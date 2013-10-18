@@ -27,13 +27,13 @@ class NumberExtensionTest extends \PHPUnit_Framework_TestCase
     public function testGetFilters()
     {
         $filters = $this->extension->getFilters();
-        $this->assertArrayContainsHasFilter('oro_number_format', 'format', $filters);
-        $this->assertArrayContainsHasFilter('oro_number_format_currency', 'formatCurrency', $filters);
-        $this->assertArrayContainsHasFilter('oro_number_format_decimal', 'formatDecimal', $filters);
-        $this->assertArrayContainsHasFilter('oro_number_format_percent', 'formatPercent', $filters);
-        $this->assertArrayContainsHasFilter('oro_number_format_spellout', 'formatSpellout', $filters);
-        $this->assertArrayContainsHasFilter('oro_number_format_duration', 'formatDuration', $filters);
-        $this->assertArrayContainsHasFilter('oro_number_format_ordinal', 'formatOrdinal', $filters);
+        $this->assertArrayContainsHasFilter('oro_format_number', 'format', $filters);
+        $this->assertArrayContainsHasFilter('oro_format_currency', 'formatCurrency', $filters);
+        $this->assertArrayContainsHasFilter('oro_format_decimal', 'formatDecimal', $filters);
+        $this->assertArrayContainsHasFilter('oro_format_percent', 'formatPercent', $filters);
+        $this->assertArrayContainsHasFilter('oro_format_spellout', 'formatSpellout', $filters);
+        $this->assertArrayContainsHasFilter('oro_format_duration', 'formatDuration', $filters);
+        $this->assertArrayContainsHasFilter('oro_format_ordinal', 'formatOrdinal', $filters);
     }
 
     protected function assertArrayContainsHasFilter($filterName, $extensionMethod, array $filters)

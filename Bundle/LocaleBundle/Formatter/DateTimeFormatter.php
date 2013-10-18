@@ -3,7 +3,6 @@
 namespace Oro\Bundle\LocaleBundle\Formatter;
 
 use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
-use NumberFormatter as IntlNumberFormatter;
 
 class DateTimeFormatter
 {

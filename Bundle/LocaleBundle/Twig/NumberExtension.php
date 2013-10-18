@@ -25,37 +25,37 @@ class NumberExtension extends \Twig_Extension
     public function getFilters()
     {
         return array(
-            'oro_number_format' => new \Twig_Filter_Method(
+            'oro_format_number' => new \Twig_Filter_Method(
                 $this,
                 'format',
                 array('is_safe' => array('html'))
             ),
-            'oro_number_format_currency' => new \Twig_Filter_Method(
+            'oro_format_currency' => new \Twig_Filter_Method(
                 $this,
                 'formatCurrency',
                 array('is_safe' => array('html'))
             ),
-            'oro_number_format_decimal' => new \Twig_Filter_Method(
+            'oro_format_decimal' => new \Twig_Filter_Method(
                 $this,
                 'formatDecimal',
                 array('is_safe' => array('html'))
             ),
-            'oro_number_format_percent' => new \Twig_Filter_Method(
+            'oro_format_percent' => new \Twig_Filter_Method(
                 $this,
                 'formatPercent',
                 array('is_safe' => array('html'))
             ),
-            'oro_number_format_spellout' => new \Twig_Filter_Method(
+            'oro_format_spellout' => new \Twig_Filter_Method(
                 $this,
                 'formatSpellout',
                 array('is_safe' => array('html'))
             ),
-            'oro_number_format_duration' => new \Twig_Filter_Method(
+            'oro_format_duration' => new \Twig_Filter_Method(
                 $this,
                 'formatDuration',
                 array('is_safe' => array('html'))
             ),
-            'oro_number_format_ordinal' => new \Twig_Filter_Method(
+            'oro_format_ordinal' => new \Twig_Filter_Method(
                 $this,
                 'formatOrdinal',
                 array('is_safe' => array('html'))
@@ -86,8 +86,8 @@ class NumberExtension extends \Twig_Extension
      */
     public function format($value, $style, array $options = array())
     {
-        $attributes = $this->getOption($options, 'attributes');
-        $textAttributes = $this->getOption($options, 'textAttributes');
+        $attributes = (array)$this->getOption($options, 'attributes', array());
+        $textAttributes = (array)$this->getOption($options, 'textAttributes', array());
         $locale = $this->getOption($options, 'locale');
 
         return $this->formatter->format($value, $style, $attributes, $textAttributes, $locale);
@@ -117,8 +117,8 @@ class NumberExtension extends \Twig_Extension
     public function formatCurrency($value, array $options = array())
     {
         $currency = $this->getOption($options, 'currency');
-        $attributes = $this->getOption($options, 'attributes');
-        $textAttributes = $this->getOption($options, 'textAttributes');
+        $attributes = (array)$this->getOption($options, 'attributes', array());
+        $textAttributes = (array)$this->getOption($options, 'textAttributes', array());
         $locale = $this->getOption($options, 'locale');
 
         return $this->formatter->formatCurrency($value, $currency, $attributes, $textAttributes, $locale);
@@ -146,8 +146,8 @@ class NumberExtension extends \Twig_Extension
      */
     public function formatDecimal($value, array $options = array())
     {
-        $attributes = $this->getOption($options, 'attributes');
-        $textAttributes = $this->getOption($options, 'textAttributes');
+        $attributes = (array)$this->getOption($options, 'attributes', array());
+        $textAttributes = (array)$this->getOption($options, 'textAttributes', array());
         $locale = $this->getOption($options, 'locale');
 
         return $this->formatter->formatDecimal($value, $attributes, $textAttributes, $locale);
@@ -175,8 +175,8 @@ class NumberExtension extends \Twig_Extension
      */
     public function formatPercent($value, array $options = array())
     {
-        $attributes = $this->getOption($options, 'attributes');
-        $textAttributes = $this->getOption($options, 'textAttributes');
+        $attributes = (array)$this->getOption($options, 'attributes', array());
+        $textAttributes = (array)$this->getOption($options, 'textAttributes', array());
         $locale = $this->getOption($options, 'locale');
 
         return $this->formatter->formatPercent($value, $attributes, $textAttributes, $locale);
@@ -204,8 +204,8 @@ class NumberExtension extends \Twig_Extension
      */
     public function formatSpellout($value, array $options = array())
     {
-        $attributes = $this->getOption($options, 'attributes');
-        $textAttributes = $this->getOption($options, 'textAttributes');
+        $attributes = (array)$this->getOption($options, 'attributes', array());
+        $textAttributes = (array)$this->getOption($options, 'textAttributes', array());
         $locale = $this->getOption($options, 'locale');
 
         return $this->formatter->formatSpellout($value, $attributes, $textAttributes, $locale);
@@ -233,8 +233,8 @@ class NumberExtension extends \Twig_Extension
      */
     public function formatDuration($value, array $options = array())
     {
-        $attributes = $this->getOption($options, 'attributes');
-        $textAttributes = $this->getOption($options, 'textAttributes');
+        $attributes = (array)$this->getOption($options, 'attributes', array());
+        $textAttributes = (array)$this->getOption($options, 'textAttributes', array());
         $locale = $this->getOption($options, 'locale');
 
         return $this->formatter->formatDuration($value, $attributes, $textAttributes, $locale);
@@ -262,8 +262,8 @@ class NumberExtension extends \Twig_Extension
      */
     public function formatOrdinal($value, array $options = array())
     {
-        $attributes = $this->getOption($options, 'attributes');
-        $textAttributes = $this->getOption($options, 'textAttributes');
+        $attributes = (array)$this->getOption($options, 'attributes', array());
+        $textAttributes = (array)$this->getOption($options, 'textAttributes', array());
         $locale = $this->getOption($options, 'locale');
 
         return $this->formatter->formatOrdinal($value, $attributes, $textAttributes, $locale);
