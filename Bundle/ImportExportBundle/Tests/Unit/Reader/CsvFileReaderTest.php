@@ -81,19 +81,17 @@ class CsvFileReaderTest extends \PHPUnit_Framework_TestCase
      */
     public function testRead($options, $expected)
     {
-        $context       = $this->getContextWithOptionsMock($options);
+        $context = $this->getContextWithOptionsMock($options);
         $stepExecution = $this->getMockStepExecution($context);
         $this->reader->setStepExecution($stepExecution);
-
         $context->expects($this->atLeastOnce())
             ->method('incrementReadOffset');
         $context->expects($this->atLeastOnce())
             ->method('incrementReadCount');
         $stepExecution->expects($this->never())
             ->method('addReaderWarning');
-
         $data = array();
-        while (($dataRow = $this->reader->read()) !== null) {
+        while (($dataRow = $this->reader->read($stepExecution)) !== null) {
             $data[] = $dataRow;
         }
         $this->assertEquals($expected, $data);
@@ -171,13 +169,14 @@ class CsvFileReaderTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @expectedException Oro\Bundle\BatchBundle\Item\InvalidItemException
+     * @expectedExceptionMessage Expecting to get 3 columns, actually got 2
+     */
     public function testReadError()
     {
         $context = $this->getContextWithOptionsMock(array('filePath' => __DIR__ . '/fixtures/import_incorrect.csv'));
         $stepExecution = $this->getMockStepExecution($context);
-        $stepExecution->expects($this->once())
-            ->method('addReaderWarning')
-            ->with(get_class($this->reader), 'Expecting to get 3 columns, actually got 2');
         $this->reader->setStepExecution($stepExecution);
         $this->reader->read($stepExecution);
     }
