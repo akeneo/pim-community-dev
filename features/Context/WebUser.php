@@ -10,6 +10,7 @@ use Behat\Behat\Context\Step;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
 use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
+use Pim\Bundle\CatalogBundle\Entity\Category;
 
 /**
  * Context of the website
@@ -185,13 +186,13 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $code
+     * @param Category $category
      *
-     * @Given /^I am on the category "([^"]*)" node creation page$/
+     * @Given /^I am on the (category "([^"]*)") node creation page$/
      */
-    public function iAmOnTheCategoryNodeCreationPage($code)
+    public function iAmOnTheCategoryNodeCreationPage(Category $category)
     {
-        $this->openPage('Category node creation', array('id' => $this->getCategory($code)->getId()));
+        $this->openPage('Category node creation', array('id' => $category->getId()));
     }
 
     /**
