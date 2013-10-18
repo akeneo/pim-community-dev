@@ -48,10 +48,10 @@ COUNT=0
 # Install the db
 pushd .
 cd $FEATURES_DIR/..
-#./install.sh db behat1
-#./install.sh db behat2
-#./install.sh db behat3
-#./install.sh db behat4
+./install.sh db behat1
+./install.sh db behat2
+./install.sh db behat3
+./install.sh db behat4
 popd
 
 PROC_1=0
@@ -99,7 +99,7 @@ for FEATURE in $FEATURES; do
         fi
         
         if [ ! -z $FEATURE_NAME ]; then
-            sleep 5
+            sleep 2
         fi
     done
 done
