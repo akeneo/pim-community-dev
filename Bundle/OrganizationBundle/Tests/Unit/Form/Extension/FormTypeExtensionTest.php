@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\OrganizationBundle\Tests\Form\Extension;
 
-use Oro\Bundle\EntityBundle\Owner\Metadata\OwnershipMetadata;
+use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadata;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
@@ -61,7 +61,7 @@ class FormTypeExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $this->securityContext = $this->getMock('Symfony\Component\Security\Core\SecurityContextInterface');
         $this->ownershipMetadataProvider =
-            $this->getMockBuilder('Oro\Bundle\EntityBundle\Owner\Metadata\OwnershipMetadataProvider')
+            $this->getMockBuilder('Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadataProvider')
                 ->disableOriginalConstructor()
                 ->getMock();
         $this->manager = $this->getMockBuilder('Oro\Bundle\OrganizationBundle\Entity\Manager\BusinessUnitManager')
