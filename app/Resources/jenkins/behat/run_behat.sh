@@ -1,36 +1,47 @@
 #!/bin/bash
 
 #
-# Execute Behat feature sequentially in a separate execution context
-# in order to avoid high memory consumption
+# Execute Behat features in parallel
+# The supporting DBs must exists and be available before executing the script.
+# Same thing for the Behat profiles
 #
 
+XDEBUG_EXTENSION="xdebug.so"
+CHECK_WAIT=2
+
 usage() {
-    echo "Usage: $0 (xdebug|noxdebug) [behat command and options]"
+    echo "Usage: $0 (concurrency) (xdebug|noxdebug) (database_prefix) (profile_prefix) [behat command and options]"
     echo "(feature file name will automatically appended)"
     exit 1;
 }
 
-if [ $# -eq 0 ] ; then
+if [ $# -lt 5 ] ; then
     usage
 else
-    if [ "$1" != 'xdebug' ] && [ "$1" != 'noxdebug' ] ; then
+    CONCURRENCY=$1
+    XDEBUG=$2
+    DB_PREFIX=$3
+    PROFILE_PREFIX=$4
+    BEHAT_CMD=`echo $* | sed -e "s/$CONCURRENCY//" -e "s/$XDEBUG//" -e "s/$DB_PREFIX//" -e "s/$PROFILE_PREFIX//"`
+
+    if [ $XDEBUG != 'xdebug' ] && [ $XDEBUG != 'noxdebug' ] ; then
+        echo "Invalid xdebug parameter [$XDEBUG]"
+        usage
+    fi
+
+    expr $CONCURRENCY + 0 > /dev/null 2>&1
+    if [ $? != 0 ]; then
+        echo "Invalid concurrency parameter [$CONCURRENCY]"
         usage
     fi
 fi
 
 FEATURES_DIR=`dirname $0`/../../../../features
-XDEBUG_EXTENSION="xdebug.so"
-
-XDEBUG=$1
-BEHAT_CMD=`echo $* | sed -e "s/noxdebug//" | sed -e "s/noxdebug//"`
-
-RESULT="OK"
 
 if [ "$XDEBUG" = 'xdebug' ]; then
     PHP_EXTENSION_DIR=`php -i | grep extension_dir | cut -d ' ' -f3`
     if [ ! -f $PHP_EXTENSION_DIR/$XDEBUG_EXTENSION ]; then
-       echo Unable to find xdebug extension $PHP_EXTENSION_DIR/$XDEBUG_EXTENSION >&2
+       echo "Unable to find xdebug extension $PHP_EXTENSION_DIR/$XDEBUG_EXTENSION"
        exit 2
     fi
 fi
@@ -43,61 +54,52 @@ export DISPLAY=:0
 
 FEATURES_NAMES=""
 
-COUNT=0
-
-# Install the db
-pushd .
-mysqldump -u root akeneo_pim_test | mysql -u root akeneo_pim_test_1
-mysqldump -u root akeneo_pim_test | mysql -u root akeneo_pim_test_2
-mysqldump -u root akeneo_pim_test | mysql -u root akeneo_pim_test_3
-mysqldump -u root akeneo_pim_test | mysql -u root akeneo_pim_test_4
-
-PROC_1=0
-PROC_2=0
-PROC_3=0
-PROC_4=0
+# Install the assets and db on all environments
+cd $FEATURES_DIR/..
+for PROC in `seq 1 $CONCURRENCY`; do
+    export SYMFONY__DATABASE__NAME=$DB_PREFIX$PROC
+    cp app/config/config_behat.yml app/config/config_behat$PROC.yml
+#    if [ $PROC -eq 1 ]; then
+#        ./install.sh all behat$PROC
+#    else
+#        ./install.sh db behat$PROC
+#    fi
+    eval PID_$PROC=0
+done
+cd -
 
 FEATURES=`find $FEATURES_DIR/ -name *.feature`
 for FEATURE in $FEATURES; do
-    COUNT=`expr $COUNT + 1`
     
     FEATURE_NAME=`echo $FEATURE | sed -e 's#^.*/features/\(.*\)$#features/\1#'`
 
     while [ ! -z $FEATURE_NAME ]; do
-        ls /proc/$PROC_1 > /dev/null 2>&1
-        if [ $? -ne 0 ]; then
-            echo "Executing feature $FEATURE_NAME"
-            $BEHAT_CMD --profile=jenkins-1 $FEATURE_NAME &
-            PROC_1=$!
-            FEATURE_NAME=""
-        fi
 
-        ls /proc/$PROC_2 > /dev/null 2>&1
-        if [ $? -ne 0 ] && [ ! -z $FEATURE_NAME ]; then
-            echo "Executing feature $FEATURE_NAME"
-            $BEHAT_CMD --profile=jenkins-2 $FEATURE_NAME &
-            PROC_2=$!
-            FEATURE_NAME=""
-        fi
+        for PROC in `seq 1 $CONCURRENCY`; do
+            # Make sure there's a feature to process
+            if [ ! -z $FEATURE_NAME ]; then
 
-        ls /proc/$PROC_3 > /dev/null 2>&1
-        if [ $? -ne 0 ] && [ ! -z $FEATURE_NAME ]; then
-            echo "Executing feature $FEATURE_NAME"
-            $BEHAT_CMD --profile=jenkins-3 $FEATURE_NAME &
-            PROC_3=$!
-            FEATURE_NAME=""
-        fi
+                # Check if processus PID_$PROC is available
+                # (/proc/PID should not exist)
+                PID_VARNAME=PID_$PROC
+                PID="${!PID_VARNAME}"
+                ls /proc/$PID > /dev/null 2>&1
+                if [ $? -ne 0 ]; then
+                    export SYMFONY__DATABASE__NAME=$DB_PREFIX$PROC
+                    echo "Executing feature $FEATURE_NAME"
+                    $BEHAT_CMD --profile=$PROFILE_PREFIX$PROC $FEATURE_NAME &
+                    RESULT=$!
+                    eval PID_$PROC=$RESULT
+                    FEATURE_NAME=""
+                fi
 
-        ls /proc/$PROC_4 > /dev/null 2>&1
-        if [ $? -ne 0 ] && [ ! -z $FEATURE_NAME ]; then
-            echo "Executing feature $FEATURE_NAME"
-            $BEHAT_CMD --profile=jenkins-4 $FEATURE_NAME &
-            PROC_4=$!
-            FEATURE_NAME=""
-        fi
-        
+            fi
+        done
+
+        # There's a feature waiting to be executed, but no processus
+        # available. Wait a little bit before checking again
         if [ ! -z $FEATURE_NAME ]; then
-            sleep 2
+            sleep $CHECK_WAIT
         fi
     done
 done

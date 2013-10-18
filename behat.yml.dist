@@ -116,20 +116,86 @@ jenkins-4:
     filters:
         tags: ~skip
 
-jenkins-pr:
+jenkins-pr-1:
     context:
         parameters:
-            base_url: http://pim-pr-behat.ci/
+            base_url: http://pim-pr-behat-1.ci/
     extensions:
         Behat\MinkExtension\Extension:
             default_session: symfony2
             show_cmd: chromium-browser %s
             selenium2: ~
-            base_url: http://pim-pr-behat.ci/
+            base_url: http://pim-pr-behat-1.ci/
             files_path: 'features/Context/fixtures/'
         Behat\Symfony2Extension\Extension:
             kernel:
-                env: behat
+                env: behat1
+        SensioLabs\Behat\PageObjectExtension\Extension: ~
+    formatter:
+        name: progress,junit
+        parameters:
+            output_path: null,app/build/logs/behat-pr/
+    filters:
+        tags: ~skip
+
+jenkins-pr-2:
+    context:
+        parameters:
+            base_url: http://pim-pr-behat-2.ci/
+    extensions:
+        Behat\MinkExtension\Extension:
+            default_session: symfony2
+            show_cmd: chromium-browser %s
+            selenium2: ~
+            base_url: http://pim-pr-behat-2.ci/
+            files_path: 'features/Context/fixtures/'
+        Behat\Symfony2Extension\Extension:
+            kernel:
+                env: behat2
+        SensioLabs\Behat\PageObjectExtension\Extension: ~
+    formatter:
+        name: progress,junit
+        parameters:
+            output_path: null,app/build/logs/behat-pr/
+    filters:
+        tags: ~skip
+
+jenkins-pr-3:
+    context:
+        parameters:
+            base_url: http://pim-pr-behat-3.ci/
+    extensions:
+        Behat\MinkExtension\Extension:
+            default_session: symfony2
+            show_cmd: chromium-browser %s
+            selenium2: ~
+            base_url: http://pim-pr-behat-3.ci/
+            files_path: 'features/Context/fixtures/'
+        Behat\Symfony2Extension\Extension:
+            kernel:
+                env: behat3
+        SensioLabs\Behat\PageObjectExtension\Extension: ~
+    formatter:
+        name: progress,junit
+        parameters:
+            output_path: null,app/build/logs/behat-pr/
+    filters:
+        tags: ~skip
+
+jenkins-pr-4:
+    context:
+        parameters:
+            base_url: http://pim-pr-behat-4.ci/
+    extensions:
+        Behat\MinkExtension\Extension:
+            default_session: symfony2
+            show_cmd: chromium-browser %s
+            selenium2: ~
+            base_url: http://pim-pr-behat-4.ci/
+            files_path: 'features/Context/fixtures/'
+        Behat\Symfony2Extension\Extension:
+            kernel:
+                env: behat4
         SensioLabs\Behat\PageObjectExtension\Extension: ~
     formatter:
         name: progress,junit
