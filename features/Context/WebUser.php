@@ -9,7 +9,12 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\Behat\Context\Step;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
 use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
+use Oro\Bundle\BatchBundle\Entity\JobInstance;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
+use Pim\Bundle\CatalogBundle\Entity\Association;
+use Pim\Bundle\CatalogBundle\Entity\Category;
+use Pim\Bundle\CatalogBundle\Entity\Family;
+use Pim\Bundle\CatalogBundle\Entity\Product;
 
 /**
  * Context of the website
@@ -152,8 +157,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iAmOnTheEntityEditPage($identifier, $page)
     {
         $page = ucfirst($page);
-        $method = sprintf('get%s', $page);
-        $entity = $this->$method($identifier);
+        $getter = sprintf('get%s', $page);
+        $entity = $this->getFixturesContext()->$getter($identifier);
         $this->openPage(sprintf('%s edit', $page), array('id' => $entity->getId()));
     }
 
@@ -166,8 +171,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iAmOnTheAttributeGroupEditPage($identifier)
     {
         $page = 'AttributeGroup';
-        $method = sprintf('get%s', $page);
-        $entity = $this->$method($identifier);
+        $getter = sprintf('get%s', $page);
+        $entity = $this->getFixturesContext()->$getter($identifier);
         $this->openPage(sprintf('%s edit', $page), array('id' => $entity->getId()));
     }
 
@@ -185,13 +190,13 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $code
+     * @param Category $category
      *
-     * @Given /^I am on the category "([^"]*)" node creation page$/
+     * @Given /^I am on the (category "([^"]*)") node creation page$/
      */
-    public function iAmOnTheCategoryNodeCreationPage($code)
+    public function iAmOnTheCategoryNodeCreationPage(Category $category)
     {
-        $this->openPage('Category node creation', array('id' => $this->getCategory($code)->getId()));
+        $this->openPage('Category node creation', array('id' => $category->getId()));
     }
 
     /**
@@ -451,12 +456,12 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
 
     /**
      * @param string $action
-     * @param string $entity
+     * @param string $identifier
      * @param string $entityType
      *
      * @Given /^I try to ([^"]*) "([^"]*)" from the ([^"]*) grid$/
      */
-    public function iTryToDoActionFromTheGrid($action, $entity, $entityType)
+    public function iTryToDoActionFromTheGrid($action, $identifier, $entityType)
     {
         $entityType = ucfirst(strtolower($entityType));
         $entityPage = $entityType.' index';
@@ -466,16 +471,9 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
             throw $this->createExpectationException(sprintf('Unable to find page "%s"', $entityPage));
         }
 
-        $getter = 'get'.$entityType;
-        if (!method_exists($this, $getter)) {
-            throw $this->createExpectationException(sprintf('Cannot find method "%s"', $getter));
-        }
-
-        $entity = $this->$getter($entity);
-
         $action = ucfirst(strtolower($action));
 
-        $page->clickOnAction($entity->getSku(), $action);
+        $page->clickOnAction($identifier, $action);
     }
 
     /**
@@ -574,7 +572,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $attributes = $this->listToArray($attributes);
         $page->visitGroup($group);
 
-        $group = $this->getAttributeGroup($group) ?: AttributeGroup::DEFAULT_GROUP_CODE;
+        $group = $this->getFixturesContext()->getAttributeGroup($group) ?: AttributeGroup::DEFAULT_GROUP_CODE;
 
         if (count($attributes) !== $actual = $this->getPage('Product edit')->getFieldsCountFor($group)) {
             throw $this->createExpectationException(
@@ -654,7 +652,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $actual = $this->getPage('Product edit')->findField($fieldName)->getValue();
 
         if ($expected !== $actual) {
-            throw new \LogicException(
+            throw $this->createExpectationException(
                 sprintf(
                     'Expected product %s to be "%s", but got "%s".',
                     $fieldName,
@@ -767,7 +765,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iShouldSeeAttributeInGroup($attribute, $group)
     {
         if (!$this->getCurrentPage()->getAttribute($attribute, $group)) {
-            throw new ExpectationException(
+            throw $this->createExpectationException(
                 sprintf(
                     'Expecting to see attribute %s under group %s, but was not present.',
                     $attribute,
@@ -778,38 +776,35 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $group
+     * @param AttributeGroup $group
      *
-     * @Given /^I should be on the "([^"]*)" attribute group page$/
+     * @Given /^I should be on the ("([^"]*)" attribute group) page$/
      */
-    public function iShouldBeOnTheAttributeGroupPage($group)
+    public function iShouldBeOnTheAttributeGroupPage(AttributeGroup $group)
     {
-        $expectedAddress = $this->getPage('AttributeGroup edit')
-            ->getUrl(array('id' => $this->getAttributeGroup($group)->getId()));
+        $expectedAddress = $this->getPage('AttributeGroup edit')->getUrl(array('id' => $group->getId()));
         $this->assertAddress($expectedAddress);
     }
 
     /**
-     * @param string $family
+     * @param Family $family
      *
-     * @Given /^I should be on the "([^"]*)" family page$/
+     * @Given /^I should be on the ("([^"]*)" family) page$/
      */
-    public function iShouldBeOnTheFamilyPage($family)
+    public function iShouldBeOnTheFamilyPage(Family $family)
     {
-        $expectedAddress = $this->getPage('Family edit')->getUrl(array('id' => $this->getFamily($family)->getId()));
+        $expectedAddress = $this->getPage('Family edit')->getUrl(array('id' => $family->getId()));
         $this->assertAddress($expectedAddress);
     }
 
     /**
-     * @param string $association
+     * @param Association $association
      *
-     * @Given /^I should be on the "([^"]*)" association page$/
+     * @Given /^I should be on the ("([^"]*)" association) page$/
      */
-    public function iShouldBeOnTheAssociationPage($association)
+    public function iShouldBeOnTheAssociationPage(Association $association)
     {
-        $expectedAddress = $this->getPage('Association edit')->getUrl(
-            array('id' => $this->getAssociation($association)->getId())
-        );
+        $expectedAddress = $this->getPage('Association edit')->getUrl(array('id' => $association->getId()));
         $this->assertAddress($expectedAddress);
     }
 
@@ -1165,13 +1160,12 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $sku
+     * @param Product $product
      *
-     * @Given /^product "([^"]*)" should be disabled$/
+     * @Given /^(product "([^"]*)") should be disabled$/
      */
-    public function productShouldBeDisabled($sku)
+    public function productShouldBeDisabled(Product $product)
     {
-        $product = $this->getProduct($sku);
         $this->getMainContext()->getEntityManager()->refresh($product);
         if ($product->isEnabled()) {
             throw $this->createExpectationException('Product was expected to be be disabled');
@@ -1179,13 +1173,12 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $sku
+     * @param Product $product
      *
-     * @Given /^product "([^"]*)" should be enabled$/
+     * @Given /^(product "([^"]*)") should be enabled$/
      */
-    public function productShouldBeEnabled($sku)
+    public function productShouldBeEnabled(Product $product)
     {
-        $product = $this->getProduct($sku);
         $this->getMainContext()->getEntityManager()->refresh($product);
         if (!$product->isEnabled()) {
             throw $this->createExpectationException('Product was expected to be be enabled');
@@ -1201,7 +1194,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function theFamilyOfProductShouldBe($sku, $expectedFamily = '')
     {
-        $product = $this->getProduct($sku);
+        $product = $this->getFixturesContext()->getProduct($sku);
         $this->getMainContext()->getEntityManager()->refresh($product);
 
         $actualFamily = $product->getFamily() ? $product->getFamily()->getCode() : '';
@@ -1304,25 +1297,24 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $code
+     * @param Category $category
      *
-     * @Then /^I should be on the category "([^"]*)" edit page$/
+     * @Then /^I should be on the (category "([^"]*)") edit page$/
      */
-    public function iShouldBeOnTheCategoryEditPage($code)
+    public function iShouldBeOnTheCategoryEditPage(Category $category)
     {
-        $expectedAddress = $this->getPage('Category edit')->getUrl(array('id' => $this->getCategory($code)->getId()));
+        $expectedAddress = $this->getPage('Category edit')->getUrl(array('id' => $category->getId()));
         $this->assertAddress($expectedAddress);
     }
 
     /**
-     * @param string $code
+     * @param Category $category
      *
-     * @Given /^I should be on the category "([^"]*)" node creation page$/
+     * @Given /^I should be on the (category "([^"]*)") node creation page$/
      */
-    public function iShouldBeOnTheCategoryNodeCreationPage($code)
+    public function iShouldBeOnTheCategoryNodeCreationPage(Category $category)
     {
-        $id = $this->getCategory($code)->getId();
-        $expectedAddress = $this->getPage('Category node creation')->getUrl(array('id' => $id));
+        $expectedAddress = $this->getPage('Category node creation')->getUrl(array('id' => $category->getId()));
         $this->assertAddress($expectedAddress);
     }
 
@@ -1406,56 +1398,24 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $code
+     * @param JobInstance $job
      *
-     * @Then /^I should be on the "([^"]*)" import job page$/
+     * @Given /^I am on the ("([^"]*)" import job) page$/
      */
-    public function iShouldBeOnTheImportJobPage($code)
+    public function iAmOnTheImportJobPage(JobInstance $job)
     {
-        $expectedAddress = $this->getPage('Import show')->getUrl(array('id' => $this->getJobInstance($code)->getId()));
-        $this->assertAddress($expectedAddress);
-    }
-
-    /**
-     * @param string $code
-     *
-     * @Given /^I am on the "([^"]*)" import job page$/
-     */
-    public function iAmOnTheImportJobPage($code)
-    {
-        $this->openPage('Import show', array('id' => $this->getJobInstance($code)->getId()));
+        $this->openPage('Import show', array('id' => $job->getId()));
         $this->wait();
     }
 
     /**
-     * @param string $code
+     * @param JobInstance $job
      *
-     * @When /^I launch the "([^"]*)" import job$/
+     * @Given /^I am on the ("([^"]*)" export job) page$/
      */
-    public function iLaunchTheImportJob($code)
+    public function iAmOnTheExportJobPage(JobInstance $job)
     {
-        $this->openPage('Import launch', array('id' => $this->getJobInstance($code)->getId()));
-    }
-
-    /**
-     * @param string $code
-     *
-     * @Then /^I should be on the "([^"]*)" export job page$/
-     */
-    public function iShouldBeOnTheExportJobPage($code)
-    {
-        $expectedAddress = $this->getPage('Export show')->getUrl(array('id' => $this->getJobInstance($code)->getId()));
-        $this->assertAddress($expectedAddress);
-    }
-
-    /**
-     * @param string $code
-     *
-     * @Given /^I am on the "([^"]*)" export job page$/
-     */
-    public function iAmOnTheExportJobPage($code)
-    {
-        $this->openPage('Export show', array('id' => $this->getJobInstance($code)->getId()));
+        $this->openPage('Export show', array('id' => $job->getId()));
         $this->wait();
     }
 
@@ -1492,13 +1452,13 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $code
+     * @param JobInstance $job
      *
-     * @When /^I launch the "([^"]*)" export job$/
+     * @When /^I launch the ("([^"]*)" export job)$/
      */
-    public function iLaunchTheExportJob($code)
+    public function iLaunchTheExportJob(JobInstance $job)
     {
-        $this->openPage('Export launch', array('id' => $this->getJobInstance($code)->getId()));
+        $this->openPage('Export launch', array('id' => $job->getId()));
     }
 
     /**
@@ -1986,96 +1946,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $username
-     *
-     * @return User
-     */
-    private function getUser($username)
-    {
-        return $this->getFixturesContext()->getUser($username);
-    }
-
-    /**
-     * @param string $sku
-     *
-     * @return Product
-     */
-    private function getProduct($sku)
-    {
-        return $this->getFixturesContext()->getProduct($sku);
-    }
-
-    /**
-     * @param string $code
-     *
-     * @return Category
-     */
-    public function getCategory($code)
-    {
-        return $this->getFixturesContext()->getCategory($code);
-    }
-
-    /**
-     * @param string $name
-     *
-     * @return AttributeGroup
-     */
-    private function getAttributeGroup($name)
-    {
-        return $this->getFixturesContext()->getAttributeGroup($name);
-    }
-
-    /**
-     * @param string $type
-     *
-     * @return ProductAttribute
-     */
-    private function getAttribute($type)
-    {
-        return $this->getFixturesContext()->getAttribute($type);
-    }
-
-    /**
-     * @param string $code
-     *
-     * @return Family
-     */
-    private function getFamily($code)
-    {
-        return $this->getFixturesContext()->getFamily($code);
-    }
-
-    /**
-     * @param string $code
-     *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Channel
-     */
-    private function getChannel($code)
-    {
-        return $this->getFixturesContext()->getChannel($code);
-    }
-
-    /**
-     * @param string $code
-     *
-     * @return \Pim\Bundle\CatalogBundle\Entity\VariantGroup
-     */
-    private function getVariant($code)
-    {
-        return $this->getFixturesContext()->getVariant($code);
-    }
-
-    /**
-     * @param string $code
-     *
-     * @return Association
-     */
-    private function getAssociation($code)
-    {
-        return $this->getFixturesContext()->getAssociation($code);
-    }
-
-    /**
      * @return FixturesContext
      */
     private function getFixturesContext()
@@ -2101,16 +1971,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     private function getLocaleCode($language)
     {
         return $this->getFixturesContext()->getLocaleCode($language);
-    }
-
-    /**
-     * @param string $code
-     *
-     * @return Job
-     */
-    private function getJobInstance($code)
-    {
-        return $this->getFixturesContext()->getJobInstance($code);
     }
 
     /**
