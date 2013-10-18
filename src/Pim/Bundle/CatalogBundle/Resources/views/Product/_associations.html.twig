@@ -17,8 +17,9 @@
         {% set selectedAssociation = firstAssociation.id %}
     {% endif %}
     {% for association in associations %}
+    {% set prototype = form_widget(form.associations.vars.prototype) %}
+        {{ form_widget(form.associations) }}
         <input type="hidden" id="apply-on-association-{{ association.id }}" name="apply_on_association_{{ association.id }}" value="0"/>
     {% endfor %}
     <div id="association-grid" data-id="{{ product.id }}" data-datalocale="{{ dataLocale }}"{% if selectedAssociation is defined %} data-selected-association="{{ selectedAssociation }}"{% endif %}></div>
 </div>
-

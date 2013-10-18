@@ -54,6 +54,16 @@ class ProductType extends FlexibleType
 
         parent::buildForm($builder, $options);
 
+        $builder->add(
+            'associations',
+            'collection',
+            array(
+                'type' => 'pim_catalog_product_association',
+                'allow_add' => true,
+                'prototype' => true
+            )
+        );
+
         if ($options['enable_family']) {
             $builder->add(
                 'family',
