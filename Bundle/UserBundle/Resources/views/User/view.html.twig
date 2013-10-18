@@ -123,7 +123,10 @@
                             {
                                 'title': '',
                                 'useSpan': false,
-                                'data': [dataGrid.renderGrid(gridName), Email.renderJs()]
+                                'data': [
+                                    dataGrid.renderGrid(gridName, {userId: entity.id}),
+                                    Email.renderJs()
+                                ]
                             }
                         ]
                     }]

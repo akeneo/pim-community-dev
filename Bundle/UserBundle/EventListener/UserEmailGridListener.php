@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\UserBundle\EventListener;
 
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -14,8 +15,16 @@ class UserEmailGridListener
     /** @var  EmailQueryFactory */
     protected $queryFactory;
 
-    public function __construct(EmailQueryFactory $factory)
+    /** @var \Symfony\Component\HttpFoundation\Request  */
+    protected $request;
+
+    /** @var  EntityManager */
+    protected $em;
+
+    public function __construct(ContainerInterface $container, EmailQueryFactory $factory)
     {
+        $this->request = $container->get('request');
+        $this->em      = $container->get('doctrine.orm.entity_manager');
         $this->queryFactory = $factory;
     }
 
@@ -28,10 +37,19 @@ class UserEmailGridListener
 
             $this->queryFactory->prepareQuery($queryBuilder);
 
-            // TODO: find user, current user you're viewing
-            $user = 'something';
-            $origin = $user->getImapConfiguration();
-            $queryBuilder->setParameter('origin_id', $origin !== null ? $origin->getId() : null);
+            if ($id = $this->request->get('userId')) {
+                $user = $this->em
+                    ->getRepository('OroUserBundle:User')
+                    ->find($id);
+
+                // TODO: select imap configuration by userId
+                $origin = $user->getImapConfiguration();
+                $origin = $origin !== null ? $origin->getId() : null;
+            } else {
+                $origin = null;
+            }
+
+            $queryBuilder->setParameter('origin_id', $origin);
         }
     }
 }

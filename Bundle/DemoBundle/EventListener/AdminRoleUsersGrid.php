@@ -9,7 +9,11 @@ use Symfony\Component\HttpFoundation\Request;
 
 class AdminRoleUsersGrid
 {
+    /**
+     * @var \Symfony\Component\HttpFoundation\Request
+     */
     protected $request;
+
     protected $em;
 
     public function __construct(ContainerInterface $container)
