@@ -22,8 +22,8 @@ Feature: Variant group creation
     Given I am on the variants page
     When I create a new variant
     And I fill in the following information:
-      | Code | MUG   |
-      | Axis | Color |
+      | Code | MUG     |
+      | Axis | Color   |
     And I press the "Save" button
     Then I am on the variants page
     And I should see variant MUG
@@ -33,7 +33,7 @@ Feature: Variant group creation
     Given I am on the variants page
     When I create a new variant
     And I fill in the following information:
-      | Axis | Size |
+      | Axis | Size    |
     And I press the "Save" button
     Then I should see validation error "This value should not be blank."
 
@@ -48,11 +48,11 @@ Feature: Variant group creation
   Scenario: Fail to create a variant filling an already used code
     Given I am on the variants page
     And the following variants:
-      | code    | label          | attributes  |
-      | TSHIRT  | T-Shirt Akeneo | size, color |
+      | code    | label          | attributes  | type    |
+      | TSHIRT  | T-Shirt Akeneo | size, color | VARIANT |
     When I create a new variant
     And I fill in the following information:
-      | Code | TSHIRT |
+      | Code | TSHIRT  |
     And I press the "Save" button
     Then I should see validation error "This value is already used."
 
@@ -60,6 +60,6 @@ Feature: Variant group creation
     Given I am on the variants page
     When I create a new variant
     And I fill in the following information:
-      | Code | MUG |
+      | Code | MUG     |
     And I press the "Save" button
     Then I should see validation error "This collection should contain 1 element or more."
