@@ -56,14 +56,15 @@ FEATURES_NAMES=""
 
 # Install the assets and db on all environments
 cd $FEATURES_DIR/..
+sed -i -e 's/database_name:.*$/database_name: "%database.name%"/' app/config/parameters_test.yml
 for PROC in `seq 1 $CONCURRENCY`; do
     export SYMFONY__DATABASE__NAME=$DB_PREFIX$PROC
     cp app/config/config_behat.yml app/config/config_behat$PROC.yml
-#    if [ $PROC -eq 1 ]; then
-#        ./install.sh all behat$PROC
-#    else
-#        ./install.sh db behat$PROC
-#    fi
+    if [ $PROC -eq 1 ]; then
+        ./install.sh all behat$PROC
+    else
+        ./install.sh db behat$PROC
+    fi
     eval PID_$PROC=0
 done
 cd -
