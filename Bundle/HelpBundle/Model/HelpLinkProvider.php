@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\HelpBundle\Model;
 
+use Oro\Bundle\PlatformBundle\OroPlatformBundle;
 use Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -53,7 +54,7 @@ class HelpLinkProvider
     /**
      * @var string
      */
-    protected $format = '%server%/%vendor%/%bundle%:%controller%_%action%';
+    protected $format = '%server%/%vendor%/%bundle%/%controller%_%action%';
 
     /**
      * @param ControllerNameParser $parser
@@ -125,7 +126,24 @@ class HelpLinkProvider
             $link
         );
 
-        return preg_replace('/(^:)\/+/', '/', $link);
+        return $this->appendVersion(preg_replace('/(^:)\/+/', '/', $link));
+    }
+
+    /**
+     * Append Platform version to URL
+     *
+     * @param string $url
+     * @return string
+     */
+    protected function appendVersion($url)
+    {
+        if (strpos($url, "?")) {
+            $url .= "&";
+        } else {
+            $url .= "?";
+        }
+
+        return $url . "v=" . OroPlatformBundle::VERSION;
     }
 
     /**

@@ -4,6 +4,7 @@ namespace Oro\Bundle\HelpBundle\Unit\Model;
 
 use Oro\Bundle\HelpBundle\Annotation\Help;
 use Oro\Bundle\HelpBundle\Model\HelpLinkProvider;
+use Oro\Bundle\PlatformBundle\OroPlatformBundle;
 use Symfony\Component\HttpFoundation\Request;
 
 class HelpLinkProviderTest extends \PHPUnit_Framework_TestCase
@@ -67,7 +68,7 @@ class HelpLinkProviderTest extends \PHPUnit_Framework_TestCase
                 ),
                 'requestAttributes' => array('_controller' => 'Acme\DemoBundle\Controller\TestController::runAction'),
                 'parserResults' => array('buildResult' => 'AcmeDemoBundle:Test:run'),
-                'expectedLink' => 'http://test.com/wiki/Acme/AcmeDemoBundle:Test_run'
+                'expectedLink' => 'http://test.com/wiki/Acme/AcmeDemoBundle/Test_run?v=' . OroPlatformBundle::VERSION
             ),
             'simple default with controller short name' => array(
                 'configuration' => array(
@@ -79,7 +80,7 @@ class HelpLinkProviderTest extends \PHPUnit_Framework_TestCase
                     '_controller' => 'AcmeDemoBundle:Test:run'
                 ),
                 'parserResults' => array('parseResult' => 'Acme\DemoBundle\Controller\TestController::runAction'),
-                'expectedLink' => 'http://test.com/wiki/Acme/AcmeDemoBundle:Test_run'
+                'expectedLink' => 'http://test.com/wiki/Acme/AcmeDemoBundle/Test_run?v=' . OroPlatformBundle::VERSION
             ),
             'default with prefix' => array(
                 'configuration' => array(
@@ -90,7 +91,8 @@ class HelpLinkProviderTest extends \PHPUnit_Framework_TestCase
                 ),
                 'requestAttributes' => array('_controller' => 'Acme\DemoBundle\Controller\TestController::runAction'),
                 'parserResults' => array('buildResult' => 'AcmeDemoBundle:Test:run'),
-                'expectedLink' => 'http://test.com/wiki/Third_Party/Acme/AcmeDemoBundle:Test_run'
+                'expectedLink' => 'http://test.com/wiki/Third_Party/Acme/AcmeDemoBundle/Test_run?v='
+                    . OroPlatformBundle::VERSION
             ),
             'default with link' => array(
                 'configuration' => array(
@@ -136,7 +138,8 @@ class HelpLinkProviderTest extends \PHPUnit_Framework_TestCase
                 ),
                 'requestAttributes' => array('_controller' => 'Acme\DemoBundle\Controller\TestController::runAction'),
                 'parserResults' => array('buildResult' => 'AcmeDemoBundle:Test:run'),
-                'expectedLink' => 'http://wiki.test.com/Prefix/CustomVendor/AcmeDemoBundle:Test_run'
+                'expectedLink' => 'http://wiki.test.com/Prefix/CustomVendor/AcmeDemoBundle/Test_run?v='
+                    . OroPlatformBundle::VERSION
             ),
             'vendor uri' => array(
                 'configuration' => array(
@@ -152,7 +155,7 @@ class HelpLinkProviderTest extends \PHPUnit_Framework_TestCase
                 ),
                 'requestAttributes' => array('_controller' => 'Acme\DemoBundle\Controller\TestController::runAction'),
                 'parserResults' => array('buildResult' => 'AcmeDemoBundle:Test:run'),
-                'http://test.com/wiki/test'
+                'expectedLink' => 'http://test.com/wiki/test?v=' . OroPlatformBundle::VERSION
             ),
             'bundle config' => array(
                 'configuration' => array(
@@ -170,7 +173,8 @@ class HelpLinkProviderTest extends \PHPUnit_Framework_TestCase
                 ),
                 'requestAttributes' => array('_controller' => 'Acme\DemoBundle\Controller\TestController::runAction'),
                 'parserResults' => array('buildResult' => 'AcmeDemoBundle:Test:run'),
-                'expectedLink' => 'http://wiki.test.com/Prefix/Acme/CustomBundle:Test_run'
+                'expectedLink' => 'http://wiki.test.com/Prefix/Acme/CustomBundle/Test_run?v='
+                    . OroPlatformBundle::VERSION
             ),
             'bundle link' => array(
                 'configuration' => array(
@@ -202,7 +206,7 @@ class HelpLinkProviderTest extends \PHPUnit_Framework_TestCase
                 ),
                 'requestAttributes' => array('_controller' => 'Acme\DemoBundle\Controller\TestController::runAction'),
                 'parserResults' => array('buildResult' => 'AcmeDemoBundle:Test:run'),
-                'expectedLink' => 'http://test.com/wiki/test'
+                'expectedLink' => 'http://test.com/wiki/test?v=' . OroPlatformBundle::VERSION
             ),
             'controller config' => array(
                 'configuration' => array(
@@ -220,7 +224,8 @@ class HelpLinkProviderTest extends \PHPUnit_Framework_TestCase
                 ),
                 'requestAttributes' => array('_controller' => 'Acme\DemoBundle\Controller\TestController::runAction'),
                 'parserResults' => array('buildResult' => 'AcmeDemoBundle:Test:run'),
-                'expectedLink' => 'http://wiki.test.com/Prefix/Acme/AcmeDemoBundle:MyTest_run'
+                'expectedLink' => 'http://wiki.test.com/Prefix/Acme/AcmeDemoBundle/MyTest_run?v='
+                    . OroPlatformBundle::VERSION
             ),
             'controller link' => array(
                 'configuration' => array(
@@ -253,7 +258,7 @@ class HelpLinkProviderTest extends \PHPUnit_Framework_TestCase
                 ),
                 'requestAttributes' => array('_controller' => 'Acme\DemoBundle\Controller\TestController::runAction'),
                 'parserResults' => array('buildResult' => 'AcmeDemoBundle:Test:run'),
-                'expectedLink' => 'http://test.com/wiki/test'
+                'expectedLink' => 'http://test.com/wiki/test?v=' . OroPlatformBundle::VERSION
             ),
             'action config' => array(
                 'configuration' => array(
@@ -271,7 +276,8 @@ class HelpLinkProviderTest extends \PHPUnit_Framework_TestCase
                 ),
                 'requestAttributes' => array('_controller' => 'Acme\DemoBundle\Controller\TestController::runAction'),
                 'parserResults' => array('buildResult' => 'AcmeDemoBundle:Test:run'),
-                'expectedLink' => 'http://wiki.test.com/Prefix/Acme/AcmeDemoBundle:Test_execute'
+                'expectedLink' => 'http://wiki.test.com/Prefix/Acme/AcmeDemoBundle/Test_execute?v='
+                    . OroPlatformBundle::VERSION
             ),
             'action link' => array(
                 'configuration' => array(
@@ -303,7 +309,7 @@ class HelpLinkProviderTest extends \PHPUnit_Framework_TestCase
                 ),
                 'requestAttributes' => array('_controller' => 'Acme\DemoBundle\Controller\TestController::runAction'),
                 'parserResults' => array('buildResult' => 'AcmeDemoBundle:Test:run'),
-                'expectedLink' => 'http://test.com/wiki/test'
+                'expectedLink' => 'http://test.com/wiki/test?v=' . OroPlatformBundle::VERSION
             ),
             'service id controller' => array(
                 'configuration' => array(
@@ -313,7 +319,7 @@ class HelpLinkProviderTest extends \PHPUnit_Framework_TestCase
                 ),
                 'requestAttributes' => array('_controller' => 'controller_service:runAction'),
                 'parserResults' => array(),
-                'expectedLink' => 'http://test.com/wiki'
+                'expectedLink' => 'http://test.com/wiki?v=' . OroPlatformBundle::VERSION
             ),
             'annotation link' => array(
                 'configuration' => array(
@@ -350,7 +356,8 @@ class HelpLinkProviderTest extends \PHPUnit_Framework_TestCase
                     )
                 ),
                 'parserResults' => array('buildResult' => 'AcmeDemoBundle:Test:run'),
-                'expectedLink' => 'http://wiki.test.com/Prefix/Vendor/Bundle:Executor_execute'
+                'expectedLink' => 'http://wiki.test.com/Prefix/Vendor/Bundle/Executor_execute?v='
+                    . OroPlatformBundle::VERSION
             ),
             'annotation configuration override' => array(
                 'configuration' => array(
@@ -385,7 +392,8 @@ class HelpLinkProviderTest extends \PHPUnit_Framework_TestCase
                     )
                 ),
                 'parserResults' => array('buildResult' => 'AcmeDemoBundle:Test:run'),
-                'expectedLink' => 'http://wiki.test.com/bar/PrefixBar/VendorBar/BundleBar:ExecutorBar_executeBar'
+                'expectedLink' => 'http://wiki.test.com/bar/PrefixBar/VendorBar/BundleBar/ExecutorBar_executeBar?v='
+                    . OroPlatformBundle::VERSION
             ),
             'annotation uri' => array(
                 'configuration' => array(
@@ -404,7 +412,7 @@ class HelpLinkProviderTest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
                 'parserResults' => array('buildResult' => 'AcmeDemoBundle:Test:run'),
-                'expectedLink' => 'http://wiki.test.com/test'
+                'expectedLink' => 'http://wiki.test.com/test?v=' . OroPlatformBundle::VERSION
             ),
             'annotation uri unset with resource config' => array(
                 'configuration' => array(
@@ -427,7 +435,8 @@ class HelpLinkProviderTest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
                 'parserResults' => array('buildResult' => 'AcmeDemoBundle:Test:run'),
-                'expectedLink' => 'http://test.com/wiki/Third_Party/Acme/AcmeDemoBundle:Test_run'
+                'expectedLink' => 'http://test.com/wiki/Third_Party/Acme/AcmeDemoBundle/Test_run?v='
+                    . OroPlatformBundle::VERSION
             ),
             'route config' => array(
                 'configuration' => array(
@@ -447,7 +456,8 @@ class HelpLinkProviderTest extends \PHPUnit_Framework_TestCase
                 ),
                 'requestAttributes' => array('_route' => 'test_route'),
                 'parserResults' => array(),
-                'expectedLink' => 'http://wiki.test.com/Prefix/Vendor/Bundle:Executor_execute'
+                'expectedLink' => 'http://wiki.test.com/Prefix/Vendor/Bundle/Executor_execute?v='
+                    . OroPlatformBundle::VERSION
             ),
             'route uri' => array(
                 'configuration' => array(
@@ -462,7 +472,7 @@ class HelpLinkProviderTest extends \PHPUnit_Framework_TestCase
                 ),
                 'requestAttributes' => array('_route' => 'test_route'),
                 'parserResults' => array(),
-                'expectedLink' => 'http://test.com/wiki/test'
+                'expectedLink' => 'http://test.com/wiki/test?v=' . OroPlatformBundle::VERSION
             ),
             'route link' => array(
                 'configuration' => array(
@@ -500,7 +510,7 @@ class HelpLinkProviderTest extends \PHPUnit_Framework_TestCase
                     '_route' => 'test_route'
                 ),
                 'parserResults' => array('buildResult' => 'AcmeDemoBundle:Test:run'),
-                'expectedLink' => 'http://test.com/wiki/Acme/AcmeDemoBundle:Test_run'
+                'expectedLink' => 'http://test.com/wiki/Acme/AcmeDemoBundle/Test_run?v=' . OroPlatformBundle::VERSION
             ),
             'with parameters' => array(
                 'configuration' => array(
@@ -518,7 +528,8 @@ class HelpLinkProviderTest extends \PHPUnit_Framework_TestCase
                     'option_3' => 'test3'
                 ),
                 'parserResults' => array('buildResult' => 'AcmeDemoBundle:Test:run'),
-                'expectedLink' => 'http://test.com/wiki/Acme/AcmeDemoBundle:Test_run/test1/test2/test3'
+                'expectedLink' => 'http://test.com/wiki/Acme/AcmeDemoBundle/Test_run/test1/test2/test3?v='
+                    . OroPlatformBundle::VERSION
             ),
             'with parameters without parameter value' => array(
                 'configuration' => array(
@@ -533,7 +544,7 @@ class HelpLinkProviderTest extends \PHPUnit_Framework_TestCase
                     )
                 ),
                 'parserResults' => array('buildResult' => 'AcmeDemoBundle:Test:run'),
-                'expectedLink' => 'http://test.com/wiki/Acme/AcmeDemoBundle:Test_run/'
+                'expectedLink' => 'http://test.com/wiki/Acme/AcmeDemoBundle/Test_run/?v=' . OroPlatformBundle::VERSION
             ),
         );
     }
