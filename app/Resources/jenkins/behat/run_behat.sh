@@ -47,12 +47,10 @@ COUNT=0
 
 # Install the db
 pushd .
-cd $FEATURES_DIR/..
-./install.sh db behat1
-./install.sh db behat2
-./install.sh db behat3
-./install.sh db behat4
-popd
+mysqldump -u root akeneo_pim_test | mysql -u root akeneo_pim_test_1
+mysqldump -u root akeneo_pim_test | mysql -u root akeneo_pim_test_2
+mysqldump -u root akeneo_pim_test | mysql -u root akeneo_pim_test_3
+mysqldump -u root akeneo_pim_test | mysql -u root akeneo_pim_test_4
 
 PROC_1=0
 PROC_2=0
