@@ -95,14 +95,14 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
      */
     protected $groups;
 
-
     /**
      * @var ArrayCollection $productAssociations
      *
      * @ORM\OneToMany(
      *     targetEntity="Pim\Bundle\CatalogBundle\Entity\ProductAssociation",
      *     mappedBy="owner",
-     *     cascade={"persist", "remove"}
+     *     cascade={"persist", "remove"},
+     *     orphanRemoval=true
      * )
      */
     protected $productAssociations;
@@ -125,10 +125,10 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
     {
         parent::__construct();
 
-        $this->categories     = new ArrayCollection();
-        $this->completenesses = new ArrayCollection();
-        $this->groups         = new ArrayCollection();
-        $this->productAssociations   = new ArrayCollection();
+        $this->categories          = new ArrayCollection();
+        $this->completenesses      = new ArrayCollection();
+        $this->groups              = new ArrayCollection();
+        $this->productAssociations = new ArrayCollection();
     }
 
     /**
@@ -570,7 +570,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
     /**
      * Get the product productAssociations
      *
-     * @return ArrayCollection|null
+     * @return ProductAssociation[]|null
      */
     public function getProductAssociations()
     {

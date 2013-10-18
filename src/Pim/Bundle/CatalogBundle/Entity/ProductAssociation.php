@@ -38,13 +38,13 @@ class ProductAssociation
     /**
      * @var ProductInterface $owner
      *
-     * @ORM\ManyToOne(targetEntity="Pim\Bundle\CatalogBundle\Model\ProductInterface", inversedBy="associations")
+     * @ORM\ManyToOne(targetEntity="Pim\Bundle\CatalogBundle\Model\ProductInterface", inversedBy="productAssociations")
      * @ORM\JoinColumn(name="owner_id", nullable=false, onDelete="CASCADE", referencedColumnName="id")
      */
     protected $owner;
 
     /**
-     * @var ProductInterface $target
+     * @var ProductInterface[] $targets
      *
      * @ORM\ManyToMany(targetEntity="Pim\Bundle\CatalogBundle\Model\ProductInterface")
      */
@@ -109,9 +109,9 @@ class ProductAssociation
     }
 
     /**
-     * Set target
+     * Set targets
      *
-     * @param ProductInterface $target
+     * @param ProductInterface[] $targets
      *
      * @return ProductAssociation
      */
@@ -123,10 +123,42 @@ class ProductAssociation
     }
 
     /**
-     * Get target
+     * Get targets
+     *
+     * @return ProductInterface[]|null
      */
     public function getTargets()
     {
         return $this->targets;
+    }
+
+    /**
+     * Add a target
+     *
+     * @param ProductInterface $target
+     *
+     * @return ProductAssociation
+     */
+    public function addTarget(ProductInterface $target)
+    {
+        if (!$this->targets->contains($target)) {
+            $this->targets->add($target);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove a target
+     *
+     * @param ProductInterface $target
+     *
+     * @return ProductAssociation
+     */
+    public function removeTarget(ProductInterface $target)
+    {
+        $this->targets->removeElement($target);
+
+        return $this;
     }
 }
