@@ -10,7 +10,7 @@ use Doctrine\ORM\EntityRepository;
 
 use Pim\Bundle\CatalogBundle\Entity\Repository\ProductAttributeRepository;
 use Pim\Bundle\CatalogBundle\Form\Subscriber\VariantGroupSubscriber;
-use Pim\Bundle\CatalogBundle\Form\Subscriber\BindVariantGroupProductsSubscriber;
+use Pim\Bundle\CatalogBundle\Form\Subscriber\BindGroupProductsSubscriber;
 
 /**
  * Type for variant group form
@@ -38,7 +38,7 @@ class VariantGroupType extends AbstractType
 
         $builder
             ->addEventSubscriber(new VariantGroupSubscriber())
-            ->addEventSubscriber(new BindVariantGroupProductsSubscriber());
+            ->addEventSubscriber(new BindGroupProductsSubscriber());
     }
 
     /**
