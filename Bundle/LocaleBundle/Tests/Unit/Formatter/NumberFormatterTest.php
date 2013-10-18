@@ -27,11 +27,11 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider formatDataProvider
      */
-    public function testFormat($expected, $value, $style, $attributes, $textAttributes, $locale, $settingsLocale = null)
+    public function testFormat($expected, $value, $style, $attributes, $textAttributes, $locale, $defaultLocale = null)
     {
-        if ($settingsLocale) {
+        if ($defaultLocale) {
             $this->localeSettings->expects($this->once())->method('getLocale')
-                ->will($this->returnValue($settingsLocale));
+                ->will($this->returnValue($defaultLocale));
         }
         $this->assertEquals(
             $expected,
