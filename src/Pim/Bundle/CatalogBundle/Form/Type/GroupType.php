@@ -47,9 +47,7 @@ class GroupType extends AbstractType
             array(
                 'class' => 'PimCatalogBundle:GroupType',
                 'query_builder' => function (EntityRepository $repository) {
-                    return $repository->buildAllByEntity(
-                        'Pim\Bundle\CatalogBundle\Entity\Group'
-                    );
+                    return $repository->buildAll();
                 },
                 'multiple' => false,
                 'expanded' => false
