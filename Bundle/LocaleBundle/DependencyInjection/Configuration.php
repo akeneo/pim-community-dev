@@ -89,7 +89,7 @@ class Configuration implements ConfigurationInterface
                 'locale' => array('value' => '%locale%'),
                 'country' => array('value' => null),
                 'timezone' => array('value' => $date->getTimezone()->getName()),
-                'default_currency' => array('value' => 'USD'),
+                'currency' => array('value' => 'USD'),
                 'name_format' => array('value' => null)
             )
         );

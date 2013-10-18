@@ -44,11 +44,14 @@ class NumberFormatter
      */
     public function formatCurrency(
         $value,
-        $currency,
+        $currency = null,
         array $attributes = array(),
         array $textAttributes = array(),
         $locale = null
     ) {
+        if (!$currency) {
+            $currency = $this->localeSettings->getCurrency();
+        }
         return $this->getFormatter($locale, \NumberFormatter::CURRENCY, $attributes, $textAttributes)
             ->formatCurrency($value, $currency);
     }

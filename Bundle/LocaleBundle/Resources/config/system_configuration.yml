@@ -47,11 +47,11 @@ oro_system_configuration:
                   constraints:
                       - NotBlank: ~
 
-        oro_locale.default_currency:
+        oro_locale.currency:
             type: currency
             priority: 30
             options:
-                label: 'Default currency'
+                label: 'Currency'
                 required: true
                 constraints:
                     - NotBlank: ~
@@ -80,7 +80,7 @@ oro_system_configuration:
                                         children:
                                             - oro_locale.language
                                             - oro_locale.country
-                                            - oro_locale.default_currency
+                                            - oro_locale.currency
                                             - oro_locale.timezone
                                     locale_options:
                                         priority: 50

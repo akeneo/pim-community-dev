@@ -14,6 +14,7 @@ class LocaleSettings
 
     const DEFAULT_LOCALE  = 'en';
     const DEFAULT_COUNTRY = 'US';
+    const DEFAULT_CURRENCY = 'USD';
 
     /**
      * @var \NumberFormatter[]
@@ -33,12 +34,22 @@ class LocaleSettings
     /**
      * @var string
      */
-    protected $defaultLocale;
+    protected $locale;
 
     /**
      * @var string
      */
-    protected $defaultCountry;
+    protected $country;
+
+    /**
+     * @var string
+     */
+    protected $currency;
+
+    /**
+     * @var string
+     */
+    protected $timeZone;
 
     /**
      * Format placeholders (lowercase and uppercase):
@@ -306,26 +317,16 @@ class LocaleSettings
     }
 
     /**
-     * Get default locale
+     * Get locale
      *
      * @return string
      */
     public function getLocale()
     {
-        if (null === $this->defaultLocale) {
-            $this->defaultLocale = $this->configManager->get('oro_locale.locale', \Locale::getDefault());
+        if (null === $this->locale) {
+            $this->locale = $this->configManager->get('oro_locale.locale', \Locale::getDefault());
         }
-        return $this->defaultLocale;
-    }
-
-    /**
-     * Set default locale
-     *
-     * @param string $locale
-     */
-    public function setLocale($locale)
-    {
-        $this->defaultLocale = $locale;
+        return $this->locale;
     }
 
     /**
@@ -335,20 +336,40 @@ class LocaleSettings
      */
     public function getCountry()
     {
-        if (null === $this->defaultCountry) {
-            $this->defaultCountry = $this->configManager->get('oro_locale.country', self::DEFAULT_COUNTRY);
+        if (null === $this->country) {
+            $this->country = $this->configManager->get(
+                'oro_locale.country',
+                self::getCountryByLocale($this->getLocale())
+            );
         }
-        return $this->defaultCountry;
+        return $this->country;
     }
 
     /**
-     * Set default country
+     * Get currency
      *
-     * @param string $country
+     * @return string
      */
-    public function setCountry($country)
+    public function getCurrency()
     {
-        $this->defaultCountry = $country;
+        if (null === $this->currency) {
+            $this->currency = $this->configManager->get('oro_locale.currency', self::DEFAULT_CURRENCY);
+        }
+        return $this->currency;
+    }
+
+    /**
+     * Get time zone
+     *
+     * @return string
+     */
+    public function getTimeZone()
+    {
+        if (null === $this->timeZone) {
+            $date = new \DateTime('now');
+            $this->timeZone = $this->configManager->get('oro_locale.timezone', $date->getTimezone()->getName());
+        }
+        return $this->timeZone;
     }
 
     /**

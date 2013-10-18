@@ -78,8 +78,8 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
 
     public function testFormatWithoutLocale()
     {
-        $settingsLocale = 'fr_FR';
-        $this->localeSettings->expects($this->once())->method('getLocale')->will($this->returnValue($settingsLocale));
+        $locale = 'fr_FR';
+        $this->localeSettings->expects($this->once())->method('getLocale')->will($this->returnValue($locale));
         $this->assertEquals(
             '123 456,4',
             $this->formatter->format(123456.4, \NumberFormatter::DECIMAL)
@@ -128,6 +128,16 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
                 'locale' => 'en_US'
             ),
         );
+    }
+
+    public function testDefaultFormatCurrency()
+    {
+        $locale = 'en_GB';
+        $currency = 'GBP';
+        $this->localeSettings->expects($this->once())->method('getLocale')->will($this->returnValue($locale));
+        $this->localeSettings->expects($this->once())->method('getCurrency')->will($this->returnValue($currency));
+
+        $this->assertEquals('£1,234.57', $this->formatter->formatCurrency(1234.56789));
     }
 
     /**
