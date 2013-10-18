@@ -3,11 +3,12 @@
 {% import 'OroUIBundle::macros.html.twig' as UI %}
 {% import 'OroEmailBundle::macros.html.twig' as Email %}
 {% import 'OroLocaleBundle::macros.html.twig' as Locale %}
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
 
-{% set gridId = 'users-email-grid' %}
+{% set gridName = 'users-email-grid' %}
 {% block head_script %}
     {{ parent() }}
-    {% placeholder prepare_grid with {'datagrid': datagrid, 'selector': '#' ~ gridId} %}
+    {% placeholder prepare_grid with {'datagrid': datagrid, 'selector': '#' ~ gridName} %}
 {% endblock %}
 
 {% set format = oro_config_value('oro_locale.name_format') %}
@@ -122,7 +123,7 @@
                             {
                                 'title': '',
                                 'useSpan': false,
-                                'data': [UI.gridBlock(gridId), Email.renderJs()]
+                                'data': [dataGrid.renderGrid(gridName), Email.renderJs()]
                             }
                         ]
                     }]

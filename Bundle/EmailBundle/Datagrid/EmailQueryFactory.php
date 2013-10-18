@@ -53,12 +53,12 @@ class EmailQueryFactory extends EntityQueryFactory
 
     protected function prepareQuery(QueryBuilder $qb)
     {
-        $firstNames = array();
-        $lastNames = array();
+//        $firstNames = array();
+//        $lastNames = array();
         foreach ($this->emailOwnerFieldNames as $fieldName) {
             $qb->leftJoin('a.' . $fieldName, $fieldName);
-            $firstNames[] = sprintf('%s.firstName', $fieldName);
-            $lastNames[] = sprintf('%s.lastName', $fieldName);
+//            $firstNames[] = sprintf('%s.firstName', $fieldName);
+//            $lastNames[] = sprintf('%s.lastName', $fieldName);
         }
     }
 

@@ -19,8 +19,21 @@ datagrid:
                 select
                     - o.label
                     - 2 as someAlias
+                    - test.some_id as someField
                 from:
                     - { table: SomeBundle:SomeEntity, alias: o }
+                join:
+                    left:
+                        joinNameOne:
+                            join: o.someEntity
+                            alias: someEntity
+                        joinNameTwo:
+                            join: o.testRel
+                            alias: test
+                    inner:
+                        innerJoinName:
+                            join: o.abcTestRel
+                            alias: abc
 
         columns:
             label:

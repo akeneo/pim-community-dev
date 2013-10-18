@@ -55,4 +55,17 @@ class OrmDatasource implements DatasourceInterface
     {
         return $this->qb;
     }
+
+    /**
+     * Set QueryBuilder
+     *
+     * @param QueryBuilder $qb
+     * @return $this
+     */
+    public function setQuery(QueryBuilder $qb)
+    {
+        $this->qb = $qb;
+
+        return $this;
+    }
 }

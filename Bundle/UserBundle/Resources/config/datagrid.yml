@@ -19,8 +19,19 @@ datagrid:
         columns:
             id:
                 type: field
-
+            username:
+                type: field
+            email:
+                type: field
             firstName:
+                type: field
+            lastName:
+                type: field
+            created:
+                type: field
+            updated:
+                type: field
+            enabled:
                 type: field
 
         properties:
@@ -166,3 +177,27 @@ datagrid:
                 label:
                     type: string
                     data_name: r.label
+
+    users-email-grid:
+        extend: email-grid
+#        source:
+#            query:
+#                select:
+#                    - e.id
+#                    - e.fromName
+#                    - e.name
+#                    - e.type
+#                join:
+#                    inner:
+#                        from_email_address:
+#                            join: e.fromEmailAddress
+#                            alias: a
+#                        folder:
+#                            join: e.folder
+#                            alias: f
+#                        origin:
+#                            join: f.origin
+#                            alias: o
+#                where:
+#                    and:
+#                        o.id: ":origin_id"

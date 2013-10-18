@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\UserBundle\Controller;
 
+use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -179,31 +180,27 @@ class UserController extends Controller
      */
     protected function view(User $user, $editRoute = '')
     {
-        /** @var UserEmailDatagridManager $manager */
-        $manager = $this->get('oro_user.email.datagrid_manager');
-        $manager->setUser($user);
         if (array_key_exists(
             'refresh',
-            $manager->getDatagrid()->getParameters()->get(ParametersInterface::ADDITIONAL_PARAMETERS)
+            $this->get('oro_grid.datagrid.request_params')
+                 ->get(RequestParameters::ADDITIONAL_PARAMETERS)
         )) {
             $origin = $user->getImapConfiguration();
             if ($origin) {
-                $this->get('oro_imap.email_synchronizer')->syncOrigins(array($origin->getId()));
+                $this->get('oro_imap.email_synchronizer')
+                     ->syncOrigins(array($origin->getId()));
             }
         }
-        $view = $manager->getDatagrid()->createView();
 
         $output = array(
             'entity' => $user,
-            'datagrid' => $view
         );
 
         if ($editRoute) {
             $output = array_merge($output, array('editRoute' => $editRoute));
         }
-        return 'json' == $this->getRequest()->getRequestFormat()
-            ? $this->get('oro_grid.renderer')->renderResultsJsonResponse($view)
-            : $output;
+
+        return $output;
     }
 
     /**

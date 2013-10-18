@@ -21,19 +21,19 @@ class EmailRepository extends EntityRepository
      */
     public function createEmailListQueryBuilder($firstResult = null, $maxResults = null)
     {
-        $qb = $this->createQueryBuilder('e')
-            ->select('partial e.{id, fromName, subject, sentAt}, a')
-            ->innerJoin('e.fromEmailAddress', 'a')
-            ->orderBy('e.sentAt', 'DESC');
-
-        if ($firstResult !== null) {
-            $qb->setFirstResult($firstResult);
-        }
-        if ($maxResults !== null) {
-            $qb->setMaxResults($maxResults);
-        }
-
-        return $qb;
+//        $qb = $this->createQueryBuilder('e')
+//            ->select('partial e.{id, fromName, subject, sentAt}, a')
+//            ->innerJoin('e.fromEmailAddress', 'a')
+//            ->orderBy('e.sentAt', 'DESC');
+//
+//        if ($firstResult !== null) {
+//            $qb->setFirstResult($firstResult);
+//        }
+//        if ($maxResults !== null) {
+//            $qb->setMaxResults($maxResults);
+//        }
+//
+//        return $qb;
     }
 
     /**

@@ -14,9 +14,12 @@ class UserEmailQueryFactory extends EmailQueryFactory
     public function createQuery()
     {
         $entityManager = $this->registry->getManagerForClass($this->className);
+
         /** @var EmailRepository $repository */
         $repository = $entityManager->getRepository($this->className);
+
         $this->queryBuilder = $repository->createEmailListQueryBuilder();
+
         $this->prepareQuery($this->queryBuilder);
         $this->queryBuilder
             ->addSelect('partial f.{id, name, type}')

@@ -64,7 +64,7 @@ class Manager implements ManagerInterface
      * @return array
      * @throws \RuntimeException
      */
-    protected function getConfigurationForGrid($name)
+    public function getConfigurationForGrid($name)
     {
         if (!isset($this->rawConfiguration[$name])) {
             throw new \RuntimeException(sprintf('Configuration for datagrid "%s" not found', $name));
