@@ -9,6 +9,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\Validator\Validator;
+use Symfony\Component\Validator\Constraints as Assert;
 use Monolog\Handler\StreamHandler;
 use Doctrine\ORM\EntityManager;
 use Oro\Bundle\BatchBundle\Entity\JobExecution;
@@ -31,7 +32,20 @@ class BatchCommand extends ContainerAwareCommand
             ->setDescription('Launch a registered job instance')
             ->addArgument('code', InputArgument::REQUIRED, 'Job instance code')
             ->addArgument('execution', InputArgument::OPTIONAL, 'Job execution id')
-            ->addOption('config', 'c', InputOption::VALUE_REQUIRED, 'Override job configuration (formatted as json. ie: php app/console oro:batch:job -c \'[{"reader":{"filePath":"/tmp/foo.csv"}}]\' acme_product_import)');
+            ->addOption(
+                'config',
+                'c',
+                InputOption::VALUE_REQUIRED,
+                'Override job configuration (formatted as json. ie: ' .
+                'php app/console oro:batch:job -c \'[{"reader":{"filePath":"/tmp/foo.csv"}}]\' ' .
+                'acme_product_import)'
+            )
+            ->addOption(
+                'email',
+                null,
+                InputOption::VALUE_REQUIRED,
+                'The email to notify at the end of the job execution'
+            );
     }
 
     /**
@@ -62,9 +76,26 @@ class BatchCommand extends ContainerAwareCommand
             );
         }
 
-        $errors = $this->getValidator()->validate($jobInstance, array('Default', 'Execution'));
+        $validator = $this->getValidator();
+
+        // Override mail notifier recipient email
+        if ($email = $input->getOption('email')) {
+            $errors = $validator->validateValue($email, new Assert\Email());
+            if (count($errors) > 0) {
+                throw new \RuntimeException(
+                    sprintf('Email "%s" is invalid: %s', $email, $this->getErrorMessages($errors))
+                );
+            }
+            $this
+                ->getMailNotifier()
+                ->setRecipientEmail($email);
+        }
+
+        $errors = $validator->validate($jobInstance, array('Default', 'Execution'));
         if (count($errors) > 0) {
-            throw new \RuntimeException(sprintf('Job "%s" is invalid: %s', $code, $this->getErrorMessages($errors)));
+            throw new \RuntimeException(
+                sprintf('Job "%s" is invalid: %s', $code, $this->getErrorMessages($errors))
+            );
         }
 
         $executionId = $input->getArgument('execution');
@@ -72,7 +103,7 @@ class BatchCommand extends ContainerAwareCommand
             $jobExecution = $this->getEntityManager()->getRepository('OroBatchBundle:JobExecution')->find($executionId);
             if (!$jobExecution) {
                 throw new \InvalidArgumentException(sprintf('Could not find job execution "%s".', $id));
-                }
+            }
             if (!$jobExecution->getStatus()->isStarting()) {
                 throw new \RuntimeException(
                     sprintf('Job execution "%s" has invalid status: %s', $executionId, $jobExecution->getStatus())
@@ -122,6 +153,14 @@ class BatchCommand extends ContainerAwareCommand
     protected function getValidator()
     {
         return $this->getContainer()->get('validator');
+    }
+
+    /**
+     * @return Validator
+     */
+    protected function getMailNotifier()
+    {
+        return $this->getContainer()->get('oro_batch.mail_notifier');
     }
 
     /**

@@ -22,6 +22,7 @@ class Configuration implements ConfigurationInterface
 
         $root
             ->children()
+                ->booleanNode('enable_mail_notification')->defaultFalse()->end()
                 ->scalarNode('sender_email')->defaultValue('mailer@bap.com')->end()
             ->end()
         ->end();
