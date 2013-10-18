@@ -1,4 +1,4 @@
-groups:
+attribute_groups:
     general:
         labels:
             en_US: General

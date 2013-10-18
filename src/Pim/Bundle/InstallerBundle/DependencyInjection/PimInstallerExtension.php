@@ -23,10 +23,11 @@ class PimInstallerExtension extends Extension
             'locales',
             'currencies',
             'families',
-            'groups',
+            'attribute_groups',
             'attributes',
             'categories',
-            'variant_groups'
+            'group_types',
+            'groups'
         );
         $installerFiles = array();
 

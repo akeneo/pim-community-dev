@@ -49,6 +49,14 @@ class Group implements TranslatableInterface
     protected $code;
 
     /**
+     * @var GroupType
+     *
+     * @ORM\ManyToOne(targetEntity="Pim\Bundle\CatalogBundle\Entity\GroupType")
+     * @ORM\JoinColumn(name="type_id", referencedColumnName="id", nullable=false)
+     */
+    protected $type;
+
+    /**
      * @var ArrayCollection $products
      *
      * @ORM\ManyToMany(
@@ -100,16 +108,6 @@ class Group implements TranslatableInterface
     }
 
     /**
-     * Returns the label of the variant group
-     *
-     * @return string
-     */
-    public function __toString()
-    {
-        return $this->getLabel();
-    }
-
-    /**
      * Get code
      *
      * @return string $code
@@ -132,6 +130,31 @@ class Group implements TranslatableInterface
 
         return $this;
     }
+
+    /**
+     * Set group type
+     *
+     * @param GroupType $type
+     *
+     * @return \Pim\Bundle\CatalogBundle\Entity\Group
+     */
+    public function setType(GroupType $type)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
+     * Get group type
+     *
+     * @return \Pim\Bundle\CatalogBundle\Entity\Group
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -282,5 +305,15 @@ class Group implements TranslatableInterface
         $this->products = new ArrayCollection($products);
 
         return $this;
+    }
+
+    /**
+     * Returns the label of the group
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getLabel();
     }
 }

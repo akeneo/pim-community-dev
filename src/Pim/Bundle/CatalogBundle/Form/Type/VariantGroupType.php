@@ -6,6 +6,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
+use Doctrine\ORM\EntityRepository;
+
 use Pim\Bundle\CatalogBundle\Entity\Repository\ProductAttributeRepository;
 use Pim\Bundle\CatalogBundle\Form\Subscriber\VariantGroupSubscriber;
 use Pim\Bundle\CatalogBundle\Form\Subscriber\BindVariantGroupProductsSubscriber;
@@ -26,6 +28,8 @@ class VariantGroupType extends AbstractType
     {
         $builder->add('code');
 
+        $this->addTypeField($builder);
+
         $this->addLabelField($builder);
 
         $this->addAttributesField($builder);
@@ -35,6 +39,29 @@ class VariantGroupType extends AbstractType
         $builder
             ->addEventSubscriber(new VariantGroupSubscriber())
             ->addEventSubscriber(new BindVariantGroupProductsSubscriber());
+    }
+
+    /**
+     * Add type field
+     *
+     * @param FormBuilderInterface $builder
+     */
+    protected function addTypeField(FormBuilderInterface $builder)
+    {
+        $builder->add(
+            'type',
+            'entity',
+            array(
+                'class' => 'PimCatalogBundle:GroupType',
+                'query_builder' => function (EntityRepository $repository) {
+                    return $repository->buildAllByEntity(
+                        'Pim\Bundle\CatalogBundle\Entity\VariantGroup'
+                    );
+                },
+                'multiple' => false,
+                'expanded' => false
+            )
+        );
     }
 
     /**
