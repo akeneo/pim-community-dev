@@ -570,7 +570,7 @@ class FixturesContext extends RawMinkContext
             if (isset($data['products'])) {
                 $skus = explode(',', $data['products']);
                 foreach ($skus as $sku) {
-                    $category->addProduct($this->getProduct($sku));
+                    $category->addProduct($this->getProduct(trim($sku)));
                 }
             }
 

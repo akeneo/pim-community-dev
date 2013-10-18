@@ -9,22 +9,25 @@ Feature: Export media with products
       | code     |
       | funboard |
     Given the following product:
-      | sku          | family   |
-      | bic-core-148 | funboard |
+      | sku                 | family   |
+      | bic-core-148        | funboard |
+      | fanatic-freewave-76 | funboard |
     Given the following product attributes:
       | label       | type  |
       | Name        | text  |
       | Front view  | image |
       | User manual | file  |
     And the following product values:
-      | product      | attribute   | value            |
-      | bic-core-148 | Name        | Bic Core 148     |
-      | bic-core-148 | Front view  | bic-core-148.gif |
-      | bic-core-148 | User manual | bic-core-148.txt |
+      | product             | attribute   | value                   |
+      | bic-core-148        | Name        | Bic Core 148            |
+      | bic-core-148        | Front view  | bic-core-148.gif        |
+      | bic-core-148        | User manual | bic-core-148.txt        |
+      | fanatic-freewave-76 | Name        | Fanatic Freewave 76     |
+      | fanatic-freewave-76 | Front view  | fanatic-freewave-76.gif |
+      | fanatic-freewave-76 | User manual | fanatic-freewave-76.txt |
     And the following category:
-      | code  | label | parent  | products     |
-      | sport | Sport | default | bic-core-148 |
-
+      | code  | label | parent  | products                          |
+      | sport | Sport | default | bic-core-148, fanatic-freewave-76 |
     And the following job:
       | connector            | alias          | code                | label                       | type   |
       | Akeneo CSV Connector | product_export | acme_product_export | Product export for Acme.com | export |
@@ -44,8 +47,11 @@ Feature: Export media with products
     """
     sku;family;variant_group;frontView;name;userManual;categories
     bic-core-148;funboard;;behat-bic-core-148.gif;"Bic Core 148";behat-bic-core-148.txt;sport
+    fanatic-freewave-76;funboard;;behat-fanatic-freewave-76.gif;"Fanatic Freewave 76";behat-fanatic-freewave-76.txt;sport
 
     """
     Then export directory of "acme_product_export" should contain the following media:
-      | behat-bic-core-148.gif |
-      | behat-bic-core-148.txt |
+      | behat-bic-core-148.gif        |
+      | behat-bic-core-148.txt        |
+      | behat-fanatic-freewave-76.gif |
+      | behat-fanatic-freewave-76.txt |
