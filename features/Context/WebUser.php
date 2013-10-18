@@ -1305,25 +1305,24 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $code
+     * @param Category $category
      *
-     * @Then /^I should be on the category "([^"]*)" edit page$/
+     * @Then /^I should be on the (category "([^"]*)") edit page$/
      */
-    public function iShouldBeOnTheCategoryEditPage($code)
+    public function iShouldBeOnTheCategoryEditPage(Category $category)
     {
-        $expectedAddress = $this->getPage('Category edit')->getUrl(array('id' => $this->getCategory($code)->getId()));
+        $expectedAddress = $this->getPage('Category edit')->getUrl(array('id' => $category->getId()));
         $this->assertAddress($expectedAddress);
     }
 
     /**
-     * @param string $code
+     * @param Category $category
      *
-     * @Given /^I should be on the category "([^"]*)" node creation page$/
+     * @Given /^I should be on the (category "([^"]*)") node creation page$/
      */
-    public function iShouldBeOnTheCategoryNodeCreationPage($code)
+    public function iShouldBeOnTheCategoryNodeCreationPage(Category $category)
     {
-        $id = $this->getCategory($code)->getId();
-        $expectedAddress = $this->getPage('Category node creation')->getUrl(array('id' => $id));
+        $expectedAddress = $this->getPage('Category node creation')->getUrl(array('id' => $category->getId()));
         $this->assertAddress($expectedAddress);
     }
 
@@ -2004,16 +2003,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     private function getProduct($sku)
     {
         return $this->getFixturesContext()->getProduct($sku);
-    }
-
-    /**
-     * @param string $code
-     *
-     * @return Category
-     */
-    public function getCategory($code)
-    {
-        return $this->getFixturesContext()->getCategory($code);
     }
 
     /**
