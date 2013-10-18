@@ -57,6 +57,12 @@ parameters:
     pim_catalog.form.handler.variant_group.class: Pim\Bundle\CatalogBundle\Form\Handler\VariantGroupHandler
     pim_catalog.form.type.variant_group.class:    Pim\Bundle\CatalogBundle\Form\Type\VariantGroupType
 
+    pim_catalog.form.handler.group.class: Pim\Bundle\CatalogBundle\Form\Handler\GroupHandler
+    pim_catalog.form.type.group.class:    Pim\Bundle\CatalogBundle\Form\Type\GroupType
+    pim_catalog.entity.association.class:       Pim\Bundle\CatalogBundle\Entity\Association
+    pim_catalog.form.handler.association.class: Pim\Bundle\CatalogBundle\Form\Handler\AssociationHandler
+    pim_catalog.form.type.association.class:    Pim\Bundle\CatalogBundle\Form\Type\AssociationType
+
     pim_catalog.event_listener.user_preferences.class:    Pim\Bundle\CatalogBundle\EventListener\UserPreferencesListener
     pim_catalog.event_listener.update_completeness.class: Pim\Bundle\CatalogBundle\EventListener\UpdateCompletenessListener
 

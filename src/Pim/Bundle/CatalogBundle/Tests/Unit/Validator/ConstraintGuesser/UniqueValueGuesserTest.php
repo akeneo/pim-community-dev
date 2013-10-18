@@ -34,15 +34,49 @@ class UniqueValueGuesserTest extends ConstraintGuesserTest
     }
 
     /**
-     * Test related method
+     * Data provider for supported attributes
+     * array(
+     *     Attribute backend type,
+     *     Boolean to know if supported or not
+     * )
+     *
+     *
+     * @static
+     *
+     * @return array[]
      */
-    public function testSupportVarcharAttribute()
+    public static function dataProviderForSupportedAttributes()
     {
-        $this->assertTrue(
-            $this->target->supportAttribute(
-                $this->getAttributeMock(array('backendType' => AbstractAttributeType::BACKEND_TYPE_VARCHAR))
-            )
+        return array(
+            'boolean'    => array(AbstractAttributeType::BACKEND_TYPE_BOOLEAN, false),
+            'collection' => array(AbstractAttributeType::BACKEND_TYPE_COLLECTION, false),
+            'date'       => array(AbstractAttributeType::BACKEND_TYPE_DATE, true),
+            'datetime'   => array(AbstractAttributeType::BACKEND_TYPE_DATETIME, true),
+            'decimal'    => array(AbstractAttributeType::BACKEND_TYPE_DECIMAL, true),
+            'entity'     => array(AbstractAttributeType::BACKEND_TYPE_ENTITY, false),
+            'integer'    => array(AbstractAttributeType::BACKEND_TYPE_INTEGER, true),
+            'media'      => array(AbstractAttributeType::BACKEND_TYPE_MEDIA, false),
+            'metric'     => array(AbstractAttributeType::BACKEND_TYPE_METRIC, false),
+            'option'     => array(AbstractAttributeType::BACKEND_TYPE_OPTION, false),
+            'options'    => array(AbstractAttributeType::BACKEND_TYPE_OPTIONS, false),
+            'price'      => array(AbstractAttributeType::BACKEND_TYPE_PRICE, false),
+            'text'       => array(AbstractAttributeType::BACKEND_TYPE_TEXT, false),
+            'varchar'    => array(AbstractAttributeType::BACKEND_TYPE_VARCHAR, true),
         );
+    }
+
+    /**
+     * Test related method
+     *
+     * @dataProvider dataProviderForSupportedAttributes
+     */
+    public function testSupportVarcharAttribute($backendType, $expectedAvailability)
+    {
+        $result = $this->target->supportAttribute(
+            $this->getAttributeMock(array('backendType' => $backendType))
+        );
+
+        $this->assertEquals($expectedAvailability, $result);
     }
 
     /**

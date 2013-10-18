@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Oro\Bundle\FlexibleEntityBundle\Entity\Media;
 use Gaufrette\Filesystem;
+use Pim\Bundle\CatalogBundle\Exception\MediaManagementException;
 
 /**
  * Media Manager actually implements with Gaufrette Bundle and Local adapter
@@ -47,13 +48,17 @@ class MediaManager
      */
     public function handle(Media $media, $filenamePrefix)
     {
-        if ($file = $media->getFile()) {
-            if ($media->getFilename() && $this->fileExists($media)) {
+        try {
+            if ($file = $media->getFile()) {
+                if ($media->getFilename() && $this->fileExists($media)) {
+                    $this->delete($media);
+                }
+                $this->upload($media, $this->generateFilename($file, $filenamePrefix));
+            } elseif ($media->isRemoved() && $this->fileExists($media)) {
                 $this->delete($media);
             }
-            $this->upload($media, $this->generateFilename($file, $filenamePrefix));
-        } elseif ($media->isRemoved() && $this->fileExists($media)) {
-            $this->delete($media);
+        } catch (\Exception $e) {
+            throw new MediaManagementException($e->getMessage(), $e->getCode(), $e);
         }
     }
 
@@ -133,7 +138,7 @@ class MediaManager
      */
     protected function delete(Media $media)
     {
-        if (($media->getFilename() !== '') && $this->fileExists($media)) {
+        if (($media->getFilename() != "") && $this->fileExists($media)) {
             $this->filesystem->delete($media->getFilename());
         }
 

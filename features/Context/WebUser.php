@@ -34,20 +34,23 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     private $windowHeight;
 
     private $pageMapping = array(
-        'attributes'  => 'Attribute index',
-        'channels'    => 'Channel index',
-        'currencies'  => 'Currency index',
-        'exports'     => 'Export index',
-        'families'    => 'Family index',
-        'imports'     => 'Import index',
-        'locales'     => 'Locale index',
-        'products'    => 'Product index',
-        'users'       => 'User index',
-        'user roles'  => 'UserRole index',
-        'user groups' => 'UserGroup index',
-        'categories'  => 'Category tree creation',
-        'home'        => 'Base index',
-        'variants'    => 'Variant index'
+        'associations'             => 'Association index',
+        'attributes'               => 'Attribute index',
+        'categories'               => 'Category tree creation',
+        'channels'                 => 'Channel index',
+        'currencies'               => 'Currency index',
+        'exports'                  => 'Export index',
+        'families'                 => 'Family index',
+        'home'                     => 'Base index',
+        'imports'                  => 'Import index',
+        'locales'                  => 'Locale index',
+        'products'                 => 'Product index',
+        'users'                    => 'User index',
+        'user roles'               => 'UserRole index',
+        'user groups'              => 'UserGroup index',
+        'variants'                 => 'Variant index',
+        'attribute groups'         => 'AttributeGroup index',
+        'attribute group creation' => 'AttributeGroup creation',
     );
 
     /**
@@ -150,6 +153,20 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iAmOnTheEntityEditPage($identifier, $page)
     {
         $page = ucfirst($page);
+        $method = sprintf('get%s', $page);
+        $entity = $this->$method($identifier);
+        $this->openPage(sprintf('%s edit', $page), array('id' => $entity->getId()));
+    }
+
+    /**
+     * @param string $identifier
+     *
+     * @Given /^I am on the "([^"]*)" attribute group page$/
+     * @Given /^I edit the "([^"]*)" attribute group$/
+     */
+    public function iAmOnTheAttributeGroupEditPage($identifier)
+    {
+        $page = 'AttributeGroup';
         $method = sprintf('get%s', $page);
         $entity = $this->$method($identifier);
         $this->openPage(sprintf('%s edit', $page), array('id' => $entity->getId()));
@@ -558,7 +575,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $attributes = $this->listToArray($attributes);
         $page->visitGroup($group);
 
-        $group = $this->getGroup($group) ?: AttributeGroup::DEFAULT_GROUP_CODE;
+        $group = $this->getAttributeGroup($group) ?: AttributeGroup::DEFAULT_GROUP_CODE;
 
         if (count($attributes) !== $actual = $this->getPage('Product edit')->getFieldsCountFor($group)) {
             throw $this->createExpectationException(
@@ -764,11 +781,12 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     /**
      * @param string $group
      *
-     * @Given /^I should be on the "([^"]*)" group page$/
+     * @Given /^I should be on the "([^"]*)" attribute group page$/
      */
-    public function iShouldBeOnTheGroupPage($group)
+    public function iShouldBeOnTheAttributeGroupPage($group)
     {
-        $expectedAddress = $this->getPage('Group edit')->getUrl(array('id' => $this->getGroup($group)->getId()));
+        $expectedAddress = $this->getPage('AttributeGroup edit')
+            ->getUrl(array('id' => $this->getAttributeGroup($group)->getId()));
         $this->assertAddress($expectedAddress);
     }
 
@@ -780,6 +798,19 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iShouldBeOnTheFamilyPage($family)
     {
         $expectedAddress = $this->getPage('Family edit')->getUrl(array('id' => $this->getFamily($family)->getId()));
+        $this->assertAddress($expectedAddress);
+    }
+
+    /**
+     * @param string $association
+     *
+     * @Given /^I should be on the "([^"]*)" association page$/
+     */
+    public function iShouldBeOnTheAssociationPage($association)
+    {
+        $expectedAddress = $this->getPage('Association edit')->getUrl(
+            array('id' => $this->getAssociation($association)->getId())
+        );
         $this->assertAddress($expectedAddress);
     }
 
@@ -967,7 +998,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     /**
      * @param string $fields
      *
-     * @Given /^the fields (.*) should be disabled$/
+     * @Given /^the fields? (.*) should be disabled$/
      */
     public function theFieldsShouldBeDisabled($fields)
     {
@@ -1682,11 +1713,13 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param TableNode $table
+     *
      * @Then /^I should see the completeness:$/
      */
-    public function iShouldSeeTheCompleteness(TableNode $tableNode)
+    public function iShouldSeeTheCompleteness(TableNode $table)
     {
-        foreach ($tableNode->getHash() as $data) {
+        foreach ($table->getHash() as $data) {
             $channel = strtoupper($data['channel']);
             $locale  = $data['locale'];
 
@@ -2046,9 +2079,9 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      *
      * @return AttributeGroup
      */
-    private function getGroup($name)
+    private function getAttributeGroup($name)
     {
-        return $this->getFixturesContext()->getGroup($name);
+        return $this->getFixturesContext()->getAttributeGroup($name);
     }
 
     /**
@@ -2089,6 +2122,16 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     private function getVariant($code)
     {
         return $this->getFixturesContext()->getVariant($code);
+    }
+
+    /**
+     * @param string $code
+     *
+     * @return Association
+     */
+    private function getAssociation($code)
+    {
+        return $this->getFixturesContext()->getAssociation($code);
     }
 
     /**

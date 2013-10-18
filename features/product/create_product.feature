@@ -23,9 +23,9 @@ Feature: Product creation
     And I fill in the following information:
       | SKU               | barbecue  |
       | Reference         | BBQ       |
-  And I press the "Save" button
-  Then I edit the "barbecue" product
-  Then I should see "Family: N/A"
-  And I should see "Attributes"
-  And I should see "Reference"
-  And I should see "SKU"
+    And I press the "Save" button
+    Then I edit the "barbecue" product
+    Then I should see "Family: N/A"
+    And I should see "Attributes"
+    And I should see "Reference"
+    And I should see "SKU"

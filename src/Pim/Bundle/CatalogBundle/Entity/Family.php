@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use JMS\Serializer\Annotation\Exclude;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
@@ -58,6 +59,7 @@ class Family implements TranslatableInterface, VersionableInterface
      *    joinColumns={@ORM\JoinColumn(name="family_id", referencedColumnName="id", onDelete="CASCADE")},
      *    inverseJoinColumns={@ORM\JoinColumn(name="attribute_id", referencedColumnName="id", onDelete="CASCADE")}
      * )
+     * @Exclude
      */
     protected $attributes;
 
@@ -95,6 +97,7 @@ class Family implements TranslatableInterface, VersionableInterface
      *     mappedBy="family",
      *     cascade={"persist", "remove"}
      * )
+     * @Exclude
      */
     protected $requirements;
 

@@ -3,7 +3,6 @@ services:
         public: false
         class: %pim_catalog.form.type.product.view.class%
 
-    # Types
     pim_catalog.form.type.product:
         class:     %pim_catalog.form.type.product.class%
         arguments:
@@ -104,6 +103,16 @@ services:
         class: %pim_catalog.form.type.variant_group.class%
         tags:
             - { name: form.type, alias: pim_catalog_variant_group }
+
+    pim_catalog.form.type.group:
+        class: %pim_catalog.form.type.group.class%
+        tags:
+            - { name: form.type, alias: pim_catalog_group }
+
+    pim_catalog.form.type.association:
+        class: %pim_catalog.form.type.association.class%
+        tags:
+            - { name: form.type, alias: pim_catalog_association }
 
     pim_catalog.form.type.available_product_attributes:
         class: %pim_catalog.form.type.available_product_attributes.class%

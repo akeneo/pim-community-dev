@@ -1,0 +1,9 @@
+group_types:
+    VARIANT:
+        entity: VariantGroup
+    X_SELL:
+        entity: Group
+    ADDITIONAL:
+        entity: Group
+    RELATED:
+        entity: Group

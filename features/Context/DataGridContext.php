@@ -3,7 +3,6 @@
 namespace Context;
 
 use Behat\Gherkin\Node\TableNode;
-use Behat\Behat\Context\Step;
 use Behat\MinkExtension\Context\RawMinkContext;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
 use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
@@ -111,7 +110,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string
+     * @param string    $code
      * @param TableNode $table
      *
      * @Then /^the row "([^"]*)" should contain:$/
@@ -233,15 +232,15 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      * @param string $order
      * @param string $columnName
      *
-     * @Then /^the datas are sorted (ascending|descending) by (.*)$/
+     * @Then /^the rows should be sorted (ascending|descending) by (.*)$/
      */
-    public function theDatasAreSortedBy($order, $columnName)
+    public function theRowsShouldBeSortedBy($order, $columnName)
     {
         $columnName = strtoupper($columnName);
 
         if (!$this->datagrid->isSortedAndOrdered($columnName, $order)) {
             $this->createExpectationException(
-                sprintf('The datas are not sorted %s on column %s', $order, $columnName)
+                sprintf('The rows are not sorted %s on column %s', $order, $columnName)
             );
         }
     }
@@ -325,9 +324,9 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     /**
      * @param string $columns
      *
-     * @Then /^the datas can be sorted by (.*)$/
+     * @Then /^the rows should be sortable by (.*)$/
      */
-    public function theDatasCanBeSortedBy($columns)
+    public function theRowsShouldBeSortableBy($columns)
     {
         $columns = $this->getMainContext()->listToArray($columns);
 
@@ -352,6 +351,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      * @Then /^I should see (?:import|export) profiles? (.*)$/
      * @Then /^I should see (?:(?:entit|currenc)(?:y|ies)) (.*)$/
      * @Then /^I should see variants? (.*)$/
+     * @Then /^I should see associations? (.*)$/
      */
     public function iShouldSeeEntities($elements)
     {
@@ -374,6 +374,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      * @Then /^I should not see (?:import|export) profiles? (.*)$/
      * @Then /^I should not see (?:(?:entit|currenc)(?:y|ies)) (.*)$/
      * @Then /^I should not see variants? (.*)$/
+     * @Then /^I should not see associations? (.*)$/
      */
     public function iShouldNotSeeEntities($entities)
     {
@@ -405,6 +406,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      * @Then /^I should see sorted (?:entities) (.*)$/
      * @Then /^I should see sorted products (.*)$/
      * @Then /^I should see sorted variants (.*)$/
+     * @Then /^I should see sorted associations (.*)$/
      */
     public function iShouldSeeSortedEntities($elements)
     {

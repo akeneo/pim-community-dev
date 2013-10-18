@@ -10,9 +10,11 @@ use Oro\Bundle\DataAuditBundle\Entity\Audit;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\UserBundle\Entity\UserApi;
+use Pim\Bundle\CatalogBundle\Entity\Association;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
+use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Family;
@@ -98,6 +100,20 @@ class FixturesContext extends RawMinkContext
     public function createRequiredAttribute()
     {
         $this->createAttribute('SKU', false, 'identifier', true);
+    }
+
+    /**
+     * @BeforeScenario
+     */
+    public function resetGroupTypes()
+    {
+        $types = array(
+            'VARIANT' => 'Pim\Bundle\CatalogBundle\Entity\VariantGroup',
+            'X_SELL'  => 'Pim\Bundle\CatalogBundle\Entity\Group',
+        );
+        foreach ($types as $code => $entity) {
+            $this->createGroupType($code, $entity);
+        }
     }
 
     /**
@@ -370,7 +386,7 @@ class FixturesContext extends RawMinkContext
                 $data
             );
 
-            $group = $this->getGroup($data['code']);
+            $group = $this->getAttributeGroup($data['code']);
 
             if (!$group) {
                 $group = new AttributeGroup();
@@ -418,7 +434,7 @@ class FixturesContext extends RawMinkContext
             }
 
             $attribute->setSortOrder($data['position']);
-            $attribute->setGroup($this->getGroup($data['group']));
+            $attribute->setGroup($this->getAttributeGroup($data['group']));
             $attribute->setRequired(strtolower($data['required']) === 'yes');
             $attribute->setScopable(strtolower($data['scopable']) === 'yes');
             $attribute->setTranslatable(strtolower($data['translatable']) === 'yes');
@@ -678,7 +694,7 @@ class FixturesContext extends RawMinkContext
             $attribute->setLabel($data['label']);
 
             if (isset($data['group'])) {
-                $group = $this->getGroup($data['group']);
+                $group = $this->getAttributeGroup($data['group']);
                 $attribute->setGroup($group);
             }
 
@@ -816,13 +832,29 @@ class FixturesContext extends RawMinkContext
         foreach ($table->getHash() as $data) {
             $code = $data['code'];
             $label = $data['label'];
+            $type = $data['type'];
             $attributes = explode(', ', $data['attributes']);
 
-            $this->createVariant($code, $label, $attributes);
+            $products = (isset($data['products'])) ? explode(', ', $data['products']) : array();
+
+            $this->createVariant($code, $label, $type, $attributes, $products);
         }
     }
 
+    /**
+     * @param TableNode $table
+     *
+     * @Given /^the following associations?:$/
+     */
+    public function theFollowingAssociations(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $code = $data['code'];
+            $label = isset($data['label']) ? $data['label'] : null;
 
+            $this->createAssociation($code, $label);
+        }
+    }
 
     /**
      * @Given /^there is no identifier attribute$/
@@ -1034,6 +1066,21 @@ class FixturesContext extends RawMinkContext
     /**
      * @param string $code
      *
+     * @return GroupType
+     */
+    public function getGroupType($code)
+    {
+        return $this->getEntityOrException(
+            'PimCatalogBundle:GroupType',
+            array(
+                'code' => $code
+            )
+        );
+    }
+
+    /**
+     * @param string $code
+     *
      * @return ProductAttribute
      */
     public function getAttribute($code)
@@ -1069,7 +1116,7 @@ class FixturesContext extends RawMinkContext
      *
      * @return AttributeGroup|null
      */
-    public function getGroup($name)
+    public function getAttributeGroup($name)
     {
         try {
             return $this->getEntityOrException(
@@ -1136,6 +1183,16 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param string $code
+     *
+     * @return Association
+     */
+    public function getAssociation($code)
+    {
+        return $this->getEntityOrException('PimCatalogBundle:Association', array('code' => $code));
+    }
+
+    /**
      * @param string $value
      *
      * @return string
@@ -1180,6 +1237,23 @@ class FixturesContext extends RawMinkContext
         $this->getEntityManager()->refresh($productValue);
 
         return $productValue;
+    }
+
+    /**
+     * @param string $code
+     * @param string $entity
+     *
+     * @return GroupType
+     */
+    private function createGroupType($code, $entity)
+    {
+        $type = new GroupType();
+        $type->setCode($code);
+        $type->setentity($entity);
+
+        $this->persist($type);
+
+        return $type;
     }
 
     /**
@@ -1358,20 +1432,44 @@ class FixturesContext extends RawMinkContext
     /**
      * @param string $code
      * @param string $label
+     * @param string $type
      * @param array  $attributes
+     * @param array  $products
      */
-    private function createVariant($code, $label, array $attributes)
+    private function createVariant($code, $label, $type, array $attributes, array $products = array())
     {
         $variant = new VariantGroup();
         $variant->setCode($code);
         $variant->setLocale('en_US')->setLabel($label); // TODO translation refactoring
+
+        $type = $this->getGroupType($type);
+        $variant->setType($type);
 
         foreach ($attributes as $attributeCode) {
             $attribute = $this->getAttribute($attributeCode);
             $variant->addAttribute($attribute);
         }
 
+        foreach ($products as $sku) {
+            $product = $this->getProduct($sku);
+            $variant->addProduct($product);
+            $product->setVariantGroup($variant);
+        }
+
         $this->persist($variant);
+    }
+
+    /**
+     * @param string $code
+     * @param string $label
+     */
+    private function createAssociation($code, $label)
+    {
+        $association = new Association();
+        $association->setCode($code);
+        $association->setLocale('en_US')->setLabel($label);
+
+        $this->persist($association);
     }
 
     /**

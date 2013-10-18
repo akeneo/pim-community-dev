@@ -4,7 +4,7 @@ default:
     context:
         class:  Context\FeatureContext
         parameters:
-            base_url: http://akeneo-pim.local/app_behat.php/
+            base_url: http://akeneo-pim-behat.local/
             window_width: 1024
             window_height: 768
     extensions:
@@ -12,7 +12,7 @@ default:
             default_session: symfony2
             show_cmd: chromium-browser %s
             selenium2: ~
-            base_url: http://localhost:8080/app_behat.php/
+            base_url: http://akeneo-pim-behat.local/
             files_path: 'features/Context/fixtures/'
 
             # If you want MinkExtension to open browser
@@ -31,13 +31,13 @@ default:
 jenkins:
     context:
         parameters:
-            base_url: http://pim-behat.ci/app_behat.php/
+            base_url: http://pim-behat.ci/
     extensions:
         Behat\MinkExtension\Extension:
             default_session: symfony2
             show_cmd: chromium-browser %s
             selenium2: ~
-            base_url: http://pim-behat.ci/app_behat.php/
+            base_url: http://pim-behat.ci/
             files_path: 'features/Context/fixtures/'
         Behat\Symfony2Extension\Extension:
             kernel:
@@ -53,13 +53,13 @@ jenkins:
 jenkins-pr:
     context:
         parameters:
-            base_url: http://pim-pr-behat.ci/app_behat.php/
+            base_url: http://pim-pr-behat.ci/
     extensions:
         Behat\MinkExtension\Extension:
             default_session: symfony2
             show_cmd: chromium-browser %s
             selenium2: ~
-            base_url: http://pim-pr-behat.ci/app_behat.php/
+            base_url: http://pim-pr-behat.ci/
             files_path: 'features/Context/fixtures/'
         Behat\Symfony2Extension\Extension:
             kernel:
@@ -75,13 +75,13 @@ jenkins-pr:
 jenkins-coverage:
     context:
         parameters:
-            base_url: http://pim-behat-coverage.ci:90/app_behat.php/
+            base_url: http://pim-behat-coverage.ci:90/
     extensions:
         Behat\MinkExtension\Extension:
             default_session: symfony2
             show_cmd: chromium-browser %s
             selenium2: ~
-            base_url: http://pim-behat-coverage.ci:90/app_behat.php/
+            base_url: http://pim-behat-coverage.ci:90/
             files_path: 'features/Context/fixtures/'
         Behat\Symfony2Extension\Extension:
             kernel:
