@@ -175,7 +175,7 @@
                 {% for group in form.vars.value.groups %}
 
                     {% set variantGroupAttributes %}
-                        {% if group.type.code == 'VARIANT' %}
+                        {% if group.type.isVariant %}
                             {% for attribute in group.attributes %}
                                 "{{ attribute }}"{% if not loop.last %},{% endif %}
                             {% endfor %}
