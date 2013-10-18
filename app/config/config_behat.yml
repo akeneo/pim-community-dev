@@ -1,5 +1,5 @@
 imports:
-    - { resource: config_dev.yml }
+    - { resource: config.yml }
     - { resource: parameters_test.yml }
 
 framework:
@@ -8,9 +8,23 @@ framework:
         storage_id: session.storage.mock_file
     csrf_protection: true
 
-web_profiler:
-    toolbar: false
-    intercept_redirects: false
+doctrine:
+    orm:
+        entity_managers:
+            default:
+                metadata_cache_driver: apc
+                query_cache_driver:    apc
+
+monolog:
+    handlers:
+        main:
+            type:         fingers_crossed
+            action_level: error
+            handler:      nested
+        nested:
+            type:  stream
+            path:  %kernel.logs_dir%/%kernel.environment%.log
+            level: debug
 
 swiftmailer:
     disable_delivery: true
