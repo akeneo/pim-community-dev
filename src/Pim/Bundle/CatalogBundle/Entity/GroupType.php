@@ -122,4 +122,3 @@ class GroupType
         return $this->getCode();
     }
 }
-
