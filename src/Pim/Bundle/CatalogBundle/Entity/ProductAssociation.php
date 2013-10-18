@@ -38,18 +38,26 @@ class ProductAssociation
     /**
      * @var ProductInterface $owner
      *
-     * @ORM\ManyToOne(targetEntity="Pim\Bundle\CatalogBundle\Model\ProductInterface", inversedBy="associations")
+     * @ORM\ManyToOne(targetEntity="Pim\Bundle\CatalogBundle\Model\ProductInterface", inversedBy="productAssociations")
      * @ORM\JoinColumn(name="owner_id", nullable=false, onDelete="CASCADE", referencedColumnName="id")
      */
     protected $owner;
 
     /**
-     * @var ProductInterface $target
+     * @var ProductInterface[] $targets
      *
-     * @ORM\OneToOne(targetEntity="Pim\Bundle\CatalogBundle\Model\ProductInterface")
-     * @ORM\JoinColumn(name="target_id", nullable=false, onDelete="CASCADE", referencedColumnName="id")
+     * @ORM\ManyToMany(targetEntity="Pim\Bundle\CatalogBundle\Model\ProductInterface")
+     * @ORM\JoinTable(
+     *     name="pim_catalog_product_association_product",
+     *     joinColumns={
+     *         @ORM\JoinColumn(name="productassociation_id", referencedColumnName="id", onDelete="CASCADE")
+     *     },
+     *     inverseJoinColumns={
+     *         @ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")
+     *     }
+     * )
      */
-    protected $target;
+    protected $targets;
 
     /**
      * Get id
@@ -110,26 +118,56 @@ class ProductAssociation
     }
 
     /**
-     * Set target
+     * Set targets
      *
-     * @param ProductInterface $target
+     * @param ProductInterface[] $targets
      *
      * @return ProductAssociation
      */
-    public function setTarget(ProductInterface $target)
+    public function setTargets($targets)
     {
-        $this->target = $target;
+        $this->targets = $targets;
 
         return $this;
     }
 
     /**
-     * Get target
+     * Get targets
      *
-     * @return ProductInterface
+     * @return ProductInterface[]|null
      */
-    public function getTarget()
+    public function getTargets()
     {
-        return $this->target;
+        return $this->targets;
+    }
+
+    /**
+     * Add a target
+     *
+     * @param ProductInterface $target
+     *
+     * @return ProductAssociation
+     */
+    public function addTarget(ProductInterface $target)
+    {
+        if (!$this->targets->contains($target)) {
+            $this->targets->add($target);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove a target
+     *
+     * @param ProductInterface $target
+     *
+     * @return ProductAssociation
+     */
+    public function removeTarget(ProductInterface $target)
+    {
+        $this->targets->removeElement($target);
+
+        return $this;
     }
 }

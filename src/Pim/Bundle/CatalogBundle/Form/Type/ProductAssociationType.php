@@ -22,17 +22,7 @@ class ProductAssociationType extends AbstractType
     {
         $builder
             ->add(
-                'association',
-                'oro_entity_identifier',
-                array(
-                    'class'    => 'Pim\Bundle\CatalogBundle\Entity\Association',
-                    'mapped'   => false,
-                    'required' => false,
-                    'multiple' => false
-                )
-            )
-            ->add(
-                'appendProducts',
+                'appendTargets',
                 'oro_entity_identifier',
                 array(
                     'class'    => 'Pim\Bundle\CatalogBundle\Entity\Product',
@@ -42,7 +32,7 @@ class ProductAssociationType extends AbstractType
                 )
             )
             ->add(
-                'removeProducts',
+                'removeTargets',
                 'oro_entity_identifier',
                 array(
                     'class'    => 'Pim\Bundle\CatalogBundle\Entity\Product',
@@ -60,7 +50,7 @@ class ProductAssociationType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'data_class' => null
+                'data_class' => 'Pim\Bundle\CatalogBundle\Entity\ProductAssociation'
             )
         );
     }

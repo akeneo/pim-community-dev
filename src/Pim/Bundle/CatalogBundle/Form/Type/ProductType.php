@@ -55,12 +55,10 @@ class ProductType extends FlexibleType
         parent::buildForm($builder, $options);
 
         $builder->add(
-            'associations',
+            'productAssociations',
             'collection',
             array(
-                'type' => 'pim_catalog_product_association',
-                'allow_add' => true,
-                'prototype' => true
+                'type' => 'pim_catalog_product_association'
             )
         );
 
