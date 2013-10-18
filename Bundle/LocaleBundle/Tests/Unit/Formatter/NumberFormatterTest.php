@@ -51,6 +51,14 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
                 'locale' => 'en_US'
             ),
             array(
+                'expected' => '1,234.568',
+                'value' => 1234.56789,
+                'style' => 'DECIMAL',
+                'attributes' => array(),
+                'textAttributes' => array(),
+                'locale' => 'en_US'
+            ),
+            array(
                 'expected' => '1,234.57',
                 'value' => 1234.56789,
                 'style' => \NumberFormatter::DECIMAL,
@@ -190,6 +198,94 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
             array(
                 'expected' => '123,457%',
                 'value' => 1234.56789,
+                'attributes' => array(),
+                'textAttributes' => array(),
+                'locale' => 'en_US'
+            ),
+        );
+    }
+
+    /**
+     * @dataProvider formatSpelloutDataProvider
+     */
+    public function testFormatSpellout($expected, $value, $attributes, $textAttributes, $locale)
+    {
+        $this->assertEquals(
+            $expected,
+            $this->formatter->formatSpellout($value, $attributes, $textAttributes, $locale)
+        );
+    }
+
+    public function formatSpelloutDataProvider()
+    {
+        return array(
+            array(
+                'expected' => 'twenty-one',
+                'value' => 21,
+                'attributes' => array(),
+                'textAttributes' => array(),
+                'locale' => 'en_US'
+            ),
+        );
+    }
+
+    /**
+     * @dataProvider formatDurationDataProvider
+     */
+    public function testFormatDuration($expected, $value, $attributes, $textAttributes, $locale)
+    {
+        $this->assertEquals(
+            $expected,
+            $this->formatter->formatDuration($value, $attributes, $textAttributes, $locale)
+        );
+    }
+
+    public function formatDurationDataProvider()
+    {
+        return array(
+            array(
+                'expected' => '1:01:01',
+                'value' => 3661,
+                'attributes' => array(),
+                'textAttributes' => array(),
+                'locale' => 'en_US'
+            ),
+            array(
+                'expected' => '1 hour, 1 minute, 1 second',
+                'value' => 3661,
+                'attributes' => array(),
+                'textAttributes' => array(
+                    \NumberFormatter::DEFAULT_RULESET => "%with-words"
+                ),
+                'locale' => 'en_US'
+            ),
+        );
+    }
+
+    /**
+     * @dataProvider formatOrdinalDataProvider
+     */
+    public function testFormatOrdinal($expected, $value, $attributes, $textAttributes, $locale)
+    {
+        $this->assertEquals(
+            $expected,
+            $this->formatter->formatOrdinal($value, $attributes, $textAttributes, $locale)
+        );
+    }
+
+    public function formatOrdinalDataProvider()
+    {
+        return array(
+            array(
+                'expected' => '1st',
+                'value' => 1,
+                'attributes' => array(),
+                'textAttributes' => array(),
+                'locale' => 'en_US'
+            ),
+            array(
+                'expected' => '3rd',
+                'value' => 3,
                 'attributes' => array(),
                 'textAttributes' => array(),
                 'locale' => 'en_US'

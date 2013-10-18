@@ -21,7 +21,7 @@ class NumberFormatter
      * Format number
      *
      * @param int|float $value
-     * @param int $style Constant of \NumberFormatter (DECIMAL, CURRENCY, PERCENT, etc)
+     * @param string|int $style Constant of \NumberFormatter (DECIMAL, CURRENCY, PERCENT, etc) or string name
      * @param array $attributes Set of attributes of \NumberFormatter
      * @param array $textAttributes Set of text attributes of \NumberFormatter
      * @param string|null $locale Locale of formatting
@@ -29,7 +29,13 @@ class NumberFormatter
      */
     public function format($value, $style, array $attributes = array(), array $textAttributes = array(), $locale = null)
     {
-        return $this->getFormatter($locale, $style, $attributes, $textAttributes)->format($value);
+        return
+            $this->getFormatter(
+                $locale,
+                $this->parseAttribute($style),
+                $attributes,
+                $textAttributes
+            )->format($value);
     }
 
     /**
@@ -67,7 +73,7 @@ class NumberFormatter
      */
     public function formatDecimal($value, array $attributes = array(), array $textAttributes = array(), $locale = null)
     {
-        return $this->getFormatter($locale, \NumberFormatter::DECIMAL, $attributes, $textAttributes)->format($value);
+        return $this->format($value, \NumberFormatter::DECIMAL, $attributes, $textAttributes, $locale);
     }
 
     /**
@@ -81,7 +87,49 @@ class NumberFormatter
      */
     public function formatPercent($value, array $attributes = array(), array $textAttributes = array(), $locale = null)
     {
-        return $this->getFormatter($locale, \NumberFormatter::PERCENT, $attributes, $textAttributes)->format($value);
+        return $this->format($value, \NumberFormatter::PERCENT, $attributes, $textAttributes, $locale);
+    }
+
+    /**
+     * Format spellout
+     *
+     * @param float $value
+     * @param array $attributes Set of attributes of \NumberFormatter
+     * @param array $textAttributes Set of text attributes of \NumberFormatter
+     * @param string|null $locale Locale of formatting
+     * @return string
+     */
+    public function formatSpellout($value, array $attributes = array(), array $textAttributes = array(), $locale = null)
+    {
+        return $this->format($value, \NumberFormatter::SPELLOUT, $attributes, $textAttributes, $locale);
+    }
+
+    /**
+     * Format duration
+     *
+     * @param float $value
+     * @param array $attributes Set of attributes of \NumberFormatter
+     * @param array $textAttributes Set of text attributes of \NumberFormatter
+     * @param string|null $locale Locale of formatting
+     * @return string
+     */
+    public function formatDuration($value, array $attributes = array(), array $textAttributes = array(), $locale = null)
+    {
+        return $this->format($value, \NumberFormatter::DURATION, $attributes, $textAttributes, $locale);
+    }
+
+    /**
+     * Format ordinal
+     *
+     * @param float $value
+     * @param array $attributes Set of attributes of \NumberFormatter
+     * @param array $textAttributes Set of text attributes of \NumberFormatter
+     * @param string|null $locale Locale of formatting
+     * @return string
+     */
+    public function formatOrdinal($value, array $attributes = array(), array $textAttributes = array(), $locale = null)
+    {
+        return $this->format($value, \NumberFormatter::ORDINAL, $attributes, $textAttributes, $locale);
     }
 
     /**
@@ -123,19 +171,30 @@ class NumberFormatter
     protected function parseAttributes(array $attributes)
     {
         $result = array();
-        foreach ($attributes as $attributeName => $value) {
-            if (is_int($attributeName)) {
-                $attribute = $attributeName;
-            } else {
-                $attributeName = strtoupper($attributeName);
-                $constantName = 'NumberFormatter::' . $attributeName;
-                if (!defined($constantName)) {
-                    throw new \InvalidArgumentException("NumberFormatter has no attribute '$attributeName'");
-                }
-                $attribute = constant($constantName);
-            }
-            $result[$attribute] = $value;
+        foreach ($attributes as $attribute => $value) {
+            $result[$this->parseAttribute($attribute)] = $value;
         }
         return $result;
+    }
+
+    /**
+     * Pass value of NumberFormatter constant or it's string name and get value
+     *
+     * @param int|string $attribute
+     * @return mixed
+     * @throws \InvalidArgumentException
+     */
+    protected function parseAttribute($attribute)
+    {
+        if (is_int($attribute)) {
+            return $attribute;
+        } else {
+            $attributeName = strtoupper($attribute);
+            $constantName = 'NumberFormatter::' . $attributeName;
+            if (!defined($constantName)) {
+                throw new \InvalidArgumentException("NumberFormatter has no attribute '$attributeName'");
+            }
+            return constant($constantName);
+        }
     }
 }
