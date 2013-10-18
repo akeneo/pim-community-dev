@@ -2,19 +2,19 @@
 
 namespace Oro\Bundle\EntityExtendBundle\EventListener;
 
-use Oro\Bundle\EntityConfigBundle\Config\Config;
-use Oro\Bundle\EntityConfigBundle\Event\NewFieldConfigModelEvent;
-use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-
-use Oro\Bundle\EntityConfigBundle\Event\Events;
-use Oro\Bundle\EntityConfigBundle\Event\PersistConfigEvent;
-use Oro\Bundle\EntityConfigBundle\Event\NewEntityConfigModelEvent;
 
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigId;
 
+use Oro\Bundle\EntityConfigBundle\Event\NewFieldConfigModelEvent;
+use Oro\Bundle\EntityConfigBundle\Event\Events;
+use Oro\Bundle\EntityConfigBundle\Event\PersistConfigEvent;
+use Oro\Bundle\EntityConfigBundle\Event\NewEntityConfigModelEvent;
+
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendConfigDumper;
+use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
+
 use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 
 class ConfigSubscriber implements EventSubscriberInterface

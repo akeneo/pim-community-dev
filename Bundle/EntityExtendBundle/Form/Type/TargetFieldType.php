@@ -29,11 +29,6 @@ class TargetFieldType extends AbstractType
         $this->entityClass    = $entityClass;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        //$builder->addEventSubscriber(new TargetFieldSubscriber($this->request, $this->configManager));
-    }
-
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(

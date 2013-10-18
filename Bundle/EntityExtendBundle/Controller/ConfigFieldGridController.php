@@ -145,7 +145,6 @@ class ConfigFieldGridController extends Controller
         /** @var ConfigManager $configManager */
         $configManager = $this->get('oro_entity_config.config_manager');
 
-        $entityProvider = $configManager->getProvider('entity');
         $extendProvider = $configManager->getProvider('extend');
 
         $extendEntityConfig = $extendProvider->getConfig($entity->getClassName());
