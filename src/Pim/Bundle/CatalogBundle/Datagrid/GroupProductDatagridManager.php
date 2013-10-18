@@ -125,8 +125,6 @@ class GroupProductDatagridManager extends FlexibleDatagridManager
                 "(:group MEMBER OF o.groups OR o.id IN (:data_in)) AND ".
                 "o.id NOT IN (:data_not_in) ".
                 "THEN true ELSE false END";
-            $this->hasProductExpression =
-                sprintf($this->hasProductExpression, $this->getGroup()->getId());
         }
 
         return $this->hasProductExpression;
