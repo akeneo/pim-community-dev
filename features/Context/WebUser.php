@@ -456,12 +456,12 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
 
     /**
      * @param string $action
-     * @param string $entity
+     * @param string $identifier
      * @param string $entityType
      *
      * @Given /^I try to ([^"]*) "([^"]*)" from the ([^"]*) grid$/
      */
-    public function iTryToDoActionFromTheGrid($action, $entity, $entityType)
+    public function iTryToDoActionFromTheGrid($action, $identifier, $entityType)
     {
         $entityType = ucfirst(strtolower($entityType));
         $entityPage = $entityType.' index';
@@ -471,16 +471,9 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
             throw $this->createExpectationException(sprintf('Unable to find page "%s"', $entityPage));
         }
 
-        $getter = 'get'.$entityType;
-        if (!method_exists($this, $getter)) {
-            throw $this->createExpectationException(sprintf('Cannot find method "%s"', $getter));
-        }
-
-        $entity = $this->getFixturesContext()->$getter($entity);
-
         $action = ucfirst(strtolower($action));
 
-        $page->clickOnAction($entity->getSku(), $action);
+        $page->clickOnAction($identifier, $action);
     }
 
     /**
