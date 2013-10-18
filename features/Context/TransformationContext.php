@@ -26,6 +26,30 @@ class TransformationContext extends RawMinkContext
     }
 
     /**
+     * @param string $code
+     *
+     * @Transform /^"([^"]*)" attribute group$/
+     *
+     * @return AttributeGroup
+     */
+    public function castAttributeGroupCodeToAttributeGroup($code)
+    {
+        return $this->getFixturesContext()->getAttributeGroup($code);
+    }
+
+    /**
+     * @param string $code
+     *
+     * @Transform /^"([^"]*)" family$/
+     *
+     * @return Family
+     */
+    public function castFamilyCodeToFamily($code)
+    {
+        return $this->getFixturesContext()->getFamily($code);
+    }
+
+    /**
      * @return FixturesContext
      */
     private function getFixturesContext()

@@ -11,6 +11,7 @@ use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
 use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\Category;
+use Pim\Bundle\CatalogBundle\Entity\Family;
 
 /**
  * Context of the website
@@ -153,8 +154,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iAmOnTheEntityEditPage($identifier, $page)
     {
         $page = ucfirst($page);
-        $method = sprintf('get%s', $page);
-        $entity = $this->$method($identifier);
+        $getter = sprintf('get%s', $page);
+        $entity = $this->getFixturesContext()->$getter($identifier);
         $this->openPage(sprintf('%s edit', $page), array('id' => $entity->getId()));
     }
 
@@ -167,8 +168,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iAmOnTheAttributeGroupEditPage($identifier)
     {
         $page = 'AttributeGroup';
-        $method = sprintf('get%s', $page);
-        $entity = $this->$method($identifier);
+        $getter = sprintf('get%s', $page);
+        $entity = $this->getFixturesContext()->$getter($identifier);
         $this->openPage(sprintf('%s edit', $page), array('id' => $entity->getId()));
     }
 
@@ -472,7 +473,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
             throw $this->createExpectationException(sprintf('Cannot find method "%s"', $getter));
         }
 
-        $entity = $this->$getter($entity);
+        $entity = $this->getFixturesContext()->$getter($entity);
 
         $action = ucfirst(strtolower($action));
 
@@ -575,7 +576,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $attributes = $this->listToArray($attributes);
         $page->visitGroup($group);
 
-        $group = $this->getAttributeGroup($group) ?: AttributeGroup::DEFAULT_GROUP_CODE;
+        $group = $this->getFixturesContext()->getAttributeGroup($group) ?: AttributeGroup::DEFAULT_GROUP_CODE;
 
         if (count($attributes) !== $actual = $this->getPage('Product edit')->getFieldsCountFor($group)) {
             throw $this->createExpectationException(
@@ -779,25 +780,24 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $group
+     * @param AttributeGroup $group
      *
-     * @Given /^I should be on the "([^"]*)" attribute group page$/
+     * @Given /^I should be on the ("([^"]*)" attribute group) page$/
      */
-    public function iShouldBeOnTheAttributeGroupPage($group)
+    public function iShouldBeOnTheAttributeGroupPage(AttributeGroup $group)
     {
-        $expectedAddress = $this->getPage('AttributeGroup edit')
-            ->getUrl(array('id' => $this->getAttributeGroup($group)->getId()));
+        $expectedAddress = $this->getPage('AttributeGroup edit')->getUrl(array('id' => $group->getId()));
         $this->assertAddress($expectedAddress);
     }
 
     /**
-     * @param string $family
+     * @param Family $family
      *
-     * @Given /^I should be on the "([^"]*)" family page$/
+     * @Given /^I should be on the ("([^"]*)" family) page$/
      */
-    public function iShouldBeOnTheFamilyPage($family)
+    public function iShouldBeOnTheFamilyPage(Family $family)
     {
-        $expectedAddress = $this->getPage('Family edit')->getUrl(array('id' => $this->getFamily($family)->getId()));
+        $expectedAddress = $this->getPage('Family edit')->getUrl(array('id' => $family->getId()));
         $this->assertAddress($expectedAddress);
     }
 
@@ -2003,56 +2003,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     private function getProduct($sku)
     {
         return $this->getFixturesContext()->getProduct($sku);
-    }
-
-    /**
-     * @param string $name
-     *
-     * @return AttributeGroup
-     */
-    private function getAttributeGroup($name)
-    {
-        return $this->getFixturesContext()->getAttributeGroup($name);
-    }
-
-    /**
-     * @param string $type
-     *
-     * @return ProductAttribute
-     */
-    private function getAttribute($type)
-    {
-        return $this->getFixturesContext()->getAttribute($type);
-    }
-
-    /**
-     * @param string $code
-     *
-     * @return Family
-     */
-    private function getFamily($code)
-    {
-        return $this->getFixturesContext()->getFamily($code);
-    }
-
-    /**
-     * @param string $code
-     *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Channel
-     */
-    private function getChannel($code)
-    {
-        return $this->getFixturesContext()->getChannel($code);
-    }
-
-    /**
-     * @param string $code
-     *
-     * @return \Pim\Bundle\CatalogBundle\Entity\VariantGroup
-     */
-    private function getVariant($code)
-    {
-        return $this->getFixturesContext()->getVariant($code);
     }
 
     /**
