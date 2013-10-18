@@ -32,6 +32,11 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 class GroupType
 {
     /**
+     * @var string
+     */
+    const CODE_VARIANT = 'VARIANT';
+
+    /**
      * @var integer $id
      *
      * @ORM\Column(name="id", type="integer")
