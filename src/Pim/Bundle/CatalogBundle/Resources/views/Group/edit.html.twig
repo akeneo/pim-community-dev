@@ -38,7 +38,7 @@
         }
     }) }}
 
-        {% set title = 'group.edit'|trans ~ ' - ' ~ form.vars.data.label %}
+        {% set title = 'group.edit'|trans ~ ' - ' ~ form.vars.data.label ~ ' - ' ~ form.vars.data.products|length ~ ' products'|trans %}
 
         {% set buttons %}
             {{ elements.backLink(path('pim_catalog_group_index')) }}
