@@ -164,7 +164,7 @@ class VariantGroupController extends AbstractDoctrineController
         }
 
         $datagridManager = $this->datagridWorker->getDatagridManager('variant_product');
-        $datagridManager->setVariantGroup($variant);
+        $datagridManager->setGroup($variant);
         $datagridView = $datagridManager->getDatagrid()->createView();
 
         if ('json' === $this->getRequest()->getRequestFormat()) {
