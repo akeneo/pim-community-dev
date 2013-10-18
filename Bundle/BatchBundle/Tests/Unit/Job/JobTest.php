@@ -295,7 +295,7 @@ class JobTest extends \PHPUnit_Framework_TestCase
         $this->job->addStep('name1', $mockStep1);
         $this->job->addStep('name2', $mockStep2);
 
-        $this->assertEquals(array('name1' => $mockStep1, 'name2' => $mockStep2), $this->job->getSteps());
+        $this->assertEquals(array($mockStep1, $mockStep2), $this->job->getSteps());
     }
 
     public function testSetSteps()
