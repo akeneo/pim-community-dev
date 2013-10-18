@@ -659,7 +659,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         $actual = $this->getPage('Product edit')->findField($fieldName)->getValue();
 
         if ($expected !== $actual) {
-            throw new \LogicException(
+            throw $this->createExpectationException(
                 sprintf(
                     'Expected product %s to be "%s", but got "%s".',
                     $fieldName,
@@ -772,7 +772,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iShouldSeeAttributeInGroup($attribute, $group)
     {
         if (!$this->getCurrentPage()->getAttribute($attribute, $group)) {
-            throw new ExpectationException(
+            throw $this->createExpectationException(
                 sprintf(
                     'Expecting to see attribute %s under group %s, but was not present.',
                     $attribute,
@@ -1950,16 +1950,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     private function wait($time = 5000, $condition = null)
     {
         $this->getMainContext()->wait($time, $condition);
-    }
-
-    /**
-     * @param string $username
-     *
-     * @return User
-     */
-    private function getUser($username)
-    {
-        return $this->getFixturesContext()->getUser($username);
     }
 
     /**
