@@ -68,7 +68,7 @@ class FlatProductNormalizer implements NormalizerInterface
 
         $this->normalizeFamily($object->getFamily());
 
-        $this->normalizeVariantGroup($object->getVariantGroup());
+        // TODO : refactor to normalize groups $this->normalizeVariantGroup($object->getVariantGroup());
 
         $values = array();
         foreach ($object->getValues() as $value) {
