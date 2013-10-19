@@ -12,23 +12,15 @@ use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManagerRegistry;
 
 class StringFilter extends Base\StringFilter
 {
-    use FlexibleFilterTrait {
-        FlexibleFilterTrait::__construct as protected flexibleFilterInit;
-    }
+    use FlexibleFilterTrait;
+
+    /** @var FlexibleManagerRegistry */
+    protected $registry;
 
     public function __construct(FormFactoryInterface $factory, FlexibleManagerRegistry $registry)
     {
         parent::__construct($factory);
-        $this->flexibleFilterInit($registry);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function init($name, array $params)
-    {
-        parent::init($name, $params);
-        $this->setFlexibleEntityName($this->get('flexible_entity_name'));
+        $this->registry = $registry;
     }
 
     /**
@@ -41,7 +33,8 @@ class StringFilter extends Base\StringFilter
             $operator = $this->getOperator($data['type']);
 
             /** @var $entityRepository FlexibleEntityRepository */
-            $entityRepository = $this->getFlexibleManager()->getFlexibleRepository();
+            $entityRepository = $this->getFlexibleManager($this->registry, $this->get('flexible_entity_name'))
+                ->getFlexibleRepository();
             $entityRepository->applyFilterByAttribute($qb, $this->get('data_name'), $data['value'], $operator);
 
             return true;
