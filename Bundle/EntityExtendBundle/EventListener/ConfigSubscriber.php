@@ -2,19 +2,19 @@
 
 namespace Oro\Bundle\EntityExtendBundle\EventListener;
 
-use Oro\Bundle\EntityConfigBundle\Config\Config;
-use Oro\Bundle\EntityConfigBundle\Event\NewFieldConfigModelEvent;
-use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-
-use Oro\Bundle\EntityConfigBundle\Event\Events;
-use Oro\Bundle\EntityConfigBundle\Event\PersistConfigEvent;
-use Oro\Bundle\EntityConfigBundle\Event\NewEntityConfigModelEvent;
 
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigId;
 
+use Oro\Bundle\EntityConfigBundle\Event\NewFieldConfigModelEvent;
+use Oro\Bundle\EntityConfigBundle\Event\Events;
+use Oro\Bundle\EntityConfigBundle\Event\PersistConfigEvent;
+use Oro\Bundle\EntityConfigBundle\Event\NewEntityConfigModelEvent;
+
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendConfigDumper;
+use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
+
 use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 
 class ConfigSubscriber implements EventSubscriberInterface
@@ -78,7 +78,9 @@ class ConfigSubscriber implements EventSubscriberInterface
             /**
              * Relations case
              */
-            if ($entityConfig->get('state') == ExtendManager::STATE_NEW) {
+            if ($entityConfig->get('state') == ExtendManager::STATE_NEW
+                && in_array($event->getConfig()->getId()->getFieldType(), array('oneToMany', 'manyToOne', 'manyToMany'))
+            ) {
                 $targetEntityClass = $event->getConfig()->get('target_entity');
                 $selfFieldType     = $event->getConfig()->getId()->getFieldType();
                 $selfFieldName     = $event->getConfig()->getId()->getFieldName();
@@ -98,20 +100,6 @@ class ConfigSubscriber implements EventSubscriberInterface
                         $relationFieldName,
                         ExtendHelper::getReversRelationType($selfFieldType)
                     );
-
-                    /*
-                    $this->extendManager->createField(
-                        $targetEntityClass,
-                        $relationFieldName,
-                        array(
-                            'type' => ExtendHelper::getReversRelationType($selfFieldType),
-                            'options' => array(
-                                'is_inverse' => true,
-                                'target_entity' => $className
-                            )
-                        )
-                    );
-                    */
                 }
 
                 $selfRelationConfig = array(
@@ -209,32 +197,5 @@ class ConfigSubscriber implements EventSubscriberInterface
             $entityConfig->set('upgradeable', true);
             $configProvider->persist($entityConfig);
         }
-
-        /*
-        $fieldConfig = $configProvider->getConfig($event->getClassName(), $event->getFieldName());
-        if (in_array($event->getFieldType(), array('oneToMany', 'manyToOne', 'manyToMany'))
-            && $fieldConfig->is('is_inverse', false)
-            && $fieldConfig->is('target_entity')
-        ) {
-
-            $classArray = explode('\\', $fieldConfig->getId()->getClassName());
-            $relationName  = strtolower(array_pop($classArray)) . '_' . $event->getFieldName();
-
-            switch ($event->getFieldType()) {
-                case 'oneToMany':
-                    $type = 'manyToOne';
-                    $fieldConfig->set('mappedBy', $relationName);
-                    break;
-                case 'manyToOne':
-                    $type = 'oneToMany';
-                    break;
-                case 'manyToMany':
-                    $type = 'manyToMany';
-                    break;
-                default:
-                    $type = '';
-            }
-        }
-        */
     }
 }
