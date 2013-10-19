@@ -77,6 +77,21 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     }
 
     /**
+     * @param string $identifier
+     * @param string $page
+     *
+     * @Given /^I edit the "([^"]*)" (\w+)$/
+     * @Given /^I am on the "([^"]*)" (\w+) page$/
+     */
+    public function iAmOnTheEntityEditPage($identifier, $page)
+    {
+        $page = ucfirst($page);
+        $getter = sprintf('get%s', $page);
+        $entity = $this->getFixturesContext()->$getter($identifier);
+        $this->openPage(sprintf('%s edit', $page), array('id' => $entity->getId()));
+    }
+
+    /**
      * @param string $name
      *
      * @return Page
@@ -125,5 +140,13 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     private function wait($time = 5000, $condition = null)
     {
         $this->getMainContext()->wait($time, $condition);
+    }
+
+    /**
+     * @return FixturesContext
+     */
+    private function getFixturesContext()
+    {
+        return $this->getMainContext()->getSubcontext('fixtures');
     }
 }

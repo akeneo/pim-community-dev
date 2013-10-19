@@ -89,21 +89,6 @@ class WebUser extends RawMinkContext
 
     /**
      * @param string $identifier
-     * @param string $page
-     *
-     * @Given /^I edit the "([^"]*)" (\w+)$/
-     * @Given /^I am on the "([^"]*)" (\w+) page$/
-     */
-    public function iAmOnTheEntityEditPage($identifier, $page)
-    {
-        $page = ucfirst($page);
-        $getter = sprintf('get%s', $page);
-        $entity = $this->getFixturesContext()->$getter($identifier);
-        $this->openPage(sprintf('%s edit', $page), array('id' => $entity->getId()));
-    }
-
-    /**
-     * @param string $identifier
      *
      * @Given /^I am on the "([^"]*)" attribute group page$/
      * @Given /^I edit the "([^"]*)" attribute group$/
