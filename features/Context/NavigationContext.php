@@ -16,6 +16,11 @@ use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
 class NavigationContext extends RawMinkContext implements PageObjectAwareInterface
 {
     /**
+     * @var string|null $currentPage
+     */
+    public $currentPage = null;
+
+    /**
      * @var PageFactory $pageFactory
      */
     private $pageFactory = null;
@@ -26,6 +31,14 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     public function setPageFactory(PageFactory $pageFactory)
     {
         $this->pageFactory = $pageFactory;
+    }
+
+    /**
+     * @BeforeScenario
+     */
+    public function resetCurrentPage()
+    {
+        $this->currentPage = null;
     }
 
     /**
@@ -42,5 +55,40 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
         $name = implode('\\', array_map('ucfirst', explode(' ', $name)));
 
         return $this->pageFactory->createPage($name);
+    }
+
+    /**
+     * @param string $page
+     * @param array  $options
+     *
+     * @return Page
+     */
+    public function openPage($page, array $options = array())
+    {
+        $this->currentPage = $page;
+
+        $page = $this->getCurrentPage()->open($options);
+        $this->wait();
+
+        return $page;
+    }
+
+    /**
+     * @return Page
+     */
+    public function getCurrentPage()
+    {
+        return $this->getPage($this->currentPage);
+    }
+
+    /**
+     * @param integer $time
+     * @param string  $condition
+     *
+     * @return void
+     */
+    private function wait($time = 5000, $condition = null)
+    {
+        $this->getMainContext()->wait($time, $condition);
     }
 }

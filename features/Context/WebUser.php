@@ -23,8 +23,6 @@ use Pim\Bundle\CatalogBundle\Entity\Product;
  */
 class WebUser extends RawMinkContext
 {
-    private $currentPage = null;
-
     private $username = null;
 
     private $password = null;
@@ -75,14 +73,6 @@ class WebUser extends RawMinkContext
             $this->getSession()->resizeWindow($this->windowWidth, $this->windowHeight);
         } catch (UnsupportedDriverActionException $e) {
         }
-    }
-
-    /**
-     * @BeforeScenario
-     */
-    public function resetCurrentPage()
-    {
-        $this->currentPage = null;
     }
 
     /**
@@ -167,7 +157,7 @@ class WebUser extends RawMinkContext
     {
         $entity = ucfirst($entity);
         $this->getPage(sprintf('%s index', $entity))->clickCreationLink();
-        $this->currentPage = sprintf('%s creation', $entity);
+        $this->getNavigationContext()->currentPage = sprintf('%s creation', $entity);
         $this->wait();
     }
 
@@ -667,7 +657,9 @@ class WebUser extends RawMinkContext
             }
         }
 
-        $value = $value ?: $this->getInvalidValueFor(sprintf('%s.%s', $this->currentPage, $field));
+        $value = $value ?: $this->getInvalidValueFor(
+            sprintf('%s.%s', $this->getNavigationContext()->currentPage, $field)
+        );
 
         return $this->getCurrentPage()->fillField($field, $value);
     }
@@ -1348,7 +1340,7 @@ class WebUser extends RawMinkContext
     {
         $this->getPage('Export index')->clickExportCreationLink($exportTitle);
         $this->wait();
-        $this->currentPage = 'Export creation';
+        $this->getNavigationContext()->currentPage = 'Export creation';
     }
 
     /**
@@ -1368,7 +1360,7 @@ class WebUser extends RawMinkContext
     {
         $this->getPage('Import index')->clickImportCreationLink($importTitle);
         $this->wait();
-        $this->currentPage = 'Import creation';
+        $this->getNavigationContext()->currentPage = 'Import creation';
     }
 
     /**
@@ -1726,7 +1718,7 @@ class WebUser extends RawMinkContext
      */
     public function iChooseTheOperation($operation)
     {
-        $this->currentPage = $this
+        $this->getNavigationContext()->currentPage = $this
             ->getPage('Batch Operation')
             ->chooseOperation($operation)
             ->next();
@@ -1847,9 +1839,8 @@ class WebUser extends RawMinkContext
      */
     private function openPage($page, array $options = array())
     {
-        $this->currentPage = $page;
+        $page = $this->getNavigationContext()->openPage($page, $options);
 
-        $page = $this->getCurrentPage()->open($options);
         $this->loginIfRequired();
         $this->wait();
 
@@ -1861,7 +1852,7 @@ class WebUser extends RawMinkContext
      */
     private function getCurrentPage()
     {
-        return $this->getPage($this->currentPage);
+        return $this->getNavigationContext()->getCurrentPage();
     }
 
     /**
