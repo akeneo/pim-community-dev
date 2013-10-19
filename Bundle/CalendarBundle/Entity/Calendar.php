@@ -21,7 +21,7 @@ use Oro\Bundle\EntityBundle\Exception\InvalidEntityException;
  *      },
  *      "security"={
  *          "type"="ACL",
- *          "permissions"="VIEW;CREATE;EDIT;DELETE",
+ *          "permissions"="VIEW",
  *          "group_name"=""
  *      }
  *  }
@@ -52,16 +52,11 @@ class Calendar
     protected $owner;
 
     /**
-     * ArrayCollection|Calendar[]
+     * @var ArrayCollection|CalendarConnection[]
      *
-     * @ORM\ManyToMany(targetEntity="Calendar", cascade={"persist"})
-     * @ORM\JoinTable(name="oro_calendar_link",
-     *      joinColumns={@ORM\JoinColumn(name="calendar_id", referencedColumnName="id", onDelete="CASCADE")},
-     *      inverseJoinColumns={@ORM\JoinColumn(
-     *          name="attached_calendar_id", referencedColumnName="id", onDelete="CASCADE")}
-     * )
+     * @ORM\OneToMany(targetEntity="CalendarConnection", mappedBy="calendar", cascade={"persist"}, orphanRemoval=true)
      */
-    protected $attachedCalendars;
+    protected $connections;
 
     /**
      * @var ArrayCollection|CalendarEvent[]
@@ -75,8 +70,16 @@ class Calendar
      */
     public function __construct()
     {
-        $this->attachedCalendars = new ArrayCollection();
+        $this->connections = new ArrayCollection();
         $this->events = new ArrayCollection();
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return empty($this->name) ? '[default]' : $this->name;
     }
 
     /**
@@ -103,7 +106,7 @@ class Calendar
     /**
      * Sets calendar name.
      *
-     * @param  string $name
+     * @param  string|null $name
      * @return Calendar
      */
     public function setName($name)
@@ -137,45 +140,49 @@ class Calendar
     }
 
     /**
-     * Gets the calendars attached to this one
+     * Gets connections represent calendars connected to this calendar
      *
-     * @return Calendar[]
+     * @return CalendarConnection[]
      */
-    public function getAttachedCalendars()
+    public function getConnections()
     {
-        return $this->attachedCalendars;
+        return $this->connections;
     }
 
     /**
-     * Connects another calendar to this one
+     * Connects another calendar to this calendar
      *
-     * @param Calendar $calendar
+     * @param CalendarConnection $connection
      * @return Calendar
      * @throws InvalidEntityException
      */
-    public function attachCalendar(Calendar $calendar)
+    public function addConnection(CalendarConnection $connection)
     {
-        if ($this === $calendar) {
-            throw new InvalidEntityException("The calendar cannot be attached to itself.");
+        if ($connection->getCalendar() !== null) {
+            throw new InvalidEntityException("The already connected calendar cannot be re-connected.");
+        }
+        if ($connection->getConnectedCalendar() === null) {
+            throw new InvalidEntityException("The connected calendar must be specified.");
         }
 
-        if (!$this->attachedCalendars->contains($calendar)) {
-            $this->attachedCalendars->add($calendar);
+        if (!$this->connections->contains($connection)) {
+            $connection->setCalendar($this);
+            $this->connections->add($connection);
         }
 
         return $this;
     }
 
     /**
-     * Disconnects another calendar from this one
+     * Detaches another calendar from this calendar
      *
-     * @param Calendar $calendar
+     * @param CalendarConnection $connection
      * @return Calendar
      */
-    public function detachCalendar(Calendar $calendar)
+    public function removeConnection(CalendarConnection $connection)
     {
-        if ($this->attachedCalendars->contains($calendar)) {
-            $this->attachedCalendars->removeElement($calendar);
+        if ($this->connections->contains($connection)) {
+            $this->connections->removeElement($connection);
         }
 
         return $this;

@@ -12,14 +12,14 @@ class CalendarEventRepository extends EntityRepository
      * @param int       $calendarId
      * @param \DateTime $start
      * @param \DateTime $end
-     * @param bool      $includeAttachedCalendars
+     * @param bool      $includeConnectedCalendars
      * @return QueryBuilder
      */
     public function getEventsQueryBuilder(
         $calendarId,
         \DateTime $start,
         \DateTime $end,
-        $includeAttachedCalendars = false
+        $includeConnectedCalendars = false
     ) {
         $qb = $this->createQueryBuilder('e')
             ->select('e')
@@ -29,15 +29,16 @@ class CalendarEventRepository extends EntityRepository
             ->setParameter('start', $start)
             ->setParameter('end', $end);
 
-        if ($includeAttachedCalendars) {
+        if ($includeConnectedCalendars) {
             $qbAC = $this->getEntityManager()->getRepository('OroCalendarBundle:Calendar')->createQueryBuilder('c1')
                 ->select('ac.id')
-                ->innerJoin('c1.attachedCalendars', 'ac')
+                ->innerJoin('c1.connections', 'a')
+                ->innerJoin('a.connectedCalendar', 'ac')
                 ->where('c1.id = :id')
                 ->setParameter('id', $calendarId);
 
             $qb
-                ->andWhere($qb->expr()->orX('c.id = :id', $qb->expr()->in('c.id', $qbAC->getDQL())))
+                ->andWhere($qb->expr()->in('c.id', $qbAC->getDQL()))
                 ->setParameter('id', $calendarId);
         } else {
             $qb

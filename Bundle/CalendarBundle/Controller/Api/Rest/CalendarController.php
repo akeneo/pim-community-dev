@@ -1,0 +1,192 @@
+<?php
+
+namespace Oro\Bundle\CalendarBundle\Controller\Api\Rest;
+
+use Symfony\Component\HttpFoundation\Response;
+
+use FOS\RestBundle\Controller\Annotations\NamePrefix;
+use FOS\RestBundle\Controller\Annotations\RouteResource;
+use FOS\RestBundle\Controller\Annotations\QueryParam;
+use FOS\RestBundle\Controller\Annotations\Get;
+use FOS\RestBundle\Controller\Annotations\Post;
+use FOS\RestBundle\Controller\FOSRestController;
+use FOS\RestBundle\Routing\ClassResourceInterface;
+use FOS\Rest\Util\Codes;
+
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Oro\Bundle\SoapBundle\Controller\Api\EntityManagerAwareInterface;
+use Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager;
+use Oro\Bundle\CalendarBundle\Entity\Repository\CalendarRepository;
+use Oro\Bundle\CalendarBundle\Entity\Repository\CalendarConnectionRepository;
+use Oro\Bundle\CalendarBundle\Entity\Calendar;
+use Oro\Bundle\CalendarBundle\Entity\CalendarConnection;
+
+/**
+ * @RouteResource("calendar")
+ * @NamePrefix("oro_api_")
+ */
+class CalendarController extends FOSRestController implements EntityManagerAwareInterface, ClassResourceInterface
+{
+    protected $userNameFormat = null;
+
+    /**
+     * Get calendar connections.
+     *
+     * @param int $id Calendar id
+     *
+     * @Get(name="oro_api_get_calendar_connections", requirements={"id"="\d+"})
+     * @ApiDoc(
+     *      description="Get calendar connections",
+     *      resource=true
+     * )
+     * @AclAncestor("oro_calendar_view")
+     *
+     * @return Response
+     * @throws \InvalidArgumentException
+     */
+    public function getConnectionsAction($id)
+    {
+        $manager = $this->getManager();
+        /** @var CalendarRepository $repo */
+        $repo = $manager->getRepository();
+        $qb   = $repo->getConnectionsQueryBuilder($id);
+
+        $result = $qb->getQuery()->getArrayResult();
+        foreach ($result as $key => $item) {
+            if ($item['calendarName'] === null) {
+                $result[$key]['calendarName'] = $this->getOwnerName(
+                    $item['ownerFirstName'],
+                    $item['ownerLastName']
+                );
+            }
+            unset($result[$key]['ownerFirstName']);
+            unset($result[$key]['ownerLastName']);
+            // prohibit to remove the current calendar from the list of connected calendar.
+            $result[$key]['removable'] = ($item['calendar'] != $id);
+        }
+
+        return new Response(json_encode($result), Codes::HTTP_OK);
+    }
+
+    /**
+     * Create new calendar connection.
+     *
+     * @param int $id Calendar id
+     *
+     * @ApiDoc(
+     *      description="Create new calendar connection",
+     *      resource=true
+     * )
+     * @AclAncestor("oro_calendar_create")
+     *
+     * @return Response
+     * @throws \InvalidArgumentException
+     */
+    public function postConnectionsAction($id)
+    {
+        $calendarId = $this->getRequest()->get('calendar');
+        $ownerId    = $this->getRequest()->get('owner');
+        if (empty($calendarId) && empty($ownerId)) {
+            throw new \InvalidArgumentException('Either "calendar" or "owner" argument must be provided.');
+        }
+
+        $manager = $this->getManager();
+
+        /** @var Calendar $calendar */
+        $calendar = $manager->find($id);
+        if (!$calendar) {
+            return $this->handleView($this->view(null, Codes::HTTP_NOT_FOUND));
+        }
+
+        $connectedCalendar = !empty($calendarId)
+            ? $manager->find($id)
+            : $manager->getRepository()->findByUser($ownerId);
+        if (!$connectedCalendar) {
+            return $this->handleView($this->view(null, Codes::HTTP_NOT_FOUND));
+        }
+
+        $connection = new CalendarConnection($connectedCalendar);
+        $calendar->addConnection($connection);
+        $manager->getObjectManager()->persist($connection);
+        $manager->getObjectManager()->flush();
+
+        $data         = array(
+            'color'           => $connection->getColor(),
+            'backgroundColor' => $connection->getBackgroundColor(),
+            'calendar'        => $connectedCalendar->getId(),
+            'owner'           => $connectedCalendar->getOwner()->getId(),
+            'removable'       => true
+        );
+        $calendarName = $connectedCalendar->getName();
+        if (empty($calendarName)) {
+            $calendarName = $this->getOwnerName(
+                $connectedCalendar->getOwner()->getFirstName(),
+                $connectedCalendar->getOwner()->getLastName()
+            );
+        }
+        $data['calendarName'] = $calendarName;
+
+        $view = $this->view($data, Codes::HTTP_CREATED);
+
+        return $this->handleView($view);
+    }
+
+    /**
+     * Remove calendar connection.
+     *
+     * @param int $id          Calendar id
+     * @param int $connectedId Connected calendar id
+     *
+     * @ApiDoc(
+     *      description="Remove calendar connection",
+     *      resource=true
+     * )
+     * @AclAncestor("oro_calendar_delete")
+     * @return Response
+     */
+    public function deleteConnectionsAction($id, $connectedId)
+    {
+        $em = $this->getManager()->getObjectManager();
+        /** @var CalendarConnectionRepository $repo */
+        $repo = $em->getRepository('OroCalendarBundle:CalendarConnection');
+
+        $connection = $repo->findByRelation($id, $connectedId);
+        if (!$connection) {
+            return $this->handleView($this->view(null, Codes::HTTP_NOT_FOUND));
+        }
+
+        $em->remove($connection);
+        $em->flush();
+
+        return $this->handleView($this->view(null, Codes::HTTP_NO_CONTENT));
+    }
+
+    /**
+     * @return ApiEntityManager
+     */
+    public function getManager()
+    {
+        return $this->get('oro_calendar.calendar.manager.api');
+    }
+
+    protected function getOwnerName($firstName, $lastName)
+    {
+        return str_replace(
+            array('%first%', '%last%'),
+            array($firstName, $lastName),
+            $this->getUserNameFormat()
+        );
+    }
+
+    protected function getUserNameFormat()
+    {
+        if ($this->userNameFormat === null) {
+            $this->userNameFormat = $this->get('oro_config.twig.config_extension')
+                ->getUserValue('oro_locale.name_format');
+        }
+
+        return $this->userNameFormat;
+    }
+}

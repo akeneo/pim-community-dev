@@ -33,13 +33,6 @@ class CalendarController extends Controller
         /** @var CalendarRepository $repo */
         $repo     = $em->getRepository('OroCalendarBundle:Calendar');
         $calendar = $repo->findByUser($user->getId());
-        if (!$calendar) {
-            // create default user's calendar if it does not exists yet
-            $calendar = new Calendar();
-            $calendar->setOwner($user);
-            $em->persist($calendar);
-            $em->flush();
-        }
 
         return $this->forward(
             'OroCalendarBundle:Calendar:view',
@@ -48,6 +41,8 @@ class CalendarController extends Controller
     }
 
     /**
+     * View calendar
+     *
      * @Route("/view/{id}", name="oro_calendar_view", requirements={"id"="\d+"})
      *
      * @Template
@@ -114,11 +109,28 @@ class CalendarController extends Controller
             && $securityFacade->isGranted('oro_calendar_delete');
 
         return array(
-            'form'      => $this->get('oro_calendar.calendar_event.form')->createView(),
-            'entity'    => $calendar,
-            'startDate' => $startDate,
-            'endDate'   => $endDate,
-            'calendar'  => array(
+            'event_form'       => $this->get('oro_calendar.calendar_event.form')->createView(),
+            'user_select_form' => $this->get('form.factory')
+                ->createNamed(
+                    'new_calendar_owner',
+                    'oro_user_select',
+                    null,
+                    array(
+                        'required' => true,
+                        'configs'  => array(
+                            'placeholder'             => 'Choose a user to add a calendar ...',
+                            'result_template_twig'    => 'OroCalendarBundle:Js:userResult.html.twig',
+                            'selection_template_twig' => 'OroCalendarBundle:Js:userSelection.html.twig',
+                            /* @todo: Must be removed. I have to do this because oro_user_select sets 400px */
+                            'width'                   => 'off'
+                        )
+                    )
+                )
+                ->createView(),
+            'entity'           => $calendar,
+            'startDate'        => $startDate,
+            'endDate'          => $endDate,
+            'calendar'         => array(
                 'date'            => $date->format('Y-m-d'),
                 'timezoneOffset'  => $timezoneOffset,
                 'firstDay'        => $firstDay,

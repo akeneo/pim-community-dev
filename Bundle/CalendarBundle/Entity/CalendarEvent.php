@@ -3,10 +3,22 @@
 namespace Oro\Bundle\CalendarBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 
 /**
  * @ORM\Entity(repositoryClass="Oro\Bundle\CalendarBundle\Entity\Repository\CalendarEventRepository")
- * @ORM\Table(name="oro_calendar_event")
+ * @ORM\Table(name="oro_calendar_event",
+ *      indexes={@ORM\Index(name="oro_calendar_event_idx", columns={"calendar_id", "start", "end"})})
+ * @Config(
+ *  defaultValues={
+ *      "entity"={"label"="Calendar Event", "plural_label"="Calendar Events"},
+ *      "security"={
+ *          "type"="ACL",
+ *          "permissions"="VIEW;CREATE;EDIT;DELETE",
+ *          "group_name"=""
+ *      }
+ *  }
+ * )
  */
 class CalendarEvent
 {

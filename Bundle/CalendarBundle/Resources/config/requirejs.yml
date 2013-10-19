@@ -10,6 +10,9 @@ config:
     paths:
         'jquery.fullcalendar': 'orocalendar/lib/fullcalendar/fullcalendar'
         'oro/calendar': 'orocalendar/js/calendar/calendar'
-        'oro/calendar/collection': 'orocalendar/js/calendar/collection'
-        'oro/calendar/model': 'orocalendar/js/calendar/model'
-        'oro/calendar/view': 'orocalendar/js/calendar/view'
+        'oro/calendar/connection-collection': 'orocalendar/js/calendar/connection-collection'
+        'oro/calendar/connection-model': 'orocalendar/js/calendar/connection-model'
+        'oro/calendar/connection-view': 'orocalendar/js/calendar/connection-view'
+        'oro/calendar/event-collection': 'orocalendar/js/calendar/event-collection'
+        'oro/calendar/event-model': 'orocalendar/js/calendar/event-model'
+        'oro/calendar/event-view': 'orocalendar/js/calendar/event-view'

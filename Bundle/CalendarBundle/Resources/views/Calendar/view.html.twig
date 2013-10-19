@@ -20,27 +20,52 @@
 
 {% block content_data %}
     <div class="container-fluid">
-        <div class="row-fluid">
+        <div class="row-fluid" id="calendar">
             <div class="span3">
-               <div>
-                   test
-               </div>
+                <div class="calendars">
+                    <div class="calendar-connections"></div>
+                    <form action="#">
+                        {{ form_row(user_select_form) }}
+                    </form>
+                </div>
             </div>
-            <div class="span9" id="calendar"></div>
+            <div class="span9 calendar-events"></div>
         </div>
     </div>
 
+    <script type="text/html" id="template-calendar-connections">
+        <ul class="media-list connection-container">
+        </ul>
+    </script>
+
+    <script type="text/html" id="template-calendar-connection-item">
+        <li class="media connection-item"
+            <% if (!_.isEmpty(backgroundColor)) { %>
+                style="background-color: #<%- backgroundColor %>; border-color: #<%- backgroundColor %>"
+            <% } %> >
+            <div class="pull-left media-body"
+                    <% if (!_.isEmpty(color)) { %> style="color: #<%- color %>"<% } %>
+                ><%- calendarName %></div>
+            <% if (removable) { %>
+            <div class="pull-right icons-holder"><a
+                href="javascript: void(0);" class="icons-holder-text no-hash remove-connection-button"
+                title="{{ 'Exclude this calendar'|trans }}"><i
+                    class="icon-remove hide-text"></i></a></div>
+            <% } %>
+        </li>
+    </script>
+
     <script type="text/html" id="template-calendar-event">
         {% set data = [
-                form_row(form.title, {'label': 'Title', 'value': '{title}'}),
-                form_row(form.start, {'label': 'Start', 'value': '{start}'}),
-                form_row(form.end, {'label': 'End', 'value': '{end}'}),
-                form_row(form.allDay, {'label': 'All day event', 'attr': { 'checkedif': 'allDay' } }),
-                form_row(form.reminder, {'label': 'Reminder', 'attr': { 'checkedif': 'reminder' } }),
+                form_row(event_form.title, {'label': 'Title', 'value': '{title}'}),
+                form_row(event_form.start, {'label': 'Start', 'value': '{start}'}),
+                form_row(event_form.end, {'label': 'End', 'value': '{end}'}),
+                form_row(event_form.allDay, {'label': 'All day event', 'attr': { 'checkedif': 'allDay' } }),
+                form_row(event_form.reminder, {'label': 'Reminder', 'attr': { 'checkedif': 'reminder' } }),
             ]
         %}
         <div class="alert alert-error" style="display: none;"></div>
-        <form id="{{ form.vars.name }}" action="#">
+        <form id="{{ event_form.vars.name }}" action="#">
             <fieldset class="form-horizontal">
                 {{ UI.scrollSubblock(null, data, true, false) }}
                 <div class="widget-actions form-actions" style="display: none;">
@@ -63,16 +88,19 @@
     </script>
 
     <script type="text/javascript">
-        require(['jquery', 'underscore', 'oro/calendar', 'oro/calendar/collection'],
-                function($, _, Calendar, CalendarEventCollection){
+        require(['jquery', 'underscore', 'oro/calendar', 'oro/calendar/event-collection', 'oro/calendar/connection-collection'],
+                function($, _, Calendar, CalendarEventCollection, CalendarConnectionCollection){
+                    var connections = new CalendarConnectionCollection();
+                    connections.reset({{ render(path('oro_api_get_calendar_connections', {id: entity.id})) }});
                     var events = new CalendarEventCollection();
                     events.reset({{ render(path('oro_api_get_calendarevents', {calendar: entity.id, start: startDate|date('c'), end: endDate|date('c'), subordinate: true})) }});
                     var options = {
                         el: '#calendar',
                         collection: events,
+                        connections: connections,
                         calendar: {{ entity.id }},
                         subordinate: true,
-                        eventFormValidationScriptUrl: '{{ JSFV(form, true) }}'
+                        eventFormValidationScriptUrl: '{{ JSFV(event_form, true) }}'
                     };
                     _.extend(options, {{ calendar|json_encode|raw }});
                     var calendar = new Calendar(options);

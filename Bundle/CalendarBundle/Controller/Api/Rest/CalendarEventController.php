@@ -45,7 +45,7 @@ class CalendarEventController extends RestController implements ClassResourceInt
      *      description="End date in ISO8601. For example: 2009-11-05T13:15:30Z.")
      * @QueryParam(
      *      name="subordinate", requirements="[01]", nullable=true,
-     *      description="Determine whether events from attached calendars should be included ou not. Defaults to 0.")
+     *      description="Determine whether events from connected calendars should be included ou not. Defaults to 0.")
      * @ApiDoc(
      *      description="Get calendar events",
      *      resource=true
@@ -97,7 +97,7 @@ class CalendarEventController extends RestController implements ClassResourceInt
     /**
      * Get calendar event.
      *
-     * @param string $id Calendar event id
+     * @param int $id Calendar event id
      *
      * @ApiDoc(
      *      description="Get calendar event",
@@ -132,7 +132,7 @@ class CalendarEventController extends RestController implements ClassResourceInt
     /**
      * Create new calendar event.
      *
-     * @Post("calendarevents")
+     * @Post("calendarevents", name="oro_api_post_calendarevent")
      * @ApiDoc(
      *      description="Create new calendar event",
      *      resource=true

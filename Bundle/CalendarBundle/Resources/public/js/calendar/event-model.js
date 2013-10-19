@@ -1,11 +1,11 @@
 /* global define */
-define(['backbone', 'routing', 'oro/calendar/collection'],
+define(['backbone', 'routing'],
     function(Backbone, routing) {
         'use strict';
 
         /**
-         * @export  oro/calendar/model
-         * @class   oro.calendar.Model
+         * @export  oro/calendar/event-model
+         * @class   oro.calendar.CalendarEvent
          * @extends Backbone.Model
          */
         return Backbone.Model.extend({

@@ -1,17 +1,17 @@
 /* global define */
-define(['backbone', 'routing', 'oro/calendar/model'],
-    function(Backbone, routing, CalendarModel) {
+define(['backbone', 'routing', 'oro/calendar/event-model'],
+    function(Backbone, routing, CalendarEvent) {
         'use strict';
 
         /**
-         * @export  oro/calendar/collection
-         * @class   oro.calendar.Collection
+         * @export  oro/calendar/event-collection
+         * @class   oro.calendar.CalendarEventCollection
          * @extends Backbone.Collection
          */
         return Backbone.Collection.extend({
             route: 'oro_api_get_calendarevents',
             url: null,
-            model: CalendarModel,
+            model: CalendarEvent,
             calendar: null,
             subordinate: false,
 
@@ -20,6 +20,9 @@ define(['backbone', 'routing', 'oro/calendar/model'],
                     this.route,
                     {calendar: this.calendar, start: start, end: end, subordinate: this.subordinate}
                 );
+            },
+            setCalendar: function(calendarId) {
+                this.calendar = calendarId;
             },
             getCalendar: function() {
                 return this.calendar;

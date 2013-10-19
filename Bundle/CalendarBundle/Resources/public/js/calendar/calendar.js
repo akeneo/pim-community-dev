@@ -1,20 +1,22 @@
 /* jshint devel:true*/
 /* global define, require */
-define(['jquery', 'underscore', 'backbone', 'oro/translator', 'oro/app', 'oro/navigation', 'oro/loading-mask',
-    'oro/calendar/collection', 'oro/calendar/model', 'oro/calendar/view'],
-    function($, _, Backbone, __, app, Navigation, LoadingMask,
-             CalendarEventCollection, CalendarEvent, CalendarEventView) {
+define(['jquery', 'underscore', 'backbone', 'oro/translator', 'oro/app', 'oro/messenger', 'oro/loading-mask',
+    'oro/calendar/event-collection', 'oro/calendar/event-model', 'oro/calendar/event-view',
+    'oro/calendar/connection-collection', 'oro/calendar/connection-view'],
+    function($, _, Backbone, __, app, messenger, LoadingMask,
+             CalendarEventCollection, CalendarEvent, CalendarEventView,
+             CalendarConnectionCollection, CalendarConnectionView) {
         'use strict';
 
         /**
-         * @export  oro/calendar/view
-         * @class   oro.CalendarView
+         * @export  oro/calendar
+         * @class   oro.Calendar
          * @extends Backbone.View
          */
         return Backbone.View.extend({
             /** @property */
-            template: _.template(
-                '<div class="container-fluid">' +
+            eventsTemplate: _.template(
+                '<div>' +
                     '<div class="calendar-container">' +
                         '<div class="calendar"></div>' +
                         '<div class="loading-mask"></div>' +
@@ -24,6 +26,8 @@ define(['jquery', 'underscore', 'backbone', 'oro/translator', 'oro/app', 'oro/na
 
             /** @property {Object} */
             selectors: {
+                connections:        '.calendar-connections',
+                events:             '.calendar-events',
                 calendar:           '.calendar',
                 loadingMask:        '.loading-mask',
                 loadingMaskContent: '.loading-content'
@@ -33,30 +37,64 @@ define(['jquery', 'underscore', 'backbone', 'oro/translator', 'oro/app', 'oro/na
             enableEventLoading: false,
 
             initialize: function() {
+                // init event collection
                 this.options.collection = this.options.collection || new CalendarEventCollection();
-                this.options.collection.calendar = this.options.calendar;
-                delete this.options.calendar;
+                this.options.collection.setCalendar(this.options.calendar);
                 this.options.collection.subordinate = this.options.subordinate;
+                // init connection collection
+                this.options.connections = this.options.connections || new CalendarConnectionCollection();
+                this.options.connections.setCalendar(this.options.calendar);
+                // remove no longer used options
+                delete this.options.calendar;
                 delete this.options.subordinate;
 
+                // create a view for event details
                 this.eventView = new CalendarEventView({
                     collection: this.getCollection(),
                     eventFormValidationScriptUrl: this.options.eventFormValidationScriptUrl,
                     timezoneOffset: this.options.timezoneOffset
                 });
+                // remove no longer used options
                 delete this.options.eventFormValidationScriptUrl;
                 delete this.options.timezoneOffset;
 
-                this.$el.empty();
-                this.$el = this.$el.append($(this.template()));
+                // init events container
+                var eventsContainer = this.$el.find(this.selectors.events);
+                if (eventsContainer.length === 0) {
+                    throw new Error("Cannot find '" + this.selectors.events + "' element.");
+                }
+                eventsContainer.empty();
+                eventsContainer.append($(this.eventsTemplate()));
 
+                // init connections container
+                var connectionsContainer = this.$el.find(this.selectors.connections);
+                if (connectionsContainer.length === 0) {
+                    throw new Error("Cannot find '" + this.selectors.connections + "' element.");
+                }
+                connectionsContainer.empty();
+                var connectionsTemplate = _.template($("#template-calendar-connections").html());
+                connectionsContainer.append($(connectionsTemplate()));
+
+                // create a view for a list of connections
+                this.connectionsView = new CalendarConnectionView({
+                    el: connectionsContainer,
+                    collection: this.getConnections()
+                });
+
+                // init a loading mask control
                 this.loadingMask = new LoadingMask();
                 this.$el.find(this.selectors.loadingMask).append(this.loadingMask.render().$el);
 
-                this.listenTo(this.getCollection(), 'add', this.addModel);
-                this.listenTo(this.getCollection(), 'change', this.changeModel);
-                this.listenTo(this.getCollection(), 'destroy', this.destroyModel);
+                // subscribe to event collection events
+                this.listenTo(this.getCollection(), 'add', this.onModelAdded);
+                this.listenTo(this.getCollection(), 'change', this.onModelChanged);
+                this.listenTo(this.getCollection(), 'destroy', this.onModelDeleted);
+                // subscribe to connection collection events
+                this.listenTo(this.getConnections(), 'add', this.onConnectionAddedOrDeleted);
+                this.listenTo(this.getConnections(), 'change', this.onConnectionChanged);
+                this.listenTo(this.getConnections(), 'destroy', this.onConnectionAddedOrDeleted);
 
+                // prepare options for jQuery FullCalendar control
                 var options = {
                         header: {
                             left: 'prev,next today',
@@ -87,22 +125,25 @@ define(['jquery', 'underscore', 'backbone', 'oro/translator', 'oro/app', 'oro/na
                     options.date = options.date.getDate();
                 }
 
+                // create jQuery FullCalendar control
                 this.getCalendarElement().fullCalendar(options);
                 this.enableEventLoading = true;
             },
             getCollection: function() {
                 return this.options.collection;
             },
+            getConnections: function() {
+                return this.options.connections;
+            },
             getCalendarElement: function() {
                 return this.$el.find(this.selectors.calendar);
             },
-            addModel: function(event){
+            onModelAdded: function(event){
                 var fcEvent = event.toJSON();
-                fcEvent.start = this.convertToViewDateTime(fcEvent.start);
-                fcEvent.end = this.convertToViewDateTime(fcEvent.end);
+                this.prepareViewModel(fcEvent);
                 this.getCalendarElement().fullCalendar('renderEvent', fcEvent);
             },
-            changeModel: function(event){
+            onModelChanged: function(event){
                 var fcEvent = this.getCalendarElement().fullCalendar('clientEvents', event.get('id'))[0];
                 // copy all fields, except id, from event to fcEvent
                 fcEvent = _.extend(fcEvent, _.pick(event.attributes, _.keys(_.omit(fcEvent, ['id']))));
@@ -110,8 +151,14 @@ define(['jquery', 'underscore', 'backbone', 'oro/translator', 'oro/app', 'oro/na
                 fcEvent.end = this.convertToViewDateTime(fcEvent.end);
                 this.getCalendarElement().fullCalendar('updateEvent', fcEvent);
             },
-            destroyModel: function(event) {
+            onModelDeleted: function(event) {
                 this.getCalendarElement().fullCalendar('removeEvents', event.id);
+            },
+            onConnectionAddedOrDeleted: function () {
+                this.getCalendarElement().fullCalendar('refetchEvents');
+            },
+            onConnectionChanged: function () {
+
             },
             select: function(start, end) {
                 if (!this.eventView.model) {
@@ -161,38 +208,44 @@ define(['jquery', 'underscore', 'backbone', 'oro/translator', 'oro/app', 'oro/na
                 }
             },
             loadEvents: function(start, end, callback) {
-                if (this.enableEventLoading) {
-                    try {
-                        this.getCollection().setRange(
-                            this.formatDateTimeForModel(start),
-                            this.formatDateTimeForModel(end)
-                        );
+                try {
+                    this.getCollection().setRange(
+                        this.formatDateTimeForModel(start),
+                        this.formatDateTimeForModel(end)
+                    );
+                    if (this.enableEventLoading) {
                         this.getCollection().fetch({
                             success: _.bind(function() {
-                                var events = this.getCollection().toJSON();
-                                _.each(events, _.bind(function (event) {
-                                    event.start = this.convertToViewDateTime(event.start);
-                                    event.end = this.convertToViewDateTime(event.end);
-                                }, this));
-                                callback(events);
+                                var fcEvents = this.getCollection().toJSON();
+                                this.prepareViewModels(fcEvents);
+                                callback(fcEvents);
                             }, this),
                             error: _.bind(function(collection, response) {
-                                callback({});
+                                this.getCalendarElement().fullCalendar('removeEvents', event.id);
                                 this.showLoadEventsError(response.responseJSON);
                             }, this)
                         });
-                    } catch (err) {
-                        callback({});
-                        this.showLoadEventsError(err);
+                    } else {
+                        var fcEvents = this.getCollection().toJSON();
+                        this.prepareViewModels(fcEvents);
+                        callback(fcEvents);
                     }
-                } else {
-                    var events = this.getCollection().toJSON();
-                    _.each(events, _.bind(function (event) {
-                        event.start = this.convertToViewDateTime(event.start);
-                        event.end = this.convertToViewDateTime(event.end);
-                    }, this));
-                    callback(events);
+                } catch (err) {
+                    callback({});
+                    this.showLoadEventsError(err);
                 }
+            },
+            prepareViewModels : function (fcEvents) {
+                _.each(fcEvents, _.bind(function (fcEvent) {
+                    this.prepareViewModel(fcEvent);
+                }, this));
+            },
+            prepareViewModel : function (fcEvent) {
+                fcEvent.start = this.convertToViewDateTime(fcEvent.start);
+                fcEvent.end = this.convertToViewDateTime(fcEvent.end);
+                var colors = this.connectionsView.getCalendarColors(fcEvent.calendar);
+                fcEvent.textColor = colors.color;
+                fcEvent.color = colors.backgroundColor;
             },
             showSavingMask: function(show) {
                 this._showMask(show, 'Saving...');
@@ -225,20 +278,17 @@ define(['jquery', 'underscore', 'backbone', 'oro/translator', 'oro/app', 'oro/na
                 if (!_.isUndefined(console)) {
                     console.error(_.isUndefined(err.stack) ? err : err.stack);
                 }
-                var navigation = Navigation.getInstance();
-                if (navigation) {
-                    var msg = __(message);
-                    if (app.debug) {
-                        if (!_.isUndefined(err.message)) {
-                            msg += ': ' + err.message;
-                        } else if (!_.isUndefined(err.errors) && _.isArray(err.errors)) {
-                            msg += ': ' + err.errors.join();
-                        } else if (_.isString(err)) {
-                            msg += ': ' + err;
-                        }
+                var msg = __(message);
+                if (app.debug) {
+                    if (!_.isUndefined(err.message)) {
+                        msg += ': ' + err.message;
+                    } else if (!_.isUndefined(err.errors) && _.isArray(err.errors)) {
+                        msg += ': ' + err.errors.join();
+                    } else if (_.isString(err)) {
+                        msg += ': ' + err;
                     }
-                    navigation.showMessage(msg);
                 }
+                messenger.notificationFlashMessage('error', msg);
             },
             convertToViewDateTime: function (s) {
                 return this.eventView.convertToViewDateTime(s);

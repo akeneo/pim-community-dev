@@ -5,7 +5,7 @@ define(['jquery', 'underscore', 'backbone', 'oro/translator', 'oro/dialog-widget
         'use strict';
 
         /**
-         * @export  oro/calendar/view
+         * @export  oro/calendar/event-view
          * @class   oro.CalendarEventView
          * @extends Backbone.View
          */
@@ -61,7 +61,7 @@ define(['jquery', 'underscore', 'backbone', 'oro/translator', 'oro/dialog-widget
                 form.on('submit', _.bind(function (e) {
                         e.preventDefault();
                         e.stopImmediatePropagation();
-                        this.saveEvent();
+                        this.saveModel();
                         return false;
                     }, this));
 
@@ -72,7 +72,7 @@ define(['jquery', 'underscore', 'backbone', 'oro/translator', 'oro/dialog-widget
                             content: el.data('message')
                         });
                         confirm.on('ok', _.bind(function() {
-                            this.deleteEvent();
+                            this.deleteModel();
                         }, this));
                         confirm.open();
                         return false;
@@ -88,7 +88,7 @@ define(['jquery', 'underscore', 'backbone', 'oro/translator', 'oro/dialog-widget
 
                 return this;
             },
-            saveEvent: function() {
+            saveModel: function() {
                 this.showSavingMask(true);
                 try {
                     var data = this.getEventFormData();
@@ -128,7 +128,7 @@ define(['jquery', 'underscore', 'backbone', 'oro/translator', 'oro/dialog-widget
                     this.showError(err);
                 }
             },
-            deleteEvent: function() {
+            deleteModel: function() {
                 this.showDeletingMask(true);
                 try {
                     this.model.destroy({

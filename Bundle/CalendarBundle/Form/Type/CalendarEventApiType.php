@@ -2,7 +2,6 @@
 
 namespace Oro\Bundle\CalendarBundle\Form\Type;
 
-use Symfony\Component\Form\Extension\Core\DataTransformer\DateTimeToStringTransformer;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;

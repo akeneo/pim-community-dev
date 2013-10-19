@@ -11,7 +11,6 @@
         "oro/windows-bundle": "dev-master",
         "oro/form-bundle": "dev-master",
         "oro/jsfv-bundle": "dev-master",
-        "oro/navigation-bundle": "dev-master",
         "oro/email-bundle": "dev-master",
         "oro/notification-bundle": "dev-master",
         "oro/user-bundle": "dev-master"
