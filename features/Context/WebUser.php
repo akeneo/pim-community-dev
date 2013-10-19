@@ -7,8 +7,6 @@ use Behat\Mink\Exception\ExpectationException;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Behat\Context\Step;
-use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
-use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
 use Oro\Bundle\BatchBundle\Entity\JobInstance;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\Association;
@@ -23,10 +21,8 @@ use Pim\Bundle\CatalogBundle\Entity\Product;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class WebUser extends RawMinkContext implements PageObjectAwareInterface
+class WebUser extends RawMinkContext
 {
-    private $pageFactory = null;
-
     private $currentPage = null;
 
     private $username = null;
@@ -98,27 +94,13 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param PageFactory $pageFactory
-     */
-    public function setPageFactory(PageFactory $pageFactory)
-    {
-        $this->pageFactory = $pageFactory;
-    }
-
-    /**
      * @param string $name
      *
      * @return Page
      */
     public function getPage($name)
     {
-        if (null === $this->pageFactory) {
-            throw new \RuntimeException('To create pages you need to pass a factory with setPageFactory()');
-        }
-
-        $name = implode('\\', array_map('ucfirst', explode(' ', $name)));
-
-        return $this->pageFactory->createPage($name);
+        return $this->getNavigationContext()->getPage($name);
     }
 
     /**
@@ -1951,6 +1933,14 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     private function getFixturesContext()
     {
         return $this->getMainContext()->getSubcontext('fixtures');
+    }
+
+    /**
+     * @return NavigationContext
+     */
+    private function getNavigationContext()
+    {
+        return $this->getMainContext()->getSubcontext('navigation');
     }
 
     /**

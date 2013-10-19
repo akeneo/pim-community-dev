@@ -27,4 +27,20 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     {
         $this->pageFactory = $pageFactory;
     }
+
+    /**
+     * @param string $name
+     *
+     * @return Page
+     */
+    public function getPage($name)
+    {
+        if (null === $this->pageFactory) {
+            throw new \RuntimeException('To create pages you need to pass a factory with setPageFactory()');
+        }
+
+        $name = implode('\\', array_map('ucfirst', explode(' ', $name)));
+
+        return $this->pageFactory->createPage($name);
+    }
 }
