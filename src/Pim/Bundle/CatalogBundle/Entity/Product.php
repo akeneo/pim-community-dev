@@ -319,6 +319,21 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
     }
 
     /**
+     * Get a string with groups
+     *
+     * @return string
+     */
+    public function getGroupCodes()
+    {
+        $codes = array();
+        foreach ($this->getGroups() as $group) {
+            $codes[] = $group->getCode();
+        }
+
+        return implode(',', $codes);
+    }
+
+    /**
      * Predicate to know if product is enabled or not
      *
      * @return boolean
