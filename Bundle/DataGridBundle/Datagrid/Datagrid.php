@@ -108,4 +108,12 @@ class Datagrid implements DatagridInterface
 
         return $this->getDatasource();
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getAcceptor()
+    {
+        return $this->acceptor;
+    }
 }

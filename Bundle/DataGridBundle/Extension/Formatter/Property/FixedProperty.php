@@ -11,6 +11,6 @@ class FixedProperty extends AbstractProperty
      */
     public function getValue(ResultRecordInterface $record)
     {
-        return $record->getValue($this->get('value_key'));
+        return $record->getValue($this->get('data_name'));
     }
 }

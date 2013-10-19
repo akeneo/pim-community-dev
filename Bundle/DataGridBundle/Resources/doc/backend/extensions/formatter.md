@@ -11,6 +11,7 @@ Formatters
 column_name:
     type: field
     frontend_type: date|datetime|decimal|integer|percent|options|text|html|boolean # optional default string
+    data_name: someAlias.someField # optional, key in result that should represent this field
 ```
 Represents default data field.
 
@@ -18,7 +19,7 @@ Represents default data field.
 ```
 column_name:
     type: fixed
-    value_key: string #required, key in result that shoud represent this field
+    data_name: string #required, key in result that should represent this field
 ```
 Represent field that contains data from another field
 

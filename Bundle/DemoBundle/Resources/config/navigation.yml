@@ -12,6 +12,12 @@ oro_menu_config:
             routeParameters:
                 gridName: contactGroup
 
+        grid_account:
+            label: 'Flexible account'
+            route: 'oro_demo_index'
+            routeParameters:
+                gridName: account
+
         grid_adminUsers:
             label: 'Admin role users'
             route: 'oro_demo_admin_users'
@@ -23,3 +29,4 @@ oro_menu_config:
                     children:
                         grid_contactGroup: ~
                         grid_adminUsers:   ~
+                        grid_account:      ~

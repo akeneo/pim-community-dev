@@ -34,9 +34,9 @@ class FieldProperty extends AbstractProperty
     protected function getRawValue(ResultRecordInterface $record)
     {
         try {
-            $value = $record->getValue($this->get('name'));
+            $value = $record->getValue($this->getOr('data_name', $this->get('name')));
         } catch (\LogicException $e) {
-            // default value if there is no flexible attribute
+            // default value
             $value = null;
         }
 
@@ -54,13 +54,6 @@ class FieldProperty extends AbstractProperty
     {
         if (null === $value) {
             return $value;
-        }
-
-        // TODO : to fix the case where $value is a flexible value
-        if (is_object($value) && is_callable(array($value, '__toString'))) {
-            $value = $value->__toString();
-        } elseif (false === $value && $this->getOr('flexible_name')) {
-            return null;
         }
 
         $result = $this->convertValue($value);
