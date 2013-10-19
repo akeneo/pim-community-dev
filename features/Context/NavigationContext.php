@@ -21,6 +21,16 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     public $currentPage = null;
 
     /**
+     * @var string $username
+     */
+    private $username = null;
+
+    /**
+     * @var string $password
+     */
+    private $password = null;
+
+    /**
      * @var PageFactory $pageFactory
      */
     private $pageFactory = null;
@@ -62,6 +72,20 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     public function resetCurrentPage()
     {
         $this->currentPage = null;
+    }
+
+    /**
+     * @param string $username
+     *
+     * @Given /^I am logged in as "([^"]*)"$/
+     */
+    public function iAmLoggedInAs($username)
+    {
+        $password = $username;
+        $this->getFixturesContext()->getOrCreateUser($username, $password);
+
+        $this->username = $username;
+        $this->password = $password;
     }
 
     /**
@@ -118,6 +142,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
         $this->currentPage = $page;
 
         $page = $this->getCurrentPage()->open($options);
+        $this->loginIfRequired();
         $this->wait();
 
         return $page;
@@ -129,6 +154,19 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     public function getCurrentPage()
     {
         return $this->getPage($this->currentPage);
+    }
+
+    /**
+     * A method that logs the user in with the previously provided credentials if required by the page
+     */
+    private function loginIfRequired()
+    {
+        $loginForm = $this->getCurrentPage()->find('css', '.form-signin');
+        if ($loginForm) {
+            $loginForm->fillField('_username', $this->username);
+            $loginForm->fillField('_password', $this->password);
+            $loginForm->pressButton('Log in');
+        }
     }
 
     /**

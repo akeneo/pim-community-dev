@@ -23,10 +23,6 @@ use Pim\Bundle\CatalogBundle\Entity\Product;
  */
 class WebUser extends RawMinkContext
 {
-    private $username = null;
-
-    private $password = null;
-
     private $windowWidth;
 
     private $windowHeight;
@@ -71,20 +67,6 @@ class WebUser extends RawMinkContext
     public function getPage($name)
     {
         return $this->getNavigationContext()->getPage($name);
-    }
-
-    /**
-     * @param string $username
-     *
-     * @Given /^I am logged in as "([^"]*)"$/
-     */
-    public function iAmLoggedInAs($username)
-    {
-        $password = $username;
-        $this->getFixturesContext()->getOrCreateUser($username, $password);
-
-        $this->username = $username;
-        $this->password = $password;
     }
 
     /**
@@ -1793,8 +1775,6 @@ class WebUser extends RawMinkContext
     private function openPage($page, array $options = array())
     {
         $page = $this->getNavigationContext()->openPage($page, $options);
-
-        $this->loginIfRequired();
         $this->wait();
 
         return $page;
@@ -1806,19 +1786,6 @@ class WebUser extends RawMinkContext
     private function getCurrentPage()
     {
         return $this->getNavigationContext()->getCurrentPage();
-    }
-
-    /**
-     * A method that logs the user in with the previously provided credentials if required by the page
-     */
-    private function loginIfRequired()
-    {
-        $loginForm = $this->getCurrentPage()->find('css', '.form-signin');
-        if ($loginForm) {
-            $loginForm->fillField('_username', $this->username);
-            $loginForm->fillField('_password', $this->password);
-            $loginForm->pressButton('Log in');
-        }
     }
 
     /**
