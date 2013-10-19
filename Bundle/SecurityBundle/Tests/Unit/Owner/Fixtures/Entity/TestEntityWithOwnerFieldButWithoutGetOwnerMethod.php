@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\EntityBundle\Tests\Unit\Owner\Fixtures\Entity;
+namespace Oro\Bundle\SecurityBundle\Tests\Unit\Owner\Fixtures\Entity;
 
 class TestEntityWithOwnerFieldButWithoutGetOwnerMethod
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace Oro\Bundle\EntityBundle\Owner;
+namespace Oro\Bundle\SecurityBundle\Owner;
 
 use Oro\Bundle\EntityBundle\ORM\EntityClassAccessor;
-use Oro\Bundle\EntityBundle\Owner\Metadata\OwnershipMetadata;
-use Oro\Bundle\EntityBundle\Owner\Metadata\OwnershipMetadataProvider;
+use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadata;
+use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadataProvider;
 use Oro\Bundle\EntityBundle\Exception\InvalidEntityException;
 
 /**
