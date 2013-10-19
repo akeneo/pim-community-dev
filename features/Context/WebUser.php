@@ -31,26 +31,6 @@ class WebUser extends RawMinkContext
 
     private $windowHeight;
 
-    private $pageMapping = array(
-        'associations'             => 'Association index',
-        'attributes'               => 'Attribute index',
-        'categories'               => 'Category tree creation',
-        'channels'                 => 'Channel index',
-        'currencies'               => 'Currency index',
-        'exports'                  => 'Export index',
-        'families'                 => 'Family index',
-        'home'                     => 'Base index',
-        'imports'                  => 'Import index',
-        'locales'                  => 'Locale index',
-        'products'                 => 'Product index',
-        'users'                    => 'User index',
-        'user roles'               => 'UserRole index',
-        'user groups'              => 'UserGroup index',
-        'variants'                 => 'Variant index',
-        'attribute groups'         => 'AttributeGroup index',
-        'attribute group creation' => 'AttributeGroup creation',
-    );
-
     /**
      * Constructor
      *
@@ -105,18 +85,6 @@ class WebUser extends RawMinkContext
 
         $this->username = $username;
         $this->password = $password;
-    }
-
-    /**
-     * @param string $page
-     *
-     * @Given /^I am on the ([^"]*) page$/
-     */
-    public function iAmOnThePage($page)
-    {
-        $page = isset($this->pageMapping[$page]) ? $this->pageMapping[$page] : $page;
-        $this->openPage($page);
-        $this->wait();
     }
 
     /**
