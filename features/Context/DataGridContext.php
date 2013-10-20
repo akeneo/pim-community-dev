@@ -73,7 +73,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iFilterPerCategory($code)
     {
-        $category = $this->getWebUserContext()->getCategory($code);
+        $category = $this->getFixturesContext()->getCategory($code);
         $this->getPage('Product index')->clickCategoryFilterLink($category);
         $this->wait();
     }
@@ -512,9 +512,17 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     /**
      * @return \Behat\Behat\Context\ExtendedContextInterface
      */
-    private function getWebUserContext()
+    private function getNavigationContext()
     {
-        return $this->getMainContext()->getSubcontext('webUser');
+        return $this->getMainContext()->getSubcontext('navigation');
+    }
+
+    /**
+     * @return \Behat\Behat\Context\ExtendedContextInterface
+     */
+    private function getFixturesContext()
+    {
+        return $this->getMainContext()->getSubcontext('fixtures');
     }
 
     /**
@@ -524,6 +532,6 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function getPage($name)
     {
-        return $this->getWebUserContext()->getPage($name);
+        return $this->getNavigationContext()->getPage($name);
     }
 }

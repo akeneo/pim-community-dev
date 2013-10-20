@@ -7,9 +7,7 @@ use Behat\Mink\Exception\ExpectationException;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Behat\Context\Step;
-use Oro\Bundle\BatchBundle\Entity\JobInstance;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
-use Pim\Bundle\CatalogBundle\Entity\Association;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Product;
@@ -70,20 +68,6 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @param string $identifier
-     *
-     * @Given /^I am on the "([^"]*)" attribute group page$/
-     * @Given /^I edit the "([^"]*)" attribute group$/
-     */
-    public function iAmOnTheAttributeGroupEditPage($identifier)
-    {
-        $page = 'AttributeGroup';
-        $getter = sprintf('get%s', $page);
-        $entity = $this->getFixturesContext()->$getter($identifier);
-        $this->openPage(sprintf('%s edit', $page), array('id' => $entity->getId()));
-    }
-
-    /**
      * @param string $entity
      *
      * @Given /^I create a new (\w+)$/
@@ -94,16 +78,6 @@ class WebUser extends RawMinkContext
         $this->getPage(sprintf('%s index', $entity))->clickCreationLink();
         $this->getNavigationContext()->currentPage = sprintf('%s creation', $entity);
         $this->wait();
-    }
-
-    /**
-     * @param Category $category
-     *
-     * @Given /^I am on the (category "([^"]*)") node creation page$/
-     */
-    public function iAmOnTheCategoryNodeCreationPage(Category $category)
-    {
-        $this->openPage('Category node creation', array('id' => $category->getId()));
     }
 
     /**
@@ -206,16 +180,6 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @param string $page
-     *
-     * @Then /^I should be redirected on the (.*) page$/
-     */
-    public function iShouldBeRedirectedOnThePage($page)
-    {
-        $this->assertAddress($this->getPage($page)->getUrl());
-    }
-
-    /**
      * @param string $tab
      *
      * @Given /^I visit the "([^"]*)" tab$/
@@ -281,23 +245,6 @@ class WebUser extends RawMinkContext
     public function iDeactivateTheCurrency($currencies)
     {
         $this->getPage('Currency index')->deactivateCurrencies($this->listToArray($currencies));
-        $this->wait();
-    }
-
-    /**
-     * @Given /^I should be on the locales page$/
-     */
-    public function iShouldBeOnTheLocalesPage()
-    {
-        $this->assertAddress($this->getPage('Locale index')->getUrl());
-    }
-
-    /**
-     * @Given /^I should be on the locale creation page$/
-     */
-    public function iShouldBeOnTheLocaleCreationPage()
-    {
-        $this->openPage('Locale creation');
         $this->wait();
     }
 
@@ -475,13 +422,13 @@ class WebUser extends RawMinkContext
      */
     public function attributesInGroupShouldBe($group, $attributes)
     {
-        $page       = $this->getPage('Product edit');
+        $page       = $this->getCurrentPage();
         $attributes = $this->listToArray($attributes);
         $page->visitGroup($group);
 
         $group = $this->getFixturesContext()->getAttributeGroup($group) ?: AttributeGroup::DEFAULT_GROUP_CODE;
 
-        if (count($attributes) !== $actual = $this->getPage('Product edit')->getFieldsCountFor($group)) {
+        if (count($attributes) !== $actual = $page->getFieldsCountFor($group)) {
             throw $this->createExpectationException(
                 sprintf(
                     'Expected to see %d fields in group "%s", actually saw %d',
@@ -496,7 +443,7 @@ class WebUser extends RawMinkContext
             function ($field) {
                 return str_replace('*', '', $field->getText());
             },
-            $this->getPage('Product edit')->getFieldsForGroup($group)
+            $page->getFieldsForGroup($group)
         );
 
         if (count(array_diff($attributes, $labels))) {
@@ -518,29 +465,11 @@ class WebUser extends RawMinkContext
      */
     public function theTitleOfTheProductShouldBe($title)
     {
-        if ($title !== $actual = $this->getPage('Product edit')->getTitle()) {
+        if ($title !== $actual = $this->getCurrentPage()->getTitle()) {
             throw $this->createExpectationException(
                 sprintf(
                     'Expected product title "%s", actually saw "%s"',
                     $title,
-                    $actual
-                )
-            );
-        }
-    }
-
-    /**
-     * @param string $pattern
-     *
-     * @Then /^the title of the product should match "([^"]*)"$/
-     */
-    public function theTitleOfTheProductShouldMatch($pattern)
-    {
-        if (1 !== preg_match($pattern, $actual = $this->getPage('Product edit')->getTitle())) {
-            throw $this->createExpectationException(
-                sprintf(
-                    'Expected product title to match "%s", actually saw "%s"',
-                    $pattern,
                     $actual
                 )
             );
@@ -556,7 +485,7 @@ class WebUser extends RawMinkContext
      */
     public function theProductFieldValueShouldBe($fieldName, $expected = '')
     {
-        $actual = $this->getPage('Product edit')->findField($fieldName)->getValue();
+        $actual = $this->getCurrentPage()->findField($fieldName)->getValue();
 
         if ($expected !== $actual) {
             throw $this->createExpectationException(
@@ -682,39 +611,6 @@ class WebUser extends RawMinkContext
                 )
             );
         }
-    }
-
-    /**
-     * @param AttributeGroup $group
-     *
-     * @Given /^I should be on the ("([^"]*)" attribute group) page$/
-     */
-    public function iShouldBeOnTheAttributeGroupPage(AttributeGroup $group)
-    {
-        $expectedAddress = $this->getPage('AttributeGroup edit')->getUrl(array('id' => $group->getId()));
-        $this->assertAddress($expectedAddress);
-    }
-
-    /**
-     * @param Family $family
-     *
-     * @Given /^I should be on the ("([^"]*)" family) page$/
-     */
-    public function iShouldBeOnTheFamilyPage(Family $family)
-    {
-        $expectedAddress = $this->getPage('Family edit')->getUrl(array('id' => $family->getId()));
-        $this->assertAddress($expectedAddress);
-    }
-
-    /**
-     * @param Association $association
-     *
-     * @Given /^I should be on the ("([^"]*)" association) page$/
-     */
-    public function iShouldBeOnTheAssociationPage(Association $association)
-    {
-        $expectedAddress = $this->getPage('Association edit')->getUrl(array('id' => $association->getId()));
-        $this->assertAddress($expectedAddress);
     }
 
     /**
@@ -1206,28 +1102,6 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @param Category $category
-     *
-     * @Then /^I should be on the (category "([^"]*)") edit page$/
-     */
-    public function iShouldBeOnTheCategoryEditPage(Category $category)
-    {
-        $expectedAddress = $this->getPage('Category edit')->getUrl(array('id' => $category->getId()));
-        $this->assertAddress($expectedAddress);
-    }
-
-    /**
-     * @param Category $category
-     *
-     * @Given /^I should be on the (category "([^"]*)") node creation page$/
-     */
-    public function iShouldBeOnTheCategoryNodeCreationPage(Category $category)
-    {
-        $expectedAddress = $this->getPage('Category node creation')->getUrl(array('id' => $category->getId()));
-        $this->assertAddress($expectedAddress);
-    }
-
-    /**
      * @param string $right
      * @param string $category
      *
@@ -1307,28 +1181,6 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @param JobInstance $job
-     *
-     * @Given /^I am on the ("([^"]*)" import job) page$/
-     */
-    public function iAmOnTheImportJobPage(JobInstance $job)
-    {
-        $this->openPage('Import show', array('id' => $job->getId()));
-        $this->wait();
-    }
-
-    /**
-     * @param JobInstance $job
-     *
-     * @Given /^I am on the ("([^"]*)" export job) page$/
-     */
-    public function iAmOnTheExportJobPage(JobInstance $job)
-    {
-        $this->openPage('Export show', array('id' => $job->getId()));
-        $this->wait();
-    }
-
-    /**
      * @param string $message
      * @param string $property
      *
@@ -1358,16 +1210,6 @@ class WebUser extends RawMinkContext
         if ($this->getCurrentPage()->findLink($link)) {
             throw $this->createExpectationException(sprintf('Link %s should not be displayed', $link));
         }
-    }
-
-    /**
-     * @param JobInstance $job
-     *
-     * @When /^I launch the ("([^"]*)" export job)$/
-     */
-    public function iLaunchTheExportJob(JobInstance $job)
-    {
-        $this->openPage('Export launch', array('id' => $job->getId()));
     }
 
     /**
@@ -1754,16 +1596,6 @@ class WebUser extends RawMinkContext
     private function scrollContainerTo($y)
     {
         $this->getSession()->executeScript(sprintf('$(".scrollable-container").scrollTop(%d);', $y));
-    }
-
-    /**
-     * @param string $expected
-     */
-    private function assertAddress($expected)
-    {
-        $actual = $this->getSession()->getCurrentUrl();
-        $result = strpos($actual, $expected) !== false;
-        assertTrue($result, sprintf('Expecting to be on page "%s", not "%s"', $expected, $actual));
     }
 
     /**
