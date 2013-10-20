@@ -36,7 +36,7 @@ else
     fi
 fi
 
-ORIGINAL_DB_NAME=`echo $DB_PREFIX | sed -e "s/-$//"`
+ORIGINAL_DB_NAME=`echo $DB_PREFIX | sed -e "s/_$//"`
 
 FEATURES_DIR=`dirname $0`/../../../../features
 
