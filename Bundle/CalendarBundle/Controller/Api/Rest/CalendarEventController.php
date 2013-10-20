@@ -72,6 +72,9 @@ class CalendarEventController extends RestController implements ClassResourceInt
 
         /** @var SecurityFacade $securityFacade */
         $securityFacade = $this->get('oro_security.security_facade');
+        if (!$securityFacade->isGranted('oro_calendar_connection_view')) {
+            $subordinate = false;
+        }
 
         $manager = $this->getManager();
         /** @var CalendarEventRepository $repo */
