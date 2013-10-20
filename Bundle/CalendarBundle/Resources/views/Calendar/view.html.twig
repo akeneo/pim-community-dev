@@ -2,7 +2,7 @@
 
 {% set format = oro_config_value('oro_locale.name_format') %}
 {% set name = entity.owner.fullname(format)|default('N/A') %}
-{% oro_title_set({params : {"%username%": name }}) %}
+{% oro_title_set({params : {"%username%": name, "%calendarname%": entity.name|default(name) }}) %}
 
 {% block head_script %}
     {{ parent() }}
@@ -11,8 +11,18 @@
 {% block navButtons %}
 {% endblock navButtons %}
 
+{% block breadcrumb %}
+    {% set breadcrumbs = [{'label': name }] %}
+    {% if not entity.name is empty %}
+        {% set breadcrumbs = breadcrumbs|merge([{'label': 'Calendars'|trans }, {'label': entity.name}]) %}
+    {% else %}
+        {% set breadcrumbs = breadcrumbs|merge([{'label': 'My Calendar'|trans}]) %}
+    {% endif %}
+    {% include 'OroNavigationBundle:Menu:breadcrumbs.html.twig' %}
+{% endblock breadcrumb %}
+
 {% block pageHeader %}
-    {% set breadcrumbs = {'entity': entity, 'indexLabel': 'Calendar', 'entityTitle': name } %}
+    {% set breadcrumbs = {'entityTitle': 'Calendar' } %}
     {{ parent() }}
 {% endblock pageHeader %}
 
