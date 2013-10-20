@@ -5,6 +5,11 @@ namespace Context;
 use Behat\MinkExtension\Context\RawMinkContext;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
 use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
+use Oro\Bundle\BatchBundle\Entity\JobInstance;
+use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
+use Pim\Bundle\CatalogBundle\Entity\Association;
+use Pim\Bundle\CatalogBundle\Entity\Category;
+use Pim\Bundle\CatalogBundle\Entity\Family;
 
 /**
  * Context for navigating the website
@@ -116,6 +121,62 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     }
 
     /**
+     * @param string $identifier
+     *
+     * @Given /^I am on the "([^"]*)" attribute group page$/
+     * @Given /^I edit the "([^"]*)" attribute group$/
+     */
+    public function iAmOnTheAttributeGroupEditPage($identifier)
+    {
+        $page = 'AttributeGroup';
+        $getter = sprintf('get%s', $page);
+        $entity = $this->getFixturesContext()->$getter($identifier);
+        $this->openPage(sprintf('%s edit', $page), array('id' => $entity->getId()));
+    }
+
+    /**
+     * @param Category $category
+     *
+     * @Given /^I am on the (category "([^"]*)") node creation page$/
+     */
+    public function iAmOnTheCategoryNodeCreationPage(Category $category)
+    {
+        $this->openPage('Category node creation', array('id' => $category->getId()));
+    }
+
+    /**
+     * @param JobInstance $job
+     *
+     * @Given /^I am on the ("([^"]*)" import job) page$/
+     */
+    public function iAmOnTheImportJobPage(JobInstance $job)
+    {
+        $this->openPage('Import show', array('id' => $job->getId()));
+        $this->wait();
+    }
+
+    /**
+     * @param JobInstance $job
+     *
+     * @Given /^I am on the ("([^"]*)" export job) page$/
+     */
+    public function iAmOnTheExportJobPage(JobInstance $job)
+    {
+        $this->openPage('Export show', array('id' => $job->getId()));
+        $this->wait();
+    }
+
+    /**
+     * @param JobInstance $job
+     *
+     * @When /^I launch the ("([^"]*)" export job)$/
+     */
+    public function iLaunchTheExportJob(JobInstance $job)
+    {
+        $this->openPage('Export launch', array('id' => $job->getId()));
+    }
+
+    /**
      * @param string $name
      *
      * @return Page
@@ -129,6 +190,79 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
         $name = implode('\\', array_map('ucfirst', explode(' ', $name)));
 
         return $this->pageFactory->createPage($name);
+    }
+
+    /**
+     * @param string $page
+     *
+     * @Then /^I should be redirected on the (.*) page$/
+     */
+    public function iShouldBeRedirectedOnThePage($page)
+    {
+        $this->assertAddress($this->getPage($page)->getUrl());
+    }
+
+    /**
+     * @param AttributeGroup $group
+     *
+     * @Given /^I should be on the ("([^"]*)" attribute group) page$/
+     */
+    public function iShouldBeOnTheAttributeGroupPage(AttributeGroup $group)
+    {
+        $expectedAddress = $this->getPage('AttributeGroup edit')->getUrl(array('id' => $group->getId()));
+        $this->assertAddress($expectedAddress);
+    }
+
+    /**
+     * @param Family $family
+     *
+     * @Given /^I should be on the ("([^"]*)" family) page$/
+     */
+    public function iShouldBeOnTheFamilyPage(Family $family)
+    {
+        $expectedAddress = $this->getPage('Family edit')->getUrl(array('id' => $family->getId()));
+        $this->assertAddress($expectedAddress);
+    }
+
+    /**
+     * @param Association $association
+     *
+     * @Given /^I should be on the ("([^"]*)" association) page$/
+     */
+    public function iShouldBeOnTheAssociationPage(Association $association)
+    {
+        $expectedAddress = $this->getPage('Association edit')->getUrl(array('id' => $association->getId()));
+        $this->assertAddress($expectedAddress);
+    }
+
+    /**
+     * @Given /^I should be on the locales page$/
+     */
+    public function iShouldBeOnTheLocalesPage()
+    {
+        $this->assertAddress($this->getPage('Locale index')->getUrl());
+    }
+
+    /**
+     * @param Category $category
+     *
+     * @Then /^I should be on the (category "([^"]*)") edit page$/
+     */
+    public function iShouldBeOnTheCategoryEditPage(Category $category)
+    {
+        $expectedAddress = $this->getPage('Category edit')->getUrl(array('id' => $category->getId()));
+        $this->assertAddress($expectedAddress);
+    }
+
+    /**
+     * @param Category $category
+     *
+     * @Given /^I should be on the (category "([^"]*)") node creation page$/
+     */
+    public function iShouldBeOnTheCategoryNodeCreationPage(Category $category)
+    {
+        $expectedAddress = $this->getPage('Category node creation')->getUrl(array('id' => $category->getId()));
+        $this->assertAddress($expectedAddress);
     }
 
     /**
@@ -154,6 +288,16 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     public function getCurrentPage()
     {
         return $this->getPage($this->currentPage);
+    }
+
+    /**
+     * @param string $expected
+     */
+    private function assertAddress($expected)
+    {
+        $actual = $this->getSession()->getCurrentUrl();
+        $result = strpos($actual, $expected) !== false;
+        assertTrue($result, sprintf('Expecting to be on page "%s", not "%s"', $expected, $actual));
     }
 
     /**
