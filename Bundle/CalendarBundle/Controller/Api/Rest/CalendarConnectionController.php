@@ -15,7 +15,9 @@ use FOS\Rest\Util\Codes;
 
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Oro\Bundle\SoapBundle\Controller\Api\EntityManagerAwareInterface;
 use Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager;
 use Oro\Bundle\CalendarBundle\Entity\Repository\CalendarRepository;
@@ -27,7 +29,9 @@ use Oro\Bundle\CalendarBundle\Entity\CalendarConnection;
  * @RouteResource("calendar")
  * @NamePrefix("oro_api_")
  */
-class CalendarController extends FOSRestController implements EntityManagerAwareInterface, ClassResourceInterface
+class CalendarConnectionController extends FOSRestController implements
+    EntityManagerAwareInterface,
+    ClassResourceInterface
 {
     protected $userNameFormat = null;
 
@@ -52,6 +56,14 @@ class CalendarController extends FOSRestController implements EntityManagerAware
         /** @var CalendarRepository $repo */
         $repo = $manager->getRepository();
         $qb   = $repo->getConnectionsQueryBuilder($id);
+
+        /** @var SecurityFacade $securityFacade */
+        $securityFacade = $this->get('oro_security.security_facade');
+        if (!$securityFacade->isGranted('oro_calendar_connection_view')) {
+            $qb
+                ->andWhere('u.id = :userId')
+                ->setParameter('userId', $this->getUser()->getId());
+        }
 
         $result = $qb->getQuery()->getArrayResult();
         foreach ($result as $key => $item) {
@@ -79,7 +91,7 @@ class CalendarController extends FOSRestController implements EntityManagerAware
      *      description="Create new calendar connection",
      *      resource=true
      * )
-     * @AclAncestor("oro_calendar_create")
+     * @AclAncestor("oro_calendar_connection_view")
      *
      * @return Response
      * @throws \InvalidArgumentException
@@ -143,7 +155,7 @@ class CalendarController extends FOSRestController implements EntityManagerAware
      *      description="Remove calendar connection",
      *      resource=true
      * )
-     * @AclAncestor("oro_calendar_delete")
+     * @AclAncestor("oro_calendar_connection_view")
      * @return Response
      */
     public function deleteConnectionsAction($id, $connectedId)

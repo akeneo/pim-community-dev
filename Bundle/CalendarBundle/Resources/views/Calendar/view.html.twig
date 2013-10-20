@@ -24,9 +24,11 @@
             <div class="span3">
                 <div class="calendars">
                     <div class="calendar-connections"></div>
+                    {% if resource_granted('oro_calendar_connection_view') %}
                     <form action="#">
                         {{ form_row(user_select_form) }}
                     </form>
+                    {% endif %}
                 </div>
             </div>
             <div class="span9 calendar-events"></div>
@@ -69,7 +71,7 @@
             <fieldset class="form-horizontal">
                 {{ UI.scrollSubblock(null, data, true, false) }}
                 <div class="widget-actions form-actions" style="display: none;">
-                    <% if (id != null) { %>
+                    <% if (id != null && removable) { %>
                     {{
                         UI.deleteButton({
                             'aCss': 'no-hash',
@@ -81,7 +83,9 @@
                     }}
                     <% } %>
                     <button class="btn" type="reset">{{ 'Cancel'|trans }}</button>
+                    <% if (id == null || (id != null && editable)) { %>
                     <button class="btn btn-primary" type="submit">{{ 'Save'|trans }}</button>
+                    <% } %>
                 </div>
             </fieldset>
         </form>

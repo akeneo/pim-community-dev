@@ -48,6 +48,11 @@ define(['jquery', 'underscore', 'backbone', 'oro/translator', 'oro/app', 'oro/me
                 delete this.options.calendar;
                 delete this.options.subordinate;
 
+                // set options for new events
+                this.options.newEventEditable = this.options.editable;
+                this.options.newEventRemovable = this.options.removable;
+                delete this.options.removable;
+
                 // create a view for event details
                 this.eventView = new CalendarEventView({
                     collection: this.getCollection(),
@@ -165,7 +170,9 @@ define(['jquery', 'underscore', 'backbone', 'oro/translator', 'oro/app', 'oro/me
                     try {
                         this.eventView.model = new CalendarEvent({
                             start: this.formatDateTimeForModel(start),
-                            end: this.formatDateTimeForModel(end)
+                            end: this.formatDateTimeForModel(end),
+                            editable: this.options.newEventEditable,
+                            removable: this.options.newEventRemovable
                         });
                         this.eventView.render();
                     } catch (err) {

@@ -8,13 +8,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\CalendarBundle\Entity\Calendar;
 use Oro\Bundle\CalendarBundle\Entity\Repository\CalendarRepository;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
 
 class CalendarController extends Controller
 {
@@ -46,7 +47,13 @@ class CalendarController extends Controller
      * @Route("/view/{id}", name="oro_calendar_view", requirements={"id"="\d+"})
      *
      * @Template
-     * @AclAncestor("oro_calendar_view")
+     * @Acl(
+     *      id="oro_calendar_view",
+     *      type="entity",
+     *      class="OroCalendarBundle:Calendar",
+     *      permission="VIEW",
+     *      group_name=""
+     * )
      */
     public function viewAction(Calendar $calendar)
     {
@@ -101,12 +108,11 @@ class CalendarController extends Controller
         $endDate->setTime(0, 0, 0);
         $endDate->add(new \DateInterval('P' . (7 - (int)$endDate->format('w') + $firstDay) % 7 . 'D'));
 
-        /** @var SecurityFacade $cm */
+        /** @var SecurityFacade $securityFacade */
         $securityFacade = $this->get('oro_security.security_facade');
-        $editable       =
-            $securityFacade->isGranted('oro_calendar_update')
-            && $securityFacade->isGranted('oro_calendar_create')
-            && $securityFacade->isGranted('oro_calendar_delete');
+        $selectable     = $securityFacade->isGranted('oro_calendar_event_create');
+        $editable       = $securityFacade->isGranted('oro_calendar_event_update');
+        $removable      = $securityFacade->isGranted('oro_calendar_event_delete');
 
         return array(
             'event_form'       => $this->get('oro_calendar.calendar_event.form')->createView(),
@@ -141,8 +147,9 @@ class CalendarController extends Controller
                 'titleFormat'     => $titleFormat,
                 'columnFormat'    => $columnFormat,
                 'timeFormat'      => $timeFormat,
+                'selectable'      => $selectable,
                 'editable'        => $editable,
-                'selectable'      => $editable,
+                'removable'       => $removable,
             )
         );
     }

@@ -14,7 +14,9 @@ use FOS\Rest\Util\Codes;
 
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 
+use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Oro\Bundle\SoapBundle\Form\Handler\ApiFormHandler;
 use Oro\Bundle\SoapBundle\Controller\Api\Rest\RestController;
 use Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager;
@@ -50,7 +52,13 @@ class CalendarEventController extends RestController implements ClassResourceInt
      *      description="Get calendar events",
      *      resource=true
      * )
-     * @AclAncestor("oro_calendar_view")
+     * @Acl(
+     *      id="oro_calendar_event_view",
+     *      type="entity",
+     *      class="OroCalendarBundle:CalendarEvent",
+     *      permission="VIEW",
+     *      group_name=""
+     * )
      *
      * @return Response
      * @throws \InvalidArgumentException
@@ -75,6 +83,9 @@ class CalendarEventController extends RestController implements ClassResourceInt
         $end         = new \DateTime($end);
         $subordinate = (bool)$this->getRequest()->get('subordinate', false);
 
+        /** @var SecurityFacade $securityFacade */
+        $securityFacade = $this->get('oro_security.security_facade');
+
         $manager = $this->getManager();
         /** @var CalendarEventRepository $repo */
         $repo = $manager->getRepository();
@@ -88,27 +99,16 @@ class CalendarEventController extends RestController implements ClassResourceInt
                 $this->transformEntityField($field, $value);
                 $resultItem[$field] = $value;
             }
+            $resultItem['editable'] =
+                ($resultItem['calendar'] === $calendarId)
+                && $securityFacade->isGranted('oro_calendar_event_update');
+            $resultItem['removable'] =
+                ($resultItem['calendar'] === $calendarId)
+                && $securityFacade->isGranted('oro_calendar_event_delete');
             $result[] = $resultItem;
         }
 
         return new Response(json_encode($result), Codes::HTTP_OK);
-    }
-
-    /**
-     * Get calendar event.
-     *
-     * @param int $id Calendar event id
-     *
-     * @ApiDoc(
-     *      description="Get calendar event",
-     *      resource=true
-     * )
-     * @AclAncestor("oro_calendar_view")
-     * @return Response
-     */
-    public function getAction($id)
-    {
-        return $this->handleGetRequest($id);
     }
 
     /**
@@ -120,12 +120,22 @@ class CalendarEventController extends RestController implements ClassResourceInt
      *      description="Update calendar event",
      *      resource=true
      * )
-     * @AclAncestor("oro_calendar_update")
+     * @Acl(
+     *      id="oro_calendar_event_update",
+     *      type="entity",
+     *      class="OroCalendarBundle:CalendarEvent",
+     *      permission="EDIT",
+     *      group_name=""
+     * )
      *
      * @return Response
      */
     public function putAction($id)
     {
+        // remove auxiliary attributes if any
+        $this->getRequest()->request->remove('editable');
+        $this->getRequest()->request->remove('removable');
+
         return $this->handleUpdateRequest($id);
     }
 
@@ -137,12 +147,22 @@ class CalendarEventController extends RestController implements ClassResourceInt
      *      description="Create new calendar event",
      *      resource=true
      * )
-     * @AclAncestor("oro_calendar_create")
+     * @Acl(
+     *      id="oro_calendar_event_create",
+     *      type="entity",
+     *      class="OroCalendarBundle:CalendarEvent",
+     *      permission="CREATE",
+     *      group_name=""
+     * )
      *
      * @return Response
      */
     public function postAction()
     {
+        // remove auxiliary attributes if any
+        $this->getRequest()->request->remove('editable');
+        $this->getRequest()->request->remove('removable');
+
         return $this->handleCreateRequest();
     }
 
@@ -155,7 +175,14 @@ class CalendarEventController extends RestController implements ClassResourceInt
      *      description="Remove calendar event",
      *      resource=true
      * )
-     * @AclAncestor("oro_calendar_delete")
+     * @Acl(
+     *      id="oro_calendar_event_delete",
+     *      type="entity",
+     *      class="OroCalendarBundle:CalendarEvent",
+     *      permission="DELETE",
+     *      group_name=""
+     * )
+     *
      * @return Response
      */
     public function deleteAction($id)
