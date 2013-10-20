@@ -124,7 +124,7 @@ class CalendarController extends Controller
                     array(
                         'required' => true,
                         'configs'  => array(
-                            'placeholder'             => 'Choose a user to add a calendar ...',
+                            'placeholder'             => 'oro.calendar.form.choose_user_to_add_calendar',
                             'result_template_twig'    => 'OroCalendarBundle:Js:userResult.html.twig',
                             'selection_template_twig' => 'OroCalendarBundle:Js:userSelection.html.twig',
                             /* @todo: Must be removed. I have to do this because oro_user_select sets 400px */
