@@ -15,7 +15,7 @@ class CalendarEventType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('title', 'text', array('required' => true))
+            ->add('title', 'textarea', array('required' => true))
             ->add('start', 'oro_datetime', array('required' => true))
             ->add('end', 'oro_datetime', array('required' => true))
             ->add('allDay', 'checkbox', array('required' => false))
