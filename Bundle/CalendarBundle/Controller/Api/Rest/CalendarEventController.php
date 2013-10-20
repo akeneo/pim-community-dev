@@ -39,15 +39,15 @@ class CalendarEventController extends RestController implements ClassResourceInt
      *      name="start",
      *      requirements="\d{4}(-\d{2}(-\d{2}([T ]\d{2}:\d{2}(:\d{2}(\.\d+)?)?(Z|([-+]\d{2}(:?\d{2})?))?)?)?)?",
      *      nullable=false,
-     *      description="Start date in ISO8601. For example: 2009-11-05T13:15:30Z.")
+     *      description="Start date in RFC 3339. For example: 2009-11-05T13:15:30Z.")
      * @QueryParam(
      *      name="end",
      *      requirements="\d{4}(-\d{2}(-\d{2}([T ]\d{2}:\d{2}(:\d{2}(\.\d+)?)?(Z|([-+]\d{2}(:?\d{2})?))?)?)?)?",
      *      nullable=false,
-     *      description="End date in ISO8601. For example: 2009-11-05T13:15:30Z.")
+     *      description="End date in RFC 3339. For example: 2009-11-05T13:15:30Z.")
      * @QueryParam(
      *      name="subordinate", requirements="[01]", nullable=true,
-     *      description="Determine whether events from connected calendars should be included ou not. Defaults to 0.")
+     *      description="Determine whether events from connected calendars should be included or not. Defaults to 0.")
      * @ApiDoc(
      *      description="Get calendar events",
      *      resource=true

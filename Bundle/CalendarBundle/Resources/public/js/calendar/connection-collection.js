@@ -13,6 +13,11 @@ define(['backbone', 'routing', 'oro/calendar/connection-model'],
             url: null,
             model: CalendarConnectionModel,
 
+            /**
+             * Sets a calendar this collection works with
+             *
+             * @param {int} calendarId
+             */
             setCalendar: function (calendarId) {
                 this.url = routing.generate(this.route, {id: calendarId});
             }

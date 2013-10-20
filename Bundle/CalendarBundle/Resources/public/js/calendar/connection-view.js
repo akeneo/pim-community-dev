@@ -10,7 +10,10 @@ define(['jquery', 'underscore', 'backbone', 'oro/translator', 'oro/app', 'oro/me
          * @extends Backbone.View
          */
         return Backbone.View.extend({
-            /** @property {Array} */
+            /**
+             * A list of text/background colors are used to determine colors of events of connected calendars
+             *  @property {Array}
+             */
             colors: [
                 ['FFFFFF', 'AC725E'], ['FFFFFF', 'D06B64'], ['FFFFFF', 'F83A22'], ['000000', 'FA573C'],
                 ['000000', 'FF7537'], ['000000', 'FFAD46'], ['000000', '42D692'], ['FFFFFF', '16A765'],
@@ -49,14 +52,17 @@ define(['jquery', 'underscore', 'backbone', 'oro/translator', 'oro/app', 'oro/me
 
                 this.defaultColors = this.findColors('4986E7');
 
+                // render connected calendars
                 this.getCollection().each(_.bind(function (model) {
                     this.onModelAdded(model);
                 }, this));
 
+                // subscribe to connection collection events
                 this.listenTo(this.getCollection(), 'add', this.onModelAdded);
                 this.listenTo(this.getCollection(), 'change', this.onModelChanged);
                 this.listenTo(this.getCollection(), 'destroy', this.onModelDeleted);
 
+                // subscribe to connect new calendar event
                 var container = this.$el.closest(this.selectors.container);
                 container.find(this.selectors.newOwnerSelector).on('change', _.bind(function (e) {
                     this.addModel(e.val);
@@ -64,11 +70,14 @@ define(['jquery', 'underscore', 'backbone', 'oro/translator', 'oro/app', 'oro/me
                     $(e.target).select2('val', '');
                 }, this));
             },
+
             getCollection: function() {
                 return this.options.collection;
             },
+
             onModelAdded: function(model){
                 var viewModel = model.toJSON();
+                // init text/background colors
                 if (_.isEmpty(viewModel.color) && _.isEmpty(viewModel.backgroundColor)) {
                     var colors = this.findNextColors(this.$el.find(this.selectors.lastItem).attr(this.attrs.backgroundColor));
                     viewModel.color = colors[0];
@@ -78,23 +87,29 @@ define(['jquery', 'underscore', 'backbone', 'oro/translator', 'oro/app', 'oro/me
                 } else if (_.isEmpty(viewModel.backgroundColor)) {
                     viewModel.backgroundColor = this.defaultColors[1];
                 }
+
                 var el = $(this.template(viewModel));
+                // set 'data-' attributes
                 _.each(this.attrs, function (value, key) {
                     el.attr(value, viewModel[key]);
                 });
+                // subscribe to disconnect calendar event
                 el.on('click', this.selectors.removeButton, _.bind(function (e) {
                     this.deleteModel($(e.currentTarget).closest(this.selectors.item).attr(this.attrs.calendar));
                 }, this));
 
                 this.$el.find(this.selectors.itemContainer).append(el);
             },
+
             onModelChanged: function(model){
                 this.setCalendarColorCache(model.get('calendar'), model.get('color'), model.get('backgroundColor'));
             },
+
             onModelDeleted: function(model) {
                 this.resetCalendarColorCache(model.get('calendar'));
                 this.$el.find(this.selectors.findItemByCalendar(model.get('calendar'))).remove();
             },
+
             addModel: function (ownerId) {
                 var el = this.$el.find(this.selectors.findItemByOwner(ownerId));
                 if (el.length > 0) {
@@ -121,6 +136,7 @@ define(['jquery', 'underscore', 'backbone', 'oro/translator', 'oro/app', 'oro/me
                     }
                 }
             },
+
             deleteModel: function (calendarId) {
                 var deletingMsg = messenger.notificationMessage('warning', __('Excluding the calendar, please wait ...'));
                 try {
@@ -141,6 +157,7 @@ define(['jquery', 'underscore', 'backbone', 'oro/translator', 'oro/app', 'oro/me
                     this.showError(err);
                 }
             },
+
             getCalendarColors: function (calendarId) {
                 if (!_.isNull(this.calendarColorCache) && this.calendarColorCache.calendarId == calendarId) {
                     return this.calendarColorCache.colors;
@@ -149,6 +166,7 @@ define(['jquery', 'underscore', 'backbone', 'oro/translator', 'oro/app', 'oro/me
                 this.setCalendarColorCache(calendarId, el.attr(this.attrs.color), el.attr(this.attrs.backgroundColor));
                 return this.calendarColorCache.colors;
             },
+
             setCalendarColorCache: function (calendarId, color, backgroundColor) {
                 this.calendarColorCache = {
                     calendarId: calendarId,
@@ -157,11 +175,13 @@ define(['jquery', 'underscore', 'backbone', 'oro/translator', 'oro/app', 'oro/me
                         backgroundColor: '#' + backgroundColor
                     }};
             },
+
             resetCalendarColorCache: function (calendarId) {
                 if (!_.isNull(this.calendarColorCache) && this.calendarColorCache.calendarId == calendarId) {
                     this.calendarColorCache = null;
                 }
             },
+
             findColors: function (bgColor) {
                 if (_.isEmpty(bgColor)) {
                     return this.findColors(this.defaultColors[1]);
@@ -173,6 +193,7 @@ define(['jquery', 'underscore', 'backbone', 'oro/translator', 'oro/app', 'oro/me
                 }
                 return result;
             },
+
             findNextColors: function (bgColor) {
                 if (_.isEmpty(bgColor)) {
                     return this.findColors(this.defaultColors[1]);
@@ -192,15 +213,19 @@ define(['jquery', 'underscore', 'backbone', 'oro/translator', 'oro/app', 'oro/me
                 }
                 return this.colors[i + 1];
             },
+
             showAddError: function (err) {
                 this._showError(err, 'Sorry, the calendar adding was failed');
             },
+
             showDeleteError: function (err) {
                 this._showError(err, 'Sorry, the calendar excluding was failed');
             },
+
             showError: function (err) {
                 this._showError(err, 'Sorry, unexpected error was occurred');
             },
+
             _showError: function (err, message) {
                 if (!_.isUndefined(console)) {
                     console.error(_.isUndefined(err.stack) ? err : err.stack);

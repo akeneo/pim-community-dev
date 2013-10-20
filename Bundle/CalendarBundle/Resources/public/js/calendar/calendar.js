@@ -33,7 +33,10 @@ define(['jquery', 'underscore', 'backbone', 'oro/translator', 'oro/app', 'oro/me
                 loadingMaskContent: '.loading-content'
             },
 
-            /* this property is used to prevent loading of events from a server when the calendar object is created */
+            /**
+             * this property is used to prevent loading of events from a server when the calendar object is created
+             *  @property {bool}
+             */
             enableEventLoading: false,
 
             initialize: function() {
@@ -134,37 +137,49 @@ define(['jquery', 'underscore', 'backbone', 'oro/translator', 'oro/app', 'oro/me
                 this.getCalendarElement().fullCalendar(options);
                 this.enableEventLoading = true;
             },
+
             getCollection: function() {
                 return this.options.collection;
             },
+
             getConnections: function() {
                 return this.options.connections;
             },
+
             getCalendarElement: function() {
                 return this.$el.find(this.selectors.calendar);
             },
+
             onModelAdded: function(event){
                 var fcEvent = event.toJSON();
                 this.prepareViewModel(fcEvent);
+
                 this.getCalendarElement().fullCalendar('renderEvent', fcEvent);
             },
+
             onModelChanged: function(event){
                 var fcEvent = this.getCalendarElement().fullCalendar('clientEvents', event.get('id'))[0];
                 // copy all fields, except id, from event to fcEvent
                 fcEvent = _.extend(fcEvent, _.pick(event.attributes, _.keys(_.omit(fcEvent, ['id']))));
+                // convert start and end dates from RFC 3339 string to Date object
                 fcEvent.start = this.convertToViewDateTime(fcEvent.start);
                 fcEvent.end = this.convertToViewDateTime(fcEvent.end);
+
                 this.getCalendarElement().fullCalendar('updateEvent', fcEvent);
             },
+
             onModelDeleted: function(event) {
                 this.getCalendarElement().fullCalendar('removeEvents', event.id);
             },
+
             onConnectionAddedOrDeleted: function () {
                 this.getCalendarElement().fullCalendar('refetchEvents');
             },
+
             onConnectionChanged: function () {
 
             },
+
             select: function(start, end) {
                 if (!this.eventView.model) {
                     try {
@@ -180,6 +195,7 @@ define(['jquery', 'underscore', 'backbone', 'oro/translator', 'oro/app', 'oro/me
                     }
                 }
             },
+
             eventClick: function(fcEvent) {
                 if (!this.eventView.model) {
                     try {
@@ -190,6 +206,7 @@ define(['jquery', 'underscore', 'backbone', 'oro/translator', 'oro/app', 'oro/me
                     }
                 }
             },
+
             eventDropOrResize: function(fcEvent) {
                 this.showSavingMask(true);
                 try {
@@ -214,6 +231,7 @@ define(['jquery', 'underscore', 'backbone', 'oro/translator', 'oro/app', 'oro/me
                     this.showLoadEventsError(err);
                 }
             },
+
             loadEvents: function(start, end, callback) {
                 try {
                     this.getCollection().setRange(
@@ -221,6 +239,7 @@ define(['jquery', 'underscore', 'backbone', 'oro/translator', 'oro/app', 'oro/me
                         this.formatDateTimeForModel(end)
                     );
                     if (this.enableEventLoading) {
+                        // load events from a server
                         this.getCollection().fetch({
                             success: _.bind(function() {
                                 var fcEvents = this.getCollection().toJSON();
@@ -233,6 +252,7 @@ define(['jquery', 'underscore', 'backbone', 'oro/translator', 'oro/app', 'oro/me
                             }, this)
                         });
                     } else {
+                        // use already loaded events
                         var fcEvents = this.getCollection().toJSON();
                         this.prepareViewModels(fcEvents);
                         callback(fcEvents);
@@ -242,24 +262,39 @@ define(['jquery', 'underscore', 'backbone', 'oro/translator', 'oro/app', 'oro/me
                     this.showLoadEventsError(err);
                 }
             },
+
             prepareViewModels : function (fcEvents) {
                 _.each(fcEvents, _.bind(function (fcEvent) {
                     this.prepareViewModel(fcEvent);
                 }, this));
             },
+
             prepareViewModel : function (fcEvent) {
+                // convert start and end dates from RFC 3339 string to Date object
                 fcEvent.start = this.convertToViewDateTime(fcEvent.start);
                 fcEvent.end = this.convertToViewDateTime(fcEvent.end);
+                // set an event text and background colors the same as the owning calendar
                 var colors = this.connectionsView.getCalendarColors(fcEvent.calendar);
                 fcEvent.textColor = colors.color;
                 fcEvent.color = colors.backgroundColor;
             },
+
+            convertToViewDateTime: function (s) {
+                return this.eventView.convertToViewDateTime(s);
+            },
+
+            formatDateTimeForModel: function (d) {
+                return this.eventView.formatDateTimeForModel(d);
+            },
+
             showSavingMask: function(show) {
                 this._showMask(show, 'Saving...');
             },
+
             showLoadingMask: function(show) {
                 this._showMask(show, 'Loading...');
             },
+
             _showMask: function(show, message) {
                 if (this.enableEventLoading) {
                     if (show) {
@@ -272,15 +307,19 @@ define(['jquery', 'underscore', 'backbone', 'oro/translator', 'oro/app', 'oro/me
                     }
                 }
             },
+
             showLoadEventsError: function (err) {
                 this._showError(err, 'Sorry, calendar events were not loaded correctly');
             },
+
             showSaveEventError: function (err) {
                 this._showError(err, 'Sorry, calendar event was not saved correctly');
             },
+
             showError: function (err) {
                 this._showError(err, 'Sorry, unexpected error was occurred');
             },
+
             _showError: function (err, message) {
                 if (!_.isUndefined(console)) {
                     console.error(_.isUndefined(err.stack) ? err : err.stack);
@@ -296,12 +335,6 @@ define(['jquery', 'underscore', 'backbone', 'oro/translator', 'oro/app', 'oro/me
                     }
                 }
                 messenger.notificationFlashMessage('error', msg);
-            },
-            convertToViewDateTime: function (s) {
-                return this.eventView.convertToViewDateTime(s);
-            },
-            formatDateTimeForModel: function (d) {
-                return this.eventView.formatDateTimeForModel(d);
             }
         });
     });
