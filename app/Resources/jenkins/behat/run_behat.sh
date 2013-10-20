@@ -36,6 +36,8 @@ else
     fi
 fi
 
+ORIGINAL_DB_NAME=`echo $DB_PREFIX | sed -e "s/-$//"`
+
 FEATURES_DIR=`dirname $0`/../../../../features
 
 if [ "$XDEBUG" = 'xdebug' ]; then
@@ -60,11 +62,7 @@ sed -i -e 's/database_name:.*$/database_name: "%database.name%"/' app/config/par
 for PROC in `seq 1 $CONCURRENCY`; do
     export SYMFONY__DATABASE__NAME=$DB_PREFIX$PROC
     cp app/config/config_behat.yml app/config/config_behat$PROC.yml
-    if [ $PROC -eq 1 ]; then
-        ./install.sh all behat$PROC
-    else
-        ./install.sh db behat$PROC
-    fi
+    mysqldump -u root $ORIGINAL_DB_NAME | mysql $DB_PREFIX$PROC
     eval PID_$PROC=0
 done
 cd -
