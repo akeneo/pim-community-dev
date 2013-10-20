@@ -62,7 +62,7 @@ sed -i -e 's/database_name:.*$/database_name: "%database.name%"/' app/config/par
 for PROC in `seq 1 $CONCURRENCY`; do
     export SYMFONY__DATABASE__NAME=$DB_PREFIX$PROC
     cp app/config/config_behat.yml app/config/config_behat$PROC.yml
-    mysqldump -u root $ORIGINAL_DB_NAME | mysql $DB_PREFIX$PROC
+    mysqldump -u root $ORIGINAL_DB_NAME | mysql -u root $DB_PREFIX$PROC
     eval PID_$PROC=0
 done
 cd -
