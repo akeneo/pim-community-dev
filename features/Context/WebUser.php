@@ -249,15 +249,6 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @Given /^I should be on the locale creation page$/
-     */
-    public function iShouldBeOnTheLocaleCreationPage()
-    {
-        $this->openPage('Locale creation');
-        $this->wait();
-    }
-
-    /**
      * @param string $deactivated
      * @param string $locales
      *
