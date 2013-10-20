@@ -43,10 +43,12 @@ class UpdateAclRoles extends AbstractFixture implements OrderedFixtureInterface,
     protected function updateUserRole(AclManager $manager)
     {
         // deny to view other user's calendar
-        $sid = $manager->getSid($this->getReference('user_role'));
-        $oid = $manager->getOid('entity:Oro\Bundle\CalendarBundle\Entity\CalendarConnection');
-        $maskBuilder = $manager->getMaskBuilder($oid);
-        $manager->setPermission($sid, $oid, $maskBuilder->get());
+        // @todo: seems that data fixtures should be loader after EntityConfig initialization
+        // error: An ACL extension was not found for: entity:Oro\Bundle\CalendarBundle\Entity\CalendarConnection
+        // $sid = $manager->getSid($this->getReference('user_role'));
+        // $oid = $manager->getOid('entity:Oro\Bundle\CalendarBundle\Entity\CalendarConnection');
+        // $maskBuilder = $manager->getMaskBuilder($oid);
+        // $manager->setPermission($sid, $oid, $maskBuilder->get());
     }
 
     /**
