@@ -228,6 +228,9 @@ define(['jquery', 'underscore', 'backbone', 'oro/translator', 'oro/dialog-widget
             },
 
             formatDateTimeForModel: function (d) {
+                if (_.isNull(d)) {
+                    return '';
+                }
                 d = new Date(d.getTime() - this.options.timezoneOffset * 60000);
                 return d.getFullYear() +
                     '-' + this.pad((d.getMonth() + 1)) +
