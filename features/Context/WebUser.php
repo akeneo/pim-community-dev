@@ -422,13 +422,13 @@ class WebUser extends RawMinkContext
      */
     public function attributesInGroupShouldBe($group, $attributes)
     {
-        $page       = $this->getPage('Product edit');
+        $page       = $this->getCurrentPage();
         $attributes = $this->listToArray($attributes);
         $page->visitGroup($group);
 
         $group = $this->getFixturesContext()->getAttributeGroup($group) ?: AttributeGroup::DEFAULT_GROUP_CODE;
 
-        if (count($attributes) !== $actual = $this->getPage('Product edit')->getFieldsCountFor($group)) {
+        if (count($attributes) !== $actual = $page->getFieldsCountFor($group)) {
             throw $this->createExpectationException(
                 sprintf(
                     'Expected to see %d fields in group "%s", actually saw %d',
@@ -443,7 +443,7 @@ class WebUser extends RawMinkContext
             function ($field) {
                 return str_replace('*', '', $field->getText());
             },
-            $this->getPage('Product edit')->getFieldsForGroup($group)
+            $page->getFieldsForGroup($group)
         );
 
         if (count(array_diff($attributes, $labels))) {
@@ -465,29 +465,11 @@ class WebUser extends RawMinkContext
      */
     public function theTitleOfTheProductShouldBe($title)
     {
-        if ($title !== $actual = $this->getPage('Product edit')->getTitle()) {
+        if ($title !== $actual = $this->getCurrentPage()->getTitle()) {
             throw $this->createExpectationException(
                 sprintf(
                     'Expected product title "%s", actually saw "%s"',
                     $title,
-                    $actual
-                )
-            );
-        }
-    }
-
-    /**
-     * @param string $pattern
-     *
-     * @Then /^the title of the product should match "([^"]*)"$/
-     */
-    public function theTitleOfTheProductShouldMatch($pattern)
-    {
-        if (1 !== preg_match($pattern, $actual = $this->getPage('Product edit')->getTitle())) {
-            throw $this->createExpectationException(
-                sprintf(
-                    'Expected product title to match "%s", actually saw "%s"',
-                    $pattern,
                     $actual
                 )
             );
@@ -503,7 +485,7 @@ class WebUser extends RawMinkContext
      */
     public function theProductFieldValueShouldBe($fieldName, $expected = '')
     {
-        $actual = $this->getPage('Product edit')->findField($fieldName)->getValue();
+        $actual = $this->getCurrentPage()->findField($fieldName)->getValue();
 
         if ($expected !== $actual) {
             throw $this->createExpectationException(
