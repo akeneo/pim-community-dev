@@ -8,7 +8,6 @@ use FOS\RestBundle\Controller\Annotations\NamePrefix;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Controller\Annotations\Get;
-use FOS\RestBundle\Controller\Annotations\Post;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Routing\ClassResourceInterface;
 use FOS\Rest\Util\Codes;
@@ -183,6 +182,13 @@ class CalendarConnectionController extends FOSRestController implements
         return $this->get('oro_calendar.calendar.manager.api');
     }
 
+    /**
+     * Returns calendar owner name formatted based on system configuration
+     *
+     * @param string $firstName
+     * @param string $lastName
+     * @return string
+     */
     protected function getOwnerName($firstName, $lastName)
     {
         return str_replace(
@@ -192,6 +198,11 @@ class CalendarConnectionController extends FOSRestController implements
         );
     }
 
+    /**
+     * Gets a string used to format calendar owner name
+     *
+     * @return string
+     */
     protected function getUserNameFormat()
     {
         if ($this->userNameFormat === null) {

@@ -247,7 +247,7 @@ define(['jquery', 'underscore', 'backbone', 'oro/translator', 'oro/app', 'oro/me
                                 callback(fcEvents);
                             }, this),
                             error: _.bind(function(collection, response) {
-                                this.getCalendarElement().fullCalendar('removeEvents', event.id);
+                                callback({});
                                 this.showLoadEventsError(response.responseJSON);
                             }, this)
                         });

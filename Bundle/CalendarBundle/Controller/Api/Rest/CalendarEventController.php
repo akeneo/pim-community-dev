@@ -33,21 +33,21 @@ class CalendarEventController extends RestController implements ClassResourceInt
      * Get calendar events.
      *
      * @QueryParam(
-     *      name="calendar", requirements="\d+", nullable=false,
+     *      name="calendar", requirements="\d+", nullable=false, strict=true,
      *      description="Calendar id.")
      * @QueryParam(
      *      name="start",
      *      requirements="\d{4}(-\d{2}(-\d{2}([T ]\d{2}:\d{2}(:\d{2}(\.\d+)?)?(Z|([-+]\d{2}(:?\d{2})?))?)?)?)?",
-     *      nullable=false,
+     *      nullable=false, strict=true,
      *      description="Start date in RFC 3339. For example: 2009-11-05T13:15:30Z.")
      * @QueryParam(
      *      name="end",
      *      requirements="\d{4}(-\d{2}(-\d{2}([T ]\d{2}:\d{2}(:\d{2}(\.\d+)?)?(Z|([-+]\d{2}(:?\d{2})?))?)?)?)?",
-     *      nullable=false,
+     *      nullable=false, strict=true,
      *      description="End date in RFC 3339. For example: 2009-11-05T13:15:30Z.")
      * @QueryParam(
-     *      name="subordinate", requirements="[01]", nullable=true,
-     *      description="Determine whether events from connected calendars should be included or not. Defaults to 0.")
+     *      name="subordinate", requirements="(true)|(false)", nullable=true, strict=true, default="false",
+     *      description="Determine whether events from connected calendars should be included or not.")
      * @ApiDoc(
      *      description="Get calendar events",
      *      resource=true
@@ -65,23 +65,10 @@ class CalendarEventController extends RestController implements ClassResourceInt
      */
     public function cgetAction()
     {
-        $calendarId = $this->getRequest()->get('calendar');
-        if (empty($calendarId)) {
-            throw new \InvalidArgumentException('The "calendar" argument must be provided.');
-        }
-        $start = $this->getRequest()->get('start');
-        if (empty($start)) {
-            throw new \InvalidArgumentException('The "start" argument must be provided.');
-        }
-        $end = $this->getRequest()->get('end');
-        if (empty($end)) {
-            throw new \InvalidArgumentException('The "end" argument must be provided.');
-        }
-
-        $calendarId  = (int)$calendarId;
-        $start       = new \DateTime($start);
-        $end         = new \DateTime($end);
-        $subordinate = (bool)$this->getRequest()->get('subordinate', false);
+        $calendarId  = (int)$this->getRequest()->get('calendar');
+        $start       = new \DateTime($this->getRequest()->get('start'));
+        $end         = new \DateTime($this->getRequest()->get('end'));
+        $subordinate = (bool)$this->getRequest()->get('subordinate');
 
         /** @var SecurityFacade $securityFacade */
         $securityFacade = $this->get('oro_security.security_facade');
