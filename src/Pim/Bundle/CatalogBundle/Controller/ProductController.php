@@ -23,19 +23,20 @@ use Oro\Bundle\GridBundle\Renderer\GridRenderer;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 
+use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Datagrid\ProductDatagridManager;
+use Pim\Bundle\CatalogBundle\Entity\Category;
+use Pim\Bundle\CatalogBundle\Entity\ProductAssociation;
+use Pim\Bundle\CatalogBundle\Exception\DeleteException;
+use Pim\Bundle\CatalogBundle\Helper\CategoryHelper;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
-use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
+use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\AvailableProductAttributes;
-use Pim\Bundle\CatalogBundle\Entity\Category;
-use Pim\Bundle\CatalogBundle\Helper\CategoryHelper;
-use Pim\Bundle\CatalogBundle\Datagrid\ProductDatagridManager;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\ImportExportBundle\Normalizer\FlatProductNormalizer;
 use Pim\Bundle\VersioningBundle\Manager\AuditManager;
-use Pim\Bundle\CatalogBundle\Exception\DeleteException;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
  * Product Controller
@@ -316,12 +317,12 @@ class ProductController extends AbstractDoctrineController
 
         $missingAssociations = $this->getRepository('PimCatalogBundle:Association')->findMissingAssociations($product);
         foreach ($missingAssociations as $association) {
-            $productAssociation = new \Pim\Bundle\CatalogBundle\Entity\ProductAssociation();
+            $productAssociation = new ProductAssociation();
             $productAssociation->setAssociation($association);
             $product->addProductAssociation($productAssociation);
         }
 
-        $form     = $this->createForm(
+        $form = $this->createForm(
             'pim_product',
             $product,
             $this->getEditFormOptions($product)

@@ -102,10 +102,42 @@
                         if ($(this).parent().hasClass('active')) {
                             return;
                         }
+                        updateAssociationFields();
                         $(this).parent().siblings('li').removeClass('active');
                         $(this).parent().addClass('active');
+                        updateTargetFields();
                         var associationId = $(this).attr('id').replace('association-link-', '');
                         Setter.setParameter('{{ associationDatagrid.datagrid.name }}', 'associationId', associationId, true);
+                    });
+
+                    function updateAssociationFields() {
+                        var $appendTargets = $('#appendTargets'),
+                            $removeTargets = $('#removeTargets'),
+                            associationId = $('#association-list').find('li.active').find('a').attr('id').replace('association-link-', ''),
+                            $associationFields = $('#{{ form.productAssociations.vars.id }}'),
+                            $field = $associationFields.find('input[type="hidden"][value="' + associationId + '"]');
+
+                        $field.siblings('[id$="appendTargets"]').val($appendTargets.val());
+                        $field.siblings('[id$="removeTargets"]').val($removeTargets.val());
+                    }
+
+                    function updateTargetFields() {
+                        var $appendTargets = $('#appendTargets'),
+                            $removeTargets = $('#removeTargets'),
+                            associationId = $('#association-list').find('li.active').find('a').attr('id').replace('association-link-', ''),
+                            $associationFields = $('#{{ form.productAssociations.vars.id }}'),
+                            $field = $associationFields.find('input[type="hidden"][value="' + associationId + '"]'),
+                            appendTargets = $field.siblings('[id$="appendTargets"]').val(),
+                            removeTargets = $field.siblings('[id$="removeTargets"]').val();
+                        $appendTargets.val(appendTargets);
+                        $removeTargets.val(removeTargets);
+                        Setter.setParameter('{{ associationDatagrid.datagrid.name }}', 'data_in', appendTargets);
+                        Setter.setParameter('{{ associationDatagrid.datagrid.name }}', 'data_not_in', removeTargets);
+                    }
+
+                    $('#{{ form.vars.id }}').on('click', 'button[type="submit"]', function() {
+                        updateAssociationFields();
+                        updateTargetFields();
                     });
 
                     $('a[data-toggle="tab"]').on('shown', setFullHeight);
