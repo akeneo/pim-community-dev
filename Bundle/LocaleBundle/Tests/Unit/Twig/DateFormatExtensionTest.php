@@ -17,6 +17,15 @@ class DateFormatExtensionTest extends \PHPUnit_Framework_TestCase
      */
     protected $extension;
 
+    /**
+     * @var array
+     */
+    protected $expectedFunctions = array(
+        'oro_dateformat' => 'getDateFormat',
+        'oro_timeformat' => 'getTimeFormat',
+        'oro_datetimeformat' => 'getDateTimeFormat',
+    );
+
     protected function setUp()
     {
         $this->converterRegistry =
@@ -37,5 +46,20 @@ class DateFormatExtensionTest extends \PHPUnit_Framework_TestCase
     public function testGetName()
     {
         $this->assertEquals('oro_locale_dateformat', $this->extension->getName());
+    }
+
+    public function testGetFunctions()
+    {
+        $actualFunctions = $this->extension->getFunctions();
+        $this->assertSameSize($this->expectedFunctions, $actualFunctions);
+
+        /** @var $actualFunction \Twig_SimpleFunction */
+        foreach ($actualFunctions as $actualFunction) {
+            $this->assertInstanceOf('\Twig_SimpleFunction', $actualFunction);
+            $actualFunctionName = $actualFunction->getName();
+            $this->assertArrayHasKey($actualFunctionName, $this->expectedFunctions);
+            $expectedCallback = array($this->extension, $this->expectedFunctions[$actualFunctionName]);
+            $this->assertEquals($expectedCallback, $actualFunction->getCallable());
+        }
     }
 }
