@@ -5,10 +5,19 @@ namespace Pim\Bundle\CatalogBundle\Imagine\Cache\Resolver;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
-use Liip\ImagineBundle\Imagine\Cache\Resolver\AbstractFilesystemResolver;
 use Liip\ImagineBundle\Imagine\Cache\Resolver\WebPathResolver;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Local directory resolver
+ *
+ * This resolver intends to find generated images on the filesystem
+ * Unlike its parent, it allows to handle images out of the web path
+ *
+ * @author    Gildas Quemener <gildas@akeneo.com>
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class LocalDirResolver extends WebPathResolver
 {
     /** @var string */
