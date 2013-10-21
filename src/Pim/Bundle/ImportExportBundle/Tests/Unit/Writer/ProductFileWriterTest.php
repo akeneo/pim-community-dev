@@ -30,6 +30,8 @@ class ProductFileWriterTest extends \PHPUnit_Framework_TestCase
         $media1 = $this->getMediaMock();
         $media2 = $this->getMediaMock();
         $media3 = $this->getMediaMock();
+        $media4 = $this->getMediaMock();
+        $media5 = $this->getMediaMock();
 
         $this->mediaManager
             ->expects($this->at(0))
@@ -46,13 +48,29 @@ class ProductFileWriterTest extends \PHPUnit_Framework_TestCase
             ->method('copy')
             ->with($media3, '/tmp/phpunit/');
 
+        $this->mediaManager
+            ->expects($this->at(3))
+            ->method('copy')
+            ->with($media3, '/tmp/phpunit/');
+
+        $this->mediaManager
+            ->expects($this->at(4))
+            ->method('copy')
+            ->with($media3, '/tmp/phpunit/');
+
         $this
             ->writer
             ->setDirectoryName('/tmp/phpunit/')
             ->write(
                 array(
-                    'entries' => array('foo', 'bar'),
-                    'media'   => array($media1, $media2, $media3),
+                    array(
+                        'entry' => 'foo',
+                        'media' => array($media1, $media2, $media3),
+                    ),
+                    array(
+                        'entry' => 'bar',
+                        'media' => array($media4, $media5),
+                    )
                 )
             );
     }
