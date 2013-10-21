@@ -6,7 +6,7 @@ use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Constraint;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Entity\VariantGroup;
+use Pim\Bundle\CatalogBundle\Entity\Group;
 
 /**
  * Validator for unique variant group axis values constraint
@@ -39,7 +39,7 @@ class UniqueVariantAxisValidator extends ConstraintValidator
      */
     public function validate($entity, Constraint $constraint)
     {
-        if ($entity instanceof VariantGroup) {
+        if ($entity instanceof Group and $entity->getType()->isVariant()) {
             $this->validateVariantGroup($entity, $constraint);
         } elseif ($entity instanceof ProductInterface) {
             $this->validateProduct($entity, $constraint);
@@ -49,10 +49,10 @@ class UniqueVariantAxisValidator extends ConstraintValidator
     /**
      * Validate variant group
      *
-     * @param VariantGroup $variantGroup
+     * @param Group $group
      * @param Constraint   $constraint
      */
-    protected function validateVariantGroup(VariantGroup $variantGroup, Constraint $constraint)
+    protected function validateVariantGroup(Group $variantGroup, Constraint $constraint)
     {
         $existingCombinations = array();
 
@@ -83,32 +83,34 @@ class UniqueVariantAxisValidator extends ConstraintValidator
      */
     protected function validateProduct(ProductInterface $entity, Constraint $constraint)
     {
-        if (null !== $variantGroup = $entity->getVariantGroup()) {
-            $criteria = array();
-            foreach ($variantGroup->getAttributes() as $attribute) {
-                $value = $entity->getValue($attribute->getCode());
-                $criteria[] = array(
-                    'attribute' => $attribute,
-                    'option'    => $value ? $value->getOption() : null,
+        foreach ($entity->getGroups() as $variantGroup) {
+            if ($variantGroup->getType()->isVariant()) {
+                $criteria = array();
+                foreach ($variantGroup->getAttributes() as $attribute) {
+                    $value = $entity->getValue($attribute->getCode());
+                    $criteria[] = array(
+                        'attribute' => $attribute,
+                        'option'    => $value ? $value->getOption() : null,
+                    );
+                }
+
+                $repository = $this->manager->getFlexibleRepository();
+                $matchingProducts = $repository->findAllForVariantGroup($variantGroup, $criteria);
+
+                $matchingProducts = array_filter(
+                    $matchingProducts,
+                    function ($product) use ($entity) {
+                        return $product->getId() !== $entity->getId();
+                    }
                 );
-            }
 
-            $repository = $this->manager->getFlexibleRepository();
-            $matchingProducts = $repository->findAllForVariantGroup($variantGroup, $criteria);
-
-            $matchingProducts = array_filter(
-                $matchingProducts,
-                function ($product) use ($entity) {
-                    return $product->getId() !== $entity->getId();
+                if (count($matchingProducts) !== 0) {
+                    $values = array();
+                    foreach ($criteria as $item) {
+                        $values[] = sprintf('%s: %s', $item['attribute']->getCode(), (string) $item['option']);
+                    }
+                    $this->addViolation($constraint, implode(', ', $values), $variantGroup->getLabel());
                 }
-            );
-
-            if (count($matchingProducts) !== 0) {
-                $values = array();
-                foreach ($criteria as $item) {
-                    $values[] = sprintf('%s: %s', $item['attribute']->getCode(), (string) $item['option']);
-                }
-                $this->addViolation($constraint, implode(', ', $values), $variantGroup->getLabel());
             }
         }
     }

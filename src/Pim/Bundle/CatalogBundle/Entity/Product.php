@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexible;
+use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
@@ -13,8 +14,8 @@ use Pim\Bundle\CatalogBundle\Exception\MissingIdentifierException;
 use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
+use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\CatalogBundle\Entity\ProductAssociation;
-use JMS\Serializer\Annotation\ExclusionPolicy;
 
 /**
  * Flexible product
@@ -79,14 +80,6 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
      * @ORM\Column(name="is_enabled", type="boolean")
      */
     protected $enabled = true;
-
-    /**
-     * @var VariantGroup $variantGroup
-     *
-     * @ORM\ManyToOne(targetEntity="VariantGroup", inversedBy="products")
-     * @ORM\JoinColumn(name="variant_group_id", referencedColumnName="id", onDelete="SET NULL")
-     */
-    protected $variantGroup;
 
     /**
      * @var ArrayCollection $groups
@@ -340,6 +333,22 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
     }
 
     /**
+     * Get a string with groups
+     *
+     * @return string
+     */
+    public function getGroupCodes()
+    {
+        $codes = array();
+        foreach ($this->getGroups() as $group) {
+            $codes[] = $group->getCode();
+        }
+        sort($codes);
+
+        return implode(',', $codes);
+    }
+
+    /**
      * Predicate to know if product is enabled or not
      *
      * @return boolean
@@ -376,37 +385,19 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
             return false;
         }
 
-        if (null === $this->family || !$this->family->getAttributes()->contains($attribute)) {
-            if (null === $this->variantGroup || !$this->variantGroup->getAttributes()->contains($attribute)) {
-                return true;
+        if (null !== $this->family && $this->family->getAttributes()->contains($attribute)) {
+            return false;
+        }
+
+        foreach ($this->groups as $group) {
+            if ($group->getType()->isVariant()) {
+                if ($this->variantGroup->getAttributes()->contains($attribute)) {
+                    return false;
+                }
             }
         }
 
-        return false;
-    }
-
-    /**
-     * Get variant group
-     *
-     * @return \Pim\Bundle\CatalogBundle\Entity\VariantGroup
-     */
-    public function getVariantGroup()
-    {
-        return $this->variantGroup;
-    }
-
-    /**
-     * Set variant group
-     *
-     * @param VariantGroup $variantGroup
-     *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Product
-     */
-    public function setVariantGroup(VariantGroup $variantGroup = null)
-    {
-        $this->variantGroup = $variantGroup;
-
-        return $this;
+        return true;
     }
 
     /**

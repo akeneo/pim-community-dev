@@ -7,7 +7,7 @@ use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Entity\Completeness;
 use Pim\Bundle\CatalogBundle\Entity\Product;
 use Pim\Bundle\CatalogBundle\Entity\Family;
-use Pim\Bundle\CatalogBundle\Entity\VariantGroup;
+use Pim\Bundle\CatalogBundle\Entity\Group;
 
 /**
  * Test related class
@@ -274,19 +274,19 @@ class ProductTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test getter/setter for variant group
+     * Test getter/setter for group
      */
-    public function testGetSetVariantGroup()
+    public function testGetSetGroup()
     {
-        $this->assertEmpty($this->product->getVariantGroup());
+        $this->assertEquals(count($this->product->getGroups()), 0);
 
         // Change value and assert new
-        $newVariant = new VariantGroup();
-        $this->product->setVariantGroup($newVariant);
-        $this->assertEquals($newVariant, $this->product->getVariantGroup());
+        $newGroup = new Group();
+        $this->product->addGroup($newGroup);
+        $this->assertEquals($newGroup, $this->product->getGroups()->first());
 
-        $this->product->setVariantGroup(null);
-        $this->assertNull($this->product->getVariantGroup());
+        $this->product->removeGroup($newGroup);
+        $this->assertEmpty(count($this->product->getGroups()), 0);
     }
 
     /**
@@ -337,18 +337,18 @@ class ProductTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Create a variant group entity
+     * Create a group entity
      *
      * @param string $code
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\VariantGroup
+     * @return \Pim\Bundle\CatalogBundle\Entity\Group
      */
-    protected function createVariantGroup($code)
+    protected function createGroup($code)
     {
-        $variant = new VariantGroup();
-        $variant->setCode($code);
+        $group = new Group();
+        $group->setCode($code);
 
-        return $variant;
+        return $group;
     }
 
     /**

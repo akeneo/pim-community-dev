@@ -27,27 +27,27 @@ Feature: Edit a variant group adding/removing products
       | MUG_1   | size      | M     |
       | POSTIT  | color     | Blue  |
       | POSTIT  | size      | XL    |
-    And the following variants:
+    And the following product groups:
       | code   | label      | attributes  | products | type    |
       | POSTIT | Postit     | color, size | POSTIT   | VARIANT |
     And I am logged in as "admin"
 
   Scenario: Successfully display the sortable columns
-    Given I am on the "POSTIT" variant page
-    
+    Given I am on the "POSTIT" product group page
     Then the rows should be sortable by Has product, SKU, Color, Size, Family, Created at and Updated at
     And the rows should be sorted ascending by Has product
 
   Scenario: Successfully sort products by Has product ascending
-    Given I am on the "POSTIT" variant page
+    Given I am on the "POSTIT" product group page
     When I sort by "Has product" value ascending
     Then I should see sorted products MUG_1 and POSTIT
     
     When I sort by "Has product" value descending
     Then I should see sorted products POSTIT and MUG_1
 
+  @skip
   Scenario: Successfully sort products by SKU ascending
-    Given I am on the "POSTIT" variant page
+    Given I am on the "POSTIT" product group page
     When I sort by "SKU" value ascending
     Then I should see sorted products MUG_1 and POSTIT
 
@@ -55,7 +55,7 @@ Feature: Edit a variant group adding/removing products
     Then I should see sorted products POSTIT and MUG_1
 
   Scenario: Successfully sort products by color ascending
-    Given I am on the "POSTIT" variant page
+    Given I am on the "POSTIT" product group page
     When I sort by "Color" value ascending
     Then I should see sorted products POSTIT and MUG_1
 
@@ -63,7 +63,7 @@ Feature: Edit a variant group adding/removing products
     Then I should see sorted products MUG_1 and POSTIT
 
   Scenario: Successfully sort products by size ascending
-    Given I am on the "POSTIT" variant page
+    Given I am on the "POSTIT" product group page
     When I sort by "Size" value ascending
     Then I should see sorted products MUG_1 and POSTIT
 
@@ -71,7 +71,7 @@ Feature: Edit a variant group adding/removing products
     Then I should see sorted products POSTIT and MUG_1
 
   Scenario: Successfully sort products by family ascending
-    Given I am on the "POSTIT" variant page
+    Given I am on the "POSTIT" product group page
     When I sort by "Family" value ascending
     Then I should see sorted products POSTIT and MUG_1
 

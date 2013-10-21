@@ -48,9 +48,7 @@ class LoadGroupData extends AbstractInstallerFixture
     protected function createGroup($code, $data)
     {
         $type = $this->getReference('group-type.'. $data['type']);
-        $entity = $type->getEntity();
-
-        $group = new $entity();
+        $group = new Group();
         $group->setCode($code);
         $group->setType($type);
 

@@ -55,6 +55,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
         'imports'                  => 'Import index',
         'locales'                  => 'Locale index',
         'products'                 => 'Product index',
+        'product groups'           => 'ProductGroup index',
         'users'                    => 'User index',
         'user roles'               => 'UserRole index',
         'user groups'              => 'UserGroup index',
@@ -165,6 +166,20 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
         $this->openPage('Export show', array('id' => $job->getId()));
         $this->wait();
     }
+
+     /**
+      * @param string $identifier
+      *
+      * @Given /^I am on the "([^"]*)" product group page$/
+      * @Given /^I edit the "([^"]*)" product group$/
+      */
+     public function iAmOnTheProductGroupEditPage($identifier)
+     {
+         $page = 'ProductGroup';
+         $getter = sprintf('get%s', $page);
+         $entity = $this->getFixturesContext()->$getter($identifier);
+         $this->openPage(sprintf('%s edit', $page), array('id' => $entity->getId()));
+     }
 
     /**
      * @param JobInstance $job
