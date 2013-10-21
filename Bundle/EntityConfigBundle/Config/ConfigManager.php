@@ -366,6 +366,7 @@ class ConfigManager
 
             if ($this->cache) {
                 $this->cache->removeConfigFromCache($config->getId());
+                $this->cache->removeAllConfigurable();
             }
         }
 

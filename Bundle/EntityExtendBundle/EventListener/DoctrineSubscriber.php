@@ -54,41 +54,45 @@ class DoctrineSubscriber implements EventSubscriber
                     }
                 }
 
-                if ($config->is('owner', ExtendManager::OWNER_SYSTEM) && $config->is('relation')) {
+                if ($config->is('relation')) {
                     foreach ($config->get('relation') as $relation) {
-                        if ($relation['assign']) {
-                            /** @var FieldConfigId $fieldId */
-                            $fieldId = $relation['field_id'];
+                        if ($relation['assign'] && $fieldId = $relation['field_id']) {
                             /** @var FieldConfigId $targetFieldId */
                             $targetFieldId = $relation['target_field_id'];
+
+                            $targetFieldName = $targetFieldId
+                                ? ExtendConfigDumper::PREFIX . $targetFieldId->getFieldName()
+                                : null;
+
+                            $fieldName = ExtendConfigDumper::PREFIX . $fieldId->getFieldName();
 
                             switch ($fieldId->getFieldType()) {
                                 case 'manyToOne':
                                     $cmBuilder->addManyToOne(
-                                        $fieldId->getFieldName(),
+                                        $fieldName,
                                         $relation['target_entity'],
-                                        $targetFieldId ? $targetFieldId->getFieldName() : null
+                                        $targetFieldName
                                     );
                                     break;
                                 case 'oneToMany':
                                     $cmBuilder->addOneToMany(
-                                        $fieldId->getFieldName(),
+                                        $fieldName,
                                         $relation['target_entity'],
-                                        $targetFieldId->getFieldName()
+                                        $targetFieldName
                                     );
                                     break;
                                 case 'manyToMany':
                                     if ($relation['owner']) {
                                         $cmBuilder->addOwningManyToMany(
-                                            $fieldId->getFieldName(),
+                                            $fieldName,
                                             $relation['target_entity'],
-                                            $targetFieldId ? $targetFieldId->getFieldName() : null
+                                            $targetFieldName
                                         );
                                     } else {
                                         $cmBuilder->addInverseManyToMany(
-                                            $targetFieldId->getFieldName(),
+                                            $targetFieldName,
                                             $fieldId->getClassName(),
-                                            $fieldId->getFieldName()
+                                            $fieldName
                                         );
                                     }
                                     break;

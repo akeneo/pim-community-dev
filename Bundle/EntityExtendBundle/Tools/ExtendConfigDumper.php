@@ -9,9 +9,6 @@ use Oro\Bundle\EntityBundle\ORM\OroEntityManager;
 
 use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
 
-use Oro\Bundle\EntityExtendBundle\Entity\EntityConfig;
-use Oro\Bundle\EntityExtendBundle\Entity\Repository\EntityConfigRepository;
-
 use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 use Oro\Bundle\EntityExtendBundle\Mapping\ExtendClassMetadataFactory;
 use Oro\Bundle\EntityExtendBundle\Exception\RuntimeException;
@@ -41,22 +38,28 @@ class ExtendConfigDumper
         $this->em       = $em;
     }
 
-    public function updateConfig()
+    /**
+     * @param null $className
+     */
+    public function updateConfig($className = null)
     {
         $this->clear();
 
-        $yml     = array();
-        $configs = $this->em->getExtendManager()->getConfigProvider()->getConfigs();
-        foreach ($configs as $config) {
-            if ($config->is('is_extend') && $config->is('upgradeable')) {
-                $yml[] = $this->dumpByConfig($config);
-            }
-        }
+        $extendProvider = $this->em->getExtendManager()->getConfigProvider();
 
-        if (count($yml)) {
-            /** @var EntityConfigRepository $extendConfigRepository */
-            $extendConfigRepository = $this->em->getRepository(EntityConfig::ENTITY_NAME);
-            $extendConfigRepository->createConfig($yml);
+        if ($className && $extendProvider->hasConfig($className)) {
+            $config = $extendProvider->getConfig($className);
+            if ($config->is('is_extend') && $config->is('upgradeable')) {
+                $this->checkSchema($config);
+            }
+        } else {
+            $configs = $extendProvider->getConfigs();
+            foreach ($configs as $config) {
+                if ($config->is('is_extend') && $config->is('upgradeable')) {
+                    $this->checkSchema($config);
+                }
+            }
+
         }
 
         $this->clear();
@@ -64,14 +67,19 @@ class ExtendConfigDumper
 
     public function dump()
     {
-        /** @var EntityConfigRepository $extendConfigRepository */
-        $extendConfigRepository = $this->em->getRepository(EntityConfig::ENTITY_NAME);
+        $yml            = array();
+        $extendProvider = $this->em->getExtendManager()->getConfigProvider();
+        $configs        = $extendProvider->getConfigs();
+        foreach ($configs as $config) {
+            if ($schema = $config->get('schema')) {
+                $yml[$config->getId()->getClassName()] = $schema;
+            }
+        }
 
-        $config = $extendConfigRepository->getActiveConfig();
-        if ($config) {
+        if ($yml) {
             file_put_contents(
                 $this->cacheDir . '/entity_config.yml',
-                Yaml::dump($config, 8)
+                Yaml::dump($yml, 8)
             );
         }
     }
@@ -90,9 +98,9 @@ class ExtendConfigDumper
         $metadataFactory->clearCache();
     }
 
-    protected function dumpByConfig(ConfigInterface $entityConfig)
+    protected function checkSchema(ConfigInterface $entityConfig)
     {
-        $configProvider = $this->em->getExtendManager()->getConfigProvider();
+        $extendProvider = $this->em->getExtendManager()->getConfigProvider();
         $className      = $entityConfig->getId()->getClassName();
         $doctrine       = array();
 
@@ -105,9 +113,6 @@ class ExtendConfigDumper
                 'fields'     => array(
                     'id' => array('type' => 'integer', 'id' => true, 'generator' => array('strategy' => 'AUTO'))
                 ),
-                'oneToMany'  => array(),
-                'manyToOne'  => array(),
-                'manyToMany' => array(),
             );
         } else {
             $entityName            = $entityConfig->get('extend_class');
@@ -115,31 +120,24 @@ class ExtendConfigDumper
             $doctrine[$entityName] = array(
                 'type'       => 'mappedSuperclass',
                 'fields'     => array(),
-                'oneToMany'  => array(),
-                'manyToOne'  => array(),
-                'manyToMany' => array(),
             );
         }
 
         $entityState = $entityConfig->get('state');
 
-        $properties = array();
-        if ($fieldConfigs = $configProvider->getConfigs($className)) {
+        $properties         = array();
+        $relationProperties = array();
+        if ($fieldConfigs = $extendProvider->getConfigs($className)) {
             foreach ($fieldConfigs as $fieldConfig) {
                 if ($fieldConfig->is('extend')) {
-                    $fieldName              = self::PREFIX . $fieldConfig->getId()->getFieldName();
-                    $fieldType              = $fieldConfig->getId()->getFieldType();
-                    $properties[$fieldName] = $fieldConfig->getId()->getFieldName();
+                    $fieldName = self::PREFIX . $fieldConfig->getId()->getFieldName();
+                    $fieldType = $fieldConfig->getId()->getFieldType();
+
                     if (in_array($fieldType, array('oneToMany', 'manyToOne', 'manyToMany'))) {
-                        $this->prepareRelation(
-                            $doctrine,
-                            $fieldType,
-                            $fieldName,
-                            $entityName,
-                            $className,
-                            $fieldConfig
-                        );
+                        $relationProperties[$fieldName] = $fieldConfig->getId()->getFieldName();
                     } else {
+                        $properties[$fieldName] = $fieldConfig->getId()->getFieldName();
+
                         $doctrine[$entityName]['fields'][$fieldName]['code']      = $fieldName;
                         $doctrine[$entityName]['fields'][$fieldName]['type']      = $fieldType;
                         $doctrine[$entityName]['fields'][$fieldName]['nullable']  = true;
@@ -157,11 +155,11 @@ class ExtendConfigDumper
                     $fieldConfig->set('is_deleted', true);
                 }
 
-                $configProvider->persist($fieldConfig);
+                $extendProvider->persist($fieldConfig);
             }
         }
 
-        $configProvider->flush();
+        $extendProvider->flush();
 
         $entityConfig->set('state', $entityState);
         if ($entityConfig->get('state') == ExtendManager::STATE_DELETED) {
@@ -170,57 +168,61 @@ class ExtendConfigDumper
             $entityConfig->set('state', ExtendManager::STATE_ACTIVE);
         }
 
-        $configProvider->persist($entityConfig);
+        $relations = $entityConfig->get('relation') ? : array();
+        foreach ($relations as &$relation) {
+            if ($relation['field_id']) {
+                $relation['assign'] = true;
 
-        $result = array(
+                $this->checkRelation($relation['target_entity'], $relation['field_id']);
+            }
+        }
+        $entityConfig->set('relation', $relations);
+
+        $schema = array(
             'class'    => $className,
             'entity'   => $entityName,
             'type'     => $type,
             'property' => $properties,
+            'relation' => $relationProperties,
             'doctrine' => $doctrine,
         );
 
         if ($type == 'Extend') {
-            $result['parent']  = get_parent_class($className);
-            $result['inherit'] = get_parent_class($result['parent']);
+            $schema['parent']  = get_parent_class($className);
+            $schema['inherit'] = get_parent_class($schema['parent']);
         }
 
-        $configProvider->flush();
+        $entityConfig->set('schema', $schema);
 
-        return $result;
+        $extendProvider->persist($entityConfig);
+        $extendProvider->flush();
     }
 
-    /**
-     * @param $config
-     * @param $relType
-     * @param $entityName
-     * @param $fieldName
-     * @param $from
-     * @param $to
-     * @throws RuntimeException
-     */
-    protected function prepareRelation(&$config, $relType, $fieldName, $entityName, $from, $to)
+    protected function checkRelation($targetClass, $fieldId)
     {
-        switch ($relType) {
-            /*
-            case 'oneToMany':
-                $config[$entityName][$relType][$fieldName]['targetEntity'] = $to->get('target_entity');
-                $config[$entityName][$relType][$fieldName]['mappedBy'] = $to->get('mappedBy');
-                break;
-            */
-            case 'manyToOne':
-                $config[$entityName][$relType][$fieldName]['targetEntity'] = $to->get('target_entity');
-                $config[$entityName][$relType][$fieldName]['joinColumn']   = array(
-                    'name'                 => strtolower($fieldName) . '_id',
-                    'referencedColumnName' => $this->getEntityIdentifier($to->get('target_entity'))
-                );
+        $extendProvider = $this->em->getExtendManager()->getConfigProvider();
+        $targetConfig = $extendProvider->getConfig($targetClass);
 
-                break;
-            default:
-                throw new RuntimeException(sprintf('Rel type "%s" is not valid', $relType));
+        $relations = $targetConfig->get('relation') ? : array();
+        $schema    = $targetConfig->get('schema') ? : array();
+
+        foreach ($relations as &$relation) {
+            if ($relation['target_field_id'] == $fieldId) {
+                $relation['assign'] = true;
+                $relationFieldId = $relation['field_id'];
+
+                if ($relation['owner'] && count($schema)) {
+                    $schema['relation'][ self::PREFIX . $relationFieldId->getFieldName()] =
+                        $relationFieldId->getFieldName();
+                }
+            }
         }
-    }
 
+        $targetConfig->set('relation', $relations);
+        $targetConfig->set('schema', $schema);
+
+        $extendProvider->persist($targetConfig);
+    }
 
     /**
      * Get Entity Identifier By a class name

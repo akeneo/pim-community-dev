@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\EntityExtendBundle\Form\Type;
 
+use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
@@ -78,10 +79,21 @@ class TargetType extends AbstractType
             $entityIds = array_filter(
                 $entityIds,
                 function (EntityConfigId $configId) use ($configManager) {
-                    return $configManager->getConfig($configId)->is('is_extend');
+                    $config = $configManager->getConfig($configId);
+
+                    return $config->is('is_extend');
                 }
             );
         }
+
+        $entityIds = array_filter(
+            $entityIds,
+            function (EntityConfigId $configId) use ($configManager) {
+                $config = $configManager->getConfig($configId);
+
+                return $config->is('is_extend', false) || !$config->is('state', ExtendManager::STATE_NEW);
+            }
+        );
 
         foreach ($entityIds as $entityId) {
             $entityName = $moduleName = '';

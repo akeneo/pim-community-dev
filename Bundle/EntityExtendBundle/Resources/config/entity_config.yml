@@ -103,6 +103,12 @@ oro_entity_config:
                         serializable:       true
                         default_value:      []
 
+                schema:
+                    options:
+                        auditable:          false
+                        serializable:       true
+                        default_value:      []
+
         field:
             grid_action:
                 -

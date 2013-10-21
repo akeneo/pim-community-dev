@@ -104,7 +104,7 @@ class Generator
                 }
             }
 
-            $toStringBody = '(string) return $this->getId();';
+            $toStringBody = 'return (string) $this->getId();';
             if (count($toString) > 0) {
                 $toStringBody = 'return (string)' . implode(' . ', $toString) . ';';
             }
@@ -113,7 +113,7 @@ class Generator
 
         $class->setInterfaceNames(array('Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface'));
 
-        $this->generateClassMethods($item['property'], $class);
+        $this->generateClassMethods($item, $class);
 
         $classArray = explode('\\', $item['entity']);
         $className  = array_pop($classArray);
@@ -124,12 +124,12 @@ class Generator
     }
 
     /**
-     * @param $properties
+     * @param $config
      * @param $class
      */
-    protected function generateClassMethods($properties, &$class)
+    protected function generateClassMethods($config, &$class)
     {
-        foreach ($properties as $property => $method) {
+        foreach ($config['property'] as $property => $method) {
             $class
                 ->setProperty(PhpProperty::create($property)->setVisibility('protected'))
                 ->setMethod(
@@ -142,6 +142,24 @@ class Generator
                     $this->generateClassMethod(
                         'set' . ucfirst(Inflector::camelize($method)),
                         '$this->' . $property . ' = $value; return $this;',
+                        array('value')
+                    )
+                );
+        }
+
+        foreach ($config['relation'] as $relation => $method) {
+            $class
+                ->setProperty(PhpProperty::create($relation)->setVisibility('protected'))
+                ->setMethod(
+                    $this->generateClassMethod(
+                        'get' . ucfirst(Inflector::camelize($method)),
+                        'return $this->' . $relation . ';'
+                    )
+                )
+                ->setMethod(
+                    $this->generateClassMethod(
+                        'set' . ucfirst(Inflector::camelize($method)),
+                        '$this->' . $relation . ' = $value; return $this;',
                         array('value')
                     )
                 );

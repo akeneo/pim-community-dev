@@ -4,8 +4,13 @@ namespace Oro\Bundle\EntityExtendBundle\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
+use Oro\Bundle\EntityConfigBundle\Config\Config;
+use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
+
+use Oro\Bundle\EntityConfigBundle\Config\Id\ConfigIdInterface;
 use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigId;
+
+use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 
 use Oro\Bundle\EntityConfigBundle\Event\NewFieldConfigModelEvent;
 use Oro\Bundle\EntityConfigBundle\Event\Events;
@@ -78,61 +83,11 @@ class ConfigSubscriber implements EventSubscriberInterface
             /**
              * Relations case
              */
-            if ($entityConfig->get('state') == ExtendManager::STATE_NEW
+            if ($event->getConfig()->get('state') == ExtendManager::STATE_NEW
                 && in_array($event->getConfig()->getId()->getFieldType(), array('oneToMany', 'manyToOne', 'manyToMany'))
             ) {
-                $targetEntityClass = $event->getConfig()->get('target_entity');
-                $selfFieldType     = $event->getConfig()->getId()->getFieldType();
-                $selfFieldName     = $event->getConfig()->getId()->getFieldName();
 
-                /**
-                 * in case of oneToMany relation
-                 * automatically create target field (type: manyToOne)
-                 */
-                $targetFieldId = false;
-                if ($selfFieldType == 'oneToMany') {
-                    $classNameArray = explode('\\', $className);
-                    $relationFieldName = strtolower(array_pop($classNameArray)) . '_' . $selfFieldName;
-
-                    $targetFieldId = new FieldConfigId(
-                        $targetEntityClass,
-                        $scope,
-                        $relationFieldName,
-                        ExtendHelper::getReversRelationType($selfFieldType)
-                    );
-                }
-
-                $selfRelationConfig = array(
-                    'assign'   => false,
-                    'field_id' => $event->getConfig()->getId(),
-                    'owner'    => true,
-                    'target_entity'   => $targetEntityClass,
-                    'target_field_id' => $targetFieldId  // for 1:*, create field
-                );
-
-                $selfRelations   = $entityConfig->get('relation') ? : array();
-                $selfRelations[] = $selfRelationConfig;
-
-                $entityConfig->set('relation', $selfRelations);
-
-                $event->getConfigManager()->persist($entityConfig);
-
-                $targetConfig = $event->getConfigManager()->getProvider($scope)->getConfig($targetEntityClass);
-
-                $targetRelationConfig = array(
-                    'assign'   => false,
-                    'field_id' => $targetFieldId, // for 1:*, new created field
-                    'owner'    => false,
-                    'target_entity'   => $className,
-                    'target_field_id' => $event->getConfig()->getId(),
-                );
-
-                $targetRelations   = $targetConfig->get('relation') ? : array();
-                $targetRelations[] = $targetRelationConfig;
-
-                $targetConfig->set('relation', $targetRelations);
-
-                $event->getConfigManager()->persist($targetConfig);
+                $this->updateRelation($event->getConfig());
             }
 
             if ($entityConfig->get('state') != ExtendManager::STATE_NEW) {
@@ -197,5 +152,119 @@ class ConfigSubscriber implements EventSubscriberInterface
             $entityConfig->set('upgradeable', true);
             $configProvider->persist($entityConfig);
         }
+    }
+
+    protected function updateRelation(Config $fieldConfig)
+    {
+        $selfConfig = $this->extendConfigProvider->getConfig($fieldConfig->getId()->getClassName());
+        if ($this->findRelation($selfConfig, $fieldConfig->getId())) {
+            return;
+        }
+
+
+        $targetConfig = $this->extendConfigProvider->getConfig($fieldConfig->get('target_entity'));
+        if ($this->findRelation($targetConfig, $fieldConfig->getId(), true)) {
+            //$this->updateTargetRelation($fieldConfig);
+
+            return;
+        }
+
+        $this->updateSelfRelation($fieldConfig);
+    }
+
+    protected function updateSelfRelation(Config $fieldConfig)
+    {
+        $selfEntityClass   = $fieldConfig->getId()->getClassName();
+        $targetEntityClass = $fieldConfig->get('target_entity');
+        $selfFieldType     = $fieldConfig->getId()->getFieldType();
+        $selfFieldName     = $fieldConfig->getId()->getFieldName();
+        $selfConfig        = $this->extendConfigProvider->getConfig($selfEntityClass);
+        $scope             = 'extend';
+
+        /**
+         * in case of oneToMany relation
+         * automatically create target field (type: manyToOne)
+         */
+        $targetFieldId = false;
+        $owner         = true;
+        $targetOwner   = false;
+
+        if ($selfFieldType == 'oneToMany') {
+            $classNameArray    = explode('\\', $selfEntityClass);
+            $relationFieldName = strtolower(array_pop($classNameArray)) . '_' . $selfFieldName;
+            $owner             = false;
+            $targetOwner       = true;
+
+            $targetFieldId = new FieldConfigId(
+                $targetEntityClass,
+                $scope,
+                $relationFieldName,
+                ExtendHelper::getReversRelationType($selfFieldType)
+            );
+        }
+
+        $selfRelationConfig = array(
+            'assign'          => false,
+            'field_id'        => $fieldConfig->getId(),
+            'owner'           => $owner,
+            'target_entity'   => $targetEntityClass,
+            'target_field_id' => $targetFieldId // for 1:*, create field
+        );
+
+        $selfRelations   = $selfConfig->get('relation') ? : array();
+        $selfRelations[] = $selfRelationConfig;
+
+        $selfConfig->set('relation', $selfRelations);
+
+        $this->extendConfigProvider->persist($selfConfig);
+
+        $targetConfig = $this->extendConfigProvider->getConfig($targetEntityClass);
+
+        $targetRelationConfig = array(
+            'assign'          => false,
+            'field_id'        => $targetFieldId, // for 1:*, new created field
+            'owner'           => $targetOwner,
+            'target_entity'   => $selfEntityClass,
+            'target_field_id' => $fieldConfig->getId(),
+        );
+
+        $targetRelations   = $targetConfig->get('relation') ? : array();
+        $targetRelations[] = $targetRelationConfig;
+
+        $targetConfig->set('relation', $targetRelations);
+
+        $this->extendConfigProvider->persist($targetConfig);
+    }
+
+    protected function updateTargetRelation(Config $fieldConfig)
+    {
+        $selfEntityClass   = $fieldConfig->getId()->getClassName();
+        $targetEntityClass = $fieldConfig->get('target_entity');
+        $selfFieldType     = $fieldConfig->getId()->getFieldType();
+        $selfFieldName     = $fieldConfig->getId()->getFieldName();
+        $scope             = 'extend';
+
+        $selfConfig   = $this->extendConfigProvider->getConfig($selfEntityClass);
+        $targetConfig = $this->extendConfigProvider->getConfig($targetEntityClass);
+
+        $selfRelationConfig = $this->findRelation($selfConfig, $fieldConfig, true);
+    }
+
+    /**
+     * @param ConfigInterface $entityConfig
+     * @param ConfigIdInterface $fieldConfigId
+     * @param bool $target
+     * @return null
+     */
+    protected function findRelation(ConfigInterface $entityConfig, ConfigIdInterface $fieldConfigId, $target = false)
+    {
+        $relations = $entityConfig->get('relation');
+        foreach ($relations as &$relation) {
+            if ($relation[$target ? 'target_field_id' : 'field_id'] == $fieldConfigId) {
+                return $relation;
+            }
+        }
+
+        return null;
     }
 }
