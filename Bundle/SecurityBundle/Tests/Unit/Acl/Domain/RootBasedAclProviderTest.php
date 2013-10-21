@@ -86,11 +86,13 @@ class RootBasedAclProviderTest extends \PHPUnit_Framework_TestCase
             ->method('findAcl')
             ->with($this->identicalTo($oid), $this->equalTo($sids))
             ->will($this->throwException(new AclNotFoundException()));
-        $this->baseProvider->expects($this->once())
-            ->method('findAndCacheRootAcl')
-            ->with($this->equalTo($oid), $this->equalTo($rootOid), $this->equalTo($sids))
+        $this->baseProvider->expects($this->at(1))
+            ->method('cacheEmptyAcl')
+            ->with($this->equalTo($oid));
+        $this->baseProvider->expects($this->at(2))
+            ->method('findAcl')
+            ->with($this->equalTo($rootOid), $this->equalTo($sids))
             ->will($this->returnValue($rootAcl));
-
         $this->assertTrue($rootAcl === $this->provider->findAcl($oid, $sids));
     }
 
@@ -106,9 +108,12 @@ class RootBasedAclProviderTest extends \PHPUnit_Framework_TestCase
             ->method('findAcl')
             ->with($this->identicalTo($oid), $this->equalTo($sids))
             ->will($this->throwException(new AclNotFoundException()));
-        $this->baseProvider->expects($this->once())
-            ->method('findAndCacheRootAcl')
-            ->with($this->equalTo($oid), $this->equalTo($rootOid), $this->equalTo($sids))
+        $this->baseProvider->expects($this->at(1))
+            ->method('cacheEmptyAcl')
+            ->with($this->equalTo($oid));
+        $this->baseProvider->expects($this->at(2))
+            ->method('findAcl')
+            ->with($this->equalTo($rootOid), $this->equalTo($sids))
             ->will($this->throwException(new AclNotFoundException()));
 
         $this->provider->findAcl($oid, $sids);

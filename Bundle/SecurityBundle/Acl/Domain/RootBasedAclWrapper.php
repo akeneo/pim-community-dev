@@ -111,6 +111,10 @@ class RootBasedAclWrapper implements AclInterface
      */
     public function getObjectIdentity()
     {
+        if (!count($this->acl->getClassAces()) && !count($this->acl->getObjectAces())) {
+            return $this->rootAcl->getObjectIdentity();
+        }
+
         return $this->acl->getObjectIdentity();
     }
 
