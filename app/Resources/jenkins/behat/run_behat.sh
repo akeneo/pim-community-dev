@@ -8,6 +8,7 @@
 
 XDEBUG_EXTENSION="xdebug.so"
 CHECK_WAIT=2
+OUTPUT=`mktemp`
 
 usage() {
     echo "Usage: $0 (concurrency) (xdebug|noxdebug) (database_prefix) (profile_prefix) [behat command and options]"
@@ -86,7 +87,7 @@ for FEATURE in $FEATURES; do
                 if [ $? -ne 0 ]; then
                     export SYMFONY__DATABASE__NAME=$DB_PREFIX$PROC
                     echo "Executing feature $FEATURE_NAME"
-                    $BEHAT_CMD --profile=$PROFILE_PREFIX$PROC $FEATURE_NAME &
+                    ($BEHAT_CMD --profile=$PROFILE_PREFIX$PROC $FEATURE_NAME 2>&1 | tee -a $OUTPUT) &
                     RESULT=$!
                     eval PID_$PROC=$RESULT
                     FEATURE_NAME=""
@@ -103,4 +104,14 @@ for FEATURE in $FEATURES; do
     done
 done
 
+# Check the output
+cat $OUTPUT | grep "failed steps"
+
+if [ $? -eq 0 ]; then
+    rm $OUTPUT
+    exit 1;
+else 
+    rm $OUTPUT
+    exit 0;
+fi
 
