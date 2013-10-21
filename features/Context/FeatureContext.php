@@ -6,6 +6,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Yaml\Parser;
 use Behat\Symfony2Extension\Context\KernelAwareInterface;
 use Behat\MinkExtension\Context\MinkContext;
+use Behat\Behat\Exception\BehaviorException;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
 
@@ -137,10 +138,10 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
             && $('.jstree-loading').length == 0;           // Jstree has finished loading
 JS;
 
-        try {
-            $this->getSession()->wait(100, false);
-            $this->getSession()->wait($time, $condition);
-        } catch (UnsupportedDriverActionException $e) {
+        $this->getSession()->wait($time, $condition);
+
+        if ($this->getSession()->evaluateScript("return $condition;") !== true) {
+            throw new BehaviorException("Timeout of $time reached when checking on $condition");
         }
     }
 
