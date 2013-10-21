@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\Entity;
 
-use Pim\Bundle\CatalogBundle\Entity\VariantGroupTranslation;
+use Pim\Bundle\CatalogBundle\Entity\GroupTranslation;
 
 /**
  * Test related class
@@ -11,15 +11,15 @@ use Pim\Bundle\CatalogBundle\Entity\VariantGroupTranslation;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class VariantGroupTranslationTest extends \PHPUnit_Framework_TestCase
+class GroupTranslationTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * Test related method
      */
     public function testConstruct()
     {
-        $variant = new VariantGroupTranslation();
+        $translation = new GroupTranslation();
 
-        $this->assertInstanceOf('\Pim\Bundle\TranslationBundle\Entity\AbstractTranslation', $variant);
+        $this->assertInstanceOf('\Pim\Bundle\TranslationBundle\Entity\AbstractTranslation', $translation);
     }
 }
