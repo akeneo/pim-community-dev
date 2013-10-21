@@ -316,15 +316,15 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @Given /^there is no variant$/
+     * @Given /^there is no product group$/
      */
-    public function thereIsNoVariant()
+    public function thereIsNoProductGroup()
     {
         $em = $this->getEntityManager();
-        $variants = $em->getRepository('PimCatalogBundle:VariantGroup')->findAll();
+        $groups = $em->getRepository('PimCatalogBundle:Group')->findAll();
 
-        foreach ($variants as $variant) {
-            $this->remove($variant);
+        foreach ($groups as $group) {
+            $this->remove($group);
         }
         $this->flush();
     }
@@ -812,9 +812,9 @@ class FixturesContext extends RawMinkContext
     /**
      * @param TableNode $table
      *
-     * @Given /^the following variants?:$/
+     * @Given /^the following product groups?:$/
      */
-    public function theFollowingVariants(TableNode $table)
+    public function theFollowingProductGroups(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
             $code = $data['code'];
