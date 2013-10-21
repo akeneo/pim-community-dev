@@ -99,10 +99,13 @@
                     }
 
                     $('#association-list').on('click', 'a', function() {
+                        if ($(this).parent().hasClass('active')) {
+                            return;
+                        }
                         $(this).parent().siblings('li').removeClass('active');
                         $(this).parent().addClass('active');
                         var associationId = $(this).attr('id').replace('association-link-', '');
-                        Setter.setParameter('product_association', 'associationId', associationId, true);
+                        Setter.setParameter('{{ associationDatagrid.datagrid.name }}', 'associationId', associationId, true);
                     });
 
                     $('a[data-toggle="tab"]').on('shown', setFullHeight);

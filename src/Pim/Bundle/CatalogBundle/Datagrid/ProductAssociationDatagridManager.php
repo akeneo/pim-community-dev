@@ -31,9 +31,9 @@ class ProductAssociationDatagridManager extends FlexibleDatagridManager
     private $product;
 
     /**
-     * @var Association $association
+     * @var integer $associationId
      */
-    private $association;
+    private $associationId = 0;
 
     /**
      * @var SecurityFacade
@@ -86,11 +86,11 @@ class ProductAssociationDatagridManager extends FlexibleDatagridManager
     }
 
     /**
-     * @param Association $association
+     * @param integer $associationId
      */
-    public function setAssociation(Association $association = null)
+    public function setAssociationId($associationId)
     {
-        $this->association = $association;
+        $this->associationId = $associationId;
     }
 
     /**
@@ -161,10 +161,6 @@ class ProductAssociationDatagridManager extends FlexibleDatagridManager
      */
     protected function getHasAssociationExpression()
     {
-        if (null === $this->association) {
-            return 0;
-        }
-
         $hasAssociationExpression =
             'CASE WHEN ' .
             '(pa IS NOT NULL OR o.id IN (:data_in)) ' .
@@ -306,12 +302,14 @@ class ProductAssociationDatagridManager extends FlexibleDatagridManager
         $additionalParameters = $this->parameters->get(ParametersInterface::ADDITIONAL_PARAMETERS);
         $dataIn    = !empty($additionalParameters['data_in']) ? $additionalParameters['data_in'] : array(0);
         $dataNotIn = !empty($additionalParameters['data_not_in']) ? $additionalParameters['data_not_in'] : array(0);
+        $this->associationId = !empty($additionalParameters['associationId']) ?
+                        $additionalParameters['associationId'] : $this->associationId;
 
         return array(
             'data_in'     => $dataIn,
             'data_not_in' => $dataNotIn,
             'scopeCode'   => $this->flexibleManager->getScope(),
-            'association' => $this->association,
+            'association' => $this->associationId,
             'product'     => $this->getProduct()
         );
     }

@@ -360,15 +360,10 @@ class ProductController extends AbstractDoctrineController
         $association = null;
         if (!empty($associations)) {
             $association = reset($associations);
-            $associationDatagridManager->setAssociation($association);
+            $associationDatagridManager->setAssociationId($association->getId());
         }
 
-        $associationDatagridManager->getRouteGenerator()->setRouteParameters(
-            array(
-                'id'            => $product->getId(),
-                'associationId' => $association ? $association->getId() : 0
-            )
-        );
+        $associationDatagridManager->getRouteGenerator()->setRouteParameters(array('id' => $product->getId()));
 
         $associationDatagridView = $associationDatagridManager->getDatagrid()->createView();
 
@@ -503,34 +498,19 @@ class ProductController extends AbstractDoctrineController
     /**
      * List associations for the provided product
      *
-     * @param Request $request       The request object
-     * @param integer $id            Product id
-     * @param integer $associationId Association id
+     * @param Request $request The request object
+     * @param integer $id      Product id
      *
      * @Template
      * @AclAncestor("pim_catalog_product_associations_view")
      * @return Response
      */
-    public function listAssociationsAction(Request $request, $id, $associationId)
+    public function listAssociationsAction(Request $request, $id)
     {
         $product = $this->findProductOr404($id);
 
-        $association = null;
-        if ($associationId) {
-            $association = $this->findOr404('PimCatalogBundle:Association', $associationId);
-        }
-
         $datagridManager = $this->datagridWorker->getDatagridManager('product_association');
-
         $datagridManager->setProduct($product);
-        $datagridManager->setAssociation($association);
-
-        $datagridManager->getRouteGenerator()->setRouteParameters(
-            array(
-                'id'            => $product->getId(),
-                'associationId' => $association ? $association->getId() : 0
-            )
-        );
 
         $datagridView = $datagridManager->getDatagrid()->createView();
 
