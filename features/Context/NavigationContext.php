@@ -101,7 +101,6 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     public function iAmOnThePage($page)
     {
         $page = isset($this->pageMapping[$page]) ? $this->pageMapping[$page] : $page;
-        echo "DEBUG: OpenPage: $page\n";
         $this->openPage($page);
         $this->wait();
     }
@@ -263,7 +262,6 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     public function iShouldBeOnTheCategoryNodeCreationPage(Category $category)
     {
         $expectedAddress = $this->getPage('Category node creation')->getUrl(array('id' => $category->getId()));
-        echo "Should be on $expectedAddress\n";
         $this->assertAddress($expectedAddress);
     }
 
@@ -321,7 +319,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
      *
      * @return void
      */
-    private function wait($time = 50000, $condition = null)
+    private function wait($time = 5000, $condition = null)
     {
         $this->getMainContext()->wait($time, $condition);
     }

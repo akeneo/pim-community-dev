@@ -1131,12 +1131,12 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @Given /^I blur (.*)$/
+     * @Given /^I blur the category node$/
      */
-    public function iBlur()
+    public function iBlurTheCategoryNode()
     {
         $this->getCurrentPage()->find('css', 'body')->click();
-        $this->wait();
+        // Wait for the loading to finish
         $this->wait();
     }
 
@@ -1665,7 +1665,7 @@ class WebUser extends RawMinkContext
      *
      * @return void
      */
-    private function wait($time = 50000, $condition = null)
+    private function wait($time = 5000, $condition = null)
     {
         $this->getMainContext()->wait($time, $condition);
     }

@@ -129,6 +129,9 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
      */
     public function wait($time = 5000, $condition = null)
     {
+        $start = microtime(true);
+        $end = $start + $time / 1000.0;
+
         $condition = $condition !== null ? $condition : <<<JS
         document.readyState == 'complete'                  // Page is ready
             && typeof $ != 'undefined'                     // jQuery is loaded
@@ -145,8 +148,7 @@ JS;
             $this->getSession()->wait($time, $condition);
 
             // Check if we reached the timeout or if the condition is really realized
-            if ($condition !== false &&
-                $this->getSession()->evaluateScript("return $condition;") !== true) {
+            if ($condition !== false && microtime(true) > $end) {
                 throw new BehaviorException("Timeout of $time reached when checking on $condition");
             }
         } catch (UnsupportedDriverActionException $e) {
