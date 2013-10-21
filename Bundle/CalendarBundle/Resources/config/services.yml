@@ -1,8 +1,9 @@
 parameters:
     oro_calendar.calendar.entity.class:                         Oro\Bundle\CalendarBundle\Entity\Calendar
+    oro_calendar.calendar_connection.entity.class:              Oro\Bundle\CalendarBundle\Entity\CalendarConnection
     oro_calendar.calendar_event.entity.class:                   Oro\Bundle\CalendarBundle\Entity\CalendarEvent
     oro_calendar.listener.entity_subscriber.class:              Oro\Bundle\CalendarBundle\EventListener\EntitySubscriber
-    oro_calendar.calendar.manager.api.class:                    Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
+    oro_calendar.calendar_connection.manager.api.class:         Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
     oro_calendar.calendar_event.manager.api.class:              Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
 
 services:
@@ -12,10 +13,10 @@ services:
         tags:
             - { name: doctrine.event_subscriber, connection: default }
 
-    oro_calendar.calendar.manager.api:
-        class: %oro_calendar.calendar.manager.api.class%
+    oro_calendar.calendar_connection.manager.api:
+        class: %oro_calendar.calendar_connection.manager.api.class%
         arguments:
-            - %oro_calendar.calendar.entity.class%
+            - %oro_calendar.calendar_connection.entity.class%
             - @doctrine.orm.entity_manager
 
     oro_calendar.calendar_event.manager.api:

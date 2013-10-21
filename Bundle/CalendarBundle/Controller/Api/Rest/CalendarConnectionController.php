@@ -52,7 +52,7 @@ class CalendarConnectionController extends FOSRestController implements
     public function getConnectionsAction($id)
     {
         $manager = $this->getManager();
-        /** @var CalendarRepository $repo */
+        /** @var CalendarConnectionRepository $repo */
         $repo = $manager->getRepository();
         $qb   = $repo->getConnectionsQueryBuilder($id);
 
@@ -104,16 +104,18 @@ class CalendarConnectionController extends FOSRestController implements
         }
 
         $manager = $this->getManager();
+        /** @var CalendarRepository $calendarRepo */
+        $calendarRepo = $manager->getObjectManager()->getRepository('OroCalendarBundle:Calendar');
 
         /** @var Calendar $calendar */
-        $calendar = $manager->find($id);
+        $calendar = $calendarRepo->find($id);
         if (!$calendar) {
             return $this->handleView($this->view(null, Codes::HTTP_NOT_FOUND));
         }
 
         $connectedCalendar = !empty($calendarId)
-            ? $manager->find($id)
-            : $manager->getRepository()->findByUser($ownerId);
+            ? $calendarRepo->find($id)
+            : $calendarRepo->findByUser($ownerId);
         if (!$connectedCalendar) {
             return $this->handleView($this->view(null, Codes::HTTP_NOT_FOUND));
         }
@@ -161,7 +163,7 @@ class CalendarConnectionController extends FOSRestController implements
     {
         $em = $this->getManager()->getObjectManager();
         /** @var CalendarConnectionRepository $repo */
-        $repo = $em->getRepository('OroCalendarBundle:CalendarConnection');
+        $repo = $this->getManager()->getRepository();
 
         $connection = $repo->findByRelation($id, $connectedId);
         if (!$connection) {
@@ -179,7 +181,7 @@ class CalendarConnectionController extends FOSRestController implements
      */
     public function getManager()
     {
-        return $this->get('oro_calendar.calendar.manager.api');
+        return $this->get('oro_calendar.calendar_connection.manager.api');
     }
 
     /**
