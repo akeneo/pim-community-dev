@@ -1,12 +1,12 @@
 <?php
 
-namespace Context\Page\Variant;
+namespace Context\Page\ProductGroup;
 
 use Behat\Mink\Exception\ElementNotFoundException;
 use Context\Page\Base\Form;
 
 /**
- * Variant creation page
+ * Group creation page
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -44,7 +44,7 @@ class Creation extends Form
      */
     public function findField($field)
     {
-        $label = $this->find('css', sprintf('#pim_catalog_variant_group_form label:contains("%s")', $field));
+        $label = $this->find('css', sprintf('#pim_catalog_group_form label:contains("%s")', $field));
 
         if (!$label) {
             throw new ElementNotFoundException($this->getSession(), 'form label ', 'value', $field);

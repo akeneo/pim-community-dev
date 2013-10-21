@@ -18,8 +18,6 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
  *
  * @ORM\Entity
  * @ORM\Table(name="pim_catalog_group")
- * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="discr", type="string")
  * @Config(
  *  defaultValues={
  *      "entity"={"label"="Group", "plural_label"="Groups"},
@@ -69,6 +67,18 @@ class Group implements TranslatableInterface
     protected $products;
 
     /**
+     * @var ArrayCollection $attributes
+     *
+     * @ORM\ManyToMany(targetEntity="Pim\Bundle\CatalogBundle\Entity\ProductAttribute")
+     * @ORM\JoinTable(
+     *     name="pim_catalog_group_attribute",
+     *     joinColumns={@ORM\JoinColumn(name="group_id", referencedColumnName="id")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="attribute_id", referencedColumnName="id")}
+     * )
+     */
+    protected $attributes;
+
+    /**
      * Used locale to override Translation listener's locale
      * this is not a mapped field of entity metadata, just a simple property
      *
@@ -95,6 +105,7 @@ class Group implements TranslatableInterface
     {
         $this->products     = new ArrayCollection();
         $this->translations = new ArrayCollection();
+        $this->attributes   = new ArrayCollection();
     }
 
     /**
@@ -305,6 +316,63 @@ class Group implements TranslatableInterface
         $this->products = new ArrayCollection($products);
 
         return $this;
+    }
+
+    /**
+     * Add attribute
+     *
+     * @param ProductAttribute $attribute
+     *
+     * @return VariantGroup
+     */
+    public function addAttribute(ProductAttribute $attribute)
+    {
+        if (!$this->attributes->contains($attribute)) {
+            $this->attributes[] = $attribute;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove attribute
+     *
+     * @param ProductAttribute $attribute
+     *
+     * @return VariantGroup
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function removeAttribute(ProductAttribute $attribute)
+    {
+        $this->attributes->removeElement($attribute);
+
+        return $this;
+    }
+
+    /**
+     * Get attributes
+     *
+     * @return ArrayCollection
+     */
+    public function getAttributes()
+    {
+        return $this->attributes;
+    }
+
+    /**
+     * Get attribute ids
+     *
+     * @return integer[]
+     */
+    public function getAttributeIds()
+    {
+        return array_map(
+            function ($attribute) {
+                return $attribute->getId();
+            },
+            $this->getAttributes()->toArray()
+        );
     }
 
     /**

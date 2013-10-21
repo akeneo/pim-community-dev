@@ -80,6 +80,17 @@ class WebUser extends RawMinkContext
         $this->wait();
     }
 
+     /**
+      * @param string $entity
+      *
+      * @Given /^I create a new product group$/
+      */
+     public function iCreateANewProductGroup()
+     {
+         $entity = 'ProductGroup';
+         $this->iCreateANew($entity);
+     }
+
     /**
      * @param TableNode $pages
      *

@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 use Doctrine\ORM\AbstractQuery;
 use Oro\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Bundle\CatalogBundle\Entity\VariantGroup;
+use Pim\Bundle\CatalogBundle\Entity\Group;
 
 /**
  * Product repository
@@ -115,19 +115,17 @@ class ProductRepository extends FlexibleEntityRepository
     /**
      * Find all products in a variant group (by variant axis attribute values)
      *
-     * @param VariantGroup $variantGroup
-     * @param array        $criteria
+     * @param Group $variantGroup
+     * @param array $criteria
      *
      * @return array
      */
-    public function findAllForVariantGroup(VariantGroup $variantGroup, array $criteria = array())
+    public function findAllForVariantGroup(Group $variantGroup, array $criteria = array())
     {
         $qb = $this->createQueryBuilder('Product');
 
         $qb
-            ->where(
-                $qb->expr()->eq('Product.variantGroup', ':variantGroup')
-            )
+            ->where(':variantGroup MEMBER OF Product.groups')
             ->setParameter('variantGroup', $variantGroup);
 
         $i = 0;

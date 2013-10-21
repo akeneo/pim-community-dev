@@ -6,7 +6,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Oro\Bundle\FlexibleEntityBundle\Entity\Media;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Entity\Family;
-use Pim\Bundle\CatalogBundle\Entity\VariantGroup;
+use Pim\Bundle\CatalogBundle\Entity\Group;
 
 /**
  * A normalizer to transform a product entity into a flat array
@@ -46,7 +46,7 @@ class FlatProductNormalizer implements NormalizerInterface
     /**
      * @staticvar string
      */
-    const FIELD_VARIANT = 'variant_group';
+    const FIELD_GROUPS = 'groups';
 
     /**
      * @staticvar string
@@ -68,7 +68,7 @@ class FlatProductNormalizer implements NormalizerInterface
 
         $this->normalizeFamily($object->getFamily());
 
-        $this->normalizeVariantGroup($object->getVariantGroup());
+        $this->normalizeGroups($object->getGroupCodes());
 
         $values = array();
         foreach ($object->getValues() as $value) {
@@ -171,14 +171,14 @@ class FlatProductNormalizer implements NormalizerInterface
     }
 
     /**
-     * Normalizes a variant group
+     * Normalizes groups
      *
-     * @param VariantGroup $group
+     * @param Group[] $groups
      */
-    protected function normalizeVariantGroup(VariantGroup $group = null)
+    protected function normalizeGroups($groups = null)
     {
-        if (empty($this->fields) || isset($this->fields[self::FIELD_VARIANT])) {
-            $this->results[self::FIELD_VARIANT] = $group ? $group->getCode() : '';
+        if (empty($this->fields) || isset($this->fields[self::FIELD_GROUPS])) {
+            $this->results[self::FIELD_GROUPS] = $groups;
         }
     }
 
