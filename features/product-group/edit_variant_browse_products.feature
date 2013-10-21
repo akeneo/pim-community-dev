@@ -33,21 +33,21 @@ Feature: Edit a variant group adding/removing products
       | MUG_3   | size      | S     |
       | POSTIT  | color     | Blue  |
       | POSTIT  | size      | M     |
-    And the following variants:
+    And the following product groups:
       | code   | label      | attributes  | type    |
       | MUG    | MUG Akeneo | color       | VARIANT |
       | POSTIT | Postit     | color, size | VARIANT |
     And I am logged in as "admin"
 
-  Scenario: Successfully display the product datagrid when I edit a variant group
-    Given I am on the "MUG" variant page
+  Scenario: Successfully display the product datagrid when I edit a product group
+    Given I am on the "MUG" product group page
     Then the grid should contain 3 elements
     And I should see products MUG_1, MUG_2 and POSTIT
     And I should not see product MUG_3
     And I should see the columns Has product, SKU, Color, Family, Created at and Updated at
 
-  Scenario: Successfully display the product datagrid when I edit a variant group with 2 axes
-    Given I am on the "POSTIT" variant page
+  Scenario: Successfully display the product datagrid when I edit a product group with 2 axes
+    Given I am on the "POSTIT" product group page
     Then the grid should contain 2 elements
     And I should see products MUG_1 and POSTIT
     And I should not see products MUG_2 and MUG_3
