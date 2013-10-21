@@ -50,6 +50,11 @@ class MutableAclProvider extends BaseMutableAclProvider
 
     }
 
+    public function clearOidCache(ObjectIdentityInterface $oid)
+    {
+        $this->cache->evictFromCacheByIdentity($oid);
+    }
+
     /**
      * Put in cache empty ACL object for given OID
      *
@@ -57,7 +62,7 @@ class MutableAclProvider extends BaseMutableAclProvider
      */
     public function cacheEmptyAcl(ObjectIdentityInterface $oid)
     {
-        $this->cache->putInCache(new Acl(1, $oid, $this->permissionStrategy, array(), true));
+        $this->cache->putInCache(new Acl(0, $oid, $this->permissionStrategy, array(), true));
     }
 
     /**
