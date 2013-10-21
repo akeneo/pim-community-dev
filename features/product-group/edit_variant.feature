@@ -59,7 +59,7 @@ Feature: Edit a variant group
 
   @insulated
   Scenario: Successfully have a confirmation popup when I change page with unsaved changes
-    Given I am on the "MUG" variant page
+    Given I am on the "MUG" product group page
     When I fill in the following information:
       | English (United States) | Mug |
     And I click on the Akeneo logo
