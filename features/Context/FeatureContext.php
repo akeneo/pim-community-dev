@@ -139,8 +139,12 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
 JS;
 
         try {
+            // Make sure the AJAX call are fired up before checking the condition
+            $this->getSession()->wait(100, false);
+
             $this->getSession()->wait($time, $condition);
-            if ($this->getSession()->evaluateScript("return $condition;") !== true) {
+            if (!empty($condition) && 
+                $this->getSession()->evaluateScript("return $condition;") !== true) {
                 throw new BehaviorException("Timeout of $time reached when checking on $condition");
             }
         } catch (UnsupportedDriverActionException $e) {
