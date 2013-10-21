@@ -50,6 +50,11 @@ class MutableAclProvider extends BaseMutableAclProvider
 
     }
 
+    /**
+     * Clear cache by $oid
+     *
+     * @param ObjectIdentityInterface $oid
+     */
     public function clearOidCache(ObjectIdentityInterface $oid)
     {
         $this->cache->evictFromCacheByIdentity($oid);
