@@ -143,7 +143,9 @@ JS;
             $this->getSession()->wait(100, false);
 
             $this->getSession()->wait($time, $condition);
-            if (!empty($condition) && 
+
+            // Check if we reached the timeout or if the condition is really realized
+            if ($condition !== false &&
                 $this->getSession()->evaluateScript("return $condition;") !== true) {
                 throw new BehaviorException("Timeout of $time reached when checking on $condition");
             }
