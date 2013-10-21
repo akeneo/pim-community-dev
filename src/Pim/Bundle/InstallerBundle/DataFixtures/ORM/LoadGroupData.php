@@ -7,8 +7,6 @@ use Symfony\Component\Yaml\Yaml;
 use Doctrine\Common\Persistence\ObjectManager;
 
 use Pim\Bundle\CatalogBundle\Entity\Group;
-use Pim\Bundle\CatalogBundle\Entity\VariantGroup;
-use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\CatalogBundle\Entity\GroupTranslation;
 use Pim\Bundle\InstallerBundle\DataFixtures\ORM\AbstractInstallerFixture;
 

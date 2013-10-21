@@ -46,9 +46,10 @@ class JavascriptRegExpTranslatorTest extends \PHPUnit_Framework_TestCase
     /**
      * Tests translate
      *
-     * @dataProvider getTranslateData
      * @param string $phpRegexp
      * @param string $javascriptRegexp
+     *
+     * @dataProvider getTranslateData
      */
     public function testTranslate($phpRegexp, $javascriptRegexp)
     {
@@ -76,9 +77,10 @@ class JavascriptRegExpTranslatorTest extends \PHPUnit_Framework_TestCase
     /**
      * Test unsupported regexps
      *
+     * @param string $phpRegexp
+     *
      * @expectedException Pim\Bundle\GridBundle\Exception\JavascriptRegexpTranslatorException
      * @dataProvider getTranslateExceptionData
-     * @param string $phpRegexp
      */
     public function testTranslateException($phpRegexp)
     {
