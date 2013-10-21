@@ -138,11 +138,16 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
             && $('.jstree-loading').length == 0;           // Jstree has finished loading
 JS;
 
-        $this->getSession()->wait($time, $condition);
-
-        if ($this->getSession()->evaluateScript("return $condition;") !== true) {
-            throw new BehaviorException("Timeout of $time reached when checking on $condition");
+        try {
+            $this->getSession()->wait($time, $condition);
+            if ($this->getSession()->evaluateScript("return $condition;") !== true) {
+                throw new BehaviorException("Timeout of $time reached when checking on $condition");
+            }
+        } catch (UnsupportedDriverActionException $e) {
+            // Some test use only the KernelDriver, and not Selenium, so no JS available
+            // Fixme: we should check before hand if JS is available !
         }
+
     }
 
     /**
