@@ -52,5 +52,17 @@ class GroupSubscriber implements EventSubscriberInterface
                 'label'    => 'Axis'
             )
         );
+
+        $form->add(
+            'type',
+            'entity',
+            array(
+                'disabled' => true,
+                'class' => 'PimCatalogBundle:GroupType',
+                'multiple' => false,
+                'expanded' => false
+            )
+        );
+
     }
 }
