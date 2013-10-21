@@ -65,9 +65,6 @@ oro_menu_config:
         pim_catalog_channel:
             label: Channels
             route: pim_catalog_channel_index
-        pim_enrich_variantgroup:
-            label: Variant groups
-            route: pim_catalog_variant_group_index
         pim_enrich_group:
             label: Groups
             route: pim_catalog_group_index
@@ -99,7 +96,6 @@ oro_menu_config:
                     children:
                         pim_enrich_product: ~
                         pim_enrich_categorytree: ~
-                        pim_enrich_variantgroup: ~
                         pim_enrich_group: ~
 
                 pim_configuration_tab:
@@ -136,9 +132,6 @@ oro_titles:
     pim_catalog_currency_index:          Currencies
     pim_catalog_locale_index:            Locales
     pim_catalog_locale_edit:             Locales %%locale.code%% | Edit
-    pim_catalog_variant_group_index:     Variant groups
-    pim_catalog_variant_group_create:    Variant groups | Create
-    pim_catalog_variant_group_edit:      Variant groups %%variant.label%% | Edit
     pim_catalog_group_index:             Groups
     pim_catalog_group_create:            Groups | Create
     pim_catalog_group_edit:              Groups %%group.label%% | Edit

@@ -1,11 +1,12 @@
 @javascript
-Feature: Edit a variant group
-  In order to manage existing variant groups for the catalog
+Feature: Delete a product group
+  In order to manager product groups for the catalog
   As a user
-  I need to be able to edit a variant group
+  I need to be able to delete groups
 
   Background:
-    Given the following families:
+    Given there is no product group
+    And the following families:
       | code      | label     |
       | mug       | Mug       |
       | furniture | Furniture |
@@ -33,37 +34,22 @@ Feature: Edit a variant group
       | MUG_3   | size      | S     |
       | POSTIT  | color     | Blue  |
       | POSTIT  | size      | M     |
-    And the following variants:
+    And the following product groups:
       | code   | label      | attributes  | type    |
       | MUG    | MUG Akeneo | color       | VARIANT |
       | POSTIT | Postit     | color, size | VARIANT |
     And I am logged in as "admin"
 
-  Scenario: Successfully display the edit view for a variant group
-    Given I am on the "MUG" variant page
-    Then I should see the Code and Axis fields
-    And the fields Code and Axis should be disabled
+  Scenario: Successfully delete a product group from the grid
+    Given I am on the product groups page
+    And I should see group MUG
+    When I click on the "Delete" action of the row which contains "MUG"
+    And I confirm the deletion
+    Then I should not see product group MUG
 
-  Scenario: Successfully edit a variant group
-    Given I am on the "MUG" variant page
-    When I fill in the following information:
-      | English (United States) | My Mug |
-    And I press the "Save" button
-    Then I should see "My Mug"
-
-  Scenario: Successfully display a message when there are unsaved changes
-    Given I am on the "MUG" variant page
-    When I fill in the following information:
-      | English (United States) | Mug |
-    Then I should see "There are unsaved changes."
-
-  @insulated
-  Scenario: Successfully have a confirmation popup when I change page with unsaved changes
-    Given I am on the "MUG" variant page
-    When I fill in the following information:
-      | English (United States) | Mug |
-    And I click on the Akeneo logo
-    Then I should see a confirm dialog with the following content:
-      | title   | Are you sure you want to leave this page?                          |
-      | content | You will lose changes to the variant group if you leave this page. |
-    And I confirm the message
+  Scenario: Successfully delete a product group
+    Given I edit the "POSTIT" product group
+    When I press the "Delete" button
+    And I confirm the deletion
+    Then the grid should contain 1 element
+    And I should not see group "POSTIT"

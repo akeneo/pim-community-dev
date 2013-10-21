@@ -14,7 +14,6 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
  *
  * @ORM\Entity(repositoryClass="Pim\Bundle\CatalogBundle\Entity\Repository\GroupTypeRepository")
  * @ORM\Table(name="pim_catalog_group_type")
- * @ORM\DiscriminatorColumn(name="discr", type="string")
  * @Config(
  *  defaultValues={
  *      "entity"={"label"="Group type", "plural_label"="Group types"},
@@ -46,9 +45,9 @@ class GroupType
     /**
      * @var string $entity
      *
-     * @ORM\Column(name="entity", type="string", length=255)
+     * @ORM\Column(name="is_variant", type="boolean")
      */
-    protected $entity;
+    protected $variant;
 
     /**
      * Get the id
@@ -85,25 +84,25 @@ class GroupType
     }
 
     /**
-     * Get entity
+     * Is variant
      *
-     * @return string $entity
+     * @return boolean
      */
-    public function getEntity()
+    public function isVariant()
     {
-        return $this->entity;
+        return $this->variant;
     }
 
     /**
-     * Set entity
+     * Set variant
      *
-     * @param string $entity
+     * @param boolean $variant
      *
      * @return GroupType
      */
-    public function setEntity($entity)
+    public function setVariant($variant)
     {
-        $this->entity = $entity;
+        $this->variant = $variant;
 
         return $this;
     }

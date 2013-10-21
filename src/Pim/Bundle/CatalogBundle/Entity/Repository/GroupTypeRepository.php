@@ -14,14 +14,11 @@ use Pim\Bundle\CatalogBundle\Doctrine\EntityRepository;
 class GroupTypeRepository extends EntityRepository
 {
     /**
-     * @param string $className
-     *
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function buildAllByEntity($className)
+    public function buildAll()
     {
-        return $this->build()->where('group_type.entity = :entity')
-            ->setParameter('entity', $className)
+        return $this->build()
             ->addOrderBy('group_type.code', 'ASC');
     }
 }

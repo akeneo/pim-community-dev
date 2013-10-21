@@ -1,12 +1,11 @@
 @javascript
-Feature: Delete a variant group
-  In order to manager variant groups for the catalog
+Feature: Edit a variant group adding/removing products
+  In order to manage existing variant groups for the catalog
   As a user
-  I need to be able to delete variants
+  I need to be able to add and remove product from a variant group
 
   Background:
-    Given there is no variant
-    And the following families:
+    Given the following families:
       | code      | label     |
       | mug       | Mug       |
       | furniture | Furniture |
@@ -34,22 +33,22 @@ Feature: Delete a variant group
       | MUG_3   | size      | S     |
       | POSTIT  | color     | Blue  |
       | POSTIT  | size      | M     |
-    And the following variants:
+    And the following product groups:
       | code   | label      | attributes  | type    |
       | MUG    | MUG Akeneo | color       | VARIANT |
       | POSTIT | Postit     | color, size | VARIANT |
     And I am logged in as "admin"
 
-  Scenario: Successfully delete a variant from the grid
-    Given I am on the variants page
-    And I should see variant MUG
-    When I click on the "Delete" action of the row which contains "MUG"
-    And I confirm the deletion
-    Then I should not see variant MUG
+  Scenario: Successfully display the product datagrid when I edit a product group
+    Given I am on the "MUG" product group page
+    Then the grid should contain 3 elements
+    And I should see products MUG_1, MUG_2 and POSTIT
+    And I should not see product MUG_3
+    And I should see the columns Has product, SKU, Color, Family, Created at and Updated at
 
-  Scenario: Successfully delete a variant
-    Given I edit the "POSTIT" variant
-    When I press the "Delete" button
-    And I confirm the deletion
-    Then the grid should contain 1 element
-    And I should not see variant "POSTIT"
+  Scenario: Successfully display the product datagrid when I edit a product group with 2 axes
+    Given I am on the "POSTIT" product group page
+    Then the grid should contain 2 elements
+    And I should see products MUG_1 and POSTIT
+    And I should not see products MUG_2 and MUG_3
+    And I should see the columns Has product, SKU, Color, Size, Family, Created at and Updated at

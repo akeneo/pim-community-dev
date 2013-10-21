@@ -48,7 +48,7 @@ class LoadGroupTypeData extends AbstractInstallerFixture
     {
         $type = new GroupType();
         $type->setCode($code);
-        $type->setEntity($data['entity']);
+        $type->setVariant($data['is_variant']);
 
         return $type;
     }
