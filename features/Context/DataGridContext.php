@@ -2,6 +2,7 @@
 
 namespace Context;
 
+use Behat\Behat\Context\Step\Then;
 use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
@@ -73,7 +74,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iFilterPerCategory($code)
     {
-        $category = $this->getWebUserContext()->getCategory($code);
+        $category = $this->getFixturesContext()->getCategory($code);
         $this->getPage('Product index')->clickCategoryFilterLink($category);
         $this->wait();
     }
@@ -259,6 +260,35 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $columns
+     *
+     * @Then /^I should be able to sort the rows by (.*)$/
+     *
+     * @return Then[]
+     */
+    public function iShouldBeAbleToSortTheRowsBy($columns)
+    {
+        $steps = array(
+            new Then(sprintf('the rows should be sortable by %s', $columns))
+        );
+        $columns = $this->getMainContext()->listToArray($columns);
+
+        foreach ($columns as $column) {
+            $values = $this->datagrid->getValuesInColumn($column);
+
+            sort($values);
+            $steps[] = new Then(sprintf('I sort by "%s" value ascending', $column));
+            $steps[] = new Then(sprintf('I should see sorted entities %s', implode(', ', $values)));
+
+            rsort($values);
+            $steps[] = new Then(sprintf('I sort by "%s" value descending', $column));
+            $steps[] = new Then(sprintf('I should see sorted entities %s', implode(', ', $values)));
+        }
+
+        return $steps;
+    }
+
+    /**
      * @param string $columnName
      * @param string $order
      *
@@ -394,7 +424,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param array $elements
+     * @param string $elements
      *
      * @throws \InvalidArgumentException
      *
@@ -512,9 +542,17 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     /**
      * @return \Behat\Behat\Context\ExtendedContextInterface
      */
-    private function getWebUserContext()
+    private function getNavigationContext()
     {
-        return $this->getMainContext()->getSubcontext('webUser');
+        return $this->getMainContext()->getSubcontext('navigation');
+    }
+
+    /**
+     * @return \Behat\Behat\Context\ExtendedContextInterface
+     */
+    private function getFixturesContext()
+    {
+        return $this->getMainContext()->getSubcontext('fixtures');
     }
 
     /**
@@ -524,6 +562,6 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function getPage($name)
     {
-        return $this->getWebUserContext()->getPage($name);
+        return $this->getNavigationContext()->getPage($name);
     }
 }

@@ -7,11 +7,7 @@ use Behat\Mink\Exception\ExpectationException;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Behat\Context\Step;
-use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
-use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
-use Oro\Bundle\BatchBundle\Entity\JobInstance;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
-use Pim\Bundle\CatalogBundle\Entity\Association;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Product;
@@ -23,39 +19,11 @@ use Pim\Bundle\CatalogBundle\Entity\Product;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class WebUser extends RawMinkContext implements PageObjectAwareInterface
+class WebUser extends RawMinkContext
 {
-    private $pageFactory = null;
-
-    private $currentPage = null;
-
-    private $username = null;
-
-    private $password = null;
-
     private $windowWidth;
 
     private $windowHeight;
-
-    private $pageMapping = array(
-        'associations'             => 'Association index',
-        'attributes'               => 'Attribute index',
-        'categories'               => 'Category tree creation',
-        'channels'                 => 'Channel index',
-        'currencies'               => 'Currency index',
-        'exports'                  => 'Export index',
-        'families'                 => 'Family index',
-        'home'                     => 'Base index',
-        'imports'                  => 'Import index',
-        'locales'                  => 'Locale index',
-        'products'                 => 'Product index',
-        'users'                    => 'User index',
-        'user roles'               => 'UserRole index',
-        'user groups'              => 'UserGroup index',
-        'product groups'           => 'ProductGroup index',
-        'attribute groups'         => 'AttributeGroup index',
-        'attribute group creation' => 'AttributeGroup creation',
-    );
 
     /**
      * Constructor
@@ -84,25 +52,9 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     /**
      * @BeforeScenario
      */
-    public function resetCurrentPage()
-    {
-        $this->currentPage = null;
-    }
-
-    /**
-     * @BeforeScenario
-     */
     public function clearRecordedMails()
     {
         $this->getMailRecorder()->clear();
-    }
-
-    /**
-     * @param PageFactory $pageFactory
-     */
-    public function setPageFactory(PageFactory $pageFactory)
-    {
-        $this->pageFactory = $pageFactory;
     }
 
     /**
@@ -112,82 +64,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function getPage($name)
     {
-        if (null === $this->pageFactory) {
-            throw new \RuntimeException('To create pages you need to pass a factory with setPageFactory()');
-        }
-
-        $name = implode('\\', array_map('ucfirst', explode(' ', $name)));
-
-        return $this->pageFactory->createPage($name);
-    }
-
-    /**
-     * @param string $username
-     *
-     * @Given /^I am logged in as "([^"]*)"$/
-     */
-    public function iAmLoggedInAs($username)
-    {
-        $password = $username;
-        $this->getFixturesContext()->getOrCreateUser($username, $password);
-
-        $this->username = $username;
-        $this->password = $password;
-    }
-
-    /**
-     * @param string $page
-     *
-     * @Given /^I am on the ([^"]*) page$/
-     */
-    public function iAmOnThePage($page)
-    {
-        $page = isset($this->pageMapping[$page]) ? $this->pageMapping[$page] : $page;
-        $this->openPage($page);
-        $this->wait();
-    }
-
-    /**
-     * @param string $identifier
-     * @param string $page
-     *
-     * @Given /^I edit the "([^"]*)" (\w+)$/
-     * @Given /^I am on the "([^"]*)" (\w+) page$/
-     */
-    public function iAmOnTheEntityEditPage($identifier, $page)
-    {
-        $page = ucfirst($page);
-        $getter = sprintf('get%s', $page);
-        $entity = $this->getFixturesContext()->$getter($identifier);
-        $this->openPage(sprintf('%s edit', $page), array('id' => $entity->getId()));
-    }
-
-    /**
-     * @param string $identifier
-     *
-     * @Given /^I am on the "([^"]*)" attribute group page$/
-     * @Given /^I edit the "([^"]*)" attribute group$/
-     */
-    public function iAmOnTheAttributeGroupEditPage($identifier)
-    {
-        $page = 'AttributeGroup';
-        $getter = sprintf('get%s', $page);
-        $entity = $this->getFixturesContext()->$getter($identifier);
-        $this->openPage(sprintf('%s edit', $page), array('id' => $entity->getId()));
-    }
-
-    /**
-     * @param string $identifier
-     *
-     * @Given /^I am on the "([^"]*)" product group page$/
-     * @Given /^I edit the "([^"]*)" product group$/
-     */
-    public function iAmOnTheProductGroupEditPage($identifier)
-    {
-        $page = 'ProductGroup';
-        $getter = sprintf('get%s', $page);
-        $entity = $this->getFixturesContext()->$getter($identifier);
-        $this->openPage(sprintf('%s edit', $page), array('id' => $entity->getId()));
+        return $this->getNavigationContext()->getPage($name);
     }
 
     /**
@@ -199,29 +76,8 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     {
         $entity = ucfirst($entity);
         $this->getPage(sprintf('%s index', $entity))->clickCreationLink();
-        $this->currentPage = sprintf('%s creation', $entity);
+        $this->getNavigationContext()->currentPage = sprintf('%s creation', $entity);
         $this->wait();
-    }
-
-    /**
-     * @param string $entity
-     *
-     * @Given /^I create a new product group$/
-     */
-    public function iCreateANewProductGroup()
-    {
-        $entity = 'ProductGroup';
-        $this->iCreateANew($entity);
-    }
-
-    /**
-     * @param Category $category
-     *
-     * @Given /^I am on the (category "([^"]*)") node creation page$/
-     */
-    public function iAmOnTheCategoryNodeCreationPage(Category $category)
-    {
-        $this->openPage('Category node creation', array('id' => $category->getId()));
     }
 
     /**
@@ -324,16 +180,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $page
-     *
-     * @Then /^I should be redirected on the (.*) page$/
-     */
-    public function iShouldBeRedirectedOnThePage($page)
-    {
-        $this->assertAddress($this->getPage($page)->getUrl());
-    }
-
-    /**
      * @param string $tab
      *
      * @Given /^I visit the "([^"]*)" tab$/
@@ -399,23 +245,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iDeactivateTheCurrency($currencies)
     {
         $this->getPage('Currency index')->deactivateCurrencies($this->listToArray($currencies));
-        $this->wait();
-    }
-
-    /**
-     * @Given /^I should be on the locales page$/
-     */
-    public function iShouldBeOnTheLocalesPage()
-    {
-        $this->assertAddress($this->getPage('Locale index')->getUrl());
-    }
-
-    /**
-     * @Given /^I should be on the locale creation page$/
-     */
-    public function iShouldBeOnTheLocaleCreationPage()
-    {
-        $this->openPage('Locale creation');
         $this->wait();
     }
 
@@ -593,13 +422,13 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function attributesInGroupShouldBe($group, $attributes)
     {
-        $page       = $this->getPage('Product edit');
+        $page       = $this->getCurrentPage();
         $attributes = $this->listToArray($attributes);
         $page->visitGroup($group);
 
         $group = $this->getFixturesContext()->getAttributeGroup($group) ?: AttributeGroup::DEFAULT_GROUP_CODE;
 
-        if (count($attributes) !== $actual = $this->getPage('Product edit')->getFieldsCountFor($group)) {
+        if (count($attributes) !== $actual = $page->getFieldsCountFor($group)) {
             throw $this->createExpectationException(
                 sprintf(
                     'Expected to see %d fields in group "%s", actually saw %d',
@@ -614,7 +443,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
             function ($field) {
                 return str_replace('*', '', $field->getText());
             },
-            $this->getPage('Product edit')->getFieldsForGroup($group)
+            $page->getFieldsForGroup($group)
         );
 
         if (count(array_diff($attributes, $labels))) {
@@ -636,29 +465,11 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function theTitleOfTheProductShouldBe($title)
     {
-        if ($title !== $actual = $this->getPage('Product edit')->getTitle()) {
+        if ($title !== $actual = $this->getCurrentPage()->getTitle()) {
             throw $this->createExpectationException(
                 sprintf(
                     'Expected product title "%s", actually saw "%s"',
                     $title,
-                    $actual
-                )
-            );
-        }
-    }
-
-    /**
-     * @param string $pattern
-     *
-     * @Then /^the title of the product should match "([^"]*)"$/
-     */
-    public function theTitleOfTheProductShouldMatch($pattern)
-    {
-        if (1 !== preg_match($pattern, $actual = $this->getPage('Product edit')->getTitle())) {
-            throw $this->createExpectationException(
-                sprintf(
-                    'Expected product title to match "%s", actually saw "%s"',
-                    $pattern,
                     $actual
                 )
             );
@@ -674,7 +485,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function theProductFieldValueShouldBe($fieldName, $expected = '')
     {
-        $actual = $this->getPage('Product edit')->findField($fieldName)->getValue();
+        $actual = $this->getCurrentPage()->findField($fieldName)->getValue();
 
         if ($expected !== $actual) {
             throw $this->createExpectationException(
@@ -710,7 +521,9 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
             }
         }
 
-        $value = $value ?: $this->getInvalidValueFor(sprintf('%s.%s', $this->currentPage, $field));
+        $value = $value ?: $this->getInvalidValueFor(
+            sprintf('%s.%s', $this->getNavigationContext()->currentPage, $field)
+        );
 
         return $this->getCurrentPage()->fillField($field, $value);
     }
@@ -798,39 +611,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
                 )
             );
         }
-    }
-
-    /**
-     * @param AttributeGroup $group
-     *
-     * @Given /^I should be on the ("([^"]*)" attribute group) page$/
-     */
-    public function iShouldBeOnTheAttributeGroupPage(AttributeGroup $group)
-    {
-        $expectedAddress = $this->getPage('AttributeGroup edit')->getUrl(array('id' => $group->getId()));
-        $this->assertAddress($expectedAddress);
-    }
-
-    /**
-     * @param Family $family
-     *
-     * @Given /^I should be on the ("([^"]*)" family) page$/
-     */
-    public function iShouldBeOnTheFamilyPage(Family $family)
-    {
-        $expectedAddress = $this->getPage('Family edit')->getUrl(array('id' => $family->getId()));
-        $this->assertAddress($expectedAddress);
-    }
-
-    /**
-     * @param Association $association
-     *
-     * @Given /^I should be on the ("([^"]*)" association) page$/
-     */
-    public function iShouldBeOnTheAssociationPage(Association $association)
-    {
-        $expectedAddress = $this->getPage('Association edit')->getUrl(array('id' => $association->getId()));
-        $this->assertAddress($expectedAddress);
     }
 
     /**
@@ -1322,28 +1102,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param Category $category
-     *
-     * @Then /^I should be on the (category "([^"]*)") edit page$/
-     */
-    public function iShouldBeOnTheCategoryEditPage(Category $category)
-    {
-        $expectedAddress = $this->getPage('Category edit')->getUrl(array('id' => $category->getId()));
-        $this->assertAddress($expectedAddress);
-    }
-
-    /**
-     * @param Category $category
-     *
-     * @Given /^I should be on the (category "([^"]*)") node creation page$/
-     */
-    public function iShouldBeOnTheCategoryNodeCreationPage(Category $category)
-    {
-        $expectedAddress = $this->getPage('Category node creation')->getUrl(array('id' => $category->getId()));
-        $this->assertAddress($expectedAddress);
-    }
-
-    /**
      * @param string $right
      * @param string $category
      *
@@ -1391,7 +1149,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     {
         $this->getPage('Export index')->clickExportCreationLink($exportTitle);
         $this->wait();
-        $this->currentPage = 'Export creation';
+        $this->getNavigationContext()->currentPage = 'Export creation';
     }
 
     /**
@@ -1411,7 +1169,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     {
         $this->getPage('Import index')->clickImportCreationLink($importTitle);
         $this->wait();
-        $this->currentPage = 'Import creation';
+        $this->getNavigationContext()->currentPage = 'Import creation';
     }
 
     /**
@@ -1420,28 +1178,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     public function iTryToCreateAnUnknownImport()
     {
         $this->openPage('Import creation');
-    }
-
-    /**
-     * @param JobInstance $job
-     *
-     * @Given /^I am on the ("([^"]*)" import job) page$/
-     */
-    public function iAmOnTheImportJobPage(JobInstance $job)
-    {
-        $this->openPage('Import show', array('id' => $job->getId()));
-        $this->wait();
-    }
-
-    /**
-     * @param JobInstance $job
-     *
-     * @Given /^I am on the ("([^"]*)" export job) page$/
-     */
-    public function iAmOnTheExportJobPage(JobInstance $job)
-    {
-        $this->openPage('Export show', array('id' => $job->getId()));
-        $this->wait();
     }
 
     /**
@@ -1474,16 +1210,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         if ($this->getCurrentPage()->findLink($link)) {
             throw $this->createExpectationException(sprintf('Link %s should not be displayed', $link));
         }
-    }
-
-    /**
-     * @param JobInstance $job
-     *
-     * @When /^I launch the ("([^"]*)" export job)$/
-     */
-    public function iLaunchTheExportJob(JobInstance $job)
-    {
-        $this->openPage('Export launch', array('id' => $job->getId()));
     }
 
     /**
@@ -1769,7 +1495,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iChooseTheOperation($operation)
     {
-        $this->currentPage = $this
+        $this->getNavigationContext()->currentPage = $this
             ->getPage('Batch Operation')
             ->chooseOperation($operation)
             ->next();
@@ -1873,16 +1599,6 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $expected
-     */
-    private function assertAddress($expected)
-    {
-        $actual = $this->getSession()->getCurrentUrl();
-        $result = strpos($actual, $expected) !== false;
-        assertTrue($result, sprintf('Expecting to be on page "%s", not "%s"', $expected, $actual));
-    }
-
-    /**
      * @param string $page
      * @param array  $options
      *
@@ -1890,10 +1606,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     private function openPage($page, array $options = array())
     {
-        $this->currentPage = $page;
-
-        $page = $this->getCurrentPage()->open($options);
-        $this->loginIfRequired();
+        $page = $this->getNavigationContext()->openPage($page, $options);
         $this->wait();
 
         return $page;
@@ -1904,20 +1617,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
      */
     private function getCurrentPage()
     {
-        return $this->getPage($this->currentPage);
-    }
-
-    /**
-     * A method that logs the user in with the previously provided credentials if required by the page
-     */
-    private function loginIfRequired()
-    {
-        $loginForm = $this->getCurrentPage()->find('css', '.form-signin');
-        if ($loginForm) {
-            $loginForm->fillField('_username', $this->username);
-            $loginForm->fillField('_password', $this->password);
-            $loginForm->pressButton('Log in');
-        }
+        return $this->getNavigationContext()->getCurrentPage();
     }
 
     /**
@@ -1976,6 +1676,14 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     private function getFixturesContext()
     {
         return $this->getMainContext()->getSubcontext('fixtures');
+    }
+
+    /**
+     * @return NavigationContext
+     */
+    private function getNavigationContext()
+    {
+        return $this->getMainContext()->getSubcontext('navigation');
     }
 
     /**
