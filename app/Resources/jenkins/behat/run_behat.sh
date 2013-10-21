@@ -105,7 +105,7 @@ for FEATURE in $FEATURES; do
 done
 
 # Check the output
-cat $OUTPUT | grep "failed steps"
+cat $OUTPUT | grep "failed steps" > /dev/null
 
 if [ $? -eq 0 ]; then
     rm $OUTPUT
