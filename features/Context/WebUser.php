@@ -204,6 +204,17 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $entity
+     *
+     * @Given /^I create a new product group$/
+     */
+    public function iCreateANewProductGroup()
+    {
+        $entity = 'ProductGroup';
+        $this->iCreateANew($entity);
+    }
+
+    /**
      * @param Category $category
      *
      * @Given /^I am on the (category "([^"]*)") node creation page$/

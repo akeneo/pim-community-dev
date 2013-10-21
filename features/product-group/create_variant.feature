@@ -43,7 +43,7 @@ Feature: Variant group creation
     And I fill in the following information:
       | Code | =( |
     And I press the "Save" button
-    Then I should see validation error "Variant group code may contain only letters, numbers and underscores."
+    Then I should see validation error "Group code may contain only letters, numbers and underscores."
 
   Scenario: Fail to create a variant filling an already used code
     Given I am on the product groups page
