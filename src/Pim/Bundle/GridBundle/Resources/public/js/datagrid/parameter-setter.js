@@ -8,7 +8,7 @@ define(
          */
         return {
 
-            setParameter: function(datagridName, parameterName, parameterValue) {
+            setParameter: function(datagridName, parameterName, parameterValue, refresh) {
                 if (!datagridName) {
                     throw new Error('Datagrid name is not specified');
                 }
@@ -16,14 +16,20 @@ define(
                 var datagrid = registry.getElement('datagrid', datagridName);
                 if (datagrid) {
                     datagrid.setAdditionalParameter(parameterName, parameterValue);
+                    if (refresh === true) {
+                        datagrid.getRefreshAction().execute();
+                    }
                 } else {
                     mediator.once("datagrid:created:" + datagridName, function(datagrid) {
                         datagrid.setAdditionalParameter(parameterName, parameterValue);
+                        if (refresh === true) {
+                            datagrid.getRefreshAction().execute();
+                        }
                     }, this);
                 }
             },
 
-            removeParameter: function(datagridName, parameterName) {
+            removeParameter: function(datagridName, parameterName, refresh) {
                 if (!datagridName) {
                     throw new Error('Datagrid name is not specified');
                 }
@@ -31,9 +37,15 @@ define(
                 var datagrid = registry.getElement('datagrid', datagridName);
                 if (datagrid) {
                     datagrid.removeAdditionalParameter(parameterName);
+                    if (refresh === true) {
+                        datagrid.getRefreshAction().execute();
+                    }
                 } else {
                     mediator.once("datagrid:created:" + datagridName, function(datagrid) {
                         datagrid.removeAdditionalParameter(parameterName);
+                        if (refresh === true) {
+                            datagrid.getRefreshAction().execute();
+                        }
                     }, this);
                 }
             }

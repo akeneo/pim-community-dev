@@ -18,8 +18,8 @@
 
     <script type="text/javascript">
         require(
-            ['jquery', 'underscore', 'oro/mediator', 'pim/tree/associate', 'pim/scopable', 'pim/formupdatelistener', 'pim/dialog', 'jquery.currencyfield'],
-            function($, _, mediator, TreeAssociate, Scopable, FormUpdateListener, Dialog){
+            ['jquery', 'underscore', 'oro/mediator', 'pim/tree/associate', 'pim/scopable', 'pim/formupdatelistener', 'pim/dialog', 'pim/datagrid/parameter-setter', 'jquery.currencyfield'],
+            function($, _, mediator, TreeAssociate, Scopable, FormUpdateListener, Dialog, Setter){
                 'use strict';
                 $(function() {
                     {% if resource_granted('pim_catalog_product_categories_view') %}
@@ -101,7 +101,8 @@
                     $('#association-list').on('click', 'a', function() {
                         $(this).parent().siblings('li').removeClass('active');
                         $(this).parent().addClass('active');
-                        // Association grid logic here
+                        var associationId = $(this).attr('id').replace('association-link-', '');
+                        Setter.setParameter('product_association', 'associationId', associationId, true);
                     });
 
                     $('a[data-toggle="tab"]').on('shown', setFullHeight);
