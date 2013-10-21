@@ -85,10 +85,10 @@ class InstallCommand extends ContainerAwareCommand
             ->runCommand('oro:entity-extend:clear', $output)
             ->runCommand('doctrine:schema:drop', $output, array('--force' => true, '--full-database' => true))
             ->runCommand('doctrine:schema:create', $output)
-            ->runCommand('doctrine:fixtures:load', $output, array('--no-interaction' => true))
             ->runCommand('oro:entity-config:init', $output)
             ->runCommand('oro:entity-extend:init', $output)
-            ->runCommand('oro:entity-extend:update-config', $output);
+            ->runCommand('oro:entity-extend:update-config', $output)
+            ->runCommand('doctrine:fixtures:load', $output, array('--no-interaction' => true, '--append' => true));
 
         $output->writeln('');
         $output->writeln('<info>Administration setup.</info>');

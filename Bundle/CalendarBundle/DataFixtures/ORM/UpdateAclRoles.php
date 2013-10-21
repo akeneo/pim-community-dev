@@ -42,13 +42,26 @@ class UpdateAclRoles extends AbstractFixture implements OrderedFixtureInterface,
 
     protected function updateUserRole(AclManager $manager)
     {
+        $sid = $manager->getSid($this->getReference('user_role'));
+
         // deny to view other user's calendar
-        // @todo: seems that data fixtures should be loader after EntityConfig initialization
-        // error: An ACL extension was not found for: entity:Oro\Bundle\CalendarBundle\Entity\CalendarConnection
-        // $sid = $manager->getSid($this->getReference('user_role'));
-        // $oid = $manager->getOid('entity:Oro\Bundle\CalendarBundle\Entity\CalendarConnection');
-        // $maskBuilder = $manager->getMaskBuilder($oid);
-        // $manager->setPermission($sid, $oid, $maskBuilder->get());
+        $oid = $manager->getOid('entity:Oro\Bundle\CalendarBundle\Entity\CalendarConnection');
+        $maskBuilder = $manager->getMaskBuilder($oid);
+        $manager->setPermission($sid, $oid, $maskBuilder->get());
+
+        // grant to manage own calendar events
+        $oid = $manager->getOid('entity:Oro\Bundle\CalendarBundle\Entity\CalendarEvent');
+        $maskBuilder = $manager->getMaskBuilder($oid)
+            // ->add('VIEW_BASIC')
+            // ->add('CREATE_BASIC')
+            // ->add('EDIT_BASIC')
+            // ->add('DELETE_BASIC');
+            // @todo now only SYSTEM level is supported
+            ->add('VIEW_SYSTEM')
+            ->add('CREATE_SYSTEM')
+            ->add('EDIT_SYSTEM')
+            ->add('DELETE_SYSTEM');
+        $manager->setPermission($sid, $oid, $maskBuilder->get());
     }
 
     /**
