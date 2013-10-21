@@ -13,6 +13,9 @@ use Pim\Bundle\GridBundle\Route\DatagridRouteRegistryBuilder;
  */
 class DatagridRouteRegistryBuilderTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @return array
+     */
     public function getTestData()
     {
         return array(
@@ -28,9 +31,10 @@ class DatagridRouteRegistryBuilderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider getTestData
      * @param array $input
      * @param array $expected
+     *
+     * @dataProvider getTestData
      */
     public function testGetRegexps($input, $expected)
     {

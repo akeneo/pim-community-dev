@@ -277,7 +277,7 @@ pim_catalog_association_remove:
     class: PimCatalogBundle:Association
     permission: DELETE
 
-# Locales 
+# Locales
 pim_catalog_locale_af_ZA:
     type: action
     label: Access to data related to locale af_ZA

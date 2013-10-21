@@ -42,7 +42,7 @@ class OrmProductWriter extends AbstractConfigurableStepElement implements
 
     /**
      * Entities which should not be cleared on flush
-     * 
+     *
      * @var array
      */
     protected $nonClearableEntities=array(
@@ -84,14 +84,14 @@ class OrmProductWriter extends AbstractConfigurableStepElement implements
     public function write(array $items)
     {
         $storageManager = $this->productManager->getStorageManager();
-        
+
         foreach ($items as $product) {
             $storageManager->persist($product);
             $this->stepExecution->incrementWriteCount();
         }
-        
+
         $storageManager->flush();
-        
+
         foreach ($storageManager->getUnitOfWork()->getIdentityMap() as $className => $entities) {
             if (count($entities) && !in_array($className, $this->nonClearableEntities)) {
                 $storageManager->clear($className);
