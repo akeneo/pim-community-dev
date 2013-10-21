@@ -41,6 +41,26 @@ class OrmProductWriter extends AbstractConfigurableStepElement implements
     protected $stepExecution;
 
     /**
+     * Entities which should not be cleared on flush
+     * 
+     * @var array
+     */
+    protected $nonClearableEntities=array(
+        'Oro\\Bundle\\BatchBundle\\Entity\\JobExecution',
+        'Oro\\Bundle\\BatchBundle\\Entity\\JobInstance',
+        'Pim\\Bundle\\CatalogBundle\\Entity\\ProductAttribute',
+        'Pim\\Bundle\\CatalogBundle\\Entity\\Family',
+        'Pim\\Bundle\\CatalogBundle\\Entity\\AttributeOption',
+        'Pim\\Bundle\\CatalogBundle\\Entity\\Channel',
+        'Pim\\Bundle\\CatalogBundle\\Entity\\Locale',
+        'Pim\\Bundle\\CatalogBundle\\Entity\\AttributeOptionValue',
+        'Oro\\Bundle\\BatchBundle\\Entity\\StepExecution',
+        'Oro\\Bundle\\UserBundle\\Entity\\User',
+        'Oro\\Bundle\\OrganizationBundle\\Entity\\BusinessUnit',
+        'Oro\\Bundle\\FlexibleEntityBundle\\Entity\\Attribute',
+        'Oro\\Bundle\\UserBundle\\Entity\\UserApi'
+    );
+    /**
      * @param ProductManager $productManager Product manager
      * @param EntityManager  $entityManager  Doctrine's entity manager
      */
@@ -63,17 +83,20 @@ class OrmProductWriter extends AbstractConfigurableStepElement implements
      */
     public function write(array $items)
     {
+        $storageManager = $this->productManager->getStorageManager();
+        
         foreach ($items as $product) {
-            $this->productManager->getStorageManager()->persist($product);
+            $storageManager->persist($product);
             $this->stepExecution->incrementWriteCount();
         }
-        $this->productManager->getStorageManager()->flush();
-
-        $this->productManager->getStorageManager()->clear('Pim\\Bundle\\CatalogBundle\\Entity\\ProductValue');
-        $this->productManager->getStorageManager()->clear('Pim\\Bundle\\CatalogBundle\\Entity\\ProductPrice');
-        $this->productManager->getStorageManager()->clear('Pim\\Bundle\\CatalogBundle\\Entity\\Product');
-        $this->productManager->getStorageManager()->clear('Oro\\Bundle\\SearchBundle\\Entity\\Item');
-        $this->productManager->getStorageManager()->clear('Oro\\Bundle\\SearchBundle\\Entity\\IndexText');
+        
+        $storageManager->flush();
+        
+        foreach ($storageManager->getUnitOfWork()->getIdentityMap() as $className => $entities) {
+            if (count($entities) && !in_array($className, $this->nonClearableEntities)) {
+                $storageManager->clear($className);
+            }
+        }
     }
 
     /**
