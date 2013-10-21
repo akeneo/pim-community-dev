@@ -138,6 +138,25 @@ class Grid extends Index
     }
 
     /**
+     * Get an array of values in the specified column
+     * @param string $column
+     *
+     * @return array
+     */
+    public function getValuesInColumn($column)
+    {
+        $column = $this->getColumnPosition($column);
+        $rows   = $this->getRows();
+        $values = array();
+
+        foreach ($rows as $row) {
+            $values[] = $this->getRowCell($row, $column)->getText();
+        }
+
+        return $values;
+    }
+
+    /**
      * @param string $column
      *
      * @return integer
@@ -146,7 +165,7 @@ class Grid extends Index
     {
         $headers = $this->getColumnHeaders();
         foreach ($headers as $position => $header) {
-            if ($column === $header->getText()) {
+            if (strtolower($column) === strtolower($header->getText())) {
                 return $position;
             }
         }
