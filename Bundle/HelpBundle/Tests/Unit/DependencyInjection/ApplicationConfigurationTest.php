@@ -24,14 +24,10 @@ class ApplicationConfigurationTest extends \PHPUnit_Framework_TestCase
         return array(
             'minimal_config' => array(
                 array(
-                    'defaults' => array(
-                        'server' => 'http://server'
-                    )
+                    'defaults' => array('server' => 'http://server')
                 ),
                 array(
-                    'defaults' => array(
-                        'server' => 'http://server'
-                    ),
+                    'defaults' => array('server' => 'http://server'),
                     'vendors' => array(),
                     'resources' => array(),
                     'routes' => array(),
@@ -45,11 +41,7 @@ class ApplicationConfigurationTest extends \PHPUnit_Framework_TestCase
                         'uri' => 'uri',
                         'link' => 'http://server/link'
                     ),
-                    'vendors' => array(
-                        'Oro' => array(
-                            'alias' => 'Platform'
-                        ),
-                    ),
+                    'vendors' => array('Oro' => array('alias' => 'Platform')),
                     'resources' => array(
                         'AcmeFooBundle' => array(
                             'server' => 'http://server',
@@ -85,14 +77,10 @@ class ApplicationConfigurationTest extends \PHPUnit_Framework_TestCase
                 array(
                     'defaults' => array(
                         'server' => 'http://server',
-                        'prefix' => 'prefix',
-                        'uri' => 'uri',
-                        'link' => 'http://server/link'
+                        'prefix' => 'prefix', 'uri' => 'uri', 'link' => 'http://server/link'
                     ),
                     'vendors' => array(
-                        'Oro' => array(
-                            'alias' => 'Platform'
-                        )
+                        'Oro' => array('alias' => 'Platform')
                     ),
                     'resources' => array(
                         'AcmeFooBundle' => array(
@@ -116,15 +104,10 @@ class ApplicationConfigurationTest extends \PHPUnit_Framework_TestCase
                             'uri' => 'uri',
                             'link' => 'http://server/link',
                         ),
-                        'AcmeBarBundle' => array(
-                        )
+                        'AcmeBarBundle' => array()
                     ),
                     'routes' => array(
-                        'test_route' => array(
-                            'server' => 'http://server.com',
-                            'uri' => 'uri',
-                            'link' => 'link',
-                        ),
+                        'test_route' => array('server' => 'http://server.com', 'uri' => 'uri', 'link' => 'link')
                     )
                 )
             ),
