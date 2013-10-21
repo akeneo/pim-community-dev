@@ -21,11 +21,19 @@ class DateTimeRangeTypeTest extends AbstractTypeTestCase
     /**
      * @var string
      */
-    protected $defaultTimezone = 'Europe/Kiev';
+    protected $defaultTimezone = 'Pacific/Honolulu';
 
     protected function setUp()
     {
-        $this->formExtensions[] = new CustomFormExtension(array(new DateRangeType()));
+        $localeSettings = $this->getMockBuilder('Oro\Bundle\LocaleBundle\Model\LocaleSettings')
+            ->disableOriginalConstructor()
+            ->setMethods(array('getTimezone'))
+            ->getMock();
+        $localeSettings->expects($this->any())
+            ->method('getTimezone')
+            ->will($this->returnValue($this->defaultTimezone));
+
+        $this->formExtensions[] = new CustomFormExtension(array(new DateRangeType($localeSettings)));
 
         parent::setUp();
         $this->type = new DateTimeRangeType();
@@ -78,7 +86,7 @@ class DateTimeRangeTypeTest extends AbstractTypeTestCase
                     'end' => $this->createDateTime('2013-01-01 18:00')
                 ),
                 'viewData' => array(
-                    'value' => array('start' => '2012-01-01T13:00:00+02:00', 'end' => '2013-01-01T18:00:00+02:00'),
+                    'value' => array('start' => '2012-01-01T13:00:00-10:00', 'end' => '2013-01-01T18:00:00-10:00'),
                 ),
             ),
             'custom timezone' => array(
@@ -107,7 +115,7 @@ class DateTimeRangeTypeTest extends AbstractTypeTestCase
                     'end' => $this->createDateTime('2014-01-13 00:00:00')
                 ),
                 'viewData' => array(
-                    'value' => array('start' => '1970-01-13T00:00:00+03:00', 'end' => '2014-01-13T00:00:00+02:00'),
+                    'value' => array('start' => '1970-01-13T00:00:00-10:00', 'end' => '2014-01-13T00:00:00-10:00'),
                 ),
                 'customOptions' => array()
             ),
