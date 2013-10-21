@@ -6,20 +6,10 @@
     {{ parent() }}
     {% include 'OroGridBundle:Include:javascript.html.twig' with {'datagridView': datagrid, 'selector': '#history-grid'} %}
 
-    {% set listenerParameters = {
-        'columnName': 'has_association',
-        'selectors': {
-            'included': '#appendTargets',
-            'excluded': '#removeTargets'
-        }
-    } %}
-
-    {% placeholder prepare_grid with {'datagrid': associationDatagrid, 'selector': '#association-grid', 'parameters': listenerParameters } %}
-
     <script type="text/javascript">
         require(
-            ['jquery', 'underscore', 'oro/mediator', 'pim/tree/associate', 'pim/scopable', 'pim/formupdatelistener', 'pim/dialog', 'pim/datagrid/parameter-setter', 'jquery.currencyfield'],
-            function($, _, mediator, TreeAssociate, Scopable, FormUpdateListener, Dialog, Setter){
+            ['jquery', 'underscore', 'oro/mediator', 'pim/tree/associate', 'pim/scopable', 'pim/formupdatelistener', 'pim/dialog', 'jquery.currencyfield'],
+            function($, _, mediator, TreeAssociate, Scopable, FormUpdateListener, Dialog){
                 'use strict';
                 $(function() {
                     {% if resource_granted('pim_catalog_product_categories_view') %}
@@ -97,48 +87,6 @@
                             $(this).height($('.scrollable-container').height() - $(this).position().top + $('.scrollable-container').position().top);
                         })
                     }
-
-                    $('#association-list').on('click', 'a', function() {
-                        if ($(this).parent().hasClass('active')) {
-                            return;
-                        }
-                        updateAssociationFields();
-                        $(this).parent().siblings('li').removeClass('active');
-                        $(this).parent().addClass('active');
-                        updateTargetFields();
-                        var associationId = $(this).attr('id').replace('association-link-', '');
-                        Setter.setParameter('{{ associationDatagrid.datagrid.name }}', 'associationId', associationId, true);
-                    });
-
-                    function updateAssociationFields() {
-                        var $appendTargets = $('#appendTargets'),
-                            $removeTargets = $('#removeTargets'),
-                            associationId = $('#association-list').find('li.active').find('a').attr('id').replace('association-link-', ''),
-                            $associationFields = $('#{{ form.productAssociations.vars.id }}'),
-                            $field = $associationFields.find('input[type="hidden"][value="' + associationId + '"]');
-
-                        $field.siblings('[id$="appendTargets"]').val($appendTargets.val());
-                        $field.siblings('[id$="removeTargets"]').val($removeTargets.val());
-                    }
-
-                    function updateTargetFields() {
-                        var $appendTargets = $('#appendTargets'),
-                            $removeTargets = $('#removeTargets'),
-                            associationId = $('#association-list').find('li.active').find('a').attr('id').replace('association-link-', ''),
-                            $associationFields = $('#{{ form.productAssociations.vars.id }}'),
-                            $field = $associationFields.find('input[type="hidden"][value="' + associationId + '"]'),
-                            appendTargets = $field.siblings('[id$="appendTargets"]').val(),
-                            removeTargets = $field.siblings('[id$="removeTargets"]').val();
-                        $appendTargets.val(appendTargets);
-                        $removeTargets.val(removeTargets);
-                        Setter.setParameter('{{ associationDatagrid.datagrid.name }}', 'data_in', appendTargets);
-                        Setter.setParameter('{{ associationDatagrid.datagrid.name }}', 'data_not_in', removeTargets);
-                    }
-
-                    $('#{{ form.vars.id }}').on('click', 'button[type="submit"]', function() {
-                        updateAssociationFields();
-                        updateTargetFields();
-                    });
 
                     $('a[data-toggle="tab"]').on('shown', setFullHeight);
                     setFullHeight();
@@ -235,7 +183,7 @@
                     {% set variantGroupTooltip = variantGroupAttributes|trim is empty ? null : 'info.variant group.axis'|trans({ '%attributes%': variantGroupAttributes|trim }) %}
                     <li>{{ 'group'|trans|capitalize }}: <span{% if variantGroupTooltip %} data-toggle="tooltip" data-placement="bottom" data-original-title="{{ variantGroupTooltip }}"{% endif %}>{{ group.code|capitalize|default('N/A'|trans) }}</span></li>
                 {% endfor %}
-        
+
 
                 <li>{{ 'Created'|trans }}: {{ created ? created.loggedAt|date("Y-m-d h:i:s") : 'N/A'|trans }} {{ 'by'|trans }} {{ created ? created.user.username : 'N/A'|trans }}</li>
                 <li>{{ 'Last update'|trans }}: {{ updated ? updated.loggedAt|date("Y-m-d h:i:s") : 'N/A'|trans }} {{ 'by'|trans }} {{ updated ? updated.user.username : 'N/A'|trans }}</li>
