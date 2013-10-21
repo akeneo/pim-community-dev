@@ -68,7 +68,7 @@ class RootBasedAclProvider implements AclProviderInterface
         } catch (AclNotFoundException $noAcl) {
             // Try to get ACL for root object
             try {
-                return $this->baseAclProvider->findAcl($rootOid, $sids);
+                return $this->baseAclProvider->findAndCacheRootAcl($oid, $rootOid, $sids);
             } catch (AclNotFoundException $noRootAcl) {
                 throw new AclNotFoundException(
                     sprintf('There is no ACL for %s. The root ACL %s was not found as well.', $oid, $rootOid),

@@ -2,7 +2,9 @@
 
 namespace Oro\Bundle\SecurityBundle\Acl\Dbal;
 
-use Oro\Bundle\SecurityBundle\Acl\Dbal\BaseMutableAclProvider;
+use Symfony\Component\Security\Acl\Model\ObjectIdentityInterface;
+
+use Symfony\Component\Security\Acl\Dbal\MutableAclProvider as BaseMutableAclProvider;
 use Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity;
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 use Symfony\Component\Security\Acl\Model\SecurityIdentityInterface;
@@ -19,6 +21,33 @@ use Symfony\Component\Security\Acl\Model\SecurityIdentityInterface;
  */
 class MutableAclProvider extends BaseMutableAclProvider
 {
+    const OID_ACL_PROPERTY = 'objectIdentity';
+
+    /**
+     * Find root ACL by $rootOid parameter and cache it like $oid Object Identity ACL and return it
+     *
+     * @param ObjectIdentityInterface $oid
+     * @param ObjectIdentityInterface $rootOid
+     * @param array $sids
+     * @return \Symfony\Component\Security\Acl\Model\AclInterface
+     */
+    public function findAndCacheRootAcl(ObjectIdentityInterface $oid, ObjectIdentityInterface $rootOid, array $sids)
+    {
+        //get root acl
+        $acl = $this->findAcl($rootOid, $sids);
+
+        //change OID
+        $reflection = new \ReflectionClass($acl);
+        $property = $reflection->getProperty(self::OID_ACL_PROPERTY);
+        $property->setAccessible(true);
+        $property->setValue($acl, $oid);
+
+        //cache acl as $oid Object Identity ACL
+        $this->cache->putInCache($acl);
+
+        return $acl;
+    }
+
     /**
      * Initiates a transaction
      */
