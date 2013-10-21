@@ -8,9 +8,24 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
+use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
+
 class DateRangeType extends AbstractType
 {
     const NAME = 'oro_type_date_range';
+
+    /**
+     * @var LocaleSettings
+     */
+    protected $localeSettings;
+
+    /**
+     * @param LocaleSettings $localeSettings
+     */
+    public function __construct(LocaleSettings $localeSettings)
+    {
+        $this->localeSettings = $localeSettings;
+    }
 
     /**
      * {@inheritDoc}
@@ -25,11 +40,17 @@ class DateRangeType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $viewTimezone = $this->localeSettings->getTimeZone();
+
         $builder->add(
             'start',
             $options['field_type'],
             array_merge(
-                array('required' => false, 'widget' => 'single_text'),
+                array(
+                    'required' => false,
+                    'widget' => 'single_text',
+                    'view_timezone' => $viewTimezone
+                ),
                 $options['field_options'],
                 $options['start_field_options']
             )
@@ -39,7 +60,11 @@ class DateRangeType extends AbstractType
             'end',
             $options['field_type'],
             array_merge(
-                array('required' => false, 'widget' => 'single_text'),
+                array(
+                    'required' => false,
+                    'widget' => 'single_text',
+                    'view_timezone' => $viewTimezone
+                ),
                 $options['field_options'],
                 $options['end_field_options']
             )

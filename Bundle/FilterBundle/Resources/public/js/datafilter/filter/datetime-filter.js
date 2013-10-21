@@ -61,8 +61,8 @@ define(['jquery', 'underscore', 'oro/datafilter/date-filter'],
             var dateFromFormat = this.dateWidgetOptions.dateFormat;
             var dateToFormat = this.dateWidgetOptions.altFormat;
             var timeFromFormat = this.dateWidgetOptions.timeFormat;
-            var timeToToFormat = this.dateWidgetOptions.altTimeFormat;
-            return this._formatValueDatetimes(value, dateFromFormat, dateToFormat, timeFromFormat, timeToToFormat);
+            var timeToFormat = this.dateWidgetOptions.altTimeFormat;
+            return this._formatValueDatetimes(value, dateFromFormat, dateToFormat, timeFromFormat, timeToFormat);
         },
 
         /**

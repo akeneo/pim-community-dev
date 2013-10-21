@@ -1,6 +1,5 @@
 parameters:
     oro_locale.settings.class: Oro\Bundle\LocaleBundle\Model\LocaleSettings
-    oro_locale.twig.dateformat.class: Oro\Bundle\LocaleBundle\Twig\DateFormatExtension
     oro_locale.form.type.name_format.type.class: Oro\Bundle\LocaleBundle\Form\Type\NameFormatType
 
     oro_locale.format_converter.date_time.registry.class: Oro\Bundle\LocaleBundle\Converter\DateTimeFormatConverterRegistry
@@ -12,6 +11,9 @@ parameters:
     oro_locale.formatter.date_time.class: Oro\Bundle\LocaleBundle\Formatter\DateTimeFormatter
     oro_locale.formatter.number.class: Oro\Bundle\LocaleBundle\Formatter\NumberFormatter
 
+    oro_locale.twig.date_format.class: Oro\Bundle\LocaleBundle\Twig\DateFormatExtension
+    oro_locale.twig.locale.class: Oro\Bundle\LocaleBundle\Twig\LocaleExtension
+
 services:
     oro_locale.settings:
         class: %oro_locale.settings.class%
@@ -21,13 +23,6 @@ services:
             - [addNameFormats, [%oro_locale.format.name%]]
             - [addAddressFormats, [%oro_locale.format.address%]]
             - [addLocaleData, [%oro_locale.locale_data%]]
-
-    oro_locale.twig.dateformat:
-        class: %oro_locale.twig.dateformat.class%
-        arguments:
-            - @oro_config.global
-        tags:
-            - { name: twig.extension }
 
     oro_locale.form.type.name_format.type:
         class: %oro_locale.form.type.name_format.type.class%
@@ -73,3 +68,17 @@ services:
         class: %oro_locale.formatter.number.class%
         arguments:
             - @oro_locale.settings
+
+    oro_locale.twig.date_format:
+        class: %oro_locale.twig.date_format.class%
+        arguments:
+            - @oro_locale.format_converter.date_time.registry
+        tags:
+            - { name: twig.extension }
+
+    oro_locale.twig.locale:
+        class: %oro_locale.twig.locale.class%
+        arguments:
+            - @oro_locale.settings
+        tags:
+            - { name: twig.extension }

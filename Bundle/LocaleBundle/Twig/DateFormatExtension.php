@@ -2,43 +2,41 @@
 
 namespace Oro\Bundle\LocaleBundle\Twig;
 
-use Oro\Bundle\ConfigBundle\Config\ConfigManager;
+use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
+use Oro\Bundle\LocaleBundle\Converter\DateTimeFormatConverterRegistry;
 
 class DateFormatExtension extends \Twig_Extension
 {
-    const CONFIG_TIMEZONE_KEY    = 'oro_locale.timezone';
-    const CONFIG_DATE_FORMAT_KEY = 'oro_locale.date_format';
-    const CONFIG_TIME_FORMAT_KEY = 'oro_locale.time_format';
-    const CONFIG_LOCALE_KEY      = 'oro_locale.locale';
-
-    /** @var ConfigManager */
-    protected $cm;
+    /**
+     * @var DateTimeFormatConverterRegistry
+     */
+    protected $converterRegistry;
 
     /**
-     * @param ConfigManager $cm
+     * @var array
      */
-    public function __construct(ConfigManager $cm)
+    protected $formatTypesMatch = array(
+        'none'   => \IntlDateFormatter::NONE,
+        'short'  => \IntlDateFormatter::SHORT,
+        'medium' => \IntlDateFormatter::MEDIUM,
+        'long'   => \IntlDateFormatter::LONG,
+        'full'   => \IntlDateFormatter::FULL,
+    );
+
+    /**
+     * @param DateTimeFormatConverterRegistry $converterRegistry
+     */
+    public function __construct(DateTimeFormatConverterRegistry $converterRegistry)
     {
-        $this->cm = $cm;
+        $this->converterRegistry = $converterRegistry;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getFilters()
+    public function getName()
     {
-        return array(
-            'locale_date'     => new \Twig_SimpleFilter(
-                'locale_date',
-                array($this, 'formatDate'),
-                array('needs_environment' => true)
-            ),
-            'locale_datetime' => new \Twig_SimpleFilter(
-                'locale_datetime',
-                array($this, 'formatDateTime'),
-                array('needs_environment' => true)
-            ),
-        );
+        return 'oro_locale_dateformat';
     }
 
     /**
@@ -47,338 +45,68 @@ class DateFormatExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'oro_config_timezone'              => new \Twig_Function_Method($this, 'getTimeZone'),
-            'oro_config_moment_dateformat'     => new \Twig_Function_Method($this, 'getMomentDateFormat'),
-            'oro_config_moment_datetimeformat' => new \Twig_Function_Method($this, 'getMomentDateTimeFormat'),
-            'oro_config_jquery_dateformat'     => new \Twig_Function_Method($this, 'getJqueryDateFormat'),
-            'oro_config_jquery_timeformat'     => new \Twig_Function_Method($this, 'getJqueryTimeFormat'),
+            new \Twig_SimpleFunction('oro_dateformat', array($this, 'getDateFormat')),
+            new \Twig_SimpleFunction('oro_timeformat', array($this, 'getTimeFormat')),
+            new \Twig_SimpleFunction('oro_datetimeformat', array($this, 'getDateTimeFormat')),
         );
     }
 
     /**
-     * @param \Twig_Environment $env
-     * @param                   $date
-     * @param                   $dateTimeFormat
-     * @param null              $locale
-     * @param                   $timezone
-     *
+     * @param string $type
+     * @param string|null $locale
+     * @param string|null $dateFormat
      * @return string
      */
-    public function formatDateTime(
-        \Twig_Environment $env,
-        $date,
-        $dateTimeFormat = null,
-        $locale = null,
-        $timezone = null
-    ) {
-        list ($dateTimeFormat, $timezone, $locale) = $this->applyDefaultParams($dateTimeFormat, $timezone, $locale);
-
-        return $this->formatDate($env, $date, $dateTimeFormat, $locale, $timezone);
-    }
-
-    /**
-     * Apply config params to dateTimeFormat, timezone and locale
-     * in case when no params passed from template
-     *
-     * @param string $dateTimeFormat
-     * @param string $timezone
-     * @param string $locale
-     * @param bool $dateOnly skip time
-     * @return array
-     */
-    protected function applyDefaultParams($dateTimeFormat, $timezone, $locale, $dateOnly = false)
+    public function getDateFormat($type, $locale = null, $dateFormat = null)
     {
-        if (is_null($dateTimeFormat)) {
-            $dateTimeFormat = $this->cm->get(self::CONFIG_DATE_FORMAT_KEY) . ($dateOnly ? '' :
-                    ' ' . $this->cm->get(self::CONFIG_TIME_FORMAT_KEY));
-        }
-
-        if (is_null($timezone)) {
-            $timezone = $this->cm->get(self::CONFIG_TIMEZONE_KEY);
-        }
-
-        if (is_null($locale)) {
-            $locale = $this->cm->get(self::CONFIG_LOCALE_KEY);
-        }
-
-        return array($dateTimeFormat, $timezone, $locale);
-    }
-
-    /**
-     * @param \Twig_Environment $env
-     * @param                   $date
-     * @param                   $dateTimeFormat
-     * @param null              $locale
-     * @param                   $timezone
-     *
-     * @return string
-     */
-    public function formatDate(
-        \Twig_Environment $env,
-        $date,
-        $dateTimeFormat = null,
-        $locale = null,
-        $timezone = null
-    ) {
-        list ($dateTimeFormat, $timezone, $locale) = $this->applyDefaultParams(
-            $dateTimeFormat,
-            $timezone,
+        return $this->converterRegistry->getFormatConverter($type)->getDateFormat(
             $locale,
-            true
+            $this->parseFormatType($dateFormat)
         );
+    }
 
-        $dateTimeFormat = $this->convertDateTimeToICUFormat($dateTimeFormat);
-
-        return twig_localized_date_filter(
-            $env,
-            $date,
-            "none",
-            "none",
+    /**
+     * @param string $type
+     * @param string|null $locale
+     * @param string|null $timeFormat
+     * @return string
+     */
+    public function getTimeFormat($type, $locale = null, $timeFormat = null)
+    {
+        return $this->converterRegistry->getFormatConverter($type)->getTimeFormat(
             $locale,
-            $timezone,
-            $dateTimeFormat
+            $this->parseFormatType($timeFormat)
         );
     }
 
     /**
-     * Returns datetime format needed for momentJS
-     *
+     * @param string $type
+     * @param string|null $locale
+     * @param string|null $dateFormat
+     * @param string|null $timeFormat
      * @return string
      */
-    public function getMomentDateTimeFormat()
+    public function getDateTimeFormat($type, $locale = null, $dateFormat = null, $timeFormat = null)
     {
-        $dateFormat = $this->cm->get(self::CONFIG_DATE_FORMAT_KEY);
-        $timeFormat = $this->cm->get(self::CONFIG_TIME_FORMAT_KEY);
-
-        return $this->convertDateTimeToMomentJSFormat(implode(' ', array($dateFormat, $timeFormat)));
+        return $this->converterRegistry->getFormatConverter($type)->getDateTimeFormat(
+            $locale,
+            $this->parseFormatType($dateFormat),
+            $this->parseFormatType($timeFormat)
+        );
     }
 
     /**
-     * Returns date format needed for momentJS
+     * Convert string representation to Intl constant
      *
-     * @return string
+     * @param string|null $formatType
+     * @return int|null
      */
-    public function getMomentDateFormat()
+    protected function parseFormatType($formatType)
     {
-        $format = $this->cm->get(self::CONFIG_DATE_FORMAT_KEY);
-
-        return $this->convertDateTimeToMomentJSFormat($format);
-    }
-
-    /**
-     * Get config time zone
-     *
-     * @return string
-     */
-    public function getTimeZone()
-    {
-        $timezone = $this->cm->get(self::CONFIG_TIMEZONE_KEY);
-
-        $result = '+00:00';
-        if ($timezone) {
-            $date = new \DateTime('now', new \DateTimeZone($timezone));
-
-            $result = $date->format('P');
+        if (isset($this->formatTypesMatch[$formatType])) {
+            return $this->formatTypesMatch[$formatType];
         }
 
-        return $result;
-    }
-
-    /**
-     * Returns date format needed for jqueryUI datepicker
-     *
-     * @return string
-     */
-    public function getJqueryDateFormat()
-    {
-        $format = $this->cm->get(self::CONFIG_DATE_FORMAT_KEY);
-
-        return $this->convertDateTimeToJqueryDateFormat($format);
-    }
-
-    /**
-     * Returns date format needed for jqueryUI datetimepicker
-     *
-     * @return string
-     */
-    public function getJqueryTimeFormat()
-    {
-        $format = $this->cm->get(self::CONFIG_TIME_FORMAT_KEY);
-
-        return $this->convertDateTimeToJqueryTimeFormat($format);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'oro_locale';
-    }
-
-    /**
-     * Format description
-     * http://www.icu-project.org/apiref/icu4c/classSimpleDateFormat.html#details
-     *
-     * @param $dateTimeFormat
-     *
-     * @return string libICU format for IntlDateFormatter::create()
-     */
-    protected function convertDateTimeToICUFormat($dateTimeFormat)
-    {
-        return str_replace(
-            array(
-                'M', // month MM
-                'm', // month MM
-                'n',
-                'd', // day DD
-                'j', // day D
-                'y', // year YY
-                'Y', // year YYYY,
-                'F', // month name
-                'H', // hour 24h with 0
-                'G', // hour 24h without 0
-                'h', // hour 12h with 0
-                'g', // hour 12h without 0
-                'i', // min
-                's', // sec
-                'a', // am/pm
-                'A', // AM/PM
-            ),
-            array(
-                'MMM',
-                'MM',
-                'M',
-                'dd',
-                'd',
-                'yy',
-                'yyyy',
-                'MMMM',
-                'HH',
-                'H',
-                'hh',
-                'h',
-                'mm',
-                'ss',
-                'a',
-                'a'
-            ),
-            $dateTimeFormat
-        );
-    }
-
-    /**
-     * Format description
-     * http://momentjs.com/docs/#/parsing/string-format/
-     *
-     * @param string $format
-     *
-     * @return string
-     */
-    protected function convertDateTimeToMomentJSFormat($format)
-    {
-        return str_replace(
-            array(
-                'd',
-                'j',
-                'n',
-                'M',
-                'm',
-                'Y',
-                'y',
-                'G',
-                'H',
-                'h',
-                'g',
-                'i',
-                's',
-            ),
-            array(
-                'DD',
-                'D',
-                'M',
-                'MMM',
-                'MM',
-                'YYYY',
-                'YY',
-                'H',
-                'HH',
-                'hh',
-                'h',
-                'mm',
-                'ss',
-            ),
-            $format
-        );
-    }
-
-    /**
-     * Format description
-     * http://api.jqueryui.com/datepicker/
-     *
-     * @param string $format
-     *
-     * @return string
-     */
-    protected function convertDateTimeToJqueryDateFormat($format)
-    {
-        return str_replace(
-            array(
-                'd',
-                'j',
-                'z',
-                'l',
-                'm',
-                'n',
-                'F',
-                'Y',
-            ),
-            array(
-                'dd', //day of month (two digit)
-                'd', //day of month (no leading zero)
-                'o', //day of the year (no leading zeros)
-                'DD', //day name long
-                'mm', //month of year (two digit)
-                'm', //month of year (no leading zero)
-                'MM', //month name long
-                'yy', //year (four digit)
-            ),
-            $format
-        );
-    }
-
-    /**
-     * Format description
-     * http://trentrichardson.com/examples/timepicker/#tp-formatting
-     *
-     * @param string $format
-     *
-     * @return string
-     */
-    protected function convertDateTimeToJqueryTimeFormat($format)
-    {
-        return str_replace(
-            array(
-                'H', // hour 24h with 0
-                'G', // hour 24h without 0
-                'h', // hour 12h with 0
-                'g', // hour 12h without 0
-                'i', // min
-                's', // sec
-                'a', // am/pm
-                'A', // AM/PM
-            ),
-            array(
-                'HH',
-                'H',
-                'hh',
-                'h',
-                'mm',
-                'ss',
-                'tt',
-                'TT',
-            ),
-            $format
-        );
+        return null;
     }
 }

@@ -12,7 +12,7 @@ class JqueryUiDateTimeFormatConverter extends AbstractDateTimeFormatConverter
      * ICU format => JQueryUI format
      *
      * http://userguide.icu-project.org/formatparse/datetime
-     * http://api.jqueryui.com/datepicker/
+     * http://api.jqueryui.com/datepicker/#utility-formatDate
      * http://trentrichardson.com/examples/timepicker/#tp-formatting
      *
      * @var array

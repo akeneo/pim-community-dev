@@ -1,7 +1,7 @@
 {% macro time(time, format) -%}
-    <time datetime="{{ time.format(constant('DateTime::ISO8601')) }}">{{ time | locale_datetime(format) }}</time>
+    <time datetime="{{ time.format(constant('DateTime::ISO8601')) }}">{{ time | date("Y-m-d") }}</time>
 {%- endmacro %}
 
 {% macro date(time, format) -%}
-    <time datetime="{{ time.format(constant('DateTime::ISO8601')) }}">{{ time | locale_date(format) }}</time>
+    <time datetime="{{ time.format(constant('DateTime::ISO8601')) }}">{{ time | date("Y-m-d H:i:s") }}</time>
 {%- endmacro %}

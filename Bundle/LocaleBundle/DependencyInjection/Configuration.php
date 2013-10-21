@@ -86,11 +86,10 @@ class Configuration implements ConfigurationInterface
             $rootNode,
             array(
                 'language' => array('value' => null),
-                'locale' => array('value' => '%locale%'),
-                'country' => array('value' => null),
+                'locale'   => array('value' => '%locale%'),
+                'country'  => array('value' => null),
                 'timezone' => array('value' => $date->getTimezone()->getName()),
                 'currency' => array('value' => 'USD'),
-                'name_format' => array('value' => null)
             )
         );
 
