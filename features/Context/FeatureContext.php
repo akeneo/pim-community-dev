@@ -129,8 +129,6 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
      */
     public function wait($time = 5000, $condition = null)
     {
-        echo "In wait with time: $time and condition:\n";
-        var_dump($condition);
         $condition = $condition !== null ? $condition : <<<JS
         document.readyState == 'complete'                  // Page is ready
             && typeof $ != 'undefined'                     // jQuery is loaded
@@ -150,8 +148,6 @@ JS;
             if ($condition !== false &&
                 $this->getSession()->evaluateScript("return $condition;") !== true) {
                 throw new BehaviorException("Timeout of $time reached when checking on $condition");
-            } else {
-                echo "Condition empty or realized\n";
             }
         } catch (UnsupportedDriverActionException $e) {
             // Some test use only the KernelDriver, and not Selenium, so no JS available
