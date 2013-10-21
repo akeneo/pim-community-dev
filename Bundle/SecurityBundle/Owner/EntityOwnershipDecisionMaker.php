@@ -4,9 +4,9 @@ namespace Oro\Bundle\SecurityBundle\Owner;
 
 use Oro\Bundle\SecurityBundle\Acl\Extension\OwnershipDecisionMakerInterface;
 use Oro\Bundle\EntityBundle\ORM\EntityClassAccessor;
-use Oro\Bundle\EntityBundle\Owner\Metadata\OwnershipMetadata;
-use Oro\Bundle\EntityBundle\Owner\Metadata\OwnershipMetadataProvider;
-use Oro\Bundle\EntityBundle\Owner\EntityOwnerAccessor;
+use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadata;
+use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadataProvider;
+use Oro\Bundle\SecurityBundle\Owner\EntityOwnerAccessor;
 use Oro\Bundle\EntityBundle\Exception\InvalidEntityException;
 use Symfony\Component\Security\Acl\Exception\InvalidDomainObjectException;
 use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdAccessor;

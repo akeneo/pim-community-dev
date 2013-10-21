@@ -102,7 +102,7 @@ class PropertyConfigContainer
 
         $result = array();
         foreach ($this->getItems($type) as $code => $item) {
-            if (isset($item['options']['internal']) || $item['options']['internal'] === false) {
+            if (isset($item['options']['auditable']) && $item['options']['auditable'] === false) {
                 $result[$code] = true;
             }
         }

@@ -78,15 +78,17 @@
                                         {% placeholder application_menu %}
                                     {% endblock application_menu %}
                                  </div>
-                                <ul class="nav pull-right">
-                                    {% placeholder user_menu %}
-                                    {# Disabled notification icon till it will be implemented
-                                    {% block notifications %}
-                                    <li class="divider-vertical small-divider"></li>
-                                    <li><a class="notifications" href="#"><i class="icon-bullhorn"></i><span class="badge badge-important">1</span></a></li>
-                                    {% endblock notifications %}
-                                    #}
-                                </ul>
+                                {% block user_menu %}
+                                    <ul class="nav pull-right user-menu">
+                                        {% placeholder user_menu %}
+                                        {# Disabled notification icon till it will be implemented
+                                        {% block notifications %}
+                                        <li class="divider-vertical small-divider"></li>
+                                        <li><a class="notifications" href="#"><i class="icon-bullhorn"></i><span class="badge badge-important">1</span></a></li>
+                                        {% endblock notifications %}
+                                        #}
+                                    </ul>
+                                {% endblock %}
                             </div>
                         </div>
                     </div>
@@ -207,7 +209,8 @@
         'script': block('head_script'),
         'content': block('page_container'),
         'menu': block('application_menu'),
-        'breadcrumb': block('breadcrumb')
+        'breadcrumb': block('breadcrumb'),
+        'userMenu': block('user_menu')
     }
     %}
 {% endif %}
