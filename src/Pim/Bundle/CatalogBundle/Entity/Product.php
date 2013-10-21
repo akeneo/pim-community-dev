@@ -521,4 +521,24 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
 
         return $this;
     }
+
+    /**
+     * Get all the media of the product
+     *
+     * @return Media[]
+     */
+    public function getMedia()
+    {
+        $media = array();
+        foreach ($this->getValues() as $value) {
+            if (in_array(
+                $value->getAttribute()->getAttributeType(),
+                array('pim_catalog_image', 'pim_catalog_file')
+            )) {
+                $media[] = $value->getData();
+            }
+        }
+
+        return $media;
+    }
 }

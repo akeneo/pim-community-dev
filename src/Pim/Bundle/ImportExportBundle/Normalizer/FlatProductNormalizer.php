@@ -17,19 +17,22 @@ use Pim\Bundle\CatalogBundle\Entity\VariantGroup;
  */
 class FlatProductNormalizer implements NormalizerInterface
 {
-    /**
-     * @var string
-     */
+    /** @staticvar string */
+    const FIELD_FAMILY = 'family';
+
+    /** @staticvar string */
+    const FIELD_VARIANT = 'variant_group';
+
+    /** @staticvar string */
+    const FIELD_CATEGORY = 'categories';
+
+    /** @staticvar string */
     const ITEM_SEPARATOR = ',';
 
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $supportedFormats = array('csv');
 
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $results;
 
     /**
@@ -37,21 +40,6 @@ class FlatProductNormalizer implements NormalizerInterface
      * @var array
      */
     protected $fields = array();
-
-    /**
-     * @staticvar string
-     */
-    const FIELD_FAMILY = 'family';
-
-    /**
-     * @staticvar string
-     */
-    const FIELD_VARIANT = 'variant_group';
-
-    /**
-     * @staticvar string
-     */
-    const FIELD_CATEGORY = 'categories';
 
     /**
      * Transforms an object into a flat array
@@ -110,9 +98,9 @@ class FlatProductNormalizer implements NormalizerInterface
      */
     protected function normalizeValue($value)
     {
-        if (empty($this->fields) || isset($this->fields[$this->getFieldValue($value)])) {
-            $data = $value->getData();
+        $data = $value->getData();
 
+        if (empty($this->fields) || isset($this->fields[$this->getFieldValue($value)])) {
             if ($data instanceof \DateTime) {
                 $data = $data->format('m/d/Y');
             } elseif ($data instanceof \Pim\Bundle\CatalogBundle\Entity\AttributeOption) {
@@ -127,11 +115,9 @@ class FlatProductNormalizer implements NormalizerInterface
                     }
                 }
                 $data = join(self::ITEM_SEPARATOR, $result);
+            } elseif ($data instanceof Media) {
+                $data = $data->getFilename();
             }
-        } elseif ($data instanceof Media) {
-            // TODO Handle media export
-            // They are ignored for now (both file and image type)
-            return;
         }
 
         return array($this->getFieldValue($value) => (string) $data);
