@@ -13,6 +13,7 @@ use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
 
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
+use Pim\Bundle\CatalogBundle\Manager\VariantGroupManager;
 
 /**
  * Group datagrid manager
@@ -27,6 +28,11 @@ class GroupDatagridManager extends DatagridManager
      * @var LocaleManager
      */
     protected $localeManager;
+
+    /**
+     * @var VariantGroupManager
+     */
+    protected $variantGroupManager;
 
     /**
      * {@inheritdoc}
@@ -99,6 +105,42 @@ class GroupDatagridManager extends DatagridManager
             )
         );
         $fieldsCollection->add($field);
+
+        $field = $this->createAxisField();
+        $fieldsCollection->add($field);
+    }
+
+    /**
+     * Create an axis field
+     *
+     * @return \Oro\Bundle\GridBundle\Field\FieldDescription
+     */
+    protected function createAxisField()
+    {
+        $choices = $this->variantGroupManager->getAvailableAxisChoices();
+
+        $field = new FieldDescription();
+        $field->setName('attribute');
+        $field->setOptions(
+            array(
+                'type'            => FieldDescriptionInterface::TYPE_HTML,
+                'label'           => $this->translate('Axis'),
+                'field_name'      => 'attributes',
+                'expression'      => 'attribute.id',
+                'filter_type'     => FilterInterface::TYPE_CHOICE,
+                'required'        => true,
+                'multiple'        => true,
+                'filterable'      => true,
+                'show_filter'     => true,
+                'field_options'   => array('choices' => $choices)
+            )
+        );
+
+        $field->setProperty(
+            new TwigTemplateProperty($field, 'PimGridBundle:Rendering:_optionsToString.html.twig')
+        );
+
+        return $field;
     }
 
     /**
@@ -152,10 +194,12 @@ class GroupDatagridManager extends DatagridManager
 
         $proxyQuery
             ->addSelect(sprintf("%s AS groupLabel", $labelExpr), true)
-            ->addSelect('translation.label', true);
+            ->addSelect('translation.label', true)
+            ->addSelect('attribute');
 
         $proxyQuery
-            ->leftJoin($rootAlias .'.translations', 'translation', 'WITH', 'translation.locale = :localeCode');
+            ->leftJoin($rootAlias .'.translations', 'translation', 'WITH', 'translation.locale = :localeCode')
+            ->leftJoin($rootAlias .'.attributes', 'attribute');
 
         $proxyQuery->setParameter('localeCode', $this->getCurrentLocale());
     }
@@ -170,6 +214,20 @@ class GroupDatagridManager extends DatagridManager
     public function setLocaleManager(LocaleManager $localeManager)
     {
         $this->localeManager = $localeManager;
+
+        return $this;
+    }
+
+    /**
+     * Set the variant group manager
+     *
+     * @param VariantGroupManager $variantGroupManager
+     *
+     * @return \Pim\Bundle\CatalogBundle\Datagrid\VariantGroupDatagridManager
+     */
+    public function setVariantGroupManager(VariantGroupManager $variantGroupManager)
+    {
+        $this->variantGroupManager = $variantGroupManager;
 
         return $this;
     }

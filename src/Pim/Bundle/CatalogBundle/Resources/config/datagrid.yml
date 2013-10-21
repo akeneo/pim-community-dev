@@ -106,6 +106,7 @@ services:
         calls:
             - [ setIdentifierField, ['id'] ]
             - [ setLocaleManager, ['@pim_catalog.manager.locale'] ]
+            - [ setVariantGroupManager, ['@pim_catalog.manager.variant_group'] ]
 
     pim_catalog.datagrid.manager.group_product:
         class: %pim_catalog.datagrid.manager.group_product_datagrid.class%
