@@ -329,6 +329,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
         foreach ($this->getGroups() as $group) {
             $codes[] = $group->getCode();
         }
+        sort($codes);
 
         return implode(',', $codes);
     }
