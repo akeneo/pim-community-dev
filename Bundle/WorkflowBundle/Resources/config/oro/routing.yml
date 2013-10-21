@@ -1,0 +1,10 @@
+oro_workflow_bundle:
+    resource:     "@OroWorkflowBundle/Controller"
+    type:         annotation
+    prefix:       /workflow
+
+oro_workflow_bundle_api:
+    resource:     "@OroWorkflowBundle/Resources/config/oro/routing_api.yml"
+    prefix:       api/rest/{version}
+    defaults:
+        version:  latest
