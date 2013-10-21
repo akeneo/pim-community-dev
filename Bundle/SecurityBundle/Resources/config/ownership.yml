@@ -1,0 +1,56 @@
+parameters:
+    oro_security.entity.owners:
+        organization: "OroOrganizationBundle:Organization"
+        business_unit: "OroOrganizationBundle:BusinessUnit"
+        user: "OroUserBundle:User"
+
+    oro_security.owner.entity_owner_accessor.class:                       Oro\Bundle\SecurityBundle\Owner\EntityOwnerAccessor
+    oro_security.owner.ownership_metadata_provider.class:                 Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadataProvider
+    oro_security.owner.ownership_metadata_provider.cache.class:           Doctrine\Common\Cache\FilesystemCache
+    oro_security.owner.ownership_config_subscriber.class:                 Oro\Bundle\SecurityBundle\EventListener\OwnershipConfigSubscriber
+    oro_security.owner.ownership_metadata_provider.cache.warmer.class:    Oro\Bundle\SecurityBundle\Cache\OwnershipMetadataCacheWarmer
+    oro_security.owner.ownership_metadata_provider.cache.clearer.class:   Oro\Bundle\SecurityBundle\Cache\OwnershipMetadataCacheClearer
+
+services:
+    oro_security.owner.entity_owner_accessor:
+        class: %oro_security.owner.entity_owner_accessor.class%
+        arguments:
+            - @oro_entity.orm.entity_class_accessor
+            - @oro_security.owner.ownership_metadata_provider
+
+    oro_security.owner.ownership_metadata_provider:
+        class: %oro_security.owner.ownership_metadata_provider.class%
+        arguments:
+            - %oro_security.entity.owners%
+            - @oro_entity_config.provider.ownership
+            - @oro_entity.orm.entity_class_resolver
+            - @oro_security.owner.ownership_metadata_provider.cache
+
+    oro_security.owner.ownership_metadata_provider.cache:
+        public: false
+        class: %oro_security.owner.ownership_metadata_provider.cache.class%
+        arguments:
+            - %kernel.cache_dir%/oro_ownership_metadata
+
+    oro_security.owner.ownership_config_subscriber:
+        class: %oro_security.owner.ownership_config_subscriber.class%
+        arguments:
+            - @oro_security.owner.ownership_metadata_provider
+        tags:
+            - { name: kernel.event_subscriber }
+
+    oro_security.owner.ownership_metadata_provider.cache.warmer:
+        public: false
+        class: %oro_security.owner.ownership_metadata_provider.cache.warmer.class%
+        arguments:
+            - @oro_security.owner.ownership_metadata_provider
+        tags:
+            - { name: kernel.cache_warmer}
+
+    oro_security.owner.ownership_metadata_provider.cache.clearer:
+        public: false
+        class: %oro_security.owner.ownership_metadata_provider.cache.clearer.class%
+        arguments:
+            - @oro_security.owner.ownership_metadata_provider
+        tags:
+            - { name: kernel.cache_clearer }

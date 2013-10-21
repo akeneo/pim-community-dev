@@ -22,7 +22,6 @@ parameters:
     oro_security.orm.ownership_sql_filter.class:               Oro\Bundle\SecurityBundle\ORM\SqlFilter\OwnershipFilter
     oro_security.orm.ownership_sql_filter_builder.class:       Oro\Bundle\SecurityBundle\ORM\SqlFilter\OwnershipFilterBuilder
 
-    oro_security.type.oro_acl_entity_row.class:                Oro\Bundle\SecurityBundle\Form\Type\EntityRowType
     oro_security.type.oro_acl_collection.class:                Oro\Bundle\SecurityBundle\Form\Type\CollectionType
     oro_security.type.oro_acl_object_name.class:               Oro\Bundle\SecurityBundle\Form\Type\ObjectNameType
     oro_security.type.oro_acl_label.class:                     Oro\Bundle\SecurityBundle\Form\Type\ObjectLabelType
@@ -46,7 +45,6 @@ parameters:
     oro_security.listener.config_subscriber.class:             Oro\Bundle\SecurityBundle\EventListener\ConfigSubscriber
     oro_security.listener.controller.class:                    Oro\Bundle\SecurityBundle\EventListener\ControllerListener
 
-    oro_user.acl.manager.api.class:                            Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
     oro_security.twig.security_extension:                      Oro\Bundle\SecurityBundle\Twig\OroSecurityExtension
 
     oro_security.encoder.mcrypt.class:                         Oro\Bundle\SecurityBundle\Encoder\Mcrypt
@@ -107,7 +105,7 @@ services:
             - @oro_security.acl.object_id_accessor
             - @oro_entity.orm.entity_class_resolver
             - @oro_security.entity_security_metadata_provider
-            - @oro_entity.owner.ownership_metadata_provider
+            - @oro_security.owner.ownership_metadata_provider
             - @oro_security.owner.decision_maker
         tags:
             - { name: oro_security.acl.extension, priority: 20 }
@@ -168,8 +166,8 @@ services:
             - @oro_security.owner.tree
             - @oro_entity.orm.entity_class_accessor
             - @oro_security.acl.object_id_accessor
-            - @oro_entity.owner.entity_owner_accessor
-            - @oro_entity.owner.ownership_metadata_provider
+            - @oro_security.owner.entity_owner_accessor
+            - @oro_security.owner.ownership_metadata_provider
 
     oro_security.orm.ownership_sql_filter_builder:
         public: false
@@ -178,7 +176,7 @@ services:
             - @oro_entity_config.link.security_context
             - @oro_security.acl.object_id_accessor
             - @oro_security.entity_security_metadata_provider
-            - @oro_entity.owner.ownership_metadata_provider
+            - @oro_security.owner.ownership_metadata_provider
             - @oro_security.owner.tree
             - @?security.acl.voter.basic_permissions
 
@@ -197,11 +195,6 @@ services:
         class: %oro_security.type.oro_acl_collection.class%
         tags:
             - { name: form.type, alias: oro_acl_collection }
-
-    oro_security.form.type.ownership_type:
-        class: %oro_security.type.oro_acl_entity_row.class%
-        tags:
-            - { name: form.type, alias: oro_acl_entity_row }
 
     oro_security.form.type.object_name_type:
         class: %oro_security.type.oro_acl_object_name.class%
@@ -223,7 +216,7 @@ services:
 
     oro_security.entity_security_metadata_provider.cache:
         public: false
-        parent: oro_entity.owner.ownership_metadata_provider.cache
+        parent: oro_security.owner.ownership_metadata_provider.cache
 
     oro_security.action_metadata_provider:
         public: false
