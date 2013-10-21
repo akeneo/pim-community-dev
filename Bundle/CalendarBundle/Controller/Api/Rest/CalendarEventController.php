@@ -20,7 +20,8 @@ use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Oro\Bundle\SoapBundle\Form\Handler\ApiFormHandler;
 use Oro\Bundle\SoapBundle\Controller\Api\Rest\RestController;
 use Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager;
-use Oro\Bundle\CalendarBundle\Entity\Repository\CalendarEventRepository;
+use Oro\Bundle\CalendarBundle\Entity\Repository\CalendarRepository;
+use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 
 /**
@@ -77,10 +78,33 @@ class CalendarEventController extends RestController implements ClassResourceInt
         }
 
         $manager = $this->getManager();
-        /** @var CalendarEventRepository $repo */
+        /** @var EntityRepository $repo */
         $repo = $manager->getRepository();
-        $qb   = $repo->getEventsQueryBuilder($calendarId, $start, $end, $subordinate);
-        $qb->select('c.id as calendar, e.id, e.title, e.start, e.end, e.allDay, e.reminder');
+        $qb = $repo->createQueryBuilder('e')
+            ->select('c.id as calendar, e.id, e.title, e.start, e.end, e.allDay, e.reminder')
+            ->innerJoin('e.calendar', 'c')
+            ->where('e.start >= :start AND e.end < :end')
+            ->orderBy('c.id, e.start')
+            ->setParameter('start', $start)
+            ->setParameter('end', $end);
+        if ($subordinate) {
+            /** @var CalendarRepository $calendarRepo */
+            $calendarRepo = $manager->getObjectManager()->getRepository('OroCalendarBundle:Calendar');
+            $qbAC = $calendarRepo->createQueryBuilder('c1')
+                ->select('ac.id')
+                ->innerJoin('c1.connections', 'a')
+                ->innerJoin('a.connectedCalendar', 'ac')
+                ->where('c1.id = :id')
+                ->setParameter('id', $calendarId);
+
+            $qb
+                ->andWhere($qb->expr()->in('c.id', $qbAC->getDQL()))
+                ->setParameter('id', $calendarId);
+        } else {
+            $qb
+                ->andWhere('c.id = :id')
+                ->setParameter('id', $calendarId);
+        }
 
         $result = array();
         foreach ($qb->getQuery()->getArrayResult() as $item) {
