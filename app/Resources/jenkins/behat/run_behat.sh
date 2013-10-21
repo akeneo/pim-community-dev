@@ -39,7 +39,9 @@ fi
 
 ORIGINAL_DB_NAME=`echo $DB_PREFIX | sed -e "s/_$//"`
 
-FEATURES_DIR=`dirname $0`/../../../../features
+APP_ROOT=`dirname $0`/../../../..
+
+FEATURES_DIR=$APP_ROOT/features/category
 
 if [ "$XDEBUG" = 'xdebug' ]; then
     PHP_EXTENSION_DIR=`php -i | grep extension_dir | cut -d ' ' -f3`
@@ -58,7 +60,7 @@ export DISPLAY=:0
 FEATURES_NAMES=""
 
 # Install the assets and db on all environments
-cd $FEATURES_DIR/..
+cd $APP_ROOT
 sed -i -e 's/database_name:.*$/database_name: "%database.name%"/' app/config/parameters_test.yml
 for PROC in `seq 1 $CONCURRENCY`; do
     export SYMFONY__DATABASE__NAME=$DB_PREFIX$PROC
@@ -102,6 +104,13 @@ for FEATURE in $FEATURES; do
             sleep $CHECK_WAIT
         fi
     done
+done
+
+# Wait for any remaining processes to finish
+for PROC in `seq 1 $CONCURRENCY`; do
+    PID_VARNAME=PID_$PROC
+    PID="${!PID_VARNAME}"
+    wait $PID
 done
 
 # Check the output
