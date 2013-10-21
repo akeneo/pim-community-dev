@@ -101,7 +101,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     public function iAmOnThePage($page)
     {
         $page = isset($this->pageMapping[$page]) ? $this->pageMapping[$page] : $page;
-        echo "DEBUG: OpenPage: $pagei\n";
+        echo "DEBUG: OpenPage: $page\n";
         $this->openPage($page);
         $this->wait();
     }
