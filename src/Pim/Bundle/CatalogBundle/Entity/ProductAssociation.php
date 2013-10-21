@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Entity\Association;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
@@ -58,6 +59,14 @@ class ProductAssociation
      * )
      */
     protected $targets;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->targets = new ArrayCollection();
+    }
 
     /**
      * Get id
