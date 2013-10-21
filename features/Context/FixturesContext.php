@@ -21,7 +21,7 @@ use Pim\Bundle\CatalogBundle\Entity\FamilyTranslation;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Entity\ProductPrice;
-use Pim\Bundle\CatalogBundle\Entity\VariantGroup;
+use Pim\Bundle\CatalogBundle\Entity\Group;
 use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Gherkin\Node\PyStringNode;
@@ -106,11 +106,11 @@ class FixturesContext extends RawMinkContext
     public function resetGroupTypes()
     {
         $types = array(
-            'VARIANT' => 'Pim\Bundle\CatalogBundle\Entity\VariantGroup',
-            'X_SELL'  => 'Pim\Bundle\CatalogBundle\Entity\Group',
+            'VARIANT' => 1,
+            'X_SELL'  => 0,
         );
-        foreach ($types as $code => $entity) {
-            $this->createGroupType($code, $entity);
+        foreach ($types as $code => $isVariant) {
+            $this->createGroupType($code, $isVariant);
         }
     }
 
@@ -824,7 +824,7 @@ class FixturesContext extends RawMinkContext
 
             $products = (isset($data['products'])) ? explode(', ', $data['products']) : array();
 
-            $this->createVariant($code, $label, $type, $attributes, $products);
+            $this->createGroup($code, $label, $type, $attributes, $products);
         }
     }
 
@@ -1227,16 +1227,16 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @param string $code
-     * @param string $entity
+     * @param string  $code
+     * @param boolean $isVariant
      *
      * @return GroupType
      */
-    private function createGroupType($code, $entity)
+    private function createGroupType($code, $isVariant)
     {
         $type = new GroupType();
         $type->setCode($code);
-        $type->setentity($entity);
+        $type->setVariant($isVariant);
 
         $this->persist($type);
 
@@ -1413,27 +1413,27 @@ class FixturesContext extends RawMinkContext
      * @param array  $attributes
      * @param array  $products
      */
-    private function createVariant($code, $label, $type, array $attributes, array $products = array())
+    private function createGroup($code, $label, $type, array $attributes, array $products = array())
     {
-        $variant = new VariantGroup();
-        $variant->setCode($code);
-        $variant->setLocale('en_US')->setLabel($label); // TODO translation refactoring
+        $group = new Group();
+        $group->setCode($code);
+        $group->setLocale('en_US')->setLabel($label); // TODO translation refactoring
 
         $type = $this->getGroupType($type);
-        $variant->setType($type);
+        $group->setType($type);
 
         foreach ($attributes as $attributeCode) {
             $attribute = $this->getAttribute($attributeCode);
-            $variant->addAttribute($attribute);
+            $group->addAttribute($attribute);
         }
 
         foreach ($products as $sku) {
             $product = $this->getProduct($sku);
-            $variant->addProduct($product);
-            $product->setVariantGroup($variant);
+            $group->addProduct($product);
+            $product->addGroup($group);
         }
 
-        $this->persist($variant);
+        $this->persist($group);
     }
 
     /**

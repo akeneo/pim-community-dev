@@ -52,7 +52,7 @@ class WebUser extends RawMinkContext implements PageObjectAwareInterface
         'users'                    => 'User index',
         'user roles'               => 'UserRole index',
         'user groups'              => 'UserGroup index',
-        'variants'                 => 'Variant index',
+        'product groups'           => 'ProductGroup index',
         'attribute groups'         => 'AttributeGroup index',
         'attribute group creation' => 'AttributeGroup creation',
     );
