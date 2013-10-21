@@ -50,3 +50,7 @@ group:
 association:
     resource: '@PimCatalogBundle/Resources/config/routing/association.yml'
     prefix: /configuration/association
+
+media:
+    resource: '@PimCatalogBundle/Resources/config/routing/media.yml'
+    prefix: /media

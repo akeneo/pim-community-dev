@@ -11,6 +11,7 @@ parameters:
     pim_catalog.controller.variant_group.class:     Pim\Bundle\CatalogBundle\Controller\VariantGroupController
     pim_catalog.controller.group.class:             Pim\Bundle\CatalogBundle\Controller\GroupController
     pim_catalog.controller.association.class:       Pim\Bundle\CatalogBundle\Controller\AssociationController
+    pim_catalog.controller.media.class:             Pim\Bundle\CatalogBundle\Controller\MediaController
 
 services:
     pim_catalog.controller.abstract:
@@ -145,3 +146,12 @@ services:
             - '@pim_catalog.datagrid.worker'
             - '@pim_catalog.form.handler.association'
             - '@pim_catalog.form.association'
+
+    pim_catalog.controller.media:
+        scope: request
+        class: %pim_catalog.controller.media.class%
+        parent: pim_catalog.controller.abstract_doctrine
+        arguments:
+            - '@liip_imagine'
+            - '@liip_imagine.filter.manager'
+            - '@liip_imagine.cache.manager'
