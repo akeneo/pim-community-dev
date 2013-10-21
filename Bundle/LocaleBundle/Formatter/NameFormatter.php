@@ -27,26 +27,26 @@ class NameFormatter
 
     /**
      * @SuppressWarnings(PHPMD.NPathComplexity)
-     * @param object $person
+     * @param NamePrefixInterface|FirstNameInterface|MiddleNameInterface|LastNameInterface|NameSuffixInterface $person
      * @param null|string $locale
      * @return string
      */
     public function format($person, $locale = null)
     {
         $nameParts = array();
-        if ($person instanceof NamePrefixInterface || $person instanceof FullNameInterface) {
+        if ($person instanceof NamePrefixInterface) {
             $nameParts['prefix'] = $person->getNamePrefix();
         }
-        if ($person instanceof FirstNameInterface || $person instanceof FullNameInterface) {
+        if ($person instanceof FirstNameInterface) {
             $nameParts['first_name'] = $person->getFirstName();
         }
-        if ($person instanceof MiddleNameInterface || $person instanceof FullNameInterface) {
+        if ($person instanceof MiddleNameInterface) {
             $nameParts['middle_name'] = $person->getMiddleName();
         }
-        if ($person instanceof LastNameInterface || $person instanceof FullNameInterface) {
+        if ($person instanceof LastNameInterface) {
             $nameParts['last_name'] = $person->getLastName();
         }
-        if ($person instanceof NameSuffixInterface || $person instanceof FullNameInterface) {
+        if ($person instanceof NameSuffixInterface) {
             $nameParts['suffix'] = $person->getNameSuffix();
         }
 

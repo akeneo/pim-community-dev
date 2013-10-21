@@ -25,19 +25,19 @@ class DateTimeExtension extends \Twig_Extension
     public function getFilters()
     {
         return array(
-            'oro_format_datetime' => new \Twig_Filter_Method(
-                $this,
-                'formatDateTime',
+            new \Twig_SimpleFilter(
+                'oro_format_datetime',
+                array($this, 'formatDateTime'),
                 array('is_safe' => array('html'))
             ),
-            'oro_format_date' => new \Twig_Filter_Method(
-                $this,
-                'formatDate',
+            new \Twig_SimpleFilter(
+                'oro_format_date',
+                array($this, 'formatDate'),
                 array('is_safe' => array('html'))
             ),
-            'oro_format_time' => new \Twig_Filter_Method(
-                $this,
-                'formatTime',
+            new \Twig_SimpleFilter(
+                'oro_format_time',
+                array($this, 'formatTime'),
                 array('is_safe' => array('html'))
             ),
         );

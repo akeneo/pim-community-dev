@@ -27,22 +27,30 @@ class NumberExtensionTest extends \PHPUnit_Framework_TestCase
     public function testGetFilters()
     {
         $filters = $this->extension->getFilters();
-        $this->assertArrayContainsHasFilter('oro_format_number', 'format', $filters);
-        $this->assertArrayContainsHasFilter('oro_format_currency', 'formatCurrency', $filters);
-        $this->assertArrayContainsHasFilter('oro_format_decimal', 'formatDecimal', $filters);
-        $this->assertArrayContainsHasFilter('oro_format_percent', 'formatPercent', $filters);
-        $this->assertArrayContainsHasFilter('oro_format_spellout', 'formatSpellout', $filters);
-        $this->assertArrayContainsHasFilter('oro_format_duration', 'formatDuration', $filters);
-        $this->assertArrayContainsHasFilter('oro_format_ordinal', 'formatOrdinal', $filters);
-    }
 
-    protected function assertArrayContainsHasFilter($filterName, $extensionMethod, array $filters)
-    {
-        $this->assertArrayHasKey($filterName, $filters);
-        /** @var \Twig_Filter_Method $filter */
-        $filter = $filters[$filterName];
-        $this->assertInstanceOf('Twig_Filter_Method', $filter);
-        $this->assertAttributeEquals($extensionMethod, 'method', $filter);
+        $this->assertCount(7, $filters);
+
+        $this->assertInstanceOf('Twig_SimpleFilter', $filters[0]);
+        $this->assertEquals('oro_format_number', $filters[0]->getName());
+
+        $this->assertInstanceOf('Twig_SimpleFilter', $filters[1]);
+        $this->assertEquals('oro_format_currency', $filters[1]->getName());
+
+        $this->assertInstanceOf('Twig_SimpleFilter', $filters[2]);
+        $this->assertEquals('oro_format_decimal', $filters[2]->getName());
+
+        $this->assertInstanceOf('Twig_SimpleFilter', $filters[3]);
+        $this->assertEquals('oro_format_percent', $filters[3]->getName());
+
+        $this->assertInstanceOf('Twig_SimpleFilter', $filters[4]);
+        $this->assertEquals('oro_format_spellout', $filters[4]->getName());
+
+        $this->assertInstanceOf('Twig_SimpleFilter', $filters[5]);
+        $this->assertEquals('oro_format_duration', $filters[5]->getName());
+
+        $this->assertInstanceOf('Twig_SimpleFilter', $filters[6]);
+        $this->assertEquals('oro_format_ordinal', $filters[6]->getName());
+
     }
 
     public function testFormat()
@@ -182,5 +190,10 @@ class NumberExtensionTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($expectedResult));
 
         $this->assertEquals($expectedResult, $this->extension->formatOrdinal($value, $options));
+    }
+
+    public function testGetName()
+    {
+        $this->assertEquals('oro_locale_number', $this->extension->getName());
     }
 }

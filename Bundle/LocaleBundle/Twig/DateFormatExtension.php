@@ -25,25 +25,6 @@ class DateFormatExtension extends \Twig_Extension
     /**
      * {@inheritdoc}
      */
-    public function getFilters()
-    {
-        return array(
-            'locale_date'     => new \Twig_SimpleFilter(
-                'locale_date',
-                array($this, 'formatDate'),
-                array('needs_environment' => true)
-            ),
-            'locale_datetime' => new \Twig_SimpleFilter(
-                'locale_datetime',
-                array($this, 'formatDateTime'),
-                array('needs_environment' => true)
-            ),
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getFunctions()
     {
         return array(
@@ -53,27 +34,6 @@ class DateFormatExtension extends \Twig_Extension
             'oro_config_jquery_dateformat'     => new \Twig_Function_Method($this, 'getJqueryDateFormat'),
             'oro_config_jquery_timeformat'     => new \Twig_Function_Method($this, 'getJqueryTimeFormat'),
         );
-    }
-
-    /**
-     * @param \Twig_Environment $env
-     * @param                   $date
-     * @param                   $dateTimeFormat
-     * @param null              $locale
-     * @param                   $timezone
-     *
-     * @return string
-     */
-    public function formatDateTime(
-        \Twig_Environment $env,
-        $date,
-        $dateTimeFormat = null,
-        $locale = null,
-        $timezone = null
-    ) {
-        list ($dateTimeFormat, $timezone, $locale) = $this->applyDefaultParams($dateTimeFormat, $timezone, $locale);
-
-        return $this->formatDate($env, $date, $dateTimeFormat, $locale, $timezone);
     }
 
     /**
@@ -102,42 +62,6 @@ class DateFormatExtension extends \Twig_Extension
         }
 
         return array($dateTimeFormat, $timezone, $locale);
-    }
-
-    /**
-     * @param \Twig_Environment $env
-     * @param                   $date
-     * @param                   $dateTimeFormat
-     * @param null              $locale
-     * @param                   $timezone
-     *
-     * @return string
-     */
-    public function formatDate(
-        \Twig_Environment $env,
-        $date,
-        $dateTimeFormat = null,
-        $locale = null,
-        $timezone = null
-    ) {
-        list ($dateTimeFormat, $timezone, $locale) = $this->applyDefaultParams(
-            $dateTimeFormat,
-            $timezone,
-            $locale,
-            true
-        );
-
-        $dateTimeFormat = $this->convertDateTimeToICUFormat($dateTimeFormat);
-
-        return twig_localized_date_filter(
-            $env,
-            $date,
-            "none",
-            "none",
-            $locale,
-            $timezone,
-            $dateTimeFormat
-        );
     }
 
     /**

@@ -25,39 +25,39 @@ class NumberExtension extends \Twig_Extension
     public function getFilters()
     {
         return array(
-            'oro_format_number' => new \Twig_Filter_Method(
-                $this,
-                'format',
+            new \Twig_SimpleFilter(
+                'oro_format_number',
+                array($this, 'format'),
                 array('is_safe' => array('html'))
             ),
-            'oro_format_currency' => new \Twig_Filter_Method(
-                $this,
-                'formatCurrency',
+            new \Twig_SimpleFilter(
+                'oro_format_currency',
+                array($this, 'formatCurrency'),
                 array('is_safe' => array('html'))
             ),
-            'oro_format_decimal' => new \Twig_Filter_Method(
-                $this,
-                'formatDecimal',
+            new \Twig_SimpleFilter(
+                'oro_format_decimal',
+                array($this, 'formatDecimal'),
                 array('is_safe' => array('html'))
             ),
-            'oro_format_percent' => new \Twig_Filter_Method(
-                $this,
-                'formatPercent',
+            new \Twig_SimpleFilter(
+                'oro_format_percent',
+                array($this, 'formatPercent'),
                 array('is_safe' => array('html'))
             ),
-            'oro_format_spellout' => new \Twig_Filter_Method(
-                $this,
-                'formatSpellout',
+            new \Twig_SimpleFilter(
+                'oro_format_spellout',
+                array($this, 'formatSpellout'),
                 array('is_safe' => array('html'))
             ),
-            'oro_format_duration' => new \Twig_Filter_Method(
-                $this,
-                'formatDuration',
+            new \Twig_SimpleFilter(
+                'oro_format_duration',
+                array($this, 'formatDuration'),
                 array('is_safe' => array('html'))
             ),
-            'oro_format_ordinal' => new \Twig_Filter_Method(
-                $this,
-                'formatOrdinal',
+            new \Twig_SimpleFilter(
+                'oro_format_ordinal',
+                array($this, 'formatOrdinal'),
                 array('is_safe' => array('html'))
             ),
         );

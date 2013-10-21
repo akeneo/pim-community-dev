@@ -27,18 +27,17 @@ class DateTimeExtensionTest extends \PHPUnit_Framework_TestCase
     public function testGetFilters()
     {
         $filters = $this->extension->getFilters();
-        $this->assertArrayContainsHasFilter('oro_format_datetime', 'formatDateTime', $filters);
-        $this->assertArrayContainsHasFilter('oro_format_date', 'formatDate', $filters);
-        $this->assertArrayContainsHasFilter('oro_format_time', 'formatTime', $filters);
-    }
 
-    protected function assertArrayContainsHasFilter($filterName, $extensionMethod, array $filters)
-    {
-        $this->assertArrayHasKey($filterName, $filters);
-        /** @var \Twig_Filter_Method $filter */
-        $filter = $filters[$filterName];
-        $this->assertInstanceOf('Twig_Filter_Method', $filter);
-        $this->assertAttributeEquals($extensionMethod, 'method', $filter);
+        $this->assertCount(3, $filters);
+
+        $this->assertInstanceOf('Twig_SimpleFilter', $filters[0]);
+        $this->assertEquals('oro_format_datetime', $filters[0]->getName());
+
+        $this->assertInstanceOf('Twig_SimpleFilter', $filters[1]);
+        $this->assertEquals('oro_format_date', $filters[1]->getName());
+
+        $this->assertInstanceOf('Twig_SimpleFilter', $filters[2]);
+        $this->assertEquals('oro_format_time', $filters[2]->getName());
     }
 
     public function testFormatDateTime()
@@ -101,5 +100,10 @@ class DateTimeExtensionTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($expectedResult));
 
         $this->assertEquals($expectedResult, $this->extension->formatTime($value, $options));
+    }
+
+    public function testGetName()
+    {
+        $this->assertEquals('oro_locale_number', $this->extension->getName());
     }
 }
