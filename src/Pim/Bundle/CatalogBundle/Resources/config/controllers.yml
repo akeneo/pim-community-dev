@@ -118,15 +118,6 @@ services:
             - '@pim_catalog.datagrid.worker'
             - '@oro_grid.mass_action.parameters_parser'
 
-    pim_catalog.controller.variant_group:
-        scope: request
-        class: %pim_catalog.controller.variant_group.class%
-        parent: pim_catalog.controller.abstract_doctrine
-        arguments:
-            - '@pim_catalog.datagrid.worker'
-            - '@pim_catalog.form.handler.variant_group'
-            - '@pim_catalog.form.variant_group'
-
     pim_catalog.controller.group:
         scope: request
         class: %pim_catalog.controller.group.class%
