@@ -1510,11 +1510,11 @@ class FixturesContext extends RawMinkContext
     /**
      * @param string $code
      *
-     * @return VariantGroup
+     * @return Group
      */
-    public function getVariant($code)
+    public function getProductGroup($code)
     {
-        return $this->getEntityOrException('PimCatalogBundle:VariantGroup', array('code' => $code));
+        return $this->getEntityOrException('PimCatalogBundle:Group', array('code' => $code));
     }
 
     /**

@@ -1,11 +1,11 @@
 @javascript
-Feature: Delete a variant group
-  In order to manager variant groups for the catalog
+Feature: Delete a product group
+  In order to manager product groups for the catalog
   As a user
-  I need to be able to delete variants
+  I need to be able to delete groups
 
   Background:
-    Given there is no variant
+    Given there is no product group
     And the following families:
       | code      | label     |
       | mug       | Mug       |
@@ -34,22 +34,22 @@ Feature: Delete a variant group
       | MUG_3   | size      | S     |
       | POSTIT  | color     | Blue  |
       | POSTIT  | size      | M     |
-    And the following variants:
+    And the following product groups:
       | code   | label      | attributes  | type    |
       | MUG    | MUG Akeneo | color       | VARIANT |
       | POSTIT | Postit     | color, size | VARIANT |
     And I am logged in as "admin"
 
-  Scenario: Successfully delete a variant from the grid
-    Given I am on the variants page
-    And I should see variant MUG
+  Scenario: Successfully delete a product group from the grid
+    Given I am on the product groups page
+    And I should see group MUG
     When I click on the "Delete" action of the row which contains "MUG"
     And I confirm the deletion
-    Then I should not see variant MUG
+    Then I should not see product group MUG
 
-  Scenario: Successfully delete a variant
-    Given I edit the "POSTIT" variant
+  Scenario: Successfully delete a product group
+    Given I edit the "POSTIT" product group
     When I press the "Delete" button
     And I confirm the deletion
     Then the grid should contain 1 element
-    And I should not see variant "POSTIT"
+    And I should not see group "POSTIT"

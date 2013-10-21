@@ -350,7 +350,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      * @Then /^I should see locales? (.*)$/
      * @Then /^I should see (?:import|export) profiles? (.*)$/
      * @Then /^I should see (?:(?:entit|currenc)(?:y|ies)) (.*)$/
-     * @Then /^I should see variants? (.*)$/
+     * @Then /^I should see groups? (.*)$/
      * @Then /^I should see associations? (.*)$/
      */
     public function iShouldSeeEntities($elements)
@@ -373,7 +373,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      * @Then /^I should not see locales? (.*)$/
      * @Then /^I should not see (?:import|export) profiles? (.*)$/
      * @Then /^I should not see (?:(?:entit|currenc)(?:y|ies)) (.*)$/
-     * @Then /^I should not see variants? (.*)$/
+     * @Then /^I should not see groups? (.*)$/
      * @Then /^I should not see associations? (.*)$/
      */
     public function iShouldNotSeeEntities($entities)
@@ -405,7 +405,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      * @Then /^I should see sorted (?:import|export) profiles (.*)$/
      * @Then /^I should see sorted (?:entities) (.*)$/
      * @Then /^I should see sorted products (.*)$/
-     * @Then /^I should see sorted variants (.*)$/
+     * @Then /^I should see sorted groups (.*)$/
      * @Then /^I should see sorted associations (.*)$/
      */
     public function iShouldSeeSortedEntities($elements)
