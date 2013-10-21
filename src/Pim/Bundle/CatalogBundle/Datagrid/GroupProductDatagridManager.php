@@ -60,6 +60,11 @@ class GroupProductDatagridManager extends FlexibleDatagridManager
         $field = $this->createFlexibleField($identifier);
         $fieldsCollection->add($field);
 
+        foreach ($this->getGroup()->getAttributes() as $attribute) {
+            $field = $this->createFlexibleField($attribute);
+            $fieldsCollection->add($field);
+        }
+
         $this->createFlexibleFilters($fieldsCollection);
 
         $field = $this->createFamilyField();
@@ -232,6 +237,8 @@ class GroupProductDatagridManager extends FlexibleDatagridManager
             ->leftJoin('values.options', 'valueOptions')
             ->leftJoin('values.prices', 'valuePrices');
 
+        $this->applyAttributeExpression($proxyQuery);
+
         $proxyQuery
             ->setParameter('localeCode', $this->flexibleManager->getLocale());
     }
@@ -251,6 +258,29 @@ class GroupProductDatagridManager extends FlexibleDatagridManager
             'group'       => $this->getGroup(),
             'scopeCode'   => $this->flexibleManager->getScope()
         );
+    }
+
+    /**
+     * Apply clause to get only product with values for each attributes
+     * of the variant group
+     *
+     * @param ProxyQueryInterface $proxyQuery
+     */
+    protected function applyAttributeExpression(ProxyQueryInterface $proxyQuery)
+    {
+        $rootAlias = $proxyQuery->getRootAlias();
+
+        foreach ($this->getGroup()->getAttributes() as $attribute) {
+            $valueField = sprintf('v_%s', $attribute->getId());
+            $proxyQuery
+                ->innerJoin(
+                    $rootAlias .'.values',
+                    $valueField,
+                    'WITH',
+                    $valueField .'.attribute = '. $attribute->getId()
+                )
+                ->andWhere($proxyQuery->expr()->isNotNull($valueField.'.option'));
+        }
     }
 
     /**
