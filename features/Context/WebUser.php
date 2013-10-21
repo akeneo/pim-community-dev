@@ -1146,8 +1146,8 @@ class WebUser extends RawMinkContext
      */
     public function iBlurTheCategoryNode()
     {
-        $this->getCurrentPage()->find('css', 'body')->click();
-        // Wait for the loading to finish
+        $elt = $this->getCurrentPage()->findInputNodeInTree();
+        $elt->blur();
         $this->wait();
     }
 
