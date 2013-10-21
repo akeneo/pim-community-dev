@@ -7,7 +7,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\CatalogBundle\Form\Subscriber\BindGroupProductsSubscriber;
-use Pim\Bundle\CatalogBundle\Form\Subscriber\VariantGroupSubscriber;
+use Pim\Bundle\CatalogBundle\Form\Subscriber\GroupSubscriber;
 use Pim\Bundle\CatalogBundle\Entity\Repository\ProductAttributeRepository;
 
 /**
@@ -35,7 +35,7 @@ class GroupType extends AbstractType
         $this->addProductsField($builder);
 
         $builder
-            ->addEventSubscriber(new VariantGroupSubscriber())
+            ->addEventSubscriber(new GroupSubscriber())
             ->addEventSubscriber(new BindGroupProductsSubscriber());
     }
 
