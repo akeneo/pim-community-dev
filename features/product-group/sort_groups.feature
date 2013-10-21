@@ -24,14 +24,14 @@ Feature: Sort product groups
     And the rows should be sorted ascending by code
     And I should see sorted groups MUG, TSHIRT_AKENEO and TSHIRT_ORO
 
-  Scenario: Successfully sort variants by code
+  Scenario: Successfully sort groups by code
     Given I am on the product groups page
     When I sort by "code" value ascending
     Then I should see sorted groups MUG, TSHIRT_AKENEO and TSHIRT_ORO
     When I sort by "code" value descending
     Then I should see sorted groups TSHIRT_ORO, TSHIRT_AKENEO and MUG
 
-  Scenario: Successfully sort variants by label
+  Scenario: Successfully sort groups by label
     Given I am on the product groups page
     When I sort by "label" value ascending
     Then I should see sorted groups MUG, TSHIRT_AKENEO and TSHIRT_ORO

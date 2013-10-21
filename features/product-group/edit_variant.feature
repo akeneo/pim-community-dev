@@ -33,26 +33,26 @@ Feature: Edit a variant group
       | MUG_3   | size      | S     |
       | POSTIT  | color     | Blue  |
       | POSTIT  | size      | M     |
-    And the following variants:
+    And the following product groups:
       | code   | label      | attributes  | type    |
       | MUG    | MUG Akeneo | color       | VARIANT |
       | POSTIT | Postit     | color, size | VARIANT |
     And I am logged in as "admin"
 
   Scenario: Successfully display the edit view for a variant group
-    Given I am on the "MUG" variant page
+    Given I am on the "MUG" product group page
     Then I should see the Code and Axis fields
     And the fields Code and Axis should be disabled
 
   Scenario: Successfully edit a variant group
-    Given I am on the "MUG" variant page
+    Given I am on the "MUG" product group page
     When I fill in the following information:
       | English (United States) | My Mug |
     And I press the "Save" button
     Then I should see "My Mug"
 
   Scenario: Successfully display a message when there are unsaved changes
-    Given I am on the "MUG" variant page
+    Given I am on the "MUG" product group page
     When I fill in the following information:
       | English (United States) | Mug |
     Then I should see "There are unsaved changes."

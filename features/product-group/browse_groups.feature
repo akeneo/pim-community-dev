@@ -22,7 +22,7 @@ Feature: Browse product groups
   Scenario: Successfully display product groups
     Given I am on the product groups page
     Then the grid should contain 3 elements
-    And I should see variants tshirt_akeneo, mug_akeneo and sticker_akeneo
+    And I should see groups tshirt_akeneo, mug_akeneo and sticker_akeneo
 
   Scenario: Successfully display columns
     Given I am on the product groups page
