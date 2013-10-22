@@ -104,11 +104,23 @@ class User extends AbstractEntityFlexible implements
     protected $email;
 
     /**
+     * Name prefix
+     *
+     * @var string
+     *
+     * @ORM\Column(name="name_prefix", type="string", length=255, nullable=true)
+     * @Soap\ComplexType("string")
+     * @Type("string")
+     * @Oro\Versioned
+     */
+    protected $namePrefix;
+
+    /**
      * First name
      *
      * @var string
      *
-     * @ORM\Column(name="firstname", type="string", length=100, nullable=true)
+     * @ORM\Column(name="first_name", type="string", length=255, nullable=true)
      * @Soap\ComplexType("string")
      * @Type("string")
      * @Oro\Versioned
@@ -116,23 +128,11 @@ class User extends AbstractEntityFlexible implements
     protected $firstName;
 
     /**
-     * Last name
-     *
-     * @var string
-     *
-     * @ORM\Column(name="lastname", type="string", length=100, nullable=true)
-     * @Soap\ComplexType("string")
-     * @Type("string")
-     * @Oro\Versioned
-     */
-    protected $lastName;
-
-    /**
      * Middle name
      *
      * @var string
      *
-     * @ORM\Column(name="middlename", type="string", length=100, nullable=true)
+     * @ORM\Column(name="middle_name", type="string", length=255, nullable=true)
      * @Soap\ComplexType("string")
      * @Type("string")
      * @Oro\Versioned
@@ -140,28 +140,28 @@ class User extends AbstractEntityFlexible implements
     protected $middleName;
 
     /**
+     * Last name
+     *
+     * @var string
+     *
+     * @ORM\Column(name="last_name", type="string", length=255, nullable=true)
+     * @Soap\ComplexType("string")
+     * @Type("string")
+     * @Oro\Versioned
+     */
+    protected $lastName;
+
+    /**
      * Name suffix
      *
      * @var string
      *
-     * @ORM\Column(name="namesuffix", type="string", length=100, nullable=true)
+     * @ORM\Column(name="name_suffix", type="string", length=255, nullable=true)
      * @Soap\ComplexType("string")
      * @Type("string")
      * @Oro\Versioned
      */
     protected $nameSuffix;
-
-    /**
-     * Name prefix
-     *
-     * @var string
-     *
-     * @ORM\Column(name="nameprefix", type="string", length=100, nullable=true)
-     * @Soap\ComplexType("string")
-     * @Type("string")
-     * @Oro\Versioned
-     */
-    protected $namePrefix;
 
     /**
      * @var DateTime
