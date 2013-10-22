@@ -151,7 +151,7 @@ class SubBlockConfig implements FormConfigInterface
      */
     public function setUseSpan($useSpan)
     {
-        $this->useSpan = $useSpan;
+        $this->useSpan = $useSpan !== null ? $useSpan : true;
 
         return $this;
     }

@@ -77,6 +77,51 @@ class EntitiesController extends Controller
     }
 
     /**
+     * Grid of Custom/Extend entity.
+     * @Route(
+     *      "/{id}",
+     *      name="oro_entity_relation",
+     *      defaults={"id"=0}
+     * )
+     * @Template("OroEntityBundle:Entities:index.html.twig")
+     */
+    public function relationAction($id)
+    {
+        $extendEntityName = str_replace('_', '\\', $id);
+        $this->checkAccess('VIEW', $extendEntityName);
+
+        /** @var ConfigProvider $entityConfigProvider */
+        $entityConfigProvider = $this->get('oro_entity_config.provider.entity');
+
+        if (!$entityConfigProvider->hasConfig($extendEntityName)) {
+            throw $this->createNotFoundException();
+        }
+
+        $entityConfig = $entityConfigProvider->getConfig($extendEntityName);
+
+        /** @var  CustomEntityDatagrid $datagrid */
+        $datagridManager = $this->get('oro_entity.relation_datagrid.manager');
+
+        $datagridManager->setCustomEntityClass($extendEntityName);
+        $datagridManager->setEntityName($extendEntityName);
+        $datagridManager->getRouteGenerator()->setRouteParameters(array('id' => $id));
+
+        $view = $datagridManager->getDatagrid()->createView();
+
+        return 'json' == $this->getRequest()->getRequestFormat()
+            ? $this->get('oro_grid.renderer')->renderResultsJsonResponse($view)
+            : $this->render(
+                'OroEntityBundle:Entities:index.html.twig',
+                array(
+                    'datagrid'     => $view,
+                    'entity_id'    => $id,
+                    'entity_class' => $extendEntityName,
+                    'label'        => $entityConfig->get('label')
+                )
+            );
+    }
+
+    /**
      * View custom entity instance.
      * @Route(
      *      "/view/{entity_id}/item/{id}",
