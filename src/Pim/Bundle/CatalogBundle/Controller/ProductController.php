@@ -27,7 +27,6 @@ use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
 use Pim\Bundle\CatalogBundle\Datagrid\ProductDatagridManager;
 use Pim\Bundle\CatalogBundle\Entity\Category;
-use Pim\Bundle\CatalogBundle\Entity\ProductAssociation;
 use Pim\Bundle\CatalogBundle\Exception\DeleteException;
 use Pim\Bundle\CatalogBundle\Helper\CategoryHelper;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
@@ -315,12 +314,7 @@ class ProductController extends AbstractDoctrineController
             return $this->gridRenderer->renderResultsJsonResponse($datagrid->createView());
         }
 
-        $missingAssociations = $this->getRepository('PimCatalogBundle:Association')->findMissingAssociations($product);
-        foreach ($missingAssociations as $association) {
-            $productAssociation = new ProductAssociation();
-            $productAssociation->setAssociation($association);
-            $product->addProductAssociation($productAssociation);
-        }
+        $this->productManager->ensureAllAssociations($product);
 
         $form = $this->createForm(
             'pim_product',
