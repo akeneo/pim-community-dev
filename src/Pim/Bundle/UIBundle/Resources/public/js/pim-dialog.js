@@ -34,18 +34,25 @@ define(
                 }
             },
             
+            /**
+             * Open a modal dialog with cancel button and specific redirection when
+             * @param string content
+             * @param string title
+             * @param string okText
+             * @param string location
+             */
             redirect: function (content, title, okText, location) {
                 if (!_.isUndefined(Backbone.BootstrapModal)) {
-                    var modal = new Backbone.BootstrapModal({
+                    var redirectModal = new Backbone.BootstrapModal({
                         allowCancel: true,
                         title: title,
                         content: content,
                         okText: okText
                     });
-                    modal.on('ok', function() {
+                    redirectModal.on('ok', function() {
                         Navigation.getInstance().setLocation(location);
                     });
-                    modal.open();
+                    redirectModal.open();
                 }else {
                     window.alert(content);
                 }
