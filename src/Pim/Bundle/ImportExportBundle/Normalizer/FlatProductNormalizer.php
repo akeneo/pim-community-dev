@@ -58,6 +58,8 @@ class FlatProductNormalizer implements NormalizerInterface
 
         $this->normalizeGroups($object->getGroupCodes());
 
+        $this->normalizeCategories($object->getCategoryCodes());
+
         $values = array();
         foreach ($object->getValues() as $value) {
             if ($value === $identifier) {
@@ -70,8 +72,6 @@ class FlatProductNormalizer implements NormalizerInterface
         }
         ksort($values);
         $this->results = array_merge($this->results, $values);
-
-        $this->normalizeCategories($object->getCategoryCodes());
 
         return $this->results;
     }
