@@ -278,14 +278,14 @@ datagrid:
             acl_resource: oro_user_role_update
             query:
                 select:
-                    - |
-                      (IF (:roleId IS NOT NULL) THEN (
-                        CASE THEN (:roleId MEMBER OF u.roles OR u.id IN (:data_in)) AND u.id NOT IN (:data_not_in)
-                        THEN true ELSE false END)
-                      ELSE (
-                        CASE THEN u.id IN (:data_in) AND u.id NOT IN (:data_not_in)
+                    - >
+                      (CASE WHEN (:role_id IS NOT NULL) THEN
+                        CASE WHEN (:role_id MEMBER OF u.roles OR u.id IN (:data_in)) AND u.id NOT IN (:data_not_in)
                         THEN true ELSE false END
-                      )) as hasCurrentRole
+                      ELSE
+                        CASE WHEN u.id IN (:data_in) AND u.id NOT IN (:data_not_in)
+                        THEN true ELSE false END
+                      END) as hasCurrentRole
         columns:
             hasCurrentRole:
                 label: Has role
