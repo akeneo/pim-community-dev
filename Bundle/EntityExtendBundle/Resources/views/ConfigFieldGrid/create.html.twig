@@ -45,7 +45,7 @@
                         relation = el.find('option:selected').attr('value').split('|'),
                         field_name = $('input#oro_entity_extend_field_type_fieldName');
 
-                    if (relation !== 'undefined' && relation.length > 1) {
+                    if (relation !== 'undefined' && relation.length > 1 && relation[2]) {
                         $(field_name).val(relation[2]).attr('readonly', 'readonly');
                     }
                     else if ($(field_name).attr('readonly')) {

@@ -62,8 +62,10 @@ class FieldType extends AbstractType
                 $targetFieldId = $relation['target_field_id'];
 
                 if ($relation['assign'] == true
-                    && $fieldId
-                    && !$extendProvider->hasConfig($fieldId->getClassName(), $fieldId->getFieldName())
+                    && (
+                        ($fieldId && !$extendProvider->hasConfig($fieldId->getClassName(), $fieldId->getFieldName()))
+                        || $targetFieldId
+                    )
                 ) {
                     $fieldType = ExtendHelper::getReversRelationType($targetFieldId->getFieldType());
 
@@ -73,7 +75,7 @@ class FieldType extends AbstractType
                         $targetFieldId->getFieldName()
                     )->get('label');
 
-                    $key = 'relation' . '|' . $fieldType . '|' . $fieldId->getFieldName();
+                    $key = 'relation' . '|' . $fieldType . '|' . ($fieldId ? $fieldId->getFieldName() : '');
 
                     $types[$key] = 'Relation (' . $entityLabel . ') ' . $fieldLabel;
                 }

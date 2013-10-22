@@ -158,7 +158,7 @@ class ConfigFieldGridController extends Controller
          */
         if (strpos($fieldType, 'relation|') === 0 && count($relationOptions) == 3) {
             $fieldType = $relationOptions[1];
-            $fieldName = $relationOptions[2];
+            $fieldName = $relationOptions[2] ? : $fieldName;
 
             foreach ($extendEntityConfig->get('relation') as $relation) {
                 $fieldConfigId = new FieldConfigId($entity->getClassName(), 'extend', $fieldName, $fieldType);

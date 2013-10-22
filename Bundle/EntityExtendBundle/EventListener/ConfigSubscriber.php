@@ -161,7 +161,6 @@ class ConfigSubscriber implements EventSubscriberInterface
             return;
         }
 
-
         $targetConfig = $this->extendConfigProvider->getConfig($fieldConfig->get('target_entity'));
         if ($this->findRelation($targetConfig, $fieldConfig->getId(), true)) {
             //$this->updateTargetRelation($fieldConfig);
