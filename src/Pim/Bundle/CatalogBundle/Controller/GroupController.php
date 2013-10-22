@@ -103,11 +103,7 @@ class GroupController extends AbstractDoctrineController
     {
         /** @var QueryBuilder $queryBuilder */
         $queryBuilder = $this->getManager()->createQueryBuilder();
-        $queryBuilder
-            ->select('g')
-            ->from('PimCatalogBundle:Group', 'g');
         $datagrid = $this->datagridWorker->getDatagrid('group', $queryBuilder);
-
 
         $view = ('json' === $request->getRequestFormat())
             ? 'OroGridBundle:Datagrid:list.json.php'

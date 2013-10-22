@@ -88,7 +88,7 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
             'elements'      => 'roue,poignées,benne',
             'visual'        => 'kb0001.jpg',
             'categories'    => 'cat1, cat2, cat3',
-            'variant_group' => '',
+            'groups'        => '',
         );
 
         $this->assertEquals(
@@ -117,15 +117,15 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
         $product    = $this->getProductMock($identifier, $values, null, 'cat1, cat2, cat3');
 
         $result = array(
-            'sku'           => 'KB0001',
-            'family'        => '',
-            'name-fr_FR'    => 'Brouette',
-            'name-en_US'    => 'Wheelbarrow',
-            'name-es_ES'    => 'Carretilla',
-            'exportedAt'    => $now->format('m/d/Y'),
-            'elements'      => 'roue,poignées,benne',
-            'categories'    => 'cat1, cat2, cat3',
-            'variant_group' => '',
+            'sku'        => 'KB0001',
+            'family'     => '',
+            'name-fr_FR' => 'Brouette',
+            'name-en_US' => 'Wheelbarrow',
+            'name-es_ES' => 'Carretilla',
+            'exportedAt' => $now->format('m/d/Y'),
+            'elements'   => 'roue,poignées,benne',
+            'categories' => 'cat1, cat2, cat3',
+            'groups'     => '',
         );
 
         $this->assertEquals(

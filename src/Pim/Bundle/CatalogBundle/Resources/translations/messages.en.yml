@@ -10,7 +10,6 @@ family:          family
 import profile:  import profile
 locale:          locale
 product:         product
-variant group:   variant group
 group:           group
 association:     association
 
@@ -62,10 +61,6 @@ product:
     overview: product overview
     create:   create product
     edit:     edit product
-variant group:
-    overview: variant group overview
-    create:   create variant group
-    edit:     edit variant group
 group:
     overview: group overview
     create:   create group
@@ -92,7 +87,6 @@ btn:
         import profile:  create import profile
         locale:          create locale
         product:         create product
-        variant group:   create variant group
         group:           create group
         association:     create association
     edit:      edit
@@ -121,7 +115,6 @@ confirmation:
         export profile:  Are you sure you want to delete the export profile %name%?
         import profile:  Are you sure you want to delete the import profile %name%?
         channel:         Are you sure you want to delete the channel %name%?
-        variant group:   Are you sure you want to delete the variant group %name%?
         group:           Are you sure you want to delete the group %name%?
         association:     Are you sure you want to delete the association %name%?
 
@@ -177,10 +170,6 @@ flash:
         removed:                  The import has been removed
     export:
         removed:                  The export has been removed
-    variant group:
-        created: Variant group successfully created
-        updated: Variant group successfully updated
-        removed: Variant group successfully removed
     group:
         created: Group successfully created
         updated: Group successfully updated
@@ -207,7 +196,7 @@ info:
         enabled:                 Enabled
         disable:                 Disable
         disabled:                Disabled
-    variant group:
+    group:
         axis: Variation axis: %attributes%
 
 # Form elements
@@ -219,6 +208,7 @@ Updated:                       Updated
 N/A:                           N/A
 Add an option:                 Add an option
 Manage products:               Manage products
+Manage groups:                 Manage groups
 Code:                          Code
 Name:                          Name
 Type:                          Type
@@ -269,7 +259,6 @@ Channel: Channel
 
 # Variants
 Always override:         Always override
-A selection of variants: A selection of variants
 Ask:                     Ask
 
 # Attribute group
@@ -338,13 +327,9 @@ Channels %channel.label% | Edit:             Channels %channel.label% | Edit
 Currencies:                                  Currencies
 Locales:                                     Locales
 Locales %locale.code% | Edit:                Locales %locale.code% | Edit
-Variant groups:                              Variant groups
-Variant groups | Create:                     Variant groups | Create
-Variant groups %variant.label% | Edit:       Variant groups %variant group.label% | Edit
 Groups:                                      Groups
 Groups | Create:                             Groups | Create
 Groups %group.label% | Edit:                 Groups %group.label% | Edit
-Variant groups %variant.label% | Edit:       Variant groups %variant.label% | Edit
 Associations:                                Associations
 Associations | Create:                       Associations | Create
 Associations %association.label% | Edit:     Associations %association.label% | Edit

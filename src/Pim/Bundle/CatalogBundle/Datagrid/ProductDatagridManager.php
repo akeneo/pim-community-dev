@@ -242,8 +242,9 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $field = $this->createCompletenessField();
         $fieldsCollection->add($field);
 
-        $field = $this->createVariantGroupField();
-        $fieldsCollection->add($field);
+        // TODO : Add a filter per type
+        // $field = $this->createVariantGroupField();
+        // $fieldsCollection->add($field);
     }
 
     /**
@@ -567,8 +568,8 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $proxyQuery
             ->leftJoin($rootAlias .'.family', 'productFamily')
             ->leftJoin('productFamily.translations', 'ft', 'WITH', 'ft.locale = :localeCode')
-            ->leftJoin($rootAlias .'.variantGroup', 'variantGroup')
-            ->leftJoin('variantGroup.translations', 'vt', 'WITH', 'vt.locale = :localeCode')
+            ->leftJoin($rootAlias .'.groups', 'Group')
+            ->leftJoin('Group.translations', 'vt', 'WITH', 'vt.locale = :localeCode')
             ->leftJoin($rootAlias.'.values', 'values')
             ->leftJoin('values.options', 'valueOptions')
             ->leftJoin('values.prices', 'valuePrices')

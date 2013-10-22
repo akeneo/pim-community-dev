@@ -38,7 +38,7 @@
         }
     }) }}
 
-        {% set title = 'group.edit'|trans ~ ' - ' ~ form.vars.data.label %}
+        {% set title = 'group.edit'|trans ~ ' - ' ~ form.vars.data.label ~ ' - ' ~ form.vars.data.products|length ~ ' products'|trans %}
 
         {% set buttons %}
             {{ elements.backLink(path('pim_catalog_group_index')) }}
@@ -69,6 +69,9 @@
             {% set generalProperties %}
                 {{ form_row(form.code) }}
                 {{ form_row(form.type) }}
+                {% if form.vars.data.type.isVariant %}
+                    {{ form_row(form.attributes) }}
+                {% endif %}
             {% endset %}
 
             {{ elements.accordion({

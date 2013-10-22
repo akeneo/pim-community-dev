@@ -17,8 +17,18 @@
         {% if isRunning %}
             {{ elements.link('Refresh', path(refresh_route, { 'id': execution.id }), { icon: 'refresh' }) }}
         {% else %}
-            {{ elements.link('Download file', path(download_file_route, { 'id': execution.id }), { icon: 'download', class:'no-hash' }) }}
-            {{ elements.link('Download log', path(download_log_route, { 'id': execution.id }), { icon: 'download', class:'no-hash' }) }}
+            {% if existingDownload %}
+                {{ elements.link(
+                    'Download file',
+                    path(download_file_route, { 'id': execution.id }), { icon: 'download', class:'no-hash' }
+                ) }}
+            {% endif %}
+            {% if existingLog %}
+                {{ elements.link(
+                    'Download log',
+                    path(download_log_route, { 'id': execution.id }), { icon: 'download', class:'no-hash' }
+                ) }}
+            {% endif %}
         {% endif %}
         {{ elements.link('Show profile', path(show_profile_route, { 'id': execution.jobInstance.id })) }}
     {% endset %}

@@ -16,11 +16,17 @@ class DatagridRouteRegistryTest extends \PHPUnit_Framework_TestCase
 {
     protected $cacheDir;
 
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         $this->cacheDir = null;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function tearDown()
     {
         if ($this->cacheDir) {
@@ -29,6 +35,9 @@ class DatagridRouteRegistryTest extends \PHPUnit_Framework_TestCase
         }
     }
 
+    /**
+     * @return array
+     */
     public function getTestData()
     {
         return array(
@@ -54,6 +63,11 @@ class DatagridRouteRegistryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param mixed   $input
+     * @param mixed   $expected
+     * @param boolean $cacheMode
+     * @param boolean $expired
+     *
      * @dataProvider getTestData
      */
     public function testGetRegexps($input, $expected, $cacheMode, $expired)

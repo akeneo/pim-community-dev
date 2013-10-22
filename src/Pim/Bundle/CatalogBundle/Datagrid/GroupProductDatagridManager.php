@@ -60,7 +60,10 @@ class GroupProductDatagridManager extends FlexibleDatagridManager
         $field = $this->createFlexibleField($identifier);
         $fieldsCollection->add($field);
 
-        $this->createFlexibleFilters($fieldsCollection);
+        foreach ($this->getGroup()->getAttributes() as $attribute) {
+            $field = $this->createFlexibleField($attribute);
+            $fieldsCollection->add($field);
+        }
 
         $field = $this->createFamilyField();
         $fieldsCollection->add($field);
@@ -106,7 +109,13 @@ class GroupProductDatagridManager extends FlexibleDatagridManager
     {
         $result = parent::getFlexibleFieldOptions($attribute, $options);
 
-        $result['show_filter'] = $attribute->getAttributeType() === 'pim_catalog_identifier';
+        if ($attribute->getAttributeType() === 'pim_catalog_identifier') {
+            $result['show_filter'] = true;
+        }
+
+        if ($this->getGroup()->getAttributes()->contains($attribute)) {
+            $result['show_filter'] = true;
+        }
 
         return $result;
     }
@@ -125,37 +134,9 @@ class GroupProductDatagridManager extends FlexibleDatagridManager
                 "(:group MEMBER OF o.groups OR o.id IN (:data_in)) AND ".
                 "o.id NOT IN (:data_not_in) ".
                 "THEN true ELSE false END";
-            $this->hasProductExpression =
-                sprintf($this->hasProductExpression, $this->getGroup()->getId());
         }
 
         return $this->hasProductExpression;
-    }
-
-    /**
-     * Create flexible filters when attributes are defined as filterable
-     * and are not already in the fields collection
-     *
-     * @param FieldDescriptionCollection $fieldsCollection
-     */
-    protected function createFlexibleFilters(FieldDescriptionCollection $fieldsCollection)
-    {
-        $excludedBackend = array(
-            AbstractAttributeType::BACKEND_TYPE_MEDIA
-        );
-
-        foreach ($this->getFlexibleAttributes() as $attribute) {
-            if (!$attribute->isUseableAsGridColumn() || !$attribute->isUseableAsGridFilter()) {
-                continue;
-            }
-
-            if (in_array($attribute->getBackendType(), $excludedBackend)) {
-                continue;
-            }
-
-            $field = $this->createFlexibleField($attribute);
-            $fieldsCollection->add($field);
-        }
     }
 
     /**
@@ -234,6 +215,8 @@ class GroupProductDatagridManager extends FlexibleDatagridManager
             ->leftJoin('values.options', 'valueOptions')
             ->leftJoin('values.prices', 'valuePrices');
 
+        $this->applyAttributeExpression($proxyQuery);
+
         $proxyQuery
             ->setParameter('localeCode', $this->flexibleManager->getLocale());
     }
@@ -253,6 +236,29 @@ class GroupProductDatagridManager extends FlexibleDatagridManager
             'group'       => $this->getGroup(),
             'scopeCode'   => $this->flexibleManager->getScope()
         );
+    }
+
+    /**
+     * Apply clause to get only product with values for each attributes
+     * of the variant group
+     *
+     * @param ProxyQueryInterface $proxyQuery
+     */
+    protected function applyAttributeExpression(ProxyQueryInterface $proxyQuery)
+    {
+        $rootAlias = $proxyQuery->getRootAlias();
+
+        foreach ($this->getGroup()->getAttributes() as $attribute) {
+            $valueField = sprintf('v_%s', $attribute->getId());
+            $proxyQuery
+                ->innerJoin(
+                    $rootAlias .'.values',
+                    $valueField,
+                    'WITH',
+                    $valueField .'.attribute = '. $attribute->getId()
+                )
+                ->andWhere($proxyQuery->expr()->isNotNull($valueField.'.option'));
+        }
     }
 
     /**
@@ -299,7 +305,7 @@ class GroupProductDatagridManager extends FlexibleDatagridManager
     protected function getDefaultSorters()
     {
         return array(
-            'has_product' => SorterInterface::DIRECTION_ASC,
+            'has_product' => SorterInterface::DIRECTION_DESC,
             $this->flexibleManager->getIdentifierAttribute()->getCode() => SorterInterface::DIRECTION_ASC
         );
     }
