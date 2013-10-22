@@ -4,8 +4,8 @@ oro_email:
     prefix:       /email
 
 oro_email_bundle_api:
-    resource:     "@OroEmailBundle/Resources/config/routing_api.yml"
-    type: rest
+    resource:     "@OroEmailBundle/Resources/config/oro/routing_api.yml"
+    type:         rest
     prefix:       api/rest/{version}
     requirements:
         version:  latest|v1

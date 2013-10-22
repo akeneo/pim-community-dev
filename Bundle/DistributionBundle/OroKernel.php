@@ -36,6 +36,7 @@ abstract class OroKernel extends Kernel
                 $cache->write($dumper->dump());
             }
 
+            // require instead of require_once used to correctly handle sub-requests
             $bundles = require $cache;
         }
 
