@@ -9,7 +9,7 @@ use Pim\Bundle\ImportExportBundle\Converter\ProductEnabledConverter;
 use Pim\Bundle\ImportExportBundle\Converter\ProductValueConverter;
 use Pim\Bundle\ImportExportBundle\Converter\ProductFamilyConverter;
 use Pim\Bundle\ImportExportBundle\Converter\ProductCategoriesConverter;
-use Pim\Bundle\ImportExportBundle\Converter\ProductVariantGroupConverter;
+use Pim\Bundle\ImportExportBundle\Converter\ProductGroupsConverter;
 
 /**
  * Transform imported product data into a bindable data to the product form
@@ -41,30 +41,30 @@ class TransformImportedProductDataSubscriber implements EventSubscriberInterface
     protected $categoriesConverter;
 
     /**
-     * @var ProductVariantGroupConverter $variantGroupConverter
+     * @var ProductGroupsConverter $groupsConverter
      */
-    protected $variantGroupConverter;
+    protected $groupsConverter;
 
     /**
      * Constructor
-     * @param ProductEnabledConverter      $enabledConverter
-     * @param ProductValueConverter        $valueConverter
-     * @param ProductFamilyConverter       $familyConverter
-     * @param ProductCategoriesConverter   $categoriesConverter
-     * @param ProductVariantGroupConverter $variantGroupConverter
+     * @param ProductEnabledConverter    $enabledConverter
+     * @param ProductValueConverter      $valueConverter
+     * @param ProductFamilyConverter     $familyConverter
+     * @param ProductCategoriesConverter $categoriesConverter
+     * @param ProductGroupsConverter     $groupsConverter
      */
     public function __construct(
         ProductEnabledConverter $enabledConverter,
         ProductValueConverter $valueConverter,
         ProductFamilyConverter $familyConverter,
         ProductCategoriesConverter $categoriesConverter,
-        ProductVariantGroupConverter $variantGroupConverter
+        ProductGroupsConverter $groupsConverter
     ) {
-        $this->enabledConverter      = $enabledConverter;
-        $this->valueConverter        = $valueConverter;
-        $this->familyConverter       = $familyConverter;
-        $this->categoriesConverter   = $categoriesConverter;
-        $this->variantGroupConverter = $variantGroupConverter;
+        $this->enabledConverter    = $enabledConverter;
+        $this->valueConverter      = $valueConverter;
+        $this->familyConverter     = $familyConverter;
+        $this->categoriesConverter = $categoriesConverter;
+        $this->groupsConverter     = $groupsConverter;
     }
 
     /**
@@ -93,7 +93,7 @@ class TransformImportedProductDataSubscriber implements EventSubscriberInterface
             $this->valueConverter->convert($data),
             $this->familyConverter->convert($data),
             $this->categoriesConverter->convert($data),
-            $this->variantGroupConverter->convert($data)
+            $this->groupsConverter->convert($data)
         );
 
         $event->setData($dataToSubmit);

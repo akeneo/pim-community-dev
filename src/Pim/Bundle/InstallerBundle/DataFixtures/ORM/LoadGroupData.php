@@ -7,8 +7,6 @@ use Symfony\Component\Yaml\Yaml;
 use Doctrine\Common\Persistence\ObjectManager;
 
 use Pim\Bundle\CatalogBundle\Entity\Group;
-use Pim\Bundle\CatalogBundle\Entity\VariantGroup;
-use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\CatalogBundle\Entity\GroupTranslation;
 use Pim\Bundle\InstallerBundle\DataFixtures\ORM\AbstractInstallerFixture;
 
@@ -50,9 +48,7 @@ class LoadGroupData extends AbstractInstallerFixture
     protected function createGroup($code, $data)
     {
         $type = $this->getReference('group-type.'. $data['type']);
-        $entity = $type->getEntity();
-
-        $group = new $entity();
+        $group = new Group();
         $group->setCode($code);
         $group->setType($type);
 

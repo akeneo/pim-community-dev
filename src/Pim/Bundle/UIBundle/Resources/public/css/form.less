@@ -495,11 +495,27 @@ div.ui-dialog {
 }
 .modal .modal-header{
   background-color: @color-purple_light;
+  #gradient .vertical(@color-purple_light, darken(@color-purple_light, 5%));
   -webkit-border-radius: 6px 6px 0 0;
   border-radius: 6px 6px 0 0;
 }
 .modal-header h3{
   color: #fff;
+}
+
+.modal-primary {
+  top: 20%;
+  background-color: @backgroundColor-white;
+
+  .modal-header {
+    background-color: @color-purple_light;
+    #gradient .vertical(@color-purple_light, darken(@color-purple_light, 5%));
+    -webkit-border-radius: 6px 6px 0 0;
+    border-radius: 6px 6px 0 0;
+  }
+  .modal-header h3 {
+    font: #fff;
+  }
 }
 
 .form-inline {
