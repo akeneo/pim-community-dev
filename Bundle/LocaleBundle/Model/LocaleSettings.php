@@ -12,8 +12,8 @@ class LocaleSettings
     const PHONE_PREFIX_KEY   = 'phone_prefix';
     const DEFAULT_LOCALE_KEY = 'default_locale';
 
-    const DEFAULT_LOCALE  = 'en';
-    const DEFAULT_COUNTRY = 'US';
+    const DEFAULT_LOCALE   = 'en';
+    const DEFAULT_COUNTRY  = 'US';
     const DEFAULT_CURRENCY = 'USD';
 
     /**
@@ -119,6 +119,8 @@ class LocaleSettings
     }
 
     /**
+     * Adds name formats.
+     *
      * @param array $formats
      */
     public function addNameFormats(array $formats)
@@ -137,6 +139,8 @@ class LocaleSettings
     }
 
     /**
+     * Adds address formats.
+     *
      * @param array $formats
      */
     public function addAddressFormats(array $formats)
@@ -155,6 +159,8 @@ class LocaleSettings
     }
 
     /**
+     * Adds locale data.
+     *
      * @param array $data
      */
     public function addLocaleData(array $data)
