@@ -1,8 +1,8 @@
 {% set listenerParameters = {
     'columnName': 'has_association',
     'selectors': {
-        'included': '#appendTargets',
-        'excluded': '#removeTargets'
+        'included': '#' ~ form.productAssociations.children|first.appendTargets.vars.id,
+        'excluded': '#' ~ form.productAssociations.children|first.removeTargets.vars.id
     }
 } %}
 
@@ -10,51 +10,29 @@
 
 <script type="text/javascript">
     require(
-        ['jquery', 'pim/datagrid/parameter-setter'],
-        function($, Setter) {
+        ['jquery', 'pim/datagrid/parameter-setter', 'oro/mediator'],
+        function($, Setter, mediator) {
             'use strict';
             $(function() {
                 $('#association-list').on('click', 'a', function() {
                     if ($(this).parent().hasClass('active')) {
                         return;
                     }
-                    updateAssociationFields();
                     $(this).parent().siblings('li').removeClass('active');
                     $(this).parent().addClass('active');
-                    updateTargetFields();
                     var associationId = $(this).attr('id').replace('association-link-', '');
+                    setAssociationFields(associationId);
                     Setter.setParameter('{{ associationDatagrid.datagrid.name }}', 'associationId', associationId, true);
                 });
 
-                function updateAssociationFields() {
-                    var $appendTargets = $('#appendTargets'),
-                        $removeTargets = $('#removeTargets'),
-                        associationId = $('#association-list').find('li.active').find('a').attr('id').replace('association-link-', ''),
-                        $associationFields = $('#{{ form.productAssociations.vars.id }}'),
-                        $field = $associationFields.find('input[type="hidden"][value="' + associationId + '"]');
+                function setAssociationFields(associationId) {
+                    var $associationFields = $('#{{ form.productAssociations.vars.id }}'),
+                        $idField = $associationFields.find('input[type="hidden"][value="' + associationId + '"]');
 
-                    $field.siblings('[id$="appendTargets"]').val($appendTargets.val());
-                    $field.siblings('[id$="removeTargets"]').val($removeTargets.val());
+                    var appendFieldId = '#' + $idField.siblings('[id$="appendTargets"]').attr('id');
+                    var removeFieldId = '#' + $idField.siblings('[id$="removeTargets"]').attr('id');
+                    mediator.trigger('column_form_listener:set_selectors', { included: appendFieldId, excluded: removeFieldId });
                 }
-
-                function updateTargetFields() {
-                    var $appendTargets = $('#appendTargets'),
-                        $removeTargets = $('#removeTargets'),
-                        associationId = $('#association-list').find('li.active').find('a').attr('id').replace('association-link-', ''),
-                        $associationFields = $('#{{ form.productAssociations.vars.id }}'),
-                        $field = $associationFields.find('input[type="hidden"][value="' + associationId + '"]'),
-                        appendTargets = $field.siblings('[id$="appendTargets"]').val(),
-                        removeTargets = $field.siblings('[id$="removeTargets"]').val();
-                    $appendTargets.val(appendTargets);
-                    $removeTargets.val(removeTargets);
-                    Setter.setParameter('{{ associationDatagrid.datagrid.name }}', 'data_in', appendTargets);
-                    Setter.setParameter('{{ associationDatagrid.datagrid.name }}', 'data_not_in', removeTargets);
-                }
-
-                $('#{{ form.vars.id }}').on('click', 'button[type="submit"]', function() {
-                    updateAssociationFields();
-                    updateTargetFields();
-                });
             });
         }
     );
