@@ -1,3 +1,5 @@
+{% extends 'OroUIBundle:Form:fields.html.twig' %}
+
 {% block genemu_jqueryselect2_country_row %}
     {{ block('genemu_jqueryselect2_row') }}
 {% endblock %}
@@ -279,3 +281,83 @@
         });
     </script>
 {% endblock %}
+
+{% block form_label %}
+    {% spaceless %}
+        {% if not compound %}
+            {% set label_attr = label_attr|merge({'for': id}) %}
+        {% endif %}
+        {% if required %}
+            {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' required')|trim}) %}
+        {% endif %}
+        {% if label is empty %}
+            {% set label = name|humanize %}
+        {% endif %}
+        {% set isRadioLabel = form.parent.vars.expanded|default(false) and checked is defined %}
+        <label{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>
+            {% if tooltip is defined and tooltip %}
+                {% set tooltip = tooltip|trans %}
+                {% if (tooltip_details_enabled is defined and tooltip_details_enabled)
+                    or (tooltip_details_anchor is defined or tooltip_details_link is defined) %}
+                    {% set helpLink = tooltip_details_link|default(get_help_link()) %}
+                    {% if tooltip_details_anchor is defined and tooltip_details_anchor %}
+                        {% set helpLink = helpLink ~ '#' ~ tooltip_details_anchor %}
+                    {% endif %}
+                    {% set tooltip = tooltip
+                        ~ '<div class="clearfix"><div class="pull-right"><a href="' ~ helpLink ~ '">' ~ 'Read more'|trans ~ '</a></div></div>' %}
+                {% endif %}
+                <i class="icon-info-sign"
+                    style="color: #6b92d0;font-size: 13px;"
+                    {% if tooltip_placement is defined %}data-placement="{{ tooltip_placement }}"{% endif %}
+                    data-content="{{ tooltip }}"
+                    data-toggle="popover"></i>
+                <script type="text/javascript">
+                    require(['jquery', 'bootstrap-tooltip'],
+                    function($) {
+                        var container = $('[for="{{ id }}"]');
+                        var handlePopoverMouseout = function (e, popover) {
+                            var popoverHandler = $(e.relatedTarget).closest('.popover');
+                            if (!popoverHandler.length) {
+                                popover.data('popover-timer',
+                                    setTimeout(function() {
+                                        popover.popover('hide');
+                                        popover.data('popover-active', false);
+                                    }, 500)
+                                );
+                            } else {
+                                popoverHandler.one('mouseout', function(evt) {
+                                    handlePopoverMouseout(evt, popover);
+                                });
+                            }
+                        };
+                        container.find('[data-toggle="popover"]')
+                            .popover({
+                                animation: true,
+                                delay: { show: 0, hide: 0 },
+                                html: true,
+                                trigger: 'manual'
+                            })
+                            .mouseover(function() {
+                                var popoverEl = $(this);
+                                clearTimeout(popoverEl.data('popover-timer'));
+                                if (!popoverEl.data('popover-active')) {
+                                    popoverEl.data('popover-active', true);
+                                    $(this).popover('show');
+                                }
+                            })
+                            .mouseout(function(e) {
+                                var popover = $(this);
+                                setTimeout(function() {
+                                    handlePopoverMouseout(e, popover);
+                                }, 500);
+                            });
+                    });
+                </script>
+            {% endif %}
+            {% if required and not isRadioLabel %}
+                <em>*</em>
+            {% endif %}
+            {{ label|trans({}, translation_domain)|capitalize }}
+        </label>
+    {% endspaceless %}
+{% endblock form_label %}

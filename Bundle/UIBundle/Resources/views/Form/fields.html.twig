@@ -178,22 +178,6 @@
     {% endspaceless %}
 {% endblock choice_widget_options %}
 
-{% block form_label %}
-    {% spaceless %}
-        {% if not compound %}
-            {% set label_attr = label_attr|merge({'for': id}) %}
-        {% endif %}
-        {% if required %}
-            {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' required')|trim}) %}
-        {% endif %}
-        {% if label is empty %}
-            {% set label = name|humanize %}
-        {% endif %}
-        {% set isRadioLabel = form.parent.vars.expanded|default(false) and checked is defined %}
-        <label{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>{% if required and not isRadioLabel %}<em>*</em>{% endif %}{{ label|trans({}, translation_domain)|capitalize }}</label>
-    {% endspaceless %}
-{% endblock form_label %}
-
 {% block oro_flexibleentity_email_collection_widget %}
     {% set subform = form.collection %}
     {{ block('collection_render') }}

@@ -77,3 +77,53 @@ datagrid:
                     type: \Oro\Bundle\FilterBundle\Form\Type\Filter\DateRangeFilterType::TYPE_MORE_THAN
                     value:
                         end: 2013-10-07 00:00
+
+    account:
+        source:
+            type: orm
+            query:
+                select:
+                    - a.id
+                    - defaultContact.firstName as contactFirstName
+                    - defaultContact.lastName as contactLastName
+                    - defaultContactEmail.email as contactEmail
+                    - defaultContactPhone.phone as contactPhone
+                    - CONCAT(accountOwner.firstName, CONCAT(' ', accountOwner.lastName)) as ownerName
+                from:
+                    - { table: OroCRMAccountBundle:Account, alias: a }
+
+                join:
+                    left:
+                        - { join: a.defaultContact, alias: defaultContact }
+                        - { join: defaultContact.emails, alias: defaultContactEmail, conditionType: 'WITH', condition: 'defaultContactEmail.primary = true' }
+                        - { join: defaultContact.phones, alias: defaultContactPhone, conditionType: 'WITH', condition: 'defaultContactPhone.primary = true' }
+                        - { join: a.owner, alias: accountOwner }
+        columns:
+            name:
+                type: field
+
+            contactFirstName:
+                type: field
+
+            contactLastName:
+                type: field
+
+            contactPhone:
+                type: field
+
+            contactEmail:
+                type: field
+
+            ownerName:
+                type: field
+
+        flexible_attributes:
+            phone:
+                filterable: true
+        flexible_entity: %orocrm_account.account.entity.class%
+
+        filters:
+            default:
+                flexible_phone:
+                    type: \Oro\Bundle\FilterBundle\Form\Type\Filter\TextFilterType::TYPE_ENDS_WITH
+                    value: 'ddd'

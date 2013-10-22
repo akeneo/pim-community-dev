@@ -72,16 +72,19 @@ class YamlConverter implements QueryConverterInterface
      */
     protected function addJoin(QueryBuilder $qb, $value)
     {
+        $defaultValues = ['conditionType' => null, 'condition' => null];
         if (isset($value['join'])) {
             if (isset($value['join']['inner'])) {
                 foreach ((array)$value['join']['inner'] as $join) {
-                    $qb->innerJoin($join['join'], $join['alias']);
+                    $join = array_merge($defaultValues, $join);
+                    $qb->innerJoin($join['join'], $join['alias'], $join['conditionType'], $join['condition']);
                 }
             }
 
             if (isset($value['join']['left'])) {
                 foreach ((array)$value['join']['left'] as $join) {
-                    $qb->leftJoin($join['join'], $join['alias']);
+                    $join = array_merge($defaultValues, $join);
+                    $qb->leftJoin($join['join'], $join['alias'], $join['conditionType'], $join['condition']);
                 }
             }
         }

@@ -23,7 +23,7 @@ class StringFilter extends AbstractFilter
                 $this->createComparisonExpression($this->get('data_name'), $operator, $parameterName)
             );
 
-            $qb->setParameter($parameterName, sprintf($this->getFormatByComparisonType($data['type']), $data['value']));
+            $qb->setParameter($parameterName, $data['value']);
 
             return true;
         }
@@ -51,6 +51,7 @@ class StringFilter extends AbstractFilter
         }
 
         $data['type'] = isset($data['type']) ? $data['type'] : null;
+        $data['value'] = sprintf($this->getFormatByComparisonType($data['type']), $data['value']);
 
         return $data;
     }

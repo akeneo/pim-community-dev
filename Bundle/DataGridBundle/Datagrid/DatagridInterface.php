@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\DataGridBundle\Datagrid;
 
+use Oro\Bundle\DataGridBundle\Extension\Acceptor;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\DataGridBundle\Extension\ExtensionVisitorInterface;
 
@@ -52,6 +53,13 @@ interface DatagridInterface
      * @return DatasourceInterface
      */
     public function getAcceptedDatasource();
+
+    /**
+     * Getter for acceptor object
+     *
+     * @return Acceptor
+     */
+    public function getAcceptor();
 
     /**
      * Converts datasource into the result array

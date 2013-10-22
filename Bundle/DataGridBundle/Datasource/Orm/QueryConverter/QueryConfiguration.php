@@ -32,7 +32,7 @@ class QueryConfiguration implements ConfigurationInterface
                                 ->isRequired()
                                 ->cannotBeEmpty()
                             ->end()
-                            ->scalarNode('alias')->end()
+                            ->scalarNode('alias')->isRequired()->end()
                         ->end()
                     ->end()
                 ->end()
@@ -87,6 +87,8 @@ class QueryConfiguration implements ConfigurationInterface
                         ->cannotBeEmpty()
                     ->end()
                     ->scalarNode('alias')->end()
+                    ->scalarNode('condition')->end()
+                    ->scalarNode('conditionType')->end()
                 ->end()
             ->end();
     }

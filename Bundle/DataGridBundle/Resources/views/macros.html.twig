@@ -16,6 +16,9 @@
                 console.info(datagrid.data('data'));
                 console.info(datagrid.data('metadata'));
                 console.groupEnd();
+
+                datagrid.html(JSON.stringify(datagrid.data('data')));
+                datagrid.append($('<div>').html(JSON.stringify(datagrid.data('metadata'))));
                 {# @TODO add require JS builder here and call init method #}
             });
         });

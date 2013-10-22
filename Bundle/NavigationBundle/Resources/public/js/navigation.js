@@ -71,6 +71,7 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
             scrollLinks:         'a[href^=#]',
             forms:               'form',
             content:             '#content',
+            userMenu:            '#top-page .user-menu',
             container:           '#container',
             loadingMask:         '.hash-loading-mask',
             searchDropdown:      '#search-div',
@@ -883,6 +884,7 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
                         var content = data.content;
                         this.selectorCached.container.html(content);
                         this.selectorCached.menu.html(data.mainMenu);
+                        this.selectorCached.userMenu.html(data.userMenu);
                         this.selectorCached.breadcrumb.html(data.breadcrumb);
                         /**
                          * Collecting javascript from head and append them to content
