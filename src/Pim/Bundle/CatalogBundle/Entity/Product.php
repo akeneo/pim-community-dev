@@ -12,9 +12,10 @@ use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Exception\MissingIdentifierException;
 use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
+use Pim\Bundle\CatalogBundle\Entity\Association;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
-use Pim\Bundle\CatalogBundle\Entity\GroupType;
+use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\ProductAssociation;
 
 /**
@@ -566,6 +567,22 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
     public function getProductAssociations()
     {
         return $this->productAssociations;
+    }
+
+    /**
+     * Get the product productAssociation for an Association entity
+     *
+     * @param Association $association
+     *
+     * @return ProductAssociation|null
+     */
+    public function getProductAssociationForAssociation(Association $association)
+    {
+        return $this->productAssociations->filter(
+            function($productAssociation) use ($association) {
+                return $productAssociation->getAssociation() === $association;
+            }
+        )->first();
     }
 
     /**

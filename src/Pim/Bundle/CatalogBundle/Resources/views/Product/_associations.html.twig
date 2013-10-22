@@ -43,8 +43,9 @@
         {% for association in associations %}
             <li{% if loop.first %} class="active"{% endif %}>
                 <a id="association-link-{{ association.id }}" href="javascript:void(0);">
-                    <i class="icon-ok"></i>
-                    {{ association.label }}
+                    {% set associationCount = product.getProductAssociationForAssociation(association).targets|length %}
+                    <i class="icon-ok {{ associationCount > 0 ? 'green' : 'gray' }}"></i>
+                    {{ association.label }} ({{ associationCount }})
                 </a>
             </li>
         {% endfor %}
@@ -54,6 +55,4 @@
 <div class="tab-content fullheight">
     <div id="association-grid"></div>
     {{ form_widget(form.productAssociations, { 'attr': { 'class': 'hide' }}) }}
-    <input type="hidden" id="appendTargets">
-    <input type="hidden" id="removeTargets">
 </div>
