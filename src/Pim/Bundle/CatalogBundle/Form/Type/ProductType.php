@@ -103,11 +103,11 @@ class ProductType extends FlexibleType
                     )
                 )
                 ->add(
-                    'variantGroup',
+                    'groups',
                     'entity',
                     array(
-                        'class'        => 'PimCatalogBundle:VariantGroup',
-                        'multiple'     => false,
+                        'class'        => 'PimCatalogBundle:Group',
+                        'multiple'     => true,
                         'by_reference' => false
                     )
                 )

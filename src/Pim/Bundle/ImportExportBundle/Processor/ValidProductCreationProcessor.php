@@ -13,7 +13,7 @@ use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\ImportExportBundle\Converter\ProductEnabledConverter;
 use Pim\Bundle\ImportExportBundle\Converter\ProductFamilyConverter;
-use Pim\Bundle\ImportExportBundle\Converter\ProductVariantGroupConverter;
+use Pim\Bundle\ImportExportBundle\Converter\ProductGroupsConverter;
 use Pim\Bundle\ImportExportBundle\Converter\ProductCategoriesConverter;
 use Pim\Bundle\ImportExportBundle\Converter\ProductErrorConverter;
 
@@ -61,7 +61,7 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
     /**
      * @var string
      */
-    protected $variantGroupColumn  = 'variant_group';
+    protected $groupsColumn  = 'groups';
 
     /**
      * Constructor
@@ -118,6 +118,26 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
     public function getCategoriesColumn()
     {
         return $this->categoriesColumn;
+    }
+
+    /**
+     * Set the groups column
+     *
+     * @param string $groupsColumn
+     */
+    public function setGroupsColumn($groupsColumn)
+    {
+        $this->groupsColumn = $groupsColumn;
+    }
+
+    /**
+     * Get the categories column
+     *
+     * @return string
+     */
+    public function getGroupsColumn()
+    {
+        return $this->groupsColumn;
     }
 
     /**
@@ -209,6 +229,7 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
             ),
             'categoriesColumn'    => array(),
             'familyColumn'        => array(),
+            'groupsColumn'         => array(),
         );
     }
 
@@ -228,7 +249,7 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
 
         foreach (array_keys($item) as $key) {
 
-            if (in_array($key, array($this->categoriesColumn, $this->familyColumn, $this->variantGroupColumn))) {
+            if (in_array($key, array($this->categoriesColumn, $this->familyColumn, $this->groupsColumn))) {
                 continue;
             }
 
@@ -326,9 +347,9 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
             unset($item[$this->familyColumn]);
         }
 
-        if (array_key_exists($this->variantGroupColumn, $item)) {
-            $item[ProductVariantGroupConverter::VARIANT_GROUP_KEY] = $item[$this->variantGroupColumn];
-            unset($item[$this->variantGroupColumn]);
+        if (array_key_exists($this->groupsColumn, $item)) {
+            $item[ProductGroupsConverter::GROUPS_KEY] = $item[$this->groupsColumn];
+            unset($item[$this->groupsColumn]);
         }
 
         if (array_key_exists($this->categoriesColumn, $item)) {
@@ -359,19 +380,19 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
             $familyCode = null;
         }
 
-        if (array_key_exists(ProductVariantGroupConverter::VARIANT_GROUP_KEY, $values)) {
-            $variantGroupCode = $values[ProductVariantGroupConverter::VARIANT_GROUP_KEY];
+        if (array_key_exists(ProductGroupsConverter::GROUPS_KEY, $values)) {
+            $groupCodes = $values[ProductGroupsConverter::GROUPS_KEY];
         } else {
-            $variantGroupCode = null;
+            $groupCodes = null;
         }
 
-        $requiredValues = $this->getRequiredValues($product, $familyCode, $variantGroupCode);
+        $requiredValues = $this->getRequiredValues($product, $familyCode, $groupCodes);
 
         $excludedKeys = array(
             ProductEnabledConverter::ENABLED_KEY,
             ProductFamilyConverter::FAMILY_KEY,
             ProductCategoriesConverter::CATEGORIES_KEY,
-            ProductVariantGroupConverter::VARIANT_GROUP_KEY
+            ProductGroupsConverter::GROUPS_KEY
         );
 
         foreach ($values as $key => $value) {
@@ -384,15 +405,15 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
     }
 
     /**
-     * Get required values for a product based on the existing attributes, the family and the variant group
+     * Get required values for a product based on the existing attributes, the family and the groups
      *
      * @param ProductInterface $product
      * @param string           $familyCode
-     * @param string           $variantGroupCode
+     * @param string           $groupCodes
      *
      * @return array
      */
-    private function getRequiredValues(ProductInterface $product, $familyCode = null, $variantGroupCode = null)
+    private function getRequiredValues(ProductInterface $product, $familyCode = null, $groupCodes = null)
     {
         $requiredAttributes = array();
         $storageManager = $this->productManager->getStorageManager();
@@ -409,15 +430,18 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
             }
         }
 
-        if ($variantGroupCode !== null) {
-            $variantGroup = $storageManager->getRepository('PimCatalogBundle:VariantGroup')->findOneBy(
-                array(
-                    'code' => $variantGroupCode
-                )
-            );
+        if ($groupCodes !== null) {
+            $groupCodes = explode(',', $groupCodes);
+            foreach ($groupCodes as $code) {
+                $group = $storageManager->getRepository('PimCatalogBundle:Group')->findOneBy(
+                    array(
+                        'code' => $code
+                    )
+                );
 
-            if ($variantGroup) {
-                $requiredAttributes = array_merge($requiredAttributes, $variantGroup->getAttributes()->toArray());
+                if ($group) {
+                    $requiredAttributes = array_merge($requiredAttributes, $group->getAttributes()->toArray());
+                }
             }
         }
 
