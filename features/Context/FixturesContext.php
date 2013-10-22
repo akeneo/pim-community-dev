@@ -1032,7 +1032,17 @@ class FixturesContext extends RawMinkContext
         $this->getEntityManager()->refresh($product);
 
         foreach ($table->getRowsHash() as $code => $value) {
-            assertEquals($value, (string) $product->getValue($code));
+            if ('media' === $this->getAttribute($code)->getBackendType()) {
+                // media filename is auto generated during media handling and cannot be guessed
+                // (it contains a timestamp)
+                if ('**empty**' === $value) {
+                    assertEmpty((string) $product->getValue($code));
+                } else {
+                    assertTrue(false !== strpos((string) $product->getValue($code), $value));
+                }
+            } else {
+                assertEquals($value, (string) $product->getValue($code));
+            }
         }
     }
 

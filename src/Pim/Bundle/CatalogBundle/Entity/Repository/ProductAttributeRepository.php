@@ -96,17 +96,14 @@ class ProductAttributeRepository extends AttributeRepository
      */
     public function findMediaAttributeCodes()
     {
-        $qb = $this->createQueryBuilder('a');
-
-        $codes = $qb
+        $codes = $this
+            ->createQueryBuilder('a')
             ->select('a.code')
-            ->andWhere(
-                $qb->expr()->in('a.attributeType', array(':file_type', ':image_type'))
-            )
+            ->andWhere('a.attributeType IN (:file_type, :image_type)')
             ->setParameters(
                 array(
-                    'file_type'  => 'pim_catalog_file',
-                    'image_type' => 'pim_catalog_image',
+                    ':file_type'  => 'pim_catalog_file',
+                    ':image_type' => 'pim_catalog_image',
                 )
             )
             ->getQuery()

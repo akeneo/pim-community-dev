@@ -396,7 +396,39 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
             ->with(array('code' => 'image'))
             ->will($this->returnValue($this->getAttributeMock('media')));
 
-        $this->assertEquals(array(), $this->converter->convert(array('image' => 'akeneo.jpg')));
+        $result = $this->converter->convert(array('image' => __DIR__ . '/../../fixtures/sport.jpg'));
+
+        $this->assertInstanceOf(
+            'Symfony\Component\HttpFoundation\File\File',
+            $result['values']['image']['media']['file']
+        );
+
+        $this->assertEquals('sport.jpg', $result['values']['image']['media']['file']->getFilename());
+    }
+
+    /**
+     * Test related method
+     */
+    public function testConvertEmptyMediaValue()
+    {
+        $this->attributeRepository
+            ->expects($this->any())
+            ->method('findOneBy')
+            ->with(array('code' => 'image'))
+            ->will($this->returnValue($this->getAttributeMock('media')));
+
+        $this->assertEquals(
+            array(
+                'values' => array(
+                    'image' => array(
+                        'media' => array(
+                            'file' => null,
+                        )
+                    )
+                )
+            ),
+            $this->converter->convert(array('image' => ''))
+        );
     }
 
     /**
