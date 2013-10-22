@@ -93,7 +93,7 @@ require(['jquery', 'underscore', 'backbone', 'oro/mediator', 'oro/registry', 'or
                                 modelFormat:   "YYYY-MM-DD hh:mm:ss",
                                 displayFormat: {{ oro_datetimeformat('moment')|json_encode|raw }},
                                 displayInUTC:  false,
-                                displayTimeZone: {{ oro_timezone()|json_encode|raw }}
+                                displayTimeZone: {{ oro_timezone_offset()|json_encode|raw }}
                             })
                         {% elseif column.type == constant(columnTypePrefix ~ 'TYPE_DECIMAL') %}
                             cell: NumberCell

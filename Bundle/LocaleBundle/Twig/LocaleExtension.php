@@ -34,7 +34,7 @@ class LocaleExtension extends \Twig_Extension
     {
         return array(
             new \Twig_SimpleFunction('oro_locale', array($this, 'getLocale')),
-            new \Twig_SimpleFunction('oro_timezone', array($this, 'getTimeZone')),
+            new \Twig_SimpleFunction('oro_timezone_offset', array($this, 'getTimeZoneOffset')),
         );
     }
 
@@ -49,7 +49,7 @@ class LocaleExtension extends \Twig_Extension
     /**
      * @return string
      */
-    public function getTimeZone()
+    public function getTimeZoneOffset()
     {
         $date = new \DateTime('now', new \DateTimeZone($this->localeSettings->getTimeZone()));
         return $date->format('P');
