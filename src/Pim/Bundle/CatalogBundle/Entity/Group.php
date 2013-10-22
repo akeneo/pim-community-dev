@@ -323,7 +323,7 @@ class Group implements TranslatableInterface
      *
      * @param ProductAttribute $attribute
      *
-     * @return VariantGroup
+     * @return Group
      */
     public function addAttribute(ProductAttribute $attribute)
     {
@@ -339,7 +339,7 @@ class Group implements TranslatableInterface
      *
      * @param ProductAttribute $attribute
      *
-     * @return VariantGroup
+     * @return Group
      *
      * @throws \InvalidArgumentException
      */

@@ -94,6 +94,7 @@ services:
               entity_hint: product
               flexible: true
               route_name: pim_catalog_group_edit
+              cache_disabled: true
 
     pim_catalog.datagrid.manager.association:
         class: %pim_catalog.datagrid.manager.association_datagrid.class%
