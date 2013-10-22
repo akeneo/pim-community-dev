@@ -40,14 +40,14 @@ services:
     oro_locale.format_converter.date_time.intl:
         class: %oro_locale.format_converter.date_time.intl.class%
         arguments:
-            - @oro_locale.settings
+            - @oro_locale.formatter.date_time
         tags:
             - { name: oro_locale.format_converter.date_time, alias: intl }
 
     oro_locale.format_converter.date_time.moment:
         class: %oro_locale.format_converter.date_time.moment.class%
         arguments:
-            - @oro_locale.settings
+            - @oro_locale.formatter.date_time
         tags:
             - { name: oro_locale.format_converter.date_time, alias: moment }
 
