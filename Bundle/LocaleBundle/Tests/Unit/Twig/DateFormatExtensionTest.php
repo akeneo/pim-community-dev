@@ -65,18 +65,15 @@ class DateFormatExtensionTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    /**
-     * @param int|null $expectedDateFormat
-     * @param string|null $locale
-     * @param string|null $dateFormat
-     * @dataProvider getDateFormatDataProvider
-     */
-    public function testGetDateFormat($expectedDateFormat, $locale = null, $dateFormat = null)
+    public function testGetDateFormat()
     {
+        $locale = 'en';
+        $dateType = 'short';
+
         $formatConverter = $this->createFormatConverter();
         $formatConverter->expects($this->once())
             ->method('getDateFormat')
-            ->with($locale, $expectedDateFormat)
+            ->with($dateType, $locale)
             ->will($this->returnValue(self::TEST_FORMAT));
 
         $this->converterRegistry->expects($this->once())
@@ -84,61 +81,18 @@ class DateFormatExtensionTest extends \PHPUnit_Framework_TestCase
             ->with(self::TEST_TYPE)
             ->will($this->returnValue($formatConverter));
 
-        $this->assertEquals(self::TEST_FORMAT, $this->extension->getDateFormat(self::TEST_TYPE, $locale, $dateFormat));
-    }
-
-    /**
-     * @return array
-     */
-    public function getDateFormatDataProvider()
-    {
-        return array(
-            'default data' => array(
-                'expectedDateFormat' => null,
-            ),
-            'incorrect format' => array(
-                'expectedDateFormat' => null,
-                'locale' => 'en',
-                'dateFormat' => 'someUnknownFormat',
-            ),
-            'none format' => array(
-                'expectedDateFormat' => \IntlDateFormatter::NONE,
-                'locale' => 'en',
-                'dateFormat' => 'none',
-            ),
-            'short format' => array(
-                'expectedDateFormat' => \IntlDateFormatter::SHORT,
-                'locale' => 'en',
-                'dateFormat' => 'short',
-            ),
-            'medium format' => array(
-                'expectedDateFormat' => \IntlDateFormatter::MEDIUM,
-                'locale' => 'en',
-                'dateFormat' => 'medium',
-            ),
-            'long format' => array(
-                'expectedDateFormat' => \IntlDateFormatter::LONG,
-                'locale' => 'en',
-                'dateFormat' => 'long',
-            ),
-            'full format' => array(
-                'expectedDateFormat' => \IntlDateFormatter::FULL,
-                'locale' => 'en',
-                'dateFormat' => 'full',
-            ),
-        );
+        $this->assertEquals(self::TEST_FORMAT, $this->extension->getDateFormat(self::TEST_TYPE, $dateType, $locale));
     }
 
     public function testGetTimeFormat()
     {
         $locale = 'en';
-        $timeFormat = 'short';
-        $expectedTimeFormat = \IntlDateFormatter::SHORT;
+        $timeType = 'short';
 
         $formatConverter = $this->createFormatConverter();
         $formatConverter->expects($this->once())
             ->method('getTimeFormat')
-            ->with($locale, $expectedTimeFormat)
+            ->with($timeType, $locale)
             ->will($this->returnValue(self::TEST_FORMAT));
 
         $this->converterRegistry->expects($this->once())
@@ -146,21 +100,19 @@ class DateFormatExtensionTest extends \PHPUnit_Framework_TestCase
             ->with(self::TEST_TYPE)
             ->will($this->returnValue($formatConverter));
 
-        $this->assertEquals(self::TEST_FORMAT, $this->extension->getTimeFormat(self::TEST_TYPE, $locale, $timeFormat));
+        $this->assertEquals(self::TEST_FORMAT, $this->extension->getTimeFormat(self::TEST_TYPE, $timeType, $locale));
     }
 
     public function testGetDateTimeFormat()
     {
         $locale = 'en';
-        $dateFormat = 'medium';
-        $timeFormat = 'short';
-        $expectedDateFormat = \IntlDateFormatter::MEDIUM;
-        $expectedTimeFormat = \IntlDateFormatter::SHORT;
+        $dateType = 'medium';
+        $timeType = 'short';
 
         $formatConverter = $this->createFormatConverter();
         $formatConverter->expects($this->once())
             ->method('getDateTimeFormat')
-            ->with($locale, $expectedDateFormat, $expectedTimeFormat)
+            ->with($dateType, $timeType, $locale)
             ->will($this->returnValue(self::TEST_FORMAT));
 
         $this->converterRegistry->expects($this->once())
@@ -170,7 +122,7 @@ class DateFormatExtensionTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(
             self::TEST_FORMAT,
-            $this->extension->getDateTimeFormat(self::TEST_TYPE, $locale, $dateFormat, $timeFormat)
+            $this->extension->getDateTimeFormat(self::TEST_TYPE, $dateType, $timeType, $locale)
         );
     }
 

@@ -49,38 +49,38 @@ class DateFormatExtension extends \Twig_Extension
     public function getDateFormat($type, $dateFormat = null, $locale = null)
     {
         return $this->converterRegistry->getFormatConverter($type)->getDateFormat(
-            $locale,
-            $dateFormat
+            $dateFormat,
+            $locale
         );
     }
 
     /**
      * @param string $type
-     * @param string|null $timeFormat
+     * @param string|null $timeType
      * @param string|null $locale
      * @return string
      */
-    public function getTimeFormat($type, $timeFormat = null, $locale = null)
+    public function getTimeFormat($type, $timeType = null, $locale = null)
     {
         return $this->converterRegistry->getFormatConverter($type)->getTimeFormat(
-            $locale,
-            $timeFormat
+            $timeType,
+            $locale
         );
     }
 
     /**
      * @param string $type
-     * @param string|null $dateFormat
-     * @param string|null $timeFormat
+     * @param string|null $dateType
+     * @param string|null $timeType
      * @param string|null $locale
      * @return string
      */
-    public function getDateTimeFormat($type, $dateFormat = null, $timeFormat = null, $locale = null)
+    public function getDateTimeFormat($type, $dateType = null, $timeType = null, $locale = null)
     {
         return $this->converterRegistry->getFormatConverter($type)->getDateTimeFormat(
-            $locale,
-            $dateFormat,
-            $timeFormat
+            $dateType,
+            $timeType,
+            $locale
         );
     }
 }
