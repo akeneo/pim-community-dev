@@ -11,6 +11,7 @@ use Oro\Bundle\FlexibleEntityBundle\Form\Type\FlexibleType;
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Pim\Bundle\CatalogBundle\Form\View\ProductFormView;
 use Pim\Bundle\CatalogBundle\Form\Subscriber\IgnoreMissingFieldDataSubscriber;
+use Pim\Bundle\CatalogBundle\Form\Subscriber\BindProductAssociationTargetsSubscriber;
 
 /**
  * Product form type
@@ -53,6 +54,17 @@ class ProductType extends FlexibleType
         }
 
         parent::buildForm($builder, $options);
+
+        $builder
+            ->add(
+                'productAssociations',
+                'collection',
+                array(
+                    'type' => 'pim_catalog_product_association'
+                )
+            )
+            ->get('productAssociations')
+            ->addEventSubscriber(new BindProductAssociationTargetsSubscriber());
 
         if ($options['enable_family']) {
             $builder->add(

@@ -57,6 +57,9 @@ pim_catalog_product_remove_attribute:
 pim_catalog_product_categories_view:
     type: action
     label: Consult the categories of a product
+pim_catalog_product_associations_view:
+    type: action
+    label: View the associations of a product
 pim_catalog_product_change_family:
     type: action
     label: Change product family

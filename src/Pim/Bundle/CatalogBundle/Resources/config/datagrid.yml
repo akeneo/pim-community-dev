@@ -7,6 +7,7 @@ parameters:
     pim_catalog.datagrid.manager.group_datagrid.class:           Pim\Bundle\CatalogBundle\Datagrid\GroupDatagridManager
     pim_catalog.datagrid.manager.group_product_datagrid.class:   Pim\Bundle\CatalogBundle\Datagrid\GroupProductDatagridManager
     pim_catalog.datagrid.manager.association_datagrid.class:     Pim\Bundle\CatalogBundle\Datagrid\AssociationDatagridManager
+    pim_catalog.datagrid.manager.product_association_datagrid.class: Pim\Bundle\CatalogBundle\Datagrid\ProductAssociationDatagridManager
     pim_catalog.datagrid.worker.class:                           Pim\Bundle\CatalogBundle\Datagrid\DatagridWorker
 
 services:
@@ -105,6 +106,19 @@ services:
               route_name: pim_catalog_association_index
         calls:
             - [ setLocaleManager, ['@pim_catalog.manager.locale'] ]
+
+    pim_catalog.datagrid.manager.product_association:
+        class: %pim_catalog.datagrid.manager.product_association_datagrid.class%
+        tags:
+            - name: oro_grid.datagrid.manager
+              datagrid_name: product_association
+              entity_name: %pim_catalog.entity.product.class%
+              entity_hint: product
+              flexible: true
+              route_name: pim_catalog_product_list_associations
+              cache_disabled: true
+        calls:
+            - [ setDatagridBuilder, ['@pim_grid.builder.datagrid'] ]
 
     pim_catalog.datagrid.worker:
         class: %pim_catalog.datagrid.worker.class%

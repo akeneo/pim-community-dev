@@ -23,19 +23,19 @@ use Oro\Bundle\GridBundle\Renderer\GridRenderer;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 
+use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Datagrid\ProductDatagridManager;
+use Pim\Bundle\CatalogBundle\Entity\Category;
+use Pim\Bundle\CatalogBundle\Exception\DeleteException;
+use Pim\Bundle\CatalogBundle\Helper\CategoryHelper;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
-use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
+use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\AvailableProductAttributes;
-use Pim\Bundle\CatalogBundle\Entity\Category;
-use Pim\Bundle\CatalogBundle\Helper\CategoryHelper;
-use Pim\Bundle\CatalogBundle\Datagrid\ProductDatagridManager;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\ImportExportBundle\Normalizer\FlatProductNormalizer;
 use Pim\Bundle\VersioningBundle\Manager\AuditManager;
-use Pim\Bundle\CatalogBundle\Exception\DeleteException;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
  * Product Controller
@@ -314,10 +314,9 @@ class ProductController extends AbstractDoctrineController
             return $this->gridRenderer->renderResultsJsonResponse($datagrid->createView());
         }
 
-        $channels = $this->getRepository('PimCatalogBundle:Channel')->findAll();
-        $trees    = $this->categoryManager->getEntityRepository()->getProductsCountByTree($product);
+        $this->productManager->ensureAllAssociations($product);
 
-        $form     = $this->createForm(
+        $form = $this->createForm(
             'pim_product',
             $product,
             $this->getEditFormOptions($product)
@@ -345,17 +344,37 @@ class ProductController extends AbstractDoctrineController
             }
         }
 
+        $channels = $this->getRepository('PimCatalogBundle:Channel')->findAll();
+        $trees    = $this->categoryManager->getEntityRepository()->getProductsCountByTree($product);
+
+        $associations = $this->getRepository('PimCatalogBundle:Association')->findAll();
+
+        $associationDatagridManager = $this->datagridWorker->getDatagridManager('product_association');
+        $associationDatagridManager->setProduct($product);
+
+        $association = null;
+        if (!empty($associations)) {
+            $association = reset($associations);
+            $associationDatagridManager->setAssociationId($association->getId());
+        }
+
+        $associationDatagridManager->getRouteGenerator()->setRouteParameters(array('id' => $product->getId()));
+
+        $associationDatagridView = $associationDatagridManager->getDatagrid()->createView();
+
         return array(
-            'form'           => $form->createView(),
-            'dataLocale'     => $this->getDataLocale(),
-            'channels'       => $channels,
-            'attributesForm' => $this->getAvailableProductAttributesForm($product->getAttributes())->createView(),
-            'product'        => $product,
-            'trees'          => $trees,
-            'created'        => $this->auditManager->getOldestLogEntry($product),
-            'updated'        => $this->auditManager->getNewestLogEntry($product),
-            'datagrid'       => $datagrid->createView(),
-            'locales'        => $this->localeManager->getUserLocales()
+            'form'                => $form->createView(),
+            'dataLocale'          => $this->getDataLocale(),
+            'channels'            => $channels,
+            'attributesForm'      => $this->getAvailableProductAttributesForm($product->getAttributes())->createView(),
+            'product'             => $product,
+            'trees'               => $trees,
+            'created'             => $this->auditManager->getOldestLogEntry($product),
+            'updated'             => $this->auditManager->getNewestLogEntry($product),
+            'datagrid'            => $datagrid->createView(),
+            'associations'        => $associations,
+            'associationDatagrid' => $associationDatagridView,
+            'locales'             => $this->localeManager->getUserLocales()
         );
     }
 
@@ -469,6 +488,28 @@ class ProductController extends AbstractDoctrineController
         $treesData = CategoryHelper::listCategoriesResponse($trees, $categories);
 
         return array('trees' => $treesData);
+    }
+
+    /**
+     * List associations for the provided product
+     *
+     * @param Request $request The request object
+     * @param integer $id      Product id
+     *
+     * @Template
+     * @AclAncestor("pim_catalog_product_associations_view")
+     * @return Response
+     */
+    public function listAssociationsAction(Request $request, $id)
+    {
+        $product = $this->findProductOr404($id);
+
+        $datagridManager = $this->datagridWorker->getDatagridManager('product_association');
+        $datagridManager->setProduct($product);
+
+        $datagridView = $datagridManager->getDatagrid()->createView();
+
+        return $this->gridRenderer->renderResultsJsonResponse($datagridView);
     }
 
     /**
