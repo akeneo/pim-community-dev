@@ -35,8 +35,11 @@ class AbstractAddressTest extends \PHPUnit_Framework_TestCase
         return array(
             'id' => array('id', 1),
             'label' => array('label', 'Shipping'),
-            'lastName' => array('lastName', 'last name'),
+            'namePrefix' => array('namePrefix', 'name prefix'),
             'firstName' => array('firstName', 'first_name'),
+            'middleName' => array('middleName', 'middle name'),
+            'lastName' => array('lastName', 'last name'),
+            'nameSuffix' => array('nameSuffix', 'name suffix'),
             'street' => array('street', 'street'),
             'street2' => array('street2', 'street2'),
             'city' => array('city', 'city'),
