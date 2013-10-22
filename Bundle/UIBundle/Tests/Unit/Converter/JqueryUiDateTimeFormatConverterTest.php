@@ -12,7 +12,7 @@ class JqueryUiDateTimeFormatConverterTest extends AbstractFormatConverterTestCas
      */
     protected function createFormatConverter()
     {
-        return new JqueryUiDateTimeFormatConverter($this->localeSettings);
+        return new JqueryUiDateTimeFormatConverter($this->formatter);
     }
 
     /**

@@ -2,14 +2,14 @@
 
 namespace Oro\Bundle\LocaleBundle\Converter;
 
-use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
+use Oro\Bundle\LocaleBundle\Formatter\DateTimeFormatter;
 
 abstract class AbstractDateTimeFormatConverter implements DateTimeFormatConverterInterface
 {
     /**
-     * @var LocaleSettings
+     * @var DateTimeFormatter
      */
-    protected $localeSettings;
+    protected $formatter;
 
     /**
      * ICU format => Default data
@@ -129,60 +129,53 @@ abstract class AbstractDateTimeFormatConverter implements DateTimeFormatConverte
     protected $formatMatch = array();
 
     /**
-     * @param LocaleSettings $localeSettings
+     * @param DateTimeFormatter $formatter
      */
-    public function __construct(LocaleSettings $localeSettings)
+    public function __construct(DateTimeFormatter $formatter)
     {
-        $this->localeSettings = $localeSettings;
+        $this->formatter = $formatter;
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getDateFormat($locale = null, $dateFormat = null)
+    public function getDateFormat($dateFormat = null, $locale = null)
     {
-        return $this->getFormat($locale, $dateFormat, \IntlDateFormatter::NONE);
+        return $this->getFormat($dateFormat, \IntlDateFormatter::NONE, $locale);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getTimeFormat($locale = null, $timeFormat = null)
+    public function getTimeFormat($timeFormat = null, $locale = null)
     {
-        return $this->getFormat($locale, \IntlDateFormatter::NONE, $timeFormat);
+        return $this->getFormat(\IntlDateFormatter::NONE, $timeFormat, $locale);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getDateTimeFormat($locale = null, $dateFormat = null, $timeFormat = null)
+    public function getDateTimeFormat($dateFormat = null, $timeFormat = null, $locale = null)
     {
-        return $this->getFormat($locale, $dateFormat, $timeFormat);
+        return $this->getFormat($dateFormat, $timeFormat, $locale);
     }
 
     /**
+     * @param int|string|null $dateType Constant of IntlDateFormatter (NONE, FULL, LONG, MEDIUM, SHORT) or it's name
+     * @param int|string|null $timeType Constant of IntlDateFormatter (NONE, FULL, LONG, MEDIUM, SHORT) or it's name
      * @param string|null $locale
-     * @param int|null $dateFormat One of the constant of IntlDateFormatter: NONE, FULL, LONG, MEDIUM, SHORT
-     * @param int|null $timeFormat One of the constant of IntlDateFormatter: NONE, FULL, LONG, MEDIUM, SHORT
      * @return string
      */
-    protected function getFormat($locale, $dateFormat, $timeFormat)
+    protected function getFormat($dateType, $timeType, $locale)
     {
-        if (null === $dateFormat) {
-            $dateFormat = \IntlDateFormatter::MEDIUM;
+        if (null === $dateType) {
+            $dateType = \IntlDateFormatter::MEDIUM;
         }
 
-        if (null === $timeFormat) {
-            $timeFormat = \IntlDateFormatter::SHORT;
+        if (null === $timeType) {
+            $timeType = \IntlDateFormatter::SHORT;
         }
-
-        if (!$locale) {
-            $locale = $this->localeSettings->getLocale();
-        }
-
-        $format = $this->localeSettings->getDatePattern($locale, $dateFormat, $timeFormat);
-
-        return $this->convertFormat($format);
+        return $this->convertFormat($this->formatter->getPattern($dateType, $timeType, $locale));
     }
 
     /**

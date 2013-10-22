@@ -66,6 +66,19 @@ class DateTimeFormatter
     }
 
     /**
+     * Get the pattern used for the IntlDateFormatter
+     *
+     * @param int|string $dateType Constant of IntlDateFormatter (NONE, FULL, LONG, MEDIUM, SHORT) or it's string name
+     * @param int|string $timeType Constant IntlDateFormatter (NONE, FULL, LONG, MEDIUM, SHORT) or it's string name
+     * @param string|null $locale
+     * @return string
+     */
+    public function getPattern($dateType, $timeType, $locale = null)
+    {
+        return $this->getFormatter($dateType, $timeType, $locale, null)->getPattern();
+    }
+
+    /**
      * Formats date using ready formatter and date time object
      *
      * @param \IntlDateFormatter $formatter

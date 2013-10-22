@@ -11,7 +11,7 @@ class MomentDateTimeFormatConverterTest extends AbstractFormatConverterTestCase
      */
     protected function createFormatConverter()
     {
-        return new MomentDateTimeFormatConverter($this->localeSettings);
+        return new MomentDateTimeFormatConverter($this->formatter);
     }
 
     /**
@@ -20,12 +20,10 @@ class MomentDateTimeFormatConverterTest extends AbstractFormatConverterTestCase
     public function getDateFormatDataProvider()
     {
         return array(
-            'default default' => array("MMM D, YYYY"),
-            'default custom'  => array("MMMM D, YYYY", null, \IntlDateFormatter::LONG),
-            'en default'      => array("MMM D, YYYY", self::LOCALE_EN),
-            'en custom'       => array("MMMM D, YYYY", self::LOCALE_EN, \IntlDateFormatter::LONG),
-            'ru default'      => array("DD.MM.YYYY", self::LOCALE_RU),
-            'ru custom'       => array("D MMMM YYYY [г.]", self::LOCALE_RU, \IntlDateFormatter::LONG),
+            'en default' => array("MMM D, YYYY", null, self::LOCALE_EN),
+            'en custom'  => array("MMMM D, YYYY", \IntlDateFormatter::LONG, self::LOCALE_EN),
+            'ru default' => array("DD.MM.YYYY", null, self::LOCALE_RU),
+            'ru custom'  => array("D MMMM YYYY [г.]", \IntlDateFormatter::LONG, self::LOCALE_RU),
         );
     }
 
@@ -35,12 +33,10 @@ class MomentDateTimeFormatConverterTest extends AbstractFormatConverterTestCase
     public function getTimeFormatDataProvider()
     {
         return array(
-            'default default' => array("h:mm A"),
-            'default custom'  => array("h:mm:ss A", null, \IntlDateFormatter::MEDIUM),
-            'en default'      => array("h:mm A", self::LOCALE_EN),
-            'en custom'       => array("h:mm:ss A", self::LOCALE_EN, \IntlDateFormatter::MEDIUM),
-            'ru default'      => array("H:mm", self::LOCALE_RU),
-            'ru custom'       => array("H:mm:ss", self::LOCALE_RU, \IntlDateFormatter::MEDIUM),
+            'en default'      => array("h:mm A", null, self::LOCALE_EN),
+            'en custom'       => array("h:mm:ss A", \IntlDateFormatter::MEDIUM, self::LOCALE_EN),
+            'ru default'      => array("H:mm", null, self::LOCALE_RU),
+            'ru custom'       => array("H:mm:ss", \IntlDateFormatter::MEDIUM, self::LOCALE_RU),
         );
     }
 
@@ -50,26 +46,19 @@ class MomentDateTimeFormatConverterTest extends AbstractFormatConverterTestCase
     public function getDateTimeFormatDataProvider()
     {
         return array(
-            'default default' => array("MMM D, YYYY h:mm A"),
-            'default custom'  => array(
-                "MMMM D, YYYY h:mm:ss A",
-                null,
-                \IntlDateFormatter::LONG,
-                \IntlDateFormatter::MEDIUM
-            ),
-            'en default' => array("MMM D, YYYY h:mm A", self::LOCALE_EN),
+            'en default' => array("MMM D, YYYY h:mm A", null, null, self::LOCALE_EN),
             'en custom'  => array(
                 "MMMM D, YYYY h:mm:ss A",
-                self::LOCALE_EN,
                 \IntlDateFormatter::LONG,
-                \IntlDateFormatter::MEDIUM
+                \IntlDateFormatter::MEDIUM,
+                self::LOCALE_EN
             ),
-            'ru default' => array("DD.MM.YYYY H:mm", self::LOCALE_RU),
+            'ru default' => array("DD.MM.YYYY H:mm", null, null, self::LOCALE_RU),
             'ru custom'  => array(
                 "D MMMM YYYY [г.] H:mm:ss",
-                self::LOCALE_RU,
                 \IntlDateFormatter::LONG,
-                \IntlDateFormatter::MEDIUM
+                \IntlDateFormatter::MEDIUM,
+                self::LOCALE_RU
             ),
         );
     }

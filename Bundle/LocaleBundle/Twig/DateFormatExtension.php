@@ -13,17 +13,6 @@ class DateFormatExtension extends \Twig_Extension
     protected $converterRegistry;
 
     /**
-     * @var array
-     */
-    protected $formatTypesMatch = array(
-        'none'   => \IntlDateFormatter::NONE,
-        'short'  => \IntlDateFormatter::SHORT,
-        'medium' => \IntlDateFormatter::MEDIUM,
-        'long'   => \IntlDateFormatter::LONG,
-        'full'   => \IntlDateFormatter::FULL,
-    );
-
-    /**
      * @param DateTimeFormatConverterRegistry $converterRegistry
      */
     public function __construct(DateTimeFormatConverterRegistry $converterRegistry)
@@ -53,60 +42,45 @@ class DateFormatExtension extends \Twig_Extension
 
     /**
      * @param string $type
-     * @param string|null $locale
      * @param string|null $dateFormat
+     * @param string|null $locale
      * @return string
      */
-    public function getDateFormat($type, $locale = null, $dateFormat = null)
+    public function getDateFormat($type, $dateFormat = null, $locale = null)
     {
         return $this->converterRegistry->getFormatConverter($type)->getDateFormat(
             $locale,
-            $this->parseFormatType($dateFormat)
+            $dateFormat
         );
     }
 
     /**
      * @param string $type
-     * @param string|null $locale
      * @param string|null $timeFormat
+     * @param string|null $locale
      * @return string
      */
-    public function getTimeFormat($type, $locale = null, $timeFormat = null)
+    public function getTimeFormat($type, $timeFormat = null, $locale = null)
     {
         return $this->converterRegistry->getFormatConverter($type)->getTimeFormat(
             $locale,
-            $this->parseFormatType($timeFormat)
+            $timeFormat
         );
     }
 
     /**
      * @param string $type
-     * @param string|null $locale
      * @param string|null $dateFormat
      * @param string|null $timeFormat
+     * @param string|null $locale
      * @return string
      */
-    public function getDateTimeFormat($type, $locale = null, $dateFormat = null, $timeFormat = null)
+    public function getDateTimeFormat($type, $dateFormat = null, $timeFormat = null, $locale = null)
     {
         return $this->converterRegistry->getFormatConverter($type)->getDateTimeFormat(
             $locale,
-            $this->parseFormatType($dateFormat),
-            $this->parseFormatType($timeFormat)
+            $dateFormat,
+            $timeFormat
         );
-    }
-
-    /**
-     * Convert string representation to Intl constant
-     *
-     * @param string|null $formatType
-     * @return int|null
-     */
-    protected function parseFormatType($formatType)
-    {
-        if (isset($this->formatTypesMatch[$formatType])) {
-            return $this->formatTypesMatch[$formatType];
-        }
-
-        return null;
     }
 }
