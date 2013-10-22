@@ -12,6 +12,7 @@ use Oro\Bundle\EntityBundle\ORM\OroEntityManager;
 use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigId;
 use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendConfigDumper;
+use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 
 class DoctrineSubscriber implements EventSubscriber
 {
@@ -56,6 +57,7 @@ class DoctrineSubscriber implements EventSubscriber
 
                 if ($config->is('relation')) {
                     foreach ($config->get('relation') as $relation) {
+                        /** @var FieldConfigId $fieldId */
                         if ($relation['assign'] && $fieldId = $relation['field_id']) {
                             /** @var FieldConfigId $targetFieldId */
                             $targetFieldId = $relation['target_field_id'];
@@ -83,11 +85,20 @@ class DoctrineSubscriber implements EventSubscriber
                                     break;
                                 case 'manyToMany':
                                     if ($relation['owner']) {
-                                        $cmBuilder->addOwningManyToMany(
-                                            $fieldName,
-                                            $relation['target_entity'],
-                                            $targetFieldName
+                                        $builder = $cmBuilder->createManyToMany($fieldName, $relation['target_entity']);
+
+                                        if ($targetFieldName) {
+                                            $builder->inversedBy($targetFieldName);
+                                        }
+
+                                        $builder->setJoinTable(
+                                            ExtendHelper::generateManyToManyJoinTableName(
+                                                $fieldId,
+                                                $relation['target_entity']
+                                            )
                                         );
+
+                                        return $builder->build();
                                     } else {
                                         $cmBuilder->addInverseManyToMany(
                                             $targetFieldName,

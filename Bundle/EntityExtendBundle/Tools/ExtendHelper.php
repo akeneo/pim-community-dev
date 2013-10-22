@@ -2,6 +2,8 @@
 
 namespace Oro\Bundle\EntityExtendBundle\Tools;
 
+use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigId;
+
 class ExtendHelper
 {
     /**
@@ -22,8 +24,19 @@ class ExtendHelper
         }
     }
 
-    public function getEntityNameByClass($className)
+    /**
+     * @param FieldConfigId $selfFieldId
+     * @param string        $targetEntity
+     * @return string
+     */
+    public static function generateManyToManyJoinTableName(FieldConfigId $selfFieldId, $targetEntity)
     {
+        $selfClassArray = explode('\\', $selfFieldId->getClassName());
+        $selfClassName  = array_pop($selfClassArray);
 
+        $targetClassArray = explode('\\', $targetEntity);
+        $targetClassName  = array_pop($targetClassArray);
+
+        return strtolower('oro_extend_' . $selfClassName . '_' . $targetClassName . '_' . $selfFieldId->getFieldName());
     }
 }

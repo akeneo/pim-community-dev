@@ -86,8 +86,7 @@ class ConfigSubscriber implements EventSubscriberInterface
             if ($event->getConfig()->get('state') == ExtendManager::STATE_NEW
                 && in_array($event->getConfig()->getId()->getFieldType(), array('oneToMany', 'manyToOne', 'manyToMany'))
             ) {
-
-                $this->updateRelation($event->getConfig());
+                $this->createRelation($event->getConfig());
             }
 
             if ($entityConfig->get('state') != ExtendManager::STATE_NEW) {
@@ -154,7 +153,7 @@ class ConfigSubscriber implements EventSubscriberInterface
         }
     }
 
-    protected function updateRelation(Config $fieldConfig)
+    protected function createRelation(Config $fieldConfig)
     {
         $selfConfig = $this->extendConfigProvider->getConfig($fieldConfig->getId()->getClassName());
         if ($this->findRelation($selfConfig, $fieldConfig->getId())) {
@@ -163,15 +162,15 @@ class ConfigSubscriber implements EventSubscriberInterface
 
         $targetConfig = $this->extendConfigProvider->getConfig($fieldConfig->get('target_entity'));
         if ($this->findRelation($targetConfig, $fieldConfig->getId(), true)) {
-            //$this->updateTargetRelation($fieldConfig);
+            //$this->createTargetRelation($fieldConfig);
 
             return;
         }
 
-        $this->updateSelfRelation($fieldConfig);
+        $this->createSelfRelation($fieldConfig);
     }
 
-    protected function updateSelfRelation(Config $fieldConfig)
+    protected function createSelfRelation(Config $fieldConfig)
     {
         $selfEntityClass   = $fieldConfig->getId()->getClassName();
         $targetEntityClass = $fieldConfig->get('target_entity');
@@ -235,7 +234,7 @@ class ConfigSubscriber implements EventSubscriberInterface
         $this->extendConfigProvider->persist($targetConfig);
     }
 
-    protected function updateTargetRelation(Config $fieldConfig)
+    protected function createTargetRelation(Config $fieldConfig)
     {
         $selfEntityClass   = $fieldConfig->getId()->getClassName();
         $targetEntityClass = $fieldConfig->get('target_entity');
