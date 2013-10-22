@@ -27,7 +27,8 @@ class DatagridRoutesPass implements CompilerPassInterface
         $registryService = $container->getDefinition(self::REGISTRY_SERVICE);
 
         foreach ($tags as $tag) {
-            if (isset($tag[0]['datagrid_name']) && isset($tag[0]['route_name'])) {
+            $cacheDisabled = isset($tag[0]['cache_disabled']) && $tag[0]['cache_disabled'] === true;
+            if (isset($tag[0]['datagrid_name']) && isset($tag[0]['route_name']) && !$cacheDisabled) {
                 $registryService->addMethodCall('addRoute', array($tag[0]['datagrid_name'], $tag[0]['route_name']));
             }
         }

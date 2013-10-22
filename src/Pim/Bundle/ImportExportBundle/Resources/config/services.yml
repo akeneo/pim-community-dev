@@ -6,7 +6,7 @@ parameters:
     pim_import_export.converter.product_value_converter.class:               Pim\Bundle\ImportExportBundle\Converter\ProductValueConverter
     pim_import_export.converter.product_family_converter.class:              Pim\Bundle\ImportExportBundle\Converter\ProductFamilyConverter
     pim_import_export.converter.product_categories_converter.class:          Pim\Bundle\ImportExportBundle\Converter\ProductCategoriesConverter
-    pim_import_export.converter.product_variant_group_converter.class:       Pim\Bundle\ImportExportBundle\Converter\ProductVariantGroupConverter
+    pim_import_export.converter.product_groups_converter.class:              Pim\Bundle\ImportExportBundle\Converter\ProductGroupsConverter
     pim_import_export.event_listener.archive_subscriber.class:               Pim\Bundle\ImportExportBundle\EventListener\ArchiveSubscriber
     pim_import_export.archiver.job_execution_archiver.class:                 Pim\Bundle\ImportExportBundle\Archiver\JobExecutionArchiver
 
@@ -31,7 +31,7 @@ services:
             - '@pim_import_export.converter.product_value_converter'
             - '@pim_import_export.converter.product_family_converter'
             - '@pim_import_export.converter.product_categories_converter'
-            - '@pim_import_export.converter.product_variant_group_converter'
+            - '@pim_import_export.converter.product_groups_converter'
 
     pim_import_export.converter.product_enabled_converter:
         public: false
@@ -56,9 +56,9 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
 
-    pim_import_export.converter.product_variant_group_converter:
+    pim_import_export.converter.product_groups_converter:
         public: false
-        class: %pim_import_export.converter.product_variant_group_converter.class%
+        class: %pim_import_export.converter.product_groups_converter.class%
         arguments:
             - '@doctrine.orm.entity_manager'
 
