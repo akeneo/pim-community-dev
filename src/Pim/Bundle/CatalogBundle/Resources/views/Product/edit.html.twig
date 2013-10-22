@@ -90,7 +90,7 @@
 
                         {% if group.type.isVariant %}
                             {% set variantGroupAttributes %}
-                                <ul>{% for attribute in group.attributes %}<li>{{ attribute }}</li>{% endfor %}</ul>
+                                <ul class="">{% for attribute in group.attributes %}<li>{{ attribute|trim }}</li>{% endfor %}</ul>
                            {% endset %}
                            {% set variantGroupTooltip = variantGroupAttributes|trim is empty ? null : 'info.variant group.axis'|trans ~ variantGroupAttributes|trim %}
                         {% endif %}

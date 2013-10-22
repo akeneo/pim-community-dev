@@ -86,11 +86,6 @@
                     });
                 {% endfor %}
 
-                    $('#{{ form.vars.id }}').on('click', 'button[type="submit"]', function() {
-                        $('#{{ form.vars.id }}').append($('<div class="hide"/>').html(message));
-                    });
-                {% endif %}
-
                 function setFullHeight() {
                     $('.fullheight').each(function() {
                         $(this).height($('.scrollable-container').height() - $(this).position().top + $('.scrollable-container').position().top);
