@@ -7,11 +7,9 @@ datagrid:
                 select:
                     - e.id
                     - e.fromName
-                    - e.fromEmailAddress
                     - e.subject
                     - e.sentAt
-                    - e.recipients
-                    - a
+                    - a.email
                 from:
                     - { table: OroEmailBundle:Email, alias: e }
                 join:
@@ -42,7 +40,7 @@ datagrid:
                 subject:
                     data_name: e.subject
                 sentAt:
-                    data_name: u.sentAt
+                    data_name: e.sentAt
             default:
                 sentAt: %oro_grid.extension.orm_sorter.class%::DIRECTION_DESC
 

@@ -181,6 +181,7 @@ datagrid:
     users-email-grid:
         extend: email-grid
         source:
+            query:
                 join:
                     inner:
                         folder:
@@ -191,11 +192,12 @@ datagrid:
                             alias: o
                 where:
                     and:
-                        o.id: ":origin_id"
+                        - o.id = :origin_id
 
     contacts-email-grid:
         extend: email-grid
         source:
-            where:
-                and:
-                    - a.email IN (:email_addresses)
+            query:
+                where:
+                    and:
+                        - a.email IN (:email_addresses)

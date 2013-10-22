@@ -39,7 +39,7 @@ class SystemAwareResolver implements ContainerAwareInterface
                     ->getConfigurationForGrid($val);
 
                 // merge them and remove extend directive
-                $datagridDefinition = array_merge(
+                $datagridDefinition = array_merge_recursive(
                     $datagridDefinition,
                     $definition
                 );
