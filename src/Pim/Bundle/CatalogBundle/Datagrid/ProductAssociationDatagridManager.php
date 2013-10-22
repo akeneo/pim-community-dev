@@ -319,7 +319,6 @@ class ProductAssociationDatagridManager extends FlexibleDatagridManager
         return array(
             'data_in'     => $dataIn,
             'data_not_in' => $dataNotIn,
-            'scopeCode'   => $this->flexibleManager->getScope(),
             'association' => $this->associationId,
             'product'     => $this->getProduct()
         );
