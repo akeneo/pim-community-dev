@@ -19,7 +19,7 @@ Add the `oro/distribution-bundle` package to your `require` section in the `comp
 ```
 
 ## Usage ##
-Add Resources/config/bundles.yml file to every bundle you want to be autoregistered:
+Add Resources/config/oro/bundles.yml file to every bundle you want to be autoregistered:
 
 ``` yml
 bundles:
@@ -29,3 +29,16 @@ bundles:
 ```
 
 That's it! Your bundle (and "VendorAnyBundle") will be automatically registered in AppKernel.php.
+
+## Routing autoload ##
+Add Resources/config/oro/routing.yml file to every bundle for which you want to autoload its routes.
+
+Add following rule to application's `routing.yml`:
+
+``` yml
+oro_auto_routing:
+    resource: .
+    type:     oro_auto
+```
+
+All routes from your bundles will be imported automatically.

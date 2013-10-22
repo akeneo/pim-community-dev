@@ -38,6 +38,7 @@ class WsseUserProvider extends Provider
 
         if ($user && $user->getApi()) {
             if ($this->validateDigest(
+                $user,
                 $token->getAttribute('digest'),
                 $token->getAttribute('nonce'),
                 $token->getAttribute('created'),
