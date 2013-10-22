@@ -366,9 +366,10 @@ class JobInstanceController extends AbstractDoctrineController
             $instanceCode = $jobExecution->getJobInstance()->getCode();
             $executionId = $jobExecution->getId();
             $cmd = sprintf(
-                'php %s/console oro:batch:job --env=%s %s %s %s >> %s/logs/batch_execute.log 2>&1',
+                'php %s/console oro:batch:job --env=%s --email="%s" %s %s %s >> %s/logs/batch_execute.log 2>&1',
                 $this->rootDir,
                 $this->environment,
+                $this->getUser()->getEmail(),
                 $uploadMode ? sprintf('-c \'%s\'', json_encode($job->getConfiguration())) : '',
                 $instanceCode,
                 $executionId,

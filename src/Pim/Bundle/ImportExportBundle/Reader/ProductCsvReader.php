@@ -3,6 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Reader;
 
 use Doctrine\ORM\EntityManager;
+use Oro\Bundle\BatchBundle\Item\InvalidItemException;
 
 /**
  * Product csv reader
@@ -61,10 +62,10 @@ class ProductCsvReader extends CsvReader
         foreach ($data as $code => $value) {
             if (array_key_exists($code, $this->uniqueValues)) {
                 if (in_array($value, $this->uniqueValues[$code])) {
-                    $this->stepExecution->addReaderWarning(
-                        get_class($this),
+                    throw new InvalidItemException(
                         sprintf(
-                            'The "%s" attribute is unique, the value "%s" was already read in this file in %s:%s.',
+                            'The "%s" attribute is unique, the value "%s" was already read ' .
+                            'in this file in %s:%s.',
                             $code,
                             $value,
                             $this->csv->getRealPath(),
@@ -72,8 +73,6 @@ class ProductCsvReader extends CsvReader
                         ),
                         $data
                     );
-
-                    return false;
                 }
                 $this->uniqueValues[$code][] = $value;
             }

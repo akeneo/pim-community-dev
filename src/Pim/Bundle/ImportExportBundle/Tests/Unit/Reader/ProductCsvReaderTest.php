@@ -56,26 +56,17 @@ class ProductCsvReaderTest extends CsvReaderTest
 
     /**
      * Test related method
+     *
+     * @expectedException Oro\Bundle\BatchBundle\Item\InvalidItemException
+     * @expectedExceptionMessage The "sku" attribute is unique, the value "SKU-001" was already read in this file
      */
     public function testReadDuplicateUniqueValue()
     {
         $this->reader->setFilePath(__DIR__ . '/../../fixtures/duplicate_values.csv');
 
-        $this->stepExecution
-            ->expects($this->once())
-            ->method('addReaderWarning')
-            ->with(
-                get_class($this->reader),
-                $this->stringStartsWith(
-                    'The "sku" attribute is unique, the value "SKU-001" was already read in this file'
-                ),
-                array('sku' => 'SKU-001', 'name' => 'window')
-            );
-
-        $this->assertEquals(array('sku' => 'SKU-001', 'name' => 'door'), $this->reader->read());
-        $this->assertEquals(array('sku' => 'SKU-002', 'name' => 'hatch'), $this->reader->read());
-        $this->assertFalse($this->reader->read());
-        $this->assertNull($this->reader->read());
+        $this->reader->read();
+        $this->reader->read();
+        $this->reader->read();
     }
 
     public function testMediaPathAreAbsolute()
