@@ -17,7 +17,7 @@
 
 <script type="text/javascript">
     require(
-        ['jquery'],
+        ['jquery', 'jquery.select2'],
         function($) {
             'use strict';
             $(function() {
@@ -25,6 +25,8 @@
                 .on('change', function() {
                     var selected = $(this).find(":selected").text();
                     var conditional = $('#{{ form.attributes.vars.id }}').closest('.control-group');
+                    $('#{{ form.attributes.vars.id }}').select2('val', '');
+
                     if (selected == 'VARIANT') {
                         conditional.show();
                     } else {
