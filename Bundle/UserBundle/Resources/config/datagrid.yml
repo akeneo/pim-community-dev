@@ -19,20 +19,28 @@ datagrid:
         columns:
             id:
                 type: field
+                frontend_type: integer
             username:
                 type: field
+                frontend_type: string
             email:
                 type: field
+                frontend_type: string
             firstName:
                 type: field
+                frontend_type: string
             lastName:
                 type: field
+                frontend_type: string
             created:
                 type: field
+                frontend_type: date
             updated:
                 type: field
+                frontend_type: date
             enabled:
                 type: field
+                frontend_type: boolean
 
         properties:
             update_link:

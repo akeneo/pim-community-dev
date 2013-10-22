@@ -66,9 +66,17 @@ class FormatterExtension extends AbstractExtension
     /**
      * {@inheritDoc}
      */
-    public function visitMetadata(array $config, \stdClass $result)
+    public function visitMetadata(array $config, \stdClass $data)
     {
-        // TODO: Implement visitMetadata() method.
+        $data->columns          = array();
+        $columns = $this->accessor->getValue($config, self::COLUMNS_PATH);
+
+        foreach ($columns as $columnName => $column) {
+            $data->columns[$columnName] = $this->accessor->getValue(
+                $config,
+                sprintf(self::COLUMNS_PATH.'[%s][frontend_type]', $columnName)
+            ) ? : array();
+        }
     }
 
     /**
@@ -99,7 +107,7 @@ class FormatterExtension extends AbstractExtension
         $config['name'] = $name;
         $type = $this->accessor->getValue($config, '[type]');
 
-        $property = $this->properties[$type];
+        $property = clone $this->properties[$type];
         $property->init($config);
 
         return $property;

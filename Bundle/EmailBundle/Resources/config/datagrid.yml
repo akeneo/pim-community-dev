@@ -21,16 +21,21 @@ datagrid:
         columns:
             id:
                 type: field
+                frontend_type: integer
             fromEmailAddress:
                 type: twig
+                frontend_type: string
                 template: OroEmailBundle:Email:Datagrid/Property/from.html.twig
             subject:
                 type: twig
+                frontend_type: string
                 template: OroEmailBundle:Email:Datagrid/Property/subject.html.twig
             sentAt:
                 type: field
+                frontend_type: date
             recipients:
                 type: twig
+                frontend_type: string
                 template: OroEmailBundle:Email:Datagrid/Property/recipients.html.twig
 
         properties:

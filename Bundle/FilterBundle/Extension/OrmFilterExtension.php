@@ -93,6 +93,11 @@ class OrmFilterExtension extends AbstractExtension
                     $data->filters['state'][$filter->getName()] = $value;
                 }
             }
+
+            $data->filters['meta'][$filter->getName()] = $this->accessor->getValue(
+                $config,
+                sprintf(self::COLUMNS_PATH.'[%s][type]', $filter->getName())
+            ) ? : array();
         }
     }
 
