@@ -16,8 +16,6 @@ Pim\Bundle\CatalogBundle\Entity\Group:
             - Count:
                 min: 1
                 groups: [variant]
-            - Blank:
-                groups: [x_sell, additional, related]
 
 Pim\Bundle\CatalogBundle\Entity\GroupTranslation:
     properties:
