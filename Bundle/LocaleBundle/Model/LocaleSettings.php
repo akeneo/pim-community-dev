@@ -17,16 +17,6 @@ class LocaleSettings
     const DEFAULT_CURRENCY = 'USD';
 
     /**
-     * @var \NumberFormatter[]
-     */
-    static protected $numberFormatters;
-
-    /**
-     * @var \IntlDateFormatter[]
-     */
-    static protected $dateFormatters;
-
-    /**
      * @var string[]
      */
     static protected $locales;
@@ -259,83 +249,6 @@ class LocaleSettings
         }
 
         throw new \RuntimeException(sprintf('Cannot get address format for "%s"', $localeOrRegion));
-    }
-
-    /**
-     * Gets a return value of NumberFormatter::getAttribute call with given parameters
-     *
-     * @param int $attribute Constant like NumberFormatter::MAX_FRACTION_DIGITS
-     * @param string $locale Locale string line "en_US"
-     * @param int $style Constant like \NumberFormatter::DECIMAL
-     * @param string|null $pattern Pattern string if the chosen style requires a pattern
-     * @return int
-     */
-    public static function getNumberFormatterAttribute($attribute, $locale, $style, $pattern = null)
-    {
-        $formatter = self::getNumberFormatter($locale, $style, $pattern);
-        return $formatter->getAttribute($attribute);
-    }
-
-    /**
-     * Gets a return value of NumberFormatter::getTextAttribute call with given parameters
-     *
-     * @param int $attribute Constant like NumberFormatter::MAX_FRACTION_DIGITS
-     * @param string $locale Locale string line "en_US"
-     * @param int $style Constant like \NumberFormatter::DECIMAL
-     * @param string|null $pattern Pattern string if the chosen style requires a pattern
-     * @return string
-     */
-    public static function getNumberFormatterTextAttribute($attribute, $locale, $style, $pattern = null)
-    {
-        $formatter = self::getNumberFormatter($locale, $style, $pattern);
-        return $formatter->getTextAttribute($attribute);
-    }
-
-    /**
-     * Gets single instance fo NumberFormatter by passed parameters
-     *
-     * @param $locale
-     * @param $style
-     * @param null $pattern
-     * @return \NumberFormatter
-     */
-    protected static function getNumberFormatter($locale, $style, $pattern = null)
-    {
-        $key = sprintf("%s:%s:%s", $locale, $style, $pattern);
-        if (!isset(self::$numberFormatters[$key])) {
-            self::$numberFormatters[$key] = new \NumberFormatter($locale, $style, $pattern);
-        }
-        return self::$numberFormatters[$key];
-    }
-
-    /**
-     * Get the pattern used for the IntlDateFormatter
-     *
-     * @param string $locale
-     * @param int $dateType One of the constant of IntlDateFormatter: NONE, FULL, LONG, MEDIUM, SHORT
-     * @param int $timeType One of the constant IntlDateFormatter: NONE, FULL, LONG, MEDIUM, SHORT
-     * @return string
-     */
-    public static function getDatePattern($locale, $dateType, $timeType)
-    {
-        return self::getDateFormatter($locale, $dateType, $timeType)->getPattern();
-    }
-
-    /**
-     * Gets single instance fo IntlDateFormatter by passed parameters
-     *
-     * @param string $locale
-     * @param int $dateType
-     * @param int $timeType
-     * @return \IntlDateFormatter
-     */
-    protected static function getDateFormatter($locale, $dateType, $timeType)
-    {
-        $key = sprintf("%s:%s:%s", $locale, $dateType, $timeType);
-        if (!isset(self::$numberFormatters[$key])) {
-            self::$numberFormatters[$key] = new \IntlDateFormatter($locale, $dateType, $timeType);
-        }
-        return self::$numberFormatters[$key];
     }
 
     /**

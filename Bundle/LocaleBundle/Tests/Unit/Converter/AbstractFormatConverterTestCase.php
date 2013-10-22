@@ -18,38 +18,36 @@ abstract class AbstractFormatConverterTestCase extends \PHPUnit_Framework_TestCa
     /**
      * @var LocaleSettings
      */
-    protected $localeSettings;
+    protected $formatter;
 
     /**
      * @var array
      */
     protected $localFormatMap = array(
-        array(self::LOCALE_EN, \IntlDateFormatter::MEDIUM, \IntlDateFormatter::SHORT,  "MMM d, y h:mm a"),
-        array(self::LOCALE_EN, \IntlDateFormatter::LONG,   \IntlDateFormatter::MEDIUM, "MMMM d, y h:mm:ss a"),
-        array(self::LOCALE_EN, \IntlDateFormatter::MEDIUM, \IntlDateFormatter::NONE,   "MMM d, y"),
-        array(self::LOCALE_EN, \IntlDateFormatter::LONG,   \IntlDateFormatter::NONE,   "MMMM d, y"),
-        array(self::LOCALE_EN, \IntlDateFormatter::NONE,   \IntlDateFormatter::SHORT,  "h:mm a"),
-        array(self::LOCALE_EN, \IntlDateFormatter::NONE,   \IntlDateFormatter::MEDIUM, "h:mm:ss a"),
-        array(self::LOCALE_RU, \IntlDateFormatter::MEDIUM, \IntlDateFormatter::SHORT,  "dd.MM.yyyy H:mm"),
-        array(self::LOCALE_RU, \IntlDateFormatter::LONG,   \IntlDateFormatter::MEDIUM, "d MMMM y 'г.' H:mm:ss"),
-        array(self::LOCALE_RU, \IntlDateFormatter::MEDIUM, \IntlDateFormatter::NONE,   "dd.MM.yyyy"),
-        array(self::LOCALE_RU, \IntlDateFormatter::LONG,   \IntlDateFormatter::NONE,   "d MMMM y 'г.'"),
-        array(self::LOCALE_RU, \IntlDateFormatter::NONE,   \IntlDateFormatter::SHORT,  "H:mm"),
-        array(self::LOCALE_RU, \IntlDateFormatter::NONE,   \IntlDateFormatter::MEDIUM, "H:mm:ss"),
+        array(\IntlDateFormatter::LONG,   \IntlDateFormatter::MEDIUM, self::LOCALE_EN, "MMMM d, y h:mm:ss a"),
+        array(\IntlDateFormatter::LONG,   \IntlDateFormatter::NONE,   self::LOCALE_EN, "MMMM d, y"),
+        array(\IntlDateFormatter::MEDIUM, \IntlDateFormatter::SHORT,  self::LOCALE_EN, "MMM d, y h:mm a"),
+        array(\IntlDateFormatter::MEDIUM, \IntlDateFormatter::NONE,   self::LOCALE_EN, "MMM d, y"),
+        array(\IntlDateFormatter::NONE,   \IntlDateFormatter::MEDIUM, self::LOCALE_EN, "h:mm:ss a"),
+        array(\IntlDateFormatter::NONE,   \IntlDateFormatter::SHORT,  self::LOCALE_EN, "h:mm a"),
+
+        array(\IntlDateFormatter::LONG,   \IntlDateFormatter::MEDIUM, self::LOCALE_RU, "d MMMM y 'г.' H:mm:ss"),
+        array(\IntlDateFormatter::LONG,   \IntlDateFormatter::NONE,   self::LOCALE_RU, "d MMMM y 'г.'"),
+        array(\IntlDateFormatter::MEDIUM, \IntlDateFormatter::SHORT,  self::LOCALE_RU, "dd.MM.yyyy H:mm"),
+        array(\IntlDateFormatter::MEDIUM, \IntlDateFormatter::NONE,   self::LOCALE_RU, "dd.MM.yyyy"),
+        array(\IntlDateFormatter::NONE,   \IntlDateFormatter::MEDIUM, self::LOCALE_RU, "H:mm:ss"),
+        array(\IntlDateFormatter::NONE,   \IntlDateFormatter::SHORT,  self::LOCALE_RU, "H:mm"),
     );
 
     protected function setUp()
     {
-        $this->localeSettings = $this->getMockBuilder('Oro\Bundle\LocaleBundle\Model\LocaleSettings')
+        $this->formatter = $this->getMockBuilder('Oro\Bundle\LocaleBundle\Formatter\DateTimeFormatter')
             ->disableOriginalConstructor()
-            ->setMethods(array('getLocale', 'getDatePattern'))
+            ->setMethods(array('getPattern'))
             ->getMock();
-        $this->localeSettings->expects($this->any())
-            ->method('getLocale')
-            ->will($this->returnValue(self::LOCALE_EN));
-        $localeSettings = $this->localeSettings;
-        $localeSettings::staticExpects($this->any())
-            ->method('getDatePattern')
+
+        $this->formatter->expects($this->any())
+            ->method('getPattern')
             ->will($this->returnValueMap($this->localFormatMap));
 
         $this->converter = $this->createFormatConverter();
@@ -57,7 +55,7 @@ abstract class AbstractFormatConverterTestCase extends \PHPUnit_Framework_TestCa
 
     protected function tearDown()
     {
-        unset($this->localeSettings);
+        unset($this->formatter);
         unset($this->converter);
     }
 
@@ -68,13 +66,13 @@ abstract class AbstractFormatConverterTestCase extends \PHPUnit_Framework_TestCa
 
     /**
      * @param string $expected
-     * @param string|null $locale
-     * @param int|null $dateFormat
+     * @param int $dateFormat
+     * @param string $locale
      * @dataProvider getDateFormatDataProvider
      */
-    public function testGetDateFormat($expected, $locale = null, $dateFormat = null)
+    public function testGetDateFormat($expected, $dateFormat, $locale)
     {
-        $this->assertEquals($expected, $this->converter->getDateFormat($locale, $dateFormat));
+        $this->assertEquals($expected, $this->converter->getDateFormat($dateFormat, $locale));
     }
 
     /**
@@ -84,13 +82,13 @@ abstract class AbstractFormatConverterTestCase extends \PHPUnit_Framework_TestCa
 
     /**
      * @param string $expected
-     * @param string|null $locale
-     * @param int|null $timeFormat
+     * @param int $timeFormat
+     * @param string $locale
      * @dataProvider getTimeFormatDataProvider
      */
-    public function testGetTimeFormat($expected, $locale = null, $timeFormat = null)
+    public function testGetTimeFormat($expected, $timeFormat, $locale)
     {
-        $this->assertEquals($expected, $this->converter->getTimeFormat($locale, $timeFormat));
+        $this->assertEquals($expected, $this->converter->getTimeFormat($timeFormat, $locale));
     }
 
     /**
@@ -100,14 +98,14 @@ abstract class AbstractFormatConverterTestCase extends \PHPUnit_Framework_TestCa
 
     /**
      * @param string $expected
-     * @param string|null $locale
-     * @param int|null $dateFormat
-     * @param int|null $timeFormat
+     * @param int $dateFormat
+     * @param int $timeFormat
+     * @param string $locale
      * @dataProvider getDateTimeFormatDataProvider
      */
-    public function testGetDateTimeFormat($expected, $locale = null, $dateFormat = null, $timeFormat = null)
+    public function testGetDateTimeFormat($expected, $dateFormat, $timeFormat, $locale)
     {
-        $this->assertEquals($expected, $this->converter->getDateTimeFormat($locale, $dateFormat, $timeFormat));
+        $this->assertEquals($expected, $this->converter->getDateTimeFormat($dateFormat, $timeFormat, $locale));
     }
 
     /**

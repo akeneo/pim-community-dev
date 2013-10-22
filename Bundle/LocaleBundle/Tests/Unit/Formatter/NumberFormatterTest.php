@@ -292,4 +292,90 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
             ),
         );
     }
+
+    /**
+     * @dataProvider getNumberFormatterAttributeDataProvider
+     */
+    public function testGetNumberFormatterAttribute($attribute, $style, $locale, $expected)
+    {
+        $this->assertSame(
+            $expected,
+            $this->formatter->getAttribute(
+                $attribute,
+                $style,
+                $locale
+            )
+        );
+    }
+
+    public function getNumberFormatterAttributeDataProvider()
+    {
+        return array(
+            array('parse_int_only', 'DECIMAL', 'en_US', 0),
+            array('GROUPING_USED', 'decimal', 'en_US', 1),
+            array(\NumberFormatter::DECIMAL_ALWAYS_SHOWN, \NumberFormatter::DECIMAL, 'en_US', 0),
+            array(\NumberFormatter::MAX_INTEGER_DIGITS, \NumberFormatter::DECIMAL, 'en_US', 309),
+            array(\NumberFormatter::MIN_INTEGER_DIGITS, \NumberFormatter::DECIMAL, 'en_US', 1),
+            array(\NumberFormatter::INTEGER_DIGITS,\NumberFormatter::DECIMAL, 'en_US', 1),
+            array(\NumberFormatter::MAX_FRACTION_DIGITS, \NumberFormatter::DECIMAL, 'en_US', 3),
+            array(\NumberFormatter::MIN_FRACTION_DIGITS, \NumberFormatter::DECIMAL, 'en_US', 0),
+            array(\NumberFormatter::FRACTION_DIGITS, \NumberFormatter::DECIMAL, 'en_US', 0),
+            array(\NumberFormatter::MULTIPLIER, \NumberFormatter::DECIMAL, 'en_US', 1),
+            array(\NumberFormatter::GROUPING_SIZE, \NumberFormatter::DECIMAL, 'en_US', 3),
+            array(\NumberFormatter::ROUNDING_MODE, \NumberFormatter::DECIMAL, 'en_US', 4),
+            array(\NumberFormatter::ROUNDING_INCREMENT, \NumberFormatter::DECIMAL, 'en_US', 0.0),
+            array(\NumberFormatter::FORMAT_WIDTH, \NumberFormatter::DECIMAL, 'en_US', 0),
+            array(\NumberFormatter::PADDING_POSITION, \NumberFormatter::DECIMAL, 'en_US', 0),
+            array(\NumberFormatter::SECONDARY_GROUPING_SIZE, \NumberFormatter::DECIMAL, 'en_US', 0),
+            array(\NumberFormatter::SIGNIFICANT_DIGITS_USED, \NumberFormatter::DECIMAL, 'en_US', 0),
+            array(\NumberFormatter::MIN_SIGNIFICANT_DIGITS, \NumberFormatter::DECIMAL, 'en_US', 1),
+            array(\NumberFormatter::MAX_SIGNIFICANT_DIGITS, \NumberFormatter::DECIMAL, 'en_US', 6),
+        );
+    }
+
+    /**
+     * @dataProvider getNumberFormatterTextAttributeDataProvider
+     */
+    public function testGetNumberFormatterTextAttribute($attribute, $locale, $style, $expected)
+    {
+        $this->assertSame(
+            $expected,
+            $this->formatter->getTextAttribute(
+                $attribute,
+                $locale,
+                $style
+            )
+        );
+    }
+
+    public function getNumberFormatterTextAttributeDataProvider()
+    {
+        return array(
+            array('positive_prefix', 'DECIMAL', 'en_US', ''),
+            array('NEGATIVE_PREFIX', 'decimal', 'en_US', '-'),
+            array(\NumberFormatter::NEGATIVE_SUFFIX, \NumberFormatter::DECIMAL, 'en_US', ''),
+            array(\NumberFormatter::PADDING_CHARACTER, \NumberFormatter::DECIMAL, 'en_US', '*'),
+            array(\NumberFormatter::CURRENCY_CODE, \NumberFormatter::CURRENCY, 'en_US', 'USD'),
+            //array(\NumberFormatter::DEFAULT_RULESET, \NumberFormatter::DECIMAL, 'en_US', false),
+            //array(\NumberFormatter::PUBLIC_RULESETS, \NumberFormatter::DECIMAL, 'en_US', false),
+            //array(\NumberFormatter::DECIMAL_SEPARATOR_SYMBOL, \NumberFormatter::DECIMAL, 'en_US', false),
+            //array(\NumberFormatter::GROUPING_SEPARATOR_SYMBOL, \NumberFormatter::DECIMAL, 'en_US', false),
+            array(\NumberFormatter::PATTERN_SEPARATOR_SYMBOL, \NumberFormatter::DECIMAL, 'en_US', '-'),
+            array(\NumberFormatter::PERCENT_SYMBOL, \NumberFormatter::PERCENT, 'en_US', '%'),
+            array(\NumberFormatter::ZERO_DIGIT_SYMBOL, \NumberFormatter::DECIMAL, 'en_US', '*'),
+            array(\NumberFormatter::DIGIT_SYMBOL, \NumberFormatter::DECIMAL, 'en_US', ''),
+            //array(\NumberFormatter::MINUS_SIGN_SYMBOL, \NumberFormatter::DECIMAL, 'en_US', false),
+            //array(\NumberFormatter::PLUS_SIGN_SYMBOL, \NumberFormatter::DECIMAL, 'en_US', false),
+            //array(\NumberFormatter::CURRENCY_SYMBOL, \NumberFormatter::CURRENCY, 'en_US', false),
+            //array(\NumberFormatter::INTL_CURRENCY_SYMBOL, \NumberFormatter::DECIMAL, 'en_US', false),
+            //array(\NumberFormatter::MONETARY_SEPARATOR_SYMBOL, \NumberFormatter::DECIMAL, 'en_US', false),
+            //array(\NumberFormatter::EXPONENTIAL_SYMBOL, \NumberFormatter::DECIMAL, 'en_US', false),
+            //array(\NumberFormatter::PERMILL_SYMBOL, \NumberFormatter::DECIMAL, 'en_US', false),
+            //array(\NumberFormatter::PAD_ESCAPE_SYMBOL, \NumberFormatter::DECIMAL, 'en_US', false),
+            //array(\NumberFormatter::INFINITY_SYMBOL, \NumberFormatter::DECIMAL, 'en_US', false),
+            //array(\NumberFormatter::NAN_SYMBOL, \NumberFormatter::DECIMAL, 'en_US', false),
+            //array(\NumberFormatter::SIGNIFICANT_DIGIT_SYMBOL, \NumberFormatter::DECIMAL, 'en_US', false),
+            //array(\NumberFormatter::MONETARY_GROUPING_SEPARATOR_SYMBOL, \NumberFormatter::DECIMAL, 'en_US', false),
+        );
+    }
 }

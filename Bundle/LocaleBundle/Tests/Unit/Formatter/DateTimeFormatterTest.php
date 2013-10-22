@@ -241,4 +241,22 @@ class DateTimeFormatterTest extends \PHPUnit_Framework_TestCase
 
         return $dateType;
     }
+
+    /**
+     * @dataProvider getDatePatternDataProvider
+     */
+    public function testGetDatePattern($dateType, $timeType, $locale, $expected)
+    {
+        $this->assertEquals($expected, $this->formatter->getPattern($dateType, $timeType, $locale));
+    }
+
+    public function getDatePatternDataProvider()
+    {
+        return array(
+            array(\IntlDateFormatter::FULL, \IntlDateFormatter::FULL, 'en_US', 'EEEE, MMMM d, y h:mm:ss a zzzz'),
+            array(\IntlDateFormatter::FULL, \IntlDateFormatter::FULL, 'ru_RU', 'EEEE, d MMMM y \'г\'. H:mm:ss zzzz'),
+            array(\IntlDateFormatter::FULL, \IntlDateFormatter::FULL, 'fr_FR', 'EEEE d MMMM y HH:mm:ss zzzz'),
+            array('full', 'full', 'fr_FR', 'EEEE d MMMM y HH:mm:ss zzzz'),
+        );
+    }
 }

@@ -136,6 +136,38 @@ class NumberFormatter
     }
 
     /**
+     * Gets value of attribute
+     *
+     * @param int|string $attribute Attribute of \NumberFormatter or it's string name
+     * @param int|string $style Constant of \NumberFormatter (DECIMAL, CURRENCY, PERCENT, etc) or string name
+     * @param string|null $locale
+     * @return bool|int
+     */
+    public function getAttribute($attribute, $style, $locale = null)
+    {
+        return $this->getFormatter(
+            $locale,
+            $this->parseAttribute($style)
+        )->getAttribute($this->parseAttribute($attribute));
+    }
+
+    /**
+     * Gets value of text attribute
+     *
+     * @param int|string $attribute Attribute of \NumberFormatter or it's string name
+     * @param int|string $style Constant of \NumberFormatter (DECIMAL, CURRENCY, PERCENT, etc) or string name
+     * @param string|null $locale
+     * @return bool|int
+     */
+    public function getTextAttribute($attribute, $style, $locale = null)
+    {
+        return $this->getFormatter(
+            $locale,
+            $this->parseAttribute($style)
+        )->getTextAttribute($this->parseAttribute($attribute));
+    }
+
+    /**
      * Creates instance of NumberFormatter class of intl extension
      *
      * @param string $locale
@@ -145,13 +177,12 @@ class NumberFormatter
      * @return IntlNumberFormatter
      * @throws \InvalidArgumentException
      */
-    public function getFormatter($locale, $style, array $attributes = array(), array $textAttributes = array())
+    protected function getFormatter($locale, $style, array $attributes = array(), array $textAttributes = array())
     {
-        if (!$locale) {
-            $locale = $this->localeSettings->getLocale();
-        }
-
-        $formatter = new IntlNumberFormatter($locale, $style);
+        $formatter = new IntlNumberFormatter(
+            $locale ? : $this->localeSettings->getLocale(),
+            $this->parseAttribute($style)
+        );
 
         foreach ($this->parseAttributes($attributes) as $attribute => $value) {
             $formatter->setAttribute($attribute, $value);
