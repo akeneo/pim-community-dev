@@ -14,23 +14,23 @@
         function($, Setter, mediator) {
             'use strict';
             $(function() {
-                $('#association-list').on('click', 'a', function() {
-                    if ($(this).parent().hasClass('active')) {
-                        return;
-                    }
+                $('#association-list').on('shown', 'a[data-toggle="tab"]', function() {
                     var associationId = $(this).attr('id').replace('association-link-', '');
-                    setAssociationFields(associationId);
-                    Setter.setParameter('{{ associationDatagrid.datagrid.name }}', 'associationId', associationId, true);
+                    changeAssociation(associationId);
                 });
 
-                function setAssociationFields(associationId) {
+                function changeAssociation(associationId) {
                     var $associationFields = $('#{{ form.productAssociations.vars.id }}'),
                         $idField = $associationFields.find('input[type="hidden"][value="' + associationId + '"]');
 
                     var appendFieldId = '#' + $idField.siblings('[id$="appendTargets"]').attr('id');
                     var removeFieldId = '#' + $idField.siblings('[id$="removeTargets"]').attr('id');
                     mediator.trigger('column_form_listener:set_selectors', { included: appendFieldId, excluded: removeFieldId });
+                    Setter.setParameter('{{ associationDatagrid.datagrid.name }}', 'associationId', associationId, true);
                 }
+
+                // Trigger the shown event on the tab activated by restoring the form state
+                $('#association-list').find('li.active:not(:first-of-type)').find('a').trigger('shown');
             });
         }
     );
