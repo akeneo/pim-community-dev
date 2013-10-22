@@ -1597,8 +1597,10 @@ class FixturesContext extends RawMinkContext
     private function createMedia($file)
     {
         $media = new Media();
-        $media->setFile(new File(__DIR__ . '/fixtures/' . $file));
-        $this->getMediaManager()->handle($media, 'behat');
+        if ($file) {
+            $media->setFile(new File(__DIR__ . '/fixtures/' . $file));
+            $this->getMediaManager()->handle($media, 'behat');
+        }
 
         return $media;
     }
