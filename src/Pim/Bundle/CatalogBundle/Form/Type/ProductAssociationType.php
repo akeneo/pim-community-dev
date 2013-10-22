@@ -49,6 +49,26 @@ class ProductAssociationType extends AbstractType
                     'required' => false,
                     'multiple' => true
                 )
+            )
+            ->add(
+                'appendGroups',
+                'oro_entity_identifier',
+                array(
+                    'class'    => 'Pim\Bundle\CatalogBundle\Entity\Group',
+                    'mapped'   => false,
+                    'required' => false,
+                    'multiple' => true
+                )
+            )
+            ->add(
+                'removeGroups',
+                'oro_entity_identifier',
+                array(
+                    'class'    => 'Pim\Bundle\CatalogBundle\Entity\Group',
+                    'mapped'   => false,
+                    'required' => false,
+                    'multiple' => true
+                )
             );
     }
 

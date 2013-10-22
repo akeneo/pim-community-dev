@@ -41,9 +41,11 @@ class BindProductAssociationTargetsSubscriber implements EventSubscriberInterfac
         for ($count = $form->count(), $i = 0; $count > $i; $i++) {
             $child = $form->get($i);
 
-            $association   = $child->get('association')->getData();
+            $association    = $child->get('association')->getData();
             $appendProducts = $child->get('appendProducts')->getData();
             $removeProducts = $child->get('removeProducts')->getData();
+            $appendGroups   = $child->get('appendGroups')->getData();
+            $removeGroups   = $child->get('removeGroups')->getData();
 
             $productAssociation = $productAssociations->filter(
                 function ($productAssociation) use ($association) {
@@ -51,7 +53,7 @@ class BindProductAssociationTargetsSubscriber implements EventSubscriberInterfac
                 }
             )->first();
 
-            $this->bindTargets($productAssociation, $appendProducts, $removeProducts);
+            $this->bindTargets($productAssociation, $appendProducts, $removeProducts, $appendGroups, $removeGroups);
         }
     }
 
@@ -59,19 +61,32 @@ class BindProductAssociationTargetsSubscriber implements EventSubscriberInterfac
      * Bind target entities
      *
      * @param ProductAssociation $productAssociation
-     * @param array              $appendProducts
-     * @param array              $removeProducts
-     *
-     * @return null
+     * @param ProductInterface[] $appendProducts
+     * @param ProductInterface[] $removeProducts
+     * @param Group[]            $appendGroups
+     * @param Group[]            $removeGroups
      */
-    private function bindTargets(ProductAssociation $productAssociation, array $appendProducts, array $removeProducts)
-    {
-        foreach ($appendProducts as $target) {
-            $productAssociation->addProduct($target);
+    private function bindTargets(
+        ProductAssociation $productAssociation,
+        array $appendProducts,
+        array $removeProducts,
+        array $appendGroups,
+        array $removeGroups
+    ) {
+        foreach ($appendProducts as $product) {
+            $productAssociation->addProduct($product);
         }
 
-        foreach ($removeProducts as $target) {
-            $productAssociation->removeProduct($target);
+        foreach ($removeProducts as $product) {
+            $productAssociation->removeProduct($product);
+        }
+
+        foreach ($appendGroups as $group) {
+            $productAssociation->addGroup($group);
+        }
+
+        foreach ($removeGroups as $group) {
+            $productAssociation->removeGroup($group);
         }
     }
 }
