@@ -40,7 +40,7 @@ class ProductGroupsConverter
      */
     public function convert($data)
     {
-        if (null !== $ids = $this->getGoupIds($data)) {
+        if (null !== $ids = $this->getGroupIds($data)) {
             return array('groups' => $ids);
         }
 

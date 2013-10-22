@@ -209,6 +209,7 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
             ),
             'categoriesColumn'    => array(),
             'familyColumn'        => array(),
+            'groupsColumn'         => array(),
         );
     }
 
@@ -388,7 +389,7 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
      *
      * @param ProductInterface $product
      * @param string           $familyCode
-     * @param array            $groupCodes
+     * @param string           $groupCodes
      *
      * @return array
      */
@@ -410,6 +411,7 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
         }
 
         if ($groupCodes !== null) {
+            $groupCodes = explode(',', $groupCodes);
             foreach ($groupCodes as $code) {
                 $group = $storageManager->getRepository('PimCatalogBundle:Group')->findOneBy(
                     array(
