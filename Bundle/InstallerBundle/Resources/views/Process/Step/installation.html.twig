@@ -3,6 +3,10 @@
 
 {% set step, steps = 'administration', ['schema', 'search', 'navigation', 'assets', 'assetic', 'assetic-oro', 'translation', 'requirejs'] %}
 
+{% if loadFixtures %}
+    {% set steps = ['fixtures']|merge(steps) %}
+{% endif %}
+
 {% block title %}{{ 'process.step.installation.header'|trans }} - {{ parent() }}{% endblock %}
 
 {% block content %}
