@@ -99,6 +99,9 @@ oro_batch:
         categoriesColumn:
             label: Categories column
             help: Name of the categories column
+        groupsColumn:
+            label: Groups column
+            help: Name of the groups column
         familyColumn:
             label: Family column
             help: Name of the family column
