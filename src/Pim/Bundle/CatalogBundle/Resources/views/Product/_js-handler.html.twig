@@ -72,7 +72,12 @@
                     {% for group in form.vars.value.groups %}
                         {% set productList %}{{ "Products list"|trans }}<ul>{% for product in group.products %}<li>{{ product.label }}</li>{% endfor %}</ul>{% endset %}
                         $('#group-products-{{ group.id }}').on('click', function() {
-                            Dialog.alert('{{ productList }}', '{{ "Group"|trans }} {{ group.label }} - {{ "list of products"|trans }}');
+                            Dialog.redirect(
+                                '{{ productList }}',
+                                '{{ "Group"|trans }} {{ group.label }} - {{ "list of products"|trans }}',
+                                '{{ "View group"|trans }}',
+                                '{{ path('pim_catalog_group_edit', { 'id': group.id }) }}'
+                            );
                         });
                     {% endfor %}
 
