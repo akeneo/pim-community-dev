@@ -9,6 +9,7 @@ use Oro\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory;
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
+use Pim\Bundle\CatalogBundle\Entity\ProductAssociation;
 use Pim\Bundle\CatalogBundle\Entity\ProductValue;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Bundle\CatalogBundle\Calculator\CompletenessCalculator;
@@ -250,8 +251,6 @@ class ProductManager extends FlexibleManager
 
     /**
      * @param ProductInterface $product
-     *
-     * @return null
      */
     public function handleMedia(ProductInterface $product)
     {
@@ -260,6 +259,25 @@ class ProductManager extends FlexibleManager
                 $filenamePrefix =  $media->getFile() ? $this->generateFilenamePrefix($product, $value) : null;
                 $this->mediaManager->handle($media, $filenamePrefix);
             }
+        }
+    }
+
+    /**
+     * @param ProductInterface $product
+     */
+    public function ensureAllAssociations(ProductInterface $product)
+    {
+        $missingAssociations = $this->storageManager
+            ->getRepository('PimCatalogBundle:Association')
+            ->findMissingAssociations($product);
+
+        if (!empty($missingAssociations)) {
+            foreach ($missingAssociations as $association) {
+                $productAssociation = new ProductAssociation();
+                $productAssociation->setAssociation($association);
+                $product->addProductAssociation($productAssociation);
+            }
+            $this->save($product, false);
         }
     }
 

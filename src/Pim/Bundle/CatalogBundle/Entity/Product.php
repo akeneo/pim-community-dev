@@ -12,9 +12,11 @@ use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Exception\MissingIdentifierException;
 use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
+use Pim\Bundle\CatalogBundle\Entity\Association;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
-use Pim\Bundle\CatalogBundle\Entity\GroupType;
+use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\CatalogBundle\Entity\ProductAssociation;
 
 /**
  * Flexible product
@@ -88,6 +90,18 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
     protected $groups;
 
     /**
+     * @var ArrayCollection $productAssociations
+     *
+     * @ORM\OneToMany(
+     *     targetEntity="Pim\Bundle\CatalogBundle\Entity\ProductAssociation",
+     *     mappedBy="owner",
+     *     cascade={"persist", "remove"},
+     *     orphanRemoval=true
+     * )
+     */
+    protected $productAssociations;
+
+    /**
      * @var ArrayCollection $completenesses
      *
      * @ORM\OneToMany(
@@ -105,9 +119,10 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
     {
         parent::__construct();
 
-        $this->categories     = new ArrayCollection();
-        $this->completenesses = new ArrayCollection();
-        $this->groups         = new ArrayCollection();
+        $this->categories          = new ArrayCollection();
+        $this->completenesses      = new ArrayCollection();
+        $this->groups              = new ArrayCollection();
+        $this->productAssociations = new ArrayCollection();
     }
 
     /**
@@ -377,7 +392,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
 
         foreach ($this->groups as $group) {
             if ($group->getType()->isVariant()) {
-                if ($this->variantGroup->getAttributes()->contains($attribute)) {
+                if ($group->getAttributes()->contains($attribute)) {
                     return false;
                 }
             }
@@ -509,6 +524,77 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
     public function setCompletenesses(array $completenesses = array())
     {
         $this->completenesses = new ArrayCollection($completenesses);
+
+        return $this;
+    }
+
+    /**
+     * Add product productAssociation
+     *
+     * @param ProductAssociation $productAssociation
+     *
+     * @return Product
+     */
+    public function addProductAssociation(ProductAssociation $productAssociation)
+    {
+        if (!$this->productAssociations->contains($productAssociation)) {
+            $productAssociation->setOwner($this);
+            $this->productAssociations->add($productAssociation);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove product productAssociation
+     *
+     * @param ProductAssociation $productAssociation
+     *
+     * @return Product
+     */
+    public function removeProductAssociation(ProductAssociation $productAssociation)
+    {
+        $this->productAssociations->removeElement($productAssociation);
+
+        return $this;
+    }
+
+    /**
+     * Get the product productAssociations
+     *
+     * @return ProductAssociation[]|null
+     */
+    public function getProductAssociations()
+    {
+        return $this->productAssociations;
+    }
+
+    /**
+     * Get the product productAssociation for an Association entity
+     *
+     * @param Association $association
+     *
+     * @return ProductAssociation|null
+     */
+    public function getProductAssociationForAssociation(Association $association)
+    {
+        return $this->productAssociations->filter(
+            function($productAssociation) use ($association) {
+                return $productAssociation->getAssociation() === $association;
+            }
+        )->first();
+    }
+
+    /**
+     * Set product productAssociations
+     *
+     * @param ProductAssociation[] $productAssociations
+     *
+     * @return Product
+     */
+    public function setProductAssociations(array $productAssociations = array())
+    {
+        $this->productAssociations = new ArrayCollection($productAssociations);
 
         return $this;
     }
