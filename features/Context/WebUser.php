@@ -1608,6 +1608,7 @@ class WebUser extends RawMinkContext
     public function exportedFileOfShouldContain($code, PyStringNode $csv)
     {
         $path = $this
+            ->getFixturesContext()
             ->getJobInstance($code)
             ->getJob()
             ->getSteps()[0]
@@ -1637,6 +1638,7 @@ class WebUser extends RawMinkContext
     public function exportDirectoryOfShouldContainTheFollowingMedia($code, TableNode $table)
     {
         $path = $this
+            ->getFixturesContext()
             ->getJobInstance($code)
             ->getJob()
             ->getSteps()[0]
