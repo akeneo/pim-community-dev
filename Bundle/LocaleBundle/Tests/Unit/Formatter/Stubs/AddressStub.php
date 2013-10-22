@@ -112,7 +112,7 @@ class AddressStub implements AddressInterface, FullNameInterface
      *
      * @return string
      */
-    public function getCountry()
+    public function getCountryName()
     {
         return 'United States';
     }

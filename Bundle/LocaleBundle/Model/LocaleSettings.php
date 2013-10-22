@@ -252,6 +252,14 @@ class LocaleSettings
     }
 
     /**
+     * @return boolean
+     */
+    public function isFormatAddressByAddressCountry()
+    {
+        return $this->configManager->get('oro_locale.format_address_by_address_country', false);
+    }
+
+    /**
      * Gets locale by country
      *
      * @param string $country Country code

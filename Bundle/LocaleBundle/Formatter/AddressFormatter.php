@@ -48,24 +48,34 @@ class AddressFormatter
     public function format(AddressInterface $address, $country = null, $newLineSeparator = "\n")
     {
         if (!$country) {
-            $country = $address->getCountryIso2();
+            $country = null;
+            if ($this->localeSettings->isFormatAddressByAddressCountry()) {
+                $country = $address->getCountryIso2();
+            } else {
+                $country = $this->localeSettings->getCountry();
+            }
+            if (!$country) {
+                $country = LocaleSettings::DEFAULT_COUNTRY;
+            }
         }
+
         $format = $this->localeSettings->getAddressFormat($country);
         $countryLocale = $this->localeSettings->getLocaleByCountry($country);
-        $self = $this;
         $formatted = preg_replace_callback(
             '/%(\w+)%/',
-            function ($data) use ($address, $countryLocale, $newLineSeparator, $self) {
+            function ($data) use ($address, $countryLocale, $newLineSeparator) {
                 $key = $data[1];
                 $lowerCaseKey = strtolower($key);
                 if ('name' === $lowerCaseKey) {
-                    $value = $self->nameFormatter->format($address, $countryLocale);
+                    $value = $this->nameFormatter->format($address, $countryLocale);
                 } elseif ('street' == $lowerCaseKey) {
-                    $value = $self->getValue($address, 'street') . ' ' . $self->getValue($address, 'street2');
+                    $value = $this->getValue($address, 'street') . ' ' . $this->getValue($address, 'street2');
                 } elseif ('street1' == $lowerCaseKey) {
-                    $value = $self->getValue($address, 'street');
+                    $value = $this->getValue($address, 'street');
+                } elseif ('country' == $lowerCaseKey) {
+                    $value = $this->getValue($address, 'countryName');
                 } else {
-                    $value = $self->getValue($address, $lowerCaseKey);
+                    $value = $this->getValue($address, $lowerCaseKey);
                 }
                 if ($value) {
                     if ($key !== $lowerCaseKey) {

@@ -42,14 +42,14 @@ class DateFormatExtension extends \Twig_Extension
 
     /**
      * @param string $type
-     * @param string|null $dateFormat
+     * @param string|null $dateType
      * @param string|null $locale
      * @return string
      */
-    public function getDateFormat($type, $dateFormat = null, $locale = null)
+    public function getDateFormat($type, $dateType = null, $locale = null)
     {
         return $this->converterRegistry->getFormatConverter($type)->getDateFormat(
-            $dateFormat,
+            $dateType,
             $locale
         );
     }

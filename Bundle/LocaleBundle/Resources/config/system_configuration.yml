@@ -39,13 +39,13 @@ oro_system_configuration:
                     - NotBlank: ~
 
         oro_locale.country:
-              type: country
-              priority: 40
-              options:
-                  label: 'Country'
-                  required: true
-                  constraints:
-                      - NotBlank: ~
+            type: country
+            priority: 40
+            options:
+                label: 'Country'
+                required: true
+                constraints:
+                    - NotBlank: ~
 
         oro_locale.currency:
             type: currency
@@ -56,15 +56,14 @@ oro_system_configuration:
                 constraints:
                     - NotBlank: ~
 
-        oro_locale.name_format:
-            type: oro_name_format
+        oro_locale.format_address_by_address_country:
+            type: oro_config_checkbox
             priority: 20
             options:
-                label: 'Name format'
+                label: 'Format address by address country'
                 required: true
-                #tooltip: 'Available variables:<br> %%firstname%%, %%lastname%%'
                 constraints:
-                    - NotBlank: ~
+                    - NotNull: ~
 
     tree:
         system_configuration:
@@ -86,4 +85,4 @@ oro_system_configuration:
                                         priority: 50
                                         children:
                                             - oro_locale.locale
-                                            - oro_locale.name_format
+                                            - oro_locale.format_address_by_address_country

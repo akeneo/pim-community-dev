@@ -90,6 +90,7 @@ class Configuration implements ConfigurationInterface
                 'country'  => array('value' => null),
                 'timezone' => array('value' => $date->getTimezone()->getName()),
                 'currency' => array('value' => 'USD'),
+                'format_address_by_address_country' => array('value' => false, 'type' => 'boolean'),
             )
         );
 
