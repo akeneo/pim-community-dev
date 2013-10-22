@@ -7,4 +7,4 @@ services:
         arguments:
             - %kernel.cache_dir%/mailer_mail_store.meta
         tags:
-            - { name: swiftmailer.plugin }
+            - { name: swiftmailer.default.plugin }
