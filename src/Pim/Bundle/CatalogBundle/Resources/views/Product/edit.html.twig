@@ -84,14 +84,23 @@
                     {% endif %}
                 </li>
 
-
                 <li>
                     {{ 'group'|trans|capitalize }}:
                     {% for group in form.vars.value.groups %}
-                        {{ group.label }} {% if not loop.last %}, {% endif %}
+
+                        {% if group.type.isVariant %}
+                            {% set variantGroupAttributes %}
+                                <ul>{% for attribute in group.attributes %}<li>{{ attribute }}</li>{% endfor %}</ul>
+                           {% endset %}
+                           {% set variantGroupTooltip = variantGroupAttributes|trim is empty ? null : 'info.variant group.axis'|trans ~ variantGroupAttributes|trim %}
+                        {% endif %}
+
+                        <span{% if variantGroupTooltip %}
+                            data-toggle="tooltip" data-placement="bottom" data-html="true"
+                            data-original-title="{{ variantGroupTooltip }}"
+                            {% endif %}>{{ group.label }}</span>{% if not loop.last %}, {% endif %}
                     {% endfor %}
                 </li>
-
 
                 <li>{{ 'Created'|trans }}: {{ created ? created.loggedAt|date("Y-m-d h:i:s") : 'N/A'|trans }} {{ 'by'|trans }} {{ created ? created.user.username : 'N/A'|trans }}</li>
                 <li>{{ 'Last update'|trans }}: {{ updated ? updated.loggedAt|date("Y-m-d h:i:s") : 'N/A'|trans }} {{ 'by'|trans }} {{ updated ? updated.user.username : 'N/A'|trans }}</li>
