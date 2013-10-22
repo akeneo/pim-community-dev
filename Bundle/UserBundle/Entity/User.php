@@ -543,8 +543,14 @@ class User extends AbstractEntityFlexible implements
     public function getFullName($format = '')
     {
         return str_replace(
-            array('%first%', '%last%'),
-            array($this->getFirstName(), $this->getLastName()),
+            array('%prefix', '%first%', '%middle', '%last%', '%suffix%'),
+            array(
+                $this->getNamePrefix(),
+                $this->getFirstName(),
+                $this->getMiddleName(),
+                $this->getLastName(),
+                $this->getNameSuffix()
+            ),
             $format ? $format : $this->getNameFormat()
         );
     }

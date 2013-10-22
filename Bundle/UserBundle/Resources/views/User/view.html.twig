@@ -98,8 +98,11 @@
                     'title': 'Basic Information'|trans,
                     'data': [
                         UI.attibuteRow('User name'|trans, entity.username),
-                        UI.attibuteRow('First name'|trans, entity.firstname),
-                        UI.attibuteRow('Last name'|trans, entity.lastname),
+                        entity.namePrefix ? UI.attibuteRow('Name prefix'|trans, entity.namePrefix),
+                        UI.attibuteRow('First name'|trans, entity.firstName|default('N/A')),
+                        entity.middleName ? UI.attibuteRow('Middle name'|trans, entity.middleName),
+                        UI.attibuteRow('Last name'|trans, entity.lastName|default('N/A')),
+                        entity.nameSuffix ? UI.attibuteRow('Name suffix'|trans, entity.nameSuffix),
                         UI.attibuteRow('Birthday'|trans, entity.birthday ? Locale.date(entity.birthday) : 'N/A'),
                         UI.renderAttribute('API key'|trans, _self.api_data_block(entity))
                     ]

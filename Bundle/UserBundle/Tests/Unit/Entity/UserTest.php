@@ -421,8 +421,11 @@ class UserTest extends \PHPUnit_Framework_TestCase
         return array(
             array('username', 'test'),
             array('email', 'test'),
+            array('nameprefix', 'test'),
             array('firstname', 'test'),
+            array('middlename', 'test'),
             array('lastname', 'test'),
+            array('namesuffix', 'test'),
             array('birthday', new \DateTime()),
             array('image', 'test'),
             array('password', 'test'),

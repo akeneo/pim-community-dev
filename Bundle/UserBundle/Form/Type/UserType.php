@@ -203,23 +203,39 @@ class UserType extends FlexibleType
                 'username',
                 'text',
                 array(
-                     'required'       => true,
+                    'required'       => true,
                 )
             )
             ->add(
                 'email',
                 'email',
                 array(
-                     'label'          => 'E-mail',
-                     'required'       => true,
+                    'label'          => 'E-mail',
+                    'required'       => true,
+                )
+            )
+            ->add(
+                'namePrefix',
+                'text',
+                array(
+                    'label'          => 'Name prefix',
+                    'required'       => false,
                 )
             )
             ->add(
                 'firstName',
                 'text',
                 array(
-                     'label'          => 'First name',
-                     'required'       => true,
+                    'label'          => 'First name',
+                    'required'       => true,
+                )
+            )
+            ->add(
+                'middleName',
+                'text',
+                array(
+                    'label'          => 'Middle name',
+                    'required'       => false,
                 )
             )
             ->add(
@@ -231,19 +247,27 @@ class UserType extends FlexibleType
                 )
             )
             ->add(
+                'nameSuffix',
+                'text',
+                array(
+                    'label'          => 'Name suffix',
+                    'required'       => false,
+                )
+            )
+            ->add(
                 'birthday',
                 'oro_date',
                 array(
-                     'label'          => 'Date of birth',
-                     'required'       => false,
+                    'label'          => 'Date of birth',
+                    'required'       => false,
                 )
             )
             ->add(
                 'imageFile',
                 'file',
                 array(
-                     'label'          => 'Avatar',
-                     'required'       => false,
+                    'label'          => 'Avatar',
+                    'required'       => false,
                 )
             );
     }

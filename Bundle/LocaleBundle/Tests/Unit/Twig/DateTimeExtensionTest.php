@@ -104,6 +104,6 @@ class DateTimeExtensionTest extends \PHPUnit_Framework_TestCase
 
     public function testGetName()
     {
-        $this->assertEquals('oro_locale_number', $this->extension->getName());
+        $this->assertEquals('oro_locale_datetime', $this->extension->getName());
     }
 }

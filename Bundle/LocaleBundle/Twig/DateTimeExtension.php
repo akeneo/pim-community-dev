@@ -132,6 +132,6 @@ class DateTimeExtension extends \Twig_Extension
      */
     public function getName()
     {
-        return 'oro_locale_number';
+        return 'oro_locale_datetime';
     }
 }
