@@ -1,4 +1,4 @@
-{% set listenerParameters = {
+{% set productListenerParameters = {
     'columnName': 'has_association',
     'selectors': {
         'included': '#' ~ form.productAssociations.children|first.appendProducts.vars.id,
@@ -6,7 +6,7 @@
     }
 } %}
 
-{% placeholder prepare_grid with {'datagrid': associationDatagrid, 'selector': '#association-grid', 'parameters': listenerParameters } %}
+{% placeholder prepare_grid with {'datagrid': associationProductGrid, 'selector': '#association-product-grid', 'parameters': productListenerParameters } %}
 
 <script type="text/javascript">
     require(
@@ -26,7 +26,7 @@
                     var appendFieldId = '#' + $idField.siblings('[id$="appendProducts"]').attr('id');
                     var removeFieldId = '#' + $idField.siblings('[id$="removeProducts"]').attr('id');
                     mediator.trigger('column_form_listener:set_selectors', { included: appendFieldId, excluded: removeFieldId });
-                    Setter.setParameter('{{ associationDatagrid.datagrid.name }}', 'associationId', associationId, true);
+                    Setter.setParameter('{{ associationProductGrid.datagrid.name }}', 'associationId', associationId, true);
                 }
 
                 // Trigger the shown event on the tab activated by restoring the form state
@@ -56,6 +56,6 @@
             <h3 class="unspaced">{{ association.label }}</h3>
         </div>
     {% endfor %}
-    <div id="association-grid"></div>
+    <div id="association-product-grid"></div>
     {{ form_widget(form.productAssociations, { 'attr': { 'class': 'hide' }}) }}
 </div>
