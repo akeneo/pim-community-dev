@@ -4,7 +4,7 @@ Feature: Export media with products
   As Julia
   I need to be able to export them among with the products
 
-  Scenario:
+  Scenario: Successfully export media
     Given the following family:
       | code     |
       | funboard |
