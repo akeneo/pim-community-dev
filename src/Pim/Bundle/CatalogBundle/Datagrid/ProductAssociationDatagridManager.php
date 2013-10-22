@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Datagrid;
 
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
+use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Oro\Bundle\GridBundle\Datagrid\FlexibleDatagridManager;
 use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
@@ -10,7 +11,7 @@ use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Oro\Bundle\GridBundle\Sorter\SorterInterface;
 
 use Pim\Bundle\CatalogBundle\Entity\Association;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
@@ -36,11 +37,6 @@ class ProductAssociationDatagridManager extends FlexibleDatagridManager
     private $associationId = 0;
 
     /**
-     * @var SecurityFacade
-     */
-    protected $securityFacade;
-
-    /**
      * Define constructor to add new price type
      */
     public function __construct()
@@ -52,11 +48,11 @@ class ProductAssociationDatagridManager extends FlexibleDatagridManager
     }
 
     /**
-     * @param SecurityFacade $securityFacade
+     * {@inheritdoc}
      */
-    public function setSecurityFacade(SecurityFacade $securityFacade)
+    public function setFlexibleManager(FlexibleManager $flexibleManager)
     {
-        $this->securityFacade = $securityFacade;
+        $this->flexibleManager = $flexibleManager;
     }
 
     /**
@@ -70,27 +66,27 @@ class ProductAssociationDatagridManager extends FlexibleDatagridManager
     }
 
     /**
+     * @param integer $associationId
+     */
+    public function setAssociationId($associationId)
+    {
+        $this->associationId = $associationId;
+    }
+
+    /**
      * Get product
      *
      * @throws \LogicException
      *
      * @return ProductInterface
      */
-    public function getProduct()
+    protected function getProduct()
     {
         if (!$this->product) {
             throw new \LogicException('Product association datagrid manager has no configured product');
         }
 
         return $this->product;
-    }
-
-    /**
-     * @param integer $associationId
-     */
-    public function setAssociationId($associationId)
-    {
-        $this->associationId = $associationId;
     }
 
     /**
@@ -128,14 +124,16 @@ class ProductAssociationDatagridManager extends FlexibleDatagridManager
         $field->setName('has_association');
         $field->setOptions(
             array(
-                'type'        => FieldDescriptionInterface::TYPE_BOOLEAN,
-                'label'       => $this->translate('Has association'),
-                'field_name'  => 'hasCurrentAssociation',
-                'expression'  => $this->getHasAssociationExpression(),
-                'nullable'    => false,
-                'editable'    => true,
-                'sortable'    => false,
-                'filter_type' => false
+                'type'            => FieldDescriptionInterface::TYPE_BOOLEAN,
+                'label'           => $this->translate('Has association'),
+                'field_name'      => 'hasCurrentAssociation',
+                'expression'      => $this->getHasAssociationExpression(),
+                'nullable'        => false,
+                'editable'        => true,
+                'sortable'        => true,
+                'filter_type'     => FilterInterface::TYPE_BOOLEAN,
+                'filterable'      => true,
+                'filter_by_where' => true
             )
         );
 
@@ -311,6 +309,17 @@ class ProductAssociationDatagridManager extends FlexibleDatagridManager
             'scopeCode'   => $this->flexibleManager->getScope(),
             'association' => $this->associationId,
             'product'     => $this->getProduct()
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getDefaultSorters()
+    {
+        return array(
+            'has_association' => SorterInterface::DIRECTION_DESC,
+            $this->flexibleManager->getIdentifierAttribute()->getCode() => SorterInterface::DIRECTION_ASC
         );
     }
 }

@@ -113,12 +113,12 @@ services:
             - name: oro_grid.datagrid.manager
               datagrid_name: product_association
               entity_name: %pim_catalog.entity.product.class%
-              entity_hint: products
+              entity_hint: product
               flexible: true
               route_name: pim_catalog_product_list_associations
+              cache_disabled: true
         calls:
             - [ setDatagridBuilder, ['@pim_grid.builder.datagrid'] ]
-            - [ setSecurityFacade, ['@oro_security.security_facade'] ]
 
     pim_catalog.datagrid.worker:
         class: %pim_catalog.datagrid.worker.class%
