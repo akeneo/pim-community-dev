@@ -50,6 +50,12 @@ datagrid:
                     - { table: OroUserBundle:User, alias: u }
 
         columns:
+            firstName:
+                type: field
+                frontend_type: string
+            lastName:
+                type: field
+                frontend_type: string
             created:
                 type: field
                 frontend_type: date
