@@ -15,8 +15,9 @@ use Oro\Bundle\EntityExtendBundle\Exception\RuntimeException;
 
 class ExtendConfigDumper
 {
-    const ENTITY = 'Extend\\Entity\\';
-    const PREFIX = 'field_';
+    const ENTITY         = 'Extend\\Entity\\';
+    const FIELD_PREFIX   = 'field_';
+    const DEFAULT_PREFIX = 'default_';
 
     /**
      * @var string
@@ -30,7 +31,7 @@ class ExtendConfigDumper
 
     /**
      * @param OroEntityManager $em
-     * @param string $cacheDir
+     * @param string           $cacheDir
      */
     public function __construct(OroEntityManager $em, $cacheDir)
     {
@@ -108,9 +109,9 @@ class ExtendConfigDumper
             $entityName            = $className;
             $type                  = 'Custom';
             $doctrine[$entityName] = array(
-                'type'       => 'entity',
-                'table'      => 'oro_extend_' . strtolower(str_replace('\\', '', $entityName)),
-                'fields'     => array(
+                'type'   => 'entity',
+                'table'  => 'oro_extend_' . strtolower(str_replace('\\', '', $entityName)),
+                'fields' => array(
                     'id' => array('type' => 'integer', 'id' => true, 'generator' => array('strategy' => 'AUTO'))
                 ),
             );
@@ -118,8 +119,8 @@ class ExtendConfigDumper
             $entityName            = $entityConfig->get('extend_class');
             $type                  = 'Extend';
             $doctrine[$entityName] = array(
-                'type'       => 'mappedSuperclass',
-                'fields'     => array(),
+                'type'   => 'mappedSuperclass',
+                'fields' => array(),
             );
         }
 
@@ -127,14 +128,20 @@ class ExtendConfigDumper
 
         $properties         = array();
         $relationProperties = array();
+        $defaultProperties  = array();
         if ($fieldConfigs = $extendProvider->getConfigs($className)) {
             foreach ($fieldConfigs as $fieldConfig) {
                 if ($fieldConfig->is('extend')) {
-                    $fieldName = self::PREFIX . $fieldConfig->getId()->getFieldName();
+                    $fieldName = self::FIELD_PREFIX . $fieldConfig->getId()->getFieldName();
                     $fieldType = $fieldConfig->getId()->getFieldType();
 
                     if (in_array($fieldType, array('oneToMany', 'manyToOne', 'manyToMany'))) {
                         $relationProperties[$fieldName] = $fieldConfig->getId()->getFieldName();
+                        if ($fieldType != 'oneToMany') {
+                            $defaultName = self::DEFAULT_PREFIX . $fieldConfig->getId()->getFieldName();
+                            
+                            $defaultProperties[$defaultName] = $defaultName;
+                        }
                     } else {
                         $properties[$fieldName] = $fieldConfig->getId()->getFieldName();
 
@@ -184,6 +191,7 @@ class ExtendConfigDumper
             'type'     => $type,
             'property' => $properties,
             'relation' => $relationProperties,
+            'default'  => $defaultProperties,
             'doctrine' => $doctrine,
         );
 
@@ -201,7 +209,7 @@ class ExtendConfigDumper
     protected function checkRelation($targetClass, $fieldId)
     {
         $extendProvider = $this->em->getExtendManager()->getConfigProvider();
-        $targetConfig = $extendProvider->getConfig($targetClass);
+        $targetConfig   = $extendProvider->getConfig($targetClass);
 
         $relations = $targetConfig->get('relation') ? : array();
         $schema    = $targetConfig->get('schema') ? : array();
@@ -209,10 +217,10 @@ class ExtendConfigDumper
         foreach ($relations as &$relation) {
             if ($relation['target_field_id'] == $fieldId) {
                 $relation['assign'] = true;
-                $relationFieldId = $relation['field_id'];
+                $relationFieldId    = $relation['field_id'];
 
                 if ($relation['owner'] && count($schema)) {
-                    $schema['relation'][ self::PREFIX . $relationFieldId->getFieldName()] =
+                    $schema['relation'][self::FIELD_PREFIX . $relationFieldId->getFieldName()] =
                         $relationFieldId->getFieldName();
                 }
             }

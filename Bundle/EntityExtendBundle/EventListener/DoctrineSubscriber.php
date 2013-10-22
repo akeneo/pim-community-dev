@@ -48,7 +48,7 @@ class DoctrineSubscriber implements EventSubscriber
 
                         if ($enabled && !$fieldConfig->is('state', ExtendManager::STATE_NEW)) {
                             $cmBuilder->addIndex(
-                                array(ExtendConfigDumper::PREFIX . $columnName),
+                                array(ExtendConfigDumper::FIELD_PREFIX . $columnName),
                                 'oro_idx_' . $columnName
                             );
                         }
@@ -63,10 +63,10 @@ class DoctrineSubscriber implements EventSubscriber
                             $targetFieldId = $relation['target_field_id'];
 
                             $targetFieldName = $targetFieldId
-                                ? ExtendConfigDumper::PREFIX . $targetFieldId->getFieldName()
+                                ? ExtendConfigDumper::FIELD_PREFIX . $targetFieldId->getFieldName()
                                 : null;
 
-                            $fieldName = ExtendConfigDumper::PREFIX . $fieldId->getFieldName();
+                            $fieldName = ExtendConfigDumper::FIELD_PREFIX . $fieldId->getFieldName();
 
                             switch ($fieldId->getFieldType()) {
                                 case 'manyToOne':

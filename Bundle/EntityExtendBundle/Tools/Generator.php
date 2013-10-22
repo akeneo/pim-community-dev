@@ -164,6 +164,24 @@ class Generator
                     )
                 );
         }
+
+        foreach ($config['default'] as $default => $method) {
+            $class
+                ->setProperty(PhpProperty::create($default)->setVisibility('protected'))
+                ->setMethod(
+                    $this->generateClassMethod(
+                        'get' . ucfirst(Inflector::camelize($method)),
+                        'return $this->' . $default . ';'
+                    )
+                )
+                ->setMethod(
+                    $this->generateClassMethod(
+                        'set' . ucfirst(Inflector::camelize($method)),
+                        '$this->' . $default . ' = $value; return $this;',
+                        array('value')
+                    )
+                );
+        }
     }
 
     /**

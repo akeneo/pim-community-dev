@@ -67,7 +67,7 @@ class EntitySelectHandler implements SearchHandlerInterface
         if ($this->entityName && $this->fieldName) {
             if ($this->isCustomField) {
                 $result[$this->fieldName] = $this->getPropertyValue(
-                    ExtendConfigDumper::PREFIX . $this->fieldName,
+                    ExtendConfigDumper::FIELD_PREFIX . $this->fieldName,
                     $item
                 );
             } else {
@@ -132,7 +132,7 @@ class EntitySelectHandler implements SearchHandlerInterface
         $queryBuilder = $this->entityManager->getRepository($this->entityName)->createQueryBuilder('e');
 
         if ($this->isCustomField) {
-            $targetField = ExtendConfigDumper::PREFIX . $targetField;
+            $targetField = ExtendConfigDumper::FIELD_PREFIX . $targetField;
         }
 
         $queryBuilder->where(
