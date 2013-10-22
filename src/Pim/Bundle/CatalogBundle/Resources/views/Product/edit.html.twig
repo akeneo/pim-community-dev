@@ -85,14 +85,17 @@
                 </li>
 
                 <li>
-                    {{ 'group'|trans|capitalize }}:
+                    {{ 'groups'|trans|capitalize }}:
                     {% for group in form.vars.value.groups %}
-
                         {% if group.type.isVariant %}
                             {% set variantGroupAttributes %}
-                                <ul class="">{% for attribute in group.attributes %}<li>{{ attribute|trim }}</li>{% endfor %}</ul>
+                                {% for attribute in group.attributes %}
+                                    - {{ attribute|trim }}<br />
+                                {% endfor %}
                            {% endset %}
-                           {% set variantGroupTooltip = variantGroupAttributes|trim is empty ? null : 'info.variant group.axis'|trans ~ variantGroupAttributes|trim %}
+                           {% set variantGroupTooltip = variantGroupAttributes|trim is empty
+                               ? null
+                               : 'info.variant group.axis'|trans ~ '<br />' ~ variantGroupAttributes|trim %}
                         {% endif %}
 
                         <span id="group-products-{{ group.id }}"{% if variantGroupTooltip %}
