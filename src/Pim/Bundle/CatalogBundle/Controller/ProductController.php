@@ -352,15 +352,22 @@ class ProductController extends AbstractDoctrineController
         $associationProductGridManager = $this->datagridWorker->getDatagridManager('association_product');
         $associationProductGridManager->setProduct($product);
 
+        $associationGroupGridManager = $this->datagridWorker->getDatagridManager('association_group');
+        $associationGroupGridManager->setProduct($product);
+
         $association = null;
         if (!empty($associations)) {
             $association = reset($associations);
             $associationProductGridManager->setAssociationId($association->getId());
+            $associationGroupGridManager->setAssociationId($association->getId());
         }
 
-        $associationProductGridManager->getRouteGenerator()->setRouteParameters(array('id' => $product->getId()));
+        $routeParameters = array('id' => $product->getId());
+        $associationProductGridManager->getRouteGenerator()->setRouteParameters($routeParameters);
+        $associationGroupGridManager->getRouteGenerator()->setRouteParameters($routeParameters);
 
         $associationProductGridView = $associationProductGridManager->getDatagrid()->createView();
+        $associationGroupGridView = $associationGroupGridManager->getDatagrid()->createView();
 
         return array(
             'form'                   => $form->createView(),
@@ -374,6 +381,7 @@ class ProductController extends AbstractDoctrineController
             'datagrid'               => $datagrid->createView(),
             'associations'           => $associations,
             'associationProductGrid' => $associationProductGridView,
+            'associationGroupGrid'   => $associationGroupGridView,
             'locales'                => $this->localeManager->getUserLocales(),
         );
     }
@@ -505,6 +513,28 @@ class ProductController extends AbstractDoctrineController
         $product = $this->findProductOr404($id);
 
         $datagridManager = $this->datagridWorker->getDatagridManager('association_product');
+        $datagridManager->setProduct($product);
+
+        $datagridView = $datagridManager->getDatagrid()->createView();
+
+        return $this->gridRenderer->renderResultsJsonResponse($datagridView);
+    }
+
+    /**
+     * List group associations for the provided product
+     *
+     * @param Request $request The request object
+     * @param integer $id      Product id
+     *
+     * @Template
+     * @AclAncestor("pim_catalog_product_associations_view")
+     * @return Response
+     */
+    public function listGroupAssociationsAction(Request $request, $id)
+    {
+        $product = $this->findProductOr404($id);
+
+        $datagridManager = $this->datagridWorker->getDatagridManager('association_group');
         $datagridManager->setProduct($product);
 
         $datagridView = $datagridManager->getDatagrid()->createView();

@@ -18,7 +18,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\GridBundle\Filter\FilterInterface;
 
 /**
- * Product association datagrid
+ * Datagrid for associating a product to products
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -114,9 +114,9 @@ class AssociationProductDatagridManager extends FlexibleDatagridManager
     }
 
     /**
-     * It creates an editable checkbox to add/remove association to the edited product
+     * It creates an editable checkbox to add/remove product association to the edited product
      *
-     * @return \Oro\Bundle\GridBundle\Field\FieldDescription
+     * @return FieldDescription
      */
     protected function createProductAssociationField()
     {
@@ -211,7 +211,7 @@ class AssociationProductDatagridManager extends FlexibleDatagridManager
     /**
      * Create family field description
      *
-     * @return \Oro\Bundle\GridBundle\Field\FieldDescription
+     * @return FieldDescription
      */
     protected function createFamilyField()
     {
@@ -244,7 +244,7 @@ class AssociationProductDatagridManager extends FlexibleDatagridManager
      * @param string $code
      * @param string $label
      *
-     * @return \Oro\Bundle\GridBundle\Field\FieldDescription
+     * @return FieldDescription
      */
     protected function createDatetimeField($code, $label)
     {

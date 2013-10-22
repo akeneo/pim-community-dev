@@ -8,6 +8,16 @@
 
 {% placeholder prepare_grid with {'datagrid': associationProductGrid, 'selector': '#association-product-grid', 'parameters': productListenerParameters } %}
 
+{% set groupListenerParameters = {
+    'columnName': 'has_association',
+    'selectors': {
+        'included': '#' ~ form.productAssociations.children|first.appendGroups.vars.id,
+        'excluded': '#' ~ form.productAssociations.children|first.removeGroups.vars.id
+    }
+} %}
+
+{% placeholder prepare_grid with {'datagrid': associationGroupGrid, 'selector': '#association-group-grid', 'parameters': groupListenerParameters } %}
+
 <script type="text/javascript">
     require(
         ['jquery', 'pim/datagrid/parameter-setter', 'oro/mediator'],
@@ -57,5 +67,6 @@
         </div>
     {% endfor %}
     <div id="association-product-grid"></div>
+    <div id="association-group-grid"></div>
     {{ form_widget(form.productAssociations, { 'attr': { 'class': 'hide' }}) }}
 </div>
