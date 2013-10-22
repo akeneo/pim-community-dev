@@ -15,6 +15,7 @@ parameters:
     oro_locale.twig.locale.class: Oro\Bundle\LocaleBundle\Twig\LocaleExtension
     oro_locale.twig.date_time.class: Oro\Bundle\LocaleBundle\Twig\DateTimeExtension
     oro_locale.twig.name.class: Oro\Bundle\LocaleBundle\Twig\NameExtension
+    oro_locale.twig.address.class: Oro\Bundle\LocaleBundle\Twig\AddressExtension
     oro_locale.twig.number.class: Oro\Bundle\LocaleBundle\Twig\NumberExtension
 
 services:
@@ -103,6 +104,14 @@ services:
             - @oro_locale.formatter.name
         tags:
             - { name: twig.extension }
+
+    oro_locale.twig.address:
+        class: %oro_locale.twig.address.class%
+        arguments:
+            - @oro_locale.formatter.address
+        tags:
+            - { name: twig.extension }
+
 
     oro_locale.twig.number:
         class: %oro_locale.twig.number.class%
