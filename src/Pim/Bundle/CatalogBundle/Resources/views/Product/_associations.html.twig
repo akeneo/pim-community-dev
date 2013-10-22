@@ -1,8 +1,8 @@
 {% set listenerParameters = {
     'columnName': 'has_association',
     'selectors': {
-        'included': '#' ~ form.productAssociations.children|first.appendTargets.vars.id,
-        'excluded': '#' ~ form.productAssociations.children|first.removeTargets.vars.id
+        'included': '#' ~ form.productAssociations.children|first.appendProducts.vars.id,
+        'excluded': '#' ~ form.productAssociations.children|first.removeProducts.vars.id
     }
 } %}
 
@@ -23,8 +23,8 @@
                     var $associationFields = $('#{{ form.productAssociations.vars.id }}'),
                         $idField = $associationFields.find('input[type="hidden"][value="' + associationId + '"]');
 
-                    var appendFieldId = '#' + $idField.siblings('[id$="appendTargets"]').attr('id');
-                    var removeFieldId = '#' + $idField.siblings('[id$="removeTargets"]').attr('id');
+                    var appendFieldId = '#' + $idField.siblings('[id$="appendProducts"]').attr('id');
+                    var removeFieldId = '#' + $idField.siblings('[id$="removeProducts"]').attr('id');
                     mediator.trigger('column_form_listener:set_selectors', { included: appendFieldId, excluded: removeFieldId });
                     Setter.setParameter('{{ associationDatagrid.datagrid.name }}', 'associationId', associationId, true);
                 }
@@ -41,7 +41,7 @@
         {% for association in associations %}
             <li class="tab{% if loop.first %} active{% endif %}">
                 <a id="association-link-{{ association.id }}" href="#association-tab-{{ association.id }}" data-toggle="tab">
-                    {% set associationCount = product.getProductAssociationForAssociation(association).targets|length %}
+                    {% set associationCount = product.getProductAssociationForAssociation(association).products|length %}
                     <i class="icon-ok {{ associationCount > 0 ? 'green' : 'gray' }}"></i>
                     {{ association.label }} ({{ associationCount }})
                 </a>

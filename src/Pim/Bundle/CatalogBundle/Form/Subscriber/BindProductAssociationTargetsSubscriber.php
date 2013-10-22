@@ -8,7 +8,7 @@ use Symfony\Component\Form\FormEvent;
 use Pim\Bundle\CatalogBundle\Entity\ProductAssociation;
 
 /**
- * Subscriber that updates targets inside the ProductAssociation
+ * Subscriber that updates target entities inside the ProductAssociation
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -27,7 +27,7 @@ class BindProductAssociationTargetsSubscriber implements EventSubscriberInterfac
     }
 
     /**
-     * Add/remove targets to/from the ProductAssociation
+     * Add/remove target entities to/from the ProductAssociation
      *
      * @param FormEvent $event
      *
@@ -42,8 +42,8 @@ class BindProductAssociationTargetsSubscriber implements EventSubscriberInterfac
             $child = $form->get($i);
 
             $association   = $child->get('association')->getData();
-            $appendTargets = $child->get('appendTargets')->getData();
-            $removeTargets = $child->get('removeTargets')->getData();
+            $appendProducts = $child->get('appendProducts')->getData();
+            $removeProducts = $child->get('removeProducts')->getData();
 
             $productAssociation = $productAssociations->filter(
                 function ($productAssociation) use ($association) {
@@ -51,27 +51,27 @@ class BindProductAssociationTargetsSubscriber implements EventSubscriberInterfac
                 }
             )->first();
 
-            $this->bindTargets($productAssociation, $appendTargets, $removeTargets);
+            $this->bindTargets($productAssociation, $appendProducts, $removeProducts);
         }
     }
 
     /**
-     * Bind targets
+     * Bind target entities
      *
      * @param ProductAssociation $productAssociation
-     * @param array              $appendTargets
-     * @param array              $removeTargets
+     * @param array              $appendProducts
+     * @param array              $removeProducts
      *
      * @return null
      */
-    private function bindTargets(ProductAssociation $productAssociation, array $appendTargets, array $removeTargets)
+    private function bindTargets(ProductAssociation $productAssociation, array $appendProducts, array $removeProducts)
     {
-        foreach ($appendTargets as $target) {
-            $productAssociation->addTarget($target);
+        foreach ($appendProducts as $target) {
+            $productAssociation->addProduct($target);
         }
 
-        foreach ($removeTargets as $target) {
-            $productAssociation->removeTarget($target);
+        foreach ($removeProducts as $target) {
+            $productAssociation->removeProduct($target);
         }
     }
 }

@@ -284,7 +284,7 @@ class ProductAssociationDatagridManager extends FlexibleDatagridManager
                 'PimCatalogBundle:ProductAssociation',
                 'pa',
                 'WITH',
-                sprintf('pa.association = :association AND pa.owner = :product AND %s MEMBER OF pa.targets', $rootAlias)
+                sprintf('pa.association = :association AND pa.owner = :product AND %s MEMBER OF pa.products', $rootAlias)
             );
 
         $this->applyProductExclusionExpression($proxyQuery);
