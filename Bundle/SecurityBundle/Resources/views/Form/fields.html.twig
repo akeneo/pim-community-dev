@@ -1,3 +1,14 @@
+{% block oro_acl_permission_selector_widget %}
+    <div class="permission-value">
+        <a href="#" data-div-id="{{ id }}" class="no-hash">
+            {% for group_label, choice in choices %}
+                {% if choice is selectedchoice(value) %}<strong>{{ choice.label|trans({}, translation_domain) }}</strong>{% endif %}
+            {% endfor %}
+        </a>
+        <div class="permission-choice" style="display: none">{{ block('choice_widget') }}</div>
+    </div>
+{% endblock %}
+
 {% block oro_acl_label_widget %}
     <strong>{{ value|trans }}</strong>
 {% endblock %}

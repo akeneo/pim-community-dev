@@ -115,4 +115,13 @@
         }
     %}
     {{ parent() }}
+    <script>
+        $(function() {
+            $(document).on('click', '.permission-value a', function() {
+                $(this).parent().find('.permission-choice').show();
+                $(this).hide();
+                return false;
+            });
+        });
+    </script>
 {% endblock content_data %}
