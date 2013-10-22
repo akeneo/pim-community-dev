@@ -9,6 +9,8 @@ use Doctrine\ORM\EntityManager;
  *
  * This specialized csv reader exists because, as the product has bulk inserted,
  * we cannot rely on the UniqueValueValidator which rely on data present inside the database.
+ * Its second purpose is to replace relative media path to absolute path, in order for later
+ * process to know where to find the files.
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -16,10 +18,11 @@ use Doctrine\ORM\EntityManager;
  */
 class ProductCsvReader extends CsvReader
 {
-    /**
-     * @var array Unique attribute value data grouped by attribute codes
-     */
+    /** @var array Unique attribute value data grouped by attribute codes */
     protected $uniqueValues = array();
+
+    /** @var array Media attribute codes */
+    protected $mediaAttributes = array();
 
     /**
      * Constructor
@@ -32,6 +35,7 @@ class ProductCsvReader extends CsvReader
         foreach ($repository->findUniqueAttributeCodes() as $code) {
             $this->uniqueValues[$code] = array();
         }
+        $this->mediaAttributes = $repository->findMediaAttributeCodes();
     }
 
     /**
@@ -45,6 +49,15 @@ class ProductCsvReader extends CsvReader
             return $data;
         }
 
+        if (false === $this->assertValueUniqueness($data)) {
+            return false;
+        }
+
+        return $this->transformMediaPathToAbsolute($data);
+    }
+
+    protected function assertValueUniqueness(array $data)
+    {
         foreach ($data as $code => $value) {
             if (array_key_exists($code, $this->uniqueValues)) {
                 if (in_array($value, $this->uniqueValues[$code])) {
@@ -63,6 +76,18 @@ class ProductCsvReader extends CsvReader
                     return false;
                 }
                 $this->uniqueValues[$code][] = $value;
+            }
+        }
+    }
+
+    protected function transformMediaPathToAbsolute(array $data)
+    {
+        foreach ($data as $code => $value) {
+            $pos = strpos($code, '-');
+            $attributeCode = false !== $pos ? substr($code, 0, $pos) : $code;
+
+            if (in_array($attributeCode, $this->mediaAttributes)) {
+                $data[$code] = dirname($this->filePath) . '/' . $value;
             }
         }
 
