@@ -5,18 +5,18 @@ namespace Pim\Bundle\ImportExportBundle\Converter;
 use Doctrine\ORM\EntityManager;
 
 /**
- * Convert a basic representation of a variant group into a complex one bindable on a product form
+ * Convert a basic representation of a groups into a complex one bindable on a product form
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductVariantGroupConverter
+class ProductGroupsConverter
 {
     /**
      * @var string
      */
-    const VARIANT_GROUP_KEY = '[variant_group]';
+    const GROUPS_KEY = '[groups]';
 
     /**
      * @var EntityManager
@@ -40,45 +40,50 @@ class ProductVariantGroupConverter
      */
     public function convert($data)
     {
-        if (null !== $id = $this->getVariantGroupId($data)) {
-            return array('variantGroup' => $id);
+        if (null !== $ids = $this->getGoupIds($data)) {
+            return array('groups' => $ids);
         }
 
         return array();
     }
 
     /**
-     * Get a variant group id
+     * Get group ids
      *
      * @param array $data The submitted data
      *
-     * @return int|null null if the self::VARIANT_GROUP_KEY wasn't sent in the data or the variant group
-     * code doesn't exist
+     * @return int|null null if the self::GROUPS_KEY wasn't sent in the data or the group
+     * codes dont exist
      */
-    private function getVariantGroupId(array $data)
+    private function getGroupIds(array $data)
     {
-        if (!array_key_exists(self::VARIANT_GROUP_KEY, $data)) {
-            // TODO Warn that the variant group could not be determined
+        if (!array_key_exists(self::GROUPS_KEY, $data)) {
+            // TODO Warn that the groups could not be determined
             return null;
         }
-        if ($group = $this->getVariantGroup($data[self::VARIANT_GROUP_KEY])) {
-            return $group->getId();
+
+        $ids = array();
+        foreach (explode(',', $data[self::GROUPS_KEY]) as $code) {
+            if ($group = $this->getGroup($code)) {
+                $ids[] = $group->getId();
+            }
+            // TODO Warn that a group does not exist
         }
 
-        // TODO Warn that the variant group code does not exist
+        return $ids;
     }
 
     /**
-     * Get a variant group by code
+     * Get a group by code
      *
      * @param string $code
      *
-     * @return VariantGroup|null
+     * @return Group|null
      */
-    private function getVariantGroup($code)
+    private function getGroup($code)
     {
         return $this->entityManager
-            ->getRepository('PimCatalogBundle:VariantGroup')
+            ->getRepository('PimCatalogBundle:Group')
             ->findOneBy(array('code' => $code));
     }
 }
