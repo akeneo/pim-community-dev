@@ -49,8 +49,6 @@ parameters:
 
     oro_security.encoder.mcrypt.class:                         Oro\Bundle\SecurityBundle\Encoder\Mcrypt
 
-    oro_security.oid_ancestor.cache.class:                     Oro\Bundle\SecurityBundle\Acl\Cache\OidAncestorsCache
-
 services:
     oro_security.security_facade:
         class: %oro_security.security_facade.class%
@@ -337,8 +335,3 @@ services:
     oro_security.encoder.mcrypt:
         class: %oro_security.encoder.mcrypt.class%
         arguments: [ %kernel.secret% ]
-
-    oro_security.oid_ancestor.cache:
-        class: %oro_security.oid_ancestor.cache.class%
-        arguments:
-            - @security.acl.cache.doctrine.cache_impl
