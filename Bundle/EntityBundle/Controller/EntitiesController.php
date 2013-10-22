@@ -40,7 +40,7 @@ class EntitiesController extends Controller
      * )
      * @Template()
      */
-    public function indexAction(Request $request, $id)
+    public function indexAction($id)
     {
         $extendEntityName = str_replace('_', '\\', $id);
         $this->checkAccess('VIEW', $extendEntityName);
@@ -161,7 +161,8 @@ class EntitiesController extends Controller
             'custom_entity_type',
             $record,
             array(
-                'class_name' => $extendEntityName,
+                'class_name'   => $extendEntityName,
+                'block_config' => array(),
             )
         );
 
@@ -216,7 +217,7 @@ class EntitiesController extends Controller
      *      defaults={"entity_id"=0, "id"=0}
      * )
      */
-    public function deleteAction(Request $request, $entity_id, $id)
+    public function deleteAction($entity_id, $id)
     {
         $extendEntityName = str_replace('_', '\\', $entity_id);
         $this->checkAccess('DELETE', $extendEntityName);

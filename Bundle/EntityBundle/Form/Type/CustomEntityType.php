@@ -2,11 +2,13 @@
 
 namespace Oro\Bundle\EntityBundle\Form\Type;
 
-use Doctrine\Common\Util\Inflector;
-
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\PropertyAccessor;
+use Symfony\Component\Routing\Router;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
@@ -36,17 +38,19 @@ class CustomEntityType extends AbstractType
         'datetime'   => 'oro_datetime',
         'text'       => 'textarea',
         'float'      => 'number',
-        'oneToMany'  => 'integer',
         'manyToOne'  => 'oro_entity_select',
-        'manyToMany' => 'integer',
+        'oneToMany'  => 'oro_multiple_entity',
+        'manyToMany' => 'oro_multiple_entity',
     );
 
     /**
      * @param ConfigManager $configManager
+     * @param Router $router
      */
-    public function __construct(ConfigManager $configManager)
+    public function __construct(ConfigManager $configManager, Router $router)
     {
         $this->configManager = $configManager;
+        $this->router        = $router;
     }
 
     /**
@@ -93,20 +97,64 @@ class CustomEntityType extends AbstractType
                     'block'    => 'general',
                 );
 
-                if ($fieldConfigId->getFieldType() == 'boolean') {
-                    $options['empty_value'] = false;
-                    $options['choices']     = array('No', 'Yes');
-                }
+                switch ($fieldConfigId->getFieldType()) {
+                    case 'boolean':
+                        $options['empty_value'] = false;
+                        $options['choices']     = array('No', 'Yes');
+                        break;
+                    case 'manyToOne':
+                        $options['entity_class'] = $extendConfig->get('target_entity');
+                        $options['configs']      = array(
+                            'placeholder'   => 'oro.form.choose_value',
+                            'extra_config'  => 'relation',
+                            'target_entity' => str_replace('\\', '_', $extendConfig->get('target_entity')),
+                            'target_field'  => $extendConfig->get('target_field'),
+                            'properties'    => array($extendConfig->get('target_field')),
+                        );
+                        break;
+                    case 'oneToMany':
+                    case 'manyToMany':
+                        $classArray          = explode('\\', $extendConfig->get('target_entity'));
+                        $blockName           = array_pop($classArray);
+                        $selectorWindowTitle = 'Select ';
 
-                if (in_array($fieldConfigId->getFieldType(), array('oneToMany', 'manyToOne', 'manyToMany'))) {
-                    $options['entity_class'] = $extendConfig->get('target_entity');
-                    $options['configs']      = array(
-                        'placeholder'   => 'oro.form.choose_value',
-                        'extra_config'  => 'relation',
-                        'target_entity' => str_replace('\\', '_', $extendConfig->get('target_entity')),
-                        'target_field'  => $extendConfig->get('target_field'),
-                        'properties'    => array($extendConfig->get('target_field')),
-                    );
+                        $builder->add(
+                            'default_' . $fieldConfigId->getFieldName(),
+                            'oro_entity_identifier',
+                            array(
+                                'class'    => $extendConfig->get('target_entity'),
+                                'multiple' => false
+                            )
+                        );
+
+                        $options = array(
+                            'label'                 => false,
+                            'required'              => false,
+                            'block'                 => $blockName,
+                            'block_config'          => array(
+                                $blockName => array(
+                                    'title'   => null,
+                                    'subblocks' => array(
+                                        array(
+                                            'useSpan' => false,
+                                        )
+                                    )
+                                )
+                            ),
+                            'class'                 => $extendConfig->get('target_entity'),
+                            'grid_url'              => $this->router->generate(
+                                'oro_entity_index',
+                                array(
+                                    'id' => str_replace('\\', '_', $extendConfig->get('target_entity'))
+                                )
+                            ),
+                            'selector_window_title' => $selectorWindowTitle,
+                            'default_element' => 'default_' . $fieldConfigId->getFieldName(),
+                            'initial_elements' => null,
+                            'mapped' => false,
+                        );
+
+                        break;
                 }
 
                 $builder->add(
@@ -117,6 +165,22 @@ class CustomEntityType extends AbstractType
             }
         }
     }
+
+    public function finishView(FormView $view, FormInterface $form, array $options)
+    {
+        $blockConfig = isset($view->vars['block_config']) ? $view->vars['block_config'] : array();
+
+        foreach ($view->children as $child) {
+            if (isset($child->vars['block_config'])) {
+                $blockConfig = array_merge($blockConfig, $child->vars['block_config']);
+
+                unset($child->vars['block_config']);
+            }
+        }
+
+        $view->vars['block_config'] = $blockConfig;
+    }
+
 
     /**
      * {@inheritdoc}
