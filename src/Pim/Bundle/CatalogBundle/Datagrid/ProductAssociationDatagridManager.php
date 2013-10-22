@@ -147,7 +147,20 @@ class ProductAssociationDatagridManager extends FlexibleDatagridManager
     {
         $result = parent::getFlexibleFieldOptions($attribute, $options);
 
-        $result['show_filter'] = $attribute->getAttributeType() === 'pim_catalog_identifier';
+        $result['filterable'] = $attribute->isUseableAsGridFilter();
+        $result['show_filter'] = $attribute->isUseableAsGridFilter()
+            && $attribute->getAttributeType() === 'pim_catalog_identifier';
+        $result['show_column'] = $attribute->isUseableAsGridColumn();
+
+        $backendType = $attribute->getBackendType();
+        if ($backendType !== AbstractAttributeType::BACKEND_TYPE_OPTION
+            && $result['type'] === FieldDescriptionInterface::TYPE_OPTIONS) {
+            $result['sortable'] = false;
+        }
+
+        if ($result['type'] === FieldDescriptionInterface::TYPE_DECIMAL and !$attribute->isDecimalsAllowed()) {
+            $result['type'] = FieldDescriptionInterface::TYPE_INTEGER;
+        }
 
         return $result;
     }
