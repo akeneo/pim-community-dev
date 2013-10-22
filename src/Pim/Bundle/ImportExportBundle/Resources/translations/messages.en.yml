@@ -133,6 +133,18 @@ oro_batch:
             label: With header
             help: Whether or not to print the column name
 
+    product_csv_serializer_processor:
+        title: Settings
+        delimiter:
+            label: Delimiter
+            help: One character used to set the field delimiter
+        enclosure:
+            label: Enclosure
+            help: One character used to set the field enclosure
+        withHeader:
+            label: With header
+            help: Whether or not to print the column name
+
     homogeneous_csv_serializer_processor:
         title: Settings
         delimiter:
@@ -146,6 +158,15 @@ oro_batch:
             help: Whether or not to print the column name
 
     file_writer:
+        title: Output
+        directoryName:
+            label: Directory path
+            help: Where to write the generated file on the file system
+        fileName:
+            label: File name
+            help: The name of the generated file.
+
+    product_file_writer:
         title: Output
         directoryName:
             label: Directory path
