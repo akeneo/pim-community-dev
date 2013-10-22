@@ -18,18 +18,23 @@ datagrid:
 
         columns:
             id:
+                label: ID
                 type: field
                 frontend_type: integer
             username:
+                label: Username
                 type: field
                 frontend_type: string
             email:
+                label: Email
                 type: field
                 frontend_type: string
             firstName:
+                label: First name
                 type: field
                 frontend_type: string
             lastName:
+                label: Last name
                 type: field
                 frontend_type: string
             created:
@@ -202,6 +207,105 @@ datagrid:
                     and:
                         - o.id = :origin_id
 
+    user-relation-grid:
+        source:
+            type: orm
+            query:
+                select:
+                    - u.id
+                    - u.username
+                    - u.email
+                    - u.firstName
+                    - u.lastName
+                from:
+                    - { table: OroUserBundle:User, alias: u }
+
+        columns:
+            id:
+                label: ID
+                type: field
+                frontend_type: integer
+            username:
+                label: Username
+                type: field
+                frontend_type: string
+            email:
+                label: Email
+                type: field
+                frontend_type: string
+            firstName:
+                label: First name
+                type: field
+                frontend_type: string
+            lastName:
+                label: Last name
+                type: field
+                frontend_type: string
+
+        properties: ~
+
+        sorters:
+            columns:
+                username:
+                    data_name: u.username
+                email:
+                    data_name: u.email
+                firstname:
+                    data_name: u.firstName
+                lastname:
+                    data_name: u.lastName
+            default:
+                id: %oro_grid.extension.orm_sorter.class%::DIRECTION_ASC
+
+        filters:
+            columns:
+                username:
+                    type: string
+                    data_name: u.username
+                email:
+                    type: string
+                    data_name: u.email
+                firstname:
+                    type: string
+                    data_name: u.firstName
+                lastname:
+                    type: string
+                    data_name: u.lastName
+
+    role-users-grid:
+        extend: user-relation-grid
+        source:
+            acl_resource: oro_user_role_update
+            query:
+                select:
+                    - |
+                      (IF (:roleId IS NOT NULL) THEN (
+                        CASE THEN (:roleId MEMBER OF u.roles OR u.id IN (:data_in)) AND u.id NOT IN (:data_not_in)
+                        THEN true ELSE false END)
+                      ELSE (
+                        CASE THEN u.id IN (:data_in) AND u.id NOT IN (:data_not_in)
+                        THEN true ELSE false END
+                      )) as hasCurrentRole
+        columns:
+            hasCurrentRole:
+                label: Has role
+                type: field
+                frontend_type: boolean
+        filters:
+            columns:
+                hasCurrentRole:
+                    type: string
+                    data_name: hasCurrentRole
+        sorters:
+            columns:
+                hasCurrentRole:
+                    data_name: hasCurrentRole
+            default:
+                has_role: %oro_grid.extension.orm_sorter.class%::DIRECTION_DESC
+                lastName: %oro_grid.extension.orm_sorter.class%::DIRECTION_ASC
+
+
+    # TODO: Move this to OroCRMContactBundle
     contacts-email-grid:
         extend: email-grid
         source:

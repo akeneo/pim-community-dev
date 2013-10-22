@@ -134,7 +134,6 @@ class RoleController extends Controller
         return array(
             'form'     => $aclRoleHandler->createView(),
             'privilegesConfig' => $this->container->getParameter('oro_user.privileges'),
-            'datagrid' => $this->getRoleUserDatagridManager($entity)->getDatagrid()->createView(),
         );
     }
 }
