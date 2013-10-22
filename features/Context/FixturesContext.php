@@ -982,8 +982,29 @@ class FixturesContext extends RawMinkContext
     public function theFollowingFileToImport(PyStringNode $string)
     {
         $this->placeholderValues['file to import'] = $filename =
-            sprintf('/tmp/behat-import-%s.csv', substr(md5(rand()), 0, 7));
+            sprintf('/tmp/pim-import/behat-import-%s.csv', substr(md5(rand()), 0, 7));
+        @mkdir(dirname($filename), 0777, true);
+
         file_put_contents($filename, (string) $string);
+    }
+
+    /**
+     * @Given /^import directory of "([^"]*)" contain the following media:$/
+     */
+    public function importDirectoryOfContainTheFollowingMedia($code, TableNode $table)
+    {
+        $path = $this
+            ->getJobInstance($code)
+            ->getJob()
+            ->getSteps()[0]
+            ->getReader()
+            ->getFilePath();
+
+        $path = dirname($path);
+
+        foreach ($table->getRows() as $data) {
+            copy(__DIR__ . '/fixtures/'. $data[0], rtrim($path, '/') . '/' .$data[0]);
+        }
     }
 
     /**
