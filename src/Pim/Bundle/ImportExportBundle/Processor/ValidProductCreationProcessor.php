@@ -121,6 +121,26 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
     }
 
     /**
+     * Set the groups column
+     *
+     * @param string $groupsColumn
+     */
+    public function setGroupsColumn($groupsColumn)
+    {
+        $this->groupsColumn = $groupsColumn;
+    }
+
+    /**
+     * Get the categories column
+     *
+     * @return string
+     */
+    public function getGroupsColumn()
+    {
+        return $this->groupsColumn;
+    }
+
+    /**
      * Set the family column
      *
      * @param string $familyColumn
