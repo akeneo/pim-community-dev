@@ -51,7 +51,7 @@ interface AddressInterface
      *
      * @return string
      */
-    public function getCountry();
+    public function getCountryName();
 
     /**
      * Get country ISO3 code.

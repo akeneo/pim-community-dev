@@ -9,6 +9,7 @@ use Symfony\Component\Validator\ExecutionContext;
 use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
 
 use Oro\Bundle\LocaleBundle\Model\FullNameInterface;
+use Oro\Bundle\LocaleBundle\Model\AddressInterface;
 
 /**
  * Address
@@ -17,8 +18,9 @@ use Oro\Bundle\LocaleBundle\Model\FullNameInterface;
  * @ORM\HasLifecycleCallbacks
  *
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ * @SuppressWarnings(PHPMD.ExcessivePublicCount)
  */
-abstract class AbstractAddress implements EmptyItem, FullNameInterface
+abstract class AbstractAddress implements EmptyItem, FullNameInterface, AddressInterface
 {
     /**
      * @var integer
@@ -71,7 +73,7 @@ abstract class AbstractAddress implements EmptyItem, FullNameInterface
     protected $postalCode;
 
     /**
-     * @var string
+     * @var Country
      *
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\AddressBundle\Entity\Country", cascade={"persist"})
      * @ORM\JoinColumn(name="country_code", referencedColumnName="iso2_code")
@@ -88,6 +90,15 @@ abstract class AbstractAddress implements EmptyItem, FullNameInterface
      * @Soap\ComplexType("string", nillable=true)
      */
     protected $state;
+
+    /**
+     * @var string
+     *
+     * @TODO Refactor in CRM-185
+     * @ORM\Column(name="organization", type="string", length=255, nullable=true)
+     * @Soap\ComplexType("string", nillable=true)
+     */
+    protected $organization;
 
     /**
      * @var string
@@ -365,6 +376,26 @@ abstract class AbstractAddress implements EmptyItem, FullNameInterface
     }
 
     /**
+     * Get name of region
+     *
+     * @return string
+     */
+    public function getRegionName()
+    {
+        return $this->getRegion() ? $this->getRegion()->getName() : $this->getRegionText();
+    }
+
+    /**
+     * Get code of region
+     *
+     * @return string
+     */
+    public function getRegionCode()
+    {
+        return $this->getRegion() ? $this->getRegion()->getCode() : '';
+    }
+
+    /**
      * Get state
      *
      * @TODO Refactor in CRM-185
@@ -434,6 +465,59 @@ abstract class AbstractAddress implements EmptyItem, FullNameInterface
     public function getCountry()
     {
         return $this->country;
+    }
+
+    /**
+     * Get name of country
+     *
+     * @return string
+     */
+    public function getCountryName()
+    {
+        return $this->getCountry() ? $this->getCountry()->getName() : '';
+    }
+
+    /**
+     * Get country ISO3 code
+     *
+     * @return string
+     */
+    public function getCountryIso3()
+    {
+        return $this->getCountry() ? $this->getCountry()->getIso3Code() : '';
+    }
+
+    /**
+     * Get country ISO2 code
+     *
+     * @return string
+     */
+    public function getCountryIso2()
+    {
+        return $this->getCountry() ? $this->getCountry()->getIso2Code() : '';
+    }
+
+    /**
+     * Sets organization
+     *
+     * @param string $organization
+     * @return AbstractAddress
+     */
+    public function setOrganization($organization)
+    {
+        $this->organization = $organization;
+
+        return $this;
+    }
+
+    /**
+     * Get organization
+     *
+     * @return string
+     */
+    public function getOrganization()
+    {
+        return $this->organization;
     }
 
     /**

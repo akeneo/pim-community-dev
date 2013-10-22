@@ -48,7 +48,7 @@ class AddressFormatter
     public function format(AddressInterface $address, $country = null, $newLineSeparator = "\n")
     {
         if (!$country) {
-            $country = $address->getCountry();
+            $country = $address->getCountryIso2();
         }
         $format = $this->localeSettings->getAddressFormat($country);
         $countryLocale = $this->localeSettings->getLocaleByCountry($country);
