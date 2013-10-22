@@ -1,8 +1,8 @@
 @javascript
-Feature: Variant group creation
-  In order to create a new variant group
+Feature: Product group creation
+  In order to manage relations between products
   As a user
-  I need to be able to manually create a variant group
+  I need to be able to manually create a group
 
   Background:
     Given the following attributes:
@@ -17,23 +17,30 @@ Feature: Variant group creation
     And I create a new product group
     Then I should see the Code and Axis fields
 
-  @skip
   Scenario: Successfully create a variant
     Given I am on the product groups page
     When I create a new product group
     And I fill in the following information:
       | Code | MUG     |
-      | Axis | Color   |
+    And I select the axis "Color"
     And I press the "Save" button
     Then I am on the product groups page
     And I should see group MUG
 
-  @skip
-  Scenario: Fail to create a variant missing the code
+  Scenario: Successfully create a cross sell
     Given I am on the product groups page
     When I create a new product group
     And I fill in the following information:
-      | Axis | Size    |
+      | Code | Cross  |
+      | Type | X_SELL |
+    And I press the "Save" button
+    Then I am on the product groups page
+    And I should see group Cross
+
+  Scenario: Fail to create a variant missing the code
+    Given I am on the product groups page
+    When I create a new product group
+    And I select the axis "Size"
     And I press the "Save" button
     Then I should see validation error "This value should not be blank."
 
