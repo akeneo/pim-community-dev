@@ -36,19 +36,19 @@ interface EmailOwnerInterface
      * @param  string $format
      * @return string
      */
-    public function getFullname($format = '');
+    public function getFullName($format = '');
 
     /**
      * Get first name
      *
      * @return string
      */
-    public function getFirstname();
+    public function getFirstName();
 
     /**
      * Get last name
      *
      * @return string
      */
-    public function getLastname();
+    public function getLastName();
 }

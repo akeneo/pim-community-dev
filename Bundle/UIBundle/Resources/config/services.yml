@@ -65,10 +65,10 @@ services:
             - @service_container
         tags:
             - { name: kernel.event_listener, event: kernel.view, method: onKernelView }
-            
+
     oro_ui.format_converter.date_time.jquery_ui:
         class: %oro_ui.format_converter.date_time.jquery_ui.class%
         arguments:
-            - @oro_locale.settings
+            - @oro_locale.formatter.date_time
         tags:
             - { name: oro_locale.format_converter.date_time, alias: jquery_ui }

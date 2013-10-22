@@ -63,13 +63,13 @@ class EmailNotificationTest extends \PHPUnit_Framework_TestCase
         $this->assertEmpty($this->entity->getRecipientUsersList());
 
         $userMock1 = $this->getMock('Oro\Bundle\UserBundle\Entity\User');
-        $userMock1->expects($this->once())->method('getFullname')
+        $userMock1->expects($this->once())->method('getFullName')
             ->will($this->returnValue('Test Name'));
         $userMock1->expects($this->once())->method('getEmail')
             ->will($this->returnValue('test@email1.com'));
 
         $userMock2 = $this->getMock('Oro\Bundle\UserBundle\Entity\User');
-        $userMock2->expects($this->once())->method('getFullname')
+        $userMock2->expects($this->once())->method('getFullName')
             ->will($this->returnValue('Test2 Name2'));
         $userMock2->expects($this->once())->method('getEmail')
             ->will($this->returnValue('test@email2.com'));

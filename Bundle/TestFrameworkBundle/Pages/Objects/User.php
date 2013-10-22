@@ -104,26 +104,26 @@ class User extends AbstractEntity implements Entity
         return $this->second_password->value();
     }
 
-    public function setFirstname($name)
+    public function setFirstName($name)
     {
         $this->first_name->clear();
         $this->first_name->value($name);
         return $this;
     }
 
-    public function getFirstname()
+    public function getFirstName()
     {
         return $this->first_name->value();
     }
 
-    public function setLastname($name)
+    public function setLastName($name)
     {
         $this->last_name->clear();
         $this->last_name->value($name);
         return $this;
     }
 
-    public function getLastname()
+    public function getLastName()
     {
         return $this->last_name->value();
     }

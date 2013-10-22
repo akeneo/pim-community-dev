@@ -27,6 +27,7 @@ services:
             - [addAddressFormats, [%oro_locale.format.address%]]
             - [addLocaleData, [%oro_locale.locale_data%]]
 
+    # Form types
     oro_locale.form.type.name_format.type:
         class: %oro_locale.form.type.name_format.type.class%
         arguments:
@@ -34,20 +35,21 @@ services:
         tags:
             - { name: form.type, alias: "oro_name_format" }
 
+    # Converters
     oro_locale.format_converter.date_time.registry:
         class: %oro_locale.format_converter.date_time.registry.class%
 
     oro_locale.format_converter.date_time.intl:
         class: %oro_locale.format_converter.date_time.intl.class%
         arguments:
-            - @oro_locale.settings
+            - @oro_locale.formatter.date_time
         tags:
             - { name: oro_locale.format_converter.date_time, alias: intl }
 
     oro_locale.format_converter.date_time.moment:
         class: %oro_locale.format_converter.date_time.moment.class%
         arguments:
-            - @oro_locale.settings
+            - @oro_locale.formatter.date_time
         tags:
             - { name: oro_locale.format_converter.date_time, alias: moment }
 

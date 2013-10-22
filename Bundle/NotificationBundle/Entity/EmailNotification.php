@@ -72,7 +72,7 @@ class EmailNotification
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -88,14 +88,14 @@ class EmailNotification
     public function setEntityName($entityName)
     {
         $this->entityName = $entityName;
-    
+
         return $this;
     }
 
     /**
      * Get entityName
      *
-     * @return string 
+     * @return string
      */
     public function getEntityName()
     {
@@ -111,7 +111,7 @@ class EmailNotification
     public function setEvent(Event $event)
     {
         $this->event = $event;
-    
+
         return $this;
     }
 
@@ -134,7 +134,7 @@ class EmailNotification
     public function setTemplate(EmailTemplate $template)
     {
         $this->template = $template;
-    
+
         return $this;
     }
 
@@ -157,7 +157,7 @@ class EmailNotification
     public function setRecipientList(RecipientList $recipientList)
     {
         $this->recipientList = $recipientList;
-    
+
         return $this;
     }
 
@@ -207,7 +207,7 @@ class EmailNotification
             ', ',
             $this->getRecipientList()->getUsers()->map(
                 function (User $user) {
-                    return sprintf('%s <%s>', $user->getFullname(), $user->getEmail());
+                    return sprintf('%s <%s>', $user->getFullName(), $user->getEmail());
                 }
             )->toArray()
         );
