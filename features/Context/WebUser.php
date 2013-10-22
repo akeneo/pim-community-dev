@@ -1462,7 +1462,7 @@ class WebUser extends RawMinkContext
     public function anEmailToShouldHaveBeenSent($email)
     {
         $recorder = $this->getMailRecorder();
-        if (0 === $recorder->getMailsSentTo($email)) {
+        if (0 === count($recorder->getMailsSentTo($email))) {
             throw $this->createExpectationException(
                 sprintf(
                     'No emails were sent to %s.',
