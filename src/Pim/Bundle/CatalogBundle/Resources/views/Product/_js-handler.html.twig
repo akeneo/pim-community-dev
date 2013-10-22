@@ -67,7 +67,13 @@
                         $('#{{ form.family.vars.id }}')
                             .attr('data-placeholder', '{{ "Choose a family"|trans }}')
                             .select2({ allowClear: true });
-                    })
+                    });
+
+                    {% for group in form.vars.value.groups %}
+                        $('#group-products-{{ group.id }}').on('click', function() {
+                            Dialog.alert('message', 'title');
+                        });
+                    {% endfor %}
 
                     $('#{{ form.vars.id }}').on('click', 'button[type="submit"]', function() {
                         $('#{{ form.vars.id }}').append($('<div class="hide"/>').html(message));

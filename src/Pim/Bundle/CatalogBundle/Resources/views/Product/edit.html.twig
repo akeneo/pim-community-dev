@@ -95,7 +95,7 @@
                            {% set variantGroupTooltip = variantGroupAttributes|trim is empty ? null : 'info.variant group.axis'|trans ~ variantGroupAttributes|trim %}
                         {% endif %}
 
-                        <span{% if variantGroupTooltip %}
+                        <span id="group-products-{{ group.id }}"{% if variantGroupTooltip %}
                             data-toggle="tooltip" data-placement="bottom" data-html="true"
                             data-original-title="{{ variantGroupTooltip }}"
                             {% endif %}>{{ group.label }}</span>{% if not loop.last %}, {% endif %}
