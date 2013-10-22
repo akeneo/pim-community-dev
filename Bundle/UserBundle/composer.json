@@ -10,7 +10,7 @@
         "symfony/symfony": "2.1.*",
         "friendsofsymfony/rest-bundle": "0.11.*",
         "nelmio/api-doc-bundle": "dev-master",
-        "escapestudios/wsse-authentication-bundle": "2.1.x-dev",
+        "escapestudios/wsse-authentication-bundle": "2.3.x-dev",
         "jms/serializer-bundle": "0.12.*@dev",
         "liip/imagine-bundle": "dev-master",
         "doctrine/data-fixtures": "@dev",
