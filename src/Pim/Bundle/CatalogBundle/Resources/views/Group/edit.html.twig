@@ -62,30 +62,39 @@
 
         {{ elements.page_header(title, buttons, null, null, right) }}
 
-        <div class="row-fluid">
+        {{ elements.form_navbar(['Products', 'Properties']) }}
+
+        <div class="row-fluid tab-content group-edit">
 
             {{ elements.form_errors(form) }}
 
-            {% set generalProperties %}
-                {{ form_row(form.code) }}
-                {{ form_row(form.type) }}
+            <div class="tab-pane active" id="products">
                 {% if form.vars.data.type.isVariant %}
-                    {{ form_row(form.attributes) }}
+                <h3>{{'The following products have values for any selected axis.'|trans}}</h3>
                 {% endif %}
-            {% endset %}
 
-            {{ elements.accordion({
-                'General Properties': generalProperties,
-                'Labels': form_row(form.label)
-            }) }}
+                <div id="group-products-grid"></div>
+                {{ form_widget(form.appendProducts, {'id': 'appendProducts'}) }}
+                {{ form_widget(form.removeProducts, {'id': 'removeProducts'}) }}
+            </div>
 
-            {{ form_widget(form.appendProducts, {'id': 'appendProducts'}) }}
-            {{ form_widget(form.removeProducts, {'id': 'removeProducts'}) }}
-
+            <div class="tab-pane" id="properties">
+                {% set generalProperties %}
+                    {{ form_row(form.code) }}
+                    {{ form_row(form.type) }}
+                    {% if form.vars.data.type.isVariant %}
+                        {{ form_row(form.attributes) }}
+                    {% endif %}
+                {% endset %}
+                {{ elements.accordion({
+                    'General Properties': generalProperties,
+                    'Labels': form_row(form.label)
+                }) }}
+            </div>
             {{ form_row(form._token) }}
         </div>
     </form>
 
-    <div id="group-products-grid"></div>
+
 
 {% endblock %}
