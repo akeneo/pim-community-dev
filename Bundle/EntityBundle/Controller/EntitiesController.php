@@ -149,7 +149,12 @@ class EntitiesController extends Controller
         $datagridManager = $this->get('oro_entity.relation_datagrid.manager');
         $datagridManager->setCustomEntityClass($fieldConfig->get('target_entity'));
         $datagridManager->setRelationConfig($fieldConfig);
-        $datagridManager->setRelation($this->getDoctrine()->getRepository($extendEntityName)->find($id));
+
+        $extendEntity = $this->getDoctrine()->getRepository($extendEntityName)->find($id);
+        if (!$extendEntity) {
+            $extendEntity = new $extendEntityName;
+        }
+        $datagridManager->setRelation($extendEntity);
         $datagridManager->setAdditionalParameters(
             array(
                 'data_in' => explode(',', $this->getRequest()->get('added')),
@@ -159,9 +164,6 @@ class EntitiesController extends Controller
         $datagridManager->setEntityName($fieldConfig->get('target_entity'));
 
         $view = $datagridManager->getDatagrid()->createView();
-
-
-
 
         return 'json' == $this->getRequest()->getRequestFormat()
             ? $this->get('oro_grid.renderer')->renderResultsJsonResponse($view)

@@ -4,6 +4,7 @@ namespace Oro\Bundle\EntityBundle\Datagrid;
 
 use Doctrine\Common\Inflector\Inflector;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
+use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 use Oro\Bundle\GridBundle\Datagrid\ORM\EntityProxyQuery;
 use Oro\Bundle\GridBundle\Datagrid\ORM\QueryFactory\EntityQueryFactory;
 use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
@@ -55,7 +56,7 @@ class RelationEntityDatagrid extends CustomEntityDatagrid
         $this->relation = $relation;
         $this->routeGenerator->setRouteParameters(
             array(
-                'id'        => $relation->getId(),
+                'id'        => $relation->getId() ? : 0,
                 'className' => $this->relationConfig->getId()->getClassName(),
                 'fieldName' => $this->relationConfig->getId()->getFieldName()
             )
@@ -191,13 +192,69 @@ class RelationEntityDatagrid extends CustomEntityDatagrid
     protected function getDefaultSorters()
     {
         return array(
-            'has_relation' => SorterInterface::DIRECTION_DESC,
+            'assigned' => SorterInterface::DIRECTION_DESC,
         );
     }
 
     protected function prepareQuery(ProxyQueryInterface $query)
     {
-        $query->leftJoin('ce.' . 'field_testentity_rel1', 'r');
-        $query->addSelect('r.id as assigned', true);
+        $classArray = explode('\\', $this->relationConfig->getId()->getClassName());
+        $fieldName =
+            ExtendConfigDumper::FIELD_PREFIX
+            . strtolower(array_pop($classArray)) . '_'
+            . $this->relationConfig->getId()->getFieldName();
+
+        switch ($this->relationConfig->getId()->getFieldType()) {
+            case 'oneToMany':
+                $query->leftJoin('ce.' . $fieldName, 'r');
+                $query->addSelect('r.id as assigned', true);
+
+                break;
+            case 'manyToMany':
+                /** @var ConfigProvider $extendConfigProvider */
+                $extendConfigProvider = $this->configManager->getProvider('extend');
+
+                $relations = $extendConfigProvider
+                    ->getConfig($this->relationConfig->getId()->getClassName())
+                    ->get('relation');
+
+                $owner = false;
+                foreach ($relations as $relation) {
+                    if ($relation['field_id'] == $this->relationConfig->getId()
+                        && $relation['owner'] == true
+                        && $relation['assign'] == true
+                    ) {
+                        $owner = true;
+                        break;
+                    }
+                }
+
+                if ($owner) {
+                    $tableName = ExtendHelper::generateManyToManyJoinTableName(
+                        $this->relationConfig->getId(),
+                        $this->relationConfig->get('target_entity')
+                    );
+                } else {
+                    foreach ($relations as $relation) {
+                        if ($relation['target_field_id'] == $this->relationConfig->getId()
+                            && $relation['assign'] == true
+                        ) {
+                            $tableName = ExtendHelper::generateManyToManyJoinTableName(
+                                $relation['field_id'],
+                                $relation['target_entity']
+                            );
+
+                            break;
+                        }
+                    }
+                }
+
+
+                //$query->leftJoin('ce.' . $fieldName, 'r');
+                //$query->addSelect('r.id as assigned', true);
+
+                break;
+        }
+
     }
 }

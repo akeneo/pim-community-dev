@@ -146,7 +146,7 @@ class CustomEntityType extends AbstractType
                             'grid_url'              => $this->router->generate(
                                 'oro_entity_relation',
                                 array(
-                                    'id'        => $data->getId(),
+                                    'id'        => $data->getId() ? : 0,
                                     'className' => str_replace('\\', '_', $className),
                                     'fieldName' => $fieldConfigId->getFieldName()
                                 )
