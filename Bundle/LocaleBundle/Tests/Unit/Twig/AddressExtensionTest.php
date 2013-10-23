@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\LocaleBundle\Tests\Unit\Model;
+namespace Oro\Bundle\LocaleBundle\Tests\Unit\Twig;
 
 use Oro\Bundle\LocaleBundle\Twig\AddressExtension;
 
