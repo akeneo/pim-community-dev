@@ -200,8 +200,9 @@ info:
     group:
         axis: Variation axis: %attributes%
     association:
-        show products: Show products
-        show groups:   Show groups
+        show products:        Show products
+        show groups:          Show groups
+        remove from products: Deleting the association will remove it from %count% products.
 
 # Form elements
 Options:                       Options

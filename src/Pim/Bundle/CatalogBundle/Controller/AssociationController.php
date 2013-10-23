@@ -184,9 +184,12 @@ class AssociationController extends AbstractDoctrineController
             return $this->gridRenderer->renderResultsJsonResponse($datagridView);
         }
 
+        $usageCount = $this->getRepository('PimCatalogBundle:ProductAssociation')->countForAssociation($association);
+
         return array(
-            'form'     => $this->associationForm->createView(),
-            'datagrid' => $datagridView,
+            'form'       => $this->associationForm->createView(),
+            'datagrid'   => $datagridView,
+            'usageCount' => $usageCount
         );
     }
 
