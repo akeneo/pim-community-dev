@@ -81,20 +81,17 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
         $result = array(
             'sku'           => 'KB0001',
             'family'        => 'garden-tool',
-            'name-fr_FR'    => 'Brouette',
+            'groups'        => '',
+            'categories'    => 'cat1, cat2, cat3',
+            'elements'      => 'roue,poignées,benne',
+            'exportedAt'    => $now->format('m/d/Y'),
             'name-en_US'    => 'Wheelbarrow',
             'name-es_ES'    => 'Carretilla',
-            'exportedAt'    => $now->format('m/d/Y'),
-            'elements'      => 'roue,poignées,benne',
+            'name-fr_FR'    => 'Brouette',
             'visual'        => 'kb0001.jpg',
-            'categories'    => 'cat1, cat2, cat3',
-            'groups'        => '',
         );
 
-        $this->assertEquals(
-            $result,
-            $this->normalizer->normalize($product, 'csv')
-        );
+        $this->assertArrayEquals($result, $this->normalizer->normalize($product, 'csv'));
     }
 
     /**
@@ -119,19 +116,16 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
         $result = array(
             'sku'        => 'KB0001',
             'family'     => '',
-            'name-fr_FR' => 'Brouette',
+            'groups'     => '',
+            'categories' => 'cat1, cat2, cat3',
+            'elements'   => 'roue,poignées,benne',
+            'exportedAt' => $now->format('m/d/Y'),
             'name-en_US' => 'Wheelbarrow',
             'name-es_ES' => 'Carretilla',
-            'exportedAt' => $now->format('m/d/Y'),
-            'elements'   => 'roue,poignées,benne',
-            'categories' => 'cat1, cat2, cat3',
-            'groups'     => '',
+            'name-fr_FR' => 'Brouette',
         );
 
-        $this->assertEquals(
-            $result,
-            $this->normalizer->normalize($product, 'csv')
-        );
+        $this->assertArrayEquals($result, $this->normalizer->normalize($product, 'csv'));
     }
 
     /**
@@ -154,6 +148,18 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
         $product = $this->getProductMock(null, $values, $family, 'cat1,cat2,cat3');
 
         $this->normalizer->normalize($product, 'csv');
+    }
+
+    /**
+     * Assert that element orders and values of two arrays are equal
+     *
+     * @param array $a
+     * @param array $b
+     */
+    protected function assertArrayEquals(array $a, array $b)
+    {
+        $this->assertEquals(array_keys($a), array_keys($b));
+        $this->assertEquals($a, $b);
     }
 
     /**

@@ -955,7 +955,9 @@ class FixturesContext extends RawMinkContext
     {
         foreach ($this->listToArray($products) as $identifier) {
             $productValue = $this->getProductValue($identifier, strtolower($attribute));
-            assertEquals($filename, $productValue->getMedia()->getOriginalFilename());
+            $media = $productValue->getMedia();
+            $this->getEntityManager()->refresh($media);
+            assertEquals($filename, $media->getOriginalFilename());
         }
     }
 

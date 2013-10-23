@@ -45,9 +45,9 @@ Feature: Export media with products
     When I launch the export job
     Then exported file of "acme_product_export" should contain:
     """
-    sku;family;groups;frontView;name;userManual;categories
-    bic-core-148;funboard;;behat-bic-core-148.gif;"Bic Core 148";behat-bic-core-148.txt;sport
-    fanatic-freewave-76;funboard;;behat-fanatic-freewave-76.gif;"Fanatic Freewave 76";behat-fanatic-freewave-76.txt;sport
+    sku;family;groups;categories;frontView;name;userManual
+    bic-core-148;funboard;;sport;behat-bic-core-148.gif;"Bic Core 148";behat-bic-core-148.txt
+    fanatic-freewave-76;funboard;;sport;behat-fanatic-freewave-76.gif;"Fanatic Freewave 76";behat-fanatic-freewave-76.txt
 
     """
     Then export directory of "acme_product_export" should contain the following media:

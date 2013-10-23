@@ -13,7 +13,9 @@ Pim\Bundle\CatalogBundle\Entity\Group:
         translations:
             - Valid: ~
         attributes:
-            - Count: { min: 1 }
+            - Count:
+                min: 1
+                groups: [variant]
 
 Pim\Bundle\CatalogBundle\Entity\GroupTranslation:
     properties:
