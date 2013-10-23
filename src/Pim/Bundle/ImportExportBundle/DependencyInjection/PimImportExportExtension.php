@@ -29,9 +29,13 @@ class PimImportExportExtension extends Extension
         $loader->load('serializer.yml');
         $loader->load('datagrid.yml');
         $loader->load('controllers.yml');
-        
+        $loader->load('form_types.yml');
+
         if ($config['debug']) {
-            $container->setParameter('oro_batch.job_factory.class', 'Pim\Bundle\ImportExportBundle\Step\BehatStepFactory');
+            $container->setParameter(
+                'oro_batch.job_factory.class',
+                'Pim\Bundle\ImportExportBundle\Step\BehatStepFactory'
+            );
         }
     }
 }

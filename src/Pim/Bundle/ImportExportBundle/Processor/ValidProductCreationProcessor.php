@@ -208,13 +208,11 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
                         $item
                     );
                 }
-
                 return false;
             } else {
                 throw new InvalidObjectException($form);
             }
         }
-
         return $product;
     }
 
@@ -246,7 +244,6 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
         if (!$product) {
             $product = $this->productManager->createProduct();
         }
-
         foreach (array_keys($item) as $key) {
 
             if (in_array($key, array($this->categoriesColumn, $this->familyColumn, $this->groupsColumn))) {
@@ -332,11 +329,10 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
     private function createAndSubmitForm(ProductInterface $product, array $item)
     {
         $form = $this->formFactory->create(
-            'pim_product',
+            'pim_product_import',
             $product,
             array(
                 'csrf_protection' => false,
-                'import_mode'     => true,
             )
         );
 
@@ -358,7 +354,6 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
         }
 
         $values = $this->filterValues($product, $item);
-
         $form->submit($values);
 
         return $form;

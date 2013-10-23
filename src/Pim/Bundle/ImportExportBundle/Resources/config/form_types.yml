@@ -1,0 +1,10 @@
+parameters:
+    pim_import_export.form.type.product.class: Pim\Bundle\ImportExportBundle\Form\Type\ProductImportType
+
+services:
+    pim_import_export.form.type.product:
+        class: '%pim_import_export.form.type.product.class%'
+        arguments:
+            - '@pim_import_export.form.transform_imported_product_data_subscriber'
+        tags:
+            - { name: form.type, alias: pim_product_import }

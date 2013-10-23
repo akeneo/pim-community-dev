@@ -47,10 +47,6 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    pim_catalog.form.transform_imported_product_data_subscriber:
-        public: false
-        class: %pim_catalog.form.transform_imported_product_data_subscriber.class%
-
     # Validators
     pim_catalog.form.validator.metric:
         class: Pim\Bundle\CatalogBundle\Validator\Constraints\ValidMetricValidator

@@ -84,7 +84,6 @@ class OrmProductWriter extends AbstractConfigurableStepElement implements
     public function write(array $items)
     {
         $storageManager = $this->productManager->getStorageManager();
-
         foreach ($items as $product) {
             $storageManager->persist($product);
             $this->stepExecution->incrementWriteCount();
