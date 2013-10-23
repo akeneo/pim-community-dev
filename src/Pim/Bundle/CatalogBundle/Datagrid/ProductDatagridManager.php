@@ -579,6 +579,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
             ->leftJoin($rootAlias .'.family', 'productFamily')
             ->leftJoin('productFamily.translations', 'ft', 'WITH', 'ft.locale = :localeCode')
             ->leftJoin($rootAlias .'.groups', 'groups')
+            ->leftJoin('groups.type', 'groupType')
             ->leftJoin('groups.translations', 'vt', 'WITH', 'vt.locale = :localeCode')
             ->leftJoin($rootAlias.'.values', 'values')
             ->leftJoin('values.options', 'valueOptions')
@@ -592,7 +593,8 @@ class ProductDatagridManager extends FlexibleDatagridManager
             ->addSelect('valuePrices')
             ->addSelect('valueOptions')
             ->addSelect('category')
-            ->addSelect('groups');
+            ->addSelect('groups')
+            ->addSelect('groupType');
 
         $this->prepareQueryForCompleteness($proxyQuery, $rootAlias);
         $this->prepareQueryForCategory($proxyQuery, $rootAlias);
