@@ -2,10 +2,11 @@
 
 namespace Oro\Bundle\LocaleBundle\Command;
 
-use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+
+use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
 
 class OroLocalizationDumpCommand extends ContainerAwareCommand
 {
@@ -24,10 +25,12 @@ class OroLocalizationDumpCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $targetDir = realpath($this->getContainer()->getParameter('kernel.root_dir') . '/../web') . '/js';
+        /** @var LocaleSettings $localeSettings */
         $localeSettings = $this->getContainer()->get('oro_locale.settings');
         $addressFormats = $this->getAddressFormats($localeSettings);
         $localeSettingsData = array(
             'locale_data' => $localeSettings->getLocaleData(),
+            'currency_data' => $localeSettings->getCurrencyData(),
             'format' => array(
                 'address' => $addressFormats,
                 'name' => $localeSettings->getNameFormats()

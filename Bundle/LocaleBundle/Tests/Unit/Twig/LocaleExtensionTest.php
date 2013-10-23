@@ -19,14 +19,6 @@ class LocaleExtensionTest extends \PHPUnit_Framework_TestCase
      */
     protected $extension;
 
-    /**
-     * @var array
-     */
-    protected $expectedFunctions = array(
-        'oro_locale' => 'getLocale',
-        'oro_timezone_offset' => 'getTimeZoneOffset',
-    );
-
     protected function setUp()
     {
         $this->localeSettings =
@@ -51,28 +43,29 @@ class LocaleExtensionTest extends \PHPUnit_Framework_TestCase
 
     public function testGetFunctions()
     {
+        $expectedFunctions = array(
+            'oro_locale' => array($this->localeSettings, 'getLocale'),
+            'oro_language' => array($this->localeSettings, 'getLanguage'),
+            'oro_country' => array($this->localeSettings, 'getCountry'),
+            'oro_currency' => array($this->localeSettings, 'getCurrency'),
+            'oro_timezone' => array($this->localeSettings, 'getTimeZone'),
+            'oro_timezone_offset' => array($this->extension, 'getTimeZoneOffset'),
+            'oro_format_address_by_address_country' => array(
+                $this->localeSettings,
+                'isFormatAddressByAddressCountry'
+            )
+        );
+
         $actualFunctions = $this->extension->getFunctions();
-        $this->assertSameSize($this->expectedFunctions, $actualFunctions);
+        $this->assertSameSize($expectedFunctions, $actualFunctions);
 
         /** @var $actualFunction \Twig_SimpleFunction */
         foreach ($actualFunctions as $actualFunction) {
             $this->assertInstanceOf('\Twig_SimpleFunction', $actualFunction);
             $actualFunctionName = $actualFunction->getName();
-            $this->assertArrayHasKey($actualFunctionName, $this->expectedFunctions);
-            $expectedCallback = array($this->extension, $this->expectedFunctions[$actualFunctionName]);
-            $this->assertEquals($expectedCallback, $actualFunction->getCallable());
+            $this->assertArrayHasKey($actualFunctionName, $expectedFunctions);
+            $this->assertEquals($expectedFunctions[$actualFunctionName], $actualFunction->getCallable());
         }
-    }
-
-    public function testGetLocale()
-    {
-        $locale = 'en_US';
-
-        $this->localeSettings->expects($this->once())
-            ->method('getLocale')
-            ->will($this->returnValue($locale));
-
-        $this->assertEquals($locale, $this->extension->getLocale());
     }
 
     public function testGetTimeZoneOffset()

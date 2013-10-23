@@ -5,16 +5,16 @@ namespace Oro\Bundle\LocaleBundle\Model;
 use Symfony\Component\Intl\Intl;
 
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
+use Oro\Bundle\LocaleBundle\DependencyInjection\Configuration as LocaleConfiguration;
 
 class LocaleSettings
 {
-    const ADDRESS_FORMAT_KEY = 'format';
-    const PHONE_PREFIX_KEY   = 'phone_prefix';
-    const DEFAULT_LOCALE_KEY = 'default_locale';
-
-    const DEFAULT_LOCALE   = 'en';
-    const DEFAULT_COUNTRY  = 'US';
-    const DEFAULT_CURRENCY = 'USD';
+    const ADDRESS_FORMAT_KEY  = 'format';
+    const PHONE_PREFIX_KEY    = 'phone_prefix';
+    const DEFAULT_LOCALE_KEY  = 'default_locale';
+    const CURRENCY_CODE_KEY   = 'currency_code';
+    const CURRENCY_SYMBOL_PREPEND_KEY = 'currency_symbol_prepend';
+    const CURRENCY_SYMBOL_KEY = 'symbol';
 
     /**
      * @var string[]
@@ -25,6 +25,11 @@ class LocaleSettings
      * @var string
      */
     protected $locale;
+
+    /**
+     * @var string
+     */
+    protected $language;
 
     /**
      * @var string
@@ -91,14 +96,28 @@ class LocaleSettings
      * Array format:
      * array(
      *     '<countryCode>' => array(
-     *          'phone_prefix'   => '<phonePrefixString>',   // optional
-     *          'default_locale' => '<defaultLocaleString>', // optional
+     *          'default_locale' => '<defaultLocaleString>',
+     *          'currency_code'  => '<currencyIso3SymbolsCode>',
+     *          'currency_symbol_prepend' => true|false,
+     *          'phone_prefix'   => '<phonePrefixString>', // optional
      *     ),
      * )
      *
      * @var array
      */
     protected $localeData = array();
+
+    /**
+     * Array format:
+     * array(
+     *     '<currencyIso3SymbolsCode>' => array(
+     *          'symbol' => '<currencySymbol>',
+     *     ),
+     * )
+     *
+     * @var array
+     */
+    protected $currencyData = array();
 
     /**
      * @param ConfigManager $configManager
@@ -169,86 +188,23 @@ class LocaleSettings
     }
 
     /**
-     * Get name format based on locale, if locale is not passed locale from system configuration will be used.
+     * Adds locale data.
      *
-     * @param string|null $locale
-     * @throws \RuntimeException
+     * @param array $data
      */
-    public function getNameFormat($locale = null)
+    public function addCurrencyData(array $data)
     {
-        if (!$locale) {
-            $locale = $this->getLocale();
-        }
-
-        // match by locale (for example - "fr_CA")
-        if (isset($this->nameFormats[$locale])) {
-            return $this->nameFormats[$locale];
-        }
-
-        // match by locale language (for example - "fr")
-        $localeParts = \Locale::parseLocale($locale);
-        if (isset($localeParts[\Locale::LANG_TAG])) {
-            $match = $localeParts[\Locale::LANG_TAG];
-            if (isset($match, $this->nameFormats[$match])) {
-                return $this->nameFormats[$match];
-            }
-        }
-
-        // match by default locale in system configuration settings
-        $match = $this->getLocale();
-        if ($match !== $locale && isset($this->nameFormats[$match])) {
-            return $this->nameFormats[$match];
-        }
-
-        // fallback to default constant locale
-        $match = self::DEFAULT_LOCALE;
-        if (isset($this->nameFormats[$match])) {
-            return $this->nameFormats[$match];
-        }
-
-        throw new \RuntimeException(sprintf('Cannot get name format for "%s"', $locale));
+        $this->currencyData = array_merge($this->currencyData, $data);
     }
 
     /**
-     * Get address format based on locale or region, if argument is not passed locale from
-     * system configuration will be used.
+     * Get locale data.
      *
-     * @param string|null $localeOrRegion
-     * @throws \RuntimeException
+     * @return array
      */
-    public function getAddressFormat($localeOrRegion = null)
+    public function getCurrencyData()
     {
-        if (!$localeOrRegion) {
-            $localeOrRegion = $this->getLocale();
-        }
-
-        // matched by country (for example - "RU")
-        if (isset($this->addressFormats[$localeOrRegion][self::ADDRESS_FORMAT_KEY])) {
-            return $this->addressFormats[$localeOrRegion][self::ADDRESS_FORMAT_KEY];
-        }
-
-        // matched by locale region - "CA"
-        $localeParts = \Locale::parseLocale($localeOrRegion);
-        if (isset($localeParts[\Locale::REGION_TAG])) {
-            $match = $localeParts[\Locale::REGION_TAG];
-            if (isset($match, $this->addressFormats[$match][self::ADDRESS_FORMAT_KEY])) {
-                return $this->addressFormats[$match][self::ADDRESS_FORMAT_KEY];
-            }
-        }
-
-        // match by default country in system configuration settings
-        $match = $this->getCountry();
-        if ($match !== $localeOrRegion && isset($this->addressFormats[$match][self::ADDRESS_FORMAT_KEY])) {
-            return $this->addressFormats[$match][self::ADDRESS_FORMAT_KEY];
-        }
-
-        // fallback to default country
-        $match = self::DEFAULT_COUNTRY;
-        if (isset($this->addressFormats[$match][self::ADDRESS_FORMAT_KEY])) {
-            return $this->addressFormats[$match][self::ADDRESS_FORMAT_KEY];
-        }
-
-        throw new \RuntimeException(sprintf('Cannot get address format for "%s"', $localeOrRegion));
+        return $this->currencyData;
     }
 
     /**
@@ -281,9 +237,22 @@ class LocaleSettings
     public function getLocale()
     {
         if (null === $this->locale) {
-            $this->locale = $this->configManager->get('oro_locale.locale', \Locale::getDefault());
+            $this->locale = $this->configManager->get('oro_locale.locale', LocaleConfiguration::DEFAULT_LOCALE);
         }
         return $this->locale;
+    }
+
+    /**
+     * Get language
+     *
+     * @return string
+     */
+    public function getLanguage()
+    {
+        if (null === $this->language) {
+            $this->language = $this->configManager->get('oro_locale.language', LocaleConfiguration::DEFAULT_LANGUAGE);
+        }
+        return $this->language;
     }
 
     /**
@@ -310,7 +279,7 @@ class LocaleSettings
     public function getCurrency()
     {
         if (null === $this->currency) {
-            $this->currency = $this->configManager->get('oro_locale.currency', self::DEFAULT_CURRENCY);
+            $this->currency = $this->configManager->get('oro_locale.currency', LocaleConfiguration::DEFAULT_CURRENCY);
         }
         return $this->currency;
     }
@@ -323,8 +292,7 @@ class LocaleSettings
     public function getTimeZone()
     {
         if (null === $this->timeZone) {
-            $date = new \DateTime('now');
-            $this->timeZone = $this->configManager->get('oro_locale.timezone', $date->getTimezone()->getName());
+            $this->timeZone = $this->configManager->get('oro_locale.timezone', date_default_timezone_get());
         }
         return $this->timeZone;
     }
@@ -340,7 +308,7 @@ class LocaleSettings
     public static function getValidLocale($locale = null)
     {
         if (!$locale) {
-            $locale = self::DEFAULT_LOCALE;
+            $locale = LocaleConfiguration::DEFAULT_LOCALE;
         }
 
         $localeParts = \Locale::parseLocale($locale);
@@ -361,11 +329,11 @@ class LocaleSettings
         $variants = array(
             array($lang, $script, $region),
             array($lang, $region),
-            array($lang, $script, self::DEFAULT_COUNTRY),
-            array($lang, self::DEFAULT_COUNTRY),
+            array($lang, $script, LocaleConfiguration::DEFAULT_COUNTRY),
+            array($lang, LocaleConfiguration::DEFAULT_COUNTRY),
             array($lang),
-            array(self::DEFAULT_LOCALE, self::DEFAULT_COUNTRY),
-            array(self::DEFAULT_LOCALE),
+            array(LocaleConfiguration::DEFAULT_LOCALE, LocaleConfiguration::DEFAULT_COUNTRY),
+            array(LocaleConfiguration::DEFAULT_LOCALE),
         );
 
         $locales = self::getLocales();
@@ -409,6 +377,6 @@ class LocaleSettings
             return $region;
         }
 
-        return LocaleSettings::DEFAULT_COUNTRY;
+        return LocaleConfiguration::DEFAULT_COUNTRY;
     }
 }

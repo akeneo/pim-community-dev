@@ -2,23 +2,24 @@
 
 namespace Oro\Bundle\LocaleBundle\Form\Type;
 
-use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+
+use Oro\Bundle\LocaleBundle\Formatter\NameFormatter;
 
 class NameFormatType extends AbstractType
 {
     /**
-     * @var LocaleSettings
+     * @var NameFormatter
      */
-    protected $localeSettings;
+    protected $nameFormatter;
 
     /**
-     * @param LocaleSettings $localeSettings
+     * @param NameFormatter $nameFormatter
      */
-    public function __construct(LocaleSettings $localeSettings)
+    public function __construct(NameFormatter $nameFormatter)
     {
-        $this->localeSettings = $localeSettings;
+        $this->nameFormatter = $nameFormatter;
     }
 
     /**
@@ -28,7 +29,7 @@ class NameFormatType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'data' => $this->localeSettings->getNameFormat()
+                'data' => $this->nameFormatter->getNameFormat()
             )
         );
     }

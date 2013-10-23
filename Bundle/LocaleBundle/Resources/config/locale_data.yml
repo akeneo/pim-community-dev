@@ -1,743 +1,1242 @@
 AD:
+    currency_code: EUR
     phone_prefix: '376'
     default_locale: ca
+    currency_symbol_prepend: false
 AE:
+    currency_code: AED
     phone_prefix: '971'
     default_locale: ar_AE
+    currency_symbol_prepend: true
 AF:
+    currency_code: AFN
     phone_prefix: '93'
     default_locale: fa_AF
+    currency_symbol_prepend: false
 AG:
+    currency_code: XCD
     phone_prefix: +1-268
     default_locale: en_AG
+    currency_symbol_prepend: true
 AI:
+    currency_code: XCD
     phone_prefix: +1-264
     default_locale: en
+    currency_symbol_prepend: true
 AL:
+    currency_code: ALL
     phone_prefix: '355'
     default_locale: sq
+    currency_symbol_prepend: true
 AM:
+    currency_code: AMD
     phone_prefix: '374'
     default_locale: hy
+    currency_symbol_prepend: false
 AO:
+    currency_code: AOA
     phone_prefix: '244'
     default_locale: pt_AO
+    currency_symbol_prepend: false
 AR:
+    currency_code: ARS
     phone_prefix: '54'
     default_locale: es_AR
+    currency_symbol_prepend: true
 AS:
+    currency_code: USD
     phone_prefix: +1-684
     default_locale: en_AS
+    currency_symbol_prepend: true
 AT:
+    currency_code: EUR
     phone_prefix: '43'
     default_locale: de_AT
+    currency_symbol_prepend: true
 AU:
+    currency_code: AUD
     phone_prefix: '61'
     default_locale: en_AU
+    currency_symbol_prepend: true
 AW:
+    currency_code: AWG
     phone_prefix: '297'
     default_locale: nl_AW
+    currency_symbol_prepend: true
 AX:
+    currency_code: EUR
     phone_prefix: +358-18
     default_locale: sv_AX
+    currency_symbol_prepend: false
 AZ:
+    currency_code: AZN
     phone_prefix: '994'
     default_locale: az
+    currency_symbol_prepend: true
 BA:
+    currency_code: BAM
     phone_prefix: '387'
     default_locale: bs
+    currency_symbol_prepend: true
 BB:
+    currency_code: BBD
     phone_prefix: +1-246
     default_locale: en_BB
+    currency_symbol_prepend: true
 BD:
+    currency_code: BDT
     phone_prefix: '880'
     default_locale: bn_BD
+    currency_symbol_prepend: false
 BE:
+    currency_code: EUR
     phone_prefix: '32'
     default_locale: nl_BE
+    currency_symbol_prepend: false
 BF:
+    currency_code: XOF
     phone_prefix: '226'
     default_locale: fr_BF
+    currency_symbol_prepend: false
 BG:
+    currency_code: BGN
     phone_prefix: '359'
     default_locale: bg
+    currency_symbol_prepend: false
 BH:
+    currency_code: BHD
     phone_prefix: '973'
     default_locale: ar_BH
+    currency_symbol_prepend: true
 BI:
+    currency_code: BIF
     phone_prefix: '257'
     default_locale: fr_BI
+    currency_symbol_prepend: false
 BJ:
+    currency_code: XOF
     phone_prefix: '229'
     default_locale: fr_BJ
+    currency_symbol_prepend: false
 BL:
+    currency_code: EUR
     phone_prefix: '590'
     default_locale: fr
+    currency_symbol_prepend: false
 BM:
+    currency_code: BMD
     phone_prefix: +1-441
     default_locale: en_BM
+    currency_symbol_prepend: true
 BN:
+    currency_code: BND
     phone_prefix: '673'
     default_locale: ms_BN
+    currency_symbol_prepend: true
 BO:
+    currency_code: BOB
     phone_prefix: '591'
     default_locale: es_BO
+    currency_symbol_prepend: true
 BQ:
+    currency_code: USD
     phone_prefix: '599'
     default_locale: nl
+    currency_symbol_prepend: false
 BR:
+    currency_code: BRL
     phone_prefix: '55'
     default_locale: pt_BR
+    currency_symbol_prepend: true
 BS:
+    currency_code: BSD
     phone_prefix: +1-242
     default_locale: en_BS
+    currency_symbol_prepend: true
 BT:
+    currency_code: BTN
     phone_prefix: '975'
     default_locale: dz
+    currency_symbol_prepend: true
 BW:
+    currency_code: BWP
     phone_prefix: '267'
     default_locale: en_BW
+    currency_symbol_prepend: true
 BY:
+    currency_code: BYR
     phone_prefix: '375'
     default_locale: be
+    currency_symbol_prepend: true
 BZ:
+    currency_code: BZD
     phone_prefix: '501'
     default_locale: en_BZ
+    currency_symbol_prepend: true
 CA:
+    currency_code: CAD
     phone_prefix: '1'
     default_locale: en_CA
+    currency_symbol_prepend: true
 CC:
+    currency_code: AUD
     phone_prefix: '61'
     default_locale: ms
+    currency_symbol_prepend: false
 CD:
+    currency_code: CDF
     phone_prefix: '243'
     default_locale: fr_CD
+    currency_symbol_prepend: false
 CF:
+    currency_code: XAF
     phone_prefix: '236'
     default_locale: fr_CF
+    currency_symbol_prepend: false
 CG:
+    currency_code: XAF
     phone_prefix: '242'
     default_locale: fr_CG
+    currency_symbol_prepend: false
 CH:
+    currency_code: CHF
     phone_prefix: '41'
     default_locale: de_CH
+    currency_symbol_prepend: true
 CI:
+    currency_code: XOF
     phone_prefix: '225'
     default_locale: fr_CI
+    currency_symbol_prepend: false
 CK:
+    currency_code: NZD
     phone_prefix: '682'
     default_locale: en
+    currency_symbol_prepend: true
 CL:
+    currency_code: CLP
     phone_prefix: '56'
     default_locale: es_CL
+    currency_symbol_prepend: true
 CM:
+    currency_code: XAF
     phone_prefix: '237'
     default_locale: en_CM
+    currency_symbol_prepend: true
 CN:
+    currency_code: CNY
     phone_prefix: '86'
     default_locale: zh_CN
+    currency_symbol_prepend: true
 CO:
+    currency_code: COP
     phone_prefix: '57'
     default_locale: es_CO
+    currency_symbol_prepend: true
 CR:
+    currency_code: CRC
     phone_prefix: '506'
     default_locale: es_CR
+    currency_symbol_prepend: true
 CU:
+    currency_code: CUP
     phone_prefix: '53'
     default_locale: es_CU
+    currency_symbol_prepend: false
 CV:
+    currency_code: CVE
     phone_prefix: '238'
     default_locale: pt_CV
+    currency_symbol_prepend: true
 CW:
+    currency_code: ANG
     phone_prefix: '599'
     default_locale: nl
+    currency_symbol_prepend: true
 CX:
+    currency_code: AUD
     phone_prefix: '61'
     default_locale: en
+    currency_symbol_prepend: false
 CY:
+    currency_code: EUR
     phone_prefix: '357'
     default_locale: el_CY
+    currency_symbol_prepend: true
 CZ:
+    currency_code: CZK
     phone_prefix: '420'
     default_locale: cs
+    currency_symbol_prepend: false
 DE:
+    currency_code: EUR
     phone_prefix: '49'
     default_locale: de
+    currency_symbol_prepend: false
 DJ:
+    currency_code: DJF
     phone_prefix: '253'
     default_locale: fr_DJ
+    currency_symbol_prepend: false
 DK:
+    currency_code: DKK
     phone_prefix: '45'
     default_locale: da_DK
+    currency_symbol_prepend: false
 DM:
+    currency_code: XCD
     phone_prefix: +1-767
     default_locale: en_DM
+    currency_symbol_prepend: true
 DO:
+    currency_code: DOP
     phone_prefix: +1-809
     default_locale: es_DO
+    currency_symbol_prepend: true
 DZ:
+    currency_code: DZD
     phone_prefix: '213'
     default_locale: ar_DZ
+    currency_symbol_prepend: true
 EC:
+    currency_code: USD
     phone_prefix: '593'
     default_locale: es_EC
+    currency_symbol_prepend: true
 EE:
+    currency_code: EUR
     phone_prefix: '372'
     default_locale: et
+    currency_symbol_prepend: false
 EG:
+    currency_code: EGP
     phone_prefix: '20'
     default_locale: ar_EG
+    currency_symbol_prepend: true
 EH:
+    currency_code: MAD
     phone_prefix: '212'
     default_locale: ar
+    currency_symbol_prepend: true
 ER:
+    currency_code: ERN
     phone_prefix: '291'
     default_locale: ti_ER
+    currency_symbol_prepend: true
 ES:
+    currency_code: EUR
     phone_prefix: '34'
     default_locale: es_ES
+    currency_symbol_prepend: false
 ET:
+    currency_code: ETB
     phone_prefix: '251'
     default_locale: am
+    currency_symbol_prepend: true
 FI:
+    currency_code: EUR
     phone_prefix: '358'
     default_locale: fi_FI
+    currency_symbol_prepend: false
 FJ:
+    currency_code: FJD
     phone_prefix: '679'
     default_locale: en_FJ
+    currency_symbol_prepend: true
 FK:
+    currency_code: FKP
     phone_prefix: '500'
     default_locale: en
+    currency_symbol_prepend: true
 FM:
+    currency_code: USD
     phone_prefix: '691'
     default_locale: en_FM
+    currency_symbol_prepend: true
 FO:
+    currency_code: DKK
     phone_prefix: '298'
     default_locale: fo
+    currency_symbol_prepend: true
 FR:
+    currency_code: EUR
     phone_prefix: '33'
     default_locale: fr_FR
+    currency_symbol_prepend: false
 GA:
+    currency_code: XAF
     phone_prefix: '241'
     default_locale: fr_GA
+    currency_symbol_prepend: false
 GB:
+    currency_code: GBP
     phone_prefix: '44'
     default_locale: en_GB
+    currency_symbol_prepend: true
 GD:
+    currency_code: XCD
     phone_prefix: +1-473
     default_locale: en_GD
+    currency_symbol_prepend: true
 GE:
+    currency_code: GEL
     phone_prefix: '995'
     default_locale: ka
+    currency_symbol_prepend: false
 GF:
+    currency_code: EUR
     phone_prefix: '594'
     default_locale: fr_GF
+    currency_symbol_prepend: false
 GG:
+    currency_code: GBP
     phone_prefix: +44-1481
     default_locale: en
+    currency_symbol_prepend: true
 GH:
+    currency_code: GHS
     phone_prefix: '233'
     default_locale: en_GH
+    currency_symbol_prepend: true
 GI:
+    currency_code: GIP
     phone_prefix: '350'
     default_locale: en_GI
+    currency_symbol_prepend: true
 GL:
+    currency_code: DKK
     phone_prefix: '299'
     default_locale: kl
+    currency_symbol_prepend: true
 GM:
+    currency_code: GMD
     phone_prefix: '220'
     default_locale: en_GM
+    currency_symbol_prepend: true
 GN:
+    currency_code: GNF
     phone_prefix: '224'
     default_locale: fr_GN
+    currency_symbol_prepend: false
 GP:
+    currency_code: EUR
     phone_prefix: '590'
     default_locale: fr_GP
+    currency_symbol_prepend: false
 GQ:
+    currency_code: XAF
     phone_prefix: '240'
     default_locale: es_GQ
+    currency_symbol_prepend: true
 GR:
+    currency_code: EUR
     phone_prefix: '30'
     default_locale: el_GR
+    currency_symbol_prepend: false
 GS:
+    currency_code: GBP
     default_locale: en
+    currency_symbol_prepend: true
 GT:
+    currency_code: GTQ
     phone_prefix: '502'
     default_locale: es_GT
+    currency_symbol_prepend: true
 GU:
+    currency_code: USD
     phone_prefix: +1-671
     default_locale: en_GU
+    currency_symbol_prepend: true
 GW:
+    currency_code: XOF
     phone_prefix: '245'
     default_locale: pt_GW
+    currency_symbol_prepend: false
 GY:
+    currency_code: GYD
     phone_prefix: '592'
     default_locale: en_GY
+    currency_symbol_prepend: true
 HK:
+    currency_code: HKD
     phone_prefix: '852'
     default_locale: zh_HK
+    currency_symbol_prepend: true
 HN:
+    currency_code: HNL
     phone_prefix: '504'
     default_locale: es_HN
+    currency_symbol_prepend: true
 HR:
+    currency_code: HRK
     phone_prefix: '385'
     default_locale: hr_HR
+    currency_symbol_prepend: false
 HT:
+    currency_code: HTG
     phone_prefix: '509'
     default_locale: fr
+    currency_symbol_prepend: false
 HU:
+    currency_code: HUF
     phone_prefix: '36'
     default_locale: hu_HU
+    currency_symbol_prepend: false
 ID:
+    currency_code: IDR
     phone_prefix: '62'
     default_locale: id
+    currency_symbol_prepend: true
 IE:
+    currency_code: EUR
     phone_prefix: '353'
     default_locale: en_IE
+    currency_symbol_prepend: true
 IL:
+    currency_code: ILS
     phone_prefix: '972'
     default_locale: he
+    currency_symbol_prepend: false
 IM:
+    currency_code: GBP
     phone_prefix: +44-1624
     default_locale: en
+    currency_symbol_prepend: true
 IN:
+    currency_code: INR
     phone_prefix: '91'
     default_locale: en_IN
+    currency_symbol_prepend: true
 IO:
+    currency_code: USD
     phone_prefix: '246'
     default_locale: en
+    currency_symbol_prepend: true
 IQ:
+    currency_code: IQD
     phone_prefix: '964'
     default_locale: ar_IQ
+    currency_symbol_prepend: true
 IR:
+    currency_code: IRR
     phone_prefix: '98'
     default_locale: fa_IR
+    currency_symbol_prepend: false
 IS:
+    currency_code: ISK
     phone_prefix: '354'
     default_locale: is
+    currency_symbol_prepend: false
 IT:
+    currency_code: EUR
     phone_prefix: '39'
     default_locale: it_IT
+    currency_symbol_prepend: true
 JE:
+    currency_code: GBP
     phone_prefix: +44-1534
     default_locale: en
+    currency_symbol_prepend: true
 JM:
+    currency_code: JMD
     phone_prefix: +1-876
     default_locale: en_JM
+    currency_symbol_prepend: true
 JO:
+    currency_code: JOD
     phone_prefix: '962'
     default_locale: ar_JO
+    currency_symbol_prepend: true
 JP:
+    currency_code: JPY
     phone_prefix: '81'
     default_locale: ja
+    currency_symbol_prepend: true
 KE:
+    currency_code: KES
     phone_prefix: '254'
     default_locale: en_KE
+    currency_symbol_prepend: true
 KG:
+    currency_code: KGS
     phone_prefix: '996'
     default_locale: ru
+    currency_symbol_prepend: false
 KH:
+    currency_code: KHR
     phone_prefix: '855'
     default_locale: km
+    currency_symbol_prepend: false
 KI:
+    currency_code: AUD
     phone_prefix: '686'
     default_locale: en_KI
+    currency_symbol_prepend: true
 KM:
+    currency_code: KMF
     phone_prefix: '269'
     default_locale: ar
+    currency_symbol_prepend: true
 KN:
+    currency_code: XCD
     phone_prefix: +1-869
     default_locale: en_KN
+    currency_symbol_prepend: true
 KP:
+    currency_code: KPW
     phone_prefix: '850'
     default_locale: ko_KP
+    currency_symbol_prepend: true
 KR:
+    currency_code: KRW
     phone_prefix: '82'
     default_locale: ko_KR
+    currency_symbol_prepend: true
 XK:
+    currency_code: EUR
     default_locale: sq
+    currency_symbol_prepend: true
 KW:
+    currency_code: KWD
     phone_prefix: '965'
     default_locale: ar_KW
+    currency_symbol_prepend: true
 KY:
+    currency_code: KYD
     phone_prefix: +1-345
     default_locale: en_KY
+    currency_symbol_prepend: true
 KZ:
+    currency_code: KZT
     phone_prefix: '7'
     default_locale: kk
+    currency_symbol_prepend: false
 LA:
+    currency_code: LAK
     phone_prefix: '856'
     default_locale: lo
+    currency_symbol_prepend: true
 LB:
+    currency_code: LBP
     phone_prefix: '961'
     default_locale: ar_LB
+    currency_symbol_prepend: true
 LC:
+    currency_code: XCD
     phone_prefix: +1-758
     default_locale: en_LC
+    currency_symbol_prepend: true
 LI:
+    currency_code: CHF
     phone_prefix: '423'
     default_locale: de_LI
+    currency_symbol_prepend: true
 LK:
+    currency_code: LKR
     phone_prefix: '94'
     default_locale: si
+    currency_symbol_prepend: true
 LR:
+    currency_code: LRD
     phone_prefix: '231'
     default_locale: en_LR
+    currency_symbol_prepend: true
 LS:
+    currency_code: LSL
     phone_prefix: '266'
     default_locale: en_LS
+    currency_symbol_prepend: true
 LT:
+    currency_code: LTL
     phone_prefix: '370'
     default_locale: lt
+    currency_symbol_prepend: false
 LU:
+    currency_code: EUR
     phone_prefix: '352'
     default_locale: fr
+    currency_symbol_prepend: false
 LV:
+    currency_code: LVL
     phone_prefix: '371'
     default_locale: lv
+    currency_symbol_prepend: false
 LY:
+    currency_code: LYD
     phone_prefix: '218'
     default_locale: ar_LY
+    currency_symbol_prepend: true
 MA:
+    currency_code: MAD
     phone_prefix: '212'
     default_locale: ar_MA
+    currency_symbol_prepend: true
 MC:
+    currency_code: EUR
     phone_prefix: '377'
     default_locale: fr_MC
+    currency_symbol_prepend: false
 MD:
+    currency_code: MDL
     phone_prefix: '373'
     default_locale: ro
+    currency_symbol_prepend: false
 ME:
+    currency_code: EUR
     phone_prefix: '382'
     default_locale: sr
+    currency_symbol_prepend: false
 MF:
+    currency_code: EUR
     phone_prefix: '590'
     default_locale: fr
+    currency_symbol_prepend: false
 MG:
+    currency_code: MGA
     phone_prefix: '261'
     default_locale: fr_MG
+    currency_symbol_prepend: false
 MH:
+    currency_code: USD
     phone_prefix: '692'
     default_locale: en
+    currency_symbol_prepend: true
 MK:
+    currency_code: MKD
     phone_prefix: '389'
     default_locale: mk
+    currency_symbol_prepend: true
 ML:
+    currency_code: XOF
     phone_prefix: '223'
     default_locale: fr_ML
+    currency_symbol_prepend: false
 MM:
+    currency_code: MMK
     phone_prefix: '95'
     default_locale: my
+    currency_symbol_prepend: true
 MN:
+    currency_code: MNT
     phone_prefix: '976'
     default_locale: mn
+    currency_symbol_prepend: true
 MO:
+    currency_code: MOP
     phone_prefix: '853'
     default_locale: zh
+    currency_symbol_prepend: true
 MP:
+    currency_code: USD
     phone_prefix: +1-670
     default_locale: fil
+    currency_symbol_prepend: false
 MQ:
+    currency_code: EUR
     phone_prefix: '596'
     default_locale: fr_MQ
+    currency_symbol_prepend: false
 MR:
+    currency_code: MRO
     phone_prefix: '222'
     default_locale: ar_MR
+    currency_symbol_prepend: true
 MS:
+    currency_code: XCD
     phone_prefix: +1-664
     default_locale: en
+    currency_symbol_prepend: true
 MT:
+    currency_code: EUR
     phone_prefix: '356'
     default_locale: mt
+    currency_symbol_prepend: true
 MU:
+    currency_code: MUR
     phone_prefix: '230'
     default_locale: en_MU
+    currency_symbol_prepend: true
 MV:
+    currency_code: MVR
     phone_prefix: '960'
+    default_locale: en
+    currency_symbol_prepend: true
 MW:
+    currency_code: MWK
     phone_prefix: '265'
     default_locale: en
+    currency_symbol_prepend: true
 MX:
+    currency_code: MXN
     phone_prefix: '52'
     default_locale: es_MX
+    currency_symbol_prepend: true
 MY:
+    currency_code: MYR
     phone_prefix: '60'
     default_locale: ms_MY
+    currency_symbol_prepend: true
 MZ:
+    currency_code: MZN
     phone_prefix: '258'
     default_locale: pt_MZ
+    currency_symbol_prepend: false
 NA:
+    currency_code: NAD
     phone_prefix: '264'
     default_locale: en_NA
+    currency_symbol_prepend: true
 NC:
+    currency_code: XPF
     phone_prefix: '687'
     default_locale: fr_NC
+    currency_symbol_prepend: false
 NE:
+    currency_code: XOF
     phone_prefix: '227'
     default_locale: fr_NE
+    currency_symbol_prepend: false
 NF:
+    currency_code: AUD
     phone_prefix: '672'
     default_locale: en
+    currency_symbol_prepend: true
 NG:
+    currency_code: NGN
     phone_prefix: '234'
     default_locale: en_NG
+    currency_symbol_prepend: true
 NI:
+    currency_code: NIO
     phone_prefix: '505'
     default_locale: es_NI
+    currency_symbol_prepend: true
 NL:
+    currency_code: EUR
     phone_prefix: '31'
     default_locale: nl_NL
+    currency_symbol_prepend: true
 NO:
+    currency_code: NOK
     phone_prefix: '47'
     default_locale: no
+    currency_symbol_prepend: true
 NP:
+    currency_code: NPR
     phone_prefix: '977'
     default_locale: ne
+    currency_symbol_prepend: true
 NR:
+    currency_code: AUD
     phone_prefix: '674'
     default_locale: en
+    currency_symbol_prepend: true
 NU:
+    currency_code: NZD
     phone_prefix: '683'
     default_locale: en
+    currency_symbol_prepend: true
 NZ:
+    currency_code: NZD
     phone_prefix: '64'
     default_locale: en_NZ
+    currency_symbol_prepend: true
 OM:
+    currency_code: OMR
     phone_prefix: '968'
     default_locale: ar_OM
+    currency_symbol_prepend: true
 PA:
+    currency_code: PAB
     phone_prefix: '507'
     default_locale: es_PA
+    currency_symbol_prepend: true
 PE:
+    currency_code: PEN
     phone_prefix: '51'
     default_locale: es_PE
+    currency_symbol_prepend: true
 PF:
+    currency_code: XPF
     phone_prefix: '689'
     default_locale: fr_PF
+    currency_symbol_prepend: false
 PG:
+    currency_code: PGK
     phone_prefix: '675'
     default_locale: en_PG
+    currency_symbol_prepend: true
 PH:
+    currency_code: PHP
     phone_prefix: '63'
     default_locale: tl
+    currency_symbol_prepend: true
 PK:
+    currency_code: PKR
     phone_prefix: '92'
     default_locale: ur_PK
+    currency_symbol_prepend: true
 PL:
+    currency_code: PLN
     phone_prefix: '48'
     default_locale: pl
+    currency_symbol_prepend: false
 PM:
+    currency_code: EUR
     phone_prefix: '508'
     default_locale: fr
+    currency_symbol_prepend: false
 PN:
+    currency_code: NZD
     phone_prefix: '870'
     default_locale: en
+    currency_symbol_prepend: true
 PR:
+    currency_code: USD
     phone_prefix: +1-787
     default_locale: en_PR
+    currency_symbol_prepend: true
 PS:
+    currency_code: ILS
     phone_prefix: '970'
     default_locale: ar_PS
+    currency_symbol_prepend: true
 PT:
+    currency_code: EUR
     phone_prefix: '351'
     default_locale: pt_PT
+    currency_symbol_prepend: false
 PW:
+    currency_code: USD
     phone_prefix: '680'
     default_locale: en
+    currency_symbol_prepend: true
 PY:
+    currency_code: PYG
     phone_prefix: '595'
     default_locale: es_PY
+    currency_symbol_prepend: true
 QA:
+    currency_code: QAR
     phone_prefix: '974'
     default_locale: ar_QA
+    currency_symbol_prepend: true
 RE:
+    currency_code: EUR
     phone_prefix: '262'
     default_locale: fr_RE
+    currency_symbol_prepend: false
 RO:
+    currency_code: RON
     phone_prefix: '40'
     default_locale: ro
+    currency_symbol_prepend: false
 RS:
+    currency_code: RSD
     phone_prefix: '381'
     default_locale: sr
+    currency_symbol_prepend: false
 RU:
+    currency_code: RUB
     phone_prefix: '7'
     default_locale: ru
+    currency_symbol_prepend: false
 RW:
+    currency_code: RWF
     phone_prefix: '250'
     default_locale: rw
+    currency_symbol_prepend: true
 SA:
+    currency_code: SAR
     phone_prefix: '966'
     default_locale: ar_SA
+    currency_symbol_prepend: true
 SB:
+    currency_code: SBD
     phone_prefix: '677'
     default_locale: en_SB
+    currency_symbol_prepend: true
 SC:
+    currency_code: SCR
     phone_prefix: '248'
     default_locale: en_SC
+    currency_symbol_prepend: true
 SD:
+    currency_code: SDG
     phone_prefix: '249'
     default_locale: ar_SD
+    currency_symbol_prepend: true
 SS:
+    currency_code: SSP
     phone_prefix: '211'
     default_locale: en
+    currency_symbol_prepend: true
 SE:
+    currency_code: SEK
     phone_prefix: '46'
     default_locale: sv_SE
+    currency_symbol_prepend: false
 SG:
+    currency_code: SGD
     phone_prefix: '65'
     default_locale: en
+    currency_symbol_prepend: true
 SH:
+    currency_code: SHP
     phone_prefix: '290'
     default_locale: en
+    currency_symbol_prepend: true
 SI:
+    currency_code: EUR
     phone_prefix: '386'
     default_locale: sl
+    currency_symbol_prepend: false
 SJ:
+    currency_code: NOK
     phone_prefix: '47'
     default_locale: no
+    currency_symbol_prepend: true
 SK:
+    currency_code: EUR
     phone_prefix: '421'
     default_locale: sk
+    currency_symbol_prepend: false
 SL:
+    currency_code: SLL
     phone_prefix: '232'
     default_locale: en_SL
+    currency_symbol_prepend: true
 SM:
+    currency_code: EUR
     phone_prefix: '378'
     default_locale: it_SM
+    currency_symbol_prepend: true
 SN:
+    currency_code: XOF
     phone_prefix: '221'
     default_locale: fr_SN
+    currency_symbol_prepend: false
 SO:
+    currency_code: SOS
     phone_prefix: '252'
     default_locale: so_SO
+    currency_symbol_prepend: true
 SR:
+    currency_code: SRD
     phone_prefix: '597'
     default_locale: nl_SR
+    currency_symbol_prepend: true
 ST:
+    currency_code: STD
     phone_prefix: '239'
     default_locale: pt_ST
+    currency_symbol_prepend: false
 SV:
+    currency_code: USD
     phone_prefix: '503'
     default_locale: es_SV
+    currency_symbol_prepend: true
 SX:
+    currency_code: ANG
     phone_prefix: '599'
     default_locale: nl
+    currency_symbol_prepend: true
 SY:
+    currency_code: SYP
     phone_prefix: '963'
     default_locale: ar_SY
+    currency_symbol_prepend: true
 SZ:
+    currency_code: SZL
     phone_prefix: '268'
     default_locale: en_SZ
+    currency_symbol_prepend: true
 TC:
+    currency_code: USD
     phone_prefix: +1-649
     default_locale: en_TC
+    currency_symbol_prepend: true
 TD:
+    currency_code: XAF
     phone_prefix: '235'
     default_locale: fr_TD
+    currency_symbol_prepend: false
 TF:
+    currency_code: EUR
     default_locale: fr
+    currency_symbol_prepend: false
 TG:
+    currency_code: XOF
     phone_prefix: '228'
     default_locale: fr_TG
+    currency_symbol_prepend: false
 TH:
+    currency_code: THB
     phone_prefix: '66'
     default_locale: th
+    currency_symbol_prepend: true
 TJ:
+    currency_code: TJS
     phone_prefix: '992'
     default_locale: fr
+    currency_symbol_prepend: false
 TK:
+    currency_code: NZD
     phone_prefix: '690'
     default_locale: en
+    currency_symbol_prepend: true
 TL:
+    currency_code: USD
     phone_prefix: '670'
     default_locale: pt
+    currency_symbol_prepend: false
 TM:
+    currency_code: TMT
     phone_prefix: '993'
     default_locale: ru
+    currency_symbol_prepend: false
 TN:
+    currency_code: TND
     phone_prefix: '216'
     default_locale: ar_TN
+    currency_symbol_prepend: true
 TO:
+    currency_code: TOP
     phone_prefix: '676'
     default_locale: to
+    currency_symbol_prepend: true
 TR:
+    currency_code: TRY
     phone_prefix: '90'
     default_locale: tr_TR
+    currency_symbol_prepend: false
 TT:
+    currency_code: TTD
     phone_prefix: +1-868
     default_locale: en_TT
+    currency_symbol_prepend: true
 TV:
+    currency_code: AUD
     phone_prefix: '688'
     default_locale: en
+    currency_symbol_prepend: true
 TW:
+    currency_code: TWD
     phone_prefix: '886'
     default_locale: zh_TW
+    currency_symbol_prepend: true
 TZ:
+    currency_code: TZS
     phone_prefix: '255'
     default_locale: sw_TZ
+    currency_symbol_prepend: false
 UA:
+    currency_code: UAH
     phone_prefix: '380'
     default_locale: uk
+    currency_symbol_prepend: false
 UG:
+    currency_code: UGX
     phone_prefix: '256'
     default_locale: en_UG
+    currency_symbol_prepend: true
 UM:
+    currency_code: USD
     phone_prefix: '1'
     default_locale: en_UM
+    currency_symbol_prepend: true
 US:
+    currency_code: USD
     phone_prefix: '1'
     default_locale: en_US
+    currency_symbol_prepend: true
 UY:
+    currency_code: UYU
     phone_prefix: '598'
     default_locale: es_UY
+    currency_symbol_prepend: true
 UZ:
+    currency_code: UZS
     phone_prefix: '998'
     default_locale: uz
+    currency_symbol_prepend: true
 VA:
+    currency_code: EUR
     phone_prefix: '379'
     default_locale: it
+    currency_symbol_prepend: true
 VC:
+    currency_code: XCD
     phone_prefix: +1-784
     default_locale: en_VC
+    currency_symbol_prepend: true
 VE:
+    currency_code: VEF
     phone_prefix: '58'
     default_locale: es_VE
+    currency_symbol_prepend: true
 VG:
+    currency_code: USD
     phone_prefix: +1-284
     default_locale: en_VG
+    currency_symbol_prepend: true
 VI:
+    currency_code: USD
     phone_prefix: +1-340
     default_locale: en_VI
+    currency_symbol_prepend: true
 VN:
+    currency_code: VND
     phone_prefix: '84'
     default_locale: vi
+    currency_symbol_prepend: false
 VU:
+    currency_code: VUV
     phone_prefix: '678'
     default_locale: fr
+    currency_symbol_prepend: false
 WF:
+    currency_code: XPF
     phone_prefix: '681'
     default_locale: fr
+    currency_symbol_prepend: false
 WS:
+    currency_code: WST
     phone_prefix: '685'
     default_locale: en
+    currency_symbol_prepend: true
 YE:
+    currency_code: YER
     phone_prefix: '967'
     default_locale: ar_YE
+    currency_symbol_prepend: true
 YT:
+    currency_code: EUR
     phone_prefix: '262'
     default_locale: fr_YT
+    currency_symbol_prepend: false
 ZA:
+    currency_code: ZAR
     phone_prefix: '27'
     default_locale: zu
+    currency_symbol_prepend: true
 ZM:
+    currency_code: ZMK
     phone_prefix: '260'
     default_locale: en_ZM
+    currency_symbol_prepend: true
 ZW:
+    currency_code: ZWL
     phone_prefix: '263'
     default_locale: en_ZW
+    currency_symbol_prepend: true
 CS:
+    currency_code: RSD
     phone_prefix: '381'
     default_locale: sr
+    currency_symbol_prepend: false
 AN:
+    currency_code: ANG
     phone_prefix: '599'
     default_locale: nl
+    currency_symbol_prepend: true

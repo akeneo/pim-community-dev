@@ -29,6 +29,7 @@ services:
             - [addNameFormats, [%oro_locale.format.name%]]
             - [addAddressFormats, [%oro_locale.format.address%]]
             - [addLocaleData, [%oro_locale.locale_data%]]
+            - [addCurrencyData, [%oro_locale.currency_data%]]
 
     oro_locale.calendar:
         class: %oro_locale.calendar.class%
@@ -39,7 +40,7 @@ services:
     oro_locale.form.type.name_format.type:
         class: %oro_locale.form.type.name_format.type.class%
         arguments:
-            - @oro_locale.settings
+            - @oro_locale.formatter.name
         tags:
             - { name: form.type, alias: "oro_name_format" }
 
