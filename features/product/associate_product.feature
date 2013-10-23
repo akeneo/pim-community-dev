@@ -47,8 +47,6 @@ Feature: Associate a product
     Given I edit the "black_tea" product
     When I visit the "Associations" tab
     And I visit the "Substitution" group
-    And I press the "Show groups" button
-    And I press the "Show products" button
     And I check the row "indian_coffee"
     And I visit the "Upsell" group
     And I check the rows "coffee_mug and tea_mug"
