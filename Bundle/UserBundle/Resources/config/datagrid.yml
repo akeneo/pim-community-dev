@@ -294,7 +294,7 @@ datagrid:
         filters:
             columns:
                 has_role:
-                    type: string
+                    type: boolean
                     data_name: has_role
         sorters:
             columns:
@@ -326,7 +326,7 @@ datagrid:
         filters:
             columns:
                 has_group:
-                    type: string
+                    type: boolean
                     data_name: has_group
         sorters:
             columns:

@@ -50,7 +50,6 @@ class BusinessUnitController extends Controller
     public function viewAction(BusinessUnit $entity)
     {
         return array(
-            'datagrid' => $this->getBusinessUnitDatagridManager($entity, 'view')->getDatagrid()->createView(),
             'entity' => $entity,
         );
     }
@@ -168,7 +167,6 @@ class BusinessUnitController extends Controller
         }
 
         return array(
-            'datagrid' => $this->getBusinessUnitDatagridManager($entity, 'update')->getDatagrid()->createView(),
             'form'     => $this->get('oro_organization.form.business_unit')->createView(),
         );
     }

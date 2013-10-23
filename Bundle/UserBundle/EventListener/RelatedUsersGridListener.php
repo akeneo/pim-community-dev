@@ -19,14 +19,19 @@ class RelatedUsersGridListener
     /** @var string */
     protected $paramName;
 
+    /** @var boolean */
+    protected $isCheckboxes;
+
     /**
      * @param RequestParameters $requestParams
      * @param string $paramName entity param name
+     * @param bool $isCheckboxes whether or not to add data_in, data_not_in params to query
      */
-    public function __construct(RequestParameters $requestParams, $paramName)
+    public function __construct(RequestParameters $requestParams, $paramName, $isCheckboxes = true)
     {
         $this->requestParams = $requestParams;
         $this->paramName = $paramName;
+        $this->isCheckboxes = $isCheckboxes;
     }
 
     public function onBuildAfter(BuildAfter $event)
@@ -35,13 +40,18 @@ class RelatedUsersGridListener
         if ($datasource instanceof OrmDatasource) {
             /** @var QueryBuilder $query */
             $queryBuilder = $datasource->getQuery();
-            $queryBuilder->setParameters(
-                array(
-                    $this->paramName => $this->requestParams->get($this->paramName, null),
-                    'data_in'     => $this->requestParams->get(self::GRID_PARAM_DATA_IN, array(0)),
-                    'data_not_in' => $this->requestParams->get(self::GRID_PARAM_DATA_NOT_IN, array(0)),
-                )
+
+            $queryParameters = array(
+                $this->paramName => $this->requestParams->get($this->paramName, null),
+                'data_in'     => $this->requestParams->get(self::GRID_PARAM_DATA_IN, array(0)),
+                'data_not_in' => $this->requestParams->get(self::GRID_PARAM_DATA_NOT_IN, array(0)),
             );
+
+            if (!$this->isCheckboxes) {
+                unset($queryParameters['data_in'], $queryParameters['data_not_in']);
+            }
+
+            $queryBuilder->setParameters($queryParameters);
         }
     }
 }
