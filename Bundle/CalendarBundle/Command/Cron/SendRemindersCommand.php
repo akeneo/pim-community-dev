@@ -8,8 +8,9 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Oro\Bundle\CronBundle\Command\Logger\OutputLogger;
+use Oro\Bundle\CalendarBundle\Notification\RemindersSender;
 
-class DispatchRemindersCommand extends ContainerAwareCommand implements CronCommandInterface
+class SendRemindersCommand extends ContainerAwareCommand implements CronCommandInterface
 {
     /**
      * {@internaldoc}
@@ -25,8 +26,8 @@ class DispatchRemindersCommand extends ContainerAwareCommand implements CronComm
     protected function configure()
     {
         $this
-            ->setName('oro:cron:calendar-dispatch-reminders')
-            ->setDescription('Dispatch calendar reminders');
+            ->setName('oro:cron:send-calendar-reminders')
+            ->setDescription('Send calendar reminders');
     }
 
     /**
@@ -34,8 +35,9 @@ class DispatchRemindersCommand extends ContainerAwareCommand implements CronComm
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-//        /** @var ImapEmailSynchronizer $synchronizer */
-//        $synchronizer = $this->getContainer()->get('oro_imap.email_synchronizer');
-//        $synchronizer->setLogger(new OutputLogger($output));
+        /** @var RemindersSender $sender */
+        $sender = $this->getContainer()->get('oro_calendar.reminders_sender');
+        $sender->setLogger(new OutputLogger($output));
+        $sender->send();
     }
 }

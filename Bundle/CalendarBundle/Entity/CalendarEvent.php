@@ -4,6 +4,7 @@ namespace Oro\Bundle\CalendarBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 
 /**
  * @ORM\Entity
@@ -41,6 +42,11 @@ class CalendarEvent
      * @var string
      *
      * @ORM\Column(name="title", type="text", nullable=false)
+     * @ConfigField(
+     *  defaultValues={
+     *      "email"={"available_in_template"=true}
+     *  }
+     * )
      */
     protected $title;
 
@@ -48,6 +54,11 @@ class CalendarEvent
      * @var \DateTime
      *
      * @ORM\Column(name="start", type="datetime")
+     * @ConfigField(
+     *  defaultValues={
+     *      "email"={"available_in_template"=true}
+     *  }
+     * )
      */
     protected $start;
 
@@ -55,6 +66,11 @@ class CalendarEvent
      * @var \DateTime
      *
      * @ORM\Column(name="end", type="datetime")
+     * @ConfigField(
+     *  defaultValues={
+     *      "email"={"available_in_template"=true}
+     *  }
+     * )
      */
     protected $end;
 
@@ -71,6 +87,20 @@ class CalendarEvent
      * @ORM\Column(name="reminder", type="boolean")
      */
     protected $reminder;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="remind_at", type="datetime", nullable=true)
+     */
+    protected $remindAt;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="reminded", type="boolean", options={"default":false})
+     */
+    protected $reminded;
 
     /**
      * Gets an calendar event id.
@@ -206,7 +236,7 @@ class CalendarEvent
     }
 
     /**
-     * Indicates whether an reminder need to be send for an event.
+     * Indicates whether an remind notification need to be send for an event.
      *
      * @return bool
      */
@@ -216,7 +246,7 @@ class CalendarEvent
     }
 
     /**
-     * Sets a flag indicates whether an reminder need to be send for an event.
+     * Sets a flag indicates whether an remind notification need to be send for an event.
      *
      * @param bool $reminder
      * @return CalendarEvent
@@ -224,6 +254,52 @@ class CalendarEvent
     public function setReminder($reminder)
     {
         $this->reminder = $reminder;
+
+        return $this;
+    }
+
+    /**
+     * Gets date/time an remind notification should occurs.
+     *
+     * @return \DateTime
+     */
+    public function getRemindAt()
+    {
+        return $this->remindAt;
+    }
+
+    /**
+     * Sets date/time an remind notification should occurs.
+     *
+     * @param \DateTime $remindAt
+     * @return CalendarEvent
+     */
+    public function setRemindAt($remindAt)
+    {
+        $this->remindAt = $remindAt;
+
+        return $this;
+    }
+
+    /**
+     * Gets a flag indicates whether an remind notification has already occurred or not.
+     *
+     * @return bool
+     */
+    public function getReminded()
+    {
+        return $this->reminded;
+    }
+
+    /**
+     * Sets a flag indicates whether an remind notification has already occurred or not.
+     *
+     * @param bool $reminded
+     * @return CalendarEvent
+     */
+    public function setReminded($reminded)
+    {
+        $this->reminded = $reminded;
 
         return $this;
     }

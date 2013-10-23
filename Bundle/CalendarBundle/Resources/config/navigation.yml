@@ -11,5 +11,5 @@ oro_menu_config:
                 oro_calendar_view_default: ~
 
 oro_titles:
-    oro_calendar_view_default: "%%username%% - My Calendar"
-    oro_calendar_view: "%%username%% - Calendars - %%calendarname%%"
+    oro_calendar_view_default: "My Calendar - %%username%%"
+    oro_calendar_view: "%%calendarname%% - Calendars - %%username%%"

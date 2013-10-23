@@ -6,13 +6,14 @@ use Oro\Bundle\CalendarBundle\Entity\Calendar;
 use Oro\Bundle\CalendarBundle\Entity\CalendarConnection;
 use Oro\Bundle\CalendarBundle\EventListener\EntitySubscriber;
 use Doctrine\ORM\Event\OnFlushEventArgs;
+use Oro\Bundle\CalendarBundle\Notification\RemindTimeCalculator;
 use Oro\Bundle\UserBundle\Entity\User;
 
 class EntitySubscriberTest extends \PHPUnit_Framework_TestCase
 {
     public function testOnFlush()
     {
-        $subscriber = new EntitySubscriber();
+        $subscriber = new EntitySubscriber(new RemindTimeCalculator(15));
         $em = $this->getMockBuilder('Doctrine\ORM\EntityManager')
             ->disableOriginalConstructor()
             ->getMock();
