@@ -415,14 +415,15 @@ class ProductDatagridManager extends FlexibleDatagridManager
      */
     protected function createGroupField(GroupType $groupType)
     {
-        $choices = $em->getRepository('PimCatalogBundle:Group')->getChoicesByType($type);
+        $em = $this->flexibleManager->getStorageManager();
+        $choices = $em->getRepository('PimCatalogBundle:Group')->getChoicesByType($groupType);
 
         $field = new FieldDescription();
-        $field->setName($type->getCode());
+        $field->setName($groupType->getCode());
         $field->setOptions(
             array(
                 'type'            => FieldDescriptionInterface::TYPE_HTML,
-                'label'           => $this->translate($type->getCode()),
+                'label'           => $this->translate((string) $groupType),
                 'field_name'      => 'groups',
                 'expression'      => 'pGroup.id',
                 'filter_type'     => FilterInterface::TYPE_CHOICE,
