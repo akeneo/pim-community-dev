@@ -18,13 +18,13 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\GridBundle\Filter\FilterInterface;
 
 /**
- * Product association datagrid
+ * Datagrid for associating a product to products
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductAssociationDatagridManager extends FlexibleDatagridManager
+class AssociationProductDatagridManager extends FlexibleDatagridManager
 {
     /**
      * @var ProductInterface $product
@@ -114,9 +114,9 @@ class ProductAssociationDatagridManager extends FlexibleDatagridManager
     }
 
     /**
-     * It creates an editable checkbox to add/remove association to the edited product
+     * It creates an editable checkbox to add/remove product association to the edited product
      *
-     * @return \Oro\Bundle\GridBundle\Field\FieldDescription
+     * @return FieldDescription
      */
     protected function createProductAssociationField()
     {
@@ -211,7 +211,7 @@ class ProductAssociationDatagridManager extends FlexibleDatagridManager
     /**
      * Create family field description
      *
-     * @return \Oro\Bundle\GridBundle\Field\FieldDescription
+     * @return FieldDescription
      */
     protected function createFamilyField()
     {
@@ -244,7 +244,7 @@ class ProductAssociationDatagridManager extends FlexibleDatagridManager
      * @param string $code
      * @param string $label
      *
-     * @return \Oro\Bundle\GridBundle\Field\FieldDescription
+     * @return FieldDescription
      */
     protected function createDatetimeField($code, $label)
     {
@@ -284,7 +284,7 @@ class ProductAssociationDatagridManager extends FlexibleDatagridManager
                 'PimCatalogBundle:ProductAssociation',
                 'pa',
                 'WITH',
-                sprintf('pa.association = :association AND pa.owner = :product AND %s MEMBER OF pa.targets', $rootAlias)
+                sprintf('pa.association = :association AND pa.owner = :product AND %s MEMBER OF pa.products', $rootAlias)
             );
 
         $this->applyProductExclusionExpression($proxyQuery);

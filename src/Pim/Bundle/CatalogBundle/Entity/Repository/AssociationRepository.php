@@ -25,16 +25,18 @@ class AssociationRepository extends EntityRepository
     {
         $qb = $this->createQueryBuilder('pa');
 
-        $associationIds = $product->getProductAssociations()->map(
-            function ($productAssociation) {
-                return $productAssociation->getAssociation()->getId();
-            }
-        );
-
-        if (!$associationIds->isEmpty()) {
-            $qb->andWhere(
-                $qb->expr()->notIn('pa.id', $associationIds->toArray())
+        if ($productAssociations = $product->getProductAssociations()) {
+            $associationIds = $productAssociations->map(
+                function ($productAssociation) {
+                    return $productAssociation->getAssociation()->getId();
+                }
             );
+
+            if (!$associationIds->isEmpty()) {
+                $qb->andWhere(
+                    $qb->expr()->notIn('pa.id', $associationIds->toArray())
+                );
+            }
         }
 
         return $qb;
