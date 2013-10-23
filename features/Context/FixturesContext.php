@@ -990,8 +990,29 @@ class FixturesContext extends RawMinkContext
     public function theFollowingFileToImport(PyStringNode $string)
     {
         $this->placeholderValues['file to import'] = $filename =
-            sprintf('/tmp/behat-import-%s.csv', substr(md5(rand()), 0, 7));
+            sprintf('/tmp/pim-import/behat-import-%s.csv', substr(md5(rand()), 0, 7));
+        @mkdir(dirname($filename), 0777, true);
+
         file_put_contents($filename, (string) $string);
+    }
+
+    /**
+     * @Given /^import directory of "([^"]*)" contain the following media:$/
+     */
+    public function importDirectoryOfContainTheFollowingMedia($code, TableNode $table)
+    {
+        $path = $this
+            ->getJobInstance($code)
+            ->getJob()
+            ->getSteps()[0]
+            ->getReader()
+            ->getFilePath();
+
+        $path = dirname($path);
+
+        foreach ($table->getRows() as $data) {
+            copy(__DIR__ . '/fixtures/'. $data[0], rtrim($path, '/') . '/' .$data[0]);
+        }
     }
 
     /**
@@ -1019,7 +1040,17 @@ class FixturesContext extends RawMinkContext
         $this->getEntityManager()->refresh($product);
 
         foreach ($table->getRowsHash() as $code => $value) {
-            assertEquals($value, (string) $product->getValue($code));
+            if ('media' === $this->getAttribute($code)->getBackendType()) {
+                // media filename is auto generated during media handling and cannot be guessed
+                // (it contains a timestamp)
+                if ('**empty**' === $value) {
+                    assertEmpty((string) $product->getValue($code));
+                } else {
+                    assertTrue(false !== strpos((string) $product->getValue($code), $value));
+                }
+            } else {
+                assertEquals($value, (string) $product->getValue($code));
+            }
         }
     }
 
@@ -1031,6 +1062,18 @@ class FixturesContext extends RawMinkContext
     public function thereShouldBeAUser($username)
     {
         $this->getUser($username);
+    }
+
+    /**
+     * @Given /^family of "([^"]*)" should be "([^"]*)"$/
+     */
+    public function familyOfShouldBe($productCode, $familyCode)
+    {
+        $family = $this->getProduct($productCode)->getFamily();
+        if (!$family) {
+            throw \Exception(sprintf('Product "%s" doesn\'t have a family', $productCode));
+        }
+        assertEquals($familyCode, $family->getCode());
     }
 
     /**

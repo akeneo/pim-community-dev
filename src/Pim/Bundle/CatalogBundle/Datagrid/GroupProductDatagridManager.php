@@ -56,11 +56,22 @@ class GroupProductDatagridManager extends FlexibleDatagridManager
         $field = $this->createProductRelationField();
         $fieldsCollection->add($field);
 
-        $identifier = $this->flexibleManager->getIdentifierAttribute();
-        $field = $this->createFlexibleField($identifier);
-        $fieldsCollection->add($field);
+        // TODO : until we'll have related backend type in grid bundle
+        $excludedBackend = array(
+            AbstractAttributeType::BACKEND_TYPE_MEDIA
+        );
 
-        foreach ($this->getGroup()->getAttributes() as $attribute) {
+        // create flexible columns
+        foreach ($this->getFlexibleAttributes() as $attribute) {
+            $backendType = $attribute->getBackendType();
+            if (in_array($backendType, $excludedBackend)) {
+                continue;
+            }
+
+            if (!$attribute->isUseableAsGridColumn() && !$attribute->isUseableAsGridFilter()) {
+                continue;
+            }
+
             $field = $this->createFlexibleField($attribute);
             $fieldsCollection->add($field);
         }
@@ -100,6 +111,25 @@ class GroupProductDatagridManager extends FlexibleDatagridManager
         );
 
         return $field;
+    }
+
+    /**
+     * @return AbstractAttribute[]
+     */
+    protected function getFlexibleAttributes()
+    {
+        if (null === $this->attributes) {
+            /** @var $attributeRepository \Doctrine\Common\Persistence\ObjectRepository */
+            $attributeRepository = $this->flexibleManager->getAttributeRepository();
+            $attributes = $attributeRepository->findAllWithTranslations();
+            $this->attributes = array();
+            /** @var $attribute AbstractAttribute */
+            foreach ($attributes as $attribute) {
+                $this->attributes[$attribute->getCode()] = $attribute;
+            }
+        }
+
+        return $this->attributes;
     }
 
     /**
@@ -234,7 +264,6 @@ class GroupProductDatagridManager extends FlexibleDatagridManager
             'data_in'     => $dataIn,
             'data_not_in' => $dataNotIn,
             'group'       => $this->getGroup(),
-            'scopeCode'   => $this->flexibleManager->getScope()
         );
     }
 
@@ -250,14 +279,15 @@ class GroupProductDatagridManager extends FlexibleDatagridManager
 
         foreach ($this->getGroup()->getAttributes() as $attribute) {
             $valueField = sprintf('v_%s', $attribute->getId());
+            $valueExpr = $valueField .'.attribute = '. $attribute->getId().' AND '
+                .($proxyQuery->expr()->isNotNull($valueField.'.option'));
             $proxyQuery
                 ->innerJoin(
                     $rootAlias .'.values',
                     $valueField,
                     'WITH',
-                    $valueField .'.attribute = '. $attribute->getId()
-                )
-                ->andWhere($proxyQuery->expr()->isNotNull($valueField.'.option'));
+                    $valueExpr
+                );
         }
     }
 
