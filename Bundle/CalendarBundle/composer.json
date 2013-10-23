@@ -13,6 +13,7 @@
         "oro/jsfv-bundle": "dev-master",
         "oro/email-bundle": "dev-master",
         "oro/notification-bundle": "dev-master",
+        "oro/locale-bundle": "dev-master",
         "oro/user-bundle": "dev-master"
     },
     "autoload": {

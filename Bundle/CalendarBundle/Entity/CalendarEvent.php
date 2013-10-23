@@ -78,6 +78,11 @@ class CalendarEvent
      * @var bool
      *
      * @ORM\Column(name="all_day", type="boolean")
+     * @ConfigField(
+     *  defaultValues={
+     *      "email"={"available_in_template"=true}
+     *  }
+     * )
      */
     protected $allDay;
 

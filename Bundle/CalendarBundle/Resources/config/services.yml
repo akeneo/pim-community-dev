@@ -1,7 +1,5 @@
 parameters:
     oro_calendar.calendar.entity.class:                         Oro\Bundle\CalendarBundle\Entity\Calendar
-
-    oro_calendar.calendar.entity.class:                         Oro\Bundle\CalendarBundle\Entity\Calendar
     oro_calendar.calendar_connection.entity.class:              Oro\Bundle\CalendarBundle\Entity\CalendarConnection
     oro_calendar.calendar_event.entity.class:                   Oro\Bundle\CalendarBundle\Entity\CalendarEvent
     oro_calendar.listener.entity_subscriber.class:              Oro\Bundle\CalendarBundle\EventListener\EntitySubscriber
@@ -9,6 +7,7 @@ parameters:
     oro_calendar.calendar_event.manager.api.class:              Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
     oro_calendar.reminders_sender.class:                        Oro\Bundle\CalendarBundle\Notification\RemindersSender
     oro_calendar.remind_time_calculator.class:                  Oro\Bundle\CalendarBundle\Notification\RemindTimeCalculator
+    oro_calendar.twig.dateformat.class:                         Oro\Bundle\CalendarBundle\Twig\DateFormatExtension
 
 services:
     oro_calendar.reminders_sender:
@@ -43,3 +42,10 @@ services:
         arguments:
             - %oro_calendar.calendar_event.entity.class%
             - @doctrine.orm.entity_manager
+
+    oro_calendar.twig.dateformat:
+        class: %oro_calendar.twig.dateformat.class%
+        arguments:
+            - @oro_locale.twig.dateformat
+        tags:
+            - { name: twig.extension }

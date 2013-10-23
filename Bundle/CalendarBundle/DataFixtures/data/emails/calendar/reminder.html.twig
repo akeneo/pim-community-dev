@@ -6,5 +6,5 @@
 
 <h1>{{ entity.title }}</h1>
 <div>
-    <i>When:</i> {{ entity.start }} - {{ entity.end }}
+    <i>When:</i> {{ calendar_date_range(entity.start, entity.end, entity.allDay) }}
 </div>

@@ -77,6 +77,8 @@ class RemindersSender
         foreach ($events as $event) {
             try {
                 $toEmail = $event->getCalendar()->getOwner()->getEmail();
+                // @todo: need to be refactored to dispatch a notification event instead of then use processor directly
+                //        wait till owner will be added to the recipient list in the notification bundle
                 $this->notificationProcessor->process(
                     $event,
                     array(new EmailNotificationAdapter($template, $toEmail)),
