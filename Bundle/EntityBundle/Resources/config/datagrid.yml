@@ -1,5 +1,6 @@
 parameters:
     oro_entity.custom_datagrid.manager.class:   Oro\Bundle\EntityBundle\Datagrid\CustomEntityDatagrid
+    oro_entity.relation_datagrid.manager.class: Oro\Bundle\EntityBundle\Datagrid\RelationEntityDatagrid
 
 services:
     oro_entity.custom_datagrid.manager:
@@ -14,3 +15,14 @@ services:
               route_name:                       oro_entity_index
               query_entity_alias:               ce
 
+    oro_entity.relation_datagrid.manager:
+        class:                                  %oro_entity.relation_datagrid.manager.class%
+        arguments:
+            - @oro_entity_config.config_manager
+        tags:
+            - name:                             oro_grid.datagrid.manager
+              datagrid_name:                    relation_entity
+              entity_name:                      Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel
+              entity_hint:                      entity
+              route_name:                       oro_entity_index
+              query_entity_alias:               ce

@@ -116,7 +116,7 @@ class CustomEntityType extends AbstractType
                     case 'manyToMany':
                         $classArray          = explode('\\', $extendConfig->get('target_entity'));
                         $blockName           = array_pop($classArray);
-                        $selectorWindowTitle = 'Select ';
+                        $selectorWindowTitle = 'Select ' . $blockName;
 
                         $builder->add(
                             'default_' . $fieldConfigId->getFieldName(),
@@ -143,9 +143,11 @@ class CustomEntityType extends AbstractType
                             ),
                             'class'                 => $extendConfig->get('target_entity'),
                             'grid_url'              => $this->router->generate(
-                                'oro_entity_index',
+                                'oro_entity_relation',
                                 array(
-                                    'id' => str_replace('\\', '_', $extendConfig->get('target_entity'))
+                                    //'className' => str_replace('\\', '_', $extendConfig->get('target_entity')),
+                                    'className' => str_replace('\\', '_', $className),
+                                    'fieldName' => $fieldConfigId->getFieldName()
                                 )
                             ),
                             'selector_window_title' => $selectorWindowTitle,

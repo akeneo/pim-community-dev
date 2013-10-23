@@ -79,19 +79,20 @@ class EntitiesController extends Controller
     /**
      * Grid of Custom/Extend entity.
      * @Route(
-     *      "/{id}",
+     *      "/relation/{className}/field/{fieldName}",
      *      name="oro_entity_relation",
-     *      defaults={"id"=0}
+     *      defaults={"className"="", "fieldName"=""}
      * )
-     * @Template("OroEntityBundle:Entities:index.html.twig")
+     * @ Template()
      */
-    public function relationAction($id)
+    public function relationAction($className, $fieldName)
     {
-        $extendEntityName = str_replace('_', '\\', $id);
+        $extendEntityName = str_replace('_', '\\', $className);
         $this->checkAccess('VIEW', $extendEntityName);
 
         /** @var ConfigProvider $entityConfigProvider */
         $entityConfigProvider = $this->get('oro_entity_config.provider.entity');
+        $extendConfigProvider = $this->get('oro_entity_config.provider.extend');
 
         if (!$entityConfigProvider->hasConfig($extendEntityName)) {
             throw $this->createNotFoundException();
@@ -99,22 +100,24 @@ class EntitiesController extends Controller
 
         $entityConfig = $entityConfigProvider->getConfig($extendEntityName);
 
+        $fieldConfig = $extendConfigProvider->getConfig($extendEntityName, $fieldName);
+
         /** @var  CustomEntityDatagrid $datagrid */
         $datagridManager = $this->get('oro_entity.relation_datagrid.manager');
 
-        $datagridManager->setCustomEntityClass($extendEntityName);
-        $datagridManager->setEntityName($extendEntityName);
-        $datagridManager->getRouteGenerator()->setRouteParameters(array('id' => $id));
+        $datagridManager->setCustomEntityClass($fieldConfig->get('target_entity'));
+        $datagridManager->setRelationConfig($fieldConfig);
+        $datagridManager->setEntityName($fieldConfig->get('target_entity'));
 
         $view = $datagridManager->getDatagrid()->createView();
 
         return 'json' == $this->getRequest()->getRequestFormat()
             ? $this->get('oro_grid.renderer')->renderResultsJsonResponse($view)
             : $this->render(
-                'OroEntityBundle:Entities:index.html.twig',
+                'OroEntityBundle:Entities:relationDatagrid.html.twig',
                 array(
                     'datagrid'     => $view,
-                    'entity_id'    => $id,
+                    'entity_id'    => $className,
                     'entity_class' => $extendEntityName,
                     'label'        => $entityConfig->get('label')
                 )
