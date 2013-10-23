@@ -26,7 +26,7 @@ class GroupRepository extends EntityRepository
 
         $choices = array();
         foreach ($groups as $group) {
-            $choices[$group->getId()]= $group->getCode();
+            $choices[$group->getId()] = $group->getCode();
         }
 
         return $choices;
