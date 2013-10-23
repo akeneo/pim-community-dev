@@ -8,7 +8,6 @@ parameters:
     pim_catalog.controller.mass_edit_action.class:  Pim\Bundle\CatalogBundle\Controller\MassEditActionController
     pim_catalog.controller.product_attribute.class: Pim\Bundle\CatalogBundle\Controller\ProductAttributeController
     pim_catalog.controller.product.class:           Pim\Bundle\CatalogBundle\Controller\ProductController
-    pim_catalog.controller.variant_group.class:     Pim\Bundle\CatalogBundle\Controller\VariantGroupController
     pim_catalog.controller.group.class:             Pim\Bundle\CatalogBundle\Controller\GroupController
     pim_catalog.controller.association.class:       Pim\Bundle\CatalogBundle\Controller\AssociationController
 
@@ -117,15 +116,6 @@ services:
             - '@pim_catalog.mass_edit_action.operator'
             - '@pim_catalog.datagrid.worker'
             - '@oro_grid.mass_action.parameters_parser'
-
-    pim_catalog.controller.variant_group:
-        scope: request
-        class: %pim_catalog.controller.variant_group.class%
-        parent: pim_catalog.controller.abstract_doctrine
-        arguments:
-            - '@pim_catalog.datagrid.worker'
-            - '@pim_catalog.form.handler.variant_group'
-            - '@pim_catalog.form.variant_group'
 
     pim_catalog.controller.group:
         scope: request

@@ -495,11 +495,27 @@ div.ui-dialog {
 }
 .modal .modal-header{
   background-color: @color-purple_light;
+  #gradient .vertical(@color-purple_light, darken(@color-purple_light, 5%));
   -webkit-border-radius: 6px 6px 0 0;
   border-radius: 6px 6px 0 0;
 }
 .modal-header h3{
   color: #fff;
+}
+
+.modal-primary {
+  top: 20%;
+  background-color: @backgroundColor-white;
+
+  .modal-header {
+    background-color: @color-purple_light;
+    #gradient .vertical(@color-purple_light, darken(@color-purple_light, 5%));
+    -webkit-border-radius: 6px 6px 0 0;
+    border-radius: 6px 6px 0 0;
+  }
+  .modal-header h3 {
+    font: #fff;
+  }
 }
 
 .form-inline {
@@ -797,6 +813,9 @@ h1 {
   .buffer-small-bottom {padding-bottom:10px;}
   .buffer-small-left {padding-left:10px;}
 }
+.unspaced {
+  margin: 0;
+}
 
 form.form-horizontal .currency {
   margin-bottom: 10px;
@@ -967,9 +986,10 @@ div.entity-updated {
   }
 }
 
-/* Product edit form - categories tab */
+/* Product edit form - categories/associations tab */
 
 .classify .nav-list li a i,
+#association-list .nav-list li a i,
 #categories .nav-list li a i {
   padding-right: 5px;
   font-size: 16px;

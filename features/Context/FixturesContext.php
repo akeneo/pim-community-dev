@@ -13,6 +13,7 @@ use Pim\Bundle\CatalogBundle\Entity\Association;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
+use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Family;
@@ -20,7 +21,7 @@ use Pim\Bundle\CatalogBundle\Entity\FamilyTranslation;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Entity\ProductPrice;
-use Pim\Bundle\CatalogBundle\Entity\VariantGroup;
+use Pim\Bundle\CatalogBundle\Entity\Group;
 use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Gherkin\Node\PyStringNode;
@@ -97,6 +98,20 @@ class FixturesContext extends RawMinkContext
     public function createRequiredAttribute()
     {
         $this->createAttribute('SKU', false, 'identifier', true);
+    }
+
+    /**
+     * @BeforeScenario
+     */
+    public function resetGroupTypes()
+    {
+        $types = array(
+            'VARIANT' => 1,
+            'X_SELL'  => 0,
+        );
+        foreach ($types as $code => $isVariant) {
+            $this->createGroupType($code, $isVariant);
+        }
     }
 
     /**
@@ -301,15 +316,15 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @Given /^there is no variant$/
+     * @Given /^there is no product group$/
      */
-    public function thereIsNoVariant()
+    public function thereIsNoProductGroup()
     {
         $em = $this->getEntityManager();
-        $variants = $em->getRepository('PimCatalogBundle:VariantGroup')->findAll();
+        $groups = $em->getRepository('PimCatalogBundle:Group')->findAll();
 
-        foreach ($variants as $variant) {
-            $this->remove($variant);
+        foreach ($groups as $group) {
+            $this->remove($group);
         }
         $this->flush();
     }
@@ -797,16 +812,19 @@ class FixturesContext extends RawMinkContext
     /**
      * @param TableNode $table
      *
-     * @Given /^the following variants?:$/
+     * @Given /^the following product groups?:$/
      */
-    public function theFollowingVariants(TableNode $table)
+    public function theFollowingProductGroups(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
             $code = $data['code'];
             $label = $data['label'];
-            $attributes = explode(', ', $data['attributes']);
+            $type = $data['type'];
+            $attributes = ($data['attributes'] == '') ? array() : explode(', ', $data['attributes']);
 
-            $this->createVariant($code, $label, $attributes);
+            $products = (isset($data['products'])) ? explode(', ', $data['products']) : array();
+
+            $this->createGroup($code, $label, $type, $attributes, $products);
         }
     }
 
@@ -1035,6 +1053,21 @@ class FixturesContext extends RawMinkContext
     /**
      * @param string $code
      *
+     * @return GroupType
+     */
+    public function getGroupType($code)
+    {
+        return $this->getEntityOrException(
+            'PimCatalogBundle:GroupType',
+            array(
+                'code' => $code
+            )
+        );
+    }
+
+    /**
+     * @param string $code
+     *
      * @return ProductAttribute
      */
     public function getAttribute($code)
@@ -1191,6 +1224,23 @@ class FixturesContext extends RawMinkContext
         $this->getEntityManager()->refresh($productValue);
 
         return $productValue;
+    }
+
+    /**
+     * @param string  $code
+     * @param boolean $isVariant
+     *
+     * @return GroupType
+     */
+    private function createGroupType($code, $isVariant)
+    {
+        $type = new GroupType();
+        $type->setCode($code);
+        $type->setVariant($isVariant);
+
+        $this->persist($type);
+
+        return $type;
     }
 
     /**
@@ -1359,20 +1409,31 @@ class FixturesContext extends RawMinkContext
     /**
      * @param string $code
      * @param string $label
+     * @param string $type
      * @param array  $attributes
+     * @param array  $products
      */
-    private function createVariant($code, $label, array $attributes)
+    private function createGroup($code, $label, $type, array $attributes, array $products = array())
     {
-        $variant = new VariantGroup();
-        $variant->setCode($code);
-        $variant->setLocale('en_US')->setLabel($label); // TODO translation refactoring
+        $group = new Group();
+        $group->setCode($code);
+        $group->setLocale('en_US')->setLabel($label); // TODO translation refactoring
+
+        $type = $this->getGroupType($type);
+        $group->setType($type);
 
         foreach ($attributes as $attributeCode) {
             $attribute = $this->getAttribute($attributeCode);
-            $variant->addAttribute($attribute);
+            $group->addAttribute($attribute);
         }
 
-        $this->persist($variant);
+        foreach ($products as $sku) {
+            $product = $this->getProduct($sku);
+            $group->addProduct($product);
+            $product->addGroup($group);
+        }
+
+        $this->persist($group);
     }
 
     /**
@@ -1449,11 +1510,11 @@ class FixturesContext extends RawMinkContext
     /**
      * @param string $code
      *
-     * @return VariantGroup
+     * @return Group
      */
-    public function getVariant($code)
+    public function getProductGroup($code)
     {
-        return $this->getEntityOrException('PimCatalogBundle:VariantGroup', array('code' => $code));
+        return $this->getEntityOrException('PimCatalogBundle:Group', array('code' => $code));
     }
 
     /**

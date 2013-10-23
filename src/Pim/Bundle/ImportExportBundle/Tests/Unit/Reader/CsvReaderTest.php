@@ -65,21 +65,15 @@ class CsvReaderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test related method
+     *
+     * @expectedException Oro\Bundle\BatchBundle\Item\InvalidItemException
+     * @expectedExceptionMessage Expecting to have 3 columns, actually have 4
      */
     public function testInvalidCsvRead()
     {
         $this->reader->setFilePath(__DIR__ . '/../../fixtures/invalid_import.csv');
 
-        $this->stepExecution
-            ->expects($this->once())
-            ->method('addReaderWarning')
-            ->with(
-                get_class($this->reader),
-                $this->stringStartsWith('Expecting to have 3 columns, actually have 4'),
-                array('Severin', 'Gero', '28', 'error')
-            );
-
-        $this->assertFalse($this->reader->read());
+        $this->reader->read();
         $this->assertNull($this->reader->read());
     }
 

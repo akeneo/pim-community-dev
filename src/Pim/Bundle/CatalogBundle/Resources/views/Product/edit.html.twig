@@ -171,15 +171,20 @@
                         <i id="edit-family" class="icon-pencil"></i>
                     {% endif %}
                 </li>
-                {% set variantGroupAttributes %}
-                    {% if form.vars.value.variantGroup %}
-                        {% for attribute in form.vars.value.variantGroup.attributes %}
-                            "{{ attribute }}"{% if not loop.last %},{% endif %}
-                        {% endfor %}
-                    {% endif %}
-                {% endset %}
-                {% set variantGroupTooltip = variantGroupAttributes|trim is empty ? null : 'info.variant group.axis'|trans({ '%attributes%': variantGroupAttributes|trim }) %}
-                <li>{{ 'variant group'|trans|capitalize }}: <span{% if variantGroupTooltip %} data-toggle="tooltip" data-placement="bottom" data-original-title="{{ variantGroupTooltip }}"{% endif %}>{{ form.vars.value.variantGroup|capitalize|default('N/A'|trans) }}</span></li>
+
+                {% for group in form.vars.value.groups %}
+                    {% set variantGroupAttributes %}
+                        {% if group.type.isVariant %}
+                            {% for attribute in group.attributes %}
+                                "{{ attribute }}"{% if not loop.last %},{% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    {% endset %}
+                    {% set variantGroupTooltip = variantGroupAttributes|trim is empty ? null : 'info.variant group.axis'|trans({ '%attributes%': variantGroupAttributes|trim }) %}
+                    <li>{{ 'group'|trans|capitalize }}: <span{% if variantGroupTooltip %} data-toggle="tooltip" data-placement="bottom" data-original-title="{{ variantGroupTooltip }}"{% endif %}>{{ group.code|capitalize|default('N/A'|trans) }}</span></li>
+                {% endfor %}
+
+
                 <li>{{ 'Created'|trans }}: {{ created ? created.loggedAt|date("Y-m-d h:i:s") : 'N/A'|trans }} {{ 'by'|trans }} {{ created ? created.user.username : 'N/A'|trans }}</li>
                 <li>{{ 'Last update'|trans }}: {{ updated ? updated.loggedAt|date("Y-m-d h:i:s") : 'N/A'|trans }} {{ 'by'|trans }} {{ updated ? updated.user.username : 'N/A'|trans }}</li>
            </ul>

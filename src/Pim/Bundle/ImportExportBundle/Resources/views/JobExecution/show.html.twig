@@ -17,8 +17,18 @@
         {% if isRunning %}
             {{ elements.link('Refresh', path(refresh_route, { 'id': execution.id }), { icon: 'refresh' }) }}
         {% else %}
-            {{ elements.link('Download file', path(download_file_route, { 'id': execution.id }), { icon: 'download', class:'no-hash' }) }}
-            {{ elements.link('Download log', path(download_log_route, { 'id': execution.id }), { icon: 'download', class:'no-hash' }) }}
+            {% if existingDownload %}
+                {{ elements.link(
+                    'Download file',
+                    path(download_file_route, { 'id': execution.id }), { icon: 'download', class:'no-hash' }
+                ) }}
+            {% endif %}
+            {% if existingLog %}
+                {{ elements.link(
+                    'Download log',
+                    path(download_log_route, { 'id': execution.id }), { icon: 'download', class:'no-hash' }
+                ) }}
+            {% endif %}
         {% endif %}
         {{ elements.link('Show profile', path(show_profile_route, { 'id': execution.jobInstance.id })) }}
     {% endset %}
@@ -44,48 +54,83 @@
             </thead>
             <tbody>
                 {% for step in execution.stepExecutions %}
-                <tr>
-                    <td>{{ step.stepName | trans }}</td>
-                    <td>{{ step.status }}</td>
-                    <td>{{ step.readCount }}</td>
-                    <td>{{ step.filterCount }}</td>
-                    <td>{{ step.writeCount }}</td>
-                    <td>{{ step.startTime |date("Y-m-d h:i:s") }}</td>
-                    <td>{{ step.endTime |date("Y-m-d h:i:s") }}</td>
+                    <tr>
+                        <td>{{ step.stepName | trans }}</td>
+                        <td>{{ step.status }}</td>
+                        <td>{{ step.readCount }}</td>
+                        <td>{{ step.filterCount }}</td>
+                        <td>{{ step.writeCount }}</td>
+                        <td>{{ step.startTime|date("Y-m-d H:i:s") }}</td>
+                        <td>{{ step.endTime|date("Y-m-d H:i:s") }}</td>
+                    </tr>
+
+                    {# Step warnings #}
+                    {% for warning in step.warnings %}
+                    <tr class="warning">
+                        <td colspan="7">
+                            <span class="title">{{ warning.name|trans|upper }}</span>&nbsp;
+                            {{ warning.reason }}<br />
+                            <a class="data" href="#"
+                                data-display-label="{{ 'Display item'|trans }}"
+                                data-hide-label="{{ 'Hide item'|trans }}">
+                                {{ 'Display item'|trans }}
+                            </a>
+                            <span class="data">
+<pre>
+{{ 'Item'|trans }} (
+{% for key, value in warning.item %}
+    {{ key }} => {{ value }}
+{% endfor %}
+)
+</pre>
+                            </span>
+                        </td>
+                    </tr>
+                    {% endfor %}
+
+                    {# Step errors #}
+                    {% for error in step.failureExceptions %}
+                    <tr class="error">
+                        <td colspan="7">
+                            <span class="title">{{ step.stepName|trans|upper }}</span>&nbsp;{{ error.message }}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                {% endfor %}
+
+                {# Job errors #}
+                {% for error in execution.failureExceptions %}
+                <tr class="error">
+                    <span class="title">{{ execution.jobInstance.label|upper }}</span>&nbsp;{{ error.message }}
                 </tr>
-                    {% if step.readerWarnings is not empty %}
-                    <tr>
-                        <td colspan="7">{{ "Reader" | trans }}</td>
-                    </tr>
-                    {% endif %}
-                    {% for warning in step.readerWarnings %}
-                    <tr>
-                        <td colspan="7"><i class="validation-tooltip"></i> {{ warning.reason }}</td>
-                    </tr>
-                    {% endfor %}
-                    {% if step.filterWarnings is not empty %}
-                    <tr>
-                        <td colspan="7">{{ "Filter" | trans }}</td>
-                    </tr>
-                    {% endif %}
-                    {% for warning in step.filterWarnings %}
-                    <tr>
-                        <td colspan="7"><i class="validation-tooltip"></i> {{ warning.reason }}</td>
-                    </tr>
-                    {% endfor %}
-                    {% if step.writerWarnings is not empty %}
-                    <tr>
-                        <td colspan="7">{{ "Writer" | trans }}</td>
-                    </tr>
-                    {% endif %}
-                    {% for warning in step.writerWarnings %}
-                    <tr>
-                        <td colspan="7"><i class="validation-tooltip"></i> {{ warning.reason }}</td>
-                    </tr>
-                    {% endfor %}
                 {% endfor %}
             </tbody>
         </table>
     </div>
 
+{% endblock %}
+
+{% block head_script %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        require(
+            ['jquery'],
+            function($){
+                'use strict';
+                $(function() {
+                    $('a.data').click(function(event) {
+                        var displayLabel = $(this).data('display-label');
+                        var hideLabel = $(this).data('hide-label');
+                        var newLabel = $(this).text().trim() == displayLabel ? hideLabel : displayLabel;
+
+                        event.preventDefault();
+
+                        $(this).siblings('span.data').toggle();
+                        $(this).text(newLabel);
+                    });
+                });
+            }
+        );
+    </script>
 {% endblock %}

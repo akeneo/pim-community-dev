@@ -1,0 +1,61 @@
+{% set listenerParameters = {
+    'columnName': 'has_association',
+    'selectors': {
+        'included': '#' ~ form.productAssociations.children|first.appendTargets.vars.id,
+        'excluded': '#' ~ form.productAssociations.children|first.removeTargets.vars.id
+    }
+} %}
+
+{% placeholder prepare_grid with {'datagrid': associationDatagrid, 'selector': '#association-grid', 'parameters': listenerParameters } %}
+
+<script type="text/javascript">
+    require(
+        ['jquery', 'pim/datagrid/parameter-setter', 'oro/mediator'],
+        function($, Setter, mediator) {
+            'use strict';
+            $(function() {
+                $('#association-list').on('shown', 'a[data-toggle="tab"]', function() {
+                    var associationId = $(this).attr('id').replace('association-link-', '');
+                    changeAssociation(associationId);
+                });
+
+                function changeAssociation(associationId) {
+                    var $associationFields = $('#{{ form.productAssociations.vars.id }}'),
+                        $idField = $associationFields.find('input[type="hidden"][value="' + associationId + '"]');
+
+                    var appendFieldId = '#' + $idField.siblings('[id$="appendTargets"]').attr('id');
+                    var removeFieldId = '#' + $idField.siblings('[id$="removeTargets"]').attr('id');
+                    mediator.trigger('column_form_listener:set_selectors', { included: appendFieldId, excluded: removeFieldId });
+                    Setter.setParameter('{{ associationDatagrid.datagrid.name }}', 'associationId', associationId, true);
+                }
+
+                // Trigger the shown event on the tab activated by restoring the form state
+                $('#association-list').find('li.active:not(:first-of-type)').find('a').trigger('shown');
+            });
+        }
+    );
+</script>
+
+<div id="association-list" class="tab-groups">
+    <ul class="nav nav-list">
+        {% for association in associations %}
+            <li class="tab{% if loop.first %} active{% endif %}">
+                <a id="association-link-{{ association.id }}" href="#association-tab-{{ association.id }}" data-toggle="tab">
+                    {% set associationCount = product.getProductAssociationForAssociation(association).targets|length %}
+                    <i class="icon-ok {{ associationCount > 0 ? 'green' : 'gray' }}"></i>
+                    {{ association.label }} ({{ associationCount }})
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+
+<div class="tab-content fullheight">
+    {% for association in associations %}
+         <div id="association-tab-{{ association.id }}" class="tab-pane">
+            <h3 class="unspaced">{{ association.label }}</h3>
+        </div>
+    {% endfor %}
+    <div id="association-grid"></div>
+    {{ form_widget(form.productAssociations, { 'attr': { 'class': 'hide' }}) }}
+</div>

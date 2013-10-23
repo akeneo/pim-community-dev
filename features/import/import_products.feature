@@ -18,6 +18,9 @@ Feature: Execute a job
       | travel  | Travel  | master |
       | men     | Men     | master |
       | women   | Women   | master |
+    And the following product groups:
+      | code  | label      | attributes  | type   |
+      | CROSS | Bag Cross  |             | X_SELL |
     And the following attributes:
       | code        | label       | type                         |
       | name        | Name        | pim_catalog_text             |
@@ -30,17 +33,17 @@ Feature: Execute a job
   Scenario: Successfully import a csv file of products
     Given the following file to import:
       """
-      sku;family;categories;name;description
-      SKU-001;Bag;leather,travel;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est
-      SKU-002;Hat;travel;Donex;Pellentesque habitant morbi tristique senectus et netus et malesuada fames
-      SKU-003;Hat;men;ac;Morbi quis urna. Nunc quis arcu vel quam dignissim pharetra.
-      SKU-004;Hat;men;nec;justo sit amet nulla. Donec non justo. Proin non massa
-      SKU-005;Bag;women,silk;non;tincidunt dui augue eu tellus. Phasellus elit pede, malesuada vel
-      SKU-006;Bag;leather;ipsum;Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aliquam auctor,
-      SKU-007;Hat;;rutrum.;quis, pede. Praesent eu dui. Cum sociis natoque penatibus et
-      SKU-008;Bag;coton;ligula;urna et arcu imperdiet ullamcorper. Duis at lacus. Quisque purus
-      SKU-009;Hat;;porttitor;sagittis. Duis gravida. Praesent eu nulla at sem molestie sodales.
-      SKU-010;Bag;men,silk;non,;vestibulum nec, euismod in, dolor. Fusce feugiat. Lorem ipsum dolor
+      sku;family;groups;categories;name;description
+      SKU-001;Bag;CROSS;leather,travel;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est
+      SKU-002;Hat;;travel;Donex;Pellentesque habitant morbi tristique senectus et netus et malesuada fames
+      SKU-003;Hat;;men;ac;Morbi quis urna. Nunc quis arcu vel quam dignissim pharetra.
+      SKU-004;Hat;;men;nec;justo sit amet nulla. Donec non justo. Proin non massa
+      SKU-005;Bag;CROSS;women,silk;non;tincidunt dui augue eu tellus. Phasellus elit pede, malesuada vel
+      SKU-006;Bag;CROSS;leather;ipsum;Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aliquam auctor,
+      SKU-007;Hat;;;rutrum.;quis, pede. Praesent eu dui. Cum sociis natoque penatibus et
+      SKU-008;Bag;CROSS;coton;ligula;urna et arcu imperdiet ullamcorper. Duis at lacus. Quisque purus
+      SKU-009;Hat;;;porttitor;sagittis. Duis gravida. Praesent eu nulla at sem molestie sodales.
+      SKU-010;Bag;CROSS;men,silk;non,;vestibulum nec, euismod in, dolor. Fusce feugiat. Lorem ipsum dolor
       """
     And the following job "acme_product_import" configuration:
       | element   | property          | value                |
@@ -52,6 +55,7 @@ Feature: Execute a job
       | processor | enabled           | yes                  |
       | processor | categories column | categories           |
       | processor | family column     | families             |
+      | processor | groups column     | groups               |
     And I am logged in as "Julia"
     When I am on the "acme_product_import" import job page
     And I launch the import job
@@ -66,9 +70,9 @@ Feature: Execute a job
   Scenario: Successfully ignore duplicate unique data
     Given the following file to import:
       """
-      sku;family;categories;name;description
-      SKU-001;Bag;leather,travel;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est
-      SKU-001;Hat;travel;Donex;Pellentesque habitant morbi tristique senectus et netus et malesuada fames
+      sku;family;groups;categories;name;description
+      SKU-001;Bag;;leather,travel;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est
+      SKU-001;Hat;;travel;Donex;Pellentesque habitant morbi tristique senectus et netus et malesuada fames
       """
     And the following job "acme_product_import" configuration:
       | element   | property          | value                |
@@ -80,6 +84,7 @@ Feature: Execute a job
       | processor | enabled           | yes                  |
       | processor | categories column | categories           |
       | processor | family column     | families             |
+      | processor | groups column     | groups               |
     And I am logged in as "Julia"
     When I am on the "acme_product_import" import job page
     And I launch the import job
@@ -96,8 +101,8 @@ Feature: Execute a job
       | SKU-001 | name      | FooBar |
     Given the following file to import:
       """
-      sku;family;categories;name;description
-      SKU-001;Bag;leather,travel;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est
+      sku;family;groups;categories;name;description
+      SKU-001;Bag;;leather,travel;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est
       """
     And the following job "acme_product_import" configuration:
       | element   | property          | value                |
@@ -109,6 +114,7 @@ Feature: Execute a job
       | processor | enabled           | yes                  |
       | processor | categories column | categories           |
       | processor | family column     | families             |
+      | processor | groups column     | groups               |
     And I am logged in as "Julia"
     When I am on the "acme_product_import" import job page
     And I launch the import job
@@ -120,17 +126,17 @@ Feature: Execute a job
   Scenario: Successfully import products through file upload
     Given the following file to import:
       """
-      sku;family;categories;name;description
-      SKU-001;Bag;leather,travel;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est
-      SKU-002;Hat;travel;Donex;Pellentesque habitant morbi tristique senectus et netus et malesuada fames
-      SKU-003;Hat;men;ac;Morbi quis urna. Nunc quis arcu vel quam dignissim pharetra.
-      SKU-004;Hat;men;nec;justo sit amet nulla. Donec non justo. Proin non massa
-      SKU-005;Bag;women,silk;non;tincidunt dui augue eu tellus. Phasellus elit pede, malesuada vel
-      SKU-006;Bag;leather;ipsum;Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aliquam auctor,
-      SKU-007;Hat;;rutrum.;quis, pede. Praesent eu dui. Cum sociis natoque penatibus et
-      SKU-008;Bag;coton;ligula;urna et arcu imperdiet ullamcorper. Duis at lacus. Quisque purus
-      SKU-009;Hat;;porttitor;sagittis. Duis gravida. Praesent eu nulla at sem molestie sodales.
-      SKU-010;Bag;men,silk;non,;vestibulum nec, euismod in, dolor. Fusce feugiat. Lorem ipsum dolor
+      sku;family;groups;categories;name;description
+      SKU-001;Bag;;leather,travel;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est
+      SKU-002;Hat;;travel;Donex;Pellentesque habitant morbi tristique senectus et netus et malesuada fames
+      SKU-003;Hat;;men;ac;Morbi quis urna. Nunc quis arcu vel quam dignissim pharetra.
+      SKU-004;Hat;;men;nec;justo sit amet nulla. Donec non justo. Proin non massa
+      SKU-005;Bag;;women,silk;non;tincidunt dui augue eu tellus. Phasellus elit pede, malesuada vel
+      SKU-006;Bag;;leather;ipsum;Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aliquam auctor,
+      SKU-007;Hat;;;rutrum.;quis, pede. Praesent eu dui. Cum sociis natoque penatibus et
+      SKU-008;Bag;;coton;ligula;urna et arcu imperdiet ullamcorper. Duis at lacus. Quisque purus
+      SKU-009;Hat;;;porttitor;sagittis. Duis gravida. Praesent eu nulla at sem molestie sodales.
+      SKU-010;Bag;;men,silk;non,;vestibulum nec, euismod in, dolor. Fusce feugiat. Lorem ipsum dolor
       """
     And the following job "acme_product_import" configuration:
       | element   | property          | value      |
@@ -142,6 +148,7 @@ Feature: Execute a job
       | processor | enabled           | yes        |
       | processor | categories column | categories |
       | processor | family column     | families   |
+      | processor | groups column     | groups     |
     And I am logged in as "Julia"
     When I am on the "acme_product_import" import job page
     And I upload and import the file "{{ file to import }}"
@@ -168,6 +175,7 @@ Feature: Execute a job
       | processor | enabled           | yes                  |
       | processor | categories column | categories           |
       | processor | family column     | families             |
+      | processor | groups column     | groups               |
     And I am logged in as "Julia"
     When I am on the "acme_product_import" import job page
     And I launch the import job
@@ -200,6 +208,7 @@ Feature: Execute a job
       | processor | enabled           | yes                  |
       | processor | categories column | categories           |
       | processor | family column     | families             |
+      | processor | groups column     | groups               |
     And I am logged in as "Julia"
     When I am on the "acme_product_import" import job page
     And I launch the import job
