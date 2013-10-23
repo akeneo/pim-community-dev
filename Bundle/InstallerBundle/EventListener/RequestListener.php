@@ -66,7 +66,7 @@ class RequestListener
 
         if (!$this->installed) {
             if (!in_array($event->getRequest()->get('_route'), $allowedRoutes)) {
-                $event->setResponse(new RedirectResponse($this->router->generate('oro_installer_flow')));
+                $event->setResponse(new RedirectResponse($event->getRequest()->getBasePath() . '/install.php'));
             }
 
             $event->stopPropagation();
