@@ -32,3 +32,11 @@ Feature: Define product prices
     And I switch the locale to "French"
     Then the product [publicPrice] in $ should be "200.00"
     And the product [publicPrice] in € should be "150.00"
+
+  Scenario: Successfully update the french public prices
+    Given I am on the "bike" product page
+    And I switch the locale to "French"
+    When I change the "$ [publicPrice]" to "700.00"
+    And I save the product
+    Then the product [publicPrice] in $ should be "700.00"
+    And the product [publicPrice] in € should be "150.00"
