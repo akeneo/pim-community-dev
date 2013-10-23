@@ -91,12 +91,12 @@
                         {% if group.type.isVariant %}
                             {% set variantGroupAttributes %}
                                 {% for attribute in group.attributes %}
-                                    - {{ attribute|trim }}<br />
+                                    <br />- {{ attribute|trim }}
                                 {% endfor %}
                            {% endset %}
                            {% set variantGroupTooltip = variantGroupAttributes|trim is empty
                                ? null
-                               : 'info.group.axis'|trans ~ '<br />' ~ variantGroupAttributes|trim %}
+                               : 'info.group.axis'|trans({'%attributes%': variantGroupAttributes|trim }) %}
                         {% endif %}
 
                         <span id="group-products-{{ group.id }}"{% if variantGroupTooltip is defined%}
