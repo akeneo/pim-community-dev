@@ -39,7 +39,7 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                     ->arrayNode(PropertyInterface::FRONTEND_OPTIONS_KEY)
-                        ->isRequired()
+                        // ->isRequired()
                         ->ignoreExtraKeys()
                         ->children()
                             ->scalarNode('label')->isRequired()->end()
