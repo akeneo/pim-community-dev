@@ -4,7 +4,7 @@ oro_calendar:
     prefix:       /calendar
 
 oro_calendar_api:
-    resource: "@OroCalendarBundle/Resources/config/routing_api.yml"
+    resource: "@OroCalendarBundle/Resources/config/oro/routing_api.yml"
     type: rest
     prefix: api/rest/{version}
     defaults:
