@@ -22,6 +22,8 @@ use Oro\Bundle\EntityBundle\Datagrid\CustomEntityDatagrid;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 
+use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
+
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 
 /**
@@ -77,13 +79,54 @@ class EntitiesController extends Controller
     }
 
     /**
+     * @Route(
+     *      "/info/{id}/{className}/{fieldName}",
+     *      name="oro_entity_info",
+     *      requirements={"id"="\d+"},
+     *      defaults={"id"=0, "className"="", "fieldName"=""}
+     * )
+     * @Template
+     */
+    public function infoAction($id, $className, $fieldName)
+    {
+        $className = str_replace('_', '\\', $className);
+        $this->checkAccess('VIEW', $className);
+
+        $extendProvider = $this->get('oro_entity_config.provider.extend');
+        $entityProvider = $this->get('oro_entity_config.provider.entity');
+        $viewProvider   = $this->get('oro_entity_config.provider.view');
+
+        $fields = $extendProvider->filter(
+            function (ConfigInterface $config) use ($viewProvider) {
+                return
+                    $config->is('owner', ExtendManager::OWNER_CUSTOM)
+                    && !$config->is('state', ExtendManager::STATE_NEW)
+                    && !$config->is('is_deleted')
+                    && $viewProvider->getConfigById($config->getId())->is('is_displayable');
+            },
+            $className
+        );
+
+        $dynamicRow = array();
+        foreach ($fields as $field) {
+            //$label = $entityProvider->getConfigById($field->getId())->get('label') ? : $field->getId()->getFieldName();
+            //$dynamicRow[$label] = $contact->{'get' . ucfirst(Inflector::camelize($field->getId()->getFieldName()))}();
+        }
+
+        /*return array(
+            'dynamic' => $dynamicRow,
+            'entity'  => $entity
+        );*/
+    }
+
+    /**
      * Grid of Custom/Extend entity.
      * @Route(
-     *      "/relation/{id}/{className}/field/{fieldName}",
+     *      "/relation/{id}/{className}/{fieldName}",
      *      name="oro_entity_relation",
      *      defaults={"id"=0, "className"="", "fieldName"=""}
      * )
-     * @ Template()
+     * @Template()
      */
     public function relationAction($id, $className, $fieldName)
     {
@@ -107,22 +150,31 @@ class EntitiesController extends Controller
         $datagridManager->setCustomEntityClass($fieldConfig->get('target_entity'));
         $datagridManager->setRelationConfig($fieldConfig);
         $datagridManager->setRelation($this->getDoctrine()->getRepository($extendEntityName)->find($id));
+        $datagridManager->setAdditionalParameters(
+            array(
+                'data_in' => explode(',', $this->getRequest()->get('added')),
+                'data_not_in' => explode(',', $this->getRequest()->get('removed'))
+            )
+        );
         $datagridManager->setEntityName($fieldConfig->get('target_entity'));
 
         $view = $datagridManager->getDatagrid()->createView();
 
+
+
+
         return 'json' == $this->getRequest()->getRequestFormat()
             ? $this->get('oro_grid.renderer')->renderResultsJsonResponse($view)
-            : $this->render(
-                'OroEntityBundle:Entities:relationDatagrid.html.twig',
-                array(
-                    'datagrid'     => $view,
-                    'entity_id'    => $className,
-                    'entity_class' => $extendEntityName,
-                    'label'        => $entityConfig->get('label')
-                )
-            );
+            : array(
+                'datagrid'        => $view,
+                'entity_id'       => $className,
+                'entity_class'    => $extendEntityName,
+                'label'           => $entityConfig->get('label'),
+                'entity_provider' => $entityConfigProvider,
+                'relation'        => $fieldConfig
+              );
     }
+
 
     /**
      * View custom entity instance.
