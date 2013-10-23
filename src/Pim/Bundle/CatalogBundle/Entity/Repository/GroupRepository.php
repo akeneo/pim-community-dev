@@ -7,7 +7,7 @@ use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Doctrine\ORM\AbstractQuery;
 
 /**
- * Repository
+ * Group repository
  *
  * @author    Nicolas <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -22,12 +22,8 @@ class GroupRepository extends EntityRepository
      */
     public function getChoicesByType(GroupType $type)
     {
-        $alias = $this->getAlias();
-        $qb = $this->build()
-            ->where($alias.'.type = :groupType')
-            ->addOrderBy($alias.'.code', 'ASC')
-            ->setParameter('groupType', $type);
-        $groups = $qb->getQuery()->getResult();
+        $groups = $this->getGroupsByType($type);
+
         $choices = array();
         foreach ($groups as $group) {
             $choices[$group->getId()]= $group->getCode();
@@ -37,11 +33,42 @@ class GroupRepository extends EntityRepository
     }
 
     /**
+     * Get ordered groups by type
+     *
+     * @param GroupType $type
+     *
+     * @return array
+     */
+    protected function getGroupsByType(GroupType $type)
+    {
+        return $this
+            ->getGroupsByTypeQB($type)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * Get ordered groups query builder
+     *
+     * @param GroupType $type
+     *
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    protected function getGroupsByTypeQB(GroupType $type)
+    {
+        $alias = $this->getAlias();
+
+        return $this->build()
+            ->where($alias.'.type = :groupType')
+            ->addOrderBy($alias.'.code', 'ASC')
+            ->setParameter('groupType', $type);
+    }
+
+    /**
      * @return string
      */
     protected function getAlias()
     {
         return 'ProductGroup';
     }
-
 }
