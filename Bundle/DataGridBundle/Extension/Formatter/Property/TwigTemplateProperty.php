@@ -9,9 +9,6 @@ class TwigTemplateProperty extends AbstractProperty
     /** @var \Twig_Environment */
     protected $environment;
 
-    /** @var \Twig_TemplateInterface */
-    protected $template;
-
     /**  @var array */
     protected $reservedKeys = ['record', 'value'];
 
@@ -61,10 +58,6 @@ class TwigTemplateProperty extends AbstractProperty
      */
     protected function getTemplate()
     {
-        if (!$this->template) {
-            $this->template = $this->environment->loadTemplate($this->get('template'));
-        }
-
-        return $this->template;
+        return $this->environment->loadTemplate($this->get('template'));
     }
 }
