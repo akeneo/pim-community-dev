@@ -67,7 +67,7 @@
                         $('#{{ form.family.vars.id }}')
                             .attr('data-placeholder', '{{ "Choose a family"|trans }}')
                             .select2({ allowClear: true });
-                    })
+                    });
 
                     $('#{{ form.vars.id }}').on('click', 'button[type="submit"]', function() {
                         $('#{{ form.vars.id }}').append($('<div class="hide"/>').html(message));
@@ -75,10 +75,10 @@
                 {% endif %}
 
                 {% for group in form.vars.value.groups %}
-                    {% set productList %}{{ "Products list"|trans }}<ul>{% for product in group.products %}<li>{{ product.label }}</li>{% endfor %}</ul>{% endset %}
+                    {% set productList %}{% include 'PimGridBundle:Grid:grid.html.twig' with {'headers': ['products'], 'rows': group.products } %}{% endset %}
                     $('#group-products-{{ group.id }}').on('click', function() {
                         Dialog.redirect(
-                            '{{ productList }}',
+                            '{{ productList|raw }}',
                             '{{ "Group"|trans }} {{ group.label }} - {{ "list of products"|trans }}',
                             '{{ "View group"|trans }}',
                             '{{ path('pim_catalog_group_edit', { 'id': group.id }) }}'
