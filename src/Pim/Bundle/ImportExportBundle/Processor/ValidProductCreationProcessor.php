@@ -11,10 +11,6 @@ use Pim\Bundle\ImportExportBundle\Exception\InvalidObjectException;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
-use Pim\Bundle\ImportExportBundle\Converter\ProductEnabledConverter;
-use Pim\Bundle\ImportExportBundle\Converter\ProductFamilyConverter;
-use Pim\Bundle\ImportExportBundle\Converter\ProductGroupsConverter;
-use Pim\Bundle\ImportExportBundle\Converter\ProductCategoriesConverter;
 use Pim\Bundle\ImportExportBundle\Converter\ProductErrorConverter;
 
 /**
@@ -28,6 +24,26 @@ use Pim\Bundle\ImportExportBundle\Converter\ProductErrorConverter;
 class ValidProductCreationProcessor extends AbstractConfigurableStepElement implements ItemProcessorInterface,
  StepExecutionAwareInterface
 {
+    /**
+     * @staticvar The name of the categories field in the form
+     */
+    const CATEGORIES_FIELD = 'categories';
+
+    /**
+     * @staticvar The name of the family field in the form
+     */
+    const GROUPS_FIELD = 'groups';
+
+    /**
+     * @staticvar The name of the family field in the form
+     */
+    const FAMILY_FIELD = 'family';
+
+    /**
+     * @staticvar The name of the enabled field in the form
+     */    
+    const ENABLED_FIELD = 'enabled';
+
     /**
      * @var FormFactoryInterface $formFactory
      */
@@ -336,24 +352,25 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
             )
         );
 
-        $item[ProductEnabledConverter::ENABLED_KEY] = $this->enabled;
-
-        if (array_key_exists($this->familyColumn, $item)) {
-            $item[ProductFamilyConverter::FAMILY_KEY] = $item[$this->familyColumn];
-            unset($item[$this->familyColumn]);
-        }
-
-        if (array_key_exists($this->groupsColumn, $item)) {
-            $item[ProductGroupsConverter::GROUPS_KEY] = $item[$this->groupsColumn];
-            unset($item[$this->groupsColumn]);
-        }
-
-        if (array_key_exists($this->categoriesColumn, $item)) {
-            $item[ProductCategoriesConverter::CATEGORIES_KEY] = $item[$this->categoriesColumn];
+        $item[static::ENABLED_FIELD] = $this->enabled;
+        
+        if (static::CATEGORIES_FIELD != $this->categoriesColumn) {
+            $item[static::CATEGORIES_FIELD] = $item[$this->categoriesColumn];
             unset($item[$this->categoriesColumn]);
         }
 
+        if (static::GROUPS_FIELD != $this->groupsColumn) {
+            $item[static::GROUPS_FIELD] = $item[$this->groupsColumn];
+            unset($item[$this->groupsColumn]);
+        }
+
+        if (static::FAMILY_FIELD != $this->familyColumn) {
+            $item[static::FAMILY_FIELD] = $item[$this->familyColumn];
+            unset($item[$this->familyColumn]);
+        }
+
         $values = $this->filterValues($product, $item);
+        
         $form->submit($values);
 
         return $form;
@@ -369,25 +386,21 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
      */
     private function filterValues(ProductInterface $product, array $values)
     {
-        if (array_key_exists(ProductFamilyConverter::FAMILY_KEY, $values)) {
-            $familyCode = $values[ProductFamilyConverter::FAMILY_KEY];
-        } else {
-            $familyCode = null;
-        }
+        $familyCode = array_key_exists(static::FAMILY_FIELD, $values)
+            ? $values[static::FAMILY_FIELD]
+            : null;
 
-        if (array_key_exists(ProductGroupsConverter::GROUPS_KEY, $values)) {
-            $groupCodes = $values[ProductGroupsConverter::GROUPS_KEY];
-        } else {
-            $groupCodes = null;
-        }
+        $groupCodes = array_key_exists(static::GROUPS_FIELD, $values)
+            ? $values[static::GROUPS_FIELD]
+            : null;
 
         $requiredValues = $this->getRequiredValues($product, $familyCode, $groupCodes);
 
         $excludedKeys = array(
-            ProductEnabledConverter::ENABLED_KEY,
-            ProductFamilyConverter::FAMILY_KEY,
-            ProductCategoriesConverter::CATEGORIES_KEY,
-            ProductGroupsConverter::GROUPS_KEY
+            static::ENABLED_FIELD,
+            static::CATEGORIES_FIELD,
+            static::FAMILY_FIELD,
+            static::GROUPS_FIELD
         );
 
         foreach ($values as $key => $value) {

@@ -36,28 +36,25 @@ class ProductImportType extends AbstractType
             ->add('enabled', 'hidden')
             ->add(
                 'family',
-                'entity',
+                'pim_import_entity',
                 array(
                     'class'       => 'PimCatalogBundle:Family',
-                    'empty_value' => ''
                 )
             )
             ->add(
                 'categories',
-                'entity',
+                'pim_import_entity',
                 array(
                     'class'        => 'PimCatalogBundle:Category',
                     'multiple'     => true,
-                    'by_reference' => false
                 )
             )
             ->add(
                 'groups',
-                'entity',
+                'pim_import_entity',
                 array(
                     'class'        => 'PimCatalogBundle:Group',
                     'multiple'     => true,
-                    'by_reference' => false
                 )
             )
             ->addEventSubscriber($this->transformer)

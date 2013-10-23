@@ -8,6 +8,7 @@ use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Oro\Bundle\BatchBundle\Entity\StepExecution;
 use Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\ImportExportBundle\Cache\EntityCache;
 
 /**
  * Product writer using ORM method
@@ -41,6 +42,11 @@ class OrmProductWriter extends AbstractConfigurableStepElement implements
     protected $stepExecution;
 
     /**
+     * @var EntityCache
+     */
+    protected $entityCache;
+
+    /**
      * Entities which should not be cleared on flush
      *
      * @var array
@@ -64,10 +70,14 @@ class OrmProductWriter extends AbstractConfigurableStepElement implements
      * @param ProductManager $productManager Product manager
      * @param EntityManager  $entityManager  Doctrine's entity manager
      */
-    public function __construct(ProductManager $productManager, EntityManager $entityManager)
-    {
+    public function __construct(
+        ProductManager $productManager, 
+        EntityManager $entityManager,
+        EntityCache $entityCache
+    ) {
         $this->productManager = $productManager;
         $this->entityManager  = $entityManager;
+        $this->entityCache    = $entityCache;
     }
 
     /**
@@ -96,6 +106,7 @@ class OrmProductWriter extends AbstractConfigurableStepElement implements
                 $storageManager->clear($className);
             }
         }
+        $this->entityCache->clear();
     }
 
     /**

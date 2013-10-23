@@ -93,6 +93,7 @@ services:
         arguments:
             - '@pim_catalog.manager.product'
             - '@doctrine.orm.default_entity_manager'
+            - '@pim_import_export.entity_cache'
 
     pim_import_export.writer.orm_category:
         class: %pim_import_export.writer.orm_category.class%
