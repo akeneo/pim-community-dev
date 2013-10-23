@@ -79,7 +79,7 @@
                     $('#group-products-{{ group.id }}').on('click', function() {
                         Dialog.redirect(
                             '{{ productList|raw }}',
-                            '{{ "Group"|trans }} {{ group.label }} - {{ "list of products"|trans }}',
+                            '{{ "Group"|trans }} {{ group.label }}',
                             '{{ "View group"|trans }}',
                             '{{ path('pim_catalog_group_edit', { 'id': group.id }) }}'
                         );
