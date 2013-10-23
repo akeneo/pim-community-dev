@@ -57,7 +57,7 @@ class TransformImportedProductDataSubscriberTest extends \PHPUnit_Framework_Test
     public function testTransformImportedData()
     {
         $event = new FormEvent(
-            $this->form, 
+            $this->form,
             array(
                 'enabled'    => true,
                 'family'     => 4,
