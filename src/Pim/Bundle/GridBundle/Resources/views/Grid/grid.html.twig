@@ -1,0 +1,29 @@
+{% spaceless %}{% if headers is defined and headers is iterable %}
+    {% if rows is defined and rows is iterable %}
+        <div class="clearfix"><div class="container-fluid"><div class="grid-container">
+            <table class="grid table table-hover table-bordered table-condensed groups">
+                <thead>
+                    <tr>
+                    {% for header in headers %}
+                        <th class="select-all-header-cell">{{ header|trans|upper }}</th>
+                    {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                {% for row in rows %}
+                    <tr>
+                    {% if row is iterable %}
+                        {% for cell in row %}
+                            <td>{{ cell }}</td>
+                        {% endfor %}
+                    {% else %}
+                        <td>{{ row }}</td>
+                    {% endif %}
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div></div></div>
+    {% endif %}
+{% endif %}
+{% endspaceless %}
