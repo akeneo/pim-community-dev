@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Datagrid;
 
+use Pim\Bundle\CatalogBundle\Entity\GroupType;
+
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
@@ -390,7 +392,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
     /**
      * Create the groups field
      *
-     * @return FieldDescription
+     * @return FieldDescription[]
      */
     protected function createGroupFields()
     {
@@ -398,34 +400,47 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $groupTypes = $em->getRepository('PimCatalogBundle:GroupType')->findAll();
         $fields = array();
         foreach ($groupTypes as $type) {
-            $choices = $em->getRepository('PimCatalogBundle:Group')->getChoicesByType($type);
-            $field = new FieldDescription();
-            $field->setName($type->getCode());
-            $field->setOptions(
-                array(
-                    'type'            => FieldDescriptionInterface::TYPE_HTML,
-                    'label'           => $this->translate($type->getCode()),
-                    'field_name'      => 'groups',
-                    'expression'      => 'pGroup.id',
-                    'filter_type'     => FilterInterface::TYPE_CHOICE,
-                    'required'        => false,
-                    'sortable'        => false,
-                    'filterable'      => true,
-                    'show_filter'     => true,
-                    'multiple'        => true,
-                    'field_options'   => array('choices' => $choices),
-                    'filter_by_where' => true
-                )
-            );
-
-            $field->setProperty(
-                new TwigTemplateProperty($field, 'PimGridBundle:Rendering:_optionsToString.html.twig')
-            );
-
-            $fields[]= $field;
+            $fields[] = $this->createGroupField($type);
         }
 
         return $fields;
+    }
+
+    /**
+     * Create a group field
+     *
+     * @param GroupType $groupType
+     *
+     * @return FieldDescription
+     */
+    protected function createGroupField(GroupType $groupType)
+    {
+        $choices = $em->getRepository('PimCatalogBundle:Group')->getChoicesByType($type);
+
+        $field = new FieldDescription();
+        $field->setName($type->getCode());
+        $field->setOptions(
+            array(
+                'type'            => FieldDescriptionInterface::TYPE_HTML,
+                'label'           => $this->translate($type->getCode()),
+                'field_name'      => 'groups',
+                'expression'      => 'pGroup.id',
+                'filter_type'     => FilterInterface::TYPE_CHOICE,
+                'required'        => false,
+                'sortable'        => false,
+                'filterable'      => true,
+                'show_filter'     => true,
+                'multiple'        => true,
+                'field_options'   => array('choices' => $choices),
+                'filter_by_where' => true
+            )
+        );
+
+        $field->setProperty(
+            new TwigTemplateProperty($field, 'PimGridBundle:Rendering:_optionsToString.html.twig')
+        );
+
+        return $field;
     }
 
     /**
