@@ -11,8 +11,8 @@ services:
             - { name: twig.extension }
 
     oro_workflow.twig.extension.workflow:
-            class: %oro_workflow.twig.extension.workflow.class%
-            arguments:
-                - @oro_workflow.registry
-            tags:
-                - { name: twig.extension }
+        class: %oro_workflow.twig.extension.workflow.class%
+        arguments:
+            - @oro_workflow.registry
+        tags:
+            - { name: twig.extension }

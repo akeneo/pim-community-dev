@@ -983,6 +983,9 @@ class AclManager extends AbstractAclManager
         $acl = null;
         $state = BatchItem::STATE_NONE;
         try {
+            // We need clear ACL cache before finding ACL because it is possible that
+            // non valid empty ACL is cached by MutableAclProvider::cacheEmptyAcl() method
+            $this->aclProvider->clearOidCache($oid);
             $acl = $this->aclProvider->findAcl($oid);
         } catch (AclNotFoundException $ex) {
             if ($ifNotExist === true) {
