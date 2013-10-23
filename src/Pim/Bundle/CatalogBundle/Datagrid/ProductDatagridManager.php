@@ -244,10 +244,8 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $field = $this->createCompletenessField();
         $fieldsCollection->add($field);
 
-        $fields = $this->createGroupFields();
-        foreach ($fields as $field) {
-            $fieldsCollection->add($field);
-        }
+        $field = $this->createGroupField();
+        $fieldsCollection->add($field);
     }
 
     /**
@@ -390,40 +388,23 @@ class ProductDatagridManager extends FlexibleDatagridManager
     }
 
     /**
-     * Create the groups field
-     *
-     * @return FieldDescription[]
-     */
-    protected function createGroupFields()
-    {
-        $em = $this->flexibleManager->getStorageManager();
-        $groupTypes = $em->getRepository('PimCatalogBundle:GroupType')->findAll();
-        $fields = array();
-        foreach ($groupTypes as $type) {
-            $fields[] = $this->createGroupField($type);
-        }
-
-        return $fields;
-    }
-
-    /**
      * Create a group field
      *
      * @param GroupType $groupType
      *
      * @return FieldDescription
      */
-    protected function createGroupField(GroupType $groupType)
+    protected function createGroupField()
     {
         $em = $this->flexibleManager->getStorageManager();
-        $choices = $em->getRepository('PimCatalogBundle:Group')->getChoicesByType($groupType);
+        $choices = $em->getRepository('PimCatalogBundle:Group')->getChoices();
 
         $field = new FieldDescription();
-        $field->setName($groupType->getCode());
+        $field->setName('pGroup');
         $field->setOptions(
             array(
                 'type'            => FieldDescriptionInterface::TYPE_HTML,
-                'label'           => $this->translate('pim_catalog.group.type.'. $groupType->getCode()),
+                'label'           => $this->translate('Groups'),
                 'field_name'      => 'groups',
                 'expression'      => 'pGroup.id',
                 'filter_type'     => FilterInterface::TYPE_CHOICE,

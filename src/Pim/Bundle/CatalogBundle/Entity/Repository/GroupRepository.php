@@ -33,6 +33,27 @@ class GroupRepository extends EntityRepository
     }
 
     /**
+     * Get groups
+     *
+     * @return array
+     */
+    public function getChoices()
+    {
+        $groups = $this
+            ->buildAll()
+            ->addOrderBy($this->getAlias() .'.code', 'ASC')
+            ->getQuery()
+            ->getResult();
+
+        $choices = array();
+        foreach ($groups as $group) {
+            $choices[$group->getId()] = $group->getCode();
+        }
+
+        return $choices;
+    }
+
+    /**
      * Get ordered groups by type
      *
      * @param GroupType $type
