@@ -12,6 +12,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class IndexText
 {
+    const HYPHEN_SUBSTITUTION = '__HYPHEN__';
+
     /**
      * @var integer
      *
@@ -82,7 +84,9 @@ class IndexText
      */
     public function setValue($value)
     {
-        $this->value = $value;
+        $processedValue = str_replace('-', self::HYPHEN_SUBSTITUTION, $value);
+
+        $this->value = $processedValue;
 
         return $this;
     }
@@ -94,7 +98,13 @@ class IndexText
      */
     public function getValue()
     {
-        return $this->value;
+        if (null !== $this->value) {
+            $originalValue = str_replace(self::HYPHEN_SUBSTITUTION, '-', $this->value);
+        } else {
+            $originalValue = null;
+        }
+
+        return $originalValue;
     }
 
     /**
