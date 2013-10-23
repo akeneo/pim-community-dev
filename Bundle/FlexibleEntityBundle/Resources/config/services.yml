@@ -19,6 +19,7 @@ parameters:
     oro_flexibleentity.grid.extension.flexible_filter_utility.class:  Oro\Bundle\FlexibleEntityBundle\Grid\Extension\Filter\FlexibleFilterUtility
     oro_flexibleentity.grid.extension.filter.string.class:            Oro\Bundle\FlexibleEntityBundle\Grid\Extension\Filter\FlexibleStringFilter
     oro_flexibleentity.grid.extension.filter.choice.class:            Oro\Bundle\FlexibleEntityBundle\Grid\Extension\Filter\FlexibleChoiceFilter
+    oro_flexibleentity.grid.extension.filter.number.class:            Oro\Bundle\FlexibleEntityBundle\Grid\Extension\Filter\FlexibleNumberFilter
 
 services:
     oro_flexibleentity.value_form.value_subscriber:
@@ -161,3 +162,11 @@ services:
             - @oro_flexibleentity.grid.extension.flexible_filter_utility
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: flexible_choice }
+
+    oro_flexibleentity.grid.extension.filter.number:
+        class: %oro_flexibleentity.grid.extension.filter.number.class%
+        arguments:
+            - @form.factory
+            - @oro_flexibleentity.grid.extension.flexible_filter_utility
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: flexible_number }

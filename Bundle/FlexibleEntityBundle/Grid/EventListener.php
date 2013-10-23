@@ -7,6 +7,7 @@ use Oro\Bundle\DataGridBundle\Datasource\OrmDatasource;
 use Oro\Bundle\DataGridBundle\Event\BuildAfter;
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\FormatterExtension;
+use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\PropertyInterface;
 use Oro\Bundle\FilterBundle\Extension\OrmFilterExtension;
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Oro\Bundle\FlexibleEntityBundle\Grid\Extension\Formatter\Property\FlexibleFieldProperty;
@@ -68,8 +69,14 @@ class EventListener
                 }
                 $this->accessor->setValue(
                     $config,
-                    FormatterExtension::COLUMNS_PATH . '[' . $attribute . ']',
-                    ['type' => 'flexible_field', 'backend_type' => $attributes[$attribute]->getBackendType()]
+                    sprintf('%s[%s]', FormatterExtension::COLUMNS_PATH, $attribute),
+                    [
+                        'type'                                  => 'flexible_field',
+                        'backend_type'                          => $attributes[$attribute]->getBackendType(),
+                        PropertyInterface::FRONTEND_OPTIONS_KEY => [
+                            'label' => $attributes[$attribute]->getLabel()
+                        ]
+                    ]
                 );
 
                 if ($filterable) {

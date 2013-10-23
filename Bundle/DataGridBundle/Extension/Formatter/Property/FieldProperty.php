@@ -6,6 +6,8 @@ use Oro\Bundle\DataGridBundle\Extension\Formatter\ResultRecordInterface;
 
 class FieldProperty extends AbstractProperty
 {
+    const FRONTEND_TYPE_KEY = 'frontend_type';
+
     const TYPE_DATE     = 'date';
     const TYPE_DATETIME = 'datetime';
     const TYPE_DECIMAL  = 'decimal';
@@ -34,7 +36,7 @@ class FieldProperty extends AbstractProperty
     protected function getRawValue(ResultRecordInterface $record)
     {
         try {
-            $value = $record->getValue($this->getOr('data_name', $this->get('name')));
+            $value = $record->getValue($this->getOr(self::DATA_NAME_KEY, $this->get(self::NAME_KEY)));
         } catch (\LogicException $e) {
             // default value
             $value = null;
@@ -74,7 +76,7 @@ class FieldProperty extends AbstractProperty
      */
     protected function convertValue($value)
     {
-        switch ($this->getOr('frontend_type')) {
+        switch ($this->getOr(self::FRONTEND_TYPE_KEY)) {
             case self::TYPE_DATETIME:
             case self::TYPE_DATE:
                 if ($value instanceof \DateTime) {
