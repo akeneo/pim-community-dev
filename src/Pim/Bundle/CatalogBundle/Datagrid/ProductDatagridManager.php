@@ -242,9 +242,10 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $field = $this->createCompletenessField();
         $fieldsCollection->add($field);
 
-        // TODO : Add a filter per type
-        // $field = $this->createVariantGroupField();
-        // $fieldsCollection->add($field);
+        $fields = $this->createGroupFields();
+        foreach ($fields as $field) {
+            $fieldsCollection->add($field);
+        }
     }
 
     /**
@@ -387,33 +388,42 @@ class ProductDatagridManager extends FlexibleDatagridManager
     }
 
     /**
-     * Create the variant group field
+     * Create the groups field
      *
      * @return FieldDescription
      */
-    protected function createVariantGroupField()
+    protected function createGroupFields()
     {
-        $field = new FieldDescription();
-        $field->setName('variantGroup');
-        $field->setOptions(
-            array(
-                'type'            => FieldDescriptionInterface::TYPE_TEXT,
-                'label'           => $this->translate('Variant group'),
-                'field_name'      => 'variantGroup',
-                'expression'      => 'variantGroup',
-                'filter_type'     => FilterInterface::TYPE_ENTITY,
-                'required'        => false,
-                'sortable'        => true,
-                'filterable'      => true,
-                'show_filter'     => true,
-                'multiple'        => true,
-                'class'           => 'PimCatalogBundle:VariantGroup',
-                'property'        => 'label',
-                'filter_by_where' => true,
-            )
-        );
+        $em = $this->flexibleManager->getStorageManager();
+        $groupTypes = $em->getRepository('PimCatalogBundle:GroupType')->findAll();
+        $fields = array();
+        foreach ($groupTypes as $type) {
+            $choices = $em->getRepository('PimCatalogBundle:Group')->getChoicesByType($type);
+            $field = new FieldDescription();
+            $field->setName($type->getCode());
+            $field->setOptions(
+                array(
+                    'type'            => FieldDescriptionInterface::TYPE_HTML,
+                    'label'           => $this->translate($type->getCode()),
+                    'field_name'      => 'groups',
+                    'filter_type'     => FilterInterface::TYPE_CHOICE,
+                    'required'        => false,
+                    'sortable'        => false,
+                    'filterable'      => true,
+                    'show_filter'     => true,
+                    'multiple'        => true,
+                    'field_options'   => array('choices' => $choices)
+                )
+            );
 
-        return $field;
+            $field->setProperty(
+                new TwigTemplateProperty($field, 'PimGridBundle:Rendering:_optionsToString.html.twig')
+            );
+
+            $fields[]= $field;
+        }
+
+        return $fields;
     }
 
     /**
@@ -568,8 +578,8 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $proxyQuery
             ->leftJoin($rootAlias .'.family', 'productFamily')
             ->leftJoin('productFamily.translations', 'ft', 'WITH', 'ft.locale = :localeCode')
-            ->leftJoin($rootAlias .'.groups', 'Group')
-            ->leftJoin('Group.translations', 'vt', 'WITH', 'vt.locale = :localeCode')
+            ->leftJoin($rootAlias .'.groups', 'groups')
+            ->leftJoin('groups.translations', 'vt', 'WITH', 'vt.locale = :localeCode')
             ->leftJoin($rootAlias.'.values', 'values')
             ->leftJoin('values.options', 'valueOptions')
             ->leftJoin('values.prices', 'valuePrices')
@@ -581,7 +591,8 @@ class ProductDatagridManager extends FlexibleDatagridManager
             ->addSelect('values')
             ->addSelect('valuePrices')
             ->addSelect('valueOptions')
-            ->addSelect('category');
+            ->addSelect('category')
+            ->addSelect('groups');
 
         $this->prepareQueryForCompleteness($proxyQuery, $rootAlias);
         $this->prepareQueryForCategory($proxyQuery, $rootAlias);
