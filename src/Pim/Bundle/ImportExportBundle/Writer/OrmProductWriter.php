@@ -71,7 +71,7 @@ class OrmProductWriter extends AbstractConfigurableStepElement implements
      * @param EntityManager  $entityManager  Doctrine's entity manager
      */
     public function __construct(
-        ProductManager $productManager, 
+        ProductManager $productManager,
         EntityManager $entityManager,
         EntityCache $entityCache
     ) {

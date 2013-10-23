@@ -23,7 +23,7 @@ class TransformImportedProductDataSubscriber implements EventSubscriberInterface
 
     /**
      * Constructor
-     * @param ProductValueConverter      $valueConverter
+     * @param ProductValueConverter $valueConverter
      */
     public function __construct(ProductValueConverter $valueConverter)
     {
@@ -58,7 +58,7 @@ class TransformImportedProductDataSubscriber implements EventSubscriberInterface
 
     /**
      * Returns the name of the fields of the Product entity
-     * 
+     *
      * @return type
      */
     protected function getProductFields()

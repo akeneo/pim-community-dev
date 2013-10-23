@@ -28,7 +28,7 @@ class ProductEditType extends AbstractType
 
     /**
      * Constructor
-     * 
+     *
      * @param \Pim\Bundle\CatalogBundle\Form\View\ProductFormView $productFormView
      */
     public function __construct(
@@ -37,7 +37,6 @@ class ProductEditType extends AbstractType
         $this->productFormView = $productFormView;
     }
 
-        
     /**
      * {@inheritdoc}
      */
@@ -54,7 +53,6 @@ class ProductEditType extends AbstractType
         return 'pim_product';
     }
 
-        
     /**
      * {@inheritdoc}
      */

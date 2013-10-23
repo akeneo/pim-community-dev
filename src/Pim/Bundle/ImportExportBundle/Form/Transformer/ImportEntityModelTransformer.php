@@ -7,7 +7,7 @@ use Pim\Bundle\ImportExportBundle\Cache\EntityCache;
 
 /**
  * Transform entity codes in entity arrays
- * 
+ *
  * @author    Antoine Guigan <antoine@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -25,14 +25,13 @@ class ImportEntityModelTransformer implements DataTransformerInterface
 
     public function reverseTransform($value)
     {
-        if (null == $value)
-        {
+        if (null == $value) {
             return;
         }
 
         $class = $this->options['class'];
         $entityCache = $this->entityCache;
-        $transform = function ($value) use($class, $entityCache) {
+        $transform = function ($value) use ($class, $entityCache) {
             return $entityCache->find($class, $value);
         };
 
@@ -46,5 +45,5 @@ class ImportEntityModelTransformer implements DataTransformerInterface
     {
         return '';
     }
-    
+
 }

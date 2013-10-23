@@ -41,7 +41,7 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
 
     /**
      * @staticvar The name of the enabled field in the form
-     */    
+     */
     const ENABLED_FIELD = 'enabled';
 
     /**
@@ -224,11 +224,13 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
                         $item
                     );
                 }
+
                 return false;
             } else {
                 throw new InvalidObjectException($form);
             }
         }
+
         return $product;
     }
 
@@ -353,7 +355,7 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
         );
 
         $item[static::ENABLED_FIELD] = $this->enabled;
-        
+
         if (static::CATEGORIES_FIELD != $this->categoriesColumn) {
             $item[static::CATEGORIES_FIELD] = $item[$this->categoriesColumn];
             unset($item[$this->categoriesColumn]);
@@ -370,7 +372,7 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
         }
 
         $values = $this->filterValues($product, $item);
-        
+
         $form->submit($values);
 
         return $form;
