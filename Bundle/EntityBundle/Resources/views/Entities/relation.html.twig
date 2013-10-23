@@ -1,7 +1,7 @@
 <div class="widget-content grid-widget-content">
     {% set gridId = "entity-grid-" ~ random() %}
     {% set listenerParameters = {
-        'columnName': 'has_relation',
+        'columnName': 'assigned',
         'selectors': {
             'included': '#appendRelation',
             'excluded': '#removeRelation'
@@ -60,24 +60,28 @@
                         new CallbackListener({
                             datagridName: {{ datagrid.datagrid.name|json_encode|raw }},
                             dataField: 'id',
-                            columnName: 'has_relation',
+                            columnName: 'assigned',
                             processCallback: function (value, model, listener) {
                                 var isActive = model.get(listener.columnName);
                                 var id = model.get('id');
                                 if (isActive) {
                                     addedModels[id] = new MultipleEntityModel({
                                         'id': model.get('id'),
-                                        'link': Routing.generate('orocrm_contact_info', {id: model.get('id')}),
-                                        'label': model.get('first_name') + ' ' + model.get('last_name'),
-                                        'extraData': [
+                                        'link': Routing.generate(
+                                                'orocrm_contact_info',
+                                                {
+                                                    id: model.get('id')
+                                                }
+                                        ),
+                                        'label': model.get('{{ relation.get('target_title') }}'),
+                                        'extraData':
+                                        [
+                                            {% for field in relation.get('target_view') %}
                                             {
-                                                'label': 'Phone',
-                                                'value': model.get('phone')
+                                                'label': '{{ entity_provider.getConfig(relation.get('target_entity'), field).get('label') }}',
+                                                'value': model.get('{{ field }}')
                                             },
-                                            {
-                                                'label': 'Email',
-                                                'value': model.get('email')
-                                            }
+                                            {% endfor %}
                                         ]
                                     });
                                 } else if (addedModels.hasOwnProperty(id)) {

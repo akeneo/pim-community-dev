@@ -6,6 +6,7 @@ use Doctrine\Common\Inflector\Inflector;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
 use Oro\Bundle\GridBundle\Datagrid\ORM\EntityProxyQuery;
 use Oro\Bundle\GridBundle\Datagrid\ORM\QueryFactory\EntityQueryFactory;
+use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
@@ -26,20 +27,12 @@ class RelationEntityDatagrid extends CustomEntityDatagrid
      */
     protected $relationConfig;
 
-    /**
-     * @var string
-     */
-    protected $hasRelationExpression;
-
     protected $relation;
 
     /**
-     * {@inheritDoc}
+     * @var array
      */
-    protected function getRowActions()
-    {
-        return array();
-    }
+    public $additionalParameters = array();
 
     /**
      * @param ConfigInterface $fieldConfig
@@ -49,32 +42,12 @@ class RelationEntityDatagrid extends CustomEntityDatagrid
         $this->relationConfig = $fieldConfig;
     }
 
-
     /**
-     * {@inheritDoc}
+     * @param array $parameters
      */
-    protected function configureFields(FieldDescriptionCollection $fieldsCollection)
+    public function setAdditionalParameters(array $parameters)
     {
-        $fieldHasRelation = new FieldDescription();
-        $fieldHasRelation->setName('has_relation');
-        $fieldHasRelation->setOptions(
-            array(
-                'type'            => FieldDescriptionInterface::TYPE_BOOLEAN,
-                'label'           => $this->translate('Assigned'),
-                'field_name'      => 'assigned',
-                'expression'      => 'r.id',
-                'nullable'        => false,
-                'editable'        => true,
-                'sortable'        => true,
-                'filter_type'     => FilterInterface::TYPE_BOOLEAN,
-                'filterable'      => true,
-                'show_filter'     => true,
-                'filter_by_where' => true,
-            )
-        );
-        $fieldsCollection->add($fieldHasRelation);
-
-        parent::configureFields($fieldsCollection);
+        $this->additionalParameters = $parameters;
     }
 
     public function setRelation($relation)
@@ -89,8 +62,77 @@ class RelationEntityDatagrid extends CustomEntityDatagrid
         );
     }
 
+    public function getRelation()
+    {
+        if (!$this->relation) {
+            throw new \LogicException('Datagrid manager has no configured relation entity');
+        }
+
+        return $this->relation;
+    }
+
     /**
-     * @param FieldDescriptionCollection $fieldsCollection
+     * {@inheritDoc}
+     */
+    protected function getRowActions()
+    {
+        return array();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function getQueryParameters()
+    {
+        $additionalParameters = $this->parameters->get(ParametersInterface::ADDITIONAL_PARAMETERS);
+        $dataIn    = !empty($additionalParameters['data_in']) ? $additionalParameters['data_in'] : array(0);
+        $dataNotIn = !empty($additionalParameters['data_not_in']) ? $additionalParameters['data_not_in'] : array(0);
+
+        $parameters = array('data_in' => $dataIn, 'data_not_in' => $dataNotIn);
+
+        if ($this->getRelation()->getId()) {
+            $parameters = array_merge(parent::getQueryParameters(), $parameters);
+        }
+
+        return $parameters;
+    }
+
+    protected function getDefaultParameters()
+    {
+        $parameters = parent::getDefaultParameters();
+        $parameters[ParametersInterface::ADDITIONAL_PARAMETERS] = $this->additionalParameters;
+        return $parameters;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    protected function configureFields(FieldDescriptionCollection $fieldsCollection)
+    {
+        $fieldHasRelation = new FieldDescription();
+        $fieldHasRelation->setName('assigned');
+        $fieldHasRelation->setOptions(
+            array(
+                'type'            => FieldDescriptionInterface::TYPE_BOOLEAN,
+                'label'           => $this->translate('Assigned'),
+                'field_name'      => 'assigned',
+                'expression'      => 'r.id',
+                'nullable'        => false,
+                'editable'        => true,
+                'sortable'        => true,
+                'filter_type'     => FilterInterface::TYPE_BOOLEAN,
+                'filterable'      => true,
+                'show_filter'     => false,
+                'filter_by_where' => true,
+            )
+        );
+        $fieldsCollection->add($fieldHasRelation);
+
+        parent::configureFields($fieldsCollection);
+    }
+
+    /**
+     * {@inheritDoc}
      */
     protected function getDynamicFields(FieldDescriptionCollection $fieldsCollection)
     {
@@ -129,7 +171,7 @@ class RelationEntityDatagrid extends CustomEntityDatagrid
                             'required'    => false,
                             'sortable'    => true,
                             'filterable'  => true,
-                            'show_filter' => false,
+                            'show_filter' => true,
                         )
                     );
 

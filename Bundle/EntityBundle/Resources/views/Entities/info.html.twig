@@ -1,0 +1,265 @@
+{% import 'OroUIBundle::macros.html.twig' as macros %}
+{% import 'OroLocaleBundle::macros.html.twig' as Locale %}
+{% import 'OroTagBundle::macros.html.twig' as _tag %}
+
+{# TODO: Move this to OroUIBundle::macros.html.twig #}
+{% macro renderRow(label, value) %}
+    {% import 'OroUIBundle::macros.html.twig' as macros %}
+    {{ macros.renderAttribute(label, '<p class="control-label">' ~ value|default('N/A'|trans) ~ '</p>') }}
+{% endmacro %}
+
+{% macro renderCollectionWithPrimaryElement(collection, isEmail) %}
+    {% set primaryElement = null %}
+    {% set secondaryElements = [] %}
+
+    {% for element in collection %}
+        {% if element.primary %}
+            {% set primaryElement = element %}
+        {% else %}
+            {% set secondaryElements = secondaryElements|merge([element]) %}
+        {% endif %}
+    {% endfor %}
+
+    <ul class="extra-list">
+        {% if primaryElement %}
+            <li>
+                <strong>
+                    {% if isEmail %}
+                        <a href="mailto:{{ primaryElement }}" title="{{ primaryElement }}">{{ primaryElement }}</a>
+                    {% else %}
+                        {{ primaryElement }}
+                    {% endif %}
+                </strong>
+            </li>
+        {% endif %}
+        {% for secondaryElement in secondaryElements %}
+            <li>
+                {% if isEmail %}
+                    <a href="mailto:{{ secondaryElement }}">{{ secondaryElement }}</a>
+                {% else %}
+                    {{ secondaryElement }}
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+{% endmacro %}
+
+{%- macro getSocialUrl(type, value) -%}
+    {% if value|slice(0, 5) == 'http:' or value|slice(0, 6) == 'https:' %}
+        {{ value }}
+    {% else %}
+        {{ oro_social_url(type, value) }}
+    {% endif %}
+{%- endmacro -%}
+
+<style>
+    .contact-info {
+        min-height: 380px;
+    }
+</style>
+<div class="widget-content contact-info form-horizontal box-content row-fluid">
+    <div class="span6">
+        <div class="control-group">
+            <label class="control-label">{% trans %}Phones{% endtrans %}</label>
+            <div class="controls">
+                <div class="clearfix-oro">
+                    <div class="control-label">
+                        {% if entity.phones.count %}
+                            {{ _self.renderCollectionWithPrimaryElement(entity.phones, false) }}
+                        {% else %}
+                            {% trans %}N/A{% endtrans %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label">{% trans %}Emails{% endtrans %}</label>
+            <div class="controls">
+                <div class="clearfix-oro">
+                    <div class="control-label email-field">
+                        {% if entity.emails.count %}
+                            {{ _self.renderCollectionWithPrimaryElement(entity.emails, true) }}
+                        {% else %}
+                            {% trans %}N/A{% endtrans %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{ _self.renderRow('Fax'|trans, entity.fax) }}
+
+        <div class="control-group">
+            <label class="control-label">{% trans %}Skype{% endtrans %}</label>
+            <div class="controls">
+                <div class="clearfix-oro">
+                    <p class="control-label">
+                        {% if entity.skype %}
+                            {{ entity.skype }} {{ skype_button(entity.skype) }}
+                        {% else %}
+                            {% trans %}N/A{% endtrans %}
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        {{ _self.renderRow('Contact Method'|trans, entity.method) }}
+
+        <div class="control-group">
+            <label class="control-label">{% trans %}Social{% endtrans %}</label>
+            <div class="controls">
+                <div class="control-label">
+                    {% if entity.twitter or entity.facebook or entity.googlePlus or entity.linkedIn %}
+                    <ul class="list-inline">
+                        {% if entity.twitter %}
+                            <li>
+                                <a class="no-hash" href="{{ _self.getSocialUrl('twitter', entity.twitter) }}" target="_blank" title="Twitter">
+                                    <i class="icon-twitter"></i>
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% if entity.facebook %}
+                            <li>
+                                <a class="no-hash" href="{{ _self.getSocialUrl('facebook', entity.facebook) }}" target="_blank" title="Facebook">
+                                    <i class="icon-facebook"></i>
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% if entity.googlePlus %}
+                            <li>
+                                <a class="no-hash" href="{{ _self.getSocialUrl('google_plus', entity.googlePlus) }}" target="_blank" title="Google+">
+                                    <i class="icon-google-plus"></i>
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% if entity.linkedIn %}
+                            <li>
+                                <a class="no-hash" href="{{ _self.getSocialUrl('linked_in', entity.linkedIn) }}" target="_blank" title="LinkedIn">
+                                    <i class="icon-linkedin"></i>
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                    {% else %}
+                        {% trans %}N/A{% endtrans %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        {% if dynamic|length %}
+            {% for label, item in dynamic %}
+                {{ _self.renderRow(label|trans, item) }}
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    <div class="span6">
+        {{ _self.renderRow('Job Title'|trans, entity.jobTitle) }}
+
+        <div class="control-group">
+            <label class="control-label">{% trans %}Companies{% endtrans %}</label>
+            <div class="controls">
+                <div class="clearfix-oro">
+                    <p class="control-label">
+                        {% if entity.accounts.count > 0 %}
+                            {% set accountViewGranted = resource_granted('orocrm_account_view') %}
+                            {%- for account in entity.accounts -%}
+                                {%- if accountViewGranted -%}
+                                    <a href="{{ path('orocrm_account_view', {'id': account.id}) }}">{{ account }}</a>
+                                {%- else -%}
+                                    {{ account }}
+                                {%- endif -%}
+                                {% if not loop.last %}, {% endif %}
+                            {%- endfor -%}
+                        {% else %}
+                            {% trans %}N/A{% endtrans %}
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label">{% trans %}Birthday{% endtrans %}</label>
+            <div class="controls">
+                <div class="clearfix-oro">
+                    <p class="control-label">
+                        {{ entity.birthday is empty ? 'N/A'|trans : Locale.date(entity.birthday) }}
+                        {% if entity.birthday is not empty %}
+                            ({{ entity.birthday|age_string({'default': 'N/A'}) }})
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        {{ _self.renderRow('Gender'|trans, oro_gender(entity.gender)) }}
+        {{ _self.renderRow('Source'|trans, entity.source) }}
+
+        <div class="control-group">
+            <label class="control-label">{% trans %}Assigned to{% endtrans %}</label>
+            <div class="controls">
+                <div class="clearfix-oro">
+                    <p class="control-label">
+                        {% if entity.assignedTo %}
+                            {% if resource_granted('oro_user_user_view') %}
+                                <a href="{{ path('oro_user_view', {'id': entity.assignedTo.id}) }}">
+                                    {{ entity.assignedTo }}
+                                </a>
+                            {% else %}
+                                {{ entity.assignedTo }}
+                            {% endif %}
+                        {% else %}
+                            {% trans %}N/A{% endtrans %}
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label">{% trans %}Reports to{% endtrans %}</label>
+            <div class="controls">
+                <div class="clearfix-oro">
+                    <p class="control-label">
+                        {% if entity.reportsTo %}
+                            <a href="{{ path('orocrm_contact_view', {'id': entity.reportsTo.id}) }}">
+                                {{ entity.reportsTo }}
+                            </a>
+                        {% else %}
+                            {% trans %}N/A{% endtrans %}
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label">{% trans %}Groups{% endtrans %}</label>
+            <div class="controls">
+                <div class="clearfix-oro">
+                    <p class="control-label">
+                        {% if entity.groups.count > 0 %}
+                            {{ entity.groupLabels|join(', ') }}
+                        {% else %}
+                            {% trans %}N/A{% endtrans %}
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label">{% trans %}Tags{% endtrans %}</label>
+            <div class="controls">
+                <div class="clearfix-oro">
+                    {{ _tag.renderView(entity) }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
