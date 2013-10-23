@@ -1,28 +1,30 @@
 <script type="text/javascript">
 require(['oro/locale-settings'],
 function(localeSettings) {
+    {% set dateTimeFormats = {} %}
+    {% for formatterName in oro_datetime_formatter_list() %}
+        {% set currentFormats = {
+            'date': oro_date_format(formatterName),
+            'time': oro_time_format(formatterName),
+            'datetime': oro_datetime_format(formatterName),
+        } %}
+        {% set dateTimeFormats = dateTimeFormats|merge({ (formatterName) : currentFormats }) %}
+    {% endfor %}
+
     {% set settings = {
-        'system': {
-            'locale': null,
-            'timezone': null,
-            'format': {
-                'moment': {
-                    'date': 'YYYY-MM-DD',
-                    'time': 'HH:mm:ss',
-                    'date_time': 'YYYY-MM-DD HH:mm:ss'
-                }
-            }
-        },
-        'user': {
-            'locale': oro_config_value('oro_locale.locale'),
-            'timezone': oro_config_value('oro_locale.timezone'),
-            'country': oro_config_value('oro_locale.country')
+        'locale': oro_locale(),
+        'language': oro_language(),
+        'country': oro_country(),
+        'currency': oro_currency(),
+        'timezone': oro_timezone(),
+        'timezone_offset': oro_timezone_offset(),
+        'format_address_by_address_country': oro_format_address_by_address_country(),
+        'format': {
+            'datetime': dateTimeFormats
         }
     } %}
+
     var settings = {{ settings|json_encode|raw }};
-    settings.user.format = {name: {}};
-    settings.user.format.name[settings.user.locale]
-        = {{ oro_config_value('oro_locale.name_format')|json_encode|raw }};
     localeSettings.extendSettings(settings);
 });
 </script>

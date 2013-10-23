@@ -94,7 +94,7 @@ class OroLocaleExtension extends Extension
             foreach ($data as $key => $value) {
                 $data[$key] = $this->escapePercentSymbols($value);
             }
-        } else {
+        } elseif (is_string($data)) {
             $data = str_replace('%', '%%', $data);
         }
 
