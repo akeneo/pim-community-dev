@@ -175,8 +175,7 @@ class InstallCommand extends ContainerAwareCommand
 
         $params = $this->getContainer()->get('oro_installer.yaml_persister')->parse();
 
-        $params['system']['installed']        = date('c');
-        $params['session']['session_handler'] = 'session.handler.native_file';
+        $params['system']['installed'] = date('c');
 
         $this->getContainer()->get('oro_installer.yaml_persister')->dump($params);
 
