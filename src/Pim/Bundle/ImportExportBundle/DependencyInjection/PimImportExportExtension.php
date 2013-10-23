@@ -21,8 +21,7 @@ class PimImportExportExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-        $configuration = new Configuration();
-        $this->processConfiguration($configuration, $configs);
+        $config = $this->processConfiguration(new Configuration(), $configs);
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
@@ -30,5 +29,9 @@ class PimImportExportExtension extends Extension
         $loader->load('serializer.yml');
         $loader->load('datagrid.yml');
         $loader->load('controllers.yml');
+        
+        if ($config['debug']) {
+            $container->setParameter('oro_batch.job_factory.class', 'Pim\Bundle\ImportExportBundle\Step\BehatStepFactory');
+        }
     }
 }

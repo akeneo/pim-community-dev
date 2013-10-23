@@ -34,3 +34,7 @@ assetic:
 
 pim_catalog:
     record_mails: true
+    
+pim_import_export:
+    debug: true
+    
