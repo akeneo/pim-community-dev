@@ -24,7 +24,7 @@ services:
     oro_locale.settings:
         class: %oro_locale.settings.class%
         arguments:
-            - @oro_config.user
+            - @oro_config.global
         calls:
             - [addNameFormats, [%oro_locale.format.name%]]
             - [addAddressFormats, [%oro_locale.format.address%]]

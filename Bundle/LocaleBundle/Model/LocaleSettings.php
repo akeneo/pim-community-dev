@@ -212,7 +212,7 @@ class LocaleSettings
      */
     public function isFormatAddressByAddressCountry()
     {
-        return $this->configManager->get('oro_locale.format_address_by_address_country', false);
+        return (bool)$this->configManager->get('oro_locale.format_address_by_address_country');
     }
 
     /**
@@ -237,7 +237,10 @@ class LocaleSettings
     public function getLocale()
     {
         if (null === $this->locale) {
-            $this->locale = $this->configManager->get('oro_locale.locale', LocaleConfiguration::DEFAULT_LOCALE);
+            $this->locale = $this->configManager->get('oro_locale.locale');
+            if (!$this->locale) {
+                $this->locale = LocaleConfiguration::DEFAULT_LOCALE;
+            }
         }
         return $this->locale;
     }
@@ -250,7 +253,10 @@ class LocaleSettings
     public function getLanguage()
     {
         if (null === $this->language) {
-            $this->language = $this->configManager->get('oro_locale.language', LocaleConfiguration::DEFAULT_LANGUAGE);
+            $this->language = $this->configManager->get('oro_locale.language');
+            if (!$this->language) {
+                $this->language = LocaleConfiguration::DEFAULT_LANGUAGE;
+            }
         }
         return $this->language;
     }
@@ -263,10 +269,10 @@ class LocaleSettings
     public function getCountry()
     {
         if (null === $this->country) {
-            $this->country = $this->configManager->get(
-                'oro_locale.country',
-                self::getCountryByLocale($this->getLocale())
-            );
+            $this->country = $this->configManager->get('oro_locale.country');
+            if (!$this->country) {
+                $this->country = self::getCountryByLocale($this->getLocale());
+            }
         }
         return $this->country;
     }
@@ -279,7 +285,10 @@ class LocaleSettings
     public function getCurrency()
     {
         if (null === $this->currency) {
-            $this->currency = $this->configManager->get('oro_locale.currency', LocaleConfiguration::DEFAULT_CURRENCY);
+            $this->currency = $this->configManager->get('oro_locale.currency');
+            if (!$this->currency) {
+                $this->currency = LocaleConfiguration::DEFAULT_CURRENCY;
+            }
         }
         return $this->currency;
     }
@@ -293,6 +302,9 @@ class LocaleSettings
     {
         if (null === $this->timeZone) {
             $this->timeZone = $this->configManager->get('oro_locale.timezone', date_default_timezone_get());
+            if (!$this->timeZone) {
+                $this->timeZone = date_default_timezone_get();
+            }
         }
         return $this->timeZone;
     }

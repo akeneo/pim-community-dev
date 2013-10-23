@@ -214,15 +214,28 @@ class LocaleSettingsTest extends \PHPUnit_Framework_TestCase
     {
         $expectedCountry = 'CA';
 
+        $this->configManager->expects($this->once())
+            ->method('get')
+            ->with('oro_locale.country')
+            ->will($this->returnValue($expectedCountry));
+
+        $this->assertEquals($expectedCountry, $this->localeSettings->getCountry());
+        $this->assertEquals($expectedCountry, $this->localeSettings->getCountry());
+    }
+
+    public function testGetCountryDefault()
+    {
+        $expectedCountry = 'US';
+
         $this->configManager->expects($this->at(0))
             ->method('get')
-            ->with('oro_locale.locale')
-            ->will($this->returnValue('en_US'));
+            ->with('oro_locale.country')
+            ->will($this->returnValue(null));
 
         $this->configManager->expects($this->at(1))
             ->method('get')
-            ->with('oro_locale.country', 'US')
-            ->will($this->returnValue($expectedCountry));
+            ->with('oro_locale.locale')
+            ->will($this->returnValue('en_US'));
 
         $this->assertEquals($expectedCountry, $this->localeSettings->getCountry());
         $this->assertEquals($expectedCountry, $this->localeSettings->getCountry());
@@ -243,12 +256,25 @@ class LocaleSettingsTest extends \PHPUnit_Framework_TestCase
 
     public function testGetCurrency()
     {
-        $expectedCurrency = 'USD';
+        $expectedCurrency = 'GBP';
 
         $this->configManager->expects($this->once())
             ->method('get')
-            ->with('oro_locale.currency', LocaleConfiguration::DEFAULT_CURRENCY)
+            ->with('oro_locale.currency')
             ->will($this->returnValue($expectedCurrency));
+
+        $this->assertEquals($expectedCurrency, $this->localeSettings->getCurrency());
+        $this->assertEquals($expectedCurrency, $this->localeSettings->getCurrency());
+    }
+
+    public function testGetCurrencyDefault()
+    {
+        $expectedCurrency = LocaleConfiguration::DEFAULT_CURRENCY;
+
+        $this->configManager->expects($this->once())
+            ->method('get')
+            ->with('oro_locale.currency')
+            ->will($this->returnValue(null));
 
         $this->assertEquals($expectedCurrency, $this->localeSettings->getCurrency());
         $this->assertEquals($expectedCurrency, $this->localeSettings->getCurrency());

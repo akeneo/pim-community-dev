@@ -59,7 +59,7 @@ class Calendar
      * Get list of month names, month with index 1 is January
      *
      * @param string|null $locale
-     * @param string $width Constant WIDTH_WIDE|WIDTH_ABBREVIATED|WIDTH_SHORT|NARROW
+     * @param string $width Constant WIDTH_WIDE|WIDTH_ABBREVIATED|NARROW
      * @return array
      */
     public function getMonthNames($width = null, $locale = null)

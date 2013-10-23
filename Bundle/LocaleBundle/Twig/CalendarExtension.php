@@ -25,17 +25,17 @@ class CalendarExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            new \Twig_SimpleFilter(
+            new \Twig_SimpleFunction(
                 'oro_calendar_month_names',
                 array($this, 'getMonthNames'),
                 array('is_safe' => array('html'))
             ),
-            new \Twig_SimpleFilter(
+            new \Twig_SimpleFunction(
                 'oro_calendar_day_of_week_names',
                 array($this, 'getDayOfWeekNames'),
                 array('is_safe' => array('html'))
             ),
-            new \Twig_SimpleFilter(
+            new \Twig_SimpleFunction(
                 'oro_calendar_first_day_of_week',
                 array($this, 'getFirstDayOfWeek'),
                 array('is_safe' => array('html'))

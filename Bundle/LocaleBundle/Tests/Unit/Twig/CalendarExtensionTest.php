@@ -31,13 +31,13 @@ class CalendarExtensionTest extends \PHPUnit_Framework_TestCase
 
         $this->assertCount(3, $filters);
 
-        $this->assertInstanceOf('Twig_SimpleFilter', $filters[0]);
+        $this->assertInstanceOf('Twig_SimpleFunction', $filters[0]);
         $this->assertEquals('oro_calendar_month_names', $filters[0]->getName());
 
-        $this->assertInstanceOf('Twig_SimpleFilter', $filters[1]);
+        $this->assertInstanceOf('Twig_SimpleFunction', $filters[1]);
         $this->assertEquals('oro_calendar_day_of_week_names', $filters[1]->getName());
 
-        $this->assertInstanceOf('Twig_SimpleFilter', $filters[2]);
+        $this->assertInstanceOf('Twig_SimpleFunction', $filters[2]);
         $this->assertEquals('oro_calendar_first_day_of_week', $filters[2]->getName());
     }
 
