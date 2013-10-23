@@ -3,7 +3,6 @@
 namespace Oro\Bundle\DataGridBundle\Extension\Formatter;
 
 use Oro\Bundle\DataGridBundle\Extension\AbstractExtension;
-use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\PropertyInterface;
 
 class FormatterExtension extends AbstractExtension
