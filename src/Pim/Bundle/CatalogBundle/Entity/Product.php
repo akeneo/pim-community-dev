@@ -599,7 +599,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
     public function getProductAssociationForAssociation(Association $association)
     {
         return $this->productAssociations->filter(
-            function($productAssociation) use ($association) {
+            function ($productAssociation) use ($association) {
                 return $productAssociation->getAssociation() === $association;
             }
         )->first();

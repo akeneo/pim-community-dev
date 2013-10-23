@@ -20,9 +20,17 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class LocalDirResolver extends WebPathResolver
 {
-    /** @var string */
+    /**
+     * @var string
+     */
     protected $rootDir;
 
+    /**
+     * Constructor
+     *
+     * @param Filesystem $filesystem
+     * @param string $rootDir
+     */
     public function __construct(Filesystem $filesystem, $rootDir)
     {
         parent::__construct($filesystem);
