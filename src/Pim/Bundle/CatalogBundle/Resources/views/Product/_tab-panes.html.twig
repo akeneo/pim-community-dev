@@ -7,6 +7,12 @@
     </div>
 {% endif %}
 
+{% if associations is not empty and resource_granted("pim_catalog_product_associations_view") %}
+    <div class="tab-pane" id="associations">
+       {% include 'PimCatalogBundle:Product:_associations.html.twig' %}
+    </div>
+{% endif %}
+
 <div class="tab-pane" id="completeness">
    {% include 'PimCatalogBundle:Product:_completeness.html.twig' %}
 </div>

@@ -18,7 +18,12 @@ class ProductCsvReaderTest extends CsvReaderTest
      */
     protected function setUp()
     {
-        $this->reader = new ProductCsvReader($this->getEntityManagerMock(array('sku', 'name')));
+        $this->reader = new ProductCsvReader(
+            $this->getEntityManagerMock(
+                array('sku', 'name'),
+                array('view', 'manual')
+            )
+        );
         $this->stepExecution = $this->getStepExecutionMock();
         $this->reader->setStepExecution($this->stepExecution);
     }
@@ -34,33 +39,49 @@ class ProductCsvReaderTest extends CsvReaderTest
     /**
      * Test related method
      */
-    public function testInitializeUniqueValuesWithAttributeRepository()
+    public function testInitializeWithAttributeRepository()
     {
-        $this->assertAttributeEquals(array('sku' => array(), 'name' => array()), 'uniqueValues', $this->reader);
+        $this->assertAttributeEquals(
+            array('sku' => array(), 'name' => array()),
+            'uniqueValues',
+            $this->reader
+        );
+
+        $this->assertAttributeEquals(
+            array('view', 'manual'),
+            'mediaAttributes',
+            $this->reader
+        );
     }
 
     /**
      * Test related method
+     *
+     * @expectedException Oro\Bundle\BatchBundle\Item\InvalidItemException
+     * @expectedExceptionMessage The "sku" attribute is unique, the value "SKU-001" was already read in this file
      */
     public function testReadDuplicateUniqueValue()
     {
         $this->reader->setFilePath(__DIR__ . '/../../fixtures/duplicate_values.csv');
 
-        $this->stepExecution
-            ->expects($this->once())
-            ->method('addReaderWarning')
-            ->with(
-                get_class($this->reader),
-                $this->stringStartsWith(
-                    'The "sku" attribute is unique, the value "SKU-001" was already read in this file'
-                ),
-                array('sku' => 'SKU-001', 'name' => 'window')
-            );
+        $this->reader->read();
+        $this->reader->read();
+        $this->reader->read();
+    }
 
-        $this->assertEquals(array('sku' => 'SKU-001', 'name' => 'door'), $this->reader->read());
-        $this->assertEquals(array('sku' => 'SKU-002', 'name' => 'hatch'), $this->reader->read());
-        $this->assertFalse($this->reader->read());
-        $this->assertNull($this->reader->read());
+    public function testMediaPathAreAbsolute()
+    {
+        $this->reader->setFilePath(__DIR__ . '/../../fixtures/with_media.csv');
+
+        $this->assertEquals(
+            array(
+                'sku'          => 'SKU-001',
+                'name'         => 'door',
+                'view'         => __DIR__ . '/../../fixtures/sku-001.jpg',
+                'manual-fr_FR' => __DIR__ . '/../../fixtures/sku-001.txt',
+            ),
+            $this->reader->read()
+        );
     }
 
     /**
@@ -68,7 +89,7 @@ class ProductCsvReaderTest extends CsvReaderTest
      *
      * @return Doctrine\ORM\EntityManager
      */
-    protected function getEntityManagerMock(array $uniqueAttributeCodes)
+    protected function getEntityManagerMock(array $uniqueAttributeCodes, array $mediaAttributeCodes)
     {
         $em = $this
             ->getMockBuilder('Doctrine\ORM\EntityManager')
@@ -80,7 +101,8 @@ class ProductCsvReaderTest extends CsvReaderTest
             ->will(
                 $this->returnValue(
                     $this->getEntityRepositoryMock(
-                        $uniqueAttributeCodes
+                        $uniqueAttributeCodes,
+                        $mediaAttributeCodes
                     )
                 )
             );
@@ -93,17 +115,21 @@ class ProductCsvReaderTest extends CsvReaderTest
      *
      * @return \Doctrine\ORM\EntityRepository
      */
-    protected function getEntityRepositoryMock(array $uniqueAttributeCodes)
+    protected function getEntityRepositoryMock(array $uniqueAttributeCodes, array $mediaAttributeCodes)
     {
         $repository = $this
             ->getMockBuilder('Doctrine\ORM\EntityRepository')
-            ->setMethods(array('findUniqueAttributeCodes'))
+            ->setMethods(array('findUniqueAttributeCodes', 'findMediaAttributeCodes'))
             ->disableOriginalConstructor()
             ->getMock();
 
         $repository->expects($this->any())
             ->method('findUniqueAttributeCodes')
             ->will($this->returnValue($uniqueAttributeCodes));
+
+        $repository->expects($this->any())
+            ->method('findMediaAttributeCodes')
+            ->will($this->returnValue($mediaAttributeCodes));
 
         return $repository;
     }

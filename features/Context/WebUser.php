@@ -6,6 +6,7 @@ use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\Gherkin\Node\TableNode;
+use Behat\Gherkin\Node\PyStringNode;
 use Behat\Behat\Context\Step;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\Category;
@@ -760,6 +761,16 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string $axis
+     *
+     * @Given /^I select the axis "([^"]*)"$/
+     */
+    public function iSelectAxis($axis)
+    {
+        $this->getPage('ProductGroup creation')->selectAxis($axis);
+    }
+
+    /**
      * @param string $status
      *
      * @Given /^I select the status "([^"]*)"$/
@@ -1462,7 +1473,7 @@ class WebUser extends RawMinkContext
     public function anEmailToShouldHaveBeenSent($email)
     {
         $recorder = $this->getMailRecorder();
-        if (0 === $recorder->getMailsSentTo($email)) {
+        if (0 === count($recorder->getMailsSentTo($email))) {
             throw $this->createExpectationException(
                 sprintf(
                     'No emails were sent to %s.',
@@ -1599,6 +1610,66 @@ class WebUser extends RawMinkContext
     public function iClickOnTheAkeneoLogo()
     {
         $this->getCurrentPage()->clickOnAkeneoLogo();
+    }
+
+    /**
+     * @Then /^exported file of "([^"]*)" should contain:$/
+     */
+    public function exportedFileOfShouldContain($code, PyStringNode $csv)
+    {
+        $path = $this
+            ->getFixturesContext()
+            ->getJobInstance($code)
+            ->getJob()
+            ->getSteps()[0]
+            ->getWriter()
+            ->getPath();
+
+        if (!is_file($path)) {
+            throw $this->createExpectationException(
+                sprintf('File "%s" doesn\'t exist', $path)
+            );
+        }
+
+        if (md5_file($path) !== md5((string) $csv)) {
+            throw $this->createExpectationException(
+                sprintf(
+                    "File \"%s\" doesn't contains the expected csv:\n%s",
+                    $path,
+                    file_get_contents($path)
+                )
+            );
+        }
+    }
+
+    /**
+     * @Then /^export directory of "([^"]*)" should contain the following media:$/
+     */
+    public function exportDirectoryOfShouldContainTheFollowingMedia($code, TableNode $table)
+    {
+        $path = $this
+            ->getFixturesContext()
+            ->getJobInstance($code)
+            ->getJob()
+            ->getSteps()[0]
+            ->getWriter()
+            ->getDirectoryName();
+
+        if (!is_dir($path)) {
+            throw $this->createExpectationException(
+                sprintf('Directory "%s" doesn\'t exist', $path)
+            );
+        }
+
+        foreach ($table->getRows() as $data) {
+            $file = rtrim($path, '/') . '/' .$data[0];
+
+            if (!is_file($file)) {
+                throw $this->createExpectationException(
+                    sprintf('File \"%s\" doesn\'t exist', $file)
+                );
+            }
+        }
     }
 
     /**

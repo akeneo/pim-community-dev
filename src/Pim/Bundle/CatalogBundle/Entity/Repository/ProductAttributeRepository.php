@@ -90,6 +90,34 @@ class ProductAttributeRepository extends AttributeRepository
     }
 
     /**
+     * Find media attribute codes
+     *
+     * @return string[]
+     */
+    public function findMediaAttributeCodes()
+    {
+        $codes = $this
+            ->createQueryBuilder('a')
+            ->select('a.code')
+            ->andWhere('a.attributeType IN (:file_type, :image_type)')
+            ->setParameters(
+                array(
+                    ':file_type'  => 'pim_catalog_file',
+                    ':image_type' => 'pim_catalog_image',
+                )
+            )
+            ->getQuery()
+            ->getArrayResult();
+
+        return array_map(
+            function ($data) {
+                return $data['code'];
+            },
+            $codes
+        );
+    }
+
+    /**
      * Find all attributes of type axis
      * An axis define a variation of a variant group
      * Axes are attributes with simple select option, not localizable and not scopable

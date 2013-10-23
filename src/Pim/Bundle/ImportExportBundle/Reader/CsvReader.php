@@ -10,6 +10,7 @@ use Oro\Bundle\BatchBundle\Item\ItemReaderInterface;
 use Oro\Bundle\BatchBundle\Item\UploadedFileAwareInterface;
 use Oro\Bundle\BatchBundle\Entity\StepExecution;
 use Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
+use Oro\Bundle\BatchBundle\Item\InvalidItemException;
 
 /**
  * Csv reader
@@ -225,8 +226,7 @@ class CsvReader extends AbstractConfigurableStepElement implements
             $this->stepExecution->incrementReadCount();
 
             if (count($this->fieldNames) !== count($data)) {
-                $this->stepExecution->addReaderWarning(
-                    get_class($this),
+                throw new InvalidItemException(
                     sprintf(
                         'Expecting to have %d columns, actually have %d in %s:%d.',
                         count($this->fieldNames),
@@ -236,8 +236,6 @@ class CsvReader extends AbstractConfigurableStepElement implements
                     ),
                     $data
                 );
-
-                return false;
             }
 
             $data = array_combine($this->fieldNames, $data);

@@ -87,6 +87,7 @@ class OrmProductWriter extends AbstractConfigurableStepElement implements
 
         foreach ($items as $product) {
             $storageManager->persist($product);
+            $this->productManager->handleMedia($product);
             $this->stepExecution->incrementWriteCount();
         }
 

@@ -112,7 +112,11 @@ class FileWriter extends AbstractConfigurableStepElement implements
     public function write(array $data)
     {
         if (!$this->handler) {
-            $this->handler = fopen($this->getPath(), 'w');
+            $path = $this->getPath();
+            if (!is_dir(dirname($path))) {
+                mkdir(dirname($path), 0777, true);
+            }
+            $this->handler = fopen($path, 'w');
         }
 
         foreach ($data as $entry) {
