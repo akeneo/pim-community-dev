@@ -1,16 +1,19 @@
 liip_imagine:
     filter_sets:
         avatar_med:
+            cache: local_dir
             quality:          95
             filters:
                 thumbnail:    { size: [58, 58], mode: outbound }
                 strip:        ~
         thumbnail_small:
+            cache: local_dir
             quality:          95
             filters:
                 thumbnail:    { size: [80, 120], mode: inset }
                 strip:        ~
         image_preview:
+            cache: local_dir
             quality:          95
             filters:
                 thumbnail:    { size: [900, 600], mode: inset }

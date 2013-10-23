@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\ImportExportBundle\Converter;
 
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Doctrine\ORM\EntityManager;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
@@ -48,8 +50,7 @@ class ProductValueConverter
         foreach ($data as $key => $value) {
             $attribute = $this->getAttribute($key);
 
-            // TODO Handle media import
-            if ($attribute && 'media' !== $attribute->getBackendType()) {
+            if ($attribute) {
                 switch ($attribute->getBackendType()) {
                     case 'prices':
                         $value = $this->convertPricesValue($value);
@@ -66,11 +67,13 @@ class ProductValueConverter
                     case 'metric':
                         $value = $this->convertMetricValue($value);
                         break;
+                    case 'media':
+                        $value = $this->convertMediaValue($value);
+                        break;
                     default:
                         $value = $this->convertValue($attribute->getBackendType(), $value);
                 }
-                $key = $this->getProductValueKey($attribute, $key);
-                $result[$key] = $value;
+                $result[$this->getProductValueKey($attribute, $key)] = $value;
             }
         }
 
@@ -88,7 +91,7 @@ class ProductValueConverter
      *
      * @return array
      */
-    private function convertPricesValue($value)
+    protected function convertPricesValue($value)
     {
         $currencies = $this->currencyManager->getActiveCodes();
 
@@ -120,7 +123,7 @@ class ProductValueConverter
      *
      * @return array
      */
-    private function convertDateValue($value)
+    protected function convertDateValue($value)
     {
         $date = new \DateTime($value);
 
@@ -134,7 +137,7 @@ class ProductValueConverter
      *
      * @return array
      */
-    private function convertOptionValue($value)
+    protected function convertOptionValue($value)
     {
         if ($option = $this->getOption($value)) {
             return $this->convertValue('option', $option->getId());
@@ -148,7 +151,7 @@ class ProductValueConverter
      *
      * @return array
      */
-    private function convertOptionsValue($value)
+    protected function convertOptionsValue($value)
     {
         $options = array();
         foreach (explode(',', $value) as $val) {
@@ -167,7 +170,7 @@ class ProductValueConverter
      *
      * @return array
      */
-    public function convertMetricValue($value)
+    protected function convertMetricValue($value)
     {
         if (empty($value)) {
             $metric = array();
@@ -188,6 +191,22 @@ class ProductValueConverter
     }
 
     /**
+     * Convert media value
+     *
+     * @param string $value
+     */
+    protected function convertMediaValue($value)
+    {
+        try {
+            $file = new File($value);
+        } catch (FileNotFoundException $e) {
+            $file = null;
+        }
+
+        return $this->convertValue('media', array('file' => $file));
+    }
+
+    /**
      * Convert value
      *
      * @param string $type
@@ -195,7 +214,7 @@ class ProductValueConverter
      *
      * @return array
      */
-    private function convertValue($type, $value)
+    protected function convertValue($type, $value)
     {
         return array($type => $value);
     }
@@ -207,7 +226,7 @@ class ProductValueConverter
      *
      * @return ProductAttribute
      */
-    private function getAttribute($code)
+    protected function getAttribute($code)
     {
         $code = $this->getAttributeCode($code);
 
@@ -223,7 +242,7 @@ class ProductValueConverter
      *
      * @return AttributeOption
      */
-    private function getOption($code)
+    protected function getOption($code)
     {
         return $this->entityManager
             ->getRepository('PimCatalogBundle:AttributeOption')
@@ -238,7 +257,7 @@ class ProductValueConverter
      *
      * @return string
      */
-    private function getProductValueKey(ProductAttribute $attribute, $key)
+    protected function getProductValueKey(ProductAttribute $attribute, $key)
     {
         $code = $key;
         $suffix = '';
@@ -280,7 +299,7 @@ class ProductValueConverter
      *
      * @return string
      */
-    private function getAttributeCode($code)
+    protected function getAttributeCode($code)
     {
         $parts = explode('-', $code);
 

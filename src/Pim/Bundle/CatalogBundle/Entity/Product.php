@@ -529,6 +529,26 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
     }
 
     /**
+     * Get all the media of the product
+     *
+     * @return Media[]
+     */
+    public function getMedia()
+    {
+        $media = array();
+        foreach ($this->getValues() as $value) {
+            if (in_array(
+                $value->getAttribute()->getAttributeType(),
+                array('pim_catalog_image', 'pim_catalog_file')
+            )) {
+                $media[] = $value->getData();
+            }
+        }
+
+        return $media;
+    }
+
+    /**
      * Add product productAssociation
      *
      * @param ProductAssociation $productAssociation
@@ -579,7 +599,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
     public function getProductAssociationForAssociation(Association $association)
     {
         return $this->productAssociations->filter(
-            function($productAssociation) use ($association) {
+            function ($productAssociation) use ($association) {
                 return $productAssociation->getAssociation() === $association;
             }
         )->first();
