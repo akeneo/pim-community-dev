@@ -102,21 +102,31 @@
     </script>
 
     <script type="text/javascript">
-        require(['jquery', 'underscore', 'oro/calendar', 'oro/calendar/event-collection', 'oro/calendar/connection-collection'],
-                function($, _, Calendar, CalendarEventCollection, CalendarConnectionCollection){
-                    var connections = new CalendarConnectionCollection();
+        require(['jquery', 'underscore', 'oro/calendar', 'oro/calendar/event/collection', 'oro/calendar/connection/collection'],
+                function($, _, Calendar, EventCollection, ConnectionCollection){
+                    var connections = new ConnectionCollection();
                     connections.reset({{ render(path('oro_api_get_calendar_connections', {id: entity.id})) }});
-                    var events = new CalendarEventCollection();
+                    var events = new EventCollection();
                     events.reset({{ render(path('oro_api_get_calendarevents', {calendar: entity.id, start: startDate|date('c'), end: endDate|date('c'), subordinate: true})) }});
                     var options = {
                         el: '#calendar',
-                        collection: events,
-                        connections: connections,
                         calendar: {{ entity.id }},
-                        subordinate: true,
-                        eventFormValidationScriptUrl: '{{ JSFV(event_form, true) }}'
+                        eventsOptions: {
+                            collection: events,
+                            subordinate: true,
+                            containerSelector: '.calendar-events',
+                            itemFormTemplateSelector: '#template-calendar-event',
+                            itemFormDeleteButtonSelector: '#btn-remove-calendarevent',
+                            itemFormValidationScriptUrl: '{{ JSFV(event_form, true) }}'
+                        },
+                        connectionsOptions: {
+                            collection: connections,
+                            containerSelector: '.calendar-connections',
+                            containerTemplateSelector: '#template-calendar-connections',
+                            itemTemplateSelector: '#template-calendar-connection-item'
+                        }
                     };
-                    _.extend(options, {{ calendar|json_encode|raw }});
+                    _.extend(options.eventsOptions, {{ calendar|json_encode|raw }});
                     var calendar = new Calendar(options);
                   });
     </script>
