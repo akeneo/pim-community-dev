@@ -1,7 +1,8 @@
 title:                    Oro Application installation
 
-wait:                     In progress...
-passed:                   Passed
+wait:                     Waiting
+progress:                 In progress...
+passed:                   Done
 failed:                   Failed
 
 form:
