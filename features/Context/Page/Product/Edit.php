@@ -129,11 +129,24 @@ class Edit extends Form
      */
     public function findField($name)
     {
+        if (false !== strpos($name, ' in ')) {
+            list($name, $currency) = explode(' in ', $name);
+        }
         $label = $this->find('css', sprintf('label:contains("%s")', $name));
 
         if (!$label) {
             throw new ElementNotFoundException($this->getSession(), 'form label ', 'value', $name);
         }
+
+        if ($currency) {
+            $label = $label
+                ->getParent()
+                ->find('css', sprintf('label:contains("%s")', $currency));
+            if (!$label) {
+                throw new ElementNotFoundException($this->getSession(), 'form label ', 'value', $name);
+            }
+        }
+
 
         $field = $label->getParent()->find('css', 'input');
 

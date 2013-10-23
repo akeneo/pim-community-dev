@@ -113,7 +113,7 @@ define(
                     }
                 });
                 $('.attribute-field.translatable').each(function () {
-                    $(this).find('div.controls').find('.icons-container').append($localizableIcon.clone().tooltip());
+                    $(this).find('div.controls').find('.icons-container').prepend($localizableIcon.clone().tooltip());
                 });
 
                 $('form').on('change', 'input[type="file"]', function () {
