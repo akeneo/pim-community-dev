@@ -3,9 +3,6 @@
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Processor;
 
 use Pim\Bundle\ImportExportBundle\Processor\ValidProductCreationProcessor;
-use Pim\Bundle\ImportExportBundle\Converter\ProductEnabledConverter;
-use Pim\Bundle\ImportExportBundle\Converter\ProductFamilyConverter;
-use Pim\Bundle\ImportExportBundle\Converter\ProductCategoriesConverter;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 
 /**
@@ -53,20 +50,20 @@ class ValidProductCreationProcessorTest extends \PHPUnit_Framework_TestCase
         $this->formFactory
             ->expects($this->any())
             ->method('create')
-            ->with('pim_product', $product, array('csrf_protection' => false, 'import_mode' => true))
+            ->with('pim_product_import', $product, array('csrf_protection' => false))
             ->will($this->returnValue($form));
 
         $form->expects($this->once())
             ->method('submit')
             ->with(
                 array(
-                    ProductEnabledConverter::ENABLED_KEY       => true,
-                    ProductFamilyConverter::FAMILY_KEY         => 'vehicle',
-                    ProductCategoriesConverter::CATEGORIES_KEY => 'cat_1,cat_2,cat_3',
-                    'sku'                                      => 'foo-1',
-                    'name-en_US'                               => 'car',
-                    'name-fr_FR'                               => 'voiture',
-                    'description'                              => 'A foo product',
+                    ValidProductCreationProcessor::ENABLED_FIELD     => true,
+                    ValidProductCreationProcessor::FAMILY_FIELD      => 'vehicle',
+                    ValidProductCreationProcessor::CATEGORIES_FIELD  => 'cat_1,cat_2,cat_3',
+                    'sku'                                           => 'foo-1',
+                    'name-en_US'                                    => 'car',
+                    'name-fr_FR'                                    => 'voiture',
+                    'description'                                   => 'A foo product',
                 )
             );
 
@@ -105,7 +102,7 @@ class ValidProductCreationProcessorTest extends \PHPUnit_Framework_TestCase
         $this->formFactory
             ->expects($this->any())
             ->method('create')
-            ->with('pim_product', $product, array('csrf_protection' => false, 'import_mode' => true))
+            ->with('pim_product_import', $product, array('csrf_protection' => false))
             ->will($this->returnValue($form));
 
         $this->processor->process(array());
