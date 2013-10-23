@@ -423,7 +423,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $field->setOptions(
             array(
                 'type'            => FieldDescriptionInterface::TYPE_HTML,
-                'label'           => $this->translate((string) $groupType),
+                'label'           => $this->translate('pim_catalog.group.type.'. $groupType->getCode()),
                 'field_name'      => 'groups',
                 'expression'      => 'pGroup.id',
                 'filter_type'     => FilterInterface::TYPE_CHOICE,
