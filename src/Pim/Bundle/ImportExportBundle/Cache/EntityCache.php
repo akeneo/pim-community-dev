@@ -48,7 +48,7 @@ class EntityCache
         if (!array_key_exists($code, $this->cache[$class])) {
             $this->cache[$class][$code] = $this->doctrine
                 ->getRepository($class)
-                ->findOneByCode($code);
+                ->findOneBy(array('code'=> $code));
         }
 
         return $this->cache[$class][$code];
