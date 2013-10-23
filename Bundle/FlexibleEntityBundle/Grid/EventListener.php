@@ -22,7 +22,6 @@ class EventListener
 {
     const FLEXIBLE_COLUMNS_PATH = '[flexible_attributes]';
     const FLEXIBLE_ENTITY_PATH  = '[flexible_entity]';
-    const PREFIX                = 'flexible_';
 
     /** @var  PropertyAccessor */
     protected $accessor;
@@ -69,7 +68,7 @@ class EventListener
                 }
                 $this->accessor->setValue(
                     $config,
-                    FormatterExtension::COLUMNS_PATH . '[' . self::PREFIX . $attribute . ']',
+                    FormatterExtension::COLUMNS_PATH . '[' . $attribute . ']',
                     ['type' => 'flexible_field', 'backend_type' => $attributes[$attribute]->getBackendType()]
                 );
 
@@ -80,7 +79,7 @@ class EventListener
 
                     $this->accessor->setValue(
                         $config,
-                        OrmFilterExtension::COLUMNS_PATH . '[' . self::PREFIX . $attribute . ']',
+                        OrmFilterExtension::COLUMNS_PATH . '[' . $attribute . ']',
                         [
                             'type'                 => $filterType,
                             'flexible_entity_name' => $flexibleEntity,
@@ -108,9 +107,9 @@ class EventListener
 
         $flexibleCount = count(
             array_filter(
-                array_keys($fields),
+                $fields,
                 function ($value) {
-                    return strpos($value, self::PREFIX) !== false;
+                    return $value['type'] === 'flexible_field';
                 }
             )
         );
@@ -159,6 +158,5 @@ class EventListener
             $configuration,
             $config
         );
-
     }
 }

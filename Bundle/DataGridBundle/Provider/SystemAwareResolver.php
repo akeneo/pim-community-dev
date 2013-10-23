@@ -78,7 +78,7 @@ class SystemAwareResolver implements ContainerAwareInterface
             case preg_match('#%([\w\._]+)%::([\w\._]+)#', $val, $match):
                 // with class as param
                 $class = $this->container->getParameter($match[1]);
-            // fall-through
+                // fall-through
             case preg_match('#([^\'"%:\s]+)::([\w\._]+)#', $val, $match):
                 // with class real name
                 $class = isset($class) ? $class : $match[1];

@@ -124,12 +124,12 @@ datagrid:
                 type: field
 
         flexible_attributes:
-            phone:
+            gender:
                 filterable: true
+            phone: ~
         flexible_entity: %orocrm_account.account.entity.class%
 
         filters:
             default:
-                flexible_phone:
-                    type: \Oro\Bundle\FilterBundle\Form\Type\Filter\TextFilterType::TYPE_ENDS_WITH
-                    value: 'ddd'
+                gender:
+                    value: 2

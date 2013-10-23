@@ -2,8 +2,6 @@
 
 namespace Oro\Bundle\DataGridBundle\Extension\Formatter\Property;
 
-use Oro\Bundle\DataGridBundle\Extension\Formatter\ResultRecord;
-
 abstract class AbstractProperty implements PropertyInterface
 {
     /** @var array */
