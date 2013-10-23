@@ -1,0 +1,43 @@
+parameters:
+    oro_tag.datagrid_manager.class: Oro\Bundle\TagBundle\Datagrid\TagDatagridManager
+    oro_tag.datagrid_manager.results.class: Oro\Bundle\TagBundle\Datagrid\ResultsDatagridManager
+    oro_tag.datagrid_results.query_factory.class: Oro\Bundle\TagBundle\Datagrid\ResultsQueryFactory
+    oro_tag.datagrid_results.grid_name: oro_tag_search_results
+
+services:
+    oro_tag.datagrid_manager:
+        class: %oro_tag.datagrid_manager.class%
+        tags:
+            - name: oro_grid.datagrid.manager
+              datagrid_name: tags
+              entity_name: %oro_tag.tag.entity.class%
+              entity_hint: tag
+              route_name: oro_tag_index
+
+    oro_tag.datagrid_results.datagrid_manager:
+        class: %oro_tag.datagrid_manager.results.class%
+        arguments: [%oro_search.twig.item_container_template%]
+        tags:
+            - name: oro_grid.datagrid.manager
+              datagrid_name: %oro_tag.datagrid_results.grid_name%
+              entity_hint: result
+              query_factory: oro_tag.datagrid_results.query_factory
+              route_name: oro_tag_search_ajax
+
+    oro_tag.datagrid_results.query_factory:
+        class: %oro_tag.datagrid_results.query_factory.class%
+        arguments:
+            - @doctrine
+            - %oro_tag.tagging.entity.class%
+            - @oro_search.mapper
+
+    oro_tag.datagrid_results.entity_result_listener:
+        class: %oro_search.datagrid_results.entity_result_listener.class%
+        arguments:
+            - @oro_search.formatter.result_formatter
+            - %oro_tag.datagrid_results.grid_name%
+            - @event_dispatcher
+        tags:
+            - name: kernel.event_listener
+              event: oro_grid.datagrid.result
+              method: processResult

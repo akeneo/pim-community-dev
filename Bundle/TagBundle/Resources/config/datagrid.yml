@@ -1,43 +1,62 @@
-parameters:
-    oro_tag.datagrid_manager.class: Oro\Bundle\TagBundle\Datagrid\TagDatagridManager
-    oro_tag.datagrid_manager.results.class: Oro\Bundle\TagBundle\Datagrid\ResultsDatagridManager
-    oro_tag.datagrid_results.query_factory.class: Oro\Bundle\TagBundle\Datagrid\ResultsQueryFactory
-    oro_tag.datagrid_results.grid_name: oro_tag_search_results
+datagrid:
+    tag-grid:
+        source:
+            acl_resource: oro_tag_view
+            type: orm
+            query:
+                select:
+                    - t.id
+                    - t.name
+                    - COUNT(t.id) as usage
+                from:
+                    - { table: OroTagBundle:Tag, alias: t }
+                join:
+                    left:
+                        tagging:
+                            join: t.tagging
+                            alias: tt
+                groupBy: t.id
 
-services:
-    oro_tag.datagrid_manager:
-        class: %oro_tag.datagrid_manager.class%
-        tags:
-            - name: oro_grid.datagrid.manager
-              datagrid_name: tags
-              entity_name: %oro_tag.tag.entity.class%
-              entity_hint: tag
-              route_name: oro_tag_index
+        columns:
+            name:
+                label: Tag
+                type: field
+                frontend_type: string
+            usage:
+                label: Usage Count
+                type: field
+                frontend_type: number
 
-    oro_tag.datagrid_results.datagrid_manager:
-        class: %oro_tag.datagrid_manager.results.class%
-        arguments: [%oro_search.twig.item_container_template%]
-        tags:
-            - name: oro_grid.datagrid.manager
-              datagrid_name: %oro_tag.datagrid_results.grid_name%
-              entity_hint: result
-              query_factory: oro_tag.datagrid_results.query_factory
-              route_name: oro_tag_search_ajax
+        properties:
+            update_link:
+                type: url
+                route: oro_tag_update
+                params:
+                    - id
+            search_link:
+                type: url
+                route: oro_tag_search
+                params:
+                    - id
+            delete_link:
+                type: url
+                route: oro_api_delete_tag
+                params:
+                    - id
+        sorters:
+            columns:
+                name:
+                    data_name: t.name
+                usage:
+                    data_name: usage
+            default:
+                label: %oro_grid.extension.orm_sorter.class%::DIRECTION_DESC
 
-    oro_tag.datagrid_results.query_factory:
-        class: %oro_tag.datagrid_results.query_factory.class%
-        arguments:
-            - @doctrine
-            - %oro_tag.tagging.entity.class%
-            - @oro_search.mapper
-
-    oro_tag.datagrid_results.entity_result_listener:
-        class: %oro_search.datagrid_results.entity_result_listener.class%
-        arguments:
-            - @oro_search.formatter.result_formatter
-            - %oro_tag.datagrid_results.grid_name%
-            - @event_dispatcher
-        tags:
-            - name: kernel.event_listener
-              event: oro_grid.datagrid.result
-              method: processResult
+        filters:
+            columns:
+                name:
+                    type: string
+                    data_name: t.name
+                usage:
+                    type: string
+                    data_name: usage

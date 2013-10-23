@@ -12,8 +12,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Oro\Bundle\TagBundle\Entity\Tag;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Oro\Bundle\GridBundle\Datagrid\Datagrid;
-use Oro\Bundle\TagBundle\Datagrid\TagDatagridManager;
 use Oro\Bundle\TagBundle\Datagrid\ResultsDatagridManager;
 
 class TagController extends Controller
@@ -35,15 +33,7 @@ class TagController extends Controller
      */
     public function indexAction()
     {
-        /** @var $gridManager TagDatagridManager */
-        $gridManager = $this->get('oro_tag.datagrid_manager');
-        $datagridView = $gridManager->getDatagrid()->createView();
-
-        if ('json' == $this->getRequest()->getRequestFormat()) {
-            return $this->get('oro_grid.renderer')->renderResultsJsonResponse($datagridView);
-        }
-
-        return array('datagrid' => $datagridView);
+        return array();
     }
 
     /**
