@@ -59,6 +59,7 @@ class CustomEntityType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $className = $options['class_name'];
+        $data      = $builder->getData();
 
         /** @var ConfigProvider $formConfigProvider */
         $formConfigProvider = $this->configManager->getProvider('form');
@@ -145,7 +146,7 @@ class CustomEntityType extends AbstractType
                             'grid_url'              => $this->router->generate(
                                 'oro_entity_relation',
                                 array(
-                                    //'className' => str_replace('\\', '_', $extendConfig->get('target_entity')),
+                                    'id'        => $data->getId(),
                                     'className' => str_replace('\\', '_', $className),
                                     'fieldName' => $fieldConfigId->getFieldName()
                                 )

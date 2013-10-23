@@ -79,13 +79,13 @@ class EntitiesController extends Controller
     /**
      * Grid of Custom/Extend entity.
      * @Route(
-     *      "/relation/{className}/field/{fieldName}",
+     *      "/relation/{id}/{className}/field/{fieldName}",
      *      name="oro_entity_relation",
-     *      defaults={"className"="", "fieldName"=""}
+     *      defaults={"id"=0, "className"="", "fieldName"=""}
      * )
      * @ Template()
      */
-    public function relationAction($className, $fieldName)
+    public function relationAction($id, $className, $fieldName)
     {
         $extendEntityName = str_replace('_', '\\', $className);
         $this->checkAccess('VIEW', $extendEntityName);
@@ -104,9 +104,9 @@ class EntitiesController extends Controller
 
         /** @var  CustomEntityDatagrid $datagrid */
         $datagridManager = $this->get('oro_entity.relation_datagrid.manager');
-
         $datagridManager->setCustomEntityClass($fieldConfig->get('target_entity'));
         $datagridManager->setRelationConfig($fieldConfig);
+        $datagridManager->setRelation($this->getDoctrine()->getRepository($extendEntityName)->find($id));
         $datagridManager->setEntityName($fieldConfig->get('target_entity'));
 
         $view = $datagridManager->getDatagrid()->createView();

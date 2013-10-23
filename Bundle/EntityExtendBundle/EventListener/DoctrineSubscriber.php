@@ -66,7 +66,8 @@ class DoctrineSubscriber implements EventSubscriber
                                 ? ExtendConfigDumper::FIELD_PREFIX . $targetFieldId->getFieldName()
                                 : null;
 
-                            $fieldName = ExtendConfigDumper::FIELD_PREFIX . $fieldId->getFieldName();
+                            $fieldName   = ExtendConfigDumper::FIELD_PREFIX . $fieldId->getFieldName();
+                            $defaultName = ExtendConfigDumper::DEFAULT_PREFIX . $fieldId->getFieldName();
 
                             switch ($fieldId->getFieldType()) {
                                 case 'manyToOne':
@@ -79,6 +80,11 @@ class DoctrineSubscriber implements EventSubscriber
                                 case 'oneToMany':
                                     $cmBuilder->addOneToMany(
                                         $fieldName,
+                                        $relation['target_entity'],
+                                        $targetFieldName
+                                    );
+                                    $cmBuilder->addOwningOneToOne(
+                                        $defaultName,
                                         $relation['target_entity'],
                                         $targetFieldName
                                     );
@@ -96,6 +102,12 @@ class DoctrineSubscriber implements EventSubscriber
                                                 $fieldId,
                                                 $relation['target_entity']
                                             )
+                                        );
+
+                                        $cmBuilder->addOwningOneToOne(
+                                            $defaultName,
+                                            $relation['target_entity'],
+                                            $targetFieldName
                                         );
 
                                         $builder->build();
