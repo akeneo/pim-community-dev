@@ -80,7 +80,14 @@ class VersionBuilder
                     $pendings[]= $groupChangeset[1];
                 }
             }
-        } elseif ($entity instanceof Group or $entity instanceof Category) {
+        } elseif ($entity instanceof Group) {
+            $products = $entity->getProducts();
+            foreach ($products as $product) {
+                $pendings[]= $product;
+            }
+
+        } elseif ($entity instanceof Category) {
+            $pendings[]= $entity;
             $products = $entity->getProducts();
             foreach ($products as $product) {
                 $pendings[]= $product;
