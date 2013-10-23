@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity;
 
+use Symfony\Component\Validator\GroupSequenceProviderInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
@@ -18,6 +20,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
  *
  * @ORM\Entity
  * @ORM\Table(name="pim_catalog_group")
+ * @Assert\GroupSequenceProvider
  * @Config(
  *  defaultValues={
  *      "entity"={"label"="Group", "plural_label"="Groups"},
@@ -28,7 +31,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
  *  }
  * )
  */
-class Group implements TranslatableInterface
+class Group implements TranslatableInterface, GroupSequenceProviderInterface
 {
     /**
      * @var integer $id
@@ -373,6 +376,15 @@ class Group implements TranslatableInterface
             },
             $this->getAttributes()->toArray()
         );
+    }
+
+    /**
+     * Return the identifier-based validation group for validation of properties
+     * @return string[]
+     */
+    public function getGroupSequence()
+    {
+        return array('Default', strtolower($this->getType()->getCode()));
     }
 
     /**

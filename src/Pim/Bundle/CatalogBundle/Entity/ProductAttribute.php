@@ -36,8 +36,10 @@ use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
  *  }
  * )
  */
-class ProductAttribute extends AbstractEntityAttribute implements TranslatableInterface, GroupSequenceProviderInterface,
- VersionableInterface
+class ProductAttribute extends AbstractEntityAttribute implements
+    TranslatableInterface,
+    GroupSequenceProviderInterface,
+    VersionableInterface
 {
     /**
      * @var integer $version

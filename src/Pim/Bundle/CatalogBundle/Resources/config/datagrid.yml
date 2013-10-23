@@ -43,7 +43,7 @@ services:
         tags:
             - name: oro_grid.datagrid.manager
               datagrid_name: catalog_history
-              entity_hint: attributes
+              entity_hint: audit
               route_name: current
 
     pim_catalog.datagrid.manager.channel:

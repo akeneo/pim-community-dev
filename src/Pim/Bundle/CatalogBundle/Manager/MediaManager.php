@@ -2,12 +2,11 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
-use Pim\Bundle\CatalogBundle\Exception\MediaManagementException;
-
-use Oro\Bundle\FlexibleEntityBundle\Entity\Media;
-
-use Knp\Bundle\GaufretteBundle\FilesystemMap;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Oro\Bundle\FlexibleEntityBundle\Entity\Media;
+use Gaufrette\Filesystem;
+use Pim\Bundle\CatalogBundle\Exception\MediaManagementException;
 
 /**
  * Media Manager actually implements with Gaufrette Bundle and Local adapter
@@ -22,7 +21,7 @@ class MediaManager
      * File system
      * @var \Gaufrette\Filesystem
      */
-    protected $fileSystem;
+    protected $filesystem;
 
     /**
      * Upload directory
@@ -33,13 +32,13 @@ class MediaManager
 
     /**
      * Constructor
-     * @param FilesystemMap $fileSystemMap   Filesystem map
-     * @param string        $fileSystemName  Filesystem name
-     * @param string        $uploadDirectory Upload directory
+     *
+     * @param Filesystem $filesystem
+     * @param string     $uploadDirectory
      */
-    public function __construct(FilesystemMap $fileSystemMap, $fileSystemName, $uploadDirectory)
+    public function __construct(Filesystem $filesystem, $uploadDirectory)
     {
-        $this->fileSystem      = $fileSystemMap->get($fileSystemName);
+        $this->filesystem      = $filesystem;
         $this->uploadDirectory = $uploadDirectory;
     }
 
@@ -63,6 +62,18 @@ class MediaManager
         }
     }
 
+    public function copy(Media $media, $targetDir)
+    {
+        if (!is_dir($targetDir)) {
+            mkdir($targetDir, 0777, true);
+        }
+
+        $targetFilePath = sprintf('%s/%s', rtrim($targetDir, '/'), $media->getFilename());
+        copy($media->getFilePath(), $targetFilePath);
+
+        return $targetFilePath;
+    }
+
     /**
      * @param File   $file
      * @param string $filenamePrefix
@@ -71,7 +82,11 @@ class MediaManager
      */
     protected function generateFilename(File $file, $filenamePrefix)
     {
-        return sprintf('%s-%s', $filenamePrefix, $file->getClientOriginalName());
+        return sprintf(
+            '%s-%s',
+            $filenamePrefix,
+            $file instanceof UploadedFile ? $file->getClientOriginalName() : $file->getFilename()
+        );
     }
 
     /**
@@ -82,13 +97,15 @@ class MediaManager
      */
     protected function upload(Media $media, $filename, $overwrite = false)
     {
-        $uploadedFile = $media->getFile();
-        $this->write($filename, file_get_contents($uploadedFile->getPathname()), $overwrite);
+        $file = $media->getFile();
+        $this->write($filename, file_get_contents($file->getPathname()), $overwrite);
 
-        $media->setOriginalFilename($uploadedFile->getClientOriginalName());
+        $media->setOriginalFilename(
+            $file instanceof UploadedFile ?  $file->getClientOriginalName() : $file->getFilename()
+        );
         $media->setFilename($filename);
         $media->setFilepath($this->getFilePath($media));
-        $media->setMimeType($uploadedFile->getMimeType());
+        $media->setMimeType($file->getMimeType());
     }
 
     /**
@@ -99,7 +116,7 @@ class MediaManager
      */
     protected function write($filename, $content, $overwrite = false)
     {
-        $this->fileSystem->write($filename, $content, $overwrite);
+        $this->filesystem->write($filename, $content, $overwrite);
     }
 
     /**
@@ -122,7 +139,7 @@ class MediaManager
     protected function delete(Media $media)
     {
         if (($media->getFilename() != "") && $this->fileExists($media)) {
-            $this->fileSystem->delete($media->getFilename());
+            $this->filesystem->delete($media->getFilename());
         }
 
         $media->setOriginalFilename(null);
@@ -140,6 +157,6 @@ class MediaManager
      */
     protected function fileExists(Media $media)
     {
-        return $this->fileSystem->has($media->getFilename());
+        return $this->filesystem->has($media->getFilename());
     }
 }

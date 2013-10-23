@@ -36,8 +36,7 @@ services:
     pim_catalog.manager.media:
         class: %pim_catalog.manager.media.class%
         arguments:
-            - '@knp_gaufrette.filesystem_map'
-            - pim
+            - '@pim_filesystem'
             - %upload_dir%
 
     pim_catalog.manager.attribute_type:
