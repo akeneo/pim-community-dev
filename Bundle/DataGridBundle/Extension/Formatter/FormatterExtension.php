@@ -107,7 +107,7 @@ class FormatterExtension extends AbstractExtension
         $config['name'] = $name;
         $type = $this->accessor->getValue($config, '[type]');
 
-        $property = clone $this->properties[$type];
+        $property = $this->properties[$type];
         $property->init($config);
 
         return $property;
