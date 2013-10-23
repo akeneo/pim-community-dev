@@ -107,29 +107,35 @@ datagrid:
         columns:
             name:
                 type: field
+                frontend_options:
+                    label: 'Name'
 
             contactFirstName:
                 type: field
+                frontend_options:
+                    label: 'Default contact first name'
 
             contactLastName:
                 type: field
+                frontend_options:
+                    label: 'Default contact last name'
 
             contactPhone:
                 type: field
+                frontend_options:
+                    label: 'Default contact phone'
 
             contactEmail:
                 type: field
+                frontend_options:
+                    label: 'Default contact email'
 
             ownerName:
                 type: field
+                frontend_options:
+                    label: 'Owner'
 
         flexible_attributes:
-            phone:
+            employees:
                 filterable: true
         flexible_entity: %orocrm_account.account.entity.class%
-
-        filters:
-            default:
-                flexible_phone:
-                    type: \Oro\Bundle\FilterBundle\Form\Type\Filter\TextFilterType::TYPE_ENDS_WITH
-                    value: 'ddd'

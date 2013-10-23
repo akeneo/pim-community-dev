@@ -8,6 +8,10 @@ use Oro\Bundle\DataGridBundle\Extension\Formatter\ResultRecordInterface;
 
 class TranslateableProperty extends AbstractProperty
 {
+    const ALIAS_KEY  = 'alias';
+    const DOMAIN_KEY = 'domain';
+    const LOCALE_KEY = 'locale';
+
     /**
      * @var TranslatorInterface
      */
@@ -26,9 +30,14 @@ class TranslateableProperty extends AbstractProperty
      */
     public function getValue(ResultRecordInterface $record)
     {
-        $dataField = $this->getOr('alias', $this->get('name'));
+        $dataField = $this->getOr(self::ALIAS_KEY, $this->get(self::NAME_KEY));
         $value     = $record->getValue($dataField);
 
-        return $this->translator->trans($value, array(), $this->getOr('domain'), $this->getOr('locale'));
+        return $this->translator->trans(
+            $value,
+            array(),
+            $this->getOr(self::DOMAIN_KEY),
+            $this->getOr(self::LOCALE_KEY)
+        );
     }
 }

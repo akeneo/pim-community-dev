@@ -5,6 +5,8 @@ namespace Oro\Bundle\DataGridBundle\Extension\Formatter;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
+use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\PropertyInterface;
+
 class Configuration implements ConfigurationInterface
 {
     /** @var array */
@@ -29,13 +31,21 @@ class Configuration implements ConfigurationInterface
             ->prototype('array')
                 ->ignoreExtraKeys()
                 ->children()
-                    ->scalarNode('type')
+                    ->scalarNode(PropertyInterface::TYPE_KEY)
                         ->isRequired()
                         ->validate()
                         ->ifNotInArray($this->types)
                             ->thenInvalid('Invalid property type "%s"')
                         ->end()
                     ->end()
+                    ->arrayNode(PropertyInterface::FRONTEND_OPTIONS_KEY)
+                        ->isRequired()
+                        ->ignoreExtraKeys()
+                        ->children()
+                            ->scalarNode('label')->isRequired()->end()
+                            ->booleanNode('editable')->end()
+                            ->booleanNode('renderable')->end()
+                        ->end()
                 ->end()
             ->end();
 
