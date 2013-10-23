@@ -8,6 +8,8 @@ use Oro\Bundle\DataGridBundle\Extension\ExtensionVisitorInterface;
 
 interface DatagridInterface
 {
+    const METADATA_OPTIONS_KEY = 'options';
+
     /**
      * Returns datagrid name
      *
