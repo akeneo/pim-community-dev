@@ -158,7 +158,8 @@ class AssociationGroupDatagridManager extends DatagridManager
             array(
                 'type'            => FieldDescriptionInterface::TYPE_TEXT,
                 'label'           => $this->translate('Type'),
-                'field_name'      => 'type',
+                'field_name'      => 'groupType',
+                'expression'      => 'type',
                 'filter_type'     => FilterInterface::TYPE_ENTITY,
                 'required'        => false,
                 'sortable'        => true,
@@ -257,10 +258,6 @@ class AssociationGroupDatagridManager extends DatagridManager
      */
     protected function prepareQuery(ProxyQueryInterface $proxyQuery)
     {
-        $proxyQuery
-            ->select('g')
-            ->from('PimCatalogBundle:Group', 'g');
-
         $rootAlias = $proxyQuery->getRootAlias();
         $labelExpr = sprintf(
             '(CASE WHEN translation.label IS NULL THEN %s.code ELSE translation.label END)',
@@ -270,12 +267,14 @@ class AssociationGroupDatagridManager extends DatagridManager
         $proxyQuery
             ->addSelect(sprintf('%s AS groupLabel', $labelExpr), true)
             ->addSelect('translation.label', true)
+            ->addSelect('type.code as groupType', true)
             ->addSelect('attribute')
             ->addSelect($this->getHasAssociationExpression() . ' AS hasCurrentAssociation', true);
 
         $proxyQuery
-            ->leftJoin($rootAlias .'.translations', 'translation', 'WITH', 'translation.locale = :localeCode')
-            ->leftJoin($rootAlias .'.attributes', 'attribute')
+            ->leftJoin($rootAlias . '.type', 'type')
+            ->leftJoin($rootAlias . '.translations', 'translation', 'WITH', 'translation.locale = :localeCode')
+            ->leftJoin($rootAlias . '.attributes', 'attribute')
             ->leftJoin(
                 'PimCatalogBundle:ProductAssociation',
                 'pa',
