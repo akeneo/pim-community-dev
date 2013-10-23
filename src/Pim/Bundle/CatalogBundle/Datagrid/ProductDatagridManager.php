@@ -406,13 +406,15 @@ class ProductDatagridManager extends FlexibleDatagridManager
                     'type'            => FieldDescriptionInterface::TYPE_HTML,
                     'label'           => $this->translate($type->getCode()),
                     'field_name'      => 'groups',
+                    'expression'      => 'pGroup.id',
                     'filter_type'     => FilterInterface::TYPE_CHOICE,
                     'required'        => false,
                     'sortable'        => false,
                     'filterable'      => true,
                     'show_filter'     => true,
                     'multiple'        => true,
-                    'field_options'   => array('choices' => $choices)
+                    'field_options'   => array('choices' => $choices),
+                    'filter_by_where' => true
                 )
             );
 
@@ -578,9 +580,8 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $proxyQuery
             ->leftJoin($rootAlias .'.family', 'productFamily')
             ->leftJoin('productFamily.translations', 'ft', 'WITH', 'ft.locale = :localeCode')
-            ->leftJoin($rootAlias .'.groups', 'groups')
-            ->leftJoin('groups.type', 'groupType')
-            ->leftJoin('groups.translations', 'vt', 'WITH', 'vt.locale = :localeCode')
+            ->leftJoin($rootAlias .'.groups', 'pGroup')
+            ->leftJoin('pGroup.translations', 'gt', 'WITH', 'gt.locale = :localeCode')
             ->leftJoin($rootAlias.'.values', 'values')
             ->leftJoin('values.options', 'valueOptions')
             ->leftJoin('values.prices', 'valuePrices')
@@ -593,8 +594,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
             ->addSelect('valuePrices')
             ->addSelect('valueOptions')
             ->addSelect('category')
-            ->addSelect('groups')
-            ->addSelect('groupType');
+            ->addSelect('pGroup');
 
         $this->prepareQueryForCompleteness($proxyQuery, $rootAlias);
         $this->prepareQueryForCategory($proxyQuery, $rootAlias);
