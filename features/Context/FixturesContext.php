@@ -2,6 +2,7 @@
 
 namespace Context;
 
+use Symfony\Component\HttpFoundation\File\File;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Util\Inflector;
 use Oro\Bundle\BatchBundle\Entity\JobInstance;
@@ -25,6 +26,7 @@ use Pim\Bundle\CatalogBundle\Entity\Group;
 use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Gherkin\Node\PyStringNode;
+use Oro\Bundle\FlexibleEntityBundle\Entity\Media;
 
 /**
  * A context for creating entities
@@ -120,6 +122,17 @@ class FixturesContext extends RawMinkContext
     public function clearUOW()
     {
         $this->getEntityManager()->clear();
+    }
+
+    /**
+     * @BeforeScenario
+     */
+    public function clearPimFilesystem()
+    {
+        $fs = $this->getPimFilesystem();
+        foreach ($fs->keys() as $key) {
+            $fs->delete($key);
+        }
     }
 
     /**
@@ -482,7 +495,7 @@ class FixturesContext extends RawMinkContext
                     $value->setLocale($data['locale']);
                 }
                 if ($data['value']) {
-                    if ($value->getAttribute()->getAttributeType() == $this->attributeTypes['prices']) {
+                    if ($value->getAttribute()->getAttributeType() === $this->attributeTypes['prices']) {
                         foreach ($value->getPrices() as $price) {
                             $value->removePrice($price);
                         }
@@ -573,7 +586,7 @@ class FixturesContext extends RawMinkContext
             if (isset($data['products'])) {
                 $skus = explode(',', $data['products']);
                 foreach ($skus as $sku) {
-                    $category->addProduct($this->getProduct($sku));
+                    $category->addProduct($this->getProduct(trim($sku)));
                 }
             }
 
@@ -942,7 +955,9 @@ class FixturesContext extends RawMinkContext
     {
         foreach ($this->listToArray($products) as $identifier) {
             $productValue = $this->getProductValue($identifier, strtolower($attribute));
-            assertEquals($filename, $productValue->getMedia()->getOriginalFilename());
+            $media = $productValue->getMedia();
+            $this->getEntityManager()->refresh($media);
+            assertEquals($filename, $media->getOriginalFilename());
         }
     }
 
@@ -1319,13 +1334,23 @@ class FixturesContext extends RawMinkContext
 
         $value = $manager->createFlexibleValue();
         $value->setAttribute($attribute);
-        if ($attribute->getAttributeType() == $this->attributeTypes['prices']) {
-            $prices = $this->createPricesFromString($data);
-            foreach ($prices as $price) {
-                $value->addPrice($price);
-            }
-        } else {
-            $value->setData($data);
+
+        switch ($attribute->getAttributeType()) {
+            case $this->attributeTypes['prices']:
+                $prices = $this->createPricesFromString($data);
+                foreach ($prices as $price) {
+                    $value->addPrice($price);
+                }
+                break;
+
+            case $this->attributeTypes['image']:
+            case $this->attributeTypes['file']:
+                $media = $this->createMedia($data);
+                $value->setMedia($media);
+                break;
+
+            default:
+                $value->setData($data);
         }
         $value->setLocale($locale);
         $value->setScope($scope);
@@ -1571,6 +1596,17 @@ class FixturesContext extends RawMinkContext
         return new ArrayCollection($data);
     }
 
+    private function createMedia($file)
+    {
+        $media = new Media();
+        if ($file) {
+            $media->setFile(new File(__DIR__ . '/fixtures/' . $file));
+            $this->getMediaManager()->handle($media, 'behat');
+        }
+
+        return $media;
+    }
+
     /**
      * @param string $data
      * @param string $currency
@@ -1770,11 +1806,27 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @return \Pim\Bundle\CatalogBundle\Manager\MediaManager
+     */
+    private function getMediaManager()
+    {
+        return $this->getContainer()->get('pim_catalog.manager.media');
+    }
+
+    /**
      * @return \Oro\Bundle\UserBundle\Entity\UserManager
      */
     private function getUserManager()
     {
         return $this->getContainer()->get('oro_user.manager');
+    }
+
+    /**
+     * @return \Gaufrette\Filesystem
+     */
+    private function getPimFilesystem()
+    {
+        return $this->getContainer()->get('pim_filesystem');
     }
 
     /**
