@@ -115,10 +115,10 @@
         }
     %}
     {{ parent() }}
-    <script>
+    <script type="text/javascript">
         $(function() {
-            $(document).on('click', '.permission-value a', function() {
-                $(this).parent().find('.permission-choice').show();
+            $(document).on('click', '.access_level_value a', function() {
+                $(this).parent().find('.access_level_value_choice').show();
                 $(this).hide();
                 return false;
             });

@@ -77,4 +77,21 @@ final class AccessLevel
 
         return null;
     }
+
+    /**
+     * Get array with access levels from NONE to $value
+     *
+     * @param int $value
+     * @return array
+     */
+    public static function getAccessLevelNames($value = self::SYSTEM_LEVEL)
+    {
+        $names = array();
+        for ($level = $value; $level >= self::NONE_LEVEL; $level--) {
+            $name = self::getAccessLevelName($level);
+            $names[$level] = $name ? $name : 'NONE';
+        }
+
+        return $names;
+    }
 }

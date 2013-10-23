@@ -29,6 +29,14 @@ class ActionAclExtension extends AbstractAclExtension
         );
     }
 
+    public function getAccessLevelNames($object)
+    {
+        return array(
+            AccessLevel::NONE_LEVEL => 'NONE',
+            AccessLevel::SYSTEM_LEVEL => AccessLevel::getAccessLevelName(AccessLevel::SYSTEM_LEVEL)
+        );
+    }
+
     /**
      * {@inheritdoc}
      */

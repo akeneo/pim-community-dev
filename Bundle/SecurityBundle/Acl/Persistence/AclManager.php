@@ -94,6 +94,13 @@ class AclManager extends AbstractAclManager
             : 'Oro\Bundle\SecurityBundle\Acl\Persistence\AclPrivilegeRepository';
     }
 
+    public function getAccessLevelsForObject($object)
+    {
+        $extension = $this->getExtensionSelector()->select($object);
+
+        return $extension->getAccessLevelNames($object);
+    }
+
     /**
      * Indicates whether ACL based security is enabled or not
      *

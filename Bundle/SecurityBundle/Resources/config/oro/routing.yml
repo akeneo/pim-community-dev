@@ -1,0 +1,4 @@
+oro_security:
+    resource:     "@OroSecurityBundle/Controller"
+    type:         annotation
+    prefix:       /security

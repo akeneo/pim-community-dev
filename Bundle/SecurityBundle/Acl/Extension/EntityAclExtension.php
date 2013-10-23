@@ -301,6 +301,23 @@ class EntityAclExtension extends AbstractAclExtension
         return $rootMask;
     }
 
+    public function getAccessLevelNames($object)
+    {
+        return AccessLevel::getAccessLevelNames($this->getMaxAccessLevel($object));
+    }
+
+    protected function getMaxAccessLevel($object)
+    {
+        $metadata = $this->getMetadata($object);
+        if (!$metadata->hasOwner()) {
+            return AccessLevel::SYSTEM_LEVEL;
+        } elseif ($metadata->isOrganizationOwned()) {
+            return AccessLevel::GLOBAL_LEVEL;
+        } elseif ($metadata->isBusinessUnitOwned()) {
+            return AccessLevel::LOCAL_LEVEL;
+        }
+    }
+
     /**
      * {@inheritdoc}
      */
