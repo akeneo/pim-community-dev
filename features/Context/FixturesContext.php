@@ -1059,6 +1059,18 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @Given /^family of "([^"]*)" should be "([^"]*)"$/
+     */
+    public function familyOfShouldBe($productCode, $familyCode)
+    {
+        $family = $this->getProduct($productCode)->getFamily();
+        if (!$family) {
+            throw \Exception(sprintf('Product "%s" doesn\'t have a family', $productCode));
+        }
+        assertEquals($familyCode, $family->getCode());
+    }
+
+    /**
      * @param string $username
      *
      * @return User

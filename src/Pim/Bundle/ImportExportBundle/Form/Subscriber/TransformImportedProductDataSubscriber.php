@@ -5,6 +5,7 @@ namespace Pim\Bundle\ImportExportBundle\Form\Subscriber;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
+use Oro\Bundle\BatchBundle\Item\InvalidItemException;
 use Pim\Bundle\ImportExportBundle\Converter\ProductEnabledConverter;
 use Pim\Bundle\ImportExportBundle\Converter\ProductValueConverter;
 use Pim\Bundle\ImportExportBundle\Converter\ProductFamilyConverter;
@@ -21,8 +22,7 @@ use Pim\Bundle\ImportExportBundle\Converter\ProductGroupsConverter;
 class TransformImportedProductDataSubscriber implements EventSubscriberInterface
 {
     /**
-     * @var ProductEnabledConverter $enabledConverter
-     */
+     * @var ProductEnabledConverter $enabledConverter */
     protected $enabledConverter;
 
     /**
@@ -88,13 +88,17 @@ class TransformImportedProductDataSubscriber implements EventSubscriberInterface
     {
         $data = $event->getData();
 
-        $dataToSubmit = array_merge(
-            $this->enabledConverter->convert($data),
-            $this->valueConverter->convert($data),
-            $this->familyConverter->convert($data),
-            $this->categoriesConverter->convert($data),
-            $this->groupsConverter->convert($data)
-        );
+        try {
+            $dataToSubmit = array_merge(
+                $this->enabledConverter->convert($data),
+                $this->valueConverter->convert($data),
+                $this->familyConverter->convert($data),
+                $this->categoriesConverter->convert($data),
+                $this->groupsConverter->convert($data)
+            );
+        } catch (\InvalidArgumentException $e) {
+            throw new InvalidItemException($e->getMessage(), $data);
+        }
 
         $event->setData($dataToSubmit);
     }

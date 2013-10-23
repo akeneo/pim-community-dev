@@ -31,7 +31,9 @@
                 {{ form_label(form, '', { label_attr: label_attr|merge({ class: 'control-label' })}) }}
                 <div class="controls{% if errors|length > 0 %} validation-error{% endif %}">
                     {{ form_widget(form) }}
-                    {{ block('form_info') }}
+                    {% if form.children|length == 0 %}
+                        {{ block('form_info') }}
+                    {% endif %}
                 </div>
             </div>
         {% endif %}

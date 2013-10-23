@@ -192,12 +192,16 @@ info:
         change family to:        Change the family to
         merge attributes:        Current attributes will be merged with the ones in the new family.
         keep attributes:         No attributes will be removed.
+        number of associations:  %productCount% products and %groupCount% groups
         enable:                  Enable
         enabled:                 Enabled
         disable:                 Disable
         disabled:                Disabled
     group:
         axis: Variation axis: %attributes%
+    association:
+        show products: Show products
+        show groups:   Show groups
 
 # Form elements
 Options:                       Options
