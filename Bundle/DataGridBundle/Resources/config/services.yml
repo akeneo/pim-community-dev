@@ -28,8 +28,8 @@ services:
 
     oro_grid.datagrid.request_params:
         class: %oro_grid.datagrid.request_params.class%
-        arguments:
-            - @service_container
+        calls:
+            - [setRequest, [@?request=]]
 
     oro_grid.provider.resolver:
         class: %oro_grid.provider.resolver.class%

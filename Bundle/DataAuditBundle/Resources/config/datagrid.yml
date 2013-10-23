@@ -124,7 +124,7 @@ datagrid:
             query:
                 select:
                     - a.id
-                    - a.data
+                    - a.data as data
                     - a.loggedAt
                     - >
                       CONCAT(
@@ -158,11 +158,13 @@ datagrid:
                 type: twig
                 template: OroDataAuditBundle:Datagrid:Property/old.html.twig
                 frontend_type: string
+                data_name: data
             new:
                 label: New values
                 type: twig
                 template: OroDataAuditBundle:Datagrid:Property/new.html.twig
                 frontend_type: string
+                data_name: data
         properties: ~
         sorters:
             columns:

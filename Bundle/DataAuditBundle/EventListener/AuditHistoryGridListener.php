@@ -35,7 +35,7 @@ class AuditHistoryGridListener
             $queryBuilder = $datasource->getQuery();
 
             $queryParameters = array(
-                'objectClass' => $this->requestParams->get(self::GRID_PARAM_CLASS, ''),
+                'objectClass' => str_replace('_', '\\', $this->requestParams->get(self::GRID_PARAM_CLASS, '')),
                 'objectId'    => $this->requestParams->get(self::GRID_PARAM_OBJECT_ID, 0),
             );
 

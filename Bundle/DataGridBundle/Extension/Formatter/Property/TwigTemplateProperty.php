@@ -47,7 +47,7 @@ class TwigTemplateProperty extends AbstractProperty
             $this->getOr('context', []),
             array(
                 'record' => $record,
-                'value'  => $record->getValue($this->get(self::NAME_KEY)),
+                'value'  => $record->getValue($this->getOr(self::DATA_NAME_KEY, $this->get(self::NAME_KEY))),
             )
         );
 

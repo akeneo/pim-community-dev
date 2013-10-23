@@ -17,14 +17,18 @@
     <script type="text/javascript">
         require(['jquery'], function ($) {
             $(function () {
-                var datagrid = $('div[data-type="datagrid"]');
-                console.group('Datagrid "{{ name }}" rendered:');
-                console.info(datagrid.data('data'));
-                console.info(datagrid.data('metadata'));
-                console.groupEnd();
+                $('div[data-type="datagrid"]:not([data-rendered])').each(function (e, el) {
+                    var el = $(el);
+                    console.group('Datagrid "{{ name }}" rendered:');
+                    console.info(el.data('data'));
+                    console.info(el.data('metadata'));
+                    console.groupEnd();
 
-                datagrid.html(JSON.stringify(datagrid.data('data'))).append($('<hr />'));
-                datagrid.append($('<div>').html(JSON.stringify(datagrid.data('metadata'))));
+                    el.html(JSON.stringify(el.data('data'))).append($('<hr />'));
+                    el.append($('<div>').html(JSON.stringify(el.data('metadata'))));
+
+                    el.data('rendered', true);
+                });
                 {# @TODO add require JS builder here and call init method #}
             });
         });

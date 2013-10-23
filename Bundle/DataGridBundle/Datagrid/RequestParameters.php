@@ -13,19 +13,8 @@ class RequestParameters
 
     const ROOT_PARAM = 'grid';
 
-    /** @var ContainerInterface */
-    private $container;
-
     /** @var Request */
     protected $request;
-
-    /**
-     * @param ContainerInterface $container
-     */
-    public function __construct(ContainerInterface $container)
-    {
-        $this->container = $container;
-    }
 
     /**
      * Get parameter value from parameters container
@@ -94,10 +83,16 @@ class RequestParameters
      */
     protected function getRequest()
     {
-        if (!$this->request) {
-            $this->request = clone $this->container->get('request');
-        }
-
         return $this->request;
+    }
+
+    /**
+     * @param Request $request
+     */
+    public function setRequest(Request $request = null)
+    {
+        if ($request instanceof Request) {
+            $this->request = clone $request;
+        }
     }
 }
