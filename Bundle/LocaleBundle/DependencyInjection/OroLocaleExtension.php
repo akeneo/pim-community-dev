@@ -16,6 +16,7 @@ class OroLocaleExtension extends Extension
     const PARAMETER_NAME_FORMATS = 'oro_locale.format.name';
     const PARAMETER_ADDRESS_FORMATS = 'oro_locale.format.address';
     const PARAMETER_LOCALE_DATA = 'oro_locale.locale_data';
+    const PARAMETER_CURRENCY_DATA = 'oro_locale.currency_data';
 
     /**
      * {@inheritDoc}
@@ -39,6 +40,10 @@ class OroLocaleExtension extends Extension
         $container->setParameter(
             self::PARAMETER_LOCALE_DATA,
             $this->escapePercentSymbols($config['locale_data'])
+        );
+        $container->setParameter(
+            self::PARAMETER_CURRENCY_DATA,
+            $this->escapePercentSymbols($config['currency_data'])
         );
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
@@ -97,15 +102,15 @@ class OroLocaleExtension extends Extension
     }
 
     /**
-     * @param array $configs
      * @param ContainerBuilder $container
      * @return array
      */
-    protected function processNameAndAddressFormatConfiguration(array $configs, ContainerBuilder $container)
+    protected function parseExternalConfigFiles(ContainerBuilder $container)
     {
         $externalNameFormat = array();
         $externalAddressFormat = array();
         $externalLocaleData = array();
+        $externalCurrencyData = array();
 
         // read configuration from external files
         foreach ($container->getParameter('kernel.bundles') as $bundle) {
@@ -125,7 +130,29 @@ class OroLocaleExtension extends Extension
             if (file_exists($file = dirname($reflection->getFilename()) . '/Resources/config/locale_data.yml')) {
                 $externalLocaleData = array_merge($externalLocaleData, Yaml::parse(realpath($file)));
             }
+
+            // read currency data files
+            if (file_exists($file = dirname($reflection->getFilename()) . '/Resources/config/currency_data.yml')) {
+                $externalCurrencyData = array_merge($externalCurrencyData, Yaml::parse(realpath($file)));
+            }
         }
+
+        return array(
+            'name_format' => $externalNameFormat,
+            'address_format' => $externalAddressFormat,
+            'locale_data' => $externalLocaleData,
+            'currency_data' => $externalCurrencyData,
+        );
+    }
+
+    /**
+     * @param array $configs
+     * @param ContainerBuilder $container
+     * @return array
+     */
+    protected function processNameAndAddressFormatConfiguration(array $configs, ContainerBuilder $container)
+    {
+        $externalData = $this->parseExternalConfigFiles($container);
 
         if (!empty($configs)) {
             $configData = array_shift($configs);
@@ -134,22 +161,12 @@ class OroLocaleExtension extends Extension
         }
 
         // merge formats
-        if (!empty($configData['name_format'])) {
-            $configData['name_format'] = array_merge($externalNameFormat, $configData['name_format']);
-        } else {
-            $configData['name_format'] = $externalNameFormat;
-        }
-
-        if (!empty($configData['address_format'])) {
-            $configData['address_format'] = array_merge($externalAddressFormat, $configData['address_format']);
-        } else {
-            $configData['address_format'] = $externalAddressFormat;
-        }
-
-        if (!empty($configData['locale_data'])) {
-            $configData['locale_data'] = array_merge($externalLocaleData, $configData['locale_data']);
-        } else {
-            $configData['locale_data'] = $externalLocaleData;
+        foreach (array('name_format', 'address_format', 'locale_data', 'currency_data') as $configKey) {
+            if (!empty($configData[$configKey])) {
+                $configData[$configKey] = array_merge($externalData[$configKey], $configData[$configKey]);
+            } else {
+                $configData[$configKey] = $externalData[$configKey];
+            }
         }
 
         array_unshift($configs, $configData);

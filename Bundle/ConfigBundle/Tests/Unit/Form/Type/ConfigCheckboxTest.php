@@ -3,7 +3,6 @@
 namespace ConfigBundle\Tests\Unit\Form\Type;
 
 use Symfony\Component\Form\Test\FormIntegrationTestCase;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
 use Oro\Bundle\ConfigBundle\Form\Type\ConfigCheckbox;
 

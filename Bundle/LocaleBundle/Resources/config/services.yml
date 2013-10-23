@@ -27,6 +27,7 @@ services:
             - [addNameFormats, [%oro_locale.format.name%]]
             - [addAddressFormats, [%oro_locale.format.address%]]
             - [addLocaleData, [%oro_locale.locale_data%]]
+            - [addCurrencyData, [%oro_locale.currency_data%]]
 
     # Form types
     oro_locale.form.type.name_format.type:

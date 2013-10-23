@@ -30,20 +30,18 @@ class LocaleSettingsTest extends \PHPUnit_Framework_TestCase
         $enFormatModified = '%prefix% %%first_name% %middle_name% %last_name% %suffix%';
         $ruFormat = '%last_name% %first_name% %middle_name%';
 
-        $this->assertAttributeEmpty('nameFormats', $this->localeSettings);
+        $this->assertEmpty($this->localeSettings->getNameFormats());
 
         $this->localeSettings->addNameFormats(array('en' => $enFormat));
-        $this->assertAttributeEquals(
+        $this->assertEquals(
             array('en' => $enFormat),
-            'nameFormats',
-            $this->localeSettings
+            $this->localeSettings->getNameFormats()
         );
 
         $this->localeSettings->addNameFormats(array('en' => $enFormatModified, 'ru' => $ruFormat));
-        $this->assertAttributeEquals(
+        $this->assertEquals(
             array('en' => $enFormatModified, 'ru' => $ruFormat),
-            'nameFormats',
-            $this->localeSettings
+            $this->localeSettings->getNameFormats()
         );
     }
 
@@ -62,43 +60,60 @@ class LocaleSettingsTest extends \PHPUnit_Framework_TestCase
                 => '%postal_code% %COUNTRY% %CITY%\n%STREET%\n%organization%\n%name%'
         );
 
-        $this->assertAttributeEmpty('addressFormats', $this->localeSettings);
+        $this->assertEmpty($this->localeSettings->getAddressFormats());
 
         $this->localeSettings->addAddressFormats(array('US' => $usFormat));
-        $this->assertAttributeEquals(
+        $this->assertEquals(
             array('US' => $usFormat),
-            'addressFormats',
-            $this->localeSettings
+            $this->localeSettings->getAddressFormats()
         );
 
         $this->localeSettings->addAddressFormats(array('US' => $usFormatModified, 'RU' => $ruFormat));
-        $this->assertAttributeEquals(
+        $this->assertEquals(
             array('US' => $usFormatModified, 'RU' => $ruFormat),
-            'addressFormats',
-            $this->localeSettings
+            $this->localeSettings->getAddressFormats()
         );
     }
 
     public function testAddLocaleData()
     {
-        $usData = array(LocaleSettings::DEFAULT_LOCALE => 'en_US');
-        $usDataModified = array(LocaleSettings::DEFAULT_LOCALE => 'en');
-        $ruFormat = array(LocaleSettings::DEFAULT_LOCALE => 'ru');
+        $usData = array(LocaleSettings::DEFAULT_LOCALE_KEY => 'en_US');
+        $usDataModified = array(LocaleSettings::DEFAULT_LOCALE_KEY => 'en');
+        $ruData = array(LocaleSettings::DEFAULT_LOCALE_KEY => 'ru');
 
-        $this->assertAttributeEmpty('localeData', $this->localeSettings);
+        $this->assertEmpty($this->localeSettings->getLocaleData());
 
         $this->localeSettings->addLocaleData(array('US' => $usData));
-        $this->assertAttributeEquals(
+        $this->assertEquals(
             array('US' => $usData),
-            'localeData',
-            $this->localeSettings
+            $this->localeSettings->getLocaleData()
         );
 
-        $this->localeSettings->addLocaleData(array('US' => $usDataModified, 'RU' => $ruFormat));
-        $this->assertAttributeEquals(
-            array('US' => $usDataModified, 'RU' => $ruFormat),
-            'localeData',
-            $this->localeSettings
+        $this->localeSettings->addLocaleData(array('US' => $usDataModified, 'RU' => $ruData));
+        $this->assertEquals(
+            array('US' => $usDataModified, 'RU' => $ruData),
+            $this->localeSettings->getLocaleData()
+        );
+    }
+
+    public function testAddCurrencyData()
+    {
+        $usData = array(LocaleSettings::CURRENCY_SYMBOL_KEY => '$');
+        $usDataModified = array(LocaleSettings::CURRENCY_SYMBOL_KEY => 'AU$');
+        $ruData = array(LocaleSettings::CURRENCY_SYMBOL_KEY => 'руб.');
+
+        $this->assertEmpty($this->localeSettings->getCurrencyData());
+
+        $this->localeSettings->addCurrencyData(array('USD' => $usData));
+        $this->assertEquals(
+            array('USD' => $usData),
+            $this->localeSettings->getCurrencyData()
+        );
+
+        $this->localeSettings->addCurrencyData(array('USD' => $usDataModified, 'RUR' => $ruData));
+        $this->assertEquals(
+            array('USD' => $usDataModified, 'RUR' => $ruData),
+            $this->localeSettings->getCurrencyData()
         );
     }
 

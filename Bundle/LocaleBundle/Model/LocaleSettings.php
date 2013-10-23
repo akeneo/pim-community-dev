@@ -8,9 +8,12 @@ use Oro\Bundle\ConfigBundle\Config\ConfigManager;
 
 class LocaleSettings
 {
-    const ADDRESS_FORMAT_KEY = 'format';
-    const PHONE_PREFIX_KEY   = 'phone_prefix';
-    const DEFAULT_LOCALE_KEY = 'default_locale';
+    const ADDRESS_FORMAT_KEY  = 'format';
+    const PHONE_PREFIX_KEY    = 'phone_prefix';
+    const DEFAULT_LOCALE_KEY  = 'default_locale';
+    const CURRENCY_CODE_KEY   = 'currency_code';
+    const CURRENCY_SYMBOL_PREPEND_KEY = 'currency_symbol_prepend';
+    const CURRENCY_SYMBOL_KEY = 'symbol';
 
     const DEFAULT_LOCALE   = 'en';
     const DEFAULT_COUNTRY  = 'US';
@@ -91,14 +94,28 @@ class LocaleSettings
      * Array format:
      * array(
      *     '<countryCode>' => array(
-     *          'phone_prefix'   => '<phonePrefixString>',   // optional
-     *          'default_locale' => '<defaultLocaleString>', // optional
+     *          'default_locale' => '<defaultLocaleString>',
+     *          'currency_code'  => '<currencyIso3SymbolsCode>',
+     *          'currency_symbol_prepend' => true|false,
+     *          'phone_prefix'   => '<phonePrefixString>', // optional
      *     ),
      * )
      *
      * @var array
      */
     protected $localeData = array();
+
+    /**
+     * Array format:
+     * array(
+     *     '<currencyIso3SymbolsCode>' => array(
+     *          'symbol' => '<currencySymbol>',
+     *     ),
+     * )
+     *
+     * @var array
+     */
+    protected $currencyData = array();
 
     /**
      * @param ConfigManager $configManager
@@ -166,6 +183,26 @@ class LocaleSettings
     public function getLocaleData()
     {
         return $this->localeData;
+    }
+
+    /**
+     * Adds locale data.
+     *
+     * @param array $data
+     */
+    public function addCurrencyData(array $data)
+    {
+        $this->currencyData = array_merge($this->currencyData, $data);
+    }
+
+    /**
+     * Get locale data.
+     *
+     * @return array
+     */
+    public function getCurrencyData()
+    {
+        return $this->currencyData;
     }
 
     /**
