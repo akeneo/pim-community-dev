@@ -761,6 +761,16 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string $axis
+     *
+     * @Given /^I select the axis "([^"]*)"$/
+     */
+    public function iSelectAxis($axis)
+    {
+        $this->getPage('ProductGroup creation')->selectAxis($axis);
+    }
+
+    /**
      * @param string $status
      *
      * @Given /^I select the status "([^"]*)"$/
