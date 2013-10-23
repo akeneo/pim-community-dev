@@ -44,7 +44,7 @@ Feature: Edit a variant group adding/removing products
     Then the grid should contain 3 elements
     And I should see products MUG_1, MUG_2 and POSTIT
     And I should not see product MUG_3
-    And I should see the columns Has product, SKU, Color, Family, Created at and Updated at
+    And I should see the columns Has product, SKU, Color, Size, Family, Created at and Updated at
 
   Scenario: Successfully display the product datagrid when I edit a product group with 2 axes
     Given I am on the "POSTIT" product group page
