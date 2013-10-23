@@ -96,7 +96,7 @@
                            {% endset %}
                            {% set variantGroupTooltip = variantGroupAttributes|trim is empty
                                ? null
-                               : 'info.variant group.axis'|trans ~ '<br />' ~ variantGroupAttributes|trim %}
+                               : 'info.group.axis'|trans ~ '<br />' ~ variantGroupAttributes|trim %}
                         {% endif %}
 
                         <span id="group-products-{{ group.id }}"{% if variantGroupTooltip is defined%}
