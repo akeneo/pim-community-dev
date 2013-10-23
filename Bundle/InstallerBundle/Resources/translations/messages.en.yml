@@ -1,7 +1,9 @@
 title:                    Oro Application installation
 
-wait:                     In progress...
-passed:                   Passed
+wait:                     Waiting
+progress:                 In progress...
+passed:                   Done
+failed:                   Failed
 
 form:
     configuration:
@@ -56,6 +58,7 @@ process:
             header:       Administration setup
         installation:
             header:       Installation
+            fixtures:     Load sample data
             schema:       Schema update
             search:       Create search index
             navigation:   Init navigation
