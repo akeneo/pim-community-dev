@@ -62,7 +62,7 @@ class LoadJobInstanceData extends AbstractDemoFixture
                         'delimiter'   => ';',
                         'enclosure'   => '"',
                         'escape'      => '\\',
-                        'allowUpload' => true,
+                        'uploadAllowed' => true,
                     ),
                     'processor' => array(
                         'enabled'          => true,
