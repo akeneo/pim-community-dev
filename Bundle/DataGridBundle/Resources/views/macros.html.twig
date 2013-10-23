@@ -7,7 +7,13 @@
 #}
 {% macro renderGrid(name, params = {}) %}
     {% set dataUrl = path('oro_datagrid_index', { 'gridName': name }|merge(params)) %}
-    <div data-type="datagrid" data-data="{{ render(dataUrl)|escape }}" data-metadata="{{ oro_grid_metadata(name)|json_encode }}"></div>
+
+    {% set metaData = oro_grid_metadata(name) %}
+    {% set options = metaData.options is defined ? metaData.options : [] %}
+    {% set options = options|merge({ gridName: name, dataUrl: dataUrl }) %}
+    {% set metaData = metaData|merge({'options': options}) %}
+
+    <div data-type="datagrid" data-data="{{ render(dataUrl)|escape }}" data-metadata="{{ metaData|json_encode }}"></div>
     <script type="text/javascript">
         require(['jquery'], function ($) {
             $(function () {
