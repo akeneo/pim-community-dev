@@ -31,10 +31,6 @@ datagrid:
                             alias: u
 
         columns:
-            id:
-                label: ID
-                type: field
-                frontend_type: integer
             action:
                 label: Action
                 type: field
@@ -120,3 +116,61 @@ datagrid:
                 loggedAt:
                     type: datetime
                     data_name: u.loggedAt
+
+    audit-history-grid:
+        source:
+            acl_resource: oro_dataaudit_history
+            type: orm
+            query:
+                select:
+                    - a.id
+                    - a.data
+                    - a.loggedAt
+                    - >
+                      CONCAT(
+                        CONCAT(
+                            CONCAT(u.firstName, ' '),
+                            CONCAT(u.lastName, ' ')
+                        ),
+                        CONCAT(' - ', u.email)
+                      ) as author
+                from:
+                    - { table: OroDataAuditBundle:Audit, alias: a }
+                join:
+                    left:
+                        user:
+                            join: a.user
+                            alias: u
+                where:
+                    and:
+                        - a.objectClass = :objectClass AND a.objectId = :objectId
+        columns:
+            author:
+                label: Author
+                type: field
+                frontend_type: string
+            loggedAt:
+                label: Logged at
+                type: field
+                frontend_type: date
+            old:
+                label: Old values
+                type: twig
+                template: OroDataAuditBundle:Datagrid:Property/old.html.twig
+                frontend_type: string
+            new:
+                label: New values
+                type: twig
+                template: OroDataAuditBundle:Datagrid:Property/new.html.twig
+                frontend_type: string
+        properties: ~
+        sorters:
+            columns:
+                author:
+                    data_name: author
+                loggedAt:
+                    data_name: a.loggedAt
+            default:
+                loggedAt: %oro_grid.extension.orm_sorter.class%::DIRECTION_DESC
+
+        filters: ~

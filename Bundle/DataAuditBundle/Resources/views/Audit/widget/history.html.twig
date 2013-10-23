@@ -1,12 +1,12 @@
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
 <div class="widget-content">
     {% set gridId = "entity-grid-" ~ random() %}
-
-    {% include 'OroGridBundle:Include:javascript.html.twig' with {'datagridView': datagrid, 'selector': '#' ~ gridId} %}
-    {% include 'OroGridBundle:Include:stylesheet.html.twig' %}
-
+    {% set gridName = "audit-history-grid" %}
         <div class="container-fluid">
             {% block content %}
-                <div id="{{ gridId }}"></div>
+                <div id="{{ gridId }}">
+                    {{ dataGrid.renderGrid(gridName, {grid: {object_class: entity, object_id: entityId}}) }}
+                </div>
             {% endblock %}
         </div>
 </div>

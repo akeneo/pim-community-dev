@@ -8,6 +8,12 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 
+/**
+ * Class AuditGridListener
+ * Used to populate choices for objectClass column filter
+ *
+ * @package Oro\Bundle\DataAuditBundle
+ */
 class AuditGridListener
 {
     const PATH_CHOICES = '[filters][columns][objectClass][choices]';

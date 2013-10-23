@@ -45,6 +45,9 @@ class AuditController extends Controller
      */
     public function historyAction($entity, $id)
     {
-        return array();
+        return array(
+            'entity' => $entity,
+            'entityId' => $id,
+        );
     }
 }

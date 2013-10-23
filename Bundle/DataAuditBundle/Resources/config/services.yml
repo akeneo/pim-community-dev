@@ -10,6 +10,7 @@ parameters:
     oro_dataaudit.loggable.entity.class:            Oro\Bundle\DataAuditBundle\Entity\Audit
 
     oro_dataaudit.event_listener.dataaudit_grid_listener.class: Oro\Bundle\DataAuditBundle\EventListener\AuditGridListener
+    oro_dataaudit.event_listener.dataaudit_history_grid_listener.class: Oro\Bundle\DataAuditBundle\EventListener\AuditHistoryGridListener
 
 services:
     oro_dataaudit.loggable.loggable_manager:
@@ -49,3 +50,10 @@ services:
             - @property_accessor
         tags:
           - { name: kernel.event_listener, event: oro_grid.datgrid.build.before.audit-grid, method: onBuildBefore }
+
+    oro_dataaudit.event_listener.dataaudit_history_grid_listener:
+        class: %oro_dataaudit.event_listener.dataaudit_history_grid_listener.class%
+        arguments:
+            - @oro_grid.datagrid.request_params
+        tags:
+          - { name: kernel.event_listener, event: oro_grid.datgrid.build.after.audit-history-grid, method: onBuildAfter }
