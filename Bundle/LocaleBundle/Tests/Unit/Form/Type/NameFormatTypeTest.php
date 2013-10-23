@@ -8,11 +8,11 @@ class NameFormatTypeTest extends \PHPUnit_Framework_TestCase
 {
     public function testFormType()
     {
-        $localeSettings = $this->getMockBuilder('Oro\Bundle\LocaleBundle\Model\LocaleSettings')
+        $nameFormatter = $this->getMockBuilder('Oro\Bundle\LocaleBundle\Formatter\NameFormatter')
             ->disableOriginalConstructor()
             ->getMock();
         $format = '%test%';
-        $localeSettings->expects($this->once())
+        $nameFormatter->expects($this->once())
             ->method('getNameFormat')
             ->will($this->returnValue($format));
         $resolver = $this->getMockBuilder('Symfony\Component\OptionsResolver\OptionsResolverInterface')
@@ -21,7 +21,7 @@ class NameFormatTypeTest extends \PHPUnit_Framework_TestCase
             ->method('setDefaults')
             ->with(array('data' => $format));
 
-        $type = new NameFormatType($localeSettings);
+        $type = new NameFormatType($nameFormatter);
         $this->assertEquals('text', $type->getParent());
         $this->assertEquals('oro_name_format', $type->getName());
         $type->setDefaultOptions($resolver);

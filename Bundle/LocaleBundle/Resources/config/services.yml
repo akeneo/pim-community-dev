@@ -33,7 +33,7 @@ services:
     oro_locale.form.type.name_format.type:
         class: %oro_locale.form.type.name_format.type.class%
         arguments:
-            - @oro_locale.settings
+            - @oro_locale.formatter.name
         tags:
             - { name: form.type, alias: "oro_name_format" }
 

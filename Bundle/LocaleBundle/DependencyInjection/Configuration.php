@@ -14,6 +14,11 @@ use Symfony\Component\Intl\Intl;
  */
 class Configuration implements ConfigurationInterface
 {
+    const DEFAULT_LOCALE   = 'en';
+    const DEFAULT_LANGUAGE = 'en';
+    const DEFAULT_COUNTRY  = 'US';
+    const DEFAULT_CURRENCY = 'USD';
+
     /**
      * {@inheritDoc}
      */
@@ -97,15 +102,14 @@ class Configuration implements ConfigurationInterface
                 ->end()
             ->end();
 
-        $date = new \DateTime('now');
         SettingsBuilder::append(
             $rootNode,
             array(
-                'language' => array('value' => null),
                 'locale'   => array('value' => '%locale%'),
-                'country'  => array('value' => null),
-                'timezone' => array('value' => $date->getTimezone()->getName()),
-                'currency' => array('value' => 'USD'),
+                'language' => array('value' => self::DEFAULT_LANGUAGE),
+                'country'  => array('value' => self::DEFAULT_COUNTRY),
+                'currency' => array('value' => self::DEFAULT_CURRENCY),
+                'timezone' => array('value' => date_default_timezone_get()),
                 'format_address_by_address_country' => array('value' => false, 'type' => 'boolean'),
             )
         );

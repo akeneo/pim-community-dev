@@ -3,6 +3,7 @@
 namespace Oro\Bundle\LocaleBundle\Tests\Unit\Model;
 
 use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
+use Oro\Bundle\LocaleBundle\DependencyInjection\Configuration as LocaleConfiguration;
 
 class LocaleSettingsTest extends \PHPUnit_Framework_TestCase
 {
@@ -118,184 +119,6 @@ class LocaleSettingsTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \RuntimeException
-     * @expectedExceptionMessage Cannot get name format for "fr_CA"
-     */
-    public function testGetNameFormatFails()
-    {
-        $this->localeSettings->getNameFormat('fr_CA');
-    }
-
-    /**
-     * @dataProvider getNameFormatDataProvider
-     *
-     * @param array $nameFormats
-     * @param string $locale
-     * @param string $expectedFormat
-     * @param string $defaultLocale
-     */
-    public function testGetNameFormat(array $nameFormats, $locale, $expectedFormat, $defaultLocale = null)
-    {
-        $this->localeSettings->addNameFormats($nameFormats);
-
-        if (null !== $defaultLocale) {
-            $this->configManager->expects($this->once())
-                ->method('get')
-                ->with('oro_locale.locale')
-                ->will($this->returnValue($defaultLocale));
-        } else {
-            $this->configManager->expects($this->never())->method($this->anything());
-        }
-
-        $this->assertEquals($expectedFormat, $this->localeSettings->getNameFormat($locale));
-    }
-
-    /**
-     * @return array
-     */
-    public function getNameFormatDataProvider()
-    {
-        return array(
-            'direct' => array(
-                'nameFormats' => array(
-                    'en_US' => '%name_format%'
-                ),
-                'locale' => 'en_US',
-                'expectedFormat' => '%name_format%'
-            ),
-            'parse_language' => array(
-                'nameFormats' => array(
-                    'fr' => '%name_format%'
-                ),
-                'locale' => 'fr_CA',
-                'expectedFormat' => '%name_format%'
-            ),
-            'empty_locale' => array(
-                'nameFormats' => array(
-                    'en_US' => '%name_format%'
-                ),
-                'locale' => false,
-                'expectedFormat' => '%name_format%',
-                'defaultLocale' => 'en_US'
-            ),
-            'default_system_locale' => array(
-                'nameFormats' => array(
-                    'en_US' => '%name_format%'
-                ),
-                'locale' => 'fr_CA',
-                'expectedFormat' => '%name_format%',
-                'defaultLocale' => 'en_US'
-            ),
-            'default_fallback' => array(
-                'nameFormats' => array(
-                    LocaleSettings::DEFAULT_LOCALE => '%name_format%'
-                ),
-                'locale' => 'fr_CA',
-                'expectedFormat' => '%name_format%',
-                'defaultLocale' => ''
-            ),
-        );
-    }
-
-    /**
-     * @expectedException \RuntimeException
-     * @expectedExceptionMessage Cannot get address format for "CA"
-     */
-    public function testGetAddressFormatFails()
-    {
-        $this->localeSettings->getAddressFormat('CA');
-    }
-
-    /**
-     * @dataProvider getAddressFormatDataProvider
-     *
-     * @param array $addressFormats
-     * @param string $localeOrRegion
-     * @param string $expectedFormat
-     * @param string $defaultCountry
-     */
-    public function testGetAddressFormat(
-        array $addressFormats,
-        $localeOrRegion,
-        $expectedFormat,
-        $defaultCountry = null
-    ) {
-        $this->localeSettings->addAddressFormats($addressFormats);
-
-        $callIndex = 0;
-
-        if (!$localeOrRegion) {
-            $this->configManager->expects($this->at($callIndex++))
-                ->method('get')
-                ->with('oro_locale.locale')
-                ->will($this->returnValue('en_US'));
-        }
-
-        if (null !== $defaultCountry) {
-            if (!$callIndex) {
-                $this->configManager->expects($this->at($callIndex++))
-                    ->method('get')
-                    ->with('oro_locale.locale')
-                    ->will($this->returnValue('en_US'));
-            }
-            $this->configManager->expects($this->at($callIndex++))
-                ->method('get')
-                ->with('oro_locale.country')
-                ->will($this->returnValue($defaultCountry));
-        }
-
-        $this->assertEquals($expectedFormat, $this->localeSettings->getAddressFormat($localeOrRegion));
-    }
-
-    /**
-     * @return array
-     */
-    public function getAddressFormatDataProvider()
-    {
-        return array(
-            'direct' => array(
-                'addressFormats' => array(
-                    'US' => array(LocaleSettings::ADDRESS_FORMAT_KEY => '%address_format%')
-                ),
-                'localeOrRegion' => 'US',
-                'expectedFormat' => '%address_format%'
-            ),
-            'parse_country' => array(
-                'addressFormats' => array(
-                    'CA' => array(LocaleSettings::ADDRESS_FORMAT_KEY => '%address_format%')
-                ),
-                'localeOrRegion' => 'fr_CA',
-                'expectedFormat' => '%address_format%'
-            ),
-            'empty_locale_or_region' => array(
-                'addressFormats' => array(
-                    'RU' => array(LocaleSettings::ADDRESS_FORMAT_KEY => '%address_format%')
-                ),
-                'localeOrRegion' => false,
-                'expectedFormat' => '%address_format%',
-                'defaultCountry' => 'RU'
-            ),
-            'default_system_country' => array(
-                'addressFormats' => array(
-                    'RU' => array(LocaleSettings::ADDRESS_FORMAT_KEY => '%address_format%')
-                ),
-                'localeOrRegion' => 'fr_CA',
-                'expectedFormat' => '%address_format%',
-                'defaultCountry' => 'RU'
-            ),
-            'default_fallback' => array(
-                'addressFormats' => array(
-                    LocaleSettings::DEFAULT_COUNTRY => array(
-                        LocaleSettings::ADDRESS_FORMAT_KEY => '%address_format%'
-                    )
-                ),
-                'localeOrRegion' => 'fr_CA',
-                'expectedFormat' => '%address_format%'
-            ),
-        );
-    }
-
-    /**
      * @dataProvider getValidLocaleDataProvider
      */
     public function testGetValidLocale($locale, $expectedLocale)
@@ -307,8 +130,8 @@ class LocaleSettingsTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array('ru_RU', 'ru_RU'),
-            array('en', LocaleSettings::DEFAULT_LOCALE),
-            array(null, LocaleSettings::DEFAULT_LOCALE),
+            array('en', LocaleConfiguration::DEFAULT_LOCALE),
+            array(null, LocaleConfiguration::DEFAULT_LOCALE),
             array('ru', 'ru'),
             array('en_Hans_CN_nedis_rozaj_x_prv1_prv2', 'en_US'),
             array('en_Hans_unknown', 'en'),
@@ -330,11 +153,11 @@ class LocaleSettingsTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array('ru_RU', 'RU'),
-            array('EN', LocaleSettings::DEFAULT_COUNTRY),
-            array('RU', LocaleSettings::DEFAULT_COUNTRY),
+            array('EN', LocaleConfiguration::DEFAULT_COUNTRY),
+            array('RU', LocaleConfiguration::DEFAULT_COUNTRY),
             array('en_CA', 'CA'),
             array('en_CN', 'CN'),
-            array('en_XX', LocaleSettings::DEFAULT_COUNTRY),
+            array('en_XX', LocaleConfiguration::DEFAULT_COUNTRY),
         );
     }
 
@@ -424,7 +247,7 @@ class LocaleSettingsTest extends \PHPUnit_Framework_TestCase
 
         $this->configManager->expects($this->once())
             ->method('get')
-            ->with('oro_locale.currency', LocaleSettings::DEFAULT_CURRENCY)
+            ->with('oro_locale.currency', LocaleConfiguration::DEFAULT_CURRENCY)
             ->will($this->returnValue($expectedCurrency));
 
         $this->assertEquals($expectedCurrency, $this->localeSettings->getCurrency());

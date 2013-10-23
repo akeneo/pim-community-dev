@@ -3,12 +3,12 @@
 namespace Oro\Bundle\LocaleBundle\Formatter;
 
 use Oro\Bundle\LocaleBundle\Model\FirstNameInterface;
-use Oro\Bundle\LocaleBundle\Model\FullNameInterface;
 use Oro\Bundle\LocaleBundle\Model\LastNameInterface;
 use Oro\Bundle\LocaleBundle\Model\MiddleNameInterface;
 use Oro\Bundle\LocaleBundle\Model\NamePrefixInterface;
 use Oro\Bundle\LocaleBundle\Model\NameSuffixInterface;
 use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
+use Oro\Bundle\LocaleBundle\DependencyInjection\Configuration as LocaleConfiguration;
 
 class NameFormatter
 {
@@ -26,7 +26,6 @@ class NameFormatter
     }
 
     /**
-     * @SuppressWarnings(PHPMD.NPathComplexity)
      * @param NamePrefixInterface|FirstNameInterface|MiddleNameInterface|LastNameInterface|NameSuffixInterface $person
      * @param null|string $locale
      * @return string
@@ -50,7 +49,7 @@ class NameFormatter
             $nameParts['suffix'] = $person->getNameSuffix();
         }
 
-        $format = $this->localeSettings->getNameFormat($locale);
+        $format = $this->getNameFormat($locale);
         $name = preg_replace_callback(
             '/%(\w+)%/',
             function ($data) use ($nameParts) {
@@ -68,5 +67,48 @@ class NameFormatter
         );
 
         return trim($name);
+    }
+
+    /**
+     * Get name format based on locale, if locale is not passed locale from system configuration will be used.
+     *
+     * @param string|null $locale
+     * @throws \RuntimeException
+     */
+    public function getNameFormat($locale = null)
+    {
+        if (!$locale) {
+            $locale = $this->localeSettings->getLocale();
+        }
+
+        $nameFormats = $this->localeSettings->getNameFormats();
+
+        // match by locale (for example - "fr_CA")
+        if (isset($nameFormats[$locale])) {
+            return $nameFormats[$locale];
+        }
+
+        // match by locale language (for example - "fr")
+        $localeParts = \Locale::parseLocale($locale);
+        if (isset($localeParts[\Locale::LANG_TAG])) {
+            $match = $localeParts[\Locale::LANG_TAG];
+            if (isset($match, $nameFormats[$match])) {
+                return $nameFormats[$match];
+            }
+        }
+
+        // match by default locale in system configuration settings
+        $match = $this->localeSettings->getLocale();
+        if ($match !== $locale && isset($nameFormats[$match])) {
+            return $nameFormats[$match];
+        }
+
+        // fallback to default constant locale
+        $match = LocaleConfiguration::DEFAULT_LOCALE;
+        if (isset($nameFormats[$match])) {
+            return $nameFormats[$match];
+        }
+
+        throw new \RuntimeException(sprintf('Cannot get name format for "%s"', $locale));
     }
 }

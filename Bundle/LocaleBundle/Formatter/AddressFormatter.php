@@ -8,6 +8,7 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 use Oro\Bundle\LocaleBundle\Model\AddressInterface;
 use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
+use Oro\Bundle\LocaleBundle\DependencyInjection\Configuration as LocaleConfiguration;
 
 class AddressFormatter
 {
@@ -55,11 +56,11 @@ class AddressFormatter
                 $country = $this->localeSettings->getCountry();
             }
             if (!$country) {
-                $country = LocaleSettings::DEFAULT_COUNTRY;
+                $country = LocaleConfiguration::DEFAULT_COUNTRY;
             }
         }
 
-        $format = $this->localeSettings->getAddressFormat($country);
+        $format = $this->getAddressFormat($country);
         $countryLocale = $this->localeSettings->getLocaleByCountry($country);
         $formatted = preg_replace_callback(
             '/%(\w+)%/',
@@ -94,6 +95,50 @@ class AddressFormatter
             str_replace('\n', $newLineSeparator, $formatted)
         );
         return trim($formatted);
+    }
+
+    /**
+     * Get address format based on locale or region, if argument is not passed locale from
+     * system configuration will be used.
+     *
+     * @param string|null $localeOrRegion
+     * @throws \RuntimeException
+     */
+    public function getAddressFormat($localeOrRegion = null)
+    {
+        if (!$localeOrRegion) {
+            $localeOrRegion = $this->localeSettings->getLocale();
+        }
+
+        $addressFormats = $this->localeSettings->getAddressFormats();
+
+        // matched by country (for example - "RU")
+        if (isset($addressFormats[$localeOrRegion][LocaleSettings::ADDRESS_FORMAT_KEY])) {
+            return $addressFormats[$localeOrRegion][LocaleSettings::ADDRESS_FORMAT_KEY];
+        }
+
+        // matched by locale region - "CA"
+        $localeParts = \Locale::parseLocale($localeOrRegion);
+        if (isset($localeParts[\Locale::REGION_TAG])) {
+            $match = $localeParts[\Locale::REGION_TAG];
+            if (isset($match, $addressFormats[$match][LocaleSettings::ADDRESS_FORMAT_KEY])) {
+                return $addressFormats[$match][LocaleSettings::ADDRESS_FORMAT_KEY];
+            }
+        }
+
+        // match by default country in system configuration settings
+        $match = $this->localeSettings->getCountry();
+        if ($match !== $localeOrRegion && isset($addressFormats[$match][LocaleSettings::ADDRESS_FORMAT_KEY])) {
+            return $addressFormats[$match][LocaleSettings::ADDRESS_FORMAT_KEY];
+        }
+
+        // fallback to default country
+        $match = LocaleConfiguration::DEFAULT_COUNTRY;
+        if (isset($addressFormats[$match][LocaleSettings::ADDRESS_FORMAT_KEY])) {
+            return $addressFormats[$match][LocaleSettings::ADDRESS_FORMAT_KEY];
+        }
+
+        throw new \RuntimeException(sprintf('Cannot get address format for "%s"', $localeOrRegion));
     }
 
     /**

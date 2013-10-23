@@ -5,6 +5,7 @@ namespace Oro\Bundle\LocaleBundle\Model;
 use Symfony\Component\Intl\Intl;
 
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
+use Oro\Bundle\LocaleBundle\DependencyInjection\Configuration as LocaleConfiguration;
 
 class LocaleSettings
 {
@@ -15,10 +16,6 @@ class LocaleSettings
     const CURRENCY_SYMBOL_PREPEND_KEY = 'currency_symbol_prepend';
     const CURRENCY_SYMBOL_KEY = 'symbol';
 
-    const DEFAULT_LOCALE   = 'en';
-    const DEFAULT_COUNTRY  = 'US';
-    const DEFAULT_CURRENCY = 'USD';
-
     /**
      * @var string[]
      */
@@ -28,6 +25,11 @@ class LocaleSettings
      * @var string
      */
     protected $locale;
+
+    /**
+     * @var string
+     */
+    protected $language;
 
     /**
      * @var string
@@ -206,89 +208,6 @@ class LocaleSettings
     }
 
     /**
-     * Get name format based on locale, if locale is not passed locale from system configuration will be used.
-     *
-     * @param string|null $locale
-     * @throws \RuntimeException
-     */
-    public function getNameFormat($locale = null)
-    {
-        if (!$locale) {
-            $locale = $this->getLocale();
-        }
-
-        // match by locale (for example - "fr_CA")
-        if (isset($this->nameFormats[$locale])) {
-            return $this->nameFormats[$locale];
-        }
-
-        // match by locale language (for example - "fr")
-        $localeParts = \Locale::parseLocale($locale);
-        if (isset($localeParts[\Locale::LANG_TAG])) {
-            $match = $localeParts[\Locale::LANG_TAG];
-            if (isset($match, $this->nameFormats[$match])) {
-                return $this->nameFormats[$match];
-            }
-        }
-
-        // match by default locale in system configuration settings
-        $match = $this->getLocale();
-        if ($match !== $locale && isset($this->nameFormats[$match])) {
-            return $this->nameFormats[$match];
-        }
-
-        // fallback to default constant locale
-        $match = self::DEFAULT_LOCALE;
-        if (isset($this->nameFormats[$match])) {
-            return $this->nameFormats[$match];
-        }
-
-        throw new \RuntimeException(sprintf('Cannot get name format for "%s"', $locale));
-    }
-
-    /**
-     * Get address format based on locale or region, if argument is not passed locale from
-     * system configuration will be used.
-     *
-     * @param string|null $localeOrRegion
-     * @throws \RuntimeException
-     */
-    public function getAddressFormat($localeOrRegion = null)
-    {
-        if (!$localeOrRegion) {
-            $localeOrRegion = $this->getLocale();
-        }
-
-        // matched by country (for example - "RU")
-        if (isset($this->addressFormats[$localeOrRegion][self::ADDRESS_FORMAT_KEY])) {
-            return $this->addressFormats[$localeOrRegion][self::ADDRESS_FORMAT_KEY];
-        }
-
-        // matched by locale region - "CA"
-        $localeParts = \Locale::parseLocale($localeOrRegion);
-        if (isset($localeParts[\Locale::REGION_TAG])) {
-            $match = $localeParts[\Locale::REGION_TAG];
-            if (isset($match, $this->addressFormats[$match][self::ADDRESS_FORMAT_KEY])) {
-                return $this->addressFormats[$match][self::ADDRESS_FORMAT_KEY];
-            }
-        }
-
-        // match by default country in system configuration settings
-        $match = $this->getCountry();
-        if ($match !== $localeOrRegion && isset($this->addressFormats[$match][self::ADDRESS_FORMAT_KEY])) {
-            return $this->addressFormats[$match][self::ADDRESS_FORMAT_KEY];
-        }
-
-        // fallback to default country
-        $match = self::DEFAULT_COUNTRY;
-        if (isset($this->addressFormats[$match][self::ADDRESS_FORMAT_KEY])) {
-            return $this->addressFormats[$match][self::ADDRESS_FORMAT_KEY];
-        }
-
-        throw new \RuntimeException(sprintf('Cannot get address format for "%s"', $localeOrRegion));
-    }
-
-    /**
      * @return boolean
      */
     public function isFormatAddressByAddressCountry()
@@ -318,9 +237,22 @@ class LocaleSettings
     public function getLocale()
     {
         if (null === $this->locale) {
-            $this->locale = $this->configManager->get('oro_locale.locale', \Locale::getDefault());
+            $this->locale = $this->configManager->get('oro_locale.locale', LocaleConfiguration::DEFAULT_LOCALE);
         }
         return $this->locale;
+    }
+
+    /**
+     * Get language
+     *
+     * @return string
+     */
+    public function getLanguage()
+    {
+        if (null === $this->language) {
+            $this->language = $this->configManager->get('oro_locale.language', LocaleConfiguration::DEFAULT_LANGUAGE);
+        }
+        return $this->language;
     }
 
     /**
@@ -347,7 +279,7 @@ class LocaleSettings
     public function getCurrency()
     {
         if (null === $this->currency) {
-            $this->currency = $this->configManager->get('oro_locale.currency', self::DEFAULT_CURRENCY);
+            $this->currency = $this->configManager->get('oro_locale.currency', LocaleConfiguration::DEFAULT_CURRENCY);
         }
         return $this->currency;
     }
@@ -360,8 +292,7 @@ class LocaleSettings
     public function getTimeZone()
     {
         if (null === $this->timeZone) {
-            $date = new \DateTime('now');
-            $this->timeZone = $this->configManager->get('oro_locale.timezone', $date->getTimezone()->getName());
+            $this->timeZone = $this->configManager->get('oro_locale.timezone', date_default_timezone_get());
         }
         return $this->timeZone;
     }
@@ -377,7 +308,7 @@ class LocaleSettings
     public static function getValidLocale($locale = null)
     {
         if (!$locale) {
-            $locale = self::DEFAULT_LOCALE;
+            $locale = LocaleConfiguration::DEFAULT_LOCALE;
         }
 
         $localeParts = \Locale::parseLocale($locale);
@@ -398,11 +329,11 @@ class LocaleSettings
         $variants = array(
             array($lang, $script, $region),
             array($lang, $region),
-            array($lang, $script, self::DEFAULT_COUNTRY),
-            array($lang, self::DEFAULT_COUNTRY),
+            array($lang, $script, LocaleConfiguration::DEFAULT_COUNTRY),
+            array($lang, LocaleConfiguration::DEFAULT_COUNTRY),
             array($lang),
-            array(self::DEFAULT_LOCALE, self::DEFAULT_COUNTRY),
-            array(self::DEFAULT_LOCALE),
+            array(LocaleConfiguration::DEFAULT_LOCALE, LocaleConfiguration::DEFAULT_COUNTRY),
+            array(LocaleConfiguration::DEFAULT_LOCALE),
         );
 
         $locales = self::getLocales();
@@ -446,6 +377,6 @@ class LocaleSettings
             return $region;
         }
 
-        return LocaleSettings::DEFAULT_COUNTRY;
+        return LocaleConfiguration::DEFAULT_COUNTRY;
     }
 }
