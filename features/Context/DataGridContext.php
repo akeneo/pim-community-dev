@@ -490,6 +490,54 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $rows
+     *
+     * @throws ExpectationException
+     *
+     * @When /^I check the rows? "([^"]*)"$/
+     */
+    public function iCheckTheRows($rows)
+    {
+        $rows = $this->getMainContext()->listToArray($rows);
+
+        foreach ($rows as $row) {
+            $gridRow = $this->datagrid->getRow($row);
+            $checkbox = $gridRow->find('css', 'input[type="checkbox"][data-identifier]:not(:disabled)');
+
+            if (!$checkbox) {
+                throw $this->createExpectationException(sprintf('Unable to find a checkbox for row %s', $row));
+            }
+
+            $checkbox->check();
+        }
+    }
+
+    /**
+     * @param string $rows
+     *
+     * @throws ExpectationException
+     *
+     * @Then /^the rows? "([^"]*)" should be checked$/
+     */
+    public function theRowShouldBeChecked($rows)
+    {
+        $rows = $this->getMainContext()->listToArray($rows);
+
+        foreach ($rows as $row) {
+            $gridRow = $this->datagrid->getRow($row);
+            $checkbox = $gridRow->find('css', 'input[type="checkbox"][data-identifier]:not(:disabled)');
+
+            if (!$checkbox) {
+                throw $this->createExpectationException(sprintf('Unable to find a checkbox for row %s', $row));
+            }
+
+            if (!$checkbox->isChecked()) {
+                throw $this->createExpectationException(sprintf('Expecting row %s to be checked', $row));
+            }
+        }
+    }
+
+    /**
      * @Then /^I reset the grid$/
      */
     public function iResetTheGrid()
