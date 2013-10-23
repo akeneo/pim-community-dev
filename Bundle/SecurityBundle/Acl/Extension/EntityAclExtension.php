@@ -311,10 +311,12 @@ class EntityAclExtension extends AbstractAclExtension
         $metadata = $this->getMetadata($object);
         if (!$metadata->hasOwner()) {
             return AccessLevel::SYSTEM_LEVEL;
-        } elseif ($metadata->isOrganizationOwned()) {
-            return AccessLevel::GLOBAL_LEVEL;
+        } elseif ($metadata->isUserOwned()) {
+            return AccessLevel::BASIC_LEVEL;
         } elseif ($metadata->isBusinessUnitOwned()) {
             return AccessLevel::LOCAL_LEVEL;
+        } elseif ($metadata->isOrganizationOwned()) {
+            return AccessLevel::GLOBAL_LEVEL;
         }
     }
 
