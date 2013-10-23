@@ -60,7 +60,7 @@ class Datagrid implements DatagridInterface
 
         $this->acceptor->acceptMetadata($this, $data);
 
-        return $data;
+        return (array) $data;
     }
 
     /**

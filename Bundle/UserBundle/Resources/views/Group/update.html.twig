@@ -1,9 +1,12 @@
 {% extends 'OroUIBundle:actions:update.html.twig' %}
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
 
-{% set title = form.vars.value.id ? 'Update Group'|trans : 'New Group'|trans %}
+{% set entityId = form.vars.value.id %}
+{% set title = entityId ? 'Update Group'|trans : 'New Group'|trans %}
 {% oro_title_set({params : { "%group%": form.vars.value.name } }) %}
-{% set gridId = 'users-grid' %}
-{% set formAction = form.vars.value.id ? path('oro_user_group_update', { 'id': form.vars.value.id}) : path('oro_user_group_create') %}
+{% set gridName = 'group-users-grid' %}
+{% set formAction = entityId ? path('oro_user_group_update', { 'id': entityId}) : path('oro_user_group_create') %}
+
 {% block head_script %}
     {{ parent() }}
 
@@ -15,16 +18,16 @@
         }
     } %}
 
-    {% placeholder prepare_grid with {'datagrid': datagrid, 'selector': '#' ~ gridId, 'parameters': listenerParameters} %}
+    {% placeholder prepare_grid with {'datagrid': datagrid, 'selector': '#' ~ gridName, 'parameters': listenerParameters} %}
 {% endblock %}
 
 {% block navButtons %}
-    {% if form.vars.value.id and resource_granted('oro_user_group_remove') %}
+    {% if entityId and resource_granted('oro_user_group_remove') %}
         {{ UI.deleteButton({
-            'dataUrl': path('oro_api_delete_group', {'id': form.vars.value.id}),
+            'dataUrl': path('oro_api_delete_group', {'id': entityId}),
             'dataRedirect': path('oro_user_group_index'),
             'aCss': 'no-hash remove-button',
-            'dataId': form.vars.value.id,
+            'dataId': entityId,
             'id': 'btn-remove-group',
             'dataMessage': 'Are you sure you want to delete this group?'|trans,
             'successMessage': 'Group removed'|trans,
@@ -40,7 +43,7 @@
 {% endblock navButtons %}
 
 {% block pageHeader %}
-    {% if form.vars.value.id %}
+    {% if entityId %}
         {% set breadcrumbs = {
             'entity':      form.vars.value,
             'indexPath':   path('oro_user_group_index'),
@@ -81,7 +84,7 @@
                 {
                     'title' : null,
                     'useSpan': false,
-                    'data' : [UI.gridBlock(gridId)]
+                    'data' : [dataGrid.renderGrid(gridName, {grid: {group_id: entityId}})]
                 }
             ]
         }]

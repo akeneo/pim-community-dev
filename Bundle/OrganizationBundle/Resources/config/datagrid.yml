@@ -101,3 +101,46 @@ datagrid:
                     type: string
                     data_name: u.createdAt
 
+    bu-update-users-grid:
+        extend: user-relation-grid
+        source:
+            acl_resource: oro_business_unit_update
+            query:
+                select:
+                    - >
+                      (CASE WHEN (:business_unit_id IS NOT NULL) THEN
+                        CASE WHEN (:business_unit_id MEMBER OF u.businessUnits OR u.id IN (:data_in)) AND u.id NOT IN (:data_not_in)
+                        THEN true ELSE false END
+                      ELSE
+                        CASE WHEN u.id IN (:data_in) AND u.id NOT IN (:data_not_in)
+                        THEN true ELSE false END
+                      END) as hasCurrentBusinessUnit
+        columns:
+            hasCurrentBusinessUnit:
+                label: Has business unit
+                type: field
+                frontend_type: boolean
+        filters:
+            columns:
+                hasCurrentBusinessUnit:
+                    type: boolean
+                    data_name: hasCurrentBusinessUnit
+        sorters:
+            columns:
+                hasCurrentBusinessUnit:
+                    data_name: hasCurrentBusinessUnit
+            default:
+                hasCurrentBusinessUnit: %oro_grid.extension.orm_sorter.class%::DIRECTION_DESC
+                lastName: %oro_grid.extension.orm_sorter.class%::DIRECTION_ASC
+
+    bu-view-users-grid:
+        extend: user-relation-grid
+        source:
+            acl_resource: oro_business_unit_view
+            query:
+                where:
+                    and:
+                        - :business_unit_id MEMBER OF u.businessUnits
+        sorters:
+            default:
+                lastName: %oro_grid.extension.orm_sorter.class%::DIRECTION_ASC

@@ -135,7 +135,6 @@ class GroupController extends Controller
         }
 
         return array(
-            'datagrid' => $this->getGroupUserDatagridManager($entity)->getDatagrid()->createView(),
             'form'     => $this->get('oro_user.form.group')->createView(),
         );
     }

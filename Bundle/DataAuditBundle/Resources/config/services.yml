@@ -9,6 +9,8 @@ parameters:
 
     oro_dataaudit.loggable.entity.class:            Oro\Bundle\DataAuditBundle\Entity\Audit
 
+    oro_dataaudit.event_listener.dataaudit_grid_listener.class: Oro\Bundle\DataAuditBundle\EventListener\AuditGridListener
+
 services:
     oro_dataaudit.loggable.loggable_manager:
         class:                                      %oro_dataaudit.loggable.loggable_manager.class%
@@ -39,3 +41,11 @@ services:
         arguments:                                  [@oro_dataaudit.loggable.loggable_manager, @security.context]
         tags:
             - { name: kernel.event_listener, event: kernel.request , method: onKernelRequest}
+
+    oro_dataaudit.event_listener.dataaudit_grid_listener:
+        class: %oro_dataaudit.event_listener.dataaudit_grid_listener.class%
+        arguments:
+            - @doctrine.orm.entity_manager
+            - @property_accessor
+        tags:
+          - { name: kernel.event_listener, event: oro_grid.datgrid.build.before.audit-grid, method: onBuildBefore }

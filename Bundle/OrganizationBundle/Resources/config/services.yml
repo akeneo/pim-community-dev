@@ -122,3 +122,20 @@ services:
             - @oro_organization.business_unit_manager
         tags:
             - { name: twig.extension }
+
+    oro_organization.event_listener.bu_update_grid_listener:
+        class: %oro_user.event_listener.related_users_grid_listener.class%
+        arguments:
+          - @oro_grid.datagrid.request_params
+          - business_unit_id
+        tags:
+          - { name: kernel.event_listener, event: oro_grid.datgrid.build.after.bu-update-users-grid, method: onBuildAfter }
+
+    oro_organization.event_listener.bu_view_grid_listener:
+        class: %oro_user.event_listener.related_users_grid_listener.class%
+        arguments:
+          - @oro_grid.datagrid.request_params
+          - business_unit_id
+          - false
+        tags:
+          - { name: kernel.event_listener, event: oro_grid.datgrid.build.after.bu-view-users-grid, method: onBuildAfter }

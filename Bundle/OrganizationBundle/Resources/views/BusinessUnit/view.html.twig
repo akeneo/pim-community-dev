@@ -1,9 +1,12 @@
 {% extends 'OroUIBundle:actions:view.html.twig' %}
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+
 {% oro_title_set({params : {"%business_unit.name%": entity.name|default('N/A') }}) %}
 {% set audit_entity_class = 'Oro_Bundle_OrganizationBundle_Entity_BusinessUnit' %}
-{% set gridId = 'users-grid' %}
+{% set gridName = 'bu-view-users-grid' %}
+
 {% block head_script %}
-    {% placeholder prepare_grid with {'datagrid': datagrid, 'selector': '#' ~ gridId} %}
+    {% placeholder prepare_grid with {'datagrid': datagrid, 'selector': '#' ~ gridName} %}
 {% endblock %}
 
 {% block navButtons %}
@@ -67,7 +70,7 @@
                 {
                     'title' : null,
                     'useSpan': false,
-                    'data' : [UI.gridBlock(gridId)]
+                    'data' : [dataGrid.renderGrid(gridName, {grid: {business_unit_id: entity.id}})]
                 }
             ]
         }]
