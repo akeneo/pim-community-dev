@@ -23,7 +23,7 @@ parameters:
     oro_user.gender_provider.class:     Oro\Bundle\UserBundle\Provider\GenderProvider
     oro_user.change_password.subscriber.class:  Oro\Bundle\UserBundle\Form\EventListener\ChangePasswordSubscriber
     oro_user.event_listener.user_email_grid_listener.class: Oro\Bundle\UserBundle\EventListener\UserEmailGridListener
-    oro_user.event_listener.role_users_grid_listener.class: Oro\Bundle\UserBundle\EventListener\RoleUsersGridListener
+    oro_user.event_listener.related_users_grid_listener.class: Oro\Bundle\UserBundle\EventListener\RelatedUsersGridListener
 
 services:
     oro_user.manager.flexible:
@@ -162,8 +162,17 @@ services:
           - { name: kernel.event_listener, event: oro_grid.datgrid.build.after.users-email-grid, method: onBuildAfter }
 
     oro_user.event_listener.role_users_grid_listener:
-        class: %oro_user.event_listener.role_users_grid_listener.class%
+        class: %oro_user.event_listener.related_users_grid_listener.class%
         arguments:
           - @oro_grid.datagrid.request_params
+          - role_id
         tags:
           - { name: kernel.event_listener, event: oro_grid.datgrid.build.after.role-users-grid, method: onBuildAfter }
+
+    oro_user.event_listener.group_users_grid_listener:
+        class: %oro_user.event_listener.related_users_grid_listener.class%
+        arguments:
+          - @oro_grid.datagrid.request_params
+          - group_id
+        tags:
+          - { name: kernel.event_listener, event: oro_grid.datgrid.build.after.group-users-grid, method: onBuildAfter }
