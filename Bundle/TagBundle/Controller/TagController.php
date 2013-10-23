@@ -83,7 +83,6 @@ class TagController extends Controller
             'tag'            => $entity,
             'from'           => $from,
             'groupedResults' => $provider->getGroupedResults($entity->getId()),
-            'datagrid'       => $datagrid->createView()
         );
     }
 
@@ -98,7 +97,7 @@ class TagController extends Controller
         $from   = $request->get('from');
         $datagrid = $this->getSearchResultsDatagrid($from, $entity);
 
-        return $this->get('oro_grid.renderer')->renderResultsJsonResponse($datagrid->createView());
+        return '';
     }
 
     /**
@@ -109,7 +108,7 @@ class TagController extends Controller
     protected function getSearchResultsDatagrid($from, Tag $tag)
     {
         /** @var $datagridManager ResultsDatagridManager */
-        $datagridManager = $this->get('oro_tag.datagrid_results.datagrid_manager');
+        //$datagridManager = $this->get('oro_tag.datagrid_results.datagrid_manager');
 
         $datagridManager->setSearchEntity($from);
         $datagridManager->setTag($tag);

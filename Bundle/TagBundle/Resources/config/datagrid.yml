@@ -60,3 +60,26 @@ datagrid:
                 usage:
                     type: string
                     data_name: usage
+
+    tag-results-grid:
+        source:
+            acl_resource: oro_tag_view
+            type: orm
+            query:
+                where:
+                    and:
+        columns:
+            entity:
+                label: Item
+                type: twig
+                template: ~
+                frontend_type: string
+            url:
+                label: URL
+                type: callback
+                callable: ~
+                frontend_type: string
+
+        properties: ~
+        sorters: ~
+        filters: ~
