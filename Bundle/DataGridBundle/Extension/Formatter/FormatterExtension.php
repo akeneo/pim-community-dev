@@ -81,7 +81,7 @@ class FormatterExtension extends AbstractExtension
                     array_flip([PropertyInterface::TYPE_KEY, PropertyInterface::FRONTEND_OPTIONS_KEY])
                 );
             },
-            $columns1
+            $columns
         );
     }
 
