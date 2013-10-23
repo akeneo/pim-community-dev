@@ -172,42 +172,6 @@ class AssociationGroupDatagridManager extends DatagridManager
             )
         );
         $fieldsCollection->add($field);
-
-        $field = $this->createAxisField();
-        $fieldsCollection->add($field);
-    }
-
-    /**
-     * Create an axis field
-     *
-     * @return FieldDescription
-     */
-    protected function createAxisField()
-    {
-        $choices = $this->variantGroupManager->getAvailableAxisChoices();
-
-        $field = new FieldDescription();
-        $field->setName('attribute');
-        $field->setOptions(
-            array(
-                'type'            => FieldDescriptionInterface::TYPE_HTML,
-                'label'           => $this->translate('Axis'),
-                'field_name'      => 'attributes',
-                'expression'      => 'attribute.id',
-                'filter_type'     => FilterInterface::TYPE_CHOICE,
-                'required'        => true,
-                'multiple'        => true,
-                'filterable'      => true,
-                'show_filter'     => true,
-                'field_options'   => array('choices' => $choices)
-            )
-        );
-
-        $field->setProperty(
-            new TwigTemplateProperty($field, 'PimGridBundle:Rendering:_optionsToString.html.twig')
-        );
-
-        return $field;
     }
 
     /**
@@ -268,13 +232,11 @@ class AssociationGroupDatagridManager extends DatagridManager
             ->addSelect(sprintf('%s AS groupLabel', $labelExpr), true)
             ->addSelect('translation.label', true)
             ->addSelect('type.code as groupType', true)
-            ->addSelect('attribute')
             ->addSelect($this->getHasAssociationExpression() . ' AS hasCurrentAssociation', true);
 
         $proxyQuery
             ->leftJoin($rootAlias . '.type', 'type')
             ->leftJoin($rootAlias . '.translations', 'translation', 'WITH', 'translation.locale = :localeCode')
-            ->leftJoin($rootAlias . '.attributes', 'attribute')
             ->leftJoin(
                 'PimCatalogBundle:ProductAssociation',
                 'pa',
@@ -322,7 +284,8 @@ class AssociationGroupDatagridManager extends DatagridManager
     protected function getDefaultSorters()
     {
         return array(
-            'has_association' => SorterInterface::DIRECTION_DESC
+            'has_association' => SorterInterface::DIRECTION_DESC,
+            'code'            => SorterInterface::DIRECTION_ASC
         );
     }
 }
