@@ -69,305 +69,184 @@ class CalendarTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider getMonthNamesDataProvider
      */
-    public function testGetMonthNames($locale, array $expected, $defaultLocale = null)
+    public function testGetMonthNames($width, $locale, array $expected, $defaultLocale = null)
     {
         if (null !== $defaultLocale) {
             $this->localeSettings->expects($this->once())
                 ->method('getLocale')
                 ->will($this->returnValue($defaultLocale));
         }
-        $this->assertEquals($expected, $this->calendar->getMonthNames($locale));
+        $this->assertEquals($expected, $this->calendar->getMonthNames($width, $locale));
     }
 
     public function getMonthNamesDataProvider()
     {
         return array(
-            'en_US' => array(
-                'en_US',
-                array(
-                    1 => 'January',
-                    2 => 'February',
-                    3 => 'March',
-                    4 => 'April',
-                    5 => 'May',
-                    6 => 'June',
-                    7 => 'July',
-                    8 => 'August',
-                    9 => 'September',
-                    10 => 'October',
-                    11 => 'November',
-                    12 => 'December',
-                )
-            ),
-            'en_US, default locale' => array(
+            'default wide, default locale' => array(
+                null,
                 null,
                 array(
-                    1 => 'January',
-                    2 => 'February',
-                    3 => 'March',
-                    4 => 'April',
-                    5 => 'May',
-                    6 => 'June',
-                    7 => 'July',
-                    8 => 'August',
-                    9 => 'September',
-                    10 => 'October',
-                    11 => 'November',
-                    12 => 'December',
+                    1 => 'January', 'February', 'March', 'April', 'May', 'June', 'July',
+                    'August', 'September', 'October', 'November', 'December',
                 ),
                 'en_US'
             ),
-            'it_IT' => array(
-                'it_IT',
+            'wide, en_US' => array(
+                Calendar::WIDTH_WIDE,
+                'en_US',
                 array(
-                    1 => 'Gennaio',
-                    2 => 'Febbraio',
-                    3 => 'Marzo',
-                    4 => 'Aprile',
-                    5 => 'Maggio',
-                    6 => 'Giugno',
-                    7 => 'Luglio',
-                    8 => 'Agosto',
-                    9 => 'Settembre',
-                    10 => 'Ottobre',
-                    11 => 'Novembre',
-                    12 => 'Dicembre',
+                    1 => 'January', 'February', 'March', 'April', 'May', 'June', 'July',
+                    'August', 'September', 'October', 'November', 'December',
                 )
             ),
-            'id_ID' => array(
+            'abbreviated, en_US' => array(
+                Calendar::WIDTH_ABBREVIATED,
+                'en_US',
+                array(1 => 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec')
+            ),
+            'short, en_US' => array(
+                Calendar::WIDTH_SHORT,
+                'en_US',
+                array(1 => 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec')
+            ),
+            'narrow, en_US' => array(
+                Calendar::WIDTH_NARROW,
+                'en_US',
+                array(1 => 'J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D')
+            ),
+            'wide, it_IT' => array(
+                Calendar::WIDTH_WIDE,
+                'it_IT',
+                array(
+                    1 => 'Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio', 'Giugno', 'Luglio',
+                    'Agosto', 'Settembre', 'Ottobre', 'Novembre', 'Dicembre',
+                )
+            ),
+            'wide, id_ID' => array(
+                Calendar::WIDTH_WIDE,
                 'id_ID',
                 array(
-                    1 => 'Januari',
-                    2 => 'Februari',
-                    3 => 'Maret',
-                    4 => 'April',
-                    5 => 'Mei',
-                    6 => 'Juni',
-                    7 => 'Juli',
-                    8 => 'Agustus',
-                    9 => 'September',
-                    10 => 'Oktober',
-                    11 => 'November',
-                    12 => 'Desember',
+                    1 => 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli',
+                    'Agustus', 'September', 'Oktober', 'November', 'Desember',
                 )
             ),
         );
     }
 
     /**
-     * @dataProvider getMonthShortNamesDataProvider
+     * @dataProvider getDayOfWeekNamesDataProvider
      */
-    public function testGetMonthShortNames($locale, array $expected, $defaultLocale = null)
+    public function testGetDayOfWeekNames($width, $locale, array $expected, $defaultLocale = null)
     {
         if (null !== $defaultLocale) {
             $this->localeSettings->expects($this->once())
                 ->method('getLocale')
                 ->will($this->returnValue($defaultLocale));
         }
-        $this->assertEquals($expected, $this->calendar->getMonthShortNames($locale));
-    }
-
-    public function getMonthShortNamesDataProvider()
-    {
-        return array(
-            'en_US' => array(
-                'en_US',
-                array(
-                    1 => 'Jan',
-                    2 => 'Feb',
-                    3 => 'Mar',
-                    4 => 'Apr',
-                    5 => 'May',
-                    6 => 'Jun',
-                    7 => 'Jul',
-                    8 => 'Aug',
-                    9 => 'Sep',
-                    10 => 'Oct',
-                    11 => 'Nov',
-                    12 => 'Dec',
-                )
-            ),
-            'en_US, default locale' => array(
-                null,
-                array(
-                    1 => 'Jan',
-                    2 => 'Feb',
-                    3 => 'Mar',
-                    4 => 'Apr',
-                    5 => 'May',
-                    6 => 'Jun',
-                    7 => 'Jul',
-                    8 => 'Aug',
-                    9 => 'Sep',
-                    10 => 'Oct',
-                    11 => 'Nov',
-                    12 => 'Dec',
-                ),
-                'en_US'
-            ),
-            'it_IT' => array(
-                'it_IT',
-                array(
-                    1 => 'gen',
-                    2 => 'feb',
-                    3 => 'mar',
-                    4 => 'apr',
-                    5 => 'mag',
-                    6 => 'giu',
-                    7 => 'lug',
-                    8 => 'ago',
-                    9 => 'set',
-                    10 => 'ott',
-                    11 => 'nov',
-                    12 => 'dic',
-                )
-            ),
-            'id_ID' => array(
-                'id_ID',
-                array(
-                    1 => 'Jan',
-                    2 => 'Feb',
-                    3 => 'Mar',
-                    4 => 'Apr',
-                    5 => 'Mei',
-                    6 => 'Jun',
-                    7 => 'Jul',
-                    8 => 'Agt',
-                    9 => 'Sep',
-                    10 => 'Okt',
-                    11 => 'Nov',
-                    12 => 'Des',
-                )
-            ),
-        );
+        $this->assertEquals($expected, $this->calendar->getDayOfWeekNames($width, $locale));
     }
 
     /**
-     * @dataProvider getDayNamesDataProvider
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
-    public function testGetDayNames($locale, array $expected, $defaultLocale = null)
-    {
-        if (null !== $defaultLocale) {
-            $this->localeSettings->expects($this->once())
-                ->method('getLocale')
-                ->will($this->returnValue($defaultLocale));
-        }
-        $this->assertEquals($expected, $this->calendar->getDayNames($locale));
-    }
-
-    public function getDayNamesDataProvider()
+    public function getDayOfWeekNamesDataProvider()
     {
         return array(
-            'en_US' => array(
+            'wide, en_US' => array(
+                Calendar::WIDTH_WIDE,
                 'en_US',
                 array(
-                    Calendar::DOW_SUNDAY => 'Sunday',
-                    Calendar::DOW_MONDAY => 'Monday',
-                    Calendar::DOW_TUESDAY => 'Tuesday',
+                    Calendar::DOW_SUNDAY    => 'Sunday',
+                    Calendar::DOW_MONDAY    => 'Monday',
+                    Calendar::DOW_TUESDAY   => 'Tuesday',
                     Calendar::DOW_WEDNESDAY => 'Wednesday',
-                    Calendar::DOW_THURSDAY => 'Thursday',
-                    Calendar::DOW_FRIDAY => 'Friday',
-                    Calendar::DOW_SATURDAY => 'Saturday',
+                    Calendar::DOW_THURSDAY  => 'Thursday',
+                    Calendar::DOW_FRIDAY    => 'Friday',
+                    Calendar::DOW_SATURDAY  => 'Saturday',
                 )
             ),
-            'en_US, default locale' => array(
+            'default wide, default locale' => array(
+                null,
                 null,
                 array(
-                    Calendar::DOW_SUNDAY => 'Sunday',
-                    Calendar::DOW_MONDAY => 'Monday',
-                    Calendar::DOW_TUESDAY => 'Tuesday',
+                    Calendar::DOW_SUNDAY    => 'Sunday',
+                    Calendar::DOW_MONDAY    => 'Monday',
+                    Calendar::DOW_TUESDAY   => 'Tuesday',
                     Calendar::DOW_WEDNESDAY => 'Wednesday',
-                    Calendar::DOW_THURSDAY => 'Thursday',
-                    Calendar::DOW_FRIDAY => 'Friday',
-                    Calendar::DOW_SATURDAY => 'Saturday',
+                    Calendar::DOW_THURSDAY  => 'Thursday',
+                    Calendar::DOW_FRIDAY    => 'Friday',
+                    Calendar::DOW_SATURDAY  => 'Saturday',
                 ),
-                'en_US'
+                'en_US',
+            ),
+            'abbreviated, en_US' => array(
+                Calendar::WIDTH_ABBREVIATED,
+                'en_US',
+                array(
+                    Calendar::DOW_SUNDAY    => 'Sun',
+                    Calendar::DOW_MONDAY    => 'Mon',
+                    Calendar::DOW_TUESDAY   => 'Tue',
+                    Calendar::DOW_WEDNESDAY => 'Wed',
+                    Calendar::DOW_THURSDAY  => 'Thu',
+                    Calendar::DOW_FRIDAY    => 'Fri',
+                    Calendar::DOW_SATURDAY  => 'Sat',
+                )
+            ),
+            'short, en_US' => array(
+                Calendar::WIDTH_SHORT,
+                'en_US',
+                array(
+                    Calendar::DOW_SUNDAY    => 'Sun',
+                    Calendar::DOW_MONDAY    => 'Mon',
+                    Calendar::DOW_TUESDAY   => 'Tue',
+                    Calendar::DOW_WEDNESDAY => 'Wed',
+                    Calendar::DOW_THURSDAY  => 'Thu',
+                    Calendar::DOW_FRIDAY    => 'Fri',
+                    Calendar::DOW_SATURDAY  => 'Sat',
+                )
+            ),
+            'narrow, en_US' => array(
+                Calendar::WIDTH_NARROW,
+                'en_US',
+                array(
+                    Calendar::DOW_SUNDAY    => 'S',
+                    Calendar::DOW_MONDAY    => 'M',
+                    Calendar::DOW_TUESDAY   => 'T',
+                    Calendar::DOW_WEDNESDAY => 'W',
+                    Calendar::DOW_THURSDAY  => 'T',
+                    Calendar::DOW_FRIDAY    => 'F',
+                    Calendar::DOW_SATURDAY  => 'S',
+                )
             ),
             'fr_FR' => array(
-                null,
+                Calendar::WIDTH_WIDE,
+                'fr_FR',
                 array(
-                    Calendar::DOW_SUNDAY => 'dimanche',
-                    Calendar::DOW_MONDAY => 'lundi',
-                    Calendar::DOW_TUESDAY => 'mardi',
+                    Calendar::DOW_SUNDAY    => 'dimanche',
+                    Calendar::DOW_MONDAY    => 'lundi',
+                    Calendar::DOW_TUESDAY   => 'mardi',
                     Calendar::DOW_WEDNESDAY => 'mercredi',
-                    Calendar::DOW_THURSDAY => 'jeudi',
-                    Calendar::DOW_FRIDAY => 'vendredi',
-                    Calendar::DOW_SATURDAY => 'samedi',
-                ),
-                'fr_FR'
-            ),
-            'ru_RU' => array(
-                null,
-                array(
-                    Calendar::DOW_SUNDAY => 'Воскресенье',
-                    Calendar::DOW_MONDAY => 'Понедельник',
-                    Calendar::DOW_TUESDAY => 'Вторник',
-                    Calendar::DOW_WEDNESDAY => 'Среда',
-                    Calendar::DOW_THURSDAY => 'Четверг',
-                    Calendar::DOW_FRIDAY => 'Пятница',
-                    Calendar::DOW_SATURDAY => 'Суббота',
-                ),
-                'ru_RU'
-            ),
-        );
-    }
-
-    /**
-     * @dataProvider getDayShortNamesDataProvider
-     */
-    public function testGetDayShortNames($locale, array $expected, $defaultLocale = null)
-    {
-        if (null !== $defaultLocale) {
-            $this->localeSettings->expects($this->once())
-                ->method('getLocale')
-                ->will($this->returnValue($defaultLocale));
-        }
-        $this->assertEquals($expected, $this->calendar->getDayShortNames($locale));
-    }
-
-    public function getDayShortNamesDataProvider()
-    {
-        return array(
-            'en_US' => array(
-                'en_US',
-                array(
-                    Calendar::DOW_SUNDAY    => 'Sun',
-                    Calendar::DOW_MONDAY    => 'Mon',
-                    Calendar::DOW_TUESDAY   => 'Tue',
-                    Calendar::DOW_WEDNESDAY => 'Wed',
-                    Calendar::DOW_THURSDAY  => 'Thu',
-                    Calendar::DOW_FRIDAY    => 'Fri',
-                    Calendar::DOW_SATURDAY  => 'Sat',
+                    Calendar::DOW_THURSDAY  => 'jeudi',
+                    Calendar::DOW_FRIDAY    => 'vendredi',
+                    Calendar::DOW_SATURDAY  => 'samedi',
                 )
             ),
-            'en_US, default locale' => array(
-                null,
-                array(
-                    Calendar::DOW_SUNDAY    => 'Sun',
-                    Calendar::DOW_MONDAY    => 'Mon',
-                    Calendar::DOW_TUESDAY   => 'Tue',
-                    Calendar::DOW_WEDNESDAY => 'Wed',
-                    Calendar::DOW_THURSDAY  => 'Thu',
-                    Calendar::DOW_FRIDAY    => 'Fri',
-                    Calendar::DOW_SATURDAY  => 'Sat',
-                ),
-                'en_US'
-            ),
-            'fr_FR' => array(
-                null,
-                array(
-                    Calendar::DOW_SUNDAY    => 'dim.',
-                    Calendar::DOW_MONDAY    => 'lun.',
-                    Calendar::DOW_TUESDAY   => 'mar.',
-                    Calendar::DOW_WEDNESDAY => 'mer.',
-                    Calendar::DOW_THURSDAY  => 'jeu.',
-                    Calendar::DOW_FRIDAY    => 'ven.',
-                    Calendar::DOW_SATURDAY  => 'sam.',
-                ),
-                'fr_FR'
-            ),
             'ru_RU' => array(
-                null,
+                Calendar::WIDTH_WIDE,
+                'ru_RU',
+                array(
+                    Calendar::DOW_SUNDAY    => 'Воскресенье',
+                    Calendar::DOW_MONDAY    => 'Понедельник',
+                    Calendar::DOW_TUESDAY   => 'Вторник',
+                    Calendar::DOW_WEDNESDAY => 'Среда',
+                    Calendar::DOW_THURSDAY  => 'Четверг',
+                    Calendar::DOW_FRIDAY    => 'Пятница',
+                    Calendar::DOW_SATURDAY  => 'Суббота',
+                )
+            ),
+            'abbreviated, ru_RU' => array(
+                Calendar::WIDTH_ABBREVIATED,
+                'ru_RU',
                 array(
                     Calendar::DOW_SUNDAY    => 'Вс',
                     Calendar::DOW_MONDAY    => 'Пн',
@@ -376,8 +255,33 @@ class CalendarTest extends \PHPUnit_Framework_TestCase
                     Calendar::DOW_THURSDAY  => 'Чт',
                     Calendar::DOW_FRIDAY    => 'Пт',
                     Calendar::DOW_SATURDAY  => 'Сб',
-                ),
-                'ru_RU'
+                )
+            ),
+            'short, ru_RU' => array(
+                Calendar::WIDTH_SHORT,
+                'ru_RU',
+                array(
+                    Calendar::DOW_SUNDAY    => 'Вс',
+                    Calendar::DOW_MONDAY    => 'Пн',
+                    Calendar::DOW_TUESDAY   => 'Вт',
+                    Calendar::DOW_WEDNESDAY => 'Ср',
+                    Calendar::DOW_THURSDAY  => 'Чт',
+                    Calendar::DOW_FRIDAY    => 'Пт',
+                    Calendar::DOW_SATURDAY  => 'Сб',
+                )
+            ),
+            'narrow, ru_RU' => array(
+                Calendar::WIDTH_NARROW,
+                'ru_RU',
+                array(
+                    Calendar::DOW_SUNDAY    => 'В',
+                    Calendar::DOW_MONDAY    => 'П',
+                    Calendar::DOW_TUESDAY   => 'В',
+                    Calendar::DOW_WEDNESDAY => 'С',
+                    Calendar::DOW_THURSDAY  => 'Ч',
+                    Calendar::DOW_FRIDAY    => 'П',
+                    Calendar::DOW_SATURDAY  => 'С',
+                )
             ),
         );
     }

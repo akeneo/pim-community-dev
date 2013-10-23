@@ -1,5 +1,6 @@
 parameters:
     oro_locale.settings.class: Oro\Bundle\LocaleBundle\Model\LocaleSettings
+    oro_locale.calendar.class: Oro\Bundle\LocaleBundle\Model\Calendar
     oro_locale.form.type.name_format.type.class: Oro\Bundle\LocaleBundle\Form\Type\NameFormatType
 
     oro_locale.format_converter.date_time.registry.class: Oro\Bundle\LocaleBundle\Converter\DateTimeFormatConverterRegistry
@@ -13,6 +14,7 @@ parameters:
 
     oro_locale.twig.date_format.class: Oro\Bundle\LocaleBundle\Twig\DateFormatExtension
     oro_locale.twig.locale.class: Oro\Bundle\LocaleBundle\Twig\LocaleExtension
+    oro_locale.twig.calendar.class: Oro\Bundle\LocaleBundle\Twig\CalendarExtension
     oro_locale.twig.date_time.class: Oro\Bundle\LocaleBundle\Twig\DateTimeExtension
     oro_locale.twig.name.class: Oro\Bundle\LocaleBundle\Twig\NameExtension
     oro_locale.twig.address.class: Oro\Bundle\LocaleBundle\Twig\AddressExtension
@@ -22,11 +24,16 @@ services:
     oro_locale.settings:
         class: %oro_locale.settings.class%
         arguments:
-            - @oro_config.global
+            - @oro_config.user
         calls:
             - [addNameFormats, [%oro_locale.format.name%]]
             - [addAddressFormats, [%oro_locale.format.address%]]
             - [addLocaleData, [%oro_locale.locale_data%]]
+
+    oro_locale.calendar:
+        class: %oro_locale.calendar.class%
+        arguments:
+            - @oro_locale.settings
 
     # Form types
     oro_locale.form.type.name_format.type:
@@ -91,6 +98,13 @@ services:
         tags:
             - { name: twig.extension }
 
+    oro_locale.twig.calendar:
+        class: %oro_locale.twig.calendar.class%
+        arguments:
+            - @oro_locale.calendar
+        tags:
+            - { name: twig.extension }
+
     oro_locale.twig.date_time:
         class: %oro_locale.twig.date_time.class%
         arguments:
@@ -111,7 +125,6 @@ services:
             - @oro_locale.formatter.address
         tags:
             - { name: twig.extension }
-
 
     oro_locale.twig.number:
         class: %oro_locale.twig.number.class%

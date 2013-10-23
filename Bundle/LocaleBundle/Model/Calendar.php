@@ -17,6 +17,11 @@ class Calendar
     const DOW_FRIDAY = 6;
     const DOW_SATURDAY = 7;
 
+    const WIDTH_WIDE        = 'wide';        // Tuesday | September
+    const WIDTH_ABBREVIATED = 'abbreviated'; // Tues    | Sept
+    const WIDTH_SHORT       = 'short';       // Tu      | Sept
+    const WIDTH_NARROW      = 'narrow';      // T       | S
+
     /**
      * @var LocaleSettings
      */
@@ -51,15 +56,31 @@ class Calendar
     }
 
     /**
-     * Get list of month names, month with index 1 - January
+     * Get list of month names, month with index 1 is January
      *
      * @param string|null $locale
+     * @param string $width Constant WIDTH_WIDE|WIDTH_ABBREVIATED|WIDTH_SHORT|NARROW
      * @return array
      */
-    public function getMonthNames($locale = null)
+    public function getMonthNames($width = null, $locale = null)
     {
-        $formatter = $this->getFormatter($locale, 'LLLL');
-
+        switch ($width) {
+            // Sept
+            case self::WIDTH_ABBREVIATED:
+            case self::WIDTH_SHORT:
+                $pattern = 'LLL';
+                break;
+            // S
+            case self::WIDTH_NARROW:
+                $pattern = 'LLLLL';
+                break;
+            // September
+            case self::WIDTH_WIDE:
+            default:
+                $pattern = 'LLLL';
+                break;
+        }
+        $formatter = $this->getFormatter($locale, $pattern);
         return array(
             1 => $formatter->format(new \DateTime('2013-01-01')),
             $formatter->format(new \DateTime('2013-02-01')),
@@ -77,62 +98,35 @@ class Calendar
     }
 
     /**
-     * Get list of month short names, month with index 1 - January
+     * Get list of day names
      *
      * @param string|null $locale
+     * @param string $width Constant WIDTH_WIDE|WIDTH_ABBREVIATED|WIDTH_SHORT|WIDTH_NARROW
      * @return array
      */
-    public function getMonthShortNames($locale = null)
+    public function getDayOfWeekNames($width = null, $locale = null)
     {
-        $formatter = $this->getFormatter($locale, 'LLL');
+        switch ($width) {
+            // Tues
+            case self::WIDTH_ABBREVIATED:
+                $pattern = 'ccc';
+                break;
+            // Tu
+            case self::WIDTH_SHORT:
+                $pattern = 'cccccc';
+                break;
+            // T
+            case self::WIDTH_NARROW:
+                $pattern = 'ccccc';
+                break;
+            // Tuesday
+            case self::WIDTH_WIDE:
+            default:
+                $pattern = 'cccc';
+                break;
+        }
 
-        return array(
-            1 => $formatter->format(new \DateTime('2013-01-01')),
-            $formatter->format(new \DateTime('2013-02-01')),
-            $formatter->format(new \DateTime('2013-03-01')),
-            $formatter->format(new \DateTime('2013-04-01')),
-            $formatter->format(new \DateTime('2013-05-01')),
-            $formatter->format(new \DateTime('2013-06-01')),
-            $formatter->format(new \DateTime('2013-07-01')),
-            $formatter->format(new \DateTime('2013-08-01')),
-            $formatter->format(new \DateTime('2013-09-01')),
-            $formatter->format(new \DateTime('2013-10-01')),
-            $formatter->format(new \DateTime('2013-11-01')),
-            $formatter->format(new \DateTime('2013-12-01')),
-        );
-    }
-
-    /**
-     * Get list of month short names, month with index 1 - January
-     *
-     * @param string|null $locale
-     * @return array
-     */
-    public function getDayNames($locale = null)
-    {
-        $formatter = $this->getFormatter($locale, 'cccc');
-
-        return array(
-            self::DOW_SUNDAY    => $formatter->format(new \DateTime('Sunday, January 1, 2012')),
-            self::DOW_MONDAY    => $formatter->format(new \DateTime('Monday, January 2, 2012')),
-            self::DOW_TUESDAY   => $formatter->format(new \DateTime('Tuesday, January 3, 2012')),
-            self::DOW_WEDNESDAY => $formatter->format(new \DateTime('Wednesday, January 4, 2012')),
-            self::DOW_THURSDAY  => $formatter->format(new \DateTime('Thursday, January 5, 2012')),
-            self::DOW_FRIDAY    => $formatter->format(new \DateTime('Friday, January 5, 2012')),
-            self::DOW_SATURDAY  => $formatter->format(new \DateTime('Saturday, January 5, 2012')),
-        );
-    }
-
-    /**
-     * Get list of month short names, month with index 1 - January
-     *
-     * @param string|null $locale
-     * @return array
-     */
-    public function getDayShortNames($locale = null)
-    {
-        $formatter = $this->getFormatter($locale, 'cccccc');
-
+        $formatter = $this->getFormatter($locale, $pattern);
         return array(
             self::DOW_SUNDAY    => $formatter->format(new \DateTime('Sunday, January 1, 2012')),
             self::DOW_MONDAY    => $formatter->format(new \DateTime('Monday, January 2, 2012')),
