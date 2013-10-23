@@ -1,27 +1,28 @@
 <script type="text/javascript">
-require(['oro/locale-settings', 'jquery'],
-function(localeSettings) {
+require(['jquery', 'oro/locale-settings'],
+function($, localeSettings) {
+    {% set dateTimeFormats = {} %}
+    {% for formatterName in oro_datetime_formatter_list() %}
+        {% set currentFormats = {
+            'date': oro_date_format(formatterName),
+            'time': oro_time_format(formatterName),
+            'datetime': oro_datetime_format(formatterName),
+        } %}
+        {% set dateTimeFormats = dateTimeFormats|merge({ (formatterName) : currentFormats }) %}
+    {% endfor %}
+
     {% set settings = {
-        'system': {
-            'locale': null,
-            'timezone': null,
-            'format': {
-                'moment': {
-                    'date': 'YYYY-MM-DD',
-                    'time': 'HH:mm:ss',
-                    'date_time': 'YYYY-MM-DD HH:mm:ss'
-                }
-            }
+        'locale': oro_locale(),
+        'language': oro_language(),
+        'country': oro_country(),
+        'currency': oro_currency(),
+        'timezone': oro_timezone(),
+        'timezone_offset': oro_timezone_offset(),
+        'format_address_by_address_country': oro_format_address_by_address_country(),
+        'format': {
+            'datetime': dateTimeFormats
         },
-        'user': {
-            'locale': oro_config_value('oro_locale.locale'),
-            'timezone': oro_config_value('oro_locale.timezone'),
-            'country': oro_config_value('oro_locale.country')
-        },
-        'locale': oro_config_value('oro_locale.locale'),
-        'timezone': oro_config_value('oro_locale.timezone'),
-        'country': oro_config_value('oro_locale.country'),
-        'calendar': {
+		'calendar': {
             'dow': {
                 'wide':        oro_calendar_day_of_week_names('wide'),
                 'abbreviated': oro_calendar_day_of_week_names('abbreviated'),
@@ -36,10 +37,10 @@ function(localeSettings) {
             'first_dow': oro_calendar_first_day_of_week()
         }
     } %}
-    var settings = {{ settings|json_encode|raw }};
-    settings.user.format = {name: {}};
 
-    // Convert to js representation as an array with first index 0
+    var settings = {{ settings|json_encode|raw }};
+
+	// Convert to js representation as an array with first index 0
     settings.calendar.first_dow          = settings.calendar.first_day_of_week - 1;
 
     settings.calendar.dow.wide           = $.map(settings.calendar.dow.wide, function(v) {return v});
@@ -50,9 +51,6 @@ function(localeSettings) {
     settings.calendar.months.wide        = $.map(settings.calendar.months.wide, function(v) {return v});
     settings.calendar.months.abbreviated = $.map(settings.calendar.months.abbreviated, function(v) {return v});
     settings.calendar.months.narrow      = $.map(settings.calendar.months.narrow, function(v) {return v});
-
-    settings.user.format.name[settings.user.locale]
-        = {{ oro_config_value('oro_locale.name_format')|json_encode|raw }};
     localeSettings.extendSettings(settings);
 });
 </script>

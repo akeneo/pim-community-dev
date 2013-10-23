@@ -84,6 +84,7 @@ class Configuration implements ConfigurationInterface
                                 ->cannotBeEmpty()
                             ->end()
                             ->booleanNode('currency_symbol_prepend')
+                                ->isRequired()
                                 ->defaultFalse()
                             ->end()
                             ->scalarNode('phone_prefix')

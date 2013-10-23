@@ -62,8 +62,6 @@ oro_system_configuration:
             options:
                 label: 'Format address by address country'
                 required: true
-                constraints:
-                    - NotNull: ~
 
     tree:
         system_configuration:

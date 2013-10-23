@@ -11,9 +11,16 @@ function(localeSettings, nameFormatter) {
      */
     return {
         format: function(address, country, newLine) {
-            country = country || address.country;
+            if (!country) {
+                if (localeSettings.isFormatAddressByAddressCountry()) {
+                    country = address.countryIso2;
+                } else {
+                    country = localeSettings.getCountry();
+                }
+            }
             newLine = newLine || '<br/>';
-            var format = localeSettings.getAddressFormat(country);
+
+            var format = this.getAddressFormat(country);
             var formatted = format.replace(/%(\w+)%/g, function (pattern, key) {
                 var lowerCaseKey = key.toLowerCase();
                 var value = '';
@@ -23,6 +30,8 @@ function(localeSettings, nameFormatter) {
                     value = address.street + ' ' + address.street2;
                 } else if ('street1' == lowerCaseKey) {
                     value = address.street;
+                } else if ('country' == lowerCaseKey) {
+                    value = address.countryName;
                 } else {
                     value = address[lowerCaseKey];
                 }
@@ -42,6 +51,14 @@ function(localeSettings, nameFormatter) {
                 addressLines.join('');
                 return addressLines.join(newLine);
             }
+        },
+
+        getAddressFormat: function(country) {
+            var addressFormats = localeSettings.getAddressFormats();
+            if (!addressFormats.hasOwnProperty(country)) {
+                country = localeSettings.getCountry();
+            }
+            return addressFormats[country];
         }
     }
 });

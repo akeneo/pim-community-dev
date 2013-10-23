@@ -34,10 +34,19 @@ class DateFormatExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            new \Twig_SimpleFunction('oro_dateformat', array($this, 'getDateFormat')),
-            new \Twig_SimpleFunction('oro_timeformat', array($this, 'getTimeFormat')),
-            new \Twig_SimpleFunction('oro_datetimeformat', array($this, 'getDateTimeFormat')),
+            new \Twig_SimpleFunction('oro_datetime_formatter_list', array($this, 'getDateTimeFormatterList')),
+            new \Twig_SimpleFunction('oro_date_format', array($this, 'getDateFormat')),
+            new \Twig_SimpleFunction('oro_time_format', array($this, 'getTimeFormat')),
+            new \Twig_SimpleFunction('oro_datetime_format', array($this, 'getDateTimeFormat')),
         );
+    }
+
+    /**
+     * @return array
+     */
+    public function getDateTimeFormatterList()
+    {
+        return array_keys($this->converterRegistry->getFormatConverters());
     }
 
     /**
