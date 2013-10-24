@@ -66,8 +66,20 @@ datagrid:
             acl_resource: oro_tag_view
             type: orm
             query:
+                select:
+                    - t.id
+                    - t.name
+                from:
+                    - { table: OroTagBundle:Tag, alias: t }
+                join:
+                    left:
+                        tagging:
+                            join: t.tagging
+                            alias: tt
+                groupBy: tt.entityName, tt.recordId
                 where:
                     and:
+                        - tt.tag = :tag
         columns:
             entity:
                 label: Item

@@ -3,14 +3,12 @@
 namespace Oro\Bundle\TagBundle\Datagrid;
 
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Query;
 
 use Oro\Bundle\TagBundle\Entity\Tagging;
 use Oro\Bundle\SearchBundle\Engine\ObjectMapper;
-use Oro\Bundle\GridBundle\Datagrid\ORM\ProxyQuery;
 use Oro\Bundle\SearchBundle\Query\Result\Item as ResultItem;
 
-class ResultsQuery extends ProxyQuery
+class ResultsQuery extends Query
 {
     /**
      * @var ObjectMapper
@@ -25,7 +23,7 @@ class ResultsQuery extends ProxyQuery
         $this->em = $em;
         $this->mapper = $mapper;
 
-        return parent::__construct($queryBuilder);
+        parent::__construct($em);
     }
 
     /**

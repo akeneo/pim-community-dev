@@ -57,7 +57,7 @@
                 </td>
                 <td class="tag-search-results-column">
                     <div id="tag-search-results-grid">
-                        {{ dataGrid.renderGrid(gridName, {grid: {group_id: entityId}}) }}
+                        {{ dataGrid.renderGrid(gridName, {grid: {from: from, tag_id: tag.id}}) }}
                     </div>
                 </td>
             </tr>

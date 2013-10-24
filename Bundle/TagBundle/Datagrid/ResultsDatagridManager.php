@@ -21,7 +21,8 @@ class ResultsDatagridManager extends SearchDatagridManager
     protected function createQuery()
     {
         /** @var ResultsQuery $query */
-        $query = DatagridManager::createQuery();
+        $query = new ResultsQuery($this->queryBuilder, $em, $this->mapper);
+
 
         /** @var QueryBuilder $qb */
         $qb = $query->getQueryBuilder();
