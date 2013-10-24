@@ -50,20 +50,28 @@ class ValidProductCreationProcessorTest extends \PHPUnit_Framework_TestCase
         $this->formFactory
             ->expects($this->any())
             ->method('create')
-            ->with('pim_product_import', $product, array('csrf_protection' => false))
+            ->with(
+                'pim_product_import',
+                $product,
+                array(
+                    'family_column'     => 'family',
+                    'categories_column' => 'categories',
+                    'groups_column'     => 'groups'
+                )
+            )
             ->will($this->returnValue($form));
 
         $form->expects($this->once())
             ->method('submit')
             ->with(
                 array(
-                    ValidProductCreationProcessor::ENABLED_FIELD     => true,
-                    ValidProductCreationProcessor::FAMILY_FIELD      => 'vehicle',
-                    ValidProductCreationProcessor::CATEGORIES_FIELD  => 'cat_1,cat_2,cat_3',
-                    'sku'                                           => 'foo-1',
-                    'name-en_US'                                    => 'car',
-                    'name-fr_FR'                                    => 'voiture',
-                    'description'                                   => 'A foo product',
+                    'enabled'     => true,
+                    'family'      => 'vehicle',
+                    'categories'  => 'cat_1,cat_2,cat_3',
+                    'sku'         => 'foo-1',
+                    'name-en_US'  => 'car',
+                    'name-fr_FR'  => 'voiture',
+                    'description' => 'A foo product',
                 )
             );
 
@@ -102,7 +110,15 @@ class ValidProductCreationProcessorTest extends \PHPUnit_Framework_TestCase
         $this->formFactory
             ->expects($this->any())
             ->method('create')
-            ->with('pim_product_import', $product, array('csrf_protection' => false))
+            ->with(
+                'pim_product_import',
+                $product,
+                array(
+                    'family_column'     => 'family',
+                    'categories_column' => 'categories',
+                    'groups_column'     => 'groups'
+                )
+            )
             ->will($this->returnValue($form));
 
         $this->processor->process(array());

@@ -66,7 +66,6 @@ class TransformImportedProductDataSubscriberTest extends \PHPUnit_Framework_Test
                 'bogus'      => false
             )
         );
-
         $this->productValueConverter
             ->expects($this->any())
             ->method('convert')
@@ -97,7 +96,7 @@ class TransformImportedProductDataSubscriberTest extends \PHPUnit_Framework_Test
     {
         $event = new FormEvent($this->form, array());
 
-        $this->productEnabledConverter
+        $this->productValueConverter
             ->expects($this->any())
             ->method('convert')
             ->will($this->throwException(new \InvalidArgumentException('So wrong!')));
@@ -110,10 +109,15 @@ class TransformImportedProductDataSubscriberTest extends \PHPUnit_Framework_Test
      */
     protected function getFormMock()
     {
-        return $this
+        $form = $this
             ->getMockBuilder('Symfony\Component\Form\Form')
             ->disableOriginalConstructor()
             ->getMock();
+        $form->expects($this->any())
+            ->method('getConfig')
+            ->will($this->returnValue($this->getFormConfigMock()));
+
+        return $form;
     }
 
     /**
@@ -127,5 +131,23 @@ class TransformImportedProductDataSubscriberTest extends \PHPUnit_Framework_Test
             ->getMockBuilder(sprintf('Pim\\Bundle\\ImportExportBundle\\Converter\\%s', $class))
             ->disableOriginalConstructor()
             ->getMock();
+    }
+
+    protected function getFormConfigMock()
+    {
+        $formConfig = $this->getMock('Symfony\Component\Form\FormConfigInterface');
+        $formConfig->expects($this->any())
+            ->method('getOptions')
+            ->will(
+                $this->returnValue(
+                    array(
+                        'family_column'     => 'family',
+                        'categories_column' => 'categories',
+                        'groups_column'     => 'groups',
+                    )
+                )
+            );
+
+        return $formConfig;
     }
 }
