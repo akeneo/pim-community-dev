@@ -16,7 +16,7 @@ use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
  * @ORM\Table(
  *      name="pim_catalog_attribute_group_translation",
  *      uniqueConstraints= {
- *          @ORM\UniqueConstraint(name="locale_foreign_key_idx", columns={locale, foreign_key})
+ *          @ORM\UniqueConstraint(name="locale_foreign_key_idx", columns={"locale", "foreign_key"})
  *      }
  * )
  */
