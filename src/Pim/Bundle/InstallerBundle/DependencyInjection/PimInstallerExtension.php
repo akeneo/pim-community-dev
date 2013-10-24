@@ -27,7 +27,8 @@ class PimInstallerExtension extends Extension
             'attributes',
             'categories',
             'group_types',
-            'groups'
+            'groups',
+            'associations'
         );
         $installerFiles = array();
 
