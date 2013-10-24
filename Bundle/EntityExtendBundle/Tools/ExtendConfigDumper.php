@@ -11,7 +11,6 @@ use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
 
 use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 use Oro\Bundle\EntityExtendBundle\Mapping\ExtendClassMetadataFactory;
-use Oro\Bundle\EntityExtendBundle\Exception\RuntimeException;
 
 class ExtendConfigDumper
 {
@@ -31,7 +30,7 @@ class ExtendConfigDumper
 
     /**
      * @param OroEntityManager $em
-     * @param string $cacheDir
+     * @param string           $cacheDir
      */
     public function __construct(OroEntityManager $em, $cacheDir)
     {
@@ -68,7 +67,7 @@ class ExtendConfigDumper
 
     public function dump()
     {
-        $yml            = array();
+        $yml            = [];
         $extendProvider = $this->em->getExtendManager()->getConfigProvider();
         $configs        = $extendProvider->getConfigs();
         foreach ($configs as $config) {
@@ -89,7 +88,7 @@ class ExtendConfigDumper
     {
         $filesystem = new Filesystem();
         if ($filesystem->exists($this->cacheDir)) {
-            $filesystem->remove(array($this->cacheDir));
+            $filesystem->remove([$this->cacheDir]);
         }
 
         $filesystem->mkdir($this->cacheDir . '/Extend/Entity');
@@ -103,40 +102,41 @@ class ExtendConfigDumper
     {
         $extendProvider = $this->em->getExtendManager()->getConfigProvider();
         $className      = $entityConfig->getId()->getClassName();
-        $doctrine       = array();
+        $doctrine       = [];
 
         if (strpos($className, self::ENTITY) !== false) {
             $entityName            = $className;
             $type                  = 'Custom';
-            $doctrine[$entityName] = array(
+            $doctrine[$entityName] = [
                 'type'   => 'entity',
                 'table'  => 'oro_extend_' . strtolower(str_replace('\\', '', $entityName)),
-                'fields' => array(
-                    'id' => array('type' => 'integer', 'id' => true, 'generator' => array('strategy' => 'AUTO'))
-                ),
-            );
+                'fields' => [
+                    'id' => ['type' => 'integer', 'id' => true, 'generator' => ['strategy' => 'AUTO']]
+                ],
+            ];
         } else {
             $entityName            = $entityConfig->get('extend_class');
             $type                  = 'Extend';
-            $doctrine[$entityName] = array(
+            $doctrine[$entityName] = [
                 'type'   => 'mappedSuperclass',
-                'fields' => array(),
-            );
+                'fields' => [],
+            ];
         }
 
         $entityState = $entityConfig->get('state');
 
-        $schema             = $entityConfig->get('schema');
-        $properties         = array();
-        $relationProperties = $schema ? $schema['relation'] : array();
-        $defaultProperties  = array();
+        $schema    = $entityConfig->get('schema');
+
+        $properties         = [];
+        $relationProperties = $schema ? $schema['relation'] : [];
+        $defaultProperties  = [];
         if ($fieldConfigs = $extendProvider->getConfigs($className)) {
             foreach ($fieldConfigs as $fieldConfig) {
                 if ($fieldConfig->is('extend')) {
                     $fieldName = self::FIELD_PREFIX . $fieldConfig->getId()->getFieldName();
                     $fieldType = $fieldConfig->getId()->getFieldType();
 
-                    if (in_array($fieldType, array('oneToMany', 'manyToOne', 'manyToMany'))) {
+                    if (in_array($fieldType, ['oneToMany', 'manyToOne', 'manyToMany'])) {
                         $relationProperties[$fieldName] = $fieldConfig->getId()->getFieldName();
                         if ($fieldType != 'manyToOne') {
                             $defaultName = self::DEFAULT_PREFIX . $fieldConfig->getId()->getFieldName();
@@ -176,7 +176,7 @@ class ExtendConfigDumper
             $entityConfig->set('state', ExtendManager::STATE_ACTIVE);
         }
 
-        $relations = $entityConfig->get('relation') ? : array();
+        $relations = $entityConfig->get('relation') ? : [];
         foreach ($relations as &$relation) {
             if ($relation['field_id']) {
                 $relation['assign'] = true;
@@ -186,7 +186,8 @@ class ExtendConfigDumper
         }
         $entityConfig->set('relation', $relations);
 
-        $schema = array(
+
+        $schema = [
             'class'    => $className,
             'entity'   => $entityName,
             'type'     => $type,
@@ -194,7 +195,7 @@ class ExtendConfigDumper
             'relation' => $relationProperties,
             'default'  => $defaultProperties,
             'doctrine' => $doctrine,
-        );
+        ];
 
         if ($type == 'Extend') {
             $schema['parent']  = get_parent_class($className);
@@ -212,15 +213,15 @@ class ExtendConfigDumper
         $extendProvider = $this->em->getExtendManager()->getConfigProvider();
         $targetConfig   = $extendProvider->getConfig($targetClass);
 
-        $relations = $targetConfig->get('relation') ? : array();
-        $schema    = $targetConfig->get('schema') ? : array();
+        $relations = $targetConfig->get('relation') ? : [];
+        $schema    = $targetConfig->get('schema') ? : [];
 
         foreach ($relations as &$relation) {
             if ($relation['target_field_id'] == $fieldId) {
                 $relation['assign'] = true;
                 $relationFieldId    = $relation['field_id'];
 
-                if (($relation['owner'] || $fieldId->getFieldType() == 'manyToMany') && count($schema)) {
+                if ($relation['owner'] && count($schema)) {
                     $schema['relation'][self::FIELD_PREFIX . $relationFieldId->getFieldName()] =
                         $relationFieldId->getFieldName();
                 }

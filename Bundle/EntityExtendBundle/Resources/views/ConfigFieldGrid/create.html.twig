@@ -42,11 +42,11 @@
             $(function() {
                 $(document).on('change', 'form select#oro_entity_extend_field_type_type', function (e) {
                     var el = $(this),
-                        relation = el.find('option:selected').attr('value').split('|'),
+                        relation = el.find('option:selected').attr('value').split('||'),
                         field_name = $('input#oro_entity_extend_field_type_fieldName');
 
-                    if (relation !== 'undefined' && relation.length > 1 && relation[2]) {
-                        $(field_name).val(relation[2]).attr('readonly', 'readonly');
+                    if (relation !== 'undefined' && relation.length > 1 && relation[1]) {
+                        $(field_name).val(relation[1]).attr('readonly', 'readonly');
                     }
                     else if ($(field_name).attr('readonly')) {
                         $(field_name).val('').removeAttr('readonly');
