@@ -144,5 +144,4 @@ class VersionBuilder
 
         return $pendings;
     }
-
 }
