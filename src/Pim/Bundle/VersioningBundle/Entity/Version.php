@@ -13,7 +13,12 @@ use Oro\Bundle\UserBundle\Entity\User;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * @ORM\Entity(repositoryClass="Pim\Bundle\VersioningBundle\Entity\Repository\VersionRepository")
- * @ORM\Table(name="pim_versioning_version")
+ * @ORM\Table(
+ *      name="pim_versioning_version",
+ *      indexes={
+ *          @ORM\Index(name="resource_name_resource_id_idx", columns={"resource_name", "resource_id"})
+ *      }
+ * )
  */
 class Version
 {
