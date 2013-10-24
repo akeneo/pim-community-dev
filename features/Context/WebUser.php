@@ -12,6 +12,7 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Product;
+use Behat\Mink\Element\Element;
 
 /**
  * Context of the website
@@ -850,11 +851,24 @@ class WebUser extends RawMinkContext
      *
      * @Given /^I fill in the following information:$/
      */
-    public function iFillInTheFollowingInformation(TableNode $table)
+    public function iFillInTheFollowingInformation(TableNode $table, Element $element = null)
     {
         foreach ($table->getRowsHash() as $field => $value) {
-            $this->getCurrentPage()->fillField($field, $value);
+            $this->getCurrentPage()->fillField($field, $value, $element);
         }
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Given /^I fill in the following information in the popin?:$/
+     */
+    public function iFillInTheFollowingInformationInThePopin(TableNode $table)
+    {
+        $this->iFillInTheFollowingInformation(
+            $table,
+            $this->getCurrentPage()->find('css', '.ui-dialog')
+        );
     }
 
     /**

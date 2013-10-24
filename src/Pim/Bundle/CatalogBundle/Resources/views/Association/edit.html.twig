@@ -31,13 +31,17 @@
 
         {% set title = 'association.edit'|trans ~ ' - ' ~ form.vars.value.label %}
 
+        {% set confirmationMessage = 'confirmation.remove.association'|trans({ '%name%': form.vars.value.label }) %}
+        {% if usageCount %}
+            {% set confirmationMessage = confirmationMessage ~ '</br>' ~ 'info.association.remove from products'|trans({ '%count%': usageCount }) %}
+        {% endif %}
         {% set buttons %}
             {{ elements.backLink(path('pim_catalog_association_index')) }}
             {{
                 elements.deleteLink(
                     path('pim_catalog_association_remove', { id: form.vars.value.id }),
                     path('pim_catalog_association_index'),
-                    'confirmation.remove.association'|trans({ '%name%': form.vars.value.label }),
+                    confirmationMessage,
                     '',
                     'flash.association.removed'|trans
                 )

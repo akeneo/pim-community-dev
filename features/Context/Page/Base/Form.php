@@ -213,11 +213,8 @@ class Form extends Base
     public function fillField($labelContent, $value, Element $element = null)
     {
         $subLabelContent = null;
-        $parsedField = str_word_count($labelContent, 1, '€$');
-
-        if (2 === count($parsedField)) {
-            $subLabelContent = $parsedField[0];
-            $labelContent    = $parsedField[1];
+        if (false !== strpbrk($labelContent, '€$')) {
+            list($subLabelContent, $labelContent) = explode(' ', $labelContent);
         }
 
         if ($element) {

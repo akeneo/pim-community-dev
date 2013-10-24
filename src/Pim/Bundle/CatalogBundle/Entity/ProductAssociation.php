@@ -16,7 +16,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * @ORM\Table(name="pim_catalog_product_association")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Pim\Bundle\CatalogBundle\Entity\Repository\ProductAssociationRepository")
  */
 class ProductAssociation
 {

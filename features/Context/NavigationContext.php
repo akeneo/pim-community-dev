@@ -167,12 +167,12 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
         $this->wait();
     }
 
-     /**
-      * @param string $identifier
-      *
-      * @Given /^I am on the "([^"]*)" product group page$/
-      * @Given /^I edit the "([^"]*)" product group$/
-      */
+    /**
+     * @param string $identifier
+     *
+     * @Given /^I am on the "([^"]*)" product group page$/
+     * @Given /^I edit the "([^"]*)" product group$/
+     */
     public function iAmOnTheProductGroupEditPage($identifier)
     {
         $page = 'ProductGroup';
