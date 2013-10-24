@@ -9,6 +9,9 @@ class Acceptor
     /** @var array */
     protected $config;
 
+    /** @var array */
+    protected $sortedExtensions;
+
     public function __construct(array $config)
     {
         $this->setConfig($config);
@@ -21,7 +24,7 @@ class Acceptor
      */
     public function acceptDatasourceVisitors(DatagridInterface $grid)
     {
-        foreach ($grid->getExtensions() as $extension) {
+        foreach ($this->getSortedExtension($grid) as $extension) {
             $extension->visitDatasource($this->getConfig(), $grid->getDatasource());
         }
     }
@@ -34,7 +37,7 @@ class Acceptor
      */
     public function acceptResult(DatagridInterface $grid, \stdClass $result)
     {
-        foreach ($grid->getExtensions() as $extension) {
+        foreach ($this->getSortedExtension($grid) as $extension) {
             $extension->visitResult($this->getConfig(), $result);
         }
     }
@@ -45,7 +48,7 @@ class Acceptor
      */
     public function acceptMetadata(DatagridInterface $grid, \stdClass $data)
     {
-        foreach ($grid->getExtensions() as $extension) {
+        foreach ($this->getSortedExtension($grid) as $extension) {
             $extension->visitMetadata($this->getConfig(), $data);
         }
     }
@@ -72,5 +75,31 @@ class Acceptor
     public function getConfig()
     {
         return $this->config;
+    }
+
+    /**
+     * @param DatagridInterface $grid
+     *
+     * @return ExtensionVisitorInterface[]
+     */
+    protected function getSortedExtension(DatagridInterface $grid)
+    {
+        if (!$this->sortedExtensions) {
+            $this->sortedExtensions = $grid->getExtensions();
+
+            usort(
+                $this->sortedExtensions,
+                function (ExtensionVisitorInterface $a, ExtensionVisitorInterface $b) {
+                    if ($a->getPriority() === $b->getPriority()) {
+                        return 0;
+                    }
+
+                    return $a->getPriority() > $b->getPriority() ? -1 : 1;
+                }
+            );
+        }
+
+
+        return $this->sortedExtensions;
     }
 }

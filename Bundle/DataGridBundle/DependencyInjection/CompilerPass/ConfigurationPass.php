@@ -23,7 +23,7 @@ class ConfigurationPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $config = array();
+        $config = [];
 
         /**
          * Collect and pass datagrid configurations to manager

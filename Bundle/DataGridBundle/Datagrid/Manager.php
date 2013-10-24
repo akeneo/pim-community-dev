@@ -20,10 +20,10 @@ class Manager implements ManagerInterface
     protected $resolver;
 
     /** @var array */
-    protected $rawConfiguration;
+    protected $rawConfiguration = [];
 
     /** @var array */
-    protected $processedConfiguration;
+    protected $processedConfiguration = [];
 
     public function __construct(array $rawConfiguration, Builder $builder, SystemAwareResolver $resolver)
     {
@@ -44,24 +44,7 @@ class Manager implements ManagerInterface
     }
 
     /**
-     * Internal getter for builder
-     *
-     * @return Builder
-     */
-    protected function getDatagridBuilder()
-    {
-        return $this->datagridBuilder;
-    }
-
-    /**
-     * Returns prepared config for requested datagrid
-     * Throws exception in case when datagrid configuration not found
-     * Cache prepared config in case if datagrid requested few times
-     *
-     * @param string $name
-     *
-     * @return array
-     * @throws \RuntimeException
+     * {@inheritDoc}
      */
     public function getConfigurationForGrid($name)
     {
@@ -70,11 +53,21 @@ class Manager implements ManagerInterface
         }
 
         if (!isset($this->processedConfiguration[$name])) {
-            $result = $this->rawConfiguration[$name];
+            $config = $this->rawConfiguration[$name];
 
-            $this->processedConfiguration[$name] = $this->resolver->resolve($name, $result);
+            $this->processedConfiguration[$name] = $this->resolver->resolve($name, $config);
         }
 
         return $this->processedConfiguration[$name];
+    }
+
+    /**
+     * Internal getter for builder
+     *
+     * @return Builder
+     */
+    protected function getDatagridBuilder()
+    {
+        return $this->datagridBuilder;
     }
 }

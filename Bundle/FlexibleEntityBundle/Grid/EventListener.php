@@ -10,6 +10,7 @@ use Oro\Bundle\DataGridBundle\Extension\Formatter\FormatterExtension;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\PropertyInterface;
 use Oro\Bundle\FilterBundle\Extension\OrmFilterExtension;
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
+use Oro\Bundle\FlexibleEntityBundle\Grid\Extension\Filter\FlexibleFilterUtility;
 use Oro\Bundle\FlexibleEntityBundle\Grid\Extension\Formatter\Property\FlexibleFieldProperty;
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManagerRegistry;
@@ -88,10 +89,10 @@ class EventListener
                         $config,
                         OrmFilterExtension::COLUMNS_PATH . '[' . $attribute . ']',
                         [
-                            'type'                 => $filterType,
-                            'flexible_entity_name' => $flexibleEntity,
-                            'data_name'            => $attribute,
-                            'options'              => ['show_filter' => $showFilter]
+                            'type'                         => $filterType,
+                            FlexibleFilterUtility::FEN_KEY => $flexibleEntity,
+                            'data_name'                    => $attribute,
+                            'options'                      => ['show_filter' => $showFilter]
                         ]
                     );
                 }

@@ -9,7 +9,7 @@ use Oro\Bundle\DataGridBundle\Extension\ExtensionVisitorInterface;
 class Datagrid implements DatagridInterface
 {
     /** @var ExtensionVisitorInterface[] */
-    protected $extensions = array();
+    protected $extensions = [];
 
     /** @var DatasourceInterface */
     protected $datasource;
@@ -55,11 +55,12 @@ class Datagrid implements DatagridInterface
      */
     public function getMetadata()
     {
-        $data = new \stdClass();
+        // create \stdClass from array
+        $data = (object)[self::METADATA_OPTIONS_KEY => ['gridName' => $this->getName()]];
 
         $this->acceptor->acceptMetadata($this, $data);
 
-        return (array) $data;
+        return (array)$data;
     }
 
     /**

@@ -6,9 +6,10 @@ use Doctrine\ORM\QueryBuilder;
 
 use Symfony\Component\Form\FormFactoryInterface;
 
-use Oro\Bundle\FilterBundle\Extension\Orm\StringFilter;
+use Oro\Bundle\FilterBundle\Extension\Orm\BooleanFilter;
+use Oro\Bundle\FilterBundle\Form\Type\Filter\BooleanFilterType;
 
-class FlexibleStringFilter extends StringFilter
+class FlexibleBooleanFilter extends BooleanFilter
 {
     /** @var FlexibleFilterUtility */
     protected $util;
@@ -25,15 +26,15 @@ class FlexibleStringFilter extends StringFilter
     public function apply(QueryBuilder $qb, $data)
     {
         $data = $this->parseData($data);
-        if ($data) {
-            $operator = $this->getOperator($data['type']);
-
-            $fen = $this->get(FlexibleFilterUtility::FEN_KEY);
-            $this->util->applyFlexibleFilter($qb, $fen, $this->get('data_name'), $data['value'], $operator);
-
-            return true;
+        if (!$data) {
+            return false;
         }
 
-        return false;
+        $field = $this->get('data_name');
+        $value = ($data['value'] == BooleanFilterType::TYPE_YES) ? 1 : 0;
+
+        $this->util->applyFlexibleFilter($qb, $this->get(FlexibleFilterUtility::FEN_KEY), $field, $value, '=');
+
+        return true;
     }
 }

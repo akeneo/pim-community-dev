@@ -2,7 +2,6 @@
 
 namespace Oro\Bundle\DataGridBundle\Extension\Formatter\Property;
 
-use Oro\Bundle\DataGridBundle\Extension\Formatter\ResultRecord;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\ResultRecordInterface;
 
 class CallbackProperty extends AbstractProperty

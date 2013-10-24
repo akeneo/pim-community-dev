@@ -28,7 +28,7 @@ class FlexibleNumberFilter extends NumberFilter
         if ($data) {
             $operator = $this->getOperator($data['type']);
 
-            $fen = $this->get('flexible_entity_name');
+            $fen = $this->get(FlexibleFilterUtility::FEN_KEY);
             $this->util->applyFlexibleFilter($qb, $fen, $this->get('data_name'), $data['value'], $operator);
 
             return true;

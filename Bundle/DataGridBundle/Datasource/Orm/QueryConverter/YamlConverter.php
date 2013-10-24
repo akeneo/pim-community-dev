@@ -6,7 +6,6 @@ use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Config\Definition\Processor;
 
 use Doctrine\ORM\QueryBuilder;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query\Expr;
 
 class YamlConverter implements QueryConverterInterface
@@ -14,7 +13,7 @@ class YamlConverter implements QueryConverterInterface
     /**
      * {@inheritdoc}
      */
-    public function parse($value, EntityManager $em)
+    public function parse($value, QueryBuilder $qb)
     {
         if (!is_array($value)) {
             $value = Yaml::parse($value);
@@ -23,7 +22,6 @@ class YamlConverter implements QueryConverterInterface
         $processor = new Processor();
 
         $value = $processor->processConfiguration(new QueryConfiguration(), $value);
-        $qb    = $em->createQueryBuilder();
 
         if (!isset($value['from'])) {
             throw new \RuntimeException('Missing mandatory "from" section');
