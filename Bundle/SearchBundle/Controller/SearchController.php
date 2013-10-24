@@ -10,7 +10,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 use Oro\Bundle\SearchBundle\Datagrid\SearchDatagridManager;
-use Oro\Bundle\GridBundle\Datagrid\DatagridView;
 use Oro\Bundle\SearchBundle\Provider\ResultStatisticsProvider;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
@@ -64,18 +63,17 @@ class SearchController extends Controller
     protected function getSearchResultsDatagridView($from, $string)
     {
         /** @var $datagridManager SearchDatagridManager */
-        $datagridManager = $this->get('oro_search.datagrid_results.datagrid_manager');
 
-        $datagridManager->setSearchEntity($from);
-        $datagridManager->setSearchString($string);
-        $datagridManager->getRouteGenerator()->setRouteParameters(
-            array(
-                'from'   => $from,
-                'search' => $string,
-            )
-        );
+//        $datagridManager->setSearchEntity($from);
+//        $datagridManager->setSearchString($string);
+//        $datagridManager->getRouteGenerator()->setRouteParameters(
+//            array(
+//                'from'   => $from,
+//                'search' => $string,
+//            )
+//        );
 
-        return $datagridManager->getDatagrid()->createView();
+        return '';
     }
 
     /**

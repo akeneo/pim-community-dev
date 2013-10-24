@@ -12,7 +12,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Oro\Bundle\TagBundle\Entity\Tag;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Oro\Bundle\TagBundle\Datagrid\ResultsDatagridManager;
 
 class TagController extends Controller
 {
@@ -73,8 +72,10 @@ class TagController extends Controller
      */
     public function searchAction(Tag $entity, Request $request)
     {
+        // path to datagrid subrequest
         $from = $request->get('from');
-        $datagrid = $this->getSearchResultsDatagrid($from, $entity);
+        $a = $entity;
+        $entityId = $entity->getId();
 
         /** @var \Oro\Bundle\TagBundle\Provider\SearchProvider $provider */
         $provider = $this->get('oro_tag.provider.search_provider');
@@ -94,32 +95,11 @@ class TagController extends Controller
      */
     public function searchResultsAjaxAction(Tag $entity, Request $request)
     {
+        // path to grid subrequest
         $from   = $request->get('from');
-        $datagrid = $this->getSearchResultsDatagrid($from, $entity);
+        $id = $entity->getId();
 
         return '';
-    }
-
-    /**
-     * @param  string   $from
-     * @param  Tag      $tag
-     * @return Datagrid
-     */
-    protected function getSearchResultsDatagrid($from, Tag $tag)
-    {
-        /** @var $datagridManager ResultsDatagridManager */
-        //$datagridManager = $this->get('oro_tag.datagrid_results.datagrid_manager');
-
-        $datagridManager->setSearchEntity($from);
-        $datagridManager->setTag($tag);
-        $datagridManager->getRouteGenerator()->setRouteParameters(
-            array(
-                'from'   => $from,
-                'id'     => $tag->getId(),
-            )
-        );
-
-        return $datagridManager->getDatagrid();
     }
 
     /**
