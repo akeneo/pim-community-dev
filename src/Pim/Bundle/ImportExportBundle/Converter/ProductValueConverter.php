@@ -98,14 +98,17 @@ class ProductValueConverter
         $result = array();
         foreach (explode(',', $value) as $price) {
             $price = trim($price);
-            if (empty($price) || false === strpos($price, ' ')) {
+            if (empty($price)) {
                 continue;
             }
 
-            list($data, $currency) = explode(' ', $price);
-            if (in_array($currency, $currencies)) {
-                $result[] = array('data' => $data, 'currency' => $currency);
-                unset($currencies[array_search($currency, $currencies)]);
+            if (0 === preg_match('/^([0-9]*\.?[0-9]*) (\w+)$/', $price, $matches)) {
+                throw new \InvalidArgumentException(sprintf('Malformed price: %s', $price));
+            }
+
+            if (in_array($matches[2], $currencies)) {
+                $result[] = array('data' => $matches[1], 'currency' => $matches[2]);
+                unset($currencies[array_search($matches[2], $currencies)]);
             }
         }
 
@@ -177,7 +180,7 @@ class ProductValueConverter
         } else {
             if (false === strpos($value, ' ')) {
                 throw new \InvalidArgumentException(
-                    sprintf('Metric value "%s" is malformed, must match "<data> <unit>"', $value)
+                    sprintf('Malformed metric: %s', $value)
                 );
             }
             list($data, $unit) = explode(' ', $value);

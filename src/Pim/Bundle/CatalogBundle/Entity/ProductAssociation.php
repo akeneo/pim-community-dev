@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Entity\Association;
+use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
@@ -15,7 +16,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * @ORM\Table(name="pim_catalog_product_association")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Pim\Bundle\CatalogBundle\Entity\Repository\ProductAssociationRepository")
  */
 class ProductAssociation
 {
@@ -45,7 +46,7 @@ class ProductAssociation
     protected $owner;
 
     /**
-     * @var ProductInterface[] $targets
+     * @var ProductInterface[] $products
      *
      * @ORM\ManyToMany(targetEntity="Pim\Bundle\CatalogBundle\Model\ProductInterface")
      * @ORM\JoinTable(
@@ -58,14 +59,31 @@ class ProductAssociation
      *     }
      * )
      */
-    protected $targets;
+    protected $products;
+
+    /**
+     * @var Group[] $groups
+     *
+     * @ORM\ManyToMany(targetEntity="Pim\Bundle\CatalogBundle\Entity\Group")
+     * @ORM\JoinTable(
+     *     name="pim_catalog_product_association_group",
+     *     joinColumns={
+     *         @ORM\JoinColumn(name="productassociation_id", referencedColumnName="id", onDelete="CASCADE")
+     *     },
+     *     inverseJoinColumns={
+     *         @ORM\JoinColumn(name="group_id", referencedColumnName="id", onDelete="CASCADE")
+     *     }
+     * )
+     */
+    protected $groups;
 
     /**
      * Constructor
      */
     public function __construct()
     {
-        $this->targets = new ArrayCollection();
+        $this->products = new ArrayCollection();
+        $this->groups = new ArrayCollection();
     }
 
     /**
@@ -127,55 +145,109 @@ class ProductAssociation
     }
 
     /**
-     * Set targets
+     * Set products
      *
-     * @param ProductInterface[] $targets
+     * @param ProductInterface[] $products
      *
      * @return ProductAssociation
      */
-    public function setTargets($targets)
+    public function setProducts($products)
     {
-        $this->targets = $targets;
+        $this->products = $products;
 
         return $this;
     }
 
     /**
-     * Get targets
+     * Get products
      *
      * @return ProductInterface[]|null
      */
-    public function getTargets()
+    public function getProducts()
     {
-        return $this->targets;
+        return $this->products;
     }
 
     /**
-     * Add a target
+     * Add a product
      *
-     * @param ProductInterface $target
+     * @param ProductInterface $product
      *
      * @return ProductAssociation
      */
-    public function addTarget(ProductInterface $target)
+    public function addProduct(ProductInterface $product)
     {
-        if (!$this->targets->contains($target)) {
-            $this->targets->add($target);
+        if (!$this->products->contains($product)) {
+            $this->products->add($product);
         }
 
         return $this;
     }
 
     /**
-     * Remove a target
+     * Remove a product
      *
-     * @param ProductInterface $target
+     * @param ProductInterface $product
      *
      * @return ProductAssociation
      */
-    public function removeTarget(ProductInterface $target)
+    public function removeProduct(ProductInterface $product)
     {
-        $this->targets->removeElement($target);
+        $this->products->removeElement($product);
+
+        return $this;
+    }
+
+    /**
+     * Set groups
+     *
+     * @param Group[] $groups
+     *
+     * @return ProductAssociation
+     */
+    public function setGroups($groups)
+    {
+        $this->groups = $groups;
+
+        return $this;
+    }
+
+    /**
+     * Get groups
+     *
+     * @return Group[]|null
+     */
+    public function getGroups()
+    {
+        return $this->groups;
+    }
+
+    /**
+     * Add a group
+     *
+     * @param Group $group
+     *
+     * @return ProductAssociation
+     */
+    public function addGroup(Group $group)
+    {
+        if (!$this->groups->contains($group)) {
+            $this->groups->add($group);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove a group
+     *
+     * @param Group $group
+     *
+     * @return ProductAssociation
+     */
+    public function removeGroup(Group $group)
+    {
+        $this->groups->removeElement($group);
 
         return $this;
     }

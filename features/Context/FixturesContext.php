@@ -621,47 +621,53 @@ class FixturesContext extends RawMinkContext
     public function theFollowingChannels(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
-
-            $code = $data['code'];
-            $label = $data['label'];
-
-            $locales = array();
-            if (isset($data['locales']) && !empty($data['locales'])) {
-                $locales = explode(', ', $data['locales']);
-            }
+            $data = array_merge(
+                array(
+                    'label'      => null,
+                    'locales'    => null,
+                    'currencies' => null,
+                    'category'   => null,
+                ),
+                $data
+            );
 
             $category = null;
-            if (isset($data['category']) && !empty($data['category'])) {
+            if ($data['category']) {
                 $category = $this->getCategory($data['category']);
             }
 
-            $currencies = array();
-            if (isset($data['currencies']) && !empty($data['currencies'])) {
-                $currencies = explode(', ', $data['currencies']);
-            }
-
             try {
-                $channel = $this->getChannel($code);
+                $channel = $this->getChannel($data['code']);
 
-                if (!empty($label)) {
-                    $channel->setLabel($label);
+                if ($data['label']) {
+                    $channel->setLabel($data['label']);
                 }
 
                 if ($category !== null) {
                     $channel->setCategory($category);
                 }
 
-                foreach ($locales as $localeCode) {
-                    $channel->addLocale($this->getLocale($localeCode));
+                if ($data['locales']) {
+                    foreach ($this->listToArray($data['locales']) as $localeCode) {
+                        $channel->addLocale($this->getLocale($localeCode));
+                    }
                 }
 
-                foreach ($currencies as $currencyCode) {
-                    $channel->addCurrency($this->getCurrency($currencyCode));
+                if ($data['currencies']) {
+                    foreach ($this->listToArray($data['currencies']) as $currencyCode) {
+                        $channel->addCurrency($this->getCurrency($currencyCode));
+                    }
                 }
 
                 $this->persist($channel);
             } catch (\InvalidArgumentException $e) {
-                $this->createChannel($code, $label, $locales, $category, $currencies);
+                $this->createChannel(
+                    $data['code'],
+                    $data['label'],
+                    $this->listToArray($data['locales']),
+                    $category,
+                    $this->listToArray($data['currencies'])
+                );
             }
         }
     }
@@ -1059,6 +1065,18 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @Given /^family of "([^"]*)" should be "([^"]*)"$/
+     */
+    public function familyOfShouldBe($productCode, $familyCode)
+    {
+        $family = $this->getProduct($productCode)->getFamily();
+        if (!$family) {
+            throw \Exception(sprintf('Product "%s" doesn\'t have a family', $productCode));
+        }
+        assertEquals($familyCode, $family->getCode());
+    }
+
+    /**
      * @param string $username
      *
      * @return User
@@ -1399,7 +1417,7 @@ class FixturesContext extends RawMinkContext
         try {
             $lang = $this->getEntityOrException('PimCatalogBundle:Locale', array('code' => $code));
         } catch (\InvalidArgumentException $e) {
-            $this->createLocale($code);
+            $lang = $this->createLocale($code);
         }
 
         return $lang;
@@ -1414,6 +1432,8 @@ class FixturesContext extends RawMinkContext
         $locale->setCode($code);
 
         $this->persist($locale);
+
+        return $locale;
     }
 
     /**
