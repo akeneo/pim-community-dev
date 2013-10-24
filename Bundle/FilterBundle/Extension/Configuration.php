@@ -8,6 +8,12 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 class Configuration implements ConfigurationInterface
 {
+    const TYPE_KEY = 'type';
+
+    const FILTERS_PATH         = '[filters]';
+    const COLUMNS_PATH         = '[filters][columns]';
+    const DEFAULT_FILTERS_PATH = '[filters][default]';
+
     /** @var array */
     protected $types;
 
@@ -32,7 +38,7 @@ class Configuration implements ConfigurationInterface
                     ->prototype('array')
                         ->ignoreExtraKeys()
                         ->children()
-                            ->scalarNode('type')
+                            ->scalarNode(self::TYPE_KEY)
                                 ->isRequired()
                                 ->validate()
                                 ->ifNotInArray($this->types)

@@ -2,11 +2,7 @@
 
 namespace Oro\Bundle\FilterBundle\Extension;
 
-use Symfony\Component\Form\FormBuilder;
-use Symfony\Component\PropertyAccess\PropertyAccess;
-
 use Oro\Bundle\DataGridBundle\Datagrid\Builder;
-use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\DataGridBundle\Datasource\OrmDatasource;
 use Oro\Bundle\DataGridBundle\Extension\AbstractExtension;
@@ -15,26 +11,19 @@ use Oro\Bundle\FilterBundle\Extension\Orm\FilterInterface;
 class OrmFilterExtension extends AbstractExtension
 {
     /**
-     * Configuration tree paths
-     */
-    const FILTERS_PATH         = '[filters]';
-    const COLUMNS_PATH         = '[filters][columns]';
-    const DEFAULT_FILTERS_PATH = '[filters][default]';
-
-    /**
      * Query param
      */
     const FILTER_ROOT_PARAM = '_filter';
 
     /** @var FilterInterface[] */
-    protected $filters = array();
+    protected $filters = [];
 
     /**
      * {@inheritDoc}
      */
     public function isApplicable(array $config)
     {
-        $filters = $this->accessor->getValue($config, self::COLUMNS_PATH) ? : array();
+        $filters = $this->accessor->getValue($config, Configuration::COLUMNS_PATH) ? : [];
 
         if (!$filters) {
             return false;
@@ -43,7 +32,7 @@ class OrmFilterExtension extends AbstractExtension
         // validate extension configuration
         $this->validateConfiguration(
             new Configuration(array_keys($this->filters)),
-            array('filters' => $this->accessor->getValue($config, self::FILTERS_PATH))
+            ['filters' => $this->accessor->getValue($config, Configuration::FILTERS_PATH)]
         );
 
         return $this->accessor->getValue($config, Builder::DATASOURCE_TYPE_PATH) == OrmDatasource::TYPE;
@@ -58,7 +47,7 @@ class OrmFilterExtension extends AbstractExtension
         $values  = $this->getValuesToApply($config);
 
         foreach ($filters as $filter) {
-            if ($value = $this->accessor->getValue($values, '[' . $filter->getName() . ']')) {
+            if ($value = $this->accessor->getValue($values, sprintf('[%s]', $filter->getName()))) {
                 $form = $filter->getForm();
                 if (!$form->isSubmitted()) {
                     $form->submit($value);
@@ -76,29 +65,36 @@ class OrmFilterExtension extends AbstractExtension
      */
     public function visitMetadata(array $config, \stdClass $data)
     {
-        $data->filters          = array();
-        $data->filters['state'] = array();
+        $data->filters = isset($data->filters) && is_array($data->filters) ? $data->filters : [];
+        $state         = $list = [];
+
 
         $filters = $this->getFiltersToApply($config);
         $values  = $this->getValuesToApply($config);
 
         foreach ($filters as $filter) {
-            if ($value = $this->accessor->getValue($values, '[' . $filter->getName() . ']')) {
+            if ($value = $this->accessor->getValue($values, sprintf('[%s]', $filter->getName()))) {
                 $form = $filter->getForm();
                 if (!$form->isSubmitted()) {
                     $form->submit($value);
                 }
 
                 if ($form->isValid()) {
-                    $data->filters['state'][$filter->getName()] = $value;
+                    $state[$filter->getName()] = $value;
                 }
             }
 
-            $data->filters['meta'][$filter->getName()] = $this->accessor->getValue(
-                $config,
-                sprintf(self::COLUMNS_PATH.'[%s][type]', $filter->getName())
-            ) ? : array();
+            $list[$filter->getName()] = $filter->getMetadata();
         }
+
+        $data->filters['state'] = array_merge(
+            isset($data->filters['state']) && is_array($data->filters['state']) ? $data->filters['state'] : [],
+            $state
+        );
+        $data->filters['list']  = array_merge(
+            isset($data->filters['list']) && is_array($data->filters['list']) ? $data->filters['list'] : [],
+            $list
+        );
     }
 
     /**
@@ -125,8 +121,8 @@ class OrmFilterExtension extends AbstractExtension
      */
     protected function getFiltersToApply(array $config)
     {
-        $filters       = array();
-        $filtersConfig = $this->accessor->getValue($config, self::COLUMNS_PATH);
+        $filters       = [];
+        $filtersConfig = $this->accessor->getValue($config, Configuration::COLUMNS_PATH);
 
         foreach ($filtersConfig as $column => $filter) {
             $filters[] = $this->getFilterObject($column, $filter);
@@ -144,15 +140,15 @@ class OrmFilterExtension extends AbstractExtension
      */
     protected function getValuesToApply(array $config)
     {
-        $result = array();
+        $result = [];
 
-        $filters = $this->accessor->getValue($config, self::COLUMNS_PATH);
+        $filters = $this->accessor->getValue($config, Configuration::COLUMNS_PATH);
 
-        $defaultFilters = $this->accessor->getValue($config, self::DEFAULT_FILTERS_PATH) ? : array();
+        $defaultFilters = $this->accessor->getValue($config, Configuration::DEFAULT_FILTERS_PATH) ? : [];
         $filterBy       = $this->requestParams->get(self::FILTER_ROOT_PARAM) ? : $defaultFilters;
 
         foreach ($filterBy as $column => $value) {
-            if ($this->accessor->getValue($filters, "[$column]")) {
+            if ($this->accessor->getValue($filters, sprintf('[%s]', $column))) {
                 $result[$column] = $value;
             }
         }
@@ -170,11 +166,11 @@ class OrmFilterExtension extends AbstractExtension
      */
     protected function getFilterObject($name, array $config)
     {
-        $type = $this->accessor->getValue($config, '[type]');
+        $type = $this->accessor->getValue($config, sprintf('[%s]', Configuration::TYPE_KEY));
 
-        $property = $this->filters[$type];
-        $property->init($name, $config);
+        $filter = $this->filters[$type];
+        $filter->init($name, $config);
 
-        return $property;
+        return clone $filter;
     }
 }

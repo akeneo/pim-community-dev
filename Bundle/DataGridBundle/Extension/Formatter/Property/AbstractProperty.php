@@ -32,7 +32,7 @@ abstract class AbstractProperty implements PropertyInterface
         );
         $metadata        = [
             self::METADATA_TYPE_KEY             => $this->getOr(self::FRONTEND_TYPE_KEY, self::TYPE_TEXT),
-            self::METADATA_FRONTEND_OPTIONS_KEY => $frontendOptions
+            self::METADATA_OPTIONS_KEY => $frontendOptions
         ];
 
         return $metadata;

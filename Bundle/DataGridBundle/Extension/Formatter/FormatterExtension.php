@@ -106,6 +106,6 @@ class FormatterExtension extends AbstractExtension
         $property = $this->properties[$type];
         $property->init($config);
 
-        return $property;
+        return clone $property;
     }
 }
