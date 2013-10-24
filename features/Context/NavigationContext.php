@@ -173,13 +173,13 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
       * @Given /^I am on the "([^"]*)" product group page$/
       * @Given /^I edit the "([^"]*)" product group$/
       */
-     public function iAmOnTheProductGroupEditPage($identifier)
-     {
-         $page = 'ProductGroup';
-         $getter = sprintf('get%s', $page);
-         $entity = $this->getFixturesContext()->$getter($identifier);
-         $this->openPage(sprintf('%s edit', $page), array('id' => $entity->getId()));
-     }
+    public function iAmOnTheProductGroupEditPage($identifier)
+    {
+        $page = 'ProductGroup';
+        $getter = sprintf('get%s', $page);
+        $entity = $this->getFixturesContext()->$getter($identifier);
+        $this->openPage(sprintf('%s edit', $page), array('id' => $entity->getId()));
+    }
 
     /**
      * @param JobInstance $job

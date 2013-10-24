@@ -84,11 +84,11 @@ class WebUser extends RawMinkContext
      /**
       * @Given /^I create a new product group$/
       */
-     public function iCreateANewProductGroup()
-     {
-         $entity = 'ProductGroup';
-         $this->iCreateANew($entity);
-     }
+    public function iCreateANewProductGroup()
+    {
+        $entity = 'ProductGroup';
+        $this->iCreateANew($entity);
+    }
 
     /**
      * @param TableNode $pages
