@@ -50,9 +50,7 @@ class ProductCsvReader extends CsvReader
             return $data;
         }
 
-        if (false === $this->assertValueUniqueness($data)) {
-            return false;
-        }
+        $this->assertValueUniqueness($data);
 
         return $this->transformMediaPathToAbsolute($data);
     }
