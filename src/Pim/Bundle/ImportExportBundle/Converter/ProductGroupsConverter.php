@@ -64,10 +64,16 @@ class ProductGroupsConverter
 
         $ids = array();
         foreach (explode(',', $data[self::GROUPS_KEY]) as $code) {
-            if ($group = $this->getGroup($code)) {
-                $ids[] = $group->getId();
+            $group = $this->getGroup($code);
+            if (!$group) {
+                throw new \InvalidArgumentException(
+                    sprintf(
+                        'Couldn\'t find a group with code "%s"',
+                        $code
+                    )
+                );
             }
-            // TODO Warn that a group does not exist
+            $ids[] = $group->getId();
         }
 
         return $ids;
