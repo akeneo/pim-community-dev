@@ -34,10 +34,8 @@ class CalendarDateTimeConfigProvider
         $startDate->setDate($date->format('Y'), $date->format('n'), 1);
         $startDate->setTime(0, 0, 0);
         $startDate->sub(new \DateInterval('P' . ((int)$startDate->format('w') - $firstDay + 7) % 7 . 'D'));
-        $endDate = clone $date;
-        $endDate->add(new \DateInterval('P1M'));
-        $endDate->setTime(0, 0, 0);
-        $endDate->add(new \DateInterval('P' . (7 - (int)$endDate->format('w') + $firstDay) % 7 . 'D'));
+        $endDate = clone $startDate;
+        $endDate->add(new \DateInterval('P6W'));
 
         return array(
             'startDate' => $startDate,
