@@ -1,4 +1,4 @@
-dashboard:
+pim_dashboard:
     menu:
         label:
             collect:  Collect

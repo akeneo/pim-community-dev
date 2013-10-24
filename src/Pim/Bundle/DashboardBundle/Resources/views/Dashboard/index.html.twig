@@ -34,7 +34,7 @@
 
             {% set widgetsArray = [
                 {
-                    label: 'Collect',
+                    label: 'pim_dashboard.menu.label.collect'|trans,
                     links: [
                         { url: path('pim_importexport_import_index'), label: 'Manage import profiles'|trans },
                         {
@@ -48,7 +48,7 @@
                     image: 'collect-image'
                 },
                 {
-                    label: 'Enrich',
+                    label: 'pim_dashboard.menu.label.enrich'|trans,
                     links: [
                         { url: path('pim_catalog_product_index'), label: 'Manage products'|trans },
                         { url: path('pim_catalog_categorytree_create'), label: 'Manage categories'|trans },
@@ -57,7 +57,7 @@
                     image: 'enrich-image'
                 },
                 {
-                    label: 'Spread',
+                    label: 'pim_dashboard.menu.label.spread'|trans,
                     links: [
                         { url: path('pim_catalog_channel_index'), label: 'Manage channels'|trans },
                         { url: path('pim_importexport_export_index'), label: 'Manage export profiles'|trans },
@@ -72,7 +72,7 @@
                     image: 'spread-image'
                 },
                 {
-                    label: 'Settings',
+                    label: 'pim_dashboard.menu.label.settings'|trans,
                     links: [
                         { url: path('pim_catalog_attributegroup_create'), label: 'Manage attribute groups'|trans },
                         { url: path('pim_catalog_productattribute_index'), label: 'Manage attributes'|trans },
