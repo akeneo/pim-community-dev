@@ -84,6 +84,38 @@ class ProductCsvReaderTest extends CsvReaderTest
         );
     }
 
+    public function testIgnoreEmptyMedia()
+    {
+        $this->reader->setFilePath(__DIR__ . '/../../fixtures/ignore_empty_media.csv');
+
+        $this->assertEquals(
+            array(
+                'sku'          => 'SKU-001',
+                'name'         => 'door',
+                'view'         => '',
+            ),
+            $this->reader->read()
+        );
+    }
+
+    /**
+     * @expectedException Oro\Bundle\BatchBundle\Item\InvalidItemException
+     * @expectedExceptionMessage Could not find the file
+     */
+    function testInexistantMedia()
+    {
+        $this->reader->setFilePath(__DIR__ . '/../../fixtures/with_inexistant_media.csv');
+
+        $this->assertEquals(
+            array(
+                'sku'          => 'SKU-002',
+                'name'         => 'door',
+                'view'         => __DIR__ . '/../../fixtures/sku-002.jpg',
+            ),
+            $this->reader->read()
+        );
+    }
+
     /**
      * @param array $uniqueAttributeCodes
      *
