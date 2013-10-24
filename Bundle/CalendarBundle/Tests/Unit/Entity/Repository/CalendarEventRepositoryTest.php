@@ -67,7 +67,8 @@ class CalendarEventRepositoryTest extends OrmTestCase
             'SELECT c.id as calendar, e.id, e.title, e.start, e.end, e.allDay, e.reminder'
             . ' FROM Oro\Bundle\CalendarBundle\Entity\CalendarEvent e'
             . ' INNER JOIN e.calendar c'
-            . ' WHERE (e.start >= :start AND e.end < :end) AND c.id = :id ORDER BY c.id, e.start ASC',
+            . ' WHERE (e.start >= :start AND e.end < :end) AND c.id = :id'
+            . ' ORDER BY c.id, e.start ASC',
             $qb->getQuery()->getDQL()
         );
     }
