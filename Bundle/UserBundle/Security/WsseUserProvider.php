@@ -3,6 +3,7 @@
 namespace Oro\Bundle\UserBundle\Security;
 
 use Symfony\Component\Security\Core\User\UserProviderInterface;
+use Symfony\Component\Security\Core\Encoder\PasswordEncoderInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
@@ -18,9 +19,17 @@ class WsseUserProvider extends Provider
      */
     protected $userProvider;
 
-    public function __construct(UserProviderInterface $userProvider, $nonceDir = null, $lifetime = 300)
+    /**
+     * Constructor.
+     *
+     * @param UserProviderInterface    $userProvider    An UserProviderInterface instance
+     * @param PasswordEncoderInterface $encoder         A PasswordEncoderInterface instance
+     * @param string                   $nonceDir        The nonce dir
+     * @param int                      $lifetime        The lifetime, in seconds
+     */
+    public function __construct(UserProviderInterface $userProvider, PasswordEncoderInterface $encoder, $nonceDir = null, $lifetime = 300)
     {
-        parent::__construct($userProvider, $nonceDir, $lifetime);
+        parent::__construct($userProvider, $encoder, $nonceDir, $lifetime);
 
         $this->userProvider = $userProvider;
     }
