@@ -123,7 +123,7 @@ class GroupDatagridManager extends DatagridManager
         $field->setName('attribute');
         $field->setOptions(
             array(
-                'type'            => FieldDescriptionInterface::TYPE_OPTIONS,
+                'type'            => FieldDescriptionInterface::TYPE_HTML,
                 'label'           => $this->translate('Axis'),
                 'field_name'      => 'attributes',
                 'expression'      => 'attribute.id',
@@ -196,7 +196,6 @@ class GroupDatagridManager extends DatagridManager
         $proxyQuery
             ->addSelect(sprintf("%s AS groupLabel", $labelExpr), true)
             ->addSelect('translation.label', true);
-//             ->addSelect('attribute');
 
         $proxyQuery
             ->leftJoin($rootAlias .'.translations', 'translation', 'WITH', 'translation.locale = :localeCode')
