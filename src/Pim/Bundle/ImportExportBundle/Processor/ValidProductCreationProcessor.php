@@ -25,26 +25,6 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
  StepExecutionAwareInterface
 {
     /**
-     * @staticvar The name of the categories field in the form
-     */
-    const CATEGORIES_FIELD = 'categories';
-
-    /**
-     * @staticvar The name of the family field in the form
-     */
-    const GROUPS_FIELD = 'groups';
-
-    /**
-     * @staticvar The name of the family field in the form
-     */
-    const FAMILY_FIELD = 'family';
-
-    /**
-     * @staticvar The name of the enabled field in the form
-     */
-    const ENABLED_FIELD = 'enabled';
-
-    /**
      * @var FormFactoryInterface $formFactory
      */
     protected $formFactory;
@@ -245,7 +225,7 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
             ),
             'categoriesColumn'    => array(),
             'familyColumn'        => array(),
-            'groupsColumn'         => array(),
+            'groupsColumn'        => array(),
         );
     }
 
@@ -350,26 +330,13 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
             'pim_product_import',
             $product,
             array(
-                'csrf_protection' => false,
+                'family_column'     => $this->familyColumn,
+                'categories_column' => $this->categoriesColumn,
+                'groups_column'     => $this->groupsColumn,
             )
         );
 
-        $item[static::ENABLED_FIELD] = $this->enabled;
-
-        if (static::CATEGORIES_FIELD != $this->categoriesColumn) {
-            $item[static::CATEGORIES_FIELD] = $item[$this->categoriesColumn];
-            unset($item[$this->categoriesColumn]);
-        }
-
-        if (static::GROUPS_FIELD != $this->groupsColumn) {
-            $item[static::GROUPS_FIELD] = $item[$this->groupsColumn];
-            unset($item[$this->groupsColumn]);
-        }
-
-        if (static::FAMILY_FIELD != $this->familyColumn) {
-            $item[static::FAMILY_FIELD] = $item[$this->familyColumn];
-            unset($item[$this->familyColumn]);
-        }
+        $item['enabled'] = $this->enabled;
 
         $values = $this->filterValues($product, $item);
 
@@ -388,21 +355,21 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
      */
     private function filterValues(ProductInterface $product, array $values)
     {
-        $familyCode = array_key_exists(static::FAMILY_FIELD, $values)
-            ? $values[static::FAMILY_FIELD]
+        $familyCode = array_key_exists($this->familyColumn, $values)
+            ? $values[$this->familyColumn]
             : null;
 
-        $groupCodes = array_key_exists(static::GROUPS_FIELD, $values)
-            ? $values[static::GROUPS_FIELD]
+        $groupCodes = array_key_exists($this->groupsColumn, $values)
+            ? $values[$this->groupsColumn]
             : null;
 
         $requiredValues = $this->getRequiredValues($product, $familyCode, $groupCodes);
 
         $excludedKeys = array(
-            static::ENABLED_FIELD,
-            static::CATEGORIES_FIELD,
-            static::FAMILY_FIELD,
-            static::GROUPS_FIELD
+            'enabled',
+            $this->familyColumn,
+            $this->categoriesColumn,
+            $this->groupsColumn
         );
 
         foreach ($values as $key => $value) {

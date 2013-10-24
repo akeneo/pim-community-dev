@@ -44,14 +44,12 @@ class TransformImportedProductDataSubscriber implements EventSubscriberInterface
      * Transform the imported product data to allow binding them to the form
      *
      * @param FormEvent $event
-     *
-     * @return null
      */
     public function preSubmit(FormEvent $event)
     {
         $data = $event->getData();
         $event->setData(
-            array_intersect_key($data, array_flip($this->getProductFields())) +
+            array_intersect_key($data, array_flip($this->getProductFields($event))) +
             $this->valueConverter->convert($data)
         );
     }
@@ -59,15 +57,18 @@ class TransformImportedProductDataSubscriber implements EventSubscriberInterface
     /**
      * Returns the name of the fields of the Product entity
      *
+     * @param  FormEvent $event
      * @return type
      */
-    protected function getProductFields()
+    protected function getProductFields(FormEvent $event)
     {
+        $options = $event->getForm()->getConfig()->getOptions();
+
         return array(
             'enabled',
-            'categories',
-            'groups',
-            'family'
+            $options['family_column'],
+            $options['categories_column'],
+            $options['groups_column']
         );
     }
 }

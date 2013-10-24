@@ -5,6 +5,7 @@ namespace Pim\Bundle\ImportExportBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Pim\Bundle\CatalogBundle\Form\Subscriber\IgnoreMissingFieldDataSubscriber;
 
 /**
@@ -35,26 +36,29 @@ class ProductImportType extends AbstractType
         $builder
             ->add('enabled', 'hidden')
             ->add(
-                'family',
+                $options['family_column'],
                 'pim_import_entity',
                 array(
-                    'class'       => 'PimCatalogBundle:Family',
+                    'property_path' => 'family',
+                    'class'         => 'PimCatalogBundle:Family',
                 )
             )
             ->add(
-                'categories',
+                $options['categories_column'],
                 'pim_import_entity',
                 array(
-                    'class'        => 'PimCatalogBundle:Category',
-                    'multiple'     => true,
+                    'property_path' => 'categories',
+                    'class'         => 'PimCatalogBundle:Category',
+                    'multiple'      => true,
                 )
             )
             ->add(
-                'groups',
+                $options['groups_column'],
                 'pim_import_entity',
                 array(
-                    'class'        => 'PimCatalogBundle:Group',
-                    'multiple'     => true,
+                    'property_path' => 'groups',
+                    'class'         => 'PimCatalogBundle:Group',
+                    'multiple'      => true,
                 )
             )
             ->addEventSubscriber($this->transformer)
@@ -75,5 +79,20 @@ class ProductImportType extends AbstractType
     public function getParent()
     {
         return 'pim_product';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(
+            array(
+                'csrf_protection'   => false,
+                'family_column'     => 'family',
+                'categories_column' => 'category',
+                'groups_column'     => 'groups'
+            )
+        );
     }
 }

@@ -14,15 +14,31 @@ use Pim\Bundle\ImportExportBundle\Cache\EntityCache;
  */
 class ImportEntityModelTransformer implements DataTransformerInterface
 {
+    /**
+     * @var EntityCache
+     */
     protected $entityCache;
+
+    /**
+     * @var array
+     */
     protected $options;
 
+    /**
+     * Constructor
+     *
+     * @param EntityCache $entityCache
+     * @param array       $options
+     */
     public function __construct(EntityCache $entityCache, array $options)
     {
         $this->entityCache = $entityCache;
         $this->options = $options;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function reverseTransform($value)
     {
         if (null == $value) {
@@ -41,9 +57,11 @@ class ImportEntityModelTransformer implements DataTransformerInterface
             : $transform($value);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function transform($value)
     {
         return '';
     }
-
 }

@@ -5,7 +5,7 @@ use Pim\Bundle\ImportExportBundle\Form\Transformer\ImportEntityModelTransformer;
 
 /**
  * Tests corresponding class
- * 
+ *
  * @author    Antoine Guigan <antoine@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -50,7 +50,7 @@ class ImportEntityModelTransformerTest extends \PHPUnit_Framework_TestCase
             ->method('find')
             ->will($this->returnValue($return));
         $this->assertEquals(
-            $multiple ? array_fill(0, $resultCount, $return) : $return, 
+            $multiple ? array_fill(0, $resultCount, $return) : $return,
             $transformer->reverseTransform($value)
         );
     }
