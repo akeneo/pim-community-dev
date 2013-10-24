@@ -34,7 +34,6 @@ abstract class AbstractFilter implements FilterInterface
     {
         $this->name   = $name;
         $this->params = $params;
-        $this->form   = null;
     }
 
     /**
@@ -45,8 +44,8 @@ abstract class AbstractFilter implements FilterInterface
         if (!$this->form) {
             $this->form = $this->formFactory->create(
                 $this->getFormType(),
-                array(),
-                array_merge($this->getOr('options', array()), array('csrf_protection' => false))
+                [],
+                array_merge($this->getOr('options', []), ['csrf_protection' => false])
             );
         }
 
@@ -59,6 +58,28 @@ abstract class AbstractFilter implements FilterInterface
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getMetadata()
+    {
+        $frontendOptions = $this->getOr(self::FRONTEND_OPTIONS_KEY, []);
+        $frontendOptions = array_merge(
+            [
+                // use filter name if label not set
+                'label' => ucfirst($this->name),
+                'show'  => true,
+            ],
+            $frontendOptions
+        );
+        $metadata        = [
+            self::METADATA_TYPE_KEY    => $this->get(self::TYPE_KEY),
+            self::METADATA_OPTIONS_KEY => $frontendOptions
+        ];
+
+        return $metadata;
     }
 
     /**

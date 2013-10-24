@@ -44,11 +44,27 @@ class ChoiceFilter extends AbstractFilter
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getMetadata()
+    {
+        $formView = $this->getForm()->createView();
+        $metadata = parent::getMetadata();
+        $metadata[self::FRONTEND_OPTIONS_KEY] = array_merge(
+            $metadata[self::FRONTEND_OPTIONS_KEY],
+            [
+                'choices' => [$formView->vars['choices']]
+            ]
+        );
+    }
+
+
+    /**
      * @param mixed $data
      *
      * @return array|bool
      */
-    public function parseData($data)
+    protected function parseData($data)
     {
         if (!is_array($data)
             || !array_key_exists('value', $data)
