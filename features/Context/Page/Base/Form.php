@@ -214,7 +214,9 @@ class Form extends Base
     {
         $subLabelContent = null;
         if (false !== strpbrk($labelContent, '€$')) {
-            list($subLabelContent, $labelContent) = explode(' ', $labelContent);
+            if (false !== strpos($labelContent, ' ')) {
+                list($subLabelContent, $labelContent) = explode(' ', $labelContent);
+            }
         }
 
         if ($element) {
