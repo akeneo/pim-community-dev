@@ -93,13 +93,6 @@ class PriceCollectionType extends AbstractAttributeType
                 )
             ),
             array(
-                'name'      => 'negativeAllowed',
-                'fieldType' => 'switch',
-                'options'   => array(
-                    'attr' => $attribute->getId() ? array() : array('checked' => 'checked')
-                )
-            ),
-            array(
                 'name'      => 'searchable',
                 'fieldType' => 'switch'
             ),
