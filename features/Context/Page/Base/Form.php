@@ -224,7 +224,7 @@ class Form extends Base
         }
 
         if (null === $label) {
-            throw new \InvalidArgumentException(sprintf('Impossible to find field %s', $labelContent));
+            return parent::fillField($labelContent, $value);
         }
 
         if ($label->hasAttribute('for')) {
