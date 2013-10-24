@@ -6,6 +6,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * This is the class that loads and manages your bundle configuration
@@ -23,31 +24,43 @@ class OroDistributionExtension extends Extension
 
         $loader->load('services.yml');
 
-        $bundles = array_merge($container->getParameter('assetic.bundles'), array(
-            'OroAsseticBundle',
-            'OroAddressBundle',
-            'OroUIBundle',
-            'OroUserBundle',
-            'OroGridBundle',
-            'OroFilterBundle',
-            'OroNavigationBundle',
-            'OroWindowsBundle',
-            'OroSegmentationTreeBundle',
-            'OroEntityExtendBundle',
-            'OroSecurityBundle',
-            'JDareClankBundle',
-        ));
+        $this->mergeAsseticBundles($container);
+        $this->mergeTwigResources($container);
+    }
 
-        $templates = array_merge($container->getParameter('twig.form.resources'), array(
-            'OroUIBundle:Form:fields.html.twig',
-            'OroFormBundle:Form:fields.html.twig',
-            'OroTranslationBundle:Form:fields.html.twig',
-            'OroAddressBundle:Include:fields.html.twig',
-            'OroOrganizationBundle:Form:fields.html.twig',
-            'OroSecurityBundle:Form:fields.html.twig',
-        ));
+    protected function mergeAsseticBundles(ContainerBuilder $container)
+    {
+        $data = array();
 
-        $container->setParameter('twig.form.resources', $templates);
-        $container->setParameter('assetic.bundles', $bundles);
+        foreach ($container->getParameter('kernel.bundles') as $bundle) {
+            $reflection = new \ReflectionClass($bundle);
+
+            if (file_exists($file = dirname($reflection->getFilename()) . '/Resources/config/oro/assetic.yml')) {
+                $data = array_merge($data, Yaml::parse(realpath($file))['bundles']);
+            }
+        }
+
+        $container->setParameter(
+            'assetic.bundles',
+            array_unique(array_merge((array) $container->getParameter('assetic.bundles'), $data))
+        );
+    }
+
+    protected function mergeTwigResources(ContainerBuilder $container)
+    {
+        $data = array();
+
+        foreach ($container->getParameter('kernel.bundles') as $bundle) {
+            $reflection = new \ReflectionClass($bundle);
+
+            if (file_exists($file = dirname($reflection->getFilename()) . '/Resources/config/oro/twig.yml')) {
+                $data = array_merge($data, Yaml::parse(realpath($file))['bundles']);
+            }
+        }
+
+        $container->setParameter(
+            'twig.form.resources',
+            array_unique(array_merge((array) $container->getParameter('twig.form.resources'), $data))
+        );
     }
 }
