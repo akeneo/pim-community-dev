@@ -73,7 +73,7 @@ class QueryConfiguration implements ConfigurationInterface
      */
     protected function addJoinNode($name)
     {
-        if (!in_array($name, array('left', 'inner'))) {
+        if (!in_array($name, ['left', 'inner'])) {
             throw new InvalidConfigurationException(sprintf('Invalid join type "%s"', $name));
         }
 
@@ -102,7 +102,7 @@ class QueryConfiguration implements ConfigurationInterface
      */
     protected function addWhereNode($name)
     {
-        if (!in_array($name, array('and', 'or'))) {
+        if (!in_array($name, ['and', 'or'])) {
             throw new InvalidConfigurationException(sprintf('Invalid where type "%s"', $name));
         }
 

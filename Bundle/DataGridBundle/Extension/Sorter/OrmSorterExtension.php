@@ -42,7 +42,7 @@ class OrmSorterExtension extends AbstractExtension
 
         $this->validateConfiguration(
             new Configuration(),
-            array('sorters' => $this->accessor->getValue($config, self::SORTERS_PATH))
+            ['sorters' => $this->accessor->getValue($config, self::SORTERS_PATH)]
         );
 
         return $isApplicable;
@@ -74,11 +74,11 @@ class OrmSorterExtension extends AbstractExtension
     {
         $multisort = $this->accessor->getValue($config, self::MULTISORT_PATH) ? : false;
 
-        $data->sorter            = array();
-        $data->sorter['state']   = array();
-        $data->sorter['options'] = array(
+        $data->sorter            = [];
+        $data->sorter['state']   = [];
+        $data->sorter['options'] = [
             'multiple_sorting' => $multisort
-        );
+        ];
 
         $sorters = $this->getSortersToApply($config);
         foreach ($sorters as $column => $definition) {
@@ -100,18 +100,18 @@ class OrmSorterExtension extends AbstractExtension
      */
     protected function getSortersToApply(array $config)
     {
-        $result = array();
+        $result = [];
 
         $sorters = $this->accessor->getValue($config, self::COLUMNS_PATH);
 
-        $defaultSorters = $this->accessor->getValue($config, self::DEFAULT_SORTERS_PATH) ? : array();
+        $defaultSorters = $this->accessor->getValue($config, self::DEFAULT_SORTERS_PATH) ? : [];
         $sortBy         = $this->requestParams->get(self::SORTERS_ROOT_PARAM) ? : $defaultSorters;
 
         foreach ($sortBy as $column => $direction) {
             if ($sorter = $this->accessor->getValue($sorters, "[$column]")) {
                 $direction = $this->normalizeDirection($direction);
 
-                $result[$column] = array($direction, $sorter);
+                $result[$column] = [$direction, $sorter];
             }
         }
 
@@ -128,7 +128,7 @@ class OrmSorterExtension extends AbstractExtension
     protected function normalizeDirection($direction)
     {
         switch (true) {
-            case in_array($direction, array(self::DIRECTION_ASC, self::DIRECTION_DESC), true):
+            case in_array($direction, [self::DIRECTION_ASC, self::DIRECTION_DESC], true):
                 break;
             case ($direction === false):
                 $direction = self::DIRECTION_DESC;

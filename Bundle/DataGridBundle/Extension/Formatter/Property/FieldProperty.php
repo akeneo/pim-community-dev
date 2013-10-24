@@ -48,7 +48,7 @@ class FieldProperty extends AbstractProperty
 
         $result = $this->convertValue($value);
 
-        if (is_object($result) && is_callable(array($result, '__toString'))) {
+        if (is_object($result) && is_callable([$result, '__toString'])) {
             $result = (string)$result;
         }
 

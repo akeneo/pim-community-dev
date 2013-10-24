@@ -61,7 +61,7 @@ abstract class AbstractPager implements \Iterator, \Countable, \Serializable, Pa
         if ($nb_links == null) {
             $nb_links = $this->getMaxPageLinks();
         }
-        $links = array();
+        $links = [];
         $tmp   = $this->page - floor($nb_links / 2);
         $check = $this->lastPage - $nb_links + 1;
 

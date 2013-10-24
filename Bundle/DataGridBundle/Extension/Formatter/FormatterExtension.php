@@ -7,12 +7,6 @@ use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\PropertyInterface;
 
 class FormatterExtension extends AbstractExtension
 {
-    /**
-     * Configuration tree paths
-     */
-    const COLUMNS_PATH    = '[columns]';
-    const PROPERTIES_PATH = '[properties]';
-
     /** @var PropertyInterface[] */
     protected $properties = [];
 

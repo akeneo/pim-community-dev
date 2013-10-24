@@ -35,7 +35,7 @@ class TranslateableProperty extends AbstractProperty
 
         return $this->translator->trans(
             $value,
-            array(),
+            [],
             $this->getOr(self::DOMAIN_KEY),
             $this->getOr(self::LOCALE_KEY)
         );

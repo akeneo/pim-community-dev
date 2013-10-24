@@ -30,10 +30,10 @@ class Builder
     protected $eventDispatcher;
 
     /** @var DatasourceInterface[] */
-    protected $dataSources = array();
+    protected $dataSources = [];
 
     /** @var ExtensionVisitorInterface[] */
-    protected $extensions = array();
+    protected $extensions = [];
 
     /** @var PropertyAccess */
     protected $accessor;
