@@ -18,9 +18,7 @@ config:
         'jquery.select2':
             deps:
                 - 'jquery'
-        'jquery.jstree':
-            deps:
-                - 'jquery'
+        # jquery.jstree initialized from OroUIBundle::requirejs.config.js.twig
         'jstree/jquery.cookie':
             deps:
                 - 'jquery.jstree'

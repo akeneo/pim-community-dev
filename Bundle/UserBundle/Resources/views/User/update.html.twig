@@ -11,8 +11,8 @@
 {% else %}
     {% set formAction = form.vars.value.id ? path('oro_user_update', { id: form.vars.value.id}) : path('oro_user_create') %}
 {% endif %}
+
 {% block head_script %}
-    {% include 'OroUIBundle:Js:jquery_jstree.config.js.twig' %}
     <script type="text/javascript">
         require(['jquery', 'jquery.jstree', 'jstree/jquery.hotkeys'],
         function($){
