@@ -84,6 +84,9 @@ class RemindersSender
                     array(new EmailNotificationAdapter($template, $toEmail)),
                     $processorLogger
                 );
+                // mark an event as processed
+                $event->setReminded(true);
+                $this->em->flush($event);
             } catch (RaiseExceptionLoggerException $processorEx) {
                 // we do not need to write this type of exception to a log because it was already done
                 $failedEventIds[] = $event->getId();
