@@ -158,6 +158,7 @@ class CustomEntityType extends AbstractType
                             'default_element' => 'default_' . $fieldConfigId->getFieldName(),
                             'initial_elements' => null,
                             'mapped' => false,
+                            'extend' => true,
                         );
 
                         break;
@@ -171,20 +172,6 @@ class CustomEntityType extends AbstractType
             }
         }
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    /*
-    public function finishView(FormView $view, FormInterface $form, array $options)
-    {
-        $account = $form->getData();
-        $view->children['contacts']->vars['grid_url']
-                          = $this->router->generate('orocrm_account_contact_select', array('id' => $account->getId()));
-        $defaultContactId = $account->getDefaultContact() ? $account->getDefaultContact()->getId() : null;
-        $view->children['contacts']->vars['initial_elements']
-                          = $this->getInitialElements($account->getContacts(), $defaultContactId);
-    }*/
 
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
@@ -281,14 +268,17 @@ class CustomEntityType extends AbstractType
             $result[] = array(
                 'id' => $entity->getId(),
                 'label' => $entity->{Inflector::camelize('get_' . $extendConfig->get('target_title'))}(),
-                /*'link' => $this->router->generate(
-                    'orocrm_contact_info',
+                'link' => $this->router->generate(
+                    'oro_entity_detailed',
                     array(
-                        'id' => $entity->getId()
+                        'id' => $entity->getId(),
+                        'className' => str_replace('\\', '_', $extendConfig->getId()->getClassName()),
+                        'fieldName' => $extendConfig->getId()->getFieldName()
                     )
-                ),*/
+                ),
                 'extraData' => $extraData,
-                'isDefault' => $default->getId() == $entity->getId()
+                'isDefault' => ($default != null && $default->getId() == $entity->getId())
+
             );
         }
 

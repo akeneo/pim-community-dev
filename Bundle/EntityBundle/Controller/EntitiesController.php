@@ -80,14 +80,20 @@ class EntitiesController extends Controller
 
     /**
      * @Route(
-     *      "/info/{id}/{className}/{fieldName}",
-     *      name="oro_entity_info",
+     *      "/detailed/{id}/{className}/{fieldName}",
+     *      name="oro_entity_detailed",
      *      requirements={"id"="\d+"},
      *      defaults={"id"=0, "className"="", "fieldName"=""}
      * )
      * @Template
+     *
+     * @param integer $id         Related entity ID
+     * @param string  $className  Self ClassName
+     * @param string  $fieldName  Self FieldName (relation description)
+     *
+     * @return array
      */
-    public function infoAction($id, $className, $fieldName)
+    public function detailedAction($id, $className, $fieldName)
     {
         $className = str_replace('_', '\\', $className);
         $this->checkAccess('VIEW', $className);
@@ -96,27 +102,32 @@ class EntitiesController extends Controller
         $entityProvider = $this->get('oro_entity_config.provider.entity');
         $viewProvider   = $this->get('oro_entity_config.provider.view');
 
+        $relationConfig = $extendProvider->getConfig($className, $fieldName);
+
         $fields = $extendProvider->filter(
-            function (ConfigInterface $config) use ($viewProvider) {
+            function (ConfigInterface $config) use ($relationConfig) {
                 return
-                    $config->is('owner', ExtendManager::OWNER_CUSTOM)
-                    && !$config->is('state', ExtendManager::STATE_NEW)
+                    !$config->is('state', ExtendManager::STATE_NEW)
                     && !$config->is('is_deleted')
-                    && $viewProvider->getConfigById($config->getId())->is('is_displayable');
+                    && in_array($config->getId()->getFieldName(), $relationConfig->get('target_detailed'));
             },
-            $className
+            $relationConfig->get('target_entity')
         );
 
-        $dynamicRow = array();
-        foreach ($fields as $field) {
-            //$label = $entityProvider->getConfigById($field->getId())->get('label') ? : $field->getId()->getFieldName();
-            //$dynamicRow[$label] = $contact->{'get' . ucfirst(Inflector::camelize($field->getId()->getFieldName()))}();
-        }
+        $entity = $this->getDoctrine()->getRepository($relationConfig->get('target_entity'))->find($id);
+        if ($entity->getId()) {
+            $dynamicRow = array();
+            foreach ($fields as $field) {
+                $label = $entityProvider
+                    ->getConfigById($field->getId())->get('label') ? : $field->getId()->getFieldName();
+                $dynamicRow[$label] = $entity->{Inflector::camelize('get_' . $field->getId()->getFieldName())}();
+            }
 
-        /*return array(
-            'dynamic' => $dynamicRow,
-            'entity'  => $entity
-        );*/
+            return array(
+                'dynamic' => $dynamicRow,
+                'entity'  => $entity
+            );
+        }
     }
 
     /**

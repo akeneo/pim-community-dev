@@ -45,13 +45,20 @@
         {% set general_fields = general_fields|merge([_self.attibuteRow(key|capitalize, value)])%}
     {% endfor %}
 
-    {% set data = { 'dataBlocks': [{
-        'title': 'General',
-        'class': 'active',
-        'subblocks': [
-            {'title': 'General Information', 'data': general_fields },
+    {% set data = { 'dataBlocks':
+        [
+            {
+                'title': 'General',
+                'class': 'active',
+                'subblocks': [
+                    {
+                        'title': 'General Information',
+                        'data': general_fields
+                    },
+                ]
+            }
         ]
-    } ]} %}
+    } %}
 
     {{ parent() }}
 {% endblock content_data %}

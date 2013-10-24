@@ -182,6 +182,30 @@ class Generator
                     )
                 );
         }
+
+        foreach ($config['addremove'] as $addremove => $method) {
+            $class
+                ->setMethod(
+                    $this->generateClassMethod(
+                        'add' . ucfirst(Inflector::camelize($method['self'])),
+                        'if (!$this->' . $addremove . '->contains($value)) {
+                            $this->' . $addremove . '->add($value);
+                            $value->set'. ucfirst(Inflector::camelize($method['target'])) .'($this);
+                        }',
+                        array('value')
+                    )
+                )
+                ->setMethod(
+                    $this->generateClassMethod(
+                        'remove' . ucfirst(Inflector::camelize($method['self'])),
+                        'if ($this->' . $addremove . '->contains($value)) {
+                            $this->' . $addremove . '->remove($value);
+                            $value->set'. ucfirst(Inflector::camelize($method['target'])) .'(null);
+                        }',
+                        array('value')
+                    )
+                );
+        }
     }
 
     /**
