@@ -198,9 +198,10 @@ info:
         disable:                 Disable
         disabled:                Disabled
     group:
-        axis: Variation axis: %attributes%
-        select products: Please select products that should belong to this group.
-        selectionable products: The following selectionable products have a defined value for each axis.
+        axis:                Variation axis: %attributes%
+        select products:     Please select products that should belong to this group.
+        selectable products: The following selectable products have a defined value for each axis.
+
     association:
         show products:        Show products
         show groups:          Show groups
