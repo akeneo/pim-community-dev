@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\CalendarBundle\Notification;
+namespace Oro\Bundle\CronBundle\Command\Logger\Exception;
 
 /**
  * Represents an exception which can be raised by RaiseExceptionLogger class

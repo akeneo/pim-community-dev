@@ -10,6 +10,8 @@ use Oro\Bundle\CalendarBundle\Entity\Repository\CalendarEventRepository;
 use Oro\Bundle\EmailBundle\Entity\Repository\EmailTemplateRepository;
 use Oro\Bundle\EmailBundle\Model\EmailTemplateInterface;
 use Oro\Bundle\NotificationBundle\Processor\EmailNotificationProcessor;
+use Oro\Bundle\CronBundle\Command\Logger\RaiseExceptionLogger;
+use Oro\Bundle\CronBundle\Command\Logger\Exception\RaiseExceptionLoggerException;
 
 class RemindersSender
 {

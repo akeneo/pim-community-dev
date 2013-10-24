@@ -14,7 +14,9 @@
         "oro/email-bundle": "dev-master",
         "oro/notification-bundle": "dev-master",
         "oro/locale-bundle": "dev-master",
-        "oro/user-bundle": "dev-master"
+        "oro/user-bundle": "dev-master",
+        "oro/cron-bundle": "dev-master",
+        "oro/requirejs-bundle": "dev-master"
     },
     "autoload": {
         "psr-0": { "Oro\\Bundle\\CalendarBundle": "" }
