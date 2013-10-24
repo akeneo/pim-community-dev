@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Datagrid;
 
-use Pim\Bundle\CatalogBundle\Entity\GroupType;
-
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
@@ -23,6 +21,7 @@ use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
 
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 
+use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\GridBundle\Action\ActionInterface;
