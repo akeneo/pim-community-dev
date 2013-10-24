@@ -90,6 +90,22 @@ class TransformImportedProductDataSubscriberTest extends \PHPUnit_Framework_Test
     }
 
     /**
+     * @expectedException Oro\Bundle\BatchBundle\Item\InvalidItemException
+     * @expectedExceptionMessage So wrong!
+     */
+    public function testConvertInvalidArgumentIntoInvalidItemException()
+    {
+        $event = new FormEvent($this->form, array());
+
+        $this->productEnabledConverter
+            ->expects($this->any())
+            ->method('convert')
+            ->will($this->throwException(new \InvalidArgumentException('So wrong!')));
+
+        $this->subscriber->preSubmit($event);
+    }
+
+    /**
      * @return \Symfony\Component\Form\Form
      */
     protected function getFormMock()

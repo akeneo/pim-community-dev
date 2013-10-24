@@ -139,6 +139,32 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param string $data
+     * @param array  $prices
+     *
+     * @dataProvider getConvertedPricesValue
+     */
+    public function testConvertPricesValue($data, $prices)
+    {
+        $this->attributeRepository
+            ->expects($this->any())
+            ->method('findOneBy')
+            ->with(array('code' => 'public_prices'))
+            ->will($this->returnValue($this->getAttributeMock('prices')));
+
+        $this->assertEquals(
+            array(
+                'values' => array(
+                    'public_prices' => array(
+                        'prices' => $prices
+                    )
+                )
+            ),
+            $this->converter->convert(array('public_prices' => $data))
+        );
+    }
+
+    /**
      * @return array
      */
     public static function getConvertedPricesValue()
@@ -165,39 +191,6 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
                     array('data' => '', 'currency' => 'USD')
                 )
             ),
-            array(
-                '50 EUR, USD',
-                array(
-                    array('data' => '50.00', 'currency' => 'EUR'),
-                    array('data' => '', 'currency' => 'USD')
-                )
-            ),
-        );
-    }
-
-    /**
-     * @param string $data
-     * @param array  $prices
-     *
-     * @dataProvider getConvertedPricesValue
-     */
-    public function testConvertPricesValue($data, $prices)
-    {
-        $this->attributeRepository
-            ->expects($this->any())
-            ->method('findOneBy')
-            ->with(array('code' => 'public_prices'))
-            ->will($this->returnValue($this->getAttributeMock('prices')));
-
-        $this->assertEquals(
-            array(
-                'values' => array(
-                    'public_prices' => array(
-                        'prices' => $prices
-                    )
-                )
-            ),
-            $this->converter->convert(array('public_prices' => $data))
         );
     }
 
@@ -230,6 +223,30 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
                 )
             ),
             $this->converter->convert(array('public_prices' => ''))
+        );
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     * @dataProvider getMalformedPrices
+     */
+    public function testConvertMalformedPrices($value)
+    {
+        $this->attributeRepository
+            ->expects($this->any())
+            ->method('findOneBy')
+            ->with(array('code' => 'public_prices'))
+            ->will($this->returnValue($this->getAttributeMock('prices')));
+
+        $this->converter->convert(array('public_prices' => $value));
+    }
+
+    public static function getMalformedPrices()
+    {
+        return array(
+            array('15EUR'),
+            array('USD50'),
+            array('50 EUR, USD'),
         );
     }
 
@@ -396,7 +413,39 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
             ->with(array('code' => 'image'))
             ->will($this->returnValue($this->getAttributeMock('media')));
 
-        $this->assertEquals(array(), $this->converter->convert(array('image' => 'akeneo.jpg')));
+        $result = $this->converter->convert(array('image' => __DIR__ . '/../../fixtures/sport.jpg'));
+
+        $this->assertInstanceOf(
+            'Symfony\Component\HttpFoundation\File\File',
+            $result['values']['image']['media']['file']
+        );
+
+        $this->assertEquals('sport.jpg', $result['values']['image']['media']['file']->getFilename());
+    }
+
+    /**
+     * Test related method
+     */
+    public function testConvertEmptyMediaValue()
+    {
+        $this->attributeRepository
+            ->expects($this->any())
+            ->method('findOneBy')
+            ->with(array('code' => 'image'))
+            ->will($this->returnValue($this->getAttributeMock('media')));
+
+        $this->assertEquals(
+            array(
+                'values' => array(
+                    'image' => array(
+                        'media' => array(
+                            'file' => null,
+                        )
+                    )
+                )
+            ),
+            $this->converter->convert(array('image' => ''))
+        );
     }
 
     /**

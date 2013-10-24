@@ -55,6 +55,7 @@ parameters:
 
     pim_catalog.manager.variant_group.class:      Pim\Bundle\CatalogBundle\Manager\VariantGroupManager
 
+    pim_catalog.entity.group.class:       Pim\Bundle\CatalogBundle\Entity\Group
     pim_catalog.form.handler.group.class: Pim\Bundle\CatalogBundle\Form\Handler\GroupHandler
     pim_catalog.form.type.group.class:    Pim\Bundle\CatalogBundle\Form\Type\GroupType
     pim_catalog.entity.association.class:       Pim\Bundle\CatalogBundle\Entity\Association

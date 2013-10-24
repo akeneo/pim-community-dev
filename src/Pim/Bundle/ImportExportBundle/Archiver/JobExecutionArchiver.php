@@ -80,11 +80,16 @@ class JobExecutionArchiver
      */
     public function getDownloadPath(JobExecution $jobExecution)
     {
-        $directory = $this->getJobExecutionPath($jobExecution);
-        $files     = scandir($directory);
-        $files     = array_diff($files, array('.', '..'));
-        $firstFile = current($files);
-        $path      = $directory.$firstFile;
+        $path = $this->getJobExecutionPath($jobExecution);
+
+        if (is_dir($path)) {
+            $files     = scandir($path);
+            $files     = array_diff($files, array('.', '..'));
+            $firstFile = current($files);
+            $path      = $path.$firstFile;
+        } else {
+            $path = "";
+        }
 
         return $path;
     }

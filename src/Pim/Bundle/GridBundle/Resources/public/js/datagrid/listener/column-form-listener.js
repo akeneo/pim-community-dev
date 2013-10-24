@@ -20,7 +20,10 @@ function(mediator, ColumnFormListener) {
         initialize: function(options) {
             ColumnFormListener.prototype.initialize.apply(this, arguments);
 
-            mediator.bind('column_form_listener:set_selectors', function(selectors) {
+            mediator.bind('column_form_listener:set_selectors', function(datagridName, selectors) {
+                if (datagridName !== this.datagrid.name) {
+                    return;
+                }
                 this._clearState();
                 this.selectors = selectors;
                 this._restoreState();

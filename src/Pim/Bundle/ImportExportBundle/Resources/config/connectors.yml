@@ -10,13 +10,14 @@ parameters:
     pim_import_export.processor.heterogeneous_csv_serializer.class: Pim\Bundle\ImportExportBundle\Processor\HeterogeneousCsvSerializerProcessor
     pim_import_export.processor.valid_product_creation.class:       Pim\Bundle\ImportExportBundle\Processor\ValidProductCreationProcessor
     pim_import_export.processor.valid_category_creation.class:      Pim\Bundle\ImportExportBundle\Processor\ValidCategoryCreationProcessor
+    pim_import_export.processor.product_csv_serializer.class:       Pim\Bundle\ImportExportBundle\Processor\ProductCsvSerializerProcessor
 
     pim_import_export.writer.orm_product.class:                     Pim\Bundle\ImportExportBundle\Writer\OrmProductWriter
     pim_import_export.writer.orm_category.class:                    Pim\Bundle\ImportExportBundle\Writer\OrmCategoryWriter
 
     pim_import_export.writer.file.class:                            Pim\Bundle\ImportExportBundle\Writer\FileWriter
+    pim_import_export.writer.product_file.class:                    Pim\Bundle\ImportExportBundle\Writer\ProductFileWriter
 
-    # TODO fake implementations to replace by concret one when we'll work on launch an import
     pim_import_export.reader.dummy.class:                           Pim\Bundle\ImportExportBundle\Reader\DummyReader
     pim_import_export.processor.dummy.class:                        Pim\Bundle\ImportExportBundle\Processor\DummyProcessor
     pim_import_export.writer.dummy.class:                           Pim\Bundle\ImportExportBundle\Writer\DummyWriter
@@ -65,6 +66,10 @@ services:
         arguments:
             - '@pim_serializer'
 
+    pim_import_export.processor.product_csv_serializer:
+        class: %pim_import_export.processor.product_csv_serializer.class%
+        parent: pim_import_export.processor.heterogeneous_csv_serializer
+
     pim_import_export.processor.dummy:
         class: %pim_import_export.processor.dummy.class%
 
@@ -84,6 +89,12 @@ services:
     # writers
     pim_import_export.writer.file:
         class: %pim_import_export.writer.file.class%
+
+    pim_import_export.writer.product_file:
+        parent: pim_import_export.writer.file
+        class: %pim_import_export.writer.product_file.class%
+        arguments:
+            - '@pim_catalog.manager.media'
 
     pim_import_export.writer.dummy:
         class: %pim_import_export.writer.dummy.class%

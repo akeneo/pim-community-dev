@@ -18,7 +18,12 @@ class ProductCsvReaderTest extends CsvReaderTest
      */
     protected function setUp()
     {
-        $this->reader = new ProductCsvReader($this->getEntityManagerMock(array('sku', 'name')));
+        $this->reader = new ProductCsvReader(
+            $this->getEntityManagerMock(
+                array('sku', 'name'),
+                array('view', 'manual')
+            )
+        );
         $this->stepExecution = $this->getStepExecutionMock();
         $this->reader->setStepExecution($this->stepExecution);
     }
@@ -34,9 +39,19 @@ class ProductCsvReaderTest extends CsvReaderTest
     /**
      * Test related method
      */
-    public function testInitializeUniqueValuesWithAttributeRepository()
+    public function testInitializeWithAttributeRepository()
     {
-        $this->assertAttributeEquals(array('sku' => array(), 'name' => array()), 'uniqueValues', $this->reader);
+        $this->assertAttributeEquals(
+            array('sku' => array(), 'name' => array()),
+            'uniqueValues',
+            $this->reader
+        );
+
+        $this->assertAttributeEquals(
+            array('view', 'manual'),
+            'mediaAttributes',
+            $this->reader
+        );
     }
 
     /**
@@ -54,12 +69,27 @@ class ProductCsvReaderTest extends CsvReaderTest
         $this->reader->read();
     }
 
+    public function testMediaPathAreAbsolute()
+    {
+        $this->reader->setFilePath(__DIR__ . '/../../fixtures/with_media.csv');
+
+        $this->assertEquals(
+            array(
+                'sku'          => 'SKU-001',
+                'name'         => 'door',
+                'view'         => __DIR__ . '/../../fixtures/sku-001.jpg',
+                'manual-fr_FR' => __DIR__ . '/../../fixtures/sku-001.txt',
+            ),
+            $this->reader->read()
+        );
+    }
+
     /**
      * @param array $uniqueAttributeCodes
      *
      * @return Doctrine\ORM\EntityManager
      */
-    protected function getEntityManagerMock(array $uniqueAttributeCodes)
+    protected function getEntityManagerMock(array $uniqueAttributeCodes, array $mediaAttributeCodes)
     {
         $em = $this
             ->getMockBuilder('Doctrine\ORM\EntityManager')
@@ -71,7 +101,8 @@ class ProductCsvReaderTest extends CsvReaderTest
             ->will(
                 $this->returnValue(
                     $this->getEntityRepositoryMock(
-                        $uniqueAttributeCodes
+                        $uniqueAttributeCodes,
+                        $mediaAttributeCodes
                     )
                 )
             );
@@ -84,17 +115,21 @@ class ProductCsvReaderTest extends CsvReaderTest
      *
      * @return \Doctrine\ORM\EntityRepository
      */
-    protected function getEntityRepositoryMock(array $uniqueAttributeCodes)
+    protected function getEntityRepositoryMock(array $uniqueAttributeCodes, array $mediaAttributeCodes)
     {
         $repository = $this
             ->getMockBuilder('Doctrine\ORM\EntityRepository')
-            ->setMethods(array('findUniqueAttributeCodes'))
+            ->setMethods(array('findUniqueAttributeCodes', 'findMediaAttributeCodes'))
             ->disableOriginalConstructor()
             ->getMock();
 
         $repository->expects($this->any())
             ->method('findUniqueAttributeCodes')
             ->will($this->returnValue($uniqueAttributeCodes));
+
+        $repository->expects($this->any())
+            ->method('findMediaAttributeCodes')
+            ->will($this->returnValue($mediaAttributeCodes));
 
         return $repository;
     }

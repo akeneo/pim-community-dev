@@ -5,7 +5,8 @@ namespace Pim\Bundle\ImportExportBundle\Form\Subscriber;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
-use Pim\Bundle\ImportExportBundle\Converter\ProductValueConverter;
+use Oro\Bundle\BatchBundle\Item\InvalidItemException;
+use Pim\Bundle\ImportExportBundle\Converter\ProductEnabledConverter;
 
 /**
  * Transform imported product data into a bindable data to the product form
@@ -48,10 +49,14 @@ class TransformImportedProductDataSubscriber implements EventSubscriberInterface
     public function preSubmit(FormEvent $event)
     {
         $data = $event->getData();
-        $event->setData(
-            array_intersect_key($data, array_flip($this->getProductFields($event))) +
-            $this->valueConverter->convert($data)
-        );
+        try {
+            $event->setData(
+                array_intersect_key($data, array_flip($this->getProductFields($event))) +
+                $this->valueConverter->convert($data)
+            );
+        } catch (\InvalidArgumentException $e) {
+            throw new InvalidItemException($e->getMessage(), $data);
+        }
     }
 
     /**

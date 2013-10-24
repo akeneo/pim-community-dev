@@ -9,7 +9,7 @@ define(
                 return
             }
             initialized = true;
-            
+
             function pageInit() {
                 // Place code that we need to run on every page load here
 
@@ -113,7 +113,7 @@ define(
                     }
                 });
                 $('.attribute-field.translatable').each(function () {
-                    $(this).find('div.controls').find('.icons-container').append($localizableIcon.clone().tooltip());
+                    $(this).find('div.controls').find('.icons-container').eq(0).prepend($localizableIcon.clone().tooltip());
                 });
 
                 $('form').on('change', 'input[type="file"]', function () {
@@ -154,7 +154,7 @@ define(
                     $(this).hide();
                 });
             }
-            
+
             $(function(){
                 if ($.isPlainObject($.uniform)) {
                     $.uniform.restore();

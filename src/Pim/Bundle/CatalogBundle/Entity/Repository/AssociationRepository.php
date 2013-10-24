@@ -6,7 +6,7 @@ use Pim\Bundle\CatalogBundle\Doctrine\EntityRepository;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
- * Product association repository
+ * Association repository
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -23,18 +23,20 @@ class AssociationRepository extends EntityRepository
      */
     public function buildMissingAssociations(ProductInterface $product)
     {
-        $qb = $this->createQueryBuilder('pa');
+        $qb = $this->createQueryBuilder('a');
 
-        $associationIds = $product->getProductAssociations()->map(
-            function ($productAssociation) {
-                return $productAssociation->getAssociation()->getId();
-            }
-        );
-
-        if (!$associationIds->isEmpty()) {
-            $qb->andWhere(
-                $qb->expr()->notIn('pa.id', $associationIds->toArray())
+        if ($productAssociations = $product->getProductAssociations()) {
+            $associationIds = $productAssociations->map(
+                function ($productAssociation) {
+                    return $productAssociation->getAssociation()->getId();
+                }
             );
+
+            if (!$associationIds->isEmpty()) {
+                $qb->andWhere(
+                    $qb->expr()->notIn('a.id', $associationIds->toArray())
+                );
+            }
         }
 
         return $qb;
