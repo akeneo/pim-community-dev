@@ -397,3 +397,10 @@ pim_catalog.completeness:
     missing_attributes: Missing value|Missing values
     legend:
         locale_not_associated: Locale not associated to this channel
+
+# Product groups
+pim_catalog.group.type:
+    VARIANT:    Variant
+    X_SELL:     X-Sell
+    ADDITIONAL: Additional
+    RELATED:    Related
