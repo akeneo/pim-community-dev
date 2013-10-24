@@ -23,7 +23,8 @@ abstract class AbstractProperty implements PropertyInterface
         $frontendOptions = $this->getOr(self::FRONTEND_OPTIONS_KEY, []);
         $frontendOptions = array_merge(
             [
-                'label'      => $this->get('name'),
+                // use field name if label not set
+                'label'      => ucfirst($this->get('name')),
                 'renderable' => true,
                 'editable'   => false
             ],

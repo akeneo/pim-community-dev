@@ -15,7 +15,7 @@ class Pager extends AbstractPager implements PagerInterface
     protected $qb;
 
     /** @var array */
-    protected $parameters = array();
+    protected $parameters = [];
 
     public function __construct($maxPerPage = 10, QueryBuilder $qb = null)
     {
@@ -62,7 +62,7 @@ class Pager extends AbstractPager implements PagerInterface
      */
     public function getResults($hydrationMode = Query::HYDRATE_OBJECT)
     {
-        return $this->getQueryBuilder()->getQuery()->execute(array(), $hydrationMode);
+        return $this->getQueryBuilder()->getQuery()->execute([], $hydrationMode);
     }
 
     /**

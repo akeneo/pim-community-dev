@@ -49,8 +49,8 @@ class UrlProperty extends AbstractProperty
      */
     protected function getParameters(ResultRecordInterface $record)
     {
-        $result = array();
-        foreach ($this->getOr(self::PARAMS_KEY, array()) as $name => $dataKey) {
+        $result = [];
+        foreach ($this->getOr(self::PARAMS_KEY, []) as $name => $dataKey) {
             if (is_numeric($name)) {
                 $name = $dataKey;
             }

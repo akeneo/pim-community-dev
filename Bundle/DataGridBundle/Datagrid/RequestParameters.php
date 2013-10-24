@@ -24,7 +24,7 @@ class RequestParameters
      *
      * @return mixed
      */
-    public function get($type, $default = array())
+    public function get($type, $default = [])
     {
         $rootParameter = $this->getRootParameterValue();
 
@@ -75,7 +75,7 @@ class RequestParameters
      */
     protected function getRootParameterValue()
     {
-        return $this->getRequest()->get(self::ROOT_PARAM, array());
+        return $this->getRequest()->get(self::ROOT_PARAM, []);
     }
 
     /**

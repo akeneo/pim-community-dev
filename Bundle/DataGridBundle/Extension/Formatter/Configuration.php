@@ -44,10 +44,10 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                     ->arrayNode(PropertyInterface::FRONTEND_OPTIONS_KEY)
-                        // ->isRequired()
                         ->ignoreExtraKeys()
                         ->children()
-                            ->scalarNode('label')->isRequired()->end()
+                            // just validate types if node exist
+                            ->scalarNode('label')->end()
                             ->booleanNode('editable')->end()
                             ->booleanNode('renderable')->end()
                         ->end()

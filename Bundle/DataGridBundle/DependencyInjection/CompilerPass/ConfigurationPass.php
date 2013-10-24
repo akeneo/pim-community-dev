@@ -52,12 +52,12 @@ class ConfigurationPass implements CompilerPassInterface
             $sources = $container->findTaggedServiceIds(self::SOURCE_TAG_NAME);
             foreach ($sources as $serviceId => $tags) {
                 $tagAttrs = reset($tags);
-                $builder->addMethodCall('addDatasource', array($tagAttrs['type'], new Reference($serviceId)));
+                $builder->addMethodCall('addDatasource', [$tagAttrs['type'], new Reference($serviceId)]);
             }
 
             $extensions = $container->findTaggedServiceIds(self::EXTENSION_TAG_NAME);
             foreach ($extensions as $serviceId => $tags) {
-                $builder->addMethodCall('addExtension', array(new Reference($serviceId)));
+                $builder->addMethodCall('addExtension', [new Reference($serviceId)]);
             }
         }
     }

@@ -7,7 +7,7 @@ class ResultRecord implements ResultRecordInterface
     /**
      * @var array
      */
-    private $valueContainers = array();
+    private $valueContainers = [];
 
     /**
      * @param mixed $data
@@ -15,7 +15,7 @@ class ResultRecord implements ResultRecordInterface
     public function __construct($data)
     {
         if (is_array($data)) {
-            $arrayData = array();
+            $arrayData = [];
             foreach ($data as $name => $value) {
                 if (is_numeric($name) && is_object($value)) {
                     $this->valueContainers[] = $value;
@@ -47,13 +47,13 @@ class ResultRecord implements ResultRecordInterface
             } elseif (is_object($data)) {
                 $fieldName          = $name;
                 $camelizedFieldName = self::camelize($fieldName);
-                $getters            = array();
+                $getters            = [];
                 $getters[]          = 'get' . $camelizedFieldName;
                 $getters[]          = 'is' . $camelizedFieldName;
 
                 foreach ($getters as $getter) {
                     if (method_exists($data, $getter)) {
-                        return call_user_func(array($data, $getter));
+                        return call_user_func([$data, $getter]);
                     }
                 }
 

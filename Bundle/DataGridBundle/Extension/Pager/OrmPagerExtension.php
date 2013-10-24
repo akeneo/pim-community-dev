@@ -46,7 +46,7 @@ class OrmPagerExtension extends AbstractExtension
 
         $this->validateConfiguration(
             new Configuration(),
-            array_intersect_key($config, array_flip(array('pager')))
+            array_intersect_key($config, array_flip(['pager']))
         );
 
         return $enabled;
@@ -70,7 +70,7 @@ class OrmPagerExtension extends AbstractExtension
      */
     public function visitResult(array $config, \stdClass $result)
     {
-        $result->options                    = isset($result->options) ? $result->options : array();
+        $result->options                    = isset($result->options) ? $result->options : [];
         $result->options[self::TOTAL_PARAM] = $this->pager->getNbResults();
     }
 

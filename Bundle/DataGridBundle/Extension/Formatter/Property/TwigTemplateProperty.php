@@ -45,10 +45,10 @@ class TwigTemplateProperty extends AbstractProperty
     {
         $context = array_merge(
             $this->getOr(self::CONTEXT_KEY, []),
-            array(
+            [
                 'record' => $record,
                 'value'  => $record->getValue($this->getOr(self::DATA_NAME_KEY, $this->get(self::NAME_KEY))),
-            )
+            ]
         );
 
         return $this->getTemplate()->render($context);
