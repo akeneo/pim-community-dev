@@ -6,7 +6,7 @@ function($, _, Backbone, __, DialogWidget, layout, LoadingMask, FormValidation, 
 
     /**
      * @export  oro/calendar/event/view
-     * @class   oro.calendar.EventView
+     * @class   oro.calendar.event.View
      * @extends Backbone.View
      */
     return Backbone.View.extend({

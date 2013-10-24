@@ -6,7 +6,7 @@ function($, _, Backbone, __, app, messenger, ConnectionCollection, ConnectionMod
 
     /**
      * @export  oro/calendar/connection/view
-     * @class   oro.calendar.ConnectionView
+     * @class   oro.calendar.connection.View
      * @extends Backbone.View
      */
     return Backbone.View.extend({

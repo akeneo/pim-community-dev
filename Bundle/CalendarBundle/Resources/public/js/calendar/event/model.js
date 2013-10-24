@@ -5,7 +5,7 @@ function(Backbone, routing) {
 
     /**
      * @export  oro/calendar/event/model
-     * @class   oro.calendar.EventModel
+     * @class   oro.calendar.event.Model
      * @extends Backbone.Model
      */
     return Backbone.Model.extend({

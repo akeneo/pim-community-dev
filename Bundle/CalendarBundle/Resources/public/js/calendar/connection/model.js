@@ -5,7 +5,7 @@ function(Backbone, ConnectionCollection) {
 
     /**
      * @export  oro/calendar/connection/model
-     * @class   oro.calendar.ConnectionModel
+     * @class   oro.calendar.connection.Model
      * @extends Backbone.Model
      */
     return Backbone.Model.extend({
