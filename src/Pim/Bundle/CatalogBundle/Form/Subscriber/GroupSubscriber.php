@@ -49,7 +49,8 @@ class GroupSubscriber implements EventSubscriberInterface
                 'disabled' => true,
                 'class'    => 'Pim\Bundle\CatalogBundle\Entity\ProductAttribute',
                 'multiple' => true,
-                'label'    => 'Axis'
+                'label'    => 'Axis',
+                'help'     => 'pim_catalog.group.axis.help'
             )
         );
 
