@@ -187,11 +187,14 @@ class ConfigSubscriber implements EventSubscriberInterface
         $owner         = true;
         $targetOwner   = false;
 
-        if ($selfFieldType == 'oneToMany') {
+        if (in_array($selfFieldType, array('oneToMany', 'manyToMany'))) {
             $classNameArray    = explode('\\', $selfEntityClass);
             $relationFieldName = strtolower(array_pop($classNameArray)) . '_' . $selfFieldName;
-            $owner             = false;
-            $targetOwner       = true;
+
+            if ($selfFieldType == 'oneToMany') {
+                $owner             = false;
+                $targetOwner       = true;
+            }
 
             $targetFieldId = new FieldConfigId(
                 $targetEntityClass,

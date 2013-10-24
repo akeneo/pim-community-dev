@@ -115,7 +115,7 @@ class RelationType extends AbstractType
             );
 
             //target_default
-            $form->add(
+            /*$form->add(
                 $this->formFactory->createNamed(
                     'target_default',
                     'choice',
@@ -126,16 +126,11 @@ class RelationType extends AbstractType
                         'auto_initialize' => false
                     )
                 )
-            );
+            );*/
         }
 
         if ($event->getName() == FormEvents::PRE_SUBMIT) {
-            $event->getForm()->getParent()->setData(
-                array_merge(
-                    $event->getForm()->getParent()->getData(),
-                    $data
-                )
-            );
+            $event->getForm()->getParent()->setData(array_merge($event->getForm()->getParent()->getData(), $data));
         }
     }
 

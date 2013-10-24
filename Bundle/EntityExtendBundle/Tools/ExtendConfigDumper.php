@@ -31,7 +31,7 @@ class ExtendConfigDumper
 
     /**
      * @param OroEntityManager $em
-     * @param string           $cacheDir
+     * @param string $cacheDir
      */
     public function __construct(OroEntityManager $em, $cacheDir)
     {
@@ -126,8 +126,9 @@ class ExtendConfigDumper
 
         $entityState = $entityConfig->get('state');
 
+        $schema             = $entityConfig->get('schema');
         $properties         = array();
-        $relationProperties = array();
+        $relationProperties = $schema ? $schema['relation'] : array();
         $defaultProperties  = array();
         if ($fieldConfigs = $extendProvider->getConfigs($className)) {
             foreach ($fieldConfigs as $fieldConfig) {
@@ -139,7 +140,7 @@ class ExtendConfigDumper
                         $relationProperties[$fieldName] = $fieldConfig->getId()->getFieldName();
                         if ($fieldType != 'manyToOne') {
                             $defaultName = self::DEFAULT_PREFIX . $fieldConfig->getId()->getFieldName();
-                            
+
                             $defaultProperties[$defaultName] = $defaultName;
                         }
                     } else {
@@ -219,7 +220,7 @@ class ExtendConfigDumper
                 $relation['assign'] = true;
                 $relationFieldId    = $relation['field_id'];
 
-                if ($relation['owner'] && count($schema)) {
+                if (($relation['owner'] || $fieldId->getFieldType() == 'manyToMany') && count($schema)) {
                     $schema['relation'][self::FIELD_PREFIX . $relationFieldId->getFieldName()] =
                         $relationFieldId->getFieldName();
                 }
