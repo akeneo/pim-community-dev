@@ -6,10 +6,9 @@ use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\DataGridBundle\Datasource\OrmDatasource;
 use Oro\Bundle\DataGridBundle\Event\BuildAfter;
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
-use Oro\Bundle\DataGridBundle\Extension\Formatter\FormatterExtension;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\PropertyInterface;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
-use Oro\Bundle\FilterBundle\Extension\OrmFilterExtension;
+use Oro\Bundle\FilterBundle\Extension\Configuration as FilterConfiguration;
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Oro\Bundle\FlexibleEntityBundle\Grid\Extension\Filter\FlexibleFilterUtility;
 use Oro\Bundle\FlexibleEntityBundle\Grid\Extension\Formatter\Property\FlexibleFieldProperty;
@@ -88,12 +87,11 @@ class EventListener
 
                     $this->accessor->setValue(
                         $config,
-                        OrmFilterExtension::COLUMNS_PATH . '[' . $attribute . ']',
+                        FilterConfiguration::COLUMNS_PATH . '[' . $attribute . ']',
                         [
                             'type'                         => $filterType,
                             FlexibleFilterUtility::FEN_KEY => $flexibleEntity,
-                            'data_name'                    => $attribute,
-                            'options'                      => ['show_filter' => $showFilter]
+                            'data_name'                    => $attribute
                         ]
                     );
                 }

@@ -11,6 +11,12 @@ interface FilterInterface
     const CONDITION_OR  = 'OR';
     const CONDITION_AND = 'AND';
 
+    const TYPE_KEY             = 'type';
+    const FRONTEND_OPTIONS_KEY = 'frontend_options';
+
+    const METADATA_TYPE_KEY    = 'type';
+    const METADATA_OPTIONS_KEY = 'options';
+
     /**
      * Initialize current filter by config
      *
@@ -34,6 +40,13 @@ interface FilterInterface
      * @return Form
      */
     public function getForm();
+
+    /**
+     * Returns metadata for frontend
+     *
+     * @return array
+     */
+    public function getMetadata();
 
     /**
      * Applies filter to query builder
