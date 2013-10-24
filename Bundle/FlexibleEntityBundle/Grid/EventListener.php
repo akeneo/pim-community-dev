@@ -8,6 +8,7 @@ use Oro\Bundle\DataGridBundle\Event\BuildAfter;
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\FormatterExtension;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\PropertyInterface;
+use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
 use Oro\Bundle\FilterBundle\Extension\OrmFilterExtension;
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Oro\Bundle\FlexibleEntityBundle\Grid\Extension\Filter\FlexibleFilterUtility;
@@ -70,7 +71,7 @@ class EventListener
                 }
                 $this->accessor->setValue(
                     $config,
-                    sprintf('%s[%s]', FormatterExtension::COLUMNS_PATH, $attribute),
+                    sprintf('%s[%s]', FormatterConfiguration::COLUMNS_PATH, $attribute),
                     [
                         'type'                                  => 'flexible_field',
                         'backend_type'                          => $attributes[$attribute]->getBackendType(),
@@ -111,7 +112,7 @@ class EventListener
     {
         $datagrid = $event->getDatagrid();
         $config   = $datagrid->getAcceptor()->getConfig();
-        $fields   = $this->accessor->getValue($config, FormatterExtension::COLUMNS_PATH) ? : [];
+        $fields   = $this->accessor->getValue($config, FormatterConfiguration::COLUMNS_PATH) ? : [];
 
         $flexibleCount = count(
             array_filter(

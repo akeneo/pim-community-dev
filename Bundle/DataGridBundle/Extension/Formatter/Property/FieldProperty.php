@@ -6,18 +6,6 @@ use Oro\Bundle\DataGridBundle\Extension\Formatter\ResultRecordInterface;
 
 class FieldProperty extends AbstractProperty
 {
-    const FRONTEND_TYPE_KEY = 'frontend_type';
-
-    const TYPE_DATE     = 'date';
-    const TYPE_DATETIME = 'datetime';
-    const TYPE_DECIMAL  = 'decimal';
-    const TYPE_INTEGER  = 'integer';
-    const TYPE_PERCENT  = 'percent';
-    const TYPE_OPTIONS  = 'options';
-    const TYPE_TEXT     = 'text';
-    const TYPE_HTML     = 'html';
-    const TYPE_BOOLEAN  = 'boolean';
-
     /**
      * {@inheritdoc}
      */

@@ -8,6 +8,11 @@ use Oro\Bundle\DataGridBundle\Extension\Formatter\ResultRecordInterface;
 
 class UrlProperty extends AbstractProperty
 {
+    const ROUTE_KEY       = 'route';
+    const IS_ABSOLUTE_KEY = 'isAbsolute';
+    const ANCHOR_KEY      = 'anchor';
+    const PARAMS_KEY      = 'params';
+
     /**
      * @var Router
      */
@@ -27,12 +32,12 @@ class UrlProperty extends AbstractProperty
     public function getValue(ResultRecordInterface $record)
     {
         $route = $this->router->generate(
-            $this->get('route'),
+            $this->get(self::ROUTE_KEY),
             $this->getParameters($record),
-            $this->getOr('isAbsolute', false)
+            $this->getOr(self::IS_ABSOLUTE_KEY, false)
         );
 
-        return $route . $this->getOr('anchor');
+        return $route . $this->getOr(self::ANCHOR_KEY);
     }
 
     /**
@@ -45,7 +50,7 @@ class UrlProperty extends AbstractProperty
     protected function getParameters(ResultRecordInterface $record)
     {
         $result = array();
-        foreach ($this->getOr('params', array()) as $name => $dataKey) {
+        foreach ($this->getOr(self::PARAMS_KEY, array()) as $name => $dataKey) {
             if (is_numeric($name)) {
                 $name = $dataKey;
             }

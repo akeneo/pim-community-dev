@@ -16,6 +16,28 @@ abstract class AbstractProperty implements PropertyInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getMetadata()
+    {
+        $frontendOptions = $this->getOr(self::FRONTEND_OPTIONS_KEY, []);
+        $frontendOptions = array_merge(
+            [
+                'label'      => $this->get('name'),
+                'renderable' => true,
+                'editable'   => false
+            ],
+            $frontendOptions
+        );
+        $metadata        = [
+            self::METADATA_TYPE_KEY             => $this->getOr(self::FRONTEND_TYPE_KEY, self::TYPE_TEXT),
+            self::METADATA_FRONTEND_OPTIONS_KEY => $frontendOptions
+        ];
+
+        return $metadata;
+    }
+
+    /**
      * Get param or throws exception
      *
      * @param string $paramName
