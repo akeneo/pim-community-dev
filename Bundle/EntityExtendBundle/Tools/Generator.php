@@ -95,7 +95,7 @@ class Generator
              * TODO
              * custom entity instance as manyToOne relation
              * find the way to show it on view
-             * we should mark some field as
+             * we should mark some field as title
              */
             $toString = array();
             foreach ($item['property'] as $propKey => $propValue) {
