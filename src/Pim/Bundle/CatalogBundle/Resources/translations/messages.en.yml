@@ -107,10 +107,10 @@ confirmation:
     discard changes: You will lose changes to the %entity% if you leave the page.
     remove:
         item:            Are you sure you want to delete this item?
-        attribute:       Are you sure you want to remove the attribute %name%?
+        attribute:       Are you sure you want to delete the attribute %name%?
         attribute group: Are you sure you want to delete the attribute group %name%?
         category:        Are you sure you want to delete the category %name%?
-        family:          Are you sure you want to remove the family %name%?
+        family:          Are you sure you want to delete the family %name%?
         product:         Are you sure you want to delete the product %name%?
         export profile:  Are you sure you want to delete the export profile %name%?
         import profile:  Are you sure you want to delete the import profile %name%?
