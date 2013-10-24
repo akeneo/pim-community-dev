@@ -133,10 +133,17 @@ function($, _, Backbone, __, app, messenger, LoadingMask,
                 eventClick: _.bind(this.eventClick, this),
                 eventDrop: _.bind(this.eventDropOrResize, this),
                 eventResize: _.bind(this.eventDropOrResize, this),
-                loading: _.bind(this.showLoadingMask, this)
+                loading: _.bind(this.showLoadingMask, this),
+                allDayText: __('all-day'),
+                buttonText: {
+                    today: __('today'),
+                    month: __('month'),
+                    week: __('week'),
+                    day: __('day')
+                }
             };
             var keys = ['date', 'defaultView', 'editable', 'selectable',
-                'titleFormat', 'columnFormat', 'timeFormat',
+                'titleFormat', 'columnFormat', 'timeFormat', 'axisFormat',
                 'firstDay', 'monthNames', 'monthNamesShort', 'dayNames', 'dayNamesShort'];
             _.extend(options, _.pick(this.options.eventsOptions, keys));
             if (!_.isUndefined(options.date)) {
