@@ -200,7 +200,7 @@ class GroupDatagridManager extends DatagridManager
         $proxyQuery
             ->leftJoin($rootAlias .'.translations', 'translation', 'WITH', 'translation.locale = :localeCode')
             ->leftJoin($rootAlias .'.attributes', 'attribute')
-            ->leftJoin($rootAlias .'.type', 'type');
+            ->innerJoin($rootAlias .'.type', 'type');
 
         $proxyQuery->groupBy($rootAlias);
 
