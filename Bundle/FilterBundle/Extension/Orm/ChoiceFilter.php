@@ -50,8 +50,8 @@ class ChoiceFilter extends AbstractFilter
     {
         $formView = $this->getForm()->createView();
         $metadata = parent::getMetadata();
-        $metadata[self::FRONTEND_OPTIONS_KEY] = array_merge(
-            $metadata[self::FRONTEND_OPTIONS_KEY],
+        $metadata[self::METADATA_OPTIONS_KEY] = array_merge(
+            $metadata[self::METADATA_OPTIONS_KEY],
             [
                 'choices' => [$formView->vars['choices']]
             ]
