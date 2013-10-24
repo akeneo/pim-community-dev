@@ -192,12 +192,19 @@ info:
         change family to:        Change the family to
         merge attributes:        Current attributes will be merged with the ones in the new family.
         keep attributes:         No attributes will be removed.
+        number of associations:  %productCount% products and %groupCount% groups
         enable:                  Enable
         enabled:                 Enabled
         disable:                 Disable
         disabled:                Disabled
     group:
         axis: Variation axis: %attributes%
+        select products: Please select products that should belong to this group.
+        selectionable products: The following selectionable products have a defined value for each axis.
+    association:
+        show products:        Show products
+        show groups:          Show groups
+        remove from products: Deleting the association will remove it from %count% products.
 
 # Form elements
 Options:                       Options
@@ -390,3 +397,15 @@ pim_catalog.completeness:
     missing_attributes: Missing value|Missing values
     legend:
         locale_not_associated: Locale not associated to this channel
+
+# Product groups
+pim_catalog.group.type:
+    VARIANT:    Variant
+    X_SELL:     X-Sell
+    ADDITIONAL: Additional
+    RELATED:    Related
+
+# Product view
+Group: Group
+View group: View group
+Products: Products

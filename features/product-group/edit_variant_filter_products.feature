@@ -22,10 +22,6 @@ Feature: Edit a variant group adding/removing products
       | POSTIT | furniture |
     And the following product attributes:
       | product | code  | label       | type         | required | translatable | scopable |
-      | MUG_1   | color | Color       | simpleselect | no       | no           | no       |
-      | MUG_1   | size  | Size        | simpleselect | no       | no           | no       |
-      | MUG_1   | price | Price       | prices       | no       | no           | no       |
-      | MUG_2   | color | Color       | simpleselect | no       | no           | no       |
       | MUG_2   | name  | Name        | text         | no       | no           | yes      |
       | MUG_2   | title | Title       | text         | no       | yes          | no       |
       | MUG_2   | descr | Description | text         | no       | yes          | yes      |
@@ -37,6 +33,10 @@ Feature: Edit a variant group adding/removing products
       | POSTIT  | title | Title       | text         | no       | yes          | no       |
       | POSTIT  | descr | Description | text         | no       | yes          | yes      |
       | POSTIT  | price | Price       | prices       | no       | no           | no       |
+      | MUG_1   | color | Color       | simpleselect | no       | no           | no       |
+      | MUG_1   | size  | Size        | simpleselect | no       | no           | no       |
+      | MUG_1   | price | Price       | prices       | no       | no           | no       |
+      | MUG_2   | color | Color       | simpleselect | no       | no           | no       |
     And the following "color" attribute options: Yellow, Blue, Green and Red
     And the following "size" attribute options: XS, S, M, L and XL
     And the following product values:
@@ -119,7 +119,7 @@ Feature: Edit a variant group adding/removing products
     And I should see product MUG_1
     And I should not see products MUG_2, MUG_3 and POSTIT
 
-  @skip
+  @insulated
   Scenario: Successfully filter by scopable field
     Given I am on the "MUG" product group page
     When I make visible the filter "Name"
@@ -128,7 +128,7 @@ Feature: Edit a variant group adding/removing products
     And I should see product MUG_2
     And I should not see products MUG_1, MUG_3 and POSTIT
 
-  @skip
+  @insulated
   Scenario: Successfully filter by localizable field
     Given I am on the "POSTIT" product group page
     When I make visible the filter "Title"
@@ -137,7 +137,7 @@ Feature: Edit a variant group adding/removing products
     And I should see product POSTIT
     And I should not see products MUG_1, MUG_2 and MUG_3
 
-  @skip
+  @insulated
   Scenario: Successfully filter by localizable and scopable field
     Given I am on the "POSTIT" product group page
     When I make visible the filter "Description"
@@ -146,7 +146,7 @@ Feature: Edit a variant group adding/removing products
     And I should see product POSTIT
     And I should not see products MUG_1, MUG_2 and MUG_3
 
-  @skip
+  @insulated
   Scenario: Successfully filter by price
     Given I am on the "MUG" product group page
     When I make visible the filter "Price"
@@ -155,7 +155,7 @@ Feature: Edit a variant group adding/removing products
     And I should see product MUG_1 and MUG_2
     And I should not see products MUG_3 and POSTIT
 
-  @skip
+  @insulated
   Scenario: Successfully filter by has product
     Given I am on the "MUG" product group page
     When I make visible the filter "Has product"

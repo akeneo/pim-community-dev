@@ -60,7 +60,8 @@ class LocalDirResolverTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \Exception
-     * @expectedMessage The Pim\Bundle\CatalogBundle\Imagine\Cache\Resolver\LocalDirResolver is not meant to generate browser path
+     * @expectedMessage
+     *     The Pim\Bundle\CatalogBundle\Imagine\Cache\Resolver\LocalDirResolver is not meant to generate browser path
      */
     public function testGetBrowserPath()
     {
