@@ -404,3 +404,8 @@ pim_catalog.group.type:
     X_SELL:     X-Sell
     ADDITIONAL: Additional
     RELATED:    Related
+
+# Product view
+Group: Group
+View group: View group
+Products: Products
