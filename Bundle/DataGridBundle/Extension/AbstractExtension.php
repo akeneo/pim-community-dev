@@ -47,6 +47,15 @@ abstract class AbstractExtension implements ExtensionVisitorInterface
     }
 
     /**
+     * {@inheritDoc}
+     */
+    public function getPriority()
+    {
+        // default priority if not overridden by child
+        return 0;
+    }
+
+    /**
      * @param ConfigurationInterface      $configuration
      * @param                             $config
      *

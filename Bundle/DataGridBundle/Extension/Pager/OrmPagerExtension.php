@@ -83,6 +83,16 @@ class OrmPagerExtension extends AbstractExtension
     }
 
     /**
+     * Pager should proceed in the end of accepting chain
+     *
+     * @return int
+     */
+    public function getPriority()
+    {
+        return -240;
+    }
+
+    /**
      * Get param or return specified default value
      *
      * @param string $paramName

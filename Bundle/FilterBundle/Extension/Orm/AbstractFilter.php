@@ -34,6 +34,7 @@ abstract class AbstractFilter implements FilterInterface
     {
         $this->name   = $name;
         $this->params = $params;
+        $this->form   = null;
     }
 
     /**

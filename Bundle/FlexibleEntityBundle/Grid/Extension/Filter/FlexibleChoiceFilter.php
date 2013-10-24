@@ -34,7 +34,7 @@ class FlexibleChoiceFilter extends ChoiceFilter
         if ($data) {
             $operator = $this->getOperator($data['type']);
 
-            $fen = $this->get('flexible_entity_name');
+            $fen = $this->get(FlexibleFilterUtility::FEN_KEY);
             $this->util->applyFlexibleFilter($qb, $fen, $this->get('data_name'), $data['value'], $operator);
 
             return true;
@@ -71,7 +71,7 @@ class FlexibleChoiceFilter extends ChoiceFilter
     {
         if (null === $this->valueOptions) {
             $filedName       = $this->get('data_name');
-            $flexibleManager = $this->util->getFlexibleManager($this->get('flexible_entity_name'));
+            $flexibleManager = $this->util->getFlexibleManager($this->get(FlexibleFilterUtility::FEN_KEY));
 
             /** @var $attributeRepository ObjectRepository */
             $attributeRepository = $flexibleManager->getAttributeRepository();

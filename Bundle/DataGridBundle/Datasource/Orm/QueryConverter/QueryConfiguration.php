@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\DataGridBundle\Datasource\Orm\QueryConverter;
 
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
@@ -96,8 +97,8 @@ class QueryConfiguration implements ConfigurationInterface
     /**
      * @param  string $name Where type ('and', 'or')
      *
-     * @throws \Symfony\Component\Config\Definition\Exception\InvalidConfigurationException
-     * @return \Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition
+     * @throws InvalidConfigurationException
+     * @return ArrayNodeDefinition
      */
     protected function addWhereNode($name)
     {

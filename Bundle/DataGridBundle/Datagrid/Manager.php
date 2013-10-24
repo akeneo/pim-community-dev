@@ -20,10 +20,10 @@ class Manager implements ManagerInterface
     protected $resolver;
 
     /** @var array */
-    protected $rawConfiguration;
+    protected $rawConfiguration = [];
 
     /** @var array */
-    protected $processedConfiguration;
+    protected $processedConfiguration = [];
 
     public function __construct(array $rawConfiguration, Builder $builder, SystemAwareResolver $resolver)
     {
@@ -44,6 +44,24 @@ class Manager implements ManagerInterface
     }
 
     /**
+     * {@inheritDoc}
+     */
+    public function getConfigurationForGrid($name)
+    {
+        if (!isset($this->rawConfiguration[$name])) {
+            throw new \RuntimeException(sprintf('Configuration for datagrid "%s" not found', $name));
+        }
+
+        if (!isset($this->processedConfiguration[$name])) {
+            $config = $this->rawConfiguration[$name];
+
+            $this->processedConfiguration[$name] = $this->resolver->resolve($name, $config);
+        }
+
+        return $this->processedConfiguration[$name];
+    }
+
+    /**
      * Internal getter for builder
      *
      * @return Builder
@@ -51,30 +69,5 @@ class Manager implements ManagerInterface
     protected function getDatagridBuilder()
     {
         return $this->datagridBuilder;
-    }
-
-    /**
-     * Returns prepared config for requested datagrid
-     * Throws exception in case when datagrid configuration not found
-     * Cache prepared config in case if datagrid requested few times
-     *
-     * @param string $name
-     *
-     * @return array
-     * @throws \RuntimeException
-     */
-    protected function getConfigurationForGrid($name)
-    {
-        if (!isset($this->rawConfiguration[$name])) {
-            throw new \RuntimeException(sprintf('Configuration for datagrid "%s" not found', $name));
-        }
-
-        if (!isset($this->processedConfiguration[$name])) {
-            $result = $this->rawConfiguration[$name];
-
-            $this->processedConfiguration[$name] = $this->resolver->resolve($name, $result);
-        }
-
-        return $this->processedConfiguration[$name];
     }
 }

@@ -10,6 +10,8 @@ use Oro\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository;
 
 class FlexibleFilterUtility
 {
+    const FEN_KEY = 'flexible_entity_name';
+
     /** @var FlexibleManagerRegistry */
     protected $fmr;
 

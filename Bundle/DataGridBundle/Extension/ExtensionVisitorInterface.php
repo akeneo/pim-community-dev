@@ -14,4 +14,12 @@ interface ExtensionVisitorInterface
     public function visitResult(array $config, \stdClass $result);
 
     public function visitMetadata(array $config, \stdClass $data);
+
+    /**
+     * Returns priority needed for applying
+     * Format from -255 to 255
+     *
+     * @return int
+     */
+    public function getPriority();
 }

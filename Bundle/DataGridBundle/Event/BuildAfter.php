@@ -10,7 +10,7 @@ use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
  * Class BuildBefore
  * @package Oro\Bundle\DataGridBundle\Event
  *
- * This event dispatched after datagrid builder finish build datasource for datagrid
+ * This event dispatched after datagrid builder finish building datasource for datagrid
  */
 class BuildAfter extends Event implements GridEventInterface
 {
