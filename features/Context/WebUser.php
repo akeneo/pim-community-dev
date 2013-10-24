@@ -12,6 +12,7 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Product;
+use Behat\Mink\Element\Element;
 
 /**
  * Context of the website
@@ -82,8 +83,6 @@ class WebUser extends RawMinkContext
     }
 
      /**
-      * @param string $entity
-      *
       * @Given /^I create a new product group$/
       */
      public function iCreateANewProductGroup()
@@ -199,6 +198,16 @@ class WebUser extends RawMinkContext
     public function iVisitTheTab($tab)
     {
         $this->getCurrentPage()->visitTab($tab);
+    }
+
+    /**
+     * @param string $group
+     *
+     * @Given /^I visit the "([^"]*)" group$/
+     */
+    public function iVisitTheGroup($group)
+    {
+        $this->getCurrentPage()->visitGroup($group);
     }
 
     /* -------------------- Other methods -------------------- */
@@ -842,11 +851,24 @@ class WebUser extends RawMinkContext
      *
      * @Given /^I fill in the following information:$/
      */
-    public function iFillInTheFollowingInformation(TableNode $table)
+    public function iFillInTheFollowingInformation(TableNode $table, Element $element = null)
     {
         foreach ($table->getRowsHash() as $field => $value) {
-            $this->getCurrentPage()->fillField($field, $value);
+            $this->getCurrentPage()->fillField($field, $value, $element);
         }
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Given /^I fill in the following information in the popin?:$/
+     */
+    public function iFillInTheFollowingInformationInThePopin(TableNode $table)
+    {
+        $this->iFillInTheFollowingInformation(
+            $table,
+            $this->getCurrentPage()->find('css', '.ui-dialog')
+        );
     }
 
     /**
@@ -1613,6 +1635,9 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string       $code
+     * @param PyStringNode $csv
+     *
      * @Then /^exported file of "([^"]*)" should contain:$/
      */
     public function exportedFileOfShouldContain($code, PyStringNode $csv)
@@ -1643,6 +1668,9 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string    $code
+     * @param TableNode $table
+     *
      * @Then /^export directory of "([^"]*)" should contain the following media:$/
      */
     public function exportDirectoryOfShouldContainTheFollowingMedia($code, TableNode $table)

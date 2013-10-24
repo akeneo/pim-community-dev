@@ -349,32 +349,41 @@ class ProductController extends AbstractDoctrineController
 
         $associations = $this->getRepository('PimCatalogBundle:Association')->findAll();
 
-        $associationDatagridManager = $this->datagridWorker->getDatagridManager('product_association');
-        $associationDatagridManager->setProduct($product);
+        $associationProductGridManager = $this->datagridWorker->getDatagridManager('association_product');
+        $associationProductGridManager->setProduct($product);
+
+        $associationGroupGridManager = $this->datagridWorker->getDatagridManager('association_group');
+        $associationGroupGridManager->setProduct($product);
 
         $association = null;
         if (!empty($associations)) {
             $association = reset($associations);
-            $associationDatagridManager->setAssociationId($association->getId());
+            $associationProductGridManager->setAssociationId($association->getId());
+            $associationGroupGridManager->setAssociationId($association->getId());
         }
 
-        $associationDatagridManager->getRouteGenerator()->setRouteParameters(array('id' => $product->getId()));
+        $routeParameters = array('id' => $product->getId());
+        $associationProductGridManager->getRouteGenerator()->setRouteParameters($routeParameters);
+        $associationGroupGridManager->getRouteGenerator()->setRouteParameters($routeParameters);
 
-        $associationDatagridView = $associationDatagridManager->getDatagrid()->createView();
+        $associationProductGridView = $associationProductGridManager->getDatagrid()->createView();
+        $associationGroupGridView = $associationGroupGridManager->getDatagrid()->createView();
 
         return array(
-            'form'                => $form->createView(),
-            'dataLocale'          => $this->getDataLocale(),
-            'channels'            => $channels,
-            'attributesForm'      => $this->getAvailableProductAttributesForm($product->getAttributes())->createView(),
-            'product'             => $product,
-            'trees'               => $trees,
-            'created'             => $this->auditManager->getOldestLogEntry($product),
-            'updated'             => $this->auditManager->getNewestLogEntry($product),
-            'datagrid'            => $datagrid->createView(),
-            'associations'        => $associations,
-            'associationDatagrid' => $associationDatagridView,
-            'locales'             => $this->localeManager->getUserLocales()
+            'form'                   => $form->createView(),
+            'dataLocale'             => $this->getDataLocale(),
+            'channels'               => $channels,
+            'attributesForm'         =>
+                $this->getAvailableProductAttributesForm($product->getAttributes())->createView(),
+            'product'                => $product,
+            'trees'                  => $trees,
+            'created'                => $this->auditManager->getOldestLogEntry($product),
+            'updated'                => $this->auditManager->getNewestLogEntry($product),
+            'datagrid'               => $datagrid->createView(),
+            'associations'           => $associations,
+            'associationProductGrid' => $associationProductGridView,
+            'associationGroupGrid'   => $associationGroupGridView,
+            'locales'                => $this->localeManager->getUserLocales(),
         );
     }
 
@@ -491,7 +500,7 @@ class ProductController extends AbstractDoctrineController
     }
 
     /**
-     * List associations for the provided product
+     * List product associations for the provided product
      *
      * @param Request $request The request object
      * @param integer $id      Product id
@@ -500,11 +509,33 @@ class ProductController extends AbstractDoctrineController
      * @AclAncestor("pim_catalog_product_associations_view")
      * @return Response
      */
-    public function listAssociationsAction(Request $request, $id)
+    public function listProductAssociationsAction(Request $request, $id)
     {
         $product = $this->findProductOr404($id);
 
-        $datagridManager = $this->datagridWorker->getDatagridManager('product_association');
+        $datagridManager = $this->datagridWorker->getDatagridManager('association_product');
+        $datagridManager->setProduct($product);
+
+        $datagridView = $datagridManager->getDatagrid()->createView();
+
+        return $this->gridRenderer->renderResultsJsonResponse($datagridView);
+    }
+
+    /**
+     * List group associations for the provided product
+     *
+     * @param Request $request The request object
+     * @param integer $id      Product id
+     *
+     * @Template
+     * @AclAncestor("pim_catalog_product_associations_view")
+     * @return Response
+     */
+    public function listGroupAssociationsAction(Request $request, $id)
+    {
+        $product = $this->findProductOr404($id);
+
+        $datagridManager = $this->datagridWorker->getDatagridManager('association_group');
         $datagridManager->setProduct($product);
 
         $datagridView = $datagridManager->getDatagrid()->createView();

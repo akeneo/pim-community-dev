@@ -21,6 +21,7 @@ use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
 
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 
+use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\GridBundle\Action\ActionInterface;
@@ -242,9 +243,8 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $field = $this->createCompletenessField();
         $fieldsCollection->add($field);
 
-        // TODO : Add a filter per type
-        // $field = $this->createVariantGroupField();
-        // $fieldsCollection->add($field);
+        $field = $this->createGroupField();
+        $fieldsCollection->add($field);
     }
 
     /**
@@ -387,30 +387,39 @@ class ProductDatagridManager extends FlexibleDatagridManager
     }
 
     /**
-     * Create the variant group field
+     * Create a group field
+     *
+     * @param GroupType $groupType
      *
      * @return FieldDescription
      */
-    protected function createVariantGroupField()
+    protected function createGroupField()
     {
+        $em = $this->flexibleManager->getStorageManager();
+        $choices = $em->getRepository('PimCatalogBundle:Group')->getChoices();
+
         $field = new FieldDescription();
-        $field->setName('variantGroup');
+        $field->setName('pGroup');
         $field->setOptions(
             array(
-                'type'            => FieldDescriptionInterface::TYPE_TEXT,
-                'label'           => $this->translate('Variant group'),
-                'field_name'      => 'variantGroup',
-                'expression'      => 'variantGroup',
-                'filter_type'     => FilterInterface::TYPE_ENTITY,
+                'type'            => FieldDescriptionInterface::TYPE_HTML,
+                'label'           => $this->translate('Groups'),
+                'field_name'      => 'groups',
+                'expression'      => 'pGroup.id',
+                'filter_type'     => FilterInterface::TYPE_CHOICE,
                 'required'        => false,
-                'sortable'        => true,
+                'sortable'        => false,
                 'filterable'      => true,
                 'show_filter'     => true,
                 'multiple'        => true,
-                'class'           => 'PimCatalogBundle:VariantGroup',
-                'property'        => 'label',
+                'field_options'   => array('choices' => $choices),
                 'filter_by_where' => true,
+                'show_column'     => false
             )
+        );
+
+        $field->setProperty(
+            new TwigTemplateProperty($field, 'PimGridBundle:Rendering:_optionsToString.html.twig')
         );
 
         return $field;
@@ -568,8 +577,8 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $proxyQuery
             ->leftJoin($rootAlias .'.family', 'productFamily')
             ->leftJoin('productFamily.translations', 'ft', 'WITH', 'ft.locale = :localeCode')
-            ->leftJoin($rootAlias .'.groups', 'Group')
-            ->leftJoin('Group.translations', 'vt', 'WITH', 'vt.locale = :localeCode')
+            ->leftJoin($rootAlias .'.groups', 'pGroup')
+            ->leftJoin('pGroup.translations', 'gt', 'WITH', 'gt.locale = :localeCode')
             ->leftJoin($rootAlias.'.values', 'values')
             ->leftJoin('values.options', 'valueOptions')
             ->leftJoin('values.prices', 'valuePrices')
@@ -581,7 +590,8 @@ class ProductDatagridManager extends FlexibleDatagridManager
             ->addSelect('values')
             ->addSelect('valuePrices')
             ->addSelect('valueOptions')
-            ->addSelect('category');
+            ->addSelect('category')
+            ->addSelect('pGroup');
 
         $this->prepareQueryForCompleteness($proxyQuery, $rootAlias);
         $this->prepareQueryForCategory($proxyQuery, $rootAlias);

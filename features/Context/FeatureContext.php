@@ -105,6 +105,10 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
      */
     public function listToArray($list)
     {
+        if (empty($list)) {
+            return array();
+        }
+
         return explode(', ', str_replace(' and ', ', ', $list));
     }
 
