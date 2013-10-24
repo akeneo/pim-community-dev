@@ -30,7 +30,7 @@ class OroAutoLoader extends YamlFileLoader
         $routes = new RouteCollection();
 
         foreach ($this->kernel->getBundles() as $bundle) {
-            $path = $bundle->getPath() . '/Resources/config/oro_routing.yml';
+            $path = $bundle->getPath() . '/Resources/config/oro/routing.yml';
 
             if (is_file($path)) {
                 $routes->addCollection(parent::load($path, $type));

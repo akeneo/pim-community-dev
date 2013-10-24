@@ -87,7 +87,7 @@ class TransactionEmail extends AbstractEntity implements Entity
     public function setGroups($groups = array())
     {
         foreach ($groups as $group) {
-            $this->groups->element($this->using('xpath')->value("div[label[text() = '{$group}']]/input"))->click();
+            $this->groups->element($this->using('xpath')->value("div[label[normalize-space(text()) = '{$group}']]/input"))->click();
         }
 
         return $this;

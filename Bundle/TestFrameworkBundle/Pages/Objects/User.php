@@ -192,7 +192,7 @@ class User extends AbstractEntity implements Entity
     public function setRoles($roles = array())
     {
         foreach ($roles as $role) {
-            $this->roles->element($this->using('xpath')->value("div[label[text() = '{$role}']]/input"))->click();
+            $this->roles->element($this->using('xpath')->value("div[label[normalize-space(text()) = '{$role}']]/input"))->click();
         }
 
         return $this;
@@ -207,7 +207,7 @@ class User extends AbstractEntity implements Entity
     public function setGroups($groups = array())
     {
         foreach ($groups as $group) {
-            $this->groups->element($this->using('xpath')->value("div[label[text() = '{$group}']]/input"))->click();
+            $this->groups->element($this->using('xpath')->value("div[label[normalize-space(text()) = '{$group}']]/input"))->click();
         }
 
         return $this;
@@ -238,11 +238,11 @@ class User extends AbstractEntity implements Entity
 
     public function viewInfo($userName)
     {
-        $this->byXPath("//ul[@class='nav pull-right']//a[@class='dropdown-toggle']")->click();
+        $this->byXPath("//ul[@class='nav pull-right user-menu']//a[@class='dropdown-toggle']")->click();
         $this->waitForAjax();
-        $this->byXpath("//ul[@class='dropdown-menu']//a[contains(., 'My User')]")->click();
+        $this->byXpath("//ul[@class='dropdown-menu']//a[contains(normalize-space(.), 'My User')]")->click();
         $this->waitPageToLoad();
-        $this->assertElementPresent("//div[label[text() = 'User name']]//div/p[text() = '$userName']");
+        $this->assertElementPresent("//div[label[normalize-space(text()) = 'User name']]//div/p[normalize-space(text()) = '$userName']");
         return $this;
     }
 
