@@ -21,4 +21,3 @@ pim_dashboard:
             family: Manage families
             association: Manage associations
             currency: Manage currencies
-            locale: List locales
