@@ -98,7 +98,7 @@ class EntitySubscriber implements EventSubscriber
                     $em  = $event->getEntityManager();
                     $uow = $em->getUnitOfWork();
                     $uow->recomputeSingleEntityChangeSet(
-                        $em->getClassMetadata("OroCalendarBundle:CalendarEvent"),
+                        $em->getClassMetadata('OroCalendarBundle:CalendarEvent'),
                         $entity
                     );
                 }
