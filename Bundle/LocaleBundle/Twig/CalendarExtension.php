@@ -2,21 +2,21 @@
 
 namespace Oro\Bundle\LocaleBundle\Twig;
 
-use Oro\Bundle\LocaleBundle\Model\Calendar;
+use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
 
 class CalendarExtension extends \Twig_Extension
 {
     /**
-     * @var Calendar
+     * @var LocaleSettings
      */
-    protected $calendar;
+    protected $localeSettings;
 
     /**
-     * @param Calendar $calendar
+     * @param LocaleSettings $localeSettings
      */
-    public function __construct(Calendar $calendar)
+    public function __construct(LocaleSettings $localeSettings)
     {
-        $this->calendar = $calendar;
+        $this->localeSettings = $localeSettings;
     }
 
     /**
@@ -52,7 +52,7 @@ class CalendarExtension extends \Twig_Extension
      */
     public function getMonthNames($width = null, $locale = null)
     {
-        return $this->calendar->getMonthNames($width, $locale);
+        return $this->localeSettings->getCalendar($locale)->getMonthNames($width);
     }
 
     /**
@@ -64,7 +64,7 @@ class CalendarExtension extends \Twig_Extension
      */
     public function getDayOfWeekNames($width = null, $locale = null)
     {
-        return $this->calendar->getDayOfWeekNames($width, $locale);
+        return $this->localeSettings->getCalendar($locale)->getDayOfWeekNames($width);
     }
 
     /**
@@ -75,7 +75,7 @@ class CalendarExtension extends \Twig_Extension
      */
     public function getFirstDayOfWeek($locale = null)
     {
-        return $this->calendar->getFirstDayOfWeek($locale);
+        return $this->localeSettings->getCalendar($locale)->getFirstDayOfWeek();
     }
 
     /**

@@ -1,6 +1,6 @@
 /* global define */
-define(['jquery', 'underscore', 'oro/translator', 'oro/datafilter/choice-filter'],
-function($, _, __, ChoiceFilter) {
+define(['jquery', 'underscore', 'oro/translator', 'oro/datafilter/choice-filter', 'oro/locale-settings'],
+function($, _, __, ChoiceFilter, localeSettings) {
     'use strict';
 
     /**
@@ -80,7 +80,7 @@ function($, _, __, ChoiceFilter) {
             changeMonth: true,
             changeYear:  true,
             yearRange:  '-80:+1',
-            dateFormat: 'yy-mm-dd',
+            dateFormat: localeSettings.getVendorDateTimeFormat('jquery_ui', 'date', 'mm/dd/yy'),
             altFormat:  'yy-mm-dd',
             className:      'date-filter-widget',
             showButtonPanel: true,

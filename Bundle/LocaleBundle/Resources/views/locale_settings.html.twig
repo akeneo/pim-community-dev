@@ -40,17 +40,6 @@ function($, localeSettings) {
 
     var settings = {{ settings|json_encode|raw }};
 
-	// Convert to js representation as an array with first index 0
-    settings.calendar.first_dow          = settings.calendar.first_day_of_week - 1;
-
-    settings.calendar.dow.wide           = $.map(settings.calendar.dow.wide, function(v) {return v});
-    settings.calendar.dow.abbreviated    = $.map(settings.calendar.dow.abbreviated, function(v) {return v});
-    settings.calendar.dow.short          = $.map(settings.calendar.dow.short, function(v) {return v});
-    settings.calendar.dow.narrow         = $.map(settings.calendar.dow.narrow, function(v) {return v});
-
-    settings.calendar.months.wide        = $.map(settings.calendar.months.wide, function(v) {return v});
-    settings.calendar.months.abbreviated = $.map(settings.calendar.months.abbreviated, function(v) {return v});
-    settings.calendar.months.narrow      = $.map(settings.calendar.months.narrow, function(v) {return v});
     localeSettings.extendSettings(settings);
 });
 </script>

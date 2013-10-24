@@ -13,6 +13,11 @@ class LocaleSettingsTest extends \PHPUnit_Framework_TestCase
     protected $configManager;
 
     /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $calendarFactory;
+
+    /**
      * @var LocaleSettings
      */
     protected $localeSettings;
@@ -22,7 +27,8 @@ class LocaleSettingsTest extends \PHPUnit_Framework_TestCase
         $this->configManager = $this->getMockBuilder('Oro\Bundle\ConfigBundle\Config\ConfigManager')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->localeSettings = new LocaleSettings($this->configManager);
+        $this->calendarFactory = $this->getMock('Oro\Bundle\LocaleBundle\Model\CalendarFactoryInterface');
+        $this->localeSettings = new LocaleSettings($this->configManager, $this->calendarFactory);
     }
 
     public function testAddNameFormats()
@@ -278,5 +284,38 @@ class LocaleSettingsTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($expectedCurrency, $this->localeSettings->getCurrency());
         $this->assertEquals($expectedCurrency, $this->localeSettings->getCurrency());
+    }
+
+    public function testGetCalendarDefaultLocale()
+    {
+        $expectedLocale = 'ru_RU';
+
+        $this->configManager->expects($this->once())
+            ->method('get')
+            ->with('oro_locale.locale')
+            ->will($this->returnValue($expectedLocale));
+
+        $calendar = $this->getMock('Oro\Bundle\LocaleBundle\Model\Calendar');
+
+        $this->calendarFactory->expects($this->once())->method('getCalendar')
+            ->with($expectedLocale)
+            ->will($this->returnValue($calendar));
+
+        $this->assertSame($calendar, $this->localeSettings->getCalendar());
+    }
+
+    public function testGetCalendarSpecificLocale()
+    {
+        $locale = 'ru_RU';
+
+        $this->configManager->expects($this->never())->method($this->anything());
+
+        $calendar = $this->getMock('Oro\Bundle\LocaleBundle\Model\Calendar');
+
+        $this->calendarFactory->expects($this->once())->method('getCalendar')
+            ->with($locale)
+            ->will($this->returnValue($calendar));
+
+        $this->assertSame($calendar, $this->localeSettings->getCalendar($locale));
     }
 }

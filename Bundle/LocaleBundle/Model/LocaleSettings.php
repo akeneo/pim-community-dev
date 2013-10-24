@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\LocaleBundle\Model;
 
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Intl\Intl;
 
 use Oro\Bundle\ConfigBundle\Config\ConfigManager;
@@ -120,11 +121,18 @@ class LocaleSettings
     protected $currencyData = array();
 
     /**
-     * @param ConfigManager $configManager
+     * @var CalendarFactoryInterface
      */
-    public function __construct(ConfigManager $configManager)
+    protected $calendarFactory;
+
+    /**
+     * @param ConfigManager $configManager
+     * @param CalendarFactoryInterface $calendarFactory
+     */
+    public function __construct(ConfigManager $configManager, CalendarFactoryInterface $calendarFactory)
     {
         $this->configManager = $configManager;
+        $this->calendarFactory = $calendarFactory;
     }
 
     /**
@@ -307,6 +315,17 @@ class LocaleSettings
             }
         }
         return $this->timeZone;
+    }
+
+    /**
+     * Get calendar instance
+     *
+     * @param string|null $locale
+     * @return Calendar
+     */
+    public function getCalendar($locale = null)
+    {
+        return $this->calendarFactory->getCalendar($locale ? : $this->getLocale());
     }
 
     /**

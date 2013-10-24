@@ -7,22 +7,24 @@ use Oro\Bundle\LocaleBundle\Model\Calendar;
 class CalendarTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
-     */
-    protected $localeSettings;
-
-    /**
      * @var Calendar
      */
     protected $calendar;
 
+    /**
+     * @var string
+     */
+    protected $defaultLocale;
+
     protected function setUp()
     {
-        $this->localeSettings = $this->getMockBuilder('Oro\Bundle\LocaleBundle\Model\LocaleSettings')
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->calendar = new Calendar();
+        $this->defaultLocale = \Locale::getDefault();
+    }
 
-        $this->calendar = new Calendar($this->localeSettings);
+    protected function tearDown()
+    {
+        \Locale::setDefault($this->defaultLocale);
     }
 
     /**
@@ -30,10 +32,9 @@ class CalendarTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetFirstDayOfWeek($locale, $expected, $defaultLocale = null)
     {
+        $this->calendar->setLocale($locale);
         if (null !== $defaultLocale) {
-            $this->localeSettings->expects($this->once())
-                ->method('getLocale')
-                ->will($this->returnValue($defaultLocale));
+            \Locale::setDefault($defaultLocale);
         }
         $this->assertEquals($expected, $this->calendar->getFirstDayOfWeek($locale));
     }
@@ -71,12 +72,11 @@ class CalendarTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetMonthNames($width, $locale, array $expected, $defaultLocale = null)
     {
+        $this->calendar->setLocale($locale);
         if (null !== $defaultLocale) {
-            $this->localeSettings->expects($this->once())
-                ->method('getLocale')
-                ->will($this->returnValue($defaultLocale));
+            \Locale::setDefault($defaultLocale);
         }
-        $this->assertEquals($expected, $this->calendar->getMonthNames($width, $locale));
+        $this->assertEquals($expected, $this->calendar->getMonthNames($width));
     }
 
     public function getMonthNamesDataProvider()
@@ -138,12 +138,11 @@ class CalendarTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetDayOfWeekNames($width, $locale, array $expected, $defaultLocale = null)
     {
+        $this->calendar->setLocale($locale);
         if (null !== $defaultLocale) {
-            $this->localeSettings->expects($this->once())
-                ->method('getLocale')
-                ->will($this->returnValue($defaultLocale));
+            \Locale::setDefault($defaultLocale);
         }
-        $this->assertEquals($expected, $this->calendar->getDayOfWeekNames($width, $locale));
+        $this->assertEquals($expected, $this->calendar->getDayOfWeekNames($width));
     }
 
     /**
@@ -284,5 +283,12 @@ class CalendarTest extends \PHPUnit_Framework_TestCase
                 )
             ),
         );
+    }
+
+    public function testLocale()
+    {
+        $this->assertEquals(\Locale::getDefault(), $this->calendar->getLocale());
+        $this->calendar->setLocale('ru_RU');
+        $this->assertEquals('ru_RU', $this->calendar->getLocale());
     }
 }

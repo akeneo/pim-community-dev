@@ -1,8 +1,7 @@
 /* global define */
-define(['jquery', 'underscore', 'oro/datafilter/date-filter'],
-    function($, _, DateFilter) {
+define(['jquery', 'underscore', 'oro/datafilter/date-filter', 'oro/locale-settings'],
+    function($, _, DateFilter, localeSettings) {
         'use strict';
-
     /**
      * Datetime filter: filter type as option + interval begin and end dates
      *
@@ -24,7 +23,7 @@ define(['jquery', 'underscore', 'oro/datafilter/date-filter'],
          * @property
          */
         dateWidgetOptions: _.extend({
-            timeFormat: "HH:mm",
+            timeFormat: localeSettings.getVendorDateTimeFormat('jquery_ui', 'time', 'HH:mm'),
             altFieldTimeOnly: false,
             altSeparator: ' ',
             altTimeFormat: 'HH:mm'

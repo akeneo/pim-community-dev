@@ -34,9 +34,9 @@ function(_, settings) {
             format: {
                 datetime: {
                     moment: {
-                        'date': 'YYYY-MM-DD',
-                        'time': 'HH:mms',
-                        'datetime': 'YYYY-MM-DD HH:mm'
+                        date: 'YYYY-MM-DD',
+                        time: 'HH:mms',
+                        datetime: 'YYYY-MM-DD HH:mm'
                     }
                 },
                 address: {
@@ -45,6 +45,56 @@ function(_, settings) {
                 name: {
                     en_US: '%prefix% %first_name% %middle_name% %last_name% %suffix%'
                 }
+            },
+            calendar: {
+                dow: {
+                    wide: {
+                        1: 'Sunday',
+                        2: 'Monday',
+                        3: 'Tuesday',
+                        4: 'Wednesday',
+                        5: 'Thursday',
+                        6: 'Friday',
+                        7: 'Saturday'
+                    },
+                    abbreviated: { 1: 'Sun', 2: 'Mon', 3: 'Tue', 4: 'Wed', 5: 'Thu', 6: 'Fri', 7: 'Sat' },
+                    short:       { 1: 'Su',  2: 'Mo',  3: 'Tu',  4: 'We',  5: 'Th',  6: 'Fr',  7: 'Sa' },
+                    narrow:      { 1: 'S',   2: 'M',   3: 'T',   4: 'W',   5: 'T',   6: 'F',   7: 'S' }
+                },
+                months: {
+                    wide: {
+                        1:  'January',
+                        2:  'February',
+                        3:  'March',
+                        4:  'April',
+                        5:  'May',
+                        6:  'June',
+                        7:  'July',
+                        8:  'August',
+                        9:  'September',
+                        10: 'October',
+                        11: 'November',
+                        12: 'December'
+                    },
+                    abbreviated: {
+                        1:  'Jan',
+                        2:  'Feb',
+                        3:  'Mar',
+                        4:  'Apr',
+                        5:  'May',
+                        6:  'Jun',
+                        7:  'Jul',
+                        8:  'Aug',
+                        9:  'Sep',
+                        10: 'Oct',
+                        11: 'Nov',
+                        12: 'Dec'
+                    },
+                    narrow:{
+                        1: 'J', 2: 'F', 3: 'M', 4: 'A', 5: 'M', 6: 'J', 7: 'J', 8: 'A', 9: 'S', 10: 'O', 11: 'N', 12: 'D'
+                    }
+                },
+                first_dow: 1
             }
         },
 
@@ -83,8 +133,24 @@ function(_, settings) {
         },
 
         getCountryLocale: function(country) {
-            return this.getLocaleData(country, 'default_locale')
-                || this.settings.locale;
+            return this.getLocaleData(country, 'default_locale') || this.settings.locale;
+        },
+
+        /**
+         * Gets default vendor specific locale for date time of specific type
+         *
+         * @param {string} vendor Registered vendor name, for example - "moment" or "jquery_ui"
+         * @param {string} type "date"|"datetime"|"time"
+         * @param {string} defaultValue
+         * @returns {string}
+         */
+        getVendorDateTimeFormat: function(vendor, type, defaultValue) {
+            if (this.settings.format.datetime.hasOwnProperty(vendor)) {
+                type = (type && this.settings.format.datetime[vendor].hasOwnProperty(type)) ? type : 'datetime'
+
+                return this.settings.format.datetime[vendor][type];
+            }
+            return defaultValue;
         },
 
         getLocaleData: function(country, dataType) {
@@ -96,6 +162,51 @@ function(_, settings) {
 
         isFormatAddressByAddressCountry: function() {
             return this.settings.format_address_by_address_country;
+        },
+
+        /**
+         * Gets months names array or object.
+         *
+         * If object then value of key '1' is January, if array first element is January
+         *
+         * @param width
+         * @param asArray
+         * @returns {*}
+         */
+        getCalendarMonthNames: function(width, asArray) {
+            width = (width && this.settings.calendar.months.hasOwnProperty(width)) ? width : 'wide';
+            var result = this.settings.calendar.months[width];
+            if (asArray) {
+                result = _.map(result, function(v) { return v });
+            }
+            return result;
+        },
+
+        /**
+         * Gets week day names array or object.
+         *
+         * If object then value of key '1' is Sunday, if array first element is Sunday
+         *
+         * @param {string} [width] "wide" - default |"abbreviated"|"short"|"narrow"
+         * @param {boolean} [asArray] Default false
+         * @returns {Object}|{Array}
+         */
+        getCalendarDayOfWeekNames: function(width, asArray) {
+            width = (width && this.settings.calendar.dow.hasOwnProperty(width)) ? width : 'wide';
+            var result = this.settings.calendar.dow[width];
+            if (asArray) {
+                result = _.map(result, function(v) { return v });
+            }
+            return result;
+        },
+
+        /**
+         * Gets first day of week starting from 1.
+         *
+         * @returns {int}
+         */
+        getCalendarFirstDayOfWeek: function() {
+            return this.settings.calendar.first_dow;
         }
     };
 

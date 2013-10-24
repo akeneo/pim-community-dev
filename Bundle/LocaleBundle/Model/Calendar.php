@@ -9,13 +9,13 @@ use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
  */
 class Calendar
 {
-    const DOW_SUNDAY = 1;
-    const DOW_MONDAY = 2;
-    const DOW_TUESDAY = 3;
+    const DOW_SUNDAY    = 1;
+    const DOW_MONDAY    = 2;
+    const DOW_TUESDAY   = 3;
     const DOW_WEDNESDAY = 4;
-    const DOW_THURSDAY = 5;
-    const DOW_FRIDAY = 6;
-    const DOW_SATURDAY = 7;
+    const DOW_THURSDAY  = 5;
+    const DOW_FRIDAY    = 6;
+    const DOW_SATURDAY  = 7;
 
     const WIDTH_WIDE        = 'wide';        // Tuesday | September
     const WIDTH_ABBREVIATED = 'abbreviated'; // Tues    | Sept
@@ -23,27 +23,49 @@ class Calendar
     const WIDTH_NARROW      = 'narrow';      // T       | S
 
     /**
-     * @var LocaleSettings
+     * @var string
      */
-    protected $localeSettings;
+    protected $locale;
 
     /**
-     * @param LocaleSettings $localeSettings
+     * @param string $locale
      */
-    public function __construct(LocaleSettings $localeSettings)
+    public function __construct($locale = null)
     {
-        $this->localeSettings = $localeSettings;
+        $this->locale = $locale;
+    }
+
+    /**
+     * Gets current calendar locale
+     *
+     * @return string
+     */
+    public function getLocale()
+    {
+        if (null === $this->locale) {
+            $this->locale = \Locale::getDefault();
+        }
+        return $this->locale;
+    }
+
+    /**
+     * Sets current calendar locale
+     *
+     * @param string $locale
+     */
+    public function setLocale($locale)
+    {
+        $this->locale = $locale;
     }
 
     /**
      * Get instance of intl calendar object
      *
-     * @param string|null $locale
      * @return int
      */
-    public function getFirstDayOfWeek($locale = null)
+    public function getFirstDayOfWeek()
     {
-        $formatter = $this->getFormatter($locale, 'cc');
+        $formatter = $this->getFormatter('cc');
         $sundayNumber = $formatter->format(new \DateTime('Sunday, January 1, 2012'));
 
         // there are cases when return value is not a number, for example locales: ar_SA, hi_IN, kn_IN, etc.
@@ -58,11 +80,10 @@ class Calendar
     /**
      * Get list of month names, month with index 1 is January
      *
-     * @param string|null $locale
      * @param string $width Constant WIDTH_WIDE|WIDTH_ABBREVIATED|NARROW
      * @return array
      */
-    public function getMonthNames($width = null, $locale = null)
+    public function getMonthNames($width = null)
     {
         switch ($width) {
             // Sept
@@ -80,7 +101,7 @@ class Calendar
                 $pattern = 'LLLL';
                 break;
         }
-        $formatter = $this->getFormatter($locale, $pattern);
+        $formatter = $this->getFormatter($pattern);
         return array(
             1 => $formatter->format(new \DateTime('2013-01-01')),
             $formatter->format(new \DateTime('2013-02-01')),
@@ -100,11 +121,10 @@ class Calendar
     /**
      * Get list of day names
      *
-     * @param string|null $locale
      * @param string $width Constant WIDTH_WIDE|WIDTH_ABBREVIATED|WIDTH_SHORT|WIDTH_NARROW
      * @return array
      */
-    public function getDayOfWeekNames($width = null, $locale = null)
+    public function getDayOfWeekNames($width = null)
     {
         switch ($width) {
             // Tues
@@ -126,7 +146,7 @@ class Calendar
                 break;
         }
 
-        $formatter = $this->getFormatter($locale, $pattern);
+        $formatter = $this->getFormatter($pattern);
         return array(
             self::DOW_SUNDAY    => $formatter->format(new \DateTime('Sunday, January 1, 2012')),
             self::DOW_MONDAY    => $formatter->format(new \DateTime('Monday, January 2, 2012')),
@@ -141,14 +161,13 @@ class Calendar
     /**
      * Gets instance of intl date formatter by parameters
      *
-     * @param string|null $locale
      * @param string|null $pattern
      * @return \IntlDateFormatter
      */
-    protected function getFormatter($locale = null, $pattern = null)
+    protected function getFormatter($pattern = null)
     {
         return new \IntlDateFormatter(
-            $locale ? : $this->localeSettings->getLocale(),
+            $this->getLocale(),
             null,
             null,
             null,

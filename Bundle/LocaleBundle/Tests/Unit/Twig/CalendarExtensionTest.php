@@ -15,14 +15,20 @@ class CalendarExtensionTest extends \PHPUnit_Framework_TestCase
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject
      */
+    protected $localeSettings;
+
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
     protected $calendar;
 
     protected function setUp()
     {
-        $this->calendar = $this->getMockBuilder('Oro\Bundle\LocaleBundle\Model\Calendar')
+        $this->localeSettings = $this->getMockBuilder('Oro\Bundle\LocaleBundle\Model\LocaleSettings')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->extension = new CalendarExtension($this->calendar);
+        $this->calendar = $this->getMockBuilder('Oro\Bundle\LocaleBundle\Model\Calendar')->getMock();
+        $this->extension = new CalendarExtension($this->localeSettings);
     }
 
     public function testGetFunctions()
@@ -48,8 +54,12 @@ class CalendarExtensionTest extends \PHPUnit_Framework_TestCase
         $expectedResult = array('expected_result');
 
         $this->calendar->expects($this->once())->method('getMonthNames')
-            ->with($width, $locale)
+            ->with($width)
             ->will($this->returnValue($expectedResult));
+
+        $this->localeSettings->expects($this->once())->method('getCalendar')
+            ->with($locale)
+            ->will($this->returnValue($this->calendar));
 
         $this->assertEquals($expectedResult, $this->extension->getMonthNames($width, $locale));
     }
@@ -61,8 +71,12 @@ class CalendarExtensionTest extends \PHPUnit_Framework_TestCase
         $expectedResult = array('expected_result');
 
         $this->calendar->expects($this->once())->method('getDayOfWeekNames')
-            ->with($width, $locale)
+            ->with($width)
             ->will($this->returnValue($expectedResult));
+
+        $this->localeSettings->expects($this->once())->method('getCalendar')
+            ->with($locale)
+            ->will($this->returnValue($this->calendar));
 
         $this->assertEquals($expectedResult, $this->extension->getDayOfWeekNames($width, $locale));
     }
@@ -73,8 +87,12 @@ class CalendarExtensionTest extends \PHPUnit_Framework_TestCase
         $expectedResult = Calendar::DOW_MONDAY;
 
         $this->calendar->expects($this->once())->method('getFirstDayOfWeek')
-            ->with($locale)
+            ->with()
             ->will($this->returnValue($expectedResult));
+
+        $this->localeSettings->expects($this->once())->method('getCalendar')
+            ->with($locale)
+            ->will($this->returnValue($this->calendar));
 
         $this->assertEquals($expectedResult, $this->extension->getFirstDayOfWeek($locale));
     }

@@ -1,6 +1,7 @@
 parameters:
     oro_locale.settings.class: Oro\Bundle\LocaleBundle\Model\LocaleSettings
     oro_locale.calendar.class: Oro\Bundle\LocaleBundle\Model\Calendar
+    oro_locale.calendar_factory.class: Oro\Bundle\LocaleBundle\Model\CalendarFactory
     oro_locale.form.type.name_format.type.class: Oro\Bundle\LocaleBundle\Form\Type\NameFormatType
 
     oro_locale.format_converter.date_time.registry.class: Oro\Bundle\LocaleBundle\Converter\DateTimeFormatConverterRegistry
@@ -25,16 +26,22 @@ services:
         class: %oro_locale.settings.class%
         arguments:
             - @oro_config.global
+            - @oro_locale.calendar_factory
         calls:
             - [addNameFormats, [%oro_locale.format.name%]]
             - [addAddressFormats, [%oro_locale.format.address%]]
             - [addLocaleData, [%oro_locale.locale_data%]]
             - [addCurrencyData, [%oro_locale.currency_data%]]
 
+    # Calendar
     oro_locale.calendar:
+        scope: prototype
         class: %oro_locale.calendar.class%
+
+    oro_locale.calendar_factory:
+        class: %oro_locale.calendar_factory.class%
         arguments:
-            - @oro_locale.settings
+            - @service_container
 
     # Form types
     oro_locale.form.type.name_format.type:
@@ -102,7 +109,7 @@ services:
     oro_locale.twig.calendar:
         class: %oro_locale.twig.calendar.class%
         arguments:
-            - @oro_locale.calendar
+            - @oro_locale.settings
         tags:
             - { name: twig.extension }
 

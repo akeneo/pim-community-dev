@@ -18,33 +18,22 @@
 {% endblock %}
 
 {% block oro_type_date_range_filter_js %}
-    {% set widgetOptions = formView.vars.widget_options|merge({
-        dateFormat: oro_date_format('jquery_ui')
-    }) %}
-
     new (DateFilter.extend({
         'name':    {{ formView.vars.name|json_encode|raw }},
         'label':   {{ formView.vars.label|json_encode|raw }},
         'enabled': {{ formView.vars.show_filter|json_encode|raw }},
         'choices': {{ formView.children.type.vars.choices|oro_filter_choices|json_encode|raw }},
-        'typeValues': {{ formView.vars.type_values|json_encode|raw }},
-        'externalWidgetOptions': {{ widgetOptions|json_encode|raw }}
+        'typeValues': {{ formView.vars.type_values|json_encode|raw }}
     }))
 {% endblock %}
 
 {% block oro_type_datetime_range_filter_js %}
-    {% set widgetOptions = formView.vars.widget_options|merge({
-        dateFormat: oro_date_format('jquery_ui'),
-        timeFormat: oro_time_format('jquery_ui')
-    }) %}
-
     new (DatetimeFilter.extend({
         'name':    {{ formView.vars.name|json_encode|raw }},
         'label':   {{ formView.vars.label|json_encode|raw }},
         'enabled': {{ formView.vars.show_filter|json_encode|raw }},
         'choices': {{ formView.children.type.vars.choices|oro_filter_choices|json_encode|raw }},
-        'typeValues': {{ formView.vars.type_values|json_encode|raw }},
-        'externalWidgetOptions': {{ widgetOptions|json_encode|raw }}
+        'typeValues': {{ formView.vars.type_values|json_encode|raw }}
     }))
 {% endblock %}
 

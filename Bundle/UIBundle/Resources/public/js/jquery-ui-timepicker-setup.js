@@ -10,7 +10,7 @@ function($, __, localeSettings) {
         closeText: __('Done'),
         amNames: [__('AM'), __('A')],
         pmNames: [__('PM'), __('P')],
-        timeFormat: 'HH:mm',
+        timeFormat: localeSettings.getVendorDateTimeFormat('jquery_ui', 'time', 'HH:mm'),
         timeSuffix: '',
         timeOnlyTitle: __('Choose Time'),
         timeText: __('Time'),
