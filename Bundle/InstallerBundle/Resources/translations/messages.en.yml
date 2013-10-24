@@ -1,7 +1,8 @@
 title:                    Oro Application installation
 
-wait:                     In progress...
-passed:                   Passed
+wait:                     Waiting
+progress:                 In progress...
+passed:                   Done
 failed:                   Failed
 
 form:
@@ -65,7 +66,7 @@ process:
             assetic:      Dump assetic
             assetic-oro:  Dump Oro assetic
             translation:  Prepare translations
-            requirejs:    Optimize RequireJS resources
+            requirejs:    Optimize RequireJS resources (this process might take few minutes)
             cache:        Clear cache
         final:
             header:       Finish

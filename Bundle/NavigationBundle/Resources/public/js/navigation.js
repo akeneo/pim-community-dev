@@ -682,7 +682,7 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
              * Processing links in 3 dots menu after item is added (e.g. favourites)
              */
             mediator.bind(
-                "navigaion_item:added",
+                "navigation_item:added",
                 function (item) {
                     this.processClicks(item.find(this.selectors.links));
                 },
@@ -897,6 +897,7 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
                          */
                         document.title = data.title;
                         this.processClicks(this.selectorCached.menu.find(this.selectors.links));
+                        this.processClicks(this.selectorCached.userMenu.find(this.selectors.links));
                         this.disableEmptyLinks(this.selectorCached.menu.find(this.selectors.scrollLinks));
                         this.processClicks(this.selectorCached.container.find(this.selectors.links));
                         this.processAnchors(this.selectorCached.container.find(this.selectors.scrollLinks));
