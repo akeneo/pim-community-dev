@@ -7,7 +7,7 @@ use Oro\Bundle\CalendarBundle\Tests\Unit\ReflectionUtil;
 
 class CalendarDateTimeConfigProviderTest extends \PHPUnit_Framework_TestCase
 {
-    /** @var \PHPUnit_Framework_MockObject_MockObject  */
+    /** @var \PHPUnit_Framework_MockObject_MockObject */
     protected $cm;
 
     /** @var CalendarDateTimeConfigProvider */
@@ -15,7 +15,7 @@ class CalendarDateTimeConfigProviderTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->cm = $this->getMockBuilder('Oro\Bundle\ConfigBundle\Config\ConfigManager')
+        $this->cm       = $this->getMockBuilder('Oro\Bundle\ConfigBundle\Config\ConfigManager')
             ->disableOriginalConstructor()
             ->getMock();
         $this->provider = new CalendarDateTimeConfigProvider($this->cm);
@@ -35,7 +35,7 @@ class CalendarDateTimeConfigProviderTest extends \PHPUnit_Framework_TestCase
             ->with('oro_locale.locale')
             ->will($this->returnValue('en_US'));
 
-        $date = new \DateTime($current, new \DateTimeZone('UTC'));
+        $date   = new \DateTime($current, new \DateTimeZone('UTC'));
         $result = $this->provider->getDateRange($date);
 
         $this->assertCount(2, $result);
@@ -66,12 +66,54 @@ class CalendarDateTimeConfigProviderTest extends \PHPUnit_Framework_TestCase
             ->with('oro_locale.locale')
             ->will($this->returnValue('en_US'));
 
-        $date = new \DateTime('2014-01-20T10:30:15+00:00', new \DateTimeZone('UTC'));
+        $date   = new \DateTime('2014-01-20T10:30:15+00:00', new \DateTimeZone('UTC'));
         $result = $this->provider->getCalendarOptions($date);
 
         $this->assertEquals('2014-01-20', $result['date']);
         $this->assertEquals(-300, $result['timezoneOffset']);
         $this->assertEquals(0, $result['firstDay']);
+        $this->assertEquals(
+            array(
+                'January',
+                'February',
+                'March',
+                'April',
+                'May',
+                'June',
+                'July',
+                'August',
+                'September',
+                'October',
+                'November',
+                'December'
+            ),
+            $result['monthNames']
+        );
+        $this->assertEquals(
+            array(
+                'Jan',
+                'Feb',
+                'Mar',
+                'Apr',
+                'May',
+                'Jun',
+                'Jul',
+                'Aug',
+                'Sep',
+                'Oct',
+                'Nov',
+                'Dec'
+            ),
+            $result['monthNamesShort']
+        );
+        $this->assertEquals(
+            array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'),
+            $result['dayNames']
+        );
+        $this->assertEquals(
+            array('Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'),
+            $result['dayNamesShort']
+        );
         $this->assertEquals('MMMM yyyy', $result['titleFormat']['month']);
         $this->assertEquals('d[ MMMM][ yyyy]{ \'&#8212;\' d MMMM yyyy}', $result['titleFormat']['week']);
         $this->assertEquals('dddd, dd.MM.yyyy', $result['titleFormat']['day']);
@@ -102,12 +144,54 @@ class CalendarDateTimeConfigProviderTest extends \PHPUnit_Framework_TestCase
             ->with('oro_locale.locale')
             ->will($this->returnValue('en_US'));
 
-        $date = new \DateTime('2014-01-20T10:30:15+00:00', new \DateTimeZone('UTC'));
+        $date   = new \DateTime('2014-01-20T10:30:15+00:00', new \DateTimeZone('UTC'));
         $result = $this->provider->getCalendarOptions($date);
 
         $this->assertEquals('2014-01-20', $result['date']);
         $this->assertEquals(-300, $result['timezoneOffset']);
         $this->assertEquals(0, $result['firstDay']);
+        $this->assertEquals(
+            array(
+                'January',
+                'February',
+                'March',
+                'April',
+                'May',
+                'June',
+                'July',
+                'August',
+                'September',
+                'October',
+                'November',
+                'December'
+            ),
+            $result['monthNames']
+        );
+        $this->assertEquals(
+            array(
+                'Jan',
+                'Feb',
+                'Mar',
+                'Apr',
+                'May',
+                'Jun',
+                'Jul',
+                'Aug',
+                'Sep',
+                'Oct',
+                'Nov',
+                'Dec'
+            ),
+            $result['monthNamesShort']
+        );
+        $this->assertEquals(
+            array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'),
+            $result['dayNames']
+        );
+        $this->assertEquals(
+            array('Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'),
+            $result['dayNamesShort']
+        );
         $this->assertEquals('MMMM yyyy', $result['titleFormat']['month']);
         $this->assertEquals('MMMM d[ yyyy]{ \'&#8212;\'[ MMMM] d yyyy}', $result['titleFormat']['week']);
         $this->assertEquals('dddd, yyyy-MM-dd', $result['titleFormat']['day']);
