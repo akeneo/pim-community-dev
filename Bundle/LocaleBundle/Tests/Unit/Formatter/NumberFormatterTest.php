@@ -96,7 +96,7 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage NumberFormatter has no attribute 'UNKNOWN_ATTRIBUTE'
+     * @expectedExceptionMessage NumberFormatter has no constant 'UNKNOWN_ATTRIBUTE'
      */
     public function testFormatFails()
     {
@@ -312,6 +312,7 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array('parse_int_only', 'DECIMAL', 'en_US', 0),
+            array('parse_int_only', null, 'en_US', 0),
             array('GROUPING_USED', 'decimal', 'en_US', 1),
             array(\NumberFormatter::DECIMAL_ALWAYS_SHOWN, \NumberFormatter::DECIMAL, 'en_US', 0),
             array(\NumberFormatter::MAX_INTEGER_DIGITS, \NumberFormatter::DECIMAL, 'en_US', 309),
@@ -319,6 +320,8 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
             array(\NumberFormatter::INTEGER_DIGITS,\NumberFormatter::DECIMAL, 'en_US', 1),
             array(\NumberFormatter::MAX_FRACTION_DIGITS, \NumberFormatter::DECIMAL, 'en_US', 3),
             array(\NumberFormatter::MIN_FRACTION_DIGITS, \NumberFormatter::DECIMAL, 'en_US', 0),
+            array(\NumberFormatter::MAX_FRACTION_DIGITS, \NumberFormatter::CURRENCY, 'en_US', 2),
+            array(\NumberFormatter::MIN_FRACTION_DIGITS, \NumberFormatter::CURRENCY, 'en_US', 2),
             array(\NumberFormatter::FRACTION_DIGITS, \NumberFormatter::DECIMAL, 'en_US', 0),
             array(\NumberFormatter::MULTIPLIER, \NumberFormatter::DECIMAL, 'en_US', 1),
             array(\NumberFormatter::GROUPING_SIZE, \NumberFormatter::DECIMAL, 'en_US', 3),
@@ -351,31 +354,61 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
     public function getNumberFormatterTextAttributeDataProvider()
     {
         return array(
-            array('positive_prefix', 'DECIMAL', 'en_US', ''),
-            array('NEGATIVE_PREFIX', 'decimal', 'en_US', '-'),
+            array('POSITIVE_PREFIX', 'DECIMAL', 'en_US', ''),
+            array('negative_prefix', 'decimal', 'en_US', '-'),
             array(\NumberFormatter::NEGATIVE_SUFFIX, \NumberFormatter::DECIMAL, 'en_US', ''),
             array(\NumberFormatter::PADDING_CHARACTER, \NumberFormatter::DECIMAL, 'en_US', '*'),
             array(\NumberFormatter::CURRENCY_CODE, \NumberFormatter::CURRENCY, 'en_US', 'USD'),
-            //array(\NumberFormatter::DEFAULT_RULESET, \NumberFormatter::DECIMAL, 'en_US', false),
-            //array(\NumberFormatter::PUBLIC_RULESETS, \NumberFormatter::DECIMAL, 'en_US', false),
-            //array(\NumberFormatter::DECIMAL_SEPARATOR_SYMBOL, \NumberFormatter::DECIMAL, 'en_US', false),
-            //array(\NumberFormatter::GROUPING_SEPARATOR_SYMBOL, \NumberFormatter::DECIMAL, 'en_US', false),
-            array(\NumberFormatter::PATTERN_SEPARATOR_SYMBOL, \NumberFormatter::DECIMAL, 'en_US', '-'),
-            array(\NumberFormatter::PERCENT_SYMBOL, \NumberFormatter::PERCENT, 'en_US', '%'),
-            array(\NumberFormatter::ZERO_DIGIT_SYMBOL, \NumberFormatter::DECIMAL, 'en_US', '*'),
-            array(\NumberFormatter::DIGIT_SYMBOL, \NumberFormatter::DECIMAL, 'en_US', ''),
-            //array(\NumberFormatter::MINUS_SIGN_SYMBOL, \NumberFormatter::DECIMAL, 'en_US', false),
-            //array(\NumberFormatter::PLUS_SIGN_SYMBOL, \NumberFormatter::DECIMAL, 'en_US', false),
-            //array(\NumberFormatter::CURRENCY_SYMBOL, \NumberFormatter::CURRENCY, 'en_US', false),
-            //array(\NumberFormatter::INTL_CURRENCY_SYMBOL, \NumberFormatter::DECIMAL, 'en_US', false),
-            //array(\NumberFormatter::MONETARY_SEPARATOR_SYMBOL, \NumberFormatter::DECIMAL, 'en_US', false),
-            //array(\NumberFormatter::EXPONENTIAL_SYMBOL, \NumberFormatter::DECIMAL, 'en_US', false),
-            //array(\NumberFormatter::PERMILL_SYMBOL, \NumberFormatter::DECIMAL, 'en_US', false),
-            //array(\NumberFormatter::PAD_ESCAPE_SYMBOL, \NumberFormatter::DECIMAL, 'en_US', false),
-            //array(\NumberFormatter::INFINITY_SYMBOL, \NumberFormatter::DECIMAL, 'en_US', false),
-            //array(\NumberFormatter::NAN_SYMBOL, \NumberFormatter::DECIMAL, 'en_US', false),
-            //array(\NumberFormatter::SIGNIFICANT_DIGIT_SYMBOL, \NumberFormatter::DECIMAL, 'en_US', false),
-            //array(\NumberFormatter::MONETARY_GROUPING_SEPARATOR_SYMBOL, \NumberFormatter::DECIMAL, 'en_US', false),
+            array(\NumberFormatter::DEFAULT_RULESET, \NumberFormatter::DECIMAL, 'en_US', false),
+            array(\NumberFormatter::PUBLIC_RULESETS, \NumberFormatter::DECIMAL, 'en_US', false)
         );
+    }
+
+    /**
+     * @dataProvider getNumberFormatterSymbolDataProvider
+     */
+    public function testGetNumberFormatterSymbol($symbol, $locale, $style, $expected)
+    {
+        $this->assertSame(
+            $expected,
+            $this->formatter->getSymbol(
+                $symbol,
+                $locale,
+                $style
+            )
+        );
+    }
+
+    public function getNumberFormatterSymbolDataProvider()
+    {
+        return array(
+            array('DECIMAL_SEPARATOR_SYMBOL', 'DECIMAL', 'en_US', '.'),
+            array(\NumberFormatter::GROUPING_SEPARATOR_SYMBOL, \NumberFormatter::DECIMAL, 'en_US', ','),
+            array('pattern_separator_symbol', 'decimal', 'en_US', ';'),
+            array(\NumberFormatter::PERCENT_SYMBOL, \NumberFormatter::DECIMAL, 'en_US', '%'),
+            array(\NumberFormatter::ZERO_DIGIT_SYMBOL, \NumberFormatter::DECIMAL, 'en_US', '0'),
+            array(\NumberFormatter::DIGIT_SYMBOL, \NumberFormatter::DECIMAL, 'en_US', '#'),
+            array(\NumberFormatter::MINUS_SIGN_SYMBOL, \NumberFormatter::DECIMAL, 'en_US', '-'),
+            array(\NumberFormatter::PLUS_SIGN_SYMBOL, \NumberFormatter::DECIMAL, 'en_US', '+'),
+            array(\NumberFormatter::CURRENCY_SYMBOL, \NumberFormatter::CURRENCY, 'en_US', '$'),
+            array(\NumberFormatter::INTL_CURRENCY_SYMBOL, \NumberFormatter::CURRENCY, 'en_US', 'USD'),
+            array(\NumberFormatter::MONETARY_SEPARATOR_SYMBOL, \NumberFormatter::CURRENCY, 'en_US', '.'),
+            array(\NumberFormatter::EXPONENTIAL_SYMBOL, \NumberFormatter::SCIENTIFIC, 'en_US', 'E'),
+            array(\NumberFormatter::PERMILL_SYMBOL, \NumberFormatter::DECIMAL, 'en_US', '‰'),
+            array(\NumberFormatter::PAD_ESCAPE_SYMBOL, \NumberFormatter::DECIMAL, 'en_US', '*'),
+            array(\NumberFormatter::INFINITY_SYMBOL, \NumberFormatter::DECIMAL, 'en_US', '∞'),
+            array(\NumberFormatter::NAN_SYMBOL, \NumberFormatter::DECIMAL, 'en_US', 'NaN'),
+            array(\NumberFormatter::SIGNIFICANT_DIGIT_SYMBOL, \NumberFormatter::DECIMAL, 'en_US', '@'),
+            array(\NumberFormatter::MONETARY_GROUPING_SEPARATOR_SYMBOL, \NumberFormatter::CURRENCY, 'en_US', ','),
+        );
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage NumberFormatter style '19' is invalid
+     */
+    public function testFormatWithInvalidStyle()
+    {
+        $this->formatter->format(123, \NumberFormatter::LENIENT_PARSE);
     }
 }

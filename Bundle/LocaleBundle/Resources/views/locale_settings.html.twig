@@ -11,6 +11,31 @@ function($, localeSettings) {
         {% set dateTimeFormats = dateTimeFormats|merge({ (formatterName) : currentFormats }) %}
     {% endfor %}
 
+    {% set numberFormatSettings = {} %}
+    {% for style in ['decimal', 'percent', 'currency'] %}
+        {% set numberFormatSettings = numberFormatSettings|merge({
+            (style): {
+                'grouping_size':       oro_locale_number_attribute('grouping_size', style),
+                'grouping_used':       oro_locale_number_attribute('grouping_used', style),
+                'max_fraction_digits': oro_locale_number_attribute('max_fraction_digits', style),
+                'min_fraction_digits': oro_locale_number_attribute('min_fraction_digits', style),
+
+                'negative_prefix': oro_locale_number_text_attribute('negative_prefix', style),
+                'negative_suffix': oro_locale_number_text_attribute('negative_suffix', style),
+                'positive_prefix': oro_locale_number_text_attribute('positive_prefix', style),
+                'positive_suffix': oro_locale_number_text_attribute('positive_suffix', style),
+                'currency_code': oro_locale_number_text_attribute('currency_code', style),
+
+                'decimal_separator_symbol':           oro_locale_number_symbol('decimal_separator_symbol', style),
+                'grouping_separator_symbol':          oro_locale_number_symbol('grouping_separator_symbol', style),
+                'monetary_separator_symbol':          oro_locale_number_symbol('monetary_separator_symbol', style),
+                'monetary_grouping_separator_symbol': oro_locale_number_symbol('monetary_grouping_separator_symbol', style),
+                'currency_symbol':                    oro_locale_number_symbol('currency_symbol', style),
+                'intl_currency_symbol':               oro_locale_number_symbol('intl_currency_symbol', style)
+            }
+        }) %}
+    {% endfor %}
+
     {% set settings = {
         'locale': oro_locale(),
         'language': oro_language(),
@@ -20,7 +45,8 @@ function($, localeSettings) {
         'timezone_offset': oro_timezone_offset(),
         'format_address_by_address_country': oro_format_address_by_address_country(),
         'format': {
-            'datetime': dateTimeFormats
+            'datetime': dateTimeFormats,
+            'number': numberFormatSettings
         },
 		'calendar': {
             'dow': {

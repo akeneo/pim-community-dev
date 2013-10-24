@@ -3,7 +3,13 @@ config:
         'moment':
             exports:
                 - 'moment'
-
+        'numeral':
+            exports:
+                - 'numeral'
+        'oro/formatter/number':
+            deps:
+                - 'numeral'
+                - 'oro/locale-settings'
     map:
         '*':
             'moment': 'oro/moment-l10n'
@@ -13,7 +19,8 @@ config:
     paths:
         'moment': 'bundles/orolocale/lib/moment.js'
         'numeral': 'bundles/orolocale/lib/numeral.js'
-        'oro/locale-settings': 'bundles/orolocale/js/locale_settings.js'
+        'oro/formatter/number': 'bundles/orolocale/js/formatter/number.js'
+        'oro/locale-settings': 'bundles/orolocale/js/locale-settings.js'
         'oro/locale-settings/data': '../js/oro.locale_data.js'
         'oro/formatter/name': 'bundles/orolocale/js/formatter/name.js'
         'oro/formatter/address': 'bundles/orolocale/js/formatter/address.js'

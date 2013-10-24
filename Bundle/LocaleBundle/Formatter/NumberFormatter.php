@@ -35,7 +35,7 @@ class NumberFormatter
         return
             $this->getFormatter(
                 $locale,
-                $this->parseAttribute($style),
+                $this->parseConstantValue($style),
                 $attributes,
                 $textAttributes
             )->format($value);
@@ -136,25 +136,57 @@ class NumberFormatter
     }
 
     /**
-     * Gets value of attribute
+     * Gets value of numeric attribute of \NumberFormatter
      *
-     * @param int|string $attribute Attribute of \NumberFormatter or it's string name
+     * Supported numeric attribute constants of \NumberFormatter are:
+     *  PARSE_INT_ONLY
+     *  GROUPING_USED
+     *  DECIMAL_ALWAYS_SHOWN
+     *  MAX_INTEGER_DIGITS
+     *  MIN_INTEGER_DIGITS
+     *  INTEGER_DIGITS
+     *  MAX_FRACTION_DIGITS
+     *  MIN_FRACTION_DIGITS
+     *  FRACTION_DIGITS
+     *  MULTIPLIER
+     *  GROUPING_SIZE
+     *  ROUNDING_MODE
+     *  ROUNDING_INCREMENT
+     *  FORMAT_WIDTH
+     *  PADDING_POSITION
+     *  SECONDARY_GROUPING_SIZE
+     *  SIGNIFICANT_DIGITS_USED
+     *  MIN_SIGNIFICANT_DIGITS
+     *  MAX_SIGNIFICANT_DIGITS
+     *  LENIENT_PARSE
+     *
+     * @param int|string $attribute Numeric attribute constant of \NumberFormatter or it's string name
      * @param int|string $style Constant of \NumberFormatter (DECIMAL, CURRENCY, PERCENT, etc) or string name
      * @param string|null $locale
      * @return bool|int
      */
-    public function getAttribute($attribute, $style, $locale = null)
+    public function getAttribute($attribute, $style = null, $locale = null)
     {
         return $this->getFormatter(
             $locale,
-            $this->parseAttribute($style)
-        )->getAttribute($this->parseAttribute($attribute));
+            $this->parseStyle($style)
+        )->getAttribute($this->parseConstantValue($attribute));
     }
 
     /**
-     * Gets value of text attribute
+     * Gets value of text attribute of \NumberFormatter
      *
-     * @param int|string $attribute Attribute of \NumberFormatter or it's string name
+     * Supported text attribute constants of \NumberFormatter are:
+     *  POSITIVE_PREFIX
+     *  POSITIVE_SUFFIX
+     *  NEGATIVE_PREFIX
+     *  NEGATIVE_SUFFIX
+     *  PADDING_CHARACTER
+     *  CURRENCY_CODE
+     *  DEFAULT_RULESET
+     *  PUBLIC_RULESETS
+     *
+     * @param int|string $attribute Text attribute constant of \NumberFormatter or it's string name
      * @param int|string $style Constant of \NumberFormatter (DECIMAL, CURRENCY, PERCENT, etc) or string name
      * @param string|null $locale
      * @return bool|int
@@ -163,8 +195,45 @@ class NumberFormatter
     {
         return $this->getFormatter(
             $locale,
-            $this->parseAttribute($style)
-        )->getTextAttribute($this->parseAttribute($attribute));
+            $this->parseStyle($style)
+        )->getTextAttribute($this->parseConstantValue($attribute));
+    }
+
+    /**
+     * Gets value of symbol associated with \NumberFormatter
+     *
+     * Supported symbol constants of \NumberFormatter are:
+     *  DECIMAL_SEPARATOR_SYMBOL
+     *  GROUPING_SEPARATOR_SYMBOL
+     *  PATTERN_SEPARATOR_SYMBOL
+     *  PERCENT_SYMBOL
+     *  ZERO_DIGIT_SYMBOL
+     *  DIGIT_SYMBOL
+     *  MINUS_SIGN_SYMBOL
+     *  PLUS_SIGN_SYMBOL
+     *  CURRENCY_SYMBOL
+     *  INTL_CURRENCY_SYMBOL
+     *  MONETARY_SEPARATOR_SYMBOL
+     *  EXPONENTIAL_SYMBOL
+     *  PERMILL_SYMBOL
+     *  PAD_ESCAPE_SYMBOL
+     *  INFINITY_SYMBOL
+     *  NAN_SYMBOL
+     *  SIGNIFICANT_DIGIT_SYMBOL
+     *  MONETARY_GROUPING_SEPARATOR_SYMBOL
+     *
+     *
+     * @param int|string $symbol Format symbol constant of \NumberFormatter or it's string name
+     * @param int|string $style Constant of \NumberFormatter (DECIMAL, CURRENCY, PERCENT, etc) or string name
+     * @param string|null $locale
+     * @return bool|int
+     */
+    public function getSymbol($symbol, $style, $locale = null)
+    {
+        return $this->getFormatter(
+            $locale,
+            $this->parseStyle($style)
+        )->getSymbol($this->parseConstantValue($symbol));
     }
 
     /**
@@ -181,7 +250,7 @@ class NumberFormatter
     {
         $formatter = new IntlNumberFormatter(
             $locale ? : $this->localeSettings->getLocale(),
-            $this->parseAttribute($style)
+            $this->parseStyle($style)
         );
 
         foreach ($this->parseAttributes($attributes) as $attribute => $value) {
@@ -206,7 +275,7 @@ class NumberFormatter
     {
         $result = array();
         foreach ($attributes as $attribute => $value) {
-            $result[$this->parseAttribute($attribute)] = $value;
+            $result[$this->parseConstantValue($attribute)] = $value;
         }
         return $result;
     }
@@ -218,7 +287,7 @@ class NumberFormatter
      * @return mixed
      * @throws \InvalidArgumentException
      */
-    protected function parseAttribute($attribute)
+    protected function parseConstantValue($attribute)
     {
         if (is_int($attribute)) {
             return $attribute;
@@ -226,9 +295,45 @@ class NumberFormatter
             $attributeName = strtoupper($attribute);
             $constantName = 'NumberFormatter::' . $attributeName;
             if (!defined($constantName)) {
-                throw new \InvalidArgumentException("NumberFormatter has no attribute '$attributeName'");
+                throw new \InvalidArgumentException("NumberFormatter has no constant '$attributeName'");
             }
             return constant($constantName);
         }
+    }
+
+    /**
+     * Pass style of NumberFormatter
+     *
+     * @param int|string|null $style
+     * @return mixed
+     * @throws \InvalidArgumentException
+     */
+    protected function parseStyle($style)
+    {
+        $originalValue = $style;
+        if (null === $style) {
+            $style = \NumberFormatter::DEFAULT_STYLE;
+        }
+        $style = $this->parseConstantValue($style);
+
+        $styleConstants = array(
+            \NumberFormatter::PATTERN_DECIMAL,
+            \NumberFormatter::DECIMAL,
+            \NumberFormatter::CURRENCY,
+            \NumberFormatter::PERCENT,
+            \NumberFormatter::SCIENTIFIC,
+            \NumberFormatter::SPELLOUT,
+            \NumberFormatter::ORDINAL,
+            \NumberFormatter::DURATION,
+            \NumberFormatter::PATTERN_RULEBASED,
+            \NumberFormatter::IGNORE,
+            \NumberFormatter::DEFAULT_STYLE,
+        );
+
+        if (!in_array($style, $styleConstants)) {
+            throw new \InvalidArgumentException("NumberFormatter style '$originalValue' is invalid");
+        }
+
+        return $style;
     }
 }

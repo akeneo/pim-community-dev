@@ -22,6 +22,30 @@ class NumberExtension extends \Twig_Extension
     /**
      * {@inheritdoc}
      */
+    public function getFunctions()
+    {
+        return array(
+            new \Twig_SimpleFunction(
+                'oro_locale_number_attribute',
+                array($this, 'getAttribute'),
+                array('is_safe' => array('html'))
+            ),
+            new \Twig_SimpleFunction(
+                'oro_locale_number_text_attribute',
+                array($this, 'getTextAttribute'),
+                array('is_safe' => array('html'))
+            ),
+            new \Twig_SimpleFunction(
+                'oro_locale_number_symbol',
+                array($this, 'getSymbol'),
+                array('is_safe' => array('html'))
+            )
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getFilters()
     {
         return array(
@@ -61,6 +85,45 @@ class NumberExtension extends \Twig_Extension
                 array('is_safe' => array('html'))
             ),
         );
+    }
+
+    /**
+     * Gets value of numeric attribute of \NumberFormatter
+     *
+     * @param string|int $attribute
+     * @param string|null $style
+     * @param string|null $locale
+     * @return int
+     */
+    public function getAttribute($attribute, $style = null, $locale = null)
+    {
+        return $this->formatter->getAttribute($attribute, $style, $locale);
+    }
+
+    /**
+     * Gets value of text attribute of \NumberFormatter
+     *
+     * @param string|int $attribute
+     * @param string|null $style
+     * @param string|null $locale
+     * @return string
+     */
+    public function getTextAttribute($attribute, $style = null, $locale = null)
+    {
+        return $this->formatter->getTextAttribute($attribute, $style, $locale);
+    }
+
+    /**
+     * Gets value of symbol associated with \NumberFormatter
+     *
+     * @param string|int $symbol
+     * @param string|null $style
+     * @param string|null $locale
+     * @return string
+     */
+    public function getSymbol($symbol, $style = null, $locale = null)
+    {
+        return $this->formatter->getSymbol($symbol, $style, $locale);
     }
 
     /**

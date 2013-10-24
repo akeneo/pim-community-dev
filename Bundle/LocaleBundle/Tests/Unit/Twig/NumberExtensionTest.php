@@ -24,6 +24,23 @@ class NumberExtensionTest extends \PHPUnit_Framework_TestCase
         $this->extension = new NumberExtension($this->formatter);
     }
 
+    public function testGetFuntions()
+    {
+        $filters = $this->extension->getFunctions();
+
+        $this->assertCount(3, $filters);
+
+        $this->assertInstanceOf('Twig_SimpleFunction', $filters[0]);
+        $this->assertEquals('oro_locale_number_attribute', $filters[0]->getName());
+
+        $this->assertInstanceOf('Twig_SimpleFunction', $filters[1]);
+        $this->assertEquals('oro_locale_number_text_attribute', $filters[1]->getName());
+
+        $this->assertInstanceOf('Twig_SimpleFunction', $filters[2]);
+        $this->assertEquals('oro_locale_number_symbol', $filters[2]->getName());
+
+    }
+
     public function testGetFilters()
     {
         $filters = $this->extension->getFilters();
@@ -51,6 +68,48 @@ class NumberExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Twig_SimpleFilter', $filters[6]);
         $this->assertEquals('oro_format_ordinal', $filters[6]->getName());
 
+    }
+
+    public function testGetAttribute()
+    {
+        $attribute = 'grouping_used';
+        $style = 'decimal';
+        $locale = 'fr_CA';
+        $expectedResult = 1;
+
+        $this->formatter->expects($this->once())->method('getAttribute')
+            ->with($attribute, $style, $locale)
+            ->will($this->returnValue($expectedResult));
+
+        $this->assertEquals($expectedResult, $this->extension->getAttribute($attribute, $style, $locale));
+    }
+
+    public function testGetTextAttribute()
+    {
+        $attribute = 'currency_code';
+        $style = 'decimal';
+        $locale = 'en_US';
+        $expectedResult = '$';
+
+        $this->formatter->expects($this->once())->method('getTextAttribute')
+            ->with($attribute, $style, $locale)
+            ->will($this->returnValue($expectedResult));
+
+        $this->assertEquals($expectedResult, $this->extension->getTextAttribute($attribute, $style, $locale));
+    }
+
+    public function testGetSymbol()
+    {
+        $symbol = 'percent_symbol';
+        $style = 'decimal';
+        $locale = 'fr_CA';
+        $expectedResult = '%';
+
+        $this->formatter->expects($this->once())->method('getSymbol')
+            ->with($symbol, $style, $locale)
+            ->will($this->returnValue($expectedResult));
+
+        $this->assertEquals($expectedResult, $this->extension->getSymbol($symbol, $style, $locale));
     }
 
     public function testFormat()
