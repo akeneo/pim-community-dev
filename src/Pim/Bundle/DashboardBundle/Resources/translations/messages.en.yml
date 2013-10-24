@@ -10,5 +10,15 @@ pim_dashboard:
         label:
             import_profile: Manage import profiles
             create_csv_import: Create a CSV import
-            
-        
+            product: Manage products
+            category: Manage categories
+            group: Manage groups
+            channel: Manage channels
+            export_profile: Manage export profiles
+            create_csv_export: Create a CSV export
+            attribute_group: Manage attribute groups
+            attribute: Manage attributes
+            family: Manage families
+            association: Manage associations
+            currency: Manage currencies
+            locale: List locales
