@@ -9,6 +9,11 @@ use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\PropertyInterface;
 
 class Configuration implements ConfigurationInterface
 {
+    const TYPE_KEY = 'type';
+
+    const COLUMNS_PATH    = '[columns]';
+    const PROPERTIES_PATH = '[properties]';
+
     /** @var array */
     protected $types;
 
@@ -31,7 +36,7 @@ class Configuration implements ConfigurationInterface
             ->prototype('array')
                 ->ignoreExtraKeys()
                 ->children()
-                    ->scalarNode(PropertyInterface::TYPE_KEY)
+                    ->scalarNode(self::TYPE_KEY)
                         ->isRequired()
                         ->validate()
                         ->ifNotInArray($this->types)
@@ -39,10 +44,10 @@ class Configuration implements ConfigurationInterface
                         ->end()
                     ->end()
                     ->arrayNode(PropertyInterface::FRONTEND_OPTIONS_KEY)
-                        // ->isRequired()
                         ->ignoreExtraKeys()
                         ->children()
-                            ->scalarNode('label')->isRequired()->end()
+                            // just validate types if node exist
+                            ->scalarNode('label')->end()
                             ->booleanNode('editable')->end()
                             ->booleanNode('renderable')->end()
                         ->end()

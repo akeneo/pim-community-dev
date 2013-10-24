@@ -27,9 +27,7 @@ class MetadataExtension extends \Twig_Extension
      */
     public function getFunctions()
     {
-        return array(
-            'oro_grid_metadata' => new \Twig_Function_Method($this, 'getGridMetadata'),
-        );
+        return ['oro_grid_metadata' => new \Twig_Function_Method($this, 'getGridMetadata')];
     }
 
     /**
@@ -42,7 +40,7 @@ class MetadataExtension extends \Twig_Extension
      */
     public function getGridMetadata($name, $additionalParams = [])
     {
-        $metaData = $this->manager->getDatagrid($name)->getMetadata();
+        $metaData            = $this->manager->getDatagrid($name)->getMetadata();
         $metaData['options'] = isset($metaData['options']) ? $metaData['options'] : [];
         $metaData['options'] = array_merge_recursive($metaData['options'], $additionalParams);
 

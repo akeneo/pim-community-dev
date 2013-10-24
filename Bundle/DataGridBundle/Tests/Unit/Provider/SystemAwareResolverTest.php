@@ -57,7 +57,7 @@ class SystemAwareResolverTest extends \PHPUnit_Framework_TestCase
      */
     public function testResolveEmpty()
     {
-        $definition = array();
+        $definition = [];
         $gridDefinition = $this->resolver->resolve('test', $definition);
 
         $this->assertEmpty($gridDefinition);

@@ -28,7 +28,7 @@ class OrmDatasource implements DatasourceInterface
      */
     public function process(DatagridInterface $grid, array $config)
     {
-        $queryConfig = array_intersect_key($config, array_flip(array('query')));
+        $queryConfig = array_intersect_key($config, array_flip(['query']));
 
         $converter = new YamlConverter();
         $this->qb  = $converter->parse($queryConfig, $this->em->createQueryBuilder());

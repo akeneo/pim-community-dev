@@ -84,7 +84,7 @@ class SystemAwareResolver implements ContainerAwareInterface
                 $class = isset($class) ? $class : $match[1];
 
                 $method = $match[2];
-                if (is_callable(array($class, $method))) {
+                if (is_callable([$class, $method])) {
                     $val = $class::$method($datagridName, $key);
                 }
                 if (defined("$class::$method")) {
