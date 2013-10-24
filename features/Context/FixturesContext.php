@@ -603,6 +603,7 @@ class FixturesContext extends RawMinkContext
     {
         foreach ($table->getHash() as $data) {
             $category = $this->getCategory($data['code']);
+            $this->getEntityManager()->refresh($category);
 
             assertEquals($data['label'], $category->getTranslation('en_US')->getLabel());
             if (empty($data['parent'])) {
