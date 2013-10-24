@@ -231,8 +231,15 @@ class Form extends Base
 
         if ($label->hasAttribute('for')) {
             if (false === strpos($value, ',')) {
-                $field = $this->find('css', sprintf('#%s', $label->getAttribute('for')));
-                $field->setValue($value);
+                $for = $label->getAttribute('for');
+                if (0 === strpos($for, 's2id_')) {
+                    // We are playing with a select2 widget
+                    $field = $label->getParent()->find('css', 'select');
+                    $field->selectOption($value);
+                } else {
+                    $field = $this->find('css', sprintf('#%s', $for));
+                    $field->setValue($value);
+                }
             } else {
                 foreach (explode(',', $value) as $value) {
                     $field = $label->getParent()->find('css', 'select');
