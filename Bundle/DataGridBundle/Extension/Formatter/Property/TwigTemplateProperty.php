@@ -6,11 +6,11 @@ use Oro\Bundle\DataGridBundle\Extension\Formatter\ResultRecordInterface;
 
 class TwigTemplateProperty extends AbstractProperty
 {
+    const CONTEXT_KEY  = 'context';
+    const TEMPLATE_KEY = 'template';
+
     /** @var \Twig_Environment */
     protected $environment;
-
-    /** @var \Twig_TemplateInterface */
-    protected $template;
 
     /**  @var array */
     protected $reservedKeys = ['record', 'value'];
@@ -26,12 +26,12 @@ class TwigTemplateProperty extends AbstractProperty
     public function init(array $params)
     {
         parent::init($params);
-        $checkInvalidArgument = array_intersect(array_keys($this->getOr('context', [])), $this->reservedKeys);
+        $checkInvalidArgument = array_intersect(array_keys($this->getOr(self::CONTEXT_KEY, [])), $this->reservedKeys);
         if (count($checkInvalidArgument)) {
             throw new \InvalidArgumentException(
                 sprintf(
                     'Context of template "%s" includes reserved key(s) - (%s)',
-                    $this->get('template'),
+                    $this->get(self::TEMPLATE_KEY),
                     implode(', ', array_values($checkInvalidArgument))
                 )
             );
@@ -44,10 +44,10 @@ class TwigTemplateProperty extends AbstractProperty
     public function getValue(ResultRecordInterface $record)
     {
         $context = array_merge(
-            $this->getOr('context', []),
+            $this->getOr(self::CONTEXT_KEY, []),
             array(
                 'record' => $record,
-                'value'  => $record->getValue($this->get(self::NAME_KEY)),
+                'value'  => $record->getValue($this->getOr(self::DATA_NAME_KEY, $this->get(self::NAME_KEY))),
             )
         );
 
@@ -61,10 +61,6 @@ class TwigTemplateProperty extends AbstractProperty
      */
     protected function getTemplate()
     {
-        if (!$this->template) {
-            $this->template = $this->environment->loadTemplate($this->get('template'));
-        }
-
-        return $this->template;
+        return $this->environment->loadTemplate($this->get(self::TEMPLATE_KEY));
     }
 }

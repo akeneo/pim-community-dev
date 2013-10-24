@@ -6,11 +6,23 @@ use Oro\Bundle\DataGridBundle\Extension\Formatter\ResultRecordInterface;
 
 interface PropertyInterface
 {
-    const TYPE_KEY             = 'type';
-    const FRONTEND_OPTIONS_KEY = 'frontend_options';
+    const TYPE_DATE     = 'date';
+    const TYPE_DATETIME = 'datetime';
+    const TYPE_DECIMAL  = 'decimal';
+    const TYPE_INTEGER  = 'integer';
+    const TYPE_PERCENT  = 'percent';
+    const TYPE_OPTIONS  = 'options';
+    const TYPE_TEXT     = 'text';
+    const TYPE_HTML     = 'html';
+    const TYPE_BOOLEAN  = 'boolean';
 
-    const NAME_KEY      = 'name';
-    const DATA_NAME_KEY = 'data_name';
+    const METADATA_TYPE_KEY             = 'type';
+    const METADATA_FRONTEND_OPTIONS_KEY = 'frontend_options';
+
+    const NAME_KEY             = 'name';
+    const DATA_NAME_KEY        = 'data_name';
+    const FRONTEND_TYPE_KEY    = 'frontend_type';
+    const FRONTEND_OPTIONS_KEY = 'frontend_options';
 
     /**
      * Prepare state for property state for current field
@@ -29,4 +41,11 @@ interface PropertyInterface
      * @return mixed
      */
     public function getValue(ResultRecordInterface $record);
+
+    /**
+     * Returns field metadata
+     *
+     * @return array
+     */
+    public function getMetadata();
 }

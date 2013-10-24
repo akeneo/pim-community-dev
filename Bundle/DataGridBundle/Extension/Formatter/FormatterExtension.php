@@ -21,8 +21,8 @@ class FormatterExtension extends AbstractExtension
      */
     public function isApplicable(array $config)
     {
-        $columns    = $this->accessor->getValue($config, self::COLUMNS_PATH) ? : [];
-        $properties = $this->accessor->getValue($config, self::PROPERTIES_PATH) ? : [];
+        $columns    = $this->accessor->getValue($config, Configuration::COLUMNS_PATH) ? : [];
+        $properties = $this->accessor->getValue($config, Configuration::PROPERTIES_PATH) ? : [];
         $applicable = $columns || $properties;
 
         // validate extension configuration
@@ -41,16 +41,16 @@ class FormatterExtension extends AbstractExtension
     {
         $rows       = (array)$result->rows;
         $results    = [];
-        $columns    = $this->accessor->getValue($config, self::COLUMNS_PATH) ? : [];
-        $properties = $this->accessor->getValue($config, self::PROPERTIES_PATH) ? : [];
+        $columns    = $this->accessor->getValue($config, Configuration::COLUMNS_PATH) ? : [];
+        $properties = $this->accessor->getValue($config, Configuration::PROPERTIES_PATH) ? : [];
         $toProcess  = array_merge($columns, $properties);
 
         foreach ($rows as $row) {
             $resultRecord = [];
             $record       = new ResultRecord($row);
 
-            foreach ($toProcess as $name => $fieldConfig) {
-                $property            = $this->getPropertyObject($name, $fieldConfig);
+            foreach ($toProcess as $name => $config) {
+                $property            = $this->getPropertyObject($name, $config);
                 $resultRecord[$name] = $property->getValue($record);
             }
 
@@ -63,25 +63,20 @@ class FormatterExtension extends AbstractExtension
     /**
      * {@inheritDoc}
      */
-    public function visitMetadata(array $config, \stdClass $result)
+    public function visitMetadata(array $config, \stdClass $data)
     {
-        $result->columns = isset($result->columns) ? $result->columns : [];
-        $columns         = $this->accessor->getValue($config, self::COLUMNS_PATH) ? : [];
-        $columns         = array_filter(
-            $columns,
-            function ($item) {
-                return strpos($item[PropertyInterface::TYPE_KEY], 'field') !== false;
-            }
-        );
+        // get only columns here because columns will be represented on frontend
+        $columns = $this->accessor->getValue($config, Configuration::COLUMNS_PATH) ? : [];
 
-        $result->columns = array_map(
-            function ($item) {
-                return array_intersect_key(
-                    $item,
-                    array_flip([PropertyInterface::TYPE_KEY, PropertyInterface::FRONTEND_OPTIONS_KEY])
-                );
-            },
-            $columns
+        $propertiesMetadata = [];
+        foreach ($columns as $name => $fieldConfig) {
+            $metadata                  = $this->getPropertyObject($name, $fieldConfig)->getMetadata();
+            $propertiesMetadata[$name] = $metadata;
+        }
+
+        $data->columns = array_merge(
+            isset($data->columns) && is_array($data->columns) ? $data->columns : [],
+            $propertiesMetadata
         );
     }
 
@@ -112,7 +107,7 @@ class FormatterExtension extends AbstractExtension
     {
         $config[PropertyInterface::NAME_KEY] = $name;
 
-        $type = $this->accessor->getValue($config, sprintf('[%s]', PropertyInterface::TYPE_KEY));
+        $type = $this->accessor->getValue($config, sprintf('[%s]', Configuration::TYPE_KEY));
 
         $property = $this->properties[$type];
         $property->init($config);
