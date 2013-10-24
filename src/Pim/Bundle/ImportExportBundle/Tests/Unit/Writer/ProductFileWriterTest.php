@@ -13,6 +13,9 @@ use Pim\Bundle\ImportExportBundle\Writer\ProductFileWriter;
  */
 class ProductFileWriterTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         $this->mediaManager = $this->getMediaManagerMock();
@@ -20,11 +23,17 @@ class ProductFileWriterTest extends \PHPUnit_Framework_TestCase
         $this->writer->setStepExecution($this->getStepExecutionMock());
     }
 
+    /**
+     * Test related method
+     */
     public function testIsAnInstanceOfFileWriter()
     {
         $this->assertInstanceOf('Pim\Bundle\ImportExportBundle\Writer\FileWriter', $this->writer);
     }
 
+    /**
+     * Test related method
+     */
     public function testWrite()
     {
         $media1 = $this->getMediaMock();
@@ -75,11 +84,17 @@ class ProductFileWriterTest extends \PHPUnit_Framework_TestCase
             );
     }
 
+    /**
+     * @return \Oro\Bundle\FlexibleEntityBundle\Entity\Media
+     */
     protected function getMediaMock()
     {
         return $this->getMock('Oro\Bundle\FlexibleEntityBundle\Entity\Media');
     }
 
+    /**
+     * @return \Pim\Bundle\CatalogBundle\Manager\MediaManager
+     */
     protected function getMediaManagerMock()
     {
         return $this
@@ -88,6 +103,9 @@ class ProductFileWriterTest extends \PHPUnit_Framework_TestCase
             ->getMock();
     }
 
+    /**
+     * @return \Oro\Bundle\BatchBundle\Entity\StepExecution
+     */
     protected function getStepExecutionMock()
     {
         return $this
