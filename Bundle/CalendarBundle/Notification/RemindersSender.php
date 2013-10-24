@@ -6,6 +6,7 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Doctrine\ORM\EntityManager;
 use Oro\Bundle\CalendarBundle\Entity\CalendarEvent;
+use Oro\Bundle\CalendarBundle\Entity\Repository\CalendarEventRepository;
 use Oro\Bundle\EmailBundle\Entity\Repository\EmailTemplateRepository;
 use Oro\Bundle\EmailBundle\Model\EmailTemplateInterface;
 use Oro\Bundle\NotificationBundle\Processor\EmailNotificationProcessor;
@@ -71,9 +72,9 @@ class RemindersSender
             return;
         }
 
-        $template = $this->getTemplate();
+        $template        = $this->getTemplate();
         $processorLogger = new RaiseExceptionLogger($this->logger);
-        $failedEventIds = array();
+        $failedEventIds  = array();
         foreach ($events as $event) {
             try {
                 $toEmail = $event->getCalendar()->getOwner()->getEmail();
@@ -126,16 +127,12 @@ class RemindersSender
      */
     protected function getEventsToRemind($currentTime)
     {
+        /** @var CalendarEventRepository $repo */
         $repo = $this->em->getRepository('OroCalendarBundle:CalendarEvent');
-        $qb   = $repo->createQueryBuilder('e')
-            ->select('e, c, u')
-            ->innerJoin('e.calendar', 'c')
-            ->innerJoin('c.owner', 'u')
-            ->where('e.remindAt <= :current AND e.start > :current AND e.reminded = :reminded')
-            ->setParameter('current', $currentTime)
-            ->setParameter('reminded', false);
 
-        return $qb->getQuery()->getResult();
+        return $repo->getEventsToRemindQueryBuilder($currentTime)
+            ->getQuery()
+            ->getResult();
     }
 
     /**

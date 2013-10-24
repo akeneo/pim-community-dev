@@ -7,7 +7,7 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Oro\Bundle\CalendarBundle\Entity\Repository\CalendarEventRepository")
  * @ORM\Table(name="oro_calendar_event",
  *      indexes={@ORM\Index(name="oro_calendar_event_idx", columns={"calendar_id", "start", "end"})})
  * @Config(

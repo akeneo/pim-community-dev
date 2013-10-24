@@ -54,18 +54,7 @@ class CalendarConnectionController extends FOSRestController implements
         $manager = $this->getManager();
         /** @var CalendarConnectionRepository $repo */
         $repo = $manager->getRepository();
-        $qb   = $repo->createQueryBuilder('a')
-            ->select(
-                'a.color, a.backgroundColor'
-                . ', ac.id as calendar, ac.name as calendarName'
-                . ', u.id as owner, u.firstName as ownerFirstName, u.lastName as ownerLastName'
-            )
-            ->innerJoin('a.calendar', 'c')
-            ->innerJoin('a.connectedCalendar', 'ac')
-            ->innerJoin('ac.owner', 'u')
-            ->where('c.id = :id')
-            ->orderBy('a.createdAt')
-            ->setParameter('id', $id);
+        $qb   = $repo->getConnectionListQueryBuilder($id);
 
         /** @var SecurityFacade $securityFacade */
         $securityFacade = $this->get('oro_security.security_facade');
