@@ -98,7 +98,8 @@ class GroupType extends AbstractType
                 'class'    => 'Pim\Bundle\CatalogBundle\Entity\ProductAttribute',
                 'query_builder' => function (ProductAttributeRepository $repository) {
                     return $repository->findAllAxisQB();
-                }
+                },
+                'help'     => 'pim_catalog.group.axis.help'
             )
         );
     }
