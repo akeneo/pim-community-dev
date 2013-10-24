@@ -1504,9 +1504,11 @@ class FixturesContext extends RawMinkContext
         }
 
         foreach ($products as $sku) {
-            $product = $this->getProduct($sku);
-            $group->addProduct($product);
-            $product->addGroup($group);
+            if (!empty($sku)) {
+                $product = $this->getProduct($sku);
+                $group->addProduct($product);
+                $product->addGroup($group);
+            }
         }
 
         $this->persist($group);

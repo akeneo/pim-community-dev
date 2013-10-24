@@ -199,6 +199,8 @@ info:
         disabled:                Disabled
     group:
         axis: Variation axis: %attributes%
+        select products: Please select products that should belong to this group.
+        selectionable products: The following selectionable products have a defined value for each axis.
     association:
         show products:        Show products
         show groups:          Show groups
@@ -395,3 +397,15 @@ pim_catalog.completeness:
     missing_attributes: Missing value|Missing values
     legend:
         locale_not_associated: Locale not associated to this channel
+
+# Product groups
+pim_catalog.group.type:
+    VARIANT:    Variant
+    X_SELL:     X-Sell
+    ADDITIONAL: Additional
+    RELATED:    Related
+
+# Product view
+Group: Group
+View group: View group
+Products: Products

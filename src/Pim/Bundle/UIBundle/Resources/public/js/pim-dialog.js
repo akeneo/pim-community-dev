@@ -1,6 +1,6 @@
 define(
-    ['jquery', 'underscore', 'backbone/bootstrap-modal'],
-    function ($, _) {
+    ['jquery', 'underscore', 'oro/navigation', 'backbone/bootstrap-modal'],
+    function ($, _, Navigation) {
         'use strict';
 
         /**
@@ -30,6 +30,30 @@ define(
                     });
                     alert.open();
                 } else {
+                    window.alert(content);
+                }
+            },
+            
+            /**
+             * Open a modal dialog with cancel button and specific redirection when
+             * @param string content
+             * @param string title
+             * @param string okText
+             * @param string location
+             */
+            redirect: function (content, title, okText, location) {
+                if (!_.isUndefined(Backbone.BootstrapModal)) {
+                    var redirectModal = new Backbone.BootstrapModal({
+                        allowCancel: true,
+                        title: title,
+                        content: content,
+                        okText: okText
+                    });
+                    redirectModal.on('ok', function() {
+                        Navigation.getInstance().setLocation(location);
+                    });
+                    redirectModal.open();
+                }else {
                     window.alert(content);
                 }
             },

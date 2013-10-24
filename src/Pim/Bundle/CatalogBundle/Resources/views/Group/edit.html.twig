@@ -38,7 +38,7 @@
         }
     }) }}
 
-        {% set title = 'group.edit'|trans ~ ' - ' ~ form.vars.data.label ~ ' - ' ~ form.vars.data.products|length ~ ' products'|trans %}
+        {% set title = 'group.edit'|trans ~ ' - ' ~ form.vars.data.label %}
 
         {% set buttons %}
             {{ elements.backLink(path('pim_catalog_group_index')) }}
@@ -54,38 +54,70 @@
             {{ elements.submitBtn() }}
         {% endset %}
 
+        {% set left %}
+            <ul class="inline">
+                <li>
+                    {{ 'code'|trans|capitalize }}: {{ form.vars.value.code }}
+                </li>
+                <li>
+                    {{ 'type'|trans|capitalize }}: {{ form.vars.value.type.code }}
+                </li>
+                {% if form.vars.value.type.isVariant %}
+                    {% set variantGroupAttributes %}
+                        {% for attribute in form.vars.value.attributes %}
+                            {{ attribute }}{% if not loop.last %},{% endif %}
+                        {% endfor %}
+                    {% endset %}
+                    <li>{{ 'axis'|trans|capitalize }}: <span>{{ variantGroupAttributes|capitalize|default('N/A'|trans) }}</span></li>
+                {% endif %}
+
+                {% if form.vars.data.products|length > 0 %}
+                    <li>{{ 'products'|trans|capitalize }}: {{ form.vars.data.products|length }}</li>
+                {% else %}
+                    <li>{{'info.group.select products'|trans}}
+                    {% if form.vars.data.type.isVariant %}
+                        {{'info.group.selectionable products'|trans}}
+                    {% endif %}
+                    </li>
+                {% endif %}
+           </ul>
+        {% endset %}
+
         {% set right %}
             <div class="pull-right entity-updated">
                 <span id="updated" class="label label-warning hide">{{ 'info.updated'|trans }}</span>
             </div>
         {% endset %}
 
-        {{ elements.page_header(title, buttons, null, null, right) }}
+        {{ elements.page_header(title, buttons, null, left, right) }}
 
-        <div class="row-fluid">
+        {{ elements.form_navbar(['Products', 'Properties']) }}
+
+        <div class="row-fluid tab-content group-edit">
 
             {{ elements.form_errors(form) }}
 
-            {% set generalProperties %}
-                {{ form_row(form.code) }}
-                {{ form_row(form.type) }}
-                {% if form.vars.data.type.isVariant %}
-                    {{ form_row(form.attributes) }}
-                {% endif %}
-            {% endset %}
+            <div class="tab-pane active" id="products">
+                <div id="group-products-grid"></div>
+                {{ form_widget(form.appendProducts, {'id': 'appendProducts'}) }}
+                {{ form_widget(form.removeProducts, {'id': 'removeProducts'}) }}
+            </div>
 
-            {{ elements.accordion({
-                'General Properties': generalProperties,
-                'Labels': form_row(form.label)
-            }) }}
-
-            {{ form_widget(form.appendProducts, {'id': 'appendProducts'}) }}
-            {{ form_widget(form.removeProducts, {'id': 'removeProducts'}) }}
-
+            <div class="tab-pane" id="properties">
+                {% set generalProperties %}
+                    {{ form_row(form.code) }}
+                    {{ form_row(form.type) }}
+                    {% if form.vars.data.type.isVariant %}
+                        {{ form_row(form.attributes) }}
+                    {% endif %}
+                {% endset %}
+                {{ elements.accordion({
+                    'General Properties': generalProperties,
+                    'Labels': form_row(form.label)
+                }) }}
+            </div>
             {{ form_row(form._token) }}
         </div>
     </form>
-
-    <div id="group-products-grid"></div>
 
 {% endblock %}

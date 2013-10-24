@@ -373,7 +373,8 @@ class ProductController extends AbstractDoctrineController
             'form'                   => $form->createView(),
             'dataLocale'             => $this->getDataLocale(),
             'channels'               => $channels,
-            'attributesForm'         => $this->getAvailableProductAttributesForm($product->getAttributes())->createView(),
+            'attributesForm'         =>
+                $this->getAvailableProductAttributesForm($product->getAttributes())->createView(),
             'product'                => $product,
             'trees'                  => $trees,
             'created'                => $this->auditManager->getOldestLogEntry($product),

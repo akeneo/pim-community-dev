@@ -15,7 +15,7 @@ Feature: Association creation
   Scenario: Successfully create an association
     Given I am on the associations page
     When I create a new association
-    And I fill in the following information:
+    And I fill in the following information in the popin:
       | Code | up_sell |
     And I press the "Save" button
     Then I should be on the "up_sell" association page
@@ -30,7 +30,7 @@ Feature: Association creation
   Scenario: Fail to create an association with an invalid code
     Given I am on the associations page
     When I create a new association
-    And I fill in the following information:
+    And I fill in the following information in the popin:
       | Code | =( |
     And I press the "Save" button
     Then I should see validation error "Association code may contain only letters, numbers and underscores"
@@ -41,7 +41,7 @@ Feature: Association creation
       | cross_sell  |
     Given I am on the associations page
     When I create a new association
-    And I fill in the following information:
+    And I fill in the following information in the popin:
       | Code | cross_sell |
     And I press the "Save" button
     Then I should see validation error "This value is already used."

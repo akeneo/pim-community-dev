@@ -13,7 +13,7 @@ Feature: Display the product history
     And I am logged in as "Julia"
     And I am on the products page
     And I create a new product
-    And I fill in the following information:
+    And I fill in the following information in the popin:
       | SKU               | cam  |
     And I press the "Save" button
     And I edit the "cam" product
