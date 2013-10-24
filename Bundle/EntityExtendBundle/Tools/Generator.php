@@ -95,7 +95,7 @@ class Generator
              * TODO
              * custom entity instance as manyToOne relation
              * find the way to show it on view
-             * we should mark some field as
+             * we should mark some field as title
              */
             $toString = array();
             foreach ($item['property'] as $propKey => $propValue) {
@@ -178,6 +178,30 @@ class Generator
                     $this->generateClassMethod(
                         'set' . ucfirst(Inflector::camelize($method)),
                         '$this->' . $default . ' = $value; return $this;',
+                        array('value')
+                    )
+                );
+        }
+
+        foreach ($config['addremove'] as $addremove => $method) {
+            $class
+                ->setMethod(
+                    $this->generateClassMethod(
+                        'add' . ucfirst(Inflector::camelize($method['self'])),
+                        'if (!$this->' . $addremove . '->contains($value)) {
+                            $this->' . $addremove . '->add($value);
+                            $value->set'. ucfirst(Inflector::camelize($method['target'])) .'($this);
+                        }',
+                        array('value')
+                    )
+                )
+                ->setMethod(
+                    $this->generateClassMethod(
+                        'remove' . ucfirst(Inflector::camelize($method['self'])),
+                        'if ($this->' . $addremove . '->contains($value)) {
+                            $this->' . $addremove . '->remove($value);
+                            $value->set'. ucfirst(Inflector::camelize($method['target'])) .'(null);
+                        }',
                         array('value')
                     )
                 );

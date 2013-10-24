@@ -125,11 +125,12 @@ class ExtendConfigDumper
 
         $entityState = $entityConfig->get('state');
 
-        $schema    = $entityConfig->get('schema');
+        $schema             = $entityConfig->get('schema');
+        $properties         = array();
+        $relationProperties = $schema ? $schema['relation'] : array();
+        $defaultProperties  = array();
+        $addRemoveMethods   = array();
 
-        $properties         = [];
-        $relationProperties = $schema ? $schema['relation'] : [];
-        $defaultProperties  = [];
         if ($fieldConfigs = $extendProvider->getConfigs($className)) {
             foreach ($fieldConfigs as $fieldConfig) {
                 if ($fieldConfig->is('extend')) {
@@ -142,6 +143,7 @@ class ExtendConfigDumper
                             $defaultName = self::DEFAULT_PREFIX . $fieldConfig->getId()->getFieldName();
 
                             $defaultProperties[$defaultName] = $defaultName;
+                            $addRemoveMethods[$fieldName]    = array('self' => $fieldConfig->getId()->getFieldName());
                         }
                     } else {
                         $properties[$fieldName] = $fieldConfig->getId()->getFieldName();
@@ -180,6 +182,12 @@ class ExtendConfigDumper
         foreach ($relations as &$relation) {
             if ($relation['field_id']) {
                 $relation['assign'] = true;
+                if (isset($addRemoveMethods[self::FIELD_PREFIX . $relation['field_id']->getFieldName()])
+                    && $relation['target_field_id']
+                ) {
+                    $addRemoveMethods[self::FIELD_PREFIX . $relation['field_id']->getFieldName()]['target']
+                        = $relation['target_field_id']->getFieldName();
+                }
 
                 $this->checkRelation($relation['target_entity'], $relation['field_id']);
             }
@@ -194,6 +202,7 @@ class ExtendConfigDumper
             'property' => $properties,
             'relation' => $relationProperties,
             'default'  => $defaultProperties,
+            'addremove'=> $addRemoveMethods,
             'doctrine' => $doctrine,
         ];
 

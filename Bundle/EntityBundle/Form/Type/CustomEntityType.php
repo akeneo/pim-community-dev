@@ -2,6 +2,9 @@
 
 namespace Oro\Bundle\EntityBundle\Form\Type;
 
+use Doctrine\Common\Inflector\Inflector;
+use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
+use Oro\Bundle\EntityExtendBundle\Tools\ExtendConfigDumper;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
@@ -155,6 +158,7 @@ class CustomEntityType extends AbstractType
                             'default_element' => 'default_' . $fieldConfigId->getFieldName(),
                             'initial_elements' => null,
                             'mapped' => false,
+                            'extend' => true,
                         );
 
                         break;
@@ -182,8 +186,104 @@ class CustomEntityType extends AbstractType
         }
 
         $view->vars['block_config'] = $blockConfig;
+
+        /**
+         * Retrieve selected entities
+         */
+        $className = $options['class_name'];
+        $data      = $form->getData();
+
+        /** @var ConfigProvider $extendConfigProvider */
+        $extendConfigProvider = $this->configManager->getProvider('extend');
+
+        /** @var ConfigProvider $formConfigProvider */
+        $formConfigProvider = $this->configManager->getProvider('form');
+        $formConfigs        = $formConfigProvider->getConfigs($className);
+        foreach ($formConfigs as $formConfig) {
+            $extendConfig = $extendConfigProvider->getConfig($className, $formConfig->getId()->getFieldName());
+
+            if ($formConfig->get('is_enabled')
+                && !$extendConfig->is('is_deleted')
+                && $extendConfig->is('owner', ExtendManager::OWNER_CUSTOM)
+                && !$extendConfig->is('state', ExtendManager::STATE_NEW)
+                && !in_array($formConfig->getId()->getFieldType(), array('ref-one', 'ref-many'))
+            ) {
+                /** @var FieldConfigId $fieldConfigId */
+                $fieldConfigId = $formConfig->getId();
+                if ($fieldConfigId->getFieldType() == 'oneToMany') {
+                    $fieldName = $fieldConfigId->getFieldName();
+
+                    $view->children[$fieldName]->vars['grid_url'] =
+                        $this->router->generate(
+                            'oro_entity_relation',
+                            array(
+                                'id'        => $data->getId() ? : 0,
+                                'className' => str_replace('\\', '_', $className),
+                                'fieldName' => $fieldName
+                            )
+                        );
+
+                    $defaultFieldName = 'get_' . ExtendConfigDumper::DEFAULT_PREFIX . $fieldName;
+                    $defaultEntityId  = $data->{Inflector::camelize($defaultFieldName)}();
+
+                    $classArray = explode('\\', $className);
+                    $relatedFieldName =
+                        ExtendConfigDumper::FIELD_PREFIX
+                        . strtolower(array_pop($classArray)) . '_'
+                        . $fieldName;
+
+                    $selectedCollection = $this->configManager->getEntityManager()
+                        ->getRepository($extendConfig->get('target_entity'))
+                        ->findBy(array($relatedFieldName => $data->getId()));
+
+                    $view->children[$fieldName]->vars['initial_elements'] =
+                        $this->getInitialElements($selectedCollection, $defaultEntityId, $extendConfig);
+                }
+            }
+        }
     }
 
+    /**
+     * @param $entities
+     * @param $default
+     * @param ConfigInterface $extendConfig
+     * @return array
+     */
+    protected function getInitialElements($entities, $default, ConfigInterface $extendConfig)
+    {
+        $result = array();
+        foreach ($entities as $entity) {
+            $extraData = array();
+            foreach ($extendConfig->get('target_view') as $fieldName) {
+                $label =$this->configManager->getProvider('entity')
+                    ->getConfig($extendConfig->get('target_entity'), $fieldName)
+                    ->get('label');
+
+                $extraData[] = array(
+                    'label' => $label,
+                    'value' => $entity->{Inflector::camelize('get_' . $fieldName)}()
+                );
+            }
+
+            $result[] = array(
+                'id' => $entity->getId(),
+                'label' => $entity->{Inflector::camelize('get_' . $extendConfig->get('target_title'))}(),
+                'link' => $this->router->generate(
+                    'oro_entity_detailed',
+                    array(
+                        'id' => $entity->getId(),
+                        'className' => str_replace('\\', '_', $extendConfig->getId()->getClassName()),
+                        'fieldName' => $extendConfig->getId()->getFieldName()
+                    )
+                ),
+                'extraData' => $extraData,
+                'isDefault' => ($default != null && $default->getId() == $entity->getId())
+
+            );
+        }
+
+        return $result;
+    }
 
     /**
      * {@inheritdoc}
