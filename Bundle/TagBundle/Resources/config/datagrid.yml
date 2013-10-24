@@ -67,15 +67,15 @@ datagrid:
             type: orm
             query:
                 select:
-                    - t.id
-                    - t.name
+                    - tt
+                    - t
                 from:
-                    - { table: OroTagBundle:Tag, alias: t }
+                    - { table: OroTagBundle:Tagging, alias: tt }
                 join:
                     left:
                         tagging:
-                            join: t.tagging
-                            alias: tt
+                            join: tt.tag
+                            alias: t
                 groupBy: tt.entityName, tt.recordId
                 where:
                     and:
@@ -83,13 +83,8 @@ datagrid:
         columns:
             entity:
                 label: Item
-                type: twig
-                template: ~
-                frontend_type: string
-            url:
-                label: URL
-                type: callback
-                callable: ~
+                type: search-result
+                template: OroTagBundle:Search/result.html.twig
                 frontend_type: string
 
         properties: ~
