@@ -23,7 +23,10 @@ class Configuration implements ConfigurationInterface
                     ->addDefaultsIfNotSet()
                     ->children()
                         // @see http://requirejs.org/docs/api.html#config-waitSeconds
-                        ->integerNode('waitSeconds')->min(0)->end()
+                        ->integerNode('waitSeconds')
+                            ->min(0)
+                            ->defaultValue(0)
+                        ->end()
                         // @see http://requirejs.org/docs/api.html#config-enforceDefine
                         ->booleanNode('enforceDefine')->end()
                         // @see http://requirejs.org/docs/api.html#config-scriptType
