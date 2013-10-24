@@ -103,31 +103,31 @@
 
     <script type="text/javascript">
         require(['jquery', 'underscore', 'oro/calendar', 'oro/calendar/event/collection', 'oro/calendar/connection/collection'],
-                function($, _, Calendar, EventCollection, ConnectionCollection){
-                    var connections = new ConnectionCollection();
-                    connections.reset({{ render(path('oro_api_get_calendar_connections', {id: entity.id})) }});
-                    var events = new EventCollection();
-                    events.reset({{ render(path('oro_api_get_calendarevents', {calendar: entity.id, start: startDate|date('c'), end: endDate|date('c'), subordinate: true})) }});
-                    var options = {
-                        el: '#calendar',
-                        calendar: {{ entity.id }},
-                        eventsOptions: {
-                            collection: events,
-                            subordinate: true,
-                            containerSelector: '.calendar-events',
-                            itemFormTemplateSelector: '#template-calendar-event',
-                            itemFormDeleteButtonSelector: '#btn-remove-calendarevent',
-                            itemFormValidationScriptUrl: '{{ JSFV(event_form, true) }}'
-                        },
-                        connectionsOptions: {
-                            collection: connections,
-                            containerSelector: '.calendar-connections',
-                            containerTemplateSelector: '#template-calendar-connections',
-                            itemTemplateSelector: '#template-calendar-connection-item'
-                        }
-                    };
-                    _.extend(options.eventsOptions, {{ calendar|json_encode|raw }});
-                    var calendar = new Calendar(options);
-                  });
+        function($, _, Calendar, EventCollection, ConnectionCollection){
+            var connections = new ConnectionCollection();
+            connections.reset({{ render(path('oro_api_get_calendar_connections', {id: entity.id})) }});
+            var events = new EventCollection();
+            events.reset({{ render(path('oro_api_get_calendarevents', {calendar: entity.id, start: startDate|date('c'), end: endDate|date('c'), subordinate: true})) }});
+            var options = {
+                el: '#calendar',
+                calendar: {{ entity.id }},
+                eventsOptions: {
+                    collection: events,
+                    subordinate: true,
+                    containerSelector: '.calendar-events',
+                    itemFormTemplateSelector: '#template-calendar-event',
+                    itemFormDeleteButtonSelector: '#btn-remove-calendarevent',
+                    itemFormValidationScriptUrl: '{{ JSFV(event_form, true) }}'
+                },
+                connectionsOptions: {
+                    collection: connections,
+                    containerSelector: '.calendar-connections',
+                    containerTemplateSelector: '#template-calendar-connections',
+                    itemTemplateSelector: '#template-calendar-connection-item'
+                }
+            };
+            _.extend(options.eventsOptions, {{ calendar|json_encode|raw }});
+            $(function() { new Calendar(options); });
+        });
     </script>
 {% endblock content_data %}
