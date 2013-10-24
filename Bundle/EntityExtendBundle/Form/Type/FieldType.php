@@ -24,7 +24,7 @@ class FieldType extends AbstractType
         'float'      => 'Float',
         'oneToMany'  => 'Relation one to many',
         'manyToOne'  => 'Relation many to one',
-        'manyToMany' => 'Relation many to many',
+        //'manyToMany' => 'Relation many to many',
     );
 
     /**
