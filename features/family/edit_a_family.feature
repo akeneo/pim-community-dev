@@ -41,8 +41,8 @@ Feature: Edit a family
     Given I am on the "Jewels" family page
     When I change the english Label to "NewJewelery"
     Then I should see "There are unsaved changes."
-    
-  @javascript @insulated
+
+  @javascript
   Scenario: Successfully have a confirmation popup when I change page with unsaved changes
     Given I am on the "Jewels" family page
     When I change the english Label to "NewJewelery"
@@ -50,4 +50,3 @@ Feature: Edit a family
     Then I should see a confirm dialog with the following content:
       | title   | Are you sure you want to leave this page?                  |
       | content | You will lose changes to the family if you leave the page. |
-    And I confirm the message

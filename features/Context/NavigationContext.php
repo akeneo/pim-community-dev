@@ -10,6 +10,7 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\Association;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\Family;
+use Behat\Mink\Exception\UnsupportedDriverActionException;
 
 /**
  * Context for navigating the website
@@ -78,6 +79,19 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     public function resetCurrentPage()
     {
         $this->currentPage = null;
+    }
+
+    /**
+     * @AfterScenario
+     */
+    public function disableNavigationConfirmation()
+    {
+        if (strpos($this->currentPage, 'edit')) {
+            try {
+                $this->getSession()->executeScript('typeof $ !== "undefined" && $(window).off("beforeunload");');
+            } catch (UnsupportedDriverActionException $e) {
+            }
+        }
     }
 
     /**
