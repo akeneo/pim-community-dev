@@ -164,7 +164,7 @@ services:
     oro_user.event_listener.role_users_grid_listener:
         class: %oro_user.event_listener.related_users_grid_listener.class%
         arguments:
-          - @oro_grid.datagrid.request_params
+          - @oro_datagrid.datagrid.request_params
           - role_id
         tags:
           - { name: kernel.event_listener, event: oro_grid.datgrid.build.after.role-users-grid, method: onBuildAfter }
@@ -172,7 +172,7 @@ services:
     oro_user.event_listener.group_users_grid_listener:
         class: %oro_user.event_listener.related_users_grid_listener.class%
         arguments:
-          - @oro_grid.datagrid.request_params
+          - @oro_datagrid.datagrid.request_params
           - group_id
         tags:
           - { name: kernel.event_listener, event: oro_grid.datgrid.build.after.group-users-grid, method: onBuildAfter }

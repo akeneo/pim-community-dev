@@ -75,7 +75,7 @@ class FieldProperty extends AbstractProperty
                 }
                 $result = (string)$value;
                 break;
-            case self::TYPE_TEXT:
+            case self::TYPE_STRING:
                 $result = (string)$value;
                 break;
             case self::TYPE_DECIMAL:

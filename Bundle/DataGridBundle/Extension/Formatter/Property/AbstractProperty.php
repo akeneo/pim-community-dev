@@ -40,7 +40,7 @@ abstract class AbstractProperty implements PropertyInterface
             'label'      => ucfirst($this->get('name')),
             'renderable' => true,
             'editable'   => false,
-            'type'       => self::TYPE_TEXT
+            'type'       => self::TYPE_STRING
         ];
 
         $metadata = array_diff_key(

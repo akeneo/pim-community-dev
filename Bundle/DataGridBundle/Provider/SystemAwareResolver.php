@@ -35,7 +35,7 @@ class SystemAwareResolver implements ContainerAwareInterface
             if ('extend' === $key) {
                 // get parent grid definition, resolved
                 $definition = $this->container
-                    ->get('oro_grid.datagrid.manager')
+                    ->get('oro_datagrid.datagrid.manager')
                     ->getConfigurationForGrid($val);
 
                 // merge them and remove extend directive

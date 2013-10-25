@@ -35,7 +35,7 @@ datagrid:
                     data_name: g.id
 
             default:
-                label: %oro_grid.extension.orm_sorter.class%::DIRECTION_DESC
+                label: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
 
     adminUsers:
         source:
@@ -69,8 +69,8 @@ datagrid:
                     data_name: u.firstName
 
             default:
-                hasRole: %oro_grid.extension.orm_sorter.class%::DIRECTION_DESC
-                firstName: %oro_grid.extension.orm_sorter.class%::DIRECTION_ASC
+                hasRole: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+                firstName: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
 
         filters:
             columns:
@@ -131,11 +131,5 @@ datagrid:
 
         flexible_attributes:
             employees:
-                filterable: true
+                filterable: false
         flexible_entity: %orocrm_account.account.entity.class%
-
-        filters:
-            default:
-                employees:
-                    type: 1
-                    value: 3

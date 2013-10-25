@@ -1,29 +1,29 @@
 parameters:
-    oro_grid.extension.formatter.class:        Oro\Bundle\DataGridBundle\Extension\Formatter\FormatterExtension
-    oro_grid.extension.orm_pager.class:        Oro\Bundle\DataGridBundle\Extension\Pager\OrmPagerExtension
-    oro_grid.extension.pager.orm.pager.class:  Oro\Bundle\DataGridBundle\Extension\Pager\Orm\Pager
-    oro_grid.extension.orm_sorter.class:       Oro\Bundle\DataGridBundle\Extension\Sorter\OrmSorterExtension
+    oro_datagrid.extension.formatter.class:        Oro\Bundle\DataGridBundle\Extension\Formatter\FormatterExtension
+    oro_datagrid.extension.orm_pager.class:        Oro\Bundle\DataGridBundle\Extension\Pager\OrmPagerExtension
+    oro_datagrid.extension.pager.orm.pager.class:  Oro\Bundle\DataGridBundle\Extension\Pager\Orm\Pager
+    oro_datagrid.extension.orm_sorter.class:       Oro\Bundle\DataGridBundle\Extension\Sorter\OrmSorterExtension
 
 services:
-    oro_grid.extension.formatter:
-        class: %oro_grid.extension.formatter.class%
+    oro_datagrid.extension.formatter:
+        class: %oro_datagrid.extension.formatter.class%
         tags:
-            - { name: oro_grid.extension }
+            - { name: oro_datagrid.extension }
 
-    oro_grid.extension.orm_pager:
-        class: %oro_grid.extension.orm_pager.class%
+    oro_datagrid.extension.orm_pager:
+        class: %oro_datagrid.extension.orm_pager.class%
         arguments:
-            - @oro_grid.extension.pager.orm.pager
-            - @oro_grid.datagrid.request_params
+            - @oro_datagrid.extension.pager.orm.pager
+            - @oro_datagrid.datagrid.request_params
         tags:
-            - { name: oro_grid.extension }
+            - { name: oro_datagrid.extension }
 
-    oro_grid.extension.pager.orm.pager:
-        class: %oro_grid.extension.pager.orm.pager.class%
+    oro_datagrid.extension.pager.orm.pager:
+        class: %oro_datagrid.extension.pager.orm.pager.class%
 
-    oro_grid.extension.orm_sorter:
-        class: %oro_grid.extension.orm_sorter.class%
+    oro_datagrid.extension.orm_sorter:
+        class: %oro_datagrid.extension.orm_sorter.class%
         arguments:
-            - @oro_grid.datagrid.request_params
+            - @oro_datagrid.datagrid.request_params
         tags:
-            - { name: oro_grid.extension }
+            - { name: oro_datagrid.extension }

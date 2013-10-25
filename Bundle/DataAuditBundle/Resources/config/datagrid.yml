@@ -55,7 +55,7 @@ datagrid:
                 label: Data
                 type: twig
                 template: OroDataAuditBundle:Datagrid:Property/data.html.twig
-                frontend_type: string
+                frontend_type: html
             author:
                 label: Author
                 type: field
@@ -173,6 +173,6 @@ datagrid:
                 loggedAt:
                     data_name: a.loggedAt
             default:
-                loggedAt: %oro_grid.extension.orm_sorter.class%::DIRECTION_DESC
+                loggedAt: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
 
         filters: ~

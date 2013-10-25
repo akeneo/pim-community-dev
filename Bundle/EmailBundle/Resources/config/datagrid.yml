@@ -47,7 +47,7 @@ datagrid:
                 sentAt:
                     data_name: e.sentAt
             default:
-                sentAt: %oro_grid.extension.orm_sorter.class%::DIRECTION_DESC
+                sentAt: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
 
         filters:
             columns:

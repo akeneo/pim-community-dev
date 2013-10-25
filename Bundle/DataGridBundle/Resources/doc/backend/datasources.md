@@ -17,7 +17,7 @@ Customization
 To implement your own adapter you have to do following:
 
  - Develop class that implements DatasourceInterface
- - Register you adapter as service with tag { name: oro_grid.datasource, type: YOUR_ADAPTER_TYPE }
+ - Register you adapter as service with tag { name: oro_datagrid.datasource, type: YOUR_ADAPTER_TYPE }
 
 To configure which datasource grid should use just modify `type` param under source tree.
 For example:

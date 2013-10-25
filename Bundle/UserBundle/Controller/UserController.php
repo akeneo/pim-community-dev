@@ -182,7 +182,7 @@ class UserController extends Controller
     {
         if (array_key_exists(
             'refresh',
-            $this->get('oro_grid.datagrid.request_params')
+            $this->get('oro_datagrid.datagrid.request_params')
                  ->get(RequestParameters::ADDITIONAL_PARAMETERS)
         )) {
             $origin = $user->getImapConfiguration();

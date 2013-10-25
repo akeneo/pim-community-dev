@@ -6,10 +6,10 @@
         params: additional parameters for url
 #}
 {% macro renderGrid(name, params = {}) %}
-    {% set dataUrl = path('oro_datagrid_index', { 'gridName': name }|merge(params)) %}
-    {% set metaData = oro_grid_metadata(name, { dataUrl: dataUrl }) %}
+    {% set url = path('oro_datagrid_index', { 'gridName': name }|merge(params)) %}
+    {% set metaData = oro_datagrid_metadata(name, { url: url }) %}
 
-    <div data-type="datagrid" data-data="{{ render(dataUrl)|escape }}" data-metadata="{{ metaData|json_encode }}"></div>
+    <div data-type="datagrid" data-data="{{ render(url)|escape }}" data-metadata="{{ metaData|json_encode }}"></div>
     <script type="text/javascript">
         require(['jquery', 'oro/datagrid-builder'],
         function ($, datagridBuilder) {
@@ -17,17 +17,11 @@
                 datagridBuilder();
                 {# @TODO remove dev code #}
                 $('div[data-type="datagrid"]:not([data-rendered])').each(function (e, el) {
-                    var el = $(el);
+                    el = $(el);
                     console.group('Datagrid "{{ name }}" rendered:');
                     console.info(el.data('data'));
                     console.info(el.data('metadata'));
                     console.groupEnd();
-
-                    el.after(
-                        $('<div>').html(JSON.stringify(el.data('data'))),
-                        $('<hr />'),
-                        $('<div>').html(JSON.stringify(el.data('metadata')))
-                    );
                 });
             });
         });

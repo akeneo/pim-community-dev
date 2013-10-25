@@ -53,7 +53,7 @@ datagrid:
                 someColumn:
                     data_name: someAlias
             default:
-                label: %oro_grid.extension.orm_sorter.class%::DIRECTION_DESC # sorters enabled by default, key is a column name
+                label: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC # sorters enabled by default, key is a column name
 
             enable_multisort: true|false # is multisorting mode enabled ? False by default
 ```
