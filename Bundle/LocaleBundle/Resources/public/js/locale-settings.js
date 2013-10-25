@@ -120,6 +120,20 @@ function(_, settings) {
             return this.settings.country;
         },
 
+        getCurrency: function() {
+            return this.settings.currency;
+        },
+
+        getCurrencySymbol: function(currencyCode) {
+            if (!currencyCode) {
+                currencyCode = this.settings.currency;
+            }
+            if (this.settings.currency_data.hasOwnProperty(currencyCode)) {
+                return this.settings.currency_data[currencyCode].symbol
+            }
+            return '$';
+        },
+
         getTimeZoneOffset: function() {
             return this.settings.timezone_offset;
         },
@@ -130,6 +144,10 @@ function(_, settings) {
 
         getAddressFormats: function() {
             return this.settings.format.address;
+        },
+
+        getNumberFormats: function(style) {
+            return this.settings.format.number[style];
         },
 
         getCountryLocale: function(country) {

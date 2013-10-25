@@ -20,18 +20,19 @@ function($, localeSettings) {
                 'max_fraction_digits': oro_locale_number_attribute('max_fraction_digits', style),
                 'min_fraction_digits': oro_locale_number_attribute('min_fraction_digits', style),
 
-                'negative_prefix': oro_locale_number_text_attribute('negative_prefix', style),
-                'negative_suffix': oro_locale_number_text_attribute('negative_suffix', style),
-                'positive_prefix': oro_locale_number_text_attribute('positive_prefix', style),
-                'positive_suffix': oro_locale_number_text_attribute('positive_suffix', style),
-                'currency_code': oro_locale_number_text_attribute('currency_code', style),
+                'negative_prefix':   oro_locale_number_text_attribute('negative_prefix', style),
+                'negative_suffix':   oro_locale_number_text_attribute('negative_suffix', style),
+                'positive_prefix':   oro_locale_number_text_attribute('positive_prefix', style),
+                'positive_suffix':   oro_locale_number_text_attribute('positive_suffix', style),
+                'currency_code':     oro_locale_number_text_attribute('currency_code', style),
+                'padding_character': oro_locale_number_text_attribute('padding_character', style),
 
                 'decimal_separator_symbol':           oro_locale_number_symbol('decimal_separator_symbol', style),
                 'grouping_separator_symbol':          oro_locale_number_symbol('grouping_separator_symbol', style),
                 'monetary_separator_symbol':          oro_locale_number_symbol('monetary_separator_symbol', style),
                 'monetary_grouping_separator_symbol': oro_locale_number_symbol('monetary_grouping_separator_symbol', style),
                 'currency_symbol':                    oro_locale_number_symbol('currency_symbol', style),
-                'intl_currency_symbol':               oro_locale_number_symbol('intl_currency_symbol', style)
+                'zero_digit_symbol':                  oro_locale_number_symbol('zero_digit_symbol', style),
             }
         }) %}
     {% endfor %}
