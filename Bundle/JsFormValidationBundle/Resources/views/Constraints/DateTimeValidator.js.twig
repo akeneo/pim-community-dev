@@ -6,9 +6,7 @@ function DateTime(field, params)
         return true;
     }
 
-    // TODO: use moment JS format for current locale
-    var dateTimeFormat = 'MMM D, YYYY h:mm A';
-    if (Moment(String(value), dateTimeFormat, true).isValid()) {
+    if (datetimeFormatter.isDateTimeValid(String(value))) {
         return true;
     }
 

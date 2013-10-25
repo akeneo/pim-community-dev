@@ -1,0 +1,11 @@
+parameters:
+    oro_distribution.routing_loader.class:            Oro\Bundle\DistributionBundle\Routing\OroAutoLoader
+
+services:
+    oro_distribution.routing_loader:
+        class:                                        %oro_distribution.routing_loader.class%
+        arguments:
+            - "@file_locator"
+            - "@kernel"
+        tags:
+            - { name: routing.loader }

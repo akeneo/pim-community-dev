@@ -203,17 +203,37 @@ class LocaleSettingsTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testGetLocale()
+    /**
+     * @param string $expectedValue
+     * @param string $configurationValue
+     * @dataProvider getLocaleDataProvider
+     */
+    public function testGetLocale($expectedValue, $configurationValue)
     {
-        $expectedLocale = 'ru_RU';
-
         $this->configManager->expects($this->once())
             ->method('get')
             ->with('oro_locale.locale')
-            ->will($this->returnValue($expectedLocale));
+            ->will($this->returnValue($configurationValue));
 
-        $this->assertEquals($expectedLocale, $this->localeSettings->getLocale());
-        $this->assertEquals($expectedLocale, $this->localeSettings->getLocale());
+        $this->assertEquals($expectedValue, $this->localeSettings->getLocale());
+        $this->assertEquals($expectedValue, $this->localeSettings->getLocale());
+    }
+
+    /**
+     * @return array
+     */
+    public function getLocaleDataProvider()
+    {
+        return array(
+            'configuration value' => array(
+                'expectedValue' => 'ru_RU',
+                'configurationValue' => 'ru_RU',
+            ),
+            'default value' => array(
+                'expectedValue' => LocaleConfiguration::DEFAULT_LOCALE,
+                'configurationValue' => null,
+            ),
+        );
     }
 
     public function testGetCountry()
@@ -247,17 +267,37 @@ class LocaleSettingsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedCountry, $this->localeSettings->getCountry());
     }
 
-    public function testGetTimeZone()
+    /**
+     * @param $expectedValue
+     * @param $configurationValue
+     * @dataProvider getTimeZoneDataProvider
+     */
+    public function testGetTimeZone($expectedValue, $configurationValue)
     {
-        $expectedTimeZone = 'America/Los_Angeles';
-
         $this->configManager->expects($this->once())
             ->method('get')
             ->with('oro_locale.timezone', date_default_timezone_get())
-            ->will($this->returnValue($expectedTimeZone));
+            ->will($this->returnValue($configurationValue));
 
-        $this->assertEquals($expectedTimeZone, $this->localeSettings->getTimeZone());
-        $this->assertEquals($expectedTimeZone, $this->localeSettings->getTimeZone());
+        $this->assertEquals($expectedValue, $this->localeSettings->getTimeZone());
+        $this->assertEquals($expectedValue, $this->localeSettings->getTimeZone());
+    }
+
+    /**
+     * @return array
+     */
+    public function getTimeZoneDataProvider()
+    {
+        return array(
+            'configuration value' => array(
+                'expectedValue' => 'America/Los_Angeles',
+                'configurationValue' => 'America/Los_Angeles',
+            ),
+            'default value' => array(
+                'expectedValue' => date_default_timezone_get(),
+                'configurationValue' => null,
+            ),
+        );
     }
 
     public function testGetCurrency()
@@ -317,5 +357,52 @@ class LocaleSettingsTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($calendar));
 
         $this->assertSame($calendar, $this->localeSettings->getCalendar($locale));
+    }
+
+    public function testIsFormatAddressByAddressCountry()
+    {
+        $this->configManager->expects($this->at(0))
+            ->method('get')
+            ->with('oro_locale.format_address_by_address_country')
+            ->will($this->returnValue(''));
+        $this->configManager->expects($this->at(1))
+            ->method('get')
+            ->with('oro_locale.format_address_by_address_country')
+            ->will($this->returnValue('1'));
+
+        $this->assertFalse($this->localeSettings->isFormatAddressByAddressCountry());
+        $this->assertTrue($this->localeSettings->isFormatAddressByAddressCountry());
+    }
+
+    /**
+     * @param string $expectedValue
+     * @param string $configurationValue
+     * @dataProvider getLanguageDataProvider
+     */
+    public function testGetLanguage($expectedValue, $configurationValue)
+    {
+        $this->configManager->expects($this->once())
+            ->method('get')
+            ->with('oro_locale.language')
+            ->will($this->returnValue($configurationValue));
+
+        $this->assertEquals($expectedValue, $this->localeSettings->getLanguage());
+    }
+
+    /**
+     * @return array
+     */
+    public function getLanguageDataProvider()
+    {
+        return array(
+            'configuration value' => array(
+                'expectedValue' => 'ru',
+                'configurationValue' => 'ru',
+            ),
+            'default value' => array(
+                'expectedValue' => LocaleConfiguration::DEFAULT_LANGUAGE,
+                'configurationValue' => null,
+            ),
+        );
     }
 }
