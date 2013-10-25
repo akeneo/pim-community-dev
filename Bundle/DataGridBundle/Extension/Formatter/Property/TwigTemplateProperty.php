@@ -10,7 +10,7 @@ class TwigTemplateProperty extends AbstractProperty
     const TEMPLATE_KEY = 'template';
 
     /** @var array */
-    protected $excludeParam = [self::CONTEXT_KEY, self::TEMPLATE_KEY];
+    protected $excludeParams = [self::CONTEXT_KEY, self::TEMPLATE_KEY];
 
     /** @var \Twig_Environment */
     protected $environment;
