@@ -16,6 +16,7 @@ interface PropertyInterface
     const TYPE_HTML     = 'html';
     const TYPE_BOOLEAN  = 'boolean';
 
+    const METADATA_NAME_KEY    = 'name';
     const METADATA_TYPE_KEY    = 'type';
     const METADATA_OPTIONS_KEY = 'options';
 

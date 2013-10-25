@@ -20,18 +20,21 @@ abstract class AbstractProperty implements PropertyInterface
      */
     public function getMetadata()
     {
+        $name = $this->get('name');
+
         $frontendOptions = $this->getOr(self::FRONTEND_OPTIONS_KEY, []);
         $frontendOptions = array_merge(
             [
                 // use field name if label not set
-                'label'      => ucfirst($this->get('name')),
+                'label'      => ucfirst($name),
                 'renderable' => true,
                 'editable'   => false
             ],
             $frontendOptions
         );
         $metadata        = [
-            self::METADATA_TYPE_KEY             => $this->getOr(self::FRONTEND_TYPE_KEY, self::TYPE_TEXT),
+            self::METADATA_NAME_KEY    => $name,
+            self::METADATA_TYPE_KEY    => $this->getOr(self::FRONTEND_TYPE_KEY, self::TYPE_TEXT),
             self::METADATA_OPTIONS_KEY => $frontendOptions
         ];
 
