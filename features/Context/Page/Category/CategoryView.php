@@ -49,6 +49,20 @@ abstract class CategoryView extends Form
     }
 
     /**
+     * Find input node in tree
+     */
+    public function findInputNodeInTree()
+    {
+        $elt = $this->getElement('Category tree')->find('css', 'input.jstree-rename-input');
+        if (!$elt) {
+            throw new \InvalidArgumentException('Unable to find category input node in the tree');
+        }
+
+        return $elt;
+
+    }
+
+    /**
      * @param string $action
      *
      * @return CategoryView

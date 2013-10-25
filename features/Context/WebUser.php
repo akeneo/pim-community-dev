@@ -1175,12 +1175,12 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @Given /^I blur (.*)$/
+     * @Given /^I blur the category node$/
      */
-    public function iBlur()
+    public function iBlurTheCategoryNode()
     {
-        $this->getCurrentPage()->find('css', 'body')->click();
-        $this->wait();
+        $elt = $this->getCurrentPage()->findInputNodeInTree();
+        $elt->blur();
         $this->wait();
     }
 

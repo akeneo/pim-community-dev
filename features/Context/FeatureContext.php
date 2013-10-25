@@ -6,6 +6,7 @@ use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Yaml\Parser;
 use Behat\Symfony2Extension\Context\KernelAwareInterface;
 use Behat\MinkExtension\Context\MinkContext;
+use Behat\Behat\Exception\BehaviorException;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
 
@@ -132,6 +133,9 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
      */
     public function wait($time = 5000, $condition = null)
     {
+        $start = microtime(true);
+        $end = $start + $time / 1000.0;
+
         $condition = $condition !== null ? $condition : <<<JS
         document.readyState == 'complete'                  // Page is ready
             && typeof $ != 'undefined'                     // jQuery is loaded
@@ -142,10 +146,20 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
 JS;
 
         try {
+            // Make sure the AJAX call are fired up before checking the condition
             $this->getSession()->wait(100, false);
+
             $this->getSession()->wait($time, $condition);
+
+            // Check if we reached the timeout or if the condition is really realized
+            if ($condition !== false && microtime(true) > $end) {
+                throw new BehaviorException("Timeout of $time reached when checking on $condition");
+            }
         } catch (UnsupportedDriverActionException $e) {
+            // Some test use only the KernelDriver, and not Selenium, so no JS available
+            // Fixme: we should check before hand if JS is available !
         }
+
     }
 
     /**

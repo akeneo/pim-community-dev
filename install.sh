@@ -82,7 +82,7 @@ fi
 export SYMFONY_ENV=$ENV
 
 if [ -z $SYMFONY_DEBUG ]; then
-    if [ $ENV = 'prod' ]; then
+    if [ $ENV = 'prod' ] || [ $ENV = 'behat' ]; then
         export SYMFONY_DEBUG=0
     else
         export SYMFONY_DEBUG=1
