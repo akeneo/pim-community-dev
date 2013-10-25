@@ -31,7 +31,7 @@ class TagSearchResultsGridListener
             /** @var QueryBuilder $query */
             $queryBuilder = $datasource->getQuery();
 
-            $queryBuilder->setParameter('tag', $this->requestParams->get('tag_id', null));
+            $queryBuilder->setParameter('tag', $this->requestParams->get('tag_id', 0));
 
             $searchEntity = $this->requestParams->get('from', '*');
             if ($searchEntity != '*') {

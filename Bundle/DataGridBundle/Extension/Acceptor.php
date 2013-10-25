@@ -2,15 +2,15 @@
 
 namespace Oro\Bundle\DataGridBundle\Extension;
 
-use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
+use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 
 class Acceptor
 {
     /** @var array */
     protected $config;
 
-    /** @var array */
-    protected $sortedExtensions;
+    /** @var ExtensionVisitorInterface[] */
+    protected $extensions = [];
 
     public function __construct(array $config)
     {
@@ -18,37 +18,31 @@ class Acceptor
     }
 
     /**
-     * @param DatagridInterface $grid
-     *
-     * @return void
+     * @param DatasourceInterface $datasource
      */
-    public function acceptDatasourceVisitors(DatagridInterface $grid)
+    public function acceptDatasourceVisitors(DatasourceInterface $datasource)
     {
-        foreach ($this->getSortedExtension($grid) as $extension) {
-            $extension->visitDatasource($this->getConfig(), $grid->getDatasource());
+        foreach ($this->getExtensions() as $extension) {
+            $extension->visitDatasource($this->getConfig(), $datasource);
         }
     }
 
     /**
-     * @param DatagridInterface $grid
-     * @param \stdClass         $result
-     *
-     * @return void
+     * @param \stdClass $result
      */
-    public function acceptResult(DatagridInterface $grid, \stdClass $result)
+    public function acceptResult(\stdClass $result)
     {
-        foreach ($this->getSortedExtension($grid) as $extension) {
+        foreach ($this->getExtensions() as $extension) {
             $extension->visitResult($this->getConfig(), $result);
         }
     }
 
     /**
-     * @param DatagridInterface $grid
-     * @param \stdClass         $data
+     * @param \stdClass $data
      */
-    public function acceptMetadata(DatagridInterface $grid, \stdClass $data)
+    public function acceptMetadata(\stdClass $data)
     {
-        foreach ($this->getSortedExtension($grid) as $extension) {
+        foreach ($this->getExtensions() as $extension) {
             $extension->visitMetadata($this->getConfig(), $data);
         }
     }
@@ -78,28 +72,40 @@ class Acceptor
     }
 
     /**
-     * @param DatagridInterface $grid
+     * Add extension that applicable to datagrid and resort all added extensions
+     *
+     * @param ExtensionVisitorInterface $extension
+     *
+     * @return $this
+     */
+    public function addExtension(ExtensionVisitorInterface $extension)
+    {
+        /**
+         * ATTENTION: extensions should be cloned due to extension object could has state
+         */
+        $this->extensions[] = clone $extension;
+
+        usort(
+            $this->extensions,
+            function (ExtensionVisitorInterface $a, ExtensionVisitorInterface $b) {
+                if ($a->getPriority() === $b->getPriority()) {
+                    return 0;
+                }
+
+                return $a->getPriority() > $b->getPriority() ? -1 : 1;
+            }
+        );
+
+        return $this;
+    }
+
+    /**
+     * Returns extensions applicable to datagrid
      *
      * @return ExtensionVisitorInterface[]
      */
-    protected function getSortedExtension(DatagridInterface $grid)
+    public function getExtensions()
     {
-        if (!$this->sortedExtensions) {
-            $this->sortedExtensions = $grid->getExtensions();
-
-            usort(
-                $this->sortedExtensions,
-                function (ExtensionVisitorInterface $a, ExtensionVisitorInterface $b) {
-                    if ($a->getPriority() === $b->getPriority()) {
-                        return 0;
-                    }
-
-                    return $a->getPriority() > $b->getPriority() ? -1 : 1;
-                }
-            );
-        }
-
-
-        return $this->sortedExtensions;
+        return $this->extensions;
     }
 }

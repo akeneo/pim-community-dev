@@ -56,10 +56,11 @@ class FlexibleFieldProperty extends FieldProperty
     /** @var array */
     protected $excludeParams = [self::BACKEND_TYPE_KEY];
 
-    public function init(array $params)
+    /**
+     * {@inheritdoc}
+     */
+    public function initialize()
     {
-        parent::init($params);
-
         $this->params[self::FRONTEND_TYPE_KEY] = isset(self::$typeMatches[$this->get(self::BACKEND_TYPE_KEY)])
             ? self::$typeMatches[$this->get(self::BACKEND_TYPE_KEY)]['field'] : FieldProperty::TYPE_STRING;
     }

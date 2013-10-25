@@ -11,7 +11,9 @@
 
     <div data-type="datagrid" data-data="{{ render(url)|escape }}" data-metadata="{{ metaData|json_encode }}"></div>
     <script type="text/javascript">
-        require(['jquery', 'oro/datagrid-builder', 'oro/datafilter-builder'],
+        {# @TODO add dynamic modules to metadata #}
+        {# {{ metaData.requireJSModules|json_encode|raw }} #}
+        require(['jquery', 'oro/datagrid-builder'].concat(['oro/datafilter-builder']),
         function ($, datagridBuilder) {
             $(function () {
                 datagridBuilder();
