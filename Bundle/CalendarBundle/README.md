@@ -1,7 +1,7 @@
 Oro Calendar Bundle
 =======================
 
-This bundle integrates the `jQuery FullCalendar` plugin into BAP and provides other calendar related functionality, such as view calendars of other users, reminders, synchronization with external calendars.
+This bundle integrates the [jQuery FullCalendar](http://arshaw.com/fullcalendar/) plugin into BAP and provides other calendar related functionality, such as view calendars of other users, reminders, synchronization with external calendars.
 
 UI
 --
