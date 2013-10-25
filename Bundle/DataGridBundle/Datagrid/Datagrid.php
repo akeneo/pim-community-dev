@@ -44,7 +44,7 @@ class Datagrid implements DatagridInterface
         /** @var array $rows */
         $rows = $this->getAcceptedDatasource()->getResults();
 
-        $result->rows = $rows;
+        $result->data = $rows;
         $this->acceptor->acceptResult($this, $result);
 
         return $result;
