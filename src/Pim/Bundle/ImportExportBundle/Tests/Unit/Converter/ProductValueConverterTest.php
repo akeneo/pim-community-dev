@@ -37,6 +37,22 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Couldn't find an attribute with code "description"
+     *
+     */
+    public function testConvertUnknownAttribute()
+    {
+        $this->attributeRepository
+            ->expects($this->any())
+            ->method('findOneBy')
+            ->with(array('code' => 'description'))
+            ->will($this->returnValue(null));
+
+        $this->converter->convert(array('description' => 'Die beste Curry Wurst!'));
+    }
+
+    /**
      * Test related method
      */
     public function testConvertBasicType()
@@ -50,23 +66,6 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             array('values' => array('sku' => array('varchar' => 'sku-001'))),
             $this->converter->convert(array('sku' => 'sku-001'))
-        );
-    }
-
-    /**
-     * Test related method
-     */
-    public function testIgnoreUnknownAttribute()
-    {
-        $this->attributeRepository
-            ->expects($this->any())
-            ->method('findOneBy')
-            ->with(array('code' => 'foo'))
-            ->will($this->returnValue(null));
-
-        $this->assertEquals(
-            array(),
-            $this->converter->convert(array('foo' => 'bar'))
         );
     }
 
@@ -304,6 +303,27 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Couldn't find an option with code "XS"
+     */
+    public function testConvertUnknownOptionValue()
+    {
+        $this->attributeRepository
+            ->expects($this->any())
+            ->method('findOneBy')
+            ->with(array('code' => 'size'))
+            ->will($this->returnValue($this->getAttributeMock('option')));
+
+        $this->optionRepository
+            ->expects($this->any())
+            ->method('findOneBy')
+            ->with(array('code' => 'XS'))
+            ->will($this->returnValue(null));
+
+        $this->converter->convert(array('size' => 'XS'));
+    }
+
+    /**
      * Test related method
      */
     public function testConvertOptionsValue()
@@ -337,6 +357,34 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
             ),
             $this->converter->convert(array('colors' => 'red,green,blue'))
         );
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Couldn't find an option with code "red"
+     */
+    public function testConvertUnknownOptionsValue()
+    {
+        $this->attributeRepository
+            ->expects($this->any())
+            ->method('findOneBy')
+            ->with(array('code' => 'colors'))
+            ->will($this->returnValue($this->getAttributeMock('options')));
+
+        $this->optionRepository
+            ->expects($this->any())
+            ->method('findOneBy')
+            ->will(
+                $this->returnValueMap(
+                    array(
+                        array(array('code' => 'red'), null, null),
+                        array(array('code' => 'green'), null, null),
+                        array(array('code' => 'blue'), null, null),
+                    )
+                )
+            );
+
+        $this->converter->convert(array('colors' => 'red,green,blue'));
     }
 
     /**

@@ -53,6 +53,28 @@ class ProductGroupsConverterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test related method
+     *
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Couldn't find a group with code "cross"
+     */
+    public function testConvertUnknownGroups()
+    {
+        $this->repository
+            ->expects($this->any())
+            ->method('findOneBy')
+            ->will(
+                $this->returnValueMap(
+                    array(
+                        array(array('code' => 'cross'), null, null),
+                    )
+                )
+            );
+
+        $this->converter->convert(array('[groups]' => 'cross,related,xsell'));
+    }
+
+    /**
      * @return \Doctrine\ORM\EntityManager
      */
     protected function getEntityManagerMock()

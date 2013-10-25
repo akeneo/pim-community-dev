@@ -54,24 +54,27 @@ class ProductCategoriesConverterTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test related method
+     *
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Couldn't find a category with code "vehicle"
      */
-    public function testConvertUnknownFamily()
+    public function testConvertUnknownCategory()
     {
         $this->repository
             ->expects($this->any())
             ->method('findOneBy')
-            ->with(array('code' => 'moto'))
+            ->with(array('code' => 'vehicle'))
             ->will($this->returnValue(null));
 
-        $this->assertEquals(array(), $this->converter->convert(array('[family]' => 'moto')));
+        $this->converter->convert(array('[categories]' => 'vehicle'));
     }
 
     /**
      * Test related method
      */
-    public function testUnresolvedFamilyKey()
+    public function testUnresolvedCategoriesKey()
     {
-        $this->assertEquals(array(), $this->converter->convert(array('Family' => 'moto')));
+        $this->assertEquals(array(), $this->converter->convert(array('Categories' => 'vehicle,2-wheels')));
     }
 
     /**

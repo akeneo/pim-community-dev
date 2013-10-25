@@ -71,19 +71,18 @@
                             <span class="title">{{ warning.name|trans|upper }}</span>&nbsp;
                             {{ warning.reason }}<br />
                             <a class="data" href="#"
-                                data-display-label="{{ 'Display item'|trans }}"
-                                data-hide-label="{{ 'Hide item'|trans }}">
-                                {{ 'Display item'|trans }}
+                                data-display-label="{{ 'Display data'|trans }}"
+                                data-hide-label="{{ 'Hide data'|trans }}">
+                                {{ 'Display data'|trans }}
                             </a>
-                            <span class="data">
-<pre>
-{{ 'Item'|trans }} (
-{% for key, value in warning.item %}
-    {{ key }} => {{ value }}
-{% endfor %}
-)
-</pre>
-                            </span>
+                            <table class="data table-striped table-bordered table-hover">
+                                {% for key, value in warning.item %}
+                                <tr>
+                                    <td>{{ key }}</td>
+                                    <td>{{ value }}</td>
+                                </tr>
+                                {% endfor %}
+                            </table>
                         </td>
                     </tr>
                     {% endfor %}
@@ -126,7 +125,7 @@
 
                         event.preventDefault();
 
-                        $(this).siblings('span.data').toggle();
+                        $(this).siblings('table.data').toggle();
                         $(this).text(newLabel);
                     });
                 });

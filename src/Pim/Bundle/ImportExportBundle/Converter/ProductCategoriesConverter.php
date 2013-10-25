@@ -57,10 +57,13 @@ class ProductCategoriesConverter
 
         $ids = array();
         foreach (explode(',', $data[self::CATEGORIES_KEY]) as $code) {
-            if ($category = $this->getCategory($code)) {
-                $ids[] = $category->getId();
+            $category = $this->getCategory($code);
+            if (!$category) {
+                throw new \InvalidArgumentException(
+                    sprintf('Couldn\'t find a category with code "%s"', $code)
+                );
             }
-            // TODO Warn that a category does not exist
+            $ids[] = $category->getId();
         }
 
         return $ids;

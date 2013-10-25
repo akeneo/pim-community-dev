@@ -77,14 +77,37 @@ class ProductCsvReader extends CsvReader
         }
     }
 
+    /**
+     * Prepend the current imported file directory to the media attribute values
+     *
+     * @param array $data
+     *
+     * @return array
+     */
     protected function transformMediaPathToAbsolute(array $data)
     {
         foreach ($data as $code => $value) {
+            if (empty($value)) {
+                continue;
+            }
+
             $pos = strpos($code, '-');
             $attributeCode = false !== $pos ? substr($code, 0, $pos) : $code;
 
             if (in_array($attributeCode, $this->mediaAttributes)) {
-                $data[$code] = dirname($this->filePath) . '/' . $value;
+                $filePath = dirname($this->filePath) . '/' . $value;
+                if (!is_file($filePath)) {
+                    throw new InvalidItemException(
+                        sprintf(
+                            'Could not find the file "%s" in %s:%s',
+                            $filePath,
+                            $this->csv->getRealPath(),
+                            $this->csv->key()
+                        ),
+                        $data
+                    );
+                }
+                $data[$code] = $filePath;
             }
         }
 

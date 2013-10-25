@@ -142,9 +142,14 @@ class ProductValueConverter
      */
     protected function convertOptionValue($value)
     {
-        if ($option = $this->getOption($value)) {
-            return $this->convertValue('option', $option->getId());
+        $option = $this->getOption($value);
+        if (!$option) {
+            throw new \InvalidArgumentException(
+                sprintf('Couldn\'t find an option with code "%s"', $value)
+            );
         }
+
+        return $this->convertValue('option', $option->getId());
     }
 
     /**
@@ -158,9 +163,13 @@ class ProductValueConverter
     {
         $options = array();
         foreach (explode(',', $value) as $val) {
-            if ($option = $this->getOption($val)) {
-                $options[] = $option->getId();
+            $option = $this->getOption($val);
+            if (!$option) {
+                throw new \InvalidArgumentException(
+                    sprintf('Couldn\'t find an option with code "%s"', $val)
+                );
             }
+            $options[] = $option->getId();
         }
 
         return $this->convertValue('options', $options);
@@ -228,14 +237,25 @@ class ProductValueConverter
      * @param string $code
      *
      * @return ProductAttribute
+     * @throw \InvalidArgumentException
      */
     protected function getAttribute($code)
     {
         $code = $this->getAttributeCode($code);
-
-        return $this->entityManager
+        $attribute = $this->entityManager
             ->getRepository('PimCatalogBundle:ProductAttribute')
             ->findOneBy(array('code' => $code));
+
+        if (!$attribute) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Couldn\'t find an attribute with code "%s"',
+                    $code
+                )
+            );
+        }
+
+        return $attribute;
     }
 
     /**

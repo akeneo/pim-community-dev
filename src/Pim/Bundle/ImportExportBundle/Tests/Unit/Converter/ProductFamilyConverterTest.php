@@ -44,6 +44,9 @@ class ProductFamilyConverterTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test related method
+     *
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Couldn't find a family with code "moto"
      */
     public function testConvertUnknownFamily()
     {
@@ -53,7 +56,7 @@ class ProductFamilyConverterTest extends \PHPUnit_Framework_TestCase
             ->with(array('code' => 'moto'))
             ->will($this->returnValue(null));
 
-        $this->assertEquals(array(), $this->converter->convert(array('[family]' => 'moto')));
+        $this->converter->convert(array('[family]' => 'moto'));
     }
 
     /**

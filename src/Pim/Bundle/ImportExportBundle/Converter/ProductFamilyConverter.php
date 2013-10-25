@@ -60,11 +60,15 @@ class ProductFamilyConverter
             // TODO Warn that the family could not be determined
             return null;
         }
-        if ($family = $this->getFamily($data[self::FAMILY_KEY])) {
-            return $family->getId();
+
+        $family = $this->getFamily($data[self::FAMILY_KEY]);
+        if (!$family) {
+            throw new \InvalidArgumentException(
+                sprintf('Couldn\'t find a family with code "%s"', $data[self::FAMILY_KEY])
+            );
         }
 
-        // TODO Warn that the family code does not exist
+        return $family->getId();
     }
 
     /**
