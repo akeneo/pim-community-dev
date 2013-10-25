@@ -1042,7 +1042,6 @@ class FixturesContext extends RawMinkContext
 
         foreach ($table->getRowsHash() as $code => $value) {
             $productValue = $product->getValue($code);
-            $this->getEntityManager()->refresh($productValue);
             if ('media' === $this->getAttribute($code)->getBackendType()) {
                 // media filename is auto generated during media handling and cannot be guessed
                 // (it contains a timestamp)
