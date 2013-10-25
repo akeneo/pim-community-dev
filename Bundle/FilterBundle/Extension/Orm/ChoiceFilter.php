@@ -48,14 +48,18 @@ class ChoiceFilter extends AbstractFilter
      */
     public function getMetadata()
     {
-        $formView = $this->getForm()->createView();
+        $formView  = $this->getForm()->createView();
+        $fieldView = $formView->children['value'];
+
         $metadata = parent::getMetadata();
         $metadata[self::METADATA_OPTIONS_KEY] = array_merge(
             $metadata[self::METADATA_OPTIONS_KEY],
             [
-                'choices' => [$formView->vars['choices']]
+                'choices' => $fieldView->vars['choices']
             ]
         );
+
+        return $metadata;
     }
 
 

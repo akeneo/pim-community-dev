@@ -65,7 +65,7 @@ class FormatterExtension extends AbstractExtension
         $propertiesMetadata = [];
         foreach ($columns as $name => $fieldConfig) {
             $metadata                  = $this->getPropertyObject($name, $fieldConfig)->getMetadata();
-            $propertiesMetadata[$name] = $metadata;
+            $propertiesMetadata[] = $metadata;
         }
 
         $data->columns = array_merge(
