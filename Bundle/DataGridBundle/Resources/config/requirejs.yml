@@ -63,6 +63,7 @@ config:
         'oro/datagrid/router': 'bundles/orodatagrid/js/datagrid/router.js'
         'oro/datagrid/row': 'bundles/orodatagrid/js/datagrid/row.js'
         'oro/datagrid/toolbar': 'bundles/orodatagrid/js/datagrid/toolbar.js'
+        'oro/datagrid-builder': 'bundles/orodatagrid/js/datagrid-builder.js'
         'oro/loading-mask': 'bundles/orodatagrid/js/loading-mask.js'
         'oro/pageable-collection': 'bundles/orodatagrid/js/pageable-collection.js'
 

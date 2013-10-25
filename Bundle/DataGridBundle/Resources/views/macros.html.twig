@@ -11,8 +11,11 @@
 
     <div data-type="datagrid" data-data="{{ render(url)|escape }}" data-metadata="{{ metaData|json_encode }}"></div>
     <script type="text/javascript">
-        require(['jquery'], function ($) {
+        require(['jquery', 'oro/datagrid-builder'],
+        function ($, datagridBuilder) {
             $(function () {
+                datagridBuilder();
+                {# @TODO remove dev code #}
                 $('div[data-type="datagrid"]:not([data-rendered])').each(function (e, el) {
                     var el = $(el);
                     console.group('Datagrid "{{ name }}" rendered:');
@@ -20,12 +23,12 @@
                     console.info(el.data('metadata'));
                     console.groupEnd();
 
-                    el.html(JSON.stringify(el.data('data'))).append($('<hr />'));
-                    el.append($('<div>').html(JSON.stringify(el.data('metadata'))));
-
-                    el.data('rendered', true);
+                    el.after(
+                        $('<div>').html(JSON.stringify(el.data('data'))),
+                        $('<hr />'),
+                        $('<div>').html(JSON.stringify(el.data('metadata')))
+                    );
                 });
-                {# @TODO add require JS builder here and call init method #}
             });
         });
     </script>
