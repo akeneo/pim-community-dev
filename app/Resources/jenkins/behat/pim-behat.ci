@@ -1,0 +1,29 @@
+<VirtualHost *:80>
+	ServerAdmin benoit@akeneo.com
+	ServerName pim-behat.ci
+	ServerAlias pim-behat-1.ci
+	ServerAlias pim-behat-2.ci
+	ServerAlias pim-behat-3.ci
+	ServerAlias pim-behat-4.ci
+
+	RewriteEngine On
+
+	DocumentRoot /home/benoit/akeneo/pim/dev/pim/web
+	<Directory /home/benoit/akeneo/pim/dev/pim/web>
+		Options Indexes FollowSymLinks MultiViews
+		AllowOverride None
+		Order allow,deny
+		allow from all
+	</Directory>
+
+	RewriteCond %{DOCUMENT_ROOT}/%{REQUEST_FILENAME} !-f
+	RewriteCond %{HTTP_HOST} ^pim-behat-([^\.]+)\.ci$
+	RewriteRule ^(.*) %{DOCUMENT_ROOT}/app_behat.php [QSA,L,E=SYMFONY__DATABASE__NAME:akeneo_pim_test_%1,E=BEHAT_ENV:behat%1]
+
+	ErrorLog ${APACHE_LOG_DIR}/pim-behat_error.log
+
+	LogLevel warn
+
+	CustomLog ${APACHE_LOG_DIR}/pim-behat_access.log combined
+
+</VirtualHost>
