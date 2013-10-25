@@ -1,13 +1,22 @@
 {% block oro_acl_access_level_selector_widget %}
-    <div class="access_level_value" data-identity="{{ identity }}" data-selector-id="{{ id }}" data-selector-name="{{ full_name }}">
-        <a href="#" class="no-hash">
-            {% if level_label %}
-                {{ level_label|trans({}, translation_domain) }}
-            {% else %}
-                {{ 'NONE'|trans({}, translation_domain) }}
-            {% endif %}
-        </a>
-        <div class="access_level_value_choice" style="display: none">{{ block('choice_widget') }}</div>
+    <div class="access_level_value"
+         data-identity="{{ identity }}"
+         data-selector-id="{{ id }}"
+         data-selector-name="{{ full_name }}"
+         data-value="{{ value }}"
+    >
+        <div class="access_level_value_link">
+            <a href="javascript:void(0);">
+                {% if level_label %}
+                    {{ level_label|trans({}, translation_domain) }}
+                {% else %}
+                    {{ 'NONE'|trans({}, translation_domain) }}
+                {% endif %}
+            </a>
+            {% set type = type|default('hidden') %}
+            {{ block('form_widget_simple') }}
+        </div>
+        <div class="access_level_value_choice" style="display: none"></div>
     </div>
 {% endblock %}
 

@@ -29,6 +29,9 @@ class ActionAclExtension extends AbstractAclExtension
         );
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getAccessLevelNames($object)
     {
         return array(

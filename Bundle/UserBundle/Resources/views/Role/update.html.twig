@@ -17,6 +17,9 @@
     } %}
 
     {% placeholder prepare_grid with {'datagrid': datagrid, 'selector': '#' ~ gridId, 'parameters': listenerParameters} %}
+    <script type="text/javascript">
+        require(['oro/security-access-levels'])
+    </script>
 {% endblock %}
 
 {% block navButtons %}
@@ -115,13 +118,4 @@
         }
     %}
     {{ parent() }}
-    <script type="text/javascript">
-        $(function() {
-            $(document).on('click', '.access_level_value a', function() {
-                $(this).parent().find('.access_level_value_choice').show();
-                $(this).hide();
-                return false;
-            });
-        });
-    </script>
 {% endblock content_data %}

@@ -153,6 +153,33 @@ class EntityAclExtension extends AbstractAclExtension
     /**
      * {@inheritdoc}
      */
+    public function getAccessLevelNames($object)
+    {
+        if ($this->getObjectType($object) === ObjectIdentityFactory::ROOT_IDENTITY_TYPE) {
+            $minLevel = AccessLevel::BASIC_LEVEL;
+        } else {
+            $metadata = $this->getMetadata($object);
+            if (!$metadata->hasOwner()) {
+
+                return array(
+                    AccessLevel::NONE_LEVEL => 'NONE',
+                    AccessLevel::SYSTEM_LEVEL => AccessLevel::getAccessLevelName(AccessLevel::SYSTEM_LEVEL)
+                );
+            } elseif ($metadata->isUserOwned()) {
+                $minLevel = AccessLevel::BASIC_LEVEL;
+            } elseif ($metadata->isBusinessUnitOwned()) {
+                $minLevel = AccessLevel::DEEP_LEVEL;
+            } elseif ($metadata->isOrganizationOwned()) {
+                $minLevel = AccessLevel::GLOBAL_LEVEL;
+            }
+        }
+
+        return AccessLevel::getAccessLevelNames($minLevel);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function supports($type, $id)
     {
         if ($type === ObjectIdentityFactory::ROOT_IDENTITY_TYPE && $id === $this->getExtensionKey()) {
@@ -299,25 +326,6 @@ class EntityAclExtension extends AbstractAclExtension
         }
 
         return $rootMask;
-    }
-
-    public function getAccessLevelNames($object)
-    {
-        return AccessLevel::getAccessLevelNames($this->getMaxAccessLevel($object));
-    }
-
-    protected function getMaxAccessLevel($object)
-    {
-        $metadata = $this->getMetadata($object);
-        if (!$metadata->hasOwner()) {
-            return AccessLevel::SYSTEM_LEVEL;
-        } elseif ($metadata->isUserOwned()) {
-            return AccessLevel::BASIC_LEVEL;
-        } elseif ($metadata->isBusinessUnitOwned()) {
-            return AccessLevel::LOCAL_LEVEL;
-        } elseif ($metadata->isOrganizationOwned()) {
-            return AccessLevel::GLOBAL_LEVEL;
-        }
     }
 
     /**
@@ -608,6 +616,17 @@ class EntityAclExtension extends AbstractAclExtension
      */
     protected function getMetadata($object)
     {
+        return $this->metadataProvider->getMetadata($this->getObjectType($object));
+    }
+
+    /**
+     * Gets type for given object
+     *
+     * @param $object
+     * @return string
+     */
+    protected function getObjectType($object)
+    {
         if ($object instanceof ObjectIdentity) {
             $className = $object->getType();
         } elseif (is_string($object)) {
@@ -617,7 +636,7 @@ class EntityAclExtension extends AbstractAclExtension
             $className = $this->entityClassAccessor->getClass($object);
         }
 
-        return $this->metadataProvider->getMetadata($className);
+        return$className;
     }
 
     /**

@@ -84,12 +84,12 @@ final class AccessLevel
      * @param int $value
      * @return array
      */
-    public static function getAccessLevelNames($value = self::SYSTEM_LEVEL)
+    public static function getAccessLevelNames($value = self::BASIC_LEVEL)
     {
-        $names = array();
-        for ($level = $value; $level >= self::NONE_LEVEL; $level--) {
+        $names = array('NONE');
+        for ($level = $value; $level <= self::SYSTEM_LEVEL; $level++) {
             $name = self::getAccessLevelName($level);
-            $names[$level] = $name ? $name : 'NONE';
+            $names[$level] = $name;
         }
 
         return $names;
