@@ -6,9 +6,7 @@ function DateTime(field, params)
         return true;
     }
 
-    // TODO: use datetime formatter insted of direct moment.js usage https://magecore.atlassian.net/browse/BAP-1931
-    var momentFormats = localeSettings.getDateTimeFormats('moment');
-    if (moment(String(value), momentFormats.datetime, true).isValid()) {
+    if (datetimeFormatter.isDateTimeValid(String(value))) {
         return true;
     }
 
