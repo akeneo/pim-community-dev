@@ -137,6 +137,11 @@ class Grid extends Index
             ->find('css', 'div label:contains("record")')
             ->getText();
 
+        // If pagination not found, count rows
+        if (!$paginationText) {
+            return $this->countRows();
+        }
+
         if (preg_match('/([0-9][0-9 ]*) records?$/', $paginationText, $matches)) {
             return $matches[1];
         } else {
