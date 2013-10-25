@@ -237,14 +237,25 @@ class ProductValueConverter
      * @param string $code
      *
      * @return ProductAttribute
+     * @throw \InvalidArgumentException
      */
     protected function getAttribute($code)
     {
         $code = $this->getAttributeCode($code);
-
-        return $this->entityManager
+        $attribute = $this->entityManager
             ->getRepository('PimCatalogBundle:ProductAttribute')
             ->findOneBy(array('code' => $code));
+
+        if (!$attribute) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Couldn\'t find an attribute with code "%s"',
+                    $code
+                )
+            );
+        }
+
+        return $attribute;
     }
 
     /**
