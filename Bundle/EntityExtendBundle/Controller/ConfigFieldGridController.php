@@ -151,6 +151,7 @@ class ConfigFieldGridController extends Controller
         $relationValues  = [];
         $relationOptions = explode('||', $fieldType);
         $relationName    = $relationOptions[0];
+        $fieldName       = isset($relationOptions[1]) ? $relationOptions[1] : $fieldName;
         $relationOptions = explode('|', $relationOptions[0]);
 
         /**
@@ -159,7 +160,6 @@ class ConfigFieldGridController extends Controller
          */
         if (count($relationOptions) == 4) {
             $fieldType = ExtendHelper::getReversRelationType($relationOptions[0]);
-            $fieldName = $relationOptions[3] ? : $fieldName;
 
             $relations = $extendEntityConfig->get('relation');
             if (isset($relations[$relationName])) {

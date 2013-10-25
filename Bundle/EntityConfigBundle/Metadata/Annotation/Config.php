@@ -30,6 +30,10 @@ class Config
             $this->routeName = $data['routeName'];
         }
 
+        if (isset($data['routeView'])) {
+            $this->routeView = $data['routeView'];
+        }
+
         if (isset($data['defaultValues'])) {
             $this->defaultValues = $data['defaultValues'];
         }

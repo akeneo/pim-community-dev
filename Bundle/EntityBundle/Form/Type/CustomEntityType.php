@@ -149,7 +149,7 @@ class CustomEntityType extends AbstractType
                             'grid_url'              => $this->router->generate(
                                 'oro_entity_relation',
                                 array(
-                                    'id'        => $data ? $data->getId() : 0,
+                                    'id'        => (($data && $data->getId()) ? $data->getId() : 0),
                                     'className' => str_replace('\\', '_', $className),
                                     'fieldName' => $fieldConfigId->getFieldName()
                                 )
@@ -210,7 +210,7 @@ class CustomEntityType extends AbstractType
             ) {
                 /** @var FieldConfigId $fieldConfigId */
                 $fieldConfigId = $formConfig->getId();
-                if ($fieldConfigId->getFieldType() == 'oneToMany') {
+                if (in_array($fieldConfigId->getFieldType(), array('oneToMany', 'manyToMany'))) {
                     $fieldName = $fieldConfigId->getFieldName();
 
                     $view->children[$fieldName]->vars['grid_url'] =
@@ -223,21 +223,14 @@ class CustomEntityType extends AbstractType
                             )
                         );
 
-                    $defaultFieldName = 'get_' . ExtendConfigDumper::DEFAULT_PREFIX . $fieldName;
-                    $defaultEntityId  = $data->{Inflector::camelize($defaultFieldName)}();
+                    $defaultFieldName   = 'get_' . ExtendConfigDumper::DEFAULT_PREFIX . $fieldName;
+                    $defaultEntityId    = $data->{Inflector::camelize($defaultFieldName)}();
+                    $selectedCollection = $data->{Inflector::classify('get_' . $fieldName)}();
 
-                    $classArray = explode('\\', $className);
-                    $relatedFieldName =
-                        ExtendConfigDumper::FIELD_PREFIX
-                        . strtolower(array_pop($classArray)) . '_'
-                        . $fieldName;
-
-                    $selectedCollection = $this->configManager->getEntityManager()
-                        ->getRepository($extendConfig->get('target_entity'))
-                        ->findBy(array($relatedFieldName => $data->getId()));
-
-                    $view->children[$fieldName]->vars['initial_elements'] =
-                        $this->getInitialElements($selectedCollection, $defaultEntityId, $extendConfig);
+                    if ($data->getId()) {
+                        $view->children[$fieldName]->vars['initial_elements'] =
+                            $this->getInitialElements($selectedCollection, $defaultEntityId, $extendConfig);
+                    }
                 }
             }
         }

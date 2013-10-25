@@ -30,7 +30,7 @@ class ExtendConfigDumper
 
     /**
      * @param OroEntityManager $em
-     * @param string           $cacheDir
+     * @param string $cacheDir
      */
     public function __construct(OroEntityManager $em, $cacheDir)
     {
@@ -143,7 +143,7 @@ class ExtendConfigDumper
                             $defaultName = self::DEFAULT_PREFIX . $fieldConfig->getId()->getFieldName();
 
                             $defaultProperties[$defaultName] = $defaultName;
-                            $addRemoveMethods[$fieldName]    = array('self' => $fieldConfig->getId()->getFieldName());
+
                         }
                     } else {
                         $properties[$fieldName] = $fieldConfig->getId()->getFieldName();
@@ -182,11 +182,16 @@ class ExtendConfigDumper
         foreach ($relations as &$relation) {
             if ($relation['field_id']) {
                 $relation['assign'] = true;
-                if (isset($addRemoveMethods[self::FIELD_PREFIX . $relation['field_id']->getFieldName()])
+                if ($relation['field_id']->getFieldType() != 'manyToOne'
                     && $relation['target_field_id']
                 ) {
-                    $addRemoveMethods[self::FIELD_PREFIX . $relation['field_id']->getFieldName()]['target']
-                        = $relation['target_field_id']->getFieldName();
+                    $fieldName                    = self::FIELD_PREFIX . $relation['field_id']->getFieldName();
+                    $addRemoveMethods[$fieldName]['self'] = $relation['field_id']->getFieldName();
+
+                    $addRemoveMethods[$fieldName]['target'] = $relation['target_field_id']->getFieldName();
+
+                    $addRemoveMethods[$fieldName]['is_target_addremove']
+                        = $relation['field_id']->getFieldType() == 'manyToMany';
                 }
 
                 $this->checkRelation($relation['target_entity'], $relation['field_id']);
@@ -196,14 +201,14 @@ class ExtendConfigDumper
 
 
         $schema = [
-            'class'    => $className,
-            'entity'   => $entityName,
-            'type'     => $type,
-            'property' => $properties,
-            'relation' => $relationProperties,
-            'default'  => $defaultProperties,
-            'addremove'=> $addRemoveMethods,
-            'doctrine' => $doctrine,
+            'class'     => $className,
+            'entity'    => $entityName,
+            'type'      => $type,
+            'property'  => $properties,
+            'relation'  => $relationProperties,
+            'default'   => $defaultProperties,
+            'addremove' => $addRemoveMethods,
+            'doctrine'  => $doctrine,
         ];
 
         if ($type == 'Extend') {
@@ -230,7 +235,7 @@ class ExtendConfigDumper
                 $relation['assign'] = true;
                 $relationFieldId    = $relation['field_id'];
 
-                if ($relation['owner'] && count($schema)) {
+                if (count($schema)) {
                     $schema['relation'][self::FIELD_PREFIX . $relationFieldId->getFieldName()] =
                         $relationFieldId->getFieldName();
                 }
