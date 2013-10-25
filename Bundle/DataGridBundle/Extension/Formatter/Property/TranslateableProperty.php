@@ -13,7 +13,7 @@ class TranslateableProperty extends AbstractProperty
     const LOCALE_KEY = 'locale';
 
     /** @var array */
-    protected $excludeParam = [self::ALIAS_KEY, self::DOMAIN_KEY, self::LOCALE_KEY];
+    protected $excludeParams = [self::ALIAS_KEY, self::DOMAIN_KEY, self::LOCALE_KEY];
 
     /**
      * @var TranslatorInterface

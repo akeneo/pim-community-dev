@@ -17,10 +17,10 @@ abstract class AbstractProperty implements PropertyInterface
     ];
 
     /** @var array */
-    protected $excludeParamDefault = [self::TYPE_KEY];
+    protected $excludeParamsDefault = [self::TYPE_KEY];
 
     /** @var array */
-    protected $excludeParam = [];
+    protected $excludeParams = [];
 
     /**
      * {@inheritdoc}
@@ -45,7 +45,7 @@ abstract class AbstractProperty implements PropertyInterface
 
         $metadata = array_diff_key(
             $this->get(),
-            array_flip(array_merge($this->excludeParam, $this->excludeParamDefault))
+            array_flip(array_merge($this->excludeParams, $this->excludeParamsDefault))
         );
         $metadata = $this->mapParams($metadata);
         $metadata = array_merge($defaultMetadata, $metadata);
