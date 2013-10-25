@@ -188,9 +188,13 @@ class Generator
                 ->setMethod(
                     $this->generateClassMethod(
                         'add' . ucfirst(Inflector::camelize($method['self'])),
-                        'if (!$this->' . $addremove . '->contains($value)) {
+                        'if (!$this->' . $addremove . ') {
+                            $this->' . $addremove . ' = new \Doctrine\Common\Collections\ArrayCollection();
+                        }
+                        if (!$this->' . $addremove . '->contains($value)) {
                             $this->' . $addremove . '->add($value);
-                            $value->set'. ucfirst(Inflector::camelize($method['target'])) .'($this);
+                            $value->' . ($method['is_target_addremove'] ? 'add' : 'set')
+                        . ucfirst(Inflector::camelize($method['target'])) .'($this);
                         }',
                         array('value')
                     )
@@ -198,9 +202,11 @@ class Generator
                 ->setMethod(
                     $this->generateClassMethod(
                         'remove' . ucfirst(Inflector::camelize($method['self'])),
-                        'if ($this->' . $addremove . '->contains($value)) {
+                        'if ($this->' . $addremove . ' && $this->' . $addremove . '->contains($value)) {
                             $this->' . $addremove . '->remove($value);
-                            $value->set'. ucfirst(Inflector::camelize($method['target'])) .'(null);
+                            $value->'. ($method['is_target_addremove'] ? 'remove' : 'set')
+                        . ucfirst(Inflector::camelize($method['target']))
+                        .'(' . ($method['is_target_addremove'] ? '$this' : 'null') . ');
                         }',
                         array('value')
                     )

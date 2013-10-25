@@ -30,6 +30,8 @@ class RelationEntityDatagrid extends CustomEntityDatagrid
 
     protected $relation;
 
+    protected $hasAssignedExpression;
+
     /**
      * @var array
      */
@@ -83,20 +85,60 @@ class RelationEntityDatagrid extends CustomEntityDatagrid
     /**
      * {@inheritDoc}
      */
-//    protected function getQueryParameters()
-//    {
-//        $additionalParameters = $this->parameters->get(ParametersInterface::ADDITIONAL_PARAMETERS);
-//        $dataIn               = !empty($additionalParameters['data_in']) ? $additionalParameters['data_in'] : array(0);
-//        $dataNotIn            = !empty($additionalParameters['data_not_in']) ? $additionalParameters['data_not_in'] : array(0);
-//
-//        $parameters = array('data_in' => $dataIn, 'data_not_in' => $dataNotIn);
-//
-//        if ($this->getRelation()->getId()) {
-//            $parameters = array_merge(parent::getQueryParameters(), $parameters);
-//        }
-//
-//        return $parameters;
-//    }
+    protected function getQueryParameters()
+    {
+        $additionalParameters = $this->parameters->get(ParametersInterface::ADDITIONAL_PARAMETERS);
+        $dataIn               = !empty($additionalParameters['data_in']) ? $additionalParameters['data_in'] : array(0);
+        $dataNotIn            = !empty($additionalParameters['data_not_in']) ? $additionalParameters['data_not_in'] : array(0);
+
+        $parameters = array(
+            'data_in' => $dataIn,
+            'data_not_in' => $dataNotIn
+        );
+
+        if ($this->getRelation()->getId()) {
+            $parameters = array_merge(array('relation' => $this->getRelation()), $parameters);
+        }
+
+        return $parameters;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getHasAssignedExpression()
+    {
+        $classArray = explode('\\', $this->relationConfig->getId()->getClassName());
+        $fieldName  =
+            ExtendConfigDumper::FIELD_PREFIX
+            . strtolower(array_pop($classArray)) . '_'
+            . $this->relationConfig->getId()->getFieldName();
+
+        if (null === $this->hasAssignedExpression) {
+            /** @var EntityQueryFactory $queryFactory */
+            $queryFactory = $this->queryFactory;
+            $entityAlias = $queryFactory->getAlias();
+
+            $compOperator = $this->relationConfig->getId()->getFieldType() == 'oneToMany'
+                ? '='
+                : 'MEMBER OF';
+
+            if ($this->getRelation()->getId()) {
+                $this->hasAssignedExpression =
+                    "CASE WHEN " .
+                    "(:relation $compOperator $entityAlias.$fieldName OR $entityAlias.id IN (:data_in)) AND " .
+                    "$entityAlias.id NOT IN (:data_not_in) ".
+                    "THEN true ELSE false END";
+            } else {
+                $this->hasAssignedExpression =
+                    "CASE WHEN " .
+                    "$entityAlias.id IN (:data_in) AND $entityAlias.id NOT IN (:data_not_in) ".
+                    "THEN true ELSE false END";
+            }
+        }
+
+        return $this->hasAssignedExpression;
+    }
 
     protected function getDefaultParameters()
     {
@@ -118,7 +160,7 @@ class RelationEntityDatagrid extends CustomEntityDatagrid
                 'type'            => FieldDescriptionInterface::TYPE_BOOLEAN,
                 'label'           => $this->translate('Assigned'),
                 'field_name'      => 'assigned',
-                'expression'      => 'r.id',
+                'expression'      => $this->getHasAssignedExpression(), //'r.id',
                 'nullable'        => false,
                 'editable'        => true,
                 'sortable'        => true,
@@ -199,22 +241,6 @@ class RelationEntityDatagrid extends CustomEntityDatagrid
 
     protected function prepareQuery(ProxyQueryInterface $query)
     {
-        $classArray = explode('\\', $this->relationConfig->getId()->getClassName());
-        $fieldName  =
-            ExtendConfigDumper::FIELD_PREFIX
-            . strtolower(array_pop($classArray)) . '_'
-            . $this->relationConfig->getId()->getFieldName();
-
-        switch ($this->relationConfig->getId()->getFieldType()) {
-            case 'oneToMany':
-                $query->leftJoin('ce.' . $fieldName, 'r');
-                $query->addSelect('r.id as assigned', true);
-
-                break;
-            case 'manyToMany':
-
-                break;
-        }
-
+        $query->addSelect($this->getHasAssignedExpression() . ' as assigned', true);
     }
 }

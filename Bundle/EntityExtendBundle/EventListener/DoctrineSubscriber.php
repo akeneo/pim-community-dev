@@ -114,7 +114,7 @@ class DoctrineSubscriber implements EventSubscriber
                                     } else {
                                         $cmBuilder->addInverseManyToMany(
                                             $fieldName,
-                                            $fieldId->getClassName(),
+                                            $relation['target_entity'],
                                             $targetFieldName
                                         );
                                     }
