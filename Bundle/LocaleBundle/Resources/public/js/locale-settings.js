@@ -207,6 +207,19 @@ function(_, settings) {
          */
         getCalendarFirstDayOfWeek: function() {
             return this.settings.calendar.first_dow;
+        },
+
+        /**
+         * Returns object with keys "date", "time" and "datetime" that contains format strings
+         *
+         * @returns {Object}
+         */
+        getDateTimeFormats: function(name) {
+            if (name && this.settings.format.datetime.hasOwnProperty(name)) {
+                return this.settings.format.datetime[name];
+            }
+
+            throw new Error('Datetime configuration for ' + name + ' is not defined');
         }
     };
 

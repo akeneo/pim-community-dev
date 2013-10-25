@@ -6,9 +6,9 @@ function Date(field, params)
         return true;
     }
 
-    // TODO: use moment JS format for current locale
-    var dateFormat = 'MMM D, YYYY';
-    if (Moment(String(value), dateFormat, true).isValid()) {
+    // TODO: use datetime formatter insted of direct moment.js usage https://magecore.atlassian.net/browse/BAP-1931
+    var momentFormats = localeSettings.getDateTimeFormats('moment');
+    if (moment(String(value), momentFormats.date, true).isValid()) {
         return true;
     }
 

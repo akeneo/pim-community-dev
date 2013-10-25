@@ -34,7 +34,7 @@ class DateFormatExtensionTest extends \PHPUnit_Framework_TestCase
         $this->converterRegistry =
             $this->getMockBuilder('Oro\Bundle\LocaleBundle\Converter\DateTimeFormatConverterRegistry')
                 ->disableOriginalConstructor()
-                ->setMethods(array('getFormatConverter'))
+                ->setMethods(array('getFormatConverter', 'getFormatConverters'))
                 ->getMock();
 
         $this->extension = new DateFormatExtension($this->converterRegistry);
@@ -125,6 +125,19 @@ class DateFormatExtensionTest extends \PHPUnit_Framework_TestCase
             self::TEST_FORMAT,
             $this->extension->getDateTimeFormat(self::TEST_TYPE, $dateType, $timeType, $locale)
         );
+    }
+
+    public function testGetDateTimeFormatterList()
+    {
+        $formatConverters = array(
+            'first'  => $this->createFormatConverter(),
+            'second' => $this->createFormatConverter(),
+        );
+        $this->converterRegistry->expects($this->once())
+            ->method('getFormatConverters')
+            ->will($this->returnValue($formatConverters));
+
+        $this->assertEquals(array_keys($formatConverters), $this->extension->getDateTimeFormatterList());
     }
 
     /**

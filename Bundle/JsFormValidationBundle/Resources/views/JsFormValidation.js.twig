@@ -6,8 +6,8 @@
  * Task for complete refactoring: BAP-859
  */
 
-require(['jquery', 'underscore', 'oro/translator', 'moment', 'jquery.bind-first', 'bootstrap-tooltip'],
-function($, _, __, Moment){
+require(['jquery', 'underscore', 'oro/translator', 'oro/locale-settings', 'moment', 'jquery.bind-first', 'bootstrap-tooltip'],
+function($, _, __, localeSettings, moment){
 {% block before %}{% endblock %}
 
 var jsfv = (function () {
