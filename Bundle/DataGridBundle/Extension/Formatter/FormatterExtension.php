@@ -33,7 +33,7 @@ class FormatterExtension extends AbstractExtension
      */
     public function visitResult(array $config, \stdClass $result)
     {
-        $rows       = (array)$result->rows;
+        $rows       = (array)$result->data;
         $results    = [];
         $columns    = $this->accessor->getValue($config, Configuration::COLUMNS_PATH) ? : [];
         $properties = $this->accessor->getValue($config, Configuration::PROPERTIES_PATH) ? : [];
@@ -51,7 +51,7 @@ class FormatterExtension extends AbstractExtension
             $results[] = $resultRecord;
         }
 
-        $result->rows = $results;
+        $result->data = $results;
     }
 
     /**
@@ -64,7 +64,7 @@ class FormatterExtension extends AbstractExtension
 
         $propertiesMetadata = [];
         foreach ($columns as $name => $fieldConfig) {
-            $metadata                  = $this->getPropertyObject($name, $fieldConfig)->getMetadata();
+            $metadata             = $this->getPropertyObject($name, $fieldConfig)->getMetadata();
             $propertiesMetadata[] = $metadata;
         }
 
