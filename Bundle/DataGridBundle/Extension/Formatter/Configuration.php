@@ -43,14 +43,11 @@ class Configuration implements ConfigurationInterface
                             ->thenInvalid('Invalid property type "%s"')
                         ->end()
                     ->end()
-                    ->arrayNode(PropertyInterface::FRONTEND_OPTIONS_KEY)
-                        ->ignoreExtraKeys()
-                        ->children()
-                            // just validate types if node exist
-                            ->scalarNode('label')->end()
-                            ->booleanNode('editable')->end()
-                            ->booleanNode('renderable')->end()
-                        ->end()
+                    // just validate types if node exist
+                    ->scalarNode(PropertyInterface::FRONTEND_TYPE_KEY)->end()
+                    ->scalarNode('label')->end()
+                    ->booleanNode('editable')->end()
+                    ->booleanNode('renderable')->end()
                 ->end()
             ->end();
 

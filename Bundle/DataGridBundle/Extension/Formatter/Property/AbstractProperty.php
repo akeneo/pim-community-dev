@@ -8,6 +8,21 @@ abstract class AbstractProperty implements PropertyInterface
     protected $params;
 
     /**
+     * Map configuration keys to metadata keys
+     *
+     * @var array
+     */
+    protected $paramMap = [
+        self::FRONTEND_TYPE_KEY => self::METADATA_TYPE_KEY
+    ];
+
+    /** @var array */
+    protected $excludeParamDefault = [self::TYPE_KEY];
+
+    /** @var array */
+    protected $excludeParam = [];
+
+    /**
      * {@inheritdoc}
      */
     public function init(array $params)
@@ -20,25 +35,43 @@ abstract class AbstractProperty implements PropertyInterface
      */
     public function getMetadata()
     {
-        $name = $this->get('name');
-
-        $frontendOptions = $this->getOr(self::FRONTEND_OPTIONS_KEY, []);
-        $frontendOptions = array_merge(
-            [
-                // use field name if label not set
-                'label'      => ucfirst($name),
-                'renderable' => true,
-                'editable'   => false
-            ],
-            $frontendOptions
-        );
-        $metadata        = [
-            self::METADATA_NAME_KEY    => $name,
-            self::METADATA_TYPE_KEY    => $this->getOr(self::FRONTEND_TYPE_KEY, self::TYPE_TEXT),
-            self::METADATA_OPTIONS_KEY => $frontendOptions
+        $defaultMetadata = [
+            // use field name if label not set
+            'label'      => ucfirst($this->get('name')),
+            'renderable' => true,
+            'editable'   => false,
+            'type'       => self::TYPE_TEXT
         ];
 
+        $metadata = array_diff_key(
+            $this->get(),
+            array_flip(array_merge($this->excludeParam, $this->excludeParamDefault))
+        );
+        $metadata = $this->mapParams($metadata);
+        $metadata = array_merge($defaultMetadata, $metadata);
+
         return $metadata;
+    }
+
+    /**
+     * Process mapping params
+     *
+     * @param array $params
+     *
+     * @return array
+     */
+    protected function mapParams($params)
+    {
+        $keys = [];
+        foreach (array_keys($params) as $key) {
+            if (isset($this->paramMap[$key])) {
+                $keys[] = $this->paramMap[$key];
+            } else {
+                $keys[] = $key;
+            }
+        }
+
+        return array_combine($keys, array_values($params));
     }
 
     /**
@@ -49,13 +82,19 @@ abstract class AbstractProperty implements PropertyInterface
      * @throws \LogicException
      * @return mixed
      */
-    protected function get($paramName)
+    protected function get($paramName = null)
     {
-        if (!isset($this->params[$paramName])) {
-            throw new \LogicException(sprintf('Trying to access not existing parameter: "%s"', $paramName));
+        $value = $this->params;
+
+        if ($paramName !== null) {
+            if (!isset($this->params[$paramName])) {
+                throw new \LogicException(sprintf('Trying to access not existing parameter: "%s"', $paramName));
+            }
+
+            $value = $this->params[$paramName];
         }
 
-        return $this->params[$paramName];
+        return $value;
     }
 
     /**
@@ -66,8 +105,12 @@ abstract class AbstractProperty implements PropertyInterface
      *
      * @return mixed
      */
-    protected function getOr($paramName, $default = null)
+    protected function getOr($paramName = null, $default = null)
     {
-        return isset($this->params[$paramName]) ? $this->params[$paramName] : $default;
+        if ($paramName !== null) {
+            return isset($this->params[$paramName]) ? $this->params[$paramName] : $default;
+        }
+
+        return $this->params;
     }
 }
