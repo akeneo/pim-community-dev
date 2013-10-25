@@ -235,7 +235,7 @@ class ExtendConfigDumper
                 $relation['assign'] = true;
                 $relationFieldId    = $relation['field_id'];
 
-                if (count($schema)) {
+                if ($relationFieldId && count($schema)) {
                     $schema['relation'][self::FIELD_PREFIX . $relationFieldId->getFieldName()] =
                         $relationFieldId->getFieldName();
                 }
