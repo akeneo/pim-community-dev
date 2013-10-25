@@ -36,6 +36,7 @@ class UpdateAclRoles extends AbstractFixture implements OrderedFixtureInterface,
 
         if ($manager->isAclEnabled()) {
             $this->updateUserRole($manager);
+            $this->updateManagerRole($manager);
             $manager->flush();
         }
     }
@@ -47,6 +48,33 @@ class UpdateAclRoles extends AbstractFixture implements OrderedFixtureInterface,
         // deny to view other user's calendar
         $oid = $manager->getOid('entity:Oro\Bundle\CalendarBundle\Entity\CalendarConnection');
         $maskBuilder = $manager->getMaskBuilder($oid);
+        $manager->setPermission($sid, $oid, $maskBuilder->get());
+
+        // grant to manage own calendar events
+        $oid = $manager->getOid('entity:Oro\Bundle\CalendarBundle\Entity\CalendarEvent');
+        $maskBuilder = $manager->getMaskBuilder($oid)
+            // ->add('VIEW_BASIC')
+            // ->add('CREATE_BASIC')
+            // ->add('EDIT_BASIC')
+            // ->add('DELETE_BASIC');
+            // @todo now only SYSTEM level is supported
+            ->add('VIEW_SYSTEM')
+            ->add('CREATE_SYSTEM')
+            ->add('EDIT_SYSTEM')
+            ->add('DELETE_SYSTEM');
+        $manager->setPermission($sid, $oid, $maskBuilder->get());
+    }
+
+    protected function updateManagerRole(AclManager $manager)
+    {
+        $sid = $manager->getSid($this->getReference('manager_role'));
+
+        // grant to view other user's calendar for the same business unit
+        $oid = $manager->getOid('entity:Oro\Bundle\CalendarBundle\Entity\CalendarConnection');
+        $maskBuilder = $manager->getMaskBuilder($oid)
+        //    ->add('VIEW_LOCAL');
+        // @todo now only SYSTEM level is supported
+            ->add('VIEW_SYSTEM');
         $manager->setPermission($sid, $oid, $maskBuilder->get());
 
         // grant to manage own calendar events
