@@ -5,7 +5,8 @@ This bundle integrates the `jQuery FullCalendar` plugin into BAP and provides ot
 
 UI
 --
-The user's calendar is available under an user menu at the top right corner of a screen. Here is [an example of a calendar](./Resources/doc/example.png).
+The user's calendar is available under an user menu at the top right corner of a screen.
+![An example of a calendar](./Resources/doc/example.png).
 
 Reminders
 ---------
