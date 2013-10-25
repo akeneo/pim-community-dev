@@ -15,14 +15,6 @@ column_name:
 ```
 Represents default data field.
 
-### Fixed
-```
-column_name:
-    type: fixed
-    data_name: string #required, key in result that should represent this field
-```
-Represent field that contains data from another field
-
 ### Url
 ```
 column_name:
@@ -47,7 +39,7 @@ Represents twig template formatted field.
 ```
 column_name:
     type: translatable
-    alias: string #optional if need to took value from another column
+    data_name: string #optional if need to took value from another column
     domain: string #optional
     locale: string #optional
 ```

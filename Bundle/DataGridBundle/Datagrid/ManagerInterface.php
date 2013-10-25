@@ -16,7 +16,6 @@ interface ManagerInterface
     /**
      * Returns prepared config for requested datagrid
      * Throws exception in case when datagrid configuration not found
-     * Cache prepared config in case if datagrid requested few times
      *
      * @param string $name
      *

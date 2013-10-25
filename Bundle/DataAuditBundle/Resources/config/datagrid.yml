@@ -55,7 +55,7 @@ datagrid:
                 label: Data
                 type: twig
                 template: OroDataAuditBundle:Datagrid:Property/data.html.twig
-                frontend_type: string
+                frontend_type: html
             author:
                 label: Author
                 type: field

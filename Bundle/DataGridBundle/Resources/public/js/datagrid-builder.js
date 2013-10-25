@@ -8,35 +8,24 @@ function($, _, Backbone, __, mediator, registry, LoadingMask,
     'use strict';
 
     var gridSelector = '[data-type="datagrid"]:not([data-rendered])',
-        datagridGridViewsSelector = '.page-title > .navbar-extra .span9:last',
-        cells = {
-            date:     'oro/datagrid/moment-cell',
-            datetime: 'oro/datagrid/moment-cell',
-            decimal:  'oro/datagrid/number-cell',
-            integer:  'oro/datagrid/integer-cell',
-            boolean:  'oro/datagrid/boolean-cell',
-            html:     'oro/datagrid/html-cell',
-            options:  'oro/datagrid/select-cell',
-            string:   'oro/datagrid/string-cell',
-            percent:  'oro/datagrid/percent-cell'
-        },
-        filters = {
-            text:        'oro/datafilter/choice-filter',
-            number:      'oro/datafilter/number-filter',
-            date:        'oro/datafilter/date-filter',
-            datetime:    'oro/datafilter/datetime-filter',
-            select:      'oro/datafilter/select-filter',
-            choice:      'oro/datafilter/select-filter',
-            selectrow:   'oro/datafilter/select-row-filter',
-            multiselect: 'oro/datafilter/multiselect-filter',
-            multichoice: 'oro/datafilter/multiselect-filter',
-            boolean:     'oro/datafilter/select-filter'
-        },
-        actions = {
-            navigate: 'oro/datagrid/navigate-action',
-            'delete': 'oro/datagrid/delete-action',
-            ajax:     'oro/datagrid/ajax-action',
-            mass:     'oro/datagrid/mass-action'
+        gridGridViewsSelector = '.page-title > .navbar-extra .span9:last',
+        cellModuleName = 'oro/datagrid/{{type}}-cell',
+        filterModuleName = 'oro/datafilter/{{type}}-filter',
+        actionModuleName = 'oro/datagrid/{{type}}-action',
+        types = {
+            cell: {
+                date:     'moment',
+                datetime: 'moment',
+                decimal:  'number'
+            },
+            filter: {
+                string:      'choice',
+                choice:      'select',
+                selectrow:   'select-row',
+                multichoice: 'multiselect',
+                boolean:     'select'
+            },
+            action: ['navigate', 'delete', 'ajax', 'mass']
         },
 
         helpers = {
@@ -79,24 +68,23 @@ function($, _, Backbone, __, mediator, registry, LoadingMask,
              * Collects required modules
              */
             collectModules: function () {
-                var modules = this.modules;
+                var modules = this.modules,
+                    moduleName = function (template, type) {
+                        return template.replace('{{type}}', type);
+                    };
                 // cells
-                _.each(this.metadata.columns || {}, function (column) {
-                    if (_.isUndefined(cells[column.type])) {
-                        throw new ReferenceError('Undefined module for cell of column type "'+ column.type + '"');
-                    }
-                    modules[helpers.cellType(column.type)] = cells[column.type];
+                _.each(this.metadata.columns || [], function (column) {
+                    var type = column.type;
+                    modules[helpers.cellType(type)] = moduleName(cellModuleName, types.cell[type] || type);
                 });
                 // filters
                 _.each((this.metadata.filters || {list: {}}).list || {}, function (filter) {
-                    if (_.isUndefined(filters[filter.type])) {
-                        throw new ReferenceError('Undefined module for filter of type "'+ filter.type + '"');
-                    }
-                    modules[helpers.filterType(filter.type)] = filters[filter.type];
+                    var type = filter.type;
+                    modules[helpers.filterType(type)] = moduleName(filterModuleName, types.filter[type] || type);
                 });
                 // actions
-                _.each(actions, function (path, type) {
-                    modules[helpers.actionType(type)] = path;
+                _.each(types.action, function (type) {
+                    modules[helpers.actionType(type)] = moduleName(actionModuleName, type);
                 });
             },
 
@@ -119,7 +107,6 @@ function($, _, Backbone, __, mediator, registry, LoadingMask,
                 } catch (e) {
                     // @todo  handle exception
                 }
-                console.log(options);
                 collection = new PageableCollection(this.data, options);
                 mediator.trigger("datagrid_collection_set_after", collection);
 
@@ -154,7 +141,7 @@ function($, _, Backbone, __, mediator, registry, LoadingMask,
                 mediator.trigger("datagrid_filters:rendered", collection);
 
                 // create grid view
-                $(datagridGridViewsSelector).append((new GridViewsView({collection: collection})).render().$el);
+                $(gridGridViewsSelector).append((new GridViewsView({collection: collection})).render().$el);
 
                 // register router
                 new GridRouter({collection: collection});
@@ -170,11 +157,15 @@ function($, _, Backbone, __, mediator, registry, LoadingMask,
              *
              * @returns {Object}
              */
-            combineCollectionOptions: function() {
+            combineCollectionOptions: function () {
                 return _.extend({
                     inputName: this.metadata.options.gridName,
                     parse: true,
+                    url: "\/user\/json",
                     state: {
+                        currentPage: 1, // ?
+                        pageSize: 10, // ?
+                        totalRecords: 53,
                         filters: {},
                         sorters: _.extend({}, this.metadata.sorter.state),
                         gridView: {}
@@ -187,7 +178,7 @@ function($, _, Backbone, __, mediator, registry, LoadingMask,
              *
              * @returns {Object}
              */
-            combineGridOptions: function() {
+            combineGridOptions: function () {
                 var columns, filters = {},
                     rowActions = {},
                     massActions = {},
@@ -196,7 +187,7 @@ function($, _, Backbone, __, mediator, registry, LoadingMask,
                     metadata = this.metadata;
 
                 // columns
-                columns = _.map(this.metadata.columns, function(cell) {
+                columns = _.map(this.metadata.columns, function (cell) {
                     var optionKeys = ['name', 'label', 'renderable', 'editable'],
                         options = _.pick.apply(null, [cell].concat(optionKeys)),
                         cellOptions = _.omit.apply(null, [cell].concat(optionKeys.concat('type'))),

@@ -33,7 +33,7 @@ class OrmDatasource implements DatasourceInterface
         $converter = new YamlConverter();
         $this->qb  = $converter->parse($queryConfig, $this->em->createQueryBuilder());
 
-        $grid->setDatasource($this);
+        $grid->setDatasource(clone $this);
     }
 
     /**

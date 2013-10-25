@@ -37,6 +37,14 @@ class OrmPagerExtension extends AbstractExtension
     }
 
     /**
+     * Prototype object
+     */
+    public function __clone()
+    {
+        $this->pager = clone $this->pager;
+    }
+
+    /**
      * {@inheritDoc}
      */
     public function isApplicable(array $config)

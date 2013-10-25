@@ -26,9 +26,8 @@ class TwigTemplateProperty extends AbstractProperty
     /**
      * {@inheritdoc}
      */
-    public function init(array $params)
+    public function initialize()
     {
-        parent::init($params);
         $checkInvalidArgument = array_intersect(array_keys($this->getOr(self::CONTEXT_KEY, [])), $this->reservedKeys);
         if (count($checkInvalidArgument)) {
             throw new \InvalidArgumentException(
@@ -44,7 +43,7 @@ class TwigTemplateProperty extends AbstractProperty
     /**
      * {@inheritdoc}
      */
-    public function getValue(ResultRecordInterface $record)
+    public function getRawValue(ResultRecordInterface $record)
     {
         $context = array_merge(
             $this->getOr(self::CONTEXT_KEY, []),
