@@ -396,6 +396,16 @@ class EntityAclExtensionTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function testGetAccessLevelNamesForRoot()
+    {
+        $object = new ObjectIdentity('entity', ObjectIdentityFactory::ROOT_IDENTITY_TYPE);
+        $this->assertEquals(
+            array('NONE', 'BASIC', 'LOCAL', 'DEEP', 'GLOBAL', 'SYSTEM'),
+            $this->extension->getAccessLevelNames($object)
+        );
+    }
+
+
     public function decideIsGrantingProvider()
     {
         $this->org1 = new Organization('org1');
