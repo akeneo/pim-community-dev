@@ -16,6 +16,7 @@ class Config
 {
     public $mode = ConfigModelManager::MODE_DEFAULT;
     public $routeName = '';
+    public $routeView = '';
     public $defaultValues = array();
 
     public function __construct(array $data)

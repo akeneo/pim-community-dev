@@ -43,7 +43,6 @@
     {% set general_fields = [ ] %}
     {% for key, value in entity_fields|default %}
         {% if value is iterable %}
-            {#{{ dump(value) }}#}
             {% set data = '' %}
             {% for item in value.values %}
                 {% if item.link is defined and item.link != false  %}
