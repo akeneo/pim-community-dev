@@ -1,29 +1,21 @@
 /* jshint browser:true */
 /* global define, require */
-define(['jquery', 'underscore', 'backbone', 'oro/translator', 'oro/mediator', 'oro/registry', 'oro/loading-mask',
-    'oro/pageable-collection', 'oro/datagrid/filter-list', 'oro/datagrid/grid', 'oro/datagrid/router',
+define(['jquery', 'underscore', 'backbone', 'oro/translator', 'oro/tools', 'oro/mediator', 'oro/registry', 'oro/loading-mask',
+    'oro/pageable-collection', 'oro/datagrid/grid', 'oro/datagrid/router',
     'oro/datagrid/grid-views/view'],
-function($, _, Backbone, __, mediator, registry, LoadingMask,
-         PageableCollection, FilterList, Grid, GridRouter, GridViewsView) {
+function($, _, Backbone, __, tools, mediator, registry, LoadingMask,
+         PageableCollection, Grid, GridRouter, GridViewsView) {
     'use strict';
 
     var gridSelector = '[data-type="datagrid"]:not([data-rendered])',
         gridGridViewsSelector = '.page-title > .navbar-extra .span9:last',
         cellModuleName = 'oro/datagrid/{{type}}-cell',
-        filterModuleName = 'oro/datafilter/{{type}}-filter',
         actionModuleName = 'oro/datagrid/{{type}}-action',
         types = {
             cell: {
                 date:     'moment',
                 datetime: 'moment',
                 decimal:  'number'
-            },
-            filter: {
-                string:      'choice',
-                choice:      'select',
-                selectrow:   'select-row',
-                multichoice: 'multiselect',
-                boolean:     'select'
             },
             action: ['navigate', 'delete', 'ajax', 'mass']
         },
@@ -37,9 +29,6 @@ function($, _, Backbone, __, mediator, registry, LoadingMask,
             },
             actionType: function (type) {
                 return this.capitalize(type) + 'Acton';
-            },
-            filterType: function (type) {
-                return this.capitalize(type) + 'Filter';
             }
         },
 
@@ -48,20 +37,12 @@ function($, _, Backbone, __, mediator, registry, LoadingMask,
              * Reads data from grid container, collects required modules and runs grid builder
              */
             initBuilder: function () {
-                this.data = this.$el.data('data');
                 this.metadata = this.$el.data('metadata');
                 this.modules = {};
                 methods.collectModules.call(this);
-                var modules = this.modules,
-                    requirements = _.values(this.modules),
-                    buildGrid = _.bind(methods.buildGrid, this);
                 // load all dependencies and build grid
-                require(requirements, function () {
-                    _.each(modules, _.bind(function(value, key) {
-                        modules[key] = this[value];
-                    }, _.object(requirements, _.toArray(arguments))));
-                    buildGrid();
-                });
+                tools.loadModules(this.modules, _.bind(methods.buildGrid, this));
+
             },
 
             /**
@@ -77,11 +58,6 @@ function($, _, Backbone, __, mediator, registry, LoadingMask,
                     var type = column.type;
                     modules[helpers.cellType(type)] = moduleName(cellModuleName, types.cell[type] || type);
                 });
-                // filters
-                _.each((this.metadata.filters || {list: {}}).list || {}, function (filter) {
-                    var type = filter.type;
-                    modules[helpers.filterType(type)] = moduleName(filterModuleName, types.filter[type] || type);
-                });
                 // actions
                 _.each(types.action, function (type) {
                     modules[helpers.actionType(type)] = moduleName(actionModuleName, type);
@@ -95,50 +71,32 @@ function($, _, Backbone, __, mediator, registry, LoadingMask,
                 var options, collection, grid,
                     gridName = this.metadata.options.gridName;
 
-                // @todo make a template configurable
-                this.$el.append(
-                    '<div class="clearfix" data-type="filter"></div>' +
-                    '<div class="clearfix" data-type="grid"></div>'
-                );
-
                 // create collection
                 try {
                     options = methods.combineCollectionOptions.call(this);
                 } catch (e) {
-                    // @todo  handle exception
+                    // @todo handle exception
+                    console.error(e.message);
                 }
-                collection = new PageableCollection(this.data, options);
-                mediator.trigger("datagrid_collection_set_after", collection);
+                collection = new PageableCollection(this.$el.data('data'), options);
+                mediator.trigger('datagrid_collection_set_after', collection, this.$el);
 
                 // create grid
                 try {
                     options = methods.combineGridOptions.call(this);
                 } catch (e) {
                     // @todo  handle exception
+                    console.error(e.message);
                 }
                 // @todo add placeholder for messages
-                options.noDataHint = __("No user exists.");
-                options.noResultsHint = __("No user was found to match your search. Try modifying your search criteria ...");
+                options.noDataHint = __('No user exists.');
+                options.noResultsHint = __('No user was found to match your search. Try modifying your search criteria ...');
                 options.collection = collection;
-                options.loadingMask = LoadingMask.extend({loadingHint: __("Loading...")});
+                options.loadingMask = LoadingMask.extend({loadingHint: __('Loading...')});
                 grid = new Grid(options);
-                this.$el.find('[data-type=grid]').append(grid.render().$el);
+                this.$el.append(grid.render().$el);
                 registry.setElement('datagrid', gridName, grid);
-                mediator.trigger("datagrid:created:" + gridName, grid);
-
-                // create filters
-                try {
-                    //options = methods.combineFilterOptions.call(this);
-                    // @todo there's something wrong, filters should not require all grid's options
-                    options = _.extend({
-                        addButtonHint: __("Manage filters"),
-                        collection: collection
-                    }, options);
-                } catch (e) {
-                    // @todo  handle exception
-                }
-                this.$el.find('[data-type=filters]').append((new FilterList(options)).render().$el);
-                mediator.trigger("datagrid_filters:rendered", collection);
+                mediator.trigger('datagrid:created:' + gridName, grid);
 
                 // create grid view
                 $(gridGridViewsSelector).append((new GridViewsView({collection: collection})).render().$el);
@@ -161,12 +119,9 @@ function($, _, Backbone, __, mediator, registry, LoadingMask,
                 return _.extend({
                     inputName: this.metadata.options.gridName,
                     parse: true,
-                    url: "\/user\/json",
+                    url: '\/user\/json',
                     state: {
-                        currentPage: 1, // ?
-                        pageSize: 10, // ?
-                        totalRecords: 53,
-                        filters: {},
+                        filters: _.extend({}, this.metadata.filters.state),
                         sorters: _.extend({}, this.metadata.sorter.state),
                         gridView: {}
                     }
@@ -179,7 +134,7 @@ function($, _, Backbone, __, mediator, registry, LoadingMask,
              * @returns {Object}
              */
             combineGridOptions: function () {
-                var columns, filters = {},
+                var columns,
                     rowActions = {},
                     massActions = {},
                     toolbarOptions = {},
@@ -200,27 +155,19 @@ function($, _, Backbone, __, mediator, registry, LoadingMask,
                     return options;
                 });
 
-                // @todo process filters, row and mass actions + toolbar options
+                // @todo row and mass actions + toolbar options
 
                 return {
                     name: this.metadata.options.gridName,
                     columns: columns,
-                    filters: filters,
                     rowActions: rowActions,
                     massActions: massActions,
                     toolbarOptions: toolbarOptions,
+                    // @todo rename 'multiple_sorting' to multipleSorting
                     multipleSorting: this.metadata.sorter.options.multiple_sorting || false,
-                    entityHint: "User"
+                    // @todo define entity hint
+                    entityHint: 'User'
                 };
-            },
-
-            /**
-             * Process metadata and combines options for filters
-             *
-             * @returns {Object}
-             */
-            combineFilterOptions: function () {
-                return {};
             }
         };
 

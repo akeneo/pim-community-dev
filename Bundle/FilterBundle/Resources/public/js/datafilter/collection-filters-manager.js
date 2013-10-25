@@ -1,16 +1,16 @@
 /* global define */
-define(['underscore', 'oro/datafilter/list'],
-function(_, FilterList) {
+define(['underscore', 'oro/datafilter/filters-manager'],
+function(_, FiltersManager) {
     'use strict';
 
     /**
      * View that represents all grid filters
      *
-     * @export  oro/datagrid/filter-list
-     * @class   oro.datagrid.FilterList
-     * @extends oro.FilterList
+     * @export  oro/datafilter/collection-filters-manager
+     * @class   oro.datafilter.CollectionFiltersManager
+     * @extends oro.datafilter.FiltersManager
      */
-    return FilterList.extend({
+    return FiltersManager.extend({
         /**
          * Initialize filter list options
          *
@@ -27,7 +27,7 @@ function(_, FilterList) {
             this.collection.on('updateState', this._onUpdateCollectionState, this);
             this.collection.on('reset', this._onCollectionReset, this);
 
-            FilterList.prototype.initialize.apply(this, arguments);
+            FiltersManager.prototype.initialize.apply(this, arguments);
         },
 
         /**
@@ -43,7 +43,7 @@ function(_, FilterList) {
             this.collection.state.currentPage = 1;
             this.collection.fetch();
 
-            FilterList.prototype._onFilterUpdated.apply(this, arguments);
+            FiltersManager.prototype._onFilterUpdated.apply(this, arguments);
         },
 
         /**

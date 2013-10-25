@@ -1,5 +1,5 @@
 /* global define */
-define(['jquery', 'underscore', 'oro/datafilter/date-filter'],
+define(['jquery', 'underscore', 'oro/datafilter/date-filter', 'jquery-ui-timepicker'],
     function($, _, DateFilter) {
         'use strict';
 

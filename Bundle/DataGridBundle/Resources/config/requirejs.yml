@@ -43,7 +43,6 @@ config:
         'oro/datagrid/select-row-cell': 'bundles/orodatagrid/js/datagrid/cell/select-row-cell.js'
         'oro/datagrid/string-cell': 'bundles/orodatagrid/js/datagrid/cell/string-cell.js'
         'oro/datagrid/percent-cell': 'bundles/orodatagrid/js/datagrid/cell/percent-cell.js'
-        'oro/datagrid/filter-list': 'bundles/orodatagrid/js/datagrid/filter-list.js'
         'oro/datagrid/cell-formatter': 'bundles/orodatagrid/js/datagrid/formatter/cell-formatter.js'
         'oro/datagrid/moment-formatter': 'bundles/orodatagrid/js/datagrid/formatter/moment-formatter.js'
         'oro/datagrid/percent-formatter': 'bundles/orodatagrid/js/datagrid/formatter/percent-formatter.js'

@@ -6,8 +6,8 @@ function($, _, Backbone, mediator, MultiselectDecorator) {
     /**
      * View that represents all grid filters
      *
-     * @export  oro/datafilter/list
-     * @class   oro.datafilter.List
+     * @export  oro/datafilter/filters-manager
+     * @class   oro.datafilter.FiltersManager
      * @extends Backbone.View
      *
      * @event updateList    on update of filter list

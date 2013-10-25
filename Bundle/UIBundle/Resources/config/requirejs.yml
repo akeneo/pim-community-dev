@@ -78,6 +78,7 @@ config:
         'oro/messenger': 'bundles/oroui/js/messenger.js'
         'oro/modal': 'bundles/oroui/js/modal.js'
         'oro/registry': 'bundles/oroui/js/registry.js'
+        'oro/tools': 'bundles/oroui/js/tools.js'
         'oro/widget-manager': 'bundles/oroui/js/widget-manager.js'
         'oro/abstract-widget': 'bundles/oroui/js/widget/abstract-widget.js'
         'oro/block-widget': 'bundles/oroui/js/widget/block-widget.js'

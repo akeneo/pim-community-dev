@@ -5,7 +5,7 @@ function(_, Backbone) {
 
     /**
      * @export oro/mediator
-     * @name oro/mediator
+     * @name   oro.mediator
      */
     return _.extend({}, Backbone.Events);
 });
