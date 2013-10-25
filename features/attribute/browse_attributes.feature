@@ -22,8 +22,5 @@ Feature: Browse attributes
   Scenario: Successfully display attributes
     Given I am on the attributes page
     Then the grid should contain 5 elements
+    And I should see the columns Code, Label, Type, Scopable, Localizable and Group
     And I should see attributes sku, name, short_descr, long_descr and count
-
-  Scenario: Successfully display columns
-    Given I am on the attributes page
-    Then I should see the columns Code, Label, Type, Scopable, Localizable and Group
