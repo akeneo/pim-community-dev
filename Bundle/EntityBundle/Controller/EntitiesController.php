@@ -62,7 +62,7 @@ class EntitiesController extends Controller
 
         $datagridManager->setCustomEntityClass($extendEntityName);
         $datagridManager->setEntityName($extendEntityName);
-        $datagridManager->getRouteGenerator()->setRouteParameters(array('id' => $id));
+        $datagridManager->getRouteGenerator()->setRouteParameters(['id' => $id]);
 
         $view = $datagridManager->getDatagrid()->createView();
 
@@ -70,12 +70,12 @@ class EntitiesController extends Controller
             ? $this->get('oro_grid.renderer')->renderResultsJsonResponse($view)
             : $this->render(
                 'OroEntityBundle:Entities:index.html.twig',
-                array(
+                [
                     'datagrid'     => $view,
                     'entity_id'    => $id,
                     'entity_class' => $extendEntityName,
                     'label'        => $entityConfig->get('label')
-                )
+                ]
             );
     }
 
@@ -167,11 +167,14 @@ class EntitiesController extends Controller
             $extendEntity = new $extendEntityName;
         }
         $datagridManager->setRelation($extendEntity);
+
+        $added   = $this->getRequest()->get('added');
+        $removed = $this->getRequest()->get('removed');
         $datagridManager->setAdditionalParameters(
-            array(
-                'data_in' => explode(',', $this->getRequest()->get('added')),
-                'data_not_in' => explode(',', $this->getRequest()->get('removed'))
-            )
+            [
+                'data_in'     => $added ? explode(',', $added) : [],
+                'data_not_in' => $removed ? explode(',', $removed) : []
+            ]
         );
         $datagridManager->setEntityName($fieldConfig->get('target_entity'));
 
@@ -179,14 +182,14 @@ class EntitiesController extends Controller
 
         return 'json' == $this->getRequest()->getRequestFormat()
             ? $this->get('oro_grid.renderer')->renderResultsJsonResponse($view)
-            : array(
+            : [
                 'datagrid'        => $view,
                 'entity_id'       => $className,
                 'entity_class'    => $extendEntityName,
                 'label'           => $entityConfig->get('label'),
                 'entity_provider' => $entityConfigProvider,
                 'relation'        => $fieldConfig
-              );
+            ];
     }
 
 
@@ -218,12 +221,13 @@ class EntitiesController extends Controller
         $fields = $viewConfigProvider->filter(
             function (ConfigInterface $config) use ($extendConfigProvider) {
                 $extendConfig = $extendConfigProvider->getConfigById($config->getId());
+
                 return $config->is('is_displayable') && $extendConfig->is('is_deleted', false);
             },
             $extendEntityName
         );
 
-        $result = array();
+        $result = [];
         foreach ($fields as $field) {
             $value = $record->{'get' . Inflector::classify($field->getId()->getFieldName())}();
             if ($value instanceof \DateTime) {
@@ -240,7 +244,7 @@ class EntitiesController extends Controller
             $result[$fieldConfig->get('label') ? : $field->getId()->getFieldName()] = $value;
         }
 
-        return array(
+        return [
             'parent'        => $entity_id,
             'entity'        => $record,
             'entity_fields' => $result,
@@ -248,7 +252,7 @@ class EntitiesController extends Controller
             'entity_config' => $entityConfigProvider->getConfig($extendEntityName),
             'extend_config' => $extendConfigProvider,
             'entity_class'  => $extendEntityName,
-        );
+        ];
     }
 
     /**
@@ -306,31 +310,31 @@ class EntitiesController extends Controller
                 );
 
                 return $this->get('oro_ui.router')->actionRedirect(
-                    array(
+                    [
                         'route'      => 'oro_entity_update',
-                        'parameters' => array(
+                        'parameters' => [
                             'entity_id' => $entity_id,
                             'id'        => $id
-                        ),
-                    ),
-                    array(
+                        ],
+                    ],
+                    [
                         'route'      => 'oro_entity_view',
-                        'parameters' => array(
+                        'parameters' => [
                             'entity_id' => $entity_id,
                             'id'        => $id
-                        )
-                    )
+                        ]
+                    ]
                 );
             }
         }
 
-        return array(
+        return [
             'entity'        => $record,
             'entity_id'     => $entity_id,
             'entity_config' => $entityConfig,
             'entity_class'  => $extendEntityName,
             'form'          => $form->createView(),
-        );
+        ];
     }
 
     /**

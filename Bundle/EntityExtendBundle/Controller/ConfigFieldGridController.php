@@ -3,6 +3,7 @@
 namespace Oro\Bundle\EntityExtendBundle\Controller;
 
 use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigId;
+use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -73,7 +74,7 @@ class ConfigFieldGridController extends Controller
         $newFieldModel = new FieldConfigModel();
         $newFieldModel->setEntity($entity);
 
-        $form = $this->createForm(
+        $form    = $this->createForm(
             'oro_entity_extend_field_type',
             $newFieldModel,
             array('class_name' => $entity->getClassName())
@@ -143,29 +144,26 @@ class ConfigFieldGridController extends Controller
         }
 
         /** @var ConfigManager $configManager */
-        $configManager = $this->get('oro_entity_config.config_manager');
-
-        $extendProvider = $configManager->getProvider('extend');
-
+        $configManager      = $this->get('oro_entity_config.config_manager');
+        $extendProvider     = $configManager->getProvider('extend');
         $extendEntityConfig = $extendProvider->getConfig($entity->getClassName());
 
-        $relationValues = array();
-        $relationOptions = explode('|', $fieldType);
+        $relationValues  = [];
+        $relationOptions = explode('||', $fieldType);
+        $relationName    = $relationOptions[0];
+        $relationOptions = explode('|', $relationOptions[0]);
 
         /**
          * fieldType example: relation|manyToOne|testentity5_relation_7
          * check if fieldType has 3rd option [fieldName]
          */
-        if (strpos($fieldType, 'relation|') === 0 && count($relationOptions) == 3) {
-            $fieldType = $relationOptions[1];
-            $fieldName = $relationOptions[2] ? : $fieldName;
+        if (count($relationOptions) == 4) {
+            $fieldType = ExtendHelper::getReversRelationType($relationOptions[0]);
+            $fieldName = $relationOptions[3] ? : $fieldName;
 
-            foreach ($extendEntityConfig->get('relation') as $relation) {
-                $fieldConfigId = new FieldConfigId($entity->getClassName(), 'extend', $fieldName, $fieldType);
-                if ($relation['field_id'] == $fieldConfigId) {
-                    $relationValues['target_entity'] = $relation['target_entity'];
-                    break;
-                }
+            $relations = $extendEntityConfig->get('relation');
+            if (isset($relations[$relationName])) {
+                $relationValues['target_entity'] = $relations[$relationName]['target_entity'];
             }
         }
 
@@ -224,8 +222,8 @@ class ConfigFieldGridController extends Controller
         /** @var ConfigProvider $entityConfigProvider */
         $entityConfigProvider = $this->get('oro_entity_config.provider.entity');
 
-        $entityConfig         = $entityConfigProvider->getConfig($entity->getClassName());
-        $fieldConfig          = $entityConfigProvider->getConfig(
+        $entityConfig = $entityConfigProvider->getConfig($entity->getClassName());
+        $fieldConfig  = $entityConfigProvider->getConfig(
             $entity->getClassName(),
             $newFieldModel->getFieldName()
         );

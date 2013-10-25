@@ -83,25 +83,26 @@ class RelationEntityDatagrid extends CustomEntityDatagrid
     /**
      * {@inheritDoc}
      */
-    protected function getQueryParameters()
-    {
-        $additionalParameters = $this->parameters->get(ParametersInterface::ADDITIONAL_PARAMETERS);
-        $dataIn    = !empty($additionalParameters['data_in']) ? $additionalParameters['data_in'] : array(0);
-        $dataNotIn = !empty($additionalParameters['data_not_in']) ? $additionalParameters['data_not_in'] : array(0);
-
-        $parameters = array('data_in' => $dataIn, 'data_not_in' => $dataNotIn);
-
-        if ($this->getRelation()->getId()) {
-            $parameters = array_merge(parent::getQueryParameters(), $parameters);
-        }
-
-        return $parameters;
-    }
+//    protected function getQueryParameters()
+//    {
+//        $additionalParameters = $this->parameters->get(ParametersInterface::ADDITIONAL_PARAMETERS);
+//        $dataIn               = !empty($additionalParameters['data_in']) ? $additionalParameters['data_in'] : array(0);
+//        $dataNotIn            = !empty($additionalParameters['data_not_in']) ? $additionalParameters['data_not_in'] : array(0);
+//
+//        $parameters = array('data_in' => $dataIn, 'data_not_in' => $dataNotIn);
+//
+//        if ($this->getRelation()->getId()) {
+//            $parameters = array_merge(parent::getQueryParameters(), $parameters);
+//        }
+//
+//        return $parameters;
+//    }
 
     protected function getDefaultParameters()
     {
-        $parameters = parent::getDefaultParameters();
+        $parameters                                             = parent::getDefaultParameters();
         $parameters[ParametersInterface::ADDITIONAL_PARAMETERS] = $this->additionalParameters;
+
         return $parameters;
     }
 
@@ -199,7 +200,7 @@ class RelationEntityDatagrid extends CustomEntityDatagrid
     protected function prepareQuery(ProxyQueryInterface $query)
     {
         $classArray = explode('\\', $this->relationConfig->getId()->getClassName());
-        $fieldName =
+        $fieldName  =
             ExtendConfigDumper::FIELD_PREFIX
             . strtolower(array_pop($classArray)) . '_'
             . $this->relationConfig->getId()->getFieldName();
@@ -211,47 +212,6 @@ class RelationEntityDatagrid extends CustomEntityDatagrid
 
                 break;
             case 'manyToMany':
-                /** @var ConfigProvider $extendConfigProvider */
-                $extendConfigProvider = $this->configManager->getProvider('extend');
-
-                $relations = $extendConfigProvider
-                    ->getConfig($this->relationConfig->getId()->getClassName())
-                    ->get('relation');
-
-                $owner = false;
-                foreach ($relations as $relation) {
-                    if ($relation['field_id'] == $this->relationConfig->getId()
-                        && $relation['owner'] == true
-                        && $relation['assign'] == true
-                    ) {
-                        $owner = true;
-                        break;
-                    }
-                }
-
-                if ($owner) {
-                    $tableName = ExtendHelper::generateManyToManyJoinTableName(
-                        $this->relationConfig->getId(),
-                        $this->relationConfig->get('target_entity')
-                    );
-                } else {
-                    foreach ($relations as $relation) {
-                        if ($relation['target_field_id'] == $this->relationConfig->getId()
-                            && $relation['assign'] == true
-                        ) {
-                            $tableName = ExtendHelper::generateManyToManyJoinTableName(
-                                $relation['field_id'],
-                                $relation['target_entity']
-                            );
-
-                            break;
-                        }
-                    }
-                }
-
-
-                //$query->leftJoin('ce.' . $fieldName, 'r');
-                //$query->addSelect('r.id as assigned', true);
 
                 break;
         }

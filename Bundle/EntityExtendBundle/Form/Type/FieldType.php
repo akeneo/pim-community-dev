@@ -2,11 +2,12 @@
 
 namespace Oro\Bundle\EntityExtendBundle\Form\Type;
 
-use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+
+use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 
@@ -57,28 +58,26 @@ class FieldType extends AbstractType
         $entityConfig = $extendProvider->getConfig($options['class_name']);
         if ($entityConfig->is('relation')) {
             $types = array();
-            foreach ($entityConfig->get('relation') as $relation) {
+            foreach ($entityConfig->get('relation') as $relationKey => $relation) {
                 $fieldId       = $relation['field_id'];
                 $targetFieldId = $relation['target_field_id'];
 
-                if ($relation['assign'] == true
-                    && (
-                        ($fieldId && !$extendProvider->hasConfig($fieldId->getClassName(), $fieldId->getFieldName()))
-                        || $targetFieldId
-                    )
-                ) {
-                    $fieldType = ExtendHelper::getReversRelationType($targetFieldId->getFieldType());
-
-                    $entityLabel = $entityProvider->getConfig($targetFieldId->getClassName())->get('label');
-                    $fieldLabel  = $entityProvider->getConfig(
-                        $targetFieldId->getClassName(),
-                        $targetFieldId->getFieldName()
-                    )->get('label');
-
-                    $key = 'relation' . '|' . $fieldType . '|' . ($fieldId ? $fieldId->getFieldName() : '');
-
-                    $types[$key] = 'Relation (' . $entityLabel . ') ' . $fieldLabel;
+                if (!$relation['assign'] || !$targetFieldId) {
+                    continue;
                 }
+
+                if ($fieldId
+                    && $extendProvider->hasConfigById($fieldId)
+                    && !$extendProvider->getConfigById($fieldId)->is('state', ExtendManager::STATE_DELETED)
+                ) {
+                    continue;
+                }
+
+                $entityLabel = $entityProvider->getConfig($targetFieldId->getClassName())->get('label');
+                $fieldLabel  = $entityProvider->getConfigById($targetFieldId)->get('label');
+
+                $key         = $relationKey . '||' . ($fieldId ? $fieldId->getFieldName() : '');
+                $types[$key] = 'Relation (' . $entityLabel . ') ' . $fieldLabel;
             }
 
             $this->types = array_merge($this->types, $types);
