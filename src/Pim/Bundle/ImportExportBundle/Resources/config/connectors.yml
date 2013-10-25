@@ -77,9 +77,7 @@ services:
     pim_import_export.processor.valid_product_creation:
         class: %pim_import_export.processor.valid_product_creation.class%
         arguments:
-            - '@form.factory'
-            - '@pim_catalog.manager.product'
-            - '@pim_catalog.manager.locale'
+            - '@pim_import_export.transformer.product'
 
     pim_import_export.processor.valid_category_creation:
         class: %pim_import_export.processor.valid_category_creation.class%

@@ -1,0 +1,55 @@
+<?php
+
+namespace Pim\Bundle\ImportExportBundle\Transformer\Property;
+
+use Pim\Bundle\ImportExportBundle\Cache\EntityCache;
+
+/**
+ * Transform entity codes in entity arrays
+ *
+ * @author    Antoine Guigan <antoine@akeneo.com>
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+class EntityTransformer implements PropertyTransformerInterface
+{
+    /**
+     * @var EntityCache
+     */
+    protected $entityCache;
+
+    /**
+     * Constructor
+     *
+     * @param EntityCache $entityCache
+     * @param array       $options
+     */
+    public function __construct(EntityCache $entityCache)
+    {
+        $this->entityCache = $entityCache;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function transform($value, array $options = array())
+    {
+        if (!$value) return;
+
+        $entityCache = $this->entityCache;
+        $transform = function ($value) use ($options, $entityCache) {
+            $entity = $entityCache->find($options['class'], $value);
+            if (!$entity) {
+                throw new \InvalidArgumentException(
+                    'No entity of class "%s" with code "%s"',
+                    $options['class'],
+                    $value
+                );
+            }
+        };
+
+        return ($options['multiple'])
+            ? array_map($transform, preg_split('/\s*,\s*/', $value))
+            : $transform($value);
+    }
+}

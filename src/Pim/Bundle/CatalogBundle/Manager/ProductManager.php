@@ -157,6 +157,21 @@ class ProductManager extends FlexibleManager
         return $product;
     }
 
+    public function getImportQuery($attributes, $identifierAttribute)
+    {
+        return $this->getStorageManager()->createQuery(
+            'SELECT p FROM PimCatalogBundle:ProductInterface ' .
+            'LEFT JOIN p.values v ON v.attribute IN (:attributes) ' .
+            'LEFT JOIN v.options o ' .
+            'WHERE p.id IN (' .
+            '  SELECT p2.id FROM PimCatalogBundle:ProductInterface p2, p2.values v2 ' .
+            '  WHERE v2.attribute=:identifier_attribute AND v2.' . $identifierAttribute->getBackendType() . '=:code' .
+            ')'
+        )
+            ->setParameter('attributes', $attributes)
+            ->setParameter('identifier_attribute', $identifierAttribute);
+    }
+
     /**
      * Creates required value(s) to add the attribute to the product
      *
