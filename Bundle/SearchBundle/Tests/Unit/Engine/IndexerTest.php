@@ -106,13 +106,14 @@ class IndexerTest extends \PHPUnit_Framework_TestCase
         $this->mapper->expects($this->any())
             ->method('getMappingConfig')
             ->will($this->returnValue($this->config));
+        $config = $this->config;
         $this->mapper->expects($this->any())
             ->method('getEntitiesListAliases')
             ->will(
                 $this->returnCallback(
-                    function () {
+                    function () use ($config) {
                         $aliases = array();
-                        foreach ($this->config as $entityName => $entityOptions) {
+                        foreach ($config as $entityName => $entityOptions) {
                             if (!empty($entityOptions['alias'])) {
                                 $aliases[$entityName] = $entityOptions['alias'];
                             }
