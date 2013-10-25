@@ -154,12 +154,21 @@ class IndexerTest extends \PHPUnit_Framework_TestCase
         $select = $this->indexService->select();
 
         $resultItem = new Item($this->entityManager);
+        $searchResults = array($resultItem);
+
         $this->adapter->expects($this->once())
             ->method('search')
-            ->with($select)
-            ->will($this->returnValue(array('results' => array($resultItem), 'records_count' => 1)));
+            ->will(
+                $this->returnCallback(
+                    function (Query $query) use ($searchResults) {
+                        return new Result($query, $searchResults, count($searchResults));
+                    }
+                )
+            );
 
-        $this->indexService->query($select);
+        $result = $this->indexService->query($select);
+        $this->assertEquals($searchResults, $result->getElements());
+        $this->assertEquals(count($searchResults), $result->getRecordsCount());
     }
 
     /**
@@ -226,14 +235,13 @@ class IndexerTest extends \PHPUnit_Framework_TestCase
     public function testSimpleSearch($expectedQuery, $string, $offset = 0, $maxResults = 0, $from = null, $page = 0)
     {
         $searchResults = array('one', 'two', 'three');
-        $searchRecordsCount = 3;
 
         $this->adapter->expects($this->any())
             ->method('search')
             ->will(
                 $this->returnCallback(
-                    function (Query $query) use ($searchResults, $searchRecordsCount) {
-                        return new Result($query, $searchResults, $searchRecordsCount);
+                    function (Query $query) use ($searchResults) {
+                        return new Result($query, $searchResults, count($searchResults));
                     }
                 )
             );
@@ -243,7 +251,7 @@ class IndexerTest extends \PHPUnit_Framework_TestCase
 
         if ($result->getQuery()->getFrom()) {
             $this->assertEquals($searchResults, $result->getElements());
-            $this->assertEquals($searchRecordsCount, $result->getRecordsCount());
+            $this->assertEquals(count($searchResults), $result->getRecordsCount());
         } else {
             $this->assertEmpty($result->getElements());
             $this->assertEquals(0, $result->getRecordsCount());
@@ -254,14 +262,13 @@ class IndexerTest extends \PHPUnit_Framework_TestCase
     public function testAdvancedSearch()
     {
         $searchResults = array('one', 'two', 'three');
-        $searchRecordsCount = 3;
 
         $this->adapter->expects($this->any())
             ->method('search')
             ->will(
                 $this->returnCallback(
-                    function (Query $query) use ($searchResults, $searchRecordsCount) {
-                        return new Result($query, $searchResults, $searchRecordsCount);
+                    function (Query $query) use ($searchResults) {
+                        return new Result($query, $searchResults, count($searchResults));
                     }
                 )
             );
@@ -277,7 +284,7 @@ class IndexerTest extends \PHPUnit_Framework_TestCase
         $actualQuery = $this->combineQueryString($result->getQuery());
 
         $this->assertEquals($searchResults, $result->getElements());
-        $this->assertEquals($searchRecordsCount, $result->getRecordsCount());
+        $this->assertEquals(count($searchResults), $result->getRecordsCount());
         $this->assertEquals($expectedQuery, $actualQuery);
     }
 
