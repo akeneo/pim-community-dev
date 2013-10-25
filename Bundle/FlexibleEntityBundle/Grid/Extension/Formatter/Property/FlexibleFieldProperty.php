@@ -7,6 +7,8 @@ use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\FieldProperty;
 
 class FlexibleFieldProperty extends FieldProperty
 {
+    const BACKEND_TYPE_KEY = 'backend_type';
+
     /** @var array */
     public static $typeMatches = [
         AbstractAttributeType::BACKEND_TYPE_DATE     => [
@@ -51,12 +53,15 @@ class FlexibleFieldProperty extends FieldProperty
         ]
     ];
 
+    /** @var array */
+    protected $excludeParams = [self::BACKEND_TYPE_KEY];
+
     public function init(array $params)
     {
         parent::init($params);
 
-        $this->params['frontend_type'] = isset(self::$typeMatches[$this->get('backend_type')])
-            ? self::$typeMatches[$this->get('backend_type')]['field'] : FieldProperty::TYPE_TEXT;
+        $this->params[self::FRONTEND_TYPE_KEY] = isset(self::$typeMatches[$this->get(self::BACKEND_TYPE_KEY)])
+            ? self::$typeMatches[$this->get(self::BACKEND_TYPE_KEY)]['field'] : FieldProperty::TYPE_TEXT;
     }
 
     /**

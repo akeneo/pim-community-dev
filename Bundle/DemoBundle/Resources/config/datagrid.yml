@@ -107,33 +107,27 @@ datagrid:
         columns:
             name:
                 type: field
-                frontend_options:
-                    label: 'Name'
+                label: 'Name'
 
             contactFirstName:
                 type: field
-                frontend_options:
-                    label: 'Default contact first name'
+                label: 'Default contact first name'
 
             contactLastName:
                 type: field
-                frontend_options:
-                    label: 'Default contact last name'
+                label: 'Default contact last name'
 
             contactPhone:
                 type: field
-                frontend_options:
-                    label: 'Default contact phone'
+                label: 'Default contact phone'
 
             contactEmail:
                 type: field
-                frontend_options:
-                    label: 'Default contact email'
+                label: 'Default contact email'
 
             ownerName:
                 type: field
-                frontend_options:
-                    label: 'Owner'
+                label: 'Owner'
 
         flexible_attributes:
             employees:
