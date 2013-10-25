@@ -7,4 +7,4 @@ services:
         arguments:
           - @service_container
         tags:
-          - { name: kernel.event_listener, event: oro_grid.datgrid.build.after.adminUsers, method: onBuildAfter }
+          - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.adminUsers, method: onBuildAfter }

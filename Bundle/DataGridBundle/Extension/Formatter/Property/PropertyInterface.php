@@ -11,8 +11,8 @@ interface PropertyInterface
     const TYPE_DECIMAL  = 'decimal';
     const TYPE_INTEGER  = 'integer';
     const TYPE_PERCENT  = 'percent';
-    const TYPE_OPTIONS  = 'options';
-    const TYPE_TEXT     = 'text';
+    const TYPE_SELECT   = 'select';
+    const TYPE_STRING   = 'string';
     const TYPE_HTML     = 'html';
     const TYPE_BOOLEAN  = 'boolean';
 

@@ -32,23 +32,23 @@ class FlexibleFieldProperty extends FieldProperty
             'filter' => 'flexible_number'
         ],
         AbstractAttributeType::BACKEND_TYPE_OPTION   => [
-            'field'  => FieldProperty::TYPE_OPTIONS,
+            'field'  => FieldProperty::TYPE_SELECT,
             'filter' => 'flexible_choice'
         ],
         AbstractAttributeType::BACKEND_TYPE_TEXT     => [
-            'field'  => FieldProperty::TYPE_TEXT,
+            'field'  => FieldProperty::TYPE_STRING,
             'filter' => 'flexible_string'
         ],
         AbstractAttributeType::BACKEND_TYPE_VARCHAR  => [
-            'field'  => FieldProperty::TYPE_TEXT,
+            'field'  => FieldProperty::TYPE_STRING,
             'filter' => 'flexible_string'
         ],
         AbstractAttributeType::BACKEND_TYPE_PRICE    => [
-            'field'  => FieldProperty::TYPE_TEXT,
+            'field'  => FieldProperty::TYPE_STRING,
             'filter' => 'flexible_string'
         ],
         AbstractAttributeType::BACKEND_TYPE_METRIC   => [
-            'field'  => FieldProperty::TYPE_TEXT,
+            'field'  => FieldProperty::TYPE_STRING,
             'filter' => 'flexible_string'
         ]
     ];
@@ -61,7 +61,7 @@ class FlexibleFieldProperty extends FieldProperty
         parent::init($params);
 
         $this->params[self::FRONTEND_TYPE_KEY] = isset(self::$typeMatches[$this->get(self::BACKEND_TYPE_KEY)])
-            ? self::$typeMatches[$this->get(self::BACKEND_TYPE_KEY)]['field'] : FieldProperty::TYPE_TEXT;
+            ? self::$typeMatches[$this->get(self::BACKEND_TYPE_KEY)]['field'] : FieldProperty::TYPE_STRING;
     }
 
     /**

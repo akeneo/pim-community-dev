@@ -25,7 +25,7 @@ datagrid:
             usage:
                 label: Usage Count
                 type: field
-                frontend_type: number
+                frontend_type: integer
 
         properties:
             update_link:

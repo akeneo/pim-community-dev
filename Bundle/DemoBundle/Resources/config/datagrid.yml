@@ -131,11 +131,5 @@ datagrid:
 
         flexible_attributes:
             employees:
-                filterable: true
+                filterable: false
         flexible_entity: %orocrm_account.account.entity.class%
-
-        filters:
-            default:
-                employees:
-                    type: 1
-                    value: 3

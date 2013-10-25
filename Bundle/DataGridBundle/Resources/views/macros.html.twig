@@ -17,17 +17,11 @@
                 datagridBuilder();
                 {# @TODO remove dev code #}
                 $('div[data-type="datagrid"]:not([data-rendered])').each(function (e, el) {
-                    var el = $(el);
+                    el = $(el);
                     console.group('Datagrid "{{ name }}" rendered:');
                     console.info(el.data('data'));
                     console.info(el.data('metadata'));
                     console.groupEnd();
-
-                    el.after(
-                        $('<div>').html(JSON.stringify(el.data('data'))),
-                        $('<hr />'),
-                        $('<div>').html(JSON.stringify(el.data('metadata')))
-                    );
                 });
             });
         });
