@@ -200,19 +200,6 @@ class Grid extends Index
     }
 
     /**
-     * Predicate to know if a column is sorted in the specified order
-     *
-     * @param string $column
-     * @param string $order
-     *
-     * @return boolean
-     */
-    public function isSortedBy($column, $order)
-    {
-        return (bool) $this->getColumn($column)->find('css', sprintf('th.%s', $order));
-    }
-
-    /**
      * Sort rows by a column in the specified order
      *
      * @param string $column
