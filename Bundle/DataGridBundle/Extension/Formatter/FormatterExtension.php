@@ -34,24 +34,19 @@ class FormatterExtension extends AbstractExtension
     public function visitResult(array $config, \stdClass $result)
     {
         $rows       = (array)$result->data;
-        $results    = [];
         $columns    = $this->accessor->getValue($config, Configuration::COLUMNS_PATH) ? : [];
         $properties = $this->accessor->getValue($config, Configuration::PROPERTIES_PATH) ? : [];
         $toProcess  = array_merge($columns, $properties);
 
-        foreach ($rows as $row) {
-            $resultRecord = [];
-            $record       = new ResultRecord($row);
-
+        foreach ($rows as $key => $row) {
+            $record = new ResultRecord($row);
             foreach ($toProcess as $name => $config) {
-                $property            = $this->getPropertyObject($name, $config);
-                $resultRecord[$name] = $property->getValue($record);
+                $property   = $this->getPropertyObject($name, $config);
+                $row[$name] = $property->getValue($record);
             }
-
-            $results[] = $resultRecord;
+            // result row will contains only processed rows
+            $result->data[$key] = array_intersect_key($row, array_flip(array_keys($toProcess)));
         }
-
-        $result->data = $results;
     }
 
     /**
@@ -75,18 +70,14 @@ class FormatterExtension extends AbstractExtension
     }
 
     /**
-     * Add property to array of available properties
+     * Add property to array of available properties, usually called by DIC
      *
      * @param string            $name
      * @param PropertyInterface $property
-     *
-     * @return $this
      */
     public function addProperty($name, PropertyInterface $property)
     {
         $this->properties[$name] = $property;
-
-        return $this;
     }
 
     /**
@@ -100,12 +91,9 @@ class FormatterExtension extends AbstractExtension
     protected function getPropertyObject($name, array $config)
     {
         $config[PropertyInterface::NAME_KEY] = $name;
-
-        $type = $this->accessor->getValue($config, sprintf('[%s]', Configuration::TYPE_KEY));
-
-        $property = $this->properties[$type];
+        $property                            = $this->properties[$config[Configuration::TYPE_KEY]];
         $property->init($config);
 
-        return clone $property;
+        return $property;
     }
 }

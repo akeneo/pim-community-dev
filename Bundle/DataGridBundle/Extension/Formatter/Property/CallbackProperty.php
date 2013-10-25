@@ -14,7 +14,7 @@ class CallbackProperty extends AbstractProperty
     /**
      * {@inheritdoc}
      */
-    public function getValue(ResultRecordInterface $record)
+    public function getRawValue(ResultRecordInterface $record)
     {
         return call_user_func($this->get(self::CALLABLE_KEY), $record);
     }

@@ -6,14 +6,13 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 use Oro\Bundle\DataGridBundle\Extension\Formatter\ResultRecordInterface;
 
-class TranslateableProperty extends AbstractProperty
+class TranslateableProperty extends FieldProperty
 {
-    const ALIAS_KEY  = 'alias';
     const DOMAIN_KEY = 'domain';
     const LOCALE_KEY = 'locale';
 
     /** @var array */
-    protected $excludeParams = [self::ALIAS_KEY, self::DOMAIN_KEY, self::LOCALE_KEY];
+    protected $excludeParams = [self::DOMAIN_KEY, self::LOCALE_KEY];
 
     /**
      * @var TranslatorInterface
@@ -31,10 +30,9 @@ class TranslateableProperty extends AbstractProperty
     /**
      * {@inheritDoc}
      */
-    public function getValue(ResultRecordInterface $record)
+    public function getRawValue(ResultRecordInterface $record)
     {
-        $dataField = $this->getOr(self::ALIAS_KEY, $this->get(self::NAME_KEY));
-        $value     = $record->getValue($dataField);
+        $value = parent::getRawValue($record);
 
         return $this->translator->trans(
             $value,

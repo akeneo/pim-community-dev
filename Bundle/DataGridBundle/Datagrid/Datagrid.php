@@ -4,13 +4,9 @@ namespace Oro\Bundle\DataGridBundle\Datagrid;
 
 use Oro\Bundle\DataGridBundle\Extension\Acceptor;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
-use Oro\Bundle\DataGridBundle\Extension\ExtensionVisitorInterface;
 
 class Datagrid implements DatagridInterface
 {
-    /** @var ExtensionVisitorInterface[] */
-    protected $extensions = [];
-
     /** @var DatasourceInterface */
     protected $datasource;
 
@@ -45,7 +41,7 @@ class Datagrid implements DatagridInterface
         $rows = $this->getAcceptedDatasource()->getResults();
 
         $result->data = $rows;
-        $this->acceptor->acceptResult($this, $result);
+        $this->acceptor->acceptResult($result);
 
         return $result;
     }
@@ -58,7 +54,7 @@ class Datagrid implements DatagridInterface
         // create \stdClass from array
         $data = (object)[self::METADATA_OPTIONS_KEY => ['gridName' => $this->getName()]];
 
-        $this->acceptor->acceptMetadata($this, $data);
+        $this->acceptor->acceptMetadata($data);
 
         return (array)$data;
     }
@@ -66,27 +62,9 @@ class Datagrid implements DatagridInterface
     /**
      * {@inheritDoc}
      */
-    public function addExtension(ExtensionVisitorInterface $extension)
-    {
-        $this->extensions[] = clone $extension;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getExtensions()
-    {
-        return $this->extensions;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function setDatasource(DatasourceInterface $source)
     {
-        $this->datasource = clone $source;
+        $this->datasource = $source;
 
         return $this;
     }
@@ -104,7 +82,7 @@ class Datagrid implements DatagridInterface
      */
     public function getAcceptedDatasource()
     {
-        $this->acceptor->acceptDatasourceVisitors($this);
+        $this->acceptor->acceptDatasourceVisitors($this->getDatasource());
 
         return $this->getDatasource();
     }

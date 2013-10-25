@@ -18,22 +18,6 @@ interface DatagridInterface
     public function getName();
 
     /**
-     * Adds extension to extension list
-     *
-     * @param ExtensionVisitorInterface $extension
-     *
-     * @return $this
-     */
-    public function addExtension(ExtensionVisitorInterface $extension);
-
-    /**
-     * Returns array of registered extensions
-     *
-     * @return ExtensionVisitorInterface[]
-     */
-    public function getExtensions();
-
-    /**
      * Set grid datasource
      *
      * @param DatasourceInterface $source

@@ -4,6 +4,12 @@ namespace Oro\Bundle\DataGridBundle\Extension\Formatter\Property;
 
 use Oro\Bundle\DataGridBundle\Extension\Formatter\ResultRecordInterface;
 
+/**
+ * Interface PropertyInterface
+ * @package Oro\Bundle\DataGridBundle\Extension\Formatter\Property
+ *
+ * Every property should be stateless
+ */
 interface PropertyInterface
 {
     const TYPE_DATE     = 'date';
@@ -19,17 +25,17 @@ interface PropertyInterface
     const METADATA_NAME_KEY = 'name';
     const METADATA_TYPE_KEY = 'type';
 
-    const TYPE_KEY             = 'type';
-    const NAME_KEY             = 'name';
-    const DATA_NAME_KEY        = 'data_name';
-    const FRONTEND_TYPE_KEY    = 'frontend_type';
+    const TYPE_KEY          = 'type';
+    const NAME_KEY          = 'name';
+    const DATA_NAME_KEY     = 'data_name';
+    const FRONTEND_TYPE_KEY = 'frontend_type';
 
     /**
-     * Prepare state for property state for current field
+     * Initialize property for each cell
      *
      * @param $params
      *
-     * @return mixed
+     * @return $this
      */
     public function init(array $params);
 

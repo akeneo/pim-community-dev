@@ -21,8 +21,7 @@ abstract class AbstractExtension implements ExtensionVisitorInterface
     public function __construct(RequestParameters $requestParams = null)
     {
         $this->requestParams = $requestParams;
-
-        $this->accessor = PropertyAccess::createPropertyAccessor();
+        $this->accessor      = PropertyAccess::createPropertyAccessor();
     }
 
     /**
@@ -56,10 +55,10 @@ abstract class AbstractExtension implements ExtensionVisitorInterface
     }
 
     /**
+     * Validate configuration
+     *
      * @param ConfigurationInterface      $configuration
      * @param                             $config
-     *
-     * @return mixed
      */
     protected function validateConfiguration(ConfigurationInterface $configuration, $config)
     {
@@ -68,8 +67,6 @@ abstract class AbstractExtension implements ExtensionVisitorInterface
             $configuration,
             $config
         );
-
-        return true;
     }
 
     /**

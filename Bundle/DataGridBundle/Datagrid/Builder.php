@@ -85,7 +85,7 @@ class Builder
 
         foreach ($this->extensions as $extension) {
             if ($extension->isApplicable($config)) {
-                $datagrid->addExtension($extension);
+                $acceptor->addExtension($extension);
             }
         }
 
