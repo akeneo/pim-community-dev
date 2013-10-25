@@ -156,15 +156,19 @@ class ConfigSubscriber implements EventSubscriberInterface
     protected function createRelation(Config $fieldConfig)
     {
         $selfConfig = $this->extendConfigProvider->getConfig($fieldConfig->getId()->getClassName());
-        if ($this->findRelationKey($selfConfig, $fieldConfig->getId())) {
-            return;
+        $relations  = $selfConfig->get('relation');
+        foreach ($relations as $relation) {
+            if ($relation['field_id'] == $fieldConfig->getId()) {
+                return;
+            }
         }
 
-        $targetConfig = $this->extendConfigProvider->getConfig($fieldConfig->get('target_entity'));
-        if ($relationKey = $this->findRelationKey($targetConfig, $fieldConfig->getId(), true)) {
-            $this->createTargetRelation($fieldConfig, $relationKey);
-
-            return;
+        if ($fieldConfig->is('relation_key')) {
+            $targetConfig = $this->extendConfigProvider->getConfig($fieldConfig->get('target_entity'));
+            $relations    = $targetConfig->get('relation');
+            if (isset($relations[$fieldConfig->get('relation_key')])) {
+                $this->createTargetRelation($fieldConfig, $fieldConfig->get('relation_key'));
+            }
         }
 
         $this->createSelfRelation($fieldConfig);
@@ -242,17 +246,23 @@ class ConfigSubscriber implements EventSubscriberInterface
     {
         $selfEntityClass   = $fieldConfig->getId()->getClassName();
         $targetEntityClass = $fieldConfig->get('target_entity');
-        $selfFieldType     = $fieldConfig->getId()->getFieldType();
-        $selfFieldName     = $fieldConfig->getId()->getFieldName();
-        $scope             = 'extend';
 
         $selfConfig         = $this->extendConfigProvider->getConfig($selfEntityClass);
         $selfRelations      = $selfConfig->get('relation');
-        $selfRelationConfig = $selfRelations[$relationKey];
+        $selfRelationConfig = &$selfRelations[$relationKey];
+
+        $selfRelationConfig['field_id'] = $fieldConfig;
 
         $targetConfig         = $this->extendConfigProvider->getConfig($targetEntityClass);
         $targetRelations      = $targetConfig->get('relation');
-        $targetRelationConfig = $targetRelations[$relationKey];
+        $targetRelationConfig = &$targetRelations[$relationKey];
+
+        $targetRelationConfig['target_field_id'] = $fieldConfig;
+
+        $selfConfig->set('relation', $selfRelations);
+        $targetConfig->set('relation', $targetRelations);
+
+        $this->extendConfigProvider->persist($targetConfig);
     }
 
     /**
