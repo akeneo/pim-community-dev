@@ -4,6 +4,7 @@ namespace Oro\Bundle\EntityBundle\Controller;
 
 use Doctrine\Common\Inflector\Inflector;
 
+use Doctrine\ORM\PersistentCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -230,6 +231,10 @@ class EntitiesController extends Controller
                 $value        = $value->format($configFormat);
             }
 
+            if ($value instanceof PersistentCollection) {
+
+            }
+
             $fieldConfig = $entityConfigProvider->getConfigById($field->getId());
 
             $result[$fieldConfig->get('label') ? : $field->getId()->getFieldName()] = $value;
@@ -241,6 +246,7 @@ class EntitiesController extends Controller
             'entity_fields' => $result,
             'id'            => $id,
             'entity_config' => $entityConfigProvider->getConfig($extendEntityName),
+            'extend_config' => $extendConfigProvider,
             'entity_class'  => $extendEntityName,
         );
     }

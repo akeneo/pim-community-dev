@@ -42,8 +42,35 @@
 {% block content_data %}
     {% set general_fields = [ ] %}
     {% for key, value in entity_fields|default %}
+        {#{{ dump(value) }}#}
+        {#{% if value %}#}
         {% set general_fields = general_fields|merge([_self.attibuteRow(key|capitalize, value)])%}
     {% endfor %}
+
+    {#<div class="control-group">#}
+        {#<label class="control-label">{% trans %}Companies{% endtrans %}</label>#}
+        {#<div class="controls">#}
+            {#<div class="clearfix-oro">#}
+                {#<p class="control-label">#}
+                    {#{% if entity.accounts.count > 0 %}#}
+                        {#{% set accountViewGranted = resource_granted('orocrm_account_view') %}#}
+                        {#{%- for account in entity.accounts -%}#}
+                            {#{%- if accountViewGranted -%}#}
+                                {#<a href="{{ path('orocrm_account_view', {'id': account.id}) }}">{{ account }}</a>#}
+                            {#{%- else -%}#}
+                                {#{{ account }}#}
+                            {#{%- endif -%}#}
+                            {#{% if not loop.last %}, {% endif %}#}
+                        {#{%- endfor -%}#}
+                    {#{% else %}#}
+                        {#{% trans %}N/A{% endtrans %}#}
+                    {#{% endif %}#}
+                {#</p>#}
+            {#</div>#}
+        {#</div>#}
+    {#</div>#}
+
+    {{ dump(entity_config) }}
 
     {% set data = { 'dataBlocks':
         [
