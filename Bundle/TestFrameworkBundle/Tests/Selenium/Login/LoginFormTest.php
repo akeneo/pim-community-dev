@@ -96,8 +96,8 @@ class LoginFormTest extends \PHPUnit_Extensions_Selenium2TestCase
         $this->waitForAjax();
         $this->assertEquals('Dashboard', $this->title());
 
-        $this->byXPath("//*[@id='top-page']//ul[@class='nav pull-right']/li[@class='dropdown']/a")->click();
-        $this->byXPath("//*[@id='top-page']//ul[@class='nav pull-right']//li/a[contains(.,'Logout')]")->click();
+        $this->byXPath("//*[@id='top-page']//ul[@class='nav pull-right user-menu']/li[@class='dropdown']/a")->click();
+        $this->byXPath("//*[@id='top-page']//ul[@class='nav pull-right user-menu']//li/a[contains(.,'Logout')]")->click();
         $this->assertEquals('Login', $this->title());
     }
 
