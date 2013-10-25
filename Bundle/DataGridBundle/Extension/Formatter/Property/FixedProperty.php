@@ -6,6 +6,9 @@ use Oro\Bundle\DataGridBundle\Extension\Formatter\ResultRecordInterface;
 
 class FixedProperty extends AbstractProperty
 {
+    /** @var array */
+    protected $excludeParam = [self::DATA_NAME_KEY];
+
     /**
      * {@inheritdoc}
      */

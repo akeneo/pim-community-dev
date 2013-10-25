@@ -16,14 +16,13 @@ interface PropertyInterface
     const TYPE_HTML     = 'html';
     const TYPE_BOOLEAN  = 'boolean';
 
-    const METADATA_NAME_KEY    = 'name';
-    const METADATA_TYPE_KEY    = 'type';
-    const METADATA_OPTIONS_KEY = 'options';
+    const METADATA_NAME_KEY = 'name';
+    const METADATA_TYPE_KEY = 'type';
 
+    const TYPE_KEY             = 'type';
     const NAME_KEY             = 'name';
     const DATA_NAME_KEY        = 'data_name';
     const FRONTEND_TYPE_KEY    = 'frontend_type';
-    const FRONTEND_OPTIONS_KEY = 'frontend_options';
 
     /**
      * Prepare state for property state for current field

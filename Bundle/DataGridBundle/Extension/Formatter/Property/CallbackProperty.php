@@ -8,6 +8,9 @@ class CallbackProperty extends AbstractProperty
 {
     const CALLABLE_KEY = 'callable';
 
+    /** @var array */
+    protected $excludeParam = [self::CALLABLE_KEY];
+
     /**
      * {@inheritdoc}
      */

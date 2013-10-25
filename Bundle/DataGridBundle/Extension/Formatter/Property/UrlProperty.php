@@ -13,6 +13,9 @@ class UrlProperty extends AbstractProperty
     const ANCHOR_KEY      = 'anchor';
     const PARAMS_KEY      = 'params';
 
+    /** @var array */
+    protected $excludeParam = [self::ROUTE_KEY, self::IS_ABSOLUTE_KEY, self::ANCHOR_KEY, self::PARAMS_KEY];
+
     /**
      * @var Router
      */

@@ -63,7 +63,7 @@ class EventListener
                 $definition = $definition ? : [];
                 // $sortable   = $this->accessor->getValue($definition, '[sortable]') ? : false;
                 $filterable = $this->accessor->getValue($definition, '[filterable]') ? : false;
-                $showFilter = $this->accessor->getValue($definition, '[show_filter]') ? : true;
+                // $showFilter = $this->accessor->getValue($definition, '[show_filter]') ? : true;
 
                 if (!isset($attributes[$attribute])) {
                     throw new \LogicException(sprintf('Flexible attribute "%s" does not exist', $attribute));
@@ -72,11 +72,9 @@ class EventListener
                     $config,
                     sprintf('%s[%s]', FormatterConfiguration::COLUMNS_PATH, $attribute),
                     [
-                        'type'                                  => 'flexible_field',
-                        'backend_type'                          => $attributes[$attribute]->getBackendType(),
-                        PropertyInterface::FRONTEND_OPTIONS_KEY => [
-                            'label' => $attributes[$attribute]->getLabel()
-                        ]
+                        'type'         => 'flexible_field',
+                        'backend_type' => $attributes[$attribute]->getBackendType(),
+                        'label'        => $attributes[$attribute]->getLabel()
                     ]
                 );
 
