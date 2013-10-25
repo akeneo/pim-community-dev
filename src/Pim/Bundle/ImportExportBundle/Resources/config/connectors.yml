@@ -12,6 +12,7 @@ parameters:
     pim_import_export.processor.valid_category_creation.class:      Pim\Bundle\ImportExportBundle\Processor\ValidCategoryCreationProcessor
     pim_import_export.processor.product_csv_serializer.class:       Pim\Bundle\ImportExportBundle\Processor\ProductCsvSerializerProcessor
 
+    pim_import_export.writer.orm_configurator.class:                Pim\Bundle\ImportExportBundle\Writer\OrmWriterConfigurator
     pim_import_export.writer.orm_product.class:                     Pim\Bundle\ImportExportBundle\Writer\OrmProductWriter
     pim_import_export.writer.orm_category.class:                    Pim\Bundle\ImportExportBundle\Writer\OrmCategoryWriter
 
@@ -99,12 +100,18 @@ services:
     pim_import_export.writer.dummy:
         class: %pim_import_export.writer.dummy.class%
 
+    pim_import_export.writer.orm_configurator:
+        class: %pim_import_export.writer.orm_configurator.class%
+        arguments:
+            - '@pim_versioning.event_listener.addversion'
+
     pim_import_export.writer.orm_product:
         class: %pim_import_export.writer.orm_product.class%
         arguments:
             - '@pim_catalog.manager.product'
             - '@doctrine.orm.default_entity_manager'
             - '@pim_import_export.entity_cache'
+        configurator: ["@pim_import_export.writer.orm_configurator", configure]
 
     pim_import_export.writer.orm_category:
         class: %pim_import_export.writer.orm_category.class%
