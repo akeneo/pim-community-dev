@@ -50,7 +50,7 @@ datagrid:
                 usage:
                     data_name: usage
             default:
-                label: %oro_grid.extension.orm_sorter.class%::DIRECTION_DESC
+                label: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
 
         filters:
             columns:

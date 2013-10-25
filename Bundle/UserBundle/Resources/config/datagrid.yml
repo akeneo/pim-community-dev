@@ -79,7 +79,7 @@ datagrid:
                     data_name: u.lastName
 
             default:
-                label: %oro_grid.extension.orm_sorter.class%::DIRECTION_DESC
+                label: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
 
         filters:
             columns:
@@ -138,7 +138,7 @@ datagrid:
                 name:
                     data_name: g.name
             default:
-                label: %oro_grid.extension.orm_sorter.class%::DIRECTION_ASC
+                label: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
 
         filters:
             columns:
@@ -183,7 +183,7 @@ datagrid:
                 label:
                     data_name: r.label
             default:
-                label: %oro_grid.extension.orm_sorter.class%::DIRECTION_ASC
+                label: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
 
         filters:
             columns:
@@ -255,7 +255,7 @@ datagrid:
                 lastname:
                     data_name: u.lastName
             default:
-                id: %oro_grid.extension.orm_sorter.class%::DIRECTION_ASC
+                id: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
 
         filters:
             columns:
@@ -301,8 +301,8 @@ datagrid:
                 has_role:
                     data_name: has_role
             default:
-                has_role: %oro_grid.extension.orm_sorter.class%::DIRECTION_DESC
-                lastName: %oro_grid.extension.orm_sorter.class%::DIRECTION_ASC
+                has_role: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+                lastName: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
 
     group-users-grid:
         extend: user-relation-grid
@@ -333,8 +333,8 @@ datagrid:
                 has_group:
                     data_name: has_group
             default:
-                has_group: %oro_grid.extension.orm_sorter.class%::DIRECTION_DESC
-                lastName: %oro_grid.extension.orm_sorter.class%::DIRECTION_ASC
+                has_group: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+                lastName: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
 
     # TODO: Move this to OroCRMContactBundle
     contacts-email-grid:

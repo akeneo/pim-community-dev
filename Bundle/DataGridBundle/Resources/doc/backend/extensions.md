@@ -18,4 +18,4 @@ Customization
 To implement your extension you have to do following:
 
  - Develop class that implements ExtensionVisitorInterface (also there is basic implementation in AbstractExtension class)
- - Register you extension as service with tag { name: oro_grid.extension }
+ - Register you extension as service with tag { name: oro_datagrid.extension }

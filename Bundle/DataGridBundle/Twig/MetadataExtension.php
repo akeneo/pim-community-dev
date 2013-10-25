@@ -19,7 +19,7 @@ class MetadataExtension extends \Twig_Extension
      */
     public function getName()
     {
-        return 'oro_grid_metadata';
+        return 'oro_datagrid_metadata';
     }
 
     /**
@@ -27,7 +27,7 @@ class MetadataExtension extends \Twig_Extension
      */
     public function getFunctions()
     {
-        return ['oro_grid_metadata' => new \Twig_Function_Method($this, 'getGridMetadata')];
+        return ['oro_datagrid_metadata' => new \Twig_Function_Method($this, 'getGridMetadata')];
     }
 
     /**

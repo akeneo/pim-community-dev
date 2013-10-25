@@ -9,11 +9,11 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 
 class ConfigurationPass implements CompilerPassInterface
 {
-    const MANAGER_SERVICE_ID = 'oro_grid.datagrid.manager';
-    const BUILDER_SERVICE_ID = 'oro_grid.datagrid.builder';
+    const MANAGER_SERVICE_ID = 'oro_datagrid.datagrid.manager';
+    const BUILDER_SERVICE_ID = 'oro_datagrid.datagrid.builder';
 
-    const SOURCE_TAG_NAME    = 'oro_grid.datasource';
-    const EXTENSION_TAG_NAME = 'oro_grid.extension';
+    const SOURCE_TAG_NAME    = 'oro_datagrid.datasource';
+    const EXTENSION_TAG_NAME = 'oro_datagrid.extension';
 
     const CONFIG_FILE_NAME = 'datagrid.yml';
     const ROOT_PARAMETER   = 'datagrid';

@@ -8,8 +8,8 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 
 class FormattersPass implements CompilerPassInterface
 {
-    const FORMATTER_EXTENSION_ID = 'oro_grid.extension.formatter';
-    const TAG_NAME               = 'oro_grid.extension.formatter.property';
+    const FORMATTER_EXTENSION_ID = 'oro_datagrid.extension.formatter';
+    const TAG_NAME               = 'oro_datagrid.extension.formatter.property';
 
     /**
      * {@inheritDoc}

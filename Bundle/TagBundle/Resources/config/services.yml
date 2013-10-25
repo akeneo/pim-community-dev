@@ -145,6 +145,6 @@ services:
     oro_tag.event_listener.search_results_grid_listener:
         class: %oro_tag.event_listener.search_results_grid_listener.class%
         arguments:
-          - @oro_grid.datagrid.request_params
+          - @oro_datagrid.datagrid.request_params
         tags:
           - { name: kernel.event_listener, event: oro_grid.datgrid.build.after.tag-results-grid, method: onBuildAfter }

@@ -75,7 +75,7 @@ datagrid:
                     data_name: u.createdAt
 
             default:
-                label: %oro_grid.extension.orm_sorter.class%::DIRECTION_DESC
+                label: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
 
         filters:
             columns:
@@ -130,8 +130,8 @@ datagrid:
                 hasCurrentBusinessUnit:
                     data_name: hasCurrentBusinessUnit
             default:
-                hasCurrentBusinessUnit: %oro_grid.extension.orm_sorter.class%::DIRECTION_DESC
-                lastName: %oro_grid.extension.orm_sorter.class%::DIRECTION_ASC
+                hasCurrentBusinessUnit: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+                lastName: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
 
     bu-view-users-grid:
         extend: user-relation-grid
@@ -143,4 +143,4 @@ datagrid:
                         - :business_unit_id MEMBER OF u.businessUnits
         sorters:
             default:
-                lastName: %oro_grid.extension.orm_sorter.class%::DIRECTION_ASC
+                lastName: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC

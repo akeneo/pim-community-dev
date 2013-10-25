@@ -99,7 +99,7 @@ class Builder
 
     /**
      * Add datasource type
-     * Automatically added services tagged by oro_grid.datasource tag
+     * Automatically added services tagged by oro_datagrid.datasource tag
      *
      * @param string              $type
      * @param DatasourceInterface $dataSource
@@ -115,7 +115,7 @@ class Builder
 
     /**
      * Add extension
-     * Automatically added services tagged by oro_grid.extension tag
+     * Automatically added services tagged by oro_datagrid.extension tag
      *
      * @param ExtensionVisitorInterface $extension
      *

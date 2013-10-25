@@ -5,6 +5,6 @@ services:
     oro_filter.extension.orm_filter:
         class: %oro_filter.extension.orm_filter.class%
         arguments:
-            - @oro_grid.datagrid.request_params
+            - @oro_datagrid.datagrid.request_params
         tags:
             - { name: oro_grid.extension }
