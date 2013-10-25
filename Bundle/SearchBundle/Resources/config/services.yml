@@ -8,7 +8,8 @@ parameters:
     oro_search.formatter.result_formatter.class:          Oro\Bundle\SearchBundle\Formatter\ResultFormatter
     oro_search.prepare_result_item.listener.class:        Oro\Bundle\SearchBundle\EventListener\PrepareResultItemListener
 
-    oro_search.extension.formatter.property.search_result_property.class: Oro\Bundle\SearchBundle\Extension\Formatter\SearchResultProperty
+    oro_search.extension.formatter.property.search_result_property.class: Oro\Bundle\SearchBundle\Extension\SearchResultProperty
+    oro_datagrid.extension.search_results.class:          Oro\Bundle\SearchBundle\Extension\SearchResultsExtension
 
 services:
     oro_search.index:
@@ -65,7 +66,14 @@ services:
             - @twig
             - @doctrine.orm.entity_manager
             - @oro_search.mapper
-            - @oro_search.formatter.result_formatter
 
         tags:
-            - { name:  oro_grid.extension.formatter.property, type: search-result }
+            - { name:  oro_datagrid.extension.formatter.property, type: search-result }
+
+    oro_search.extension.search_results:
+        class: %oro_datagrid.extension.search_results.class%
+        arguments:
+            - @oro_datagrid.datagrid.request_params
+            - @oro_search.formatter.result_formatter
+        tags:
+            - { name: oro_datagrid.extension }

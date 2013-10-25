@@ -84,7 +84,7 @@ datagrid:
             entity:
                 label: Item
                 type: search-result
-                template: OroTagBundle:Search/result.html.twig
+                template: OroTagBundle::Search\result.html.twig
                 frontend_type: string
 
         properties: ~
