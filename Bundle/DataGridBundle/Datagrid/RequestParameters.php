@@ -3,7 +3,6 @@
 namespace Oro\Bundle\DataGridBundle\Datagrid;
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class RequestParameters
 {

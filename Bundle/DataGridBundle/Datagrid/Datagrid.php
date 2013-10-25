@@ -18,8 +18,8 @@ class Datagrid implements DatagridInterface
 
     public function __construct($name, Acceptor $acceptor)
     {
-        $this->name     = $name;
-        $this->acceptor = $acceptor;
+        $this->name = $name;
+        $this->setAcceptor($acceptor);
     }
 
     /**
@@ -93,5 +93,15 @@ class Datagrid implements DatagridInterface
     public function getAcceptor()
     {
         return $this->acceptor;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setAcceptor(Acceptor $acceptor)
+    {
+        $this->acceptor = $acceptor;
+
+        return $this;
     }
 }
