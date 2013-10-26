@@ -69,6 +69,9 @@ class ProductCsvReaderTest extends CsvReaderTest
         $this->reader->read();
     }
 
+    /**
+     * Test related method
+     */
     public function testMediaPathAreAbsolute()
     {
         $this->reader->setFilePath(__DIR__ . '/../../fixtures/with_media.csv');
@@ -86,6 +89,7 @@ class ProductCsvReaderTest extends CsvReaderTest
 
     /**
      * @param array $uniqueAttributeCodes
+     * @param array $mediaAttributeCodes
      *
      * @return Doctrine\ORM\EntityManager
      */
@@ -112,6 +116,7 @@ class ProductCsvReaderTest extends CsvReaderTest
 
     /**
      * @param array $uniqueAttributeCodes
+     * @param array $mediaAttributeCodes
      *
      * @return \Doctrine\ORM\EntityRepository
      */

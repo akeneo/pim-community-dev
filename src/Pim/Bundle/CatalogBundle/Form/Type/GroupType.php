@@ -43,6 +43,8 @@ class GroupType extends AbstractType
      * Add type field
      *
      * @param FormBuilderInterface $builder
+     *
+     * @return null
      */
     protected function addTypeField(FormBuilderInterface $builder)
     {

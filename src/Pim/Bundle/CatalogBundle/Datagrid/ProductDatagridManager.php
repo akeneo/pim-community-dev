@@ -21,7 +21,6 @@ use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
 
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 
-use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\GridBundle\Action\ActionInterface;
@@ -388,8 +387,6 @@ class ProductDatagridManager extends FlexibleDatagridManager
 
     /**
      * Create a group field
-     *
-     * @param GroupType $groupType
      *
      * @return FieldDescription
      */

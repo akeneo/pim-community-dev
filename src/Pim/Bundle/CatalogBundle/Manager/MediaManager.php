@@ -62,6 +62,12 @@ class MediaManager
         }
     }
 
+    /**
+     * @param Media  $media
+     * @param string $targetDir
+     *
+     * @return string
+     */
     public function copy(Media $media, $targetDir)
     {
         if (!is_dir($targetDir)) {

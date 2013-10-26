@@ -79,6 +79,12 @@ class MediaController extends AbstractDoctrineController
         $this->cacheManager  = $cacheManager;
     }
 
+    /**
+     * @param Request $request
+     * @param string  $filename
+     *
+     * @return Response
+     */
     public function showAction(Request $request, $filename)
     {
         $media = $this->getRepository('OroFlexibleEntityBundle:Media')->findOneBy(

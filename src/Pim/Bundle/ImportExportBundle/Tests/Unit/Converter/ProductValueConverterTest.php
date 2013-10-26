@@ -227,6 +227,8 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param string $value
+     *
      * @expectedException \InvalidArgumentException
      * @dataProvider getMalformedPrices
      */
@@ -241,6 +243,9 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
         $this->converter->convert(array('public_prices' => $value));
     }
 
+    /**
+     * @return array
+     */
     public static function getMalformedPrices()
     {
         return array(
