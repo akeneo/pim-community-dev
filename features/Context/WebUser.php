@@ -848,6 +848,7 @@ class WebUser extends RawMinkContext
 
     /**
      * @param TableNode $table
+     * @param Element   $element
      *
      * @Given /^I fill in the following information:$/
      */

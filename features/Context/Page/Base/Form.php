@@ -209,6 +209,8 @@ class Form extends Base
      * @param string  $labelContent
      * @param string  $value
      * @param Element $element
+     *
+     * @return null
      */
     public function fillField($labelContent, $value, Element $element = null)
     {

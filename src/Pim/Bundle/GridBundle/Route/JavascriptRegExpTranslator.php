@@ -38,7 +38,8 @@ class JavascriptRegExpTranslator
     /**
      * Translates a PHP regexp to Javascript
      *
-     * @param  string                              $regexp
+     * @param string $regexp
+     *
      * @return string
      * @throws JavascriptRegexpTranslatorException
      */

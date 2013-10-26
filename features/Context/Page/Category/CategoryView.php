@@ -50,6 +50,7 @@ abstract class CategoryView extends Form
 
     /**
      * Find input node in tree
+     * @return NodeElement
      */
     public function findInputNodeInTree()
     {

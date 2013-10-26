@@ -197,6 +197,8 @@ class ProductValueConverter
      * Convert media value
      *
      * @param string $value
+     *
+     * @return array
      */
     protected function convertMediaValue($value)
     {
