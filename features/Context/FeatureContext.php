@@ -40,6 +40,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         $this->useContext('command', new CommandContext());
         $this->useContext('navigation', new NavigationContext());
         $this->useContext('transformations', new TransformationContext());
+        $this->useContext('assertions', new AssertionContext());
     }
 
     /**

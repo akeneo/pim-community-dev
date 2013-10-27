@@ -182,6 +182,30 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     }
 
     /**
+     * @param string $jobTitle
+     * @param string $jobType
+     *
+     * @Given /^I create a new "([^"]*)" (import|export)$/
+     */
+    public function iCreateANewJob($jobTitle, $jobType)
+    {
+        $jobType = ucfirst($jobType);
+        $this->getPage(sprintf('%s index', $jobType))->clickJobCreationLink($jobTitle);
+        $this->wait();
+        $this->currentPage = sprintf('%s creation', $jobType);
+    }
+
+    /**
+     * @param string $jobType
+     *
+     * @Given /^I try to create an unknown (import|export)$/
+     */
+    public function iTryToCreateAnUnknownJob($jobType)
+    {
+        $this->openPage(sprintf('%s creation', ucfirst($jobType)));
+    }
+
+    /**
      * @param string $identifier
      *
      * @Given /^I am on the "([^"]*)" product group page$/
