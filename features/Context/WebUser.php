@@ -1075,46 +1075,6 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @param string $exportTitle
-     *
-     * @Given /^I create a new "([^"]*)" export$/
-     */
-    public function iCreateANewExport($exportTitle)
-    {
-        $this->getPage('Export index')->clickExportCreationLink($exportTitle);
-        $this->wait();
-        $this->getNavigationContext()->currentPage = 'Export creation';
-    }
-
-    /**
-     * @Given /^I try to create an unknown export$/
-     */
-    public function iTryToCreateAnUnknownExport()
-    {
-        $this->openPage('Export creation');
-    }
-
-    /**
-     * @param string $importTitle
-     *
-     * @Given /^I create a new "([^"]*)" import$/
-     */
-    public function iCreateANewImport($importTitle)
-    {
-        $this->getPage('Import index')->clickImportCreationLink($importTitle);
-        $this->wait();
-        $this->getNavigationContext()->currentPage = 'Import creation';
-    }
-
-    /**
-     * @Given /^I try to create an unknown import$/
-     */
-    public function iTryToCreateAnUnknownImport()
-    {
-        $this->openPage('Import creation');
-    }
-
-    /**
      * @param string $message
      * @param string $property
      *
