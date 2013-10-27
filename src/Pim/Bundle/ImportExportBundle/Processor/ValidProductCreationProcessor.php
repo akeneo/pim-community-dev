@@ -418,32 +418,8 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
         $requiredAttributes = array();
         $storageManager = $this->productManager->getStorageManager();
 
-        if ($familyCode !== null) {
-            $family = $storageManager->getRepository('PimCatalogBundle:Family')->findOneBy(
-                array(
-                    'code' => $familyCode
-                )
-            );
-
-            if ($family) {
-                $requiredAttributes = $family->getAttributes()->toArray();
-            }
-        }
-
-        if ($groupCodes !== null) {
-            $groupCodes = explode(',', $groupCodes);
-            foreach ($groupCodes as $code) {
-                $group = $storageManager->getRepository('PimCatalogBundle:Group')->findOneBy(
-                    array(
-                        'code' => $code
-                    )
-                );
-
-                if ($group) {
-                    $requiredAttributes = array_merge($requiredAttributes, $group->getAttributes()->toArray());
-                }
-            }
-        }
+        $requiredAttributes = $this->getRequiredAttributesFromFamily($familyCode);
+        $requiredAttributes = array_merge($requiredAttributes, $this->getRequiredAttributesFromGroups($groupCodes));
 
         if ($product->getId()) {
             foreach ($product->getValues() as $value) {
@@ -472,6 +448,54 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
         }
 
         return array_unique($requiredValues);
+    }
+
+    /**
+     * @param string $familyCode
+     *
+     * @return array
+     */
+    private function getRequiredAttributesFromFamily($familyCode)
+    {
+        if ($familyCode !== null) {
+            $family = $storageManager->getRepository('PimCatalogBundle:Family')->findOneBy(
+                array(
+                    'code' => $familyCode
+                )
+            );
+
+            if ($family) {
+                return $family->getAttributes()->toArray();
+            }
+        }
+
+        return array();
+    }
+
+    /**
+     * @param array $groupCodes
+     *
+     * @return array
+     */
+    private function getRequiredAttributesFromGroups($groupCodes)
+    {
+        $requiredAttributes = array();
+        if ($groupCodes !== null) {
+            $groupCodes = explode(',', $groupCodes);
+            foreach ($groupCodes as $code) {
+                $group = $storageManager->getRepository('PimCatalogBundle:Group')->findOneBy(
+                    array(
+                        'code' => $code
+                    )
+                );
+
+                if ($group) {
+                    $requiredAttributes = array_merge($requiredAttributes, $group->getAttributes()->toArray());
+                }
+            }
+        }
+
+        return $requiredAttributes;
     }
 
     /**
