@@ -213,17 +213,6 @@ class WebUser extends RawMinkContext
     /* -------------------- Other methods -------------------- */
 
     /**
-     * @param string $error
-     *
-     * @Then /^I should see validation error "([^"]*)"$/
-     */
-    public function iShouldSeeValidationError($error)
-    {
-        $errors = $this->getCurrentPage()->getValidationErrors();
-        assertTrue(in_array($error, $errors), sprintf('Expecting to see validation error "%s", not found', $error));
-    }
-
-    /**
      * @param string $deactivated
      * @param string $currencies
      *
@@ -1546,18 +1535,6 @@ class WebUser extends RawMinkContext
             ->next();
 
         $this->wait();
-    }
-
-    /**
-     * @param string $text
-     *
-     * @Then /^I should see a tooltip "([^"]*)"$/
-     */
-    public function iShouldSeeATooltip($text)
-    {
-        if (!$this->getCurrentPage()->findTooltip($text)) {
-            throw $this->createExpectationException(sprintf('No tooltip containing "%s" were found.', $text));
-        }
     }
 
     /**
