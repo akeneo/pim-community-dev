@@ -12,10 +12,7 @@ interface FilterInterface
     const CONDITION_AND = 'AND';
 
     const TYPE_KEY             = 'type';
-    const FRONTEND_OPTIONS_KEY = 'frontend_options';
-
-    const METADATA_TYPE_KEY    = 'type';
-    const METADATA_OPTIONS_KEY = 'options';
+    const DATA_NAME_KEY        = 'data_name';
 
     /**
      * Initialize current filter by config

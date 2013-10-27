@@ -18,6 +18,7 @@ abstract class AbstractFlexibleDateFilter extends AbstractDateFilter
     {
         parent::__construct($factory);
         $this->util = $util;
+        $this->paramMap = FlexibleFilterUtility::$paramMap;
     }
 
     /**
@@ -36,7 +37,13 @@ abstract class AbstractFlexibleDateFilter extends AbstractDateFilter
         $dateEndValue = $data['date_end'];
         $type         = $data['type'];
 
-        $this->applyFlexibleDependingOnType($type, $qb, $dateStartValue, $dateEndValue, $this->get('data_name'));
+        $this->applyFlexibleDependingOnType(
+            $type,
+            $qb,
+            $dateStartValue,
+            $dateEndValue,
+            $this->get(self::DATA_NAME_KEY)
+        );
 
         return true;
     }

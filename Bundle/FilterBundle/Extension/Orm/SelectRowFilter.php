@@ -36,10 +36,10 @@ class SelectRowFilter extends AbstractFilter
                 $expression = $qb->expr()->eq(0, 1);
                 break;
             case !empty($data['in']):
-                $expression = $qb->expr()->in($this->get('data_name'), $data['in']);
+                $expression = $qb->expr()->in($this->get(self::DATA_NAME_KEY), $data['in']);
                 break;
             case !empty($data['out']):
-                $expression = $qb->expr()->notIn($this->get('data_name'), $data['out']);
+                $expression = $qb->expr()->notIn($this->get(self::DATA_NAME_KEY), $data['out']);
                 break;
         }
 

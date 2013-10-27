@@ -23,6 +23,9 @@ services:
 
     oro_flexibleentity.grid.extension.formatter.property:
         class: %oro_flexibleentity.grid.extension.formatter.property.class%
+        arguments:
+            - @oro_locale.twig.dateformat
+            - @translator
         tags:
             - { name:  oro_datagrid.extension.formatter.property, type: flexible_field }
 

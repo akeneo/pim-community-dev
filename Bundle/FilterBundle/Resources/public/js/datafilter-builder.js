@@ -25,14 +25,14 @@ function($, _, tools,  mediator, FiltersManager) {
              */
             collectModules: function () {
                 var modules = this.modules;
-                _.each((this.metadata.filters || {list: {}}).list || {}, function (filter) {
+                _.each((this.metadata.filters || {}) || {}, function (filter) {
                      var type = filter.type;
                      modules[type] = filterModuleName.replace('{{type}}', filterTypes[type] || type);
                 });
             },
 
             build: function () {
-                var options;
+                var options = {};
                 try {
                     options = methods.combineOptions.call(this);
                 } catch (e) {
@@ -53,7 +53,8 @@ function($, _, tools,  mediator, FiltersManager) {
             combineOptions: function () {
                  var options = {},
                      modules = this.modules;
-                 options.filters = _.map(this.metadata.filters.list, function (filter, name) {
+                 // @TODO fix error in case when filters not isset
+                 options.filters = _.map(this.metadata.filters, function (filter, name) {
                     return new (modules[filter.type].extend(_.extend({name: name}, filter.options)));
                  });
                  return options;

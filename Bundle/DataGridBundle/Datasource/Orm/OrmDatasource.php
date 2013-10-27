@@ -1,11 +1,12 @@
 <?php
 
-namespace Oro\Bundle\DataGridBundle\Datasource;
+namespace Oro\Bundle\DataGridBundle\Datasource\Orm;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
 
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
+use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\QueryConverter\YamlConverter;
 
 class OrmDatasource implements DatasourceInterface

@@ -2,10 +2,19 @@
 
 namespace Oro\Bundle\DataGridBundle\Extension\Formatter\Property;
 
+use Symfony\Component\Translation\TranslatorInterface;
+
+use Oro\Bundle\LocaleBundle\Twig\DateFormatExtension;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\ResultRecordInterface;
 
 abstract class AbstractProperty implements PropertyInterface
 {
+    /** @var TranslatorInterface */
+    protected $translator;
+
+    /** @var DateFormatExtension */
+    protected $dateFormatExtension;
+
     /** @var array */
     protected $params;
 
@@ -23,6 +32,12 @@ abstract class AbstractProperty implements PropertyInterface
 
     /** @var array */
     protected $excludeParams = [];
+
+    public function __construct(DateFormatExtension $dateFormatExtension, TranslatorInterface $translator)
+    {
+        $this->dateFormatExtension = $dateFormatExtension;
+        $this->translator          = $translator;
+    }
 
     /**
      * {@inheritdoc}
@@ -132,30 +147,12 @@ abstract class AbstractProperty implements PropertyInterface
             array_flip(array_merge($this->excludeParams, $this->excludeParamsDefault))
         );
         $metadata = $this->mapParams($metadata);
-        $metadata = array_merge($defaultMetadata, $metadata);
+        $metadata = array_merge($defaultMetadata, $this->guessAdditionalMetadata(), $metadata);
+
+        // translate label on backend
+        $metadata['label'] = $this->translator->trans($metadata['label']);
 
         return $metadata;
-    }
-
-    /**
-     * Process mapping params
-     *
-     * @param array $params
-     *
-     * @return array
-     */
-    protected function mapParams($params)
-    {
-        $keys = [];
-        foreach (array_keys($params) as $key) {
-            if (isset($this->paramMap[$key])) {
-                $keys[] = $this->paramMap[$key];
-            } else {
-                $keys[] = $key;
-            }
-        }
-
-        return array_combine($keys, array_values($params));
     }
 
     /**
@@ -196,5 +193,58 @@ abstract class AbstractProperty implements PropertyInterface
         }
 
         return $this->params;
+    }
+
+    /**
+     * Process mapping params
+     *
+     * @param array $params
+     *
+     * @return array
+     */
+    protected function mapParams($params)
+    {
+        $keys = [];
+        foreach (array_keys($params) as $key) {
+            if (isset($this->paramMap[$key])) {
+                $keys[] = $this->paramMap[$key];
+            } else {
+                $keys[] = $key;
+            }
+        }
+
+        return array_combine($keys, array_values($params));
+    }
+
+    /**
+     * Guess additional metadata dependent on frontend type
+     *
+     * @return array
+     */
+    protected function guessAdditionalMetadata()
+    {
+        $metadata = [];
+
+        switch ($this->getOr(self::FRONTEND_TYPE_KEY)) {
+            case self::TYPE_DATETIME:
+                $metadata = [
+                    'modelFormat'     => 'YYYY-MM-DD hh:mm:ss',
+                    'displayFormat'   => $this->dateFormatExtension->getMomentDateTimeFormat(),
+                    'displayInUTC'    => false,
+                    'displayTimeZone' => $this->dateFormatExtension->getTimeZone()
+                ];
+                break;
+            case self::TYPE_DATE:
+                $metadata = [
+                    'modelFormat'   => 'YYYY-MM-DD',
+                    'displayFormat' => $this->dateFormatExtension->getMomentDateFormat(),
+                ];
+                break;
+            case self::TYPE_INTEGER:
+                $metadata = ['orderSeparator' => ''];
+                break;
+        }
+
+        return $metadata;
     }
 }

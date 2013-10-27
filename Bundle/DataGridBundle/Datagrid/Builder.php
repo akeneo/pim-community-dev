@@ -98,15 +98,15 @@ class Builder
     }
 
     /**
-     * Add datasource type
-     * Automatically added services tagged by oro_datagrid.datasource tag
+     * Register datasource type
+     * Automatically registered services tagged by oro_datagrid.datasource tag
      *
      * @param string              $type
      * @param DatasourceInterface $dataSource
      *
      * @return $this
      */
-    public function addDatasource($type, DatasourceInterface $dataSource)
+    public function registerDatasource($type, DatasourceInterface $dataSource)
     {
         $this->dataSources[$type] = $dataSource;
 
@@ -114,14 +114,14 @@ class Builder
     }
 
     /**
-     * Add extension
-     * Automatically added services tagged by oro_datagrid.extension tag
+     * Register extension
+     * Automatically registered services tagged by oro_datagrid.extension tag
      *
      * @param ExtensionVisitorInterface $extension
      *
      * @return $this
      */
-    public function addExtension(ExtensionVisitorInterface $extension)
+    public function registerExtension(ExtensionVisitorInterface $extension)
     {
         $this->extensions[] = $extension;
 

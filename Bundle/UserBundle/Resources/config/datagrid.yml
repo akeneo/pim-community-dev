@@ -15,38 +15,31 @@ datagrid:
                     - u.enabled
                 from:
                     - { table: OroUserBundle:User, alias: u }
-
         columns:
-            id:
-                label: ID
-                type: field
-                frontend_type: integer
             username:
-                label: Username
+                label: oro.user.grid.users.columns.username
                 type: field
-                frontend_type: string
             email:
-                label: Email
+                label: oro.user.grid.users.columns.email
                 type: field
-                frontend_type: string
             firstName:
-                label: First name
+                label: oro.user.grid.users.columns.firstName
                 type: field
-                frontend_type: string
             lastName:
-                label: Last name
+                label: oro.user.grid.users.columns.lastName
                 type: field
-                frontend_type: string
             created:
+                label: oro.user.grid.users.columns.created
                 type: field
-                frontend_type: date
+                frontend_type: datetime
             updated:
+                label: oro.user.grid.users.columns.created
                 type: field
-                frontend_type: date
+                frontend_type: datetime
             enabled:
+                label: oro.user.grid.users.columns.enabled
                 type: field
                 frontend_type: boolean
-
         properties:
             update_link:
                 type: url
@@ -67,8 +60,6 @@ datagrid:
                     - id
         sorters:
             columns:
-                id:
-                    data_name: u.id
                 username:
                     data_name: u.username
                 email:
@@ -77,9 +68,14 @@ datagrid:
                     data_name: u.firstName
                 lastname:
                     data_name: u.lastName
-
+                created:
+                    data_name: u.created
+                updated:
+                    data_name: u.updated
+                enabled:
+                    data_name: u.enabled
             default:
-                label: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+                username: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
 
         filters:
             columns:
@@ -161,8 +157,6 @@ datagrid:
                     and:
                         - r.role <> '%oro_user.entity.class%::ROLE_ANONYMOUS'
         columns:
-            id:
-                type: field
             label:
                 type: field
 

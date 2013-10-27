@@ -8,6 +8,8 @@ use Oro\Bundle\FilterBundle\Form\Type\Filter\BooleanFilterType;
 
 class BooleanFilter extends AbstractFilter
 {
+    const NULLABLE_KEY = 'nullable';
+
     /**
      * {@inheritdoc}
      */
@@ -26,10 +28,10 @@ class BooleanFilter extends AbstractFilter
             return false;
         }
 
-        $field             = $this->get('data_name');
+        $field             = $this->get(self::DATA_NAME_KEY);
         $compareExpression = $qb->expr()->neq($field, 'false');
 
-        if ($this->getOr('nullable', false)) {
+        if ($this->getOr(self::NULLABLE_KEY, false)) {
             $summaryExpression = $qb->expr()->andX(
                 $qb->expr()->isNotNull($field),
                 $compareExpression

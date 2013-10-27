@@ -68,6 +68,7 @@ datagrid:
                 firstName:
                     data_name: u.firstName
 
+            multiple_sorting: true
             default:
                 hasRole: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
                 firstName: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
@@ -90,6 +91,7 @@ datagrid:
             query:
                 select:
                     - a.id
+                    - a.name
                     - defaultContact.firstName as contactFirstName
                     - defaultContact.lastName as contactLastName
                     - defaultContactEmail.email as contactEmail
@@ -129,7 +131,12 @@ datagrid:
                 type: field
                 label: 'Owner'
 
+        sorters:
+            columns:
+                name:
+                    data_name: a.name
+
         flexible_attributes:
             employees:
-                filterable: false
+                filterable:  true
         flexible_entity: %orocrm_account.account.entity.class%

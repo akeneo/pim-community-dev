@@ -2,12 +2,13 @@
 
 namespace Oro\Bundle\UserBundle\EventListener;
 
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\EntityManager;
+
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 use Oro\Bundle\EmailBundle\Datagrid\EmailQueryFactory;
-use Oro\Bundle\DataGridBundle\Datasource\OrmDatasource;
+use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 use Oro\Bundle\DataGridBundle\Event\BuildAfter;
 
 class UserEmailGridListener

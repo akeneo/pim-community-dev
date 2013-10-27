@@ -75,7 +75,7 @@ class FormatterExtension extends AbstractExtension
      * @param string            $name
      * @param PropertyInterface $property
      */
-    public function addProperty($name, PropertyInterface $property)
+    public function registerProperty($name, PropertyInterface $property)
     {
         $this->properties[$name] = $property;
     }

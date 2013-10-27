@@ -2,10 +2,10 @@
 
 namespace Oro\Bundle\DemoBundle\EventListener;
 
-use Oro\Bundle\DataGridBundle\Datasource\OrmDatasource;
-use Oro\Bundle\DataGridBundle\Event\BuildAfter;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpFoundation\Request;
+
+use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
+use Oro\Bundle\DataGridBundle\Event\BuildAfter;
 
 class AdminRoleUsersGrid
 {

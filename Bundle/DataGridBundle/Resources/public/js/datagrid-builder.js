@@ -116,16 +116,18 @@ function($, _, Backbone, __, tools, mediator, registry, LoadingMask,
              * @returns {Object}
              */
             combineCollectionOptions: function () {
+                var emptyState = {filters: {}, sorters:{}};
+
                 return _.extend({
-                    inputName: this.metadata.options.gridName,
-                    parse: true,
-                    url: '\/user\/json',
-                    state: {
-                        filters: _.extend({}, this.metadata.filters.state),
-                        sorters: _.extend({}, this.metadata.sorter.state),
-                        gridView: {}
+                        inputName: this.metadata.options.gridName,
+                        parse: true,
+                        url: '\/user\/json'
+                    },
+                    this.metadata.options,
+                    {
+                        state: _.extend(emptyState, this.metadata.state||{})
                     }
-                }, this.metadata.options);
+                );
             },
 
             /**
@@ -151,7 +153,6 @@ function($, _, Backbone, __, tools, mediator, registry, LoadingMask,
                         cellType = cellType.extend(cellOptions);
                     }
                     options.cell = cellType;
-                    options.sortable = _.contains(metadata.sorter.columns || [], options.name);
                     return options;
                 });
 
@@ -163,10 +164,8 @@ function($, _, Backbone, __, tools, mediator, registry, LoadingMask,
                     rowActions: rowActions,
                     massActions: massActions,
                     toolbarOptions: toolbarOptions,
-                    // @todo rename 'multiple_sorting' to multipleSorting
-                    multipleSorting: this.metadata.sorter.options.multiple_sorting || false,
-                    // @todo define entity hint
-                    entityHint: 'User'
+                    multipleSorting: metadata.options.multipleSorting || false,
+                    entityHint: metadata.options.entityHint || __('Entity')
                 };
             }
         };

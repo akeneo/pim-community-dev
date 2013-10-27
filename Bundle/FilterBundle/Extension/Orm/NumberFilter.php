@@ -27,13 +27,11 @@ class NumberFilter extends AbstractFilter
         }
 
         $operator = $this->getOperator($data['type']);
-
-        // c.name > '1' => c.name OPERATOR :FIELDNAME
         $parameterName = $this->generateQueryParameterName();
 
         $this->applyFilterToClause(
             $qb,
-            $this->createComparisonExpression($this->get('data_name'), $operator, $parameterName)
+            $this->createComparisonExpression($this->get(self::DATA_NAME_KEY), $operator, $parameterName)
         );
 
         $qb->setParameter($parameterName, $data['value']);

@@ -5,6 +5,8 @@ namespace Oro\Bundle\DataGridBundle\Extension\Sorter;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
+use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\PropertyInterface;
+
 class Configuration implements ConfigurationInterface
 {
     /**
@@ -20,15 +22,16 @@ class Configuration implements ConfigurationInterface
                     ->prototype('array')
                         ->ignoreExtraKeys()
                         ->children()
-                            ->scalarNode('data_name')->isRequired()->end()
+                            ->scalarNode(PropertyInterface::DATA_NAME_KEY)->end()
                         ->end()
                     ->end()
                 ->end()
                 ->arrayNode('default')
-                        ->prototype('enum')
-                            ->values([OrmSorterExtension::DIRECTION_DESC, OrmSorterExtension::DIRECTION_ASC])
+                    ->prototype('enum')
+                        ->values([OrmSorterExtension::DIRECTION_DESC, OrmSorterExtension::DIRECTION_ASC])
                         ->end()
                     ->end()
+                    ->booleanNode('multiple_sorting')->end()
                 ->end()
             ->end();
 

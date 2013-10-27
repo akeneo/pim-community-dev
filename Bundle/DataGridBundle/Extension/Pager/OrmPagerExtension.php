@@ -4,7 +4,7 @@ namespace Oro\Bundle\DataGridBundle\Extension\Pager;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Builder;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
-use Oro\Bundle\DataGridBundle\Datasource\OrmDatasource;
+use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\DataGridBundle\Extension\AbstractExtension;
 use Oro\Bundle\DataGridBundle\Extension\Pager\Orm\Pager;
@@ -91,7 +91,7 @@ class OrmPagerExtension extends AbstractExtension
     }
 
     /**
-     * Pager should proceed in the end of accepting chain
+     * Pager should proceed closest to end of accepting chain
      *
      * @return int
      */

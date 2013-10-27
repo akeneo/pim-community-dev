@@ -23,6 +23,7 @@ class FlexibleChoiceFilter extends ChoiceFilter
     {
         parent::__construct($factory);
         $this->util = $util;
+        $this->paramMap = FlexibleFilterUtility::$paramMap;
     }
 
     /**
@@ -35,7 +36,7 @@ class FlexibleChoiceFilter extends ChoiceFilter
             $operator = $this->getOperator($data['type']);
 
             $fen = $this->get(FlexibleFilterUtility::FEN_KEY);
-            $this->util->applyFlexibleFilter($qb, $fen, $this->get('data_name'), $data['value'], $operator);
+            $this->util->applyFlexibleFilter($qb, $fen, $this->get(self::DATA_NAME_KEY), $data['value'], $operator);
 
             return true;
         }
@@ -70,7 +71,7 @@ class FlexibleChoiceFilter extends ChoiceFilter
     protected function getValueOptions()
     {
         if (null === $this->valueOptions) {
-            $filedName       = $this->get('data_name');
+            $filedName       = $this->get(self::DATA_NAME_KEY);
             $flexibleManager = $this->util->getFlexibleManager($this->get(FlexibleFilterUtility::FEN_KEY));
 
             /** @var $attributeRepository ObjectRepository */

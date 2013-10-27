@@ -4,8 +4,11 @@ namespace Oro\Bundle\SearchBundle\Extension;
 
 use Doctrine\ORM\EntityManager;
 
+use Symfony\Component\Translation\TranslatorInterface;
+
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\TwigTemplateProperty;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\ResultRecordInterface;
+use Oro\Bundle\LocaleBundle\Twig\DateFormatExtension;
 use Oro\Bundle\SearchBundle\Engine\ObjectMapper;
 use Oro\Bundle\SearchBundle\Query\Result\Item as ResultItem;
 
@@ -17,17 +20,17 @@ class SearchResultProperty extends TwigTemplateProperty
     /** @var ObjectMapper */
     protected $mapper;
 
-    /**
-     * @param \Twig_Environment $environment
-     * @param EntityManager $em
-     * @param ObjectMapper $mapper
-     */
-    public function __construct(\Twig_Environment $environment, EntityManager $em, ObjectMapper $mapper)
-    {
-        $this->em = $em;
+    public function __construct(
+        DateFormatExtension $dateFormatExtension,
+        TranslatorInterface $translator,
+        \Twig_Environment $environment,
+        EntityManager $em,
+        ObjectMapper $mapper
+    ) {
+        $this->em     = $em;
         $this->mapper = $mapper;
 
-        parent::__construct($environment);
+        parent::__construct($dateFormatExtension, $translator, $environment);
     }
 
     /**

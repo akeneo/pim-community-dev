@@ -10,7 +10,10 @@ class RequestParameters
     /** @TODO MOVE TO FLEXIBLE */
     const SCOPE_PARAMETER = '_scope';
 
-    const ROOT_PARAM = 'grid';
+    const DEFAULT_ROOT_PARAM = 'grid';
+
+    /** @var string */
+    protected $rootParam;
 
     /** @var Request */
     protected $request;
@@ -47,7 +50,7 @@ class RequestParameters
             $parameters[$type] = $value;
         }
 
-        $this->getRequest()->query->set(self::ROOT_PARAM, $parameters);
+        $this->getRequest()->query->set($this->rootParam ? : self::DEFAULT_ROOT_PARAM, $parameters);
     }
 
     /**
@@ -70,11 +73,23 @@ class RequestParameters
     }
 
     /**
+     * @param $rootParam
+     *
+     * @return $this
+     */
+    public function setRootParameter($rootParam)
+    {
+        $this->rootParam = $rootParam;
+
+        return $this;
+    }
+
+    /**
      * @return array
      */
     protected function getRootParameterValue()
     {
-        return $this->getRequest()->get(self::ROOT_PARAM, []);
+        return $this->getRequest()->get($this->rootParam ? : self::DEFAULT_ROOT_PARAM, []);
     }
 
     /**

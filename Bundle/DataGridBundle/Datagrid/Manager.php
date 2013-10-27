@@ -19,17 +19,25 @@ class Manager implements ManagerInterface
     /** @var SystemAwareResolver */
     protected $resolver;
 
+    /** @var RequestParameters */
+    protected $requestParams;
+
     /** @var array */
     protected $rawConfiguration = [];
 
     /** @var array */
     protected $processedConfiguration = [];
 
-    public function __construct(array $rawConfiguration, Builder $builder, SystemAwareResolver $resolver)
-    {
+    public function __construct(
+        array $rawConfiguration,
+        Builder $builder,
+        SystemAwareResolver $resolver,
+        RequestParameters $requestParams
+    ) {
         $this->rawConfiguration = $rawConfiguration;
         $this->datagridBuilder  = $builder;
         $this->resolver         = $resolver;
+        $this->requestParams    = $requestParams;
     }
 
     /**
@@ -37,7 +45,10 @@ class Manager implements ManagerInterface
      */
     public function getDatagrid($name)
     {
-        $config   = $this->getConfigurationForGrid($name);
+        $config = $this->getConfigurationForGrid($name);
+
+        // prepare for work with current grid
+        $this->requestParams->setRootParameter($name);
         $datagrid = $this->getDatagridBuilder()->build($name, $config);
 
         return $datagrid;

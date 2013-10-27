@@ -20,7 +20,7 @@ class StringFilter extends AbstractFilter
 
             $this->applyFilterToClause(
                 $qb,
-                $this->createComparisonExpression($this->get('data_name'), $operator, $parameterName)
+                $this->createComparisonExpression($this->get(self::DATA_NAME_KEY), $operator, $parameterName)
             );
 
             $qb->setParameter($parameterName, $data['value']);

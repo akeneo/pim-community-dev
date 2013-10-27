@@ -8,6 +8,8 @@ use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormFactoryInterface;
 
+use Oro\Bundle\FilterBundle\Extension\Configuration;
+
 abstract class AbstractFilter implements FilterInterface
 {
     /** @var string */
@@ -21,6 +23,19 @@ abstract class AbstractFilter implements FilterInterface
 
     /** @var Form */
     protected $form;
+
+    /**
+     * Map configuration keys to metadata keys
+     *
+     * @var array
+     */
+    protected $paramMap = [];
+
+    /** @var array */
+    protected $excludeParams = [];
+
+    /** @var array */
+    protected $excludeParamsDefault = [self::DATA_NAME_KEY];
 
     public function __construct(FormFactoryInterface $factory)
     {
@@ -65,19 +80,19 @@ abstract class AbstractFilter implements FilterInterface
      */
     public function getMetadata()
     {
-        $frontendOptions = $this->getOr(self::FRONTEND_OPTIONS_KEY, []);
-        $frontendOptions = array_merge(
-            [
-                // use filter name if label not set
-                'label' => ucfirst($this->name),
-                'show'  => true,
-            ],
-            $frontendOptions
-        );
-        $metadata        = [
-            self::METADATA_TYPE_KEY    => $this->get(self::TYPE_KEY),
-            self::METADATA_OPTIONS_KEY => $frontendOptions
+        $defaultMetadata = [
+            'name'                     => $this->getName(),
+            // use filter name if label not set
+            'label'                    => ucfirst($this->name),
+            Configuration::ENABLED_KEY => true,
         ];
+
+        $metadata = array_diff_key(
+            $this->get(),
+            array_flip(array_merge($this->excludeParams, $this->excludeParamsDefault))
+        );
+        $metadata = $this->mapParams($metadata);
+        $metadata = array_merge($defaultMetadata, $metadata);
 
         return $metadata;
     }
@@ -171,13 +186,19 @@ abstract class AbstractFilter implements FilterInterface
      * @throws \LogicException
      * @return mixed
      */
-    protected function get($paramName)
+    protected function get($paramName = null)
     {
-        if (!isset($this->params[$paramName])) {
-            throw new \LogicException(sprintf('Trying to access not existing parameter: "%s"', $paramName));
+        $value = $this->params;
+
+        if ($paramName !== null) {
+            if (!isset($this->params[$paramName])) {
+                throw new \LogicException(sprintf('Trying to access not existing parameter: "%s"', $paramName));
+            }
+
+            $value = $this->params[$paramName];
         }
 
-        return $this->params[$paramName];
+        return $value;
     }
 
     /**
@@ -188,8 +209,33 @@ abstract class AbstractFilter implements FilterInterface
      *
      * @return mixed
      */
-    protected function getOr($paramName, $default = null)
+    protected function getOr($paramName = null, $default = null)
     {
-        return isset($this->params[$paramName]) ? $this->params[$paramName] : $default;
+        if ($paramName !== null) {
+            return isset($this->params[$paramName]) ? $this->params[$paramName] : $default;
+        }
+
+        return $this->params;
+    }
+
+    /**
+     * Process mapping params
+     *
+     * @param array $params
+     *
+     * @return array
+     */
+    protected function mapParams($params)
+    {
+        $keys = [];
+        foreach (array_keys($params) as $key) {
+            if (isset($this->paramMap[$key])) {
+                $keys[] = $this->paramMap[$key];
+            } else {
+                $keys[] = $key;
+            }
+        }
+
+        return array_combine($keys, array_values($params));
     }
 }

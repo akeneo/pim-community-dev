@@ -39,7 +39,7 @@ abstract class AbstractDateFilter extends AbstractFilter
             $dateEndValue,
             $startDateParameterName,
             $endDateParameterName,
-            $this->get('data_name')
+            $this->get(self::DATA_NAME_KEY)
         );
 
         /** @var $queryBuilder QueryBuilder */

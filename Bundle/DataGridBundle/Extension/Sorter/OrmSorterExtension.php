@@ -3,9 +3,12 @@
 namespace Oro\Bundle\DataGridBundle\Extension\Sorter;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Builder;
+use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
-use Oro\Bundle\DataGridBundle\Datasource\OrmDatasource;
+use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 use Oro\Bundle\DataGridBundle\Extension\AbstractExtension;
+use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
+use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\PropertyInterface;
 
 class OrmSorterExtension extends AbstractExtension
 {
@@ -14,7 +17,7 @@ class OrmSorterExtension extends AbstractExtension
      */
     const SORTERS_PATH         = '[sorters]';
     const COLUMNS_PATH         = '[sorters][columns]';
-    const MULTISORT_PATH       = '[sorters][enable_multisort]';
+    const MULTISORT_PATH       = '[sorters][multiple_sorting]';
     const DEFAULT_SORTERS_PATH = '[sorters][default]';
 
     /**
@@ -74,21 +77,67 @@ class OrmSorterExtension extends AbstractExtension
     {
         $multisort = $this->accessor->getValue($config, self::MULTISORT_PATH) ? : false;
 
-        $data->sorter            = [];
-        $data->sorter['state']   = [];
-        $data->sorter['options'] = [
-            'multiple_sorting' => $multisort
-        ];
+        $data->state            = isset($data->state) && is_array($data->state) ? $data->state : [];
+        $data->state['sorters'] = isset($data->state['sorters']) && is_array($data->state['sorters'])
+            ? $data->state['sorters'] : [];
+
+        $sorters = $this->getSorters($config);
+        foreach (array_keys($sorters) as $name) {
+            if (isset($data->columns->{$name})) {
+                $data->columns->{$name}['sortable'] = true;
+            }
+        }
+
+        $data->{DatagridInterface::METADATA_OPTIONS_KEY}['multipleSorting'] = $multisort;
 
         $sorters = $this->getSortersToApply($config);
         foreach ($sorters as $column => $definition) {
             list($direction) = $definition;
-            $data->sorter['state'][$column] = $this->normalizeDirection($direction);
+            $data->state['sorters'][$column] = $this->normalizeDirection($direction);
 
             if (!$multisort) {
                 break;
             }
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getPriority()
+    {
+        // should visit after all extensions
+        return -250;
+    }
+
+    /**
+     * Retrieve and prepare list of sorters
+     *
+     * Try to guess data_name from column definition
+     *
+     * @param array $config
+     *
+     * @return array
+     */
+    protected function getSorters(array $config)
+    {
+        $sorters = $this->accessor->getValue($config, self::COLUMNS_PATH);
+        $columns = $this->accessor->getValue($config, FormatterConfiguration::COLUMNS_PATH) ? : [];
+
+        $sorters = array_intersect_key($sorters, $columns);
+        foreach ($sorters as $name => $definition) {
+            $definition = is_array($definition) ? $definition : [];
+            if (!$this->accessor->getValue($definition, sprintf('[%s]', PropertyInterface::DATA_NAME_KEY))) {
+                $definition['data_name'] = $this->accessor->getValue(
+                    $columns[$name],
+                    sprintf('[%s]', PropertyInterface::DATA_NAME_KEY)
+                ) ? : $name;
+            }
+
+            $sorters[$name] = $definition;
+        }
+
+        return $sorters;
     }
 
     /**
@@ -102,13 +151,13 @@ class OrmSorterExtension extends AbstractExtension
     {
         $result = [];
 
-        $sorters = $this->accessor->getValue($config, self::COLUMNS_PATH);
+        $sorters = $this->getSorters($config);
 
         $defaultSorters = $this->accessor->getValue($config, self::DEFAULT_SORTERS_PATH) ? : [];
         $sortBy         = $this->requestParams->get(self::SORTERS_ROOT_PARAM) ? : $defaultSorters;
 
         foreach ($sortBy as $column => $direction) {
-            if ($sorter = $this->accessor->getValue($sorters, "[$column]")) {
+            if ($sorter = $this->accessor->getValue($sorters, sprintf('[%s]', $column))) {
                 $direction = $this->normalizeDirection($direction);
 
                 $result[$column] = [$direction, $sorter];

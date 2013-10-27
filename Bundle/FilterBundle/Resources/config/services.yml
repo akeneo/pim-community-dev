@@ -6,5 +6,6 @@ services:
         class: %oro_filter.extension.orm_filter.class%
         arguments:
             - @oro_datagrid.datagrid.request_params
+            - @translator
         tags:
             - { name: oro_datagrid.extension }

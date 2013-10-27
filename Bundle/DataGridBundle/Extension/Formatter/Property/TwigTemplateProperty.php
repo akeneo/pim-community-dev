@@ -2,11 +2,14 @@
 
 namespace Oro\Bundle\DataGridBundle\Extension\Formatter\Property;
 
+use Symfony\Component\Translation\TranslatorInterface;
+
+use Oro\Bundle\LocaleBundle\Twig\DateFormatExtension;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\ResultRecordInterface;
 
 class TwigTemplateProperty extends AbstractProperty
 {
-    const CONTEXT_KEY  = 'context';
+    const CONTEXT_KEY = 'context';
     const TEMPLATE_KEY = 'template';
 
     /** @var array */
@@ -18,8 +21,12 @@ class TwigTemplateProperty extends AbstractProperty
     /**  @var array */
     protected $reservedKeys = ['record', 'value'];
 
-    public function __construct(\Twig_Environment $environment)
-    {
+    public function __construct(
+        DateFormatExtension $dateFormatExtension,
+        TranslatorInterface $translator,
+        \Twig_Environment $environment
+    ) {
+        parent::__construct($dateFormatExtension, $translator);
         $this->environment = $environment;
     }
 

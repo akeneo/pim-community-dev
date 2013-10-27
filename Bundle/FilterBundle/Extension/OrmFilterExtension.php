@@ -3,10 +3,13 @@
 namespace Oro\Bundle\FilterBundle\Extension;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Builder;
+use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
-use Oro\Bundle\DataGridBundle\Datasource\OrmDatasource;
+use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 use Oro\Bundle\DataGridBundle\Extension\AbstractExtension;
 use Oro\Bundle\FilterBundle\Extension\Orm\FilterInterface;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class OrmFilterExtension extends AbstractExtension
 {
@@ -17,6 +20,15 @@ class OrmFilterExtension extends AbstractExtension
 
     /** @var FilterInterface[] */
     protected $filters = [];
+
+    /** @var TranslatorInterface */
+    protected $translator;
+
+    public function __construct(RequestParameters $requestParams, TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+        parent::__construct($requestParams);
+    }
 
     /**
      * {@inheritDoc}
@@ -65,8 +77,11 @@ class OrmFilterExtension extends AbstractExtension
      */
     public function visitMetadata(array $config, \stdClass $data)
     {
-        $data->filters = isset($data->filters) && is_array($data->filters) ? $data->filters : [];
-        $state         = $list = [];
+        $data->filters         = isset($data->filters) && is_array($data->filters) ? $data->filters : [];
+
+        $data->state            = isset($data->state) && is_array($data->state) ? $data->state : [];
+        $data->state['filters'] = isset($data->state['filters']) && is_array($data->state['filters'])
+            ? $data->state['filters'] : [];
 
 
         $filters = $this->getFiltersToApply($config);
@@ -80,21 +95,16 @@ class OrmFilterExtension extends AbstractExtension
                 }
 
                 if ($form->isValid()) {
-                    $state[$filter->getName()] = $value;
+                    $data->state['filters'][$filter->getName()] = $value;
                 }
             }
 
-            $list[$filter->getName()] = $filter->getMetadata();
+            $metadata                = $filter->getMetadata();
+            $data->filters[] = array_merge(
+                $metadata,
+                ['label' => $this->translator->trans($metadata['label'])]
+            );
         }
-
-        $data->filters['state'] = array_merge(
-            isset($data->filters['state']) && is_array($data->filters['state']) ? $data->filters['state'] : [],
-            $state
-        );
-        $data->filters['list']  = array_merge(
-            isset($data->filters['list']) && is_array($data->filters['list']) ? $data->filters['list'] : [],
-            $list
-        );
     }
 
     /**

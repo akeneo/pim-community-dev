@@ -4,13 +4,19 @@ namespace Oro\Bundle\FlexibleEntityBundle\Grid\Extension\Filter;
 
 use Doctrine\ORM\QueryBuilder;
 
+use Oro\Bundle\FilterBundle\Extension\Configuration;
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManagerRegistry;
 use Oro\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository;
 
 class FlexibleFilterUtility
 {
-    const FEN_KEY = 'flexible_entity_name';
+    const FEN_KEY         = 'flexible_entity_name';
+    const PARENT_TYPE_KEY = 'parent_type';
+
+    public static $paramMap = [
+        self::PARENT_TYPE_KEY => Configuration::TYPE_KEY
+    ];
 
     /** @var FlexibleManagerRegistry */
     protected $fmr;

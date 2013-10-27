@@ -18,6 +18,7 @@ class FlexibleBooleanFilter extends BooleanFilter
     {
         parent::__construct($factory);
         $this->util = $util;
+        $this->paramMap = FlexibleFilterUtility::$paramMap;
     }
 
     /**
@@ -30,7 +31,7 @@ class FlexibleBooleanFilter extends BooleanFilter
             return false;
         }
 
-        $field = $this->get('data_name');
+        $field = $this->get(self::DATA_NAME_KEY);
         $value = ($data['value'] == BooleanFilterType::TYPE_YES) ? 1 : 0;
 
         $this->util->applyFlexibleFilter($qb, $this->get(FlexibleFilterUtility::FEN_KEY), $field, $value, '=');

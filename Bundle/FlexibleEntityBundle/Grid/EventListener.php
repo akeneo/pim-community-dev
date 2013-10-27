@@ -3,12 +3,12 @@ namespace Oro\Bundle\FlexibleEntityBundle\Grid;
 
 use Doctrine\ORM\QueryBuilder;
 
-use Oro\Bundle\DataGridBundle\Datasource\OrmDatasource;
 use Oro\Bundle\DataGridBundle\Event\BuildAfter;
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
-use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\PropertyInterface;
+use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
 use Oro\Bundle\FilterBundle\Extension\Configuration as FilterConfiguration;
+use Oro\Bundle\FilterBundle\Extension\Orm\FilterInterface;
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Oro\Bundle\FlexibleEntityBundle\Grid\Extension\Filter\FlexibleFilterUtility;
 use Oro\Bundle\FlexibleEntityBundle\Grid\Extension\Formatter\Property\FlexibleFieldProperty;
@@ -22,7 +22,6 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 class EventListener
 {
-    const FLEXIBLE_COLUMNS_PATH = '[flexible_attributes]';
     const FLEXIBLE_ENTITY_PATH  = '[flexible_entity]';
 
     /** @var  PropertyAccessor */
@@ -47,10 +46,10 @@ class EventListener
     public function buildBefore(BuildBefore $event)
     {
         $config   = $event->getConfig();
-        $flexible = $this->accessor->getValue($config, self::FLEXIBLE_COLUMNS_PATH);
+        $flexible = $this->accessor->getValue($config, sprintf('[%s]', Configuration::FLEXIBLE_ATTRIBUTES_KEY));
 
         if ($flexible) {
-            $this->validateConfiguration(new Configuration(), array('flexible_attributes' => $flexible));
+            $this->validateConfiguration(new Configuration(), [Configuration::FLEXIBLE_ATTRIBUTES_KEY => $flexible]);
             $flexibleEntity = $this->accessor->getValue($config, self::FLEXIBLE_ENTITY_PATH);
             if (!$flexibleEntity) {
                 throw new \LogicException(
@@ -62,8 +61,8 @@ class EventListener
             foreach ($flexible as $attribute => $definition) {
                 $definition = $definition ? : [];
                 // $sortable   = $this->accessor->getValue($definition, '[sortable]') ? : false;
-                $filterable = $this->accessor->getValue($definition, '[filterable]') ? : false;
-                // $showFilter = $this->accessor->getValue($definition, '[show_filter]') ? : true;
+                $filterable    = $this->accessor->getValue($definition, '[filterable]') ? : false;
+                $enabledFilter = $this->accessor->getValue($definition, '[filter_enabled]') ? : true;
 
                 if (!isset($attributes[$attribute])) {
                     throw new \LogicException(sprintf('Flexible attribute "%s" does not exist', $attribute));
@@ -72,24 +71,33 @@ class EventListener
                     $config,
                     sprintf('%s[%s]', FormatterConfiguration::COLUMNS_PATH, $attribute),
                     [
-                        'type'         => 'flexible_field',
-                        'backend_type' => $attributes[$attribute]->getBackendType(),
-                        'label'        => $attributes[$attribute]->getLabel()
+                        FlexibleFieldProperty::TYPE_KEY         => 'flexible_field',
+                        FlexibleFieldProperty::BACKEND_TYPE_KEY => $attributes[$attribute]->getBackendType(),
+                        'label'                                 => $attributes[$attribute]->getLabel()
                     ]
                 );
 
                 if ($filterable) {
-                    $filterType = isset(FlexibleFieldProperty::$typeMatches[$attributes[$attribute]->getBackendType()])
-                        ? FlexibleFieldProperty::$typeMatches[$attributes[$attribute]->getBackendType()]['filter']
-                        : FlexibleFieldProperty::$typeMatches[AbstractAttributeType::BACKEND_TYPE_TEXT];
+                    $map         = FlexibleFieldProperty::$typeMatches;
+                    $backendType = $attributes[$attribute]->getBackendType();
+
+                    $filterType = isset(FlexibleFieldProperty::$typeMatches[$backendType])
+                        ? $map[$backendType]['filter']
+                        : $map[AbstractAttributeType::BACKEND_TYPE_TEXT]['filter'];
+
+                    $parentType = isset(FlexibleFieldProperty::$typeMatches[$backendType])
+                        ? $map[$backendType]['parent_filter']
+                        : $map[AbstractAttributeType::BACKEND_TYPE_TEXT]['parent_filter'];
 
                     $this->accessor->setValue(
                         $config,
-                        FilterConfiguration::COLUMNS_PATH . '[' . $attribute . ']',
+                        sprintf('%s[%s]', FilterConfiguration::COLUMNS_PATH, $attribute),
                         [
-                            'type'                         => $filterType,
-                            FlexibleFilterUtility::FEN_KEY => $flexibleEntity,
-                            'data_name'                    => $attribute
+                            FilterConfiguration::TYPE_KEY          => $filterType,
+                            FlexibleFilterUtility::FEN_KEY         => $flexibleEntity,
+                            FilterInterface::DATA_NAME_KEY         => $attribute,
+                            FlexibleFilterUtility::PARENT_TYPE_KEY => $parentType,
+                            FilterConfiguration::ENABLED_KEY       => $enabledFilter
                         ]
                     );
                 }

@@ -11,6 +11,8 @@ use Oro\Bundle\FilterBundle\Extension\Orm\EntityFilter;
 
 class FlexibleEntityFilter extends EntityFilter
 {
+    const BACKEND_TYPE_KEY = 'backend_type';
+
     /** @var FlexibleFilterUtility */
     protected $util;
 
@@ -18,6 +20,7 @@ class FlexibleEntityFilter extends EntityFilter
     {
         parent::__construct($factory);
         $this->util = $util;
+        $this->paramMap = FlexibleFilterUtility::$paramMap;
     }
 
     public function init($name, array $params)
@@ -38,7 +41,7 @@ class FlexibleEntityFilter extends EntityFilter
             $this->util->applyFlexibleFilter(
                 $qb,
                 $this->get(FlexibleFilterUtility::FEN_KEY),
-                $this->get('data_name'),
+                $this->get(self::DATA_NAME_KEY),
                 $this->extractIds($data['value']),
                 $operator
             );
@@ -64,7 +67,7 @@ class FlexibleEntityFilter extends EntityFilter
             ->getMetadataFactory()
             ->getMetadataFor($valueName);
 
-        return $valueMetadata->getAssociationTargetClass($this->get('backend_type'));
+        return $valueMetadata->getAssociationTargetClass($this->get(self::BACKEND_TYPE_KEY));
     }
 
     /**

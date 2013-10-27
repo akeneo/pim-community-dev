@@ -31,9 +31,9 @@ class ChoiceFilter extends AbstractFilter
         $parameter = $this->generateQueryParameterName();
 
         if ('IN' == $operator) {
-            $expression = $qb->expr()->in($this->get('data_name'), ':' . $parameter);
+            $expression = $qb->expr()->in($this->get(self::DATA_NAME_KEY), ':' . $parameter);
         } else {
-            $expression = $qb->expr()->notIn($this->get('data_name'), ':' . $parameter);
+            $expression = $qb->expr()->notIn($this->get(self::DATA_NAME_KEY), ':' . $parameter);
         }
 
         $this->applyFilterToClause($qb, $expression);
@@ -51,17 +51,11 @@ class ChoiceFilter extends AbstractFilter
         $formView  = $this->getForm()->createView();
         $fieldView = $formView->children['value'];
 
-        $metadata = parent::getMetadata();
-        $metadata[self::METADATA_OPTIONS_KEY] = array_merge(
-            $metadata[self::METADATA_OPTIONS_KEY],
-            [
-                'choices' => $fieldView->vars['choices']
-            ]
-        );
+        $metadata            = parent::getMetadata();
+        $metadata['choices'] = $fieldView->vars['choices'];
 
         return $metadata;
     }
-
 
     /**
      * @param mixed $data

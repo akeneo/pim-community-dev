@@ -12,44 +12,54 @@ class FlexibleFieldProperty extends FieldProperty
     /** @var array */
     public static $typeMatches = [
         AbstractAttributeType::BACKEND_TYPE_DATE     => [
-            'field'  => FieldProperty::TYPE_DATE,
-            'filter' => 'flexible_date'
+            'field'         => FieldProperty::TYPE_DATE,
+            'filter'        => 'flexible_date',
+            'parent_filter' => 'date'
         ],
         AbstractAttributeType::BACKEND_TYPE_DATETIME => [
-            'field'  => FieldProperty::TYPE_DATETIME,
-            'filter' => 'flexible_datetime'
+            'field'         => FieldProperty::TYPE_DATETIME,
+            'filter'        => 'flexible_datetime',
+            'parent_filter' => 'datetime'
         ],
         AbstractAttributeType::BACKEND_TYPE_DECIMAL  => [
-            'field'  => FieldProperty::TYPE_DECIMAL,
-            'filter' => 'flexible_number'
+            'field'         => FieldProperty::TYPE_DECIMAL,
+            'filter'        => 'flexible_number',
+            'parent_filter' => 'number'
         ],
         AbstractAttributeType::BACKEND_TYPE_BOOLEAN  => [
-            'field'  => FieldProperty::TYPE_BOOLEAN,
-            'filter' => 'flexible_boolean'
+            'field'         => FieldProperty::TYPE_BOOLEAN,
+            'filter'        => 'flexible_boolean',
+            'parent_filter' => 'number'
         ],
         AbstractAttributeType::BACKEND_TYPE_INTEGER  => [
-            'field'  => FieldProperty::TYPE_INTEGER,
-            'filter' => 'flexible_number'
+            'field'         => FieldProperty::TYPE_INTEGER,
+            'filter'        => 'flexible_number',
+            'parent_filter' => 'number'
         ],
         AbstractAttributeType::BACKEND_TYPE_OPTION   => [
-            'field'  => FieldProperty::TYPE_SELECT,
-            'filter' => 'flexible_choice'
+            'field'         => FieldProperty::TYPE_SELECT,
+            'filter'        => 'flexible_choice',
+            'parent_filter' => 'choice'
         ],
         AbstractAttributeType::BACKEND_TYPE_TEXT     => [
-            'field'  => FieldProperty::TYPE_STRING,
-            'filter' => 'flexible_string'
+            'field'         => FieldProperty::TYPE_STRING,
+            'filter'        => 'flexible_string',
+            'parent_filter' => 'string'
         ],
         AbstractAttributeType::BACKEND_TYPE_VARCHAR  => [
-            'field'  => FieldProperty::TYPE_STRING,
-            'filter' => 'flexible_string'
+            'field'         => FieldProperty::TYPE_STRING,
+            'filter'        => 'flexible_string',
+            'parent_filter' => 'string'
         ],
         AbstractAttributeType::BACKEND_TYPE_PRICE    => [
-            'field'  => FieldProperty::TYPE_STRING,
-            'filter' => 'flexible_string'
+            'field'         => FieldProperty::TYPE_STRING,
+            'filter'        => 'flexible_string',
+            'parent_filter' => 'string'
         ],
         AbstractAttributeType::BACKEND_TYPE_METRIC   => [
-            'field'  => FieldProperty::TYPE_STRING,
-            'filter' => 'flexible_string'
+            'field'         => FieldProperty::TYPE_STRING,
+            'filter'        => 'flexible_string',
+            'parent_filter' => 'string'
         ]
     ];
 

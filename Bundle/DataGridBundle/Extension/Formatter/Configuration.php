@@ -43,7 +43,7 @@ class Configuration implements ConfigurationInterface
                             ->thenInvalid('Invalid property type "%s"')
                         ->end()
                     ->end()
-                    // just validate types if node exist
+                    // just validate type if node exist
                     ->scalarNode(PropertyInterface::FRONTEND_TYPE_KEY)->end()
                     ->scalarNode('label')->end()
                     ->booleanNode('editable')->end()

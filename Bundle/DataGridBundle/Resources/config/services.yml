@@ -17,6 +17,7 @@ services:
             - []
             - @oro_datagrid.datagrid.builder
             - @oro_datagrid.provider.resolver
+            - @oro_datagrid.datagrid.request_params
 
     oro_datagrid.datagrid.builder:
         class: %oro_datagrid.datagrid.builder.class%
