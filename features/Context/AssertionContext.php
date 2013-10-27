@@ -3,6 +3,7 @@
 namespace Context;
 
 use Behat\MinkExtension\Context\RawMinkContext;
+use Behat\Mink\Exception\ExpectationException;
 
 /**
  * Context for assertions
@@ -13,6 +14,21 @@ use Behat\MinkExtension\Context\RawMinkContext;
  */
 class AssertionContext extends RawMinkContext
 {
+    /**
+     * @param string $expectedTitle
+     *
+     * @Then /^I should see the title "([^"]*)"$/
+     */
+    public function iShouldSeeTheTitle($expectedTitle)
+    {
+        $actualTitle = $this->getCurrentPage()->getHeadTitle();
+        if (trim($actualTitle) !== trim($expectedTitle)) {
+            throw $this->createExpectationException(
+                sprintf('Incorrect title. Expected "%s", found "%s"', $expectedTitle, $headTitle)
+            );
+        }
+    }
+
     /**
      * @param string $text
      *
@@ -42,5 +58,15 @@ class AssertionContext extends RawMinkContext
     private function getCurrentPage()
     {
         return $this->getMainContext()->getSubcontext('navigation')->getCurrentPage();
+    }
+
+    /**
+     * @param string $message
+     *
+     * @return ExpectationException
+     */
+    private function createExpectationException($message)
+    {
+        return $this->getMainContext()->createExpectationException($message);
     }
 }

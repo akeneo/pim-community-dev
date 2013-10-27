@@ -120,16 +120,6 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @param string $title
-     *
-     * @Then /^I should see the title "([^"]*)"$/
-     */
-    public function iShouldSeeTheTitle($title)
-    {
-        $this->getCurrentPage()->checkHeadTitle($title);
-    }
-
-    /**
      * @param string $category
      *
      * @Given /^I select the "([^"]*)" tree$/
