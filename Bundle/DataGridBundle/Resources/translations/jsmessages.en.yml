@@ -29,3 +29,6 @@
 "Action is not performed.": "Action is not performed."
 "Please, select item to perform action.": "Please, select item to perform action."
 "Please select view": "Please select view"
+"oro.datagrid.entityHint": "Entity"
+"oro.datagrid.noentities": "No {{ entityHint }} exists"
+"oro.datagrid.noresults": "No {{ entityHint }} was found to match your search. Try modifying your search criteria..."
