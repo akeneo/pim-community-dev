@@ -25,7 +25,7 @@ class AssertionContext extends RawMinkContext
         $actualTitle = $this->getCurrentPage()->getHeadTitle();
         if (trim($actualTitle) !== trim($expectedTitle)) {
             throw $this->createExpectationException(
-                sprintf('Incorrect title. Expected "%s", found "%s"', $expectedTitle, $headTitle)
+                sprintf('Incorrect title. Expected "%s", found "%s"', $expectedTitle, $actualTitle)
             );
         }
     }

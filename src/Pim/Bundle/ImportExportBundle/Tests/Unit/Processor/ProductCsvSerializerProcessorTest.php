@@ -53,13 +53,6 @@ class ProductCsvSerializerProcessorTest extends \PHPUnit_Framework_TestCase
         $sail  = $this->getProductMock(array($media3));
         $mast  = $this->getProductMock(array($media4, $media5, $media6));
 
-        $context = array(
-            'delimiter'     => ';',
-            'enclosure'     => '"',
-            'withHeader'    => true,
-            'heterogeneous' => true,
-        );
-
         $this->serializer
             ->expects($this->once())
             ->method('serialize')
