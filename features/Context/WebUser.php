@@ -915,40 +915,28 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @Given /^I disable the product$/
+     * @param string $action
+     *
+     * @Given /^I (enable|disable) the product$/
      */
-    public function iDisableTheProduct()
+    public function iEnableOrDisableTheProduct($action)
     {
-        $this->getPage('Product edit')->disableProduct()->save();
+        $action = $action . 'Product';
+        $this->getCurrentPage()->$action()->save();
         $this->wait();
     }
 
     /**
-     * @Given /^I disable the products$/
+     * @param string $action
+     *
+     * @Given /^I (enable|disable) the products$/
      */
-    public function iDisableTheProducts()
+    public function iEnableOrDisableTheProducts($action)
     {
-        $this->getPage('Batch ChangeStatus')->disableProducts()->next();
-        $this->getPage('Batch ChangeStatus')->confirm();
-        $this->wait();
-    }
-
-    /**
-     * @Given /^I enable the product$/
-     */
-    public function iEnableTheProduct()
-    {
-        $this->getPage('Product edit')->enableProduct()->save();
-        $this->wait();
-    }
-
-    /**
-     * @Given /^I enable the products$/
-     */
-    public function iEnableTheProducts()
-    {
-        $this->getPage('Batch ChangeStatus')->enableProducts()->next();
-        $this->getPage('Batch ChangeStatus')->confirm();
+        $status = $action === 'enable' ? true : false;
+        $this->getCurrentPage()->toggleSwitch('To enable', $status);
+        $this->getCurrentPage()->next();
+        $this->getCurrentPage()->confirm();
         $this->wait();
     }
 
