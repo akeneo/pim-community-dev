@@ -80,10 +80,14 @@ abstract class AbstractFilter implements FilterInterface
      */
     public function getMetadata()
     {
+        $formView = $this->getForm()->createView();
+        $typeView = $formView->children['type'];
+
         $defaultMetadata = [
             'name'                     => $this->getName(),
             // use filter name if label not set
             'label'                    => ucfirst($this->name),
+            'choices'                  => $typeView->vars['choices'],
             Configuration::ENABLED_KEY => true,
         ];
 

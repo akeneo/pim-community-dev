@@ -33,7 +33,7 @@ datagrid:
                 type: field
                 frontend_type: datetime
             updated:
-                label: oro.user.grid.users.columns.created
+                label: oro.user.grid.users.columns.updated
                 type: field
                 frontend_type: datetime
             enabled:
@@ -100,6 +100,11 @@ datagrid:
                 enabled:
                     type: choice
                     data_name: u.enabled
+                    options:
+                        field_options:
+                            choices:
+                               - Inactive
+                               - Active
 
     groups-grid:
         source:
