@@ -83,7 +83,7 @@
                                         'label': model.get(field_prefix + '{{ relation.get('target_title') }}'),
                                         'extraData':
                                         [
-                                            {% for field in relation.get('target_view') %}
+                                            {% for field in relation.get('target_grid') %}
                                                 {% set is_extend = extend_provider.getConfig(relation.get('target_entity'), field).is('owner', 'Custom') %}
                                                 {% set field_name = field %}
                                                 {% if is_extend == true %}

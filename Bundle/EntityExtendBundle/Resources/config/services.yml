@@ -4,6 +4,7 @@ parameters:
     oro_entity_extend.tools.dumper.class:                   Oro\Bundle\EntityExtendBundle\Tools\ExtendConfigDumper
     oro_entity_extend.listener.config_subscriber.class:     Oro\Bundle\EntityExtendBundle\EventListener\ConfigSubscriber
     oro_entity_extend.listener.entity_subscriber.class:     Oro\Bundle\EntityExtendBundle\EventListener\DoctrineSubscriber
+    oro_entity.twig.relation_extension.class:               Oro\Bundle\EntityExtendBundle\Twig\ViewExtension
 
 services:
     oro_entity_extend.extend.extend_manager:
@@ -36,3 +37,11 @@ services:
         class:                                      %oro_entity_extend.listener.entity_subscriber.class%
         tags:
             - { name: doctrine.event_subscriber, connection: default }
+
+
+    oro_entity.twig.relation_extension:
+        class: %oro_entity.twig.relation_extension.class%
+        arguments:
+            - @oro_entity_config.config_manager
+        tags:
+            - { name: twig.extension }

@@ -71,20 +71,7 @@ class RelationType extends AbstractType
                     isset($data['target_grid']) ? $data['target_grid'] : null,
                     array(
                         'multiple' => true,
-                        'label'    => 'Relations grid'
-                    )
-                )
-            );
-
-            //target_view
-            $form->add(
-                $this->formFactory->createNamed(
-                    'target_view',
-                    new TargetFieldType($this->configProvider, $targetEntity),
-                    isset($data['target_view']) ? $data['target_view'] : null,
-                    array(
-                        'multiple' => true,
-                        'label'    => 'Related entity info'
+                        'label'    => 'Related entity data fields'
                     )
                 )
             );
@@ -109,24 +96,10 @@ class RelationType extends AbstractType
                     isset($data['target_detailed']) ? $data['target_detailed'] : null,
                     array(
                         'multiple' => true,
-                        'label'    => 'Related entity detailed info'
+                        'label'    => 'Related entity detailed'
                     )
                 )
             );
-
-            //target_default
-            /*$form->add(
-                $this->formFactory->createNamed(
-                    'target_default',
-                    'choice',
-                    isset($data['target_default']) ? $data['target_default'] : null,
-                    array(
-                        'choices'  => array('No', 'Yes'),
-                        'label'    => 'Can have default',
-                        'auto_initialize' => false
-                    )
-                )
-            );*/
         }
 
         if ($event->getName() == FormEvents::PRE_SUBMIT) {

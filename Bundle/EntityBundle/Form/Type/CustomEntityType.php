@@ -132,7 +132,7 @@ class CustomEntityType extends AbstractType
                         );
 
                         $options = array(
-                            'label'                 => false,
+                            'label'                 => $entityConfig->get('label'),
                             'required'              => false,
                             'block'                 => $blockName,
                             'block_config'          => array(
@@ -247,7 +247,7 @@ class CustomEntityType extends AbstractType
         $result = array();
         foreach ($entities as $entity) {
             $extraData = array();
-            foreach ($extendConfig->get('target_view') as $fieldName) {
+            foreach ($extendConfig->get('target_grid') as $fieldName) {
                 $label =$this->configManager->getProvider('entity')
                     ->getConfig($extendConfig->get('target_entity'), $fieldName)
                     ->get('label');

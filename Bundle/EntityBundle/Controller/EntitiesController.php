@@ -299,7 +299,6 @@ class EntitiesController extends Controller
             'entity_fields' => $result,
             'id'            => $id,
             'entity_config' => $entityConfigProvider->getConfig($extendEntityName),
-            'extend_config' => $extendConfigProvider,
             'entity_class'  => $extendEntityName,
         ];
     }

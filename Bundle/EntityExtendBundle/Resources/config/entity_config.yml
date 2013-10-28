@@ -275,10 +275,10 @@ oro_entity_config:
                         auditable:          false
                         serializable:       true
 
-                target_view:
-                    options:
-                        auditable:          false
-                        serializable:       true
+#                target_view:
+#                    options:
+#                        auditable:          false
+#                        serializable:       true
 
                 target_title:
                     options:
@@ -289,9 +289,9 @@ oro_entity_config:
                         auditable:          false
                         serializable:       true
 
-                target_default:
-                    options:
-                        auditable:          false
+#                target_default:
+#                    options:
+#                        auditable:          false
 
                 is_deleted:
                     options:
