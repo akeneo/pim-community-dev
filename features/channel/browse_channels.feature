@@ -23,8 +23,5 @@ Feature: Browse channels
   Scenario: Successfully display channels
     Given I am on the channels page
     Then the grid should contain 6 elements
+    And I should see the columns Code, Label and Category tree
     And I should see channels ecommerce, mobile, FOO, BAR, BAZ and QUX
-
-  Scenario: Successfully display columns
-    Given I am on the channels page
-    Then I should see the columns Code, Label and Category tree

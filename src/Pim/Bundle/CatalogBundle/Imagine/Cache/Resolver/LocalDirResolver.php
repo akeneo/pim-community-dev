@@ -29,7 +29,7 @@ class LocalDirResolver extends WebPathResolver
      * Constructor
      *
      * @param Filesystem $filesystem
-     * @param string $rootDir
+     * @param string     $rootDir
      */
     public function __construct(Filesystem $filesystem, $rootDir)
     {

@@ -33,5 +33,5 @@ Feature: Create a category
     And I am on the categories page
     When I right click on the "Shoe" category
     And I click on "Create" in the right click menu
-    And I blur the field
+    And I blur the category node
     Then I should be on the category "shoe" node creation page

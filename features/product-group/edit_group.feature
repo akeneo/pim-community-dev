@@ -41,11 +41,13 @@ Feature: Edit a variant group
 
   Scenario: Successfully display the edit view for a variant group
     Given I am on the "MUG" product group page
+    And I visit the "Properties" tab
     Then I should see the Code and Axis fields
     And the fields Code and Axis should be disabled
 
   Scenario: Successfully edit a variant group
     Given I am on the "MUG" product group page
+    And I visit the "Properties" tab
     When I fill in the following information:
       | English (United States) | My Mug |
     And I press the "Save" button
@@ -53,17 +55,17 @@ Feature: Edit a variant group
 
   Scenario: Successfully display a message when there are unsaved changes
     Given I am on the "MUG" product group page
+    And I visit the "Properties" tab
     When I fill in the following information:
       | English (United States) | Mug |
     Then I should see "There are unsaved changes."
 
-  @insulated
   Scenario: Successfully have a confirmation popup when I change page with unsaved changes
     Given I am on the "MUG" product group page
+    And I visit the "Properties" tab
     When I fill in the following information:
       | English (United States) | Mug |
     And I click on the Akeneo logo
     Then I should see a confirm dialog with the following content:
       | title   | Are you sure you want to leave this page?                          |
       | content | You will lose changes to the variant group if you leave this page. |
-    And I confirm the message

@@ -67,6 +67,8 @@ class UniqueValueGuesserTest extends ConstraintGuesserTest
 
     /**
      * Test related method
+     * @param string  $backendType
+     * @param boolean $expectedAvailability
      *
      * @dataProvider dataProviderForSupportedAttributes
      */

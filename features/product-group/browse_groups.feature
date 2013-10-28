@@ -22,8 +22,5 @@ Feature: Browse product groups
   Scenario: Successfully display product groups
     Given I am on the product groups page
     Then the grid should contain 3 elements
+    And I should see the columns Code, Label, Type and Axis
     And I should see groups tshirt_akeneo, mug_akeneo and sticker_akeneo
-
-  Scenario: Successfully display columns
-    Given I am on the product groups page
-    Then I should see the columns Code, Label, Type and Axis

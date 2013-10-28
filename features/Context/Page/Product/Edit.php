@@ -129,6 +129,7 @@ class Edit extends Form
      */
     public function findField($name)
     {
+        $currency = null;
         if (false !== strpos($name, ' in ')) {
             list($name, $currency) = explode(' in ', $name);
         }

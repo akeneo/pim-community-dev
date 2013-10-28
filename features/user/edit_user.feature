@@ -11,10 +11,6 @@ Feature: Edit a user
     When I fill in the following information:
       | First name | John  |
       | Last name  | Smith |
+    And I select "Main" from "Owner"
     And I save the user
     Then I should see "John Smith"
-    And I edit the "admin" user
-    When I fill in the following information:
-      | Last name  | Doe |
-    And I save the user
-    Then I should see "John Doe"

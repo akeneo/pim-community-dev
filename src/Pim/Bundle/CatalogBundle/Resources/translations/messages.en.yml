@@ -107,10 +107,10 @@ confirmation:
     discard changes: You will lose changes to the %entity% if you leave the page.
     remove:
         item:            Are you sure you want to delete this item?
-        attribute:       Are you sure you want to remove the attribute %name%?
+        attribute:       Are you sure you want to delete the attribute %name%?
         attribute group: Are you sure you want to delete the attribute group %name%?
         category:        Are you sure you want to delete the category %name%?
-        family:          Are you sure you want to remove the family %name%?
+        family:          Are you sure you want to delete the family %name%?
         product:         Are you sure you want to delete the product %name%?
         export profile:  Are you sure you want to delete the export profile %name%?
         import profile:  Are you sure you want to delete the import profile %name%?
@@ -198,7 +198,9 @@ info:
         disable:                 Disable
         disabled:                Disabled
     group:
-        axis: Variation axis: %attributes%
+        axis:                Variation axis: %attributes%
+        select products:     Please select products that should belong to this group.
+        selectable products: The following selectable products have a defined value for each axis.
     association:
         show products:        Show products
         show groups:          Show groups
@@ -395,3 +397,17 @@ pim_catalog.completeness:
     missing_attributes: Missing value|Missing values
     legend:
         locale_not_associated: Locale not associated to this channel
+
+# Product groups
+pim_catalog.group:
+    axis.help: 'Axis are attributes which define variants of the variant group. Axis are attributes with options, not localizable and not scoped. It cannot be changed after the creation of the variant group.'
+    type:
+        VARIANT:    Variant
+        X_SELL:     X-Sell
+        ADDITIONAL: Additional
+        RELATED:    Related
+
+# Product view
+Group: Group
+View group: View group
+Products: Products

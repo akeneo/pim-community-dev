@@ -1,7 +1,6 @@
 {% extends bap.layout %}
 
 {% macro renderWidget(widget) %}
-
     {% if resource_granted('pim_navigation_' ~ widget.label |lower) %}
     <div class="quick-launchpad-widget span6">
         <div class="clearfix">
@@ -35,47 +34,51 @@
 
             {% set widgetsArray = [
                 {
-                    label: 'Collect',
+                    label: 'pim_dashboard.menu.label.collect'|trans,
                     links: [
-                        {url: path('pim_importexport_import_index'), label: 'Manage import profiles'|trans},
+                        { url: path('pim_importexport_import_index'), label: 'pim_dashboard.link.label.import_profile'|trans },
                         {
                             url: path(
                                 'pim_importexport_import_create',
                                 { connector: 'Akeneo CSV Connector', alias: 'product_import' }
                             ),
-                            label: 'Create a CSV import'|trans
+                            label: 'pim_dashboard.link.label.create_csv_import'|trans
                         }
                     ],
                     image: 'collect-image'
                 },
                 {
-                    label: 'Enrich',
+                    label: 'pim_dashboard.menu.label.enrich'|trans,
                     links: [
-                        {url: path('pim_catalog_product_index'), label: 'Manage products'|trans},
-                        {url: path('pim_catalog_categorytree_create'), label: 'Manage categories'|trans},
-                        {url: path('pim_catalog_group_index'), label: 'Manage groups'|trans},
+                        { url: path('pim_catalog_product_index'), label: 'pim_dashboard.link.label.product'|trans },
+                        { url: path('pim_catalog_categorytree_create'), label: 'pim_dashboard.link.label.category'|trans },
+                        { url: path('pim_catalog_group_index'), label: 'pim_dashboard.link.label.group'|trans },
                     ],
                     image: 'enrich-image'
                 },
                 {
-                    label: 'Spread',
+                    label: 'pim_dashboard.menu.label.spread'|trans,
                     links: [
-                        {url: path('pim_importexport_export_index'), label: 'Manage export profiles'|trans},
+                        { url: path('pim_catalog_channel_index'), label: 'pim_dashboard.link.label.channel'|trans },
+                        { url: path('pim_importexport_export_index'), label: 'pim_dashboard.link.label.export_profile'|trans },
                         {
                             url: path(
                                 'pim_importexport_export_create',
                                 { connector: 'Akeneo CSV Connector', alias: 'product_export' }
                             ),
-                            label: 'Create a CSV export'|trans
+                            label: 'pim_dashboard.link.label.create_csv_export'|trans
                         }
                     ],
                     image: 'spread-image'
                 },
                 {
-                    label: 'Settings',
+                    label: 'pim_dashboard.menu.label.settings'|trans,
                     links: [
-                        {url: path('pim_catalog_productattribute_index'), label: 'Manage attributes'|trans},
-                        {url: path('pim_catalog_family_create'), label: 'Manage families'|trans}
+                        { url: path('pim_catalog_attributegroup_create'), label: 'pim_dashboard.link.label.attribute_group'|trans },
+                        { url: path('pim_catalog_productattribute_index'), label: 'pim_dashboard.link.label.attribute'|trans },
+                        { url: path('pim_catalog_family_create'), label: 'pim_dashboard.link.label.family'|trans },
+                        { url: path('pim_catalog_association_index'), label: 'pim_dashboard.link.label.association'|trans },
+                        { url: path('pim_catalog_currency_index'), label: 'pim_dashboard.link.label.currency'|trans }
                     ],
                     image: 'configure-image'
                 },

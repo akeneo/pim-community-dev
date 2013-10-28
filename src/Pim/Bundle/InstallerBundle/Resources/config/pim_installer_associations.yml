@@ -1,0 +1,13 @@
+associations:
+    X_SELL:
+        labels:
+            en_US: Cross sell
+            fr_FR: Vente croisée
+    UPSELL:
+        labels:
+            en_US: Upsell
+            fr_FR: Vente incitative
+    SUBSTITUTION:
+        labels:
+            en_US: Substitution
+            fr_FR: Remplacement

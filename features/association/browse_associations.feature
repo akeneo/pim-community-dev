@@ -15,8 +15,5 @@ Feature: Browse associations
   Scenario: Successfully display associations
     Given I am on the associations page
     Then the grid should contain 3 elements
+    And I should see the columns Code and Label
     And I should see associations cross_sell, up_sell and substitution
-
-  Scenario: Successfully display columns
-    Given I am on the associations page
-    Then I should see the columns Code and Label

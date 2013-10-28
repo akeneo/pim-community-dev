@@ -209,15 +209,16 @@ class Form extends Base
      * @param string  $labelContent
      * @param string  $value
      * @param Element $element
+     *
+     * @return null
      */
     public function fillField($labelContent, $value, Element $element = null)
     {
         $subLabelContent = null;
-        $parsedField = str_word_count($labelContent, 1, '€$');
-
-        if (2 === count($parsedField)) {
-            $subLabelContent = $parsedField[0];
-            $labelContent    = $parsedField[1];
+        if (false !== strpbrk($labelContent, '€$')) {
+            if (false !== strpos($labelContent, ' ')) {
+                list($subLabelContent, $labelContent) = explode(' ', $labelContent);
+            }
         }
 
         if ($element) {
@@ -227,13 +228,20 @@ class Form extends Base
         }
 
         if (null === $label) {
-            throw new \InvalidArgumentException(sprintf('Impossible to find field %s', $labelContent));
+            return parent::fillField($labelContent, $value);
         }
 
         if ($label->hasAttribute('for')) {
             if (false === strpos($value, ',')) {
-                $field = $this->find('css', sprintf('#%s', $label->getAttribute('for')));
-                $field->setValue($value);
+                $for = $label->getAttribute('for');
+                if (0 === strpos($for, 's2id_')) {
+                    // We are playing with a select2 widget
+                    $field = $label->getParent()->find('css', 'select');
+                    $field->selectOption($value);
+                } else {
+                    $field = $this->find('css', sprintf('#%s', $for));
+                    $field->setValue($value);
+                }
             } else {
                 foreach (explode(',', $value) as $value) {
                     $field = $label->getParent()->find('css', 'select');

@@ -49,8 +49,8 @@ class UniqueVariantAxisValidator extends ConstraintValidator
     /**
      * Validate variant group
      *
-     * @param Group $group
-     * @param Constraint   $constraint
+     * @param Group      $variantGroup
+     * @param Constraint $constraint
      */
     protected function validateVariantGroup(Group $variantGroup, Constraint $constraint)
     {
@@ -66,7 +66,7 @@ class UniqueVariantAxisValidator extends ConstraintValidator
             $combination = implode(', ', $values);
 
             if (in_array($combination, $existingCombinations)) {
-                $this->addViolation($constraint, $combination, $variantGroup->getLabel());
+                $this->addViolation($constraint, $product->getLabel(), $variantGroup->getLabel(), $combination);
             } else {
                 $existingCombinations[] = $combination;
             }
@@ -109,7 +109,12 @@ class UniqueVariantAxisValidator extends ConstraintValidator
                     foreach ($criteria as $item) {
                         $values[] = sprintf('%s: %s', $item['attribute']->getCode(), (string) $item['option']);
                     }
-                    $this->addViolation($constraint, implode(', ', $values), $variantGroup->getLabel());
+                    $this->addViolation(
+                        $constraint,
+                        $entity->getLabel(),
+                        $variantGroup->getLabel(),
+                        implode(', ', $values)
+                    );
                 }
             }
         }
@@ -119,16 +124,18 @@ class UniqueVariantAxisValidator extends ConstraintValidator
      * Add violation to the executioncontext
      *
      * @param Constraint $constraint
-     * @param string     $values
+     * @param string     $productLabel
      * @param string     $variantLabel
+     * @param string     $values
      */
-    protected function addViolation(Constraint $constraint, $values, $variantLabel)
+    protected function addViolation(Constraint $constraint, $productLabel, $variantLabel, $values)
     {
         $this->context->addViolation(
             $constraint->message,
             array(
-                '%values%'        => $values,
-                '%variant group%' => $variantLabel
+                '%product%'       => $productLabel,
+                '%variant group%' => $variantLabel,
+                '%values%'        => $values
             )
         );
     }

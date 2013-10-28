@@ -12,6 +12,7 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Product;
+use Behat\Mink\Element\Element;
 
 /**
  * Context of the website
@@ -84,11 +85,11 @@ class WebUser extends RawMinkContext
      /**
       * @Given /^I create a new product group$/
       */
-     public function iCreateANewProductGroup()
-     {
-         $entity = 'ProductGroup';
-         $this->iCreateANew($entity);
-     }
+    public function iCreateANewProductGroup()
+    {
+        $entity = 'ProductGroup';
+        $this->iCreateANew($entity);
+    }
 
     /**
      * @param TableNode $pages
@@ -116,16 +117,6 @@ class WebUser extends RawMinkContext
             $loadedCorrectly = (bool) $this->getSession()->evaluateScript('return $(\'img[alt="Akeneo"]\').length;');
             assertTrue($loadedCorrectly, sprintf('Javascript error ocurred on page "%s"', $data['page']));
         }
-    }
-
-    /**
-     * @param string $title
-     *
-     * @Then /^I should see the title "([^"]*)"$/
-     */
-    public function iShouldSeeTheTitle($title)
-    {
-        $this->getCurrentPage()->checkHeadTitle($title);
     }
 
     /**
@@ -210,17 +201,6 @@ class WebUser extends RawMinkContext
     }
 
     /* -------------------- Other methods -------------------- */
-
-    /**
-     * @param string $error
-     *
-     * @Then /^I should see validation error "([^"]*)"$/
-     */
-    public function iShouldSeeValidationError($error)
-    {
-        $errors = $this->getCurrentPage()->getValidationErrors();
-        assertTrue(in_array($error, $errors), sprintf('Expecting to see validation error "%s", not found', $error));
-    }
 
     /**
      * @param string $deactivated
@@ -810,51 +790,29 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @param string $fields
+     * @param TableNode $table
+     * @param Element   $element
      *
-     * @Then /^I should see the (.*) fields?$/
+     * @Given /^I fill in the following information:$/
      */
-    public function iShouldSeeTheFields($fields)
+    public function iFillInTheFollowingInformation(TableNode $table, Element $element = null)
     {
-        $fields = $this->listToArray($fields);
-        foreach ($fields as $field) {
-            if (!$this->getCurrentPage()->findField($field)) {
-                throw $this->createExpectationException(sprintf('Expecting to see field "%s".', $field));
-            }
-        }
-    }
-
-    /**
-     * @param string $fields
-     *
-     * @Given /^the fields? (.*) should be disabled$/
-     */
-    public function theFieldsShouldBeDisabled($fields)
-    {
-        $fields = $this->listToArray($fields);
-        foreach ($fields as $fieldName) {
-            $field = $this->getCurrentPage()->findField($fieldName);
-            if (!$field) {
-                throw $this->createExpectationException(sprintf('Expecting to see field "%s".', $fieldName));
-
-                return;
-            }
-            if (!$field->hasAttribute('disabled')) {
-                throw $this->createExpectationException(sprintf('Expecting field "%s" to be disabled.', $fieldName));
-            }
+        foreach ($table->getRowsHash() as $field => $value) {
+            $this->getCurrentPage()->fillField($field, $value, $element);
         }
     }
 
     /**
      * @param TableNode $table
      *
-     * @Given /^I fill in the following information:$/
+     * @Given /^I fill in the following information in the popin?:$/
      */
-    public function iFillInTheFollowingInformation(TableNode $table)
+    public function iFillInTheFollowingInformationInThePopin(TableNode $table)
     {
-        foreach ($table->getRowsHash() as $field => $value) {
-            $this->getCurrentPage()->fillField($field, $value);
-        }
+        $this->iFillInTheFollowingInformation(
+            $table,
+            $this->getCurrentPage()->find('css', '.ui-dialog')
+        );
     }
 
     /**
@@ -1078,60 +1036,6 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @param string $product
-     * @param string $data
-     *
-     * @Then /^I should see product "([^"]*)" with data (.*)$/
-     */
-    public function iShouldSeeProductWithData($product, $data)
-    {
-        $row = $this->getPage('Product index')->getRow($product);
-        $data = $this->listToArray($data);
-
-        if (!$row) {
-            throw $this->createExpectationException(sprintf('Expecting to see product %s, not found', $product));
-        }
-
-        $rowHtml = $row->getHtml();
-        foreach ($data as $cellData) {
-            if (strpos($rowHtml, $cellData) === false) {
-                throw $this->createExpectationException(
-                    sprintf('Expecting to see product data %s, not found', $cellData)
-                );
-            }
-        }
-    }
-
-    /**
-     * @param TableNode $table
-     *
-     * @Then /^I should see history:$/
-     */
-    public function iShouldSeeHistoryWithData(TableNode $table)
-    {
-        $expectedUpdates = $table->getHash();
-        $rows = $this->getCurrentPage()->getHistoryRows();
-        foreach ($expectedUpdates as $updateRow) {
-            $isPresent = false;
-            foreach ($rows as $row) {
-                $rowStr       = str_replace(array(' ', "\n"), '', strip_tags(nl2br($row->getHtml())));
-                $actionFound  = (strpos($rowStr, $updateRow['action']) !== false);
-                $versionFound = (strpos($rowStr, $updateRow['version']) !== false);
-                $dataFound    = (strpos($rowStr, $updateRow['data']) !== false);
-                if ($actionFound and $versionFound and $dataFound) {
-                    $isPresent = true;
-                    break;
-                }
-            }
-            if (!$isPresent) {
-                throw $this->createExpectationException(
-                    sprintf('Expecting to see history data %s, not found', implode(', ', $updateRow))
-                );
-            }
-        }
-    }
-
-    /**
      * @param string $right
      * @param string $category
      *
@@ -1161,53 +1065,13 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @Given /^I blur (.*)$/
+     * @Given /^I blur the category node$/
      */
-    public function iBlur()
+    public function iBlurTheCategoryNode()
     {
-        $this->getCurrentPage()->find('css', 'body')->click();
+        $elt = $this->getCurrentPage()->findInputNodeInTree();
+        $elt->blur();
         $this->wait();
-        $this->wait();
-    }
-
-    /**
-     * @param string $exportTitle
-     *
-     * @Given /^I create a new "([^"]*)" export$/
-     */
-    public function iCreateANewExport($exportTitle)
-    {
-        $this->getPage('Export index')->clickExportCreationLink($exportTitle);
-        $this->wait();
-        $this->getNavigationContext()->currentPage = 'Export creation';
-    }
-
-    /**
-     * @Given /^I try to create an unknown export$/
-     */
-    public function iTryToCreateAnUnknownExport()
-    {
-        $this->openPage('Export creation');
-    }
-
-    /**
-     * @param string $importTitle
-     *
-     * @Given /^I create a new "([^"]*)" import$/
-     */
-    public function iCreateANewImport($importTitle)
-    {
-        $this->getPage('Import index')->clickImportCreationLink($importTitle);
-        $this->wait();
-        $this->getNavigationContext()->currentPage = 'Import creation';
-    }
-
-    /**
-     * @Given /^I try to create an unknown import$/
-     */
-    public function iTryToCreateAnUnknownImport()
-    {
-        $this->openPage('Import creation');
     }
 
     /**
@@ -1231,18 +1095,6 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @param string $link
-     *
-     * @Then /^I should not see the "([^"]*)" link$/
-     */
-    public function iShouldNotSeeTheLink($link)
-    {
-        if ($this->getCurrentPage()->findLink($link)) {
-            throw $this->createExpectationException(sprintf('Link %s should not be displayed', $link));
-        }
-    }
-
-    /**
      * @param string $type
      *
      * @When /^I launch the (import|export) job$/
@@ -1250,7 +1102,7 @@ class WebUser extends RawMinkContext
     public function iExecuteTheJob($type)
     {
         $this->getPage(sprintf('%s show', ucfirst($type)))->execute();
-        sleep(10);
+        sleep(20);
         $this->getMainContext()->reload();
         $this->wait();
     }
@@ -1268,42 +1120,6 @@ class WebUser extends RawMinkContext
         sleep(10);
         $this->getMainContext()->reload();
         $this->wait();
-    }
-
-    /**
-     * @param string $file
-     *
-     * @Given /^file "([^"]*)" should exist$/
-     */
-    public function fileShouldExist($file)
-    {
-        if (!file_exists($file)) {
-            throw $this->createExpectationException(sprintf('File %s does not exist.', $file));
-        }
-
-        unlink($file);
-    }
-
-    /**
-     * @param string  $fileName
-     * @param integer $rows
-     *
-     * @Given /^file "([^"]*)" should contain (\d+) rows$/
-     */
-    public function fileShouldContainRows($fileName, $rows)
-    {
-        if (!file_exists($fileName)) {
-            throw $this->createExpectationException(sprintf('File %s does not exist.', $fileName));
-        }
-
-        $file = fopen($fileName, 'rb');
-        $rowCount = 0;
-        while (fgets($file) !== false) {
-            $rowCount++;
-        }
-        fclose($file);
-
-        assertEquals($rows, $rowCount, sprintf('Expecting file to contain %d rows, found %d.', $rows, $rowCount));
     }
 
     /**
@@ -1534,30 +1350,6 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @param string $text
-     *
-     * @Then /^I should see a tooltip "([^"]*)"$/
-     */
-    public function iShouldSeeATooltip($text)
-    {
-        if (!$this->getCurrentPage()->findTooltip($text)) {
-            throw $this->createExpectationException(sprintf('No tooltip containing "%s" were found.', $text));
-        }
-    }
-
-    /**
-     * @param string $text
-     *
-     * @Then /^I should see (?:a )?flash message "([^"]*)"$/
-     */
-    public function iShouldSeeFlashMessage($text)
-    {
-        if (!$this->getCurrentPage()->findFlashMessage($text)) {
-            throw $this->createExpectationException(sprintf('No flash messages containing "%s" were found.', $text));
-        }
-    }
-
-    /**
      * @param string $fields
      *
      * @Given /^I display the (.*) attributes?$/
@@ -1578,38 +1370,6 @@ class WebUser extends RawMinkContext
         $this->scrollContainerTo(900);
         $this->getCurrentPage()->confirm();
         $this->wait();
-    }
-
-    /**
-     * @param TableNode $tableNode
-     *
-     * @Then /^I should see a confirm dialog with the following content:$/
-     */
-    public function iShouldSeeAConfirmDialog(TableNode $tableNode)
-    {
-        $tableHash = $tableNode->getHash();
-
-        if (isset($tableHash['title'])) {
-            $expectedTitle = $tableHash['title'];
-            $title = $this->getCurrentPage()->getConfirmDialogTitle();
-
-            if ($expectedTitle !== $title) {
-                $this->createExpectationException(
-                    sprintf('Expecting confirm dialog title "%s", saw "%s"', $expectedTitle, $title)
-                );
-            }
-        }
-
-        if (isset($tableHash['content'])) {
-            $expectedContent = $tableHash['content'];
-            $content = $this->getCurrentPage()->getConfirmDialogContent();
-
-            if ($expectedContent !== $content) {
-                $this->createExpectationException(
-                    sprintf('Expecting confirm dialog content "%s", saw "%s"', $expectedContent, $content)
-                );
-            }
-        }
     }
 
     /**
@@ -1761,7 +1521,7 @@ class WebUser extends RawMinkContext
      *
      * @return void
      */
-    private function wait($time = 5000, $condition = null)
+    private function wait($time = 10000, $condition = null)
     {
         $this->getMainContext()->wait($time, $condition);
     }

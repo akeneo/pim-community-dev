@@ -16,6 +16,9 @@ class LocalDirResolverTest extends \PHPUnit_Framework_TestCase
 {
     protected $cacheDir = '/tmp/phpunit/local-dir-resolver';
 
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         @mkdir($this->cacheDir, 0777, true);
@@ -23,6 +26,9 @@ class LocalDirResolverTest extends \PHPUnit_Framework_TestCase
         $this->resolver = new LocalDirResolver(new Filesystem(), $this->cacheDir);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function tearDown()
     {
         $it = new \RecursiveDirectoryIterator($this->cacheDir);
@@ -40,6 +46,9 @@ class LocalDirResolverTest extends \PHPUnit_Framework_TestCase
         rmdir($this->cacheDir);
     }
 
+    /**
+     * Test related method
+     */
     public function testResolveInexistentCachedImage()
     {
         $this->assertEquals(
@@ -48,6 +57,9 @@ class LocalDirResolverTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * Test related method
+     */
     public function testResolveExistentCachedImage()
     {
         @mkdir($this->cacheDir . '/foo_filter', 0777, true);
@@ -60,13 +72,17 @@ class LocalDirResolverTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \Exception
-     * @expectedMessage The Pim\Bundle\CatalogBundle\Imagine\Cache\Resolver\LocalDirResolver is not meant to generate browser path
+     * @expectedMessage
+     *     The Pim\Bundle\CatalogBundle\Imagine\Cache\Resolver\LocalDirResolver is not meant to generate browser path
      */
     public function testGetBrowserPath()
     {
         $this->resolver->getBrowserPath('foo', 'bar');
     }
 
+    /**
+     * Test related method
+     */
     public function testClear()
     {
         @mkdir($this->cacheDir . '/bar_filter', 0777, true);
@@ -86,6 +102,9 @@ class LocalDirResolverTest extends \PHPUnit_Framework_TestCase
         }
     }
 
+    /**
+     * @return \Symfony\Component\HttpFoundation\Request
+     */
     protected function getRequestMock()
     {
         return $this->getMock('Symfony\Component\HttpFoundation\Request');

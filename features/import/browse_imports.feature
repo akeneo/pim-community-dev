@@ -15,13 +15,10 @@ Feature: Browse imports
 
   Scenario: Successfully display all the import jobs
     Given I am on the imports page
-    Then the grid should contain 3 element
+    Then the grid should contain 3 elements
+    And I should see the columns Code, Label, Job, Connector and Status
     And I should see import profiles acme_product_import, acme_category_import and foo_category_import
     And I should not see import profile acme_product_export
     And the row "acme_product_import" should contain:
       | column    | value                |
       | connector | Akeneo CSV Connector |
-
-  Scenario: Successfully display columns
-    Given I am on the imports page
-    Then I should see the columns Code, Label, Job, Connector and Status

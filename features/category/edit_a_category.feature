@@ -39,8 +39,8 @@ Feature: Edit a category
     Given I edit the "Laptops" category
     When I change the Code to "notebooks"
     Then I should see "There are unsaved changes."
-    
-  @javascript @insulated
+
+  @javascript
   Scenario: Successfully have a confirmation popup when I change page with unsaved changes
     Given I edit the "Laptops" category
     When I change the Code to "notebooks"
@@ -48,4 +48,3 @@ Feature: Edit a category
     Then I should see a confirm dialog with the following content:
       | title   | Are you sure you want to leave this page?                |
       | content | You will lose changes to the tree if you leave the page. |
-    And I confirm the message
