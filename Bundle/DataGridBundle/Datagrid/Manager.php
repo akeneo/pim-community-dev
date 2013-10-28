@@ -3,6 +3,7 @@
 namespace Oro\Bundle\DataGridBundle\Datagrid;
 
 use Oro\Bundle\DataGridBundle\Provider\SystemAwareResolver;
+use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 
 /**
  * Class Manager
@@ -25,7 +26,7 @@ class Manager implements ManagerInterface
     /** @var array */
     protected $rawConfiguration = [];
 
-    /** @var array */
+    /** @var DatagridConfiguration[] */
     protected $processedConfiguration = [];
 
     public function __construct(
@@ -49,7 +50,7 @@ class Manager implements ManagerInterface
 
         // prepare for work with current grid
         $this->requestParams->setRootParameter($name);
-        $datagrid = $this->getDatagridBuilder()->build($name, $config);
+        $datagrid = $this->getDatagridBuilder()->build($config);
 
         return $datagrid;
     }
@@ -64,9 +65,9 @@ class Manager implements ManagerInterface
         }
 
         if (!isset($this->processedConfiguration[$name])) {
-            $config = $this->rawConfiguration[$name];
+            $config = $this->resolver->resolve($name, $this->rawConfiguration[$name]);
 
-            $this->processedConfiguration[$name] = $this->resolver->resolve($name, $config);
+            $this->processedConfiguration[$name] = DatagridConfiguration::createNamed($name, $config);
         }
 
         return $this->processedConfiguration[$name];

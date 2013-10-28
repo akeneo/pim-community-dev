@@ -2,6 +2,8 @@
 
 namespace Oro\Bundle\DataGridBundle\Datagrid;
 
+use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
+
 interface ManagerInterface
 {
     /**
@@ -19,7 +21,7 @@ interface ManagerInterface
      *
      * @param string $name
      *
-     * @return array
+     * @return DatagridConfiguration
      * @throws \RuntimeException
      */
     public function getConfigurationForGrid($name);

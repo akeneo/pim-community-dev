@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\DataGridBundle\Extension;
 
+
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
@@ -9,6 +10,9 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
+use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
+use Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataObject;
+use Oro\Bundle\DataGridBundle\Datagrid\Common\ResultsObject;
 
 abstract class AbstractExtension implements ExtensionVisitorInterface
 {
@@ -27,21 +31,21 @@ abstract class AbstractExtension implements ExtensionVisitorInterface
     /**
      * {@inheritDoc}
      */
-    public function visitDatasource(array $config, DatasourceInterface $datasource)
+    public function visitDatasource(DatagridConfiguration $config, DatasourceInterface $datasource)
     {
     }
 
     /**
      * {@inheritDoc}
      */
-    public function visitMetadata(array $config, \stdClass $data)
+    public function visitMetadata(DatagridConfiguration $config, MetadataObject $data)
     {
     }
 
     /**
      * {@inheritDoc}
      */
-    public function visitResult(array $config, \stdClass $result)
+    public function visitResult(DatagridConfiguration $config, ResultsObject $result)
     {
     }
 

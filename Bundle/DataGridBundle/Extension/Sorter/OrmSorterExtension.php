@@ -3,6 +3,8 @@
 namespace Oro\Bundle\DataGridBundle\Extension\Sorter;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Builder;
+use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
+use Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataObject;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
@@ -38,15 +40,13 @@ class OrmSorterExtension extends AbstractExtension
     /**
      * {@inheritDoc}
      */
-    public function isApplicable(array $config)
+    public function isApplicable(DatagridConfiguration $config)
     {
-        $isApplicable = $this->accessor->getValue($config, Builder::DATASOURCE_TYPE_PATH) == OrmDatasource::TYPE
-            && is_array($this->accessor->getValue($config, self::COLUMNS_PATH));
+        $columns      = $config->offsetGetByPath(self::COLUMNS_PATH);
+        $isApplicable = $config->offsetGetByPath(Builder::DATASOURCE_TYPE_PATH) === OrmDatasource::TYPE
+            && is_array($columns);
 
-        $this->validateConfiguration(
-            new Configuration(),
-            ['sorters' => $this->accessor->getValue($config, self::SORTERS_PATH)]
-        );
+        $this->validateConfiguration(new Configuration(), ['sorters' => $config->offsetGetByPath(self::SORTERS_PATH)]);
 
         return $isApplicable;
     }
@@ -54,7 +54,7 @@ class OrmSorterExtension extends AbstractExtension
     /**
      * {@inheritDoc}
      */
-    public function visitDatasource(array $config, DatasourceInterface $datasource)
+    public function visitDatasource(DatagridConfiguration $config, DatasourceInterface $datasource)
     {
         $sorters   = $this->getSortersToApply($config);
         $multisort = $this->accessor->getValue($config, self::MULTISORT_PATH) ? : false;
@@ -73,13 +73,10 @@ class OrmSorterExtension extends AbstractExtension
     /**
      * {@inheritDoc}
      */
-    public function visitMetadata(array $config, \stdClass $data)
+    public function visitMetadata(DatagridConfiguration $config, MetadataObject $data)
     {
-        $multisort = $this->accessor->getValue($config, self::MULTISORT_PATH) ? : false;
-
-        $data->state            = isset($data->state) && is_array($data->state) ? $data->state : [];
-        $data->state['sorters'] = isset($data->state['sorters']) && is_array($data->state['sorters'])
-            ? $data->state['sorters'] : [];
+        $multisort    = $config->offsetGetByPath(self::MULTISORT_PATH, false);
+        $sortersState = $data->offsetGetByPath('[state][sorters]', []);
 
         $sorters = $this->getSorters($config);
         foreach (array_keys($sorters) as $name) {
@@ -93,12 +90,14 @@ class OrmSorterExtension extends AbstractExtension
         $sorters = $this->getSortersToApply($config);
         foreach ($sorters as $column => $definition) {
             list($direction) = $definition;
-            $data->state['sorters'][$column] = $this->normalizeDirection($direction);
+            $sortersState[$column] = $this->normalizeDirection($direction);
 
             if (!$multisort) {
                 break;
             }
         }
+
+        $data->offsetAddToArray('state', ['sorters' => $sortersState]);
     }
 
     /**
@@ -112,23 +111,23 @@ class OrmSorterExtension extends AbstractExtension
 
     /**
      * Retrieve and prepare list of sorters
-     *
      * Try to guess data_name from column definition
      *
-     * @param array $config
+     * @param DatagridConfiguration $config
      *
      * @return array
      */
-    protected function getSorters(array $config)
+    protected function getSorters(DatagridConfiguration $config)
     {
-        $sorters = $this->accessor->getValue($config, self::COLUMNS_PATH);
-        $columns = $this->accessor->getValue($config, FormatterConfiguration::COLUMNS_PATH) ? : [];
+        $sorters = $config->offsetGetByPath(self::COLUMNS_PATH);
+        $columns = $config->offsetGetByPath(FormatterConfiguration::COLUMNS_PATH, []);
 
         $sorters = array_intersect_key($sorters, $columns);
         foreach ($sorters as $name => $definition) {
             $definition = is_array($definition) ? $definition : [];
+
             if (!$this->accessor->getValue($definition, sprintf('[%s]', PropertyInterface::DATA_NAME_KEY))) {
-                $definition['data_name'] = $this->accessor->getValue(
+                $definition[PropertyInterface::DATA_NAME_KEY] = $this->accessor->getValue(
                     $columns[$name],
                     sprintf('[%s]', PropertyInterface::DATA_NAME_KEY)
                 ) ? : $name;
@@ -143,23 +142,24 @@ class OrmSorterExtension extends AbstractExtension
     /**
      * Prepare sorters array
      *
-     * @param array $config
+     * @param DatagridConfiguration $config
      *
      * @return array
      */
-    protected function getSortersToApply(array $config)
+    protected function getSortersToApply(DatagridConfiguration $config)
     {
         $result = [];
 
         $sorters = $this->getSorters($config);
 
-        $defaultSorters = $this->accessor->getValue($config, self::DEFAULT_SORTERS_PATH) ? : [];
+        $defaultSorters = $config->offsetGetByPath(self::DEFAULT_SORTERS_PATH, []);
         $sortBy         = $this->requestParams->get(self::SORTERS_ROOT_PARAM) ? : $defaultSorters;
 
         foreach ($sortBy as $column => $direction) {
-            if ($sorter = $this->accessor->getValue($sorters, sprintf('[%s]', $column))) {
-                $direction = $this->normalizeDirection($direction);
+            $sorter = $this->accessor->getValue($sorters, sprintf('[%s]', $column));
 
+            if ($sorter) {
+                $direction       = $this->normalizeDirection($direction);
                 $result[$column] = [$direction, $sorter];
             }
         }

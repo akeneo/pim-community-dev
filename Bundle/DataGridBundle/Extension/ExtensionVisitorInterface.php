@@ -2,6 +2,9 @@
 
 namespace Oro\Bundle\DataGridBundle\Extension;
 
+use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
+use Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataObject;
+use Oro\Bundle\DataGridBundle\Datagrid\Common\ResultsObject;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 
 interface ExtensionVisitorInterface
@@ -9,41 +12,41 @@ interface ExtensionVisitorInterface
     /**
      * Checks if extensions should be applied to grid
      *
-     * @param array $config
+     * @param DatagridConfiguration $config
      *
      * @return bool
      */
-    public function isApplicable(array $config);
+    public function isApplicable(DatagridConfiguration $config);
 
     /**
      * Apply changes provided by applied extensions on datasource
      *
-     * @param array               $config
-     * @param DatasourceInterface $datasource
+     * @param DatagridConfiguration $config
+     * @param DatasourceInterface   $datasource
      *
      * @return mixed
      */
-    public function visitDatasource(array $config, DatasourceInterface $datasource);
+    public function visitDatasource(DatagridConfiguration $config, DatasourceInterface $datasource);
 
     /**
      * Apply changes provided by applied extensions on result data
      *
-     * @param array     $config
-     * @param \stdClass $result
+     * @param DatagridConfiguration $config
+     * @param ResultsObject         $result
      *
      * @return mixed
      */
-    public function visitResult(array $config, \stdClass $result);
+    public function visitResult(DatagridConfiguration $config, ResultsObject $result);
 
     /**
      * Apply changes provided by applied extensions on metadata
      *
-     * @param array     $config
-     * @param \stdClass $data
+     * @param DatagridConfiguration $config
+     * @param MetadataObject        $data
      *
      * @return mixed
      */
-    public function visitMetadata(array $config, \stdClass $data);
+    public function visitMetadata(DatagridConfiguration $config, MetadataObject $data);
 
     /**
      * Returns priority needed for applying

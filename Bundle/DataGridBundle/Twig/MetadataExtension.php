@@ -41,9 +41,8 @@ class MetadataExtension extends \Twig_Extension
     public function getGridMetadata($name, $additionalParams = [])
     {
         $metaData            = $this->manager->getDatagrid($name)->getMetadata();
-        $metaData['options'] = isset($metaData['options']) ? $metaData['options'] : [];
-        $metaData['options'] = array_merge_recursive($metaData['options'], $additionalParams);
+        $metaData->offsetAddToArray('options', $additionalParams);
 
-        return $metaData;
+        return $metaData->toArray();
     }
 }
