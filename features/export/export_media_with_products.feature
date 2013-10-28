@@ -2,7 +2,7 @@
 Feature: Export media with products
   In order to re-use the images and documents I have setted on my products
   As Julia
-  I need to be able to export them among with the products
+  I need to be able to export them along with the products
 
   Scenario: Successfully export media
     Given the following family:
