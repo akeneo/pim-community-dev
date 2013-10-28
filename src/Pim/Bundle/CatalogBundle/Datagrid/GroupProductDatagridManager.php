@@ -162,11 +162,8 @@ class GroupProductDatagridManager extends FlexibleDatagridManager
 
         $result['show_filter'] = $attribute->getAttributeType() === 'pim_catalog_identifier';
 
-        if ($this->getGroup()->getAttributes()->contains($attribute)) {
-            $result['show_column'] = true;
-        } else {
-            $result['show_column'] = $attribute->getAttributeType() === 'pim_catalog_identifier';
-        }
+        $result['show_column'] = ($this->getGroup()->getAttributes()->contains($attribute))
+            ? true : $attribute->getAttributeType() === 'pim_catalog_identifier';
 
         return $result;
     }
