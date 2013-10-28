@@ -416,7 +416,6 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
     private function getRequiredValues(ProductInterface $product, $familyCode = null, $groupCodes = null)
     {
         $requiredAttributes = array();
-        $storageManager = $this->productManager->getStorageManager();
 
         $requiredAttributes = $this->getRequiredAttributesFromFamily($familyCode);
         $requiredAttributes = array_merge($requiredAttributes, $this->getRequiredAttributesFromGroups($groupCodes));
@@ -458,6 +457,7 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
     private function getRequiredAttributesFromFamily($familyCode)
     {
         if ($familyCode !== null) {
+            $storageManager = $this->productManager->getStorageManager();
             $family = $storageManager->getRepository('PimCatalogBundle:Family')->findOneBy(
                 array(
                     'code' => $familyCode
@@ -482,6 +482,7 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
         $requiredAttributes = array();
         if ($groupCodes !== null) {
             $groupCodes = explode(',', $groupCodes);
+            $storageManager = $this->productManager->getStorageManager();
             foreach ($groupCodes as $code) {
                 $group = $storageManager->getRepository('PimCatalogBundle:Group')->findOneBy(
                     array(
