@@ -73,12 +73,6 @@
 
                 {% if form.vars.data.products|length > 0 %}
                     <li>{{ 'products'|trans|capitalize }}: {{ form.vars.data.products|length }}</li>
-                {% else %}
-                    <li>{{'info.group.select products'|trans}}
-                    {% if form.vars.data.type.isVariant %}
-                        {{'info.group.selectable products'|trans}}
-                    {% endif %}
-                    </li>
                 {% endif %}
            </ul>
         {% endset %}
@@ -98,6 +92,16 @@
             {{ elements.form_errors(form) }}
 
             <div class="tab-pane active" id="products">
+
+                {% if form.vars.data.products|length == 0 %}
+                    <div class="alert alert-info">
+                        <button data-dismiss="alert" class="close" type="button">×</button>
+                        {{ 'info.group.select products'|trans }}
+                    {% if form.vars.data.type.isVariant %}
+                        <br />{{ 'info.group.selectable products'|trans }}
+                    {% endif %}
+                    </div>
+                {% endif %}
                 <div id="group-products-grid"></div>
                 {{ form_widget(form.appendProducts, {'id': 'appendProducts'}) }}
                 {{ form_widget(form.removeProducts, {'id': 'removeProducts'}) }}
