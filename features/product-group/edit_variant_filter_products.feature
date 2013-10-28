@@ -101,14 +101,16 @@ Feature: Edit a variant group adding/removing products
 
   Scenario: Successfully filter by Color
     Given I am on the "MUG" product group page
-    When I filter by "Color" with value "Red"
+    When I make visible the filter "Color"
+    And I filter by "Color" with value "Red"
     Then the grid should contain 1 element
     And I should see product MUG_1
     And I should not see products MUG_2, MUG_3 and POSTIT
 
   Scenario: Successfully filter by Size
     Given I am on the "POSTIT" product group page
-    When I filter by "Size" with value "XL"
+    When I make visible the filter "Size"
+    And I filter by "Size" with value "XL"
     Then the grid should contain 1 element
     And I should see product MUG_1
     And I should not see products MUG_2, MUG_3 and POSTIT
