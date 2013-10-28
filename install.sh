@@ -99,8 +99,8 @@ if [ $TASK = 'db' ] || [ $TASK = 'all' ]; then
     php app/console doctrine:database:drop --force 2>&1 > /dev/null || true
     php app/console doctrine:database:create
     php app/console doctrine:schema:create
-    echo "Loading ORO fixtures"
     php app/console cache:clear
+    echo "Loading ORO fixtures"
     php app/console doctrine:fixtures:load $ORO_FIXTURES --no-interaction
     echo "Loading PIM fixtures"
     php app/console doctrine:fixtures:load $PIM_FIXTURES --no-interaction --append

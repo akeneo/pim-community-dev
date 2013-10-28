@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Datagrid;
 
+use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
+
 use Oro\Bundle\GridBundle\Sorter\SorterInterface;
 
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
@@ -56,25 +58,21 @@ class GroupProductDatagridManager extends FlexibleDatagridManager
         $field = $this->createProductRelationField();
         $fieldsCollection->add($field);
 
-        // TODO : until we'll have related backend type in grid bundle
-        $excludedBackend = array(
-            AbstractAttributeType::BACKEND_TYPE_MEDIA
-        );
+        $identifier = $this->flexibleManager->getIdentifierAttribute();
+        $field = $this->createFlexibleField($identifier);
+        $fieldsCollection->add($field);
 
-        // create flexible columns
-        foreach ($this->getFlexibleAttributes() as $attribute) {
-            $backendType = $attribute->getBackendType();
-            if (in_array($backendType, $excludedBackend)) {
-                continue;
+        $field = $this->createAttributeAsLabelField();
+        $fieldsCollection->add($field);
+
+        if ($this->group->getType()->isVariant()) {
+            foreach ($this->getGroup()->getAttributes() as $attribute) {
+                $field = $this->createFlexibleField($attribute);
+                $fieldsCollection->add($field);
             }
-
-            if (!$attribute->isUseableAsGridColumn() && !$attribute->isUseableAsGridFilter()) {
-                continue;
-            }
-
-            $field = $this->createFlexibleField($attribute);
-            $fieldsCollection->add($field);
         }
+
+        $this->createFlexibleFilters($fieldsCollection);
 
         $field = $this->createFamilyField();
         $fieldsCollection->add($field);
@@ -114,6 +112,29 @@ class GroupProductDatagridManager extends FlexibleDatagridManager
     }
 
     /**
+     * Create attribute as label column
+     *
+     * @return \Oro\Bundle\GridBundle\Field\FieldDescription
+     */
+    protected function createAttributeAsLabelField()
+    {
+        $field = new FieldDescription();
+        $field->setName('attributeAsLabel');
+        $field->setOptions(
+            array(
+                'type'              => FieldDescriptionInterface::TYPE_TEXT,
+                'label'             => $this->translate('Label'),
+                'field_name'        => 'label',
+                'nullable'          => false,
+                'sortable'          => false,
+                'filter_type'       => false
+            )
+        );
+
+        return $field;
+    }
+
+    /**
      * @return AbstractAttribute[]
      */
     protected function getFlexibleAttributes()
@@ -139,13 +160,10 @@ class GroupProductDatagridManager extends FlexibleDatagridManager
     {
         $result = parent::getFlexibleFieldOptions($attribute, $options);
 
-        if ($attribute->getAttributeType() === 'pim_catalog_identifier') {
-            $result['show_filter'] = true;
-        }
+        $result['show_filter'] = $attribute->getAttributeType() === 'pim_catalog_identifier';
 
-        if ($this->getGroup()->getAttributes()->contains($attribute)) {
-            $result['show_filter'] = true;
-        }
+        $result['show_column'] = ($this->getGroup()->getAttributes()->contains($attribute))
+            ? true : $attribute->getAttributeType() === 'pim_catalog_identifier';
 
         return $result;
     }
@@ -167,6 +185,36 @@ class GroupProductDatagridManager extends FlexibleDatagridManager
         }
 
         return $this->hasProductExpression;
+    }
+
+    /**
+     * Create flexible filters when attributes are defined as filterable
+     * and are not already in the fields collection
+     *
+     * @param FieldDescriptionCollection $fieldsCollection
+     */
+    protected function createFlexibleFilters(FieldDescriptionCollection $fieldsCollection)
+    {
+        $excludedBackend = array(
+            AbstractAttributeType::BACKEND_TYPE_MEDIA
+        );
+
+        foreach ($this->getFlexibleAttributes() as $attribute) {
+            if (!$attribute->isUseableAsGridColumn() || !$attribute->isUseableAsGridFilter()) {
+                continue;
+            }
+
+            if (in_array($attribute->getBackendType(), $excludedBackend)) {
+                continue;
+            }
+
+            if ($this->getGroup()->getAttributes()->contains($attribute)) {
+                continue;
+            }
+
+            $field = $this->createFlexibleField($attribute);
+            $fieldsCollection->add($field);
+        }
     }
 
     /**
@@ -323,6 +371,8 @@ class GroupProductDatagridManager extends FlexibleDatagridManager
 
     /**
      * {@inheritdoc}
+     *
+     * This method is overriden to prevent against the use of parameters
      */
     public function setFlexibleManager(FlexibleManager $flexibleManager)
     {

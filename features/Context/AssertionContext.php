@@ -4,6 +4,7 @@ namespace Context;
 
 use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Mink\Exception\ExpectationException;
+use Behat\Gherkin\Node\TableNode;
 
 /**
  * Context for assertions
@@ -24,7 +25,7 @@ class AssertionContext extends RawMinkContext
         $actualTitle = $this->getCurrentPage()->getHeadTitle();
         if (trim($actualTitle) !== trim($expectedTitle)) {
             throw $this->createExpectationException(
-                sprintf('Incorrect title. Expected "%s", found "%s"', $expectedTitle, $headTitle)
+                sprintf('Incorrect title. Expected "%s", found "%s"', $expectedTitle, $actualTitle)
             );
         }
     }

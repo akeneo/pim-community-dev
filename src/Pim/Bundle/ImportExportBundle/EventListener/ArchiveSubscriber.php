@@ -24,7 +24,7 @@ class ArchiveSubscriber implements EventSubscriberInterface
     /**
      * @param JobExecutionArchiver $archiver
      */
-    public function __construct($archiver)
+    public function __construct(JobExecutionArchiver $archiver)
     {
         $this->archiver = $archiver;
     }
