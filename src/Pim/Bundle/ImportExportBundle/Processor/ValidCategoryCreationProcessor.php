@@ -9,7 +9,6 @@ use Oro\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Oro\Bundle\BatchBundle\Entity\StepExecution;
-use Pim\Bundle\ImportExportBundle\Exception\InvalidObjectException;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 
 /**

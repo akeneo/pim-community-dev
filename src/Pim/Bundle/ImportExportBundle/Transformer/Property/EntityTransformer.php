@@ -39,7 +39,7 @@ class EntityTransformer implements PropertyTransformerInterface
         if (!$value) {
             return $multiple ? array() : null;
         }
-        
+
         $entityCache = $this->entityCache;
         $transform = function ($value) use ($options, $entityCache) {
             $entity = $entityCache->find($options['class'], $value);

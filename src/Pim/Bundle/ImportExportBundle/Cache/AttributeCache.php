@@ -3,9 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Cache;
 
 use Symfony\Bridge\Doctrine\RegistryInterface;
-use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
-use Pim\Bundle\CatalogBundle\Entity\Family;
 
 /**
  * Caches the attributes of an import. Do not forget to call the reset method between two imports.
@@ -20,75 +18,153 @@ class AttributeCache
      * @staticvar the identifier attribute type
      */
     const IDENTIFIER_ATTRIBUTE_TYPE = 'pim_catalog_identifier';
-    
+
+    /**
+     * @var RegistryInterface
+     */
     protected $doctrine;
-    
+
+    /**
+     * @var array
+     */
     protected $attributes;
     /**
      * @var array
      */
     protected $columns;
-    
+
+    /**
+     * @var ProductAttribute
+     */
     protected $identifierAttribute;
-    
+
+    /**
+     * @var boolean
+     */
     protected $initialized=false;
 
+    /**
+     * Constructor
+     * @param RegistryInterface $doctrine
+     */
     public function __construct(RegistryInterface $doctrine)
     {
         $this->doctrine = $doctrine;
     }
-    public function reset()
+
+    /**
+     * Clears the cache
+     */
+    public function clear()
     {
         $this->attributes = null;
         $this->columns = null;
         $this->identifierAttribute = null;
         $this->initialized = false;
     }
-    public function initialize($columnLabels)
+
+    /**
+     * Initializes the cache with a set of column labels
+     *
+     * @param array $columnLabels
+     */
+    public function initialize(array $columnLabels)
     {
         $columnLabelTokens = $this->getColumnLabelTokens($columnLabels);
         $this->setAttributes($columnLabelTokens);
         $this->setColumns($columnLabelTokens);
         $this->initialized = true;
     }
-    public function isInitialized() {
+
+    /**
+     * Returns true if the cache has been initialized
+     *
+     * @return boolean
+     */
+    public function isInitialized()
+    {
         return $this->initialized;
     }
-    public function getAttribute($code) {
-        foreach($this->attributes as $attribute) {
+
+    /**
+     * Returns the attribute corresponding to the specified code
+     *
+     * @param  string           $code
+     * @return ProductAttribute
+     */
+    public function getAttribute($code)
+    {
+        foreach ($this->attributes as $attribute) {
             if ($code == $attribute->getCode()) {
                 return $attribute;
             }
         }
     }
+
+    /**
+     * Returns an array of cached attributes
+     *
+     * @return array
+     */
     public function getAttributes()
     {
         return $this->attributes;
     }
 
+    /**
+     * Returns the product attribute
+     *
+     * @return ProductAttribute
+     */
     public function getIdentifierAttribute()
     {
         return $this->identifierAttribute;
     }
 
+    /**
+     * Returns an array of information about the columns
+     *
+     * The following info is returned for each column :
+     *
+     * columnLabel:
+     *      attribute:  A ProductAttribute instance
+     *      code:       The code of the attribute
+     *      locale:     The locale of the column
+     *      scope:      The scope of the column
+     *
+     * @return array
+     */
     public function getColumns()
     {
         return $this->columns;
     }
 
+    /**
+     * Returns an array of tokens for each column label.
+     *
+     * @param  array $columnLabels
+     * @return array
+     */
     protected function getColumnLabelTokens($columnLabels)
     {
         $columnTokens = array();
-        foreach($columnLabels as $columnLabel) {
+        foreach ($columnLabels as $columnLabel) {
             $columnTokens[$columnLabel] = explode('-', $columnLabel);
         }
 
         return $columnTokens;
     }
-    protected function setColumns($columnLabelTokens)
+
+    /**
+     * Sets the columns property
+     *
+     * @param  array      $columnLabelTokens
+     * @throws \Exception
+     */
+    protected function setColumns(array $columnLabelTokens)
     {
         $this->columns = array();
-        foreach($columnLabelTokens as $columnCode => $labelTokens) {
+        foreach ($columnLabelTokens as $columnCode => $labelTokens) {
             $columnInfo = array(
                 'code' => array_shift($labelTokens),
                 'locale' => null,
@@ -121,6 +197,12 @@ class AttributeCache
         }
     }
 
+    /**
+     * Sets the attributes and identifierAttributes properties
+     *
+     * @param  array      $columnLabelTokens
+     * @throws \Exception
+     */
     protected function setAttributes($columnLabelTokens)
     {
         $codes = array_unique(
@@ -131,7 +213,7 @@ class AttributeCache
                 $columnLabelTokens
             )
         );
-            
+
         $this->attributes = $this->doctrine->getRepository('PimCatalogBundle:ProductAttribute')
                 ->findBy(array('code' => $codes));
 
@@ -141,15 +223,15 @@ class AttributeCache
                 break;
             }
         }
-        if(count($this->attributes) != count($codes)) {
+        if (count($this->attributes) != count($codes)) {
             throw new \Exception(
                 sprintf(
                     'The following fields do not exist : %s',
                     implode(
-                        ', ', 
+                        ', ',
                         array_diff(
-                            $codes, 
-                            array_map(function($attribute) { return $attribute->getCode(); }, $this->attributes)
+                            $codes,
+                            array_map(function ($attribute) { return $attribute->getCode(); }, $this->attributes)
                         )
                     )
                 )

@@ -7,7 +7,7 @@ use Pim\Bundle\ImportExportBundle\Exception\InvalidValueException;
 
 /**
  * Prices attribute transformer
- * 
+ *
  * @author    Antoine Guigan <antoine@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -20,15 +20,23 @@ class PricesTransformer implements PropertyTransformerInterface
     protected $currencyManager;
 
     /**
-     * @var array 
+     * @var array
      */
     private $currencies;
 
+    /**
+     * Constructor
+     *
+     * @param CurrencyManager $currencyManager
+     */
     public function __construct(CurrencyManager $currencyManager)
     {
         $this->currencyManager = $currencyManager;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function transform($value, array $options = array())
     {
         $currencies = $this->getCurrencies();
@@ -57,6 +65,11 @@ class PricesTransformer implements PropertyTransformerInterface
         return $result;
     }
 
+    /**
+     * Returns the active currencies
+     *
+     * @return array
+     */
     protected function getCurrencies()
     {
         if (!isset($this->currencies)) {

@@ -40,14 +40,14 @@ services:
               backend_type: options
               class: PimCatalogBundle:AttributeOption
               multiple: true
-            
+
     pim_import_export.transformer.attribute.media:
         class: '%pim_import_export.transformer.property.media.class%'
         public: false
         tags:
             - name: pim_import_export.transformer.product.attribute
               backend_type: media
-            
+
     pim_import_export.transformer.attribute.prices:
         class: '%pim_import_export.transformer.property.prices.class%'
         public: false
@@ -56,14 +56,14 @@ services:
         tags:
             - name: pim_import_export.transformer.product.attribute
               backend_type: prices
-            
+
     pim_import_export.transformer.attribute.metric:
         class: '%pim_import_export.transformer.property.metric.class%'
         public: false
         tags:
             - name: pim_import_export.transformer.product.attribute
               backend_type: metric
-            
+
     pim_import_export.transformer.attribute.date:
         class: '%pim_import_export.transformer.property.date.class%'
         public: false

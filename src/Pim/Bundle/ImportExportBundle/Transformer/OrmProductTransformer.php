@@ -13,7 +13,7 @@ use Pim\Bundle\ImportExportBundle\Exception\InvalidValueException;
 
 /**
  * Transforms a CSV product in an entity
- * 
+ *
  * @author    Antoine Guigan <antoine@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -54,7 +54,15 @@ class OrmProductTransformer
      * @var Query
      */
     private $importQuery;
-            
+
+    /**
+     * Constructor
+     *
+     * @param ProductManager            $productManager
+     * @param ProductImportValidator    $productValidator
+     * @param AttributeCache            $attributeCache
+     * @param PropertyAccessorInterface $propertyAccessor
+     */
     public function __construct(
         ProductManager $productManager,
         ProductImportValidator $productValidator,
@@ -67,9 +75,18 @@ class OrmProductTransformer
         $this->propertyAccessor = $propertyAccessor;
     }
 
+    /**
+     * Returns a ProductInterface object from an array of scalar values
+     *
+     * @param  array                $values   the values to transform
+     * @param  array                $mapping  a mapping of columns which should be renamed
+     * @param  array                $defaults default values for the object
+     * @return ProductInterface
+     * @throws InvalidItemException
+     */
     public function getProduct(array $values, array $mapping = array(), array $defaults = array())
     {
-        
+
         $this->mapValues($values, $mapping);
         $attributeValues = array_diff_key($values, $this->propertyTransformers);
         $propertyValues = array_intersect_key($values, $this->propertyTransformers);
@@ -77,8 +94,8 @@ class OrmProductTransformer
             $this->attributeCache->initialize(array_keys($attributeValues));
         }
 
-        $product = $this->createOrLoadProduct($values, $defaults);
-        
+        $product = $this->createOrLoadProduct($values);
+
         $this->setDefaultValues($product, $defaults);
         $errors = array_merge(
             $this->setPropertyValues($product, $propertyValues),
@@ -87,9 +104,17 @@ class OrmProductTransformer
         if (count($errors)) {
             throw new InvalidItemException(implode("\n", $errors), $values);
         }
+
         return $product;
     }
 
+    /**
+     * Adds a property transformer
+     *
+     * @param string                       $propertyPath
+     * @param PropertyTransformerInterface $transformer
+     * @param array                        $options
+     */
     public function addPropertyTransformer(
         $propertyPath,
         Property\PropertyTransformerInterface $transformer,
@@ -101,6 +126,13 @@ class OrmProductTransformer
         );
     }
 
+    /**
+     * Adds an attribute transformer
+     *
+     * @param string                                                                           $backendType
+     * @param \Pim\Bundle\ImportExportBundle\Transformer\Property\PropertyTransformerInterface $transformer
+     * @param array                                                                            $options
+     */
     public function addAttributeTransformer(
         $backendType,
         Property\PropertyTransformerInterface $transformer,
@@ -112,7 +144,13 @@ class OrmProductTransformer
         );
     }
 
-    protected function mapValues(&$values, array $mapping)
+    /**
+     * Remaps values according to $mapping
+     *
+     * @param array $values
+     * @param array $mapping
+     */
+    protected function mapValues(array &$values, array $mapping)
     {
         foreach ($mapping as $oldName => $newName) {
             if ($oldName != $newName && isset($values[$oldName])) {
@@ -122,11 +160,18 @@ class OrmProductTransformer
         }
     }
 
-    protected function createOrLoadProduct(array $values, array $defaults)
+    /**
+     * Loads a product from the database, or creates if it doesn't exist
+     *
+     * @param  array            $values
+     * @param  array            $defaults
+     * @return ProductInterface
+     */
+    protected function createOrLoadProduct(array $values)
     {
         if (!isset($this->importQuery)) {
             $this->importQuery = $this->productManager->getImportQuery(
-                $this->attributeCache->getAttributes(), 
+                $this->attributeCache->getAttributes(),
                 $this->attributeCache->getIdentifierAttribute()
             );
         }
@@ -137,13 +182,16 @@ class OrmProductTransformer
             $product = $this->productManager->createProduct();
         }
 
-        foreach($defaults as $propertyPath=>$value) {
-            $this->propertyAccessor->setValue($product, $propertyPath, $value);
-        }
-
         return $product;
     }
 
+    /**
+     * Sets the values for the properties
+     *
+     * @param  ProductInterface $product
+     * @param  array            $values
+     * @return array            an array of errors
+     */
     protected function setPropertyValues(ProductInterface $product, array $values)
     {
         $errors = array();
@@ -153,7 +201,7 @@ class OrmProductTransformer
                 $this->propertyAccessor->setValue(
                     $product,
                     $propertyPath,
-                    $this->getTransformedValue($this->propertyTransformers[$propertyPath], $value)
+                    $this->getTransformedValue($value, $this->propertyTransformers[$propertyPath])
                 );
             } catch (InvalidValueException $ex) {
                 $errors[] = $this->productValidator->getTranslatedExceptionMessage($propertyPath, $ex);
@@ -165,12 +213,27 @@ class OrmProductTransformer
             $this->productValidator->validateProductProperties($product, $values)
         );
     }
+
+    /**
+     * Sets the default values of the product
+     *
+     * @param ProductInterface $product
+     * @param type             $defaults
+     */
     protected function setDefaultValues(ProductInterface $product, $defaults)
     {
         foreach ($defaults as $propertyPath => $value) {
             $this->propertyAccessor->setValue($product, $propertyPath, $value);
         }
     }
+
+    /**
+     * Sets the values of the attributes
+     *
+     * @param  ProductInterface $product
+     * @param  array            $attributeValues
+     * @return array            an array of errors
+     */
     protected function setAttributeValues(ProductInterface $product, array $attributeValues)
     {
         $requiredAttributeCodes = $this->getRequiredAttributeCodes($product);
@@ -178,8 +241,9 @@ class OrmProductTransformer
         $errors = array();
         foreach ($attributeValues as $columnCode=>$columnValue) {
             $columnInfo = $columns[$columnCode];
-            try  {
+            try {
                 if ($columnValue || in_array($columnInfo['code'], $requiredAttributeCodes)) {
+                    $this->setAttributeValue($product, $this->getTransformedAttributeValue($columnValue, $columnInfo), $columnInfo);
                     $errors = array_merge(
                         $errors,
                         $this->productValidator->validateProductValue(
@@ -196,7 +260,16 @@ class OrmProductTransformer
 
         return $errors;
     }
-    protected function setAttributeValue(ProductInterface $product, $value, array $columnInfo) {
+
+    /**
+     * Sets the value for a given attribute
+     *
+     * @param ProductInterface $product
+     * @param mixed            $value
+     * @param array            $columnInfo
+     */
+    protected function setAttributeValue(ProductInterface $product, $value, array $columnInfo)
+    {
         $productValue = $product->getValue($columnInfo['code'], $columnInfo['locale'], $columnInfo['scope']);
         if (!$productValue) {
             $productValue = $product->createValue($columnInfo['code'], $columnInfo['locale'], $columnInfo['scope']);
@@ -204,22 +277,46 @@ class OrmProductTransformer
         }
         $productValue->setData($value);
     }
-    protected function getAttributeValue($value, array $columnInfo) {
+
+    /**
+     * Retruns a transformed attribute value
+     *
+     * @param  string $value
+     * @param  array  $columnInfo
+     * @return mixed
+     */
+    protected function getTransformedAttributeValue($value, array $columnInfo)
+    {
         $backendType = $columnInfo['attribute']->getBackendType();
         if ($value) {
             if (isset($this->attributeTransformers[$backendType])) {
-                $value = $this->getTransformedValue($this->attributeTransformers[$backendType], $value);
+                $value = $this->getTransformedValue($value, $this->attributeTransformers[$backendType]);
             }
         } else {
             $value = null;
         }
+
         return $value;
     }
-    protected function getTransformedValue(array $transformerConfig, $value)
+
+    /**
+     * Returns a transformed value
+     *
+     * @param  string $value
+     * @param  array  $transformerConfig
+     * @return type
+     */
+    protected function getTransformedValue($value, array $transformerConfig)
     {
         return $transformerConfig['transformer']->transform($value, $transformerConfig['options']);
     }
 
+    /**
+     * Returns the required attribute codes for a product
+     *
+     * @param  ProductInterface $product
+     * @return array
+     */
     protected function getRequiredAttributeCodes(ProductInterface $product)
     {
         $requiredAttributes = array();
@@ -228,7 +325,7 @@ class OrmProductTransformer
             $requiredAttributes = $product->getFamily()->getAttributes()->toArray();
         }
 
-        foreach($product->getGroups() as $group) {
+        foreach ($product->getGroups() as $group) {
             $requiredAttributes = array_merge($requiredAttributes, $group->getAttributes()->toArray());
         }
 

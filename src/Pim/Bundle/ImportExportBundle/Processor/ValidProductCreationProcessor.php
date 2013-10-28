@@ -53,7 +53,7 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
 
     /**
      * Constructor
-     * 
+     *
      * @param OrmProductTransformer $transformer
      */
     public function __construct(OrmProductTransformer $transformer)
@@ -155,7 +155,7 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
             'groupsColumn'        => array(),
         );
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -174,14 +174,13 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
                 )
             );
         } catch (InvalidObjectException $ex) {
-            foreach($ex->getErrors() as $error) {
+            foreach ($ex->getErrors() as $error) {
                 $this->stepExecution->addError($error);
             }
 
             throw new InvalidItemException('Invalid item', $item);
         }
     }
-
 
     /**
      * {@inheritdoc}
