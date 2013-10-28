@@ -3,8 +3,9 @@
 namespace Oro\Bundle\LocaleBundle\Tests\Unit\Formatter;
 
 use Oro\Bundle\LocaleBundle\Formatter\DateTimeFormatter;
+use Oro\Bundle\LocaleBundle\Tests\Unit\IcuAwareTestCase;
 
-class DateTimeFormatterTest extends \PHPUnit_Framework_TestCase
+class DateTimeFormatterTest extends IcuAwareTestCase
 {
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject
@@ -37,6 +38,7 @@ class DateTimeFormatterTest extends \PHPUnit_Framework_TestCase
         $defaultLocale = null,
         $defaultTimeZone = null
     ) {
+        $this->ignoreIfIcuVersionGreaterThan('4.8.1.1');
         $at = 0;
         if ($defaultLocale) {
             $this->localeSettings->expects($this->at($at++))->method('getLocale')
