@@ -3,11 +3,14 @@
 namespace Oro\Bundle\DataGridBundle\Extension\Pager;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Builder;
+use Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataObject;
+use Oro\Bundle\DataGridBundle\Datagrid\Common\ResultsObject;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\DataGridBundle\Extension\AbstractExtension;
 use Oro\Bundle\DataGridBundle\Extension\Pager\Orm\Pager;
+use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 
 class OrmPagerExtension extends AbstractExtension
 {
@@ -47,15 +50,12 @@ class OrmPagerExtension extends AbstractExtension
     /**
      * {@inheritDoc}
      */
-    public function isApplicable(array $config)
+    public function isApplicable(DatagridConfiguration $config)
     {
         $enabled = $this->accessor->getValue($config, Builder::DATASOURCE_TYPE_PATH) == OrmDatasource::TYPE
             && $this->accessor->getValue($config, self::PAGER_ENABLE_OPTION_PATH) !== false;
 
-        $this->validateConfiguration(
-            new Configuration(),
-            array_intersect_key($config, array_flip(['pager']))
-        );
+        $this->validateConfiguration(new Configuration(), $config->toArray(['pager']));
 
         return $enabled;
     }
@@ -63,7 +63,7 @@ class OrmPagerExtension extends AbstractExtension
     /**
      * {@inheritDoc}
      */
-    public function visitDatasource(array $config, DatasourceInterface $datasource)
+    public function visitDatasource(DatagridConfiguration $config, DatasourceInterface $datasource)
     {
         $defaultPerPage = $this->accessor->getValue($config, self::PAGER_DEFAULT_PER_PAGE_OPTION_PATH) ? : 10;
 
@@ -76,16 +76,15 @@ class OrmPagerExtension extends AbstractExtension
     /**
      * {@inheritDoc}
      */
-    public function visitResult(array $config, \stdClass $result)
+    public function visitResult(DatagridConfiguration $config, ResultsObject $result)
     {
-        $result->options                    = isset($result->options) ? $result->options : [];
-        $result->options[self::TOTAL_PARAM] = $this->pager->getNbResults();
+        $result->offsetAddToArray('options', [self::TOTAL_PARAM => $this->pager->getNbResults()]);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function visitMetadata(array $config, \stdClass $result)
+    public function visitMetadata(DatagridConfiguration $config, MetadataObject $result)
     {
         // TODO: Implement visitMetadata() method.
     }

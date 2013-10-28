@@ -5,6 +5,7 @@ namespace Oro\Bundle\DataGridBundle\Event;
 use Symfony\Component\EventDispatcher\Event;
 
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
+use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 
 /**
  * Class BuildBefore
@@ -20,10 +21,10 @@ class BuildBefore extends Event implements GridEventInterface
     /** @var DatagridInterface */
     protected $datagrid;
 
-    /** @var array */
+    /** @var DatagridConfiguration */
     protected $config;
 
-    public function __construct(DatagridInterface $datagrid, array $config)
+    public function __construct(DatagridInterface $datagrid, DatagridConfiguration $config)
     {
         $this->datagrid = $datagrid;
         $this->config   = $config;
@@ -40,24 +41,10 @@ class BuildBefore extends Event implements GridEventInterface
     /**
      * Getter for datagrid config array
      *
-     * @return array
+     * @return DatagridConfiguration
      */
     public function getConfig()
     {
         return $this->config;
-    }
-
-    /**
-     * Setter for datagrid config
-     *
-     * @param array $config
-     *
-     * @return $this
-     */
-    public function setConfig(array $config)
-    {
-        $this->config = $config;
-
-        return $this;
     }
 }

@@ -2,14 +2,16 @@
 
 namespace Oro\Bundle\FilterBundle\Extension;
 
+use Symfony\Component\Translation\TranslatorInterface;
+
 use Oro\Bundle\DataGridBundle\Datagrid\Builder;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 use Oro\Bundle\DataGridBundle\Extension\AbstractExtension;
 use Oro\Bundle\FilterBundle\Extension\Orm\FilterInterface;
-use Symfony\Component\PropertyAccess\PropertyAccess;
-use Symfony\Component\Translation\TranslatorInterface;
+use Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataObject;
+use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 
 class OrmFilterExtension extends AbstractExtension
 {
@@ -33,7 +35,7 @@ class OrmFilterExtension extends AbstractExtension
     /**
      * {@inheritDoc}
      */
-    public function isApplicable(array $config)
+    public function isApplicable(DatagridConfiguration $config)
     {
         $filters = $this->accessor->getValue($config, Configuration::COLUMNS_PATH) ? : [];
 
@@ -53,7 +55,7 @@ class OrmFilterExtension extends AbstractExtension
     /**
      * {@inheritDoc}
      */
-    public function visitDatasource(array $config, DatasourceInterface $datasource)
+    public function visitDatasource(DatagridConfiguration $config, DatasourceInterface $datasource)
     {
         $filters = $this->getFiltersToApply($config);
         $values  = $this->getValuesToApply($config);
@@ -75,9 +77,9 @@ class OrmFilterExtension extends AbstractExtension
     /**
      * {@inheritDoc}
      */
-    public function visitMetadata(array $config, \stdClass $data)
+    public function visitMetadata(DatagridConfiguration $config, MetadataObject $data)
     {
-        $data->filters         = isset($data->filters) && is_array($data->filters) ? $data->filters : [];
+        $data->filters = isset($data->filters) && is_array($data->filters) ? $data->filters : [];
 
         $data->state            = isset($data->state) && is_array($data->state) ? $data->state : [];
         $data->state['filters'] = isset($data->state['filters']) && is_array($data->state['filters'])
@@ -99,7 +101,7 @@ class OrmFilterExtension extends AbstractExtension
                 }
             }
 
-            $metadata                = $filter->getMetadata();
+            $metadata        = $filter->getMetadata();
             $data->filters[] = array_merge(
                 $metadata,
                 ['label' => $this->translator->trans($metadata['label'])]
@@ -125,11 +127,11 @@ class OrmFilterExtension extends AbstractExtension
     /**
      * Prepare filters array
      *
-     * @param array $config
+     * @param DatagridConfiguration $config
      *
      * @return FilterInterface[]
      */
-    protected function getFiltersToApply(array $config)
+    protected function getFiltersToApply(DatagridConfiguration $config)
     {
         $filters       = [];
         $filtersConfig = $this->accessor->getValue($config, Configuration::COLUMNS_PATH);
@@ -144,11 +146,11 @@ class OrmFilterExtension extends AbstractExtension
     /**
      * Takes param from request and merge with default filters
      *
-     * @param array $config
+     * @param DatagridConfiguration $config
      *
      * @return array
      */
-    protected function getValuesToApply(array $config)
+    protected function getValuesToApply(DatagridConfiguration $config)
     {
         $result = [];
 

@@ -22,6 +22,6 @@ class GridController extends Controller
         $grid =  $this->get('oro_datagrid.datagrid.manager')->getDatagrid($gridName);
         $result = $grid->getData();
 
-        return new JsonResponse($result);
+        return new JsonResponse($result->toArray());
     }
 }

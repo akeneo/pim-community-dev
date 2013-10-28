@@ -3,6 +3,8 @@
 namespace Oro\Bundle\DataGridBundle\Datagrid;
 
 use Oro\Bundle\DataGridBundle\Extension\Acceptor;
+use Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataObject;
+use Oro\Bundle\DataGridBundle\Datagrid\Common\ResultsObject;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 
 class Datagrid implements DatagridInterface
@@ -35,12 +37,10 @@ class Datagrid implements DatagridInterface
      */
     public function getData()
     {
-        $result = new \stdClass();
-
         /** @var array $rows */
         $rows = $this->getAcceptedDatasource()->getResults();
 
-        $result->data = $rows;
+        $result = ResultsObject::create(['data' => $rows]);
         $this->acceptor->acceptResult($result);
 
         return $result;
@@ -51,12 +51,10 @@ class Datagrid implements DatagridInterface
      */
     public function getMetadata()
     {
-        // create \stdClass from array
-        $data = (object)[self::METADATA_OPTIONS_KEY => ['gridName' => $this->getName()]];
-
+        $data = MetadataObject::create([self::METADATA_OPTIONS_KEY => ['gridName' => $this->getName()]]);
         $this->acceptor->acceptMetadata($data);
 
-        return (array)$data;
+        return $data;
     }
 
     /**

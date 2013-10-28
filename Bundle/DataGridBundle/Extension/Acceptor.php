@@ -3,16 +3,19 @@
 namespace Oro\Bundle\DataGridBundle\Extension;
 
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
+use Oro\Bundle\DataGridBundle\Datagrid\Common\ResultsObject;
+use Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataObject;
+use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 
 class Acceptor
 {
-    /** @var array */
+    /** @var DatagridConfiguration */
     protected $config;
 
     /** @var ExtensionVisitorInterface[] */
     protected $extensions = [];
 
-    public function __construct(array $config)
+    public function __construct(DatagridConfiguration $config)
     {
         $this->setConfig($config);
     }
@@ -28,9 +31,9 @@ class Acceptor
     }
 
     /**
-     * @param \stdClass $result
+     * @param ResultsObject $result
      */
-    public function acceptResult(\stdClass $result)
+    public function acceptResult(ResultsObject $result)
     {
         foreach ($this->getExtensions() as $extension) {
             $extension->visitResult($this->getConfig(), $result);
@@ -38,9 +41,9 @@ class Acceptor
     }
 
     /**
-     * @param \stdClass $data
+     * @param MetadataObject $data
      */
-    public function acceptMetadata(\stdClass $data)
+    public function acceptMetadata(MetadataObject $data)
     {
         foreach ($this->getExtensions() as $extension) {
             $extension->visitMetadata($this->getConfig(), $data);
@@ -50,11 +53,11 @@ class Acceptor
     /**
      * Setter for config
      *
-     * @param array $config
+     * @param DatagridConfiguration $config
      *
      * @return mixed
      */
-    public function setConfig(array $config)
+    public function setConfig(DatagridConfiguration $config)
     {
         $this->config = $config;
 
@@ -64,7 +67,7 @@ class Acceptor
     /**
      * Getter for config
      *
-     * @return array
+     * @return DatagridConfiguration
      */
     public function getConfig()
     {

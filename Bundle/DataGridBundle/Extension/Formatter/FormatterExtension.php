@@ -2,6 +2,9 @@
 
 namespace Oro\Bundle\DataGridBundle\Extension\Formatter;
 
+use Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataObject;
+use Oro\Bundle\DataGridBundle\Datagrid\Common\ResultsObject;
+use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\AbstractExtension;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\PropertyInterface;
 
@@ -13,7 +16,7 @@ class FormatterExtension extends AbstractExtension
     /**
      * {@inheritDoc}
      */
-    public function isApplicable(array $config)
+    public function isApplicable(DatagridConfiguration $config)
     {
         $columns    = $this->accessor->getValue($config, Configuration::COLUMNS_PATH) ? : [];
         $properties = $this->accessor->getValue($config, Configuration::PROPERTIES_PATH) ? : [];
@@ -31,11 +34,11 @@ class FormatterExtension extends AbstractExtension
     /**
      * {@inheritDoc}
      */
-    public function visitResult(array $config, \stdClass $result)
+    public function visitResult(DatagridConfiguration $config, ResultsObject $result)
     {
-        $rows       = (array)$result->data;
-        $columns    = $this->accessor->getValue($config, Configuration::COLUMNS_PATH) ? : [];
-        $properties = $this->accessor->getValue($config, Configuration::PROPERTIES_PATH) ? : [];
+        $rows       = (array)$result->offsetGetOr('data', []);
+        $columns    = $config->offsetGetByPath(Configuration::COLUMNS_PATH, []);
+        $properties = $config->offsetGetByPath(Configuration::PROPERTIES_PATH, []);
         $toProcess  = array_merge($columns, $properties);
 
         foreach ($rows as $key => $row) {
@@ -45,14 +48,16 @@ class FormatterExtension extends AbstractExtension
                 $row[$name] = $property->getValue($record);
             }
             // result row will contains only processed rows
-            $result->data[$key] = array_intersect_key($row, array_flip(array_keys($toProcess)));
+            $rows[$key] = array_intersect_key($row, array_flip(array_keys($toProcess)));
         }
+
+        $result->offsetSet('data', $rows);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function visitMetadata(array $config, \stdClass $data)
+    public function visitMetadata(DatagridConfiguration $config, MetadataObject $data)
     {
         // get only columns here because columns will be represented on frontend
         $columns = $this->accessor->getValue($config, Configuration::COLUMNS_PATH) ? : [];
@@ -63,10 +68,7 @@ class FormatterExtension extends AbstractExtension
             $propertiesMetadata[] = $metadata;
         }
 
-        $data->columns = array_merge(
-            isset($data->columns) && is_array($data->columns) ? $data->columns : [],
-            $propertiesMetadata
-        );
+        $data->offsetAddToArray('columns', $propertiesMetadata);
     }
 
     /**

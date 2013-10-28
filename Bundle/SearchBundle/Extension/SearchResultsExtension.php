@@ -1,18 +1,17 @@
 <?php
 namespace Oro\Bundle\SearchBundle\Extension;
 
-use Doctrine\ORM\EntityManager;
-
+use Oro\Bundle\DataGridBundle\Datagrid\Common\ResultsObject;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Extension\AbstractExtension;
+use Oro\Bundle\DataGridBundle\Extension\Formatter\ResultRecord;
+use Oro\Bundle\SearchBundle\Event\PrepareResultItemEvent;
 use Oro\Bundle\SearchBundle\Formatter\ResultFormatter;
-use Oro\Bundle\SearchBundle\Engine\ObjectMapper;
-use Oro\Bundle\DataGridBundle\Extension\Formatter\ResultRecordInterface;
-use Oro\Bundle\SearchBundle\Query\Result\Item as ResultItem;
+use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 
 class SearchResultsExtension extends AbstractExtension
 {
-    const TYPE_PATH = '[columns][entity][type]';
+    const TYPE_PATH  = '[columns][entity][type]';
     const TYPE_VALUE = 'search-result';
 
     /** @var ResultFormatter */
@@ -20,7 +19,7 @@ class SearchResultsExtension extends AbstractExtension
 
     /**
      * @param RequestParameters $requestParams
-     * @param ResultFormatter $formatter
+     * @param ResultFormatter   $formatter
      */
     public function __construct(RequestParameters $requestParams, ResultFormatter $formatter)
     {
@@ -32,7 +31,7 @@ class SearchResultsExtension extends AbstractExtension
     /**
      * {@inheritDoc}
      */
-    public function isApplicable(array $config)
+    public function isApplicable(DatagridConfiguration $config)
     {
         return $this->accessor->getValue($config, self::TYPE_PATH) == self::TYPE_VALUE ? true : false;
     }
@@ -40,10 +39,10 @@ class SearchResultsExtension extends AbstractExtension
     /**
      * {@inheritDoc}
      */
-    public function visitResult(array $config, \stdClass $result)
+    public function visitResult(DatagridConfiguration $config, ResultsObject $result)
     {
-        $rows       = (array)$result->data;
-        $results    = [];
+        $rows    = (array)$result->data;
+        $results = [];
 
         $this->resultFormatter->getResultEntities($result);
 
@@ -59,7 +58,7 @@ class SearchResultsExtension extends AbstractExtension
 
             $resultRows[] = array(
                 'indexer_item' => $row,
-                'entity' => $entity,
+                'entity'       => $entity,
             );
 
 

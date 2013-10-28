@@ -3,6 +3,7 @@ namespace Oro\Bundle\FlexibleEntityBundle\Grid;
 
 use Doctrine\ORM\QueryBuilder;
 
+use Oro\Bundle\DataGridBundle\Common\Object;
 use Oro\Bundle\DataGridBundle\Event\BuildAfter;
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
@@ -15,14 +16,12 @@ use Oro\Bundle\FlexibleEntityBundle\Grid\Extension\Formatter\Property\FlexibleFi
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManagerRegistry;
 
-use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
-use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 class EventListener
 {
-    const FLEXIBLE_ENTITY_PATH  = '[flexible_entity]';
+    const FLEXIBLE_ENTITY_PATH = '[flexible_entity]';
 
     /** @var  PropertyAccessor */
     protected $accessor;
@@ -46,11 +45,13 @@ class EventListener
     public function buildBefore(BuildBefore $event)
     {
         $config   = $event->getConfig();
-        $flexible = $this->accessor->getValue($config, sprintf('[%s]', Configuration::FLEXIBLE_ATTRIBUTES_KEY));
+        $flexible = $config->offsetGetOr(Configuration::FLEXIBLE_ATTRIBUTES_KEY);
 
         if ($flexible) {
-            $this->validateConfiguration(new Configuration(), [Configuration::FLEXIBLE_ATTRIBUTES_KEY => $flexible]);
-            $flexibleEntity = $this->accessor->getValue($config, self::FLEXIBLE_ENTITY_PATH);
+            Object::create([Configuration::FLEXIBLE_ATTRIBUTES_KEY => $flexible])
+                ->validateConfiguration(new Configuration());
+
+            $flexibleEntity = $config->offsetGetByPath(self::FLEXIBLE_ENTITY_PATH);
             if (!$flexibleEntity) {
                 throw new \LogicException(
                     'Could not retrieve "flexible_entity" attribute for datagrid: ' . $event->getDatagrid()->getName()
@@ -67,8 +68,7 @@ class EventListener
                 if (!isset($attributes[$attribute])) {
                     throw new \LogicException(sprintf('Flexible attribute "%s" does not exist', $attribute));
                 }
-                $this->accessor->setValue(
-                    $config,
+                $config->offsetSetByPath(
                     sprintf('%s[%s]', FormatterConfiguration::COLUMNS_PATH, $attribute),
                     [
                         FlexibleFieldProperty::TYPE_KEY         => 'flexible_field',
@@ -89,8 +89,7 @@ class EventListener
                         ? $map[$backendType]['parent_filter']
                         : $map[AbstractAttributeType::BACKEND_TYPE_TEXT]['parent_filter'];
 
-                    $this->accessor->setValue(
-                        $config,
+                    $config->offsetSetByPath(
                         sprintf('%s[%s]', FilterConfiguration::COLUMNS_PATH, $attribute),
                         [
                             FilterConfiguration::TYPE_KEY          => $filterType,
@@ -103,8 +102,6 @@ class EventListener
                 }
             }
         }
-
-        $event->setConfig($config);
     }
 
     /**
@@ -116,7 +113,7 @@ class EventListener
     {
         $datagrid = $event->getDatagrid();
         $config   = $datagrid->getAcceptor()->getConfig();
-        $fields   = $this->accessor->getValue($config, FormatterConfiguration::COLUMNS_PATH) ? : [];
+        $fields   = $config->offsetGetByPath(FormatterConfiguration::COLUMNS_PATH, []);
 
         $flexibleCount = count(
             array_filter(
@@ -158,18 +155,5 @@ class EventListener
         }
 
         return $attributes;
-    }
-
-    /**
-     * @param ConfigurationInterface      $configuration
-     * @param                             $config
-     */
-    protected function validateConfiguration(ConfigurationInterface $configuration, $config)
-    {
-        $processor = new Processor();
-        $processor->processConfiguration(
-            $configuration,
-            $config
-        );
     }
 }
