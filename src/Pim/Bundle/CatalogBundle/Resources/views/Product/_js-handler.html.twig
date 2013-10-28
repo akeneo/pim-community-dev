@@ -102,7 +102,7 @@
 
                     $('#group-products-{{ group.id }}').on('click', function(event) {
                         event.preventDefault();
-                        var modal = Dialog.redirect(
+                        Dialog.redirect(
                             '{{ productList|raw }}',
                             '{{ "Group"|trans }} {{ group.label }}',
                             '{{ "View group"|trans }}',
