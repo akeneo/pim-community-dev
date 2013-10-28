@@ -176,5 +176,7 @@ class ChannelDatagridManager extends DatagridManager
         $proxyQuery
             ->innerJoin(sprintf('%s.category', $rootAlias), 'category')
             ->leftJoin('category.translations', 'ct');
+
+        $proxyQuery->groupBy($rootAlias);
     }
 }
