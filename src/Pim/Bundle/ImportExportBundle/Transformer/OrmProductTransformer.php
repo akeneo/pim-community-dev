@@ -3,6 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Transformer;
 
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
+use Symfony\Component\PropertyAccess\PropertyPathBuilder;
 use Doctrine\ORM\Query;
 use Pim\Bundle\ImportExportBundle\Cache\AttributeCache;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
@@ -60,14 +61,14 @@ class OrmProductTransformer
     public function getProduct(array $values, array $mapping = array(), array $defaults = array())
     {
         $this->mapValues($values, $mapping);
-
-        $attributeValues = array_diff_key($values, array_keys($this->propertyTransformers));
+        $attributeValues = array_diff_key($values, $this->propertyTransformers);
         if (!$this->attributeCache->isInitialized()) {
             $this->attributeCache->initialize(array_keys($attributeValues));
         }
 
         $product = $this->createOrLoadProduct($values, $defaults);
-
+        
+        $this->setDefaultValues($product, $defaults);
         $this->setPropertyValues($product, $values);
         $this->setAttributeValues($product, $attributeValues);
 
@@ -100,7 +101,7 @@ class OrmProductTransformer
     protected function mapValues(&$values, array $mapping)
     {
         foreach ($mapping as $oldName => $newName) {
-            if (isset($values[$oldName])) {
+            if ($oldName != $newName && isset($values[$oldName])) {
                 $values[$newName] = $values[$oldName];
                 unset($values[$oldName]);
             }
@@ -136,10 +137,30 @@ class OrmProductTransformer
                 $this->propertyAccessor->setValue(
                     $product,
                     $propertyPath,
-                    $values[$propertyPath] ? $this->getTransformedValue($transformerConfig, $value) : null
+                    $this->getTransformedValue($transformerConfig, $values[$propertyPath])
                 );
             }
         }
+    }
+    protected function setDefaultValues(ProductInterface $product, $defaults)
+    {
+        foreach ($defaults as $propertyPath => $value) {
+            $this->propertyAccessor->setValue($product, $propertyPath, $value);
+        }
+    }
+    protected function setPropertyValue(ProductInterface $product, $propertyPath, $value)
+    {
+        $propertyPathBuilder = new PropertyPathBuilder;
+        if (is_array($value)) {
+            $propertyPathBuilder->appendIndex($propertyPath);
+        } else {
+            $propertyPathBuilder->appendProperty($propertyPath);
+        }
+        $this->propertyAccessor->setValue(
+            $product,
+            $propertyPathBuilder->getPropertyPath(),
+            $value
+        );
     }
 
     protected function setAttributeValues(ProductInterface $product, array $attributeValues)

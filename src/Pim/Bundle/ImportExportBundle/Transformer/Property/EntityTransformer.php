@@ -34,21 +34,28 @@ class EntityTransformer implements PropertyTransformerInterface
      */
     public function transform($value, array $options = array())
     {
-        if (!$value) return;
-
+        $multiple = (isset($options['multiple']) && $options['multiple']);
+        if (!$value) {
+            return $multiple ? array() : null;
+        }
+        
         $entityCache = $this->entityCache;
         $transform = function ($value) use ($options, $entityCache) {
             $entity = $entityCache->find($options['class'], $value);
             if (!$entity) {
                 throw new \InvalidArgumentException(
-                    'No entity of class "%s" with code "%s"',
-                    $options['class'],
-                    $value
+                    sprintf(
+                        'No entity of class "%s" with code "%s"',
+                        $options['class'],
+                        $value
+                    )
                 );
             }
+
+            return $entity;
         };
 
-        return ($options['multiple'])
+        return $multiple
             ? array_map($transform, preg_split('/\s*,\s*/', $value))
             : $transform($value);
     }
