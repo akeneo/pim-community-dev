@@ -180,19 +180,19 @@ class OrmProductTransformer
             $columnInfo = $columns[$columnCode];
             try  {
                 if ($columnValue || in_array($columnInfo['code'], $requiredAttributeCodes)) {
-                    $this->setAttributeValue($product, $this->getAttributeValue($columnValue, $columnInfo), $columnInfo);
+                    $errors = array_merge(
+                        $errors,
+                        $this->productValidator->validateProductValue(
+                            $columnCode,
+                            $columnInfo['attribute'],
+                            $columnValue
+                        )
+                    );
                 }
             } catch (InvalidValueException $ex) {
                 $errors[] = $this->productValidator->getTranslatedExceptionMessage($columnCode, $ex);
             }
         }
-        $errors = array_merge(
-            $errors,
-            $this->productValidator->validateProductProperties(
-                $product, 
-                array_keys($attributeValues) 
-            )
-        );
 
         return $errors;
     }
