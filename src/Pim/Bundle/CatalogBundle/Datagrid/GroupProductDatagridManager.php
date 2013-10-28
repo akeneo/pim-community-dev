@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Datagrid;
 
+use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
+
 use Oro\Bundle\GridBundle\Sorter\SorterInterface;
 
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
@@ -60,6 +62,9 @@ class GroupProductDatagridManager extends FlexibleDatagridManager
         $field = $this->createFlexibleField($identifier);
         $fieldsCollection->add($field);
 
+        $field = $this->createAttributeAsLabelField();
+        $fieldsCollection->add($field);
+
         if ($this->group->getType()->isVariant()) {
             foreach ($this->getGroup()->getAttributes() as $attribute) {
                 $field = $this->createFlexibleField($attribute);
@@ -100,6 +105,29 @@ class GroupProductDatagridManager extends FlexibleDatagridManager
                 'filter_type'     => FilterInterface::TYPE_BOOLEAN,
                 'filterable'      => true,
                 'filter_by_where' => true
+            )
+        );
+
+        return $field;
+    }
+
+    /**
+     * Create attribute as label column
+     *
+     * @return \Oro\Bundle\GridBundle\Field\FieldDescription
+     */
+    protected function createAttributeAsLabelField()
+    {
+        $field = new FieldDescription();
+        $field->setName('attributeAsLabel');
+        $field->setOptions(
+            array(
+                'type'              => FieldDescriptionInterface::TYPE_TEXT,
+                'label'             => $this->translate('Label'),
+                'field_name'        => 'label',
+                'nullable'          => false,
+                'sortable'          => false,
+                'filter_type'       => false
             )
         );
 
