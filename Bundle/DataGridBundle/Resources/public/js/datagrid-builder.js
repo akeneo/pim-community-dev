@@ -11,24 +11,18 @@ function($, _, Backbone, __, tools, mediator, registry, LoadingMask,
         gridGridViewsSelector = '.page-title > .navbar-extra .span9:last',
         cellModuleName = 'oro/datagrid/{{type}}-cell',
         actionModuleName = 'oro/datagrid/{{type}}-action',
-        types = {
-            cell: {
-                date:     'moment',
-                datetime: 'moment',
-                decimal:  'number'
-            },
-            action: ['navigate', 'delete', 'ajax', 'mass']
+        cellTypes = {
+            date:     'moment',
+            datetime: 'moment',
+            decimal:  'number'
         },
 
         helpers = {
-            capitalize: function (s) {
-                return s[0].toUpperCase() + s.slice(1);
-            },
             cellType: function (type) {
-                return this.capitalize(type) + 'Cell';
+                return type + 'Cell';
             },
             actionType: function (type) {
-                return this.capitalize(type) + 'Acton';
+                return type + 'Acton';
             }
         },
 
@@ -55,17 +49,18 @@ function($, _, Backbone, __, tools, mediator, registry, LoadingMask,
              */
             collectModules: function () {
                 var modules = this.modules,
+                    metadata = this.metadata,
                     moduleName = function (template, type) {
                         return template.replace('{{type}}', type);
                     };
                 // cells
-                _.each(this.metadata.columns, function (column) {
+                _.each(metadata.columns, function (column) {
                     var type = column.type;
-                    modules[helpers.cellType(type)] = moduleName(cellModuleName, types.cell[type] || type);
+                    modules[helpers.cellType(type)] = moduleName(cellModuleName, cellTypes[type] || type);
                 });
                 // actions
-                _.each(types.action, function (type) {
-                    modules[helpers.actionType(type)] = moduleName(actionModuleName, type);
+                _.each(_.values(metadata.rowActions).concat(_.values(metadata.massActions)), function (action) {
+                    modules[helpers.actionType(action.type)] = moduleName(actionModuleName, action.type);
                 });
             },
 
@@ -73,8 +68,7 @@ function($, _, Backbone, __, tools, mediator, registry, LoadingMask,
              * Build grid
              */
             buildGrid: function () {
-                var options, collection, grid,
-                    gridName = this.metadata.options.gridName;
+                var options, collection, grid;
 
                 // create collection
                 options = methods.combineCollectionOptions.call(this);
@@ -85,19 +79,14 @@ function($, _, Backbone, __, tools, mediator, registry, LoadingMask,
                 options = methods.combineGridOptions.call(this);
                 grid = new Grid(_.extend({collection: collection}, options));
                 this.$el.append(grid.render().$el);
-                registry.setElement('datagrid', gridName, grid);
-                mediator.trigger('datagrid:created:' + gridName, grid);
+                registry.setElement('datagrid', options.name, grid);
+                mediator.trigger('datagrid:created:' + options.name, grid);
 
                 // create grid view
                 $(gridGridViewsSelector).append((new GridViewsView({collection: collection})).render().$el);
 
                 // register router
                 new GridRouter({collection: collection});
-
-                // @todo why do we need start history here?
-                if (!Backbone.History.started) {
-                    Backbone.history.start();
-                }
             },
 
             /**
@@ -124,28 +113,41 @@ function($, _, Backbone, __, tools, mediator, registry, LoadingMask,
              */
             combineGridOptions: function () {
                 var columns,
+                    rowActions = {},
+                    massActions = {},
                     modules = this.modules,
                     metadata = this.metadata;
 
                 // columns
-                columns = _.map(this.metadata.columns, function (cell) {
-                    var optionKeys = ['name', 'label', 'renderable', 'editable'],
-                        options = _.pick.apply(null, [cell].concat(optionKeys)),
-                        cellOptions = _.omit.apply(null, [cell].concat(optionKeys.concat('type'))),
+                columns = _.map(metadata.columns, function (cell) {
+                    var cellOptionKeys = ['name', 'label', 'renderable', 'editable'],
+                        cellOptions = _.pick.apply(null, [cell].concat(cellOptionKeys)),
+                        extendOptions = _.omit.apply(null, [cell].concat(cellOptionKeys.concat('type'))),
                         cellType = modules[helpers.cellType(cell.type)];
-                    if (!_.isEmpty(cellOptions)) {
-                        cellType = cellType.extend(cellOptions);
+                        // @todo not sortable columns
+                    if (!_.isEmpty(extendOptions)) {
+                        cellType = cellType.extend(extendOptions);
                     }
-                    options.cell = cellType;
-                    return options;
+                    cellOptions.cell = cellType;
+                    return cellOptions;
+                });
+
+                // row actions
+                _.each(metadata.rowActions, function (options, action) {
+                    rowActions[action] = modules[helpers.actionType(options.type)].extend(options);
+                });
+
+                // mass actions
+                _.each(metadata.massActions, function (options, action) {
+                    massActions[action] = modules[helpers.actionType(options.type)].extend(options);
                 });
 
                 return {
-                    name: this.metadata.options.gridName,
+                    name: metadata.options.gridName,
                     columns: columns,
-                    rowActions: this.metadata.rowActions,
-                    massActions: this.metadata.massActions,
-                    toolbarOptions: this.metadata.options.toolbarOptions || {},
+                    rowActions: rowActions,
+                    massActions: massActions,
+                    toolbarOptions: metadata.options.toolbarOptions || {},
                     multipleSorting: metadata.options.multipleSorting || false,
                     entityHint: metadata.options.entityHint
                 };
