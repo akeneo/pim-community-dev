@@ -5,6 +5,7 @@ namespace Oro\Bundle\BatchBundle\Job;
 use Doctrine\ORM\EntityManager;
 use Oro\Bundle\BatchBundle\Entity\JobInstance;
 use Oro\Bundle\BatchBundle\Entity\JobExecution;
+use Oro\Bundle\BatchBundle\Entity\StepExecution;
 
 /**
  * Class peristing JobExecution and StepExecution states
@@ -35,4 +36,23 @@ class DoctrineJobRepository implements JobRepositoryInterface
 
         return $jobExecution;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function updateJobExecution(JobExecution $jobExecution)
+    {
+        $this->entityManager->persist($jobExecution);
+        $this->entityManager->flush($jobExecution);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function updateStepExecution(StepExecution $stepExecution)
+    {
+        $this->entityManager->persist($stepExecution);
+        $this->entityManager->flush($stepExecution);
+    }
+
 }
