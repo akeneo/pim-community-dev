@@ -37,12 +37,17 @@ function($, _, Backbone, __, tools, mediator, registry, LoadingMask,
              * Reads data from grid container, collects required modules and runs grid builder
              */
             initBuilder: function () {
-                this.metadata = this.$el.data('metadata');
+                this.metadata = _.extend({
+                    columns: [],
+                    options: {},
+                    state: {},
+                    rowActions: {},
+                    massActions: {}
+                }, this.$el.data('metadata'));
                 this.modules = {};
                 methods.collectModules.call(this);
                 // load all dependencies and build grid
                 tools.loadModules(this.modules, _.bind(methods.buildGrid, this));
-
             },
 
             /**
@@ -54,7 +59,7 @@ function($, _, Backbone, __, tools, mediator, registry, LoadingMask,
                         return template.replace('{{type}}', type);
                     };
                 // cells
-                _.each(this.metadata.columns || [], function (column) {
+                _.each(this.metadata.columns, function (column) {
                     var type = column.type;
                     modules[helpers.cellType(type)] = moduleName(cellModuleName, types.cell[type] || type);
                 });
@@ -72,28 +77,13 @@ function($, _, Backbone, __, tools, mediator, registry, LoadingMask,
                     gridName = this.metadata.options.gridName;
 
                 // create collection
-                try {
-                    options = methods.combineCollectionOptions.call(this);
-                } catch (e) {
-                    // @todo handle exception
-                    console.error(e.message);
-                }
+                options = methods.combineCollectionOptions.call(this);
                 collection = new PageableCollection(this.$el.data('data'), options);
                 mediator.trigger('datagrid_collection_set_after', collection, this.$el);
 
                 // create grid
-                try {
-                    options = methods.combineGridOptions.call(this);
-                } catch (e) {
-                    // @todo  handle exception
-                    console.error(e.message);
-                }
-                // @todo add placeholder for messages
-                options.noDataHint = __('No user exists.');
-                options.noResultsHint = __('No user was found to match your search. Try modifying your search criteria ...');
-                options.collection = collection;
-                options.loadingMask = LoadingMask.extend({loadingHint: __('Loading...')});
-                grid = new Grid(options);
+                options = methods.combineGridOptions.call(this);
+                grid = new Grid(_.extend({collection: collection}, options));
                 this.$el.append(grid.render().$el);
                 registry.setElement('datagrid', gridName, grid);
                 mediator.trigger('datagrid:created:' + gridName, grid);
@@ -116,18 +106,15 @@ function($, _, Backbone, __, tools, mediator, registry, LoadingMask,
              * @returns {Object}
              */
             combineCollectionOptions: function () {
-                var emptyState = {filters: {}, sorters:{}};
-
                 return _.extend({
-                        inputName: this.metadata.options.gridName,
-                        parse: true,
-                        url: '\/user\/json'
-                    },
-                    this.metadata.options,
-                    {
-                        state: _.extend(emptyState, this.metadata.state||{})
-                    }
-                );
+                    inputName: this.metadata.options.gridName,
+                    parse: true,
+                    url: '\/user\/json',
+                    state: _.extend({
+                        filters: {},
+                        sorters:{}
+                    }, this.metadata.state)
+                }, this.metadata.options);
             },
 
             /**
@@ -137,9 +124,6 @@ function($, _, Backbone, __, tools, mediator, registry, LoadingMask,
              */
             combineGridOptions: function () {
                 var columns,
-                    rowActions = {},
-                    massActions = {},
-                    toolbarOptions = {},
                     modules = this.modules,
                     metadata = this.metadata;
 
@@ -156,16 +140,14 @@ function($, _, Backbone, __, tools, mediator, registry, LoadingMask,
                     return options;
                 });
 
-                // @todo row and mass actions + toolbar options
-
                 return {
                     name: this.metadata.options.gridName,
                     columns: columns,
-                    rowActions: rowActions,
-                    massActions: massActions,
-                    toolbarOptions: toolbarOptions,
+                    rowActions: this.metadata.rowActions,
+                    massActions: this.metadata.massActions,
+                    toolbarOptions: this.metadata.options.toolbarOptions || {},
                     multipleSorting: metadata.options.multipleSorting || false,
-                    entityHint: metadata.options.entityHint || __('Entity')
+                    entityHint: metadata.options.entityHint
                 };
             }
         };

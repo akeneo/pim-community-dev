@@ -73,8 +73,6 @@ function($, _, Backgrid, __, mediator, LoadingMask, GridHeader, GridBody, Toolba
          * @property {Object} Default properties values
          */
         defaults: {
-            noDataHint: 'No data found.',
-            noResultsHint: 'No items found during search.',
             rowClickActionClass: 'row-click-action',
             rowClassName: '',
             toolbarOptions: {addResetAction: true, addRefreshAction: true},
@@ -90,7 +88,6 @@ function($, _, Backgrid, __, mediator, LoadingMask, GridHeader, GridBody, Toolba
          * @param {Object} options
          * @param {Backbone.Collection} options.collection
          * @param {(Backbone.Collection|Array)} options.columns
-         * @param {String} [options.noDataHint] Text which displayed when datagrid collection is empty
          * @param {String} [options.rowClickActionClass] CSS class for row with click action
          * @param {String} [options.rowClassName] CSS class for row
          * @param {Object} [options.toolbarOptions] Options for toolbar
@@ -426,15 +423,11 @@ function($, _, Backgrid, __, mediator, LoadingMask, GridHeader, GridBody, Toolba
          * Render no data block.
          */
         renderNoDataBlock: function() {
-            if (_.isEmpty(this.collection.state.filters)) {
-                // no filters
-                var dataHint = this.noDataHint;
-            } else {
-                // some filters exists
-                var dataHint = this.noResultsHint;
-            }
+            var placeholders = {entityHint: (this.entityHint || __('oro.datagrid.entityHint')).toLowerCase()},
+                template = _.isEmpty(this.collection.state.filters) ?
+                    'oro.datagrid.noentities' : 'oro.datagrid.noresults';
             this.$(this.selectors.noDataBlock).html($(this.noDataTemplate({
-                hint: dataHint.replace('\n', '<br />')
+                hint: __(template, placeholders).replace('\n', '<br />')
             }))).hide();
             this._updateNoDataBlock();
         },
