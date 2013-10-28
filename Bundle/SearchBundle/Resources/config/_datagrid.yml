@@ -3,7 +3,7 @@ parameters:
     oro_search.datagrid_results.datagrid_manager.class:       Oro\Bundle\SearchBundle\Datagrid\SearchDatagridManager
     oro_search.datagrid_results.datagrid_builder.class:       Oro\Bundle\SearchBundle\Datagrid\SearchDatagridBuilder
     oro_search.datagrid_results.query_factory.class:          Oro\Bundle\SearchBundle\Datagrid\IndexerQueryFactory
-    oro_search.datagrid_results.entity_result_listener.class: Oro\Bundle\SearchBundle\Datagrid\EntityResultListener
+
 
 services:
     oro_search.datagrid_results.datagrid_manager:
@@ -33,13 +33,13 @@ services:
             - @oro_grid.action.factory
             - %oro_grid.datagrid.class%
 
-    oro_search.datagrid_results.entity_result_listener:
-        class: %oro_search.datagrid_results.entity_result_listener.class%
-        arguments:
-            - @oro_search.formatter.result_formatter
-            - %oro_search.datagrid_results.datagrid_name%
-            - @event_dispatcher
-        tags:
-            - name: kernel.event_listener
-              event: oro_grid.datagrid.result
-              method: processResult
+#    oro_search.datagrid_results.entity_result_listener:
+#        class: %oro_search.datagrid_results.entity_result_listener.class%
+#        arguments:
+#            - @oro_search.formatter.result_formatter
+#            - %oro_search.datagrid_results.datagrid_name%
+#            - @event_dispatcher
+#        tags:
+#            - name: kernel.event_listener
+#              event: oro_grid.datagrid.result
+#              method: processResult

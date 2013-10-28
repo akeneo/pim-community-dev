@@ -41,10 +41,8 @@ class SearchResultsExtension extends AbstractExtension
      */
     public function visitResult(DatagridConfiguration $config, ResultsObject $result)
     {
-        $rows    = (array)$result->data;
-        $results = [];
-
-        $this->resultFormatter->getResultEntities($result);
+        $rows    = $result->offsetGetByPath('[data]');
+        $resultItems = $this->resultFormatter->getResultEntities($rows);
 
         foreach ($rows as $row) {
             $entity     = null;
@@ -61,19 +59,17 @@ class SearchResultsExtension extends AbstractExtension
                 'entity'       => $entity,
             );
 
-
-            $resultRecord = [];
-            $record       = new ResultRecord($row);
-
-            foreach ($toProcess as $name => $config) {
-                $property            = $this->getPropertyObject($name, $config);
-                $resultRecord[$name] = $property->getValue($record);
-            }
-
-            $results[] = $resultRecord;
+//            $resultRecord = [];
+//            $record       = new ResultRecord($row);
+//
+//            foreach ($toProcess as $name => $config) {
+//                $property            = $this->getPropertyObject($name, $config);
+//                $resultRecord[$name] = $property->getValue($record);
+//            }
         }
 
-        $result->data = $results;
+        // set results
+        $result->offsetSet('data', $resultRows);
     }
 
     /**
