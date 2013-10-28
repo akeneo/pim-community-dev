@@ -57,7 +57,7 @@
 
 require(['jquery', 'underscore', 'backbone', 'oro/mediator', 'oro/registry', 'oro/loading-mask',
     'oro/datagrid/grid', 'oro/datagrid/router', 'oro/pageable-collection', 'oro/datagrid/filter-list',
-    'oro/datagrid/moment-cell', 'oro/datagrid/number-cell', 'oro/datagrid/boolean-cell',
+    'oro/datagrid/date-cell', 'oro/datagrid/datetime-cell', 'oro/datagrid/number-cell', 'oro/datagrid/boolean-cell',
     'oro/datagrid/html-cell', 'oro/datagrid/select-cell', 'oro/datagrid/string-cell',
     'oro/datagrid/delete-action', 'oro/datagrid/navigate-action', 'oro/datagrid/mass-action',
     'oro/datafilter/choice-filter', 'oro/datafilter/number-filter', 'oro/datafilter/date-filter',
@@ -65,7 +65,7 @@ require(['jquery', 'underscore', 'backbone', 'oro/mediator', 'oro/registry', 'or
     'oro/datafilter/select-row-filter', 'oro/datagrid/ajax-action', 'oro/datagrid/grid-views/view'],
     function($, _, Backbone, mediator, registry, LoadingMask,
              Grid, GridRouter, PageableCollection, FilterList,
-             MomentCell, NumberCell, BooleanCell,
+             DateCell, DateTimeCell, NumberCell, BooleanCell,
              HtmlCell, SelectCell, StringCell,
              DeleteAction, NavigateAction, MassAction,
              ChoiceFilter, NumberFilter, DateFilter,
@@ -84,17 +84,9 @@ require(['jquery', 'underscore', 'backbone', 'oro/mediator', 'oro/registry', 'or
                         sortable: {{ column.sortable|json_encode|raw }},
                         editable: {{ column.editable|json_encode|raw }},
                         {% if column.type == constant(columnTypePrefix ~ 'TYPE_DATE') %}
-                            cell: MomentCell.extend({
-                                modelFormat:   "YYYY-MM-DD",
-                                displayFormat: {{ oro_date_format('moment')|json_encode|raw }}
-                            })
+                            cell: DateCell,
                         {% elseif column.type == constant(columnTypePrefix ~ 'TYPE_DATETIME') %}
-                            cell: MomentCell.extend({
-                                modelFormat:   "YYYY-MM-DD hh:mm:ss",
-                                displayFormat: {{ oro_datetime_format('moment')|json_encode|raw }},
-                                displayInUTC:  false,
-                                displayTimeZone: {{ oro_timezone_offset()|json_encode|raw }}
-                            })
+                            cell: DateTimeCell,
                         {% elseif column.type == constant(columnTypePrefix ~ 'TYPE_DECIMAL') %}
                             cell: NumberCell.extend({ style: 'decimal' })
                         {% elseif column.type == constant(columnTypePrefix ~ 'TYPE_INTEGER') %}

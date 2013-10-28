@@ -228,20 +228,6 @@ function(_, settings) {
         },
 
         /**
-         * Get object with keys "date", "time" and "datetime" that contains format strings for specified vendor
-         *
-         * @param {string} vendor
-         * @returns {Object}
-         */
-        getDateTimeFormats: function(vendor) {
-            if (vendor && this.settings.format.datetime.hasOwnProperty(vendor)) {
-                return this.settings.format.datetime[vendor];
-            }
-
-            throw new Error('Datetime configuration for ' + vendor + ' is not defined');
-        },
-
-        /**
          * Get array of possible locales - first locale is the best, last is the worst
          *
          * @param {string} locale
