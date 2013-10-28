@@ -10,6 +10,7 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\Association;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\Family;
+use Behat\Mink\Exception\UnsupportedDriverActionException;
 
 /**
  * Context for navigating the website
@@ -78,6 +79,19 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     public function resetCurrentPage()
     {
         $this->currentPage = null;
+    }
+
+    /**
+     * @AfterScenario
+     */
+    public function disableNavigationConfirmation()
+    {
+        if (strpos($this->currentPage, 'edit')) {
+            try {
+                $this->getSession()->executeScript('typeof $ !== "undefined" && $(window).off("beforeunload");');
+            } catch (UnsupportedDriverActionException $e) {
+            }
+        }
     }
 
     /**
@@ -165,6 +179,30 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     {
         $this->openPage('Export show', array('id' => $job->getId()));
         $this->wait();
+    }
+
+    /**
+     * @param string $jobTitle
+     * @param string $jobType
+     *
+     * @Given /^I create a new "([^"]*)" (import|export)$/
+     */
+    public function iCreateANewJob($jobTitle, $jobType)
+    {
+        $jobType = ucfirst($jobType);
+        $this->getPage(sprintf('%s index', $jobType))->clickJobCreationLink($jobTitle);
+        $this->wait();
+        $this->currentPage = sprintf('%s creation', $jobType);
+    }
+
+    /**
+     * @param string $jobType
+     *
+     * @Given /^I try to create an unknown (import|export)$/
+     */
+    public function iTryToCreateAnUnknownJob($jobType)
+    {
+        $this->openPage(sprintf('%s creation', ucfirst($jobType)));
     }
 
     /**
@@ -334,7 +372,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
      *
      * @return void
      */
-    private function wait($time = 5000, $condition = null)
+    private function wait($time = 10000, $condition = null)
     {
         $this->getMainContext()->wait($time, $condition);
     }

@@ -485,7 +485,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      * @param integer $time
      * @param string  $condition
      */
-    private function wait($time = 5000, $condition = null)
+    private function wait($time = 10000, $condition = null)
     {
         $this->getMainContext()->wait($time, $condition);
     }

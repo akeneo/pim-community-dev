@@ -40,6 +40,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         $this->useContext('command', new CommandContext());
         $this->useContext('navigation', new NavigationContext());
         $this->useContext('transformations', new TransformationContext());
+        $this->useContext('assertions', new AssertionContext());
     }
 
     /**
@@ -131,7 +132,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
      * @param integer $time
      * @param string  $condition
      */
-    public function wait($time = 5000, $condition = null)
+    public function wait($time = 10000, $condition = null)
     {
         $start = microtime(true);
         $end = $start + $time / 1000.0;

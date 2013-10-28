@@ -14,6 +14,9 @@ namespace Pim\Bundle\ImportExportBundle\Processor;
  */
 class ProductCsvSerializerProcessor extends HeterogeneousCsvSerializerProcessor
 {
+    /**
+     * {@inheritdoc}
+     */
     public function process($products)
     {
         $csv = parent::process($products);

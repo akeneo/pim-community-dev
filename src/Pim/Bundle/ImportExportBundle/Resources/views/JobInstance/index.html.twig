@@ -14,10 +14,12 @@
         {{ elements.createBtn(entityName, null, { 'data-toggle': 'dropdown', 'class': 'dropdown-toggle' }) }}
         <ul class="dropdown-menu pull-right">
             {% for connector, jobs in connectors %}
-            <li class="disabled"><a href="javascript:void(0);"><b>{{ connector }}</b></a></li>
-                {% for alias, job in jobs %}
-                <li><a href="{{ path(createRoute, { 'connector': connector, 'alias': alias }) }}">{{ job.name|trans }}</a></li>
-                {% endfor %}
+                {% if connector != 'oro_importexport' %}
+                <li class="disabled"><a href="javascript:void(0);"><b>{{ connector }}</b></a></li>
+                    {% for alias, job in jobs %}
+                    <li><a href="{{ path(createRoute, { 'connector': connector, 'alias': alias }) }}">{{ job.name|trans }}</a></li>
+                    {% endfor %}
+                {% endif %}
             {% endfor %}
         </ul>
     </div>

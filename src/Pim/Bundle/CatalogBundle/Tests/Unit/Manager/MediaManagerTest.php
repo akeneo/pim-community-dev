@@ -19,6 +19,9 @@ class MediaManagerTest extends \PHPUnit_Framework_TestCase
     /** @var \Pim\Bundle\CatalogBundle\Manager\MediaManager */
     protected $manager;
 
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         $this->filesystem = $this->getFilesystemMock();
@@ -26,6 +29,9 @@ class MediaManagerTest extends \PHPUnit_Framework_TestCase
         $this->manager    = new MediaManager($this->filesystem, $this->uploadDir);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function tearDown()
     {
         $this->filesystem = null;
@@ -33,6 +39,9 @@ class MediaManagerTest extends \PHPUnit_Framework_TestCase
         @unlink($this->uploadDir . '/phpunit-file.txt');
     }
 
+    /**
+     * Test related method
+     */
     public function testUploadIfAFileIsPresent()
     {
         $this->filesystem->expects($this->once())
@@ -76,6 +85,9 @@ class MediaManagerTest extends \PHPUnit_Framework_TestCase
         $this->manager->handle($media, 'foo');
     }
 
+    /**
+     * Test related method
+     */
     public function testRemoveAFileIfMediaIsRemoved()
     {
         $this->filesystem->expects($this->any())
@@ -98,6 +110,9 @@ class MediaManagerTest extends \PHPUnit_Framework_TestCase
         $this->manager->handle($media, '');
     }
 
+    /**
+     * Test related method
+     */
     public function testExportMedia()
     {
         @mkdir($this->uploadDir, 0777, true);
