@@ -69,7 +69,6 @@ Feature: Edit a variant group adding/removing products
       | POSTIT | Postit     | color, size | VARIANT |
     And I am logged in as "admin"
 
-  @insulated
   Scenario: Successfully display filters on the product datagrid when I edit a variant group
     Given I am on the "MUG" product group page
     Then I should see the filters SKU, Color and Family
@@ -78,7 +77,6 @@ Feature: Edit a variant group adding/removing products
     And I should see products MUG_1, MUG_2 and POSTIT
     And I should not see product MUG_3
 
-  @insulated
   Scenario: Successfully display filters on the product datagrid when I edit a variant group with 2 axes
     Given I am on the "POSTIT" product group page
     Then I should see the filters SKU, Color, Size and Family
@@ -87,7 +85,6 @@ Feature: Edit a variant group adding/removing products
     And I should see products MUG_1 and POSTIT
     And I should not see products MUG_2 and MUG_3
 
-  @insulated
   Scenario: Successfully filter by SKU
     Given I am on the "MUG" product group page
     When I filter by "SKU" with value "MUG"
@@ -95,7 +92,6 @@ Feature: Edit a variant group adding/removing products
     And I should see products MUG_1 and MUG_2
     And I should not see products POSTIT and MUG_3
 
-  @insulated
   Scenario: Successfully filter by Family
     Given I am on the "POSTIT" product group page
     When I filter by "Family" with value "Furniture"
@@ -103,7 +99,6 @@ Feature: Edit a variant group adding/removing products
     And I should see product POSTIT
     And I should not see products MUG_1, MUG_2 and MUG_3
 
-  @insulated
   Scenario: Successfully filter by Color
     Given I am on the "MUG" product group page
     When I filter by "Color" with value "Red"
@@ -111,7 +106,6 @@ Feature: Edit a variant group adding/removing products
     And I should see product MUG_1
     And I should not see products MUG_2, MUG_3 and POSTIT
 
-  @insulated
   Scenario: Successfully filter by Size
     Given I am on the "POSTIT" product group page
     When I filter by "Size" with value "XL"
@@ -119,7 +113,6 @@ Feature: Edit a variant group adding/removing products
     And I should see product MUG_1
     And I should not see products MUG_2, MUG_3 and POSTIT
 
-  @insulated
   Scenario: Successfully filter by scopable field
     Given I am on the "MUG" product group page
     When I make visible the filter "Name"
@@ -128,7 +121,6 @@ Feature: Edit a variant group adding/removing products
     And I should see product MUG_2
     And I should not see products MUG_1, MUG_3 and POSTIT
 
-  @insulated
   Scenario: Successfully filter by localizable field
     Given I am on the "POSTIT" product group page
     When I make visible the filter "Title"
@@ -137,7 +129,6 @@ Feature: Edit a variant group adding/removing products
     And I should see product POSTIT
     And I should not see products MUG_1, MUG_2 and MUG_3
 
-  @insulated
   Scenario: Successfully filter by localizable and scopable field
     Given I am on the "POSTIT" product group page
     When I make visible the filter "Description"
@@ -146,7 +137,6 @@ Feature: Edit a variant group adding/removing products
     And I should see product POSTIT
     And I should not see products MUG_1, MUG_2 and MUG_3
 
-  @insulated
   Scenario: Successfully filter by price
     Given I am on the "MUG" product group page
     When I make visible the filter "Price"
@@ -155,7 +145,6 @@ Feature: Edit a variant group adding/removing products
     And I should see product MUG_1 and MUG_2
     And I should not see products MUG_3 and POSTIT
 
-  @insulated
   Scenario: Successfully filter by has product
     Given I am on the "MUG" product group page
     When I make visible the filter "Has product"
