@@ -45,18 +45,20 @@ class FlatCategoryNormalizerTest extends CategoryNormalizerTest
         return array(
             array(
                 array(
-                    'code'    => 'root_category',
-                    'label'   => 'en:Root category,fr:Categorie racine',
-                    'parent'  => '',
-                    'dynamic' => '0',
+                    'code'        => 'root_category',
+                    'label-en_US' => 'Root category',
+                    'label-fr_FR' => 'Categorie racine',
+                    'parent'      => '',
+                    'dynamic'     => '0',
                 )
             ),
             array(
                 array(
-                    'code'    => 'child_category',
-                    'label'   => 'en:Child category,fr:Catégorie enfant',
-                    'parent'  => '1',
-                    'dynamic' => '0',
+                    'code'        => 'child_category',
+                    'label-en_US' => 'Root category',
+                    'label-fr_FR' => 'Categorie racine',
+                    'parent'      => '1',
+                    'dynamic'     => '0',
                 )
             ),
         );
@@ -82,14 +84,9 @@ class FlatCategoryNormalizerTest extends CategoryNormalizerTest
      */
     protected function getLabels($data)
     {
-        $labels = array();
-        foreach (explode(',', $data['label']) as $data) {
-            $label = explode(':', $data);
-            $locale = reset($label);
-            $label = end($label);
-            $labels[$locale]= $label;
-        }
-
-        return $labels;
+        return array(
+            'en_US' => $data['label-en_US'],
+            'fr_FR' => $data['label-fr_FR']
+        );
     }
 }
