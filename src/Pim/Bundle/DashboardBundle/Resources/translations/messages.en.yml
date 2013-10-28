@@ -1,19 +1,18 @@
 pim_dashboard:
     menu:
         label:
-            collect:  Collect
-            enrich:   Enrich
-            spread:   Spread
-            settings: Settings
-
+            collect:   'Collect'
+            enrich:    'Enrich'
+            spread:    'Spread'
+            configure: 'Configure'
     link:
         label:
-            import_profile: Manage import profiles
-            import_report:  Imports history
-            product:        Manage products
-            category:       Manage categories
-            channel:        Manage channels
-            export_profile: Manage export profiles
-            export_report:  Exports history
-            attribute:      Manage attributes
-            family:         Manage families
+            import_profile: 'Manage Import Profiles'
+            import_report:  'Imports History'
+            product:        'Manage Products'
+            category:       'Manage Categories'
+            channel:        'Manage Channels'
+            export_profile: 'Manage Export Profiles'
+            export_report:  'Exports History'
+            attribute:      'Manage Attributes'
+            family:         'Manage Families'
