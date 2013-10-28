@@ -5,13 +5,14 @@ namespace Oro\Bundle\FilterBundle\Extension;
 use Symfony\Component\Translation\TranslatorInterface;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Builder;
+use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
+use Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataObject;
+use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 use Oro\Bundle\DataGridBundle\Extension\AbstractExtension;
 use Oro\Bundle\FilterBundle\Extension\Orm\FilterInterface;
-use Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataObject;
-use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 
 class OrmFilterExtension extends AbstractExtension
 {
@@ -79,12 +80,8 @@ class OrmFilterExtension extends AbstractExtension
      */
     public function visitMetadata(DatagridConfiguration $config, MetadataObject $data)
     {
-        $data->filters = isset($data->filters) && is_array($data->filters) ? $data->filters : [];
-
-        $data->state            = isset($data->state) && is_array($data->state) ? $data->state : [];
-        $data->state['filters'] = isset($data->state['filters']) && is_array($data->state['filters'])
-            ? $data->state['filters'] : [];
-
+        $filtersState    = $data->offsetGetByPath('[state][filters]', []);
+        $filtersMetaData = [];
 
         $filters = $this->getFiltersToApply($config);
         $values  = $this->getValuesToApply($config);
@@ -97,16 +94,21 @@ class OrmFilterExtension extends AbstractExtension
                 }
 
                 if ($form->isValid()) {
-                    $data->state['filters'][$filter->getName()] = $value;
+                    $filtersState[$filter->getName()] = $value;
                 }
             }
 
-            $metadata        = $filter->getMetadata();
-            $data->filters[] = array_merge(
+            $metadata          = $filter->getMetadata();
+            $filtersMetaData[] = array_merge(
                 $metadata,
                 ['label' => $this->translator->trans($metadata['label'])]
             );
+
         }
+
+        $data->offsetAddToArray('state', ['filters' => $filtersState])
+            ->offsetAddToArray('filters', $filtersMetaData)
+            ->offsetAddToArray(DatagridInterface::METADATA_REQUIRED_MODULES_KEY, ['oro/datafilter-builder']);
     }
 
     /**

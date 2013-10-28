@@ -51,7 +51,9 @@ class Datagrid implements DatagridInterface
      */
     public function getMetadata()
     {
-        $data = MetadataObject::create([self::METADATA_OPTIONS_KEY => ['gridName' => $this->getName()]]);
+        $data = MetadataObject::create(
+            [self::METADATA_REQUIRED_MODULES_KEY => [], self::METADATA_OPTIONS_KEY => ['gridName' => $this->getName()]]
+        );
         $this->acceptor->acceptMetadata($data);
 
         return $data;

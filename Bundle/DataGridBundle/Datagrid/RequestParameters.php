@@ -87,7 +87,7 @@ class RequestParameters
     /**
      * @return array
      */
-    protected function getRootParameterValue()
+    public function getRootParameterValue()
     {
         return $this->getRequest()->get($this->rootParam ? : self::DEFAULT_ROOT_PARAM, []);
     }

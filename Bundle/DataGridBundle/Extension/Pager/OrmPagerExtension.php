@@ -65,7 +65,7 @@ class OrmPagerExtension extends AbstractExtension
      */
     public function visitDatasource(DatagridConfiguration $config, DatasourceInterface $datasource)
     {
-        $defaultPerPage = $this->accessor->getValue($config, self::PAGER_DEFAULT_PER_PAGE_OPTION_PATH) ? : 10;
+        $defaultPerPage = $config->offsetGetByPath(self::PAGER_DEFAULT_PER_PAGE_OPTION_PATH, 10);
 
         $this->pager->setQueryBuilder($datasource->getQuery());
         $this->pager->setPage($this->getOr(self::PAGE_PARAM, 1));
@@ -86,7 +86,13 @@ class OrmPagerExtension extends AbstractExtension
      */
     public function visitMetadata(DatagridConfiguration $config, MetadataObject $result)
     {
-        // TODO: Implement visitMetadata() method.
+        $defaultPerPage = $config->offsetGetByPath(self::PAGER_DEFAULT_PER_PAGE_OPTION_PATH, 10);
+
+        $state = [
+            'currentPage' => $this->getOr(self::PAGE_PARAM, 1),
+            'pageSize'    => $this->getOr(self::PER_PAGE_PARAM, $defaultPerPage)
+        ];
+        $result->offsetAddToArray('state', $state);
     }
 
     /**

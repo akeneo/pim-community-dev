@@ -80,12 +80,11 @@ class OrmSorterExtension extends AbstractExtension
 
         $sorters = $this->getSorters($config);
         foreach (array_keys($sorters) as $name) {
-            if (isset($data->columns->{$name})) {
-                $data->columns->{$name}['sortable'] = true;
+            if (isset($data['columns'][$name])) {
+                $data['columns'][$name]['sortable'] = true;
             }
         }
-
-        $data->{DatagridInterface::METADATA_OPTIONS_KEY}['multipleSorting'] = $multisort;
+        $data->offsetAddToArray(DatagridInterface::METADATA_OPTIONS_KEY, ['multipleSorting' => $multisort]);
 
         $sorters = $this->getSortersToApply($config);
         foreach ($sorters as $column => $definition) {

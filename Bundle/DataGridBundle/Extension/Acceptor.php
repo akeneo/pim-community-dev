@@ -51,30 +51,6 @@ class Acceptor
     }
 
     /**
-     * Setter for config
-     *
-     * @param DatagridConfiguration $config
-     *
-     * @return mixed
-     */
-    public function setConfig(DatagridConfiguration $config)
-    {
-        $this->config = $config;
-
-        return $config;
-    }
-
-    /**
-     * Getter for config
-     *
-     * @return DatagridConfiguration
-     */
-    public function getConfig()
-    {
-        return $this->config;
-    }
-
-    /**
      * Add extension that applicable to datagrid and resort all added extensions
      *
      * @param ExtensionVisitorInterface $extension
@@ -110,5 +86,29 @@ class Acceptor
     public function getExtensions()
     {
         return $this->extensions;
+    }
+
+    /**
+     * Setter for config
+     *
+     * @param DatagridConfiguration $config
+     *
+     * @return mixed
+     */
+    public function setConfig(DatagridConfiguration $config)
+    {
+        $this->config = $config;
+
+        return $config;
+    }
+
+    /**
+     * Getter for config
+     *
+     * @return DatagridConfiguration
+     */
+    public function getConfig()
+    {
+        return $this->config;
     }
 }
