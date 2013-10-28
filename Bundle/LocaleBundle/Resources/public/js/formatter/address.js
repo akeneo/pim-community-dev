@@ -10,6 +10,17 @@ function(localeSettings, nameFormatter) {
      * @class   oro.AddressFormatter
      */
     return {
+        /**
+         * @property {Object}
+         */
+        formats: localeSettings.getAddressFormats(),
+
+        /**
+         * @param {Object} address
+         * @param {string} country ISO2 code
+         * @param {string} newLine
+         * @returns {string}
+         */
         format: function(address, country, newLine) {
             if (!country) {
                 if (localeSettings.isFormatAddressByAddressCountry()) {
@@ -53,12 +64,15 @@ function(localeSettings, nameFormatter) {
             }
         },
 
+        /**
+         * @param {string} country ISO2 code
+         * @returns {*}
+         */
         getAddressFormat: function(country) {
-            var addressFormats = localeSettings.getAddressFormats();
-            if (!addressFormats.hasOwnProperty(country)) {
+            if (!this.formats.hasOwnProperty(country)) {
                 country = localeSettings.getCountry();
             }
-            return addressFormats[country];
+            return this.formats[country];
         }
     }
 });

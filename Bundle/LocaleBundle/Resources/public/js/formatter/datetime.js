@@ -16,28 +16,33 @@ function(localeSettings, moment) {
         momentFormats: localeSettings.getDateTimeFormats('moment'),
 
         /**
-         * @returns {String}
+         * @property {string}
+         */
+        timezoneOffset: localeSettings.getTimeZoneOffset(),
+
+        /**
+         * @returns {string}
          */
         getDateFormat: function() {
             return this.momentFormats.date;
         },
 
         /**
-         * @returns {String}
+         * @returns {string}
          */
         getTimeFormat: function() {
             return this.momentFormats.time;
         },
 
         /**
-         * @returns {String}
+         * @returns {string}
          */
         getDateTimeFormat: function() {
             return this.momentFormats.datetime;
         },
 
         /**
-         * @param {String} value
+         * @param {string} value
          * @returns {*}
          */
         isDateValid: function(value) {
@@ -45,7 +50,7 @@ function(localeSettings, moment) {
         },
 
         /**
-         * @param {String} value
+         * @param {string} value
          * @returns {Boolean}
          */
         isTimeValid: function(value) {
@@ -53,7 +58,7 @@ function(localeSettings, moment) {
         },
 
         /**
-         * @param {String} value
+         * @param {string} value
          * @returns {Boolean}
          */
         isDateTimeValid: function(value) {
@@ -61,8 +66,8 @@ function(localeSettings, moment) {
         },
 
         /**
-         * @param {String} value
-         * @returns {String}
+         * @param {string} value
+         * @returns {string}
          */
         formatDate: function(value) {
             var momentDate = moment(value);
@@ -74,8 +79,8 @@ function(localeSettings, moment) {
         },
 
         /**
-         * @param {String} value
-         * @returns {String}
+         * @param {string} value
+         * @returns {string}
          */
         formatTime: function(value) {
             var momentTime = moment(value, ['HH:mm:ss', 'HH:mm']);
@@ -87,8 +92,8 @@ function(localeSettings, moment) {
         },
 
         /**
-         * @param {String} value
-         * @returns {String}
+         * @param {string} value
+         * @returns {string}
          */
         formatDateTime: function(value) {
             var momentDateTime = moment(value);
@@ -96,7 +101,7 @@ function(localeSettings, moment) {
                 throw new Error('Invalid datetime ' + value);
             }
 
-            return momentDateTime.format(this.getDateTimeFormat());
+            return momentDateTime.zone(this.timezoneOffset).format(this.getDateTimeFormat());
         }
     }
 });
