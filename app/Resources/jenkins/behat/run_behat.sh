@@ -88,6 +88,7 @@ for FEATURE in $FEATURES; do
                 ls /proc/$PID > /dev/null 2>&1
                 if [ $? -ne 0 ]; then
                     export SYMFONY__DATABASE__NAME=$DB_PREFIX$PROC
+                    export SYMFONY__UPLOAD__DIR=product_$PROC
                     echo "Executing feature $FEATURE_NAME"
                     ($BEHAT_CMD --profile=$PROFILE_PREFIX$PROC $FEATURE_NAME 2>&1 | tee -a $OUTPUT) &
                     RESULT=$!
