@@ -31,7 +31,7 @@ function(numeral, localeSettings) {
             }
 
             return format;
-        }
+        };
 
         var formatters = {
             numeralFormat: function(value, options) {

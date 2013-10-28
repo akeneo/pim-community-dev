@@ -164,7 +164,7 @@ function(_, settings) {
          */
         getVendorDateTimeFormat: function(vendor, type, defaultValue) {
             if (this.settings.format.datetime.hasOwnProperty(vendor)) {
-                type = (type && this.settings.format.datetime[vendor].hasOwnProperty(type)) ? type : 'datetime'
+                type = (type && this.settings.format.datetime[vendor].hasOwnProperty(type)) ? type : 'datetime';
 
                 return this.settings.format.datetime[vendor][type];
             }
@@ -228,16 +228,41 @@ function(_, settings) {
         },
 
         /**
-         * Returns object with keys "date", "time" and "datetime" that contains format strings
+         * Get object with keys "date", "time" and "datetime" that contains format strings for specified vendor
          *
+         * @param {string} vendor
          * @returns {Object}
          */
-        getDateTimeFormats: function(name) {
-            if (name && this.settings.format.datetime.hasOwnProperty(name)) {
-                return this.settings.format.datetime[name];
+        getDateTimeFormats: function(vendor) {
+            if (vendor && this.settings.format.datetime.hasOwnProperty(vendor)) {
+                return this.settings.format.datetime[vendor];
             }
 
-            throw new Error('Datetime configuration for ' + name + ' is not defined');
+            throw new Error('Datetime configuration for ' + vendor + ' is not defined');
+        },
+
+        /**
+         * Get array of possible locales - first locale is the best, last is the worst
+         *
+         * @param {string} locale
+         * @returns {Array}
+         */
+        getLocaleFallback: function(locale) {
+            var locales = [locale, this.settings.locale];
+
+            var getLocaleLang = function(locale) {
+                return locale ? locale.split('_')[0] : locale;
+            };
+
+            var possibleLocales = [];
+            for (var i = 0; i < locales.length; i++) {
+                if (locales[i]) {
+                    possibleLocales.push(locales[i]);
+                    possibleLocales.push(getLocaleLang(locales[i]));
+                }
+            }
+
+            return possibleLocales;
         }
     };
 
