@@ -185,6 +185,7 @@ class EntitiesController extends Controller
                 'entity_class'    => $extendEntityName,
                 'label'           => $entityConfig->get('label'),
                 'entity_provider' => $entityConfigProvider,
+                'extend_provider' => $extendConfigProvider,
                 'relation'        => $fieldConfig
             ];
     }
@@ -251,7 +252,6 @@ class EntitiesController extends Controller
                  */
                 $route       = false;
                 $routeParams = false;
-                $link        = '';
                 /** @var EntityMetadata $metadata */
                 if (class_exists($extendConfig->get('target_entity'))) {
                     $metadata = $configManager->getEntityMetadata($extendConfig->get('target_entity'));
@@ -260,7 +260,6 @@ class EntitiesController extends Controller
                         $routeParams = array(
                             'id' => null
                         );
-                        //$link  = $this->generateUrl($metadata->routeView, array('id' => 1));
                     }
 
                     $relationExtendConfig = $extendConfigProvider->getConfig($extendConfig->get('target_entity'));
@@ -270,14 +269,6 @@ class EntitiesController extends Controller
                             'entity_id' => str_replace('\\', '_', $extendConfig->get('target_entity')),
                             'id'        => null
                         );
-
-                        /*$link = $this->generateUrl(
-                            $route,
-                            array(
-                                'entity_id' => str_replace('\\', '_', $extendConfig->get('target_entity')),
-                                'id'        => $id
-                            )
-                        );*/
                     }
                 }
 
@@ -290,15 +281,9 @@ class EntitiesController extends Controller
 
                 foreach ($collection as $item) {
                     $routeParams['id'] = $item->getId();
-
-                    $link = false;
-                    if ($route) {
-                        $link = $this->generateUrl($route, $routeParams);
-                    }
-
                     $value['values'][] = array(
                         'id'    => $item->getId(),
-                        'link'  => $link,
+                        'link'  => $route ? $this->generateUrl($route, $routeParams) : false,
                         'title' => $item->{Inflector::camelize('get_' . $titleFieldName)}()
                     );
                 }

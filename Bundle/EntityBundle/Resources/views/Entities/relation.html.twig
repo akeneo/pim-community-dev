@@ -65,6 +65,11 @@
                                 var isActive = model.get(listener.columnName);
                                 var id = model.get('id');
                                 if (isActive) {
+                                    var is_field_extend = Boolean("{{ extend_provider.getConfig(relation.get('target_entity'), relation.get('target_title')).is('owner', 'Custom') }}");
+                                    var field_prefix = '';
+                                    if (is_field_extend) {
+                                        field_prefix = 'field_';
+                                    }
                                     addedModels[id] = new MultipleEntityModel({
                                         'id': model.get('id'),
                                         'link': Routing.generate(
@@ -75,13 +80,18 @@
                                                     fieldName: '{{ relation.getId().getFieldName() }}'
                                                 }
                                         ),
-                                        'label': model.get('{{ relation.get('target_title') }}'),
+                                        'label': model.get(field_prefix + '{{ relation.get('target_title') }}'),
                                         'extraData':
                                         [
                                             {% for field in relation.get('target_view') %}
+                                                {% set is_extend = extend_provider.getConfig(relation.get('target_entity'), field).is('owner', 'Custom') %}
+                                                {% set field_name = field %}
+                                                {% if is_extend == true %}
+                                                    {% set field_name = 'field_' ~ field %}
+                                                {% endif %}
                                             {
                                                 'label': '{{ entity_provider.getConfig(relation.get('target_entity'), field).get('label') }}',
-                                                'value': model.get('{{ field }}')
+                                                'value': model.get('{{ field_name }}')
                                             },
                                             {% endfor %}
                                         ]
