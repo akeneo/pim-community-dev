@@ -58,7 +58,7 @@ function(localeSettings) {
                 var format = null;
                 for (var i = 0; i < localeFallback.length; i++) {
                     if (this.formats.hasOwnProperty(localeFallback[i])) {
-                        format = localeFallback[i];
+                        format = this.formats[localeFallback[i]];
                         break;
                     }
                 }
