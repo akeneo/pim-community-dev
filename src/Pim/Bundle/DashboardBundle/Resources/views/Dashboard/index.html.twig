@@ -37,13 +37,7 @@
                     label: 'pim_dashboard.menu.label.collect'|trans,
                     links: [
                         { url: path('pim_importexport_import_index'), label: 'pim_dashboard.link.label.import_profile'|trans },
-                        {
-                            url: path(
-                                'pim_importexport_import_create',
-                                { connector: 'Akeneo CSV Connector', alias: 'product_import' }
-                            ),
-                            label: 'pim_dashboard.link.label.create_csv_import'|trans
-                        }
+                        { url: path('pim_importexport_import_report_index'), label: 'pim_dashboard.link.label.import_report'|trans }
                     ],
                     image: 'collect-image'
                 },
@@ -51,8 +45,7 @@
                     label: 'pim_dashboard.menu.label.enrich'|trans,
                     links: [
                         { url: path('pim_catalog_product_index'), label: 'pim_dashboard.link.label.product'|trans },
-                        { url: path('pim_catalog_categorytree_create'), label: 'pim_dashboard.link.label.category'|trans },
-                        { url: path('pim_catalog_group_index'), label: 'pim_dashboard.link.label.group'|trans },
+                        { url: path('pim_catalog_categorytree_create'), label: 'pim_dashboard.link.label.category'|trans }
                     ],
                     image: 'enrich-image'
                 },
@@ -61,24 +54,15 @@
                     links: [
                         { url: path('pim_catalog_channel_index'), label: 'pim_dashboard.link.label.channel'|trans },
                         { url: path('pim_importexport_export_index'), label: 'pim_dashboard.link.label.export_profile'|trans },
-                        {
-                            url: path(
-                                'pim_importexport_export_create',
-                                { connector: 'Akeneo CSV Connector', alias: 'product_export' }
-                            ),
-                            label: 'pim_dashboard.link.label.create_csv_export'|trans
-                        }
+                        { url: path('pim_importexport_export_report_index'), label: 'pim_dashboard.link.label.export_report'|trans }
                     ],
                     image: 'spread-image'
                 },
                 {
                     label: 'pim_dashboard.menu.label.settings'|trans,
                     links: [
-                        { url: path('pim_catalog_attributegroup_create'), label: 'pim_dashboard.link.label.attribute_group'|trans },
                         { url: path('pim_catalog_productattribute_index'), label: 'pim_dashboard.link.label.attribute'|trans },
-                        { url: path('pim_catalog_family_create'), label: 'pim_dashboard.link.label.family'|trans },
-                        { url: path('pim_catalog_association_index'), label: 'pim_dashboard.link.label.association'|trans },
-                        { url: path('pim_catalog_currency_index'), label: 'pim_dashboard.link.label.currency'|trans }
+                        { url: path('pim_catalog_family_create'), label: 'pim_dashboard.link.label.family'|trans }
                     ],
                     image: 'configure-image'
                 },
