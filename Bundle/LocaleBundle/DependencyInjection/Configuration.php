@@ -111,7 +111,7 @@ class Configuration implements ConfigurationInterface
                 'country'  => array('value' => self::DEFAULT_COUNTRY),
                 'currency' => array('value' => self::DEFAULT_CURRENCY),
                 'timezone' => array('value' => date_default_timezone_get()),
-                'format_address_by_address_country' => array('value' => false, 'type' => 'boolean'),
+                'format_address_by_address_country' => array('value' => true, 'type' => 'boolean'),
             )
         );
 

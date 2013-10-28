@@ -3,6 +3,8 @@ define(['oro/locale-settings', 'moment'],
 function(localeSettings, moment) {
     'use strict';
 
+    var datetimeVendor = 'moment';
+
     /**
      * Datetime formatter
      *
@@ -13,7 +15,20 @@ function(localeSettings, moment) {
         /**
          * @property {Object}
          */
-        momentFormats: localeSettings.getDateTimeFormats('moment'),
+        frontendFormats: {
+            'date':     localeSettings.getVendorDateTimeFormat(datetimeVendor, 'date'),
+            'time':     localeSettings.getVendorDateTimeFormat(datetimeVendor, 'time'),
+            'datetime': localeSettings.getVendorDateTimeFormat(datetimeVendor, 'datetime')
+        },
+
+        /**
+         * @property {Object}
+         */
+        backendFormats: {
+            'date':     'YYYY-MM-DD',
+            'time':     'HH:mm:ss',
+            'datetime': 'YYYY-MM-DD[T]HH:mm:ssZZ'
+        },
 
         /**
          * @property {string}
@@ -24,21 +39,21 @@ function(localeSettings, moment) {
          * @returns {string}
          */
         getDateFormat: function() {
-            return this.momentFormats.date;
+            return this.frontendFormats.date;
         },
 
         /**
          * @returns {string}
          */
         getTimeFormat: function() {
-            return this.momentFormats.time;
+            return this.frontendFormats.time;
         },
 
         /**
          * @returns {string}
          */
         getDateTimeFormat: function() {
-            return this.momentFormats.datetime;
+            return this.frontendFormats.datetime;
         },
 
         /**
@@ -72,7 +87,7 @@ function(localeSettings, moment) {
         formatDate: function(value) {
             var momentDate = moment(value);
             if (!momentDate.isValid()) {
-                throw new Error('Invalid date ' + value);
+                throw new Error('Invalid backend date ' + value);
             }
 
             return momentDate.format(this.getDateFormat());
@@ -85,7 +100,7 @@ function(localeSettings, moment) {
         formatTime: function(value) {
             var momentTime = moment(value, ['HH:mm:ss', 'HH:mm']);
             if (!momentTime.isValid()) {
-                throw new Error('Invalid time ' + value);
+                throw new Error('Invalid backend time ' + value);
             }
 
             return momentTime.format(this.getTimeFormat());
@@ -98,10 +113,46 @@ function(localeSettings, moment) {
         formatDateTime: function(value) {
             var momentDateTime = moment(value);
             if (!momentDateTime.isValid()) {
-                throw new Error('Invalid datetime ' + value);
+                throw new Error('Invalid backend datetime ' + value);
             }
 
             return momentDateTime.zone(this.timezoneOffset).format(this.getDateTimeFormat());
+        },
+
+        /**
+         * @param {string} value
+         * @returns {string}
+         */
+        unformatDate: function(value) {
+            if (!this.isDateValid(value)) {
+                throw new Error('Invalid frontend date ' + value);
+            }
+
+            return moment(value, this.getDateFormat()).format(this.backendFormats.date);
+        },
+
+        /**
+         * @param {string} value
+         * @returns {string}
+         */
+        unformatTime: function(value) {
+            if (!this.isTimeValid(value)) {
+                throw new Error('Invalid frontend time ' + value);
+            }
+
+            return moment(value, this.getTimeFormat()).format(this.backendFormats.time);
+        },
+
+        /**
+         * @param {string} value
+         * @returns {string}
+         */
+        unformatDateTime: function(value) {
+            if (!this.isDateTimeValid(value)) {
+                throw new Error('Invalid frontend datetime ' + value);
+            }
+
+            return moment(value, this.getDateTimeFormat()).zone('+00:00').format(this.backendFormats.datetime);
         }
     }
 });

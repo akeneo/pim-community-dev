@@ -38,6 +38,8 @@ class InstallationStep extends AbstractStep
                 return $this->handleAjaxAction('oro:search:create-index');
             case 'navigation':
                 return $this->handleAjaxAction('oro:navigation:init');
+            case 'localization':
+                return $this->handleAjaxAction('oro:localization:dump');
             case 'assets':
                 return $this->handleAjaxAction('assets:install', array('target' => './'));
             case 'assetic':

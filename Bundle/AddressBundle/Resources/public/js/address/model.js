@@ -11,14 +11,19 @@ function(Backbone) {
     return Backbone.Model.extend({
         defaults: {
             label: '',
+            namePrefix: '',
             firstName: '',
             lastName: '',
+            nameSuffix: '',
+            organization: '',
             street: '',
             street2: '',
             city: '',
             country: '',
+            countryIso2: '',
             postalCode: '',
             state: '',
+            stateText: '',
             primary: false,
             types: [],
             active: false

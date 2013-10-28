@@ -66,6 +66,7 @@ class NameFormatter
             $format
         );
 
+        $name = preg_replace('/ +/', ' ', $name);
         return trim($name);
     }
 

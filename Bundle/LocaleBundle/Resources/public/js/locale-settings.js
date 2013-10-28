@@ -17,7 +17,7 @@ function(_, settings) {
             currency: 'USD',
             timezone: 'UTC',
             timezone_offset: '+00:00',
-            format_address_by_address_country: false,
+            format_address_by_address_country: true,
             locale_data: {
                 US: {
                     phone_prefix: '1',
@@ -225,20 +225,6 @@ function(_, settings) {
          */
         getCalendarFirstDayOfWeek: function() {
             return this.settings.calendar.first_dow;
-        },
-
-        /**
-         * Get object with keys "date", "time" and "datetime" that contains format strings for specified vendor
-         *
-         * @param {string} vendor
-         * @returns {Object}
-         */
-        getDateTimeFormats: function(vendor) {
-            if (vendor && this.settings.format.datetime.hasOwnProperty(vendor)) {
-                return this.settings.format.datetime[vendor];
-            }
-
-            throw new Error('Datetime configuration for ' + vendor + ' is not defined');
         },
 
         /**
