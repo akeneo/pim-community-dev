@@ -60,7 +60,6 @@ Feature: Edit a variant group
       | English (United States) | Mug |
     Then I should see "There are unsaved changes."
 
-  @insulated
   Scenario: Successfully have a confirmation popup when I change page with unsaved changes
     Given I am on the "MUG" product group page
     And I visit the "Properties" tab
@@ -70,4 +69,3 @@ Feature: Edit a variant group
     Then I should see a confirm dialog with the following content:
       | title   | Are you sure you want to leave this page?                          |
       | content | You will lose changes to the variant group if you leave this page. |
-    And I confirm the message

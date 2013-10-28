@@ -197,6 +197,34 @@ class FlatAttributeNormalizerTest extends AttributeNormalizerTest
             }
         }
 
+        $this->addAttributeOptions($attribute, $data);
+
+        foreach ($this->optionalProperties as $property) {
+            if (isset($data[$property]) && $data[$property] !== '') {
+                $method = 'set' . implode(
+                    '',
+                    array_map(
+                        function ($item) {
+                            return ucfirst($item);
+                        },
+                        explode('_', $property)
+                    )
+                );
+                $attribute->$method($data[$property]);
+            }
+        }
+
+        return $attribute;
+    }
+
+    /**
+     * Create attribute options
+     *
+     * @param ProductAttribute $attribute
+     * @param array            $data
+     */
+    private function addAttributeOptions(ProductAttribute $attribute, $data)
+    {
         $options = array_filter(explode('|', $data['options']));
         foreach ($options as $option) {
             $attributeOption = new AttributeOption();
@@ -234,22 +262,5 @@ class FlatAttributeNormalizerTest extends AttributeNormalizerTest
                 }
             }
         }
-
-        foreach ($this->optionalProperties as $property) {
-            if (isset($data[$property]) && $data[$property] !== '') {
-                $method = 'set' . implode(
-                    '',
-                    array_map(
-                        function ($item) {
-                            return ucfirst($item);
-                        },
-                        explode('_', $property)
-                    )
-                );
-                $attribute->$method($data[$property]);
-            }
-        }
-
-        return $attribute;
     }
 }

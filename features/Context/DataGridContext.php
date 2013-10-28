@@ -224,7 +224,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
 
         $expectedPosition = 0;
         foreach ($columns as $column) {
-            $position = $this->datagrid->getColumnPosition(strtoupper($column));
+            $position = $this->datagrid->getColumnPosition($column);
             if ($expectedPosition++ !== $position) {
                 throw $this->createExpectationException("The columns are not well ordered");
             }
@@ -243,7 +243,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
 
         if (!$this->datagrid->isSortedAndOrdered($columnName, $order)) {
             $this->createExpectationException(
-                sprintf('The rows are not sorted %s on column %s', $order, $columnName)
+                sprintf('The rows are not sorted %s by column %s', $order, $columnName)
             );
         }
     }
@@ -276,15 +276,10 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
         $columns = $this->getMainContext()->listToArray($columns);
 
         foreach ($columns as $column) {
-            $values = $this->datagrid->getValuesInColumn($column);
-
-            sort($values);
             $steps[] = new Then(sprintf('I sort by "%s" value ascending', $column));
-            $steps[] = new Then(sprintf('I should see sorted entities %s', implode(', ', $values)));
-
-            rsort($values);
+            $steps[] = new Then(sprintf('the rows should be sorted ascending by %s', $column));
             $steps[] = new Then(sprintf('I sort by "%s" value descending', $column));
-            $steps[] = new Then(sprintf('I should see sorted entities %s', implode(', ', $values)));
+            $steps[] = new Then(sprintf('the rows should be sorted descending by %s', $column));
         }
 
         return $steps;
@@ -298,58 +293,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iSortByValue($columnName, $order = 'ascending')
     {
-        $columnName = strtoupper($columnName);
-
-        if (!$this->datagrid->isSortedAndOrdered($columnName, $order)) {
-            if ($this->datagrid->isSortedColumn($columnName)) {
-                $this->sortByColumn($columnName);
-            } else {
-                // get the actual sorted columns
-                $sortedColumns = $this->datagrid->getSortedColumns();
-
-                // if we ask sorting by descending we must sort twice
-                if ($order === 'descending') {
-                    $this->sortByColumn($columnName);
-                }
-                $this->sortByColumn($columnName);
-
-                // And we must remove the default sorted column
-                foreach ($sortedColumns as $column) {
-                    $this->removeSortOnColumn($column);
-                    $this->wait();
-                }
-            }
-        }
-    }
-
-    /**
-     * Remove sort on a column with a loop but using a threshold to prevent
-     * against infinite loop
-     *
-     * @param string $column
-     *
-     * @return null
-     */
-    private function removeSortOnColumn($column)
-    {
-        $threshold = 0;
-        while ($this->datagrid->isSortedColumn($column)) {
-            $this->datagrid->getColumnSorter($column)->click();
-            $this->wait();
-
-            if ($threshold++ === 3) {
-                return;
-            }
-        }
-    }
-
-    /**
-     * Sort by a column name
-     * @param strign $columnName
-     */
-    protected function sortByColumn($columnName)
-    {
-        $this->datagrid->getColumnSorter($columnName)->click();
+        $this->datagrid->sortBy($columnName, $order);
         $this->wait();
     }
 
@@ -422,49 +366,6 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
                 // here we must catch an exception because the row is not found
                 continue;
             }
-        }
-    }
-
-    /**
-     * @param string $elements
-     *
-     * @throws \InvalidArgumentException
-     *
-     * @Then /^I should see sorted channels (.*)$/
-     * @Then /^I should see sorted currencies (.*)$/
-     * @Then /^I should see sorted locales (.*)$/
-     * @Then /^I should see sorted attributes (.*)$/
-     * @Then /^I should see sorted (?:import|export) profiles (.*)$/
-     * @Then /^I should see sorted (?:entities) (.*)$/
-     * @Then /^I should see sorted products (.*)$/
-     * @Then /^I should see sorted groups (.*)$/
-     * @Then /^I should see sorted associations (.*)$/
-     */
-    public function iShouldSeeSortedEntities($elements)
-    {
-        $elements = $this->getMainContext()->listToArray($elements);
-
-        if ($this->datagrid->countRows() !== count($elements)) {
-            throw $this->createExpectationException(
-                'You must define all the entities in the grid to check the sorting'
-            );
-        }
-
-        $expectedPosition = 0;
-        foreach ($elements as $element) {
-            $position = $this->datagrid->getRowPosition($element);
-            if ($expectedPosition !== $position) {
-                $errorMsg = sprintf(
-                    'Value %s is expected at position %d but is at position %d',
-                    $element,
-                    $expectedPosition,
-                    $position
-                );
-                throw $this->createExpectationException(
-                    sprintf("The entities are not well sorted\n%s", $errorMsg)
-                );
-            }
-            $expectedPosition++;
         }
     }
 
@@ -584,7 +485,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      * @param integer $time
      * @param string  $condition
      */
-    private function wait($time = 5000, $condition = null)
+    private function wait($time = 10000, $condition = null)
     {
         $this->getMainContext()->wait($time, $condition);
     }

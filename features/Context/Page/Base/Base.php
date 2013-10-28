@@ -39,19 +39,11 @@ class Base extends Page
     }
 
     /**
-     * @param string $title
-     *
-     * @throws \Exception
+     * @return string
      */
-    public function checkHeadTitle($title)
+    public function getHeadTitle()
     {
-        $headTitle = $this->getElement('HeadTitle')->getHtml();
-
-        if (trim($headTitle) !== trim($title)) {
-            throw new \Exception(
-                sprintf('Incorrect title. Expected "%s", given "%s"', $title, $headTitle)
-            );
-        }
+        return $this->getElement('HeadTitle')->getHtml();
     }
 
     /**

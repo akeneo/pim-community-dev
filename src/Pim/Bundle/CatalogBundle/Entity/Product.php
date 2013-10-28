@@ -55,7 +55,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
      * @ORM\OneToMany(
      *     targetEntity="Pim\Bundle\CatalogBundle\Model\ProductValueInterface",
      *     mappedBy="entity",
-     *     cascade={"persist", "remove"}
+     *     cascade={"persist", "remove", "refresh"}
      * )
      */
     protected $values;
@@ -63,7 +63,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
     /**
      * @var Pim\Bundle\CatalogBundle\Entity\Family $family
      *
-     * @ORM\ManyToOne(targetEntity="Pim\Bundle\CatalogBundle\Entity\Family", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="Pim\Bundle\CatalogBundle\Entity\Family", cascade={"persist", "refresh"})
      * @ORM\JoinColumn(name="family_id", referencedColumnName="id", onDelete="SET NULL")
      */
     protected $family;
@@ -95,7 +95,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
      * @ORM\OneToMany(
      *     targetEntity="Pim\Bundle\CatalogBundle\Entity\ProductAssociation",
      *     mappedBy="owner",
-     *     cascade={"persist", "remove"},
+     *     cascade={"persist", "remove", "refresh"},
      *     orphanRemoval=true
      * )
      */
@@ -107,7 +107,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
      * @ORM\OneToMany(
      *     targetEntity="Pim\Bundle\CatalogBundle\Entity\Completeness",
      *     mappedBy="product",
-     *     cascade={"persist", "remove"}
+     *     cascade={"persist", "remove", "refresh"}
      * )
      */
     protected $completenesses;

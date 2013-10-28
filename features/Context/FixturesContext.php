@@ -603,6 +603,7 @@ class FixturesContext extends RawMinkContext
     {
         foreach ($table->getHash() as $data) {
             $category = $this->getCategory($data['code']);
+            $this->getEntityManager()->refresh($category);
 
             assertEquals($data['label'], $category->getTranslation('en_US')->getLabel());
             if (empty($data['parent'])) {
@@ -997,6 +998,9 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param string    $code
+     * @param TableNode $table
+     *
      * @Given /^import directory of "([^"]*)" contain the following media:$/
      */
     public function importDirectoryOfContainTheFollowingMedia($code, TableNode $table)
@@ -1041,7 +1045,6 @@ class FixturesContext extends RawMinkContext
 
         foreach ($table->getRowsHash() as $code => $value) {
             $productValue = $product->getValue($code);
-            $this->getEntityManager()->refresh($productValue);
             if ('media' === $this->getAttribute($code)->getBackendType()) {
                 // media filename is auto generated during media handling and cannot be guessed
                 // (it contains a timestamp)
@@ -1067,6 +1070,9 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param string $productCode
+     * @param string $familyCode
+     *
      * @Given /^family of "([^"]*)" should be "([^"]*)"$/
      */
     public function familyOfShouldBe($productCode, $familyCode)
@@ -1427,6 +1433,8 @@ class FixturesContext extends RawMinkContext
 
     /**
      * @param string $code
+     *
+     * @return Locale
      */
     private function createLocale($code)
     {
@@ -1651,6 +1659,11 @@ class FixturesContext extends RawMinkContext
         return new ArrayCollection($data);
     }
 
+    /**
+     * @param string $file
+     *
+     * @return Media
+     */
     private function createMedia($file)
     {
         $media = new Media();

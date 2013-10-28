@@ -5,7 +5,9 @@
         Custom ruleset.
     </description>
 
-    <rule ref="rulesets/design.xml" />
+    <rule ref="rulesets/design.xml">
+        <exclude name="CouplingBetweenObjects" />
+    </rule>
 
     <rule ref="rulesets/unusedcode.xml">
         <exclude name="UnusedFormalParameter" />

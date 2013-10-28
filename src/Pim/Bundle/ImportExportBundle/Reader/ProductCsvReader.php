@@ -55,6 +55,11 @@ class ProductCsvReader extends CsvReader
         return $this->transformMediaPathToAbsolute($data);
     }
 
+    /**
+     * @param array $data
+     *
+     * @throws InvalidItemException
+     */
     protected function assertValueUniqueness(array $data)
     {
         foreach ($data as $code => $value) {
@@ -77,6 +82,11 @@ class ProductCsvReader extends CsvReader
         }
     }
 
+    /**
+     * @param array $data
+     *
+     * @return array
+     */
     protected function transformMediaPathToAbsolute(array $data)
     {
         foreach ($data as $code => $value) {

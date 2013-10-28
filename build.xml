@@ -170,15 +170,27 @@
 
     <target name="behat" description="Run acceptance tests with Behat">
         <exec executable="${basedir}/app/Resources/jenkins/behat/run_behat.sh" failonerror="true">
+            <!-- Concurrency -->
+            <arg value="2" />
             <arg value="noxdebug" />
-            <arg value="${basedir}/bin/behat --profile=jenkins --ansi" />
+            <!-- DB Prefix -->
+            <arg value="akeneo_ci_pim_behat_" />
+            <!-- Profile Prefix -->
+            <arg value="jenkins-" />
+            <arg value="${basedir}/bin/behat --ansi" />
         </exec>
     </target>
 
     <target name="behat-pr" description="Run acceptance tests with Behat for the pull request">
         <exec executable="${basedir}/app/Resources/jenkins/behat/run_behat.sh" failonerror="true">
+            <!-- Concurrency -->
+            <arg value="2" />
             <arg value="noxdebug" />
-            <arg value="${basedir}/bin/behat --profile=jenkins-pr --ansi" />
+            <!-- DB Prefix -->
+            <arg value="akeneo_ci_pim_pr_behat_" />
+            <!-- Profile Prefix -->
+            <arg value="jenkins-pr-" />
+            <arg value="${basedir}/bin/behat --ansi" />
         </exec>
     </target>
 

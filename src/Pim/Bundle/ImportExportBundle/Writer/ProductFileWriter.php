@@ -22,7 +22,7 @@ class ProductFileWriter extends FileWriter
     /**
      * Constructor
      *
-     * @param MediaManager
+     * @param MediaManager $mediaManager
      */
     public function __construct(MediaManager $mediaManager)
     {

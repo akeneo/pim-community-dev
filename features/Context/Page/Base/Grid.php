@@ -137,6 +137,11 @@ class Grid extends Index
             ->find('css', 'div label:contains("record")')
             ->getText();
 
+        // If pagination not found, count rows
+        if (!$paginationText) {
+            return $this->countRows();
+        }
+
         if (preg_match('/([0-9][0-9 ]*) records?$/', $paginationText, $matches)) {
             return $matches[1];
         } else {
@@ -195,36 +200,17 @@ class Grid extends Index
     }
 
     /**
-     * Predicate to know if a column is sorted
+     * Sort rows by a column in the specified order
      *
      * @param string $column
-     *
-     * @return boolean
+     * @param string $order
      */
-    public function isSortedColumn($column)
+    public function sortBy($column, $order = 'ascending')
     {
-        return (bool) $this->getColumn($column)->find('css', 'th.ascending')
-            || (bool) $this->getColumn($column)->find('css', 'th.descending');
-    }
-
-    /**
-     * Get the sorted columns
-     * @return Ambigous <\Behat\Mink\Element\Element, unknown, multitype:unknown >
-     */
-    public function getSortedColumns()
-    {
-        $columns = $this->getColumnHeaders(false, false);
-
-        foreach ($columns as $key => $column) {
-            $columnName = $column->getText();
-            if (!$this->isSortedColumn($columnName)) {
-                unset($columns[$key]);
-            } else {
-                $columns[$key] = $columnName;
-            }
+        $sorter = $this->getColumnSorter($column);
+        if ($sorter->getAttribute('class') !== strtolower($order)) {
+            $sorter->click();
         }
-
-        return $columns;
     }
 
     /**
@@ -237,7 +223,30 @@ class Grid extends Index
      */
     public function isSortedAndOrdered($column, $order)
     {
-        return (bool) $this->getColumn($column)->find('css', sprintf('th.%s', $order));
+        $column = strtoupper($column);
+        $order = strtolower($order);
+        if ($this->getColumn($column)->getAttribute('class') !== $order) {
+            return false;
+        }
+
+        $rows = $this->getRows();
+        $rowCount = count($rows);
+        $values = array();
+        $currentRow = 0;
+        $columnPosition = $this->getColumnPosition($column);
+        while ($rowCount > 0) {
+            $values[] = $this->getRowCell($rows[$currentRow], $columnPosition)->getText();
+            $currentRow++;
+            $rowCount--;
+        }
+        $sortedValues = $values;
+        if ($order === 'ascending') {
+            sort($sortedValues);
+        } else {
+            rsort($sortedValues);
+        }
+
+        return $sortedValues === $values;
     }
 
     /**
@@ -260,6 +269,7 @@ class Grid extends Index
      */
     public function getColumn($columnName)
     {
+        $columnName = strtoupper($columnName);
         $columnHeaders = $this->getColumnHeaders();
 
         foreach ($columnHeaders as $columnHeader) {
@@ -459,8 +469,8 @@ class Grid extends Index
         return $checkbox;
     }
     /**
-     * @param string $row
-     * @param string $position
+     * @param NodeElement $row
+     * @param string      $position
      *
      * @return NodeElement
      */

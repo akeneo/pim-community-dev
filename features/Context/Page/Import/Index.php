@@ -21,7 +21,7 @@ class Index extends JobIndex
     /**
      * @param string $importLink
      */
-    public function clickImportCreationLink($importLink)
+    public function clickJobCreationLink($importLink)
     {
         $this->clickLink('Create import profile');
         $this->clickLink($importLink);

@@ -102,7 +102,7 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
      *
      * @var ArrayCollection options
      *
-     * @ORM\ManyToMany(targetEntity="Pim\Bundle\CatalogBundle\Entity\AttributeOption")
+     * @ORM\ManyToMany(targetEntity="Pim\Bundle\CatalogBundle\Entity\AttributeOption", cascade={"refresh"})
      * @ORM\JoinTable(name="pim_catalog_value_option",
      *      joinColumns={@ORM\JoinColumn(name="value_id", referencedColumnName="id", onDelete="CASCADE")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="option_id", referencedColumnName="id", onDelete="CASCADE")}
@@ -115,7 +115,7 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
      *
      * @var Pim\Bundle\CatalogBundle\Entity\AttributeOption $option
      *
-     * @ORM\ManyToOne(targetEntity="Pim\Bundle\CatalogBundle\Entity\AttributeOption", cascade="persist")
+     * @ORM\ManyToOne(targetEntity="Pim\Bundle\CatalogBundle\Entity\AttributeOption", cascade={"persist", "refresh"})
      * @ORM\JoinColumn(name="option_id", referencedColumnName="id", onDelete="SET NULL")
      */
     protected $option;
@@ -125,7 +125,7 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
      *
      * @var Media $media
      *
-     * @ORM\OneToOne(targetEntity="Oro\Bundle\FlexibleEntityBundle\Entity\Media", cascade="persist")
+     * @ORM\OneToOne(targetEntity="Oro\Bundle\FlexibleEntityBundle\Entity\Media", cascade={"persist", "refresh"})
      * @ORM\JoinColumn(name="media_id", referencedColumnName="id", onDelete="SET NULL")
      */
     protected $media;
@@ -135,7 +135,7 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
      *
      * @var Metric $metric
      *
-     * @ORM\OneToOne(targetEntity="Oro\Bundle\FlexibleEntityBundle\Entity\Metric", cascade="persist")
+     * @ORM\OneToOne(targetEntity="Oro\Bundle\FlexibleEntityBundle\Entity\Metric", cascade={"persist", "refresh"})
      * @ORM\JoinColumn(name="metric_id", referencedColumnName="id", onDelete="SET NULL")
      */
     protected $metric;
@@ -148,7 +148,7 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
      * @ORM\OneToMany(
      *     targetEntity="Pim\Bundle\CatalogBundle\Entity\ProductPrice",
      *     mappedBy="value",
-     *     cascade={"persist", "remove"}
+     *     cascade={"persist", "remove", "refresh"}
      * )
      * @ORM\OrderBy({"currency" = "ASC"})
      */

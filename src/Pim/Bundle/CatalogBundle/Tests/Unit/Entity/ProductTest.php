@@ -289,6 +289,9 @@ class ProductTest extends \PHPUnit_Framework_TestCase
         $this->assertEmpty(count($this->product->getGroups()), 0);
     }
 
+    /**
+     * Test getter for media
+     */
     public function testGetMedia()
     {
         $this->product->addValue(
@@ -475,6 +478,9 @@ class ProductTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Pim\Bundle\CatalogBundle\Entity\Product', $entity);
     }
 
+    /**
+     * @return \Oro\Bundle\FlexibleEntityBundle\Entity\Media
+     */
     protected function getMediaMock()
     {
         return $this->getMock('Oro\Bundle\FlexibleEntityBundle\Entity\Media');
