@@ -145,6 +145,9 @@ function(numeral, localeSettings) {
                     formatters.replaceCurrency
                 ];
                 return doFormat(value, options, formattersChain);
+            },
+            unformat: function(value) {
+                return numeral().unformat(value);
             }
         }
     };

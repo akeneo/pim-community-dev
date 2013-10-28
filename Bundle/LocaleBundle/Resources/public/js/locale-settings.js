@@ -131,7 +131,7 @@ function(_, settings) {
             if (this.settings.currency_data.hasOwnProperty(currencyCode)) {
                 return this.settings.currency_data[currencyCode].symbol
             }
-            return '$';
+            return currencyCode;
         },
 
         getTimeZoneOffset: function() {

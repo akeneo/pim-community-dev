@@ -57,16 +57,16 @@
 
 require(['jquery', 'underscore', 'backbone', 'oro/mediator', 'oro/registry', 'oro/loading-mask',
     'oro/datagrid/grid', 'oro/datagrid/router', 'oro/pageable-collection', 'oro/datagrid/filter-list',
-    'oro/datagrid/moment-cell', 'oro/datagrid/number-cell', 'oro/datagrid/integer-cell', 'oro/datagrid/boolean-cell',
-    'oro/datagrid/html-cell', 'oro/datagrid/select-cell', 'oro/datagrid/string-cell', 'oro/datagrid/percent-cell',
+    'oro/datagrid/moment-cell', 'oro/datagrid/number-cell', 'oro/datagrid/boolean-cell',
+    'oro/datagrid/html-cell', 'oro/datagrid/select-cell', 'oro/datagrid/string-cell',
     'oro/datagrid/delete-action', 'oro/datagrid/navigate-action', 'oro/datagrid/mass-action',
     'oro/datafilter/choice-filter', 'oro/datafilter/number-filter', 'oro/datafilter/date-filter',
     'oro/datafilter/datetime-filter', 'oro/datafilter/select-filter', 'oro/datafilter/multiselect-filter',
     'oro/datafilter/select-row-filter', 'oro/datagrid/ajax-action', 'oro/datagrid/grid-views/view'],
     function($, _, Backbone, mediator, registry, LoadingMask,
              Grid, GridRouter, PageableCollection, FilterList,
-             MomentCell, NumberCell, IntegerCell, BooleanCell,
-             HtmlCell, SelectCell, StringCell, PercentCell,
+             MomentCell, NumberCell, BooleanCell,
+             HtmlCell, SelectCell, StringCell,
              DeleteAction, NavigateAction, MassAction,
              ChoiceFilter, NumberFilter, DateFilter,
              DatetimeFilter, SelectFilter, MultiselectFilter,
@@ -96,11 +96,11 @@ require(['jquery', 'underscore', 'backbone', 'oro/mediator', 'oro/registry', 'or
                                 displayTimeZone: {{ oro_timezone_offset()|json_encode|raw }}
                             })
                         {% elseif column.type == constant(columnTypePrefix ~ 'TYPE_DECIMAL') %}
-                            cell: NumberCell
+                            cell: NumberCell.extend({ style: 'decimal' })
                         {% elseif column.type == constant(columnTypePrefix ~ 'TYPE_INTEGER') %}
-                            cell: IntegerCell.extend({ orderSeparator: '' })
+                            cell: NumberCell.extend({ style: 'integer' })
                         {% elseif column.type == constant(columnTypePrefix ~ 'TYPE_PERCENT') %}
-                            cell: PercentCell,
+                            cell: NumberCell.extend({ style: 'percent' })
                         {% elseif column.type == constant(columnTypePrefix ~ 'TYPE_BOOLEAN') %}
                             cell: BooleanCell,
                             width: 10
