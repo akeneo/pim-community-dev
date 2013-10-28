@@ -50,15 +50,18 @@ function(localeSettings, nameFormatter) {
                 return value || '';
             });
 
-            var addressLines = formatted.replace(/(\\n)+/g, '\\n').split("\\n");
+            var addressLines = formatted
+                .replace(/ *(\\n)+/g, '\\n')
+                .split("\\n");
             if (typeof newLine == 'function') {
                 for (var i = 0; i < addressLines.length; i++) {
                     addressLines[i] = newLine(addressLines[i]);
                 }
-                return addressLines.join('');
+                formatted = addressLines.join('');
             } else {
-                return addressLines.join(newLine);
+                formatted = addressLines.join(newLine);
             }
+            return formatted.replace(/ +/g, ' ');
         },
 
         /**

@@ -94,6 +94,8 @@ class AddressFormatter
             $newLineSeparator,
             str_replace('\n', $newLineSeparator, $formatted)
         );
+        $formatted = preg_replace('/ +/', ' ', $formatted);
+        $formatted = preg_replace('/ +\n/', "\n", $formatted);
         return trim($formatted);
     }
 

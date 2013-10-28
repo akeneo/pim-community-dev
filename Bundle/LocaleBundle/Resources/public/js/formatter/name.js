@@ -44,7 +44,9 @@ function(localeSettings) {
                 return value || '';
             });
 
-            return formatted.replace(/^\s+|\s+$/g, '');
+            return formatted
+                .replace(/ +/g, ' ')
+                .replace(/^\s+|\s+$/g, '');
         },
 
         /**
