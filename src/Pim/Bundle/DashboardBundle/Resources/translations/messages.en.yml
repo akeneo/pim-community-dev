@@ -1,10 +1,10 @@
 pim_dashboard:
     menu:
         label:
-            collect:   'Collect'
-            enrich:    'Enrich'
-            spread:    'Spread'
-            configure: 'Configure'
+            collect:  'Collect'
+            enrich:   'Enrich'
+            spread:   'Spread'
+            settings: 'Settings'
     link:
         label:
             import_profile: 'Manage Import Profiles'
