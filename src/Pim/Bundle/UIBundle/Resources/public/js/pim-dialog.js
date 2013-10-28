@@ -33,7 +33,7 @@ define(
                     window.alert(content);
                 }
             },
-            
+
             /**
              * Open a modal dialog with cancel button and specific redirection when
              * @param string content
@@ -49,11 +49,17 @@ define(
                         content: content,
                         okText: okText
                     });
+
                     redirectModal.on('ok', function() {
                         Navigation.getInstance().setLocation(location);
                     });
+
+                    $('.modal-body a', redirectModal.el).on('click', function() {
+                        redirectModal.close();
+                    });
+
                     redirectModal.open();
-                }else {
+                } else {
                     window.alert(content);
                 }
             },
