@@ -371,6 +371,8 @@ class GroupProductDatagridManager extends FlexibleDatagridManager
 
     /**
      * {@inheritdoc}
+     *
+     * This method is overriden to prevent against the use of parameters
      */
     public function setFlexibleManager(FlexibleManager $flexibleManager)
     {
