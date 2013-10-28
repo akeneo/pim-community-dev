@@ -62,6 +62,7 @@ FEATURES_NAMES=""
 # Install the assets and db on all environments
 cd $APP_ROOT
 sed -i -e 's/database_name:.*$/database_name: "%database.name%"/' app/config/parameters_test.yml
+sed -i -e 's#upload_dir:.*$#upload_dir: "%kernel.root_dir%/uploads/%upload.dir%"#' app/config/parameters_test.yml
 for PROC in `seq 1 $CONCURRENCY`; do
     export SYMFONY__DATABASE__NAME=$DB_PREFIX$PROC
     cp app/config/config_behat.yml app/config/config_behat$PROC.yml
@@ -72,7 +73,7 @@ cd -
 
 FEATURES=`find $FEATURES_DIR/ -name *.feature`
 for FEATURE in $FEATURES; do
-    
+
     FEATURE_NAME=`echo $FEATURE | sed -e 's#^.*/features/\(.*\)$#features/\1#'`
 
     while [ ! -z $FEATURE_NAME ]; do
@@ -119,7 +120,7 @@ cat $OUTPUT | grep "failed steps" > /dev/null
 if [ $? -eq 0 ]; then
     rm $OUTPUT
     exit 1;
-else 
+else
     rm $OUTPUT
     exit 0;
 fi
