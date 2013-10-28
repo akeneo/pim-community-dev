@@ -38,6 +38,7 @@ class AddressType extends AbstractType
             ->add('middleName', 'text', array('required' => false, 'label' => 'Middle Name'))
             ->add('lastName', 'text', array('required' => false, 'label' => 'Last Name'))
             ->add('nameSuffix', 'text', array('required' => false, 'label' => 'Name Suffix'))
+            ->add('organization', 'text', array('required' => false, 'label' => 'Organization'))
             ->add('country', 'oro_country', array('required' => true, 'label' => 'Country'))
             ->add('street', 'text', array('required' => true, 'label' => 'Street'))
             ->add('street2', 'text', array('required' => false, 'label' => 'Street 2'))

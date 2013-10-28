@@ -41,7 +41,7 @@ function(localeSettings) {
                         value = value.toLocaleUpperCase();
                     }
                 }
-                return value;
+                return value || '';
             });
 
             return formatted.replace(/^\s+|\s+$/g, '');

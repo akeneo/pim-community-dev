@@ -17,7 +17,7 @@ function(_, settings) {
             currency: 'USD',
             timezone: 'UTC',
             timezone_offset: '+00:00',
-            format_address_by_address_country: false,
+            format_address_by_address_country: true,
             locale_data: {
                 US: {
                     phone_prefix: '1',

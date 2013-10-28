@@ -38,28 +38,25 @@ function(localeSettings, nameFormatter) {
                 if ('name' === lowerCaseKey) {
                     value = nameFormatter.format(address, localeSettings.getCountryLocale(country));
                 } else if ('street' == lowerCaseKey) {
-                    value = address.street + ' ' + address.street2;
+                    value = address.street + ' ' + (address.street2 || '');
                 } else if ('street1' == lowerCaseKey) {
                     value = address.street;
-                } else if ('country' == lowerCaseKey) {
-                    value = address.countryName;
                 } else {
                     value = address[lowerCaseKey];
                 }
                 if (value && key !== lowerCaseKey) {
                     value = value.toLocaleUpperCase();
                 }
-                return value;
+                return value || '';
             });
 
-            var addressLines = formatted.split('\n');
+            var addressLines = formatted.replace(/(\\n)+/g, '\\n').split("\\n");
             if (typeof newLine == 'function') {
                 for (var i = 0; i < addressLines.length; i++) {
                     addressLines[i] = newLine(addressLines[i]);
                 }
                 return addressLines.join('');
             } else {
-                addressLines.join('');
                 return addressLines.join(newLine);
             }
         },
