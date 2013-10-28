@@ -4,14 +4,21 @@ parameters:
 
 services:
     oro_soap.request:
-        class: %oro_soap.request.class%
-        scope: request
+        class:                        %oro_soap.request.class%
+        scope:                        request
         arguments:
-            - @oro_flexibleentity.registry
+            - "@oro_flexibleentity.registry"
 
-    besimple.soap.definition.loader.yml_file:
-        class:                        %oro_soap.loader_yml.class%
-        arguments:                    ["@file_locator", "@annotation_reader"]
+#    besimple.soap.definition.loader.yml_file:
+#        class:                        %oro_soap.loader_yml.class%
+#        arguments:                    ["@file_locator", "@annotation_reader"]
+#        public:                       false
+#        tags:
+#          - { name: besimple.soap.definition.loader }
+
+    oro_soap.loader:
+        class:                        Oro\Bundle\SoapBundle\ServiceDefinition\Loader\OroSoapLoader
+        arguments:                    ["@file_locator", "@besimple.soap.definition.loader.annot_class"]
         public:                       false
         tags:
           - { name: besimple.soap.definition.loader }
