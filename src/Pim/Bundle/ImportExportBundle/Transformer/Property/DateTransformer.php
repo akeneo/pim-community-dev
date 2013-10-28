@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\ImportExportBundle\Transformer\Property;
 
+use Pim\Bundle\ImportExportBundle\Exception\InvalidValueException;
+
 /**
  * Date attribute transformer
  * 
@@ -13,7 +15,11 @@ class DateTransformer implements PropertyTransformerInterface
 {
     public function transform($value, array $options = array())
     {
-        return new \DateTime($value);
+        try {
+            return new \DateTime($value);
+        } catch (\Exception $ex) {
+            throw new InvalidValueException('Invalid date');
+        }
     }
 
 }

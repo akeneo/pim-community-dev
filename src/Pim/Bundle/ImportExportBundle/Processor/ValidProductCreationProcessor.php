@@ -7,6 +7,8 @@ use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Oro\Bundle\BatchBundle\Entity\StepExecution;
 use Pim\Bundle\ImportExportBundle\Transformer\OrmProductTransformer;
+use Pim\Bundle\ImportExportBundle\Exception\InvalidObjectException;
+use Oro\Bundle\BatchBundle\Item\InvalidItemException;
 
 /**
  * Product import processor
@@ -43,6 +45,11 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
      * @var string
      */
     protected $groupsColumn  = 'groups';
+
+    /**
+     * @var StepExecution
+     */
+    protected $stepExecution;
 
     /**
      * Constructor
@@ -154,17 +161,25 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
      */
     public function process($item)
     {
-        return $this->transformer->getProduct(
-            $item,
-            array(
-                'family'        => $this->familyColumn,
-                'categories'    => $this->categoriesColumn,
-                'groups'        => $this->groupsColumn
-            ),
-            array(
-                'enabled'       => $this->enabled
-            )
-        );
+        try {
+            return $this->transformer->getProduct(
+                $item,
+                array(
+                    'family'        => $this->familyColumn,
+                    'categories'    => $this->categoriesColumn,
+                    'groups'        => $this->groupsColumn
+                ),
+                array(
+                    'enabled'       => $this->enabled
+                )
+            );
+        } catch (InvalidObjectException $ex) {
+            foreach($ex->getErrors() as $error) {
+                $this->stepExecution->addError($error);
+            }
+
+            throw new InvalidItemException('Invalid item', $item);
+        }
     }
 
 

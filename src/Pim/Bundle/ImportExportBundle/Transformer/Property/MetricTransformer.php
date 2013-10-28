@@ -3,6 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Transformer\Property;
 
 use Oro\Bundle\FlexibleEntityBundle\Entity\Metric;
+use Pim\Bundle\ImportExportBundle\Exception\InvalidValueException;
 
 /**
  * Metric attribute transformer
@@ -19,9 +20,7 @@ class MetricTransformer implements PropertyTransformerInterface
             $metric = array();
         } else {
             if (false === strpos($value, ' ')) {
-                throw new \InvalidArgumentException(
-                    sprintf('Malformed metric: %s', $value)
-                );
+                throw new InvalidValueException('Malformed metric: %value%', array('%value%'=>$value));
             }
             list($data, $unit) = explode(' ', $value);
             $metric = new Metric;

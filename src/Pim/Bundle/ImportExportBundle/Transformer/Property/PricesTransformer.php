@@ -3,6 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Transformer\Property;
 
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
+use Pim\Bundle\ImportExportBundle\Exception\InvalidValueException;
 
 /**
  * Prices attribute transformer
@@ -40,7 +41,7 @@ class PricesTransformer implements PropertyTransformerInterface
             }
 
             if (0 === preg_match('/^([0-9]*\.?[0-9]*) (\w+)$/', $price, $matches)) {
-                throw new \InvalidArgumentException(sprintf('Malformed price: %s', $price));
+                throw new InvalidValueException('Malformed price: %value%', array('%value%'=>$price));
             }
 
             if (in_array($matches[2], $currencies)) {

@@ -3,6 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Transformer\Property;
 
 use Pim\Bundle\ImportExportBundle\Cache\EntityCache;
+use Pim\Bundle\ImportExportBundle\Exception\InvalidValueException;
 
 /**
  * Transform entity codes in entity arrays
@@ -43,12 +44,9 @@ class EntityTransformer implements PropertyTransformerInterface
         $transform = function ($value) use ($options, $entityCache) {
             $entity = $entityCache->find($options['class'], $value);
             if (!$entity) {
-                throw new \InvalidArgumentException(
-                    sprintf(
-                        'No entity of class "%s" with code "%s"',
-                        $options['class'],
-                        $value
-                    )
+                throw new InvalidValueException(
+                    'No entity of class "%class%" with code "%value%"',
+                    array('%class%'=>$options['class'], '%value%'=>$value)
                 );
             }
 

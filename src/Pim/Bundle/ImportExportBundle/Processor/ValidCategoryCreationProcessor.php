@@ -154,8 +154,6 @@ class ValidCategoryCreationProcessor extends AbstractConfigurableStepElement imp
      * If the category is valid, it is stored into the categories property
      *
      * @param array $item
-     *
-     * @throws InvalidObjectException when validation errors are present
      */
     private function processItem($item)
     {

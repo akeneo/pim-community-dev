@@ -12,6 +12,7 @@ services:
         public: false
         arguments:
             - '@pim_catalog.manager.product'
+            - '@pim_import_export.product_validator'
             - '@pim_import_export.attribute_cache'
             - '@property_accessor'
 

@@ -5,6 +5,7 @@ parameters:
     pim_import_export.archiver.job_execution_archiver.class:                 Pim\Bundle\ImportExportBundle\Archiver\JobExecutionArchiver
     pim_import_export.entity_cache.class:                                    Pim\Bundle\ImportExportBundle\Cache\EntityCache
     pim_import_export.attribute_cache.class:                                 Pim\Bundle\ImportExportBundle\Cache\AttributeCache
+    pim_import_export.product_validator.class:                               Pim\Bundle\ImportExportBundle\Validator\Import\ProductImportValidator
 
 services:
     pim_import_export.twig.normalize_configuration_extension:
@@ -40,3 +41,10 @@ services:
         class: '%pim_import_export.attribute_cache.class%'
         arguments:
             - '@doctrine'
+            
+    pim_import_export.product_validator:
+        class: '%pim_import_export.product_validator.class%'
+        arguments:
+            - '@validator'
+            - '@oro_flexibleentity.validator.attribute_constraint_guesser'
+            - '@translator'

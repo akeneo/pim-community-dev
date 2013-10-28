@@ -164,6 +164,7 @@ class ProductManager extends FlexibleManager
             'SELECT p FROM ' . $class . ' p ' .
             'LEFT JOIN p.values v WITH v.attribute IN (:attributes) ' .
             'LEFT JOIN v.options o ' .
+            'LEFT JOIN v.prices pr ' .
             'WHERE p.id IN (' .
             '  SELECT p2.id FROM ' . $class . ' p2 INNER JOIN p2.values v2 ' .
             '  WHERE v2.attribute=:identifier_attribute AND v2.' . $identifierAttribute->getBackendType() . ' = :code ' .

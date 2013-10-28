@@ -3,11 +3,13 @@
 namespace Pim\Bundle\ImportExportBundle\Transformer;
 
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
-use Symfony\Component\PropertyAccess\PropertyPathBuilder;
 use Doctrine\ORM\Query;
+use Oro\Bundle\BatchBundle\Item\InvalidItemException;
 use Pim\Bundle\ImportExportBundle\Cache\AttributeCache;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\ImportExportBundle\Validator\Import\ProductImportValidator;
+use Pim\Bundle\ImportExportBundle\Exception\InvalidValueException;
 
 /**
  * Transforms a CSV product in an entity
@@ -27,6 +29,11 @@ class OrmProductTransformer
      * @var AttributeCache
      */
     protected $attributeCache;
+
+    /**
+     * @var ProductImportValidator
+     */
+    protected $productValidator;
 
     /**
      * @var PropertyAccessorInterface
@@ -50,18 +57,22 @@ class OrmProductTransformer
             
     public function __construct(
         ProductManager $productManager,
+        ProductImportValidator $productValidator,
         AttributeCache $attributeCache,
         PropertyAccessorInterface $propertyAccessor
     ) {
         $this->productManager = $productManager;
+        $this->productValidator = $productValidator;
         $this->attributeCache = $attributeCache;
         $this->propertyAccessor = $propertyAccessor;
     }
 
     public function getProduct(array $values, array $mapping = array(), array $defaults = array())
     {
+        
         $this->mapValues($values, $mapping);
         $attributeValues = array_diff_key($values, $this->propertyTransformers);
+        $propertyValues = array_intersect_key($values, $this->propertyTransformers);
         if (!$this->attributeCache->isInitialized()) {
             $this->attributeCache->initialize(array_keys($attributeValues));
         }
@@ -69,10 +80,13 @@ class OrmProductTransformer
         $product = $this->createOrLoadProduct($values, $defaults);
         
         $this->setDefaultValues($product, $defaults);
-        $this->setPropertyValues($product, $values);
-        $this->setAttributeValues($product, $attributeValues);
-
-        //todo: validate product and attributes
+        $errors = array_merge(
+            $this->setPropertyValues($product, $propertyValues),
+            $this->setAttributeValues($product, $attributeValues)
+        );
+        if (count($errors)) {
+            throw new InvalidItemException(implode("\n", $errors), $values);
+        }
         return $product;
     }
 
@@ -132,15 +146,24 @@ class OrmProductTransformer
 
     protected function setPropertyValues(ProductInterface $product, array $values)
     {
-        foreach ($this->propertyTransformers as $propertyPath => $transformerConfig) {
-            if(isset($values[$propertyPath])) {
+        $errors = array();
+
+        foreach ($values as $propertyPath => $value) {
+            try {
                 $this->propertyAccessor->setValue(
                     $product,
                     $propertyPath,
-                    $this->getTransformedValue($transformerConfig, $values[$propertyPath])
+                    $this->getTransformedValue($this->propertyTransformers[$propertyPath], $value)
                 );
+            } catch (InvalidValueException $ex) {
+                $errors[] = $this->productValidator->getTranslatedExceptionMessage($propertyPath, $ex);
             }
         }
+
+        return array_merge(
+            $errors,
+            $this->productValidator->validateProductProperties($product, $values)
+        );
     }
     protected function setDefaultValues(ProductInterface $product, $defaults)
     {
@@ -148,33 +171,32 @@ class OrmProductTransformer
             $this->propertyAccessor->setValue($product, $propertyPath, $value);
         }
     }
-    protected function setPropertyValue(ProductInterface $product, $propertyPath, $value)
-    {
-        $propertyPathBuilder = new PropertyPathBuilder;
-        if (is_array($value)) {
-            $propertyPathBuilder->appendIndex($propertyPath);
-        } else {
-            $propertyPathBuilder->appendProperty($propertyPath);
-        }
-        $this->propertyAccessor->setValue(
-            $product,
-            $propertyPathBuilder->getPropertyPath(),
-            $value
-        );
-    }
-
     protected function setAttributeValues(ProductInterface $product, array $attributeValues)
     {
         $requiredAttributeCodes = $this->getRequiredAttributeCodes($product);
         $columns = $this->attributeCache->getColumns();
+        $errors = array();
         foreach ($attributeValues as $columnCode=>$columnValue) {
             $columnInfo = $columns[$columnCode];
-            if ($columnValue || in_array($columnInfo['code'], $requiredAttributeCodes)) {
-                $this->setProductValue($product, $this->getAttributeValue($columnValue, $columnInfo), $columnInfo);
+            try  {
+                if ($columnValue || in_array($columnInfo['code'], $requiredAttributeCodes)) {
+                    $this->setAttributeValue($product, $this->getAttributeValue($columnValue, $columnInfo), $columnInfo);
+                }
+            } catch (InvalidValueException $ex) {
+                $errors[] = $this->productValidator->getTranslatedExceptionMessage($columnCode, $ex);
             }
         }
+        $errors = array_merge(
+            $errors,
+            $this->productValidator->validateProductProperties(
+                $product, 
+                array_keys($attributeValues) 
+            )
+        );
+
+        return $errors;
     }
-    protected function setProductValue(ProductInterface $product, $value, array $columnInfo) {
+    protected function setAttributeValue(ProductInterface $product, $value, array $columnInfo) {
         $productValue = $product->getValue($columnInfo['code'], $columnInfo['locale'], $columnInfo['scope']);
         if (!$productValue) {
             $productValue = $product->createValue($columnInfo['code'], $columnInfo['locale'], $columnInfo['scope']);
