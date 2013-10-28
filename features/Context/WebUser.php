@@ -1108,7 +1108,7 @@ class WebUser extends RawMinkContext
         }
 
         if ($this->getCurrentPage()->findLink('Refresh')) {
-            throw $this->createExpectationException(sprintf("The job didn't finish in %d seconds", $timeout));
+            throw $this->createExpectationException("The job didn't finish in 30 seconds");
         }
     }
 
