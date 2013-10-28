@@ -1,5 +1,5 @@
 <?php
-
+// TODO: consider to remove, used only with GridBundle
 namespace Oro\Bundle\SearchBundle\Datagrid;
 
 use Symfony\Component\EventDispatcher\EventDispatcher;

@@ -58,7 +58,7 @@ class MetadataExtension extends \Twig_Extension
     {
         $metaData = $this->manager->getDatagrid($name)->getMetadata();
 
-        $additionalParams = array_merge($additionalParams, ['gridName' => $name]);
+        $additionalParams = array_merge([$name => $additionalParams], ['gridName' => $name]);
         $metaData->offsetAddToArray('options', ['url' => $this->router->generate(self::ROUTE, $additionalParams)]);
 
         return $metaData->toArray();
@@ -77,8 +77,7 @@ class MetadataExtension extends \Twig_Extension
     public function getGridData(\Twig_Environment $twig, $name, $additionalParams = [])
     {
         $additionalParams = array_merge(
-            [$name => $this->requestParams->getRootParameterValue()],
-            $additionalParams,
+            [$name => array_merge($additionalParams, $this->requestParams->getRootParameterValue())],
             ['gridName' => $name]
         );
 
