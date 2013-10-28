@@ -884,7 +884,7 @@ class WebUser extends RawMinkContext
         foreach ($table->getRowsHash() as $type => $fields) {
             $this->iSelectTheAttributeType($type);
             try {
-                $this->iShouldSeeTheFields($fields);
+                $this->getMainContext()->getSubcontext('assertions')->iShouldSeeTheFields($fields);
             } catch (ExpectationException $e) {
                 throw $this->createExpectationException(sprintf('%s: %s', $type, $e->getMessage()));
             }
