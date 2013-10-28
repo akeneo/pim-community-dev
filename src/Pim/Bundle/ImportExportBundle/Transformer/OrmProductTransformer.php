@@ -48,9 +48,11 @@ class OrmProductTransformer
     private $importQuery;
             
     public function __construct(
+        ProductManager $productManager,
         AttributeCache $attributeCache,
         PropertyAccessorInterface $propertyAccessor
     ) {
+        $this->productManager = $productManager;
         $this->attributeCache = $attributeCache;
         $this->propertyAccessor = $propertyAccessor;
     }
@@ -130,19 +132,22 @@ class OrmProductTransformer
     protected function setPropertyValues(ProductInterface $product, array $values)
     {
         foreach ($this->propertyTransformers as $propertyPath => $transformerConfig) {
-            $this->propertyAccessor->setValue(
-                $product,
-                $propertyPath,
-                $values[$propertyPath] ? $this->getTransformedValue($transformerConfig, $value) : null
-            );
+            if(isset($values[$propertyPath])) {
+                $this->propertyAccessor->setValue(
+                    $product,
+                    $propertyPath,
+                    $values[$propertyPath] ? $this->getTransformedValue($transformerConfig, $value) : null
+                );
+            }
         }
     }
 
     protected function setAttributeValues(ProductInterface $product, array $attributeValues)
     {
         $requiredAttributeCodes = $this->getRequiredAttributeCodes($product);
+        $columns = $this->attributeCache->getColumns();
         foreach ($attributeValues as $columnCode=>$columnValue) {
-            $columnInfo = $this->attributeColumns[$columnCode];
+            $columnInfo = $columns[$columnCode];
             if ($columnValue || in_array($columnInfo['code'], $requiredAttributeCodes)) {
                 $this->setProductValue($product, $this->getAttributeValue($columnValue, $columnInfo), $columnInfo);
             }
@@ -152,11 +157,12 @@ class OrmProductTransformer
         $productValue = $product->getValue($columnInfo['code'], $columnInfo['locale'], $columnInfo['scope']);
         if (!$productValue) {
             $productValue = $product->createValue($columnInfo['code'], $columnInfo['locale'], $columnInfo['scope']);
+            $product->addValue($productValue);
         }
         $productValue->setData($value);
     }
     protected function getAttributeValue($value, array $columnInfo) {
-        $backendType = $this->attributes[$columnInfo['attribute']]->getBackendType();
+        $backendType = $columnInfo['attribute']->getBackendType();
         if ($value) {
             if (isset($this->attributeTransformers[$backendType])) {
                 $value = $this->getTransformedValue($this->attributeTransformers[$backendType], $value);
@@ -193,7 +199,8 @@ class OrmProductTransformer
             array_map(
                 function ($attribute) {
                     return $attribute->getCode();
-                }
+                },
+                $requiredAttributes
             )
         );
     }

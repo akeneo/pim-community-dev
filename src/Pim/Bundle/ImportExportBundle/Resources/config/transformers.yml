@@ -11,6 +11,7 @@ services:
         class: '%pim_import_export.transformer.product.class%'
         public: false
         arguments:
+            - '@pim_catalog.manager.product'
             - '@pim_import_export.attribute_cache'
             - '@property_accessor'
 

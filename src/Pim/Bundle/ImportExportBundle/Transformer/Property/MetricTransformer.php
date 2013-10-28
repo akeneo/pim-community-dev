@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\ImportExportBundle\Transformer\Property;
 
+use Oro\Bundle\FlexibleEntityBundle\Entity\Metric;
+
 /**
  * Metric attribute transformer
  * 
@@ -22,10 +24,8 @@ class MetricTransformer implements PropertyTransformerInterface
                 );
             }
             list($data, $unit) = explode(' ', $value);
-            $metric = array(
-                'data' => $data,
-                'unit' => $unit,
-            );
+            $metric = new Metric;
+            $metric->setData($data)->setUnit($unit);
         }
 
         return $metric;

@@ -54,7 +54,13 @@ class AttributeCache
     public function isInitialized() {
         return $this->initialized;
     }
-
+    public function getAttribute($code) {
+        foreach($this->attributes as $attribute) {
+            if ($code == $attribute->getCode()) {
+                return $attribute;
+            }
+        }
+    }
     public function getAttributes()
     {
         return $this->attributes;
@@ -88,7 +94,7 @@ class AttributeCache
                 'locale' => null,
                 'scope' => null
             );
-            $columnInfo['attribute'] = $this->attributes[$columnInfo['code']];
+            $columnInfo['attribute'] = $this->getAttribute($columnInfo['code']);
             if ($columnInfo['attribute']->getTranslatable()) {
                 if (!count($labelTokens)) {
                     throw new \Exception(
@@ -121,12 +127,12 @@ class AttributeCache
             array_map(
                 function ($tokens) {
                     return $tokens[0];
-                }
-            ),
-            $columnLabelTokens
+                },
+                $columnLabelTokens
+            )
         );
             
-        $this->attributes = $this->doctrine->getRepository('PimImportExportBundle:ProductAttribute')
+        $this->attributes = $this->doctrine->getRepository('PimCatalogBundle:ProductAttribute')
                 ->findBy(array('code' => $codes));
 
         foreach ($this->attributes as $attribute) {
