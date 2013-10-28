@@ -60,8 +60,8 @@
                         <td>{{ step.readCount }}</td>
                         <td>{{ step.filterCount }}</td>
                         <td>{{ step.writeCount }}</td>
-                        <td>{{ step.startTime|date("Y-m-d H:i:s") }}</td>
-                        <td>{{ step.endTime|date("Y-m-d H:i:s") }}</td>
+                        <td>{{ step.startTime is empty ? "-" : step.startTime|date("Y-m-d H:i:s") }}</td>
+                        <td>{{ step.endTime is empty ? "-" : step.endTime|date("Y-m-d H:i:s") }}</td>
                     </tr>
 
                     {# Step warnings #}
