@@ -1,7 +1,7 @@
 Feature: Import media with products
   In order to re-use the images and documents I have setted on my products
   As Julia
-  I need to be able to import them among with the products
+  I need to be able to import them along with the products
 
   Background:
     Given the following families:
