@@ -43,6 +43,7 @@ Feature: Export media with products
     And I am logged in as "Julia"
     And I am on the "acme_product_export" export job page
     When I launch the export job
+    And I wait for the job to finish
     Then exported file of "acme_product_export" should contain:
     """
     sku;family;groups;categories;frontView;name;userManual
