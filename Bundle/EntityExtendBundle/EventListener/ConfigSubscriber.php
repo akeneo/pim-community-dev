@@ -76,14 +76,16 @@ class ConfigSubscriber implements EventSubscriberInterface
             }
         }
 
+        /** @var ConfigProvider $extendConfigProvider */
+        $extendConfigProvider = $event->getConfigManager()->getProvider('extend');
+        $extendFieldConfig    = $extendConfigProvider->getConfigById($event->getConfig()->getId());
+
         if ($scope == 'datagrid'
             && $event->getConfig()->getId() instanceof FieldConfigId
             && !in_array($event->getConfig()->getId()->getFieldType(), array('text'))
+            && $extendFieldConfig->is('is_extend')
             && isset($change['is_visible'])
-
         ) {
-            /** @var ConfigProvider $extendConfigProvider */
-            $extendConfigProvider = $event->getConfigManager()->getProvider('extend');
             $extendConfig         = $extendConfigProvider->getConfig($className);
             $index                = $extendConfig->has('index') ? $extendConfig->get('index') : array();
 

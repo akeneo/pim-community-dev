@@ -37,7 +37,9 @@ Each template must define these params:
 
 Optional parameter:
 
+ - name - template name; the template file name without extension is used if this parameter is not specified 
  - isSystem - 1 or 0, default - false (0)
+ - isEditable - 1 or 0, default - false (0); make sense only if isSystem = 1 and allow to edit content of system templates
 
 Params defined with syntax at the top of the template
 ```

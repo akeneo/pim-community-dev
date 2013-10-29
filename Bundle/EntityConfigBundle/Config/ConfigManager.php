@@ -319,6 +319,7 @@ class ConfigManager
         if ($this->cache) {
             $this->cache->removeAllConfigurable();
         }
+        $this->modelManager->clearCheckDatabase();
     }
 
     /**

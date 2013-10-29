@@ -14,13 +14,19 @@ class SchemaStep extends AbstractStep
             case 'cache':
                 return $this->handleAjaxAction('cache:clear');
             case 'drop':
-                return $this->handleAjaxAction('doctrine:schema:drop', array('--force' => true, '--full-database' => true));
+                return $this->handleAjaxAction(
+                    'doctrine:schema:drop',
+                    array('--force' => true, '--full-database' => true)
+                );
             case 'clear':
                 return $this->handleAjaxAction('oro:entity-extend:clear');
             case 'create':
                 return $this->handleAjaxAction('doctrine:schema:create');
             case 'fixtures':
-                return $this->handleAjaxAction('doctrine:fixtures:load', array('--no-interaction' => true));
+                return $this->handleAjaxAction(
+                    'doctrine:fixtures:load',
+                    array('--no-interaction' => true, '--append' => true)
+                );
             case 'init-config':
                 return $this->handleAjaxAction('oro:entity-config:init');
             case 'init-extend':
