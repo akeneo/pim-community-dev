@@ -1,0 +1,10 @@
+@name = calendar_reminder
+@entityName = Oro\Bundle\CalendarBundle\Entity\CalendarEvent
+@subject = Calendar Reminder
+@isSystem = 1
+@isEditable = 1
+
+<h1>{{ entity.title }}</h1>
+<div>
+    <i>When:</i> {{ calendar_date_range(entity.start, entity.end, entity.allDay) }}
+</div>

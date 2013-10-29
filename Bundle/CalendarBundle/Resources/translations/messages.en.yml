@@ -1,0 +1,11 @@
+oro:
+    calendar:
+        form.choose_user_to_add_calendar: "Choose a user to add a calendar ..."
+"Calendars": "Calendars"
+"My Calendar": "My Calendar"
+"Exclude this calendar": "Exclude this calendar"
+"Cancel": "Cancel"
+"Save": "Save"
+"Delete": "Delete"
+"Delete event": "Delete event"
+"Are you sure you want to delete this event?": "Are you sure you want to delete this event?"

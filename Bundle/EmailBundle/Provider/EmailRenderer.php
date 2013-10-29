@@ -11,6 +11,7 @@ use Oro\Bundle\UserBundle\Entity\User;
 
 use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
+use Oro\Bundle\EmailBundle\Model\EmailTemplateInterface;
 
 class EmailRenderer extends \Twig_Environment
 {
@@ -101,21 +102,21 @@ class EmailRenderer extends \Twig_Environment
     /**
      * Compile email message
      *
-     * @param EmailTemplate $entity
-     * @param array         $templateParams
+     * @param EmailTemplateInterface $template
+     * @param array                  $templateParams
      *
      * @return array first element is email subject, second - message
      */
-    public function compileMessage(EmailTemplate $entity, array $templateParams = array())
+    public function compileMessage(EmailTemplateInterface $template, array $templateParams = array())
     {
         // ensure we have no html tags in txt template
-        $content = $entity->getContent();
-        $content = $entity->getType() == 'txt' ? strip_tags($content) : $content;
+        $content = $template->getContent();
+        $content = $template->getType() == 'txt' ? strip_tags($content) : $content;
 
         $templateParams['user'] = $this->user;
 
         $templateRendered = $this->render($content, $templateParams);
-        $subjectRendered  = $this->render($entity->getSubject(), $templateParams);
+        $subjectRendered  = $this->render($template->getSubject(), $templateParams);
 
         return array($subjectRendered, $templateRendered);
     }
