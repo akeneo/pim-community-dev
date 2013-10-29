@@ -14,7 +14,6 @@ class LocaleSettings
     const PHONE_PREFIX_KEY    = 'phone_prefix';
     const DEFAULT_LOCALE_KEY  = 'default_locale';
     const CURRENCY_CODE_KEY   = 'currency_code';
-    const CURRENCY_SYMBOL_PREPEND_KEY = 'currency_symbol_prepend';
     const CURRENCY_SYMBOL_KEY = 'symbol';
 
     /**
@@ -99,7 +98,6 @@ class LocaleSettings
      *     '<countryCode>' => array(
      *          'default_locale' => '<defaultLocaleString>',
      *          'currency_code'  => '<currencyIso3SymbolsCode>',
-     *          'currency_symbol_prepend' => true|false,
      *          'phone_prefix'   => '<phonePrefixString>', // optional
      *     ),
      * )

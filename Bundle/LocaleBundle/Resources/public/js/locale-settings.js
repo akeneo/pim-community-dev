@@ -22,8 +22,7 @@ function(_, settings) {
                 US: {
                     phone_prefix: '1',
                     default_locale: 'en_US',
-                    currency_code: 'USD',
-                    currency_symbol_prepend: true
+                    currency_code: 'USD'
                 }
             },
             currency_data: {
