@@ -26,6 +26,7 @@ use Oro\Bundle\UserBundle\Entity\Email;
 use Oro\Bundle\UserBundle\Entity\EntityUploadedImageInterface;
 use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
 use Oro\Bundle\EmailBundle\Entity\EmailOwnerInterface;
+use Oro\Bundle\EmailBundle\Model\EmailHolderInterface;
 use Oro\Bundle\ImapBundle\Entity\ImapEmailOrigin;
 use Oro\Bundle\ImapBundle\Entity\ImapConfigurationOwnerInterface;
 use Oro\Bundle\TagBundle\Entity\Tag;
@@ -68,6 +69,7 @@ class User extends AbstractEntityFlexible implements
     EntityUploadedImageInterface,
     Taggable,
     EmailOwnerInterface,
+    EmailHolderInterface,
     ImapConfigurationOwnerInterface,
     FullNameInterface
 {
@@ -775,7 +777,7 @@ class User extends AbstractEntityFlexible implements
     public function setImageFile(UploadedFile $imageFile)
     {
         $this->imageFile = $imageFile;
-        // this will trigger PreUpdate callback even if only image has been changed
+		// this will trigger PreUpdate callback even if only image has been changed
         $this->updated = new DateTime('now', new \DateTimeZone('UTC'));
 
         return $this;

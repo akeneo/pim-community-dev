@@ -1,6 +1,6 @@
 /* global define */
-define(['underscore', 'oro/messenger', 'oro/translator', 'oro/modal', 'oro/datagrid/model-action'],
-function(_, messenger, __, Modal, ModelAction) {
+define(['underscore', 'oro/messenger', 'oro/translator', 'oro/delete-confirmation', 'oro/modal', 'oro/datagrid/model-action'],
+function(_, messenger, __, DeleteConfirmation, Modal, ModelAction) {
     'use strict';
 
     /**
@@ -50,10 +50,8 @@ function(_, messenger, __, Modal, ModelAction) {
          */
         getConfirmDialog: function() {
             if (!this.confirmModal) {
-                this.confirmModal = new Modal({
-                    title: __('Delete Confirmation'),
-                    content: __('Are you sure you want to delete this item?'),
-                    okText: __('Yes, Delete')
+                this.confirmModal = new DeleteConfirmation({
+                    content: __('Are you sure you want to delete this item?')
                 });
                 this.confirmModal.on('ok', _.bind(this.doDelete, this));
             }

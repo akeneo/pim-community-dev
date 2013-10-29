@@ -5,6 +5,9 @@ parameters:
     oro_notification.event_entity.class: Oro\Bundle\NotificationBundle\Entity\Event
     oro_notification.emailnotification.entity.class: Oro\Bundle\NotificationBundle\Entity\EmailNotification
 
+    # Notification processors
+    oro_notification.email_processor.class: Oro\Bundle\NotificationBundle\Processor\EmailNotificationProcessor
+
     # Event manager and event handler classes
     oro_notification.manager.class: Oro\Bundle\NotificationBundle\Provider\NotificationManager
     oro_notification.email_handler.class: Oro\Bundle\NotificationBundle\Event\Handler\EmailNotificationHandler
@@ -104,8 +107,8 @@ services:
             - @doctrine.orm.entity_manager
             - %oro_notification.emailnotification.entity.class%
 
-    oro_notification.email_handler:
-        class: %oro_notification.email_handler.class%
+    oro_notification.email_processor:
+        class: %oro_notification.email_processor.class%
         arguments:
             - @oro_email.email_renderer
             - @swiftmailer.mailer.db_spool_mailer
@@ -115,6 +118,12 @@ services:
         calls:
             - [ setEnv, ['prod'] ]
             - [ setMessageLimit, [100] ]
+
+    oro_notification.email_handler:
+        class: %oro_notification.email_handler.class%
+        arguments:
+            - @oro_notification.email_processor
+            - @doctrine.orm.entity_manager
         tags:
             - { name: notification.handler, alias: email_notification_handler }
 
