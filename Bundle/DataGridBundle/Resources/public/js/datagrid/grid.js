@@ -142,16 +142,10 @@ function($, _, Backgrid, __, mediator, LoadingMask, GridHeader, GridBody, Toolba
          * @private
          */
         _initRowActions: function() {
-            var rowClickActions = _.filter(this.rowActions, function(action, key) {
-                if (action.prototype.runOnRowClick) {
-                    delete this.rowActions[key];
-                    return true;
-                }
-                return false;
-            }, this);
-
-            if (rowClickActions.length && !this.rowClickAction) {
-                this.rowClickAction = rowClickActions[0];
+            if (!this.rowClickAction) {
+                this.rowClickAction = _.find(this.rowActions, function (action) {
+                    return Boolean(action.prototype.rowAction);
+                });
             }
         },
 

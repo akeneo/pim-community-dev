@@ -84,7 +84,7 @@ class OrmSorterExtension extends AbstractExtension
                 $data->offsetSetByPath(sprintf('[columns][%s][sortable]', $key), true);
             }
         }
-        $data->offsetAddToArray(DatagridInterface::METADATA_OPTIONS_KEY, ['multipleSorting' => $multisort]);
+        $data->offsetAddToArray(MetadataObject::OPTIONS_KEY, ['multipleSorting' => $multisort]);
 
         $sorters = $this->getSortersToApply($config);
         foreach ($sorters as $column => $definition) {
