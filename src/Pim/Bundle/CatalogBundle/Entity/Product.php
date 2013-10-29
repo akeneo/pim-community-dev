@@ -297,7 +297,6 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
     public function addCategory(Category $category)
     {
         if (!$this->categories->contains($category)) {
-            $category->addProduct($this);
             $this->categories->add($category);
         }
 
@@ -313,7 +312,6 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
     public function removeCategory(Category $category)
     {
         $this->categories->removeElement($category);
-        $category->removeProduct($this);
 
         return $this;
     }
@@ -420,7 +418,6 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
     public function addGroup(Group $group)
     {
         if (!$this->groups->contains($group)) {
-            $group->addProduct($this);
             $this->groups->add($group);
         }
 
@@ -436,7 +433,6 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
     public function removeGroup(Group $group)
     {
         $this->groups->removeElement($group);
-        $group->removeProduct($this);
 
         return $this;
     }

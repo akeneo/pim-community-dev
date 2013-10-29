@@ -63,7 +63,6 @@ class Group implements TranslatableInterface, GroupSequenceProviderInterface
      * @ORM\ManyToMany(
      *     targetEntity="Pim\Bundle\CatalogBundle\Model\ProductInterface",
      *     inversedBy="groups",
-     *     cascade={"persist"}
      * )
      * @ORM\JoinTable(name="pim_catalog_group_product")
      */

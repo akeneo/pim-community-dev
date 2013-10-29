@@ -67,7 +67,6 @@ class Category extends AbstractSegment implements CategoryInterface, Translatabl
      * @ORM\ManyToMany(
      *     targetEntity="Pim\Bundle\CatalogBundle\Model\ProductInterface",
      *     inversedBy="categories",
-     *     cascade={"persist"},
      *     fetch="EXTRA_LAZY"
      * )
      * @ORM\JoinTable(
