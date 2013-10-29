@@ -24,19 +24,25 @@ abstract class AbstractFormatConverterTestCase extends \PHPUnit_Framework_TestCa
      * @var array
      */
     protected $localFormatMap = array(
+        array(null,                       null,                       self::LOCALE_EN, "MMM d, y h:mm a"),
         array(\IntlDateFormatter::LONG,   \IntlDateFormatter::MEDIUM, self::LOCALE_EN, "MMMM d, y h:mm:ss a"),
         array(\IntlDateFormatter::LONG,   \IntlDateFormatter::NONE,   self::LOCALE_EN, "MMMM d, y"),
         array(\IntlDateFormatter::MEDIUM, \IntlDateFormatter::SHORT,  self::LOCALE_EN, "MMM d, y h:mm a"),
         array(\IntlDateFormatter::MEDIUM, \IntlDateFormatter::NONE,   self::LOCALE_EN, "MMM d, y"),
+        array(null,                       \IntlDateFormatter::NONE,   self::LOCALE_EN, "MMM d, y"),
         array(\IntlDateFormatter::NONE,   \IntlDateFormatter::MEDIUM, self::LOCALE_EN, "h:mm:ss a"),
         array(\IntlDateFormatter::NONE,   \IntlDateFormatter::SHORT,  self::LOCALE_EN, "h:mm a"),
+        array(\IntlDateFormatter::NONE,   null,                       self::LOCALE_EN, "h:mm a"),
 
+        array(null,                       null,                       self::LOCALE_RU, "dd.MM.yyyy H:mm"),
         array(\IntlDateFormatter::LONG,   \IntlDateFormatter::MEDIUM, self::LOCALE_RU, "d MMMM y 'г.' H:mm:ss"),
         array(\IntlDateFormatter::LONG,   \IntlDateFormatter::NONE,   self::LOCALE_RU, "d MMMM y 'г.'"),
         array(\IntlDateFormatter::MEDIUM, \IntlDateFormatter::SHORT,  self::LOCALE_RU, "dd.MM.yyyy H:mm"),
         array(\IntlDateFormatter::MEDIUM, \IntlDateFormatter::NONE,   self::LOCALE_RU, "dd.MM.yyyy"),
+        array(null,                       \IntlDateFormatter::NONE,   self::LOCALE_RU, "dd.MM.yyyy"),
         array(\IntlDateFormatter::NONE,   \IntlDateFormatter::MEDIUM, self::LOCALE_RU, "H:mm:ss"),
         array(\IntlDateFormatter::NONE,   \IntlDateFormatter::SHORT,  self::LOCALE_RU, "H:mm"),
+        array(\IntlDateFormatter::NONE,   null,                       self::LOCALE_RU, "H:mm"),
     );
 
     protected function setUp()

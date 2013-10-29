@@ -1,6 +1,5 @@
 {% extends bap.layout%}
 {% import 'OroUIBundle::macros.html.twig' as UI %}
-{% import 'OroLocaleBundle::macros.html.twig' as Locale %}
 
 {% block page_container %}
     {% block content %}
@@ -55,8 +54,8 @@
                                         <ul class="inline">
                                             {% block stats %}
                                                 {% if breadcrumbs.entity.createdAt is defined and breadcrumbs.entity.updatedAt is defined %}
-                                                    <li>{{ 'Created'|trans }}: {{ breadcrumbs.entity.createdAt ? Locale.time(breadcrumbs.entity.createdAt) : 'N/A' }}</li>
-                                                    <li>{{ 'Updated'|trans }}: {{ breadcrumbs.entity.updatedAt ? Locale.time(breadcrumbs.entity.updatedAt) : 'N/A' }}</li>
+                                                    <li>{{ 'Created'|trans }}: {{ breadcrumbs.entity.createdAt ? breadcrumbs.entity.createdAt|oro_format_datetime : 'N/A' }}</li>
+                                                    <li>{{ 'Updated'|trans }}: {{ breadcrumbs.entity.updatedAt ? breadcrumbs.entity.updatedAt|oro_format_datetime : 'N/A' }}</li>
                                                 {% endif %}
                                             {% endblock stats %}
                                         </ul>

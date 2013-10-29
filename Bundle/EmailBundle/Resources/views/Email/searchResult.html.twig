@@ -5,7 +5,6 @@
 #}
 {% extends 'OroSearchBundle:Search:searchResultItem.html.twig' %}
 {% import 'OroUserBundle::macros.html.twig' as UI %}
-{% import 'OroLocaleBundle::macros.html.twig' as Locale %}
 {% import 'OroEmailBundle::macros.html.twig' as EA %}
 
 {% set format = oro_config_value('oro_locale.name_format') %}
@@ -17,7 +16,7 @@
 {% set entityType = 'Email'|trans %}
 
 {% set entityInfo = [
-{'title': 'Sent', 'value': Locale.time(entity.sentAt)},
-{'title': 'From', 'value': EA.email_address(entity.fromEmailAddress, entity.fromName, format)},
-{'title': 'To', 'value': EA.recipient_email_addresses(entity.recipients('to'), format)},
+    {'title': 'Sent', 'value': entity.sentAt|oro_format_datetime},
+    {'title': 'From', 'value': EA.email_address(entity.fromEmailAddress, entity.fromName, format)},
+    {'title': 'To', 'value': EA.recipient_email_addresses(entity.recipients('to'), format)},
 ] %}

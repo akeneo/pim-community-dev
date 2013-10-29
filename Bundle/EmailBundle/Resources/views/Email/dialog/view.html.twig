@@ -4,7 +4,6 @@
 #}
 {% import 'OroUIBundle::macros.html.twig' as UI %}
 {% import 'OroEmailBundle::macros.html.twig' as EA %}
-{% import 'OroLocaleBundle::macros.html.twig' as Locale %}
 
 {% set format = oro_config_value('oro_locale.name_format') %}
 
@@ -13,7 +12,7 @@
     {% block content %}
     <div class="form-horizontal">
         <div class="control-group">
-            {{ UI.attibuteRow('Sent', Locale.time(entity.sentAt)) }}
+            {{ UI.attibuteRow('Sent', entity.sentAt|oro_format_datetime) }}
             {{ UI.attibuteRow('From', EA.email_address(entity.fromEmailAddress, entity.fromName, format, true)) }}
             {{ UI.attibuteRow('To', EA.recipient_email_addresses(entity.recipients('to'), format, true)) }}
             {{ UI.attibuteRow('Cc', EA.recipient_email_addresses(entity.recipients('cc'), format, true)) }}

@@ -168,13 +168,6 @@ abstract class AbstractDateTimeFormatConverter implements DateTimeFormatConverte
      */
     protected function getFormat($dateType, $timeType, $locale)
     {
-        if (null === $dateType) {
-            $dateType = \IntlDateFormatter::MEDIUM;
-        }
-
-        if (null === $timeType) {
-            $timeType = \IntlDateFormatter::SHORT;
-        }
         return $this->convertFormat($this->formatter->getPattern($dateType, $timeType, $locale));
     }
 

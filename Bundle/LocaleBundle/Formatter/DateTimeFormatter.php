@@ -6,6 +6,9 @@ use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
 
 class DateTimeFormatter
 {
+    const DEFAULT_DATE_TYPE = \IntlDateFormatter::MEDIUM;
+    const DEFAULT_TIME_TYPE = \IntlDateFormatter::SHORT;
+
     /**
      * @var LocaleSettings
      */
@@ -107,6 +110,14 @@ class DateTimeFormatter
 
         if (!$timeZone) {
             $timeZone = $this->localeSettings->getTimeZone();
+        }
+
+        if (null === $dateType) {
+            $dateType = static::DEFAULT_DATE_TYPE;
+        }
+
+        if (null === $timeType) {
+            $timeType = static::DEFAULT_TIME_TYPE;
         }
 
         return new \IntlDateFormatter(

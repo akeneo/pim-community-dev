@@ -1,5 +1,4 @@
 {% extends 'OroUIBundle:actions:update.html.twig' %}
-{% import 'OroLocaleBundle::macros.html.twig' as Locale %}
 {% set format = oro_config_value('oro_locale.name_format') %}
 {% form_theme form with ['OroFormBundle:Form:fields.html.twig', 'OroTagBundle:Form:fields.html.twig'] %}
 
@@ -72,7 +71,7 @@
 
 {% block stats %}
     {{ parent() }}
-    <li>{{ 'Last logged in'|trans }}: {{ form.vars.value.lastLogin ? Locale.time(form.vars.value.lastLogin) : 'N/A' }}</li>
+    <li>{{ 'Last logged in'|trans }}: {{ form.vars.value.lastLogin ? form.vars.value.lastLogin|oro_format_datetime : 'N/A' }}</li>
     <li>{{ 'Login count'|trans }}: {{ form.vars.value.loginCount|default(0) }}</li>
 {% endblock stats %}
 

@@ -98,7 +98,7 @@ class DateTimeFormatterTest extends IcuAwareTestCase
                 'timeZone' => 'America/Los_Angeles'
             ),
             'default_date_and_time_type' => array(
-                'expected' => '2013-12-31 2:00:00 PM',
+                'expected' => '2013-12-31 2:00 PM',
                 'date' => $this->createDateTime('2014-01-01 00:00:00', 'Europe/London'),
                 'dateType' => null,
                 'timeType' => null,
@@ -221,7 +221,7 @@ class DateTimeFormatterTest extends IcuAwareTestCase
                 'timeZone' => 'America/Los_Angeles'
             ),
             'default_date_type' => array(
-                'expected' => '2:00:00 PM',
+                'expected' => '2:00 PM',
                 'date' => $this->createDateTime('2014-01-01 00:00:00', 'Europe/London'),
                 'dateType' => null,
                 'locale' => 'en_CA',
