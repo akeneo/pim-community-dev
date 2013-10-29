@@ -62,9 +62,8 @@ class Group implements TranslatableInterface, GroupSequenceProviderInterface
      *
      * @ORM\ManyToMany(
      *     targetEntity="Pim\Bundle\CatalogBundle\Model\ProductInterface",
-     *     inversedBy="groups"
+     *     mappedBy="groups"
      * )
-     * @ORM\JoinTable(name="pim_catalog_group_product")
      */
     protected $products;
 
@@ -277,6 +276,7 @@ class Group implements TranslatableInterface, GroupSequenceProviderInterface
     {
         if (!$this->products->contains($product)) {
             $this->products[] = $product;
+            $product->addGroup($this);
         }
 
         return $this;
@@ -292,6 +292,7 @@ class Group implements TranslatableInterface, GroupSequenceProviderInterface
     public function removeProduct(ProductInterface $product)
     {
         $this->products->removeElement($product);
+        $product->removeGroup($this);
 
         return $this;
     }

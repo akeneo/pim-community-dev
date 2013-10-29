@@ -185,8 +185,9 @@ class ProductManager extends FlexibleManager
         
 
         return $em->createQuery(
-            'SELECT p, v, o, pr ' .
+            'SELECT p, v, f, o, pr ' .
             'FROM ' . $class . ' p ' .
+            'LEFT JOIN p.family f ' .
             'LEFT JOIN p.values v WITH v.attribute IN (:attributes) ' .
             'LEFT JOIN v.options o ' .
             'LEFT JOIN v.prices pr ' .
