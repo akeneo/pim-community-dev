@@ -1,4 +1,4 @@
-# 1.0.0-beta-2 (2013-10-29)
+# 1.0.0-beta-2 - Hold the Lion, please (2013-10-29)
 
 ## Features
 - Manage variant groups
