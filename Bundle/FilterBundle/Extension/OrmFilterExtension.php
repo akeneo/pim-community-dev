@@ -70,8 +70,8 @@ class OrmFilterExtension extends AbstractExtension
                     $form->submit($value);
                 }
 
-                if (!($form->isValid() && $filter->apply($datasource->getQuery(), $form->getData()))) {
-                    throw new \LogicException(sprintf('Filter %s is not valid', $filter->getName()));
+                if ($form->isValid()) {
+                    $filter->apply($datasource->getQuery(), $form->getData());
                 }
             }
         }
