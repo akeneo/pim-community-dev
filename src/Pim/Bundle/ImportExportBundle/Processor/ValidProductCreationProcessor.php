@@ -7,6 +7,7 @@ use Oro\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Oro\Bundle\BatchBundle\Entity\StepExecution;
+use Oro\Bundle\BatchBundle\Item\InvalidItemException;
 use Pim\Bundle\ImportExportBundle\Exception\InvalidObjectException;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
@@ -197,19 +198,14 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
             $converter = new ProductErrorConverter();
             $warnings = $converter->convert($form);
             if (!empty($warnings)) {
-                foreach ($warnings as $warning) {
-                    $this->stepExecution->addFilterWarning(
-                        get_class($this),
-                        sprintf(
-                            'Product %s : %s',
-                            (string) $product->getIdentifier(),
-                            $warning
-                        ),
-                        $item
-                    );
-                }
-
-                return false;
+                throw new InvalidItemException(
+                    sprintf(
+                        'Product %s : %s',
+                        (string) $product->getIdentifier(),
+                        implode(',', $warnings)
+                    ),
+                    $item
+                );
             } else {
                 throw new InvalidObjectException($form);
             }
