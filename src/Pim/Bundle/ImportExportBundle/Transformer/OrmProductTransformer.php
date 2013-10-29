@@ -229,7 +229,7 @@ class OrmProductTransformer
      */
     protected function setAttributeValues(ProductInterface $product, array $attributeValues)
     {
-        $requiredAttributeCodes = $this->getRequiredAttributeCodes($product);
+        $requiredAttributeCodes = $this->attributeCache->getRequiredAttributeCodes($product);
         $columns = $this->attributeCache->getColumns();
         $errors = array();
         foreach ($attributeValues as $columnCode=>$columnValue) {
@@ -302,39 +302,5 @@ class OrmProductTransformer
     protected function getTransformedValue($value, array $transformerConfig)
     {
         return $transformerConfig['transformer']->transform($value, $transformerConfig['options']);
-    }
-
-    /**
-     * Returns the required attribute codes for a product
-     *
-     * @param  ProductInterface $product
-     * @return array
-     */
-    protected function getRequiredAttributeCodes(ProductInterface $product)
-    {
-        $requiredAttributes = array();
-
-        if ($product->getFamily()) {
-            $requiredAttributes = $product->getFamily()->getAttributes()->toArray();
-        }
-
-        foreach ($product->getGroups() as $group) {
-            $requiredAttributes = array_merge($requiredAttributes, $group->getAttributes()->toArray());
-        }
-
-        if ($product->getId()) {
-            foreach ($product->getValues() as $value) {
-                $requiredAttributes[] = $value->getAttribute();
-            }
-        }
-
-        return array_unique(
-            array_map(
-                function ($attribute) {
-                    return $attribute->getCode();
-                },
-                $requiredAttributes
-            )
-        );
     }
 }

@@ -4,6 +4,9 @@ namespace Pim\Bundle\ImportExportBundle\Cache;
 
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Entity\Family;
+use Pim\Bundle\CatalogBundle\Entity\Group;
 
 /**
  * Caches the attributes of an import. Do not forget to call the reset method between two imports.
@@ -42,6 +45,16 @@ class AttributeCache
      * @var boolean
      */
     protected $initialized=false;
+
+    /**
+     * @var array
+     */
+    protected $familyAttributeCodes = array();
+
+    /***
+     * @var array
+     */
+    protected $groupAttributeCodes = array();
 
     /**
      * Constructor
@@ -137,6 +150,79 @@ class AttributeCache
     public function getColumns()
     {
         return $this->columns;
+    }
+
+    /**
+     * Returns the required attribute codes for a product
+     *
+     * @param  ProductInterface $product
+     * @return array
+     */
+    public function getRequiredAttributeCodes(ProductInterface $product)
+    {
+        $codes = array();
+
+        if ($product->getFamily()) {
+            $codes = $this->getFamilyAttributeCodes($product->getFamily());
+        }
+
+        foreach ($product->getGroups() as $group) {
+            $codes = array_merge($codes, $this->getGroupAttributeCodes($group));
+        }
+
+        if ($product->getId()) {
+            foreach ($product->getValues() as $value) {
+                $codes[] = $value->getAttribute()->getCode();
+            }
+        }
+
+        return $codes;
+    }
+
+    /**
+     * Returns the attribute codes for a group
+     * 
+     * @param Group $group
+     * @return array
+     */
+    protected function getGroupAttributeCodes(Group $group) {
+        $code = $group->getCode();
+        if (!isset($this->groupAttributeCodes)) {
+            $this->groupAttributeCodes[$code] = $this->getAttributeCodes($group);
+        }
+
+        return $this->groupAttributeCodes[$code];
+    }
+
+    /**
+     * Returns the attribute codes for a family
+     * 
+     * @param Family $family
+     * @return array
+     */
+    protected function getFamilyAttributeCodes(Family $family) {
+        $code = $family->getCode();
+        if (!isset($this->familyAttributeCodes)) {
+            $this->familyAttributeCodes[$code] = $this->getAttributeCodes($family);
+        }
+
+        return $this->familyAttributeCodes[$code];
+    }
+
+    /**
+     * Returns the attribute codes for an object
+     * 
+     * @param object $object
+     * @return array
+     */
+    protected function getAttributeCodes($object)
+    {
+        return array_map(
+                function ($attribute) {
+                    return $attribute->getCode();
+                },
+                $object->getAttributes()->toArray()
+            );
     }
 
     /**
