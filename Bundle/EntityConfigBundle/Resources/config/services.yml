@@ -72,4 +72,4 @@ services:
         arguments:
             - @oro_entity_config.config_manager
         tags:
-            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.entityconfig-grid, method: onBuildAfter }
+            - { name: kernel.event_subscriber }

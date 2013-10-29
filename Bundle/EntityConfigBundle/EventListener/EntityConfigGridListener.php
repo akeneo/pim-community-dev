@@ -4,6 +4,8 @@ namespace Oro\Bundle\EntityConfigBundle\EventListener;
 
 use Doctrine\ORM\QueryBuilder;
 
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+
 use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 use Oro\Bundle\DataGridBundle\Event\BuildAfter;
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
@@ -11,7 +13,7 @@ use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 use Oro\Bundle\EntityConfigBundle\Config\Id\ConfigIdInterface;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 
-class EntityConfigGridListener
+class EntityConfigGridListener implements EventSubscriberInterface
 {
     /**
      * @var ConfigManager
@@ -24,6 +26,13 @@ class EntityConfigGridListener
     public function __construct(ConfigManager $configManager)
     {
         $this->configManager = $configManager;
+    }
+
+    public static function getSubscribedEvents()
+    {
+        return array(
+            'oro_datagrid.datgrid.build.after.entityconfig-grid' => 'onBuildAfter',
+        );
     }
 
     /**

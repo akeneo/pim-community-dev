@@ -50,7 +50,7 @@ datagrid:
                 usage:
                     data_name: usage
             default:
-                label: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+                name: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
 
         filters:
             columns:
@@ -108,7 +108,3 @@ datagrid:
                 type: search-result
                 template: OroTagBundle::Search\result.html.twig
                 frontend_type: html
-
-        properties: ~
-        sorters: ~
-        filters: ~

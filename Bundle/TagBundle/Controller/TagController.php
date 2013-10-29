@@ -74,7 +74,6 @@ class TagController extends Controller
     {
         // path to datagrid subrequest
         $from = $request->get('from');
-        $a = $entity;
         $entityId = $entity->getId();
 
         /** @var \Oro\Bundle\TagBundle\Provider\SearchProvider $provider */
@@ -85,21 +84,6 @@ class TagController extends Controller
             'from'           => $from,
             'groupedResults' => $provider->getGroupedResults($entity->getId()),
         );
-    }
-
-    /**
-     * Return search results in json for datagrid
-     *
-     * @Route("/ajax/{id}", name="oro_tag_search_ajax", requirements={"id"="\d+"}, defaults={"id"=0})
-     * @AclAncestor("oro_tag_view")
-     */
-    public function searchResultsAjaxAction(Tag $entity, Request $request)
-    {
-        // path to grid subrequest
-        $from   = $request->get('from');
-        $id = $entity->getId();
-
-        return '';
     }
 
     /**
