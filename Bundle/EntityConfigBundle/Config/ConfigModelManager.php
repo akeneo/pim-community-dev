@@ -90,6 +90,11 @@ class ConfigModelManager
         return $this->dbCheckCache;
     }
 
+    public function clearCheckDatabase()
+    {
+        $this->dbCheckCache = null;
+    }
+
     /**
      * @param      $className
      * @param null $fieldName

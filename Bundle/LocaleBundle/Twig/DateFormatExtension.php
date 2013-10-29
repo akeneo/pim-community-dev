@@ -33,6 +33,11 @@ class DateFormatExtension extends \Twig_Extension
                 array($this, 'formatDate'),
                 array('needs_environment' => true)
             ),
+            'locale_time'     => new \Twig_SimpleFilter(
+                'locale_time',
+                array($this, 'formatTime'),
+                array('needs_environment' => true)
+            ),
             'locale_datetime' => new \Twig_SimpleFilter(
                 'locale_datetime',
                 array($this, 'formatDateTime'),
@@ -56,11 +61,13 @@ class DateFormatExtension extends \Twig_Extension
     }
 
     /**
+     * Returns a string represents the given $date as a date/time, formatted according the given parameters
+     *
      * @param \Twig_Environment $env
-     * @param                   $date
-     * @param                   $dateTimeFormat
-     * @param null              $locale
-     * @param                   $timezone
+     * @param \DateTime|string  $date
+     * @param string|null       $dateTimeFormat
+     * @param string|null       $locale
+     * @param string|null       $timezone
      *
      * @return string
      */
@@ -71,63 +78,11 @@ class DateFormatExtension extends \Twig_Extension
         $locale = null,
         $timezone = null
     ) {
-        list ($dateTimeFormat, $timezone, $locale) = $this->applyDefaultParams($dateTimeFormat, $timezone, $locale);
+        $this->applyDefaultDateTimeFormat($dateTimeFormat);
+        $this->applyDefaultTimezone($timezone);
+        $this->applyDefaultLocale($locale);
 
-        return $this->formatDate($env, $date, $dateTimeFormat, $locale, $timezone);
-    }
-
-    /**
-     * Apply config params to dateTimeFormat, timezone and locale
-     * in case when no params passed from template
-     *
-     * @param string $dateTimeFormat
-     * @param string $timezone
-     * @param string $locale
-     * @param bool $dateOnly skip time
-     * @return array
-     */
-    protected function applyDefaultParams($dateTimeFormat, $timezone, $locale, $dateOnly = false)
-    {
-        if (is_null($dateTimeFormat)) {
-            $dateTimeFormat = $this->cm->get(self::CONFIG_DATE_FORMAT_KEY) . ($dateOnly ? '' :
-                    ' ' . $this->cm->get(self::CONFIG_TIME_FORMAT_KEY));
-        }
-
-        if (is_null($timezone)) {
-            $timezone = $this->cm->get(self::CONFIG_TIMEZONE_KEY);
-        }
-
-        if (is_null($locale)) {
-            $locale = $this->cm->get(self::CONFIG_LOCALE_KEY);
-        }
-
-        return array($dateTimeFormat, $timezone, $locale);
-    }
-
-    /**
-     * @param \Twig_Environment $env
-     * @param                   $date
-     * @param                   $dateTimeFormat
-     * @param null              $locale
-     * @param                   $timezone
-     *
-     * @return string
-     */
-    public function formatDate(
-        \Twig_Environment $env,
-        $date,
-        $dateTimeFormat = null,
-        $locale = null,
-        $timezone = null
-    ) {
-        list ($dateTimeFormat, $timezone, $locale) = $this->applyDefaultParams(
-            $dateTimeFormat,
-            $timezone,
-            $locale,
-            true
-        );
-
-        $dateTimeFormat = $this->convertDateTimeToICUFormat($dateTimeFormat);
+        $dateFormat = $this->convertDateTimeToICUFormat($dateTimeFormat);
 
         return twig_localized_date_filter(
             $env,
@@ -136,8 +91,132 @@ class DateFormatExtension extends \Twig_Extension
             "none",
             $locale,
             $timezone,
-            $dateTimeFormat
+            $dateFormat
         );
+    }
+
+    /**
+     * Returns a string represents the given $date as a date, formatted according the given parameters
+     *
+     * @param \Twig_Environment $env
+     * @param \DateTime|string  $date
+     * @param string|null       $dateFormat
+     * @param string|null       $locale
+     * @param string|null       $timezone
+     *
+     * @return string
+     */
+    public function formatDate(
+        \Twig_Environment $env,
+        $date,
+        $dateFormat = null,
+        $locale = null,
+        $timezone = null
+    ) {
+        $this->applyDefaultDateTimeFormat($dateFormat, true);
+        $this->applyDefaultTimezone($timezone);
+        $this->applyDefaultLocale($locale);
+
+        $dateFormat = $this->convertDateTimeToICUFormat($dateFormat);
+
+        return twig_localized_date_filter(
+            $env,
+            $date,
+            "none",
+            "none",
+            $locale,
+            $timezone,
+            $dateFormat
+        );
+    }
+
+    /**
+     * Returns a string represents the given $date as a time, formatted according the given parameters
+     *
+     * @param \Twig_Environment $env
+     * @param \DateTime|string  $date
+     * @param string|null       $timeFormat
+     * @param string|null       $locale
+     * @param string|null       $timezone
+     *
+     * @return string
+     */
+    public function formatTime(
+        \Twig_Environment $env,
+        $date,
+        $timeFormat = null,
+        $locale = null,
+        $timezone = null
+    ) {
+        $this->applyDefaultTimeFormat($timeFormat);
+        $this->applyDefaultTimezone($timezone);
+        $this->applyDefaultLocale($locale);
+
+        $timeFormat = $this->convertDateTimeToICUFormat($timeFormat);
+
+        return twig_localized_date_filter(
+            $env,
+            $date,
+            "none",
+            "none",
+            $locale,
+            $timezone,
+            $timeFormat
+        );
+    }
+
+    /**
+     * Applies default value for $dateTimeFormat
+     * in case when this parameter was not passed from a template
+     *
+     * @param string $dateTimeFormat
+     * @param bool   $dateOnly skip time
+     */
+    protected function applyDefaultDateTimeFormat(&$dateTimeFormat, $dateOnly = false)
+    {
+        if (is_null($dateTimeFormat)) {
+            $dateTimeFormat = $this->cm->get(self::CONFIG_DATE_FORMAT_KEY)
+                . ($dateOnly ? '' : ' ' . $this->cm->get(self::CONFIG_TIME_FORMAT_KEY));
+        }
+    }
+
+    /**
+     * Applies default value for $timeFormat
+     * in case when this parameter was not passed from a template
+     *
+     * @param string $timeFormat
+     */
+    protected function applyDefaultTimeFormat(&$timeFormat)
+    {
+        if (is_null($timeFormat)) {
+            $timeFormat = $this->cm->get(self::CONFIG_TIME_FORMAT_KEY);
+        }
+    }
+
+    /**
+     * Applies default value for $timezone
+     * in case when this parameter was not passed from a template
+     *
+     * @param string|null $timezone
+     */
+    protected function applyDefaultTimezone(&$timezone)
+    {
+        if (is_null($timezone)) {
+            $timezone = $this->cm->get(self::CONFIG_TIMEZONE_KEY);
+        }
+    }
+
+    /**
+     * Applies default value for $locale
+     * in case when this parameter was not passed from a template
+     *
+     * @param string|null $locale
+     */
+    protected function applyDefaultLocale(&$locale)
+    {
+        if (is_null($locale)) {
+            $locale = $this->cm->get(self::CONFIG_LOCALE_KEY);
+        }
     }
 
     /**
