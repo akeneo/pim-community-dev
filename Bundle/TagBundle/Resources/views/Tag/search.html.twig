@@ -4,6 +4,19 @@
 {% set gridName = 'tag-results-grid' %}
 {% oro_title_set({ params: { '%tag.name%': tag.name } }) %}
 
+{% block head_script %}
+    {{ parent() }}
+    <script type="text/javascript">
+        require(['jquery'],
+        function($) {
+            $(function() {
+                // hide header
+                $('div[data-type="datagrid"] thead').remove();
+            });
+        });
+    </script>
+{% endblock %}
+
 {% block page_container %}
     {% block content %}
     <div class="container-fluid search-header clearfix">

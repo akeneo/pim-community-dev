@@ -1,5 +1,7 @@
 datagrid:
     tag-grid:
+        options:
+            entityHint: tag
         source:
             acl_resource: oro_tag_view
             type: orm
@@ -84,6 +86,8 @@ datagrid:
                 acl_resource:  oro_tag_delete
 
     tag-results-grid:
+        options:
+            entityHint: result
         source:
             acl_resource: oro_tag_view
             type: orm
