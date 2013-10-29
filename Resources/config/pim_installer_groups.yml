@@ -1,12 +1,12 @@
 groups:
-    AKENEO_MUG:
+    akeneo_mug:
         type: VARIANT
         labels:
             en_US: Akeneo Mug
             fr_FR: Tasse Akeneo
         attributes:
             - unique_color
-    AKENEO_TSHIRT:
+    akeneo_tshirt:
         type: VARIANT
         labels:
             en_US: Akeneo T-Shirt
@@ -14,15 +14,15 @@ groups:
         attributes:
             - unique_color
             - size
-    ORO_TSHIRT:
+    oro_tshirt:
         type: VARIANT
         labels:
             en_US: Oro T-Shirt
             fr_FR: T-Shirt Oro
         attributes:
             - size
-    AKENEO_XSELL:
-        type: X_SELL
+    akeneo_related:
+        type: RELATED
         labels:
-            en_US: Akeneo X-sell
-            fr_FR: Akeneo X-sell
+            en_US: Akeneo Related
+            fr_FR: Akeneo Related
