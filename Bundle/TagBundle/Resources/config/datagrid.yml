@@ -85,7 +85,7 @@ datagrid:
                 label: Item
                 type: search-result
                 template: OroTagBundle::Search\result.html.twig
-                frontend_type: string
+                frontend_type: html
 
         properties: ~
         sorters: ~

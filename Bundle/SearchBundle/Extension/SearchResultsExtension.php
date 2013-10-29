@@ -1,13 +1,19 @@
 <?php
 namespace Oro\Bundle\SearchBundle\Extension;
 
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+
+use Doctrine\ORM\EntityManager;
+
 use Oro\Bundle\DataGridBundle\Datagrid\Common\ResultsObject;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Extension\AbstractExtension;
-use Oro\Bundle\DataGridBundle\Extension\Formatter\ResultRecord;
+use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
+
+use Oro\Bundle\SearchBundle\Engine\ObjectMapper;
 use Oro\Bundle\SearchBundle\Event\PrepareResultItemEvent;
 use Oro\Bundle\SearchBundle\Formatter\ResultFormatter;
-use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
+use Oro\Bundle\SearchBundle\Query\Result\Item as ResultItem;
 
 class SearchResultsExtension extends AbstractExtension
 {
@@ -17,15 +23,35 @@ class SearchResultsExtension extends AbstractExtension
     /** @var ResultFormatter */
     protected $resultFormatter;
 
+    /** @var EntityManager */
+    protected $em;
+
+    /** @var ObjectMapper */
+    protected $mapper;
+
+    /** @var EventDispatcherInterface */
+    protected $dispatcher;
+
     /**
      * @param RequestParameters $requestParams
-     * @param ResultFormatter   $formatter
+     * @param ResultFormatter $formatter
+     * @param EntityManager $em
+     * @param ObjectMapper $mapper
+     * @param EventDispatcherInterface $dispatcher
      */
-    public function __construct(RequestParameters $requestParams, ResultFormatter $formatter)
-    {
+    public function __construct(
+        RequestParameters $requestParams,
+        ResultFormatter $formatter,
+        EntityManager $em,
+        ObjectMapper $mapper,
+        EventDispatcherInterface $dispatcher
+    ) {
         parent::__construct($requestParams);
 
         $this->resultFormatter = $formatter;
+        $this->em = $em;
+        $this->mapper = $mapper;
+        $this->dispatcher = $dispatcher;
     }
 
     /**
@@ -42,7 +68,7 @@ class SearchResultsExtension extends AbstractExtension
     public function visitResult(DatagridConfiguration $config, ResultsObject $result)
     {
         $rows    = $result->offsetGetByPath('[data]');
-        $resultItems = $this->resultFormatter->getResultEntities($rows);
+        $entities = $this->resultFormatter->getResultEntities($rows);
 
         foreach ($rows as $row) {
             $entity     = null;
@@ -52,20 +78,18 @@ class SearchResultsExtension extends AbstractExtension
                 $entity = $entities[$entityName][$entityId];
             }
 
-            $this->dispatcher->dispatch(PrepareResultItemEvent::EVENT_NAME, new PrepareResultItemEvent($row, $entity));
-
-            $resultRows[] = array(
-                'indexer_item' => $row,
-                'entity'       => $entity,
+            $item = new ResultItem(
+                $this->em,
+                $entityName,
+                $entityId,
+                null,
+                null,
+                null,
+                $this->mapper->getEntityConfig($entityName)
             );
+            $resultRows[] = ['entity' => $entity, 'indexer_item' => $item];
 
-//            $resultRecord = [];
-//            $record       = new ResultRecord($row);
-//
-//            foreach ($toProcess as $name => $config) {
-//                $property            = $this->getPropertyObject($name, $config);
-//                $resultRecord[$name] = $property->getValue($record);
-//            }
+            $this->dispatcher->dispatch(PrepareResultItemEvent::EVENT_NAME, new PrepareResultItemEvent($item, $entity));
         }
 
         // set results

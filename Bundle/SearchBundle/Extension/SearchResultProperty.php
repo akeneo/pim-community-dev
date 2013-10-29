@@ -4,6 +4,8 @@ namespace Oro\Bundle\SearchBundle\Extension;
 
 use Doctrine\ORM\EntityManager;
 
+use Oro\Bundle\SearchBundle\Query\Result\Item;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\TwigTemplateProperty;
@@ -19,6 +21,9 @@ class SearchResultProperty extends TwigTemplateProperty
 
     /** @var ObjectMapper */
     protected $mapper;
+
+    /** @var EventDispatcherInterface */
+    protected $dispater;
 
     public function __construct(
         DateFormatExtension $dateFormatExtension,
@@ -38,16 +43,11 @@ class SearchResultProperty extends TwigTemplateProperty
      */
     public function getValue(ResultRecordInterface $record)
     {
-        $item = new ResultItem(
-            $this->em,
-            $record->getValue('entity_name'),
-            $record->getValue('record_id'),
-            null,
-            null,
-            null,
-            $this->mapper->getEntityConfig($record->getValue('entity_name'))
+        return $this->getTemplate()->render(
+            array(
+                'indexer_item' => $record->getValue('indexer_item'),
+                'entity'       => $record->getValue('entity'),
+            )
         );
-
-        return $this->getTemplate()->render(['item' => $item]);
     }
 }

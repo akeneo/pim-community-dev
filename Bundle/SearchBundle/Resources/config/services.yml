@@ -77,5 +77,8 @@ services:
         arguments:
             - @oro_datagrid.datagrid.request_params
             - @oro_search.formatter.result_formatter
+            - @doctrine.orm.entity_manager
+            - @oro_search.mapper
+            - @event_dispatcher
         tags:
             - { name: oro_datagrid.extension }
