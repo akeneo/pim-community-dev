@@ -10,7 +10,7 @@ use Oro\Bundle\EmailBundle\Entity\EmailAddress;
 use Oro\Bundle\EmailBundle\Entity\EmailOwnerInterface;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Oro\Bundle\EmailBundle\Entity\Repository\EmailAddressRepository")
  * @ORM\Table(name="oro_email_address",
  *      uniqueConstraints={@ORM\UniqueConstraint(name="oro_email_address_uq", columns={"email"})},
  *      indexes={@ORM\Index(name="oro_email_address_idx", columns={"email"})})

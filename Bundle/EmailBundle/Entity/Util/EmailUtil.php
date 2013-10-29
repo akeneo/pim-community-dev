@@ -74,6 +74,47 @@ class EmailUtil
     }
 
     /**
+     * Build a full email address from the given 'pure' email address and email address owner name
+     *
+     * Examples of full email addresses:
+     *    John Smith <john@example.com>, if 'pure' email address is john@example.com and owner name is 'John Smith'
+     *    John <john@example.com>, if 'pure' email address is john@example.com and owner name is 'John'
+     *    john@example.com, if 'pure' email address is john@example.com and owner name is empty
+     *
+     * @param string $pureEmailAddress
+     * @param string $emailAddressOwnerName
+     * @return string
+     */
+    public static function buildFullEmailAddress($pureEmailAddress, $emailAddressOwnerName)
+    {
+        if ($pureEmailAddress === null) {
+            $pureEmailAddress = '';
+        }
+
+        if (empty($emailAddressOwnerName)) {
+            return trim($pureEmailAddress);
+        }
+
+        return sprintf('%s <%s>', trim($emailAddressOwnerName), trim($pureEmailAddress));
+    }
+
+    /**
+     * Determine whether the given string represents a full email address or not.
+     * The full email address is an address contains both an name and email parts.
+     *
+     * @param string $emailAddress
+     * @return bool
+     */
+    public static function isFullEmailAddress($emailAddress)
+    {
+        if (empty($emailAddress)) {
+            return false;
+        }
+
+        return (strpos($emailAddress, '<') !== false);
+    }
+
+    /**
      * Return current UTC date/time
      *
      * @return \DateTime
