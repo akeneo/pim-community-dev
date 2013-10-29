@@ -26,28 +26,29 @@ class Object implements \ArrayAccess, \IteratorAggregate
     /**
      * Creates object from array
      *
-     * @param array $config
+     * @param array $params
      *
      * @return $this
      */
-    public static function create(array $config)
+    public static function create(array $params)
     {
-        return new static($config);
+        return new static($params);
     }
 
     /**
      * Creates object from array, add name as regular param option
      *
+     *
      * @param string $name
-     * @param array  $config
+     * @param array  $params
      *
      * @return $this
      */
-    public static function createNamed($name, array $config)
+    public static function createNamed($name, array $params)
     {
-        $config[self::NAME_KEY] = $name;
+        $params[self::NAME_KEY] = $name;
 
-        return new static($config);
+        return new static($params);
     }
 
     /**

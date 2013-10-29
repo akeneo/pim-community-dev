@@ -12,12 +12,13 @@ use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 use Oro\Bundle\EntityConfigBundle\Config\Id\ConfigIdInterface;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
+use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 class EntityConfigGridListener implements EventSubscriberInterface
 {
-    /**
-     * @var ConfigManager
-     */
+    const PATH_COLUMNS = '[columns]';
+
+    /** @var ConfigManager */
     protected $configManager;
 
     /**
@@ -28,10 +29,14 @@ class EntityConfigGridListener implements EventSubscriberInterface
         $this->configManager = $configManager;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public static function getSubscribedEvents()
     {
         return array(
             'oro_datagrid.datgrid.build.after.entityconfig-grid' => 'onBuildAfter',
+            'oro_datagrid.datgrid.build.before.entityconfig-grid' => 'onBuildBefore',
         );
     }
 
@@ -44,14 +49,22 @@ class EntityConfigGridListener implements EventSubscriberInterface
         if ($datasource instanceof OrmDatasource) {
             $queryBuilder = $datasource->getQuery();
 
-            $this->prepareQuery($queryBuilder)
-                 ->addDynamicFields($queryBuilder);
+            $this->prepareQuery($queryBuilder);
         }
     }
 
-    public function onBuilderBefore(BuildBefore $event)
+    /**
+     * @param BuildBefore $event
+     */
+    public function onBuildBefore(BuildBefore $event)
     {
+        $config = $event->getConfig();
 
+        $columns = $config->offsetGetByPath(self::PATH_COLUMNS, array());
+        $additionalColumns = $this->getDynamicFields();
+        $columns = array_merge_recursive($additionalColumns, $columns);
+
+        $config->offsetSetByPath(self::PATH_COLUMNS, $columns);
     }
 
     /**
@@ -84,76 +97,47 @@ class EntityConfigGridListener implements EventSubscriberInterface
     }
 
     /**
-     * @param QueryBuilder $query
      * @return $this
      */
-    protected function addDynamicFields(QueryBuilder $query)
+    protected function getDynamicFields()
     {
+        $fields = [];
+
         foreach ($this->configManager->getProviders() as $provider) {
             foreach ($provider->getPropertyConfig()->getItems() as $code => $item) {
+                if (!isset($item['grid'])) {
+                    continue;
+                }
 
-                $fields = $this->prepareAdditionalFields($provider, $code, $item);
+                $fieldName = $provider->getScope() . '_' . $code;
+                $item['grid'] = $provider->getPropertyConfig()->initConfig($item['grid']);
+
+                $field = array(
+                    $fieldName => array_merge(
+                        $item['grid'],
+                        array(
+                            'expression' => 'cev' . $code . '.value',
+                            'field_name' => $fieldName,
+                        )
+                    )
+                );
+
+                if (isset($item['options']['priority']) && !isset($fields[$item['options']['priority']])) {
+                    $fields[$item['options']['priority']] = $field;
+                } else {
+                    $fields[] = $field;
+                }
+
             }
         }
 
         ksort($fields);
+
+        $ordererFields = [];
         foreach ($fields as $field) {
-//            $fieldsCollection->add($field);
+            $ordererFields = array_merge($ordererFields, $field);
         }
 
-        return $this;
+        return $ordererFields;
     }
-
-    /**
-     * @param ConfigProvider $provider
-     * @param string $code
-     * @param ConfigIdInterface $item
-     *
-     * @return array
-     */
-    protected function prepareAdditionalFields(ConfigProvider $provider, $code, ConfigIdInterface $item)
-    {
-        $fields = array();
-
-        if (!isset($item['grid'])) {
-            return $fields;
-        }
-
-        $item['grid'] = $provider->getPropertyConfig()->initConfig($item['grid']);
-
-        $fieldName = $provider->getScope() . '_' . $code;
-
-
-        $fieldObject = new FieldDescription();
-        $fieldObject->setName($fieldName);
-        $fieldObject->setOptions(
-            array_merge(
-                $item['grid'],
-                array(
-                    'expression' => 'cev' . $code . '.value',
-                    'field_name' => $fieldName,
-                )
-            )
-        );
-
-        if (isset($item['grid']['type'])
-            && $item['grid']['type'] == FieldDescriptionInterface::TYPE_HTML
-            && isset($item['grid']['template'])
-        ) {
-            $templateDataProperty = new TwigTemplateProperty(
-                $fieldObject,
-                $item['grid']['template']
-            );
-            $fieldObject->setProperty($templateDataProperty);
-        }
-
-        if (isset($item['options']['priority']) && !isset($fields[$item['options']['priority']])) {
-            $fields[$item['options']['priority']] = $fieldObject;
-        } else {
-            $fields[] = $fieldObject;
-        }
-
-        return $fields;
-    }
-
 }

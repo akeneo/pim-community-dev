@@ -89,6 +89,7 @@ datagrid:
         filters:
             columns:
                 action:
+                    label: Action
                     type: choice
                     data_name: a.action
                     choices:
@@ -96,9 +97,11 @@ datagrid:
                         create: Created
                         remove: Deleted
                 version:
+                    label: Version
                     type: number
                     data_name: a.version
                 objectClass:
+                    label: Object class
                     type: choice
                     data_name: a.objectClass
                 objectName:
@@ -113,9 +116,10 @@ datagrid:
                 author:
                     type: string
                     data_name: author
+                    filter_by_having: true
                 loggedAt:
                     type: datetime
-                    data_name: u.loggedAt
+                    data_name: a.loggedAt
 
     audit-history-grid:
         source:

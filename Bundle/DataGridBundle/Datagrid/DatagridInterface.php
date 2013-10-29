@@ -9,9 +9,6 @@ use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 
 interface DatagridInterface
 {
-    const METADATA_OPTIONS_KEY          = 'options';
-    const METADATA_REQUIRED_MODULES_KEY = 'requireJSModules';
-
     /**
      * Returns datagrid name
      *
