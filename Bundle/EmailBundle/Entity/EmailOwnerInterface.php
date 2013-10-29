@@ -31,14 +31,6 @@ interface EmailOwnerInterface
     public function getId();
 
     /**
-     * Get full name of email owner according to the given name format
-     *
-     * @param  string $format
-     * @return string
-     */
-    public function getFullName($format = '');
-
-    /**
      * Get first name
      *
      * @return string

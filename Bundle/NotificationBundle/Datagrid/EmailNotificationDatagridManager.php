@@ -126,26 +126,19 @@ class EmailNotificationDatagridManager extends DatagridManager
             array(
                 'type'        => FieldDescriptionInterface::TYPE_HTML,
                 'field_name'  => 'recipientUsersList',
-                'expression'  => 'recipientUsersList',
+                'expression'  => 'recipientUsersList.email',
                 'label'       => $this->translate('oro.notification.datagrid.recipient.user'),
                 'required'    => false,
                 'sortable'    => false,
                 'filterable'  => true,
                 'show_filter' => true,
-                // entity filter options
-                'multiple'            => true,
-                'filter_type'         => FilterInterface::TYPE_ENTITY,
-                'class'               => 'OroUserBundle:User',
-                'property'            => 'fullName',
-                'filter_by_where'     => true,
-                'query_builder'       => function (EntityRepository $er) {
-                    return $er->createQueryBuilder('e');
-                },
+                'filter_by_where' => true,
+                'filter_type' => FilterInterface::TYPE_STRING,
             )
         );
         $templateDataProperty = new TwigTemplateProperty(
             $fieldRecipientList,
-            'OroNotificationBundle:EmailNotification:Datagrid/Property/recipientList.html.twig'
+            'OroNotificationBundle:EmailNotification:Datagrid/Property/recipientUsersList.html.twig'
         );
         $fieldRecipientList->setProperty($templateDataProperty);
         $fieldsCollection->add($fieldRecipientList);
@@ -175,7 +168,7 @@ class EmailNotificationDatagridManager extends DatagridManager
         );
         $templateDataProperty = new TwigTemplateProperty(
             $fieldRecipientList,
-            'OroNotificationBundle:EmailNotification:Datagrid/Property/recipientList.html.twig'
+            'OroNotificationBundle:EmailNotification:Datagrid/Property/recipientGroupsList.html.twig'
         );
         $fieldRecipientList->setProperty($templateDataProperty);
         $fieldsCollection->add($fieldRecipientList);

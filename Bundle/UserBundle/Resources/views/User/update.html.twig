@@ -1,9 +1,9 @@
 {% extends 'OroUIBundle:actions:update.html.twig' %}
-{% set format = oro_config_value('oro_locale.name_format') %}
 {% form_theme form with ['OroFormBundle:Form:fields.html.twig', 'OroTagBundle:Form:fields.html.twig'] %}
 
-{% set title = form.vars.value.id ? form.vars.value.fullname(format)|default('N/A') ~ ' - ' ~ 'Update User'|trans : 'New User'|trans %}
-{% oro_title_set({params : {"%username%": form.vars.value.fullname(format)|default('N/A') }}) %}
+{% set fullname = form.vars.value|oro_format_name|default('N/A') %}
+{% set title = form.vars.value.id ? fullname ~ ' - ' ~ 'Update User'|trans : 'New User'|trans %}
+{% oro_title_set({params : {"%username%": fullname }}) %}
 {% set audit_entity_class = 'Oro_Bundle_UserBundle_Entity_User' %}
 {% if editRoute %}
     {% set formAction = path(editRoute) %}
@@ -58,7 +58,7 @@
             'entity':      form.vars.value,
             'indexPath':   path('oro_user_index'),
             'indexLabel': 'Users'|trans,
-            'entityTitle': form.vars.value.fullname(format)|default('N/A'),
+            'entityTitle': fullname,
             'hasAvatar':   true,
             'imagePath':   form.vars.value.imagePath,
         }

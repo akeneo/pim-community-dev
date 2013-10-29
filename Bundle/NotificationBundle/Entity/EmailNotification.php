@@ -172,44 +172,22 @@ class EmailNotification
     }
 
     /**
-     * Returns comma separated list
+     * Get recipient groups list
      *
-     * @return string
+     * @return ArrayCollection
      */
     public function getRecipientGroupsList()
     {
-        if (!$this->getRecipientList()) {
-            return '';
-        }
-
-        return implode(
-            ', ',
-            $this->getRecipientList()->getGroups()->map(
-                function (Group $group) {
-                    return $group->getName();
-                }
-            )->toArray()
-        );
+        return $this->recipientList ? $this->recipientList->getGroups() : new ArrayCollection();
     }
 
     /**
-     * Returns comma separated list
+     * Get recipient users list
      *
-     * @return string
+     * @return ArrayCollection
      */
     public function getRecipientUsersList()
     {
-        if (!$this->getRecipientList()) {
-            return '';
-        }
-
-        return implode(
-            ', ',
-            $this->getRecipientList()->getUsers()->map(
-                function (User $user) {
-                    return sprintf('%s <%s>', $user->getFullName(), $user->getEmail());
-                }
-            )->toArray()
-        );
+        return $this->recipientList ? $this->recipientList->getUsers() : new ArrayCollection();
     }
 }

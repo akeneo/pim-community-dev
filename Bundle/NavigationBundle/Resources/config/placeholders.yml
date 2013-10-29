@@ -21,10 +21,6 @@ placeholders:
         items:
             shortcuts:
                 order: 100
-    user_menu:
-        items:
-            menu_user:
-                order: 100
     application_menu:
         label: Application Menu
         items:
@@ -57,8 +53,6 @@ items:
         template: OroNavigationBundle:Js:pinbar.js.twig
    shortcuts:
         template: OroNavigationBundle:Shortcut:shortcuts.html.twig
-   menu_user:
-        template: OroNavigationBundle:Menu:menuProfile.html.twig
    application_menu:
         template: OroNavigationBundle:ApplicationMenu:applicationMenu.html.twig
    dots_menu:
