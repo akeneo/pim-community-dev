@@ -19,6 +19,7 @@ class DateTimeFormatterTest extends IcuAwareTestCase
 
     protected function setUp()
     {
+        $this->ignoreIfIcuVersionGreaterThan('4.8.1.1');
         $this->localeSettings = $this->getMockBuilder('Oro\Bundle\LocaleBundle\Model\LocaleSettings')
             ->disableOriginalConstructor()
             ->getMock();
@@ -38,7 +39,6 @@ class DateTimeFormatterTest extends IcuAwareTestCase
         $defaultLocale = null,
         $defaultTimeZone = null
     ) {
-        $this->ignoreIfIcuVersionGreaterThan('4.8.1.1');
         $at = 0;
         if ($defaultLocale) {
             $this->localeSettings->expects($this->at($at++))->method('getLocale')

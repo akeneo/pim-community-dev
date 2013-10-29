@@ -9,8 +9,8 @@
     {% placeholder prepare_grid with {'datagrid': datagrid, 'selector': '#' ~ gridId} %}
 {% endblock %}
 
-{% set format = oro_config_value('oro_locale.name_format') %}
-{% oro_title_set({params : {"%username%": entity.fullname(format)|default('N/A') }}) %}
+{% set fullname = entity|oro_format_name|default('N/A') %}
+{% oro_title_set({params : {"%username%": fullname }}) %}
 {% set audit_entity_class = 'Oro_Bundle_UserBundle_Entity_User' %}
 {% macro api_data_block(user) %}
 <div class="horizontal">
@@ -52,7 +52,7 @@
         'entity':      entity,
         'indexPath':   path('oro_user_index'),
         'indexLabel': 'Users'|trans,
-        'entityTitle': entity.fullname(format)|default('N/A'),
+        'entityTitle': fullname,
         'hasAvatar':   true,
         'imagePath':   entity.imagePath,
     }

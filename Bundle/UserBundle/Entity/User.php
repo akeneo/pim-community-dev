@@ -278,15 +278,6 @@ class User extends AbstractEntityFlexible implements
     protected $owner;
 
     /**
-     * Set name formatting using "%first%" and "%last%" placeholders
-     *
-     * @var string
-     *
-     * @Exclude
-     */
-    protected $nameFormat;
-
-    /**
      * @var Role[]
      *
      * @ORM\ManyToMany(targetEntity="Role")
@@ -441,7 +432,7 @@ class User extends AbstractEntityFlexible implements
 
     /**
      * Get entity class name.
-     * TODO: This is a temporary solution for get 'view' route in twig. Will be removed after EntityConfigBundle is finished
+     * TODO: Remove this temporary solution for get 'view' route in twig after EntityConfigBundle is finished
      * @return string
      */
     public function getClass()
@@ -536,33 +527,6 @@ class User extends AbstractEntityFlexible implements
     }
 
     /**
-     * Return full name according to name format
-     *
-     * @see User::setNameFormat()
-     * @param  string $format [optional]
-     * @return string
-     */
-    public function getFullName($format = '')
-    {
-        return str_replace(
-            array('%prefix', '%first%', '%middle', '%last%', '%suffix%'),
-            array(
-                $this->getNamePrefix(),
-                $this->getFirstName(),
-                $this->getMiddleName(),
-                $this->getLastName(),
-                $this->getNameSuffix()
-            ),
-            $format ? $format : $this->getNameFormat()
-        );
-    }
-
-    public function getName()
-    {
-        return $this->getFullname();
-    }
-
-    /**
      * Return birthday
      *
      * @return DateTime
@@ -654,16 +618,6 @@ class User extends AbstractEntityFlexible implements
     public function getLoginCount()
     {
         return $this->loginCount;
-    }
-
-    /**
-     * Get full name format. Defaults to "%first% %last%".
-     *
-     * @return string
-     */
-    public function getNameFormat()
-    {
-        return $this->nameFormat ?  $this->nameFormat : '%first% %last%';
     }
 
     /**
@@ -823,7 +777,8 @@ class User extends AbstractEntityFlexible implements
     public function setImageFile(UploadedFile $imageFile)
     {
         $this->imageFile = $imageFile;
-        $this->updated = new DateTime('now', new \DateTimeZone('UTC')); // this will trigger PreUpdate callback even if only image has been changed
+		// this will trigger PreUpdate callback even if only image has been changed
+        $this->updated = new DateTime('now', new \DateTimeZone('UTC'));
 
         return $this;
     }
@@ -926,19 +881,6 @@ class User extends AbstractEntityFlexible implements
     public function setLoginCount($count)
     {
         $this->loginCount = $count;
-
-        return $this;
-    }
-
-    /**
-     * Set new format for a full name display. Use %first% and %last% placeholders, for example: "%last%, %first%".
-     *
-     * @param  string $format New format string
-     * @return User
-     */
-    public function setNameFormat($format)
-    {
-        $this->nameFormat = $format;
 
         return $this;
     }
