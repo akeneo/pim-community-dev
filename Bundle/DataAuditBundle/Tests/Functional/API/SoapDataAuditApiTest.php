@@ -57,6 +57,7 @@ class SoapDataAuditApiTest extends WebTestCase
             "firstName" => "firstName",
             "lastName" => "lastName",
             "rolesCollection" => array("3"),
+            "groups" => array(),
             "owner" => "1"
         );
 
