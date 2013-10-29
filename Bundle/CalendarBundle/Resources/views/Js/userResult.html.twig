@@ -1,0 +1,2 @@
+{% set format = oro_config_value('oro_locale.name_format') %}
+{{ format|replace({' ': '&nbsp;', '%first%': '<%= highlight(firstName) %>', '%last%': '<%= highlight(lastName) %>'})|raw }}

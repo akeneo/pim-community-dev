@@ -351,8 +351,24 @@ class LoggableManager
                         }
 
                         $method = $meta->propertyMetadata[$field]->method;
-                        $old    = ($old !== null) ? $old->$method() : $old;
-                        $new    = ($new !== null) ? $new->$method() : $new;
+                        if ($old !== null) {
+                            // check if an object has the required method to avoid a fatal error
+                            if (!method_exists($old, $method)) {
+                                throw new \ReflectionException(
+                                    sprintf('Try to call to undefined method %s::%s', get_class($old), $method)
+                                );
+                            }
+                            $old = $old->{$method}();
+                        }
+                        if ($new !== null) {
+                            // check if an object has the required method to avoid a fatal error
+                            if (!method_exists($new, $method)) {
+                                throw new \ReflectionException(
+                                    sprintf('Try to call to undefined method %s::%s', get_class($new), $method)
+                                );
+                            }
+                            $new = $new->{$method}();
+                        }
                     }
 
                     $newValues[$field] = array(

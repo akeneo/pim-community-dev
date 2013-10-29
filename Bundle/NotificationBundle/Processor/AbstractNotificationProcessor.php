@@ -1,15 +1,34 @@
 <?php
 
-namespace Oro\Bundle\NotificationBundle\Event\Handler;
+namespace Oro\Bundle\NotificationBundle\Processor;
 
+use Psr\Log\LoggerInterface;
+use Doctrine\ORM\EntityManager;
 use JMS\JobQueueBundle\Entity\Job;
 
-abstract class EventHandlerAbstract implements EventHandlerInterface
+abstract class AbstractNotificationProcessor
 {
     /**
-     * @var ObjectManager
+     * @var LoggerInterface
+     */
+    protected $logger;
+
+    /**
+     * @var EntityManager
      */
     protected $em;
+
+    /**
+     * Constructor
+     *
+     * @param LoggerInterface $logger
+     * @param EntityManager   $em
+     */
+    protected function __construct(LoggerInterface $logger, EntityManager $em)
+    {
+        $this->logger = $logger;
+        $this->em     = $em;
+    }
 
     /**
      * Add command to job queue if it has not been added earlier
@@ -18,13 +37,12 @@ abstract class EventHandlerAbstract implements EventHandlerInterface
      * @param $commandArgs
      * @return boolean|integer
      */
-    public function addJob($command, $commandArgs)
+    protected function addJob($command, $commandArgs)
     {
         $currJob = $this->em
             ->createQuery("SELECT j FROM JMSJobQueueBundle:Job j WHERE j.command = :command AND j.state <> :state")
             ->setParameter('command', $command)
             ->setParameter('state', Job::STATE_FINISHED)
-            ->setMaxResults(1)
             ->getOneOrNullResult();
 
         if (!$currJob) {
@@ -33,6 +51,6 @@ abstract class EventHandlerAbstract implements EventHandlerInterface
             $this->em->flush($job);
         }
 
-        return $currJob ? $currJob->getId(): true;
+        return $currJob ? $currJob->getId() : true;
     }
 }
