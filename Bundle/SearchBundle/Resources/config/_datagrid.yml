@@ -33,13 +33,3 @@ services:
             - @oro_grid.action.factory
             - %oro_grid.datagrid.class%
 
-#    oro_search.datagrid_results.entity_result_listener:
-#        class: %oro_search.datagrid_results.entity_result_listener.class%
-#        arguments:
-#            - @oro_search.formatter.result_formatter
-#            - %oro_search.datagrid_results.datagrid_name%
-#            - @event_dispatcher
-#        tags:
-#            - name: kernel.event_listener
-#              event: oro_grid.datagrid.result
-#              method: processResult
