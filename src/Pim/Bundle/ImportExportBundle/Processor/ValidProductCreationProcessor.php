@@ -7,8 +7,6 @@ use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Oro\Bundle\BatchBundle\Entity\StepExecution;
 use Pim\Bundle\ImportExportBundle\Transformer\OrmProductTransformer;
-use Pim\Bundle\ImportExportBundle\Exception\InvalidObjectException;
-use Oro\Bundle\BatchBundle\Item\InvalidItemException;
 
 /**
  * Product import processor

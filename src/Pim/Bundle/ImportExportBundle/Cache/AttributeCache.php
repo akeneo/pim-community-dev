@@ -175,17 +175,18 @@ class AttributeCache
                 $codes[] = $value->getAttribute()->getCode();
             }
         }
-        
+
         return $codes;
     }
 
     /**
      * Returns the attribute codes for a group
-     * 
-     * @param Group $group
+     *
+     * @param  Group $group
      * @return array
      */
-    protected function getGroupAttributeCodes(Group $group) {
+    protected function getGroupAttributeCodes(Group $group)
+    {
         $code = $group->getCode();
         if (!isset($this->groupAttributeCodes[$code])) {
             $this->groupAttributeCodes[$code] = $this->getAttributeCodes($group);
@@ -196,11 +197,12 @@ class AttributeCache
 
     /**
      * Returns the attribute codes for a family
-     * 
-     * @param Family $family
+     *
+     * @param  Family $family
      * @return array
      */
-    protected function getFamilyAttributeCodes(Family $family) {
+    protected function getFamilyAttributeCodes(Family $family)
+    {
         $code = $family->getCode();
         if (!isset($this->familyAttributeCodes[$code])) {
             $this->familyAttributeCodes[$code] = $this->getAttributeCodes($family);
@@ -211,8 +213,8 @@ class AttributeCache
 
     /**
      * Returns the attribute codes for an object
-     * 
-     * @param object $object
+     *
+     * @param  object $object
      * @return array
      */
     protected function getAttributeCodes($object)

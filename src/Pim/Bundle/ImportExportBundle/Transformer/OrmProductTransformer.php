@@ -3,7 +3,6 @@
 namespace Pim\Bundle\ImportExportBundle\Transformer;
 
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
-use Doctrine\ORM\Query;
 use Oro\Bundle\BatchBundle\Item\InvalidItemException;
 use Pim\Bundle\ImportExportBundle\Cache\AttributeCache;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
@@ -166,7 +165,7 @@ class OrmProductTransformer
     {
         $identifierAttribute = $this->attributeCache->getIdentifierAttribute();
         $product = $this->productManager->getImportProduct(
-            $this->attributeCache->getAttributes(), 
+            $this->attributeCache->getAttributes(),
             $identifierAttribute,
             $values[$identifierAttribute->getCode()]
         );

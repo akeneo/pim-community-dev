@@ -46,11 +46,7 @@ class EntityCache
             $this->cache[$class] = array();
         }
         if (!array_key_exists($code, $this->cache[$class])) {
-            $this->cache[$class][$code] = $this->doctrine
-                ->getManager()
-                ->createQuery("SELECT e FROM $class e WHERE e.code=:code")
-                ->setParameter('code', $code)
-                ->getOneOrNullResult();
+            $this->cache[$class][$code] = $this->getEntity($class, $code);
         }
 
         return $this->cache[$class][$code];
@@ -64,5 +60,21 @@ class EntityCache
         foreach (array_keys($this->cache) as $class) {
             $this->cache[$class] = array();
         }
+    }
+
+    /**
+     * Returns an entity from the manager
+     *
+     * @param  string $class
+     * @param  string $code
+     * @return object
+     */
+    protected function getEntity($class, $code)
+    {
+        return $this->doctrine
+                ->getManager()
+                ->createQuery("SELECT e FROM $class e WHERE e.code=:code")
+                ->setParameter('code', $code)
+                ->getOneOrNullResult();
     }
 }

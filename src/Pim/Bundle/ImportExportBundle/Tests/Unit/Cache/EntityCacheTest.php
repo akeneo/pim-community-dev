@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Cache;
 
-use Pim\Bundle\ImportExportBundle\Cache\EntityCache;
-
 /**
  * Tests EntityCache
  *
@@ -15,48 +13,44 @@ class EntityCacheTest extends \PHPUnit_Framework_TestCase
 {
     public function testFind()
     {
-        $repository = $this->getMockBuilder('Doctrine\ORM\EntityRepository')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $repository->expects($this->exactly(2))
-            ->method('findOneBy')
-            ->will($this->returnArgument(0));
-
-        $doctrine = $this->getMock('Symfony\Bridge\Doctrine\RegistryInterface');
-        $doctrine->expects($this->exactly(2))
-            ->method('getRepository')
-            ->will($this->returnValue($repository));
-
-        $cache = new EntityCache($doctrine);
-        $this->assertEquals(array('code' => 'object1'), $cache->find('class', 'object1'));
-        $this->assertEquals(array('code' => 'object2'), $cache->find('class', 'object2'));
+        $cache = $this->createCache(2);
+        $this->assertEquals('object1', $cache->find('class', 'object1'));
+        $this->assertEquals('object2', $cache->find('class', 'object2'));
 
         //Test that the values are not queried a second time
-        $this->assertEquals(array('code' => 'object1'), $cache->find('class', 'object1'));
-        $this->assertEquals(array('code' => 'object2'), $cache->find('class', 'object2'));
+        $this->assertEquals('object1', $cache->find('class', 'object1'));
+        $this->assertEquals('object2', $cache->find('class', 'object2'));
     }
 
     public function testReset()
     {
-        $repository = $this->getMockBuilder('Doctrine\ORM\EntityRepository')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $repository->expects($this->exactly(4))
-            ->method('findOneBy')
-            ->will($this->returnArgument(0));
+        $cache = $this->createCache(4);
 
-        $doctrine = $this->getMock('Symfony\Bridge\Doctrine\RegistryInterface');
-        $doctrine->expects($this->exactly(4))
-            ->method('getRepository')
-            ->will($this->returnValue($repository));
-
-        $cache = new EntityCache($doctrine);
-        $this->assertEquals(array('code' => 'object1'), $cache->find('class', 'object1'));
-        $this->assertEquals(array('code' => 'object2'), $cache->find('class', 'object2'));
+        $this->assertEquals('object1', $cache->find('class', 'object1'));
+        $this->assertEquals('object2', $cache->find('class', 'object2'));
 
         $cache->clear();
         //Test that the values are not queried a second time
-        $this->assertEquals(array('code' => 'object1'), $cache->find('class', 'object1'));
-        $this->assertEquals(array('code' => 'object2'), $cache->find('class', 'object2'));
+        $this->assertEquals('object1', $cache->find('class', 'object1'));
+        $this->assertEquals('object2', $cache->find('class', 'object2'));
+    }
+
+    protected function createCache($queryCount)
+    {
+        $doctrine = $this->getMock('Symfony\Bridge\Doctrine\RegistryInterface');
+        $cache = $this->getMockForAbstractClass(
+            'Pim\Bundle\ImportExportBundle\Cache\EntityCache',
+            array($doctrine),
+            '',
+            true,
+            true,
+            true,
+            array('getEntity')
+        );
+        $cache->expects($this->exactly($queryCount))
+            ->method('getEntity')
+            ->will($this->returnArgument(1));
+
+        return $cache;
     }
 }
