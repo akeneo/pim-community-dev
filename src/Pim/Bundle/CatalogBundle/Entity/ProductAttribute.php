@@ -932,7 +932,9 @@ class ProductAttribute extends AbstractEntityAttribute implements
      */
     public function setAllowedExtensions($allowedExtensions)
     {
-        $this->allowedExtensions = $allowedExtensions;
+        $allowedExtensions = explode(',', strtolower($allowedExtensions));
+        $allowedExtensions = array_unique(array_map('trim', $allowedExtensions));
+        $this->allowedExtensions = implode(',', $allowedExtensions);
 
         return $this;
     }
