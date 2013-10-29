@@ -5,7 +5,6 @@
 #}
 {% extends 'OroSearchBundle:Search:searchResultItem.html.twig' %}
 
-{% set format = oro_config_value('oro_locale.name_format') %}
 {% set entity_output = oro_config_entity('Oro\\Bundle\\UserBundle\\Entity\\User') %}
 {% set showImage = true %}
 
@@ -24,7 +23,7 @@
     {% endblock %}
 {% endif %}
 
-{% set title = entity.fullname(format)|default('N/A') %}
+{% set title = entity ? entity|oro_format_name : indexer_item.recordTitle %}
 {% set entityType = entity_output.name|trans({}, 'config') %}
 
 {% set entityInfo = [

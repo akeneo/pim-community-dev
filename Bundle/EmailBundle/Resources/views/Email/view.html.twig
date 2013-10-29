@@ -5,7 +5,6 @@
 {% extends 'OroUIBundle:actions:view.html.twig' %}
 {% import 'OroUIBundle::macros.html.twig' as UI %}
 {% import 'OroEmailBundle::macros.html.twig' as EA %}
-{% set format = oro_config_value('oro_locale.name_format') %}
 {% oro_title_set({params : {"%subject%": entity.subject} }) %}
 
 {% block pageHeader %}
@@ -22,10 +21,10 @@
 
     {% set attributes = [
             UI.attibuteRow('Sent', entity.sentAt|oro_format_datetime),
-            UI.attibuteRow('From', EA.email_address(entity.fromEmailAddress, entity.fromName, format)),
-            UI.attibuteRow('To', EA.recipient_email_addresses(entity.recipients('to'), format)),
-            UI.attibuteRow('Cc', EA.recipient_email_addresses(entity.recipients('cc'), format)),
-            UI.attibuteRow('Bcc', EA.recipient_email_addresses(entity.recipients('bcc'), format)),
+            UI.attibuteRow('From', EA.email_address(entity.fromEmailAddress, entity.fromName)),
+            UI.attibuteRow('To', EA.recipient_email_addresses(entity.recipients('to'))),
+            UI.attibuteRow('Cc', EA.recipient_email_addresses(entity.recipients('cc'))),
+            UI.attibuteRow('Bcc', EA.recipient_email_addresses(entity.recipients('bcc'))),
             UI.attibuteRow('Subject', entity.subject)
         ]
     %}
