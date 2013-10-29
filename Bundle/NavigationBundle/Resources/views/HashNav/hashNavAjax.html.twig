@@ -6,17 +6,17 @@
 #}
 {% set md5_object = '' %}
 {% set is_entity = false %}
-{% if entity is not defined %}
-    {% if form is defined and form.vars.value is defined %}
-        {% set md5_object = form.vars.value %}
-        {% set is_entity = true %}
-    {% else %}
-        {% set md5_object = content %}
-    {% endif %}
-{% else %}
-    {% set md5_object = entity %}
-    {% set is_entity = true %}
-{% endif %}
+{#{% if entity is not defined %}#}
+    {#{% if form is defined and form.vars.value is defined %}#}
+        {#{% set md5_object = form.vars.value %}#}
+        {#{% set is_entity = true %}#}
+    {#{% else %}#}
+        {#{% set md5_object = content %}#}
+    {#{% endif %}#}
+{#{% else %}#}
+    {#{% set md5_object = entity %}#}
+    {#{% set is_entity = true %}#}
+{#{% endif %}#}
 {% set md5_string = md5_object|objectMd5 %}
 {% if (app.request.get('hash-navigation-md5')) %}
     {% set data = {

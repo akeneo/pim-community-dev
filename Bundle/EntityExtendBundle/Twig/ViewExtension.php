@@ -32,6 +32,12 @@ class ViewExtension extends \Twig_Extension
 
     public function relationFilter($value)
     {
+        /**
+         * TODO
+         *
+         * relations view
+         * should simplify Controllers and twig templates
+         */
         $value = $value;
 
         return 'mock';
