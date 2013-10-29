@@ -71,15 +71,20 @@ class Object implements \ArrayAccess, \IteratorAggregate
      * If keys specified returns only intersection
      *
      * @param array $keys
+     * @param array $excludeKeys
      *
      * @return array
      */
-    public function toArray(array $keys = [])
+    public function toArray(array $keys = [], array $excludeKeys = [])
     {
         $params = $this->params;
 
         if (!empty($keys)) {
             $params = array_intersect_key($params, array_flip($keys));
+        }
+
+        if (!empty($excludeKeys)) {
+            $params = array_diff_key($params, array_flip($excludeKeys));
         }
 
         return $params;
@@ -171,6 +176,20 @@ class Object implements \ArrayAccess, \IteratorAggregate
     }
 
     /**
+     * Merge additional params
+     *
+     * @param array $params
+     *
+     * @return $this
+     */
+    public function merge(array $params)
+    {
+        $this->params = array_merge($this->params, $params);
+
+        return $this;
+    }
+
+    /**
      * Merge value to array property, if property not isset creates new one
      *
      * @param string $offset
@@ -211,7 +230,7 @@ class Object implements \ArrayAccess, \IteratorAggregate
      */
     public function validateConfiguration(ConfigurationInterface $configuration)
     {
-        $processor = new Processor();
+        $processor    = new Processor();
         $this->params = $processor->processConfiguration($configuration, $this->toArray());
 
         return $this;

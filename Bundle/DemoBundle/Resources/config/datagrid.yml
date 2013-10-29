@@ -15,6 +15,9 @@ datagrid:
                 type: field
 
         properties:
+            id:
+                type: field
+
             update_link:
                 type: url
                 route: orocrm_contact_group_update
@@ -36,6 +39,19 @@ datagrid:
 
             default:
                 label: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+
+        actions:
+            update:
+                type: navigate
+                label: Update
+                icon: edit
+                link: update_link
+            delete:
+                type: delete
+                acl_resource: ~
+                label: Delete
+                icon: trash
+                link: delete_link
 
     adminUsers:
         source:
