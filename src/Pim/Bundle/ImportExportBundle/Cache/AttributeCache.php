@@ -175,7 +175,7 @@ class AttributeCache
                 $codes[] = $value->getAttribute()->getCode();
             }
         }
-
+        
         return $codes;
     }
 
@@ -187,7 +187,7 @@ class AttributeCache
      */
     protected function getGroupAttributeCodes(Group $group) {
         $code = $group->getCode();
-        if (!isset($this->groupAttributeCodes)) {
+        if (!isset($this->groupAttributeCodes[$code])) {
             $this->groupAttributeCodes[$code] = $this->getAttributeCodes($group);
         }
 
@@ -202,7 +202,7 @@ class AttributeCache
      */
     protected function getFamilyAttributeCodes(Family $family) {
         $code = $family->getCode();
-        if (!isset($this->familyAttributeCodes)) {
+        if (!isset($this->familyAttributeCodes[$code])) {
             $this->familyAttributeCodes[$code] = $this->getAttributeCodes($family);
         }
 
