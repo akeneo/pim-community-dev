@@ -203,7 +203,7 @@ class Generator
                     $this->generateClassMethod(
                         'remove' . ucfirst(Inflector::camelize($method['self'])),
                         'if ($this->' . $addremove . ' && $this->' . $addremove . '->contains($value)) {
-                            $this->' . $addremove . '->remove($value);
+                            $this->' . $addremove . '->removeElement($value);
                             $value->'. ($method['is_target_addremove'] ? 'remove' : 'set')
                         . ucfirst(Inflector::camelize($method['target']))
                         .'(' . ($method['is_target_addremove'] ? '$this' : 'null') . ');

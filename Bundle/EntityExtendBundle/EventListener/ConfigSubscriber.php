@@ -181,7 +181,7 @@ class ConfigSubscriber implements EventSubscriberInterface
         $selfFieldType     = $fieldConfig->getId()->getFieldType();
         $selfFieldName     = $fieldConfig->getId()->getFieldName();
         $selfConfig        = $this->extendConfigProvider->getConfig($selfEntityClass);
-        $reflectionKey     = implode('|', [$selfFieldType, $selfEntityClass, $targetEntityClass, $selfFieldName]);
+        $relationKey       = implode('|', [$selfFieldType, $selfEntityClass, $targetEntityClass, $selfFieldName]);
         $scope             = 'extend';
 
         /**
@@ -218,7 +218,7 @@ class ConfigSubscriber implements EventSubscriberInterface
         ];
 
         $selfRelations                 = $selfConfig->get('relation') ? : [];
-        $selfRelations[$reflectionKey] = $selfRelationConfig;
+        $selfRelations[$relationKey] = $selfRelationConfig;
 
         $selfConfig->set('relation', $selfRelations);
 
@@ -234,12 +234,14 @@ class ConfigSubscriber implements EventSubscriberInterface
             'target_field_id' => $fieldConfig->getId(),
         ];
 
-        $targetRelations                 = $targetConfig->get('relation') ? : [];
-        $targetRelations[$reflectionKey] = $targetRelationConfig;
+        $targetRelations               = $targetConfig->get('relation') ? : [];
+        $targetRelations[$relationKey] = $targetRelationConfig;
 
         $targetConfig->set('relation', $targetRelations);
+        $fieldConfig->set('relation_key', $relationKey);
 
         $this->extendConfigProvider->persist($targetConfig);
+        //$this->extendConfigProvider->persist($fieldConfig);
     }
 
     protected function createTargetRelation(Config $fieldConfig, $relationKey)

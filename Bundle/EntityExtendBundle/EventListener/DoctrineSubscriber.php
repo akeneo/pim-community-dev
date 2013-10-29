@@ -85,8 +85,7 @@ class DoctrineSubscriber implements EventSubscriber
                                     );
                                     $cmBuilder->addOwningOneToOne(
                                         $defaultName,
-                                        $relation['target_entity'],
-                                        $targetFieldName
+                                        $relation['target_entity']
                                     );
                                     break;
                                 case 'manyToMany':
@@ -106,8 +105,7 @@ class DoctrineSubscriber implements EventSubscriber
 
                                         $cmBuilder->addOwningOneToOne(
                                             $defaultName,
-                                            $relation['target_entity'],
-                                            $targetFieldName
+                                            $relation['target_entity']
                                         );
 
                                         $builder->build();

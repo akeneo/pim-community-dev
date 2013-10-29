@@ -3,23 +3,22 @@
 namespace Oro\Bundle\EntityBundle\Datagrid;
 
 use Doctrine\Common\Inflector\Inflector;
-use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
-use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
-use Oro\Bundle\GridBundle\Datagrid\ORM\EntityProxyQuery;
+
 use Oro\Bundle\GridBundle\Datagrid\ORM\QueryFactory\EntityQueryFactory;
 use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
+use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
+use Oro\Bundle\GridBundle\Filter\FilterInterface;
+use Oro\Bundle\GridBundle\Sorter\SorterInterface;
 
+use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
 use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigId;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 
 use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendConfigDumper;
-use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
-use Oro\Bundle\GridBundle\Filter\FilterInterface;
-use Oro\Bundle\GridBundle\Sorter\SorterInterface;
 
 class RelationEntityDatagrid extends CustomEntityDatagrid
 {
@@ -88,8 +87,12 @@ class RelationEntityDatagrid extends CustomEntityDatagrid
     protected function getQueryParameters()
     {
         $additionalParameters = $this->parameters->get(ParametersInterface::ADDITIONAL_PARAMETERS);
-        $dataIn               = !empty($additionalParameters['data_in']) ? $additionalParameters['data_in'] : array(0);
-        $dataNotIn            = !empty($additionalParameters['data_not_in']) ? $additionalParameters['data_not_in'] : array(0);
+        $dataIn               = !empty($additionalParameters['data_in'])
+            ? $additionalParameters['data_in']
+            : array(0);
+        $dataNotIn            = !empty($additionalParameters['data_not_in'])
+            ? $additionalParameters['data_not_in']
+            : array(0);
 
         $parameters = array(
             'data_in' => $dataIn,
@@ -108,11 +111,13 @@ class RelationEntityDatagrid extends CustomEntityDatagrid
      */
     protected function getHasAssignedExpression()
     {
-        $classArray = explode('\\', $this->relationConfig->getId()->getClassName());
-        $fieldName  =
-            ExtendConfigDumper::FIELD_PREFIX
-            . strtolower(array_pop($classArray)) . '_'
-            . $this->relationConfig->getId()->getFieldName();
+        $entityConfig = $this->configManager->getProvider('extend')->getConfig(
+            $this->relationConfig->getId()->getClassName()
+        );
+        $relations = $entityConfig->get('relation');
+        $relation  = $relations[$this->relationConfig->get('relation_key')];
+
+        $fieldName = ExtendConfigDumper::FIELD_PREFIX . $relation['target_field_id']->getFieldName();
 
         if (null === $this->hasAssignedExpression) {
             /** @var EntityQueryFactory $queryFactory */
