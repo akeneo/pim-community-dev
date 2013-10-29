@@ -33,7 +33,7 @@ class RestUsersApiTest extends WebTestCase
                 "plainPassword" => '1231231q',
                 "firstName" => "firstName",
                 "lastName" => "lastName",
-                "rolesCollection" => array("1"),
+                "rolesCollection" => array("3"),
                 "attributes" => array("company" => "Some test company"),
                 "owner" => "1",
             )

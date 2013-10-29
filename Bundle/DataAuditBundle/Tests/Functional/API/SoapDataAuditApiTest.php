@@ -56,8 +56,7 @@ class SoapDataAuditApiTest extends WebTestCase
             "plainPassword" => '1231231q',
             "firstName" => "firstName",
             "lastName" => "lastName",
-            "rolesCollection" => array("3"),
-            "groups" => array(),
+            "rolesCollection" => array("2"),
             "owner" => "1"
         );
 

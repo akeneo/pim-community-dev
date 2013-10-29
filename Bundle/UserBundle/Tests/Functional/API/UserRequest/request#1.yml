@@ -8,7 +8,7 @@ request:
     plainPassword: 123123q
     lastLogin: ~
     rolesCollection: [3]
-    groups: []
+    groups: ~
     values: ~
     owner: 1
 response:
