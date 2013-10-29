@@ -161,25 +161,17 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
      */
     public function process($item)
     {
-        try {
-            return $this->transformer->getProduct(
-                $item,
-                array(
-                    'family'        => $this->familyColumn,
-                    'categories'    => $this->categoriesColumn,
-                    'groups'        => $this->groupsColumn
-                ),
-                array(
-                    'enabled'       => $this->enabled
-                )
-            );
-        } catch (InvalidObjectException $ex) {
-            foreach ($ex->getErrors() as $error) {
-                $this->stepExecution->addError($error);
-            }
-
-            throw new InvalidItemException('Invalid item', $item);
-        }
+        return $this->transformer->getProduct(
+            $item,
+            array(
+                'family'        => $this->familyColumn,
+                'categories'    => $this->categoriesColumn,
+                'groups'        => $this->groupsColumn
+            ),
+            array(
+                'enabled'       => $this->enabled
+            )
+        );
     }
 
     /**
