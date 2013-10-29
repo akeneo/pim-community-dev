@@ -47,8 +47,10 @@ class EntityCache
         }
         if (!array_key_exists($code, $this->cache[$class])) {
             $this->cache[$class][$code] = $this->doctrine
-                ->getRepository($class)
-                ->findOneBy(array('code'=> $code));
+                ->getManager()
+                ->createQuery("SELECT e FROM $class e WHERE e.code=:code")
+                ->setParameter('code', $code)
+                ->getOneOrNullResult();
         }
 
         return $this->cache[$class][$code];
