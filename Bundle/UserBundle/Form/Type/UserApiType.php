@@ -19,8 +19,8 @@ class UserApiType extends UserType
         parent::addEntityFields($builder);
 
         $builder
-            ->addEventSubscriber(new UserApiSubscriber($builder->getFormFactory()))
-            ->addEventSubscriber(new PatchSubscriber());
+            ->addEventSubscriber(new UserApiSubscriber($builder->getFormFactory()));
+//            ->addEventSubscriber(new PatchSubscriber());
     }
 
     /**
