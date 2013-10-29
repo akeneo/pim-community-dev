@@ -20,38 +20,59 @@ class ArrayApcCache implements Cache
      */
     protected $cache;
 
+    /**
+     * Constructor
+     */
     public function __construct()
     {
         $this->cache = ('cli' == php_sapi_name())
             ? new ArrayCache()
             : new ApcCache();
     }
-    
+
+    /**
+     * {@inheritdoc}
+     */
     public function contains($id)
     {
         return $this->cache->contains($id);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function delete($id)
     {
         return $this->cache->delete($id);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function fetch($id)
     {
         return $this->cache->fetch($id);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getStats()
     {
         return $this->cache->getStats();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function save($id, $data, $lifeTime = 0)
     {
         return $this->cache->save($id, $data, $lifeTime);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function __call($name, $arguments)
     {
         return call_user_func_array(array($this->cache, $name), $arguments);

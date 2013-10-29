@@ -160,6 +160,7 @@ class ProductManager extends FlexibleManager
     public function getImportQuery($attributes, $identifierAttribute)
     {
         $class = $this->getFlexibleRepository()->getClassName();
+
         return $this->getStorageManager()->createQuery(
             'SELECT p FROM ' . $class . ' p ' .
             'LEFT JOIN p.values v WITH v.attribute IN (:attributes) ' .
