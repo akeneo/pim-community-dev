@@ -39,7 +39,7 @@ class BuildBefore extends Event implements GridEventInterface
     }
 
     /**
-     * Getter for datagrid config array
+     * Getter for datagrid config
      *
      * @return DatagridConfiguration
      */

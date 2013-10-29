@@ -14,13 +14,17 @@ datagrid:
                     - { table: OroEntityConfigBundle:EntityConfigModel, alias: ce }
         columns:
             name:
-                label: Tag
+                label: Name
                 type: field
                 frontend_type: string
-            usage:
-                label: Usage Count
+            module:
+                label: Module
                 type: field
-                frontend_type: integer
+                frontend_type: string
+            updated:
+                label: Updated at
+                type: field
+                frontend_type: datetime
 
         properties:
             update_link:
