@@ -35,5 +35,6 @@ Feature: Import partial product informations
     And I am logged in as "Julia"
     When I am on the "acme_product_import" import job page
     And I launch the import job
+    And I wait for the job to finish
     Then there should be 1 product
     And family of "honda-civic" should be "sports-car"

@@ -23,6 +23,7 @@ Feature: Import categories
       | reader  | filePath | {{ file to import }} |
     When I am on the "acme_category_import" import job page
     And I launch the import job
+    And I wait for the job to finish
     Then there should be the following categories:
       | code        | label       | parent    |
       | computers   | Computers   |           |

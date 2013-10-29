@@ -1,5 +1,4 @@
 parameters:
-    oro_flexibleentity.listener.timestampable.class: Pim\Bundle\CatalogBundle\EventListener\TimestampableListener
     pim_catalog.imagine.local_dir_resolver.class:    Pim\Bundle\CatalogBundle\Imagine\Cache\Resolver\LocalDirResolver
 
 services:

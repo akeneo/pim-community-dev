@@ -884,7 +884,7 @@ class WebUser extends RawMinkContext
         foreach ($table->getRowsHash() as $type => $fields) {
             $this->iSelectTheAttributeType($type);
             try {
-                $this->iShouldSeeTheFields($fields);
+                $this->getMainContext()->getSubcontext('assertions')->iShouldSeeTheFields($fields);
             } catch (ExpectationException $e) {
                 throw $this->createExpectationException(sprintf('%s: %s', $type, $e->getMessage()));
             }
@@ -915,40 +915,28 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @Given /^I disable the product$/
+     * @param string $action
+     *
+     * @Given /^I (enable|disable) the product$/
      */
-    public function iDisableTheProduct()
+    public function iEnableOrDisableTheProduct($action)
     {
-        $this->getPage('Product edit')->disableProduct()->save();
+        $action = $action . 'Product';
+        $this->getCurrentPage()->$action()->save();
         $this->wait();
     }
 
     /**
-     * @Given /^I disable the products$/
+     * @param string $action
+     *
+     * @Given /^I (enable|disable) the products$/
      */
-    public function iDisableTheProducts()
+    public function iEnableOrDisableTheProducts($action)
     {
-        $this->getPage('Batch ChangeStatus')->disableProducts()->next();
-        $this->getPage('Batch ChangeStatus')->confirm();
-        $this->wait();
-    }
-
-    /**
-     * @Given /^I enable the product$/
-     */
-    public function iEnableTheProduct()
-    {
-        $this->getPage('Product edit')->enableProduct()->save();
-        $this->wait();
-    }
-
-    /**
-     * @Given /^I enable the products$/
-     */
-    public function iEnableTheProducts()
-    {
-        $this->getPage('Batch ChangeStatus')->enableProducts()->next();
-        $this->getPage('Batch ChangeStatus')->confirm();
+        $status = $action === 'enable' ? true : false;
+        $this->getCurrentPage()->toggleSwitch('To enable', $status);
+        $this->getCurrentPage()->next();
+        $this->getCurrentPage()->confirm();
         $this->wait();
     }
 
@@ -1102,9 +1090,26 @@ class WebUser extends RawMinkContext
     public function iExecuteTheJob($type)
     {
         $this->getPage(sprintf('%s show', ucfirst($type)))->execute();
-        sleep(20);
-        $this->getMainContext()->reload();
         $this->wait();
+    }
+
+    /**
+     * @When /^I wait for the job to finish$/
+     */
+    public function iWaitForTheJobToFinish()
+    {
+        $timeout = 120;
+
+        while ($timeout && $refreshLink = $this->getCurrentPage()->findLink('Refresh')) {
+            sleep(3);
+            $timeout -= 3;
+            $refreshLink->click();
+            $this->wait();
+        }
+
+        if ($this->getCurrentPage()->findLink('Refresh')) {
+            throw $this->createExpectationException("The job didn't finish in 2 minutes");
+        }
     }
 
     /**

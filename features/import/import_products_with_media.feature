@@ -1,7 +1,7 @@
 Feature: Import media with products
   In order to re-use the images and documents I have setted on my products
   As Julia
-  I need to be able to import them among with the products
+  I need to be able to import them along with the products
 
   Background:
     Given the following families:
@@ -44,6 +44,7 @@ Feature: Import media with products
     And I am logged in as "Julia"
     When I am on the "acme_product_import" import job page
     And I launch the import job
+    And I wait for the job to finish
     Then there should be 2 products
     And the product "bic-core-148" should have the following values:
       | frontView  | bic-core-148.gif |
@@ -75,6 +76,7 @@ Feature: Import media with products
     And I am logged in as "Julia"
     When I am on the "acme_product_import" import job page
     And I launch the import job
+    And I wait for the job to finish
     Then there should be 2 products
     And the product "bic-core-148" should have the following values:
       | frontView  | bic-core-148.gif |

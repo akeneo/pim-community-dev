@@ -1,14 +1,14 @@
 <script type="text/javascript">
     require(
-        ['jquery', 'underscore', 'oro/mediator', 'pim/tree/associate', 'pim/scopable', 'pim/formupdatelistener', 'pim/dialog', 'jquery.currencyfield'],
-        function($, _, mediator, TreeAssociate, Scopable, FormUpdateListener, Dialog){
+        ['jquery', 'underscore', 'oro/mediator', 'pim/tree/associate', 'pim/scopable', 'pim/formupdatelistener', 'pim/dialog', 'backbone/bootstrap-modal', 'jquery.currencyfield'],
+        function ($, _, mediator, TreeAssociate, Scopable, FormUpdateListener, Dialog) {
             'use strict';
-            $(function() {
+            $(function () {
                 {% if resource_granted('pim_catalog_product_categories_view') %}
                     new TreeAssociate('#trees', '#pim_product_categories');
                 {% endif %}
 
-                _.each($('form div.scopable'), function(field) {
+                _.each($('form div.scopable'), function (field) {
                     new Scopable({ el: $(field) });
                 });
 
@@ -28,12 +28,12 @@
                 });
 
                 $('#attribute-buttons').find('.dropdown-menu').click(function (e) {
-                    e.stopPropagation();
+                    e.stopPropagation ();
                 });
 
                 $('[data-toggle="popover"]').popover();
 
-                $('#switch_status').on('click', function() {
+                $('#switch_status').on('click', function () {
                     var $field = $('#{{ form.enabled.vars.id }}'),
                         $status = $('.status-enabled').find('.badge');
                     if (+$field.val()) {
@@ -69,26 +69,61 @@
                             .select2({ allowClear: true });
                     });
 
-                    $('#{{ form.vars.id }}').on('click', 'button[type="submit"]', function() {
+                    $('#{{ form.vars.id }}').on('click', 'button[type="submit"]', function () {
                         $('#{{ form.vars.id }}').append($('<div class="hide"/>').html(message));
                     });
                 {% endif %}
 
                 {% for group in form.vars.value.groups %}
-                    {% set productList %}{% include 'PimGridBundle:Grid:grid.html.twig' with {'headers': ['products'], 'rows': group.products } %}{% endset %}
-                    $('#group-products-{{ group.id }}').on('click', function() {
-                        Dialog.redirect(
-                            '{{ productList|raw }}',
-                            '{{ "Group"|trans }} {{ group.label }}',
-                            '{{ "View group"|trans }}',
-                            '{{ path('pim_catalog_group_edit', { 'id': group.id }) }}'
-                        );
+                    {% set productList %}
+                    {% spaceless %}
+                    <div class="clearfix"><div class="container-fluid"><div class="grid-container">
+                        {% if group.products|length > 0 %}
+                        <table class="grid table table-hover table-bordered table-condensed groups">
+                            <thead>
+                                <tr>
+                                    <th>{{ group.products[0].identifier.attribute.label }}</th>
+                                    <th>{{ 'Label'|trans }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for product in group.products %}
+                                    <tr>
+                                        <td><a href="{{ path('pim_catalog_product_edit', {'id': product.id}) }}">{{ product.identifier }}</a></td>
+                                        <td>{{ product.label }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        {% endif %}
+                    </div></div></div>
+                    {% endspaceless %}
+                    {% endset %}
+
+                    $('#group-products-{{ group.id }}').on('click', function (event) {
+                        event.preventDefault();
+
+                        var groupDoAction = function () {
+                            var $groupLink = $('<a href="{{ path('pim_catalog_group_edit', { 'id': group.id }) }}" class="hide"></a>');
+                            $groupLink.appendTo($('#{{ form.vars.id }}')).click();
+                        };
+
+                        var groupModal = new Backbone.BootstrapModal({
+                            allowCancel: true,
+                            cancelText: '{{ "Close"|trans }}',
+                            title: '{{ "Group"|trans }} {{ group.label }}',
+                            content: '{{ productList|raw }}',
+                            okText: '{{ "View group"|trans }}'
+                        });
+
+                        groupModal.on('ok', groupDoAction);
+                        groupModal.open();
                     });
                 {% endfor %}
 
                 function setFullHeight() {
-                    $('.fullheight').each(function() {
-                        $(this).height($('.scrollable-container').height() - $(this).position().top + $('.scrollable-container').position().top);
+                    $('.fullheight').each(function () {
+                        $(this).height($('.scrollable-container').height() - $(this).position ().top + $('.scrollable-container').position ().top);
                     })
                 }
 

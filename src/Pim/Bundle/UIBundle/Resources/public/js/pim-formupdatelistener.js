@@ -52,6 +52,7 @@ define(
             $(document).on('click', '#' + $form.attr('id') + ' ins.jstree-checkbox', formUpdated);
 
             $('a[href^="/"]:not(".no-hash")').off('click').on('click', linkClicked);
+            $form.on('click', 'a[href^="/"]:not(".no-hash")', linkClicked);
 
             Backbone.Router.prototype.on('route', function () {
                 $('a[href^="/"]:not(".no-hash")').off('click', linkClicked);

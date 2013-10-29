@@ -88,21 +88,14 @@
                 <li>
                     {{ 'groups'|trans|capitalize }}:
                     {% for group in form.vars.value.groups %}
+                        <a id="group-products-{{ group.id }}" href="#"
                         {% if group.type.isVariant %}
-                            {% set variantGroupAttributes %}
-                                {% for attribute in group.attributes %}
-                                    <br />- {{ attribute|trim }}
-                                {% endfor %}
-                           {% endset %}
-                           {% set variantGroupTooltip = variantGroupAttributes|trim is empty
-                               ? null
-                               : 'info.group.axis'|trans({'%attributes%': variantGroupAttributes|trim }) %}
-                        {% endif %}
-
-                        <span id="group-products-{{ group.id }}"{% if variantGroupTooltip is defined%}
                             data-toggle="tooltip" data-placement="bottom" data-html="true"
-                            data-original-title="{{ variantGroupTooltip }}"
-                            {% endif %}>{{ group.label }}</span>{% if not loop.last %}, {% endif %}
+                            data-original-title="{{ 'info.group.axis'|trans({'%attributes%': group.attributes|join(', ')}) }}"
+                        {% endif %}
+                        >
+                            {{ group.label }}</a>{% if not loop.last %}, {% endif %}
+                        </a>
                     {% endfor %}
                 </li>
                 {% endif %}
