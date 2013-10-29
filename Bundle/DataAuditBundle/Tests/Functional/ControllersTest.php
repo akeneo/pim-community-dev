@@ -16,9 +16,12 @@ class ControllersTest extends WebTestCase
     protected $userData = array(
         'username' => 'testAdmin',
         'email' => 'test@test.com',
+        'namePrefix' => 'Mr.',
         'firstName' => 'FirstNameAudit',
+        'middleName' => 'MiddleName',
         'lastName' => 'LastNameAudit',
-        'birthday' => '07/01/2013',
+        'nameSuffix' => 'Sn.',
+        'birthday' => '2013-01-01',
         'enabled' => 1,
         'roles' => 'Administrator',
         'groups' => 'Sales',
@@ -32,6 +35,7 @@ class ControllersTest extends WebTestCase
 
     public function setUp()
     {
+        $this->userData['birthday'] = $this->getFormattedDate($this->userData['birthday']);
         $this->client = static::createClient(
             array(),
             array_merge(ToolsAPI::generateBasicHeader(), array('HTTP_X-CSRF-Header' => 1))
@@ -104,29 +108,53 @@ class ControllersTest extends WebTestCase
         $result = ToolsAPI::jsonToArray($result->getContent());
         $result = reset($result['data']);
 
-        $result['old'] = strip_tags(preg_replace('/(<!--(.*)-->)|(\h)/Uis', '', $result['old']));
-        $count = 0;
-        do {
-            $result['old'] = strip_tags(preg_replace('/\n{2,}/Uis', "\n", $result['old'], -1, $count));
-        } while ($count > 0);
-        $result['new'] = strip_tags(preg_replace('/(<!--(.*)-->)|(\h)/Uis', '', $result['new']));
-        $count = 0;
-        do {
-            $result['new'] = strip_tags(preg_replace('/\n{2,}/Uis', "\n", $result['new'], -1, $count));
-        } while ($count > 0);
-        $result['old'] = explode("\n", trim($result['old'], "\n"));
-        $result['new'] = explode("\n", trim($result['new'], "\n"));
+        $result['old'] = $this->clearResult($result['old']);
+        $result['new'] = $this->clearResult($result['new']);
+
         foreach ($result['old'] as $auditRecord) {
-            $auditValue = explode(':', $auditRecord);
-            $this->assertEquals('', $auditValue[1]);
+            $auditValue = explode(': ', $auditRecord, 2);
+            $this->assertEmpty(trim($auditValue[1]));
         }
 
         foreach ($result['new'] as $auditRecord) {
-            $auditValue = explode(':', $auditRecord);
-            $this->assertEquals($this->userData[$auditValue[0]], $auditValue[1]);
+            $auditValue = explode(': ', $auditRecord, 2);
+            $key = trim($auditValue[0]);
+            $value = trim($auditValue[1]);
+            if ($key == 'birthday') {
+                $value = $this->getFormattedDate($value);
+            }
+            $this->assertEquals($this->userData[$key], $value);
         }
 
         $this->assertEquals('John Doe  - admin@example.com', $result['author']);
 
+    }
+
+    protected function clearResult($result)
+    {
+        $result = preg_replace("/\n+ */", "\n", $result);
+        $result = strip_tags($result);
+        $result = explode("\n", trim($result, "\n"));
+
+        return array_filter($result);
+    }
+
+    /**
+     * Get formatted date acceptable by oro_date type.
+     *
+     * @param string $date
+     * @return bool|string
+     */
+    protected function getFormattedDate($date)
+    {
+        $date = new \DateTime($date);
+        $formatter = new \IntlDateFormatter(
+            \Locale::getDefault(),
+            \IntlDateFormatter::MEDIUM,
+            \IntlDateFormatter::NONE,
+            $date->getTimezone(),
+            \IntlDateFormatter::GREGORIAN
+        );
+        return $formatter->format($date);
     }
 }
