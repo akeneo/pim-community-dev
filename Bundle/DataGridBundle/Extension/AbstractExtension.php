@@ -4,8 +4,6 @@ namespace Oro\Bundle\DataGridBundle\Extension;
 
 
 use Symfony\Component\Config\Definition\Processor;
-use Symfony\Component\PropertyAccess\PropertyAccess;
-use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
@@ -19,13 +17,9 @@ abstract class AbstractExtension implements ExtensionVisitorInterface
     /** @var RequestParameters */
     protected $requestParams;
 
-    /** @var PropertyAccessor */
-    protected $accessor;
-
     public function __construct(RequestParameters $requestParams = null)
     {
         $this->requestParams = $requestParams;
-        $this->accessor      = PropertyAccess::createPropertyAccessor();
     }
 
     /**
@@ -63,11 +57,13 @@ abstract class AbstractExtension implements ExtensionVisitorInterface
      *
      * @param ConfigurationInterface      $configuration
      * @param                             $config
+     *
+     * @return array
      */
     protected function validateConfiguration(ConfigurationInterface $configuration, $config)
     {
         $processor = new Processor();
-        $processor->processConfiguration(
+        return $processor->processConfiguration(
             $configuration,
             $config
         );

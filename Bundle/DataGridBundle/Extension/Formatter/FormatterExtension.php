@@ -18,8 +18,8 @@ class FormatterExtension extends AbstractExtension
      */
     public function isApplicable(DatagridConfiguration $config)
     {
-        $columns    = $this->accessor->getValue($config, Configuration::COLUMNS_PATH) ? : [];
-        $properties = $this->accessor->getValue($config, Configuration::PROPERTIES_PATH) ? : [];
+        $columns    = $config->offsetGetByPath(Configuration::COLUMNS_PATH, []);
+        $properties = $config->offsetGetByPath(Configuration::PROPERTIES_PATH, []);
         $applicable = $columns || $properties;
 
         // validate extension configuration
@@ -60,7 +60,7 @@ class FormatterExtension extends AbstractExtension
     public function visitMetadata(DatagridConfiguration $config, MetadataObject $data)
     {
         // get only columns here because columns will be represented on frontend
-        $columns = $this->accessor->getValue($config, Configuration::COLUMNS_PATH) ? : [];
+        $columns = $config->offsetGetByPath(Configuration::COLUMNS_PATH, []);
 
         $propertiesMetadata = [];
         foreach ($columns as $name => $fieldConfig) {

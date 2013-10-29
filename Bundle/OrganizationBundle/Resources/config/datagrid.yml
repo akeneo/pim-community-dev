@@ -38,6 +38,7 @@ datagrid:
                 type: field
             createdAt:
                 type: field
+                frontend_type: datetime
 
         properties:
             update_link:
