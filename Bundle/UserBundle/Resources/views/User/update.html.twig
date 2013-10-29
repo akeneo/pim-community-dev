@@ -2,7 +2,6 @@
 {% form_theme form with ['OroFormBundle:Form:fields.html.twig', 'OroTagBundle:Form:fields.html.twig'] %}
 
 {% set fullname = form.vars.value|oro_format_name|default('N/A') %}
-{% set title = form.vars.value.id ? fullname ~ ' - ' ~ 'Update User'|trans : 'New User'|trans %}
 {% oro_title_set({params : {"%username%": fullname }}) %}
 {% set audit_entity_class = 'Oro_Bundle_UserBundle_Entity_User' %}
 {% if editRoute %}

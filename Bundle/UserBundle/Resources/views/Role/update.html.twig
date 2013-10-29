@@ -1,6 +1,5 @@
 {% extends 'OroUIBundle:actions:update.html.twig' %}
 
-{% set title = form.vars.value.id ? 'Update Role'|trans : 'New Role'|trans %}
 {% oro_title_set({params : { "%role%": form.vars.value.label } }) %}
 {% set gridId = 'users-grid' %}
 {% set formAction = form.vars.value.id ? path('oro_user_role_update', { 'id': form.vars.value.id}) : path('oro_user_role_create') %}
