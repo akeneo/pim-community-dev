@@ -34,7 +34,7 @@ class TagSearchResultsGridListener
             $queryBuilder->setParameter('tag', $this->requestParams->get('tag_id', 0));
 
             $searchEntity = $this->requestParams->get('from', '*');
-            if ($searchEntity != '*') {
+            if ($searchEntity != '*' && !empty($searchEntity)) {
                 $queryBuilder->andWhere('tt.alias = :alias')
                     ->setParameter('alias', $searchEntity);
             }

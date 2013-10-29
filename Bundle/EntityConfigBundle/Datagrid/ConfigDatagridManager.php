@@ -21,38 +21,6 @@ use Oro\Bundle\EntityConfigBundle\Provider\PropertyConfigContainer;
 class ConfigDatagridManager extends BaseDatagrid
 {
     /**
-     * @return array
-     */
-    public function getLayoutActions()
-    {
-        $actions = array();
-
-        foreach ($this->configManager->getProviders() as $provider) {
-            foreach ($provider->getPropertyConfig()->getLayoutActions() as $config) {
-                $actions[] = $config;
-            }
-        }
-
-        return $actions;
-    }
-
-    /**
-     * @return array
-     */
-    public function getRequireJsModules()
-    {
-        $modules = array();
-        foreach ($this->configManager->getProviders() as $provider) {
-            $modules = array_merge(
-                $modules,
-                $provider->getPropertyConfig()->getRequireJsModules()
-            );
-        }
-
-        return $modules;
-    }
-
-    /**
      * {@inheritDoc}
      */
     protected function getProperties()
@@ -311,34 +279,5 @@ class ConfigDatagridManager extends BaseDatagrid
         $this->prepareRowActions($actions);
 
         return $actions;
-    }
-
-    /**
-     * @param ProxyQueryInterface $query
-     * @return ProxyQueryInterface
-     */
-    protected function prepareQuery(ProxyQueryInterface $query)
-    {
-        foreach ($this->configManager->getProviders() as $provider) {
-            foreach ($provider->getPropertyConfig()->getItems() as $code => $item) {
-                $alias     = 'cev' . $code;
-                $fieldName = $provider->getScope() . '_' . $code;
-
-                if (isset($item['grid']['query'])) {
-                    $query->andWhere($alias . '.value ' . $item['grid']['query']['operator'] . ' :' . $alias);
-                    $query->setParameter($alias, $item['grid']['query']['value']);
-                }
-
-                $query->leftJoin(
-                    'ce.values',
-                    $alias,
-                    'WITH',
-                    $alias . ".code='" . $code . "' AND " . $alias . ".scope='" . $provider->getScope() . "'"
-                );
-                $query->addSelect($alias . '.value as ' . $fieldName, true);
-            }
-        }
-
-        return $query;
     }
 }

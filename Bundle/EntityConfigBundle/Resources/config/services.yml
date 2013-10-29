@@ -5,6 +5,8 @@ parameters:
     oro_entity_config.cache.cache.class:                        Oro\Bundle\EntityConfigBundle\Config\ConfigCache
     oro_entity_config.provider_bag.class:                       Oro\Bundle\EntityConfigBundle\Provider\ConfigProviderBag
 
+    oro_entity_config.event_listener.entityconfig_grid_listener.class: Oro\Bundle\EntityConfigBundle\EventListener\EntityConfigGridListener
+
 services:
     oro_entity_config.link.entity_manager:
         tags:
@@ -64,3 +66,10 @@ services:
         parent: oro.cache.abstract
         calls:
             - [setNamespace, ['oro_entity_config.model']]
+
+    oro_entity_config.event_listener.entityconfig_grid_listener:
+        class: %oro_entity_config.event_listener.entityconfig_grid_listener.class%
+        arguments:
+            - @oro_entity_config.config_manager
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.entityconfig-grid, method: onBuildAfter }
