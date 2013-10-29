@@ -87,8 +87,6 @@ class JobExecutionArchiver
             $files     = array_diff($files, array('.', '..'));
             $firstFile = current($files);
             $path      = $path.$firstFile;
-        } else {
-            $path = "";
         }
 
         return $path;
