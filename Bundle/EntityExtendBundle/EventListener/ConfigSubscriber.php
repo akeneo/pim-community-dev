@@ -44,6 +44,9 @@ class ConfigSubscriber implements EventSubscriberInterface
 
     /**
      * @param PersistConfigEvent $event
+     *
+     * @todo as discussed with Alpha team thm method will be refactored in this sprint
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public function persistConfig(PersistConfigEvent $event)
     {

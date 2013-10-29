@@ -15,7 +15,12 @@ oro_entity_config:
                     options:
                         default_value:      'Demo'               # sets the default value for 'demo_attr' attribute
 ```
-This configuration adds 'demo_attr' attribute with 'Demo' value to all configurable entities. The configurable entity is an entiry marked with @Config annotation. Also this code automatically adds a servive named **oro_entity_config.provider.acme** into DI container. You can use this service to get a value of 'demo_attr' attribute for particular entity. For example:
+This configuration adds 'demo_attr' attribute with 'Demo' value to all configurable entities. The configurable entity is an entity marked with @Config annotation. Also this code automatically adds a service named **oro_entity_config.provider.acme** into DI container. You can use this service to get a value of 'demo_attr' attribute for particular entity.
+To apply this changes execute **oro:entity-config:update** command:
+```bash
+php app/console oro:entity-config:update
+```
+An example how to get a value of a configuration attribute:
 ``` php
 <?php
     /** @var ConfigProvider $acmeConfigProvider */
@@ -119,3 +124,11 @@ php app/console oro:entity-config:init
 ```
 This command iterates through all entities and configs files and loads entity metadata into the database.
 This command is executed during the installation process and usually you do not need to execute it manually.
+
+Update configuration data
+-------------------------
+The following command can be used to update configurable entities:
+```bash
+php app/console oro:entity-config:update
+```
+Usually you need to execute this command only in 'dev' mode when new new configuration attribute or whole configuration scope is added.
