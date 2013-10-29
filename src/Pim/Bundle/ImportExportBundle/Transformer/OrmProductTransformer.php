@@ -51,11 +51,6 @@ class OrmProductTransformer
     protected $attributeTransformers;
 
     /**
-     * @var Query
-     */
-    private $importQuery;
-
-    /**
      * Constructor
      *
      * @param ProductManager            $productManager
@@ -169,14 +164,12 @@ class OrmProductTransformer
      */
     protected function createOrLoadProduct(array $values)
     {
-        if (!isset($this->importQuery)) {
-            $this->importQuery = $this->productManager->getImportQuery(
-                $this->attributeCache->getAttributes(),
-                $this->attributeCache->getIdentifierAttribute()
-            );
-        }
-        $this->importQuery->setParameter('code', $values[$this->attributeCache->getIdentifierAttribute()->getCode()]);
-        $product = $this->importQuery->getOneOrNullResult();
+        $identifierAttribute = $this->attributeCache->getIdentifierAttribute();
+        $product = $this->productManager->getImportProduct(
+            $this->attributeCache->getAttributes(), 
+            $identifierAttribute,
+            $values[$identifierAttribute->getCode()]
+        );
 
         if (!$product) {
             $product = $this->productManager->createProduct();
