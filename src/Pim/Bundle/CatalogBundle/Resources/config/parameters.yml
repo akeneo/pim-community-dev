@@ -78,3 +78,5 @@ parameters:
     pim_catalog.mass_edit_action.change_family.class:          Pim\Bundle\CatalogBundle\MassEditAction\ChangeFamily
 
     pim_catalog.form.type.localized_collection.class:          Pim\Bundle\CatalogBundle\Form\Type\LocalizedCollectionType
+
+    doctrine.orm.cache.apc.class:  Pim\Bundle\CatalogBundle\Doctrine\ArrayApcCache
