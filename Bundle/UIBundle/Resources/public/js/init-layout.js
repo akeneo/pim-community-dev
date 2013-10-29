@@ -270,6 +270,8 @@ function($, _, __, app, mediator, layout, Navigation, Modal, messenger) {
                             } else {
                                 window.location.href = el.data('redirect');
                             }
+                        } else if (navigation) {
+                            navigation.loadingMask.hide();
                         }
                     },
                     error: function () {
