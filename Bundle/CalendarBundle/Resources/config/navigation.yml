@@ -1,0 +1,15 @@
+oro_menu_config:
+    items:
+        oro_calendar_view_default:
+            label: 'My Calendar'
+            route: 'oro_calendar_view_default'
+            extras:
+                position: 20
+    tree:
+        usermenu:
+            children:
+                oro_calendar_view_default: ~
+
+oro_titles:
+    oro_calendar_view_default: "My Calendar - %%username%%"
+    oro_calendar_view: "%%calendarname%% - Calendars - %%username%%"

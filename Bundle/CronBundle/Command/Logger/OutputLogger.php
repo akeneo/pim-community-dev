@@ -45,16 +45,11 @@ class OutputLogger extends AbstractLogger
         }
 
         $this->output->writeln(sprintf('[%s] %s', $level, $message));
-        if (!empty($context)) {
-            foreach ($context as $item) {
-                if (is_object($item)) {
-                    if ($item instanceof \Exception) {
-                        $this->output->writeln($item);
-                    }
-                } else {
-                    $this->output->writeln($item);
-                }
-            }
+
+        // based on PSR-3 recommendations if an Exception object is passed in the context data,
+        // it MUST be in the 'exception' key.
+        if (isset($context['exception']) && $context['exception'] instanceof \Exception) {
+            $this->output->writeln((string) $context['exception']);
         }
     }
 }
