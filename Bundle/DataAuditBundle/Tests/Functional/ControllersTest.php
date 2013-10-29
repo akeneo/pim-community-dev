@@ -16,9 +16,12 @@ class ControllersTest extends WebTestCase
     protected $userData = array(
         'username' => 'testAdmin',
         'email' => 'test@test.com',
+        'namePrefix' => 'Mr.',
         'firstName' => 'FirstNameAudit',
+        'middleName' => 'MiddleName',
         'lastName' => 'LastNameAudit',
-        'birthday' => '07/01/2013',
+        'nameSuffix' => 'Sn.',
+        'birthday' => '2013-01-01',
         'enabled' => 1,
         'roles' => 'Administrator',
         'groups' => 'Sales',
@@ -32,6 +35,7 @@ class ControllersTest extends WebTestCase
 
     public function setUp()
     {
+        $this->userData['birthday'] = $this->getFormattedDate($this->userData['birthday']);
         $this->client = static::createClient(
             array(),
             array_merge(ToolsAPI::generateBasicHeader(), array('HTTP_X-CSRF-Header' => 1))
@@ -128,5 +132,24 @@ class ControllersTest extends WebTestCase
 
         $this->assertEquals('John Doe  - admin@example.com', $result['author']);
 
+    }
+
+    /**
+     * Get formatted date acceptable by oro_date type.
+     *
+     * @param string $date
+     * @return bool|string
+     */
+    protected function getFormattedDate($date)
+    {
+        $date = new \DateTime($date);
+        $formatter = new \IntlDateFormatter(
+            \Locale::getDefault(),
+            \IntlDateFormatter::MEDIUM,
+            \IntlDateFormatter::NONE,
+            $date->getTimezone(),
+            \IntlDateFormatter::GREGORIAN
+        );
+        return $formatter->format($date);
     }
 }

@@ -166,9 +166,9 @@ class User extends AbstractEntityFlexible implements
     /**
      * @var DateTime
      *
-     * @ORM\Column(name="birthday", type="datetime", nullable=true)
+     * @ORM\Column(name="birthday", type="date", nullable=true)
      * @Soap\ComplexType("date", nillable=true)
-     * @Type("dateTime")
+     * @Type("date")
      * @Oro\Versioned
      */
     protected $birthday;

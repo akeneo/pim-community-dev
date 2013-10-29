@@ -41,7 +41,7 @@ class ControllersTest extends WebTestCase
         $form['oro_user_user_form[plainPassword][second]'] = 'password';
         $form['oro_user_user_form[firstName]'] = 'First Name';
         $form['oro_user_user_form[lastName]'] = 'Last Name';
-        $form['oro_user_user_form[birthday]'] = '7/1/13';
+        $form['oro_user_user_form[birthday]'] = $this->getFormattedDate('2013-01-01');
         $form['oro_user_user_form[email]'] = 'test@test.com';
         //$form['oro_user_user_form[tags][owner]'] = 'tags1';
         //$form['oro_user_user_form[tags][all]'] = null;
@@ -88,7 +88,7 @@ class ControllersTest extends WebTestCase
         $form['oro_user_user_form[username]'] = 'testUser1';
         $form['oro_user_user_form[firstName]'] = 'First Name';
         $form['oro_user_user_form[lastName]'] = 'Last Name';
-        $form['oro_user_user_form[birthday]'] = '1/1/13';
+        $form['oro_user_user_form[birthday]'] = $this->getFormattedDate('2013-01-02');
         $form['oro_user_user_form[email]'] = 'test@test.com';
         $form['oro_user_user_form[groups][1]'] = 2;
         $form['oro_user_user_form[rolesCollection][2]'] = 4;
@@ -121,7 +121,7 @@ class ControllersTest extends WebTestCase
         );
         /** @var Form $form */
         $form = $crawler->selectButton('Save and Close')->form();
-        $form['oro_user_user_form[birthday]'] = '01/01/1999/';
+        $form['oro_user_user_form[birthday]'] = $this->getFormattedDate('1999-01-01');
 
         $this->client->followRedirects(true);
         $crawler = $this->client->submit($form);
@@ -138,6 +138,25 @@ class ControllersTest extends WebTestCase
         );
         /** @var Form $form */
         $form = $crawler->selectButton('Save and Close')->form();
-        $this->assertEquals('1/1/99', $form['oro_user_user_form[birthday]']->getValue());
+        $this->assertEquals($this->getFormattedDate('1999-01-01'), $form['oro_user_user_form[birthday]']->getValue());
+    }
+
+    /**
+     * Get formatted date acceptable by oro_date type.
+     *
+     * @param string $date
+     * @return bool|string
+     */
+    protected function getFormattedDate($date)
+    {
+        $date = new \DateTime($date);
+        $formatter = new \IntlDateFormatter(
+            \Locale::getDefault(),
+            \IntlDateFormatter::MEDIUM,
+            \IntlDateFormatter::NONE,
+            $date->getTimezone(),
+            \IntlDateFormatter::GREGORIAN
+        );
+        return $formatter->format($date);
     }
 }
