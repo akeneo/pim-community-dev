@@ -58,8 +58,30 @@ datagrid:
                     type: string
                     data_name: t.name
                 usage:
-                    type: string
+                    type: number
                     data_name: usage
+                    filter_by_having: true
+
+        actions:
+            search:
+                type:          navigate
+                label:         Search by tag
+                link:          search_link
+                icon:          search
+                acl_resource:  oro_tag_view
+                rowAction:     true
+            update:
+                type:          navigate
+                label:         Update
+                link:          update_link
+                icon:          edit
+                acl_resource:  oro_tag_update
+            delete:
+                type:          delete
+                label:         Delete
+                link:          update_link
+                icon:          trash
+                acl_resource:  oro_tag_delete
 
     tag-results-grid:
         source:

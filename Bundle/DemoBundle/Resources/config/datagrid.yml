@@ -46,6 +46,7 @@ datagrid:
                 label: Update
                 icon: edit
                 link: update_link
+                rowAction: true
             delete:
                 type: delete
                 acl_resource: ~
