@@ -5,6 +5,8 @@ namespace Oro\Bundle\FilterBundle\Extension\Orm;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Common\Collections\Collection;
 
+use Symfony\Component\Form\Extension\Core\View\ChoiceView;
+
 use Oro\Bundle\FilterBundle\Form\Type\Filter\ChoiceFilterType;
 
 class ChoiceFilter extends AbstractFilter
@@ -51,8 +53,19 @@ class ChoiceFilter extends AbstractFilter
         $formView  = $this->getForm()->createView();
         $fieldView = $formView->children['value'];
 
-        $metadata            = parent::getMetadata();
-        $metadata['choices'] = $fieldView->vars['choices'];
+        $options = array_map(
+            function (ChoiceView $choice) {
+                return [
+                    'label' => $choice->label,
+                    'value' => $choice->value
+                ];
+            },
+            $fieldView->vars['choices']
+        );
+
+        $metadata                    = parent::getMetadata();
+        $metadata['options']         = $options;
+        $metadata['populateDefault'] = $formView->vars['populate_default'];
 
         return $metadata;
     }

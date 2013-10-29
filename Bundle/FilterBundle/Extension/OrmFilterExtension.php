@@ -38,7 +38,7 @@ class OrmFilterExtension extends AbstractExtension
      */
     public function isApplicable(DatagridConfiguration $config)
     {
-        $filters = $this->accessor->getValue($config, Configuration::COLUMNS_PATH) ? : [];
+        $filters = $config->offsetGetByPath(Configuration::COLUMNS_PATH, []);
 
         if (!$filters) {
             return false;
@@ -47,10 +47,10 @@ class OrmFilterExtension extends AbstractExtension
         // validate extension configuration
         $this->validateConfiguration(
             new Configuration(array_keys($this->filters)),
-            ['filters' => $this->accessor->getValue($config, Configuration::FILTERS_PATH)]
+            ['filters' => $config->offsetGetByPath(Configuration::FILTERS_PATH)]
         );
 
-        return $this->accessor->getValue($config, Builder::DATASOURCE_TYPE_PATH) == OrmDatasource::TYPE;
+        return $config->offsetGetByPath(Builder::DATASOURCE_TYPE_PATH) == OrmDatasource::TYPE;
     }
 
     /**
@@ -62,7 +62,9 @@ class OrmFilterExtension extends AbstractExtension
         $values  = $this->getValuesToApply($config);
 
         foreach ($filters as $filter) {
-            if ($value = $this->accessor->getValue($values, sprintf('[%s]', $filter->getName()))) {
+            $value = isset($values[$filter->getName()]) ? $values[$filter->getName()] : false;
+
+            if ($value !== false) {
                 $form = $filter->getForm();
                 if (!$form->isSubmitted()) {
                     $form->submit($value);
@@ -87,7 +89,9 @@ class OrmFilterExtension extends AbstractExtension
         $values  = $this->getValuesToApply($config);
 
         foreach ($filters as $filter) {
-            if ($value = $this->accessor->getValue($values, sprintf('[%s]', $filter->getName()))) {
+            $value = isset($values[$filter->getName()]) ? $values[$filter->getName()] : false;
+
+            if ($value !== false) {
                 $form = $filter->getForm();
                 if (!$form->isSubmitted()) {
                     $form->submit($value);
@@ -136,7 +140,7 @@ class OrmFilterExtension extends AbstractExtension
     protected function getFiltersToApply(DatagridConfiguration $config)
     {
         $filters       = [];
-        $filtersConfig = $this->accessor->getValue($config, Configuration::COLUMNS_PATH);
+        $filtersConfig = $config->offsetGetByPath(Configuration::COLUMNS_PATH);
 
         foreach ($filtersConfig as $column => $filter) {
             $filters[] = $this->getFilterObject($column, $filter);
@@ -156,13 +160,13 @@ class OrmFilterExtension extends AbstractExtension
     {
         $result = [];
 
-        $filters = $this->accessor->getValue($config, Configuration::COLUMNS_PATH);
+        $filters = $config->offsetGetByPath(Configuration::COLUMNS_PATH);
 
-        $defaultFilters = $this->accessor->getValue($config, Configuration::DEFAULT_FILTERS_PATH) ? : [];
+        $defaultFilters = $config->offsetGetByPath(Configuration::DEFAULT_FILTERS_PATH, []);
         $filterBy       = $this->requestParams->get(self::FILTER_ROOT_PARAM) ? : $defaultFilters;
 
         foreach ($filterBy as $column => $value) {
-            if ($this->accessor->getValue($filters, sprintf('[%s]', $column))) {
+            if (isset($filters[$column])) {
                 $result[$column] = $value;
             }
         }
@@ -180,7 +184,8 @@ class OrmFilterExtension extends AbstractExtension
      */
     protected function getFilterObject($name, array $config)
     {
-        $type = $this->accessor->getValue($config, sprintf('[%s]', Configuration::TYPE_KEY));
+        // @TODO replace by config object
+        $type = $config[Configuration::TYPE_KEY];
 
         $filter = $this->filters[$type];
         $filter->init($name, $config);

@@ -57,7 +57,7 @@ class OrmSorterExtension extends AbstractExtension
     public function visitDatasource(DatagridConfiguration $config, DatasourceInterface $datasource)
     {
         $sorters   = $this->getSortersToApply($config);
-        $multisort = $this->accessor->getValue($config, self::MULTISORT_PATH) ? : false;
+        $multisort = $config->offsetGetByPath(self::MULTISORT_PATH, false);
         foreach ($sorters as $definition) {
             list($direction, $sorter) = $definition;
 
@@ -79,9 +79,9 @@ class OrmSorterExtension extends AbstractExtension
         $sortersState = $data->offsetGetByPath('[state][sorters]', []);
 
         $sorters = $this->getSorters($config);
-        foreach (array_keys($sorters) as $name) {
-            if (isset($data['columns'][$name])) {
-                $data['columns'][$name]['sortable'] = true;
+        foreach ($data->offsetGetOr('columns', []) as $key => $column) {
+            if (isset($column['name']) && isset($sorters[$column['name']])) {
+                $data->offsetSetByPath(sprintf('[columns][%s][sortable]', $key), true);
             }
         }
         $data->offsetAddToArray(DatagridInterface::METADATA_OPTIONS_KEY, ['multipleSorting' => $multisort]);
@@ -125,11 +125,9 @@ class OrmSorterExtension extends AbstractExtension
         foreach ($sorters as $name => $definition) {
             $definition = is_array($definition) ? $definition : [];
 
-            if (!$this->accessor->getValue($definition, sprintf('[%s]', PropertyInterface::DATA_NAME_KEY))) {
-                $definition[PropertyInterface::DATA_NAME_KEY] = $this->accessor->getValue(
-                    $columns[$name],
-                    sprintf('[%s]', PropertyInterface::DATA_NAME_KEY)
-                ) ? : $name;
+            if (!isset($definition[PropertyInterface::DATA_NAME_KEY])) {
+                $definition[PropertyInterface::DATA_NAME_KEY] = isset($columns[$name][PropertyInterface::DATA_NAME_KEY])
+                    ? $columns[$name][PropertyInterface::DATA_NAME_KEY] : $name;
             }
 
             $sorters[$name] = $definition;
@@ -155,9 +153,9 @@ class OrmSorterExtension extends AbstractExtension
         $sortBy         = $this->requestParams->get(self::SORTERS_ROOT_PARAM) ? : $defaultSorters;
 
         foreach ($sortBy as $column => $direction) {
-            $sorter = $this->accessor->getValue($sorters, sprintf('[%s]', $column));
+            $sorter = isset($sorters[$column]) ? $sorters[$column] : false;
 
-            if ($sorter) {
+            if ($sorter !== false) {
                 $direction       = $this->normalizeDirection($direction);
                 $result[$column] = [$direction, $sorter];
             }

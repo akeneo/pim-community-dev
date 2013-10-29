@@ -142,7 +142,7 @@ abstract class AbstractDateFilter extends AbstractFilter
      * @param string       $dateEndValue
      * @param string       $startDateParameterName
      * @param string       $endDateParameterName
-     * @param string       $fieldName,
+     * @param string       $fieldName ,
      */
     protected function applyFilterBetween(
         $queryBuilder,
@@ -284,5 +284,18 @@ abstract class AbstractDateFilter extends AbstractFilter
                 );
                 break;
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getMetadata()
+    {
+        $formView = $this->getForm()->createView();
+
+        $metadata               = parent::getMetadata();
+        $metadata['typeValues'] = $formView->vars['type_values'];
+
+        return $metadata;
     }
 }

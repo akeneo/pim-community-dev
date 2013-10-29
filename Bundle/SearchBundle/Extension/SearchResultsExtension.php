@@ -33,7 +33,7 @@ class SearchResultsExtension extends AbstractExtension
      */
     public function isApplicable(DatagridConfiguration $config)
     {
-        return $this->accessor->getValue($config, self::TYPE_PATH) == self::TYPE_VALUE ? true : false;
+        return $config->offsetGetByPath(self::TYPE_PATH) == self::TYPE_VALUE ? true : false;
     }
 
     /**

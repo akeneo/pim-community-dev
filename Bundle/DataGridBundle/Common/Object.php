@@ -212,7 +212,7 @@ class Object implements \ArrayAccess, \IteratorAggregate
     public function validateConfiguration(ConfigurationInterface $configuration)
     {
         $processor = new Processor();
-        $processor->processConfiguration($configuration, $this->toArray());
+        $this->params = $processor->processConfiguration($configuration, $this->toArray());
 
         return $this;
     }

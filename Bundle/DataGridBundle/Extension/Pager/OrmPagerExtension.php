@@ -52,8 +52,8 @@ class OrmPagerExtension extends AbstractExtension
      */
     public function isApplicable(DatagridConfiguration $config)
     {
-        $enabled = $this->accessor->getValue($config, Builder::DATASOURCE_TYPE_PATH) == OrmDatasource::TYPE
-            && $this->accessor->getValue($config, self::PAGER_ENABLE_OPTION_PATH) !== false;
+        $enabled = $config->offsetGetByPath(Builder::DATASOURCE_TYPE_PATH) == OrmDatasource::TYPE
+            && $config->offsetGetByPath(self::PAGER_ENABLE_OPTION_PATH) !== false;
 
         $this->validateConfiguration(new Configuration(), $config->toArray(['pager']));
 

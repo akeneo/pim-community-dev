@@ -23,7 +23,7 @@ class Acceptor
     /**
      * @param DatasourceInterface $datasource
      */
-    public function acceptDatasourceVisitors(DatasourceInterface $datasource)
+    public function acceptDatasource(DatasourceInterface $datasource)
     {
         foreach ($this->getExtensions() as $extension) {
             $extension->visitDatasource($this->getConfig(), $datasource);
@@ -64,16 +64,16 @@ class Acceptor
          */
         $this->extensions[] = clone $extension;
 
-        usort(
-            $this->extensions,
-            function (ExtensionVisitorInterface $a, ExtensionVisitorInterface $b) {
-                if ($a->getPriority() === $b->getPriority()) {
-                    return 0;
-                }
-
-                return $a->getPriority() > $b->getPriority() ? -1 : 1;
+        $comparisonClosure = function (ExtensionVisitorInterface $a, ExtensionVisitorInterface $b) {
+            if ($a->getPriority() === $b->getPriority()) {
+                return 0;
             }
-        );
+
+            return $a->getPriority() > $b->getPriority() ? -1 : 1;
+        };
+
+        // https://bugs.php.net/bug.php?id=50688
+        @usort($this->extensions, $comparisonClosure);
 
         return $this;
     }
