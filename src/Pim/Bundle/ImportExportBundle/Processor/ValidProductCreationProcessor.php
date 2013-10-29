@@ -7,6 +7,7 @@ use Oro\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Oro\Bundle\BatchBundle\Entity\StepExecution;
+use Oro\Bundle\BatchBundle\Item\InvalidItemException;
 use Pim\Bundle\ImportExportBundle\Exception\InvalidObjectException;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
@@ -197,19 +198,14 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
             $converter = new ProductErrorConverter();
             $warnings = $converter->convert($form);
             if (!empty($warnings)) {
-                foreach ($warnings as $warning) {
-                    $this->stepExecution->addFilterWarning(
-                        get_class($this),
-                        sprintf(
-                            'Product %s : %s',
-                            (string) $product->getIdentifier(),
-                            $warning
-                        ),
-                        $item
-                    );
-                }
-
-                return false;
+                throw new InvalidItemException(
+                    sprintf(
+                        'Product %s : %s',
+                        (string) $product->getIdentifier(),
+                        implode(',', $warnings)
+                    ),
+                    $item
+                );
             } else {
                 throw new InvalidObjectException($form);
             }
@@ -416,34 +412,9 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
     private function getRequiredValues(ProductInterface $product, $familyCode = null, $groupCodes = null)
     {
         $requiredAttributes = array();
-        $storageManager = $this->productManager->getStorageManager();
 
-        if ($familyCode !== null) {
-            $family = $storageManager->getRepository('PimCatalogBundle:Family')->findOneBy(
-                array(
-                    'code' => $familyCode
-                )
-            );
-
-            if ($family) {
-                $requiredAttributes = $family->getAttributes()->toArray();
-            }
-        }
-
-        if ($groupCodes !== null) {
-            $groupCodes = explode(',', $groupCodes);
-            foreach ($groupCodes as $code) {
-                $group = $storageManager->getRepository('PimCatalogBundle:Group')->findOneBy(
-                    array(
-                        'code' => $code
-                    )
-                );
-
-                if ($group) {
-                    $requiredAttributes = array_merge($requiredAttributes, $group->getAttributes()->toArray());
-                }
-            }
-        }
+        $requiredAttributes = $this->getRequiredAttributesFromFamily($familyCode);
+        $requiredAttributes = array_merge($requiredAttributes, $this->getRequiredAttributesFromGroups($groupCodes));
 
         if ($product->getId()) {
             foreach ($product->getValues() as $value) {
@@ -472,6 +443,56 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
         }
 
         return array_unique($requiredValues);
+    }
+
+    /**
+     * @param string $familyCode
+     *
+     * @return array
+     */
+    private function getRequiredAttributesFromFamily($familyCode)
+    {
+        if ($familyCode !== null) {
+            $storageManager = $this->productManager->getStorageManager();
+            $family = $storageManager->getRepository('PimCatalogBundle:Family')->findOneBy(
+                array(
+                    'code' => $familyCode
+                )
+            );
+
+            if ($family) {
+                return $family->getAttributes()->toArray();
+            }
+        }
+
+        return array();
+    }
+
+    /**
+     * @param array $groupCodes
+     *
+     * @return array
+     */
+    private function getRequiredAttributesFromGroups($groupCodes)
+    {
+        $requiredAttributes = array();
+        if ($groupCodes !== null) {
+            $groupCodes = explode(',', $groupCodes);
+            $storageManager = $this->productManager->getStorageManager();
+            foreach ($groupCodes as $code) {
+                $group = $storageManager->getRepository('PimCatalogBundle:Group')->findOneBy(
+                    array(
+                        'code' => $code
+                    )
+                );
+
+                if ($group) {
+                    $requiredAttributes = array_merge($requiredAttributes, $group->getAttributes()->toArray());
+                }
+            }
+        }
+
+        return $requiredAttributes;
     }
 
     /**
