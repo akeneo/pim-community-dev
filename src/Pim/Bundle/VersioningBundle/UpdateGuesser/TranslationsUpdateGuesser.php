@@ -4,6 +4,7 @@ namespace Pim\Bundle\VersioningBundle\UpdateGuesser;
 
 use Doctrine\ORM\EntityManager;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
+use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
 
 /**
  * Translation update guesser
