@@ -320,9 +320,9 @@ class AttributeCache
                         array_diff(
                             $codes,
                             array_map(
-                                function ($attribute) { 
-                                    return $attribute->getCode(); 
-                                    
+                                function ($attribute) {
+                                    return $attribute->getCode();
+
                                 },
                                 $this->attributes
                             )
