@@ -31,8 +31,10 @@ class OroDateType extends AbstractType
      * @param TranslatorInterface $translator
      * @param DateTimeFormatConverterRegistry $converterRegistry
      */
-    public function __construct(TranslatorInterface $translator, DateTimeFormatConverterRegistry $converterRegistry)
-    {
+    public function __construct(
+        TranslatorInterface $translator,
+        DateTimeFormatConverterRegistry $converterRegistry
+    ) {
         $this->translator = $translator;
         $this->converterRegistry = $converterRegistry;
     }
@@ -43,7 +45,7 @@ class OroDateType extends AbstractType
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
         $jqueryUiFormatter = $this->converterRegistry->getFormatConverter(JqueryUiDateTimeFormatConverter::NAME);
-        $dateFormat = $jqueryUiFormatter->getDateFormat(null, $options['date_format']);
+        $dateFormat = $jqueryUiFormatter->getDateFormat($options['date_format']);
 
         $view->vars['attr']['data-dateformat'] = $dateFormat;
 
@@ -57,16 +59,29 @@ class OroDateType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'years'       => range(date('Y') - 120, date('Y')),
-                'date_format' => null,
-                'format' => function (Options $options) {
-                    $intlFormatter = $this->converterRegistry->getFormatConverter(IntlDateTimeFormatConverter::NAME);
-                    return $intlFormatter->getDateFormat(null, $options['date_format']);
-                },
-                'widget'      => 'single_text',
-                'attr'        => array(
+                'model_timezone'   => 'UTC',
+                'view_timezone'    => 'UTC',
+                'years'            => range(date('Y') - 120, date('Y')),
+                'date_format'      => null,
+                'localized_format' => true,
+                'widget'           => 'single_text',
+                'attr'             => array(
                     'class' => 'datepicker',
                 )
+            )
+        );
+
+        $resolver->setNormalizers(
+            array(
+                'format' => function (Options $options, $value) {
+                    if (!empty($options['localized_format'])) {
+                        $intlFormatter = $this->converterRegistry->getFormatConverter(
+                            IntlDateTimeFormatConverter::NAME
+                        );
+                        $value = $intlFormatter->getDateFormat($options['date_format']);
+                    }
+                    return $value;
+                }
             )
         );
     }

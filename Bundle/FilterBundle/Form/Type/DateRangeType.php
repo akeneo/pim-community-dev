@@ -49,6 +49,7 @@ class DateRangeType extends AbstractType
                 array(
                     'required' => false,
                     'widget' => 'single_text',
+                    'model_timezone' => 'UTC',
                     'view_timezone' => $viewTimezone
                 ),
                 $options['field_options'],
@@ -63,6 +64,7 @@ class DateRangeType extends AbstractType
                 array(
                     'required' => false,
                     'widget' => 'single_text',
+                    'model_timezone' => 'UTC',
                     'view_timezone' => $viewTimezone
                 ),
                 $options['field_options'],
