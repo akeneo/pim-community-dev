@@ -337,6 +337,9 @@ Locales %locale.code% | Edit:                Locales %locale.code% | Edit
 Groups:                                      Groups
 Groups | Create:                             Groups | Create
 Groups %group.label% | Edit:                 Groups %group.label% | Edit
+Variant groups:                              Variant groups
+Variant groups | Create:                     Variant groups | Create
+Variant groups %group.label% | Edit:         Variant groups %group.label% | Edit
 Associations:                                Associations
 Associations | Create:                       Associations | Create
 Associations %association.label% | Edit:     Associations %association.label% | Edit
