@@ -126,6 +126,8 @@ class Generator
     /**
      * @param $config
      * @param $class
+     *
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     protected function generateClassMethods($config, &$class)
     {

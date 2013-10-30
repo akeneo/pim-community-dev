@@ -98,6 +98,13 @@ class ExtendConfigDumper
         $metadataFactory->clearCache();
     }
 
+    /**
+     * @param ConfigInterface $entityConfig
+     *
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     */
     protected function checkSchema(ConfigInterface $entityConfig)
     {
         $extendProvider = $this->em->getExtendManager()->getConfigProvider();
@@ -185,20 +192,18 @@ class ExtendConfigDumper
                 if ($relation['field_id']->getFieldType() != 'manyToOne'
                     && $relation['target_field_id']
                 ) {
-                    $fieldName                    = self::FIELD_PREFIX . $relation['field_id']->getFieldName();
-                    $addRemoveMethods[$fieldName]['self'] = $relation['field_id']->getFieldName();
+                    $fieldName = self::FIELD_PREFIX . $relation['field_id']->getFieldName();
 
+                    $addRemoveMethods[$fieldName]['self']   = $relation['field_id']->getFieldName();
                     $addRemoveMethods[$fieldName]['target'] = $relation['target_field_id']->getFieldName();
-
                     $addRemoveMethods[$fieldName]['is_target_addremove']
-                        = $relation['field_id']->getFieldType() == 'manyToMany';
+                                                            = $relation['field_id']->getFieldType() == 'manyToMany';
                 }
 
                 $this->checkRelation($relation['target_entity'], $relation['field_id']);
             }
         }
         $entityConfig->set('relation', $relations);
-
 
         $schema = [
             'class'     => $className,
