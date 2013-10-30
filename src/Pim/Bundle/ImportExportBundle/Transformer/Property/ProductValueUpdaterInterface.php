@@ -18,6 +18,7 @@ interface ProductValueUpdaterInterface
      * 
      * @param ProductValueInterface $productValue
      * @param mixed $data
+     * @param array $options
      */
-    public function updateProductValue(ProductValueInterface $productValue, $data);
+    public function updateProductValue(ProductValueInterface $productValue, $data, array $options = array());
 }

@@ -235,7 +235,14 @@ class OrmProductTransformer
             $columnInfo = $columns[$columnCode];
             try {
                 if ($columnValue || in_array($columnInfo['code'], $requiredAttributeCodes)) {
-                    $this->setAttributeValue($product, $this->getTransformedAttributeValue($columnValue, $columnInfo), $columnInfo);
+                    $backendType = $columnInfo['attribute']->getBackendType();
+                    $transformerConfig = isset($this->attributeTransformers[$backendType])
+                            ? $this->attributeTransformers[$backendType]
+                            : null;
+                    $value = $transformerConfig
+                            ? $this->getTransformedValue($columnValue, $transformerConfig)
+                            : $columnValue;
+                    $this->setAttributeValue($product, $value, $columnInfo, $transformerConfig);
                     $errors = array_merge(
                         $errors,
                         $this->productValidator->validateProductValue(
@@ -249,6 +256,7 @@ class OrmProductTransformer
                 $errors[] = $this->productValidator->getTranslatedExceptionMessage($columnCode, $ex);
             }
         }
+        $this->productManager->handleMedia($product);
 
         return $errors;
     }
@@ -259,40 +267,25 @@ class OrmProductTransformer
      * @param ProductInterface $product
      * @param mixed            $value
      * @param array            $columnInfo
+     * @param array            $transformerConfig
      */
-    protected function setAttributeValue(ProductInterface $product, $value, array $columnInfo)
-    {
+    protected function setAttributeValue(
+        ProductInterface $product,
+        $value,
+        array $columnInfo,
+        array $transformerConfig = null
+    ) {
         $productValue = $product->getValue($columnInfo['code'], $columnInfo['locale'], $columnInfo['scope']);
         if (!$productValue) {
             $productValue = $product->createValue($columnInfo['code'], $columnInfo['locale'], $columnInfo['scope']);
             $product->addValue($productValue);
         }
-        $backendType = $columnInfo['attribute']->getBackendType();
-        $transformer = isset($this->attributeTransformers[$backendType])
-                ? $this->attributeTransformers[$backendType]['transformer']
-                : null;
-        if ($transformer && ($transformer instanceof Property\ProductValueUpdaterInterface)) {
-            $transformer->updateProductValue($productValue, $value);
+        
+        if ($transformerConfig && $transformerConfig['transformer'] instanceof Property\ProductValueUpdaterInterface) {
+            $transformerConfig['transformer']->updateProductValue($productValue, $value, $transformerConfig['options']);
         } else {
             $productValue->setData($value);
         }
-    }
-
-    /**
-     * Retruns a transformed attribute value
-     *
-     * @param  string $value
-     * @param  array  $columnInfo
-     * @return mixed
-     */
-    protected function getTransformedAttributeValue($value, array $columnInfo)
-    {
-        $backendType = $columnInfo['attribute']->getBackendType();
-        if (isset($this->attributeTransformers[$backendType])) {
-            $value = $this->getTransformedValue($value, $this->attributeTransformers[$backendType]);
-        }
-
-        return $value;
     }
 
     /**

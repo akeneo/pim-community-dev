@@ -64,7 +64,7 @@ class PricesTransformer implements PropertyTransformerInterface, ProductValueUpd
     /**
      * {@inheritdoc}
      */
-    public function updateProductValue(ProductValueInterface $productValue, $data)
+    public function updateProductValue(ProductValueInterface $productValue, $data, array $options = array())
     {
         $currencies = $this->getCurrencies();
         $removeCurrency = function ($code) use (&$currencies) {
