@@ -78,6 +78,7 @@ oro_entity_config:
                         auditable:          false
                     grid:
                         show_column:        false
+                        renderable:         false
                         query:
                             operator:       '!='
                             value:          true

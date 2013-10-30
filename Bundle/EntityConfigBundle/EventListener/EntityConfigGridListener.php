@@ -5,6 +5,8 @@ namespace Oro\Bundle\EntityConfigBundle\EventListener;
 use Doctrine\ORM\QueryBuilder;
 
 use Oro\Bundle\DataGridBundle\Common\Object;
+use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
+use Oro\Bundle\EntityConfigBundle\Provider\PropertyConfigContainer;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
@@ -19,8 +21,11 @@ class EntityConfigGridListener implements EventSubscriberInterface
 {
     const PATH_COLUMNS = '[columns]';
     const PATH_PROPERTIES = '[properties]';
+
     const TYPE_HTML = 'html';
     const TYPE_TWIG = 'twig';
+    const TYPE_NAVIGATE = 'navigate';
+    const TYPE_DELETE = 'navigate';
 
     /** @var ConfigManager */
     protected $configManager;
@@ -74,6 +79,15 @@ class EntityConfigGridListener implements EventSubscriberInterface
         // set new column set with dynamic fields
         $config->offsetSetByPath(self::PATH_COLUMNS, $columns);
 
+        // add entity config properties
+        $this->addEntityConfigProperties($config);
+    }
+
+    /**
+     * @param DatagridConfiguration $config
+     */
+    protected function addEntityConfigProperties(DatagridConfiguration $config)
+    {
         // configure properties from config providers
         $properties = $config->offsetGetByPath(self::PATH_PROPERTIES, array());
         $filters = array();
@@ -170,6 +184,46 @@ class EntityConfigGridListener implements EventSubscriberInterface
             }
 
             $actions[strtolower($config['name'])] = true;
+        }
+    }
+
+    /**
+     * @param $actions
+     * @param $type
+     */
+    protected function prepareRowActions(&$actions, $type = PropertyConfigContainer::TYPE_ENTITY)
+    {
+        foreach ($this->configManager->getProviders() as $provider) {
+            $gridActions = $provider->getPropertyConfig()->getGridActions($type);
+
+            foreach ($gridActions as $config) {
+                $configItem = array(
+                    'name'    => strtolower($config['name']),
+                    'options' => array(
+                        'label' => ucfirst($config['name']),
+                        'icon'  => isset($config['icon']) ? $config['icon'] : 'question-sign',
+                        'link'  => strtolower($config['name']) . '_link'
+                    )
+                );
+
+                if (isset($config['type'])) {
+                    switch ($config['type']) {
+                        case 'delete':
+                            $configItem['type'] = self::TYPE_DELETE;
+                            break;
+                        case 'redirect':
+                            $configItem['type'] = self::TYPE_NAVIGATE;
+                            break;
+                        case 'ajax':
+                            $configItem['type'] = self::TYPE_NAVIGATE;
+                            break;
+                    }
+                } else {
+                    $configItem['type'] = self::TYPE_NAVIGATE;
+                }
+
+                $actions[] = $configItem;
+            }
         }
     }
 

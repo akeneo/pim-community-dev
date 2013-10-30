@@ -21,73 +21,6 @@ use Oro\Bundle\EntityConfigBundle\Provider\PropertyConfigContainer;
 class ConfigDatagridManager extends BaseDatagrid
 {
     /**
-     * {@inheritDoc}
-     */
-    protected function getProperties()
-    {
-        $properties = array(
-            new UrlProperty('view_link', $this->router, 'oro_entityconfig_view', array('id')),
-            new UrlProperty('update_link', $this->router, 'oro_entityconfig_update', array('id')),
-        );
-
-        $filters = array();
-        $actions = array();
-
-        foreach ($this->configManager->getProviders() as $provider) {
-            $gridActions = $provider->getPropertyConfig()->getGridActions();
-
-            $this->prepareProperties($gridActions, $properties, $actions, $filters, $provider->getScope());
-
-            if ($provider->getPropertyConfig()->getUpdateActionFilter()) {
-                $filters['update'] = $provider->getPropertyConfig()->getUpdateActionFilter();
-            }
-        }
-
-        if (count($filters)) {
-            $properties[] = new ActionConfigurationProperty(
-                function (ResultRecord $record) use ($filters, $actions) {
-                    if ($record->getValue('mode') == ConfigModelManager::MODE_READONLY) {
-                        $actions = array_map(
-                            function () {
-                                return false;
-                            },
-                            $actions
-                        );
-
-                        $actions['update'] = false;
-                    } else {
-                        foreach ($filters as $action => $filter) {
-                            foreach ($filter as $key => $value) {
-                                if (is_array($value)) {
-                                    $error = true;
-                                    foreach ($value as $v) {
-                                        if ($record->getValue($key) == $v) {
-                                            $error = false;
-                                        }
-                                    }
-                                    if ($error) {
-                                        $actions[$action] = false;
-                                        break;
-                                    }
-                                } else {
-                                    if ($record->getValue($key) != $value) {
-                                        $actions[$action] = false;
-                                        break;
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    return $actions;
-                }
-            );
-        }
-
-        return $properties;
-    }
-
-    /**
      * @param  string $scope
      * @return array
      */
@@ -122,57 +55,6 @@ class ConfigDatagridManager extends BaseDatagrid
         }
 
         return $options[$scope];
-    }
-
-    /**
-     * @param FieldDescriptionCollection $fieldsCollection
-     */
-    protected function getDynamicFields(FieldDescriptionCollection $fieldsCollection)
-    {
-        $fields = array();
-        foreach ($this->configManager->getProviders() as $provider) {
-            foreach ($provider->getPropertyConfig()->getItems() as $code => $item) {
-                if (isset($item['grid'])) {
-                    $item['grid'] = $provider->getPropertyConfig()->initConfig($item['grid']);
-
-                    $fieldName = $provider->getScope() . '_' . $code;
-
-                    $fieldObject = new FieldDescription();
-                    $fieldObject->setName($fieldName);
-                    $fieldObject->setOptions(
-                        array_merge(
-                            $item['grid'],
-                            array(
-                                'expression' => 'cev' . $code . '.value',
-                                'field_name' => $fieldName,
-                            )
-                        )
-                    );
-
-                    if (isset($item['grid']['type'])
-                        && $item['grid']['type'] == FieldDescriptionInterface::TYPE_HTML
-                        && isset($item['grid']['template'])
-                    ) {
-                        $templateDataProperty = new TwigTemplateProperty(
-                            $fieldObject,
-                            $item['grid']['template']
-                        );
-                        $fieldObject->setProperty($templateDataProperty);
-                    }
-
-                    if (isset($item['options']['priority']) && !isset($fields[$item['options']['priority']])) {
-                        $fields[$item['options']['priority']] = $fieldObject;
-                    } else {
-                        $fields[] = $fieldObject;
-                    }
-                }
-            }
-        }
-
-        ksort($fields);
-        foreach ($fields as $field) {
-            $fieldsCollection->add($field);
-        }
     }
 
     /**
