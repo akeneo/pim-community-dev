@@ -12,7 +12,7 @@ oro_system_configuration:
 
     fields:
         oro_locale.language:
-            type: locale
+            type: oro_locale
             priority: 70
             options:
                 label: 'Language'
@@ -21,7 +21,7 @@ oro_system_configuration:
                     - NotBlank: ~
 
         oro_locale.locale:
-            type: locale
+            type: oro_locale
             priority: 60
             options:
                 label: 'Locale'
@@ -39,7 +39,7 @@ oro_system_configuration:
                     - NotBlank: ~
 
         oro_locale.country:
-            type: country
+            type: oro_country
             priority: 40
             options:
                 label: 'Country'
@@ -48,7 +48,7 @@ oro_system_configuration:
                     - NotBlank: ~
 
         oro_locale.currency:
-            type: currency
+            type: oro_currency
             priority: 30
             options:
                 label: 'Currency'
