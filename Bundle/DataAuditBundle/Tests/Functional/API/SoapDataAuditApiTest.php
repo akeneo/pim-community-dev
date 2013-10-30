@@ -12,7 +12,6 @@ use Oro\Bundle\TestFrameworkBundle\Test\Client;
  */
 class SoapDataAuditApiTest extends WebTestCase
 {
-
     /** @var Client  */
     protected $client = null;
 
@@ -33,21 +32,6 @@ class SoapDataAuditApiTest extends WebTestCase
      */
     public function testPreconditions()
     {
-        //clear Audits
-        $result = $this->client->getSoap()->getAudits();
-        $result = ToolsAPI::classToArray($result);
-        if (!empty($result)) {
-            if (!is_array(reset($result['item']))) {
-                $result[] = $result['item'];
-                unset($result['item']);
-            } else {
-                $result = $result['item'];
-            }
-            foreach ($result as $audit) {
-                $this->client->getSoap()->deleteAudit($audit['id']);
-            }
-        }
-
         //create users
         $request = array(
             "username" => 'user_' . mt_rand(),
