@@ -42,12 +42,12 @@ class OrmProductTransformer
     /**
      * @var array
      */
-    protected $propertyTransformers;
+    protected $propertyTransformers = array();
 
     /**
      * @var array
      */
-    protected $attributeTransformers;
+    protected $attributeTransformers = array();
 
     /**
      * Constructor
