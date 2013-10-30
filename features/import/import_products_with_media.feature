@@ -18,6 +18,7 @@ Feature: Import media with products
     And the following job:
       | connector            | alias          | code                | label                       | type   |
       | Akeneo CSV Connector | product_import | acme_product_import | Product import for Acme.com | import |
+    And I am logged in as "Julia"
 
   Scenario: Successfully import media
     Given the following file to import:
@@ -41,7 +42,6 @@ Feature: Import media with products
       | bic-core-148.txt        |
       | fanatic-freewave-76.gif |
       | fanatic-freewave-76.txt |
-    And I am logged in as "Julia"
     When I am on the "acme_product_import" import job page
     And I launch the import job
     And I wait for the job to finish
@@ -73,7 +73,6 @@ Feature: Import media with products
     And import directory of "acme_product_import" contain the following media:
       | bic-core-148.gif        |
       | bic-core-148.txt        |
-    And I am logged in as "Julia"
     When I am on the "acme_product_import" import job page
     And I launch the import job
     And I wait for the job to finish
