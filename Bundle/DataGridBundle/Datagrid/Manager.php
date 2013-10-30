@@ -67,10 +67,10 @@ class Manager implements ManagerInterface
         if (!isset($this->processedConfiguration[$name])) {
             $config = $this->resolver->resolve($name, $this->rawConfiguration[$name]);
 
-            $this->processedConfiguration[$name] = DatagridConfiguration::createNamed($name, $config);
+            $this->processedConfiguration[$name] = $config;
         }
 
-        return $this->processedConfiguration[$name];
+        return DatagridConfiguration::createNamed($name, $this->processedConfiguration[$name]);
     }
 
     /**
