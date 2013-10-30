@@ -44,7 +44,7 @@ class VariantGroupController extends GroupController
     {
         /** @var QueryBuilder $queryBuilder */
         $queryBuilder = $this->getManager()->createQueryBuilder();
-        $datagrid = $this->datagridWorker->getDatagrid('group', $queryBuilder);
+        $datagrid = $this->datagridWorker->getDatagrid('variant_group', $queryBuilder);
 
         $view = ('json' === $request->getRequestFormat())
             ? 'OroGridBundle:Datagrid:list.json.php'
