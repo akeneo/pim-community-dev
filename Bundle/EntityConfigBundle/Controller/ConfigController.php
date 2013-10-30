@@ -4,6 +4,7 @@ namespace Oro\Bundle\EntityConfigBundle\Controller;
 
 use Doctrine\ORM\QueryBuilder;
 
+use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -172,17 +173,6 @@ class ConfigController extends Controller
         /** @var \Oro\Bundle\EntityConfigBundle\Config\ConfigManager $configManager */
         $configManager = $this->get('oro_entity_config.config_manager');
 
-        // generate link for Entity grid
-        $link = '';
-        /** @var EntityMetadata $metadata */
-        if (class_exists($entity->getClassName())) {
-            $metadata = $configManager->getEntityMetadata($entity->getClassName());
-
-            if ($metadata && $metadata->routeName) {
-                $link = $this->generateUrl($metadata->routeName);
-            }
-        }
-
         /** @var ConfigProvider $entityConfigProvider */
         $entityConfigProvider = $this->get('oro_entity_config.provider.entity');
 
@@ -193,8 +183,26 @@ class ConfigController extends Controller
         /** @var ConfigProvider $ownershipConfigProvider */
         $ownershipConfigProvider = $this->get('oro_entity_config.provider.ownership');
 
-
+        /**
+         * TODO
+         * refactor and place into Helper class
+         */
+        // generate link for Entity grid
+        $link = '';
+        /** @var EntityMetadata $metadata */
         if (class_exists($entity->getClassName())) {
+            $metadata = $configManager->getEntityMetadata($entity->getClassName());
+            if ($metadata && $metadata->routeName) {
+                $link = $this->generateUrl($metadata->routeName);
+            }
+
+            if ($extendConfig->is('owner', ExtendManager::OWNER_CUSTOM)) {
+                $link = $this->generateUrl(
+                    'oro_entity_index',
+                    array('id' => str_replace('\\', '_', $entity->getClassName()))
+                );
+            }
+
             /** @var QueryBuilder $qb */
             $qb = $this->getDoctrine()->getManager()->createQueryBuilder();
             $qb->select('count(entity)');
@@ -241,11 +249,7 @@ class ConfigController extends Controller
 
         $datagrid = $datagridManager->getDatagrid();
 
-        $datagridManager->getRouteGenerator()->setRouteParameters(
-            array(
-                'id' => $id
-            )
-        );
+        $datagridManager->getRouteGenerator()->setRouteParameters(array('id' => $id));
 
         $view = 'json' == $request->getRequestFormat()
             ? 'OroGridBundle:Datagrid:list.json.php'

@@ -33,7 +33,7 @@
     {% import 'OroUIBundle::macros.html.twig' as UI %}
     {% macro attribute_data(value) %}
         <div class="clearfix-oro">
-            <p class="control-label">{{ value }}</p>
+            <p class="control-label">{{ value|raw }}</p>
         </div>
     {% endmacro %}
     {{ UI.renderAttribute(title, _self.attribute_data(value)) }}
@@ -42,16 +42,32 @@
 {% block content_data %}
     {% set general_fields = [ ] %}
     {% for key, value in entity_fields|default %}
+        {% if value is iterable %}
+            {% set data = '' %}
+            {% for item in value.values %}
+                {% if item.link is defined and item.link != false  %}
+                    {% set data = data ~ '<a href="' ~ item.link ~ '">' ~ item.title ~ '</a>' %}
+                {% else %}
+                    {% set data = data ~ item.title %}
+                {% endif %}
+                {% if not loop.last %}
+                    {% set data = data ~ ', ' %}
+                {% endif %}
+            {% endfor %}
+            {% set value = data %}
+        {% endif %}
+
         {% set general_fields = general_fields|merge([_self.attibuteRow(key|capitalize, value)])%}
     {% endfor %}
 
     {% set data = { 'dataBlocks': [{
         'title': 'General',
         'class': 'active',
-        'subblocks': [
-            {'title': 'General Information', 'data': general_fields },
-        ]
-    } ]} %}
+        'subblocks': [{
+            'title': 'General Information',
+            'data':  general_fields
+        }]
+    }] } %}
 
     {{ parent() }}
 {% endblock content_data %}

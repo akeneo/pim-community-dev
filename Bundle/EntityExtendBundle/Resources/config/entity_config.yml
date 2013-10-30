@@ -47,7 +47,7 @@ oro_entity_config:
                     options:
                         priority:           27
                         default_value:      false
-                        internal:           true
+                        auditable:          false
                     grid:
                         type:               boolean
                         label:              'Is Extend'
@@ -97,6 +97,18 @@ oro_entity_config:
                         auditable:          false
                         default_value:      true
 
+                relation:
+                    options:
+                        auditable:          false
+                        serializable:       true
+                        default_value:      []
+
+                schema:
+                    options:
+                        auditable:          false
+                        serializable:       true
+                        default_value:      []
+
         field:
             grid_action:
                 -
@@ -118,7 +130,7 @@ oro_entity_config:
                     name:                   'Manage unique keys'
                     route:                  'oro_entityextend_entity_unique_key'
                     entity_id:              true
-                    filter:                 { is_extend: true }
+                    filter:                 { is_extend: true, upgradeable: true }
                 -
                     name:                   'Create field'
                     route:                  'oro_entityextend_field_create'
@@ -136,7 +148,7 @@ oro_entity_config:
                     options:
                         priority:           20
                         default_value:      'System'
-                        auditable:        false
+                        auditable:          false
                     grid:
                         type:               string
                         label:              'Type'
@@ -163,9 +175,13 @@ oro_entity_config:
 
                 is_extend:
                     options:
-                        priority:           40
                         default_value:      false
-                        auditable:        false
+                        auditable:          false
+
+                extend:
+                    options:
+                        default_value:      false
+                        auditable:          false
 
                 length:
                     options:
@@ -231,7 +247,7 @@ oro_entity_config:
                             block:          entity
                             subblock:       properties
 
-                target_entity:
+                relation:
                     options:
                         allowed_type:       [oneToMany, manyToOne, manyToMany]
                         required_property:
@@ -240,40 +256,42 @@ oro_entity_config:
                                 scope:      extend
                             code:           is_extend
                             value:          true
-                    constraints:
-                        - NotBlank:
-                            message: 'Please choice target entity...'
                     form:
-                        type:               oro_entity_target_type
+                        type:               oro_entity_relation_type
                         options:
-                            attr:           {class: 'extend-rel-target-name'}
-                            required:       true
-                            label:          'Target entity'
-                            empty_value:    'Please choice target entity...'
                             block:          entity
                             subblock:       properties
 
+#                target_entity:
+#                    options:
+#                        auditable:          false
+
                 target_field:
                     options:
-                        allowed_type:       [oneToMany, manyToOne, manyToMany]
-                        required_property:
-                            config_id:
-                                field_name:  null
-                                scope:      extend
-                            code:           is_extend
-                            value:          true
-                    constraints:
-                        - NotBlank:
-                            message: 'Please choice target field...'
-                    form:
-                        type:               oro_entity_target_field_type
-                        options:
-                            attr:           {class: 'extend-rel-target-field'}
-                            required:       true
-                            label:          'Target field'
-                            empty_value:    'Please choice target field...'
-                            block:          entity
-                            subblock:       properties
+                        auditable:          false
+
+                target_grid:
+                    options:
+                        auditable:          false
+                        serializable:       true
+
+#                target_view:
+#                    options:
+#                        auditable:          false
+#                        serializable:       true
+
+                target_title:
+                    options:
+                        auditable:          false
+
+                target_detailed:
+                    options:
+                        auditable:          false
+                        serializable:       true
+
+#                target_default:
+#                    options:
+#                        auditable:          false
 
                 is_deleted:
                     options:
@@ -284,3 +302,8 @@ oro_entity_config:
                         query:
                             operator:       '!='
                             value:          true
+
+                is_inverse:
+                    options:
+                        default_value:      false
+                        auditable:          false

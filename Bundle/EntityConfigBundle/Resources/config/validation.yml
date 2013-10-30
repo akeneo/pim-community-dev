@@ -10,21 +10,21 @@ Oro\Bundle\EntityConfigBundle\Entity\FieldConfigModel:
                     max:        50
             type:
                 - NotBlank:     ~
-                - Choice:
-                    choices:
-                        - string
-                        - integer
-                        - smallint
-                        - bigint
-                        - boolean
-                        - decimal
-                        - date
-                        - text
-                        - float
-                        - oneToMany
-                        - manyToOne
-                        - manyToMany
-                    message:  Choose a valid Data Type.
+#                - Choice:
+#                    choices:
+#                        - string
+#                        - integer
+#                        - smallint
+#                        - bigint
+#                        - boolean
+#                        - decimal
+#                        - date
+#                        - text
+#                        - float
+#                        - oneToMany
+#                        - manyToOne
+#                        - manyToMany
+#                    message:  Choose a valid Data Type.
 
 Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel:
         constraints:
