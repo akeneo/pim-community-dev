@@ -1406,6 +1406,32 @@ class FixturesContext extends RawMinkContext
                 $value->setMedia($media);
                 break;
 
+            case $this->attributeTypes['simpleselect']:
+            case $this->attributeTypes['multiselect']:
+                $options = $attribute->getOptions()->filter(
+                    function ($option) use ($data) {
+                        return $option->getCode() == $data;
+                    }
+                );
+
+                if (empty($options)) {
+                    throw new \InvalidArgumentException(
+                        sprintf(
+                            'Could not find option "%s" for attribute "%s"',
+                            $data,
+                            (string) $attribute
+                        )
+                    );
+                }
+                $option = $options->first();
+
+                if ($attribute->getAttributeType() === $this->attributeTypes['simpleselect']) {
+                    $value->setOption($option);
+                } else {
+                    $value->addOption($option);
+                }
+                break;
+
             default:
                 $value->setData($data);
         }
