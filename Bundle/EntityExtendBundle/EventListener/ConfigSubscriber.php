@@ -57,6 +57,9 @@ class ConfigSubscriber implements EventSubscriberInterface
 
     /**
      * @param PersistConfigEvent $event
+     *
+     * @todo as discussed with Alpha team thm method will be refactored in this sprint
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public function persistConfig(PersistConfigEvent $event)
     {
@@ -96,14 +99,16 @@ class ConfigSubscriber implements EventSubscriberInterface
             }
         }
 
+        /** @var ConfigProvider $extendConfigProvider */
+        $extendConfigProvider = $event->getConfigManager()->getProvider('extend');
+        $extendFieldConfig    = $extendConfigProvider->getConfigById($event->getConfig()->getId());
+
         if ($scope == 'datagrid'
             && $event->getConfig()->getId() instanceof FieldConfigId
             && !in_array($event->getConfig()->getId()->getFieldType(), ['text'])
+            && $extendFieldConfig->is('is_extend')
             && isset($change['is_visible'])
-
         ) {
-            /** @var ConfigProvider $extendConfigProvider */
-            $extendConfigProvider = $event->getConfigManager()->getProvider('extend');
             $extendConfig         = $extendConfigProvider->getConfig($className);
             $index                = $extendConfig->has('index') ? $extendConfig->get('index') : [];
 
