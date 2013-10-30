@@ -76,4 +76,17 @@ class NumberFilter extends AbstractFilter
 
         return isset($operatorTypes[$type]) ? $operatorTypes[$type] : '=';
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getMetadata()
+    {
+        $metadata = parent::getMetadata();
+
+        $formView = $this->getForm()->createView();
+        $metadata['formatterOptions'] = $formView->vars['formatter_options'];
+
+        return $metadata;
+    }
 }

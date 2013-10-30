@@ -6,21 +6,21 @@ use Oro\Bundle\DataGridBundle\Datagrid\Builder;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataObject;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\ResultsObject;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
+use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\DataGridBundle\Extension\AbstractExtension;
 use Oro\Bundle\DataGridBundle\Extension\Pager\Orm\Pager;
-use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
+use Oro\Bundle\DataGridBundle\Extension\Toolbar\ToolbarExtension;
 
+/**
+ * Class OrmPagerExtension
+ * @package Oro\Bundle\DataGridBundle\Extension\Pager
+ *
+ * Responsibility of this extension is to apply pagination on query for ORM datasource
+ */
 class OrmPagerExtension extends AbstractExtension
 {
-    /**
-     * Configuration tree paths
-     */
-    const PAGER_OPTION_PATH                  = '[pager]';
-    const PAGER_ENABLE_OPTION_PATH           = '[pager][enabled]';
-    const PAGER_DEFAULT_PER_PAGE_OPTION_PATH = '[pager][default_per_page]';
-
     /**
      * Query params
      */
@@ -52,12 +52,8 @@ class OrmPagerExtension extends AbstractExtension
      */
     public function isApplicable(DatagridConfiguration $config)
     {
-        $enabled = $config->offsetGetByPath(Builder::DATASOURCE_TYPE_PATH) == OrmDatasource::TYPE
-            && $config->offsetGetByPath(self::PAGER_ENABLE_OPTION_PATH) !== false;
-
-        $this->validateConfiguration(new Configuration(), $config->toArray(['pager']));
-
-        return $enabled;
+        // enabled by default for ORM datasource
+        return $config->offsetGetByPath(Builder::DATASOURCE_TYPE_PATH) == OrmDatasource::TYPE;
     }
 
     /**
@@ -65,7 +61,7 @@ class OrmPagerExtension extends AbstractExtension
      */
     public function visitDatasource(DatagridConfiguration $config, DatasourceInterface $datasource)
     {
-        $defaultPerPage = $config->offsetGetByPath(self::PAGER_DEFAULT_PER_PAGE_OPTION_PATH, 10);
+        $defaultPerPage = $config->offsetGetByPath(ToolbarExtension::PAGER_DEFAULT_PER_PAGE_OPTION_PATH, 10);
 
         $this->pager->setQueryBuilder($datasource->getQuery());
         $this->pager->setPage($this->getOr(self::PAGE_PARAM, 1));
@@ -84,15 +80,16 @@ class OrmPagerExtension extends AbstractExtension
     /**
      * {@inheritDoc}
      */
-    public function visitMetadata(DatagridConfiguration $config, MetadataObject $result)
+    public function visitMetadata(DatagridConfiguration $config, MetadataObject $data)
     {
-        $defaultPerPage = $config->offsetGetByPath(self::PAGER_DEFAULT_PER_PAGE_OPTION_PATH, 10);
+        $defaultPerPage = $config->offsetGetByPath(ToolbarExtension::PAGER_DEFAULT_PER_PAGE_OPTION_PATH, 10);
 
         $state = [
             'currentPage' => $this->getOr(self::PAGE_PARAM, 1),
             'pageSize'    => $this->getOr(self::PER_PAGE_PARAM, $defaultPerPage)
         ];
-        $result->offsetAddToArray('state', $state);
+
+        $data->offsetAddToArray('state', $state);
     }
 
     /**
