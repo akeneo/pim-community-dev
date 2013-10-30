@@ -65,6 +65,10 @@ group:
     overview: group overview
     create:   create group
     edit:     edit group
+variant group:
+    overview: variant group overview
+    create:   create variant group
+    edit:     edit variant group
 association:
     overview: association overview
     create:   create association
@@ -88,6 +92,7 @@ btn:
         locale:          create locale
         product:         create product
         group:           create group
+        variant group:   create variant group
         association:     create association
     edit:      edit
     save:      save
