@@ -89,7 +89,7 @@ class ProductFileWriterTest extends \PHPUnit_Framework_TestCase
      */
     protected function getMediaMock()
     {
-        return $this->getMock('Oro\Bundle\FlexibleEntityBundle\Entity\Media');
+        return $this->getMock('Pim\Bundle\CatalogBundle\Entity\Media');
     }
 
     /**

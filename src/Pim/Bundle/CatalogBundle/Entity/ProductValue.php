@@ -9,6 +9,7 @@ use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttributeOption
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Entity\ProductPrice;
+use Pim\Bundle\CatalogBundle\Entity\Media;
 
 /**
  * Value for a product attribute
@@ -125,8 +126,11 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
      *
      * @var Media $media
      *
-     * @ORM\OneToOne(targetEntity="Oro\Bundle\FlexibleEntityBundle\Entity\Media", cascade={"persist", "refresh"})
-     * @ORM\JoinColumn(name="media_id", referencedColumnName="id", onDelete="SET NULL")
+     * @ORM\OneToOne(
+     *     targetEntity="Pim\Bundle\CatalogBundle\Entity\Media",
+     *     cascade={"persist", "refresh"},
+     *     mappedBy="value"
+     * )
      */
     protected $media;
 
@@ -191,12 +195,13 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
     /**
      * Set media
      *
-     * @param \Oro\Bundle\FlexibleEntityBundle\Entity\Media $media
+     * @param Pim\Bundle\CatalogBundle\Entity\Media $media
      *
      * @return ProductValue
      */
-    public function setMedia($media)
+    public function setMedia(Media $media)
     {
+        $media->setValue($this);
         $this->media = $media;
 
         return $this;

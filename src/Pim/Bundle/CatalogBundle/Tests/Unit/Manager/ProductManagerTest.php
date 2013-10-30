@@ -323,7 +323,7 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
      */
     protected function getMediaMock($filename = null)
     {
-        $media = $this->getMock('Oro\Bundle\FlexibleEntityBundle\Entity\Media', array('getFile', 'isRemoved'));
+        $media = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Media');
 
         $media->expects($this->any())
               ->method('getFile')
