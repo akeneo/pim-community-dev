@@ -17,10 +17,8 @@ class LocaleListener implements EventSubscriberInterface
 
     private $translator;
 
-    public function __construct(
-        LocaleSettings $localeSettings,
-        TranslatorInterface $translator
-    ) {
+    public function __construct(LocaleSettings $localeSettings, TranslatorInterface $translator)
+    {
         $this->localeSettings = $localeSettings;
         $this->translator = $translator;
     }
@@ -32,10 +30,9 @@ class LocaleListener implements EventSubscriberInterface
         }
 
         if (!$request->attributes->get('_locale')) {
-            $request->attributes->set('_locale', $this->localeSettings->getLocale());
+            $request->setLocale($this->localeSettings->getLanguage());
         }
-
-        $this->translator->setLocale($this->localeSettings->getLanguage());
+        $this->setPhpDefaultLocale($this->localeSettings->getLocale());
     }
 
     public function onKernelRequest(GetResponseEvent $event)
@@ -44,11 +41,16 @@ class LocaleListener implements EventSubscriberInterface
         $this->setRequest($request);
     }
 
+    public function setPhpDefaultLocale($locale)
+    {
+        \Locale::setDefault($locale);
+    }
+
     public static function getSubscribedEvents()
     {
         return array(
-            // must be registered before Symfony's original LocaleListener
-            KernelEvents::REQUEST => array(array('onKernelRequest', 17)),
+            // must be registered after Symfony's original LocaleListener
+            KernelEvents::REQUEST => array(array('onKernelRequest', 15)),
         );
     }
 }
