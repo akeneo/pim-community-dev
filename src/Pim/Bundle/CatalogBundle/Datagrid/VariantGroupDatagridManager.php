@@ -47,6 +47,13 @@ class VariantGroupDatagridManager extends GroupDatagridManager
     }
 
     /**
+     * {@inheritdoc}
+     */
+    protected function createTypeField(FieldDescriptionCollection $fieldsCollection)
+    {
+    }
+
+    /**
      * Create an axis field
      *
      * @param FieldDescriptionCollection $fieldsCollection
