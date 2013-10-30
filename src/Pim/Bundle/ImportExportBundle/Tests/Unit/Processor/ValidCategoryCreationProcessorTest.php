@@ -32,28 +32,6 @@ class ValidCategoryCreationProcessorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test getter/setter for labelDelimiter
-     */
-    public function testGetSetLabelDelimiter()
-    {
-        $this->assertEquals(',', $this->processor->getLabelDelimiter());
-        $newDelimiter = ';';
-        $this->processor->setLabelDelimiter($newDelimiter);
-        $this->assertEquals($newDelimiter, $this->processor->getLabelDelimiter());
-    }
-
-    /**
-     * Test getter/setter for circularRefsChecked
-     */
-    public function testGetSetLocaleDelimiter()
-    {
-        $this->assertEquals(':', $this->processor->getLocaleDelimiter());
-        $newDelimiter = '|';
-        $this->processor->setLocaleDelimiter($newDelimiter);
-        $this->assertEquals($newDelimiter, $this->processor->getLocaleDelimiter());
-    }
-
-    /**
      * Test getter/setter for circularRefsChecked
      */
     public function testGetIsCircularRefsChecked()
@@ -70,8 +48,6 @@ class ValidCategoryCreationProcessorTest extends \PHPUnit_Framework_TestCase
     public function testGetConfigurationFields()
     {
         $configurationFields = array(
-            'labelDelimiter'      => array(),
-            'localeDelimiter'     => array(),
             'circularRefsChecked' => array(
                 'type' => 'switch',
             ),
@@ -249,7 +225,8 @@ class ValidCategoryCreationProcessorTest extends \PHPUnit_Framework_TestCase
         return array(
             'code'    => $code,
             'parent'  => $parent,
-            'label'   => sprintf('en_US:%s (en),fr_FR:%s (fr)', ucfirst($code), ucfirst($code)),
+            'label-en_US'   => sprintf('%s (en)', ucfirst($code)),
+            'label-fr_FR'   => sprintf('%s (fr)', ucfirst($code)),
             'dynamic' => '0',
         );
     }
