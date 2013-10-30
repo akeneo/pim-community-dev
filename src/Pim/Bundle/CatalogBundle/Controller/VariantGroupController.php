@@ -74,7 +74,7 @@ class VariantGroupController extends GroupController
             $this->addFlash('success', 'flash.variant group.created');
 
             $url = $this->generateUrl(
-                'pim_catalog_variant group_edit',
+                'pim_catalog_variant_group_edit',
                 array('id' => $group->getId())
             );
             $response = array('status' => 1, 'url' => $url);
@@ -84,6 +84,35 @@ class VariantGroupController extends GroupController
 
         return array(
             'form' => $this->groupForm->createView()
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @AclAncestor("pim_catalog_group_edit")
+     * @Template("PimCatalogBundle:Group:edit.html.twig")
+     */
+    public function editAction(Group $group)
+    {
+        if ($this->groupHandler->process($group)) {
+            $this->addFlash('success', 'flash.variant group.updated');
+        }
+
+        $datagridManager = $this->datagridWorker->getDatagridManager('group_product');
+        $datagridManager->setGroup($group);
+        $datagridView = $datagridManager->getDatagrid()->createView();
+
+        if ('json' === $this->getRequest()->getRequestFormat()) {
+            return $this->render(
+                'OroGridBundle:Datagrid:list.json.php',
+                array('datagrid' => $datagridView)
+            );
+        }
+
+        return array(
+            'form' => $this->groupForm->createView(),
+            'datagrid' => $datagridView
         );
     }
 }
