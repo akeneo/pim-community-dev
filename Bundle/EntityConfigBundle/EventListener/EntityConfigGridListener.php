@@ -138,7 +138,7 @@ class EntityConfigGridListener implements EventSubscriberInterface
             }
 
             return $actions;
-        }
+        };
     }
 
     /**

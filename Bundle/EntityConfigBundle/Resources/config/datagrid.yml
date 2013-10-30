@@ -1,6 +1,9 @@
 datagrid:
     entityconfig-grid:
-        type: orm
+        options:
+            toolbarOptions:
+                pageSize:
+                    default_per_page: 50
         source:
             acl_resource: oro_entityconfig_manage
             type: orm
@@ -57,7 +60,8 @@ datagrid:
                     data_name: module
                 updated:
                     data_name: ce.updated
-
+#            default:
+#                name: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
         filters:
             columns:
                 name:
