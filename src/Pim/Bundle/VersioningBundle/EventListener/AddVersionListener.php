@@ -183,7 +183,7 @@ class AddVersionListener implements EventSubscriber
         }
 
         foreach ($uow->getScheduledEntityDeletions() as $entity) {
-            $this->checkScheduledDeletion($entity);
+            $this->checkScheduledUpdate($em, $entity);
         }
 
         foreach ($uow->getScheduledCollectionDeletions() as $entity) {
@@ -204,19 +204,6 @@ class AddVersionListener implements EventSubscriber
     public function checkScheduledUpdate($em, $entity)
     {
         $pendings = $this->versionBuilder->checkScheduledUpdate($em, $entity);
-        foreach ($pendings as $pending) {
-            $this->addPendingVersioning($pending);
-        }
-    }
-
-    /**
-     * Check if a related entity must be versioned due to entity deletion
-     *
-     * @param object $entity
-     */
-    public function checkScheduledDeletion($entity)
-    {
-        $pendings = $this->versionBuilder->checkScheduledDeletion($entity);
         foreach ($pendings as $pending) {
             $this->addPendingVersioning($pending);
         }
