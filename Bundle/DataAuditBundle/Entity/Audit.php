@@ -87,7 +87,7 @@ class Audit extends AbstractLogEntry
     /**
      * @var string $username
      *
-     * @Exclude
+     * @Soap\ComplexType("string", nillable=true)
      */
     protected $username;
 
@@ -97,7 +97,7 @@ class Audit extends AbstractLogEntry
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User", cascade={"persist"})
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      * @Type("string")
-     * @Soap\ComplexType("string", nillable=true)
+     * @Exclude
      */
     protected $user;
 
@@ -122,6 +122,16 @@ class Audit extends AbstractLogEntry
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * Get object name
+     *
+     * @return string
+     */
+    public function getUsername()
+    {
+        return $this->getUser() ? $this->getUser()->getUsername() : '';
     }
 
     /**
