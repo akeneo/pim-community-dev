@@ -1,6 +1,9 @@
 parameters:
-    oro_soap.request.class:           Oro\Bundle\SoapBundle\Entity\RequestFix
-    oro_soap.loader_yml.class:        Oro\Bundle\SoapBundle\ServiceDefinition\Loader\YmlAnnotationClassLoader
+    oro_soap.api_url_prefix:                 "/api"
+    oro_soap.request.class:                  Oro\Bundle\SoapBundle\Entity\RequestFix
+    oro_soap.loader_yml.class:               Oro\Bundle\SoapBundle\ServiceDefinition\Loader\YmlAnnotationClassLoader
+    oro_soap.form.extension.date.class:      Oro\Bundle\SoapBundle\Form\Extension\DateFormExtension
+    oro_soap.form.extension.datetime.class:  Oro\Bundle\SoapBundle\Form\Extension\DateTimeFormExtension
 
 services:
     oro_soap.request:
@@ -8,6 +11,24 @@ services:
         scope: request
         arguments:
             - @oro_flexibleentity.registry
+
+    oro_soap.form.extension.date:
+        class: %oro_soap.form.extension.date.class%
+        scope: request
+        arguments:
+            - @request
+            - %oro_soap.api_url_prefix%
+        tags:
+            - { name: form.type_extension, alias: oro_date }
+
+    oro_soap.form.extension.datetime:
+        class: %oro_soap.form.extension.datetime.class%
+        scope: request
+        arguments:
+            - @request
+            - %oro_soap.api_url_prefix%
+        tags:
+            - { name: form.type_extension, alias: oro_datetime }
 
     besimple.soap.definition.loader.yml_file:
         class:                        %oro_soap.loader_yml.class%

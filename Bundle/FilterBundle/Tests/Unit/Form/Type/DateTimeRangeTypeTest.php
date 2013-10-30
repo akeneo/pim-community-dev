@@ -31,7 +31,7 @@ class DateTimeRangeTypeTest extends AbstractTypeTestCase
             ->getMock();
         $localeSettings->expects($this->any())
             ->method('getTimezone')
-            ->will($this->returnValue($this->defaultTimezone));
+            ->will($this->returnValue('UTC'));
 
         $this->formExtensions[] = new CustomFormExtension(array(new DateRangeType($localeSettings)));
 
@@ -82,8 +82,8 @@ class DateTimeRangeTypeTest extends AbstractTypeTestCase
             'default timezone' => array(
                 'bindData' => array('start' => '2012-01-01 13:00', 'end' => '2013-01-01 18:00'),
                 'formData' => array(
-                    'start' => $this->createDateTime('2012-01-01 13:00'),
-                    'end' => $this->createDateTime('2013-01-01 18:00')
+                    'start' => $this->createDateTime('2012-01-01 13:00', $this->defaultTimezone),
+                    'end' => $this->createDateTime('2013-01-01 18:00', $this->defaultTimezone)
                 ),
                 'viewData' => array(
                     'value' => array('start' => '2012-01-01T13:00:00-10:00', 'end' => '2013-01-01T18:00:00-10:00'),
@@ -111,8 +111,8 @@ class DateTimeRangeTypeTest extends AbstractTypeTestCase
             'without time' => array(
                 'bindData' => array('start' => '1/13/1970', 'end' => '1/13/2014'),
                 'formData' => array(
-                    'start' => $this->createDateTime('1970-01-13 00:00:00'),
-                    'end' => $this->createDateTime('2014-01-13 00:00:00')
+                    'start' => $this->createDateTime('1970-01-13 00:00:00', $this->defaultTimezone),
+                    'end' => $this->createDateTime('2014-01-13 00:00:00', $this->defaultTimezone)
                 ),
                 'viewData' => array(
                     'value' => array('start' => '1970-01-13T00:00:00-10:00', 'end' => '2014-01-13T00:00:00-10:00'),

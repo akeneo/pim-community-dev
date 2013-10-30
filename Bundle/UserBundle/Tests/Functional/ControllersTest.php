@@ -154,7 +154,7 @@ class ControllersTest extends WebTestCase
             \Locale::getDefault(),
             \IntlDateFormatter::MEDIUM,
             \IntlDateFormatter::NONE,
-            $date->getTimezone(),
+            $date->getTimezone()->getName(),
             \IntlDateFormatter::GREGORIAN
         );
         return $formatter->format($date);
