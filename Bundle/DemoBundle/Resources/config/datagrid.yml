@@ -53,6 +53,7 @@ datagrid:
 
         options:
             entityHint: contact group
+            testOption: qweqws
             toolbarOptions:
                 pageSize:
                     items:

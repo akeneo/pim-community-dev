@@ -13,7 +13,7 @@ class ToolbarExtension extends AbstractExtension
      */
     const METADATA_KEY = 'options';
 
-    const OPTIONS_KEY                        = '[options]';
+    const OPTIONS_PATH                       = '[options]';
     const TOOLBAR_OPTION_PATH                = '[options][toolbarOptions]';
     const PAGER_ITEMS_OPTION_PATH            = '[options][toolbarOptions][pageSize][items]';
     const PAGER_DEFAULT_PER_PAGE_OPTION_PATH = '[options][toolbarOptions][pageSize][default_per_page]';
@@ -26,7 +26,7 @@ class ToolbarExtension extends AbstractExtension
         $options = $config->offsetGetByPath(self::TOOLBAR_OPTION_PATH, []);
         // validate configuration and pass default values back to config
         $configuration = $this->validateConfiguration(new Configuration(), ['toolbarOptions' => $options]);
-        $config->offsetAddToArrayByPath(self::OPTIONS_KEY, ['toolbarOptions' => $configuration]);
+        $config->offsetAddToArrayByPath(self::OPTIONS_PATH, ['toolbarOptions' => $configuration]);
 
         return true;
     }
@@ -73,6 +73,6 @@ class ToolbarExtension extends AbstractExtension
         }
 
         // grid options passed under "options" node
-        $data->offsetAddToArray('options', $config->offsetGetOr('options', []));
+        $data->offsetAddToArray(self::METADATA_KEY, $config->offsetGetByPath(ToolbarExtension::OPTIONS_PATH, []));
     }
 }

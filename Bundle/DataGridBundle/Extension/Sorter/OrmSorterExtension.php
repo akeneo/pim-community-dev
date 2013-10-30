@@ -165,6 +165,13 @@ class OrmSorterExtension extends AbstractExtension
         $defaultSorters = $config->offsetGetByPath(self::DEFAULT_SORTERS_PATH, []);
         $sortBy         = $this->requestParams->get(self::SORTERS_ROOT_PARAM) ? : $defaultSorters;
 
+        // if default sorter was not specified, just take first sortable column
+        if (!$sortBy && $sorters) {
+            $names           = array_keys($sorters);
+            $firstSorterName = reset($names);
+            $sortBy          = [$firstSorterName => self::DIRECTION_ASC];
+        }
+
         foreach ($sortBy as $column => $direction) {
             $sorter = isset($sorters[$column]) ? $sorters[$column] : false;
 
