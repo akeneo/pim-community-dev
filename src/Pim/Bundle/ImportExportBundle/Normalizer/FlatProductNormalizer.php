@@ -3,10 +3,11 @@
 namespace Pim\Bundle\ImportExportBundle\Normalizer;
 
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Oro\Bundle\FlexibleEntityBundle\Entity\Media;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\CatalogBundle\Entity\Media;
+use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 
 /**
  * A normalizer to transform a product entity into a flat array
@@ -29,6 +30,9 @@ class FlatProductNormalizer implements NormalizerInterface
     /** @staticvar string */
     const ITEM_SEPARATOR = ',';
 
+    /** @var Pim\Bundle\CatalogBundle\Manager\MediaManager */
+    protected $mediaManager;
+
     /** @var array */
     protected $supportedFormats = array('csv');
 
@@ -40,6 +44,16 @@ class FlatProductNormalizer implements NormalizerInterface
      * @var array
      */
     protected $fields = array();
+
+    /**
+     * Constructor
+     *
+     * @param Pim\Bundle\CatalogBundle\Manager\MediaManager $mediaManager
+     */
+    public function __construct(MediaManager $mediaManager)
+    {
+        $this->mediaManager = $mediaManager;
+    }
 
     /**
      * Transforms an object into a flat array
@@ -116,7 +130,7 @@ class FlatProductNormalizer implements NormalizerInterface
                 }
                 $data = join(self::ITEM_SEPARATOR, $result);
             } elseif ($data instanceof Media) {
-                $data = $data->getFilename();
+                $data = $this->mediaManager->getExportPath($data);
             }
         }
 

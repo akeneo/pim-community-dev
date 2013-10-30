@@ -32,6 +32,8 @@ services:
     pim_serializer.normalizer.flat_product:
         public: false
         class: %pim_serializer.normalizer.flat_product.class%
+        arguments:
+            - '@pim_catalog.manager.media'
         tags:
             - { name: pim_serializer.normalizer }
 
