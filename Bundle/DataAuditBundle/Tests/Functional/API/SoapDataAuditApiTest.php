@@ -77,6 +77,7 @@ class SoapDataAuditApiTest extends WebTestCase
      */
     public function testGetAudits($response)
     {
+        $this->markTestSkipped('Skipped till BAP-1979 will be fixed');
         $result = $this->client->getSoap()->getAudits();
         $result = ToolsAPI::classToArray($result);
 
