@@ -47,7 +47,6 @@ class PatchSubscriber implements EventSubscriberInterface
                 if ($data = $this->unbind($child)) {
                     $ary[$name] = $this->unbind($child);
                 }
-//                  $ary[$name] = $this->unbind($child);
             }
 
             return $ary;
