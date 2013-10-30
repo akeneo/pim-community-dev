@@ -54,6 +54,7 @@
                         <div class="clearfix">
                             {% block breadcrumbs %}
                                 <div class="pull-left">
+                                    {% if breadcrumbs.indexLabel is defined %}
                                     <div class="sub-title">
                                     {%- if breadcrumbs.indexPath is defined -%}
                                         <a href="{{ breadcrumbs.indexPath }}">{{ breadcrumbs.indexLabel|trans }}</a>
@@ -62,6 +63,7 @@
                                     {%- endif -%}
                                     </div>
                                     <span class="separator">/</span>
+                                    {% endif %}
                                     {% if breadcrumbs.additional is defined %}
                                         {% for breadcrumb in breadcrumbs.additional %}
                                             <div class="sub-title"><a href="{{ breadcrumb.indexPath }}">{{ breadcrumb.indexLabel|trans }}</a></div>

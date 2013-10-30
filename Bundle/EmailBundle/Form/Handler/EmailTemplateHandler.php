@@ -59,7 +59,7 @@ class EmailTemplateHandler
 
         if (in_array($this->request->getMethod(), array('POST', 'PUT'))) {
             // deny to modify system templates
-            if ($entity->getIsSystem()) {
+            if ($entity->getIsSystem() && !$entity->getIsEditable()) {
                 $message = $this->translator->trans(
                     'oro.email.handler.attempt_save_system_template',
                     array(),
@@ -73,6 +73,10 @@ class EmailTemplateHandler
             $this->form->submit($this->request);
 
             if ($this->form->isValid()) {
+                // mark an email template creating by an user as editable
+                if (!$entity->getId()) {
+                    $entity->setIsEditable(true);
+                }
                 $this->manager->persist($entity);
                 $this->manager->flush();
 

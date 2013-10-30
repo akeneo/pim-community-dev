@@ -224,15 +224,15 @@ services:
         class: %oro_email.twig.email_security_policy.class%
         arguments:
             # tags
-            - [ 'if', 'app', 'for' ]
+            - [ 'app', 'for', 'if', 'spaceless' ]
             # filters
-            - [ 'upper', 'escape' ]
+            - [ 'default', 'date', 'escape', 'format', 'length', 'lower', 'nl2br', 'number_format', 'title', 'trim', 'upper' ]
             # methods
             - []
             # properties
             - []
             # functions
-            - []
+            - [ 'date' ]
 
     oro_email.twig.email_sandbox:
         class: Twig_Extension_Sandbox

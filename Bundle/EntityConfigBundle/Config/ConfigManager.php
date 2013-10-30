@@ -319,6 +319,7 @@ class ConfigManager
         if ($this->cache) {
             $this->cache->removeAllConfigurable();
         }
+        $this->modelManager->clearCheckDatabase();
     }
 
     /**
@@ -456,6 +457,29 @@ class ConfigManager
     }
 
     /**
+     * Checks if the configuration model for the given class exists
+     *
+     * @param string $className
+     * @return bool
+     */
+    public function hasConfigEntityModel($className)
+    {
+        return null !== $this->modelManager->findModel($className);
+    }
+
+    /**
+     * Checks if the configuration model for the given field exist
+     *
+     * @param string $className
+     * @param string $fieldName
+     * @return bool
+     */
+    public function hasConfigFieldModel($className, $fieldName)
+    {
+        return null !== $this->modelManager->findModel($className, $fieldName);
+    }
+
+    /**
      * TODO:: check class name for custom entity
      *
      * @param string $className
@@ -492,6 +516,46 @@ class ConfigManager
 
     /**
      * @param string $className
+     *
+     * @TODO: need refactoring. Join updateConfigEntityModel and updateConfigFieldModel.
+     *        may be need introduce MetadataWithDefaultValuesInterface
+     *        need handling for removed values
+     *        need refactor getConfig
+     *        need to find out more appropriate name for this method
+     */
+    public function updateConfigEntityModel($className)
+    {
+        $metadata = $this->getEntityMetadata($className);
+        foreach ($this->getProviders() as $provider) {
+            $scope = $provider->getScope();
+            // try to get default values from annotation
+            $defaultValues = array();
+            if (isset($metadata->defaultValues[$scope])) {
+                $defaultValues = $metadata->defaultValues[$scope];
+            }
+            // combine them with default values from config file
+            $defaultValues = array_merge(
+                $provider->getPropertyConfig()->getDefaultValues(),
+                $defaultValues
+            );
+
+            // set missing values with default ones
+            $hasChanges = false;
+            $config = $provider->getConfig($className);
+            foreach ($defaultValues as $code => $value) {
+                if (!$config->has($code)) {
+                    $config->set($code, $value);
+                    $hasChanges = true;
+                }
+            }
+            if ($hasChanges) {
+                $provider->persist($config);
+            }
+        }
+    }
+
+    /**
+     * @param string $className
      * @param string $fieldName
      * @param string $fieldType
      * @param string $mode
@@ -522,6 +586,47 @@ class ConfigManager
         }
 
         return $fieldModel;
+    }
+
+    /**
+     * @param string $className
+     * @param string $fieldName
+     *
+     * @TODO: need refactoring. Join updateConfigEntityModel and updateConfigFieldModel.
+     *        may be need introduce MetadataWithDefaultValuesInterface
+     *        need handling for removed values
+     *        need refactor getConfig
+     *        need to find out more appropriate name for this method
+     */
+    public function updateConfigFieldModel($className, $fieldName)
+    {
+        $metadata = $this->getFieldMetadata($className, $fieldName);
+        foreach ($this->getProviders() as $provider) {
+            $scope = $provider->getScope();
+            // try to get default values from annotation
+            $defaultValues = array();
+            if (isset($metadata->defaultValues[$scope])) {
+                $defaultValues = $metadata->defaultValues[$scope];
+            }
+            // combine them with default values from config file
+            $defaultValues = array_merge(
+                $provider->getPropertyConfig()->getDefaultValues(),
+                $defaultValues
+            );
+
+            // set missing values with default ones
+            $hasChanges = false;
+            $config = $provider->getConfig($className, $fieldName);
+            foreach ($defaultValues as $code => $value) {
+                if (!$config->has($code)) {
+                    $config->set($code, $value);
+                    $hasChanges = true;
+                }
+            }
+            if ($hasChanges) {
+                $provider->persist($config);
+            }
+        }
     }
 
     /**

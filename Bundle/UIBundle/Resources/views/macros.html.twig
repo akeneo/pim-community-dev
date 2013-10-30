@@ -138,10 +138,14 @@
             {% if (parameters.id is defined) %}
                 id="{{ parameters.id }}"
             {% endif %}
-            data-id="{{ parameters.dataId }}"
+            {% if (parameters.dataId is defined) %}
+                data-id="{{ parameters.dataId }}"
+            {% endif %}
             data-message="{{ parameters.dataMessage|trans }}"
             data-success-message="{{ parameters.successMessage|default('Item deleted')|trans }}"
-            data-url="{{ parameters.dataUrl }}"
+            {% if (parameters.dataUrl is defined) %}
+                data-url="{{ parameters.dataUrl }}"
+            {% endif %}
             {% if parameters.dataRedirect is defined %}
                 data-redirect="{{ parameters.dataRedirect  }}"
             {% endif %}

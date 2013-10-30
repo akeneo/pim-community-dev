@@ -195,13 +195,13 @@ abstract class AbstractEmailSynchronizer
                 // ignore any exception here
                 $this->log->error(
                     sprintf('Cannot set the fail state. Error: %s.', $innerEx->getMessage()),
-                    array($innerEx)
+                    array('exception' => $innerEx)
                 );
             }
 
             $this->log->error(
                 sprintf('The synchronization failed. Error: %s.', $ex->getMessage()),
-                array($ex)
+                array('exception' => $ex)
             );
 
             throw $ex;
