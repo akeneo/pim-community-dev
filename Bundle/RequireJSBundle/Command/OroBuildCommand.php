@@ -55,30 +55,32 @@ class OroBuildCommand extends ContainerAwareCommand
             throw new \RuntimeException('Unable to write file ' . $buildConfigFilePath);
         }
 
-        $output->writeln('Running code optimizer');
-        $command = $config['js_engine'] . ' ' .
-            self::OPTIMIZER_FILE_PATH . ' -o ' . basename($buildConfigFilePath) . ' 1>&2';
-        $process = new Process($command, $webRoot);
-        $process->setTimeout($config['building_timeout']);
-        $process->run();
-        if (!$process->isSuccessful()) {
-            throw new \RuntimeException($process->getErrorOutput());
-        }
+        if (isset($config['js_engine']) && $config['js_engine']) {
+            $output->writeln('Running code optimizer');
+            $command = $config['js_engine'] . ' ' .
+                self::OPTIMIZER_FILE_PATH . ' -o ' . basename($buildConfigFilePath) . ' 1>&2';
+            $process = new Process($command, $webRoot);
+            $process->setTimeout($config['building_timeout']);
+            $process->run();
+            if (!$process->isSuccessful()) {
+                throw new \RuntimeException($process->getErrorOutput());
+            }
 
-        $output->writeln('Cleaning up');
-        if (false === @unlink($mainConfigFilePath)) {
-            throw new \RuntimeException('Unable to remove file ' . $mainConfigFilePath);
-        }
-        if (false === @unlink($buildConfigFilePath)) {
-            throw new \RuntimeException('Unable to remove file ' . $buildConfigFilePath);
-        }
+            $output->writeln('Cleaning up');
+            if (false === @unlink($mainConfigFilePath)) {
+                throw new \RuntimeException('Unable to remove file ' . $mainConfigFilePath);
+            }
+            if (false === @unlink($buildConfigFilePath)) {
+                throw new \RuntimeException('Unable to remove file ' . $buildConfigFilePath);
+            }
 
-        $output->writeln(
-            sprintf(
-                '<comment>%s</comment> <info>[file+]</info> %s',
-                date('H:i:s'),
-                realpath($webRoot . DIRECTORY_SEPARATOR . $config['build_path'])
-            )
-        );
+            $output->writeln(
+                sprintf(
+                    '<comment>%s</comment> <info>[file+]</info> %s',
+                    date('H:i:s'),
+                    realpath($webRoot . DIRECTORY_SEPARATOR . $config['build_path'])
+                )
+            );
+        }
     }
 }
