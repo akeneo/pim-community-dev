@@ -8,10 +8,15 @@ services:
         arguments:
             - '@pim_catalog.manager.product'
             - pim_product_value
-            - '@pim_catalog.form.type.product.view'
-            - '@pim_catalog.form.transform_imported_product_data_subscriber'
         tags:
             - { name: form.type, alias: pim_product }
+
+    pim_catalog.form.type.product_edit:
+        class:     %pim_catalog.form.type.product_edit.class%
+        arguments:
+            - '@pim_catalog.form.type.product.view'
+        tags:
+            - { name: form.type, alias: pim_product_edit }
 
     pim_catalog.form.type.product_create:
         class:     %pim_catalog.form.type.product_create.class%

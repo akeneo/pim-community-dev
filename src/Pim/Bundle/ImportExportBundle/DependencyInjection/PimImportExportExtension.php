@@ -30,5 +30,7 @@ class PimImportExportExtension extends Extension
         $loader->load('serializer.yml');
         $loader->load('datagrid.yml');
         $loader->load('controllers.yml');
+        $loader->load('form_types.yml');
+
     }
 }

@@ -1,0 +1,18 @@
+parameters:
+    pim_import_export.form.type.product_import.class: Pim\Bundle\ImportExportBundle\Form\Type\ProductImportType
+    pim_import_export.form.type.import_entity.class:  Pim\Bundle\ImportExportBundle\Form\Type\ImportEntityType
+
+services:
+    pim_import_export.form.type.product_import:
+        class: '%pim_import_export.form.type.product_import.class%'
+        arguments:
+            - '@pim_import_export.form.transform_imported_product_data_subscriber'
+        tags:
+            - { name: form.type, alias: pim_product_import }
+
+    pim_import_export.form.type.import_entity:
+        class: '%pim_import_export.form.type.import_entity.class%'
+        arguments:
+            - '@pim_import_export.entity_cache'
+        tags:
+            - { name: form.type, alias: pim_import_entity }

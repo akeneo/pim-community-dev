@@ -12,10 +12,6 @@ use Pim\Bundle\ImportExportBundle\Exception\InvalidObjectException;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
-use Pim\Bundle\ImportExportBundle\Converter\ProductEnabledConverter;
-use Pim\Bundle\ImportExportBundle\Converter\ProductFamilyConverter;
-use Pim\Bundle\ImportExportBundle\Converter\ProductGroupsConverter;
-use Pim\Bundle\ImportExportBundle\Converter\ProductCategoriesConverter;
 use Pim\Bundle\ImportExportBundle\Converter\ProductErrorConverter;
 
 /**
@@ -225,7 +221,7 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
             ),
             'categoriesColumn'    => array(),
             'familyColumn'        => array(),
-            'groupsColumn'         => array(),
+            'groupsColumn'        => array(),
         );
     }
 
@@ -242,7 +238,6 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
         if (!$product) {
             $product = $this->productManager->createProduct();
         }
-
         foreach (array_keys($item) as $key) {
 
             if (in_array($key, array($this->categoriesColumn, $this->familyColumn, $this->groupsColumn))) {
@@ -328,30 +323,16 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
     private function createAndSubmitForm(ProductInterface $product, array $item)
     {
         $form = $this->formFactory->create(
-            'pim_product',
+            'pim_product_import',
             $product,
             array(
-                'csrf_protection' => false,
-                'import_mode'     => true,
+                'family_column'     => $this->familyColumn,
+                'categories_column' => $this->categoriesColumn,
+                'groups_column'     => $this->groupsColumn,
             )
         );
 
-        $item[ProductEnabledConverter::ENABLED_KEY] = $this->enabled;
-
-        if (array_key_exists($this->familyColumn, $item)) {
-            $item[ProductFamilyConverter::FAMILY_KEY] = $item[$this->familyColumn];
-            unset($item[$this->familyColumn]);
-        }
-
-        if (array_key_exists($this->groupsColumn, $item)) {
-            $item[ProductGroupsConverter::GROUPS_KEY] = $item[$this->groupsColumn];
-            unset($item[$this->groupsColumn]);
-        }
-
-        if (array_key_exists($this->categoriesColumn, $item)) {
-            $item[ProductCategoriesConverter::CATEGORIES_KEY] = $item[$this->categoriesColumn];
-            unset($item[$this->categoriesColumn]);
-        }
+        $item['enabled'] = $this->enabled;
 
         $values = $this->filterValues($product, $item);
 
@@ -370,25 +351,21 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
      */
     private function filterValues(ProductInterface $product, array $values)
     {
-        if (array_key_exists(ProductFamilyConverter::FAMILY_KEY, $values)) {
-            $familyCode = $values[ProductFamilyConverter::FAMILY_KEY];
-        } else {
-            $familyCode = null;
-        }
+        $familyCode = array_key_exists($this->familyColumn, $values)
+            ? $values[$this->familyColumn]
+            : null;
 
-        if (array_key_exists(ProductGroupsConverter::GROUPS_KEY, $values)) {
-            $groupCodes = $values[ProductGroupsConverter::GROUPS_KEY];
-        } else {
-            $groupCodes = null;
-        }
+        $groupCodes = array_key_exists($this->groupsColumn, $values)
+            ? $values[$this->groupsColumn]
+            : null;
 
         $requiredValues = $this->getRequiredValues($product, $familyCode, $groupCodes);
 
         $excludedKeys = array(
-            ProductEnabledConverter::ENABLED_KEY,
-            ProductFamilyConverter::FAMILY_KEY,
-            ProductCategoriesConverter::CATEGORIES_KEY,
-            ProductGroupsConverter::GROUPS_KEY
+            'enabled',
+            $this->familyColumn,
+            $this->categoriesColumn,
+            $this->groupsColumn
         );
 
         foreach ($values as $key => $value) {
