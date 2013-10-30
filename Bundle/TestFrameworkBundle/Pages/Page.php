@@ -171,10 +171,9 @@ class Page
         );
         $actualResult = $this->byXPath(
             "//div[@id = 'flash-messages']//div[@class = 'message']"
-        )->text();
+        )->attribute('innerHTML');
 
-        PHPUnit_Framework_Assert::assertEquals($messageText, $actualResult, $message
-        );
+        PHPUnit_Framework_Assert::assertEquals($messageText, trim($actualResult), $message);
         return $this;
     }
 
@@ -191,8 +190,7 @@ class Page
         );
         $actualResult = $this->byXPath("//div[contains(@class,'alert') and not(contains(@class, 'alert-empty'))]/div")->text();
 
-        PHPUnit_Framework_Assert::assertEquals($messageText, $actualResult, $message
-        );
+        PHPUnit_Framework_Assert::assertEquals($messageText, trim($actualResult), $message);
         return $this;
     }
     /**
