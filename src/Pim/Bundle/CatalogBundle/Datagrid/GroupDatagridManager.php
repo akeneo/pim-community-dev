@@ -105,43 +105,6 @@ class GroupDatagridManager extends DatagridManager
             )
         );
         $fieldsCollection->add($field);
-
-        $field = $this->createAxisField();
-        $fieldsCollection->add($field);
-    }
-
-    /**
-     * Create an axis field
-     *
-     * @return \Oro\Bundle\GridBundle\Field\FieldDescription
-     */
-    protected function createAxisField()
-    {
-        $choices = $this->variantGroupManager->getAvailableAxisChoices();
-
-        $field = new FieldDescription();
-        $field->setName('attribute');
-        $field->setOptions(
-            array(
-                'type'            => FieldDescriptionInterface::TYPE_HTML,
-                'label'           => $this->translate('Axis'),
-                'field_name'      => 'attributes',
-                'expression'      => 'attribute.id',
-                'filter_type'     => FilterInterface::TYPE_CHOICE,
-                'required'        => true,
-                'multiple'        => true,
-                'filterable'      => true,
-                'show_filter'     => true,
-                'field_options'   => array('choices' => $choices),
-                'filter_by_where' => true
-            )
-        );
-
-        $field->setProperty(
-            new TwigTemplateProperty($field, 'PimGridBundle:Rendering:_optionsToString.html.twig')
-        );
-
-        return $field;
     }
 
     /**
@@ -198,13 +161,25 @@ class GroupDatagridManager extends DatagridManager
             ->addSelect('translation.label', true);
 
         $proxyQuery
-            ->leftJoin($rootAlias .'.translations', 'translation', 'WITH', 'translation.locale = :localeCode')
-            ->leftJoin($rootAlias .'.attributes', 'attribute')
-            ->innerJoin($rootAlias .'.type', 'type');
+            ->leftJoin($rootAlias .'.translations', 'translation', 'WITH', 'translation.locale = :localeCode');
+
+        $this->applyJoinOnGroupType($proxyQuery);
 
         $proxyQuery->groupBy($rootAlias);
 
         $proxyQuery->setParameter('localeCode', $this->getCurrentLocale());
+    }
+
+    /**
+     * Apply join on group type
+     * @param ProxyQueryInterface $proxyQuery
+     */
+    protected function applyJoinOnGroupType(ProxyQueryInterface $proxyQuery)
+    {
+        $joinExpr = $proxyQuery->expr()->neq('type.code', ':group');
+        $proxyQuery
+            ->innerJoin($proxyQuery->getRootAlias() .'.type', 'type', 'WITH', $joinExpr)
+            ->setParameter('group', 'VARIANT');
     }
 
     /**
