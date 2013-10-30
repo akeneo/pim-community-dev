@@ -83,7 +83,7 @@ class PricesTransformer implements PropertyTransformerInterface, ProductValueUpd
             }
         }
 
-        foreach ($data as $currency=>$price) {
+        foreach ($data as $currency => $price) {
             $this->addPrice($productValue, $price, $currency);
             $removeCurrency($currency);
         }
@@ -116,8 +116,8 @@ class PricesTransformer implements PropertyTransformerInterface, ProductValueUpd
      */
     protected function addPrice(ProductValueInterface $productValue, $data, $currency)
     {
-       $price = new ProductPrice();
-       $productValue->addPrice(
+        $price = new ProductPrice();
+        $productValue->addPrice(
             $price->setValue($productValue)->setData($data)->setCurrency($currency)
         );
     }

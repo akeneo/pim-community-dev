@@ -148,7 +148,7 @@ class ProductImportValidator
      * @param  array  $parameters
      * @return string
      */
-    public function getTranslatedErrorMessage($propertyPath, $message, array $parameters=array())
+    public function getTranslatedErrorMessage($propertyPath, $message, array $parameters = array())
     {
         return sprintf(
             '%s: %s',

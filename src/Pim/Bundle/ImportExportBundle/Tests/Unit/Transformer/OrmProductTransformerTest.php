@@ -149,7 +149,7 @@ class OrmProductTransformerTest extends \PHPUnit_Framework_TestCase
         $this->addAttributeColumn('key1', 'raw');
         $this->addAttributeColumn('key2', 'transformed');
 
-        $product = $this->transformer->getProduct(
+        $this->transformer->getProduct(
             array(
                 'sku'   => 'sku',
                 'key1'  => 'value1',
@@ -170,7 +170,7 @@ class OrmProductTransformerTest extends \PHPUnit_Framework_TestCase
         $this->addAttributeColumn('key1', 'raw');
         $this->addAttributeColumn('key2', 'raw');
 
-        $product = $this->transformer->getProduct(
+        $this->transformer->getProduct(
             array(
                 'sku'   => 'sku',
                 'key1'  => '',
@@ -189,7 +189,7 @@ class OrmProductTransformerTest extends \PHPUnit_Framework_TestCase
     {
         $this->addAttributeColumn('key1', 'raw');
         $this->valueErrors['key1'] = array('error');
-         $this->transformer->getProduct(
+        $this->transformer->getProduct(
             array(
                 'sku'   => 'sku',
                 'key1'  => 'test'
@@ -247,7 +247,7 @@ class OrmProductTransformerTest extends \PHPUnit_Framework_TestCase
                 ->method('transform')
                 ->will(
                     $this->returnCallback(
-                        function ($value, $options) use ($prefix) {
+                        function ($value) use ($prefix) {
                             return "$prefix-$value";
                         }
                     )

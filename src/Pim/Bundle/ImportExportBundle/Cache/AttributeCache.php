@@ -220,11 +220,11 @@ class AttributeCache
     protected function getAttributeCodes($object)
     {
         return array_map(
-                function ($attribute) {
-                    return $attribute->getCode();
-                },
-                $object->getAttributes()->toArray()
-            );
+            function ($attribute) {
+                return $attribute->getCode();
+            },
+            $object->getAttributes()->toArray()
+        );
     }
 
     /**
@@ -319,7 +319,13 @@ class AttributeCache
                         ', ',
                         array_diff(
                             $codes,
-                            array_map(function ($attribute) { return $attribute->getCode(); }, $this->attributes)
+                            array_map(
+                                function ($attribute) { 
+                                    return $attribute->getCode(); 
+                                    
+                                },
+                                $this->attributes
+                            )
                         )
                     )
                 )

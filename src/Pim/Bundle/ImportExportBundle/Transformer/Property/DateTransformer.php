@@ -30,5 +30,4 @@ class DateTransformer implements PropertyTransformerInterface
             throw new InvalidValueException('Invalid date');
         }
     }
-
 }

@@ -166,7 +166,8 @@ class ProductManager extends FlexibleManager
      * @param string $code
      * @return ProductInterface
      */
-    public function getImportProduct($attributes, $identifierAttribute, $code) {
+    public function getImportProduct($attributes, $identifierAttribute, $code)
+    {
         $class = $this->getFlexibleRepository()->getClassName();
         $em = $this->getStorageManager();
         try {

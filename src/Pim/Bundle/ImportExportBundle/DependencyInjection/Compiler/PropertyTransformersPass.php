@@ -26,7 +26,7 @@ class PropertyTransformersPass implements CompilerPassInterface
     {
         $definition = $container->getDefinition(self::PRODUCT_TRANSFORMER_SERVICE);
 
-        foreach ($container->findTaggedServiceIds(self::PRODUCT_PROPERTY_TAG) as $id=>$tags) {
+        foreach ($container->findTaggedServiceIds(self::PRODUCT_PROPERTY_TAG) as $id => $tags) {
             foreach ($tags as $tag) {
                 $options = $tag;
                 unset($options['property_path']);
@@ -41,7 +41,7 @@ class PropertyTransformersPass implements CompilerPassInterface
             }
         }
 
-        foreach ($container->findTaggedServiceIds(self::PRODUCT_ATTRIBUTE_TAG) as $id=>$tags) {
+        foreach ($container->findTaggedServiceIds(self::PRODUCT_ATTRIBUTE_TAG) as $id => $tags) {
             foreach ($tags as $tag) {
                 $options = $tag;
                 unset($options['backend_type']);

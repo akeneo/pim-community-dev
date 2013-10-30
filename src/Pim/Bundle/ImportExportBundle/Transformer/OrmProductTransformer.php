@@ -112,7 +112,7 @@ class OrmProductTransformer
     public function addPropertyTransformer(
         $propertyPath,
         Property\PropertyTransformerInterface $transformer,
-        array $options=array()
+        array $options = array()
     ) {
         $this->propertyTransformers[$propertyPath] = array(
             'transformer' => $transformer,
@@ -130,7 +130,7 @@ class OrmProductTransformer
     public function addAttributeTransformer(
         $backendType,
         Property\PropertyTransformerInterface $transformer,
-        array $options=array()
+        array $options = array()
     ) {
         $this->attributeTransformers[$backendType] = array(
             'transformer' => $transformer,
@@ -231,7 +231,7 @@ class OrmProductTransformer
         $requiredAttributeCodes = $this->attributeCache->getRequiredAttributeCodes($product);
         $columns = $this->attributeCache->getColumns();
         $errors = array();
-        foreach ($attributeValues as $columnCode=>$columnValue) {
+        foreach ($attributeValues as $columnCode => $columnValue) {
             $columnInfo = $columns[$columnCode];
             try {
                 if ($columnValue || in_array($columnInfo['code'], $requiredAttributeCodes)) {
