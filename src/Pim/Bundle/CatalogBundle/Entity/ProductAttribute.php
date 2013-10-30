@@ -6,6 +6,7 @@ use Symfony\Component\Validator\GroupSequenceProviderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttribute;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
@@ -25,9 +26,20 @@ use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
  * )
  * @ORM\Entity(repositoryClass="Pim\Bundle\CatalogBundle\Entity\Repository\ProductAttributeRepository")
  * @Assert\GroupSequenceProvider
+ * @Config(
+ *  defaultValues={
+ *      "entity"={"label"="Attribute", "plural_label"="Attributes"},
+ *      "security"={
+ *          "type"="ACL",
+ *          "group_name"=""
+ *      }
+ *  }
+ * )
  */
-class ProductAttribute extends AbstractEntityAttribute implements TranslatableInterface, GroupSequenceProviderInterface,
- VersionableInterface
+class ProductAttribute extends AbstractEntityAttribute implements
+    TranslatableInterface,
+    GroupSequenceProviderInterface,
+    VersionableInterface
 {
     /**
      * @var integer $version
@@ -920,7 +932,9 @@ class ProductAttribute extends AbstractEntityAttribute implements TranslatableIn
      */
     public function setAllowedExtensions($allowedExtensions)
     {
-        $this->allowedExtensions = $allowedExtensions;
+        $allowedExtensions = explode(',', strtolower($allowedExtensions));
+        $allowedExtensions = array_unique(array_map('trim', $allowedExtensions));
+        $this->allowedExtensions = implode(',', $allowedExtensions);
 
         return $this;
     }

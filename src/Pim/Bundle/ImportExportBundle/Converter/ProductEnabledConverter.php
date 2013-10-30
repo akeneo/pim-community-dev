@@ -13,6 +13,11 @@ class ProductEnabledConverter
 {
     const ENABLED_KEY = '[enabled]';
 
+    /**
+     * @param array $data
+     *
+     * @return array
+     */
     public function convert($data)
     {
         if (array_key_exists(self::ENABLED_KEY, $data)) {

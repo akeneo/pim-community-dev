@@ -5,6 +5,8 @@ namespace Pim\Bundle\TranslationBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
+ * Abstract translation class
+ *
  * @ORM\MappedSuperclass
  */
 abstract class AbstractTranslation
@@ -21,7 +23,7 @@ abstract class AbstractTranslation
     /**
      * @var string $locale
      *
-     * @ORM\Column(type="string", length=8)
+     * @ORM\Column(type="string", length=10)
      */
     protected $locale;
 
@@ -45,7 +47,8 @@ abstract class AbstractTranslation
     /**
      * Set locale
      *
-     * @param  string              $locale
+     * @param string $locale
+     *
      * @return AbstractTranslation
      */
     public function setLocale($locale)

@@ -131,7 +131,7 @@ a.select2-choice {
   }
 }
 
-.navbar-buttons .btn-group>.btn-primary {
+.navbar-buttons .btn-group>.btn {
   font-size: 14px;
 }
 
@@ -272,6 +272,10 @@ div.btn-group > .has-switch {
 #attribute-buttons {
   float: right;
   margin: 10px;
+}
+
+#association-buttons {
+  padding-top: 7px;
 }
 
 #lbCenter {
@@ -495,6 +499,7 @@ div.ui-dialog {
 }
 .modal .modal-header{
   background-color: @color-purple_light;
+  #gradient .vertical(@color-purple_light, darken(@color-purple_light, 5%));
   -webkit-border-radius: 6px 6px 0 0;
   border-radius: 6px 6px 0 0;
 }
@@ -502,7 +507,22 @@ div.ui-dialog {
   color: #fff;
 }
 
-#pim_catalog_product_create {
+.modal-primary {
+  top: 20%;
+  background-color: @backgroundColor-white;
+
+  .modal-header {
+    background-color: @color-purple_light;
+    #gradient .vertical(@color-purple_light, darken(@color-purple_light, 5%));
+    -webkit-border-radius: 6px 6px 0 0;
+    border-radius: 6px 6px 0 0;
+  }
+  .modal-header h3 {
+    font: #fff;
+  }
+}
+
+.form-inline {
   label {
     width: 200px;
     text-align: left;
@@ -797,8 +817,14 @@ h1 {
   .buffer-small-bottom {padding-bottom:10px;}
   .buffer-small-left {padding-left:10px;}
 }
+.unspaced {
+  margin: 0;
+}
+span.muted.small {
+  font-size: 14px;
+}
 
-form .currency {
+form.form-horizontal .currency {
   margin-bottom: 10px;
   .control-group {
     margin: 0;
@@ -967,9 +993,10 @@ div.entity-updated {
   }
 }
 
-/* Product edit form - categories tab */
+/* Product edit form - categories/associations tab */
 
 .classify .nav-list li a i,
+#association-list .nav-list li a i,
 #categories .nav-list li a i {
   padding-right: 5px;
   font-size: 16px;
@@ -994,6 +1021,9 @@ form.form-upload {
       margin-left: 20px;
       .upload-zone {
         width: 100%;
+        input[type="file"] {
+          font-size: 200px;
+        }
       }
       .icons-container {
         float: right;
@@ -1082,6 +1112,36 @@ ul.medias label.remove-media {
     padding: 7px;
     margin: 0;
     color: #b9b9b9;
+  }
+}
+
+/* Selectize UI for metric attribute field */
+.selectize-control.input-small {
+  display: inline-block;
+  .selectize-input {
+    padding: 4px 10px 4px 10px;
+    &> * {
+      float: left;
+    }
+  }
+  &.prepend .selectize-input {
+    border-right: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+}
+.controls.metric.input-prepend {
+  margin-left: 10px;
+  .icons-container {
+    padding-top: 5px;
+  }
+}
+.selectize-dropdown {
+  [data-selectable].active {
+     #gradient .vertical(@color-purple_light, darken(@color-purple_light, 5%));
+  }
+  .active {
+    background-color: @color-purple_light;
   }
 }
 

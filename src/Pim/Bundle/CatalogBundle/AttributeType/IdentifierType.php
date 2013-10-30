@@ -39,7 +39,7 @@ class IdentifierType extends OroTextType
             ),
             array(
                 'name'      => 'searchable',
-                'fieldType' => 'checkbox'
+                'fieldType' => 'switch'
             ),
             array(
                 'name'      => 'scopable',
@@ -52,7 +52,7 @@ class IdentifierType extends OroTextType
             ),
             array(
                 'name'      => 'unique',
-                'fieldType' => 'checkbox',
+                'fieldType' => 'switch',
                 'options'   => array(
                     'data'      => true,
                     'disabled'  => true,
@@ -61,7 +61,7 @@ class IdentifierType extends OroTextType
             ),
             array(
                 'name'      => 'required',
-                'fieldType' => 'checkbox',
+                'fieldType' => 'switch',
                 'options'   => array(
                     'data'      => true,
                     'disabled'  => true,
@@ -70,7 +70,7 @@ class IdentifierType extends OroTextType
             ),
             array(
                 'name'      => 'useableAsGridColumn',
-                'fieldType' => 'checkbox',
+                'fieldType' => 'switch',
                 'options'   => array(
                     'data'      => true,
                     'disabled'  => true,
@@ -79,7 +79,7 @@ class IdentifierType extends OroTextType
             ),
             array(
                 'name'      => 'useableAsGridFilter',
-                'fieldType' => 'checkbox',
+                'fieldType' => 'switch',
                 'options'   => array(
                     'data'      => true,
                     'disabled'  => true,

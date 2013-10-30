@@ -20,8 +20,12 @@ Feature: Product creation
   Scenario: Successfully create a product
     Given I am on the products page
     And I create a new product
-    And I fill in the following information:
+    And I fill in the following information in the popin:
       | SKU               | barbecue  |
       | Reference         | BBQ       |
     And I press the "Save" button
-    Then I should see "Product successfully created"
+    Then I edit the "barbecue" product
+    Then I should see "Family: N/A"
+    And I should see "Attributes"
+    And I should see "Reference"
+    And I should see "SKU"

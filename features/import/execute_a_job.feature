@@ -1,12 +1,15 @@
+@javascript
 Feature: Execute a job
   In order to launch an import
-  As a user
+  As Julia
   I need to be able to execute a valid export
 
-  Scenario: Fail to see the execute button of a job with validation errors
+  Background:
     Given the following job:
       | connector            | alias          | code                | label                       | type   |
       | Akeneo CSV Connector | product_import | acme_product_import | Product import for Acme.com | import |
-    Given I am logged in as "admin"
+
+  Scenario: Fail to see the import button of a job with validation errors
+    Given I am logged in as "Julia"
     When I am on the "acme_product_import" import job page
-    Then I should not see the "Execute" link
+    Then I should not see the "Import now" link

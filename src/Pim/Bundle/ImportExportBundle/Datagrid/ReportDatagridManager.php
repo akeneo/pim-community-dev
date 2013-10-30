@@ -39,7 +39,7 @@ class ReportDatagridManager extends DatagridManager
         $proxyQuery->addSelect('jobInstance.code as jobCode');
         $proxyQuery->addSelect('jobInstance.label as jobLabel');
         $proxyQuery->addSelect('jobInstance.alias as jobAlias');
-        $proxyQuery->addSelect($proxyQuery->getRootAlias() .'.exitCode as exitCode');
+        $proxyQuery->addSelect($proxyQuery->getRootAlias() .'.status as status');
 
         if ($this->jobType !== null) {
             $proxyQuery->andWhere('jobInstance.type = :job_type');
@@ -108,7 +108,7 @@ class ReportDatagridManager extends DatagridManager
             array(
                 'type'        => FieldDescriptionInterface::TYPE_TEXT,
                 'label'       => $this->translate('Status'),
-                'field_name'  => 'exitCode',
+                'field_name'  => 'status',
                 'filter_type' => FilterInterface::TYPE_CHOICE,
                 'required'    => false,
                 'sortable'    => true,
@@ -138,12 +138,10 @@ class ReportDatagridManager extends DatagridManager
      */
     protected function getRowActions()
     {
-        $acl = sprintf('pim_importexport_%s_report_show', $this->jobType);
-
         $showAction = array(
             'name'         => 'show',
             'type'         => ActionInterface::TYPE_REDIRECT,
-            'acl_resource' => $acl,
+            'acl_resource' => sprintf('pim_importexport_%s_report_show', $this->jobType),
             'options'      => array(
                 'label'   => $this->translate('Show'),
                 'icon'    => 'list-alt',

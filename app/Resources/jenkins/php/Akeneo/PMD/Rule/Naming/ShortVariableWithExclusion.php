@@ -17,7 +17,7 @@ class Akeneo_PMD_Rule_Naming_ShortVariableWithExclusion
     /**
      * {@inheritdoc}
      */
-    protected function checkNodeImage(PHP_PMD_AbstractNode $node)               
+    protected function checkNodeImage(PHP_PMD_AbstractNode $node)
     {
         $excludedVariables = explode('|', $this->getStringProperty('excludeVariables'));
         if (!in_array($node->getImage(), $excludedVariables)) {

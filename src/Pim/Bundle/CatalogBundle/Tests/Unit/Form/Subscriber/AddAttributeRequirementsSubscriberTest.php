@@ -14,6 +14,9 @@ use Pim\Bundle\CatalogBundle\Entity\Family;
  */
 class AddAttributeRequirementsSubscriberTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * Test related method
+     */
     public function testGetSubscribedEvent()
     {
         $this->assertEquals(
@@ -22,6 +25,9 @@ class AddAttributeRequirementsSubscriberTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * Test related method
+     */
     public function testPreSetData()
     {
         $mobile      = $this->getChannelMock('mobile');
@@ -56,6 +62,12 @@ class AddAttributeRequirementsSubscriberTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($requirements['name_mobile'], $existingRequirement);
     }
 
+    /**
+     * @param mixed $attribute
+     * @param mixed $channel
+     *
+     * @return \Pim\Bundle\CatalogBundle\Entity\AttributeRequirement
+     */
     private function getAttributeRequirementMock($attribute, $channel)
     {
         $requirement = $this->getMock('Pim\Bundle\CatalogBundle\Entity\AttributeRequirement');
@@ -71,6 +83,13 @@ class AddAttributeRequirementsSubscriberTest extends \PHPUnit_Framework_TestCase
         return $requirement;
     }
 
+    /**
+     * @param array  $requirements
+     * @param string $key
+     * @param mixed  $family
+     * @param mixed  $name
+     * @param mixed  $mobile
+     */
     private function assertAttributeRequirement(array $requirements, $key, $family, $name, $mobile)
     {
         $this->assertEquals($requirements[$key]->getFamily(), $family);
@@ -78,6 +97,11 @@ class AddAttributeRequirementsSubscriberTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($requirements[$key]->getChannel(), $mobile);
     }
 
+    /**
+     * @param string $code
+     *
+     * @return \Pim\Bundle\CatalogBundle\Entity\Channel
+     */
     private function getChannelMock($code)
     {
         $channel = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Channel');
@@ -89,6 +113,11 @@ class AddAttributeRequirementsSubscriberTest extends \PHPUnit_Framework_TestCase
         return $channel;
     }
 
+    /**
+     * @param string $code
+     *
+     * @return \Pim\Bundle\CatalogBundle\Entity\ProductAttribute
+     */
     private function getAttributeMock($code)
     {
         $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductAttribute');
@@ -100,6 +129,11 @@ class AddAttributeRequirementsSubscriberTest extends \PHPUnit_Framework_TestCase
         return $attribute;
     }
 
+    /**
+     * @param mixed $data
+     *
+     * @return \Symfony\Component\Form\FormEvent
+     */
     private function getEventMock($data)
     {
         $event = $this

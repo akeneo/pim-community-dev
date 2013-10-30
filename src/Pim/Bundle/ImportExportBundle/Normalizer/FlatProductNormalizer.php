@@ -3,9 +3,10 @@
 namespace Pim\Bundle\ImportExportBundle\Normalizer;
 
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Oro\Bundle\FlexibleEntityBundle\Entity\Media;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Entity\Family;
-use Oro\Bundle\FlexibleEntityBundle\Entity\Media;
+use Pim\Bundle\CatalogBundle\Entity\Group;
 
 /**
  * A normalizer to transform a product entity into a flat array
@@ -16,19 +17,22 @@ use Oro\Bundle\FlexibleEntityBundle\Entity\Media;
  */
 class FlatProductNormalizer implements NormalizerInterface
 {
-    /**
-     * @var string
-     */
+    /** @staticvar string */
+    const FIELD_FAMILY = 'family';
+
+    /** @staticvar string */
+    const FIELD_GROUPS = 'groups';
+
+    /** @staticvar string */
+    const FIELD_CATEGORY = 'categories';
+
+    /** @staticvar string */
     const ITEM_SEPARATOR = ',';
 
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $supportedFormats = array('csv');
 
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $results;
 
     /**
@@ -36,16 +40,6 @@ class FlatProductNormalizer implements NormalizerInterface
      * @var array
      */
     protected $fields = array();
-
-    /**
-     * @staticvar string
-     */
-    const FIELD_FAMILY = 'family';
-
-    /**
-     * @staticvar string
-     */
-    const FIELD_CATEGORY = 'categories';
 
     /**
      * Transforms an object into a flat array
@@ -58,20 +52,26 @@ class FlatProductNormalizer implements NormalizerInterface
      */
     public function normalize($object, $format = null, array $context = array())
     {
-        $this->results = array();
-
-        $this->normalizeValue($identifier = $object->getIdentifier());
+        $this->results = $this->normalizeValue($identifier = $object->getIdentifier());
 
         $this->normalizeFamily($object->getFamily());
 
+        $this->normalizeGroups($object->getGroupCodes());
+
+        $this->normalizeCategories($object->getCategoryCodes());
+
+        $values = array();
         foreach ($object->getValues() as $value) {
             if ($value === $identifier) {
                 continue;
             }
-            $this->normalizeValue($value);
+            $values = array_merge(
+                $values,
+                $this->normalizeValue($value)
+            );
         }
-
-        $this->normalizeCategories($object->getCategoryCodes());
+        ksort($values);
+        $this->results = array_merge($this->results, $values);
 
         return $this->results;
     }
@@ -93,14 +93,16 @@ class FlatProductNormalizer implements NormalizerInterface
      * Normalizes a value
      *
      * @param mixed $value
+     *
+     * @return array
      */
     protected function normalizeValue($value)
     {
-        if (empty($this->fields) || isset($this->fields[$this->getFieldValue($value)])) {
-            $data = $value->getData();
+        $data = $value->getData();
 
+        if (empty($this->fields) || isset($this->fields[$this->getFieldValue($value)])) {
             if ($data instanceof \DateTime) {
-                $data = $data->format('r');
+                $data = $data->format('m/d/Y');
             } elseif ($data instanceof \Pim\Bundle\CatalogBundle\Entity\AttributeOption) {
                 $data = $data->getCode();
             } elseif ($data instanceof \Doctrine\Common\Collections\Collection) {
@@ -113,14 +115,12 @@ class FlatProductNormalizer implements NormalizerInterface
                     }
                 }
                 $data = join(self::ITEM_SEPARATOR, $result);
+            } elseif ($data instanceof Media) {
+                $data = $data->getFilename();
             }
-        } elseif ($data instanceof Media) {
-            // TODO Handle media export
-            // They are ignored for now (both file and image type)
-            return;
         }
 
-        $this->results[$this->getFieldValue($value)] = (string) $data;
+        return array($this->getFieldValue($value) => (string) $data);
     }
 
     /**
@@ -133,8 +133,12 @@ class FlatProductNormalizer implements NormalizerInterface
     protected function getFieldValue($value)
     {
         $suffix = '';
+
         if ($value->getAttribute()->getTranslatable()) {
-            $suffix = $suffix = sprintf('-%s', $value->getLocale());
+            $suffix = sprintf('-%s', $value->getLocale());
+        }
+        if ($value->getAttribute()->getScopable()) {
+            $suffix .= sprintf('-%s', $value->getScope());
         }
 
         return $value->getAttribute()->getCode() . $suffix;
@@ -149,6 +153,18 @@ class FlatProductNormalizer implements NormalizerInterface
     {
         if (empty($this->fields) || isset($this->fields[self::FIELD_FAMILY])) {
             $this->results[self::FIELD_FAMILY] = $family ? $family->getCode() : '';
+        }
+    }
+
+    /**
+     * Normalizes groups
+     *
+     * @param Group[] $groups
+     */
+    protected function normalizeGroups($groups = null)
+    {
+        if (empty($this->fields) || isset($this->fields[self::FIELD_GROUPS])) {
+            $this->results[self::FIELD_GROUPS] = $groups;
         }
     }
 

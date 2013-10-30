@@ -14,15 +14,24 @@ Feature: Filter products per category
       | green-tshirt  |
       | akeneo-mug    |
     And the following categories:
-      | code           | title   | products                   |
-      | tshirts        | TShirts | purple-tshirt,green-tshirt |
+      | code           | parent  | label    | products                   |
+      | catalog        |         | Catalog  |                            |
+      | tshirts        | catalog | TShirts  | purple-tshirt,green-tshirt |
+      | trousers       | catalog | Trousers |                            |
     And I am logged in as "admin"
 
+  @insulated
   Scenario: Successfully display all products classified in T-shirts on products page
     Given I am on the products page
     And I filter per category "tshirts"
     Then I should see products purple-tshirt and green-tshirt
     And I should not see products akeneo-mug
+
+  @insulated
+  Scenario: Successfully display all products classified in Trousers on products page
+    Given I am on the products page
+    And I filter per category "trousers"
+    Then I should not see products purple-tshirt, green-tshirt and akeneo-mug
 
   @insulated
   Scenario: Successfully display all products unclassified on products page

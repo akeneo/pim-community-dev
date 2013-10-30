@@ -3,6 +3,7 @@
 namespace Context\Page\Base;
 
 use Behat\Mink\Exception\ElementNotFoundException;
+use Behat\Mink\Element\Element;
 
 /**
  * Basic form page
@@ -82,6 +83,20 @@ class Form extends Base
         }
 
         return parent::findField($name);
+    }
+
+    /**
+     * Toggle the bootstrapSwitch on or off
+     *
+     * @param string  $locator
+     * @param boolean $on
+     */
+    public function toggleSwitch($locator, $on = true)
+    {
+        $field = $this->findField($locator);
+        if ($field->isChecked() != $on) {
+            $field->getParent()->find('css', 'label')->click();
+        }
     }
 
     /**
@@ -195,5 +210,82 @@ class Form extends Base
         }
 
         $checkbox->check();
+    }
+
+    /**
+     * This method allows to fill a compound field by passing the label in reversed order separated
+     * with whitespaces.
+     *
+     * Example:
+     * We have a field "$" embedded inside a "Price" field
+     * We can call fillField('$ Price', 26) to set the "$" value of parent field "Price"
+     *
+     * @param string  $labelContent
+     * @param string  $value
+     * @param Element $element
+     *
+     * @return null
+     */
+    public function fillField($labelContent, $value, Element $element = null)
+    {
+        $subLabelContent = null;
+        if (false !== strpbrk($labelContent, '€$')) {
+            if (false !== strpos($labelContent, ' ')) {
+                list($subLabelContent, $labelContent) = explode(' ', $labelContent);
+            }
+        }
+
+        if ($element) {
+            $label = $element->find('css', sprintf('label:contains("%s")', $labelContent));
+        } else {
+            $label = $this->find('css', sprintf('label:contains("%s")', $labelContent));
+        }
+
+        if (null === $label) {
+            return parent::fillField($labelContent, $value);
+        }
+
+        if ($label->hasAttribute('for')) {
+            if (false === strpos($value, ',')) {
+                $for = $label->getAttribute('for');
+                if (0 === strpos($for, 's2id_')) {
+                    // We are playing with a select2 widget
+                    $field = $label->getParent()->find('css', 'select');
+                    $field->selectOption($value);
+                } else {
+                    $field = $this->find('css', sprintf('#%s', $for));
+                    $field->setValue($value);
+                }
+            } else {
+                foreach (explode(',', $value) as $value) {
+                    $field = $label->getParent()->find('css', 'select');
+                    $field->selectOption(trim($value), true);
+                }
+            }
+        } else {
+            if (!$subLabelContent) {
+                throw new \InvalidArgumentException(
+                    sprintf(
+                        'The "%s" field is compound but the sub label was not provided',
+                        $labelContent
+                    )
+                );
+            }
+
+            // it is a compound field, so let's expand the values
+            $this->expand($label);
+
+            $this->fillField($subLabelContent, $value, $label->getParent());
+        }
+    }
+
+    /**
+     * @param string $label
+     */
+    public function expand($label)
+    {
+        if ($icon = $label->getParent()->find('css', '.icon-caret-right')) {
+            $icon->click();
+        }
     }
 }

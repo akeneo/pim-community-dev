@@ -13,16 +13,38 @@ use Pim\Bundle\CatalogBundle\Manager\MediaManager;
  */
 class MediaManagerTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @test
-     */
-    public function itShouldUploadIfAFileIsPresent()
-    {
-        $filesystem = $this->getFilesystemMock();
-        $target     = $this->getTargetedClass($filesystem);
-        $media      = $this->getMediaMock($this->getFileMock());
+    /** @var \Gaufrette\Filesystem */
+    protected $filesystem;
 
-        $filesystem->expects($this->once())
+    /** @var \Pim\Bundle\CatalogBundle\Manager\MediaManager */
+    protected $manager;
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUp()
+    {
+        $this->filesystem = $this->getFilesystemMock();
+        $this->uploadDir  = '/tmp/upload';
+        $this->manager    = new MediaManager($this->filesystem, $this->uploadDir);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function tearDown()
+    {
+        $this->filesystem = null;
+        $this->manager    = null;
+        @unlink($this->uploadDir . '/phpunit-file.txt');
+    }
+
+    /**
+     * Test related method
+     */
+    public function testUploadIfAFileIsPresent()
+    {
+        $this->filesystem->expects($this->once())
                    ->method('write')
                    ->with(
                        $this->equalTo('foo-akeneo.jpg'),
@@ -30,13 +52,15 @@ class MediaManagerTest extends \PHPUnit_Framework_TestCase
                        $this->equalTo(false)
                    );
 
-        $filesystem->expects($this->at(0))
+        $this->filesystem->expects($this->at(0))
                    ->method('has')
                    ->will($this->returnValue(false));
 
-        $filesystem->expects($this->at(2))
+        $this->filesystem->expects($this->at(2))
                    ->method('has')
                    ->will($this->returnValue(true));
+
+        $media = $this->getMediaMock($this->getFileMock());
 
         $media->expects($this->any())
               ->method('getFilename')
@@ -58,21 +82,22 @@ class MediaManagerTest extends \PHPUnit_Framework_TestCase
               ->method('setMimeType')
               ->with($this->equalTo('image/jpeg'));
 
-        $target->handle($media, 'foo');
+        $this->manager->handle($media, 'foo');
     }
 
     /**
-     * @test
+     * Test related method
      */
-    public function itShouldRemoveAFileIfMediaIsRemoved()
+    public function testRemoveAFileIfMediaIsRemoved()
     {
-        $filesystem = $this->getFilesystemMock();
-        $target     = $this->getTargetedClass($filesystem);
-        $media      = $this->getMediaMock();
-
-        $filesystem->expects($this->any())
+        $this->filesystem->expects($this->any())
                    ->method('has')
                    ->will($this->returnValue(true));
+
+        $this->filesystem->expects($this->once())
+                   ->method('delete');
+
+        $media = $this->getMediaMock();
 
         $media->expects($this->any())
               ->method('isRemoved')
@@ -82,48 +107,42 @@ class MediaManagerTest extends \PHPUnit_Framework_TestCase
             ->method('getFilename')
             ->will($this->returnValue('foo.jpg'));
 
-        $filesystem->expects($this->once())
-                   ->method('delete');
-
-        $target->handle($media, '');
+        $this->manager->handle($media, '');
     }
 
-    private function getTargetedClass($filesystem)
+    /**
+     * Test related method
+     */
+    public function testExportMedia()
     {
-        $name = 'foo';
-        $filesystemMap = $this->getFilesystemMapMock($name, $filesystem);
+        @mkdir($this->uploadDir, 0777, true);
+        file_put_contents($this->uploadDir . '/phpunit-file.txt', 'Lorem ipsum');
 
-        return new MediaManager($filesystemMap, $name, '/tmp/upload');
+        $media = $this->getMediaMock();
+        $media->expects($this->any())
+            ->method('getFilePath')
+            ->will($this->returnValue($this->uploadDir . '/phpunit-file.txt'));
+        $media->expects($this->any())
+            ->method('getFilename')
+            ->will($this->returnValue('phpunit-file.txt'));
+
+        $this->assertEquals(
+            '/tmp/behat/phpunit-file.txt',
+            $this->manager->copy($media, '/tmp/behat/')
+        );
+
+        $this->assertFileEquals(
+            $this->uploadDir . '/phpunit-file.txt',
+            '/tmp/behat/phpunit-file.txt'
+        );
     }
 
-    private function getFilesystemMapMock($name, $filesystem)
-    {
-        $filesystemMap = $this
-            ->getMockBuilder('Knp\Bundle\GaufretteBundle\FilesystemMap')
-            ->disableOriginalConstructor()
-            ->setMethods(array('get'))
-            ->getMock();
-
-        $filesystemMap->expects($this->any())
-                      ->method('get')
-                      ->with($this->equalTo($name))
-                      ->will($this->returnValue($filesystem));
-
-        return $filesystemMap;
-    }
-
-    private function getFilesystemMock()
-    {
-        $filesystem = $this
-            ->getMockBuilder('Knp\Bundle\GaufretteBundle\Filesystem')
-            ->setMethods(array('write', 'has', 'delete'))
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        return $filesystem;
-    }
-
-    private function getMediaMock($file = null)
+    /**
+     * @param mixed $file
+     *
+     * @return \Oro\Bundle\FlexibleEntityBundle\Entity\Media
+     */
+    protected function getMediaMock($file = null)
     {
         $media = $this->getMock('Oro\Bundle\FlexibleEntityBundle\Entity\Media');
 
@@ -134,7 +153,10 @@ class MediaManagerTest extends \PHPUnit_Framework_TestCase
         return $media;
     }
 
-    private function getFileMock()
+    /**
+     * @return \Symfony\Component\HttpFoundation\File\UploadedFile
+     */
+    protected function getFileMock()
     {
         $file = $this
             ->getMockBuilder('Symfony\Component\HttpFoundation\File\UploadedFile')
@@ -142,7 +164,7 @@ class MediaManagerTest extends \PHPUnit_Framework_TestCase
             ->getMock();
 
         $bundle = new \ReflectionClass('Pim\Bundle\CatalogBundle\PimCatalogBundle');
-        
+
         $file->expects($this->any())
              ->method('getPathname')
              ->will($this->returnValue(sprintf('%s/Tests/fixtures/akeneo.jpg', dirname($bundle->getFileName()))));
@@ -156,5 +178,18 @@ class MediaManagerTest extends \PHPUnit_Framework_TestCase
              ->will($this->returnValue('image/jpeg'));
 
         return $file;
+    }
+
+    /**
+     * @return \Knp\Bundle\GaufretteBundle\Filesystem
+     */
+    protected function getFilesystemMock()
+    {
+        $filesystem = $this
+            ->getMockBuilder('Gaufrette\Filesystem')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        return $filesystem;
     }
 }

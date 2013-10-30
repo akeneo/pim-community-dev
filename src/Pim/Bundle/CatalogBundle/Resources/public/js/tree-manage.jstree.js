@@ -24,9 +24,7 @@ define(
                     'json_data',
                     'ui',
                     'crrm',
-                    'types',
-                    'dnd',
-                    'contextmenu'
+                    'types'
                 ],
                 contextmenu: {
                     items: {
@@ -40,7 +38,7 @@ define(
                         'url': Routing.generate('pim_catalog_categorytree_listtree', { '_format': 'json', 'select_node_id': selectedNode })
                     },
                     'auto_open_root': true,
-                    'node_label_field': 'title',
+                    'node_label_field': 'label',
                     'no_tree_message': _.__('jstree.no_tree'),
                     'preselect_node_id': selectedNode
                 },
@@ -83,7 +81,12 @@ define(
                     'select_multiple_modifier': false
                 }
             };
-
+            if ($el.attr("data-movable")) {
+                this.config.plugins.push("dnd")
+            } 
+            if ($el.attr("data-creatable")) {
+                this.config.plugins.push("contextmenu")
+            } 
             this.init = function () {
                 $el.jstree(this.config).bind('move_node.jstree', function (e, data) {
                     var this_jstree = $.jstree._focused();
@@ -145,9 +148,9 @@ define(
                     var id       = data.rslt.parent.attr('id').replace('node_', ''),
                         url      = Routing.generate('pim_catalog_categorytree_create', { parent: id }),
                         position = data.rslt.position,
-                        title    = data.rslt.name;
+                        label    = data.rslt.name;
 
-                    url = url + '?title=' + title + '&position=' + position;
+                    url = url + '?label=' + label + '&position=' + position;
                     loadingMask.show();
                     $.ajax({
                         async: true,

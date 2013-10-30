@@ -41,7 +41,7 @@ class AttributeGroupTypeTest extends AbstractFormTypeTest
     public function testFormCreate()
     {
         // Assert fields
-        $this->assertField('name', 'pim_translatable_field');
+        $this->assertField('label', 'pim_translatable_field');
         $this->assertField('sort_order', 'hidden');
 
         // Assert option class

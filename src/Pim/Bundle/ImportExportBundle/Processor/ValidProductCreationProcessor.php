@@ -2,20 +2,21 @@
 
 namespace Pim\Bundle\ImportExportBundle\Processor;
 
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Form\FormFactoryInterface;
 use Oro\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
+use Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
+use Oro\Bundle\BatchBundle\Entity\StepExecution;
+use Oro\Bundle\BatchBundle\Item\InvalidItemException;
 use Pim\Bundle\ImportExportBundle\Exception\InvalidObjectException;
-use Pim\Bundle\ImportExportBundle\Validator\Constraints\Channel;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\ImportExportBundle\Converter\ProductEnabledConverter;
 use Pim\Bundle\ImportExportBundle\Converter\ProductFamilyConverter;
-use Pim\Bundle\ImportExportBundle\Converter\ProductValueConverter;
+use Pim\Bundle\ImportExportBundle\Converter\ProductGroupsConverter;
 use Pim\Bundle\ImportExportBundle\Converter\ProductCategoriesConverter;
+use Pim\Bundle\ImportExportBundle\Converter\ProductErrorConverter;
 
 /**
  * Product form processor
@@ -25,7 +26,8 @@ use Pim\Bundle\ImportExportBundle\Converter\ProductCategoriesConverter;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ValidProductCreationProcessor extends AbstractConfigurableStepElement implements ItemProcessorInterface
+class ValidProductCreationProcessor extends AbstractConfigurableStepElement implements ItemProcessorInterface,
+ StepExecutionAwareInterface
 {
     /**
      * @var FormFactoryInterface $formFactory
@@ -36,11 +38,6 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
      * @var ProductManager $productManager
      */
     protected $productManager;
-
-    /**
-     * @var ChannelManager $channelManager
-     */
-    protected $channelManager;
 
     /**
      * @var LocaleManager $localeManager
@@ -63,28 +60,24 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
     protected $familyColumn  = 'family';
 
     /**
-     * @Assert\NotBlank
-     * @Channel
+     * @var string
      */
-    protected $channel;
+    protected $groupsColumn  = 'groups';
 
     /**
      * Constructor
      *
      * @param FormFactoryInterface $formFactory
      * @param ProductManager       $productManager
-     * @param ChannelManager       $channelManager
      * @param LocaleManager        $localeManager
      */
     public function __construct(
         FormFactoryInterface $formFactory,
         ProductManager $productManager,
-        ChannelManager $channelManager,
         LocaleManager $localeManager
     ) {
         $this->formFactory    = $formFactory;
         $this->productManager = $productManager;
-        $this->channelManager = $channelManager;
         $this->localeManager  = $localeManager;
     }
 
@@ -129,6 +122,26 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
     }
 
     /**
+     * Set the groups column
+     *
+     * @param string $groupsColumn
+     */
+    public function setGroupsColumn($groupsColumn)
+    {
+        $this->groupsColumn = $groupsColumn;
+    }
+
+    /**
+     * Get the categories column
+     *
+     * @return string
+     */
+    public function getGroupsColumn()
+    {
+        return $this->groupsColumn;
+    }
+
+    /**
      * Set the family column
      *
      * @param string $familyColumn
@@ -146,25 +159,6 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
     public function getFamilyColumn()
     {
         return $this->familyColumn;
-    }
-
-    /**
-     * Set channel
-     *
-     * @param string $channel
-     */
-    public function setChannel($channel)
-    {
-        $this->channel = $channel;
-    }
-
-    /**
-     * Get channel
-     * @return string
-     */
-    public function getChannel()
-    {
-        return $this->channel;
     }
 
     /**
@@ -200,7 +194,21 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
         $form    = $this->createAndSubmitForm($product, $item);
 
         if (!$form->isValid()) {
-            throw new InvalidObjectException($form);
+
+            $converter = new ProductErrorConverter();
+            $warnings = $converter->convert($form);
+            if (!empty($warnings)) {
+                throw new InvalidItemException(
+                    sprintf(
+                        'Product %s : %s',
+                        (string) $product->getIdentifier(),
+                        implode(',', $warnings)
+                    ),
+                    $item
+                );
+            } else {
+                throw new InvalidObjectException($form);
+            }
         }
 
         return $product;
@@ -213,17 +221,11 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
     {
         return array(
             'enabled'             => array(
-                'type' => 'checkbox',
+                'type' => 'switch',
             ),
             'categoriesColumn'    => array(),
             'familyColumn'        => array(),
-            'channel'             => array(
-                'type' => 'choice',
-                'options' => array(
-                    'choices'  => $this->channelManager->getChannelChoices(),
-                    'required' => true
-                )
-            )
+            'groupsColumn'         => array(),
         );
     }
 
@@ -238,35 +240,81 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
     {
         $product = $this->productManager->findByIdentifier(reset($item));
         if (!$product) {
-            $product = $this->productManager->createFlexible();
-        } else {
-            $product->getCategories()->count();
+            $product = $this->productManager->createProduct();
         }
 
-        $product->setScope($this->channel);
-        foreach (array_keys($item) as $code) {
-            $locale = null;
+        foreach (array_keys($item) as $key) {
 
-            if (in_array($code, array($this->categoriesColumn, $this->familyColumn))) {
+            if (in_array($key, array($this->categoriesColumn, $this->familyColumn, $this->groupsColumn))) {
                 continue;
             }
 
-            if (strpos($code, '-')) {
-                list($code, $locale) = explode('-', $code);
-            }
+            list($code, $locale, $scope) = $this->parseProductValueKey($product, $key);
 
-            if ($locale) {
-                $product->setLocale($locale);
-            }
-
-            if (false === $product->{'get'.ucfirst($code)}()) {
-                $product->{'set'.ucfirst($code)}(null);
+            if (false === $product->getValue($code, $locale, $scope)) {
+                $value = $product->createValue($code, $locale, $scope);
+                $product->addValue($value);
             }
         }
 
-        $this->productManager->addMissingPrices($product);
-
         return $product;
+    }
+
+    /**
+     * Return attribute, locale and scope code
+     *
+     * @param Product $product
+     * @param string  $key
+     *
+     * @return array
+     */
+    protected function parseProductValueKey($product, $key)
+    {
+        $tokens = explode('-', $key);
+        $code   = $tokens[0];
+        $locale = null;
+        $scope  = null;
+
+        $allAttributes = $product->getAllAttributes();
+        if (!isset($allAttributes[$code])) {
+            throw new \Exception(sprintf('Unknown attribute "%s"', $code));
+        }
+        $attribute = $allAttributes[$code];
+
+        if ($attribute->getScopable() && $attribute->getTranslatable()) {
+            if (count($tokens) < 3) {
+                throw new \Exception(
+                    sprintf(
+                        'The column "%s" must contains attribute, locale and scope codes',
+                        $key
+                    )
+                );
+            }
+            $locale = $tokens[1];
+            $scope  = $tokens[2];
+        } elseif ($attribute->getScopable()) {
+            if (count($tokens) < 2) {
+                throw new \Exception(
+                    sprintf(
+                        'The column "%s" must contains attribute and scope codes',
+                        $key
+                    )
+                );
+            }
+            $scope = $tokens[1];
+        } elseif ($attribute->getTranslatable()) {
+            if (count($tokens) < 2) {
+                throw new \Exception(
+                    sprintf(
+                        'The column "%s" must contains attribute and locale codes',
+                        $key
+                    )
+                );
+            }
+            $locale = $tokens[1];
+        }
+
+        return array($code, $locale, $scope);
     }
 
     /**
@@ -289,11 +337,15 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
         );
 
         $item[ProductEnabledConverter::ENABLED_KEY] = $this->enabled;
-        $item[ProductValueConverter::SCOPE_KEY]     = $this->channel;
 
         if (array_key_exists($this->familyColumn, $item)) {
             $item[ProductFamilyConverter::FAMILY_KEY] = $item[$this->familyColumn];
             unset($item[$this->familyColumn]);
+        }
+
+        if (array_key_exists($this->groupsColumn, $item)) {
+            $item[ProductGroupsConverter::GROUPS_KEY] = $item[$this->groupsColumn];
+            unset($item[$this->groupsColumn]);
         }
 
         if (array_key_exists($this->categoriesColumn, $item)) {
@@ -324,13 +376,19 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
             $familyCode = null;
         }
 
-        $requiredValues = $this->getRequiredValues($product, $familyCode);
+        if (array_key_exists(ProductGroupsConverter::GROUPS_KEY, $values)) {
+            $groupCodes = $values[ProductGroupsConverter::GROUPS_KEY];
+        } else {
+            $groupCodes = null;
+        }
+
+        $requiredValues = $this->getRequiredValues($product, $familyCode, $groupCodes);
 
         $excludedKeys = array(
             ProductEnabledConverter::ENABLED_KEY,
-            ProductValueConverter::SCOPE_KEY,
             ProductFamilyConverter::FAMILY_KEY,
-            ProductCategoriesConverter::CATEGORIES_KEY
+            ProductCategoriesConverter::CATEGORIES_KEY,
+            ProductGroupsConverter::GROUPS_KEY
         );
 
         foreach ($values as $key => $value) {
@@ -343,28 +401,20 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
     }
 
     /**
-     * Get required values for a product based on the existing attributes and the family
+     * Get required values for a product based on the existing attributes, the family and the groups
      *
      * @param ProductInterface $product
      * @param string           $familyCode
+     * @param string           $groupCodes
      *
      * @return array
      */
-    private function getRequiredValues(ProductInterface $product, $familyCode = null)
+    private function getRequiredValues(ProductInterface $product, $familyCode = null, $groupCodes = null)
     {
         $requiredAttributes = array();
 
-        if ($familyCode !== null) {
-            $family = $this->productManager->getStorageManager()->getRepository('PimCatalogBundle:Family')->findOneBy(
-                array(
-                    'code' => $familyCode
-                )
-            );
-
-            if ($family) {
-                $requiredAttributes = $family->getAttributes()->toArray();
-            }
-        }
+        $requiredAttributes = $this->getRequiredAttributesFromFamily($familyCode);
+        $requiredAttributes = array_merge($requiredAttributes, $this->getRequiredAttributesFromGroups($groupCodes));
 
         if ($product->getId()) {
             foreach ($product->getValues() as $value) {
@@ -393,5 +443,63 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
         }
 
         return array_unique($requiredValues);
+    }
+
+    /**
+     * @param string $familyCode
+     *
+     * @return array
+     */
+    private function getRequiredAttributesFromFamily($familyCode)
+    {
+        if ($familyCode !== null) {
+            $storageManager = $this->productManager->getStorageManager();
+            $family = $storageManager->getRepository('PimCatalogBundle:Family')->findOneBy(
+                array(
+                    'code' => $familyCode
+                )
+            );
+
+            if ($family) {
+                return $family->getAttributes()->toArray();
+            }
+        }
+
+        return array();
+    }
+
+    /**
+     * @param array $groupCodes
+     *
+     * @return array
+     */
+    private function getRequiredAttributesFromGroups($groupCodes)
+    {
+        $requiredAttributes = array();
+        if ($groupCodes !== null) {
+            $groupCodes = explode(',', $groupCodes);
+            $storageManager = $this->productManager->getStorageManager();
+            foreach ($groupCodes as $code) {
+                $group = $storageManager->getRepository('PimCatalogBundle:Group')->findOneBy(
+                    array(
+                        'code' => $code
+                    )
+                );
+
+                if ($group) {
+                    $requiredAttributes = array_merge($requiredAttributes, $group->getAttributes()->toArray());
+                }
+            }
+        }
+
+        return $requiredAttributes;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setStepExecution(StepExecution $stepExecution)
+    {
+        $this->stepExecution = $stepExecution;
     }
 }

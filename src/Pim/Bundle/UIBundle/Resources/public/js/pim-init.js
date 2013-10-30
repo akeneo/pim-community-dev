@@ -9,6 +9,7 @@ define(
                 return
             }
             initialized = true;
+
             function pageInit() {
                 // Place code that we need to run on every page load here
 
@@ -42,7 +43,17 @@ define(
                 // Save and restore activated form tabs and groups
                 function saveFormState() {
                     var activeTab   = $('#form-navbar').find('li.active').find('a').attr('href'),
-                        activeGroup = $('.tab-groups').find('li.tab.active').find('a').attr('href');
+                        $activeGroup = $('.tab-pane.active').find('.tab-groups').find('li.active').find('a'),
+                        activeGroup;
+
+                    if ($activeGroup.length) {
+                        activeGroup = $activeGroup.attr('href');
+                        if (!activeGroup || activeGroup === '#' || activeGroup.indexOf('javascript') === 0) {
+                            activeGroup = $activeGroup.attr('id') ? '#' + $activeGroup.attr('id') : null;
+                        }
+                    } else {
+                        activeGroup = null;
+                    }
 
                     if (activeTab) {
                         sessionStorage.activeTab = activeTab;
@@ -67,6 +78,12 @@ define(
                         if ($activeGroup.length && !$('.loading-mask').is(':visible')) {
                             $activeGroup.tab('show');
                             sessionStorage.removeItem('activeGroup');
+                        } else {
+                            var $tree = $('[data-selected-tree]');
+                            if ($tree.length && !$('.loading-mask').is(':visible')) {
+                                $tree.attr('data-selected-tree', sessionStorage.activeGroup.match(/\d/g).join(''));
+                                sessionStorage.removeItem('activeGroup');
+                            }
                         }
                     }
                 }
@@ -96,7 +113,7 @@ define(
                     }
                 });
                 $('.attribute-field.translatable').each(function () {
-                    $(this).find('div.controls').find('.icons-container').append($localizableIcon.clone().tooltip());
+                    $(this).find('div.controls').find('.icons-container').eq(0).prepend($localizableIcon.clone().tooltip());
                 });
 
                 $('form').on('change', 'input[type="file"]', function () {
@@ -137,6 +154,7 @@ define(
                     $(this).hide();
                 });
             }
+
             $(function(){
                 if ($.isPlainObject($.uniform)) {
                     $.uniform.restore();

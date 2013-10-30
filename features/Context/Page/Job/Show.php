@@ -20,7 +20,7 @@ class Show extends BaseIndex
      */
     public function getPropertyErrorMessage($property)
     {
-        $error = $this->find('css', sprintf('li:contains("%s") span.label-important', ucfirst($property)));
+        $error = $this->find('css', sprintf('tr:contains("%s") span.label-important', ucfirst($property)));
 
         if (!$error) {
             throw new \InvalidArgumentException(sprintf('Could not find the %s property', $property));

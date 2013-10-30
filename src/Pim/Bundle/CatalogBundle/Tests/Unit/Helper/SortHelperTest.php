@@ -49,7 +49,6 @@ class SortHelperTest extends \PHPUnit_Framework_TestCase
     public function testSortByProperty($values, $expectedValues)
     {
         $property = 'label';
-        $unsortedValues = array();
 
         // transform values to objects
         foreach ($values as $key => $value) {
@@ -60,7 +59,7 @@ class SortHelperTest extends \PHPUnit_Framework_TestCase
 
         $sortedValues = SortHelper::sortByProperty($values, $property);
         foreach ($expectedValues as $key => $expectedValue) {
-            $this->assertEquals($expectedValue, $values[$key]->$property);
+            $this->assertEquals($expectedValue, $sortedValues[$key]->$property);
         }
     }
 

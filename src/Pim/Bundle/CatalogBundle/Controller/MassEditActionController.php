@@ -13,7 +13,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-use Oro\Bundle\UserBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\GridBundle\Action\MassAction\MassActionParametersParser;
 use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
 
@@ -28,13 +28,6 @@ use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * @Acl(
- *      id="pim_catalog_mass_edit",
- *      name="Product mass edit actions",
- *      description="Product mass edit actions",
- *      parent="pim_catalog"
- * )
  */
 class MassEditActionController extends AbstractDoctrineController
 {
@@ -101,12 +94,7 @@ class MassEditActionController extends AbstractDoctrineController
      * @param Request $request
      *
      * @Template
-     * @Acl(
-     *      id="pim_catalog_mass_edit_choose",
-     *      name="Choose action",
-     *      description="Choose action",
-     *      parent="pim_catalog_mass_edit"
-     * )
+     * @AclAncestor("pim_catalog_mass_edit_choose")
      * @return template|RedirectResponse
      */
     public function chooseAction(Request $request)
@@ -141,12 +129,7 @@ class MassEditActionController extends AbstractDoctrineController
      * @param Request $request
      * @param string  $operationAlias
      *
-     * @Acl(
-     *      id="pim_catalog_mass_edit_configure",
-     *      name="Configure action",
-     *      description="Configure action",
-     *      parent="pim_catalog_mass_edit"
-     * )
+     * @AclAncestor("pim_catalog_mass_edit_configure")
      * @throws NotFoundHttpException
      * @return template|RedirectResponse
      */
@@ -186,12 +169,7 @@ class MassEditActionController extends AbstractDoctrineController
      * @param Request $request
      * @param string  $operationAlias
      *
-     * @Acl(
-     *      id="pim_catalog_mass_edit_perform",
-     *      name="Perform action",
-     *      description="Perform action",
-     *      parent="pim_catalog_mass_edit"
-     * )
+     * @AclAncestor("pim_catalog_mass_edit_perform")
      * @throws NotFoundHttpException
      * @return template|RedirectResponse
      */

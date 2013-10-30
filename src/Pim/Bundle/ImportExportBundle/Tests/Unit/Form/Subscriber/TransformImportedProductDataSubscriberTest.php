@@ -15,23 +15,31 @@ use Pim\Bundle\ImportExportBundle\Form\Subscriber\TransformImportedProductDataSu
  */
 class TransformImportedProductDataSubscriberTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         $this->productEnabledConverter    = $this->getConverterMock('ProductEnabledConverter');
         $this->productValueConverter      = $this->getConverterMock('ProductValueConverter');
         $this->productFamilyConverter     = $this->getConverterMock('ProductFamilyConverter');
         $this->productCategoriesConverter = $this->getConverterMock('ProductCategoriesConverter');
+        $this->productGroupsConverter     = $this->getConverterMock('ProductGroupsConverter');
 
         $this->subscriber = new TransformImportedProductDataSubscriber(
             $this->productEnabledConverter,
             $this->productValueConverter,
             $this->productFamilyConverter,
-            $this->productCategoriesConverter
+            $this->productCategoriesConverter,
+            $this->productGroupsConverter
         );
 
         $this->form = $this->getFormMock();
     }
 
+    /**
+     * Test related method
+     */
     public function testInstanceOfEventSubscriber()
     {
         $this->assertInstanceOf(
@@ -40,6 +48,9 @@ class TransformImportedProductDataSubscriberTest extends \PHPUnit_Framework_Test
         );
     }
 
+    /**
+     * Test related method
+     */
     public function testSubscribedEvent()
     {
         $this->assertEquals(
@@ -48,6 +59,9 @@ class TransformImportedProductDataSubscriberTest extends \PHPUnit_Framework_Test
         );
     }
 
+    /**
+     * Test related method
+     */
     public function testTransformImportedData()
     {
         $event = new FormEvent($this->form, array());
@@ -72,6 +86,11 @@ class TransformImportedProductDataSubscriberTest extends \PHPUnit_Framework_Test
             ->method('convert')
             ->will($this->returnValue(array('categories' => array(1, 2, 3))));
 
+        $this->productGroupsConverter
+            ->expects($this->any())
+            ->method('convert')
+            ->will($this->returnValue(array('groups' => 1)));
+
         $this->subscriber->preSubmit($event);
 
         $data = $event->getData();
@@ -80,6 +99,7 @@ class TransformImportedProductDataSubscriberTest extends \PHPUnit_Framework_Test
         $this->assertArrayHasKey('values', $data);
         $this->assertArrayHasKey('family', $data);
         $this->assertArrayHasKey('categories', $data);
+        $this->assertArrayHasKey('groups', $data);
 
         $this->assertEquals('1', $data['enabled']);
         $this->assertEquals(array('sku' => 'sku-001'), $data['values']);
@@ -87,6 +107,25 @@ class TransformImportedProductDataSubscriberTest extends \PHPUnit_Framework_Test
         $this->assertEquals(array(1, 2, 3), $data['categories']);
     }
 
+    /**
+     * @expectedException Oro\Bundle\BatchBundle\Item\InvalidItemException
+     * @expectedExceptionMessage So wrong!
+     */
+    public function testConvertInvalidArgumentIntoInvalidItemException()
+    {
+        $event = new FormEvent($this->form, array());
+
+        $this->productEnabledConverter
+            ->expects($this->any())
+            ->method('convert')
+            ->will($this->throwException(new \InvalidArgumentException('So wrong!')));
+
+        $this->subscriber->preSubmit($event);
+    }
+
+    /**
+     * @return \Symfony\Component\Form\Form
+     */
     protected function getFormMock()
     {
         return $this
@@ -95,6 +134,11 @@ class TransformImportedProductDataSubscriberTest extends \PHPUnit_Framework_Test
             ->getMock();
     }
 
+    /**
+     * @param string $class
+     *
+     * @return \Pim\Bundle\ImportExportBundle\Converter\mixed
+     */
     protected function getConverterMock($class)
     {
         return $this

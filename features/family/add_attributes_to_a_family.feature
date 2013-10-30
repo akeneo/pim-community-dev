@@ -11,8 +11,8 @@ Feature: Add attribute to a family
       | Bags       |
       | Jewels     |
     And the following attribute group:
-      | name    |
-      | General |
+      | code    | label   |
+      | general | General |
 
   Scenario: Successfully list available grouped attributes
     Given the following product attributes:

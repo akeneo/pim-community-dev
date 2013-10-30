@@ -3,8 +3,16 @@
     {% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
 {% endif %}
 {% endspaceless %}
-<form id="pim_catalog_product_create" method="POST" class="form-horizontal" data-title="{{ 'Create a new product'|trans }}" data-button-submit="{{ 'btn.save'|trans|capitalize }}" data-button-cancel="{{ 'btn.cancel'|trans|capitalize }}" action="{{ path('pim_catalog_product_create', { dataLocale: dataLocale }) }}" {{ form_enctype(form) }}>
 
+{{ form_start(form, {
+    'action': path('pim_catalog_product_create', { dataLocale: dataLocale }),
+    'class': 'form-inline',
+    'attr': {
+        'data-title': 'Create a new product'|trans,
+        'data-button-submit': 'btn.save'|trans|capitalize,
+        'data-button-cancel': 'btn.cancel'|trans|capitalize
+    }
+}) }}
     {{ JSFV(form) }}
 
     {{ elements.form_errors(form) }}
@@ -15,5 +23,4 @@
         {{ form_row(form.family, { attr: { 'data-placeholder': 'Choose a family'|trans }}) }}
         {{ form_row(form._token) }}
     </div>
-
 </form>

@@ -17,4 +17,9 @@ interface ActionInterface extends OroActionInterface
      * @staticvar string
      */
     const TYPE_TAB_REDIRECT = "pim_grid_action_tab_redirect";
+
+    /**
+     * @staticvar string
+     */
+    const TYPE_PRODUCT_DELETE = 'pim_grid_action_product_delete';
 }

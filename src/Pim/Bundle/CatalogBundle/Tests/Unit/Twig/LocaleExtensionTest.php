@@ -24,9 +24,7 @@ class LocaleExtensionTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $localeHelper          = $this->getLocaleHelperMock();
-        $localeManager         = $this->getLocaleManagerMock('fr_FR');
-        $this->localeExtension = new LocaleExtension($localeManager, $localeHelper);
+        $this->localeExtension = new LocaleExtension($this->getLocaleHelperMock());
     }
 
     /**
@@ -37,48 +35,92 @@ class LocaleExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('pim_locale_extension', $this->localeExtension->getName());
     }
 
-    public function testLocalizedLabel()
+    /**
+     * Test related method
+     */
+    public function testLocaleLabel()
     {
-        $this->assertEquals('fr_FR', $this->localeExtension->localizedLabel('fr_FR'));
+        $this->assertEquals('en_US', $this->localeExtension->localeLabel('en_US'));
     }
 
+    /**
+     * Test related method
+     */
+    public function testFlag()
+    {
+        $this->assertEquals('en_US', $this->localeExtension->flag('en_US'));
+    }
+
+    /**
+     * Test related method
+     */
+    public function testCurrencySymbol()
+    {
+        $this->assertEquals('USD', $this->localeExtension->currencySymbol('USD'));
+    }
+
+    /**
+     * Test related method
+     */
+    public function testLocaleCurrency()
+    {
+        $this->assertEquals('USD', $this->localeExtension->localeCurrency());
+    }
+
+    /**
+     * Test related method
+     */
     public function testGetFunctions()
     {
         $twigFunctions = $this->localeExtension->getFunctions();
 
-        $this->assertArrayHasKey('localizedLabel', $twigFunctions);
-        $this->assertTrue(method_exists($this->localeExtension, 'localizedLabel'));
-        $this->assertInstanceOf('\Twig_Function_Method', $twigFunctions['localizedLabel']);
-    }
+        $this->assertArrayHasKey('locale_label', $twigFunctions);
+        $this->assertTrue(method_exists($this->localeExtension, 'localeLabel'));
+        $this->assertInstanceOf('\Twig_Function_Method', $twigFunctions['locale_label']);
 
-    protected function getLocaleHelperMock()
-    {
-        $helper = $this->getMock('Pim\Bundle\CatalogBundle\Helper\LocaleHelper');
+        $this->assertArrayHasKey('currency_symbol', $twigFunctions);
+        $this->assertTrue(method_exists($this->localeExtension, 'currencySymbol'));
+        $this->assertInstanceOf('\Twig_Function_Method', $twigFunctions['currency_symbol']);
 
-        $helper->expects($this->any())
-            ->method('getLocalizedLabel')
-            ->will($this->returnArgument(0));
-
-        return $helper;
+        $this->assertArrayHasKey('locale_currency', $twigFunctions);
+        $this->assertTrue(method_exists($this->localeExtension, 'localeCurrency'));
+        $this->assertInstanceOf('\Twig_Function_Method', $twigFunctions['locale_currency']);
     }
 
     /**
-     * Create locale manager
-     *
-     * @return \Pim\Bundle\CatalogBundle\Manager\LocaleManager
+     * Test related method
      */
-    protected function getLocaleManagerMock($code)
+    public function testGetFilters()
     {
-        $localeManager = $this
-            ->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\LocaleManager')
+        $twigFilters = $this->localeExtension->getFilters();
+
+        $this->assertArrayHasKey('flag', $twigFilters);
+        $this->assertTrue(method_exists($this->localeExtension, 'flag'));
+        $this->assertInstanceOf('\Twig_Filter_Method', $twigFilters['flag']);
+    }
+    /**
+     * Get LocaleHelperMock
+     *
+     * @return \Pim\Bundle\CatalogBundle\Helper\LocaleHelper
+     */
+    protected function getLocaleHelperMock()
+    {
+        $helper = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Helper\LocaleHelper')
             ->disableOriginalConstructor()
             ->getMock();
+        $helper->expects($this->any())
+            ->method('getLocaleLabel')
+            ->will($this->returnArgument(0));
+        $helper->expects($this->any())
+            ->method('getLocaleCurrency')
+            ->will($this->returnValue('USD'));
+        $helper->expects($this->any())
+            ->method('getFlag')
+            ->will($this->returnArgument(0));
+        $helper->expects($this->any())
+            ->method('getCurrencySymbol')
+            ->will($this->returnArgument(0));
 
-        $localeManager
-            ->expects($this->any())
-            ->method('getUserLocaleCode')
-            ->will($this->returnValue($code));
-
-        return $localeManager;
+        return $helper;
     }
 }

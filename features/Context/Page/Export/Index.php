@@ -21,7 +21,7 @@ class Index extends JobIndex
     /**
      * @param string $exportLink
      */
-    public function clickExportCreationLink($exportLink)
+    public function clickJobCreationLink($exportLink)
     {
         $this->clickLink('Create export profile');
         $this->clickLink($exportLink);

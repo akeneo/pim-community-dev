@@ -6,22 +6,33 @@ use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\SetImportedProductData
 use Symfony\Component\DependencyInjection\Definition;
 
 /**
+ * Test related class
+ *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class SetImportedProductDataTransformerPassTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         $this->pass = new SetImportedProductDataTransformerPass();
     }
 
+    /**
+     * Test related method
+     */
     public function testInstanceOfCompilerPassInterface()
     {
         $this->assertInstanceOf('Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface', $this->pass);
     }
 
+    /**
+     * Test related method
+     */
     public function testProcessWithOverridedTransformer()
     {
         $productType = new Definition();
@@ -39,6 +50,9 @@ class SetImportedProductDataTransformerPassTest extends \PHPUnit_Framework_TestC
         $this->assertAttributeEquals('the_foo_transformer', 'id', $arguments[3]);
     }
 
+    /**
+     * Test related method
+     */
     public function testProcessWithNonOverridedTransformer()
     {
         $productType = new Definition();
@@ -55,6 +69,9 @@ class SetImportedProductDataTransformerPassTest extends \PHPUnit_Framework_TestC
         $this->assertEquals('arg4', $arguments[3]);
     }
 
+    /**
+     * Test related method
+     */
     public function testProcessWithUnavailableProductType()
     {
         $container = $this->getContainerBuilderMock();
@@ -64,6 +81,11 @@ class SetImportedProductDataTransformerPassTest extends \PHPUnit_Framework_TestC
         $this->pass->process($container);
     }
 
+    /**
+     * @param mixed $definition
+     *
+     * @return \Symfony\Component\DependencyInjection\ContainerBuilder
+     */
     private function getContainerBuilderMock($definition = null)
     {
         $container = $this->getMock('Symfony\Component\DependencyInjection\ContainerBuilder');
@@ -83,10 +105,5 @@ class SetImportedProductDataTransformerPassTest extends \PHPUnit_Framework_TestC
         }
 
         return $container;
-    }
-
-    private function getDefinitionMock()
-    {
-        return $this->getMock('Symfony\Component\DependencyInjection\Definition');
     }
 }

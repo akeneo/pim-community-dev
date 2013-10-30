@@ -3,12 +3,15 @@
 namespace Pim\Bundle\InstallerBundle\DataFixtures\ORM;
 
 use Symfony\Component\Yaml\Yaml;
+
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\CatalogBundle\Entity\AttributeGroupTranslation;
-use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
+
+use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\CatalogBundle\Entity\GroupTranslation;
+use Pim\Bundle\InstallerBundle\DataFixtures\ORM\AbstractInstallerFixture;
 
 /**
- * Load fixtures for attribute groups
+ * Load fixtures for product groups
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -16,12 +19,6 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
  */
 class LoadGroupData extends AbstractInstallerFixture
 {
-    /**
-     * count groups created to order them
-     * @staticvar integer
-     */
-    protected static $order = 0;
-
     /**
      * {@inheritdoc}
      */
@@ -31,9 +28,9 @@ class LoadGroupData extends AbstractInstallerFixture
 
         if (isset($configuration['groups'])) {
             foreach ($configuration['groups'] as $code => $data) {
-                $group = $this->createGroup($code, $data['labels']);
+                $group = $this->createGroup($code, $data);
                 $manager->persist($group);
-                $this->addReference('attribute-group.'.$group->getCode(), $group);
+                $this->addReference('group.'. $group->getCode(), $group);
             }
         }
 
@@ -41,22 +38,30 @@ class LoadGroupData extends AbstractInstallerFixture
     }
 
     /**
-     * Create a group
+     * Create a group entity
      *
      * @param string $code
-     * @param array  $translations
+     * @param array  $data
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\AttributeGroup
+     * @return \Pim\Bundle\CatalogBundle\Entity\Group
      */
-    protected function createGroup($code, $translations)
+    protected function createGroup($code, $data)
     {
-        $group = new AttributeGroup();
+        $type = $this->getReference('group-type.'. $data['type']);
+        $group = new Group();
         $group->setCode($code);
-        $group->setSortOrder(++self::$order);
+        $group->setType($type);
 
-        foreach ($translations as $locale => $label) {
-            $translation = $this->createTranslation($group, $locale, $label);
-            $group->addTranslation($translation);
+        if (isset($data['labels'])) {
+            foreach ($data['labels'] as $locale => $translation) {
+                $this->createTranslation($group, $locale, $translation);
+            }
+        }
+
+        if (isset($data['attributes'])) {
+            foreach ($data['attributes'] as $attribute) {
+                $group->addAttribute($this->getReference('product-attribute.'. $attribute));
+            }
         }
 
         return $group;
@@ -65,20 +70,18 @@ class LoadGroupData extends AbstractInstallerFixture
     /**
      * Create a translation entity
      *
-     * @param AttributeGroup $entity AttributeGroup entity
-     * @param string         $locale Locale used
-     * @param string         $name   Name translated in locale value linked
-     *
-     * @return \Pim\Bundle\CatalogBundle\Entity\AttributeGroupTranslation
+     * @param Group  $group
+     * @param string $locale
+     * @param string $content
      */
-    protected function createTranslation($entity, $locale, $name)
+    protected function createTranslation($group, $locale, $content)
     {
-        $translation = new AttributeGroupTranslation();
-        $translation->setForeignKey($entity);
+        $translation = new GroupTranslation();
+        $translation->setForeignKey($group);
         $translation->setLocale($locale);
-        $translation->setName($name);
+        $translation->setLabel($content);
 
-        return $translation;
+        $group->addTranslation($translation);
     }
 
     /**
@@ -94,6 +97,6 @@ class LoadGroupData extends AbstractInstallerFixture
      */
     public function getOrder()
     {
-        return 5;
+        return 160;
     }
 }

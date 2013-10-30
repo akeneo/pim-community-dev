@@ -67,7 +67,6 @@ class ValidDefaultValueValidatorTest extends \PHPUnit_Framework_TestCase
                     'numberMin'       => 0.01,
                     'numberMax'       => 1000000,
                     'decimalsAllowed' => true,
-                    'negativeAllowed' => false
                 )
             ),
             array(

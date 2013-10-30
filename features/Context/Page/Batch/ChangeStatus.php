@@ -13,21 +13,4 @@ use Context\Page\Base\Wizard;
  */
 class ChangeStatus extends Wizard
 {
-    protected $elements = array(
-        'Products status' => array('css' => '#pim_catalog_mass_edit_action_operation_toEnable')
-    );
-
-    public function enableProducts()
-    {
-        $this->getElement('Products status')->check();
-
-        return $this;
-    }
-
-    public function disableProducts()
-    {
-        $this->getElement('Products status')->uncheck();
-
-        return $this;
-    }
 }

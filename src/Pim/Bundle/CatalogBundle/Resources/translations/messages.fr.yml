@@ -1,334 +1,347 @@
-# Entities
-attribute:       attribut
-attribute group: __attribute group
-category:        __category
-tree:            __tree
-channel:         __channel
-currency:        __currency
-export profile:  __export profile
-family:          __family
-import profile:  __import profile
-locale:          __locale
-product:         produit
-
-# Page header titles
 attribute:
-    overview: aperçu des attributs
-    create:   __create attribute
-    edit:     __edit attribute
+  overview: Liste des attributs
+  create: Créer un attribut
+  edit: Modifier un attribut
 attribute group:
-    overview: __attribute group overview
-    create:   __create attribute group
-    edit:     __edit attribute group
+  overview: "Liste des groupes d'attributs"
+  create: "Créer un groupe d'attributs"
+  edit: "Modifier un groupe d'attributs"
 category:
-    overview: __category overview
-    create:   __create category
-    edit:     __edit category
+  overview: Liste des catégories
+  create: Créer une catégorie
+  edit: Editer une catégorie
 tree:
-    create:   __create tree
-    edit:     __edit tree
+  create: Créer un arbre
+  edit: Editer un arbre
 channel:
-    overview: aperçu des canaux
-    create:   __create channel
-    edit:     modifier un canal
+  overview: Liste des canaux
+  create: Créer un channel
+  edit: Editer un channel
 currency:
-    overview: aperçu des monnaies
-    create:   créer une monnaie
-    edit:     modifier une monnaie
+  overview: Liste des devises
+  create: Créer une monnaie
+  edit: Editer une monnaie
 export profile:
-    overview: __export profile overview
-    create:   __create export profile
-    edit:     __edit export profile
-export report:
-    overview: __export reports
+  overview: "Liste des profils d'export"
+  create: "Créer un profil d'export"
+  edit: "Modifier un profil d'export"
 family:
-    overview: __family overview
-    create:   __create family
-    edit:     __edit family
+  overview: Liste des familles
+  create: Créer une famille
+  edit: Editer une famille
 import profile:
-    overview: __import profile overview
-    create:   __create import profile
-    edit:     __edit import profile
-import report:
-    overview: __import reports
+  overview: "Liste des profils d'import"
+  create: "Créer un profil d'import"
+  edit: "Modifier un profil d'import"
 locale:
-    overview: aperçu des locales
-    create:   __create locale
-    edit:     modifier une locale
+  overview: Liste des locales
+  create: Créer une locale
+  edit: Modifier une locale
 product:
-    overview: __product overview
-    create:   __create product
-    edit:     __edit product
-
-# Custom titles
-products: produits
-
-# Buttons
+  overview: Liste des produits
+  create: Créer un produit
+  edit: Modifier un produit
+group:
+  overview: Liste des groupes
+  create: Créer un groupe
+  edit: Editer un groupe
+association:
+  overview: Liste des associations
+  create: Créer une association
+  edit: Modifier une association
+export report:
+  overview: "Rapports d'exportations"
+import report:
+  overview: "Rapports d'importations"
+products: Produits
 btn:
-    create:
-        attribute:       __create attribute
-        attribute group: __create attribute group
-        category:        __create category
-        tree:            __create tree
-        channel:         __create channel
-        currency:        __create currency
-        export profile:  __create export profile
-        family:          __create family
-        import profile:  __create import profile
-        locale:          __create locale
-        product:         __create product
-    edit:      modifier
-    save:      sauvegarder
-    remove:    __remove
-    delete:    __delete
-    cancel:    __cancel
-    next:      __next
-    back:      __back
-    confirm:   __confirm
-    to grid:   __back to grid
-    to parent: __back to parent
-
-# Confirmation messages
+  create:
+    attribute: Créer un attribut
+    attribute group: "Créer un groupe d'attributs"
+    category: Créer une catégorie
+    tree: Créer un arbre
+    channel: Créer un canal
+    currency: Créer une devise
+    export profile: "Créer un profil d'export"
+    family: Créer une famille
+    import profile: "Créer un profil d'import"
+    locale: Créer une locale
+    product: Créer un produit
+    group: Créer un groupe
+    association: Créer une association
+  edit: Modifier
+  save: Enregistrer
+  remove: Retirer
+  delete: Supprimer
+  cancel: Annuler
+  next: Suivant
+  back: Précédent
+  confirm: Confirmer
+  to grid: Retour à la grille
+  to parent: Retour au parent
 confirmation:
-    delete:          __Delete confirmation
-    leave:           __Are you sure you want to leave this page?
-    discard changes: __You will lose changes to the %entity% if you leave the page.
-    remove:
-        item:            __Are you sure you want to delete this item?
-        attribute:       __Are you sure you want to remove the attribute %name%?
-        attribute group: __Are you sure you want to delete the attribute group %name%?
-        category:        __Are you sure you want to delete the category %name%?
-        family:          __Are you sure you want to remove the family %name%?
-        product:         __Are you sure you want to delete the product %name%?
-        export profile:  __Are you sure you want to delete the export profile %name%?
-        import profile:  __Are you sure you want to delete the import profile %name%?
-
-# Flash messages
+  delete: Confirmation de la suppression
+  leave: Êtes-vous sûr de vouloir quitter cette page?
+  discard changes: "Vous perdrez toutes les modifications apportées à l'objet %entity% si vous quittez cette page."
+  remove:
+    item: Êtes-vous certain de vouloir supprimer cet élément?
+    attribute: "Êtes-vous sûr de vouloir supprimer l'attribut %name% ?"
+    attribute group: "Êtes-vous sûr de vouloir supprimer le groupe d'attributs %name% ?"
+    category: Êtes-vous sûr de vouloir supprimer la catégorie %name% ?
+    family: Êtes-vous sûr de vouloir supprimer la famille %name% ?
+    product: Êtes-vous sûr de vouloir supprimer le produit %name% ?
+    export profile: "Êtes-vous sûr de vouloir supprimer le profil d'export %name% ?"
+    import profile: "Êtes-vous sûr de vouloir supprimer le profil d'export %name%?"
+    channel: Êtes-vous sûr de vouloir supprimer le canal %name% ?
+    group: Êtes-vous sûr de que vouloir supprimer le groupe %name% ?
+    association: "Êtes-vous sûr de que vouloir supprimer l'association %name% ?"
 flash:
-    attribute:
-        created:                  __Attribute successfully created
-        updated:                  __Attribute successfully updated
-        removed:                  __Attribute successfully removed
-        identifier not removable: __Identifier attribute can not be removed
-    attribute group:
-        created:           __Attribute group successfully created
-        updated:           __Attribute group successfully updated
-        removed:           __Attribute group successfully removed
-        attributes added:  __Attributes successfully added to the attribute group
-        attribute removed: __Attribute successfully removed from the attribute group
-    category:
-        created: __Category successfully created
-        updated: __Category successfully updated
-        removed: __Category successfully removed
-    tree:
-        created: __Tree successfully created
-        updated: __Tree successfully updated
-        removed: __Tree successfully removed
-    channel:
-        saved:   __Channel successfully saved
-        removed: __Channel successfully removed
-    currency:
-        updated: __Currency successfully updated
-    family:
-        created:                       __Family successfully created
-        updated:                       __Family successfully updated
-        removed:                       __Family successfully removed
-        identifier not removable:      __Identifier attribute can not be removed from a family
-        label attribute not removable: __This attribute can not be removed because it is used as the label of the family
-        attribute not found:           __The attribute does not belong to this family
-        attributes added:              __Attributes successfully added to the family
-        attribute removed:             __Attribute successfully removed from the family
-    product:
-        created:                  __Product successfully created
-        updated:                  __Product successfully updated
-        removed:                  __Product successfully removed
-        invalid:                  __Please check your entry and try again
-        attributes added:         __Attributes successfully added to the product
-        attribute removed:        __Attribute successfully removed from the product
-        attribute not removable:  __The attribute can not be removed from this product
-    error ocurred: __Action failed. Please retry.
-
-# Info messages
+  entity:
+    removed: "L'entité a été supprimée"
+  attribute:
+    created: Attribut créé avec succès
+    updated: Attribut mis à jour avec succès
+    removed: Attribut supprimé avec succès
+    identifier not removable: Un attribut de type identifiant ne peut pas être supprimé
+  attribute group:
+    created: "Groupe d'attributs créé avec succès"
+    updated: "Groupe d'attributs mis à jour avec succès"
+    removed: "Groupe d'attributs supprimé avec succès"
+    attributes added: "Attributs ajoutés avec succès au groupe d'attributs"
+    attribute removed: "Attribut supprimé avec succès du groupe d'attributs"
+  category:
+    created: Catégorie créée avec succès
+    updated: Catégorie mise à jour avec succès
+    removed: Catégorie supprimée avec succès
+  tree:
+    created: Arborescence créée avec succès
+    updated: Arborescence mise à jour avec succès
+    removed: Arborescence supprimée avec succès
+    not removable: Les arborescences liées à un canal ne peuvent pas être supprimés.
+  channel:
+    saved: Canal sauvegardé avec succès
+    removed: Canal supprimé avec succès
+    not removable: Le dernier canal ne peut pas être supprimé
+  currency:
+    updated: Devise a été mise à jour avec succès
+  family:
+    created: Famille créée avec succès
+    updated: Famille mise à jour avec succès
+    removed: Famille supprimée avec succès
+    identifier not removable: "Un attribut de type identifiant ne peut pas être retiré d'une famille"
+    label attribute not removable: Cet attribut ne peut pas être retiré car il est utilisé comme libellé pour cette famille
+    attribute not found: "Cet attribut n'appartient pas à cette famille"
+    attributes added: Attributs ajoutés avec succès à la famille
+    attribute removed: Attributs retirés avec succès de la famille
+  product:
+    created: Produit crée avec succès
+    updated: Produit mis à jour avec succès
+    removed: Produit supprimé avec succès
+    invalid: Merci de vérifier votre saisie et essayer à nouveau
+    attributes added: Attributs ajoutés avec succès au produit
+    attribute removed: Attribut retirés avec succès du produit
+    attribute not removable: Cet attribut ne peut pas être retiré de ce produit
+  import:
+    removed: "Le profil d'import a été supprimé"
+  export:
+    removed: "L'export a été supprimé"
+  group:
+    created: Groupe créé avec succès
+    updated: Groupe mis à jour avec succès
+    removed: Groupe supprimé avec succès
+  association:
+    created: Association créée avec succès
+    updated: Association mise à jour avec succès
+    removed: Association supprimée avec succès
+  error ocurred: Opération échouée. Merci de réessayer.
 info:
-    updated: __There are unsaved changes.
-    category:
-        remove children: __All sub-categories will be deleted.
-        keep products:   __Products in these categories will not be deleted.
-    product:
-        no available attributes: __There are no more attributes to add
-        change family:           __Change the product family
-        change family to:        __Change the family to
-        merge attributes:        __Current attributes will be merged with the ones in the new family.
-        keep attributes:         __No attributes will be removed.
-
-# Form elements
-Options:                       Options
-Created at:                    Créé le
-Updated at:                    Mis à jour le
-Created:                       Créé
-Updated:                       Mis à jour
-N/A:                           N/A
-Add an option:                 Ajouter une option
-Manage products:               Gestion des produits
-Code:                          Code
-Name:                          Nom
-Type:                          Type
-Scope:                         __Scope
-Required:                      Requis
-Unique:                        Unique
-translatable:                  Traduisible
-Scopable:                      Scopable
-Unique value:                  __Unique value
-Attribute group:               __Attribute group
-Variants behavior when edited: __Variants behavior when edited
-Edit:                          Modifier
-Remove:                        Supprimer
-Delete:                        __Delete
-Parameters:                    __Parameters
-Values:                        __Values
-General parameters:            __General parameters
-Backend parameters:            __Backend parameters
-Label:                         Libellé
-Default label:                 __Default label
-Default value:                 __Default value
-Attributetype:                 Type dattribut
-searchable:                    Recherchable
-Defaultvalue:                  Valeur par défaut
-Variant:                       Variante
-Smart:                         __Smart
-Useable as grid column:        Utilisable comme colonne de grille
-Useable as grid filter:        Utilisable comme filtre de grille
-Family:                        Famille
-Available locales:             Locales disponibles
-Locale specific:               __Locale specific
-Label translations:            __Label translations
-default:                       __Default
-
-Create:               __Create
-Cancel:               __Cancel
-Create a new product: __Create a new product
-Choose a family:      __Choose a family
-
-# Scopes
-Global:  Global
+  updated: "Des modifications n'ont pas encore été sauvegardées."
+  category:
+    remove children: Toutes les sous-catégories vont être supprimées.
+    keep products: Les produits associés à ces catégories ne seront pas supprimés.
+  product:
+    no available attributes: "Il n'y a plus d'attributs disponibles"
+    change family: Changer la famille du produit
+    change family to: Changer la famille pour
+    merge attributes: Les attributs existants seront fusionnés avec ceux de la nouvelle famille.
+    keep attributes: Aucun attribut ne sera supprimé.
+    number of associations: %productCount% produits et %groupCount% groupes
+    enable: Activer
+    enabled: Activé
+    disable: Désactiver
+    disabled: Désactivé
+  group:
+    axis:
+      Variation axis: %attributes%
+    select products: Veuillez sélectionner les produits qui devraient appartenir à ce groupe.
+    selectable products: Les produits sélectionnables suivants ont une valeur définie pour chaque axe.
+  association:
+    show products: Afficher les produits
+    show groups: Afficher les groupes
+    remove from products: "La suppression de l'association l'enlèvera de %count% produits."
+Options: Options
+Created at: Crée le
+Updated at: Mis à jour le
+Created: Créé
+Updated: Mis à jour
+N/A: N/A
+Add an option: Ajouter une option
+Manage products: Gérer les produits
+Manage groups: Gérer les groupes
+Code: Code
+Name: Nom
+Type: Type
+Scope: Portée
+Required: Obligatoire
+Unique: Unique
+translatable: Localisable
+Scopable: Décliné par canal
+Unique value: Valeur unique
+Attribute group: "Groupe d'attributs"
+Variants behavior when edited: "Comportement des variantes lors de l'édition"
+Edit: Modifier
+Remove: Supprimer
+Delete: Supprimer
+Parameters: Paramètres
+Values: Valeurs
+General parameters: Paramètres généraux
+Backend parameters: "Paramètres de l'interface"
+Label: Libellé
+Default label: Libellé par défaut
+Default value: Valeur par défaut
+Attributetype: "Type d'attribut"
+searchable: Recherchable
+Defaultvalue: Valeur par défaut
+Variant: Variante
+Smart: Smart
+Useable as grid column: Utilisable en tant que colonne de la grille
+Useable as grid filter: Utilisable en tant que filtre de la grille
+Family: Famille
+Available locales: Locales disponibles
+Locale specific: Spécifique à une locale
+Label translations: Traductions du libellé
+default: Défaut
+Create: Créer
+Cancel: Annuler
+Create a new product: Créer un nouveau produit
+Choose a family: Choisissez une famille
+Create a new association: Créer une nouvelle association
+Global: Global
 Channel: Canal
-
-# Variants
-Always override:         Toujours écraser
-A selection of variants: Une sélection de variantes
-Ask:                     Demander
-
-# Attribute group
-General Properties: __General Properties
-Group values:       __Group values
-New group:          Nouveau groupe
-Groups overview:    Aperçu des groupes
-
-'Y-m-d h:i:s': 'd/m/Y h:i:s'
-
-# Attribute properties
-Max characters:          __Max characters
-Validation rule:         __Validation rule
-Validation regexp:       __Validation regexp
-Wysiwyg enabled:         __WYSIWYG enabled
-Number min:              __Min number
-Number max:              __Max number
-Decimals allowed:        __Allow decimals
-Negative allowed:        __Allow negative values
-Date type:               __Date type
-Date min:                __Min date
-Date max:                __Max date
-Default currency:        __Default currency
-Metric family:           __Metric family
-Default metric unit:     __Default metric unit
-Max file size:           __Max file size
-Allowed file extensions: __Allowed file extensions
-
-# Family
-Attributes: __Attributes
-
-# Category
-Title:      __Title
-Is dynamic: __Is dynamic
-
-# Page titles
-Dashboard:                                   __Dashboard
-Attribute groups:                            __Attribute groups
-Attribute groups | Create:                   __Attribute groups | Create
-Attribute groups %group.name% | Edit:        __Attribute groups %group.name% | Edit
-Attribute groups | Sort:                     __Attribute groups | Sort
-Category trees:                              __Category trees
-Category trees | List:                       __Category trees | List
-Category trees | Manage:                     __Category trees | Manage
-Category trees | View:                       __Category trees | View
-Category trees | Create:                     __Category trees | Create
-Category trees | Edit:                       __Category trees | Edit
-Export profiles:                             __Export profiles
-Export profiles | Create:                    __Export profiles | Create
-Export profiles %export.label% | Edit:       __Export profiles %export.label% | Edit
-Import profiles:                             __Import profiles
-Import profiles | Create:                    __Import profiles | Create
-Import profiles %import.label% | Edit:       __Import profiles %import.label% | Edit
-Product attributes:                          __Product attributes
-Product attributes | Create:                 __Product attributes | Create
-Product attributes %attribute.label% | Edit: __Product attributes %attribute.label% | Edit
-Products:                                    __Products
-Products | Create:                           __Products | Create
-Products %product.sku% | Edit:               __Products %product.sku% | Edit
-Families:                                    __Families
-Families | Create:                           __Families | Create
-Families %family.label% | Edit:              __Families %family.label% | Edit
-Channels:                                    __Channels
-Channels | Create:                           __Channels | Create
-Channels %channel.name% | Edit:              __Channels %channel.name% | Edit
-Currencies:                                  __Currencies
-Locales:                                     __Locales
-Locales %locale.code% | Edit:                __Locales %locale.code% | Edit
-
-pim_catalog_identifier:       __Identifier
-pim_catalog_text:             __Text
-pim_catalog_textarea:         __Text Area
-pim_catalog_number:           __Number
-pim_catalog_price_collection: __Price
-pim_catalog_multiselect:      __Multi select
-pim_catalog_simpleselect:     __Simple select
-pim_catalog_file:             __File
-pim_catalog_image:            __Image
-pim_catalog_boolean:          __Yes/No
-pim_catalog_date:             __Date
-pim_catalog_metric:           __Metric
-
-# Locales
-Fallback:  Repli
-Activated: Actif
-Edit:      Modifier
-Disable:   Désactiver
-
-# Batch operations
+Always override: Toujours écraser
+Ask: Demander
+General Properties: Propriétés générales
+Group values: Valeurs du groupe
+New group: Nouveau groupe
+Groups overview: Liste des groupes
+"Y-m-d h:i:s": Y-m-d h:i:s
+Max characters: Nombre maximum de caractères
+Validation rule: Règle de validation
+Validation regexp: Expression régulière
+Wysiwyg enabled: Editeur WYSIWYG activé
+Number min: Nombre min
+Number max: Nombre max
+Decimals allowed: Autoriser les nombres décimaux
+Negative allowed: Autoriser les valeurs négatives
+Date type: Type de date
+Date min: Date mini
+Date max: Date maxi
+Default currency: Devise par défaut
+Metric family: Type de mesure
+Default metric unit: Unité de mesure par défaut
+Max file size: Taille de fichier maximale
+Allowed file extensions: Extensions autorisées
+Attributes: Attributs
+Title: Titre
+Is dynamic: Dynamique
+Dashboard: Tableau de bord
+Attribute groups: "Groupes d'attributs"
+Attribute groups | Create: "Groupe d'attributs | Créer"
+Attribute groups %group.label% | Edit: "Groupe d'attribut %group.label% | Modifier"
+Attribute groups | Sort: "Groupe d'attributs | Trier"
+Category trees: Arborescences
+Category trees | List: Arborescences | Liste
+Category trees | Manage: Arborescences | Gérer
+Category trees | View: Arborescences | Vue
+Category trees | Create: Arborescences | Créer
+Category trees | Edit: Arborescences | Modification
+Export profiles: "Profils d'export"
+Export profiles | Create: "Profils d'export | Créer"
+Export profiles %export.label% | Edit: "Profil d'export %export.label% | Modifier"
+Import profiles: "Profils d'import"
+Import profiles | Create: "Profils d'import | Créer"
+Import profiles %import.label% | Edit: "Profil d'import %import.label% | Modifier "
+Product attributes: Attributs produit
+Product attributes | Create: Attributs produit | Créer
+Product attributes %attribute.label% | Edit: Attributs produit %attribute.label% | Modifier
+Products: Produits
+Products | Create: Produits | Créer
+Products %product.sku% | Edit: Produit %product.sku% | Modifier
+Families: Familles
+Families | Create: Familles | Créer
+Families %family.label% | Edit: Famille %family.label% | Modifier
+Channels: Canaux
+Channels | Create: Canaux | Créer
+Channels %channel.label% | Edit: Canal %channel.label% | Modifier
+Currencies: Devises
+Locales: Locales
+Locales %locale.code% | Edit: Locale %locale.code% | Modifier
+Groups: Groupes
+Groups | Create: Groupes | Créer
+Groups %group.label% | Edit: Groupes %group.label% | Edit
+Associations: Associations
+Associations | Create: Associations | Créer
+Associations %association.label% | Edit: Associations %association.label% | Edit
+pim_catalog_identifier: Identifiant
+pim_catalog_text: Texte
+pim_catalog_textarea: Zone de texte (TextArea)
+pim_catalog_number: Nombre
+pim_catalog_price_collection: Prix
+pim_catalog_multiselect: Liste à choix multiple
+pim_catalog_simpleselect: Liste à choix unique
+pim_catalog_file: Fichier
+pim_catalog_image: Image
+pim_catalog_boolean: Oui/Non
+pim_catalog_date: Date
+pim_catalog_metric: Unité de mesure
+Fallback: Langue de repli
+Activated: Activé
+Disable: Désactivé
 pim_catalog.mass_edit_action:
-    page_title:    __Products
-    page_subtitle: __Mass Edit (1 product)|Mass Edit (%count% products)
-    title:         __Choose operation
-    subtitle:      __Choose the operation you wish to perform on the selected product|Choose the operation you wish to perform on the selected %count% products
-    confirm:       __You are about to update a product with the following information, please confirm.|You are about to update %count% products with the following information, please confirm.
-
-    change-status:
-        label:         __Change status (enable / disable)
-        description:   __The selected products will be enabled or disabled.
-        success_flash: __Product(s) status have been changed
-
-    edit-common-attributes:
-        label:         __Edit attributes
-        description:   __The selected product's attributes will be edited with following data for the chosen locale.
-        empty:         __Please select the attribute(s) you want to edit
-        success_flash: __Product(s) attribute(s) have been updated
-
-    classify:
-        label:         __Classify products in categories
-        description:   __The products will be positioned into following categories, the existing placement are kept.
-        success_flash: __Product(s) have been classified into selected categories
-
-    change-family:
-        label:         __Change the family of products
-        description:   __The family of the selected products will be changed to the chosen family
-        success_flash: __The family of selected product(s) has been successfully changed
+  page_title: Produits
+  page_subtitle: Edition de masse (1 produit)|Edition de masse (%count% produits)
+  title: "Choisir l'opération à effectuer"
+  subtitle: "Choisissez l'opération que vous souhaitez effectuer sur le produit sélectionné| Choisissez l'opération que vous souhaitez effectuer sur les %count% produits sélectionnés"
+  confirm: 'Vous êtes sur le point de mettre à jour un produit avec les renseignements suivants, merci de confirmer. |Vous êtes sur le point de mettre à jour  %count% produits avec les renseignements suivants, merci de confirmer.'
+  change-status:
+    label: Changer de statut (activé / désactivé)
+    description: Les produits sélectionnés vont être activés ou désactivés.
+    success_flash: Le statut des produits ont été changés
+  edit-common-attributes:
+    label: Modifier les attributs
+    description: Les attributs sélectionnés vont être modifié avec les valeurs suivantes pour la locale choisie.
+    empty: Veuillez sélectionner le ou les attribut(s) à modifier
+    success_flash: Le(s) attribut(s) ont été mise à jour
+  classify:
+    label: Classer les produits dans des catégories
+    description: "Les produits seront positionnés dans les catégories suivantes, le placement existant avant l'opération sera conservé."
+    success_flash: Le(s) produit(s) ont été classés dans les catégories sélectionnées
+  change-family:
+    label: Changer la famille des produits
+    description: La famille des produits sélectionnés sera remplacée par la famille choisie
+    success_flash: La famille de(s) produit(s) sélectionné(s) a été modifiée avec succès
+pim_catalog.completeness:
+  progress_bar.title: %ratio%% complet (1 valeur requise)|%ratio%% complet (%count% valeurs requises)
+  subtitle: '{0} Complet|{1} 1 valeur manquante|]1,Inf] %count% valeurs manquantes'
+  missing_attributes: Valeur manquante|Valeurs manquantes
+  legend:
+    locale_not_associated: Locale non associée à ce canal
+pim_catalog.group:
+  axis.help: Les axes sont les attributs qui définissent des variantes du groupe. Les axes sont des attributs avec des options, non localisables et sans portées limitées. Il ne peut pas être modifié après la création.
+  type:
+    VARIANT: Variant
+    X_SELL: Vente croisée
+    ADDITIONAL: Supplémentaire
+    RELATED: Associé
+Group: Groupe
+View group: Afficher le groupe

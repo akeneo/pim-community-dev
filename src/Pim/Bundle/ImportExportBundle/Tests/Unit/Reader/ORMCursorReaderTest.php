@@ -5,21 +5,40 @@ namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Reader;
 use Pim\Bundle\ImportExportBundle\Reader\ORMCursorReader;
 
 /**
+ * Test related class
+ *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class ORMCursorReaderTest extends \PHPUnit_Framework_TestCase
 {
-    public function testInstanceOfItemReaderInterface()
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUp()
     {
-        $this->assertInstanceOf('Oro\Bundle\BatchBundle\Item\ItemReaderInterface', new ORMCursorReader());
+        $this->reader = new ORMCursorReader();
+        $this->stepExecution = $this->getStepExecutionMock();
+
+        $this->reader->setStepExecution($this->stepExecution);
     }
 
+    /**
+     * Test related method
+     */
+    public function testIsAConfigurableStepExecutionAwareReader()
+    {
+        $this->assertInstanceOf('Oro\Bundle\BatchBundle\Item\ItemReaderInterface', $this->reader);
+        $this->assertInstanceOf('Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement', $this->reader);
+        $this->assertInstanceOf('Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface', $this->reader);
+    }
+
+    /**
+     * Test related method
+     */
     public function testRead()
     {
-        $reader = new ORMCursorReader();
-        $stepExecution = $this->getStepExecutionMock();
         $query  = $this->getQueryMock();
         $result = $this->getIterableResultMock(
             array(
@@ -33,13 +52,16 @@ class ORMCursorReaderTest extends \PHPUnit_Framework_TestCase
             ->method('iterate')
             ->will($this->returnValue($result));
 
-        $reader->setQuery($query);
-        $this->assertEquals($item1, $reader->read($stepExecution));
-        $this->assertEquals($item2, $reader->read($stepExecution));
-        $this->assertEquals($item3, $reader->read($stepExecution));
-        $this->assertNull($reader->read($stepExecution));
+        $this->reader->setQuery($query);
+        $this->assertEquals($item1, $this->reader->read());
+        $this->assertEquals($item2, $this->reader->read());
+        $this->assertEquals($item3, $this->reader->read());
+        $this->assertNull($this->reader->read());
     }
 
+    /**
+     * @return \octrine\ORM\AbstractQuery
+     */
     private function getQueryMock()
     {
         return $this
@@ -49,6 +71,11 @@ class ORMCursorReaderTest extends \PHPUnit_Framework_TestCase
             ->getMock();
     }
 
+    /**
+     * @param array $results
+     *
+     * @return \Doctrine\ORM\Internal\Hydration\IterableResult
+     */
     private function getIterableResultMock(array $results)
     {
         $mock = $this
@@ -65,6 +92,9 @@ class ORMCursorReaderTest extends \PHPUnit_Framework_TestCase
         return $mock;
     }
 
+    /**
+     * @return \Oro\Bundle\BatchBundle\Entity\StepExecution
+     */
     private function getStepExecutionMock()
     {
         return $this

@@ -33,15 +33,13 @@ class LocaleManagerTest extends WebTestCase
      * Count of all locales
      * @staticvar integer
      */
-    protected static $totalCount = 82;
+    protected static $totalCount = 210;
 
     /**
      * {@inheritdoc}
      */
     protected function setUp()
     {
-        $this->markTestSkipped('Due to locale refactoring PIM-861, to replace by behat scenario');
-
         if (null !== static::$kernel) {
             static::$kernel->shutdown();
         }
@@ -103,7 +101,6 @@ class LocaleManagerTest extends WebTestCase
     public function testGetLocales()
     {
         $locales = $this->localeManager->getLocales();
-        $expectedLocales = static::$activatedLocales;
 
         $this->assertCount(self::$totalCount, $locales);
         foreach ($locales as $locale) {

@@ -1,15 +1,39 @@
 {% extends 'OroUIBundle:Form:fields.html.twig' %}
 
+{% block form_start %}
+{% spaceless %}
+    {% set method = method|upper %}
+    {% if method in ["GET", "POST"] %}
+        {% set form_method = method %}
+    {% else %}
+        {% set form_method = "POST" %}
+    {% endif %}
+    {% set formClass = class is defined ? class : 'form-horizontal' %}
+    {% if attr.class is defined %}
+        {% set class = attr.class ~ ' ' ~ formClass %}
+    {% else %}
+        {% set class = formClass %}
+    {% endif %}
+    {% set attr = attr|merge({'class': class }) %}
+    <form id="{{ id }}" method="{{ form_method|lower }}" action="{{ action }}"{% for attrname, attrvalue in attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}{% if multipart %} enctype="multipart/form-data"{% endif %}>
+    {% if form_method != method %}
+        <input type="hidden" name="_method" value="{{ method }}" />
+    {% endif %}
+{% endspaceless %}
+{% endblock form_start %}
+
 {% block form_row %}
     {% spaceless %}
         {% if form|is_flexible %}
             {{ block('form_row_flex') }}
         {% else %}
             <div class="control-group{% if attr.class is defined %} {{ attr.class }}{% endif %}">
-                {{ form_label(form, '' , { label_attr: label_attr|merge({ class: 'control-label' })}) }}
+                {{ form_label(form, '', { label_attr: label_attr|merge({ class: 'control-label' })}) }}
                 <div class="controls{% if errors|length > 0 %} validation-error{% endif %}">
                     {{ form_widget(form) }}
-                    {{ block('form_info') }}
+                    {% if form.children|length == 0 %}
+                        {{ block('form_info') }}
+                    {% endif %}
                 </div>
             </div>
         {% endif %}
@@ -33,6 +57,16 @@
     {% endif %}
 {% endspaceless %}
 {% endblock form_label %}
+
+{% block choice_widget_collapsed %}
+    {% set client_validation = false %}
+    {{ parent() }}
+{% endblock choice_widget_collapsed %}
+
+{% block form_widget_simple %}
+    {% set client_validation = false %}
+    {{ parent() }}
+{% endblock form_widget_simple %}
 
 {% block form_info %}
     {% spaceless %}
@@ -101,7 +135,7 @@
             <label class="upload-zone file{% if empty %} empty{% endif %}">
                 <div class="upload-info">
                     {% if not empty %}
-                        <a class="no-hash upload-preview" href="{{ asset(form.vars.value.filePath) }}" target="_blank" title="{{ form.vars.value.originalFilename }}">
+                        <a class="no-hash upload-preview" href="{{ path('pim_catalog_media_show', { 'filename': form.vars.value.filename }) }}" target="_blank" title="{{ form.vars.value.originalFilename }}">
                             <i class="icon-file upload-preview"></i>
                         </a>
                     {% else %}
@@ -116,7 +150,7 @@
                     {{ form_widget(form.file) }}
                 {% else %}
                     {{ form_widget(form.file, { attr: { 'class': 'hide', 'disabled': 'disabled' }}) }}
-                    {{ form_widget(form.removed, {'attr': { 'class': 'noswitch hide' }}) }}
+                    {{ form_widget(form.removed, {'attr': { 'class': 'hide' }}) }}
                 {% endif %}
             </label>
             <div class="icons-container">
@@ -138,8 +172,8 @@
             <label class="upload-zone image{% if empty %} empty{% endif %}">
                 <div class="upload-info">
                     {% if not empty %}
-                        <a class="no-hash upload-preview" href="{{ asset(form.vars.value.filePath)|imagine_filter('image_preview') }}" title="{{ form.vars.value.originalFilename }}" rel="slimbox">
-                            <img src="{{ asset(form.vars.value.filePath)|imagine_filter('thumbnail_small') }}">
+                        <a class="no-hash upload-preview" href="{{ path('pim_catalog_media_show', { 'filename': form.vars.value.filename, 'filter': 'image_preview' }) }}" title="{{ form.vars.value.originalFilename }}" rel="slimbox">
+                            <img src="{{ path('pim_catalog_media_show', { 'filename': form.vars.value.filename, 'filter': 'thumbnail_small' }) }}">
                         </a>
                     {% else %}
                         <i class="icon-camera-retro upload-preview empty"></i>
@@ -153,7 +187,7 @@
                     {{ form_widget(form.file) }}
                 {% else %}
                     {{ form_widget(form.file, { 'attr': { 'class': 'hide', 'disabled': 'disabled' }}) }}
-                    {{ form_widget(form.removed, { 'attr': { 'class': 'noswitch hide' }}) }}
+                    {{ form_widget(form.removed, { 'attr': { 'class': 'hide' }}) }}
                 {% endif %}
             </label>
             <div class="icons-container">
@@ -166,58 +200,64 @@
 {% endblock %}
 
 {% block widget_attributes %}
-{% if attr.class is defined %}
-    {% if attr.class != 'noswitch' %}
-        {% set class = attr.class ~ ' input-large' %}
+{% if attr.size is not defined %}
+    {% if attr.class is defined %}
+        {% if 'input-' not in attr.class %}
+            {% set class = attr.class ~ ' input-large' %}
+        {% else %}
+            {% set class = attr.class %}
+        {% endif %}
     {% else %}
-        {% set class = attr.class %}
+        {% set class = 'input-large' %}
     {% endif %}
-{% else %}
-    {% set class = 'input-large' %}
+    {% set attr = attr|merge({'class': class }) %}
 {% endif %}
-{% set attr = attr|merge({'class': class }) %}
 {% spaceless %}
     id="{{ id }}" name="{{ full_name }}"{% if read_only %} readonly="readonly"{% endif %}{% if disabled %} disabled="disabled"{% endif %}{% if required %} required="required"{% endif %}{% if max_length %} maxlength="{{ max_length }}"{% endif %}{% if pattern %} pattern="{{ pattern }}"{% endif %}
     {% for attrname, attrvalue in attr %}{% if attrname in ['placeholder', 'title'] %}{{ attrname }}="{{ attrvalue|trans({}, translation_domain) }}" {% else %}{{ attrname }}="{{ attrvalue }}" {% endif %}{% endfor %}
 {% endspaceless %}
 {% endblock widget_attributes %}
 
-{% block checkbox_widget %}
+{% block switch_widget %}
 {% spaceless %}
-    {% if attr.class is defined and 'noswitch' in attr.class %}
+    <div class="switch switch-{{ attr.size is defined ? attr.size : 'small' }}" data-on-label="{{ attr['data-on-label'] is defined ? attr['data-on-label']|trans : 'Yes'|trans }}" data-off-label="{{ attr['data-off-label'] is defined ? attr['data-off-label']|trans : 'No'|trans }}">
+        {% if required %}{% set required = false %}{% endif %}
         <input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %}>
-    {% else %}
-        <div class="switch {% if attr['size'] is defined %}{{ attr['size'] ? 'switch-' ~ attr['size'] : '' }}{% else %}switch-small{% endif %}" data-on-label="{% if attr['data-on-label'] is defined %}{{ attr['data-on-label']|trans }}{% else %}{{ 'Yes'|trans }}{% endif %}" data-off-label="{% if attr['data-off-label'] is defined %}{{ attr['data-off-label']|trans }}{% else %}{{ 'No'|trans }}{% endif %}">
-            {% if required %}{% set required = false %}{% endif %}
-            <input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %}>
-        </div>
-    {% endif %}
+    </div>
 {% endspaceless %}
-{% endblock checkbox_widget %}
+{% endblock switch_widget %}
 
 {% block oro_flexibleentity_metric_row %}
 {% spaceless %}
     <div class="control-group">
         {{ form_label(form, null, { 'label_attr': {'class': 'control-label', 'for': form.data.vars.id} }) }}
-        <div class="controls">
-            {{ form_widget(form.unit) }}
-            {{ form_widget(form.data) }}
+        <div class="controls metric input-prepend">
+            {{ form_widget(form.unit, { 'attr': { 'class': 'input-small prepend pull-left' }}) }}
+            {{ form_widget(form.data, { 'attr': { 'class': 'pull-left' }}) }}
             <div class="icons-container">
                 {{ form_errors(form) }}
             </div>
         </div>
     </div>
+    <script type="text/javascript">
+        require(
+            ['jquery', 'jquery.select2', 'selectize'],
+            function ($) {
+                $('#{{ form.unit.vars.id }}').select2('destroy').selectize();
+            }
+        );
+    </script>
 {% endspaceless %}
 {% endblock oro_flexibleentity_metric_row %}
 
 {% block pim_catalog_price_collection_widget %}
     {% for child in form.children %}
-        {% if child.vars.value.currency == localeCurrency() %}
+        {% if child.vars.value.currency == locale_currency() %}
             {{ form_widget(child) }}
         {% endif %}
     {% endfor %}
     {% for child in form.children %}
-        {% if child.vars.value.currency != localeCurrency() %}
+        {% if child.vars.value.currency != locale_currency() %}
             {{ form_widget(child) }}
         {% endif %}
     {% endfor %}
@@ -226,7 +266,7 @@
 {% block pim_catalog_price_widget %}
 {% spaceless %}
     {{ form_widget(form.currency) }}
-    {{ form_row(form.data, {label:currencySymbol(form.currency.vars.value)} ) }}
+    {{ form_row(form.data, {label:currency_symbol(form.currency.vars.value)} ) }}
 {% endspaceless %}
 {% endblock pim_catalog_price_widget %}
 

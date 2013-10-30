@@ -5,7 +5,6 @@ imports:
 framework:
     #esi:             ~
     translator:      { fallback: %locale% }
-    default_locale:  %locale%
     secret:          %secret%
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
@@ -14,139 +13,73 @@ framework:
     csrf_protection: true
     validation:      { enable_annotations: true }
     templating:      { engines: ['twig', 'php'] } #assets_version: SomeVersionScheme
-    trusted_proxies: ~
+    default_locale:           "%locale%"
+    trusted_proxies:          ~
     session:
-        cookie_lifetime:      43200
         name:                 BAPID
+        handler_id:           %session_handler%
+        save_path:            %kernel.root_dir%/cache/sessions
     fragments:
-        enabled: true
-        path: /_fragment # used for controller action in template
+        enabled:              true
+        path:                 /_fragment # used for controller action in template
+    serializer:
+        enabled:              true
 
 # Twig Configuration
 twig:
-    debug:                    "%kernel.debug%"
-    strict_variables:         "%kernel.debug%"
-    exception_controller:     "FOS\RestBundle\Controller\ExceptionController::showAction"
-    globals:
-        env: %kernel.environment%
-        bap:
-            layout:           ::base.html.twig  # default layout across all Oro bundles
-            start_route:      oro_default
-    form:
-        resources:
-            - 'OroUIBundle:Form:fields.html.twig'
-            - 'OroFormBundle:Form:fields.html.twig'
-            - 'OroTranslationBundle:Form:fields.html.twig'
-            - 'OroOrganizationBundle:Form:fields.html.twig'
-            - 'PimUIBundle:Form:pim-fields.html.twig'
+    debug:            "%kernel.debug%"
+    strict_variables: "%kernel.debug%"
 
 # Assetic Configuration
 assetic:
-    debug:                    false
-    use_controller:           false
-    bundles:
-        - OroAsseticBundle
-        - OroUIBundle
-        - OroUserBundle
-        - OroGridBundle
-        - OroFilterBundle
-        - OroNavigationBundle
-        - OroWindowsBundle
-        - OroEntityExtendBundle
-        - OroSegmentationTreeBundle
-        - PimUIBundle
-        - PimCatalogBundle
-
-    #java: /usr/bin/java
+    debug:          "%kernel.debug%"
+    use_controller: false
     filters:
         cssrewrite: ~
-        lessphp:
-            file: %kernel.root_dir%/../vendor/leafo/lessphp/lessc.inc.php
-            apply_to: "\.less$"
-        yui_css:
-            jar: "%kernel.root_dir%/Resources/java/yuicompressor-2.4.7.jar"
-        yui_js:
-            jar: "%kernel.root_dir%/Resources/java/yuicompressor-2.4.7.jar"
 
 # Doctrine Configuration
 doctrine:
     dbal:
-        driver:               "%database_driver%"
-        host:                 "%database_host%"
-        port:                 "%database_port%"
-        dbname:               "%database_name%"
-        user:                 "%database_user%"
-        password:             "%database_password%"
-        charset:              UTF8
-
+        default_connection:   default
+        connections:
+            default:
+                driver:       pdo_mysql
+                host:         "%database_host%"
+                port:         "%database_port%"
+                dbname:       "%database_name%"
+                user:         "%database_user%"
+                password:     "%database_password%"
+                charset:      UTF8
+            report_source:
+                driver:       pdo_mysql
+                host:         "%database_host%"
+                port:         "%database_port%"
+                dbname:       "%database_name%"
+                user:         "%database_user%"
+                password:     "%database_password%"
+                charset:      UTF8
+            report_target:
+                driver:       pdo_mysql
+                host:         "%database_host%"
+                port:         "%database_port%"
+                dbname:       "%database_name%"
+                user:         "%database_user%"
+                password:     "%database_password%"
+                charset:      UTF8
+        types:
+            datetime: Oro\Bundle\LocaleBundle\DoctrineExtensions\DBAL\Types\UTCDateTimeType
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
-        auto_mapping:         true
-        resolve_target_entities:
-            Symfony\Component\Security\Core\User\UserInterface:   Oro\Bundle\UserBundle\Entity\User
-            Pim\Bundle\CatalogBundle\Model\ProductValueInterface: Pim\Bundle\CatalogBundle\Entity\ProductValue
-            Pim\Bundle\CatalogBundle\Model\ProductInterface:      Pim\Bundle\CatalogBundle\Entity\Product
-            Pim\Bundle\CatalogBundle\Model\CategoryInterface:     Pim\Bundle\CatalogBundle\Entity\Category
-            Pim\Bundle\ImportExportBundle\Model\ExportInterface:  Pim\Bundle\ImportExportBundle\Entity\Export
+        auto_mapping:                true
+        class_metadata_factory_name: Oro\Bundle\EntityExtendBundle\Mapping\ExtendClassMetadataFactory
 
 # Swiftmailer Configuration
 swiftmailer:
     transport:                "%mailer_transport%"
-    encryption:               "%mailer_encryption%"
-    auth_mode:                "%mailer_auth_mode%"
     host:                     "%mailer_host%"
     username:                 "%mailer_user%"
     password:                 "%mailer_password%"
     spool:                    { type: memory }
-
-knp_paginator:
-    page_range:               5         # default page range used in pagination control
-    default_options:
-        page_name:            page      # page query parameter name
-        sort_field_name:      sort      # sort field query parameter name
-        sort_direction_name:  direction # sort direction query parameter name
-        distinct:             true      # ensure distinct results, useful when ORM queries are using GROUP BY statements
-    template:
-        pagination:           OroUIBundle::pager.html.twig
-
-fos_rest:
-    view:
-        failed_validation: HTTP_BAD_REQUEST
-        default_engine: php
-        formats:
-            json: true
-            xml: true
-    format_listener:
-        prefer_extension: true
-    body_listener:
-        decoders:
-            json: fos_rest.decoder.json
-            xml: fos_rest.decoder.xml
-    routing_loader:
-        default_format: json
-
-fos_js_routing:
-    routes_to_expose:          [oro_*, pim_*]
-
-be_simple_soap:
-    cache:
-        type:                 disk
-        lifetime:             86400
-        limit:                5
-    services:
-        soap:
-            namespace:        http://symfony.loc/Api/1.0/
-            binding:          rpc-literal
-            resource:         "%kernel.root_dir%/../app/config/soap.yml"
-            resource_type:    yml
-
-stof_doctrine_extensions:
-    default_locale: %default_locale%
-    translation_fallback: true
-    orm:
-        default:
-            timestampable:    true
-            tree:             true
 
 services:
     oro.cache.abstract:
@@ -157,81 +90,49 @@ services:
          class: Twig_Extensions_Extension_Intl
          tags:
              - { name: twig.extension }
+    doctrine.dbal.default.wrapped_connection:
+        factory_service:      doctrine.dbal.default_connection
+        factory_method:       getWrappedConnection
+        class:                PDO
+    session.handler.pdo:
+        class:                Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler
+        arguments:
+            - "@doctrine.dbal.default.wrapped_connection"
+            -
+              db_table:       oro_session
+              db_id_col:      id
 
-escape_wsse_authentication:
-    authentication_provider_class: Oro\Bundle\UserBundle\Security\WsseUserProvider
-    authentication_listener_class: Oro\Bundle\UserBundle\Security\WsseAuthListener
+clank:
+    web_socket_server:
+        port:                 %websocket_port%                # The port the socket server will listen on
+        host:                 %websocket_host%                # (optional) The host ip to bind to
+    session_handler:          session.handler.pdo
+    periodic:
+        -
+            service:          "oro_wamp.db_ping"
+            time:             60000                           # the time in milliseconds between the "tick" function being called
 
-liip_imagine:
-    filter_sets:
-        avatar_med:
-            quality:          95
-            filters:
-                thumbnail:    { size: [58, 58], mode: outbound }
-                strip:        ~
-        thumbnail_small:
-            quality:          95
-            filters:
-                thumbnail:    { size: [80, 120], mode: inset }
-                strip:        ~
-        image_preview:
-            quality:          95
-            filters:
-                thumbnail:    { size: [900, 600], mode: inset }
-                strip:        ~
+a2lix_translation_form:
+    locales:                  [en, fr]
+    templating:               "OroUIBundle:Form:translateable.html.twig"
 
-genemu_form:
-    select2: ~
-    autocomplete: ~
+apy_js_form_validation:
+    check_modes: [submit, blur, change]
 
-oro_search:
-    engine:                   orm
-    realtime_update:          true
-
-oro_ui:
-    settings:
-        application_name:
-            value: "Akeneo"
-        application_title:
-            value: "Akeneo"
-
-oro_user:
-    settings:
-        name_format:
-          value:              %%last%%, %%first%%
-
-oro_translation:
-    js_translation:
-        # order of domains reflects messages fallback
-        domains: [jsmessages, validators]
-
-jms_di_extra:
-    doctrine_integration: false
-
-oro_entity_extend:
-    backend:        Dynamic
-    backup:         "%kernel.root_dir%/entities/Backup/"
-
-oro_filter:
-    twig:
-        layout: PimFilterBundle:Filter:pim-layout.js.twig
-
-oro_batch:
-    sender_email: mailer@akeneo.com
-
-knp_gaufrette:
-    adapters:
-        pim_adapter:
-            local:
-                directory: %upload_dir%
-                create:    true
-    filesystems:
-        pim:
-            adapter: pim_adapter
-            alias:   pim_filesystem
+lexik_maintenance:
+    authorized:
+        path:                 "maintenance|.*\.js"             # "maintenance" is only for demo purposes, remove in production!
+#        ips:                  ["127.0.0.1"]                   # Optional. Authorized ip addresses
+    driver:
+        class:                Lexik\Bundle\MaintenanceBundle\Drivers\FileDriver
+        options:
+            file_path:        %kernel.root_dir%/cache/lock
 
 pim_demo:
     load_data: true
 
 pim_catalog:
     imported_product_data_transformer: pim_import_export.form.transform_imported_product_data_subscriber
+
+oro_batch:
+    enable_mail_notification: true

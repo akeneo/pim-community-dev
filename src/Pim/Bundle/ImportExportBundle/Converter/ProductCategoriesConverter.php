@@ -17,11 +17,21 @@ class ProductCategoriesConverter
 
     protected $entityManager;
 
+    /**
+     * Constructor
+     *
+     * @param EntityManager $entityManager
+     */
     public function __construct(EntityManager $entityManager)
     {
         $this->entityManager = $entityManager;
     }
 
+    /**
+     * @param array $data
+     *
+     * @return array
+     */
     public function convert($data)
     {
         if (null !== $ids = $this->getCategoryIds($data)) {

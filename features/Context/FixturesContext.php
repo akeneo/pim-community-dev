@@ -2,17 +2,19 @@
 
 namespace Context;
 
+use Symfony\Component\HttpFoundation\File\File;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Util\Inflector;
 use Oro\Bundle\BatchBundle\Entity\JobInstance;
 use Oro\Bundle\DataAuditBundle\Entity\Audit;
-use Oro\Bundle\UserBundle\Entity\Acl;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\UserBundle\Entity\UserApi;
+use Pim\Bundle\CatalogBundle\Entity\Association;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
+use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Family;
@@ -20,8 +22,11 @@ use Pim\Bundle\CatalogBundle\Entity\FamilyTranslation;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Entity\ProductPrice;
+use Pim\Bundle\CatalogBundle\Entity\Group;
 use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
+use Behat\Gherkin\Node\PyStringNode;
+use Oro\Bundle\FlexibleEntityBundle\Entity\Media;
 
 /**
  * A context for creating entities
@@ -53,7 +58,18 @@ class FixturesContext extends RawMinkContext
         'image'       => 'pim_catalog_image',
         'file'        => 'pim_catalog_file',
         'multiselect' => 'pim_catalog_multiselect',
+        'simpleselect' => 'pim_catalog_simpleselect',
     );
+
+    private $placeholderValues = array();
+
+    /**
+     * @BeforeScenario
+     */
+    public function resetPlaceholderValues()
+    {
+        $this->placeholderValues = array();
+    }
 
     /**
      * @BeforeScenario
@@ -72,7 +88,7 @@ class FixturesContext extends RawMinkContext
     {
         $tree = $this->createTree('default');
         foreach ($this->channels as $code => $locales) {
-            $this->createChannel($code, $locales, $tree);
+            $this->createChannel($code, ucfirst($code), $locales, $tree);
         }
 
         $this->flush();
@@ -89,26 +105,15 @@ class FixturesContext extends RawMinkContext
     /**
      * @BeforeScenario
      */
-    public function resetAcl()
+    public function resetGroupTypes()
     {
-        $root = $this->createAcl('root', null, array(User::ROLE_DEFAULT, 'ROLE_SUPER_ADMIN'));
-
-        $oroSecurity = $this->createAcl('oro_security', $root, array('IS_AUTHENTICATED_ANONYMOUSLY'));
-        $this->createAcl('oro_login', $oroSecurity);
-        $this->createAcl('oro_login_check', $oroSecurity);
-        $this->createAcl('oro_logout', $oroSecurity);
-
-        $this->createAcl(
-            'template_controller',
-            $root,
-            array(),
-            'Symfony\Bundle\FrameworkBundle\Controller\TemplateController',
-            'templateAction'
+        $types = array(
+            'VARIANT' => 1,
+            'X_SELL'  => 0,
         );
-
-        $this->getContainer()->get('oro_user.acl_manager')->synchronizeAclResources();
-        $role = $this->getRoleOrCreate('ROLE_SUPER_ADMIN');
-        $this->getContainer()->get('oro_user.acl_manager')->saveRoleAcl($role);
+        foreach ($types as $code => $isVariant) {
+            $this->createGroupType($code, $isVariant);
+        }
     }
 
     /**
@@ -117,6 +122,17 @@ class FixturesContext extends RawMinkContext
     public function clearUOW()
     {
         $this->getEntityManager()->clear();
+    }
+
+    /**
+     * @BeforeScenario
+     */
+    public function clearPimFilesystem()
+    {
+        $fs = $this->getPimFilesystem();
+        foreach ($fs->keys() as $key) {
+            $fs->delete($key);
+        }
     }
 
     /**
@@ -223,6 +239,9 @@ class FixturesContext extends RawMinkContext
         foreach ($table->getHash() as $data) {
             $family = new Family();
             $family->setCode($data['code']);
+            if (isset($data['label'])) {
+                $family->setLocale('en_US')->setLabel($data['label']); // TODO translation refactoring
+            }
             $this->persist($family);
 
             $translation = $this->createFamilyTranslation($family, $data['code']);
@@ -310,6 +329,20 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @Given /^there is no product group$/
+     */
+    public function thereIsNoProductGroup()
+    {
+        $em = $this->getEntityManager();
+        $groups = $em->getRepository('PimCatalogBundle:Group')->findAll();
+
+        foreach ($groups as $group) {
+            $this->remove($group);
+        }
+        $this->flush();
+    }
+
+    /**
      * @Given /^there is no attribute$/
      */
     public function thereIsNoAttribute()
@@ -346,10 +379,25 @@ class FixturesContext extends RawMinkContext
     public function theFollowingAttributeGroups(TableNode $table)
     {
         foreach ($table->getHash() as $index => $data) {
-            $group = new AttributeGroup();
-            $group->setCode($this->camelize($data['name']));
-            $group->setLocale('en_US')->setName($data['name']); // TODO translation refactoring
-            $group->setSortOrder($index);
+            $data = array_merge(
+                array(
+                    'locale' => 'english'
+                ),
+                $data
+            );
+
+            $group = $this->getAttributeGroup($data['code']);
+
+            if (!$group) {
+                $group = new AttributeGroup();
+                $group->setSortOrder($index);
+                $group->setCode($data['code']);
+            }
+
+            $group
+                ->setLocale($this->getLocaleCode($data['locale']))
+                ->setLabel($data['label']);
+
 
             $this->persist($group);
         }
@@ -386,7 +434,7 @@ class FixturesContext extends RawMinkContext
             }
 
             $attribute->setSortOrder($data['position']);
-            $attribute->setGroup($this->getGroup($data['group']));
+            $attribute->setGroup($this->getAttributeGroup($data['group']));
             $attribute->setRequired(strtolower($data['required']) === 'yes');
             $attribute->setScopable(strtolower($data['scopable']) === 'yes');
             $attribute->setTranslatable(strtolower($data['translatable']) === 'yes');
@@ -447,7 +495,7 @@ class FixturesContext extends RawMinkContext
                     $value->setLocale($data['locale']);
                 }
                 if ($data['value']) {
-                    if ($value->getAttribute()->getAttributeType() == $this->attributeTypes['prices']) {
+                    if ($value->getAttribute()->getAttributeType() === $this->attributeTypes['prices']) {
                         foreach ($value->getPrices() as $price) {
                             $value->removePrice($price);
                         }
@@ -455,6 +503,20 @@ class FixturesContext extends RawMinkContext
                         foreach ($prices as $price) {
                             $value->addPrice($price);
                         }
+                    } elseif ($value->getAttribute()->getAttributeType() === $this->attributeTypes['simpleselect']) {
+                        $options = $value->getAttribute()->getOptions();
+                        $optionValue = null;
+                        foreach ($options as $option) {
+                            if ($option->getCode() === $data['value']) {
+                                $optionValue = $option;
+                            }
+                        }
+
+                        if ($optionValue === null) {
+                            throw new \InvalidArgumentException(sprintf('Unknown option value "%s"', $data['value']));
+                        }
+
+                        $value->setData($optionValue);
                     } else {
                         $value->setData($data['value']);
                     }
@@ -514,7 +576,7 @@ class FixturesContext extends RawMinkContext
         foreach ($table->getHash() as $data) {
             $category = new Category();
             $category->setCode($data['code']);
-            $category->setLocale('en_US')->setTitle($data['title']); // TODO translation refactoring
+            $category->setLocale('en_US')->setLabel($data['label']); // TODO translation refactoring
 
             if (!empty($data['parent'])) {
                 $parent = $this->getCategoryOrCreate($data['parent']);
@@ -524,7 +586,7 @@ class FixturesContext extends RawMinkContext
             if (isset($data['products'])) {
                 $skus = explode(',', $data['products']);
                 foreach ($skus as $sku) {
-                    $category->addProduct($this->getProduct($sku));
+                    $category->addProduct($this->getProduct(trim($sku)));
                 }
             }
 
@@ -535,47 +597,100 @@ class FixturesContext extends RawMinkContext
     /**
      * @param TableNode $table
      *
-     * @Given /^the following channels:$/
+     * @Then /^there should be the following categories:$/
      */
-    public function theFollowingChannels(TableNode $table)
+    public function thereShouldBeTheFollowingCategories(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
-            $channel = new Channel();
-            $channel->setCode($data['code']);
-            $channel->setName($data['name']);
+            $category = $this->getCategory($data['code']);
+            $this->getEntityManager()->refresh($category);
 
-            if (isset($data['locales'])) {
-                $locales = explode(', ', $data['locales']);
-                foreach ($locales as $localeCode) {
-                    $locale = $this->getLocale($localeCode);
-                    $channel->addLocale($locale);
-                }
+            assertEquals($data['label'], $category->getTranslation('en_US')->getLabel());
+            if (empty($data['parent'])) {
+                assertNull($category->getParent());
+            } else {
+                assertEquals($data['parent'], $category->getParent()->getCode());
             }
-
-            if (isset($data['category'])) {
-                $category = $this->getCategory($data['category']);
-                $channel->setCategory($category);
-            }
-
-            if (isset($data['currencies'])) {
-                foreach ($data['currencies'] as $currencyCode) {
-                    $currency = $this->getCurrency($currencyCode);
-                    $channel->addCurrency($currency);
-                }
-            }
-
-            $this->persist($channel);
         }
     }
 
     /**
      * @param TableNode $table
      *
-     * @Given /^the following attributes:$/
+     * @Given /^the following channels?:$/
+     */
+    public function theFollowingChannels(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $data = array_merge(
+                array(
+                    'label'      => null,
+                    'locales'    => null,
+                    'currencies' => null,
+                    'category'   => null,
+                ),
+                $data
+            );
+
+            $category = null;
+            if ($data['category']) {
+                $category = $this->getCategory($data['category']);
+            }
+
+            try {
+                $channel = $this->getChannel($data['code']);
+
+                if ($data['label']) {
+                    $channel->setLabel($data['label']);
+                }
+
+                if ($category !== null) {
+                    $channel->setCategory($category);
+                }
+
+                if ($data['locales']) {
+                    foreach ($this->listToArray($data['locales']) as $localeCode) {
+                        $channel->addLocale($this->getLocale($localeCode));
+                    }
+                }
+
+                if ($data['currencies']) {
+                    foreach ($this->listToArray($data['currencies']) as $currencyCode) {
+                        $channel->addCurrency($this->getCurrency($currencyCode));
+                    }
+                }
+
+                $this->persist($channel);
+            } catch (\InvalidArgumentException $e) {
+                $this->createChannel(
+                    $data['code'],
+                    $data['label'],
+                    $this->listToArray($data['locales']),
+                    $category,
+                    $this->listToArray($data['currencies'])
+                );
+            }
+        }
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Given /^the following attributes?:$/
      */
     public function theFollowingAttributes(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
+            $data = array_merge(
+                array(
+                    'scopable'    => 'no',
+                    'localizable' => 'no',
+                    'group'       => null,
+                    'type'        => 'pim_catalog_text'
+                ),
+                $data
+            );
+
             $attribute = $this->getProductManager()->createAttribute($data['type']);
 
             $attribute->setCode($data['code']);
@@ -585,11 +700,30 @@ class FixturesContext extends RawMinkContext
             $attribute->setLocale('en_US');
             $attribute->setLabel($data['label']);
 
-            $group = $this->getGroup($data['group']);
-            $attribute->setGroup($group);
+            if (isset($data['group'])) {
+                $group = $this->getAttributeGroup($data['group']);
+                $attribute->setGroup($group);
+            }
 
             $this->persist($attribute);
         }
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Given /^the following attribute label translations:$/
+     */
+    public function theFollowingAttributeLabelTranslations(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $this
+                ->getAttribute($data['attribute'])
+                ->setLocale($this->getLocaleCode($data['lang']))
+                ->setLabel($data['label']);
+        }
+
+        $this->flush();
     }
 
     /**
@@ -604,7 +738,7 @@ class FixturesContext extends RawMinkContext
         $entity = $this->{'get'.ucfirst($entityName)}($id);
 
         foreach ($table->getHash() as $data) {
-            $audit = new Audit;
+            $audit = new Audit();
             $audit->setAction($data['action']);
             $audit->setLoggedAt(new \DateTime($data['loggedAt']));
             $audit->setObjectId($entity->getId());
@@ -656,7 +790,11 @@ class FixturesContext extends RawMinkContext
         $steps       = $job->getSteps();
 
         foreach ($table->getHash() as $data) {
-            $config[$data['element']][$data['property']] = $data['value'];
+            $value = $this->replacePlaceholders($data['value']);
+            if (in_array($value, array('yes', 'no'))) {
+                $value = 'yes' === $value;
+            }
+            $config[$data['element']][$data['property']] = $value;
         }
         $config = array_merge(array('reader' => array(), 'processor' => array(), 'writer' => array()), $config);
         $steps[0]->setConfiguration($config);
@@ -689,6 +827,40 @@ class FixturesContext extends RawMinkContext
         }
 
         $this->flush();
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Given /^the following product groups?:$/
+     */
+    public function theFollowingProductGroups(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $code = $data['code'];
+            $label = $data['label'];
+            $type = $data['type'];
+            $attributes = ($data['attributes'] == '') ? array() : explode(', ', $data['attributes']);
+
+            $products = (isset($data['products'])) ? explode(', ', $data['products']) : array();
+
+            $this->createGroup($code, $label, $type, $attributes, $products);
+        }
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Given /^the following associations?:$/
+     */
+    public function theFollowingAssociations(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $code = $data['code'];
+            $label = isset($data['label']) ? $data['label'] : null;
+
+            $this->createAssociation($code, $label);
+        }
     }
 
     /**
@@ -790,7 +962,9 @@ class FixturesContext extends RawMinkContext
     {
         foreach ($this->listToArray($products) as $identifier) {
             $productValue = $this->getProductValue($identifier, strtolower($attribute));
-            assertEquals($filename, $productValue->getMedia()->getOriginalFilename());
+            $media = $productValue->getMedia();
+            $this->getEntityManager()->refresh($media);
+            assertEquals($filename, $media->getOriginalFilename());
         }
     }
 
@@ -810,33 +984,104 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @param string $identifier
-     * @param string $attribute
-     * @param string $locale
-     * @param string $scope
+     * @param PyStringNode $string
      *
-     * @throws InvalidArgumentException
-     *
-     * @return ProductValue
+     * @Given /^the following file to import:$/
      */
-    private function getProductValue($identifier, $attribute, $locale = null, $scope = null)
+    public function theFollowingFileToImport(PyStringNode $string)
     {
-        $product = $this->getProductManager()->findByIdentifier($identifier);
-        if (!$product) {
-            throw new \InvalidArgumentException(
-                sprintf('Could not find product with identifier "%s"', $identifier)
-            );
-        }
+        $this->placeholderValues['file to import'] = $filename =
+            sprintf('/tmp/pim-import/behat-import-%s.csv', substr(md5(rand()), 0, 7));
+        @mkdir(dirname($filename), 0777, true);
 
-        $productValue = $product->getValue($attribute, $locale, $scope);
-        if (!$productValue) {
-            throw new \InvalidArgumentException(
-                sprintf('Could not find product value for attribute "%s" in locale "%s"', $attribute, $lang)
-            );
-        }
-        $this->getEntityManager()->refresh($productValue);
+        file_put_contents($filename, (string) $string);
+    }
 
-        return $productValue;
+    /**
+     * @param string    $code
+     * @param TableNode $table
+     *
+     * @Given /^import directory of "([^"]*)" contain the following media:$/
+     */
+    public function importDirectoryOfContainTheFollowingMedia($code, TableNode $table)
+    {
+        $path = $this
+            ->getJobInstance($code)
+            ->getJob()
+            ->getSteps()[0]
+            ->getReader()
+            ->getFilePath();
+
+        $path = dirname($path);
+
+        foreach ($table->getRows() as $data) {
+            copy(__DIR__ . '/fixtures/'. $data[0], rtrim($path, '/') . '/' .$data[0]);
+        }
+    }
+
+    /**
+     * @param integer $expectedTotal
+     *
+     * @Then /^there should be (\d+) products?$/
+     */
+    public function thereShouldBeProducts($expectedTotal)
+    {
+        $total = count($this->getProductManager()->getFlexibleRepository()->findAll());
+
+        assertEquals($expectedTotal, $total);
+    }
+
+    /**
+     * @param string    $identifier
+     * @param TableNode $table
+     *
+     * @Given /^the product "([^"]*)" should have the following values?:$/
+     */
+    public function theProductShouldHaveTheFollowingValues($identifier, TableNode $table)
+    {
+        $this->getEntityManager()->clear();
+        $product = $this->getProduct($identifier);
+        $this->getEntityManager()->refresh($product);
+
+        foreach ($table->getRowsHash() as $code => $value) {
+            $productValue = $product->getValue($code);
+            if ('media' === $this->getAttribute($code)->getBackendType()) {
+                // media filename is auto generated during media handling and cannot be guessed
+                // (it contains a timestamp)
+                if ('**empty**' === $value) {
+                    assertEmpty((string) $productValue);
+                } else {
+                    assertTrue(false !== strpos((string) $productValue, $value));
+                }
+            } else {
+                assertEquals($value, (string) $productValue);
+            }
+        }
+    }
+
+    /**
+     * @param string $username
+     *
+     * @Then /^there should be a "([^"]*)" user$/
+     */
+    public function thereShouldBeAUser($username)
+    {
+        $this->getUser($username);
+    }
+
+    /**
+     * @param string $productCode
+     * @param string $familyCode
+     *
+     * @Given /^family of "([^"]*)" should be "([^"]*)"$/
+     */
+    public function familyOfShouldBe($productCode, $familyCode)
+    {
+        $family = $this->getProduct($productCode)->getFamily();
+        if (!$family) {
+            throw \Exception(sprintf('Product "%s" doesn\'t have a family', $productCode));
+        }
+        assertEquals($familyCode, $family->getCode());
     }
 
     /**
@@ -856,11 +1101,7 @@ class FixturesContext extends RawMinkContext
      */
     public function getProduct($sku)
     {
-        $manager    = $this->getProductManager();
-        $repository = $manager->getFlexibleRepository();
-        $qb         = $repository->createQueryBuilder('p');
-        $repository->applyFilterByAttribute($qb, $manager->getIdentifierAttribute()->getCode(), $sku);
-        $product = $qb->getQuery()->getOneOrNullResult();
+        $product = $this->getProductManager()->findByIdentifier($sku);
 
         return $product ?: $this->createProduct($sku);
     }
@@ -879,6 +1120,21 @@ class FixturesContext extends RawMinkContext
         }
 
         return $this->createUser($username, $password, $apiKey);
+    }
+
+    /**
+     * @param string $code
+     *
+     * @return GroupType
+     */
+    public function getGroupType($code)
+    {
+        return $this->getEntityOrException(
+            'PimCatalogBundle:GroupType',
+            array(
+                'code' => $code
+            )
+        );
     }
 
     /**
@@ -919,7 +1175,7 @@ class FixturesContext extends RawMinkContext
      *
      * @return AttributeGroup|null
      */
-    public function getGroup($name)
+    public function getAttributeGroup($name)
     {
         try {
             return $this->getEntityOrException(
@@ -951,6 +1207,112 @@ class FixturesContext extends RawMinkContext
     public function getChannel($code)
     {
         return $this->getEntityOrException('PimCatalogBundle:Channel', array('code' => $code));
+    }
+
+    /**
+     * Get currency
+     *
+     * @param string $code
+     *
+     * @return Currency
+     */
+    public function getCurrency($code)
+    {
+        return $this->getEntityOrException('PimCatalogBundle:Currency', array('code' => $code));
+    }
+
+    /**
+     * @param string $code
+     *
+     * @return Category
+     */
+    public function getCategory($code)
+    {
+        return $this->getEntityOrException('PimCatalogBundle:Category', array('code' => $code));
+    }
+
+    /**
+     * @param string $code
+     *
+     * @return Job
+     */
+    public function getJobInstance($code)
+    {
+        return $this->getEntityOrException('OroBatchBundle:JobInstance', array('code' => $code));
+    }
+
+    /**
+     * @param string $code
+     *
+     * @return Association
+     */
+    public function getAssociation($code)
+    {
+        return $this->getEntityOrException('PimCatalogBundle:Association', array('code' => $code));
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return string
+     */
+    public function replacePlaceholders($value)
+    {
+        if (false !== strpos($value, '{{') && false !== strpos($value, '}}')) {
+            $key = trim(str_replace(array('{{', '}}'), '', $value));
+            if (array_key_exists($key, $this->placeholderValues)) {
+                return $this->placeholderValues[$key];
+            }
+        }
+
+        return $value;
+    }
+
+    /**
+     * @param string $identifier
+     * @param string $attribute
+     * @param string $locale
+     * @param string $scope
+     *
+     * @throws InvalidArgumentException
+     *
+     * @return ProductValue
+     */
+    private function getProductValue($identifier, $attribute, $locale = null, $scope = null)
+    {
+        $product = $this->getProductManager()->findByIdentifier($identifier);
+        if (!$product) {
+            throw new \InvalidArgumentException(
+                sprintf('Could not find product with identifier "%s"', $identifier)
+            );
+        }
+
+        $productValue = $product->getValue($attribute, $locale, $scope);
+        if (!$productValue) {
+            throw new \InvalidArgumentException(
+                sprintf('Could not find product value for attribute "%s" in locale "%s"', $attribute, $locale)
+            );
+        }
+        $this->getEntityManager()->refresh($productValue);
+
+        return $productValue;
+    }
+
+    /**
+     * @param string  $code
+     * @param boolean $isVariant
+     *
+     * @return GroupType
+     */
+    private function createGroupType($code, $isVariant)
+    {
+        $type = new GroupType();
+        $type->setCode($code);
+        $type->setVariant($isVariant);
+
+        $this->persist($type);
+
+        return $type;
     }
 
     /**
@@ -986,6 +1348,10 @@ class FixturesContext extends RawMinkContext
         $attribute->setTranslatable($translatable);
         $attribute->setUseableAsGridColumn($showInGrid);
         $attribute->setUseableAsGridFilter($showInGrid);
+        if ('identifier' === $type) {
+            $attribute->setUnique(true);
+            $attribute->setRequired(true);
+        }
         $this->persist($attribute);
 
         return $attribute;
@@ -1025,13 +1391,23 @@ class FixturesContext extends RawMinkContext
 
         $value = $manager->createFlexibleValue();
         $value->setAttribute($attribute);
-        if ($attribute->getAttributeType() == $this->attributeTypes['prices']) {
-            $prices = $this->createPricesFromString($data);
-            foreach ($prices as $price) {
-                $value->addPrice($price);
-            }
-        } else {
-            $value->setData($data);
+
+        switch ($attribute->getAttributeType()) {
+            case $this->attributeTypes['prices']:
+                $prices = $this->createPricesFromString($data);
+                foreach ($prices as $price) {
+                    $value->addPrice($price);
+                }
+                break;
+
+            case $this->attributeTypes['image']:
+            case $this->attributeTypes['file']:
+                $media = $this->createMedia($data);
+                $value->setMedia($media);
+                break;
+
+            default:
+                $value->setData($data);
         }
         $value->setLocale($locale);
         $value->setScope($scope);
@@ -1049,33 +1425,25 @@ class FixturesContext extends RawMinkContext
         try {
             $lang = $this->getEntityOrException('PimCatalogBundle:Locale', array('code' => $code));
         } catch (\InvalidArgumentException $e) {
-            $this->createLocale($code);
+            $lang = $this->createLocale($code);
         }
 
         return $lang;
     }
 
     /**
-     * Get currency
-     *
      * @param string $code
      *
-     * @return Currency
-     */
-    public function getCurrency($code)
-    {
-        return $this->getEntityOrException('PimCatalogBundle:Currency', array('code' => $code));
-    }
-
-    /**
-     * @param string $code
+     * @return Locale
      */
     private function createLocale($code)
     {
-        $locale = new Locale;
+        $locale = new Locale();
         $locale->setCode($code);
 
         $this->persist($locale);
+
+        return $locale;
     }
 
     /**
@@ -1093,22 +1461,80 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @param string       $code
-     * @param array:string $locales
-     * @param Category     $tree
+     * @param string   $code
+     * @param string   $label
+     * @param string[] $locales
+     * @param Category $tree
+     * @param string[] $currencies
      */
-    private function createChannel($code, $locales, $tree = null)
+    private function createChannel($code, $label = null, $locales = array(), $tree = null, $currencies = array())
     {
-        $channel = new Channel;
+        $channel = new Channel();
         $channel->setCode($code);
-        $channel->setName(ucfirst($code));
-        $channel->setCategory($tree);
+
+        if ($label === null) {
+            $label = ucfirst($code);
+        }
+        $channel->setLabel($label);
+
+        if ($tree !== null) {
+            $channel->setCategory($tree);
+        }
 
         foreach ($locales as $localeCode) {
             $channel->addLocale($this->getLocale($localeCode));
         }
 
+        foreach ($currencies as $currencyCode) {
+            $channel->addCurrency($this->getCurrency($currencyCode));
+        }
+
         $this->persist($channel);
+    }
+
+    /**
+     * @param string $code
+     * @param string $label
+     * @param string $type
+     * @param array  $attributes
+     * @param array  $products
+     */
+    private function createGroup($code, $label, $type, array $attributes, array $products = array())
+    {
+        $group = new Group();
+        $group->setCode($code);
+        $group->setLocale('en_US')->setLabel($label); // TODO translation refactoring
+
+        $type = $this->getGroupType($type);
+        $group->setType($type);
+
+        foreach ($attributes as $attributeCode) {
+            $attribute = $this->getAttribute($attributeCode);
+            $group->addAttribute($attribute);
+        }
+
+        foreach ($products as $sku) {
+            if (!empty($sku)) {
+                $product = $this->getProduct($sku);
+                $group->addProduct($product);
+                $product->addGroup($group);
+            }
+        }
+
+        $this->persist($group);
+    }
+
+    /**
+     * @param string $code
+     * @param string $label
+     */
+    private function createAssociation($code, $label)
+    {
+        $association = new Association();
+        $association->setCode($code);
+        $association->setLocale('en_US')->setLabel($label);
+
+        $this->persist($association);
     }
 
     /**
@@ -1119,23 +1545,13 @@ class FixturesContext extends RawMinkContext
     private function getRoleOrCreate($label)
     {
         try {
-            $role = $this->getEntityOrException('OroUserBundle:Role', array('label' => $label));
+            $role = $this->getEntityOrException('OroUserBundle:Role', array('role' => $label));
         } catch (\InvalidArgumentException $e) {
             $role = new Role($label);
             $this->persist($role);
         }
 
         return $role;
-    }
-
-    /**
-     * @param string $code
-     *
-     * @return Category
-     */
-    public function getCategory($code)
-    {
-        return $this->getEntityOrException('PimCatalogBundle:Category', array('code' => $code));
     }
 
     /**
@@ -1154,16 +1570,6 @@ class FixturesContext extends RawMinkContext
         }
 
         return $category;
-    }
-
-    /**
-     * @param string $code
-     *
-     * @return Job
-     */
-    public function getJobInstance($code)
-    {
-        return $this->getEntityOrException('OroBatchBundle:JobInstance', array('code' => $code));
     }
 
     /**
@@ -1187,6 +1593,16 @@ class FixturesContext extends RawMinkContext
         }
 
         return $entity;
+    }
+
+    /**
+     * @param string $code
+     *
+     * @return Group
+     */
+    public function getProductGroup($code)
+    {
+        return $this->getEntityOrException('PimCatalogBundle:Group', array('code' => $code));
     }
 
     /**
@@ -1244,6 +1660,22 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param string $file
+     *
+     * @return Media
+     */
+    private function createMedia($file)
+    {
+        $media = new Media();
+        if ($file) {
+            $media->setFile(new File(__DIR__ . '/fixtures/' . $file));
+            $this->getMediaManager()->handle($media, 'behat');
+        }
+
+        return $media;
+    }
+
+    /**
      * @param string $data
      * @param string $currency
      *
@@ -1275,48 +1707,67 @@ class FixturesContext extends RawMinkContext
         $scope        = 'ecommerce';
         $scopeOption  = null;
 
-        $user = new User();
-        $user->setUsername($username);
-        $user->setFirstname('John');
-        $user->setLastname('Doe');
-        $user->setPlainPassword($password);
-        $user->setEmail($email);
-
-        $user->addRole($this->getRoleOrCreate(User::ROLE_DEFAULT));
-        $user->addRole($this->getRoleOrCreate(User::ROLE_ANONYMOUS));
+        $user = $this->getUserManager()->createUser();
+        $user
+            ->setUsername($username)
+            ->setPlainPassword($password)
+            ->setFirstname('John')
+            ->setLastname('Doe')
+            ->setEmail($email)
+            ->addRole($this->getRoleOrCreate('ROLE_ADMINISTRATOR'));
 
         $manager = $this->getContainer()->get('oro_user.manager.flexible');
 
-        $localeAttribute = $manager->createAttribute('oro_flexibleentity_simpleselect');
-        $localeAttribute->setCode('cataloglocale')->setLabel('cataloglocale');
-        foreach ($this->locales as $localeCode) {
-            $option = $manager->createAttributeOption();
-            $optionValue = $manager->createAttributeOptionValue()->setValue($localeCode);
-            $option->addOptionValue($optionValue);
-            $localeAttribute->addOption($option);
-            if ($locale == $localeCode) {
-                $localeOption = $option;
+        $localeAttribute = $manager->getAttributeRepository()->findOneBy(array('code' => 'cataloglocale'));
+
+        if (!$localeAttribute) {
+            $localeAttribute = $manager->createAttribute('oro_flexibleentity_simpleselect');
+            $localeAttribute->setCode('cataloglocale')->setLabel('cataloglocale');
+            foreach ($this->locales as $localeCode) {
+                $option = $manager->createAttributeOption();
+                $optionValue = $manager->createAttributeOptionValue()->setValue($localeCode);
+                $option->addOptionValue($optionValue);
+                $localeAttribute->addOption($option);
+                if ($locale == $localeCode) {
+                    $localeOption = $option;
+                }
             }
+            $this->persist($localeAttribute);
+        } else {
+            $localeOption = $localeAttribute->getOptions()->filter(
+                function ($option) use ($locale) {
+                    return $option->getOptionValue()->getValue() === $locale;
+                }
+            )->first();
         }
-        $this->persist($localeAttribute);
 
         $localeValue = $manager->createFlexibleValue();
         $localeValue->setAttribute($localeAttribute);
         $localeValue->setOption($localeOption);
         $user->addValue($localeValue);
 
-        $scopeAttribute = $manager->createAttribute('oro_flexibleentity_simpleselect');
-        $scopeAttribute->setCode('catalogscope')->setLabel('catalogscope');
-        foreach (array_keys($this->channels) as $scopeCode) {
-            $option = $manager->createAttributeOption();
-            $optionValue = $manager->createAttributeOptionValue()->setValue($scopeCode);
-            $option->addOptionValue($optionValue);
-            $scopeAttribute->addOption($option);
-            if ($scope == $scopeCode) {
-                $scopeOption = $option;
+        $scopeAttribute = $manager->getAttributeRepository()->findOneBy(array('code' => 'catalogscope'));
+
+        if (!$scopeAttribute) {
+            $scopeAttribute = $manager->createAttribute('oro_flexibleentity_simpleselect');
+            $scopeAttribute->setCode('catalogscope')->setLabel('catalogscope');
+            foreach (array_keys($this->channels) as $scopeCode) {
+                $option = $manager->createAttributeOption();
+                $optionValue = $manager->createAttributeOptionValue()->setValue($scopeCode);
+                $option->addOptionValue($optionValue);
+                $scopeAttribute->addOption($option);
+                if ($scope == $scopeCode) {
+                    $scopeOption = $option;
+                }
             }
+            $this->persist($scopeAttribute);
+        } else {
+            $scopeOption = $scopeAttribute->getOptions()->filter(
+                function ($option) use ($scope) {
+                    return $option->getOptionValue()->getValue() === $scope;
+                }
+            )->first();
         }
-        $this->persist($scopeAttribute);
 
         $scopeValue = $manager->createFlexibleValue();
         $scopeValue->setAttribute($scopeAttribute);
@@ -1331,38 +1782,6 @@ class FixturesContext extends RawMinkContext
         $this->persist($api);
 
         return $user;
-    }
-
-    /**
-     * @param string $name
-     * @param Acl    $parent
-     * @param array  $roles
-     * @param string $class
-     * @param string $method
-     *
-     * @return Acl
-     */
-    private function createAcl($name, $parent = null, array $roles = array(), $class = null, $method = null)
-    {
-        $acl = new Acl();
-        $acl->setId($name);
-        $acl->setName($this->camelize($name));
-        $acl->setDescription($this->camelize($name));
-        if ($parent) {
-            $acl->setParent($parent);
-        }
-        if ($class) {
-            $acl->setClass($class);
-        }
-        if ($method) {
-            $acl->setMethod($method);
-        }
-        foreach ($roles as $role) {
-            $acl->addAccessRole($this->getRoleOrCreate($role));
-        }
-        $this->persist($acl);
-
-        return $acl;
     }
 
     /**
@@ -1455,11 +1874,27 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @return \Pim\Bundle\CatalogBundle\Manager\MediaManager
+     */
+    private function getMediaManager()
+    {
+        return $this->getContainer()->get('pim_catalog.manager.media');
+    }
+
+    /**
      * @return \Oro\Bundle\UserBundle\Entity\UserManager
      */
     private function getUserManager()
     {
         return $this->getContainer()->get('oro_user.manager');
+    }
+
+    /**
+     * @return \Gaufrette\Filesystem
+     */
+    private function getPimFilesystem()
+    {
+        return $this->getContainer()->get('pim_filesystem');
     }
 
     /**

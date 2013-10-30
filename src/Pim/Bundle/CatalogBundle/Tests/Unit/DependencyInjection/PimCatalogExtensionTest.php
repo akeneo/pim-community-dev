@@ -39,8 +39,6 @@ class PimCatalogExtensionTest extends \PHPUnit_Framework_TestCase
         $this->extension = new PimCatalogExtension();
         $this->container = new ContainerBuilder();
         $this->container->setParameter('validator.mapping.loader.yaml_files_loader.mapping_files', array());
-        $this->container->setParameter('fos_rest.exception.codes', array());
-        $this->container->setParameter('fos_rest.exception.messages', array());
     }
 
     /**
@@ -52,29 +50,8 @@ class PimCatalogExtensionTest extends \PHPUnit_Framework_TestCase
         $this->extension->load($this->configs, $this->container);
         $this->assertGreaterThanOrEqual(1, $this->container->getServiceIds());
 
-        // assert currency configuration
-        $configCurrencies = $this->container->getParameter('pim_catalog.currencies');
-        $this->assertCount(1, $configCurrencies);
-        $this->assertArrayHasKey('currencies', $configCurrencies);
-        $this->assertTrue(is_array($configCurrencies['currencies']));
-
-        // assert locale configuration
-        $configLocales = $this->container->getParameter('pim_catalog.locales');
-        $this->assertCount(1, $configLocales);
-        $this->assertArrayHasKey('locales', $configLocales);
-        $this->assertTrue(is_array($configLocales['locales']));
-
         // assert validation configuration
         $yamlMappingFiles = $this->container->getParameter('validator.mapping.loader.yaml_files_loader.mapping_files');
         $this->assertGreaterThanOrEqual(5, count($yamlMappingFiles));
-
-        // assert delete exception code and message
-        $codes = $this->container->getParameter('fos_rest.exception.codes');
-        $expectedCodes = array('Pim\Bundle\CatalogBundle\Exception\DeleteException' => 409);
-        $this->assertEquals($expectedCodes, $codes);
-
-        $messages = $this->container->getParameter('fos_rest.exception.messages');
-        $expectedMessages = array('Pim\Bundle\CatalogBundle\Exception\DeleteException' => true);
-        $this->assertEquals($expectedMessages, $messages);
     }
 }

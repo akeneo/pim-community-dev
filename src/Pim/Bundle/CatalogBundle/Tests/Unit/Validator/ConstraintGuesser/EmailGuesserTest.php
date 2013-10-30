@@ -5,17 +5,25 @@ namespace Pim\Bundle\CatalogBundle\Tests\Unit\Validator\ConstraintGuesser;
 use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\EmailGuesser;
 
 /**
+ * Test related class
+ *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class EmailGuesserTest extends ConstraintGuesserTest
 {
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
         $this->target = new EmailGuesser();
     }
 
+    /**
+     * Test related method
+     */
     public function testInstanceOfContraintGuesserInterface()
     {
         $this->assertInstanceOf(
@@ -24,6 +32,9 @@ class EmailGuesserTest extends ConstraintGuesserTest
         );
     }
 
+    /**
+     * Test related method
+     */
     public function testSupportTextAttribute()
     {
         $this->assertTrue(
@@ -33,6 +44,9 @@ class EmailGuesserTest extends ConstraintGuesserTest
         );
     }
 
+    /**
+     * Test related method
+     */
     public function testGuessEmailConstraint()
     {
         $constraints = $this->target->guessConstraints(
@@ -42,6 +56,9 @@ class EmailGuesserTest extends ConstraintGuesserTest
         $this->assertContainsInstanceOf('Symfony\Component\Validator\Constraints\Email', $constraints);
     }
 
+    /**
+     * Test related method
+     */
     public function testDoNotGuessEmailConstraint()
     {
         $constraints = $this->target->guessConstraints(

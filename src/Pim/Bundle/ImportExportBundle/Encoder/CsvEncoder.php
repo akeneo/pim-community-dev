@@ -93,17 +93,35 @@ class CsvEncoder implements EncoderInterface
         return self::FORMAT === $format;
     }
 
+    /**
+     * @param array  $data
+     * @param mixed  $output
+     * @param string $delimiter
+     * @param string $enclosure
+     */
     private function encodeHeader($data, $output, $delimiter, $enclosure)
     {
         $this->write($output, array_keys($data), $delimiter, $enclosure);
         $this->hasHeader = true;
     }
 
+    /**
+     * @param mixed  $output
+     * @param array  $entry
+     * @param string $delimiter
+     * @param string $enclosure
+     */
     private function write($output, $entry, $delimiter, $enclosure)
     {
         fputcsv($output, $entry, $delimiter, $enclosure);
     }
 
+    /**
+     * @param mixed $csvResource
+     *
+     * @throws \Exception
+     * @return string
+     */
     private function readCsv($csvResource)
     {
         rewind($csvResource);
@@ -115,6 +133,12 @@ class CsvEncoder implements EncoderInterface
         return $csv;
     }
 
+    /**
+     * @param array $data
+     * @param array $columns
+     *
+     * @return array
+     */
     private function normalizeColumns(array $data, array $columns)
     {
         foreach ($data as $key => $item) {
@@ -124,6 +148,11 @@ class CsvEncoder implements EncoderInterface
         return $data;
     }
 
+    /**
+     * @param array $data
+     *
+     * @return array
+     */
     private function getColumns(array $data)
     {
         $columns = array();
@@ -137,6 +166,11 @@ class CsvEncoder implements EncoderInterface
         return $columns;
     }
 
+    /**
+     * @param array $data
+     *
+     * @throws \InvalidArgumentException
+     */
     private function checkHasStringKeys(array $data)
     {
         if (empty($data)) {

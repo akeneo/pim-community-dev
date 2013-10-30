@@ -13,6 +13,9 @@ use Pim\Bundle\ImportExportBundle\Converter\ProductValueConverter;
  */
 class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         $em = $this->getEntityManagerMock();
@@ -33,6 +36,9 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
         $this->converter = new ProductValueConverter($em, $currencyManager);
     }
 
+    /**
+     * Test related method
+     */
     public function testConvertBasicType()
     {
         $this->attributeRepository
@@ -47,6 +53,9 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * Test related method
+     */
     public function testIgnoreUnknownAttribute()
     {
         $this->attributeRepository
@@ -61,6 +70,9 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * Test related method
+     */
     public function testConvertLocalizedValue()
     {
         $this->attributeRepository
@@ -75,6 +87,9 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * Test related method
+     */
     public function testConvertUnlocalizedValue()
     {
         $this->attributeRepository
@@ -85,11 +100,14 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(
             array('values' => array('name' => array('varchar' => 'car'))),
-            $this->converter->convert(array('name-en_US' => 'car'))
+            $this->converter->convert(array('name' => 'car'))
         );
     }
 
-    public function testConvertScopableValue()
+    /**
+     * Test related method
+     */
+    public function testConvertScopedValue()
     {
         $this->attributeRepository
             ->expects($this->any())
@@ -99,11 +117,34 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(
             array('values' => array('description_ecommerce' => array('varchar' => 'an awesome vehicle'))),
-            $this->converter->convert(array('description' => 'an awesome vehicle', '[scope]' => 'ecommerce'))
+            $this->converter->convert(array('description-ecommerce' => 'an awesome vehicle'))
         );
     }
 
-    public function testConvertPricesValue()
+    /**
+     * Test related method
+     */
+    public function testConvertLocalizedAndScopedValue()
+    {
+        $this->attributeRepository
+            ->expects($this->any())
+            ->method('findOneBy')
+            ->with(array('code' => 'description'))
+            ->will($this->returnValue($this->getAttributeMock('varchar', true, true)));
+
+        $this->assertEquals(
+            array('values' => array('description_en_US_ecommerce' => array('varchar' => 'an awesome vehicle'))),
+            $this->converter->convert(array('description-en_US-ecommerce' => 'an awesome vehicle'))
+        );
+    }
+
+    /**
+     * @param string $data
+     * @param array  $prices
+     *
+     * @dataProvider getConvertedPricesValue
+     */
+    public function testConvertPricesValue($data, $prices)
     {
         $this->attributeRepository
             ->expects($this->any())
@@ -115,23 +156,47 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
             array(
                 'values' => array(
                     'public_prices' => array(
-                        'prices' => array(
-                            array(
-                                'data'     => '99.90',
-                                'currency' => 'EUR',
-                            ),
-                            array(
-                                'data'     => '59.90',
-                                'currency' => 'USD',
-                            )
-                        ),
+                        'prices' => $prices
                     )
                 )
             ),
-            $this->converter->convert(array('public_prices' => '99.90 EUR,59.90 USD'))
+            $this->converter->convert(array('public_prices' => $data))
         );
     }
 
+    /**
+     * @return array
+     */
+    public static function getConvertedPricesValue()
+    {
+        return array(
+            array(
+                '99.90 EUR,59.90 USD',
+                array(
+                    array('data' => '99.90', 'currency' => 'EUR'),
+                    array('data' => '59.90', 'currency' => 'USD')
+                )
+            ),
+            array(
+                '99.90 EUR, 59.90 USD',
+                array(
+                    array('data' => '99.90', 'currency' => 'EUR'),
+                    array('data' => '59.90', 'currency' => 'USD')
+                )
+            ),
+            array(
+                '50 EUR',
+                array(
+                    array('data' => '50.00', 'currency' => 'EUR'),
+                    array('data' => '', 'currency' => 'USD')
+                )
+            ),
+        );
+    }
+
+    /**
+     * Test related method
+     */
     public function testConvertEmptyPricesValue()
     {
         $this->attributeRepository
@@ -161,6 +226,38 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @param string $value
+     *
+     * @expectedException \InvalidArgumentException
+     * @dataProvider getMalformedPrices
+     */
+    public function testConvertMalformedPrices($value)
+    {
+        $this->attributeRepository
+            ->expects($this->any())
+            ->method('findOneBy')
+            ->with(array('code' => 'public_prices'))
+            ->will($this->returnValue($this->getAttributeMock('prices')));
+
+        $this->converter->convert(array('public_prices' => $value));
+    }
+
+    /**
+     * @return array
+     */
+    public static function getMalformedPrices()
+    {
+        return array(
+            array('15EUR'),
+            array('USD50'),
+            array('50 EUR, USD'),
+        );
+    }
+
+    /**
+     * Test related method
+     */
     public function testConvertDateValue()
     {
         $this->attributeRepository
@@ -182,6 +279,9 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * Test related method
+     */
     public function testConvertOptionValue()
     {
         $this->attributeRepository
@@ -208,6 +308,9 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * Test related method
+     */
     public function testConvertOptionsValue()
     {
         $this->attributeRepository
@@ -241,6 +344,9 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * Test related method
+     */
     public function testConvertMetricValue()
     {
         $this->attributeRepository
@@ -264,6 +370,9 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * Test related method
+     */
     public function testConvertEmptyMetricValue()
     {
         $this->attributeRepository
@@ -298,6 +407,9 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
         $this->converter->convert(array('weight' => '60KILOGRAM'));
     }
 
+    /**
+     * Test related method
+     */
     public function testConvertMedia()
     {
         $this->attributeRepository
@@ -306,9 +418,48 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
             ->with(array('code' => 'image'))
             ->will($this->returnValue($this->getAttributeMock('media')));
 
-        $this->assertEquals(array(), $this->converter->convert(array('image' => 'akeneo.jpg')));
+        $result = $this->converter->convert(array('image' => __DIR__ . '/../../fixtures/sport.jpg'));
+
+        $this->assertInstanceOf(
+            'Symfony\Component\HttpFoundation\File\File',
+            $result['values']['image']['media']['file']
+        );
+
+        $this->assertEquals('sport.jpg', $result['values']['image']['media']['file']->getFilename());
     }
 
+    /**
+     * Test related method
+     */
+    public function testConvertEmptyMediaValue()
+    {
+        $this->attributeRepository
+            ->expects($this->any())
+            ->method('findOneBy')
+            ->with(array('code' => 'image'))
+            ->will($this->returnValue($this->getAttributeMock('media')));
+
+        $this->assertEquals(
+            array(
+                'values' => array(
+                    'image' => array(
+                        'media' => array(
+                            'file' => null,
+                        )
+                    )
+                )
+            ),
+            $this->converter->convert(array('image' => ''))
+        );
+    }
+
+    /**
+     * @param string  $backendType
+     * @param boolean $translatable
+     * @param boolean $scopable
+     *
+     * @return \Pim\Bundle\CatalogBundle\Entity\ProductAttribute
+     */
     protected function getAttributeMock($backendType, $translatable = false, $scopable = false)
     {
         $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductAttribute');
@@ -328,6 +479,9 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
         return $attribute;
     }
 
+    /**
+     * @return \Doctrine\ORM\EntityManager
+     */
     protected function getEntityManagerMock()
     {
         return $this
@@ -336,6 +490,9 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
             ->getMock();
     }
 
+    /**
+     * @return \Pim\Bundle\CatalogBundle\Manager\CurrencyManager
+     */
     protected function getCurrencyManagerMock()
     {
         $currencyManager = $this
@@ -351,6 +508,9 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
         return $currencyManager;
     }
 
+    /**
+     * @return \Doctrine\ORM\EntityRepository
+     */
     protected function getRepositoryMock()
     {
         return $this
@@ -359,6 +519,11 @@ class ProductValueConverterTest extends \PHPUnit_Framework_TestCase
             ->getMock();
     }
 
+    /**
+     * @param integer $id
+     *
+     * @return \Pim\Bundle\CatalogBundle\Entity\AttributeOption
+     */
     protected function getAttributeOptionMock($id)
     {
         $option = $this

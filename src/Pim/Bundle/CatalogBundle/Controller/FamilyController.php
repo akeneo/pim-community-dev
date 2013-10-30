@@ -14,7 +14,7 @@ use Symfony\Component\Translation\TranslatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Oro\Bundle\GridBundle\Renderer\GridRenderer;
-use Oro\Bundle\UserBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
@@ -32,13 +32,6 @@ use Pim\Bundle\CatalogBundle\Exception\DeleteException;
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * @Acl(
- *      id="pim_catalog_family",
- *      name="Family manipulation",
- *      description="Family manipulation",
- *      parent="pim_catalog"
- * )
  */
 class FamilyController extends AbstractDoctrineController
 {
@@ -115,12 +108,7 @@ class FamilyController extends AbstractDoctrineController
      * @param Request $request
      *
      * @Template
-     * @Acl(
-     *      id="pim_catalog_family_create",
-     *      name="Create a family",
-     *      description="Create a family",
-     *      parent="pim_catalog_family"
-     * )
+     * @AclAncestor("pim_catalog_family_create")
      * @return array
      */
     public function createAction(Request $request)
@@ -155,12 +143,7 @@ class FamilyController extends AbstractDoctrineController
      * @param integer $id
      *
      * @Template
-     * @Acl(
-     *      id="pim_catalog_family_edit",
-     *      name="Edit a family",
-     *      description="Edit a family",
-     *      parent="pim_catalog_family"
-     * )
+     * @AclAncestor("pim_catalog_family_edit")
      * @return array
      */
     public function editAction(Request $request, $id)
@@ -215,13 +198,8 @@ class FamilyController extends AbstractDoctrineController
      *
      * @param Family $entity
      *
-     * @Acl(
-     *      id="pim_catalog_family_remove",
-     *      name="Remove a family",
-     *      description="Remove a family",
-     *      parent="pim_catalog_family"
-     * )
-     * @return array
+     * @AclAncestor("pim_catalog_family_remove")
+     * @return Response|RedirectResponse
      */
     public function removeAction(Family $entity)
     {
@@ -241,12 +219,7 @@ class FamilyController extends AbstractDoctrineController
      * @param Request $request The request object
      * @param integer $id      The family id to which add attributes
      *
-     * @Acl(
-     *      id="pim_catalog_family_add_attribute",
-     *      name="Add attribute to a family",
-     *      description="Add attribute to a family",
-     *      parent="pim_catalog_family"
-     * )
+     * @AclAncestor("pim_catalog_family_add_attribute")
      * @return Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function addProductAttributesAction(Request $request, $id)
@@ -277,13 +250,10 @@ class FamilyController extends AbstractDoctrineController
      * @param integer $familyId
      * @param integer $attributeId
      *
-     * @Acl(
-     *      id="pim_catalog_family_remove_atribute",
-     *      name="Remove attribute from a family",
-     *      description="Remove attribute from a family",
-     *      parent="pim_catalog_family"
-     * )
+     * @AclAncestor("pim_catalog_family_remove_atribute")
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     *
+     * @throws DeleteException
      */
     public function removeProductAttributeAction($familyId, $attributeId)
     {

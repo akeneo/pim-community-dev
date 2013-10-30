@@ -7,9 +7,9 @@ Feature: Browse attributes
   Background:
     Given there is no attribute
     And the following attribute groups:
-      | name      |
-      | General   |
-      | Marketing |
+      | code      | label     |
+      | general   | General   |
+      | marketing | Marketing |
     And the following attributes:
       | code        | label       | type                   | scopable | localizable | group     |
       | sku         | Sku         | pim_catalog_identifier | false    | false       | General   |
@@ -22,8 +22,5 @@ Feature: Browse attributes
   Scenario: Successfully display attributes
     Given I am on the attributes page
     Then the grid should contain 5 elements
+    And I should see the columns Code, Label, Type, Scopable, Localizable and Group
     And I should see attributes sku, name, short_descr, long_descr and count
-
-  Scenario: Successfully display columns
-    Given I am on the attributes page
-    Then I should see the columns Code, Label, Type, Scopable, Localizable and Group

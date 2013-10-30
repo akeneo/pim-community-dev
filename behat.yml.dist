@@ -4,7 +4,7 @@ default:
     context:
         class:  Context\FeatureContext
         parameters:
-            base_url: http://akeneo-pim.local/app_behat.php/
+            base_url: http://akeneo-pim-behat.local/
             window_width: 1024
             window_height: 768
     extensions:
@@ -12,37 +12,23 @@ default:
             default_session: symfony2
             show_cmd: chromium-browser %s
             selenium2: ~
-            base_url: http://localhost:8080/app_behat.php/
+            base_url: http://akeneo-pim-behat.local/
             files_path: 'features/Context/fixtures/'
-
-            # If you want MinkExtension to open browser
-            # with last response page every time you have
-            # a failed step, execute this in your shell:
-            #
-            #   export MINK_EXTENSION_PARAMS='show_auto=true&show_cmd=firefox %s'
-            #
-            # where `firefox %s` is the page opening command
-
         Behat\Symfony2Extension\Extension:
             kernel:
                 env: behat
         SensioLabs\Behat\PageObjectExtension\Extension: ~
 
-jenkins:
+jenkins-1:
     context:
         parameters:
-            base_url: http://pim-behat.ci/app_behat.php/
+            base_url: http://pim-behat-1.ci/
     extensions:
         Behat\MinkExtension\Extension:
-            default_session: symfony2
-            show_cmd: chromium-browser %s
-            selenium2: ~
-            base_url: http://pim-behat.ci/app_behat.php/
-            files_path: 'features/Context/fixtures/'
+            base_url: http://pim-behat-1.ci/
         Behat\Symfony2Extension\Extension:
             kernel:
-                env: behat
-        SensioLabs\Behat\PageObjectExtension\Extension: ~
+                env: behat1
     formatter:
         name: progress,junit
         parameters:
@@ -50,21 +36,118 @@ jenkins:
     filters:
         tags: ~skip
 
-jenkins-pr:
+jenkins-2:
     context:
         parameters:
-            base_url: http://pim-pr-behat.ci/app_behat.php/
+            base_url: http://pim-behat-2.ci/
     extensions:
         Behat\MinkExtension\Extension:
-            default_session: symfony2
-            show_cmd: chromium-browser %s
-            selenium2: ~
-            base_url: http://pim-pr-behat.ci/app_behat.php/
-            files_path: 'features/Context/fixtures/'
+            base_url: http://pim-behat-2.ci/
         Behat\Symfony2Extension\Extension:
             kernel:
-                env: behat
-        SensioLabs\Behat\PageObjectExtension\Extension: ~
+                env: behat2
+    formatter:
+        name: progress,junit
+        parameters:
+            output_path: null,app/build/logs/behat/
+    filters:
+        tags: ~skip
+
+jenkins-3:
+    context:
+        parameters:
+            base_url: http://pim-behat-3.ci/
+    extensions:
+        Behat\MinkExtension\Extension:
+            base_url: http://pim-behat-3.ci/
+        Behat\Symfony2Extension\Extension:
+            kernel:
+                env: behat3
+    formatter:
+        name: progress,junit
+        parameters:
+            output_path: null,app/build/logs/behat/
+    filters:
+        tags: ~skip
+
+jenkins-4:
+    context:
+        parameters:
+            base_url: http://pim-behat-4.ci/
+    extensions:
+        Behat\MinkExtension\Extension:
+            base_url: http://pim-behat-4.ci/
+        Behat\Symfony2Extension\Extension:
+            kernel:
+                env: behat4
+    formatter:
+        name: progress,junit
+        parameters:
+            output_path: null,app/build/logs/behat/
+    filters:
+        tags: ~skip
+
+jenkins-pr-1:
+    context:
+        parameters:
+            base_url: http://pim-pr-behat-1.ci/
+    extensions:
+        Behat\MinkExtension\Extension:
+            base_url: http://pim-pr-behat-1.ci/
+        Behat\Symfony2Extension\Extension:
+            kernel:
+                env: behat1
+    formatter:
+        name: progress,junit
+        parameters:
+            output_path: null,app/build/logs/behat-pr/
+    filters:
+        tags: ~skip
+
+jenkins-pr-2:
+    context:
+        parameters:
+            base_url: http://pim-pr-behat-2.ci/
+    extensions:
+        Behat\MinkExtension\Extension:
+            base_url: http://pim-pr-behat-2.ci/
+        Behat\Symfony2Extension\Extension:
+            kernel:
+                env: behat2
+    formatter:
+        name: progress,junit
+        parameters:
+            output_path: null,app/build/logs/behat-pr/
+    filters:
+        tags: ~skip
+
+jenkins-pr-3:
+    context:
+        parameters:
+            base_url: http://pim-pr-behat-3.ci/
+    extensions:
+        Behat\MinkExtension\Extension:
+            base_url: http://pim-pr-behat-3.ci/
+        Behat\Symfony2Extension\Extension:
+            kernel:
+                env: behat3
+    formatter:
+        name: progress,junit
+        parameters:
+            output_path: null,app/build/logs/behat-pr/
+    filters:
+        tags: ~skip
+
+jenkins-pr-4:
+    context:
+        parameters:
+            base_url: http://pim-pr-behat-4.ci/
+    extensions:
+        Behat\MinkExtension\Extension:
+            base_url: http://pim-pr-behat-4.ci/
+        Behat\Symfony2Extension\Extension:
+            kernel:
+                env: behat4
     formatter:
         name: progress,junit
         parameters:
@@ -75,18 +158,13 @@ jenkins-pr:
 jenkins-coverage:
     context:
         parameters:
-            base_url: http://pim-behat-coverage.ci:90/app_behat.php/
+            base_url: http://pim-behat-coverage.ci:90/
     extensions:
         Behat\MinkExtension\Extension:
-            default_session: symfony2
-            show_cmd: chromium-browser %s
-            selenium2: ~
-            base_url: http://pim-behat-coverage.ci:90/app_behat.php/
-            files_path: 'features/Context/fixtures/'
+            base_url: http://pim-behat-coverage.ci:90/
         Behat\Symfony2Extension\Extension:
             kernel:
                 env: behat
-        SensioLabs\Behat\PageObjectExtension\Extension: ~
     formatter:
         name: progress,junit
         parameters:

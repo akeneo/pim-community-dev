@@ -65,4 +65,89 @@ class ProductAttributeRepository extends AttributeRepository
 
         return $qb->getQuery()->getResult();
     }
+
+    /**
+     * Find all unique product attribute codes
+     *
+     * @return string[]
+     */
+    public function findUniqueAttributeCodes()
+    {
+        $codes = $this
+            ->createQueryBuilder('a')
+            ->select('a.code')
+            ->andWhere('a.unique = ?1')
+            ->setParameter(1, true)
+            ->getQuery()
+            ->getArrayResult();
+
+        return array_map(
+            function ($data) {
+                return $data['code'];
+            },
+            $codes
+        );
+    }
+
+    /**
+     * Find media attribute codes
+     *
+     * @return string[]
+     */
+    public function findMediaAttributeCodes()
+    {
+        $codes = $this
+            ->createQueryBuilder('a')
+            ->select('a.code')
+            ->andWhere('a.attributeType IN (:file_type, :image_type)')
+            ->setParameters(
+                array(
+                    ':file_type'  => 'pim_catalog_file',
+                    ':image_type' => 'pim_catalog_image',
+                )
+            )
+            ->getQuery()
+            ->getArrayResult();
+
+        return array_map(
+            function ($data) {
+                return $data['code'];
+            },
+            $codes
+        );
+    }
+
+    /**
+     * Find all attributes of type axis
+     * An axis define a variation of a variant group
+     * Axes are attributes with simple select option, not localizable and not scopable
+     *
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function findAllAxisQB()
+    {
+        $qb = $this->createQueryBuilder('a');
+        $qb
+            ->andWhere(
+                $qb->expr()->in('a.attributeType', array('pim_catalog_simpleselect'))
+            )
+            ->andWhere($qb->expr()->neq('a.scopable', 1))
+            ->andWhere($qb->expr()->neq('a.translatable', 1));
+
+        return $qb;
+    }
+
+    /**
+     * Find all axis
+     *
+     * @see findAllAxisQB
+     *
+     * @return array
+     */
+    public function findAllAxis()
+    {
+        $qb = $this->findAllAxisQB();
+
+        return $qb->getQuery()->getResult();
+    }
 }

@@ -36,7 +36,7 @@ class TranslationFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function itShouldThrowAnExceptionIfTheTranslationIsNotAnAbstractTranslationClass()
     {
-        $target = $this->getTargetedClass(
+        $this->getTargetedClass(
             'Pim\Bundle\TranslationBundle\Tests\Entity\InvalidTranslation',
             'Pim\Bundle\TranslationBundle\Tests\Entity\Item',
             'bar'

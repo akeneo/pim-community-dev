@@ -3,12 +3,14 @@
 namespace Pim\Bundle\ImportExportBundle\Reader;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Pim\Bundle\CatalogBundle\Validator\Constraints\File;
+use Symfony\Component\HttpFoundation\File\File;
+use Pim\Bundle\CatalogBundle\Validator\Constraints\File as AssertFile;
 use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Oro\Bundle\BatchBundle\Item\ItemReaderInterface;
 use Oro\Bundle\BatchBundle\Item\UploadedFileAwareInterface;
 use Oro\Bundle\BatchBundle\Entity\StepExecution;
+use Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
+use Oro\Bundle\BatchBundle\Item\InvalidItemException;
 
 /**
  * Csv reader
@@ -17,11 +19,14 @@ use Oro\Bundle\BatchBundle\Entity\StepExecution;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CsvReader extends AbstractConfigurableStepElement implements ItemReaderInterface, UploadedFileAwareInterface
+class CsvReader extends AbstractConfigurableStepElement implements
+    ItemReaderInterface,
+    UploadedFileAwareInterface,
+    StepExecutionAwareInterface
 {
     /**
      * @Assert\NotBlank(groups={"Execution"})
-     * @File(groups={"Execution"}, allowedExtensions={"csv"})
+     * @AssertFile(groups={"Execution"}, allowedExtensions={"csv"})
      */
     protected $filePath;
 
@@ -51,9 +56,14 @@ class CsvReader extends AbstractConfigurableStepElement implements ItemReaderInt
     protected $uploadAllowed = false;
 
     /**
+     * @var StepExecution
+     */
+    protected $stepExecution;
+
+    /**
      * @var SplFileObject
      */
-    private $csv;
+    protected $csv;
 
     /**
      * Get uploaded file constraints
@@ -64,7 +74,7 @@ class CsvReader extends AbstractConfigurableStepElement implements ItemReaderInt
     {
         return array(
             new Assert\NotBlank(),
-            new File(array('allowedExtensions' => array('csv'))),
+            new AssertFile(array('allowedExtensions' => array('csv'))),
         );
     }
 
@@ -74,7 +84,7 @@ class CsvReader extends AbstractConfigurableStepElement implements ItemReaderInt
      *
      * @return CsvReader
      */
-    public function setUploadedFile(UploadedFile $uploadedFile)
+    public function setUploadedFile(File $uploadedFile)
     {
         $this->filePath = $uploadedFile->getRealPath();
 
@@ -194,7 +204,7 @@ class CsvReader extends AbstractConfigurableStepElement implements ItemReaderInt
     /**
      * {@inheritdoc}
      */
-    public function read(StepExecution $stepExecution)
+    public function read()
     {
         if (null === $this->csv) {
             $this->csv = new \SplFileObject($this->filePath);
@@ -213,20 +223,19 @@ class CsvReader extends AbstractConfigurableStepElement implements ItemReaderInt
             if ($data === array(null) || $data === null) {
                 return null;
             }
-            $stepExecution->incrementReadCount();
+            $this->stepExecution->incrementReadCount();
 
             if (count($this->fieldNames) !== count($data)) {
-                $stepExecution->addReaderWarning(
-                    $this,
+                throw new InvalidItemException(
                     sprintf(
-                        'Expecting to have %d columns, actually have %d.',
+                        'Expecting to have %d columns, actually have %d in %s:%d.',
                         count($this->fieldNames),
-                        count($data)
+                        count($data),
+                        $this->csv->getRealPath(),
+                        $this->csv->key()
                     ),
                     $data
                 );
-
-                return false;
             }
 
             $data = array_combine($this->fieldNames, $data);
@@ -245,11 +254,19 @@ class CsvReader extends AbstractConfigurableStepElement implements ItemReaderInt
         return array(
             'filePath'      => array(),
             'uploadAllowed' => array(
-                'type' => 'checkbox',
+                'type' => 'switch',
             ),
             'delimiter'     => array(),
             'enclosure'     => array(),
             'escape'        => array(),
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setStepExecution(StepExecution $stepExecution)
+    {
+        $this->stepExecution = $stepExecution;
     }
 }

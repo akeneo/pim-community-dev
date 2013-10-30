@@ -12,7 +12,11 @@ define(
             }
             var title = $form.attr('data-updated-title'),
                 self  = this,
-                formUpdated = function () {
+                formUpdated = function (e) {
+                    var $target = $(e.target);
+                    if ($target.parents('div.filter-box').length || $target.parents('ul.icons-holder').length) {
+                        return;
+                    }
                     self.updated = true;
                     $('#updated').show();
 
@@ -48,6 +52,7 @@ define(
             $(document).on('click', '#' + $form.attr('id') + ' ins.jstree-checkbox', formUpdated);
 
             $('a[href^="/"]:not(".no-hash")').off('click').on('click', linkClicked);
+            $form.on('click', 'a[href^="/"]:not(".no-hash")', linkClicked);
 
             Backbone.Router.prototype.on('route', function () {
                 $('a[href^="/"]:not(".no-hash")').off('click', linkClicked);

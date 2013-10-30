@@ -119,7 +119,7 @@ class ProductAttributeType extends AttributeType
      */
     protected function addFieldSmart(FormBuilderInterface $builder)
     {
-        $builder->add('smart', 'checkbox');
+        $builder->add('smart', 'switch');
     }
 
     /**
@@ -146,7 +146,7 @@ class ProductAttributeType extends AttributeType
      */
     protected function addFieldUseableAsGridColumn(FormBuilderInterface $builder)
     {
-        $builder->add('useableAsGridColumn', 'checkbox');
+        $builder->add('useableAsGridColumn', 'switch');
     }
 
     /**
@@ -155,7 +155,7 @@ class ProductAttributeType extends AttributeType
      */
     protected function addFieldUseableAsGridFilter(FormBuilderInterface $builder)
     {
-        $builder->add('useableAsGridFilter', 'checkbox');
+        $builder->add('useableAsGridFilter', 'switch');
     }
 
     /**
@@ -164,7 +164,7 @@ class ProductAttributeType extends AttributeType
      */
     protected function addFieldRequired(FormBuilderInterface $builder)
     {
-        $builder->add('required', 'checkbox');
+        $builder->add('required', 'switch');
     }
 
     /**

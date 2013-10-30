@@ -3,6 +3,8 @@
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\Validator\ConstraintGuesser;
 
 /**
+ * Test related class
+ *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -11,6 +13,11 @@ namespace Pim\Bundle\CatalogBundle\Tests\Unit\Validator\ConstraintGuesser;
  */
 abstract class ConstraintGuesserTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @param array $options
+     *
+     * @return \Pim\Bundle\CatalogBundle\Entity\ProductAttribute
+     */
     protected function getAttributeMock(array $options = array())
     {
         $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductAttribute');
@@ -28,6 +35,12 @@ abstract class ConstraintGuesserTest extends \PHPUnit_Framework_TestCase
         return $attribute;
     }
 
+    /**
+     * @param string $class
+     * @param array  $constraints
+     *
+     * @return null
+     */
     protected function assertContainsInstanceOf($class, $constraints)
     {
         if (!$this->getInstanceOf($class, $constraints)) {
@@ -49,6 +62,11 @@ abstract class ConstraintGuesserTest extends \PHPUnit_Framework_TestCase
         }
     }
 
+    /**
+     * @param string $class
+     * @param array  $constraints
+     * @param array  $config
+     */
     protected function assertConstraintsConfiguration($class, $constraints, array $config)
     {
         $constraint = $this->getInstanceOf($class, $constraints);
@@ -68,6 +86,12 @@ abstract class ConstraintGuesserTest extends \PHPUnit_Framework_TestCase
         }
     }
 
+    /**
+     * @param string $class
+     * @param array  $constraints
+     *
+     * @return mixed
+     */
     protected function getInstanceOf($class, $constraints)
     {
         foreach ($constraints as $constraint) {

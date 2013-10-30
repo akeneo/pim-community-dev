@@ -44,11 +44,15 @@ class JobExecutionArchiver
             $writer = $step->getWriter();
             if ($reader instanceof CsvReader) {
                 $sourcePath = $reader->getFilePath();
-                $this->copyFile($sourcePath, $archivePath);
+                if (file_exists($sourcePath)) {
+                    $this->copyFile($sourcePath, $archivePath);
+                }
             }
             if ($writer instanceof FileWriter) {
                 $sourcePath = $writer->getPath();
-                $this->copyFile($sourcePath, $archivePath);
+                if (file_exists($sourcePath)) {
+                    $this->copyFile($sourcePath, $archivePath);
+                }
             }
         }
     }
@@ -56,34 +60,42 @@ class JobExecutionArchiver
     /**
      * Copy the source path to the archive
      * @param string $sourcePath
-     * @param string $archivepath
+     * @param string $archivePath
      */
     protected function copyFile($sourcePath, $archivePath)
     {
         $sourceName = basename($sourcePath);
         $destPath   = $archivePath.$sourceName;
-        mkdir($archivePath, 0777, true);
+        if (!is_dir($archivePath)) {
+            mkdir($archivePath, 0777, true);
+        }
         copy($sourcePath, $destPath);
     }
 
     /**
      * Get download file path
+     * @param JobExecution $jobExecution
      *
      * @return string
      */
     public function getDownloadPath(JobExecution $jobExecution)
     {
-        $directory = $this->getJobExecutionPath($jobExecution);
-        $files     = scandir($directory);
-        $files     = array_diff($files, array('.', '..'));
-        $firstFile = current($files);
-        $path      = $directory.$firstFile;
+        $path = $this->getJobExecutionPath($jobExecution);
+
+        if (is_dir($path)) {
+            $files     = scandir($path);
+            $files     = array_diff($files, array('.', '..'));
+            $firstFile = current($files);
+            $path      = $path.$firstFile;
+        }
 
         return $path;
     }
 
     /**
      * @param JobExecution $jobExecution
+     *
+     * @return string
      */
     public function getJobExecutionPath(JobExecution $jobExecution)
     {
@@ -96,6 +108,8 @@ class JobExecutionArchiver
 
     /**
      * @param string $jobType
+     *
+     * @return string
      */
     public function getBaseDirectory($jobType)
     {

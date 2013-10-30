@@ -7,19 +7,19 @@ Feature: Order product attributes
   Scenario: Successfully update an attribute position
     Given a "Car" product
     And the following attribute group:
-      | name    |
-      | General |
+      | code    | label   |
+      | general | General |
     And the following product attribute:
       | product | label        | group   | position |
       | Car     | Release Date | General | 1        |
       | Car     | Color        | General | 2        |
       | Car     | Price        | General | 3        |
     And I am logged in as "admin"
-    When I am on the "General" group page
+    When I am on the "General" attribute group page
     And I visit the "Attributes" tab
     Then the attribute "Price" should be in position 3
     And I change the attribute "Price" position to 1
-    Then I should see "Attribute group successfully updated"
+    When I am on the "General" attribute group page
     And I visit the "Attributes" tab
     Then the attribute "Price" should be in position 1
     And the attribute "Color" should be in position 3
@@ -27,9 +27,9 @@ Feature: Order product attributes
   Scenario: Display product attribute fields ordered by their position
     Given a "Car" product
     And the following attribute groups:
-      | name    |
-      | General |
-      | Shape   |
+      | code    | label   |
+      | general | General |
+      | shape   | Shape   |
     And the following product attributes:
       | product | label        | position | group   |
       | Car     | Release date | 20       | General |

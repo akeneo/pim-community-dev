@@ -8,8 +8,8 @@ connector:
                 export:
                     title:     pim_import_export.jobs.product_export.export.title
                     reader:    pim_import_export.reader.product
-                    processor: pim_import_export.processor.heterogeneous_csv_serializer
-                    writer:    pim_import_export.writer.file
+                    processor: pim_import_export.processor.product_csv_serializer
+                    writer:    pim_import_export.writer.product_file
         category_export:
             title: pim_import_export.jobs.category_export.title
             type:  export
@@ -34,9 +34,9 @@ connector:
             steps:
                 import:
                     title:     pim_import_export.jobs.product_import.import.title
-                    reader:    pim_import_export.reader.csv
+                    reader:    pim_import_export.reader.product_csv
                     processor: pim_import_export.processor.valid_product_creation
-                    writer:    pim_import_export.writer.orm_product    #TODO: to replace by concrete implementation
+                    writer:    pim_import_export.writer.orm_product
         category_import:
             title: pim_import_export.jobs.category_import.title
             type:  import

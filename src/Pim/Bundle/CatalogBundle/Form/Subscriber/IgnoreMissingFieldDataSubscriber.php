@@ -18,6 +18,9 @@ use Symfony\Component\Form\FormEvent;
  */
 class IgnoreMissingFieldDataSubscriber implements EventSubscriberInterface
 {
+    /**
+     * {@inheritdoc}
+     */
     public static function getSubscribedEvents()
     {
         return array(
@@ -27,6 +30,7 @@ class IgnoreMissingFieldDataSubscriber implements EventSubscriberInterface
 
     /**
      * Remove a form field if it wasn't submitted
+     * @param FormEvent $event
      */
     public function preSubmit(FormEvent $event)
     {

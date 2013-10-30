@@ -1,0 +1,135 @@
+<script type="text/javascript">
+    require(
+        ['jquery', 'underscore', 'oro/mediator', 'pim/tree/associate', 'pim/scopable', 'pim/formupdatelistener', 'pim/dialog', 'backbone/bootstrap-modal', 'jquery.currencyfield'],
+        function ($, _, mediator, TreeAssociate, Scopable, FormUpdateListener, Dialog) {
+            'use strict';
+            $(function () {
+                {% if resource_granted('pim_catalog_product_categories_view') %}
+                    new TreeAssociate('#trees', '#pim_product_categories');
+                {% endif %}
+
+                _.each($('form div.scopable'), function (field) {
+                    new Scopable({ el: $(field) });
+                });
+
+                $('form div.currency').currencyField();
+
+                new FormUpdateListener($('#{{ form.vars.id }}'));
+
+                $('#default_channel').select2('destroy').css('padding', '0').on('change', function (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    mediator.trigger('scopablefield:changescope', $(this).val());
+                });
+
+                $('.dropdown-menu.channel').find('a').click(function (e) {
+                    e.preventDefault();
+                    mediator.trigger('scopablefield:' + $(this).data('action'));
+                });
+
+                $('#attribute-buttons').find('.dropdown-menu').click(function (e) {
+                    e.stopPropagation ();
+                });
+
+                $('[data-toggle="popover"]').popover();
+
+                $('#switch_status').on('click', function () {
+                    var $field = $('#{{ form.enabled.vars.id }}'),
+                        $status = $('.status-enabled').find('.badge');
+                    if (+$field.val()) {
+                        $field.val(0).trigger('change');
+                        $(this).html('{{ "info.product.enable"|trans }}');
+                        $status.html('<i class="icon-status-disabled icon-circle"></i>{{ "info.product.disabled"|trans }}').removeClass('badge-enabled status-enabled').addClass('badge-disabled status-disabled');
+                    } else {
+                        $field.val(1).trigger('change');
+                        $(this).html('{{ "info.product.disable"|trans }}');
+                        $status.html('<i class="icon-status-enabled icon-circle"></i>{{ "info.product.enabled"|trans }}').removeClass('badge-disabled status-disabled').addClass('badge-enabled status-enabled');
+                    }
+                });
+
+                {% if resource_granted('pim_catalog_product_change_family') %}
+                    {% set familyWidget %}
+                        {{ 'info.product.change family to'|trans }}:
+                        {{ form_widget(form.family) }}</br>
+                        {{ 'info.product.merge attributes'|trans }}</br>
+                        {{ 'info.product.keep attributes'|trans }}
+                    {% endset %}
+
+                    var message = '{{ familyWidget|e("js")|raw }}',
+                        title   = '{{ "info.product.change family"|trans }}',
+                        doAction = function () {
+                            $('#{{ form.vars.id }}').append($('#{{ form.family.vars.id }}'));
+                            $('#{{ form.vars.id }}').submit();
+                        };
+
+                    $('#edit-family').on('click', function () {
+                        Dialog.confirm(message, title, doAction);
+                        $('#{{ form.family.vars.id }}')
+                            .attr('data-placeholder', '{{ "Choose a family"|trans }}')
+                            .select2({ allowClear: true });
+                    });
+
+                    $('#{{ form.vars.id }}').on('click', 'button[type="submit"]', function () {
+                        $('#{{ form.vars.id }}').append($('<div class="hide"/>').html(message));
+                    });
+                {% endif %}
+
+                {% for group in form.vars.value.groups %}
+                    {% set productList %}
+                    {% spaceless %}
+                    <div class="clearfix"><div class="container-fluid"><div class="grid-container">
+                        {% if group.products|length > 0 %}
+                        <table class="grid table table-hover table-bordered table-condensed groups">
+                            <thead>
+                                <tr>
+                                    <th>{{ group.products[0].identifier.attribute.label }}</th>
+                                    <th>{{ 'Label'|trans }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for product in group.products %}
+                                    <tr>
+                                        <td><a href="{{ path('pim_catalog_product_edit', {'id': product.id}) }}">{{ product.identifier }}</a></td>
+                                        <td>{{ product.label }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        {% endif %}
+                    </div></div></div>
+                    {% endspaceless %}
+                    {% endset %}
+
+                    $('#group-products-{{ group.id }}').on('click', function (event) {
+                        event.preventDefault();
+
+                        var groupDoAction = function () {
+                            var $groupLink = $('<a href="{{ path('pim_catalog_group_edit', { 'id': group.id }) }}" class="hide"></a>');
+                            $groupLink.appendTo($('#{{ form.vars.id }}')).click();
+                        };
+
+                        var groupModal = new Backbone.BootstrapModal({
+                            allowCancel: true,
+                            cancelText: '{{ "Close"|trans }}',
+                            title: '{{ "Group"|trans }} {{ group.label }}',
+                            content: '{{ productList|raw }}',
+                            okText: '{{ "View group"|trans }}'
+                        });
+
+                        groupModal.on('ok', groupDoAction);
+                        groupModal.open();
+                    });
+                {% endfor %}
+
+                function setFullHeight() {
+                    $('.fullheight').each(function () {
+                        $(this).height($('.scrollable-container').height() - $(this).position ().top + $('.scrollable-container').position ().top);
+                    })
+                }
+
+                $('a[data-toggle="tab"]').on('shown', setFullHeight);
+                setFullHeight();
+            });
+        }
+    );
+</script>

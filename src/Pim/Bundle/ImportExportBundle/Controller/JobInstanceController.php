@@ -333,6 +333,12 @@ class JobInstanceController extends AbstractDoctrineController
                     $media = $data['file'];
                     $file = $media->getFile();
 
+                    $filename = $file->getClientOriginalName();
+                    $file = $file->move(
+                        sys_get_temp_dir(),
+                        $file->getFilename() . substr($filename, strrpos($filename, '.'))
+                    );
+
                     foreach ($job->getSteps() as $step) {
                         $reader = $step->getReader();
 
@@ -355,25 +361,22 @@ class JobInstanceController extends AbstractDoctrineController
                 }
             }
 
-            if ($uploadMode) {
-                $job->execute($jobExecution);
-
-            } else {
-                $this->getManager()->persist($jobExecution);
-                $this->getManager()->flush();
-                $instanceCode = $jobExecution->getJobInstance()->getCode();
-                $executionId = $jobExecution->getId();
-                $cmd = sprintf(
-                    'php %s/console oro:batch:job --env=%s %s %s >> %s/logs/batch_execute.log 2>&1',
-                    $this->rootDir,
-                    $this->environment,
-                    $instanceCode,
-                    $executionId,
-                    $this->rootDir
-                );
-                $process = new Process($cmd);
-                $process->start();
-            }
+            $this->getManager()->persist($jobExecution);
+            $this->getManager()->flush();
+            $instanceCode = $jobExecution->getJobInstance()->getCode();
+            $executionId = $jobExecution->getId();
+            $cmd = sprintf(
+                'php %s/console oro:batch:job --env=%s --email="%s" %s %s %s >> %s/logs/batch_execute.log 2>&1',
+                $this->rootDir,
+                $this->environment,
+                $this->getUser()->getEmail(),
+                $uploadMode ? sprintf('-c \'%s\'', json_encode($job->getConfiguration())) : '',
+                $instanceCode,
+                $executionId,
+                $this->rootDir
+            );
+            $process = new Process($cmd);
+            $process->start();
             $this->addFlash('success', sprintf('The %s is running.', $this->getJobType()));
 
             return $this->redirectToReportView($jobExecution->getId());

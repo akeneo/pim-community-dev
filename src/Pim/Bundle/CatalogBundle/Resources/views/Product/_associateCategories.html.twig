@@ -1,3 +1,5 @@
+{{ form_widget(form.categories, { attr: { 'class': 'hide' } }) }}
+
 <div id="trees-list" class="tab-groups">
     <ul class="nav nav-list">
         {% for tree in trees %}
@@ -9,7 +11,7 @@
             {% endif %}
             <li>
                 <a class="{{ aClass }}" href="javascript:void(0);" id="tree-link-{{ tree['tree'].id }}">
-                    <i class="icon-ok {{ iClass }}"></i>{{ tree['tree'].title }} ({{ tree['productsCount'] }})
+                    <i class="icon-ok {{ iClass }}"></i>{{ tree['tree'].label }} ({{ tree['productsCount'] }})
                 </a>
             </li>
         {% endfor %}
@@ -24,7 +26,7 @@
     <div id="trees" data-id="{{ product.id }}" data-datalocale="{{ dataLocale }}"{% if selectedTree is defined %} data-selected-tree="{{ selectedTree }}"{% endif %}>
         {% for tree in trees %}
             <div class="tree" data-tree-id="{{ tree['tree'].id }}">
-                <h3>{{ tree['tree'].title }}</h3>
+                <h3>{{ tree['tree'].label }}</h3>
                 <input type="hidden" id="apply-on-tree-{{ tree['tree'].id }}" name="apply_on_tree_{{ tree['tree'].id }}" value="0"/>
                 <div id="tree-{{ tree['tree'].id }}" class="buffer-small-left"></div>
             </div>

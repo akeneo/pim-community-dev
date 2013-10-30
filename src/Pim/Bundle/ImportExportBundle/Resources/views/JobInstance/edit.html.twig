@@ -3,7 +3,7 @@
 {% block content %}
 
     {{ JSFV(form) }}
-    <form id="{{ form.vars.id }}" method="POST" class="form-horizontal" action="{{ actionRoute }}" {{ form_enctype(form) }}>
+    {{ form_start(form, { 'action': actionRoute }) }}
 
         {% set buttons %}
             {{ elements.backLink(indexRoute) }}

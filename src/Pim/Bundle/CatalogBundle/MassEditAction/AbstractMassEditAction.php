@@ -9,7 +9,7 @@ namespace Pim\Bundle\CatalogBundle\MassEditAction;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-abstract class AbstractMassEditAction implements MassEditAction
+abstract class AbstractMassEditAction implements MassEditActionInterface
 {
     /**
      * {@inheritdoc}
@@ -31,6 +31,7 @@ abstract class AbstractMassEditAction implements MassEditAction
      *
      * @param string $key
      * @param array  $parameters
+     * @param mixed  $default
      *
      * @throw InvalidArgumentException
      *

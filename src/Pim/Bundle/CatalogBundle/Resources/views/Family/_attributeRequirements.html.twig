@@ -10,16 +10,16 @@
         <thead>
             <th width="10%">{{ 'Label'|upper }}</th>
             {% for channel in channels %}
-                <th class="channel" width="{{ columnWidth }}%">{{ channel.name|upper }}</th>
+                <th class="channel" width="{{ columnWidth }}%">{{ channel.label|upper }}</th>
             {% endfor %}
             <th width="5%">&nbsp;</th>
         </thead>
 
         {% set colspan = channels|length + 2 %}
-        {% for groupName, attributes in family.groupedAttributes %}
+        {% for groupLabel, attributes in family.groupedAttributes %}
         <tbody>
             <tr class="group">
-                <td colspan="{{ colspan }}"><i class="icon-collapse-alt"></i>{{ groupName }}</td>
+                <td colspan="{{ colspan }}"><i class="icon-collapse-alt"></i>{{ groupLabel }}</td>
             </tr>
             {% for attribute in attributes %}
             <tr>

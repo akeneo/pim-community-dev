@@ -60,6 +60,13 @@ class EditCommonAttributes extends AbstractMassEditAction
      */
     protected $attributesToDisplay;
 
+    /**
+     * Constructor
+     *
+     * @param ProductManager  $productManager
+     * @param LocaleManager   $localeManager
+     * @param CurrencyManager $currencyManager
+     */
     public function __construct(
         ProductManager $productManager,
         LocaleManager $localeManager,
@@ -72,6 +79,13 @@ class EditCommonAttributes extends AbstractMassEditAction
         $this->attributesToDisplay = new ArrayCollection();
     }
 
+    /**
+     * Set values
+     *
+     * @param Collection $values
+     *
+     * @return EditCommonAttributes
+     */
     public function setValues(Collection $values)
     {
         $this->values = $values;
@@ -79,11 +93,23 @@ class EditCommonAttributes extends AbstractMassEditAction
         return $this;
     }
 
+    /**
+     * Get values
+     *
+     * @return Collection
+     */
     public function getValues()
     {
         return $this->values;
     }
 
+    /**
+     * Set locale
+     *
+     * @param Locale $locale
+     *
+     * @return EditCommonAttributes
+     */
     public function setLocale(Locale $locale)
     {
         $this->locale = $locale;
@@ -91,6 +117,11 @@ class EditCommonAttributes extends AbstractMassEditAction
         return $this;
     }
 
+    /**
+     * Get locale
+     *
+     * @return Locale
+     */
     public function getLocale()
     {
         if ($this->locale instanceof Locale) {
@@ -102,6 +133,13 @@ class EditCommonAttributes extends AbstractMassEditAction
         );
     }
 
+    /**
+     * Set common attributes
+     *
+     * @param array $commonAttributes
+     *
+     * @return EditCommonAttributes
+     */
     public function setCommonAttributes(array $commonAttributes)
     {
         $this->commonAttributes = $commonAttributes;
@@ -109,11 +147,23 @@ class EditCommonAttributes extends AbstractMassEditAction
         return $this;
     }
 
+    /**
+     * Get common attributes
+     *
+     * @return array
+     */
     public function getCommonAttributes()
     {
         return $this->commonAttributes;
     }
 
+    /**
+     * Set attributes to display
+     *
+     * @param Collection $attributesToDisplay
+     *
+     * @return EditCommonAttributes
+     */
     public function setAttributesToDisplay(Collection $attributesToDisplay)
     {
         $this->attributesToDisplay = $attributesToDisplay;
@@ -121,6 +171,11 @@ class EditCommonAttributes extends AbstractMassEditAction
         return $this;
     }
 
+    /**
+     * Get attributes to display
+     *
+     * @return Collection
+     */
     public function getAttributesToDisplay()
     {
         return $this->attributesToDisplay;
@@ -134,10 +189,15 @@ class EditCommonAttributes extends AbstractMassEditAction
         return 'pim_catalog_mass_edit_common_attributes';
     }
 
+    /**
+     * Get form options
+     *
+     * @return array
+     */
     public function getFormOptions()
     {
         return array(
-            'locales'          => $this->localeManager->getActiveLocales(),
+            'locales'          => $this->localeManager->getUserLocales(),
             'commonAttributes' => $this->commonAttributes,
         );
     }
@@ -147,7 +207,7 @@ class EditCommonAttributes extends AbstractMassEditAction
      */
     public function initialize(array $products)
     {
-        $this->commonAttributes = $this->productManager->getAttributeRepository()->findAll();
+        $this->initializeCommonAttributes();
 
         foreach ($products as $product) {
             foreach ($this->commonAttributes as $key => $attribute) {
@@ -184,6 +244,29 @@ class EditCommonAttributes extends AbstractMassEditAction
     }
 
     /**
+     * Initializes self::commonAtributes with values from the repository
+     */
+    protected function initializeCommonAttributes()
+    {
+        $attributes = $this->productManager->getAttributeRepository()->findAll();
+
+        $currentLocaleCode = $this->getLocale()->getCode();
+
+        // Set attribute options locale
+        $this->productManager->setLocale($currentLocaleCode);
+
+        foreach ($attributes as $attribute) {
+            $attribute->setLocale($currentLocaleCode);
+
+            $attribute
+                ->getVirtualGroup()
+                ->setLocale($currentLocaleCode);
+
+            $this->commonAttributes[] = $attribute;
+        }
+    }
+
+    /**
      * Set product values with the one stored inside $this->values
      *
      * @param ProductInterface $product
@@ -212,26 +295,30 @@ class EditCommonAttributes extends AbstractMassEditAction
         switch ($value->getAttribute()->getAttributeType()) {
             case 'pim_catalog_price_collection':
                 $this->setProductPrice($productValue, $value);
-                break;
 
+                break;
             case 'pim_catalog_multiselect':
                 $this->setProductOption($productValue, $value);
-                break;
 
+                break;
             case 'pim_catalog_file':
             case 'pim_catalog_image':
                 $this->setProductFile($productValue, $value);
-                break;
 
+                break;
             case 'pim_catalog_metric':
                 $this->setProductMetric($productValue, $value);
-                break;
 
+                break;
             default:
                 $productValue->setData($value->getData());
         }
     }
 
+    /**
+     * @param ProductValueInterface $productValue
+     * @param ProductValueInterface $value
+     */
     private function setProductPrice(ProductValueInterface $productValue, ProductValueInterface $value)
     {
         foreach ($value->getPrices() as $price) {
@@ -244,6 +331,10 @@ class EditCommonAttributes extends AbstractMassEditAction
         }
     }
 
+    /**
+     * @param ProductValueInterface $productValue
+     * @param ProductValueInterface $value
+     */
     private function setProductOption(ProductValueInterface $productValue, ProductValueInterface $value)
     {
         $productValue->getOptions()->clear();
@@ -253,6 +344,10 @@ class EditCommonAttributes extends AbstractMassEditAction
         }
     }
 
+    /**
+     * @param ProductValueInterface $productValue
+     * @param ProductValueInterface $value
+     */
     private function setProductFile(ProductValueInterface $productValue, ProductValueInterface $value)
     {
         if (null === $media = $productValue->getMedia()) {
@@ -262,6 +357,10 @@ class EditCommonAttributes extends AbstractMassEditAction
         $media->setFile($value->getMedia()->getFile());
     }
 
+    /**
+     * @param ProductValueInterface $productValue
+     * @param ProductValueInterface $value
+     */
     private function setProductMetric(ProductValueInterface $productValue, ProductValueInterface $value)
     {
         if (null === $metric = $productValue->getMetric()) {

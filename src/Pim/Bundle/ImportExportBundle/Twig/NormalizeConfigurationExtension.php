@@ -89,7 +89,7 @@ class NormalizeConfigurationExtension extends \Twig_Extension
             $spanStart = '<span class="label label-important">';
             $spanEnd   = '</span>';
 
-            return $spanStart . join("$spanEnd $spanStart", $messages) . $spanEnd;
+            return $spanStart . join("$spanEnd&nbsp;$spanStart", $messages) . $spanEnd;
         }
     }
 }

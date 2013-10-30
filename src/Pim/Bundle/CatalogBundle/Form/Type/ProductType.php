@@ -11,6 +11,7 @@ use Oro\Bundle\FlexibleEntityBundle\Form\Type\FlexibleType;
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Pim\Bundle\CatalogBundle\Form\View\ProductFormView;
 use Pim\Bundle\CatalogBundle\Form\Subscriber\IgnoreMissingFieldDataSubscriber;
+use Pim\Bundle\CatalogBundle\Form\Subscriber\BindProductAssociationTargetsSubscriber;
 
 /**
  * Product form type
@@ -48,26 +49,66 @@ class ProductType extends FlexibleType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        if ($options['enable_state']) {
+            $builder->add('enabled', 'checkbox');
+        }
+
         parent::buildForm($builder, $options);
 
-        $builder->add(
-            'family',
-            'entity',
-            array(
-                'class'       => 'PimCatalogBundle:Family',
-                'empty_value' => ''
+        $builder
+            ->add(
+                'productAssociations',
+                'collection',
+                array(
+                    'type' => 'pim_catalog_product_association'
+                )
             )
-        );
+            ->get('productAssociations')
+            ->addEventSubscriber(new BindProductAssociationTargetsSubscriber());
+
+        if ($options['enable_family']) {
+            $builder->add(
+                'family',
+                'entity',
+                array(
+                    'class'       => 'PimCatalogBundle:Family',
+                    'empty_value' => ''
+                )
+            );
+        }
+
+        $builder
+            ->add(
+                'categories',
+                'oro_entity_identifier',
+                array(
+                    'class'    => 'PimCatalogBundle:Category',
+                    'required' => true,
+                    'mapped'   => true,
+                    'multiple' => true,
+                )
+            );
 
         if ($options['import_mode']) {
+            // The product category converter works on a classic entity form type scheme
             $builder
+                ->remove('categories')
                 ->add(
                     'categories',
                     'entity',
                     array(
-                        'multiple'     => true,
                         'class'        => 'PimCatalogBundle:Category',
-                        'by_reference' => false,
+                        'multiple'     => true,
+                        'by_reference' => false
+                    )
+                )
+                ->add(
+                    'groups',
+                    'entity',
+                    array(
+                        'class'        => 'PimCatalogBundle:Group',
+                        'multiple'     => true,
+                        'by_reference' => false
                     )
                 )
                 ->addEventSubscriber($this->transformer)
@@ -90,18 +131,7 @@ class ProductType extends FlexibleType
     {
         parent::addEntityFields($builder);
 
-        $builder
-            ->add(
-                'enabled',
-                'checkbox',
-                array(
-                    'attr' => array(
-                        'data-on-label'  => 'Enabled',
-                        'data-off-label' => 'Disabled',
-                        'size'           => null
-                    )
-                )
-            );
+        $builder->add('enabled', 'hidden');
     }
 
     /**
@@ -114,7 +144,7 @@ class ProductType extends FlexibleType
     {
         $builder->add(
             'values',
-            new LocalizedCollectionType(),
+            'pim_catalog_localized_collection',
             array(
                 'type'               => $this->valueFormAlias,
                 'allow_add'          => true,
@@ -135,6 +165,8 @@ class ProductType extends FlexibleType
             array(
                 'currentLocale' => null,
                 'import_mode'   => false,
+                'enable_family' => true,
+                'enable_state'  => true
             )
         );
     }

@@ -32,11 +32,13 @@ class Edit extends Form
             array(
                 'Locales dropdown' => array('css' => '#locale-switcher'),
                 'Locales selector' => array('css' => '#pim_product_locales'),
-                'Enable switcher'  => array('css' => '#pim_product_enabled'),
+                'Enable switcher'  => array('css' => '#switch_status'),
                 'Updates grid'     => array('css' => '#history table.grid'),
                 'Image preview'    => array('css' => '#lbImage'),
                 'Completeness'     => array('css' => 'div#completeness'),
                 'Updates grid'     => array('css' => '#history table.grid'),
+                'Category pane'    => array('css' => '#categories'),
+                'Category tree'    => array('css' => '#trees'),
             )
         );
     }
@@ -127,11 +129,25 @@ class Edit extends Form
      */
     public function findField($name)
     {
+        $currency = null;
+        if (false !== strpos($name, ' in ')) {
+            list($name, $currency) = explode(' in ', $name);
+        }
         $label = $this->find('css', sprintf('label:contains("%s")', $name));
 
         if (!$label) {
             throw new ElementNotFoundException($this->getSession(), 'form label ', 'value', $name);
         }
+
+        if ($currency) {
+            $label = $label
+                ->getParent()
+                ->find('css', sprintf('label:contains("%s")', $currency));
+            if (!$label) {
+                throw new ElementNotFoundException($this->getSession(), 'form label ', 'value', $name);
+            }
+        }
+
 
         $field = $label->getParent()->find('css', 'input');
 
@@ -159,7 +175,7 @@ class Edit extends Form
      */
     public function disableProduct()
     {
-        $this->getElement('Enable switcher')->uncheck();
+        $this->getElement('Enable switcher')->click();
 
         return $this;
     }
@@ -171,7 +187,7 @@ class Edit extends Form
      */
     public function enableProduct()
     {
-        $this->getElement('Enable switcher')->check();
+        $this->getElement('Enable switcher')->click();
 
         return $this;
     }
@@ -351,7 +367,7 @@ class Edit extends Form
             ->find('css', 'div.progress')
             ->getAttribute('data-original-title');
 
-        $pattern = sprintf('/^%s%% complete/', $ratio);
+        $pattern = sprintf('/^%s complete/', $ratio);
         if (!$title || preg_match($pattern, $title) !== 1) {
             throw new \InvalidArgumentException(
                 sprintf('Ratio %s not found for %s:%s', $ratio, $channelCode, $localeCode)
@@ -380,5 +396,49 @@ class Edit extends Form
     public function getHistoryRows()
     {
         return $this->getElement('Updates grid')->findAll('css', 'tbody tr');
+    }
+
+    /**
+     * @param string $category
+     *
+     * @return CategoryView
+     */
+    public function selectTree($category)
+    {
+        $link = $this->getElement('Category pane')
+            ->find('css', sprintf('#trees-list li a:contains(%s)', $category));
+        $link->click();
+
+        return $this;
+    }
+
+    /**
+     * @param string $category
+     *
+     * @return CategoryView
+     */
+    public function expandCategory($category)
+    {
+        $category = $this->findCategoryInTree($category);
+        $category->getParent()->find('css', 'ins')->click();
+
+        return $this;
+    }
+
+    /**
+     * @param string $category
+     *
+     * @return NodeElement
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function findCategoryInTree($category)
+    {
+        $elt = $this->getElement('Category tree')->find('css', sprintf('li a:contains(%s)', $category));
+        if (!$elt) {
+            throw new \InvalidArgumentException(sprintf('Unable to find category "%s" in the tree', $category));
+        }
+
+        return $elt;
     }
 }

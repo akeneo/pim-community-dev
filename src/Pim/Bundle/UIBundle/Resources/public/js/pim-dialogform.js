@@ -63,6 +63,8 @@ define(
                     open: function () {
                         $(this).parent().keypress(function (e) {
                             if (e.keyCode === $.ui.keyCode.ENTER) {
+                                e.preventDefault();
+                                e.stopPropagation();
                                 $(this).find('button.btn-primary:eq(0)').click();
                             }
                         });

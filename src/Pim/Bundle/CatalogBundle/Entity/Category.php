@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\SegmentationTreeBundle\Entity\AbstractSegment;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
@@ -27,6 +28,15 @@ use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
  * @Gedmo\Tree(type="nested")
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="discr", type="string")
+ * @Config(
+ *  defaultValues={
+ *      "entity"={"label"="Category", "plural_label"="Categories"},
+ *      "security"={
+ *          "type"="ACL",
+ *          "group_name"=""
+ *      }
+ *  }
+ * )
  */
 class Category extends AbstractSegment implements CategoryInterface, TranslatableInterface, VersionableInterface
 {
@@ -316,27 +326,27 @@ class Category extends AbstractSegment implements CategoryInterface, Translatabl
     }
 
     /**
-     * Get title
+     * Get label
      *
      * @return string
      */
-    public function getTitle()
+    public function getLabel()
     {
-        $translated = ($this->getTranslation()) ? $this->getTranslation()->getTitle() : null;
+        $translated = ($this->getTranslation()) ? $this->getTranslation()->getLabel() : null;
 
         return ($translated !== '' && $translated !== null) ? $translated : '['.$this->getCode().']';
     }
 
     /**
-     * Set title
+     * Set label
      *
-     * @param string $title
+     * @param string $label
      *
      * @return string
      */
-    public function setTitle($title)
+    public function setLabel($label)
     {
-        $this->getTranslation()->setTitle($title);
+        $this->getTranslation()->setLabel($label);
 
         return $this;
     }
@@ -356,6 +366,6 @@ class Category extends AbstractSegment implements CategoryInterface, Translatabl
      */
     public function __toString()
     {
-        return $this->getTitle();
+        return $this->getLabel();
     }
 }

@@ -14,9 +14,9 @@ Feature: Create a category
 
   Scenario: Create a category node
     Given the following category:
-      | code | title |
+      | code | label |
       | shoe | Shoe  |
-    Given I am logged in as "admin"
+    And I am logged in as "admin"
     And I am on the category "shoe" node creation page
     When I fill in the following information:
       | Code    | flipflap |
@@ -27,11 +27,11 @@ Feature: Create a category
   @javascript
   Scenario: Go to category creation page from the category tree right click menu
     Given the following category:
-    | code | title |
-    | shoe | Shoe  |
-    Given I am logged in as "admin"
+      | code | label |
+      | shoe | Shoe  |
+    And I am logged in as "admin"
     And I am on the categories page
     When I right click on the "Shoe" category
     And I click on "Create" in the right click menu
-    And I blur the field
+    And I blur the category node
     Then I should be on the category "shoe" node creation page

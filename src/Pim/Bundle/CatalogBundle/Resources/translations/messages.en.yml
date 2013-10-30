@@ -10,6 +10,8 @@ family:          family
 import profile:  import profile
 locale:          locale
 product:         product
+group:           group
+association:     association
 
 # Page header titles
 attribute:
@@ -59,6 +61,14 @@ product:
     overview: product overview
     create:   create product
     edit:     edit product
+group:
+    overview: group overview
+    create:   create group
+    edit:     edit group
+association:
+    overview: association overview
+    create:   create association
+    edit:     edit association
 
 # Custom titles
 products: products
@@ -77,6 +87,8 @@ btn:
         import profile:  create import profile
         locale:          create locale
         product:         create product
+        group:           create group
+        association:     create association
     edit:      edit
     save:      save
     remove:    remove
@@ -95,19 +107,22 @@ confirmation:
     discard changes: You will lose changes to the %entity% if you leave the page.
     remove:
         item:            Are you sure you want to delete this item?
-        attribute:       Are you sure you want to remove the attribute %name%?
+        attribute:       Are you sure you want to delete the attribute %name%?
         attribute group: Are you sure you want to delete the attribute group %name%?
         category:        Are you sure you want to delete the category %name%?
-        family:          Are you sure you want to remove the family %name%?
+        family:          Are you sure you want to delete the family %name%?
         product:         Are you sure you want to delete the product %name%?
         export profile:  Are you sure you want to delete the export profile %name%?
         import profile:  Are you sure you want to delete the import profile %name%?
         channel:         Are you sure you want to delete the channel %name%?
+        group:           Are you sure you want to delete the group %name%?
+        association:     Are you sure you want to delete the association %name%?
 
 # Flash messages
 flash:
     entity:
         removed:          Item was deleted
+        removed: Item was deleted
     attribute:
         created:                  Attribute successfully created
         updated:                  Attribute successfully updated
@@ -155,6 +170,14 @@ flash:
         removed:                  The import has been removed
     export:
         removed:                  The export has been removed
+    group:
+        created: Group successfully created
+        updated: Group successfully updated
+        removed: Group successfully removed
+    association:
+        created: Association successfully created
+        updated: Association successfully updated
+        removed: Association successfully removed
     error ocurred: Action failed. Please retry.
 
 # Info messages
@@ -169,6 +192,19 @@ info:
         change family to:        Change the family to
         merge attributes:        Current attributes will be merged with the ones in the new family.
         keep attributes:         No attributes will be removed.
+        number of associations:  %productCount% products and %groupCount% groups
+        enable:                  Enable
+        enabled:                 Enabled
+        disable:                 Disable
+        disabled:                Disabled
+    group:
+        axis:                Variation axis: %attributes%
+        select products:     Please select products that should belong to this group.
+        selectable products: The following selectable products have a defined value for each axis.
+    association:
+        show products:        Show products
+        show groups:          Show groups
+        remove from products: Deleting the association will remove it from %count% products.
 
 # Form elements
 Options:                       Options
@@ -179,6 +215,7 @@ Updated:                       Updated
 N/A:                           N/A
 Add an option:                 Add an option
 Manage products:               Manage products
+Manage groups:                 Manage groups
 Code:                          Code
 Name:                          Name
 Type:                          Type
@@ -217,6 +254,11 @@ Create:               Create
 Cancel:               Cancel
 Create a new product: Create a new product
 Choose a family:      Choose a family
+Create:                   Create
+Cancel:                   Cancel
+Create a new product:     Create a new product
+Create a new association: Create a new association
+Choose a family:          Choose a family
 
 # Scopes
 Global:  Global
@@ -224,7 +266,6 @@ Channel: Channel
 
 # Variants
 Always override:         Always override
-A selection of variants: A selection of variants
 Ask:                     Ask
 
 # Attribute group
@@ -264,7 +305,7 @@ Is dynamic: Is dynamic
 Dashboard:                                   Dashboard
 Attribute groups:                            Attribute groups
 Attribute groups | Create:                   Attribute groups | Create
-Attribute groups %group.name% | Edit:        Attribute groups %group.name% | Edit
+Attribute groups %group.label% | Edit:       Attribute groups %group.label% | Edit
 Attribute groups | Sort:                     Attribute groups | Sort
 Category trees:                              Category trees
 Category trees | List:                       Category trees | List
@@ -289,10 +330,17 @@ Families | Create:                           Families | Create
 Families %family.label% | Edit:              Families %family.label% | Edit
 Channels:                                    Channels
 Channels | Create:                           Channels | Create
-Channels %channel.name% | Edit:              Channels %channel.name% | Edit
+Channels %channel.label% | Edit:             Channels %channel.label% | Edit
 Currencies:                                  Currencies
 Locales:                                     Locales
 Locales %locale.code% | Edit:                Locales %locale.code% | Edit
+Groups:                                      Groups
+Groups | Create:                             Groups | Create
+Groups %group.label% | Edit:                 Groups %group.label% | Edit
+Associations:                                Associations
+Associations | Create:                       Associations | Create
+Associations %association.label% | Edit:     Associations %association.label% | Edit
+
 
 pim_catalog_identifier:       Identifier
 pim_catalog_text:             Text
@@ -341,3 +389,25 @@ pim_catalog.mass_edit_action:
         label:         Change the family of products
         description:   The family of the selected products will be changed to the chosen family
         success_flash: The family of selected product(s) has been successfully changed
+
+# Product completeness
+pim_catalog.completeness:
+    progress_bar.title: '%ratio%% complete (1 required value)|%ratio%% complete (%count% required values)'
+    subtitle:           '{0} Complete|{1} 1 missing value|]1,Inf] %count% missing values'
+    missing_attributes: Missing value|Missing values
+    legend:
+        locale_not_associated: Locale not associated to this channel
+
+# Product groups
+pim_catalog.group:
+    axis.help: 'Axis are attributes which define variants of the variant group. Axis are attributes with options, not localizable and not scoped. It cannot be changed after the creation of the variant group.'
+    type:
+        VARIANT:    Variant
+        X_SELL:     X-Sell
+        ADDITIONAL: Additional
+        RELATED:    Related
+
+# Product view
+Group: Group
+View group: View group
+Products: Products

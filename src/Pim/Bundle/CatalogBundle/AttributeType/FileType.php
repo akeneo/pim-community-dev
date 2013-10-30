@@ -37,7 +37,7 @@ class FileType extends OroFileType
             ),
             array(
                 'name'      => 'translatable',
-                'fieldType' => 'checkbox',
+                'fieldType' => 'switch',
                 'options'   => array(
                     'disabled'  => (bool) $attribute->getId(),
                     'read_only' => (bool) $attribute->getId()
@@ -57,7 +57,7 @@ class FileType extends OroFileType
             ),
             array(
                 'name'      => 'unique',
-                'fieldType' => 'checkbox',
+                'fieldType' => 'switch',
                 'options'   => array(
                     'disabled'  => true,
                     'read_only' => true

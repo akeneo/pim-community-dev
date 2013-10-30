@@ -13,15 +13,31 @@ use Doctrine\ORM\EntityManager;
  */
 class ProductFamilyConverter
 {
+    /**
+     * @var string
+     */
     const FAMILY_KEY = '[family]';
 
+    /**
+     * @var EntityManager $entityManager
+     */
     protected $entityManager;
 
+    /**
+     * Constructor
+     *
+     * @param EntityManager $entityManager
+     */
     public function __construct(EntityManager $entityManager)
     {
         $this->entityManager = $entityManager;
     }
 
+    /**
+     * @param array $data
+     *
+     * @return array
+     */
     public function convert($data)
     {
         if (null !== $id = $this->getFamilyId($data)) {

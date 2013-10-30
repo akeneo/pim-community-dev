@@ -7,9 +7,9 @@ Feature: Add attributes to a product
   Background:
     Given a "Car" product
     And the following attribute group:
-      | name    |
-      | General |
-      | Prices  |
+      | code    | label   |
+      | general | General |
+      | prices  | Prices  |
     And the following product attribute:
       | product | label        | group   |
       | Car     | Release Date | General |

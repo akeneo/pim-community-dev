@@ -17,12 +17,6 @@ use Pim\Bundle\TranslationBundle\Form\Type\TranslatableFieldType;
  */
 class TranslatableFieldTypeTest extends TypeTestCase
 {
-    protected $localeConfig = array(
-        'locales'=>array(
-            'fr_FR' => array('label'=>'Français'),
-            'en_US' => array('label'=>'English')
-        )
-    );
     /**
      * @var TranslatableFieldType
      */
@@ -72,7 +66,7 @@ class TranslatableFieldTypeTest extends TypeTestCase
                 new TranslatableFieldType(
                     $this->getMock('Symfony\Component\Validator\ValidatorInterface'),
                     $this->getLocaleManagerMock(),
-                    $this->localeConfig
+                    $this->getLocaleHelperMock()
                 )
             )
             ->getFormFactory();
@@ -81,7 +75,7 @@ class TranslatableFieldTypeTest extends TypeTestCase
         $this->type = new TranslatableFieldType(
             $this->getMock('Symfony\Component\Validator\ValidatorInterface'),
             $this->getLocaleManagerMock(),
-            $this->localeConfig
+            $this->getLocaleHelperMock()
         );
         $this->options = $this->buildOptions(self::OPT_ENTITY_CLASS, self::OPT_NAME, self::OPT_TRANSLATION_CLASS);
 
@@ -97,10 +91,11 @@ class TranslatableFieldTypeTest extends TypeTestCase
     {
         $objectManager = $this->getMockForAbstractClass('\Doctrine\Common\Persistence\ObjectManager');
         $securityContext = $this->getSecurityContextMock();
+        $securityFacade = $this->getSecurityFacadeMock();
 
         // create mock builder for locale manager and redefine constructor to set object manager
         $mockBuilder = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\LocaleManager')
-                            ->setConstructorArgs(array($objectManager, $securityContext));
+                            ->setConstructorArgs(array($objectManager, $securityContext, $securityFacade, 'fr_FR'));
 
         // create locale manager mock from mock builder previously create and redefine getActiveCodes method
         $localeManager = $mockBuilder->getMock(
@@ -128,7 +123,7 @@ class TranslatableFieldTypeTest extends TypeTestCase
 
         $securityContext = new SecurityContext($authManager, $decisionManager);
         $securityContext->setToken(
-            $token = $this->getMock('Symfony\Component\Security\Core\Authentication\Token\TokenInterface')
+            $this->getMock('Symfony\Component\Security\Core\Authentication\Token\TokenInterface')
         );
 
         return $securityContext;
@@ -210,6 +205,36 @@ class TranslatableFieldTypeTest extends TypeTestCase
     public function testAssertException($entityClass, $fieldName, $translationClass)
     {
         $options = $this->buildOptions($entityClass, $fieldName, $translationClass);
-        $form = $this->factory->create($this->type, null, $options);
+        $this->factory->create($this->type, null, $options);
+    }
+
+    /**
+     * Get LocaleHelperMock
+     *
+     * @return \Pim\Bundle\CatalogBundle\Helper\LocaleHelper
+     */
+    protected function getLocaleHelperMock()
+    {
+        $helper = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Helper\LocaleHelper')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $helper->expects($this->any())
+            ->method('getLocaleLabel')
+            ->will($this->returnArgument(0));
+
+        return $helper;
+    }
+
+    /**
+     * Get ACL SecurityFacade mock
+     *
+     * @return \Oro\Bundle\SecurityBundle\SecurityFacade
+     */
+    protected function getSecurityFacadeMock()
+    {
+        return $this
+            ->getMockBuilder('Oro\Bundle\SecurityBundle\SecurityFacade')
+            ->disableOriginalConstructor()
+            ->getMock();
     }
 }

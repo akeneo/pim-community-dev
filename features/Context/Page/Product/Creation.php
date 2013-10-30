@@ -40,13 +40,12 @@ class Creation extends Form
         parent::pressButton($locator);
     }
 
-
     /**
      * {@inheritdoc}
      */
     public function findField($field)
     {
-        $label = $this->find('css', sprintf('#pim_catalog_product_create label:contains("%s")', $field));
+        $label = $this->find('css', sprintf('#pim_product_create label:contains("%s")', $field));
 
         if (!$label) {
             throw new ElementNotFoundException($this->getSession(), 'form label ', 'value', $field);
@@ -59,19 +58,5 @@ class Creation extends Form
         }
 
         return $field;
-    }
-
-    /**
-     * @param string $locale
-     */
-    public function selectActivatedLocale($locale)
-    {
-        $elt = $this->getElement('Activated locales')->find('css', sprintf('li:contains("%s")', $locale));
-
-        if (!$elt) {
-            throw new \Exception(sprintf('Could not find locale "%s".', $locale));
-        }
-
-        $elt->click();
     }
 }

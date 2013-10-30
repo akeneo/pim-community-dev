@@ -81,8 +81,6 @@ class LoadFamilyData extends AbstractInstallerFixture
      * @param Family $family  entity
      * @param string $locale  Locale used
      * @param string $content Translated content
-     *
-     * @return \Pim\Bundle\CatalogBundle\Entity\FamilyTranslation
      */
     public function createTranslation($family, $locale, $content)
     {

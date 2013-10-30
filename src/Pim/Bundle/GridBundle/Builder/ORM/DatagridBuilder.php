@@ -5,7 +5,6 @@ namespace Pim\Bundle\GridBundle\Builder\ORM;
 use Pim\Bundle\GridBundle\Action\Export\ExportActionInterface;
 
 use Oro\Bundle\GridBundle\Action\ActionFactoryInterface;
-use Oro\Bundle\UserBundle\Acl\ManagerInterface;
 use Oro\Bundle\GridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
@@ -14,6 +13,7 @@ use Oro\Bundle\GridBundle\Filter\FilterFactoryInterface;
 use Oro\Bundle\GridBundle\Route\RouteGeneratorInterface;
 use Oro\Bundle\GridBundle\Sorter\SorterFactoryInterface;
 use Oro\Bundle\GridBundle\Builder\ORM\DatagridBuilder as OroDatagridBuilder;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -39,7 +39,7 @@ class DatagridBuilder extends OroDatagridBuilder
      *
      * @param FormFactoryInterface     $formFactory
      * @param EventDispatcherInterface $eventDispatcher
-     * @param ManagerInterface         $aclManager
+     * @param SecurityFacade           $securityFacade
      * @param FilterFactoryInterface   $filterFactory
      * @param SorterFactoryInterface   $sorterFactory
      * @param ActionFactoryInterface   $actionFactory
@@ -49,7 +49,7 @@ class DatagridBuilder extends OroDatagridBuilder
     public function __construct(
         FormFactoryInterface $formFactory,
         EventDispatcherInterface $eventDispatcher,
-        ManagerInterface $aclManager,
+        SecurityFacade $securityFacade,
         FilterFactoryInterface $filterFactory,
         SorterFactoryInterface $sorterFactory,
         ActionFactoryInterface $actionFactory,
@@ -59,7 +59,7 @@ class DatagridBuilder extends OroDatagridBuilder
         parent::__construct(
             $formFactory,
             $eventDispatcher,
-            $aclManager,
+            $securityFacade,
             $filterFactory,
             $sorterFactory,
             $actionFactory,
@@ -97,7 +97,7 @@ class DatagridBuilder extends OroDatagridBuilder
     public function addExportAction(DatagridInterface $datagrid, ExportActionInterface $exportAction)
     {
         $aclResource = $exportAction->getAclResource();
-        if ($aclResource || $this->aclManager->isResourceGranted($aclResource)) {
+        if (!$aclResource || $this->securityFacade->isGranted($aclResource)) {
             $datagrid->addExportAction($exportAction);
         }
     }

@@ -25,8 +25,8 @@ class AddTranslatableFieldSubscriberTest extends \PHPUnit_Framework_TestCase
 
     protected $localeConfig = array(
         'locales'=>array(
-            'fr_FR' => array('label'=>'Français'),
-            'en_US' => array('label'=>'English')
+            'fr_FR' => array('label'=>'fr_FR'),
+            'en_US' => array('label'=>'en_US')
         )
     );
 
@@ -245,8 +245,6 @@ class AddTranslatableFieldSubscriberTest extends \PHPUnit_Framework_TestCase
         $requiredLocales = $options['required_locale'];
 
         foreach ($locales as $index => $locale) {
-            $translation = $this->getTranslationMock($options['field'], $locale);
-
             $this->formFactory->expects($this->at($index))
                 ->method('createNamed')
                 ->with(
@@ -363,8 +361,45 @@ class AddTranslatableFieldSubscriberTest extends \PHPUnit_Framework_TestCase
         return new AddTranslatableFieldSubscriber(
             $this->formFactory,
             $this->getValidatorMock(),
+            $this->getLocaleManagerMock(),
+            $this->getLocaleHelperMock(),
             $options
         );
+    }
+
+    /**
+     * Get LocaleHelperMock
+     *
+     * @return \Pim\Bundle\CatalogBundle\Helper\LocaleHelper
+     */
+    protected function getLocaleHelperMock()
+    {
+        $helper = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Helper\LocaleHelper')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $helper->expects($this->any())
+            ->method('getLocaleLabel')
+            ->will($this->returnArgument(0));
+
+        return $helper;
+    }
+
+    /**
+     * Get LocaleHelperMock
+     *
+     * @return \Pim\Bundle\CatalogBundle\Helper\LocaleHelper
+     */
+    protected function getLocaleManagerMock()
+    {
+        $manager = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\LocaleManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $manager->expects($this->any())
+            ->method('getUserCodes')
+            ->will($this->returnValue(array('en_US', 'fr_FR')));
+
+        return $manager;
     }
 
     /**

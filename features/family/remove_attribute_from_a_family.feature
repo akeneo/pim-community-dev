@@ -16,7 +16,7 @@ Feature: Remove attribute from a family
     And I am on the "Bags" family page
     And I visit the "Attributes" tab
     When I remove the "Manufacturer" attribute
-    Then I should see "Attribute successfully removed from the family"
+    Then I should see flash message "Attribute successfully removed from the family"
     And I should see attribute "Long Description" in group "Other"
 
   Scenario: Successfully display an attribute as removable on a product when it has been removed from the family
@@ -30,6 +30,10 @@ Feature: Remove attribute from a family
     And the following products:
       | sku            | family |
       | bag-dolce-vita | Bags   |
+    And the following product values:
+      | product         | attribute        | locale |scope      | value          |
+      | bag-dolce-vita  | Long description |        |           | my description |
+      | bag-dolce-vita  | Manufacturer     |        |           | dolce          |
     And the attribute "Manufacturer" has been removed from the "Bags" family
     And I am logged in as "admin"
     When I am on the "bag-dolce-vita" product page

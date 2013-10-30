@@ -9,6 +9,6 @@ Feature: Browse roles
 
   Scenario: Successfully display roles
     Given I am on the user roles page
-    Then the grid should contain 2 elements
-    When I click on the "Update" action of the row which contains "ROLE_USER"
-    Then I should see "ROLE_USER"
+    Then the grid should contain 3 elements
+    When I click on the "Update" action of the row which contains "User"
+    Then I should see "User"

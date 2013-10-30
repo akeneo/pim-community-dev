@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Controller;
 
+use Pim\Bundle\CatalogBundle\Exception\MediaManagementException;
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
@@ -10,7 +12,6 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -19,24 +20,22 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 use Oro\Bundle\GridBundle\Renderer\GridRenderer;
-use Oro\Bundle\UserBundle\Annotation\Acl;
-use Oro\Bundle\UserBundle\Acl\Manager as AclManager;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 
+use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
-use Pim\Bundle\CatalogBundle\Form\Handler\ProductCreateHandler;
-use Pim\Bundle\CatalogBundle\Calculator\CompletenessCalculator;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Datagrid\ProductDatagridManager;
+use Pim\Bundle\CatalogBundle\Entity\Category;
+use Pim\Bundle\CatalogBundle\Exception\DeleteException;
+use Pim\Bundle\CatalogBundle\Helper\CategoryHelper;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
-use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
+use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\AvailableProductAttributes;
-use Pim\Bundle\CatalogBundle\Form\Type\AvailableProductAttributesType;
-use Pim\Bundle\CatalogBundle\Entity\Category;
-use Pim\Bundle\CatalogBundle\Helper\CategoryHelper;
-use Pim\Bundle\CatalogBundle\Datagrid\ProductDatagridManager;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\ImportExportBundle\Normalizer\FlatProductNormalizer;
 use Pim\Bundle\VersioningBundle\Manager\AuditManager;
-use Pim\Bundle\CatalogBundle\Exception\DeleteException;
 
 /**
  * Product Controller
@@ -44,26 +43,9 @@ use Pim\Bundle\CatalogBundle\Exception\DeleteException;
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * @Acl(
- *      id="pim_catalog_product",
- *      name="Product manipulation",
- *      description="Product manipulation",
- *      parent="pim_catalog"
- * )
  */
 class ProductController extends AbstractDoctrineController
 {
-    /**
-     * @var string
-     */
-    const CATEGORY_PREFIX = "category_node_";
-
-    /**
-     * @var string
-     */
-    const TREE_APPLY_PREFIX = "apply_on_tree_";
-
     /**
      * @var GridRenderer
      */
@@ -73,21 +55,6 @@ class ProductController extends AbstractDoctrineController
      * @var DatagridWorkerInterface
      */
     private $datagridWorker;
-
-    /**
-     * @var ProductCreateHandler
-     */
-    private $productCreateHandler;
-
-    /**
-     * @var Form
-     */
-    private $productCreateForm;
-
-    /**
-     * @var CompletenessCalculator
-     */
-    private $calculator;
 
     /**
      * @var ProductManager
@@ -110,9 +77,9 @@ class ProductController extends AbstractDoctrineController
     private $auditManager;
 
     /**
-     * @var AclManager
+     * @var SecurityFacade
      */
-    private $aclManager;
+    private $securityFacade;
 
     /**
      * @staticvar int
@@ -132,14 +99,11 @@ class ProductController extends AbstractDoctrineController
      * @param RegistryInterface        $doctrine
      * @param GridRenderer             $gridRenderer
      * @param DatagridWorkerInterface  $datagridWorker
-     * @param ProductCreateHandler     $productCreateHandler
-     * @param Form                     $productCreateForm
-     * @param CompletenessCalculator   $calculator
      * @param ProductManager           $productManager
      * @param CategoryManager          $categoryManager
      * @param LocaleManager            $localeManager
      * @param AuditManager             $auditManager
-     * @param AclManager               $aclManager
+     * @param SecurityFacade           $securityFacade
      */
     public function __construct(
         Request $request,
@@ -152,14 +116,11 @@ class ProductController extends AbstractDoctrineController
         RegistryInterface $doctrine,
         GridRenderer $gridRenderer,
         DatagridWorkerInterface $datagridWorker,
-        ProductCreateHandler $productCreateHandler,
-        Form $productCreateForm,
-        CompletenessCalculator $calculator,
         ProductManager $productManager,
         CategoryManager $categoryManager,
         LocaleManager $localeManager,
         AuditManager $auditManager,
-        AclManager $aclManager
+        SecurityFacade $securityFacade
     ) {
         parent::__construct(
             $request,
@@ -174,14 +135,11 @@ class ProductController extends AbstractDoctrineController
 
         $this->gridRenderer         = $gridRenderer;
         $this->datagridWorker       = $datagridWorker;
-        $this->productCreateHandler = $productCreateHandler;
-        $this->productCreateForm    = $productCreateForm;
-        $this->calculator           = $calculator;
         $this->productManager       = $productManager;
         $this->categoryManager      = $categoryManager;
         $this->localeManager        = $localeManager;
         $this->auditManager         = $auditManager;
-        $this->aclManager           = $aclManager;
+        $this->securityFacade       = $securityFacade;
 
         $this->productManager->setLocale($this->getDataLocale());
     }
@@ -190,12 +148,7 @@ class ProductController extends AbstractDoctrineController
      *
      * @param Request $request the request
      *
-     * @Acl(
-     *      id="pim_catalog_product_index",
-     *      name="View product list",
-     *      description="View product list",
-     *      parent="pim_catalog_product"
-     * )
+     * @AclAncestor("pim_catalog_product_index")
      * @return Response
      */
     public function indexAction(Request $request)
@@ -217,15 +170,20 @@ class ProductController extends AbstractDoctrineController
 
                 $scope = $this->productManager->getScope();
 
+                $dateTime = new \DateTime();
+                $fileName = sprintf(
+                    'products_export_%s_%s_%s.csv',
+                    $this->getDataLocale(),
+                    $scope,
+                    $dateTime->format('Y-m-d_H:i:s')
+                );
+
                 // prepare response
                 $response = new StreamedResponse();
-                $attachment = $response->headers->makeDisposition(
-                    ResponseHeaderBag::DISPOSITION_INLINE,
-                    'quick_export_products.csv'
-                );
+                $attachment = $response->headers->makeDisposition(ResponseHeaderBag::DISPOSITION_INLINE, $fileName);
                 $response->headers->set('Content-Type', 'text/csv');
                 $response->headers->set('Content-Disposition', $attachment);
-                $response->setCallback($this->quickExportCallback($gridManager, $scope, static::BATCH_SIZE));
+                $response->setCallback($this->quickExportCallback($gridManager, static::BATCH_SIZE));
 
                 return $response->send();
 
@@ -238,7 +196,7 @@ class ProductController extends AbstractDoctrineController
 
         $params = array(
             'datagrid'   => $datagrid->createView(),
-            'locales'    => $this->localeManager->getActiveLocales(),
+            'locales'    => $this->localeManager->getUserLocales(),
             'dataLocale' => $this->getDataLocale(),
             'dataScope' => $this->getDataScope(),
         );
@@ -250,13 +208,13 @@ class ProductController extends AbstractDoctrineController
      * Quick export callback
      *
      * @param ProductDatagridManager $gridManager
-     * @param string                 $scope
+     * @param integer                $limit
      *
      * @return \Closure
      */
-    protected function quickExportCallback(ProductDatagridManager $gridManager, $scope, $limit)
+    protected function quickExportCallback(ProductDatagridManager $gridManager, $limit)
     {
-        return function () use ($gridManager, $scope, $limit) {
+        return function () use ($gridManager, $limit) {
             flush();
 
             $proxyQuery = $gridManager->getDatagrid()->getQueryWithParametersApplied();
@@ -270,7 +228,6 @@ class ProductController extends AbstractDoctrineController
             $context = array(
                 'withHeader' => true,
                 'heterogeneous' => false,
-                'scope' => $scope,
                 'fields' => $fieldsList
             );
 
@@ -289,32 +246,13 @@ class ProductController extends AbstractDoctrineController
     }
 
     /**
-     * Return a response
-     *
-     * @param string  $content
-     * @param integer $status
-     * @param array   $headers
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    protected function returnResponse($content, $status = 200, $headers = array())
-    {
-        return new Response($content, $status, $headers);
-    }
-
-    /**
      * Create product
      *
      * @param Request $request
      * @param string  $dataLocale
      *
      * @Template
-     * @Acl(
-     *      id="pim_catalog_product_create",
-     *      name="Create a product",
-     *      description="Create a product",
-     *      parent="pim_catalog_product"
-     * )
+     * @AclAncestor("pim_catalog_product_create")
      * @return array
      */
     public function createAction(Request $request, $dataLocale)
@@ -323,26 +261,29 @@ class ProductController extends AbstractDoctrineController
             return $this->redirectToRoute('pim_catalog_product_index');
         }
 
-        $entity = $this->productManager->createFlexible(true);
+        $entity = $this->productManager->createProduct();
+        $form = $this->createForm('pim_product_create', $entity, $this->getCreateFormOptions($entity));
+        if ($request->isMethod('POST')) {
+            $form->submit($request);
+            if ($form->isValid()) {
+                $this->productManager->save($entity);
+                $this->addFlash('success', 'flash.product.created');
 
-        if ($this->productCreateHandler->process($entity)) {
+                if ($dataLocale === null) {
+                    $dataLocale = $this->getDataLocale();
+                }
+                $url = $this->generateUrl(
+                    'pim_catalog_product_edit',
+                    array('id' => $entity->getId(), 'dataLocale' => $dataLocale)
+                );
+                $response = array('status' => 1, 'url' => $url);
 
-            $this->addFlash('success', 'flash.product.created');
-
-            if ($dataLocale === null) {
-                $dataLocale = $this->getDataLocale();
+                return new Response(json_encode($response));
             }
-            $url = $this->generateUrl(
-                'pim_catalog_product_edit',
-                array('id' => $entity->getId(), 'dataLocale' => $dataLocale)
-            );
-            $response = array('status' => 1, 'url' => $url);
-
-            return new Response(json_encode($response));
         }
 
         return array(
-            'form'       => $this->productCreateForm->createView(),
+            'form'       => $form->createView(),
             'dataLocale' => $this->getDataLocale()
         );
     }
@@ -354,12 +295,7 @@ class ProductController extends AbstractDoctrineController
      * @param integer $id
      *
      * @Template
-     * @Acl(
-     *      id="pim_catalog_product_edit",
-     *      name="Edit a product",
-     *      description="Edit a product",
-     *      parent="pim_catalog_product"
-     * )
+     * @AclAncestor("pim_catalog_product_edit")
      * @return array
      */
     public function editAction(Request $request, $id)
@@ -378,35 +314,26 @@ class ProductController extends AbstractDoctrineController
             return $this->gridRenderer->renderResultsJsonResponse($datagrid->createView());
         }
 
-        $channels = $this->getRepository('PimCatalogBundle:Channel')->findAll();
-        $trees    = $this->categoryManager->getEntityRepository()->getProductsCountByTree($product);
+        $this->productManager->ensureAllAssociations($product);
 
-        $form     = $this->createForm(
+        $form = $this->createForm(
             'pim_product',
             $product,
-            array('currentLocale' => $this->getDataLocale())
+            $this->getEditFormOptions($product)
         );
 
-        if (!$this->aclManager->isResourceGranted('pim_catalog_product_change_family')) {
-            $form->remove('family');
-        }
-
         if ($request->isMethod('POST')) {
-            $form->bind($request);
+            $form->submit($request);
 
             if ($form->isValid()) {
+                try {
+                    $this->productManager->handleMedia($product);
+                    $this->productManager->save($product);
 
-                $categoriesData = $this->getCategoriesData($request->request->all());
-                $categories = $this->categoryManager->getCategoriesByIds($categoriesData['categories']);
-
-                $this->productManager->handleMedia($product);
-                $this->productManager->save($product, $categories, $categoriesData['trees']);
-                // Call completeness calculator after validating data and saving product
-                // so all values for all locale are loaded now
-                $this->calculator->calculateForAProduct($product);
-                $this->productManager->save($product);
-
-                $this->addFlash('success', 'flash.product.updated');
+                    $this->addFlash('success', 'flash.product.updated');
+                } catch (MediaManagementException $e) {
+                    $this->addFlash('error', $e->getMessage());
+                }
 
                 // TODO : Check if the locale exists and is activated
                 $params = array('id' => $product->getId(), 'dataLocale' => $this->getDataLocale());
@@ -417,17 +344,46 @@ class ProductController extends AbstractDoctrineController
             }
         }
 
+        $channels = $this->getRepository('PimCatalogBundle:Channel')->findAll();
+        $trees    = $this->categoryManager->getEntityRepository()->getProductsCountByTree($product);
+
+        $associations = $this->getRepository('PimCatalogBundle:Association')->findAll();
+
+        $associationProductGridManager = $this->datagridWorker->getDatagridManager('association_product');
+        $associationProductGridManager->setProduct($product);
+
+        $associationGroupGridManager = $this->datagridWorker->getDatagridManager('association_group');
+        $associationGroupGridManager->setProduct($product);
+
+        $association = null;
+        if (!empty($associations)) {
+            $association = reset($associations);
+            $associationProductGridManager->setAssociationId($association->getId());
+            $associationGroupGridManager->setAssociationId($association->getId());
+        }
+
+        $routeParameters = array('id' => $product->getId());
+        $associationProductGridManager->getRouteGenerator()->setRouteParameters($routeParameters);
+        $associationGroupGridManager->getRouteGenerator()->setRouteParameters($routeParameters);
+
+        $associationProductGridView = $associationProductGridManager->getDatagrid()->createView();
+        $associationGroupGridView = $associationGroupGridManager->getDatagrid()->createView();
+
         return array(
-            'form'           => $form->createView(),
-            'dataLocale'     => $this->getDataLocale(),
-            'channels'       => $channels,
-            'attributesForm' => $this->getAvailableProductAttributesForm($product->getAttributes())->createView(),
-            'product'        => $product,
-            'trees'          => $trees,
-            'created'        => $this->auditManager->getOldestLogEntry($product),
-            'updated'        => $this->auditManager->getNewestLogEntry($product),
-            'datagrid'       => $datagrid->createView(),
-            'locales'        => $this->localeManager->getActiveLocales()
+            'form'                   => $form->createView(),
+            'dataLocale'             => $this->getDataLocale(),
+            'channels'               => $channels,
+            'attributesForm'         =>
+                $this->getAvailableProductAttributesForm($product->getAttributes())->createView(),
+            'product'                => $product,
+            'trees'                  => $trees,
+            'created'                => $this->auditManager->getOldestLogEntry($product),
+            'updated'                => $this->auditManager->getNewestLogEntry($product),
+            'datagrid'               => $datagrid->createView(),
+            'associations'           => $associations,
+            'associationProductGrid' => $associationProductGridView,
+            'associationGroupGrid'   => $associationGroupGridView,
+            'locales'                => $this->localeManager->getUserLocales(),
         );
     }
 
@@ -437,12 +393,7 @@ class ProductController extends AbstractDoctrineController
      * @param Request $request The request object
      * @param integer $id      The product id to which add attributes
      *
-     * @Acl(
-     *      id="pim_catalog_product_add_attribute",
-     *      name="Add an attribute to a product",
-     *      description="Add an attribute to a product",
-     *      parent="pim_catalog_product"
-     * )
+     * @AclAncestor("pim_catalog_product_add_attribute")
      * @return Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function addProductAttributesAction(Request $request, $id)
@@ -453,7 +404,7 @@ class ProductController extends AbstractDoctrineController
             $product->getAttributes(),
             $availableAttributes
         );
-        $attributesForm->bind($request);
+        $attributesForm->submit($request);
 
         foreach ($availableAttributes->getAttributes() as $attribute) {
             $this->productManager->addAttributeToProduct($product, $attribute);
@@ -472,12 +423,7 @@ class ProductController extends AbstractDoctrineController
      * @param Request $request
      * @param integer $id
      *
-     * @Acl(
-     *      id="pim_catalog_product_remove",
-     *      name="Remove a product",
-     *      description="Remove a product",
-     *      parent="pim_catalog_product"
-     * )
+     * @AclAncestor("pim_catalog_product_remove")
      * @return Response|RedirectResponse
      */
     public function removeAction(Request $request, $id)
@@ -498,12 +444,7 @@ class ProductController extends AbstractDoctrineController
      * @param integer $productId
      * @param integer $attributeId
      *
-     * @Acl(
-     *      id="pim_catalog_product_remove_attribute",
-     *      name="Remove a product's attribute",
-     *      description="Remove a product's attribute",
-     *      parent="pim_catalog_product"
-     * )
+     * @AclAncestor("pim_catalog_product_remove_attribute")
      * @return RedirectResponse
      *
      * @throws NotFoundHttpException
@@ -537,12 +478,7 @@ class ProductController extends AbstractDoctrineController
      *
      * @ParamConverter("parent", class="PimCatalogBundle:Category", options={"id" = "category_id"})
      * @Template
-     * @Acl(
-     *      id="pim_catalog_product_categories_view",
-     *      name="Consult the categories of a product",
-     *      description="Consult the categories of a product",
-     *      parent="pim_catalog_product"
-     * )
+     * @AclAncestor("pim_catalog_product_categories_view")
      * @return array
      */
     public function listCategoriesAction(Request $request, $id, Category $parent)
@@ -564,6 +500,50 @@ class ProductController extends AbstractDoctrineController
     }
 
     /**
+     * List product associations for the provided product
+     *
+     * @param Request $request The request object
+     * @param integer $id      Product id
+     *
+     * @Template
+     * @AclAncestor("pim_catalog_product_associations_view")
+     * @return Response
+     */
+    public function listProductAssociationsAction(Request $request, $id)
+    {
+        $product = $this->findProductOr404($id);
+
+        $datagridManager = $this->datagridWorker->getDatagridManager('association_product');
+        $datagridManager->setProduct($product);
+
+        $datagridView = $datagridManager->getDatagrid()->createView();
+
+        return $this->gridRenderer->renderResultsJsonResponse($datagridView);
+    }
+
+    /**
+     * List group associations for the provided product
+     *
+     * @param Request $request The request object
+     * @param integer $id      Product id
+     *
+     * @Template
+     * @AclAncestor("pim_catalog_product_associations_view")
+     * @return Response
+     */
+    public function listGroupAssociationsAction(Request $request, $id)
+    {
+        $product = $this->findProductOr404($id);
+
+        $datagridManager = $this->datagridWorker->getDatagridManager('association_group');
+        $datagridManager->setProduct($product);
+
+        $datagridView = $datagridManager->getDatagrid()->createView();
+
+        return $this->gridRenderer->renderResultsJsonResponse($datagridView);
+    }
+
+    /**
      * {@inheritdoc}
      */
     protected function redirectToRoute($route, $parameters = array(), $status = 302)
@@ -573,40 +553,6 @@ class ProductController extends AbstractDoctrineController
         }
 
         return parent::redirectToRoute($route, $parameters, $status);
-    }
-
-    /**
-     * Generate an array composed of an array of categories ids
-     * from category_id_* params and an array of tree ids from
-     * apply_to_tree_* params
-     *
-     * @param array $requestParameters
-     *
-     * @return array of categories data structured of two arrays
-     *      categories, trees
-     */
-    protected function getCategoriesData(array $requestParameters)
-    {
-        $categories = array();
-        $trees = array();
-
-        foreach ($requestParameters as $key => $value) {
-            if ($value === "1") {
-                if (strpos($key, static::CATEGORY_PREFIX) === 0) {
-                    $catId = (int) str_replace(static::CATEGORY_PREFIX, '', $key);
-                    if ($catId > 0) {
-                        $categories[] = $catId;
-                    }
-                } elseif (strpos($key, static::TREE_APPLY_PREFIX) === 0) {
-                    $treeId = (int) str_replace(static::TREE_APPLY_PREFIX, '', $key);
-                    if ($treeId > 0) {
-                        $trees[] = $treeId;
-                    }
-                }
-            }
-        }
-
-        return array('categories' => $categories, "trees" => $trees);
     }
 
     /**
@@ -625,7 +571,7 @@ class ProductController extends AbstractDoctrineController
         if (!$dataLocale) {
             throw new \Exception('User must have a catalog locale defined');
         }
-        if (!$this->aclManager->isResourceGranted('pim_catalog_locale_'.$dataLocale)) {
+        if (!$this->securityFacade->isGranted('pim_catalog_locale_'.$dataLocale)) {
             throw new \Exception(sprintf("User doesn't have access to the locale '%s'", $dataLocale));
         }
 
@@ -686,8 +632,6 @@ class ProductController extends AbstractDoctrineController
             );
         }
 
-        $this->productManager->addMissingPrices($product);
-
         return $product;
     }
 
@@ -704,9 +648,37 @@ class ProductController extends AbstractDoctrineController
         AvailableProductAttributes $availableAttributes = null
     ) {
         return $this->createForm(
-            new AvailableProductAttributesType(),
+            'pim_available_product_attributes',
             $availableAttributes ?: new AvailableProductAttributes(),
             array('attributes' => $attributes)
         );
+    }
+
+    /**
+     * Returns the options for the edit form
+     *
+     * @param ProductInterface $product
+     *
+     * @return array
+     */
+    protected function getEditFormOptions(ProductInterface $product)
+    {
+        return array(
+            'enable_family' => $this->securityFacade->isGranted('pim_catalog_product_change_family'),
+            'enable_state'  => $this->securityFacade->isGranted('pim_catalog_product_change_state'),
+            'currentLocale' => $this->getDataLocale()
+        );
+    }
+
+    /**
+     * Returns the options for the create form
+     *
+     * @param ProductInterface $product
+     *
+     * @return array
+     */
+    protected function getCreateFormOptions(ProductInterface $product)
+    {
+        return array();
     }
 }

@@ -5,17 +5,25 @@ namespace Pim\Bundle\CatalogBundle\Tests\Unit\Validator\ConstraintGuesser;
 use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\RegexGuesser;
 
 /**
+ * Test related class
+ *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class RegexGuesserTest extends ConstraintGuesserTest
 {
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
         $this->target = new RegexGuesser();
     }
 
+    /**
+     * Test related method
+     */
     public function testInstanceOfContraintGuesserInterface()
     {
         $this->assertInstanceOf(
@@ -24,6 +32,9 @@ class RegexGuesserTest extends ConstraintGuesserTest
         );
     }
 
+    /**
+     * Test related method
+     */
     public function testSupportAttribute()
     {
         $this->assertTrue(
@@ -31,6 +42,9 @@ class RegexGuesserTest extends ConstraintGuesserTest
         );
     }
 
+    /**
+     * Test related method
+     */
     public function testGuessRegexConstraint()
     {
         $constraints = $this->target->guessConstraints(
@@ -51,6 +65,9 @@ class RegexGuesserTest extends ConstraintGuesserTest
         );
     }
 
+    /**
+     * Test related method
+     */
     public function testDoNotGuessRegexConstraint()
     {
         $this->assertEquals(

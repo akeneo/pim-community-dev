@@ -2,13 +2,12 @@
 
 namespace Context;
 
+use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Yaml\Parser;
 use Behat\Symfony2Extension\Context\KernelAwareInterface;
 use Behat\MinkExtension\Context\MinkContext;
+use Behat\Behat\Exception\BehaviorException;
 use Behat\Mink\Exception\ExpectationException;
-
-use Doctrine\Common\DataFixtures\Purger\ORMPurger;
-
-use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * Main feature context
@@ -22,6 +21,12 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     private $kernel;
 
     /**
+     * Path of the yaml file containing tables that should be excluded from database purge
+     * @var string
+     */
+    private $excludedTablesFile = 'excluded_tables.yml';
+
+    /**
      * Register contexts
      * @param array $parameters
      */
@@ -32,6 +37,9 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         $this->useContext('webApi', new WebApiContext($parameters['base_url']));
         $this->useContext('datagrid', new DataGridContext());
         $this->useContext('command', new CommandContext());
+        $this->useContext('navigation', new NavigationContext());
+        $this->useContext('transformations', new TransformationContext());
+        $this->useContext('assertions', new AssertionContext());
     }
 
     /**
@@ -39,7 +47,15 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
      */
     public function purgeDatabase()
     {
-        $purger = new ORMPurger($this->getEntityManager());
+        $excludedTablesFile = __DIR__ . '/' . $this->excludedTablesFile;
+        if (file_exists($excludedTablesFile)) {
+            $parser = new Parser();
+            $excludedTables = $parser->parse(file_get_contents($excludedTablesFile));
+            $excludedTables = $excludedTables['excluded_tables'];
+        } else {
+            $excludedTables = array();
+        }
+        $purger = new SelectiveORMPurger($this->getEntityManager(), $excludedTables);
         $purger->purge();
     }
 
@@ -90,6 +106,10 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
      */
     public function listToArray($list)
     {
+        if (empty($list)) {
+            return array();
+        }
+
         return explode(', ', str_replace(' and ', ', ', $list));
     }
 
@@ -110,10 +130,36 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
      *
      * @param integer $time
      * @param string  $condition
+     *
+     * @throws BehaviorException If timeout is reached
      */
-    public function wait($time = 4000, $condition = 'document.readyState == "complete" && !$.active')
+    public function wait($time = 10000, $condition = null)
     {
+        if (!$this->getSession()->getDriver() instanceof \Behat\Mink\Driver\Selenium2Driver) {
+            return;
+        }
+
+        $start = microtime(true);
+        $end = $start + $time / 1000.0;
+
+        $condition = $condition !== null ? $condition : <<<JS
+        document.readyState == 'complete'                  // Page is ready
+            && typeof $ != 'undefined'                     // jQuery is loaded
+            && !$.active                                   // No ajax request is active
+            && $('#page').css('display') == 'block'        // Page is displayed (no progress bar)
+            && $('.loading-mask').css('display') == 'none' // Page is not loading (no black mask loading page)
+            && $('.jstree-loading').length == 0;           // Jstree has finished loading
+JS;
+
+        // Make sure the AJAX calls are fired up before checking the condition
+        $this->getSession()->wait(100, false);
+
         $this->getSession()->wait($time, $condition);
+
+        // Check if we reached the timeout unless the condition is false to explicitly wait the specified time
+        if ($condition !== false && microtime(true) > $end) {
+            throw new BehaviorException(sprintf('Timeout of %d reached when checking on %s', $time, $condition));
+        }
     }
 
     /**

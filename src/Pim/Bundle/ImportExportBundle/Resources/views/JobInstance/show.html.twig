@@ -1,19 +1,25 @@
 {% extends 'PimCatalogBundle::layout.html.twig' %}
 
 {% macro configuration(title, config, stepIndex, violations, stepType) %}
-    <li>{{ ('oro_batch.' ~ title ~ '.title')|trans }}
-        <ul>
+<table class="configuration">
+    <thead>
+        <tr>
+            <td colspan="2" class="buffer-small-bottom">{{ ('oro_batch.' ~ title ~ '.title')|trans }}</td>
+        </tr>
+    </thead>
+    <tbody>
         {% for field, value in config %}
-            <li>
-                <b>{{ ('oro_batch.' ~ title ~ '.' ~ field ~ '.label')|trans }}:</b>
-                <span class="label">{{ value|normalizeValue }}</span>
-                {{ getViolations(violations, stepIndex, stepType, field) }}
-            </li>
+        <tr>
+            <td><b>{{ ('oro_batch.' ~ title ~ '.' ~ field ~ '.label')|trans }}</b></td>
+            <td>{{ value|normalizeValue }} {{ getViolations(violations, stepIndex, stepType, field) }}</td>
+        </tr>
         {% else %}
-            <li><i>{{ 'No configuration'|trans }}</i></li>
+        <tr>
+            <td><i>{{ 'No configuration'|trans }}</i></td>
+        </tr>
         {% endfor %}
-        </ul>
-    </li>
+    </tbody>
+</table>
 {% endmacro %}
 
 {% block content %}
@@ -43,7 +49,13 @@
     {{ elements.page_header(title, buttons, null, left) }}
 
     {% if form is defined and form is not empty and uploadAllowed and uploadViolations|length == 0 %}
-        <form id="pim_importexport_import_upload" method="POST" class="form-horizontal form-upload hide" action="{{ path('pim_importexport_import_launch', { id: jobInstance.id }) }}" {{ form_enctype(form) }}>
+        {{ form_start(form, {
+            'id': 'pim_importexport_import_upload',
+            'action': path('pim_importexport_import_launch', { id: jobInstance.id }),
+            'attr': {
+                'class': 'form-upload hide'
+            }
+        }) }}
             {{ elements.form_errors(form) }}
             <div class="row-fluid">
                 {{ form_row(form.file) }}
@@ -59,18 +71,16 @@
         {% set heading = 'Step %stepIndex%'|trans({ '%stepIndex%': loop.index }) ~ ' - ' ~ stepTitle|trans %}
 
         {% set content %}
-            <ul>
-                {% set step = jobInstance.job.step(stepTitle) %}
-                {% set stepIndex = loop.index - 1 %}
-                {{ _self.configuration(step.reader.name, stepConfig.reader, stepIndex, violations, 'reader') }}
-                {{ _self.configuration(step.processor.name, stepConfig.processor, stepIndex, violations, 'processor') }}
-                {{ _self.configuration(step.writer.name, stepConfig.writer, stepIndex, violations, 'writer') }}
-            </ul>
+            {% set step = jobInstance.job.step(stepTitle) %}
+            {% set stepIndex = loop.index - 1 %}
+            {{ _self.configuration(step.reader.name, stepConfig.reader, stepIndex, violations, 'reader') }}
+            {{ _self.configuration(step.processor.name, stepConfig.processor, stepIndex, violations, 'processor') }}
+            {{ _self.configuration(step.writer.name, stepConfig.writer, stepIndex, violations, 'writer') }}
         {% endset %}
 
         {% set accordionContent = accordionContent|merge({ (heading): content }) %}
     {% endfor %}
 
-    {{ elements.accordion(accordionContent) }}
+    {{ elements.accordion(accordionContent, 1, true) }}
 
 {% endblock %}

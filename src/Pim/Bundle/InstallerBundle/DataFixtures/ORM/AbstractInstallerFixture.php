@@ -47,6 +47,8 @@ abstract class AbstractInstallerFixture extends AbstractFixture implements Order
     }
 
     /**
+     * Must contains the end of the filename
+     *
      * @abstract
      * @return string
      */

@@ -70,15 +70,15 @@ class ChannelManagerTest extends \PHPUnit_Framework_TestCase
     /**
      * Create a channel
      * @param string $code
-     * @param string $name
+     * @param string $label
      *
      * @return \Pim\Bundle\CatalogBundle\Entity\Channel
      */
-    protected function createChannel($code, $name)
+    protected function createChannel($code, $label)
     {
         $channel = new Channel();
         $channel->setCode($code);
-        $channel->setName($name);
+        $channel->setLabel($label);
 
         return $channel;
     }
@@ -229,7 +229,7 @@ class ChannelManagerTest extends \PHPUnit_Framework_TestCase
 
         // change the user channel
         $expectedArray = array_reverse($expectedArray);
-        $manager = $this->createChannelManager('mobile');
+        $this->createChannelManager('mobile');
 
         $channelChoices = $this->manager->getChannelChoiceWithUserChannel();
         $this->assertEquals($expectedArray, $channelChoices);

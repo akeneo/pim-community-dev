@@ -1,37 +1,15 @@
 {% extends 'PimCatalogBundle::layout.html.twig' %}
 
-{% oro_title_set({ params: { "%category.title%": form.vars.value.title } }) %}
+{% oro_title_set({ params: { "%category.label%": form.vars.value.label } }) %}
 
 {% block head_script %}
     {{ parent() }}
-    <script type="text/javascript">
-        require(
-            ['jquery', 'pim/tree/manage', 'oro/navigation', 'jquery.sidebarize', 'bootstrap-tooltip'],
-            function($, TreeManage, Navigation){
-                'use strict';
-                $(function() {
-                    var createBtn = $('<a>', {
-                        'href': '{{ path("pim_catalog_categorytree_create") }}',
-                        'data-toggle': 'tooltip',
-                        'data-placement': 'right',
-                        'data-original-title': '{{ "btn.create.tree"|trans|capitalize }}'
-                    }).html(
-                        $('<i>', { 'class': 'icon-plus-sign' })
-                    );
-
-                    // Instantiate sidebar
-                    $('#category-tree-container').sidebarize({ buttons: [ createBtn ] });
-                    new TreeManage('#tree');
-                    $('[data-toggle="tooltip"]').tooltip();
-                });
-            }
-        );
-    </script>
+    {% include "PimCatalogBundle:CategoryTree:_scripts.html.twig" %}
 {% endblock %}
 
 {% block content %}
     <div id="category-tree-container" class="row-fluid">
-        <div id="tree" {% if form.vars.value.id %} data-node-id="{{ form.vars.value.id }}"{% elseif form.vars.value.parent %} data-node-id="{{ form.vars.value.parent.id }}"{% endif %}></div>
+        <div id="tree" {% if form.vars.value.id %} data-node-id="{{ form.vars.value.id }}"{% elseif form.vars.value.parent %} data-node-id="{{ form.vars.value.parent.id }}"{% endif %} {% if resource_granted("pim_catalog_category_move") %}data-movable="true"{% endif %}  {% if resource_granted("pim_catalog_category_create") %}data-creatable="true"{% endif %}></div>
 
         <div id="category-form">
             {% include 'PimCatalogBundle:CategoryTree:form.html.twig' with {'form': form} %}

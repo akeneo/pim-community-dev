@@ -3,10 +3,10 @@
 namespace Pim\Bundle\CatalogBundle\Tests\Functional\EventListener;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Oro\Bundle\UserBundle\Entity\UserManager;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Doctrine\ORM\EntityManager;
+use Oro\Bundle\UserBundle\Entity\UserManager;
 use Oro\Bundle\UserBundle\Entity\User;
+use Pim\Bundle\CatalogBundle\Entity\Channel;
 
 /**
  * Test related class
@@ -20,11 +20,12 @@ class UserPreferencesListenerTest extends WebTestCase
     /**
      * @var UserManager
      */
-    private $userManager;
+    protected $userManager;
+
     /**
      * @var EntityManager
      */
-    private $entityManager;
+    protected $entityManager;
 
     /**
      * {@inheritdoc}
@@ -45,11 +46,15 @@ class UserPreferencesListenerTest extends WebTestCase
     {
         $prefix = sha1(rand(0, 9999999));
         $channel1 = new Channel();
-        $channel1->setCode($prefix . 'channel1')->setName('channel1');
+        $channel1
+            ->setCode($prefix . 'channel1')
+            ->setLabel('channel1');
         $this->entityManager->persist($channel1);
 
         $channel2 = new Channel();
-        $channel2->setCode($prefix . 'channel2')->setName('channel2');
+        $channel2
+            ->setCode($prefix . 'channel2')
+            ->setLabel('channel2');
         $this->entityManager->persist($channel2);
 
         $this->entityManager->flush();
@@ -63,10 +68,10 @@ class UserPreferencesListenerTest extends WebTestCase
 
         $user = $this->userManager->createFlexible();
         $user
-                ->setUsername($prefix)
-                ->setEmail($prefix . '@test.com')
-                ->setPassword($prefix);
-        $value = $user->setCatalogscope($removedOption);
+            ->setUsername($prefix)
+            ->setEmail($prefix . '@test.com')
+            ->setPassword($prefix)
+            ->setCatalogscope($removedOption);
         $this->userManager->updateUser($user);
         $this->entityManager->flush();
 

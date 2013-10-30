@@ -2,6 +2,8 @@
 
 namespace Context;
 
+use Behat\Behat\Context\Step\Then;
+use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
 use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
@@ -15,7 +17,6 @@ use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
  */
 class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
 {
-
     /**
      * @var \SensioLabs\Behat\PageObjectExtension\Context\PageFactory
      */
@@ -42,15 +43,17 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function theGridShouldContainElement($count)
     {
-        if (intval($count) !== $actualCount = $this->datagrid->countRows()) {
-            throw $this->createExpectationException(
-                sprintf(
-                    'Expecting to see %d row(s) in the datagrid, actually saw %d.',
-                    $count,
-                    $actualCount
-                )
-            );
-        }
+        assertEquals(
+            intval($count),
+            $actualCount = $this->datagrid->getToolbarCount(),
+            sprintf('Expecting to see %d record(s) in the datagrid, actually saw %d', $count, $actualCount)
+        );
+
+        assertEquals(
+            intval($count),
+            $actualCount = $this->datagrid->countRows(),
+            sprintf('Expecting to see %d row(s) in the datagrid, actually saw %d.', $count, $actualCount)
+        );
     }
 
     /**
@@ -73,7 +76,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iFilterPerCategory($code)
     {
-        $category = $this->getWebUserContext()->getCategory($code);
+        $category = $this->getFixturesContext()->getCategory($code);
         $this->getPage('Product index')->clickCategoryFilterLink($category);
         $this->wait();
     }
@@ -110,19 +113,34 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $column
+     * @param string    $code
+     * @param TableNode $table
+     *
+     * @Then /^the row "([^"]*)" should contain:$/
+     */
+    public function theRowShouldContain($code, TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $this->assertColumnContainsValue($code, $data['column'], $data['value']);
+        }
+    }
+
+    /**
      * @param string $row
+     * @param string $column
      * @param string $expectation
      *
-     * @Given /^Value of column "([^"]*)" of the row which contains "([^"]*)" should be "([^"]*)"$/
+     * @throws ExpectationException
      */
-    public function valueOfColumnOfTheRowWhichContainsShouldBe($column, $row, $expectation)
+    protected function assertColumnContainsValue($row, $column, $expectation)
     {
         $column = strtoupper($column);
-        if ($expectation !== $actual = $this->datagrid->getColumnValue($column, $row)) {
+        $actual = $this->datagrid->getColumnValue($column, $row);
+
+        if ($expectation !== $actual) {
             throw $this->createExpectationException(
                 sprintf(
-                    'Expecting column "%s" to contain "%s", got "%s".',
+                    'Expecting column "%s" to contain "%s", got "%s"',
                     $column,
                     $expectation,
                     $actual
@@ -206,7 +224,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
 
         $expectedPosition = 0;
         foreach ($columns as $column) {
-            $position = $this->datagrid->getColumnPosition(strtoupper($column));
+            $position = $this->datagrid->getColumnPosition($column);
             if ($expectedPosition++ !== $position) {
                 throw $this->createExpectationException("The columns are not well ordered");
             }
@@ -217,15 +235,15 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      * @param string $order
      * @param string $columnName
      *
-     * @Then /^the datas are sorted (ascending|descending) by (.*)$/
+     * @Then /^the rows should be sorted (ascending|descending) by (.*)$/
      */
-    public function theDatasAreSortedBy($order, $columnName)
+    public function theRowsShouldBeSortedBy($order, $columnName)
     {
         $columnName = strtoupper($columnName);
 
         if (!$this->datagrid->isSortedAndOrdered($columnName, $order)) {
             $this->createExpectationException(
-                sprintf('The datas are not sorted %s on column %s', $order, $columnName)
+                sprintf('The rows are not sorted %s by column %s', $order, $columnName)
             );
         }
     }
@@ -244,6 +262,30 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $columns
+     *
+     * @Then /^I should be able to sort the rows by (.*)$/
+     *
+     * @return Then[]
+     */
+    public function iShouldBeAbleToSortTheRowsBy($columns)
+    {
+        $steps = array(
+            new Then(sprintf('the rows should be sortable by %s', $columns))
+        );
+        $columns = $this->getMainContext()->listToArray($columns);
+
+        foreach ($columns as $column) {
+            $steps[] = new Then(sprintf('I sort by "%s" value ascending', $column));
+            $steps[] = new Then(sprintf('the rows should be sorted ascending by %s', $column));
+            $steps[] = new Then(sprintf('I sort by "%s" value descending', $column));
+            $steps[] = new Then(sprintf('the rows should be sorted descending by %s', $column));
+        }
+
+        return $steps;
+    }
+
+    /**
      * @param string $columnName
      * @param string $order
      *
@@ -251,67 +293,16 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iSortByValue($columnName, $order = 'ascending')
     {
-        $columnName = strtoupper($columnName);
-
-        if (!$this->datagrid->isSortedAndOrdered($columnName, $order)) {
-            if ($this->datagrid->isSortedColumn($columnName)) {
-                $this->sortByColumn($columnName);
-            } else {
-                // get the actual sorted columns
-                $sortedColumns = $this->datagrid->getSortedColumns();
-
-                // if we ask sorting by descending we must sort twice
-                if ($order === 'descending') {
-                    $this->sortByColumn($columnName);
-                }
-                $this->sortByColumn($columnName);
-
-                // And we must remove the default sorted column
-                foreach ($sortedColumns as $column) {
-                    $this->removeSortOnColumn($column);
-                    $this->wait();
-                }
-            }
-        }
-    }
-
-    /**
-     * Remove sort on a column with a loop but using a threshold to prevent
-     * against infinite loop
-     *
-     * @param string $column
-     *
-     * @return null
-     */
-    private function removeSortOnColumn($column)
-    {
-        $threshold = 0;
-        while ($this->datagrid->isSortedColumn($column)) {
-            $this->datagrid->getColumnSorter($column)->click();
-            $this->wait();
-
-            if ($threshold++ === 3) {
-                return;
-            }
-        }
-    }
-
-    /**
-     * Sort by a column name
-     * @param strign $columnName
-     */
-    protected function sortByColumn($columnName)
-    {
-        $this->datagrid->getColumnSorter($columnName)->click();
+        $this->datagrid->sortBy($columnName, $order);
         $this->wait();
     }
 
     /**
      * @param string $columns
      *
-     * @Then /^the datas can be sorted by (.*)$/
+     * @Then /^the rows should be sortable by (.*)$/
      */
-    public function theDatasCanBeSortedBy($columns)
+    public function theRowsShouldBeSortableBy($columns)
     {
         $columns = $this->getMainContext()->listToArray($columns);
 
@@ -329,9 +320,14 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      *
      * @throws ExpectationException
      *
-     * @Then /^I should see products? ((?!with data).)*$/
-     * @Then /^I should see attributes? ((?!in group).)*$/
-     * @Then /^I should see (?:(?:entit|currenc)(?:y|ies)|channels?|locales?|(?:import|export) profiles?) (.*)$/
+     * @Then /^I should see products? (.*)$/
+     * @Then /^I should see attributes? (?!(.*)in group )(.*)$/
+     * @Then /^I should see channels? (.*)$/
+     * @Then /^I should see locales? (.*)$/
+     * @Then /^I should see (?:import|export) profiles? (.*)$/
+     * @Then /^I should see (?:(?:entit|currenc)(?:y|ies)) (.*)$/
+     * @Then /^I should see groups? (.*)$/
+     * @Then /^I should see associations? (.*)$/
      */
     public function iShouldSeeEntities($elements)
     {
@@ -347,9 +343,14 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     /**
      * @param array $entities
      *
-     * @Then /^I should not see products? ((?!with data).)*$/
-     * @Then /^I should not see attributes? ((?!in group).)*$/
-     * @Then /^I should not see (?:(?:entit|currenc)(?:y|ies)|channels?|locales?|(?:import|export) profiles?) (.*)$/
+     * @Then /^I should not see products? (.*)$/
+     * @Then /^I should not see attributes? (?!(.*)in group )(.*)$/
+     * @Then /^I should not see channels? (.*)$/
+     * @Then /^I should not see locales? (.*)$/
+     * @Then /^I should not see (?:import|export) profiles? (.*)$/
+     * @Then /^I should not see (?:(?:entit|currenc)(?:y|ies)) (.*)$/
+     * @Then /^I should not see groups? (.*)$/
+     * @Then /^I should not see associations? (.*)$/
      */
     public function iShouldNotSeeEntities($entities)
     {
@@ -365,41 +366,6 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
                 // here we must catch an exception because the row is not found
                 continue;
             }
-        }
-    }
-
-    /**
-     * @param array $elements
-     *
-     * @throws \InvalidArgumentException
-     *
-     * @Then /^I should see sorted (?:entities|channels|currencies|locales|attributes|(?:import|export) profiles) (.*)$/
-     */
-    public function iShouldSeeSortedEntities($elements)
-    {
-        $elements = $this->getMainContext()->listToArray($elements);
-
-        if ($this->datagrid->countRows() !== count($elements)) {
-            throw $this->createExpectationException(
-                'You must define all the entities in the grid to check the sorting'
-            );
-        }
-
-        $expectedPosition = 0;
-        foreach ($elements as $element) {
-            $position = $this->datagrid->getRowPosition($element);
-            if ($expectedPosition !== $position) {
-                $errorMsg = sprintf(
-                    'Value %s is expected at position %d but is at position %d',
-                    $element,
-                    $expectedPosition,
-                    $position
-                );
-                throw $this->createExpectationException(
-                    sprintf("The entities are not well sorted\n%s", $errorMsg)
-                );
-            }
-            $expectedPosition++;
         }
     }
 
@@ -423,7 +389,55 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function iClickOnTheRow($row)
     {
         $this->datagrid->getRow($row)->click();
-        $this->wait(4000, null);
+        $this->wait();
+    }
+
+    /**
+     * @param string $rows
+     *
+     * @throws ExpectationException
+     *
+     * @When /^I check the rows? "([^"]*)"$/
+     */
+    public function iCheckTheRows($rows)
+    {
+        $rows = $this->getMainContext()->listToArray($rows);
+
+        foreach ($rows as $row) {
+            $gridRow = $this->datagrid->getRow($row);
+            $checkbox = $gridRow->find('css', 'input[type="checkbox"][data-identifier]:not(:disabled)');
+
+            if (!$checkbox) {
+                throw $this->createExpectationException(sprintf('Unable to find a checkbox for row %s', $row));
+            }
+
+            $checkbox->check();
+        }
+    }
+
+    /**
+     * @param string $rows
+     *
+     * @throws ExpectationException
+     *
+     * @Then /^the rows? "([^"]*)" should be checked$/
+     */
+    public function theRowShouldBeChecked($rows)
+    {
+        $rows = $this->getMainContext()->listToArray($rows);
+
+        foreach ($rows as $row) {
+            $gridRow = $this->datagrid->getRow($row);
+            $checkbox = $gridRow->find('css', 'input[type="checkbox"][data-identifier]:not(:disabled)');
+
+            if (!$checkbox) {
+                throw $this->createExpectationException(sprintf('Unable to find a checkbox for row %s', $row));
+            }
+
+            if (!$checkbox->isChecked()) {
+                throw $this->createExpectationException(sprintf('Expecting row %s to be checked', $row));
+            }
+        }
     }
 
     /**
@@ -445,6 +459,15 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @Then /^I click back to grid$/
+     */
+    public function iClickBackToGrid()
+    {
+        $this->getSession()->getPage()->clickLink('Back to grid');
+        $this->wait();
+    }
+
+    /**
      * Create an expectation exception
      *
      * @param string $message
@@ -461,21 +484,26 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      *
      * @param integer $time
      * @param string  $condition
-     *
-     * @return void
      */
-    private function wait($time = 4000, $condition = 'document.readyState == "complete" && !$.active')
+    private function wait($time = 10000, $condition = null)
     {
-        return $this->getMainContext()->wait($time, $condition);
+        $this->getMainContext()->wait($time, $condition);
     }
 
     /**
-     *
      * @return \Behat\Behat\Context\ExtendedContextInterface
      */
-    private function getWebUserContext()
+    private function getNavigationContext()
     {
-        return $this->getMainContext()->getSubcontext('webUser');
+        return $this->getMainContext()->getSubcontext('navigation');
+    }
+
+    /**
+     * @return \Behat\Behat\Context\ExtendedContextInterface
+     */
+    private function getFixturesContext()
+    {
+        return $this->getMainContext()->getSubcontext('fixtures');
     }
 
     /**
@@ -485,6 +513,6 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function getPage($name)
     {
-        return $this->getWebUserContext()->getPage($name);
+        return $this->getNavigationContext()->getPage($name);
     }
 }

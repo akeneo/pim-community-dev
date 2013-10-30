@@ -1,13 +1,5 @@
 services:
     # Form
-    pim_catalog.form.product_create:
-        class:           Symfony\Component\Form\Form
-        factory_method:  createNamed
-        factory_service: form.factory
-        arguments:
-            - pim_product_create_form
-            - pim_product_create
-
     pim_catalog.form.attribute:
         class:           Symfony\Component\Form\Form
         factory_method:  createNamed
@@ -47,3 +39,19 @@ services:
         arguments:
             - pim_catalog_currency_form
             - pim_catalog_currency
+
+    pim_catalog.form.group:
+        class:           Symfony\Component\Form\Form
+        factory_method:  createNamed
+        factory_service: form.factory
+        arguments:
+            - pim_catalog_group_form
+            - pim_catalog_group
+
+    pim_catalog.form.association:
+        class:           Symfony\Component\Form\Form
+        factory_method:  createNamed
+        factory_service: form.factory
+        arguments:
+            - pim_catalog_association_form
+            - pim_catalog_association

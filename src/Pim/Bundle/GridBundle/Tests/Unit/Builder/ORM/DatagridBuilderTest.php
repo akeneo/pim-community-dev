@@ -5,6 +5,7 @@ namespace Pim\Bundle\GridBundle\Tests\Unit\Builder\ORM;
 use Pim\Bundle\GridBundle\Builder\ORM\DatagridBuilder;
 
 use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
+use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
 use Oro\Bundle\GridBundle\Tests\Unit\Builder\ORM\DatagridBuilderTest as OroDatagridBuilderTest;
 
 /**
@@ -31,7 +32,7 @@ class DatagridBuilderTest extends OroDatagridBuilderTest
         $this->model = new DatagridBuilder(
             $arguments['formFactory'],
             $arguments['eventDispatcher'],
-            $arguments['aclManager'],
+            $arguments['securityFacade'],
             $arguments['filterFactory'],
             $arguments['sorterFactory'],
             $arguments['actionFactory'],
@@ -41,6 +42,8 @@ class DatagridBuilderTest extends OroDatagridBuilderTest
     }
 
     /**
+     * @param array $arguments
+     *
      * @return array
      */
     protected function getDatagridBuilderArguments(array $arguments = array())
@@ -50,7 +53,8 @@ class DatagridBuilderTest extends OroDatagridBuilderTest
             'eventDispatcher' => $this->getMockForAbstractClass(
                 'Symfony\Component\EventDispatcher\EventDispatcherInterface'
             ),
-            'aclManager'      => $this->getMockForAbstractClass('Oro\Bundle\UserBundle\Acl\ManagerInterface'),
+            'securityFacade'  => $this->getMockBuilder('Oro\Bundle\SecurityBundle\SecurityFacade')
+                                 ->disableOriginalConstructor()->getMock(),
             'filterFactory'   => $this->getMockForAbstractClass('Oro\Bundle\GridBundle\Filter\FilterFactoryInterface'),
             'sorterFactory'   => $this->getMockForAbstractClass('Oro\Bundle\GridBundle\Sorter\SorterFactoryInterface'),
             'actionFactory'   => $this->getMockForAbstractClass('Oro\Bundle\GridBundle\Action\ActionFactoryInterface'),
@@ -68,8 +72,14 @@ class DatagridBuilderTest extends OroDatagridBuilderTest
      */
     public function testGetBaseDatagrid()
     {
+        // filter form
+        $filterForm = $this->getMock('Symfony\Component\Form\Form', array(), array(), '', false);
+
         // form builder
-        $formBuilderMock = $this->getMock('Symfony\Component\Form\FormBuilder', array(), array(), '', false);
+        $formBuilderMock = $this->getMock('Symfony\Component\Form\FormBuilder', array('getForm'), array(), '', false);
+        $formBuilderMock->expects($this->once())
+            ->method('getForm')
+            ->will($this->returnValue($filterForm));
 
         // form factory
         $formFactoryMock = $this->getMockForAbstractClass(
@@ -98,6 +108,18 @@ class DatagridBuilderTest extends OroDatagridBuilderTest
         $fieldDescriptionCollection = new FieldDescriptionCollection();
         $routeGeneratorMock = $this->getMockForAbstractClass('Oro\Bundle\GridBundle\Route\RouteGeneratorInterface');
         $parametersMock = $this->getMockForAbstractClass('Oro\Bundle\GridBundle\Datagrid\ParametersInterface');
+        $parametersMock->expects($this->at(0))
+            ->method('get')
+            ->with(ParametersInterface::FILTER_PARAMETERS)
+            ->will($this->returnValue(array()));
+        $parametersMock->expects($this->at(1))
+            ->method('get')
+            ->with(ParametersInterface::PAGER_PARAMETERS)
+            ->will($this->returnValue(array()));
+        $parametersMock->expects($this->at(2))
+            ->method('get')
+            ->with(ParametersInterface::SORT_PARAMETERS)
+            ->will($this->returnValue(array()));
 
         // test datagrid
         $this->initializeDatagridBuilder(

@@ -71,10 +71,10 @@
             <script type="text/javascript">
                 require(
                     ['jquery', 'pim/dialogform'],
-                    function ($, dialogForm) {
+                    function ($, DialogForm) {
                         'use strict';
                         $(function() {
-                            new dialogForm('#create-product');
+                            new DialogForm('#create-product');
                         });
                     }
                 );
@@ -90,7 +90,6 @@
             </span>
             <ul class="dropdown-menu">
                 {% for locale in locales %}
-                    {% if resource_granted('pim_catalog_locale_' ~ locale.code) %}
                     <li class="{{ locale.code == dataLocale ? 'active' : '' }}">
                         <a href="{{ path('pim_catalog_product_index', { 'dataLocale': locale.code }) }}" title="{{ locale.code }}">
                             <span class="icon pull-left">
@@ -103,7 +102,6 @@
                             </span>
                         </a>
                     </li>
-                    {% endif %}
                 {% endfor %}
             </ul>
         </div>
@@ -112,7 +110,7 @@
     {{ elements.page_header(title, buttons, subtitle) }}
 
     <div class="row-fluid has-sidebar">
-        <div id="tree" data-datalocale="{{ dataLocale }}" {% if app.request.get("categoryId") %}data-node-id="{{app.request.get("categoryId")}}"{% endif %}></div>
+        <div id="tree" data-datalocale="{{ dataLocale }}" data-node-id="{{app.request.get("categoryId")}}"></div>
         <div id="product-grid"></div>
     </div>
 

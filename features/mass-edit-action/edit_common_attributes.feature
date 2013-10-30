@@ -1,4 +1,4 @@
-@javascript
+@javascript @insulated
 Feature: Edit common attributes of many products at once
   In order to update the same information on many products
   As Julia
@@ -9,29 +9,45 @@ Feature: Edit common attributes of many products at once
     And a "ceiling" product
     And a "torch" product
     And the following attribute group:
-      | name    |
-      | General |
+      | code      | label     | locale  |
+      | general   | General   | english |
+      | technical | Technical | english |
+      | general   | Général   | french  |
+      | technical | Technique | french  |
     And the following product attributes:
-      | product | label  | group   | translatable | scopable | type        | metric family | default metric unit |
-      | lamp    | Name   | General | yes          | no       | text        |               |                     |
-      | ceiling | Name   | General | yes          | no       | text        |               |                     |
-      | torch   | Name   | General | yes          | no       | text        |               |                     |
-      | lamp    | Colors | General | no           | no       | multiselect |               |                     |
-      | ceiling | Colors | General | no           | no       | multiselect |               |                     |
-      | torch   | Colors | General | no           | no       | multiselect |               |                     |
-      | lamp    | Price  | General | no           | no       | prices      |               |                     |
-      | torch   | Price  | General | no           | no       | prices      |               |                     |
-      | ceiling | Visual | General | no           | no       | image       |               |                     |
-      | torch   | Visual | General | no           | no       | image       |               |                     |
-      | lamp    | Weight | General | no           | no       | metric      | Weight        | KILOGRAM            |
-      | torch   | Weight | General | no           | no       | metric      | Weight        | KILOGRAM            |
+      | product | label  | group     | translatable | scopable | type        | metric family | default metric unit | locale | scope |
+      | lamp    | Name   | general   | yes          | no       | text        |               |                     | en_US  |       |
+      | ceiling | Name   | general   | yes          | no       | text        |               |                     | en_US  |       |
+      | torch   | Name   | general   | yes          | no       | text        |               |                     | en_US  |       |
+      | lamp    | Colors | technical | no           | no       | multiselect |               |                     |        |       |
+      | ceiling | Colors | technical | no           | no       | multiselect |               |                     |        |       |
+      | torch   | Colors | technical | no           | no       | multiselect |               |                     |        |       |
+      | lamp    | Price  | general   | no           | no       | prices      |               |                     |        |       |
+      | torch   | Price  | general   | no           | no       | prices      |               |                     |        |       |
+      | ceiling | Visual | general   | no           | no       | image       |               |                     |        |       |
+      | torch   | Visual | general   | no           | no       | image       |               |                     |        |       |
+      | lamp    | Weight | technical | no           | no       | metric      | Weight        | KILOGRAM            |        |       |
+      | torch   | Weight | technical | no           | no       | metric      | Weight        | KILOGRAM            |        |       |
+    And the following attribute label translations:
+      | attribute | lang    | label    |
+      | name      | english | Name     |
+      | name      | french  | Nom      |
+      | colors    | english | Colors   |
+      | colors    | french  | Couleurs |
+      | price     | english | Price    |
+      | price     | french  | Prix     |
+      | visual    | english | Visual   |
+      | visual    | french  | Visuel   |
+      | weight    | english | Weight   |
+      | weight    | french  | Poids    |
     And I am logged in as "Julia"
 
   Scenario: Allow editing only common attributes
     Given I am on the products page
     When I mass-edit products lamp, torch and ceiling
     And I choose the "Edit attributes" operation
-    Then I should see available attributes Name and Colors in group "General"
+    Then I should see available attribute Name in group "General"
+    And I should see available attribute Colors in group "Technical"
 
   Scenario: Succesfully update many text values at once
     Given I am on the products page
@@ -40,8 +56,7 @@ Feature: Edit common attributes of many products at once
     And I display the Name attribute
     And I change the "Name" to "Lamp"
     And I move on to the next step
-    Then I should see "Product(s) attribute(s) have been updated"
-    And the english name of lamp should be "Lamp"
+    Then the english name of lamp should be "Lamp"
     And the english name of torch should be "Lamp"
     And the english name of ceiling should be "Lamp"
 
@@ -57,8 +72,7 @@ Feature: Edit common attributes of many products at once
     And I change the "$ Price" to "100"
     And I change the "€ Price" to "150"
     And I move on to the next step
-    Then I should see "Product(s) attribute(s) have been updated"
-    And the prices "Price" of products lamp and torch should be:
+    Then the prices "Price" of products lamp and torch should be:
       | amount | currency |
       | 100    | USD      |
       | 150    | EUR      |
@@ -70,8 +84,7 @@ Feature: Edit common attributes of many products at once
     And I display the Visual attribute
     And I attach file "akeneo.jpg" to "Visual"
     And I move on to the next step
-    Then I should see "Product(s) attribute(s) have been updated"
-    And the file "Visual" of products torch and ceiling should be "akeneo.jpg"
+    Then the file "Visual" of products torch and ceiling should be "akeneo.jpg"
 
   Scenario: Succesfully update many multi-valued values at once
     Given the following "Colors" attribute options: Red, Blue and White
@@ -81,8 +94,7 @@ Feature: Edit common attributes of many products at once
     And I display the Colors attribute
     And I change the "Colors" to "Red, Blue"
     And I move on to the next step
-    Then I should see "Product(s) attribute(s) have been updated"
-    And the options "Colors" of products lamp and ceiling should be:
+    Then the options "Colors" of products lamp and ceiling should be:
       | value |
       | Red   |
       | Blue  |
@@ -94,5 +106,25 @@ Feature: Edit common attributes of many products at once
     And I display the Weight attribute
     And I change the "Weight" to "600"
     And I move on to the next step
-    Then I should see "Product(s) attribute(s) have been updated"
-    And the metric "Weight" of products lamp and torch should be "600"
+    Then the metric "Weight" of products lamp and torch should be "600"
+
+  Scenario: Succesfully translate in english groups and labels
+    Given I am on the products page
+    When I mass-edit products lamp and torch
+    And I choose the "Edit attributes" operation
+    And I display the Name and Colors attributes
+    Then I should see "Technical"
+    And I should see "General"
+    And I should see "Name"
+    And I should see "Colors"
+
+  Scenario: Succesfully translate in french groups and labels
+    Given I am on the products page
+    When I mass-edit products lamp and torch
+    And I choose the "Edit attributes" operation
+    And I switch the locale to "French (France)"
+    And I display the Nom and Couleur attributes
+    Then I should see "Technique"
+    And I should see "Général"
+    And I should see "Nom"
+    And I should see "Couleurs"

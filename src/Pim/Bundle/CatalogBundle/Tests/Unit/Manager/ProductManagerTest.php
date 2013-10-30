@@ -50,6 +50,46 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test related method
+     */
+    public function testCreateProductValue()
+    {
+        $value = $this->getProductManager()->createProductValue();
+        $this->assertEquals(get_class($value), 'Pim\Bundle\CatalogBundle\Entity\ProductValue');
+    }
+
+    /**
+     * Test related method
+     */
+    public function testCreateProduct()
+    {
+        $product = $this->getProductManager()->createProduct();
+        $this->assertEquals(get_class($product), 'Pim\Bundle\CatalogBundle\Entity\Product');
+    }
+
+    /**
+     * test related method
+     */
+    public function testSetLocale()
+    {
+        $pm = $this->getProductManager();
+        $this->assertNull($pm->getLocale());
+        $pm->setLocale('de_DE');
+        $this->assertEquals($pm->getLocale(), 'de_DE');
+    }
+
+    /**
+     * test related method
+     */
+    public function testSetScope()
+    {
+        $pm = $this->getProductManager();
+        $this->assertNull($pm->getScope());
+        $pm->setScope('mychan');
+        $this->assertEquals($pm->getScope(), 'mychan');
+    }
+
+    /**
      * Create ProductManager
      *
      * @param MediaManager  $mediaManager
@@ -62,18 +102,32 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
         $flexibleRepository = $this->getEntityRepositoryMock();
 
         return new ProductManager(
-            'Product',
-            array('entities_config' => array('Product' => null)),
+            'Pim\Bundle\CatalogBundle\Entity\Product',
+            array(
+                'entities_config' => array(
+                    'Pim\Bundle\CatalogBundle\Entity\Product' => array(
+                        'flexible_class' => 'Pim\Bundle\CatalogBundle\Entity\Product',
+                        'flexible_value_class' => 'Pim\Bundle\CatalogBundle\Entity\ProductValue',
+                        'attribute_class' => 'Pim\Bundle\CatalogBundle\Entity\ProductAttribute',
+                        'attribute_option_class' => 'Pim\Bundle\CatalogBundle\Entity\AttributeOption',
+                        'attribute_option_value_class' => 'Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue',
+                        'default_locale' => null,
+                        'default_scope'  => null
+                    )
+                ),
+            ),
             $objectManager ?: $this->getObjectManagerMock($flexibleRepository),
             $this->getEventDispatcherInterfaceMock(),
             $this->getAttributeTypeFactoryMock(),
             $mediaManager ?: $this->getMediaManagerMock(),
-            $this->getCurrencyManagerMock()
+            $this->getCurrencyManagerMock(),
+            $this->getCompletenessCalculatorMock()
         );
     }
 
     /**
      * Get a mock of ObjectManager
+     * @param mixed $repository
      *
      * @return \Doctrine\Common\Persistence\ObjectManager
      */
@@ -300,6 +354,11 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
         return $file;
     }
 
+    /**
+     * @param array $activeCodes
+     *
+     * @return \Pim\Bundle\CatalogBundle\Manager\CurrencyManager
+     */
     protected function getCurrencyManagerMock(array $activeCodes = array())
     {
         $manager = $this
@@ -314,11 +373,26 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
         return $manager;
     }
 
+    /**
+     * @return \Doctrine\ORM\EntityRepository
+     */
     protected function getEntityRepositoryMock()
     {
         return $this
             ->getMockBuilder('Doctrine\ORM\EntityRepository')
             ->disableOriginalConstructor()
             ->getMock();
+    }
+
+    /**
+     * @return \Pim\Bundle\CatalogBundle\Calculator\CompletenessCalculator
+     */
+    protected function getCompletenessCalculatorMock()
+    {
+        return $this
+            ->getMockBuilder('Pim\Bundle\CatalogBundle\Calculator\CompletenessCalculator')
+            ->disableOriginalConstructor()
+            ->getMock();
+
     }
 }

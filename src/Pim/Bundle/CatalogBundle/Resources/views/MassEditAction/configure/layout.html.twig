@@ -7,7 +7,7 @@
 
     {{ parent() }}
 
-    <form id="{{ form.vars.id }}" action="{{ path('pim_catalog_mass_edit_action_perform', { 'operationAlias': batchOperator.operationAlias, 'products': productIds }) }}" method="POST" class="form-horizontal" {{ form_enctype(form) }}>
+    {{ form_start(form, { 'action': path('pim_catalog_mass_edit_action_perform', { 'operationAlias': batchOperator.operationAlias, 'products': productIds }) }) }}
 
         <div class="row">
             <div class="offset1 span12">
@@ -57,8 +57,8 @@
     {% set action = path('pim_catalog_mass_edit_action_configure', { 'operationAlias': batchOperator.operationAlias, 'products': productIds }) %}
     <script type="text/javascript">
         require(
-            ['jquery', 'jquery.wizard', 'jquery.select2', 'bootstrap.bootstrapswitch', 'jquery.multiselect'],
-            function ($) {
+            ['jquery', 'oro/mediator', 'jquery.wizard', 'jquery.select2', 'bootstrap.bootstrapswitch', 'jquery.multiselect'],
+            function ($, mediator) {
                 'use strict';
 
                 $(function () {
@@ -76,6 +76,9 @@
 
                         // Disable switcher
                         $('.has-switch').bootstrapSwitch('setActive', false);
+
+                        // Trigger jstree lock
+                        mediator.trigger('jstree:lock');
                     }
 
                     var enableForm = function() {
@@ -92,6 +95,9 @@
 
                         // Enable switcher
                         $('.has-switch').bootstrapSwitch('setActive', true);
+
+                        // Trigger jstree unlock
+                        mediator.trigger('jstree:unlock');
                     };
 
                     $('select.operation-param').change(function () {

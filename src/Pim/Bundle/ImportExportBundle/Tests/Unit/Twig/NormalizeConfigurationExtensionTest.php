@@ -13,21 +13,35 @@ use Pim\Bundle\ImportExportBundle\Twig\NormalizeConfigurationExtension;
  */
 class NormalizeConfigurationExtensionTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         $this->extension = new NormalizeConfigurationExtension();
     }
 
+    /**
+     * Test related method
+     */
     public function testInstanceOfTwigExtension()
     {
         $this->assertInstanceOf('\Twig_Extension', $this->extension);
     }
 
+    /**
+     * Test related method
+     */
     public function testGetName()
     {
         $this->assertEquals('pim_ie_normalize_configuration', $this->extension->getName());
     }
 
+    /**
+     * Data provider for testNormalizeValues
+     *
+     * @return array
+     */
     public static function getNormalizeValuesData()
     {
         return array(
@@ -42,6 +56,9 @@ class NormalizeConfigurationExtensionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param mixed $value
+     * @param mixed $expectedValue
+     *
      * @dataProvider getNormalizeValuesData
      */
     public function testNormalizeValues($value, $expectedValue)
@@ -49,6 +66,9 @@ class NormalizeConfigurationExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedValue, $this->extension->normalizeValueFilter($value));
     }
 
+    /**
+     * Test related method
+     */
     public function testGetViolationsFunction()
     {
         $violations = array(
@@ -62,7 +82,7 @@ class NormalizeConfigurationExtensionTest extends \PHPUnit_Framework_TestCase
             $this->extension->getViolationsFunction($violations, 0, 'Reader', 'foo')
         );
         $this->assertEquals(
-            '<span class="label label-important">The writer bar of step 1 is somehow wrong.</span> ' .
+            '<span class="label label-important">The writer bar of step 1 is somehow wrong.</span>&nbsp;' .
             '<span class="label label-important">The writer bar of step 1 is elsehow wrong.</span>',
             $this->extension->getViolationsFunction($violations, 1, 'Writer', 'bar')
         );
@@ -71,6 +91,14 @@ class NormalizeConfigurationExtensionTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * Get a ConstraintViolation mock
+     *
+     * @param string $propertyPath
+     * @param string $message
+     *
+     * @return \Symfony\Component\Validator\ConstraintViolation
+     */
     protected function getViolationMock($propertyPath, $message)
     {
         $constraint = $this

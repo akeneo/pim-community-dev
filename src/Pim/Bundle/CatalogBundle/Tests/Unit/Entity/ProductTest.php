@@ -7,6 +7,7 @@ use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Entity\Completeness;
 use Pim\Bundle\CatalogBundle\Entity\Product;
 use Pim\Bundle\CatalogBundle\Entity\Family;
+use Pim\Bundle\CatalogBundle\Entity\Group;
 
 /**
  * Test related class
@@ -85,11 +86,10 @@ class ProductTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetGroups()
     {
-        $groups           = array(
+        $groups = array(
             $otherGroup   = $this->getGroupMock(1, 'Other', -1),
             $generalGroup = $this->getGroupMock(2, 'General', 0),
             $alphaGroup   = $this->getGroupMock(3, 'Alpha', 20),
-            $alphaGroup2  = $this->getGroupMock(3, 'Alpha', 20),
             $betaGroup    = $this->getGroupMock(4, 'Beta', 10),
         );
 
@@ -101,10 +101,13 @@ class ProductTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(4, count($groups));
         $this->assertSame($generalGroup, current($groups));
         $this->assertSame($betaGroup, next($groups));
-        $this->assertSame($alphaGroup2, next($groups));
+        $this->assertSame($alphaGroup, next($groups));
         $this->assertSame($otherGroup, next($groups));
     }
 
+    /**
+     * Test related method
+     */
     public function testSkuLabel()
     {
         $sku = $this->getValueMock($this->getAttributeMock(null, 'pim_catalog_identifier'), 'foo-bar');
@@ -113,6 +116,9 @@ class ProductTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('foo-bar', $this->product->getLabel());
     }
 
+    /**
+     * Test related method
+     */
     public function testAttributeLabel()
     {
         $attributeAsLabel = $this->getAttributeMock();
@@ -127,6 +133,9 @@ class ProductTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('bar', $this->product->getLabel());
     }
 
+    /**
+     * Test related method
+     */
     public function testNullValuedAttributeLabel()
     {
         $attributeAsLabel = $this->getAttributeMock();
@@ -142,6 +151,9 @@ class ProductTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('foo-bar', $this->product->getLabel());
     }
 
+    /**
+     * Test related method
+     */
     public function testEmptyStringValuedAttributeLabel()
     {
         $attributeAsLabel = $this->getAttributeMock();
@@ -157,6 +169,9 @@ class ProductTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('foo-bar', $this->product->getLabel());
     }
 
+    /**
+     * Test related method
+     */
     public function testNullAttributeLabel()
     {
         $attribute = $this->getAttributeMock();
@@ -172,6 +187,9 @@ class ProductTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('foo-bar', $this->product->getLabel());
     }
 
+    /**
+     * Test related method
+     */
     public function testIsSetEnabled()
     {
         $this->assertTrue($this->product->isEnabled());
@@ -183,6 +201,9 @@ class ProductTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->product->isEnabled());
     }
 
+    /**
+     * Test related method
+     */
     public function testGetIdentifier()
     {
         $identifier = $this->getValueMock($this->getAttributeMock(null, 'pim_catalog_identifier'));
@@ -217,8 +238,8 @@ class ProductTest extends \PHPUnit_Framework_TestCase
         $channel1 = $completeness->getChannel();
 
         $completeness2 = $this->createCompleteness('channel2', 'fr_FR');
-        $localeFR = $completeness2->getLocale();
-        $channel2 = $completeness2->getChannel();
+        $completeness2->getLocale();
+        $completeness2->getChannel();
 
         // assert no return if nothing found
         $this->assertNull($this->product->getCompleteness($localeUS, $channel1));
@@ -249,6 +270,51 @@ class ProductTest extends \PHPUnit_Framework_TestCase
 
         $this->product->setCompletenesses(array($completeness, $completeness2));
         $this->assertCount(2, $this->product->getCompletenesses());
+    }
+
+    /**
+     * Test getter/setter for group
+     */
+    public function testGetSetGroup()
+    {
+        $this->assertEquals(count($this->product->getGroups()), 0);
+
+        // Change value and assert new
+        $newGroup = new Group();
+        $this->product->addGroup($newGroup);
+        $this->assertEquals($newGroup, $this->product->getGroups()->first());
+
+        $this->product->removeGroup($newGroup);
+        $this->assertEmpty(count($this->product->getGroups()), 0);
+    }
+
+    /**
+     * Test getter for media
+     */
+    public function testGetMedia()
+    {
+        $this->product->addValue(
+            $this->getValueMock(
+                $this->getAttributeMock(null, 'pim_catalog_text')
+            )
+        );
+        $this->product->addValue(
+            $this->getValueMock(
+                $this->getAttributeMock(null, 'pim_catalog_image'),
+                $view = $this->getMediaMock()
+            )
+        );
+        $this->product->addValue(
+            $this->getValueMock(
+                $this->getAttributeMock(null, 'pim_catalog_file'),
+                $manual = $this->getMediaMock()
+            )
+        );
+
+        $this->assertEquals(
+            array($view, $manual),
+            $this->product->getMedia()
+        );
     }
 
     /**
@@ -298,7 +364,28 @@ class ProductTest extends \PHPUnit_Framework_TestCase
         return $locale;
     }
 
-    private function getAttributeMock($group = null, $type = 'pim_catalog_text')
+    /**
+     * Create a group entity
+     *
+     * @param string $code
+     *
+     * @return \Pim\Bundle\CatalogBundle\Entity\Group
+     */
+    protected function createGroup($code)
+    {
+        $group = new Group();
+        $group->setCode($code);
+
+        return $group;
+    }
+
+    /**
+     * @param mixed  $group
+     * @param string $type
+     *
+     * @return \Pim\Bundle\CatalogBundle\Entity\ProductAttribute
+     */
+    protected function getAttributeMock($group = null, $type = 'pim_catalog_text')
     {
         $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductAttribute');
 
@@ -313,7 +400,13 @@ class ProductTest extends \PHPUnit_Framework_TestCase
         return $attribute;
     }
 
-    private function getValueMock($attribute, $data = null)
+    /**
+     * @param mixed $attribute
+     * @param mixed $data
+     *
+     * @return \Pim\Bundle\CatalogBundle\Entity\ProductValue
+     */
+    protected function getValueMock($attribute, $data = null)
     {
         $value = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductValue');
 
@@ -332,7 +425,14 @@ class ProductTest extends \PHPUnit_Framework_TestCase
         return $value;
     }
 
-    private function getGroupMock($id, $name, $sortOrder)
+    /**
+     * @param integer $id
+     * @param mixed   $name
+     * @param integer $sortOrder
+     *
+     * @return \Pim\Bundle\CatalogBundle\Entity\AttributeGroup
+     */
+    protected function getGroupMock($id, $name, $sortOrder)
     {
         $group = $this->getMock('Pim\Bundle\CatalogBundle\Entity\AttributeGroup');
 
@@ -351,15 +451,20 @@ class ProductTest extends \PHPUnit_Framework_TestCase
         return $group;
     }
 
-    private function getFamilyMock($attributeAsLabel)
+    /**
+     * @param mixed $attributeAsLabel
+     *
+     * @return \Pim\Bundle\CatalogBundle\Entity\Family
+     */
+    protected function getFamilyMock($attributeAsLabel)
     {
-        $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductAttribute', array('getAttributeAsLabel'));
+        $family = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Family', array('getAttributeAsLabel'));
 
-        $attribute->expects($this->any())
-                  ->method('getAttributeAsLabel')
-                  ->will($this->returnValue($attributeAsLabel));
+        $family->expects($this->any())
+               ->method('getAttributeAsLabel')
+               ->will($this->returnValue($attributeAsLabel));
 
-        return $attribute;
+        return $family;
     }
 
     /**
@@ -370,5 +475,13 @@ class ProductTest extends \PHPUnit_Framework_TestCase
     protected function assertEntity($entity)
     {
         $this->assertInstanceOf('Pim\Bundle\CatalogBundle\Entity\Product', $entity);
+    }
+
+    /**
+     * @return \Oro\Bundle\FlexibleEntityBundle\Entity\Media
+     */
+    protected function getMediaMock()
+    {
+        return $this->getMock('Oro\Bundle\FlexibleEntityBundle\Entity\Media');
     }
 }

@@ -6,17 +6,25 @@ use Pim\Bundle\CatalogBundle\Tests\Unit\Validator\ConstraintGuesser\ConstraintGu
 use Pim\Bundle\CatalogBundle\Validator\ChainedAttributeConstraintGuesser;
 
 /**
+ * Test related class
+ *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class ChainedAttributeConstraintGuesserTest extends ConstraintGuesserTest
 {
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
         $this->target = new ChainedAttributeConstraintGuesser();
     }
 
+    /**
+     * Test related method
+     */
     public function testInstanceOfContraintGuesserInterface()
     {
         $this->assertInstanceOf(
@@ -25,6 +33,9 @@ class ChainedAttributeConstraintGuesserTest extends ConstraintGuesserTest
         );
     }
 
+    /**
+     * Test related method
+     */
     public function testAddConstraintGuesser()
     {
         $this->target->addConstraintGuesser(
@@ -33,11 +44,17 @@ class ChainedAttributeConstraintGuesserTest extends ConstraintGuesserTest
         $this->assertCount(1, $this->target->getConstraintGuessers());
     }
 
+    /**
+     * Test related method
+     */
     public function testSupportProductAttribute()
     {
         $this->assertTrue($this->target->supportAttribute($this->getAttributeMock()));
     }
 
+    /**
+     * Test related method
+     */
     public function testGuessConstraintsUsingRegisteredGuessers()
     {
         $guesser1 = $this->getMock('Oro\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface');

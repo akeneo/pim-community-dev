@@ -2,9 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 
+use Doctrine\ORM\AbstractQuery;
 use Oro\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Doctrine\ORM\AbstractQuery;
+use Pim\Bundle\CatalogBundle\Entity\Group;
 
 /**
  * Product repository
@@ -25,22 +26,22 @@ class ProductRepository extends FlexibleEntityRepository
         $qb = $this->findByWithAttributesQB();
         $qb
             ->andWhere(
-                $qb->expr()->eq('Entity.enabled', '?1')
+                $qb->expr()->eq('Entity.enabled', ':enabled')
             )
             ->andWhere(
                 $qb->expr()->orX(
-                    $qb->expr()->eq('Value.scope', '?2'),
+                    $qb->expr()->eq('Value.scope', ':scope'),
                     $qb->expr()->isNull('Value.scope')
                 )
             )
-            ->setParameter(1, true)
-            ->setParameter(2, $scope);
+            ->setParameter('enabled', true)
+            ->setParameter('scope', $scope);
 
         return $qb;
     }
 
     /**
-     * @param string $scope
+     * @param Channel $channel
      *
      * @return QueryBuilder
      */
@@ -85,6 +86,8 @@ class ProductRepository extends FlexibleEntityRepository
     }
 
     /**
+     * @param array $ids
+     *
      * @return \Doctrine\Common\Collections\ArrayCollection
      */
     public function findByIds(array $ids)
@@ -107,5 +110,38 @@ class ProductRepository extends FlexibleEntityRepository
             ->from($this->_entityName, 'p', 'p.id');
 
         return array_keys($qb->getQuery()->execute(array(), AbstractQuery::HYDRATE_ARRAY));
+    }
+
+    /**
+     * Find all products in a variant group (by variant axis attribute values)
+     *
+     * @param Group $variantGroup
+     * @param array $criteria
+     *
+     * @return array
+     */
+    public function findAllForVariantGroup(Group $variantGroup, array $criteria = array())
+    {
+        $qb = $this->createQueryBuilder('Product');
+
+        $qb
+            ->where(':variantGroup MEMBER OF Product.groups')
+            ->setParameter('variantGroup', $variantGroup);
+
+        $i = 0;
+        foreach ($criteria as $item) {
+            $code = $item['attribute']->getCode();
+            $qb
+                ->innerJoin(
+                    'Product.values',
+                    sprintf('Value_%s', $code),
+                    'WITH',
+                    sprintf('Value_%s.attribute = ?%d AND Value_%s.option = ?%d', $code, ++$i, $code, ++$i)
+                )
+                ->setParameter($i - 1, $item['attribute'])
+                ->setParameter($i, $item['option']);
+        }
+
+        return $qb->getQuery()->getResult();
     }
 }

@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-use Oro\Bundle\UserBundle\Annotation\Acl;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\GridBundle\Renderer\GridRenderer;
 
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
@@ -31,13 +31,6 @@ use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * @Acl(
- *      id="pim_catalog_attribute_group",
- *      name="Attribute group manipulation",
- *      description="Attribute group manipulation",
- *      parent="pim_catalog"
- * )
  */
 class AttributeGroupController extends AbstractDoctrineController
 {
@@ -111,24 +104,20 @@ class AttributeGroupController extends AbstractDoctrineController
      * Create attribute group
      *
      * @Template()
-     * @Acl(
-     *      id="pim_catalog_attribute_group_create",
-     *      name="Create group",
-     *      description="Create group",
-     *      parent="pim_catalog_attribute_group"
-     * )
+     * @AclAncestor("pim_catalog_attribute_group_create")
      * @return array
      */
     public function createAction()
     {
         $group = new AttributeGroup();
-        $groups = $this->getRepository('PimCatalogBundle:AttributeGroup')->getIdToNameOrderedBySortOrder();
 
         if ($this->formHandler->process($group)) {
             $this->addFlash('success', 'flash.attribute group.created');
 
             return $this->redirectToRoute('pim_catalog_attributegroup_edit', array('id' => $group->getId()));
         }
+
+        $groups = $this->getRepository('PimCatalogBundle:AttributeGroup')->getIdToLabelOrderedBySortOrder();
 
         return array(
             'groups'         => $groups,
@@ -144,17 +133,12 @@ class AttributeGroupController extends AbstractDoctrineController
      * @param AttributeGroup $group
      *
      * @Template
-     * @Acl(
-     *      id="pim_catalog_attribute_group_edit",
-     *      name="Edit attribute groups",
-     *      description="Edit attribute groups",
-     *      parent="pim_catalog_attribute_group"
-     * )
+     * @AclAncestor("pim_catalog_attribute_group_edit")
      * @return array
      */
     public function editAction(AttributeGroup $group)
     {
-        $groups = $this->getRepository('PimCatalogBundle:AttributeGroup')->getIdToNameOrderedBySortOrder();
+        $groups = $this->getRepository('PimCatalogBundle:AttributeGroup')->getIdToLabelOrderedBySortOrder();
 
         $datagrid = $this->dataGridWorker->getDataAuditDatagrid(
             $group,
@@ -187,12 +171,7 @@ class AttributeGroupController extends AbstractDoctrineController
      *
      * @param Request $request
      *
-     * @Acl(
-     *      id="pim_catalog_attribute_group_sort",
-     *      name="Sort groups",
-     *      description="Sort groups",
-     *      parent="pim_catalog_attribute_group"
-     * )
+     * @AclAncestor("pim_catalog_attribute_group_sort")
      * @return Response
      */
     public function sortAction(Request $request)
@@ -225,12 +204,7 @@ class AttributeGroupController extends AbstractDoctrineController
      * @param Request        $request
      * @param AttributeGroup $group
      *
-     * @Acl(
-     *      id="pim_catalog_attribute_group_remove",
-     *      name="Remove group",
-     *      description="Remove group",
-     *      parent="pim_catalog_attribute_group"
-     * )
+     * @AclAncestor("pim_catalog_attribute_group_remove")
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function removeAction(Request $request, AttributeGroup $group)
@@ -277,12 +251,7 @@ class AttributeGroupController extends AbstractDoctrineController
      * @param Request $request The request object
      * @param integer $id      The group id to add attributes to
      *
-     * @Acl(
-     *      id="pim_catalog_attribute_group_add_attribute",
-     *      name="Add attribute to group",
-     *      description="Add attribute to group",
-     *      parent="pim_catalog_attribute_group"
-     * )
+     * @AclAncestor("pim_catalog_attribute_group_add_attribute")
      * @return Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function addProductAttributesAction(Request $request, $id)
@@ -316,12 +285,7 @@ class AttributeGroupController extends AbstractDoctrineController
      * @param integer $groupId
      * @param integer $attributeId
      *
-     * @Acl(
-     *      id="pim_catalog_attribute_group_remove_attribute",
-     *      name="Remove attribute from a group",
-     *      description="Remove attribute from a group",
-     *      parent="pim_catalog_attribute_group"
-     * )
+     * @AclAncestor("pim_catalog_attribute_group_remove_attribute")
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function removeProductAttributeAction($groupId, $attributeId)

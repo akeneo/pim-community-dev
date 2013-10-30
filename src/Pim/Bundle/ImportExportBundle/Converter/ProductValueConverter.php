@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\ImportExportBundle\Converter;
 
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Doctrine\ORM\EntityManager;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
@@ -15,8 +17,6 @@ use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
  */
 class ProductValueConverter
 {
-    const SCOPE_KEY = '[scope]';
-
     /**
      * @var EntityManager $entityManager
      */
@@ -46,14 +46,11 @@ class ProductValueConverter
      */
     public function convert($data)
     {
-        $scope = $this->getScope($data);
-
         $result = array();
         foreach ($data as $key => $value) {
             $attribute = $this->getAttribute($key);
 
-            // TODO Handle media import
-            if ($attribute && 'media' !== $attribute->getBackendType()) {
+            if ($attribute) {
                 switch ($attribute->getBackendType()) {
                     case 'prices':
                         $value = $this->convertPricesValue($value);
@@ -70,11 +67,13 @@ class ProductValueConverter
                     case 'metric':
                         $value = $this->convertMetricValue($value);
                         break;
+                    case 'media':
+                        $value = $this->convertMediaValue($value);
+                        break;
                     default:
                         $value = $this->convertValue($attribute->getBackendType(), $value);
                 }
-                $key = $this->getProductValueKey($attribute, $key, $scope);
-                $result[$key] = $value;
+                $result[$this->getProductValueKey($attribute, $key)] = $value;
             }
         }
 
@@ -92,24 +91,29 @@ class ProductValueConverter
      *
      * @return array
      */
-    private function convertPricesValue($value)
+    protected function convertPricesValue($value)
     {
+        $currencies = $this->currencyManager->getActiveCodes();
+
         $result = array();
-        if (strpos($value, ',') !== false) {
-            foreach (explode(',', $value) as $price) {
-                list($data, $currency) = explode(' ', $price);
-                $result[] = array(
-                    'data'     => $data,
-                    'currency' => $currency,
-                );
+        foreach (explode(',', $value) as $price) {
+            $price = trim($price);
+            if (empty($price)) {
+                continue;
             }
-        } else {
-            foreach ($this->currencyManager->getActiveCodes() as $currency) {
-                $result[] = array(
-                    'data'     => '',
-                    'currency' => $currency,
-                );
+
+            if (0 === preg_match('/^([0-9]*\.?[0-9]*) (\w+)$/', $price, $matches)) {
+                throw new \InvalidArgumentException(sprintf('Malformed price: %s', $price));
             }
+
+            if (in_array($matches[2], $currencies)) {
+                $result[] = array('data' => $matches[1], 'currency' => $matches[2]);
+                unset($currencies[array_search($matches[2], $currencies)]);
+            }
+        }
+
+        foreach ($currencies as $currency) {
+            $result[] = array('data' => '', 'currency' => $currency);
         }
 
         return $this->convertValue('prices', $result);
@@ -122,7 +126,7 @@ class ProductValueConverter
      *
      * @return array
      */
-    private function convertDateValue($value)
+    protected function convertDateValue($value)
     {
         $date = new \DateTime($value);
 
@@ -136,7 +140,7 @@ class ProductValueConverter
      *
      * @return array
      */
-    private function convertOptionValue($value)
+    protected function convertOptionValue($value)
     {
         if ($option = $this->getOption($value)) {
             return $this->convertValue('option', $option->getId());
@@ -150,7 +154,7 @@ class ProductValueConverter
      *
      * @return array
      */
-    private function convertOptionsValue($value)
+    protected function convertOptionsValue($value)
     {
         $options = array();
         foreach (explode(',', $value) as $val) {
@@ -169,14 +173,14 @@ class ProductValueConverter
      *
      * @return array
      */
-    public function convertMetricValue($value)
+    protected function convertMetricValue($value)
     {
         if (empty($value)) {
             $metric = array();
         } else {
             if (false === strpos($value, ' ')) {
                 throw new \InvalidArgumentException(
-                    sprintf('Metric value "%s" is malformed, must match "<data> <unit>"', $value)
+                    sprintf('Malformed metric: %s', $value)
                 );
             }
             list($data, $unit) = explode(' ', $value);
@@ -190,6 +194,24 @@ class ProductValueConverter
     }
 
     /**
+     * Convert media value
+     *
+     * @param string $value
+     *
+     * @return array
+     */
+    protected function convertMediaValue($value)
+    {
+        try {
+            $file = new File($value);
+        } catch (FileNotFoundException $e) {
+            $file = null;
+        }
+
+        return $this->convertValue('media', array('file' => $file));
+    }
+
+    /**
      * Convert value
      *
      * @param string $type
@@ -197,26 +219,9 @@ class ProductValueConverter
      *
      * @return array
      */
-    private function convertValue($type, $value)
+    protected function convertValue($type, $value)
     {
         return array($type => $value);
-    }
-
-    /**
-     * Get the value of the self::SCOPE_KEY
-     *
-     * @param array $data
-     *
-     * @return string
-     */
-    private function getScope(array &$data)
-    {
-        if (array_key_exists(self::SCOPE_KEY, $data)) {
-            $scope = $data[self::SCOPE_KEY];
-            unset($data[self::SCOPE_KEY]);
-
-            return $scope;
-        }
     }
 
     /**
@@ -226,11 +231,9 @@ class ProductValueConverter
      *
      * @return ProductAttribute
      */
-    private function getAttribute($code)
+    protected function getAttribute($code)
     {
-        if ($this->isLocalized($code)) {
-            $code = $this->getAttributeCode($code);
-        }
+        $code = $this->getAttributeCode($code);
 
         return $this->entityManager
             ->getRepository('PimCatalogBundle:ProductAttribute')
@@ -244,7 +247,7 @@ class ProductValueConverter
      *
      * @return AttributeOption
      */
-    private function getOption($code)
+    protected function getOption($code)
     {
         return $this->entityManager
             ->getRepository('PimCatalogBundle:AttributeOption')
@@ -256,44 +259,52 @@ class ProductValueConverter
      *
      * @param ProductAttribute $attribute
      * @param string           $key
-     * @param strint           $scope
      *
      * @return string
      */
-    private function getProductValueKey(ProductAttribute $attribute, $key, $scope)
+    protected function getProductValueKey(ProductAttribute $attribute, $key)
     {
+        $code = $key;
         $suffix = '';
-        if ($attribute->getScopable()) {
-            $suffix = sprintf('_%s', $scope);
+
+        if (strpos($key, '-')) {
+            $tokens = explode('-', $key);
+            $code = $tokens[0];
+            if ($attribute->getScopable() && $attribute->getTranslatable()) {
+                if (count($tokens) < 3) {
+                    throw new \Exception(
+                        sprintf(
+                            'The column "%s" must contains attribute, locale and scope codes',
+                            $key
+                        )
+                    );
+                }
+                $suffix = sprintf('_%s_%s', $tokens[1], $tokens[2]);
+            } else {
+                if (count($tokens) < 2) {
+                    throw new \Exception(
+                        sprintf(
+                            'The column "%s" must contains attribute and %s code',
+                            $key,
+                            ($attribute->getScopable()) ? 'scope' : 'locale'
+                        )
+                    );
+                }
+                $suffix = sprintf('_%s', $tokens[1]);
+            }
         }
 
-        if ($this->isLocalized($key) && !$attribute->getTranslatable()) {
-            $key = substr($key, 0, strpos($key, '-'));
-        }
-
-        return str_replace('-', '_', $key).$suffix;
+        return $code.$suffix;
     }
 
     /**
-     * Wether or not the code is localised
-     *
-     * @param string $code
-     *
-     * @return boolean
-     */
-    private function isLocalized($code)
-    {
-        return false !== strpos($code, '-');
-    }
-
-    /**
-     * Return the code part of a localised attribute code
+     * Return the code part of a localised and / or scoped attribute code
      *
      * @param string $code
      *
      * @return string
      */
-    private function getAttributeCode($code)
+    protected function getAttributeCode($code)
     {
         $parts = explode('-', $code);
 

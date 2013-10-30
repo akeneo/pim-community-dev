@@ -15,12 +15,9 @@ Feature: Browse currencies
   Scenario: Successfully display currencies
     Given I am on the currencies page
     Then the grid should contain 3 elements
+    And I should see the columns Code and Activated
     And I should see activated currencies USD and EUR
     And I should see deactivated currency GBP
-
-  Scenario: Successfully display columns
-    Given I am on the currencies page
-    Then I should see the columns Code and Activated
 
   Scenario: Successfully activate a currency
     Given I am on the currencies page

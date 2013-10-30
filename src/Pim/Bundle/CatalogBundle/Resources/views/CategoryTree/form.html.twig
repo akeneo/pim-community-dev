@@ -8,7 +8,7 @@
 {% set entityName = parentId ? 'category' : 'tree' %}
 
 {% if form.vars.value.id %}
-    {% set title = (entityName ~ '.edit')|trans ~ ' - ' ~ form.vars.value.title %}
+    {% set title = (entityName ~ '.edit')|trans ~ ' - ' ~ form.vars.value.label %}
 {% else %}
     {% set title = (entityName ~ '.create')|trans %}
 {% endif %}
@@ -31,19 +31,22 @@
 </script>
 
 {{ JSFV(form) }}
-<form id="{{ form.vars.id }}" class="form-horizontal"
-    data-updated-title="{{ 'confirmation.leave'|trans }}"
-    data-updated-message="{{ 'confirmation.discard changes'|trans({ '%entity%': entityName|trans }) }}"
-    action="{{ form.vars.value.id ?
-    path('pim_catalog_categorytree_edit', { id: form.vars.value.id }) :
-    path('pim_catalog_categorytree_create', { parent: parentId }) }}" method="POST" {{ form_enctype(form) }}>
+{{ form_start(form, {
+    'action': form.vars.value.id ?
+        path('pim_catalog_categorytree_edit', { id: form.vars.value.id }) :
+        path('pim_catalog_categorytree_create', { parent: parentId }),
+    'attr': {
+        'data-updated-title': 'confirmation.leave'|trans,
+        'data-updated-message': 'confirmation.discard changes'|trans({ '%entity%': entityName|trans })
+    }
+}) }}
 
     {% set buttons %}
-        {% if form.vars.value.id %}
+        {% if form.vars.value.id and resource_granted("pim_catalog_category_remove") %}
             {{ elements.deleteLink(
                 path('pim_catalog_categorytree_remove', { id: form.vars.value.id }),
-                path('pim_catalog_categorytree_create'),
-                'confirmation.remove.category'|trans({ '%name%': form.vars.value.title }) ~ '<br />'
+                form.vars.value.parent ? path('pim_catalog_categorytree_edit', { id: form.vars.value.parent.id }) : path('pim_catalog_categorytree_create'),
+                'confirmation.remove.category'|trans({ '%name%': form.vars.value.label }) ~ '<br />'
                 ~ 'info.category.remove children'|trans ~ '<br />'
                 ~ 'info.category.keep products'|trans,
                 "",
