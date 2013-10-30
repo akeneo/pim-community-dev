@@ -4,6 +4,9 @@ namespace Oro\Bundle\FilterBundle\Extension\Orm;
 
 use Doctrine\ORM\QueryBuilder;
 
+use Symfony\Component\Form\FormFactoryInterface;
+
+use Oro\Bundle\LocaleBundle\Twig\DateFormatExtension;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\DateRangeFilterType;
 
 abstract class AbstractDateFilter extends AbstractFilter
@@ -12,6 +15,15 @@ abstract class AbstractDateFilter extends AbstractFilter
      * DateTime object as string format
      */
     const DATETIME_FORMAT = 'Y-m-d';
+
+    /** @var DateFormatExtension */
+    protected $localeExtension;
+
+    public function __construct(FormFactoryInterface $factory, DateFormatExtension $localeExtension)
+    {
+        parent::__construct($factory);
+        $this->localeExtension = $localeExtension;
+    }
 
     /**
      * {@inheritdoc}
@@ -293,8 +305,12 @@ abstract class AbstractDateFilter extends AbstractFilter
     {
         $formView = $this->getForm()->createView();
 
-        $metadata               = parent::getMetadata();
-        $metadata['typeValues'] = $formView->vars['type_values'];
+        $metadata                          = parent::getMetadata();
+        $metadata['typeValues']            = $formView->vars['type_values'];
+        $metadata['externalWidgetOptions'] = $formView->vars['widget_options'];
+
+        $metadata['externalWidgetOptions']['dateFormat'] = $this->localeExtension->getJqueryDateFormat();
+        $metadata['externalWidgetOptions']['timeFormat'] = $this->localeExtension->getJqueryTimeFormat();
 
         return $metadata;
     }

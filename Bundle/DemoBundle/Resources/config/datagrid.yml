@@ -51,6 +51,18 @@ datagrid:
                 icon: trash
                 link: delete_link
 
+        options:
+            entityHint: contact group
+            toolbarOptions:
+                pageSize:
+                    items:
+                      -
+                          size: 10
+                          label: 10 Records
+                      -
+                          size: 0
+                          label: All
+
     adminUsers:
         source:
             type: orm
@@ -80,9 +92,6 @@ datagrid:
                     data_name: u.firstName
 
             multiple_sorting: true
-#            default:
-#                hasRole: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
-#                lastName: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
 
         filters:
             columns:
@@ -135,11 +144,6 @@ datagrid:
             ownerName:
                 type: field
                 label: 'Owner'
-
-#        sorters:
-#            columns:
-#                name:
-#                    data_name: a.name
 
         flexible_attributes:
             employees:

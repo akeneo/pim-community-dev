@@ -72,10 +72,6 @@ class FormatterExtension extends AbstractExtension
         }
 
         $data->offsetAddToArray('columns', $propertiesMetadata);
-
-        // grid options passed under "options" node
-        $options = array_merge($data->offsetGetOr('options', []), $config->offsetGetOr('options', []));
-        $data->offsetSet('options', $options);
     }
 
     /**

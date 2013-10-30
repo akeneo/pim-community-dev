@@ -63,6 +63,7 @@ services:
         class: %oro_filter.extension.orm.date_range_filter.class%
         arguments:
             - @form.factory
+            - @oro_locale.twig.dateformat
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: date }
 
@@ -70,6 +71,7 @@ services:
         class: %oro_filter.extension.orm.datetime_range_filter.class%
         arguments:
             - @form.factory
+            - @oro_locale.twig.dateformat
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: datetime }
 

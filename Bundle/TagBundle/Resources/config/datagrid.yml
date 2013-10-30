@@ -9,7 +9,7 @@ datagrid:
                 select:
                     - t.id
                     - t.name
-                    - COUNT(t.id) as usage
+                    - COUNT(tt.id) as usage
                 from:
                     - { table: OroTagBundle:Tag, alias: t }
                 join:
