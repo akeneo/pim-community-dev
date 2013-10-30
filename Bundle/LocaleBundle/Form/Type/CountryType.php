@@ -13,9 +13,11 @@ class CountryType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array(
-            'choices' => Intl::getRegionBundle()->getCountryNames('en'),
-        ));
+        $resolver->setDefaults(
+            array(
+                'choices' => Intl::getRegionBundle()->getCountryNames('en'),
+            )
+        );
     }
 
     /**
@@ -31,6 +33,6 @@ class CountryType extends AbstractType
      */
     public function getName()
     {
-        return 'oro_country';
+        return 'oro_locale_country';
     }
 }

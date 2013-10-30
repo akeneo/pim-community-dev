@@ -7,61 +7,60 @@ oro_system_configuration:
         locale_settings:
             title: 'Localization options'
 
-        locale_options:
-            title: 'Formatting options'
-
     fields:
-        oro_locale.language:
-            type: oro_locale
-            priority: 70
-            options:
-                label: 'Language'
-                required: true
-                constraints:
-                    - NotBlank: ~
-
         oro_locale.locale:
             type: oro_locale
-            priority: 60
+            priority: 70
             options:
                 label: 'Locale'
                 required: true
                 constraints:
                     - NotBlank: ~
 
-        oro_locale.timezone:
-            type: timezone
-            priority: 50
-            options:
-                label: 'Timezone'
-                required: true
-                constraints:
-                    - NotBlank: ~
-
         oro_locale.country:
-            type: oro_country
-            priority: 40
+            type: oro_locale_country
+            priority: 60
             options:
-                label: 'Country'
-                required: true
-                constraints:
-                    - NotBlank: ~
-
-        oro_locale.currency:
-            type: oro_currency
-            priority: 30
-            options:
-                label: 'Currency'
+                label: 'Location'
                 required: true
                 constraints:
                     - NotBlank: ~
 
         oro_locale.format_address_by_address_country:
             type: oro_config_checkbox
-            priority: 20
+            priority: 50
             options:
                 label: 'Format address by address country'
                 required: true
+
+        oro_locale.language:
+            type: oro_locale
+            priority: 40
+            options:
+                label: 'Language'
+                required: true
+                constraints:
+                    - NotBlank: ~
+
+        oro_locale.timezone:
+            type: timezone
+            priority: 30
+            options:
+                label: 'Timezone'
+                required: true
+                constraints:
+                    - NotBlank: ~
+
+
+
+        oro_locale.currency:
+            type: oro_currency
+            priority: 20
+            options:
+                label: 'Currency'
+                required: true
+                constraints:
+                    - NotBlank: ~
 
     tree:
         system_configuration:
@@ -75,12 +74,9 @@ oro_system_configuration:
                                     locale_settings:
                                         priority: 100
                                         children:
-                                            - oro_locale.language
-                                            - oro_locale.country
-                                            - oro_locale.currency
-                                            - oro_locale.timezone
-                                    locale_options:
-                                        priority: 50
-                                        children:
                                             - oro_locale.locale
+                                            - oro_locale.country
                                             - oro_locale.format_address_by_address_country
+                                            - oro_locale.language
+                                            - oro_locale.timezone
+                                            - oro_locale.currency

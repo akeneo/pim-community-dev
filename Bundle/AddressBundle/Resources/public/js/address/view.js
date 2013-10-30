@@ -60,6 +60,7 @@ function( _, Backbone, __, addressFormatter) {
                 prefix: data.namePrefix,
                 suffix: data.nameSuffix,
                 first_name: data.firstName,
+                middle_name: data.middleName,
                 last_name: data.lastName,
                 organization: data.organization,
                 street: data.street,

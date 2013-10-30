@@ -68,6 +68,12 @@ class OroLocaleExtension extends Extension
         if (empty($config['settings']['country']['value'])) {
             $config['settings']['country']['value'] = LocaleSettings::getCountryByLocale($locale);
         }
+        $country = $config['settings']['country']['value'];
+        if (empty($config['settings']['currency']['value'])
+            && isset($config['locale_data'][$country]['currency_code'])
+        ) {
+            $config['settings']['currency']['value'] = $config['locale_data'][$country]['currency_code'];
+        }
         $container->prependExtensionConfig('oro_locale', $config);
     }
 

@@ -60,7 +60,7 @@ services:
     oro_locale.form.type.country:
         class: %oro_locale.form.type.country.class%
         tags:
-            - { name: form.type, alias: "oro_country" }
+            - { name: form.type, alias: "oro_locale_country" }
 
     oro_locale.form.type.currency:
         class: %oro_locale.form.type.currency.class%

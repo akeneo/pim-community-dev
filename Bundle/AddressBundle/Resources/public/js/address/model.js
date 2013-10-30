@@ -13,6 +13,7 @@ function(Backbone) {
             label: '',
             namePrefix: '',
             firstName: '',
+            middleName: '',
             lastName: '',
             nameSuffix: '',
             organization: '',
