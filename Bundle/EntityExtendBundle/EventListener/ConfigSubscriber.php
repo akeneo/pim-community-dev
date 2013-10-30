@@ -63,8 +63,7 @@ class ConfigSubscriber implements EventSubscriberInterface
      */
     public function persistConfig(PersistConfigEvent $event)
     {
-        $change = $event->getConfigManager()->getConfigChangeSet($event->getConfig());
-
+        $change    = $event->getConfigManager()->getConfigChangeSet($event->getConfig());
         $scope     = $event->getConfig()->getId()->getScope();
         $className = $event->getConfig()->getId()->getClassName();
 
@@ -109,8 +108,11 @@ class ConfigSubscriber implements EventSubscriberInterface
             && $extendFieldConfig->is('is_extend')
             && isset($change['is_visible'])
         ) {
-            $extendConfig         = $extendConfigProvider->getConfig($className);
-            $index                = $extendConfig->has('index') ? $extendConfig->get('index') : [];
+            $index        = [];
+            $extendConfig = $extendConfigProvider->getConfig($className);
+            if ($extendConfig->has('index')) {
+                $index = $extendConfig->get('index');
+            }
 
             $index[$event->getConfig()->getId()->getFieldName()] = $event->getConfig()->get('is_visible');
 
