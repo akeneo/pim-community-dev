@@ -32,13 +32,9 @@ use Pim\Bundle\CatalogBundle\Form\Handler\GroupHandler;
 class VariantGroupController extends GroupController
 {
     /**
-     * List variant groups
+     * {@inheritdoc}
      *
-     * @param Request $request
-     *
-     * @Template
      * @AclAncestor("pim_catalog_group_index")
-     * @return Response
      */
     public function indexAction(Request $request)
     {
