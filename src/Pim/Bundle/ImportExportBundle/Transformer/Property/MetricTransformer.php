@@ -19,13 +19,14 @@ class MetricTransformer implements PropertyTransformerInterface
      */
     public function transform($value, array $options = array())
     {
+        $value = trim($value);
         if (empty($value)) {
-            $metric = array();
+            $metric = null;
         } else {
             if (false === strpos($value, ' ')) {
                 throw new InvalidValueException('Malformed metric: %value%', array('%value%'=>$value));
             }
-            list($data, $unit) = explode(' ', $value);
+            list($data, $unit) = preg_split('/ +/', $value);
             $metric = new Metric;
             $metric->setData($data)->setUnit($unit);
         }

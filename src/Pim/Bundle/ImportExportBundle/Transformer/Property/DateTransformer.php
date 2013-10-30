@@ -18,6 +18,12 @@ class DateTransformer implements PropertyTransformerInterface
      */
     public function transform($value, array $options = array())
     {
+        $value = trim($value);
+        
+        if (empty($value)) {
+            return null;
+        }
+
         try {
             return new \DateTime($value);
         } catch (\Exception $ex) {

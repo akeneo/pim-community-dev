@@ -4,6 +4,8 @@ namespace Pim\Bundle\ImportExportBundle\Transformer\Property;
 
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Bundle\ImportExportBundle\Exception\InvalidValueException;
+use Pim\Bundle\CatalogBundle\Entity\ProductPrice;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 
 /**
  * Prices attribute transformer
@@ -12,7 +14,7 @@ use Pim\Bundle\ImportExportBundle\Exception\InvalidValueException;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class PricesTransformer implements PropertyTransformerInterface
+class PricesTransformer implements PropertyTransformerInterface, ProductValueUpdaterInterface
 {
     /**
      * @var CurrencyManager
@@ -42,8 +44,7 @@ class PricesTransformer implements PropertyTransformerInterface
         $currencies = $this->getCurrencies();
 
         $result = array();
-        foreach (explode(',', $value) as $price) {
-            $price = trim($price);
+        foreach (preg_split('/\s*,\s*/', trim($value)) as $price) {
             if (empty($price)) {
                 continue;
             }
@@ -53,16 +54,43 @@ class PricesTransformer implements PropertyTransformerInterface
             }
 
             if (in_array($matches[2], $currencies)) {
-                $result[] = array('data' => $matches[1], 'currency' => $matches[2]);
-                unset($currencies[array_search($matches[2], $currencies)]);
+                $result[$matches[2]] = $matches[1];
             }
         }
 
-        foreach ($currencies as $currency) {
-            $result[] = array('data' => '', 'currency' => $currency);
+        return $result;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function updateProductValue(ProductValueInterface $productValue, $data)
+    {
+        $currencies = $this->getCurrencies();
+        $removeCurrency = function ($code) use (&$currencies) {
+            $pos = array_search($code, $currencies);
+            if (false !== $pos) {
+                unset($currencies[$pos]);
+            }
+        };
+        
+        foreach ($productValue->getPrices() as $price) {
+            $currency = $price->getCurrency();
+            if (isset($data[$currency])) {
+                $price->setData($data[$currency]);
+                $removeCurrency($currency);
+                unset($data[$currency]);
+            }
         }
 
-        return $result;
+        foreach($data as $currency=>$price) {
+            $this->addPrice($productValue, $price, $currency);
+            $removeCurrency($currency);
+        }
+
+        foreach($currencies as $currency) {
+            $this->addPrice($productValue, null, $currency);
+        }
     }
 
     /**
@@ -77,5 +105,20 @@ class PricesTransformer implements PropertyTransformerInterface
         }
 
         return $this->currencies;
+    }
+
+    /**
+     * Creates a ProductPrice object
+     * 
+     * @param float $data
+     * @param string $currency
+     * @return ProductPrice
+     */
+    protected function addPrice(ProductValueInterface $productValue, $data, $currency)
+    {
+       $price = new ProductPrice();
+       $productValue->addPrice(
+            $price->setValue($productValue)->setData($data)->setCurrency($currency)
+        );
     }
 }

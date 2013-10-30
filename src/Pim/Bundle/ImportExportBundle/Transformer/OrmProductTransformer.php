@@ -267,7 +267,15 @@ class OrmProductTransformer
             $productValue = $product->createValue($columnInfo['code'], $columnInfo['locale'], $columnInfo['scope']);
             $product->addValue($productValue);
         }
-        $productValue->setData($value);
+        $backendType = $columnInfo['attribute']->getBackendType();
+        $transformer = isset($this->attributeTransformers[$backendType])
+                ? $this->attributeTransformers[$backendType]['transformer']
+                : null;
+        if ($transformer && ($transformer instanceof Property\ProductValueUpdaterInterface)) {
+            $transformer->updateProductValue($productValue, $value);
+        } else {
+            $productValue->setData($value);
+        }
     }
 
     /**
@@ -280,12 +288,8 @@ class OrmProductTransformer
     protected function getTransformedAttributeValue($value, array $columnInfo)
     {
         $backendType = $columnInfo['attribute']->getBackendType();
-        if ($value) {
-            if (isset($this->attributeTransformers[$backendType])) {
-                $value = $this->getTransformedValue($value, $this->attributeTransformers[$backendType]);
-            }
-        } else {
-            $value = null;
+        if (isset($this->attributeTransformers[$backendType])) {
+            $value = $this->getTransformedValue($value, $this->attributeTransformers[$backendType]);
         }
 
         return $value;

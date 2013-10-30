@@ -35,6 +35,8 @@ class EntityTransformer implements PropertyTransformerInterface
      */
     public function transform($value, array $options = array())
     {
+        $value = trim($value);
+
         $multiple = (isset($options['multiple']) && $options['multiple']);
         if (!$value) {
             return $multiple ? array() : null;
