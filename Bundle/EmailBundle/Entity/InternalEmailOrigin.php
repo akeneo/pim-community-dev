@@ -46,4 +46,14 @@ class InternalEmailOrigin extends EmailOrigin
 
         return $this;
     }
+
+    /**
+     * Get a human-readable representation of this object.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return sprintf('InternalEmailOrigin(%s)', $this->name);
+    }
 }
