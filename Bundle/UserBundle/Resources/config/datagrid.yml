@@ -39,7 +39,10 @@ datagrid:
             enabled:
                 label: oro.user.grid.users.columns.enabled
                 type: field
-                frontend_type: boolean
+                frontend_type: select
+                choices:
+                   - Inactive
+                   - Active
         properties:
             update_link:
                 type: url
@@ -64,9 +67,9 @@ datagrid:
                     data_name: u.username
                 email:
                     data_name: u.email
-                firstname:
+                firstName:
                     data_name: u.firstName
-                lastname:
+                lastName:
                     data_name: u.lastName
                 created:
                     data_name: u.created

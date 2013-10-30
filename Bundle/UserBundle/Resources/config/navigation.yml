@@ -49,6 +49,11 @@ oro_menu_config:
             route: oro_user_group_create
             extras:
                 description: Create new group instance
+        oro_user_profile_view:
+            label: 'My User'
+            route: 'oro_user_profile_view'
+            extras:
+                position: 10
 
     tree:
         application_menu:
@@ -60,6 +65,9 @@ oro_menu_config:
                                 user_list: ~
                                 user_roles: ~
                                 user_groups: ~
+        usermenu:
+            children:
+                oro_user_profile_view: ~
 
         shortcuts:
             children:

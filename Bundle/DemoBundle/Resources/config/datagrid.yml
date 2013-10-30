@@ -34,9 +34,6 @@ datagrid:
                 label:
                     data_name: g.label
 
-                id:
-                    data_name: g.id
-
             default:
                 label: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
 
@@ -79,28 +76,19 @@ datagrid:
 
         sorters:
             columns:
-                hasRole:
-                    data_name: hasRole
-
                 firstName:
                     data_name: u.firstName
 
             multiple_sorting: true
-            default:
-                hasRole: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
-                firstName: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
+#            default:
+#                hasRole: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+#                lastName: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
 
         filters:
             columns:
                 created:
                     type: date
                     data_name: u.created
-
-            default:
-                created:
-                    type: \Oro\Bundle\FilterBundle\Form\Type\Filter\DateRangeFilterType::TYPE_MORE_THAN
-                    value:
-                        end: 2013-10-07 00:00
 
     account:
         source:
@@ -148,12 +136,13 @@ datagrid:
                 type: field
                 label: 'Owner'
 
-        sorters:
-            columns:
-                name:
-                    data_name: a.name
+#        sorters:
+#            columns:
+#                name:
+#                    data_name: a.name
 
         flexible_attributes:
             employees:
                 filterable:  true
+                sortable:    true
         flexible_entity: %orocrm_account.account.entity.class%

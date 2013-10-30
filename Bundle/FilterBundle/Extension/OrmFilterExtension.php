@@ -5,7 +5,6 @@ namespace Oro\Bundle\FilterBundle\Extension;
 use Symfony\Component\Translation\TranslatorInterface;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Builder;
-use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataObject;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
@@ -70,8 +69,8 @@ class OrmFilterExtension extends AbstractExtension
                     $form->submit($value);
                 }
 
-                if (!($form->isValid() && $filter->apply($datasource->getQuery(), $form->getData()))) {
-                    throw new \LogicException(sprintf('Filter %s is not valid', $filter->getName()));
+                if ($form->isValid()) {
+                    $filter->apply($datasource->getQuery(), $form->getData());
                 }
             }
         }

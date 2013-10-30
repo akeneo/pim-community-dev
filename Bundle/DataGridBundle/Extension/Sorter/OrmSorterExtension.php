@@ -5,11 +5,9 @@ namespace Oro\Bundle\DataGridBundle\Extension\Sorter;
 use Oro\Bundle\DataGridBundle\Datagrid\Builder;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataObject;
-use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 use Oro\Bundle\DataGridBundle\Extension\AbstractExtension;
-use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\PropertyInterface;
 
 class OrmSorterExtension extends AbstractExtension
@@ -62,7 +60,11 @@ class OrmSorterExtension extends AbstractExtension
             list($direction, $sorter) = $definition;
 
             $sortKey = $sorter['data_name'];
-            $datasource->getQuery()->addOrderBy($sortKey, $direction);
+            if (isset($sorter['apply_callback']) && is_callable($sorter['apply_callback'])) {
+                $sorter['apply_callback']($datasource, $sortKey, $direction);
+            } else {
+                $datasource->getQuery()->addOrderBy($sortKey, $direction);
+            }
 
             if (!$multisort) {
                 break;
@@ -79,11 +81,22 @@ class OrmSorterExtension extends AbstractExtension
         $sortersState = $data->offsetGetByPath('[state][sorters]', []);
 
         $sorters = $this->getSorters($config);
+
+        $proceed = [];
         foreach ($data->offsetGetOr('columns', []) as $key => $column) {
             if (isset($column['name']) && isset($sorters[$column['name']])) {
                 $data->offsetSetByPath(sprintf('[columns][%s][sortable]', $key), true);
+                $proceed [] = $column['name'];
             }
         }
+
+        $extraSorters = array_diff(array_keys($sorters), $proceed);
+        if (count($extraSorters)) {
+            throw new \LogicException(
+                sprintf('Could not found column(s) "%s" for sorting', implode(', ', $extraSorters))
+            );
+        }
+
         $data->offsetAddToArray(MetadataObject::OPTIONS_KEY, ['multipleSorting' => $multisort]);
 
         $sorters = $this->getSortersToApply($config);
@@ -96,7 +109,9 @@ class OrmSorterExtension extends AbstractExtension
             }
         }
 
-        $data->offsetAddToArray('state', ['sorters' => $sortersState]);
+        if ($sortersState) {
+            $data->offsetAddToArray('state', ['sorters' => $sortersState]);
+        }
     }
 
     /**
@@ -119,9 +134,7 @@ class OrmSorterExtension extends AbstractExtension
     protected function getSorters(DatagridConfiguration $config)
     {
         $sorters = $config->offsetGetByPath(self::COLUMNS_PATH);
-        $columns = $config->offsetGetByPath(FormatterConfiguration::COLUMNS_PATH, []);
 
-        $sorters = array_intersect_key($sorters, $columns);
         foreach ($sorters as $name => $definition) {
             $definition = is_array($definition) ? $definition : [];
 

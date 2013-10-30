@@ -42,7 +42,7 @@ abstract class AbstractProperty implements PropertyInterface
     /**
      * {@inheritdoc}
      */
-    final public function init(array $params)
+    final public function init(PropertyConfiguration $params)
     {
         $this->params = $params;
         $this->initialize();
@@ -142,10 +142,7 @@ abstract class AbstractProperty implements PropertyInterface
             'type'       => self::TYPE_STRING
         ];
 
-        $metadata = array_diff_key(
-            $this->get(),
-            array_flip(array_merge($this->excludeParams, $this->excludeParamsDefault))
-        );
+        $metadata = $this->get()->toArray([], array_merge($this->excludeParams, $this->excludeParamsDefault));
         $metadata = $this->mapParams($metadata);
         $metadata = array_merge($defaultMetadata, $this->guessAdditionalMetadata(), $metadata);
 
@@ -161,7 +158,7 @@ abstract class AbstractProperty implements PropertyInterface
      * @param string $paramName
      *
      * @throws \LogicException
-     * @return mixed
+     * @return PropertyConfiguration
      */
     protected function get($paramName = null)
     {

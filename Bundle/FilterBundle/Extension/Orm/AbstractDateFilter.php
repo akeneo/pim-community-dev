@@ -212,11 +212,11 @@ abstract class AbstractDateFilter extends AbstractFilter
         $orExpression = $queryBuilder->expr()->orX();
 
         if ($dateStartValue) {
-            $this->createComparisonExpression($fieldName, '<', $startDateParameterName);
+            $orExpression->add($this->createComparisonExpression($fieldName, '<', $startDateParameterName));
         }
 
         if ($dateEndValue) {
-            $this->createComparisonExpression($fieldName, '>', $endDateParameterName);
+            $orExpression->add($this->createComparisonExpression($fieldName, '>', $endDateParameterName));
         }
 
         $this->applyFilterToClause($queryBuilder, $orExpression);

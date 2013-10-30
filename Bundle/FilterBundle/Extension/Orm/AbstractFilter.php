@@ -132,12 +132,57 @@ abstract class AbstractFilter implements FilterInterface
      */
     protected function applyHaving(QueryBuilder $qb, $parameter)
     {
+        if ($this->fixComparison($qb, $parameter)) {
+            return;
+        }
+
         /** @var $queryBuilder QueryBuilder */
         if ($this->getOr('filter_condition', self::CONDITION_AND) == self::CONDITION_OR) {
             $qb->orHaving($parameter);
         } else {
             $qb->andHaving($parameter);
         }
+    }
+
+    /**
+     * Note: this is workaround for http://www.doctrine-project.org/jira/browse/DDC-1858
+     * It could be removed when doctrine version >= 2.4
+     *
+     * @param QueryBuilder $qb
+     * @param mixed        $parameter
+     *
+     * @return bool
+     */
+    private function fixComparison(QueryBuilder $qb, $parameter)
+    {
+        if ($parameter instanceof \Doctrine\ORM\Query\Expr\Comparison
+            && ($parameter->getOperator() === 'LIKE' || $parameter->getOperator() === 'NOT LIKE')) {
+            $extraSelect   = null;
+            $expectedAlias = (string)$parameter->getLeftExpr();
+
+            foreach ($qb->getDQLPart('select') as $selectPart) {
+                foreach ($selectPart->getParts() as $part) {
+                    if (preg_match("#(.*)\\s+as\\s+$expectedAlias#i", $part, $matches)) {
+                        $extraSelect = $matches[1];
+                    }
+                }
+            }
+
+            if ($extraSelect !== null) {
+                $isParam   = preg_match('#^:{1}#', $parameter->getRightExpr());
+                $parameter = $this->createComparisonExpression(
+                    $extraSelect,
+                    $parameter->getOperator(),
+                    $parameter->getRightExpr(),
+                    !$isParam
+                );
+
+                $this->applyWhere($qb, $parameter);
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
