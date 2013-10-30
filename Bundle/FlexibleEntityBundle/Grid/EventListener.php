@@ -7,12 +7,15 @@ use Oro\Bundle\DataGridBundle\Common\Object;
 use Oro\Bundle\DataGridBundle\Event\BuildAfter;
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
+use Oro\Bundle\DataGridBundle\Extension\Sorter\OrmSorterExtension;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
 use Oro\Bundle\FilterBundle\Extension\Configuration as FilterConfiguration;
 use Oro\Bundle\FilterBundle\Extension\Orm\FilterInterface;
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
+use Oro\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository;
 use Oro\Bundle\FlexibleEntityBundle\Grid\Extension\Filter\FlexibleFilterUtility;
 use Oro\Bundle\FlexibleEntityBundle\Grid\Extension\Formatter\Property\FlexibleFieldProperty;
+use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManagerRegistry;
 
@@ -60,8 +63,8 @@ class EventListener
 
             $attributes = $this->getFlexibleAttributes($flexibleEntity);
             foreach ($flexible as $attribute => $definition) {
-                $definition = $definition ? : [];
-                // $sortable   = $this->accessor->getValue($definition, '[sortable]') ? : false;
+                $definition    = $definition ? : [];
+                $sortable      = $this->accessor->getValue($definition, '[sortable]') ? : false;
                 $filterable    = $this->accessor->getValue($definition, '[filterable]') ? : false;
                 $enabledFilter = $this->accessor->getValue($definition, '[filter_enabled]') ? : true;
 
@@ -97,6 +100,16 @@ class EventListener
                             FilterInterface::DATA_NAME_KEY         => $attribute,
                             FlexibleFilterUtility::PARENT_TYPE_KEY => $parentType,
                             FilterConfiguration::ENABLED_KEY       => $enabledFilter
+                        ]
+                    );
+                }
+
+                if ($sortable) {
+                    $config->offsetSetByPath(
+                        sprintf('%s[%s]', OrmSorterExtension::COLUMNS_PATH, $attribute),
+                        [
+                            'data_name'      => $attribute,
+                            'apply_callback' => $this->getFlexibleSorterApplyCallback($flexibleEntity)
                         ]
                     );
                 }
@@ -155,5 +168,26 @@ class EventListener
         }
 
         return $attributes;
+    }
+
+    /**
+     * Creates sorter apply callback
+     *
+     * @param string $entityFQCN
+     *
+     * @return callable
+     */
+    protected function getFlexibleSorterApplyCallback($entityFQCN)
+    {
+        /** @var FlexibleManager $fm */
+        $fm = $this->registry->getManager($entityFQCN);
+
+        return function (OrmDatasource $datasource, $attribute, $direction) use ($fm) {
+            $qb = $datasource->getQuery();
+
+            /** @var $entityRepository FlexibleEntityRepository */
+            $entityRepository = $fm->getFlexibleRepository();
+            $entityRepository->applySorterByAttribute($qb, $attribute, $direction);
+        };
     }
 }

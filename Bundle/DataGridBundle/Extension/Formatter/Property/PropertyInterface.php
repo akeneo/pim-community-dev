@@ -33,11 +33,11 @@ interface PropertyInterface
     /**
      * Initialize property for each cell
      *
-     * @param $params
+     * @param PropertyConfiguration $params
      *
      * @return $this
      */
-    public function init(array $params);
+    public function init(PropertyConfiguration $params);
 
     /**
      * Get field value from data

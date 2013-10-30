@@ -6,6 +6,7 @@ use Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataObject;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\ResultsObject;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\AbstractExtension;
+use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\PropertyConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\PropertyInterface;
 
 class FormatterExtension extends AbstractExtension
@@ -44,7 +45,8 @@ class FormatterExtension extends AbstractExtension
         foreach ($rows as $key => $row) {
             $record = new ResultRecord($row);
             foreach ($toProcess as $name => $config) {
-                $property   = $this->getPropertyObject($name, $config);
+                $config     = PropertyConfiguration::createNamed($name, $config);
+                $property   = $this->getPropertyObject($config);
                 $row[$name] = $property->getValue($record);
             }
             // result row will contains only processed rows
@@ -64,7 +66,8 @@ class FormatterExtension extends AbstractExtension
 
         $propertiesMetadata = [];
         foreach ($columns as $name => $fieldConfig) {
-            $metadata             = $this->getPropertyObject($name, $fieldConfig)->getMetadata();
+            $fieldConfig          = PropertyConfiguration::createNamed($name, $fieldConfig);
+            $metadata             = $this->getPropertyObject($fieldConfig)->getMetadata();
             $propertiesMetadata[] = $metadata;
         }
 
@@ -89,15 +92,13 @@ class FormatterExtension extends AbstractExtension
     /**
      * Returns prepared property object
      *
-     * @param string $name
-     * @param array  $config
+     * @param PropertyConfiguration $config
      *
      * @return PropertyInterface
      */
-    protected function getPropertyObject($name, array $config)
+    protected function getPropertyObject(PropertyConfiguration $config)
     {
-        $config[PropertyInterface::NAME_KEY] = $name;
-        $property                            = $this->properties[$config[Configuration::TYPE_KEY]];
+        $property = $this->properties[$config[Configuration::TYPE_KEY]];
         $property->init($config);
 
         return $property;
