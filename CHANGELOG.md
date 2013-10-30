@@ -1,3 +1,8 @@
+# dev-master
+
+## Improvements
+- Export media into separated sub directories
+
 # 1.0.0-beta-2 - "Hold the Lion, Please" (2013-10-29)
 
 ## Features
