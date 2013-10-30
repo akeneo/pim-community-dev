@@ -41,6 +41,31 @@ class MailerType extends AbstractType
                 )
             )
             ->add(
+                'oro_installer_mailer_port',
+                'text',
+                array(
+                    'label'         => 'form.configuration.mailer.port',
+                    'constraints'   => array(
+                        new Assert\Range(array('groups' => array('SMTP'), 'min' => 0, 'max' => 65535)),
+                    ),
+                    'required'      => false,
+                )
+            )
+            ->add(
+                'oro_installer_mailer_encryption',
+                'choice',
+                array(
+                    'label'         => 'form.configuration.mailer.encryption',
+                    'preferred_choices' => array(''),
+                    'choices'       => array(
+                        ''          => 'None',
+                        'ssl'       => 'SSL',
+                        'tls'       => 'TLS',
+                    ),
+                    'required'      => false,
+                )
+            )
+            ->add(
                 'oro_installer_mailer_user',
                 'text',
                 array(

@@ -54,14 +54,16 @@ class EmailController extends Controller
     public function createAction()
     {
         $entity = new EmailModel();
-        if ($this->get('oro_email.form.handler.email')->process($entity)) {
-
-        }
-
-        return array(
+        $responseData = array(
             'entity' => $entity,
-            'form'   => $this->get('oro_email.form.email')->createView(),
+            'saved' => false
         );
+        if ($this->get('oro_email.form.handler.email')->process($entity)) {
+            $responseData['saved'] = true;
+        }
+        $responseData['form'] = $this->get('oro_email.form.email')->createView();
+
+        return $responseData;
     }
 
     /**

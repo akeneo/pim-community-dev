@@ -12,7 +12,7 @@ parameters:
     oro_email.manager.email.api.class:            Oro\Bundle\EmailBundle\Entity\Manager\EmailApiEntityManager
     oro_email.entity.cache.warmer.class:          Oro\Bundle\EmailBundle\Cache\EntityCacheWarmer
     oro_email.entity.cache.clearer.class:         Oro\Bundle\EmailBundle\Cache\EntityCacheClearer
-    oro_email.direct_mail_sender.class:           Oro\Bundle\EmailBundle\Mailer\DirectMailSender
+    oro_email.direct_mailer.class:                Oro\Bundle\EmailBundle\Mailer\DirectMailer
 
     oro_email.emailtemplate.entity.class: Oro\Bundle\EmailBundle\Entity\EmailTemplate
 
@@ -116,10 +116,11 @@ services:
             - %oro_email.email.entity.class%
             - @doctrine.orm.entity_manager
 
-    oro_email.direct_mail_sender:
-        class: %oro_email.direct_mail_sender.class%
+    oro_email.direct_mailer:
+        class: %oro_email.direct_mailer.class%
         arguments:
             - @mailer
+            - @service_container
 
     # Email template API
     oro_email.manager.emailtemplate.api:

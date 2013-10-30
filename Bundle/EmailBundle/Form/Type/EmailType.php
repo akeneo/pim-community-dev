@@ -14,6 +14,7 @@ class EmailType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('gridId', 'hidden', array('required' => false))
             ->add('from', 'oro_email_email_address', array('required' => true))
             ->add('to', 'oro_email_email_address', array('required' => true, 'multiple' => true))
             ->add('subject', 'text', array('required' => true))

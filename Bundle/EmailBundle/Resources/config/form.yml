@@ -78,7 +78,8 @@ services:
             - @security.context
             - @oro_email.email.address.manager
             - @oro_email.email.entity.builder=
-            - @oro_email.direct_mail_sender
+            - @oro_email.direct_mailer
+            - @logger
             - @oro_config.twig.config_extension
 
     oro_email.form.email:

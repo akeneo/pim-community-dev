@@ -7,6 +7,11 @@ class Email
     /**
      * @var string
      */
+    protected $gridId;
+
+    /**
+     * @var string
+     */
     protected $from;
 
     /**
@@ -30,6 +35,29 @@ class Email
     public function __construct()
     {
         $this->to = array();
+    }
+
+    /**
+     * Get id of emails datagrid
+     *
+     * @return string
+     */
+    public function getGridId()
+    {
+        return $this->gridId;
+    }
+
+    /**
+     * Set id of emails datagrid
+     *
+     * @param string $gridId
+     * @return $this
+     */
+    public function setGridId($gridId)
+    {
+        $this->gridId = $gridId;
+
+        return $this;
     }
 
     /**
