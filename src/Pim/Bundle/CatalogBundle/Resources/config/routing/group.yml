@@ -1,9 +1,8 @@
 pim_catalog_group_index:
-    path: /{type}/.{_format}
-    defaults: { _controller: pim_catalog.controller.group:indexAction, _format: html, type: group }
+    path: /.{_format}
+    defaults: { _controller: pim_catalog.controller.group:indexAction, _format: html }
     requirements:
         _format: html|json
-        type: group|variant
 
 pim_catalog_group_create:
     path: /create
