@@ -35,7 +35,7 @@ abstract class AbstractFilter implements FilterInterface
     protected $excludeParams = [];
 
     /** @var array */
-    protected $excludeParamsDefault = [self::DATA_NAME_KEY];
+    protected $excludeParamsDefault = [self::DATA_NAME_KEY, self::FORM_OPTIONS_KEY];
 
     public function __construct(FormFactoryInterface $factory)
     {
@@ -60,7 +60,7 @@ abstract class AbstractFilter implements FilterInterface
             $this->form = $this->formFactory->create(
                 $this->getFormType(),
                 [],
-                array_merge($this->getOr('options', []), ['csrf_protection' => false])
+                array_merge($this->getOr(self::FORM_OPTIONS_KEY, []), ['csrf_protection' => false])
             );
         }
 
@@ -178,6 +178,7 @@ abstract class AbstractFilter implements FilterInterface
                 );
 
                 $this->applyWhere($qb, $parameter);
+
                 return true;
             }
         }

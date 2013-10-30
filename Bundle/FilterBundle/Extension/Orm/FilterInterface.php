@@ -11,8 +11,9 @@ interface FilterInterface
     const CONDITION_OR  = 'OR';
     const CONDITION_AND = 'AND';
 
-    const TYPE_KEY             = 'type';
-    const DATA_NAME_KEY        = 'data_name';
+    const TYPE_KEY         = 'type';
+    const FORM_OPTIONS_KEY = 'options';
+    const DATA_NAME_KEY    = 'data_name';
 
     /**
      * Initialize current filter by config
