@@ -48,16 +48,16 @@ class MultipleEntityType extends AbstractType
             );
 
         if ($options['extend']) {
-            $em = $this->entityManager;
+            $em    = $this->entityManager;
             $class = $options['class'];
 
             $builder->addEventListener(
                 FormEvents::PRE_SUBMIT,
                 function (FormEvent $event) use ($em, $class) {
-                    $data = $event->getData();
+                    $data       = $event->getData();
                     $repository = $em->getRepository($class);
                     $targetData = $event->getForm()->getParent()->getData();
-                    $fieldName = $event->getForm()->getName();
+                    $fieldName  = $event->getForm()->getName();
 
                     foreach (explode(',', $data['added']) as $id) {
                         $entity = $repository->find($id);
@@ -85,13 +85,13 @@ class MultipleEntityType extends AbstractType
         $resolver->setRequired(array('class'));
         $resolver->setDefaults(
             array(
-                'class' => null,
-                'mapped' => false,
-                'grid_url' => null,
-                'default_element' => null,
-                'initial_elements' => null,
+                'class'                 => null,
+                'mapped'                => false,
+                'grid_url'              => null,
+                'default_element'       => null,
+                'initial_elements'      => null,
                 'selector_window_title' => null,
-                'extend' => false
+                'extend'                => false
             )
         );
     }
@@ -109,8 +109,8 @@ class MultipleEntityType extends AbstractType
 
     /**
      * @param FormView $view
-     * @param array $options
-     * @param string $option
+     * @param array    $options
+     * @param string   $option
      */
     protected function setOptionToView(FormView $view, array $options, $option)
     {
