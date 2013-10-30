@@ -165,12 +165,12 @@ class Page
     {
         PHPUnit_Framework_Assert::assertTrue(
             $this->isElementPresent(
-                "//div[contains(@class,'alert') and not(contains(@class, 'alert-empty')) and not(contains(@class, 'alert-error'))]"
+                "//div[@id = 'flash-messages']//div[@class = 'message']"
             ),
             'Flash message is missing'
         );
         $actualResult = $this->byXPath(
-            "//div[contains(@class,'alert') and not(contains(@class, 'alert-empty')) and not(contains(@class, 'alert-error'))]/div"
+            "//div[@id = 'flash-messages']//div[@class = 'message']"
         )->text();
 
         PHPUnit_Framework_Assert::assertEquals($messageText, $actualResult, $message
