@@ -162,7 +162,7 @@ services:
         calls:
           - [setEmailSync, [@?oro_imap.email_synchronizer=]]
         tags:
-          - { name: kernel.event_listener, event: oro_grid.datgrid.build.after.users-email-grid, method: onBuildAfter }
+          - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.users-email-grid, method: onBuildAfter }
 
     oro_user.event_listener.role_users_grid_listener:
         class: %oro_user.event_listener.related_users_grid_listener.class%
@@ -170,7 +170,7 @@ services:
           - @oro_datagrid.datagrid.request_params
           - role_id
         tags:
-          - { name: kernel.event_listener, event: oro_grid.datgrid.build.after.role-users-grid, method: onBuildAfter }
+          - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.role-users-grid, method: onBuildAfter }
 
     oro_user.event_listener.group_users_grid_listener:
         class: %oro_user.event_listener.related_users_grid_listener.class%
@@ -178,4 +178,4 @@ services:
           - @oro_datagrid.datagrid.request_params
           - group_id
         tags:
-          - { name: kernel.event_listener, event: oro_grid.datgrid.build.after.group-users-grid, method: onBuildAfter }
+          - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.group-users-grid, method: onBuildAfter }

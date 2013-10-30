@@ -1,6 +1,9 @@
 datagrid:
     entityconfig-grid:
-        type: orm
+        options:
+            toolbarOptions:
+                pageSize:
+                    default_per_page: 50
         source:
             acl_resource: oro_entityconfig_manage
             type: orm
@@ -29,33 +32,44 @@ datagrid:
         properties:
             update_link:
                 type: url
-                route: oro_tag_update
+                route: oro_entityconfig_update
                 params:
                     - id
-            search_link:
+            view_link:
                 type: url
-                route: oro_tag_search
+                route: oro_entityconfig_view
                 params:
                     - id
-            delete_link:
-                type: url
-                route: oro_api_delete_tag
-                params:
-                    - id
+        actions:
+            update:
+                type: navigate
+                label: Update
+                icon: edit
+                link: update_link
+                rowAction: true
+            view:
+                type: navigate
+                label: View
+                icon: book
+                link: view_link
         sorters:
             columns:
                 name:
-                    data_name: t.name
-                usage:
-                    data_name: usage
-            default:
-                label: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
-
+                    data_name: name
+                module:
+                    data_name: module
+                updated:
+                    data_name: ce.updated
+#            default:
+#                name: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
         filters:
             columns:
                 name:
-                    type: string
-                    data_name: t.name
-                usage:
-                    type: string
-                    data_name: usage
+                    type: choice
+                    data_name: name
+                module:
+                    type: choice
+                    data_name: module
+                updated:
+                    type: datetime
+                    data_name:

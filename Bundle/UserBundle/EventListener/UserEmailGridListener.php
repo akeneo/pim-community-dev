@@ -59,7 +59,7 @@ class UserEmailGridListener
 
                 // TODO: select imap configuration by userId
                 $origin = $user->getImapConfiguration();
-                $originId = $origin !== null ? $origin->getId() : null;
+                $originId = $origin !== null ? $origin->getId() : 0;
 
                 if (array_key_exists(
                     'refresh',
@@ -68,7 +68,7 @@ class UserEmailGridListener
                     $this->imapSync->syncOrigins(array($originId));
                 }
             } else {
-                $originId = null;
+                $originId = 0; // to make sure param bind passed
             }
 
             $queryBuilder->setParameter('origin_id', $originId);
