@@ -60,27 +60,35 @@ class RequestFix
                     $type = 'option';
                     $default = $attr->getOptions()->offsetGet(0)->getId();
                 }
+            } else {
+                $type = $attr->getBackendType();
+                //TODO: temporary fix for https://github.com/symfony/symfony/issues/8548
+                $default = '';
+            }
 
-                $attrCode = $attr->getCode();
-                $data[$attributeKey][$attrCode] = array();
+            $attrCode = $attr->getCode();
+            if ($default) {
                 $data[$attributeKey][$attrCode]['id'] = $attr->getId();
                 $data[$attributeKey][$attrCode][$type] = $default;
+            }
 
-                foreach ($attrVal as $fieldCode => $fieldValue) {
-                    if ($attr->getCode() == (string)$fieldCode) {
-                        if (is_array($fieldValue)) {
-                            if (array_key_exists('scope', $fieldValue)) {
-                                $data[$attributeKey][$attrCode]['scope'] = $fieldValue['scope'];
-                            }
-                            if (array_key_exists('locale', $fieldValue)) {
-                                $data[$attributeKey][$attrCode]['locale'] = $fieldValue['locale'];
-                            }
-                            $fieldValue = $fieldValue['value'];
+            foreach ($attrVal as $fieldCode => $fieldValue) {
+                if ($attr->getCode() == (string)$fieldCode) {
+                    if (is_array($fieldValue)) {
+                        if (array_key_exists('scope', $fieldValue)) {
+                            $data[$attributeKey][$attrCode]['scope'] = $fieldValue['scope'];
                         }
-                        $data[$attributeKey][$attrCode][$type] = (string)$fieldValue;
-
-                        break;
+                        if (array_key_exists('locale', $fieldValue)) {
+                            $data[$attributeKey][$attrCode]['locale'] = $fieldValue['locale'];
+                        }
+                        $fieldValue = $fieldValue['value'];
                     }
+                    if ($fieldValue) {
+                        $data[$attributeKey][$attrCode]['id'] = $attr->getId();
+                        $data[$attributeKey][$attrCode][$type] = (string)$fieldValue;
+                    }
+
+                    break;
                 }
             }
         }
