@@ -64,16 +64,12 @@ class CustomEntityType extends AbstractType
         $className = $options['class_name'];
         $data      = $builder->getData();
 
-        /** @var ConfigProvider $formConfigProvider */
-        $formConfigProvider = $this->configManager->getProvider('form');
-        $formConfigs        = $formConfigProvider->getConfigs($className);
-
-        /** @var ConfigProvider $entityConfigProvider */
+        /** @var ConfigProvider */
+        $formConfigProvider   = $this->configManager->getProvider('form');
         $entityConfigProvider = $this->configManager->getProvider('entity');
-
-        /** @var ConfigProvider $extendConfigProvider */
         $extendConfigProvider = $this->configManager->getProvider('extend');
 
+        $formConfigs = $formConfigProvider->getConfigs($className);
         foreach ($formConfigs as $formConfig) {
             // TODO: refactor ConfigIdInterface to allow extracting of field name,
             // TODO: should be done in scope https://magecore.atlassian.net/browse/BAP-1722
@@ -81,40 +77,38 @@ class CustomEntityType extends AbstractType
 
             // TODO: Convert this check to method in separate helper service and reuse it in ExtendEntityExtension,
             // TODO: should be done in scope of https://magecore.atlassian.net/browse/BAP-1721
-            if ($formConfig->get('is_enabled')
-                && !$extendConfig->is('is_deleted')
+            if ($formConfig->get('is_enabled') && !$extendConfig->is('is_deleted')
                 && $extendConfig->is('owner', ExtendManager::OWNER_CUSTOM)
                 && !$extendConfig->is('state', ExtendManager::STATE_NEW)
                 && !in_array($formConfig->getId()->getFieldType(), array('ref-one', 'ref-many'))
             ) {
                 /** @var FieldConfigId $fieldConfigId */
                 $fieldConfigId = $formConfig->getId();
-
-                $entityConfig = $entityConfigProvider->getConfig(
+                $entityConfig  = $entityConfigProvider->getConfig(
                     $fieldConfigId->getClassName(),
                     $fieldConfigId->getFieldName()
                 );
 
-                $options = array(
+                $options = [
                     'label'    => $entityConfig->get('label'),
                     'required' => false,
                     'block'    => 'general',
-                );
+                ];
 
                 switch ($fieldConfigId->getFieldType()) {
                     case 'boolean':
                         $options['empty_value'] = false;
-                        $options['choices']     = array('No', 'Yes');
+                        $options['choices']     = ['No', 'Yes'];
                         break;
                     case 'manyToOne':
                         $options['entity_class'] = $extendConfig->get('target_entity');
-                        $options['configs']      = array(
+                        $options['configs']      = [
                             'placeholder'   => 'oro.form.choose_value',
                             'extra_config'  => 'relation',
                             'target_entity' => str_replace('\\', '_', $extendConfig->get('target_entity')),
                             'target_field'  => $extendConfig->get('target_field'),
-                            'properties'    => array($extendConfig->get('target_field')),
-                        );
+                            'properties'    => [$extendConfig->get('target_field')],
+                        ];
                         break;
                     case 'oneToMany':
                     case 'manyToMany':
@@ -125,50 +119,41 @@ class CustomEntityType extends AbstractType
                         $builder->add(
                             'default_' . $fieldConfigId->getFieldName(),
                             'oro_entity_identifier',
-                            array(
+                            [
                                 'class'    => $extendConfig->get('target_entity'),
                                 'multiple' => false
-                            )
+                            ]
                         );
 
-                        $options = array(
+                        $options = [
                             'label'                 => $entityConfig->get('label'),
                             'required'              => false,
                             'block'                 => $blockName,
-                            'block_config'          => array(
-                                $blockName => array(
-                                    'title'   => null,
-                                    'subblocks' => array(
-                                        array(
-                                            'useSpan' => false,
-                                        )
-                                    )
-                                )
-                            ),
+                            'block_config'          => [
+                                $blockName => [
+                                    'title'     => null,
+                                    'subblocks' => [['useSpan' => false]]
+                                ]
+                            ],
                             'class'                 => $extendConfig->get('target_entity'),
                             'grid_url'              => $this->router->generate(
                                 'oro_entity_relation',
-                                array(
+                                [
                                     'id'        => (($data && $data->getId()) ? $data->getId() : 0),
                                     'className' => str_replace('\\', '_', $className),
                                     'fieldName' => $fieldConfigId->getFieldName()
-                                )
+                                ]
                             ),
                             'selector_window_title' => $selectorWindowTitle,
-                            'default_element' => 'default_' . $fieldConfigId->getFieldName(),
-                            'initial_elements' => null,
-                            'mapped' => false,
-                            'extend' => true,
-                        );
-
+                            'default_element'       => 'default_' . $fieldConfigId->getFieldName(),
+                            'initial_elements'      => null,
+                            'mapped'                => false,
+                            'extend'                => true,
+                        ];
                         break;
                 }
 
-                $builder->add(
-                    $fieldConfigId->getFieldName(),
-                    $this->typeMap[$fieldConfigId->getFieldType()],
-                    $options
-                );
+                $builder->add($fieldConfigId->getFieldName(), $this->typeMap[$fieldConfigId->getFieldType()], $options);
             }
         }
     }
@@ -213,14 +198,18 @@ class CustomEntityType extends AbstractType
                 if (in_array($fieldConfigId->getFieldType(), array('oneToMany', 'manyToMany'))) {
                     $fieldName = $fieldConfigId->getFieldName();
 
+                    $dataId = 0;
+                    if ($data->getId()) {
+                        $dataId = $data->getId();
+                    }
                     $view->children[$fieldName]->vars['grid_url'] =
                         $this->router->generate(
                             'oro_entity_relation',
-                            array(
-                                'id'        => $data->getId() ? : 0,
+                            [
+                                'id'        => $dataId,
                                 'className' => str_replace('\\', '_', $className),
                                 'fieldName' => $fieldName
-                            )
+                            ]
                         );
 
                     $defaultFieldName   = 'get_' . ExtendConfigDumper::DEFAULT_PREFIX . $fieldName;
@@ -248,7 +237,7 @@ class CustomEntityType extends AbstractType
         foreach ($entities as $entity) {
             $extraData = array();
             foreach ($extendConfig->get('target_grid') as $fieldName) {
-                $label =$this->configManager->getProvider('entity')
+                $label = $this->configManager->getProvider('entity')
                     ->getConfig($extendConfig->get('target_entity'), $fieldName)
                     ->get('label');
 
@@ -259,12 +248,12 @@ class CustomEntityType extends AbstractType
             }
 
             $result[] = array(
-                'id' => $entity->getId(),
-                'label' => $entity->{Inflector::camelize('get_' . $extendConfig->get('target_title'))}(),
-                'link' => $this->router->generate(
+                'id'        => $entity->getId(),
+                'label'     => $entity->{Inflector::camelize('get_' . $extendConfig->get('target_title'))}(),
+                'link'      => $this->router->generate(
                     'oro_entity_detailed',
                     array(
-                        'id' => $entity->getId(),
+                        'id'        => $entity->getId(),
                         'className' => str_replace('\\', '_', $extendConfig->getId()->getClassName()),
                         'fieldName' => $extendConfig->getId()->getFieldName()
                     )

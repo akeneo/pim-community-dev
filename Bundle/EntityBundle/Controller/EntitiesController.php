@@ -151,8 +151,7 @@ class EntitiesController extends Controller
         }
 
         $entityConfig = $entityConfigProvider->getConfig($extendEntityName);
-
-        $fieldConfig = $extendConfigProvider->getConfig($extendEntityName, $fieldName);
+        $fieldConfig  = $extendConfigProvider->getConfig($extendEntityName, $fieldName);
 
         /** @var  CustomEntityDatagrid $datagrid */
         $datagridManager = $this->get('oro_entity.relation_datagrid.manager');
@@ -167,12 +166,20 @@ class EntitiesController extends Controller
 
         $added   = $this->getRequest()->get('added');
         $removed = $this->getRequest()->get('removed');
-        $datagridManager->setAdditionalParameters(
-            [
-                'data_in'     => $added ? explode(',', $added) : [],
-                'data_not_in' => $removed ? explode(',', $removed) : []
-            ]
-        );
+
+        if ($added) {
+            $added = explode(',', $added);
+        } else {
+            $added = [];
+        }
+
+        if ($removed) {
+            $removed = explode(',', $removed);
+        } else {
+            $removed = [];
+        }
+
+        $datagridManager->setAdditionalParameters(['data_in' => $added, 'data_not_in' => $removed]);
         $datagridManager->setEntityName($fieldConfig->get('target_entity'));
 
         $view = $datagridManager->getDatagrid()->createView();
@@ -209,14 +216,13 @@ class EntitiesController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         /** @var \Oro\Bundle\EntityConfigBundle\Config\ConfigManager $configManager */
-        $configManager        = $this->get('oro_entity_config.config_manager');
-        $entityConfigProvider = $this->get('oro_entity_config.provider.entity');
-        $extendConfigProvider = $this->get('oro_entity_config.provider.extend');
-        $viewConfigProvider   = $this->get('oro_entity_config.provider.view');
+        $configManager = $this->get('oro_entity_config.config_manager');
 
+        $entityConfigProvider   = $this->get('oro_entity_config.provider.entity');
+        $extendConfigProvider   = $this->get('oro_entity_config.provider.extend');
+        $viewConfigProvider     = $this->get('oro_entity_config.provider.view');
         $extendEntityRepository = $em->getRepository($extendEntityName);
-
-        $record = $extendEntityRepository->find($id);
+        $record                 = $extendEntityRepository->find($id);
 
         $fields = $viewConfigProvider->filter(
             function (ConfigInterface $config) use ($extendConfigProvider) {
@@ -231,44 +237,37 @@ class EntitiesController extends Controller
         foreach ($fields as $field) {
             $value = $record->{'get' . Inflector::classify($field->getId()->getFieldName())}();
 
-            /**
-             * Prepare DateTime field type
-             */
+            /** Prepare DateTime field type */
             if ($value instanceof \DateTime) {
-                $configFormat = $this->get('oro_config.global')->get('oro_locale.date_format') ? : 'Y-m-d';
+                $dateFormat   = 'Y-m-d';
+                if ($this->get('oro_config.global')->get('oro_locale.date_format')) {
+                    $dateFormat = $this->get('oro_config.global')->get('oro_locale.date_format');
+                }
+                $configFormat = $dateFormat;
                 $value        = $value->format($configFormat);
             }
 
-            /**
-             * Prepare Relation field type
-             */
+            /** Prepare Relation field type */
             if ($value instanceof PersistentCollection) {
                 $collection     = $value;
                 $extendConfig   = $extendConfigProvider->getConfigById($field->getId());
                 $titleFieldName = $extendConfig->get('target_title');
+                $targetEntity   = $extendConfig->get('target_entity');
 
-                /**
-                 * generate link for related entities collection
-                 */
-                $route       = false;
-                $routeParams = false;
-                /** @var EntityMetadata $metadata */
+                /** generate link for related entities collection */
+                $route = $routeParams = false;
                 if (class_exists($extendConfig->get('target_entity'))) {
-                    $metadata = $configManager->getEntityMetadata($extendConfig->get('target_entity'));
+                    /** @var EntityMetadata $metadata */
+                    $metadata = $configManager->getEntityMetadata($targetEntity);
                     if ($metadata && $metadata->routeView) {
                         $route       = $metadata->routeView;
-                        $routeParams = array(
-                            'id' => null
-                        );
+                        $routeParams = ['id' => null];
                     }
 
-                    $relationExtendConfig = $extendConfigProvider->getConfig($extendConfig->get('target_entity'));
+                    $relationExtendConfig = $extendConfigProvider->getConfig($targetEntity);
                     if ($relationExtendConfig->is('owner', ExtendManager::OWNER_CUSTOM)) {
                         $route       = 'oro_entity_view';
-                        $routeParams = array(
-                            'entity_id' => str_replace('\\', '_', $extendConfig->get('target_entity')),
-                            'id'        => null
-                        );
+                        $routeParams = ['entity_id' => str_replace('\\', '_', $targetEntity), 'id' => null];
                     }
                 }
 
@@ -276,21 +275,25 @@ class EntitiesController extends Controller
                     'title'        => $titleFieldName,
                     'route'        => $route,
                     'route_params' => $routeParams,
-                    'values'       => array()
+                    'values'       => []
                 );
 
                 foreach ($collection as $item) {
                     $routeParams['id'] = $item->getId();
-                    $value['values'][] = array(
+                    $value['values'][] = [
                         'id'    => $item->getId(),
                         'link'  => $route ? $this->generateUrl($route, $routeParams) : false,
                         'title' => $item->{Inflector::camelize('get_' . $titleFieldName)}()
-                    );
+                    ];
                 }
             }
 
             $fieldConfig = $entityConfigProvider->getConfigById($field->getId());
-            $result[$fieldConfig->get('label') ? : $field->getId()->getFieldName()] = $value;
+            $label       = $field->getId()->getFieldName();
+            if ($fieldConfig->get('label')) {
+                $label = $fieldConfig->get('label');
+            }
+            $result[$label] = $value;
         }
 
         return [
