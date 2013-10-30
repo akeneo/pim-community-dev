@@ -43,16 +43,15 @@ class VariantGroupDatagridManager extends GroupDatagridManager
     {
         parent::configureFields($fieldsCollection);
 
-        $field = $this->createAxisField();
-        $fieldsCollection->add($field);
+        $this->createAxisField($fieldsCollection);
     }
 
     /**
      * Create an axis field
      *
-     * @return \Oro\Bundle\GridBundle\Field\FieldDescription
+     * @param FieldDescriptionCollection $fieldsCollection
      */
-    protected function createAxisField()
+    protected function createAxisField(FieldDescriptionCollection $fieldsCollection)
     {
         $choices = $this->variantGroupManager->getAvailableAxisChoices();
 
@@ -78,7 +77,7 @@ class VariantGroupDatagridManager extends GroupDatagridManager
             new TwigTemplateProperty($field, 'PimGridBundle:Rendering:_optionsToString.html.twig')
         );
 
-        return $field;
+        $fieldsCollection->add($field);
     }
 
     /**

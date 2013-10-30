@@ -50,6 +50,18 @@ class GroupDatagridManager extends DatagridManager
      */
     protected function configureFields(FieldDescriptionCollection $fieldsCollection)
     {
+        $this->createCodeField($fieldsCollection);
+        $this->createLabelField($fieldsCollection);
+        $this->createTypeField($fieldsCollection);
+    }
+
+    /**
+     * Create code field
+     *
+     * @param FieldDescriptionCollection $fieldsCollection
+     */
+    protected function createCodeField(FieldDescriptionCollection $fieldsCollection)
+    {
         $field = new FieldDescription();
         $field->setName('code');
         $field->setOptions(
@@ -65,7 +77,15 @@ class GroupDatagridManager extends DatagridManager
             )
         );
         $fieldsCollection->add($field);
+    }
 
+    /**
+     * Create label field
+     *
+     * @param FieldDescriptionCollection $fieldsCollection
+     */
+    protected function createLabelField(FieldDescriptionCollection $fieldsCollection)
+    {
         $field = new FieldDescription();
         $field->setName('label');
         $field->setOptions(
@@ -85,7 +105,15 @@ class GroupDatagridManager extends DatagridManager
             new TwigTemplateProperty($field, 'PimGridBundle:Rendering:_toString.html.twig')
         );
         $fieldsCollection->add($field);
+    }
 
+    /**
+     * Create group type field
+     *
+     * @param FieldDescriptionCollection $fieldsCollection
+     */
+    protected function createTypeField(FieldDescriptionCollection $fieldsCollection)
+    {
         $field = new FieldDescription();
         $field->setName('type');
         $field->setOptions(
