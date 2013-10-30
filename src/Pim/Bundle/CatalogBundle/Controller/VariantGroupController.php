@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Controller;
 
+use Pim\Bundle\CatalogBundle\Entity\GroupType;
+
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
@@ -47,5 +49,41 @@ class VariantGroupController extends GroupController
             : 'PimCatalogBundle:VariantGroup:index.html.twig';
 
         return $this->render($view, array('datagrid' => $datagrid->createView()));
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @Template
+     * @AclAncestor("pim_catalog_group_create")
+     */
+    public function createAction(Request $request)
+    {
+        if (!$request->isXmlHttpRequest()) {
+            return $this->redirectToRoute('pim_catalog_variant_group_index');
+        }
+
+        $groupType = $this
+            ->getRepository('PimCatalogBundle:GroupType')
+            ->findOneBy(array('code' => 'VARIANT'));
+
+        $group = new Group();
+        $group->setType($groupType);
+
+        if ($this->groupHandler->process($group)) {
+            $this->addFlash('success', 'flash.variant group.created');
+
+            $url = $this->generateUrl(
+                'pim_catalog_variant group_edit',
+                array('id' => $group->getId())
+            );
+            $response = array('status' => 1, 'url' => $url);
+
+            return new Response(json_encode($response));
+        }
+
+        return array(
+            'form' => $this->groupForm->createView()
+        );
     }
 }
