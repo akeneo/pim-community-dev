@@ -206,6 +206,9 @@ class EntitiesController extends Controller
      *      defaults={"entity_id"=0, "id"=0}
      * )
      * @Template()
+     *
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     * TODO: will be refactored via twig extension
      */
     public function viewAction($entity_id, $id)
     {
