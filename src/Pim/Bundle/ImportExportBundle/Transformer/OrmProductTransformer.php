@@ -280,7 +280,7 @@ class OrmProductTransformer
             $productValue = $product->createValue($columnInfo['code'], $columnInfo['locale'], $columnInfo['scope']);
             $product->addValue($productValue);
         }
-        
+
         if ($transformerConfig && $transformerConfig['transformer'] instanceof Property\ProductValueUpdaterInterface) {
             $transformerConfig['transformer']->updateProductValue($productValue, $value, $transformerConfig['options']);
         } else {
