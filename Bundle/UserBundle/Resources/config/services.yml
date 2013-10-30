@@ -156,8 +156,11 @@ services:
     oro_user.event_listener.user_email_grid_listener:
         class: %oro_user.event_listener.user_email_grid_listener.class%
         arguments:
-          - @service_container
+          - @doctrine.orm.entity_manager
           - @oro_email.datagrid_query_factory
+          - @oro_datagrid.datagrid.request_params
+        calls:
+          - [setEmailSync, [@?oro_imap.email_synchronizer=]]
         tags:
           - { name: kernel.event_listener, event: oro_grid.datgrid.build.after.users-email-grid, method: onBuildAfter }
 

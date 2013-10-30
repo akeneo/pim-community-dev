@@ -4,7 +4,6 @@ namespace Oro\Bundle\SearchBundle\Extension;
 
 use Doctrine\ORM\EntityManager;
 
-use Oro\Bundle\SearchBundle\Query\Result\Item;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -12,7 +11,6 @@ use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\TwigTemplateProperty;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\ResultRecordInterface;
 use Oro\Bundle\LocaleBundle\Twig\DateFormatExtension;
 use Oro\Bundle\SearchBundle\Engine\ObjectMapper;
-use Oro\Bundle\SearchBundle\Query\Result\Item as ResultItem;
 
 class SearchResultProperty extends TwigTemplateProperty
 {

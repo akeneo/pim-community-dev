@@ -1,14 +1,12 @@
 <?php
-
 namespace Oro\Bundle\SearchBundle\Datagrid;
 
-use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\GridBundle\Datagrid\QueryFactoryInterface;
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 use Oro\Bundle\SearchBundle\Engine\Indexer;
 use Oro\Bundle\SearchBundle\Datagrid\IndexerQuery;
-use Oro\Bundle\SearchBundle\Query\Query;
 
+// TODO: refactor this class or remove it
 class IndexerQueryFactory implements QueryFactoryInterface
 {
     /**
@@ -29,7 +27,6 @@ class IndexerQueryFactory implements QueryFactoryInterface
      */
     public function createQuery()
     {
-        new Query();
         return new IndexerQuery(
             $this->indexer,
             $this->indexer->select()

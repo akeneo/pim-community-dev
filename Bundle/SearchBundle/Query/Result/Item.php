@@ -51,9 +51,6 @@ class Item
      */
     protected $em;
 
-    /** @var mixed */
-    protected $entity = null;
-
     public function __construct(
         ObjectManager $em,
         $entityName = null,
@@ -128,22 +125,7 @@ class Item
      */
     public function getEntity()
     {
-        if (is_null($this->entity)) {
-            $this->entity = $this->em->getRepository($this->getEntityName())->find($this->getRecordId());
-        }
-
-        return $this->entity;
-    }
-
-    /**
-     * @param mixed $entity
-     * @return $this
-     */
-    public function setEntity($entity)
-    {
-        $this->entity = $entity;
-
-        return $this;
+        return $this->em->getRepository($this->getEntityName())->find($this->getRecordId());
     }
 
     /**
