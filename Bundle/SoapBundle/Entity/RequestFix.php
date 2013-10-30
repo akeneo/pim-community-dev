@@ -67,9 +67,10 @@ class RequestFix
             }
 
             $attrCode = $attr->getCode();
-            $data[$attributeKey][$attrCode] = array();
-            $data[$attributeKey][$attrCode]['id'] = $attr->getId();
-            $data[$attributeKey][$attrCode][$type] = $default;
+            if ($default) {
+                $data[$attributeKey][$attrCode]['id'] = $attr->getId();
+                $data[$attributeKey][$attrCode][$type] = $default;
+            }
 
             foreach ($attrVal as $fieldCode => $fieldValue) {
                 if ($attr->getCode() == (string)$fieldCode) {
@@ -82,7 +83,10 @@ class RequestFix
                         }
                         $fieldValue = $fieldValue['value'];
                     }
-                    $data[$attributeKey][$attrCode][$type] = (string)$fieldValue;
+                    if ($fieldValue) {
+                        $data[$attributeKey][$attrCode]['id'] = $attr->getId();
+                        $data[$attributeKey][$attrCode][$type] = (string)$fieldValue;
+                    }
 
                     break;
                 }

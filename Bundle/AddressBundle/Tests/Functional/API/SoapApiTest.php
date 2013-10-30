@@ -203,7 +203,6 @@ class SoapApiTest extends WebTestCase
      */
     public function testGetRegions()
     {
-        $this->markTestSkipped("Skipped segmentation fault");
         $result = $this->client->getSoap()->getRegions();
         $result = ToolsAPI::classToArray($result);
         return array_slice($result['item'], 0, 5);
