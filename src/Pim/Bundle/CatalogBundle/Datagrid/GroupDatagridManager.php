@@ -193,8 +193,6 @@ class GroupDatagridManager extends DatagridManager
 
         $this->applyJoinOnGroupType($proxyQuery);
 
-        $proxyQuery->groupBy($rootAlias);
-
         $proxyQuery->setParameter('localeCode', $this->getCurrentLocale());
     }
 

@@ -2,19 +2,14 @@
 
 namespace Pim\Bundle\CatalogBundle\Datagrid;
 
+use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
+use Oro\Bundle\GridBundle\Field\FieldDescription;
+use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
+use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
+use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
 use Oro\Bundle\GridBundle\Property\UrlProperty;
 
 use Pim\Bundle\GridBundle\Filter\FilterInterface;
-
-use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
-
-use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
-
-use Oro\Bundle\GridBundle\Field\FieldDescription;
-
-use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
-
-use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 
 /**
  * Variant group datagrid manager
@@ -48,6 +43,8 @@ class VariantGroupDatagridManager extends GroupDatagridManager
 
     /**
      * {@inheritdoc}
+     *
+     * Override to remove create type field
      */
     protected function createTypeField(FieldDescriptionCollection $fieldsCollection)
     {
@@ -94,9 +91,9 @@ class VariantGroupDatagridManager extends GroupDatagridManager
     {
         parent::prepareQuery($proxyQuery);
 
-        $proxyQuery->leftJoin($proxyQuery->getRootAlias() .'.attributes', 'attribute');
-
-        $proxyQuery->groupBy($proxyQuery->getRootAlias());
+        $proxyQuery
+            ->leftJoin($proxyQuery->getRootAlias() .'.attributes', 'attribute')
+            ->groupBy($proxyQuery->getRootAlias());
     }
 
     /**
