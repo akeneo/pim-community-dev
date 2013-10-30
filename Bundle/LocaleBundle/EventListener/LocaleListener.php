@@ -7,24 +7,26 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-use Symfony\Component\Translation\TranslatorInterface;
-
 use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
 
 class LocaleListener implements EventSubscriberInterface
 {
+    /**
+     * @var LocaleSettings
+     */
     private $localeSettings;
 
-    private $translator;
-
-    public function __construct(
-        LocaleSettings $localeSettings,
-        TranslatorInterface $translator
-    ) {
+    /**
+     * @param LocaleSettings $localeSettings
+     */
+    public function __construct(LocaleSettings $localeSettings)
+    {
         $this->localeSettings = $localeSettings;
-        $this->translator = $translator;
     }
 
+    /**
+     * @param Request $request
+     */
     public function setRequest(Request $request = null)
     {
         if (!$request) {
@@ -32,23 +34,36 @@ class LocaleListener implements EventSubscriberInterface
         }
 
         if (!$request->attributes->get('_locale')) {
-            $request->attributes->set('_locale', $this->localeSettings->getLocale());
+            $request->setLocale($this->localeSettings->getLanguage());
         }
-
-        $this->translator->setLocale($this->localeSettings->getLanguage());
+        $this->setPhpDefaultLocale($this->localeSettings->getLocale());
     }
 
+    /**
+     * @param GetResponseEvent $event
+     */
     public function onKernelRequest(GetResponseEvent $event)
     {
         $request = $event->getRequest();
         $this->setRequest($request);
     }
 
+    /**
+     * @param string $locale
+     */
+    public function setPhpDefaultLocale($locale)
+    {
+        \Locale::setDefault($locale);
+    }
+
+    /**
+     * @return array
+     */
     public static function getSubscribedEvents()
     {
         return array(
-            // must be registered before Symfony's original LocaleListener
-            KernelEvents::REQUEST => array(array('onKernelRequest', 17)),
+            // must be registered after Symfony's original LocaleListener
+            KernelEvents::REQUEST => array(array('onKernelRequest', 15)),
         );
     }
 }
