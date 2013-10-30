@@ -46,7 +46,7 @@ class ControllersTest extends WebTestCase
             '<select required="required" name="emailnotification[template]" id="emailnotification_template" ' .
             'tabindex="-1" class="select2-offscreen"> ' .
             '<option value="" selected="selected"></option> ' .
-            '<option value="1">update_user</option> </select>'
+            '<option value="2">EmailBundle:update_user</option> </select>'
         );
 
         $field = new ChoiceFormField($doc->getElementsByTagName('select')->item(0));
@@ -63,6 +63,9 @@ class ControllersTest extends WebTestCase
         $this->assertContains("Email notification rule saved", $crawler->html());
     }
 
+    /**
+     * @depends testCreate
+     */
     public function testUpdate()
     {
         $this->client->request(
@@ -89,7 +92,7 @@ class ControllersTest extends WebTestCase
             '<select required="required" name="emailnotification[template]" id="emailnotification_template" ' .
             'tabindex="-1" class="select2-offscreen"> ' .
             '<option value="" selected="selected"></option> ' .
-            '<option value="1">update_user</option> </select>'
+            '<option value="2">EmailBundle:update_user</option> </select>'
         );
 
         $field = new ChoiceFormField($doc->getElementsByTagName('select')->item(0));
