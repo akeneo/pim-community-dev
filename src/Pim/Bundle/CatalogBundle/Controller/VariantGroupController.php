@@ -48,7 +48,7 @@ class VariantGroupController extends GroupController
 
         $view = ('json' === $request->getRequestFormat())
             ? 'OroGridBundle:Datagrid:list.json.php'
-            : 'PimCatalogBundle:Group:index.html.twig';
+            : 'PimCatalogBundle:VariantGroup:index.html.twig';
 
         return $this->render($view, array('datagrid' => $datagrid->createView()));
     }
