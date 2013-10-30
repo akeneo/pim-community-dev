@@ -9,7 +9,7 @@ class FullCalendarDateTimeFormatConverter extends AbstractDateTimeFormatConverte
     const NAME = 'fullcalendar';
 
     /**
-     * ICU format => moment.js data
+     * ICU format => fullcalendar.js data
      *
      * http://userguide.icu-project.org/formatparse/datetime
      * http://arshaw.com/fullcalendar/docs/utilities/formatDate/

@@ -186,8 +186,8 @@ function(_, settings) {
          *
          * If object then value of key '1' is January, if array first element is January
          *
-         * @param width
-         * @param asArray
+         * @param {String} [width] "wide" - default |"abbreviated"|"narrow"
+         * @param {Boolean} [asArray]
          * @returns {*}
          */
         getCalendarMonthNames: function(width, asArray) {

@@ -59,41 +59,39 @@ class CalendarController extends Controller
     {
         /** @var SecurityFacade $securityFacade */
         $securityFacade = $this->get('oro_security.security_facade');
+        /** @var CalendarDateTimeConfigProvider $calendarConfigProvider */
+        $calendarConfigProvider = $this->get('oro_calendar.provider.calendar_config');
+
+        $currentDate = new \DateTime('now', new \DateTimeZone('UTC'));
+        $dateRange = $calendarConfigProvider->getDateRange($currentDate);
 
         $result = array(
-            'event_form'       => $this->get('oro_calendar.calendar_event.form')->createView(),
+            'event_form' => $this->get('oro_calendar.calendar_event.form')->createView(),
             'user_select_form' => $this->get('form.factory')
-                    ->createNamed(
-                        'new_calendar_owner',
-                        'oro_user_select',
-                        null,
-                        array(
-                            'required' => true,
-                            'configs'  => array(
-                                'placeholder'             => 'oro.calendar.form.choose_user_to_add_calendar',
-                                'result_template_twig'    => 'OroUserBundle:User:Autocomplete/result.html.twig',
-                                'selection_template_twig' => 'OroUserBundle:User:Autocomplete/selection.html.twig',
-                                /* @todo: Must be removed. I have to do this because oro_user_select sets 400px */
-                                'width'                   => 'off'
-                            )
+                ->createNamed(
+                    'new_calendar_owner',
+                    'oro_user_select',
+                    null,
+                    array(
+                        'required' => true,
+                        'configs'  => array(
+                            'placeholder' => 'oro.calendar.form.choose_user_to_add_calendar',
+                            /* @todo: Must be removed. I have to do this because oro_user_select sets 400px */
+                            'width' => 'off'
                         )
                     )
-                    ->createView(),
-            'entity'           => $calendar,
-            'calendar'         => array(
-                'selectable'      => $securityFacade->isGranted('oro_calendar_event_create'),
-                'editable'        => $securityFacade->isGranted('oro_calendar_event_update'),
-                'removable'       => $securityFacade->isGranted('oro_calendar_event_delete'),
-            )
+                )
+                ->createView(),
+            'entity' => $calendar,
+            'calendar' => array(
+                'selectable' => $securityFacade->isGranted('oro_calendar_event_create'),
+                'editable' => $securityFacade->isGranted('oro_calendar_event_update'),
+                'removable' => $securityFacade->isGranted('oro_calendar_event_delete'),
+                'timezoneOffset' => $calendarConfigProvider->getTimezoneOffset($currentDate)
+            ),
+            'startDate' => $dateRange['startDate'],
+            'endDate' => $dateRange['endDate'],
         );
-        
-        $dateTimeProvider = new CalendarDateTimeConfigProvider(
-            $this->get('oro_locale.settings'),
-            $this->get('oro_locale.formatter.date_time')
-        );
-        $currentDate = new \DateTime('now', new \DateTimeZone('UTC'));
-        $result = array_merge($result, $dateTimeProvider->getDateRange($currentDate));
-        $result['calendar'] = array_merge($result['calendar'], $dateTimeProvider->getCalendarOptions($currentDate));
 
         return $result;
     }

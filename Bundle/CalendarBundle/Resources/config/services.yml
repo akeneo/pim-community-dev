@@ -8,6 +8,7 @@ parameters:
     oro_calendar.reminders_sender.class:                         Oro\Bundle\CalendarBundle\Notification\RemindersSender
     oro_calendar.remind_time_calculator.class:                   Oro\Bundle\CalendarBundle\Notification\RemindTimeCalculator
     oro_calendar.twig.dateformat.class:                          Oro\Bundle\CalendarBundle\Twig\DateFormatExtension
+    oro_calendar.provider.calendar_config.class:                 Oro\Bundle\CalendarBundle\Provider\CalendarDateTimeConfigProvider
     oro_calendar.format_converter.date_time.full_calendar.class: Oro\Bundle\CalendarBundle\Converter\FullCalendarDateTimeFormatConverter
 
 services:
@@ -50,6 +51,11 @@ services:
             - @oro_locale.formatter.date_time
         tags:
             - { name: twig.extension }
+
+    oro_calendar.provider.calendar_config:
+        class: %oro_calendar.provider.calendar_config.class%
+        arguments:
+            - @oro_locale.settings
 
     oro_calendar.format_converter.date_time.full_calendar:
         class: %oro_calendar.format_converter.date_time.full_calendar.class%

@@ -101,12 +101,23 @@
     </script>
 
     <script type="text/javascript">
-        require(['jquery', 'underscore', 'oro/calendar', 'oro/calendar/event/collection', 'oro/calendar/connection/collection'],
-        function($, _, Calendar, EventCollection, ConnectionCollection){
+        require(['jquery', 'underscore', 'oro/calendar', 'oro/calendar/event/collection', 'oro/calendar/connection/collection', 'oro/locale-settings'],
+        function($, _, Calendar, EventCollection, ConnectionCollection, localeSettings){
             var connections = new ConnectionCollection();
             connections.reset({{ render(path('oro_api_get_calendar_connections', {id: entity.id})) }});
             var events = new EventCollection();
             events.reset({{ render(path('oro_api_get_calendarevents', {calendar: entity.id, start: startDate|date('c'), end: endDate|date('c'), subordinate: true})) }});
+
+            var dateFormat = localeSettings.getVendorDateTimeFormat('fullcalendar', 'date', 'MMM d, yyyy');
+            var timeFormat = localeSettings.getVendorDateTimeFormat('fullcalendar', 'time', 'h:mm TT');
+            // @TODO Get date format without year
+            var dateFormatWithoutYear = dateFormat;
+            // prepare FullCalendar specific date/time formats
+            var isDateFormatStartedWithDay = dateFormat.indexOf('d') === 0;
+            var weekFormat = isDateFormatStartedWithDay
+                ? 'd[ MMMM][ yyyy]{ \'&#8212;\' d MMMM yyyy}'
+                : 'MMMM d[ yyyy]{ \'&#8212;\'[ MMMM] d yyyy}';
+
             var options = {
                 el: '#calendar',
                 calendar: {{ entity.id }},
@@ -116,7 +127,28 @@
                     containerSelector: '.calendar-events',
                     itemFormTemplateSelector: '#template-calendar-event',
                     itemFormDeleteButtonSelector: '#btn-remove-calendarevent',
-                    itemFormValidationScriptUrl: '{{ JSFV(event_form, true) }}'
+                    itemFormValidationScriptUrl: '{{ JSFV(event_form, true) }}',
+                    date: "{{ 'now'|date('Y-m-d') }}",
+                    firstDay: localeSettings.getCalendarFirstDayOfWeek() - 1,
+                    monthNames: localeSettings.getCalendarMonthNames('wide', true),
+                    monthNamesShort: localeSettings.getCalendarMonthNames('abbreviated', true),
+                    dayNames: localeSettings.getCalendarDayOfWeekNames('wide', true),
+                    dayNamesShort: localeSettings.getCalendarDayOfWeekNames('abbreviated', true),
+                    titleFormat: {
+                        month: 'MMMM yyyy',
+                        week: weekFormat,
+                        day: 'dddd, ' + dateFormat
+                    },
+                    columnFormat: {
+                        month: 'ddd',
+                        week: 'ddd ' + dateFormatWithoutYear,
+                        day: 'dddd ' + dateFormatWithoutYear
+                    },
+                    timeFormat: {
+                        '': timeFormat,
+                        agenda: timeFormat + '{ - ' + timeFormat + '}'
+                    },
+                    axisFormat: timeFormat
                 },
                 connectionsOptions: {
                     collection: connections,

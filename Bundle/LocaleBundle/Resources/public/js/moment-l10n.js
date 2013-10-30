@@ -17,5 +17,4 @@ function(moment, localeSettings) {
     });
 
     return moment;
-
 });
