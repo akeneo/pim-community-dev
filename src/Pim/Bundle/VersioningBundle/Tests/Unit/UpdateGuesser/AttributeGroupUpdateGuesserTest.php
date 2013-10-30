@@ -33,6 +33,7 @@ class AttributeGroupUpdateGuesserTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param AttributeGroup $group
+     *
      * @return EntityManager
      */
     protected function getEntityManagerMock($group)
@@ -51,6 +52,7 @@ class AttributeGroupUpdateGuesserTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param AttributeGroup $group
+     *
      * @return Doctrine\ORM\UnitOfWork
      */
     protected function getUnitOfWorkMock($group)
