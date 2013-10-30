@@ -74,6 +74,12 @@ services:
         arguments:
             - @oro_email.form.email
             - @request
+            - @doctrine.orm.entity_manager
+            - @security.context
+            - @oro_email.email.address.manager
+            - @oro_email.email.entity.builder=
+            - @oro_email.direct_mail_sender
+            - @oro_config.twig.config_extension
 
     oro_email.form.email:
         class: Symfony\Component\Form\Form

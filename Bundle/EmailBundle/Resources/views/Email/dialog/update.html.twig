@@ -1,7 +1,7 @@
 {#
     Available variables:
-    * entity       - email entity Oro\Bundle\EmailBundle\Model\Email
-    * form         - email entity Oro\Bundle\EmailBundle\Model\Email
+    * entity       - Oro\Bundle\EmailBundle\Model\Email
+    * form         - Oro\Bundle\EmailBundle\Form\type\EmailType
 #}
 {% form_theme form with ['OroFormBundle:Form:fields.html.twig'] %}
 {% import 'OroUIBundle::macros.html.twig' as UI %}
@@ -9,25 +9,23 @@
 {% block page_container %}
 <div class="widget-content email-form">
     {{ JSFV(form) }}
-
-    {% if not form.vars.valid %}
+    {% if not form.vars.valid and form.vars.errors|length %}
         <div class="alert alert-error">
             <div class="message">
                 {{ form_errors(form) }}
             </div>
         </div>
     {% endif %}
-
-    <form id="{{ form.vars.name }}"
-          action="{{ path('oro_email_email_create') }}"
-          method="post" class="form-register form-dialog">
-        <fieldset class="form-horizontal">
-            {{ form_widget(form) }}
-            <div class="widget-actions form-actions" style="display: none;">
-                <button class="btn" type="reset">{{ 'Cancel'|trans }}</button>
-                <button class="btn btn-primary" type="submit">{{ 'Send'|trans }}</button>
-            </div>
-        </fieldset>
-    </form>
+    <div class="form-container">
+        <form id="{{ form.vars.name }}" action="{{ path('oro_email_email_create') }}" method="post">
+            <fieldset class="form-horizontal">
+                {{ form_widget(form) }}
+                <div class="widget-actions form-actions" style="display: none;">
+                    <button class="btn" type="reset">{{ 'Cancel'|trans }}</button>
+                    <button class="btn btn-primary" type="submit">{{ 'Send'|trans }}</button>
+                </div>
+            </fieldset>
+        </form>
+    </div>
 </div>
 {% endblock %}

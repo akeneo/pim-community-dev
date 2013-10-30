@@ -64,7 +64,7 @@ class EmailAddressTransformer implements DataTransformerInterface
         }
 
         if ($this->multiple) {
-            $result = implode(';', array_filter(array_map('trim', explode(';', $value))));
+            $result = array_filter(array_map('trim', explode(';', $value)));
         } else {
             $result = trim($value);
             if (empty($result)) {

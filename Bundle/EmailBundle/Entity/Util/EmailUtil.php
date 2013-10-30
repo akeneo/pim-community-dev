@@ -39,6 +39,30 @@ class EmailUtil
     }
 
     /**
+     * Extract email address name from the given email address
+     *
+     * Examples:
+     *    email address: "John Smith" <john@example.com>; email address name John Smith
+     *    email address: John Smith <john@example.com>; email address name John Smith
+     *    email address: <john@example.com>; email address name is null
+     *    email address: john@example.com; email address name is null
+     *
+     * @param string $fullEmailAddress
+     * @return string|null
+     */
+    public static function extractEmailAddressName($fullEmailAddress)
+    {
+        $addrPos = strrpos($fullEmailAddress, '<');
+        if ($addrPos === false) {
+            return null;
+        }
+
+        $result = trim(substr($fullEmailAddress, 0, $addrPos), ' "\'');
+
+        return empty($result) ? null : $result;
+    }
+
+    /**
      * Extract email addresses from the given argument.
      * Always return an array, even if no any email is given.
      *

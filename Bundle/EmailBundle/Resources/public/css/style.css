@@ -18,14 +18,23 @@
     padding-left: 30px;
 }
 
-.ui-dialog .email-form input,
-.ui-dialog .email-form textarea,
-.ui-dialog .email-form .uneditable-input {
-    width: auto;
-}
-
+/* FE refactoring */
 .ui-dialog pre.email-body,
 .ui-dialog iframe.email-body,
 .ui-dialog .email-form textarea {
     height: 200px;
+}
+.ui-dialog .email-form input,
+.ui-dialog .email-form textarea,
+.ui-dialog .email-form .uneditable-input {
+    width: 97%;
+}
+.ui-dialog .email-form .form-horizontal .control-group {
+    padding-left: 110px;
+}
+.ui-dialog .email-form .form-horizontal .control-group .control-label {
+    margin-left: -120px;
+}
+.ui-dialog .email-form .form-horizontal .control-group .controls .validation-faled {
+    margin-left: 14px;
 }

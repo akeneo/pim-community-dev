@@ -2,8 +2,6 @@
 
 namespace Oro\Bundle\EmailBundle\Form\Model;
 
-use Doctrine\Common\Collections\ArrayCollection;
-
 class Email
 {
     /**
@@ -12,7 +10,7 @@ class Email
     protected $from;
 
     /**
-     * @var ArrayCollection|string[]
+     * @var string[]
      */
     protected $to;
 
@@ -31,7 +29,7 @@ class Email
      */
     public function __construct()
     {
-        $this->to = new ArrayCollection();
+        $this->to = array();
     }
 
     /**
@@ -70,12 +68,12 @@ class Email
     /**
      * Set TO email addresses
      *
-     * @param string $to
+     * @param string[] $to
      * @return $this
      */
-    public function addTo($to)
+    public function setTo(array $to)
     {
-        $this->to->add($to);
+        $this->to = $to;
 
         return $this;
     }
