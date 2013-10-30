@@ -7,6 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Loggable\Entity\MappedSuperclass\AbstractLogEntry;
 
 use JMS\Serializer\Annotation\Type;
+use JMS\Serializer\Annotation\Exclude;
+
 use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
 
 use Oro\Bundle\UserBundle\Entity\User;
@@ -54,7 +56,7 @@ class Audit extends AbstractLogEntry
      * @var string $objectClass
      *
      * @ORM\Column(name="object_class", type="string", length=255)
-     * @Soap\ComplexType("int", nillable=true)
+     * @Soap\ComplexType("string", nillable=true)
      */
     protected $objectClass;
 
@@ -85,7 +87,7 @@ class Audit extends AbstractLogEntry
     /**
      * @var string $username
      *
-     * @Soap\ComplexType("string", nillable=true)
+     * @Exclude
      */
     protected $username;
 
