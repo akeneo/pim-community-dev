@@ -415,6 +415,7 @@ class EmailTemplate implements EmailTemplateInterface, Translatable
         $this->parent = $this->id;
         $this->id = null;
         $this->isSystem = false;
+        $this->isEditable = true;
 
         if ($this->getTranslations() instanceof ArrayCollection) {
             $clonedTranslations = new ArrayCollection();
