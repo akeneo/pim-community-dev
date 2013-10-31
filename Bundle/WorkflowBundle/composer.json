@@ -23,6 +23,7 @@
     "autoload": {
         "psr-0": { "Oro\\Bundle\\WorkflowBundle": "" }
     },
+    "target-dir": "Oro/Bundle/GridBundle",
     "minimum-stability": "dev",
     "extra": {
         "branch-alias": {
