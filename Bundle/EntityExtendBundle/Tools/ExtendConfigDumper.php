@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\EntityExtendBundle\Tools;
 
+use Oro\Bundle\EntityConfigBundle\Config\Config;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Yaml\Yaml;
 
@@ -181,6 +182,14 @@ class ExtendConfigDumper
         $entityConfig->set('state', $entityState);
         if ($entityConfig->get('state') == ExtendManager::STATE_DELETED) {
             $entityConfig->set('is_deleted', true);
+
+            $extendProvider->map(
+                function (Config $config) use ($extendProvider) {
+                    $config->set('is_deleted', true);
+                    $extendProvider->persist($config);
+                },
+                $className
+            );
         } else {
             $entityConfig->set('state', ExtendManager::STATE_ACTIVE);
         }

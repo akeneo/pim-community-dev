@@ -231,7 +231,13 @@ class EntitiesController extends Controller
             function (ConfigInterface $config) use ($extendConfigProvider) {
                 $extendConfig = $extendConfigProvider->getConfigById($config->getId());
 
-                return $config->is('is_displayable') && $extendConfig->is('is_deleted', false);
+                return
+                    $config->is('is_displayable')
+                    && $extendConfig->is('is_deleted', false)
+                    && !(
+                        in_array($extendConfig->getId()->getFieldType(), array('oneToMany', 'manyToOne', 'manyToMany'))
+                        && $extendConfigProvider->getConfig($extendConfig->get('target_entity'))->is('is_deleted', true)
+                    );
             },
             $extendEntityName
         );

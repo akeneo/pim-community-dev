@@ -262,9 +262,9 @@ oro_entity_config:
                             block:          entity
                             subblock:       properties
 
-#                target_entity:
-#                    options:
-#                        auditable:          false
+                target_entity:
+                    options:
+                        auditable:          false
 
                 target_field:
                     options:
@@ -275,23 +275,15 @@ oro_entity_config:
                         auditable:          false
                         serializable:       true
 
-#                target_view:
-#                    options:
-#                        auditable:          false
-#                        serializable:       true
-
                 target_title:
                     options:
                         auditable:          false
+                        serializable:       true
 
                 target_detailed:
                     options:
                         auditable:          false
                         serializable:       true
-
-#                target_default:
-#                    options:
-#                        auditable:          false
 
                 is_deleted:
                     options:

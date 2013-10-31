@@ -102,6 +102,7 @@ class RelationType extends AbstractType
                     new TargetFieldType($this->configProvider, $targetEntity),
                     $targetTitle,
                     [
+                        'multiple' => true,
                         'label'    => 'Related entity info title'
                     ]
                 )
