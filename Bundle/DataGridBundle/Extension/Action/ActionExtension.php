@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\DataGridBundle\Extension\Action;
 
+use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 use Oro\Bundle\SecurityBundle\SecurityFacade;
@@ -9,13 +10,17 @@ use Oro\Bundle\DataGridBundle\Extension\AbstractExtension;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataObject;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Action\Actions\ActionInterface;
+use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration;
+use Oro\Bundle\DataGridBundle\Extension\Formatter\ResultRecordInterface;
 
 class ActionExtension extends AbstractExtension
 {
-    const METADATA_ACTION_KEY = 'rowActions';
+    const METADATA_ACTION_KEY               = 'rowActions';
+    const METADATA_ACTION_CONFIGURATION_KEY = 'action_configuration';
 
-    const ACTION_KEY      = 'actions';
-    const ACTION_TYPE_KEY = 'type';
+    const ACTION_KEY               = 'actions';
+    const ACTION_CONFIGURATION_KEY = 'action_configuration';
+    const ACTION_TYPE_KEY          = 'type';
 
     /** @var ContainerInterface */
     protected $container;
@@ -23,16 +28,23 @@ class ActionExtension extends AbstractExtension
     /** @var SecurityFacade */
     protected $securityFacade;
 
+    /** @var TranslatorInterface */
+    protected $translator;
+
     /** @var array */
     protected $actions = [];
 
     /** @var array */
     protected static $excludeParams = [ActionInterface::ACL_KEY];
 
-    public function __construct(ContainerInterface $container, SecurityFacade $securityFacade)
-    {
+    public function __construct(
+        ContainerInterface $container,
+        SecurityFacade $securityFacade,
+        TranslatorInterface $translator
+    ) {
         $this->container      = $container;
         $this->securityFacade = $securityFacade;
+        $this->translator     = $translator;
     }
 
     /**
@@ -40,7 +52,25 @@ class ActionExtension extends AbstractExtension
      */
     public function isApplicable(DatagridConfiguration $config)
     {
-        $actions = $config->offsetGetOr(self::ACTION_KEY, []);
+        $actions             = $config->offsetGetOr(self::ACTION_KEY, []);
+        $actionConfiguration = $config->offsetGetOr(self::ACTION_CONFIGURATION_KEY);
+
+        if ($actionConfiguration && is_callable($actionConfiguration)) {
+            $callable = function (ResultRecordInterface $record) use ($actionConfiguration) {
+                $result = call_user_func($actionConfiguration, $record);
+
+                return is_array($result) ? $result : [];
+            };
+
+            $propertyConfig = [
+                'type'     => 'callback',
+                'callable' => $callable
+            ];
+            $config->offsetAddToArrayByPath(
+                sprintf('%s[%s]', Configuration::PROPERTIES_PATH, self::METADATA_ACTION_CONFIGURATION_KEY),
+                $propertyConfig
+            );
+        }
 
         return !empty($actions);
     }
@@ -58,7 +88,9 @@ class ActionExtension extends AbstractExtension
             $action = $this->create($config);
 
             if (null === $action->getAclResource() || $this->isResourceGranted($action->getAclResource())) {
-                $actionsMetadata[] = $action->getOptions()->toArray([], self::$excludeParams);
+                $metadata          = $action->getOptions()->toArray([], self::$excludeParams);
+                $metadata['label'] = isset($metadata['label']) ? $this->translator->trans($metadata['label']) : null;
+                $actionsMetadata[$config->getName()] = $metadata;
             }
         }
 

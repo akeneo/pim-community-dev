@@ -38,8 +38,6 @@ datagrid:
                 frontend_type: string
                 template: OroEmailBundle:Email:Datagrid/Property/recipients.html.twig
 
-        properties:
-
         sorters:
             columns:
                 subject:
@@ -60,3 +58,107 @@ datagrid:
                 sentAt:
                     type: string
                     data_name: e.sentAt
+
+    email-templates:
+        source:
+            type: orm
+            acl_resource: oro_email_emailtemplate_index
+            query:
+                select:
+                    - t.id
+                    - t.entityName
+                    - t.name
+                    - t.type
+                    - t.isSystem
+                from:
+                    - { table: %oro_email.emailtemplate.entity.class%, alias: t }
+
+        columns:
+            entityName:
+                type:          twig
+                frontend_type: html
+                label:         oro.email.datagrid.emailtemplate.column.entity_name
+                template:      OroNotificationBundle:EmailNotification:Datagrid/Property/entityName.html.twig
+            name:
+                type:   field
+                label:  oro.email.datagrid.emailtemplate.column.name
+            type:
+                type:           field
+                frontend_type:  select
+                label:          oro.email.datagrid.emailtemplate.column.type
+                choices:
+                    html: oro.email.datagrid.emailtemplate.filter.type.html
+                    txt:  oro.email.datagrid.emailtemplate.filter.type.txt
+            isSystem:
+                type: field
+                frontend_type:  select
+                label: oro.email.datagrid.emailtemplate.column.isSystem
+                choices:
+                    - oro.email.datagrid.emailtemplate.filter.isSystem.no
+                    - oro.email.datagrid.emailtemplate.filter.isSystem.yes
+        properties:
+            id:
+                type: field
+            update_link:
+                type: url
+                route: oro_email_emailtemplate_update
+                params: [ id ]
+            clone_link:
+                type: url
+                route: oro_email_emailtemplate_clone
+                params: [ id ]
+            delete_link:
+                type: url
+                route: oro_api_delete_emailtemplate
+                params: [ id ]
+
+        filters:
+            columns:
+                entityName: { type: string, data_name: t.entityName }
+                name:       { type: string, data_name: t.name }
+                type:
+                    type:        choice
+                    data_name:   t.type
+                    options:
+                        field_options:
+                            choices:
+                                html: oro.email.datagrid.emailtemplate.filter.type.html
+                                txt:  oro.email.datagrid.emailtemplate.filter.type.txt
+                isSystem:
+                    type:      choice
+                    data_name: t.isSystem
+                    options:
+                        field_options:
+                            choices:
+                                - oro.email.datagrid.emailtemplate.filter.isSystem.no
+                                - oro.email.datagrid.emailtemplate.filter.isSystem.yes
+
+        sorters:
+            columns:
+                name:     { data_name: t.name }
+                type:     { data_name: t.type }
+                isSystem: { data_name: t.isSystem }
+
+        actions:
+            update:
+                type:         navigate
+                label:        oro.email.datagrid.emailtemplate.action.update
+                link:         update_link
+                icon:         edit
+                acl_resource: oro_email_emailtemplate_update
+                rowAction:    true
+            clone:
+                type:         navigate
+                label:        oro.email.datagrid.emailtemplate.action.clone
+                link:         clone_link
+                icon:         share
+                acl_resource: oro_email_emailtemplate_create
+            delete:
+                type:         delete
+                label:        oro.email.datagrid.emailtemplate.action.delete
+                acl_resource: oro_email_emailtemplate_remove
+                icon:         trash
+                link:         delete_link
+
+        action_configuration: Oro\Bundle\EmailBundle\Datagrid\EmailTemplatesActionConfiguration::getClosure
+        views_list : @oro_email.emailtemplate.datagrid_view_list

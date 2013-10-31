@@ -7,11 +7,27 @@ use Oro\Bundle\DataGridBundle\Extension\Formatter\ResultRecordInterface;
 class FieldProperty extends AbstractProperty
 {
     /**
-     * Get raw value from object
-     *
-     * @param ResultRecordInterface $record
-     *
-     * @return mixed
+     * {@inheritdoc}
+     */
+    protected function initialize()
+    {
+        if ($this->getOr(self::FRONTEND_TYPE_KEY) === self::TYPE_SELECT) {
+            $translator = $this->translator;
+
+            $choices    = $this->getOr('choices', []);
+            $translated = array_map(
+                function ($item) use ($translator) {
+                    return $translator->trans($item);
+                },
+                $choices
+            );
+
+            $this->params['choices'] = $translated;
+        }
+    }
+
+    /**
+     * {@inheritdoc}
      */
     protected function getRawValue(ResultRecordInterface $record)
     {

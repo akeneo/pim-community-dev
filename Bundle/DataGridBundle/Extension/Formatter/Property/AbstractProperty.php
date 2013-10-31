@@ -220,7 +220,7 @@ abstract class AbstractProperty implements PropertyInterface
      */
     protected function guessAdditionalMetadata()
     {
-        $metadata = [];
+        $metadata  = [];
 
         switch ($this->getOr(self::FRONTEND_TYPE_KEY)) {
             case self::TYPE_DATETIME:

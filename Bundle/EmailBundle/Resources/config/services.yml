@@ -43,6 +43,8 @@ parameters:
 
     oro_email.datagrid_query_factory.class: Oro\Bundle\EmailBundle\Datagrid\EmailQueryFactory
 
+    oro_email.emailtemplate.datagrid_view_list.class: Oro\Bundle\EmailBundle\Datagrid\EmailTemplatesViewList
+
 services:
     oro_email.entity.cache.warmer:
         public: false
@@ -263,3 +265,8 @@ services:
             - %oro_email.email.entity.class%
             - @oro_email.email.owner.provider.storage
             - @oro_config.user
+
+    oro_email.emailtemplate.datagrid_view_list:
+            class: %oro_email.emailtemplate.datagrid_view_list.class%
+            arguments:
+                - @translator

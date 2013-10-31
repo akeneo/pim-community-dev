@@ -83,7 +83,8 @@ function($, _, Backbone, __, tools, mediator, registry, LoadingMask,
                 mediator.trigger('datagrid:created:' + options.name, grid);
 
                 // create grid view
-                $(gridGridViewsSelector).append((new GridViewsView({collection: collection})).render().$el);
+                options = methods.combineGridViewsOptions.call(this);
+                $(gridGridViewsSelector).append((new GridViewsView(_.extend({collection: collection}, options))).render().$el);
 
                 // register router
                 new GridRouter({collection: collection});
@@ -153,6 +154,15 @@ function($, _, Backbone, __, tools, mediator, registry, LoadingMask,
                     multipleSorting: metadata.options.multipleSorting || false,
                     entityHint: metadata.options.entityHint
                 };
+            },
+
+            /**
+             * Process metadata and combines options for datagrid views
+             *
+             * @returns {Object}
+             */
+            combineGridViewsOptions: function () {
+                return this.metadata.gridViews || {};
             }
         };
 
