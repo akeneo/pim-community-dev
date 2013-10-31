@@ -1,16 +1,16 @@
 @javascript
-Feature: Browse variant groups
-  In order to list the existing variant groups for the catalog
+Feature: Browse product groups
+  In order to list the existing product groups for the catalog
   As a user
-  I need to be able to see variant groups
+  I need to be able to see product groups
 
   Background:
     Given there is no product group
     And the following attributes:
-      | code      | label      | type                     |
-      | multi     | Multi      | pim_catalog_multiselect  |
-      | color     | Color      | pim_catalog_simpleselect |
-      | size      | Size       | pim_catalog_simpleselect |
+      | code  | label | type                     |
+      | multi | Multi | pim_catalog_multiselect  |
+      | color | Color | pim_catalog_simpleselect |
+      | size  | Size  | pim_catalog_simpleselect |
     And the following product groups:
       | code          | label          | attributes  | type    |
       | tshirt_akeneo | T-Shirt Akeneo | size, color | VARIANT |
