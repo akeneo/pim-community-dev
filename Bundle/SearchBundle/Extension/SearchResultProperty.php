@@ -7,10 +7,10 @@ use Doctrine\ORM\EntityManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
-use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\TwigTemplateProperty;
-use Oro\Bundle\DataGridBundle\Extension\Formatter\ResultRecordInterface;
-use Oro\Bundle\LocaleBundle\Twig\DateFormatExtension;
 use Oro\Bundle\SearchBundle\Engine\ObjectMapper;
+use Oro\Bundle\LocaleBundle\Twig\DateFormatExtension;
+use Oro\Bundle\DataGridBundle\Datasource\Orm\ResultRecordInterface;
+use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\TwigTemplateProperty;
 
 class SearchResultProperty extends TwigTemplateProperty
 {

@@ -3,6 +3,8 @@
 namespace Oro\Bundle\DataGridBundle\Extension\MassAction;
 
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
+use Oro\Bundle\DataGridBundle\Datasource\Orm\IterableResultInterface;
+use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface;
 
 class MassActionMediator implements MassActionMediatorInterface
 {
@@ -26,23 +28,23 @@ class MassActionMediator implements MassActionMediatorInterface
      */
     protected $datagrid;
 
-//    /**
-//     * @param MassActionInterface     $massAction
-//     * @param DatagridInterface       $datagrid
-//     * @param IterableResultInterface $results
-//     * @param array                   $data
-//     */
-//    public function __construct(
-//        MassActionInterface $massAction,
-//        DatagridInterface $datagrid,
-//        IterableResultInterface $results,
-//        array $data = array()
-//    ) {
-//        $this->massAction = $massAction;
-//        $this->results    = $results;
-//        $this->data       = $data;
-//        $this->datagrid   = $datagrid;
-//    }
+    /**
+     * @param MassActionInterface     $massAction
+     * @param DatagridInterface       $datagrid
+     * @param IterableResultInterface $results
+     * @param array                   $data
+     */
+    public function __construct(
+        MassActionInterface $massAction,
+        DatagridInterface $datagrid,
+        IterableResultInterface $results,
+        array $data = array()
+    ) {
+        $this->massAction = $massAction;
+        $this->results    = $results;
+        $this->data       = $data;
+        $this->datagrid   = $datagrid;
+    }
 
     /**
      * {@inheritDoc}

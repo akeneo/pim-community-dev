@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\DataGridBundle\Extension\Formatter;
+namespace Oro\Bundle\DataGridBundle\Datasource\Orm;
 
 class ResultRecord implements ResultRecordInterface
 {

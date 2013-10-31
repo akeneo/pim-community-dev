@@ -6,6 +6,9 @@ use Oro\Bundle\DataGridBundle\Extension\Action\ActionConfiguration;
 
 class DeleteMassAction extends AjaxMassAction
 {
+    /** @var array */
+    protected $requiredOptions = ['handler', 'entity_name', 'data_identifier'];
+
     /**
      * {@inheritDoc}
      */

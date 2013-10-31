@@ -1,13 +1,14 @@
 <?php
 
-namespace Oro\Bundle\DataGridBundle\Extension\Formatter;
+namespace Oro\Bundle\DataGridBundle\Datasource\Orm;
 
 interface ResultRecordInterface
 {
     /**
      * Get value of record property by name
      *
-     * @param  string          $name
+     * @param  string $name
+     *
      * @return mixed
      * @throws \LogicException When cannot get value
      */
