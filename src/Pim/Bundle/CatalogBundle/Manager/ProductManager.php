@@ -160,10 +160,10 @@ class ProductManager extends FlexibleManager
 
     /**
      * Returns a product for the import process
-     * 
-     * @param array $attributes
-     * @param ProductAttribute $identifierAttribute
-     * @param string $code
+     *
+     * @param  array            $attributes
+     * @param  ProductAttribute $identifierAttribute
+     * @param  string           $code
      * @return ProductInterface
      */
     public function getImportProduct($attributes, $identifierAttribute, $code)
@@ -183,7 +183,6 @@ class ProductManager extends FlexibleManager
         } catch (NoResultException $ex) {
             return null;
         }
-        
 
         return $em->createQuery(
             'SELECT p, v, f, o, pr ' .
