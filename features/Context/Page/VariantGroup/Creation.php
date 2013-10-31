@@ -13,4 +13,19 @@ use Context\Page\ProductGroup\Creation as GroupCreation;
  */
 class Creation extends GroupCreation
 {
+    /**
+     * @var array
+     */
+    protected $elements = array(
+        'Axis' => array('css' => '#pim_catalog_group_form_attributes')
+    );
+
+    /**
+     * Select the axis
+     * @param string $axis
+     */
+    public function selectAxis($axis)
+    {
+        $this->getElement('Axis')->selectOption($axis);
+    }
 }

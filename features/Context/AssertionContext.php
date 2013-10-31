@@ -65,7 +65,9 @@ class AssertionContext extends RawMinkContext
         $fields = $this->getMainContext()->listToArray($fields);
         foreach ($fields as $field) {
             try {
-                $this->getCurrentPage()->findField($field);
+                if (!$this->getCurrentPage()->findField($field)) {
+                    throw $this->createExpectationException(sprintf('Expecting to see field "%s".', $field));
+                }
             } catch (ElementNotFoundException $e) {
                 throw $this->createExpectationException(sprintf('Expecting to see field "%s".', $field));
             }
@@ -83,9 +85,9 @@ class AssertionContext extends RawMinkContext
 
         foreach ($fields as $field) {
             try {
-                $this->getCurrentPage()->findField($field);
-
-                throw $this->createExpectationException(sprintf('Not expecting to see field "%s"', $field));
+                if ($this->getCurrentPage()->findField($field)) {
+                    throw $this->createExpectationException(sprintf('Not expecting to see field "%s"', $field));
+                }
             } catch (ElementNotFoundException $e) {
             }
         }
