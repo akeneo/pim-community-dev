@@ -43,7 +43,7 @@ oro_system_configuration:
                     - NotBlank: ~
 
         oro_locale.timezone:
-            type: timezone
+            type: oro_locale_timezone
             priority: 30
             options:
                 label: 'Timezone'
