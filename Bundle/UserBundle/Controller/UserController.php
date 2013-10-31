@@ -97,7 +97,7 @@ class UserController extends Controller
      */
     public function createAction()
     {
-        $user = $this->get('oro_user.manager')->createFlexible();
+        $user = $this->get('oro_user.manager')->createUser();
 
         return $this->update($user);
     }

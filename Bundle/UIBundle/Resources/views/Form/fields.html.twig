@@ -2,19 +2,15 @@
 
 {% block form_row %}
     {% spaceless %}
-        {% if form|is_flexible %}
-            {{ block('form_row_flex') }}
-        {% else %}
-            <div class="control-group{% if attr.class is defined %} {{ attr.class }}{% endif %}">
-                {% if label is not sameas(false) %}
-                {{ form_label(form, '' , { label_attr: label_attr|merge({ class: 'control-label' })}) }}
-                {% endif %}
-                <div class="controls{% if errors|length > 0 %} validation-error{% endif %}">
-                    {{ form_widget(form) }}
-                    {{ form_errors(form) }}
-                </div>
+        <div class="control-group{% if attr.class is defined %} {{ attr.class }}{% endif %}">
+            {% if label is not sameas(false) %}
+            {{ form_label(form, '' , { label_attr: label_attr|merge({ class: 'control-label' })}) }}
+            {% endif %}
+            <div class="controls{% if errors|length > 0 %} validation-error{% endif %}">
+                {{ form_widget(form) }}
+                {{ form_errors(form) }}
             </div>
-        {% endif %}
+        </div>
     {% endspaceless %}
 {% endblock form_row %}
 

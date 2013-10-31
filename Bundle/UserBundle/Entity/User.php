@@ -16,8 +16,6 @@ use JMS\Serializer\Annotation\Exclude;
 
 use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
 
-use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexible;
-
 use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
 
 use Oro\Bundle\TagBundle\Entity\Taggable;
@@ -41,7 +39,7 @@ use DateTime;
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  * @SuppressWarnings(PHPMD.ExcessiveClassLength)
  * @SuppressWarnings(PHPMD.TooManyFields)
- * @ORM\Entity(repositoryClass="Oro\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository")
+ * @ORM\Entity()
  * @ORM\Table(name="oro_user")
  * @ORM\HasLifecycleCallbacks()
  * @Oro\Loggable
@@ -62,7 +60,7 @@ use DateTime;
  *      }
  * )
  */
-class User extends AbstractEntityFlexible implements
+class User implements
     AdvancedUserInterface,
     \Serializable,
     EntityUploadedImageInterface,
@@ -277,14 +275,6 @@ class User extends AbstractEntityFlexible implements
     protected $groups;
 
     /**
-     * @var \Oro\Bundle\FlexibleEntityBundle\Model\AbstractFlexibleValue[]
-     *
-     * @ORM\OneToMany(targetEntity="UserValue", mappedBy="entity", cascade={"persist", "remove"}, orphanRemoval=true)
-     * @Exclude
-     */
-    protected $values;
-
-    /**
      * @ORM\OneToOne(
      *  targetEntity="UserApi", mappedBy="user", cascade={"persist", "remove"}, orphanRemoval=true, fetch="EXTRA_LAZY"
      * )
@@ -344,10 +334,22 @@ class User extends AbstractEntityFlexible implements
      */
     protected $imapConfiguration;
 
+    /**
+     * @var datetime $created
+     *
+     * @ORM\Column(type="datetime")
+     */
+    protected $created;
+
+    /**
+     * @var datetime $updated
+     *
+     * @ORM\Column(type="datetime")
+     */
+    protected $updated;
+
     public function __construct()
     {
-        parent::__construct();
-
         $this->salt            = base_convert(sha1(uniqid(mt_rand(), true)), 16, 36);
         $this->roles           = new ArrayCollection();
         $this->groups          = new ArrayCollection();
@@ -1097,6 +1099,7 @@ class User extends AbstractEntityFlexible implements
     public function beforeSave()
     {
         $this->created = new DateTime('now', new \DateTimeZone('UTC'));
+        $this->updated = new DateTime('now', new \DateTimeZone('UTC'));
         $this->loginCount = 0;
     }
 

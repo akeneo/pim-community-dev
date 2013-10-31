@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\UserBundle\Datagrid;
 
-use Oro\Bundle\GridBundle\Datagrid\FlexibleDatagridManager;
+use Oro\Bundle\GridBundle\Datagrid\DatagridManager;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
@@ -10,7 +10,7 @@ use Oro\Bundle\GridBundle\Filter\FilterInterface;
 use Oro\Bundle\GridBundle\Action\ActionInterface;
 use Oro\Bundle\GridBundle\Property\UrlProperty;
 
-class UserDatagridManager extends FlexibleDatagridManager
+class UserDatagridManager extends DatagridManager
 {
     /**
      * {@inheritDoc}
