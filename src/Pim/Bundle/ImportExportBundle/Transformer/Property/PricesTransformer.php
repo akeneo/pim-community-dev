@@ -50,7 +50,7 @@ class PricesTransformer implements PropertyTransformerInterface, ProductValueUpd
             }
 
             if (0 === preg_match('/^([0-9]*\.?[0-9]*) (\w+)$/', $price, $matches)) {
-                throw new InvalidValueException('Malformed price: %value%', array('%value%'=>$price));
+                throw new InvalidValueException('Malformed price: %value%', array('%value%' => $price));
             }
 
             if (in_array($matches[2], $currencies)) {

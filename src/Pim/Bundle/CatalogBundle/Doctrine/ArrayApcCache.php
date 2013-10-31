@@ -25,7 +25,7 @@ class ArrayApcCache implements Cache
      */
     public function __construct()
     {
-        $this->cache = ('cli' == php_sapi_name())
+        $this->cache = ('cli' === php_sapi_name())
             ? new ArrayCache()
             : new ApcCache();
     }

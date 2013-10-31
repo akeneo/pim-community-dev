@@ -108,7 +108,7 @@ class AttributeCache
     public function getAttribute($code)
     {
         foreach ($this->attributes as $attribute) {
-            if ($code == $attribute->getCode()) {
+            if ($code === $attribute->getCode()) {
                 return $attribute;
             }
         }
@@ -306,12 +306,12 @@ class AttributeCache
                 ->findBy(array('code' => $codes));
 
         foreach ($this->attributes as $attribute) {
-            if (static::IDENTIFIER_ATTRIBUTE_TYPE == $attribute->getAttributeType()) {
+            if (static::IDENTIFIER_ATTRIBUTE_TYPE === $attribute->getAttributeType()) {
                 $this->identifierAttribute = $attribute;
                 break;
             }
         }
-        if (count($this->attributes) != count($codes)) {
+        if (count($this->attributes) !== count($codes)) {
             throw new \Exception(
                 sprintf(
                     'The following fields do not exist : %s',

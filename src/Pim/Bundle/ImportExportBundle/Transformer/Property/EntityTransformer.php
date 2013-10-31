@@ -48,7 +48,7 @@ class EntityTransformer implements PropertyTransformerInterface
             if (!$entity) {
                 throw new InvalidValueException(
                     'No entity of class "%class%" with code "%value%"',
-                    array('%class%'=>$options['class'], '%value%'=>$value)
+                    array('%class%' => $options['class'], '%value%' => $value)
                 );
             }
 
