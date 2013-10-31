@@ -23,7 +23,10 @@ class Configuration implements ConfigurationInterface
                     ->addDefaultsIfNotSet()
                     ->children()
                         // @see http://requirejs.org/docs/api.html#config-waitSeconds
-                        ->integerNode('waitSeconds')->min(0)->end()
+                        ->integerNode('waitSeconds')
+                            ->min(0)
+                            ->defaultValue(0)
+                        ->end()
                         // @see http://requirejs.org/docs/api.html#config-enforceDefine
                         ->booleanNode('enforceDefine')->end()
                         // @see http://requirejs.org/docs/api.html#config-scriptType
@@ -33,7 +36,7 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('web_root')->defaultValue('%kernel.root_dir%/../web')->end()
                 ->scalarNode('js_engine')->isRequired()->end()
                 ->scalarNode('build_path')->defaultValue('js/app.min.js')->end()
-                ->integerNode('building_timeout')->min(1)->defaultValue('60')->end()
+                ->integerNode('building_timeout')->min(1)->defaultValue(60)->end()
                 ->arrayNode('build')
                     ->addDefaultsIfNotSet()
                     ->children()

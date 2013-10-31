@@ -78,7 +78,9 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
                 ),
                 array(
                     'js_engine' => 'node',
-                    'config' => array(),
+                    'config' => array(
+                        'waitSeconds' => 0,
+                    ),
                     'web_root' => '%kernel.root_dir%/../web',
                     'build_path' => 'js/app.min.js',
                     'building_timeout' => 60,
