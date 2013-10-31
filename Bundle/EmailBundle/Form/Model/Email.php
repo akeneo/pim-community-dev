@@ -7,7 +7,7 @@ class Email
     /**
      * @var string
      */
-    protected $gridId;
+    protected $gridName;
 
     /**
      * @var string
@@ -42,20 +42,20 @@ class Email
      *
      * @return string
      */
-    public function getGridId()
+    public function getGridName()
     {
-        return $this->gridId;
+        return $this->gridName;
     }
 
     /**
      * Set id of emails datagrid
      *
-     * @param string $gridId
+     * @param string $gridName
      * @return $this
      */
-    public function setGridId($gridId)
+    public function setGridName($gridName)
     {
-        $this->gridId = $gridId;
+        $this->gridName = $gridName;
 
         return $this;
     }

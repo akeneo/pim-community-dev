@@ -153,8 +153,8 @@ class EmailHandler
      */
     protected function initModel(Email $model)
     {
-        if ($this->request->query->has('gridId')) {
-            $model->setGridId($this->request->query->get('gridId'));
+        if ($this->request->query->has('gridName')) {
+            $model->setGridName($this->request->query->get('gridName'));
         }
         if ($this->request->query->has('from')) {
             $model->setFrom($this->request->query->get('from'));

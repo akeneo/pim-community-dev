@@ -14,7 +14,7 @@ class EmailType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('gridId', 'hidden', array('required' => false))
+            ->add('gridName', 'hidden', array('required' => false))
             ->add('from', 'oro_email_email_address', array('required' => true))
             ->add('to', 'oro_email_email_address', array('required' => true, 'multiple' => true))
             ->add('subject', 'text', array('required' => true))
@@ -30,6 +30,7 @@ class EmailType extends AbstractType
             array(
                 'data_class'           => 'Oro\Bundle\EmailBundle\Form\Model\Email',
                 'intention'            => 'email',
+                'csrf_protection'      => true,
                 'cascade_validation'   => true,
             )
         );
