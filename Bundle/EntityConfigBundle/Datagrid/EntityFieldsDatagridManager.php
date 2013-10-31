@@ -21,73 +21,6 @@ use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
 class EntityFieldsDatagridManager extends BaseDatagrid
 {
     /**
-     * @var integer id
-     */
-    protected $entityId;
-
-    /**
-     * @param $id
-     */
-    public function setEntityId($id)
-    {
-        $this->entityId = $id;
-    }
-
-    /**
-     * @param  EntityConfigModel $entity
-     * @return array
-     */
-    public function getLayoutActions(EntityConfigModel $entity)
-    {
-        $actions = array();
-        foreach ($this->configManager->getProviders() as $provider) {
-            foreach ($provider->getPropertyConfig()->getLayoutActions(PropertyConfigContainer::TYPE_FIELD) as $config) {
-                if (isset($config['filter'])) {
-                    foreach ($config['filter'] as $key => $value) {
-                        if (is_array($value)) {
-                            $error = true;
-                            foreach ($value as $v) {
-                                if ($provider->getConfig($entity->getClassName())->get($key) == $v) {
-                                    $error = false;
-                                }
-                            }
-                            if ($error) {
-                                continue 2;
-                            }
-                        } elseif ($provider->getConfig($entity->getClassName())->get($key) != $value) {
-                            continue 2;
-                        }
-                    }
-                }
-
-                if (isset($config['entity_id']) && $config['entity_id'] == true) {
-                    $config['args'] = array('id' => $entity->getId());
-                }
-
-                $actions[] = $config;
-            }
-        }
-
-        return $actions;
-    }
-
-    /**
-     * @return array
-     */
-    public function getRequireJsModules()
-    {
-        $modules = array();
-        foreach ($this->configManager->getProviders() as $provider) {
-            $modules = array_merge(
-                $modules,
-                $provider->getPropertyConfig(PropertyConfigContainer::TYPE_FIELD)->getRequireJsModules()
-            );
-        }
-
-        return $modules;
-    }
-
-    /**
      * {@inheritDoc}
      */
     protected function getProperties()
@@ -275,41 +208,5 @@ class EntityFieldsDatagridManager extends BaseDatagrid
         $this->prepareRowActions($actions, PropertyConfigContainer::TYPE_FIELD);
 
         return $actions;
-    }
-
-    /**
-     * @return ProxyQueryInterface
-     */
-    protected function createQuery()
-    {
-        /** @var ProxyQueryInterface|Query $query */
-        $query = parent::createQuery();
-        $query->where('cf.mode <> :mode');
-        $query->setParameter('mode', ConfigModelManager::MODE_HIDDEN);
-        $query->innerJoin('cf.entity', 'ce', 'WITH', 'ce.id=' . $this->entityId);
-        $query->addSelect('ce.id as entity_id', true);
-
-        foreach ($this->configManager->getProviders() as $provider) {
-            foreach ($provider->getPropertyConfig()->getItems(PropertyConfigContainer::TYPE_FIELD) as $code => $item) {
-                $alias = 'cfv_' . $code;
-
-                $fieldName = $provider->getScope() . '_' . $code;
-
-                if (isset($item['grid']['query'])) {
-                    $query->andWhere($alias . '.value ' . $item['grid']['query']['operator'] . ' :' . $alias);
-                    $query->setParameter($alias, $item['grid']['query']['value']);
-                }
-
-                $query->leftJoin(
-                    'cf.values',
-                    $alias,
-                    'WITH',
-                    $alias . ".code='" . $code . "' AND " . $alias . ".scope='" . $provider->getScope() . "'"
-                );
-                $query->addSelect($alias . '.value as ' . $fieldName . '', true);
-            }
-        }
-
-        return $query;
     }
 }

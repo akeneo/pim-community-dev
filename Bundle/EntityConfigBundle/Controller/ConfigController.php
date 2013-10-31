@@ -4,6 +4,7 @@ namespace Oro\Bundle\EntityConfigBundle\Controller;
 
 use Doctrine\ORM\QueryBuilder;
 
+use Oro\Bundle\EntityConfigBundle\Provider\PropertyConfigContainer;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -47,10 +48,6 @@ class ConfigController extends Controller
      */
     public function indexAction(Request $request)
     {
-        /*
-        $datagrid->getPager()->setMaxPerPage(50);
-        */
-
         $actions = array();
         $modules = array();
         $configManager = $this->get('oro_entity_config.config_manager');
@@ -141,17 +138,6 @@ class ConfigController extends Controller
      */
     public function viewAction(EntityConfigModel $entity)
     {
-        /** @var  EntityFieldsDatagridManager $datagridManager */
-        $datagridManager = $this->get('oro_entity_config.entityfieldsdatagrid.manager');
-        $datagridManager->setEntityId($entity->getId());
-        $datagridManager->getRouteGenerator()->setRouteParameters(
-            array(
-                'id' => $entity->getId()
-            )
-        );
-
-        $datagrid = $datagridManager->getDatagrid();
-
         /**
          * define Entity module and name
          */
@@ -205,25 +191,20 @@ class ConfigController extends Controller
             $entityCount = 0;
         }
 
-        /**
-         * Set 50 records per page by default for DataGrid
-         */
-        $datagrid->getPager()->setMaxPerPage(50);
-        $datagrid->getPager()->init();
+        list ($layoutActions, $requireJsModules) = $this->getLayoutParams($entity);
 
         return array(
             'entity'           => $entity,
             'entity_config'    => $entityConfigProvider->getConfig($entity->getClassName()),
             'entity_extend'    => $extendConfig,
             'entity_count'     => $entityCount,
-            'entity_fields'    => $datagrid->createView(),
             'entity_ownership' => $ownershipConfigProvider->getConfig($entity->getClassName()),
             'unique_key'       => $extendConfig->get('unique_key'),
             'link'             => $link,
             'entity_name'      => $entityName,
             'module_name'      => $moduleName,
-            'button_config'    => $datagridManager->getLayoutActions($entity),
-            'require_js'       => $datagridManager->getRequireJsModules(),
+            'button_config'    => $layoutActions,
+            'require_js'       => $requireJsModules,
         );
     }
 
@@ -378,5 +359,56 @@ class ConfigController extends Controller
         }
 
         return new Response(json_encode($fields));
+    }
+
+    /**
+     * Return configured layout actions and requirejs modules
+     *
+     * @param  EntityConfigModel $entity
+     * @return array
+     */
+    protected function getLayoutParams(EntityConfigModel $entity)
+    {
+        $configManager = $this->get('oro_entity_config.config_manager');
+
+        $actions = array();
+        $requireJsModules = array();
+
+        foreach ($configManager->getProviders() as $provider) {
+            $layoutActions = $provider->getPropertyConfig()->getLayoutActions(PropertyConfigContainer::TYPE_FIELD);
+            foreach ($layoutActions as $config) {
+                if (isset($config['filter'])) {
+                    foreach ($config['filter'] as $key => $value) {
+                        if (is_array($value)) {
+                            $error = true;
+                            foreach ($value as $v) {
+                                if ($provider->getConfig($entity->getClassName())->get($key) == $v) {
+                                    $error = false;
+                                }
+                            }
+                            if ($error) {
+                                continue 2;
+                            }
+                        } elseif ($provider->getConfig($entity->getClassName())->get($key) != $value) {
+                            continue 2;
+                        }
+                    }
+                }
+
+                if (isset($config['entity_id']) && $config['entity_id'] == true) {
+                    $config['args'] = array('id' => $entity->getId());
+                }
+
+                $actions[] = $config;
+            }
+
+            $requireJsModules = array_merge(
+                $requireJsModules,
+                $provider->getPropertyConfig(PropertyConfigContainer::TYPE_FIELD)
+                    ->getRequireJsModules()
+            );
+        }
+
+        return [$actions, $requireJsModules];
     }
 }

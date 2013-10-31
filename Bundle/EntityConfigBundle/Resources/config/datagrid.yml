@@ -1,6 +1,8 @@
 datagrid:
+    # Entity config entities grid
     entityconfig-grid:
         options:
+            entityHint: entity
             toolbarOptions:
                 pageSize:
                     default_per_page: 50
@@ -84,3 +86,92 @@ datagrid:
                 updated:
                     type: datetime
                     data_name: ce.updated
+
+    # Entity field datagrid
+    entityfields-grid:
+        options:
+            entityHint: fields
+            toolbarOptions:
+                pageSize:
+                    default_per_page: 50
+        source:
+            acl_resource: oro_entityconfig_view
+            type: orm
+            query:
+                select:
+                    - cf.id
+                    - cf.className
+                    - cf.fieldName
+                    - cf.type
+
+                from:
+                    - { table: OroEntityConfigBundle:FieldConfigModel, alias: cf }
+        columns:
+            name:
+                label: Name
+                type: field
+                frontend_type: select
+                choices: @oro_entity_config.event_listener.entityconfig_grid_listener->getChoicesName
+            #@TODO module column should has "select" type
+            module:
+                label: Module
+                type: field
+                frontend_type: select
+                choices: @oro_entity_config.event_listener.entityconfig_grid_listener->getChoicesModule
+            updated:
+                label: Updated at
+                type: field
+                frontend_type: datetime
+
+        properties:
+            update_link:
+                type: url
+                route: oro_entityconfig_update
+                params:
+                    - id
+            view_link:
+                type: url
+                route: oro_entityconfig_view
+                params:
+                    - id
+        actions:
+            # @TODO check why those actions dont have ACL
+            update:
+                type: navigate
+                label: Update
+                icon: edit
+                link: update_link
+                rowAction: true
+            view:
+                type: navigate
+                label: View
+                icon: book
+                link: view_link
+        sorters:
+            columns:
+                name:
+                    data_name: name
+                module:
+                    data_name: module
+                updated:
+                    data_name: ce.updated
+        filters:
+            columns:
+                name:
+                    type: choice
+                    data_name: name
+                    options:
+                        field_options:
+                            multiple: true
+                            choices: @oro_entity_config.event_listener.entityconfig_grid_listener->getChoicesName
+                module:
+                    type: choice
+                    data_name: module
+                    options:
+                        field_options:
+                            multiple: true
+                            choices: @oro_entity_config.event_listener.entityconfig_grid_listener->getChoicesModule
+                updated:
+                    type: datetime
+                    data_name: ce.updated
+

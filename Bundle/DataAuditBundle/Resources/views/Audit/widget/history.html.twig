@@ -5,7 +5,7 @@
         <div class="container-fluid">
             {% block content %}
                 <div id="{{ gridId }}">
-                    {{ dataGrid.renderGrid(gridName, {grid: {object_class: entity, object_id: entityId}}) }}
+                    {{ dataGrid.renderGrid(gridName, {object_class: entity, object_id: entityId}) }}
                 </div>
             {% endblock %}
         </div>

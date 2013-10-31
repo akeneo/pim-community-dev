@@ -4,7 +4,6 @@ namespace Oro\Bundle\EntityConfigBundle\EventListener;
 
 use Doctrine\ORM\QueryBuilder;
 
-use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 use Oro\Bundle\DataGridBundle\Event\BuildAfter;
@@ -15,47 +14,22 @@ use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\ResultRecord;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 
+use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigModelManager;
 use Oro\Bundle\EntityConfigBundle\Provider\PropertyConfigContainer;
 use Oro\Bundle\FilterBundle\Extension\Configuration as FilterConfiguration;
 
-class EntityConfigGridListener implements EventSubscriberInterface
+class EntityConfigGridListener extends AbstractConfigGridListener
 {
-    const TYPE_HTML     = 'html';
-    const TYPE_TWIG     = 'twig';
-    const TYPE_NAVIGATE = 'navigate';
-    const TYPE_DELETE   = 'delete';
-    const PATH_COLUMNS  = '[columns]';
-    const PATH_SORTERS  = '[sorters]';
-    const PATH_FILTERS  = '[filters]';
-    const PATH_ACTIONS  = '[actions]';
+    const GRID_NAME = 'entityconfig-grid';
+
 
     /** @var ConfigManager */
     protected $configManager;
 
-    protected $filterChoices;
-
-    /**
-     * @param ConfigManager $configManager
-     */
-    public function __construct(ConfigManager $configManager)
-    {
-        $this->configManager = $configManager;
-
-        $this->filterChoices = ['name' => [], 'module' => []];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getSubscribedEvents()
-    {
-        return array(
-            'oro_datagrid.datgrid.build.after.entityconfig-grid'  => 'onBuildAfter',
-            'oro_datagrid.datgrid.build.before.entityconfig-grid' => 'onBuildBefore',
-        );
-    }
+    /** @var array Filter choices for name and module column filters */
+    protected $filterChoices = ['name' => [], 'module' => []];
 
     /**
      * @param BuildAfter $event
@@ -66,47 +40,16 @@ class EntityConfigGridListener implements EventSubscriberInterface
         if ($datasource instanceof OrmDatasource) {
             $queryBuilder = $datasource->getQuery();
 
-            $this->prepareQuery($queryBuilder);
+            $this->prepareQuery($queryBuilder, 'ce', 'cev', PropertyConfigContainer::TYPE_ENTITY);
         }
     }
 
     /**
-     * Add dynamic fields
-     *
      * @param BuildBefore $event
      */
     public function onBuildBefore(BuildBefore $event)
     {
-        $config = $event->getConfig();
-
-        // get dynamic columns and merge them with static columns from configuration
-        $additionalColumnSettings = $this->getDynamicFields();
-        $filtersSorters = $this->getDynamicSortersAndFilters($additionalColumnSettings);
-        $additionalColumnSettings = [
-            'columns' => $additionalColumnSettings,
-            'sorters' => $filtersSorters['sorters'],
-            'filters' => $filtersSorters['filters'],
-        ];
-
-        foreach (['columns', 'sorters', 'filters'] as $itemName) {
-            $path = '['.$itemName.']';
-            // get already defined columns, sorters and filters
-            $items = $config->offsetGetByPath($path, array());
-
-            // merge additional items with existing
-            $items = array_merge_recursive($additionalColumnSettings[$itemName], $items);
-
-            // set new item set with dynamic columns/sorters/filters
-            $config->offsetSetByPath($path, $items);
-        }
-
-        // add/configure entity config properties
-        $this->addEntityConfigProperties($config);
-
-        // add/configure entity config actions
-        $actions = $config->offsetGetByPath(self::PATH_ACTIONS, []);
-        $this->prepareRowActions($actions);
-        $config->offsetSetByPath(self::PATH_ACTIONS, $actions);
+        $this->doBuildBefore($event, 'cev', PropertyConfigContainer::TYPE_ENTITY);
     }
 
     /**
@@ -253,82 +196,6 @@ class EntityConfigGridListener implements EventSubscriberInterface
     }
 
     /**
-     * @param QueryBuilder $query
-     *
-     * @return $this
-     */
-    protected function prepareQuery(QueryBuilder $query)
-    {
-        foreach ($this->configManager->getProviders() as $provider) {
-            foreach ($provider->getPropertyConfig()->getItems() as $code => $item) {
-                $alias     = 'cev' . $code;
-                $fieldName = $provider->getScope() . '_' . $code;
-
-                if (isset($item['grid']['query'])) {
-                    $query->andWhere($alias . '.value ' . $item['grid']['query']['operator'] . ' :' . $alias);
-                    $query->setParameter($alias, $item['grid']['query']['value']);
-                }
-
-                $query->leftJoin(
-                    'ce.values',
-                    $alias,
-                    'WITH',
-                    $alias . ".code='" . $code . "' AND " . $alias . ".scope='" . $provider->getScope() . "'"
-                );
-                $query->addSelect($alias . '.value as ' . $fieldName);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return array
-     */
-    protected function getDynamicFields()
-    {
-        $fields = [];
-
-        foreach ($this->configManager->getProviders() as $provider) {
-            foreach ($provider->getPropertyConfig()->getItems() as $code => $item) {
-                if (!isset($item['grid'])) {
-                    continue;
-                }
-
-                $fieldName    = $provider->getScope() . '_' . $code;
-                $item['grid'] = $provider->getPropertyConfig()->initConfig($item['grid']);
-                $item['grid'] = $this->mapEntityConfigTypes($item['grid']);
-
-                $field = array(
-                    $fieldName => array_merge(
-                        $item['grid'],
-                        array(
-                            'expression' => 'cev' . $code . '.value',
-                            'field_name' => $fieldName,
-                        )
-                    )
-                );
-
-                if (isset($item['options']['priority']) && !isset($fields[$item['options']['priority']])) {
-                    $fields[$item['options']['priority']] = $field;
-                } else {
-                    $fields[] = $field;
-                }
-            }
-        }
-
-        ksort($fields);
-
-        $orderedFields = $sorters = $filters = [];
-        // compile field list with pre-defined order
-        foreach ($fields as $field) {
-            $orderedFields = array_merge($orderedFields, $field);
-        }
-
-        return $orderedFields;
-    }
-
-    /**
      * @param array $orderedFields
      * @return array
      */
@@ -426,27 +293,5 @@ class EntityConfigGridListener implements EventSubscriberInterface
         return $this->filterChoices[$scope];
     }
 
-    /**
-     * @param array $gridConfig
-     *
-     * @return array
-     */
-    protected function mapEntityConfigTypes(array $gridConfig)
-    {
-        if (isset($gridConfig['type'])
-            && $gridConfig['type'] == self::TYPE_HTML
-            && isset($item['grid']['template'])
-        ) {
-            $gridConfig['type']          = self::TYPE_TWIG;
-            $gridConfig['frontend_type'] = self::TYPE_HTML;
-        } else {
-            if (!empty($gridConfig['type'])) {
-                $gridConfig['frontend_type'] = $gridConfig['type'];
-            }
 
-            $gridConfig['type'] = 'field';
-        }
-
-        return $gridConfig;
-    }
 }
