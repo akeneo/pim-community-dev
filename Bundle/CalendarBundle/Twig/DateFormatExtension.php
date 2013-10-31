@@ -48,7 +48,7 @@ class DateFormatExtension extends \Twig_Extension
      *          Thu Oct 17, 2013 – Thu Oct 18, 2013 - when $skipTime = true
      *
      * @param \Twig_Environment $env
-     * @param \DateTime         $startDate
+     * @param \DateTime|null    $startDate
      * @param \DateTime|null    $endDate
      * @param bool              $skipTime
      * @param string|null       $dateTimeFormat
@@ -61,7 +61,7 @@ class DateFormatExtension extends \Twig_Extension
      */
     public function formatCalendarDateRange(
         \Twig_Environment $env,
-        \DateTime $startDate,
+        \DateTime $startDate = null,
         \DateTime $endDate = null,
         $skipTime = false,
         $dateTimeFormat = null,
@@ -70,6 +70,13 @@ class DateFormatExtension extends \Twig_Extension
         $locale = null,
         $timezone = null
     ) {
+        if (is_null($startDate)) {
+            // exit because nothing to format.
+            // We have to accept null as $startDate because the validator of email templates calls functions
+            // with empty arguments
+            return '';
+        }
+
         // check if $endDate is not specified or $startDate equals to $endDate
         if (is_null($endDate) || $startDate == $endDate) {
             return $skipTime
