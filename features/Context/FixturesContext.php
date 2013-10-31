@@ -1207,7 +1207,7 @@ class FixturesContext extends RawMinkContext
         $product = $this->getProductManager()->findByIdentifier($sku);
 
         if (!$product) {
-            throw new \InvalidArgumentException(sprintf('Could not find product with sku %s', $sku));
+            throw new \InvalidArgumentException(sprintf('Could not find a product with sku %s', $sku));
         }
 
         return $product;
@@ -1420,6 +1420,7 @@ class FixturesContext extends RawMinkContext
                     );
                 }
                 $option = $options->first();
+                $option = $option ?: null;
 
                 if ($attribute->getAttributeType() === $this->attributeTypes['simpleselect']) {
                     $value->setOption($option);
