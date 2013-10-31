@@ -3,9 +3,12 @@
 namespace Oro\Bundle\FormBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
+use Oro\Bundle\LocaleBundle\Formatter\NumberFormatter;
 
 class OroMoneyType extends AbstractType
 {
@@ -17,11 +20,18 @@ class OroMoneyType extends AbstractType
     protected $localeSettings;
 
     /**
-     * @param LocaleSettings $localeSettings
+     * @var
      */
-    public function __construct(LocaleSettings $localeSettings)
+    protected $numberFormatter;
+
+    /**
+     * @param LocaleSettings $localeSettings
+     * @param NumberFormatter $numberFormatter
+     */
+    public function __construct(LocaleSettings $localeSettings, NumberFormatter $numberFormatter)
     {
         $this->localeSettings = $localeSettings;
+        $this->numberFormatter = $numberFormatter;
     }
 
     /**
@@ -45,10 +55,48 @@ class OroMoneyType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
+        $currencyCode = $this->localeSettings->getCurrency();
+        $currencySymbol = $this->localeSettings->getCurrencySymbolByCurrency($currencyCode);
+
         $resolver->setDefaults(
             array(
-                'currency' => $this->localeSettings->getCurrency(),
+                'currency'        => $currencyCode,
+                'currency_symbol' => $currencySymbol,
             )
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function buildView(FormView $view, FormInterface $form, array $options)
+    {
+        $currency = $options['currency'];
+        $isPrepend = $this->numberFormatter->isCurrencySymbolPrepend($currency);
+
+        $view->vars['money_pattern'] = $this->getPattern($currency, $isPrepend);
+        $view->vars['currency_symbol'] = $options['currency_symbol'];
+        $view->vars['currency_symbol_prepend'] = $isPrepend;
+    }
+
+    /**
+     * @param string $currency
+     * @param bool|null $isPrepend
+     * @return string
+     */
+    protected function getPattern($currency, $isPrepend)
+    {
+        $pattern = '{{ widget }}';
+        if (!$currency || null === $isPrepend) {
+            return $pattern;
+        }
+
+        if ($isPrepend) {
+            $pattern = '{{ currency }}' . $pattern;
+        } else {
+            $pattern = $pattern . '{{ currency }}';
+        }
+
+        return $pattern;
     }
 }

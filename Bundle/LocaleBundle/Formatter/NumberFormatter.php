@@ -13,6 +13,19 @@ class NumberFormatter
     protected $localeSettings;
 
     /**
+     * array(
+     *      '<locale>' => array(
+     *          '<currencyCode>' => true|false|null,
+     *          ...
+     *      ),
+     *      ...
+     * )
+     *
+     * @var array
+     */
+    protected $currencySymbolPrepend = array();
+
+    /**
      * @param LocaleSettings $localeSettings
      */
     public function __construct(LocaleSettings $localeSettings)
@@ -42,7 +55,7 @@ class NumberFormatter
     }
 
     /**
-     * Format currency
+     * Format currency, replace INTL currency symbol with configuration currency symbol
      *
      * @param float $value
      * @param string $currency Currency code
@@ -61,8 +74,20 @@ class NumberFormatter
         if (!$currency) {
             $currency = $this->localeSettings->getCurrency();
         }
-        return $this->getFormatter($locale, \NumberFormatter::CURRENCY, $attributes, $textAttributes)
-            ->formatCurrency($value, $currency);
+
+        $formatter = $this->getFormatter($locale, \NumberFormatter::CURRENCY, $attributes, $textAttributes);
+
+        $currencySymbol = $this->getSymbol(\NumberFormatter::CURRENCY_SYMBOL, \NumberFormatter::CURRENCY);
+        $currencyIntlSymbol = $this->getSymbol(\NumberFormatter::INTL_CURRENCY_SYMBOL, \NumberFormatter::CURRENCY);
+        $localizedCurrencySymbol = $this->localeSettings->getCurrencySymbolByCurrency($currency);
+
+        $formattedString = $formatter->formatCurrency($value, $currency);
+
+        return str_replace(
+            array($currency, $currencySymbol, $currencyIntlSymbol),
+            $localizedCurrencySymbol,
+            $formattedString
+        );
     }
 
     /**
@@ -335,5 +360,39 @@ class NumberFormatter
         }
 
         return $style;
+    }
+
+    /**
+     * @param string $currency
+     * @param string|null $locale
+     * @return bool|null Null means that there are no currency symbol in string
+     */
+    public function isCurrencySymbolPrepend($currency, $locale = null)
+    {
+        if (!$locale) {
+            $locale = $this->localeSettings->getLocale();
+        }
+
+        if (empty($this->currencySymbolPrepend[$locale])
+            || !array_key_exists($currency, $this->currencySymbolPrepend)
+        ) {
+            $formatter = $this->getFormatter($locale, \NumberFormatter::CURRENCY);
+            $pattern = $formatter->formatCurrency('123', $currency);
+            preg_match(
+                '/^([^\s\xc2\xa0]*)[\s\xc2\xa0]*123(?:[,.]0+)?[\s\xc2\xa0]*([^\s\xc2\xa0]*)$/u',
+                $pattern,
+                $matches
+            );
+
+            if (!empty($matches[1])) {
+                $this->currencySymbolPrepend[$locale][$currency] = true;
+            } elseif (!empty($matches[2])) {
+                $this->currencySymbolPrepend[$locale][$currency] = false;
+            } else {
+                $this->currencySymbolPrepend[$locale][$currency] = null;
+            }
+        }
+
+        return $this->currencySymbolPrepend[$locale][$currency];
     }
 }

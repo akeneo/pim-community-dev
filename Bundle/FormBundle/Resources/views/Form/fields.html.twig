@@ -361,3 +361,26 @@
         </label>
     {% endspaceless %}
 {% endblock form_label %}
+
+{% block oro_money_currency_addon %}
+    <span class="add-on">{{ currency_symbol }}</span>
+{% endblock oro_money_currency_addon %}
+
+{% block oro_money_widget %}
+    {% spaceless %}
+        {% if currency_symbol_prepend is null %}
+            {% set div_input_class = '' %}
+        {% elseif currency_symbol_prepend == true %}
+            {% set div_input_class = 'input-prepend' %}
+        {% else %}
+            {% set div_input_class = 'input-append' %}
+        {% endif %}
+
+        <div class="{{ div_input_class }}">
+            {% set money_field = money_pattern %}
+            {% set money_field = money_field|replace({ '{{ widget }}': block('form_widget_simple') }) %}
+            {% set money_field = money_field|replace({ '{{ currency }}': block('oro_money_currency_addon') }) %}
+            {{ money_field|raw }}
+        </div>
+    {% endspaceless %}
+{% endblock oro_money_widget %}
