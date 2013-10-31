@@ -77,7 +77,7 @@ class MassActionDispatcher
 
         // create mediator
         $massAction     = $this->getMassActionByName($datagrid, $actionName);
-        $identifier     = $this->getEntityIdentifierField($massAction);
+        $identifier     = $this->getIdentifierField($massAction);
         $qb             = $this->getDatagridQuery($datagrid, $identifier, $inset, $values);
         $resultIterator = $this->getResultIterator($qb);
         $mediator       = new MassActionMediator($massAction, $datagrid, $resultIterator, $data);
@@ -203,7 +203,7 @@ class MassActionDispatcher
      *
      * @return string
      */
-    protected function getEntityIdentifierField(MassActionInterface $massAction)
+    protected function getIdentifierField(MassActionInterface $massAction)
     {
         $identifier = $massAction->getOptions()->offsetGet('data_identifier');
         if (!$identifier) {

@@ -54,7 +54,9 @@ datagrid:
         mass_actions:
             delete:
                 type: delete
-                data_id: g.id
+                icon: trash
+                entity_name: OroCRMContactBundle:Group
+                data_identifier: g.id
 
         options:
             entityHint: contact group
