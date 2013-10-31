@@ -25,6 +25,7 @@ function(Backbone) {
             postalCode: '',
             state: '',
             stateText: '',
+            regionCode: '',
             primary: false,
             types: [],
             active: false

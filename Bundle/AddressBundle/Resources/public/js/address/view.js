@@ -67,9 +67,10 @@ function( _, Backbone, __, addressFormatter) {
                 street2: data.street2,
                 city: data.city,
                 country: data.country,
-                countryIso2: data.countryIso2,
+                country_iso2: data.countryIso2,
                 postal_code: data.postalCode,
-                region: data.state || data.stateText
+                region: data.state || data.stateText,
+                region_code: data.regionCode
             });
             this.$el.append(this.template(data));
             if (this.model.get('primary')) {
