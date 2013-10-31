@@ -88,6 +88,8 @@ class OrmProductTransformerTest extends \PHPUnit_Framework_TestCase
             $this->attributeCache,
             $this->propertyAccessor
         );
+
+        $this->addProductValueTransformer('default');
     }
 
     public function testPropertyTransformers()
@@ -156,7 +158,7 @@ class OrmProductTransformerTest extends \PHPUnit_Framework_TestCase
                 'key2'  => 'value2'
             )
         );
-        $this->assertEquals($this->productValues['key1']->data, 'value1');
+        $this->assertEquals($this->productValues['key1']->data, 'default-value1');
         $this->assertEquals($this->productValues['key2']->data, 'transformed-value2');
     }
 
@@ -178,7 +180,7 @@ class OrmProductTransformerTest extends \PHPUnit_Framework_TestCase
             )
         );
 
-        $this->assertEquals($this->productValues['key1']->data, '');
+        $this->assertEquals($this->productValues['key1']->data, 'default-');
         $this->assertArrayNotHasKey('key2', $this->productValues);
     }
 

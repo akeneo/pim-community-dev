@@ -1,5 +1,6 @@
 parameters:
     pim_import_export.transformer.product.class:                Pim\Bundle\ImportExportBundle\Transformer\OrmProductTransformer
+    pim_import_export.transformer.property.default.class:       Pim\Bundle\ImportExportBundle\Transformer\Property\DefaultTransformer
     pim_import_export.transformer.property.entity.class:        Pim\Bundle\ImportExportBundle\Transformer\Property\EntityTransformer
     pim_import_export.transformer.property.media.class:         Pim\Bundle\ImportExportBundle\Transformer\Property\MediaTransformer
     pim_import_export.transformer.property.date.class:          Pim\Bundle\ImportExportBundle\Transformer\Property\DateTransformer
@@ -16,6 +17,13 @@ services:
             - '@pim_import_export.attribute_cache'
             - '@property_accessor'
 
+    pim_import_export.transformer.property.default:
+        class: '%pim_import_export.transformer.property.default.class%'
+        public: false
+        tags:
+            - name: pim_import_export.transformer.product.attribute
+              backend_type: default
+        
     pim_import_export.transformer.property.entity:
         class: '%pim_import_export.transformer.property.entity.class%'
         arguments:

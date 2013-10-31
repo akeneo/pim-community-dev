@@ -234,14 +234,12 @@ class OrmProductTransformer
         foreach ($attributeValues as $columnCode => $columnValue) {
             $columnInfo = $columns[$columnCode];
             try {
-                if ($columnValue || in_array($columnInfo['code'], $requiredAttributeCodes)) {
+                if ('' != trim($columnValue) || in_array($columnInfo['code'], $requiredAttributeCodes)) {
                     $backendType = $columnInfo['attribute']->getBackendType();
                     $transformerConfig = isset($this->attributeTransformers[$backendType])
                             ? $this->attributeTransformers[$backendType]
-                            : null;
-                    $value = $transformerConfig
-                            ? $this->getTransformedValue($columnValue, $transformerConfig)
-                            : $columnValue;
+                            : $this->attributeTransformers['default'];
+                    $value = $this->getTransformedValue($columnValue, $transformerConfig);
                     $this->setAttributeValue($product, $value, $columnInfo, $transformerConfig);
                     $errors = array_merge(
                         $errors,
