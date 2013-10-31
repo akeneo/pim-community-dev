@@ -248,19 +248,38 @@ class ProductManager extends FlexibleManager
      *
      * @return null
      */
-    public function save(ProductInterface $product, $calculateCompleteness = true)
+    public function save(ProductInterface $product, $postpone = false, $flush = true)
     {
         $this->storageManager->persist($product);
-        $this->storageManager->flush();
-        $this->storageManager->refresh($product);
 
-        if ($calculateCompleteness) {
-            $this->completenessCalculator->calculateForAProduct($product);
-        } else {
+        if ($postpone) {
             $this->completenessCalculator->schedule($product);
+        } else {
+            $this->completenessCalculator->calculateForAProduct($product);
         }
 
-        $this->storageManager->flush();
+        if ($flush) {
+            $this->storageManager->flush();
+        }
+    }
+
+    public function saveAll(array $products, $postpone = false, $flush = true)
+    {
+        foreach ($products as $product) {
+            if (!$product instanceof \Pim\Bundle\CatalogBundle\Model\ProductInterface) {
+                throw new \InvalidArgumentException(
+                    sprintf(
+                        'Expected instance of Pim\Bundle\CatalogBundle\Model\ProductInterface, got %s',
+                        get_class($product)
+                    )
+                );
+            }
+            $this->save($product, $postpone, false);
+        }
+
+        if ($flush) {
+            $this->storageManager->flush();
+        }
     }
 
     /**
@@ -305,6 +324,21 @@ class ProductManager extends FlexibleManager
                 $filenamePrefix =  $media->getFile() ? $this->generateFilenamePrefix($product, $value) : null;
                 $this->mediaManager->handle($media, $filenamePrefix);
             }
+        }
+    }
+
+    public function handleAllMedia(array $products)
+    {
+        foreach ($products as $product) {
+            if (!$product instanceof \Pim\Bundle\CatalogBundle\Model\ProductInterface) {
+                throw new \InvalidArgumentException(
+                    sprintf(
+                        'Expected instance of Pim\Bundle\CatalogBundle\Model\ProductInterface, got %s',
+                        get_class($product)
+                    )
+                );
+            }
+            $this->handleMedia($product);
         }
     }
 
