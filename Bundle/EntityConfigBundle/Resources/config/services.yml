@@ -6,6 +6,7 @@ parameters:
     oro_entity_config.provider_bag.class:                       Oro\Bundle\EntityConfigBundle\Provider\ConfigProviderBag
 
     oro_entity_config.event_listener.entityconfig_grid_listener.class: Oro\Bundle\EntityConfigBundle\EventListener\EntityConfigGridListener
+    oro_entity_config.event_listener.entityfields_grid_listener.class: Oro\Bundle\EntityConfigBundle\EventListener\FieldConfigGridListener
 
 services:
     oro_entity_config.link.entity_manager:
@@ -71,5 +72,13 @@ services:
         class: %oro_entity_config.event_listener.entityconfig_grid_listener.class%
         arguments:
             - @oro_entity_config.config_manager
+        tags:
+            - { name: kernel.event_subscriber }
+
+    oro_entity_config.event_listener.entityfields_grid_listener:
+        class: %oro_entity_config.event_listener.entityfields_grid_listener.class%
+        arguments:
+            - @oro_entity_config.config_manager
+            - @oro_datagrid.datagrid.request_params
         tags:
             - { name: kernel.event_subscriber }
