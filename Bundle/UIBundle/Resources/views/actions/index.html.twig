@@ -3,7 +3,7 @@
 {% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
 {% block head_script %}
     {{ parent() }}
-    {#{% placeholder prepare_grid with {'datagrid': datagrid, 'selector': '#' ~ gridId} %}#}
+    {% if gridId is defined %}{% placeholder prepare_grid with {'datagrid': datagrid, 'selector': '#' ~ gridId} %}{% endif %}
 {% endblock %}
 {% block content %}
     <div class="container-fluid page-title">
@@ -25,9 +25,15 @@
         </div>
     </div>
 
-    {% if params is defined %}
-        {{ dataGrid.renderGrid(gridName, params) }}
-    {% else %}
-        {{ dataGrid.renderGrid(gridName) }}
+    {% if gridName is defined %}
+        {% if params is defined %}
+            {{ dataGrid.renderGrid(gridName, params) }}
+        {% else %}
+            {{ dataGrid.renderGrid(gridName) }}
+        {% endif %}
+    {% endif %}
+
+    {% if gridId is defined %}
+        {{ UI.gridBlock(gridId) }}
     {% endif %}
 {% endblock content %}
