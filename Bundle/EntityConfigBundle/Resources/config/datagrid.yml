@@ -144,50 +144,50 @@ datagrid:
     entity-audit-grid:
         options:
             entityHint: history
-#            toolbarOptions:
-#                pageSize:
-#                    default_per_page: 50
         source:
             acl_resource: oro_entityconfig_manage
             type: orm
             query:
                 select:
-                    - cf.id
-                    - ce.className
-                    - cf.fieldName
-                    - cf.type
-                    - cf.mode
+                    - log.id
+                    - log.diff
+                    - log.loggedAt
+                    - >
+                      CONCAT(
+                        CONCAT(
+                            CONCAT(u.firstName, ' '),
+                            CONCAT(u.lastName, ' ')
+                        ),
+                        CONCAT(' - ', u.email)
+                      ) as author
                 from:
-                    - { table: OroEntityConfigBundle:FieldConfigModel, alias: cf }
+                    - { table: OroEntityConfigBundle:ConfigLog, alias: log }
+                join:
+                    left:
+                        user:
+                            join: a.user
+                            alias: u
 
         columns:
-            fieldName:
-                label: Name
+            author:
+                label: Author
                 type: field
                 frontend_type: string
-            type:
-                label: Data Type
+            loggedAt:
+                label: Logged at
                 type: field
+                frontend_type: date
+            diffs:
+                label: Diffs
+                type: twig
+                template: OroEntityConfigBundle:Audit:data.html.twig
                 frontend_type: string
-
-        properties:
-            update_link:
-                type: url
-                route: oro_entityconfig_field_update
-                params:
-                    - id
-        actions:
-            # @TODO check why those actions dont have ACL
-            update:
-                type: navigate
-                label: Edit
-                icon: edit
-                link: update_link
-                rowAction: true
+                data_name: diff
         sorters:
             columns:
-                fieldName:
-                    data_name: cf.fieldName
-                type:
-                    data_name: cf.type
-        filters: ~
+                author:
+                    data_name: author
+                loggedAt:
+                    data_name: a.loggedAt
+            default:
+                loggedAt: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
