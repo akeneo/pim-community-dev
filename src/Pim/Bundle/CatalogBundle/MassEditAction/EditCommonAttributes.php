@@ -238,9 +238,9 @@ class EditCommonAttributes extends AbstractMassEditAction
     {
         foreach ($products as $product) {
             $this->setProductValues($product);
-            $this->productManager->handleMedia($product);
-            $this->productManager->save($product);
         }
+        $this->productManager->handleAllMedia($products);
+        $this->productManager->saveAll($products, true);
     }
 
     /**
