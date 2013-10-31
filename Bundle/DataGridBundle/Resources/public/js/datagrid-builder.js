@@ -58,10 +58,14 @@ function($, _, Backbone, __, tools, mediator, registry, LoadingMask,
                     var type = column.type;
                     modules[helpers.cellType(type)] = moduleName(cellModuleName, cellTypes[type] || type);
                 });
-                // actions
-                _.each(_.values(metadata.rowActions).concat(_.values(metadata.massActions)), function (action) {
+                // row actions
+                _.each(_.values(metadata.rowActions), function (action) {
                     modules[helpers.actionType(action.type)] = moduleName(actionModuleName, action.type);
                 });
+                // mass actions
+                if (!$.isEmptyObject(metadata.massActions)) {
+                    modules[helpers.actionType('mass')] = moduleName(actionModuleName, 'mass');
+                }
             },
 
             /**
@@ -142,7 +146,7 @@ function($, _, Backbone, __, tools, mediator, registry, LoadingMask,
 
                 // mass actions
                 _.each(metadata.massActions, function (options, action) {
-                    massActions[action] = modules[helpers.actionType(options.type)].extend(options);
+                    massActions[action] = modules[helpers.actionType('mass')].extend(options);
                 });
 
                 return {
