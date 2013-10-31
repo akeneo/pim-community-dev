@@ -13,7 +13,12 @@ use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * @ORM\Entity()
- * @ORM\Table(name="pim_catalog_category_translation")
+ * @ORM\Table(
+ *      name="pim_catalog_category_translation",
+ *      uniqueConstraints= {
+ *          @ORM\UniqueConstraint(name="locale_foreign_key_idx", columns={"locale", "foreign_key"})
+ *      }
+ * )
  */
 class CategoryTranslation extends AbstractTranslation
 {
