@@ -2,8 +2,9 @@
 
 namespace Oro\Bundle\DataGridBundle\Extension\MassAction;
 
-
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
+use Oro\Bundle\DataGridBundle\Datasource\Orm\IterableResultInterface;
+use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface;
 
 interface MassActionMediatorInterface
 {

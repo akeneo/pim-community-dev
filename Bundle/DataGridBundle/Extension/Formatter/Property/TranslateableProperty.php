@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\DataGridBundle\Extension\Formatter\Property;
 
-use Oro\Bundle\DataGridBundle\Extension\Formatter\ResultRecordInterface;
+use Oro\Bundle\DataGridBundle\Datasource\Orm\ResultRecordInterface;
 
 class TranslateableProperty extends FieldProperty
 {

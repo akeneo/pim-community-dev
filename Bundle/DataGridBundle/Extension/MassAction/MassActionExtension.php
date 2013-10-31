@@ -3,6 +3,7 @@
 namespace Oro\Bundle\DataGridBundle\Extension\MassAction;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
+use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Extension\Action\ActionExtension;
 
 class MassActionExtension extends ActionExtension
@@ -23,8 +24,23 @@ class MassActionExtension extends ActionExtension
         return !empty($massActions);
     }
 
-    public function getMassAction($name, DatagridConfiguration $config)
+    /**
+     * Get grid massaction by name
+     *
+     * @param  string           $name
+     * @param DatagridInterface $datagrid
+     *
+     * @return bool|\Oro\Bundle\DataGridBundle\Extension\Action\Actions\ActionInterface
+     */
+    public function getMassAction($name, DatagridInterface $datagrid)
     {
+        $config = $datagrid->getAcceptor()->getConfig();
 
+        $action = false;
+        if (isset($config[static::ACTION_KEY][$name])) {
+            $action = $this->getActionObject($name, $config[static::ACTION_KEY][$name]);
+        }
+
+        return $action;
     }
 }

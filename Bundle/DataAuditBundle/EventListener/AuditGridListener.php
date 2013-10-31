@@ -4,10 +4,6 @@ namespace Oro\Bundle\DataAuditBundle\EventListener;
 
 use Doctrine\ORM\EntityManager;
 
-use Symfony\Component\PropertyAccess\PropertyAccessor;
-
-use Oro\Bundle\DataGridBundle\Event\BuildBefore;
-
 /**
  * Class AuditGridListener
  * Used to populate choices for objectClass column filter
@@ -16,8 +12,6 @@ use Oro\Bundle\DataGridBundle\Event\BuildBefore;
  */
 class AuditGridListener
 {
-    const PATH_CHOICES = '[filters][columns][objectClass][choices]';
-
     /** @var EntityManager */
     protected $em;
 
@@ -26,38 +20,10 @@ class AuditGridListener
 
     /**
      * @param EntityManager $em
-     * @param PropertyAccessor $propAccessor
      */
-    public function __construct(EntityManager $em, PropertyAccessor $propAccessor)
+    public function __construct(EntityManager $em)
     {
         $this->em = $em;
-        $this->propAccessor = $propAccessor;
-    }
-
-    /**
-     * @param BuildBefore $event
-     */
-    public function onBuildBefore(BuildBefore $event)
-    {
-        if (is_null($this->objectClassChoices)) {
-            $this->objectClassChoices = $this->getObjectClassOptions();
-        }
-
-        $config = $event->getConfig();
-        $objectClassChoices = $this->propAccessor->getValue(
-            $config,
-            self::PATH_CHOICES
-        );
-        $objectClassChoices = $objectClassChoices ?: array();
-
-        $objectClassChoices = array_merge($objectClassChoices, $this->objectClassChoices);
-        $this->propAccessor->setValue(
-            $config,
-            self::PATH_CHOICES,
-            $objectClassChoices
-        );
-
-        $event->setConfig($config);
     }
 
     /**
@@ -65,25 +31,29 @@ class AuditGridListener
      *
      * @return array
      */
-    protected function getObjectClassOptions()
+    public function getObjectClassOptions()
     {
-        $options = array();
+        if (is_null($this->objectClassChoices)) {
+            $options = array();
 
-        $result = $this->em->createQueryBuilder()
-            ->add('select', 'a.objectClass')
-            ->add('from', 'Oro\Bundle\DataAuditBundle\Entity\Audit a')
-            ->distinct('a.objectClass')
-            ->getQuery()
-            ->getArrayResult();
+            $result = $this->em->createQueryBuilder()
+                ->add('select', 'a.objectClass')
+                ->add('from', 'Oro\Bundle\DataAuditBundle\Entity\Audit a')
+                ->distinct('a.objectClass')
+                ->getQuery()
+                ->getArrayResult();
 
-        foreach ((array) $result as $value) {
-            $options[$value['objectClass']] = current(
-                array_reverse(
-                    explode('\\', $value['objectClass'])
-                )
-            );
+            foreach ((array) $result as $value) {
+                $options[$value['objectClass']] = current(
+                    array_reverse(
+                        explode('\\', $value['objectClass'])
+                    )
+                );
+            }
+
+            $this->objectClassChoices = $options;
         }
 
-        return $options;
+        return $this->objectClassChoices;
     }
 }

@@ -54,7 +54,9 @@ datagrid:
         mass_actions:
             delete:
                 type: delete
-                data_id: g.id
+                icon: trash
+                entity_name: OroCRMContactBundle:Group
+                data_identifier: g.id
 
         options:
             entityHint: contact group
@@ -151,8 +153,19 @@ datagrid:
                 type: field
                 label: 'Owner'
 
+        properties:
+            id:
+                type: field
+
         flexible_attributes:
             employees:
                 filterable:  true
                 sortable:    true
         flexible_entity: %orocrm_account.account.entity.class%
+
+        mass_actions:
+            delete:
+                type: delete
+                icon: trash
+                entity_name: OroCRMAccountBundle:Account
+                data_identifier: a.id

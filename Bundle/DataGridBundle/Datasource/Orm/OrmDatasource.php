@@ -38,13 +38,17 @@ class OrmDatasource implements DatasourceInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @return ResultRecordInterface[]
      */
     public function getResults()
     {
         $results = $this->qb->getQuery()->execute();
+        $rows    = [];
+        foreach ($results as $result) {
+            $rows[] = new ResultRecord($result);
+        }
 
-        return $results;
+        return $rows;
     }
 
     /**
@@ -61,6 +65,7 @@ class OrmDatasource implements DatasourceInterface
      * Set QueryBuilder
      *
      * @param QueryBuilder $qb
+     *
      * @return $this
      */
     public function setQuery(QueryBuilder $qb)
