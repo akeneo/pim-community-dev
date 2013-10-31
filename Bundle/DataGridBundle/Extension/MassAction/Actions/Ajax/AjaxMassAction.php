@@ -3,9 +3,10 @@
 namespace Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\Ajax;
 
 use Oro\Bundle\DataGridBundle\Extension\Action\ActionConfiguration;
-use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\AbstractMassAction;
+use Oro\Bundle\DataGridBundle\Extension\Action\Actions\AbstractAction;
+use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface;
 
-class AjaxMassAction extends AbstractMassAction
+class AjaxMassAction extends AbstractAction implements MassActionInterface
 {
     /** @var array */
     protected $requiredOptions = ['handler'];

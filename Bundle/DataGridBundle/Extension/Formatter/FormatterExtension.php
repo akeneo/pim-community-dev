@@ -43,14 +43,15 @@ class FormatterExtension extends AbstractExtension
         $toProcess  = array_merge($columns, $properties);
 
         foreach ($rows as $key => $row) {
-            $record = new ResultRecord($row);
+            $currentRow = [];
+
             foreach ($toProcess as $name => $config) {
-                $config     = PropertyConfiguration::createNamed($name, $config);
-                $property   = $this->getPropertyObject($config);
-                $row[$name] = $property->getValue($record);
+                $config            = PropertyConfiguration::createNamed($name, $config);
+                $property          = $this->getPropertyObject($config);
+                $currentRow[$name] = $property->getValue($row);
             }
             // result row will contains only processed rows
-            $rows[$key] = array_intersect_key($row, array_flip(array_keys($toProcess)));
+            $rows[$key] = $currentRow;
         }
 
         $result->offsetSet('data', $rows);

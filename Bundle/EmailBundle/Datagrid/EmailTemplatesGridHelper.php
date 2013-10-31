@@ -2,7 +2,8 @@
 
 namespace Oro\Bundle\EmailBundle\Datagrid;
 
-use Oro\Bundle\DataGridBundle\Extension\Formatter\ResultRecordInterface;
+
+use Oro\Bundle\DataGridBundle\Datasource\Orm\ResultRecordInterface;
 
 class EmailTemplatesGridHelper
 {

@@ -11,7 +11,7 @@ use Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataObject;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Action\Actions\ActionInterface;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration;
-use Oro\Bundle\DataGridBundle\Extension\Formatter\ResultRecordInterface;
+use Oro\Bundle\DataGridBundle\Datasource\Orm\ResultRecordInterface;
 
 class ActionExtension extends AbstractExtension
 {
@@ -84,19 +84,35 @@ class ActionExtension extends AbstractExtension
         $actions         = $config->offsetGetOr(static::ACTION_KEY, []);
 
         foreach ($actions as $name => $action) {
-            $config = ActionConfiguration::createNamed($name, $action);
-            $action = $this->create($config);
+            $action = $this->getActionObject($name, $action);
 
-            if (null === $action->getAclResource() || $this->isResourceGranted($action->getAclResource())) {
-                $metadata                            = $action->getOptions()->toArray([], static::$excludeParams);
-                $metadata['label']                   = isset($metadata['label']) ? $this->translator->trans(
-                    $metadata['label']
-                ) : null;
-                $actionsMetadata[$config->getName()] = $metadata;
-            }
+            $metadata          = $action->getOptions()->toArray([], static::$excludeParams);
+            $metadata['label'] = isset($metadata['label']) ? $this->translator->trans(
+                $metadata['label']
+            ) : null;
+
+            $actionsMetadata[$action->getName()] = $metadata;
         }
 
         $data->offsetAddToArray(static::METADATA_ACTION_KEY, $actionsMetadata);
+    }
+
+    /**
+     * @param  string $name
+     * @param array   $config
+     *
+     * @return bool|ActionInterface
+     */
+    protected function getActionObject($name, array $config)
+    {
+        $config = ActionConfiguration::createNamed($name, $config);
+        $action = $this->create($config);
+
+        if (null === $action->getAclResource() || $this->isResourceGranted($action->getAclResource())) {
+            return $action;
+        }
+
+        return false;
     }
 
     /**

@@ -32,15 +32,15 @@ class CustomEntityDatagrid extends DatagridManager
     protected $parentId;
 
     protected $filterMap = array(
-        'string'   => 'oro_grid_orm_string',
-        'integer'  => 'oro_grid_orm_number',
-        'smallint' => 'oro_grid_orm_number',
-        'bigint'   => 'oro_grid_orm_number',
-        'boolean'  => 'oro_grid_orm_boolean',
-        'decimal'  => 'oro_grid_orm_number',
-        'date'     => 'oro_grid_orm_date_range',
-        'text'     => 'oro_grid_orm_string',
-        'float'    => 'oro_grid_orm_number',
+        'string'   => 'string',
+        'integer'  => 'number',
+        'smallint' => 'number',
+        'bigint'   => 'number',
+        'boolean'  => 'boolean',
+        'decimal'  => 'number',
+        'date'     => 'range',
+        'text'     => 'string',
+        'float'    => 'number',
     );
 
     protected $typeMap = array(

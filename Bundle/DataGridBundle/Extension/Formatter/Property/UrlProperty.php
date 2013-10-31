@@ -6,7 +6,7 @@ use Symfony\Component\Routing\Router;
 use Symfony\Component\Translation\TranslatorInterface;
 
 use Oro\Bundle\LocaleBundle\Twig\DateFormatExtension;
-use Oro\Bundle\DataGridBundle\Extension\Formatter\ResultRecordInterface;
+use Oro\Bundle\DataGridBundle\Datasource\Orm\ResultRecordInterface;
 
 class UrlProperty extends AbstractProperty
 {
