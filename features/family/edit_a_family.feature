@@ -34,7 +34,7 @@ Feature: Edit a family
     Given I am on the "Jewels" family page
     And I change the english Label to "NewJewelery"
     And I save the family
-    Then I should see the families bags, NewJewelery and smartphone
+    Then I should see the families [bags], [smartphone] and NewJewelery
 
   @javascript
   Scenario: Successfully display a message when there are unsaved changes

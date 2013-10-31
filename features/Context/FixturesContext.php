@@ -237,15 +237,21 @@ class FixturesContext extends RawMinkContext
     public function theFollowingFamilies(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
+            $data = array_merge(
+                array(
+                    'locale' => 'english'
+                ),
+                $data
+            );
+
             $family = new Family();
             $family->setCode($data['code']);
             if (isset($data['label'])) {
-                $family->setLocale('en_US')->setLabel($data['label']); // TODO translation refactoring
+                $family
+                    ->setLocale($this->getLocaleCode($data['locale']))
+                    ->setLabel($data['label']);
             }
             $this->persist($family);
-
-            $translation = $this->createFamilyTranslation($family, $data['code']);
-            $family->addTranslation($translation);
         }
 
         $this->flush();
@@ -1605,25 +1611,6 @@ class FixturesContext extends RawMinkContext
     public function getProductGroup($code)
     {
         return $this->getEntityOrException('PimCatalogBundle:Group', array('code' => $code));
-    }
-
-    /**
-     * @param Family $family
-     * @param string $content
-     * @param string $locale
-     *
-     * @return FamilyTranslation
-     */
-    private function createFamilyTranslation(Family $family, $content, $locale = 'en_US')
-    {
-        $translation = new FamilyTranslation();
-        $translation->setLabel($content);
-        $translation->setLocale($locale);
-        $translation->setForeignKey($family);
-
-        $this->persist($translation);
-
-        return $translation;
     }
 
     /**
