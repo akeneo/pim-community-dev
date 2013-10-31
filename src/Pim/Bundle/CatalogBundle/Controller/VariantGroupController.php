@@ -91,7 +91,7 @@ class VariantGroupController extends GroupController
      * {@inheritdoc}
      *
      * @AclAncestor("pim_catalog_group_edit")
-     * @Template("PimCatalogBundle:Group:edit.html.twig")
+     * @Template
      */
     public function editAction(Group $group)
     {
