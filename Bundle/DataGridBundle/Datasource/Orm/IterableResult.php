@@ -14,6 +14,19 @@ class IterableResult extends BufferedQueryResultIterator implements IterableResu
     /**
      * {@inheritDoc}
      */
+    public function next()
+    {
+        parent::next();
+
+        if (null !== $this->current) {
+            $result        = new ResultRecord($this->current);
+            $this->current = $result;
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function getSource()
     {
         return $this->source;

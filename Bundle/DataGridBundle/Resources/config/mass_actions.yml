@@ -1,18 +1,29 @@
 parameters:
-    oro_datagrid.mass_action.parameters_parser.class:        Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser
-    oro_datagrid.mass_action.dispatcher.class:               Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher
+    oro_datagrid.extension.mass_action.handler.delete.class:  Oro\Bundle\DataGridBundle\Extension\MassAction\DeleteMassActionHandler
+    oro_datagrid.mass_action.parameters_parser.class:         Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser
+    oro_datagrid.mass_action.dispatcher.class:                Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher
 
-    oro_datagrid.extension.mass_action.type.ajax.class:      Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\Ajax\AjaxMassAction
-    oro_datagrid.extension.mass_action.type.delete.class:    Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\Ajax\DeleteMassAction
-    oro_datagrid.extension.mass_action.type.redirect.class:  Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\Redirect\RedirectMassAction
-    oro_datagrid.extension.mass_action.type.widget.class:    Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\Widget\WidgetMassAction
-    oro_datagrid.extension.mass_action.type.window.class:    Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\Widget\WindowMassAction
+    oro_datagrid.extension.mass_action.type.ajax.class:       Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\Ajax\AjaxMassAction
+    oro_datagrid.extension.mass_action.type.delete.class:     Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\Ajax\DeleteMassAction
+    oro_datagrid.extension.mass_action.type.redirect.class:   Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\Redirect\RedirectMassAction
+    oro_datagrid.extension.mass_action.type.widget.class:     Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\Widget\WidgetMassAction
+    oro_datagrid.extension.mass_action.type.window.class:     Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\Widget\WindowMassAction
 services:
+    oro_datagrid.extension.mass_action.handler.delete:
+        class: %oro_datagrid.extension.mass_action.handler.delete.class%
+        arguments:
+            - @doctrine.orm.entity_manager
+            - @translator
+
     oro_datagrid.mass_action.parameters_parser:
         class: %oro_datagrid.mass_action.parameters_parser.class%
 
     oro_datagrid.mass_action.dispatcher:
         class: %oro_datagrid.mass_action.dispatcher.class%
+        arguments:
+            - @service_container
+            - @oro_datagrid.datagrid.manager
+            - @oro_datagrid.datagrid.request_params
 
     oro_datagrid.extension.mass_action.type.ajax:
         class: %oro_datagrid.extension.mass_action.type.ajax.class%

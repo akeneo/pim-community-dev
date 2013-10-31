@@ -4,10 +4,10 @@ namespace Oro\Bundle\DataGridBundle\Extension\MassAction;
 
 use Doctrine\ORM\EntityManager;
 
-use Oro\Bundle\DataGridBundle\Datasource\Orm\ConstantPagerIterableResult;
-use Oro\Bundle\DataGridBundle\Datasource\Orm\ResultRecordInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
+use Oro\Bundle\DataGridBundle\Datasource\Orm\ConstantPagerIterableResult;
+use Oro\Bundle\DataGridBundle\Datasource\Orm\ResultRecordInterface;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\IterableResultInterface;
 
 class DeleteMassActionHandler implements MassActionHandlerInterface
@@ -157,6 +157,13 @@ class DeleteMassActionHandler implements MassActionHandlerInterface
         $identifier = $massAction->getOptions()->offsetGet('data_identifier');
         if (!$identifier) {
             throw new \LogicException(sprintf('Mass action "%s" must define identifier name', $massAction->getName()));
+        }
+
+        // if we ask identifier that's means that we have plain data in array
+        // so we will just use column name without entity alias
+        if (strpos('.', $identifier) !== -1) {
+            $parts      = explode('.', $identifier);
+            $identifier = end($parts);
         }
 
         return $identifier;

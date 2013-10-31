@@ -76,7 +76,7 @@ class MassActionDispatcher
         $this->requestParams->set(OrmFilterExtension::FILTER_ROOT_PARAM, $filters);
 
         // create mediator
-        $massAction     = $this->getMassActionByName($datagrid, $actionName);
+        $massAction     = $this->getMassActionByName($actionName, $datagrid);
         $identifier     = $this->getIdentifierField($massAction);
         $qb             = $this->getDatagridQuery($datagrid, $identifier, $inset, $values);
         $resultIterator = $this->getResultIterator($qb);
@@ -145,7 +145,7 @@ class MassActionDispatcher
             throw new \LogicException("MassAction extension is not applied to datagrid.");
         }
 
-        $massAction = $extension->getMassAction($massAction, $datagrid);
+        $massAction = $extension->getMassAction($massActionName, $datagrid);
 
         if (!$massAction) {
             throw new \LogicException(sprintf('Can\'t find mass action "%s"', $massActionName));
