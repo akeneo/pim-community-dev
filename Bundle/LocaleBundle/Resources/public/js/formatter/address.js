@@ -24,7 +24,7 @@ function(localeSettings, nameFormatter) {
         format: function(address, country, newLine) {
             if (!country) {
                 if (localeSettings.isFormatAddressByAddressCountry()) {
-                    country = address.countryIso2;
+                    country = address.country_iso2;
                 } else {
                     country = localeSettings.getCountry();
                 }

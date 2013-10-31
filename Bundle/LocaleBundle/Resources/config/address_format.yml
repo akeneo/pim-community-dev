@@ -495,7 +495,7 @@ UM:
     zip_name_type: zip
     region_name_type: region
 US:
-    format: '%name%\n%organization%\n%street%\n%CITY% %REGION% %COUNTRY% %postal_code%'
+    format: '%name%\n%organization%\n%street%\n%CITY% %REGION_CODE% %COUNTRY_ISO2% %postal_code%'
     require: [street, city, region, postal_code]
     zip_name_type: zip
     region_name_type: region
