@@ -183,6 +183,8 @@ class EntityConfigGridListener implements EventSubscriberInterface
     }
 
     /**
+     * @TODO fix adding actions from different scopes suche as EXTEND
+     *
      * @param $actions
      * @param $type
      */

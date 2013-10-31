@@ -13,6 +13,7 @@ datagrid:
                     - ce.className as name
                     - ce.className as module
                     - ce.updated
+                    - ce.mode
                 from:
                     - { table: OroEntityConfigBundle:EntityConfigModel, alias: ce }
         columns:
@@ -51,6 +52,11 @@ datagrid:
                 rowAction: true
             view:
                 type: navigate
+                label: View
+                icon: book
+                link: view_link
+            remove:
+                type: delete
                 label: View
                 icon: book
                 link: view_link
