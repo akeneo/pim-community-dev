@@ -1,13 +1,13 @@
 /* global define */
-define(['backbone', 'underscore', 'oro/translator', 'oro/datagrid/grid-views/collection'],
+define(['backbone', 'underscore', 'oro/translator', 'oro/grid/grid-views/collection'],
 function (Backbone, _, __, GridViewsCollection) {
     'use strict';
 
     /**
      * Datagrid views widget
      *
-     * @export oro/datagrid/grid-views
-     * @class   oro.datagrid.GridViews
+     * @export oro/grid/grid-views
+     * @class   oro.grid.GridViews
      * @extends Backbone.View
      */
     return Backbone.View.extend({

@@ -1,13 +1,13 @@
 /* global define */
-define(['underscore', 'backgrid', 'oro/datagrid/moment-formatter', 'backgrid/moment'],
+define(['underscore', 'backgrid', 'oro/grid/moment-formatter', 'backgrid/moment'],
 function(_, Backgrid, MomentFormatter) {
     'use strict';
 
     /**
      * Datetime column cell. Added missing behavior.
      *
-     * @export  oro/datagrid/moment-cell
-     * @class   oro.datagrid.MomentCell
+     * @export  oro/grid/moment-cell
+     * @class   oro.grid.MomentCell
      * @extends Backgrid.Extension.MomentCell
      */
     return Backgrid.Extension.MomentCell.extend({

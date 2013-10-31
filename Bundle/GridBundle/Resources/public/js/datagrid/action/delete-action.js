@@ -1,14 +1,14 @@
 /* global define */
-define(['underscore', 'oro/messenger', 'oro/translator', 'oro/modal', 'oro/datagrid/model-action'],
+define(['underscore', 'oro/messenger', 'oro/translator', 'oro/modal', 'oro/grid/model-action'],
 function(_, messenger, __, Modal, ModelAction) {
     'use strict';
 
     /**
      * Delete action with confirm dialog, triggers REST DELETE request
      *
-     * @export  oro/datagrid/delete-action
-     * @class   oro.datagrid.DeleteAction
-     * @extends oro.datagrid.ModelAction
+     * @export  oro/grid/delete-action
+     * @class   oro.grid.DeleteAction
+     * @extends oro.grid.ModelAction
      */
     return ModelAction.extend({
 

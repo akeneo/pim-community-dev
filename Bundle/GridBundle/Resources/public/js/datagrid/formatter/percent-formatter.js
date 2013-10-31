@@ -6,8 +6,8 @@ function(Backgrid) {
     /**
      * Cell formatter that format percent representation
      *
-     * @export  oro/datagrid/percent-formatter
-     * @class   oro.datagrid.PercentFormatter
+     * @export  oro/grid/percent-formatter
+     * @class   oro.grid.PercentFormatter
      * @extends Backgrid.NumberFormatter
      */
     var PercentFormatter = function () {};

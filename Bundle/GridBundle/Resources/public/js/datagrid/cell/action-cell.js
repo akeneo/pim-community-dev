@@ -6,8 +6,8 @@ function($, _, Backgrid) {
     /**
      * Cell for grid, contains actions
      *
-     * @export  oro/datagrid/action-cell
-     * @class   oro.datagrid.ActionCell
+     * @export  oro/grid/action-cell
+     * @class   oro.grid.ActionCell
      * @extends Backgrid.Cell
      */
     return Backgrid.Cell.extend({
@@ -66,7 +66,7 @@ function($, _, Backgrid) {
         /**
          * Handle action run
          *
-         * @param {oro.datagrid.AbstractAction} action
+         * @param {oro.grid.AbstractAction} action
          */
         onActionRun: function(action) {
             this.$('.dropdown.open').removeClass('open');
@@ -185,7 +185,7 @@ function($, _, Backgrid) {
         /**
          * Render launcher
          *
-         * @param {oro.datagrid.ActionLauncher} launcher
+         * @param {oro.grid.ActionLauncher} launcher
          * @param {Object} [templateParameters]
          * @return {jQuery} Rendered element wrapped with jQuery
          */
