@@ -319,7 +319,6 @@ class ProductManager extends FlexibleManager
                 $productAssociation->setAssociation($association);
                 $product->addProductAssociation($productAssociation);
             }
-            $this->save($product, false);
         }
     }
 
