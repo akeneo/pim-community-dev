@@ -110,6 +110,18 @@ class CompletenessCalculator
     }
 
     /**
+     * Schedule recalculation of completenesses for a product
+     *
+     * @param ProductInterface $product
+     */
+    public function schedule(ProductInterface $product)
+    {
+        foreach ($product->getCompletenesses() as $completeness) {
+            $this->em->remove($completeness);
+        }
+    }
+
+    /**
      * Get the channels for which the products must be calculated
      * If no locale, all of them are recovered from database
      *
