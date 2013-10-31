@@ -199,6 +199,8 @@ class FlatAttributeNormalizerTest extends AttributeNormalizerTest
 
         $this->addAttributeOptions($attribute, $data);
 
+        $this->addAttributeDefaultOptions($attribute, $data);
+
         foreach ($this->optionalProperties as $property) {
             if (isset($data[$property]) && $data[$property] !== '') {
                 $method = 'set' . implode(
@@ -244,20 +246,31 @@ class FlatAttributeNormalizerTest extends AttributeNormalizerTest
             }
             $attribute->addOption($attributeOption);
         }
+    }
 
+    /**
+     * Add attribute default options
+     *
+     * @param ProductAttribute $attribute
+     * @param array            $data
+     */
+    private function addAttributeDefaultOptions(ProductAttribute $attribute, $data)
+    {
         $defaultOptions = array_filter(explode('|', $data['default_options']));
         foreach ($defaultOptions as $defaultOption) {
             $translations = explode(',', $defaultOption);
-            $locale       = reset($translation);
-            $value        = end($translation);
-
-            $options = $attribute->getOptions();
-            foreach ($options as $option) {
-                $optionValues = $option->getOptionValues();
-                foreach ($optionValues as $optionValue) {
-                    if ($optionValue->getLocale() == $locale && $optionValue->getValue() == $value) {
-                        $option->setDefault(true);
-                        break;
+            foreach ($translations as $translation) {
+                $translation = explode(':', $translation);
+                $locale       = reset($translation);
+                $value        = end($translation);
+                $options = $attribute->getOptions();
+                foreach ($options as $option) {
+                    $optionValues = $option->getOptionValues();
+                    foreach ($optionValues as $optionValue) {
+                        if ($optionValue->getLocale() == $locale && $optionValue->getValue() == $value) {
+                            $option->setDefault(true);
+                            break;
+                        }
                     }
                 }
             }
