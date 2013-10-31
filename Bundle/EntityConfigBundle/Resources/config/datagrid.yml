@@ -109,11 +109,58 @@ datagrid:
                     - { table: OroEntityConfigBundle:FieldConfigModel, alias: cf }
 
         columns:
-# show columns false
-#            className:
-#                label: ClassName
-#                type: field
-#                frontend_type: string
+            fieldName:
+                label: Name
+                type: field
+                frontend_type: string
+            type:
+                label: Data Type
+                type: field
+                frontend_type: string
+
+        properties:
+            update_link:
+                type: url
+                route: oro_entityconfig_field_update
+                params:
+                    - id
+        actions:
+            # @TODO check why those actions dont have ACL
+            update:
+                type: navigate
+                label: Edit
+                icon: edit
+                link: update_link
+                rowAction: true
+        sorters:
+            columns:
+                fieldName:
+                    data_name: cf.fieldName
+                type:
+                    data_name: cf.type
+        filters: ~
+
+    # Audit entity log grid
+    entity-audit-grid:
+        options:
+            entityHint: history
+#            toolbarOptions:
+#                pageSize:
+#                    default_per_page: 50
+        source:
+            acl_resource: oro_entityconfig_manage
+            type: orm
+            query:
+                select:
+                    - cf.id
+                    - ce.className
+                    - cf.fieldName
+                    - cf.type
+                    - cf.mode
+                from:
+                    - { table: OroEntityConfigBundle:FieldConfigModel, alias: cf }
+
+        columns:
             fieldName:
                 label: Name
                 type: field

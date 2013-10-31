@@ -4,7 +4,6 @@ namespace Oro\Bundle\EntityConfigBundle\Controller;
 
 use Doctrine\ORM\QueryBuilder;
 
-use Oro\Bundle\EntityConfigBundle\Provider\PropertyConfigContainer;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,10 +11,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
+use Oro\Bundle\EntityConfigBundle\Provider\PropertyConfigContainer;
 use Oro\Bundle\EntityConfigBundle\Metadata\EntityMetadata;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
-use Oro\Bundle\EntityConfigBundle\Datagrid\EntityFieldsDatagridManager;
-use Oro\Bundle\EntityConfigBundle\Datagrid\ConfigDatagridManager;
 use Oro\Bundle\EntityConfigBundle\Entity\FieldConfigModel;
 use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
 
@@ -209,6 +207,7 @@ class ConfigController extends Controller
     }
 
     /**
+     * TODO: Check if this method ever used
      * Lists Entity fields
      * @Route("/fields/{id}", name="oro_entityconfig_fields", requirements={"id"="\d+"}, defaults={"id"=0})
      * @Template()
@@ -217,31 +216,13 @@ class ConfigController extends Controller
     {
         $entity = $this->getDoctrine()->getRepository(EntityConfigModel::ENTITY_NAME)->find($id);
 
-        /** @var  EntityFieldsDatagridManager $datagridManager */
-        $datagridManager = $this->get('oro_entity_config.entityfieldsdatagrid.manager');
-        $datagridManager->setEntityId($id);
+        list ($layoutActions, $requireJsModules) = $this->getLayoutParams($entity);
 
-        $datagrid = $datagridManager->getDatagrid();
-
-        $datagridManager->getRouteGenerator()->setRouteParameters(
-            array(
-                'id' => $id
-            )
-        );
-
-        $view = 'json' == $request->getRequestFormat()
-            ? 'OroGridBundle:Datagrid:list.json.php'
-            : 'OroEntityConfigBundle:Config:fields.html.twig';
-
-        return $this->render(
-            $view,
-            array(
-                'buttonConfig' => $datagridManager->getLayoutActions($entity),
-                'datagrid'     => $datagrid->createView(),
-                'entity_id'    => $id,
-                'entity_name'  => $entity->getClassName(),
-                'require_js'   => $datagridManager->getRequireJsModules(),
-            )
+        return array(
+            'buttonConfig' => $layoutActions,
+            'entity_id'    => $id,
+            'entity_name'  => $entity->getClassName(),
+            'require_js'   => $requireJsModules,
         );
     }
 
