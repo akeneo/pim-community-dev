@@ -346,7 +346,7 @@ class FixturesContext extends RawMinkContext
      * @param string $status
      * @param string $sku
      *
-     * @Given /^an (enabled|disabled) "([^"]*)" product$/
+     * @Given /^(an|a) (enabled|disabled) "([^"]*)" product$/
      */
     public function anEnabledOrDisabledProduct($status, $sku)
     {
