@@ -71,9 +71,9 @@ class OroMoneyTypeTest extends FormIntegrationTestCase
                 'symbolPrepend'  => true,
                 'data'           => 11.22,
                 'viewData'       => array(
-                    'money_pattern'    => '{{ currency }}{{ widget }}',
-                    'currency_symbol'  => '$',
-                    'currency_prepend' => true
+                    'money_pattern' => '{{ currency }}{{ widget }}',
+                    'currency_symbol' => '$',
+                    'currency_symbol_prepend' => true
                 ),
             ),
             'default ru locale' => array(
@@ -83,9 +83,9 @@ class OroMoneyTypeTest extends FormIntegrationTestCase
                 'symbolPrepend'  => false,
                 'data'           => 11.22,
                 'viewData'       => array(
-                    'money_pattern'    => '{{ widget }}{{ currency }}',
-                    'currency_symbol'  => 'руб.',
-                    'currency_prepend' => false
+                    'money_pattern' => '{{ widget }}{{ currency }}',
+                    'currency_symbol' => 'руб.',
+                    'currency_symbol_prepend' => false
                 ),
             ),
             'custom currency' => array(
@@ -95,9 +95,9 @@ class OroMoneyTypeTest extends FormIntegrationTestCase
                 'symbolPrepend'  => true,
                 'data'           => 11.22,
                 'viewData'       => array(
-                    'money_pattern'    => '{{ currency }}{{ widget }}',
-                    'currency_symbol'  => '€',
-                    'currency_prepend' => true
+                    'money_pattern' => '{{ currency }}{{ widget }}',
+                    'currency_symbol' => '€',
+                    'currency_symbol_prepend' => true
                 ),
             ),
         );
