@@ -13,6 +13,7 @@ oro_system_configuration:
             priority: 70
             options:
                 label: 'Locale'
+                tooltip: oro.locale.form.tooltip.locale
                 required: true
                 constraints:
                     - NotBlank: ~
@@ -22,6 +23,7 @@ oro_system_configuration:
             priority: 60
             options:
                 label: 'Location'
+                tooltip: oro.locale.form.tooltip.location
                 required: true
                 constraints:
                     - NotBlank: ~
@@ -31,6 +33,7 @@ oro_system_configuration:
             priority: 50
             options:
                 label: 'Format address by address country'
+                tooltip: oro.locale.form.tooltip.format_address_by_address_country
                 required: true
 
         oro_locale.language:
@@ -38,6 +41,7 @@ oro_system_configuration:
             priority: 40
             options:
                 label: 'Language'
+                tooltip: oro.locale.form.tooltip.language
                 required: true
                 constraints:
                     - NotBlank: ~
@@ -47,17 +51,17 @@ oro_system_configuration:
             priority: 30
             options:
                 label: 'Timezone'
+                tooltip: oro.locale.form.tooltip.timezone
                 required: true
                 constraints:
                     - NotBlank: ~
-
-
 
         oro_locale.currency:
             type: oro_currency
             priority: 20
             options:
                 label: 'Currency'
+                tooltip: oro.locale.form.tooltip.currency
                 required: true
                 constraints:
                     - NotBlank: ~
