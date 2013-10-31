@@ -65,11 +65,19 @@
                                 var isActive = model.get(listener.columnName);
                                 var id = model.get('id');
                                 if (isActive) {
-                                    var is_field_extend = Boolean("{{ extend_provider.getConfig(relation.get('target_entity'), relation.get('target_title')).is('owner', 'Custom') }}");
-                                    var field_prefix = '';
-                                    if (is_field_extend) {
-                                        field_prefix = 'field_';
-                                    }
+                                    var label = '';
+
+                                    {% set label = '' %}
+                                    {% for title in relation.get('target_title') %}
+                                        {% set is_extend = extend_provider.getConfig(relation.get('target_entity'), title).is('owner', 'Custom') %}
+                                        {% set field_label = title %}
+                                        {% if is_extend == true %}
+                                            {% set field_label = 'field_' ~ title %}
+                                        {% endif %}
+
+                                        label += model.get('{{ field_label }}') + ' ';
+                                    {% endfor %}
+
                                     addedModels[id] = new MultipleEntityModel({
                                         'id': model.get('id'),
                                         'link': Routing.generate(
@@ -80,7 +88,7 @@
                                                     fieldName: '{{ relation.getId().getFieldName() }}'
                                                 }
                                         ),
-                                        'label': model.get(field_prefix + '{{ relation.get('target_title') }}'),
+                                        'label': label,
                                         'extraData':
                                         [
                                             {% for field in relation.get('target_grid') %}

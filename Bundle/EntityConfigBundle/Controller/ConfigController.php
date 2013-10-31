@@ -353,7 +353,7 @@ class ConfigController extends Controller
 
             /** @var EntityConfigModel $entity */
             $entity = $this->getDoctrine()->getRepository(EntityConfigModel::ENTITY_NAME)
-                ->findOneBy(array('className' => $id));
+                ->findOneBy(['className' => $id]);
 
             if ($entity) {
                 /** @var ConfigProvider $entityConfigProvider */
@@ -362,11 +362,10 @@ class ConfigController extends Controller
                 /** @var FieldConfigModel $fields */
                 $entityFields = $this->getDoctrine()->getRepository(FieldConfigModel::ENTITY_NAME)
                     ->findBy(
-                        array(
+                        [
                             'entity' => $entity->getId(),
                             'type'   => 'string'
-                        ),
-                        array('fieldName' => 'ASC')
+                        ]
                     );
 
                 foreach ($entityFields as $field) {

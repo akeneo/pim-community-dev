@@ -81,9 +81,9 @@ class CustomEntityType extends AbstractType
                 && $extendConfig->is('owner', ExtendManager::OWNER_CUSTOM)
                 && !$extendConfig->is('state', ExtendManager::STATE_NEW)
                 && !in_array($formConfig->getId()->getFieldType(), array('ref-one', 'ref-many'))
-                && (
+                && !(
                     in_array($formConfig->getId()->getFieldType(), array('oneToMany', 'manyToOne', 'manyToMany'))
-                    && $extendConfigProvider->getConfig($extendConfig->get('target_entity'))->is('is_deleted', false)
+                    && $extendConfigProvider->getConfig($extendConfig->get('target_entity'))->is('is_deleted', true)
                 )
             ) {
                 /** @var FieldConfigId $fieldConfigId */
