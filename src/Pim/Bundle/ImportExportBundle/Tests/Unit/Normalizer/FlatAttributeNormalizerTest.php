@@ -24,6 +24,7 @@ class FlatAttributeNormalizerTest extends AttributeNormalizerTest
     protected function setUp()
     {
         $this->normalizer = new FlatAttributeNormalizer();
+        $this->format = 'csv';
     }
 
     /**
@@ -117,16 +118,11 @@ class FlatAttributeNormalizerTest extends AttributeNormalizerTest
     }
 
     /**
-     * Create a attribute
-     * @param array $data
-     *
-     * @return attribute
+     * @param ProductAttribute $attribute
+     * @param array            $data
      */
-    private function createAttribute(array $data)
+    protected function addLabels($attribute, $data)
     {
-        $attribute = new ProductAttribute();
-        $attribute->setAttributeType(sprintf('pim_catalog_%s', strtolower($data['type'])));
-
         $labels = explode(',', $data['label']);
         foreach ($labels as $label) {
             $label  = explode(':', $label);
@@ -135,23 +131,14 @@ class FlatAttributeNormalizerTest extends AttributeNormalizerTest
             $translation = $attribute->getTranslation($locale);
             $translation->setLabel($label);
         }
+    }
 
-        if ($data['group'] !== '') {
-            $group = new AttributeGroup();
-            $group->setCode($data['group']);
-            $attribute->setGroup($group);
-        }
-
-        $attribute->setCode($data['code']);
-        $attribute->setSortOrder($data['sort_order']);
-        $attribute->setRequired($data['required']);
-        $attribute->setUnique($data['unique']);
-        $attribute->setSearchable($data['searchable']);
-        $attribute->setTranslatable($data['localizable']);
-        $attribute->setScopable(strtolower($data['scope']) !== 'global');
-        $attribute->setUseableAsGridColumn((bool) $data['useable_as_grid_column']);
-        $attribute->setUseableAsGridFilter((bool) $data['useable_as_grid_filter']);
-
+    /**
+     * @param ProductAttribute $attribute
+     * @param array            $data
+     */
+    protected function addAvailableLocales($attribute, $data)
+    {
         if (strtolower($data['available_locales']) !== 'all') {
             $locales = explode(',', $data['available_locales']);
             foreach ($locales as $localeCode) {
@@ -160,27 +147,6 @@ class FlatAttributeNormalizerTest extends AttributeNormalizerTest
                 $attribute->addAvailableLocale($locale);
             }
         }
-
-        $this->addAttributeOptions($attribute, $data);
-
-        $this->addAttributeDefaultOptions($attribute, $data);
-
-        foreach ($this->getOptionalProperties() as $property) {
-            if (isset($data[$property]) && $data[$property] !== '') {
-                $method = 'set' . implode(
-                    '',
-                    array_map(
-                        function ($item) {
-                            return ucfirst($item);
-                        },
-                        explode('_', $property)
-                    )
-                );
-                $attribute->$method($data[$property]);
-            }
-        }
-
-        return $attribute;
     }
 
     /**
@@ -189,7 +155,7 @@ class FlatAttributeNormalizerTest extends AttributeNormalizerTest
      * @param ProductAttribute $attribute
      * @param array            $data
      */
-    private function addAttributeOptions(ProductAttribute $attribute, $data)
+    protected function addOptions(ProductAttribute $attribute, $data)
     {
         $options = array_filter(explode('|', $data['options']));
         foreach ($options as $option) {
@@ -218,7 +184,7 @@ class FlatAttributeNormalizerTest extends AttributeNormalizerTest
      * @param ProductAttribute $attribute
      * @param array            $data
      */
-    private function addAttributeDefaultOptions(ProductAttribute $attribute, $data)
+    protected function addDefaultOptions(ProductAttribute $attribute, $data)
     {
         $defaultOptions = array_filter(explode('|', $data['default_options']));
         foreach ($defaultOptions as $defaultOption) {
