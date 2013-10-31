@@ -71,7 +71,7 @@ class SoapDataAuditApiTest extends WebTestCase
         $resultActual = reset($result);
 
         $this->assertEquals($response['username'], $resultActual['objectName']);
-        $this->assertEquals('admin', $resultActual['user']['username']);
+        $this->assertEquals('admin', $resultActual['username']);
 
         return $result;
     }

@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Loggable\Entity\MappedSuperclass\AbstractLogEntry;
 
 use JMS\Serializer\Annotation\Type;
-use JMS\Serializer\Annotation\Exclude;
+use JMS\Serializer\Annotation\SerializedName;
 
 use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
 
@@ -97,7 +97,7 @@ class Audit extends AbstractLogEntry
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User", cascade={"persist"})
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      * @Type("string")
-     * @Exclude
+     * @SerializedName("username")
      */
     protected $user;
 
