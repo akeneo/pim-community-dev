@@ -6,9 +6,6 @@ use Oro\Bundle\DataGridBundle\Datasource\Orm\ResultRecord;
 use Oro\Bundle\DataGridBundle\Event\BuildAfter;
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
-use Oro\Bundle\DataGridBundle\Extension\Action\ActionExtension;
-use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration;
-use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 
 use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
@@ -49,81 +46,6 @@ class EntityConfigGridListener extends AbstractConfigGridListener
     }
 
     /**
-     * @param DatagridConfiguration $config
-     */
-    protected function addEntityConfigProperties(DatagridConfiguration $config)
-    {
-        // configure properties from config providers
-        $properties = $config->offsetGetByPath(Configuration::PROPERTIES_PATH, []);
-        $filters    = array();
-        $actions    = array();
-
-        foreach ($this->configManager->getProviders() as $provider) {
-            $gridActions = $provider->getPropertyConfig()->getGridActions();
-
-            $this->prepareProperties($gridActions, $properties, $actions, $filters, $provider->getScope());
-
-            if ($provider->getPropertyConfig()->getUpdateActionFilter()) {
-                $filters['update'] = $provider->getPropertyConfig()->getUpdateActionFilter();
-            }
-        }
-
-        if (count($filters)) {
-            $config->offsetSet(
-                ActionExtension::ACTION_CONFIGURATION_KEY,
-                $this->getActionConfigurationClosure($filters, $actions)
-            );
-        }
-    }
-
-    /**
-     * Returns closure that will configure actions for each row in grid
-     *
-     * @param array $filters
-     * @param array $actions
-     *
-     * @return callable
-     */
-    public function getActionConfigurationClosure($filters, $actions)
-    {
-        return function (ResultRecord $record) use ($filters, $actions) {
-            if ($record->getValue('mode') == ConfigModelManager::MODE_READONLY) {
-                $actions           = array_map(
-                    function () {
-                        return false;
-                    },
-                    $actions
-                );
-                $actions['update'] = false;
-            } else {
-                foreach ($filters as $action => $filter) {
-                    foreach ($filter as $key => $value) {
-                        if (is_array($value)) {
-                            $error = true;
-                            foreach ($value as $v) {
-                                if ($record->getValue($key) == $v) {
-                                    $error = false;
-                                }
-                            }
-                            if ($error) {
-                                $actions[$action] = false;
-                                break;
-                            }
-                        } else {
-                            if ($record->getValue($key) != $value) {
-                                $actions[$action] = false;
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-
-            return $actions;
-        };
-    }
-
-    /**
      * @param $gridActions
      * @param $properties
      * @param $actions
@@ -158,10 +80,10 @@ class EntityConfigGridListener extends AbstractConfigGridListener
     /**
      * @TODO fix adding actions from different scopes such as EXTEND
      *
-     * @param $actions
-     * @param $type
+     * @param array $actions
+     * @param string $type
      */
-    protected function prepareRowActions(&$actions, $type = PropertyConfigContainer::TYPE_ENTITY)
+    protected function prepareRowActions(&$actions, $type)
     {
         foreach ($this->configManager->getProviders() as $provider) {
             $gridActions = $provider->getPropertyConfig()->getGridActions($type);

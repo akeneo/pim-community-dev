@@ -3,10 +3,17 @@
 namespace Oro\Bundle\EntityConfigBundle\EventListener;
 
 use Doctrine\ORM\QueryBuilder;
-use Oro\Bundle\DataGridBundle\Event\BuildAfter;
-use Oro\Bundle\DataGridBundle\Event\BuildBefore;
+
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
+use Oro\Bundle\DataGridBundle\Extension\Action\ActionExtension;
+use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
+use Oro\Bundle\DataGridBundle\Event\BuildAfter;
+use Oro\Bundle\DataGridBundle\Event\BuildBefore;
+use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration;
+use Oro\Bundle\DataGridBundle\Datasource\Orm\ResultRecord;
+
+use Oro\Bundle\EntityConfigBundle\Config\ConfigModelManager;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 
 abstract class AbstractConfigGridListener implements EventSubscriberInterface
@@ -85,11 +92,11 @@ abstract class AbstractConfigGridListener implements EventSubscriberInterface
         }
 
         // add/configure entity config properties
-        $this->addEntityConfigProperties($config);
+        $this->addEntityConfigProperties($config, $itemType);
 
         // add/configure entity config actions
         $actions = $config->offsetGetByPath(self::PATH_ACTIONS, []);
-        $this->prepareRowActions($actions);
+        $this->prepareRowActions($actions, $itemType);
         $config->offsetSetByPath(self::PATH_ACTIONS, $actions);
     }
 
@@ -139,6 +146,85 @@ abstract class AbstractConfigGridListener implements EventSubscriberInterface
         }
 
         return $orderedFields;
+    }
+
+    /**
+     * @param DatagridConfiguration $config
+     * @param $itemType
+     */
+    protected function addEntityConfigProperties(DatagridConfiguration $config, $itemType)
+    {
+        // configure properties from config providers
+        $properties = $config->offsetGetByPath(Configuration::PROPERTIES_PATH, []);
+        $filters    = array();
+        $actions    = array();
+
+        foreach ($this->configManager->getProviders() as $provider) {
+            $gridActions = $provider->getPropertyConfig()->getGridActions($itemType);
+
+            $this->prepareProperties($gridActions, $properties, $actions, $filters, $provider->getScope());
+
+            // TODO: check if this neccessary for field config grid
+            if (static::GRID_NAME == 'entityconfig-grid' && $provider->getPropertyConfig()->getUpdateActionFilter()) {
+                $filters['update'] = $provider->getPropertyConfig()->getUpdateActionFilter();
+            }
+        }
+
+        if (count($filters)) {
+            $config->offsetSet(
+                ActionExtension::ACTION_CONFIGURATION_KEY,
+                $this->getActionConfigurationClosure($filters, $actions)
+            );
+        }
+    }
+
+    /**
+     * Returns closure that will configure actions for each row in grid
+     *
+     * @param array $filters
+     * @param array $actions
+     *
+     * @return callable
+     */
+    public function getActionConfigurationClosure($filters, $actions)
+    {
+        return function (ResultRecord $record) use ($filters, $actions) {
+            if ($record->getValue('mode') == ConfigModelManager::MODE_READONLY) {
+                $actions = array_map(
+                    function () {
+                        return false;
+                    },
+                    $actions
+                );
+
+                $actions['update']   = false;
+                $actions['rowClick'] = false;
+            } else {
+                foreach ($filters as $action => $filter) {
+                    foreach ($filter as $key => $value) {
+                        if (is_array($value)) {
+                            $error = true;
+                            foreach ($value as $v) {
+                                if ($record->getValue($key) == $v) {
+                                    $error = false;
+                                }
+                            }
+                            if ($error) {
+                                $actions[$action] = false;
+                                break;
+                            }
+                        } else {
+                            if ($record->getValue($key) != $value) {
+                                $actions[$action] = false;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return $actions;
+        };
     }
 
     /**

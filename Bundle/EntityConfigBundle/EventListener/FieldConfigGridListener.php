@@ -3,6 +3,7 @@
 namespace Oro\Bundle\EntityConfigBundle\EventListener;
 
 use Doctrine\ORM\QueryBuilder;
+
 use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 use Oro\Bundle\DataGridBundle\Event\BuildAfter;
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
@@ -46,4 +47,6 @@ class FieldConfigGridListener extends AbstractConfigGridListener
 
         return parent::prepareQuery($query, $rootAlias, $alias, $itemsType);
     }
+
+
 }
