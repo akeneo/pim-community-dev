@@ -17,7 +17,7 @@
                         var $field = $(field),
                             $target = $field.parent().find('.icons-container').first();
                         if ($target.length) {
-                            $field.insertAfter($target).attr('tabIndex', -1);
+                            $field.insertBefore($target).attr('tabIndex', -1);
                         }
                         var callback = function(data) {
                             if (data.status) {
