@@ -2,13 +2,12 @@
 
 namespace Oro\Bundle\EmailBundle\Mailer;
 
-use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Oro\Bundle\EmailBundle\Entity\Util\EmailUtil;
 use Symfony\Component\DependencyInjection\IntrospectableContainerInterface;
 
 /**
  * The goal of this class is to send an email directly, not using a mail spool
+ * even when it is configured for a base mailer
  */
 class DirectMailer
 {
@@ -64,11 +63,13 @@ class DirectMailer
         if ($transport instanceof \Swift_Transport_SpoolTransport) {
             $realTransport = $this->findRealTransport();
             if ($realTransport) {
+                // start a transport if needed
                 $needToStopRealTransport = false;
                 if (!$realTransport->isStarted()) {
                     $realTransport->start();
                     $needToStopRealTransport = true;
                 }
+                // send a mail
                 $sendException = null;
                 try {
                     $result = $realTransport->send($message, $failedRecipients);
@@ -79,6 +80,7 @@ class DirectMailer
                 } catch (\Exception $unexpectedEx) {
                     $sendException = $unexpectedEx;
                 }
+                // stop a transport if it was started before
                 if ($needToStopRealTransport) {
                     try {
                         $realTransport->stop();
@@ -93,39 +95,6 @@ class DirectMailer
             }
         } else {
             $result = $this->mailer->send($message, $failedRecipients);
-        }
-
-        return $result;
-    }
-
-    /**
-     * Converts emails addresses to a form acceptable to \Swift_Mime_Message class
-     *
-     * @param string|string[] $addresses Examples of correct email addresses: john@example.com, <john@example.com>,
-     *                                   John Smith <john@example.com> or "John Smith" <john@example.com>
-     * @return array
-     * @throws \InvalidArgumentException
-     */
-    public function getAddresses($addresses)
-    {
-        $result = array();
-
-        if (is_string($addresses)) {
-            $addresses = array($addresses);
-        }
-        if (!is_array($addresses) && $addresses instanceof \Iterator) {
-            throw new \InvalidArgumentException(
-                'The $addresses argument must be a string or a list of strings (array or Iterator)'
-            );
-        }
-
-        foreach ($addresses as $address) {
-            $name = EmailUtil::extractEmailAddressName($address);
-            if (empty($name)) {
-                $result[] = EmailUtil::extractPureEmailAddress($address);
-            } else {
-                $result[EmailUtil::extractPureEmailAddress($address)] = $name;
-            }
         }
 
         return $result;

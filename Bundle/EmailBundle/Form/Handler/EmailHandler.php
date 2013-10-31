@@ -110,8 +110,8 @@ class EmailHandler
                     $message     = $this->mailer->createMessage();
                     $message->setDate($messageDate->getTimestamp());
                     $message->setSubject($model->getSubject());
-                    $message->setFrom($this->mailer->getAddresses($model->getFrom()));
-                    $message->setTo($this->mailer->getAddresses($model->getTo()));
+                    $message->setFrom($this->getAddresses($model->getFrom()));
+                    $message->setTo($this->getAddresses($model->getTo()));
                     $message->setBody($model->getBody(), 'text/plain');
                     $sent = $this->mailer->send($message);
 
@@ -190,6 +190,39 @@ class EmailHandler
             $subject = trim($this->request->query->get('subject'));
             $model->setSubject($subject);
         }
+    }
+
+    /**
+     * Converts emails addresses to a form acceptable to \Swift_Mime_Message class
+     *
+     * @param string|string[] $addresses Examples of correct email addresses: john@example.com, <john@example.com>,
+     *                                   John Smith <john@example.com> or "John Smith" <john@example.com>
+     * @return array
+     * @throws \InvalidArgumentException
+     */
+    protected function getAddresses($addresses)
+    {
+        $result = array();
+
+        if (is_string($addresses)) {
+            $addresses = array($addresses);
+        }
+        if (!is_array($addresses) && $addresses instanceof \Iterator) {
+            throw new \InvalidArgumentException(
+                'The $addresses argument must be a string or a list of strings (array or Iterator)'
+            );
+        }
+
+        foreach ($addresses as $address) {
+            $name = EmailUtil::extractEmailAddressName($address);
+            if (empty($name)) {
+                $result[] = EmailUtil::extractPureEmailAddress($address);
+            } else {
+                $result[EmailUtil::extractPureEmailAddress($address)] = $name;
+            }
+        }
+
+        return $result;
     }
 
     /**
