@@ -7,7 +7,7 @@ use Oro\Bundle\DataGridBundle\Extension\Action\ActionExtension;
 
 class MassActionExtension extends ActionExtension
 {
-    const MASS_ACTION_KEY     = 'mass_actions';
+    const ACTION_KEY          = 'mass_actions';
     const METADATA_ACTION_KEY = 'massActions';
 
     /** @var array */
@@ -18,7 +18,7 @@ class MassActionExtension extends ActionExtension
      */
     public function isApplicable(DatagridConfiguration $config)
     {
-        $massActions = $config->offsetGetOr(self::MASS_ACTION_KEY, []);
+        $massActions = $config->offsetGetOr(static::ACTION_KEY, []);
 
         return !empty($massActions);
     }

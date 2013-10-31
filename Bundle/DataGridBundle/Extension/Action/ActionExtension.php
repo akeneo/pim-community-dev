@@ -52,8 +52,8 @@ class ActionExtension extends AbstractExtension
      */
     public function isApplicable(DatagridConfiguration $config)
     {
-        $actions             = $config->offsetGetOr(self::ACTION_KEY, []);
-        $actionConfiguration = $config->offsetGetOr(self::ACTION_CONFIGURATION_KEY);
+        $actions             = $config->offsetGetOr(static::ACTION_KEY, []);
+        $actionConfiguration = $config->offsetGetOr(static::ACTION_CONFIGURATION_KEY);
 
         if ($actionConfiguration && is_callable($actionConfiguration)) {
             $callable = function (ResultRecordInterface $record) use ($actionConfiguration) {
@@ -67,7 +67,7 @@ class ActionExtension extends AbstractExtension
                 'callable' => $callable
             ];
             $config->offsetAddToArrayByPath(
-                sprintf('%s[%s]', Configuration::PROPERTIES_PATH, self::METADATA_ACTION_CONFIGURATION_KEY),
+                sprintf('%s[%s]', Configuration::PROPERTIES_PATH, static::METADATA_ACTION_CONFIGURATION_KEY),
                 $propertyConfig
             );
         }
@@ -81,20 +81,22 @@ class ActionExtension extends AbstractExtension
     public function visitMetadata(DatagridConfiguration $config, MetadataObject $data)
     {
         $actionsMetadata = [];
-        $actions         = $config->offsetGetOr(self::ACTION_KEY, []);
+        $actions         = $config->offsetGetOr(static::ACTION_KEY, []);
 
         foreach ($actions as $name => $action) {
             $config = ActionConfiguration::createNamed($name, $action);
             $action = $this->create($config);
 
             if (null === $action->getAclResource() || $this->isResourceGranted($action->getAclResource())) {
-                $metadata          = $action->getOptions()->toArray([], self::$excludeParams);
-                $metadata['label'] = isset($metadata['label']) ? $this->translator->trans($metadata['label']) : null;
+                $metadata                            = $action->getOptions()->toArray([], static::$excludeParams);
+                $metadata['label']                   = isset($metadata['label']) ? $this->translator->trans(
+                    $metadata['label']
+                ) : null;
                 $actionsMetadata[$config->getName()] = $metadata;
             }
         }
 
-        $data->offsetAddToArray(self::METADATA_ACTION_KEY, $actionsMetadata);
+        $data->offsetAddToArray(static::METADATA_ACTION_KEY, $actionsMetadata);
     }
 
     /**
@@ -123,14 +125,14 @@ class ActionExtension extends AbstractExtension
      */
     protected function create(ActionConfiguration $config)
     {
-        if (!$config->offsetExists(self::ACTION_TYPE_KEY)) {
+        if (!$config->offsetExists(static::ACTION_TYPE_KEY)) {
             throw new \RunTimeException('The type must be defined');
         }
 
-        $type = $config->offsetGet(self::ACTION_TYPE_KEY);
+        $type = $config->offsetGet(static::ACTION_TYPE_KEY);
         if (!isset($this->actions[$type])) {
             throw new \RunTimeException(
-                sprintf('No attached service to action type named "%s"', $config->offsetGet(self::ACTION_TYPE_KEY))
+                sprintf('No attached service to action type named "%s"', $config->offsetGet(static::ACTION_TYPE_KEY))
             );
         }
 
