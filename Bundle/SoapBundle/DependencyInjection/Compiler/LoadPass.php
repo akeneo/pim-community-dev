@@ -4,7 +4,7 @@ namespace Oro\Bundle\SoapBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
-use Symfony\Component\DependencyInjection\DefinitionDecorator;
+use Symfony\Component\Yaml\Yaml;
 
 class LoadPass implements CompilerPassInterface
 {
@@ -13,21 +13,18 @@ class LoadPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $classes = [
-            'Oro\Bundle\SearchBundle\Controller\Api\SoapController',
-            'Oro\Bundle\UserBundle\Controller\Api\Soap\UserController',
-            'Oro\Bundle\UserBundle\Controller\Api\Soap\RoleController',
-            'Oro\Bundle\UserBundle\Controller\Api\Soap\GroupController',
-            'Oro\Bundle\AddressBundle\Controller\Api\Soap\AddressController',
-            'Oro\Bundle\AddressBundle\Controller\Api\Soap\AddressTypeController',
-            'Oro\Bundle\AddressBundle\Controller\Api\Soap\CountryController',
-            'Oro\Bundle\AddressBundle\Controller\Api\Soap\RegionController',
-            'Oro\Bundle\DataAuditBundle\Controller\Api\Soap\AuditController',
-            'Oro\Bundle\OrganizationBundle\Controller\Api\Soap\BusinessUnitController',
-        ];
+        $classes = [];
+
+        foreach ($container->getParameter('kernel.bundles') as $bundle) {
+            $reflection = new \ReflectionClass($bundle);
+
+            if (file_exists($file = dirname($reflection->getFilename()) . '/Resources/config/oro/soap.yml')) {
+                $classes = array_merge($classes, Yaml::parse(realpath($file))['classes']);
+            }
+        }
 
         $container
             ->getDefinition('oro_soap.loader')
-            ->addArgument($classes);
+            ->addArgument(array_unique($classes));
     }
 }
