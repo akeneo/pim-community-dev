@@ -32,8 +32,12 @@ class RequestFix
      * @param string $requestAttributeKey
      * @return array
      */
-    public function getFixedAttributesData($entityClass, array $data, $attributeKey = 'values', $requestAttributeKey = 'attributes')
-    {
+    public function getFixedAttributesData(
+        $entityClass,
+        array $data,
+        $attributeKey = 'values',
+        $requestAttributeKey = 'attributes'
+    ) {
         /** @var ObjectRepository $attrRepository */
         $attrRepository = $this->managerRegistry
             ->getManager($entityClass)
@@ -46,25 +50,7 @@ class RequestFix
 
         foreach ($attrDef as $attr) {
             /* @var AbstractEntityAttribute $attr */
-            if ($attr->getBackendType() == 'options') {
-                if (in_array(
-                    $attr->getAttributeType(),
-                    array(
-                        'oro_flexibleentity_multiselect',
-                        'oro_flexibleentity_multicheckbox',
-                    )
-                )) {
-                    $type = 'options';
-                    $default = array($attr->getOptions()->offsetGet(0)->getId());
-                } else {
-                    $type = 'option';
-                    $default = $attr->getOptions()->offsetGet(0)->getId();
-                }
-            } else {
-                $type = $attr->getBackendType();
-                //TODO: temporary fix for https://github.com/symfony/symfony/issues/8548
-                $default = '';
-            }
+            list($type, $default) = $this->getAttributeParameters($attr);
 
             $attrCode = $attr->getCode();
             if ($default) {
@@ -94,5 +80,34 @@ class RequestFix
         }
 
         return $data;
+    }
+
+    /**
+     * @param AbstractEntityAttribute $attr
+     * @return array
+     */
+    protected function getAttributeParameters(AbstractEntityAttribute $attr)
+    {
+        if ($attr->getBackendType() == 'options') {
+            if (in_array(
+                $attr->getAttributeType(),
+                array(
+                    'oro_flexibleentity_multiselect',
+                    'oro_flexibleentity_multicheckbox',
+                )
+            )) {
+                $type = 'options';
+                $default = array($attr->getOptions()->offsetGet(0)->getId());
+            } else {
+                $type = 'option';
+                $default = $attr->getOptions()->offsetGet(0)->getId();
+            }
+        } else {
+            $type = $attr->getBackendType();
+            //TODO: temporary fix for https://github.com/symfony/symfony/issues/8548
+            $default = '';
+        }
+
+        return array($type, $default);
     }
 }

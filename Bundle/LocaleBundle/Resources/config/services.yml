@@ -16,6 +16,7 @@ parameters:
     oro_locale.form.type.country.class: Oro\Bundle\LocaleBundle\Form\Type\CountryType
     oro_locale.form.type.currency.class: Oro\Bundle\LocaleBundle\Form\Type\CurrencyType
     oro_locale.form.type.locale.class: Oro\Bundle\LocaleBundle\Form\Type\LocaleType
+    oro_locale.form.type.timezone.class: Oro\Bundle\LocaleBundle\Form\Type\TimezoneType
 
     oro_locale.locale_listener.class: Oro\Bundle\LocaleBundle\EventListener\LocaleListener
 
@@ -28,6 +29,11 @@ parameters:
     oro_locale.twig.number.class: Oro\Bundle\LocaleBundle\Twig\NumberExtension
 
 services:
+    oro_locale.cache:
+            parent: oro.cache.abstract
+            calls:
+                - [ setNamespace, [ "oro_locale.cache" ] ]
+
     oro_locale.settings:
         class: %oro_locale.settings.class%
         arguments:
@@ -71,6 +77,13 @@ services:
         class: %oro_locale.form.type.locale.class%
         tags:
             - { name: form.type, alias: "oro_locale" }
+
+    oro_locale.form.type.timezone:
+        class: %oro_locale.form.type.timezone.class%
+        arguments:
+            - @oro_locale.cache
+        tags:
+            - { name: form.type, alias: "oro_locale_timezone" }
 
     # Converters
     oro_locale.format_converter.date_time.registry:

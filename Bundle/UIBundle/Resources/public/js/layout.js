@@ -68,6 +68,43 @@ function($, __) {
             });
 
             container.find('[data-toggle="tooltip"]').tooltip();
+
+            var handlePopoverMouseout = function (e, popover) {
+                var popoverHandler = $(e.relatedTarget).closest('.popover');
+                if (!popoverHandler.length) {
+                    popover.data('popover-timer',
+                        setTimeout(function() {
+                            popover.popover('hide');
+                            popover.data('popover-active', false);
+                        }, 500)
+                    );
+                } else {
+                    popoverHandler.one('mouseout', function(evt) {
+                        handlePopoverMouseout(evt, popover);
+                    });
+                }
+            };
+            $('form label [data-toggle="popover"]')
+                .popover({
+                    animation: true,
+                    delay: { show: 0, hide: 0 },
+                    html: true,
+                    trigger: 'manual'
+                })
+                .mouseover(function() {
+                    var popoverEl = $(this);
+                    clearTimeout(popoverEl.data('popover-timer'));
+                    if (!popoverEl.data('popover-active')) {
+                        popoverEl.data('popover-active', true);
+                        $(this).popover('show');
+                    }
+                })
+                .mouseout(function(e) {
+                    var popover = $(this);
+                    setTimeout(function() {
+                        handlePopoverMouseout(e, popover);
+                    }, 500);
+                });
         },
 
         hideProgressBar: function() {
