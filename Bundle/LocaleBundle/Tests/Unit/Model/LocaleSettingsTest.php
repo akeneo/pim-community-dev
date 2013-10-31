@@ -326,19 +326,25 @@ class LocaleSettingsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedCurrency, $this->localeSettings->getCurrency());
     }
 
-    public function testGetCalendarDefaultLocale()
+    public function testGetCalendarDefaultLocaleAndLanguage()
     {
         $expectedLocale = 'ru_RU';
+        $expectedLanguage = 'fr_CA';
 
-        $this->configManager->expects($this->once())
+        $this->configManager->expects($this->at(0))
             ->method('get')
             ->with('oro_locale.locale')
             ->will($this->returnValue($expectedLocale));
 
+        $this->configManager->expects($this->at(1))
+            ->method('get')
+            ->with('oro_locale.language')
+            ->will($this->returnValue($expectedLanguage));
+
         $calendar = $this->getMock('Oro\Bundle\LocaleBundle\Model\Calendar');
 
         $this->calendarFactory->expects($this->once())->method('getCalendar')
-            ->with($expectedLocale)
+            ->with($expectedLocale, $expectedLanguage)
             ->will($this->returnValue($calendar));
 
         $this->assertSame($calendar, $this->localeSettings->getCalendar());
@@ -347,16 +353,17 @@ class LocaleSettingsTest extends \PHPUnit_Framework_TestCase
     public function testGetCalendarSpecificLocale()
     {
         $locale = 'ru_RU';
+        $language = 'fr_CA';
 
         $this->configManager->expects($this->never())->method($this->anything());
 
         $calendar = $this->getMock('Oro\Bundle\LocaleBundle\Model\Calendar');
 
         $this->calendarFactory->expects($this->once())->method('getCalendar')
-            ->with($locale)
+            ->with($locale, $language)
             ->will($this->returnValue($calendar));
 
-        $this->assertSame($calendar, $this->localeSettings->getCalendar($locale));
+        $this->assertSame($calendar, $this->localeSettings->getCalendar($locale, $language));
     }
 
     public function testIsFormatAddressByAddressCountry()

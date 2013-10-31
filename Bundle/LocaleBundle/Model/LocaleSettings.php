@@ -319,11 +319,15 @@ class LocaleSettings
      * Get calendar instance
      *
      * @param string|null $locale
+     * @param string|null $language
      * @return Calendar
      */
-    public function getCalendar($locale = null)
+    public function getCalendar($locale = null, $language = null)
     {
-        return $this->calendarFactory->getCalendar($locale ? : $this->getLocale());
+        return $this->calendarFactory->getCalendar(
+            $locale ? : $this->getLocale(),
+            $language ? : $this->getLanguage()
+        );
     }
 
     /**

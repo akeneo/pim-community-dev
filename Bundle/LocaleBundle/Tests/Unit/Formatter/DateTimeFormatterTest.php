@@ -36,18 +36,24 @@ class DateTimeFormatterTest extends IcuAwareTestCase
         $timeType,
         $locale,
         $timeZone,
+        $language,
         $defaultLocale = null,
         $defaultTimeZone = null
     ) {
-        $at = 0;
+        $this->localeSettings->expects($this->once())->method('getLanguage')->will($this->returnValue($language));
+        $methodCalls = 1;
         if ($defaultLocale) {
-            $this->localeSettings->expects($this->at($at++))->method('getLocale')
+            $methodCalls++;
+            $this->localeSettings->expects($this->once())->method('getLocale')
                 ->will($this->returnValue($defaultLocale));
         }
         if ($defaultTimeZone) {
-            $this->localeSettings->expects($this->at($at++))->method('getTimeZone')
+            $methodCalls++;
+            $this->localeSettings->expects($this->once())->method('getTimeZone')
                 ->will($this->returnValue($defaultTimeZone));
         }
+        $this->localeSettings->expects($this->exactly($methodCalls))->method($this->anything());
+
         $this->assertEquals(
             $expected,
             $this->formatter->format($date, $dateType, $timeType, $locale, $timeZone)
@@ -64,6 +70,27 @@ class DateTimeFormatterTest extends IcuAwareTestCase
                 'timeType' => \IntlDateFormatter::FULL,
                 'locale' => 'en_US',
                 'timeZone' => 'America/Los_Angeles',
+                'language' => 'en_US',
+            ),
+            'full_format_default_locale_and_timezone' => array(
+                'expected' => 'Tuesday, December 31, 2013 2:00:00 PM Pacific Standard Time',
+                'date' => $this->createDateTime('2014-01-01 00:00:00', 'Europe/London'),
+                'dateType' => \IntlDateFormatter::FULL,
+                'timeType' => \IntlDateFormatter::FULL,
+                'locale' => null,
+                'timeZone' => null,
+                'language' => 'en_US',
+                'defaultLocale' => 'en_US',
+                'defaultTimeZone' => 'America/Los_Angeles',
+            ),
+            'full_format_english_locale_russian_language' => array(
+                'expected' => 'вторник, декабря 31, 2013 2:00:00 после полудня Тихоокеанское стандартное время',
+                'date' => $this->createDateTime('2014-01-01 00:00:00', 'Europe/London'),
+                'dateType' => \IntlDateFormatter::FULL,
+                'timeType' => \IntlDateFormatter::FULL,
+                'locale' => 'en_US',
+                'timeZone' => 'America/Los_Angeles',
+                'language' => 'ru_RU',
             ),
             'string_date' => array(
                 'expected' => '14-01-01 12:00 AM',
@@ -72,6 +99,7 @@ class DateTimeFormatterTest extends IcuAwareTestCase
                 'timeType' => \IntlDateFormatter::SHORT,
                 'locale' => 'en_CA',
                 'timeZone' => 'America/Los_Angeles',
+                'language' => 'en_CA',
             ),
             'integer_date' => array(
                 'expected' => '14-01-01 12:00 AM',
@@ -80,6 +108,7 @@ class DateTimeFormatterTest extends IcuAwareTestCase
                 'timeType' => \IntlDateFormatter::SHORT,
                 'locale' => 'en_CA',
                 'timeZone' => 'America/Los_Angeles',
+                'language' => 'en_CA',
             ),
             'short_format_and_text_date_types' => array(
                 'expected' => '12/31/13 2:00 PM',
@@ -88,6 +117,7 @@ class DateTimeFormatterTest extends IcuAwareTestCase
                 'timeType' => 'short',
                 'locale' => 'en_US',
                 'timeZone' => 'America/Los_Angeles',
+                'language' => 'en_US',
             ),
             'long_date_without_time' => array(
                 'expected' => '31 décembre 2013',
@@ -95,7 +125,17 @@ class DateTimeFormatterTest extends IcuAwareTestCase
                 'dateType' => \IntlDateFormatter::LONG,
                 'timeType' => \IntlDateFormatter::NONE,
                 'locale' => 'fr_FR',
-                'timeZone' => 'America/Los_Angeles'
+                'timeZone' => 'America/Los_Angeles',
+                'language' => 'fr_FR',
+            ),
+            'long_date_without_time_french_locale_russian_language' => array(
+                'expected' => '31 декабря 2013',
+                'date' => $this->createDateTime('2014-01-01 00:00:00', 'Europe/London'),
+                'dateType' => \IntlDateFormatter::LONG,
+                'timeType' => \IntlDateFormatter::NONE,
+                'locale' => 'fr_FR',
+                'timeZone' => 'America/Los_Angeles',
+                'language' => 'ru_RU',
             ),
             'default_date_and_time_type' => array(
                 'expected' => '2013-12-31 2:00 PM',
@@ -103,7 +143,8 @@ class DateTimeFormatterTest extends IcuAwareTestCase
                 'dateType' => null,
                 'timeType' => null,
                 'locale' => 'en_CA',
-                'timeZone' => 'America/Los_Angeles'
+                'timeZone' => 'America/Los_Angeles',
+                'language' => 'en_CA',
             ),
         );
     }
@@ -117,18 +158,24 @@ class DateTimeFormatterTest extends IcuAwareTestCase
         $dateType,
         $locale,
         $timeZone,
+        $language,
         $defaultLocale = null,
         $defaultTimeZone = null
     ) {
-        $at = 0;
+        $this->localeSettings->expects($this->once())->method('getLanguage')->will($this->returnValue($language));
+        $methodCalls = 1;
         if ($defaultLocale) {
-            $this->localeSettings->expects($this->at($at++))->method('getLocale')
+            $this->localeSettings->expects($this->once())->method('getLocale')
                 ->will($this->returnValue($defaultLocale));
+            $methodCalls++;
         }
         if ($defaultTimeZone) {
-            $this->localeSettings->expects($this->at($at++))->method('getTimeZone')
+            $this->localeSettings->expects($this->once())->method('getTimeZone')
                 ->will($this->returnValue($defaultTimeZone));
+            $methodCalls++;
         }
+        $this->localeSettings->expects($this->exactly($methodCalls))->method($this->anything());
+
         $this->assertEquals(
             $expected,
             $this->formatter->formatDate($date, $dateType, $locale, $timeZone)
@@ -144,6 +191,25 @@ class DateTimeFormatterTest extends IcuAwareTestCase
                 'dateType' => \IntlDateFormatter::FULL,
                 'locale' => 'en_US',
                 'timeZone' => 'America/Los_Angeles',
+                'language' => 'en_US',
+            ),
+            'full_date_default_locale_and_timezone' => array(
+                'expected' => 'Tuesday, December 31, 2013',
+                'date' => $this->createDateTime('2014-01-01 00:00:00', 'Europe/London'),
+                'dateType' => \IntlDateFormatter::FULL,
+                'locale' => null,
+                'timeZone' => null,
+                'language' => 'en_US',
+                'defaultLocale' => 'en_US',
+                'defaultTimeZone' => 'America/Los_Angeles',
+            ),
+            'full_date_object' => array(
+                'expected' => 'Tuesday, December 31, 2013',
+                'date' => $this->createDateTime('2014-01-01 00:00:00', 'Europe/London'),
+                'dateType' => \IntlDateFormatter::FULL,
+                'locale' => 'en_US',
+                'timeZone' => 'America/Los_Angeles',
+                'language' => 'en_US',
             ),
             'short_date_and_text_date_type' => array(
                 'expected' => '12/31/13',
@@ -151,20 +217,31 @@ class DateTimeFormatterTest extends IcuAwareTestCase
                 'dateType' => 'short',
                 'locale' => 'en_US',
                 'timeZone' => 'America/Los_Angeles',
+                'language' => 'en_US',
             ),
             'long_date' => array(
                 'expected' => '31 décembre 2013',
                 'date' => $this->createDateTime('2014-01-01 00:00:00', 'Europe/London'),
                 'dateType' => \IntlDateFormatter::LONG,
                 'locale' => 'fr_FR',
-                'timeZone' => 'America/Los_Angeles'
+                'timeZone' => 'America/Los_Angeles',
+                'language' => 'fr_FR',
+            ),
+            'long_date_french_locale_english_language' => array(
+                'expected' => '31 December 2013',
+                'date' => $this->createDateTime('2014-01-01 00:00:00', 'Europe/London'),
+                'dateType' => \IntlDateFormatter::LONG,
+                'locale' => 'fr_FR',
+                'timeZone' => 'America/Los_Angeles',
+                'language' => 'en',
             ),
             'default_date_type' => array(
                 'expected' => '2013-12-31',
                 'date' => $this->createDateTime('2014-01-01 00:00:00', 'Europe/London'),
                 'dateType' => null,
                 'locale' => 'en_CA',
-                'timeZone' => 'America/Los_Angeles'
+                'timeZone' => 'America/Los_Angeles',
+                'language' => 'en_CA',
             ),
         );
     }
@@ -178,18 +255,24 @@ class DateTimeFormatterTest extends IcuAwareTestCase
         $timeType,
         $locale,
         $timeZone,
+        $language,
         $defaultLocale = null,
         $defaultTimeZone = null
     ) {
-        $at = 0;
+        $this->localeSettings->expects($this->once())->method('getLanguage')->will($this->returnValue($language));
+        $methodCalls = 1;
         if ($defaultLocale) {
-            $this->localeSettings->expects($this->at($at++))->method('getLocale')
+            $this->localeSettings->expects($this->once())->method('getLocale')
                 ->will($this->returnValue($defaultLocale));
+            $methodCalls++;
         }
         if ($defaultTimeZone) {
-            $this->localeSettings->expects($this->at($at++))->method('getTimeZone')
+            $this->localeSettings->expects($this->once())->method('getTimeZone')
                 ->will($this->returnValue($defaultTimeZone));
+            $methodCalls++;
         }
+        $this->localeSettings->expects($this->exactly($methodCalls))->method($this->anything());
+
         $this->assertEquals(
             $expected,
             $this->formatter->formatTime($date, $timeType, $locale, $timeZone)
@@ -205,6 +288,25 @@ class DateTimeFormatterTest extends IcuAwareTestCase
                 'dateType' => \IntlDateFormatter::FULL,
                 'locale' => 'en_US',
                 'timeZone' => 'America/Los_Angeles',
+                'language' => 'en_US',
+            ),
+            'full_date_default_locale_and_timezone' => array(
+                'expected' => '2:00:00 PM Pacific Standard Time',
+                'date' => $this->createDateTime('2014-01-01 00:00:00', 'Europe/London'),
+                'dateType' => \IntlDateFormatter::FULL,
+                'locale' => null,
+                'timeZone' => null,
+                'language' => 'en_US',
+                'defaultLocale' => 'en_US',
+                'defaultTimeZone' => 'America/Los_Angeles',
+            ),
+            'full_date_english_locale_russian_language' => array(
+                'expected' => '2:00:00 после полудня Тихоокеанское стандартное время',
+                'date' => $this->createDateTime('2014-01-01 00:00:00', 'Europe/London'),
+                'dateType' => \IntlDateFormatter::FULL,
+                'locale' => 'en_US',
+                'timeZone' => 'America/Los_Angeles',
+                'language' => 'ru',
             ),
             'short_date_and_text_date_type' => array(
                 'expected' => '2:00 PM',
@@ -212,20 +314,23 @@ class DateTimeFormatterTest extends IcuAwareTestCase
                 'dateType' => 'short',
                 'locale' => 'en_US',
                 'timeZone' => 'America/Los_Angeles',
+                'language' => 'en_US',
             ),
             'long_time' => array(
                 'expected' => '14:00:00 UTC-08:00',
                 'date' => $this->createDateTime('2014-01-01 00:00:00', 'Europe/London'),
                 'dateType' => \IntlDateFormatter::LONG,
                 'locale' => 'fr_FR',
-                'timeZone' => 'America/Los_Angeles'
+                'timeZone' => 'America/Los_Angeles',
+                'language' => 'fr_FR',
             ),
             'default_date_type' => array(
                 'expected' => '2:00 PM',
                 'date' => $this->createDateTime('2014-01-01 00:00:00', 'Europe/London'),
                 'dateType' => null,
                 'locale' => 'en_CA',
-                'timeZone' => 'America/Los_Angeles'
+                'timeZone' => 'America/Los_Angeles',
+                'language' => 'en_CA',
             ),
         );
     }

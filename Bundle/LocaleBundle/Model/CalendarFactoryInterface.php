@@ -2,15 +2,14 @@
 
 namespace Oro\Bundle\LocaleBundle\Model;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
-
 interface CalendarFactoryInterface
 {
     /**
      * Get calendar instance
      *
-     * @param string $locale
+     * @param string|null $locale
+     * @param string|null $language
      * @return Calendar
      */
-    public function getCalendar($locale = null);
+    public function getCalendar($locale = null, $language = null);
 }

@@ -30,12 +30,16 @@ class DateTimeFormatter
      * @param string|int|null $timeType
      * @param string|null $locale
      * @param string|null $timeZone
+     * @param string|null $pattern
      * @return string
      */
-    public function format($date, $dateType = null, $timeType = null, $locale = null, $timeZone = null)
+    public function format($date, $dateType = null, $timeType = null, $locale = null, $timeZone = null, $pattern = null)
     {
-        $formatter = $this->getFormatter($dateType, $timeType, $locale, $timeZone);
-        return $this->doFormat($formatter, $this->getDateTime($date, $timeZone));
+        if (!$timeZone) {
+            $timeZone = $this->localeSettings->getTimeZone();
+        }
+        $formatter = $this->getFormatter($dateType, $timeType, $locale, $timeZone, $pattern);
+        return $formatter->format((int)$this->getDateTime($date, $timeZone)->format('U'));
     }
 
     /**
@@ -49,8 +53,7 @@ class DateTimeFormatter
      */
     public function formatDate($date, $dateType = null, $locale = null, $timeZone = null)
     {
-        $formatter = $this->getFormatter($dateType, \IntlDateFormatter::NONE, $locale, $timeZone);
-        return $this->doFormat($formatter, $this->getDateTime($date, $timeZone));
+        return $this->format($date, $dateType, \IntlDateFormatter::NONE, $locale, $timeZone);
     }
 
     /**
@@ -64,8 +67,7 @@ class DateTimeFormatter
      */
     public function formatTime($date, $timeType = null, $locale = null, $timeZone = null)
     {
-        $formatter = $this->getFormatter(\IntlDateFormatter::NONE, $timeType, $locale, $timeZone);
-        return $this->doFormat($formatter, $this->getDateTime($date, $timeZone));
+        return $this->format($date, \IntlDateFormatter::NONE, $timeType, $locale, $timeZone);
     }
 
     /**
@@ -78,38 +80,8 @@ class DateTimeFormatter
      */
     public function getPattern($dateType, $timeType, $locale = null)
     {
-        return $this->getFormatter($dateType, $timeType, $locale, null)->getPattern();
-    }
-
-    /**
-     * Formats date using ready formatter and date time object
-     *
-     * @param \IntlDateFormatter $formatter
-     * @param \DateTime $date
-     * @return string
-     */
-    protected function doFormat(\IntlDateFormatter $formatter, \DateTime $date)
-    {
-        return $formatter->format((int)$date->format('U'));
-    }
-
-    /**
-     * Gets instance of intl date formatter by parameters
-     *
-     * @param string|int|null $dateType
-     * @param string|int|null $timeType
-     * @param string|null $locale
-     * @param string|null $timeZone
-     * @return \IntlDateFormatter
-     */
-    protected function getFormatter($dateType, $timeType, $locale, $timeZone)
-    {
         if (!$locale) {
             $locale = $this->localeSettings->getLocale();
-        }
-
-        if (!$timeZone) {
-            $timeZone = $this->localeSettings->getTimeZone();
         }
 
         if (null === $dateType) {
@@ -120,12 +92,32 @@ class DateTimeFormatter
             $timeType = static::DEFAULT_TIME_TYPE;
         }
 
+        $dateType = $this->parseDateType($dateType);
+        $timeType = $this->parseDateType($timeType);
+
+        $localeFormatter = new \IntlDateFormatter($locale, $dateType, $timeType, null, \IntlDateFormatter::GREGORIAN);
+        return $localeFormatter->getPattern();
+    }
+
+    /**
+     * Gets instance of intl date formatter by parameters
+     *
+     * @param string|int|null $dateType
+     * @param string|int|null $timeType
+     * @param string|null $locale
+     * @param string|null $timeZone
+     * @param string|null $pattern
+     * @return \IntlDateFormatter
+     */
+    protected function getFormatter($dateType, $timeType, $locale, $timeZone, $pattern)
+    {
         return new \IntlDateFormatter(
-            $locale,
-            $this->parseDateType($dateType),
-            $this->parseDateType($timeType),
+            $this->localeSettings->getLanguage(),
+            null,
+            null,
             $timeZone,
-            \IntlDateFormatter::GREGORIAN
+            \IntlDateFormatter::GREGORIAN,
+            $pattern ? : $this->getPattern($dateType, $timeType, $locale)
         );
     }
 
@@ -166,21 +158,19 @@ class DateTimeFormatter
      * Returns DateTime by $data and $timezone
      *
      * @param \DateTime|string|int $date
-     * @param \DateTimeZone|string|null $timeZone
+     * @param \DateTimeZone|string $timeZone
      * @return \DateTime
      */
-    protected function getDateTime($date, $timeZone = null)
+    protected function getDateTime($date, $timeZone)
     {
-        if ($date instanceof \DateTime) {
-            return $date;
-        }
-
-        if (!$timeZone) {
-            $timeZone = $this->localeSettings->getTimeZone();
-        }
-
         if (!$timeZone instanceof \DateTimeZone) {
             $timeZone = new \DateTimeZone($timeZone);
+        }
+
+        if ($date instanceof \DateTime) {
+            $result = clone $date;
+            $result->setTimezone($timeZone);
+            return $result;
         }
 
         $defaultTimezone = date_default_timezone_get();

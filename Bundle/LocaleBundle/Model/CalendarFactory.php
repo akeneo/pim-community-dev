@@ -22,11 +22,12 @@ class CalendarFactory implements CalendarFactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function getCalendar($locale = null)
+    public function getCalendar($locale = null, $language = null)
     {
         /** @var Calendar $result */
         $result = $this->container->get('oro_locale.calendar');
         $result->setLocale($locale);
+        $result->setLanguage($language);
         return $result;
     }
 }

@@ -2,8 +2,6 @@
 
 namespace Oro\Bundle\LocaleBundle\Model;
 
-use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
-
 /**
  * @link http://userguide.icu-project.org/formatparse/datetime
  */
@@ -28,11 +26,18 @@ class Calendar
     protected $locale;
 
     /**
-     * @param string $locale
+     * @var string
      */
-    public function __construct($locale = null)
+    protected $language;
+
+    /**
+     * @param string|null $locale
+     * @param string|null $language
+     */
+    public function __construct($locale = null, $language = null)
     {
         $this->locale = $locale;
+        $this->language = $language;
     }
 
     /**
@@ -59,13 +64,33 @@ class Calendar
     }
 
     /**
+     * Gets current language
+     *
+     * @return string
+     */
+    public function getLanguage()
+    {
+        return $this->language ? : $this->getLocale();
+    }
+
+    /**
+     * Sets current language
+     *
+     * @param string $language
+     */
+    public function setLanguage($language)
+    {
+        $this->language = $language;
+    }
+
+    /**
      * Get instance of intl calendar object
      *
      * @return int
      */
     public function getFirstDayOfWeek()
     {
-        $formatter = $this->getFormatter('cc');
+        $formatter = $this->getFormatter('cc', $this->getLocale());
         $sundayNumber = $formatter->format(new \DateTime('Sunday, January 1, 2012'));
 
         // there are cases when return value is not a number, for example locales: ar_SA, hi_IN, kn_IN, etc.
@@ -101,7 +126,7 @@ class Calendar
                 $pattern = 'LLLL';
                 break;
         }
-        $formatter = $this->getFormatter($pattern);
+        $formatter = $this->getFormatter($pattern, $this->getLanguage());
         return array(
             1 => $formatter->format(new \DateTime('2013-01-01')),
             $formatter->format(new \DateTime('2013-02-01')),
@@ -146,7 +171,7 @@ class Calendar
                 break;
         }
 
-        $formatter = $this->getFormatter($pattern);
+        $formatter = $this->getFormatter($pattern, $this->getLanguage());
         return array(
             self::DOW_SUNDAY    => $formatter->format(new \DateTime('Sunday, January 1, 2012')),
             self::DOW_MONDAY    => $formatter->format(new \DateTime('Monday, January 2, 2012')),
@@ -162,12 +187,13 @@ class Calendar
      * Gets instance of intl date formatter by parameters
      *
      * @param string|null $pattern
+     * @param string|null $locale
      * @return \IntlDateFormatter
      */
-    protected function getFormatter($pattern = null)
+    protected function getFormatter($pattern = null, $locale = null)
     {
         return new \IntlDateFormatter(
-            $this->getLocale(),
+            $locale ? : $this->getLocale(),
             null,
             null,
             null,
