@@ -30,7 +30,7 @@ oro_entity_config:
                     grid:
                         type:               string
                         label:              'Type'
-                        filter_type:        oro_grid_orm_string
+                        filter_type:        string
                         required:           true
                         sortable:           true
                         filterable:         true
@@ -51,7 +51,7 @@ oro_entity_config:
                     grid:
                         type:               boolean
                         label:              'Is Extend'
-                        filter_type:        oro_grid_orm_boolean
+                        filter_type:        boolean
                         required:           true
                         sortable:           true
                         filterable:         true
@@ -65,7 +65,7 @@ oro_entity_config:
                     grid:
                         type:               string
                         label:              'Schema status'
-                        filter_type:        oro_grid_orm_choice
+                        filter_type:        choice
                         choices:            {system: '', new: 'New', active: 'Active', updated: 'Requires update', deleted: 'To be deleted'}
                         required:           true
                         sortable:           true
@@ -141,7 +141,7 @@ oro_entity_config:
                     grid:
                         type:               string
                         label:              'Type'
-                        filter_type:        oro_grid_orm_string
+                        filter_type:        string
                         required:           true
                         sortable:           true
                         filterable:         false
@@ -155,7 +155,7 @@ oro_entity_config:
                     grid:
                         type:               string
                         label:              'Schema status'
-                        filter_type:        oro_grid_orm_choice
+                        filter_type:        choice
                         choices:            { new: 'New', applied: 'Applied', updated: 'Requires update', deleted: 'To be deleted'}
                         required:           true
                         sortable:           true
