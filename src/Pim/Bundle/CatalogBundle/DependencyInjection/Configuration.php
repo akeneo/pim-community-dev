@@ -25,7 +25,6 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->booleanNode('record_mails')->defaultFalse()->end()
-                ->scalarNode('imported_product_data_transformer')->defaultNull()->end()
             ->end()
         ->end();
 

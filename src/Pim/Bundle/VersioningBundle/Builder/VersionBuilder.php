@@ -6,14 +6,12 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Oro\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
 use Pim\Bundle\VersioningBundle\Entity\Version;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Entity\ProductPrice;
-use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
-use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
-use Pim\Bundle\CatalogBundle\Entity\Group;
-use Pim\Bundle\CatalogBundle\Entity\Category;
+use Pim\Bundle\VersioningBundle\UpdateGuesser\VersionableUpdateGuesser;
+use Pim\Bundle\VersioningBundle\UpdateGuesser\TranslationsUpdateGuesser;
+use Pim\Bundle\VersioningBundle\UpdateGuesser\ContainsProductsUpdateGuesser;
+use Pim\Bundle\VersioningBundle\UpdateGuesser\AttributeOptionUpdateGuesser;
+use Pim\Bundle\VersioningBundle\UpdateGuesser\ProductValueUpdateGuesser;
+use Pim\Bundle\VersioningBundle\UpdateGuesser\AttributeGroupUpdateGuesser;
 
 /**
  * Version builder
@@ -43,7 +41,7 @@ class VersionBuilder
      * @param VersionableInterface $versionable
      * @param User                 $user
      *
-     * @return \Pim\Bundle\VersioningBundle\Entity\Version
+     * @return Version
      */
     public function buildVersion(VersionableInterface $versionable, User $user)
     {
@@ -68,78 +66,19 @@ class VersionBuilder
     {
         $pendings = array();
 
-        if ($entity instanceof ProductAttribute) {
-            $pendings[]= $entity;
-            $changeset = $em->getUnitOfWork()->getEntityChangeSet($entity);
-            if ($changeset and in_array('group', array_keys($changeset))) {
-                $groupChangeset = $changeset['group'];
-                if (isset($groupChangeset[0]) and $groupChangeset[0]) {
-                    $pendings[]= $groupChangeset[0];
-                }
-                if (isset($groupChangeset[1]) and $groupChangeset[1]) {
-                    $pendings[]= $groupChangeset[1];
-                }
-            }
-        } elseif ($entity instanceof Group) {
-            $products = $entity->getProducts();
-            foreach ($products as $product) {
-                $pendings[]= $product;
-            }
+        $guessers = array(
+            new VersionableUpdateGuesser(),
+            new TranslationsUpdateGuesser(),
+            new ContainsProductsUpdateGuesser(),
+            new AttributeOptionUpdateGuesser(),
+            new ProductValueUpdateGuesser(),
+            new AttributeOptionUpdateGuesser(),
+            new AttributeGroupUpdateGuesser()
+        );
 
-        } elseif ($entity instanceof Category) {
-            $pendings[]= $entity;
-            $products = $entity->getProducts();
-            foreach ($products as $product) {
-                $pendings[]= $product;
-            }
-
-        } elseif ($entity instanceof VersionableInterface) {
-            $pendings[]= $entity;
-
-        } elseif ($entity instanceof ProductValueInterface) {
-            $product = $entity->getEntity();
-            if ($product) {
-                $pendings[]= $product;
-            }
-
-        } elseif ($entity instanceof ProductPrice) {
-            $pendings[]= $entity->getValue()->getEntity();
-
-        } elseif ($entity instanceof AbstractTranslation) {
-            $translatedEntity = $entity->getForeignKey();
-            if ($translatedEntity instanceof VersionableInterface) {
-                $pendings[]= $translatedEntity;
-            }
-
-        } elseif ($entity instanceof AttributeOption) {
-            $pendings[]= $entity->getAttribute();
-
-        } elseif ($entity instanceof AttributeOptionValue) {
-            $pendings[]= $entity->getOption()->getAttribute();
-        }
-
-        return $pendings;
-    }
-
-    /**
-     * Check if a related entity must be versioned due to entity deletion
-     *
-     * @param object $entity
-     *
-     * @return array
-     */
-    public function checkScheduledDeletion($entity)
-    {
-        $pendings = array();
-
-        if ($entity instanceof AttributeOption) {
-            $pendings[]= $entity->getAttribute();
-
-        } elseif ($entity instanceof Group or $entity instanceof Category) {
-            $products = $entity->getProducts();
-            foreach ($products as $product) {
-                $pendings[]= $product;
-            }
+        foreach ($guessers as $guesser) {
+            $updates = $guesser->guessUpdates($em, $entity);
+            $pendings = array_merge($pendings, $updates);
         }
 
         return $pendings;

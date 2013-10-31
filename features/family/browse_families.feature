@@ -11,4 +11,4 @@ Feature: Browse families
       | jewels     |
     And I am logged in as "admin"
     When I am on the families page
-    Then I should see the families bags, jewels and smartphone
+    Then I should see the families [bags], [jewels] and [smartphone]
