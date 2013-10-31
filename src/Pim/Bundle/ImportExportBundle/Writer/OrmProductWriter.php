@@ -51,7 +51,7 @@ class OrmProductWriter extends AbstractConfigurableStepElement implements
      *
      * @var array
      */
-    protected $nonClearableEntities=array(
+    protected $nonClearableEntities = array(
         'Oro\\Bundle\\BatchBundle\\Entity\\JobExecution',
         'Oro\\Bundle\\BatchBundle\\Entity\\JobInstance',
         'Pim\\Bundle\\CatalogBundle\\Entity\\ProductAttribute',
@@ -92,14 +92,11 @@ class OrmProductWriter extends AbstractConfigurableStepElement implements
      */
     public function write(array $items)
     {
-        $storageManager = $this->productManager->getStorageManager();
-        foreach ($items as $product) {
-            $storageManager->persist($product);
-            $this->productManager->handleMedia($product);
-            $this->stepExecution->incrementWriteCount();
-        }
+        $this->productManager->saveAll($items, true);
+        $this->productManager->handleAllMedia($items);
+        $this->stepExecution->setWriteCount(count($items));
 
-        $storageManager->flush();
+        $storageManager = $this->productManager->getStorageManager();
 
         foreach ($storageManager->getUnitOfWork()->getIdentityMap() as $className => $entities) {
             if (count($entities) && !in_array($className, $this->nonClearableEntities)) {
