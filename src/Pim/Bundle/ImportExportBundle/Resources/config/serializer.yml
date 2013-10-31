@@ -16,6 +16,8 @@ parameters:
     pim_serializer.normalizer.flat_association.class:     Pim\Bundle\ImportExportBundle\Normalizer\FlatAssociationNormalizer
     pim_serializer.normalizer.get_set_method.class:       Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer
     pim_serializer.encoder.csv.class:                     Pim\Bundle\ImportExportBundle\Encoder\CsvEncoder
+    pim_serializer.normalizer.group.class:                Pim\Bundle\ImportExportBundle\Normalizer\GroupNormalizer
+    pim_serializer.normalizer.flat_group.class:           Pim\Bundle\ImportExportBundle\Normalizer\FlatGroupNormalizer
 
 services:
     pim_serializer:
@@ -88,6 +90,16 @@ services:
     pim_serializer.normalizer.get_set_method:
         public: false
         class: %pim_serializer.normalizer.get_set_method.class%
+        tags:
+            - { name: pim_serializer.normalizer }
+
+    pim_serializer.normalizer.group:
+        class: %pim_serializer.normalizer.group.class%
+        tags:
+            - { name: pim_serializer.normalizer }
+
+    pim_serializer.normalizer.flat_group:
+        class: %pim_serializer.normalizer.flat_group.class%
         tags:
             - { name: pim_serializer.normalizer }
 
