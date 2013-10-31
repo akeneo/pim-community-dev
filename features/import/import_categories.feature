@@ -11,12 +11,12 @@ Feature: Import categories
     And I am logged in as "Julia"
     And the following file to import:
     """
-    code;parent;dynamic;label
+    code;parent;dynamic;label-en_US
     default;;;
-    computers;;;en_US:Computers
-    laptops;computers;;en_US:Laptops
-    hard_drives;laptops;;"en_US:Hard drives"
-    pc;computers;;en_US:PC
+    computers;;;Computers
+    laptops;computers;;Laptops
+    hard_drives;laptops;;Hard drives
+    pc;computers;;PC
     """
     And the following job "acme_category_import" configuration:
       | element | property | value                |
