@@ -6,8 +6,8 @@
  * Task for complete refactoring: BAP-859
  */
 
-require(['jquery', 'underscore', 'oro/translator', 'oro/formatter/datetime', 'jquery.bind-first', 'bootstrap-tooltip'],
-function($, _, __, datetimeFormatter){
+require(['jquery', 'underscore', 'oro/translator', 'oro/formatter/datetime', 'oro/formatter/number', 'jquery.bind-first', 'bootstrap-tooltip'],
+function($, _, __, datetimeFormatter, numberFormatter){
 {% block before %}{% endblock %}
 
 var jsfv = (function () {
@@ -22,6 +22,16 @@ var jsfv = (function () {
 
     function isNotDefined(value) {
         return (typeof(value) == 'undefined' || null === value || '' === value);
+    }
+
+    function parseNumber(value)
+    {
+        var stringValue = String(value);
+        var result = numberFormatter.unformat(stringValue);
+        if (0 === result && stringValue !== '0' && stringValue.indexOf('0') !== 0) {
+            return NaN;
+        }
+        return result;
     }
 
 {% block getFieldValue %}
@@ -102,7 +112,6 @@ var jsfv = (function () {
         return true;
     }
 
-
 {% for librairyCall in librairyCalls %}
 
 {% include librairyCall %}
@@ -134,7 +143,10 @@ var jsfv = (function () {
             // Add errors block
             field = $(field);
             var target = field;
-            if (field.parent().filter('.selector').length || field.parent().filter('.uploader').length) {
+            if (field.parent().filter('.selector').length ||
+                field.parent().filter('.uploader').length ||
+                field.parent().filter('.input-append').length
+            ) {
                 target = field.parent();
             }
             if (!target.siblings('.validation-faled').length) {
@@ -218,7 +230,8 @@ var jsfv = (function () {
                         form.find('.error>:input,:input.error').first().focus();
                         e.stopImmediatePropagation();
                     }
-                    return submitForm;
+                    //return submitForm;
+                    return false;
                 });
             }
 {% endif %}

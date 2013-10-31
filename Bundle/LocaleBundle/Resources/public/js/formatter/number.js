@@ -147,7 +147,17 @@ function(numeral, localeSettings) {
                 return doFormat(value, options, formattersChain);
             },
             unformat: function(value) {
-                return numeral().unformat(value);
+                var options = localeSettings.getNumberFormats('decimal');
+                var result = String(value);
+                var defaultGroupingSeparator = ',', defaultDecimalSeparator = '.';
+                result = result.replace(options.grouping_separator_symbol, defaultGroupingSeparator);
+                result = result.replace(options.decimal_separator_symbol, defaultDecimalSeparator);
+
+                var originLanguage = numeral.language();
+                result = numeral().unformat(result);
+                numeral.language(originLanguage);
+
+                return result;
             }
         }
     };
