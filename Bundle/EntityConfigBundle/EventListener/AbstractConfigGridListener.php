@@ -249,6 +249,7 @@ abstract class AbstractConfigGridListener implements EventSubscriberInterface
                 $this->getActionConfigurationClosure($filters, $actions)
             );
         }
+        $config->offsetSetByPath(Configuration::PROPERTIES_PATH, $properties);
     }
 
     /**
