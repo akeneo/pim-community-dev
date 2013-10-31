@@ -339,14 +339,6 @@ class LoggableManager
                         continue;
                     }
 
-                    if ($old instanceof \DateTime) {
-                        $old = $old->format('c');
-                    }
-
-                    if ($new instanceof \DateTime) {
-                        $new = $new->format('c');
-                    }
-
                     if ($entityMeta->isSingleValuedAssociation($field) && $new) {
                         $oid   = spl_object_hash($new);
                         $value = $this->getIdentifier($new);
