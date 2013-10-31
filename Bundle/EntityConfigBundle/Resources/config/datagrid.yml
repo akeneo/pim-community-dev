@@ -20,12 +20,14 @@ datagrid:
             name:
                 label: Name
                 type: field
-                frontend_type: string
+                frontend_type: select
+                choices: @oro_entity_config.event_listener.entityconfig_grid_listener->getChoicesName
             #@TODO module column should has "select" type
             module:
                 label: Module
                 type: field
-                frontend_type: string
+                frontend_type: select
+                choices: @oro_entity_config.event_listener.entityconfig_grid_listener->getChoicesModule
             updated:
                 label: Updated at
                 type: field
@@ -55,11 +57,6 @@ datagrid:
                 label: View
                 icon: book
                 link: view_link
-            remove:
-                type: delete
-                label: View
-                icon: book
-                link: view_link
         sorters:
             columns:
                 name:
@@ -70,13 +67,20 @@ datagrid:
                     data_name: ce.updated
         filters:
             columns:
-                # @TODO Add choices for filters
                 name:
                     type: choice
                     data_name: name
+                    options:
+                        field_options:
+                            multiple: true
+                            choices: @oro_entity_config.event_listener.entityconfig_grid_listener->getChoicesName
                 module:
                     type: choice
                     data_name: module
+                    options:
+                        field_options:
+                            multiple: true
+                            choices: @oro_entity_config.event_listener.entityconfig_grid_listener->getChoicesModule
                 updated:
                     type: datetime
                     data_name: ce.updated
