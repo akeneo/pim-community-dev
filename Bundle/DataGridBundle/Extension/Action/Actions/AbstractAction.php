@@ -10,7 +10,7 @@ abstract class AbstractAction implements ActionInterface
     protected $options;
 
     /** @var array */
-    protected $requiredOptions = array();
+    protected $requiredOptions = [];
 
     public function __construct()
     {

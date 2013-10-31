@@ -51,6 +51,11 @@ datagrid:
                 icon: trash
                 link: delete_link
 
+        mass_actions:
+            delete:
+                type: delete
+                data_id: g.id
+
         options:
             entityHint: contact group
             testOption: qweqws

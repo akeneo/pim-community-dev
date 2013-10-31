@@ -23,5 +23,6 @@ class OroDataGridExtension extends Extension
         $loader->load('data_sources.yml');
         $loader->load('formatters.yml');
         $loader->load('actions.yml');
+        $loader->load('mass_actions.yml');
     }
 }

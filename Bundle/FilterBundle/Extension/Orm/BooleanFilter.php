@@ -6,7 +6,7 @@ use Doctrine\ORM\QueryBuilder;
 
 use Oro\Bundle\FilterBundle\Form\Type\Filter\BooleanFilterType;
 
-class BooleanFilter extends AbstractFilter
+class BooleanFilter extends ChoiceFilter
 {
     const NULLABLE_KEY = 'nullable';
 
@@ -16,6 +16,16 @@ class BooleanFilter extends AbstractFilter
     protected function getFormType()
     {
         return BooleanFilterType::NAME;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function init($name, array $params)
+    {
+        // static option for metadata
+        $params['contextSearch'] = false;
+        parent::init($name, $params);
     }
 
     /**

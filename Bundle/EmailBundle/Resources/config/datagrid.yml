@@ -112,25 +112,29 @@ datagrid:
             columns:
                 entityName:
                     type:      choice
+                    label:     oro.email.datagrid.emailtemplate.column.entity_name
                     data_name: t.entityName
                     options:
                         translation_domain: config
                         field_options:
+                            multiple:       true
                             choices:        @oro_email.emailtemplate.datagrid_helper->getEntityNameChoices
-                name: { type: string, data_name: t.name }
+                name:
+                    type:      string
+                    data_name: t.name
+                    label:     oro.email.datagrid.emailtemplate.column.name
                 type:
                     type:            choice
+                    label:           oro.email.datagrid.emailtemplate.column.type
                     data_name:       t.type
                     options:
                         field_options:
                             choices: @oro_email.emailtemplate.datagrid_helper->getTypeChoices
 
                 isSystem:
-                    type:           choice
+                    type:           boolean
+                    label:          oro.email.datagrid.emailtemplate.column.isSystem
                     data_name:      t.isSystem
-                    options:
-                        field_options:
-                            choices: @oro_email.emailtemplate.datagrid_helper->getSystemChoices
 
         sorters:
             columns:
@@ -159,5 +163,5 @@ datagrid:
                 icon:         trash
                 link:         delete_link
 
-        action_configuration: Oro\Bundle\EmailBundle\Datagrid\EmailTemplatesActionConfiguration::getActionConfigurationClosure
+        action_configuration: @oro_email.emailtemplate.datagrid_helper->getActionConfigurationClosure
         views_list : @oro_email.emailtemplate.datagrid_view_list
