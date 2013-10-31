@@ -142,10 +142,16 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
     {
         $locale = 'en_GB';
         $currency = 'GBP';
-        $this->localeSettings->expects($this->once())->method('getLocale')->will($this->returnValue($locale));
-        $this->localeSettings->expects($this->once())->method('getCurrency')->will($this->returnValue($currency));
+        $currencySymbol = 'Pound';
 
-        $this->assertEquals('£1,234.57', $this->formatter->formatCurrency(1234.56789));
+        $this->localeSettings->expects($this->any())->method('getLocale')->will($this->returnValue($locale));
+        $this->localeSettings->expects($this->any())->method('getCurrency')->will($this->returnValue($currency));
+        $this->localeSettings->expects($this->any())
+            ->method('getCurrencySymbolByCurrency')
+            ->with($currency)
+            ->will($this->returnValue($currencySymbol));
+
+        $this->assertEquals('Pound1,234.57', $this->formatter->formatCurrency(1234.56789));
     }
 
     /**
@@ -153,6 +159,14 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
      */
     public function testFormatCurrency($expected, $value, $currency, $attributes, $textAttributes, $locale)
     {
+        $currencySymbolMap = array(
+            array('USD', '$'),
+            array('RUB', 'руб.'),
+        );
+        $this->localeSettings->expects($this->any())
+            ->method('getCurrencySymbolByCurrency')
+            ->will($this->returnValueMap($currencySymbolMap));
+
         $this->assertEquals(
             $expected,
             $this->formatter->formatCurrency($value, $currency, $attributes, $textAttributes, $locale)
@@ -171,7 +185,7 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
                 'locale' => 'en_US'
             ),
             array(
-                'expected' => 'RUB1,234.57',
+                'expected' => 'руб.1,234.57',
                 'value' => 1234.56789,
                 'currency' => 'RUB',
                 'attributes' => array(),
@@ -410,5 +424,46 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
     public function testFormatWithInvalidStyle()
     {
         $this->formatter->format(123, \NumberFormatter::LENIENT_PARSE);
+    }
+
+    /**
+     * @param bool $expected
+     * @param string $currency
+     * @param string|null $locale
+     * @param string|null $defaultLocale
+     * @dataProvider isCurrencySymbolPrependDataProvider
+     */
+    public function testIsCurrencySymbolPrepend($expected, $currency, $locale, $defaultLocale = null)
+    {
+        if ($defaultLocale) {
+            $this->localeSettings->expects($this->once())
+                ->method('getLocale')
+                ->will($this->returnValue($defaultLocale));
+        } else {
+            $this->localeSettings->expects($this->never())
+                ->method('getLocale');
+        }
+
+        $this->assertEquals($expected, $this->formatter->isCurrencySymbolPrepend($currency, $locale));
+    }
+
+    /**
+     * @return array
+     */
+    public function isCurrencySymbolPrependDataProvider()
+    {
+        return array(
+            'default locale' => array(
+                'expected' => true,
+                'currency' => 'USD',
+                'locale' => null,
+                'defaultLocale' => 'en',
+            ),
+            'custom locale' => array(
+                'expected' => false,
+                'currency' => 'RUR',
+                'locale' => 'ru',
+            ),
+        );
     }
 }

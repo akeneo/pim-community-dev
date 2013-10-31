@@ -300,6 +300,19 @@ class LocaleSettings
     }
 
     /**
+     * @param string $currencyCode
+     * @return null
+     */
+    public function getCurrencySymbolByCurrency($currencyCode)
+    {
+        if (!empty($this->currencyData[$currencyCode]['symbol'])) {
+            return $this->currencyData[$currencyCode]['symbol'];
+        }
+
+        return null;
+    }
+
+    /**
      * Get time zone
      *
      * @return string

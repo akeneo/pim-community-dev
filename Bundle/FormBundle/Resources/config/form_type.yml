@@ -33,6 +33,7 @@ services:
         class: %oro_form.type.money.class%
         arguments:
             - @oro_locale.settings
+            - @oro_locale.formatter.number
         tags:
             - { name: form.type, alias: oro_money }
 
