@@ -72,11 +72,11 @@ abstract class AbstractViewsList
      */
     public function toChoiceList()
     {
-        $choices = array();
+        $choices = [];
 
         /** @var View $view */
         foreach ($this->getList() as $view) {
-            $choices[] = array('value' => $view->getName(), 'label' => $this->translator->trans($view->getName()));
+            $choices[] = ['value' => $view->getName(), 'label' => $this->translator->trans($view->getName())];
         }
 
         return $choices;

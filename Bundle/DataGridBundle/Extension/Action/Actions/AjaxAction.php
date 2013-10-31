@@ -7,7 +7,7 @@ class AjaxAction extends AbstractAction
     /**
      * @var array
      */
-    protected $requiredOptions = array('link');
+    protected $requiredOptions = ['link'];
 
     /**
      * @return array

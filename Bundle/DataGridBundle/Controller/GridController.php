@@ -50,10 +50,10 @@ class GridController extends Controller
         $massActionDispatcher = $this->get('oro_datagrid.mass_action.dispatcher');
         $response             = $massActionDispatcher->dispatch($gridName, $actionName, $parameters, $requestData);
 
-        $data = array(
+        $data = [
             'successful' => $response->isSuccessful(),
             'message'    => $response->getMessage(),
-        );
+        ];
 
         return new JsonResponse(array_merge($data, $response->getOptions()));
     }
