@@ -14,7 +14,7 @@ abstract class AbstractUpdateGuesserTest extends \PHPUnit_Framework_TestCase
     /**
      * Test related method
      */
-    public abstract function testGuessUpdates();
+    abstract public function testGuessUpdates();
 
     /**
      * @return EntityManager
