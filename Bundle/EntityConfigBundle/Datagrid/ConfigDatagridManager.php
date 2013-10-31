@@ -117,49 +117,5 @@ class ConfigDatagridManager extends BaseDatagrid
         $fieldsCollection->add($fieldObjectUpdate);
     }
 
-    /**
-     * {@inheritDoc}
-     * Todo: update acl resources after impl.
-     */
-    protected function getRowActions()
-    {
-        $clickAction = array(
-            'name'         => 'rowClick',
-            'type'         => ActionInterface::TYPE_REDIRECT,
-            //'acl_resource' => '(root)',
-            'options'      => array(
-                'label'         => 'View',
-                'link'          => 'view_link',
-                'runOnRowClick' => true,
-            )
-        );
 
-        $viewAction = array(
-            'name'         => 'view',
-            'type'         => ActionInterface::TYPE_REDIRECT,
-            //'acl_resource' => 'root',
-            'options'      => array(
-                'label' => 'View',
-                'icon'  => 'book',
-                'link'  => 'view_link',
-            )
-        );
-
-        $updateAction = array(
-            'name'         => 'update',
-            'type'         => ActionInterface::TYPE_REDIRECT,
-            //'acl_resource' => 'root',
-            'options'      => array(
-                'label' => 'Edit',
-                'icon'  => 'edit',
-                'link'  => 'update_link',
-            )
-        );
-
-        $actions = array($clickAction, $viewAction, $updateAction);
-
-        $this->prepareRowActions($actions);
-
-        return $actions;
-    }
 }

@@ -4,6 +4,7 @@ namespace Oro\Bundle\EntityConfigBundle\EventListener;
 
 use Doctrine\ORM\QueryBuilder;
 
+use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 use Oro\Bundle\DataGridBundle\Event\BuildAfter;
@@ -13,6 +14,7 @@ use Oro\Bundle\DataGridBundle\Extension\Action\ActionExtension;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\ResultRecord;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
+
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigModelManager;
 use Oro\Bundle\EntityConfigBundle\Provider\PropertyConfigContainer;
@@ -22,9 +24,14 @@ class EntityConfigGridListener implements EventSubscriberInterface
     const TYPE_HTML     = 'html';
     const TYPE_TWIG     = 'twig';
     const TYPE_NAVIGATE = 'navigate';
+    const TYPE_DELETE   = 'delete';
+    const PATH_COLUMNS  = '[columns]';
+    const PATH_ACTIONS  = '[actions]';
 
     /** @var ConfigManager */
     protected $configManager;
+
+    protected $filterChoices;
 
     /**
      * @param ConfigManager $configManager
@@ -32,6 +39,8 @@ class EntityConfigGridListener implements EventSubscriberInterface
     public function __construct(ConfigManager $configManager)
     {
         $this->configManager = $configManager;
+
+        $this->filterChoices = ['name' => [], 'module' => []];
     }
 
     /**
@@ -67,12 +76,20 @@ class EntityConfigGridListener implements EventSubscriberInterface
     {
         $config = $event->getConfig();
 
-        // set new column set with dynamic fields
+        // get dynamic columns and merge them with static columns from configuration
+        $columns = $config->offsetGetByPath(self::PATH_COLUMNS, array());
         $additionalColumns = $this->getDynamicFields();
-        $config->offsetAddToArrayByPath(Configuration::COLUMNS_PATH, $additionalColumns);
+        $columns = array_merge_recursive($additionalColumns, $columns);
+        // set new column set with dynamic fields
+        $config->offsetSetByPath(self::PATH_COLUMNS, $columns);
 
-        // add entity config properties
+        // add/configure entity config properties
         $this->addEntityConfigProperties($config);
+
+        // add/configure entity config actions
+        $actions = $config->offsetGetByPath(self::PATH_ACTIONS, []);
+        $this->prepareRowActions($actions);
+        $config->offsetSetByPath(self::PATH_ACTIONS, $actions);
     }
 
     /**
@@ -183,7 +200,7 @@ class EntityConfigGridListener implements EventSubscriberInterface
     }
 
     /**
-     * @TODO fix adding actions from different scopes suche as EXTEND
+     * @TODO fix adding actions from different scopes such as EXTEND
      *
      * @param $actions
      * @param $type
@@ -195,12 +212,9 @@ class EntityConfigGridListener implements EventSubscriberInterface
 
             foreach ($gridActions as $config) {
                 $configItem = array(
-                    'name'    => strtolower($config['name']),
-                    'options' => array(
-                        'label' => ucfirst($config['name']),
-                        'icon'  => isset($config['icon']) ? $config['icon'] : 'question-sign',
-                        'link'  => strtolower($config['name']) . '_link'
-                    )
+                    'label' => ucfirst($config['name']),
+                    'icon'  => isset($config['icon']) ? $config['icon'] : 'question-sign',
+                    'link'  => strtolower($config['name']) . '_link'
                 );
 
                 if (isset($config['type'])) {
@@ -208,12 +222,15 @@ class EntityConfigGridListener implements EventSubscriberInterface
                         case 'redirect':
                             $configItem['type'] = self::TYPE_NAVIGATE;
                             break;
+                        default:
+                            $configItem['type'] = $config['type'];
+                            break;
                     }
                 } else {
                     $configItem['type'] = self::TYPE_NAVIGATE;
                 }
 
-                $actions[] = $configItem;
+                $actions = array_merge($actions, [strtolower($config['name']) => $configItem]);
             }
         }
     }
@@ -291,6 +308,72 @@ class EntityConfigGridListener implements EventSubscriberInterface
         }
 
         return $orderedFields;
+    }
+
+    /**
+     * Call this method from datagrid.yml
+     * invoked in Manager when datagrid configuration prepared for grid build process
+     *
+     * @return array
+     */
+    public function getChoicesName()
+    {
+        return $this->getObjectName();
+    }
+
+    /**
+     * Call this method from datagrid.yml
+     * invoked in Manager when datagrid configuration prepared for grid build process
+     *
+     * @return array
+     */
+    public function getChoicesModule()
+    {
+        return $this->getObjectName('module');
+    }
+
+    /**
+     *
+     * @param  string $scope
+     * @return array
+     */
+    protected function getObjectName($scope = 'name')
+    {
+        if (empty($this->filterChoices[$scope])) {
+            $alias = 'ce';
+            $qb = $this->configManager->getEntityManager()->createQueryBuilder();
+            $qb->select($alias)
+                ->from(EntityConfigModel::ENTITY_NAME, $alias)
+                ->add('select', $alias.'.className')
+                ->distinct($alias.'.className');
+
+            $result = $qb->getQuery()->getArrayResult();
+
+            $options = ['name' => [], 'module' => []];
+            foreach ((array) $result as $value) {
+                $className = explode('\\', $value['className']);
+
+                $options['name'][$value['className']]   = '';
+                $options['module'][$value['className']] = '';
+
+                if (strpos($value['className'], 'Extend\\Entity') === false) {
+                    foreach ($className as $index => $name) {
+                        if (count($className) - 1 == $index) {
+                            $options['name'][$value['className']] = $name;
+                        } elseif (!in_array($name, array('Bundle', 'Entity'))) {
+                            $options['module'][$value['className']] .= $name;
+                        }
+                    }
+                } else {
+                    $options['name'][$value['className']]   = str_replace('Extend\\Entity\\', '', $value['className']);
+                    $options['module'][$value['className']] = 'System';
+                }
+            }
+
+            $this->filterChoices = $options;
+        }
+
+        return $this->filterChoices[$scope];
     }
 
     /**
