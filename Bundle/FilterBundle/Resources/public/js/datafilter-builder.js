@@ -56,6 +56,8 @@ function($, _, tools,  mediator, FiltersManager) {
         };
 
     mediator.on('datagrid_collection_set_after', function (collection, $el) {
-        methods.initBuilder.call({$el: $el, collection: collection});
+        if ($el) {
+            methods.initBuilder.call({$el: $el, collection: collection});
+        }
     });
 });
