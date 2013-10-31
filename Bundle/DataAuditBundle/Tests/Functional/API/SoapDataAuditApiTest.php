@@ -69,9 +69,7 @@ class SoapDataAuditApiTest extends WebTestCase
         }
 
         $resultActual = reset($result);
-        //Bug BAP-1116
-        //$this->assertEquals($resultExpected['action'], 'create');
-        //$this->assertEquals($resultExpected['objectClass'], 'Oro\Bundle\UserBundle\Entity\User');
+
         $this->assertEquals($response['username'], $resultActual['objectName']);
         $this->assertEquals('admin', $resultActual['user']['username']);
 

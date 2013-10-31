@@ -76,11 +76,7 @@ class RestDataAuditApiTest extends WebTestCase
         $this->assertEquals('create', $resultActual['action']);
         $this->assertEquals('Oro\Bundle\UserBundle\Entity\User', $resultActual['object_class']);
         $this->assertEquals($response['user']['username'], $resultActual['object_name']);
-        $this->assertEquals('admin', $resultActual['user']);
-        $this->assertEquals($response['user']['username'], $resultActual['data']['username']['new']);
-        $this->assertEquals($response['user']['email'], $resultActual['data']['email']['new']);
-        $this->assertEquals($response['user']['enabled'], $resultActual['data']['enabled']['new']);
-        $this->assertEquals('User', $resultActual['data']['roles']['new']);
+        $this->assertEquals('admin', $resultActual['username']);
 
         return $result;
     }

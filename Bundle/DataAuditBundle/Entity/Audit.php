@@ -125,7 +125,7 @@ class Audit extends AbstractLogEntry
     }
 
     /**
-     * Get object name
+     * Get user name
      *
      * @return string
      */
