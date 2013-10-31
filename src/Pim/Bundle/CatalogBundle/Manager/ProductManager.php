@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\NoResultException;
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory;
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
@@ -155,6 +156,47 @@ class ProductManager extends FlexibleManager
         }
 
         return $product;
+    }
+
+    /**
+     * Returns a product for the import process
+     * 
+     * @param array $attributes
+     * @param ProductAttribute $identifierAttribute
+     * @param string $code
+     * @return ProductInterface
+     */
+    public function getImportProduct($attributes, $identifierAttribute, $code)
+    {
+        $class = $this->getFlexibleRepository()->getClassName();
+        $em = $this->getStorageManager();
+        try {
+            $id = $em->createQuery(
+                'SELECT p.id FROM ' . $class . ' p '.
+                'INNER JOIN p.values v '  .
+                'WHERE v.attribute=:identifier_attribute ' .
+                'AND v.' . $identifierAttribute->getBackendType() .'=:code'
+            )
+                ->setParameter('identifier_attribute', $identifierAttribute)
+                ->setParameter('code', $code)
+                ->getSingleScalarResult();
+        } catch (NoResultException $ex) {
+            return null;
+        }
+        
+
+        return $em->createQuery(
+            'SELECT p, v, f, o, pr ' .
+            'FROM ' . $class . ' p ' .
+            'LEFT JOIN p.family f ' .
+            'LEFT JOIN p.values v WITH v.attribute IN (:attributes) ' .
+            'LEFT JOIN v.options o ' .
+            'LEFT JOIN v.prices pr ' .
+            'WHERE p.id=:id'
+        )
+            ->setParameter('attributes', $attributes)
+            ->setParameter('id', $id)
+            ->getSingleResult();
     }
 
     /**
