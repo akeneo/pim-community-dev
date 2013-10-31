@@ -87,12 +87,6 @@ services:
         tags:
             - { name: pim_serializer.normalizer }
 
-    pim_serializer.normalizer.get_set_method:
-        public: false
-        class: %pim_serializer.normalizer.get_set_method.class%
-        tags:
-            - { name: pim_serializer.normalizer }
-
     pim_serializer.normalizer.group:
         class: %pim_serializer.normalizer.group.class%
         tags:
@@ -100,6 +94,12 @@ services:
 
     pim_serializer.normalizer.flat_group:
         class: %pim_serializer.normalizer.flat_group.class%
+        tags:
+            - { name: pim_serializer.normalizer }
+
+    pim_serializer.normalizer.get_set_method:
+        public: false
+        class: %pim_serializer.normalizer.get_set_method.class%
         tags:
             - { name: pim_serializer.normalizer }
 
