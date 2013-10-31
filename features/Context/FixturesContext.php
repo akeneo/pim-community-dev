@@ -74,7 +74,7 @@ class FixturesContext extends RawMinkContext
         'User'           => 'OroUserBundle:User',
         'Role'           => 'OroUserBundle:Role',
         'Locale'         => 'PimCatalogBundle:Locale',
-        'Group'          => 'PimCatalogBundle:Group',
+        'ProductGroup'   => 'PimCatalogBundle:Group',
         'GroupType'      => 'PimCatalogBundle:GroupType',
     );
 
@@ -445,40 +445,27 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @Given /^there is no channel$/
+     * @param string $entityName
+     *
+     * @Given /^there is no (.*)$/
      */
-    public function thereIsNoChannel()
+    public function thereIsNoEntity($entityName)
     {
-        $channels = $this->getRepository('PimCatalogBundle:Channel')->findAll();
-
-        foreach ($channels as $channel) {
-            $this->remove($channel, false);
+        if (strpos($entityName, ' ')) {
+            $entityName = implode('', array_map('ucfirst', explode(' ', $entityName)));
         }
-        $this->flush();
-    }
 
-    /**
-     * @Given /^there is no product group$/
-     */
-    public function thereIsNoProductGroup()
-    {
-        $groups = $this->getRepository('PimCatalogBundle:Group')->findAll();
+        $entityName = ucfirst($entityName);
 
-        foreach ($groups as $group) {
-            $this->remove($group, false);
+        if (!array_key_exists($entityName, $this->entities)) {
+            throw new \Exception(sprintf('Unrecognized entity "%s".', $entityName));
         }
-        $this->flush();
-    }
 
-    /**
-     * @Given /^there is no attribute$/
-     */
-    public function thereIsNoAttribute()
-    {
-        $attributes = $this->getRepository('PimCatalogBundle:ProductAttribute')->findAll();
+        $namespace = $this->entities[$entityName];
+        $entities = $this->getRepository($namespace)->findAll();
 
-        foreach ($attributes as $attribute) {
-            $this->remove($attribute, false);
+        foreach ($entities as $entity) {
+            $this->remove($entity, false);
         }
         $this->flush();
     }
@@ -970,7 +957,7 @@ class FixturesContext extends RawMinkContext
 
             $products = (isset($data['products'])) ? explode(', ', $data['products']) : array();
 
-            $this->createGroup($code, $label, $type, $attributes, $products);
+            $this->createProductGroup($code, $label, $type, $attributes, $products);
         }
     }
 
@@ -1492,7 +1479,7 @@ class FixturesContext extends RawMinkContext
      * @param array  $attributes
      * @param array  $products
      */
-    private function createGroup($code, $label, $type, array $attributes, array $products = array())
+    private function createProductGroup($code, $label, $type, array $attributes, array $products = array())
     {
         $group = new Group();
         $group->setCode($code);
