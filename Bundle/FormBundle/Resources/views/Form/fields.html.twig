@@ -334,6 +334,8 @@
             {% set div_input_class = 'input-append' %}
         {% endif %}
 
+        {% set attr = attr|merge({'class': (attr.class|default('') ~ ' input-addon')|trim}) %}
+
         <div class="{{ div_input_class }}">
             {% set money_field = money_pattern %}
             {% set money_field = money_field|replace({ '{{ widget }}': block('form_widget_simple') }) %}
