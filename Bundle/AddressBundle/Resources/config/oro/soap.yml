@@ -1,0 +1,5 @@
+classes:
+    - Oro\Bundle\AddressBundle\Controller\Api\Soap\AddressController
+    - Oro\Bundle\AddressBundle\Controller\Api\Soap\AddressTypeController
+    - Oro\Bundle\AddressBundle\Controller\Api\Soap\CountryController
+    - Oro\Bundle\AddressBundle\Controller\Api\Soap\RegionController
