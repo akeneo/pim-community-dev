@@ -22,6 +22,7 @@ use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Entity\ProductPrice;
 use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\CatalogBundle\Entity\Currency;
 use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Gherkin\Node\PyStringNode;
@@ -74,6 +75,7 @@ class FixturesContext extends RawMinkContext
         'Role'           => 'OroUserBundle:Role',
         'Locale'         => 'PimCatalogBundle:Locale',
         'Group'          => 'PimCatalogBundle:Group',
+        'GroupType'      => 'PimCatalogBundle:GroupType',
     );
 
     private $placeholderValues = array();
@@ -341,23 +343,14 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param string $status
      * @param string $sku
      *
-     * @Given /^an enabled "([^"]*)" product$/
+     * @Given /^an (enabled|disabled) "([^"]*)" product$/
      */
-    public function anEnabledProduct($sku)
+    public function anEnabledOrDisabledProduct($status, $sku)
     {
-        $this->aProduct($sku)->setEnabled(true);
-    }
-
-    /**
-     * @param string $sku
-     *
-     * @Given /^a disabled "([^"]*)" product$/
-     */
-    public function aDisabledProduct($sku)
-    {
-        $this->aProduct($sku)->setEnabled(false);
+        $this->aProduct($sku)->setEnabled($status === 'enabled');
     }
 
     /**
@@ -393,7 +386,7 @@ class FixturesContext extends RawMinkContext
      * @param string    $family
      * @param TableNode $table
      *
-     * @Given /^the family "([^"]*)" has the following attribute:$/
+     * @Given /^the family "([^"]*)" has the following attributes?:$/
      */
     public function theFamilyHasTheFollowingAttribute($family, TableNode $table)
     {
@@ -419,7 +412,7 @@ class FixturesContext extends RawMinkContext
     public function theFollowingCurrencies(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
-            $currency = new \Pim\Bundle\CatalogBundle\Entity\Currency;
+            $currency = new Currency();
             $currency->setCode($data['code']);
             $currency->setActivated($data['activated'] === 'yes');
 
@@ -434,9 +427,8 @@ class FixturesContext extends RawMinkContext
      */
     public function theFollowingLocales(TableNode $table)
     {
-        $em = $this->getEntityManager();
         foreach ($table->getHash() as $data) {
-            $locale = $em->getRepository('PimCatalogBundle:Locale')->findOneBy(array('code' => $data['code']));
+            $locale = $this->findLocale(array('code' => $data['code']));
             if (!$locale) {
                 $locale = new Locale();
                 $locale->setCode($data['code']);
@@ -447,9 +439,9 @@ class FixturesContext extends RawMinkContext
                 $locale->activate();
             }
 
-            $em->persist($locale);
+            $this->persist($locale, false);
         }
-        $em->flush();
+        $this->flush();
     }
 
     /**
@@ -457,11 +449,10 @@ class FixturesContext extends RawMinkContext
      */
     public function thereIsNoChannel()
     {
-        $em = $this->getEntityManager();
-        $channels = $em->getRepository('PimCatalogBundle:Channel')->findAll();
+        $channels = $this->getRepository('PimCatalogBundle:Channel')->findAll();
 
         foreach ($channels as $channel) {
-            $this->remove($channel);
+            $this->remove($channel, false);
         }
         $this->flush();
     }
@@ -471,11 +462,10 @@ class FixturesContext extends RawMinkContext
      */
     public function thereIsNoProductGroup()
     {
-        $em = $this->getEntityManager();
-        $groups = $em->getRepository('PimCatalogBundle:Group')->findAll();
+        $groups = $this->getRepository('PimCatalogBundle:Group')->findAll();
 
         foreach ($groups as $group) {
-            $this->remove($group);
+            $this->remove($group, false);
         }
         $this->flush();
     }
@@ -485,11 +475,10 @@ class FixturesContext extends RawMinkContext
      */
     public function thereIsNoAttribute()
     {
-        $em = $this->getEntityManager();
-        $attributes = $em->getRepository('PimCatalogBundle:ProductAttribute')->findAll();
+        $attributes = $this->getRepository('PimCatalogBundle:ProductAttribute')->findAll();
 
         foreach ($attributes as $attribute) {
-            $this->remove($attribute);
+            $this->remove($attribute, false);
         }
         $this->flush();
     }
@@ -1176,7 +1165,7 @@ class FixturesContext extends RawMinkContext
      */
     public function theProductShouldHaveTheFollowingValues($identifier, TableNode $table)
     {
-        $this->getEntityManager()->clear();
+        $this->clearUOW();
         $product = $this->getProduct($identifier);
         $this->getEntityManager()->refresh($product);
 
@@ -1251,21 +1240,6 @@ class FixturesContext extends RawMinkContext
         }
 
         return $this->createUser($username, $password, $apiKey);
-    }
-
-    /**
-     * @param string $code
-     *
-     * @return GroupType
-     */
-    public function getGroupType($code)
-    {
-        return $this->getEntityOrException(
-            'PimCatalogBundle:GroupType',
-            array(
-                'code' => $code
-            )
-        );
     }
 
     /**
