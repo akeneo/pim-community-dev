@@ -1,11 +1,12 @@
 @javascript
-Feature: Edit a variant group adding/removing products
-  In order to manage existing variant groups for the catalog
+Feature: Delete a variant group
+  In order to manager variant groups for the catalog
   As a user
-  I need to be able to add and remove product from a variant group
+  I need to be able to delete variant groups
 
   Background:
-    Given the following families:
+    Given there is no product group
+    And the following families:
       | code      | label     |
       | mug       | Mug       |
       | furniture | Furniture |
@@ -39,16 +40,16 @@ Feature: Edit a variant group adding/removing products
       | POSTIT | Postit     | color, size | VARIANT |
     And I am logged in as "admin"
 
-  Scenario: Successfully display the product datagrid when I edit a variant group
-    Given I am on the "MUG" variant group page
-    Then the grid should contain 3 elements
-    And I should see products MUG_1, MUG_2 and POSTIT
-    And I should not see product MUG_3
-    And I should see the columns Has product, SKU, Label, Color, Family, Created at and Updated at
+  Scenario: Successfully delete a variant group from the grid
+    Given I am on the variant groups page
+    And I should see group MUG
+    When I click on the "Delete" action of the row which contains "MUG"
+    And I confirm the deletion
+    Then I should not see group MUG
 
-  Scenario: Successfully display the product datagrid when I edit a variant group with 2 axes
-    Given I am on the "POSTIT" variant group page
-    Then the grid should contain 2 elements
-    And I should see products MUG_1 and POSTIT
-    And I should not see products MUG_2 and MUG_3
-    And I should see the columns Has product, SKU, Label, Color, Size, Family, Created at and Updated at
+  Scenario: Successfully delete a variant group
+    Given I edit the "POSTIT" variant group
+    When I press the "Delete" button
+    And I confirm the deletion
+    Then the grid should contain 1 element
+    And I should not see group "POSTIT"

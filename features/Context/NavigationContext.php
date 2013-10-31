@@ -220,6 +220,20 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     }
 
     /**
+     * @param string $identifier
+     *
+     * @Given /^I am on the "([^"]*)" variant group page$/
+     * @Given /^I edit the "([^"]*)" variant group$/
+     */
+    public function iAmOnTheVariantGroupEditPage($identifier)
+    {
+        $page = 'VariantGroup';
+        $getter = sprintf('get%s', $page);
+        $entity = $this->getFixturesContext()->getProductGroup($identifier);
+        $this->openPage(sprintf('%s edit', $page), array('id' => $entity->getId()));
+    }
+
+    /**
      * @param JobInstance $job
      *
      * @When /^I launch the ("([^"]*)" export job)$/

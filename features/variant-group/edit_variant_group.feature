@@ -1,8 +1,8 @@
 @javascript
-Feature: Edit a variant group adding/removing products
+Feature: Edit a variant group
   In order to manage existing variant groups for the catalog
   As a user
-  I need to be able to add and remove product from a variant group
+  I need to be able to edit a variant group
 
   Background:
     Given the following families:
@@ -39,16 +39,33 @@ Feature: Edit a variant group adding/removing products
       | POSTIT | Postit     | color, size | VARIANT |
     And I am logged in as "admin"
 
-  Scenario: Successfully display the product datagrid when I edit a variant group
+  Scenario: Successfully display the edit view for a variant group
     Given I am on the "MUG" variant group page
-    Then the grid should contain 3 elements
-    And I should see products MUG_1, MUG_2 and POSTIT
-    And I should not see product MUG_3
-    And I should see the columns Has product, SKU, Label, Color, Family, Created at and Updated at
+    And I visit the "Properties" tab
+    Then I should see the Code and Axis fields
+    And the fields Code and Axis should be disabled
 
-  Scenario: Successfully display the product datagrid when I edit a variant group with 2 axes
-    Given I am on the "POSTIT" variant group page
-    Then the grid should contain 2 elements
-    And I should see products MUG_1 and POSTIT
-    And I should not see products MUG_2 and MUG_3
-    And I should see the columns Has product, SKU, Label, Color, Size, Family, Created at and Updated at
+  Scenario: Successfully edit a variant group
+    Given I am on the "MUG" variant group page
+    And I visit the "Properties" tab
+    When I fill in the following information:
+      | English (United States) | My Mug |
+    And I press the "Save" button
+    Then I should see "My Mug"
+
+  Scenario: Successfully display a message when there are unsaved changes
+    Given I am on the "MUG" variant group page
+    And I visit the "Properties" tab
+    When I fill in the following information:
+      | English (United States) | Mug |
+    Then I should see "There are unsaved changes."
+
+  Scenario: Successfully have a confirmation popup when I change page with unsaved changes
+    Given I am on the "MUG" variant group page
+    And I visit the "Properties" tab
+    When I fill in the following information:
+      | English (United States) | Mug |
+    And I click on the Akeneo logo
+    Then I should see a confirm dialog with the following content:
+      | title   | Are you sure you want to leave this page?                          |
+      | content | You will lose changes to the variant group if you leave this page. |

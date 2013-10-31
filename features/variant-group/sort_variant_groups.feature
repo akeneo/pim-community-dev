@@ -19,6 +19,6 @@ Feature: Sort variant groups
     And I am logged in as "admin"
 
   Scenario: Successfully sort variant groups
-    Given I am on the product groups page
+    Given I am on the variant groups page
     Then the rows should be sorted ascending by code
     And I should be able to sort the rows by code and label

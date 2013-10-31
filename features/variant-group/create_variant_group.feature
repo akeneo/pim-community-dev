@@ -16,6 +16,7 @@ Feature: Variant group creation
     Given I am on the variant groups page
     And I create a new variant group
     Then I should see the Code, Axis and Type fields
+    And the field Type should be disabled
 
   Scenario: Successfully create a variant
     Given I am on the variant groups page
@@ -44,7 +45,7 @@ Feature: Variant group creation
 
   Scenario: Fail to create a variant filling an already used code
     Given I am on the variant groups page
-    And the following variant groups:
+    And the following product groups:
       | code    | label          | attributes  | type    |
       | TSHIRT  | T-Shirt Akeneo | size, color | VARIANT |
     When I create a new variant group
@@ -54,7 +55,7 @@ Feature: Variant group creation
     Then I should see validation error "This value is already used."
 
   Scenario: Fail to create a variant missing adding an axis
-    Given I am on the product groups page
+    Given I am on the variant groups page
     When I create a new variant group
     And I fill in the following information in the popin:
       | Code | MUG     |

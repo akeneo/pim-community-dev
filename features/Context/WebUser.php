@@ -92,6 +92,15 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @Given /^I create a new variant group$/
+     */
+    public function iCreateANewVariantGroup()
+    {
+        $entity = 'VariantGroup';
+        $this->iCreateANew($entity);
+    }
+
+    /**
      * @param TableNode $pages
      *
      * @Then /^I should be able visit the following pages without errors$/
