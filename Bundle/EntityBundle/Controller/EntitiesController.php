@@ -208,6 +208,9 @@ class EntitiesController extends Controller
      * @Template()
      *
      * @SuppressWarnings(PHPMD.NPathComplexity)
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     *
      * TODO: will be refactored via twig extension
      */
     public function viewAction($entity_id, $id)

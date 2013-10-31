@@ -58,6 +58,8 @@ class CustomEntityType extends AbstractType
 
     /**
      * {@inheritdoc}
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -134,10 +136,7 @@ class CustomEntityType extends AbstractType
                             'required'              => false,
                             'block'                 => $blockName,
                             'block_config'          => [
-                                $blockName => [
-                                    'title'     => null,
-                                    'subblocks' => [['useSpan' => false]]
-                                ]
+                                $blockName => ['title' => null, 'subblocks' => [['useSpan' => false]]]
                             ],
                             'class'                 => $extendConfig->get('target_entity'),
                             'grid_url'              => $this->router->generate(
@@ -162,6 +161,13 @@ class CustomEntityType extends AbstractType
         }
     }
 
+    /**
+     * @param FormView $view
+     * @param FormInterface $form
+     * @param array $options
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     */
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
         $blockConfig = isset($view->vars['block_config']) ? $view->vars['block_config'] : array();
