@@ -13,6 +13,7 @@ use Oro\Bundle\DataGridBundle\Extension\Action\ActionExtension;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\ResultRecord;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
+
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigModelManager;
 use Oro\Bundle\EntityConfigBundle\Provider\PropertyConfigContainer;
@@ -22,6 +23,8 @@ class EntityConfigGridListener implements EventSubscriberInterface
     const TYPE_HTML     = 'html';
     const TYPE_TWIG     = 'twig';
     const TYPE_NAVIGATE = 'navigate';
+    const TYPE_DELETE   = 'delete';
+    const PATH_ACTIONS  = '[actions]';
 
     /** @var ConfigManager */
     protected $configManager;
@@ -71,8 +74,13 @@ class EntityConfigGridListener implements EventSubscriberInterface
         $additionalColumns = $this->getDynamicFields();
         $config->offsetAddToArrayByPath(Configuration::COLUMNS_PATH, $additionalColumns);
 
-        // add entity config properties
+        // add/configure entity config properties
         $this->addEntityConfigProperties($config);
+
+        // add/configure entity config actions
+        $actions = $config->offsetGetByPath(self::PATH_ACTIONS, []);
+        $this->prepareRowActions($actions);
+        $config->offsetSetByPath(self::PATH_ACTIONS, $actions);
     }
 
     /**
@@ -183,7 +191,7 @@ class EntityConfigGridListener implements EventSubscriberInterface
     }
 
     /**
-     * @TODO fix adding actions from different scopes suche as EXTEND
+     * @TODO fix adding actions from different scopes such as EXTEND
      *
      * @param $actions
      * @param $type
