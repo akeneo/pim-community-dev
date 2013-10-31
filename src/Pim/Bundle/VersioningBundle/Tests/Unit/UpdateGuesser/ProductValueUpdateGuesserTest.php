@@ -14,7 +14,7 @@ use Pim\Bundle\CatalogBundle\Entity\ProductPrice;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductValueUpdateGuesserTest extends \PHPUnit_Framework_TestCase
+class ProductValueUpdateGuesserTest extends AbstractUpdateGuesserTest
 {
     /**
      * Test related methods
@@ -37,24 +37,9 @@ class ProductValueUpdateGuesserTest extends \PHPUnit_Framework_TestCase
         $value->addPrice($price);
         $product->addValue($value);
 
-        $guesser   = new ProductValueUpdateGuesser();
-        $em        = $this->getEntityManagerMock();
         $updates   = $guesser->guessUpdates($em, $price);
         $this->assertEquals(1, count($updates));
         $this->assertEquals($product, $updates[0]);
 
-    }
-
-    /**
-     * @return EntityManager
-     */
-    protected function getEntityManagerMock()
-    {
-        $mock = $this
-            ->getMockBuilder('Doctrine\ORM\EntityManager')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        return $mock;
     }
 }

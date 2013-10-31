@@ -13,7 +13,7 @@ use Pim\Bundle\CatalogBundle\Entity\Family;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class VersionableUpdateGuesserTest extends \PHPUnit_Framework_TestCase
+class VersionableUpdateGuesserTest extends AbstractUpdateGuesserTest
 {
     /**
      * Test related methods
@@ -33,18 +33,5 @@ class VersionableUpdateGuesserTest extends \PHPUnit_Framework_TestCase
         $updates   = $guesser->guessUpdates($em, $family);
         $this->assertEquals(1, count($updates));
         $this->assertEquals($family, $updates[0]);
-    }
-
-    /**
-     * @return EntityManager
-     */
-    protected function getEntityManagerMock()
-    {
-        $mock = $this
-            ->getMockBuilder('Doctrine\ORM\EntityManager')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        return $mock;
     }
 }

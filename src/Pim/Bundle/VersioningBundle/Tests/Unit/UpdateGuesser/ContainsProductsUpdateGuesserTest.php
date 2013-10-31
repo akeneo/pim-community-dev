@@ -13,7 +13,7 @@ use Pim\Bundle\CatalogBundle\Entity\Product;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ContainsProductsUpdateGuesserTest extends \PHPUnit_Framework_TestCase
+class ContainsProductsUpdateGuesserTest extends AbstractUpdateGuesserTest
 {
     /**
      * Test related methods
@@ -33,18 +33,5 @@ class ContainsProductsUpdateGuesserTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($category, $updates[0]);
         $this->assertEquals($productOne, $updates[1]);
         $this->assertEquals($productTwo, $updates[2]);
-    }
-
-    /**
-     * @return EntityManager
-     */
-    protected function getEntityManagerMock()
-    {
-        $mock = $this
-            ->getMockBuilder('Doctrine\ORM\EntityManager')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        return $mock;
     }
 }

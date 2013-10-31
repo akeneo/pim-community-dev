@@ -13,7 +13,7 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeOptionUpdateGuesserTest extends \PHPUnit_Framework_TestCase
+class AttributeOptionUpdateGuesserTest extends AbstractUpdateGuesserTest
 {
     /**
      * Test related methods
@@ -29,18 +29,5 @@ class AttributeOptionUpdateGuesserTest extends \PHPUnit_Framework_TestCase
         $updates   = $guesser->guessUpdates($em, $option);
         $this->assertEquals(1, count($updates));
         $this->assertEquals($attribute, $updates[0]);
-    }
-
-    /**
-     * @return EntityManager
-     */
-    protected function getEntityManagerMock()
-    {
-        $mock = $this
-            ->getMockBuilder('Doctrine\ORM\EntityManager')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        return $mock;
     }
 }
