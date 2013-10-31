@@ -18,26 +18,7 @@ use Pim\Bundle\CatalogBundle\Entity\Locale;
  */
 class AttributeNormalizerTest extends \PHPUnit_Framework_TestCase
 {
-    private $normalizer;
-
-    private $optionalProperties = array(
-        'default_value',
-        'max_characters',
-        'validation_rule',
-        'validation_regexp',
-        'wysiwyg_enabled',
-        'number_min',
-        'number_max',
-        'decimals_allowed',
-        'negative_allowed',
-        'date_min',
-        'date_max',
-        'date_type',
-        'metric_family',
-        'default_metric_unit',
-        'allowed_extensions',
-        'max_file_size',
-    );
+    protected $normalizer;
 
     /**
      * {@inheritdoc}
@@ -143,7 +124,7 @@ class AttributeNormalizerTest extends \PHPUnit_Framework_TestCase
         $attribute = $this->createAttribute($data);
 
         $expectedResult = $data;
-        foreach ($this->optionalProperties as $property) {
+        foreach ($this->getOptionalProperties() as $property) {
             if (!array_key_exists($property, $expectedResult)) {
                 $expectedResult[$property] = '';
             }
@@ -151,6 +132,31 @@ class AttributeNormalizerTest extends \PHPUnit_Framework_TestCase
 
         $normalized = $this->normalizer->normalize($attribute, 'json');
         $this->assertEquals($expectedResult, $normalized);
+    }
+
+    /**
+     * @return array
+     */
+    protected function getOptionalProperties()
+    {
+        return array(
+            'default_value',
+            'max_characters',
+            'validation_rule',
+            'validation_regexp',
+            'wysiwyg_enabled',
+            'number_min',
+            'number_max',
+            'decimals_allowed',
+            'negative_allowed',
+            'date_min',
+            'date_max',
+            'date_type',
+            'metric_family',
+            'default_metric_unit',
+            'allowed_extensions',
+            'max_file_size',
+        );
     }
 
     /**
@@ -211,7 +217,7 @@ class AttributeNormalizerTest extends \PHPUnit_Framework_TestCase
             }
         }
 
-        foreach ($this->optionalProperties as $property) {
+        foreach ($this->getOptionalProperties() as $property) {
             if (isset($data[$property]) && $data[$property] !== '') {
                 $method = 'set' . implode(
                     '',

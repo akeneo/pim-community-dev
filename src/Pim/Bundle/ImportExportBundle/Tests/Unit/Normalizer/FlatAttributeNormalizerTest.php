@@ -18,27 +18,6 @@ use Pim\Bundle\CatalogBundle\Entity\Locale;
  */
 class FlatAttributeNormalizerTest extends AttributeNormalizerTest
 {
-    private $normalizer;
-
-    private $optionalProperties = array(
-        'default_value',
-        'max_characters',
-        'validation_rule',
-        'validation_regexp',
-        'wysiwyg_enabled',
-        'number_min',
-        'number_max',
-        'decimals_allowed',
-        'negative_allowed',
-        'date_min',
-        'date_max',
-        'date_type',
-        'metric_family',
-        'default_metric_unit',
-        'allowed_extensions',
-        'max_file_size',
-    );
-
     /**
      * {@inheritdoc}
      */
@@ -59,21 +38,6 @@ class FlatAttributeNormalizerTest extends AttributeNormalizerTest
             array('stdClass',                                         'csv',  false),
             array('stdClass',                                         'json', false),
         );
-    }
-
-    /**
-     * Test supportsNormalization method
-     * @param mixed   $class
-     * @param string  $format
-     * @param boolean $isSupported
-     *
-     * @dataProvider getSupportNormalizationData
-     */
-    public function testSupportNormalization($class, $format, $isSupported)
-    {
-        $data = $this->getMock($class);
-
-        $this->assertSame($isSupported, $this->normalizer->supportsNormalization($data, $format));
     }
 
     /**
@@ -140,7 +104,7 @@ class FlatAttributeNormalizerTest extends AttributeNormalizerTest
         $attribute = $this->createAttribute($data);
 
         $expectedResult = $data;
-        foreach ($this->optionalProperties as $property) {
+        foreach ($this->getOptionalProperties() as $property) {
             if (!array_key_exists($property, $expectedResult)) {
                 $expectedResult[$property] = '';
             }
@@ -201,7 +165,7 @@ class FlatAttributeNormalizerTest extends AttributeNormalizerTest
 
         $this->addAttributeDefaultOptions($attribute, $data);
 
-        foreach ($this->optionalProperties as $property) {
+        foreach ($this->getOptionalProperties() as $property) {
             if (isset($data[$property]) && $data[$property] !== '') {
                 $method = 'set' . implode(
                     '',
