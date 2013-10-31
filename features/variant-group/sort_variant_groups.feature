@@ -16,6 +16,7 @@ Feature: Sort variant groups
       | TSHIRT_ORO    | T-Shirt Oro    | size, color | VARIANT |
       | MUG           | Mug Akeneo     | color       | VARIANT |
       | TSHIRT_AKENEO | T-Shirt Akeneo | size        | VARIANT |
+      | CROSS_SELL    | Cross sell     |             | X_SELL  |
     And I am logged in as "admin"
 
   Scenario: Successfully sort variant groups

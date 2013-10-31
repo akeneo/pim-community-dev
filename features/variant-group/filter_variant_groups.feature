@@ -12,10 +12,11 @@ Feature: Filter variant groups
       | size      | Size       | pim_catalog_simpleselect |
       | dimension | Dimensions | pim_catalog_simpleselect |
     And the following product groups:
-      | code           | label         | attributes  | type    |
+      | code          | label          | attributes  | type    |
       | TSHIRT_ORO    | T-Shirt Oro    | size, color | VARIANT |
       | MUG           | Mug Akeneo     | color       | VARIANT |
       | TSHIRT_AKENEO | T-Shirt Akeneo | size        | VARIANT |
+      | CROSS_SELL    | Cross sell     |             | X_SELL  |
     And I am logged in as "admin"
 
   Scenario: Successfully display filters
@@ -23,20 +24,21 @@ Feature: Filter variant groups
     Then I should see the filters Code, Label and Axis
     And the grid should contain 3 elements
     And I should see groups TSHIRT_ORO, MUG and TSHIRT_AKENEO
+    And I should not see groups CROSS_SELL
 
   Scenario: Successfully filter by code
     Given I am on the variant groups page
     When I filter by "Code" with value "MUG"
     Then the grid should contain 1 element
     And I should see group MUG
-    And I should not see groups TSHIRT_ORO and TSHIRT_AKENEO
+    And I should not see groups TSHIRT_ORO, TSHIRT_AKENEO and CROSS_SELL
 
   Scenario: Successfully filter by label
     Given I am on the variant groups page
     When I filter by "Label" with value "Akeneo"
     Then the grid should contain 2 elements
     And I should see groups MUG and TSHIRT_AKENEO
-    And I should not see group TSHIRT_ORO
+    And I should not see group TSHIRT_ORO and CROSS_SELL
 
   Scenario: Successfully filter by label and code
     Given I am on the variant groups page
@@ -44,11 +46,11 @@ Feature: Filter variant groups
     And I filter by "Label" with value "Akeneo"
     Then the grid should contain 1 element
     And I should see group TSHIRT_AKENEO
-    And I should not see groups MUG and TSHIRT_ORO
+    And I should not see groups MUG, TSHIRT_ORO and CROSS_SELL
 
   Scenario: Successfully filter by axis
     Given I am on the variant groups page
     When I filter by "Axis" with value "Color"
     Then the grid should contain 2 elements
     And I should see group TSHIRT_ORO and MUG
-    And I should not see groups TSHIRT_AKENEO
+    And I should not see groups TSHIRT_AKENEO and CROSS_SELL
