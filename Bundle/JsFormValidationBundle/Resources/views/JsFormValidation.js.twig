@@ -145,7 +145,8 @@ var jsfv = (function () {
             var target = field;
             if (field.parent().filter('.selector').length ||
                 field.parent().filter('.uploader').length ||
-                field.parent().filter('.input-append').length
+                field.parent().filter('.input-append').length ||
+                field.parent().filter('.input-prepend').length
             ) {
                 target = field.parent();
             }
