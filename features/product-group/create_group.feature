@@ -13,7 +13,6 @@ Feature: Product group creation
     Then I should see the Code and Type fields
     And I should not see the Axis field
 
-  @skip
   Scenario: Successfully create a cross sell
     Given I am on the product groups page
     When I create a new product group
@@ -27,7 +26,6 @@ Feature: Product group creation
   Scenario: Fail to create a group missing the code
     Given I am on the product groups page
     When I create a new product group
-    And I select the type "Size"
     And I press the "Save" button
     Then I should see validation error "This value should not be blank."
 

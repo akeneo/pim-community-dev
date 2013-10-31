@@ -2,6 +2,8 @@
 
 namespace Context;
 
+use Behat\Mink\Exception\ElementNotFoundException;
+
 use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\Gherkin\Node\TableNode;
@@ -62,8 +64,29 @@ class AssertionContext extends RawMinkContext
     {
         $fields = $this->getMainContext()->listToArray($fields);
         foreach ($fields as $field) {
-            if (!$this->getCurrentPage()->findField($field)) {
+            try {
+                $this->getCurrentPage()->findField($field);
+            } catch (ElementNotFoundException $e) {
                 throw $this->createExpectationException(sprintf('Expecting to see field "%s".', $field));
+            }
+        }
+    }
+
+    /**
+     * @param string $fields
+     *
+     * @Then /^I should not see the (.*) fields?$/
+     */
+    public function iShouldNotSeeTheFields($fields)
+    {
+        $fields = $this->getMainContext()->listToArray($fields);
+
+        foreach ($fields as $field) {
+            try {
+                $this->getCurrentPage()->findField($field);
+
+                throw $this->createExpectationException(sprintf('Not expecting to see field "%s"', $field));
+            } catch (ElementNotFoundException $e) {
             }
         }
     }
