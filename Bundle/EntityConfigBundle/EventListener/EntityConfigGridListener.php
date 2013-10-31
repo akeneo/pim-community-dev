@@ -2,16 +2,12 @@
 
 namespace Oro\Bundle\EntityConfigBundle\EventListener;
 
-use Doctrine\ORM\QueryBuilder;
-
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-
+use Oro\Bundle\DataGridBundle\Datasource\Orm\ResultRecord;
 use Oro\Bundle\DataGridBundle\Event\BuildAfter;
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 use Oro\Bundle\DataGridBundle\Extension\Action\ActionExtension;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration;
-use Oro\Bundle\DataGridBundle\Extension\Formatter\ResultRecord;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 
 use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
