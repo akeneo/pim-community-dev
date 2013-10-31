@@ -22,6 +22,7 @@ function(Backbone) {
             city: '',
             country: '',
             countryIso2: '',
+            countryIso3: '',
             postalCode: '',
             state: '',
             stateText: '',

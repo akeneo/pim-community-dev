@@ -68,6 +68,7 @@ function( _, Backbone, __, addressFormatter) {
                 city: data.city,
                 country: data.country,
                 country_iso2: data.countryIso2,
+                country_iso3: data.countryIso3,
                 postal_code: data.postalCode,
                 region: data.state || data.stateText,
                 region_code: data.regionCode
