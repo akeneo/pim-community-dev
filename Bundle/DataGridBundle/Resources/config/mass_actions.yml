@@ -1,0 +1,10 @@
+parameters:
+    oro_datagrid.mass_action.parameters_parser.class: Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser
+    oro_datagrid.mass_action.dispatcher.class:        Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher
+
+services:
+    oro_datagrid.mass_action.parameters_parser:
+        class: %oro_datagrid.mass_action.parameters_parser.class%
+
+    oro_datagrid.mass_action.dispatcher:
+        class: %oro_datagrid.mass_action.dispatcher.class%

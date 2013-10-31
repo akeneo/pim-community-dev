@@ -7,7 +7,7 @@ class NavigateAction extends AbstractAction
     /**
      * @var array
      */
-    protected $requiredOptions = array('link');
+    protected $requiredOptions = ['link'];
 
     protected static $additionalOptions = [
         'launcherOptions' => [

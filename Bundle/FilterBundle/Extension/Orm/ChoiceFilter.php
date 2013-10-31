@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\Collection;
 
 use Symfony\Component\Form\Extension\Core\View\ChoiceView;
 
+use Oro\Bundle\FilterBundle\Extension\Configuration;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\ChoiceFilterType;
 
 class ChoiceFilter extends AbstractFilter
@@ -53,7 +54,7 @@ class ChoiceFilter extends AbstractFilter
         $formView  = $this->getForm()->createView();
         $fieldView = $formView->children['value'];
 
-        $options = array_map(
+        $choices = array_map(
             function (ChoiceView $choice) {
                 return [
                     'label' => $choice->label,
@@ -63,10 +64,14 @@ class ChoiceFilter extends AbstractFilter
             $fieldView->vars['choices']
         );
 
+
         $metadata                    = parent::getMetadata();
-        $metadata['choices']         = $options;
+        $metadata['choices']         = $choices;
         $metadata['populateDefault'] = $formView->vars['populate_default'];
 
+        if ($fieldView->vars['multiple']) {
+            $metadata[Configuration::TYPE_KEY] = 'multichoice';
+        }
         return $metadata;
     }
 

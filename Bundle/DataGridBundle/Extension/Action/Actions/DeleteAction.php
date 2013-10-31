@@ -9,7 +9,7 @@ class DeleteAction extends AbstractAction
     /**
      * @var array
      */
-    protected $requiredOptions = array('link');
+    protected $requiredOptions = ['link'];
 
     /**
      * @param ActionConfiguration $options
