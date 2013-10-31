@@ -246,7 +246,7 @@ class OrmProductTransformer
                         $this->productValidator->validateProductValue(
                             $columnCode,
                             $columnInfo['attribute'],
-                            $columnValue
+                            $value
                         )
                     );
                 }
