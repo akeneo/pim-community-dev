@@ -6,13 +6,13 @@ function(_, Backbone, registry, mediator) {
     /**
      * Abstarct listener for datagrid
      *
-     * @export  oro/datagrid/abstract-listener
-     * @class   oro.datagrid.AbstractListener
+     * @export  oro/grid/abstract-listener
+     * @class   oro.grid.AbstractListener
      * @extends Backbone.Model
      */
     return Backbone.Model.extend({
 
-        /** @param {oro.datagrid.Grid} */
+        /** @param {oro.grid.Grid} */
         datagrid: null,
 
         /** @param {String} Column name of cells that will be listened for changing their values */
@@ -63,7 +63,7 @@ function(_, Backbone, registry, mediator) {
         /**
          * Set datagrid instance
          *
-         * @param {oro.datagrid.Grid} datagrid
+         * @param {oro.grid.Grid} datagrid
          */
         setDatagridAndSubscribe: function(datagrid) {
             this.datagrid = datagrid;

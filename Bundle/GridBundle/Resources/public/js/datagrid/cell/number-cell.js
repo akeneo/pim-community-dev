@@ -6,8 +6,8 @@ function(Backgrid) {
     /**
      * Number column cell. Added missing behaviour.
      *
-     * @export  oro/datagrid/number-cell
-     * @class   oro.datagrid.NumberCell
+     * @export  oro/grid/number-cell
+     * @class   oro.grid.NumberCell
      * @extends Backgrid.NumberCell
      */
     return Backgrid.NumberCell.extend({

@@ -6,8 +6,8 @@ function(_, Backgrid) {
     /**
      * Formatter for date and time. Fixed formatting method.
      *
-     * @export  oro/datagrid/moment-formatter
-     * @class   oro.datagrid.MomentFormatter
+     * @export  oro/grid/moment-formatter
+     * @class   oro.grid.MomentFormatter
      * @extends Backgrid.Extension.MomentFormatter
      */
     var MomentFormatter = function (options) {

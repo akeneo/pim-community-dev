@@ -9,8 +9,8 @@ function($, _, Backgrid) {
      * Triggers events:
      *  - "clicked" when row is clicked
      *
-     * @export  oro/datagrid/row
-     * @class   oro.datagrid.Row
+     * @export  oro/grid/row
+     * @class   oro.grid.Row
      * @extends Backgrid.Row
      */
     return Backgrid.Row.extend({

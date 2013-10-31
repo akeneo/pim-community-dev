@@ -1,13 +1,13 @@
 /* global define */
-define(['underscore', 'oro/datafilter/list'],
+define(['underscore', 'oro/datafilter/filters-manager'],
 function(_, FilterList) {
     'use strict';
 
     /**
      * View that represents all grid filters
      *
-     * @export  oro/datagrid/filter-list
-     * @class   oro.datagrid.FilterList
+     * @export  oro/grid/filter-list
+     * @class   oro.grid.FilterList
      * @extends oro.FilterList
      */
     return FilterList.extend({
