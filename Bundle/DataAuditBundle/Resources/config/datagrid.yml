@@ -108,8 +108,7 @@ datagrid:
                     data_name: a.objectClass
                     options:
                           field_options:
-                              choices: ~  # @TODO add correct choices here
-                              # https://github.com/laboro/platform/blob/master/src/Oro/Bundle/DataAuditBundle/Datagrid/AuditDatagridManager.php#L209
+                              choices: @oro_dataaudit.dataaudit_grid_service->getObjectClassOptions
                 objectName:
                     type: string
                     data_name: a.objectName

@@ -13,7 +13,7 @@ oro_entity_config:
                     grid:
                         type:               boolean
                         label:              'Show in Datagrid'
-                        filter_type:        oro_grid_orm_boolean
+                        filter_type:        boolean
                         required:           true
                         sortable:           true
                         filterable:         true
@@ -53,7 +53,7 @@ oro_entity_config:
                     grid:
                         type:               boolean
                         label:              'Show in Datagrid'
-                        filter_type:        oro_grid_orm_boolean
+                        filter_type:        boolean
                         required:           true
                         sortable:           true
                         filterable:         true
@@ -73,7 +73,7 @@ oro_entity_config:
                     grid:
                         type:               boolean
                         label:              'Datagrid search'
-                        filter_type:        oro_grid_orm_boolean
+                        filter_type:        boolean
                         required:           true
                         sortable:           true
                         filterable:         true
@@ -93,7 +93,7 @@ oro_entity_config:
                     grid:
                         type:               boolean
                         label:              'Datagrid filter'
-                        filter_type:        oro_grid_orm_boolean
+                        filter_type:        boolean
                         required:           true
                         sortable:           true
                         filterable:         true

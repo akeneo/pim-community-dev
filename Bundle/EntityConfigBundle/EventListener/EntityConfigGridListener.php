@@ -18,6 +18,7 @@ use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigModelManager;
 use Oro\Bundle\EntityConfigBundle\Provider\PropertyConfigContainer;
+use Oro\Bundle\FilterBundle\Extension\Configuration as FilterConfiguration;
 
 class EntityConfigGridListener implements EventSubscriberInterface
 {
@@ -26,6 +27,8 @@ class EntityConfigGridListener implements EventSubscriberInterface
     const TYPE_NAVIGATE = 'navigate';
     const TYPE_DELETE   = 'delete';
     const PATH_COLUMNS  = '[columns]';
+    const PATH_SORTERS  = '[sorters]';
+    const PATH_FILTERS  = '[filters]';
     const PATH_ACTIONS  = '[actions]';
 
     /** @var ConfigManager */
@@ -77,11 +80,25 @@ class EntityConfigGridListener implements EventSubscriberInterface
         $config = $event->getConfig();
 
         // get dynamic columns and merge them with static columns from configuration
-        $columns = $config->offsetGetByPath(self::PATH_COLUMNS, array());
-        $additionalColumns = $this->getDynamicFields();
-        $columns = array_merge_recursive($additionalColumns, $columns);
-        // set new column set with dynamic fields
-        $config->offsetSetByPath(self::PATH_COLUMNS, $columns);
+        $additionalColumnSettings = $this->getDynamicFields();
+        $filtersSorters = $this->getDynamicSortersAndFilters($additionalColumnSettings);
+        $additionalColumnSettings = [
+            'columns' => $additionalColumnSettings,
+            'sorters' => $filtersSorters['sorters'],
+            'filters' => $filtersSorters['filters'],
+        ];
+
+        foreach (['columns', 'sorters', 'filters'] as $itemName) {
+            $path = '['.$itemName.']';
+            // get already defined columns, sorters and filters
+            $items = $config->offsetGetByPath($path, array());
+
+            // merge additional items with existing
+            $items = array_merge_recursive($additionalColumnSettings[$itemName], $items);
+
+            // set new item set with dynamic columns/sorters/filters
+            $config->offsetSetByPath($path, $items);
+        }
 
         // add/configure entity config properties
         $this->addEntityConfigProperties($config);
@@ -302,12 +319,45 @@ class EntityConfigGridListener implements EventSubscriberInterface
 
         ksort($fields);
 
-        $orderedFields = [];
+        $orderedFields = $sorters = $filters = [];
+        // compile field list with pre-defined order
         foreach ($fields as $field) {
             $orderedFields = array_merge($orderedFields, $field);
         }
 
         return $orderedFields;
+    }
+
+    /**
+     * @param array $orderedFields
+     * @return array
+     */
+    public function getDynamicSortersAndFilters(array $orderedFields)
+    {
+        $filters = $sorters = [];
+
+        // add sorters and filters if needed
+        foreach ($orderedFields as $fieldName => $field) {
+            if (isset($field['sortable']) && $field['sortable']) {
+                $sorters['columns'][$fieldName] = ['data_name' => $field['expression']];
+            }
+
+            if (isset($field['filterable']) && $field['filterable']) {
+                $filters['columns'][$fieldName] = [
+                    'data_name'     => $field['expression'],
+                    'type'          => isset($field['filter_type']) ? $field['filter_type'] : 'string',
+                    'frontend_type' => $field['frontend_type'],
+                    'label'         => $field['label'],
+                    FilterConfiguration::ENABLED_KEY   => isset($field['show_filter']) ? $field['show_filter'] : true,
+                ];
+
+                if (isset($field['choices'])) {
+                    $filters['columns'][$fieldName]['options']['field_options']['choices'] = $field['choices'];
+                }
+            }
+        }
+
+        return ['filters' => $filters, 'sorters' => $sorters];
     }
 
     /**
