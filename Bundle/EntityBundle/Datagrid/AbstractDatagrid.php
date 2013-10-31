@@ -48,7 +48,7 @@ class AbstractDatagrid extends DatagridManager
             array(
                 'type'        => FieldDescriptionInterface::TYPE_TEXT,
                 'label'       => $fieldConfig->get('label') ? : $field->getFieldName(),
-                'field_name'  => ExtendConfigDumper::PREFIX . $field->getFieldName(),
+                'field_name'  => ExtendConfigDumper::FIELD_PREFIX . $field->getFieldName(),
                 'filter_type' => FilterInterface::TYPE_STRING,
                 'sortable'    => true,
                 'filterable'  => true,

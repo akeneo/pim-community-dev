@@ -6,31 +6,68 @@ use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
-use Oro\Bundle\EntityExtendBundle\Form\EventListener\TargetFieldSubscriber;
+use Oro\Bundle\EntityConfigBundle\Config\Config;
+use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 
 class TargetFieldType extends AbstractType
 {
-    /** @var  ConfigManager */
-    protected $configManager;
-
-    /** @var  Request */
-    protected $request;
+    /**
+     * @var ConfigProvider
+     */
+    protected $configProvider;
 
     /**
-     * @param ConfigManager $configManager
-     * @param Request $request
+     * @var string
      */
-    public function __construct(ConfigManager $configManager, Request $request)
+    protected $entityClass;
+
+    public function __construct(ConfigProvider $configProvider, $entityClass)
     {
-        $this->configManager = $configManager;
-        $this->request       = $request;
+        $this->configProvider = $configProvider;
+        $this->entityClass    = $entityClass;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $builder->addEventSubscriber(new TargetFieldSubscriber($this->request, $this->configManager));
+        $resolver->setDefaults(
+            array(
+                'attr'            => array('class' => 'extend-rel-target-field'),
+                'label'           => 'Target field',
+                'empty_value'     => 'Please choice target field...',
+                'choices'         => $this->getPropertyChoiceList(),
+                'auto_initialize' => false
+            )
+        );
+    }
+
+    /**
+     * @return array
+     */
+    protected function getPropertyChoiceList()
+    {
+        $choices = array();
+
+        if (!$this->entityClass) {
+            return $choices;
+        }
+
+        $fields = $this->configProvider->filter(
+            function (Config $config) {
+                return $config->getId()->getFieldType() == 'string';
+            },
+            $this->entityClass
+        );
+
+        $entityConfigProvider = $this->configProvider->getConfigManager()->getProvider('entity');
+        foreach ($fields as $field) {
+            $label = $entityConfigProvider->getConfigById($field->getId())->get('label');
+
+            $choices[$field->getId()->getFieldName()] = $label ? : $field->getId()->getFieldName();
+        }
+
+        return $choices;
     }
 
     /**
