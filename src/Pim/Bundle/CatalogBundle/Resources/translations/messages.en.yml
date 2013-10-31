@@ -11,6 +11,7 @@ import profile:  import profile
 locale:          locale
 product:         product
 group:           group
+variant group:   variant group
 association:     association
 
 # Page header titles
@@ -121,6 +122,7 @@ confirmation:
         import profile:  Are you sure you want to delete the import profile %name%?
         channel:         Are you sure you want to delete the channel %name%?
         group:           Are you sure you want to delete the group %name%?
+        variant group:   Are you sure you want to delete the variant group %name%?
         association:     Are you sure you want to delete the association %name%?
 
 # Flash messages
@@ -179,6 +181,10 @@ flash:
         created: Group successfully created
         updated: Group successfully updated
         removed: Group successfully removed
+    variant group:
+        created: Variant group successfully created
+        updated: Variant group successfully updated
+        removed: Variant group successfully removed
     association:
         created: Association successfully created
         updated: Association successfully updated
