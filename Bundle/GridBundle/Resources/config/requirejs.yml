@@ -1,21 +1,4 @@
 config:
-    shim:
-        'backgrid':
-            deps:
-                - 'jquery'
-                - 'underscore'
-                - 'backbone'
-            exports: 'Backgrid'
-        'backgrid/moment':
-            deps:
-                - 'jquery'
-                - 'underscore'
-                - 'backbone'
-                - 'backgrid'
-                - 'moment'
-        'moment':
-            exports:
-                - 'moment'
     paths:
         'oro/grid/action-launcher': 'bundles/orogrid/js/datagrid/action-launcher.js'
         'oro/grid/abstract-action': 'bundles/orogrid/js/datagrid/action/abstract-action.js'
