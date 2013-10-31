@@ -157,6 +157,12 @@ datagrid:
             id:
                 type: field
 
+        filters:
+            columns:
+                mass_action:
+                    type: selectrow
+                    data_name: a.id
+
         flexible_attributes:
             employees:
                 filterable:  true
@@ -168,4 +174,10 @@ datagrid:
                 type: delete
                 icon: trash
                 entity_name: OroCRMAccountBundle:Account
+                data_identifier: a.id
+
+            update:
+                type: window
+                route: orocrm_account_create
+                icon: edit
                 data_identifier: a.id

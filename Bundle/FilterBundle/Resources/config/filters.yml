@@ -22,7 +22,7 @@ services:
         arguments:
             - @form.factory
         tags:
-            - { name: oro_filter.extension.orm_filter.filter, type: select_row }
+            - { name: oro_filter.extension.orm_filter.filter, type: selectrow }
 
     oro_filter.extension.orm.number_filter:
         class: %oro_filter.extension.orm.number_filter.class%

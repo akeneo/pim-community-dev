@@ -9,6 +9,12 @@ use Doctrine\ORM\Query;
  */
 class ConstantPagerIterableResult extends IterableResult
 {
+    public function __construct($source)
+    {
+        parent::__construct($source);
+        $source->setMaxResults($this->bufferSize);
+    }
+
     /**
      * @param Query $pageQuery
      */
