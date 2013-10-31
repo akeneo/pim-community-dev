@@ -1,8 +1,8 @@
 @javascript
-Feature: Sort product groups
-  In order to create relations bewteen products with groups in the catalog
+Feature: Sort variant groups
+  In order to create relations between products with groups in the catalog
   As a user
-  I need to be able to sort product groups by several columns in the catalog
+  I need to be able to sort variant groups by several columns in the catalog
 
   Background:
     Given there is no product group
@@ -18,7 +18,7 @@ Feature: Sort product groups
       | TSHIRT_AKENEO | T-Shirt Akeneo | size        | VARIANT |
     And I am logged in as "admin"
 
-  Scenario: Successfully sort groups
+  Scenario: Successfully sort variant groups
     Given I am on the product groups page
     Then the rows should be sorted ascending by code
     And I should be able to sort the rows by code and label

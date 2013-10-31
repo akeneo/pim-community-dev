@@ -60,7 +60,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
         'users'                    => 'User index',
         'user roles'               => 'UserRole index',
         'user groups'              => 'UserGroup index',
-        'variants'                 => 'Variant index',
+        'variant groups'           => 'VariantGroup index',
         'attribute groups'         => 'AttributeGroup index',
         'attribute group creation' => 'AttributeGroup creation',
     );
