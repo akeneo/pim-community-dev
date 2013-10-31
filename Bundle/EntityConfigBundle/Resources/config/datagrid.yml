@@ -104,12 +104,10 @@ datagrid:
                     - ce.className
                     - cf.fieldName
                     - cf.type
-
+                    - cf.mode
                 from:
                     - { table: OroEntityConfigBundle:FieldConfigModel, alias: cf }
-                join:
-                    inner:
-                        - { join: cf.entity, alias: ce }
+
         columns:
 # show columns false
 #            className:
