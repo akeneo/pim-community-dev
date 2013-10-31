@@ -20,6 +20,7 @@ datagrid:
                 label: Name
                 type: field
                 frontend_type: string
+            #@TODO module column should has "select" type
             module:
                 label: Module
                 type: field
@@ -41,6 +42,7 @@ datagrid:
                 params:
                     - id
         actions:
+            # @TODO check why those actions dont have ACL
             update:
                 type: navigate
                 label: Update
@@ -62,6 +64,7 @@ datagrid:
                     data_name: ce.updated
         filters:
             columns:
+                # @TODO Add choices for filters
                 name:
                     type: choice
                     data_name: name
@@ -70,4 +73,4 @@ datagrid:
                     data_name: module
                 updated:
                     type: datetime
-                    data_name:
+                    data_name: ce.updated

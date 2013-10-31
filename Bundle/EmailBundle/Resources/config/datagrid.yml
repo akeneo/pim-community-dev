@@ -75,27 +75,23 @@ datagrid:
 
         columns:
             entityName:
-                type:          twig
-                frontend_type: html
-                label:         oro.email.datagrid.emailtemplate.column.entity_name
-                template:      OroNotificationBundle:EmailNotification:Datagrid/Property/entityName.html.twig
+                type:           twig
+                frontend_type:  html
+                label:          oro.email.datagrid.emailtemplate.column.entity_name
+                template:       OroNotificationBundle:EmailNotification:Datagrid/Property/entityName.html.twig
             name:
-                type:   field
-                label:  oro.email.datagrid.emailtemplate.column.name
+                type:           field
+                label:          oro.email.datagrid.emailtemplate.column.name
             type:
                 type:           field
                 frontend_type:  select
                 label:          oro.email.datagrid.emailtemplate.column.type
-                choices:
-                    html: oro.email.datagrid.emailtemplate.filter.type.html
-                    txt:  oro.email.datagrid.emailtemplate.filter.type.txt
+                choices:        @oro_email.emailtemplate.datagrid_helper->getTypeChoices
             isSystem:
-                type: field
+                type:           field
                 frontend_type:  select
-                label: oro.email.datagrid.emailtemplate.column.isSystem
-                choices:
-                    - oro.email.datagrid.emailtemplate.filter.isSystem.no
-                    - oro.email.datagrid.emailtemplate.filter.isSystem.yes
+                label:          oro.email.datagrid.emailtemplate.column.isSystem
+                choices:        @oro_email.emailtemplate.datagrid_helper->getSystemChoices
         properties:
             id:
                 type: field
@@ -114,24 +110,27 @@ datagrid:
 
         filters:
             columns:
-                entityName: { type: string, data_name: t.entityName }
-                name:       { type: string, data_name: t.name }
-                type:
-                    type:        choice
-                    data_name:   t.type
-                    options:
-                        field_options:
-                            choices:
-                                html: oro.email.datagrid.emailtemplate.filter.type.html
-                                txt:  oro.email.datagrid.emailtemplate.filter.type.txt
-                isSystem:
+                entityName:
                     type:      choice
-                    data_name: t.isSystem
+                    data_name: t.entityName
+                    options:
+                        translation_domain: config
+                        field_options:
+                            choices:        @oro_email.emailtemplate.datagrid_helper->getEntityNameChoices
+                name: { type: string, data_name: t.name }
+                type:
+                    type:            choice
+                    data_name:       t.type
                     options:
                         field_options:
-                            choices:
-                                - oro.email.datagrid.emailtemplate.filter.isSystem.no
-                                - oro.email.datagrid.emailtemplate.filter.isSystem.yes
+                            choices: @oro_email.emailtemplate.datagrid_helper->getTypeChoices
+
+                isSystem:
+                    type:           choice
+                    data_name:      t.isSystem
+                    options:
+                        field_options:
+                            choices: @oro_email.emailtemplate.datagrid_helper->getSystemChoices
 
         sorters:
             columns:
@@ -160,5 +159,5 @@ datagrid:
                 icon:         trash
                 link:         delete_link
 
-        action_configuration: Oro\Bundle\EmailBundle\Datagrid\EmailTemplatesActionConfiguration::getClosure
+        action_configuration: Oro\Bundle\EmailBundle\Datagrid\EmailTemplatesActionConfiguration::getActionConfigurationClosure
         views_list : @oro_email.emailtemplate.datagrid_view_list

@@ -4,28 +4,24 @@ namespace Oro\Bundle\EntityConfigBundle\EventListener;
 
 use Doctrine\ORM\QueryBuilder;
 
-use Oro\Bundle\DataGridBundle\Common\Object;
-use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
-use Oro\Bundle\EntityConfigBundle\Provider\PropertyConfigContainer;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 use Oro\Bundle\DataGridBundle\Event\BuildAfter;
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
+use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
+use Oro\Bundle\DataGridBundle\Extension\Action\ActionExtension;
+use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration;
+use Oro\Bundle\DataGridBundle\Extension\Formatter\ResultRecord;
+use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
-use Oro\Bundle\EntityConfigBundle\Config\Id\ConfigIdInterface;
-use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
-use Symfony\Component\PropertyAccess\PropertyAccessor;
+use Oro\Bundle\EntityConfigBundle\Config\ConfigModelManager;
+use Oro\Bundle\EntityConfigBundle\Provider\PropertyConfigContainer;
 
 class EntityConfigGridListener implements EventSubscriberInterface
 {
-    const PATH_COLUMNS = '[columns]';
-    const PATH_PROPERTIES = '[properties]';
-
-    const TYPE_HTML = 'html';
-    const TYPE_TWIG = 'twig';
+    const TYPE_HTML     = 'html';
+    const TYPE_TWIG     = 'twig';
     const TYPE_NAVIGATE = 'navigate';
-    const TYPE_DELETE = 'navigate';
 
     /** @var ConfigManager */
     protected $configManager;
@@ -44,7 +40,7 @@ class EntityConfigGridListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            'oro_datagrid.datgrid.build.after.entityconfig-grid' => 'onBuildAfter',
+            'oro_datagrid.datgrid.build.after.entityconfig-grid'  => 'onBuildAfter',
             'oro_datagrid.datgrid.build.before.entityconfig-grid' => 'onBuildBefore',
         );
     }
@@ -71,13 +67,9 @@ class EntityConfigGridListener implements EventSubscriberInterface
     {
         $config = $event->getConfig();
 
-        // get dynamic columns and merge them with static columns from configuration
-        $columns = $config->offsetGetByPath(self::PATH_COLUMNS, array());
-        $additionalColumns = $this->getDynamicFields();
-        $columns = array_merge_recursive($additionalColumns, $columns);
-
         // set new column set with dynamic fields
-        $config->offsetSetByPath(self::PATH_COLUMNS, $columns);
+        $additionalColumns = $this->getDynamicFields();
+        $config->offsetAddToArrayByPath(Configuration::COLUMNS_PATH, $additionalColumns);
 
         // add entity config properties
         $this->addEntityConfigProperties($config);
@@ -89,9 +81,9 @@ class EntityConfigGridListener implements EventSubscriberInterface
     protected function addEntityConfigProperties(DatagridConfiguration $config)
     {
         // configure properties from config providers
-        $properties = $config->offsetGetByPath(self::PATH_PROPERTIES, array());
-        $filters = array();
-        $actions = array();
+        $properties = $config->offsetGetByPath(Configuration::PROPERTIES_PATH, []);
+        $filters    = array();
+        $actions    = array();
 
         foreach ($this->configManager->getProviders() as $provider) {
             $gridActions = $provider->getPropertyConfig()->getGridActions();
@@ -104,28 +96,31 @@ class EntityConfigGridListener implements EventSubscriberInterface
         }
 
         if (count($filters)) {
-            // TODO: add callback closure $this->getPropertiesClosure()
-            //$properties['callback_prop'] = array(
-            //);
+            $config->offsetSet(
+                ActionExtension::ACTION_CONFIGURATION_KEY,
+                $this->getActionConfigurationClosure($filters, $actions)
+            );
         }
     }
 
     /**
-     * TODO: should be refactored
+     * Returns closure that will configure actions for each row in grid
+     *
+     * @param array $filters
+     * @param array $actions
      *
      * @return callable
      */
-    public function getPropertiesClosure()
+    public function getActionConfigurationClosure($filters, $actions)
     {
         return function (ResultRecord $record) use ($filters, $actions) {
             if ($record->getValue('mode') == ConfigModelManager::MODE_READONLY) {
-                $actions = array_map(
+                $actions           = array_map(
                     function () {
                         return false;
                     },
                     $actions
                 );
-
                 $actions['update'] = false;
             } else {
                 foreach ($filters as $action => $filter) {
@@ -166,8 +161,8 @@ class EntityConfigGridListener implements EventSubscriberInterface
     {
         foreach ($gridActions as $config) {
             $properties[strtolower($config['name']) . '_link'] = [
-                'type' => 'url',
-                'route' => $config['route'],
+                'type'   => 'url',
+                'route'  => $config['route'],
                 'params' => (isset($config['args']) ? $config['args'] : [])
             ];
 
@@ -179,7 +174,7 @@ class EntityConfigGridListener implements EventSubscriberInterface
                     array_keys($config['filter'])
                 );
 
-                $config['filter'] = array_combine($keys, $config['filter']);
+                $config['filter']                     = array_combine($keys, $config['filter']);
                 $filters[strtolower($config['name'])] = $config['filter'];
             }
 
@@ -208,13 +203,7 @@ class EntityConfigGridListener implements EventSubscriberInterface
 
                 if (isset($config['type'])) {
                     switch ($config['type']) {
-                        case 'delete':
-                            $configItem['type'] = self::TYPE_DELETE;
-                            break;
                         case 'redirect':
-                            $configItem['type'] = self::TYPE_NAVIGATE;
-                            break;
-                        case 'ajax':
                             $configItem['type'] = self::TYPE_NAVIGATE;
                             break;
                     }
@@ -229,6 +218,7 @@ class EntityConfigGridListener implements EventSubscriberInterface
 
     /**
      * @param QueryBuilder $query
+     *
      * @return $this
      */
     protected function prepareQuery(QueryBuilder $query)
@@ -257,7 +247,7 @@ class EntityConfigGridListener implements EventSubscriberInterface
     }
 
     /**
-     * @return $this
+     * @return array
      */
     protected function getDynamicFields()
     {
@@ -269,7 +259,7 @@ class EntityConfigGridListener implements EventSubscriberInterface
                     continue;
                 }
 
-                $fieldName = $provider->getScope() . '_' . $code;
+                $fieldName    = $provider->getScope() . '_' . $code;
                 $item['grid'] = $provider->getPropertyConfig()->initConfig($item['grid']);
                 $item['grid'] = $this->mapEntityConfigTypes($item['grid']);
 
@@ -293,16 +283,17 @@ class EntityConfigGridListener implements EventSubscriberInterface
 
         ksort($fields);
 
-        $ordererFields = [];
+        $orderedFields = [];
         foreach ($fields as $field) {
-            $ordererFields = array_merge($ordererFields, $field);
+            $orderedFields = array_merge($orderedFields, $field);
         }
 
-        return $ordererFields;
+        return $orderedFields;
     }
 
     /**
      * @param array $gridConfig
+     *
      * @return array
      */
     protected function mapEntityConfigTypes(array $gridConfig)
@@ -311,7 +302,7 @@ class EntityConfigGridListener implements EventSubscriberInterface
             && $gridConfig['type'] == self::TYPE_HTML
             && isset($item['grid']['template'])
         ) {
-            $gridConfig['type'] = self::TYPE_TWIG;
+            $gridConfig['type']          = self::TYPE_TWIG;
             $gridConfig['frontend_type'] = self::TYPE_HTML;
         } else {
             if (!empty($gridConfig['type'])) {
