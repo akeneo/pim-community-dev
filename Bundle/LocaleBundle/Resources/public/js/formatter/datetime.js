@@ -61,7 +61,7 @@ function(localeSettings, moment) {
          * @returns {*}
          */
         isDateValid: function(value) {
-            return moment(value, this.getDateFormat(), true).isValid();
+            return moment(value, this.getDateFormat()).isValid();
         },
 
         /**
@@ -69,7 +69,7 @@ function(localeSettings, moment) {
          * @returns {Boolean}
          */
         isTimeValid: function(value) {
-            return moment(value, this.getTimeFormat(), true).isValid();
+            return moment(value, this.getTimeFormat()).isValid();
         },
 
         /**
@@ -77,7 +77,7 @@ function(localeSettings, moment) {
          * @returns {Boolean}
          */
         isDateTimeValid: function(value) {
-            return moment(value, this.getDateTimeFormat(), true).isValid();
+            return moment(value, this.getDateTimeFormat()).isValid();
         },
 
         /**
