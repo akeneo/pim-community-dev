@@ -63,12 +63,12 @@ class CompletenessCalculatorTest extends \PHPUnit_Framework_TestCase
 
         $channelManager = $this->createChannelManager();
         $localeManager  = $this->createLocaleManager();
-        $entityManager  = $this->createEntityManager();
+        $this->entityManager  = $this->createEntityManager();
 
         $this->calculator = new CompletenessCalculator(
             $channelManager,
             $localeManager,
-            $entityManager,
+            $this->entityManager,
             $this->validator
         );
     }
@@ -231,6 +231,43 @@ class CompletenessCalculatorTest extends \PHPUnit_Framework_TestCase
         // call the calculator
         $this->calculator->calculateForAProductByChannel($product, $channelUsed);
         $this->assertCount(0, $product->getCompletenesses());
+    }
+
+    public function testSchedule()
+    {
+        $product = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Product');
+        $completeness1 = $this->getCompletenessMock();
+        $completeness2 = $this->getCompletenessMock();
+        $completeness3 = $this->getCompletenessMock();
+
+        $product->expects($this->any())
+            ->method('getCompletenesses')
+            ->will(
+                $this->returnValue(
+                    array(
+                        $completeness1,
+                        $completeness2,
+                        $completeness3,
+                    )
+                )
+            );
+
+        $this->entityManager
+            ->expects($this->at(0))
+            ->method('remove')
+            ->with($completeness1);
+
+        $this->entityManager
+            ->expects($this->at(1))
+            ->method('remove')
+            ->with($completeness2);
+
+        $this->entityManager
+            ->expects($this->at(2))
+            ->method('remove')
+            ->with($completeness3);
+
+        $this->calculator->schedule($product);
     }
 
     /**
@@ -493,5 +530,10 @@ class CompletenessCalculatorTest extends \PHPUnit_Framework_TestCase
         $attribute->setCode($code);
 
         return $attribute;
+    }
+
+    protected function getCompletenessMock()
+    {
+        return $this->getMock('Pim\Bundle\CatalogBundle\Entity\Completeness');
     }
 }
