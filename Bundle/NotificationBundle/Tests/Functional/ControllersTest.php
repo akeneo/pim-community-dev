@@ -46,12 +46,12 @@ class ControllersTest extends WebTestCase
             '<select required="required" name="emailnotification[template]" id="emailnotification_template" ' .
             'tabindex="-1" class="select2-offscreen"> ' .
             '<option value="" selected="selected"></option> ' .
-            '<option value="1">update_user</option> </select>'
+            '<option value="2">EmailBundle:update_user</option> </select>'
         );
 
         $field = new ChoiceFormField($doc->getElementsByTagName('select')->item(0));
         $form->set($field);
-        $form['emailnotification[template]'] = '1';
+        $form['emailnotification[template]'] = '2';
         $form['emailnotification[recipientList][users]'] = '1';
         $form['emailnotification[recipientList][groups][0]'] = '1';
         $form['emailnotification[recipientList][email]'] = 'admin@example.com';
@@ -63,6 +63,9 @@ class ControllersTest extends WebTestCase
         $this->assertContains("Email notification rule saved", $crawler->html());
     }
 
+    /**
+     * @depends testCreate
+     */
     public function testUpdate()
     {
         $this->client->request(
@@ -89,12 +92,12 @@ class ControllersTest extends WebTestCase
             '<select required="required" name="emailnotification[template]" id="emailnotification_template" ' .
             'tabindex="-1" class="select2-offscreen"> ' .
             '<option value="" selected="selected"></option> ' .
-            '<option value="1">update_user</option> </select>'
+            '<option value="2">EmailBundle:update_user</option> </select>'
         );
 
         $field = new ChoiceFormField($doc->getElementsByTagName('select')->item(0));
         $form->set($field);
-        $form['emailnotification[template]'] = '1';
+        $form['emailnotification[template]'] = '2';
         $form['emailnotification[recipientList][users]'] = '1';
         $form['emailnotification[recipientList][groups][0]'] = '1';
         $form['emailnotification[recipientList][email]'] = 'admin@example.com';

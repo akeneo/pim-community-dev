@@ -67,6 +67,7 @@ class Contact extends AbstractEntity implements Entity
 
     public function setOwner($owner)
     {
+        $this->moveto($this->owner);
         $this->owner->click();
         $this->waitForAjax();
         $this->byXpath("//div[@id='select2-drop']/div/input")->value($owner);
@@ -202,12 +203,15 @@ class Contact extends AbstractEntity implements Entity
 
     public function setAddressCity($value, $addressId = 0)
     {
-        $city = "//input[@id='orocrm_contact_form_addresses_{$addressId}_city']";
+        $xpathCity = "//input[@id='orocrm_contact_form_addresses_{$addressId}_city']";
         if ($this->isElementPresent("//div[@role='dialog']")) {
-            $city = "//input[@id='orocrm_contact_address_form_city']";
+            $xpathCity = "//input[@id='orocrm_contact_address_form_city']";
         }
-        $this->byXpath($city)->clear();
-        $this->byXpath($city)->value($value);
+        $city = $this->byXpath($xpathCity);
+        $this->moveto($city);
+
+        $city->clear();
+        $city->value($value);
         return $this;
     }
 
@@ -219,12 +223,15 @@ class Contact extends AbstractEntity implements Entity
 
     public function setAddressPostalCode($value, $addressId = 0)
     {
-        $zipcode = "//input[@id='orocrm_contact_form_addresses_{$addressId}_postalCode']";
+        $xpathZipcode = "//input[@id='orocrm_contact_form_addresses_{$addressId}_postalCode']";
         if ($this->isElementPresent("//div[@role='dialog']")) {
-            $zipcode = "//input[@id='orocrm_contact_address_form_postalCode']";
+            $xpathZipcode = "//input[@id='orocrm_contact_address_form_postalCode']";
         }
-        $this->byXpath($zipcode)->clear();
-        $this->byXpath($zipcode)->value($value);
+        $zipcode = $this->byXpath($xpathZipcode);
+        $this->moveto($zipcode);
+
+        $zipcode->clear();
+        $zipcode->value($value);
         return $this;
     }
 

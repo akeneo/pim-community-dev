@@ -52,6 +52,8 @@ services:
 
     oro_form.type.multiple_entity:
         class: %oro_form.type.multiple_entity.class%
+        arguments:
+            - @doctrine.orm.entity_manager
         tags:
             - { name: form.type, alias: oro_multiple_entity }
 

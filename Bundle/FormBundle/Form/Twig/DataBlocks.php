@@ -103,10 +103,12 @@ class DataBlocks
                     $tmpChild = $tmpChild->parent;
                 }
 
-                $subBlock->addData($this->env->render(
-                    '{{ form_row(' . $this->formVariableName . $formPath . ') }}',
-                    $this->context
-                ));
+                $subBlock->addData(
+                    $this->env->render(
+                        '{{ form_row(' . $this->formVariableName . $formPath . ') }}',
+                        $this->context
+                    )
+                );
             }
 
             $this->renderBlock($child);
@@ -178,6 +180,7 @@ class DataBlocks
         $subBlock->setTitle($this->accessor->getValue($config, '[title]'));
         $subBlock->setPriority($this->accessor->getValue($config, '[priority]'));
         $subBlock->setDescription($this->accessor->getValue($config, '[description]'));
+        $subBlock->setUseSpan($this->accessor->getValue($config, '[useSpan]'));
 
         return $subBlock;
     }
