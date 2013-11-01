@@ -182,6 +182,6 @@ function($, _, Backbone, __, tools, mediator, registry, LoadingMask,
             $grids = ($container.is(gridSelector) && $container) || $container.find(gridSelector);
         $grids.each(function (i, el) {
             methods.initBuilder.call({$el: $(el)});
-        }).data('rendered', true);
+        }).end().data('rendered', true);
     };
 });

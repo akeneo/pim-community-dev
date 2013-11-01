@@ -25,7 +25,7 @@ class AuditController extends Controller
      */
     public function indexAction(Request $request)
     {
-        return array();
+        return [];
     }
 
     /**
@@ -46,8 +46,9 @@ class AuditController extends Controller
     public function historyAction($entity, $id)
     {
         return array(
-            'entity' => $entity,
-            'entityId' => $id,
+            'gridName'     => 'audit-history-grid',
+            'entityClass'  => $entity,
+            'entityId'     => $id,
         );
     }
 }

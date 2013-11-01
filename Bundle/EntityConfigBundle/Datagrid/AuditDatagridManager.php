@@ -14,6 +14,7 @@ class AuditDatagridManager extends AuditDatagrid
     {
         parent::prepareQuery($query);
 
+        //$join, $alias, $conditionType = null, $condition = null
         $query->innerJoin('log.diffs', 'diff', 'WITH', 'diff.className = :className AND diff.fieldName IS NULL');
         $query->setParameter('className', $this->entityClass);
 
