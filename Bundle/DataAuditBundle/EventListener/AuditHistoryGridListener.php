@@ -44,7 +44,7 @@ class AuditHistoryGridListener
                 'objectClass' => str_replace('_', '\\', $this->requestParams->get(self::GRID_PARAM_CLASS, '')),
             );
 
-            if (isset($this->paramsToBind['objectId'])) {
+            if (in_array('objectId', $this->paramsToBind)) {
                 $queryParameters['objectId'] = $this->requestParams->get(self::GRID_PARAM_OBJECT_ID, 0);
             }
 
