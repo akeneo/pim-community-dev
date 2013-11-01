@@ -14,7 +14,7 @@ interface MassActionMediatorInterface
     public function getMassAction();
 
     /**
-     * @return IterableResultInterface|[]
+     * @return IterableResultInterface
      */
     public function getResults();
 

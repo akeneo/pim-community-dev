@@ -2,16 +2,11 @@
 
 namespace Oro\Bundle\DataGridBundle\Extension\Formatter\Property;
 
-use Symfony\Component\Translation\TranslatorInterface;
-
 use Oro\Bundle\LocaleBundle\Twig\DateFormatExtension;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\ResultRecordInterface;
 
 abstract class AbstractProperty implements PropertyInterface
 {
-    /** @var TranslatorInterface */
-    protected $translator;
-
     /** @var DateFormatExtension */
     protected $dateFormatExtension;
 
@@ -33,10 +28,10 @@ abstract class AbstractProperty implements PropertyInterface
     /** @var array */
     protected $excludeParams = [];
 
-    public function __construct(DateFormatExtension $dateFormatExtension, TranslatorInterface $translator)
+    public function __construct(DateFormatExtension $dateFormatExtension)
     {
+        /** @TODO refactor property localization */
         $this->dateFormatExtension = $dateFormatExtension;
-        $this->translator          = $translator;
     }
 
     /**
@@ -46,6 +41,8 @@ abstract class AbstractProperty implements PropertyInterface
     {
         $this->params = $params;
         $this->initialize();
+
+        return $this;
     }
 
     /**
@@ -136,18 +133,12 @@ abstract class AbstractProperty implements PropertyInterface
     {
         $defaultMetadata = [
             // use field name if label not set
-            'label'      => ucfirst($this->get('name')),
-            'renderable' => true,
-            'editable'   => false,
-            'type'       => self::TYPE_STRING
+            'label' => ucfirst($this->get('name')),
         ];
 
         $metadata = $this->get()->toArray([], array_merge($this->excludeParams, $this->excludeParamsDefault));
         $metadata = $this->mapParams($metadata);
         $metadata = array_merge($defaultMetadata, $this->guessAdditionalMetadata(), $metadata);
-
-        // translate label on backend
-        $metadata['label'] = $this->translator->trans($metadata['label']);
 
         return $metadata;
     }
@@ -158,7 +149,7 @@ abstract class AbstractProperty implements PropertyInterface
      * @param string $paramName
      *
      * @throws \LogicException
-     * @return PropertyConfiguration
+     * @return PropertyConfiguration|mixed
      */
     protected function get($paramName = null)
     {
@@ -220,7 +211,7 @@ abstract class AbstractProperty implements PropertyInterface
      */
     protected function guessAdditionalMetadata()
     {
-        $metadata  = [];
+        $metadata = [];
 
         switch ($this->getOr(self::FRONTEND_TYPE_KEY)) {
             case self::TYPE_DATETIME:

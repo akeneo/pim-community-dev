@@ -13,7 +13,7 @@ class View
     /** @var array */
     protected $sortersData;
 
-    public function __construct($name, array $filtersData = array(), array $sortersData = array())
+    public function __construct($name, array $filtersData = [], array $sortersData = [])
     {
         $this->name        = $name;
         $this->filtersData = $filtersData;
@@ -83,12 +83,12 @@ class View
      *
      * @return array
      */
-    public function toViewData()
+    public function getMetadata()
     {
-        return array(
+        return [
             'name'    => $this->getName(),
             'filters' => $this->getFiltersData(),
             'sorters' => $this->getSortersData()
-        );
+        ];
     }
 }

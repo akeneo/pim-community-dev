@@ -3,7 +3,6 @@
 namespace Oro\Bundle\DataGridBundle\Extension\Formatter\Property;
 
 use Symfony\Component\Routing\Router;
-use Symfony\Component\Translation\TranslatorInterface;
 
 use Oro\Bundle\LocaleBundle\Twig\DateFormatExtension;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\ResultRecordInterface;
@@ -25,10 +24,9 @@ class UrlProperty extends AbstractProperty
 
     public function __construct(
         DateFormatExtension $dateFormatExtension,
-        TranslatorInterface $translator,
         Router $router
     ) {
-        parent::__construct($dateFormatExtension, $translator);
+        parent::__construct($dateFormatExtension);
         $this->router = $router;
     }
 

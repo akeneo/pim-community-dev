@@ -20,22 +20,17 @@ datagrid:
 
         columns:
             id:
-                type: field
                 frontend_type: integer
             fromEmailAddress:
                 type: twig
-                frontend_type: string
                 template: OroEmailBundle:Email:Datagrid/Property/from.html.twig
             subject:
                 type: twig
-                frontend_type: string
                 template: OroEmailBundle:Email:Datagrid/Property/subject.html.twig
             sentAt:
-                type: field
                 frontend_type: date
             recipients:
                 type: twig
-                frontend_type: string
                 template: OroEmailBundle:Email:Datagrid/Property/recipients.html.twig
 
         sorters:
@@ -80,21 +75,17 @@ datagrid:
                 label:          oro.email.datagrid.emailtemplate.column.entity_name
                 template:       OroNotificationBundle:EmailNotification:Datagrid/Property/entityName.html.twig
             name:
-                type:           field
                 label:          oro.email.datagrid.emailtemplate.column.name
             type:
-                type:           field
                 frontend_type:  select
                 label:          oro.email.datagrid.emailtemplate.column.type
                 choices:        @oro_email.emailtemplate.datagrid_helper->getTypeChoices
             isSystem:
-                type:           field
                 frontend_type:  select
                 label:          oro.email.datagrid.emailtemplate.column.isSystem
                 choices:        @oro_email.emailtemplate.datagrid_helper->getSystemChoices
         properties:
-            id:
-                type: field
+            id: ~
             update_link:
                 type: url
                 route: oro_email_emailtemplate_update

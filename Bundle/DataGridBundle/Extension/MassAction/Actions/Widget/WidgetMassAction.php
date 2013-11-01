@@ -24,8 +24,6 @@ class WidgetMassAction extends AbstractAction implements MassActionInterface
             $options['route_parameters'] = [];
         }
 
-        parent::setOptions($options);
-
-        return $this;
+        return parent::setOptions($options);
     }
 }

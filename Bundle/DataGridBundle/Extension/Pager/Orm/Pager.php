@@ -44,7 +44,9 @@ class Pager extends AbstractPager implements PagerInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Calculates count
+     *
+     * @return int
      */
     public function computeNbResult()
     {

@@ -23,7 +23,7 @@ class MassActionsPass implements CompilerPassInterface
             $actions = $container->findTaggedServiceIds(self::TAG_NAME);
             foreach ($actions as $serviceId => $tags) {
                 $tagAttrs = reset($tags);
-                $extension->addMethodCall('registerAction', array($tagAttrs['type'], $serviceId));
+                $extension->addMethodCall('registerAction', [$tagAttrs['type'], $serviceId]);
             }
         }
     }

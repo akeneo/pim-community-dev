@@ -49,6 +49,8 @@ abstract class AbstractAction implements ActionInterface
     {
         $this->options = $options;
         $this->assertHasRequiredOptions();
+
+        return $this;
     }
 
     /**

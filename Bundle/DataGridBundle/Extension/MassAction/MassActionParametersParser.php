@@ -18,7 +18,7 @@ class MassActionParametersParser
 
         $values = $request->get('values', '');
         if (!is_array($values)) {
-            $values = $values !== '' ? explode(',', $values) : array();
+            $values = $values !== '' ? explode(',', $values) : [];
         }
 
         $filters = $request->get('filters', null);
@@ -26,13 +26,13 @@ class MassActionParametersParser
             $filters = json_decode($filters, true);
         }
         if (!$filters) {
-            $filters = array();
+            $filters = [];
         }
 
-        return array(
+        return [
             'inset'   => $inset,
             'values'  => $values,
             'filters' => $filters,
-        );
+        ];
     }
 }

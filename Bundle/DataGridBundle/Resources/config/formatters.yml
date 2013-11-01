@@ -18,7 +18,6 @@ services:
         class: %oro_datagrid.extension.formatter.property.url_property.class%
         arguments:
             - @oro_locale.twig.dateformat
-            - @translator
             - @router
         tags:
             - { name:  oro_datagrid.extension.formatter.property, type: url }
@@ -27,7 +26,6 @@ services:
         class: %oro_datagrid.extension.formatter.property.twig_property.class%
         arguments:
             - @oro_locale.twig.dateformat
-            - @translator
             - @twig
         tags:
             - { name:  oro_datagrid.extension.formatter.property, type: twig }
@@ -44,6 +42,5 @@ services:
         class : %oro_datagrid.extension.formatter.property.callback_property.class%
         arguments:
             - @oro_locale.twig.dateformat
-            - @translator
         tags:
             - { name:  oro_datagrid.extension.formatter.property, type: callback }

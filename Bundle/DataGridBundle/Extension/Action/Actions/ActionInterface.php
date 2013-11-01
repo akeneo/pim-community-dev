@@ -33,6 +33,8 @@ interface ActionInterface
      * Set action options
      *
      * @param ActionConfiguration $options
+     *
+     * @return $this
      */
     public function setOptions(ActionConfiguration $options);
 }

@@ -2,9 +2,6 @@
 
 namespace Oro\Bundle\DataGridBundle\Extension\Pager;
 
-
-use Doctrine\ORM\QueryBuilder;
-
 interface PagerInterface
 {
     /**

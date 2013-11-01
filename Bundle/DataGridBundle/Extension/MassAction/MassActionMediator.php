@@ -8,24 +8,16 @@ use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface;
 
 class MassActionMediator implements MassActionMediatorInterface
 {
-    /**
-     * @var MassActionInterface
-     */
+    /** @var MassActionInterface */
     protected $massAction;
 
-    /**
-     * @var \Iterator|[]
-     */
+    /** @var \Iterator */
     protected $results;
 
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $data;
 
-    /**
-     * @var DatagridInterface|null
-     */
+    /** @var DatagridInterface|null */
     protected $datagrid;
 
     /**
@@ -38,7 +30,7 @@ class MassActionMediator implements MassActionMediatorInterface
         MassActionInterface $massAction,
         DatagridInterface $datagrid,
         IterableResultInterface $results,
-        array $data = array()
+        array $data = []
     ) {
         $this->massAction = $massAction;
         $this->results    = $results;

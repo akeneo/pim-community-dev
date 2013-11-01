@@ -19,7 +19,7 @@ class SystemAwareResolverTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->container = $this->getMockForAbstractClass('Symfony\Component\DependencyInjection\ContainerInterface');
-        $this->resolver = new SystemAwareResolver($this->container);
+        $this->resolver  = new SystemAwareResolver($this->container);
     }
 
     /**
@@ -59,18 +59,18 @@ class SystemAwareResolverTest extends \PHPUnit_Framework_TestCase
      */
     public function testResolveEmpty()
     {
-        $definition = [];
+        $definition     = [];
         $gridDefinition = $this->resolver->resolve('test', $definition);
 
         $this->assertEmpty($gridDefinition);
 
-        $definition = array(
-            'filters' => array(
-                'entityName' => array(
-                    'choices' => 'test-not-valid',
-                )
-            )
-        );
+        $definition     = [
+            'filters' => [
+                'entityName' => [
+                    'choices' => 'test-not-valid'
+                ]
+            ]
+        ];
         $gridDefinition = $this->resolver->resolve('test', $definition);
         $this->assertEquals($definition, $gridDefinition);
     }
@@ -80,42 +80,40 @@ class SystemAwareResolverTest extends \PHPUnit_Framework_TestCase
      */
     public function resolveProvider()
     {
-        return array(
-            'service method call' => array(
+        return [
+            'service method call' => [
                 'test1',
-                array(
-                    'filters' => array(
-                        'entityName' => array(
+                [
+                    'filters' => [
+                        'entityName' => [
                             'choices' => '@oro_datagrid.some_class->getAnswerToLifeAndEverything',
-                        )
-                    )
-                ),
+                        ]
+                    ]
+                ],
                 42
-            ),
-
-            'static call' => array(
+            ],
+            'static call'         => [
                 'test2',
-                array(
-                    'filters' => array(
-                        'entityName' => array(
+                [
+                    'filters' => [
+                        'entityName' => [
                             'choices' => '%oro_datagrid.some.class%::testStaticCall',
-                        )
-                    )
-                ),
+                        ]
+                    ]
+                ],
                 84
-            ),
-
-            'class constant' => array(
+            ],
+            'class constant'      => [
                 'test3',
-                array(
-                    'filters' => array(
-                        'entityName' => array(
+                [
+                    'filters' => [
+                        'entityName' => [
                             'choices' => 'Oro\Bundle\DataGridBundle\Tests\Unit\DataFixtures\Stub\SomeClass::TEST',
-                        )
-                    )
-                ),
+                        ]
+                    ]
+                ],
                 42
-            )
-        );
+            ]
+        ];
     }
 }

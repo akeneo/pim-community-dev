@@ -9,7 +9,7 @@ interface MassActionHandlerInterface
      *
      * @param MassActionMediatorInterface $mediator
      *
-     * @return
+     * @return MassActionResponseInterface
      */
     public function handle(MassActionMediatorInterface $mediator);
 }

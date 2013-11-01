@@ -48,19 +48,19 @@ class MassActionDispatcher
      *
      * @return MassActionResponseInterface
      */
-    public function dispatch($datagridName, $actionName, array $parameters, array $data = array())
+    public function dispatch($datagridName, $actionName, array $parameters, array $data = [])
     {
         $inset = true;
         if (isset($parameters['inset'])) {
             $inset = $parameters['inset'];
         }
 
-        $values = array();
+        $values = [];
         if (isset($parameters['values'])) {
             $values = $parameters['values'];
         }
 
-        $filters = array();
+        $filters = [];
         if (isset($parameters['filters'])) {
             $filters = $parameters['filters'];
         }

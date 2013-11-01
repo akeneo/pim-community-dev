@@ -63,9 +63,9 @@ abstract class AbstractConfigGridListener implements EventSubscriberInterface
      * Add dynamic fields
      *
      * @param BuildBefore $event
-     * @param string $alias
-     * @param string $itemType
-     * @param bool $dynamicFirst flag if true - dynamic columns will be placed before static, false - after
+     * @param string      $alias
+     * @param string      $itemType
+     * @param bool        $dynamicFirst flag if true - dynamic columns will be placed before static, false - after
      */
     public function doBuildBefore(BuildBefore $event, $alias, $itemType, $dynamicFirst = true)
     {
@@ -73,7 +73,7 @@ abstract class AbstractConfigGridListener implements EventSubscriberInterface
 
         // get dynamic columns and merge them with static columns from configuration
         $additionalColumnSettings = $this->getDynamicFields($alias, $itemType);
-        $filtersSorters = $this->getDynamicSortersAndFilters($additionalColumnSettings);
+        $filtersSorters           = $this->getDynamicSortersAndFilters($additionalColumnSettings);
         $additionalColumnSettings = [
             'columns' => $additionalColumnSettings,
             'sorters' => $filtersSorters['sorters'],
@@ -81,7 +81,7 @@ abstract class AbstractConfigGridListener implements EventSubscriberInterface
         ];
 
         foreach (['columns', 'sorters', 'filters'] as $itemName) {
-            $path = '['.$itemName.']';
+            $path = '[' . $itemName . ']';
             // get already defined columns, sorters and filters
             $items = $config->offsetGetByPath($path, array());
 
@@ -108,6 +108,7 @@ abstract class AbstractConfigGridListener implements EventSubscriberInterface
     /**
      * @param string $alias
      * @param string $itemsType
+     *
      * @return array
      */
     protected function getDynamicFields($alias, $itemsType)
@@ -155,6 +156,7 @@ abstract class AbstractConfigGridListener implements EventSubscriberInterface
 
     /**
      * @param array $orderedFields
+     *
      * @return array
      */
     public function getDynamicSortersAndFilters(array $orderedFields)
@@ -169,11 +171,11 @@ abstract class AbstractConfigGridListener implements EventSubscriberInterface
 
             if (isset($field['filterable']) && $field['filterable']) {
                 $filters['columns'][$fieldName] = [
-                    'data_name'     => $field['expression'],
-                    'type'          => isset($field['filter_type']) ? $field['filter_type'] : 'string',
-                    'frontend_type' => $field['frontend_type'],
-                    'label'         => $field['label'],
-                    FilterConfiguration::ENABLED_KEY   => isset($field['show_filter']) ? $field['show_filter'] : true,
+                    'data_name'                      => $field['expression'],
+                    'type'                           => isset($field['filter_type']) ? $field['filter_type'] : 'string',
+                    'frontend_type'                  => $field['frontend_type'],
+                    'label'                          => $field['label'],
+                    FilterConfiguration::ENABLED_KEY => isset($field['show_filter']) ? $field['show_filter'] : true,
                 ];
 
                 if (isset($field['choices'])) {
@@ -188,7 +190,7 @@ abstract class AbstractConfigGridListener implements EventSubscriberInterface
     /**
      * @TODO fix adding actions from different scopes such as EXTEND
      *
-     * @param array $actions
+     * @param array  $actions
      * @param string $type
      */
     protected function prepareRowActions(&$actions, $type)
@@ -223,12 +225,12 @@ abstract class AbstractConfigGridListener implements EventSubscriberInterface
 
     /**
      * @param DatagridConfiguration $config
-     * @param $itemType
+     * @param                       $itemType
      */
     protected function addEntityConfigProperties(DatagridConfiguration $config, $itemType)
     {
         // configure properties from config providers
-        $properties = $config->offsetGetByPath(Configuration::PROPERTIES_PATH, []);
+        $properties = $config->offsetGetOr(Configuration::PROPERTIES_KEY, []);
         $filters    = array();
         $actions    = array();
 
@@ -249,7 +251,7 @@ abstract class AbstractConfigGridListener implements EventSubscriberInterface
                 $this->getActionConfigurationClosure($filters, $actions)
             );
         }
-        $config->offsetSetByPath(Configuration::PROPERTIES_PATH, $properties);
+        $config->offsetSet(Configuration::PROPERTIES_KEY, $properties);
     }
 
     /**
@@ -335,9 +337,9 @@ abstract class AbstractConfigGridListener implements EventSubscriberInterface
 
     /**
      * @param QueryBuilder $query
-     * @param string $rootAlias
-     * @param $joinAlias
-     * @param string $itemsType
+     * @param string       $rootAlias
+     * @param              $joinAlias
+     * @param string       $itemsType
      *
      * @return $this
      */
@@ -354,7 +356,7 @@ abstract class AbstractConfigGridListener implements EventSubscriberInterface
                 }
 
                 $query->leftJoin(
-                    $rootAlias.'.values',
+                    $rootAlias . '.values',
                     $alias,
                     'WITH',
                     $alias . ".code='" . $code . "' AND " . $alias . ".scope='" . $provider->getScope() . "'"

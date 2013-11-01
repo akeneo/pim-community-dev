@@ -7,7 +7,7 @@ use Oro\Bundle\DataGridBundle\Common\Object;
 use Oro\Bundle\DataGridBundle\Event\BuildAfter;
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
-use Oro\Bundle\DataGridBundle\Extension\Sorter\OrmSorterExtension;
+use Oro\Bundle\DataGridBundle\Extension\Sorter\Configuration as OrmSorterConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
 use Oro\Bundle\FilterBundle\Extension\Configuration as FilterConfiguration;
 use Oro\Bundle\FilterBundle\Extension\Orm\FilterInterface;
@@ -72,7 +72,7 @@ class EventListener
                     throw new \LogicException(sprintf('Flexible attribute "%s" does not exist', $attribute));
                 }
                 $config->offsetSetByPath(
-                    sprintf('%s[%s]', FormatterConfiguration::COLUMNS_PATH, $attribute),
+                    sprintf('[%s][%s]', FormatterConfiguration::COLUMNS_KEY, $attribute),
                     [
                         FlexibleFieldProperty::TYPE_KEY         => 'flexible_field',
                         FlexibleFieldProperty::BACKEND_TYPE_KEY => $attributes[$attribute]->getBackendType(),
@@ -106,7 +106,7 @@ class EventListener
 
                 if ($sortable) {
                     $config->offsetSetByPath(
-                        sprintf('%s[%s]', OrmSorterExtension::COLUMNS_PATH, $attribute),
+                        sprintf('%s[%s]', OrmSorterConfiguration::COLUMNS_PATH, $attribute),
                         [
                             'data_name'      => $attribute,
                             'apply_callback' => $this->getFlexibleSorterApplyCallback($flexibleEntity)
@@ -126,7 +126,7 @@ class EventListener
     {
         $datagrid = $event->getDatagrid();
         $config   = $datagrid->getAcceptor()->getConfig();
-        $fields   = $config->offsetGetByPath(FormatterConfiguration::COLUMNS_PATH, []);
+        $fields   = $config->offsetGetOr(FormatterConfiguration::COLUMNS_KEY, []);
 
         $flexibleCount = count(
             array_filter(
