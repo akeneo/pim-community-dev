@@ -20,7 +20,8 @@ class Base extends Page
         'Title'          => array('css' => '.navbar-title'),
         'HeadTitle'      => array('css' => 'title'),
         'Flash messages' => array('css' => '.flash-messages-holder'),
-        'Navigation Bar' => array('css' => 'header#oroplatform-header')
+        'Navigation Bar' => array('css' => 'header#oroplatform-header'),
+        'Container'      => array('css' => '#container'),
     );
 
     /**
