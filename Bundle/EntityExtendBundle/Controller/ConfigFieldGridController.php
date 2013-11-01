@@ -22,7 +22,7 @@ use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 
 use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
-use Oro\Bundle\EntityExtendBundle\Form\Type\FieldType;
+use Oro\Bundle\EntityExtendBundle\Tools\ExtendHelper;
 
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
@@ -37,7 +37,6 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
  */
 class ConfigFieldGridController extends Controller
 {
-
     const SESSION_ID_FIELD_TYPE = '_extendbundle_create_entity_%s_field_type';
     const SESSION_ID_FIELD_NAME = '_extendbundle_create_entity_%s_field_name';
 
@@ -73,7 +72,11 @@ class ConfigFieldGridController extends Controller
         $newFieldModel = new FieldConfigModel();
         $newFieldModel->setEntity($entity);
 
-        $form    = $this->createForm(new FieldType(), $newFieldModel);
+        $form = $this->createForm(
+            'oro_entity_extend_field_type',
+            $newFieldModel,
+            array('class_name' => $entity->getClassName())
+        );
         $request = $this->getRequest();
 
         if ($request->getMethod() == 'POST') {
@@ -122,38 +125,54 @@ class ConfigFieldGridController extends Controller
      */
     public function updateAction(EntityConfigModel $entity)
     {
-        $request = $this->getRequest();
-
+        $request   = $this->getRequest();
         $fieldName = $request->getSession()->get(sprintf(self::SESSION_ID_FIELD_NAME, $entity->getId()));
         $fieldType = $request->getSession()->get(sprintf(self::SESSION_ID_FIELD_TYPE, $entity->getId()));
-
         if (!$fieldName || !$fieldType) {
-            return $this->redirect(
-                $this->generateUrl(
-                    'oro_entityextend_field_create',
-                    array(
-                        'id' => $entity->getId()
-                    )
-                )
-            );
+            return $this->redirect($this->generateUrl('oro_entityextend_field_create', ['id' => $entity->getId()]));
         }
 
         /** @var ConfigManager $configManager */
-        $configManager = $this->get('oro_entity_config.config_manager');
+        $configManager      = $this->get('oro_entity_config.config_manager');
+        $extendProvider     = $configManager->getProvider('extend');
+        $extendEntityConfig = $extendProvider->getConfig($entity->getClassName());
+
+        $relationValues  = [];
+        $relationOptions = explode('||', $fieldType);
+        $relationName    = $relationOptions[0];
+
+        if (isset($relationOptions[1])) {
+            $fieldName = $relationOptions[1];
+        }
+
+        $relationOptions = explode('|', $relationOptions[0]);
+
+        /**
+         * fieldType example: relation|manyToOne|testentity5_relation_7
+         * check if fieldType has 3rd option [fieldName]
+         */
+        if (count($relationOptions) == 4) {
+            $fieldType = ExtendHelper::getReversRelationType($relationOptions[0]);
+
+            $relations = $extendEntityConfig->get('relation');
+            if (isset($relations[$relationName])) {
+                $relationValues['target_entity'] = $relations[$relationName]['target_entity'];
+                $relationValues['relation_key']  = $relationName;
+            }
+        }
+
         $newFieldModel = $configManager->createConfigFieldModel($entity->getClassName(), $fieldName, $fieldType);
 
-        $extendFieldConfig = $configManager->getProvider('extend')->getConfig($entity->getClassName(), $fieldName);
+        $extendFieldConfig = $extendProvider->getConfig($entity->getClassName(), $fieldName);
         $extendFieldConfig->set('owner', ExtendManager::OWNER_CUSTOM);
         $extendFieldConfig->set('state', ExtendManager::STATE_NEW);
         $extendFieldConfig->set('extend', true);
 
-        $form = $this->createForm(
-            'oro_entity_config_type',
-            null,
-            array(
-                'config_model' => $newFieldModel,
-            )
-        );
+        foreach ($relationValues as $key => $value) {
+            $extendFieldConfig->set($key, $value);
+        }
+
+        $form = $this->createForm('oro_entity_config_type', null, ['config_model' => $newFieldModel]);
 
         if ($request->getMethod() == 'POST') {
             $form->submit($request);
@@ -165,7 +184,6 @@ class ConfigFieldGridController extends Controller
                     $this->get('translator')->trans('oro.entity_extend.controller.config_field.message.saved')
                 );
 
-                $extendEntityConfig = $configManager->getProvider('extend')->getConfig($entity->getClassName());
                 if ($extendEntityConfig->get('state') != ExtendManager::STATE_NEW) {
                     $extendEntityConfig->set('state', ExtendManager::STATE_UPDATED);
                 }
@@ -176,36 +194,28 @@ class ConfigFieldGridController extends Controller
                 $configManager->flush();
 
                 return $this->get('oro_ui.router')->actionRedirect(
-                    array(
-                        'route'      => 'oro_entityconfig_field_update',
-                        'parameters' => array('id' => $newFieldModel->getId()),
-                    ),
-                    array(
-                        'route'      => 'oro_entityconfig_view',
-                        'parameters' => array('id' => $entity->getId())
-                    )
+                    ['route' => 'oro_entityconfig_field_update', 'parameters' => ['id' => $newFieldModel->getId()]],
+                    ['route' => 'oro_entityconfig_view', 'parameters' => ['id' => $entity->getId()]]
                 );
             }
         }
 
         /** @var ConfigProvider $entityConfigProvider */
         $entityConfigProvider = $this->get('oro_entity_config.provider.entity');
-        $entityConfig         = $entityConfigProvider->getConfig($entity->getClassName());
-        $fieldConfig          = $entityConfigProvider->getConfig(
-            $entity->getClassName(),
-            $newFieldModel->getFieldName()
-        );
+
+        $entityConfig = $entityConfigProvider->getConfig($entity->getClassName());
+        $fieldConfig  = $entityConfigProvider->getConfig($entity->getClassName(), $newFieldModel->getFieldName());
 
         return $this->render(
             'OroEntityConfigBundle:Config:fieldUpdate.html.twig',
-            array(
+            [
                 'entity_config' => $entityConfig,
                 'field_config'  => $fieldConfig,
                 'field'         => $newFieldModel,
                 'form'          => $form->createView(),
                 'formAction'    => $this->generateUrl('oro_entityextend_field_update', array('id' => $entity->getId())),
                 'require_js'    => $configManager->getProvider('extend')->getPropertyConfig()->getRequireJsModules()
-            )
+            ]
         );
     }
 

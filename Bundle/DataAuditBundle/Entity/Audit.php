@@ -7,6 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Loggable\Entity\MappedSuperclass\AbstractLogEntry;
 
 use JMS\Serializer\Annotation\Type;
+use JMS\Serializer\Annotation\SerializedName;
+
 use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
 
 use Oro\Bundle\UserBundle\Entity\User;
@@ -54,7 +56,7 @@ class Audit extends AbstractLogEntry
      * @var string $objectClass
      *
      * @ORM\Column(name="object_class", type="string", length=255)
-     * @Soap\ComplexType("int", nillable=true)
+     * @Soap\ComplexType("string", nillable=true)
      */
     protected $objectClass;
 
@@ -95,7 +97,7 @@ class Audit extends AbstractLogEntry
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User", cascade={"persist"})
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      * @Type("string")
-     * @Soap\ComplexType("string", nillable=true)
+     * @SerializedName("username")
      */
     protected $user;
 
@@ -120,6 +122,16 @@ class Audit extends AbstractLogEntry
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * Get user name
+     *
+     * @return string
+     */
+    public function getUsername()
+    {
+        return $this->getUser() ? $this->getUser()->getUsername() : '';
     }
 
     /**

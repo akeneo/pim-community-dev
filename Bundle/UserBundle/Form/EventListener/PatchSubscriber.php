@@ -36,7 +36,7 @@ class PatchSubscriber implements EventSubscriberInterface
      * @param FormInterface $form
      * @return array
      */
-    protected function unbind($form)
+    protected function unbind(FormInterface $form)
     {
         if ($form->count() > 0) {
             $ary = array();
@@ -50,7 +50,9 @@ class PatchSubscriber implements EventSubscriberInterface
 
             return $ary;
         } else {
-            return $form->getViewData();
+            $data = $form->getViewData();
+
+            return $data instanceof Collection ? $data->toArray() : $data;
         }
     }
 }

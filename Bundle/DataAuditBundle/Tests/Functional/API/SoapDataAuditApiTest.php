@@ -12,7 +12,6 @@ use Oro\Bundle\TestFrameworkBundle\Test\Client;
  */
 class SoapDataAuditApiTest extends WebTestCase
 {
-
     /** @var Client  */
     protected $client = null;
 
@@ -33,21 +32,6 @@ class SoapDataAuditApiTest extends WebTestCase
      */
     public function testPreconditions()
     {
-        //clear Audits
-        $result = $this->client->getSoap()->getAudits();
-        $result = ToolsAPI::classToArray($result);
-        if (!empty($result)) {
-            if (!is_array(reset($result['item']))) {
-                $result[] = $result['item'];
-                unset($result['item']);
-            } else {
-                $result = $result['item'];
-            }
-            foreach ($result as $audit) {
-                $this->client->getSoap()->deleteAudit($audit['id']);
-            }
-        }
-
         //create users
         $request = array(
             "username" => 'user_' . mt_rand(),
@@ -59,7 +43,7 @@ class SoapDataAuditApiTest extends WebTestCase
             "middleName" => "middleName",
             "lastName" => "lastName",
             "nameSuffix" => "Sn.",
-            "rolesCollection" => array("1"),
+            "rolesCollection" => array("2"),
             "owner" => "1"
         );
 
@@ -77,7 +61,6 @@ class SoapDataAuditApiTest extends WebTestCase
      */
     public function testGetAudits($response)
     {
-        $this->markTestSkipped('Skipped till BAP-1979 will be fixed');
         $result = $this->client->getSoap()->getAudits();
         $result = ToolsAPI::classToArray($result);
 
@@ -89,11 +72,9 @@ class SoapDataAuditApiTest extends WebTestCase
         }
 
         $resultActual = reset($result);
-        //Bug BAP-1116
-        //$this->assertEquals($resultExpected['action'], 'create');
-        //$this->assertEquals($resultExpected['objectClass'], 'Oro\Bundle\UserBundle\Entity\User');
+
         $this->assertEquals($response['username'], $resultActual['objectName']);
-        $this->assertEquals('admin', $resultActual['user']['username']);
+        $this->assertEquals('admin', $resultActual['username']);
 
         return $result;
     }

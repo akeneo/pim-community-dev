@@ -70,9 +70,9 @@ class ConfigProvider implements ConfigProviderInterface
     /**
      * Gets an instance of FieldConfigId or EntityConfigId depends on the given parameters.
      *
-     * @param string        $className
-     * @param string|null   $fieldName
-     * @param string|null   $fieldType
+     * @param string      $className
+     * @param string|null $fieldName
+     * @param string|null $fieldType
      * @return ConfigIdInterface
      */
     public function getId($className, $fieldName = null, $fieldType = null)
@@ -101,8 +101,8 @@ class ConfigProvider implements ConfigProviderInterface
     /**
      * Determines if this provider has configuration data for the given class or field.
      *
-     * @param string        $className
-     * @param string|null   $fieldName
+     * @param string      $className
+     * @param string|null $fieldName
      * @return bool
      */
     public function hasConfig($className, $fieldName = null)
@@ -111,10 +111,23 @@ class ConfigProvider implements ConfigProviderInterface
     }
 
     /**
+     * @param ConfigIdInterface $configId
+     * @return bool
+     */
+    public function hasConfigById(ConfigIdInterface $configId)
+    {
+        if ($configId instanceof FieldConfigId) {
+            return $this->configManager->hasConfig($configId->getClassName(), $configId->getFieldName());
+        } else {
+            return $this->configManager->hasConfig($configId->getClassName());
+        }
+    }
+
+    /**
      * Gets configuration data for the given class or field.
      *
-     * @param string        $className
-     * @param string|null   $fieldName
+     * @param string      $className
+     * @param string|null $fieldName
      * @return ConfigInterface
      */
     public function getConfig($className, $fieldName = null)
@@ -170,7 +183,7 @@ class ConfigProvider implements ConfigProviderInterface
      * Gets a list of ids for all classes (if $className is not specified) or all fields of
      * the given $className, which can be managed by this provider.
      *
-     * @param string|null   $className
+     * @param string|null $className
      * @return array|ConfigIdInterface[]
      */
     public function getIds($className = null)
@@ -186,7 +199,7 @@ class ConfigProvider implements ConfigProviderInterface
      * Gets configuration data for all classes (if $className is not specified) or all fields of
      * the given $className.
      *
-     * @param string|null   $className
+     * @param string|null $className
      * @return array|ConfigInterface[]
      */
     public function getConfigs($className = null)
@@ -204,8 +217,8 @@ class ConfigProvider implements ConfigProviderInterface
      * Applies the callback to configuration data of all classes (if $className is not specified)
      * or all fields of the given $className.
      *
-     * @param callable      $callback The callback function to run for configuration data for each object
-     * @param string|null   $className
+     * @param callable    $callback The callback function to run for configuration data for each object
+     * @param string|null $className
      * @return array|ConfigInterface[]
      */
     public function map(\Closure $callback, $className = null)
@@ -217,8 +230,8 @@ class ConfigProvider implements ConfigProviderInterface
      * Filters configuration data of all classes (if $className is not specified)
      * or all fields of the given $className using the given callback function.
      *
-     * @param callable      $callback The callback function to use
-     * @param string|null   $className
+     * @param callable    $callback The callback function to use
+     * @param string|null $className
      * @return array|ConfigInterface[]
      */
     public function filter(\Closure $callback, $className = null)
@@ -263,8 +276,8 @@ class ConfigProvider implements ConfigProviderInterface
     /**
      * Removes configuration data for the given object (entity or field) from the cache.
      *
-     * @param string        $className
-     * @param string|null   $fieldName
+     * @param string      $className
+     * @param string|null $fieldName
      */
     public function clearCache($className, $fieldName = null)
     {

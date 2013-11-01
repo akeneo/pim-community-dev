@@ -9,7 +9,6 @@ use Oro\Bundle\SoapBundle\Controller\Api\FormHandlerAwareInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 use Doctrine\Common\Util\ClassUtils;
-use Doctrine\ORM\UnitOfWork;
 
 use FOS\Rest\Util\Codes;
 
@@ -21,7 +20,7 @@ abstract class RestController extends RestGetController implements
     /**
      * Edit entity
      *
-     * @param mixed $id
+     * @param  mixed    $id
      * @return Response
      */
     public function handleUpdateRequest($id)
@@ -36,6 +35,7 @@ abstract class RestController extends RestGetController implements
         } else {
             $view = $this->view($this->getForm(), Codes::HTTP_BAD_REQUEST);
         }
+
         return $this->handleView($view);
     }
 
@@ -56,13 +56,14 @@ abstract class RestController extends RestGetController implements
         } else {
             $view = $this->view($this->getForm(), Codes::HTTP_BAD_REQUEST);
         }
+
         return $this->handleView($view);
     }
 
     /**
      * Delete entity
      *
-     * @param mixed $id
+     * @param  mixed    $id
      * @return Response
      */
     public function handleDeleteRequest($id)
@@ -71,7 +72,6 @@ abstract class RestController extends RestGetController implements
         if (!$entity) {
             return $this->handleView($this->view(null, Codes::HTTP_NOT_FOUND));
         }
-
 
         $em = $this->getManager()->getObjectManager();
         $this->handleDelete($entity, $em);
@@ -83,7 +83,7 @@ abstract class RestController extends RestGetController implements
     /**
      * Process form.
      *
-     * @param mixed $entity
+     * @param  mixed $entity
      * @return bool
      */
     protected function processForm($entity)
@@ -91,11 +91,10 @@ abstract class RestController extends RestGetController implements
         return $this->getFormHandler()->process($entity);
     }
 
-
     /**
      * Handle delete entity object.
      *
-     * @param object $entity
+     * @param object        $entity
      * @param ObjectManager $em
      */
     protected function handleDelete($entity, ObjectManager $em)

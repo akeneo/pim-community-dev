@@ -9,7 +9,7 @@ request:
     nameSuffix: Sn.
     enabled: true
     plainPassword: 123123q
-    rolesCollection: [1]
+    rolesCollection: [3]
     groups: ~
     values: ~
     owner: 1

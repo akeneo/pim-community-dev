@@ -30,24 +30,27 @@ class CalendarEventApiType extends CalendarEventType
                 'start',
                 'datetime',
                 array(
-                    'required'     => true,
-                    'with_seconds' => true,
-                    'widget'       => 'single_text',
-                    'format'       => DateTimeType::HTML5_FORMAT
+                    'required'       => true,
+                    'with_seconds'   => true,
+                    'widget'         => 'single_text',
+                    'format'         => DateTimeType::HTML5_FORMAT,
+                    'model_timezone' => 'UTC',
                 )
             )
             ->add(
                 'end',
                 'datetime',
                 array(
-                    'required'     => true,
-                    'with_seconds' => true,
-                    'widget'       => 'single_text',
-                    'format'       => DateTimeType::HTML5_FORMAT
+                    'required'       => true,
+                    'with_seconds'   => true,
+                    'widget'         => 'single_text',
+                    'format'         => DateTimeType::HTML5_FORMAT,
+                    'model_timezone' => 'UTC',
                 )
             )
             ->add('allDay', 'checkbox', array('required' => false))
             ->add('reminder', 'checkbox', array('required' => false));
+
         $builder->addEventSubscriber(new PatchSubscriber());
     }
 

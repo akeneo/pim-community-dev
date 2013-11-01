@@ -49,6 +49,7 @@ use DateTime;
  * @Oro\Loggable
  * @Config(
  *      routeName="oro_user_index",
+ *      routeView="oro_user_user_view",
  *      defaultValues={
  *          "entity"={"icon"="icon-user", "label"="User", "plural_label"="Users"},
  *          "ownership"={

@@ -16,7 +16,7 @@ interface RestApiCrudInterface extends RestApiReadInterface
     /**
      * Update item.
      *
-     * @param mixed $id
+     * @param  mixed    $id
      * @return Response
      */
     public function handleUpdateRequest($id);
@@ -24,7 +24,7 @@ interface RestApiCrudInterface extends RestApiReadInterface
     /**
      * Delete item.
      *
-     * @param mixed $id
+     * @param  mixed    $id
      * @return Response
      */
     public function handleDeleteRequest($id);

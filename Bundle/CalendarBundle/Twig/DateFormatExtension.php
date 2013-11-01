@@ -67,6 +67,13 @@ class DateFormatExtension extends \Twig_Extension
         $locale = null,
         $timeZone = null
     ) {
+        if (is_null($startDate)) {
+            // exit because nothing to format.
+            // We have to accept null as $startDate because the validator of email templates calls functions
+            // with empty arguments
+            return '';
+        }
+
         // check if $endDate is not specified or $startDate equals to $endDate
         if (is_null($endDate) || $startDate == $endDate) {
             return $skipTime
