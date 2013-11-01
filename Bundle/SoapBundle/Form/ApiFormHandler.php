@@ -41,7 +41,7 @@ class ApiFormHandler
      * Process form
      *
      * @param  mixed $entity
-     * @return bool True on successful processing, false otherwise
+     * @return bool  True on successful processing, false otherwise
      */
     public function process($entity)
     {

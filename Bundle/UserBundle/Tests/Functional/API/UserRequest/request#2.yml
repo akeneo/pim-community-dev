@@ -7,7 +7,7 @@ request:
     enabled: true
     plainPassword: 123123q
     lastLogin: ~
-    rolesCollection: [1]
+    rolesCollection: [3]
     groups: ~
     values: ~
     owner: 1

@@ -23,6 +23,7 @@ abstract class FlexibleRestController extends RestController
             $result['attributes'] = $result['values'];
             unset($result['values']);
         }
+
         return $result;
     }
 
@@ -54,7 +55,7 @@ abstract class FlexibleRestController extends RestController
                         /** @var ScopableInterface $flexibleValue */
                         $attributeData['scope'] = $flexibleValue->getScope();
                     }
-                    $value[$attribute->getCode()] = (object)$attributeData;
+                    $value[$attribute->getCode()] = (object) $attributeData;
                 }
             }
         } else {
@@ -68,6 +69,7 @@ abstract class FlexibleRestController extends RestController
     protected function processForm($entity)
     {
         $this->fixRequestAttributes($entity);
+
         return parent::processForm($entity);
     }
 

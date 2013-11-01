@@ -12,23 +12,12 @@ use Oro\Bundle\TestFrameworkBundle\Test\Client;
  */
 class SoapGroupsApiTest extends WebTestCase
 {
-    /** Default value for role label */
-    const DEFAULT_VALUE = 'GROUP_LABEL';
-
     /** @var Client */
     protected $client;
 
     public function setUp()
     {
         $this->client = static::createClient(array(), ToolsAPI::generateWsseHeader());
-        $this->client->soap(
-            "http://localhost/api/soap",
-            array(
-                'location' => 'http://localhost/api/soap',
-                'soap_version' => SOAP_1_2
-            )
-        );
-
         $this->client->soap(
             "http://localhost/api/soap",
             array(
@@ -49,6 +38,16 @@ class SoapGroupsApiTest extends WebTestCase
         $id = $this->client->getSoap()->createGroup($request);
         $this->assertInternalType('int', $id);
         $this->assertGreaterThan(0, $id);
+    }
+
+    /**
+     * @depends testCreateGroup
+     */
+    public function testGetGroups()
+    {
+        $groups = $this->client->getSoap()->getGroups();
+        $groups = ToolsAPI::classToArray($groups);
+        $this->assertEquals(6, count($groups['item']));
     }
 
     /**
@@ -78,22 +77,10 @@ class SoapGroupsApiTest extends WebTestCase
     }
 
     /**
-     * @depends testCreateGroup
-     */
-    public function testGetGroups()
-    {
-        //get roles
-        $groups = $this->client->getSoap()->getGroups();
-        $groups = ToolsAPI::classToArray($groups);
-        $this->assertEquals(6, count($groups['item']));
-    }
-
-    /**
      * @depends testGetGroups
      */
     public function testDeleteGroups()
     {
-        //get roles
         $groups = $this->client->getSoap()->getGroups();
         $groups = ToolsAPI::classToArray($groups);
         $this->assertEquals(6, count($groups['item']));
