@@ -6,12 +6,8 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\OptionsResolver\Options;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 
-use Oro\Bundle\LocaleBundle\Converter\DateTimeFormatConverterRegistry;
-use Oro\Bundle\LocaleBundle\Converter\IntlDateTimeFormatConverter;
-use Oro\Bundle\UIBundle\Converter\JqueryUiDateTimeFormatConverter;
 use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
 
 class OroDateTimeType extends AbstractType
@@ -48,21 +44,9 @@ class OroDateTimeType extends AbstractType
             array(
                 'model_timezone'   => 'UTC',
                 'view_timezone'    => 'UTC',
-                'date_format'      => 'yyyy-MM-dd HH:mm:ss',
+                'format'           => "yyyy-MM-dd'T'HH:mm:ssZ",
                 'widget'           => 'single_text',
                 'placeholder'      => 'oro.form.click_here_to_select',
-                'localized_format' => true,
-            )
-        );
-
-        $resolver->setNormalizers(
-            array(
-                'view_timezone' => function (Options $options, $value) {
-                    if (!empty($options['localized_format'])) {
-                        $value = $this->localeSettings->getTimeZone();
-                    }
-                    return $value;
-                },
             )
         );
     }

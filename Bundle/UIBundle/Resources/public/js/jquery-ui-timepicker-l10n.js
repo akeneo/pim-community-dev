@@ -19,7 +19,8 @@ function($, __, localeSettings) {
         secondText: __('Second'),
         millisecText: __('Millisecond'),
         microsecText: __('Microsecond'),
-        timezoneText: __('Time Zone')
+        timezoneText: __('Time Zone'),
+        defaultTimezone: localeSettings.getTimeZoneOffset().replace(':', '')
     };
     $.timepicker.setDefaults($.timepicker.regional[locale]);
 });

@@ -35,7 +35,6 @@ class ControllersTest extends WebTestCase
 
     public function setUp()
     {
-        $this->userData['birthday'] = $this->getFormattedDate($this->userData['birthday']);
         $this->client = static::createClient(
             array(),
             array_merge(ToolsAPI::generateBasicHeader(), array('HTTP_X-CSRF-Header' => 1))
@@ -147,14 +146,7 @@ class ControllersTest extends WebTestCase
      */
     protected function getFormattedDate($date)
     {
-        $date = new \DateTime($date);
-        $formatter = new \IntlDateFormatter(
-            \Locale::getDefault(),
-            \IntlDateFormatter::MEDIUM,
-            \IntlDateFormatter::NONE,
-            $date->getTimezone()->getName(),
-            \IntlDateFormatter::GREGORIAN
-        );
-        return $formatter->format($date);
+        $dateObject = new \DateTime($date);
+        return $dateObject->format('Y-m-d');
     }
 }

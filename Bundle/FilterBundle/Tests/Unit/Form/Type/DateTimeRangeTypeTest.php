@@ -31,7 +31,7 @@ class DateTimeRangeTypeTest extends AbstractTypeTestCase
             ->getMock();
         $localeSettings->expects($this->any())
             ->method('getTimezone')
-            ->will($this->returnValue('UTC'));
+            ->will($this->returnValue($this->defaultTimezone));
 
         $this->formExtensions[] = new CustomFormExtension(array(new DateRangeType($localeSettings)));
 
