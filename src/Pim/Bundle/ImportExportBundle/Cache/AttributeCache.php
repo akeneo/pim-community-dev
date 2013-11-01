@@ -247,7 +247,7 @@ class AttributeCache
      * Sets the columns property
      *
      * @param  array      $columnLabelTokens
-     * @throws \Exception
+     * @throws \InvalidArgumentException
      */
     protected function setColumns(array $columnLabelTokens)
     {
@@ -261,9 +261,9 @@ class AttributeCache
             $columnInfo['attribute'] = $this->getAttribute($columnInfo['code']);
             if ($columnInfo['attribute']->getTranslatable()) {
                 if (!count($labelTokens)) {
-                    throw new \Exception(
+                    throw new \InvalidArgumentException(
                         sprintf(
-                            'The column "%s" must contains the local code',
+                            'The column "%s" must contain the local code',
                             $columnCode
                         )
                     );
@@ -272,9 +272,9 @@ class AttributeCache
             }
             if ($columnInfo['attribute']->getScopable()) {
                 if (!count($labelTokens)) {
-                    throw new \Exception(
+                    throw new \InvalidArgumentException(
                         sprintf(
-                            'The column "%s" must contains the scope code',
+                            'The column "%s" must contain the scope code',
                             $columnCode
                         )
                     );
@@ -289,7 +289,7 @@ class AttributeCache
      * Sets the attributes and identifierAttributes properties
      *
      * @param  array      $columnLabelTokens
-     * @throws \Exception
+     * @throws \InvalidArgumentException
      */
     protected function setAttributes($columnLabelTokens)
     {
@@ -312,9 +312,9 @@ class AttributeCache
             }
         }
         if (count($this->attributes) !== count($codes)) {
-            throw new \Exception(
+            throw new \InvalidArgumentException(
                 sprintf(
-                    'The following fields do not exist : %s',
+                    'The following fields do not exist: %s',
                     implode(
                         ', ',
                         array_diff(

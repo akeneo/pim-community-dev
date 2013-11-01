@@ -39,7 +39,6 @@ class AttributeCacheTest extends \PHPUnit_Framework_TestCase
     }
     public function getAttributes($params)
     {
-        $this->assertEquals(array_keys($this->attributes), array_values($params['code']));
         return $this->attributes;
     }
     protected function addAttribute($code, $translatable = false, $scopable = false, $attributeType = 'default')
@@ -128,5 +127,52 @@ class AttributeCacheTest extends \PHPUnit_Framework_TestCase
             ),
             $this->attributeCache->getColumns()
         );
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage The column "col" must contain the local code
+     */
+    public function testColumnWithoutLocale()
+    {
+        $this->initializeAttributes();
+        $this->addAttribute('col', true);
+
+        $this->attributeCache->initialize(array('identifier', 'col'));
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage The column "col" must contain the scope code
+     */
+    public function testColumnWithoutScope()
+    {
+        $this->initializeAttributes();
+        $this->addAttribute('col', false, true);
+
+        $this->attributeCache->initialize(array('identifier', 'col'));
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage The column "col" must contain the local code
+     */
+    public function testColumnWithoutLocalAndScope()
+    {
+        $this->initializeAttributes();
+        $this->addAttribute('col', true, true);
+
+        $this->attributeCache->initialize(array('identifier', 'col'));
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage The following fields do not exist: col1, col2
+     */
+    public function testExtraColumns()
+    {
+        $this->initializeAttributes();
+
+        $this->attributeCache->initialize(array('identifier', 'col1', 'col2'));
     }
 }
