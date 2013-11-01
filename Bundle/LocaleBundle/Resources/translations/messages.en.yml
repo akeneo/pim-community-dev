@@ -14,9 +14,9 @@ oro.locale:
 
     form:
         tooltip:
-            locale: "Locale option used to change number, address, name and date formats"
-            location: "Location format used when 'Format address by address country' option is disabled"
-            format_address_by_address_country: "When this option is enabled address will be formatted acording to their countries"
-            language: "Language option used to change application language"
-            timezone: "Timezone option used to show dates in correct time zone"
-            currency: "Currency option used as system wide default currency"
+            locale: "Select the locale option used to format numbers, addresses, names and dates"
+            location: " Location will be used to format addresses when 'Format address by address country' option is disabled"
+            format_address_by_address_country: "Selecting this option will enabled addresses to be formatted by the country they are in. Disabeling this option will cause the addresses to be formatted in your location address format"
+            language: "Select the system language you wish to use"
+            timezone: "Select the timezone for displaying date and time"
+            currency: "Select the default currency"
