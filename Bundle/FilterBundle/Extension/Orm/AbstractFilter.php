@@ -29,7 +29,7 @@ abstract class AbstractFilter implements FilterInterface
      *
      * @var array
      */
-    protected $paramMap = [];
+    protected $paramMap = [self::FRONTEND_TYPE_KEY => self::TYPE_KEY];
 
     /** @var array */
     protected $excludeParams = [];
