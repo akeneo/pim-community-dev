@@ -8,7 +8,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\NotificationBundle\Entity\EmailNotification;
-use Oro\Bundle\NotificationBundle\Datagrid\EmailNotificationDatagridManager;
 
 /**
  * @Route("/email")
@@ -31,7 +30,7 @@ class EmailNotificationController extends Controller
      */
     public function indexAction()
     {
-        return array();
+        return [];
     }
 
     /**
