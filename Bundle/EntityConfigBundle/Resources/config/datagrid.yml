@@ -20,19 +20,16 @@ datagrid:
         columns:
             name:
                 label: Name
-                type: field
                 data_name: className
                 frontend_type: select
                 choices: @oro_entity_config.event_listener.entityconfig_grid_listener->getChoicesName
             module:
                 label: Module
-                type: field
                 data_name: className
                 frontend_type: select
                 choices: @oro_entity_config.event_listener.entityconfig_grid_listener->getChoicesModule
             updated:
                 label: Updated at
-                type: field
                 frontend_type: datetime
 
         properties:
@@ -111,11 +108,9 @@ datagrid:
         columns:
             fieldName:
                 label: Name
-                type: field
                 frontend_type: string
             type:
                 label: Data Type
-                type: field
                 frontend_type: string
 
         properties:
@@ -150,7 +145,7 @@ datagrid:
             query:
                 select:
                     - log.id
-                    - log.diff
+#                    - diff.id
                     - log.loggedAt
                     - >
                       CONCAT(
@@ -165,29 +160,53 @@ datagrid:
                 join:
                     left:
                         user:
-                            join: a.user
+                            join: log.user
                             alias: u
+                    inner:
+                        diffs:
+                            join: log.diffs
+                            alias: diff
+                            conditionType: WITH
 
         columns:
             author:
                 label: Author
                 type: field
                 frontend_type: string
-            loggedAt:
-                label: Logged at
-                type: field
-                frontend_type: date
             diffs:
                 label: Diffs
                 type: twig
                 template: OroEntityConfigBundle:Audit:data.html.twig
                 frontend_type: string
                 data_name: diff
+            loggedAt:
+                label: Logged at
+                type: field
+                frontend_type: date
+
         sorters:
             columns:
                 author:
                     data_name: author
                 loggedAt:
-                    data_name: a.loggedAt
+                    data_name: log.loggedAt
             default:
                 loggedAt: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+
+    audit-log-grid:
+        extend: entity-audit-grid
+        source:
+            query:
+                join:
+                    inner:
+                        diffs:
+                            condition: diff.className = :objectClass AND diff.fieldName IS NULL
+
+    auditfield-log-grid:
+        extend: entity-audit-grid
+        source:
+            query:
+                join:
+                    inner:
+                        diffs:
+                            condition: diff.className = :objectClass AND diff.fieldName = :fieldName

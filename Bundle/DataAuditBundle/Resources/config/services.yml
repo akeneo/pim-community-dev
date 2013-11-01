@@ -52,5 +52,6 @@ services:
         class: %oro_dataaudit.event_listener.dataaudit_history_grid_listener.class%
         arguments:
             - @oro_datagrid.datagrid.request_params
+            - [objectClass, objectId]
         tags:
-          - { name: kernel.event_listener, event: oro_grid.datgrid.build.after.audit-history-grid, method: onBuildAfter }
+          - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.audit-history-grid, method: onBuildAfter }
