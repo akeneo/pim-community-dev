@@ -4,13 +4,12 @@
 
 {% block head_script %}
     {{ parent() }}
-    {% include 'OroGridBundle:Include:javascript.html.twig' with { datagridView: datagrid, selector: '#search-result-grid' } %}
     <script type="text/javascript">
         require(['jquery', 'oro/registry'],
         function($, registry) {
             $(function() {
                 // hide header
-                var searchDatagrid = registry.getElement('datagrid', {{ datagrid.datagrid.name|json_encode|raw }});
+                {#var searchDatagrid = registry.getElement('datagrid', {{ datagrid.datagrid.name|json_encode|raw }});#}
                 //searchDatagrid.header.$el.remove();
             });
         });
