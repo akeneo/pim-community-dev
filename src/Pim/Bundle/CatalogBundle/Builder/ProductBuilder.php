@@ -52,28 +52,6 @@ class ProductBuilder
     }
 
     /**
-     * Add a missing value to the product
-     *
-     * @param ProductInterface $product
-     * @param Attribute        $attribute
-     * @param string           $locale
-     * @param string           $scope
-     *
-     * @return null
-     */
-    public function addProductValue(ProductInterface $product, $attribute, $locale = null, $scope = null)
-    {
-        $value = $this->createProductValue();
-        if ($locale) {
-            $value->setLocale($locale);
-        }
-        $value->setScope($scope);
-        $value->setAttribute($attribute);
-
-        $product->addValue($value);
-    }
-
-    /**
      * Add empty values for family and product-specific attributes for relevant scopes and locales
      *
      * It makes sure that if an attribute is translatable/scopable, then all values in the required locales/channels
@@ -136,11 +114,60 @@ class ProductBuilder
     }
 
     /**
+     * Creates required value(s) to add the attribute to the product
+     *
+     * @param ProductInterface $product
+     * @param ProductAttribute $attribute
+     *
+     * @return null
+     */
+    public function addAttributeToProduct(ProductInterface $product, ProductAttribute $attribute)
+    {
+        $requiredValues = $this->getExpectedValues($attribute);
+
+        foreach ($requiredValues as $value) {
+            $this->addProductValue($product, $attribute, $value['locale'], $value['scope']);
+        }
+    }
+
+    /**
+     * Deletes values that link an attribute to a product
+     *
+     * @param ProductInterface $product
+     * @param ProductAttribute $attribute
+     *
+     * @return boolean
+     */
+    public function removeAttributeFromProduct(ProductInterface $product, ProductAttribute $attribute)
+    {
+        $values = $this->objectManager->getRepository($this->getProductValueClass())
+            ->findBy(array('entity' => $product, 'attribute' => $attribute,));
+
+        foreach ($values as $value) {
+            $this->objectManager->remove($value);
+        }
+
+        $this->objectManager->flush();
+    }
+
+    /**
      * Create a product value
      *
      * @return ProductValue
      */
     protected function createProductValue()
+    {
+        $class = $this->getProductValueClass();
+
+        return new $class();
+    }
+
+    /**
+     * Get product value class
+     *
+     * @return string
+     */
+    protected function getProductValueClass()
     {
         if (!$this->productValueClass) {
             $meta = $this->objectManager->getClassMetadata($this->productClass);
@@ -148,7 +175,29 @@ class ProductBuilder
             $this->productValueClass = $associations['values']['targetEntity'];
         }
 
-        return new $this->productValueClass();
+        return $this->productValueClass;
+    }
+
+    /**
+     * Add a missing value to the product
+     *
+     * @param ProductInterface $product
+     * @param Attribute        $attribute
+     * @param string           $locale
+     * @param string           $scope
+     *
+     * @return null
+     */
+    protected function addProductValue(ProductInterface $product, $attribute, $locale = null, $scope = null)
+    {
+        $value = $this->createProductValue();
+        if ($locale) {
+            $value->setLocale($locale);
+        }
+        $value->setScope($scope);
+        $value->setAttribute($attribute);
+
+        $product->addValue($value);
     }
 
     /**

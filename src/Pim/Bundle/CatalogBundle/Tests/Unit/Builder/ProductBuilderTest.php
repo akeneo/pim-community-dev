@@ -34,6 +34,13 @@ class ProductBuilderTest extends \PHPUnit_Framework_TestCase
 
         $builder->addMissingProductValues($product);
         $this->assertEquals(count($product->getValues()), 1);
+
+        $attributeTwo = new ProductAttribute();
+        $attributeTwo->setCode('two');
+        $family->addAttribute($attributeTwo);
+
+        $builder->addMissingProductValues($product);
+        $this->assertEquals(count($product->getValues()), 2);
     }
 
     /**

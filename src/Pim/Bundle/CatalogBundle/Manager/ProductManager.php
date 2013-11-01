@@ -208,11 +208,7 @@ class ProductManager extends FlexibleManager
      */
     public function addAttributeToProduct(ProductInterface $product, ProductAttribute $attribute)
     {
-        $requiredValues = $this->getExpectedValues($attribute);
-
-        foreach ($requiredValues as $value) {
-            $this->builder->addProductValue($product, $attribute, $value['locale'], $value['scope']);
-        }
+        $this->builder->addAttributeToProduct($product, $attribute);
     }
 
     /**
@@ -225,18 +221,7 @@ class ProductManager extends FlexibleManager
      */
     public function removeAttributeFromProduct(ProductInterface $product, ProductAttribute $attribute)
     {
-        $values = $this->getFlexibleValueRepository()->findBy(
-            array(
-                'entity'    => $product,
-                'attribute' => $attribute,
-            )
-        );
-
-        foreach ($values as $value) {
-            $this->storageManager->remove($value);
-        }
-
-        $this->storageManager->flush();
+        $this->builder->removeAttributeFromProduct($product, $attribute);
     }
 
     /**
