@@ -202,8 +202,8 @@ class ConfigManager
         }
 
         $result = $this->cache->getConfigurable($className, $fieldName);
-        if ($result == null) {
-            $result = (bool) $this->modelManager->findModel($className, $fieldName);
+        if ($result === false) {
+            $result = (bool) $this->modelManager->findModel($className, $fieldName) ? : null;
 
             $this->cache->setConfigurable($result, $className, $fieldName);
         }
@@ -367,6 +367,7 @@ class ConfigManager
 
             if ($this->cache) {
                 $this->cache->removeConfigFromCache($config->getId());
+                $this->cache->removeAllConfigurable();
             }
         }
 

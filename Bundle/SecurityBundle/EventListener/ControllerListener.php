@@ -65,7 +65,7 @@ class ControllerListener
 
             if (!$this->securityFacade->isClassMethodGranted($className, $method)) {
                 if ($event->getRequestType() === HttpKernelInterface::MASTER_REQUEST) {
-                    throw new AccessDeniedException('Access denied.');
+                    throw new AccessDeniedException(sprintf('Access denied to %s::%s.', $className, $method));
                 }
             }
         }

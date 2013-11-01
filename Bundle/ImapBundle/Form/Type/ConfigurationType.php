@@ -32,7 +32,7 @@ class ConfigurationType extends AbstractType
         $builder->addEventListener(
             FormEvents::PRE_SUBMIT,
             function (FormEvent $event) use ($encryptor) {
-                $data = $event->getData();
+                $data = (array) $event->getData();
                 /** @var ImapEmailOrigin|null $entity */
                 $entity = $event->getForm()->getData();
 

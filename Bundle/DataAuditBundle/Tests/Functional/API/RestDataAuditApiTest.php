@@ -26,21 +26,7 @@ class RestDataAuditApiTest extends WebTestCase
      */
     public function testPreconditions()
     {
-        //clear Audits
-        $this->client->request('GET', $this->client->generate('oro_api_get_audits'));
-        $result = $this->client->getResponse();
-        ToolsAPI::assertJsonResponse($result, 200);
-        $result = ToolsAPI::jsonToArray($result->getContent());
-        foreach ($result as $audit) {
-            $this->client->request(
-                'DELETE',
-                $this->client->generate('oro_api_delete_audit', array('id' => $audit['id']))
-            );
-            $result = $this->client->getResponse();
-            ToolsAPI::assertJsonResponse($result, 204);
-        }
-
-        //create users
+        // create users
         $request = array(
             "user" => array (
                 "username" => 'user_' . mt_rand(),
@@ -49,7 +35,7 @@ class RestDataAuditApiTest extends WebTestCase
                 "plainPassword" => '1231231q',
                 "firstName" => "firstName",
                 "lastName" => "lastName",
-                "rolesCollection" => array("1"),
+                "rolesCollection" => array("2"),
                 "owner" => "1",
             )
         );
@@ -76,7 +62,7 @@ class RestDataAuditApiTest extends WebTestCase
         $this->assertEquals('create', $resultActual['action']);
         $this->assertEquals('Oro\Bundle\UserBundle\Entity\User', $resultActual['object_class']);
         $this->assertEquals($response['user']['username'], $resultActual['object_name']);
-        $this->assertEquals('admin', $resultActual['user']);
+        $this->assertEquals('admin', $resultActual['username']);
         $this->assertEquals($response['user']['username'], $resultActual['data']['username']['new']);
         $this->assertEquals($response['user']['email'], $resultActual['data']['email']['new']);
         $this->assertEquals($response['user']['enabled'], $resultActual['data']['enabled']['new']);
