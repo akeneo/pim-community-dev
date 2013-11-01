@@ -26,8 +26,8 @@ class ApiEntityManager
     /**
      * Constructor
      *
-     * @param string $class Entity name
-     * @param ObjectManager $om Object manager
+     * @param string        $class Entity name
+     * @param ObjectManager $om    Object manager
      */
     public function __construct($class, ObjectManager $om)
     {
@@ -59,7 +59,7 @@ class ApiEntityManager
     /**
      * Get entity by identifier.
      *
-     * @param mixed $id
+     * @param  mixed  $id
      * @return object
      */
     public function find($id)
@@ -68,7 +68,7 @@ class ApiEntityManager
     }
 
     /**
-     * @param object $entity
+     * @param  object                    $entity
      * @return int
      * @throws \InvalidArgumentException
      */
@@ -111,15 +111,16 @@ class ApiEntityManager
      *
      * In case when limit and offset set to null QueryBuilder instance will be returned.
      *
-     * @param int $limit
-     * @param int $page
-     * @param null $orderBy
+     * @param  int          $limit
+     * @param  int          $page
+     * @param  null         $orderBy
      * @return \Traversable
      */
     public function getList($limit = 10, $page = 1, $orderBy = null)
     {
         $page = $page > 0 ? $page : 1;
         $orderBy = $orderBy ? $orderBy : $this->getDefaultOrderBy();
+
         return $this->getRepository()->findBy(array(), $this->getOrderBy($orderBy), $limit, $this->getOffset($page));
     }
 
@@ -137,7 +138,7 @@ class ApiEntityManager
     /**
      * Get offset by page
      *
-     * @param int|null $page
+     * @param  int|null $page
      * @return int
      */
     protected function getOffset($page)
@@ -145,6 +146,7 @@ class ApiEntityManager
         if (!$page !== null) {
             $page = $page > 0 ? $page - 1 : 0;
         }
+
         return $page;
     }
 
@@ -160,6 +162,7 @@ class ApiEntityManager
         foreach ($ids as $pk) {
             $orderBy[$pk] = 'ASC';
         }
+
         return $orderBy;
     }
 }
