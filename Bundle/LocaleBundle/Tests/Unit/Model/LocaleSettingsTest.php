@@ -276,7 +276,7 @@ class LocaleSettingsTest extends \PHPUnit_Framework_TestCase
     {
         $this->configManager->expects($this->once())
             ->method('get')
-            ->with('oro_locale.timezone', date_default_timezone_get())
+            ->with('oro_locale.timezone', false)
             ->will($this->returnValue($configurationValue));
 
         $this->assertEquals($expectedValue, $this->localeSettings->getTimeZone());

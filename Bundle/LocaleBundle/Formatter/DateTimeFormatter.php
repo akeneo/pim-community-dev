@@ -38,8 +38,9 @@ class DateTimeFormatter
         if (!$timeZone) {
             $timeZone = $this->localeSettings->getTimeZone();
         }
+        $date = $this->getDateTime($date);
         $formatter = $this->getFormatter($dateType, $timeType, $locale, $timeZone, $pattern);
-        return $formatter->format((int)$this->getDateTime($date, $timeZone)->format('U'));
+        return $formatter->format((int)$date->format('U'));
     }
 
     /**
@@ -111,13 +112,16 @@ class DateTimeFormatter
      */
     protected function getFormatter($dateType, $timeType, $locale, $timeZone, $pattern)
     {
+        if (!$pattern) {
+            $pattern = $this->getPattern($dateType, $timeType, $locale);
+        }
         return new \IntlDateFormatter(
             $this->localeSettings->getLanguage(),
             null,
             null,
             $timeZone,
             \IntlDateFormatter::GREGORIAN,
-            $pattern ? : $this->getPattern($dateType, $timeType, $locale)
+            $pattern
         );
     }
 
@@ -158,24 +162,17 @@ class DateTimeFormatter
      * Returns DateTime by $data and $timezone
      *
      * @param \DateTime|string|int $date
-     * @param \DateTimeZone|string $timeZone
      * @return \DateTime
      */
-    protected function getDateTime($date, $timeZone)
+    protected function getDateTime($date)
     {
-        if (!$timeZone instanceof \DateTimeZone) {
-            $timeZone = new \DateTimeZone($timeZone);
-        }
-
         if ($date instanceof \DateTime) {
-            $result = clone $date;
-            $result->setTimezone($timeZone);
-            return $result;
+            return $date;
         }
 
         $defaultTimezone = date_default_timezone_get();
 
-        date_default_timezone_set($timeZone->getName());
+        date_default_timezone_set('UTC');
 
         if (is_numeric($date)) {
             $date = (int)$date;
@@ -187,7 +184,6 @@ class DateTimeFormatter
 
         $result = new \DateTime();
         $result->setTimestamp($date);
-        $result->setTimezone($timeZone);
 
         date_default_timezone_set($defaultTimezone);
 
