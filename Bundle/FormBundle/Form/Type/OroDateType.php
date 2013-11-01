@@ -18,38 +18,11 @@ class OroDateType extends AbstractType
     const NAME = 'oro_date';
 
     /**
-     * @var TranslatorInterface
-     */
-    protected $translator;
-
-    /**
-     * @var DateTimeFormatConverterRegistry
-     */
-    protected $converterRegistry;
-
-    /**
-     * @param TranslatorInterface $translator
-     * @param DateTimeFormatConverterRegistry $converterRegistry
-     */
-    public function __construct(
-        TranslatorInterface $translator,
-        DateTimeFormatConverterRegistry $converterRegistry
-    ) {
-        $this->translator = $translator;
-        $this->converterRegistry = $converterRegistry;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
-        $jqueryUiFormatter = $this->converterRegistry->getFormatConverter(JqueryUiDateTimeFormatConverter::NAME);
-        $dateFormat = $jqueryUiFormatter->getDateFormat($options['date_format']);
-
-        $view->vars['attr']['data-dateformat'] = $dateFormat;
-
-        $view->vars['attr']['placeholder'] = $this->translator->trans('oro.form.click_here_to_select');
+        $view->vars['placeholder'] = $options['placeholder'];
     }
 
     /**
@@ -59,29 +32,11 @@ class OroDateType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'model_timezone'   => 'UTC',
-                'view_timezone'    => 'UTC',
-                'years'            => range(date('Y') - 120, date('Y')),
-                'date_format'      => null,
-                'localized_format' => true,
-                'widget'           => 'single_text',
-                'attr'             => array(
-                    'class' => 'datepicker',
-                )
-            )
-        );
-
-        $resolver->setNormalizers(
-            array(
-                'format' => function (Options $options, $value) {
-                    if (!empty($options['localized_format'])) {
-                        $intlFormatter = $this->converterRegistry->getFormatConverter(
-                            IntlDateTimeFormatConverter::NAME
-                        );
-                        $value = $intlFormatter->getDateFormat($options['date_format']);
-                    }
-                    return $value;
-                }
+                'model_timezone' => 'UTC',
+                'view_timezone'  => 'UTC',
+                'format'         => 'yyyy-MM-dd', // ISO format
+                'widget'         => 'single_text',
+                'placeholder'    => 'oro.form.click_here_to_select',
             )
         );
     }

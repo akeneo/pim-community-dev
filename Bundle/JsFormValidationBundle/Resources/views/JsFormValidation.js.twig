@@ -92,7 +92,19 @@ var jsfv = (function () {
         if (!$("#" + field).length || $("#" + field).is(':disabled')) {
             return true;
         }
+
+        // if value is stored in other (hidden) input and JSFV must be applied to source (visible) input
+        var fieldInputId = $("#" + field).data('input-id');
+        if (fieldInputId) {
+            if (!$("#" + fieldInputId).length || $("#" + fieldInputId).is(':disabled')) {
+                return true;
+            } else {
+                field = fieldInputId;
+            }
+        }
+
         field = jsfv.id(field);
+
         // Remove old errors of the field
         {% block removeErrors %}{% spaceless %}jsfv.removeErrors(field);{% endspaceless %}{% endblock %}
         // Check the value

@@ -19,33 +19,16 @@ class OroDateTimeType extends AbstractType
     const NAME = 'oro_datetime';
 
     /**
-     * @var TranslatorInterface
-     */
-    protected $translator;
-
-    /**
      * @var LocaleSettings
      */
     protected $localeSettings;
 
     /**
-     * @var DateTimeFormatConverterRegistry
-     */
-    protected $converterRegistry;
-
-    /**
-     * @param TranslatorInterface $translator
      * @param LocaleSettings $localeSettings
-     * @param DateTimeFormatConverterRegistry $converterRegistry
      */
-    public function __construct(
-        TranslatorInterface $translator,
-        LocaleSettings $localeSettings,
-        DateTimeFormatConverterRegistry $converterRegistry
-    ) {
-        $this->translator = $translator;
+    public function __construct(LocaleSettings $localeSettings)
+    {
         $this->localeSettings = $localeSettings;
-        $this->converterRegistry = $converterRegistry;
     }
 
     /**
@@ -53,14 +36,7 @@ class OroDateTimeType extends AbstractType
      */
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
-        $jqueryUiFormatter = $this->converterRegistry->getFormatConverter(JqueryUiDateTimeFormatConverter::NAME);
-        $dateFormat = $jqueryUiFormatter->getDateFormat($options['date_format']);
-        $timeFormat = $jqueryUiFormatter->getTimeFormat($options['time_format']);
-
-        $view->vars['attr']['data-dateformat'] = $dateFormat;
-        $view->vars['attr']['data-timeformat'] = $timeFormat;
-
-        $view->vars['attr']['placeholder'] = $this->translator->trans('oro.form.click_here_to_select');
+        $view->vars['placeholder'] = $options['placeholder'];
     }
 
     /**
@@ -72,14 +48,10 @@ class OroDateTimeType extends AbstractType
             array(
                 'model_timezone'   => 'UTC',
                 'view_timezone'    => 'UTC',
-                'years'            => range(date('Y') - 120, date('Y')),
-                'date_format'      => null,
-                'time_format'      => null,
-                'localized_format' => true,
+                'date_format'      => 'yyyy-MM-dd HH:mm:ss',
                 'widget'           => 'single_text',
-                'attr'             => array(
-                    'class' => 'datetimepicker',
-                )
+                'placeholder'      => 'oro.form.click_here_to_select',
+                'localized_format' => true,
             )
         );
 
@@ -91,17 +63,6 @@ class OroDateTimeType extends AbstractType
                     }
                     return $value;
                 },
-                'format' => function (Options $options, $value) {
-                    if (!empty($options['localized_format'])) {
-                        $intlFormatter = $this->converterRegistry->getFormatConverter(
-                            IntlDateTimeFormatConverter::NAME
-                        );
-                        $dateFormat = $intlFormatter->getDateFormat($options['date_format']);
-                        $timeFormat = $intlFormatter->getTimeFormat($options['time_format']);
-                        $value =  $dateFormat . ' ' . $timeFormat;
-                    }
-                    return $value;
-                }
             )
         );
     }

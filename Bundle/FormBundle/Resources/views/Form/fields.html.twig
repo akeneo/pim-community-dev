@@ -344,3 +344,74 @@
         </div>
     {% endspaceless %}
 {% endblock oro_money_widget %}
+
+{% block oro_date_widget %}
+    {% set value_id = id %}
+    {% set selector_name = 'date_selector_' ~ random() %}
+    {% set selector_id = selector_name %}
+
+    {# Actual date field that uses ISO format #}
+    {% set attr = attr|merge({'data-input-id': selector_id}) %}
+    <span style="display:none">{{ block('date_widget') }}</span>
+
+    {# Visible fake datepicker field that uses localized format #}
+    <input type="text"
+           name="{{ selector_name }}"
+           id="{{ selector_id }}"
+           placeholder="{{ placeholder|trans }}" />
+
+    <script type="text/javascript">
+        require(['jquery', 'oro/formatter/datetime', 'jquery-ui'],
+        function($, datetimeFormatter) {
+            var selector = $("#{{ selector_id }}");
+            {% if value %}
+                selector.val(datetimeFormatter.formatDate({{ value|json_encode|raw }}));
+            {% endif %}
+            selector.datepicker({
+                altField: '#{{ value_id }}',
+                altFormat: 'yy-mm-dd',
+                changeMonth: true,
+                changeYear: true,
+                yearRange: '-80:+1',
+                showButtonPanel: true
+            });
+        });
+    </script>
+{% endblock oro_date_widget %}
+
+{% block oro_datetime_widget %}
+    {% set value_id = id %}
+    {% set selector_name = 'datetime_selector_' ~ random() %}
+    {% set selector_id = selector_name %}
+
+    {# Actual date field that uses ISO format #}
+    {% set attr = attr|merge({'data-input-id': selector_id}) %}
+    <span style="display:none">{{ block('datetime_widget') }}</span>
+
+    {# Visible fake datetimepicker field that uses localized format #}
+    <input type="text"
+           name="{{ selector_name }}"
+           id="{{ selector_id }}"
+           placeholder="{{ placeholder|trans }}" />
+
+    <script type="text/javascript">
+        require(['jquery', 'oro/formatter/datetime', 'jquery-ui-timepicker'],
+        function($, datetimeFormatter) {
+            var selector = $("#{{ selector_id }}");
+            {% if value %}
+                selector.val(datetimeFormatter.formatDateTime({{ value|json_encode|raw }}));
+            {% endif %}
+            selector.datetimepicker({
+                altField: '#{{ value_id }}',
+                altFormat: 'yy-mm-dd',
+                altTimeFormat: 'HH:mm:ss',
+                altFieldTimeOnly: false,
+                altSeparator: ' ',
+                changeMonth: true,
+                changeYear: true,
+                yearRange: '-80:+1',
+                showButtonPanel: true
+            });
+        });
+    </script>
+{% endblock oro_datetime_widget %}

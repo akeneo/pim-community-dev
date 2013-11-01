@@ -1,6 +1,6 @@
 /* global define */
-define(['moment', 'oro/locale-settings'],
-function(moment, localeSettings) {
+define(['moment', 'oro/translator', 'oro/locale-settings'],
+function(moment, __, localeSettings) {
     'use strict';
 
     var locale = localeSettings.getLocale();
@@ -13,6 +13,13 @@ function(moment, localeSettings) {
         weekdaysMin : localeSettings.getCalendarDayOfWeekNames('short', true),
         week : {
             dow : localeSettings.getCalendarFirstDayOfWeek() - 1
+        },
+        meridiem : function (hours, minutes, isLower) {
+            if (hours > 11) {
+                return isLower ? __('pm') : __('PM');
+            } else {
+                return isLower ? __('am') : __('AM');
+            }
         }
     });
 

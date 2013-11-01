@@ -14,18 +14,13 @@ services:
     # Form types
     oro_form.type.date:
         class: %oro_form.type.date.class%
-        arguments:
-            - @translator
-            - @oro_locale.format_converter.date_time.registry
         tags:
             - { name: form.type, alias: oro_date }
 
     oro_form.type.datetime:
         class: %oro_form.type.datetime.class%
         arguments:
-            - @translator
             - @oro_locale.settings
-            - @oro_locale.format_converter.date_time.registry
         tags:
             - { name: form.type, alias: oro_datetime }
 
