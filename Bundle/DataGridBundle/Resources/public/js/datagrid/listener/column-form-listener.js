@@ -10,7 +10,7 @@ function($, _, __, mediator, Modal, AbstractListener) {
      * @class   oro.datagrid.ColumnFormListener
      * @extends oro.datagrid.AbstractListener
      */
-    return AbstractListener.extend({
+    var ColumnFormListener = AbstractListener.extend({
 
         /** @param {Object} */
         selectors: {
@@ -256,4 +256,15 @@ function($, _, __, mediator, Modal, AbstractListener) {
             this.confirmModal[type].open();
         }
     });
+
+    ColumnFormListener.init = function () {
+        mediator.on('datagrid:created', function (grid, $el) {
+            var metadata = $el.data('metadata');
+            if (metadata.columnListener) {
+                new ColumnFormListener(_.extend({grid: grid}, metadata.columnListener));
+            }
+        });
+    };
+
+    return ColumnFormListener;
 });

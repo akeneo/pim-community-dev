@@ -11,10 +11,11 @@
     <div data-type="datagrid" data-data="{{ oro_datagrid_data(name, params)|escape }}"
          data-metadata="{{ metaData|json_encode }}"></div>
     <script type="text/javascript">
-        require(['jquery', 'oro/datagrid-builder'].concat({{ metaData.requireJSModules|json_encode|raw }}),
+        require(['jquery', 'oro/datagrid-builder', 'oro/datagrid/column-form-listener'].concat({{ metaData.requireJSModules|json_encode|raw }}),
         function ($, datagridBuilder) {
+            var builders = _.toArray(arguments).slice(2);
             $(function () {
-                datagridBuilder();
+                datagridBuilder(builders);
                 {# @TODO remove dev code #}
                 $('div[data-type="datagrid"]:not([data-rendered])').each(function (e, el) {
                     el = $(el);
@@ -24,7 +25,7 @@
                     console.groupEnd();
                 });
 
-                {% if listenerParams|length > 0 %}
+                {#% if listenerParams|length > 0 %}
                     require(['oro/datagrid/column-form-listener'],
                     function (ColumnFormListener) {
                         $(function () {
@@ -35,7 +36,7 @@
                             }, {{ listenerParams|json_encode|raw }}));
                         });
                     });
-                {% endif %}
+                {% endif %#}
             });
         });
     </script>
