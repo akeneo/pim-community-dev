@@ -71,6 +71,22 @@ class EmailHandler
      */
     protected $configExtension;
 
+    /**
+     * Constructor
+     *
+     * @param FormInterface            $form
+     * @param Request                  $request
+     * @param EntityManager            $em
+     * @param Translator               $translator
+     * @param SecurityContextInterface $securityContext
+     * @param EmailAddressManager      $emailAddressManager
+     * @param EmailEntityBuilder       $emailEntityBuilder
+     * @param \Swift_Mailer            $mailer
+     * @param LoggerInterface          $logger
+     * @param ConfigExtension          $configExtension
+     *
+     * @SuppressWarnings(PHPMD.ExcessiveParameterList)
+     */
     public function __construct(
         FormInterface $form,
         Request $request,
