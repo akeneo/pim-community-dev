@@ -139,6 +139,10 @@ class NumberExtension extends \Twig_Extension
      *          <attribute> => <value>,
      *          ...
      *      ),
+     *     'symbols' => array(
+     *          <symbol> => <value>,
+     *          ...
+     *      ),
      *     'locale' => <locale>
      * )
      *
@@ -151,9 +155,10 @@ class NumberExtension extends \Twig_Extension
     {
         $attributes = (array)$this->getOption($options, 'attributes', array());
         $textAttributes = (array)$this->getOption($options, 'textAttributes', array());
+        $symbols = (array)$this->getOption($options, 'symbols', array());
         $locale = $this->getOption($options, 'locale');
 
-        return $this->formatter->format($value, $style, $attributes, $textAttributes, $locale);
+        return $this->formatter->format($value, $style, $attributes, $textAttributes, $symbols, $locale);
     }
 
     /**
@@ -170,6 +175,10 @@ class NumberExtension extends \Twig_Extension
      *          <attribute> => <value>,
      *          ...
      *      ),
+     *     'symbols' => array(
+     *          <symbol> => <value>,
+     *          ...
+     *      ),
      *     'locale' => <locale>
      * )
      *
@@ -182,9 +191,10 @@ class NumberExtension extends \Twig_Extension
         $currency = $this->getOption($options, 'currency');
         $attributes = (array)$this->getOption($options, 'attributes', array());
         $textAttributes = (array)$this->getOption($options, 'textAttributes', array());
+        $symbols = (array)$this->getOption($options, 'symbols', array());
         $locale = $this->getOption($options, 'locale');
 
-        return $this->formatter->formatCurrency($value, $currency, $attributes, $textAttributes, $locale);
+        return $this->formatter->formatCurrency($value, $currency, $attributes, $textAttributes, $symbols, $locale);
     }
 
     /**
@@ -200,6 +210,10 @@ class NumberExtension extends \Twig_Extension
      *          <attribute> => <value>,
      *          ...
      *      ),
+     *     'symbols' => array(
+     *          <symbol> => <value>,
+     *          ...
+     *      ),
      *     'locale' => <locale>
      * )
      *
@@ -211,9 +225,10 @@ class NumberExtension extends \Twig_Extension
     {
         $attributes = (array)$this->getOption($options, 'attributes', array());
         $textAttributes = (array)$this->getOption($options, 'textAttributes', array());
+        $symbols = (array)$this->getOption($options, 'symbols', array());
         $locale = $this->getOption($options, 'locale');
 
-        return $this->formatter->formatDecimal($value, $attributes, $textAttributes, $locale);
+        return $this->formatter->formatDecimal($value, $attributes, $textAttributes, $symbols, $locale);
     }
 
     /**
@@ -229,6 +244,10 @@ class NumberExtension extends \Twig_Extension
      *          <attribute> => <value>,
      *          ...
      *      ),
+     *     'symbols' => array(
+     *          <symbol> => <value>,
+     *          ...
+     *      ),
      *     'locale' => <locale>
      * )
      *
@@ -240,9 +259,10 @@ class NumberExtension extends \Twig_Extension
     {
         $attributes = (array)$this->getOption($options, 'attributes', array());
         $textAttributes = (array)$this->getOption($options, 'textAttributes', array());
+        $symbols = (array)$this->getOption($options, 'symbols', array());
         $locale = $this->getOption($options, 'locale');
 
-        return $this->formatter->formatPercent($value, $attributes, $textAttributes, $locale);
+        return $this->formatter->formatPercent($value, $attributes, $textAttributes, $symbols, $locale);
     }
 
     /**
@@ -258,6 +278,10 @@ class NumberExtension extends \Twig_Extension
      *          <attribute> => <value>,
      *          ...
      *      ),
+     *     'symbols' => array(
+     *          <symbol> => <value>,
+     *          ...
+     *      ),
      *     'locale' => <locale>
      * )
      *
@@ -269,9 +293,10 @@ class NumberExtension extends \Twig_Extension
     {
         $attributes = (array)$this->getOption($options, 'attributes', array());
         $textAttributes = (array)$this->getOption($options, 'textAttributes', array());
+        $symbols = (array)$this->getOption($options, 'symbols', array());
         $locale = $this->getOption($options, 'locale');
 
-        return $this->formatter->formatSpellout($value, $attributes, $textAttributes, $locale);
+        return $this->formatter->formatSpellout($value, $attributes, $textAttributes, $symbols, $locale);
     }
 
     /**
@@ -287,6 +312,10 @@ class NumberExtension extends \Twig_Extension
      *          <attribute> => <value>,
      *          ...
      *      ),
+     *     'symbols' => array(
+     *          <symbol> => <value>,
+     *          ...
+     *      ),
      *     'locale' => <locale>
      * )
      *
@@ -298,9 +327,10 @@ class NumberExtension extends \Twig_Extension
     {
         $attributes = (array)$this->getOption($options, 'attributes', array());
         $textAttributes = (array)$this->getOption($options, 'textAttributes', array());
+        $symbols = (array)$this->getOption($options, 'symbols', array());
         $locale = $this->getOption($options, 'locale');
 
-        return $this->formatter->formatDuration($value, $attributes, $textAttributes, $locale);
+        return $this->formatter->formatDuration($value, $attributes, $textAttributes, $symbols, $locale);
     }
 
     /**
@@ -316,6 +346,10 @@ class NumberExtension extends \Twig_Extension
      *          <attribute> => <value>,
      *          ...
      *      ),
+     *     'symbols' => array(
+     *          <symbol> => <value>,
+     *          ...
+     *      ),
      *     'locale' => <locale>
      * )
      *
@@ -327,9 +361,10 @@ class NumberExtension extends \Twig_Extension
     {
         $attributes = (array)$this->getOption($options, 'attributes', array());
         $textAttributes = (array)$this->getOption($options, 'textAttributes', array());
+        $symbols = (array)$this->getOption($options, 'symbols', array());
         $locale = $this->getOption($options, 'locale');
 
-        return $this->formatter->formatOrdinal($value, $attributes, $textAttributes, $locale);
+        return $this->formatter->formatOrdinal($value, $attributes, $textAttributes, $symbols, $locale);
     }
 
     /**

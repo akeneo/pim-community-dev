@@ -27,15 +27,23 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider formatDataProvider
      */
-    public function testFormat($expected, $value, $style, $attributes, $textAttributes, $locale, $defaultLocale = null)
-    {
+    public function testFormat(
+        $expected,
+        $value,
+        $style,
+        $attributes,
+        $textAttributes,
+        $symbols,
+        $locale,
+        $defaultLocale = null
+    ) {
         if ($defaultLocale) {
             $this->localeSettings->expects($this->once())->method('getLocale')
                 ->will($this->returnValue($defaultLocale));
         }
         $this->assertEquals(
             $expected,
-            $this->formatter->format($value, $style, $attributes, $textAttributes, $locale)
+            $this->formatter->format($value, $style, $attributes, $textAttributes, $symbols, $locale)
         );
     }
 
@@ -48,6 +56,7 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
                 'style' => \NumberFormatter::DECIMAL,
                 'attributes' => array(),
                 'textAttributes' => array(),
+                'symbols' => array(),
                 'locale' => 'en_US'
             ),
             array(
@@ -56,6 +65,7 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
                 'style' => 'DECIMAL',
                 'attributes' => array(),
                 'textAttributes' => array(),
+                'symbols' => array(),
                 'locale' => 'en_US'
             ),
             array(
@@ -66,11 +76,12 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
                     'fraction_digits' => 2
                 ),
                 'textAttributes' => array(),
+                'symbols' => array(),
                 'locale' => null,
                 'settingsLocale' => 'en_US'
             ),
             array(
-                'expected' => 'MINUS 10,0000.123',
+                'expected' => 'MINUS 10.0000,123',
                 'value' => -100000.123,
                 'style' => \NumberFormatter::DECIMAL,
                 'attributes' => array(
@@ -78,6 +89,10 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
                 ),
                 'textAttributes' => array(
                     \NumberFormatter::NEGATIVE_PREFIX => 'MINUS ',
+                ),
+                'symbols' => array(
+                    \NumberFormatter::DECIMAL_SEPARATOR_SYMBOL => ',',
+                    \NumberFormatter::GROUPING_SEPARATOR_SYMBOL => '.',
                 ),
                 'locale' => 'en_US'
             ),
@@ -100,17 +115,24 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
      */
     public function testFormatFails()
     {
-        $this->formatter->format('123', \NumberFormatter::DECIMAL, array('unknown_attribute' => 1), array(), 'en_US');
+        $this->formatter->format(
+            '123',
+            \NumberFormatter::DECIMAL,
+            array('unknown_attribute' => 1),
+            array(),
+            array(),
+            'en_US'
+        );
     }
 
     /**
      * @dataProvider formatDecimalDataProvider
      */
-    public function testFormatDecimal($expected, $value, $attributes, $textAttributes, $locale)
+    public function testFormatDecimal($expected, $value, $attributes, $textAttributes, $symbols, $locale)
     {
         $this->assertEquals(
             $expected,
-            $this->formatter->formatDecimal($value, $attributes, $textAttributes, $locale)
+            $this->formatter->formatDecimal($value, $attributes, $textAttributes, $symbols, $locale)
         );
     }
 
@@ -122,16 +144,21 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
                 'value' => 1234.56789,
                 'attributes' => array(),
                 'textAttributes' => array(),
+                'symbols' => array(),
                 'locale' => 'en_US'
             ),
             array(
-                'expected' => '+12,345.6789000000',
+                'expected' => '+12 345,6789000000',
                 'value' => 12345.6789,
                 'attributes' => array(
                     'fraction_digits' => 10
                 ),
                 'textAttributes' => array(
                     'positive_prefix' => '+',
+                ),
+                'symbols' => array(
+                    \NumberFormatter::DECIMAL_SEPARATOR_SYMBOL => ',',
+                    \NumberFormatter::GROUPING_SEPARATOR_SYMBOL => ' ',
                 ),
                 'locale' => 'en_US'
             ),
@@ -157,7 +184,7 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider formatCurrencyDataProvider
      */
-    public function testFormatCurrency($expected, $value, $currency, $attributes, $textAttributes, $locale)
+    public function testFormatCurrency($expected, $value, $currency, $attributes, $textAttributes, $symbols, $locale)
     {
         $currencySymbolMap = array(
             array('USD', '$'),
@@ -169,7 +196,7 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(
             $expected,
-            $this->formatter->formatCurrency($value, $currency, $attributes, $textAttributes, $locale)
+            $this->formatter->formatCurrency($value, $currency, $attributes, $textAttributes, $symbols, $locale)
         );
     }
 
@@ -182,6 +209,7 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
                 'currency' => 'USD',
                 'attributes' => array(),
                 'textAttributes' => array(),
+                'symbols' => array(),
                 'locale' => 'en_US'
             ),
             array(
@@ -190,6 +218,7 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
                 'currency' => 'RUB',
                 'attributes' => array(),
                 'textAttributes' => array(),
+                'symbols' => array(),
                 'locale' => 'en_US'
             ),
         );
@@ -198,11 +227,11 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider formatPercentDataProvider
      */
-    public function testFormatPercent($expected, $value, $attributes, $textAttributes, $locale)
+    public function testFormatPercent($expected, $value, $attributes, $textAttributes, $symbols, $locale)
     {
         $this->assertEquals(
             $expected,
-            $this->formatter->formatPercent($value, $attributes, $textAttributes, $locale)
+            $this->formatter->formatPercent($value, $attributes, $textAttributes, $symbols, $locale)
         );
     }
 
@@ -214,6 +243,7 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
                 'value' => 1234.56789,
                 'attributes' => array(),
                 'textAttributes' => array(),
+                'symbols' => array(),
                 'locale' => 'en_US'
             ),
         );
@@ -222,11 +252,11 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider formatSpelloutDataProvider
      */
-    public function testFormatSpellout($expected, $value, $attributes, $textAttributes, $locale)
+    public function testFormatSpellout($expected, $value, $attributes, $textAttributes, $symbols, $locale)
     {
         $this->assertEquals(
             $expected,
-            $this->formatter->formatSpellout($value, $attributes, $textAttributes, $locale)
+            $this->formatter->formatSpellout($value, $attributes, $textAttributes, $symbols, $locale)
         );
     }
 
@@ -238,6 +268,7 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
                 'value' => 21,
                 'attributes' => array(),
                 'textAttributes' => array(),
+                'symbols' => array(),
                 'locale' => 'en_US'
             ),
         );
@@ -246,11 +277,11 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider formatDurationDataProvider
      */
-    public function testFormatDuration($expected, $value, $attributes, $textAttributes, $locale)
+    public function testFormatDuration($expected, $value, $attributes, $textAttributes, $symbols, $locale)
     {
         $this->assertEquals(
             $expected,
-            $this->formatter->formatDuration($value, $attributes, $textAttributes, $locale)
+            $this->formatter->formatDuration($value, $attributes, $textAttributes, $symbols, $locale)
         );
     }
 
@@ -262,6 +293,7 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
                 'value' => 3661,
                 'attributes' => array(),
                 'textAttributes' => array(),
+                'symbols' => array(),
                 'locale' => 'en_US'
             ),
             array(
@@ -271,6 +303,7 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
                 'textAttributes' => array(
                     \NumberFormatter::DEFAULT_RULESET => "%with-words"
                 ),
+                'symbols' => array(),
                 'locale' => 'en_US'
             ),
         );
@@ -279,11 +312,11 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider formatOrdinalDataProvider
      */
-    public function testFormatOrdinal($expected, $value, $attributes, $textAttributes, $locale)
+    public function testFormatOrdinal($expected, $value, $attributes, $textAttributes, $symbols, $locale)
     {
         $this->assertEquals(
             $expected,
-            $this->formatter->formatOrdinal($value, $attributes, $textAttributes, $locale)
+            $this->formatter->formatOrdinal($value, $attributes, $textAttributes, $symbols, $locale)
         );
     }
 
@@ -295,6 +328,7 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
                 'value' => 1,
                 'attributes' => array(),
                 'textAttributes' => array(),
+                'symbols' => array(),
                 'locale' => 'en_US'
             ),
             array(
@@ -302,6 +336,7 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
                 'value' => 3,
                 'attributes' => array(),
                 'textAttributes' => array(),
+                'symbols' => array(),
                 'locale' => 'en_US'
             ),
         );

@@ -118,12 +118,15 @@ class NumberExtensionTest extends \PHPUnit_Framework_TestCase
         $style = 'decimal';
         $attributes = array('grouping_size' => 3);
         $textAttributes = array('grouping_separator_symbol' => ',');
+        $symbols = array('symbols' => '$');
         $locale = 'fr_CA';
-        $options = array('attributes' => $attributes, 'textAttributes' => $textAttributes, 'locale' => $locale);
+        $options = array(
+            'attributes' => $attributes, 'textAttributes' => $textAttributes, 'symbols' => $symbols, 'locale' => $locale
+        );
         $expectedResult = '1,234.45';
 
         $this->formatter->expects($this->once())->method('format')
-            ->with($value, $style, $attributes, $textAttributes, $locale)
+            ->with($value, $style, $attributes, $textAttributes, $symbols, $locale)
             ->will($this->returnValue($expectedResult));
 
         $this->assertEquals($expectedResult, $this->extension->format($value, $style, $options));
@@ -135,17 +138,19 @@ class NumberExtensionTest extends \PHPUnit_Framework_TestCase
         $currency = 'USD';
         $attributes = array('grouping_size' => 3);
         $textAttributes = array('grouping_separator_symbol' => ',');
+        $symbols = array('symbols' => '$');
         $locale = 'en_US';
         $options = array(
             'currency' => $currency,
             'attributes' => $attributes,
             'textAttributes' => $textAttributes,
+            'symbols' => $symbols,
             'locale' => $locale
         );
         $expectedResult = '$1,234.45';
 
         $this->formatter->expects($this->once())->method('formatCurrency')
-            ->with($value, $currency, $attributes, $textAttributes, $locale)
+            ->with($value, $currency, $attributes, $textAttributes, $symbols, $locale)
             ->will($this->returnValue($expectedResult));
 
         $this->assertEquals($expectedResult, $this->extension->formatCurrency($value, $options));
@@ -156,16 +161,18 @@ class NumberExtensionTest extends \PHPUnit_Framework_TestCase
         $value = 1234.5;
         $attributes = array('grouping_size' => 3);
         $textAttributes = array('grouping_separator_symbol' => ',');
+        $symbols = array('symbols' => '$');
         $locale = 'en_US';
         $options = array(
             'attributes' => $attributes,
             'textAttributes' => $textAttributes,
+            'symbols' => $symbols,
             'locale' => $locale
         );
         $expectedResult = '1,234.45';
 
         $this->formatter->expects($this->once())->method('formatDecimal')
-            ->with($value, $attributes, $textAttributes, $locale)
+            ->with($value, $attributes, $textAttributes, $symbols, $locale)
             ->will($this->returnValue($expectedResult));
 
         $this->assertEquals($expectedResult, $this->extension->formatDecimal($value, $options));
@@ -176,16 +183,18 @@ class NumberExtensionTest extends \PHPUnit_Framework_TestCase
         $value = 99;
         $attributes = array('grouping_size' => 3);
         $textAttributes = array('grouping_separator_symbol' => ',');
+        $symbols = array('symbols' => '$');
         $locale = 'en_US';
         $options = array(
             'attributes' => $attributes,
             'textAttributes' => $textAttributes,
+            'symbols' => $symbols,
             'locale' => $locale
         );
         $expectedResult = '99%';
 
         $this->formatter->expects($this->once())->method('formatPercent')
-            ->with($value, $attributes, $textAttributes, $locale)
+            ->with($value, $attributes, $textAttributes, $symbols, $locale)
             ->will($this->returnValue($expectedResult));
 
         $this->assertEquals($expectedResult, $this->extension->formatPercent($value, $options));
@@ -196,16 +205,18 @@ class NumberExtensionTest extends \PHPUnit_Framework_TestCase
         $value = 1;
         $attributes = array('foo' => 1);
         $textAttributes = array('bar' => 'baz');
+        $symbols = array('symbols' => '$');
         $locale = 'en_US';
         $options = array(
             'attributes' => $attributes,
             'textAttributes' => $textAttributes,
+            'symbols' => $symbols,
             'locale' => $locale
         );
         $expectedResult = 'one';
 
         $this->formatter->expects($this->once())->method('formatSpellout')
-            ->with($value, $attributes, $textAttributes, $locale)
+            ->with($value, $attributes, $textAttributes, $symbols, $locale)
             ->will($this->returnValue($expectedResult));
 
         $this->assertEquals($expectedResult, $this->extension->formatSpellout($value, $options));
@@ -216,16 +227,18 @@ class NumberExtensionTest extends \PHPUnit_Framework_TestCase
         $value = 1;
         $attributes = array('foo' => 1);
         $textAttributes = array('bar' => 'baz');
+        $symbols = array('symbols' => '$');
         $locale = 'en_US';
         $options = array(
             'attributes' => $attributes,
             'textAttributes' => $textAttributes,
+            'symbols' => $symbols,
             'locale' => $locale
         );
         $expectedResult = '1 sec';
 
         $this->formatter->expects($this->once())->method('formatDuration')
-            ->with($value, $attributes, $textAttributes, $locale)
+            ->with($value, $attributes, $textAttributes, $symbols, $locale)
             ->will($this->returnValue($expectedResult));
 
         $this->assertEquals($expectedResult, $this->extension->formatDuration($value, $options));
@@ -236,16 +249,18 @@ class NumberExtensionTest extends \PHPUnit_Framework_TestCase
         $value = 1;
         $attributes = array('foo' => 1);
         $textAttributes = array('bar' => 'baz');
+        $symbols = array('symbols' => '$');
         $locale = 'en_US';
         $options = array(
             'attributes' => $attributes,
             'textAttributes' => $textAttributes,
+            'symbols' => $symbols,
             'locale' => $locale
         );
         $expectedResult = '1st';
 
         $this->formatter->expects($this->once())->method('formatOrdinal')
-            ->with($value, $attributes, $textAttributes, $locale)
+            ->with($value, $attributes, $textAttributes, $symbols, $locale)
             ->will($this->returnValue($expectedResult));
 
         $this->assertEquals($expectedResult, $this->extension->formatOrdinal($value, $options));
