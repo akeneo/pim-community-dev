@@ -52,6 +52,28 @@ class ProductBuilder
     }
 
     /**
+     * Add a missing value to the product
+     *
+     * @param ProductInterface $product
+     * @param Attribute        $attribute
+     * @param string           $locale
+     * @param string           $scope
+     *
+     * @return null
+     */
+    public function addProductValue(ProductInterface $product, $attribute, $locale = null, $scope = null)
+    {
+        $value = $this->createProductValue();
+        if ($locale) {
+            $value->setLocale($locale);
+        }
+        $value->setScope($scope);
+        $value->setAttribute($attribute);
+
+        $product->addValue($value);
+    }
+
+    /**
      * Add empty values for family and product-specific attributes for relevant scopes and locales
      *
      * It makes sure that if an attribute is translatable/scopable, then all values in the required locales/channels
@@ -182,28 +204,6 @@ class ProductBuilder
                 $value->removeDisabledPrices($activeCurrencies);
             }
         }
-    }
-
-    /**
-     * Add a missing value to the product
-     *
-     * @param ProductInterface $product
-     * @param Attribute        $attribute
-     * @param string           $locale
-     * @param string           $scope
-     *
-     * @return null
-     */
-    protected function addProductValue(ProductInterface $product, $attribute, $locale = null, $scope = null)
-    {
-        $value = $this->createProductValue();
-        if ($locale) {
-            $value->setLocale($locale);
-        }
-        $value->setScope($scope);
-        $value->setAttribute($attribute);
-
-        $product->addValue($value);
     }
 
     /**
