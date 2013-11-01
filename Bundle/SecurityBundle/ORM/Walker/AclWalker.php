@@ -126,7 +126,7 @@ class AclWalker extends TreeWalkerAdapter
      */
     protected function addAclToWhereClause($AST, array $whereConditions)
     {
-        $aclConditionalFactors = array();
+        $aclConditionalFactors = [];
 
         foreach ($whereConditions as $whereCondition) {
             $aclConditionalFactors[] = $this->getConditionalFactor($whereCondition);
@@ -206,7 +206,7 @@ class AclWalker extends TreeWalkerAdapter
      */
     protected function getLiterals(AclCondition $whereCondition)
     {
-        $literals = array();
+        $literals = [];
 
         if (!is_array($whereCondition->getValue())) {
             $whereCondition->setValue(array($whereCondition->getValue()));

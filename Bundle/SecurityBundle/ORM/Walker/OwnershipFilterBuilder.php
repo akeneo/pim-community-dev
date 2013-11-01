@@ -7,6 +7,7 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
 use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadata;
 use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadataProvider;
 use Oro\Bundle\SecurityBundle\Owner\OwnerTree;
+use Oro\Bundle\SecurityBundle\Owner\OwnerTreeProvider;
 use Oro\Bundle\SecurityBundle\Acl\Domain\OneShotIsGrantedObserver;
 use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdAccessor;
 use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
@@ -53,26 +54,23 @@ class OwnershipFilterBuilder
      * @param ObjectIdAccessor $objectIdAccessor
      * @param EntitySecurityMetadataProvider $entityMetadataProvider
      * @param OwnershipMetadataProvider $metadataProvider
-     * @param OwnerTree $tree
-     * @param AclVoter $aclVoter
      * @param $treeProvider
+     * @param AclVoter $aclVoter
      */
     public function __construct(
         ServiceLink $securityContextLink,
         ObjectIdAccessor $objectIdAccessor,
         EntitySecurityMetadataProvider $entityMetadataProvider,
         OwnershipMetadataProvider $metadataProvider,
-        OwnerTree $tree,
-        AclVoter $aclVoter = null,
-        $treeProvider
+        OwnerTreeProvider $treeProvider,
+        AclVoter $aclVoter = null
     ) {
         $this->securityContextLink = $securityContextLink;
         $this->aclVoter = $aclVoter;
         $this->objectIdAccessor = $objectIdAccessor;
         $this->entityMetadataProvider = $entityMetadataProvider;
         $this->metadataProvider = $metadataProvider;
-        $this->tree = $tree;
-        $treeProvider->fillTree($this->tree);
+        $this->tree = $treeProvider->getTree();
     }
 
     /**
@@ -153,21 +151,21 @@ class OwnershipFilterBuilder
                     $buIds = $this->tree->getUserBusinessUnitIds($this->getUserId());
                     $constraint = $this->getCondition($buIds, $metadata);
                 } elseif ($metadata->isUserOwned()) {
-                    $userIds = array();
+                    $userIds = [];
                     $this->fillBusinessUnitUserIds($this->getUserId(), $userIds);
                     $constraint = $this->getCondition($userIds, $metadata);
                 }
             } elseif (AccessLevel::DEEP_LEVEL === $accessLevel) {
                 if ($this->metadataProvider->getBusinessUnitClass() === $targetEntityClassName) {
-                    $buIds = array();
+                    $buIds = [];
                     $this->fillSubordinateBusinessUnitIds($this->getUserId(), $buIds);
                     $constraint = $this->getCondition($buIds, $metadata, 'id');
                 } elseif ($metadata->isBusinessUnitOwned()) {
-                    $buIds = array();
+                    $buIds = [];
                     $this->fillSubordinateBusinessUnitIds($this->getUserId(), $buIds);
                     $constraint = $this->getCondition($buIds, $metadata);
                 } elseif ($metadata->isUserOwned()) {
-                    $userIds = array();
+                    $userIds = [];
                     $this->fillSubordinateBusinessUnitUserIds($this->getUserId(), $userIds);
                     $constraint = $this->getCondition($userIds, $metadata);
                 }
@@ -176,11 +174,11 @@ class OwnershipFilterBuilder
                     $orgIds = $this->tree->getUserOrganizationIds($this->getUserId());
                     $constraint = $this->getCondition($orgIds, $metadata);
                 } elseif ($metadata->isBusinessUnitOwned()) {
-                    $buIds = array();
+                    $buIds = [];
                     $this->fillOrganizationBusinessUnitIds($this->getUserId(), $buIds);
                     $constraint = $this->getCondition($buIds, $metadata);
                 } elseif ($metadata->isUserOwned()) {
-                    $userIds = array();
+                    $userIds = [];
                     $this->fillOrganizationUserIds($this->getUserId(), $userIds);
                     $constraint = $this->getCondition($userIds, $metadata);
                 }
@@ -218,7 +216,7 @@ class OwnershipFilterBuilder
     protected function fillSubordinateBusinessUnitIds($userId, array &$result)
     {
         $buIds = $this->tree->getUserBusinessUnitIds($userId);
-        $result = array_merge($buIds, array());
+        $result = array_merge($buIds, []);
         foreach ($buIds as $buId) {
             $diff = array_diff($this->tree->getSubordinateBusinessUnitIds($buId), $result);
             if (!empty($diff)) {
@@ -251,7 +249,7 @@ class OwnershipFilterBuilder
      */
     protected function fillSubordinateBusinessUnitUserIds($userId, array &$result)
     {
-        $buIds = array();
+        $buIds = [];
         $this->fillSubordinateBusinessUnitIds($userId, $buIds);
         foreach ($buIds as $buId) {
             $userIds = $this->tree->getBusinessUnitUserIds($buId);

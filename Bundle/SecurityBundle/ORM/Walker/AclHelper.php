@@ -90,7 +90,7 @@ class ACLHelper
                 }
             }
         } else {
-            $subQueryAcl = array();
+            $subQueryAcl = [];
             foreach ($conditionalExpression->conditionalFactors as $factorId => $expression) {
                 if (isset($expression->simpleConditionalExpression->subselect)
                     && $expression->simpleConditionalExpression->subselect instanceof Subselect
@@ -134,8 +134,8 @@ class ACLHelper
         } else {
             $isSubRequest = true;
         }
-        $whereConditions = array();
-        $joinConditions = array();
+        $whereConditions = [];
+        $joinConditions = [];
         $fromClause = $isSubRequest ? $select->subselectFromClause : $select->fromClause;
 
         foreach ($fromClause->identificationVariableDeclarations as $fromKey => $identificationVariableDeclaration) {
