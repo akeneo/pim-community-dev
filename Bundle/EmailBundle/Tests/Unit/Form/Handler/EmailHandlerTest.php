@@ -23,6 +23,11 @@ class EmailHandlerTest extends \PHPUnit_Framework_TestCase
     /** @var \PHPUnit_Framework_MockObject_MockObject */
     protected $em;
 
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $translator;
+
     /** @var \PHPUnit_Framework_MockObject_MockObject */
     protected $securityContext;
 
@@ -54,6 +59,9 @@ class EmailHandlerTest extends \PHPUnit_Framework_TestCase
             ->getMock();
         $this->request             = new Request();
         $this->em                  = $this->getMockBuilder('Doctrine\ORM\EntityManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->translator = $this->getMockBuilder('Symfony\Component\Translation\Translator')
             ->disableOriginalConstructor()
             ->getMock();
         $this->securityContext     = $this->getMock('Symfony\Component\Security\Core\SecurityContextInterface');
@@ -102,6 +110,7 @@ class EmailHandlerTest extends \PHPUnit_Framework_TestCase
             $this->form,
             $this->request,
             $this->em,
+            $this->translator,
             $this->securityContext,
             $this->emailAddressManager,
             $this->emailEntityBuilder,

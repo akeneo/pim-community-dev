@@ -9,6 +9,7 @@ use Oro\Bundle\EmailBundle\Entity\Manager\EmailAddressManager;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Translation\Translator;
 use Doctrine\ORM\EntityManager;
 
 use Oro\Bundle\EmailBundle\Form\Model\Email;
@@ -34,6 +35,11 @@ class EmailHandler
      * @var EntityManager
      */
     protected $em;
+
+    /**
+     * @var Translator
+     */
+    protected $translator;
 
     /**
      * @var SecurityContextInterface
@@ -69,6 +75,7 @@ class EmailHandler
         FormInterface $form,
         Request $request,
         EntityManager $em,
+        Translator $translator,
         SecurityContextInterface $securityContext,
         EmailAddressManager $emailAddressManager,
         EmailEntityBuilder $emailEntityBuilder,
@@ -79,6 +86,7 @@ class EmailHandler
         $this->form                = $form;
         $this->request             = $request;
         $this->em                  = $em;
+        $this->translator          = $translator;
         $this->securityContext     = $securityContext;
         $this->emailAddressManager = $emailAddressManager;
         $this->emailEntityBuilder  = $emailEntityBuilder;
@@ -138,7 +146,9 @@ class EmailHandler
                     $result = true;
                 } catch (\Exception $ex) {
                     $this->logger->error('Email sending failed.', array('exception' => $ex));
-                    $this->form->addError(new FormError('Unable to send the email.'));
+                    $this->form->addError(
+                        new FormError($this->translator->trans('oro.email.handler.unable_to_send_email'))
+                    );
                 }
             }
         }

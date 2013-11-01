@@ -75,6 +75,7 @@ services:
             - @oro_email.form.email
             - @request
             - @doctrine.orm.entity_manager
+            - @translator
             - @security.context
             - @oro_email.email.address.manager
             - @oro_email.email.entity.builder=

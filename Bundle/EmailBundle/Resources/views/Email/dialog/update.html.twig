@@ -14,7 +14,7 @@
             require(['underscore', 'oro/translator', 'oro/widget-manager', 'oro/messenger', 'oro/registry'],
             function(_, __, widgetManager, messenger, registry) {
                 widgetManager.getWidgetInstance({{ app.request.get('_wid')|json_encode|raw }}, function(widget) {
-                    messenger.notificationFlashMessage('success', __('The email sent'));
+                    messenger.notificationFlashMessage('success', __('The email was sent'));
                     widget.remove();
                     {% if form.vars.value.gridName|length %}
                     var grid = registry.getElement('datagrid', {{ form.vars.value.gridName|json_encode|raw }});
