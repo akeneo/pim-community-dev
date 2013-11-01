@@ -284,18 +284,22 @@ class EntitiesController extends Controller
                 }
 
                 $value = array(
-                    'title'        => $titleFieldName,
                     'route'        => $route,
                     'route_params' => $routeParams,
                     'values'       => []
                 );
 
                 foreach ($collection as $item) {
+                    $title = [];
+                    foreach ($titleFieldName as $fieldName) {
+                        $title[] = $item->{Inflector::camelize('get_' . $fieldName)}();
+                    }
+
                     $routeParams['id'] = $item->getId();
                     $value['values'][] = [
                         'id'    => $item->getId(),
                         'link'  => $route ? $this->generateUrl($route, $routeParams) : false,
-                        'title' => $item->{Inflector::camelize('get_' . $titleFieldName)}()
+                        'title' => implode(' ', $title)
                     ];
                 }
             }
