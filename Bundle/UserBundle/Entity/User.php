@@ -647,6 +647,17 @@ class User implements
     }
 
     /**
+     * @param integer $id
+     * @return User
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    /**
      *
      * @param  string $username New username
      * @return User
