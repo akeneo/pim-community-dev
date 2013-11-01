@@ -1,12 +1,15 @@
 {% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+
 <div class="widget-content">
     {% set gridId = "entity-grid-" ~ random() %}
-    {% set gridName = "audit-history-grid" %}
-        <div class="container-fluid">
-            {% block content %}
-                <div id="{{ gridId }}">
-                    {{ dataGrid.renderGrid(gridName, {object_class: entity, object_id: entityId}) }}
-                </div>
-            {% endblock %}
-        </div>
+    {% set fieldName = (fieldName is defined) ? fieldName : '' %}
+
+    <div class="container-fluid">
+        {% block content %}
+            <div id="{{ gridId }}">
+                {# gridName set from corresponding controllers #}
+                {{ dataGrid.renderGrid(gridName, {object_class: entityClass, object_id: entityId, field_name: fieldName}) }}
+            </div>
+        {% endblock %}
+    </div>
 </div>

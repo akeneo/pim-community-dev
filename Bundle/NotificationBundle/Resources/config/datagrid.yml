@@ -1,13 +1,141 @@
-parameters:
-    oro_notification.emailnotification.datagrid_manager.class: Oro\Bundle\NotificationBundle\Datagrid\EmailNotificationDatagridManager
+datagrid:
+    email-notification-grid:
+        options:
+            entityHint: transactional email
+        source:
+            acl_resource: oro_notification_emailnotification_view
+            type: orm
+            query:
+                select:
+                    - e.id
+                    - e.entityName
+                    - event.name as eventName
+                    - recipientList.owner as ownerRecipient
+                    - recipientList.email as emailRecipient
+                    - template.name
+                from:
+                    - { table: OroNotificationBundle:EmailNotification, alias: e }
+                join:
+                    left:
+                        - { join: e.event, alias: event }
+                        - { join: e.template, alias: template }
+                        - { join: e.recipientList, alias: recipientList }
+                        - { join: recipientList.users, alias: recipientUsersList }
+                        - { join: recipientList.groups, alias: recipientGroupsList }
 
-services:
-    oro_notification.emailnotification.datagrid_manager:
-        class: %oro_notification.emailnotification.datagrid_manager.class%
-        arguments: [%oro_config.entities%]
-        tags:
-            - name: oro_grid.datagrid.manager
-              datagrid_name: emailnotification
-              entity_name: %oro_notification.emailnotification.entity.class%
-              entity_hint: transactional email
-              route_name: oro_notification_emailnotification_index
+        columns:
+            entityName:
+                label: oro.notification.datagrid.entity_name
+                data_name: entityName
+                type: twig
+                template: OroNotificationBundle:EmailNotification:Datagrid/Property/entityName.html.twig
+                frontend_type: select
+                choices: @oro_notification.event_listener.email_notification_listener->getEntityNameChoices
+
+            eventName:
+                type: translateable
+                label: oro.notification.datagrid.event_name
+                frontend_type: select
+                choices: @oro_notification.event_listener.email_notification_listener->getEventNameChoices
+
+            template:
+                label: oro.notification.datagrid.template
+                data_name: template.name
+
+            recipientUsersList:
+                type: twig
+                template: OroNotificationBundle:EmailNotification:Datagrid/Property/recipientList.html.twig
+                label: oro.notification.datagrid.recipient.user
+                frontend_type: select
+                choices: @oro_notification.event_listener.email_notification_listener->getRecipientUsersChoices
+
+            recipientGroupsList:
+                type: twig
+                label: oro.notification.datagrid.recipient.group
+                template: OroNotificationBundle:EmailNotification:Datagrid/Property/recipientList.html.twig
+                choices: @oro_notification.event_listener.email_notification_listener->getRecipientGroupsChoices
+                frontend_type: select
+
+            emailRecipient:
+                label: oro.notification.datagrid.recipient.custom_email
+                data_name: recipientList.email
+                frontend_type: string
+
+            ownerRecipient:
+                label: oro.notification.datagrid.recipient.owner
+                data_name: recipientList.owner
+                frontend_type: boolean
+
+        properties:
+            update_link:
+                type: url
+                route: oro_notification_emailnotification_update
+                params:
+                    - id
+            delete_link:
+                type: url
+                route: oro_api_delete_emailnotication
+                params:
+                    - id
+        actions:
+            update:
+                type: navigate
+                label: Update
+                acl_resource: oro_notification_emailnotification_update
+                icon: edit
+                link: update_link
+                rowAction: true
+            delete:
+                type: navigate
+                label: Delete
+                acl_resource: oro_notification_emailnotification_remove
+                icon: trash
+                link: delete_link
+
+        sorters: ~
+
+        filters:
+            columns:
+                entityName:
+                    type: choice
+                    data_name: e.entityName
+                    options:
+                        field_options:
+                            multiple: true
+                            choices: @oro_notification.event_listener.email_notification_listener->getEntityNameChoices
+
+                eventName:
+                    type: choice
+                    data_name: eventName
+                    options:
+                        field_options:
+                            multiple: true
+                            choices: @oro_notification.event_listener.email_notification_listener->getEventNameChoices
+
+                template:
+                    type: string
+                    data_name: template.name
+
+                recipientUsersList:
+                    type: choice
+                    data_name: recipientUsersList
+                    options:
+                        field_options:
+                            multiple: true
+                            choices: @oro_notification.event_listener.email_notification_listener->getRecipientUsersChoices
+
+                recipientGroupsList:
+                    type: choice
+                    data_name: recipientGroupsList
+                    options:
+                        field_options:
+                            multiple: true
+                            choices: @oro_notification.event_listener.email_notification_listener->getRecipientGroupsChoices
+
+                emailRecipient:
+                    type: string
+                    data_name: recipientList.email
+
+                ownerRecipient:
+                    type: boolean
+                    data_name: recipientList.owner

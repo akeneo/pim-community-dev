@@ -10,18 +10,24 @@ use Oro\Bundle\DataGridBundle\Event\BuildAfter;
 
 class AuditHistoryGridListener
 {
-    const GRID_PARAM_CLASS     = 'object_class';
-    const GRID_PARAM_OBJECT_ID = 'object_id';
+    const GRID_PARAM_CLASS      = 'object_class';
+    const GRID_PARAM_OBJECT_ID  = 'object_id';
+    const GRID_PARAM_FIELD_NAME = 'field_name';
 
     /** @var  RequestParameters */
     protected $requestParams;
 
+    /** @var array */
+    protected $paramsToBind = [];
+
     /**
      * @param RequestParameters $requestParams
+     * @param array $paramsToBind
      */
-    public function __construct(RequestParameters $requestParams)
+    public function __construct(RequestParameters $requestParams, $paramsToBind = [])
     {
         $this->requestParams = $requestParams;
+        $this->paramsToBind = $paramsToBind;
     }
 
     /**
@@ -36,8 +42,16 @@ class AuditHistoryGridListener
 
             $queryParameters = array(
                 'objectClass' => str_replace('_', '\\', $this->requestParams->get(self::GRID_PARAM_CLASS, '')),
-                'objectId'    => $this->requestParams->get(self::GRID_PARAM_OBJECT_ID, 0),
             );
+
+            if (in_array('objectId', $this->paramsToBind)) {
+                $queryParameters['objectId'] = $this->requestParams->get(self::GRID_PARAM_OBJECT_ID, 0);
+            }
+
+            $fieldName = $this->requestParams->get(self::GRID_PARAM_FIELD_NAME, false);
+            if (!empty($fieldName) && isset($this->paramsToBind['fieldName'])) {
+                $queryParameters['fieldName'] = $fieldName;
+            }
 
             $queryBuilder->setParameters($queryParameters);
         }

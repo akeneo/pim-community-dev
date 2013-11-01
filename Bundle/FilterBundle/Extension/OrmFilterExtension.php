@@ -11,6 +11,7 @@ use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 use Oro\Bundle\DataGridBundle\Extension\AbstractExtension;
+use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
 use Oro\Bundle\FilterBundle\Extension\Orm\FilterInterface;
 
 class OrmFilterExtension extends AbstractExtension
@@ -142,6 +143,12 @@ class OrmFilterExtension extends AbstractExtension
         $filtersConfig = $config->offsetGetByPath(Configuration::COLUMNS_PATH);
 
         foreach ($filtersConfig as $column => $filter) {
+            // if label not set, try to suggest it from column with the same name
+            if (!isset($filter['label'])) {
+                $filter['label'] = $config->offsetGetByPath(
+                    sprintf('[%s][%s][label]', FormatterConfiguration::COLUMNS_KEY, $column)
+                );
+            }
             $filters[] = $this->getFilterObject($column, $filter);
         }
 
