@@ -21,6 +21,7 @@ PHP Number Formatter
 ====================
 
 **Class:** Oro\Bundle\LocaleBundle\Formatter\NumberFormatter
+
 **Service id:** oro_locale.formatter.number
 
 Formats different styles of numbers in localized format. Proxies intl extension class [NumberFormatter](http://www.php.net/manual/en/class.numberformatter.php).
@@ -108,7 +109,7 @@ Methods and examples of usage
 
 ### format
 
-string *public* **format**(mixed *value*, string|int *style*[, array *attributes*[, array *textAttributes*[, array *symbols*[, string *locale*]]]])
+string *public* *format*(mixed *value*, string|int *style*[, array *attributes*[, array *textAttributes*[, array *symbols*[, string *locale*]]]])
 
 This method can be used to format any style of number that are passed directly as a second argument.
 List of custom attributes, text attributes, symbols and locale can be passed as well.
@@ -135,7 +136,7 @@ echo $numberFormatter->format(
 
 ### formatCurrency
 
-string *public* **formatCurrency**(mixed *value*, string *currency*[, array *attributes*[, array *textAttributes*[, array *symbols*[, string *locale*]]]])
+string *public* *formatCurrency*(mixed *value*, string *currency*[, array *attributes*[, array *textAttributes*[, array *symbols*[, string *locale*]]]])
 
 Formats currency number. Currency code should be specified, otherwise default currency will be used.
 
@@ -151,7 +152,7 @@ echo $numberFormatter->formatCurrency(1234.56789, 'EUR', array(), array(), array
 
 ### formatDecimal
 
-string *public* **formatDecimal**(mixed *value*[, array *attributes*[, array *textAttributes*[, array *symbols*[, string *locale*]]]])
+string *public* *formatDecimal*(mixed *value*[, array *attributes*[, array *textAttributes*[, array *symbols*[, string *locale*]]]])
 
 Formats decimal number.
 
@@ -173,7 +174,7 @@ echo $numberFormatter->formatDecimal(
 
 ### formatPercent
 
-string *public* **formatPercent**(mixed *value*[, array *attributes*[, array *textAttributes*[, array *symbols*[, string *locale*]]]])
+string *public* *formatPercent*(mixed *value*[, array *attributes*[, array *textAttributes*[, array *symbols*[, string *locale*]]]])
 
 Formats percent number.
 
@@ -187,7 +188,7 @@ echo $numberFormatter->formatDecimal(.567, array(), array(), array(), 'en_US');
 
 ### formatSpellout
 
-string *public* **formatSpellout**(mixed *value*[, array *attributes*[, array *textAttributes*[, array *symbols*[, string *locale*]]]])
+string *public* *formatSpellout*(mixed *value*[, array *attributes*[, array *textAttributes*[, array *symbols*[, string *locale*]]]])
 
 Formats spellout number. If locale is not specified default one will be used.
 
@@ -201,7 +202,7 @@ echo $numberFormatter->formatSpellout(21, array(), array(), array(), 'en_US');
 
 ### formatDuration
 
-string *public* **formatDuration**(mixed *value*[, array *attributes*[, array *textAttributes*[, array *symbols*[, string *locale*]]]])
+string *public* *formatDuration*(mixed *value*[, array *attributes*[, array *textAttributes*[, array *symbols*[, string *locale*]]]])
 
 Formats duration number. If locale is not specified default one will be used.
 
@@ -221,7 +222,7 @@ echo $numberFormatter->formatDuration(
 
 ### formatOrdinal
 
-string *public* **formatOrdinal**(mixed *value*[, array *attributes*[, array *textAttributes*[, array *symbols*[, string *locale*]]]])
+string *public* *formatOrdinal*(mixed *value*[, array *attributes*[, array *textAttributes*[, array *symbols*[, string *locale*]]]])
 
 Formats ordinal number. If locale is not specified default one will be used.
 
@@ -235,7 +236,7 @@ echo $numberFormatter->formatDuration(3, array(), array(), array(), 'en_US');
 
 ### getAttribute
 
-string *public* **getAttribute**(string|int *attribute*[, string|int *style*[, string *locale*]])
+int *public* *getAttribute*(string|int *attribute*[, string|int *style*[, string *locale*]])
 
 Gets numeric attribute of intl NumberFormatter related to passed locale. If locale is not passed, default one will be used.
 
@@ -249,7 +250,7 @@ echo $numberFormatter->getAttribute(\NumberFormatter::MAX_INTEGER_DIGITS, \Numbe
 
 ### getTextAttribute
 
-string *public* **getTextAttribute**(string|int *textAttribute*[, string|int *style*[, string *locale*]])
+string *public* *getTextAttribute*(string|int *textAttribute*[, string|int *style*[, string *locale*]])
 
 Gets text attribute of intl NumberFormatter related to passed locale. If locale is not passed, default one will be used.
 
@@ -263,7 +264,7 @@ echo $numberFormatter->getTextAttribute(\NumberFormatter::\NEGATIVE_PREFIX', \Nu
 
 ### getSymbol
 
-string *public* **getSymbol**(string|int *symbol*[, string|int *style*[, string *locale*]])
+string *public* *getSymbol*(string|int *symbol*[, string|int *style*[, string *locale*]])
 
 Gets symbol of intl NumberFormatter related to passed locale. If locale is not passed, default one will be used.
 
