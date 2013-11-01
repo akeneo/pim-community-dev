@@ -264,7 +264,7 @@ class AttributeCache
                     throw new \Exception(
                         sprintf(
                             'The column "%s" must contains the local code',
-                            $key
+                            $columnCode
                         )
                     );
                 }
@@ -275,7 +275,7 @@ class AttributeCache
                     throw new \Exception(
                         sprintf(
                             'The column "%s" must contains the scope code',
-                            $key
+                            $columnCode
                         )
                     );
                 }
