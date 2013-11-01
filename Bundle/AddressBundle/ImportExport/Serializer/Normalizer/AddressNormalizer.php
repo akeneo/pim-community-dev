@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\AddressBundle\ImportExport\Serializer\Normalizer;
 
+use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -14,6 +15,23 @@ class AddressNormalizer implements NormalizerInterface, DenormalizerInterface
     const ABSTRACT_ADDRESS_TYPE = 'Oro\Bundle\AddressBundle\Entity\AbstractAddress';
 
     /**
+     * @var array
+     */
+    protected $flatProperties = array(
+        'label',
+        'organization',
+        'namePrefix',
+        'firstName',
+        'middleName',
+        'lastName',
+        'nameSuffix',
+        'street',
+        'street2',
+        'postalCode',
+        'city'
+    );
+
+    /**
      * @param AbstractAddress $object
      * @param mixed $format
      * @param array $context
@@ -21,18 +39,17 @@ class AddressNormalizer implements NormalizerInterface, DenormalizerInterface
      */
     public function normalize($object, $format = null, array $context = array())
     {
-        return array(
-            'label' => $object->getLabel(),
-            'firstName' => $object->getFirstName(),
-            'lastName' => $object->getLastName(),
-            'street' => $object->getStreet(),
-            'street2' => $object->getStreet2(),
-            'city' => $object->getCity(),
-            'postalCode' => $object->getPostalCode() ? $object->getPostalCode() : null,
-            'regionText' => $object->getRegionText(),
-            'region' => $object->getRegion() ? $object->getRegion()->getCode() : null,
-            'country' => $object->getCountry() ? $object->getCountry()->getIso2Code() : null,
-        );
+        $propertyAccessor = PropertyAccess::createPropertyAccessor();
+        $normalizedData = array();
+        foreach ($this->flatProperties as $property) {
+            $normalizedData[$property] = $propertyAccessor->getValue($object, $property);
+        }
+
+        $normalizedData['regionText'] = $object->getRegionText();
+        $normalizedData['region'] = $object->getRegion() ? $object->getRegion()->getCode() : null;
+        $normalizedData['country'] = $object->getCountry() ? $object->getCountry()->getIso2Code() : null;
+
+        return $normalizedData;
     }
 
     /**
@@ -44,28 +61,13 @@ class AddressNormalizer implements NormalizerInterface, DenormalizerInterface
      */
     public function denormalize($data, $class, $format = null, array $context = array())
     {
+        $propertyAccessor = PropertyAccess::createPropertyAccessor();
         /** @var AbstractAddress $result */
         $result = new $class();
-        if (!empty($data['label'])) {
-            $result->setLabel($data['label']);
-        }
-        if (!empty($data['firstName'])) {
-            $result->setFirstName($data['firstName']);
-        }
-        if (!empty($data['lastName'])) {
-            $result->setLastName($data['lastName']);
-        }
-        if (!empty($data['street'])) {
-            $result->setStreet($data['street']);
-        }
-        if (!empty($data['street2'])) {
-            $result->setStreet2($data['street2']);
-        }
-        if (!empty($data['city'])) {
-            $result->setCity($data['city']);
-        }
-        if (!empty($data['postalCode'])) {
-            $result->setPostalCode($data['postalCode']);
+        foreach ($this->flatProperties as $property) {
+            if (!empty($data[$property])) {
+                $propertyAccessor->setValue($result, $property, $data[$property]);
+            }
         }
         $this->setRegionAndCountry($result, $data);
 
