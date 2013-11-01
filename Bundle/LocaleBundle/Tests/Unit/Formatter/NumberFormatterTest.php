@@ -221,6 +221,15 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
                 'symbols' => array(),
                 'locale' => 'en_US'
             ),
+            array(
+                'expected' => '1 234,57 €',
+                'value' => 1234.56789,
+                'currency' => 'EUR',
+                'attributes' => array(),
+                'textAttributes' => array(),
+                'symbols' => array(),
+                'locale' => 'ru_RU'
+            ),
         );
     }
 
@@ -343,9 +352,9 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider getNumberFormatterAttributeDataProvider
+     * @dataProvider getAttributeDataProvider
      */
-    public function testGetNumberFormatterAttribute($attribute, $style, $locale, $expected)
+    public function testGetAttribute($attribute, $style, $locale, $expected)
     {
         $this->assertSame(
             $expected,
@@ -357,7 +366,7 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function getNumberFormatterAttributeDataProvider()
+    public function getAttributeDataProvider()
     {
         return array(
             array('parse_int_only', 'DECIMAL', 'en_US', 0),
@@ -386,9 +395,9 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider getNumberFormatterTextAttributeDataProvider
+     * @dataProvider getTextAttributeDataProvider
      */
-    public function testGetNumberFormatterTextAttribute($attribute, $locale, $style, $expected)
+    public function testTextAttribute($attribute, $locale, $style, $expected)
     {
         $this->assertSame(
             $expected,
@@ -400,7 +409,7 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function getNumberFormatterTextAttributeDataProvider()
+    public function getTextAttributeDataProvider()
     {
         return array(
             array('POSITIVE_PREFIX', 'DECIMAL', 'en_US', ''),
@@ -414,7 +423,7 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @dataProvider getNumberFormatterSymbolDataProvider
+     * @dataProvider getSymbolDataProvider
      */
     public function testGetNumberFormatterSymbol($symbol, $locale, $style, $expected)
     {
@@ -428,7 +437,7 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function getNumberFormatterSymbolDataProvider()
+    public function getSymbolDataProvider()
     {
         return array(
             array('DECIMAL_SEPARATOR_SYMBOL', 'DECIMAL', 'en_US', '.'),
