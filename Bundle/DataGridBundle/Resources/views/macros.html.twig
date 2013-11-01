@@ -5,25 +5,38 @@
         name: datagrid name
         params: additional parameters for url
 #}
-{% macro renderGrid(name, params = {}) %}
+{% macro renderGrid(name, params = {}, listenerParams = {}) %}
     {% set metaData = oro_datagrid_metadata(name, params) %}
 
     <div data-type="datagrid" data-data="{{ oro_datagrid_data(name, params)|escape }}"
          data-metadata="{{ metaData|json_encode }}"></div>
     <script type="text/javascript">
         require(['jquery', 'oro/datagrid-builder'].concat({{ metaData.requireJSModules|json_encode|raw }}),
-                function ($, datagridBuilder) {
-                    $(function () {
-                        datagridBuilder();
-                        {# @TODO remove dev code #}
-                        $('div[data-type="datagrid"]:not([data-rendered])').each(function (e, el) {
-                            el = $(el);
-                            console.group('Datagrid "{{ name }}" rendered:');
-                            console.info(el.data('data'));
-                            console.info(el.data('metadata'));
-                            console.groupEnd();
+        function ($, datagridBuilder) {
+            $(function () {
+                datagridBuilder();
+                {# @TODO remove dev code #}
+                $('div[data-type="datagrid"]:not([data-rendered])').each(function (e, el) {
+                    el = $(el);
+                    console.group('Datagrid "{{ name }}" rendered:');
+                    console.info(el.data('data'));
+                    console.info(el.data('metadata'));
+                    console.groupEnd();
+                });
+
+                {% if listenerParams|length > 0 %}
+                    require(['oro/datagrid/column-form-listener'],
+                    function (ColumnFormListener) {
+                        $(function () {
+                            /** @type {oro.datagrid.ColumnFormListener} */
+                            new ColumnFormListener(_.extend({
+                                datagridName: {{ name|json_encode|raw }},
+                                dataField: 'id'
+                            }, {{ listenerParams|json_encode|raw }}));
                         });
                     });
-                });
+                {% endif %}
+            });
+        });
     </script>
 {% endmacro %}

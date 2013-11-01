@@ -231,6 +231,9 @@ abstract class AbstractProperty implements PropertyInterface
             case self::TYPE_INTEGER:
                 $metadata = ['orderSeparator' => ''];
                 break;
+            case self::TYPE_BOOLEAN:
+                $metadata = ['width' => 10];
+                break;
         }
 
         return $metadata;
