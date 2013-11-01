@@ -1,4 +1,4 @@
 OroLocaleBundle Documentation
 =============================
 
-- [Number Formatting](#number-formatting)
+- [Number Formatting](./reference/number-formatting.md)
