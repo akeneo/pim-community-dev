@@ -18,12 +18,18 @@ class OwnershipFilter extends SQLFilter
      */
     public function addFilterConstraint(ClassMetadata $targetEntity, $targetTableAlias)
     {
-        return ''; //TODO: Removed after new acl implemented
+        //return ''; //TODO: Removed after new acl implemented
+        $table = $this->getParameter('table');
+        $table = str_replace("'", '', $table);
+        $table = str_replace("\\\\", "\\", $table);
+        if ($table == $targetEntity->name) {
+            return $this->builder->buildFilterConstraint($targetEntity->reflClass->getName(), $targetTableAlias);
+        }
+
         /*if (!($targetEntity->reflClass->getName() == "OroCRM\\Bundle\\AccountBundle\\Entity\\Account")) {
             return '';
         }*/
-
-        return $this->builder->buildFilterConstraint($targetEntity->reflClass->getName(), $targetTableAlias);
+        return '';
     }
 
     /**

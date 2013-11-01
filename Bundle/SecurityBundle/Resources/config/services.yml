@@ -50,6 +50,8 @@ parameters:
 
     oro_security.encoder.mcrypt.class:                         Oro\Bundle\SecurityBundle\Encoder\Mcrypt
 
+    oro_security.acl.listenerclass:                            Oro\Bundle\SecurityBundle\EventListener\AclListener
+
 services:
     oro_security.security_facade:
         class: %oro_security.security_facade.class%
@@ -341,3 +343,48 @@ services:
     oro_security.encoder.mcrypt:
         class: %oro_security.encoder.mcrypt.class%
         arguments: [ %kernel.secret% ]
+
+#    oro_security.acl.listener:
+#        class:                        %oro_security.acl.listenerclass%
+#        tags:
+#            - { name: doctrine.event_listener, event: preRemove }
+#
+
+#    oro_security.orm.acl_check_filter:
+#        public: false
+#        class: %oro_security.orm.ownership_sql_filter.class%
+#        arguments:
+#            - @doctrine.orm.entity_manager
+#        calls:
+#            - [setBuilder, [@oro_security.orm.ownership_sql_filter_builder]]
+#        tags:
+#            - { name: oro_entity.orm.sql_filter, filter_name: acl_check, enabled: false }
+#            - { name: kernel.event_listener, priority: -255, event: kernel.request, method: setUserParameter }
+
+    oro_security.acl_helper:
+        class: Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper
+        arguments:
+             - @oro_security.orm.ownership_sql_walker_builder
+
+#    oro_security.acl_walker:
+#        public: false
+#        class: Oro\Bundle\SecurityBundle\ORM\Walker\AclWalker
+#        arguments: [ @doctrine.orm.entity_manager, @security.context ]
+
+
+    oro_security.orm.ownership_sql_walker_builder:
+#            public: false
+          class: Oro\Bundle\SecurityBundle\ORM\Walker\OwnershipFilterBuilder
+          arguments:
+              - @oro_entity_config.link.security_context
+              - @oro_security.acl.object_id_accessor
+              - @oro_security.entity_security_metadata_provider
+              - @oro_security.owner.ownership_metadata_provider
+              - @oro_security.owner.tree
+              - @?security.acl.voter.basic_permissions
+              - @oro_security.tree_provider
+
+    oro_security.tree_provider:
+          class: Oro\Bundle\SecurityBundle\TreeProvider
+          arguments:
+              - @doctrine.orm.entity_manager
