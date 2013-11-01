@@ -33,7 +33,7 @@ class EmailNotificationGridListener
     /**
      * @param BuildAfter $event
      */
-    public function buildAfter(BuildAfter $event)
+    public function onBuildAfter(BuildAfter $event)
     {
         //
     }
@@ -43,24 +43,49 @@ class EmailNotificationGridListener
      */
     public function getRecipientUsersChoices()
     {
-        $fullNames = $this->em
-            ->createQueryBuilder('e')
-            ->select('e.id, e.fullName')
+        return $this->getEntityChoices(
+            'OroUserBundle:User',
+            'e.id, e.firstName, e.lastName'
+        );
+    }
+
+    /**
+     * @return array
+     */
+    public function getRecipientGroupsChoices()
+    {
+        return $this->getEntityChoices('OroUserBundle:Group', 'e.id, e.name', 'name');
+    }
+
+    /**
+     * @param string $entity
+     * @param string $select
+     * @param string $mainField
+     *
+     * @return array
+     */
+    protected function getEntityChoices($entity, $select, $mainField = null)
+    {
+        $options = [];
+        $entities = $this->em
+            ->createQueryBuilder()
+            ->from($entity, 'e')
+            ->select($select)
             ->getQuery()
             ->getArrayResult();
 
-        $options = [];
+        foreach ($entities as $entityItem) {
+            if (is_null($mainField)) {
+                $id = $entityItem['id'];
+                unset($entityItem['id']);
 
-        foreach ($fullNames as $fullNameItem) {
-            $options[$fullNameItem['id']] = $fullNameItem['fullName'];
+                $options[$id] = implode(' ', $entityItem);
+            } else {
+                $options[$entityItem['id']] = $entityItem[$mainField];
+            }
         }
 
         return $options;
-    }
-
-    public function getRecipientGroupsChoices()
-    {
-        
     }
 
     /**
