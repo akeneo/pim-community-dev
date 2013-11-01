@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\Builder;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Entity\Product;
 use Pim\Bundle\CatalogBundle\Entity\Family;
@@ -52,7 +51,6 @@ class ProductBuilderTest extends \PHPUnit_Framework_TestCase
 
         return new ProductBuilder($productClass, $this->getObjectManagerMock(), $this->getCurrencyManagerMock());
     }
-
 
     /**
      * @param array $activeCodes
