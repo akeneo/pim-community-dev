@@ -31,14 +31,6 @@ class EmailNotificationGridListener
     }
 
     /**
-     * @param BuildAfter $event
-     */
-    public function onBuildAfter(BuildAfter $event)
-    {
-        //
-    }
-
-    /**
      * @return array
      */
     public function getRecipientUsersChoices()
