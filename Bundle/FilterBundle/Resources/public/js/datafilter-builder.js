@@ -4,7 +4,8 @@ define(['jquery', 'underscore', 'oro/tools', 'oro/mediator', 'oro/datafilter/col
 function($, _, tools,  mediator, FiltersManager) {
     'use strict';
 
-    var filterModuleName = 'oro/datafilter/{{type}}-filter',
+    var initialized = false,
+        filterModuleName = 'oro/datafilter/{{type}}-filter',
         filterTypes = {
             string:      'choice',
             choice:      'select',
@@ -53,9 +54,22 @@ function($, _, tools,  mediator, FiltersManager) {
                 });
                 return {filters: filters};
             }
+        },
+        initHandler = function (collection, $el) {
+            methods.initBuilder.call({$el: $el, collection: collection});
         };
 
-    mediator.on('datagrid_collection_set_after', function (collection, $el) {
-        methods.initBuilder.call({$el: $el, collection: collection});
-    });
+    return {
+        init: function () {
+            if (initialized) {
+                return;
+            }
+            mediator.on('datagrid_collection_set_after', initHandler);
+            initialized = true;
+        },
+        destroy: function () {
+            mediator.off('datagrid_collection_set_after', initHandler);
+            initialized = false;
+        }
+    };
 });

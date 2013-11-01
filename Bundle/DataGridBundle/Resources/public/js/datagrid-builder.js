@@ -83,6 +83,8 @@ function($, _, Backbone, __, tools, mediator, registry, LoadingMask,
                 options = methods.combineGridOptions.call(this);
                 grid = new Grid(_.extend({collection: collection}, options));
                 this.$el.append(grid.render().$el);
+                mediator.trigger('datagrid:created', grid, this.$el);
+                // @todo delete
                 registry.setElement('datagrid', options.name, grid);
                 mediator.trigger('datagrid:created:' + options.name, grid);
 
@@ -177,11 +179,18 @@ function($, _, Backbone, __, tools, mediator, registry, LoadingMask,
      * @export oro/datagrid-builder
      * @name   oro.datagridBuilder
      */
-    return function (el) {
-        var $container = $(el || document),
+    return function (builders) {
+        var $container = $(document),
             $grids = ($container.is(gridSelector) && $container) || $container.find(gridSelector);
         $grids.each(function (i, el) {
-            methods.initBuilder.call({$el: $(el)});
+            var $el = $(el);
+            _.each(builders, function (builder) {
+                if (!_.has(builder, 'init') || !$.isFunction(builder.init)) {
+                    throw new TypeError('Builder does not have init method');
+                }
+                builder.init($el);
+            });
+            methods.initBuilder.call({$el: $el});
         }).data('rendered', true);
     };
 });
