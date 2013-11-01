@@ -68,17 +68,6 @@ class LoadUserData extends AbstractFixture implements ContainerAwareInterface, O
     }
 
     /**
-     * Load attributes
-     *
-     * @param UserManager $entityManager
-     * @return void
-     */
-    public function loadAttributes($entityManager)
-    {
-        $this->assertHasRequiredAttributes($entityManager, array('company', 'gender'));
-    }
-
-    /**
      * Persist object
      *
      * @param UserManager $entityManager
