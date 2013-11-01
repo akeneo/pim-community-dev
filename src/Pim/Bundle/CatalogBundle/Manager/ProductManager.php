@@ -110,7 +110,7 @@ class ProductManager extends FlexibleManager
         $product = $this->getFlexibleRepository()->findWithSortedAttribute($id);
 
         if ($product) {
-            $this->addMissingProductValues($product);
+            $this->builder->addMissingProductValues($product);
         }
 
         return $product;
@@ -129,7 +129,7 @@ class ProductManager extends FlexibleManager
         $products = $this->getFlexibleRepository()->findByIds($ids);
 
         foreach ($products as $product) {
-            $this->addMissingProductValues($product);
+            $this->builder->addMissingProductValues($product);
         }
 
         return $products;
@@ -151,7 +151,7 @@ class ProductManager extends FlexibleManager
         $product = reset($products);
 
         if ($product) {
-            $this->addMissingProductValues($product);
+            $this->builder->addMissingProductValues($product);
         }
 
         return $product;
@@ -319,21 +319,6 @@ class ProductManager extends FlexibleManager
                 $product->addProductAssociation($productAssociation);
             }
         }
-    }
-
-    /**
-     * Add empty values for family and product-specific attributes for relevant scopes and locales
-     *
-     * It makes sure that if an attribute is translatable/scopable, then all values in the required locales/channels
-     * exist. If the attribute is not scopable or translatable, makes sure that a single value exists.
-     *
-     * @param ProductInterface $product
-     *
-     * @return null
-     */
-    protected function addMissingProductValues(ProductInterface $product)
-    {
-        $this->builder->addMissingProductValues($product);
     }
 
     /**
