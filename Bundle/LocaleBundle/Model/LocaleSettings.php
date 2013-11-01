@@ -320,7 +320,7 @@ class LocaleSettings
     public function getTimeZone()
     {
         if (null === $this->timeZone) {
-            $this->timeZone = $this->configManager->get('oro_locale.timezone', date_default_timezone_get());
+            $this->timeZone = $this->configManager->get('oro_locale.timezone');
             if (!$this->timeZone) {
                 $this->timeZone = date_default_timezone_get();
             }

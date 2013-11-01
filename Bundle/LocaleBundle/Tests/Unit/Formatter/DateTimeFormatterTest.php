@@ -93,12 +93,21 @@ class DateTimeFormatterTest extends IcuAwareTestCase
                 'language' => 'ru_RU',
             ),
             'string_date' => array(
-                'expected' => '14-01-01 12:00 AM',
+                'expected' => '14-01-01 3:00 AM',
                 'date' => '2014-01-01 00:00:00',
                 'dateType' => \IntlDateFormatter::SHORT,
                 'timeType' => \IntlDateFormatter::SHORT,
                 'locale' => 'en_CA',
-                'timeZone' => 'America/Los_Angeles',
+                'timeZone' => 'Europe/Kiev',
+                'language' => 'en_CA',
+            ),
+            'string_date_with_timezone' => array(
+                'expected' => '14-01-01 12:00 AM',
+                'date' => '2014-01-01 00:00:00+03',
+                'dateType' => \IntlDateFormatter::SHORT,
+                'timeType' => \IntlDateFormatter::SHORT,
+                'locale' => 'en_CA',
+                'timeZone' => 'Europe/Kiev',
                 'language' => 'en_CA',
             ),
             'integer_date' => array(
