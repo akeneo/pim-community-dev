@@ -82,18 +82,23 @@ abstract class AbstractViewsList
         return $choices;
     }
 
-    public function toViewData()
+    /**
+     * Returns metadata array
+     *
+     * @return array
+     */
+    public function getMetadata()
     {
         $result = $this->getList()->map(
             function (View $view) {
-                return $view->toViewData();
+                return $view->getMetadata();
             }
         );
 
-        return array(
+        return [
             'choices' => $this->toChoiceList(),
             'views'   => $result->toArray()
-        );
+        ];
     }
 
     /**

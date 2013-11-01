@@ -11,6 +11,8 @@ parameters:
 services:
     oro_datagrid.extension.formatter:
         class: %oro_datagrid.extension.formatter.class%
+        arguments:
+            - @translator
         tags:
             - { name: oro_datagrid.extension }
 

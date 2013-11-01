@@ -26,7 +26,7 @@ class ToolbarExtension extends AbstractExtension
         $options = $config->offsetGetByPath(self::TOOLBAR_OPTION_PATH, []);
         // validate configuration and pass default values back to config
         $configuration = $this->validateConfiguration(new Configuration(), ['toolbarOptions' => $options]);
-        $config->offsetAddToArrayByPath(self::OPTIONS_PATH, ['toolbarOptions' => $configuration]);
+        $config->offsetSetByPath(sprintf('%s[%s]', self::OPTIONS_PATH, 'toolbarOptions'), $configuration);
 
         return true;
     }

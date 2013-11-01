@@ -2,10 +2,22 @@
 
 namespace Oro\Bundle\DataGridBundle\Extension\Formatter\Property;
 
+use Symfony\Component\Translation\TranslatorInterface;
+
 use Oro\Bundle\DataGridBundle\Datasource\Orm\ResultRecordInterface;
+use Oro\Bundle\LocaleBundle\Twig\DateFormatExtension;
 
 class FieldProperty extends AbstractProperty
 {
+    /** @var TranslatorInterface */
+    protected $translator;
+
+    public function __construct(DateFormatExtension $dateFormatExtension, TranslatorInterface $translator)
+    {
+        parent::__construct($dateFormatExtension);
+        $this->translator = $translator;
+    }
+
     /**
      * {@inheritdoc}
      */

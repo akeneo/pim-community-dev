@@ -83,12 +83,12 @@ class View
      *
      * @return array
      */
-    public function toViewData()
+    public function getMetadata()
     {
-        return array(
+        return [
             'name'    => $this->getName(),
             'filters' => $this->getFiltersData(),
             'sorters' => $this->getSortersData()
-        );
+        ];
     }
 }

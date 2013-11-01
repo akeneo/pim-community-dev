@@ -11,8 +11,7 @@ use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 
 class GridViewsExtension extends AbstractExtension
 {
-    const VIEWS_LIST_KEY = 'views_list';
-
+    const VIEWS_LIST_KEY  = 'views_list';
     const VIEWS_PARAM_KEY = 'view';
 
     /**
@@ -43,10 +42,12 @@ class GridViewsExtension extends AbstractExtension
     {
         $params      = $this->getRequestParams()->get(RequestParameters::ADDITIONAL_PARAMETERS);
         $currentView = isset($params[self::VIEWS_PARAM_KEY]) ? $params[self::VIEWS_PARAM_KEY] : null;
+        $data->offsetAddToArray('state', ['gridView' => $currentView]);
 
         /** @var AbstractViewsList $list */
         $list = $config->offsetGetOr(self::VIEWS_LIST_KEY, false);
-        $data->offsetAddToArray('state', ['gridView' => $currentView])
-            ->offsetSet('gridViews', $list->toViewData());
+        if ($list !== false) {
+            $data->offsetSet('gridViews', $list->getMetadata());
+        }
     }
 }

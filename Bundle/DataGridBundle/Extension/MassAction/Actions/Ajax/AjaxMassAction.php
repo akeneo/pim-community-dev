@@ -30,8 +30,6 @@ class AjaxMassAction extends AbstractAction implements MassActionInterface
             $options['confirmation'] = true;
         }
 
-        parent::setOptions($options);
-
-        return $this;
+        return parent::setOptions($options);
     }
 }

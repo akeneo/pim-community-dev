@@ -4,31 +4,21 @@ namespace Oro\Bundle\DataGridBundle\Extension\MassAction;
 
 class MassActionResponse implements MassActionResponseInterface
 {
-    /**
-     * @var boolean
-     */
+    /** @var boolean */
     protected $successful;
 
-    /**
-     * @var string
-     */
+    /**  @var string */
     protected $message;
 
-    /**
-     * @var array
-     */
-    protected $options = array();
-
-    /**
-     * @param array $options
-     */
+    /** @var array */
+    protected $options = [];
 
     /**
      * @param boolean $successful
      * @param string  $message
      * @param array   $options
      */
-    public function __construct($successful, $message, array $options = array())
+    public function __construct($successful, $message, array $options = [])
     {
         $this->successful = $successful;
         $this->message    = $message;

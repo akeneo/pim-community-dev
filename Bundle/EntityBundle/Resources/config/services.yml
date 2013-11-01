@@ -1,6 +1,7 @@
 parameters:
     oro_entity.listener.navigation_listener.class:              Oro\Bundle\EntityBundle\EventListener\NavigationListener
     oro_entity.owner.entity_config_subscriber.class:            Oro\Bundle\EntityBundle\EventListener\EntityConfigSubscriber
+
 services:
     oro_entity.listener.navigation_listener:
         class: %oro_entity.listener.navigation_listener.class%

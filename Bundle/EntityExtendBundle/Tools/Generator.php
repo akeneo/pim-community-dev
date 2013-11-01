@@ -90,11 +90,30 @@ class Generator
         } else {
             $class->setProperty(PhpProperty::create('id')->setVisibility('protected'));
             $class->setMethod($this->generateClassMethod('getId', 'return $this->id;'));
+
+            /**
+             * TODO
+             * custom entity instance as manyToOne relation
+             * find the way to show it on view
+             * we should mark some field as title
+             */
+            $toString = array();
+            foreach ($item['property'] as $propKey => $propValue) {
+                if ($item['doctrine'][$item['entity']]['fields'][$propKey]['type'] == 'string') {
+                    $toString[] = '$this->get' . ucfirst(Inflector::camelize($propValue)) . '()';
+                }
+            }
+
+            $toStringBody = 'return (string) $this->getId();';
+            if (count($toString) > 0) {
+                $toStringBody = 'return (string)' . implode(' . ', $toString) . ';';
+            }
+            $class->setMethod($this->generateClassMethod('__toString', $toStringBody));
         }
 
         $class->setInterfaceNames(array('Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface'));
 
-        $this->generateClassMethods($item['property'], $class);
+        $this->generateClassMethods($item, $class);
 
         $classArray = explode('\\', $item['entity']);
         $className  = array_pop($classArray);
@@ -105,12 +124,14 @@ class Generator
     }
 
     /**
-     * @param $properties
+     * @param $config
      * @param $class
+     *
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
-    protected function generateClassMethods($properties, &$class)
+    protected function generateClassMethods($config, &$class)
     {
-        foreach ($properties as $property => $method) {
+        foreach ($config['property'] as $property => $method) {
             $class
                 ->setProperty(PhpProperty::create($property)->setVisibility('protected'))
                 ->setMethod(
@@ -123,6 +144,72 @@ class Generator
                     $this->generateClassMethod(
                         'set' . ucfirst(Inflector::camelize($method)),
                         '$this->' . $property . ' = $value; return $this;',
+                        array('value')
+                    )
+                );
+        }
+
+        foreach ($config['relation'] as $relation => $method) {
+            $class
+                ->setProperty(PhpProperty::create($relation)->setVisibility('protected'))
+                ->setMethod(
+                    $this->generateClassMethod(
+                        'get' . ucfirst(Inflector::camelize($method)),
+                        'return $this->' . $relation . ';'
+                    )
+                )
+                ->setMethod(
+                    $this->generateClassMethod(
+                        'set' . ucfirst(Inflector::camelize($method)),
+                        '$this->' . $relation . ' = $value; return $this;',
+                        array('value')
+                    )
+                );
+        }
+
+        foreach ($config['default'] as $default => $method) {
+            $class
+                ->setProperty(PhpProperty::create($default)->setVisibility('protected'))
+                ->setMethod(
+                    $this->generateClassMethod(
+                        'get' . ucfirst(Inflector::camelize($method)),
+                        'return $this->' . $default . ';'
+                    )
+                )
+                ->setMethod(
+                    $this->generateClassMethod(
+                        'set' . ucfirst(Inflector::camelize($method)),
+                        '$this->' . $default . ' = $value; return $this;',
+                        array('value')
+                    )
+                );
+        }
+
+        foreach ($config['addremove'] as $addremove => $method) {
+            $class
+                ->setMethod(
+                    $this->generateClassMethod(
+                        'add' . ucfirst(Inflector::camelize($method['self'])),
+                        'if (!$this->' . $addremove . ') {
+                            $this->' . $addremove . ' = new \Doctrine\Common\Collections\ArrayCollection();
+                        }
+                        if (!$this->' . $addremove . '->contains($value)) {
+                            $this->' . $addremove . '->add($value);
+                            $value->' . ($method['is_target_addremove'] ? 'add' : 'set')
+                        . ucfirst(Inflector::camelize($method['target'])) .'($this);
+                        }',
+                        array('value')
+                    )
+                )
+                ->setMethod(
+                    $this->generateClassMethod(
+                        'remove' . ucfirst(Inflector::camelize($method['self'])),
+                        'if ($this->' . $addremove . ' && $this->' . $addremove . '->contains($value)) {
+                            $this->' . $addremove . '->removeElement($value);
+                            $value->'. ($method['is_target_addremove'] ? 'remove' : 'set')
+                        . ucfirst(Inflector::camelize($method['target']))
+                        .'(' . ($method['is_target_addremove'] ? '$this' : 'null') . ');
+                        }',
                         array('value')
                     )
                 );

@@ -67,12 +67,22 @@ class ActionExtension extends AbstractExtension
                 'callable' => $callable
             ];
             $config->offsetAddToArrayByPath(
-                sprintf('%s[%s]', Configuration::PROPERTIES_PATH, static::METADATA_ACTION_CONFIGURATION_KEY),
+                sprintf('[%s][%s]', Configuration::PROPERTIES_KEY, static::METADATA_ACTION_CONFIGURATION_KEY),
                 $propertyConfig
             );
         }
 
         return !empty($actions);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getPriority()
+    {
+        // should  be applied before formatter extension
+        // this extension add dynamic property and this may cause a bug
+        return 200;
     }
 
     /**
@@ -85,13 +95,14 @@ class ActionExtension extends AbstractExtension
 
         foreach ($actions as $name => $action) {
             $action = $this->getActionObject($name, $action);
+            if ($action !== false) {
 
-            $metadata          = $action->getOptions()->toArray([], static::$excludeParams);
-            $metadata['label'] = isset($metadata['label']) ? $this->translator->trans(
-                $metadata['label']
-            ) : null;
+                $metadata          = $action->getOptions()->toArray([], static::$excludeParams);
+                $metadata['label'] = isset($metadata['label'])
+                    ? $this->translator->trans($metadata['label']) : null;
 
-            $actionsMetadata[$action->getName()] = $metadata;
+                $actionsMetadata[$action->getName()] = $metadata;
+            }
         }
 
         $data->offsetAddToArray(static::METADATA_ACTION_KEY, $actionsMetadata);

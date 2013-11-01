@@ -93,12 +93,11 @@ class OrmPagerExtension extends AbstractExtension
     }
 
     /**
-     * Pager should proceed closest to end of accepting chain
-     *
-     * @return int
+     * {@inheritDoc}
      */
     public function getPriority()
     {
+        // Pager should proceed closest to end of accepting chain
         return -240;
     }
 

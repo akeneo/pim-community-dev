@@ -115,14 +115,14 @@ class DeleteMassActionHandler implements MassActionHandlerInterface
         $responseMessage = $massAction->getOptions()->offsetGetByPath('[messages][success]', $this->responseMessage);
 
         $successful = $entitiesCount > 0;
-        $options    = array('count' => $entitiesCount);
+        $options    = ['count' => $entitiesCount];
 
         return new MassActionResponse(
             $successful,
             $this->translator->transChoice(
                 $responseMessage,
                 $entitiesCount,
-                array('%count%' => $entitiesCount)
+                ['%count%' => $entitiesCount]
             ),
             $options
         );

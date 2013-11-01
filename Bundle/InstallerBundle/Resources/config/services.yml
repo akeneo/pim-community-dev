@@ -18,7 +18,8 @@ services:
     oro_installer.yaml_persister:
         class:                                    %oro_installer.yaml_persister.class%
         arguments:
-            - %kernel.root_dir%/config/parameters.yml
+            - %kernel.root_dir%/config
+            - %kernel.environment%
 
     kernel.listener.install.event:
         class:                                    %oro_installer.listener.request.class%

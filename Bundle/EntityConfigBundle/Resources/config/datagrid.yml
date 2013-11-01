@@ -12,8 +12,7 @@ datagrid:
             query:
                 select:
                     - ce.id
-                    - ce.className as name
-                    - ce.className as module
+                    - ce.className
                     - ce.updated
                     - ce.mode
                 from:
@@ -22,12 +21,13 @@ datagrid:
             name:
                 label: Name
                 type: field
+                data_name: className
                 frontend_type: select
                 choices: @oro_entity_config.event_listener.entityconfig_grid_listener->getChoicesName
-            #@TODO module column should has "select" type
             module:
                 label: Module
                 type: field
+                data_name: className
                 frontend_type: select
                 choices: @oro_entity_config.event_listener.entityconfig_grid_listener->getChoicesModule
             updated:
@@ -62,23 +62,23 @@ datagrid:
         sorters:
             columns:
                 name:
-                    data_name: name
+                    data_name: ce.className
                 module:
-                    data_name: module
+                    data_name: ce.className
                 updated:
                     data_name: ce.updated
         filters:
             columns:
                 name:
                     type: choice
-                    data_name: name
+                    data_name: ce.className
                     options:
                         field_options:
                             multiple: true
                             choices: @oro_entity_config.event_listener.entityconfig_grid_listener->getChoicesName
                 module:
                     type: choice
-                    data_name: module
+                    data_name: ce.className
                     options:
                         field_options:
                             multiple: true
@@ -95,83 +95,99 @@ datagrid:
                 pageSize:
                     default_per_page: 50
         source:
-            acl_resource: oro_entityconfig_view
+            # TODO: check oro_entityconfig_view acl (403) right now
+            acl_resource: oro_entityconfig_manage
             type: orm
             query:
                 select:
                     - cf.id
-                    - cf.className
+                    - ce.className
                     - cf.fieldName
                     - cf.type
-
+                    - cf.mode
                 from:
                     - { table: OroEntityConfigBundle:FieldConfigModel, alias: cf }
+
         columns:
-            name:
+            fieldName:
                 label: Name
                 type: field
-                frontend_type: select
-                choices: @oro_entity_config.event_listener.entityconfig_grid_listener->getChoicesName
-            #@TODO module column should has "select" type
-            module:
-                label: Module
+                frontend_type: string
+            type:
+                label: Data Type
                 type: field
-                frontend_type: select
-                choices: @oro_entity_config.event_listener.entityconfig_grid_listener->getChoicesModule
-            updated:
-                label: Updated at
-                type: field
-                frontend_type: datetime
+                frontend_type: string
 
         properties:
             update_link:
                 type: url
-                route: oro_entityconfig_update
-                params:
-                    - id
-            view_link:
-                type: url
-                route: oro_entityconfig_view
+                route: oro_entityconfig_field_update
                 params:
                     - id
         actions:
             # @TODO check why those actions dont have ACL
             update:
                 type: navigate
-                label: Update
+                label: Edit
                 icon: edit
                 link: update_link
                 rowAction: true
-            view:
-                type: navigate
-                label: View
-                icon: book
-                link: view_link
         sorters:
             columns:
-                name:
-                    data_name: name
-                module:
-                    data_name: module
-                updated:
-                    data_name: ce.updated
-        filters:
-            columns:
-                name:
-                    type: choice
-                    data_name: name
-                    options:
-                        field_options:
-                            multiple: true
-                            choices: @oro_entity_config.event_listener.entityconfig_grid_listener->getChoicesName
-                module:
-                    type: choice
-                    data_name: module
-                    options:
-                        field_options:
-                            multiple: true
-                            choices: @oro_entity_config.event_listener.entityconfig_grid_listener->getChoicesModule
-                updated:
-                    type: datetime
-                    data_name: ce.updated
+                fieldName:
+                    data_name: cf.fieldName
+                type:
+                    data_name: cf.type
+        filters: ~
 
+    # Audit entity log grid
+    entity-audit-grid:
+        options:
+            entityHint: history
+        source:
+            acl_resource: oro_entityconfig_manage
+            type: orm
+            query:
+                select:
+                    - log.id
+                    - log.diff
+                    - log.loggedAt
+                    - >
+                      CONCAT(
+                        CONCAT(
+                            CONCAT(u.firstName, ' '),
+                            CONCAT(u.lastName, ' ')
+                        ),
+                        CONCAT(' - ', u.email)
+                      ) as author
+                from:
+                    - { table: OroEntityConfigBundle:ConfigLog, alias: log }
+                join:
+                    left:
+                        user:
+                            join: a.user
+                            alias: u
+
+        columns:
+            author:
+                label: Author
+                type: field
+                frontend_type: string
+            loggedAt:
+                label: Logged at
+                type: field
+                frontend_type: date
+            diffs:
+                label: Diffs
+                type: twig
+                template: OroEntityConfigBundle:Audit:data.html.twig
+                frontend_type: string
+                data_name: diff
+        sorters:
+            columns:
+                author:
+                    data_name: author
+                loggedAt:
+                    data_name: a.loggedAt
+            default:
+                loggedAt: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC

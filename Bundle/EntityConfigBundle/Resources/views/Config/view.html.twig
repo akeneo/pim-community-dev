@@ -28,12 +28,6 @@
     {% endif %}
 {% endblock navButtons %}
 
-{% block head_script %}
-    {{ parent() }}
-
-    {% placeholder prepare_grid with {'name': gridName, 'parameters': ''} %}
-{% endblock %}
-
 {% block pageHeader %}
     {% set breadcrumbs = {
         'entity':      entity,

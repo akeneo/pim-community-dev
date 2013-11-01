@@ -116,6 +116,10 @@ abstract class AbstractFilter implements FilterInterface
      */
     protected function applyWhere(QueryBuilder $qb, $parameter)
     {
+        if ($this->fixComparison($qb, $parameter)) {
+            return;
+        }
+
         /** @var QueryBuilder $queryBuilder */
         if ($this->getOr('filter_condition', self::CONDITION_AND) == self::CONDITION_OR) {
             $qb->orWhere($parameter);

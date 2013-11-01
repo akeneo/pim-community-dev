@@ -1,0 +1,2 @@
+classes:
+    - Oro\Bundle\SearchBundle\Controller\Api\SoapController

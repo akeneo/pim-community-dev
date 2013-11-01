@@ -5,7 +5,6 @@ namespace Oro\Bundle\SearchBundle\Extension;
 use Doctrine\ORM\EntityManager;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\Translation\TranslatorInterface;
 
 use Oro\Bundle\SearchBundle\Engine\ObjectMapper;
 use Oro\Bundle\LocaleBundle\Twig\DateFormatExtension;
@@ -25,7 +24,6 @@ class SearchResultProperty extends TwigTemplateProperty
 
     public function __construct(
         DateFormatExtension $dateFormatExtension,
-        TranslatorInterface $translator,
         \Twig_Environment $environment,
         EntityManager $em,
         ObjectMapper $mapper
@@ -33,7 +31,7 @@ class SearchResultProperty extends TwigTemplateProperty
         $this->em     = $em;
         $this->mapper = $mapper;
 
-        parent::__construct($dateFormatExtension, $translator, $environment);
+        parent::__construct($dateFormatExtension, $environment);
     }
 
     /**

@@ -4,7 +4,7 @@ namespace Oro\Bundle\EntityConfigBundle\Controller;
 
 use Doctrine\ORM\QueryBuilder;
 
-use Oro\Bundle\EntityConfigBundle\Provider\PropertyConfigContainer;
+use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,10 +12,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
+use Oro\Bundle\EntityConfigBundle\Provider\PropertyConfigContainer;
 use Oro\Bundle\EntityConfigBundle\Metadata\EntityMetadata;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
-use Oro\Bundle\EntityConfigBundle\Datagrid\EntityFieldsDatagridManager;
-use Oro\Bundle\EntityConfigBundle\Datagrid\ConfigDatagridManager;
 use Oro\Bundle\EntityConfigBundle\Entity\FieldConfigModel;
 use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
 
@@ -159,17 +158,6 @@ class ConfigController extends Controller
         /** @var \Oro\Bundle\EntityConfigBundle\Config\ConfigManager $configManager */
         $configManager = $this->get('oro_entity_config.config_manager');
 
-        // generate link for Entity grid
-        $link = '';
-        /** @var EntityMetadata $metadata */
-        if (class_exists($entity->getClassName())) {
-            $metadata = $configManager->getEntityMetadata($entity->getClassName());
-
-            if ($metadata && $metadata->routeName) {
-                $link = $this->generateUrl($metadata->routeName);
-            }
-        }
-
         /** @var ConfigProvider $entityConfigProvider */
         $entityConfigProvider = $this->get('oro_entity_config.provider.entity');
 
@@ -180,8 +168,26 @@ class ConfigController extends Controller
         /** @var ConfigProvider $ownershipConfigProvider */
         $ownershipConfigProvider = $this->get('oro_entity_config.provider.ownership');
 
-
+        /**
+         * TODO
+         * refactor and place into Helper class
+         */
+        // generate link for Entity grid
+        $link = '';
+        /** @var EntityMetadata $metadata */
         if (class_exists($entity->getClassName())) {
+            $metadata = $configManager->getEntityMetadata($entity->getClassName());
+            if ($metadata && $metadata->routeName) {
+                $link = $this->generateUrl($metadata->routeName);
+            }
+
+            if ($extendConfig->is('owner', ExtendManager::OWNER_CUSTOM)) {
+                $link = $this->generateUrl(
+                    'oro_entity_index',
+                    array('id' => str_replace('\\', '_', $entity->getClassName()))
+                );
+            }
+
             /** @var QueryBuilder $qb */
             $qb = $this->getDoctrine()->getManager()->createQueryBuilder();
             $qb->select('count(entity)');
@@ -209,6 +215,7 @@ class ConfigController extends Controller
     }
 
     /**
+     * TODO: Check if this method ever used
      * Lists Entity fields
      * @Route("/fields/{id}", name="oro_entityconfig_fields", requirements={"id"="\d+"}, defaults={"id"=0})
      * @Template()
@@ -217,31 +224,13 @@ class ConfigController extends Controller
     {
         $entity = $this->getDoctrine()->getRepository(EntityConfigModel::ENTITY_NAME)->find($id);
 
-        /** @var  EntityFieldsDatagridManager $datagridManager */
-        $datagridManager = $this->get('oro_entity_config.entityfieldsdatagrid.manager');
-        $datagridManager->setEntityId($id);
+        list ($layoutActions, $requireJsModules) = $this->getLayoutParams($entity);
 
-        $datagrid = $datagridManager->getDatagrid();
-
-        $datagridManager->getRouteGenerator()->setRouteParameters(
-            array(
-                'id' => $id
-            )
-        );
-
-        $view = 'json' == $request->getRequestFormat()
-            ? 'OroGridBundle:Datagrid:list.json.php'
-            : 'OroEntityConfigBundle:Config:fields.html.twig';
-
-        return $this->render(
-            $view,
-            array(
-                'buttonConfig' => $datagridManager->getLayoutActions($entity),
-                'datagrid'     => $datagrid->createView(),
-                'entity_id'    => $id,
-                'entity_name'  => $entity->getClassName(),
-                'require_js'   => $datagridManager->getRequireJsModules(),
-            )
+        return array(
+            'buttonConfig' => $layoutActions,
+            'entity_id'    => $id,
+            'entity_name'  => $entity->getClassName(),
+            'require_js'   => $requireJsModules,
         );
     }
 
@@ -331,7 +320,7 @@ class ConfigController extends Controller
 
             /** @var EntityConfigModel $entity */
             $entity = $this->getDoctrine()->getRepository(EntityConfigModel::ENTITY_NAME)
-                ->findOneBy(array('className' => $id));
+                ->findOneBy(['className' => $id]);
 
             if ($entity) {
                 /** @var ConfigProvider $entityConfigProvider */
@@ -340,11 +329,10 @@ class ConfigController extends Controller
                 /** @var FieldConfigModel $fields */
                 $entityFields = $this->getDoctrine()->getRepository(FieldConfigModel::ENTITY_NAME)
                     ->findBy(
-                        array(
+                        [
                             'entity' => $entity->getId(),
                             'type'   => 'string'
-                        ),
-                        array('fieldName' => 'ASC')
+                        ]
                     );
 
                 foreach ($entityFields as $field) {
