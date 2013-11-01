@@ -73,7 +73,18 @@ class ToolbarExtension extends AbstractExtension
             );
         }
 
+        $options = $config->offsetGetByPath(ToolbarExtension::OPTIONS_PATH, []);
+
+        // get user specified require js modules from options
+        if (isset($options[MetadataObject::REQUIRED_MODULES_KEY])) {
+            $data->offsetAddToArray(
+                MetadataObject::REQUIRED_MODULES_KEY,
+                $options[MetadataObject::REQUIRED_MODULES_KEY]
+            );
+            unset($options[MetadataObject::REQUIRED_MODULES_KEY]);
+        }
+
         // grid options passed under "options" node
-        $data->offsetAddToArray(self::METADATA_KEY, $config->offsetGetByPath(ToolbarExtension::OPTIONS_PATH, []));
+        $data->offsetAddToArray(self::METADATA_KEY, $options);
     }
 }

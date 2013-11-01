@@ -259,9 +259,10 @@ function($, _, __, mediator, Modal, AbstractListener) {
 
     ColumnFormListener.init = function () {
         mediator.on('datagrid:created', function (grid, $el) {
-            var metadata = $el.data('metadata');
-            if (metadata.columnListener) {
-                new ColumnFormListener(_.extend({grid: grid}, metadata.columnListener));
+            var metadata = $el.data('metadata'),
+                options = metadata.options || {};
+            if (options.columnListener) {
+                new ColumnFormListener(_.extend({grid: grid}, metadata.options.columnListener));
             }
         });
     };
