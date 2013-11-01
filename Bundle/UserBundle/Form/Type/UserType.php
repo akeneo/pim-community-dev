@@ -108,7 +108,7 @@ class UserType extends FlexibleType
                 'emails',
                 'collection',
                 array(
-                    'type'           => new EmailType(),
+                    'type'           => 'oro_user_email',
                     'allow_add'      => true,
                     'allow_delete'   => true,
                     'by_reference'   => false,
