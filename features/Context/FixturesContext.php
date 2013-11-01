@@ -861,7 +861,7 @@ class FixturesContext extends RawMinkContext
             list($field, $change) = explode(': ', $data['change']);
             list($old, $new) = explode(' => ', $change);
             $audit->setData(array($field => array('old' => $old, 'new' => $new)));
-            $user = $this->getUser(array('username' => $data['updatedBy']));
+            $user = $this->getUser($data['updatedBy']);
             $audit->setUsername($user->getUsername());
             $audit->setUser($user);
             $this->persist($audit);
@@ -1173,16 +1173,6 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @param string $username
-     *
-     * @Then /^there should be a "([^"]*)" user$/
-     */
-    public function thereShouldBeAUser($username)
-    {
-        $this->getUser(array('username' => $username));
-    }
-
-    /**
      * @param string $productCode
      * @param string $familyCode
      *
@@ -1211,6 +1201,17 @@ class FixturesContext extends RawMinkContext
         }
 
         return $product;
+    }
+
+    /**
+     * @param string $username
+     *
+     * @return User
+     * @Then /^there should be a "([^"]*)" user$/
+     */
+    public function getUser($username)
+    {
+        return $this->getEntityOrException('User', array('username' => $username));
     }
 
     /**
