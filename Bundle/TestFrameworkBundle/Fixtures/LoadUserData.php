@@ -29,8 +29,6 @@ class LoadUserData extends AbstractFixture implements ContainerAwareInterface, O
         /** @var UserManager $userManager */
         $userManager = $this->container->get('oro_user.manager');
 
-        $this->loadAttributes($userManager);
-
         $admin = $userManager->createUser();
 
         $role  = $manager
