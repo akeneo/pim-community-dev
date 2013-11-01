@@ -83,8 +83,7 @@ function($, _, __, ChoiceFilter, localeSettings) {
             dateFormat: localeSettings.getVendorDateTimeFormat('jquery_ui', 'date', 'mm/dd/yy'),
             altFormat:  'yy-mm-dd',
             className:      'date-filter-widget',
-            showButtonPanel: true,
-            currentText: 'Now'
+            showButtonPanel: true
         },
 
         /**

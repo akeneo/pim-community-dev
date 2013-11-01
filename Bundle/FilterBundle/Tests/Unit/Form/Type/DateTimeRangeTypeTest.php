@@ -33,10 +33,11 @@ class DateTimeRangeTypeTest extends AbstractTypeTestCase
             ->method('getTimezone')
             ->will($this->returnValue($this->defaultTimezone));
 
-        $this->formExtensions[] = new CustomFormExtension(array(new DateRangeType($localeSettings)));
+        $this->formExtensions[] = new CustomFormExtension(array(new DateRangeType()));
 
         parent::setUp();
-        $this->type = new DateTimeRangeType();
+
+        $this->type = new DateTimeRangeType($localeSettings);
     }
 
     /**
@@ -61,6 +62,10 @@ class DateTimeRangeTypeTest extends AbstractTypeTestCase
             array(
                 'defaultOptions' => array(
                     'field_type' => 'datetime',
+                    'field_options' => array(
+                        'format' => 'yyyy-MM-dd HH:mm',
+                        'view_timezone' => $this->defaultTimezone
+                    )
                 )
             )
         );
@@ -82,11 +87,11 @@ class DateTimeRangeTypeTest extends AbstractTypeTestCase
             'default timezone' => array(
                 'bindData' => array('start' => '2012-01-01 13:00', 'end' => '2013-01-01 18:00'),
                 'formData' => array(
-                    'start' => $this->createDateTime('2012-01-01 13:00', $this->defaultTimezone),
-                    'end' => $this->createDateTime('2013-01-01 18:00', $this->defaultTimezone)
+                    'start' => $this->createDateTime('2012-01-01 23:00', 'UTC'),
+                    'end' => $this->createDateTime('2013-01-02 04:00', 'UTC')
                 ),
                 'viewData' => array(
-                    'value' => array('start' => '2012-01-01T13:00:00-10:00', 'end' => '2013-01-01T18:00:00-10:00'),
+                    'value' => array('start' => '2012-01-01 13:00', 'end' => '2013-01-01 18:00'),
                 ),
             ),
             'custom timezone' => array(
@@ -108,17 +113,6 @@ class DateTimeRangeTypeTest extends AbstractTypeTestCase
                     )
                 )
             ),
-            'without time' => array(
-                'bindData' => array('start' => '1/13/1970', 'end' => '1/13/2014'),
-                'formData' => array(
-                    'start' => $this->createDateTime('1970-01-13 00:00:00', $this->defaultTimezone),
-                    'end' => $this->createDateTime('2014-01-13 00:00:00', $this->defaultTimezone)
-                ),
-                'viewData' => array(
-                    'value' => array('start' => '1970-01-13T00:00:00-10:00', 'end' => '2014-01-13T00:00:00-10:00'),
-                ),
-                'customOptions' => array()
-            ),
         );
     }
 
@@ -127,16 +121,47 @@ class DateTimeRangeTypeTest extends AbstractTypeTestCase
      *
      * @param string $dateString
      * @param string|null $timeZone
+     * @param string $format
      * @return \DateTime
+     * @throws \Exception
      */
     private function createDateTime(
         $dateString,
-        $timeZone = null
+        $timeZone = null,
+        $format = 'yyyy-MM-dd HH:mm'
     ) {
+        $pattern = $format ? $format : null;
+
         if (!$timeZone) {
-            $timeZone = $this->defaultTimezone ? $this->defaultTimezone : date_default_timezone_get();
+            $timeZone = date_default_timezone_get();
         }
 
-        return new \DateTime($dateString, new \DateTimeZone($timeZone));
+        $calendar = \IntlDateFormatter::GREGORIAN;
+        $intlDateFormatter = new \IntlDateFormatter(
+            \Locale::getDefault(),
+            \IntlDateFormatter::NONE,
+            \IntlDateFormatter::NONE,
+            $timeZone,
+            $calendar,
+            $pattern
+        );
+        $intlDateFormatter->setLenient(false);
+        $timestamp = $intlDateFormatter->parse($dateString);
+
+        if (intl_get_error_code() != 0) {
+            throw new \Exception(intl_get_error_message());
+        }
+
+        // read timestamp into DateTime object - the formatter delivers in UTC
+        $dateTime = new \DateTime(sprintf('@%s UTC', $timestamp));
+        if ('UTC' !== $timeZone) {
+            try {
+                $dateTime->setTimezone(new \DateTimeZone($timeZone));
+            } catch (\Exception $e) {
+                throw new \Exception($e->getMessage(), $e->getCode(), $e);
+            }
+        }
+
+        return $dateTime;
     }
 }

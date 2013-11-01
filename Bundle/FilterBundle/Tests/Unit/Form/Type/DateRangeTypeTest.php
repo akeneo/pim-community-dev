@@ -20,15 +20,7 @@ class DateRangeTypeTest extends AbstractTypeTestCase
     {
         parent::setUp();
 
-        $localeSettings = $this->getMockBuilder('Oro\Bundle\LocaleBundle\Model\LocaleSettings')
-            ->disableOriginalConstructor()
-            ->setMethods(array('getTimezone'))
-            ->getMock();
-        $localeSettings->expects($this->any())
-            ->method('getTimezone')
-            ->will($this->returnValue('UTC'));
-
-        $this->type = new DateRangeType($localeSettings);
+        $this->type = new DateRangeType();
     }
 
     /**
