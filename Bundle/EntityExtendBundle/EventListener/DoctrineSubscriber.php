@@ -85,18 +85,43 @@ class DoctrineSubscriber implements EventSubscriber
 
                     switch ($fieldId->getFieldType()) {
                         case 'manyToOne':
-                            $cmBuilder->addManyToOne(
+                            /*$cmBuilder->addManyToOne(
                                 $fieldName,
                                 $relation['target_entity'],
                                 $targetFieldName
-                            );
+                            );*/
+
+                            $builder = $cmBuilder->createManyToOne($fieldName, $relation['target_entity']);
+                            if ($targetFieldName) {
+                                $builder->inversedBy($targetFieldName);
+                            }
+                            /*$builder->addJoinColumn(
+                                $fieldName,
+                                'id',
+                                $onDelete = 'SET NULL'
+                            );*/
+                            $builder->cascadeRemove();
+//                            $builder->addJoinColumn(
+//                                $fieldName . '_id',
+//                                'id',
+//                                true,
+//                                false,
+//                                '\'SET NULL\''
+//                            );
+                            $builder->build();
                             break;
                         case 'oneToMany':
-                            $cmBuilder->addOneToMany(
+                            /*$cmBuilder->addOneToMany(
                                 $fieldName,
                                 $relation['target_entity'],
                                 $targetFieldName
-                            );
+                            );*/
+                            $builder = $cmBuilder->createOneToMany($fieldName, $relation['target_entity']);
+                            $builder->mappedBy($targetFieldName);
+
+                            $builder->cascadeRemove();
+                            $builder->build();
+
                             $cmBuilder->addOwningOneToOne(
                                 $defaultName,
                                 $relation['target_entity']
@@ -105,7 +130,6 @@ class DoctrineSubscriber implements EventSubscriber
                         case 'manyToMany':
                             if ($relation['owner']) {
                                 $builder = $cmBuilder->createManyToMany($fieldName, $relation['target_entity']);
-
                                 if ($targetFieldName) {
                                     $builder->inversedBy($targetFieldName);
                                 }
