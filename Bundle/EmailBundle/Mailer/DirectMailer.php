@@ -4,17 +4,18 @@ namespace Oro\Bundle\EmailBundle\Mailer;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\IntrospectableContainerInterface;
+use Oro\Bundle\EmailBundle\Exception\NotSupportedException;
 
 /**
  * The goal of this class is to send an email directly, not using a mail spool
  * even when it is configured for a base mailer
  */
-class DirectMailer
+class DirectMailer extends \Swift_Mailer
 {
     /**
      * @var \Swift_Mailer
      */
-    protected $mailer;
+    protected $baseMailer;
 
     /**
      * @var ContainerInterface
@@ -24,24 +25,33 @@ class DirectMailer
     /**
      * Constructor
      *
-     * @param \Swift_Mailer      $mailer
+     * @param \Swift_Mailer      $baseMailer
      * @param ContainerInterface $container
      */
-    public function __construct(\Swift_Mailer $mailer, ContainerInterface $container)
+    public function __construct(\Swift_Mailer $baseMailer, ContainerInterface $container)
     {
-        $this->mailer    = $mailer;
-        $this->container = $container;
+        $this->baseMailer = $baseMailer;
+        $this->container  = $container;
+
+        $transport = $this->baseMailer->getTransport();
+        if ($transport instanceof \Swift_Transport_SpoolTransport) {
+            $transport = $this->findRealTransport();
+            if (!$transport) {
+                $transport = \Swift_NullTransport::newInstance();
+            }
+        }
+        parent::__construct($transport);
     }
 
     /**
-     * Creates a new instance of an email message.
+     * Register a plugin using a known unique key (e.g. myPlugin).
      *
-     * @param string $service
-     * @return \Swift_Mime_Message
+     * @param \Swift_Events_EventListener $plugin
+     * @throws \Oro\Bundle\EmailBundle\Exception\NotSupportedException
      */
-    public function createMessage($service = 'message')
+    public function registerPlugin(\Swift_Events_EventListener $plugin)
     {
-        return $this->mailer->createMessage($service);
+        throw new NotSupportedException('The registerPlugin() is not supported for this mailer.');
     }
 
     /**
@@ -58,43 +68,31 @@ class DirectMailer
      */
     public function send(\Swift_Mime_Message $message, &$failedRecipients = null)
     {
-        $result    = 0;
-        $transport = $this->mailer->getTransport();
-        if ($transport instanceof \Swift_Transport_SpoolTransport) {
-            $realTransport = $this->findRealTransport();
-            if ($realTransport) {
-                // start a transport if needed
-                $needToStopRealTransport = false;
-                if (!$realTransport->isStarted()) {
-                    $realTransport->start();
-                    $needToStopRealTransport = true;
-                }
-                // send a mail
-                $sendException = null;
-                try {
-                    $result = $realTransport->send($message, $failedRecipients);
-                } catch (\Swift_RfcComplianceException $ex) {
-                    foreach ($message->getTo() as $address => $name) {
-                        $failedRecipients[] = $address;
-                    }
-                } catch (\Exception $unexpectedEx) {
-                    $sendException = $unexpectedEx;
-                }
-                // stop a transport if it was started before
-                if ($needToStopRealTransport) {
-                    try {
-                        $realTransport->stop();
-                    } catch (\Exception $ex) {
-                        // ignore errors here
-                    }
-                }
-                // rethrow send failure
-                if ($sendException) {
-                    throw $sendException;
-                }
+        $result = 0;
+        // start a transport if needed
+        $needToStopRealTransport = false;
+        if (!$this->getTransport()->isStarted()) {
+            $this->getTransport()->start();
+            $needToStopRealTransport = true;
+        }
+        // send a mail
+        $sendException = null;
+        try {
+            $result = parent::send($message, $failedRecipients);
+        } catch (\Exception $unexpectedEx) {
+            $sendException = $unexpectedEx;
+        }
+        // stop a transport if it was started before
+        if ($needToStopRealTransport) {
+            try {
+                $this->getTransport()->stop();
+            } catch (\Exception $ex) {
+                // ignore errors here
             }
-        } else {
-            $result = $this->mailer->send($message, $failedRecipients);
+        }
+        // rethrow send failure
+        if ($sendException) {
+            throw $sendException;
         }
 
         return $result;
@@ -116,7 +114,7 @@ class DirectMailer
                 continue;
             }
             $mailer = $this->container->get(sprintf('swiftmailer.mailer.%s', $name));
-            if ($mailer === $this->mailer) {
+            if ($mailer === $this->baseMailer) {
                 $realTransport = $this->container->get(sprintf('swiftmailer.mailer.%s.transport.real', $name));
                 break;
             }

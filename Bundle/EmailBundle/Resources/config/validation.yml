@@ -21,5 +21,3 @@ Oro\Bundle\EmailBundle\Form\Model\Email:
             - NotBlank:     ~
         subject:
             - NotBlank:     ~
-        body:
-            - NotBlank:     ~

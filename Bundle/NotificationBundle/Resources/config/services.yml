@@ -1,5 +1,5 @@
 parameters:
-    oro_notification.send_from: example@example.com
+    oro_notification.send_from: welmag@ukr.net
 
     # Entity classes
     oro_notification.event_entity.class: Oro\Bundle\NotificationBundle\Entity\Event

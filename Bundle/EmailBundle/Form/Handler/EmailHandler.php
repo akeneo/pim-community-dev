@@ -13,7 +13,6 @@ use Doctrine\ORM\EntityManager;
 
 use Oro\Bundle\EmailBundle\Form\Model\Email;
 use Oro\Bundle\EmailBundle\Builder\EmailEntityBuilder;
-use Oro\Bundle\EmailBundle\Mailer\DirectMailer;
 use Oro\Bundle\EmailBundle\Entity\Util\EmailUtil;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -52,7 +51,7 @@ class EmailHandler
     protected $emailEntityBuilder;
 
     /**
-     * @var DirectMailer
+     * @var \Swift_Mailer
      */
     protected $mailer;
 
@@ -73,7 +72,7 @@ class EmailHandler
         SecurityContextInterface $securityContext,
         EmailAddressManager $emailAddressManager,
         EmailEntityBuilder $emailEntityBuilder,
-        DirectMailer $mailer,
+        \Swift_Mailer $mailer,
         LoggerInterface $logger,
         ConfigExtension $configExtension
     ) {
@@ -96,6 +95,7 @@ class EmailHandler
      */
     public function process(Email $model)
     {
+        $result = false;
         if ($this->request->getMethod() === 'GET') {
             $this->initModel($model);
         }
@@ -109,40 +109,41 @@ class EmailHandler
                     $messageDate = new \DateTime('now', new \DateTimeZone('UTC'));
                     $message     = $this->mailer->createMessage();
                     $message->setDate($messageDate->getTimestamp());
-                    $message->setSubject($model->getSubject());
                     $message->setFrom($this->getAddresses($model->getFrom()));
                     $message->setTo($this->getAddresses($model->getTo()));
+                    $message->setSubject($model->getSubject());
                     $message->setBody($model->getBody(), 'text/plain');
                     $sent = $this->mailer->send($message);
-
-                    if ($sent) {
-                        $origin = $this->em->getRepository('OroEmailBundle:InternalEmailOrigin')
-                            ->findOneBy(array('name' => InternalEmailOrigin::BAP));
-                        $this->emailEntityBuilder->setOrigin($origin);
-                        $email = $this->emailEntityBuilder->email(
-                            $model->getSubject(),
-                            $model->getFrom(),
-                            $model->getTo(),
-                            $messageDate,
-                            $messageDate,
-                            $messageDate
-                        );
-                        $email->setFolder($origin->getFolder(EmailFolder::SENT));
-                        $emailBody = $this->emailEntityBuilder->body($model->getBody(), false, true);
-                        $email->setEmailBody($emailBody);
-                        $this->emailEntityBuilder->getBatch()->persist($this->em);
-                        $this->em->flush();
+                    if (!$sent) {
+                        throw new \Swift_SwiftException('An email was not delivered.');
                     }
+
+                    $origin = $this->em->getRepository('OroEmailBundle:InternalEmailOrigin')
+                        ->findOneBy(array('name' => InternalEmailOrigin::BAP));
+                    $this->emailEntityBuilder->setOrigin($origin);
+                    $email = $this->emailEntityBuilder->email(
+                        $model->getSubject(),
+                        $model->getFrom(),
+                        $model->getTo(),
+                        $messageDate,
+                        $messageDate,
+                        $messageDate
+                    );
+                    $email->setFolder($origin->getFolder(EmailFolder::SENT));
+                    $emailBody = $this->emailEntityBuilder->body($model->getBody(), false, true);
+                    $email->setEmailBody($emailBody);
+                    $this->emailEntityBuilder->getBatch()->persist($this->em);
+                    $this->em->flush();
+
+                    $result = true;
                 } catch (\Exception $ex) {
                     $this->logger->error('Email sending failed.', array('exception' => $ex));
                     $this->form->addError(new FormError('Unable to send the email.'));
                 }
-
-                return true;
             }
         }
 
-        return false;
+        return $result;
     }
 
     /**
@@ -157,34 +158,28 @@ class EmailHandler
             $model->setGridName($this->request->query->get('gridName'));
         }
         if ($this->request->query->has('from')) {
-            $model->setFrom($this->request->query->get('from'));
+            $from = $this->request->query->get('from');
+            if (!empty($from)) {
+                $this->preciseFullEmailAddress($from);
+            }
+            $model->setFrom($from);
         } else {
             $user = $this->getUser();
-            $model->setFrom(
-                EmailUtil::buildFullEmailAddress(
-                    $user->getEmail(),
-                    $this->getOwnerName($user->getFirstname(), $user->getLastname())
-                )
-            );
+            if ($user) {
+                $model->setFrom(
+                    EmailUtil::buildFullEmailAddress(
+                        $user->getEmail(),
+                        $this->getOwnerName($user->getFirstname(), $user->getLastname())
+                    )
+                );
+            }
         }
         if ($this->request->query->has('to')) {
             $to = trim($this->request->query->get('to'));
             if (!empty($to)) {
-                if (!EmailUtil::isFullEmailAddress($to)) {
-                    $repo         = $this->emailAddressManager->getEmailAddressRepository($this->em);
-                    $emailAddress = $repo->findOneBy(array('email' => $to));
-                    if ($emailAddress) {
-                        $owner = $emailAddress->getOwner();
-                        if ($owner) {
-                            $to = EmailUtil::buildFullEmailAddress(
-                                $to,
-                                $this->getOwnerName($owner->getFirstname(), $owner->getLastname())
-                            );
-                        }
-                    }
-                }
-                $model->setTo(array($to));
+                $this->preciseFullEmailAddress($to);
             }
+            $model->setTo(array($to));
         }
         if ($this->request->query->has('subject')) {
             $subject = trim($this->request->query->get('subject'));
@@ -207,7 +202,7 @@ class EmailHandler
         if (is_string($addresses)) {
             $addresses = array($addresses);
         }
-        if (!is_array($addresses) && $addresses instanceof \Iterator) {
+        if (!is_array($addresses) && !$addresses instanceof \Iterator) {
             throw new \InvalidArgumentException(
                 'The $addresses argument must be a string or a list of strings (array or Iterator)'
             );
@@ -223,6 +218,27 @@ class EmailHandler
         }
 
         return $result;
+    }
+
+    /**
+     * @param string $emailAddress
+     * @return string
+     */
+    protected function preciseFullEmailAddress(&$emailAddress)
+    {
+        if (!EmailUtil::isFullEmailAddress($emailAddress)) {
+            $repo            = $this->emailAddressManager->getEmailAddressRepository($this->em);
+            $emailAddressObj = $repo->findOneBy(array('email' => $emailAddress));
+            if ($emailAddressObj) {
+                $owner = $emailAddressObj->getOwner();
+                if ($owner) {
+                    $emailAddress = EmailUtil::buildFullEmailAddress(
+                        $emailAddress,
+                        $this->getOwnerName($owner->getFirstname(), $owner->getLastname())
+                    );
+                }
+            }
+        }
     }
 
     /**

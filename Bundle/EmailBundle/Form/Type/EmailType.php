@@ -18,7 +18,7 @@ class EmailType extends AbstractType
             ->add('from', 'oro_email_email_address', array('required' => true))
             ->add('to', 'oro_email_email_address', array('required' => true, 'multiple' => true))
             ->add('subject', 'text', array('required' => true))
-            ->add('body', 'textarea', array('required' => true));
+            ->add('body', 'textarea', array('required' => false));
     }
 
     /**

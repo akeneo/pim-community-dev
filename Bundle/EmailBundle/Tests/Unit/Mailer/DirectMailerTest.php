@@ -12,26 +12,10 @@ class DirectMailerTest extends \PHPUnit_Framework_TestCase
     /** @var \PHPUnit_Framework_MockObject_MockObject */
     protected $container;
 
-    /** @var DirectMailer */
-    protected $mailer;
-
     protected function setUp()
     {
         $this->baseMailer = $this->getMailerMock();
         $this->container  = $this->getMock('Symfony\Component\DependencyInjection\ContainerInterface');
-        $this->mailer     = new DirectMailer($this->baseMailer, $this->container);
-    }
-
-    public function testCreateMessage()
-    {
-        $message = new \Swift_Message();
-
-        $this->baseMailer->expects($this->once())
-            ->method('createMessage')
-            ->with('test')
-            ->will($this->returnValue($message));
-
-        $this->assertTrue($message === $this->mailer->createMessage('test'));
     }
 
     public function testSendNonSpooled()
@@ -43,12 +27,26 @@ class DirectMailerTest extends \PHPUnit_Framework_TestCase
         $this->baseMailer->expects($this->once())
             ->method('getTransport')
             ->will($this->returnValue($transport));
-        $this->baseMailer->expects($this->once())
+        $this->container->expects($this->never())
+            ->method('getParameter');
+
+        $transport->expects($this->at(0))
+            ->method('isStarted')
+            ->will($this->returnValue(false));
+        $transport->expects($this->once())
+            ->method('start');
+        $transport->expects($this->at(2))
+            ->method('isStarted')
+            ->will($this->returnValue(true));
+        $transport->expects($this->once())
             ->method('send')
             ->with($this->identicalTo($message), $this->identicalTo($failedRecipients))
             ->will($this->returnValue(1));
+        $transport->expects($this->once())
+            ->method('stop');
 
-        $this->assertEquals(1, $this->mailer->send($message, $failedRecipients));
+        $mailer = new DirectMailer($this->baseMailer, $this->container);
+        $this->assertEquals(1, $mailer->send($message, $failedRecipients));
     }
 
     public function testSendSpooled()
@@ -80,19 +78,74 @@ class DirectMailerTest extends \PHPUnit_Framework_TestCase
                     )
                 )
             );
-        $realTransport->expects($this->once())
+
+        $realTransport->expects($this->at(0))
             ->method('isStarted')
             ->will($this->returnValue(false));
         $realTransport->expects($this->once())
             ->method('start');
-        $realTransport->expects($this->once())
-            ->method('stop');
+        $realTransport->expects($this->at(2))
+            ->method('isStarted')
+            ->will($this->returnValue(true));
         $realTransport->expects($this->once())
             ->method('send')
             ->with($this->identicalTo($message), $this->identicalTo($failedRecipients))
             ->will($this->returnValue(1));
+        $realTransport->expects($this->once())
+            ->method('stop');
 
-        $this->assertEquals(1, $this->mailer->send($message, $failedRecipients));
+        $mailer = new DirectMailer($this->baseMailer, $this->container);
+        $this->assertEquals(1, $mailer->send($message, $failedRecipients));
+    }
+
+    /**
+     * @expectedException \Exception
+     */
+    public function testSendWithException()
+    {
+        $message          = new \Swift_Message();
+        $failedRecipients = array();
+        $transport        = $this->getMock('\Swift_Transport');
+
+        $this->baseMailer->expects($this->once())
+            ->method('getTransport')
+            ->will($this->returnValue($transport));
+        $this->container->expects($this->never())
+            ->method('getParameter');
+
+        $transport->expects($this->at(0))
+            ->method('isStarted')
+            ->will($this->returnValue(false));
+        $transport->expects($this->once())
+            ->method('start');
+        $transport->expects($this->at(2))
+            ->method('isStarted')
+            ->will($this->returnValue(true));
+        $transport->expects($this->once())
+            ->method('send')
+            ->with($this->identicalTo($message), $this->identicalTo($failedRecipients))
+            ->will($this->throwException(new \Exception('test failure')));
+        $transport->expects($this->once())
+            ->method('stop');
+
+        $mailer = new DirectMailer($this->baseMailer, $this->container);
+        $this->assertEquals(1, $mailer->send($message, $failedRecipients));
+    }
+
+    /**
+     * @expectedException \Oro\Bundle\EmailBundle\Exception\NotSupportedException
+     */
+    public function testRegisterPlugin()
+    {
+        $transport = $this->getMock('\Swift_Transport');
+
+        $this->baseMailer->expects($this->once())
+            ->method('getTransport')
+            ->will($this->returnValue($transport));
+
+        $mailer = new DirectMailer($this->baseMailer, $this->container);
+        $plugin = $this->getMock('\Swift_Events_EventListener');
+        $mailer->registerPlugin($plugin);
     }
 
     protected function getMailerMock()
