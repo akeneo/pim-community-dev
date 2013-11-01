@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\DataAuditBundle\Loggable;
 
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\PersistentCollection;
 
 use Oro\Bundle\DataAuditBundle\Loggable\LoggableManager as OroLoggableManager;
