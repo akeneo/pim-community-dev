@@ -1420,13 +1420,15 @@ class FixturesContext extends RawMinkContext
                     );
                 }
                 $option = $options->first();
-                $option = $option ?: null;
 
-                if ($attribute->getAttributeType() === $this->attributeTypes['simpleselect']) {
-                    $value->setOption($option);
-                } else {
-                    $value->addOption($option);
+                if ($option) {
+                    if ($attribute->getAttributeType() === $this->attributeTypes['simpleselect']) {
+                        $value->setOption($option);
+                    } else {
+                        $value->addOption($option);
+                    }
                 }
+
                 break;
 
             default:
