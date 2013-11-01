@@ -14,6 +14,7 @@ use Pim\Bundle\CatalogBundle\Entity\ProductAssociation;
 use Pim\Bundle\CatalogBundle\Entity\ProductValue;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Bundle\CatalogBundle\Calculator\CompletenessCalculator;
+use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 
 /**
  * Product manager
@@ -30,14 +31,14 @@ class ProductManager extends FlexibleManager
     protected $mediaManager;
 
     /**
-     * @var CurrencyManager
-     */
-    protected $currencyManager;
-
-    /**
      * @var CompletenessCalculator
      */
     protected $completenessCalculator;
+
+    /**
+     * @var ProductBuilder
+     */
+    protected $builder;
 
     /**
      * Constructor
@@ -48,7 +49,7 @@ class ProductManager extends FlexibleManager
      * @param EventDispatcherInterface $eventDispatcher        Event dispatcher
      * @param AttributeTypeFactory     $attributeTypeFactory   Attribute type factory
      * @param MediaManager             $mediaManager           Media manager
-     * @param CurrencyManager          $currencyManager        Currency manager
+     * @param ProductBuilder           $builder                Product builder
      * @param CompletenessCalculator   $completenessCalculator Completeness calculator
      */
     public function __construct(
@@ -58,7 +59,7 @@ class ProductManager extends FlexibleManager
         EventDispatcherInterface $eventDispatcher,
         AttributeTypeFactory $attributeTypeFactory,
         MediaManager $mediaManager,
-        CurrencyManager $currencyManager,
+        ProductBuilder $builder,
         CompletenessCalculator $completenessCalculator
     ) {
         parent::__construct(
@@ -70,8 +71,8 @@ class ProductManager extends FlexibleManager
         );
 
         $this->mediaManager           = $mediaManager;
-        $this->currencyManager        = $currencyManager;
         $this->completenessCalculator = $completenessCalculator;
+        $this->builder                = $builder;
     }
 
     /**
@@ -212,7 +213,7 @@ class ProductManager extends FlexibleManager
         $requiredValues = $this->getExpectedValues($attribute);
 
         foreach ($requiredValues as $value) {
-            $this->addProductValue($product, $attribute, $value['locale'], $value['scope']);
+            $this->builder->addProductValue($product, $attribute, $value['locale'], $value['scope']);
         }
     }
 
@@ -334,181 +335,7 @@ class ProductManager extends FlexibleManager
      */
     protected function addMissingProductValues(ProductInterface $product)
     {
-        $attributes = $product->getAttributes();
-
-        if ($family = $product->getFamily()) {
-            foreach ($family->getAttributes() as $attribute) {
-                $attributes[] = $attribute;
-            }
-        }
-
-        if (!is_array($attributes)) {
-            return;
-        }
-
-        $attributes = array_unique($attributes);
-
-        foreach ($attributes as $attribute) {
-            $requiredValues = $this->getExpectedValues($attribute);
-            $existingValues = array();
-
-            foreach ($product->getValues() as $value) {
-                if ($value->getAttribute() === $attribute) {
-                    $existingValues[] = array('locale' => $value->getLocale(), 'scope' => $value->getScope());
-                }
-            }
-
-            $missingValues = array_filter(
-                $requiredValues,
-                function ($value) use ($existingValues) {
-                    return !in_array($value, $existingValues);
-                }
-            );
-
-            $redundantValues = array_filter(
-                $existingValues,
-                function ($value) use ($requiredValues) {
-                    return !in_array($value, $requiredValues);
-                }
-            );
-
-            foreach ($missingValues as $value) {
-                $this->addProductValue($product, $attribute, $value['locale'], $value['scope']);
-            }
-
-            foreach ($redundantValues as $value) {
-                $this->removeProductValue($product, $attribute, $value['locale'], $value['scope']);
-            }
-        }
-
-        $this->addMissingPrices($product);
-    }
-
-    /**
-     * Returns an array of values that are expected to link product to an attribute depending on locale and scope
-     * Each value is returned as an array with 'scope' and 'locale' keys
-     *
-     * @param ProductAttribute $attribute
-     *
-     * @return array:array
-     */
-    protected function getExpectedValues(ProductAttribute $attribute)
-    {
-        $requiredValues = array();
-
-        if ($attribute->getScopable()) {
-            $channels = $this->getChannels();
-            if ($attribute->getTranslatable()) {
-                foreach ($channels as $channel) {
-                    foreach ($channel->getLocales() as $locale) {
-                        $requiredValues[] = array('locale' => $locale->getCode(), 'scope' => $channel->getCode());
-                    }
-                }
-            } else {
-                foreach ($channels as $channel) {
-                    $requiredValues[] = array('locale' => null, 'scope' => $channel->getCode());
-                }
-            }
-        } elseif ($attribute->getTranslatable()) {
-            $locales = $this->getLocales();
-            foreach ($locales as $locale) {
-                $requiredValues[] = array('locale' => $locale->getCode(), 'scope' => null);
-            }
-        } else {
-            $requiredValues[] = array('locale' => null, 'scope' => null);
-        }
-
-        return $requiredValues;
-    }
-
-    /**
-     * Add missing prices (a price per currency)
-     *
-     * @param ProductInterface $product the product
-     *
-     * @return null
-     */
-    protected function addMissingPrices(ProductInterface $product)
-    {
-        foreach ($product->getValues() as $value) {
-            if ($value->getAttribute()->getAttributeType() === 'pim_catalog_price_collection') {
-                $activeCurrencies = $this->currencyManager->getActiveCodes();
-                $value->addMissingPrices($activeCurrencies);
-                $value->removeDisabledPrices($activeCurrencies);
-            }
-        }
-    }
-
-    /**
-     * Return available channels
-     *
-     * @return ArrayCollection
-     */
-    protected function getChannels()
-    {
-        return $this->storageManager->getRepository('PimCatalogBundle:Channel')->findAll();
-    }
-
-    /**
-     * Return available locales
-     *
-     * @return ArrayCollection
-     */
-    protected function getLocales()
-    {
-        return $this->storageManager->getRepository('PimCatalogBundle:Locale')->getActivatedLocales();
-    }
-
-    /**
-     * Add a missing value to the product
-     *
-     * @param ProductInterface $product
-     * @param Attribute        $attribute
-     * @param string           $locale
-     * @param string           $scope
-     *
-     * @return null
-     */
-    protected function addProductValue(ProductInterface $product, $attribute, $locale = null, $scope = null)
-    {
-        $value = $this->createProductValue();
-        if ($locale) {
-            $value->setLocale($locale);
-        }
-        $value->setScope($scope);
-        $value->setAttribute($attribute);
-
-        $product->addValue($value);
-    }
-
-    /**
-     * Remove a redundant value from the product
-     *
-     * @param ProductInterface $product
-     * @param Attribute        $attribute
-     * @param string           $locale
-     * @param string           $scope
-     *
-     * @return null
-     */
-    protected function removeProductValue(ProductInterface $product, $attribute, $locale = null, $scope = null)
-    {
-        $values = $product->getValues();
-        $values = $values->filter(
-            function ($value) use ($attribute, $locale, $scope) {
-                if ($value->getAttribute() === $attribute
-                    && $value->getScope() === $scope
-                    && $value->getLocale() === $locale) {
-                    return true;
-                }
-
-                return false;
-            }
-        );
-        foreach ($values as $value) {
-            $product->removeValue($value);
-            $value->setEntity(null);
-        }
+        $this->builder->addMissingProductValues($product);
     }
 
     /**
