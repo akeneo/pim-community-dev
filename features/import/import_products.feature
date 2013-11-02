@@ -190,6 +190,7 @@ Feature: Execute a job
       | code | activated |
       | USD  | yes       |
       | EUR  | yes       |
+    And a "SKU-001" product
     And the following product values:
       | product | attribute  | value            |
       | SKU-001 | Prices     | 100 EUR, 150 USD |
