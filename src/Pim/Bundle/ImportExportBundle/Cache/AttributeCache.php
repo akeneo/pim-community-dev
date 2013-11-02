@@ -102,7 +102,8 @@ class AttributeCache
     /**
      * Returns the attribute corresponding to the specified code
      *
-     * @param  string           $code
+     * @param string $code
+     *
      * @return ProductAttribute
      */
     public function getAttribute($code)
@@ -155,7 +156,8 @@ class AttributeCache
     /**
      * Returns the required attribute codes for a product
      *
-     * @param  ProductInterface $product
+     * @param ProductInterface $product
+     *
      * @return array
      */
     public function getRequiredAttributeCodes(ProductInterface $product)
@@ -182,7 +184,8 @@ class AttributeCache
     /**
      * Returns the attribute codes for a group
      *
-     * @param  Group $group
+     * @param Group $group
+     *
      * @return array
      */
     protected function getGroupAttributeCodes(Group $group)
@@ -198,7 +201,8 @@ class AttributeCache
     /**
      * Returns the attribute codes for a family
      *
-     * @param  Family $family
+     * @param Family $family
+     *
      * @return array
      */
     protected function getFamilyAttributeCodes(Family $family)
@@ -214,7 +218,8 @@ class AttributeCache
     /**
      * Returns the attribute codes for an object
      *
-     * @param  object $object
+     * @param object $object
+     *
      * @return array
      */
     protected function getAttributeCodes($object)
@@ -230,7 +235,8 @@ class AttributeCache
     /**
      * Returns an array of tokens for each column label.
      *
-     * @param  array $columnLabels
+     * @param array $columnLabels
+     *
      * @return array
      */
     protected function getColumnLabelTokens($columnLabels)
@@ -246,7 +252,8 @@ class AttributeCache
     /**
      * Sets the columns property
      *
-     * @param  array                     $columnLabelTokens
+     * @param array $columnLabelTokens
+     *
      * @throws \InvalidArgumentException
      */
     protected function setColumns(array $columnLabelTokens)
@@ -288,7 +295,9 @@ class AttributeCache
     /**
      * Sets the attributes and identifierAttributes properties
      *
-     * @param  array                     $columnLabelTokens
+     * @param array $columnLabelTokens
+     *
+     * @return null
      * @throws \InvalidArgumentException
      */
     protected function setAttributes($columnLabelTokens)

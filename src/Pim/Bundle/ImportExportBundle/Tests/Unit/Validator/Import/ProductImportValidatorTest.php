@@ -18,6 +18,9 @@ class ProductImportValidatorTest extends \PHPUnit_Framework_TestCase
     protected $constraintGuesser;
     protected $translator;
 
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         $this->validator = $this->getMock('Symfony\Component\Validator\ValidatorInterface');
@@ -34,11 +37,22 @@ class ProductImportValidatorTest extends \PHPUnit_Framework_TestCase
             $this->translator
         );
     }
+
+    /**
+     * @param string $message
+     * @param array  $params
+     *
+     * @return string
+     */
     public function translate($message, array $params = array())
     {
         return 'trans-' . strtr($message, $params);
     }
 
+    /**
+     * Test related method
+     * @return null
+     */
     public function testValidateProductProperties()
     {
         $test = $this;
@@ -58,15 +72,20 @@ class ProductImportValidatorTest extends \PHPUnit_Framework_TestCase
                 )
             );
 
-            $this->assertEquals(
-                array('key1: trans-error "val1"'),
-                $this->productValidator->validateProductProperties(
-                    $product,
-                    array('key1' => 'val1', 'key2' => 'val2')
-                )
-            );
+        $this->assertEquals(
+            array('key1: trans-error "val1"'),
+            $this->productValidator->validateProductProperties(
+                $product,
+                array('key1' => 'val1', 'key2' => 'val2')
+            )
+        );
     }
 
+    /**
+     * @param array $violationMessages
+     *
+     * @return \Symfony\Component\Validator\ConstraintViolationList
+     */
     public function getViolationListMock(array $violationMessages)
     {
         $list = $this->getMock('Symfony\Component\Validator\ConstraintViolationList');
@@ -90,6 +109,10 @@ class ProductImportValidatorTest extends \PHPUnit_Framework_TestCase
         return $list;
     }
 
+    /**
+     * Test related method
+     * @return null
+     */
     public function testGetAttributeConstraints()
     {
         $constraints = array(
@@ -117,7 +140,7 @@ class ProductImportValidatorTest extends \PHPUnit_Framework_TestCase
                 )
             );
 
-        foreach ($constraints as $code=>$attributeConstraints) {
+        foreach ($constraints as $code => $attributeConstraints) {
             $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductAttribute');
             $attribute->expects($this->any())
                 ->method('getCode')
@@ -134,6 +157,10 @@ class ProductImportValidatorTest extends \PHPUnit_Framework_TestCase
             );
         }
     }
+
+    /**
+     * @return \Pim\Bundle\CatalogBundle\Model\ProductInterface
+     */
     protected function getMockProduct()
     {
         return $this->getMock('Pim\Bundle\CatalogBundle\Model\ProductInterface');

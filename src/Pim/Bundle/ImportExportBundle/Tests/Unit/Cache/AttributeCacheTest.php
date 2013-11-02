@@ -22,6 +22,9 @@ class AttributeCacheTest extends \PHPUnit_Framework_TestCase
     protected $families;
     protected $groups;
 
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         $this->attributes = array();
@@ -38,6 +41,10 @@ class AttributeCacheTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($this->repository));
         $this->attributeCache = new AttributeCache($this->doctrine);
     }
+
+    /**
+     * Test related method
+     */
     protected function initializeAttributes()
     {
         $this->repository->expects($this->once())
@@ -45,12 +52,27 @@ class AttributeCacheTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnCallback(array($this, 'getAttributes')));
         $this->addAttribute('identifier', false, false, AttributeCache::IDENTIFIER_ATTRIBUTE_TYPE);
     }
+
+    /**
+     * @param array $params
+     *
+     * @return array
+     */
     public function getAttributes($params)
     {
         $this->assertEquals($this->expectedQueryCodes ?: array_keys($this->attributes), array_values($params['code']));
 
         return $this->attributes;
     }
+
+    /**
+     * @param string  $code
+     * @param boolean $translatable
+     * @param boolean $scopable
+     * @param string  $attributeType
+     *
+     * @return \Pim\Bundle\CatalogBundle\Entity\ProductAttribute
+     */
     public function addAttribute($code, $translatable = false, $scopable = false, $attributeType = 'default')
     {
         $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductAttribute');
@@ -76,6 +98,9 @@ class AttributeCacheTest extends \PHPUnit_Framework_TestCase
         return $this->attributes[$code];
     }
 
+    /**
+     * Test related method
+     */
     public function testInitialize()
     {
         $this->assertFalse($this->attributeCache->isInitialized());
@@ -143,6 +168,9 @@ class AttributeCacheTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->attributeCache->isInitialized());
     }
 
+    /**
+     * Test related method
+     */
     public function testClear()
     {
         $this->initializeAttributes();
@@ -205,6 +233,9 @@ class AttributeCacheTest extends \PHPUnit_Framework_TestCase
         $this->attributeCache->initialize(array('identifier', 'col1', 'col2'));
     }
 
+    /**
+     * Test related method
+     */
     public function testGetRequiredAttributes()
     {
         $product1 = $this->getProductMock(
@@ -248,6 +279,12 @@ class AttributeCacheTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @param array $expected
+     * @param array $actual
+     *
+     * @return boolean
+     */
     protected function assertEqualArrays($expected, $actual)
     {
         sort($expected);
@@ -256,6 +293,15 @@ class AttributeCacheTest extends \PHPUnit_Framework_TestCase
         return $this->assertEquals($expected, $actual);
     }
 
+    /**
+     * @param integer $productId
+     * @param array   $productAttributeCodes
+     * @param string  $familyCode
+     * @param array   $familyAttributeCodes
+     * @param array   $categories
+     *
+     * @return \Pim\Bundle\CatalogBundle\Model\ProductInterface
+     */
     protected function getProductMock(
         $productId = null,
         $productAttributeCodes = array(),
@@ -310,6 +356,13 @@ class AttributeCacheTest extends \PHPUnit_Framework_TestCase
         return $product;
     }
 
+    /**
+     * @param object $entity
+     * @param string $code
+     * @param array  $attributeCodes
+     *
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
     protected function addAttributeCollection($entity, $code, array $attributeCodes)
     {
         $test = $this;

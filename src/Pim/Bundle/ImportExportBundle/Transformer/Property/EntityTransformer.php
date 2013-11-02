@@ -23,7 +23,6 @@ class EntityTransformer implements PropertyTransformerInterface
      * Constructor
      *
      * @param EntityCache $entityCache
-     * @param array       $options
      */
     public function __construct(EntityCache $entityCache)
     {

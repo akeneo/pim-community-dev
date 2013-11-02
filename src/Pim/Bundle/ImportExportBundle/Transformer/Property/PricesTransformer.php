@@ -110,8 +110,10 @@ class PricesTransformer implements PropertyTransformerInterface, ProductValueUpd
     /**
      * Creates a ProductPrice object
      *
-     * @param  float        $data
-     * @param  string       $currency
+     * @param ProductValueInterface $productValue
+     * @param float                 $data
+     * @param string                $currency
+     *
      * @return ProductPrice
      */
     protected function addPrice(ProductValueInterface $productValue, $data, $currency)
