@@ -3,13 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
-use Symfony\Component\Routing\RouterInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
-use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\Validator\ValidatorInterface;
-use Symfony\Component\Translation\TranslatorInterface;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
@@ -58,44 +51,17 @@ class FamilyController extends AbstractDoctrineController
     /**
      * Constructor
      *
-     * @param Request                  $request
-     * @param EngineInterface          $templating
-     * @param RouterInterface          $router
-     * @param SecurityContextInterface $securityContext
-     * @param FormFactoryInterface     $formFactory
-     * @param ValidatorInterface       $validator
-     * @param TranslatorInterface      $translator
-     * @param RegistryInterface        $doctrine
-     * @param GridRenderer             $gridRenderer
-     * @param DatagridWorkerInterface  $dataGridWorker
-     * @param ChannelManager           $channelManager
-     * @param ProductManager           $productManager
+     * @param GridRenderer            $gridRenderer
+     * @param DatagridWorkerInterface $dataGridWorker
+     * @param ChannelManager          $channelManager
+     * @param ProductManager          $productManager
      */
     public function __construct(
-        Request $request,
-        EngineInterface $templating,
-        RouterInterface $router,
-        SecurityContextInterface $securityContext,
-        FormFactoryInterface $formFactory,
-        ValidatorInterface $validator,
-        TranslatorInterface $translator,
-        RegistryInterface $doctrine,
         GridRenderer $gridRenderer,
         DatagridWorkerInterface $dataGridWorker,
         ChannelManager $channelManager,
         ProductManager $productManager
     ) {
-        parent::__construct(
-            $request,
-            $templating,
-            $router,
-            $securityContext,
-            $formFactory,
-            $validator,
-            $translator,
-            $doctrine
-        );
-
         $this->gridRenderer   = $gridRenderer;
         $this->dataGridWorker = $dataGridWorker;
         $this->channelManager = $channelManager;

@@ -108,6 +108,8 @@ services:
             - '@pim_catalog.manager.locale'
             - '@pim_versioning.manager.audit'
             - '@oro_security.security_facade'
+        calls:
+            - [ setProductManagerLocale ]
 
     pim_catalog.controller.mass_edit_action:
         scope: request

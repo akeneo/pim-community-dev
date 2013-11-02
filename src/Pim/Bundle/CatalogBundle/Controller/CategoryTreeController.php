@@ -6,13 +6,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
-use Symfony\Component\Routing\RouterInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
-use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\Validator\ValidatorInterface;
-use Symfony\Component\Translation\TranslatorInterface;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -55,42 +48,15 @@ class CategoryTreeController extends AbstractDoctrineController
     /**
      * Constructor
      *
-     * @param Request                  $request
-     * @param EngineInterface          $templating
-     * @param RouterInterface          $router
-     * @param SecurityContextInterface $securityContext
-     * @param FormFactoryInterface     $formFactory
-     * @param ValidatorInterface       $validator
-     * @param TranslatorInterface      $translator
-     * @param RegistryInterface        $doctrine
-     * @param GridRenderer             $gridRenderer
-     * @param DatagridWorkerInterface  $dataGridWorker
-     * @param CategoryManager          $categoryManager
+     * @param GridRenderer            $gridRenderer
+     * @param DatagridWorkerInterface $dataGridWorker
+     * @param CategoryManager         $categoryManager
      */
     public function __construct(
-        Request $request,
-        EngineInterface $templating,
-        RouterInterface $router,
-        SecurityContextInterface $securityContext,
-        FormFactoryInterface $formFactory,
-        ValidatorInterface $validator,
-        TranslatorInterface $translator,
-        RegistryInterface $doctrine,
         GridRenderer $gridRenderer,
         DatagridWorkerInterface $dataGridWorker,
         CategoryManager $categoryManager
     ) {
-        parent::__construct(
-            $request,
-            $templating,
-            $router,
-            $securityContext,
-            $formFactory,
-            $validator,
-            $translator,
-            $doctrine
-        );
-
         $this->gridRenderer    = $gridRenderer;
         $this->dataGridWorker  = $dataGridWorker;
         $this->categoryManager = $categoryManager;
