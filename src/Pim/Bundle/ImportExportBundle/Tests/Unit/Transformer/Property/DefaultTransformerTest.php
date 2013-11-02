@@ -1,0 +1,23 @@
+<?php
+
+namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Transformer\Property;
+
+use Pim\Bundle\ImportExportBundle\Transformer\Property\DefaultTransformer;
+
+/**
+ * Tests related class
+ *
+ * @author    Antoine Guigan <antoine@akeneo.com>
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+class DefaultTransformerTest
+{
+    public function testTransform()
+    {
+        $transformer = new DefaultTransformer;
+        $this->assertEquals(null, $transformer->transform(''));
+        $this->assertEquals(null, $transformer->transform(' '));
+        $this->assertEquals('test', $transformer->transform(' test '));
+    }
+}
