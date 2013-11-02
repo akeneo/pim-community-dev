@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Transformer\Property;
 
-use Pim\Bundle\ImportExportBundle\Transformer\Property\DefaultTransformer;
+use Pim\Bundle\ImportExportBundle\Transformer\Property\DateTransformer;
 
 /**
  * Tests related class
@@ -11,11 +11,11 @@ use Pim\Bundle\ImportExportBundle\Transformer\Property\DefaultTransformer;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class DateTransformerTest
+class DateTransformerTest extends \PHPUnit_Framework_TestCase
 {
     public function testTransform()
     {
-        $transformer = new DefaultTransformer;
+        $transformer = new DateTransformer;
         $this->assertEquals(null, $transformer->transform(''));
         $this->assertEquals(null, $transformer->transform(' '));
         $this->assertEquals(new \DateTime('2012-07-10'), $transformer->transform(' 2012-07-10 '));
