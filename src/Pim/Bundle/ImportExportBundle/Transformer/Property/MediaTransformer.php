@@ -23,7 +23,7 @@ class MediaTransformer implements PropertyTransformerInterface, ProductValueUpda
     {
         $value = trim($value);
 
-        if (is_dir($value)) {
+        if (empty($value) || is_dir($value)) {
             return;
         }
 
@@ -45,9 +45,11 @@ class MediaTransformer implements PropertyTransformerInterface, ProductValueUpda
             return;
         }
 
-        if (!$productValue->getMedia()) {
-            $productValue->setMedia(new Media);
+        $media = $productValue->getMedia();
+        if (!$media) {
+            $media = new Media;
+            $productValue->setMedia($media);
         }
-        $productValue->getMedia()->setFile($data);
+        $media->setFile($data);
     }
 }
