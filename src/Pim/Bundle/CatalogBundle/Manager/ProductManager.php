@@ -159,7 +159,7 @@ class ProductManager extends FlexibleManager
 
     /**
      * Returns a product for the import process
-     * 
+     *
      * @param array            $attributes
      * @param ProductAttribute $identifierAttribute
      * @param string           $code
