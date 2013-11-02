@@ -6,6 +6,8 @@ use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Entity\Product;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
+use Pim\Bundle\CatalogBundle\Entity\Locale;
+use Pim\Bundle\CatalogBundle\Entity\Channel;
 
 /**
  * Test related class
@@ -27,19 +29,63 @@ class ProductBuilderTest extends \PHPUnit_Framework_TestCase
 
         $family = new Family();
         $attribute = new ProductAttribute();
-        $attribute->setCode('myatt');
+        $attribute->setCode('one');
         $family->addAttribute($attribute);
         $product->setFamily($family);
 
         $builder->addMissingProductValues($product);
-        $this->assertEquals(count($product->getValues()), 1);
+        $this->assertValues($product, array('one'));
 
         $attributeTwo = new ProductAttribute();
         $attributeTwo->setCode('two');
+        $attributeTwo->setTranslatable(true);
         $family->addAttribute($attributeTwo);
 
         $builder->addMissingProductValues($product);
-        $this->assertEquals(count($product->getValues()), 2);
+        $this->assertValues($product, array('one', 'twoen_US', 'twofr_FR'));
+
+        $attributeThree = new ProductAttribute();
+        $attributeThree->setCode('three');
+        $attributeThree->setScopable(true);
+        $family->addAttribute($attributeThree);
+
+        $builder->addMissingProductValues($product);
+        $this->assertValues($product, array('one', 'twoen_US', 'twofr_FR', 'threeecom', 'threeprint'));
+
+        $attributeFour = new ProductAttribute();
+        $attributeFour->setCode('four');
+        $attributeFour->setTranslatable(true);
+        $attributeFour->setScopable(true);
+        $family->addAttribute($attributeFour);
+
+        $builder->addMissingProductValues($product);
+        $this->assertValues(
+            $product,
+            array(
+                'one', 'twoen_US', 'twofr_FR', 'threeecom', 'threeprint',
+                'fouren_USecom', 'fouren_USprint', 'fourfr_FRecom', 'fourfr_FRprint'
+            )
+        );
+    }
+
+    /**
+     * Check product values
+     *
+     * @param Product $product   the product
+     * @param array   $valueKeys the expected value keys (attCode + locale + scope)
+     *
+     * @return boolean
+     */
+    protected function assertValues($product, $valueKeys)
+    {
+        $nbValues = count($valueKeys);
+        $values = $product->getValues();
+        $this->assertEquals(count($values), $nbValues);
+
+        foreach ($values as $value) {
+            $key = $value->getAttribute()->getCode().$value->getLocale().$value->getScope();
+            $this->assertTrue(in_array($key, $valueKeys));
+        }
     }
 
     /**
@@ -78,13 +124,20 @@ class ProductBuilderTest extends \PHPUnit_Framework_TestCase
      */
     protected function getObjectManagerMock()
     {
-        $manager = $this->getMock('Doctrine\Common\Persistence\ObjectManager');
+        $mock = $this->getMock('Doctrine\Common\Persistence\ObjectManager');
 
-        $manager->expects($this->any())
+        $mock->expects($this->any())
             ->method('getClassMetadata')
             ->will($this->returnValue($this->getClassMetadataMock()));
+        $repos = array(
+            array('PimCatalogBundle:Locale', $this->getLocaleRepositoryMock()),
+            array('PimCatalogBundle:Channel', $this->getChannelRepositoryMock()),
+        );
+        $mock->expects($this->any())
+            ->method('getRepository')
+            ->will($this->returnValueMap($repos));
 
-        return $manager;
+        return $mock;
     }
 
     /**
@@ -106,6 +159,73 @@ class ProductBuilderTest extends \PHPUnit_Framework_TestCase
                     array('values' => array('targetEntity' => 'Pim\Bundle\CatalogBundle\Entity\ProductValue'))
                 )
             );
+
+        return $mock;
+    }
+
+    /**
+     * @return array
+     */
+    protected function getLocales()
+    {
+        $localeEn = new Locale();
+        $localeEn->setCode('en_US');
+        $localeFr = new Locale();
+        $localeFr->setCode('fr_FR');
+
+        return array($localeEn, $localeFr);
+    }
+
+    /**
+     * @return Doctrine\ORM\EntityRepository
+     */
+    protected function getLocaleRepositoryMock()
+    {
+        $mock = $this
+            ->getMockBuilder('Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $mock
+            ->expects($this->any())
+            ->method('getActivatedLocales')
+            ->will($this->returnValue($this->getLocales()));
+
+        return $mock;
+    }
+
+    /**
+     * @return array
+     */
+    protected function getChannels()
+    {
+        $codes = array('ecom', 'print');
+        $channels = array();
+
+        foreach ($codes as $code) {
+            $channel = new Channel();
+            $channel->setCode($code);
+            foreach ($this->getLocales() as $locale) {
+                $channel->addLocale($locale);
+            }
+            $channels[]= $channel;
+        }
+
+        return $channels;
+    }
+
+    /**
+     * @return Doctrine\ORM\EntityRepository
+     */
+    protected function getChannelRepositoryMock()
+    {
+        $mock = $this
+            ->getMockBuilder('Doctrine\ORM\EntityRepository')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $mock
+            ->expects($this->any())
+            ->method('findAll')
+            ->will($this->returnValue($this->getChannels()));
 
         return $mock;
     }
