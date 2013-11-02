@@ -260,8 +260,8 @@ class AttributeCacheTest extends \PHPUnit_Framework_TestCase
         $productId = null,
         $productAttributeCodes = array(),
         $familyCode = null,
-        array $familyAttributeCodes=array(),
-        array $categories=array()
+        array $familyAttributeCodes = array(),
+        array $categories = array()
     ) {
         $product = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Model\ProductInterface')
             ->setMethods(array('getId', 'getValues', 'getFamily', 'getGroups'))
@@ -295,7 +295,7 @@ class AttributeCacheTest extends \PHPUnit_Framework_TestCase
         }
 
         $groups = array();
-        foreach ($categories as $groupCode=>$groupAttributeCodes) {
+        foreach ($categories as $groupCode => $groupAttributeCodes) {
             if (!isset($this->groups[$groupCode])) {
                 $this->groups[$groupCode] = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Group');
                 $this->addAttributeCollection($this->groups[$groupCode], $groupCode, $groupAttributeCodes);
