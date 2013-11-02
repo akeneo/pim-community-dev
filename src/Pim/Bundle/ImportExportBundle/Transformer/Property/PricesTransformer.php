@@ -50,12 +50,14 @@ class PricesTransformer implements PropertyTransformerInterface, ProductValueUpd
             }
 
             if (0 === preg_match('/^([0-9]*\.?[0-9]*) (\w+)$/', $price, $matches)) {
-                throw new InvalidValueException('Malformed price: %value%', array('%value%' => $price));
+                throw new InvalidValueException('Malformed price: "%value%"', array('%value%' => $price));
             }
 
-            if (in_array($matches[2], $currencies)) {
-                $result[$matches[2]] = $matches[1];
+            if (!in_array($matches[2], $currencies)) {
+                throw new InvalidValueException('Currency "%currency%" is not active', array('%currency%' => $matches[2]));
             }
+
+            $result[$matches[2]] = $matches[1];
         }
 
         return $result;
@@ -76,7 +78,7 @@ class PricesTransformer implements PropertyTransformerInterface, ProductValueUpd
 
         foreach ($productValue->getPrices() as $price) {
             $currency = $price->getCurrency();
-            if (isset($data[$currency])) {
+            if (!isset($data[$currency])) {
                 $price->setData($data[$currency]);
                 $removeCurrency($currency);
                 unset($data[$currency]);

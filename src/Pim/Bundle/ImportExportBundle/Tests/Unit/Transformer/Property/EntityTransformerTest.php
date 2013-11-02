@@ -89,12 +89,9 @@ class EntityTransformerTest extends \PHPUnit_Framework_TestCase
     public function testFailingMultipleTransform()
     {
         $this->addEntity('class', 'code1');
-        $this->assertSame(
-            array_values($this->entities['class']),
-            $this->transformer->transform(
-                ' code1,code2, code3',
-                array('class' => 'class', 'multiple' => true)
-            )
+        $this->transformer->transform(
+            ' code1,code2, code3',
+            array('class' => 'class', 'multiple' => true)
         );
     }
 }
