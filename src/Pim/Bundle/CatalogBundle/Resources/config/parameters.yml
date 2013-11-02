@@ -1,5 +1,6 @@
 parameters:
-    pim_catalog.manager.product.class:                Pim\Bundle\CatalogBundle\Manager\ProductManager
+    pim_catalog.manager.product.class:                  Pim\Bundle\CatalogBundle\Manager\ProductManager
+    pim_catalog.builder.product.class:                  Pim\Bundle\CatalogBundle\Builder\ProductBuilder
 
     pim_catalog.entity.product.class:                   Pim\Bundle\CatalogBundle\Entity\Product
     pim_catalog.form.type.product.view.class:           Pim\Bundle\CatalogBundle\Form\View\ProductFormView
