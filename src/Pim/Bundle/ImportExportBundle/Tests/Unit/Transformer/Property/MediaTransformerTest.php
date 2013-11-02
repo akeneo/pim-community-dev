@@ -83,4 +83,13 @@ class MediaTransformerTest extends \PHPUnit_Framework_TestCase
         }
         unlink($f);
     }
+    /**
+     * @expectedException Pim\Bundle\ImportExportBundle\Exception\InvalidValueException
+     * @expectedExceptionMessage File not found: "/bogus-file"
+     */
+    public function testUnvalid()
+    {
+        $transformer = new MediaTransformer;
+        $transformer->transform('/bogus-file');
+    }
 }

@@ -3,6 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Transformer\Property;
 
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Oro\Bundle\FlexibleEntityBundle\Entity\Media;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\ImportExportBundle\Exception\InvalidValueException;
@@ -29,8 +30,8 @@ class MediaTransformer implements PropertyTransformerInterface, ProductValueUpda
 
         try {
             $file = new File($value);
-        } catch (Exception $e) {
-            throw new InvalidValueException('File not found: %value%', array('%value%' => $value));
+        } catch (FileNotFoundException $e) {
+            throw new InvalidValueException('File not found: "%value%"', array('%value%' => $value));
         }
 
         return $file;
