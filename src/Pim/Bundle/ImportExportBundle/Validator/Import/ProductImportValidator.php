@@ -60,9 +60,10 @@ class ProductImportValidator
     /**
      * Validates a list of property
      *
-     * @param  ProductInterface $product
-     * @param  array            $values
-     * @return type             an array of errors
+     * @param ProductInterface $product
+     * @param array            $values
+     *
+     * @return array an array of errors
      */
     public function validateProductProperties(ProductInterface $product, array $values)
     {
@@ -83,10 +84,11 @@ class ProductImportValidator
     /**
      * Validates a ProductValue
      *
-     * @param  string           $propertyPath
-     * @param  ProductAttribute $attribute
-     * @param  mixed            $value
-     * @return array            an array of errors
+     * @param string           $propertyPath
+     * @param ProductAttribute $attribute
+     * @param mixed            $value
+     *
+     * @return array an array of errors
      */
     public function validateProductValue($propertyPath, ProductAttribute $attribute, $value)
     {
@@ -102,7 +104,8 @@ class ProductImportValidator
     /**
      * Returns an array of constraints for a given attribute
      *
-     * @param  Entity\ProductAttribute $attribute
+     * @param Entity\ProductAttribute $attribute
+     *
      * @return string
      */
     public function getAttributeConstraints(ProductAttribute $attribute)
@@ -122,8 +125,9 @@ class ProductImportValidator
     /**
      * Returns an array of error strings
      *
-     * @param  string                           $propertyPath
-     * @param  ConstraintViolationListInterface $violations
+     * @param string                           $propertyPath
+     * @param ConstraintViolationListInterface $violations
+     *
      * @return array
      */
     public function getErrors($propertyPath, ConstraintViolationListInterface $violations)
@@ -143,9 +147,10 @@ class ProductImportValidator
     /**
      * Returns a translated error message
      *
-     * @param  string $propertyPath
-     * @param  string $message
-     * @param  array  $parameters
+     * @param string $propertyPath
+     * @param string $message
+     * @param array  $parameters
+     *
      * @return string
      */
     public function getTranslatedErrorMessage($propertyPath, $message, array $parameters = array())
@@ -160,8 +165,9 @@ class ProductImportValidator
     /**
      * Returns a translated InvalidValueException message
      *
-     * @param  string                $propertyPath
-     * @param  InvalidValueException $exception
+     * @param string                $propertyPath
+     * @param InvalidValueException $exception
+     *
      * @return string
      */
     public function getTranslatedExceptionMessage($propertyPath, InvalidValueException $exception)

@@ -72,9 +72,10 @@ class OrmProductTransformer
     /**
      * Returns a ProductInterface object from an array of scalar values
      *
-     * @param  array                $values   the values to transform
-     * @param  array                $mapping  a mapping of columns which should be renamed
-     * @param  array                $defaults default values for the object
+     * @param array $values   the values to transform
+     * @param array $mapping  a mapping of columns which should be renamed
+     * @param array $defaults default values for the object
+     *
      * @return ProductInterface
      * @throws InvalidItemException
      */
@@ -141,7 +142,7 @@ class OrmProductTransformer
     /**
      * Remaps values according to $mapping
      *
-     * @param array $values
+     * @param array &$values
      * @param array $mapping
      */
     protected function mapValues(array &$values, array $mapping)
@@ -157,8 +158,8 @@ class OrmProductTransformer
     /**
      * Loads a product from the database, or creates if it doesn't exist
      *
-     * @param  array            $values
-     * @param  array            $defaults
+     * @param array $values
+     *
      * @return ProductInterface
      */
     protected function createOrLoadProduct(array $values)
@@ -180,9 +181,10 @@ class OrmProductTransformer
     /**
      * Sets the values for the properties
      *
-     * @param  ProductInterface $product
-     * @param  array            $values
-     * @return array            an array of errors
+     * @param ProductInterface $product
+     * @param array            $values
+     *
+     * @return array an array of errors
      */
     protected function setPropertyValues(ProductInterface $product, array $values)
     {
@@ -222,9 +224,10 @@ class OrmProductTransformer
     /**
      * Sets the values of the attributes
      *
-     * @param  ProductInterface $product
-     * @param  array            $attributeValues
-     * @return array            an array of errors
+     * @param ProductInterface $product
+     * @param array            $attributeValues
+     *
+     * @return array an array of errors
      */
     protected function setAttributeValues(ProductInterface $product, array $attributeValues)
     {
@@ -289,8 +292,9 @@ class OrmProductTransformer
     /**
      * Returns a transformed value
      *
-     * @param  string $value
-     * @param  array  $transformerConfig
+     * @param string $value
+     * @param array  $transformerConfig
+     *
      * @return type
      */
     protected function getTransformedValue($value, array $transformerConfig)

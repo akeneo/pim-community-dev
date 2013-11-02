@@ -36,8 +36,9 @@ class EntityCache
     /**
      * Returns an entity by code
      *
-     * @param  string $class
-     * @param  string $code
+     * @param string $class
+     * @param string $code
+     *
      * @return object
      */
     public function find($class, $code)
@@ -65,8 +66,9 @@ class EntityCache
     /**
      * Returns an entity from the manager
      *
-     * @param  string $class
-     * @param  string $code
+     * @param string $class
+     * @param string $code
+     *
      * @return object
      */
     protected function getEntity($class, $code)

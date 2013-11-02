@@ -66,8 +66,9 @@ class OrmProductWriter extends AbstractConfigurableStepElement implements
         'Oro\\Bundle\\UserBundle\\Entity\\UserApi'
     );
     /**
-     * @param ProductManager $productManager Product manager
-     * @param EntityManager  $entityManager  Doctrine's entity manager
+     * @param ProductManager $productManager
+     * @param EntityManager  $entityManager
+     * @param EntityCache    $entityCache
      */
     public function __construct(
         ProductManager $productManager,

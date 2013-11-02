@@ -14,6 +14,12 @@ class InvalidValueException extends \InvalidArgumentException
     protected $rawMessage;
     protected $messageParameters;
 
+    /**
+     * Constructor
+     *
+     * @param string $rawMessage
+     * @param array  $messageParameters
+     */
     public function __construct($rawMessage, $messageParameters)
     {
         $this->rawMessage = $rawMessage;
@@ -22,11 +28,17 @@ class InvalidValueException extends \InvalidArgumentException
         parent::__construct(strtr($rawMessage, $messageParameters));
     }
 
+    /**
+     * @return string
+     */
     public function getRawMessage()
     {
         return $this->rawMessage;
     }
 
+    /**
+     * @return array
+     */
     public function getMessageParameters()
     {
         return $this->messageParameters;
