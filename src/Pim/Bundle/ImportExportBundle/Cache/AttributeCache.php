@@ -176,7 +176,7 @@ class AttributeCache
             }
         }
 
-        return $codes;
+        return array_unique($codes);
     }
 
     /**
@@ -246,7 +246,7 @@ class AttributeCache
     /**
      * Sets the columns property
      *
-     * @param  array      $columnLabelTokens
+     * @param  array                     $columnLabelTokens
      * @throws \InvalidArgumentException
      */
     protected function setColumns(array $columnLabelTokens)
@@ -288,7 +288,7 @@ class AttributeCache
     /**
      * Sets the attributes and identifierAttributes properties
      *
-     * @param  array      $columnLabelTokens
+     * @param  array                     $columnLabelTokens
      * @throws \InvalidArgumentException
      */
     protected function setAttributes($columnLabelTokens)
