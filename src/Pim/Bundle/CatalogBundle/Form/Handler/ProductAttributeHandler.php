@@ -137,7 +137,7 @@ class ProductAttributeHandler
             $this->manager->getRepository('PimCatalogBundle:Locale')->getActivatedLocales()
         );
 
-       return $locales;
+        return $locales;
     }
 
     /**
