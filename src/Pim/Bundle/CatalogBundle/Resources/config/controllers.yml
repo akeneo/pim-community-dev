@@ -15,20 +15,20 @@ parameters:
 services:
     pim_catalog.controller.abstract:
         abstract: true
-        arguments:
-            - '@request'
-            - '@templating'
-            - '@router'
-            - '@security.context'
-            - '@form.factory'
-            - '@validator'
-            - '@translator'
+        calls:
+            - [ setRequest, ['@request'] ]
+            - [ setTemplating, ['@templating'] ]
+            - [ setRouter, ['@router'] ]
+            - [ setSecurityContext, ['@security.context'] ]
+            - [ setFormFactory, ['@form.factory'] ]
+            - [ setValidator, ['@validator'] ]
+            - [ setTranslator, ['@translator'] ]
 
     pim_catalog.controller.abstract_doctrine:
         abstract: true
         parent: pim_catalog.controller.abstract
-        arguments:
-            - '@doctrine'
+        calls:
+            - [ setDoctrine, ['@doctrine'] ]
 
     pim_catalog.controller.attribute_group:
         scope: request
