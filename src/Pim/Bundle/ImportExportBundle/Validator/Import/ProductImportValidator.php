@@ -4,7 +4,7 @@ namespace Pim\Bundle\ImportExportBundle\Validator\Import;
 
 use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\Validator\ConstraintViolationList;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 use Oro\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
@@ -122,11 +122,11 @@ class ProductImportValidator
     /**
      * Returns an array of error strings
      *
-     * @param  string                  $propertyPath
-     * @param  ConstraintViolationList $violations
+     * @param  string                           $propertyPath
+     * @param  ConstraintViolationListInterface $violations
      * @return array
      */
-    public function getErrors($propertyPath, ConstraintViolationList $violations)
+    public function getErrors($propertyPath, ConstraintViolationListInterface $violations)
     {
         $errors = array();
         foreach ($violations as $violation) {
