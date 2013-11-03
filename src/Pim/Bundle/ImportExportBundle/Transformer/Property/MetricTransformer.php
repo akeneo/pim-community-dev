@@ -27,7 +27,7 @@ class MetricTransformer implements PropertyTransformerInterface
                 throw new InvalidValueException('Malformed metric: %value%', array('%value%'=>$value));
             }
             list($data, $unit) = preg_split('/ +/', $value);
-            $metric = new Metric;
+            $metric = new Metric();
             $metric->setData($data)->setUnit($unit);
         }
 

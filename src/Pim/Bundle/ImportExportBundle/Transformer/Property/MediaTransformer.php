@@ -48,7 +48,7 @@ class MediaTransformer implements PropertyTransformerInterface, ProductValueUpda
 
         $media = $productValue->getMedia();
         if (!$media) {
-            $media = new Media;
+            $media = new Media();
             $productValue->setMedia($media);
         }
         $media->setFile($data);

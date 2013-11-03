@@ -54,7 +54,7 @@ class EntityTransformerTest extends \PHPUnit_Framework_TestCase
         if (!isset($this->entities[$class])) {
             $this->entities[$class] = array();
         }
-        $this->entities[$class][$code] = new \stdClass;
+        $this->entities[$class][$code] = new \stdClass();
     }
 
     /**

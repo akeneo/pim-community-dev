@@ -18,7 +18,7 @@ class DateTransformerTest extends \PHPUnit_Framework_TestCase
      */
     public function testTransform()
     {
-        $transformer = new DateTransformer;
+        $transformer = new DateTransformer();
         $this->assertEquals(null, $transformer->transform(''));
         $this->assertEquals(null, $transformer->transform(' '));
         $this->assertEquals(new \DateTime('2012-07-10'), $transformer->transform(' 2012-07-10 '));

@@ -18,7 +18,7 @@ class DefaultTransformerTest extends \PHPUnit_Framework_TestCase
      */
     public function testTransform()
     {
-        $transformer = new DefaultTransformer;
+        $transformer = new DefaultTransformer();
         $this->assertEquals(null, $transformer->transform(''));
         $this->assertEquals(null, $transformer->transform(' '));
         $this->assertEquals('test', $transformer->transform(' test '));
