@@ -11,7 +11,7 @@ use Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataObject;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Action\Actions\ActionInterface;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration;
-use Oro\Bundle\DataGridBundle\Datasource\Orm\ResultRecordInterface;
+use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 
 class ActionExtension extends AbstractExtension
 {

@@ -11,7 +11,7 @@ use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Event\BuildAfter;
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration;
-use Oro\Bundle\DataGridBundle\Datasource\Orm\ResultRecord;
+use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigModelManager;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 use Oro\Bundle\FilterBundle\Extension\Configuration as FilterConfiguration;

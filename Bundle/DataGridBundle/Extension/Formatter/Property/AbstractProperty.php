@@ -3,7 +3,7 @@
 namespace Oro\Bundle\DataGridBundle\Extension\Formatter\Property;
 
 use Oro\Bundle\LocaleBundle\Twig\DateFormatExtension;
-use Oro\Bundle\DataGridBundle\Datasource\Orm\ResultRecordInterface;
+use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 
 abstract class AbstractProperty implements PropertyInterface
 {

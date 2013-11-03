@@ -4,7 +4,7 @@ namespace Oro\Bundle\DataGridBundle\Extension\Formatter\Property;
 
 use Symfony\Component\Translation\TranslatorInterface;
 
-use Oro\Bundle\DataGridBundle\Datasource\Orm\ResultRecordInterface;
+use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use Oro\Bundle\LocaleBundle\Twig\DateFormatExtension;
 
 class FieldProperty extends AbstractProperty

@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\DataGridBundle\Datasource\Orm;
+namespace Oro\Bundle\DataGridBundle\Datasource;
 
 interface ResultRecordInterface
 {

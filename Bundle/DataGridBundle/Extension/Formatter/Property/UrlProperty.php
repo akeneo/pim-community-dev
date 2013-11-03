@@ -5,7 +5,7 @@ namespace Oro\Bundle\DataGridBundle\Extension\Formatter\Property;
 use Symfony\Component\Routing\Router;
 
 use Oro\Bundle\LocaleBundle\Twig\DateFormatExtension;
-use Oro\Bundle\DataGridBundle\Datasource\Orm\ResultRecordInterface;
+use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 
 class UrlProperty extends AbstractProperty
 {
