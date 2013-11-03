@@ -16,6 +16,9 @@ class PricesTransformerTest extends \PHPUnit_Framework_TestCase
     protected $transformer;
     protected $currencyManager;
 
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         $this->currencyManager = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\CurrencyManager')
@@ -28,6 +31,9 @@ class PricesTransformerTest extends \PHPUnit_Framework_TestCase
         $this->transformer = new PricesTransformer($this->currencyManager);
     }
 
+    /**
+     * Test related method
+     */
     public function testTransform()
     {
         $this->assertEquals(array(), $this->transformer->transform(''));

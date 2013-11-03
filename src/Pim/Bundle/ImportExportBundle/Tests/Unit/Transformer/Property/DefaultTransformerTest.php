@@ -13,6 +13,9 @@ use Pim\Bundle\ImportExportBundle\Transformer\Property\DefaultTransformer;
  */
 class DefaultTransformerTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * Test related method
+     */
     public function testTransform()
     {
         $transformer = new DefaultTransformer;

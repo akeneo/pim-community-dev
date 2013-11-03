@@ -18,6 +18,9 @@ class EntityTransformerTest extends \PHPUnit_Framework_TestCase
 
     protected $entities;
 
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         $this->entities = array();
@@ -31,11 +34,21 @@ class EntityTransformerTest extends \PHPUnit_Framework_TestCase
         $this->transformer = new EntityTransformer($this->entityCache);
     }
 
+    /**
+     * @param string $class
+     * @param string $code
+     *
+     * @return object|null
+     */
     public function findEntity($class, $code)
     {
         return isset($this->entities[$class][$code]) ? $this->entities[$class][$code] : null;
     }
 
+    /**
+     * @param string $class
+     * @param string $code
+     */
     public function addEntity($class, $code)
     {
         if (!isset($this->entities[$class])) {
@@ -44,6 +57,9 @@ class EntityTransformerTest extends \PHPUnit_Framework_TestCase
         $this->entities[$class][$code] = new \stdClass;
     }
 
+    /**
+     * Test related method
+     */
     public function testSingleTransform()
     {
         $this->addEntity('class', 'code');
@@ -68,6 +84,9 @@ class EntityTransformerTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * Test related method
+     */
     public function testMultipleTransform()
     {
         $this->addEntity('class', 'code1');

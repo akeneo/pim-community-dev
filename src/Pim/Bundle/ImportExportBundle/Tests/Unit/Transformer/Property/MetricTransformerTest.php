@@ -14,6 +14,9 @@ use Oro\Bundle\FlexibleEntityBundle\Entity\Metric;
  */
 class MetricTransformerTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * Test related method
+     */
     public function testTransform()
     {
         $transformer = new MetricTransformer;

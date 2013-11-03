@@ -15,6 +15,9 @@ use Oro\Bundle\FlexibleEntityBundle\Entity\Media;
  */
 class MediaTransformerTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * Test related method
+     */
     public function testTransform()
     {
         $transformer = new MediaTransformer;
@@ -31,6 +34,9 @@ class MediaTransformerTest extends \PHPUnit_Framework_TestCase
         rmdir($d);
     }
 
+    /**
+     * @return array
+     */
     public function getUpdateProductValueData()
     {
         return array(
@@ -42,6 +48,9 @@ class MediaTransformerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param boolean $hasFile
+     * @param boolean $mediaExists
+     *
      * @dataProvider getUpdateProductValueData
      */
     public function testUpdateProductValue($hasFile, $mediaExists)
