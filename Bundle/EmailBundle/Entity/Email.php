@@ -23,7 +23,7 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
  *      "entity"={"label"="Email", "plural_label"="Emails"},
  *      "security"={
  *          "type"="ACL",
- *          "permissions"="VIEW",
+ *          "permissions"="VIEW,CREATE",
  *          "group_name"=""
  *      }
  *  }

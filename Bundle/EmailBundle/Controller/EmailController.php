@@ -18,8 +18,7 @@ use Oro\Bundle\EmailBundle\Entity\Repository\EmailRepository;
 use Oro\Bundle\EmailBundle\Entity\Email;
 use Oro\Bundle\EmailBundle\Entity\EmailBody;
 use Oro\Bundle\EmailBundle\Entity\EmailAttachment;
-use Oro\Bundle\EmailBundle\Entity\EmailInterface;
-use Doctrine\Common\Collections\ArrayCollection;
+use Oro\Bundle\EmailBundle\Form\Model\Email as EmailModel;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
@@ -42,6 +41,31 @@ class EmailController extends Controller
         return array(
             'entity' => $entity
         );
+    }
+
+    /**
+     * @Route("/create")
+     * @Acl(
+     *      id="oro_email_create",
+     *      type="entity",
+     *      class="OroEmailBundle:Email",
+     *      permission="CREATE"
+     * )
+     * @Template("OroEmailBundle:Email:update.html.twig")
+     */
+    public function createAction()
+    {
+        $entity = new EmailModel();
+        $responseData = array(
+            'entity' => $entity,
+            'saved' => false
+        );
+        if ($this->get('oro_email.form.handler.email')->process($entity)) {
+            $responseData['saved'] = true;
+        }
+        $responseData['form'] = $this->get('oro_email.form.email')->createView();
+
+        return $responseData;
     }
 
     /**
