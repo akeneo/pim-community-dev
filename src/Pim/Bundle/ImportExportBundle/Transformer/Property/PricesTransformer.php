@@ -54,7 +54,10 @@ class PricesTransformer implements PropertyTransformerInterface, ProductValueUpd
             }
 
             if (!in_array($matches[2], $currencies)) {
-                throw new InvalidValueException('Currency "%currency%" is not active', array('%currency%' => $matches[2]));
+                throw new InvalidValueException(
+                    'Currency "%currency%" is not active',
+                    array('%currency%' => $matches[2])
+                );
             }
 
             $result[$matches[2]] = $matches[1];
