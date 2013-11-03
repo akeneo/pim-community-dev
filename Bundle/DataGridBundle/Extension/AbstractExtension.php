@@ -25,6 +25,13 @@ abstract class AbstractExtension implements ExtensionVisitorInterface
     /**
      * {@inheritDoc}
      */
+    public function processConfigs(DatagridConfiguration $config)
+    {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function visitDatasource(DatagridConfiguration $config, DatasourceInterface $datasource)
     {
     }

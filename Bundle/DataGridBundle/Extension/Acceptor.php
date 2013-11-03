@@ -21,6 +21,16 @@ class Acceptor
     }
 
     /**
+     * Ask extensions to process configuration
+     */
+    public function processConfiguration()
+    {
+        foreach ($this->getExtensions() as $extension) {
+            $extension->processConfigs($this->getConfig());
+        }
+    }
+
+    /**
      * @param DatasourceInterface $datasource
      */
     public function acceptDatasource(DatasourceInterface $datasource)

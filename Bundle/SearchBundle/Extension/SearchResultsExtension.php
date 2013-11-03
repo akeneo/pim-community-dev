@@ -8,6 +8,8 @@ use Doctrine\ORM\EntityManager;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\ResultsObject;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Extension\AbstractExtension;
+use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
+use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 
 use Oro\Bundle\SearchBundle\Engine\ObjectMapper;
@@ -33,10 +35,10 @@ class SearchResultsExtension extends AbstractExtension
     protected $dispatcher;
 
     /**
-     * @param RequestParameters $requestParams
-     * @param ResultFormatter $formatter
-     * @param EntityManager $em
-     * @param ObjectMapper $mapper
+     * @param RequestParameters        $requestParams
+     * @param ResultFormatter          $formatter
+     * @param EntityManager            $em
+     * @param ObjectMapper             $mapper
      * @param EventDispatcherInterface $dispatcher
      */
     public function __construct(
@@ -49,9 +51,9 @@ class SearchResultsExtension extends AbstractExtension
         parent::__construct($requestParams);
 
         $this->resultFormatter = $formatter;
-        $this->em = $em;
-        $this->mapper = $mapper;
-        $this->dispatcher = $dispatcher;
+        $this->em              = $em;
+        $this->mapper          = $mapper;
+        $this->dispatcher      = $dispatcher;
     }
 
     /**
@@ -67,9 +69,16 @@ class SearchResultsExtension extends AbstractExtension
      */
     public function visitResult(DatagridConfiguration $config, ResultsObject $result)
     {
-        $rows    = $result->offsetGetByPath('[data]');
-        $entities = $this->resultFormatter->getResultEntities($rows);
+        $rows       = $result->offsetGetByPath('[data]');
+        $rows       = array_map(
+            function (ResultRecordInterface $record) {
+                return $record->getRootEntity();
+            },
+            $rows
+        );
+        $entities   = $this->resultFormatter->getResultEntities($rows);
 
+        $resultRows = [];
         foreach ($rows as $row) {
             $entity     = null;
             $entityName = $row->getEntityName();
@@ -78,7 +87,7 @@ class SearchResultsExtension extends AbstractExtension
                 $entity = $entities[$entityName][$entityId];
             }
 
-            $item = new ResultItem(
+            $item         = new ResultItem(
                 $this->em,
                 $entityName,
                 $entityId,
@@ -87,7 +96,7 @@ class SearchResultsExtension extends AbstractExtension
                 null,
                 $this->mapper->getEntityConfig($entityName)
             );
-            $resultRows[] = ['entity' => $entity, 'indexer_item' => $item];
+            $resultRows[] = new ResultRecord(['entity' => $entity, 'indexer_item' => $item]);
 
             $this->dispatcher->dispatch(PrepareResultItemEvent::EVENT_NAME, new PrepareResultItemEvent($item, $entity));
         }

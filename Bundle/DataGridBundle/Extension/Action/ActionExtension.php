@@ -11,6 +11,7 @@ use Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataObject;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Action\Actions\ActionInterface;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration;
+use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\PropertyInterface;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 
 class ActionExtension extends AbstractExtension
@@ -52,7 +53,16 @@ class ActionExtension extends AbstractExtension
      */
     public function isApplicable(DatagridConfiguration $config)
     {
-        $actions             = $config->offsetGetOr(static::ACTION_KEY, []);
+        $actions = $config->offsetGetOr(static::ACTION_KEY, []);
+
+        return !empty($actions);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function processConfigs(DatagridConfiguration $config)
+    {
         $actionConfiguration = $config->offsetGetOr(static::ACTION_CONFIGURATION_KEY);
 
         if ($actionConfiguration && is_callable($actionConfiguration)) {
@@ -63,16 +73,15 @@ class ActionExtension extends AbstractExtension
             };
 
             $propertyConfig = [
-                'type'     => 'callback',
-                'callable' => $callable
+                'type'                               => 'callback',
+                'callable'                           => $callable,
+                PropertyInterface::FRONTEND_TYPE_KEY => 'array'
             ];
             $config->offsetAddToArrayByPath(
                 sprintf('[%s][%s]', Configuration::PROPERTIES_KEY, static::METADATA_ACTION_CONFIGURATION_KEY),
                 $propertyConfig
             );
         }
-
-        return !empty($actions);
     }
 
     /**

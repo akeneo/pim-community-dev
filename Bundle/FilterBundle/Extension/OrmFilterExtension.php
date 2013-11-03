@@ -44,13 +44,19 @@ class OrmFilterExtension extends AbstractExtension
             return false;
         }
 
+        return $config->offsetGetByPath(Builder::DATASOURCE_TYPE_PATH) == OrmDatasource::TYPE;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function processConfigs(DatagridConfiguration $config)
+    {
         // validate extension configuration
         $this->validateConfiguration(
             new Configuration(array_keys($this->filters)),
             ['filters' => $config->offsetGetByPath(Configuration::FILTERS_PATH)]
         );
-
-        return $config->offsetGetByPath(Builder::DATASOURCE_TYPE_PATH) == OrmDatasource::TYPE;
     }
 
     /**
@@ -190,7 +196,6 @@ class OrmFilterExtension extends AbstractExtension
      */
     protected function getFilterObject($name, array $config)
     {
-        // @TODO replace by config object
         $type = $config[Configuration::TYPE_KEY];
 
         $filter = $this->filters[$type];

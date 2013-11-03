@@ -32,6 +32,20 @@ class FormatterExtension extends AbstractExtension
         $columns    = $config->offsetGetOr(Configuration::COLUMNS_KEY, []);
         $properties = $config->offsetGetOr(Configuration::PROPERTIES_KEY, []);
         $applicable = $columns || $properties;
+        $this->processConfigs($config);
+
+        return $applicable;
+    }
+
+    /**
+     * Validate configs nad fill default values
+     *
+     * @param DatagridConfiguration $config
+     */
+    public function processConfigs(DatagridConfiguration $config)
+    {
+        $columns    = $config->offsetGetOr(Configuration::COLUMNS_KEY, []);
+        $properties = $config->offsetGetOr(Configuration::PROPERTIES_KEY, []);
 
         // validate extension configuration and normalize by setting default values
         $columnsNormalized    = $this->validateConfigurationByType($columns, Configuration::COLUMNS_KEY);
@@ -40,8 +54,6 @@ class FormatterExtension extends AbstractExtension
         // replace config values by normalized, extra keys passed directly
         $config->offsetSet(Configuration::COLUMNS_KEY, array_replace_recursive($columns, $columnsNormalized))
             ->offsetSet(Configuration::PROPERTIES_KEY, array_replace_recursive($properties, $propertiesNormalized));
-
-        return $applicable;
     }
 
     /**

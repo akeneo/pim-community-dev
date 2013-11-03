@@ -1,6 +1,7 @@
 parameters:
     oro_entity.listener.navigation_listener.class:              Oro\Bundle\EntityBundle\EventListener\NavigationListener
     oro_entity.owner.entity_config_subscriber.class:            Oro\Bundle\EntityBundle\EventListener\EntityConfigSubscriber
+    oro_entity.datagrid.extension.class:                        Oro\Bundle\EntityBundle\Grid\ExtendExtension
 
 services:
     oro_entity.listener.navigation_listener:
@@ -17,3 +18,10 @@ services:
         class: %oro_entity.owner.entity_config_subscriber.class%
         tags:
             - { name: kernel.event_subscriber }
+
+    oro_entity.datagrid.extension:
+        class: %oro_entity.datagrid.extension.class%
+        arguments:
+            - @oro_entity_config.config_manager
+        tags:
+            - { name: oro_datagrid.extension }

@@ -35,12 +35,18 @@ class OrmSorterExtension extends AbstractExtension
         $isApplicable = $config->offsetGetByPath(Builder::DATASOURCE_TYPE_PATH) === OrmDatasource::TYPE
             && is_array($columns);
 
+        return $isApplicable;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function processConfigs(DatagridConfiguration $config)
+    {
         $this->validateConfiguration(
             new Configuration(),
             ['sorters' => $config->offsetGetByPath(Configuration::SORTERS_PATH)]
         );
-
-        return $isApplicable;
     }
 
     /**

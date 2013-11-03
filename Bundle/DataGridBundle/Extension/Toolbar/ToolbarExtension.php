@@ -23,12 +23,18 @@ class ToolbarExtension extends AbstractExtension
      */
     public function isApplicable(DatagridConfiguration $config)
     {
+        return true;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function processConfigs(DatagridConfiguration $config)
+    {
         $options = $config->offsetGetByPath(self::TOOLBAR_OPTION_PATH, []);
         // validate configuration and pass default values back to config
         $configuration = $this->validateConfiguration(new Configuration(), ['toolbarOptions' => $options]);
         $config->offsetSetByPath(sprintf('%s[%s]', self::OPTIONS_PATH, 'toolbarOptions'), $configuration);
-
-        return true;
     }
 
     /**

@@ -19,6 +19,16 @@ interface ExtensionVisitorInterface
     public function isApplicable(DatagridConfiguration $config);
 
     /**
+     * Process configuration object
+     * Validation and passing default values goes here
+     *
+     * @param DatagridConfiguration $config
+     *
+     * @return void
+     */
+    public function processConfigs(DatagridConfiguration $config);
+
+    /**
      * Apply changes provided by applied extensions on datasource
      *
      * @param DatagridConfiguration $config

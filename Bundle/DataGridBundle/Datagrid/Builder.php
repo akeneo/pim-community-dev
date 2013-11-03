@@ -80,6 +80,8 @@ class Builder
             }
         }
 
+        $acceptor->processConfiguration();
+
         $event = new BuildAfter($datagrid);
         $this->eventDispatcher->dispatch(BuildAfter::NAME, $event);
         // duplicate event dispatch with grid name
