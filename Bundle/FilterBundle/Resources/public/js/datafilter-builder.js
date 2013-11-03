@@ -46,9 +46,14 @@ function($, _, tools,  mediator, FiltersManager) {
              */
             combineOptions: function () {
                 var filters= {},
-                    modules = this.modules;
+                    modules = this.modules,
+                    collection = this.collection;
                 _.each(this.metadata.filters, function (options) {
                     if (_.has(options, 'name') && _.has(options, 'type')) {
+                        // @TODO pass collection only for specific filters
+                        if (options.type == 'selectrow') {
+                            options.collection = collection
+                        }
                         filters[options.name] = new (modules[options.type].extend(options));
                     }
                 });

@@ -6,7 +6,7 @@ use Doctrine\ORM\QueryBuilder;
 
 use Oro\Bundle\FilterBundle\Form\Type\Filter\SelectRowFilterType;
 
-class SelectRowFilter extends AbstractFilter
+class SelectRowFilter extends ChoiceFilter
 {
     /**
      * {@inheritdoc}
@@ -29,10 +29,10 @@ class SelectRowFilter extends AbstractFilter
 
         $expression = false;
         switch (true) {
-            case !isset($data['in']) && isset($data['out']) && empty($data['out']):
+            case $data['in'] === null && $data['out'] !== null && empty($data['out']):
                 $expression = $qb->expr()->eq(1, 1);
                 break;
-            case !isset($data['out']) && isset($data['in']) && empty($data['in']):
+            case $data['out'] === null && $data['in'] !== null && empty($data['in']):
                 $expression = $qb->expr()->eq(0, 1);
                 break;
             case !empty($data['in']):
@@ -59,9 +59,10 @@ class SelectRowFilter extends AbstractFilter
      */
     protected function parseData($data)
     {
-        $expectedChoices = array(SelectRowFilterType::NOT_SELECTED_VALUE, SelectRowFilterType::SELECTED_VALUE);
-        if (empty($data['value']) || !in_array($data['value'], $expectedChoices)) {
-            return false;
+        $expectedChoices = [SelectRowFilterType::NOT_SELECTED_VALUE, SelectRowFilterType::SELECTED_VALUE];
+        if (empty($data['value'])
+            || !in_array($data['value'], $expectedChoices)) {
+            $data['value'] = null;
         }
 
         if (isset($data['in']) && !is_array($data['in'])) {
