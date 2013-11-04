@@ -3,6 +3,7 @@
 ## Features
 - History of changes for groups and variant groups
 - History of changes for import / export profiles
+- Allow creating new options for simple select and multiselect attributes directly from the product edit form
 
 ## Improvements
 - Separate product groups and variants management
