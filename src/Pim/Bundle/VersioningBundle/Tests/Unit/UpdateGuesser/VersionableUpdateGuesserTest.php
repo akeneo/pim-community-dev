@@ -20,9 +20,13 @@ class VersionableUpdateGuesserTest extends AbstractUpdateGuesserTest
      */
     public function testGuessUpdates()
     {
+        $versionables = array(
+            'Pim\Bundle\CatalogBundle\Entity\ProductAttribute',
+            'Pim\Bundle\CatalogBundle\Entity\Family'
+        );
         $attribute = new ProductAttribute();
         $attribute->setCode('my code');
-        $guesser   = new VersionableUpdateGuesser();
+        $guesser   = new VersionableUpdateGuesser($versionables);
         $em        = $this->getEntityManagerMock();
         $updates   = $guesser->guessUpdates($em, $attribute);
         $this->assertEquals(1, count($updates));

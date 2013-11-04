@@ -40,7 +40,7 @@ class VersionBuilderTest extends \PHPUnit_Framework_TestCase
     public function testBuildVersion()
     {
         $data = array('field' => 'value');
-        $version = $this->manager->buildVersion($this->getVersionableMock($data), $this->getUserMock());
+        $version = $this->manager->buildVersion($this->getVersionableMock($data), $this->getUserMock(), 1);
         $this->assertTrue($version instanceof Version);
     }
 
