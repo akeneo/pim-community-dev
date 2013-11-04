@@ -1,3 +1,18 @@
+# 1.0.0-beta-3
+
+## Features
+- History of changes for groups and variant groups
+- History of changes for import / export profiles
+- Allow creating new options for simple select and multiselect attributes directly from the product edit form
+
+## Improvements
+- Separate product groups and variants management
+
+## Bug fixes
+
+## BC breaks
+
+
 # 1.0.0-beta-2 - "Hold the Lion, Please" (2013-10-29)
 
 ## Features

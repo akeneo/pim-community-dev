@@ -57,15 +57,7 @@ class LoadFamilyData extends AbstractInstallerFixture
         }
 
         if (array_key_exists('requirements', $data)) {
-            foreach ($data['requirements'] as $channel => $attributes) {
-                foreach ($attributes as $attribute) {
-                    $requirement =  new AttributeRequirement();
-                    $requirement->setAttribute($this->getReference('product-attribute.'.$attribute));
-                    $requirement->setChannel($this->getReference('channel.'.$channel));
-                    $requirement->setRequired(true);
-                    $family->addAttributeRequirement($requirement);
-                }
-            }
+            $this->addRequirements($family, $data['requirements']);
         }
 
         if (isset($data['attributeAsLabel'])) {
@@ -90,6 +82,25 @@ class LoadFamilyData extends AbstractInstallerFixture
         $translation->setLabel($content);
 
         $family->addTranslation($translation);
+    }
+
+    /**
+     * Add attribute requirements
+     *
+     * @param Family $family
+     * @param array  $requirements
+     */
+    public function addRequirements(Family $family, $requirements)
+    {
+        foreach ($requirements as $channel => $attributes) {
+            foreach ($attributes as $attribute) {
+                $requirement =  new AttributeRequirement();
+                $requirement->setAttribute($this->getReference('product-attribute.'.$attribute));
+                $requirement->setChannel($this->getReference('channel.'.$channel));
+                $requirement->setRequired(true);
+                $family->addAttributeRequirement($requirement);
+            }
+        }
     }
 
     /**

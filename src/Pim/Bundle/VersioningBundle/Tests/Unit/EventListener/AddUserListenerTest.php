@@ -9,6 +9,7 @@ use Pim\Bundle\VersioningBundle\EventListener\AddUserListener;
 use Pim\Bundle\VersioningBundle\EventListener\AddVersionListener;
 use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;
 use Pim\Bundle\VersioningBundle\Builder\AuditBuilder;
+use Pim\Bundle\VersioningBundle\UpdateGuesser\ChainedUpdateGuesser;
 use Pim\Bundle\ImportExportBundle\Encoder\CsvEncoder;
 
 /**
@@ -33,7 +34,7 @@ class AddUserListenerTest extends \PHPUnit_Framework_TestCase
         $encoders    = array(new CsvEncoder());
         $normalizers = array(new GetSetMethodNormalizer());
         $serializer  = new Serializer($normalizers, $encoders);
-        $versionBuilder = new VersionBuilder($serializer);
+        $versionBuilder = new VersionBuilder($serializer, new ChainedUpdateGuesser());
         $auditBuilder   = new AuditBuilder();
         $this->versionListener = new AddVersionListener($versionBuilder, $auditBuilder);
     }

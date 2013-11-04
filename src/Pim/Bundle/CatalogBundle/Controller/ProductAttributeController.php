@@ -24,9 +24,10 @@ use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
 use Pim\Bundle\CatalogBundle\Form\Handler\ProductAttributeHandler;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Pim\Bundle\VersioningBundle\Manager\AuditManager;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
+use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Exception\DeleteException;
+use Pim\Bundle\VersioningBundle\Manager\AuditManager;
 
 /**
  * Product attribute controller
@@ -76,6 +77,14 @@ class ProductAttributeController extends AbstractDoctrineController
      * @var array
      */
     private $measuresConfig;
+
+    /**
+     * @var array
+     */
+    private $choiceAttributeTypes = array(
+        'pim_catalog_simpleselect',
+        'pim_catalog_multiselect'
+    );
 
     /**
      * Constructor
@@ -295,6 +304,49 @@ class ProductAttributeController extends AbstractDoctrineController
         }
 
         return new Response(0);
+    }
+
+    /**
+     * Create a new option for a simple/multi-select attribute
+     *
+     * @param Request          $request
+     * @param ProductAttribute $attribute
+     *
+     * @Template("PimCatalogBundle:ProductAttribute:form_options.html.twig")
+     * @AclAncestor("pim_catalog_attribute_edit")
+     * @return Response
+     */
+    public function createOptionAction(Request $request, ProductAttribute $attribute)
+    {
+        if (!$request->isXmlHttpRequest() || !in_array($attribute->getAttributeType(), $this->choiceAttributeTypes)) {
+            return $this->redirectToRoute('pim_catalog_productattribute_edit', array('id'=> $attribute->getId()));
+        }
+
+        $option = new AttributeOption();
+        $attribute->addOption($option);
+        $form = $this->createForm('pim_attribute_option_create', $option);
+
+        if ($request->isMethod('POST')) {
+            $form->submit($request);
+            if ($form->isValid()) {
+                $this->getManager()->persist($option);
+                $this->getManager()->flush();
+                $response = array(
+                    'status' => 1,
+                    'option' => array(
+                        'id'    => $option->getId(),
+                        'label' => $option->__toString()
+                    )
+                );
+
+                return new Response(json_encode($response));
+            }
+        }
+
+        return array(
+            'attribute' => $attribute,
+            'form'      => $form->createView()
+        );
     }
 
     /**

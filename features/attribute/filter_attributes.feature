@@ -46,29 +46,23 @@ Feature: Filter attributes
     And I should see attributes short_descr and long_descr
     And I should not see attributes sku, name and count
 
-  Scenario: Successfully filter by scopable "yes"
+  Scenario: Successfully filter by scopable
     Given I am on the attributes page
     When I filter by "Scopable" with value "yes"
     Then the grid should contain 2 elements
     And I should see attributes short_descr and long_descr
     And I should not see attributes sku, name and count
-
-  Scenario: Successfully filter by scopable "no"
-    Given I am on the attributes page
     When I filter by "Scopable" with value "no"
     Then the grid should contain 3 elements
     And I should see attributes sku, name and count
     And I should not see attributes short_descr and long_descr
 
-  Scenario: Successfully filter by localizable "yes"
+  Scenario: Successfully filter by localizable
     Given I am on the attributes page
     When I filter by "Localizable" with value "yes"
     Then the grid should contain 3 elements
     And I should see attributes name, short_descr and long_descr
     And I should not see attributes sku and count
-
-  Scenario: Successfully filter by localizable "no"
-    Given I am on the attributes page
     When I filter by "Localizable" with value "no"
     Then the grid should contain 2 elements
     And I should see attributes sku and count

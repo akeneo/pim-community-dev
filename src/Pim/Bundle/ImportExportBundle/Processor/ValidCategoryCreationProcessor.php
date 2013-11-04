@@ -8,9 +8,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
-use Pim\Bundle\ImportExportBundle\Exception\InvalidObjectException;
-use Pim\Bundle\CatalogBundle\Entity\Category;
 use Oro\Bundle\BatchBundle\Entity\StepExecution;
+use Pim\Bundle\CatalogBundle\Entity\Category;
 
 /**
  * Valid category creation (or update) processor
@@ -31,20 +30,6 @@ class ValidCategoryCreationProcessor extends AbstractConfigurableStepElement imp
      * @var EntityManager
      */
     protected $entityManager;
-
-    /**
-     * Delimiter separating the translated labels
-     *
-     * @var string
-     */
-    protected $labelDelimiter    = ',';
-
-    /**
-     * Delimiter separating locale from the label
-     *
-     * @var string
-     */
-    protected $localeDelimiter   = ':';
 
     /**
      * If true, category data will be checked to make sure that there are no circular references between the categories
@@ -87,46 +72,6 @@ class ValidCategoryCreationProcessor extends AbstractConfigurableStepElement imp
     }
 
     /**
-     * Set the label delimiter
-     *
-     * @param string $labelDelimiter
-     */
-    public function setLabelDelimiter($labelDelimiter)
-    {
-        $this->labelDelimiter = $labelDelimiter;
-    }
-
-    /**
-     * Get the label delimiter
-     *
-     * @return string
-     */
-    public function getLabelDelimiter()
-    {
-        return $this->labelDelimiter;
-    }
-
-    /**
-     * Set the locale delimiter
-     *
-     * @param string $localeDelimiter
-     */
-    public function setLocaleDelimiter($localeDelimiter)
-    {
-        $this->localeDelimiter = $localeDelimiter;
-    }
-
-    /**
-     * Get the Locale delimiter
-     *
-     * @return string
-     */
-    public function getLocaleDelimiter()
-    {
-        return $this->localeDelimiter;
-    }
-
-    /**
      * Set circularRefsChecked
      *
      * @param boolean $circularRefsChecked
@@ -160,8 +105,6 @@ class ValidCategoryCreationProcessor extends AbstractConfigurableStepElement imp
     public function getConfigurationFields()
     {
         return array(
-            'labelDelimiter'      => array(),
-            'localeDelimiter'     => array(),
             'circularRefsChecked' => array(
                 'type' => 'switch',
             ),
@@ -210,32 +153,20 @@ class ValidCategoryCreationProcessor extends AbstractConfigurableStepElement imp
      * If the category is valid, it is stored into the categories property
      *
      * @param array $item
-     *
-     * @throws InvalidObjectException when validation errors are present
      */
     private function processItem($item)
     {
         $category = $this->getCategory($item);
 
-        $labels = explode($this->labelDelimiter, $item['label']);
-        $labelData = array();
-        foreach ($labels as $labelItem) {
-            $parsedLabelItem = explode($this->localeDelimiter, $labelItem);
-            if (count($parsedLabelItem) === 2) {
-                list($locale, $label) = $parsedLabelItem;
-                $labelData[$locale] = $label;
-            } else {
-                $this->stepExecution->addError(sprintf('Label "%s" cannot be parsed, it has been ignored', $labelItem));
+        $category->setCode($item['code']);
+        $category->setDynamic((bool) $item['dynamic']);
+        foreach ($item as $key => $value) {
+            if (preg_match('/^label-(.+)/', $key, $matches)) {
+                $category->setLocale($matches[1]);
+                $category->setLabel($value);
             }
         }
 
-        $category->setCode($item['code']);
-        $category->setDynamic((bool) $item['dynamic']);
-
-        foreach ($labelData as $locale => $label) {
-            $category->setLocale($locale);
-            $category->setLabel($label);
-        }
         $category->setLocale(null);
 
         $violations = $this->validator->validate($category);

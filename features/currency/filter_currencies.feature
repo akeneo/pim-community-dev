@@ -25,15 +25,12 @@ Feature: Filter currencies
     And I should see currencies USD and EUR
     And I should not see currency GBP
 
-  Scenario: Successfully filter by activated "yes"
+  Scenario: Successfully filter by activated
     Given I am on the currencies page
     When I filter by "Activated" with value "yes"
     Then the grid should contain 2 elements
     And I should see currencies USD and EUR
     And I should not see currency GBP
-
-  Scenario: Successfully filter by activated "no"
-    Given I am on the currencies page
     When I filter by "Activated" with value "no"
     Then the grid should contain 1 element
     And I should see currency GBP

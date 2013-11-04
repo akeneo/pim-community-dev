@@ -21,6 +21,9 @@ class PimVersioningExtension extends Extension
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('parameters.yml');
-        $loader->load('services.yml');
+        $loader->load('guessers.yml');
+        $loader->load('managers.yml');
+        $loader->load('builders.yml');
+        $loader->load('event_listeners.yml');
     }
 }

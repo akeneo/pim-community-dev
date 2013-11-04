@@ -17,7 +17,7 @@ connector:
                 export:
                     title:     pim_import_export.jobs.category_export.export.title
                     reader:    pim_import_export.reader.category
-                    processor: pim_import_export.processor.homogeneous_csv_serializer
+                    processor: pim_import_export.processor.heterogeneous_csv_serializer
                     writer:    pim_import_export.writer.file
         attribute_export:
             title: pim_import_export.jobs.attribute_export.title

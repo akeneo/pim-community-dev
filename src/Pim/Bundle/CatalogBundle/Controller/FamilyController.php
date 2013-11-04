@@ -25,6 +25,7 @@ use Pim\Bundle\CatalogBundle\Model\AvailableProductAttributes;
 use Pim\Bundle\CatalogBundle\Form\Type\AvailableProductAttributesType;
 use Symfony\Component\HttpFoundation\Response;
 use Pim\Bundle\CatalogBundle\Exception\DeleteException;
+use Pim\Bundle\CatalogBundle\Calculator\CompletenessCalculator;
 
 /**
  * Family controller
@@ -55,6 +56,9 @@ class FamilyController extends AbstractDoctrineController
      */
     private $productManager;
 
+    /** @var CompletenessCalculator */
+    private $completenessCalculator;
+
     /**
      * Constructor
      *
@@ -83,7 +87,8 @@ class FamilyController extends AbstractDoctrineController
         GridRenderer $gridRenderer,
         DatagridWorkerInterface $dataGridWorker,
         ChannelManager $channelManager,
-        ProductManager $productManager
+        ProductManager $productManager,
+        CompletenessCalculator $completenessCalculator
     ) {
         parent::__construct(
             $request,
@@ -96,10 +101,11 @@ class FamilyController extends AbstractDoctrineController
             $doctrine
         );
 
-        $this->gridRenderer   = $gridRenderer;
-        $this->dataGridWorker = $dataGridWorker;
-        $this->channelManager = $channelManager;
-        $this->productManager = $productManager;
+        $this->gridRenderer           = $gridRenderer;
+        $this->dataGridWorker         = $dataGridWorker;
+        $this->channelManager         = $channelManager;
+        $this->productManager         = $productManager;
+        $this->completenessCalculator = $completenessCalculator;
     }
 
     /**
@@ -118,7 +124,7 @@ class FamilyController extends AbstractDoctrineController
 
         $form = $this->createForm('pim_family', $family);
         if ($request->isMethod('POST')) {
-            $form->handleRequest($request);
+            $form->submit($request);
             if ($form->isValid()) {
                 $identifier = $this->productManager->getIdentifierAttribute();
                 $family->addAttribute($identifier);
@@ -172,8 +178,11 @@ class FamilyController extends AbstractDoctrineController
         );
 
         if ($request->isMethod('POST')) {
-            $form->handleRequest($request);
+            $form->submit($request);
             if ($form->isValid()) {
+                foreach ($family->getProducts() as $product) {
+                    $this->completenessCalculator->schedule($product);
+                }
                 $this->getManager()->flush();
                 $this->addFlash('success', 'flash.family.updated');
 
@@ -231,7 +240,7 @@ class FamilyController extends AbstractDoctrineController
             $availableAttributes
         );
 
-        $attributesForm->bind($request);
+        $attributesForm->submit($request);
 
         foreach ($availableAttributes->getAttributes() as $attribute) {
             $family->addAttribute($attribute);

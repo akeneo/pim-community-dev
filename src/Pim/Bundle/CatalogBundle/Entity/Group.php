@@ -10,6 +10,7 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
 
 /**
  * Group entity
@@ -31,7 +32,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
  *  }
  * )
  */
-class Group implements TranslatableInterface, GroupSequenceProviderInterface
+class Group implements TranslatableInterface, GroupSequenceProviderInterface, VersionableInterface
 {
     /**
      * @var integer $id
@@ -62,10 +63,8 @@ class Group implements TranslatableInterface, GroupSequenceProviderInterface
      *
      * @ORM\ManyToMany(
      *     targetEntity="Pim\Bundle\CatalogBundle\Model\ProductInterface",
-     *     inversedBy="groups",
-     *     cascade={"persist"}
+     *     mappedBy="groups"
      * )
-     * @ORM\JoinTable(name="pim_catalog_group_product")
      */
     protected $products;
 
@@ -102,6 +101,14 @@ class Group implements TranslatableInterface, GroupSequenceProviderInterface
     protected $translations;
 
     /**
+     * @var integer $version
+     *
+     * @ORM\Column(name="version", type="integer")
+     * @ORM\Version
+     */
+    protected $version;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -119,6 +126,16 @@ class Group implements TranslatableInterface, GroupSequenceProviderInterface
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Get version
+     *
+     * @return string $version
+     */
+    public function getVersion()
+    {
+        return $this->version;
     }
 
     /**
@@ -278,6 +295,7 @@ class Group implements TranslatableInterface, GroupSequenceProviderInterface
     {
         if (!$this->products->contains($product)) {
             $this->products[] = $product;
+            $product->addGroup($this);
         }
 
         return $this;
@@ -293,6 +311,7 @@ class Group implements TranslatableInterface, GroupSequenceProviderInterface
     public function removeProduct(ProductInterface $product)
     {
         $this->products->removeElement($product);
+        $product->removeGroup($this);
 
         return $this;
     }

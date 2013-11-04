@@ -24,7 +24,6 @@ class PimCatalogBundle extends Bundle
 
         $container
             ->addCompilerPass(new Compiler\RegisterAttributeConstraintGuessersPass())
-            ->addCompilerPass(new Compiler\SetImportedProductDataTransformerPass())
             ->addCompilerPass(new Compiler\RegisterMassEditActionsPass());
     }
 }

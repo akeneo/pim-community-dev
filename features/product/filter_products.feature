@@ -41,6 +41,22 @@ Feature: Filter products
       | book    | description | en_US  | mobile    | My mobile book descr     |
       | book    | description | fr_FR  | ecommerce | Ma descr livre ecommerce |
       | book    | description | fr_FR  | mobile    | Ma descr livre mobile    |
+      | book2   | SKU         |        |           | book2                    |
+      | book2   | name        | en_US  |           | Book2                    |
+      | book2   | name        | fr_FR  |           | Livre2                   |
+      | book2   | image       |        | ecommerce | book2_large.jpeg         |
+      | book2   | image       |        | mobile    | book2_small.jpeg         |
+      | book2   | description | en_US  | ecommerce | My ecommerce book2 descr |
+      | book2   | description | en_US  | mobile    | My mobile book2 descr    |
+      | book2   | description | fr_FR  | ecommerce | Ma descr livre2 ecommerce|
+      | book2   | description | fr_FR  | mobile    | Ma descr livre2 mobile   |
+      | ebook   | SKU         |        |           | ebook                    |
+      | ebook   | name        | en_US  |           | eBook                    |
+      | ebook   | name        | fr_FR  |           | Ebook                    |
+      | ebook   | description | en_US  | ecommerce | My ecommerce ebook descr |
+      | ebook   | description | en_US  | mobile    | My mobile ebook descr    |
+      | ebook   | description | fr_FR  | ecommerce | Ma descr ebook ecommerce |
+      | ebook   | description | fr_FR  | mobile    | Ma descr ebook mobile    |
     And I am logged in as "admin"
 
   Scenario: Successfully display filters
@@ -62,8 +78,60 @@ Feature: Filter products
   Scenario: Successfully filter by SKU
     Given I am on the products page
     When I filter by "SKU" with value "book"
+    Then the grid should contain 3 elements
+    And I should see products book
+    And I should see products ebook
+    And I should see products book2
+    And I should not see products postit
+
+  @insulated
+  Scenario: Successfully filter by SKU that contains
+    Given I am on the products page
+    When I filter by "SKU" with operator "contains" and value "book"
+    Then the grid should contain 3 elements
+    And I should see products book
+    And I should see products book2
+    And I should see products ebook
+    And I should not see products postit
+
+  @insulated
+  Scenario: Successfully filter by SKU that does not contains
+    Given I am on the products page
+    When I filter by "SKU" with operator "does not contain" and value "book"
+    Then the grid should contain 1 element
+    And I should see products postit
+    And I should not see products book
+    And I should not see products book2
+    And I should not see products ebook
+
+  @insulated
+  Scenario: Successfully filter by SKU that starts with
+    Given I am on the products page
+    When I filter by "SKU" with operator "starts with" and value "boo"
+    Then the grid should contain 2 elements
+    And I should see products book
+    And I should see products book2
+    And I should not see products postit
+    And I should not see products ebook
+
+  @insulated
+  Scenario: Successfully filter by SKU that is equal to
+    Given I am on the products page
+    When I filter by "SKU" with operator "is equal to" and value "book"
     Then the grid should contain 1 element
     And I should see products book
+    And I should not see products book2
+    And I should not see products postit
+    And I should not see products ebook
+
+  @insulated
+  Scenario: Successfully filter by SKU that ends with
+    Given I am on the products page
+    When I filter by "SKU" with operator "ends with" and value "book"
+    Then the grid should contain 2 elements
+    And I should see products book
+    And I should see products ebook
+    And I should not see products book2
     And I should not see products postit
 
   @insulated
