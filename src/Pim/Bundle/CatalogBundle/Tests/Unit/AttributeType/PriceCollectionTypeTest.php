@@ -50,7 +50,7 @@ class PriceCollectionTypeTest extends AttributeTypeTestCase
                 'text',
                 'bar',
                 array(
-                    'options'      => array('constraints' => array('constraints')),
+                    'constraints'      => array('constraints'),
                     'label'        => null,
                     'required'     => null,
                     'type'         => 'pim_catalog_price',

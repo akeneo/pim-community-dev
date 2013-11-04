@@ -66,14 +66,8 @@ class Category extends AbstractSegment implements CategoryInterface, Translatabl
      *
      * @ORM\ManyToMany(
      *     targetEntity="Pim\Bundle\CatalogBundle\Model\ProductInterface",
-     *     inversedBy="categories",
-     *     cascade={"persist"},
+     *     mappedBy="categories",
      *     fetch="EXTRA_LAZY"
-     * )
-     * @ORM\JoinTable(
-     *     name="pim_catalog_category_product",
-     *     joinColumns={@ORM\JoinColumn(name="category_id", referencedColumnName="id", onDelete="CASCADE")},
-     *     inverseJoinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")}
      * )
      */
     protected $products;
@@ -171,6 +165,7 @@ class Category extends AbstractSegment implements CategoryInterface, Translatabl
     public function addProduct(ProductInterface $product)
     {
         $this->products[] = $product;
+        $product->addCategory($this);
 
         return $this;
     }
@@ -195,6 +190,7 @@ class Category extends AbstractSegment implements CategoryInterface, Translatabl
     public function removeProduct(ProductInterface $product)
     {
         $this->products->removeElement($product);
+        $product->removeCategory($this);
 
         return $this;
     }

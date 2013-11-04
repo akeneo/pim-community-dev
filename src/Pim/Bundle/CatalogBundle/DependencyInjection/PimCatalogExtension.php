@@ -7,7 +7,6 @@ use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
-use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Yaml\Parser as YamlParser;
 use Symfony\Component\Finder\Finder;
 
@@ -25,11 +24,6 @@ class PimCatalogExtension extends Extension implements PrependExtensionInterface
     {
         // process configuration to validation and merge
         $config = $this->processConfiguration(new Configuration(), $configs);
-
-        $container->setParameter(
-            'pim_catalog.imported_product_data_transformer',
-            $config['imported_product_data_transformer']
-        );
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('parameters.yml');

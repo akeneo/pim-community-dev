@@ -164,6 +164,15 @@ class GroupController extends AbstractDoctrineController
         $datagridManager->setGroup($group);
         $datagridView = $datagridManager->getDatagrid()->createView();
 
+        $historyDatagrid = $this->datagridWorker->getDataAuditDatagrid(
+            $group,
+            'pim_catalog_group_edit',
+            array(
+                'id' => $group->getId()
+            )
+        );
+        $historyDatagridView = $historyDatagrid->createView();
+
         if ('json' === $this->getRequest()->getRequestFormat()) {
             return $this->render(
                 'OroGridBundle:Datagrid:list.json.php',
@@ -172,8 +181,9 @@ class GroupController extends AbstractDoctrineController
         }
 
         return array(
-            'form' => $this->groupForm->createView(),
-            'datagrid' => $datagridView
+            'form'            => $this->groupForm->createView(),
+            'datagrid'        => $datagridView,
+            'historyDatagrid' => $historyDatagridView
         );
     }
 

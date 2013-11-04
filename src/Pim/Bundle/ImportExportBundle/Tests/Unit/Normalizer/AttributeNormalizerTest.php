@@ -18,26 +18,15 @@ use Pim\Bundle\CatalogBundle\Entity\Locale;
  */
 class AttributeNormalizerTest extends \PHPUnit_Framework_TestCase
 {
-    private $normalizer;
+    /**
+     * @var Normalizer
+     */
+    protected $normalizer;
 
-    private $optionalProperties = array(
-        'default_value',
-        'max_characters',
-        'validation_rule',
-        'validation_regexp',
-        'wysiwyg_enabled',
-        'number_min',
-        'number_max',
-        'decimals_allowed',
-        'negative_allowed',
-        'date_min',
-        'date_max',
-        'date_type',
-        'metric_family',
-        'default_metric_unit',
-        'allowed_extensions',
-        'max_file_size',
-    );
+    /**
+     * @var string
+     */
+    protected $format;
 
     /**
      * {@inheritdoc}
@@ -45,6 +34,7 @@ class AttributeNormalizerTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->normalizer = new AttributeNormalizer();
+        $this->format = 'json';
     }
 
     /**
@@ -143,14 +133,39 @@ class AttributeNormalizerTest extends \PHPUnit_Framework_TestCase
         $attribute = $this->createAttribute($data);
 
         $expectedResult = $data;
-        foreach ($this->optionalProperties as $property) {
+        foreach ($this->getOptionalProperties() as $property) {
             if (!array_key_exists($property, $expectedResult)) {
                 $expectedResult[$property] = '';
             }
         }
 
-        $normalized = $this->normalizer->normalize($attribute, 'json');
+        $normalized = $this->normalizer->normalize($attribute, $this->format);
         $this->assertEquals($expectedResult, $normalized);
+    }
+
+    /**
+     * @return array
+     */
+    protected function getOptionalProperties()
+    {
+        return array(
+            'default_value',
+            'max_characters',
+            'validation_rule',
+            'validation_regexp',
+            'wysiwyg_enabled',
+            'number_min',
+            'number_max',
+            'decimals_allowed',
+            'negative_allowed',
+            'date_min',
+            'date_max',
+            'date_type',
+            'metric_family',
+            'default_metric_unit',
+            'allowed_extensions',
+            'max_file_size',
+        );
     }
 
     /**
@@ -159,15 +174,12 @@ class AttributeNormalizerTest extends \PHPUnit_Framework_TestCase
      *
      * @return ProductAttribute
      */
-    private function createAttribute(array $data)
+    protected function createAttribute(array $data)
     {
         $attribute = new ProductAttribute();
         $attribute->setAttributeType(sprintf('pim_catalog_%s', strtolower($data['type'])));
 
-        foreach ($data['label'] as $locale => $label) {
-            $translation = $attribute->getTranslation($locale);
-            $translation->setLabel($label);
-        }
+        $this->addLabels($attribute, $data);
 
         if ($data['group'] !== '') {
             $group = new AttributeGroup();
@@ -185,33 +197,11 @@ class AttributeNormalizerTest extends \PHPUnit_Framework_TestCase
         $attribute->setUseableAsGridColumn((bool) $data['useable_as_grid_column']);
         $attribute->setUseableAsGridFilter((bool) $data['useable_as_grid_filter']);
 
-        foreach ($data['available_locales'] as $code) {
-            $locale = new Locale();
-            $locale->setCode($code);
-            $attribute->addAvailableLocale($locale);
-        }
+        $this->addAvailableLocales($attribute, $data);
+        $this->addOptions($attribute, $data);
+        $this->addDefaultOptions($attribute, $data);
 
-        foreach ($data['options'] as $code => $values) {
-            $attributeOption = new AttributeOption();
-            $attributeOption->setCode($code);
-            foreach ($values as $locale => $value) {
-                $optionValue = new AttributeOptionValue();
-                $optionValue->setLocale($locale);
-                $optionValue->setValue($value);
-                $attributeOption->addOptionValue($optionValue);
-            }
-            $attribute->addOption($attributeOption);
-        }
-
-        foreach ($data['default_options'] as $code => $values) {
-            foreach ($attribute->getOptions() as $option) {
-                if ($code == $option->getCode()) {
-                    $option->setDefault(true);
-                }
-            }
-        }
-
-        foreach ($this->optionalProperties as $property) {
+        foreach ($this->getOptionalProperties() as $property) {
             if (isset($data[$property]) && $data[$property] !== '') {
                 $method = 'set' . implode(
                     '',
@@ -227,5 +217,70 @@ class AttributeNormalizerTest extends \PHPUnit_Framework_TestCase
         }
 
         return $attribute;
+    }
+
+    /**
+     * @param ProductAttribute $attribute
+     * @param array            $data
+     */
+    protected function addLabels($attribute, $data)
+    {
+        foreach ($data['label'] as $locale => $label) {
+            $translation = $attribute->getTranslation($locale);
+            $translation->setLabel($label);
+        }
+    }
+
+    /**
+     * @param ProductAttribute $attribute
+     * @param array            $data
+     */
+    protected function addAvailableLocales($attribute, $data)
+    {
+        foreach ($data['available_locales'] as $code) {
+            $locale = new Locale();
+            $locale->setCode($code);
+            $attribute->addAvailableLocale($locale);
+        }
+    }
+
+    /**
+     * Create attribute options
+     *
+     * @param ProductAttribute $attribute
+     * @param array            $data
+     */
+    protected function addOptions(ProductAttribute $attribute, $data)
+    {
+        foreach ($data['options'] as $code => $values) {
+            $attributeOption = new AttributeOption();
+            $attributeOption->setCode($code);
+            foreach ($values as $locale => $value) {
+                $optionValue = new AttributeOptionValue();
+                $optionValue->setLocale($locale);
+                $optionValue->setValue($value);
+                $attributeOption->addOptionValue($optionValue);
+            }
+            $attribute->addOption($attributeOption);
+        }
+    }
+
+    /**
+     * Add attribute default options
+     *
+     * @param ProductAttribute $attribute
+     * @param array            $data
+     */
+    protected function addDefaultOptions(ProductAttribute $attribute, $data)
+    {
+        $defaultOptions = array_keys($data['default_options']);
+        foreach ($defaultOptions as $code) {
+            $options = $attribute->getOptions();
+            foreach ($options as $option) {
+                if ($code == $option->getCode()) {
+                    $option->setDefault(true);
+                }
+            }
+        }
     }
 }

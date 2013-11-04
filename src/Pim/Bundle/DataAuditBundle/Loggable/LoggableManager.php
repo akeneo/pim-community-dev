@@ -2,10 +2,9 @@
 
 namespace Pim\Bundle\DataAuditBundle\Loggable;
 
-use Oro\Bundle\DataAuditBundle\Loggable\LoggableManager as OroLoggableManager;
-use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
+use Doctrine\ORM\PersistentCollection;
 
-use Doctrine\ORM\EntityManager;
+use Oro\Bundle\DataAuditBundle\Loggable\LoggableManager as OroLoggableManager;
 
 /**
  * Override loggable manager
@@ -17,45 +16,22 @@ use Doctrine\ORM\EntityManager;
 class LoggableManager extends OroLoggableManager
 {
     /**
-     * @param string         $logEntityClass
-     * @param ConfigProvider $auditConfigProvider
+     * {@inheritDoc}
      */
-    public function __construct(
-        $logEntityClass,
-        ConfigProvider $auditConfigProvider
-    ) {
-        $this->auditConfigProvider = $auditConfigProvider;
-        $this->logEntityClass      = $logEntityClass;
+    protected function calculateCollectionData(PersistentCollection $collection)
+    {
+        if (!$this->isSkipped($collection)) {
+            parent::calculateCollectionData($collection);
+        }
     }
 
     /**
-     * @param EntityManager $em
+     * {@inheritDoc}
      */
-    public function handleLoggable(EntityManager $em)
+    protected function createLogEntity($action, $entity)
     {
-        $this->em = $em;
-        $uow      = $em->getUnitOfWork();
-
-        $collections = array_merge($uow->getScheduledCollectionUpdates(), $uow->getScheduledCollectionDeletions());
-        foreach ($collections as $collection) {
-            if (!$this->isSkipped($collection)) {
-                $this->calculateCollectionData($collection);
-            }
-        }
-        foreach ($uow->getScheduledEntityInsertions() as $entity) {
-            if (!$this->isSkipped($entity)) {
-                $this->createLogEntity(self::ACTION_CREATE, $entity);
-            }
-        }
-        foreach ($uow->getScheduledEntityUpdates() as $entity) {
-            if (!$this->isSkipped($entity)) {
-                $this->createLogEntity(self::ACTION_UPDATE, $entity);
-            }
-        }
-        foreach ($uow->getScheduledEntityDeletions() as $entity) {
-            if (!$this->isSkipped($entity)) {
-                $this->createLogEntity(self::ACTION_REMOVE, $entity);
-            }
+        if (!$this->isSkipped($entity)) {
+            parent::createLogEntity($action, $entity);
         }
     }
 

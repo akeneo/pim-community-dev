@@ -1,0 +1,173 @@
+pim_import_export.status:
+  - Bereit
+pim_import_export:
+  jobs:
+    product_export:
+      title: Produkt-Export als CSV-Datei
+      export.title: Konfiguration
+    category_export:
+      title: Kategorie-Export als CSV-Datei
+      export.title: Konfiguration
+    attribute_export:
+      title: Attribut-Export als CSV-Datei
+      export.title: Konfiguration
+    product_import:
+      title: Produkt-Import aus CSV-Datei
+      import.title: Konfiguration
+    category_import:
+      title: Kategorie-Import aus CSV-Datei
+      import.title: Konfiguration
+    attribute_import:
+      title: Attribut-Import aus CSV-Datei
+      import.title: Konfiguration
+oro_batch:
+  product_reader:
+    title: Gültigkeitsbereich
+    channel:
+      label: Ausgabekanal
+      help: Der Ausgabekanal, den Sie exportieren möchten
+  category_reader:
+    title: Extraktion der Kategorien
+  attribute_reader:
+    title: Extraktion der Attribute
+  csv_reader:
+    title: CSV-Reader
+    filePath:
+      label: Datei
+      help: Die zu importierende CSV-Datei
+    delimiter:
+      label: Trennzeichen
+      help: Ein einzelnes Zeichen, welches als Feld-Trennzeichen verwendet wird
+    enclosure:
+      label: Eingeschlossen von
+      help: Ein einzelnes Zeichen, von dem das Feld eingeschlossen wird
+    escape:
+      label: Escape
+      help: Zeichen mit dem das Feld escaped wird
+    uploadAllowed:
+      label: Datei-Upload erlauben
+      help: Auswahl, ob ein direkter Datei-Upload möglich sein soll oder nicht
+  product_csv_reader:
+    title: CSV-Reader
+    filePath:
+      label: Datei
+      help: Die zu importierende CSV-Datei
+    delimiter:
+      label: Trennzeichen
+      help: Ein einzelnes Zeichen, welches als Feld-Trennzeichen verwendet wird
+    enclosure:
+      label: Eingeschlossen von
+      help: Ein einzelnes Zeichen, von dem das Feld eingeschlossen wird
+    escape:
+      label: Escape
+      help: Zeichen mit dem das Feld escaped wird
+    uploadAllowed:
+      label: Datei-Upload erlauben
+      help: Auswahl, ob ein direkter Datei-Upload möglich sein soll oder nicht
+  csv_file_reader:
+    title: CSV-Datei Reader
+    filePath:
+      label: Datei
+      help: Die zu importierende CSV-Datei
+    delimiter:
+      label: Trennzeichen
+      help: Ein einzelnes Zeichen, welches als Feld-Trennzeichen verwendet wird
+    enclosure:
+      label: Eingeschlossen von
+      help: Ein einzelnes Zeichen, von dem das Feld eingeschlossen wird
+    escape:
+      label: Escape
+      help: Zeichen mit dem das Feld escaped wird
+    uploadAllowed:
+      label: Datei-Upload erlauben
+      help: Auswahl, ob ein direkter Datei-Upload möglich sein soll oder nicht
+  valid_product_creation_processor:
+    title: Produktanlage
+    enabled:
+      label: Produkt aktivieren?
+      help: Auswahl, ob importierte Produkte aktiviert werden sollen oder nicht
+    categoriesColumn:
+      label: Kategorie-Spalte
+      help: Name der Kategorie-Spalte
+    groupsColumn:
+      label: Groups column
+      help: Name of the groups column
+    familyColumn:
+      label: Produktfamilien-Spalte
+      help: Name der Produktfamilien-Spalte
+    categoriesDelimiter:
+      label: Kategorien-Trennzeichen
+      help: Zeichen zum Trennen der Kategorie-Codes
+    channel:
+      label: Ausgabekanal
+      help: Ausgabekanal in welchem der importierte Wert angelegt werden soll
+  valid_category_creation_processor:
+    title: Kategorieanlage
+    labelDelimiter:
+      label: Feldbezeichner-Trennzeichen
+      help: Einzelnes Zeichen, mit dem die Feldbezeichner der einzelnen Gebietsschemata getrennt werden sollen
+    localeDelimiter:
+      label: Gebietsschema-Trennzeichen
+      help: Ein einzelnes Zeichen um den Titel vom Gebietsschema zu trennen
+    circularRefsChecked:
+      label: Prüfen Sie auf Zirkelbezüge
+      help: Falls ja, werden die Daten verarbeitet, um sicherzustellen, dass keine Zirkelbezüge zwischen den Kategorien existieren
+  heterogeneous_csv_serializer_processor:
+    title: Einstellungen
+    delimiter:
+      label: Trennzeichen
+      help: Ein einzelnes Zeichen, welches als Feld-Trennzeichen verwendet wird
+    enclosure:
+      label: Eingeschlossen von
+      help: Ein einzelnes Zeichen, von dem das Feld eingeschlossen wird
+    withHeader:
+      label: Mit Kopfzeile
+      help: Auswahl, ob die Spaltenüberschrift mit ausgegeben werden sollen oder nicht
+  product_csv_serializer_processor:
+    title: Settings
+    delimiter:
+      label: Delimiter
+      help: One character used to set the field delimiter
+    enclosure:
+      label: Enclosure
+      help: One character used to set the field enclosure
+    withHeader:
+      label: With header
+      help: Whether or not to print the column name
+  homogeneous_csv_serializer_processor:
+    title: Einstellungen
+    delimiter:
+      label: Trennzeichen
+      help: Ein einzelnes Zeichen, welches als Feld-Trennzeichen verwendet wird
+    enclosure:
+      label: Eingeschlossen von
+      help: Ein einzelnes Zeichen, von dem das Feld eingeschlossen wird
+    withHeader:
+      label: Mit Kopfzeile
+      help: Auswahl, ob die Spaltenüberschriften mit ausgegeben werden sollen oder nicht
+  file_writer:
+    title: Ausgabe
+    directoryName:
+      label: Verzeichnispfad
+      help: Verzeichnis, in welches die generierte Datei abgelegt werden soll
+    fileName:
+      label: Dateiname
+      help: Name der generierten Datei.
+  product_file_writer:
+    title: Output
+    directoryName:
+      label: Directory path
+      help: Where to write the generated file on the file system
+    fileName:
+      label: File name
+      help: The name of the generated file.
+  orm_category_writer:
+    title: Kategorie-Speicher
+  orm_product_writer:
+    title: Produkt-Speicher
+Import management: Import-Verwaltung
+Import %job.name% | Edit: Import %job.name% | Bearbeiten
+Import %job.name% | Show: Import %job.name% | Anzeigen
+Export management: Export-Verwaltung
+Export %job.name% | Edit: Export %job.name% | Bearbeiten
+Export %job.name% | Show: Export %job.name% | Anzeigen

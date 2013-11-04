@@ -19,7 +19,7 @@ Feature: Association creation
       | Code | up_sell |
     And I press the "Save" button
     Then I should be on the "up_sell" association page
-    And I should see association up_sell
+    And I should see "Edit association - [up_sell]"
 
   Scenario: Fail to create an association with an empty or invalid code
     Given I am on the associations page
