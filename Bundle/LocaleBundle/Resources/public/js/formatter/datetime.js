@@ -111,12 +111,13 @@ function(localeSettings, moment) {
          * @returns {string}
          */
         formatDateTime: function(value) {
+            moment().zone(this.timezoneOffset);
             var momentDateTime = moment(value);
             if (!momentDateTime.isValid()) {
                 throw new Error('Invalid backend datetime ' + value);
             }
 
-            return momentDateTime.zone(this.timezoneOffset).format(this.getDateTimeFormat());
+            return momentDateTime.format(this.getDateTimeFormat());
         },
 
         /**
@@ -145,14 +146,18 @@ function(localeSettings, moment) {
 
         /**
          * @param {string} value
+         * @param {string} [timezoneOffset]
          * @returns {string}
          */
-        unformatDateTime: function(value) {
+        unformatDateTime: function(value, timezoneOffset) {
             if (!this.isDateTimeValid(value)) {
                 throw new Error('Invalid frontend datetime ' + value);
             }
 
-            return moment(value, this.getDateTimeFormat()).zone('+00:00').format(this.backendFormats.datetime);
+            timezoneOffset = timezoneOffset || this.timezoneOffset;
+            moment().zone(timezoneOffset);
+
+            return moment(value, this.getDateTimeFormat()).format(this.backendFormats.datetime);
         }
     }
 });
