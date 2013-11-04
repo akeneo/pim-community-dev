@@ -7,20 +7,21 @@ Feature: Browse product groups
   Background:
     Given there is no product group
     And the following attributes:
-      | code      | label      | type                     |
-      | multi     | Multi      | pim_catalog_multiselect  |
-      | color     | Color      | pim_catalog_simpleselect |
-      | size      | Size       | pim_catalog_simpleselect |
-      | dimension | Dimensions | pim_catalog_simpleselect |
+      | code  | label | type                     |
+      | multi | Multi | pim_catalog_multiselect  |
+      | color | Color | pim_catalog_simpleselect |
+      | size  | Size  | pim_catalog_simpleselect |
     And the following product groups:
-      | code           | label          | attributes  | type    |
-      | tshirt_akeneo  | T-Shirt Akeneo | size, color | VARIANT |
-      | mug_akeneo     | Mug Akeneo     | color       | VARIANT |
-      | sticker_akeneo | Sticker Akeneo | dimension   | VARIANT |
+      | code          | label          | attributes  | type    |
+      | tshirt_akeneo | T-Shirt Akeneo | size, color | VARIANT |
+      | mug_akeneo    | Mug Akeneo     | color       | VARIANT |
+      | CROSS_SELL_1  | Cross Sell     |             | X_SELL  |
+      | CROSS_SELL_2  | Relational     |             | X_SELL  |
     And I am logged in as "admin"
 
   Scenario: Successfully display product groups
     Given I am on the product groups page
-    Then the grid should contain 3 elements
-    And I should see the columns Code, Label, Type and Axis
-    And I should see groups tshirt_akeneo, mug_akeneo and sticker_akeneo
+    Then the grid should contain 2 elements
+    And I should see the columns Code, Label and Type
+    And I should see groups CROSS_SELL_1 and CROSS_SELL_2
+    And I should not see group tshort_akeneo and mug_akeneo

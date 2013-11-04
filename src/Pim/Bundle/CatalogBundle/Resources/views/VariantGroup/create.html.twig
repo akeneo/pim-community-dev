@@ -5,10 +5,10 @@
 {% endspaceless %}
 
 {{ form_start(form, {
-    'action': path('pim_catalog_group_create'),
+    'action': path('pim_catalog_variant_group_create'),
     'class': 'form-inline',
     'attr': {
-        'data-title': 'Create a new group'|trans,
+        'data-title': 'Create a new variant group'|trans,
         'data-button-submit': 'btn.save'|trans|capitalize,
         'data-button-cancel': 'btn.cancel'|trans|capitalize
     }
@@ -20,6 +20,7 @@
     <div class="row-fluid">
         {{ form_row(form.code) }}
         {{ form_row(form.type) }}
+        {{ form_row(form.attributes) }}
         {{ form_row(form._token) }}
     </div>
-{{ form_end(form) }}
+</form>

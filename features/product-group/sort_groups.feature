@@ -1,6 +1,6 @@
 @javascript
 Feature: Sort product groups
-  In order to create relations bewteen products with groups in the catalog
+  In order to create relations between products with groups in the catalog
   As a user
   I need to be able to sort product groups by several columns in the catalog
 
@@ -9,16 +9,14 @@ Feature: Sort product groups
     And the following attributes:
       | code      | label      | type                     |
       | color     | Color      | pim_catalog_simpleselect |
-      | size      | Size       | pim_catalog_simpleselect |
-      | dimension | Dimensions | pim_catalog_simpleselect |
     And the following product groups:
-      | code          | label          | attributes  | type    |
-      | TSHIRT_ORO    | T-Shirt Oro    | size, color | VARIANT |
-      | MUG           | Mug Akeneo     | color       | VARIANT |
-      | TSHIRT_AKENEO | T-Shirt Akeneo | size        | VARIANT |
+      | code       | label          | attributes | type    |
+      | TSHIRT     | T-Shirt Akeneo | color      | VARIANT |
+      | CROSS_SELL | Cross sell     |            | X_SELL  |
+      | MUG        | Mug            |            | X_SELL  |
     And I am logged in as "admin"
 
-  Scenario: Successfully sort groups
+  Scenario: Successfully sort product groups
     Given I am on the product groups page
     Then the rows should be sorted ascending by code
-    And I should be able to sort the rows by code and label
+    And I should be able to sort the rows by code, label and type
