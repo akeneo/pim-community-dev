@@ -86,7 +86,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
      */
     public function disableNavigationConfirmation()
     {
-        if (strpos($this->currentPage, 'edit')) {
+        if (strpos($this->currentPage, 'edit') || strpos($this->currentPage, 'creation')) {
             try {
                 $this->getSession()->executeScript('typeof $ !== "undefined" && $(window).off("beforeunload");');
             } catch (UnsupportedDriverActionException $e) {
