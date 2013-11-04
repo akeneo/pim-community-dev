@@ -110,33 +110,15 @@ class CompletenessCalculator
     }
 
     /**
-     * Get the channels for which the products must be calculated
-     * If no locale, all of them are recovered from database
+     * Schedule recalculation of completenesses for a product
      *
-     * @return Channel[]
+     * @param ProductInterface $product
      */
-    protected function getChannels()
+    public function schedule(ProductInterface $product)
     {
-        if ($this->channels === null || !is_array($this->channels) || empty($this->channels)) {
-            $this->channels = $this->channelManager->getChannels();
+        foreach ($product->getCompletenesses() as $completeness) {
+            $this->em->remove($completeness);
         }
-
-        return $this->channels;
-    }
-
-    /**
-     * Get the locales for which the products must be calculated
-     * If no locale, all of them are recovered from database
-     *
-     * @return Locale[]
-     */
-    protected function getLocales()
-    {
-        if ($this->locales === null || !is_array($this->locales) || empty($this->locales)) {
-            $this->locales = $this->localeManager->getActiveLocales();
-        }
-
-        return $this->locales;
     }
 
     /**
@@ -231,6 +213,36 @@ class CompletenessCalculator
 
             $product->addCompleteness($completeness);
         }
+    }
+
+    /**
+     * Get the channels for which the products must be calculated
+     * If no locale, all of them are recovered from database
+     *
+     * @return Channel[]
+     */
+    protected function getChannels()
+    {
+        if ($this->channels === null || !is_array($this->channels) || empty($this->channels)) {
+            $this->channels = $this->channelManager->getChannels();
+        }
+
+        return $this->channels;
+    }
+
+    /**
+     * Get the locales for which the products must be calculated
+     * If no locale, all of them are recovered from database
+     *
+     * @return Locale[]
+     */
+    protected function getLocales()
+    {
+        if ($this->locales === null || !is_array($this->locales) || empty($this->locales)) {
+            $this->locales = $this->localeManager->getActiveLocales();
+        }
+
+        return $this->locales;
     }
 
     /**

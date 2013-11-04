@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\NoResultException;
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory;
@@ -11,6 +12,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Entity\ProductAssociation;
 use Pim\Bundle\CatalogBundle\Entity\ProductValue;
+use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Bundle\CatalogBundle\Calculator\CompletenessCalculator;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 
@@ -232,13 +234,36 @@ class ProductManager extends FlexibleManager
      *
      * @return null
      */
-    public function save(ProductInterface $product, $calculateCompleteness = true)
+    public function save(ProductInterface $product, $postpone = false, $flush = true)
     {
         $this->storageManager->persist($product);
-        $this->storageManager->flush();
-        if ($calculateCompleteness) {
-            $this->storageManager->refresh($product);
+
+        if ($postpone) {
+            $this->completenessCalculator->schedule($product);
+        } else {
             $this->completenessCalculator->calculateForAProduct($product);
+        }
+
+        if ($flush) {
+            $this->storageManager->flush();
+        }
+    }
+
+    public function saveAll(array $products, $postpone = false, $flush = true)
+    {
+        foreach ($products as $product) {
+            if (!$product instanceof \Pim\Bundle\CatalogBundle\Model\ProductInterface) {
+                throw new \InvalidArgumentException(
+                    sprintf(
+                        'Expected instance of Pim\Bundle\CatalogBundle\Model\ProductInterface, got %s',
+                        get_class($product)
+                    )
+                );
+            }
+            $this->save($product, $postpone, false);
+        }
+
+        if ($flush) {
             $this->storageManager->flush();
         }
     }
@@ -288,6 +313,21 @@ class ProductManager extends FlexibleManager
         }
     }
 
+    public function handleAllMedia(array $products)
+    {
+        foreach ($products as $product) {
+            if (!$product instanceof \Pim\Bundle\CatalogBundle\Model\ProductInterface) {
+                throw new \InvalidArgumentException(
+                    sprintf(
+                        'Expected instance of Pim\Bundle\CatalogBundle\Model\ProductInterface, got %s',
+                        get_class($product)
+                    )
+                );
+            }
+            $this->handleMedia($product);
+        }
+    }
+
     /**
      * @param ProductInterface $product
      */
@@ -303,6 +343,7 @@ class ProductManager extends FlexibleManager
                 $productAssociation->setAssociation($association);
                 $product->addProductAssociation($productAssociation);
             }
+            $this->save($product, true);
         }
     }
 
