@@ -122,8 +122,7 @@
                 {% include 'PimCatalogBundle:Product:_tab-panes.html.twig' %}
 
                 {{ form_row(form.id) }}
-                {{ form_row(form._token) }}
             </div>
         </div>
-    </form>
+    {{ form_end(form) }}
 {% endblock %}

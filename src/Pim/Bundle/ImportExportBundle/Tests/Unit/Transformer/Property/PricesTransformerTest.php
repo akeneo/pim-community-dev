@@ -3,6 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Transformer\Property;
 
 use Pim\Bundle\ImportExportBundle\Transformer\Property\PricesTransformer;
+use Pim\Bundle\CatalogBundle\Entity\ProductPrice;
 
 /**
  * Tests related class
@@ -38,8 +39,11 @@ class PricesTransformerTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals(array(), $this->transformer->transform(''));
         $this->assertEquals(array(), $this->transformer->transform(' '));
-        $this->assertEquals(array('EUR' => 15.2), $this->transformer->transform(' 15.20 EUR'));
-        $this->assertEquals(array('EUR' => 15.2, 'USD' => 45), $this->transformer->transform(' 15.20 EUR, 45 USD '));
+        $this->assertEquals(array('EUR' => $this->getPrice(15.2, 'EUR')), $this->transformer->transform(' 15.20 EUR'));
+        $this->assertEquals(
+            array('EUR' => $this->getPrice(15.2, 'EUR'), 'USD' => $this->getPrice(45, 'USD')),
+            $this->transformer->transform(' 15.20 EUR, 45 USD ')
+        );
     }
 
     /**
@@ -58,5 +62,12 @@ class PricesTransformerTest extends \PHPUnit_Framework_TestCase
     public function testInactiveCurrenctTransform()
     {
         $this->transformer->transform(' 15 USD, 30 CHF');
+    }
+
+    protected function getPrice($data, $currency)
+    {
+        $price = new ProductPrice;
+
+        return $price->setData($data)->setCurrency($currency);
     }
 }

@@ -23,7 +23,6 @@ class NotDecimalGuesser implements ConstraintGuesserInterface
         return in_array(
             $attribute->getAttributeType(),
             array(
-                'pim_catalog_price_collection',
                 'pim_catalog_metric',
                 'pim_catalog_number',
             )

@@ -62,7 +62,11 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
     /**
      * @var Pim\Bundle\CatalogBundle\Entity\Family $family
      *
-     * @ORM\ManyToOne(targetEntity="Pim\Bundle\CatalogBundle\Entity\Family", cascade={"persist", "refresh"})
+     * @ORM\ManyToOne(
+     *     targetEntity="Pim\Bundle\CatalogBundle\Entity\Family",
+     *     cascade={"persist", "refresh"},
+     *     inversedBy="products"
+     * )
      * @ORM\JoinColumn(name="family_id", referencedColumnName="id", onDelete="SET NULL")
      */
     protected $family;

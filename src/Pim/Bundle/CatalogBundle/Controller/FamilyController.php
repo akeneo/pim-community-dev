@@ -118,7 +118,7 @@ class FamilyController extends AbstractDoctrineController
 
         $form = $this->createForm('pim_family', $family);
         if ($request->isMethod('POST')) {
-            $form->handleRequest($request);
+            $form->submit($request);
             if ($form->isValid()) {
                 $identifier = $this->productManager->getIdentifierAttribute();
                 $family->addAttribute($identifier);
@@ -172,8 +172,11 @@ class FamilyController extends AbstractDoctrineController
         );
 
         if ($request->isMethod('POST')) {
-            $form->handleRequest($request);
+            $form->submit($request);
             if ($form->isValid()) {
+                foreach ($family->getProducts() as $product) {
+                    $this->completenessCalculator->schedule($product);
+                }
                 $this->getManager()->flush();
                 $this->addFlash('success', 'flash.family.updated');
 
@@ -231,7 +234,7 @@ class FamilyController extends AbstractDoctrineController
             $availableAttributes
         );
 
-        $attributesForm->bind($request);
+        $attributesForm->submit($request);
 
         foreach ($availableAttributes->getAttributes() as $attribute) {
             $family->addAttribute($attribute);
