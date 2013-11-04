@@ -135,6 +135,8 @@ flash:
         updated:                  Attribute successfully updated
         removed:                  Attribute successfully removed
         identifier not removable: Identifier attribute can not be removed
+        option created:           Option successfully created
+        error creating option:    Error ocurred when trying to create the option, please try again
     attribute group:
         created:           Attribute group successfully created
         updated:           Attribute group successfully updated
@@ -270,6 +272,7 @@ Cancel:                   Cancel
 Create a new product:     Create a new product
 Create a new association: Create a new association
 Choose a family:          Choose a family
+Create a new option:      Create a new option
 
 # Scopes
 Global:  Global
