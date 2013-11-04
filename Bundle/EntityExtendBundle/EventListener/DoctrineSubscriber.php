@@ -85,41 +85,25 @@ class DoctrineSubscriber implements EventSubscriber
 
                     switch ($fieldId->getFieldType()) {
                         case 'manyToOne':
-                            /*$cmBuilder->addManyToOne(
-                                $fieldName,
-                                $relation['target_entity'],
-                                $targetFieldName
-                            );*/
-
                             $builder = $cmBuilder->createManyToOne($fieldName, $relation['target_entity']);
                             if ($targetFieldName) {
                                 $builder->inversedBy($targetFieldName);
                             }
-                            /*$builder->addJoinColumn(
-                                $fieldName,
+                            $builder->addJoinColumn(
+                                $fieldName . '_id',
                                 'id',
-                                $onDelete = 'SET NULL'
-                            );*/
-                            $builder->cascadeRemove();
-//                            $builder->addJoinColumn(
-//                                $fieldName . '_id',
-//                                'id',
-//                                true,
-//                                false,
-//                                '\'SET NULL\''
-//                            );
+                                true,
+                                false,
+                                'SET NULL'
+                            );
+                            $builder->cascadeDetach();
                             $builder->build();
                             break;
                         case 'oneToMany':
-                            /*$cmBuilder->addOneToMany(
-                                $fieldName,
-                                $relation['target_entity'],
-                                $targetFieldName
-                            );*/
                             $builder = $cmBuilder->createOneToMany($fieldName, $relation['target_entity']);
                             $builder->mappedBy($targetFieldName);
 
-                            $builder->cascadeRemove();
+                            $builder->cascadeDetach();
                             $builder->build();
 
                             $cmBuilder->addOwningOneToOne(
