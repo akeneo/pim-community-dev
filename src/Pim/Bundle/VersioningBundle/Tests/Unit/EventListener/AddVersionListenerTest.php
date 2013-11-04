@@ -10,6 +10,7 @@ use Pim\Bundle\ImportExportBundle\Encoder\CsvEncoder;
 use Pim\Bundle\VersioningBundle\EventListener\AddVersionListener;
 use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;
 use Pim\Bundle\VersioningBundle\Builder\AuditBuilder;
+use Pim\Bundle\VersioningBundle\UpdateGuesser\ChainedUpdateGuesser;
 use Pim\Bundle\CatalogBundle\Entity\FamilyTranslation;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
@@ -102,7 +103,7 @@ class AddVersionListenerTest extends \PHPUnit_Framework_TestCase
         $encoders    = array(new CsvEncoder());
         $normalizers = array(new GetSetMethodNormalizer());
         $serializer  = new Serializer($normalizers, $encoders);
-        $versionBuilder = new VersionBuilder($serializer);
+        $versionBuilder = new VersionBuilder($serializer, new ChainedUpdateGuesser());
         $auditBuilder   = new AuditBuilder();
         $listener = new AddVersionListener($versionBuilder, $auditBuilder);
 
