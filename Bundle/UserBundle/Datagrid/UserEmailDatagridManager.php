@@ -3,7 +3,7 @@
 namespace Oro\Bundle\UserBundle\Datagrid;
 
 use Oro\Bundle\EmailBundle\Datagrid\EmailDatagridManager;
-use Oro\Bundle\EmailBundle\Entity\Repository\EmailRepository;
+use Oro\Bundle\EmailBundle\Entity\Util\EmailUtil;
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 use Oro\Bundle\UserBundle\Entity\User;
 
@@ -43,5 +43,11 @@ class UserEmailDatagridManager extends EmailDatagridManager
     {
         $origin = $this->user->getImapConfiguration();
         $query->setParameter('origin_id', $origin !== null ? $origin->getId() : null);
+        $userEmails = EmailUtil::extractEmailAddresses($this->user->getEmails());
+        $primaryEmail = $this->user->getEmail();
+        if (!empty($primaryEmail)) {
+            $userEmails[] = $this->user->getEmail();
+        }
+        $query->setParameter('user_emails', empty($userEmails) ? null : $userEmails);
     }
 }
