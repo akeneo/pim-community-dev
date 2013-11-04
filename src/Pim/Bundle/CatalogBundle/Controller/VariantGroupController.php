@@ -102,6 +102,15 @@ class VariantGroupController extends GroupController
         $datagridManager->setGroup($group);
         $datagridView = $datagridManager->getDatagrid()->createView();
 
+        $historyDatagrid = $this->datagridWorker->getDataAuditDatagrid(
+            $group,
+            'pim_catalog_variant_group_edit',
+            array(
+                'id' => $group->getId()
+            )
+        );
+        $historyDatagridView = $historyDatagrid->createView();
+
         if ('json' === $this->getRequest()->getRequestFormat()) {
             return $this->render(
                 'OroGridBundle:Datagrid:list.json.php',
@@ -111,7 +120,8 @@ class VariantGroupController extends GroupController
 
         return array(
             'form' => $this->groupForm->createView(),
-            'datagrid' => $datagridView
+            'datagrid' => $datagridView,
+            'historyDatagrid' => $historyDatagridView
         );
     }
 }
