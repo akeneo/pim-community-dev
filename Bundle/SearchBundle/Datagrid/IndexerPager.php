@@ -2,12 +2,11 @@
 
 namespace Oro\Bundle\SearchBundle\Datagrid;
 
-use Oro\Bundle\GridBundle\Datagrid\PagerInterface;
-use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
-use Oro\Bundle\SearchBundle\Query\Result;
-use Oro\Bundle\SearchBundle\Query\Query;
+use Doctrine\ORM\Query;
 
-class IndexerPager implements PagerInterface
+use Oro\Bundle\SearchBundle\Query\Result;
+
+class IndexerPager
 {
     /**
      * @var int
@@ -25,12 +24,12 @@ class IndexerPager implements PagerInterface
     protected $nbResults = 0;
 
     /**
-     * @var ProxyQueryInterface
+     * @var Query
      */
     protected $query;
 
     /**
-     * @param ProxyQueryInterface $query
+     * @param Query $query
      */
     public function setQuery($query)
     {

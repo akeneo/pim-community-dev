@@ -8,11 +8,11 @@ datagrid:
                 type: twig
                 template: ~
                 frontend_type: string
-            url:
-                label: URL
-                type: callback
-                callable: ~
-                frontend_type: string
+#            url:
+#                label: URL
+#                type: callback
+#                callable: ~
+#                frontend_type: string
 
         properties: ~
         sorters: ~
