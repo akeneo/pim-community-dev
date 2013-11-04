@@ -6,6 +6,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * This is the class that loads and manages your bundle configuration
@@ -25,5 +26,9 @@ class PimVersioningExtension extends Extension
         $loader->load('managers.yml');
         $loader->load('builders.yml');
         $loader->load('event_listeners.yml');
+
+        $file = __DIR__.'/../Resources/config/pim_versioning_entities.yml';
+        $entities = Yaml::parse(realpath($file));
+        $container->setParameter('pim_versioning.versionable_entities', $entities['versionable']);
     }
 }

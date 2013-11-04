@@ -1,0 +1,2 @@
+versionable:
+    - Oro\Bundle\BatchBundle\Entity\JobInstance
