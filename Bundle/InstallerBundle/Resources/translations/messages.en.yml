@@ -18,6 +18,8 @@ form:
         mailer:
             header:       Mailer settings
             host:         Host
+            port:         Port
+            encryption:   Encryption
             user:         User
             password:     Password
             transport:    Transport

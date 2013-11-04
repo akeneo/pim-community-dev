@@ -3,8 +3,7 @@
 namespace Oro\Bundle\EntityBundle\Form\Type;
 
 use Doctrine\Common\Inflector\Inflector;
-use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
-use Oro\Bundle\EntityExtendBundle\Tools\ExtendConfigDumper;
+
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
@@ -14,11 +13,13 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\Routing\Router;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
+use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigId;
 
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 
+use Oro\Bundle\EntityExtendBundle\Tools\ExtendConfigDumper;
 use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 
 class CustomEntityType extends AbstractType
@@ -247,35 +248,40 @@ class CustomEntityType extends AbstractType
      */
     protected function getInitialElements($entities, $default, ConfigInterface $extendConfig)
     {
-        $result = array();
+        $result = [];
         foreach ($entities as $entity) {
-            $extraData = array();
+            $extraData = [];
             foreach ($extendConfig->get('target_grid') as $fieldName) {
                 $label = $this->configManager->getProvider('entity')
                     ->getConfig($extendConfig->get('target_entity'), $fieldName)
                     ->get('label');
 
-                $extraData[] = array(
+                $extraData[] = [
                     'label' => $label,
                     'value' => $entity->{Inflector::camelize('get_' . $fieldName)}()
-                );
+                ];
             }
 
-            $result[] = array(
+            $title = [];
+            foreach ($extendConfig->get('target_title') as $fieldName) {
+                $title[] = $entity->{Inflector::camelize('get_' . $fieldName)}();
+            }
+
+            $result[] = [
                 'id'        => $entity->getId(),
-                'label'     => $entity->{Inflector::camelize('get_' . $extendConfig->get('target_title'))}(),
+                'label'     => implode(' ', $title),
                 'link'      => $this->router->generate(
                     'oro_entity_detailed',
-                    array(
+                    [
                         'id'        => $entity->getId(),
                         'className' => str_replace('\\', '_', $extendConfig->getId()->getClassName()),
                         'fieldName' => $extendConfig->getId()->getFieldName()
-                    )
+                    ]
                 ),
                 'extraData' => $extraData,
                 'isDefault' => ($default != null && $default->getId() == $entity->getId())
 
-            );
+            ];
         }
 
         return $result;
@@ -286,7 +292,7 @@ class CustomEntityType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setRequired(array('class_name'));
+        $resolver->setRequired(['class_name']);
     }
 
     /**

@@ -159,6 +159,47 @@
 {% endmacro %}
 
 {#
+    A button with javascript handler
+    Parameters - array:
+        [
+            'aCss' - additional css class for 'a' tag
+            'iCss' - additional css class for 'i' tag
+            'dataId' - data-id parameter
+            'dataUrl' - data-url parameter
+            'dataRedirect' - url to redirect after an operation finished
+            'successMessage' - a message which will be shown after an operation finished
+            'title' - button title
+            'label' - button label
+        ]
+#}
+{% macro clientButton(parameters) %}
+    <div class="pull-left btn-group icons-holder">
+        <a href="javascript: void(0);" class="btn icons-holder-text {{ parameters.aCss is defined ? parameters.aCss : '' }}"
+           {% if (parameters.id is defined) %}
+           id="{{ parameters.id }}"
+           {% endif %}
+           {% if (parameters.dataId is defined) %}
+           data-id="{{ parameters.dataId }}"
+           {% endif %}
+           {% if (parameters.dataUrl is defined) %}
+           data-url="{{ parameters.dataUrl }}"
+           {% endif %}
+           {% if (parameters.successMessage is defined) %}
+           data-success-message="{{ parameters.successMessage }}"
+           {% endif %}
+           {% if parameters.dataRedirect is defined %}
+           data-redirect="{{ parameters.dataRedirect  }}"
+           {% endif %}
+           {% if (parameters.title is defined) %}
+           title="{{ parameters.title }}"
+           {% endif -%}
+           >
+           <i class="{{ parameters.iCss is defined ? parameters.iCss : '' }} hide-text">{{ parameters.label }}</i>{{ parameters.label -}}
+        </a>
+    </div>
+{% endmacro %}
+
+{#
     Button macros with custom button type
     Parameters - array:
         [
