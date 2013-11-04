@@ -803,7 +803,7 @@ class WebUser extends RawMinkContext
      */
     public function iSelectAxis($axis)
     {
-        $this->getPage('ProductGroup creation')->selectAxis($axis);
+        $this->getCurrentPage()->selectAxis($axis);
     }
 
     /**

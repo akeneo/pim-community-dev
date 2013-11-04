@@ -1,8 +1,8 @@
 @javascript
-Feature: Edit a variant group
-  In order to manage existing variant groups for the catalog
+Feature: Edit a product group
+  In order to manage existing product groups for the catalog
   As a user
-  I need to be able to edit a variant group
+  I need to be able to edit a product group
 
   Background:
     Given the following families:

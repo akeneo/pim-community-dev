@@ -1,7 +1,7 @@
-Feature: Display the product group history
-  In order to know who, when and what changes has been made to a product group
+Feature: Display the variant group history
+  In order to know who, when and what changes has been made to a variant group
   As a user
-  I need to have access to a product group history
+  I need to have access to a variant group history
 
   Background:
     Given there is no product group
@@ -11,9 +11,9 @@ Feature: Display the product group history
     And I am logged in as "admin"
 
   @javascript
-  Scenario: Succesfully edit a iproduct group and see the history
-    Given I am on the product groups page
-    When I create a new product group
+  Scenario: Succesfully edit a variant group and see the history
+    Given I am on the variant groups page
+    When I create a new variant group
     And I fill in the following information in the popin:
       | Code | AkeneoShirt |
     And I select the axis "Color"
