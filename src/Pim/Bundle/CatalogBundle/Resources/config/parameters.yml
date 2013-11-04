@@ -1,5 +1,6 @@
 parameters:
-    pim_catalog.manager.product.class:                Pim\Bundle\CatalogBundle\Manager\ProductManager
+    pim_catalog.manager.product.class:                  Pim\Bundle\CatalogBundle\Manager\ProductManager
+    pim_catalog.builder.product.class:                  Pim\Bundle\CatalogBundle\Builder\ProductBuilder
 
     pim_catalog.entity.product.class:                   Pim\Bundle\CatalogBundle\Entity\Product
     pim_catalog.form.type.product.view.class:           Pim\Bundle\CatalogBundle\Form\View\ProductFormView
@@ -15,8 +16,9 @@ parameters:
     pim_catalog.entity.product_attribute.class:        Pim\Bundle\CatalogBundle\Entity\ProductAttribute
     pim_catalog.entity.product_value.class:            Pim\Bundle\CatalogBundle\Entity\ProductValue
 
-    pim_catalog.form.type.product_attribute.class:     Pim\Bundle\CatalogBundle\Form\Type\ProductAttributeType
-    pim_catalog.form.handler.product_attribute.class:  Pim\Bundle\CatalogBundle\Form\Handler\ProductAttributeHandler
+    pim_catalog.form.type.product_attribute.class:       Pim\Bundle\CatalogBundle\Form\Type\ProductAttributeType
+    pim_catalog.form.type.attribute_option_create.class: Pim\Bundle\CatalogBundle\Form\Type\AttributeOptionCreateType
+    pim_catalog.form.handler.product_attribute.class:    Pim\Bundle\CatalogBundle\Form\Handler\ProductAttributeHandler
 
     pim_catalog.entity.attribute_group.class:          Pim\Bundle\CatalogBundle\Entity\AttributeGroup
     pim_catalog.form.handler.attribute_group.class:         Pim\Bundle\CatalogBundle\Form\Handler\AttributeGroupHandler

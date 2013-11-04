@@ -528,7 +528,17 @@ class Grid extends Index
      */
     protected function getColumnHeaders($withHidden = false, $withActions = true)
     {
-        $headers = $this->getElement('Grid')->findAll('css', 'thead th');
+        $grids = $this->getElement('Container')->findAll('css', $this->elements['Grid']['css']);
+        foreach ($grids as $grid) {
+            if ($grid->isVisible()) {
+                $headers = $grid->findAll('css', 'thead th');
+                break;
+            }
+        }
+
+        if (!$headers) {
+            throw new \InvalidArgumentException('No visible grids found');
+        }
 
         if (!$withActions) {
             foreach ($headers as $key => $header) {

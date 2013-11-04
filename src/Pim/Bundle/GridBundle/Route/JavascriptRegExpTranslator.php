@@ -47,7 +47,7 @@ class JavascriptRegExpTranslator
     {
         foreach ($this->unsupported as $unsupportedRegexp) {
             if (preg_match($unsupportedRegexp, $regexp)) {
-                throw new JavascriptRegexpTranslatorException;
+                throw new JavascriptRegexpTranslatorException();
             }
         }
 

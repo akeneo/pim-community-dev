@@ -4,7 +4,6 @@ namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Normalizer;
 
 use Pim\Bundle\ImportExportBundle\Normalizer\FlatAttributeNormalizer;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
-use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
@@ -18,33 +17,13 @@ use Pim\Bundle\CatalogBundle\Entity\Locale;
  */
 class FlatAttributeNormalizerTest extends AttributeNormalizerTest
 {
-    private $normalizer;
-
-    private $optionalProperties = array(
-        'default_value',
-        'max_characters',
-        'validation_rule',
-        'validation_regexp',
-        'wysiwyg_enabled',
-        'number_min',
-        'number_max',
-        'decimals_allowed',
-        'negative_allowed',
-        'date_min',
-        'date_max',
-        'date_type',
-        'metric_family',
-        'default_metric_unit',
-        'allowed_extensions',
-        'max_file_size',
-    );
-
     /**
      * {@inheritdoc}
      */
     protected function setUp()
     {
         $this->normalizer = new FlatAttributeNormalizer();
+        $this->format = 'csv';
     }
 
     /**
@@ -59,21 +38,6 @@ class FlatAttributeNormalizerTest extends AttributeNormalizerTest
             array('stdClass',                                         'csv',  false),
             array('stdClass',                                         'json', false),
         );
-    }
-
-    /**
-     * Test supportsNormalization method
-     * @param mixed   $class
-     * @param string  $format
-     * @param boolean $isSupported
-     *
-     * @dataProvider getSupportNormalizationData
-     */
-    public function testSupportNormalization($class, $format, $isSupported)
-    {
-        $data = $this->getMock($class);
-
-        $this->assertSame($isSupported, $this->normalizer->supportsNormalization($data, $format));
     }
 
     /**
@@ -140,7 +104,7 @@ class FlatAttributeNormalizerTest extends AttributeNormalizerTest
         $attribute = $this->createAttribute($data);
 
         $expectedResult = $data;
-        foreach ($this->optionalProperties as $property) {
+        foreach ($this->getOptionalProperties() as $property) {
             if (!array_key_exists($property, $expectedResult)) {
                 $expectedResult[$property] = '';
             }
@@ -153,16 +117,11 @@ class FlatAttributeNormalizerTest extends AttributeNormalizerTest
     }
 
     /**
-     * Create a attribute
-     * @param array $data
-     *
-     * @return attribute
+     * @param ProductAttribute $attribute
+     * @param array            $data
      */
-    private function createAttribute(array $data)
+    protected function addLabels($attribute, $data)
     {
-        $attribute = new ProductAttribute();
-        $attribute->setAttributeType(sprintf('pim_catalog_%s', strtolower($data['type'])));
-
         $labels = explode(',', $data['label']);
         foreach ($labels as $label) {
             $label  = explode(':', $label);
@@ -171,23 +130,14 @@ class FlatAttributeNormalizerTest extends AttributeNormalizerTest
             $translation = $attribute->getTranslation($locale);
             $translation->setLabel($label);
         }
+    }
 
-        if ($data['group'] !== '') {
-            $group = new AttributeGroup();
-            $group->setCode($data['group']);
-            $attribute->setGroup($group);
-        }
-
-        $attribute->setCode($data['code']);
-        $attribute->setSortOrder($data['sort_order']);
-        $attribute->setRequired($data['required']);
-        $attribute->setUnique($data['unique']);
-        $attribute->setSearchable($data['searchable']);
-        $attribute->setTranslatable($data['localizable']);
-        $attribute->setScopable(strtolower($data['scope']) !== 'global');
-        $attribute->setUseableAsGridColumn((bool) $data['useable_as_grid_column']);
-        $attribute->setUseableAsGridFilter((bool) $data['useable_as_grid_filter']);
-
+    /**
+     * @param ProductAttribute $attribute
+     * @param array            $data
+     */
+    protected function addAvailableLocales($attribute, $data)
+    {
         if (strtolower($data['available_locales']) !== 'all') {
             $locales = explode(',', $data['available_locales']);
             foreach ($locales as $localeCode) {
@@ -196,25 +146,6 @@ class FlatAttributeNormalizerTest extends AttributeNormalizerTest
                 $attribute->addAvailableLocale($locale);
             }
         }
-
-        $this->addAttributeOptions($attribute, $data);
-
-        foreach ($this->optionalProperties as $property) {
-            if (isset($data[$property]) && $data[$property] !== '') {
-                $method = 'set' . implode(
-                    '',
-                    array_map(
-                        function ($item) {
-                            return ucfirst($item);
-                        },
-                        explode('_', $property)
-                    )
-                );
-                $attribute->$method($data[$property]);
-            }
-        }
-
-        return $attribute;
     }
 
     /**
@@ -223,7 +154,7 @@ class FlatAttributeNormalizerTest extends AttributeNormalizerTest
      * @param ProductAttribute $attribute
      * @param array            $data
      */
-    private function addAttributeOptions(ProductAttribute $attribute, $data)
+    protected function addOptions(ProductAttribute $attribute, $data)
     {
         $options = array_filter(explode('|', $data['options']));
         foreach ($options as $option) {
@@ -244,20 +175,31 @@ class FlatAttributeNormalizerTest extends AttributeNormalizerTest
             }
             $attribute->addOption($attributeOption);
         }
+    }
 
+    /**
+     * Add attribute default options
+     *
+     * @param ProductAttribute $attribute
+     * @param array            $data
+     */
+    protected function addDefaultOptions(ProductAttribute $attribute, $data)
+    {
         $defaultOptions = array_filter(explode('|', $data['default_options']));
         foreach ($defaultOptions as $defaultOption) {
             $translations = explode(',', $defaultOption);
-            $locale       = reset($translation);
-            $value        = end($translation);
-
-            $options = $attribute->getOptions();
-            foreach ($options as $option) {
-                $optionValues = $option->getOptionValues();
-                foreach ($optionValues as $optionValue) {
-                    if ($optionValue->getLocale() == $locale && $optionValue->getValue() == $value) {
-                        $option->setDefault(true);
-                        break;
+            foreach ($translations as $translation) {
+                $translation = explode(':', $translation);
+                $locale       = reset($translation);
+                $value        = end($translation);
+                $options = $attribute->getOptions();
+                foreach ($options as $option) {
+                    $optionValues = $option->getOptionValues();
+                    foreach ($optionValues as $optionValue) {
+                        if ($optionValue->getLocale() == $locale && $optionValue->getValue() == $value) {
+                            $option->setDefault(true);
+                            break;
+                        }
                     }
                 }
             }

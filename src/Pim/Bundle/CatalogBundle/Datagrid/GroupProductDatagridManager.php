@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Datagrid;
 
-use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
-
 use Oro\Bundle\GridBundle\Sorter\SorterInterface;
 
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;

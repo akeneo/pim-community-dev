@@ -6,7 +6,7 @@ use Oro\Bundle\BatchBundle\Item\ItemReaderInterface;
 use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 
 /**
- * Dummy step, can be use to do nothing until you'll have concret implementation
+ * Dummy step, can't be used unless you have a concrete implementation
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)

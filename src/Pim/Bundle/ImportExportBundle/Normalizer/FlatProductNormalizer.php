@@ -106,15 +106,7 @@ class FlatProductNormalizer implements NormalizerInterface
             } elseif ($data instanceof \Pim\Bundle\CatalogBundle\Entity\AttributeOption) {
                 $data = $data->getCode();
             } elseif ($data instanceof \Doctrine\Common\Collections\Collection) {
-                $result = array();
-                foreach ($data as $item) {
-                    if ($item instanceof \Pim\Bundle\CatalogBundle\Entity\AttributeOption) {
-                        $result[] = $item->getCode();
-                    } else {
-                        $result[] = (string) $item;
-                    }
-                }
-                $data = join(self::ITEM_SEPARATOR, $result);
+                $data = $this->normalizeCollectionData($data);
             } elseif ($data instanceof Media) {
                 $data = $data->getFilename();
             }
@@ -142,6 +134,28 @@ class FlatProductNormalizer implements NormalizerInterface
         }
 
         return $value->getAttribute()->getCode() . $suffix;
+    }
+
+    /**
+     * Normalize the value collection data
+     *
+     * @param array $data
+     *
+     * @return string
+     */
+    protected function normalizeCollectionData($data)
+    {
+        $result = array();
+        foreach ($data as $item) {
+            if ($item instanceof \Pim\Bundle\CatalogBundle\Entity\AttributeOption) {
+                $result[] = $item->getCode();
+            } else {
+                $result[] = (string) $item;
+            }
+        }
+        $data = join(self::ITEM_SEPARATOR, $result);
+
+        return $data;
     }
 
     /**

@@ -26,6 +26,9 @@ class OrmProductTransformerTest extends \PHPUnit_Framework_TestCase
     protected $valueErrors;
     protected $columns;
 
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         $this->productValues = array();
@@ -92,6 +95,9 @@ class OrmProductTransformerTest extends \PHPUnit_Framework_TestCase
         $this->addProductValueTransformer('default');
     }
 
+    /**
+     * Test related method
+     */
     public function testPropertyTransformers()
     {
         $this->addPropertyTransformer('field1');
@@ -145,6 +151,9 @@ class OrmProductTransformerTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * Test related method
+     */
     public function testProductValues()
     {
         $this->addProductValueTransformer('transformed');
@@ -162,6 +171,9 @@ class OrmProductTransformerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($this->productValues['key2']->data, 'transformed-value2');
     }
 
+    /**
+     * Test related method
+     */
     public function testEmptyProductValues()
     {
         $this->attributeCache
@@ -214,11 +226,22 @@ class OrmProductTransformerTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @param ProductInterface $product
+     * @param string           $name
+     * @param mixed            $value
+     */
     public function setProductValue($product, $name, $value)
     {
         $product->$name = $value;
     }
 
+    /**
+     * @param string  $propertyPath
+     * @param boolean $failing
+     *
+     * @return \Pim\Bundle\ImportExportBundle\Transformer\Property\PropertyTransformerInterface
+     */
     protected function addPropertyTransformer($propertyPath, $failing = false)
     {
         $transformer = $this->getPropertyTransformerMock($propertyPath, $failing);
@@ -227,6 +250,12 @@ class OrmProductTransformerTest extends \PHPUnit_Framework_TestCase
         return $transformer;
     }
 
+    /**
+     * @param string  $backendType
+     * @param boolean $failing
+     *
+     * @return \Pim\Bundle\ImportExportBundle\Transformer\Property\PropertyTransformerInterface
+     */
     protected function addProductValueTransformer($backendType, $failing = false)
     {
         $transformer = $this->getPropertyTransformerMock($backendType, $failing);
@@ -235,6 +264,12 @@ class OrmProductTransformerTest extends \PHPUnit_Framework_TestCase
         return $transformer;
     }
 
+    /**
+     * @param string  $prefix
+     * @param boolean $failing
+     *
+     * @return \Pim\Bundle\ImportExportBundle\Transformer\Property\PropertyTransformerInterface
+     */
     protected function getPropertyTransformerMock($prefix, $failing = false)
     {
         $transformer = $this->getMock(
@@ -259,6 +294,11 @@ class OrmProductTransformerTest extends \PHPUnit_Framework_TestCase
         return $transformer;
     }
 
+    /**
+     * @param string $code
+     *
+     * @return \Pim\Bundle\CatalogBundle\Model\ProductValueInterface
+     */
     public function getProductValueMock($code)
     {
         $productValue = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Model\ProductValueInterface')
@@ -280,11 +320,19 @@ class OrmProductTransformerTest extends \PHPUnit_Framework_TestCase
         return $productValue;
     }
 
+    /**
+     * @param ProductValueInterface $productValue
+     */
     public function addProductValue($productValue)
     {
         $this->productValues[$productValue->code] = $productValue;
     }
 
+    /**
+     * @param string $columnCode
+     *
+     * @return array
+     */
     public function getValueErrors($columnCode)
     {
         return isset($this->valueErrors[$columnCode])
@@ -292,21 +340,37 @@ class OrmProductTransformerTest extends \PHPUnit_Framework_TestCase
             : array();
     }
 
+    /**
+     * @return array
+     */
     public function getPropertyErrors()
     {
         return $this->propertyErrors;
     }
 
+    /**
+     * @return array
+     */
     public function getColumns()
     {
         return $this->columns;
     }
 
+    /**
+     * @return array
+     */
     public function getAttributes()
     {
         return $this->attributes;
     }
 
+    /**
+     * @param string $columnCode
+     * @param string $backendType
+     * @param string $attributeCode
+     * @param string $localeCode
+     * @param string $scopeCode
+     */
     protected function addAttributeColumn(
         $columnCode,
         $backendType,

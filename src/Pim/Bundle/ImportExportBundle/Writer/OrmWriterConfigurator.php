@@ -18,6 +18,11 @@ class OrmWriterConfigurator
      */
     protected $addVersionListener;
 
+    /**
+     * Constructor
+     *
+     * @param AddVersionListener $addVersionListener
+     */
     public function __construct(AddVersionListener $addVersionListener)
     {
         $this->addVersionListener = $addVersionListener;

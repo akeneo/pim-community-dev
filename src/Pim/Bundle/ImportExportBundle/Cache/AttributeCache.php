@@ -102,7 +102,8 @@ class AttributeCache
     /**
      * Returns the attribute corresponding to the specified code
      *
-     * @param  string           $code
+     * @param string $code
+     *
      * @return ProductAttribute
      */
     public function getAttribute($code)
@@ -155,7 +156,8 @@ class AttributeCache
     /**
      * Returns the required attribute codes for a product
      *
-     * @param  ProductInterface $product
+     * @param ProductInterface $product
+     *
      * @return array
      */
     public function getRequiredAttributeCodes(ProductInterface $product)
@@ -176,13 +178,14 @@ class AttributeCache
             }
         }
 
-        return $codes;
+        return array_unique($codes);
     }
 
     /**
      * Returns the attribute codes for a group
      *
-     * @param  Group $group
+     * @param Group $group
+     *
      * @return array
      */
     protected function getGroupAttributeCodes(Group $group)
@@ -198,7 +201,8 @@ class AttributeCache
     /**
      * Returns the attribute codes for a family
      *
-     * @param  Family $family
+     * @param Family $family
+     *
      * @return array
      */
     protected function getFamilyAttributeCodes(Family $family)
@@ -214,7 +218,8 @@ class AttributeCache
     /**
      * Returns the attribute codes for an object
      *
-     * @param  object $object
+     * @param object $object
+     *
      * @return array
      */
     protected function getAttributeCodes($object)
@@ -230,7 +235,8 @@ class AttributeCache
     /**
      * Returns an array of tokens for each column label.
      *
-     * @param  array $columnLabels
+     * @param array $columnLabels
+     *
      * @return array
      */
     protected function getColumnLabelTokens($columnLabels)
@@ -246,8 +252,9 @@ class AttributeCache
     /**
      * Sets the columns property
      *
-     * @param  array      $columnLabelTokens
-     * @throws \Exception
+     * @param array $columnLabelTokens
+     *
+     * @throws \InvalidArgumentException
      */
     protected function setColumns(array $columnLabelTokens)
     {
@@ -261,10 +268,10 @@ class AttributeCache
             $columnInfo['attribute'] = $this->getAttribute($columnInfo['code']);
             if ($columnInfo['attribute']->getTranslatable()) {
                 if (!count($labelTokens)) {
-                    throw new \Exception(
+                    throw new \InvalidArgumentException(
                         sprintf(
-                            'The column "%s" must contains the local code',
-                            $key
+                            'The column "%s" must contain the local code',
+                            $columnCode
                         )
                     );
                 }
@@ -272,10 +279,10 @@ class AttributeCache
             }
             if ($columnInfo['attribute']->getScopable()) {
                 if (!count($labelTokens)) {
-                    throw new \Exception(
+                    throw new \InvalidArgumentException(
                         sprintf(
-                            'The column "%s" must contains the scope code',
-                            $key
+                            'The column "%s" must contain the scope code',
+                            $columnCode
                         )
                     );
                 }
@@ -288,8 +295,10 @@ class AttributeCache
     /**
      * Sets the attributes and identifierAttributes properties
      *
-     * @param  array      $columnLabelTokens
-     * @throws \Exception
+     * @param array $columnLabelTokens
+     *
+     * @return null
+     * @throws \InvalidArgumentException
      */
     protected function setAttributes($columnLabelTokens)
     {
@@ -312,9 +321,9 @@ class AttributeCache
             }
         }
         if (count($this->attributes) !== count($codes)) {
-            throw new \Exception(
+            throw new \InvalidArgumentException(
                 sprintf(
-                    'The following fields do not exist : %s',
+                    'The following fields do not exist: %s',
                     implode(
                         ', ',
                         array_diff(
