@@ -45,7 +45,8 @@ Feature: Delete a variant group
     And I should see group MUG
     When I click on the "Delete" action of the row which contains "MUG"
     And I confirm the deletion
-    Then I should not see group MUG
+    Then the grid should contain 1 element
+    And I should not see group "MUG"
 
   Scenario: Successfully delete a variant group
     Given I edit the "POSTIT" variant group
