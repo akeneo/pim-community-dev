@@ -46,12 +46,12 @@ class ControllersTest extends WebTestCase
             '<select required="required" name="emailnotification[template]" id="emailnotification_template" ' .
             'tabindex="-1" class="select2-offscreen"> ' .
             '<option value="" selected="selected"></option> ' .
-            '<option value="2">EmailBundle:update_user</option> </select>'
+            '<option value="1">EmailBundle:update_user</option> </select>'
         );
 
         $field = new ChoiceFormField($doc->getElementsByTagName('select')->item(0));
         $form->set($field);
-        $form['emailnotification[template]'] = '2';
+        $form['emailnotification[template]'] = '1';
         $form['emailnotification[recipientList][users]'] = '1';
         $form['emailnotification[recipientList][groups][0]'] = '1';
         $form['emailnotification[recipientList][email]'] = 'admin@example.com';
@@ -60,6 +60,7 @@ class ControllersTest extends WebTestCase
 
         $result = $this->client->getResponse();
         ToolsAPI::assertJsonResponse($result, 200, 'text/html; charset=UTF-8');
+        file_put_contents('/tmp/out.html', $crawler->html());
         $this->assertContains("Email notification rule saved", $crawler->html());
     }
 
@@ -92,12 +93,12 @@ class ControllersTest extends WebTestCase
             '<select required="required" name="emailnotification[template]" id="emailnotification_template" ' .
             'tabindex="-1" class="select2-offscreen"> ' .
             '<option value="" selected="selected"></option> ' .
-            '<option value="2">EmailBundle:update_user</option> </select>'
+            '<option value="1">EmailBundle:update_user</option> </select>'
         );
 
         $field = new ChoiceFormField($doc->getElementsByTagName('select')->item(0));
         $form->set($field);
-        $form['emailnotification[template]'] = '2';
+        $form['emailnotification[template]'] = '1';
         $form['emailnotification[recipientList][users]'] = '1';
         $form['emailnotification[recipientList][groups][0]'] = '1';
         $form['emailnotification[recipientList][email]'] = 'admin@example.com';
