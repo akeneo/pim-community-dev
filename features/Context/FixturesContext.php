@@ -1445,7 +1445,7 @@ class FixturesContext extends RawMinkContext
      */
     private function createTree($code)
     {
-        return $this>createCategory($code);
+        return $this->createCategory($code);
     }
 
     /**
