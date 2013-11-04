@@ -49,7 +49,7 @@ class PricesTransformer implements PropertyTransformerInterface, ProductValueUpd
                 continue;
             }
 
-            if (0 === preg_match('/^([0-9]*\.?[0-9]*) (\w+)$/', $price, $matches)) {
+            if (0 === preg_match('/^([^\s]+) (\w+)$/', $price, $matches)) {
                 throw new InvalidValueException('Malformed price: "%value%"', array('%value%' => $price));
             }
 
@@ -60,7 +60,7 @@ class PricesTransformer implements PropertyTransformerInterface, ProductValueUpd
                 );
             }
 
-            $result[$matches[2]] = $matches[1];
+            $result[$matches[2]] = $this->createPrice($matches[1], $matches[2]);
         }
 
         return $result;
@@ -81,15 +81,15 @@ class PricesTransformer implements PropertyTransformerInterface, ProductValueUpd
 
         foreach ($productValue->getPrices() as $price) {
             $currency = $price->getCurrency();
-            if (!isset($data[$currency])) {
-                $price->setData($data[$currency]);
+            if (isset($data[$currency])) {
+                $price->setData($data[$currency]->getData());
                 $removeCurrency($currency);
                 unset($data[$currency]);
             }
         }
 
         foreach ($data as $currency => $price) {
-            $this->addPrice($productValue, $price, $currency);
+            $this->addPrice($productValue, $price->getData(), $currency);
             $removeCurrency($currency);
         }
 
@@ -113,7 +113,7 @@ class PricesTransformer implements PropertyTransformerInterface, ProductValueUpd
     }
 
     /**
-     * Creates a ProductPrice object
+     * Creates a ProductPrice object and adds it to the product value
      *
      * @param ProductValueInterface $productValue
      * @param float                 $data
@@ -123,9 +123,23 @@ class PricesTransformer implements PropertyTransformerInterface, ProductValueUpd
      */
     protected function addPrice(ProductValueInterface $productValue, $data, $currency)
     {
+        $productValue->addPrice($this->createPrice($data, $currency)->setValue($productValue));
+    }
+
+    /**
+     * Creates a ProductPrice object
+     *
+     * @param ProductValueInterface $productValue
+     * @param float                 $data
+     * @param string                $currency
+     *
+     * @return ProductPrice
+     */
+    protected function createPrice($data, $currency)
+    {
         $price = new ProductPrice();
-        $productValue->addPrice(
-            $price->setValue($productValue)->setData($data)->setCurrency($currency)
-        );
+        $price->setData($data)->setCurrency($currency);
+
+        return $price;
     }
 }
