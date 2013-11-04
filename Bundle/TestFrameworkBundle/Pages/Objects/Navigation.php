@@ -12,7 +12,7 @@ class Navigation extends Page
     protected $pinbar;
     protected $xpathMenu = '';
 
-    public function __construct($testCase,  $args = array())
+    public function __construct($testCase, $args = array())
     {
         if (array_key_exists('url', $args)) {
             $this->redirectUrl = $args['url'];
