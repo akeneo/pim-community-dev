@@ -15,12 +15,32 @@ use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
 class VersionableUpdateGuesser implements UpdateGuesserInterface
 {
     /**
+     * Entities configured as versionable without implementing interface because coming
+     * from third party bundles
+     *
+     * @var array $versionableEntities
+     */
+    protected $versionableEntities;
+
+   /**
+    * Constructor
+    *
+    * @param array $versionableEntities
+    */
+    public function __construct(array $versionableEntities)
+    {
+        $this->versionableEntities = $versionableEntities;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function guessUpdates(Entitymanager $em, $entity)
     {
         $pendings = array();
         if ($entity instanceof VersionableInterface) {
+            $pendings[]= $entity;
+        } elseif (in_array(get_class($entity), $this->versionableEntities)) {
             $pendings[]= $entity;
         }
 

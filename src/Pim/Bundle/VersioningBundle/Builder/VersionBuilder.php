@@ -40,16 +40,16 @@ class VersionBuilder
     /**
      * Build a version from a versionable entity
      *
-     * @param VersionableInterface $versionable
-     * @param User                 $user
+     * @param object  $versionable
+     * @param User    $user
+     * @param integer $numVersion
      *
      * @return Version
      */
-    public function buildVersion(VersionableInterface $versionable, User $user)
+    public function buildVersion($versionable, User $user, $numVersion)
     {
         $resourceName = get_class($versionable);
         $resourceId   = $versionable->getId();
-        $numVersion   = $versionable->getVersion();
         // TODO: we don't use direct json serialize due to convert to audit data based on array_diff
         $data         = $this->serializer->normalize($versionable, 'csv');
 

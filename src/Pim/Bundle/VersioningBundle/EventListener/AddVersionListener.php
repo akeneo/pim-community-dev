@@ -7,13 +7,13 @@ use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 use Oro\Bundle\UserBundle\Entity\User;
-use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
 use Pim\Bundle\VersioningBundle\Entity\Pending;
 use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;
 use Pim\Bundle\VersioningBundle\Builder\AuditBuilder;
+use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
 
 /**
- * Aims to audit data updates on product, attribute, family, category
+ * Aims to audit data updates on versionable entities
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -31,7 +31,7 @@ class AddVersionListener implements EventSubscriber
     /**
      * Entities to version
      *
-     * @var VersionableInterface[]
+     * @var object[]
      */
     protected $versionableEntities = array();
 
@@ -139,24 +139,24 @@ class AddVersionListener implements EventSubscriber
 
     /**
      * @param EntityManager $em
-     * @param Versionable   $versionable
+     * @param object        $versionable
      * @param User          $user
      */
-    public function createVersionAndAudit(EntityManager $em, VersionableInterface $versionable, User $user)
+    public function createVersionAndAudit(EntityManager $em, $versionable, User $user)
     {
-        $current = $this->versionBuilder->buildVersion($versionable, $user);
+        $previous = $em->getRepository('PimVersioningBundle:Version')
+            ->findPreviousVersion(get_class($versionable), $versionable->getId());
+        $prevVersionNumber = ($previous) ? $previous->getVersion() + 1 : 1;
+
+        $current = $this->versionBuilder->buildVersion($versionable, $user, $prevVersionNumber);
         $this->computeChangeSet($em, $current);
-        $previous = $em->getRepository('PimVersioningBundle:Version')->findPreviousVersion($current);
+
         $previousAudit = $em->getRepository('Oro\Bundle\DataAuditBundle\Entity\Audit')
             ->findOneBy(
                 array('objectId' => $current->getResourceId(), 'objectName' => $current->getResourceName()),
                 array('loggedAt' => 'desc')
             );
-        if ($previousAudit) {
-            $versionNumber = $previousAudit->getVersion() + 1;
-        } else {
-            $versionNumber = 1;
-        }
+        $versionNumber = ($previousAudit) ? $previousAudit->getVersion() + 1 : 1;
 
         $audit = $this->auditBuilder->buildAudit($current, $previous, $versionNumber);
         $diffData = $audit->getData();
@@ -223,9 +223,9 @@ class AddVersionListener implements EventSubscriber
     /**
      * Mark entity as to be versioned
      *
-     * @param VersionableInterface $versionable
+     * @param object $versionable
      */
-    protected function addPendingVersioning(VersionableInterface $versionable)
+    protected function addPendingVersioning($versionable)
     {
         $oid = spl_object_hash($versionable);
         if (!isset($this->versionableEntities[$oid]) and !in_array($oid, $this->versionedEntities)) {

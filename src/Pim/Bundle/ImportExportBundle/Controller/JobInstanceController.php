@@ -245,6 +245,8 @@ class JobInstanceController extends AbstractDoctrineController
         }
         $form = $this->createForm(new JobInstanceType(), $jobInstance);
 
+        $historyDatagrid = $this->datagridWorker->getDataAuditDatagrid($jobInstance, 'pim_importexport_export_edit', array('id' => $jobInstance->getId()));
+
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
@@ -263,7 +265,8 @@ class JobInstanceController extends AbstractDoctrineController
         return $this->render(
             sprintf('PimImportExportBundle:%s:edit.html.twig', ucfirst($this->getJobType())),
             array(
-                'form'      => $form->createView(),
+                'form'            => $form->createView(),
+                'historyDatagrid' => $historyDatagrid->createView()
             )
         );
     }
