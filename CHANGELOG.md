@@ -1,3 +1,13 @@
+# 1.0.0-beta-3 - in progress
+
+## Features
+- History of changes for groups and variant groups
+- History of changes for import / export profiles
+
+## Improvements
+
+## Bug fixes
+
 # 1.0.0-beta-2 - "Hold the Lion, Please" (2013-10-29)
 
 ## Features
