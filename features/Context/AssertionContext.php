@@ -2,9 +2,8 @@
 
 namespace Context;
 
-use Behat\Mink\Exception\ElementNotFoundException;
-
 use Behat\MinkExtension\Context\RawMinkContext;
+use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\Gherkin\Node\TableNode;
 
