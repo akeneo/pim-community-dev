@@ -64,9 +64,8 @@
             {% endif %}
 
             {{ form_row(form.id) }}
-            {{ form_row(form._token) }}
         </div>
-    </form>
+    {{ form_end(form) }}
 {% endblock %}
 
 {% block head_script_component %}
