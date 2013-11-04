@@ -2,7 +2,9 @@
 
 {% block head_script %}
     {{ parent() }}
-    {% include 'OroGridBundle:Include:javascript.html.twig' with {'datagridView': historyDatagrid, 'selector': '#history-grid'} %}
+    {% if form.vars.value.id %}
+        {% include 'OroGridBundle:Include:javascript.html.twig' with {'datagridView': historyDatagrid, 'selector': '#history-grid'} %}
+    {% endif %}
 {% endblock %}
 
 {% block content %}
@@ -22,7 +24,10 @@
 
         {{ elements.form_errors(form) }}
 
-        {% set navbarTabs = ['General properties', 'History'] %}
+        {% set navbarTabs = ['General properties'] %}
+        {% if form.vars.value.id %}
+             {% set navbarTabs = navbarTabs|merge(['History']) %}
+        {% endif %}
 
         {% for step in form.job.steps %}
             {% set navbarTabs = navbarTabs|merge([step.vars.value.name]) %}
@@ -46,9 +51,11 @@
                 </div>
             {% endfor %}
 
+            {% if form.vars.value.id %}
             <div class="tab-pane" id="history">
                 <div id="history-grid"></div>
             </div>
+            {% endif %}
         </div>
 
     {{ form_end(form) }}
