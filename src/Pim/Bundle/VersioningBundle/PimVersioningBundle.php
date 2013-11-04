@@ -3,6 +3,8 @@
 namespace Pim\Bundle\VersioningBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Pim\Bundle\VersioningBundle\DependencyInjection\Compiler;
 
 /**
  * Pim Versioning Bundle
@@ -13,4 +15,14 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class PimVersioningBundle extends Bundle
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function build(ContainerBuilder $container)
+    {
+        parent::build($container);
+
+        $container
+            ->addCompilerPass(new Compiler\RegisterUpdateGuessersPass());
+    }
 }
