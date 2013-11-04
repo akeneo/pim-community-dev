@@ -1,6 +1,8 @@
 # 1.0.0-beta-3
 
 ## Features
+- History of changes for groups and variant groups
+- History of changes for import / export profiles
 
 ## Improvements
 - Separate product groups and variants management

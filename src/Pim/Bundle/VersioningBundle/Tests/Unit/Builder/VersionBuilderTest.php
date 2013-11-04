@@ -7,6 +7,7 @@ use Pim\Bundle\ImportExportBundle\Encoder\CsvEncoder;
 use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
 use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;
 use Pim\Bundle\VersioningBundle\Entity\Version;
+use Pim\Bundle\VersioningBundle\UpdateGuesser\ChainedUpdateGuesser;
 
 /**
  * Test related class
@@ -30,7 +31,7 @@ class VersionBuilderTest extends \PHPUnit_Framework_TestCase
         $encoders = array(new CsvEncoder());
         $normalizers = array(new GetSetMethodNormalizer());
         $serializer = new Serializer($normalizers, $encoders);
-        $this->manager = new VersionBuilder($serializer);
+        $this->manager = new VersionBuilder($serializer, new ChainedUpdateGuesser());
     }
 
     /**

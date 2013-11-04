@@ -6,12 +6,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Oro\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
 use Pim\Bundle\VersioningBundle\Entity\Version;
-use Pim\Bundle\VersioningBundle\UpdateGuesser\VersionableUpdateGuesser;
-use Pim\Bundle\VersioningBundle\UpdateGuesser\TranslationsUpdateGuesser;
-use Pim\Bundle\VersioningBundle\UpdateGuesser\ContainsProductsUpdateGuesser;
-use Pim\Bundle\VersioningBundle\UpdateGuesser\AttributeOptionUpdateGuesser;
-use Pim\Bundle\VersioningBundle\UpdateGuesser\ProductValueUpdateGuesser;
-use Pim\Bundle\VersioningBundle\UpdateGuesser\AttributeGroupUpdateGuesser;
+use Pim\Bundle\VersioningBundle\UpdateGuesser\ChainedUpdateGuesser;
 
 /**
  * Version builder
@@ -28,11 +23,18 @@ class VersionBuilder
     protected $serializer;
 
     /**
-     * @param SerializerInterface $serializer
+     * @var ChainedUpdateGuesser
      */
-    public function __construct(SerializerInterface $serializer)
+    protected $guesser;
+
+    /**
+     * @param SerializerInterface  $serializer
+     * @param ChainedUpdateGuesser $guesser
+     */
+    public function __construct(SerializerInterface $serializer, ChainedUpdateGuesser $guesser)
     {
-        $this->serializer   = $serializer;
+        $this->serializer = $serializer;
+        $this->guesser    = $guesser;
     }
 
     /**
@@ -64,23 +66,8 @@ class VersionBuilder
      */
     public function checkScheduledUpdate($em, $entity)
     {
-        $pendings = array();
+        $updates = $this->guesser->guessUpdates($em, $entity);
 
-        $guessers = array(
-            new VersionableUpdateGuesser(),
-            new TranslationsUpdateGuesser(),
-            new ContainsProductsUpdateGuesser(),
-            new AttributeOptionUpdateGuesser(),
-            new ProductValueUpdateGuesser(),
-            new AttributeOptionUpdateGuesser(),
-            new AttributeGroupUpdateGuesser()
-        );
-
-        foreach ($guessers as $guesser) {
-            $updates = $guesser->guessUpdates($em, $entity);
-            $pendings = array_merge($pendings, $updates);
-        }
-
-        return $pendings;
+        return $updates;
     }
 }
