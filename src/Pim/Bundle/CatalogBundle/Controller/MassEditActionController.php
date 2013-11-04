@@ -3,13 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
-use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
-use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\Validator\ValidatorInterface;
-use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
@@ -49,42 +42,15 @@ class MassEditActionController extends AbstractDoctrineController
     /**
      * Constructor
      *
-     * @param Request                    $request
-     * @param EngineInterface            $templating
-     * @param RouterInterface            $router
-     * @param SecurityContextInterface   $securityContext
-     * @param FormFactoryInterface       $formFactory
-     * @param ValidatorInterface         $validator
-     * @param TranslatorInterface        $translator
-     * @param RegistryInterface          $doctrine
      * @param MassEditActionOperator     $batchOperator
      * @param DatagridWorkerInterface    $datagridWorker
      * @param MassActionParametersParser $parametersParser
      */
     public function __construct(
-        Request $request,
-        EngineInterface $templating,
-        RouterInterface $router,
-        SecurityContextInterface $securityContext,
-        FormFactoryInterface $formFactory,
-        ValidatorInterface $validator,
-        TranslatorInterface $translator,
-        RegistryInterface $doctrine,
         MassEditActionOperator $batchOperator,
         DatagridWorkerInterface $datagridWorker,
         MassActionParametersParser $parametersParser
     ) {
-        parent::__construct(
-            $request,
-            $templating,
-            $router,
-            $securityContext,
-            $formFactory,
-            $validator,
-            $translator,
-            $doctrine
-        );
-
         $this->batchOperator    = $batchOperator;
         $this->datagridWorker   = $datagridWorker;
         $this->parametersParser = $parametersParser;

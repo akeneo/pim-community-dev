@@ -5,13 +5,6 @@ namespace Pim\Bundle\CatalogBundle\Controller;
 use Pim\Bundle\CatalogBundle\Exception\MediaManagementException;
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
-use Symfony\Component\Routing\RouterInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
-use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\Validator\ValidatorInterface;
-use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -89,31 +82,15 @@ class ProductController extends AbstractDoctrineController
     /**
      * Constructor
      *
-     * @param Request                  $request
-     * @param EngineInterface          $templating
-     * @param RouterInterface          $router
-     * @param SecurityContextInterface $securityContext
-     * @param FormFactoryInterface     $formFactory
-     * @param ValidatorInterface       $validator
-     * @param TranslatorInterface      $translator
-     * @param RegistryInterface        $doctrine
-     * @param GridRenderer             $gridRenderer
-     * @param DatagridWorkerInterface  $datagridWorker
-     * @param ProductManager           $productManager
-     * @param CategoryManager          $categoryManager
-     * @param LocaleManager            $localeManager
-     * @param AuditManager             $auditManager
-     * @param SecurityFacade           $securityFacade
+     * @param GridRenderer            $gridRenderer
+     * @param DatagridWorkerInterface $datagridWorker
+     * @param ProductManager          $productManager
+     * @param CategoryManager         $categoryManager
+     * @param LocaleManager           $localeManager
+     * @param AuditManager            $auditManager
+     * @param SecurityFacade          $securityFacade
      */
     public function __construct(
-        Request $request,
-        EngineInterface $templating,
-        RouterInterface $router,
-        SecurityContextInterface $securityContext,
-        FormFactoryInterface $formFactory,
-        ValidatorInterface $validator,
-        TranslatorInterface $translator,
-        RegistryInterface $doctrine,
         GridRenderer $gridRenderer,
         DatagridWorkerInterface $datagridWorker,
         ProductManager $productManager,
@@ -122,17 +99,6 @@ class ProductController extends AbstractDoctrineController
         AuditManager $auditManager,
         SecurityFacade $securityFacade
     ) {
-        parent::__construct(
-            $request,
-            $templating,
-            $router,
-            $securityContext,
-            $formFactory,
-            $validator,
-            $translator,
-            $doctrine
-        );
-
         $this->gridRenderer         = $gridRenderer;
         $this->datagridWorker       = $datagridWorker;
         $this->productManager       = $productManager;
@@ -140,9 +106,16 @@ class ProductController extends AbstractDoctrineController
         $this->localeManager        = $localeManager;
         $this->auditManager         = $auditManager;
         $this->securityFacade       = $securityFacade;
+    }
 
+    /**
+     * Set the user locale in productmanager
+     */
+    public function setProductManagerLocale()
+    {
         $this->productManager->setLocale($this->getDataLocale());
     }
+
     /**
      * List product attributes
      *

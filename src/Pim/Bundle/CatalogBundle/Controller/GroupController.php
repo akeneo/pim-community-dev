@@ -2,16 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Controller;
 
-use Symfony\Bridge\Doctrine\RegistryInterface;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Form\Form;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Validator\ValidatorInterface;
-use Symfony\Component\Translation\TranslatorInterface;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
@@ -49,42 +42,15 @@ class GroupController extends AbstractDoctrineController
     /**
      * Constructor
      *
-     * @param Request                  $request
-     * @param EngineInterface          $templating
-     * @param RouterInterface          $router
-     * @param SecurityContextInterface $securityContext
-     * @param FormFactoryInterface     $formFactory
-     * @param ValidatorInterface       $validator
-     * @param TranslatorInterface      $translator
-     * @param RegistryInterface        $doctrine
-     * @param DatagridWorkerInterface  $datagridWorker
-     * @param GroupHandler             $groupHandler
-     * @param Form                     $groupForm
+     * @param DatagridWorkerInterface $datagridWorker
+     * @param GroupHandler            $groupHandler
+     * @param Form                    $groupForm
      */
     public function __construct(
-        Request $request,
-        EngineInterface $templating,
-        RouterInterface $router,
-        SecurityContextInterface $securityContext,
-        FormFactoryInterface $formFactory,
-        ValidatorInterface $validator,
-        TranslatorInterface $translator,
-        RegistryInterface $doctrine,
         DatagridWorkerInterface $datagridWorker,
         GroupHandler $groupHandler,
         Form $groupForm
     ) {
-        parent::__construct(
-            $request,
-            $templating,
-            $router,
-            $securityContext,
-            $formFactory,
-            $validator,
-            $translator,
-            $doctrine
-        );
-
         $this->datagridWorker = $datagridWorker;
         $this->groupHandler   = $groupHandler;
         $this->groupForm      = $groupForm;

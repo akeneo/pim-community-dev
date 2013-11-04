@@ -60,32 +60,13 @@ abstract class AbstractController
     private $translator;
 
     /**
-     * Constructor
-     *
-     * @param Request                  $request
-     * @param EngineInterface          $templating
-     * @param RouterInterface          $router
-     * @param SecurityContextInterface $securityContext
-     * @param FormFactoryInterface     $formFactory
-     * @param ValidatorInterface       $validator
-     * @param TranslatorInterface      $translator
+     * @param Request $request
      */
-    public function __construct(
-        Request $request,
-        EngineInterface $templating,
-        RouterInterface $router,
-        SecurityContextInterface $securityContext,
-        FormFactoryInterface $formFactory,
-        ValidatorInterface $validator,
-        TranslatorInterface $translator
-    ) {
-        $this->request         = $request;
-        $this->templating      = $templating;
-        $this->router          = $router;
-        $this->securityContext = $securityContext;
-        $this->formFactory     = $formFactory;
-        $this->validator       = $validator;
-        $this->translator      = $translator;
+    public function setRequest(Request $request = null)
+    {
+        if ($request) {
+            $this->request = $request;
+        }
     }
 
     /**
@@ -99,6 +80,14 @@ abstract class AbstractController
     }
 
     /**
+     * @param EngineInterface $templating
+     */
+    public function setTemplating(EngineInterface $templating)
+    {
+        $this->templating = $templating;
+    }
+
+    /**
      * Returns the templating service
      *
      * @return EngineInterface
@@ -106,6 +95,14 @@ abstract class AbstractController
     protected function getTemplating()
     {
         return $this->templating;
+    }
+
+    /**
+     * @param RouterInterface $router
+     */
+    public function setRouter(RouterInterface $router)
+    {
+        $this->router = $router;
     }
 
     /**
@@ -119,6 +116,14 @@ abstract class AbstractController
     }
 
     /**
+     * @param SecurityContextInterface $securityContext
+     */
+    public function setSecurityContext(SecurityContextInterface $securityContext)
+    {
+        $this->securityContext = $securityContext;
+    }
+
+    /**
      * Returns the security cotnext service
      *
      * @return SecurityContextInterface
@@ -126,6 +131,14 @@ abstract class AbstractController
     protected function getSecurityContext()
     {
         return $this->securityContext;
+    }
+
+    /**
+     * @param FormFactoryInterface $formFactory
+     */
+    public function setFormFactory(FormFactoryInterface $formFactory)
+    {
+        $this->formFactory = $formFactory;
     }
 
     /**
@@ -139,6 +152,14 @@ abstract class AbstractController
     }
 
     /**
+     * @param ValidatorInterface $validator
+     */
+    public function setValidator(ValidatorInterface $validator)
+    {
+        $this->validator = $validator;
+    }
+
+    /**
      * Returns the validator service.
      *
      * @return ValidatorInterface
@@ -146,6 +167,14 @@ abstract class AbstractController
     protected function getValidator()
     {
         return $this->validator;
+    }
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function setTranslator(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
     }
 
     /**
