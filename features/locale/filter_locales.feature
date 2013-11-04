@@ -25,15 +25,12 @@ Feature: Filter locales
     And I should see locales de_DE and en_US
     And I should not see locales fr_FR
 
-  Scenario: Successfully filter by activated "yes"
+  Scenario: Successfully filter by activated
     Given I am on the locales page
     When I filter by "Activated" with value "yes"
     Then the grid should contain 2 elements
     And I should see locales en_US and fr_FR
     And I should not see locale de_DE
-
-  Scenario: Successfully filter by activated "no"
-    Given I am on the locales page
     When I filter by "Activated" with value "no"
     Then the grid should contain 1 element
     And I should see locales de_DE
