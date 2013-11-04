@@ -9,8 +9,6 @@ require(
             // Get form name
             var formName = '#{{ form.vars.id }}';
 
-            new FormUpdateListener($(formName));
-
             var $optionList;
 
             function updateForm() {
@@ -177,6 +175,8 @@ require(
                     $(this).prev().val($(this).is(':checked') ? 1 : 0);
                 });
             }
+
+            new FormUpdateListener($(formName));
         });
     }
 );
