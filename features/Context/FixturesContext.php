@@ -977,19 +977,6 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @Given /^there is no identifier attribute$/
-     */
-    public function thereIsNoIdentifierAttribute()
-    {
-        $attributes = $this->getRepository('PimCatalogBundle:ProductAttribute')
-                ->findBy(array('attributeType' => 'pim_catalog_identifier'));
-
-        foreach ($attributes as $attribute) {
-            $this->remove($attribute);
-        }
-    }
-
-    /**
      * @param string $attribute
      * @param string $options
      *
