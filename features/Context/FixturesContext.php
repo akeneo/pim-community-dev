@@ -376,7 +376,7 @@ class FixturesContext extends RawMinkContext
                     ->setLocale($this->getLocaleCode($data['locale']))
                     ->setLabel($data['label']);
             }
-            $this->persist($family);
+            $this->persist($family, false);
         }
 
         $this->flush();
@@ -428,11 +428,7 @@ class FixturesContext extends RawMinkContext
     public function theFollowingLocales(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
-            $locale = $this->findLocale(array('code' => $data['code']));
-            if (!$locale) {
-                $locale = new Locale();
-                $locale->setCode($data['code']);
-            }
+            $locale = $this->getOrCreateLocale($data['code']);
 
             $locale->setFallback($data['fallback']);
             if ($data['activated'] === 'yes') {
@@ -687,8 +683,7 @@ class FixturesContext extends RawMinkContext
     public function theFollowingCategories(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
-            $category = new Category();
-            $category->setCode($data['code']);
+            $category = $this->createCategory($data['code']);
             $category->setLocale('en_US')->setLabel($data['label']); // TODO translation refactoring
 
             if (!empty($data['parent'])) {
@@ -936,7 +931,7 @@ class FixturesContext extends RawMinkContext
 
             $requirement->setRequired($data['required'] === 'yes');
 
-            $this->persist($requirement);
+            $this->persist($requirement, false);
         }
 
         $this->flush();
@@ -975,19 +970,6 @@ class FixturesContext extends RawMinkContext
             $label = isset($data['label']) ? $data['label'] : null;
 
             $this->createAssociation($code, $label);
-        }
-    }
-
-    /**
-     * @Given /^there is no identifier attribute$/
-     */
-    public function thereIsNoIdentifierAttribute()
-    {
-        $attributes = $this->getRepository('PimCatalogBundle:ProductAttribute')
-                ->findBy(array('attributeType' => 'pim_catalog_identifier'));
-
-        foreach ($attributes as $attribute) {
-            $this->remove($attribute);
         }
     }
 
@@ -1465,11 +1447,21 @@ class FixturesContext extends RawMinkContext
      */
     private function createTree($code)
     {
-        $tree = new Category();
-        $tree->setCode($code);
-        $this->persist($tree);
+        return $this->createCategory($code);
+    }
 
-        return $tree;
+    /**
+     * @param string $code
+     *
+     * @return Category
+     */
+    private function createCategory($code)
+    {
+        $category = new Category();
+        $category->setCode($code);
+        $this->persist($category);
+
+        return $category;
     }
 
     /**
@@ -1560,20 +1552,6 @@ class FixturesContext extends RawMinkContext
         $this->persist($role);
 
         return $role;
-    }
-
-    /**
-     * @param string $code
-     *
-     * @return Category
-     */
-    private function createCategory($code)
-    {
-        $category = new Category();
-        $category->setCode($code);
-        $this->persist($category);
-
-        return $category;
     }
 
     /**

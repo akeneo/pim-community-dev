@@ -4,16 +4,16 @@ namespace Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser;
 
 use Oro\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface;
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
-use Pim\Bundle\CatalogBundle\Validator\Constraints\NotDecimal;
+use Pim\Bundle\CatalogBundle\Validator\Constraints\Numeric;
 
 /**
  * Guesser
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author    Antoine Guigan <antoine@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class NotDecimalGuesser implements ConstraintGuesserInterface
+class NumericGuesser implements ConstraintGuesserInterface
 {
     /**
      * {@inheritdoc}
@@ -37,7 +37,7 @@ class NotDecimalGuesser implements ConstraintGuesserInterface
         $constraints = array();
 
         if (!$attribute->isDecimalsAllowed()) {
-            $constraints[] = new NotDecimal();
+            $constraints[] = new Numeric();
         }
 
         return $constraints;
