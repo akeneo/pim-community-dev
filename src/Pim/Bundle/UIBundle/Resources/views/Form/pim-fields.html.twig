@@ -22,6 +22,13 @@
 {% endspaceless %}
 {% endblock form_start %}
 
+{% block form_end %}
+{% spaceless %}
+    {{ form_row(form._token) }}
+</form>
+{% endspaceless %}
+{% endblock form_end %}
+
 {% block form_row %}
     {% spaceless %}
         {% if form|is_flexible %}
