@@ -80,12 +80,30 @@ class ProductAttributeHandler
      */
     public function process(ProductAttribute $entity)
     {
-        $locales = array_map(
-            function ($locale) {
-                return $locale->getCode();
-            },
-            $this->manager->getRepository('PimCatalogBundle:Locale')->getActivatedLocales()
-        );
+        $this->addMissingOptionValues($entity);
+        $this->form->setData($entity);
+
+        if ($this->request->isMethod('POST')) {
+            $this->form->bind($this->request);
+
+            if ($this->form->isValid()) {
+                $this->onSuccess($entity);
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Add missing attribute optio values
+     *
+     * @param ProductAttribute $entity
+     */
+    protected function addMissingOptionValues(ProductAttribute $entity)
+    {
+        $locales = $this->getLocaleCodes();
 
         foreach ($entity->getOptions() as $option) {
             if ($option->getTranslatable()) {
@@ -103,19 +121,23 @@ class ProductAttributeHandler
                 }
             }
         }
-        $this->form->setData($entity);
+    }
 
-        if ($this->request->isMethod('POST')) {
-            $this->form->bind($this->request);
+    /**
+     * Get activated locale codes
+     *
+     * @return array
+     */
+    protected function getLocaleCodes()
+    {
+        $locales = array_map(
+            function ($locale) {
+                return $locale->getCode();
+            },
+            $this->manager->getRepository('PimCatalogBundle:Locale')->getActivatedLocales()
+        );
 
-            if ($this->form->isValid()) {
-                $this->onSuccess($entity);
-
-                return true;
-            }
-        }
-
-        return false;
+        return $locales;
     }
 
     /**

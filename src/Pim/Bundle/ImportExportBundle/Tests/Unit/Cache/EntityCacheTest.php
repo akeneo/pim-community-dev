@@ -11,6 +11,9 @@ namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Cache;
  */
 class EntityCacheTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * Test related method
+     */
     public function testFind()
     {
         $cache = $this->createCache(2);
@@ -22,6 +25,9 @@ class EntityCacheTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('object2', $cache->find('class', 'object2'));
     }
 
+    /**
+     * Test related method
+     */
     public function testReset()
     {
         $cache = $this->createCache(4);
@@ -35,6 +41,11 @@ class EntityCacheTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('object2', $cache->find('class', 'object2'));
     }
 
+    /**
+     * @param integer $queryCount
+     *
+     * @return \Pim\Bundle\ImportExportBundle\Cache\EntityCache
+     */
     protected function createCache($queryCount)
     {
         $doctrine = $this->getMock('Symfony\Bridge\Doctrine\RegistryInterface');

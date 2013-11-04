@@ -16,8 +16,9 @@ interface PropertyTransformerInterface
     /**
      * Returns transformed value
      *
-     * @var string $value
-     * @var array $options
+     * @param string $value
+     * @param array  $options
+     *
      * @throws InvalidValueException
      * @return mixed
      */

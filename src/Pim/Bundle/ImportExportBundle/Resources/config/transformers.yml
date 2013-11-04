@@ -23,7 +23,7 @@ services:
         tags:
             - name: pim_import_export.transformer.product.attribute
               backend_type: default
-        
+
     pim_import_export.transformer.property.entity:
         class: '%pim_import_export.transformer.property.entity.class%'
         arguments:

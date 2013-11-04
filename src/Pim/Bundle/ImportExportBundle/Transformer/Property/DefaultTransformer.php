@@ -11,6 +11,9 @@ namespace Pim\Bundle\ImportExportBundle\Transformer\Property;
  */
 class DefaultTransformer implements PropertyTransformerInterface
 {
+    /**
+     * {@inheritdoc}
+     */
     public function transform($value, array $options = array())
     {
         $value = trim($value);
