@@ -122,36 +122,6 @@ class CompletenessCalculator
     }
 
     /**
-     * Get the channels for which the products must be calculated
-     * If no locale, all of them are recovered from database
-     *
-     * @return Channel[]
-     */
-    protected function getChannels()
-    {
-        if ($this->channels === null || !is_array($this->channels) || empty($this->channels)) {
-            $this->channels = $this->channelManager->getChannels();
-        }
-
-        return $this->channels;
-    }
-
-    /**
-     * Get the locales for which the products must be calculated
-     * If no locale, all of them are recovered from database
-     *
-     * @return Locale[]
-     */
-    protected function getLocales()
-    {
-        if ($this->locales === null || !is_array($this->locales) || empty($this->locales)) {
-            $this->locales = $this->localeManager->getActiveLocales();
-        }
-
-        return $this->locales;
-    }
-
-    /**
      * Calculate the completeness of a products list
      *
      * Returns an associative array of completeness entities like
@@ -243,6 +213,36 @@ class CompletenessCalculator
 
             $product->addCompleteness($completeness);
         }
+    }
+
+    /**
+     * Get the channels for which the products must be calculated
+     * If no locale, all of them are recovered from database
+     *
+     * @return Channel[]
+     */
+    protected function getChannels()
+    {
+        if ($this->channels === null || !is_array($this->channels) || empty($this->channels)) {
+            $this->channels = $this->channelManager->getChannels();
+        }
+
+        return $this->channels;
+    }
+
+    /**
+     * Get the locales for which the products must be calculated
+     * If no locale, all of them are recovered from database
+     *
+     * @return Locale[]
+     */
+    protected function getLocales()
+    {
+        if ($this->locales === null || !is_array($this->locales) || empty($this->locales)) {
+            $this->locales = $this->localeManager->getActiveLocales();
+        }
+
+        return $this->locales;
     }
 
     /**
