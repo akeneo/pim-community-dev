@@ -6,7 +6,7 @@ use Oro\Bundle\TestFrameworkBundle\Pages\PageFilteredGrid;
 
 class ConfigEntities extends PageFilteredGrid
 {
-    const URL = 'entity/config';
+    const URL = 'entity/config/';
 
     public function __construct($testCase, $redirect = true)
     {
