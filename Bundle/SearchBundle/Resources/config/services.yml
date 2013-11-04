@@ -9,7 +9,10 @@ parameters:
     oro_search.prepare_result_item.listener.class:        Oro\Bundle\SearchBundle\EventListener\PrepareResultItemListener
 
     oro_search.extension.formatter.property.search_result_property.class: Oro\Bundle\SearchBundle\Extension\SearchResultProperty
-    oro_datagrid.extension.search_results.class:          Oro\Bundle\SearchBundle\Extension\SearchResultsExtension
+    oro_search.extension.search_results.class:          Oro\Bundle\SearchBundle\Extension\SearchResultsExtension
+
+    oro_search.event_listener.search_results_grid_listener.class: Oro\Bundle\SearchBundle\EventListener\SearchResultsGridListener
+    oro_search.datasource.search.class:                 Oro\Bundle\SearchBundle\Datagrid\SearchDatasource
 
 services:
     oro_search.index:
@@ -72,7 +75,7 @@ services:
             - { name:  oro_datagrid.extension.formatter.property, type: search-result }
 
     oro_search.extension.search_results:
-        class: %oro_datagrid.extension.search_results.class%
+        class: %oro_search.extension.search_results.class%
         arguments:
             - @oro_datagrid.datagrid.request_params
             - @oro_search.formatter.result_formatter
@@ -81,3 +84,18 @@ services:
             - @event_dispatcher
         tags:
             - { name: oro_datagrid.extension }
+
+    oro_search.event_listener.search_results_grid_listener:
+        class: %oro_search.event_listener.search_results_grid_listener.class%
+        arguments:
+          - @oro_datagrid.datagrid.request_params
+          - @oro_search.index
+        tags:
+          - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.search-grid, method: onBuildAfter }
+
+    oro_search.datasource.search:
+        class: %oro_search.datasource.search.class%
+        arguments:
+            - @doctrine.orm.entity_manager
+        tags:
+            - { name: oro_datagrid.datasource, type: search }

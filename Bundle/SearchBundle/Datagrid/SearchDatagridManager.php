@@ -99,7 +99,11 @@ class SearchDatagridManager extends DatagridManager
     protected function createQuery()
     {
         /** @var $query Query */
-        $query = parent::createQuery();
+        $query = new IndexerQuery(
+            $this->indexer,
+            $this->indexer->select()
+        );
+
         $query
             ->from($this->searchEntity)
             ->andWhere(Indexer::TEXT_ALL_DATA_FIELD, '~', $this->searchString, 'text');

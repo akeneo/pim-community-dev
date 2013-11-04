@@ -1,11 +1,11 @@
 datagrid:
     search-grid:
         source:
-            type: orm
+            type: search
         columns:
             entity:
                 label: Item
-                type: twig
+                type: search-result
                 template: ~
                 frontend_type: string
 #            url:
