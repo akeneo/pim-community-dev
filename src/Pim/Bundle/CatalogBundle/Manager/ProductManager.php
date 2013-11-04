@@ -3,7 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\NoResultException;
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory;
@@ -343,7 +342,7 @@ class ProductManager extends FlexibleManager
                 $productAssociation->setAssociation($association);
                 $product->addProductAssociation($productAssociation);
             }
-            $this->save($product, true);
+            $this->storageManager->flush();
         }
     }
 

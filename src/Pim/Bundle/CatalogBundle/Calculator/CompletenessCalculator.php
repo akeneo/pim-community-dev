@@ -30,34 +30,22 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
  */
 class CompletenessCalculator
 {
-    /**
-     * @var ChannelManager
-     */
+    /** @var ChannelManager */
     protected $channelManager;
 
-    /**
-     * @var LocaleManager
-     */
+    /** @var LocaleManager */
     protected $localeManager;
 
-    /**
-     * @var EntityManager
-     */
+    /** @var EntityManager */
     protected $em;
 
-    /**
-     * @var Validator
-     */
+    /** @var Validator */
     protected $validator;
 
-    /**
-     * @var Channel[]
-     */
+    /** @var Channel[] */
     protected $channels;
 
-    /**
-     * @var Locale[]
-     */
+    /** @var Locale[] */
     protected $locales;
 
     /**
@@ -212,6 +200,20 @@ class CompletenessCalculator
             $completeness->setRatio($ratio);
 
             $product->addCompleteness($completeness);
+        }
+    }
+
+    /**
+     * Calculate missing completeness of a list of a products for a given channel
+     *
+     * @param array $products
+     * @param Channel $channel
+     *
+     */
+    public function calculateForAChannel(array $products, Channel $channel)
+    {
+        foreach ($products as $product) {
+            $this->calculateForAProductByChannel($product, $channel);
         }
     }
 

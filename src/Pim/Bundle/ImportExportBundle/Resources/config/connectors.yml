@@ -31,6 +31,7 @@ services:
         arguments:
             - '@pim_catalog.manager.product'
             - '@pim_catalog.manager.channel'
+            - '@pim_catalog.calculator.completeness'
 
     pim_import_export.reader.category:
         class: %pim_import_export.reader.category.class%

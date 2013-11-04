@@ -3,9 +3,11 @@
 namespace Pim\Bundle\ImportExportBundle\Reader;
 
 use Symfony\Component\Validator\Constraints as Assert;
+use Pim\Bundle\ImportExportBundle\Validator\Constraints\Channel as ChannelConstraint;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Pim\Bundle\ImportExportBundle\Validator\Constraints\Channel;
+use Pim\Bundle\CatalogBundle\Calculator\CompletenessCalculator;
+use Pim\Bundle\CatalogBundle\Entity\Channel;
 
 /**
  * Product reader
@@ -17,24 +19,38 @@ use Pim\Bundle\ImportExportBundle\Validator\Constraints\Channel;
 class ProductReader extends ORMReader
 {
     /**
-     * @var EntityManager
-     */
-    protected $em;
-
-    /**
+     * @var string
+     *
      * @Assert\NotBlank
-     * @Channel
+     * @ChannelConstraint
      */
     protected $channel;
 
+    /** @var Pim\Bundle\CatalogBundle\Doctrine\EntityRepository */
+    protected $repository;
+
+    /** @var ProductManager */
+    protected $productManager;
+
+    /** @var ChannelManager */
+    protected $channelManager;
+
+    /** @var CompletenessCalculator */
+    protected $calculator;
+
     /**
-     * @param ProductManager $productManager
-     * @param ChannelManager $channelManager
+     * @param ProductManager         $productManager
+     * @param ChannelManager         $channelManager
+     * @param CompletenessCalculator $calculator
      */
-    public function __construct(ProductManager $productManager, ChannelManager $channelManager)
-    {
-        $this->repository     = $productManager->getFlexibleRepository();
+    public function __construct(
+        ProductManager $productManager,
+        ChannelManager $channelManager,
+        CompletenessCalculator $calculator
+    ) {
+        $this->productManager = $productManager;
         $this->channelManager = $channelManager;
+        $this->calculator     = $calculator;
     }
 
     /**
@@ -44,12 +60,29 @@ class ProductReader extends ORMReader
     {
         if (!$this->query) {
             $channel = current($this->channelManager->getChannels(array('code' => $this->channel)));
-            $this->query = $this->repository
+            if (!$channel) {
+                throw new \InvalidArgumentException(
+                    sprintf('Could not find the channel %s', $this->channel)
+                );
+            }
+
+            $this->calculateMissingCompletenesses($channel);
+            $this->productManager->getStorageManager()->flush();
+
+            $this->query = $this->getProductRepository()
                 ->buildByChannelAndCompleteness($channel)
                 ->getQuery();
         }
 
         return parent::read();
+    }
+
+    protected function calculateMissingCompletenesses(Channel $channel)
+    {
+        $products = $this->getProductRepository()
+            ->findByMissingCompleteness($channel);
+
+        $this->calculator->calculateForAChannel($products, $channel);
     }
 
     /**
@@ -84,5 +117,10 @@ class ProductReader extends ORMReader
                 )
             )
         );
+    }
+
+    protected function getProductRepository()
+    {
+        return $this->productManager->getFlexibleRepository();
     }
 }
