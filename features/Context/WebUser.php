@@ -92,6 +92,15 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @Given /^I create a new variant group$/
+     */
+    public function iCreateANewVariantGroup()
+    {
+        $entity = 'VariantGroup';
+        $this->iCreateANew($entity);
+    }
+
+    /**
      * @param TableNode $pages
      *
      * @Then /^I should be able visit the following pages without errors$/
@@ -794,7 +803,7 @@ class WebUser extends RawMinkContext
      */
     public function iSelectAxis($axis)
     {
-        $this->getPage('ProductGroup creation')->selectAxis($axis);
+        $this->getCurrentPage()->selectAxis($axis);
     }
 
     /**

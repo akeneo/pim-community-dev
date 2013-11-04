@@ -52,7 +52,6 @@
 
             {{ elements.accordion({ 'General Properties': generalProperties, 'Locale values': form_row(form.label) }) }}
         </div>
-        {{ form_row(form._token) }}
 
         <div class="tab-pane" id="attributes">
             {% include 'PimCatalogBundle:Family:_attributeRequirements.html.twig' %}
@@ -63,7 +62,7 @@
         </div>
 
     </div>
-</form>
+{{ form_end(form) }}
 {% endblock %}
 
 {% block head_script_component %}

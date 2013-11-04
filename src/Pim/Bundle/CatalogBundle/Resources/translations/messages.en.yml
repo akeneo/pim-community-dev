@@ -11,6 +11,7 @@ import profile:  import profile
 locale:          locale
 product:         product
 group:           group
+variant group:   variant group
 association:     association
 
 # Page header titles
@@ -65,6 +66,10 @@ group:
     overview: group overview
     create:   create group
     edit:     edit group
+variant group:
+    overview: variant group overview
+    create:   create variant group
+    edit:     edit variant group
 association:
     overview: association overview
     create:   create association
@@ -88,6 +93,7 @@ btn:
         locale:          create locale
         product:         create product
         group:           create group
+        variant group:   create variant group
         association:     create association
     edit:      edit
     save:      save
@@ -116,6 +122,7 @@ confirmation:
         import profile:  Are you sure you want to delete the import profile %name%?
         channel:         Are you sure you want to delete the channel %name%?
         group:           Are you sure you want to delete the group %name%?
+        variant group:   Are you sure you want to delete the variant group %name%?
         association:     Are you sure you want to delete the association %name%?
 
 # Flash messages
@@ -176,6 +183,10 @@ flash:
         created: Group successfully created
         updated: Group successfully updated
         removed: Group successfully removed
+    variant group:
+        created: Variant group successfully created
+        updated: Variant group successfully updated
+        removed: Variant group successfully removed
     association:
         created: Association successfully created
         updated: Association successfully updated
@@ -340,6 +351,9 @@ Locales %locale.code% | Edit:                Locales %locale.code% | Edit
 Groups:                                      Groups
 Groups | Create:                             Groups | Create
 Groups %group.label% | Edit:                 Groups %group.label% | Edit
+Variant groups:                              Variant groups
+Variant groups | Create:                     Variant groups | Create
+Variant groups %group.label% | Edit:         Variant groups %group.label% | Edit
 Associations:                                Associations
 Associations | Create:                       Associations | Create
 Associations %association.label% | Edit:     Associations %association.label% | Edit

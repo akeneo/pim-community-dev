@@ -11,6 +11,8 @@ pim_dashboard:
             import_report:  'Imports History'
             product:        'Manage Products'
             category:       'Manage Categories'
+            variant:        'Manage Variant Groups'
+            group:          'Manage Groups'
             channel:        'Manage Channels'
             export_profile: 'Manage Export Profiles'
             export_report:  'Exports History'

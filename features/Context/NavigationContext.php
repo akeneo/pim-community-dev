@@ -60,7 +60,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
         'users'                    => 'User index',
         'user roles'               => 'UserRole index',
         'user groups'              => 'UserGroup index',
-        'variants'                 => 'Variant index',
+        'variant groups'           => 'VariantGroup index',
         'attribute groups'         => 'AttributeGroup index',
         'attribute group creation' => 'AttributeGroup creation',
     );
@@ -86,7 +86,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
      */
     public function disableNavigationConfirmation()
     {
-        if (strpos($this->currentPage, 'edit')) {
+        if (strpos($this->currentPage, 'edit') || strpos($this->currentPage, 'creation')) {
             try {
                 $this->getSession()->executeScript('typeof $ !== "undefined" && $(window).off("beforeunload");');
             } catch (UnsupportedDriverActionException $e) {
@@ -216,6 +216,20 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
         $page = 'ProductGroup';
         $getter = sprintf('get%s', $page);
         $entity = $this->getFixturesContext()->$getter($identifier);
+        $this->openPage(sprintf('%s edit', $page), array('id' => $entity->getId()));
+    }
+
+    /**
+     * @param string $identifier
+     *
+     * @Given /^I am on the "([^"]*)" variant group page$/
+     * @Given /^I edit the "([^"]*)" variant group$/
+     */
+    public function iAmOnTheVariantGroupEditPage($identifier)
+    {
+        $page = 'VariantGroup';
+        $getter = sprintf('get%s', $page);
+        $entity = $this->getFixturesContext()->getProductGroup($identifier);
         $this->openPage(sprintf('%s edit', $page), array('id' => $entity->getId()));
     }
 

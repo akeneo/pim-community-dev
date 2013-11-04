@@ -948,7 +948,9 @@ class FixturesContext extends RawMinkContext
             $code = $data['code'];
             $label = $data['label'];
             $type = $data['type'];
-            $attributes = ($data['attributes'] == '') ? array() : explode(', ', $data['attributes']);
+
+            $attributes = (!isset($data['attributes']) || $data['attributes'] == '')
+                ? array() : explode(', ', $data['attributes']);
 
             $products = (isset($data['products'])) ? explode(', ', $data['products']) : array();
 
