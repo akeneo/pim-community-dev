@@ -35,55 +35,12 @@ class VariantGroupController extends GroupController
     /**
      * {@inheritdoc}
      *
-     * @AclAncestor("pim_catalog_group_index")
-     */
-    public function indexAction(Request $request)
-    {
-        /** @var QueryBuilder $queryBuilder */
-        $queryBuilder = $this->getManager()->createQueryBuilder();
-        $datagrid = $this->datagridWorker->getDatagrid('variant_group', $queryBuilder);
-
-        $view = ('json' === $request->getRequestFormat())
-            ? 'OroGridBundle:Datagrid:list.json.php'
-            : 'PimCatalogBundle:VariantGroup:index.html.twig';
-
-        return $this->render($view, array('datagrid' => $datagrid->createView()));
-    }
-
-    /**
-     * {@inheritdoc}
-     *
      * @Template
      * @AclAncestor("pim_catalog_group_create")
      */
     public function createAction(Request $request)
     {
-        if (!$request->isXmlHttpRequest()) {
-            return $this->redirectToRoute('pim_catalog_variant_group_index');
-        }
-
-        $groupType = $this
-            ->getRepository('PimCatalogBundle:GroupType')
-            ->findOneBy(array('code' => 'VARIANT'));
-
-        $group = new Group();
-        $group->setType($groupType);
-
-        if ($this->groupHandler->process($group)) {
-            $this->addFlash('success', 'flash.variant group.created');
-
-            $url = $this->generateUrl(
-                'pim_catalog_variant_group_edit',
-                array('id' => $group->getId())
-            );
-            $response = array('status' => 1, 'url' => $url);
-
-            return new Response(json_encode($response));
-        }
-
-        return array(
-            'form' => $this->groupForm->createView()
-        );
+        return parent::createAction($request);
     }
 
     /**
@@ -94,34 +51,65 @@ class VariantGroupController extends GroupController
      */
     public function editAction(Group $group)
     {
+        return parent::editAction($group);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function createGroup()
+    {
+        $groupType = $this
+            ->getRepository('PimCatalogBundle:GroupType')
+            ->findOneBy(array('code' => 'VARIANT'));
+
+        $group = new Group();
+        $group->setType($groupType);
+
+        return $group;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getGroupDatagrid()
+    {
+        $queryBuilder = $this->getManager()->createQueryBuilder();
+
+        return $this->datagridWorker->getDatagrid('variant_group', $queryBuilder);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function redirectToIndex()
+    {
+        return $this->redirectToRoute('pim_catalog_variant_group_index');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function successCreate(Group $group)
+    {
+        $this->addFlash('success', 'flash.variant group.created');
+
+        $url = $this->generateUrl(
+            'pim_catalog_variant_group_edit',
+            array('id' => $group->getId())
+        );
+        $response = array('status' => 1, 'url' => $url);
+
+        return new Response(json_encode($response));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function processGroupHandler(Group $group)
+    {
         if ($this->groupHandler->process($group)) {
             $this->addFlash('success', 'flash.variant group.updated');
         }
-
-        $datagridManager = $this->datagridWorker->getDatagridManager('group_product');
-        $datagridManager->setGroup($group);
-        $datagridView = $datagridManager->getDatagrid()->createView();
-
-        $historyDatagrid = $this->datagridWorker->getDataAuditDatagrid(
-            $group,
-            'pim_catalog_variant_group_edit',
-            array(
-                'id' => $group->getId()
-            )
-        );
-        $historyDatagridView = $historyDatagrid->createView();
-
-        if ('json' === $this->getRequest()->getRequestFormat()) {
-            return $this->render(
-                'OroGridBundle:Datagrid:list.json.php',
-                array('datagrid' => $datagridView)
-            );
-        }
-
-        return array(
-            'form' => $this->groupForm->createView(),
-            'datagrid' => $datagridView,
-            'historyDatagrid' => $historyDatagridView
-        );
     }
 }

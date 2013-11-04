@@ -101,9 +101,7 @@ class GroupController extends AbstractDoctrineController
      */
     public function indexAction(Request $request)
     {
-        /** @var QueryBuilder $queryBuilder */
-        $queryBuilder = $this->getManager()->createQueryBuilder();
-        $datagrid = $this->datagridWorker->getDatagrid('group', $queryBuilder);
+        $datagrid = $this->getGroupDatagrid();
 
         $view = ('json' === $request->getRequestFormat())
             ? 'OroGridBundle:Datagrid:list.json.php'
@@ -123,21 +121,13 @@ class GroupController extends AbstractDoctrineController
     public function createAction(Request $request)
     {
         if (!$request->isXmlHttpRequest()) {
-            return $this->redirectToRoute('pim_catalog_group_index');
+            return $this->redirectToIndex();
         }
 
-        $group = new Group();
+        $group = $this->createGroup();
 
         if ($this->groupHandler->process($group)) {
-            $this->addFlash('success', 'flash.group.created');
-
-            $url = $this->generateUrl(
-                'pim_catalog_group_edit',
-                array('id' => $group->getId())
-            );
-            $response = array('status' => 1, 'url' => $url);
-
-            return new Response(json_encode($response));
+            $this->successCreate($group);
         }
 
         return array(
@@ -156,9 +146,7 @@ class GroupController extends AbstractDoctrineController
      */
     public function editAction(Group $group)
     {
-        if ($this->groupHandler->process($group)) {
-            $this->addFlash('success', 'flash.group.updated');
-        }
+        $this->processGroupHandler($group);
 
         $datagridManager = $this->datagridWorker->getDatagridManager('group_product');
         $datagridManager->setGroup($group);
@@ -166,7 +154,7 @@ class GroupController extends AbstractDoctrineController
 
         $historyDatagrid = $this->datagridWorker->getDataAuditDatagrid(
             $group,
-            'pim_catalog_group_edit',
+            $this->getEditRoute(),
             array(
                 'id' => $group->getId()
             )
@@ -203,6 +191,77 @@ class GroupController extends AbstractDoctrineController
             return new Response('', 204);
         } else {
             return $this->redirectToRoute('pim_catalog_group_index');
+        }
+    }
+
+    /**
+     * Get the group datagrid
+     *
+     * @return \Oro\Bundle\GridBundle\Datagrid\Datagrid
+     */
+    protected function getGroupDatagrid()
+    {
+        $queryBuilder = $this->getManager()->createQueryBuilder();
+
+        return $this->datagridWorker->getDatagrid('group', $queryBuilder);
+    }
+
+    /**
+     * Redirect to the index page
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    protected function redirectToIndex()
+    {
+        return $this->redirectToRoute('pim_catalog_group_index');
+    }
+
+    /**
+     * Create an empty group entity
+     *
+     * @return \Pim\Bundle\CatalogBundle\Entity\Group
+     */
+    protected function createGroup()
+    {
+        return new Group();
+    }
+
+    /**
+     * Post process after successfully create a group
+     *
+     * @param Group $group
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    protected function successCreate(Group $group)
+    {
+        $this->addFlash('success', 'flash.group.created');
+
+        $url = $this->generateUrl($this->getEditRoute(), array('id' => $group->getId()));
+        $response = array('status' => 1, 'url' => $url);
+
+        return new Response(json_encode($response));
+    }
+
+    /**
+     * Get edit route
+     *
+     * @return string
+     */
+    protected function getEditRoute()
+    {
+        return 'pim_catalog_group_edit';
+    }
+
+    /**
+     * Process handler for group entity
+     *
+     * @param Group $group
+     */
+    protected function processGroupHandler(Group $group)
+    {
+        if ($this->groupHandler->process($group)) {
+            $this->addFlash('success', 'flash.group.updated');
         }
     }
 }
