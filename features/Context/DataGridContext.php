@@ -7,6 +7,7 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
 use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
+use Context\Page\Base\Grid;
 
 /**
  * Feature context for the datagrid related steps
@@ -378,6 +379,33 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function iFilterBy($filterName, $value)
     {
         $this->datagrid->filterBy($filterName, $value);
+        $this->wait();
+    }
+
+    /**
+     * @param string $filterName
+     * @param string $operatorName
+     * @param string $value
+     *
+     * @Then /^I filter by "([^"]*)" with operator "([^"]*)" and value "([^"]*)"$/
+     */
+    public function iFilterByWithOperator($filterName, $operatorName, $value)
+    {
+        $operators = array(
+            'contains' => Grid::FILTER_CONTAINS,
+            'does not contain' => Grid::FILTER_DOES_NOT_CONTAIN,
+            'is equal to' => Grid::FILTER_IS_EQUAL_TO,
+            'starts with' => Grid::FILTER_STARTS_WITH,
+            'ends with' => Grid::FILTER_ENDS_WITH
+        );
+
+        if (!isset($operators[$operatorName])) {
+            throw new \InvalidArgumentException("Operator $operatorName is unknown.");
+        }
+
+        $operator = $operators[$operatorName];
+
+        $this->datagrid->filterBy($filterName, $value, $operator);
         $this->wait();
     }
 
