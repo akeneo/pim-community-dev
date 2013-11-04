@@ -22,6 +22,8 @@ services:
 
     pim_versioning.update_guesser.translations:
         class: %pim_versioning.update_guesser.translations.class%
+        arguments:
+            - %pim_versioning.versionable_entities%
         tags:
             - { name: pim_versioning.update_guesser }
 

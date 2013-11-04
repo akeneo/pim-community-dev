@@ -8,7 +8,6 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
-use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
 
 /**
  * Association entity
@@ -29,7 +28,7 @@ use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
  *  }
  * )
  */
-class Association implements TranslatableInterface, VersionableInterface
+class Association implements TranslatableInterface
 {
     /**
      * @var integer
@@ -82,14 +81,6 @@ class Association implements TranslatableInterface, VersionableInterface
      * @ORM\Column(type="datetime")
      */
     protected $updated;
-
-    /**
-     * @var integer $version
-     *
-     * @ORM\Column(name="version", type="integer")
-     * @ORM\Version
-     */
-    protected $version;
 
     /**
      * Constructor
@@ -145,16 +136,6 @@ class Association implements TranslatableInterface, VersionableInterface
         $this->code = $code;
 
         return $this;
-    }
-
-    /**
-     * Get version
-     *
-     * @return integer $version
-     */
-    public function getVersion()
-    {
-        return $this->version;
     }
 
     /**
