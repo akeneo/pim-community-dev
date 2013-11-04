@@ -55,5 +55,4 @@ class PriceCollectionGuesser implements ConstraintGuesserInterface
             )
         );
     }
-
 }
