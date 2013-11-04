@@ -2,16 +2,11 @@
 
 namespace Oro\Bundle\SearchBundle\Extension;
 
-use Doctrine\ORM\EntityManager;
-
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\TwigTemplateProperty;
 
 class SearchResultProperty extends TwigTemplateProperty
 {
-    /** @var EntityManager */
-    protected $em;
-
     /**
      * {@inheritdoc}
      */

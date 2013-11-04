@@ -6,12 +6,10 @@ use Oro\Bundle\SearchBundle\Query\Query;
 use Oro\Bundle\SearchBundle\Query\Result;
 use Oro\Bundle\SearchBundle\Engine\Indexer;
 
-use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
-
 /**
  * @method Query setOrderBy() setOrderBy($fieldName, $direction = "ASC", $type = Query::TYPE_TEXT)
  */
-class IndexerQuery implements ProxyQueryInterface
+class IndexerQuery
 {
     /**
      * @var Indexer

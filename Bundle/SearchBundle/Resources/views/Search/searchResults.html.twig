@@ -1,4 +1,8 @@
 {% extends bap.layout %}
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+
+{% set gridName = 'search-grid' %}
+
 
 {% oro_title_set({ params: { '%keyword%': searchString } }) %}
 
@@ -55,7 +59,9 @@
                     {% endfor %}
                 </td>
                 <td class="search-results-column">
-                    <div id="search-result-grid"></div>
+                    <div id="search-result-grid">
+                        {{ dataGrid.renderGrid(gridName, {from: from, search: searchString}) }}
+                    </div>
                 </td>
             </tr>
         </table>
