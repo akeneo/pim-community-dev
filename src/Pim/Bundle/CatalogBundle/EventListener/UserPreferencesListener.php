@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\EventListener;
 
 use Doctrine\Common\EventSubscriber;
+use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Doctrine\ORM\Event\OnFlushEventArgs;
@@ -95,6 +96,10 @@ class UserPreferencesListener implements EventSubscriber
         if ($entity instanceof Channel) {
             $this->addOptionValue('catalogscope', $entity->getCode());
         }
+
+        if ($entity instanceof Category && $entity->isRoot()) {
+            $this->addOptionValue('defaulttree', $entity->getCode());
+        }
     }
 
     /**
@@ -106,6 +111,10 @@ class UserPreferencesListener implements EventSubscriber
     {
         if ($entity instanceof Channel) {
             $this->removeOption('catalogscope', $entity->getCode());
+        }
+
+        if ($entity instanceof Category && $entity->isRoot()) {
+            $this->removeOption('defaulttree', $entity->getCode());
         }
     }
 
