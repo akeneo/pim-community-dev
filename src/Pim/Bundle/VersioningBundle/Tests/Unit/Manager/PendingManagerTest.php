@@ -101,19 +101,15 @@ class PendingManagerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return VersionableInterface
+     * @return Product
      */
     protected function getVersionableMock()
     {
-        $versionable = $this->getMock('Pim\Bundle\VersioningBundle\Entity\VersionableInterface');
+        $versionable = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Product');
 
         $versionable->expects($this->any())
             ->method('getId')
             ->will($this->returnValue(1));
-
-        $versionable->expects($this->any())
-            ->method('getVersion')
-            ->will($this->returnValue(2));
 
         return $versionable;
     }

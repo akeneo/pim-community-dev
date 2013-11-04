@@ -105,7 +105,7 @@ class AddVersionListenerTest extends \PHPUnit_Framework_TestCase
         $serializer  = new Serializer($normalizers, $encoders);
         $versionBuilder = new VersionBuilder($serializer, new ChainedUpdateGuesser());
         $auditBuilder   = new AuditBuilder();
-        $listener = new AddVersionListener($versionBuilder, $auditBuilder);
+        $listener = new AddVersionListener($versionBuilder, $auditBuilder, array());
 
         return $listener;
     }
@@ -113,19 +113,15 @@ class AddVersionListenerTest extends \PHPUnit_Framework_TestCase
     /**
      * @param string $data
      *
-     * @return VersionableInterface
+     * @return Product
      */
     protected function getVersionableMock($data)
     {
-        $versionable = $this->getMock('Pim\Bundle\VersioningBundle\Entity\VersionableInterface');
+        $versionable = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Product');
 
         $versionable->expects($this->any())
             ->method('getId')
             ->will($this->returnValue(1));
-
-        $versionable->expects($this->any())
-            ->method('getVersion')
-            ->will($this->returnValue(2));
 
         return $versionable;
     }

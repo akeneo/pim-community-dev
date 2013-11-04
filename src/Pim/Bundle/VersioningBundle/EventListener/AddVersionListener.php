@@ -10,7 +10,6 @@ use Oro\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\VersioningBundle\Entity\Pending;
 use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;
 use Pim\Bundle\VersioningBundle\Builder\AuditBuilder;
-use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
 
 /**
  * Aims to audit data updates on versionable entities
@@ -27,6 +26,13 @@ class AddVersionListener implements EventSubscriber
      * @var string
      */
     const DEFAULT_SYSTEM_USER = 'admin';
+
+    /**
+     * Entities configured as versionable
+     *
+     * @var array $entities
+     */
+    protected $entities;
 
     /**
      * Entities to version
@@ -65,11 +71,13 @@ class AddVersionListener implements EventSubscriber
      *
      * @param VersionBuilder $versionBuilder
      * @param AuditBuilder   $auditBuilder
+     * @param array          $entities
      */
-    public function __construct(VersionBuilder $versionBuilder, AuditBuilder $auditBuilder)
+    public function __construct(VersionBuilder $versionBuilder, AuditBuilder $auditBuilder, $entities)
     {
         $this->versionBuilder = $versionBuilder;
         $this->auditBuilder   = $auditBuilder;
+        $this->entities       = $entities;
     }
 
     /**
@@ -215,7 +223,7 @@ class AddVersionListener implements EventSubscriber
      */
     public function checkScheduledCollection($entity)
     {
-        if ($entity->getOwner() instanceof VersionableInterface) {
+        if (in_array(get_class($entity->getOwner()), $this->versionableEntities)) {
             $this->addPendingVersioning($entity->getOwner());
         }
     }

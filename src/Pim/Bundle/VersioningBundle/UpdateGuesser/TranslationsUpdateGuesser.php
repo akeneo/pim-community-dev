@@ -4,7 +4,6 @@ namespace Pim\Bundle\VersioningBundle\UpdateGuesser;
 
 use Doctrine\ORM\EntityManager;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
-use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
 
 /**
  * Translation update guesser
@@ -16,8 +15,7 @@ use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
 class TranslationsUpdateGuesser implements UpdateGuesserInterface
 {
     /**
-     * Entities configured as versionable without implementing interface because coming
-     * from third party bundles
+     * Entities configured as versionable
      *
      * @var array $versionableEntities
      */

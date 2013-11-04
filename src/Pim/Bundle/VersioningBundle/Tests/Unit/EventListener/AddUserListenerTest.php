@@ -36,7 +36,7 @@ class AddUserListenerTest extends \PHPUnit_Framework_TestCase
         $serializer  = new Serializer($normalizers, $encoders);
         $versionBuilder = new VersionBuilder($serializer, new ChainedUpdateGuesser());
         $auditBuilder   = new AuditBuilder();
-        $this->versionListener = new AddVersionListener($versionBuilder, $auditBuilder);
+        $this->versionListener = new AddVersionListener($versionBuilder, $auditBuilder, array());
     }
 
     /**

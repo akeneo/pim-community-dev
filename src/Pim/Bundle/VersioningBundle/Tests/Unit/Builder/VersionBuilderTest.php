@@ -47,11 +47,11 @@ class VersionBuilderTest extends \PHPUnit_Framework_TestCase
     /**
      * @param array $data
      *
-     * @return VersionableInterface
+     * @return Product
      */
     protected function getVersionableMock(array $data)
     {
-        $versionable = $this->getMock('Pim\Bundle\VersioningBundle\Entity\VersionableInterface');
+        $versionable = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Product');
 
         $versionable->expects($this->any())
             ->method('getId')

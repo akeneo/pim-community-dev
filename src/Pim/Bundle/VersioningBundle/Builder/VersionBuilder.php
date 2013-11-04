@@ -4,7 +4,6 @@ namespace Pim\Bundle\VersioningBundle\Builder;
 
 use Symfony\Component\Serializer\SerializerInterface;
 use Oro\Bundle\UserBundle\Entity\User;
-use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
 use Pim\Bundle\VersioningBundle\Entity\Version;
 use Pim\Bundle\VersioningBundle\UpdateGuesser\ChainedUpdateGuesser;
 
