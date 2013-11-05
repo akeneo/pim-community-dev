@@ -188,7 +188,7 @@ class AddVersionListener implements EventSubscriber
      * @param object        $versionable
      * @param User          $user
      */
-    protected function createVersionAndAudit(EntityManager $em, $versionable, User $user)
+    public function createVersionAndAudit(EntityManager $em, $versionable, User $user)
     {
         $previous = $em->getRepository('PimVersioningBundle:Version')
             ->findPreviousVersion(get_class($versionable), $versionable->getId());
