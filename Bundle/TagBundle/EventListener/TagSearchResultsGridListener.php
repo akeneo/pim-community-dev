@@ -35,7 +35,7 @@ class TagSearchResultsGridListener
         $datasource = $event->getDatagrid()->getDatasource();
         if ($datasource instanceof OrmDatasource) {
             /** @var QueryBuilder $query */
-            $queryBuilder = $datasource->getQuery();
+            $queryBuilder = $datasource->getQueryBuilder();
 
             $queryBuilder->setParameter('tag', $this->requestParams->get('tag_id', 0));
 

@@ -110,7 +110,7 @@ class MassActionDispatcher
         }
 
         /** @var QueryBuilder $qb */
-        $qb = $datagrid->getAcceptedDatasource()->getQuery();
+        $qb = $datagrid->getAcceptedDatasource()->getQueryBuilder();
         if ($values) {
             $valueWhereCondition =
                 $inset

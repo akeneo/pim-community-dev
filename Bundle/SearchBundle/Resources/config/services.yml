@@ -68,8 +68,7 @@ services:
         arguments:
             - @oro_locale.twig.dateformat
             - @twig
-            - @doctrine.orm.entity_manager
-            - @oro_search.mapper
+            - %oro_search.entities_config%
 
         tags:
             - { name:  oro_datagrid.extension.formatter.property, type: search-result }

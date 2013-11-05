@@ -112,7 +112,7 @@ class ExtendExtension extends AbstractExtension
         $fields = $this->getDynamicFields($entityName);
         if ($datasource instanceof OrmDatasource && !empty($fields)) {
             /** @var QueryBuilder $qb */
-            $qb        = $datasource->getQuery();
+            $qb        = $datasource->getQueryBuilder();
             $fromParts = $qb->getDQLPart('from');
 
             $alias = false;

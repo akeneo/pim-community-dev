@@ -77,7 +77,7 @@ class OrmFilterExtension extends AbstractExtension
                 }
 
                 if ($form->isValid()) {
-                    $filter->apply($datasource->getQuery(), $form->getData());
+                    $filter->apply($datasource->getQueryBuilder(), $form->getData());
                 }
             }
         }

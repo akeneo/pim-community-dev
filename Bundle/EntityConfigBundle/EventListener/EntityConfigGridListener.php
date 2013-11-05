@@ -28,7 +28,7 @@ class EntityConfigGridListener extends AbstractConfigGridListener
     {
         $datasource = $event->getDatagrid()->getDatasource();
         if ($datasource instanceof OrmDatasource) {
-            $queryBuilder = $datasource->getQuery();
+            $queryBuilder = $datasource->getQueryBuilder();
 
             $this->prepareQuery($queryBuilder, 'ce', 'cev', PropertyConfigContainer::TYPE_ENTITY);
         }

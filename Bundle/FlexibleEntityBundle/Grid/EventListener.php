@@ -139,7 +139,7 @@ class EventListener
 
         if ($flexibleCount && $datagrid->getDatasource() instanceof OrmDatasource) {
             /** @var QueryBUilder $qb */
-            $qb = $datagrid->getDatasource()->getQuery();
+            $qb = $datagrid->getDatasource()->getQueryBuilder();
 
             $aliases = $qb->getRootAliases();
             $alias   = reset($aliases);
@@ -183,7 +183,7 @@ class EventListener
         $fm = $this->registry->getManager($entityFQCN);
 
         return function (OrmDatasource $datasource, $attribute, $direction) use ($fm) {
-            $qb = $datasource->getQuery();
+            $qb = $datasource->getQueryBuilder();
 
             /** @var $entityRepository FlexibleEntityRepository */
             $entityRepository = $fm->getFlexibleRepository();

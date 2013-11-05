@@ -63,7 +63,7 @@ class OrmPagerExtension extends AbstractExtension
     {
         $defaultPerPage = $config->offsetGetByPath(ToolbarExtension::PAGER_DEFAULT_PER_PAGE_OPTION_PATH, 10);
 
-        $this->pager->setQueryBuilder($datasource->getQuery());
+        $this->pager->setQueryBuilder($datasource->getQueryBuilder());
         $this->pager->setPage($this->getOr(self::PAGE_PARAM, 1));
         $this->pager->setMaxPerPage($this->getOr(self::PER_PAGE_PARAM, $defaultPerPage));
         $this->pager->init();
