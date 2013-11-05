@@ -2,11 +2,14 @@
 
 namespace Oro\Bundle\NotificationBundle\Tests\Functional;
 
+use Symfony\Component\DomCrawler\Form;
+use Symfony\Component\DomCrawler\Field\ChoiceFormField;
+use Doctrine\ORM\EntityManager;
+
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Oro\Bundle\TestFrameworkBundle\Test\ToolsAPI;
 use Oro\Bundle\TestFrameworkBundle\Test\Client;
-use Symfony\Component\DomCrawler\Form;
-use Symfony\Component\DomCrawler\Field\ChoiceFormField;
+use \Oro\Bundle\EmailBundle\Entity\EmailTemplate;
 
 /**
  * @outputBuffering enabled
@@ -37,6 +40,9 @@ class ControllersTest extends WebTestCase
     public function testCreate()
     {
         $crawler = $this->client->request('GET', $this->client->generate('oro_notification_emailnotification_create'));
+
+        $emailTemplate = $this->getEmailTemplate('EmailBundle:update_user');
+
         /** @var Form $form */
         $form = $crawler->selectButton('Save and Close')->form();
         $form['emailnotification[entityName]'] = 'Oro\Bundle\UserBundle\Entity\User';
@@ -46,12 +52,12 @@ class ControllersTest extends WebTestCase
             '<select required="required" name="emailnotification[template]" id="emailnotification_template" ' .
             'tabindex="-1" class="select2-offscreen"> ' .
             '<option value="" selected="selected"></option> ' .
-            '<option value="1">EmailBundle:update_user</option> </select>'
+            '<option value="' . $emailTemplate->getId() . '">' . $emailTemplate->getName() . '</option> </select>'
         );
 
         $field = new ChoiceFormField($doc->getElementsByTagName('select')->item(0));
         $form->set($field);
-        $form['emailnotification[template]'] = '1';
+        $form['emailnotification[template]'] = $emailTemplate->getId();
         $form['emailnotification[recipientList][users]'] = '1';
         $form['emailnotification[recipientList][groups][0]'] = '1';
         $form['emailnotification[recipientList][email]'] = 'admin@example.com';
@@ -73,6 +79,9 @@ class ControllersTest extends WebTestCase
             $this->client->generate('oro_notification_emailnotification_index', array('_format' =>'json')),
             array('emailnotification[_pager][_page]' => 1, 'emailnotification[_pager][_per_page]' => 1)
         );
+
+        $emailTemplate = $this->getEmailTemplate('EmailBundle:update_user');
+
         $result = $this->client->getResponse();
         ToolsAPI::assertJsonResponse($result, 200);
 
@@ -92,12 +101,12 @@ class ControllersTest extends WebTestCase
             '<select required="required" name="emailnotification[template]" id="emailnotification_template" ' .
             'tabindex="-1" class="select2-offscreen"> ' .
             '<option value="" selected="selected"></option> ' .
-            '<option value="1">EmailBundle:update_user</option> </select>'
+            '<option value="' . $emailTemplate->getId() . '">' . $emailTemplate->getName() . '</option> </select>'
         );
 
         $field = new ChoiceFormField($doc->getElementsByTagName('select')->item(0));
         $form->set($field);
-        $form['emailnotification[template]'] = '1';
+        $form['emailnotification[template]'] = $emailTemplate->getId();
         $form['emailnotification[recipientList][users]'] = '1';
         $form['emailnotification[recipientList][groups][0]'] = '1';
         $form['emailnotification[recipientList][email]'] = 'admin@example.com';
@@ -132,5 +141,25 @@ class ControllersTest extends WebTestCase
 
         $result = $this->client->getResponse();
         ToolsAPI::assertJsonResponse($result, 204);
+    }
+
+    /**
+     * @param string $name
+     * @return EmailTemplate
+     * @throws \LogicException
+     */
+    protected function getEmailTemplate($name)
+    {
+        /** @var EntityManager $entityManager */
+        $entityManager = $this->client->getKernel()->getContainer()->get('doctrine.orm.entity_manager');
+        $emailTemplate = $entityManager->getRepository('OroEmailBundle:EmailTemplate')->findOneBy(
+            array('name' => $name)
+        );
+
+        if (!$emailTemplate) {
+            throw new \LogicException(sprintf('Cant\'t find template with name %s', $name));
+        }
+
+        return $emailTemplate;
     }
 }
