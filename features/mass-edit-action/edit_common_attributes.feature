@@ -1,4 +1,4 @@
-@javascript @insulated
+@javascript
 Feature: Edit common attributes of many products at once
   In order to update the same information on many products
   As Julia
