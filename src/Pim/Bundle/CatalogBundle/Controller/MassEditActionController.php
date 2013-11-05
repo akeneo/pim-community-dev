@@ -20,7 +20,7 @@ use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
 use Pim\Bundle\CatalogBundle\Form\Type\MassEditActionOperatorType;
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\CatalogBundle\MassEditAction\MassEditActionOperator;
-use Pim\Bundle\CatalogBundle\Datagrid\DatagridHelperInterface;
+use Pim\Bundle\GridBundle\Helper\DatagridHelperInterface;
 
 /**
  * Batch operation controller
