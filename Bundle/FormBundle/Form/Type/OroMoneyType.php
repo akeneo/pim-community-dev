@@ -62,7 +62,7 @@ class OroMoneyType extends AbstractType
             array(
                 'currency'        => $currencyCode,
                 'currency_symbol' => $currencySymbol,
-                'grouping'        => true
+                'grouping'        => (bool)$this->numberFormatter->getAttribute(\NumberFormatter::GROUPING_USED)
             )
         );
     }
