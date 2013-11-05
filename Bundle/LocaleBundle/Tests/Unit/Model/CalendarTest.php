@@ -51,7 +51,6 @@ class CalendarTest extends IcuAwareTestCase
             'ko_KR, Sunday' => array('ko_KR', Calendar::DOW_SUNDAY),
             'lo_LA, Sunday' => array('lo_LA', Calendar::DOW_SUNDAY),
             'ja_JP, Sunday' => array('ja_JP', Calendar::DOW_SUNDAY),
-            'id_ID, Sunday' => array('id_ID', Calendar::DOW_SUNDAY),
             'hi_IN, Sunday' => array('hi_IN', Calendar::DOW_SUNDAY),
             'kn_IN, Sunday' => array('kn_IN', Calendar::DOW_SUNDAY),
             'zh_CN, Sunday' => array('zh_CN', Calendar::DOW_SUNDAY),
@@ -63,8 +62,6 @@ class CalendarTest extends IcuAwareTestCase
             'it_IT, Monday' => array('it_IT', Calendar::DOW_MONDAY),
             'fr_FR, Monday' => array('fr_FR', Calendar::DOW_MONDAY),
             'eu_ES, Monday' => array('eu_ES', Calendar::DOW_MONDAY),
-            'is_IS, Monday' => array('is_IS', Calendar::DOW_MONDAY),
-            'ka_GE, Monday' => array('ka_GE', Calendar::DOW_MONDAY),
         );
     }
 

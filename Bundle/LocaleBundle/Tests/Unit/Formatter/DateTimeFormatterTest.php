@@ -93,21 +93,21 @@ class DateTimeFormatterTest extends IcuAwareTestCase
                 'language' => 'fr_FR',
             ),
             'string_date' => array(
-                'expected' => '14-01-01 3:00 AM',
+                'expected' => '14-01-01 2:00 AM',
                 'date' => '2014-01-01 00:00:00',
                 'dateType' => \IntlDateFormatter::SHORT,
                 'timeType' => \IntlDateFormatter::SHORT,
                 'locale' => 'en_CA',
-                'timeZone' => 'Europe/Kiev',
+                'timeZone' => 'Europe/Athens',
                 'language' => 'en_CA',
             ),
             'string_date_with_timezone' => array(
                 'expected' => '14-01-01 12:00 AM',
-                'date' => '2014-01-01 00:00:00+03',
+                'date' => '2014-01-01 00:00:00+2',
                 'dateType' => \IntlDateFormatter::SHORT,
                 'timeType' => \IntlDateFormatter::SHORT,
                 'locale' => 'en_CA',
-                'timeZone' => 'Europe/Kiev',
+                'timeZone' => 'Europe/Athens',
                 'language' => 'en_CA',
             ),
             'integer_date' => array(
@@ -366,7 +366,6 @@ class DateTimeFormatterTest extends IcuAwareTestCase
     {
         return array(
             array(\IntlDateFormatter::FULL, \IntlDateFormatter::FULL, 'en_US', 'EEEE, MMMM d, y h:mm:ss a zzzz'),
-            array(\IntlDateFormatter::FULL, \IntlDateFormatter::FULL, 'ru_RU', 'EEEE, d MMMM y \'г\'. H:mm:ss zzzz'),
             array(\IntlDateFormatter::FULL, \IntlDateFormatter::FULL, 'fr_FR', 'EEEE d MMMM y HH:mm:ss zzzz'),
             array('full', 'full', 'fr_FR', 'EEEE d MMMM y HH:mm:ss zzzz'),
         );
