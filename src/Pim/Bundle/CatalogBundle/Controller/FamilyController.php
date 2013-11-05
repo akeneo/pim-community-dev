@@ -26,6 +26,7 @@ use Pim\Bundle\CatalogBundle\Form\Type\AvailableProductAttributesType;
 use Symfony\Component\HttpFoundation\Response;
 use Pim\Bundle\CatalogBundle\Exception\DeleteException;
 use Pim\Bundle\CatalogBundle\Calculator\CompletenessCalculator;
+use Pim\Bundle\CatalogBundle\Factory\FamilyFactory;
 
 /**
  * Family controller
@@ -51,13 +52,11 @@ class FamilyController extends AbstractDoctrineController
      */
     private $channelManager;
 
-    /**
-     * @var ProductManager
-     */
-    private $productManager;
-
     /** @var CompletenessCalculator */
     private $completenessCalculator;
+
+    /** @var FamilyFactory */
+    private $factory;
 
     /**
      * Constructor
@@ -73,7 +72,7 @@ class FamilyController extends AbstractDoctrineController
      * @param GridRenderer             $gridRenderer
      * @param DatagridWorkerInterface  $dataGridWorker
      * @param ChannelManager           $channelManager
-     * @param ProductManager           $productManager
+     * @param FamilyFactory            $factory
      */
     public function __construct(
         Request $request,
@@ -87,8 +86,8 @@ class FamilyController extends AbstractDoctrineController
         GridRenderer $gridRenderer,
         DatagridWorkerInterface $dataGridWorker,
         ChannelManager $channelManager,
-        ProductManager $productManager,
-        CompletenessCalculator $completenessCalculator
+        CompletenessCalculator $completenessCalculator,
+        FamilyFactory $factory
     ) {
         parent::__construct(
             $request,
@@ -104,8 +103,8 @@ class FamilyController extends AbstractDoctrineController
         $this->gridRenderer           = $gridRenderer;
         $this->dataGridWorker         = $dataGridWorker;
         $this->channelManager         = $channelManager;
-        $this->productManager         = $productManager;
         $this->completenessCalculator = $completenessCalculator;
+        $this->factory                = $factory;
     }
 
     /**
@@ -119,15 +118,13 @@ class FamilyController extends AbstractDoctrineController
      */
     public function createAction(Request $request)
     {
-        $family   = new Family();
+        $family = $this->factory->createFamily();
         $families = $this->getRepository('PimCatalogBundle:Family')->getIdToLabelOrderedByLabel();
 
         $form = $this->createForm('pim_family', $family);
         if ($request->isMethod('POST')) {
             $form->submit($request);
             if ($form->isValid()) {
-                $identifier = $this->productManager->getIdentifierAttribute();
-                $family->addAttribute($identifier);
                 $this->getManager()->persist($family);
                 $this->getManager()->flush();
                 $this->addFlash('success', 'flash.family.created');
