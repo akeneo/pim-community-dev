@@ -15,11 +15,10 @@ use Symfony\Component\Validator\ValidatorInterface;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-use Oro\Bundle\GridBundle\Renderer\GridRenderer;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
-use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
+use Pim\Bundle\GridBundle\Helper\DatagridHelperInterface;
 use Pim\Bundle\CatalogBundle\Entity\Association;
 use Pim\Bundle\CatalogBundle\Form\Handler\AssociationHandler;
 
@@ -33,14 +32,9 @@ use Pim\Bundle\CatalogBundle\Form\Handler\AssociationHandler;
 class AssociationController extends AbstractDoctrineController
 {
     /**
-     * @var GridRenderer
+     * @var DatagridHelperInterface
      */
-    private $gridRenderer;
-
-    /**
-     * @var DatagridWorkerInterface
-     */
-    private $dataGridWorker;
+    private $dataGridHelper;
 
     /**
      * @var AssociationHandler
@@ -63,8 +57,7 @@ class AssociationController extends AbstractDoctrineController
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
      * @param RegistryInterface        $doctrine
-     * @param GridRenderer             $gridRenderer
-     * @param DatagridWorkerInterface  $dataGridWorker
+     * @param DatagridHelperInterface  $dataGridHelper
      * @param AssociationHandler       $associationHandler
      * @param Form                     $associationForm
      */
@@ -77,8 +70,7 @@ class AssociationController extends AbstractDoctrineController
         ValidatorInterface $validator,
         TranslatorInterface $translator,
         RegistryInterface $doctrine,
-        GridRenderer $gridRenderer,
-        DatagridWorkerInterface $dataGridWorker,
+        DatagridHelperInterface $dataGridHelper,
         AssociationHandler $associationHandler,
         Form $associationForm
     ) {
@@ -93,8 +85,7 @@ class AssociationController extends AbstractDoctrineController
             $doctrine
         );
 
-        $this->gridRenderer       = $gridRenderer;
-        $this->dataGridWorker     = $dataGridWorker;
+        $this->dataGridHelper     = $dataGridHelper;
         $this->associationHandler = $associationHandler;
         $this->associationForm    = $associationForm;
     }
@@ -110,7 +101,7 @@ class AssociationController extends AbstractDoctrineController
      */
     public function indexAction(Request $request)
     {
-        $datagridView = $this->dataGridWorker->getDatagrid('association')->createView();
+        $datagridView = $this->dataGridHelper->getDatagrid('association')->createView();
 
         if ('json' === $request->getRequestFormat()) {
             return $this->gridRenderer->renderResultsJsonResponse($datagridView);
@@ -174,7 +165,7 @@ class AssociationController extends AbstractDoctrineController
             return $this->redirectToRoute('pim_catalog_association_edit', array('id' => $id));
         }
 
-        $datagridView = $this->dataGridWorker->getDataAuditDatagrid(
+        $datagridView = $this->dataGridHelper->getDataAuditDatagrid(
             $association,
             'pim_catalog_association_edit',
             array('id' => $id)

@@ -17,10 +17,9 @@ use Symfony\Component\Form\Form;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Oro\Bundle\GridBundle\Renderer\GridRenderer;
 
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
-use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
+use Pim\Bundle\CatalogBundle\Datagrid\DatagridHelperInterface;
 use Pim\Bundle\CatalogBundle\Form\Handler\ProductAttributeHandler;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
@@ -39,14 +38,9 @@ use Pim\Bundle\VersioningBundle\Manager\AuditManager;
 class ProductAttributeController extends AbstractDoctrineController
 {
     /**
-     * @var GridRenderer
+     * @var DatagridHelperInterface
      */
-    private $gridRenderer;
-
-    /**
-     * @var DatagridWorkerInterface
-     */
-    private $datagridWorker;
+    private $datagridHelper;
 
     /**
      * @var ProductAttributeHandler
@@ -97,8 +91,7 @@ class ProductAttributeController extends AbstractDoctrineController
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
      * @param RegistryInterface        $doctrine
-     * @param GridRenderer             $gridRenderer
-     * @param DatagridWorkerInterface  $datagridWorker
+     * @param DatagridHelperInterface  $datagridHelper
      * @param ProductAttributeHandler  $attributeHandler
      * @param Form                     $attributeForm
      * @param ProductManager           $productManager
@@ -115,8 +108,7 @@ class ProductAttributeController extends AbstractDoctrineController
         ValidatorInterface $validator,
         TranslatorInterface $translator,
         RegistryInterface $doctrine,
-        GridRenderer $gridRenderer,
-        DatagridWorkerInterface $datagridWorker,
+        DatagridHelperInterface $datagridHelper,
         ProductAttributeHandler $attributeHandler,
         Form $attributeForm,
         ProductManager $productManager,
@@ -135,8 +127,7 @@ class ProductAttributeController extends AbstractDoctrineController
             $doctrine
         );
 
-        $this->gridRenderer     = $gridRenderer;
-        $this->datagridWorker   = $datagridWorker;
+        $this->datagridHelper   = $datagridHelper;
         $this->attributeHandler = $attributeHandler;
         $this->attributeForm    = $attributeForm;
         $this->productManager   = $productManager;
@@ -153,7 +144,7 @@ class ProductAttributeController extends AbstractDoctrineController
      */
     public function indexAction(Request $request)
     {
-        $datagrid = $this->datagridWorker->getDatagrid('productattribute');
+        $datagrid = $this->datagridHelper->getDatagrid('productattribute');
 
         if ('json' == $request->getRequestFormat()) {
             $view = 'OroGridBundle:Datagrid:list.json.php';
@@ -207,7 +198,7 @@ class ProductAttributeController extends AbstractDoctrineController
             return $this->redirectToRoute('pim_catalog_productattribute_edit', array('id' => $attribute->getId()));
         }
 
-        $datagrid = $this->datagridWorker->getDataAuditDatagrid(
+        $datagrid = $this->datagridHelper->getDataAuditDatagrid(
             $attribute,
             'pim_catalog_productattribute_edit',
             array('id' => $attribute->getId())
@@ -215,7 +206,7 @@ class ProductAttributeController extends AbstractDoctrineController
         $datagridView = $datagrid->createView();
 
         if ('json' == $request->getRequestFormat()) {
-            return $this->gridRenderer->renderResultsJsonResponse($datagridView);
+            return $this->datagridHelper->getDatagridRenderer()->renderResultsJsonResponse($datagridView);
         }
 
         return array(

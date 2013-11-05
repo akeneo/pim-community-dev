@@ -18,11 +18,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-use Oro\Bundle\GridBundle\Renderer\GridRenderer;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
-use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
+use Pim\Bundle\GridBundle\Helper\DatagridHelperInterface;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\CatalogBundle\Helper\CategoryHelper;
 use Pim\Bundle\CatalogBundle\Entity\Category;
@@ -38,14 +37,9 @@ use Pim\Bundle\CatalogBundle\Exception\DeleteException;
 class CategoryTreeController extends AbstractDoctrineController
 {
     /**
-     * @var GridRenderer
+     * @var DatagridHelperInterface
      */
-    private $gridRenderer;
-
-    /**
-     * @var DatagridWorkerInterface
-     */
-    private $dataGridWorker;
+    private $datagridHelper;
 
     /**
      * @var CategoryManager
@@ -63,8 +57,7 @@ class CategoryTreeController extends AbstractDoctrineController
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
      * @param RegistryInterface        $doctrine
-     * @param GridRenderer             $gridRenderer
-     * @param DatagridWorkerInterface  $dataGridWorker
+     * @param DatagridHelperInterface  $datagridHelper
      * @param CategoryManager          $categoryManager
      */
     public function __construct(
@@ -76,8 +69,7 @@ class CategoryTreeController extends AbstractDoctrineController
         ValidatorInterface $validator,
         TranslatorInterface $translator,
         RegistryInterface $doctrine,
-        GridRenderer $gridRenderer,
-        DatagridWorkerInterface $dataGridWorker,
+        DatagridHelperInterface $datagridHelper,
         CategoryManager $categoryManager
     ) {
         parent::__construct(
@@ -91,8 +83,7 @@ class CategoryTreeController extends AbstractDoctrineController
             $doctrine
         );
 
-        $this->gridRenderer    = $gridRenderer;
-        $this->dataGridWorker  = $dataGridWorker;
+        $this->datagridHelper  = $datagridHelper;
         $this->categoryManager = $categoryManager;
     }
 
@@ -289,7 +280,7 @@ class CategoryTreeController extends AbstractDoctrineController
      */
     public function editAction(Request $request, Category $category)
     {
-        $datagrid = $this->dataGridWorker->getDataAuditDatagrid(
+        $datagrid = $this->datagridHelper->getDataAuditDatagrid(
             $category,
             'pim_catalog_categorytree_edit',
             array(
@@ -298,7 +289,7 @@ class CategoryTreeController extends AbstractDoctrineController
         );
 
         if ('json' == $request->getRequestFormat()) {
-            return $this->gridRenderer->renderResultsJsonResponse($datagrid->createView());
+            return $this->datagridHelper->getDatagridRenderer()->renderResultsJsonResponse($datagrid->createView());
         }
 
         $form = $this->createForm('pim_category', $category, $this->getFormOptions($category));

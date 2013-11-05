@@ -13,11 +13,10 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-use Oro\Bundle\GridBundle\Renderer\GridRenderer;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
-use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
+use Pim\Bundle\GridBundle\Helper\DatagridHelperInterface;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Entity\Family;
@@ -37,14 +36,9 @@ use Pim\Bundle\CatalogBundle\Calculator\CompletenessCalculator;
 class FamilyController extends AbstractDoctrineController
 {
     /**
-     * @var GridRenderer
+     * @var DatagridHelperInterface
      */
-    private $gridRenderer;
-
-    /**
-     * @var DatagridWorkerInterface
-     */
-    private $dataGridWorker;
+    private $datagridHelper;
 
     /**
      * @var ChannelManager
@@ -70,8 +64,7 @@ class FamilyController extends AbstractDoctrineController
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
      * @param RegistryInterface        $doctrine
-     * @param GridRenderer             $gridRenderer
-     * @param DatagridWorkerInterface  $dataGridWorker
+     * @param DatagridHelperInterface  $datagridHelper
      * @param ChannelManager           $channelManager
      * @param ProductManager           $productManager
      */
@@ -84,8 +77,7 @@ class FamilyController extends AbstractDoctrineController
         ValidatorInterface $validator,
         TranslatorInterface $translator,
         RegistryInterface $doctrine,
-        GridRenderer $gridRenderer,
-        DatagridWorkerInterface $dataGridWorker,
+        DatagridHelperInterface $datagridHelper,
         ChannelManager $channelManager,
         ProductManager $productManager,
         CompletenessCalculator $completenessCalculator
@@ -101,8 +93,7 @@ class FamilyController extends AbstractDoctrineController
             $doctrine
         );
 
-        $this->gridRenderer           = $gridRenderer;
-        $this->dataGridWorker         = $dataGridWorker;
+        $this->datagridHelper         = $datagridHelper;
         $this->channelManager         = $channelManager;
         $this->productManager         = $productManager;
         $this->completenessCalculator = $completenessCalculator;
@@ -155,7 +146,7 @@ class FamilyController extends AbstractDoctrineController
     public function editAction(Request $request, $id)
     {
         $family   = $this->findOr404('PimCatalogBundle:Family', $id);
-        $datagrid = $this->dataGridWorker->getDataAuditDatagrid(
+        $datagrid = $this->datagridHelper->getDataAuditDatagrid(
             $family,
             'pim_catalog_family_edit',
             array('id' => $family->getId())
@@ -163,7 +154,7 @@ class FamilyController extends AbstractDoctrineController
         $datagridView = $datagrid->createView();
 
         if ('json' === $request->getRequestFormat()) {
-            return $this->gridRenderer->renderResultsJsonResponse($datagridView);
+            return $this->datagridHelper->getDatagridRenderer()->renderResultsJsonResponse($datagridView);
         }
 
         $families = $this->getRepository('PimCatalogBundle:Family')->getIdToLabelOrderedByLabel();

@@ -18,7 +18,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
-use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
+use Pim\Bundle\CatalogBundle\Datagrid\DatagridHelperInterface;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Form\Handler\GroupHandler;
 
@@ -32,9 +32,9 @@ use Pim\Bundle\CatalogBundle\Form\Handler\GroupHandler;
 class GroupController extends AbstractDoctrineController
 {
     /**
-     * @var DatagridWorkerInterface
+     * @var DatagridHelperInterface
      */
-    protected $datagridWorker;
+    protected $datagridHelper;
 
     /**
      * @var GroupHandler
@@ -57,7 +57,7 @@ class GroupController extends AbstractDoctrineController
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
      * @param RegistryInterface        $doctrine
-     * @param DatagridWorkerInterface  $datagridWorker
+     * @param DatagridHelperInterface  $datagridHelper
      * @param GroupHandler             $groupHandler
      * @param Form                     $groupForm
      */
@@ -70,7 +70,7 @@ class GroupController extends AbstractDoctrineController
         ValidatorInterface $validator,
         TranslatorInterface $translator,
         RegistryInterface $doctrine,
-        DatagridWorkerInterface $datagridWorker,
+        DatagridHelperInterface $datagridHelper,
         GroupHandler $groupHandler,
         Form $groupForm
     ) {
@@ -85,7 +85,7 @@ class GroupController extends AbstractDoctrineController
             $doctrine
         );
 
-        $this->datagridWorker = $datagridWorker;
+        $this->datagridHelper = $datagridHelper;
         $this->groupHandler   = $groupHandler;
         $this->groupForm      = $groupForm;
     }
@@ -103,7 +103,7 @@ class GroupController extends AbstractDoctrineController
     {
         /** @var QueryBuilder $queryBuilder */
         $queryBuilder = $this->getManager()->createQueryBuilder();
-        $datagrid = $this->datagridWorker->getDatagrid('group', $queryBuilder);
+        $datagrid = $this->datagridHelper->getDatagrid('group', $queryBuilder);
 
         $view = ('json' === $request->getRequestFormat())
             ? 'OroGridBundle:Datagrid:list.json.php'
@@ -160,11 +160,11 @@ class GroupController extends AbstractDoctrineController
             $this->addFlash('success', 'flash.group.updated');
         }
 
-        $datagridManager = $this->datagridWorker->getDatagridManager('group_product');
+        $datagridManager = $this->datagridHelper->getDatagridManager('group_product');
         $datagridManager->setGroup($group);
         $datagridView = $datagridManager->getDatagrid()->createView();
 
-        $historyDatagrid = $this->datagridWorker->getDataAuditDatagrid(
+        $historyDatagrid = $this->datagridHelper->getDataAuditDatagrid(
             $group,
             'pim_catalog_group_history',
             array(
@@ -174,7 +174,7 @@ class GroupController extends AbstractDoctrineController
         $historyDatagridView = $historyDatagrid->createView();
 
         if ('json' === $this->getRequest()->getRequestFormat()) {
-            return $this->datagridWorker->getDatagridRenderer()->renderResultsJsonResponse($datagridView);
+            return $this->datagridHelper->getDatagridRenderer()->renderResultsJsonResponse($datagridView);
         }
 
         return array(
@@ -194,7 +194,7 @@ class GroupController extends AbstractDoctrineController
      */
     public function historyAction(Request $request, Group $group)
     {
-        $historyGrid = $this->datagridWorker->getDataAuditDatagrid(
+        $historyGrid = $this->datagridHelper->getDataAuditDatagrid(
             $group,
             'pim_catalog_group_history',
             array('id' => $group->getId())
@@ -202,7 +202,7 @@ class GroupController extends AbstractDoctrineController
         $historyGridView = $historyGrid->createView();
 
         if ('json' === $request->getRequestFormat()) {
-            return $this->datagridWorker->getDatagridRenderer()->renderResultsJsonResponse($historyGridView);
+            return $this->datagridHelper->getDatagridRenderer()->renderResultsJsonResponse($historyGridView);
         }
     }
 
