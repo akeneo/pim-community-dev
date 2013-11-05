@@ -119,14 +119,6 @@ class AssociationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test related method
-     */
-    public function testGetVersion()
-    {
-        $this->assertNull($this->association->getVersion());
-    }
-
-    /**
      * Test getter/setter for created property
      */
     public function testCreated()

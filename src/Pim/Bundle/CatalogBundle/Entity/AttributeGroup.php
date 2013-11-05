@@ -6,7 +6,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
-use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
@@ -30,7 +29,7 @@ use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
  *  }
  * )
  */
-class AttributeGroup implements TranslatableInterface, VersionableInterface
+class AttributeGroup implements TranslatableInterface
 {
     /**
      * @staticvar string
@@ -103,14 +102,6 @@ class AttributeGroup implements TranslatableInterface, VersionableInterface
      * )
      */
     protected $translations;
-
-    /**
-     * @var integer $version
-     *
-     * @ORM\Column(name="version", type="integer")
-     * @ORM\Version
-     */
-    protected $version;
 
     /**
      * Constructor
@@ -417,15 +408,5 @@ class AttributeGroup implements TranslatableInterface, VersionableInterface
         $this->getTranslation()->setLabel($label);
 
         return $this;
-    }
-
-    /**
-     * Get version
-     *
-     * @return string $version
-     */
-    public function getVersion()
-    {
-        return $this->version;
     }
 }

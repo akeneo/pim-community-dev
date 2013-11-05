@@ -11,7 +11,6 @@ use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttribute;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
-use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
 
 /**
  * Custom properties for a product attribute
@@ -38,17 +37,8 @@ use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
  */
 class ProductAttribute extends AbstractEntityAttribute implements
     TranslatableInterface,
-    GroupSequenceProviderInterface,
-    VersionableInterface
+    GroupSequenceProviderInterface
 {
-    /**
-     * @var integer $version
-     *
-     * @ORM\Column(name="version", type="integer")
-     * @ORM\Version
-     */
-    protected $version;
-
     /**
      * Overrided to change target entity name
      *
@@ -286,16 +276,6 @@ class ProductAttribute extends AbstractEntityAttribute implements
         $this->useableAsGridFilter = false;
         $this->availableLocales    = new ArrayCollection();
         $this->translations        = new ArrayCollection();
-    }
-
-    /**
-     * Get version
-     *
-     * @return string $version
-     */
-    public function getVersion()
-    {
-        return $this->version;
     }
 
     /**
