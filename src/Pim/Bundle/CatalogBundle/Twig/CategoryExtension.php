@@ -2,9 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Twig;
 
+use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
-
-use Doctrine\ORM\EntityManager;
 
 /**
  * Twig extension to render category from twig templates
@@ -16,18 +15,18 @@ use Doctrine\ORM\EntityManager;
 class CategoryExtension extends \Twig_Extension
 {
     /**
-     * @var EntityManager
+     * @var CategoryManager
      */
-    protected $em;
+    protected $categoryManager;
 
     /**
      * Constructor
      *
-     * @param EntityManager $em
+     * @param CategoryManager $categoryManager
      */
-    public function __construct(EntityManager $em)
+    public function __construct(CategoryManager $categoryManager)
     {
-        $this->em = $em;
+        $this->categoryManager = $categoryManager;
     }
 
     /**
@@ -41,7 +40,8 @@ class CategoryExtension extends \Twig_Extension
     }
 
     /**
-     * Count products for a defined category
+     * Count products for a category
+     *
      * @param CategoryInterface $category
      * @param bool $nested
      *
@@ -49,9 +49,11 @@ class CategoryExtension extends \Twig_Extension
      */
     public function countProducts($category, $nested)
     {
-        // TODO : test instance of
         if ($category instanceof CategoryInterface) {
-            return 'pouic';
+            return $this
+                ->categoryManager
+                ->getEntityRepository()
+                ->countProductsLinked($category, !$nested);
         } else {
             throw \Twig_Error_Runtime('"count_products" filter is only allowed for CategoryInterface');
         }
