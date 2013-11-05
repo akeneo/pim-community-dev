@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\SearchBundle\Datagrid;
+namespace Oro\Bundle\SearchBundle\Extension\Pager;
 
 use Doctrine\ORM\Query;
 

@@ -5,7 +5,7 @@ namespace Oro\Bundle\SearchBundle\EventListener;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 use Oro\Bundle\DataGridBundle\Event\BuildAfter;
-use Oro\Bundle\SearchBundle\Datagrid\IndexerQuery;
+use Oro\Bundle\SearchBundle\Extension\Pager\IndexerQuery;
 use Oro\Bundle\SearchBundle\Engine\Indexer;
 use Oro\Bundle\SearchBundle\Query\Query;
 
