@@ -51,13 +51,7 @@ define(
                         'url': Routing.generate('pim_catalog_categorytree_children', { '_format': 'json' }),
                         'data': function (node) {
                             // the result is fed to the AJAX request `data` option
-                            var id = null;
-
-                            if (node && node !== -1) {
-                                id = node.attr('id').replace('node_', '');
-                            } else {
-                                id = -1;
-                            }
+                            var id = (node && node !== -1) ? node.attr('id').replace('node_', '') : -1;
                             
                             return {
                                 'id': id,
