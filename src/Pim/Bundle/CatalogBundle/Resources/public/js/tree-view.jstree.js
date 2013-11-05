@@ -1,5 +1,5 @@
 define(
-    ['jquery', 'underscore', 'routing', 'oro/registry', 'jquery.jstree', 'jstree/jquery.jstree.tree_selector'],
+    ['jquery', 'underscore', 'routing', 'oro/registry', 'jquery.jstree', 'jstree/jquery.jstree.tree_selector', 'jstree/jquery.jstree.nested_switch'],
     function ($, _, Routing, Registry) {
         'use strict';
 
@@ -18,6 +18,7 @@ define(
                 },
                 'plugins': [
                     'tree_selector',
+                    'nested_switch',
                     'themes',
                     'json_data',
                     'ui',
@@ -42,10 +43,12 @@ define(
                         'data': function (node) {
                             // the result is fed to the AJAX request `data` option
                             var id = (node && node !== -1) ? node.attr('id').replace('node_', '') : -1;
+                            
                             return {
                                 'id': id,
                                 'select_node_id': selectedNode,
-                                'with_products_count': 1
+                                'with_products_count': 1,
+                                'nested': _.first($('#nested_switch_input')).checked ? 1 : 0
                             };
                         }
                     }
