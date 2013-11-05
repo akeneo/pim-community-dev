@@ -19,7 +19,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
-use Pim\Bundle\CatalogBundle\Datagrid\DatagridHelperInterface;
+use Pim\Bundle\GridBundle\Helper\DatagridHelperInterface;
 use Pim\Bundle\CatalogBundle\Form\Handler\ProductAttributeHandler;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
@@ -198,26 +198,32 @@ class ProductAttributeController extends AbstractDoctrineController
             return $this->redirectToRoute('pim_catalog_productattribute_edit', array('id' => $attribute->getId()));
         }
 
-        $datagrid = $this->datagridHelper->getDataAuditDatagrid(
-            $attribute,
-            'pim_catalog_productattribute_edit',
-            array('id' => $attribute->getId())
-        );
-        $datagridView = $datagrid->createView();
-
-        if ('json' == $request->getRequestFormat()) {
-            return $this->datagridHelper->getDatagridRenderer()->renderResultsJsonResponse($datagridView);
-        }
-
         return array(
             'form'            => $this->attributeForm->createView(),
             'locales'         => $this->localeManager->getActiveLocales(),
             'disabledLocales' => $this->localeManager->getDisabledLocales(),
             'measures'        => $this->measuresConfig,
-            'datagrid'        => $datagridView,
+            'historyDatagrid' => $this->getHistoryGrid($attribute)->createView(),
             'created'         => $this->auditManager->getOldestLogEntry($attribute),
             'updated'         => $this->auditManager->getNewestLogEntry($attribute),
         );
+    }
+
+    /**
+     * History of a attribute
+     *
+     * @param Request          $request
+     * @param ProductAttribute $attribute
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|template
+     */
+    public function historyAction(Request $request, ProductAttribute $attribute)
+    {
+        $historyGridView = $this->getHistoryGrid($attribute)->createView();
+
+        if ('json' === $request->getRequestFormat()) {
+            return $this->datagridHelper->getDatagridRenderer()->renderResultsJsonResponse($historyGridView);
+        }
     }
 
     /**
@@ -368,5 +374,21 @@ class ProductAttributeController extends AbstractDoctrineController
         } else {
             return $this->redirectToRoute('pim_catalog_productattribute_index');
         }
+    }
+
+    /**
+     * @param ProductAttribute $attribute
+     *
+     * @return Datagrid
+     */
+    protected function getHistoryGrid(ProductAttribute $attribute)
+    {
+        $historyGrid = $this->datagridHelper->getDataAuditDatagrid(
+            $attribute,
+            'pim_catalog_productattribute_history',
+            array('id' => $attribute->getId())
+        );
+
+        return $historyGrid;
     }
 }
