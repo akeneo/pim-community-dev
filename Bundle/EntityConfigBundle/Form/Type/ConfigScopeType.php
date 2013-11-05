@@ -71,6 +71,8 @@ class ConfigScopeType extends AbstractType
             if (isset($config['form']['type'])) {
                 $options = isset($config['form']['options']) ? $config['form']['options'] : array();
 
+                $options['config_id'] = $this->config->getId();
+
                 if (isset($config['options']['required_property'])) {
                     $property = $config['options']['required_property'];
 

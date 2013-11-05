@@ -26,6 +26,7 @@ use Oro\Bundle\UserBundle\Entity\Email;
 use Oro\Bundle\UserBundle\Entity\EntityUploadedImageInterface;
 use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
 use Oro\Bundle\EmailBundle\Entity\EmailOwnerInterface;
+use Oro\Bundle\EmailBundle\Model\EmailHolderInterface;
 use Oro\Bundle\ImapBundle\Entity\ImapEmailOrigin;
 use Oro\Bundle\ImapBundle\Entity\ImapConfigurationOwnerInterface;
 use Oro\Bundle\TagBundle\Entity\Tag;
@@ -46,6 +47,7 @@ use DateTime;
  * @Oro\Loggable
  * @Config(
  *      routeName="oro_user_index",
+ *      routeView="oro_user_user_view",
  *      defaultValues={
  *          "entity"={"icon"="icon-user", "label"="User", "plural_label"="Users"},
  *          "ownership"={
@@ -66,6 +68,7 @@ class User extends AbstractEntityFlexible implements
     EntityUploadedImageInterface,
     Taggable,
     EmailOwnerInterface,
+    EmailHolderInterface,
     ImapConfigurationOwnerInterface
 {
     const ROLE_DEFAULT   = 'ROLE_USER';
