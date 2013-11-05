@@ -2,7 +2,9 @@
 
 namespace Oro\Bundle\TestFrameworkBundle\Tests\Selenium;
 
-class LoginFormTest extends \PHPUnit_Extensions_Selenium2TestCase
+use Oro\Bundle\TestFrameworkBundle\Test\Selenium2TestCase;
+
+class LoginFormTest extends Selenium2TestCase
 {
     protected $coverageScriptUrl = PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_TESTS_URL_COVERAGE;
 
