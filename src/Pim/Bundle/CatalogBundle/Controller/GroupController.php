@@ -18,7 +18,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
-use Pim\Bundle\CatalogBundle\Datagrid\DatagridHelperInterface;
+use Pim\Bundle\GridBundle\Helper\DatagridHelperInterface;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Form\Handler\GroupHandler;
 
@@ -164,15 +164,6 @@ class GroupController extends AbstractDoctrineController
         $datagridManager->setGroup($group);
         $datagridView = $datagridManager->getDatagrid()->createView();
 
-        $historyDatagrid = $this->datagridHelper->getDataAuditDatagrid(
-            $group,
-            'pim_catalog_group_history',
-            array(
-                'id' => $group->getId()
-            )
-        );
-        $historyDatagridView = $historyDatagrid->createView();
-
         if ('json' === $this->getRequest()->getRequestFormat()) {
             return $this->datagridHelper->getDatagridRenderer()->renderResultsJsonResponse($datagridView);
         }
@@ -180,7 +171,7 @@ class GroupController extends AbstractDoctrineController
         return array(
             'form'            => $this->groupForm->createView(),
             'datagrid'        => $datagridView,
-            'historyDatagrid' => $historyDatagridView
+            'historyDatagrid' => $this->getHistoryGrid($group)->createView()
         );
     }
 
@@ -194,12 +185,7 @@ class GroupController extends AbstractDoctrineController
      */
     public function historyAction(Request $request, Group $group)
     {
-        $historyGrid = $this->datagridHelper->getDataAuditDatagrid(
-            $group,
-            'pim_catalog_group_history',
-            array('id' => $group->getId())
-        );
-        $historyGridView = $historyGrid->createView();
+        $historyGridView = $this->getHistoryGrid($group)->createView();
 
         if ('json' === $request->getRequestFormat()) {
             return $this->datagridHelper->getDatagridRenderer()->renderResultsJsonResponse($historyGridView);
@@ -223,5 +209,21 @@ class GroupController extends AbstractDoctrineController
         } else {
             return $this->redirectToRoute('pim_catalog_group_index');
         }
+    }
+
+    /**
+     * @param Group $group
+     *
+     * @return Datagrid
+     */
+    protected function getHistoryGrid(Group $group)
+    {
+        $historyGrid = $this->datagridHelper->getDataAuditDatagrid(
+            $group,
+            'pim_catalog_group_history',
+            array('id' => $group->getId())
+        );
+
+        return $historyGrid;
     }
 }
