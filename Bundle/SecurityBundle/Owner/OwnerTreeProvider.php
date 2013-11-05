@@ -49,9 +49,20 @@ class OwnerTreeProvider
         return $this->tree;
     }
 
+    /**
+     * Clear the owner tree cache
+     */
     public function clear()
     {
         $this->cache->deleteAll();
+    }
+
+    /**
+     * Warmup owner tree cache
+     */
+    public function warmUpCache()
+    {
+        $this->ensureTreeLoaded();
     }
 
     /**
@@ -85,11 +96,6 @@ class OwnerTreeProvider
         $users = $this->em->getRepository('Oro\Bundle\UserBundle\Entity\User')->findAll();
         $businessUnits = $this->em->getRepository('Oro\Bundle\OrganizationBundle\Entity\BusinessUnit')->findAll();
 
-        foreach ($users as $user) {
-            /** @var \Oro\Bundle\UserBundle\Entity\User $user */
-            $tree->addUser($user->getId(), $user->getOwner()->getId());
-        }
-
         foreach ($businessUnits as $businessUnit)
         {
             /** @var \Oro\Bundle\OrganizationBundle\Entity\BusinessUnit $businessUnit */
@@ -101,6 +107,7 @@ class OwnerTreeProvider
 
         foreach ($users as $user) {
             /** @var \Oro\Bundle\UserBundle\Entity\User $user */
+            $tree->addUser($user->getId(), $user->getOwner()->getId());
             foreach ($user->getBusinessUnits() as $businessUnit) {
                 $tree->addUserBusinessUnit($user->getId(), $businessUnit->getId());
             }

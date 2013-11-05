@@ -94,6 +94,12 @@ class AclManager extends AbstractAclManager
             : 'Oro\Bundle\SecurityBundle\Acl\Persistence\AclPrivilegeRepository';
     }
 
+    /**
+     * Get access levels list for object.
+     *
+     * @param $object
+     * @return array
+     */
     public function getAccessLevelsForObject($object)
     {
         $extension = $this->getExtensionSelector()->select($object);

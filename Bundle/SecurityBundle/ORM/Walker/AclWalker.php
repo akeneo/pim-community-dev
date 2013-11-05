@@ -101,7 +101,9 @@ class AclWalker extends TreeWalkerAdapter
             $conditionalFactor = $this->getConditionalFactor($condition);
 
             /** @var Join $join */
-            $join = $fromClause->identificationVariableDeclarations[$condition->getFromKey()]->joins[$condition->getJoinKey()];
+            $join = $fromClause
+                ->identificationVariableDeclarations[$condition->getFromKey()]
+                ->joins[$condition->getJoinKey()];
 
             $aclConditionalFactors = array($conditionalFactor);
             if ($join->conditionalExpression instanceof ConditionalPrimary) {
