@@ -28,7 +28,7 @@
                                         {% endif %}
                                     {% endif %}
                                     {% if ownerPath is defined %}
-                                        <a href="{{ ownerPath }}">{{ entity.owner.name }}</a>
+                                        <a href="{{ ownerPath }}">{{ entity.owner|oro_format_name }}</a>
                                     {% else %}
                                         {{ entity.owner.name }}
                                     {% endif %}
