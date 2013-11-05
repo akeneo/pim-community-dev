@@ -34,7 +34,7 @@ class AssociationController extends AbstractDoctrineController
     /**
      * @var DatagridHelperInterface
      */
-    private $dataGridHelper;
+    private $datagridHelper;
 
     /**
      * @var AssociationHandler
@@ -85,7 +85,7 @@ class AssociationController extends AbstractDoctrineController
             $doctrine
         );
 
-        $this->dataGridHelper     = $dataGridHelper;
+        $this->datagridHelper     = $dataGridHelper;
         $this->associationHandler = $associationHandler;
         $this->associationForm    = $associationForm;
     }
@@ -101,7 +101,7 @@ class AssociationController extends AbstractDoctrineController
      */
     public function indexAction(Request $request)
     {
-        $datagridView = $this->dataGridHelper->getDatagrid('association')->createView();
+        $datagridView = $this->datagridHelper->getDatagrid('association')->createView();
 
         if ('json' === $request->getRequestFormat()) {
             return $this->gridRenderer->renderResultsJsonResponse($datagridView);
@@ -165,23 +165,30 @@ class AssociationController extends AbstractDoctrineController
             return $this->redirectToRoute('pim_catalog_association_edit', array('id' => $id));
         }
 
-        $datagridView = $this->dataGridHelper->getDataAuditDatagrid(
-            $association,
-            'pim_catalog_association_edit',
-            array('id' => $id)
-        )->createView();
-
-        if ('json' === $request->getRequestFormat()) {
-            return $this->gridRenderer->renderResultsJsonResponse($datagridView);
-        }
-
         $usageCount = $this->getRepository('PimCatalogBundle:ProductAssociation')->countForAssociation($association);
 
         return array(
-            'form'       => $this->associationForm->createView(),
-            'datagrid'   => $datagridView,
-            'usageCount' => $usageCount
+            'form'            => $this->associationForm->createView(),
+            'historyDatagrid' => $this->getHistoryGrid($association)->createView(),
+            'usageCount'      => $usageCount
         );
+    }
+
+    /**
+     * History of an association
+     *
+     * @param Request     $request
+     * @param Association $association
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|template
+     */
+    public function historyAction(Request $request, Association $association)
+    {
+        $historyGridView = $this->getHistoryGrid($association)->createView();
+
+        if ('json' === $request->getRequestFormat()) {
+            return $this->datagridHelper->getDatagridRenderer()->renderResultsJsonResponse($historyGridView);
+        }
     }
 
     /**
@@ -202,5 +209,21 @@ class AssociationController extends AbstractDoctrineController
         } else {
             return $this->redirectToRoute('pim_catalog_association_index');
         }
+    }
+
+    /**
+     * @param Association $association
+     *
+     * @return Datagrid
+     */
+    protected function getHistoryGrid(Association $association)
+    {
+        $historyGrid = $this->datagridHelper->getDataAuditDatagrid(
+            $association,
+            'pim_catalog_association_history',
+            array('id' => $association->getId())
+        );
+
+        return $historyGrid;
     }
 }
