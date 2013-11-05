@@ -62,7 +62,7 @@ class CategoryHelper
      * @return array
      * @static
      */
-    public static function childrenResponse(array $categories, $withProductsCount = false, Category $parent = null)
+    public static function childrenResponse(array $categories, $withProductsCount = false, $nested = false, Category $parent = null)
     {
         $result = array();
 

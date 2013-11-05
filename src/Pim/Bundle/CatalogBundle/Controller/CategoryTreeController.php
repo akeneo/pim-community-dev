@@ -204,10 +204,11 @@ class CategoryTreeController extends AbstractDoctrineController
 
         } else {
             $categories = $this->categoryManager->getChildren($parent->getId());
+            $nested = (bool) $this->getRequest()->get('nested');
             if ($includeParent) {
-                $data = CategoryHelper::childrenResponse($categories, $withProductsCount, $parent);
+                $data = CategoryHelper::childrenResponse($categories, $withProductsCount, $nested, $parent);
             } else {
-                $data = CategoryHelper::childrenResponse($categories, $withProductsCount);
+                $data = CategoryHelper::childrenResponse($categories, $withProductsCount, $nested);
             }
         }
 
