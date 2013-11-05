@@ -95,6 +95,13 @@ services:
         tags:
             - { name: twig.extension }
 
+    pim_catalog.twig.category_extension:
+        class: Pim\Bundle\CatalogBundle\Twig\CategoryExtension
+        arguments:
+            - '@doctrine.orm.entity_manager'
+        tags:
+            - { name: twig.extension }
+
     # extension listener
     stof_doctrine_extensions.event_listener.locale:
         class: %pim_catalog.event_listener.user_context.class%
