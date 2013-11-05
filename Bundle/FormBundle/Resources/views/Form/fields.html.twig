@@ -346,7 +346,7 @@
 {% endblock oro_money_widget %}
 
 {% block oro_date_widget %}
-    {% set value_id = id %}
+    {% set actual_id = id %}
     {% set selector_name = 'date_selector_' ~ random() %}
     {% set selector_id = selector_name %}
 
@@ -364,23 +364,34 @@
         require(['jquery', 'oro/formatter/datetime', 'jquery-ui'],
         function($, datetimeFormatter) {
             var selector = $("#{{ selector_id }}");
+            var actual = $("#{{ actual_id }}");
             {% if value %}
                 selector.val(datetimeFormatter.formatDate({{ value|json_encode|raw }}));
             {% endif %}
             selector.datepicker({
-                altField: '#{{ value_id }}',
+                altField: '#{{ actual_id }}',
                 altFormat: 'yy-mm-dd',
                 changeMonth: true,
                 changeYear: true,
                 yearRange: '-80:+1',
                 showButtonPanel: true
             });
+            selector.keyup(
+                function () {
+                    var selectorValue = selector.val();
+                    if (datetimeFormatter.isDateValid(selectorValue)) {
+                        actual.val(datetimeFormatter.unformatDate(selectorValue));
+                    } else {
+                        actual.val('');
+                    }
+                }
+            );
         });
     </script>
 {% endblock oro_date_widget %}
 
 {% block oro_datetime_widget %}
-    {% set value_id = id %}
+    {% set actual_id = id %}
     {% set selector_name = 'datetime_selector_' ~ random() %}
     {% set selector_id = selector_name %}
 
@@ -398,11 +409,12 @@
         require(['jquery', 'oro/formatter/datetime', 'jquery-ui-timepicker'],
         function($, datetimeFormatter) {
             var selector = $("#{{ selector_id }}");
+            var actual = $("#{{ actual_id }}");
             {% if value %}
                 selector.val(datetimeFormatter.formatDateTime({{ value|json_encode|raw }}));
             {% endif %}
             selector.datetimepicker({
-                altField: '#{{ value_id }}',
+                altField: '#{{ actual_id }}',
                 altFormat: 'yy-mm-dd',
                 altTimeFormat: 'HH:mm:ssz',
                 altFieldTimeOnly: false,
@@ -412,6 +424,16 @@
                 yearRange: '-80:+1',
                 showButtonPanel: true
             });
+            selector.keyup(
+                function () {
+                    var selectorValue = selector.val();
+                    if (datetimeFormatter.isDateTimeValid(selectorValue)) {
+                        actual.val(datetimeFormatter.unformatDateTime(selectorValue));
+                    } else {
+                        actual.val('');
+                    }
+                }
+            );
         });
     </script>
 {% endblock oro_datetime_widget %}
