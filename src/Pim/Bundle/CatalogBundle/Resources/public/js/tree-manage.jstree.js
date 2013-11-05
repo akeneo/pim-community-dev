@@ -51,8 +51,13 @@ define(
                         'url': Routing.generate('pim_catalog_categorytree_children', { '_format': 'json' }),
                         'data': function (node) {
                             // the result is fed to the AJAX request `data` option
-                            var id = (node && node !== -1) ? node.attr('id').replace('node_', '') : -1;
-                            
+                            var id = null;
+
+                            if (node && node !== -1) {
+                                id = node.attr('id').replace('node_', '');
+                            } else {
+                                id = -1;
+                            }
                             return {
                                 'id': id,
                                 'select_node_id': selectedNode,
@@ -77,10 +82,10 @@ define(
                 }
             };
             if ($el.attr("data-movable")) {
-                this.config.plugins.push("dnd");
+                this.config.plugins.push("dnd")
             } 
             if ($el.attr("data-creatable")) {
-                this.config.plugins.push("contextmenu");
+                this.config.plugins.push("contextmenu")
             } 
             this.init = function () {
                 $el.jstree(this.config).bind('move_node.jstree', function (e, data) {
