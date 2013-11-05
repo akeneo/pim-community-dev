@@ -21,7 +21,7 @@ class VersionBuilder
     protected $serializer;
 
     /**
-     * @param SerializerInterface  $serializer
+     * @param SerializerInterface $serializer
      */
     public function __construct(SerializerInterface $serializer)
     {

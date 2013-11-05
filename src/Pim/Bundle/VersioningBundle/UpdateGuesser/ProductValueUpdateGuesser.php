@@ -16,7 +16,7 @@ use Pim\Bundle\CatalogBundle\Entity\ProductPrice;
 class ProductValueUpdateGuesser implements UpdateGuesserInterface
 {
     /**
-     * {@inheritdoc} 
+     * {@inheritdoc}
      */
     public function supportAction($action)
     {

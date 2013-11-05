@@ -15,7 +15,7 @@ use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 class AttributeGroupUpdateGuesser implements UpdateGuesserInterface
 {
     /**
-     * {@inheritdoc} 
+     * {@inheritdoc}
      */
     public function supportAction($action)
     {

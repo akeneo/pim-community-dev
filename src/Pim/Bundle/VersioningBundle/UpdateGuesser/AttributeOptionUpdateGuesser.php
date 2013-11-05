@@ -16,7 +16,7 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
 class AttributeOptionUpdateGuesser implements UpdateGuesserInterface
 {
     /**
-     * {@inheritdoc} 
+     * {@inheritdoc}
      */
     public function supportAction($action)
     {

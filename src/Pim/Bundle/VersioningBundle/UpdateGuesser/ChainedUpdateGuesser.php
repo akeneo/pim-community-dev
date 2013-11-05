@@ -19,7 +19,7 @@ class ChainedUpdateGuesser implements UpdateGuesserInterface
     protected $guessers = array();
 
     /**
-     * {@inheritdoc} 
+     * {@inheritdoc}
      */
     public function supportAction($action)
     {

@@ -16,7 +16,7 @@ use Pim\Bundle\CatalogBundle\Entity\Category;
 class ContainsProductsUpdateGuesser implements UpdateGuesserInterface
 {
     /**
-     * {@inheritdoc} 
+     * {@inheritdoc}
      */
     public function supportAction($action)
     {

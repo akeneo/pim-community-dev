@@ -21,11 +21,11 @@ class TranslationsUpdateGuesser implements UpdateGuesserInterface
      */
     protected $versionableEntities;
 
-   /**
-    * Constructor
-    *
-    * @param array $versionableEntities
-    */
+    /**
+     * Constructor
+     *
+     * @param array $versionableEntities
+     */
     public function __construct(array $versionableEntities)
     {
         $this->versionableEntities = $versionableEntities;
