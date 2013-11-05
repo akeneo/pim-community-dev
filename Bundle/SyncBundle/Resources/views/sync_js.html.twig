@@ -1,9 +1,5 @@
 {% if check_ws() %}
 <script type="text/javascript">
-    WEB_SOCKET_FORCE_FLASH = true;
-    WEB_SOCKET_SWF_LOCATION = "/bundles/orosync/lib/WebSocketMain.swf";
-    WEB_SOCKET_DEBUG = true;
-
     require(['jquery', 'oro/mediator', 'oro/sync', 'oro/sync/wamp', 'oro/messenger'],
     function($, mediator, sync, Wamp, messenger){
         $(document).on('click.action.data-api', '[data-action=sync-connect]', function (e) {

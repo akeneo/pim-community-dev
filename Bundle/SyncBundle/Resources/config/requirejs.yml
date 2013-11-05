@@ -12,12 +12,8 @@ config:
         'cryptojs/pbkdf2':
             deps:
                 - 'cryptojs/core'
-        'web_socket':
-            deps:
-                - 'swfobject'
         'autobahn':
             deps:
-                - 'web_socket'
                 - 'when'
                 - 'cryptojs/core'
                 - 'cryptojs/enc-base64'
@@ -37,8 +33,6 @@ config:
         'cryptojs/sha256': 'bundles/orosync/lib/cryptojs/sha256-min.js'
         'cryptojs/pbkdf2': 'bundles/orosync/lib/cryptojs/pbkdf2-min.js'
         'when': 'bundles/orosync/lib/when.js'
-        'swfobject': 'bundles/orosync/lib/swfobject.js'
-        'web_socket': 'bundles/orosync/lib/web_socket.js'
         'autobahn': 'bundles/orosync/lib/autobahn.js'
         'oro/sync': 'bundles/orosync/js/sync.js'
         'oro/sync/wamp': 'bundles/orosync/js/sync/wamp.js'
@@ -46,6 +40,4 @@ config:
 
 build:
     paths:
-        'swfobject': 'empty:'
-        'web_socket': 'empty:'
         'autobahn': 'empty:'
