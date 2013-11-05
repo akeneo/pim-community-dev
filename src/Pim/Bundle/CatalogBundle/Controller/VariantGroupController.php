@@ -95,7 +95,7 @@ class VariantGroupController extends GroupController
 
         $historyDatagrid = $this->datagridWorker->getDataAuditDatagrid(
             $group,
-            'pim_catalog_variant_group_edit',
+            'pim_catalog_group_history',
             array(
                 'id' => $group->getId()
             )
