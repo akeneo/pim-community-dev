@@ -2,10 +2,13 @@
 
 namespace Oro\Bundle\EmailBundle\Entity;
 
+use Oro\Bundle\LocaleBundle\Model\FirstNameInterface;
+use Oro\Bundle\LocaleBundle\Model\LastNameInterface;
+
 /**
  * Represents an email owner
  */
-interface EmailOwnerInterface
+interface EmailOwnerInterface extends FirstNameInterface, LastNameInterface
 {
     /**
      * Get entity class name.

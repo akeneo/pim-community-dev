@@ -44,7 +44,7 @@ class EmailHandlerTest extends \PHPUnit_Framework_TestCase
     protected $logger;
 
     /** @var \PHPUnit_Framework_MockObject_MockObject */
-    protected $config;
+    protected $nameFormatter;
 
     /** @var Email */
     protected $model;
@@ -75,14 +75,9 @@ class EmailHandlerTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
         $this->logger              = $this->getMock('Psr\Log\LoggerInterface');
-        $this->config              = $this->getMockBuilder('Oro\Bundle\ConfigBundle\Twig\ConfigExtension')
+        $this->nameFormatter       = $this->getMockBuilder('Oro\Bundle\LocaleBundle\Formatter\NameFormatter')
             ->disableOriginalConstructor()
             ->getMock();
-
-        $this->config->expects($this->any())
-            ->method('getUserValue')
-            ->with('oro_locale.name_format')
-            ->will($this->returnValue('%first% %last%'));
 
         $emailAddressRepository = $this->getMockBuilder('Doctrine\ORM\EntityRepository')
             ->disableOriginalConstructor()
@@ -116,7 +111,7 @@ class EmailHandlerTest extends \PHPUnit_Framework_TestCase
             $this->emailEntityBuilder,
             $this->mailer,
             $this->logger,
-            $this->config
+            $this->nameFormatter
         );
     }
 
@@ -132,6 +127,12 @@ class EmailHandlerTest extends \PHPUnit_Framework_TestCase
             ->method('submit');
 
         $user  = new TestUser('test@example.com', 'John', 'Smith');
+
+        $this->nameFormatter->expects($this->any())
+            ->method('format')
+            ->with($user)
+            ->will($this->returnValue('John Smith'));
+
         $token = $this->getMock('Symfony\Component\Security\Core\Authentication\Token\TokenInterface');
         $token->expects($this->once())
             ->method('getUser')
@@ -153,6 +154,11 @@ class EmailHandlerTest extends \PHPUnit_Framework_TestCase
         $this->request->query->set('from', 'from@example.com');
         $this->request->query->set('to', 'to@example.com');
         $this->request->query->set('subject', 'testSubject');
+
+        $this->nameFormatter->expects($this->any())
+            ->method('format')
+            ->with($this->isInstanceOf('Oro\Bundle\EmailBundle\Tests\Unit\Fixtures\Entity\TestUser'))
+            ->will($this->returnValue('FirstName LastName'));
 
         $this->form->expects($this->once())
             ->method('setData')
