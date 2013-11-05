@@ -247,7 +247,7 @@ class JobInstanceController extends AbstractDoctrineController
 
         $historyDatagrid = $this->datagridWorker->getDataAuditDatagrid(
             $jobInstance,
-            'pim_importexport_export_edit',
+            sprintf('pim_importexport_%s_history', $this->getJobType()),
             array('id' => $jobInstance->getId())
         );
 
@@ -273,6 +273,29 @@ class JobInstanceController extends AbstractDoctrineController
                 'historyDatagrid' => $historyDatagrid->createView()
             )
         );
+    }
+
+    /**
+     * History of a job instance
+     *
+     * @param Request $request
+     * @param integer $id
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|template
+     */
+    public function historyAction(Request $request, $id)
+    {
+        $jobInstance = $this->getJobInstance($id);
+        $historyGrid = $this->datagridWorker->getDataAuditDatagrid(
+            $jobInstance,
+            sprintf('pim_importexport_%s_history', $this->getJobType()),
+            array('id' => $id)
+        );
+        $historyGridView = $historyGrid->createView();
+
+        if ('json' === $request->getRequestFormat()) {
+            return $this->datagridWorker->getDatagridRenderer()->renderResultsJsonResponse($historyGridView);
+        }
     }
 
     /**
