@@ -208,7 +208,7 @@ DQL;
      */
     public function getToolbarOptions()
     {
-        $removeActions = array('addResetAction' => false, 'addRefreshAction' => false);
+        $removeActions = array('addResetAction' => false);
 
         return array_merge($removeActions, $this->toolbarOptions);
     }

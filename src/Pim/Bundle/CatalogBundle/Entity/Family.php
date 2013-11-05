@@ -11,7 +11,6 @@ use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
-use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
 
 /**
  * Family entity
@@ -32,7 +31,7 @@ use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
  *  }
  * )
  */
-class Family implements TranslatableInterface, VersionableInterface
+class Family implements TranslatableInterface
 {
     /**
      * @var integer $id
@@ -118,14 +117,6 @@ class Family implements TranslatableInterface, VersionableInterface
     protected $updated;
 
     /**
-     * @var integer $version
-     *
-     * @ORM\Column(name="version", type="integer")
-     * @ORM\Version
-     */
-    protected $version;
-
-    /**
      * @ORM\OneToMany(
      *     targetEntity="Pim\Bundle\CatalogBundle\Model\ProductInterface",
      *     mappedBy="family"
@@ -162,16 +153,6 @@ class Family implements TranslatableInterface, VersionableInterface
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Get version
-     *
-     * @return string $version
-     */
-    public function getVersion()
-    {
-        return $this->version;
     }
 
     /**

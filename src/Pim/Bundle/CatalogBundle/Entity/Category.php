@@ -11,7 +11,6 @@ use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
-use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
 
 /**
  * Segment class allowing to organize a flexible product class into trees
@@ -38,7 +37,7 @@ use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
  *  }
  * )
  */
-class Category extends AbstractSegment implements CategoryInterface, TranslatableInterface, VersionableInterface
+class Category extends AbstractSegment implements CategoryInterface, TranslatableInterface
 {
     /**
      * @var Category $parent
@@ -143,16 +142,6 @@ class Category extends AbstractSegment implements CategoryInterface, Translatabl
         $this->products     = new ArrayCollection();
         $this->translations = new ArrayCollection();
         $this->channels     = new ArrayCollection();
-    }
-
-    /**
-     * Get version
-     *
-     * @return string $version
-     */
-    public function getVersion()
-    {
-        return $this->version;
     }
 
     /**

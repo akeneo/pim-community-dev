@@ -13,5 +13,5 @@ use Symfony\Component\Validator\Constraint;
  */
 class Numeric extends Constraint
 {
-    public $message = 'This value should be numeric.';
+    public $message = 'This value should be a valid number.';
 }

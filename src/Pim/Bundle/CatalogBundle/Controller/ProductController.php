@@ -198,7 +198,7 @@ class ProductController extends AbstractDoctrineController
             'datagrid'   => $datagrid->createView(),
             'locales'    => $this->localeManager->getUserLocales(),
             'dataLocale' => $this->getDataLocale(),
-            'dataScope' => $this->getDataScope(),
+            'dataScope'  => $this->getDataScope()
         );
 
         return $this->render($view, $params);

@@ -40,18 +40,18 @@ class VersionBuilderTest extends \PHPUnit_Framework_TestCase
     public function testBuildVersion()
     {
         $data = array('field' => 'value');
-        $version = $this->manager->buildVersion($this->getVersionableMock($data), $this->getUserMock());
+        $version = $this->manager->buildVersion($this->getVersionableMock($data), $this->getUserMock(), 1);
         $this->assertTrue($version instanceof Version);
     }
 
     /**
      * @param array $data
      *
-     * @return VersionableInterface
+     * @return Product
      */
     protected function getVersionableMock(array $data)
     {
-        $versionable = $this->getMock('Pim\Bundle\VersioningBundle\Entity\VersionableInterface');
+        $versionable = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Product');
 
         $versionable->expects($this->any())
             ->method('getId')

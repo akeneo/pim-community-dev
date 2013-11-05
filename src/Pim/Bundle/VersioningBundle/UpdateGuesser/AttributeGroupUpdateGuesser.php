@@ -17,7 +17,15 @@ class AttributeGroupUpdateGuesser implements UpdateGuesserInterface
     /**
      * {@inheritdoc}
      */
-    public function guessUpdates(Entitymanager $em, $entity)
+    public function supportAction($action)
+    {
+        return $action === UpdateGuesserInterface::ACTION_UPDATE_ENTITY;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function guessUpdates(Entitymanager $em, $entity, $action)
     {
         $pendings = array();
         if ($entity instanceof ProductAttribute) {

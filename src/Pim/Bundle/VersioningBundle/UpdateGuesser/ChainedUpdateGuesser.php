@@ -21,15 +21,25 @@ class ChainedUpdateGuesser implements UpdateGuesserInterface
     /**
      * {@inheritdoc}
      */
-    public function guessUpdates(EntityManager $em, $entity)
+    public function supportAction($action)
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function guessUpdates(EntityManager $em, $entity, $action)
     {
         $updates = array();
 
         foreach ($this->guessers as $guesser) {
-            $updates = array_merge(
-                $updates,
-                $guesser->guessUpdates($em, $entity)
-            );
+            if ($guesser->supportAction($action)) {
+                $updates = array_merge(
+                    $updates,
+                    $guesser->guessUpdates($em, $entity, $action)
+                );
+            }
         }
 
         return $updates;

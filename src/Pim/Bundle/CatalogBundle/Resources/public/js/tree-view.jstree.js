@@ -8,9 +8,11 @@ define(
             if (!$el || !$el.length || !_.isObject($el)) {
                 throw new Error('Unable to instantiate tree on this element');
             }
-            var self       = this,
-                dataLocale = $el.attr('data-datalocale'),
-                selectedNode = $el.attr('data-node-id') || 'node_';
+            var self               = this,
+                dataLocale         = $el.attr('data-datalocale'),
+                selectedNode       = $el.attr('data-node-id') || -1,
+                selectedTree       = $el.attr('data-tree-id') || -1,
+                selectedNodeOrTree = selectedNode in [0, -1] ? selectedTree : selectedNode;
 
             this.config = {
                 'core': {
@@ -27,7 +29,7 @@ define(
                 ],
                 'tree_selector': {
                     'ajax': {
-                        'url': Routing.generate('pim_catalog_categorytree_listtree', { '_format': 'json', 'dataLocale': dataLocale, 'select_node_id': selectedNode  })
+                        'url': Routing.generate('pim_catalog_categorytree_listtree', { '_format': 'json', 'dataLocale': dataLocale, 'select_node_id': selectedNodeOrTree })
                     },
                     'auto_open_root': true,
                     'node_label_field': 'label',
@@ -87,7 +89,7 @@ define(
                             'attr': { 'class': 'jstree-unclassified', 'id': 'node_' },
                             'data': { 'title': _.__('jstree.all') }
                         }, null, true);
-                        if ('node_' === selectedNode) {
+                        if (-1 === selectedNode) {
                             $el.jstree('select_node', '#node_');
                         }
 
@@ -95,15 +97,13 @@ define(
                             'attr': { 'class': 'jstree-unclassified', 'id': 'node_0' },
                             'data': { 'title': _.__('jstree.unclassified') }
                         }, null, true);
-                        if ('0' === selectedNode) {
+                        if (0 == selectedNode) {
                             $el.jstree('select_node', '#node_0');
                         }
                     });
                 }).on('select_node.jstree', function () {
                     function getNodeId(node) {
-                        return (node && node.attr("id")) 
-                                ? node.attr('id').replace('node_','') 
-                                : '';
+                        return (node && node.attr('id')) ? node.attr('id').replace('node_', '') : '';
                     }
                     var nodeId = getNodeId($.jstree._focused().get_selected()),
                         treeId = getNodeId($('#tree').find('li').first());

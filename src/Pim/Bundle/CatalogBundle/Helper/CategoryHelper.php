@@ -30,7 +30,7 @@ class CategoryHelper
         $selectedTreeId = -1;
 
         if ($selectCategory != null) {
-            $selectedTreeId = $selectCategory->getRoot();
+            $selectedTreeId = $selectCategory->isRoot() ? $selectCategory->getId() : $selectCategory->getRoot();
         }
 
         foreach ($trees as $i => $tree) {
@@ -203,7 +203,7 @@ class CategoryHelper
     {
         $state = $category->hasChildren() ? 'closed' : 'leaf';
 
-        if ($category->getParent() == null) {
+        if ($category->isRoot()) {
             $state .= ' jstree-root';
         }
 
