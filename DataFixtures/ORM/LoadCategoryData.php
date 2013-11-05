@@ -68,7 +68,6 @@ class LoadCategoryData extends AbstractDemoFixture
 
         // translate data in en_US
         $locale = $this->getReference('locale.en_US');
-        $this->translate($treeCatalog, $locale, 'Master Catalog');
         $this->translate($treeCollections, $locale, 'Collections');
         $this->translate($treeColors, $locale, 'Colors');
         $this->translate($treeSales, $locale, 'Europe Sales Catalog');
