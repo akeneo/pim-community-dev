@@ -115,65 +115,6 @@ class AddVersionListener implements EventSubscriber
     }
 
     /**
-     * @param PostFlushEventArgs $args
-     */
-    public function postFlush(PostFlushEventArgs $args)
-    {
-        $em = $args->getEntityManager();
-        if (!empty($this->versionableEntities)) {
-            if ($this->username) {
-                $user = $em->getRepository('OroUserBundle:User')->findOneBy(array('username' => $this->username));
-                if (!$user and $this->realTimeVersioning) {
-                    $this->versionableEntities = array();
-
-                    return;
-                }
-                foreach ($this->versionableEntities as $versionable) {
-                    if ($this->realTimeVersioning) {
-                        $em->refresh($versionable);
-                        $this->createVersionAndAudit($em, $versionable, $user);
-                    } else {
-                        $className = \Doctrine\Common\Util\ClassUtils::getRealClass(get_class($versionable));
-                        $pending = new Pending($className, $versionable->getId(), $this->username);
-                        $this->computeChangeSet($em, $pending);
-                    }
-                    $this->versionedEntities[]= spl_object_hash($versionable);
-                }
-                $this->versionableEntities = array();
-                $em->flush();
-            }
-        }
-    }
-
-    /**
-     * @param EntityManager $em
-     * @param object        $versionable
-     * @param User          $user
-     */
-    public function createVersionAndAudit(EntityManager $em, $versionable, User $user)
-    {
-        $previous = $em->getRepository('PimVersioningBundle:Version')
-            ->findPreviousVersion(get_class($versionable), $versionable->getId());
-        $prevVersionNumber = ($previous) ? $previous->getVersion() + 1 : 1;
-
-        $current = $this->versionBuilder->buildVersion($versionable, $user, $prevVersionNumber);
-        $this->computeChangeSet($em, $current);
-
-        $previousAudit = $em->getRepository('Oro\Bundle\DataAuditBundle\Entity\Audit')
-            ->findOneBy(
-                array('objectId' => $current->getResourceId(), 'objectName' => $current->getResourceName()),
-                array('loggedAt' => 'desc')
-            );
-        $versionNumber = ($previousAudit) ? $previousAudit->getVersion() + 1 : 1;
-
-        $audit = $this->auditBuilder->buildAudit($current, $previous, $versionNumber);
-        $diffData = $audit->getData();
-        if (!empty($diffData)) {
-            $this->computeChangeSet($em, $audit);
-        }
-    }
-
-    /**
      * @param OnFlushEventArgs $args
      */
     public function onFlush(OnFlushEventArgs $args)
@@ -203,12 +144,80 @@ class AddVersionListener implements EventSubscriber
     }
 
     /**
+     * @param PostFlushEventArgs $args
+     */
+    public function postFlush(PostFlushEventArgs $args)
+    {
+        $em = $args->getEntityManager();
+        if (!empty($this->versionableEntities)) {
+            if ($this->username) {
+                $user = $em->getRepository('OroUserBundle:User')->findOneBy(array('username' => $this->username));
+                if (!$user and $this->realTimeVersioning) {
+                    $this->versionableEntities = array();
+
+                    return;
+                }
+                $this->processVersionableEntities($em, $user);
+            }
+        }
+    }
+
+    /**
+     * @param EntityManager $em
+     * @param User          $user
+     */
+    protected function processVersionableEntities(EntityManager $em, User $user)
+    {
+        foreach ($this->versionableEntities as $versionable) {
+            if ($this->realTimeVersioning) {
+                $em->refresh($versionable);
+                $this->createVersionAndAudit($em, $versionable, $user);
+            } else {
+                $className = \Doctrine\Common\Util\ClassUtils::getRealClass(get_class($versionable));
+                $pending = new Pending($className, $versionable->getId(), $this->username);
+                $this->computeChangeSet($em, $pending);
+            }
+            $this->versionedEntities[]= spl_object_hash($versionable);
+        }
+        $this->versionableEntities = array();
+        $em->flush();
+    }
+
+    /**
+     * @param EntityManager $em
+     * @param object        $versionable
+     * @param User          $user
+     */
+    protected function createVersionAndAudit(EntityManager $em, $versionable, User $user)
+    {
+        $previous = $em->getRepository('PimVersioningBundle:Version')
+            ->findPreviousVersion(get_class($versionable), $versionable->getId());
+        $prevVersionNumber = ($previous) ? $previous->getVersion() + 1 : 1;
+
+        $current = $this->versionBuilder->buildVersion($versionable, $user, $prevVersionNumber);
+        $this->computeChangeSet($em, $current);
+
+        $previousAudit = $em->getRepository('Oro\Bundle\DataAuditBundle\Entity\Audit')
+            ->findOneBy(
+                array('objectId' => $current->getResourceId(), 'objectName' => $current->getResourceName()),
+                array('loggedAt' => 'desc')
+            );
+        $versionNumber = ($previousAudit) ? $previousAudit->getVersion() + 1 : 1;
+
+        $audit = $this->auditBuilder->buildAudit($current, $previous, $versionNumber);
+        $diffData = $audit->getData();
+        if (!empty($diffData)) {
+            $this->computeChangeSet($em, $audit);
+        }
+    }
+
+    /**
      * Check if an entity must be versioned due to entity changes
      *
      * @param EntityManager $em
      * @param object        $entity
      */
-    public function checkScheduledUpdate($em, $entity)
+    protected function checkScheduledUpdate($em, $entity)
     {
         $pendings = $this->guesser->guessUpdates($em, $entity, UpdateGuesserInterface::ACTION_UPDATE_ENTITY);
         foreach ($pendings as $pending) {
@@ -222,7 +231,7 @@ class AddVersionListener implements EventSubscriber
      * @param EntityManager $em
      * @param object        $entity
      */
-    public function checkScheduledCollection($em, $entity)
+    protected function checkScheduledCollection($em, $entity)
     {
         $pendings = $this->guesser->guessUpdates($em, $entity, UpdateGuesserInterface::ACTION_UPDATE_COLLECTION);
         foreach ($pendings as $pending) {
@@ -236,7 +245,7 @@ class AddVersionListener implements EventSubscriber
      * @param EntityManager $em
      * @param object        $entity
      */
-    public function checkScheduledDeletion($em, $entity)
+    protected function checkScheduledDeletion($em, $entity)
     {
         $pendings = $this->guesser->guessUpdates($em, $entity, UpdateGuesserInterface::ACTION_DELETE);
         foreach ($pendings as $pending) {

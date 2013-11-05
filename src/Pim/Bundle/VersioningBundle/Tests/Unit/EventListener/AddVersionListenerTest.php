@@ -60,42 +60,6 @@ class AddVersionListenerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test related method
-     */
-    public function testCheckScheduledUpdate()
-    {
-        $listener = $this->getListener();
-
-        $emMock          = $this->getEntityManagerMock();
-        $versionableMock = $this->getVersionableMock('{"field1":  "value1"}');
-        $listener->checkScheduledUpdate($emMock, $versionableMock);
-
-        $value = new ProductValue();
-        $value->setEntity(new Product());
-        $listener->checkScheduledUpdate($emMock, $value);
-
-        $price = new ProductPrice();
-        $value->addPrice($price);
-        $listener->checkScheduledUpdate($emMock, $price);
-
-        $attribute = new ProductAttribute();
-        $listener->checkScheduledUpdate($emMock, $attribute);
-
-        $option = new AttributeOption();
-        $attribute->addOption($option);
-        $listener->checkScheduledUpdate($emMock, $option);
-
-        $optionValue = new AttributeOptionValue();
-        $option->addOptionValue($optionValue);
-        $listener->checkScheduledUpdate($emMock, $optionValue);
-
-        $family = new Family();
-        $translation = new FamilyTranslation();
-        $translation->setForeignKey($family);
-        $listener->checkScheduledUpdate($emMock, $translation);
-    }
-
-    /**
       * @return AddVersionListener
       */
     protected function getListener()
