@@ -5,11 +5,8 @@ datagrid:
             type: orm
             query:
                 select:
-                    - e.id
-                    - e.fromName
-                    - e.subject
-                    - e.sentAt
-                    - a.email
+                    - e
+                    - @oro_email.datagrid_query_factory->getFromEmailExpression()
                 from:
                     - { table: OroEmailBundle:Email, alias: e }
                 join:
@@ -19,40 +16,38 @@ datagrid:
                             alias: a
 
         columns:
-            id:
-                frontend_type: integer
             fromEmailAddress:
                 type: twig
+                label: oro.email.datagrid.email.from_name
+                frontend_type: html
                 template: OroEmailBundle:Email:Datagrid/Property/from.html.twig
             subject:
                 type: twig
+                label: oro.email.datagrid.email.subject
+                frontend_type: html
                 template: OroEmailBundle:Email:Datagrid/Property/subject.html.twig
             sentAt:
-                frontend_type: date
+                label: oro.email.datagrid.email.sentAt
+                frontend_type: datetime
             recipients:
                 type: twig
+                label: oro.email.datagrid.email.recipients
+                frontend_type: html
                 template: OroEmailBundle:Email:Datagrid/Property/recipients.html.twig
-
+        properties:
+            id: ~
         sorters:
             columns:
-                subject:
-                    data_name: e.subject
-                sentAt:
-                    data_name: e.sentAt
-            default:
-                sentAt: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+                subject: { data_name: e.subject }
+                sentAt:  { data_name: e.sentAt }
+            default: { sentAt: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC }
 
         filters:
             columns:
-                fromEmailAddress:
-                    type: string
-                    data_name: e.fromEmailAddress
-                subject:
-                    type: string
-                    data_name: e.subject
-                sentAt:
-                    type: string
-                    data_name: e.sentAt
+                fromEmailAddress: { type: string,   data_name: a.email }
+                subject:          { type: string,   data_name: e.subject }
+                sentAt:           { type: datetime, data_name: e.sentAt }
+        options: { entityHint: email }
 
     email-templates:
         source:
@@ -111,7 +106,6 @@ datagrid:
                             multiple:       true
                             choices:        @oro_email.emailtemplate.datagrid_helper->getEntityNameChoices
                 name:
-                    type:      string
                     data_name: t.name
                     label:     oro.email.datagrid.emailtemplate.column.name
                 type:

@@ -58,7 +58,7 @@ class OrmDatasource implements DatasourceInterface
      *
      * @return QueryBuilder
      */
-    public function getQueryBuilder()
+    public function getQuery()
     {
         return $this->qb;
     }
@@ -70,7 +70,7 @@ class OrmDatasource implements DatasourceInterface
      *
      * @return $this
      */
-    public function setQueryBuilder(QueryBuilder $qb)
+    public function setQuery(QueryBuilder $qb)
     {
         $this->qb = $qb;
 

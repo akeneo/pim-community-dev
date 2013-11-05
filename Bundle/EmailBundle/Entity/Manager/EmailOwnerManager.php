@@ -9,7 +9,6 @@ use Oro\Bundle\EmailBundle\Entity\EmailAddress;
 use Oro\Bundle\EmailBundle\Entity\EmailOwnerInterface;
 use Oro\Bundle\EmailBundle\Entity\EmailInterface;
 use Oro\Bundle\EmailBundle\Entity\Provider\EmailOwnerProviderStorage;
-use Oro\Bundle\EmailBundle\Entity\Manager\EmailAddressManager;
 
 /**
  * This class responsible for binging EmailAddress to owner entities

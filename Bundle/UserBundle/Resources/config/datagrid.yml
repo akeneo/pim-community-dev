@@ -337,12 +337,3 @@ datagrid:
             default:
                 has_group: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
                 lastName: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
-
-    # TODO: Move this to OroCRMContactBundle
-    contacts-email-grid:
-        extend: email-grid
-        source:
-            query:
-                where:
-                    and:
-                        - a.email IN (:email_addresses)

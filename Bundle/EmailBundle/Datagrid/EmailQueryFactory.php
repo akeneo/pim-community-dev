@@ -68,7 +68,8 @@ class EmailQueryFactory
         $lastName = sprintf('COALESCE(%s, \'\')', implode(', ', $lastNames));
 
         $nameFormat = $userConfigManager->get('oro_locale.name_format');
-        $this->fromEmailExpression = $this->buildFromEmailExpression($nameFormat, $firstName, $lastName);
+        $this->fromEmailExpression = $this->buildFromEmailExpression($nameFormat, $firstName, $lastName)
+            . ' as FromEmailExpression';
     }
 
 
