@@ -27,10 +27,6 @@ function(_, Backbone, registry, mediator) {
          * @param {Object} options
          */
         initialize: function(options) {
-            if (!_.has(options, 'datagridName')) {
-                throw new Error('Datagrid name is not specified');
-            }
-
             if (!_.has(options, 'columnName')) {
                 throw new Error('Data column name is not specified');
             }
@@ -42,7 +38,14 @@ function(_, Backbone, registry, mediator) {
 
             Backbone.Model.prototype.initialize.apply(this, arguments);
 
-            this._assignDatagridAndSubscribe(options.datagridName);
+            if (options.grid) {
+                this.setDatagridAndSubscribe(options.grid);
+            } else {
+                if (!_.has(options, 'datagridName')) {
+                    throw new Error('Datagrid name is not specified');
+                }
+                this._assignDatagridAndSubscribe(options.datagridName);
+            }
         },
 
         /**
@@ -67,7 +70,7 @@ function(_, Backbone, registry, mediator) {
          */
         setDatagridAndSubscribe: function(datagrid) {
             this.datagrid = datagrid;
-            this.datagrid.collection.on('backgrid:edited', this._onModelEdited, this);
+            this.datagrid.collection.on('change:' + this.columnName, this._onModelEdited, this);
         },
 
         /**
@@ -77,12 +80,10 @@ function(_, Backbone, registry, mediator) {
          * @param {Backgrid.Column} column
          * @protected
          */
-        _onModelEdited: function (model, column) {
-            if (this.columnName === column.get('name')) {
-                var value = model.get(this.dataField);
-                if (!_.isUndefined(value)) {
-                    this._processValue(value, model);
-                }
+        _onModelEdited: function (model) {
+            var value = model.get(this.dataField);
+            if (!_.isUndefined(value)) {
+                this._processValue(value, model);
             }
         },
 
