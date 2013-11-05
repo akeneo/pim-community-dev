@@ -166,7 +166,7 @@ class GroupController extends AbstractDoctrineController
 
         $historyDatagrid = $this->datagridWorker->getDataAuditDatagrid(
             $group,
-            'pim_catalog_group_edit',
+            'pim_catalog_group_history',
             array(
                 'id' => $group->getId()
             )
@@ -174,10 +174,7 @@ class GroupController extends AbstractDoctrineController
         $historyDatagridView = $historyDatagrid->createView();
 
         if ('json' === $this->getRequest()->getRequestFormat()) {
-            return $this->render(
-                'OroGridBundle:Datagrid:list.json.php',
-                array('datagrid' => $datagridView)
-            );
+            return $this->datagridWorker->getDatagridRenderer()->renderResultsJsonResponse($datagridView);
         }
 
         return array(
@@ -185,6 +182,28 @@ class GroupController extends AbstractDoctrineController
             'datagrid'        => $datagridView,
             'historyDatagrid' => $historyDatagridView
         );
+    }
+
+    /**
+     * History of a group
+     *
+     * @param Request $request
+     * @param Group   $group
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|template
+     */
+    public function historyAction(Request $request, Group $group)
+    {
+        $historyGrid = $this->datagridWorker->getDataAuditDatagrid(
+            $group,
+            'pim_catalog_group_history',
+            array('id' => $group->getId())
+        );
+        $historyGridView = $historyGrid->createView();
+
+        if ('json' === $request->getRequestFormat()) {
+            return $this->datagridWorker->getDatagridRenderer()->renderResultsJsonResponse($historyGridView);
+        }
     }
 
     /**

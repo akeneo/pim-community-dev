@@ -10,7 +10,6 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
 
 /**
  * Group entity
@@ -32,7 +31,7 @@ use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
  *  }
  * )
  */
-class Group implements TranslatableInterface, GroupSequenceProviderInterface, VersionableInterface
+class Group implements TranslatableInterface, GroupSequenceProviderInterface
 {
     /**
      * @var integer $id
@@ -101,14 +100,6 @@ class Group implements TranslatableInterface, GroupSequenceProviderInterface, Ve
     protected $translations;
 
     /**
-     * @var integer $version
-     *
-     * @ORM\Column(name="version", type="integer")
-     * @ORM\Version
-     */
-    protected $version;
-
-    /**
      * Constructor
      */
     public function __construct()
@@ -126,16 +117,6 @@ class Group implements TranslatableInterface, GroupSequenceProviderInterface, Ve
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Get version
-     *
-     * @return string $version
-     */
-    public function getVersion()
-    {
-        return $this->version;
     }
 
     /**

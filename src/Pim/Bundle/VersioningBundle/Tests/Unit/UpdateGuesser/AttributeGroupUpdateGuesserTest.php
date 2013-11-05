@@ -3,6 +3,7 @@
 namespace Pim\Bundle\VersioningBundle\Tests\Unit\UpdateGuesser;
 
 use Pim\Bundle\VersioningBundle\UpdateGuesser\AttributeGroupUpdateGuesser;
+use Pim\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 
@@ -25,7 +26,7 @@ class AttributeGroupUpdateGuesserTest extends AbstractUpdateGuesserTest
         $attribute->setGroup($group);
         $guesser   = new AttributeGroupUpdateGuesser();
         $em        = $this->getEntityManagerMock($group);
-        $updates   = $guesser->guessUpdates($em, $attribute);
+        $updates   = $guesser->guessUpdates($em, $attribute, UpdateGuesserInterface::ACTION_UPDATE_ENTITY);
         $this->assertEquals(2, count($updates));
         $this->assertEquals($attribute, $updates[0]);
         $this->assertEquals($group, $updates[1]);

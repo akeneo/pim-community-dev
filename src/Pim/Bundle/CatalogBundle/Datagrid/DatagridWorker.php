@@ -72,6 +72,14 @@ class DatagridWorker implements DatagridWorkerInterface
     }
 
     /**
+     * @return Oro\Bundle\GridBundle\Renderer\GridRenderer
+     */
+    public function getDatagridRenderer()
+    {
+        return $this->container->get('oro_grid.renderer');
+    }
+
+    /**
      * Gets the query factory for the given type
      *
      * @param string $name

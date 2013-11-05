@@ -20,6 +20,12 @@ Feature: Create an export
     And I save the export
     Then I should see "Export profile - Mobile product export"
     And I should see flash message "The export has been successfully created."
+    Then I press the "Edit" button
+    When I visit the "History" tab
+    Then there should be 1 update
+    And I should see history:
+      | action | version | data       |
+      | create | 1       | code:mobile_product_export |
 
   Scenario: Fail to create an unknown product export
     Given I am logged in as "admin"

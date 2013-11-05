@@ -5,6 +5,7 @@ services:
         arguments:
             - '@pim_versioning.builder.version'
             - '@pim_versioning.builder.audit'
+            - '@pim_versioning.update_guesser.chained'
         tags:
             - { name: doctrine.event_subscriber }
 

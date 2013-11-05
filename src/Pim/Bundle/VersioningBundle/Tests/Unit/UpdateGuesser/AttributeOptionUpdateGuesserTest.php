@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\VersioningBundle\Tests\Unit\UpdateGuesser;
 
+use Pim\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
 use Pim\Bundle\VersioningBundle\UpdateGuesser\AttributeOptionUpdateGuesser;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
@@ -26,7 +27,7 @@ class AttributeOptionUpdateGuesserTest extends AbstractUpdateGuesserTest
 
         $guesser   = new AttributeOptionUpdateGuesser();
         $em        = $this->getEntityManagerMock();
-        $updates   = $guesser->guessUpdates($em, $option);
+        $updates   = $guesser->guessUpdates($em, $option, UpdateGuesserInterface::ACTION_UPDATE_ENTITY);
         $this->assertEquals(1, count($updates));
         $this->assertEquals($attribute, $updates[0]);
     }
