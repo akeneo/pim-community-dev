@@ -5,6 +5,10 @@ function($, __, localeSettings) {
 
     var locale = localeSettings.locale;
 
+    var separator = localeSettings.getVendorDateTimeFormat('jquery_ui', 'datetime')
+        .replace(localeSettings.getVendorDateTimeFormat('jquery_ui', 'date'), '')
+        .replace(localeSettings.getVendorDateTimeFormat('jquery_ui', 'time'), '');
+
     $.timepicker.regional[locale] = { // Default regional settings
         currentText: __('Now'),
         closeText: __('Done'),
@@ -20,7 +24,8 @@ function($, __, localeSettings) {
         millisecText: __('Millisecond'),
         microsecText: __('Microsecond'),
         timezoneText: __('Time Zone'),
-        defaultTimezone: localeSettings.getTimeZoneOffset().replace(':', '')
+        defaultTimezone: localeSettings.getTimeZoneOffset().replace(':', ''),
+        separator: separator
     };
     $.timepicker.setDefaults($.timepicker.regional[locale]);
 });

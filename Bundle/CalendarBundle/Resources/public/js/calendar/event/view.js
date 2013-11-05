@@ -1,7 +1,7 @@
 /* global define */
-define(['underscore', 'backbone', 'oro/translator', 'oro/dialog-widget', 'oro/layout',
-    'oro/loading-mask', 'oro/form-validation', 'oro/delete-confirmation', 'oro/formatter/datetime'],
-function(_, Backbone, __, DialogWidget, layout, LoadingMask, FormValidation, DeleteConfirmation, dateTimeFormatter) {
+define(['underscore', 'backbone', 'oro/translator', 'oro/dialog-widget','oro/loading-mask', 'oro/form-validation',
+    'oro/delete-confirmation', 'oro/formatter/datetime'],
+function(_, Backbone, __, DialogWidget, LoadingMask, FormValidation, DeleteConfirmation, dateTimeFormatter) {
     'use strict';
 
     var $ = Backbone.$;
@@ -34,8 +34,8 @@ function(_, Backbone, __, DialogWidget, layout, LoadingMask, FormValidation, Del
             var title = this.model.isNew() ? __('Add New Event') : __('Edit Event');
             var data = this.model.toJSON();
             // convert start and end dates from RFC 3339 string to jQuery date/time string
-            data.start = dateTimeFormatter.formatDateTime(data.start);
-            data.end = dateTimeFormatter.formatDateTime(data.end);
+            data.start = this.formatDateTimeForDatePicker(data.start);
+            data.end = this.formatDateTimeForDatePicker(data.start);
             var el = this.template(data);
             // create a dialog
             this.eventDialog = new DialogWidget({
@@ -56,15 +56,12 @@ function(_, Backbone, __, DialogWidget, layout, LoadingMask, FormValidation, Del
                     }, this)
                 }
             });
-
-            // init controls and show the dialog
-            layout.init(this.eventDialog.$el);
             this.eventDialog.render();
 
             // override form submit behavior
-            var form = this.eventDialog.$el.find('input:submit').closest('form');
-            form.off('submit');
-            form.on('submit', _.bind(function (e) {
+            this.eventDialog.form
+                .off('submit')
+                .on('submit', _.bind(function (e) {
                     e.preventDefault();
                     e.stopImmediatePropagation();
                     this.saveModel();
@@ -72,18 +69,18 @@ function(_, Backbone, __, DialogWidget, layout, LoadingMask, FormValidation, Del
                 }, this));
 
             // subscribe to 'delete event' event
-            this.eventDialog.$el.closest('.ui-dialog').find(this.options.formDeleteButtonSelector)
-                .on('click', _.bind(function (e) {
-                    var el = $(e.target);
-                    var confirm = new DeleteConfirmation({
-                        content: el.data('message')
-                    });
-                    confirm.on('ok', _.bind(function() {
-                        this.deleteModel();
-                    }, this));
-                    confirm.open();
-                    return false;
-                }, this));
+            var onDelete = _.bind(function (e) {
+                e.preventDefault();
+                var el = $(e.target);
+                var confirm = new DeleteConfirmation({
+                    content: el.data('message')
+                });
+                confirm.on('ok', _.bind(this.deleteModel, this));
+                confirm.open();
+            }, this);
+            this.eventDialog.getAction('delete', 'adopted', function(deleteAction) {
+                deleteAction.on('click', onDelete);
+            });
 
             // init form validation script
             if (!_.isUndefined(this.options.formValidationScriptUrl)
@@ -209,6 +206,10 @@ function(_, Backbone, __, DialogWidget, layout, LoadingMask, FormValidation, Del
 
         formatDateTimeForModel: function (d) {
             return dateTimeFormatter.unformatDateTime(d);
+        },
+
+        formatDateTimeForDatePicker: function(s) {
+            return dateTimeFormatter.formatDateTime(s);
         }
     });
 });

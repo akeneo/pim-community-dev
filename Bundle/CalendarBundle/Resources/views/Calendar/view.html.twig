@@ -85,7 +85,8 @@
                             'id': 'btn-remove-calendarevent',
                             'dataMessage': 'Are you sure you want to delete this event?',
                             'title': 'Delete event',
-                            'label': 'Delete'
+                            'label': 'Delete',
+                            'data': {'action-name': 'delete'}
                         })
                     }}
                     <% } %>
@@ -125,7 +126,6 @@
                     subordinate: true,
                     containerSelector: '.calendar-events',
                     itemFormTemplateSelector: '#template-calendar-event',
-                    itemFormDeleteButtonSelector: '#btn-remove-calendarevent',
                     itemFormValidationScriptUrl: '{{ JSFV(event_form, true) }}',
                     date: "{{ 'now'|date('Y-m-d') }}",
                     firstDay: localeSettings.getCalendarFirstDayOfWeek() - 1,
