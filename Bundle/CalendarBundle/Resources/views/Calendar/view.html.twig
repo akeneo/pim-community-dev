@@ -28,20 +28,18 @@
 {% block stats %}{% endblock stats %}
 
 {% block content_data %}
-    <div class="container-fluid">
-        <div class="row-fluid" id="calendar">
-            <div class="span3">
-                <div class="calendars">
-                    <div class="calendar-connections"></div>
-                    {% if resource_granted('oro_calendar_connection_view') %}
-                    <form action="#">
-                        {{ form_row(user_select_form) }}
-                    </form>
-                    {% endif %}
-                </div>
+    <div class="row-fluid" id="calendar">
+        <div class="span3">
+            <div class="calendars">
+                <div class="calendar-connections"></div>
+                {% if resource_granted('oro_calendar_connection_view') %}
+                <form action="#">
+                    {{ form_row(user_select_form) }}
+                </form>
+                {% endif %}
             </div>
-            <div class="span9 calendar-events"></div>
         </div>
+        <div class="span9 calendar-events scrollable-container"></div>
     </div>
 
     <script type="text/html" id="template-calendar-connections">
@@ -78,7 +76,7 @@
         <div class="alert alert-error" style="display: none;"></div>
         <form id="{{ event_form.vars.name }}" action="#">
             <fieldset class="form-horizontal">
-                {{ UI.scrollSubblock(null, data, true, false) }}
+                {{ UI.scrollSubblock(null, data, true, false)|replace({'<script': '<% print("<sc" + "ript") %>', '</script>': '<% print("</sc" + "ript>") %>'})|raw }}
                 <div class="widget-actions form-actions" style="display: none;">
                     <% if (id != null && removable) { %>
                     {{
@@ -101,7 +99,8 @@
     </script>
 
     <script type="text/javascript">
-        require(['jquery', 'underscore', 'oro/calendar', 'oro/calendar/event/collection', 'oro/calendar/connection/collection', 'oro/locale-settings'],
+        require(['jquery', 'underscore', 'oro/calendar', 'oro/calendar/event/collection',
+            'oro/calendar/connection/collection', 'oro/locale-settings'],
         function($, _, Calendar, EventCollection, ConnectionCollection, localeSettings){
             var connections = new ConnectionCollection();
             connections.reset({{ render(path('oro_api_get_calendar_connections', {id: entity.id})) }});

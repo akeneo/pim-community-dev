@@ -34,7 +34,7 @@ class OroMoneyTypeTest extends FormIntegrationTestCase
 
         $this->numberFormatter = $this->getMockBuilder('Oro\Bundle\LocaleBundle\Formatter\NumberFormatter')
             ->disableOriginalConstructor()
-            ->setMethods(array('isCurrencySymbolPrepend'))
+            ->setMethods(array('isCurrencySymbolPrepend', 'getAttribute'))
             ->getMock();
 
         $this->formType = new OroMoneyType($this->localeSettings, $this->numberFormatter);
@@ -137,6 +137,11 @@ class OroMoneyTypeTest extends FormIntegrationTestCase
             ->method('isCurrencySymbolPrepend')
             ->with($currency)
             ->will($this->returnValue($symbolPrepend));
+
+        $this->numberFormatter->expects($this->any())
+            ->method('getAttribute')
+            ->with(\NumberFormatter::GROUPING_USED)
+            ->will($this->returnValue(1));
 
         $form = $this->factory->create($this->formType, null, $options);
 

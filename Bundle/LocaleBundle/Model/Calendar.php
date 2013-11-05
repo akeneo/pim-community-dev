@@ -91,7 +91,7 @@ class Calendar
     public function getFirstDayOfWeek()
     {
         $formatter = $this->getFormatter('cc', $this->getLocale());
-        $sundayNumber = $formatter->format(new \DateTime('Sunday, January 1, 2012'));
+        $sundayNumber = $formatter->format(new \DateTime('Sunday, January 1, 2012', new \DateTimeZone('UTC')));
 
         // there are cases when return value is not a number, for example locales: ar_SA, hi_IN, kn_IN, etc.
         if (!is_numeric($sundayNumber)) {
@@ -127,19 +127,20 @@ class Calendar
                 break;
         }
         $formatter = $this->getFormatter($pattern, $this->getLanguage());
+        $utcTimeZone = new \DateTimeZone('UTC');
         return array(
-            1 => $formatter->format(new \DateTime('2013-01-01')),
-            $formatter->format(new \DateTime('2013-02-01')),
-            $formatter->format(new \DateTime('2013-03-01')),
-            $formatter->format(new \DateTime('2013-04-01')),
-            $formatter->format(new \DateTime('2013-05-01')),
-            $formatter->format(new \DateTime('2013-06-01')),
-            $formatter->format(new \DateTime('2013-07-01')),
-            $formatter->format(new \DateTime('2013-08-01')),
-            $formatter->format(new \DateTime('2013-09-01')),
-            $formatter->format(new \DateTime('2013-10-01')),
-            $formatter->format(new \DateTime('2013-11-01')),
-            $formatter->format(new \DateTime('2013-12-01')),
+            1 => $formatter->format(new \DateTime('2013-01-01', $utcTimeZone)),
+            $formatter->format(new \DateTime('2013-02-01', $utcTimeZone)),
+            $formatter->format(new \DateTime('2013-03-01', $utcTimeZone)),
+            $formatter->format(new \DateTime('2013-04-01', $utcTimeZone)),
+            $formatter->format(new \DateTime('2013-05-01', $utcTimeZone)),
+            $formatter->format(new \DateTime('2013-06-01', $utcTimeZone)),
+            $formatter->format(new \DateTime('2013-07-01', $utcTimeZone)),
+            $formatter->format(new \DateTime('2013-08-01', $utcTimeZone)),
+            $formatter->format(new \DateTime('2013-09-01', $utcTimeZone)),
+            $formatter->format(new \DateTime('2013-10-01', $utcTimeZone)),
+            $formatter->format(new \DateTime('2013-11-01', $utcTimeZone)),
+            $formatter->format(new \DateTime('2013-12-01', $utcTimeZone)),
         );
     }
 
@@ -172,14 +173,15 @@ class Calendar
         }
 
         $formatter = $this->getFormatter($pattern, $this->getLanguage());
+        $utcTimeZone = new \DateTimeZone('UTC');
         return array(
-            self::DOW_SUNDAY    => $formatter->format(new \DateTime('Sunday, January 1, 2012')),
-            self::DOW_MONDAY    => $formatter->format(new \DateTime('Monday, January 2, 2012')),
-            self::DOW_TUESDAY   => $formatter->format(new \DateTime('Tuesday, January 3, 2012')),
-            self::DOW_WEDNESDAY => $formatter->format(new \DateTime('Wednesday, January 4, 2012')),
-            self::DOW_THURSDAY  => $formatter->format(new \DateTime('Thursday, January 5, 2012')),
-            self::DOW_FRIDAY    => $formatter->format(new \DateTime('Friday, January 5, 2012')),
-            self::DOW_SATURDAY  => $formatter->format(new \DateTime('Saturday, January 5, 2012')),
+            self::DOW_SUNDAY    => $formatter->format(new \DateTime('Sunday, January 1, 2012', $utcTimeZone)),
+            self::DOW_MONDAY    => $formatter->format(new \DateTime('Monday, January 2, 2012', $utcTimeZone)),
+            self::DOW_TUESDAY   => $formatter->format(new \DateTime('Tuesday, January 3, 2012', $utcTimeZone)),
+            self::DOW_WEDNESDAY => $formatter->format(new \DateTime('Wednesday, January 4, 2012', $utcTimeZone)),
+            self::DOW_THURSDAY  => $formatter->format(new \DateTime('Thursday, January 5, 2012', $utcTimeZone)),
+            self::DOW_FRIDAY    => $formatter->format(new \DateTime('Friday, January 5, 2012', $utcTimeZone)),
+            self::DOW_SATURDAY  => $formatter->format(new \DateTime('Saturday, January 5, 2012', $utcTimeZone)),
         );
     }
 

@@ -111,12 +111,13 @@ function(localeSettings, moment) {
          * @returns {string}
          */
         formatDateTime: function(value) {
+            moment().zone(this.timezoneOffset);
             var momentDateTime = moment(value);
             if (!momentDateTime.isValid()) {
                 throw new Error('Invalid backend datetime ' + value);
             }
 
-            return momentDateTime.zone(this.timezoneOffset).format(this.getDateTimeFormat());
+            return momentDateTime.format(this.getDateTimeFormat());
         },
 
         /**
@@ -124,7 +125,9 @@ function(localeSettings, moment) {
          * @returns {string}
          */
         unformatDate: function(value) {
-            if (!this.isDateValid(value)) {
+            if (this.isDateObject(value)) {
+                value = this.formatDate(value);
+            } else if (!this.isDateValid(value)) {
                 throw new Error('Invalid frontend date ' + value);
             }
 
@@ -136,7 +139,9 @@ function(localeSettings, moment) {
          * @returns {string}
          */
         unformatTime: function(value) {
-            if (!this.isTimeValid(value)) {
+            if (this.isDateObject(value)) {
+                value = this.formatTime(value);
+            } else if (!this.isTimeValid(value)) {
                 throw new Error('Invalid frontend time ' + value);
             }
 
@@ -145,14 +150,30 @@ function(localeSettings, moment) {
 
         /**
          * @param {string} value
+         * @param {string} [timezoneOffset]
          * @returns {string}
          */
-        unformatDateTime: function(value) {
-            if (!this.isDateTimeValid(value)) {
+        unformatDateTime: function(value, timezoneOffset) {
+            if (this.isDateObject(value)) {
+                value = this.formatDateTime(value);
+            } else if (!this.isDateTimeValid(value)) {
                 throw new Error('Invalid frontend datetime ' + value);
             }
 
-            return moment(value, this.getDateTimeFormat()).zone('+00:00').format(this.backendFormats.datetime);
+            timezoneOffset = timezoneOffset || this.timezoneOffset;
+            moment().zone(timezoneOffset);
+
+            return moment(value, this.getDateTimeFormat()).format(this.backendFormats.datetime);
+        },
+
+        /**
+         * Check that obj is Date object
+         *
+         * @param {string|Date} obj
+         * @returns {boolean}
+         */
+        isDateObject: function(obj) {
+            return Object.prototype.toString.call(obj) == '[object Date]'
         }
     }
 });

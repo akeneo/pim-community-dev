@@ -34,6 +34,9 @@ function(_, CellFormatter, formatter) {
          * @inheritDoc
          */
         fromRaw: function (rawData) {
+            if (rawData == null || rawData == '') {
+                return '';
+            }
             return this.formatter.apply(this, arguments);
         },
 
@@ -41,6 +44,9 @@ function(_, CellFormatter, formatter) {
          * @inheritDoc
          */
         toRaw: function (formattedData) {
+            if (formattedData == null || formattedData == '') {
+                return null;
+            }
             return formatter.unformat(formattedData);
         }
     });

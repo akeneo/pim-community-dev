@@ -1,12 +1,15 @@
 /* jshint devel:true*/
 /* global define */
-define(['jquery', 'underscore', 'backbone', 'oro/translator', 'oro/app', 'oro/messenger', 'oro/loading-mask',
+define(['underscore', 'backbone', 'oro/translator', 'oro/app', 'oro/messenger', 'oro/loading-mask',
     'oro/calendar/event/collection', 'oro/calendar/event/model', 'oro/calendar/event/view',
-    'oro/calendar/connection/collection', 'oro/calendar/connection/view', 'jquery.fullcalendar'],
-function($, _, Backbone, __, app, messenger, LoadingMask,
+    'oro/calendar/connection/collection', 'oro/calendar/connection/view', 'oro/formatter/datetime',
+    'jquery.fullcalendar'],
+function(_, Backbone, __, app, messenger, LoadingMask,
          EventCollection, EventModel, EventView,
-         ConnectionCollection, ConnectionView) {
+         ConnectionCollection, ConnectionView, dateTimeFormatter) {
     'use strict';
+
+    var $ = Backbone.$;
 
     /**
      * @export  oro/calendar
@@ -29,6 +32,20 @@ function($, _, Backbone, __, app, messenger, LoadingMask,
             calendar:           '.calendar',
             loadingMask:        '.loading-mask',
             loadingMaskContent: '.loading-content'
+        },
+
+        options: {
+            eventsOptions: {
+                editable: true,
+                removable: true,
+                collection: null,
+                itemFormTemplateSelector: null,
+                itemFormDeleteButtonSelector: null,
+                itemFormValidationScriptUrl: null
+            },
+            connectionsOptions: {
+                containerTemplateSelector: null
+            }
         },
 
         /**
@@ -155,6 +172,14 @@ function($, _, Backbone, __, app, messenger, LoadingMask,
                 options.date = options.date.getDate();
             }
 
+            //Fix aspect ration to prevent double scroll for week and day views.
+            options.viewRender = _.bind(function(view) {
+                if (view.name !== 'month') {
+                    this.getCalendarElement().fullCalendar('option', 'aspectRatio', 1.0);
+                } else {
+                    this.getCalendarElement().fullCalendar('option', 'aspectRatio', 1.35);
+                }
+            }, this);
             // create jQuery FullCalendar control
             this.getCalendarElement().fullCalendar(options);
             this.enableEventLoading = true;
@@ -251,6 +276,12 @@ function($, _, Backbone, __, app, messenger, LoadingMask,
         },
 
         loadEvents: function(start, end, callback) {
+            var onEventsLoad = _.bind(function() {
+                var fcEvents = this.getCollection().toJSON();
+                this.prepareViewModels(fcEvents);
+                callback(fcEvents);
+            }, this);
+
             try {
                 this.getCollection().setRange(
                     this.formatDateTimeForModel(start),
@@ -259,11 +290,7 @@ function($, _, Backbone, __, app, messenger, LoadingMask,
                 if (this.enableEventLoading) {
                     // load events from a server
                     this.getCollection().fetch({
-                        success: _.bind(function() {
-                            var fcEvents = this.getCollection().toJSON();
-                            this.prepareViewModels(fcEvents);
-                            callback(fcEvents);
-                        }, this),
+                        success: onEventsLoad,
                         error: _.bind(function(collection, response) {
                             callback({});
                             this.showLoadEventsError(response.responseJSON);
@@ -271,9 +298,7 @@ function($, _, Backbone, __, app, messenger, LoadingMask,
                     });
                 } else {
                     // use already loaded events
-                    var fcEvents = this.getCollection().toJSON();
-                    this.prepareViewModels(fcEvents);
-                    callback(fcEvents);
+                    onEventsLoad();
                 }
             } catch (err) {
                 callback({});
@@ -282,9 +307,7 @@ function($, _, Backbone, __, app, messenger, LoadingMask,
         },
 
         prepareViewModels : function (fcEvents) {
-            _.each(fcEvents, _.bind(function (fcEvent) {
-                this.prepareViewModel(fcEvent);
-            }, this));
+            _.each(fcEvents, this.prepareViewModel, this);
         },
 
         prepareViewModel : function (fcEvent) {
@@ -298,19 +321,19 @@ function($, _, Backbone, __, app, messenger, LoadingMask,
         },
 
         convertToViewDateTime: function (s) {
-            return this.eventView.convertToViewDateTime(s);
+            return dateTimeFormatter.formatDateTime(s);
         },
 
         formatDateTimeForModel: function (d) {
-            return this.eventView.formatDateTimeForModel(d);
+            return dateTimeFormatter.unformatDateTime(d);
         },
 
         showSavingMask: function(show) {
-            this._showMask(show, 'Saving...');
+            this._showMask(show, __('Saving...'));
         },
 
         showLoadingMask: function(show) {
-            this._showMask(show, 'Loading...');
+            this._showMask(show, __('Loading...'));
         },
 
         _showMask: function(show, message) {
@@ -318,7 +341,7 @@ function($, _, Backbone, __, app, messenger, LoadingMask,
                 if (show) {
                     this.loadingMask.$el
                         .find(this.selectors.loadingMaskContent)
-                        .text(__(message));
+                        .text(message);
                     this.loadingMask.show();
                 } else {
                     this.loadingMask.hide();
@@ -327,22 +350,22 @@ function($, _, Backbone, __, app, messenger, LoadingMask,
         },
 
         showLoadEventsError: function (err) {
-            this._showError(err, 'Sorry, calendar events were not loaded correctly');
+            this._showError(err, __('Sorry, calendar events were not loaded correctly'));
         },
 
         showSaveEventError: function (err) {
-            this._showError(err, 'Sorry, calendar event was not saved correctly');
+            this._showError(err, __('Sorry, calendar event was not saved correctly'));
         },
 
         showError: function (err) {
-            this._showError(err, 'Sorry, unexpected error was occurred');
+            this._showError(err, __('Sorry, unexpected error was occurred'));
         },
 
         _showError: function (err, message) {
             if (!_.isUndefined(console)) {
                 console.error(_.isUndefined(err.stack) ? err : err.stack);
             }
-            var msg = __(message);
+            var msg = message;
             if (app.debug) {
                 if (!_.isUndefined(err.message)) {
                     msg += ': ' + err.message;
