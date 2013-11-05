@@ -10,6 +10,8 @@ use Oro\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\VersioningBundle\Entity\Pending;
 use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;
 use Pim\Bundle\VersioningBundle\Builder\AuditBuilder;
+use Pim\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
+use Pim\Bundle\VersioningBundle\UpdateGuesser\ChainedUpdateGuesser;
 
 /**
  * Aims to audit data updates on versionable entities
@@ -26,13 +28,6 @@ class AddVersionListener implements EventSubscriber
      * @var string
      */
     const DEFAULT_SYSTEM_USER = 'admin';
-
-    /**
-     * Entities configured as versionable
-     *
-     * @var array $entities
-     */
-    protected $entities;
 
     /**
      * Entities to version
@@ -67,17 +62,22 @@ class AddVersionListener implements EventSubscriber
     protected $auditBuilder;
 
     /**
+     * @var ChainedUpdateGuesser
+     */
+    protected $guesser;
+
+    /**
      * Constructor
      *
-     * @param VersionBuilder $versionBuilder
-     * @param AuditBuilder   $auditBuilder
-     * @param array          $entities
+     * @param VersionBuilder       $vBuilder
+     * @param AuditBuilder         $aBuilder
+     * @param ChainedUpdateGuesser $guesser
      */
-    public function __construct(VersionBuilder $versionBuilder, AuditBuilder $auditBuilder, $entities)
+    public function __construct(VersionBuilder $vBuilder, AuditBuilder $aBuilder, ChainedUpdateGuesser $guesser)
     {
-        $this->versionBuilder = $versionBuilder;
-        $this->auditBuilder   = $auditBuilder;
-        $this->entities       = $entities;
+        $this->versionBuilder = $vBuilder;
+        $this->auditBuilder   = $aBuilder;
+        $this->guesser        = $guesser;
     }
 
     /**
@@ -194,11 +194,11 @@ class AddVersionListener implements EventSubscriber
         }
 
         foreach ($uow->getScheduledCollectionDeletions() as $entity) {
-            $this->checkScheduledCollection($entity);
+            $this->checkScheduledCollection($em, $entity);
         }
 
         foreach ($uow->getScheduledCollectionUpdates() as $entity) {
-            $this->checkScheduledCollection($entity);
+            $this->checkScheduledCollection($em, $entity);
         }
     }
 
@@ -210,7 +210,7 @@ class AddVersionListener implements EventSubscriber
      */
     public function checkScheduledUpdate($em, $entity)
     {
-        $pendings = $this->versionBuilder->checkScheduledUpdate($em, $entity);
+        $pendings = $this->guesser->guessUpdates($em, $entity, UpdateGuesserInterface::ACTION_UPDATE_ENTITY);
         foreach ($pendings as $pending) {
             $this->addPendingVersioning($pending);
         }
@@ -219,12 +219,28 @@ class AddVersionListener implements EventSubscriber
     /**
      * Check if an entity must be versioned due to collection changes
      *
-     * @param object $entity
+     * @param EntityManager $em
+     * @param object        $entity
      */
-    public function checkScheduledCollection($entity)
+    public function checkScheduledCollection($em, $entity)
     {
-        if (in_array(get_class($entity->getOwner()), $this->versionableEntities)) {
-            $this->addPendingVersioning($entity->getOwner());
+        $pendings = $this->guesser->guessUpdates($em, $entity, UpdateGuesserInterface::ACTION_UPDATE_COLLECTION);
+        foreach ($pendings as $pending) {
+            $this->addPendingVersioning($pending);
+        }
+    }
+
+    /**
+     * Check if a related entity must be versioned due to entity deletion
+     *
+     * @param EntityManager $em
+     * @param object        $entity
+     */
+    public function checkScheduledDeletion($em, $entity)
+    {
+        $pendings = $this->guesser->guessUpdates($em, $entity, UpdateGuesserInterface::ACTION_DELETE);
+        foreach ($pendings as $pending) {
+            $this->addPendingVersioning($pending);
         }
     }
 
