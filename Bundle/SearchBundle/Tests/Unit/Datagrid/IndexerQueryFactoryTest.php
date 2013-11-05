@@ -19,7 +19,7 @@ class IndexerQueryFactoryTest extends \PHPUnit_Framework_TestCase
         $indexerQueryFactory = new IndexerQueryFactory($indexer);
         $indexerQuery = $indexerQueryFactory->createQuery();
 
-        $this->assertInstanceOf('Oro\Bundle\SearchBundle\Datagrid\IndexerQuery', $indexerQuery);
+        $this->assertInstanceOf('Oro\Bundle\SearchBundle\Extension\Pager\IndexerQuery', $indexerQuery);
         $this->assertAttributeEquals($indexer, 'indexer', $indexerQuery);
         $this->assertAttributeEquals($query, 'query', $indexerQuery);
     }

@@ -18,44 +18,36 @@ datagrid:
         columns:
             username:
                 label: oro.user.grid.users.columns.username
-                type: field
             email:
                 label: oro.user.grid.users.columns.email
-                type: field
             firstName:
                 label: oro.user.grid.users.columns.firstName
-                type: field
             lastName:
                 label: oro.user.grid.users.columns.lastName
-                type: field
             created:
                 label: oro.user.grid.users.columns.created
-                type: field
                 frontend_type: datetime
             updated:
                 label: oro.user.grid.users.columns.updated
-                type: field
                 frontend_type: datetime
             enabled:
                 label: oro.user.grid.users.columns.enabled
-                type: field
                 frontend_type: select
                 choices:
                    - Inactive
                    - Active
+
         properties:
             update_link:
                 type: url
                 route: oro_user_update
                 params:
                     - id
-
             view_link:
                 type: url
                 route: oro_user_view
                 params:
                     - id
-
             delete_link:
                 type: url
                 route: oro_api_delete_user
@@ -78,7 +70,7 @@ datagrid:
                 enabled:
                     data_name: u.enabled
             default:
-                username: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+                username: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
 
         filters:
             columns:
@@ -88,10 +80,10 @@ datagrid:
                 email:
                     type: string
                     data_name: u.email
-                firstname:
+                firstName:
                     type: string
                     data_name: u.firstName
-                lastname:
+                lastName:
                     type: string
                     data_name: u.lastName
                 created:
@@ -108,6 +100,27 @@ datagrid:
                             choices:
                                - Inactive
                                - Active
+
+        actions:
+            view:
+                type:          navigate
+                label:         View
+                link:          view_link
+                icon:          user
+                acl_resource:  oro_user_user_view
+                rowAction:     true
+            update:
+                type:          navigate
+                label:         Update
+                link:          update_link
+                icon:          edit
+                acl_resource:  oro_user_user_update
+            delete:
+                type:          delete
+                label:         Delete
+                link:          update_link
+                icon:          trash
+                acl_resource:  oro_user_user_delete
 
     groups-grid:
         source:

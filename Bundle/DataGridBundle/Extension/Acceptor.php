@@ -70,7 +70,7 @@ class Acceptor
     public function addExtension(ExtensionVisitorInterface $extension)
     {
         /**
-         * ATTENTION: extensions should be cloned due to extension object could has state
+         * ATTENTION: extension object should be cloned cause it can contain some state
          */
         $this->extensions[] = clone $extension;
 
