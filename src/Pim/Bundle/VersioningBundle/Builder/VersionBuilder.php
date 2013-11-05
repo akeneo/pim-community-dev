@@ -5,7 +5,6 @@ namespace Pim\Bundle\VersioningBundle\Builder;
 use Symfony\Component\Serializer\SerializerInterface;
 use Oro\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\VersioningBundle\Entity\Version;
-use Pim\Bundle\VersioningBundle\UpdateGuesser\ChainedUpdateGuesser;
 
 /**
  * Version builder
@@ -22,18 +21,11 @@ class VersionBuilder
     protected $serializer;
 
     /**
-     * @var ChainedUpdateGuesser
-     */
-    protected $guesser;
-
-    /**
      * @param SerializerInterface  $serializer
-     * @param ChainedUpdateGuesser $guesser
      */
-    public function __construct(SerializerInterface $serializer, ChainedUpdateGuesser $guesser)
+    public function __construct(SerializerInterface $serializer)
     {
         $this->serializer = $serializer;
-        $this->guesser    = $guesser;
     }
 
     /**
@@ -53,20 +45,5 @@ class VersionBuilder
         $data         = $this->serializer->normalize($versionable, 'csv');
 
         return new Version($resourceName, $resourceId, $numVersion, $data, $user);
-    }
-
-    /**
-     * Check if some entities must be versioned due to an entity changes
-     *
-     * @param EntityManager $em
-     * @param object        $entity
-     *
-     * @return array
-     */
-    public function checkScheduledUpdate($em, $entity)
-    {
-        $updates = $this->guesser->guessUpdates($em, $entity);
-
-        return $updates;
     }
 }
