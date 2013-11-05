@@ -64,7 +64,7 @@ class DateTimeFormatterTest extends IcuAwareTestCase
     {
         return array(
             'full_format' => array(
-                'expected' => 'Tuesday, December 31, 2013 2:00:00 PM Pacific Standard Time',
+                'expected' => 'Tuesday, December 31, 2013 4:00:00 PM Pacific Standard Time',
                 'date' => $this->createDateTime('2014-01-01 00:00:00', 'Europe/London'),
                 'dateType' => \IntlDateFormatter::FULL,
                 'timeType' => \IntlDateFormatter::FULL,
@@ -73,7 +73,7 @@ class DateTimeFormatterTest extends IcuAwareTestCase
                 'language' => 'en_US',
             ),
             'full_format_default_locale_and_timezone' => array(
-                'expected' => 'Tuesday, December 31, 2013 2:00:00 PM Pacific Standard Time',
+                'expected' => 'Tuesday, December 31, 2013 4:00:00 PM Pacific Standard Time',
                 'date' => $this->createDateTime('2014-01-01 00:00:00', 'Europe/London'),
                 'dateType' => \IntlDateFormatter::FULL,
                 'timeType' => \IntlDateFormatter::FULL,
@@ -83,14 +83,14 @@ class DateTimeFormatterTest extends IcuAwareTestCase
                 'defaultLocale' => 'en_US',
                 'defaultTimeZone' => 'America/Los_Angeles',
             ),
-            'full_format_english_locale_russian_language' => array(
-                'expected' => 'вторник, декабря 31, 2013 2:00:00 после полудня Тихоокеанское стандартное время',
+            'full_format_english_locale_french_language' => array(
+                'expected' => 'mardi, décembre 31, 2013 4:00:00 PM heure normale du Pacifique',
                 'date' => $this->createDateTime('2014-01-01 00:00:00', 'Europe/London'),
                 'dateType' => \IntlDateFormatter::FULL,
                 'timeType' => \IntlDateFormatter::FULL,
                 'locale' => 'en_US',
                 'timeZone' => 'America/Los_Angeles',
-                'language' => 'ru_RU',
+                'language' => 'fr_FR',
             ),
             'string_date' => array(
                 'expected' => '14-01-01 3:00 AM',
@@ -120,7 +120,7 @@ class DateTimeFormatterTest extends IcuAwareTestCase
                 'language' => 'en_CA',
             ),
             'short_format_and_text_date_types' => array(
-                'expected' => '12/31/13 2:00 PM',
+                'expected' => '12/31/13 4:00 PM',
                 'date' => $this->createDateTime('2014-01-01 00:00:00', 'Europe/London'),
                 'dateType' => 'short',
                 'timeType' => 'short',
@@ -147,7 +147,7 @@ class DateTimeFormatterTest extends IcuAwareTestCase
                 'language' => 'ru_RU',
             ),
             'default_date_and_time_type' => array(
-                'expected' => '2013-12-31 2:00 PM',
+                'expected' => '2013-12-31 4:00 PM',
                 'date' => $this->createDateTime('2014-01-01 00:00:00', 'Europe/London'),
                 'dateType' => null,
                 'timeType' => null,
@@ -292,7 +292,7 @@ class DateTimeFormatterTest extends IcuAwareTestCase
     {
         return array(
             'full_date' => array(
-                'expected' => '2:00:00 PM Pacific Standard Time',
+                'expected' => '4:00:00 PM Pacific Standard Time',
                 'date' => $this->createDateTime('2014-01-01 00:00:00', 'Europe/London'),
                 'dateType' => \IntlDateFormatter::FULL,
                 'locale' => 'en_US',
@@ -300,7 +300,7 @@ class DateTimeFormatterTest extends IcuAwareTestCase
                 'language' => 'en_US',
             ),
             'full_date_default_locale_and_timezone' => array(
-                'expected' => '2:00:00 PM Pacific Standard Time',
+                'expected' => '4:00:00 PM Pacific Standard Time',
                 'date' => $this->createDateTime('2014-01-01 00:00:00', 'Europe/London'),
                 'dateType' => \IntlDateFormatter::FULL,
                 'locale' => null,
@@ -309,16 +309,16 @@ class DateTimeFormatterTest extends IcuAwareTestCase
                 'defaultLocale' => 'en_US',
                 'defaultTimeZone' => 'America/Los_Angeles',
             ),
-            'full_date_english_locale_russian_language' => array(
-                'expected' => '2:00:00 после полудня Тихоокеанское стандартное время',
+            'full_date_english_locale_french_language' => array(
+                'expected' => '4:00:00 PM heure normale du Pacifique',
                 'date' => $this->createDateTime('2014-01-01 00:00:00', 'Europe/London'),
                 'dateType' => \IntlDateFormatter::FULL,
                 'locale' => 'en_US',
                 'timeZone' => 'America/Los_Angeles',
-                'language' => 'ru',
+                'language' => 'fr',
             ),
             'short_date_and_text_date_type' => array(
-                'expected' => '2:00 PM',
+                'expected' => '4:00 PM',
                 'date' => $this->createDateTime('2014-01-01 00:00:00', 'Europe/London'),
                 'dateType' => 'short',
                 'locale' => 'en_US',
@@ -326,7 +326,7 @@ class DateTimeFormatterTest extends IcuAwareTestCase
                 'language' => 'en_US',
             ),
             'long_time' => array(
-                'expected' => '14:00:00 UTC-08:00',
+                'expected' => '16:00:00 UTC-08:00',
                 'date' => $this->createDateTime('2014-01-01 00:00:00', 'Europe/London'),
                 'dateType' => \IntlDateFormatter::LONG,
                 'locale' => 'fr_FR',
@@ -334,7 +334,7 @@ class DateTimeFormatterTest extends IcuAwareTestCase
                 'language' => 'fr_FR',
             ),
             'default_date_type' => array(
-                'expected' => '2:00 PM',
+                'expected' => '4:00 PM',
                 'date' => $this->createDateTime('2014-01-01 00:00:00', 'Europe/London'),
                 'dateType' => null,
                 'locale' => 'en_CA',
@@ -351,11 +351,7 @@ class DateTimeFormatterTest extends IcuAwareTestCase
      */
     protected function createDateTime($date, $timeZone)
     {
-        $dateType = new \DateTime($date);
-
-        $dateType->setTimezone(new \DateTimeZone($timeZone));
-
-        return $dateType;
+        return new \DateTime($date, new \DateTimeZone($timeZone));
     }
 
     /**
