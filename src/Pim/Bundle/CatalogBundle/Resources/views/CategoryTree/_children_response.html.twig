@@ -4,7 +4,7 @@
     {
         "attr": {"id":"node_{{ category.id }}"},
         "data": "{{ category.label|raw }} ({{ category|count_products(nested) }})",
-        "state": "leaf"
+        "state": "{{ category|state }}"
     }
     {% if not loop.last %},{% endif %}
 {% endfor %}]

@@ -35,7 +35,8 @@ class CategoryExtension extends \Twig_Extension
     public function getFilters()
     {
         return array(
-            'count_products' => new \Twig_Filter_Method($this, 'countProducts')
+            'count_products' => new \Twig_Filter_Method($this, 'countProducts'),
+            'state'          => new \Twig_Filter_Method($this, 'getState')
         );
     }
 
@@ -47,7 +48,7 @@ class CategoryExtension extends \Twig_Extension
      *
      * @return string
      */
-    public function countProducts($category, $nested)
+    public function countProducts(CategoryInterface $category, $nested)
     {
         if ($category instanceof CategoryInterface) {
             return $this
@@ -57,6 +58,24 @@ class CategoryExtension extends \Twig_Extension
         } else {
             throw \Twig_Error_Runtime('"count_products" filter is only allowed for CategoryInterface');
         }
+    }
+
+    /**
+     * Return the state of the category (leaf if no children, closed otherwise)
+     *
+     * @param CategoryInterface $category
+     *
+     * @return string
+     */
+    public function getState(CategoryInterface $category)
+    {
+        $state = $category->hasChildren() ? 'closed' : 'leaf';
+
+        if ($category->isRoot()) {
+            $state .= ' jstree-root';
+        }
+
+        return $state;
     }
 
     /**
