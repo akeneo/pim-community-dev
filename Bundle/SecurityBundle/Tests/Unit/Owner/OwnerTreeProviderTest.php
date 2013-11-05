@@ -66,7 +66,8 @@ class OwnerTreeProviderTest extends \PHPUnit_Framework_TestCase
 
         $this->treeProvider->warmUpCache();
         $tree = $this->treeProvider->getTree();
-        var_dump($tree);
+        $this->assertEquals(1, $tree->getBusinessUnitOrganizationId(1));
+        $this->assertEquals([1], $tree->getUserOrganizationIds(1));
     }
 
     protected function setId($object, $value)
@@ -74,7 +75,7 @@ class OwnerTreeProviderTest extends \PHPUnit_Framework_TestCase
         $reflection = new \ReflectionClass($object);
         $property = $reflection->getProperty('id');
         $property->setAccessible(true);
-        $property->setValue($reflection, $value);
+        $property->setValue($object, $value);
     }
 
     protected function getTestData()
@@ -115,4 +116,4 @@ class OwnerTreeProviderTest extends \PHPUnit_Framework_TestCase
             [$mainBu, $bu2, $childBu]
         ];
     }
-} 
+}
