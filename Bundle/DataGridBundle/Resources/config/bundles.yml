@@ -1,3 +1,2 @@
 bundles:
     - Oro\Bundle\DataGridBundle\OroDataGridBundle
-    - Oro\Bundle\DemoBundle\OroDemoBundle

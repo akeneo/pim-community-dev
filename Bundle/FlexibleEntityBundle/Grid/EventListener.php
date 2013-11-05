@@ -7,6 +7,7 @@ use Oro\Bundle\DataGridBundle\Common\Object;
 use Oro\Bundle\DataGridBundle\Event\BuildAfter;
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
+use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\PropertyInterface;
 use Oro\Bundle\DataGridBundle\Extension\Sorter\Configuration as OrmSorterConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
 use Oro\Bundle\FilterBundle\Extension\Configuration as FilterConfiguration;
@@ -108,8 +109,8 @@ class EventListener
                     $config->offsetSetByPath(
                         sprintf('%s[%s]', OrmSorterConfiguration::COLUMNS_PATH, $attribute),
                         [
-                            'data_name'      => $attribute,
-                            'apply_callback' => $this->getFlexibleSorterApplyCallback($flexibleEntity)
+                            PropertyInterface::DATA_NAME_KEY => $attribute,
+                            'apply_callback'                 => $this->getFlexibleSorterApplyCallback($flexibleEntity)
                         ]
                     );
                 }
