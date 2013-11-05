@@ -333,20 +333,20 @@ class NumberFormatterTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array(
-                'expected' => '1st',
+                'expected' => '1er',
                 'value' => 1,
                 'attributes' => array(),
                 'textAttributes' => array(),
                 'symbols' => array(),
-                'locale' => 'en_US'
+                'locale' => 'fr_FR'
             ),
             array(
-                'expected' => '3rd',
+                'expected' => '3e',
                 'value' => 3,
                 'attributes' => array(),
                 'textAttributes' => array(),
                 'symbols' => array(),
-                'locale' => 'en_US'
+                'locale' => 'fr_FR'
             ),
         );
     }

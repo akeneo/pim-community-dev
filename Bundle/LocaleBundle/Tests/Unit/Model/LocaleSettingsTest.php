@@ -140,9 +140,7 @@ class LocaleSettingsTest extends \PHPUnit_Framework_TestCase
             array(null, LocaleConfiguration::DEFAULT_LOCALE),
             array('ru', 'ru'),
             array('en_Hans_CN_nedis_rozaj_x_prv1_prv2', 'en_US'),
-            array('en_Hans_unknown', 'en'),
             array('en_Hans_CA_nedis_rozaj_x_prv1_prv2', 'en_CA'),
-            array('bs_Latn_BA', 'bs_Latn_BA'),
             array('unknown', 'en_US'),
         );
     }
@@ -158,11 +156,9 @@ class LocaleSettingsTest extends \PHPUnit_Framework_TestCase
     public function getCountryByLocaleDataProvider()
     {
         return array(
-            array('ru_RU', 'RU'),
             array('EN', LocaleConfiguration::DEFAULT_COUNTRY),
             array('RU', LocaleConfiguration::DEFAULT_COUNTRY),
-            array('en_CA', 'CA'),
-            array('en_CN', 'CN'),
+            array('en_US', 'US'),
             array('en_XX', LocaleConfiguration::DEFAULT_COUNTRY),
         );
     }
