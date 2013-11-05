@@ -131,17 +131,6 @@ class AttributeGroupController extends AbstractDoctrineController
     {
         $groups = $this->getRepository('PimCatalogBundle:AttributeGroup')->getIdToLabelOrderedBySortOrder();
 
-        $datagrid = $this->datagridHelper->getDataAuditDatagrid(
-            $group,
-            'pim_catalog_attributegroup_edit',
-            array('id' => $group->getId())
-        );
-        $datagridView = $datagrid->createView();
-
-        if ('json' === $this->getRequest()->getRequestFormat()) {
-            return $this->datagridHelper->getDatagridRenderer()->renderResultsJsonResponse($datagridView);
-        }
-
         if ($this->formHandler->process($group)) {
             $this->addFlash('success', 'flash.attribute group.updated');
 
@@ -153,8 +142,25 @@ class AttributeGroupController extends AbstractDoctrineController
             'group'          => $group,
             'form'           => $this->form->createView(),
             'attributesForm' => $this->getAvailableProductAttributesForm($this->getGroupedAttributes())->createView(),
-            'datagrid'       => $datagridView,
+            'historyDatagrid' => $this->getHistoryGrid($group)->createView()
         );
+    }
+
+    /**
+     * History of a group
+     *
+     * @param Request        $request
+     * @param AttributeGroup $group
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|template
+     */
+    public function historyAction(Request $request, AttributeGroup $group)
+    {
+        $historyGridView = $this->getHistoryGrid($group)->createView();
+
+        if ('json' === $request->getRequestFormat()) {
+            return $this->datagridHelper->getDatagridRenderer()->renderResultsJsonResponse($historyGridView);
+        }
     }
 
     /**
@@ -308,5 +314,21 @@ class AttributeGroupController extends AbstractDoctrineController
     protected function getGroupedAttributes()
     {
         return $this->getRepository('PimCatalogBundle:ProductAttribute')->findAllGrouped();
+    }
+
+    /**
+     * @param AttributeGroup $group
+     *
+     * @return Datagrid
+     */
+    protected function getHistoryGrid(AttributeGroup $group)
+    {
+        $historyGrid = $this->datagridHelper->getDataAuditDatagrid(
+            $group,
+            'pim_catalog_attributegroup_history',
+            array('id' => $group->getId())
+        );
+
+        return $historyGrid;
     }
 }
