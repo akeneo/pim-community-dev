@@ -38,7 +38,7 @@ class AuditHistoryGridListener
         $datasource = $event->getDatagrid()->getDatasource();
         if ($datasource instanceof OrmDatasource) {
             /** @var QueryBuilder $query */
-            $queryBuilder = $datasource->getQuery();
+            $queryBuilder = $datasource->getQueryBuilder();
 
             $queryParameters = array(
                 'objectClass' => str_replace('_', '\\', $this->requestParams->get(self::GRID_PARAM_CLASS, '')),

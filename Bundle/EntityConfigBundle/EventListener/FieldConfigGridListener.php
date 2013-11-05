@@ -38,7 +38,7 @@ class FieldConfigGridListener extends AbstractConfigGridListener
     {
         $datasource = $event->getDatagrid()->getDatasource();
         if ($datasource instanceof OrmDatasource) {
-            $queryBuilder = $datasource->getQuery();
+            $queryBuilder = $datasource->getQueryBuilder();
 
             $this->prepareQuery($queryBuilder, 'cf', 'cfv_', PropertyConfigContainer::TYPE_FIELD);
         }

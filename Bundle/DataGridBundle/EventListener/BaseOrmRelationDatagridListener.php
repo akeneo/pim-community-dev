@@ -55,7 +55,7 @@ class BaseOrmRelationDatagridListener
         $datasource = $event->getDatagrid()->getDatasource();
         if ($datasource instanceof OrmDatasource) {
             /** @var QueryBuilder $query */
-            $queryBuilder = $datasource->getQuery();
+            $queryBuilder = $datasource->getQueryBuilder();
 
             $queryParameters = array(
                 $this->paramName => $this->requestParams->get($this->paramName, null),

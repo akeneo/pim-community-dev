@@ -27,7 +27,9 @@ class AdminRoleUsersGrid
         $datasource = $event->getDatagrid()->getDatasource();
 
         if ($datasource instanceof OrmDatasource) {
-            $aliases = $datasource->getQuery()->getRootAliases();
+            $qb = $datasource->getQueryBuilder();
+
+            $aliases = $qb->getRootAliases();
             $entityAlias = reset($aliases);
 
             if ($id = $this->request->get('roleId')) {
@@ -38,7 +40,7 @@ class AdminRoleUsersGrid
                     "((:role MEMBER OF $entityAlias.roles) OR $entityAlias.id IN (:data_in)) AND " .
                     "$entityAlias.id NOT IN (:data_not_in)" .
                     "THEN true ELSE false END";
-                $datasource->getQuery()->setParameter(':role', $role);
+                $qb->setParameter(':role', $role);
             } else {
                 $hasRoleExpression =
                     "CASE WHEN " .
@@ -46,9 +48,9 @@ class AdminRoleUsersGrid
                     "THEN true ELSE false END";
             }
 
-            $datasource->getQuery()->addSelect($hasRoleExpression . ' as hasRole');
-            $datasource->getQuery()->setParameter(':data_in', $this->request->get('data_in', array(0)));
-            $datasource->getQuery()->setParameter(':data_not_in', $this->request->get('data_not_in', array(0)));
+            $qb->addSelect($hasRoleExpression . ' as hasRole')
+               ->setParameter(':data_in', $this->request->get('data_in', array(0)))
+               ->setParameter(':data_not_in', $this->request->get('data_not_in', array(0)));
         }
     }
 }

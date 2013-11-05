@@ -32,7 +32,7 @@ class CountryDatagridHelper
     {
         $source = $event->getDatagrid()->getDatasource();
         if ($source instanceof OrmDatasource) {
-            $source->getQuery()->getQuery()->setHint(
+            $source->getQueryBuilder()->getQuery()->setHint(
                 Query::HINT_CUSTOM_OUTPUT_WALKER,
                 'Gedmo\Translatable\Query\TreeWalker\TranslationWalker'
             );

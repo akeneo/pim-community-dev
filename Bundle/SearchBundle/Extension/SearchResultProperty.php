@@ -2,13 +2,29 @@
 
 namespace Oro\Bundle\SearchBundle\Extension;
 
+use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
+use Symfony\Component\Security\Core\Util\ClassUtils;
+
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\PropertyConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\TwigTemplateProperty;
-use Symfony\Component\Security\Core\Util\ClassUtils;
+use Oro\Bundle\LocaleBundle\Twig\DateFormatExtension;
 
 class SearchResultProperty extends TwigTemplateProperty
 {
+    /** @var array */
+    protected $entitiesConfig;
+
+    public function __construct(
+        DateFormatExtension $dateFormatExtension,
+        \Twig_Environment $environment,
+        $config
+    ) {
+        parent::__construct($dateFormatExtension, $environment);
+
+        $this->entitiesConfig = $config;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -16,14 +32,18 @@ class SearchResultProperty extends TwigTemplateProperty
     {
         $entity = $record->getValue('entity');
         $entityClass = ClassUtils::getRealClass($entity);
-        $bundleName = explode('\\', $entityClass)[2];
-        $templateName = 'Oro'.$bundleName.':Search/result.html.twig';
 
-        /** @var PropertyConfiguration $params */
-        $params = $this->params;
+        if (empty($this->entitiesConfig[$entityClass])) {
+            throw new InvalidConfigurationException(
+                sprintf('Unknown entity type %s, unable to find search configuration', $entityClass)
+            );
+        } else {
+            $searchTemplate = $this->entitiesConfig[$entityClass]['search_template'];
+        }
+
         $template = $this->params->offsetGetOr('template', false);
         if (!$template) {
-            $this->params->offsetSet('template', $templateName);
+            $this->params->offsetSet('template', $searchTemplate);
         }
 
         return $this->getTemplate()->render(
@@ -32,5 +52,13 @@ class SearchResultProperty extends TwigTemplateProperty
                 'entity'       => $record->getValue('entity'),
             )
         );
+    }
+
+    /**
+     * @param array $configArray
+     */
+    public function setEntitiesConfig(array $configArray)
+    {
+        $this->entitiesConfig = $configArray;
     }
 }

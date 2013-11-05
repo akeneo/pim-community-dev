@@ -65,7 +65,7 @@ class OrmSorterExtension extends AbstractExtension
             if (isset($sorter['apply_callback']) && is_callable($sorter['apply_callback'])) {
                 $sorter['apply_callback']($datasource, $sortKey, $direction);
             } else {
-                $datasource->getQuery()->addOrderBy($sortKey, $direction);
+                $datasource->getQueryBuilder()->addOrderBy($sortKey, $direction);
             }
 
             if (!$multisort) {
