@@ -1,0 +1,11 @@
+{% spaceless %}
+{% set nested = true %}
+[{% for category in categories %}
+    {
+        "attr": {"id":"node_{{ category.id }}"},
+        "data": "{{ category.label|raw }} ({{ category|count_products(nested) }})",
+        "state": "leaf"
+    }
+    {% if not loop.last %},{% endif %}
+{% endfor %}]
+{% endspaceless %}
