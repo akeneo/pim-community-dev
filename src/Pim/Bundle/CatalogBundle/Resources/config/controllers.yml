@@ -75,6 +75,7 @@ services:
             - '@pim_catalog.datagrid.worker'
             - '@pim_catalog.manager.channel'
             - '@pim_catalog.manager.product'
+            - '@pim_catalog.calculator.completeness'
 
     pim_catalog.controller.locale:
         scope: request

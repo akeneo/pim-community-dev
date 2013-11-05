@@ -21,10 +21,6 @@ class RangeValidator extends BaseRangeValidator
      */
     public function validate($value, Constraint $constraint)
     {
-        if (null === $value) {
-            return;
-        }
-
         if ($value instanceof \DateTime) {
             if ($constraint->min && $value < $constraint->min) {
                 $this->context->addViolation(
