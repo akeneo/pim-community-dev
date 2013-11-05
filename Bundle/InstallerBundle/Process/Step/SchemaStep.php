@@ -13,15 +13,17 @@ class SchemaStep extends AbstractStep
         switch ($this->getRequest()->query->get('action')) {
             case 'cache':
                 return $this->handleAjaxAction('cache:clear');
-            case 'drop':
+            case 'clear':
+                return $this->handleAjaxAction('oro:entity-extend:clear');
+            case 'schema-drop':
                 return $this->handleAjaxAction(
                     'doctrine:schema:drop',
                     array('--force' => true, '--full-database' => true)
                 );
-            case 'clear':
-                return $this->handleAjaxAction('oro:entity-extend:clear');
-            case 'create':
+            case 'schema-create':
                 return $this->handleAjaxAction('doctrine:schema:create');
+            case 'schema-update':
+                return $this->handleAjaxAction('doctrine:schema:update', array('--force' => true));
             case 'fixtures':
                 return $this->handleAjaxAction(
                     'doctrine:fixtures:load',

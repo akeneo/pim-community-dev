@@ -23,7 +23,12 @@ class InstallCommand extends ContainerAwareCommand
             ->addOption('user-firstname', null, InputOption::VALUE_OPTIONAL, 'User first name')
             ->addOption('user-lastname', null, InputOption::VALUE_OPTIONAL, 'User last name')
             ->addOption('user-password', null, InputOption::VALUE_OPTIONAL, 'User password')
-            ->addOption('sample-data', null, InputOption::VALUE_OPTIONAL, 'Load sample data');
+            ->addOption(
+                'sample-data',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'Determines whether sample data need to be loaded or not'
+            );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -134,15 +139,9 @@ class InstallCommand extends ContainerAwareCommand
 
         $container->get('oro_user.manager')->updateUser($user);
 
-        if (isset($options['sample-data'])) {
-            if (!$options['sample-data'] || strtolower($options['sample-data']) == 'y') {
-                $demo = true;
-            } else {
-                $demo = false;
-            }
-        } else {
-            $demo = $dialog->askConfirmation($output, '<question>Load sample data (y/n)?</question> ', false);
-        }
+        $demo = isset($options['sample-data'])
+            ? !$options['sample-data'] || strtolower($options['sample-data']) == 'y'
+            : $dialog->askConfirmation($output, '<question>Load sample data (y/n)?</question> ', false);
 
         // load demo fixtures
         if ($demo) {
