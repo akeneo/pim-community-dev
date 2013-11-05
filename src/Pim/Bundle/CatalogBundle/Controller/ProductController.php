@@ -293,18 +293,6 @@ class ProductController extends AbstractDoctrineController
     {
         $product  = $this->findProductOr404($id);
 
-        $datagrid = $this->datagridHelper->getDataAuditDatagrid(
-            $product,
-            'pim_catalog_product_edit',
-            array(
-                'id' => $product->getId()
-            )
-        );
-
-        if ('json' === $request->getRequestFormat()) {
-            return $this->datagridHelper->getDatagridRenderer()->renderResultsJsonResponse($datagrid->createView());
-        }
-
         $this->productManager->ensureAllAssociations($product);
 
         $form = $this->createForm(
@@ -370,12 +358,30 @@ class ProductController extends AbstractDoctrineController
             'trees'                  => $trees,
             'created'                => $this->auditManager->getOldestLogEntry($product),
             'updated'                => $this->auditManager->getNewestLogEntry($product),
-            'datagrid'               => $datagrid->createView(),
+            'historyDatagrid'        => $this->getHistoryGrid($product)->createView(),
             'associations'           => $associations,
             'associationProductGrid' => $associationProductGridView,
             'associationGroupGrid'   => $associationGroupGridView,
             'locales'                => $this->localeManager->getUserLocales(),
         );
+    }
+
+    /**
+     * History of a product
+     *
+     * @param Request $request
+     * @param integer $id
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|template
+     */
+    public function historyAction(Request $request, $id)
+    {
+        $product  = $this->findProductOr404($id);
+        $historyGridView = $this->getHistoryGrid($product)->createView();
+
+        if ('json' === $request->getRequestFormat()) {
+            return $this->datagridHelper->getDatagridRenderer()->renderResultsJsonResponse($historyGridView);
+        }
     }
 
     /**
@@ -671,5 +677,21 @@ class ProductController extends AbstractDoctrineController
     protected function getCreateFormOptions(ProductInterface $product)
     {
         return array();
+    }
+
+    /**
+     * @param ProductInterface $product
+     *
+     * @return Datagrid
+     */
+    protected function getHistoryGrid(ProductInterface $product)
+    {
+        $historyGrid = $this->datagridHelper->getDataAuditDatagrid(
+            $product,
+            'pim_catalog_product_history',
+            array('id' => $product->getId())
+        );
+
+        return $historyGrid;
     }
 }
