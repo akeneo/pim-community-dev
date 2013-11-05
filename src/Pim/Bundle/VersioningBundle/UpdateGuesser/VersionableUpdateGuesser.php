@@ -32,7 +32,7 @@ class VersionableUpdateGuesser implements UpdateGuesserInterface
     }
 
     /**
-     * {@inheritdoc} 
+     * {@inheritdoc}
      */
     public function supportAction($action)
     {

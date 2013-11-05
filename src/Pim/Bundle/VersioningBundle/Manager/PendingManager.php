@@ -81,7 +81,7 @@ class PendingManager
      *
      * @param Pending $pending
      *
-     * @return object 
+     * @return object
      */
     public function getRelatedVersionable(Pending $pending)
     {

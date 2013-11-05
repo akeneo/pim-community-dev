@@ -32,7 +32,7 @@ class TranslationsUpdateGuesser implements UpdateGuesserInterface
     }
 
     /**
-     * {@inheritdoc} 
+     * {@inheritdoc}
      */
     public function supportAction($action)
     {
