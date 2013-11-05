@@ -14,12 +14,37 @@ use Doctrine\ORM\EntityManager;
 interface UpdateGuesserInterface
 {
     /**
+     * @var string
+     */
+    const ACTION_UPDATE_ENTITY = 'update_entity';
+
+    /**
+     * @var string
+     */
+    const ACTION_UPDATE_COLLECTION = 'update_collection';
+
+    /**
+     * @var string
+     */
+    const ACTION_DELETE = 'delete';
+
+    /**
+     * Check if the guesser support the action
+     *
+     * @param string $action
+     *
+     * @return boolean
+     */
+    public function supportAction($action);
+
+    /**
      * Get updated entities
      *
      * @param EntityManager $em
      * @param object        $entity
+     * @param string        $action
      *
      * @return array
      */
-    public function guessUpdates(EntityManager $em, $entity);
+    public function guessUpdates(EntityManager $em, $entity, $action);
 }
