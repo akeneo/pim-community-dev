@@ -88,6 +88,7 @@ class InstallCommand extends ContainerAwareCommand
             ->runCommand('oro:entity-config:init', $output)
             ->runCommand('oro:entity-extend:init', $output)
             ->runCommand('oro:entity-extend:update-config', $output)
+            ->runCommand('doctrine:schema:update', $output, array('--force' => true, '--no-interaction' => true))
             ->runCommand('doctrine:fixtures:load', $output, array('--no-interaction' => true, '--append' => true));
 
         $output->writeln('');
@@ -133,9 +134,15 @@ class InstallCommand extends ContainerAwareCommand
 
         $container->get('oro_user.manager')->updateUser($user);
 
-        $demo = isset($options['sample-data'])
-            ? true
-            : $dialog->askConfirmation($output, '<question>Load sample data (y/n)?</question> ', false);
+        if (isset($options['sample-data'])) {
+            if (!$options['sample-data'] || strtolower($options['sample-data']) == 'y') {
+                $demo = true;
+            } else {
+                $demo = false;
+            }
+        } else {
+            $demo = $dialog->askConfirmation($output, '<question>Load sample data (y/n)?</question> ', false);
+        }
 
         // load demo fixtures
         if ($demo) {
@@ -164,7 +171,6 @@ class InstallCommand extends ContainerAwareCommand
         $input->setInteractive(false);
 
         $this
-            ->runCommand('doctrine:schema:update', $output, array('--force' => true, '--no-interaction' => true))
             ->runCommand('oro:search:create-index', $output)
             ->runCommand('oro:navigation:init', $output)
             ->runCommand('assets:install', $output)
