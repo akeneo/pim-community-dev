@@ -14,6 +14,7 @@ parameters:
     oro_organization.entity_ownership.listener.class:                   Oro\Bundle\OrganizationBundle\Event\RecordOwnerDataListener
     oro_organization.business_unit.listener.class:                      Oro\Bundle\OrganizationBundle\Event\BusinessUnitListener
     oro_organization.twig.business_units.class:                         Oro\Bundle\OrganizationBundle\Twig\BusinessUnitExtension
+    oro_organization.provider.business_units.class:                     Oro\Bundle\OrganizationBundle\Provider\BusinessUnitGridService
 
 services:
     oro_organization.form.business_unit:
@@ -139,3 +140,8 @@ services:
           - false
         tags:
           - { name: kernel.event_listener, event: oro_grid.datgrid.build.after.bu-view-users-grid, method: onBuildAfter }
+
+    oro_organization.provider.business_units_grid:
+        class: %oro_organization.provider.business_units.class%
+        arguments:
+          - @doctrine.orm.entity_manager

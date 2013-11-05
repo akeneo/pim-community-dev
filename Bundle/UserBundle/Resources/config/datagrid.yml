@@ -133,10 +133,8 @@ datagrid:
                 from:
                     - { table: OroUserBundle:Group, alias: g }
         columns:
-            id:
-                type: field
             name:
-                type: field
+                label: oro.user.grid.groups.columns.name
 
         properties:
             update_link:
@@ -150,12 +148,28 @@ datagrid:
                 route: oro_api_delete_group
                 params:
                     - id
+
+        actions:
+            update:
+                type:          navigate
+                label:         Update
+                link:          update_link
+                icon:          edit
+                acl_resource:  oro_user_group_update
+                rowAction:     true
+            delete:
+                type:          delete
+                label:         Delete
+                link:          update_link
+                icon:          trash
+                acl_resource:  oro_user_group_remove
+
         sorters:
             columns:
                 name:
                     data_name: g.name
             default:
-                label: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
+                name: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
 
         filters:
             columns:
@@ -179,7 +193,7 @@ datagrid:
                         - r.role <> '%oro_user.entity.class%::ROLE_ANONYMOUS'
         columns:
             label:
-                type: field
+                label: oro.user.grid.roles.columns.label
 
         properties:
             update_link:
@@ -193,6 +207,22 @@ datagrid:
                 route: oro_api_delete_role
                 params:
                     - id
+
+        actions:
+            update:
+                type:          navigate
+                label:         Update
+                link:          update_link
+                icon:          edit
+                acl_resource:  oro_user_role_update
+                rowAction:     true
+            delete:
+                type:          delete
+                label:         Delete
+                link:          update_link
+                icon:          trash
+                acl_resource:  oro_user_role_remove
+
         sorters:
             columns:
                 label:
