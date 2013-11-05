@@ -146,7 +146,7 @@ class ControllersTest extends WebTestCase
      */
     protected function getFormattedDate($date)
     {
-        $dateObject = new \DateTime($date);
+        $dateObject = new \DateTime($date, new \DateTimeZone('UTC'));
         return $dateObject->format('Y-m-d');
     }
 }
