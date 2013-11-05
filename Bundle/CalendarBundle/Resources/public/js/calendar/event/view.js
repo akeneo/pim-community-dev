@@ -30,17 +30,10 @@ function(_, Backbone, __, DialogWidget, LoadingMask, FormValidation, DeleteConfi
         },
 
         render: function() {
-            // prepare dialog content
-            var title = this.model.isNew() ? __('Add New Event') : __('Edit Event');
-            var data = this.model.toJSON();
-            // convert start and end dates from RFC 3339 string to jQuery date/time string
-            data.start = this.formatDateTimeForDatePicker(data.start);
-            data.end = this.formatDateTimeForDatePicker(data.start);
-            var el = this.template(data);
             // create a dialog
             this.eventDialog = new DialogWidget({
-                el: el,
-                title: title,
+                el: this.template(this.model.toJSON()),
+                title: this.model.isNew() ? __('Add New Event') : __('Edit Event'),
                 stateEnabled: false,
                 incrementalPosition: false,
                 loadingMaskEnabled: false,
@@ -206,10 +199,6 @@ function(_, Backbone, __, DialogWidget, LoadingMask, FormValidation, DeleteConfi
 
         formatDateTimeForModel: function (d) {
             return dateTimeFormatter.unformatDateTime(d);
-        },
-
-        formatDateTimeForDatePicker: function(s) {
-            return dateTimeFormatter.formatDateTime(s);
         }
     });
 });
