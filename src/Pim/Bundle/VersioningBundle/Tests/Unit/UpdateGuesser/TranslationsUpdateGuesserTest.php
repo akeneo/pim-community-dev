@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\VersioningBundle\Tests\Unit\UpdateGuesser;
 
+use Pim\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
 use Pim\Bundle\VersioningBundle\UpdateGuesser\TranslationsUpdateGuesser;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\CategoryTranslation;
@@ -27,7 +28,7 @@ class TranslationsUpdateGuesserTest extends AbstractUpdateGuesserTest
 
         $guesser   = new TranslationsUpdateGuesser(array('Pim\Bundle\CatalogBundle\Entity\Category'));
         $em        = $this->getEntityManagerMock();
-        $updates   = $guesser->guessUpdates($em, $translation);
+        $updates   = $guesser->guessUpdates($em, $translation, UpdateGuesserInterface::ACTION_UPDATE_ENTITY);
         $this->assertEquals(1, count($updates));
         $this->assertEquals($category, $updates[0]);
     }

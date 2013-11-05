@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\VersioningBundle\Tests\Unit\UpdateGuesser;
 
+use Pim\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
 use Pim\Bundle\VersioningBundle\UpdateGuesser\VersionableUpdateGuesser;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Entity\Family;
@@ -28,13 +29,13 @@ class VersionableUpdateGuesserTest extends AbstractUpdateGuesserTest
         $attribute->setCode('my code');
         $guesser   = new VersionableUpdateGuesser($versionables);
         $em        = $this->getEntityManagerMock();
-        $updates   = $guesser->guessUpdates($em, $attribute);
+        $updates   = $guesser->guessUpdates($em, $attribute, UpdateGuesserInterface::ACTION_UPDATE_ENTITY);
         $this->assertEquals(1, count($updates));
         $this->assertEquals($attribute, $updates[0]);
 
         $family    = new Family();
         $family->setCode('my code');
-        $updates   = $guesser->guessUpdates($em, $family);
+        $updates   = $guesser->guessUpdates($em, $family, UpdateGuesserInterface::ACTION_UPDATE_ENTITY);
         $this->assertEquals(1, count($updates));
         $this->assertEquals($family, $updates[0]);
     }

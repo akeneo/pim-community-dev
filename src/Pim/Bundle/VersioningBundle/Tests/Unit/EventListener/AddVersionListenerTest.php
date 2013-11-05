@@ -103,9 +103,9 @@ class AddVersionListenerTest extends \PHPUnit_Framework_TestCase
         $encoders    = array(new CsvEncoder());
         $normalizers = array(new GetSetMethodNormalizer());
         $serializer  = new Serializer($normalizers, $encoders);
-        $versionBuilder = new VersionBuilder($serializer, new ChainedUpdateGuesser());
+        $versionBuilder = new VersionBuilder($serializer);
         $auditBuilder   = new AuditBuilder();
-        $listener = new AddVersionListener($versionBuilder, $auditBuilder, array());
+        $listener = new AddVersionListener($versionBuilder, $auditBuilder, new ChainedUpdateGuesser());
 
         return $listener;
     }

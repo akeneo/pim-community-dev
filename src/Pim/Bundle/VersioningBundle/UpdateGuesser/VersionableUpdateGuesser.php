@@ -32,9 +32,17 @@ class VersionableUpdateGuesser implements UpdateGuesserInterface
     }
 
     /**
+     * {@inheritdoc} 
+     */
+    public function supportAction($action)
+    {
+        return $action === UpdateGuesserInterface::ACTION_UPDATE_ENTITY;
+    }
+
+    /**
      * {@inheritdoc}
      */
-    public function guessUpdates(Entitymanager $em, $entity)
+    public function guessUpdates(Entitymanager $em, $entity, $action)
     {
         $pendings = array();
         if (in_array(get_class($entity), $this->versionableEntities)) {
