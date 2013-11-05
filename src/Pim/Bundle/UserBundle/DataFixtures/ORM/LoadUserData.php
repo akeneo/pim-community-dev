@@ -62,9 +62,14 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $scopeAttr   = $this->findAttribute('catalogscope');
         $scopeOption = $this->findAttributeOptionWithValue($scopeAttr, $scope->getCode());
 
+        $tree       = current($this->getCategoryManager()->getTrees());
+        $treeAttr   = $this->findAttribute('defaulttree');
+        $treeOption = $this->findAttributeOptionWithValue($treeAttr, $tree->getCode());
+
         foreach ($users as $user) {
             $user->setCataloglocale($localeOption);
             $user->setCatalogscope($scopeOption);
+            $user->setDefaulttree($treeOption);
             $this->persist($user);
         }
 
@@ -89,6 +94,16 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
     protected function getChannelManager()
     {
         return $this->container->get('pim_catalog.manager.channel');
+    }
+
+    /**
+     * Get category manager
+     *
+     * @return \Pim\Bundle\CatalogBundle\Manager\CategoryManager
+     */
+    protected function getCategoryManager()
+    {
+        return $this->container->get('pim_catalog.manager.category');
     }
 
     /**

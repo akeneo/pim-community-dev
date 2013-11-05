@@ -138,7 +138,7 @@ class CategoryRepository extends SegmentRepository
 
         $rawTrees = $query->getResult();
         $trees = array();
-        $treeKeys = array('tree','productsCount');
+        $treeKeys = array('tree', 'productsCount');
 
         foreach ($rawTrees as $rawTree) {
             $trees[] = array_combine($treeKeys, $rawTree);
