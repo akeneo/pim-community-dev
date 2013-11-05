@@ -88,12 +88,14 @@ function($, _, Backbone, __, tools, mediator, registry, LoadingMask,
                 registry.setElement('datagrid', options.name, grid);
                 mediator.trigger('datagrid:created:' + options.name, grid);
 
+                if (options.routerEnabled !== false) {
+                    // register router
+                    new GridRouter({collection: collection});
+                }
+
                 // create grid view
                 options = methods.combineGridViewsOptions.call(this);
                 $(gridGridViewsSelector).append((new GridViewsView(_.extend({collection: collection}, options))).render().$el);
-
-                // register router
-                new GridRouter({collection: collection});
             },
 
             /**
@@ -158,7 +160,8 @@ function($, _, Backbone, __, tools, mediator, registry, LoadingMask,
                     massActions: massActions,
                     toolbarOptions: metadata.options.toolbarOptions || {},
                     multipleSorting: metadata.options.multipleSorting || false,
-                    entityHint: metadata.options.entityHint
+                    entityHint: metadata.options.entityHint,
+                    routerEnabled: _.isUndefined(metadata.options.routerEnabled) ? true : metadata.options.routerEnabled
                 };
             },
 
