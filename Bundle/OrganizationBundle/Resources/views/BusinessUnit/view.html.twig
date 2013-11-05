@@ -5,10 +5,6 @@
 {% set audit_entity_class = 'Oro_Bundle_OrganizationBundle_Entity_BusinessUnit' %}
 {% set gridName = 'bu-view-users-grid' %}
 
-{% block head_script %}
-    {% placeholder prepare_grid with {'datagrid': datagrid, 'selector': '#' ~ gridName} %}
-{% endblock %}
-
 {% block navButtons %}
     {% if resource_granted('oro_business_unit_update') %}
         {{ UI.button({'path' : path('oro_business_unit_update', { id: entity.id }), 'iClass' : 'icon-edit ', 'title' : 'Edit business unit', 'label' : 'Edit'}) }}

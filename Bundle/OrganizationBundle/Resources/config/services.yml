@@ -130,7 +130,7 @@ services:
           - @oro_datagrid.datagrid.request_params
           - business_unit_id
         tags:
-          - { name: kernel.event_listener, event: oro_grid.datgrid.build.after.bu-update-users-grid, method: onBuildAfter }
+          - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.bu-update-users-grid, method: onBuildAfter }
 
     oro_organization.event_listener.bu_view_grid_listener:
         class: %oro_user.event_listener.related_users_grid_listener.class%
@@ -139,7 +139,7 @@ services:
           - business_unit_id
           - false
         tags:
-          - { name: kernel.event_listener, event: oro_grid.datgrid.build.after.bu-view-users-grid, method: onBuildAfter }
+          - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.bu-view-users-grid, method: onBuildAfter }
 
     oro_organization.provider.business_units_grid:
         class: %oro_organization.provider.business_units.class%

@@ -52,7 +52,7 @@ class BusinessUnitGridService
         if (!isset($this->choices[$field])) {
             $this->choices[$field] = $this->em
                 ->getRepository('Oro\Bundle\OrganizationBundle\Entity\BusinessUnit')
-                ->getChoices($field, $entity, $alias);
+                ->getGridFilterChoices($field, $entity, $alias);
         }
 
         return $this->choices[$field];

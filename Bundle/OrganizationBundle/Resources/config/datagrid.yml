@@ -58,7 +58,7 @@ datagrid:
         actions:
             view:
                 type:          navigate
-                label:         oro.business_unit.datagrid.view
+                label:         oro.business_unit.datagrid.action.view
                 link:          view_link
                 icon:          user
                 acl_resource:  oro_business_unit_view
@@ -145,6 +145,7 @@ datagrid:
                 hasCurrentBusinessUnit:
                     type: boolean
                     data_name: hasCurrentBusinessUnit
+                    filter_by_having: true
         sorters:
             columns:
                 hasCurrentBusinessUnit:

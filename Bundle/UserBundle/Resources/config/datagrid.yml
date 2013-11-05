@@ -266,26 +266,14 @@ datagrid:
                     - { table: OroUserBundle:User, alias: u }
 
         columns:
-            id:
-                label: ID
-                type: field
-                frontend_type: integer
-            username:
-                label: Username
-                type: field
-                frontend_type: string
-            email:
-                label: Email
-                type: field
-                frontend_type: string
             firstName:
-                label: First name
-                type: field
-                frontend_type: string
+                label: oro.user.grid.users.columns.firstName
             lastName:
-                label: Last name
-                type: field
-                frontend_type: string
+                label: oro.user.grid.users.columns.lastName
+            username:
+                label: oro.user.grid.users.columns.username
+            email:
+                label: oro.user.grid.users.columns.email
 
         properties: ~
 
@@ -295,9 +283,9 @@ datagrid:
                     data_name: u.username
                 email:
                     data_name: u.email
-                firstname:
+                firstName:
                     data_name: u.firstName
-                lastname:
+                lastName:
                     data_name: u.lastName
             default:
                 id: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
@@ -310,10 +298,10 @@ datagrid:
                 email:
                     type: string
                     data_name: u.email
-                firstname:
+                firstName:
                     type: string
                     data_name: u.firstName
-                lastname:
+                lastName:
                     type: string
                     data_name: u.lastName
 
