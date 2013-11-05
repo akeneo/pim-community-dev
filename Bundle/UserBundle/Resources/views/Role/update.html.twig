@@ -7,20 +7,6 @@
 {% set gridName = 'role-users-grid' %}
 {% set formAction = entityId ? path('oro_user_role_update', { 'id': entityId}) : path('oro_user_role_create') %}
 
-{% block head_script %}
-    {{ parent() }}
-
-    {% set listenerParameters = {
-        'columnName': 'has_role',
-        'selectors': {
-            'included': '#roleAppendUsers',
-            'excluded': '#roleRemoveUsers'
-        }
-    } %}
-
-    {% placeholder prepare_grid with {'datagrid': datagrid, 'selector': '#' ~ gridName, 'parameters': listenerParameters} %}
-{% endblock %}
-
 {% block navButtons %}
     {% if entityId and resource_granted('oro_user_role_remove') %}
         {{ UI.deleteButton({

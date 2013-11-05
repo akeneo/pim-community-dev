@@ -7,20 +7,6 @@
 {% set gridName = 'group-users-grid' %}
 {% set formAction = entityId ? path('oro_user_group_update', { 'id': entityId}) : path('oro_user_group_create') %}
 
-{% block head_script %}
-    {{ parent() }}
-
-    {% set listenerParameters = {
-        'columnName': 'has_group',
-        'selectors': {
-            'included': '#groupAppendUsers',
-            'excluded': '#groupRemoveUsers'
-        }
-    } %}
-
-    {% placeholder prepare_grid with {'datagrid': datagrid, 'selector': '#' ~ gridName, 'parameters': listenerParameters} %}
-{% endblock %}
-
 {% block navButtons %}
     {% if entityId and resource_granted('oro_user_group_remove') %}
         {{ UI.deleteButton({

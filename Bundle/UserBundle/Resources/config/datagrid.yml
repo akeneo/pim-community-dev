@@ -329,7 +329,9 @@ datagrid:
                 has_role:
                     type: boolean
                     data_name: has_role
+                    filter_by_having: true
         sorters:
+            multiple_sorting: true
             columns:
                 has_role:
                     data_name: has_role
@@ -362,6 +364,7 @@ datagrid:
                     type: boolean
                     data_name: has_group
         sorters:
+            multiple_sorting: true
             columns:
                 has_group:
                     data_name: has_group
