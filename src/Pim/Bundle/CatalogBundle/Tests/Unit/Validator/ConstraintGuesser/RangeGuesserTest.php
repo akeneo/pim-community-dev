@@ -38,12 +38,6 @@ class RangeGuesserTest extends ConstraintGuesserTest
     public function testSupportAttribute()
     {
         $this->assertTrue(
-            $this->target->supportAttribute(
-                $this->getAttributeMock(array('attributeType' => 'pim_catalog_price_collection',))
-            )
-        );
-
-        $this->assertTrue(
             $this->target->supportAttribute($this->getAttributeMock(array('attributeType' => 'pim_catalog_metric',)))
         );
 
