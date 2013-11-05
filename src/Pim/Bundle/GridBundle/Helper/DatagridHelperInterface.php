@@ -1,5 +1,5 @@
 <?php
-namespace Pim\Bundle\CatalogBundle\Datagrid;
+namespace Pim\Bundle\GridBundle\Helper;
 
 use Oro\Bundle\GridBundle\Datagrid\Datagrid;
 use Oro\Bundle\GridBundle\Datagrid\DatagridManagerInterface;
@@ -12,7 +12,7 @@ use Doctrine\ORM\QueryBuilder;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface DatagridWorkerInterface
+interface DatagridHelperInterface
 {
     /**
      * Get the log entries datagrid for the given product
