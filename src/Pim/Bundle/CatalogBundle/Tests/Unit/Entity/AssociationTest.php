@@ -38,11 +38,14 @@ class AssociationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test getter for id property
+     * Test getter/setter for id property
      */
     public function testId()
     {
         $this->assertEmpty($this->association->getId());
+        $newId = 100;
+        $this->association->setId($newId);
+        $this->assertSame($newId, $this->association->getId());
     }
 
     /**
