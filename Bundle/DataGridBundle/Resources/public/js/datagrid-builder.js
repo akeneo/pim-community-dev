@@ -191,6 +191,7 @@ function($, _, Backbone, __, tools, mediator, registry, LoadingMask,
                 builder.init($el);
             });
             methods.initBuilder.call({$el: $(el)});
-        }).end().data('rendered', true);
+            $el.attr('data-rendered', true);
+        }).end();
     };
 });
