@@ -7,4 +7,3 @@ services:
 
     pim_versioning.builder.audit:
         class: %pim_versioning.builder.audit.class%
-

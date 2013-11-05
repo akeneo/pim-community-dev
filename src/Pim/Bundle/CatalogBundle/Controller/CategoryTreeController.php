@@ -109,6 +109,9 @@ class CategoryTreeController extends AbstractDoctrineController
                 $selectNode = null;
             }
         }
+        if ($selectNode === null) {
+            $selectNode = $this->getDefaultTree();
+        }
 
         $trees = $this->categoryManager->getTrees();
 
@@ -357,6 +360,29 @@ class CategoryTreeController extends AbstractDoctrineController
         }
 
         return $category;
+    }
+
+    /**
+     * Get default tree
+     *
+     * @throws \Exception
+     *
+     * @return Category
+     */
+    protected function getDefaultTree()
+    {
+        $defaultTree = (string) $this->getUser()->getValue('defaulttree');
+        if (!$defaultTree) {
+            throw new \Exception('User must have a default tree defined');
+        }
+
+        $tree = $this->categoryManager->getEntityRepository()->findOneBy(array('code' => $defaultTree));
+
+        if (!$tree) {
+            throw $this->createNotFoundException(sprintf('%s tree not found', $defaultTree));
+        }
+
+        return $tree;
     }
 
     /**

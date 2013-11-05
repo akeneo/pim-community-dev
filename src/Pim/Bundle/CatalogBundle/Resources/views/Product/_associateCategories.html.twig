@@ -19,11 +19,20 @@
 </div>
 
 <div class="tab-content fullheight">
+    {% set selectedTree = 0 %}
     {% if trees %}
-        {% set firstTree = trees|first %}
-        {% set selectedTree = firstTree['tree'].id %}
+        {% if app.user.defaulttree is defined %}
+            {% for tree in trees %}
+                {% if tree['tree'].code == app.user.defaulttree %}
+                    {% set selectedTree = tree['tree'].id %}
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            {% set firstTree = trees|first %}
+            {% set selectedTree = firstTree['tree'].id %}
+        {% endif %}
     {% endif %}
-    <div id="trees" data-id="{{ product.id }}" data-datalocale="{{ dataLocale }}"{% if selectedTree is defined %} data-selected-tree="{{ selectedTree }}"{% endif %}>
+    <div id="trees" data-id="{{ product.id }}" data-datalocale="{{ dataLocale }}" data-selected-tree="{{ selectedTree }}">
         {% for tree in trees %}
             <div class="tree" data-tree-id="{{ tree['tree'].id }}">
                 <h3>{{ tree['tree'].label }}</h3>
