@@ -50,7 +50,7 @@ define(
                                 'id': id,
                                 'select_node_id': selectedNode,
                                 'with_products_count': 1,
-                                'nested': _.first($('#nested_switch_input')).checked ? 1 : 0
+                                'only_actual': _.first($('#nested_switch_input')).checked ? 0 : 1
                             };
                         }
                     }
