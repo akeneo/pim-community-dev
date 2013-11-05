@@ -31,7 +31,7 @@ class JobExecutionController extends AbstractDoctrineController
     /**
      * @var DatagridHelperInterface
      */
-    private $dataGridHelper;
+    private $datagridHelper;
 
     /**
      * @var BatchLogHandler
