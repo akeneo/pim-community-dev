@@ -18,7 +18,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
-use Pim\Bundle\CatalogBundle\Datagrid\DatagridHelperInterface;
+use Pim\Bundle\GridBundle\Helper\DatagridHelperInterface;
 use Pim\Bundle\CatalogBundle\Form\Handler\ChannelHandler;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Exception\DeleteException;
