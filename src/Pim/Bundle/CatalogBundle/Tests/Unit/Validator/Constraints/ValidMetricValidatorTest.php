@@ -151,7 +151,7 @@ class ValidMetricValidatorTest extends \PHPUnit_Framework_TestCase
         return array(
             array('Length', 'REAUMUR'),
             array('Temperature', 'KILOMETER'),
-            array('Temperature','invalid_unit')
+            array('Temperature', 'invalid_unit')
         );
     }
 
@@ -185,7 +185,7 @@ class ValidMetricValidatorTest extends \PHPUnit_Framework_TestCase
         return array(
             array('Length', 'INCH'),
             array('Temperature', 'RANKINE'),
-            array('Temperature','KELVIN')
+            array('Temperature', 'KELVIN')
         );
     }
 
