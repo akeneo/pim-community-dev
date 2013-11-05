@@ -1,7 +1,7 @@
 /* global define */
 define(['underscore', 'backbone', 'oro/translator', 'oro/dialog-widget','oro/loading-mask', 'oro/form-validation',
-    'oro/delete-confirmation', 'oro/formatter/datetime'],
-function(_, Backbone, __, DialogWidget, LoadingMask, FormValidation, DeleteConfirmation, dateTimeFormatter) {
+    'oro/delete-confirmation'],
+function(_, Backbone, __, DialogWidget, LoadingMask, FormValidation, DeleteConfirmation) {
     'use strict';
 
     var $ = Backbone.$;
@@ -190,15 +190,7 @@ function(_, Backbone, __, DialogWidget, LoadingMask, FormValidation, DeleteConfi
                 }
             });
 
-            // convert start and end dates from jQuery date/time string to RFC 3339 string
-            data.start = this.formatDateTimeForModel(data.start);
-            data.end = this.formatDateTimeForModel(data.end);
-
             return data;
-        },
-
-        formatDateTimeForModel: function (d) {
-            return dateTimeFormatter.unformatDateTime(d);
         }
     });
 });
