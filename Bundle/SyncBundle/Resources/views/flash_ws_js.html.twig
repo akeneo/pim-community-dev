@@ -1,3 +1,4 @@
+{% if check_ws() %}
 <!--[if lte IE 9]>
 <script src="{{ asset('/bundles/orosync/lib/swfobject.js') }}"></script>
 <script src="{{ asset('/bundles/orosync/lib/web_socket.js') }}"></script>
@@ -7,3 +8,4 @@
     WEB_SOCKET_DEBUG = true;
 </script>
 <![endif]-->
+{% endif %}
