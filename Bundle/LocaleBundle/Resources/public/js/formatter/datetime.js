@@ -125,7 +125,9 @@ function(localeSettings, moment) {
          * @returns {string}
          */
         unformatDate: function(value) {
-            if (!this.isDateValid(value)) {
+            if (this.isDateObject(value)) {
+                value = this.formatDate(value);
+            } else if (!this.isDateValid(value)) {
                 throw new Error('Invalid frontend date ' + value);
             }
 
@@ -137,7 +139,9 @@ function(localeSettings, moment) {
          * @returns {string}
          */
         unformatTime: function(value) {
-            if (!this.isTimeValid(value)) {
+            if (this.isDateObject(value)) {
+                value = this.formatTime(value);
+            } else if (!this.isTimeValid(value)) {
                 throw new Error('Invalid frontend time ' + value);
             }
 
@@ -150,7 +154,9 @@ function(localeSettings, moment) {
          * @returns {string}
          */
         unformatDateTime: function(value, timezoneOffset) {
-            if (!this.isDateTimeValid(value)) {
+            if (this.isDateObject(value)) {
+                value = this.formatDateTime(value);
+            } else if (!this.isDateTimeValid(value)) {
                 throw new Error('Invalid frontend datetime ' + value);
             }
 
@@ -158,6 +164,16 @@ function(localeSettings, moment) {
             moment().zone(timezoneOffset);
 
             return moment(value, this.getDateTimeFormat()).format(this.backendFormats.datetime);
+        },
+
+        /**
+         * Check that obj is Date object
+         *
+         * @param {string|Date} obj
+         * @returns {boolean}
+         */
+        isDateObject: function(obj) {
+            return Object.prototype.toString.call(obj) == '[object Date]'
         }
     }
 });

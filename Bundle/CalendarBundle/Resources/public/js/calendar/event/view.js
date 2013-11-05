@@ -1,8 +1,10 @@
 /* global define */
-define(['jquery', 'underscore', 'backbone', 'oro/translator', 'oro/dialog-widget', 'oro/layout',
-    'oro/loading-mask', 'oro/form-validation', 'oro/delete-confirmation'],
-function($, _, Backbone, __, DialogWidget, layout, LoadingMask, FormValidation, DeleteConfirmation) {
+define(['underscore', 'backbone', 'oro/translator', 'oro/dialog-widget', 'oro/layout',
+    'oro/loading-mask', 'oro/form-validation', 'oro/delete-confirmation', 'oro/formatter/datetime'],
+function(_, Backbone, __, DialogWidget, layout, LoadingMask, FormValidation, DeleteConfirmation, dateTimeFormatter) {
     'use strict';
+
+    var $ = Backbone.$;
 
     /**
      * @export  oro/calendar/event/view
@@ -21,10 +23,6 @@ function($, _, Backbone, __, DialogWidget, layout, LoadingMask, FormValidation, 
                 .replace(/\{\s*(\w+)\s*\}/g, '<%- $1 %>')
                 .replace(/checkedif="(\w+)"/g, '<% if ($1) { %> checked="checked"<% } %>');
             this.template = _.template(templateHtml);
-            var dateMatch = templateHtml.match(/data-dateformat="([^"]*)"/);
-            this.options.dateformat = dateMatch[1];
-            var timeMatch = templateHtml.match(/data-timeformat="([^"]*)"/);
-            this.options.timeformat = timeMatch[1];
         },
 
         getCollection: function() {
@@ -36,8 +34,8 @@ function($, _, Backbone, __, DialogWidget, layout, LoadingMask, FormValidation, 
             var title = this.model.isNew() ? __('Add New Event') : __('Edit Event');
             var data = this.model.toJSON();
             // convert start and end dates from RFC 3339 string to jQuery date/time string
-            data.start = this.convertDateTimeFromModelToDatepicker(data.start);
-            data.end = this.convertDateTimeFromModelToDatepicker(data.end);
+            data.start = dateTimeFormatter.formatDateTime(data.start);
+            data.end = dateTimeFormatter.formatDateTime(data.end);
             var el = this.template(data);
             // create a dialog
             this.eventDialog = new DialogWidget({
@@ -203,55 +201,14 @@ function($, _, Backbone, __, DialogWidget, layout, LoadingMask, FormValidation, 
             });
 
             // convert start and end dates from jQuery date/time string to RFC 3339 string
-            data.start = this.convertDateTimeFromDatepickerToModel(data.start);
-            data.end = this.convertDateTimeFromDatepickerToModel(data.end);
+            data.start = this.formatDateTimeForModel(data.start);
+            data.end = this.formatDateTimeForModel(data.end);
 
             return data;
         },
 
-        convertDateTimeFromDatepickerToModel: function (s) {
-            var d = $.datepicker.parseDateTime(
-                this.options.dateformat,
-                this.options.timeformat,
-                s,
-                {},
-                {separator: ' ', timeFormat: this.options.timeformat}
-            );
-            return this.formatDateTimeForModel(d);
-        },
-
-        convertDateTimeFromModelToDatepicker: function (s) {
-            var d = this.convertToViewDateTime(s);
-            var t = {hour: d.getHours(), minute: d.getMinutes(), second: d.getSeconds()};
-            return $.datepicker.formatDate(this.options.dateformat, d) + ' ' +
-                $.datepicker.formatTime(this.options.timeformat, t);
-        },
-
         formatDateTimeForModel: function (d) {
-            if (_.isNull(d)) {
-                return '';
-            }
-            d = new Date(d.getTime() - this.options.timezoneOffset * 60000);
-            return d.getFullYear() +
-                '-' + this.pad((d.getMonth() + 1)) +
-                '-' + this.pad(d.getDate()) +
-                'T' + this.pad(d.getHours()) +
-                ':' + this.pad(d.getMinutes()) +
-                ':' + this.pad(d.getSeconds()) +
-                '.000Z';
-        },
-
-        convertToViewDateTime: function (s) {
-            var d = $.fullCalendar.parseISO8601(s, true);
-            return new Date(d.getTime() + this.options.timezoneOffset * 60000);
-        },
-
-        pad: function (s) {
-            s += '';
-            if (s.length === 1) {
-                s = '0' + s;
-            }
-            return s;
+            return dateTimeFormatter.unformatDateTime(d);
         }
     });
 });
