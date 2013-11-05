@@ -83,4 +83,33 @@ class BusinessUnitRepository extends EntityRepository
 
         return $qb->getQuery()->getSingleScalarResult();
     }
+
+    /**
+     * @param string $field
+     * @param string $entity
+     * @param string $alias
+     *
+     * @return array
+     */
+    public function getGridFilterChoices($field, $entity, $alias = 'bu')
+    {
+        $options = [];
+
+        $result = $this->createQueryBuilder($alias)
+            ->add('select', $alias . '.' . $field)
+            ->add('from', $entity . ' ' . $alias)
+            ->distinct($alias . '.' . $field)
+            ->getQuery()
+            ->getArrayResult();
+
+        foreach ((array) $result as $value) {
+            $options[$value[$field]] = current(
+                array_reverse(
+                    explode('\\', $value[$field])
+                )
+            );
+        }
+
+        return $options;
+    }
 }
