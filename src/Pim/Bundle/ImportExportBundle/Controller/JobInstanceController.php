@@ -245,7 +245,11 @@ class JobInstanceController extends AbstractDoctrineController
         }
         $form = $this->createForm(new JobInstanceType(), $jobInstance);
 
-        $historyDatagrid = $this->datagridWorker->getDataAuditDatagrid($jobInstance, 'pim_importexport_export_edit', array('id' => $jobInstance->getId()));
+        $historyDatagrid = $this->datagridWorker->getDataAuditDatagrid(
+            $jobInstance,
+            'pim_importexport_export_edit',
+            array('id' => $jobInstance->getId())
+        );
 
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
