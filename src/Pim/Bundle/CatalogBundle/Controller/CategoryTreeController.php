@@ -213,7 +213,7 @@ class CategoryTreeController extends AbstractDoctrineController
             }
         }
 
-        return array('data' => $data);
+        return array('data' => $data, 'categories' => $categories);
     }
 
     /**
