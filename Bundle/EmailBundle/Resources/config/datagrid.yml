@@ -106,6 +106,7 @@ datagrid:
                             multiple:       true
                             choices:        @oro_email.emailtemplate.datagrid_helper->getEntityNameChoices
                 name:
+                    type:      string
                     data_name: t.name
                     label:     oro.email.datagrid.emailtemplate.column.name
                 type:

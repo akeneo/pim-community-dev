@@ -1,4 +1,0 @@
-oro_demo_bundle:
-    resource: "@OroDemoBundle/Controller"
-    type:     annotation
-    prefix:   /demo
