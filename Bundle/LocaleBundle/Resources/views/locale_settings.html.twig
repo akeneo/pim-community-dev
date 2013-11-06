@@ -37,10 +37,18 @@ function($, localeSettings) {
         }) %}
     {% endfor %}
 
+    {% set localeConfigurationClass = '\\Oro\\Bundle\\LocaleBundle\\DependencyInjection\\Configuration::' %}
+    {% set defaults = {
+        'locale':   constant(localeConfigurationClass ~ 'DEFAULT_LOCALE'),
+        'language': constant(localeConfigurationClass ~ 'DEFAULT_LANGUAGE'),
+        'country':  constant(localeConfigurationClass ~ 'DEFAULT_COUNTRY'),
+        'currency': constant(localeConfigurationClass ~ 'DEFAULT_CURRENCY')
+    } %}
+
     {% set settings = {
-        'locale': oro_locale(),
+        'locale':   oro_locale(),
         'language': oro_language(),
-        'country': oro_country(),
+        'country':  oro_country(),
         'currency': oro_currency(),
         'timezone': oro_timezone(),
         'timezone_offset': oro_timezone_offset(),
@@ -65,8 +73,10 @@ function($, localeSettings) {
         }
     } %}
 
+    var defaults = {{ defaults|json_encode|raw }};
     var settings = {{ settings|json_encode|raw }};
 
+    localeSettings.extendDefaults(defaults);
     localeSettings.extendSettings(settings);
 });
 </script>

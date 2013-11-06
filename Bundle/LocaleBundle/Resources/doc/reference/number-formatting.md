@@ -538,3 +538,95 @@ Custom locale can be passed in third argument:
 
 JS
 ==
+
+On JS side number formatter is available via module "oro/formatter/number".
+
+To use it include it to via require.js like this:
+
+```js
+require(['oro/formatter/number'], function(numberFormatter) {
+
+});
+```
+
+This module provides next functions for different cases:
+
+Functions
+---------
+
+### formatDecimal
+
+Formats number to decimal localized format.
+
+Example of usage:
+
+```js
+require(['oro/formatter/number'], function(numberFormatter) {
+    // 10,000.000 depending on locale settings
+    console.log(numberFormatter.formatDecimal(10000)));
+});
+```
+
+### formatInteger
+
+Formats number to integer localized format.
+
+Example of usage:
+
+```js
+require(['oro/formatter/number'], function(numberFormatter) {
+    // 10,000 depending on locale settings
+    console.log(numberFormatter.formatInteger(10000)));
+});
+```
+
+### formatPercent
+
+Formats number to percent localized format.
+
+Example of usage:
+
+```js
+require(['oro/formatter/number'], function(numberFormatter) {
+    // 50% depending on locale settings
+    console.log(numberFormatter.formatPercent(.5)));
+});
+```
+
+### formatCurrency
+
+Formats number to currency localized format. If currency is not specified, then default one will be used.
+
+Example of usage:
+
+```js
+require(['oro/formatter/number'], function(numberFormatter) {
+    // ($50,000.45) depending on locale settings if default currency in USD
+    console.log(numberFormatter.formatCurrency(-50000.45)));
+
+    // €1,000.00 depending on locale settings
+    console.log(numberFormatter.formatCurrency(1000, 'EUR')));
+});
+```
+
+### unformat
+
+Parses a number from localized number string. Can be used to parse all styles of localized numbers.
+
+Example of usage:
+
+```js
+require(['oro/formatter/number'], function(numberFormatter) {
+    // 50000.45 depending on locale settings
+    console.log(numberFormatter.unformat('$50,000.45')));
+
+    // 0.95 depending on locale settings
+    console.log(numberFormatter.unformat('95%')));
+
+    // -1000000.456 depending on locale settings
+    console.log(numberFormatter.unformat('(1,000,000.456)')));
+
+    // NaN
+    console.log(numberFormatter.unformat('ssss')));
+});
+```

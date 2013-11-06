@@ -10,6 +10,14 @@ function(_, settings) {
      * @class   oro.LocaleSettings
      */
     var localeSettings = {
+        defaults: {
+            locale: 'en_US',
+            language: 'en',
+            country: 'US',
+            currency: 'USD',
+            timezone: 'UTC',
+            timezone_offset: '+00:00'
+        },
         settings: {
             locale: 'en_US',
             language: 'en',
@@ -97,18 +105,23 @@ function(_, settings) {
             }
         },
 
-        extendSettings: function(settings) {
-            var deepExtend = function(target, source) {
-                for (var prop in source) if (source.hasOwnProperty(prop)) {
-                    if (_.isObject(target[prop])) {
-                        target[prop] = deepExtend(target[prop], source[prop]);
-                    } else {
-                        target[prop] = source[prop];
-                    }
+        _deepExtend: function(target, source) {
+            for (var prop in source) if (source.hasOwnProperty(prop)) {
+                if (_.isObject(target[prop])) {
+                    target[prop] = this._deepExtend(target[prop], source[prop]);
+                } else {
+                    target[prop] = source[prop];
                 }
-                return target;
-            };
-            this.settings = deepExtend(this.settings, settings);
+            }
+            return target;
+        },
+
+        extendSettings: function(settings) {
+            this.settings = this._deepExtend(this.settings, settings);
+        },
+
+        extendDefaults: function(defaults) {
+            this.defaults = this._deepExtend(this.defaults, defaults);
         },
 
         getLocale: function() {
@@ -233,7 +246,7 @@ function(_, settings) {
          * @returns {Array}
          */
         getLocaleFallback: function(locale) {
-            var locales = [locale, this.settings.locale];
+            var locales = [locale, this.settings.locale, this.defaults.locale];
 
             var getLocaleLang = function(locale) {
                 return locale ? locale.split('_')[0] : locale;
