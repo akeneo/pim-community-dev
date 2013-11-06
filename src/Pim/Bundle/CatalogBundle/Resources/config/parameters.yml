@@ -68,7 +68,6 @@ parameters:
     pim_catalog.form.type.product_association.class: Pim\Bundle\CatalogBundle\Form\Type\ProductAssociationType
 
     pim_catalog.event_listener.user_preferences.class:    Pim\Bundle\CatalogBundle\EventListener\UserPreferencesListener
-    pim_catalog.event_listener.update_completeness.class: Pim\Bundle\CatalogBundle\EventListener\UpdateCompletenessListener
 
     pim_catalog.calculator.completeness.class:       Pim\Bundle\CatalogBundle\Calculator\CompletenessCalculator
     pim_catalog.calculator.batch_completeness.class: Pim\Bundle\CatalogBundle\Calculator\BatchCompletenessCalculator
