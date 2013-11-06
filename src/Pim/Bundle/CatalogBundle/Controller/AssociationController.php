@@ -104,7 +104,7 @@ class AssociationController extends AbstractDoctrineController
         $datagridView = $this->datagridHelper->getDatagrid('association')->createView();
 
         if ('json' === $request->getRequestFormat()) {
-            return $this->gridRenderer->renderResultsJsonResponse($datagridView);
+            return $this->datagridHelper->getDatagridRenderer()->renderResultsJsonResponse($datagridView);
         }
 
         return array(
