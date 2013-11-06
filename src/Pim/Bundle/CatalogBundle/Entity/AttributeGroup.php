@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation\ExclusionPolicy;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
@@ -29,6 +30,8 @@ use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
  *      }
  *  }
  * )
+ * 
+ * @ExclusionPolicy("all")
  */
 class AttributeGroup implements TranslatableInterface, VersionableInterface
 {

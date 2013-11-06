@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 
 /**
@@ -13,7 +14,14 @@ use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * @ORM\Entity()
- * @ORM\Table(name="pim_catalog_attribute_group_translation")
+ * @ORM\Table(
+ *      name="pim_catalog_attribute_group_translation",
+ *      uniqueConstraints= {
+ *          @ORM\UniqueConstraint(name="locale_foreign_key_idx", columns={"locale", "foreign_key"})
+ *      }
+ * )
+ * 
+ * @ExclusionPolicy("all")
  */
 class AttributeGroupTranslation extends AbstractTranslation
 {
