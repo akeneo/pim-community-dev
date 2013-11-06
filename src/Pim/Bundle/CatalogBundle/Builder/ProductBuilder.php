@@ -63,19 +63,12 @@ class ProductBuilder
      */
     public function addMissingProductValues(ProductInterface $product)
     {
-        $attributes = $product->getAttributes();
+        $attributes = $this->getExpectedAttributes($product);
 
-        if ($family = $product->getFamily()) {
-            foreach ($family->getAttributes() as $attribute) {
-                $attributes[] = $attribute;
-            }
-        }
-
-        if (!is_array($attributes)) {
-            return;
-        }
-
-        $attributes = array_unique($attributes);
+        // TODO
+        // expected values
+        // existing values
+        // array_diff then create new one 
 
         foreach ($attributes as $attribute) {
             $requiredValues = $this->getExpectedValues($attribute);
@@ -148,6 +141,25 @@ class ProductBuilder
         }
 
         $this->objectManager->flush();
+    }
+
+    /**
+     * Get expected attributes for the product
+     *
+     * @param ProductInterface $product
+     *
+     * @return ProductAttribute[]
+     */
+    protected function getExpectedAttributes(ProductInterface $product)
+    {
+        $attributes = $product->getAttributes();
+        if ($family = $product->getFamily()) {
+            foreach ($family->getAttributes() as $attribute) {
+                $attributes[] = $attribute;
+            }
+        }
+
+        return array_unique($attributes);
     }
 
     /**
