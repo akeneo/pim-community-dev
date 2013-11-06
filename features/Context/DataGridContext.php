@@ -66,7 +66,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iFilterPerPrice($action, $value, $currency)
     {
-        $this->getCurrentPage()->filterPerPrice($action, $value, $currency);
+        $this->datagrid->filterPerPrice($action, $value, $currency);
         $this->wait();
     }
 
@@ -99,7 +99,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iFilterPerFamily($code)
     {
-        $this->getCurrentPage()->filterPerFamily($code);
+        $this->datagrid->filterPerFamily($code);
         $this->wait();
     }
 
@@ -110,7 +110,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iFilterPerChannel($code)
     {
-        $this->getCurrentPage()->filterPerChannel($code);
+        $this->datagrid->filterPerChannel($code);
         $this->wait();
     }
 

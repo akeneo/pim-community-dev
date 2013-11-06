@@ -11,18 +11,14 @@ Feature: Product creation
       | Reference   | yes      |
       | Description | no       |
     And I am logged in as "admin"
-
-  Scenario: Successfully display all required attributes in the product creation form
-    Given I am on the products page
-    And I create a new product
-    Then I should see the SKU, Reference and Family fields
+    And I am on the products page
 
   Scenario: Successfully create a product
-    Given I am on the products page
-    And I create a new product
+    Given I create a new product
+    Then I should see the SKU, Reference and Family fields
     And I fill in the following information in the popin:
-      | SKU               | barbecue  |
-      | Reference         | BBQ       |
+      | SKU       | barbecue  |
+      | Reference | BBQ       |
     And I press the "Save" button
     Then I edit the "barbecue" product
     Then I should see "Family: N/A"

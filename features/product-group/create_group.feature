@@ -38,10 +38,10 @@ Feature: Product group creation
     Then I should see validation error "Group code may contain only letters, numbers and underscores."
 
   Scenario: Fail to create a group filling an already used code
-    Given I am on the product groups page
-    And the following product groups:
+    Given the following product groups:
       | code    | label          | type   |
       | TSHIRT  | T-Shirt Akeneo | X_SELL |
+    And I am on the product groups page
     When I create a new product group
     And I fill in the following information in the popin:
       | Code | TSHIRT  |

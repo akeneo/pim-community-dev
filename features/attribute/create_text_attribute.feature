@@ -22,7 +22,7 @@ Feature: Create an attribute
   @javascript
   Scenario: Fail to create a text attribute with an invalid validation regex
     Given I fill in the following information:
-     | Code              | short_descsription |
+     | Code              | short_description  |
      | Validation rule   | Regular expression |
      | Validation regexp | this is not valid  |
     And I save the attribute
