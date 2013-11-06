@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use JMS\Serializer\Annotation\Exclude;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\Currency;
@@ -62,6 +63,7 @@ class Channel
      *     inversedBy="channels"
      * )
      * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
+     * @Exclude
      */
     protected $category;
 
