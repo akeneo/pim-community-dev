@@ -12,6 +12,7 @@
 - Speed up completeness calculation
 
 ## Bug fixes
+- Mass delete products
 
 ## BC breaks
 - Command "pim:product:completeness-calculator" has been replaced into "pim:completeness:calculate"

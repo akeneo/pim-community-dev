@@ -109,7 +109,7 @@ class WebUser extends RawMinkContext
     {
         foreach ($pages->getHash() as $data) {
             $url = $this->getSession()->evaluateScript(sprintf('return Routing.generate("%s");', $data['page']));
-            $this->getSession()->executeScript(
+            $this->getMainContext()->executeScript(
                 sprintf("require(['oro/navigation'], function(Nav) { Nav.getInstance().setLocation('%s'); } );", $url)
             );
             $this->wait();
@@ -880,11 +880,7 @@ class WebUser extends RawMinkContext
         }
 
         $this->getCurrentPage()->attachFileToField($field, $file);
-
-        try {
-            $this->getSession()->executeScript('$("[disabled]").removeAttr("disabled");');
-        } catch (UnsupportedDriverActionException $e) {
-        }
+        $this->getMainContext()->executeScript('$("[disabled]").removeAttr("disabled");');
     }
 
     /**
@@ -894,11 +890,8 @@ class WebUser extends RawMinkContext
      */
     public function iRemoveTheFile($field)
     {
-        try {
-            $this->getSession()->executeScript(
-                "$('label:contains(\"{$field}\")').parent().find('.remove-upload').click();"
-            );
-        } catch (UnsupportedDriverActionException $e) {
+        $script = sprintf("$('label:contains(\"%s\")').parent().find('.remove-upload').click();", $field);
+        if (!$this->getMainContext()->executeScript($script)) {
             $this->getCurrentPage()->removeFileFromField($field);
         }
     }
@@ -1395,6 +1388,23 @@ class WebUser extends RawMinkContext
         }
 
         $page->massEdit();
+        $this->wait();
+    }
+
+    /**
+     * @param string $products
+     *
+     * @When /^I mass-delete products (.*)$/
+     */
+    public function iMassDeleteProducts($products)
+    {
+        $page = $this->getPage('Product index');
+
+        foreach ($this->listToArray($products) as $product) {
+            $page->selectRow($product);
+        }
+
+        $page->massDelete();
         $this->wait();
     }
 

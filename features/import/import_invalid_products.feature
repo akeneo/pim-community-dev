@@ -34,5 +34,5 @@ Feature: Import invalid products
     And I launch the import job
     And I wait for the job to finish
     Then there should be 1 product
-    And I should see "Malformed price: 15EUR"
+    And I should see "Malformed price: \"15EUR\""
 
