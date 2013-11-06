@@ -213,15 +213,7 @@ class CategoryTreeController extends AbstractDoctrineController
      */
     public function listItemsAction(Category $category)
     {
-        $products = new ArrayCollection();
-
-        if (is_object($category)) {
-            $products = $category->getProducts();
-        }
-
-        $data = CategoryHelper::productsResponse($products);
-
-        return array('data' => $data);
+        return array('products' => $category->getProducts());
     }
 
     /**
