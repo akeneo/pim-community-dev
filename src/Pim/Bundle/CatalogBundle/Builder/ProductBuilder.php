@@ -76,7 +76,9 @@ class ProductBuilder
 
             foreach ($product->getValues() as $value) {
                 if ($value->getAttribute() === $attribute) {
-                    $existingValues[] = array('locale' => $value->getLocale(), 'scope' => $value->getScope());
+                    $existingValues[] = array(
+                        'code' => $attribute->getCode(), 'locale' => $value->getLocale(), 'scope' => $value->getScope()
+                    );
                 }
             }
 
@@ -223,27 +225,30 @@ class ProductBuilder
     protected function getExpectedValues(ProductAttribute $attribute)
     {
         $requiredValues = array();
+        $attCode = $attribute->getCode();
 
         if ($attribute->getScopable()) {
             $channels = $this->getChannels();
             if ($attribute->getTranslatable()) {
                 foreach ($channels as $channel) {
                     foreach ($channel->getLocales() as $locale) {
-                        $requiredValues[] = array('locale' => $locale->getCode(), 'scope' => $channel->getCode());
+                        $requiredValues[] = array(
+                            'code' => $attCode, 'locale' => $locale->getCode(), 'scope' => $channel->getCode()
+                        );
                     }
                 }
             } else {
                 foreach ($channels as $channel) {
-                    $requiredValues[] = array('locale' => null, 'scope' => $channel->getCode());
+                    $requiredValues[] = array('code' => $attCode, 'locale' => null, 'scope' => $channel->getCode());
                 }
             }
         } elseif ($attribute->getTranslatable()) {
             $locales = $this->getLocales();
             foreach ($locales as $locale) {
-                $requiredValues[] = array('locale' => $locale->getCode(), 'scope' => null);
+                $requiredValues[] = array('code' => $attCode, 'locale' => $locale->getCode(), 'scope' => null);
             }
         } else {
-            $requiredValues[] = array('locale' => null, 'scope' => null);
+            $requiredValues[] = array('code' => $attCode, 'locale' => null, 'scope' => null);
         }
 
         return $requiredValues;
