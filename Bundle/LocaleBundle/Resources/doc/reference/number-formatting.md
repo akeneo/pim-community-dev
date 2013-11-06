@@ -139,7 +139,7 @@ string *public* *format*(mixed *value*, string|int *style*[, array *attributes*[
 This method can be used to format any style of number that are passed directly as a second argument.
 List of custom attributes, text attributes, symbols and locale can be passed as well.
 
-```
+```php
 // Simple usage default locale and related number format will be used
 echo $numberFormatter->format(1234.56789, \NumberFormatter::DECIMAL);
 // outputs: "1,234.568" if default locale is en_US
@@ -165,7 +165,7 @@ string *public* *formatCurrency*(mixed *value*, string *currency*[, array *attri
 
 Formats currency number. Currency code should be specified, otherwise default currency will be used.
 
-```
+```php
 // Using default locale and currency
 echo $numberFormatter->formatCurrency(1234.56789);
 // outputs: "$1,234.57" if default locale is en_US and currency is 'USD'
@@ -181,7 +181,7 @@ string *public* *formatDecimal*(mixed *value*[, array *attributes*[, array *text
 
 Formats decimal number.
 
-```
+```php
 // Using default locale and format
 echo $numberFormatter->formatDecimal(1234.56789);
 // outputs: "1,234.568" if default locale is en_US and currency is 'USD'
@@ -203,7 +203,7 @@ string *public* *formatPercent*(mixed *value*[, array *attributes*[, array *text
 
 Formats percent number.
 
-```
+```php
 echo $numberFormatter->formatPercent(1);
 // outputs: "100%"
 
@@ -217,7 +217,7 @@ string *public* *formatSpellout*(mixed *value*[, array *attributes*[, array *tex
 
 Formats spellout number. If locale is not specified default one will be used.
 
-```
+```php
 echo $numberFormatter->formatSpellout(1);
 // outputs: "one"
 
@@ -231,7 +231,7 @@ string *public* *formatDuration*(mixed *value*[, array *attributes*[, array *tex
 
 Formats duration number. If locale is not specified default one will be used.
 
-```
+```php
 echo $numberFormatter->formatDuration(3661);
 // outputs: "1:01:01"
 
@@ -251,7 +251,7 @@ string *public* *formatOrdinal*(mixed *value*[, array *attributes*[, array *text
 
 Formats ordinal number. If locale is not specified default one will be used.
 
-```
+```php
 echo $numberFormatter->formatOrdinal(1);
 // outputs: "1st"
 
@@ -265,7 +265,7 @@ int *public* *getAttribute*(string|int *attribute*[, string|int *style*[, string
 
 Gets numeric attribute of intl NumberFormatter related to passed locale. If locale is not passed, default one will be used.
 
-```
+```php
 echo $numberFormatter->getAttribute('parse_int_only', 'decimal', 'en_US');
 // outputs: 0
 
@@ -279,7 +279,7 @@ string *public* *getTextAttribute*(string|int *textAttribute*[, string|int *styl
 
 Gets text attribute of intl NumberFormatter related to passed locale. If locale is not passed, default one will be used.
 
-```
+```php
 echo $numberFormatter->getTextAttribute('negative_prefix', 'decimal', 'en_US');
 // outputs: "-"
 
@@ -293,7 +293,7 @@ string *public* *getSymbol*(string|int *symbol*[, string|int *style*[, string *l
 
 Gets symbol of intl NumberFormatter related to passed locale. If locale is not passed, default one will be used.
 
-```
+```php
 echo $numberFormatter->getSymbol('DECIMAL_SEPARATOR_SYMBOL', 'DECIMAL', 'en_US');
 // outputs: "."
 
