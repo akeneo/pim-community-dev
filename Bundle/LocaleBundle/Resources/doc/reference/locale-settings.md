@@ -5,6 +5,7 @@ Table of Contents
 -----------------
  - [Overview](#overview)
  - [Locale](#locale)
+ - [Language](#language)
  - [Calendar](#calendar)
  - [Names formats](#names-formats)
  - [Addresses formats](#addresses-formats)
@@ -30,7 +31,7 @@ Locale
 ======
 
 Locale settings can provide default application locale. This setting is based on system configuration and can be
-different per user.
+different per user. Locale is used by all formatters, such as for names, addresses, numbers, date and times.
 
 Example of getting current locale:
 
@@ -67,6 +68,18 @@ Returns the list of all available locales.
 **Oro\Bundle\LocaleBundle\Model\LocaleSettings::getCountryByLocale**
 
 Gets country by locale. If could not find result than returns default country.
+
+Language
+========
+
+Locale settings provides application language configuration. Language setting affects translations and representation
+of date times. For example you could have en_US locale but french language, in this case date/times will be localized
+using en_US locale but with french language. To get current language there is a corresponding method:
+
+```php
+$localeSettings = $this->get('oro_locale.settings');
+$language = $locale->getLanguage();
+```
 
 Calendar
 ========
