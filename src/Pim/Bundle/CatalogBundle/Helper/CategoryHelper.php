@@ -15,43 +15,6 @@ use Pim\Bundle\CatalogBundle\Entity\Category;
 class CategoryHelper
 {
     /**
-     * Format in array category trees. The tree where is the select category
-     * will be selected (attribute selected at "true" in the response)
-     *
-     * @param array    $trees
-     * @param Category $selectCategory
-     *
-     * @return array
-     * @static
-     */
-    public static function treesResponse($trees, Category $selectCategory = null)
-    {
-        $return = array();
-        $selectedTreeId = -1;
-
-        if ($selectCategory != null) {
-            $selectedTreeId = $selectCategory->isRoot() ? $selectCategory->getId() : $selectCategory->getRoot();
-        }
-
-        foreach ($trees as $i => $tree) {
-            $selectedTree = false;
-
-            if (($selectedTreeId == -1) && ($i == 0)
-                || ($tree->getId() == $selectedTreeId) ) {
-                $selectedTree = true;
-            }
-
-            $return[] = array(
-                'id' => $tree->getId(),
-                'label'  => $tree->getLabel(),
-                'selected' => $selectedTree ? "true" : "false"
-            );
-        }
-
-        return $return;
-    }
-
-    /**
      * Format categories list into simple array with data formatted
      * for JStree json_data plugin.
      *

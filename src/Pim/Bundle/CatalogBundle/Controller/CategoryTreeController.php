@@ -108,25 +108,17 @@ class CategoryTreeController extends AbstractDoctrineController
      */
     public function listTreeAction(Request $request)
     {
-        $selectNodeId = $request->get('select_node_id');
-        $selectNode = null;
-
-        if ($selectNodeId != null) {
-            try {
-                $selectNode = $this->findCategory($selectNodeId);
-            } catch (NotFoundHttpException $e) {
-                $selectNode = null;
-            }
-        }
-        if ($selectNode === null) {
+        $selectNodeId = $request->get('select_node_id', -1);
+        try {
+            $selectNode = $this->findCategory($selectNodeId);
+        } catch (NotFoundHttpException $e) {
             $selectNode = $this->getDefaultTree();
         }
 
-        $trees = $this->categoryManager->getTrees();
-
-        $treesResponse = CategoryHelper::treesResponse($trees, $selectNode);
-
-        return array('trees' => $treesResponse);
+        return array(
+            'trees' => $this->categoryManager->getTrees(),
+            'selectedTreeId' => $selectNode->isRoot() ? $selectNode->getId() : $selectNode->getRoot()
+        );
     }
 
     /**
