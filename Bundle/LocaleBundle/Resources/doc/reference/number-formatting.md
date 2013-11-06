@@ -279,5 +279,56 @@ echo $numberFormatter->getSymbol(\NumberFormatter::GROUPING_SEPARATOR_SYMBOL, \N
 Twig
 ====
 
+Filters
+-------
+
+Next filters are available in Twig templates:
+
+###oro_format_number
+
+This filter formats a number to localized format according to passed number style and optional custom options:
+
+Simple usage of this filter requires a style of number. Next values can be used: 'decimal', 'currency', 'percent',
+'scientific', 'spellout', 'ordinal', 'duration'.
+
+This example outputs a string in localized format like this: 10,000.000
+```
+{{ 10000|oro_format_number('decimal') }}
+```
+
+This example outputs MINUS 10.0000,123 and shows what options could be passed to customize format.
+```
+{{ -100000.123|oro_format_number('decimal', {
+    attributes: {'grouping_size': 4},
+    textAttributes: {'negative_prefix': 'MINUS'},
+    symbols: {'decimal_separator_symbol': ',', 'grouping_separator_symbol': '.'},
+    locale: 'en_US'
+}) }}
+```
+
+###oro_format_currency
+
+###oro_format_decimal
+
+###oro_format_percent
+
+###oro_format_spellout
+
+###oro_format_duration
+
+###oro_format_ordinal
+
+Functions
+---------
+
+Next functions are available in Twig templates:
+
+### oro_locale_number_attribute
+
+### oro_locale_number_text_attribute
+
+### oro_locale_number_symbol
+
+
 JS
 ==
