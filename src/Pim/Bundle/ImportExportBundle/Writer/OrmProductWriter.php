@@ -103,8 +103,8 @@ class OrmProductWriter extends AbstractConfigurableStepElement implements
     public function write(array $items)
     {
         $this->addVersionListener->setRealTimeVersioning(false);
-        $this->productManager->saveAll($items, true);
         $this->productManager->handleAllMedia($items);
+        $this->productManager->saveAll($items, false);
         $this->stepExecution->setWriteCount(count($items));
 
         $storageManager = $this->productManager->getStorageManager();

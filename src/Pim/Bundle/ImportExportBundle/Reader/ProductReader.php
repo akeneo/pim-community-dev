@@ -66,8 +66,7 @@ class ProductReader extends ORMReader
                 );
             }
 
-            $this->calculateMissingCompletenesses($channel);
-            $this->productManager->getStorageManager()->flush();
+            $this->calculator->calculateChannelCompleteness($channel);
 
             $this->query = $this->getProductRepository()
                 ->buildByChannelAndCompleteness($channel)
@@ -75,14 +74,6 @@ class ProductReader extends ORMReader
         }
 
         return parent::read();
-    }
-
-    protected function calculateMissingCompletenesses(Channel $channel)
-    {
-        $products = $this->getProductRepository()
-            ->findByMissingCompleteness($channel);
-
-        $this->calculator->calculateForAChannel($products, $channel);
     }
 
     /**
