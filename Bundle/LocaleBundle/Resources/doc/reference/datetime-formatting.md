@@ -348,8 +348,8 @@ console.log(datetimeFormatter.isDateTimeValid('oct 12 2013 12:12 pm'));
 
 ### formatDate(value), formatTime(value), formatDateTime(value)
 
-Receive either Date object or valid ISO string and returns value string in localized format.
-Throw an exception in case of not valid string.
+Receives either Date object or valid ISO string and returns value string in localized format.
+Throws an exception in case of not valid string.
 
 ```js
 console.log(datetimeFormatter.formatDate('2013-12-12'));
@@ -363,7 +363,7 @@ console.log(datetimeFormatter.formatDateTime(new Date()));
 
 Receives localized string data and convert in to ISO format string, unformatDateTime optionally can receive
 timezone offset - if no offset is set default offset will be used.
-Throw an exception in case of not valid string.
+Throws an exception in case of not valid string.
 
 ```js
 console.log(datetimeFormatter.unformatDate('Dec 12, 2013'));
