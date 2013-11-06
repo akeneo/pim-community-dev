@@ -15,15 +15,16 @@ use Pim\Bundle\VersioningBundle\Entity\Version;
 class VersionRepository extends EntityRepository
 {
     /**
-     * @param Version $current
+     * @param string $resourceName
+     * @param string $resourceId
      *
      * @return Version|null
      */
-    public function findPreviousVersion(Version $current)
+    public function findPreviousVersion($resourceName, $resourceId)
     {
         $previous = $this
             ->findOneBy(
-                array('resourceId' => $current->getResourceId(), 'resourceName' => $current->getResourceName()),
+                array('resourceId' => $resourceId, 'resourceName' => $resourceName),
                 array('loggedAt' => 'desc')
             );
 

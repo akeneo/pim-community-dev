@@ -10,7 +10,6 @@ use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Exception\MissingIdentifierException;
-use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
 use Pim\Bundle\CatalogBundle\Entity\Association;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
@@ -38,16 +37,8 @@ use Pim\Bundle\CatalogBundle\Entity\ProductAssociation;
  *
  * @ExclusionPolicy("all")
  */
-class Product extends AbstractEntityFlexible implements ProductInterface, VersionableInterface
+class Product extends AbstractEntityFlexible implements ProductInterface
 {
-    /**
-     * @var integer $version
-     *
-     * @ORM\Column(name="version", type="integer")
-     * @ORM\Version
-     */
-    protected $version;
-
     /**
      * @var ArrayCollection $values
      *
@@ -136,16 +127,6 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
         $this->completenesses      = new ArrayCollection();
         $this->groups              = new ArrayCollection();
         $this->productAssociations = new ArrayCollection();
-    }
-
-    /**
-     * Get version
-     *
-     * @return string $version
-     */
-    public function getVersion()
-    {
-        return $this->version;
     }
 
     /**

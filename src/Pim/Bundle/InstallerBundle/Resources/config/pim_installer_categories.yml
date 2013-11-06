@@ -1,4 +1,4 @@
 categories:
     default:
-        code:  default
-        label: Master catalog
+        labels:
+            en_US: Master catalog

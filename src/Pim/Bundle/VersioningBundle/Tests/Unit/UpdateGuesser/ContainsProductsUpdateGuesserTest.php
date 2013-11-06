@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\VersioningBundle\Tests\Unit\UpdateGuesser;
 
+use Pim\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
 use Pim\Bundle\VersioningBundle\UpdateGuesser\ContainsProductsUpdateGuesser;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\Product;
@@ -28,10 +29,9 @@ class ContainsProductsUpdateGuesserTest extends AbstractUpdateGuesserTest
 
         $guesser   = new ContainsProductsUpdateGuesser();
         $em        = $this->getEntityManagerMock();
-        $updates   = $guesser->guessUpdates($em, $category);
-        $this->assertEquals(3, count($updates));
-        $this->assertEquals($category, $updates[0]);
-        $this->assertEquals($productOne, $updates[1]);
-        $this->assertEquals($productTwo, $updates[2]);
+        $updates   = $guesser->guessUpdates($em, $category, UpdateGuesserInterface::ACTION_UPDATE_ENTITY);
+        $this->assertEquals(2, count($updates));
+        $this->assertEquals($productOne, $updates[0]);
+        $this->assertEquals($productTwo, $updates[1]);
     }
 }

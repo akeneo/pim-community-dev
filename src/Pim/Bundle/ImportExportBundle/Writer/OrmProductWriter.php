@@ -9,6 +9,7 @@ use Oro\Bundle\BatchBundle\Entity\StepExecution;
 use Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\ImportExportBundle\Cache\EntityCache;
+use Pim\Bundle\VersioningBundle\EventListener\AddVersionListener;
 
 /**
  * Product writer using ORM method
@@ -30,6 +31,11 @@ class OrmProductWriter extends AbstractConfigurableStepElement implements
      * @var EntityManager
      */
     protected $entityManager;
+
+    /**
+     * @var AddVersionListener
+     */
+    protected $addVersionListener;
 
     /**
      * @var Attribute
@@ -66,18 +72,21 @@ class OrmProductWriter extends AbstractConfigurableStepElement implements
         'Oro\\Bundle\\UserBundle\\Entity\\UserApi'
     );
     /**
-     * @param ProductManager $productManager
-     * @param EntityManager  $entityManager
-     * @param EntityCache    $entityCache
+     * @param ProductManager     $productManager
+     * @param EntityManager      $entityManager
+     * @param EntityCache        $entityCache
+     * @param AddVersionListener $addVersionListener
      */
     public function __construct(
         ProductManager $productManager,
         EntityManager $entityManager,
-        EntityCache $entityCache
+        EntityCache $entityCache,
+        AddVersionListener $addVersionListener
     ) {
         $this->productManager = $productManager;
         $this->entityManager  = $entityManager;
         $this->entityCache    = $entityCache;
+        $this->addVersionListener = $addVersionListener;
     }
 
     /**
@@ -93,6 +102,7 @@ class OrmProductWriter extends AbstractConfigurableStepElement implements
      */
     public function write(array $items)
     {
+        $this->addVersionListener->setRealTimeVersioning(false);
         $this->productManager->saveAll($items, true);
         $this->productManager->handleAllMedia($items);
         $this->stepExecution->setWriteCount(count($items));

@@ -15,7 +15,7 @@
 {% endspaceless %}
 
 {% if form.vars.value.id %}
-    {% include 'OroGridBundle:Include:javascript.html.twig' with {'datagridView': datagrid, 'selector': '#history-grid'} %}
+    {% include 'OroGridBundle:Include:javascript.html.twig' with {'datagridView': historyDatagrid, 'selector': '#history-grid'} %}
 {% endif %}
 
 <script type="text/javascript">

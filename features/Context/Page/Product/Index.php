@@ -28,7 +28,8 @@ class Index extends Grid
         $this->elements = array_merge(
             $this->elements,
             array(
-                'Categories tree' => array('css' => '#tree'),
+                'Categories tree'  => array('css' => '#tree'),
+                'Tree select'      => array('css' => '#tree_select'),
                 'Locales dropdown' => array('css' => '#locale-switcher'),
             )
         );
@@ -50,6 +51,18 @@ class Index extends Grid
             throw new \Exception(sprintf('Could not find locale "%s" in switcher.', $locale));
         }
         $elt->click();
+    }
+
+    /**
+     * @param string $category
+     *
+     * @return Index
+     */
+    public function selectTree($category)
+    {
+        $this->getElement('Tree select')->selectOption($category);
+
+        return $this;
     }
 
     /**

@@ -1652,7 +1652,7 @@ class FixturesContext extends RawMinkContext
 
         if (!$localeAttribute) {
             $localeAttribute = $manager->createAttribute('oro_flexibleentity_simpleselect');
-            $localeAttribute->setCode('cataloglocale')->setLabel('cataloglocale');
+            $localeAttribute->setCode('cataloglocale')->setLabel('Catalog locale');
             foreach ($this->locales as $localeCode) {
                 $option = $manager->createAttributeOption();
                 $optionValue = $manager->createAttributeOptionValue()->setValue($localeCode);
@@ -1680,7 +1680,7 @@ class FixturesContext extends RawMinkContext
 
         if (!$scopeAttribute) {
             $scopeAttribute = $manager->createAttribute('oro_flexibleentity_simpleselect');
-            $scopeAttribute->setCode('catalogscope')->setLabel('catalogscope');
+            $scopeAttribute->setCode('catalogscope')->setLabel('Catalog scope');
             foreach (array_keys($this->channels) as $scopeCode) {
                 $option = $manager->createAttributeOption();
                 $optionValue = $manager->createAttributeOptionValue()->setValue($scopeCode);
@@ -1702,6 +1702,25 @@ class FixturesContext extends RawMinkContext
         $scopeValue = $manager->createFlexibleValue();
         $scopeValue->setAttribute($scopeAttribute);
         $scopeValue->setOption($scopeOption);
+        $user->addValue($scopeValue);
+
+        $treeAttribute = $manager->getAttributeRepository()->findOneBy(array('code' => 'defaulttree'));
+
+        if (!$treeAttribute) {
+            $treeAttribute = $manager->createAttribute('oro_flexibleentity_simpleselect');
+            $treeAttribute->setCode('defaulttree')->setLabel('Default tree');
+            $treeOption = $manager->createAttributeOption();
+            $optionValue = $manager->createAttributeOptionValue()->setValue('default');
+            $treeOption->addOptionValue($optionValue);
+            $treeAttribute->addOption($treeOption);
+            $this->persist($treeAttribute);
+        } else {
+            $treeOption = $treeAttribute->getOptions()->first();
+        }
+
+        $scopeValue = $manager->createFlexibleValue();
+        $scopeValue->setAttribute($treeAttribute);
+        $scopeValue->setOption($treeOption);
         $user->addValue($scopeValue);
 
         $this->getUserManager()->updateUser($user);

@@ -2,23 +2,14 @@
 
 namespace Pim\Bundle\CatalogBundle\Controller;
 
-use Symfony\Bridge\Doctrine\RegistryInterface;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Form\Form;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Validator\ValidatorInterface;
-use Symfony\Component\Translation\TranslatorInterface;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
-use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
-use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\CatalogBundle\Form\Handler\GroupHandler;
@@ -41,7 +32,7 @@ class VariantGroupController extends GroupController
     {
         /** @var QueryBuilder $queryBuilder */
         $queryBuilder = $this->getManager()->createQueryBuilder();
-        $datagrid = $this->datagridWorker->getDatagrid('variant_group', $queryBuilder);
+        $datagrid = $this->datagridHelper->getDatagrid('variant_group', $queryBuilder);
 
         $view = ('json' === $request->getRequestFormat())
             ? 'OroGridBundle:Datagrid:list.json.php'
@@ -98,18 +89,9 @@ class VariantGroupController extends GroupController
             $this->addFlash('success', 'flash.variant group.updated');
         }
 
-        $datagridManager = $this->datagridWorker->getDatagridManager('group_product');
+        $datagridManager = $this->datagridHelper->getDatagridManager('group_product');
         $datagridManager->setGroup($group);
         $datagridView = $datagridManager->getDatagrid()->createView();
-
-        $historyDatagrid = $this->datagridWorker->getDataAuditDatagrid(
-            $group,
-            'pim_catalog_variant_group_edit',
-            array(
-                'id' => $group->getId()
-            )
-        );
-        $historyDatagridView = $historyDatagrid->createView();
 
         if ('json' === $this->getRequest()->getRequestFormat()) {
             return $this->render(
@@ -121,7 +103,7 @@ class VariantGroupController extends GroupController
         return array(
             'form' => $this->groupForm->createView(),
             'datagrid' => $datagridView,
-            'historyDatagrid' => $historyDatagridView
+            'historyDatagrid' => $this->getHistoryGrid($group)->createView()
         );
     }
 }

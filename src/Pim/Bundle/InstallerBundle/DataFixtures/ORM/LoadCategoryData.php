@@ -5,6 +5,7 @@ namespace Pim\Bundle\InstallerBundle\DataFixtures\ORM;
 use Symfony\Component\Yaml\Yaml;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Entity\Category;
+use Pim\Bundle\CatalogBundle\Entity\CategoryTranslation;
 
 /**
  * Load fixtures for categories
@@ -22,11 +23,10 @@ class LoadCategoryData extends AbstractInstallerFixture
     {
         $configuration = Yaml::parse(realpath($this->getFilePath()));
 
-        foreach ($configuration['categories'] as $data) {
-            $category = $this->createCategory($data['code']);
+        foreach ($configuration['categories'] as $code => $data) {
+            $category = $this->createCategory($code, $data);
             $manager->persist($category);
         }
-
         $manager->flush();
     }
 
@@ -36,13 +36,33 @@ class LoadCategoryData extends AbstractInstallerFixture
      *
      * @return \Pim\Bundle\CatalogBundle\Entity\Category
      */
-    protected function createCategory($code)
+    protected function createCategory($code, array $data)
     {
         $category = new Category();
         $category->setCode($code);
         $this->setReference('category.'. $code, $category);
+        foreach ($data['labels'] as $locale => $label) {
+            $this->createLabel($category, $locale, $label);
+        }
 
         return $category;
+    }
+
+    /**
+     * Creates a label
+     *
+     * @param Category $category
+     * @param type     $locale
+     * @param type     $label
+     */
+    protected function createLabel(Category $category, $locale, $label)
+    {
+        $translation = new CategoryTranslation;
+        $translation
+            ->setLabel($label)
+            ->setLocale($locale)
+            ->setForeignKey($category);
+        $category->addTranslation($translation);
     }
 
     /**

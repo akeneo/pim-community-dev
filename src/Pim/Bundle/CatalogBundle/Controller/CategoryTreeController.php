@@ -18,11 +18,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-use Oro\Bundle\GridBundle\Renderer\GridRenderer;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
-use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
+use Pim\Bundle\GridBundle\Helper\DatagridHelperInterface;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\CatalogBundle\Helper\CategoryHelper;
 use Pim\Bundle\CatalogBundle\Entity\Category;
@@ -38,14 +37,9 @@ use Pim\Bundle\CatalogBundle\Exception\DeleteException;
 class CategoryTreeController extends AbstractDoctrineController
 {
     /**
-     * @var GridRenderer
+     * @var DatagridHelperInterface
      */
-    private $gridRenderer;
-
-    /**
-     * @var DatagridWorkerInterface
-     */
-    private $dataGridWorker;
+    private $datagridHelper;
 
     /**
      * @var CategoryManager
@@ -63,8 +57,7 @@ class CategoryTreeController extends AbstractDoctrineController
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
      * @param RegistryInterface        $doctrine
-     * @param GridRenderer             $gridRenderer
-     * @param DatagridWorkerInterface  $dataGridWorker
+     * @param DatagridHelperInterface  $datagridHelper
      * @param CategoryManager          $categoryManager
      */
     public function __construct(
@@ -76,8 +69,7 @@ class CategoryTreeController extends AbstractDoctrineController
         ValidatorInterface $validator,
         TranslatorInterface $translator,
         RegistryInterface $doctrine,
-        GridRenderer $gridRenderer,
-        DatagridWorkerInterface $dataGridWorker,
+        DatagridHelperInterface $datagridHelper,
         CategoryManager $categoryManager
     ) {
         parent::__construct(
@@ -91,8 +83,7 @@ class CategoryTreeController extends AbstractDoctrineController
             $doctrine
         );
 
-        $this->gridRenderer    = $gridRenderer;
-        $this->dataGridWorker  = $dataGridWorker;
+        $this->datagridHelper  = $datagridHelper;
         $this->categoryManager = $categoryManager;
     }
 
@@ -117,6 +108,9 @@ class CategoryTreeController extends AbstractDoctrineController
             } catch (NotFoundHttpException $e) {
                 $selectNode = null;
             }
+        }
+        if ($selectNode === null) {
+            $selectNode = $this->getDefaultTree();
         }
 
         $trees = $this->categoryManager->getTrees();
@@ -289,18 +283,6 @@ class CategoryTreeController extends AbstractDoctrineController
      */
     public function editAction(Request $request, Category $category)
     {
-        $datagrid = $this->dataGridWorker->getDataAuditDatagrid(
-            $category,
-            'pim_catalog_categorytree_edit',
-            array(
-                'id' => $category->getId()
-            )
-        );
-
-        if ('json' == $request->getRequestFormat()) {
-            return $this->gridRenderer->renderResultsJsonResponse($datagrid->createView());
-        }
-
         $form = $this->createForm('pim_category', $category, $this->getFormOptions($category));
 
         if ($request->isMethod('POST')) {
@@ -318,10 +300,27 @@ class CategoryTreeController extends AbstractDoctrineController
         return $this->render(
             sprintf('PimCatalogBundle:CategoryTree:%s.html.twig', $request->get('content', 'edit')),
             array(
-                'form'     => $form->createView(),
-                'datagrid' => $datagrid->createView(),
+                'form'            => $form->createView(),
+                'historyDatagrid' => $this->getHistoryGrid($category)->createView()
             )
         );
+    }
+
+    /**
+     * History of a category
+     *
+     * @param Request  $request
+     * @param Category $category
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|template
+     */
+    public function historyAction(Request $request, Category $category)
+    {
+        $historyGridView = $this->getHistoryGrid($category)->createView();
+
+        if ('json' === $request->getRequestFormat()) {
+            return $this->datagridHelper->getDatagridRenderer()->renderResultsJsonResponse($historyGridView);
+        }
     }
 
     /**
@@ -369,6 +368,29 @@ class CategoryTreeController extends AbstractDoctrineController
     }
 
     /**
+     * Get default tree
+     *
+     * @throws \Exception
+     *
+     * @return Category
+     */
+    protected function getDefaultTree()
+    {
+        $defaultTree = (string) $this->getUser()->getValue('defaulttree');
+        if (!$defaultTree) {
+            throw new \Exception('User must have a default tree defined');
+        }
+
+        $tree = $this->categoryManager->getEntityRepository()->findOneBy(array('code' => $defaultTree));
+
+        if (!$tree) {
+            throw $this->createNotFoundException(sprintf('%s tree not found', $defaultTree));
+        }
+
+        return $tree;
+    }
+
+    /**
      * Gets the options for the form
      *
      * @param Category $category
@@ -378,5 +400,21 @@ class CategoryTreeController extends AbstractDoctrineController
     protected function getFormOptions(Category $category)
     {
         return array();
+    }
+
+    /**
+     * @param Category $category
+     *
+     * @return Datagrid
+     */
+    protected function getHistoryGrid(Category $category)
+    {
+        $historyGrid = $this->datagridHelper->getDataAuditDatagrid(
+            $category,
+            'pim_catalog_categorytree_history',
+            array('id' => $category->getId())
+        );
+
+        return $historyGrid;
     }
 }

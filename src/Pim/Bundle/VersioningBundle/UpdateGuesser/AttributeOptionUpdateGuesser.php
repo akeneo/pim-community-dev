@@ -18,7 +18,18 @@ class AttributeOptionUpdateGuesser implements UpdateGuesserInterface
     /**
      * {@inheritdoc}
      */
-    public function guessUpdates(Entitymanager $em, $entity)
+    public function supportAction($action)
+    {
+        return in_array(
+            $action,
+            array(UpdateGuesserInterface::ACTION_UPDATE_ENTITY, UpdateGuesserInterface::ACTION_DELETE)
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function guessUpdates(Entitymanager $em, $entity, $action)
     {
         $pendings = array();
         if ($entity instanceof AttributeOption) {

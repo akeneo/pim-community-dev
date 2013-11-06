@@ -211,15 +211,6 @@ class CategoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test related method
-     * Only test if getVersion return a value or null. Setter is not accessible.
-     */
-    public function testGetVersion()
-    {
-        $this->assertNull($this->category->getVersion());
-    }
-
-    /**
      * Assert entity
      * @param Pim\Bundle\CatalogBundle\Entity\Category $entity
      */
