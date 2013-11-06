@@ -51,10 +51,6 @@ function(_, Backbone, __, DialogWidget, LoadingMask, FormValidation, DeleteConfi
             this.remove();
         },
 
-        getCollection: function() {
-            return this.options.collection;
-        },
-
         render: function() {
             // create a dialog
             if (!this.model) {
