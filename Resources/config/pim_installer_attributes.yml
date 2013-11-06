@@ -37,6 +37,7 @@ attributes:
             numberMin:           1
             numberMax:           500
             sortOrder:           1
+            decimalsAllowed:     true
     short_description:
         labels:
             en_US: Short Description
