@@ -266,36 +266,6 @@ class ProductBuilder
     }
 
     /**
-     * Remove a redundant value from the product
-     *
-     * @param ProductInterface $product
-     * @param Attribute        $attribute
-     * @param string           $locale
-     * @param string           $scope
-     *
-     * @return null
-     */
-    protected function removeProductValue(ProductInterface $product, $attribute, $locale = null, $scope = null)
-    {
-        $values = $product->getValues();
-        $values = $values->filter(
-            function ($value) use ($attribute, $locale, $scope) {
-                if ($value->getAttribute() === $attribute
-                    && $value->getScope() === $scope
-                    && $value->getLocale() === $locale) {
-                    return true;
-                }
-
-                return false;
-            }
-        );
-        foreach ($values as $value) {
-            $product->removeValue($value);
-            $value->setEntity(null);
-        }
-    }
-
-    /**
      * Return available channels
      *
      * @return ArrayCollection
