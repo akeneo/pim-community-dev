@@ -72,7 +72,7 @@ Gets country by locale. If could not find result than returns default country.
 Language
 ========
 
-Locale settings provides application language configuration. Language setting affects translations and representation
+Locale settings provides application language configuration. Application language affects translations and representation
 of date times. For example you could have en_US locale but french language, in this case date/times will be localized
 using en_US locale but with french language. To get current language there is a corresponding method:
 
@@ -86,6 +86,86 @@ Calendar
 
 Locale settings can provide instance of localized Calendar class (Oro\Bundle\LocaleBundle\Model\Calendar). This class
 can be used to get localized calendar data based on application locale and application language.
+
+Example of getting calendar from locale settings:
+
+```php
+$localeSettings = $this->get('oro_locale.settings');
+$calendar = $locale->getCalendar();
+```
+
+Calendar provides next information:
+
+*First day of week*
+
+First day of week depends from locale in Locale Settings.
+
+```php
+// Returns one of constants of Calendar: DOW_SUNDAY, DOW_MONDAY, DOW_TUESDAY, DOW_WEDNESDAY, DOW_THURSDAY, DOW_FRIDAY, DOW_SATURDAY
+$firstDayOfWeek = $calendar->getFirstDayOfWeek();
+```
+
+*Month names*
+
+Month names depends from application language in Locale Settings.
+
+```php
+// array(
+//   1 => 'January', 'February', 'March', 'April', 'May', 'June', 'July',
+//   'August', 'September', 'October', 'November', 'December',
+// )
+$wideMonthNames = $calendar->getMonthNames();
+$wideMonthNames = $calendar->getMonthNames(Calendar::WIDTH_WIDE);
+
+// array(1 => 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec')
+$abbreviatedMonthNames = $calendar->getMonthNames(Calendar::WIDTH_ABBREVIATED);
+
+$shortMonthNames = $calendar->getMonthNames(Calendar::WIDTH_SHORT);
+
+// array(1 => 'J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D')
+$narrowMonthNames = $calendar->getMonthNames(Calendar::WIDTH_NARROW);
+```
+
+*Day of week names*
+
+Day of week names depends from application language in Locale Settings.
+
+```php
+// array(
+//   Calendar::DOW_SUNDAY    => 'Sunday',
+//   Calendar::DOW_MONDAY    => 'Monday',
+//   Calendar::DOW_TUESDAY   => 'Tuesday',
+//   Calendar::DOW_WEDNESDAY => 'Wednesday',
+//   Calendar::DOW_THURSDAY  => 'Thursday',
+//   Calendar::DOW_FRIDAY    => 'Friday',
+//   Calendar::DOW_SATURDAY  => 'Saturday',
+// );
+$wideDowNames = $calendar->getDayOfWeekNames();
+$wideDowNames = $calendar->getDayOfWeekNames(Calendar::WIDTH_WIDE);
+
+// array(
+//   Calendar::DOW_SUNDAY    => 'Sun',
+//   Calendar::DOW_MONDAY    => 'Mon',
+//   Calendar::DOW_TUESDAY   => 'Tue',
+//   Calendar::DOW_WEDNESDAY => 'Wed',
+//   Calendar::DOW_THURSDAY  => 'Thu',
+//   Calendar::DOW_FRIDAY    => 'Fri',
+//   Calendar::DOW_SATURDAY  => 'Sat',
+// );
+$abbreviatedDowNames = $calendar->getDayOfWeekNames(Calendar::WIDTH_ABBREVIATED);
+$shortDowNames = $calendar->getDayOfWeekNames(Calendar::WIDTH_SHORT);
+
+// array(
+//   Calendar::DOW_SUNDAY    => 'S',
+//   Calendar::DOW_MONDAY    => 'M',
+//   Calendar::DOW_TUESDAY   => 'T',
+//   Calendar::DOW_WEDNESDAY => 'W',
+//   Calendar::DOW_THURSDAY  => 'T',
+//   Calendar::DOW_FRIDAY    => 'F',
+//   Calendar::DOW_SATURDAY  => 'S',
+// );
+$narrowDowNames = $calendar->getDayOfWeekNames(Calendar::WIDTH_NARROW);
+```
 
 
 Names formats
