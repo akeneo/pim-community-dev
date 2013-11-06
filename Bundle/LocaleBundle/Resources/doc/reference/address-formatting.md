@@ -3,6 +3,7 @@ Address Formatting
 
 Table of Contents
 -----------------
+ - [Formats source]
  - [PHP Address Formatter](#php-address-formatter)
     - [Methods and examples of usage](#methods-and-examples-of-usage)
       - [format](#format)
@@ -14,6 +15,42 @@ Table of Contents
     - [Methods and examples of usage](#js_methods-and-examples-of-usage)
         - [format](#js_format)
         - [getAddressFormat](#js_getAddressFormat)
+
+Formats source
+================
+Address formats may be found in address_format.yml.
+
+Example of format configuration for US:
+
+```yaml
+US:
+    format: '%name%\n%organization%\n%street%\n%CITY% %REGION_CODE% %COUNTRY_ISO2% %postal_code%'
+```
+
+Possible format placeholders:
+
+* *name* - address owner name
+* *organization* - organization
+* *street* - street
+* *street2* - street line 2
+* *city* - city
+* *country* - country name
+* *country_iso2* - country ISO2 code
+* *country_iso3* - country ISO3 code
+* *postal_code* - postal/ZIP code
+* *region* - region
+* *region_code* - region code
+
+In case when format placeholder is in upper case corresponding value will be also upper cased.
+
+In address_format.yml stored also additional optional data that does not used for now in LocaleBundle. Possible keys:
+
+* *latin_format* - address format for latin characters
+* *require* - array of required address fields for country
+* *region_name_type* - how region named in country
+* *zip_name_type* - how post code (zip) named in country
+* *format_charset* - format charset encoding
+* *postprefix* - post code prefix
 
 PHP Address Formatter
 ====================
@@ -81,7 +118,7 @@ By default new line separator set to *&lt;br/&gt;*
 ```
 
 JS
-==
+============
 
 Methods and examples of usage
 -----------------------------
@@ -96,24 +133,21 @@ To format address using specific country format *country* parameters may be set.
 function which will be called for each line and which must return string.
 
 Possible address object parameters are:
-
-Parameter    | Description
----------------------------------
-prefix       | name prefix
-suffix       | name suffix
-first_name   | first name
-middle_name  | middle name
-last_name    | last name
-organization | organization
-street       | street
-street2      | street line 2
-city         | city
-country      | country name
-country_iso2 | country ISO2 code
-country_iso3 | country ISO3 code
-postal_code  | postal/ZIP code
-region       | region
-region_code  | region code
+* *prefix* - name prefix
+* *suffix* - name suffix
+* *first_name* - first name
+* *middle_name* - middle name
+* *last_name* - last name
+* *organization* - organization
+* *street* - street
+* *street2* - street line 2
+* *city* - city
+* *country* - country name
+* *country_iso2* - country ISO2 code
+* *country_iso3* - country ISO3 code
+* *postal_code* - postal/ZIP code
+* *region* - region
+* *region_code* - region code
 
 ### getAddressFormat
 
