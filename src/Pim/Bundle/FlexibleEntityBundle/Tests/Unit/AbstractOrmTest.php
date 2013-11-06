@@ -19,7 +19,7 @@ abstract class AbstractOrmTest extends OrmTestCase
     /**
      * @var string
      */
-    protected $entityPath = 'Oro\\Bundle\\FlexibleEntityBundle\\Test\\Entity\\Demo';
+    protected $entityPath = 'Pim\\Bundle\\FlexibleEntityBundle\\Test\\Entity\\Demo';
 
     /**
      * @var Container

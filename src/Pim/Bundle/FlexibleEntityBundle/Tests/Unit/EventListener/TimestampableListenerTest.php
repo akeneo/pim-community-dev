@@ -41,7 +41,7 @@ class TimestampableListenerTest extends OrmTestCase
         $this->listener = new TimestampableListener();
         // prepare test entity manager
         $reader = new AnnotationReader();
-        $metadataDriver = new AnnotationDriver($reader, 'Oro\\Bundle\\FlexibleEntityBundle\\Entity');
+        $metadataDriver = new AnnotationDriver($reader, 'Pim\\Bundle\\FlexibleEntityBundle\\Entity');
         $this->em = $this->_getTestEntityManager();
         $this->em->getConfiguration()->setMetadataDriverImpl($metadataDriver);
     }

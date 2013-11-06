@@ -17,7 +17,7 @@ final class FlexibleEntityEvents
      *
      * @var string
      */
-    const CREATE_ATTRIBUTE = 'oro_flexible.create_attribute';
+    const CREATE_ATTRIBUTE = 'pim_flexible.create_attribute';
 
     /**
      * This event is thrown each time a flexible is created in the system.
@@ -27,7 +27,7 @@ final class FlexibleEntityEvents
      *
      * @var string
      */
-    const CREATE_FLEXIBLE  = 'oro_flexible.create_flexible';
+    const CREATE_FLEXIBLE  = 'pim_flexible.create_flexible';
 
     /**
      * This event is thrown each time a value is created in the system.
@@ -37,5 +37,5 @@ final class FlexibleEntityEvents
      *
      * @var string
      */
-    const CREATE_VALUE     = 'oro_flexible.create_value';
+    const CREATE_VALUE     = 'pim_flexible.create_value';
 }

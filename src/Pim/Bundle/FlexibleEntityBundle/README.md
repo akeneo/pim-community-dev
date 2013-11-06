@@ -21,12 +21,12 @@ To use as dependency, use composer and add bundle in your AppKernel :
 ```yaml
     "require": {
         [...]
-        "oro/FlexibleEntityBundle": "dev-master"
+        "akeneo/FlexibleEntityBundle": "dev-master"
     },
     "repositories": [
         {
             "type": "vcs",
-            "url": "git@github.com:laboro/FlexibleEntityBundle.git",
+            "url": "git@github.com:akeneo/FlexibleEntityBundle.git",
             "branch": "master"
         }
     ]

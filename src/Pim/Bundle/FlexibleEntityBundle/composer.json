@@ -1,9 +1,9 @@
 {
-    "name": "oro/flexible-entity-bundle",
+    "name": "pim/flexible-entity-bundle",
     "type": "symfony-bundle",
-    "description": "BAP Flexible Entity Bundle",
-    "keywords": ["BAP"],
-    "homepage": "https://github.com/laboro/FlexibleEntityBundle",
+    "description": "Akeneo Flexible Entity Bundle",
+    "keywords": ["Akeneo"],
+    "homepage": "https://github.com/akeneo/FlexibleEntityBundle",
     "license": "MIT",
     "require": {
         "php": ">=5.3.3",
@@ -15,9 +15,9 @@
         "doctrine/orm": ">=2.2.3,<2.4-dev"
     },
     "autoload": {
-        "psr-0": { "Oro\\Bundle\\FlexibleEntityBundle": "" }
+        "psr-0": { "Pim\\Bundle\\FlexibleEntityBundle": "" }
     },
-    "target-dir": "Oro/Bundle/FlexibleEntityBundle",
+    "target-dir": "Pim/Bundle/FlexibleEntityBundle",
     "minimum-stability": "dev",
     "extra": {
         "branch-alias": {
