@@ -10,6 +10,9 @@ Table of Contents
    - [First day of week](#first-day-of-week)
    - [Month names](#month-names)
    - [Day of week names](#day-of-week-names)
+ - [Location](#location)
+ - [Time Zone](#time-zone)
+ - [Currencies](#currencies)
  - [Names formats](#names-formats)
  - [Addresses formats](#addresses-formats)
 
@@ -168,6 +171,41 @@ $shortDowNames = $calendar->getDayOfWeekNames(Calendar::WIDTH_SHORT);
 // );
 $narrowDowNames = $calendar->getDayOfWeekNames(Calendar::WIDTH_NARROW);
 ```
+
+Location
+========
+
+Location is a country associated with locale settings. Locations affects formatting of addresses in mode when
+addresses are not formatted using their Countries.
+
+Example of getting country location from locale settings:
+```php
+$localeSettings = $this->get('oro_locale.settings');
+// US or some other code of the country
+$country = $locale->getCountry();
+```
+
+Time Zone
+=========
+
+All dates in application are stored in UTC time zone. When dates are displayed on the UI they are formatted via date/time
+formatter. This formatter uses time zone setting from Locale Settings to display date times with respect of time zone.
+
+List of available timezones in PHP: http://php.net/manual/en/timezones.php
+
+Example of getting time zone from Locale settings
+
+```php
+
+$localeSettings = $this->get('oro_locale.settings');
+// America/Los_Angeles or some other time zone
+$timeZone = $locale->getTimeZone();
+```
+
+Currencies
+==========
+
+
 
 Names formats
 =============
