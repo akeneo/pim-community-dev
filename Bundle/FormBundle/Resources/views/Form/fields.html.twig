@@ -347,7 +347,7 @@
 
 {% block oro_date_widget %}
     {% set actual_id = id %}
-    {% set selector_name = 'date_selector_' ~ random() %}
+    {% set selector_name = 'date_selector_' ~ id %}
     {% set selector_id = selector_name %}
 
     {# Actual date field that uses ISO format #}
@@ -365,9 +365,13 @@
         function($, datetimeFormatter) {
             var selector = $("#{{ selector_id }}");
             var actual = $("#{{ actual_id }}");
-            {% if value %}
-                selector.val(datetimeFormatter.formatDate({{ value|json_encode|raw }}));
-            {% endif %}
+            var sync = function() {
+                selector.val(datetimeFormatter.formatDate(actual.val()));
+            };
+            actual.on('change', sync);
+            if (actual.val().length) {
+                sync();
+            }
             selector.datepicker({
                 altField: '#{{ actual_id }}',
                 altFormat: 'yy-mm-dd',
@@ -392,7 +396,7 @@
 
 {% block oro_datetime_widget %}
     {% set actual_id = id %}
-    {% set selector_name = 'datetime_selector_' ~ random() %}
+    {% set selector_name = 'datetime_selector_' ~ id %}
     {% set selector_id = selector_name %}
 
     {# Actual date field that uses ISO format #}
@@ -410,9 +414,13 @@
         function($, datetimeFormatter) {
             var selector = $("#{{ selector_id }}");
             var actual = $("#{{ actual_id }}");
-            {% if value %}
-                selector.val(datetimeFormatter.formatDateTime({{ value|json_encode|raw }}));
-            {% endif %}
+            var sync = function() {
+                selector.val(datetimeFormatter.formatDateTime(actual.val()));
+            };
+            actual.on('change', sync);
+            if (actual.val().length) {
+                sync();
+            }
             selector.datetimepicker({
                 altField: '#{{ actual_id }}',
                 altFormat: 'yy-mm-dd',

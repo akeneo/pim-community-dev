@@ -21,16 +21,18 @@
                                     {% if (ownerType == 'USER') %}
                                         {% if resource_granted('oro_user_user_view') %}
                                             {% set ownerPath = path('oro_user_view', {'id': entity.owner.id}) %}
+                                            {% set ownerName = entity.owner|oro_format_name %}
                                         {% endif %}
                                     {% elseif (ownerType == 'BUSINESS_UNIT') %}
                                         {% if resource_granted('oro_business_unit_view') %}
                                             {% set ownerPath = path('oro_business_unit_view', {'id': entity.owner.id}) %}
+                                            {% set ownerName = entity.owner.name %}
                                         {% endif %}
                                     {% endif %}
                                     {% if ownerPath is defined %}
-                                        <a href="{{ ownerPath }}">{{ entity.owner|oro_format_name }}</a>
+                                        <a href="{{ ownerPath }}">{{ ownerName }}</a>
                                     {% else %}
-                                        {{ entity.owner.name }}
+                                        {{ ownerName }}
                                     {% endif %}
                                 </li>
                             {% endif %}

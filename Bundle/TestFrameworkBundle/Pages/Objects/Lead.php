@@ -39,7 +39,6 @@ class Lead extends AbstractEntity implements Entity
         $this->website = $this->byId('orocrm_sales_lead_form_website');
         $this->employees = $this->byId('orocrm_sales_lead_form_numberOfEmployees');
         $this->industry = $this->byId('orocrm_sales_lead_form_industry');
-        $this->address = $this->byId('orocrm_sales_lead_form_address');
         $this->owner = $this->byXpath("//div[@id='s2id_orocrm_sales_lead_form_owner']/a");
 
         return $this;

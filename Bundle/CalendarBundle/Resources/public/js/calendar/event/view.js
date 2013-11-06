@@ -25,9 +25,6 @@ function(_, Backbone, __, DialogWidget, LoadingMask, FormValidation, DeleteConfi
 
         initialize: function() {
             var templateHtml = $(this.options.formTemplateSelector).html();
-            templateHtml = templateHtml
-                .replace(/\{\s*(\w+)\s*\}/g, '<%- $1 %>')
-                .replace(/checkedif="(\w+)"/g, '<% if ($1) { %> checked="checked"<% } %>');
             this.template = _.template(templateHtml);
 
             this.listenTo(this.model, 'sync', this.onModelSave);
@@ -51,17 +48,17 @@ function(_, Backbone, __, DialogWidget, LoadingMask, FormValidation, DeleteConfi
             this.remove();
         },
 
-        getCollection: function() {
-            return this.options.collection;
-        },
-
         render: function() {
             // create a dialog
             if (!this.model) {
                 this.model = new EventModel();
             }
+            var modelData = this.model.toJSON();
+            var eventForm = this.template(modelData);
+            eventForm = this.fillForm(eventForm, modelData);
+
             this.eventDialog = new DialogWidget({
-                el: this.template(this.model.toJSON()),
+                el: eventForm,
                 title: this.model.isNew() ? __('Add New Event') : __('Edit Event'),
                 stateEnabled: false,
                 incrementalPosition: false,
@@ -172,6 +169,22 @@ function(_, Backbone, __, DialogWidget, LoadingMask, FormValidation, DeleteConfi
             if (this.eventDialog) {
                 FormValidation.handleErrors(this.eventDialog.$el.parent(), err);
             }
+        },
+
+        fillForm: function(form, modelData) {
+            form = $(form);
+            _.each(modelData, function(value, key) {
+                var input = form.find('[name$="[' + key + ']"]');
+                if (input.length) {
+                    if (input.is(':checkbox')) {
+                        input.prop('checked', value);
+                    } else {
+                        input.val(value);
+                    }
+                    input.change();
+                }
+            });
+            return form;
         },
 
         getEventFormData: function () {

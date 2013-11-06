@@ -73,12 +73,6 @@ function(_, Backbone, __, app, messenger, LoadingMask,
             this.listenTo(this.getCollection(), 'add', this.onEventAdded);
             this.listenTo(this.getCollection(), 'change', this.onEventChanged);
             this.listenTo(this.getCollection(), 'destroy', this.onEventDeleted);
-
-            // subscribe to connection collection events
-            var connectionsCollection = this.options.connectionsOptions.collection;
-            this.listenTo(connectionsCollection, 'add', this.onConnectionAddedOrDeleted);
-            this.listenTo(connectionsCollection, 'change', this.onConnectionChanged);
-            this.listenTo(connectionsCollection, 'destroy', this.onConnectionAddedOrDeleted);
         },
 
         getEventsView: function (model) {
@@ -211,6 +205,7 @@ function(_, Backbone, __, app, messenger, LoadingMask,
             var onEventsLoad = _.bind(function() {
                 var fcEvents = this.getCollection().toJSON();
                 this.prepareViewModels(fcEvents);
+                this._hideMask();
                 callback(fcEvents);
             }, this);
 
@@ -340,7 +335,13 @@ function(_, Backbone, __, app, messenger, LoadingMask,
                 eventClick: _.bind(this.eventClick, this),
                 eventDrop: _.bind(this.eventDropOrResize, this),
                 eventResize: _.bind(this.eventDropOrResize, this),
-                loading: _.bind(this.showLoadingMask, this),
+                loading: _.bind(function(show) {
+                    if (show) {
+                        this.showLoadingMask();
+                    } else {
+                        this._hideMask();
+                    }
+                }, this),
                 allDayText: __('all-day'),
                 buttonText: {
                     today: __('today'),
@@ -385,16 +386,17 @@ function(_, Backbone, __, app, messenger, LoadingMask,
             var connectionsTemplate = _.template($(this.options.connectionsOptions.containerTemplateSelector).html());
             connectionsContainer.append($(connectionsTemplate()));
 
-            // init connection collection
-            var connections = this.options.connectionsOptions.collection || new ConnectionCollection();
-            connections.setCalendar(this.options.calendar);
-
             // create a view for a list of connections
             this.connectionsView = new ConnectionView({
                 el: connectionsContainer,
-                collection: connections,
+                collection: this.options.connectionsOptions.collection,
+                calendar: this.options.calendar,
                 itemTemplateSelector: this.options.connectionsOptions.itemTemplateSelector
             });
+
+            this.listenTo(this.connectionsView, 'connectionAdd', this.onConnectionAddedOrDeleted);
+            this.listenTo(this.connectionsView, 'connectionChange', this.onConnectionChanged);
+            this.listenTo(this.connectionsView, 'connectionRemove', this.onConnectionAddedOrDeleted);
         },
 
         render: function() {
