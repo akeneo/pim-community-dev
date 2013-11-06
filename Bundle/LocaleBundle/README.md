@@ -23,7 +23,7 @@ Provides such locale settings of application as:
   * currency symbols based on currency codes
   * currency code, phone prefix, default locale based on country
 
-Uses system configuration as a source of settings.
+Locale settings uses system configuration as a source.
 
 See detailed [documentation](./Resources/doc/reference/locale-settings.md) for more details.
 

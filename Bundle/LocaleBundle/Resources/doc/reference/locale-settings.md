@@ -21,8 +21,7 @@ This service can be used to get locale specific settings of the application such
 * calendar
 * time zone
 * list of person names formats
-* list addresses formats
-* instance of calendar object to get localized calendar data
+* list of addresses formats
 * currency specific data
   * currency symbols based on currency codes
   * currency code, phone prefix, default locale based on country
@@ -74,7 +73,7 @@ Language
 
 Locale settings provides application language configuration. Application language affects translations and representation
 of date times. For example you could have en_US locale but french language, in this case date/times will be localized
-using en_US locale but with french language. To get current language there is a corresponding method:
+using en_US locale formats but with french language. To get current language there is a corresponding method:
 
 ```php
 $localeSettings = $this->get('oro_locale.settings');
@@ -96,7 +95,7 @@ $calendar = $locale->getCalendar();
 
 Calendar provides next information:
 
-*First day of week*
+**First day of week**
 
 First day of week depends from locale in Locale Settings.
 
@@ -105,7 +104,7 @@ First day of week depends from locale in Locale Settings.
 $firstDayOfWeek = $calendar->getFirstDayOfWeek();
 ```
 
-*Month names*
+**Month names**
 
 Month names depends from application language in Locale Settings.
 
@@ -126,7 +125,7 @@ $shortMonthNames = $calendar->getMonthNames(Calendar::WIDTH_SHORT);
 $narrowMonthNames = $calendar->getMonthNames(Calendar::WIDTH_NARROW);
 ```
 
-*Day of week names*
+**Day of week names**
 
 Day of week names depends from application language in Locale Settings.
 
@@ -166,7 +165,6 @@ $shortDowNames = $calendar->getDayOfWeekNames(Calendar::WIDTH_SHORT);
 // );
 $narrowDowNames = $calendar->getDayOfWeekNames(Calendar::WIDTH_NARROW);
 ```
-
 
 Names formats
 =============
