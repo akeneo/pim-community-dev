@@ -171,7 +171,6 @@ class CategoryHelper
         }
 
         return $state;
-    }rn $return;
     }
 
     /**
