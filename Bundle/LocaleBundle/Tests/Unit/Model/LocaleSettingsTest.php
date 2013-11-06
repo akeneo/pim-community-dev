@@ -408,4 +408,25 @@ class LocaleSettingsTest extends \PHPUnit_Framework_TestCase
             ),
         );
     }
+
+    public function testGetCurrencySymbolByCurrency()
+    {
+        $existingCurrencyCode = 'USD';
+        $existingCurrencySymbol = '$';
+        $notExistingCurrencyCode = 'UAK';
+
+        $currencyData = array(
+            $existingCurrencyCode => array('symbol' => $existingCurrencySymbol)
+        );
+        $this->localeSettings->addCurrencyData($currencyData);
+
+        $this->assertEquals(
+            $existingCurrencySymbol,
+            $this->localeSettings->getCurrencySymbolByCurrency($existingCurrencyCode)
+        );
+        $this->assertEquals(
+            $notExistingCurrencyCode,
+            $this->localeSettings->getCurrencySymbolByCurrency($notExistingCurrencyCode)
+        );
+    }
 }
