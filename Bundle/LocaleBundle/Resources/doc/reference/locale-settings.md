@@ -5,6 +5,7 @@ Table of Contents
 -----------------
  - [Overview](#overview)
  - [Names formats](#names-formats)
+ - [Addresses formats](#addresses-formats)
 
 Overview
 ========
@@ -44,3 +45,37 @@ ru_RU: %last_name% %first_name% %middle_name%
 ```
 
 See name formats [detailed documentation](./name-formatting.md).
+
+
+Addresses formats
+=================
+
+This data is used by [address formatter](./address-formatting.md). Locale settings can gets the full list of addresses
+formats that are available:
+
+```php
+$localeSettings = $this->get('oro_locale.settings');
+$addressesFormats = $localeSettings->getAddressFormats();
+```
+
+Addresses formats are loaded from bundle's file ./Resources/config/address_format.yml. Other bundles could provide
+their files to extend address formats configuration.
+
+Example of address_format.yml file:
+
+```yml
+AD:
+    format: '%name%\n%organization%\n%street%\n%postal_code% %REGION%\n%COUNTRY%'
+    require: [street, region]
+    region_name_type: parish
+AE:
+    format: '%name%\n%organization%\n%street%\n%city%\n%country%'
+    require: [street, city]
+AG:
+    require: [street]
+AM:
+    format: '%name%\n%organization%\n%street%\n%postal_code%\n%city%\n%region%\n%country%'
+    latin_format: '%name%\n%organization%\n%street%\n%postal_code%\n%city%\n%region%\n%country%'
+```
+
+See name formats [detailed documentation](./address-formatting.md).
