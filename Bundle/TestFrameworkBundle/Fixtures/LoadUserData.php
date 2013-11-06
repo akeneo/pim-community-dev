@@ -29,36 +29,41 @@ class LoadUserData extends AbstractFixture implements ContainerAwareInterface, O
         /** @var UserManager $userManager */
         $userManager = $this->container->get('oro_user.manager');
 
-        $admin = $userManager->createUser();
+        $admin  = $manager
+            ->getRepository('OroUserBundle:User')
+            ->findOneBy(array('username' => 'admin'));
 
-        $role  = $manager
-            ->getRepository('OroUserBundle:Role')
-            ->findOneBy(array('role' => 'ROLE_ADMINISTRATOR'));
-        $group = $manager
-            ->getRepository('OroUserBundle:Group')
-            ->findOneBy(array('name' => 'Administrators'));
+        if (!$admin) {
+            $admin = $userManager->createUser();
 
-        $unit = $manager
-            ->getRepository('OroOrganizationBundle:BusinessUnit')
-            ->findOneBy(array('name' => 'Main'));
+            $role  = $manager
+                ->getRepository('OroUserBundle:Role')
+                ->findOneBy(array('role' => 'ROLE_ADMINISTRATOR'));
+            $group = $manager
+                ->getRepository('OroUserBundle:Group')
+                ->findOneBy(array('name' => 'Administrators'));
+
+            $unit = $manager
+                ->getRepository('OroOrganizationBundle:BusinessUnit')
+                ->findOneBy(array('name' => 'Main'));
+            $admin
+                ->setUsername('admin')
+                ->setPlainPassword('admin')
+                ->setFirstname('John')
+                ->setLastname('Doe')
+                ->setEmail('admin@example.com')
+                ->addRole($role)
+                ->addGroup($group)
+                ->setBusinessUnits(
+                    new ArrayCollection(array($unit))
+                )
+                ->setOwner($unit);
+        }
 
         $api   = new UserApi();
         $api->setApiKey('admin_api_key')
             ->setUser($admin);
-
-        $admin
-            ->setUsername('admin')
-            ->setPlainPassword('admin')
-            ->setFirstname('John')
-            ->setLastname('Doe')
-            ->setEmail('admin@example.com')
-            ->setApi($api)
-            ->addRole($role)
-            ->addGroup($group)
-            ->setBusinessUnits(
-                new ArrayCollection(array($unit))
-            )
-            ->setOwner($unit);
+        $admin->setApi($api);
 
         $this->addReference('default_user', $admin);
 
