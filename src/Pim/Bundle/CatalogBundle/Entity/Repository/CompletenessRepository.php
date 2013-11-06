@@ -60,6 +60,14 @@ class CompletenessRepository extends EntityRepository
                             AND v.entity_id = p.id
                         LEFT JOIN pim_catalog_value_option o ON o.value_id = v.id
                         LEFT JOIN pim_catalog_product_value_price m ON m.value_id = v.id
+                        JOIN (
+                            SELECT p.id as product_id, ch.id as channel_id FROM pim_catalog_channel ch
+                                JOIN pim_catalog_product p
+                                LEFT JOIN pim_catalog_completeness c
+                                    ON c.product_id = p.id
+                                    AND c.channel_id = ch.id
+                                    WHERE c.id IS NULL
+                        ) as pending_product ON pending_product.product_id = p.id AND pending_product.channel_id = c.id
                     WHERE (
                             v.option_id         IS NOT NULL
                             OR v.media_id       IS NOT NULL
@@ -186,20 +194,6 @@ SQL;
                         )
                         AND c.id = :channel
 SQL;
-        }
-
-        if (!array_key_exists('product', $criteria) && !array_key_exists('channel', $criteria)) {
-            $sql .= <<<SQL
-                        AND p.id IN (
-                            SELECT p.id FROM pim_catalog_channel ch
-                                JOIN pim_catalog_product p
-                                LEFT JOIN pim_catalog_completeness c
-                                    ON c.product_id = p.id
-                                    AND c.channel_id = ch.id
-                                    WHERE c.id IS NULL
-                        )
-SQL;
-
         }
 
         return $sql;

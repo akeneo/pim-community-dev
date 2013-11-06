@@ -5,13 +5,16 @@
 - History of changes for import / export profiles
 - Allow creating new options for simple select and multiselect attributes directly from the product edit form
 - Add a default tree per user
+- Introduce command "pim:completeness:calculate" size argument to manage number of completenesses to calculate
 
 ## Improvements
 - Separate product groups and variants management
+- Speed up completeness calculation
 
 ## Bug fixes
 
 ## BC breaks
+- Command "pim:product:completeness-calculator" has been replaced into "pim:completeness:calculate"
 
 
 # 1.0.0-beta-2 - "Hold the Lion, Please" (2013-10-29)
