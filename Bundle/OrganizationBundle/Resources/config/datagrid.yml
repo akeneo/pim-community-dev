@@ -154,6 +154,16 @@ datagrid:
                 hasCurrentBusinessUnit: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
                 lastName: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
 
+        options:
+            requireJSModules:
+              - oro/datagrid/column-form-listener
+            columnListener:
+                dataField: id
+                columnName: hasCurrentBusinessUnit
+                selectors:
+                    included: '#businessUnitAppendUsers'
+                    excluded: '#businessUnitRemoveUsers'
+
     bu-view-users-grid:
         extend: user-relation-grid
         source:

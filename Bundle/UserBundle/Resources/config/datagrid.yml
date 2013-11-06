@@ -322,7 +322,7 @@ datagrid:
         columns:
             has_role:
                 label: Has role
-                type: field
+                editable: true
                 frontend_type: boolean
         filters:
             columns:
@@ -338,6 +338,16 @@ datagrid:
             default:
                 has_role: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
                 lastName: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
+
+        options:
+            requireJSModules:
+              - oro/datagrid/column-form-listener
+            columnListener:
+                dataField: id
+                columnName: has_role
+                selectors:
+                    included: '#roleAppendUsers'
+                    excluded: '#roleRemoveUsers'
 
     group-users-grid:
         extend: user-relation-grid
@@ -356,13 +366,14 @@ datagrid:
         columns:
             has_group:
                 label: Has group
-                type: field
+                editable: true
                 frontend_type: boolean
         filters:
             columns:
                 has_group:
                     type: boolean
                     data_name: has_group
+                    filter_by_having: true
         sorters:
             multiple_sorting: true
             columns:
@@ -371,3 +382,13 @@ datagrid:
             default:
                 has_group: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
                 lastName: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
+
+        options:
+            requireJSModules:
+              - oro/datagrid/column-form-listener
+            columnListener:
+                dataField: id
+                columnName: has_group
+                selectors:
+                    included: '#groupAppendUsers'
+                    excluded: '#groupRemoveUsers'
