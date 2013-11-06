@@ -309,7 +309,7 @@ class LocaleSettings
             return $this->currencyData[$currencyCode]['symbol'];
         }
 
-        return null;
+        return $currencyCode;
     }
 
     /**
