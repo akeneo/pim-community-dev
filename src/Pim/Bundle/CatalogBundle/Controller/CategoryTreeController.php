@@ -192,13 +192,6 @@ class CategoryTreeController extends AbstractDoctrineController
             return $this->render('PimCatalogBundle:CategoryTree:children-tree.html.twig', array('data' => $data));
         } else {
             $categories = $this->categoryManager->getChildren($parent->getId());
-            if ($includeParent) {
-                $data = CategoryHelper::childrenResponse($categories, $withProductsCount, $parent);
-
-                return $this->render('PimCatalogBundle:CategoryTree:old-children.html.twig', array('data' => $data));
-            } else {
-                $data = CategoryHelper::childrenResponse($categories, $withProductsCount);
-            }
         }
 
         if (!$includeParent) {
@@ -207,7 +200,12 @@ class CategoryTreeController extends AbstractDoctrineController
 
         return $this->render(
             'PimCatalogBundle:CategoryTree:children.json.twig',
-            array('categories' => $categories, 'nested' => $nested, 'parent' => $parent),
+            array(
+                'categories'    => $categories,
+                'parent'        => $parent,
+                'nested'        => $nested,
+                'product_count' => $withProductsCount
+            ),
             new JsonResponse()
         );
     }

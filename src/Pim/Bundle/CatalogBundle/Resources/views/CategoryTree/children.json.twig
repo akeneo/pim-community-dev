@@ -1,3 +1,14 @@
-[{% for category in categories %}
-{% include 'PimCatalogBundle:CategoryTree:_category.html.twig' %}{% if not loop.last %},{% endif %}
-{% endfor %}]
+{% set children %}
+    [{% for category in categories %}
+        {% include 'PimCatalogBundle:CategoryTree:_category.html.twig'
+            with { 'category': category, 'product_count': product_count, 'nested': nested } %}
+        {% if not loop.last %},{% endif %}
+    {% endfor %}]
+{% endset %}
+
+{% if parent is not null %}
+    {% include 'PimCatalogBundle:CategoryTree:_category.html.twig'
+            with { 'category': parent, 'product_count': product_count, 'nested': nested, 'children': children } %}
+{% else %}
+    {{ children }}
+{% endif %}
