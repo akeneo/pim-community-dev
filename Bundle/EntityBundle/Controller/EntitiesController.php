@@ -4,7 +4,7 @@ namespace Oro\Bundle\EntityBundle\Controller;
 
 use Doctrine\Common\Inflector\Inflector;
 use Doctrine\ORM\PersistentCollection;
-use Oro\Bundle\EntityConfigBundle\Metadata\EntityMetadata;
+
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,13 +15,12 @@ use FOS\Rest\Util\Codes;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-use Oro\Bundle\SecurityBundle\Annotation\Acl;
-
 use Oro\Bundle\EntityBundle\ORM\OroEntityManager;
 use Oro\Bundle\EntityBundle\Datagrid\CustomEntityDatagrid;
 
 use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
+use Oro\Bundle\EntityConfigBundle\Metadata\EntityMetadata;
 
 use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 
@@ -57,26 +56,11 @@ class EntitiesController extends Controller
 
         $entityConfig = $entityConfigProvider->getConfig($extendEntityName);
 
-        /** @var  CustomEntityDatagrid $datagrid */
-        $datagridManager = $this->get('oro_entity.custom_datagrid.manager');
-
-        $datagridManager->setCustomEntityClass($extendEntityName);
-        $datagridManager->setEntityName($extendEntityName);
-        $datagridManager->getRouteGenerator()->setRouteParameters(['id' => $id]);
-
-        $view = $datagridManager->getDatagrid()->createView();
-
-        return 'json' == $this->getRequest()->getRequestFormat()
-            ? $this->get('oro_grid.renderer')->renderResultsJsonResponse($view)
-            : $this->render(
-                'OroEntityBundle:Entities:index.html.twig',
-                [
-                    'datagrid'     => $view,
-                    'entity_id'    => $id,
-                    'entity_class' => $extendEntityName,
-                    'label'        => $entityConfig->get('label')
-                ]
-            );
+        return [
+            'entity_id'    => $id,
+            'entity_class' => $extendEntityName,
+            'label'        => $entityConfig->get('label')
+        ];
     }
 
     /**

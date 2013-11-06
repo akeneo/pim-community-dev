@@ -33,6 +33,7 @@
         {% endif %}
     {% endif %}
 
+    {# fallback for OroGridBundle grids #}
     {% if gridId is defined %}
         {{ UI.gridBlock(gridId) }}
     {% endif %}

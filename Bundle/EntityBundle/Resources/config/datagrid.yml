@@ -1,28 +1,25 @@
-parameters:
-    oro_entity.custom_datagrid.manager.class:   Oro\Bundle\EntityBundle\Datagrid\CustomEntityDatagrid
-    oro_entity.relation_datagrid.manager.class: Oro\Bundle\EntityBundle\Datagrid\RelationEntityDatagrid
+datagrid:
+    custom-entity-grid:
+        options:
+            entityHint: entity
+        source:
+            acl_resource: ~
+            type: orm
+            query:
+                select:
+                    - ce.id
+                from:
+                    - { table: OroEntityConfigBundle:EntityConfigModel, alias: ce }
 
-services:
-    oro_entity.custom_datagrid.manager:
-        class:                                  %oro_entity.custom_datagrid.manager.class%
-        arguments:
-            - @oro_entity_config.config_manager
-        tags:
-            - name:                             oro_grid.datagrid.manager
-              datagrid_name:                    custom_entity
-              entity_name:                      Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel
-              entity_hint:                      entity
-              route_name:                       oro_entity_index
-              query_entity_alias:               ce
+    entity-relation-grid:
+        options:
+            entityHint: entity
+        source:
+            acl_resource: ~
+            type: orm
+            query:
+                select:
+                    - ce.id
+                from:
+                    - { table: OroEntityConfigBundle:EntityConfigModel, alias: ce }
 
-    oro_entity.relation_datagrid.manager:
-        class:                                  %oro_entity.relation_datagrid.manager.class%
-        arguments:
-            - @oro_entity_config.config_manager
-        tags:
-            - name:                             oro_grid.datagrid.manager
-              datagrid_name:                    relation_entity
-              entity_name:                      Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel
-              entity_hint:                      entity
-              route_name:                       oro_entity_relation
-              query_entity_alias:               ce
