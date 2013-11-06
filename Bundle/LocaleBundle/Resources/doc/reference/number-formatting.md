@@ -4,6 +4,10 @@ Number Formatting
 Table of Contents
 -----------------
  - [PHP Number Formatter](#php-number-formatter)
+   - [Format style constants](#format-style-constants)
+   - [Numeric attribute constants](#numeric-attribute-constants)
+   - [Text attribute constants](#text-attribute-constants)
+   - [Format symbol constants](#format-symbol-constants)
    - [Methods and examples of usage](#methods-and-examples-of-usage)
      - [format](#format)
      - [formatCurrency](#formatCurrency)
@@ -15,6 +19,17 @@ Table of Contents
      - [getTextAttribute](#getTextAttribute)
      - [getSymbol](#getSymbol)
   - [Twig](#twig)
+   - [Filters](#filters)
+     - [oro_format_number](#oro_format_number)
+     - [oro_format_currency](#oro_format_currency)
+     - [oro_format_percent](#oro_format_percent)
+     - [oro_format_spellout](#oro_format_spellout)
+     - [oro_format_duration](#oro_format_duration)
+     - [oro_format_ordinal](#oro_format_ordinal)
+   - [Functions](#functions)
+     - [oro_locale_number_attribute](#oro_locale_number_attribute)
+     - [oro_locale_number_text_attribute](#oro_locale_number_text_attribute)
+     - [oro_locale_number_symbol](#oro_locale_number_symbol)
   - [JS](#js)
 
 PHP Number Formatter
@@ -28,7 +43,9 @@ Formats different styles of numbers in localized format. Proxies intl extension 
 Method of this class can receive values of original intl NumberFormatter constants. These constants can be divided
 by next logical groups:
 
-**Format style constants**
+Format style constants
+----------------------
+
 ```
 \NumberFormatter::PATTERN_DECIMAL
 \NumberFormatter::DECIMAL
@@ -43,7 +60,9 @@ by next logical groups:
 \NumberFormatter::DEFAULT_STYLE
 ```
 
-**Numeric attribute constants**
+Numeric attribute constants
+---------------------------
+
 ```
 \NumberFormatter::PARSE_INT_ONLY
 \NumberFormatter::GROUPING_USED
@@ -67,7 +86,8 @@ by next logical groups:
 \NumberFormatter::LENIENT_PARSE
 ```
 
-**Text attribute constants**
+Text attribute constants
+------------------------
 ```
 \NumberFormatter::POSITIVE_PREFIX
 \NumberFormatter::POSITIVE_SUFFIX
@@ -79,7 +99,9 @@ by next logical groups:
 \NumberFormatter::PUBLIC_RULESETS
 ```
 
-**Format symbol constants**
+Format symbol constants
+-----------------------
+
 ```
 \NumberFormatter::DECIMAL_SEPARATOR_SYMBOL
 \NumberFormatter::GROUPING_SEPARATOR_SYMBOL
@@ -282,14 +304,22 @@ Twig
 Filters
 -------
 
+Each filter can optionally receive attributes, textAttributes and symbols options. All possible options relates to
+the names of constants of NumberFormatter:
+
+* [Format style constants](#format-style-constants)
+* [Numeric attribute constants](#numeric-attribute-constants)
+* [Text attribute constants](#text-attribute-constants)
+* [Format symbol constants](#format-symbol-constants)
+
 Next filters are available in Twig templates:
 
 ###oro_format_number
 
 This filter formats a number to localized format according to passed number style and optional custom options:
 
-Simple usage of this filter requires a style of number. Next values can be used: 'decimal', 'currency', 'percent',
-'scientific', 'spellout', 'ordinal', 'duration'.
+Simple usage of this filter requires a style of number. Next values can be used: decimal, currency, percent, scientific,
+spellout, ordinal, duration.
 
 This example outputs a string in localized format like this: 10,000.000
 ```
@@ -299,16 +329,59 @@ This example outputs a string in localized format like this: 10,000.000
 This example outputs MINUS 10.0000,123 and shows what options could be passed to customize format.
 ```
 {{ -100000.123|oro_format_number('decimal', {
-    attributes: {'grouping_size': 4},
-    textAttributes: {'negative_prefix': 'MINUS'},
-    symbols: {'decimal_separator_symbol': ',', 'grouping_separator_symbol': '.'},
+    attributes: {grouping_size: 4},
+    textAttributes: {negative_prefix: 'MINUS'},
+    symbols: {decimal_separator_symbol: ',', grouping_separator_symbol: '.'},
     locale: 'en_US'
 }) }}
 ```
 
 ###oro_format_currency
 
+This filter formats currency number according to localized format.
+
+Next example is a simple use case. If currency is not specified, default one will be used.
+This line outputs a string like this $10,000.00 depending on locale settings.
+
+```
+{{ 100000|oro_format_currency }}
+```
+
+It's possible to override formatting options. Next example demonstrates how custom options could be passed using this filter.
+
+This line outputs a string: (1 2345.78 €)
+
+```
+{{ 12345.6789|oro_format_currency({
+    currency: 'EUR',
+    locale: 'ru_RU',
+    attributes: {grouping_size: 4},
+    textAttributes: {negative_prefix: '(', negative_suffix: ')'},
+    symbols: {decimal_separator_symbol: '.'},
+}) }}
+```
+
 ###oro_format_decimal
+
+This filter formats decimal number according localized format.
+
+This example outputs a string: 1,234.568
+
+```
+{{ 1234.56789|oro_format_decimal }}
+```
+
+You can override formatting options.
+This snippet shows an example of using custom formatting options. It outputs a string: +12 345,6789000000
+
+```
+{{ 1234.56789|oro_format_decimal({
+    attributes: { fraction_digits: 10 },
+    textAttributes: { positive_prefix: '+' },
+    symbols: { decimal_separator: ',', 'grouping_separator': ' ' },
+    locale: 'en_US'
+}) }}
+```
 
 ###oro_format_percent
 
