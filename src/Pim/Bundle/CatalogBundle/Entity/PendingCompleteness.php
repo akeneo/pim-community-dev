@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Family;
@@ -18,6 +19,8 @@ use Pim\Bundle\CatalogBundle\Entity\Family;
  *     repositoryClass="Pim\Bundle\CatalogBundle\Entity\Repository\PendingCompletenessRepository"
  * )
  * @ORM\Table(name="pim_catalog_pending_completeness")
+ * 
+ * @ExclusionPolicy("all")
  */
 class PendingCompleteness
 {

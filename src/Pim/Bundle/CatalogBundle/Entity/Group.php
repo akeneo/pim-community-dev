@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Symfony\Component\Validator\GroupSequenceProviderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use JMS\Serializer\Annotation\ExclusionPolicy;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
@@ -30,6 +31,8 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
  *      }
  *  }
  * )
+ * 
+ * @ExclusionPolicy("all")
  */
 class Group implements TranslatableInterface, GroupSequenceProviderInterface
 {
