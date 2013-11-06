@@ -4,10 +4,11 @@ Number Formatting
 Table of Contents
 -----------------
  - [PHP Number Formatter](#php-number-formatter)
-   - [Format style constants](#format-style-constants)
-   - [Numeric attribute constants](#numeric-attribute-constants)
-   - [Text attribute constants](#text-attribute-constants)
-   - [Format symbol constants](#format-symbol-constants)
+   - [Constants](#constants)
+     - [Format style constants](#format-style-constants)
+     - [Numeric attribute constants](#numeric-attribute-constants)
+     - [Text attribute constants](#text-attribute-constants)
+     - [Format symbol constants](#format-symbol-constants)
    - [Methods and examples of usage](#methods-and-examples-of-usage)
      - [format](#format)
      - [formatCurrency](#formatCurrency)
@@ -40,11 +41,17 @@ PHP Number Formatter
 **Service id:** oro_locale.formatter.number
 
 Formats different styles of numbers in localized format. Proxies intl extension class [NumberFormatter](http://www.php.net/manual/en/class.numberformatter.php).
-Method of this class can receive values of original intl NumberFormatter constants. These constants can be divided
-by next logical groups:
 
-Format style constants
-----------------------
+Constants
+---------
+Methods of Number Formatter can receive values of original intl NumberFormatter constants.
+
+Each constant can be passed to appropriate method of Number Formatter as a string name, for example, case insensitive:
+"DECIMAL_SEPARATOR_SYMBOL", "currency_code".
+
+Constants can be divided by next logical groups:
+
+### Format style constants
 
 ```
 \NumberFormatter::PATTERN_DECIMAL
@@ -60,8 +67,7 @@ Format style constants
 \NumberFormatter::DEFAULT_STYLE
 ```
 
-Numeric attribute constants
----------------------------
+### Numeric attribute constants
 
 ```
 \NumberFormatter::PARSE_INT_ONLY
@@ -86,8 +92,8 @@ Numeric attribute constants
 \NumberFormatter::LENIENT_PARSE
 ```
 
-Text attribute constants
-------------------------
+### Text attribute constants
+
 ```
 \NumberFormatter::POSITIVE_PREFIX
 \NumberFormatter::POSITIVE_SUFFIX
@@ -99,8 +105,7 @@ Text attribute constants
 \NumberFormatter::PUBLIC_RULESETS
 ```
 
-Format symbol constants
------------------------
+### Format symbol constants
 
 ```
 \NumberFormatter::DECIMAL_SEPARATOR_SYMBOL
@@ -122,9 +127,6 @@ Format symbol constants
 \NumberFormatter::SIGNIFICANT_DIGIT_SYMBOL
 \NumberFormatter::MONETARY_GROUPING_SEPARATOR_SYMBOL
 ```
-
-Each constant can be passed to appropriate method of Oro\Bundle\LocaleBundle\Formatter\NumberFormatter as a string name,
-for example, case insensitive: "DECIMAL_SEPARATOR_SYMBOL", "currency_code".
 
 Methods and examples of usage
 -----------------------------
@@ -305,12 +307,7 @@ Filters
 -------
 
 Each filter can optionally receive attributes, textAttributes and symbols options. All possible options relates to
-the names of constants of NumberFormatter:
-
-* [Format style constants](#format-style-constants)
-* [Numeric attribute constants](#numeric-attribute-constants)
-* [Text attribute constants](#text-attribute-constants)
-* [Format symbol constants](#format-symbol-constants)
+the names of [constants of NumberFormatter](#constants):
 
 Next filters are available in Twig templates:
 
@@ -378,7 +375,7 @@ This snippet shows an example of using custom formatting options. It outputs a s
 {{ 1234.56789|oro_format_decimal({
     attributes: { fraction_digits: 10 },
     textAttributes: { positive_prefix: '+' },
-    symbols: { decimal_separator: ',', 'grouping_separator': ' ' },
+    symbols: { decimal_separator: ',', grouping_separator: ' ' },
     locale: 'en_US'
 }) }}
 ```
