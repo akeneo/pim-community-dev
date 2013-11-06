@@ -1,12 +1,12 @@
 <?php
 
-namespace Oro\Bundle\FlexibleEntityBundle\Form\Type;
+namespace Pim\Bundle\FlexibleEntityBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
+use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 
 /**
  * Base flexible value form type

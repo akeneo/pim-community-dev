@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Form\Type;
 
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Oro\Bundle\FlexibleEntityBundle\Form\Type\AttributeType;
+use Pim\Bundle\FlexibleEntityBundle\Form\Type\AttributeType;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Form\Subscriber\AddAttributeTypeRelatedFieldsSubscriber;
 use Pim\Bundle\CatalogBundle\Manager\AttributeTypeManager;

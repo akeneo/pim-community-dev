@@ -1,18 +1,18 @@
 <?php
 
-namespace Oro\Bundle\FlexibleEntityBundle\Tests\Unit\Entity;
+namespace Pim\Bundle\FlexibleEntityBundle\Tests\Unit\Entity;
 
-use Oro\Bundle\FlexibleEntityBundle\Entity\Media;
+use Pim\Bundle\FlexibleEntityBundle\Entity\Media;
 
-use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
+use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 
-use Oro\Bundle\FlexibleEntityBundle\Tests\Unit\Entity\Demo\FlexibleValue;
-use Oro\Bundle\FlexibleEntityBundle\Tests\Unit\Entity\Demo\Flexible;
-use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
-use Oro\Bundle\FlexibleEntityBundle\Entity\Attribute;
-use Oro\Bundle\FlexibleEntityBundle\Entity\AttributeOption;
-use Oro\Bundle\FlexibleEntityBundle\Entity\Metric;
-use Oro\Bundle\FlexibleEntityBundle\Entity\Price;
+use Pim\Bundle\FlexibleEntityBundle\Tests\Unit\Entity\Demo\FlexibleValue;
+use Pim\Bundle\FlexibleEntityBundle\Tests\Unit\Entity\Demo\Flexible;
+use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
+use Pim\Bundle\FlexibleEntityBundle\Entity\Attribute;
+use Pim\Bundle\FlexibleEntityBundle\Entity\AttributeOption;
+use Pim\Bundle\FlexibleEntityBundle\Entity\Metric;
+use Pim\Bundle\FlexibleEntityBundle\Entity\Price;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**

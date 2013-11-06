@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\FlexibleEntityBundle\Entity;
+namespace Pim\Bundle\FlexibleEntityBundle\Entity;
 
 use Symfony\Component\HttpFoundation\File\File;
 
@@ -84,7 +84,7 @@ class Media
      *
      * @param integer $id
      *
-     * @return \Oro\Bundle\FlexibleEntityBundle\Entity\Media
+     * @return \Pim\Bundle\FlexibleEntityBundle\Entity\Media
      */
     public function setId($id)
     {
@@ -108,7 +108,7 @@ class Media
      *
      * @param \Symfony\Component\HttpFoundation\File\File $file
      *
-     * @return \Oro\Bundle\FlexibleEntityBundle\Entity\Media
+     * @return \Pim\Bundle\FlexibleEntityBundle\Entity\Media
      */
     public function setFile(File $file)
     {
@@ -132,7 +132,7 @@ class Media
      *
      * @param string $filename
      *
-     * @return \Oro\Bundle\FlexibleEntityBundle\Entity\Media
+     * @return \Pim\Bundle\FlexibleEntityBundle\Entity\Media
      */
     public function setFilename($filename)
     {
@@ -156,7 +156,7 @@ class Media
      *
      * @param string $filePath
      *
-     * @return \Oro\Bundle\FlexibleEntityBundle\Entity\Media
+     * @return \Pim\Bundle\FlexibleEntityBundle\Entity\Media
      */
     public function setFilePath($filePath)
     {
@@ -180,7 +180,7 @@ class Media
      *
      * @param string $originalFilename
      *
-     * @return \Oro\Bundle\FlexibleEntityBundle\Entity\Media
+     * @return \Pim\Bundle\FlexibleEntityBundle\Entity\Media
      */
     public function setOriginalFilename($originalFilename)
     {
@@ -204,7 +204,7 @@ class Media
      *
      * @param string $mimeType
      *
-     * @return \Oro\Bundle\FlexibleEntityBundle\Entity\Media
+     * @return \Pim\Bundle\FlexibleEntityBundle\Entity\Media
      */
     public function setMimeType($mimeType)
     {

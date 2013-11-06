@@ -1,17 +1,17 @@
 <?php
 
-namespace Oro\Bundle\FlexibleEntityBundle\Entity\Repository;
+namespace Pim\Bundle\FlexibleEntityBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\ORM\QueryBuilder;
-use Oro\Bundle\FlexibleEntityBundle\Doctrine\ORM\FlexibleQueryBuilder;
-use Oro\Bundle\FlexibleEntityBundle\Exception\UnknownAttributeException;
-use Oro\Bundle\FlexibleEntityBundle\Model\Behavior\TranslatableInterface;
-use Oro\Bundle\FlexibleEntityBundle\Model\Behavior\ScopableInterface;
-use Oro\Bundle\FlexibleEntityBundle\Entity\Attribute;
-use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
-use Oro\Bundle\FlexibleEntityBundle\Model\AbstractFlexible;
+use Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\FlexibleQueryBuilder;
+use Pim\Bundle\FlexibleEntityBundle\Exception\UnknownAttributeException;
+use Pim\Bundle\FlexibleEntityBundle\Model\Behavior\TranslatableInterface;
+use Pim\Bundle\FlexibleEntityBundle\Model\Behavior\ScopableInterface;
+use Pim\Bundle\FlexibleEntityBundle\Entity\Attribute;
+use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
+use Pim\Bundle\FlexibleEntityBundle\Model\AbstractFlexible;
 
 /**
  * Base repository for flexible entity

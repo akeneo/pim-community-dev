@@ -1,9 +1,9 @@
 <?php
 
-namespace Oro\Bundle\FlexibleEntityBundle\Entity\Repository;
+namespace Pim\Bundle\FlexibleEntityBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
+use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 
 /**
  * Repository for AttributeOption entity

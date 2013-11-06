@@ -1,8 +1,8 @@
 <?php
 
-namespace Oro\Bundle\FlexibleEntityBundle\Form\Validator;
+namespace Pim\Bundle\FlexibleEntityBundle\Form\Validator;
 
-use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
+use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 
 /**
  * Constraint guesser interface

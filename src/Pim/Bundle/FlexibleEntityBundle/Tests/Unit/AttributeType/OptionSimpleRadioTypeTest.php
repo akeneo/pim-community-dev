@@ -1,8 +1,8 @@
 <?php
 
-namespace Oro\Bundle\FlexibleEntityBundle\Tests\Unit\AttributeType;
+namespace Pim\Bundle\FlexibleEntityBundle\Tests\Unit\AttributeType;
 
-use Oro\Bundle\FlexibleEntityBundle\AttributeType\OptionSimpleRadioType;
+use Pim\Bundle\FlexibleEntityBundle\AttributeType\OptionSimpleRadioType;
 
 class OptionSimpleRadioTypeTest extends AttributeTypeTest
 {

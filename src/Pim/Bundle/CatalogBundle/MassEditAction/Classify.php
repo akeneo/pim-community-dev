@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\MassEditAction;
 
-use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
+use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Pim\Bundle\CatalogBundle\Form\Type\MassEditAction\ClassifyType;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 

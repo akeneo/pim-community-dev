@@ -1,18 +1,18 @@
 parameters:
     oro_flexibleentity.flexible_config:                               ~
-    oro_flexibleentity.registry.class:                                Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManagerRegistry
-    oro_flexibleentity.attributetype.factory.class:                   Oro\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory
-    oro_flexibleentity.value_form.value_subscriber.class:             Oro\Bundle\FlexibleEntityBundle\Form\EventListener\FlexibleValueSubscriber
-    oro_flexibleentity.filterAttributes.twig.extension.class:         Oro\Bundle\FlexibleEntityBundle\Twig\FilterAttributesExtension
-    oro_flexibleentity.validator.attribute_constraint_guesser.class:  Oro\Bundle\FlexibleEntityBundle\Form\Validator\AttributeConstraintGuesser
-    oro_flexibleentity.listener.add_attributes.class:                 Oro\Bundle\FlexibleEntityBundle\EventListener\AddAttributesListener
-    oro_flexibleentity.listener.translatable.class:                   Oro\Bundle\FlexibleEntityBundle\EventListener\TranslatableListener
-    oro_flexibleentity.listener.scopable.class:                       Oro\Bundle\FlexibleEntityBundle\EventListener\ScopableListener
-    oro_flexibleentity.listener.timestampable.class:                  Oro\Bundle\FlexibleEntityBundle\EventListener\TimestampableListener
-    oro_flexibleentity.listener.has_required_value.class:             Oro\Bundle\FlexibleEntityBundle\EventListener\RequiredValueListener
-    oro_flexibleentity.listener.default_value.class:                  Oro\Bundle\FlexibleEntityBundle\EventListener\DefaultValueListener
-    oro_flexibleentity.listener.initialize_flexible.class:            Oro\Bundle\FlexibleEntityBundle\EventListener\InitializeValuesListener
-    oro_flexibleentity.listener.attribute_cache.class:                Oro\Bundle\FlexibleEntityBundle\EventListener\AttributeCacheListener
+    oro_flexibleentity.registry.class:                                Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManagerRegistry
+    oro_flexibleentity.attributetype.factory.class:                   Pim\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory
+    oro_flexibleentity.value_form.value_subscriber.class:             Pim\Bundle\FlexibleEntityBundle\Form\EventListener\FlexibleValueSubscriber
+    oro_flexibleentity.filterAttributes.twig.extension.class:         Pim\Bundle\FlexibleEntityBundle\Twig\FilterAttributesExtension
+    oro_flexibleentity.validator.attribute_constraint_guesser.class:  Pim\Bundle\FlexibleEntityBundle\Form\Validator\AttributeConstraintGuesser
+    oro_flexibleentity.listener.add_attributes.class:                 Pim\Bundle\FlexibleEntityBundle\EventListener\AddAttributesListener
+    oro_flexibleentity.listener.translatable.class:                   Pim\Bundle\FlexibleEntityBundle\EventListener\TranslatableListener
+    oro_flexibleentity.listener.scopable.class:                       Pim\Bundle\FlexibleEntityBundle\EventListener\ScopableListener
+    oro_flexibleentity.listener.timestampable.class:                  Pim\Bundle\FlexibleEntityBundle\EventListener\TimestampableListener
+    oro_flexibleentity.listener.has_required_value.class:             Pim\Bundle\FlexibleEntityBundle\EventListener\RequiredValueListener
+    oro_flexibleentity.listener.default_value.class:                  Pim\Bundle\FlexibleEntityBundle\EventListener\DefaultValueListener
+    oro_flexibleentity.listener.initialize_flexible.class:            Pim\Bundle\FlexibleEntityBundle\EventListener\InitializeValuesListener
+    oro_flexibleentity.listener.attribute_cache.class:                Pim\Bundle\FlexibleEntityBundle\EventListener\AttributeCacheListener
 
 services:
     oro_flexibleentity.value_form.value_subscriber:
@@ -52,7 +52,7 @@ services:
         tags:
             - { name: doctrine.event_subscriber }
 
-    # update created and updated at fields 
+    # update created and updated at fields
     oro_flexibleentity.listener.timestampable:
         class: %oro_flexibleentity.listener.timestampable.class%
         tags:
@@ -85,31 +85,31 @@ services:
 
     # Media form type
     form.type.oro_media:
-        class: Oro\Bundle\FlexibleEntityBundle\Form\Type\MediaType
+        class: Pim\Bundle\FlexibleEntityBundle\Form\Type\MediaType
         tags:
             - { name: form.type, alias: oro_media }
 
     # Price form type
     form.type.oro_flexibleentity_price:
-        class: Oro\Bundle\FlexibleEntityBundle\Form\Type\PriceType
+        class: Pim\Bundle\FlexibleEntityBundle\Form\Type\PriceType
         tags:
             - { name: form.type, alias: oro_flexibleentity_price }
 
     # Metric form type
     form.type.oro_flexibleentity_metric:
-        class: Oro\Bundle\FlexibleEntityBundle\Form\Type\MetricType
+        class: Pim\Bundle\FlexibleEntityBundle\Form\Type\MetricType
         tags:
             - { name: form.type, alias: oro_flexibleentity_metric }
 
     # Phone collection form type
     form.type.oro_flexibleentity_phone_collection:
-        class: Oro\Bundle\FlexibleEntityBundle\Form\Type\PhoneCollectionType
+        class: Pim\Bundle\FlexibleEntityBundle\Form\Type\PhoneCollectionType
         tags:
             - { name: form.type, alias: oro_flexibleentity_phone_collection }
 
     # Email collection form type
     form.type.oro_flexibleentity_email_collection:
-        class: Oro\Bundle\FlexibleEntityBundle\Form\Type\EmailCollectionType
+        class: Pim\Bundle\FlexibleEntityBundle\Form\Type\EmailCollectionType
         tags:
             - { name: form.type, alias: oro_flexibleentity_email_collection }
 

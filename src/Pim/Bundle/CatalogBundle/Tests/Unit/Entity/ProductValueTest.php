@@ -20,7 +20,7 @@ class ProductValueTest extends \PHPUnit_Framework_TestCase
     public function itShouldBeAnEntityFlexibleValue()
     {
         $this->assertInstanceOf(
-            'Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexibleValue',
+            'Pim\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexibleValue',
             $this->getTargetedClass()
         );
     }

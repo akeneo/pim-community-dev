@@ -1,12 +1,12 @@
 <?php
 
-namespace Oro\Bundle\FlexibleEntityBundle\EventListener;
+namespace Pim\Bundle\FlexibleEntityBundle\EventListener;
 
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\Event\LifecycleEventArgs;
-use Oro\Bundle\FlexibleEntityBundle\Model\Behavior\TimestampableInterface;
-use Oro\Bundle\FlexibleEntityBundle\Model\AbstractFlexible;
+use Pim\Bundle\FlexibleEntityBundle\Model\Behavior\TimestampableInterface;
+use Pim\Bundle\FlexibleEntityBundle\Model\AbstractFlexible;
 
 /**
  * Aims to add timestambable behavior
@@ -47,14 +47,14 @@ class TimestampableListener implements EventSubscriber
     {
         $entity = $args->getEntity();
 
-        if ($entity instanceof \Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexibleValue) {
+        if ($entity instanceof \Pim\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexibleValue) {
             $flexible = $entity->getEntity();
             if ($flexible !== null) {
                 $this->updateFlexibleFields($args->getEntityManager(), $flexible, array('updated'));
             }
         }
 
-        if ($entity instanceof \Oro\Bundle\FlexibleEntityBundle\Model\Behavior\TimestampableInterface) {
+        if ($entity instanceof \Pim\Bundle\FlexibleEntityBundle\Model\Behavior\TimestampableInterface) {
             $entity->setUpdated(new \DateTime('now', new \DateTimeZone('UTC')));
         }
     }

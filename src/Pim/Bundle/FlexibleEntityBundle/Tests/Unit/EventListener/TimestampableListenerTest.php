@@ -1,11 +1,11 @@
 <?php
-namespace Oro\Bundle\FlexibleEntityBundle\Tests\Unit\EventListener;
+namespace Pim\Bundle\FlexibleEntityBundle\Tests\Unit\EventListener;
 
 use Doctrine\Tests\OrmTestCase;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
-use Oro\Bundle\FlexibleEntityBundle\Entity\Attribute;
-use Oro\Bundle\FlexibleEntityBundle\EventListener\TimestampableListener;
+use Pim\Bundle\FlexibleEntityBundle\Entity\Attribute;
+use Pim\Bundle\FlexibleEntityBundle\EventListener\TimestampableListener;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 
 /**

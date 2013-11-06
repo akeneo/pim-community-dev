@@ -1,8 +1,8 @@
 <?php
 
-namespace Oro\Bundle\FlexibleEntityBundle\Tests\Form\Type;
+namespace Pim\Bundle\FlexibleEntityBundle\Tests\Form\Type;
 
-use Oro\Bundle\FlexibleEntityBundle\Form\Type\PriceType;
+use Pim\Bundle\FlexibleEntityBundle\Form\Type\PriceType;
 use Symfony\Component\Form\Tests\Extension\Core\Type\TypeTestCase;
 
 /**
@@ -31,7 +31,7 @@ class PriceTypeTest extends TypeTestCase
         $this->assertField('currency', 'text');
 
         $this->assertEquals(
-            'Oro\Bundle\FlexibleEntityBundle\Entity\Price',
+            'Pim\Bundle\FlexibleEntityBundle\Entity\Price',
             $this->form->getConfig()->getDataClass()
         );
 

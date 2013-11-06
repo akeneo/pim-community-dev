@@ -1,8 +1,8 @@
 <?php
 
-namespace Oro\Bundle\FlexibleEntityBundle\Tests\Unit\AttributeType;
+namespace Pim\Bundle\FlexibleEntityBundle\Tests\Unit\AttributeType;
 
-use Oro\Bundle\FlexibleEntityBundle\AttributeType\TextType;
+use Pim\Bundle\FlexibleEntityBundle\AttributeType\TextType;
 
 class TextTypeTest extends AttributeTypeTest
 {

@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 
-use Oro\Bundle\FlexibleEntityBundle\Entity\Repository\AttributeOptionRepository as OroAttributeOptionRepository;
+use Pim\Bundle\FlexibleEntityBundle\Entity\Repository\AttributeOptionRepository as OroAttributeOptionRepository;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 
 /**

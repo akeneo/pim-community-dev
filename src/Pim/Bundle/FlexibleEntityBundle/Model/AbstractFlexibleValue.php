@@ -1,11 +1,11 @@
 <?php
 
-namespace Oro\Bundle\FlexibleEntityBundle\Model;
+namespace Pim\Bundle\FlexibleEntityBundle\Model;
 
-use Oro\Bundle\FlexibleEntityBundle\Exception\FlexibleConfigurationException;
+use Pim\Bundle\FlexibleEntityBundle\Exception\FlexibleConfigurationException;
 
-use Oro\Bundle\FlexibleEntityBundle\Model\Behavior\TranslatableInterface;
-use Oro\Bundle\FlexibleEntityBundle\Model\Behavior\ScopableInterface;
+use Pim\Bundle\FlexibleEntityBundle\Model\Behavior\TranslatableInterface;
+use Pim\Bundle\FlexibleEntityBundle\Model\Behavior\ScopableInterface;
 
 /**
  * Abstract entity value, independent of storage

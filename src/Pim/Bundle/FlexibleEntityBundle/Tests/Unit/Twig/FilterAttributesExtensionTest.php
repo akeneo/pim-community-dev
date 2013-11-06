@@ -1,9 +1,9 @@
 <?php
 
-namespace Oro\Bundle\FlexibleEntityBundle\Tests\Unit\Twig;
+namespace Pim\Bundle\FlexibleEntityBundle\Tests\Unit\Twig;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Oro\Bundle\FlexibleEntityBundle\Twig\FilterAttributesExtension;
+use Pim\Bundle\FlexibleEntityBundle\Twig\FilterAttributesExtension;
 
 /**
  * Test related class
@@ -31,7 +31,7 @@ class FilterAttributesExtensionTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->extension = new FilterAttributesExtension();
-        $this->entityMock = $this->getMock('Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexible');
+        $this->entityMock = $this->getMock('Pim\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexible');
         $this->valuesMock = $this->getMock('Doctrine\Common\Collections\ArrayCollection');
     }
 
@@ -103,8 +103,8 @@ class FilterAttributesExtensionTest extends \PHPUnit_Framework_TestCase
 
     public function testFilterScenario()
     {
-        $valueMock1 = $this->getMock('Oro\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface');
-        $attributeMock1 = $this->getMock('Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute');
+        $valueMock1 = $this->getMock('Pim\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface');
+        $attributeMock1 = $this->getMock('Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute');
         $valueMock2 = clone $valueMock1;
         $attributeMock2 = clone $attributeMock1;
 
@@ -141,8 +141,8 @@ class FilterAttributesExtensionTest extends \PHPUnit_Framework_TestCase
 
     public function testFilterSkipScenario()
     {
-        $valueMock1 = $this->getMock('Oro\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface');
-        $attributeMock1 = $this->getMock('Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute');
+        $valueMock1 = $this->getMock('Pim\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface');
+        $attributeMock1 = $this->getMock('Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute');
         $valueMock2 = clone $valueMock1;
         $attributeMock2 = clone $attributeMock1;
 

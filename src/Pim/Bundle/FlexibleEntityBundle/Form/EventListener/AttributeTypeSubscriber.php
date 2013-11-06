@@ -1,10 +1,10 @@
 <?php
 
-namespace Oro\Bundle\FlexibleEntityBundle\Form\EventListener;
+namespace Pim\Bundle\FlexibleEntityBundle\Form\EventListener;
 
 use Symfony\Component\Form\Form;
-use Oro\Bundle\FlexibleEntityBundle\Form\Type\AttributeOptionType;
-use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
+use Pim\Bundle\FlexibleEntityBundle\Form\Type\AttributeOptionType;
+use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormFactoryInterface;

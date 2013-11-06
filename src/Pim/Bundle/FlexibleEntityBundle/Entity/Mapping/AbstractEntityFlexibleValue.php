@@ -1,11 +1,11 @@
 <?php
 
-namespace Oro\Bundle\FlexibleEntityBundle\Entity\Mapping;
+namespace Pim\Bundle\FlexibleEntityBundle\Entity\Mapping;
 
 use Symfony\Component\HttpFoundation\File\File;
-use Oro\Bundle\FlexibleEntityBundle\Model\AbstractFlexible;
-use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
-use Oro\Bundle\FlexibleEntityBundle\Model\AbstractFlexibleValue;
+use Pim\Bundle\FlexibleEntityBundle\Model\AbstractFlexible;
+use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
+use Pim\Bundle\FlexibleEntityBundle\Model\AbstractFlexibleValue;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -26,7 +26,7 @@ abstract class AbstractEntityFlexibleValue extends AbstractFlexibleValue
     /**
      * @var Attribute $attribute
      *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\FlexibleEntityBundle\Entity\Attribute")
+     * @ORM\ManyToOne(targetEntity="Pim\Bundle\FlexibleEntityBundle\Entity\Attribute")
      * @ORM\JoinColumn(name="attribute_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $attribute;
@@ -119,7 +119,7 @@ abstract class AbstractEntityFlexibleValue extends AbstractFlexibleValue
      *
      * @var options ArrayCollection
      *
-     * @ORM\ManyToMany(targetEntity="Oro\Bundle\FlexibleEntityBundle\Entity\AttributeOption")
+     * @ORM\ManyToMany(targetEntity="Pim\Bundle\FlexibleEntityBundle\Entity\AttributeOption")
      * @ORM\JoinTable(name="oro_flexibleentity_values_options",
      *      joinColumns={@ORM\JoinColumn(name="value_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="option_id", referencedColumnName="id")}
@@ -130,9 +130,9 @@ abstract class AbstractEntityFlexibleValue extends AbstractFlexibleValue
     /**
      * Store simple option value
      *
-     * @var Oro\Bundle\FlexibleEntityBundle\Entity\AttributeOption $option
+     * @var Pim\Bundle\FlexibleEntityBundle\Entity\AttributeOption $option
      *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\FlexibleEntityBundle\Entity\AttributeOption", cascade="persist")
+     * @ORM\ManyToOne(targetEntity="Pim\Bundle\FlexibleEntityBundle\Entity\AttributeOption", cascade="persist")
      * @ORM\JoinColumn(name="option_id", referencedColumnName="id", onDelete="SET NULL")
      */
     protected $option;

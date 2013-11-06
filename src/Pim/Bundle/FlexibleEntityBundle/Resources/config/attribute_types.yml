@@ -1,6 +1,6 @@
 services:
     oro_flexibleentity.attributetype.boolean:
-        class: Oro\Bundle\FlexibleEntityBundle\AttributeType\BooleanType
+        class: Pim\Bundle\FlexibleEntityBundle\AttributeType\BooleanType
         arguments:
             - "boolean"
             - "checkbox"
@@ -9,7 +9,7 @@ services:
             - { name: oro_flexibleentity.attributetype, alias: oro_flexibleentity_boolean }
 
     oro_flexibleentity.attributetype.text:
-        class: Oro\Bundle\FlexibleEntityBundle\AttributeType\TextType
+        class: Pim\Bundle\FlexibleEntityBundle\AttributeType\TextType
         arguments:
             - "varchar"
             - "text"
@@ -18,7 +18,7 @@ services:
             - { name: oro_flexibleentity.attributetype, alias: oro_flexibleentity_text }
 
     oro_flexibleentity.attributetype.textarea:
-        class: Oro\Bundle\FlexibleEntityBundle\AttributeType\TextAreaType
+        class: Pim\Bundle\FlexibleEntityBundle\AttributeType\TextAreaType
         arguments:
             - "text"
             - "textarea"
@@ -27,7 +27,7 @@ services:
             - { name: oro_flexibleentity.attributetype, alias: oro_flexibleentity_textarea }
 
     oro_flexibleentity.attributetype.date:
-        class: Oro\Bundle\FlexibleEntityBundle\AttributeType\DateType
+        class: Pim\Bundle\FlexibleEntityBundle\AttributeType\DateType
         arguments:
             - "date"
             - "oro_date"
@@ -36,7 +36,7 @@ services:
             - { name: oro_flexibleentity.attributetype, alias: oro_flexibleentity_date }
 
     oro_flexibleentity.attributetype.datetime:
-        class: Oro\Bundle\FlexibleEntityBundle\AttributeType\DateTimeType
+        class: Pim\Bundle\FlexibleEntityBundle\AttributeType\DateTimeType
         arguments:
             - "datetime"
             - "oro_datetime"
@@ -45,7 +45,7 @@ services:
             - { name: oro_flexibleentity.attributetype, alias: oro_flexibleentity_datetime }
 
     oro_flexibleentity.attributetype.integer:
-        class: Oro\Bundle\FlexibleEntityBundle\AttributeType\IntegerType
+        class: Pim\Bundle\FlexibleEntityBundle\AttributeType\IntegerType
         arguments:
             - "integer"
             - "integer"
@@ -54,7 +54,7 @@ services:
             - { name: oro_flexibleentity.attributetype, alias: oro_flexibleentity_integer }
 
     oro_flexibleentity.attributetype.money:
-        class: Oro\Bundle\FlexibleEntityBundle\AttributeType\MoneyType
+        class: Pim\Bundle\FlexibleEntityBundle\AttributeType\MoneyType
         arguments:
             - "decimal"
             - "money"
@@ -63,7 +63,7 @@ services:
             - { name: oro_flexibleentity.attributetype, alias: oro_flexibleentity_money }
 
     oro_flexibleentity.attributetype.number:
-        class: Oro\Bundle\FlexibleEntityBundle\AttributeType\NumberType
+        class: Pim\Bundle\FlexibleEntityBundle\AttributeType\NumberType
         arguments:
             - "decimal"
             - "number"
@@ -72,7 +72,7 @@ services:
             - { name: oro_flexibleentity.attributetype, alias: oro_flexibleentity_number }
 
     oro_flexibleentity.attributetype.multiselect:
-        class: Oro\Bundle\FlexibleEntityBundle\AttributeType\OptionMultiSelectType
+        class: Pim\Bundle\FlexibleEntityBundle\AttributeType\OptionMultiSelectType
         arguments:
             - "options"
             - "entity"
@@ -81,7 +81,7 @@ services:
             - { name: oro_flexibleentity.attributetype, alias: oro_flexibleentity_multiselect }
 
     oro_flexibleentity.attributetype.simpleselect:
-        class: Oro\Bundle\FlexibleEntityBundle\AttributeType\OptionSimpleSelectType
+        class: Pim\Bundle\FlexibleEntityBundle\AttributeType\OptionSimpleSelectType
         arguments:
             - "option"
             - "entity"
@@ -90,7 +90,7 @@ services:
             - { name: oro_flexibleentity.attributetype, alias: oro_flexibleentity_simpleselect }
 
     oro_flexibleentity.attributetype.metric:
-        class: Oro\Bundle\FlexibleEntityBundle\AttributeType\MetricType
+        class: Pim\Bundle\FlexibleEntityBundle\AttributeType\MetricType
         arguments:
             - "metric"
             - "oro_flexibleentity_metric"
@@ -100,7 +100,7 @@ services:
             - { name: oro_flexibleentity.attributetype, alias: oro_flexibleentity_metric }
 
     oro_flexibleentity.attributetype.file:
-        class: Oro\Bundle\FlexibleEntityBundle\AttributeType\FileType
+        class: Pim\Bundle\FlexibleEntityBundle\AttributeType\FileType
         arguments:
             - "media"
             - "oro_media"
@@ -109,7 +109,7 @@ services:
             - { name: oro_flexibleentity.attributetype, alias: oro_flexibleentity_file }
 
     oro_flexibleentity.attributetype.image:
-        class: Oro\Bundle\FlexibleEntityBundle\AttributeType\ImageType
+        class: Pim\Bundle\FlexibleEntityBundle\AttributeType\ImageType
         arguments:
             - "media"
             - "oro_media"
@@ -118,7 +118,7 @@ services:
             - { name: oro_flexibleentity.attributetype, alias: oro_flexibleentity_image }
 
     oro_flexibleentity.attributetype.fileurl:
-        class: Oro\Bundle\FlexibleEntityBundle\AttributeType\FileUrlType
+        class: Pim\Bundle\FlexibleEntityBundle\AttributeType\FileUrlType
         arguments:
             - "media"
             - "oro_media"
@@ -127,7 +127,7 @@ services:
             - { name: oro_flexibleentity.attributetype, alias: oro_flexibleentity_fileurl }
 
     oro_flexibleentity.attributetype.imageurl:
-        class: Oro\Bundle\FlexibleEntityBundle\AttributeType\ImageUrlType
+        class: Pim\Bundle\FlexibleEntityBundle\AttributeType\ImageUrlType
         arguments:
             - "media"
             - "oro_media"
@@ -136,7 +136,7 @@ services:
             - { name: oro_flexibleentity.attributetype, alias: oro_flexibleentity_imageurl }
 
     oro_flexibleentity.attributetype.email:
-        class: Oro\Bundle\FlexibleEntityBundle\AttributeType\EmailType
+        class: Pim\Bundle\FlexibleEntityBundle\AttributeType\EmailType
         arguments:
             - "varchar"
             - "email"
@@ -145,7 +145,7 @@ services:
             - { name: oro_flexibleentity.attributetype, alias: oro_flexibleentity_email }
 
     oro_flexibleentity.attributetype.url:
-        class: Oro\Bundle\FlexibleEntityBundle\AttributeType\UrlType
+        class: Pim\Bundle\FlexibleEntityBundle\AttributeType\UrlType
         arguments:
             - "varchar"
             - "url"
@@ -154,7 +154,7 @@ services:
             - { name: oro_flexibleentity.attributetype, alias: oro_flexibleentity_url }
 
     oro_flexibleentity.attributetype.multicheckbox:
-        class: Oro\Bundle\FlexibleEntityBundle\AttributeType\OptionMultiCheckboxType
+        class: Pim\Bundle\FlexibleEntityBundle\AttributeType\OptionMultiCheckboxType
         arguments:
             - "options"
             - "entity"
@@ -163,7 +163,7 @@ services:
             - { name: oro_flexibleentity.attributetype, alias: oro_flexibleentity_multicheckbox }
 
     oro_flexibleentity.attributetype.simpleradio:
-        class: Oro\Bundle\FlexibleEntityBundle\AttributeType\OptionSimpleRadioType
+        class: Pim\Bundle\FlexibleEntityBundle\AttributeType\OptionSimpleRadioType
         arguments:
             - "option"
             - "entity"
@@ -172,7 +172,7 @@ services:
             - { name: oro_flexibleentity.attributetype, alias: oro_flexibleentity_simpleradio }
 
     oro_flexibleentity.attributetype.price:
-        class: Oro\Bundle\FlexibleEntityBundle\AttributeType\PriceType
+        class: Pim\Bundle\FlexibleEntityBundle\AttributeType\PriceType
         arguments:
             - "price"
             - "oro_flexibleentity_price"
@@ -181,7 +181,7 @@ services:
             - { name: oro_flexibleentity.attributetype, alias: oro_flexibleentity_price }
 
     oro_flexibleentity.attributetype.email_collection:
-        class: Oro\Bundle\FlexibleEntityBundle\AttributeType\EmailCollectionType
+        class: Pim\Bundle\FlexibleEntityBundle\AttributeType\EmailCollectionType
         arguments:
             - "collections"
             - "oro_flexibleentity_email_collection"
@@ -190,7 +190,7 @@ services:
             - { name: oro_flexibleentity.attributetype, alias: oro_flexibleentity_email_collection }
 
     oro_flexibleentity.attributetype.phone_collection:
-        class: Oro\Bundle\FlexibleEntityBundle\AttributeType\PhoneCollectionType
+        class: Pim\Bundle\FlexibleEntityBundle\AttributeType\PhoneCollectionType
         arguments:
             - "collections"
             - "oro_flexibleentity_phone_collection"

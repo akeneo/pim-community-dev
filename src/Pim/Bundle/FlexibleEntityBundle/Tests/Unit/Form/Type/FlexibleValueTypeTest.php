@@ -1,8 +1,8 @@
 <?php
 
-namespace Oro\Bundle\FlexibleEntityBundle\Tests\Form\Type;
+namespace Pim\Bundle\FlexibleEntityBundle\Tests\Form\Type;
 
-use Oro\Bundle\FlexibleEntityBundle\Form\Type\FlexibleValueType;
+use Pim\Bundle\FlexibleEntityBundle\Form\Type\FlexibleValueType;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -22,7 +22,7 @@ class FlexibleValueTypeTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $flexibleManager = $this->getMockBuilder('Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager')
+        $flexibleManager = $this->getMockBuilder('Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager')
             ->disableOriginalConstructor()
             ->getMock();
         $flexibleManager->expects($this->once())

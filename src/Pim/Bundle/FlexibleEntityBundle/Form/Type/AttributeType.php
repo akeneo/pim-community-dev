@@ -1,10 +1,10 @@
 <?php
 
-namespace Oro\Bundle\FlexibleEntityBundle\Form\Type;
+namespace Pim\Bundle\FlexibleEntityBundle\Form\Type;
 
-use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
+use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Oro\Bundle\FlexibleEntityBundle\Form\EventListener\AttributeTypeSubscriber;
+use Pim\Bundle\FlexibleEntityBundle\Form\EventListener\AttributeTypeSubscriber;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\AbstractType;
 
@@ -150,7 +150,7 @@ class AttributeType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'data_class' => 'Oro\Bundle\FlexibleEntityBundle\Entity\Attribute'
+                'data_class' => 'Pim\Bundle\FlexibleEntityBundle\Entity\Attribute'
             )
         );
     }

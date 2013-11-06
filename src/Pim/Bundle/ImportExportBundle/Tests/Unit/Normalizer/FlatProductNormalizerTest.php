@@ -269,11 +269,11 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
     /**
      * @param string $filename
      *
-     * @return \Oro\Bundle\FlexibleEntityBundle\Entity\Media
+     * @return \Pim\Bundle\FlexibleEntityBundle\Entity\Media
      */
     private function getMediaMock($filename)
     {
-        $media = $this->getMock('Oro\Bundle\FlexibleEntityBundle\Entity\Media');
+        $media = $this->getMock('Pim\Bundle\FlexibleEntityBundle\Entity\Media');
 
         $media->expects($this->any())
             ->method('getFilename')

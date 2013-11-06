@@ -1,10 +1,10 @@
 <?php
-namespace Oro\Bundle\FlexibleEntityBundle\Tests\Unit\Entity;
+namespace Pim\Bundle\FlexibleEntityBundle\Tests\Unit\Entity;
 
-use Oro\Bundle\FlexibleEntityBundle\Entity\Attribute;
-use Oro\Bundle\FlexibleEntityBundle\Entity\AttributeOption;
-use Oro\Bundle\FlexibleEntityBundle\Entity\AttributeOptionValue;
-use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
+use Pim\Bundle\FlexibleEntityBundle\Entity\Attribute;
+use Pim\Bundle\FlexibleEntityBundle\Entity\AttributeOption;
+use Pim\Bundle\FlexibleEntityBundle\Entity\AttributeOptionValue;
+use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 
 /**
  * Test related class
@@ -50,7 +50,7 @@ class AttributeTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetEntityType()
     {
-        $entityType = 'Oro\Bundle\FlexibleEntityBundle\Tests\Unit\Entity\Demo\Flexible';
+        $entityType = 'Pim\Bundle\FlexibleEntityBundle\Tests\Unit\Entity\Demo\Flexible';
         $this->attribute->setEntityType($entityType);
         $this->assertEquals($this->attribute->getEntityType(), $entityType);
     }

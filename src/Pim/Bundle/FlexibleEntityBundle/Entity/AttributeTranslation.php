@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\FlexibleEntityBundle\Entity;
+namespace Pim\Bundle\FlexibleEntityBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Translatable\Entity\MappedSuperclass\AbstractTranslation;

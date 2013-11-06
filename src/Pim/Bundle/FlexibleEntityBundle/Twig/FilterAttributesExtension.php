@@ -1,10 +1,10 @@
 <?php
 
-namespace Oro\Bundle\FlexibleEntityBundle\Twig;
+namespace Pim\Bundle\FlexibleEntityBundle\Twig;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
-use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexible;
+use Pim\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexible;
 
 /**
  * Filter attribute extension

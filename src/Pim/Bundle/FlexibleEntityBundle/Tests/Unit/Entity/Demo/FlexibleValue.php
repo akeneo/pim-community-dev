@@ -1,8 +1,8 @@
 <?php
 
-namespace Oro\Bundle\FlexibleEntityBundle\Tests\Unit\Entity\Demo;
+namespace Pim\Bundle\FlexibleEntityBundle\Tests\Unit\Entity\Demo;
 
-use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexibleValue;
+use Pim\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexibleValue;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -15,9 +15,9 @@ class FlexibleValue extends AbstractEntityFlexibleValue
 {
 
     /**
-     * @var Oro\Bundle\FlexibleEntityBundle\Entity\Attribute $attribute
+     * @var Pim\Bundle\FlexibleEntityBundle\Entity\Attribute $attribute
      *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\FlexibleEntityBundle\Entity\Attribute")
+     * @ORM\ManyToOne(targetEntity="Pim\Bundle\FlexibleEntityBundle\Entity\Attribute")
      */
     protected $attribute;
 
@@ -33,7 +33,7 @@ class FlexibleValue extends AbstractEntityFlexibleValue
      *
      * @var ArrayCollection options
      *
-     * @ORM\ManyToMany(targetEntity="Oro\Bundle\FlexibleEntityBundle\Entity\AttributeOption")
+     * @ORM\ManyToMany(targetEntity="Pim\Bundle\FlexibleEntityBundle\Entity\AttributeOption")
      */
     protected $options;
 
@@ -42,7 +42,7 @@ class FlexibleValue extends AbstractEntityFlexibleValue
      *
      * @var Media $media
      *
-     * @ORM\OneToOne(targetEntity="Oro\Bundle\FlexibleEntityBundle\Entity\Media", cascade="persist")
+     * @ORM\OneToOne(targetEntity="Pim\Bundle\FlexibleEntityBundle\Entity\Media", cascade="persist")
      * @ORM\JoinColumn(name="media_id", referencedColumnName="id", onDelete="SET NULL")
      */
     protected $media;
@@ -52,7 +52,7 @@ class FlexibleValue extends AbstractEntityFlexibleValue
      *
      * @var Metric $metric
      *
-     * @ORM\OneToOne(targetEntity="Oro\Bundle\FlexibleEntityBundle\Entity\Metric", cascade="persist")
+     * @ORM\OneToOne(targetEntity="Pim\Bundle\FlexibleEntityBundle\Entity\Metric", cascade="persist")
      * @ORM\JoinColumn(name="metric_id", referencedColumnName="id", onDelete="SET NULL")
      */
     protected $metric;
@@ -62,7 +62,7 @@ class FlexibleValue extends AbstractEntityFlexibleValue
      *
      * @var Price $price
      *
-     * @ORM\OneToOne(targetEntity="Oro\Bundle\FlexibleEntityBundle\Entity\Price", cascade="persist")
+     * @ORM\OneToOne(targetEntity="Pim\Bundle\FlexibleEntityBundle\Entity\Price", cascade="persist")
      * @ORM\JoinColumn(name="price_id", referencedColumnName="id", onDelete="SET NULL")
      */
     protected $price;
@@ -70,7 +70,7 @@ class FlexibleValue extends AbstractEntityFlexibleValue
     /**
      * Get media
      *
-     * @return \Oro\Bundle\FlexibleEntityBundle\Entity\Media
+     * @return \Pim\Bundle\FlexibleEntityBundle\Entity\Media
      */
     public function getMedia()
     {
@@ -80,9 +80,9 @@ class FlexibleValue extends AbstractEntityFlexibleValue
     /**
      * Set media
      *
-     * @param \Oro\Bundle\FlexibleEntityBundle\Entity\Media $media
+     * @param \Pim\Bundle\FlexibleEntityBundle\Entity\Media $media
      *
-     * @return \Oro\Bundle\FlexibleEntityBundle\Entity\ProductValue
+     * @return \Pim\Bundle\FlexibleEntityBundle\Entity\ProductValue
      */
     public function setMedia($media)
     {

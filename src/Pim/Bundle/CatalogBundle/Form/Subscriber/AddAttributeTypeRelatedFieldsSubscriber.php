@@ -6,8 +6,8 @@ use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormFactoryInterface;
-use Oro\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory;
-use Oro\Bundle\FlexibleEntityBundle\Form\EventListener\AttributeTypeSubscriber;
+use Pim\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory;
+use Pim\Bundle\FlexibleEntityBundle\Form\EventListener\AttributeTypeSubscriber;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Manager\AttributeTypeManager;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\FlexibleEntityBundle\AttributeType;
+namespace Pim\Bundle\FlexibleEntityBundle\AttributeType;
 
 /**
  * Image attribute type

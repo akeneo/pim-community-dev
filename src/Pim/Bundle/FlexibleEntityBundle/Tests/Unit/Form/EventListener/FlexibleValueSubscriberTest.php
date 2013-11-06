@@ -1,10 +1,10 @@
 <?php
 
-namespace Oro\Bundle\FlexibleEntityBundle\Tests\Form\EventListener;
+namespace Pim\Bundle\FlexibleEntityBundle\Tests\Form\EventListener;
 
-use Oro\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory;
-use Oro\Bundle\FlexibleEntityBundle\Form\EventListener\FlexibleValueSubscriber;
-use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManagerRegistry;
+use Pim\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory;
+use Pim\Bundle\FlexibleEntityBundle\Form\EventListener\FlexibleValueSubscriber;
+use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManagerRegistry;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormFactoryInterface;
 
@@ -34,10 +34,10 @@ class FlexibleValueSubscriberTest extends \PHPUnit_Framework_TestCase
     {
         $this->formFactory = $this->getMockBuilder('Symfony\Component\Form\FormFactoryInterface')
             ->getMock();
-        $this->attributeTypeFactory = $this->getMockBuilder('Oro\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory')
+        $this->attributeTypeFactory = $this->getMockBuilder('Pim\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->flexibleManagerRegistry = $this->getMockBuilder('Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManagerRegistry')
+        $this->flexibleManagerRegistry = $this->getMockBuilder('Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManagerRegistry')
             ->disableOriginalConstructor()
             ->getMock();
         $this->subscriber = new FlexibleValueSubscriber($this->formFactory, $this->attributeTypeFactory, $this->flexibleManagerRegistry);
@@ -67,12 +67,12 @@ class FlexibleValueSubscriberTest extends \PHPUnit_Framework_TestCase
 
     public function testPreSetDataWithFlexibleAttribute()
     {
-        $dataClass = 'Oro\Bundle\FlexibleEntityBundle\Model\AbstractFlexible';
+        $dataClass = 'Pim\Bundle\FlexibleEntityBundle\Model\AbstractFlexible';
 
-        $attributeEntity = $this->getMockBuilder('Oro\Bundle\FlexibleEntityBundle\Model\FlexibleInterface')
+        $attributeEntity = $this->getMockBuilder('Pim\Bundle\FlexibleEntityBundle\Model\FlexibleInterface')
             ->getMock();
 
-        $flexibleManager = $this->getMockBuilder('Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager')
+        $flexibleManager = $this->getMockBuilder('Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager')
             ->disableOriginalConstructor()
             ->getMock();
         $flexibleManager->expects($this->once())
@@ -91,12 +91,12 @@ class FlexibleValueSubscriberTest extends \PHPUnit_Framework_TestCase
     protected function assertAttrbiuteValueFormInit($dataClass, $valueFormData = null)
     {
         $attributeTypeName = 'test_attribute';
-        $attribute = $this->getMockBuilder('Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute')
+        $attribute = $this->getMockBuilder('Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute')
             ->getMock();
         $attribute->expects($this->once())
             ->method('getAttributeType')
             ->will($this->returnValue($attributeTypeName));
-        $data = $this->getMockBuilder('Oro\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface')
+        $data = $this->getMockBuilder('Pim\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface')
             ->getMock();
         $data->expects($this->once())
             ->method('getAttribute')
@@ -121,7 +121,7 @@ class FlexibleValueSubscriberTest extends \PHPUnit_Framework_TestCase
                 ->with($valueFormData);
         }
 
-        $attributeType = $this->getMockBuilder('Oro\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeInterface')
+        $attributeType = $this->getMockBuilder('Pim\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeInterface')
             ->getMock();
         $attributeType->expects($this->once())
             ->method('buildValueFormType')

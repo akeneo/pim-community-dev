@@ -1,8 +1,8 @@
 <?php
-namespace Oro\Bundle\FlexibleEntityBundle\Tests\Unit\DependencyInjection;
+namespace Pim\Bundle\FlexibleEntityBundle\Tests\Unit\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Oro\Bundle\FlexibleEntityBundle\DependencyInjection\Compiler\AddManagerCompilerPass;
+use Pim\Bundle\FlexibleEntityBundle\DependencyInjection\Compiler\AddManagerCompilerPass;
 use Symfony\Component\DependencyInjection\Definition;
 
 /**
@@ -31,7 +31,7 @@ class AddManagerCompilerPassTest extends \PHPUnit_Framework_TestCase
         $this->compiler = new AddManagerCompilerPass();
 
         $this->builder = new ContainerBuilder();
-        $defRegistry = new Definition('Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManagerRegistry');
+        $defRegistry = new Definition('Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManagerRegistry');
         $definitions = array('oro_flexibleentity.registry' => $defRegistry);
         $this->builder->setDefinitions($definitions);
     }

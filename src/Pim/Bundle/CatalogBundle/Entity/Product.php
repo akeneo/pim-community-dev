@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
-use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexible;
+use Pim\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexible;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
@@ -251,7 +251,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface
      *
      * @param string $locale
      *
-     * @return \Oro\Bundle\FlexibleEntityBundle\Model\mixed|string
+     * @return \Pim\Bundle\FlexibleEntityBundle\Model\mixed|string
      */
     public function getLabel($locale = null)
     {

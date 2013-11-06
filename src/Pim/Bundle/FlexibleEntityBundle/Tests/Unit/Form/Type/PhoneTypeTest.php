@@ -1,8 +1,8 @@
 <?php
 
-namespace Oro\Bundle\FlexibleEntityBundle\Tests\Form\Type;
+namespace Pim\Bundle\FlexibleEntityBundle\Tests\Form\Type;
 
-use Oro\Bundle\FlexibleEntityBundle\Form\Type\PhoneType;
+use Pim\Bundle\FlexibleEntityBundle\Form\Type\PhoneType;
 use Symfony\Component\Form\Tests\Extension\Core\Type\TypeTestCase;
 
 /**
@@ -31,7 +31,7 @@ class PhoneTypeTest extends TypeTestCase
         $this->assertField('type', 'choice');
 
         $this->assertEquals(
-            'Oro\Bundle\FlexibleEntityBundle\Entity\Collection',
+            'Pim\Bundle\FlexibleEntityBundle\Entity\Collection',
             $this->form->getConfig()->getDataClass()
         );
 

@@ -1,11 +1,11 @@
 <?php
 
-namespace Oro\Bundle\FlexibleEntityBundle\EventListener;
+namespace Pim\Bundle\FlexibleEntityBundle\EventListener;
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Util\ClassUtils;
-use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexible;
+use Pim\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexible;
 
 /**
  * Aims to inject available attributes into a flexible entity

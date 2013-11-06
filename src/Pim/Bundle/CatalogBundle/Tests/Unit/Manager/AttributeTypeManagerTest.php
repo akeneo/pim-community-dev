@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\Manager;
 
-use Oro\Bundle\FlexibleEntityBundle\Entity\Attribute;
+use Pim\Bundle\FlexibleEntityBundle\Entity\Attribute;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 
 use Pim\Bundle\CatalogBundle\Manager\AttributeTypeManager;

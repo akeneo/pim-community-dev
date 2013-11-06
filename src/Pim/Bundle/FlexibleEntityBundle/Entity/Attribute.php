@@ -1,8 +1,8 @@
 <?php
 
-namespace Oro\Bundle\FlexibleEntityBundle\Entity;
+namespace Pim\Bundle\FlexibleEntityBundle\Entity;
 
-use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttribute;
+use Pim\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttribute;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -15,10 +15,10 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *     name="oro_flexibleentity_attribute", indexes={@ORM\Index(name="searchcode_idx", columns={"code"})},
  *     uniqueConstraints={@ORM\UniqueConstraint(name="searchunique_idx", columns={"code", "entity_type"})}
  * )
- * @ORM\Entity(repositoryClass="Oro\Bundle\FlexibleEntityBundle\Entity\Repository\AttributeRepository")
+ * @ORM\Entity(repositoryClass="Pim\Bundle\FlexibleEntityBundle\Entity\Repository\AttributeRepository")
  * @ORM\HasLifecycleCallbacks
  * @UniqueEntity("code")
- * @Gedmo\TranslationEntity(class="Oro\Bundle\FlexibleEntityBundle\Entity\AttributeTranslation")
+ * @Gedmo\TranslationEntity(class="Pim\Bundle\FlexibleEntityBundle\Entity\AttributeTranslation")
  */
 class Attribute extends AbstractEntityAttribute
 {
@@ -123,7 +123,7 @@ class Attribute extends AbstractEntityAttribute
      *
      * @param integer $sortOrder
      *
-     * @return \Oro\Bundle\FlexibleEntityBundle\Entity\Attribute
+     * @return \Pim\Bundle\FlexibleEntityBundle\Entity\Attribute
      */
     public function setSortOrder($sortOrder)
     {

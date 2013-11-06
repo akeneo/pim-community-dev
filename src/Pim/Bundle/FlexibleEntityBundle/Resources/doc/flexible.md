@@ -17,12 +17,12 @@ We use the basic entity repository, and define by mapping which value table to u
 ```php
 namespace Acme\Bundle\DemoFlexibleEntityBundle\Entity;
 
-use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexible;
+use Pim\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexible;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Table(name="acmedemo_customer")
- * @ORM\Entity(repositoryClass="Oro\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository")
+ * @ORM\Entity(repositoryClass="Pim\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository")
  */
 class Customer extends AbstractEntityFlexible
 {
@@ -67,8 +67,8 @@ We define mapping to basic entity attribute and to our customer entity.
 <?php
 namespace Acme\Bundle\DemoFlexibleEntityBundle\Entity;
 
-use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexibleValue;
-use Oro\Bundle\FlexibleEntityBundle\Entity\Attribute;
+use Pim\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexibleValue;
+use Pim\Bundle\FlexibleEntityBundle\Entity\Attribute;
 use Doctrine\ORM\Mapping as ORM;
 /**
 
@@ -80,7 +80,7 @@ class CustomerValue extends AbstractEntityFlexibleValue
     /**
      * @var Attribute $attribute
      *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\FlexibleEntityBundle\Entity\Attribute")
+     * @ORM\ManyToOne(targetEntity="Pim\Bundle\FlexibleEntityBundle\Entity\Attribute")
      */
     protected $attribute;
 
@@ -107,7 +107,7 @@ For instance, to use a list of options as backend, add the following mapping in 
      *
      * @var options ArrayCollection
      *
-     * @ORM\ManyToMany(targetEntity="Oro\Bundle\FlexibleEntityBundle\Entity\AttributeOption")
+     * @ORM\ManyToMany(targetEntity="Pim\Bundle\FlexibleEntityBundle\Entity\AttributeOption")
      * @ORM\JoinTable(name="acmedemoflexibleentity_customer_values_options",
      *      joinColumns={@ORM\JoinColumn(name="value_id", referencedColumnName="id", onDelete="CASCADE")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="option_id", referencedColumnName="id", onDelete="CASCADE")}
@@ -132,19 +132,19 @@ entities_config:
         flexible_manager:     customer_manager
         flexible_class:       Acme\Bundle\DemoBundle\Entity\Customer
         flexible_value_class: Acme\Bundle\DemoBundle\Entity\CustomerValue
-        # there is some default values added here for attribute, option, etc, see Oro\Bundle\FlexibleEntityBundle\DependencyInjection\Configuration
+        # there is some default values added here for attribute, option, etc, see Pim\Bundle\FlexibleEntityBundle\DependencyInjection\Configuration
 ```
 
 This config :
-- is validated by Oro\Bundle\FlexibleEntityBundle\DependencyInjection\Configuration
-- is loaded / merged with others by Oro\Bundle\FlexibleEntityBundle\DependencyInjection\OroFlexibleEntityExtension
+- is validated by Pim\Bundle\FlexibleEntityBundle\DependencyInjection\Configuration
+- is loaded / merged with others by Pim\Bundle\FlexibleEntityBundle\DependencyInjection\OroFlexibleEntityExtension
 - is accessible as $this->container->getParameter('oro_flexibleentity.flexible_config');
 - is known by flexible entity manager and repository
 
 Finally we add our service declaration in src/Acme/Bundle/DemoFlexibleEntityBundle/Resources/config/services.yml :
 ```yaml
 parameters:
-    customer_manager_class: Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager
+    customer_manager_class: Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager
     customer_entity_class:  Acme\Bundle\DemoFlexibleEntityBundle\Entity\Customer
 
 services:

@@ -1,8 +1,8 @@
 <?php
 
-namespace Oro\Bundle\FlexibleEntityBundle\Tests\Form\Type;
+namespace Pim\Bundle\FlexibleEntityBundle\Tests\Form\Type;
 
-use Oro\Bundle\FlexibleEntityBundle\Form\Type\EmailCollectionType;
+use Pim\Bundle\FlexibleEntityBundle\Form\Type\EmailCollectionType;
 use Symfony\Component\Form\Tests\Extension\Core\Type\TypeTestCase;
 
 /**

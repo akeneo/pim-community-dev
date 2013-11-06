@@ -6,9 +6,9 @@ Create the class
 
 ```php
 <?php
-namespace Oro\Bundle\FlexibleEntityBundle\AttributeType;
+namespace Pim\Bundle\FlexibleEntityBundle\AttributeType;
 
-use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
+use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 
 class TextType extends AbstractAttributeType
 {
@@ -29,7 +29,7 @@ With backend type to use and form type to render a value :
 ```yaml
 services:
     oro_flexibleentity.attributetype.text:
-        class: Oro\Bundle\FlexibleEntityBundle\AttributeType\TextType
+        class: Pim\Bundle\FlexibleEntityBundle\AttributeType\TextType
         arguments: ["varchar", "text"]
         tags:
             - { name: oro_flexibleentity.attributetype, alias: oro_flexibleentity_text }

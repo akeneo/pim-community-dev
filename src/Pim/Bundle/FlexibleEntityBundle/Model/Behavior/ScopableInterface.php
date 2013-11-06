@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\FlexibleEntityBundle\Model\Behavior;
+namespace Pim\Bundle\FlexibleEntityBundle\Model\Behavior;
 
 /**
  * Scopable interface, implemented by class which can be scoped

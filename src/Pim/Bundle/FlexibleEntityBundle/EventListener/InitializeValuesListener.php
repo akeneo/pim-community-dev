@@ -1,12 +1,12 @@
 <?php
 
-namespace Oro\Bundle\FlexibleEntityBundle\EventListener;
+namespace Pim\Bundle\FlexibleEntityBundle\EventListener;
 
-use Oro\Bundle\FlexibleEntityBundle\Model\FlexibleInterface;
+use Pim\Bundle\FlexibleEntityBundle\Model\FlexibleInterface;
 
-use Oro\Bundle\FlexibleEntityBundle\Event\FilterFlexibleEvent;
+use Pim\Bundle\FlexibleEntityBundle\Event\FilterFlexibleEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Oro\Bundle\FlexibleEntityBundle\FlexibleEntityEvents;
+use Pim\Bundle\FlexibleEntityBundle\FlexibleEntityEvents;
 
 /**
  * Aims to add all values / required values when create or load a new flexible :

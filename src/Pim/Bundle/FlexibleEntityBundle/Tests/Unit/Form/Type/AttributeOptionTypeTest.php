@@ -1,9 +1,9 @@
 <?php
 
-namespace Oro\Bundle\FlexibleEntityBundle\Tests\Form\Type;
+namespace Pim\Bundle\FlexibleEntityBundle\Tests\Form\Type;
 
 use Symfony\Component\Form\Tests\Extension\Core\Type\TypeTestCase;
-use Oro\Bundle\FlexibleEntityBundle\Form\Type\AttributeOptionType;
+use Pim\Bundle\FlexibleEntityBundle\Form\Type\AttributeOptionType;
 
 /**
  * Test related class
@@ -32,7 +32,7 @@ class AttributeOptionTypeTest extends TypeTestCase
         $this->assertField('translatable', 'text');
 
         $this->assertEquals(
-            'Oro\Bundle\FlexibleEntityBundle\Entity\AttributeOption',
+            'Pim\Bundle\FlexibleEntityBundle\Entity\AttributeOption',
             $this->form->getConfig()->getDataClass()
         );
 

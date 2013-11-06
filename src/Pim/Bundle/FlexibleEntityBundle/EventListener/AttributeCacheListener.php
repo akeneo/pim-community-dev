@@ -1,13 +1,13 @@
 <?php
 
-namespace Oro\Bundle\FlexibleEntityBundle\EventListener;
+namespace Pim\Bundle\FlexibleEntityBundle\EventListener;
 
-use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
+use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\Common\EventSubscriber;
 
-use Oro\Bundle\FlexibleEntityBundle\Entity\Repository\AttributeRepository;
+use Pim\Bundle\FlexibleEntityBundle\Entity\Repository\AttributeRepository;
 
 /**
  * This listener is used to listen to insert or delete

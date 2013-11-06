@@ -478,10 +478,10 @@ class ProductTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return \Oro\Bundle\FlexibleEntityBundle\Entity\Media
+     * @return \Pim\Bundle\FlexibleEntityBundle\Entity\Media
      */
     protected function getMediaMock()
     {
-        return $this->getMock('Oro\Bundle\FlexibleEntityBundle\Entity\Media');
+        return $this->getMock('Pim\Bundle\FlexibleEntityBundle\Entity\Media');
     }
 }

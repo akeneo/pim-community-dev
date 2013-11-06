@@ -1,7 +1,7 @@
 <?php
-namespace Oro\Bundle\FlexibleEntityBundle\Tests\Unit\Entity;
+namespace Pim\Bundle\FlexibleEntityBundle\Tests\Unit\Entity;
 
-use Oro\Bundle\FlexibleEntityBundle\Entity\Media;
+use Pim\Bundle\FlexibleEntityBundle\Entity\Media;
 
 /**
  * Test related class

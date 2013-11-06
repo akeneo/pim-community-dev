@@ -1,27 +1,27 @@
 <?php
 
-namespace Oro\Bundle\FlexibleEntityBundle\Manager;
+namespace Pim\Bundle\FlexibleEntityBundle\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-use Oro\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory;
-use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
-use Oro\Bundle\FlexibleEntityBundle\FlexibleEntityEvents;
-use Oro\Bundle\FlexibleEntityBundle\Event\FilterAttributeEvent;
-use Oro\Bundle\FlexibleEntityBundle\Event\FilterFlexibleEvent;
-use Oro\Bundle\FlexibleEntityBundle\Event\FilterFlexibleValueEvent;
-use Oro\Bundle\FlexibleEntityBundle\Exception\FlexibleConfigurationException;
-use Oro\Bundle\FlexibleEntityBundle\Model\FlexibleInterface;
-use Oro\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
-use Oro\Bundle\FlexibleEntityBundle\Model\Behavior\TranslatableInterface;
-use Oro\Bundle\FlexibleEntityBundle\Model\Behavior\ScopableInterface;
-use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
-use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttributeOption;
-use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttributeOptionValue;
-use Oro\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository;
+use Pim\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory;
+use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
+use Pim\Bundle\FlexibleEntityBundle\FlexibleEntityEvents;
+use Pim\Bundle\FlexibleEntityBundle\Event\FilterAttributeEvent;
+use Pim\Bundle\FlexibleEntityBundle\Event\FilterFlexibleEvent;
+use Pim\Bundle\FlexibleEntityBundle\Event\FilterFlexibleValueEvent;
+use Pim\Bundle\FlexibleEntityBundle\Exception\FlexibleConfigurationException;
+use Pim\Bundle\FlexibleEntityBundle\Model\FlexibleInterface;
+use Pim\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
+use Pim\Bundle\FlexibleEntityBundle\Model\Behavior\TranslatableInterface;
+use Pim\Bundle\FlexibleEntityBundle\Model\Behavior\ScopableInterface;
+use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
+use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttributeOption;
+use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttributeOptionValue;
+use Pim\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository;
 
 /**
  * Flexible object manager, allow to use flexible entity in storage agnostic way

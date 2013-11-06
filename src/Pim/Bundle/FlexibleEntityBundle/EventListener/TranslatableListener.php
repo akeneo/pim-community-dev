@@ -1,15 +1,15 @@
 <?php
 
-namespace Oro\Bundle\FlexibleEntityBundle\EventListener;
+namespace Pim\Bundle\FlexibleEntityBundle\EventListener;
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Util\ClassUtils;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Oro\Bundle\FlexibleEntityBundle\Model\FlexibleInterface;
-use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttributeOption;
-use Oro\Bundle\FlexibleEntityBundle\Model\Behavior\TranslatableInterface;
+use Pim\Bundle\FlexibleEntityBundle\Model\FlexibleInterface;
+use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttributeOption;
+use Pim\Bundle\FlexibleEntityBundle\Model\Behavior\TranslatableInterface;
 
 /**
  * Aims to inject selected locale into loaded translatable container, ie, not store locale code but contains some

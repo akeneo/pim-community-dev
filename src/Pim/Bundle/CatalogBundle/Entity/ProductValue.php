@@ -4,8 +4,8 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
-use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexibleValue;
-use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttributeOption;
+use Pim\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexibleValue;
+use Pim\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttributeOption;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Entity\ProductPrice;
@@ -27,7 +27,7 @@ use Pim\Bundle\CatalogBundle\Entity\ProductPrice;
 class ProductValue extends AbstractEntityFlexibleValue implements ProductValueInterface
 {
     /**
-     * @var Oro\Bundle\FlexibleEntityBundle\Entity\Attribute $attribute
+     * @var Pim\Bundle\FlexibleEntityBundle\Entity\Attribute $attribute
      *
      * @ORM\ManyToOne(targetEntity="Pim\Bundle\CatalogBundle\Entity\ProductAttribute")
      * @ORM\JoinColumn(name="attribute_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
@@ -125,7 +125,7 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
      *
      * @var Media $media
      *
-     * @ORM\OneToOne(targetEntity="Oro\Bundle\FlexibleEntityBundle\Entity\Media", cascade={"persist", "refresh"})
+     * @ORM\OneToOne(targetEntity="Pim\Bundle\FlexibleEntityBundle\Entity\Media", cascade={"persist", "refresh"})
      * @ORM\JoinColumn(name="media_id", referencedColumnName="id", onDelete="SET NULL")
      */
     protected $media;
@@ -135,7 +135,7 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
      *
      * @var Metric $metric
      *
-     * @ORM\OneToOne(targetEntity="Oro\Bundle\FlexibleEntityBundle\Entity\Metric", cascade={"persist", "refresh"})
+     * @ORM\OneToOne(targetEntity="Pim\Bundle\FlexibleEntityBundle\Entity\Metric", cascade={"persist", "refresh"})
      * @ORM\JoinColumn(name="metric_id", referencedColumnName="id", onDelete="SET NULL")
      */
     protected $metric;
@@ -181,7 +181,7 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
     /**
      * Get media
      *
-     * @return \Oro\Bundle\FlexibleEntityBundle\Entity\Media
+     * @return \Pim\Bundle\FlexibleEntityBundle\Entity\Media
      */
     public function getMedia()
     {
@@ -191,7 +191,7 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
     /**
      * Set media
      *
-     * @param \Oro\Bundle\FlexibleEntityBundle\Entity\Media $media
+     * @param \Pim\Bundle\FlexibleEntityBundle\Entity\Media $media
      *
      * @return ProductValue
      */

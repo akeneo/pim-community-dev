@@ -1,8 +1,8 @@
 <?php
 
-namespace Oro\Bundle\FlexibleEntityBundle\Tests\Form\Type;
+namespace Pim\Bundle\FlexibleEntityBundle\Tests\Form\Type;
 
-use Oro\Bundle\FlexibleEntityBundle\Form\Type\MediaType;
+use Pim\Bundle\FlexibleEntityBundle\Form\Type\MediaType;
 
 use Symfony\Component\Form\Tests\Extension\Core\Type\TypeTestCase;
 
@@ -31,7 +31,7 @@ class MediaTypeTest extends TypeTestCase
         $this->assertField('removed', 'checkbox');
 
         $this->assertEquals(
-            'Oro\Bundle\FlexibleEntityBundle\Entity\Media',
+            'Pim\Bundle\FlexibleEntityBundle\Entity\Media',
             $this->form->getConfig()->getDataClass()
         );
 

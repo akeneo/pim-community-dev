@@ -1,9 +1,9 @@
 <?php
-namespace Oro\Bundle\FlexibleEntityBundle\Tests\Unit\EventListener;
+namespace Pim\Bundle\FlexibleEntityBundle\Tests\Unit\EventListener;
 
-use Oro\Bundle\FlexibleEntityBundle\Tests\Unit\AbstractFlexibleManagerTest;
-use Oro\Bundle\FlexibleEntityBundle\Tests\Unit\Entity\Demo\Flexible;
-use Oro\Bundle\FlexibleEntityBundle\EventListener\ScopableListener;
+use Pim\Bundle\FlexibleEntityBundle\Tests\Unit\AbstractFlexibleManagerTest;
+use Pim\Bundle\FlexibleEntityBundle\Tests\Unit\Entity\Demo\Flexible;
+use Pim\Bundle\FlexibleEntityBundle\EventListener\ScopableListener;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 
 /**

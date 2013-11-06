@@ -1,7 +1,7 @@
 <?php
-namespace Oro\Bundle\FlexibleEntityBundle\Tests\Unit\DependencyInjection;
+namespace Pim\Bundle\FlexibleEntityBundle\Tests\Unit\DependencyInjection;
 
-use Oro\Bundle\FlexibleEntityBundle\DependencyInjection\Configuration;
+use Pim\Bundle\FlexibleEntityBundle\DependencyInjection\Configuration;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 
 /**

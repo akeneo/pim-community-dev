@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Form\Type;
 
-use Oro\Bundle\FlexibleEntityBundle\Form\Type\MediaType;
+use Pim\Bundle\FlexibleEntityBundle\Form\Type\MediaType;
 
 /**
  * Form type linked to Media entity

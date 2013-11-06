@@ -1,8 +1,8 @@
 <?php
 
-namespace Oro\Bundle\FlexibleEntityBundle\Tests\Unit\AttributeType;
+namespace Pim\Bundle\FlexibleEntityBundle\Tests\Unit\AttributeType;
 
-use Oro\Bundle\FlexibleEntityBundle\AttributeType\BooleanType;
+use Pim\Bundle\FlexibleEntityBundle\AttributeType\BooleanType;
 
 class BooleanTypeTest extends AttributeTypeTest
 {

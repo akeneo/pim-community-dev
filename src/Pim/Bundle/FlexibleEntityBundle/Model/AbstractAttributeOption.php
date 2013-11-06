@@ -1,8 +1,8 @@
 <?php
 
-namespace Oro\Bundle\FlexibleEntityBundle\Model;
+namespace Pim\Bundle\FlexibleEntityBundle\Model;
 
-use Oro\Bundle\FlexibleEntityBundle\Model\Behavior\TranslatableInterface;
+use Pim\Bundle\FlexibleEntityBundle\Model\Behavior\TranslatableInterface;
 
 /**
  * Abstract entity attribute option, independent of storage

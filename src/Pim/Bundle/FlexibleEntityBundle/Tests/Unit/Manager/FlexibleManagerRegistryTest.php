@@ -1,14 +1,14 @@
 <?php
 
-namespace Oro\Bundle\FlexibleEntityBundle\Tests\Unit\Manager;
+namespace Pim\Bundle\FlexibleEntityBundle\Tests\Unit\Manager;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\Tests\OrmTestCase;
 
 use Symfony\Component\DependencyInjection\Container;
 
-use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
-use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManagerRegistry;
+use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
+use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManagerRegistry;
 
 /**
  * Test related class
@@ -51,7 +51,7 @@ class FlexibleManagerRegistryTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->registry        = new FlexibleManagerRegistry();
-        $this->flexibleManager =  $this->getMockBuilder('Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager')
+        $this->flexibleManager =  $this->getMockBuilder('Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager')
             ->disableOriginalConstructor()
             ->getMock();
     }
@@ -87,7 +87,7 @@ class FlexibleManagerRegistryTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Cannot get flexible manager for class "Oro\Bundle\FlexibleEntityBundle\Test\Entity\Demo".
+     * @expectedExceptionMessage Cannot get flexible manager for class "Pim\Bundle\FlexibleEntityBundle\Test\Entity\Demo".
      */
     public function testGetManagerFails()
     {

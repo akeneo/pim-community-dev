@@ -1,14 +1,14 @@
 <?php
 
-namespace Oro\Bundle\FlexibleEntityBundle\Tests\Unit\Entity\Demo;
+namespace Pim\Bundle\FlexibleEntityBundle\Tests\Unit\Entity\Demo;
 
-use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexible;
+use Pim\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexible;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * A concret flexible class
  *
- * @ORM\Entity(repositoryClass="Oro\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository")
+ * @ORM\Entity(repositoryClass="Pim\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository")
  */
 class Flexible extends AbstractEntityFlexible
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\FlexibleEntityBundle\Tests\Unit\AttributeType;
+namespace Pim\Bundle\FlexibleEntityBundle\Tests\Unit\AttributeType;
 
 abstract class AttributeTypeTest extends \PHPUnit_Framework_TestCase
 {
@@ -21,7 +21,7 @@ abstract class AttributeTypeTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->guesser = $this->getMock('Oro\Bundle\FlexibleEntityBundle\Form\Validator\AttributeConstraintGuesser');
+        $this->guesser = $this->getMock('Pim\Bundle\FlexibleEntityBundle\Form\Validator\AttributeConstraintGuesser');
         $this->guesser->expects($this->any())
             ->method('supportAttribute')
             ->will($this->returnValue(true));
@@ -47,7 +47,7 @@ abstract class AttributeTypeTest extends \PHPUnit_Framework_TestCase
         if (!$this->target) {
             throw new \Exception(sprintf('You must override the setUp() method and provide a $target instance.'));
         }
-        $this->assertInstanceOf('Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType', $this->target);
+        $this->assertInstanceOf('Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType', $this->target);
     }
 
     protected function getFormFactoryMock()
@@ -70,7 +70,7 @@ abstract class AttributeTypeTest extends \PHPUnit_Framework_TestCase
         );
 
         $value = $this->getMock(
-            'Oro\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface',
+            'Pim\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface',
             array(
                 'getAttribute', 'getData'
             )
@@ -96,7 +96,7 @@ abstract class AttributeTypeTest extends \PHPUnit_Framework_TestCase
 
     protected function getAttributeMock($backendType, $defaultValue)
     {
-        $attribute = $this->getMock('Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute');
+        $attribute = $this->getMock('Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute');
 
         $attribute->expects($this->any())
             ->method('getBackendType')

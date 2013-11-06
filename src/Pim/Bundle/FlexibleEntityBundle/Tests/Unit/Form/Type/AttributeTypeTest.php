@@ -1,9 +1,9 @@
 <?php
 
-namespace Oro\Bundle\FlexibleEntityBundle\Tests\Form\Type;
+namespace Pim\Bundle\FlexibleEntityBundle\Tests\Form\Type;
 
 use Symfony\Component\Form\Tests\Extension\Core\Type\TypeTestCase;
-use Oro\Bundle\FlexibleEntityBundle\Form\Type\AttributeType;
+use Pim\Bundle\FlexibleEntityBundle\Form\Type\AttributeType;
 
 /**
  * Test related class
@@ -36,7 +36,7 @@ class AttributeTypeTest extends TypeTestCase
         $this->assertField('searchable', 'choice');
 
         $this->assertEquals(
-            'Oro\Bundle\FlexibleEntityBundle\Entity\Attribute',
+            'Pim\Bundle\FlexibleEntityBundle\Entity\Attribute',
             $this->form->getConfig()->getDataClass()
         );
 

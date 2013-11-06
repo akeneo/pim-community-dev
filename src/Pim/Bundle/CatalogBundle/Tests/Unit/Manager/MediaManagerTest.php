@@ -140,11 +140,11 @@ class MediaManagerTest extends \PHPUnit_Framework_TestCase
     /**
      * @param mixed $file
      *
-     * @return \Oro\Bundle\FlexibleEntityBundle\Entity\Media
+     * @return \Pim\Bundle\FlexibleEntityBundle\Entity\Media
      */
     protected function getMediaMock($file = null)
     {
-        $media = $this->getMock('Oro\Bundle\FlexibleEntityBundle\Entity\Media');
+        $media = $this->getMock('Pim\Bundle\FlexibleEntityBundle\Entity\Media');
 
         $media->expects($this->any())
               ->method('getFile')

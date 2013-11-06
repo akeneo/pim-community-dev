@@ -1,8 +1,8 @@
 <?php
 
-namespace Oro\Bundle\FlexibleEntityBundle\Tests\Unit\Entity;
+namespace Pim\Bundle\FlexibleEntityBundle\Tests\Unit\Entity;
 
-use Oro\Bundle\FlexibleEntityBundle\Entity\Collection;
+use Pim\Bundle\FlexibleEntityBundle\Entity\Collection;
 
 /**
  * Test related class

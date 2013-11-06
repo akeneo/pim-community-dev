@@ -1,14 +1,14 @@
 <?php
-namespace Oro\Bundle\FlexibleEntityBundle\Tests\Unit\Doctrine\ORM;
+namespace Pim\Bundle\FlexibleEntityBundle\Tests\Unit\Doctrine\ORM;
 
 use Doctrine\ORM\QueryBuilder;
-use Oro\Bundle\FlexibleEntityBundle\Tests\Unit\AbstractOrmTest;
+use Pim\Bundle\FlexibleEntityBundle\Tests\Unit\AbstractOrmTest;
 use Doctrine\Tests\OrmTestCase;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
-use Oro\Bundle\FlexibleEntityBundle\Doctrine\ORM\FlexibleQueryBuilder;
-use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
-use Oro\Bundle\FlexibleEntityBundle\Entity\Attribute;
+use Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\FlexibleQueryBuilder;
+use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
+use Pim\Bundle\FlexibleEntityBundle\Entity\Attribute;
 
 /**
  * Test related class
@@ -55,7 +55,7 @@ class FlexibleQueryBuilderTest extends AbstractOrmTest
 
     /**
      * Test related method
-     * @expectedException \Oro\Bundle\FlexibleEntityBundle\Exception\FlexibleQueryException
+     * @expectedException \Pim\Bundle\FlexibleEntityBundle\Exception\FlexibleQueryException
      */
     public function testGetAllowedOperatorsException()
     {
@@ -95,7 +95,7 @@ class FlexibleQueryBuilderTest extends AbstractOrmTest
 
     /**
      * Test related method
-     * @expectedException \Oro\Bundle\FlexibleEntityBundle\Exception\FlexibleQueryException
+     * @expectedException \Pim\Bundle\FlexibleEntityBundle\Exception\FlexibleQueryException
      */
     public function testPrepareAttributeJoinConditionExceptionLocale()
     {
@@ -107,7 +107,7 @@ class FlexibleQueryBuilderTest extends AbstractOrmTest
 
     /**
      * Test related method
-     * @expectedException \Oro\Bundle\FlexibleEntityBundle\Exception\FlexibleQueryException
+     * @expectedException \Pim\Bundle\FlexibleEntityBundle\Exception\FlexibleQueryException
      */
     public function testPrepareAttributeJoinConditionExceptionScope()
     {
@@ -159,7 +159,7 @@ class FlexibleQueryBuilderTest extends AbstractOrmTest
 
     /**
      * Test related method
-     * @expectedException \Oro\Bundle\FlexibleEntityBundle\Exception\FlexibleQueryException
+     * @expectedException \Pim\Bundle\FlexibleEntityBundle\Exception\FlexibleQueryException
      */
     public function testPrepareCriteriaConditionException()
     {

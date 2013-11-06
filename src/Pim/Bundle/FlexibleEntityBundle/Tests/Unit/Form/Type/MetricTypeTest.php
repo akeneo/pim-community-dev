@@ -1,8 +1,8 @@
 <?php
 
-namespace Oro\Bundle\FlexibleEntityBundle\Tests\Form\Type;
+namespace Pim\Bundle\FlexibleEntityBundle\Tests\Form\Type;
 
-use Oro\Bundle\FlexibleEntityBundle\Form\Type\MetricType;
+use Pim\Bundle\FlexibleEntityBundle\Form\Type\MetricType;
 use Symfony\Component\Form\Tests\Extension\Core\Type\TypeTestCase;
 
 /**
@@ -32,7 +32,7 @@ class MetricTypeTest extends TypeTestCase
         $this->assertField('unit', 'choice');
 
         $this->assertEquals(
-            'Oro\Bundle\FlexibleEntityBundle\Entity\Metric',
+            'Pim\Bundle\FlexibleEntityBundle\Entity\Metric',
             $this->form->getConfig()->getDataClass()
         );
 

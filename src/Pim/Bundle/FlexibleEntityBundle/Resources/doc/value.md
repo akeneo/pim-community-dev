@@ -103,7 +103,7 @@ Add the doctrine mapping and getter / setter in your value implementation as :
      *
      * @var Price $price
      *
-     * @ORM\OneToOne(targetEntity="Oro\Bundle\FlexibleEntityBundle\Entity\Price", cascade="persist")
+     * @ORM\OneToOne(targetEntity="Pim\Bundle\FlexibleEntityBundle\Entity\Price", cascade="persist")
      * @ORM\JoinColumn(name="price_id", referencedColumnName="id", onDelete="SET NULL")
      */
     protected $price;

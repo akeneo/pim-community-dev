@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\FlexibleEntityBundle\Model;
+namespace Pim\Bundle\FlexibleEntityBundle\Model;
 
 /**
  * Flexible value interface, allow to define a flexible value without extends abstract class

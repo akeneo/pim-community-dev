@@ -1,9 +1,9 @@
 <?php
-namespace Oro\Bundle\FlexibleEntityBundle\Tests\Unit\Entity;
+namespace Pim\Bundle\FlexibleEntityBundle\Tests\Unit\Entity;
 
-use Oro\Bundle\FlexibleEntityBundle\Entity\Attribute;
-use Oro\Bundle\FlexibleEntityBundle\Entity\AttributeOption;
-use Oro\Bundle\FlexibleEntityBundle\Entity\AttributeOptionValue;
+use Pim\Bundle\FlexibleEntityBundle\Entity\Attribute;
+use Pim\Bundle\FlexibleEntityBundle\Entity\AttributeOption;
+use Pim\Bundle\FlexibleEntityBundle\Entity\AttributeOptionValue;
 
 /**
  * Test related class
@@ -56,17 +56,17 @@ class AttributeOptionTest extends \PHPUnit_Framework_TestCase
     /**
      * @staticvar string
      */
-    protected static $attClass = 'Oro\Bundle\FlexibleEntityBundle\Entity\Attribute';
+    protected static $attClass = 'Pim\Bundle\FlexibleEntityBundle\Entity\Attribute';
 
     /**
      * @staticvar string
      */
-    protected static $attOptClass = 'Oro\Bundle\FlexibleEntityBundle\Entity\AttributeOption';
+    protected static $attOptClass = 'Pim\Bundle\FlexibleEntityBundle\Entity\AttributeOption';
 
     /**
      * @staticvar string
      */
-    protected static $attOptValueClass = 'Oro\Bundle\FlexibleEntityBundle\Entity\AttributeOptionValue';
+    protected static $attOptValueClass = 'Pim\Bundle\FlexibleEntityBundle\Entity\AttributeOptionValue';
 
     /**
      * Test related getter/setter method

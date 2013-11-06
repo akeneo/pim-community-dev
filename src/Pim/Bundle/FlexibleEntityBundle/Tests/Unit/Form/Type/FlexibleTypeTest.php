@@ -1,10 +1,10 @@
 <?php
 
-namespace Oro\Bundle\FlexibleEntityBundle\Tests\Form\Type;
+namespace Pim\Bundle\FlexibleEntityBundle\Tests\Form\Type;
 
 use Symfony\Component\Form\Forms;
-use Oro\Bundle\FlexibleEntityBundle\Tests\Unit\AbstractFlexibleManagerTest;
-use Oro\Bundle\FlexibleEntityBundle\Form\Type\FlexibleType;
+use Pim\Bundle\FlexibleEntityBundle\Tests\Unit\AbstractFlexibleManagerTest;
+use Pim\Bundle\FlexibleEntityBundle\Form\Type\FlexibleType;
 
 /**
  * Test related class
@@ -38,7 +38,7 @@ class FlexibleTypeTest extends AbstractFlexibleManagerTest
         $this->assertField('id', 'hidden');
 
         $this->assertEquals(
-            'Oro\Bundle\FlexibleEntityBundle\Tests\Unit\Entity\Demo\Flexible',
+            'Pim\Bundle\FlexibleEntityBundle\Tests\Unit\Entity\Demo\Flexible',
             $this->form->getConfig()->getDataClass()
         );
 

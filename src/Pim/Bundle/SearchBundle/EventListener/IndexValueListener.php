@@ -5,7 +5,7 @@ namespace Pim\Bundle\SearchBundle\EventListener;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Oro\Bundle\SearchBundle\Engine\AbstractEngine;
-use Oro\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
+use Pim\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
 
 /**
  * Allow to index product when a value is updated

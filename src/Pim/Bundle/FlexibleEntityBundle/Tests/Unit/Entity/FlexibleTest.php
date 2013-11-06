@@ -1,10 +1,10 @@
 <?php
-namespace Oro\Bundle\FlexibleEntityBundle\Tests\Unit\Entity;
+namespace Pim\Bundle\FlexibleEntityBundle\Tests\Unit\Entity;
 
-use Oro\Bundle\FlexibleEntityBundle\Tests\Unit\Entity\Demo\FlexibleValue;
+use Pim\Bundle\FlexibleEntityBundle\Tests\Unit\Entity\Demo\FlexibleValue;
 
-use Oro\Bundle\FlexibleEntityBundle\Tests\Unit\Entity\Demo\Flexible;
-use Oro\Bundle\FlexibleEntityBundle\Entity\Attribute;
+use Pim\Bundle\FlexibleEntityBundle\Tests\Unit\Entity\Demo\Flexible;
+use Pim\Bundle\FlexibleEntityBundle\Entity\Attribute;
 
 /**
  * Test related demo class, aims to cover abstract one
@@ -31,7 +31,7 @@ class FlexibleTest extends \PHPUnit_Framework_TestCase
         $this->attribute->setBackendType('varchar');
         // create flexible
         $this->flexible = new Flexible();
-        $this->flexible->setValueClass('Oro\Bundle\FlexibleEntityBundle\Tests\Unit\Entity\Demo\FlexibleValue');
+        $this->flexible->setValueClass('Pim\Bundle\FlexibleEntityBundle\Tests\Unit\Entity\Demo\FlexibleValue');
         $this->flexible->setAllAttributes(array($this->attributeCode => $this->attribute));
     }
 

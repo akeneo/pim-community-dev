@@ -1,10 +1,10 @@
 <?php
 
-namespace Oro\Bundle\FlexibleEntityBundle\Tests\Unit\Form\Validator;
+namespace Pim\Bundle\FlexibleEntityBundle\Tests\Unit\Form\Validator;
 
-use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
+use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Symfony\Component\Validator\Constraints;
-use Oro\Bundle\FlexibleEntityBundle\Form\Validator\AttributeConstraintGuesser;
+use Pim\Bundle\FlexibleEntityBundle\Form\Validator\AttributeConstraintGuesser;
 
 /**
  * Test related class
@@ -19,7 +19,7 @@ class ChainedConstraintGuesserTest extends \PHPUnit_Framework_TestCase
     public function testInstanceOfContraintGuesserInterface()
     {
         $this->assertInstanceOf(
-            'Oro\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface',
+            'Pim\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface',
             $this->target
         );
     }
@@ -64,7 +64,7 @@ class ChainedConstraintGuesserTest extends \PHPUnit_Framework_TestCase
             $options
         );
 
-        $attribute = $this->getMock('Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute');
+        $attribute = $this->getMock('Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute');
 
         $attribute->expects($this->any())
             ->method('getBackendType')

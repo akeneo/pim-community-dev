@@ -1,8 +1,8 @@
 <?php
 
-namespace Oro\Bundle\FlexibleEntityBundle\Tests\Unit\AttributeType;
+namespace Pim\Bundle\FlexibleEntityBundle\Tests\Unit\AttributeType;
 
-use Oro\Bundle\FlexibleEntityBundle\AttributeType\FileUrlType;
+use Pim\Bundle\FlexibleEntityBundle\AttributeType\FileUrlType;
 
 class FileUrlTypeTest extends AttributeTypeTest
 {

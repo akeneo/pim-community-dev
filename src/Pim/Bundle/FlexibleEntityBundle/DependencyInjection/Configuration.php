@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\FlexibleEntityBundle\DependencyInjection;
+namespace Pim\Bundle\FlexibleEntityBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -55,20 +55,20 @@ class Configuration implements ConfigurationInterface
 
                 // optional, to define customized attribute and option models
                 ->scalarNode('attribute_class')
-                    ->defaultValue('Oro\Bundle\FlexibleEntityBundle\Entity\Attribute')
+                    ->defaultValue('Pim\Bundle\FlexibleEntityBundle\Entity\Attribute')
                 ->end()
 
                 ->scalarNode('attribute_option_class')
-                    ->defaultValue('Oro\Bundle\FlexibleEntityBundle\Entity\AttributeOption')
+                    ->defaultValue('Pim\Bundle\FlexibleEntityBundle\Entity\AttributeOption')
                 ->end()
 
                 ->scalarNode('attribute_option_value_class')
-                    ->defaultValue('Oro\Bundle\FlexibleEntityBundle\Entity\AttributeOptionValue')
+                    ->defaultValue('Pim\Bundle\FlexibleEntityBundle\Entity\AttributeOptionValue')
                 ->end()
 
                 // optional, to define customized media entity
                 ->scalarNode('attribute_media_class')
-                    ->defaultValue('Oro\Bundle\FlexibleEntityBundle\Entity\Media')
+                    ->defaultValue('Pim\Bundle\FlexibleEntityBundle\Entity\Media')
                 ->end()
 
                 // optional, default locale used for entity values

@@ -27,7 +27,7 @@ class TimeGuesserTest extends ConstraintGuesserTest
     public function testInstanceOfContraintGuesserInterface()
     {
         $this->assertInstanceOf(
-            'Oro\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface',
+            'Pim\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface',
             $this->target
         );
     }

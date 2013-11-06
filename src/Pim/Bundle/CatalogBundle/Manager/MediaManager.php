@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Oro\Bundle\FlexibleEntityBundle\Entity\Media;
+use Pim\Bundle\FlexibleEntityBundle\Entity\Media;
 use Gaufrette\Filesystem;
 use Pim\Bundle\CatalogBundle\Exception\MediaManagementException;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\FlexibleEntityBundle\Manager;
+namespace Pim\Bundle\FlexibleEntityBundle\Manager;
 
 use Doctrine\Common\Util\ClassUtils;
 

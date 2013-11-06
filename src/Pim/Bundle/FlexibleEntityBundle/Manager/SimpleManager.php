@@ -1,8 +1,8 @@
 <?php
 
-namespace Oro\Bundle\FlexibleEntityBundle\Manager;
+namespace Pim\Bundle\FlexibleEntityBundle\Manager;
 
-use Oro\Bundle\FlexibleEntityBundle\Model\Entity;
+use Pim\Bundle\FlexibleEntityBundle\Model\Entity;
 
 use Doctrine\Common\Persistence\ObjectManager;
 

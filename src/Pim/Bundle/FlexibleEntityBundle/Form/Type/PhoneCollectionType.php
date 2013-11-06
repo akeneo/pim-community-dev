@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\FlexibleEntityBundle\Form\Type;
+namespace Pim\Bundle\FlexibleEntityBundle\Form\Type;
 
 use Symfony\Component\Form\FormBuilderInterface;
 

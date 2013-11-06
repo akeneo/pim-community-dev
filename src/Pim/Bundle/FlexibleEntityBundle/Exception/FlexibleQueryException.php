@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\FlexibleEntityBundle\Exception;
+namespace Pim\Bundle\FlexibleEntityBundle\Exception;
 
 /**
  * FlexibleQueryException

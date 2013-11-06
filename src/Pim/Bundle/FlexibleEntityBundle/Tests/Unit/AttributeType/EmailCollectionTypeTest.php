@@ -1,7 +1,7 @@
 <?php
-namespace Oro\Bundle\FlexibleEntityBundle\Tests\Unit\AttributeType;
+namespace Pim\Bundle\FlexibleEntityBundle\Tests\Unit\AttributeType;
 
-use Oro\Bundle\FlexibleEntityBundle\AttributeType\EmailCollectionType;
+use Pim\Bundle\FlexibleEntityBundle\AttributeType\EmailCollectionType;
 
 class EmailCollectionTypeTest extends AttributeTypeTest
 {

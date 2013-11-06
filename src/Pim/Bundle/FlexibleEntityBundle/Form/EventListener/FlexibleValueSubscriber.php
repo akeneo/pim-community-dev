@@ -1,14 +1,14 @@
 <?php
 
-namespace Oro\Bundle\FlexibleEntityBundle\Form\EventListener;
+namespace Pim\Bundle\FlexibleEntityBundle\Form\EventListener;
 
-use Oro\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
+use Pim\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManagerRegistry;
-use Oro\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory;
+use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManagerRegistry;
+use Pim\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory;
 use Symfony\Component\Form\FormInterface;
 
 /**
@@ -80,7 +80,7 @@ class FlexibleValueSubscriber implements EventSubscriberInterface
 
         // Initialize subforms which connected to flexible entities
         $dataClass = $valueForm->getConfig()->getDataClass();
-        if (is_subclass_of($dataClass, 'Oro\Bundle\FlexibleEntityBundle\Model\FlexibleInterface')) {
+        if (is_subclass_of($dataClass, 'Pim\Bundle\FlexibleEntityBundle\Model\FlexibleInterface')) {
             $flexibleManager = $this->flexibleManagerRegistry->getManager($dataClass);
             $entity = $flexibleManager->createFlexible();
             $valueForm->setData($entity);

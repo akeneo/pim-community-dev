@@ -1,5 +1,5 @@
 <?php
-namespace Oro\Bundle\FlexibleEntityBundle;
+namespace Pim\Bundle\FlexibleEntityBundle;
 
 /**
  * Flexible events
@@ -13,7 +13,7 @@ final class FlexibleEntityEvents
      * This event is thrown each time an attribute is created in the system.
      *
      * The event listener receives an
-     * Oro\Bundle\FlexibleEntityBundle\Event\FilterFlexibleEvent instance.
+     * Pim\Bundle\FlexibleEntityBundle\Event\FilterFlexibleEvent instance.
      *
      * @var string
      */
@@ -23,7 +23,7 @@ final class FlexibleEntityEvents
      * This event is thrown each time a flexible is created in the system.
      *
      * The event listener receives an
-     * Oro\Bundle\FlexibleEntityBundle\Event\FilterFlexibleEvent instance.
+     * Pim\Bundle\FlexibleEntityBundle\Event\FilterFlexibleEvent instance.
      *
      * @var string
      */
@@ -33,7 +33,7 @@ final class FlexibleEntityEvents
      * This event is thrown each time a value is created in the system.
      *
      * The event listener receives an
-     * Oro\Bundle\FlexibleEntityBundle\Event\FilterFlexibleEvent instance.
+     * Pim\Bundle\FlexibleEntityBundle\Event\FilterFlexibleEvent instance.
      *
      * @var string
      */

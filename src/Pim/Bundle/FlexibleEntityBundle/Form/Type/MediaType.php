@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\FlexibleEntityBundle\Form\Type;
+namespace Pim\Bundle\FlexibleEntityBundle\Form\Type;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
@@ -40,7 +40,7 @@ class MediaType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'data_class' => 'Oro\Bundle\FlexibleEntityBundle\Entity\Media'
+                'data_class' => 'Pim\Bundle\FlexibleEntityBundle\Entity\Media'
             )
         );
     }

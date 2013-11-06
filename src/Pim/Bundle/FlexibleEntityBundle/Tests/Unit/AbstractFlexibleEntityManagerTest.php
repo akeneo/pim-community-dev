@@ -1,16 +1,16 @@
 <?php
 
-namespace Oro\Bundle\FlexibleEntityBundle\Tests\Unit;
+namespace Pim\Bundle\FlexibleEntityBundle\Tests\Unit;
 
-use Oro\Bundle\FlexibleEntityBundle\AttributeType\TextType;
+use Pim\Bundle\FlexibleEntityBundle\AttributeType\TextType;
 
 use Doctrine\Tests\OrmTestCase;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Symfony\Component\DependencyInjection\Container;
-use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
+use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Symfony\Component\EventDispatcher\EventDispatcher;
-use Oro\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory;
+use Pim\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory;
 
 /**
  * Test related class
@@ -75,11 +75,11 @@ abstract class AbstractFlexibleManagerTest extends AbstractOrmTest
     {
         parent::setUp();
         // flexible entity manager configuration
-        $this->attributeClassName            = 'Oro\Bundle\FlexibleEntityBundle\Entity\Attribute';
-        $this->attributeOptionClassName      = 'Oro\Bundle\FlexibleEntityBundle\Entity\AttributeOption';
-        $this->attributeOptionValueClassName = 'Oro\Bundle\FlexibleEntityBundle\Entity\AttributeOptionValue';
-        $this->flexibleClassName             = 'Oro\Bundle\FlexibleEntityBundle\Tests\Unit\Entity\Demo\Flexible';
-        $this->flexibleValueClassName        = 'Oro\Bundle\FlexibleEntityBundle\Tests\Unit\Entity\Demo\FlexibleValue';
+        $this->attributeClassName            = 'Pim\Bundle\FlexibleEntityBundle\Entity\Attribute';
+        $this->attributeOptionClassName      = 'Pim\Bundle\FlexibleEntityBundle\Entity\AttributeOption';
+        $this->attributeOptionValueClassName = 'Pim\Bundle\FlexibleEntityBundle\Entity\AttributeOptionValue';
+        $this->flexibleClassName             = 'Pim\Bundle\FlexibleEntityBundle\Tests\Unit\Entity\Demo\Flexible';
+        $this->flexibleValueClassName        = 'Pim\Bundle\FlexibleEntityBundle\Tests\Unit\Entity\Demo\FlexibleValue';
         $this->defaultLocale                 = 'en';
         $this->defaultScope                  = 'mobile';
         $this->flexibleConfig = array(
@@ -103,7 +103,7 @@ abstract class AbstractFlexibleManagerTest extends AbstractOrmTest
         $this->container->setParameter('oro_flexibleentity.flexible_config', $this->flexibleConfig);
 
         // prepare attribute type factory
-        $attType = new TextType('varchar', 'text', $this->getMock('Oro\Bundle\FlexibleEntityBundle\Form\Validator\AttributeConstraintGuesser'));
+        $attType = new TextType('varchar', 'text', $this->getMock('Pim\Bundle\FlexibleEntityBundle\Form\Validator\AttributeConstraintGuesser'));
         $this->container->set('oro_flexibleentity.attributetype.text', $attType);
         $attTypes = array('oro_flexibleentity_text' => 'oro_flexibleentity.attributetype.text');
         $this->attributeTypeFactory = new AttributeTypeFactory($this->container, $attTypes);

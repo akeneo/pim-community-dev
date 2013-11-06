@@ -1,12 +1,12 @@
 <?php
-namespace Oro\Bundle\FlexibleEntityBundle\Tests\Unit\Entity\Repository;
+namespace Pim\Bundle\FlexibleEntityBundle\Tests\Unit\Entity\Repository;
 
-use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
+use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 
-use Oro\Bundle\FlexibleEntityBundle\Entity\Attribute;
+use Pim\Bundle\FlexibleEntityBundle\Entity\Attribute;
 
-use Oro\Bundle\FlexibleEntityBundle\Tests\Unit\AbstractFlexibleManagerTest;
-use Oro\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository;
+use Pim\Bundle\FlexibleEntityBundle\Tests\Unit\AbstractFlexibleManagerTest;
+use Pim\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository;
 
 /**
  * Test related class
@@ -31,7 +31,7 @@ class FlexibleEntityRepositoryTest extends AbstractFlexibleManagerTest
         $metadata = $this->entityManager->getClassMetadata($this->flexibleClassName);
         $constructorArgs = array($this->entityManager, $metadata);
         $this->repository = $this->getMock(
-            'Oro\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository',
+            'Pim\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository',
             array('getCodeToAttributes'),
             $constructorArgs
         );

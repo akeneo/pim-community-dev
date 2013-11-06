@@ -10,7 +10,7 @@ Create flexible entity form
 <?php
 namespace Pim\Bundle\ProductBundle\Form\Type;
 
-use Oro\Bundle\FlexibleEntityBundle\Form\Type\FlexibleType;
+use Pim\Bundle\FlexibleEntityBundle\Form\Type\FlexibleType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;

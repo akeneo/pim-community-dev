@@ -1,10 +1,10 @@
 <?php
 
-namespace Oro\Bundle\FlexibleEntityBundle\Tests\Unit\Manager;
+namespace Pim\Bundle\FlexibleEntityBundle\Tests\Unit\Manager;
 
-use Oro\Bundle\FlexibleEntityBundle\Tests\Unit\AbstractOrmTest;
+use Pim\Bundle\FlexibleEntityBundle\Tests\Unit\AbstractOrmTest;
 use Doctrine\ORM\EntityManager;
-use Oro\Bundle\FlexibleEntityBundle\Manager\SimpleManager;
+use Pim\Bundle\FlexibleEntityBundle\Manager\SimpleManager;
 
 /**
  * Test related class
@@ -23,7 +23,7 @@ class SimpleManagerTest extends AbstractOrmTest
     {
         parent::setUp();
         // prepare simple entity manager (use default entity manager)
-        $this->entityName = 'Oro\Bundle\FlexibleEntityBundle\Tests\Unit\\Entity\Demo\Simple';
+        $this->entityName = 'Pim\Bundle\FlexibleEntityBundle\Tests\Unit\\Entity\Demo\Simple';
         $this->manager = new SimpleManager($this->entityName, $this->container->get('doctrine.orm.entity_manager'));
     }
 
