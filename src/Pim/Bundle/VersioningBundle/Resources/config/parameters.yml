@@ -1,4 +1,5 @@
 parameters:
+    pim_versioning.versionable_entities:            ~
     pim_versioning.manager.audit.class:             Pim\Bundle\VersioningBundle\Manager\AuditManager
     pim_versioning.manager.version.class:           Pim\Bundle\VersioningBundle\Manager\VersionManager
     pim_versioning.builder.audit.class:             Pim\Bundle\VersioningBundle\Builder\AuditBuilder
@@ -7,3 +8,10 @@ parameters:
     pim_versioning.event_listener.addversion.class: Pim\Bundle\VersioningBundle\EventListener\AddVersionListener
     pim_versioning.event_listener.adduser.class:    Pim\Bundle\VersioningBundle\EventListener\AddUserListener
     pim_versioning.event_listener.addcontext.class: Pim\Bundle\VersioningBundle\EventListener\AddContextListener
+    pim_versioning.update_guesser.attribute_group.class:   Pim\Bundle\VersioningBundle\UpdateGuesser\AttributeGroupUpdateGuesser
+    pim_versioning.update_guesser.attribute_option.class:  Pim\Bundle\VersioningBundle\UpdateGuesser\AttributeOptionUpdateGuesser
+    pim_versioning.update_guesser.chained.class:           Pim\Bundle\VersioningBundle\UpdateGuesser\ChainedUpdateGuesser
+    pim_versioning.update_guesser.contains_products.class: Pim\Bundle\VersioningBundle\UpdateGuesser\ContainsProductsUpdateGuesser
+    pim_versioning.update_guesser.product_value.class:     Pim\Bundle\VersioningBundle\UpdateGuesser\ProductValueUpdateGuesser
+    pim_versioning.update_guesser.translations.class:      Pim\Bundle\VersioningBundle\UpdateGuesser\TranslationsUpdateGuesser
+    pim_versioning.update_guesser.versionable.class:       Pim\Bundle\VersioningBundle\UpdateGuesser\VersionableUpdateGuesser

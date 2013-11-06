@@ -19,7 +19,6 @@
 {% block formContent %}
 
     {{ form_widget(form.operation.categories) }}
-    {{ form_widget(form._token) }}
 
     {% set trees = form.vars.value.operation.trees %}
 
@@ -40,11 +39,20 @@
             </div>
 
             <div class="tab-content">
+                {% set selectedTree = 0 %}
                 {% if trees %}
-                    {% set firstTree = trees|first %}
-                    {% set selectedTree = firstTree.id %}
+                    {% if app.user.defaulttree is defined %}
+                        {% for tree in trees %}
+                            {% if tree.code == app.user.defaulttree %}
+                                {% set selectedTree = tree.id %}
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        {% set firstTree = trees|first %}
+                        {% set selectedTree = firstTree.id %}
+                    {% endif %}
                 {% endif %}
-                <div id="trees" data-id="" data-datalocale="en_US" {% if selectedTree is defined %} data-selected-tree="{{ selectedTree }}"{% endif %}>
+                <div id="trees" data-selected-tree="{{ selectedTree }}">
                     {% for tree in trees %}
                         <div class="tree" data-tree-id="{{ tree.id }}">
                             <h3>{{ tree.label }}</h3>

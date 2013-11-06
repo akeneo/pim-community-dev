@@ -1,0 +1,15 @@
+{% extends 'PimCatalogBundle:Group:index.html.twig' %}
+
+{% block content %}
+    {% set title = 'variant group.overview'|trans %}
+
+    {% set buttons %}
+        {{ elements.createBtn(
+            'variant group',
+            null,
+            { 'id': 'create-group', 'data-form': 'dialog', 'data-form-url': path('pim_catalog_variant_group_create') }
+        ) }}
+    {% endset %}
+
+    {{ parent() }}
+{% endblock %}

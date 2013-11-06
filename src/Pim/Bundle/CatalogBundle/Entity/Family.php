@@ -11,7 +11,6 @@ use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
-use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
 
 /**
  * Family entity
@@ -32,7 +31,7 @@ use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
  *  }
  * )
  */
-class Family implements TranslatableInterface, VersionableInterface
+class Family implements TranslatableInterface
 {
     /**
      * @var integer $id
@@ -118,12 +117,12 @@ class Family implements TranslatableInterface, VersionableInterface
     protected $updated;
 
     /**
-     * @var integer $version
-     *
-     * @ORM\Column(name="version", type="integer")
-     * @ORM\Version
+     * @ORM\OneToMany(
+     *     targetEntity="Pim\Bundle\CatalogBundle\Model\ProductInterface",
+     *     mappedBy="family"
+     * )
      */
-    protected $version;
+    protected $products;
 
     /**
      * Constructor
@@ -133,6 +132,7 @@ class Family implements TranslatableInterface, VersionableInterface
         $this->attributes   = new ArrayCollection();
         $this->translations = new ArrayCollection();
         $this->requirements = new ArrayCollection();
+        $this->products     = new ArrayCollection();
     }
 
     /**
@@ -153,16 +153,6 @@ class Family implements TranslatableInterface, VersionableInterface
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Get version
-     *
-     * @return string $version
-     */
-    public function getVersion()
-    {
-        return $this->version;
     }
 
     /**
@@ -504,5 +494,29 @@ class Family implements TranslatableInterface, VersionableInterface
     public function getAttributeRequirementKeyFor($attributeCode, $channelCode)
     {
         return sprintf('%s_%s', $attributeCode, $channelCode);
+    }
+
+    /**
+     * Getter for products
+     *
+     * @return ArrayCollection
+     */
+    public function getProducts()
+    {
+        return $this->products;
+    }
+
+    /**
+     * Set products
+     *
+     * @param array $products
+     *
+     * @return Product
+     */
+    public function setProducts(array $products)
+    {
+        $this->products = new ArrayCollection($products);
+
+        return $this;
     }
 }

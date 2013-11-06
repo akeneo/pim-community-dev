@@ -92,6 +92,15 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @Given /^I create a new variant group$/
+     */
+    public function iCreateANewVariantGroup()
+    {
+        $entity = 'VariantGroup';
+        $this->iCreateANew($entity);
+    }
+
+    /**
      * @param TableNode $pages
      *
      * @Then /^I should be able visit the following pages without errors$/
@@ -100,7 +109,7 @@ class WebUser extends RawMinkContext
     {
         foreach ($pages->getHash() as $data) {
             $url = $this->getSession()->evaluateScript(sprintf('return Routing.generate("%s");', $data['page']));
-            $this->getSession()->executeScript(
+            $this->getMainContext()->executeScript(
                 sprintf("require(['oro/navigation'], function(Nav) { Nav.getInstance().setLocation('%s'); } );", $url)
             );
             $this->wait();
@@ -426,7 +435,7 @@ class WebUser extends RawMinkContext
         $attributes = $this->listToArray($attributes);
         $page->visitGroup($group);
 
-        $group = $this->getFixturesContext()->getAttributeGroup($group) ?: AttributeGroup::DEFAULT_GROUP_CODE;
+        $group = $this->getFixturesContext()->findAttributeGroup($group) ?: AttributeGroup::DEFAULT_GROUP_CODE;
 
         if (count($attributes) !== $actual = $page->getFieldsCountFor($group)) {
             throw $this->createExpectationException(
@@ -485,7 +494,26 @@ class WebUser extends RawMinkContext
      */
     public function theProductFieldValueShouldBe($fieldName, $expected = '')
     {
-        $actual = $this->getCurrentPage()->findField($fieldName)->getValue();
+        $field = $this->getCurrentPage()->findField($fieldName);
+        $class = $field->getAttribute('class');
+        if (strpos($class, 'select2-focusser') !== false) {
+            $field  = $field->getParent()->getParent()->find('css', 'select');
+            $actual = $field->find('css', 'option[selected]')->getHtml();
+        } elseif (strpos($class, 'select2-input') !== false) {
+            $field   = $field->getParent()->getParent()->getParent()->getParent()->find('css', 'select');
+            $options = $field->findAll('css', 'option[selected]');
+            $actual  = array();
+            foreach ($options as $option) {
+                $actual[] = $option->getHtml();
+            }
+            $expected = $this->listToArray($expected);
+            sort($actual);
+            sort($expected);
+            $actual   = implode(', ', $actual);
+            $expected = implode(', ', $expected);
+        } else {
+            $actual = $field->getValue();
+        }
 
         if ($expected !== $actual) {
             throw $this->createExpectationException(
@@ -665,6 +693,26 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string $field
+     *
+     * @When /^I add a new option to the "([^"]*)" attribute$/
+     */
+    public function iAddANewOptionToTheAttribute($field)
+    {
+        if (null === $link = $this->getCurrentPage()->getAddOptionLinkFor($field)) {
+            throw $this->createExpectationException(
+                sprintf(
+                    'Add option link should be displayed for attribute "%s".',
+                    $field
+                )
+            );
+        }
+
+        $link->click();
+        $this->wait();
+    }
+
+    /**
      * @param string $attributes
      *
      * @Then /^eligible attributes as label should be (.*)$/
@@ -755,7 +803,7 @@ class WebUser extends RawMinkContext
      */
     public function iSelectAxis($axis)
     {
-        $this->getPage('ProductGroup creation')->selectAxis($axis);
+        $this->getCurrentPage()->selectAxis($axis);
     }
 
     /**
@@ -832,11 +880,7 @@ class WebUser extends RawMinkContext
         }
 
         $this->getCurrentPage()->attachFileToField($field, $file);
-
-        try {
-            $this->getSession()->executeScript('$("[disabled]").removeAttr("disabled");');
-        } catch (UnsupportedDriverActionException $e) {
-        }
+        $this->getMainContext()->executeScript('$("[disabled]").removeAttr("disabled");');
     }
 
     /**
@@ -846,11 +890,8 @@ class WebUser extends RawMinkContext
      */
     public function iRemoveTheFile($field)
     {
-        try {
-            $this->getSession()->executeScript(
-                "$('label:contains(\"{$field}\")').parent().find('.remove-upload').click();"
-            );
-        } catch (UnsupportedDriverActionException $e) {
+        $script = sprintf("$('label:contains(\"%s\")').parent().find('.remove-upload').click();", $field);
+        if (!$this->getMainContext()->executeScript($script)) {
             $this->getCurrentPage()->removeFileFromField($field);
         }
     }
@@ -911,6 +952,17 @@ class WebUser extends RawMinkContext
     public function iPressTheButton($button)
     {
         $this->getCurrentPage()->pressButton($button);
+        $this->wait();
+    }
+
+    /**
+     * @param string $button
+     *
+     * @Given /^I press the "([^"]*)" button in the popin$/
+     */
+    public function iPressTheButtonInThePopin($button)
+    {
+        $this->getCurrentPage()->find('css', sprintf('.ui-dialog button:contains("%s")', $button))->press();
         $this->wait();
     }
 
@@ -1098,17 +1150,17 @@ class WebUser extends RawMinkContext
      */
     public function iWaitForTheJobToFinish()
     {
-        $timeout = 120;
+        $timeout = 180;
 
         while ($timeout && $refreshLink = $this->getCurrentPage()->findLink('Refresh')) {
-            sleep(3);
-            $timeout -= 3;
+            sleep(5);
+            $timeout -= 5;
             $refreshLink->click();
             $this->wait();
         }
 
         if ($this->getCurrentPage()->findLink('Refresh')) {
-            throw $this->createExpectationException("The job didn't finish in 2 minutes");
+            throw $this->createExpectationException("The job didn't finish in 3 minutes");
         }
     }
 

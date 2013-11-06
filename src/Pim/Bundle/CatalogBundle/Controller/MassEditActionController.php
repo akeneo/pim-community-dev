@@ -20,7 +20,7 @@ use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
 use Pim\Bundle\CatalogBundle\Form\Type\MassEditActionOperatorType;
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\CatalogBundle\MassEditAction\MassEditActionOperator;
-use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
+use Pim\Bundle\GridBundle\Helper\DatagridHelperInterface;
 
 /**
  * Batch operation controller
@@ -37,9 +37,9 @@ class MassEditActionController extends AbstractDoctrineController
     protected $batchOperator;
 
     /**
-     * @var DatagridWorkerInterface
+     * @var DatagridHelperInterface
      */
-    private $datagridWorker;
+    private $datagridHelper;
 
     /**
      * @var MassActionParametersParser
@@ -58,7 +58,7 @@ class MassEditActionController extends AbstractDoctrineController
      * @param TranslatorInterface        $translator
      * @param RegistryInterface          $doctrine
      * @param MassEditActionOperator     $batchOperator
-     * @param DatagridWorkerInterface    $datagridWorker
+     * @param DatagridHelperInterface    $datagridHelper
      * @param MassActionParametersParser $parametersParser
      */
     public function __construct(
@@ -71,7 +71,7 @@ class MassEditActionController extends AbstractDoctrineController
         TranslatorInterface $translator,
         RegistryInterface $doctrine,
         MassEditActionOperator $batchOperator,
-        DatagridWorkerInterface $datagridWorker,
+        DatagridHelperInterface $datagridHelper,
         MassActionParametersParser $parametersParser
     ) {
         parent::__construct(
@@ -86,7 +86,7 @@ class MassEditActionController extends AbstractDoctrineController
         );
 
         $this->batchOperator    = $batchOperator;
-        $this->datagridWorker   = $datagridWorker;
+        $this->datagridHelper   = $datagridHelper;
         $this->parametersParser = $parametersParser;
     }
 
@@ -238,7 +238,7 @@ class MassEditActionController extends AbstractDoctrineController
         $inset = $request->query->get('inset');
         if ($inset === '0') {
             /** @var $gridManager ProductDatagridManager */
-            $gridManager = $this->datagridWorker->getDatagridManager('product');
+            $gridManager = $this->datagridHelper->getDatagridManager('product');
             $gridManager->setFilterTreeId($request->get('treeId', 0));
             $gridManager->setFilterCategoryId($request->get('categoryId', 0));
             $parameters = $this->parametersParser->parse($request);

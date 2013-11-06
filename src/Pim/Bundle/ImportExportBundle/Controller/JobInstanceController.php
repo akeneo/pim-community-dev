@@ -20,7 +20,7 @@ use Oro\Bundle\BatchBundle\Entity\JobExecution;
 use Oro\Bundle\BatchBundle\Item\UploadedFileAwareInterface;
 
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
-use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
+use Pim\Bundle\GridBundle\Helper\DatagridHelperInterface;
 use Pim\Bundle\CatalogBundle\Form\Type\UploadType;
 use Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceType;
 
@@ -34,9 +34,9 @@ use Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceType;
 class JobInstanceController extends AbstractDoctrineController
 {
     /**
-     * @var DatagridWorkerInterface
+     * @var DatagridHelperInterface
      */
-    private $datagridWorker;
+    private $datagridHelper;
 
     /**
      * @var ConnectorRegistry
@@ -69,7 +69,7 @@ class JobInstanceController extends AbstractDoctrineController
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
      * @param RegistryInterface        $doctrine
-     * @param DatagridWorkerInterface  $datagridWorker
+     * @param DatagridHelperInterface  $datagridHelper
      * @param ConnectorRegistry        $connectorRegistry
      * @param string                   $jobType
      * @param string                   $rootDir
@@ -84,7 +84,7 @@ class JobInstanceController extends AbstractDoctrineController
         ValidatorInterface $validator,
         TranslatorInterface $translator,
         RegistryInterface $doctrine,
-        DatagridWorkerInterface $datagridWorker,
+        DatagridHelperInterface $datagridHelper,
         ConnectorRegistry $connectorRegistry,
         $jobType,
         $rootDir,
@@ -101,7 +101,7 @@ class JobInstanceController extends AbstractDoctrineController
             $doctrine
         );
 
-        $this->datagridWorker    = $datagridWorker;
+        $this->datagridHelper    = $datagridHelper;
         $this->connectorRegistry = $connectorRegistry;
         $this->jobType           = $jobType;
         $this->rootDir           = $rootDir;
@@ -245,6 +245,12 @@ class JobInstanceController extends AbstractDoctrineController
         }
         $form = $this->createForm(new JobInstanceType(), $jobInstance);
 
+        $historyDatagrid = $this->datagridHelper->getDataAuditDatagrid(
+            $jobInstance,
+            sprintf('pim_importexport_%s_history', $this->getJobType()),
+            array('id' => $jobInstance->getId())
+        );
+
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
@@ -263,9 +269,33 @@ class JobInstanceController extends AbstractDoctrineController
         return $this->render(
             sprintf('PimImportExportBundle:%s:edit.html.twig', ucfirst($this->getJobType())),
             array(
-                'form'      => $form->createView(),
+                'form'            => $form->createView(),
+                'historyDatagrid' => $historyDatagrid->createView()
             )
         );
+    }
+
+    /**
+     * History of a job instance
+     *
+     * @param Request $request
+     * @param integer $id
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|template
+     */
+    public function historyAction(Request $request, $id)
+    {
+        $jobInstance = $this->getJobInstance($id);
+        $historyGrid = $this->datagridHelper->getDataAuditDatagrid(
+            $jobInstance,
+            sprintf('pim_importexport_%s_history', $this->getJobType()),
+            array('id' => $id)
+        );
+        $historyGridView = $historyGrid->createView();
+
+        if ('json' === $request->getRequestFormat()) {
+            return $this->datagridHelper->getDatagridRenderer()->renderResultsJsonResponse($historyGridView);
+        }
     }
 
     /**
@@ -481,7 +511,7 @@ class JobInstanceController extends AbstractDoctrineController
      */
     protected function getDatagridManager()
     {
-        return $this->datagridWorker->getDatagridManager($this->getJobType(), 'pim_import_export');
+        return $this->datagridHelper->getDatagridManager($this->getJobType(), 'pim_import_export');
     }
 
     /**

@@ -30,7 +30,7 @@ class DatagridRouteRegistryTest extends \PHPUnit_Framework_TestCase
     protected function tearDown()
     {
         if ($this->cacheDir) {
-            $f = new Filesystem;
+            $f = new Filesystem();
             $f->remove($this->cacheDir);
         }
     }

@@ -4,7 +4,7 @@
 
 {% block head_script %}
     {{ parent() }}
-    {% include 'OroGridBundle:Include:javascript.html.twig' with {'datagridView': datagrid, 'selector': '#history-grid'} %}
+    {% include 'OroGridBundle:Include:javascript.html.twig' with {'datagridView': historyDatagrid, 'selector': '#history-grid'} %}
     {% include 'PimCatalogBundle:Product:_js-handler.html.twig' %}
 {% endblock %}
 
@@ -122,8 +122,7 @@
                 {% include 'PimCatalogBundle:Product:_tab-panes.html.twig' %}
 
                 {{ form_row(form.id) }}
-                {{ form_row(form._token) }}
             </div>
         </div>
-    </form>
+    {{ form_end(form) }}
 {% endblock %}

@@ -208,8 +208,8 @@ DQL;
      */
     public function getToolbarOptions()
     {
-        $removeResetAction = array('addResetAction' => false);
+        $removeActions = array('addResetAction' => false);
 
-        return array_merge($removeResetAction, $this->toolbarOptions);
+        return array_merge($removeActions, $this->toolbarOptions);
     }
 }

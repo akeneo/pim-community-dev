@@ -29,6 +29,7 @@ Feature: Execute a job
     And the following job:
       | connector            | alias          | code                | label                       | type   |
       | Akeneo CSV Connector | product_import | acme_product_import | Product import for Acme.com | import |
+    And I am logged in as "Julia"
 
   Scenario: Successfully import a csv file of products
     Given the following file to import:
@@ -56,7 +57,6 @@ Feature: Execute a job
       | processor | categories column | categories           |
       | processor | family column     | families             |
       | processor | groups column     | groups               |
-    And I am logged in as "Julia"
     When I am on the "acme_product_import" import job page
     And I launch the import job
     And I wait for the job to finish
@@ -86,7 +86,6 @@ Feature: Execute a job
       | processor | categories column | categories           |
       | processor | family column     | families             |
       | processor | groups column     | groups               |
-    And I am logged in as "Julia"
     When I am on the "acme_product_import" import job page
     And I launch the import job
     And I wait for the job to finish
@@ -117,7 +116,6 @@ Feature: Execute a job
       | processor | categories column | categories           |
       | processor | family column     | families             |
       | processor | groups column     | groups               |
-    And I am logged in as "Julia"
     When I am on the "acme_product_import" import job page
     And I launch the import job
     And I wait for the job to finish
@@ -152,7 +150,6 @@ Feature: Execute a job
       | processor | categories column | categories |
       | processor | family column     | families   |
       | processor | groups column     | groups     |
-    And I am logged in as "Julia"
     When I am on the "acme_product_import" import job page
     And I upload and import the file "{{ file to import }}"
     Then there should be 10 products
@@ -179,7 +176,6 @@ Feature: Execute a job
       | processor | categories column | categories           |
       | processor | family column     | families             |
       | processor | groups column     | groups               |
-    And I am logged in as "Julia"
     When I am on the "acme_product_import" import job page
     And I launch the import job
     And I wait for the job to finish
@@ -194,6 +190,7 @@ Feature: Execute a job
       | code | activated |
       | USD  | yes       |
       | EUR  | yes       |
+    And a "SKU-001" product
     And the following product values:
       | product | attribute  | value            |
       | SKU-001 | Prices     | 100 EUR, 150 USD |
@@ -213,7 +210,6 @@ Feature: Execute a job
       | processor | categories column | categories           |
       | processor | family column     | families             |
       | processor | groups column     | groups               |
-    And I am logged in as "Julia"
     When I am on the "acme_product_import" import job page
     And I launch the import job
     And I wait for the job to finish

@@ -20,22 +20,22 @@ Feature: Filter products per category
       | trousers       | catalog | Trousers |                            |
     And I am logged in as "admin"
 
-  @insulated
   Scenario: Successfully display all products classified in T-shirts on products page
     Given I am on the products page
+    When I select the "Catalog" tree
     And I filter per category "tshirts"
     Then I should see products purple-tshirt and green-tshirt
     And I should not see products akeneo-mug
 
-  @insulated
   Scenario: Successfully display all products classified in Trousers on products page
     Given I am on the products page
+    When I select the "Catalog" tree
     And I filter per category "trousers"
     Then I should not see products purple-tshirt, green-tshirt and akeneo-mug
 
-  @insulated
   Scenario: Successfully display all products unclassified on products page
     Given I am on the products page
+    When I select the "Catalog" tree
     And I filter per unclassified category
     Then I should see products akeneo-mug
     And I should not see products purple-tshirt and green-tshirt

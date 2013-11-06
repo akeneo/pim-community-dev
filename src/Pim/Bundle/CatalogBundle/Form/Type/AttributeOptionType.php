@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Form\Type;
 use Oro\Bundle\FlexibleEntityBundle\Form\Type\AttributeOptionType as FlexibleAttributeOptionType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormBuilderInterface;
-use Pim\Bundle\CatalogBundle\Form\Type\AttributeOptionValueType as ProductAttributeOptionValueType;
+use Pim\Bundle\CatalogBundle\Form\Type\AttributeOptionValueType;
 
 /**
  * Type for option attribute form
@@ -48,7 +48,7 @@ class AttributeOptionType extends FlexibleAttributeOptionType
             'optionValues',
             'collection',
             array(
-                'type'         => new ProductAttributeOptionValueType(),
+                'type'         => new AttributeOptionValueType(),
                 'allow_add'    => true,
                 'allow_delete' => true,
                 'by_reference' => false

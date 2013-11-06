@@ -16,7 +16,7 @@
             }
         );
     </script>
-    {% include 'OroGridBundle:Include:javascript.html.twig' with {'datagridView': datagrid, 'selector': '#history-grid'} %}
+    {% include 'OroGridBundle:Include:javascript.html.twig' with {'datagridView': historyDatagrid, 'selector': '#history-grid'} %}
 {% endblock %}
 
 {% block content %}
@@ -70,8 +70,6 @@
             <div class="tab-pane" id="history">
                 <div id="history-grid"></div>
             </div>
-
-            {{ form_row(form._token) }}
         </div>
-    </form>
+    {{ form_end(form) }}
 {% endblock %}

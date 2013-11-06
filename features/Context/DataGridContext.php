@@ -7,6 +7,7 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
 use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
+use Context\Page\Base\Grid;
 
 /**
  * Feature context for the datagrid related steps
@@ -65,7 +66,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iFilterPerPrice($action, $value, $currency)
     {
-        $this->getPage('Product index')->filterPerPrice($action, $value, $currency);
+        $this->datagrid->filterPerPrice($action, $value, $currency);
         $this->wait();
     }
 
@@ -77,7 +78,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function iFilterPerCategory($code)
     {
         $category = $this->getFixturesContext()->getCategory($code);
-        $this->getPage('Product index')->clickCategoryFilterLink($category);
+        $this->getCurrentPage()->clickCategoryFilterLink($category);
         $this->wait();
     }
 
@@ -86,7 +87,8 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iFilterPerUnclassifiedCategory()
     {
-        $this->getPage('Product index')->clickUnclassifiedCategoryFilterLink();
+        $this->wait();
+        $this->getCurrentPage()->clickUnclassifiedCategoryFilterLink();
         $this->wait();
     }
 
@@ -97,7 +99,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iFilterPerFamily($code)
     {
-        $this->getPage('Product index')->filterPerFamily($code);
+        $this->datagrid->filterPerFamily($code);
         $this->wait();
     }
 
@@ -108,7 +110,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iFilterPerChannel($code)
     {
-        $this->getPage('Product index')->filterPerChannel($code);
+        $this->datagrid->filterPerChannel($code);
         $this->wait();
     }
 
@@ -382,6 +384,33 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $filterName
+     * @param string $operatorName
+     * @param string $value
+     *
+     * @Then /^I filter by "([^"]*)" with operator "([^"]*)" and value "([^"]*)"$/
+     */
+    public function iFilterByWithOperator($filterName, $operatorName, $value)
+    {
+        $operators = array(
+            'contains' => Grid::FILTER_CONTAINS,
+            'does not contain' => Grid::FILTER_DOES_NOT_CONTAIN,
+            'is equal to' => Grid::FILTER_IS_EQUAL_TO,
+            'starts with' => Grid::FILTER_STARTS_WITH,
+            'ends with' => Grid::FILTER_ENDS_WITH
+        );
+
+        if (!isset($operators[$operatorName])) {
+            throw new \InvalidArgumentException("Operator $operatorName is unknown.");
+        }
+
+        $operator = $operators[$operatorName];
+
+        $this->datagrid->filterBy($filterName, $value, $operator);
+        $this->wait();
+    }
+
+    /**
      * @param string $row
      *
      * @When /^I click on the "([^"]*)" row$/
@@ -507,12 +536,10 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $name
-     *
      * @return \SensioLabs\Behat\PageObjectExtension\PageObject\Page
      */
-    public function getPage($name)
+    public function getCurrentPage()
     {
-        return $this->getNavigationContext()->getPage($name);
+        return $this->getNavigationContext()->getCurrentPage();
     }
 }

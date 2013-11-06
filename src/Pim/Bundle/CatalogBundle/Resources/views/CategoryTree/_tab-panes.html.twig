@@ -8,7 +8,6 @@
 
     {% set nodeValues %}
         {{ form_row(form.label) }}
-        {{ form_rest(form) }}
     {% endset %}
 
     {{ elements.accordion({ 'General Properties': generalProperties, 'Node values': nodeValues }) }}

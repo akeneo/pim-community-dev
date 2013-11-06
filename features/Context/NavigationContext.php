@@ -10,7 +10,6 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\Association;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\Family;
-use Behat\Mink\Exception\UnsupportedDriverActionException;
 
 /**
  * Context for navigating the website
@@ -60,7 +59,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
         'users'                    => 'User index',
         'user roles'               => 'UserRole index',
         'user groups'              => 'UserGroup index',
-        'variants'                 => 'Variant index',
+        'variant groups'           => 'VariantGroup index',
         'attribute groups'         => 'AttributeGroup index',
         'attribute group creation' => 'AttributeGroup creation',
     );
@@ -78,6 +77,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
      */
     public function resetCurrentPage()
     {
+        $this->getMainContext()->executeScript('sessionStorage.clear();');
         $this->currentPage = null;
     }
 
@@ -86,11 +86,8 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
      */
     public function disableNavigationConfirmation()
     {
-        if (strpos($this->currentPage, 'edit')) {
-            try {
-                $this->getSession()->executeScript('typeof $ !== "undefined" && $(window).off("beforeunload");');
-            } catch (UnsupportedDriverActionException $e) {
-            }
+        if (strpos($this->currentPage, 'edit') || strpos($this->currentPage, 'creation')) {
+            $this->getMainContext()->executeScript('typeof $ !== "undefined" && $(window).off("beforeunload");');
         }
     }
 
@@ -216,6 +213,20 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
         $page = 'ProductGroup';
         $getter = sprintf('get%s', $page);
         $entity = $this->getFixturesContext()->$getter($identifier);
+        $this->openPage(sprintf('%s edit', $page), array('id' => $entity->getId()));
+    }
+
+    /**
+     * @param string $identifier
+     *
+     * @Given /^I am on the "([^"]*)" variant group page$/
+     * @Given /^I edit the "([^"]*)" variant group$/
+     */
+    public function iAmOnTheVariantGroupEditPage($identifier)
+    {
+        $page = 'VariantGroup';
+        $getter = sprintf('get%s', $page);
+        $entity = $this->getFixturesContext()->getProductGroup($identifier);
         $this->openPage(sprintf('%s edit', $page), array('id' => $entity->getId()));
     }
 

@@ -4,9 +4,11 @@ Feature: Display available field options
   As a user
   I need to see only relevant validation fields given the attribute type
 
-  Scenario: Successfully display available parameter fields for attribute types
+  Background:
     Given I am logged in as "admin"
     And I am on the attribute creation page
+
+  Scenario: Successfully display available parameter fields for attribute types
     Then the following attribute types should have the following fields
       | Identifier    | Max characters, Validation rule, Searchable                                                                                  |
       | Yes/No        | Default value                                                                                                                |
@@ -22,9 +24,7 @@ Feature: Display available field options
       | Text          | Default value, Max characters, Validation rule, Searchable                                                                   |
 
   Scenario Outline: Succesfully display available values fields for attribute types
-    Given I am logged in as "admin"
-    And I am on the attribute creation page
-    When I select the attribute type "<type>"
+    Given I select the attribute type "<type>"
     And I visit the "Values" tab
     Then I should see the <fields> fields
 

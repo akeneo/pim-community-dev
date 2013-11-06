@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Tests\Unit\Manager;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Manager\ProductBuilder;
 
 /**
  * Test related class
@@ -120,7 +121,7 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
             $this->getEventDispatcherInterfaceMock(),
             $this->getAttributeTypeFactoryMock(),
             $mediaManager ?: $this->getMediaManagerMock(),
-            $this->getCurrencyManagerMock(),
+            $this->getProductBuilderMock(),
             $this->getCompletenessCalculatorMock()
         );
     }
@@ -355,20 +356,14 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param array $activeCodes
-     *
-     * @return \Pim\Bundle\CatalogBundle\Manager\CurrencyManager
+     * @return \Pim\Bundle\CatalogBundle\Builder\ProductBuilder
      */
-    protected function getCurrencyManagerMock(array $activeCodes = array())
+    protected function getProductBuilderMock()
     {
         $manager = $this
-            ->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\CurrencyManager')
+            ->getMockBuilder('Pim\Bundle\CatalogBundle\Builder\ProductBuilder')
             ->disableOriginalConstructor()
             ->getMock();
-
-        $manager->expects($this->any())
-            ->method('getActiveCodes')
-            ->will($this->returnValue($activeCodes));
 
         return $manager;
     }

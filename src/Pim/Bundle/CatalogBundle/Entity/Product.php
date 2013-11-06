@@ -7,11 +7,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexible;
 use JMS\Serializer\Annotation\ExclusionPolicy;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Exception\MissingIdentifierException;
-use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
 use Pim\Bundle\CatalogBundle\Entity\Association;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
@@ -39,16 +37,8 @@ use Pim\Bundle\CatalogBundle\Entity\ProductAssociation;
  *
  * @ExclusionPolicy("all")
  */
-class Product extends AbstractEntityFlexible implements ProductInterface, VersionableInterface
+class Product extends AbstractEntityFlexible implements ProductInterface
 {
-    /**
-     * @var integer $version
-     *
-     * @ORM\Column(name="version", type="integer")
-     * @ORM\Version
-     */
-    protected $version;
-
     /**
      * @var ArrayCollection $values
      *
@@ -63,7 +53,11 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
     /**
      * @var Pim\Bundle\CatalogBundle\Entity\Family $family
      *
-     * @ORM\ManyToOne(targetEntity="Pim\Bundle\CatalogBundle\Entity\Family", cascade={"persist", "refresh"})
+     * @ORM\ManyToOne(
+     *     targetEntity="Pim\Bundle\CatalogBundle\Entity\Family",
+     *     cascade={"persist", "refresh"},
+     *     inversedBy="products"
+     * )
      * @ORM\JoinColumn(name="family_id", referencedColumnName="id", onDelete="SET NULL")
      */
     protected $family;
@@ -71,7 +65,12 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
     /**
      * @var ArrayCollection $categories
      *
-     * @ORM\ManyToMany(targetEntity="Pim\Bundle\CatalogBundle\Model\CategoryInterface", mappedBy="products")
+     * @ORM\ManyToMany(targetEntity="Pim\Bundle\CatalogBundle\Model\CategoryInterface", inversedBy="products")
+     * @ORM\JoinTable(
+     *     name="pim_catalog_category_product",
+     *     inverseJoinColumns={@ORM\JoinColumn(name="category_id", referencedColumnName="id", onDelete="CASCADE")},
+     *     joinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")}
+     * )
      */
     protected $categories;
 
@@ -85,7 +84,12 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
     /**
      * @var ArrayCollection $groups
      *
-     * @ORM\ManyToMany(targetEntity="Pim\Bundle\CatalogBundle\Entity\Group", mappedBy="products")
+     * @ORM\ManyToMany(targetEntity="Pim\Bundle\CatalogBundle\Entity\Group", inversedBy="products")
+     * @ORM\JoinTable(
+     *     name="pim_catalog_group_product",
+     *     inverseJoinColumns={@ORM\JoinColumn(name="group_id", referencedColumnName="id", onDelete="CASCADE")},
+     *     joinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")}
+     * )
      */
     protected $groups;
 
@@ -123,16 +127,6 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
         $this->completenesses      = new ArrayCollection();
         $this->groups              = new ArrayCollection();
         $this->productAssociations = new ArrayCollection();
-    }
-
-    /**
-     * Get version
-     *
-     * @return string $version
-     */
-    public function getVersion()
-    {
-        return $this->version;
     }
 
     /**
@@ -297,7 +291,6 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
     public function addCategory(Category $category)
     {
         if (!$this->categories->contains($category)) {
-            $category->addProduct($this);
             $this->categories->add($category);
         }
 
@@ -313,7 +306,6 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
     public function removeCategory(Category $category)
     {
         $this->categories->removeElement($category);
-        $category->removeProduct($this);
 
         return $this;
     }
@@ -420,7 +412,6 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
     public function addGroup(Group $group)
     {
         if (!$this->groups->contains($group)) {
-            $group->addProduct($this);
             $this->groups->add($group);
         }
 
@@ -436,7 +427,6 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
     public function removeGroup(Group $group)
     {
         $this->groups->removeElement($group);
-        $group->removeProduct($this);
 
         return $this;
     }

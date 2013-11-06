@@ -15,37 +15,11 @@
 }) }}
     {{ JSFV(form) }}
 
-<script type="text/javascript">
-    require(
-        ['jquery', 'jquery.select2'],
-        function($) {
-            'use strict';
-            $(function() {
-                $('#{{ form.type.vars.id }}')
-                .on('change', function() {
-                    var selected = $(this).find(":selected").text();
-                    var conditional = $('#{{ form.attributes.vars.id }}').closest('.control-group');
-                    $('#{{ form.attributes.vars.id }}').select2('val', '');
-
-                    if (selected == 'VARIANT') {
-                        conditional.show();
-                    } else {
-                        conditional.hide();
-                    }
-                })
-                .trigger('change');
-            });
-        }
-    );
-</script>
-
-
     {{ elements.form_errors(form) }}
 
     <div class="row-fluid">
         {{ form_row(form.code) }}
         {{ form_row(form.type) }}
-        {{ form_row(form.attributes) }}
         {{ form_row(form._token) }}
     </div>
-</form>
+{{ form_end(form) }}

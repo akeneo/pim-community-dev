@@ -53,7 +53,8 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
     {
         $users = $this->userRepository->findAll();
 
-        $localeCode   = current($this->getLocaleManager()->getActiveCodes());
+        $localeCodes   = $this->getLocaleManager()->getActiveCodes();
+        $localeCode = in_array('en_US', $localeCodes) ? 'en_US' : current($localeCodes);
         $locale       = current($this->getLocaleManager()->getLocales(array('code' => $localeCode)));
         $localeAttr   = $this->findAttribute('cataloglocale');
         $localeOption = $this->findAttributeOptionWithValue($localeAttr, $locale->getCode());
@@ -62,9 +63,14 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $scopeAttr   = $this->findAttribute('catalogscope');
         $scopeOption = $this->findAttributeOptionWithValue($scopeAttr, $scope->getCode());
 
+        $tree       = current($this->getCategoryManager()->getTrees());
+        $treeAttr   = $this->findAttribute('defaulttree');
+        $treeOption = $this->findAttributeOptionWithValue($treeAttr, $tree->getCode());
+
         foreach ($users as $user) {
             $user->setCataloglocale($localeOption);
             $user->setCatalogscope($scopeOption);
+            $user->setDefaulttree($treeOption);
             $this->persist($user);
         }
 
@@ -89,6 +95,16 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
     protected function getChannelManager()
     {
         return $this->container->get('pim_catalog.manager.channel');
+    }
+
+    /**
+     * Get category manager
+     *
+     * @return \Pim\Bundle\CatalogBundle\Manager\CategoryManager
+     */
+    protected function getCategoryManager()
+    {
+        return $this->container->get('pim_catalog.manager.category');
     }
 
     /**

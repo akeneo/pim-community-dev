@@ -8,6 +8,8 @@ use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Oro\Bundle\BatchBundle\Entity\StepExecution;
 use Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\ImportExportBundle\Cache\EntityCache;
+use Pim\Bundle\VersioningBundle\EventListener\AddVersionListener;
 
 /**
  * Product writer using ORM method
@@ -31,6 +33,11 @@ class OrmProductWriter extends AbstractConfigurableStepElement implements
     protected $entityManager;
 
     /**
+     * @var AddVersionListener
+     */
+    protected $addVersionListener;
+
+    /**
      * @var Attribute
      */
     protected $identifierAttribute;
@@ -41,19 +48,23 @@ class OrmProductWriter extends AbstractConfigurableStepElement implements
     protected $stepExecution;
 
     /**
+     * @var EntityCache
+     */
+    protected $entityCache;
+
+    /**
      * Entities which should not be cleared on flush
      *
      * @var array
      */
-    protected $nonClearableEntities=array(
+    protected $nonClearableEntities = array(
         'Oro\\Bundle\\BatchBundle\\Entity\\JobExecution',
         'Oro\\Bundle\\BatchBundle\\Entity\\JobInstance',
         'Pim\\Bundle\\CatalogBundle\\Entity\\ProductAttribute',
         'Pim\\Bundle\\CatalogBundle\\Entity\\Family',
-        'Pim\\Bundle\\CatalogBundle\\Entity\\AttributeOption',
         'Pim\\Bundle\\CatalogBundle\\Entity\\Channel',
         'Pim\\Bundle\\CatalogBundle\\Entity\\Locale',
-        'Pim\\Bundle\\CatalogBundle\\Entity\\AttributeOptionValue',
+        'Pim\\Bundle\\CatalogBundle\\Entity\\Currency',
         'Oro\\Bundle\\BatchBundle\\Entity\\StepExecution',
         'Oro\\Bundle\\UserBundle\\Entity\\User',
         'Oro\\Bundle\\OrganizationBundle\\Entity\\BusinessUnit',
@@ -61,13 +72,21 @@ class OrmProductWriter extends AbstractConfigurableStepElement implements
         'Oro\\Bundle\\UserBundle\\Entity\\UserApi'
     );
     /**
-     * @param ProductManager $productManager Product manager
-     * @param EntityManager  $entityManager  Doctrine's entity manager
+     * @param ProductManager     $productManager
+     * @param EntityManager      $entityManager
+     * @param EntityCache        $entityCache
+     * @param AddVersionListener $addVersionListener
      */
-    public function __construct(ProductManager $productManager, EntityManager $entityManager)
-    {
+    public function __construct(
+        ProductManager $productManager,
+        EntityManager $entityManager,
+        EntityCache $entityCache,
+        AddVersionListener $addVersionListener
+    ) {
         $this->productManager = $productManager;
         $this->entityManager  = $entityManager;
+        $this->entityCache    = $entityCache;
+        $this->addVersionListener = $addVersionListener;
     }
 
     /**
@@ -83,21 +102,19 @@ class OrmProductWriter extends AbstractConfigurableStepElement implements
      */
     public function write(array $items)
     {
+        $this->addVersionListener->setRealTimeVersioning(false);
+        $this->productManager->saveAll($items, true);
+        $this->productManager->handleAllMedia($items);
+        $this->stepExecution->setWriteCount(count($items));
+
         $storageManager = $this->productManager->getStorageManager();
-
-        foreach ($items as $product) {
-            $storageManager->persist($product);
-            $this->productManager->handleMedia($product);
-            $this->stepExecution->incrementWriteCount();
-        }
-
-        $storageManager->flush();
 
         foreach ($storageManager->getUnitOfWork()->getIdentityMap() as $className => $entities) {
             if (count($entities) && !in_array($className, $this->nonClearableEntities)) {
                 $storageManager->clear($className);
             }
         }
+        $this->entityCache->clear();
     }
 
     /**

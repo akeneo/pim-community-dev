@@ -15,7 +15,7 @@
 {% endspaceless %}
 
 {% if form.vars.value.id %}
-    {% include 'OroGridBundle:Include:javascript.html.twig' with {'datagridView': datagrid, 'selector': '#history-grid'} %}
+    {% include 'OroGridBundle:Include:javascript.html.twig' with {'datagridView': historyDatagrid, 'selector': '#history-grid'} %}
 {% endif %}
 
 <script type="text/javascript">
@@ -72,4 +72,4 @@
         {{ elements.form_errors(form) }}
         {% include 'PimCatalogBundle:CategoryTree:_tab-panes.html.twig' %}
     </div>
-</form>
+{{ form_end(form) }}

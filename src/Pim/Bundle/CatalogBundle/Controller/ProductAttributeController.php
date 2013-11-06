@@ -17,16 +17,16 @@ use Symfony\Component\Form\Form;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Oro\Bundle\GridBundle\Renderer\GridRenderer;
 
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
-use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
+use Pim\Bundle\GridBundle\Helper\DatagridHelperInterface;
 use Pim\Bundle\CatalogBundle\Form\Handler\ProductAttributeHandler;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Pim\Bundle\VersioningBundle\Manager\AuditManager;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
+use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Exception\DeleteException;
+use Pim\Bundle\VersioningBundle\Manager\AuditManager;
 
 /**
  * Product attribute controller
@@ -38,14 +38,9 @@ use Pim\Bundle\CatalogBundle\Exception\DeleteException;
 class ProductAttributeController extends AbstractDoctrineController
 {
     /**
-     * @var GridRenderer
+     * @var DatagridHelperInterface
      */
-    private $gridRenderer;
-
-    /**
-     * @var DatagridWorkerInterface
-     */
-    private $datagridWorker;
+    private $datagridHelper;
 
     /**
      * @var ProductAttributeHandler
@@ -78,6 +73,14 @@ class ProductAttributeController extends AbstractDoctrineController
     private $measuresConfig;
 
     /**
+     * @var array
+     */
+    private $choiceAttributeTypes = array(
+        'pim_catalog_simpleselect',
+        'pim_catalog_multiselect'
+    );
+
+    /**
      * Constructor
      *
      * @param Request                  $request
@@ -88,8 +91,7 @@ class ProductAttributeController extends AbstractDoctrineController
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
      * @param RegistryInterface        $doctrine
-     * @param GridRenderer             $gridRenderer
-     * @param DatagridWorkerInterface  $datagridWorker
+     * @param DatagridHelperInterface  $datagridHelper
      * @param ProductAttributeHandler  $attributeHandler
      * @param Form                     $attributeForm
      * @param ProductManager           $productManager
@@ -106,8 +108,7 @@ class ProductAttributeController extends AbstractDoctrineController
         ValidatorInterface $validator,
         TranslatorInterface $translator,
         RegistryInterface $doctrine,
-        GridRenderer $gridRenderer,
-        DatagridWorkerInterface $datagridWorker,
+        DatagridHelperInterface $datagridHelper,
         ProductAttributeHandler $attributeHandler,
         Form $attributeForm,
         ProductManager $productManager,
@@ -126,8 +127,7 @@ class ProductAttributeController extends AbstractDoctrineController
             $doctrine
         );
 
-        $this->gridRenderer     = $gridRenderer;
-        $this->datagridWorker   = $datagridWorker;
+        $this->datagridHelper   = $datagridHelper;
         $this->attributeHandler = $attributeHandler;
         $this->attributeForm    = $attributeForm;
         $this->productManager   = $productManager;
@@ -144,7 +144,7 @@ class ProductAttributeController extends AbstractDoctrineController
      */
     public function indexAction(Request $request)
     {
-        $datagrid = $this->datagridWorker->getDatagrid('productattribute');
+        $datagrid = $this->datagridHelper->getDatagrid('productattribute');
 
         if ('json' == $request->getRequestFormat()) {
             $view = 'OroGridBundle:Datagrid:list.json.php';
@@ -198,26 +198,32 @@ class ProductAttributeController extends AbstractDoctrineController
             return $this->redirectToRoute('pim_catalog_productattribute_edit', array('id' => $attribute->getId()));
         }
 
-        $datagrid = $this->datagridWorker->getDataAuditDatagrid(
-            $attribute,
-            'pim_catalog_productattribute_edit',
-            array('id' => $attribute->getId())
-        );
-        $datagridView = $datagrid->createView();
-
-        if ('json' == $request->getRequestFormat()) {
-            return $this->gridRenderer->renderResultsJsonResponse($datagridView);
-        }
-
         return array(
             'form'            => $this->attributeForm->createView(),
             'locales'         => $this->localeManager->getActiveLocales(),
             'disabledLocales' => $this->localeManager->getDisabledLocales(),
             'measures'        => $this->measuresConfig,
-            'datagrid'        => $datagridView,
+            'historyDatagrid' => $this->getHistoryGrid($attribute)->createView(),
             'created'         => $this->auditManager->getOldestLogEntry($attribute),
             'updated'         => $this->auditManager->getNewestLogEntry($attribute),
         );
+    }
+
+    /**
+     * History of a attribute
+     *
+     * @param Request          $request
+     * @param ProductAttribute $attribute
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|template
+     */
+    public function historyAction(Request $request, ProductAttribute $attribute)
+    {
+        $historyGridView = $this->getHistoryGrid($attribute)->createView();
+
+        if ('json' === $request->getRequestFormat()) {
+            return $this->datagridHelper->getDatagridRenderer()->renderResultsJsonResponse($historyGridView);
+        }
     }
 
     /**
@@ -298,6 +304,49 @@ class ProductAttributeController extends AbstractDoctrineController
     }
 
     /**
+     * Create a new option for a simple/multi-select attribute
+     *
+     * @param Request          $request
+     * @param ProductAttribute $attribute
+     *
+     * @Template("PimCatalogBundle:ProductAttribute:form_options.html.twig")
+     * @AclAncestor("pim_catalog_attribute_edit")
+     * @return Response
+     */
+    public function createOptionAction(Request $request, ProductAttribute $attribute)
+    {
+        if (!$request->isXmlHttpRequest() || !in_array($attribute->getAttributeType(), $this->choiceAttributeTypes)) {
+            return $this->redirectToRoute('pim_catalog_productattribute_edit', array('id'=> $attribute->getId()));
+        }
+
+        $option = new AttributeOption();
+        $attribute->addOption($option);
+        $form = $this->createForm('pim_attribute_option_create', $option);
+
+        if ($request->isMethod('POST')) {
+            $form->submit($request);
+            if ($form->isValid()) {
+                $this->getManager()->persist($option);
+                $this->getManager()->flush();
+                $response = array(
+                    'status' => 1,
+                    'option' => array(
+                        'id'    => $option->getId(),
+                        'label' => $option->__toString()
+                    )
+                );
+
+                return new Response(json_encode($response));
+            }
+        }
+
+        return array(
+            'attribute' => $attribute,
+            'form'      => $form->createView()
+        );
+    }
+
+    /**
      * Remove attribute
      *
      * @param Request          $request
@@ -325,5 +374,21 @@ class ProductAttributeController extends AbstractDoctrineController
         } else {
             return $this->redirectToRoute('pim_catalog_productattribute_index');
         }
+    }
+
+    /**
+     * @param ProductAttribute $attribute
+     *
+     * @return Datagrid
+     */
+    protected function getHistoryGrid(ProductAttribute $attribute)
+    {
+        $historyGrid = $this->datagridHelper->getDataAuditDatagrid(
+            $attribute,
+            'pim_catalog_productattribute_history',
+            array('id' => $attribute->getId())
+        );
+
+        return $historyGrid;
     }
 }

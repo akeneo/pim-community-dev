@@ -5,7 +5,6 @@ namespace Pim\Bundle\VersioningBundle\Manager;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\VersioningBundle\Entity\Pending;
-use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
 
 /**
  * Pending manager
@@ -33,11 +32,11 @@ class PendingManager
 
     /**
      * Return the pending version for the versionable entity
-     * @param VersionableInterface $versionable
+     * @param object $versionable
      *
      * @return Pending | null
      */
-    public function getPendingVersion(VersionableInterface $versionable)
+    public function getPendingVersion($versionable)
     {
         $criteria = array(
             'resourceName' => get_class($versionable),
@@ -50,11 +49,11 @@ class PendingManager
 
     /**
      * Return the pending versions for the versionable entity
-     * @param VersionableInterface $versionable
+     * @param object $versionable
      *
      * @return Pending[]
      */
-    public function getPendingVersions(VersionableInterface $versionable)
+    public function getPendingVersions($versionable)
     {
         $criteria = array(
             'resourceName' => get_class($versionable),
@@ -82,7 +81,7 @@ class PendingManager
      *
      * @param Pending $pending
      *
-     * @return VersionableInterface;
+     * @return object
      */
     public function getRelatedVersionable(Pending $pending)
     {

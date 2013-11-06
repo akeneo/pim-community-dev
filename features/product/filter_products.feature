@@ -15,6 +15,8 @@ Feature: Filter products
       | book   | library   | no      |
     And a "postit" product
     And a "book" product
+    And a "book2" product
+    And a "ebook" product
     And the following product attributes:
       | label       | required | translatable | scopable |
       | SKU         | yes      | no           | no       |
@@ -41,14 +43,30 @@ Feature: Filter products
       | book    | description | en_US  | mobile    | My mobile book descr     |
       | book    | description | fr_FR  | ecommerce | Ma descr livre ecommerce |
       | book    | description | fr_FR  | mobile    | Ma descr livre mobile    |
+      | book2   | SKU         |        |           | book2                    |
+      | book2   | name        | en_US  |           | Book2                    |
+      | book2   | name        | fr_FR  |           | Livre2                   |
+      | book2   | image       |        | ecommerce | book2_large.jpeg         |
+      | book2   | image       |        | mobile    | book2_small.jpeg         |
+      | book2   | description | en_US  | ecommerce | My ecommerce book2 descr |
+      | book2   | description | en_US  | mobile    | My mobile book2 descr    |
+      | book2   | description | fr_FR  | ecommerce | Ma descr livre2 ecommerce|
+      | book2   | description | fr_FR  | mobile    | Ma descr livre2 mobile   |
+      | ebook   | SKU         |        |           | ebook                    |
+      | ebook   | name        | en_US  |           | eBook                    |
+      | ebook   | name        | fr_FR  |           | Ebook                    |
+      | ebook   | description | en_US  | ecommerce | My ecommerce ebook descr |
+      | ebook   | description | en_US  | mobile    | My mobile ebook descr    |
+      | ebook   | description | fr_FR  | ecommerce | Ma descr ebook ecommerce |
+      | ebook   | description | fr_FR  | mobile    | Ma descr ebook mobile    |
     And I am logged in as "admin"
 
   Scenario: Successfully display filters
     Given I am on the products page
     Then I should see the filters SKU, Family and Enabled
     And I should not see the filters Name, Image, Description
-    And the grid should contain 2 elements
-    And I should see products postit and book
+    And the grid should contain 4 elements
+    And I should see products postit and book and book2 and ebook
 
   Scenario: Successfully hide/show filters
     Given I am on the products page
@@ -58,15 +76,60 @@ Feature: Filter products
     Then I should see the filters Name, Description, Family and Enabled
     And I should not see the filters Image, SKU
 
-  @insulated
   Scenario: Successfully filter by SKU
     Given I am on the products page
     When I filter by "SKU" with value "book"
-    Then the grid should contain 1 element
+    Then the grid should contain 3 elements
     And I should see products book
+    And I should see products ebook
+    And I should see products book2
     And I should not see products postit
 
-  @insulated
+  Scenario: Successfully filter by SKU that contains
+    Given I am on the products page
+    When I filter by "SKU" with operator "contains" and value "book"
+    Then the grid should contain 3 elements
+    And I should see products book
+    And I should see products book2
+    And I should see products ebook
+    And I should not see products postit
+
+  Scenario: Successfully filter by SKU that does not contains
+    Given I am on the products page
+    When I filter by "SKU" with operator "does not contain" and value "book"
+    Then the grid should contain 1 element
+    And I should see products postit
+    And I should not see products book
+    And I should not see products book2
+    And I should not see products ebook
+
+  Scenario: Successfully filter by SKU that starts with
+    Given I am on the products page
+    When I filter by "SKU" with operator "starts with" and value "boo"
+    Then the grid should contain 2 elements
+    And I should see products book
+    And I should see products book2
+    And I should not see products postit
+    And I should not see products ebook
+
+  Scenario: Successfully filter by SKU that is equal to
+    Given I am on the products page
+    When I filter by "SKU" with operator "is equal to" and value "book"
+    Then the grid should contain 1 element
+    And I should see products book
+    And I should not see products book2
+    And I should not see products postit
+    And I should not see products ebook
+
+  Scenario: Successfully filter by SKU that ends with
+    Given I am on the products page
+    When I filter by "SKU" with operator "ends with" and value "book"
+    Then the grid should contain 2 elements
+    And I should see products book
+    And I should see products ebook
+    And I should not see products book2
+    And I should not see products postit
+
   Scenario: Successfully filter by Name
     Given I am on the products page
     When I make visible the filter "Name"
@@ -74,44 +137,47 @@ Feature: Filter products
     Then the grid should contain 1 element
     And I should see products postit
     And I should not see products book
+    And I should not see products book2
+    And I should not see products ebook
 
-  @insulated
   Scenario: Successfully filter by Description
     Given I am on the products page
     When I make visible the filter "Description"
     And I filter by "Description" with value "book"
-    Then the grid should contain 1 element
+    Then the grid should contain 3 elements
     And I should see products book
+    And I should see products book2
+    And I should see products ebook
     And I should not see products postit
 
-  @insulated
   Scenario: Successfully display enabled products
     Given I am on the products page
     When I filter by "Enabled" with value "yes"
-    Then the grid should contain 1 element
+    Then the grid should contain 3 elements
     And I should see products postit
+    And I should see products book2
+    And I should see products ebook
     And I should not see products book
 
-  @insulated
   Scenario: Successfully display disabled products
     Given I am on the products page
     When I filter by "Enabled" with value "no"
     Then the grid should contain 1 element
     And I should see products book
     And I should not see products postit
+    And I should not see products book2
+    And I should not see products ebook
 
-  @insulated
   Scenario: Successfully reset the filters
     Given I am on the products page
     Then I filter by "Enabled" with value "yes"
-    And the grid should contain 1 element
+    And the grid should contain 3 elements
     When I reset the grid
-    Then the grid should contain 2 elements
+    Then the grid should contain 4 elements
 
-  @insulated
   Scenario: Successfully refresh the grid
     Given I am on the products page
     Then I filter by "Enabled" with value "yes"
-    And the grid should contain 1 element
+    And the grid should contain 3 elements
     When I refresh the grid
-    Then the grid should contain 1 element
+    Then the grid should contain 3 elements

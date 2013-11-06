@@ -27,8 +27,8 @@ Feature: Create a category
   @javascript
   Scenario: Go to category creation page from the category tree right click menu
     Given the following category:
-      | code | label |
-      | shoe | Shoe  |
+      | code | label | parent  |
+      | shoe | Shoe  | default |
     And I am logged in as "admin"
     And I am on the categories page
     When I right click on the "Shoe" category

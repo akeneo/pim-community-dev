@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\Entity;
 
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
+use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
 
 /**
  * Test related class
@@ -40,6 +41,23 @@ class AttributeOptionTest extends \PHPUnit_Framework_TestCase
         $expectedIsDefault = false;
         $this->assertEntity($this->attributeOption->setDefault($expectedIsDefault));
         $this->assertFalse($this->attributeOption->isDefault());
+    }
+
+    /**
+     * Test __toString method
+     */
+    public function testToString()
+    {
+        $code = 'test_code';
+        $this->attributeOption->setCode($code);
+        $this->assertSame('['.$code.']', $this->attributeOption->__toString());
+
+        $newValue = 'test_value';
+        $optionValue = new AttributeOptionValue();
+        $optionValue->setValue($newValue);
+        $this->attributeOption->addOptionValue($optionValue);
+
+        $this->assertSame($newValue, $this->attributeOption->__toString());
     }
 
     /**

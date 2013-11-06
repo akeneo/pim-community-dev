@@ -13,6 +13,7 @@ Feature: Add attribute to a family
     And the following attribute group:
       | code    | label   |
       | general | General |
+    And I am logged in as "admin"
 
   Scenario: Successfully list available grouped attributes
     Given the following product attributes:
@@ -20,7 +21,6 @@ Feature: Add attribute to a family
       | Long Description | General |
       | Manufacturer     | General |
       | Size             |         |
-    And I am logged in as "admin"
     When I am on the "Bags" family page
     And I visit the "Attributes" tab
     Then I should see available attributes Long Description and Manufacturer in group "General"
@@ -32,7 +32,6 @@ Feature: Add attribute to a family
       | Long Description | General | Smartphone |
       | Manufacturer     | General |            |
       | Size             |         | Smartphone |
-    And I am logged in as "admin"
     When I am on the "Smartphone" family page
     And I visit the "Attributes" tab
     Then I should see attribute "Long Description" in group "General"
@@ -45,7 +44,6 @@ Feature: Add attribute to a family
       | Long Description | General |
       | Manufacturer     | General |
       | Size             |         |
-    And I am logged in as "admin"
     When I am on the "Bags" family page
     And I visit the "Attributes" tab
     And I add available attributes Long Description and Size

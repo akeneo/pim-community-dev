@@ -11,7 +11,6 @@ use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
-use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
 
 /**
  * Segment class allowing to organize a flexible product class into trees
@@ -38,7 +37,7 @@ use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
  *  }
  * )
  */
-class Category extends AbstractSegment implements CategoryInterface, TranslatableInterface, VersionableInterface
+class Category extends AbstractSegment implements CategoryInterface, TranslatableInterface
 {
     /**
      * @var Category $parent
@@ -66,14 +65,8 @@ class Category extends AbstractSegment implements CategoryInterface, Translatabl
      *
      * @ORM\ManyToMany(
      *     targetEntity="Pim\Bundle\CatalogBundle\Model\ProductInterface",
-     *     inversedBy="categories",
-     *     cascade={"persist"},
+     *     mappedBy="categories",
      *     fetch="EXTRA_LAZY"
-     * )
-     * @ORM\JoinTable(
-     *     name="pim_catalog_category_product",
-     *     joinColumns={@ORM\JoinColumn(name="category_id", referencedColumnName="id", onDelete="CASCADE")},
-     *     inverseJoinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")}
      * )
      */
     protected $products;
@@ -152,16 +145,6 @@ class Category extends AbstractSegment implements CategoryInterface, Translatabl
     }
 
     /**
-     * Get version
-     *
-     * @return string $version
-     */
-    public function getVersion()
-    {
-        return $this->version;
-    }
-
-    /**
      * Add product to this category node
      *
      * @param ProductInterface $product
@@ -171,6 +154,7 @@ class Category extends AbstractSegment implements CategoryInterface, Translatabl
     public function addProduct(ProductInterface $product)
     {
         $this->products[] = $product;
+        $product->addCategory($this);
 
         return $this;
     }
@@ -195,6 +179,7 @@ class Category extends AbstractSegment implements CategoryInterface, Translatabl
     public function removeProduct(ProductInterface $product)
     {
         $this->products->removeElement($product);
+        $product->removeCategory($this);
 
         return $this;
     }

@@ -8,9 +8,11 @@ define(
             if (!$el || !$el.length || !_.isObject($el)) {
                 throw new Error('Unable to instantiate tree on this element');
             }
-            var selectedNode = $el.attr('data-node-id') || -1,
-                preventFirst = selectedNode > 0,
-                loadingMask  = new LoadingMask();
+            var selectedNode       = $el.attr('data-node-id') || -1,
+                selectedTree       = $el.attr('data-tree-id') || -1,
+                selectedNodeOrTree = selectedNode in [0, -1] ? selectedTree : selectedNode,
+                preventFirst       = selectedNode > 0,
+                loadingMask        = new LoadingMask();
 
             loadingMask.render().$el.appendTo($('#container'));
 
@@ -35,7 +37,7 @@ define(
                 },
                 'tree_selector': {
                     'ajax': {
-                        'url': Routing.generate('pim_catalog_categorytree_listtree', { '_format': 'json', 'select_node_id': selectedNode })
+                        'url': Routing.generate('pim_catalog_categorytree_listtree', { '_format': 'json', 'select_node_id': selectedNodeOrTree })
                     },
                     'auto_open_root': true,
                     'node_label_field': 'label',
@@ -82,11 +84,11 @@ define(
                 }
             };
             if ($el.attr("data-movable")) {
-                this.config.plugins.push("dnd")
-            } 
+                this.config.plugins.push("dnd");
+            }
             if ($el.attr("data-creatable")) {
-                this.config.plugins.push("contextmenu")
-            } 
+                this.config.plugins.push("contextmenu");
+            }
             this.init = function () {
                 $el.jstree(this.config).bind('move_node.jstree', function (e, data) {
                     var this_jstree = $.jstree._focused();

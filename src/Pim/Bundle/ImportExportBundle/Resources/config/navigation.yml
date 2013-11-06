@@ -9,11 +9,11 @@ oro_menu_config:
             route: pim_importexport_export_index
 
         pim_report_import:
-            label: History of imports
+            label: Imports history
             route: pim_importexport_import_report_index
 
         pim_report_export:
-            label: History of exports
+            label: Exports history
             route: pim_importexport_export_report_index
 
     tree:

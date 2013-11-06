@@ -10,13 +10,7 @@ use Pim\Bundle\ImportExportBundle\Encoder\CsvEncoder;
 use Pim\Bundle\VersioningBundle\EventListener\AddVersionListener;
 use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;
 use Pim\Bundle\VersioningBundle\Builder\AuditBuilder;
-use Pim\Bundle\CatalogBundle\Entity\FamilyTranslation;
-use Pim\Bundle\CatalogBundle\Entity\Family;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
-use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
-use Pim\Bundle\CatalogBundle\Entity\ProductPrice;
-use Pim\Bundle\CatalogBundle\Entity\ProductValue;
+use Pim\Bundle\VersioningBundle\UpdateGuesser\ChainedUpdateGuesser;
 use Pim\Bundle\CatalogBundle\Entity\Product;
 
 /**
@@ -59,42 +53,6 @@ class AddVersionListenerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test related method
-     */
-    public function testCheckScheduledUpdate()
-    {
-        $listener = $this->getListener();
-
-        $emMock          = $this->getEntityManagerMock();
-        $versionableMock = $this->getVersionableMock('{"field1":  "value1"}');
-        $listener->checkScheduledUpdate($emMock, $versionableMock);
-
-        $value = new ProductValue();
-        $value->setEntity(new Product());
-        $listener->checkScheduledUpdate($emMock, $value);
-
-        $price = new ProductPrice();
-        $value->addPrice($price);
-        $listener->checkScheduledUpdate($emMock, $price);
-
-        $attribute = new ProductAttribute();
-        $listener->checkScheduledUpdate($emMock, $attribute);
-
-        $option = new AttributeOption();
-        $attribute->addOption($option);
-        $listener->checkScheduledUpdate($emMock, $option);
-
-        $optionValue = new AttributeOptionValue();
-        $option->addOptionValue($optionValue);
-        $listener->checkScheduledUpdate($emMock, $optionValue);
-
-        $family = new Family();
-        $translation = new FamilyTranslation();
-        $translation->setForeignKey($family);
-        $listener->checkScheduledUpdate($emMock, $translation);
-    }
-
-    /**
       * @return AddVersionListener
       */
     protected function getListener()
@@ -104,7 +62,7 @@ class AddVersionListenerTest extends \PHPUnit_Framework_TestCase
         $serializer  = new Serializer($normalizers, $encoders);
         $versionBuilder = new VersionBuilder($serializer);
         $auditBuilder   = new AuditBuilder();
-        $listener = new AddVersionListener($versionBuilder, $auditBuilder);
+        $listener = new AddVersionListener($versionBuilder, $auditBuilder, new ChainedUpdateGuesser());
 
         return $listener;
     }
@@ -112,19 +70,15 @@ class AddVersionListenerTest extends \PHPUnit_Framework_TestCase
     /**
      * @param string $data
      *
-     * @return VersionableInterface
+     * @return Product
      */
     protected function getVersionableMock($data)
     {
-        $versionable = $this->getMock('Pim\Bundle\VersioningBundle\Entity\VersionableInterface');
+        $versionable = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Product');
 
         $versionable->expects($this->any())
             ->method('getId')
             ->will($this->returnValue(1));
-
-        $versionable->expects($this->any())
-            ->method('getVersion')
-            ->will($this->returnValue(2));
 
         return $versionable;
     }
