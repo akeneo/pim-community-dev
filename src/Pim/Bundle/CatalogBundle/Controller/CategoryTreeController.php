@@ -130,8 +130,8 @@ class CategoryTreeController extends AbstractDoctrineController
      */
     public function moveNodeAction(Request $request)
     {
-        $segmentId = $request->get('id');
-        $parentId = $request->get('parent');
+        $segmentId     = $request->get('id');
+        $parentId      = $request->get('parent');
         $prevSiblingId = $request->get('prev_sibling');
 
         if ($request->get('copy') == 1) {
@@ -139,7 +139,6 @@ class CategoryTreeController extends AbstractDoctrineController
         } else {
             $this->categoryManager->move($segmentId, $parentId, $prevSiblingId);
         }
-
         $this->categoryManager->getStorageManager()->flush();
 
         return new JsonResponse(array('status' => 1));
