@@ -66,11 +66,11 @@
 
     <script type="text/html" id="template-calendar-event">
         {% set data = [
-                form_row(event_form.title, {'label': 'Title', 'value': '{title}'}),
-                form_row(event_form.start, {'label': 'Start', 'value': '{start}'}),
-                form_row(event_form.end, {'label': 'End', 'value': '{end}'}),
-                form_row(event_form.allDay, {'label': 'All day event', 'attr': { 'checkedif': 'allDay' } }),
-                form_row(event_form.reminder, {'label': 'Reminder', 'attr': { 'checkedif': 'reminder' } }),
+                form_row(event_form.title, {'label': 'Title'}),
+                form_row(event_form.start, {'label': 'Start'}),
+                form_row(event_form.end, {'label': 'End'}),
+                form_row(event_form.allDay, {'label': 'All day event'}),
+                form_row(event_form.reminder, {'label': 'Reminder'}),
             ]
         %}
         <div class="alert alert-error" style="display: none;"></div>
