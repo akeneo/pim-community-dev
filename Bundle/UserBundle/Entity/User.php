@@ -3,6 +3,7 @@
 namespace Oro\Bundle\UserBundle\Entity;
 
 
+use Oro\Bundle\UserBundle\Model\ExtendUser;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -60,7 +61,7 @@ use DateTime;
  *      }
  * )
  */
-class User implements
+class User extends ExtendUser implements
     AdvancedUserInterface,
     \Serializable,
     EntityUploadedImageInterface,
