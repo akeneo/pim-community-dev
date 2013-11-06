@@ -3,7 +3,7 @@ Name Formatting
 
 Table of Contents
 -----------------
- - [Formats source]
+ - [Formats source](#format-source)
  - [PHP Name Formatter](#php-name-formatter)
     - [Methods and examples of usage](#methods-and-examples-of-usage)
       - [format](#format)
