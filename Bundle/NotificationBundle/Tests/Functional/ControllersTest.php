@@ -61,6 +61,7 @@ class ControllersTest extends WebTestCase
      */
     public function testCreate()
     {
+        $this->markTestIncomplete('BAP-2168');
         $crawler = $this->client->request('GET', $this->client->generate('oro_notification_emailnotification_create'));
 
         // prepare data for next tests
