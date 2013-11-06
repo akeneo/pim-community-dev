@@ -22,6 +22,9 @@ See detailed [documentation](./Resources/doc/reference/number-formatting.md) for
 Date and Time Formatting
 ------------------------
 
+Includes tools for localized formatting of date and time values:
+* [PHP DateTime Formatter](./Resources/doc/reference/datetime-formatting.md#php-datetime-formatter))
+
 Person Names Formatting
 -----------------------
 
