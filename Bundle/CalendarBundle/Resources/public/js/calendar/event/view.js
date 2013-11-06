@@ -1,7 +1,7 @@
 /* global define */
 define(['underscore', 'backbone', 'oro/translator', 'oro/dialog-widget','oro/loading-mask', 'oro/form-validation',
-    'oro/delete-confirmation'],
-function(_, Backbone, __, DialogWidget, LoadingMask, FormValidation, DeleteConfirmation) {
+    'oro/delete-confirmation', 'oro/calendar/event/model'],
+function(_, Backbone, __, DialogWidget, LoadingMask, FormValidation, DeleteConfirmation, EventModel) {
     'use strict';
 
     var $ = Backbone.$;
@@ -17,20 +17,45 @@ function(_, Backbone, __, DialogWidget, LoadingMask, FormValidation, DeleteConfi
             loadingMaskContent: '.loading-content'
         },
 
+        options: {
+            formTemplateSelector: null,
+            formValidationScriptUrl: null,
+            calendar: null
+        },
+
         initialize: function() {
             var templateHtml = $(this.options.formTemplateSelector).html();
             templateHtml = templateHtml
                 .replace(/\{\s*(\w+)\s*\}/g, '<%- $1 %>')
                 .replace(/checkedif="(\w+)"/g, '<% if ($1) { %> checked="checked"<% } %>');
             this.template = _.template(templateHtml);
+
+            this.listenTo(this.model, 'sync', this.onModelSave);
+            this.listenTo(this.model, 'destroy', this.onModelDelete);
         },
 
-        getCollection: function() {
-            return this.options.collection;
+        remove: function() {
+            this.trigger('remove');
+            this._hideMask();
+            Backbone.View.prototype.remove.apply(this, arguments);
+        },
+
+        onModelSave: function() {
+            this.trigger('addEvent', this.model);
+            this.eventDialog.remove();
+            this.remove();
+        },
+
+        onModelDelete: function() {
+            this.eventDialog.remove();
+            this.remove();
         },
 
         render: function() {
             // create a dialog
+            if (!this.model) {
+                this.model = new EventModel();
+            }
             this.eventDialog = new DialogWidget({
                 el: this.template(this.model.toJSON()),
                 title: this.model.isNew() ? __('Add New Event') : __('Edit Event'),
@@ -42,11 +67,7 @@ function(_, Backbone, __, DialogWidget, LoadingMask, FormValidation, DeleteConfi
                     resizable: false,
                     width: 475,
                     autoResize: true,
-                    close: _.bind(function() {
-                        delete this.model;
-                        this.loadingMask.remove();
-                        this.loadingMask = null;
-                    }, this)
+                    close: _.bind(this.remove, this)
                 }
             });
             this.eventDialog.render();
@@ -89,104 +110,79 @@ function(_, Backbone, __, DialogWidget, LoadingMask, FormValidation, DeleteConfi
         },
 
         saveModel: function() {
-            this.showSavingMask(true);
+            this.showSavingMask();
             try {
                 var data = this.getEventFormData();
+                data.calendar = this.options.calendar;
 
-                if (this.model.isNew()) {
-                    data.calendar = this.getCollection().getCalendar();
-                    // set model fields
-                    _.each(data, _.bind(function (value, key) {
-                        this.model.set(key, value);
-                    }, this));
-                    this.getCollection().create(this.model, {
-                        wait: true,
-                        success: _.bind(function () {
-                            this.showSavingMask(false);
-                            this.eventDialog.remove();
-                        }, this),
-                        error: _.bind(function (collection, response) {
-                            this.showSavingMask(false);
-                            this.showError(response.responseJSON);
-                        }, this)
-                    });
-                } else {
-                    this.model.save(data, {
-                        wait: true,
-                        success: _.bind(function () {
-                            this.showSavingMask(false);
-                            this.eventDialog.remove();
-                        }, this),
-                        error: _.bind(function (model, response) {
-                            this.showSavingMask(false);
-                            this.showError(response.responseJSON);
-                        }, this)
-                    });
-                }
+                this.model.save(data, {
+                    wait: true,
+                    error: _.bind(this._handleResponseError, this)
+                });
             } catch (err) {
-                this.showSavingMask(false);
                 this.showError(err);
             }
         },
 
         deleteModel: function() {
-            this.showDeletingMask(true);
+            this.showDeletingMask();
             try {
                 this.model.destroy({
                     wait: true,
-                    success: _.bind(function () {
-                        this.showDeletingMask(false);
-                        this.eventDialog.remove();
-                    }, this),
-                    error: _.bind(function (model, response) {
-                        this.showDeletingMask(false);
-                        this.showError(response.responseJSON);
-                    }, this)
+                    error: _.bind(this._handleResponseError, this)
                 });
             } catch (err) {
-                this.showDeletingMask(false);
                 this.showError(err);
             }
         },
 
-        showSavingMask: function(show) {
-            this._showMask(show, 'Saving...');
+        showSavingMask: function() {
+            this._showMask(__('Saving...'));
         },
 
-        showDeletingMask: function(show) {
-            this._showMask(show, 'Deleting...');
+        showDeletingMask: function() {
+            this._showMask(__('Deleting...'));
         },
 
-        _showMask: function(show, message) {
+        _showMask: function(message) {
             if (this.loadingMask) {
-                if (show) {
-                    this.loadingMask.$el
-                        .find(this.selectors.loadingMaskContent)
-                        .text(__(message));
-                    this.loadingMask.show();
-                } else {
-                    this.loadingMask.hide();
-                }
+                this.loadingMask.$el
+                    .find(this.selectors.loadingMaskContent)
+                    .text(message);
+                this.loadingMask.show();
             }
         },
 
+        _hideMask: function() {
+            if (this.loadingMask) {
+                this.loadingMask.hide();
+            }
+        },
+
+        _handleResponseError: function(model, response) {
+            this.showError(response.responseJSON);
+        },
+
         showError: function (err) {
+            this._hideMask();
             if (this.eventDialog) {
                 FormValidation.handleErrors(this.eventDialog.$el.parent(), err);
             }
         },
 
         getEventFormData: function () {
-            var keys = ['title', 'start', 'end', 'allDay', 'reminder'];
+            var fieldNameRegex = /\[(\w+)\]$/;
             var data = {};
-            var container = this.eventDialog.$el.parent();
-            var eventFormFieldPrefix = FormValidation.getFormFieldPrefix(container);
-            _.each(keys, function (key) {
-                var el = container.find('#' + eventFormFieldPrefix + key);
-                if (el.attr('type') == 'checkbox') {
-                    data[key] = el.is(':checked');
-                } else {
-                    data[key] = el.val();
+            var formData = this.eventDialog.form.serializeArray();
+            formData = formData.concat(this.eventDialog.form.find('input[type=checkbox]:not(:checked)')
+                .map(function() {
+                    return {"name": this.name, "value": false};
+                }).get()
+            );
+            _.each(formData, function (dataItem) {
+                var fieldNameData = fieldNameRegex.exec(dataItem.name);
+                if (fieldNameData && fieldNameData.length == 2) {
+                    data[fieldNameData[1]] = dataItem.value;
                 }
             });
 

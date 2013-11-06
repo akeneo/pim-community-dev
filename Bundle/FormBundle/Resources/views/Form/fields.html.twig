@@ -347,7 +347,7 @@
 
 {% block oro_date_widget %}
     {% set actual_id = id %}
-    {% set selector_name = 'date_selector_' ~ random() %}
+    {% set selector_name = 'date_selector_' ~ id %}
     {% set selector_id = selector_name %}
 
     {# Actual date field that uses ISO format #}
@@ -392,7 +392,7 @@
 
 {% block oro_datetime_widget %}
     {% set actual_id = id %}
-    {% set selector_name = 'datetime_selector_' ~ random() %}
+    {% set selector_name = 'datetime_selector_' ~ id %}
     {% set selector_id = selector_name %}
 
     {# Actual date field that uses ISO format #}
