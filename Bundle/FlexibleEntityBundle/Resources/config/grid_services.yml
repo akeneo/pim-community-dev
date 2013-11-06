@@ -17,6 +17,7 @@ services:
         class: %oro_flexibleentity.grid.listener.class%
         arguments:
             - @oro_flexibleentity.registry
+            - @oro_datagrid.datagrid.request_params
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before, method: buildBefore}
             - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after,  method: buildAfter}

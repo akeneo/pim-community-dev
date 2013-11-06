@@ -4,6 +4,7 @@ namespace Oro\Bundle\FlexibleEntityBundle\Grid;
 use Doctrine\ORM\QueryBuilder;
 
 use Oro\Bundle\DataGridBundle\Common\Object;
+use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Event\BuildAfter;
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
@@ -25,6 +26,7 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 class EventListener
 {
+    const SCOPE_PARAMETER      = '_scope';
     const FLEXIBLE_ENTITY_PATH = '[flexible_entity]';
 
     /** @var  PropertyAccessor */
@@ -33,10 +35,14 @@ class EventListener
     /** @var FlexibleManagerRegistry */
     protected $registry;
 
-    public function __construct(FlexibleManagerRegistry $registry)
+    /** @var RequestParameters */
+    protected $requestParams;
+
+    public function __construct(FlexibleManagerRegistry $registry, RequestParameters $requestParams)
     {
-        $this->registry = $registry;
-        $this->accessor = PropertyAccess::createPropertyAccessor();
+        $this->registry      = $registry;
+        $this->requestParams = $requestParams;
+        $this->accessor      = PropertyAccess::createPropertyAccessor();
     }
 
     /**
@@ -158,7 +164,7 @@ class EventListener
      */
     protected function getFlexibleAttributes($entityFQCN)
     {
-        $fm = $this->registry->getManager($entityFQCN);
+        $fm = $this->getFlexibleManager($entityFQCN);
 
         $attributeRepository = $fm->getAttributeRepository();
         $attributesEntities  = $attributeRepository->findBy(['entityType' => $fm->getFlexibleName()]);
@@ -172,6 +178,23 @@ class EventListener
     }
 
     /**
+     * @param string $entityFQCN
+     *
+     * @return FlexibleManager
+     */
+    protected function getFlexibleManager($entityFQCN)
+    {
+        $fm = $this->registry->getManager($entityFQCN);
+
+        $rootValue = $this->requestParams->getRootParameterValue();
+        $scope     = isset($rootValue[self::SCOPE_PARAMETER]) ? $rootValue[self::SCOPE_PARAMETER] : null;
+
+        $fm->setLocale($this->requestParams->getLocale())->setScope($scope);
+
+        return $fm;
+    }
+
+    /**
      * Creates sorter apply callback
      *
      * @param string $entityFQCN
@@ -180,8 +203,7 @@ class EventListener
      */
     protected function getFlexibleSorterApplyCallback($entityFQCN)
     {
-        /** @var FlexibleManager $fm */
-        $fm = $this->registry->getManager($entityFQCN);
+        $fm = $this->getFlexibleManager($entityFQCN);
 
         return function (OrmDatasource $datasource, $attribute, $direction) use ($fm) {
             $qb = $datasource->getQueryBuilder();
