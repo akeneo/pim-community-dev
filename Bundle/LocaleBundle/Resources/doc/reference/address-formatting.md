@@ -42,6 +42,7 @@ Possible format placeholders:
 * *region_code* - region code
 
 In case when format placeholder is in upper case corresponding value will be also upper cased.
+Address formatter uses name formatter to format names according to address country locale.
 
 In address_format.yml stored also additional optional data that does not used for now in LocaleBundle. Possible keys:
 
@@ -148,6 +149,32 @@ Possible address object parameters are:
 * *postal_code* - postal/ZIP code
 * *region* - region
 * *region_code* - region code
+
+Example:
+
+```javascript
+require(['oro/formatter/address'],
+function(addressFormatter) {
+    var data = this.model.toJSON();
+    data.formatted_address = addressFormatter.format({
+        prefix: data.namePrefix,
+        suffix: data.nameSuffix,
+        first_name: data.firstName,
+        middle_name: data.middleName,
+        last_name: data.lastName,
+        organization: data.organization,
+        street: data.street,
+        street2: data.street2,
+        city: data.city,
+        country: data.country,
+        country_iso2: data.countryIso2,
+        country_iso3: data.countryIso3,
+        postal_code: data.postalCode,
+        region: data.region,
+        region_code: data.regionCode
+    });
+});
+```
 
 ### getAddressFormat
 
