@@ -11,13 +11,13 @@ Table of Contents
      - [Format symbol constants](#format-symbol-constants)
    - [Methods and examples of usage](#methods-and-examples-of-usage)
      - [format](#format)
-     - [formatCurrency](#formatCurrency)
-     - [formatDecimal](#formatDecimal)
-     - [formatPercent](#formatPercent)
-     - [formatSpellout](#formatSpellout)
-     - [formatOrdinal](#formatOrdinal)
-     - [getAttribute](#getAttribute)
-     - [getTextAttribute](#getTextAttribute)
+     - [formatCurrency](#formatcurrency)
+     - [formatDecimal](#formatdecimal)
+     - [formatPercent](#formatpercent)
+     - [formatSpellout](#formatspellout)
+     - [formatOrdinal](#formatordinal)
+     - [getAttribute](#getattribute)
+     - [getTextAttribute](#gettextattribute)
      - [getSymbol](#getSymbol)
  - [Twig](#twig)
    - [Filters](#filters)
@@ -33,10 +33,10 @@ Table of Contents
      - [oro_locale_number_symbol](#oro_locale_number_symbol)
  - [JS](#js)
    - [Functions](#functions-1)
-     - [formatDecimal](#formatDecimal-1)
-     - [formatInteger](#formatInteger)
-     - [formatPercent](#formatPercent-1)
-     - [formatCurrency](#formatCurrency-1)
+     - [formatDecimal](#formatdecimal-1)
+     - [formatInteger](#formatinteger)
+     - [formatPercent](#formatpercent-1)
+     - [formatCurrency](#formatcurrency-1)
      - [unformat](#unformat)
 
 PHP Number Formatter
@@ -289,7 +289,7 @@ Gets text attribute of intl NumberFormatter related to passed locale. If locale 
 echo $numberFormatter->getTextAttribute('negative_prefix', 'decimal', 'en_US');
 // outputs: "-"
 
-echo $numberFormatter->getTextAttribute(\NumberFormatter::\NEGATIVE_PREFIX', \NumberFormatter::CURRENCY, 'en_US');
+echo $numberFormatter->getTextAttribute(\NumberFormatter::\NEGATIVE_PREFIX, \NumberFormatter::CURRENCY, 'en_US');
 // outputs: "($"
 ```
 
