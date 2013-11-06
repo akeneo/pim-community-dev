@@ -10,6 +10,7 @@
 - Separate product groups and variants management
 
 ## Bug fixes
+- Mass delete products
 
 ## BC breaks
 

@@ -10,17 +10,20 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\GridBundle\Action\MassAction\MassActionParametersParser;
 use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
+use Oro\Bundle\GridBundle\Action\MassAction\MassActionResponse;
 
 use Pim\Bundle\CatalogBundle\Form\Type\MassEditActionOperatorType;
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\CatalogBundle\MassEditAction\MassEditActionOperator;
 use Pim\Bundle\GridBundle\Helper\DatagridHelperInterface;
+use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 
 /**
  * Batch operation controller
@@ -47,6 +50,11 @@ class MassEditActionController extends AbstractDoctrineController
     private $parametersParser;
 
     /**
+     * @var ProductManager
+     */
+    private $productManager;
+
+    /**
      * Constructor
      *
      * @param Request                    $request
@@ -60,6 +68,7 @@ class MassEditActionController extends AbstractDoctrineController
      * @param MassEditActionOperator     $batchOperator
      * @param DatagridHelperInterface    $datagridHelper
      * @param MassActionParametersParser $parametersParser
+     * @param ProductManager             $productManager
      */
     public function __construct(
         Request $request,
@@ -72,7 +81,8 @@ class MassEditActionController extends AbstractDoctrineController
         RegistryInterface $doctrine,
         MassEditActionOperator $batchOperator,
         DatagridHelperInterface $datagridHelper,
-        MassActionParametersParser $parametersParser
+        MassActionParametersParser $parametersParser,
+        ProductManager $productManager
     ) {
         parent::__construct(
             $request,
@@ -88,6 +98,7 @@ class MassEditActionController extends AbstractDoctrineController
         $this->batchOperator    = $batchOperator;
         $this->datagridHelper   = $datagridHelper;
         $this->parametersParser = $parametersParser;
+        $this->productManager   = $productManager;
     }
 
     /**
@@ -212,6 +223,37 @@ class MassEditActionController extends AbstractDoctrineController
                 'productIds'    => $productIds,
             )
         );
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return Response
+     * @throws \LogicException
+     */
+    public function deleteAction(Request $request)
+    {
+        $productIds = $this->getProductIds($request);
+        $this->productManager->removeAll($productIds);
+        $entitiesCount = count($productIds);
+        $options = array('count' => $entitiesCount);
+
+        $response = new MassActionResponse(
+            true,
+            $this->getTranslator()->transChoice(
+                'oro.grid.mass_action.delete.success_message',
+                $entitiesCount,
+                array('%count%' => $entitiesCount)
+            ),
+            $options
+        );
+
+        $data = array(
+            'successful' => $response->isSuccessful(),
+            'message'    => $response->getMessage(),
+        );
+
+        return new JsonResponse(array_merge($data, $response->getOptions()));
     }
 
     /**
