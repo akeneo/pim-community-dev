@@ -289,7 +289,7 @@ Gets text attribute of intl NumberFormatter related to passed locale. If locale 
 echo $numberFormatter->getTextAttribute('negative_prefix', 'decimal', 'en_US');
 // outputs: "-"
 
-echo $numberFormatter->getTextAttribute(\NumberFormatter::\NEGATIVE_PREFIX', \NumberFormatter::CURRENCY, 'en_US');
+echo $numberFormatter->getTextAttribute(\NumberFormatter::\NEGATIVE_PREFIX, \NumberFormatter::CURRENCY, 'en_US');
 // outputs: "($"
 ```
 
