@@ -125,18 +125,18 @@ services:
             - { name: twig.extension }
 
     oro_organization.event_listener.bu_update_grid_listener:
-        class: %oro_user.event_listener.related_users_grid_listener.class%
+        class: %oro_datagrid.event_listener.base_orm_relation.class%
         arguments:
-          - @oro_datagrid.datagrid.request_params
           - business_unit_id
+          - @oro_datagrid.datagrid.request_params
         tags:
           - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.bu-update-users-grid, method: onBuildAfter }
 
     oro_organization.event_listener.bu_view_grid_listener:
-        class: %oro_user.event_listener.related_users_grid_listener.class%
+        class: %oro_datagrid.event_listener.base_orm_relation.class%
         arguments:
-          - @oro_datagrid.datagrid.request_params
           - business_unit_id
+          - @oro_datagrid.datagrid.request_params
           - false
         tags:
           - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.bu-view-users-grid, method: onBuildAfter }
