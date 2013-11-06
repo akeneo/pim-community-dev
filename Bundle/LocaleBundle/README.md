@@ -12,11 +12,13 @@ Locale Settings
 
 Provides such locale settings of application as:
 
+* locale
+* language
+* location
+* time zone
+* calendar
 * person names formats
 * addresses formats
-* calendar
-* time zone
-* location
 * currency specific data
   * currency symbols based on currency codes
   * currency code, phone prefix, default locale based on country

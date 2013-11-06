@@ -4,6 +4,8 @@ Locale Settings
 Table of Contents
 -----------------
  - [Overview](#overview)
+ - [Locale](#locale)
+ - [Calendar](#calendar)
  - [Names formats](#names-formats)
  - [Addresses formats](#addresses-formats)
 
@@ -12,14 +14,66 @@ Overview
 
 Locale Settings is a service of Oro\Bundle\LocaleBundle\Model\LocaleSettings class. Id of the service is "oro_locale.settings".
 This service can be used to get locale specific settings of the application such as:
+* locale
+* language
+* location
+* calendar
+* time zone
 * list of person names formats
 * list addresses formats
 * instance of calendar object to get localized calendar data
-* time zone
-* location
 * currency specific data
   * currency symbols based on currency codes
   * currency code, phone prefix, default locale based on country
+
+Locale
+======
+
+Locale settings can provide default application locale. This setting is based on system configuration and can be
+different per user.
+
+Example of getting current locale:
+
+```php
+$localeSettings = $this->get('oro_locale.settings');
+$locale = $locale->getLocale();
+```
+
+Locale Settings class also provides help static methods related to locales:
+
+**Oro\Bundle\LocaleBundle\Model\LocaleSettings::getValidLocale**
+
+Validates given locale according to real data of environment. The purpose of this method to ensure that locale is
+valid in current environment (PHP intl extension, ICU version). If locale is not supported than fallback valid default
+one will be used. This method also try to strip all parts of locale different from \Locale::LANG_TAG,
+\Locale::SCRIPT_TAG and \Locale::REGION_TAG.
+
+Example of usage:
+```php
+// outputs ru_RU
+echo \Oro\Bundle\LocaleBundle\Model\LocaleSettings::getValidLocale('ru_RU');
+
+// outputs en_US
+echo \Oro\Bundle\LocaleBundle\Model\LocaleSettings::getValidLocale('en_Hans_CN_nedis_rozaj_x_prv1_prv2');
+
+// outputs en_US if this is a default locale
+echo \Oro\Bundle\LocaleBundle\Model\LocaleSettings::getValidLocale('unknown');
+```
+
+**Oro\Bundle\LocaleBundle\Model\LocaleSettings::getLocales**
+
+Returns the list of all available locales.
+
+**Oro\Bundle\LocaleBundle\Model\LocaleSettings::getCountryByLocale**
+
+Gets country by locale. If could not find result than returns default country.
+
+Calendar
+========
+
+Locale settings can provide instance of localized Calendar class (Oro\Bundle\LocaleBundle\Model\Calendar). This class
+can be used to get localized calendar data based on application locale and application language.
+
 
 Names formats
 =============
@@ -78,4 +132,4 @@ AM:
     latin_format: '%name%\n%organization%\n%street%\n%postal_code%\n%city%\n%region%\n%country%'
 ```
 
-See name formats [detailed documentation](./address-formatting.md).
+See address formats [detailed documentation](./address-formatting.md).
