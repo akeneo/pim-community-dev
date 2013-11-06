@@ -171,29 +171,7 @@ class CategoryHelper
         }
 
         return $state;
-    }
-
-    /**
-     * Format product list
-     *
-     * @param ArrayCollection $products
-     *
-     * @return array
-     * @static
-     */
-    public static function productsResponse($products)
-    {
-        $return = array();
-
-        foreach ($products as $product) {
-            $return[] = array(
-                'id' => $product->getId(),
-                'name' => $product->getSku(),
-                'description' => $product->getSku()
-            );
-        }
-
-        return $return;
+    }rn $return;
     }
 
     /**
