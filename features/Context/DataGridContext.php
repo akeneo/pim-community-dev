@@ -87,6 +87,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iFilterPerUnclassifiedCategory()
     {
+        $this->wait();
         $this->getCurrentPage()->clickUnclassifiedCategoryFilterLink();
         $this->wait();
     }
