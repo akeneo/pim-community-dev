@@ -291,7 +291,7 @@ class ProductController extends AbstractDoctrineController
      */
     public function editAction(Request $request, $id)
     {
-        $product  = $this->findProductOr404($id);
+        $product = $this->findProductOr404($id);
 
         $this->productManager->ensureAllAssociations($product);
 
