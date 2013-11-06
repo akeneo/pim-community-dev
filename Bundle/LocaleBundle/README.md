@@ -9,13 +9,28 @@ This bundle provides next localization tools:
 Locale Settings
 ---------------
 
+Provides such locale settings of application as:
+
+* person names formats
+* addresses formats
+* calendar
+* time zone
+* location
+* currency specific data
+  * currency symbols based on currency codes
+  * currency code, phone prefix, default locale based on country
+
+Uses system configuration as a source of settings.
+
+See detailed [documentation](./Resources/doc/reference/locale-settings.md) for more details.
+
 Number Formatting
 -----------------
 
 Includes tools for localized formatting numbers:
-* [PHP class formatter](./Resources/doc/reference/number-formatting.md#php-number-formatter)
-* [Twig functions](./Resources/doc/reference/number-formatting.md#twig)
-* [JS](./Resources/doc/reference/number-formatting.md#js)
+* [PHP side formatter](./Resources/doc/reference/number-formatting.md#php-number-formatter)
+* [Twig functions and filters](./Resources/doc/reference/number-formatting.md#twig)
+* [JS side formatter](./Resources/doc/reference/number-formatting.md#js)
 
 See detailed [documentation](./Resources/doc/reference/number-formatting.md) for more details.
 
