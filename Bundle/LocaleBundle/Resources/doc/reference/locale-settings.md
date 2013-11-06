@@ -185,6 +185,26 @@ $localeSettings = $this->get('oro_locale.settings');
 $country = $locale->getCountry();
 ```
 
+Additional locale data is available in Locale Settings. Using this data based on country next information could be
+accessed:
+* currency code
+* phone prefix
+* default locale
+
+This data is loaded from bundle's file ./Resources/config/locale_data.yml. Other bundles could provide their files
+to extend this data. Example of locale_data.yml file:
+
+```yml
+AD:
+    currency_code: EUR
+    phone_prefix: '376'
+    default_locale: ca
+AE:
+    currency_code: AED
+    phone_prefix: '971'
+    default_locale: ar_AE
+```
+
 Time Zone
 =========
 
@@ -193,7 +213,7 @@ formatter. This formatter uses time zone setting from Locale Settings to display
 
 List of available timezones in PHP: http://php.net/manual/en/timezones.php
 
-Example of getting time zone from Locale settings
+Example of getting time zone from Locale settings:
 
 ```php
 
@@ -205,6 +225,38 @@ $timeZone = $locale->getTimeZone();
 Currencies
 ==========
 
+Locale Settings stores default currency of application. [Number formatter](./number-formatting.md) uses this currency
+for formatting currency when currency is not specified.
+
+Example of getting currency from Locale Settings:
+
+```php
+$localeSettings = $this->get('oro_locale.settings');
+// USD or some other currency code
+$currency = $localeSettings->getCurrency();
+```
+
+Example of getting currency symbol by currency code:
+
+```php
+$localeSettings = $this->get('oro_locale.settings');
+// $
+$symbol = $localeSettings->getCurrencySymbolByCurrency('USD');
+```
+
+Data about currency code and currency symbols are loaded from bundle's file ./Resources/config/currency_data.yml. Other bundles could provide their files
+to extend this data.
+
+Example of currency_data.yml file:
+
+```yml
+UAH:
+    symbol: ₴
+UGX:
+    symbol: UGX
+USD:
+    symbol: $
+```
 
 
 Names formats
@@ -224,10 +276,10 @@ to extend name formats configuration.
 Example of name_format.yml file:
 
 ```yml
-en: %prefix% %first_name% %middle_name% %last_name% %suffix%
-en_US: %prefix% %first_name% %middle_name% %last_name% %suffix%
-ru: %last_name% %first_name% %middle_name%
-ru_RU: %last_name% %first_name% %middle_name%
+en: '%prefix% %first_name% %middle_name% %last_name% %suffix%'
+en_US: %prefix% %first_name% %middle_name% %last_name% %suffix%'
+ru: '%last_name% %first_name% %middle_name%'
+ru_RU: '%last_name% %first_name% %middle_name%'
 ```
 
 See name formats [detailed documentation](./name-formatting.md).
