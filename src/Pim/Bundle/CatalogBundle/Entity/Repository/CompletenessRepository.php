@@ -108,9 +108,7 @@ SQL;
      */
     public function createAllCompletenesses($limit = 100)
     {
-        $this->createCompletenesses(array(
-            'limit' => $limit
-        ));
+        $this->createCompletenesses(array(), $limit);
     }
 
     /**
@@ -118,9 +116,9 @@ SQL;
      *
      * @param array $criteria
      */
-    protected function createCompletenesses(array $criteria)
+    protected function createCompletenesses(array $criteria, $limit = null)
     {
-        $sql = $this->getInsertCompletenessSQL($criteria);
+        $sql = $this->getInsertCompletenessSQL($criteria, $limit);
 
         $stmt = $this
             ->getEntityManager()
@@ -141,9 +139,15 @@ SQL;
      *
      * @return string
      */
-    private function getInsertCompletenessSQL(array $criteria)
+    private function getInsertCompletenessSQL(array $criteria, $limit)
     {
-        return $this->getInsertCompletenessSQLCondition($criteria) . ' GROUP BY p.id, c.id, l.id;';
+        $sql = $this->getInsertCompletenessSQLCondition($criteria) . ' GROUP BY p.id, c.id, l.id';
+
+        if ($limit) {
+            $sql .= ' LIMIT ' . $limit;
+        }
+
+        return $sql . ';';
     }
 
     /**
@@ -179,7 +183,6 @@ SQL;
                                     ON c.product_id = p.id
                                     AND c.channel_id = ch.id
                                     WHERE ch.id = :channel AND c.id IS NULL
-                                    %LIMIT%
                         )
                         AND c.id = :channel
 SQL;
@@ -194,29 +197,11 @@ SQL;
                                     ON c.product_id = p.id
                                     AND c.channel_id = ch.id
                                     WHERE c.id IS NULL
-                                    %LIMIT%
                         )
 SQL;
 
         }
 
-        return $this->setInsertCompletenessSQLLimit($sql, $criteria);
-    }
-
-    /**
-     * Replace the limit placeholder in the insert completeness sql query
-     *
-     * @param string $sql
-     * @param array  $criteria
-     *
-     * @return string
-     */
-    private function setInsertCompletenessSQLLimit($sql, array $criteria)
-    {
-        if (array_key_exists('limit', $criteria)) {
-            return str_replace('%LIMIT%', 'LIMIT :limit', $sql);
-        }
-
-        return str_replace('%LIMIT%', '', $sql);
+        return $sql;
     }
 }
