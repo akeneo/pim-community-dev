@@ -45,8 +45,7 @@ class CategoryExtension extends \Twig_Extension
     public function getFilters()
     {
         return array(
-//             'count_products' => new \Twig_Filter_Method($this, 'countProducts'),
-            'state'          => new \Twig_Filter_Method($this, 'getState')
+            'state' => new \Twig_Filter_Method($this, 'getState')
         );
     }
 

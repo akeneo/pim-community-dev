@@ -168,6 +168,7 @@ class CategoryTreeController extends AbstractDoctrineController
         $selectNodeId      = $request->get('select_node_id', -1);
         $withProductsCount = (boolean) $request->get('with_products_count', false);
         $includeParent     = $request->get('include_parent', false);
+        $nested            = (bool) $this->getRequest()->get('nested', false);
 
         try {
             $selectNode = $this->findCategory($selectNodeId);
@@ -180,7 +181,7 @@ class CategoryTreeController extends AbstractDoctrineController
         }
 
         // FIXME: Simplify and use a single helper method able to manage both cases
-        if ($selectNode != null) {
+        if ($selectNode !== null) {
             $categories = $this->categoryManager->getChildren($parent->getId(), $selectNode->getId());
             if ($includeParent) {
                 $data = CategoryHelper::childrenTreeResponse($categories, $selectNode, $withProductsCount, $parent);
@@ -188,21 +189,27 @@ class CategoryTreeController extends AbstractDoctrineController
                 $data = CategoryHelper::childrenTreeResponse($categories, $selectNode, $withProductsCount);
             }
 
-            return array('select_node' => $selectNode, 'data' => $data);
+            return $this->render('PimCatalogBundle:CategoryTree:children-tree.html.twig', array('data' => $data));
         } else {
             $categories = $this->categoryManager->getChildren($parent->getId());
-            $nested = (bool) $this->getRequest()->get('nested', false);
-
             if ($includeParent) {
-                $data = CategoryHelper::childrenResponse($categories, $withProductsCount, $nested, $parent);
-            } else {
-                $data = CategoryHelper::childrenResponse($categories, $withProductsCount, $nested);
-            }
+                $data = CategoryHelper::childrenResponse($categories, $withProductsCount, $parent);
 
-            return array('categories' => $categories, 'nested' => $nested);
+                return $this->render('PimCatalogBundle:CategoryTree:old-children.html.twig', array('data' => $data));
+            } else {
+                $data = CategoryHelper::childrenResponse($categories, $withProductsCount);
+            }
         }
 
-        return array('data' => $data, 'categories' => $categories);
+        if (!$includeParent) {
+            $parent = null;
+        }
+
+        return $this->render(
+            'PimCatalogBundle:CategoryTree:children.json.twig',
+            array('categories' => $categories, 'nested' => $nested, 'parent' => $parent),
+            new JsonResponse()
+        );
     }
 
     /**

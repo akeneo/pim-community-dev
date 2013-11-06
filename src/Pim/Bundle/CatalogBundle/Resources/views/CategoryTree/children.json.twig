@@ -1,14 +1,3 @@
-{% if select_node is not defined %}
-[
-    {% for category in categories %}
-        {
-            "attr": {"id":"node_{{ category.id }}"},
-            "data": "{{ category.label|raw }} ({{ count_products(category, nested) }})",
-            "state": "{{ category|state }}"
-        }
-        {% if not loop.last %},{% endif %}
-    {% endfor %}
-]
-{% else %}
-    {{ data|json_encode|raw }}
-{% endif %}
+[{% for category in categories %}
+{% include 'PimCatalogBundle:CategoryTree:_category.html.twig' %}{% if not loop.last %},{% endif %}
+{% endfor %}]
