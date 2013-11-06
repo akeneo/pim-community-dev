@@ -63,11 +63,11 @@ abstract class AbstractConfigGridListener implements EventSubscriberInterface
      * Add dynamic fields
      *
      * @param BuildBefore $event
-     * @param string      $alias
-     * @param string      $itemType
-     * @param bool        $dynamicFirst flag if true - dynamic columns will be placed before static, false - after
+     * @param string|null  $alias
+     * @param string|null  $itemType
+     * @param bool         $dynamicFirst flag if true - dynamic columns will be placed before static, false - after
      */
-    public function doBuildBefore(BuildBefore $event, $alias, $itemType, $dynamicFirst = true)
+    public function doBuildBefore(BuildBefore $event, $alias = null, $itemType = null, $dynamicFirst = true)
     {
         $config = $event->getConfig();
 
@@ -82,8 +82,8 @@ abstract class AbstractConfigGridListener implements EventSubscriberInterface
 
         foreach (['columns', 'sorters', 'filters'] as $itemName) {
             $path = '[' . $itemName . ']';
-            // get already defined columns, sorters and filters
-            $items = $config->offsetGetByPath($path, array());
+            // get already defined items
+            $items = $config->offsetGetByPath($path, []);
 
             // merge additional items with existing
             if ($dynamicFirst) {
@@ -106,12 +106,14 @@ abstract class AbstractConfigGridListener implements EventSubscriberInterface
     }
 
     /**
-     * @param string $alias
-     * @param string $itemsType
+     * Get dynamic fields from config providers
+     *
+     * @param string|null $alias
+     * @param string|null $itemsType
      *
      * @return array
      */
-    protected function getDynamicFields($alias, $itemsType)
+    protected function getDynamicFields($alias = null, $itemsType = null)
     {
         $fields = [];
 
@@ -125,15 +127,15 @@ abstract class AbstractConfigGridListener implements EventSubscriberInterface
                 $item['grid'] = $provider->getPropertyConfig()->initConfig($item['grid']);
                 $item['grid'] = $this->mapEntityConfigTypes($item['grid']);
 
-                $field = array(
+                $field = [
                     $fieldName => array_merge(
                         $item['grid'],
-                        array(
+                        [
                             'expression' => $alias . $code . '.value',
                             'field_name' => $fieldName,
-                        )
+                        ]
                     )
-                );
+                ];
 
                 if (isset($item['options']['priority']) && !isset($fields[$item['options']['priority']])) {
                     $fields[$item['options']['priority']] = $field;
@@ -145,7 +147,7 @@ abstract class AbstractConfigGridListener implements EventSubscriberInterface
 
         ksort($fields);
 
-        $orderedFields = $sorters = $filters = [];
+        $orderedFields = [];
         // compile field list with pre-defined order
         foreach ($fields as $field) {
             $orderedFields = array_merge($orderedFields, $field);
@@ -171,7 +173,7 @@ abstract class AbstractConfigGridListener implements EventSubscriberInterface
 
             if (isset($field['filterable']) && $field['filterable']) {
                 $filters['columns'][$fieldName] = [
-                    'data_name'                      => $field['expression'],
+                    'data_name'                      => isset($field['expression']) ? $field['expression'] : $fieldName,
                     'type'                           => isset($field['filter_type']) ? $field['filter_type'] : 'string',
                     'frontend_type'                  => $field['frontend_type'],
                     'label'                          => $field['label'],

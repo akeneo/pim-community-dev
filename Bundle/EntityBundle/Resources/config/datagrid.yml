@@ -11,6 +11,50 @@ datagrid:
                 from:
                     - { table: OroEntityConfigBundle:EntityConfigModel, alias: ce }
 
+        columns: ~ # no static columns
+
+        properties:
+            update_link:
+                type: url
+                route: oro_entity_update
+                params:
+                    - id
+                    - entity_id
+            view_link:
+                type: url
+                route: oro_entity_view
+                params:
+                    - id
+                    - entity_id
+            delete_link:
+                type: url
+                route: oro_entity_delete
+                params:
+                    - id
+                    - entity_id
+
+        actions:
+            # TODO: add dynamic acl_resources
+            view:
+                type: navigate
+                label: View
+                icon: book
+                link: view_link
+                rowAction: true
+            update:
+                type: navigate
+                label: Update
+                icon: edit
+                link: update_link
+            delete:
+                type: delete
+                label: Delete
+                icon: trash
+                link: delete_link
+
+        sorters: ~ # no pre-defined sorters
+        filters: ~
+
     entity-relation-grid:
         options:
             entityHint: entity
