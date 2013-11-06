@@ -24,7 +24,6 @@ use Pim\Bundle\CatalogBundle\Model\AvailableProductAttributes;
 use Pim\Bundle\CatalogBundle\Form\Type\AvailableProductAttributesType;
 use Symfony\Component\HttpFoundation\Response;
 use Pim\Bundle\CatalogBundle\Exception\DeleteException;
-use Pim\Bundle\CatalogBundle\Calculator\CompletenessCalculator;
 use Pim\Bundle\CatalogBundle\Factory\FamilyFactory;
 
 /**
@@ -36,18 +35,11 @@ use Pim\Bundle\CatalogBundle\Factory\FamilyFactory;
  */
 class FamilyController extends AbstractDoctrineController
 {
-    /**
-     * @var DatagridHelperInterface
-     */
+    /** @var DatagridHelperInterface */
     private $datagridHelper;
 
-    /**
-     * @var ChannelManager
-     */
+    /** @var ChannelManager */
     private $channelManager;
-
-    /** @var CompletenessCalculator */
-    private $completenessCalculator;
 
     /** @var FamilyFactory */
     private $factory;
@@ -78,7 +70,6 @@ class FamilyController extends AbstractDoctrineController
         RegistryInterface $doctrine,
         DatagridHelperInterface $datagridHelper,
         ChannelManager $channelManager,
-        CompletenessCalculator $completenessCalculator,
         FamilyFactory $factory
     ) {
         parent::__construct(
@@ -92,10 +83,9 @@ class FamilyController extends AbstractDoctrineController
             $doctrine
         );
 
-        $this->datagridHelper         = $datagridHelper;
-        $this->channelManager         = $channelManager;
-        $this->completenessCalculator = $completenessCalculator;
-        $this->factory                = $factory;
+        $this->datagridHelper = $datagridHelper;
+        $this->channelManager = $channelManager;
+        $this->factory        = $factory;
     }
 
     /**
@@ -158,7 +148,7 @@ class FamilyController extends AbstractDoctrineController
             $form->submit($request);
             if ($form->isValid()) {
                 foreach ($family->getProducts() as $product) {
-                    $this->completenessCalculator->schedule($product);
+                    $this->getCompletenessRepository()->schedule($product);
                 }
                 $this->getManager()->flush();
                 $this->addFlash('success', 'flash.family.updated');
@@ -313,5 +303,15 @@ class FamilyController extends AbstractDoctrineController
         );
 
         return $historyGrid;
+    }
+
+    /**
+     * Get the completeness repository
+     *
+     * @return \Doctrine\ORM\EntityRepository
+     */
+    protected function getCompletenessRepository()
+    {
+        return $this->getRepository('PimCatalogBundle:Completeness');
     }
 }

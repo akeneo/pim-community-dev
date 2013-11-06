@@ -26,31 +26,22 @@ class ProductReader extends ORMReader
      */
     protected $channel;
 
-    /** @var Pim\Bundle\CatalogBundle\Doctrine\EntityRepository */
-    protected $repository;
-
     /** @var ProductManager */
     protected $productManager;
 
     /** @var ChannelManager */
     protected $channelManager;
 
-    /** @var CompletenessCalculator */
-    protected $calculator;
-
     /**
      * @param ProductManager         $productManager
      * @param ChannelManager         $channelManager
-     * @param CompletenessCalculator $calculator
      */
     public function __construct(
         ProductManager $productManager,
-        ChannelManager $channelManager,
-        CompletenessCalculator $calculator
+        ChannelManager $channelManager
     ) {
         $this->productManager = $productManager;
         $this->channelManager = $channelManager;
-        $this->calculator     = $calculator;
     }
 
     /**
@@ -66,7 +57,7 @@ class ProductReader extends ORMReader
                 );
             }
 
-            $this->calculator->calculateChannelCompleteness($channel);
+            $this->getCompletenessRepository()->createChannelCompletenesses($channel);
 
             $this->query = $this->getProductRepository()
                 ->buildByChannelAndCompleteness($channel)
@@ -110,8 +101,26 @@ class ProductReader extends ORMReader
         );
     }
 
+    /**
+     * Get the product repository
+     *
+     * @return \Doctrine\ORM\EntityRepository
+     */
     protected function getProductRepository()
     {
         return $this->productManager->getFlexibleRepository();
+    }
+
+    /**
+     * Get the completeness repository
+     *
+     * @return \Doctrine\ORM\EntityRepository
+     */
+    protected function getCompletenessRepository()
+    {
+        return $this
+            ->productManager
+            ->getStorageManager()
+            ->getRepository('PimCatalogBundle:Completeness');
     }
 }

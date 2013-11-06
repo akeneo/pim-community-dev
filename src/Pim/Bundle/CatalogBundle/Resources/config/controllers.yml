@@ -71,7 +71,6 @@ services:
         arguments:
             - '@pim_grid.datagrid.helper'
             - '@pim_catalog.manager.channel'
-            - '@pim_catalog.calculator.completeness'
             - '@pim_catalog.factory.family'
 
     pim_catalog.controller.locale:

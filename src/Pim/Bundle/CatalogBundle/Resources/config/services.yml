@@ -100,20 +100,6 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    # Product completeness calculator
-    pim_catalog.calculator.completeness:
-        class: %pim_catalog.calculator.completeness.class%
-        arguments:
-            - '@doctrine.orm.entity_manager'
-
-    # Batch completeness calculator
-    pim_catalog.calculator.batch_completeness:
-        class: %pim_catalog.calculator.batch_completeness.class%
-        arguments:
-            - '@pim_catalog.calculator.completeness'
-            - '@pim_catalog.manager.product'
-            - '@doctrine.orm.entity_manager'
-
     # Mass edit action operator
     pim_catalog.mass_edit_action.operator:
         class: %pim_catalog.mass_edit_action.operator.class%

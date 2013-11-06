@@ -120,6 +120,20 @@ SQL;
     }
 
     /**
+     * Schedule recalculation of completenesses for a product
+     *
+     * @param ProductInterface $product
+     */
+    public function schedule(ProductInterface $product)
+    {
+        $query = $this->_em->createQuery(
+            'DELETE FROM Pim\Bundle\CatalogBundle\Entity\Completeness c WHERE c.product = :product'
+        );
+        $query->setParameter('product', $product);
+        $query->execute();
+    }
+
+    /**
      * Insert missing completeness according to the criteria
      *
      * @param array $criteria
