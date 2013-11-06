@@ -65,22 +65,9 @@ class ProductBuilder
     {
         $attributes = $this->getExpectedAttributes($product);
 
-        // TODO
-        // expected values
-        // existing values
-        // array_diff then create new one 
-
         foreach ($attributes as $attribute) {
             $requiredValues = $this->getExpectedValues($attribute);
-            $existingValues = array();
-
-            foreach ($product->getValues() as $value) {
-                if ($value->getAttribute() === $attribute) {
-                    $existingValues[] = array(
-                        'code' => $attribute->getCode(), 'locale' => $value->getLocale(), 'scope' => $value->getScope()
-                    );
-                }
-            }
+            $existingValues = $this->getExistingValues($product, $attribute);
 
             $missingValues = array_filter(
                 $requiredValues,
@@ -214,6 +201,27 @@ class ProductBuilder
         $product->addValue($value);
     }
 
+
+    /**
+     * Returns an array of product values for the passed attribute
+     *
+     * @param ProductInterfac  $product
+     * @param ProductAttribute $attribute
+     *
+     * @return array:array
+     */
+    protected function getExistingValues(ProductInterface $product, ProductAttribute $attribute)
+    {
+        $existingValues = array();
+        foreach ($product->getValues() as $value) {
+            if ($value->getAttribute() === $attribute) {
+                $existingValues[] = array('locale' => $value->getLocale(), 'scope' => $value->getScope());
+            }
+        }
+
+        return $existingValues;
+    }
+
     /**
      * Returns an array of values that are expected to link product to an attribute depending on locale and scope
      * Each value is returned as an array with 'scope' and 'locale' keys
@@ -225,30 +233,26 @@ class ProductBuilder
     protected function getExpectedValues(ProductAttribute $attribute)
     {
         $requiredValues = array();
-        $attCode = $attribute->getCode();
-
         if ($attribute->getScopable()) {
             $channels = $this->getChannels();
             if ($attribute->getTranslatable()) {
                 foreach ($channels as $channel) {
                     foreach ($channel->getLocales() as $locale) {
-                        $requiredValues[] = array(
-                            'code' => $attCode, 'locale' => $locale->getCode(), 'scope' => $channel->getCode()
-                        );
+                        $requiredValues[] = array('locale' => $locale->getCode(), 'scope' => $channel->getCode());
                     }
                 }
             } else {
                 foreach ($channels as $channel) {
-                    $requiredValues[] = array('code' => $attCode, 'locale' => null, 'scope' => $channel->getCode());
+                    $requiredValues[] = array('locale' => null, 'scope' => $channel->getCode());
                 }
             }
         } elseif ($attribute->getTranslatable()) {
             $locales = $this->getLocales();
             foreach ($locales as $locale) {
-                $requiredValues[] = array('code' => $attCode, 'locale' => $locale->getCode(), 'scope' => null);
+                $requiredValues[] = array('locale' => $locale->getCode(), 'scope' => null);
             }
         } else {
-            $requiredValues[] = array('code' => $attCode, 'locale' => null, 'scope' => null);
+            $requiredValues[] = array('locale' => null, 'scope' => null);
         }
 
         return $requiredValues;
