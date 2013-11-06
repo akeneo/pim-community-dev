@@ -62,21 +62,6 @@ function($, _, __, TextFilter) {
         },
 
         /**
-         * Initialize.
-         *
-         * @param {Object} options
-         */
-        initialize: function() {
-            // temp code to keep backward compatible
-            if ($.isPlainObject(this.choices)) {
-                this.choices = _.map(this.choices, function(option, i) {
-                    return {value: i.toString(), label: option};
-                });
-            }
-            TextFilter.prototype.initialize.apply(this, arguments);
-        },
-
-        /**
          * @inheritDoc
          */
         _renderCriteria: function(el) {
