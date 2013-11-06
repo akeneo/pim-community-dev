@@ -67,10 +67,6 @@ class OrmSorterExtension extends AbstractExtension
             } else {
                 $datasource->getQueryBuilder()->addOrderBy($sortKey, $direction);
             }
-
-            if (!$multisort) {
-                break;
-            }
         }
     }
 
@@ -104,10 +100,6 @@ class OrmSorterExtension extends AbstractExtension
         foreach ($sorters as $column => $definition) {
             list($direction) = $definition;
             $sortersState[$column] = $this->normalizeDirection($direction);
-
-            if (!$multisort) {
-                break;
-            }
         }
 
         $data->offsetAddToArray('state', ['sorters' => $sortersState]);
