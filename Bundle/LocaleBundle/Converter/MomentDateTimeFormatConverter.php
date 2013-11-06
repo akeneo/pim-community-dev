@@ -2,8 +2,6 @@
 
 namespace Oro\Bundle\LocaleBundle\Converter;
 
-use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
-
 class MomentDateTimeFormatConverter extends AbstractDateTimeFormatConverter
 {
     const NAME = 'moment';
@@ -61,6 +59,7 @@ class MomentDateTimeFormatConverter extends AbstractDateTimeFormatConverter
         'SS'     => 'SS',
         'S'      => 'S',
         'ZZZZZ'  => 'Z',
+        'ZZZZ'   => 'ZZ',
         'ZZZ'    => 'ZZ',
         'ZZ'     => 'ZZ',
         'Z'      => 'ZZ',

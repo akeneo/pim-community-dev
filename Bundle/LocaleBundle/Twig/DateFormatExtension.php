@@ -2,7 +2,6 @@
 
 namespace Oro\Bundle\LocaleBundle\Twig;
 
-use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
 use Oro\Bundle\LocaleBundle\Converter\DateTimeFormatConverterRegistry;
 
 class DateFormatExtension extends \Twig_Extension

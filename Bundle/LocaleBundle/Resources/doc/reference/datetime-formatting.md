@@ -8,7 +8,10 @@ Table of Contents
     - [formatDate](#formatdate)
     - [formatTime](#formattime)
     - [getPattern](#getpattern)
-  - [PHP DateTime Format Converters](#converters)
+  - [PHP DateTime Format Converters](#php-datetime-format-converters)
+    - [getDateFormat](#getdateformat)
+    - [getTimeFormat](#gettimeformat)
+    - [getDateTimeFormat](#getdatetimeformat)
   - [Twig Extensions](#twig)
   - [JS DateTime Formatter](#js)
 
@@ -108,3 +111,95 @@ echo $formatter->getPattern(\IntlDateFormatter::FULL, \IntlDateFormatter::FULL);
 echo $formatter->getPattern(\IntlDateFormatter::FULL, \IntlDateFormatter::FULL, 'ru');
 // EEEE, d MMMM y 'г'. H:mm:ss zzzz
 ```
+
+
+PHP DateTime Format Converters
+------------------------------
+
+OroPlatform application contains several libraries that works with datetime values.
+Each library has its own datetime format placeholders, so, to unify approach to generate localized format strings
+for all libraries LocaleBundle provides format converters.
+
+For each used library there must be a format converter that contains rules of converting
+of standard internal format to specific library format. Intl library format is used
+for internal format representation. Each format converter has as alias specified as an alias in service configuration
+and used to extract it from registry.
+
+Main entry point for developer is a converter registry (DateTimeFormatConverterRegistry) -
+it simply collects and stores existing format converters and allows to receive appropriate converter by it's alias.
+
+LocaleBundle contains following format converters:
+ - intl (IntlDateTimeFormatConverter) - default format converter that simply returns Intl formats;
+ - moment (MomentDateTimeFormatConverter) - format converter for moment.js library.
+
+Also bundle contains interface DateTimeFormatConverterInterface that must be implemented by all format converters.
+Here is list of interface functions.
+
+### getDateFormat
+
+**Signature:** getDateFormat(dateFormat = null, locale = null)
+
+Returns localized date format for specific library. Optionally receives date format type form Intl library
+and custom locale.
+
+```php
+echo $converterRegistry->getFormatConverter('intl')->getDateFormat();
+echo $converterRegistry->getFormatConverter('moment')->getDateFormat();
+// MMM d, y
+// MMM D, YYYY
+
+echo $converterRegistry->getFormatConverter('intl')->getDateFormat(\IntlDateFormatter::FULL, 'ru');
+echo $converterRegistry->getFormatConverter('moment')->getDateFormat(\IntlDateFormatter::FULL, 'ru');
+// EEEE, d MMMM y 'г'.
+// dddd, D MMMM YYYY [г].
+```
+
+### getTimeFormat
+
+**Signature:** getTimeFormat(timeFormat = null, locale = null)
+
+Returns localized time format for specific library. Optionally receives time format type form Intl library
+and custom locale.
+
+```php
+echo $converterRegistry->getFormatConverter('intl')->getTimeFormat();
+echo $converterRegistry->getFormatConverter('moment')->getTimeFormat();
+// h:mm a
+// h:mm A
+
+echo $converterRegistry->getFormatConverter('intl')->getTimeFormat(\IntlDateFormatter::MEDIUM, 'ru');
+echo $converterRegistry->getFormatConverter('moment')->getTimeFormat(\IntlDateFormatter::MEDIUM, 'ru');
+// H:mm:ss
+// H:mm:ss
+```
+
+### getDateTimeFormat
+
+**Signature:** getDateTimeFormat(dateFormat = null, timeFormat = null, locale = null)
+
+Returns localized datetime format for specific library. Optionally receives date and time format types
+form Intl library and custom locale.
+
+```php
+echo $converterRegistry->getFormatConverter('intl')->getDateTimeFormat();
+echo $converterRegistry->getFormatConverter('moment')->getDateTimeFormat();
+// MMM d, y h:mm a
+// MMM D, YYYY h:mm A
+
+echo $converterRegistry->getFormatConverter('intl')->getDateTimeFormat(
+    \IntlDateFormatter::FULL,
+    \IntlDateFormatter::MEDIUM,
+    'ru'
+);
+echo $converterRegistry->getFormatConverter('moment')->getDateTimeFormat(
+    \IntlDateFormatter::FULL,
+    \IntlDateFormatter::MEDIUM,
+    'ru'
+);
+// EEEE, d MMMM y 'г'. H:mm:ss
+// dddd, D MMMM YYYY [г]. H:mm:ss
+```
+
+
+
+
