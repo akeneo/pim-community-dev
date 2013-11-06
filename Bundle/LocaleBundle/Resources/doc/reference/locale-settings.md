@@ -7,6 +7,9 @@ Table of Contents
  - [Locale](#locale)
  - [Language](#language)
  - [Calendar](#calendar)
+   - [First day of week](#first-day-of-week)
+   - [Month names](#month-names)
+   - [Day of week names](#day-of-week-names)
  - [Names formats](#names-formats)
  - [Addresses formats](#addresses-formats)
 
@@ -95,7 +98,7 @@ $calendar = $locale->getCalendar();
 
 Calendar provides next information:
 
-**First day of week**
+### First day of week
 
 First day of week depends from locale in Locale Settings.
 
@@ -104,7 +107,7 @@ First day of week depends from locale in Locale Settings.
 $firstDayOfWeek = $calendar->getFirstDayOfWeek();
 ```
 
-**Month names**
+### Month names
 
 Month names depends from application language in Locale Settings.
 
@@ -125,7 +128,7 @@ $shortMonthNames = $calendar->getMonthNames(Calendar::WIDTH_SHORT);
 $narrowMonthNames = $calendar->getMonthNames(Calendar::WIDTH_NARROW);
 ```
 
-**Day of week names**
+### Day of week names
 
 Day of week names depends from application language in Locale Settings.
 
