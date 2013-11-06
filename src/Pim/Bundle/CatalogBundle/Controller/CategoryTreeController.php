@@ -188,6 +188,7 @@ class CategoryTreeController extends AbstractDoctrineController
                 $data = CategoryHelper::childrenTreeResponse($categories, $selectNode, $withProductsCount);
             }
 
+            return array('select_node' => $selectNode, 'data' => $data);
         } else {
             $categories = $this->categoryManager->getChildren($parent->getId());
             $nested = (bool) $this->getRequest()->get('nested', false);
@@ -197,6 +198,8 @@ class CategoryTreeController extends AbstractDoctrineController
             } else {
                 $data = CategoryHelper::childrenResponse($categories, $withProductsCount, $nested);
             }
+
+            return array('categories' => $categories, 'nested' => $nested);
         }
 
         return array('data' => $data, 'categories' => $categories);

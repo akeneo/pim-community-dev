@@ -32,10 +32,20 @@ class CategoryExtension extends \Twig_Extension
     /**
      * {@inheritdoc}
      */
+    public function getFunctions()
+    {
+        return array(
+            'count_products' => new \Twig_Function_Method($this, 'countProducts')
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getFilters()
     {
         return array(
-            'count_products' => new \Twig_Filter_Method($this, 'countProducts'),
+//             'count_products' => new \Twig_Filter_Method($this, 'countProducts'),
             'state'          => new \Twig_Filter_Method($this, 'getState')
         );
     }
@@ -50,14 +60,10 @@ class CategoryExtension extends \Twig_Extension
      */
     public function countProducts(CategoryInterface $category, $nested)
     {
-        if ($category instanceof CategoryInterface) {
-            return $this
-                ->categoryManager
-                ->getEntityRepository()
-                ->countProductsLinked($category, !$nested);
-        } else {
-            throw \Twig_Error_Runtime('"count_products" filter is only allowed for CategoryInterface');
-        }
+        return $this
+            ->categoryManager
+            ->getEntityRepository()
+            ->countProductsLinked($category, !$nested);
     }
 
     /**
