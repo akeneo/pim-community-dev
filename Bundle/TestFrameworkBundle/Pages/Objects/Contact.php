@@ -151,8 +151,11 @@ class Contact extends AbstractEntity implements Entity
         if ($this->isElementPresent("//div[@role='dialog']")) {
             $addressFirstName = "//input[@id='orocrm_contact_address_form_firstName']";
         }
-        $this->byXpath($addressFirstName)->clear();
-        $this->byXpath($addressFirstName)->value($value);
+        $addressFirstName = $this->byXpath($addressFirstName);
+        $this->moveto($addressFirstName);
+
+        $addressFirstName->clear();
+        $addressFirstName->value($value);
 
         return $this;
 
@@ -170,8 +173,11 @@ class Contact extends AbstractEntity implements Entity
         if ($this->isElementPresent("//div[@role='dialog']")) {
             $addressLastName = "//input[@id='orocrm_contact_address_form_lastName']";
         }
-        $this->byXpath($addressLastName)->clear();
-        $this->byXpath($addressLastName)->value($value);
+        $addressLastName = $this->byXpath($addressLastName);
+        $this->moveto($addressLastName);
+
+        $addressLastName->clear();
+        $addressLastName->value($value);
 
         return $this;
 
@@ -189,8 +195,11 @@ class Contact extends AbstractEntity implements Entity
         if ($this->isElementPresent("//div[@role='dialog']")) {
             $street = "//input[@id='orocrm_contact_address_form_street']";
         }
-        $this->byXpath($street)->clear();
-        $this->byXpath($street)->value($value);
+        $street = $this->byXpath($street);
+        $this->moveto($street);
+
+        $street->clear();
+        $street->value($value);
 
         return $this;
     }
@@ -247,7 +256,10 @@ class Contact extends AbstractEntity implements Entity
         if ($this->isElementPresent("//div[@role='dialog']")) {
             $country = "//div[@id='s2id_orocrm_contact_address_form_country']/a";
         }
-        $this->byXpath($country)->click();
+        $country = $this->byXpath($country);
+        $this->moveto($country);
+
+        $country->click();
         $this->waitForAjax();
         $this->byXpath("//div[@id='select2-drop']/div/input")->value($value);
         $this->waitForAjax();
@@ -279,7 +291,10 @@ class Contact extends AbstractEntity implements Entity
         if ($this->isElementPresent("//div[@role='dialog']")) {
             $xpath = "//div[@id='s2id_orocrm_contact_address_form_state']/a";
         }
-        $this->byXpath($xpath)->click();
+        $xpath = $this->byXpath($xpath);
+        $this->moveto($xpath);
+
+        $xpath->click();
         $this->waitForAjax();
         $this->byXpath("//div[@id='select2-drop']/div/input")->value($state);
         $this->waitForAjax();
@@ -309,10 +324,12 @@ class Contact extends AbstractEntity implements Entity
         )
         ) {
             //click Add
-            $this->byXpath(
+            $addButton = $this->byXpath(
                 "//div[@class='row-oro'][div[@id='orocrm_contact_form_addresses_collection']]" .
-                "//a[@class='btn add-list-item']"
-            )->click();
+                    "//a[@class='btn add-list-item']"
+            );
+            $this->moveto($addButton);
+            $addButton->click();
             $this->waitForAjax();
         }
 
