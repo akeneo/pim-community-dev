@@ -162,25 +162,20 @@ class CategoryTreeController extends AbstractDoctrineController
         try {
             $parent = $this->findCategory($request->get('id'));
         } catch (NotFoundHttpException $e) {
-            return array('data' => array());
+            return array('categories' => array());
         }
 
-        $selectNodeId      = $request->get('select_node_id');
+        $selectNodeId      = $request->get('select_node_id', -1);
         $withProductsCount = (boolean) $request->get('with_products_count', false);
         $includeParent     = $request->get('include_parent', false);
 
-        $selectNode = null;
+        try {
+            $selectNode = $this->findCategory($selectNodeId);
 
-        if ($selectNodeId != null) {
-            try {
-                $selectNode = $this->findCategory($selectNodeId);
-            } catch (NotFoundHttpException $e) {
+            if (!$this->categoryManager->isAncestor($parent, $selectNode)) {
                 $selectNode = null;
             }
-        }
-
-        if (($selectNode != null)
-            && (!$this->categoryManager->isAncestor($parent, $selectNode))) {
+        } catch (NotFoundHttpException $e) {
             $selectNode = null;
         }
 
