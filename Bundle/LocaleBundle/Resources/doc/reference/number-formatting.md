@@ -479,7 +479,7 @@ See available values for arguments are:
 * [Format style constants](#format-style-constants)
 * [Numeric attribute constants](#numeric-attribute-constants)
 
-This example uses default locale and outputs the value of \NumberFormatter::PARSE_INT_ONLY_ATTRIBUTE for given number
+This example uses default locale and outputs the value of \NumberFormatter::PARSE_INT_ONLY for given number
 style and locale.
 
 ```
@@ -528,10 +528,12 @@ and locale.
 
 ```
 {{ oro_locale_number_symbol('decimal_separator_symbol', 'decimal');
-// outputs: "."
+```
 
-echo $numberFormatter->getSymbol('grouping_separator_symbol', 'decimal', 'en_US');
-// outputs: ","
+Custom locale can be passed in third argument:
+
+```
+{{ oro_locale_number_symbol('decimal_separator_symbol', 'decimal', 'ru_RU') }}
 ```
 
 JS
