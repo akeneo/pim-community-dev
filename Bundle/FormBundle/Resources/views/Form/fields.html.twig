@@ -365,9 +365,13 @@
         function($, datetimeFormatter) {
             var selector = $("#{{ selector_id }}");
             var actual = $("#{{ actual_id }}");
-            {% if value %}
-                selector.val(datetimeFormatter.formatDate({{ value|json_encode|raw }}));
-            {% endif %}
+            var sync = function() {
+                selector.val(datetimeFormatter.formatDate(actual.val()));
+            };
+            actual.on('change', sync);
+            if (actual.val().length) {
+                sync();
+            }
             selector.datepicker({
                 altField: '#{{ actual_id }}',
                 altFormat: 'yy-mm-dd',
@@ -410,9 +414,13 @@
         function($, datetimeFormatter) {
             var selector = $("#{{ selector_id }}");
             var actual = $("#{{ actual_id }}");
-            {% if value %}
-                selector.val(datetimeFormatter.formatDateTime({{ value|json_encode|raw }}));
-            {% endif %}
+            var sync = function() {
+                selector.val(datetimeFormatter.formatDateTime(actual.val()));
+            };
+            actual.on('change', sync);
+            if (actual.val().length) {
+                sync();
+            }
             selector.datetimepicker({
                 altField: '#{{ actual_id }}',
                 altFormat: 'yy-mm-dd',
