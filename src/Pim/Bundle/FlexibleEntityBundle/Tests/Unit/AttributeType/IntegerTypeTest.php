@@ -6,7 +6,7 @@ use Pim\Bundle\FlexibleEntityBundle\AttributeType\IntegerType;
 
 class IntegerTypeTest extends AttributeTypeTest
 {
-    protected $name = 'oro_flexibleentity_integer';
+    protected $name = 'pim_flexibleentity_integer';
 
     public function setUp()
     {

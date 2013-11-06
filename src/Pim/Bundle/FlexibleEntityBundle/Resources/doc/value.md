@@ -8,7 +8,7 @@ By default, attribute is defined as not translatable, you have to setup as follo
 ```php
 $pm = $this->container->get('product_manager');
 $attributeCode = 'name';
-$attribute = $pm->createAttribute('oro_flexibleentity_text');
+$attribute = $pm->createAttribute('pim_flexibleentity_text');
 $attribute->setCode($attributeCode);
 $attribute->setTranslatable(true);
 ```
@@ -48,7 +48,7 @@ By default, attribute is defined as not scopable, you have to setup as following
 ```php
 $pm = $this->container->get('product_manager');
 $attributeCode = 'description';
-$attribute = $pm->createAttribute('oro_flexibleentity_text');
+$attribute = $pm->createAttribute('pim_flexibleentity_text');
 $attribute->setCode($attributeCode);
 $attribute->setTranslatable(true);
 $attribute->setScopable(true);

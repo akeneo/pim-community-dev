@@ -17,7 +17,7 @@ class TextType extends AbstractAttributeType
      */
     public function getName()
     {
-        return 'oro_flexibleentity_text';
+        return 'pim_flexibleentity_text';
     }
 }
 ```
@@ -28,11 +28,11 @@ Declare as tagged service
 With backend type to use and form type to render a value :
 ```yaml
 services:
-    oro_flexibleentity.attributetype.text:
+    pim_flexibleentity.attributetype.text:
         class: Pim\Bundle\FlexibleEntityBundle\AttributeType\TextType
         arguments: ["varchar", "text"]
         tags:
-            - { name: oro_flexibleentity.attributetype, alias: oro_flexibleentity_text }
+            - { name: pim_flexibleentity.attributetype, alias: pim_flexibleentity_text }
 ```
 
 Enable it on a flexible entity
@@ -45,7 +45,7 @@ services:
         arguments: [...]
         tags: [...]
         calls:
-            - [ addAttributeType, ['oro_flexibleentity_text'] ]
+            - [ addAttributeType, ['pim_flexibleentity_text'] ]
 ```
 
 Create an attribute of this type
@@ -54,7 +54,7 @@ Create an attribute of this type
 ```php
 // from the flexible manager
 $manager = $this->container->get('product_manager');
-$manager->createAttribute('oro_flexibleentity_text');
+$manager->createAttribute('pim_flexibleentity_text');
 // then attribute stored the alias of attribute type
 ```
 
@@ -63,6 +63,6 @@ Get an attribute type as service
 
 ```php
 // from the factory
-$factory = $this->container->get('oro_flexibleentity.attributetype.factory');
-$factory->get('oro_flexibleentity_text');
+$factory = $this->container->get('pim_flexibleentity.attributetype.factory');
+$factory->get('pim_flexibleentity_text');
 ```

@@ -51,6 +51,6 @@ class PhoneType extends CollectionItemAbstract
      */
     public function getName()
     {
-        return 'oro_flexibleentity_phone';
+        return 'pim_flexibleentity_phone';
     }
 }

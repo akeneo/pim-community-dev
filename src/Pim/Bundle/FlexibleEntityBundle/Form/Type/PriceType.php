@@ -40,6 +40,6 @@ class PriceType extends AbstractType
      */
     public function getName()
     {
-        return 'oro_flexibleentity_price';
+        return 'pim_flexibleentity_price';
     }
 }

@@ -28,7 +28,7 @@ class PhoneCollectionTypeTest extends TypeTestCase
     {
         $this->assertField('collection', 'collection');
 
-        $this->assertEquals('oro_flexibleentity_phone_collection', $this->form->getName());
+        $this->assertEquals('pim_flexibleentity_phone_collection', $this->form->getName());
     }
 
     /**

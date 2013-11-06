@@ -12,6 +12,6 @@ class FileUrlType extends UrlType
      */
     public function getName()
     {
-        return 'oro_flexibleentity_fileurl';
+        return 'pim_flexibleentity_fileurl';
     }
 }

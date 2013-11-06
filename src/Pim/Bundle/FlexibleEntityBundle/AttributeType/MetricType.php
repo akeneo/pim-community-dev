@@ -34,7 +34,7 @@ class MetricType extends AbstractAttributeType
      */
     public function getName()
     {
-        return 'oro_flexibleentity_metric';
+        return 'pim_flexibleentity_metric';
     }
 
     /**

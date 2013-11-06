@@ -19,7 +19,7 @@ abstract class AbstractOptionType extends AbstractAttributeType
         $options = parent::prepareValueFormOptions($value);
         $attribute = $value->getAttribute();
         $options['empty_value']   = false;
-        $options['class']         = 'OroFlexibleEntityBundle:AttributeOption';
+        $options['class']         = 'PimFlexibleEntityBundle:AttributeOption';
         $options['query_builder'] = function (EntityRepository $er) use ($attribute) {
             return $er->createQueryBuilder('opt')->where('opt.attribute = '.$attribute->getId());
         };

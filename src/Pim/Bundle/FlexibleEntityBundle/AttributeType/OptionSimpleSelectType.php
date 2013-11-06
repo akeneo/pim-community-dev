@@ -27,6 +27,6 @@ class OptionSimpleSelectType extends AbstractOptionType
      */
     public function getName()
     {
-        return 'oro_flexibleentity_simpleselect';
+        return 'pim_flexibleentity_simpleselect';
     }
 }

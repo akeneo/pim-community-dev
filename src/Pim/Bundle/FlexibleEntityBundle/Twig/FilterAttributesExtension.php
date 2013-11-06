@@ -68,6 +68,6 @@ class FilterAttributesExtension extends \Twig_Extension
      */
     public function getName()
     {
-        return 'oro_flexibleentity_getAttributes';
+        return 'pim_flexibleentity_getAttributes';
     }
 }

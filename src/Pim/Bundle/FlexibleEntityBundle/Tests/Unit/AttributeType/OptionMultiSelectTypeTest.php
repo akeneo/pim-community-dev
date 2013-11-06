@@ -6,7 +6,7 @@ use Pim\Bundle\FlexibleEntityBundle\AttributeType\OptionMultiSelectType;
 
 class OptionMultiSelectTypeTest extends AttributeTypeTest
 {
-    protected $name = 'oro_flexibleentity_multiselect';
+    protected $name = 'pim_flexibleentity_multiselect';
 
     public function setUp()
     {
@@ -35,7 +35,7 @@ class OptionMultiSelectTypeTest extends AttributeTypeTest
                     $this->defaultCreateNamedOptions,
                     array(
                         'empty_value' => false,
-                        'class'       => 'OroFlexibleEntityBundle:AttributeOption',
+                        'class'       => 'PimFlexibleEntityBundle:AttributeOption',
                         'expanded'    => false,
                         'multiple'    => true,
                         'query_builder' => function () {

@@ -42,7 +42,7 @@ class FlexibleTypeTest extends AbstractFlexibleManagerTest
             $this->form->getConfig()->getDataClass()
         );
 
-        $this->assertEquals('oro_flexibleentity_entity', $this->form->getName());
+        $this->assertEquals('pim_flexibleentity_entity', $this->form->getName());
     }
 
     /**

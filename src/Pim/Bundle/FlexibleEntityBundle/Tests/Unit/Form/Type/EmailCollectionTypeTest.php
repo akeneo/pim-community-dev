@@ -28,7 +28,7 @@ class EmailCollectionTypeTest extends TypeTestCase
     {
         $this->assertField('collection', 'collection');
 
-        $this->assertEquals('oro_flexibleentity_email_collection', $this->form->getName());
+        $this->assertEquals('pim_flexibleentity_email_collection', $this->form->getName());
     }
 
     /**

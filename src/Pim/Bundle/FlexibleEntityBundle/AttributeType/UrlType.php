@@ -14,6 +14,6 @@ class UrlType extends AbstractAttributeType
      */
     public function getName()
     {
-        return 'oro_flexibleentity_url';
+        return 'pim_flexibleentity_url';
     }
 }

@@ -5,7 +5,7 @@ use Pim\Bundle\FlexibleEntityBundle\AttributeType\PhoneCollectionType;
 
 class PhoneCollectionTypeTest extends AttributeTypeTest
 {
-    protected $name = 'oro_flexibleentity_phone_collection';
+    protected $name = 'pim_flexibleentity_phone_collection';
 
     public function setUp()
     {

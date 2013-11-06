@@ -6,7 +6,7 @@ use Pim\Bundle\FlexibleEntityBundle\AttributeType\OptionSimpleSelectType;
 
 class OptionSimpleSelectTypeTest extends AttributeTypeTest
 {
-    protected $name = 'oro_flexibleentity_simpleselect';
+    protected $name = 'pim_flexibleentity_simpleselect';
 
     public function setUp()
     {
@@ -35,7 +35,7 @@ class OptionSimpleSelectTypeTest extends AttributeTypeTest
                     $this->defaultCreateNamedOptions,
                     array(
                         'empty_value' => false,
-                        'class'       => 'OroFlexibleEntityBundle:AttributeOption',
+                        'class'       => 'PimFlexibleEntityBundle:AttributeOption',
                         'expanded'    => false,
                         'multiple'    => false,
                         'query_builder' => function () {

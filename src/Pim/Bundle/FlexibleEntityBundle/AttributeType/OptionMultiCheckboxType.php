@@ -26,6 +26,6 @@ class OptionMultiCheckboxType extends AbstractOptionType
      */
     public function getName()
     {
-        return 'oro_flexibleentity_multicheckbox';
+        return 'pim_flexibleentity_multicheckbox';
     }
 }

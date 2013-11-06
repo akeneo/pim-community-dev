@@ -6,7 +6,7 @@ use Pim\Bundle\FlexibleEntityBundle\AttributeType\ImageUrlType;
 
 class ImageUrlTypeTest extends AttributeTypeTest
 {
-    protected $name = 'oro_flexibleentity_imageurl';
+    protected $name = 'pim_flexibleentity_imageurl';
 
     public function setUp()
     {

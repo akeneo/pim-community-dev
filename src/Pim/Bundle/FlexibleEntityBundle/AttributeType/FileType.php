@@ -14,6 +14,6 @@ class FileType extends AbstractAttributeType
      */
     public function getName()
     {
-        return 'oro_flexibleentity_file';
+        return 'pim_flexibleentity_file';
     }
 }

@@ -14,6 +14,6 @@ class TextAreaType extends AbstractAttributeType
      */
     public function getName()
     {
-        return 'oro_flexibleentity_textarea';
+        return 'pim_flexibleentity_textarea';
     }
 }

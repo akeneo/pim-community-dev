@@ -6,7 +6,7 @@ use Pim\Bundle\FlexibleEntityBundle\AttributeType\MoneyType;
 
 class MoneyTypeTest extends AttributeTypeTest
 {
-    protected $name = 'oro_flexibleentity_money';
+    protected $name = 'pim_flexibleentity_money';
 
     public function setUp()
     {

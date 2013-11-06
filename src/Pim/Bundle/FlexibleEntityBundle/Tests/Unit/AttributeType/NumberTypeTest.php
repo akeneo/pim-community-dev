@@ -6,7 +6,7 @@ use Pim\Bundle\FlexibleEntityBundle\AttributeType\NumberType;
 
 class NumberTypeTest extends AttributeTypeTest
 {
-    protected $name = 'oro_flexibleentity_number';
+    protected $name = 'pim_flexibleentity_number';
 
     public function setUp()
     {

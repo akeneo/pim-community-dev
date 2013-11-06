@@ -137,8 +137,8 @@ entities_config:
 
 This config :
 - is validated by Pim\Bundle\FlexibleEntityBundle\DependencyInjection\Configuration
-- is loaded / merged with others by Pim\Bundle\FlexibleEntityBundle\DependencyInjection\OroFlexibleEntityExtension
-- is accessible as $this->container->getParameter('oro_flexibleentity.flexible_config');
+- is loaded / merged with others by Pim\Bundle\FlexibleEntityBundle\DependencyInjection\PimFlexibleEntityExtension
+- is accessible as $this->container->getParameter('pim_flexibleentity.flexible_config');
 - is known by flexible entity manager and repository
 
 Finally we add our service declaration in src/Acme/Bundle/DemoFlexibleEntityBundle/Resources/config/services.yml :
@@ -150,12 +150,12 @@ parameters:
 services:
     customer_manager:
         class:     "%customer_manager_class%"
-        arguments: [%customer_entity_class%, %oro_flexibleentity.flexible_config%, @doctrine.orm.entity_manager, @event_dispatcher, @oro_flexibleentity.attributetype.factory]
+        arguments: [%customer_entity_class%, %pim_flexibleentity.flexible_config%, @doctrine.orm.entity_manager, @event_dispatcher, @pim_flexibleentity.attributetype.factory]
         tags:
-            - { name: oro_flexibleentity_manager, entity: %customer_entity_class%}
+            - { name: pim_flexibleentity_manager, entity: %customer_entity_class%}
         calls:
-            - [ addAttributeType, ['oro_flexibleentity_text'] ]
-            - [ addAttributeType, ['oro_flexibleentity_number'] ]
+            - [ addAttributeType, ['pim_flexibleentity_text'] ]
+            - [ addAttributeType, ['pim_flexibleentity_number'] ]
 ```
 
 Note that tag allows to define the flexible manager and entity on registry.
@@ -167,7 +167,7 @@ $cm = $this->container->get('customer_manager');
 
 // create an attribute with one of predefined type
 $attCode = 'company';
-$att = $cm->createAttribute('oro_flexibleentity_text');
+$att = $cm->createAttribute('pim_flexibleentity_text');
 $att->setCode($attCode);
 
 // persist and flush

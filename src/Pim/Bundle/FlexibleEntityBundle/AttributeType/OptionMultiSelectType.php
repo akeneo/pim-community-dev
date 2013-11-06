@@ -27,6 +27,6 @@ class OptionMultiSelectType extends AbstractOptionType
      */
     public function getName()
     {
-        return 'oro_flexibleentity_multiselect';
+        return 'pim_flexibleentity_multiselect';
     }
 }

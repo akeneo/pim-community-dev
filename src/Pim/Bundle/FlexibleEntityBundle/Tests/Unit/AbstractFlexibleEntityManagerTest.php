@@ -100,12 +100,12 @@ abstract class AbstractFlexibleManagerTest extends AbstractOrmTest
         $dispatcher = new EventDispatcher();
 
         // prepare test container
-        $this->container->setParameter('oro_flexibleentity.flexible_config', $this->flexibleConfig);
+        $this->container->setParameter('pim_flexibleentity.flexible_config', $this->flexibleConfig);
 
         // prepare attribute type factory
         $attType = new TextType('varchar', 'text', $this->getMock('Pim\Bundle\FlexibleEntityBundle\Form\Validator\AttributeConstraintGuesser'));
-        $this->container->set('oro_flexibleentity.attributetype.text', $attType);
-        $attTypes = array('oro_flexibleentity_text' => 'oro_flexibleentity.attributetype.text');
+        $this->container->set('pim_flexibleentity.attributetype.text', $attType);
+        $attTypes = array('pim_flexibleentity_text' => 'pim_flexibleentity.attributetype.text');
         $this->attributeTypeFactory = new AttributeTypeFactory($this->container, $attTypes);
 
         // prepare simple entity manager (use default entity manager)

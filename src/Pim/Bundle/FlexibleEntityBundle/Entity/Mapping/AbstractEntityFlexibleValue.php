@@ -120,7 +120,7 @@ abstract class AbstractEntityFlexibleValue extends AbstractFlexibleValue
      * @var options ArrayCollection
      *
      * @ORM\ManyToMany(targetEntity="Pim\Bundle\FlexibleEntityBundle\Entity\AttributeOption")
-     * @ORM\JoinTable(name="oro_flexibleentity_values_options",
+     * @ORM\JoinTable(name="pim_flexibleentity_values_options",
      *      joinColumns={@ORM\JoinColumn(name="value_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="option_id", referencedColumnName="id")}
      * )

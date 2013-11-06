@@ -14,7 +14,7 @@ class EmailCollectionType extends AbstractAttributeType
      */
     public function getName()
     {
-        return 'oro_flexibleentity_email_collection';
+        return 'pim_flexibleentity_email_collection';
     }
 
     /**

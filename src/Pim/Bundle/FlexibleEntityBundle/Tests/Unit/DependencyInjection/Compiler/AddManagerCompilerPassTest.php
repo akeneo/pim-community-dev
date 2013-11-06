@@ -32,7 +32,7 @@ class AddManagerCompilerPassTest extends \PHPUnit_Framework_TestCase
 
         $this->builder = new ContainerBuilder();
         $defRegistry = new Definition('Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManagerRegistry');
-        $definitions = array('oro_flexibleentity.registry' => $defRegistry);
+        $definitions = array('pim_flexibleentity.registry' => $defRegistry);
         $this->builder->setDefinitions($definitions);
     }
 

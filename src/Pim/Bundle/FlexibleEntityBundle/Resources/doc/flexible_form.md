@@ -64,7 +64,7 @@ Declare forms as services
 
     form.type.acme_product_value:
         class: Acme\Bundle\DemoFlexibleEntityBundle\Form\Type\ProductValueType
-        arguments: [@product_manager, @oro_flexibleentity.value_form.value_subscriber]
+        arguments: [@product_manager, @pim_flexibleentity.value_form.value_subscriber]
         tags:
             - { name: form.type, alias: acme_product_value }
 ```

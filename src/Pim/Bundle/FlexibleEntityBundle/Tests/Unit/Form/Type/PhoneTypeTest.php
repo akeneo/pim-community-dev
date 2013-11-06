@@ -35,7 +35,7 @@ class PhoneTypeTest extends TypeTestCase
             $this->form->getConfig()->getDataClass()
         );
 
-        $this->assertEquals('oro_flexibleentity_phone', $this->form->getName());
+        $this->assertEquals('pim_flexibleentity_phone', $this->form->getName());
     }
 
     /**

@@ -160,7 +160,7 @@ class AttributeType extends AbstractType
      */
     public function getName()
     {
-        return 'oro_flexibleentity_attribute';
+        return 'pim_flexibleentity_attribute';
     }
 
     /**
@@ -171,7 +171,7 @@ class AttributeType extends AbstractType
     public function getAttributeTypeChoices()
     {
         $types = array(
-            'oro_flexibleentity_text' => 'oro_flexibleentity_text'
+            'pim_flexibleentity_text' => 'pim_flexibleentity_text'
         );
         asort($types);
 

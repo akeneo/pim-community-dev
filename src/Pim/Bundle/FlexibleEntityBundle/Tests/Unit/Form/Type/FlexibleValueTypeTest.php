@@ -67,6 +67,6 @@ class FlexibleValueTypeTest extends \PHPUnit_Framework_TestCase
 
     public function testGetName()
     {
-        $this->assertEquals('oro_flexibleentity_value', $this->type->getName());
+        $this->assertEquals('pim_flexibleentity_value', $this->type->getName());
     }
 }

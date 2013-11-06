@@ -36,7 +36,7 @@ class AttributeOptionTypeTest extends TypeTestCase
             $this->form->getConfig()->getDataClass()
         );
 
-        $this->assertEquals('oro_flexibleentity_attribute_option', $this->form->getName());
+        $this->assertEquals('pim_flexibleentity_attribute_option', $this->form->getName());
     }
 
     /**

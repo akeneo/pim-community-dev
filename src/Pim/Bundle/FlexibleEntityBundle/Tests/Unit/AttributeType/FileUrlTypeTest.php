@@ -6,7 +6,7 @@ use Pim\Bundle\FlexibleEntityBundle\AttributeType\FileUrlType;
 
 class FileUrlTypeTest extends AttributeTypeTest
 {
-    protected $name = 'oro_flexibleentity_fileurl';
+    protected $name = 'pim_flexibleentity_fileurl';
 
     public function setUp()
     {

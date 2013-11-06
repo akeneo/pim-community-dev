@@ -27,6 +27,6 @@ class OptionSimpleRadioType extends AbstractOptionType
      */
     public function getName()
     {
-        return 'oro_flexibleentity_simpleradio';
+        return 'pim_flexibleentity_simpleradio';
     }
 }

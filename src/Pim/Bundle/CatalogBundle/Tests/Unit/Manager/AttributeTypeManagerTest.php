@@ -65,7 +65,7 @@ class AttributeTypeManagerTest extends WebTestCase
         $this->productManager = static::$kernel->getContainer()->get('pim_catalog.manager.product');
         $this->localeManager = static::$kernel->getContainer()->get('pim_catalog.manager.locale');
         $this->factory = static::$kernel->getContainer()
-            ->get('oro_flexibleentity.attributetype.factory');
+            ->get('pim_flexibleentity.attributetype.factory');
 
         $this->attTypeManager = new AttributeTypeManager($this->productManager, $this->localeManager, $this->factory);
     }

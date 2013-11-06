@@ -180,7 +180,7 @@ class AttributeTest extends \PHPUnit_Framework_TestCase
     {
         $date = new \DateTime('now');
         $this->attribute->setDefaultValue($date->format('U'));
-        $this->attribute->setAttributeType('oro_flexibleentity_date');
+        $this->attribute->setAttributeType('pim_flexibleentity_date');
         $this->attribute->convertDefaultValueToDatetime();
         $this->assertEquals($this->attribute->getDefaultValue()->format('U'), $date->format('U'));
     }
@@ -194,7 +194,7 @@ class AttributeTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($this->attribute->getDefaultValue());
 
         $this->attribute->setDefaultValue(true);
-        $this->attribute->setAttributeType('oro_flexibleentity_integer');
+        $this->attribute->setAttributeType('pim_flexibleentity_integer');
         $this->attribute->convertDefaultValueToInteger();
         $this->assertEquals($this->attribute->getDefaultValue(), 1);
     }
@@ -208,7 +208,7 @@ class AttributeTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($this->attribute->getDefaultValue());
 
         $this->attribute->setDefaultValue(1);
-        $this->attribute->setAttributeType('oro_flexibleentity_boolean');
+        $this->attribute->setAttributeType('pim_flexibleentity_boolean');
         $this->attribute->convertDefaultValueToBoolean();
         $this->assertEquals($this->attribute->getDefaultValue(), true);
     }

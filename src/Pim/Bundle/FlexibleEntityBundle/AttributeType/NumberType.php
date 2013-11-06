@@ -14,6 +14,6 @@ class NumberType extends AbstractAttributeType
      */
     public function getName()
     {
-        return 'oro_flexibleentity_number';
+        return 'pim_flexibleentity_number';
     }
 }

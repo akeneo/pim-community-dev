@@ -9,7 +9,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  * Attribute options
  *
- * @ORM\Table(name="oro_flexibleentity_attribute_option")
+ * @ORM\Table(name="pim_flexibleentity_attribute_option")
  * @ORM\Entity(repositoryClass="Pim\Bundle\FlexibleEntityBundle\Entity\Repository\AttributeOptionRepository")
  */
 class AttributeOption extends AbstractEntityAttributeOption

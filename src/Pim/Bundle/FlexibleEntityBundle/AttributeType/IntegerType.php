@@ -14,6 +14,6 @@ class IntegerType extends AbstractAttributeType
      */
     public function getName()
     {
-        return 'oro_flexibleentity_integer';
+        return 'pim_flexibleentity_integer';
     }
 }

@@ -14,6 +14,6 @@ class BooleanType extends AbstractAttributeType
      */
     public function getName()
     {
-        return 'oro_flexibleentity_boolean';
+        return 'pim_flexibleentity_boolean';
     }
 }

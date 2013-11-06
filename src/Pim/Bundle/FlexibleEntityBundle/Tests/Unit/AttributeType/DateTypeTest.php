@@ -6,7 +6,7 @@ use Pim\Bundle\FlexibleEntityBundle\AttributeType\DateType;
 
 class DateTypeTest extends AttributeTypeTest
 {
-    protected $name  = 'oro_flexibleentity_date';
+    protected $name  = 'pim_flexibleentity_date';
 
     public function setUp()
     {

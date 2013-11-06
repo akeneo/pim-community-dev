@@ -64,6 +64,6 @@ class FlexibleValueType extends AbstractType
      */
     public function getName()
     {
-        return 'oro_flexibleentity_value';
+        return 'pim_flexibleentity_value';
     }
 }

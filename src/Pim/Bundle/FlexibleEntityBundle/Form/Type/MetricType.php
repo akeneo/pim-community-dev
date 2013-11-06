@@ -46,6 +46,6 @@ class MetricType extends AbstractType
      */
     public function getName()
     {
-        return 'oro_flexibleentity_metric';
+        return 'pim_flexibleentity_metric';
     }
 }

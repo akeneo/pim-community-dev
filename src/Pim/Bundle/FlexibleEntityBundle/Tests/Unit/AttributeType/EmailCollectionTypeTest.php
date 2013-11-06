@@ -5,7 +5,7 @@ use Pim\Bundle\FlexibleEntityBundle\AttributeType\EmailCollectionType;
 
 class EmailCollectionTypeTest extends AttributeTypeTest
 {
-    protected $name  = 'oro_flexibleentity_email_collection';
+    protected $name  = 'pim_flexibleentity_email_collection';
 
     public function setUp()
     {

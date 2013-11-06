@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Attribute option values
  *
- * @ORM\Table(name="oro_flexibleentity_attribute_option_value")
+ * @ORM\Table(name="pim_flexibleentity_attribute_option_value")
  * @ORM\Entity
  */
 class AttributeOptionValue extends AbstractEntityAttributeOptionValue

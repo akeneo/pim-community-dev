@@ -36,7 +36,7 @@ class MetricTypeTest extends TypeTestCase
             $this->form->getConfig()->getDataClass()
         );
 
-        $this->assertEquals('oro_flexibleentity_metric', $this->form->getName());
+        $this->assertEquals('pim_flexibleentity_metric', $this->form->getName());
     }
 
     /**

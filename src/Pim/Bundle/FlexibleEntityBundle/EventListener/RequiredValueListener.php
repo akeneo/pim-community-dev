@@ -87,7 +87,7 @@ class RequiredValueListener implements EventSubscriber
             $entityClass = ClassUtils::getRealClass(get_class($entity));
             $metadata = $args->getEntityManager()->getClassMetadata($entityClass);
 
-            $flexibleConfig = $this->container->getParameter('oro_flexibleentity.flexible_config');
+            $flexibleConfig = $this->container->getParameter('pim_flexibleentity.flexible_config');
             if (!$metadata->isMappedSuperclass && array_key_exists($entityClass, $flexibleConfig['entities_config'])) {
                 $flexibleManagerName = $flexibleConfig['entities_config'][$entityClass]['flexible_manager'];
                 $flexibleManager = $this->container->get($flexibleManagerName);

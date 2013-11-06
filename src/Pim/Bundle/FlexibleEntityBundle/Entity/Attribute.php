@@ -12,7 +12,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * Base entity attribute
  *
  * @ORM\Table(
- *     name="oro_flexibleentity_attribute", indexes={@ORM\Index(name="searchcode_idx", columns={"code"})},
+ *     name="pim_flexibleentity_attribute", indexes={@ORM\Index(name="searchcode_idx", columns={"code"})},
  *     uniqueConstraints={@ORM\UniqueConstraint(name="searchunique_idx", columns={"code", "entity_type"})}
  * )
  * @ORM\Entity(repositoryClass="Pim\Bundle\FlexibleEntityBundle\Entity\Repository\AttributeRepository")
@@ -69,7 +69,7 @@ class Attribute extends AbstractEntityAttribute
     {
         if ($this->getDefaultValue()) {
             // TODO : must be moved and avoid to use service name here
-            if ($this->getAttributeType() === 'oro_flexibleentity_date') {
+            if ($this->getAttributeType() === 'pim_flexibleentity_date') {
                 $date = new \DateTime('now', new \DateTimeZone('UTC'));
                 $date->setTimestamp(intval($this->getDefaultValue()));
 
@@ -88,7 +88,7 @@ class Attribute extends AbstractEntityAttribute
     {
         if ($this->getDefaultValue() !== null) {
             // TODO : must be moved and avoid to use service name here
-            if ($this->getAttributeType() === 'oro_flexibleentity_integer') {
+            if ($this->getAttributeType() === 'pim_flexibleentity_integer') {
                 $this->setDefaultValue((int) $this->getDefaultValue());
             }
         }
@@ -103,7 +103,7 @@ class Attribute extends AbstractEntityAttribute
     {
         if ($this->getDefaultValue() !== null) {
             // TODO : must be moved and avoid to use service name here
-            if ($this->getAttributeType() === 'oro_flexibleentity_boolean') {
+            if ($this->getAttributeType() === 'pim_flexibleentity_boolean') {
                 $this->setDefaultValue((bool) $this->getDefaultValue());
             }
         }

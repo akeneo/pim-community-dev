@@ -37,6 +37,6 @@ class EmailCollectionType extends CollectionAbstract
      */
     public function getName()
     {
-        return 'oro_flexibleentity_email_collection';
+        return 'pim_flexibleentity_email_collection';
     }
 }

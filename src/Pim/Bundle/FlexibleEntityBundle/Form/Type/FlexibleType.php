@@ -100,6 +100,6 @@ class FlexibleType extends AbstractType
      */
     public function getName()
     {
-        return 'oro_flexibleentity_entity';
+        return 'pim_flexibleentity_entity';
     }
 }

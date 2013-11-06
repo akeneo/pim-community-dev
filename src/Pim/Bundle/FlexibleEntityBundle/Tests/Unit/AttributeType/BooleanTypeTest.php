@@ -6,7 +6,7 @@ use Pim\Bundle\FlexibleEntityBundle\AttributeType\BooleanType;
 
 class BooleanTypeTest extends AttributeTypeTest
 {
-    protected $name = 'oro_flexibleentity_boolean';
+    protected $name = 'pim_flexibleentity_boolean';
 
     public function setUp()
     {

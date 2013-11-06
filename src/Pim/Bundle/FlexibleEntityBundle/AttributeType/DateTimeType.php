@@ -27,6 +27,6 @@ class DateTimeType extends AbstractAttributeType
      */
     public function getName()
     {
-        return 'oro_flexibleentity_datetime';
+        return 'pim_flexibleentity_datetime';
     }
 }

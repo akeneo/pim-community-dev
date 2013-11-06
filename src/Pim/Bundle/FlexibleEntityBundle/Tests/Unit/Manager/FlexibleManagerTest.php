@@ -18,7 +18,7 @@ class FlexibleManagerTest extends AbstractFlexibleManagerTest
     {
         $myManager = new FlexibleManager(
             $this->flexibleClassName,
-            $this->container->getParameter('oro_flexibleentity.flexible_config'),
+            $this->container->getParameter('pim_flexibleentity.flexible_config'),
             $this->entityManager,
             $this->container->get('event_dispatcher'),
             $this->attributeTypeFactory
@@ -177,7 +177,7 @@ class FlexibleManagerTest extends AbstractFlexibleManagerTest
      */
     public function testCreateAttribute()
     {
-        $this->assertInstanceOf($this->attributeClassName, $this->manager->createAttribute('oro_flexibleentity_text'));
+        $this->assertInstanceOf($this->attributeClassName, $this->manager->createAttribute('pim_flexibleentity_text'));
     }
 
     /**

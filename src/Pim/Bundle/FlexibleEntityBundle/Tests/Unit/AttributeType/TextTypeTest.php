@@ -6,7 +6,7 @@ use Pim\Bundle\FlexibleEntityBundle\AttributeType\TextType;
 
 class TextTypeTest extends AttributeTypeTest
 {
-    protected $name = 'oro_flexibleentity_text';
+    protected $name = 'pim_flexibleentity_text';
 
     public function setUp()
     {

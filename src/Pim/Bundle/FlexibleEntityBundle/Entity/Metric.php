@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Metric backend type entity
  *
- * @ORM\Table(name="oro_flexibleentity_metric")
+ * @ORM\Table(name="pim_flexibleentity_metric")
  * @ORM\Entity
  */
 class Metric

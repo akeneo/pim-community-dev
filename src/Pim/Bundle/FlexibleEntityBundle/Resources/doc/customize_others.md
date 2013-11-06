@@ -7,13 +7,13 @@ Add some behavior related to flexible
 ```php
 <?php
 // get manager from registry 
-$registry = $this->container->get('oro_flexibleentity.registry');
+$registry = $this->container->get('pim_flexibleentity.registry');
 $registry->getManagers();
 $registry->getEntityToManager();
 $registry->getManager($flexibleEntityClass);
 
 // get manager from flexible config
-$flexibleConfig = $this->container->getParameter('oro_flexibleentity.flexible_config');
+$flexibleConfig = $this->container->getParameter('pim_flexibleentity.flexible_config');
 $flexibleManagerName = $flexibleConfig['entities_config'][$flexibleEntityClass]['flexible_manager'];
 $flexibleManager = $this->container->get($flexibleManagerName);
 ```

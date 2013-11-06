@@ -6,7 +6,7 @@ use Pim\Bundle\FlexibleEntityBundle\AttributeType\OptionMultiCheckboxType;
 
 class OptionMultiCheckboxTypeTest extends AttributeTypeTest
 {
-    protected $name = 'oro_flexibleentity_multicheckbox';
+    protected $name = 'pim_flexibleentity_multicheckbox';
 
     public function setUp()
     {
@@ -35,7 +35,7 @@ class OptionMultiCheckboxTypeTest extends AttributeTypeTest
                     $this->defaultCreateNamedOptions,
                     array(
                         'empty_value' => false,
-                        'class'       => 'OroFlexibleEntityBundle:AttributeOption',
+                        'class'       => 'PimFlexibleEntityBundle:AttributeOption',
                         'expanded'    => true,
                         'multiple'    => true,
                         'query_builder' => function () {

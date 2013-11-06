@@ -90,6 +90,6 @@ class AttributeOptionType extends AbstractType
      */
     public function getName()
     {
-        return 'oro_flexibleentity_attribute_option';
+        return 'pim_flexibleentity_attribute_option';
     }
 }

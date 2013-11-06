@@ -6,7 +6,7 @@ use Pim\Bundle\FlexibleEntityBundle\AttributeType\OptionSimpleRadioType;
 
 class OptionSimpleRadioTypeTest extends AttributeTypeTest
 {
-    protected $name = 'oro_flexibleentity_simpleradio';
+    protected $name = 'pim_flexibleentity_simpleradio';
 
     public function setUp()
     {
@@ -35,7 +35,7 @@ class OptionSimpleRadioTypeTest extends AttributeTypeTest
                     $this->defaultCreateNamedOptions,
                     array(
                         'empty_value' => false,
-                        'class'       => 'OroFlexibleEntityBundle:AttributeOption',
+                        'class'       => 'PimFlexibleEntityBundle:AttributeOption',
                         'expanded'    => true,
                         'multiple'    => false,
                         'query_builder' => function () {

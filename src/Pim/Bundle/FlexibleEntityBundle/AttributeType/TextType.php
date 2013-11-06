@@ -14,6 +14,6 @@ class TextType extends AbstractAttributeType
      */
     public function getName()
     {
-        return 'oro_flexibleentity_text';
+        return 'pim_flexibleentity_text';
     }
 }

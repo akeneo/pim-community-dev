@@ -6,7 +6,7 @@ use Pim\Bundle\FlexibleEntityBundle\AttributeType\TextAreaType;
 
 class TextAreaTypeTest extends AttributeTypeTest
 {
-    protected $name = 'oro_flexibleentity_textarea';
+    protected $name = 'pim_flexibleentity_textarea';
 
     public function setUp()
     {

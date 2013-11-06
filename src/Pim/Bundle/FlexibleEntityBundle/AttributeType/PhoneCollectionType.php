@@ -15,7 +15,7 @@ class PhoneCollectionType extends AbstractAttributeType
      */
     public function getName()
     {
-        return 'oro_flexibleentity_phone_collection';
+        return 'pim_flexibleentity_phone_collection';
     }
 
     /**

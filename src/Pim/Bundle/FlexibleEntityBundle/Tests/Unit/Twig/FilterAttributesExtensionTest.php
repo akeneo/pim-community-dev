@@ -37,7 +37,7 @@ class FilterAttributesExtensionTest extends \PHPUnit_Framework_TestCase
 
     public function testGetName()
     {
-        $this->assertEquals('oro_flexibleentity_getAttributes', $this->extension->getName());
+        $this->assertEquals('pim_flexibleentity_getAttributes', $this->extension->getName());
     }
 
     public function testGetFilters()

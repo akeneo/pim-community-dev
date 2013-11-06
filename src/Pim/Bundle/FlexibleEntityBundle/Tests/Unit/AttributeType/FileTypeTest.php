@@ -6,7 +6,7 @@ use Pim\Bundle\FlexibleEntityBundle\AttributeType\FileType;
 
 class FileTypeTest extends AttributeTypeTest
 {
-    protected $name = 'oro_flexibleentity_file';
+    protected $name = 'pim_flexibleentity_file';
 
     public function setUp()
     {

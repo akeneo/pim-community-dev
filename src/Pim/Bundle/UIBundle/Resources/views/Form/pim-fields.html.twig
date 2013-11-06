@@ -234,7 +234,7 @@
 {% endspaceless %}
 {% endblock switch_widget %}
 
-{% block oro_flexibleentity_metric_row %}
+{% block pim_flexibleentity_metric_row %}
 {% spaceless %}
     <div class="control-group">
         {{ form_label(form, null, { 'label_attr': {'class': 'control-label', 'for': form.data.vars.id} }) }}
@@ -255,7 +255,7 @@
         );
     </script>
 {% endspaceless %}
-{% endblock oro_flexibleentity_metric_row %}
+{% endblock pim_flexibleentity_metric_row %}
 
 {% block pim_catalog_price_collection_widget %}
     {% for child in form.children %}

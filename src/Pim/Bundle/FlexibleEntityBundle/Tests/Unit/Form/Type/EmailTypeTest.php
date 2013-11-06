@@ -35,7 +35,7 @@ class EmailTypeTest extends TypeTestCase
             $this->form->getConfig()->getDataClass()
         );
 
-        $this->assertEquals('oro_flexibleentity_email', $this->form->getName());
+        $this->assertEquals('pim_flexibleentity_email', $this->form->getName());
     }
 
     /**

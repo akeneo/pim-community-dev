@@ -11,7 +11,7 @@ use Symfony\Component\Yaml\Yaml;
 /**
  * Flexible entity extension
  */
-class OroFlexibleEntityExtension extends Extension
+class PimFlexibleEntityExtension extends Extension
 {
     /**
      * {@inheritDoc}
@@ -48,6 +48,6 @@ class OroFlexibleEntityExtension extends Extension
         $loader->load('services.yml');
         $loader->load('attribute_types.yml');
         // set entities config
-        $container->setParameter('oro_flexibleentity.flexible_config', $config);
+        $container->setParameter('pim_flexibleentity.flexible_config', $config);
     }
 }

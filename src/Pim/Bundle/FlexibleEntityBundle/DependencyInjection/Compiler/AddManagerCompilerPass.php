@@ -18,12 +18,12 @@ class AddManagerCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition('oro_flexibleentity.registry')) {
+        if (!$container->hasDefinition('pim_flexibleentity.registry')) {
             return;
         }
 
-        $registryDefinition = $container->getDefinition('oro_flexibleentity.registry');
-        $taggedManagerServices = $container->findTaggedServiceIds('oro_flexibleentity_manager');
+        $registryDefinition = $container->getDefinition('pim_flexibleentity.registry');
+        $taggedManagerServices = $container->findTaggedServiceIds('pim_flexibleentity_manager');
 
         foreach ($taggedManagerServices as $managerId => $tagAttributes) {
             foreach ($tagAttributes as $attributes) {

@@ -11,7 +11,7 @@ use Pim\Bundle\FlexibleEntityBundle\DependencyInjection\Compiler\AddAttributeTyp
  *
  *
  */
-class OroFlexibleEntityBundle extends Bundle
+class PimFlexibleEntityBundle extends Bundle
 {
 
     /**

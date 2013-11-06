@@ -12,6 +12,6 @@ class ImageType extends FileType
      */
     public function getName()
     {
-        return 'oro_flexibleentity_image';
+        return 'pim_flexibleentity_image';
     }
 }

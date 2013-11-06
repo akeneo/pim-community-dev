@@ -12,8 +12,8 @@ use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
  */
 class AddAttributeTypeCompilerPass implements CompilerPassInterface
 {
-    const FLEXIBLE_TYPE_TAG         = 'oro_flexibleentity.attributetype';
-    const FLEXIBLE_TYPE_FACTORY_KEY = 'oro_flexibleentity.attributetype.factory';
+    const FLEXIBLE_TYPE_TAG         = 'pim_flexibleentity.attributetype';
+    const FLEXIBLE_TYPE_FACTORY_KEY = 'pim_flexibleentity.attributetype.factory';
 
     /**
      * @param ContainerBuilder $container

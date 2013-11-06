@@ -40,7 +40,7 @@ class AttributeTypeTest extends TypeTestCase
             $this->form->getConfig()->getDataClass()
         );
 
-        $this->assertEquals('oro_flexibleentity_attribute', $this->form->getName());
+        $this->assertEquals('pim_flexibleentity_attribute', $this->form->getName());
     }
 
     /**
