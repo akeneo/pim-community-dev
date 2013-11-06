@@ -59,7 +59,12 @@
                         <td>{{ step.status }}</td>
                         <td>{{ step.readCount }}</td>
                         <td>{{ step.filterCount }}</td>
-                        <td>{{ step.writeCount }}</td>
+                        <td>
+                            {{ step.writeCount }}
+                            {% if step.creationCount + step.updateCount == step.writeCount%}
+                                ({{ '%count% created'|trans({'%count%': step.creationCount}) }}, {{ '%count% updated'|trans({'%count%': step.updateCount}) }})
+                            {% endif %}
+                        </td>
                         <td>{{ step.startTime is empty ? "-" : step.startTime|date("Y-m-d H:i:s") }}</td>
                         <td>{{ step.endTime is empty ? "-" : step.endTime|date("Y-m-d H:i:s") }}</td>
                     </tr>
