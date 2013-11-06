@@ -235,9 +235,6 @@ require(['jquery', 'underscore', 'backbone', 'oro/mediator', 'oro/registry', 'or
             $(datagridFiltersSelector).html(filtersList.render().$el);
             /** @event datagrid_filters:initialized */
             mediator.trigger("datagrid_filters:rendered", datagridCollection.collection);
-            {% if (datagrid.pager.nbResults == 0) %}
-                filtersList.$el.hide();
-            {% endif %}
 
             var gridViewsPanel = new GridViewsView(_.extend({}, { collection: datagridCollection.collection }, {{ viewsData|json_encode|raw }}));
             $(datagridGridViewsSelector).append(gridViewsPanel.render().$el);
