@@ -472,10 +472,67 @@ Next functions are available in Twig templates:
 
 ### oro_locale_number_attribute
 
+Gets text attribute of intl NumberFormatter related to passed locale. If locale is not passed, default one will be used.
+
+See available values for arguments are:
+
+* [Format style constants](#format-style-constants)
+* [Numeric attribute constants](#numeric-attribute-constants)
+
+This example uses default locale and outputs the value of \NumberFormatter::PARSE_INT_ONLY_ATTRIBUTE for given number
+style and locale.
+
+```
+{{ oro_locale_number_attribute('parse_int_only', 'decimal') }}
+```
+
+Custom locale can be passed in third argument:
+
+```
+{{ oro_locale_number_attribute('max_integer_digits', 'decimal', 'en_US');
+```
+
 ### oro_locale_number_text_attribute
+
+Gets text attribute of intl NumberFormatter related to passed locale. If locale is not passed, default one will be used.
+
+See available values for arguments are:
+
+* [Format style constants](#format-style-constants)
+* [Text attribute constants](#text-attribute-constants)
+
+This example uses default locale and outputs the value of \NumberFormatter::NEGATIVE_PREFIX for given number style
+and locale.
+
+```
+{{ oro_locale_number_text_attribute('negative_prefix', 'decimal') }}
+```
+
+Custom locale can be passed in third argument:
+
+```
+{{ oro_locale_number_text_attribute('negative_prefix', 'decimal', 'ru_RU') }}
+```
 
 ### oro_locale_number_symbol
 
+Gets symbol of intl NumberFormatter related to passed locale. If locale is not passed, default one will be used.
+
+See available values for arguments are:
+
+* [Format style constants](#format-style-constants)
+* [Format symbol constants](#format-symbol-constants)
+
+This example uses default locale and outputs the value of \NumberFormatter::DECIMAL_SEPARATOR_SYMBOL for given number style
+and locale.
+
+```
+{{ oro_locale_number_symbol('decimal_separator_symbol', 'decimal');
+// outputs: "."
+
+echo $numberFormatter->getSymbol('grouping_separator_symbol', 'decimal', 'en_US');
+// outputs: ","
+```
 
 JS
 ==
