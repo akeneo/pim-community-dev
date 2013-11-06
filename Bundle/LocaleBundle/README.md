@@ -25,10 +25,6 @@ Uses system configuration as a source of settings.
 
 See detailed [documentation](./Resources/doc/reference/locale-settings.md) for more details.
 
-Converters
----------------
-**TODO**: add documentation for converters.
-
 Formatters
 -----------------
 
