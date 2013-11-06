@@ -18,7 +18,7 @@ Table of Contents
 
 Formats source
 ================
-Address formats may be found in address_format.yml.
+Address formats may be found in address_format.yml. Address formats are grouped by country.
 
 Example of format configuration for US:
 
