@@ -124,6 +124,21 @@ To format name using specific locale format *locale* parameters may be passed.
 
 Possible name object parameters are same to format placeholder keys.
 
+Usage example:
+
+```javascript
+require(['oro/formatter/name'],
+function(nameFormatter) {
+    var formattedName = nameFormatter.format({
+        prefix: 'Mr.',
+        first_name: 'First',
+        middle_name: 'Middle',
+        last_name: 'Last',
+        suffix: 'Sn.'
+    });
+});
+```
+
 ### getNameFormat
 
 string *public* *getNameFormat*([string *locale*])
