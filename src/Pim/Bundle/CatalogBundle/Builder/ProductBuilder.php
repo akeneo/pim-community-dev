@@ -76,19 +76,8 @@ class ProductBuilder
                 }
             );
 
-            $redundantValues = array_filter(
-                $existingValues,
-                function ($value) use ($requiredValues) {
-                    return !in_array($value, $requiredValues);
-                }
-            );
-
             foreach ($missingValues as $value) {
                 $this->addProductValue($product, $attribute, $value['locale'], $value['scope']);
-            }
-
-            foreach ($redundantValues as $value) {
-                $this->removeProductValue($product, $attribute, $value['locale'], $value['scope']);
             }
         }
 
