@@ -19,7 +19,7 @@ Table of Contents
      - [getAttribute](#getAttribute)
      - [getTextAttribute](#getTextAttribute)
      - [getSymbol](#getSymbol)
-  - [Twig](#twig)
+ - [Twig](#twig)
    - [Filters](#filters)
      - [oro_format_number](#oro_format_number)
      - [oro_format_currency](#oro_format_currency)
@@ -31,7 +31,13 @@ Table of Contents
      - [oro_locale_number_attribute](#oro_locale_number_attribute)
      - [oro_locale_number_text_attribute](#oro_locale_number_text_attribute)
      - [oro_locale_number_symbol](#oro_locale_number_symbol)
-  - [JS](#js)
+ - [JS](#js)
+   - [Functions](#functions-1)
+     - [formatDecimal](#formatDecimal-1)
+     - [formatInteger](#formatInteger)
+     - [formatPercent](#formatPercent-1)
+     - [formatCurrency](#formatCurrency-1)
+     - [unformat](#unformat)
 
 PHP Number Formatter
 ====================
