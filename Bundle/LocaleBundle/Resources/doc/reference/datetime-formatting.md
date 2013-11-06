@@ -12,8 +12,10 @@ Table of Contents
     - [getDateFormat](#getdateformat)
     - [getTimeFormat](#gettimeformat)
     - [getDateTimeFormat](#getdatetimeformat)
-  - [Twig Extensions](#twig)
-  - [JS DateTime Formatter](#js)
+  - [Twig Extensions](#twig-extensions)
+    - [Formatter filters](#formatter-filters)
+    - [Format Converter functions](#format-converter-functions)
+  - [JS DateTime Formatter](#js-datetime-formatter)
 
 
 PHP DateTime Formatter
@@ -200,6 +202,173 @@ echo $converterRegistry->getFormatConverter('moment')->getDateTimeFormat(
 // dddd, D MMMM YYYY [г]. H:mm:ss
 ```
 
+Twig Extensions
+---------------
 
+LocaleBundle has two twig extensions that provides formatter filters and format converter functions.
 
+### Formatter filters
 
+Twig extension DateTimeExtension has following functions.
+
+#### oro_format_date
+
+Proxy for [formatDate](#formatdate) function of DateTimeFormatter, receives date value as a first argument
+and array of options as a second argument. Allowed options:
+  * dateType,
+  * locale,
+  * timezone.
+
+```
+{{ entity.lastLogin|oro_format_date }}
+{# Nov 6, 2013 #}
+
+{{ entity.lastLogin|oro_format_date({'locale': 'ru'}) }}
+{# 06.11.2013 #}
+```
+
+#### oro_format_time
+
+Proxy for [formatTime](#formattime) function of DateTimeFormatter, receives time value as a first argument
+and array of options as a second argument. Allowed options:
+  * timeType,
+  * locale,
+  * timezone.
+
+```
+{{ entity.lastLogin|oro_format_time }}
+{# 7:44 PM #}
+
+{{ entity.lastLogin|oro_format_time({'locale': 'ru'}) }}
+{# 19:44 #}
+```
+
+#### oro_format_datetime
+
+Proxy for [format](#format) function of DateTimeFormatter, receives datetime value as a first argument
+and array of options as a second argument. Allowed options:
+  * dateType,
+  * timeType,
+  * locale,
+  * timezone.
+
+```
+{{ entity.lastLogin|oro_format_datetime }}
+{# Nov 6, 2013 7:44 PM #}
+
+{{ entity.lastLogin|oro_format_datetime({'locale': 'ru'}) }}
+{# 06.11.2013 19:44 #}
+```
+
+### Format Converter functions
+
+Twig extension DateFormatExtension has following functions.
+
+#### oro_date_format
+
+Receives format converter alias, date format type and custom locale, returns date format from appropriate
+format converter.
+
+```
+{{ oro_date_format('moment') }}
+{# MMM D, YYYY #}
+
+{{ oro_date_format('moment', null, 'ru') }}
+{# DD.MM.YYYY #}
+```
+
+#### oro_time_format
+
+Receives format converter alias, time format type and custom locale, returns time format from appropriate
+format converter.
+
+```
+{{ oro_time_format('moment') }}
+{# h:mm A #}
+
+{{ oro_time_format('moment', null, 'ru') }}
+{# H:mm #}
+```
+
+#### oro_datetime_format
+
+Receives format converter alias, date and time format types and custom locale, returns time format from appropriate
+format converter.
+
+```
+{{ oro_datetime_format('moment') }}
+{# MMM D, YYYY h:mm A #}
+
+{{ oro_datetime_format('moment', null, null, 'ru') }}
+{# DD.MM.YYYY H:mm #}
+```
+
+#### oro_datetime_formatter_list
+
+Returns array of all registered format converter aliases.
+
+```
+{{ oro_datetime_formatter_list()|join(', ') }}
+{# intl, moment, jquery_ui, fullcalendar #}
+```
+
+JS DateTime Formatter
+---------------------
+
+From the frontend side there is JavaScript datetime converter that provides functions to format datetime values.
+Formatter uses library moment.js to work with datetime values and localized formats injected from locale settings
+configuration.
+
+Formatter work with two string representations of datetime values: frontend - it's localized format
+in current timezone, and backend - ISO format data in UTC (for date) or with direct timezone specification
+(for datetime).
+
+Formatter provides following functions.
+
+### getDateFormat(), getTimeFormat(), getDateTimeFormat()
+
+Returns appropriate localized frontend format for moment.js library received from locale settings configuration.
+
+```js
+console.log(datetimeFormatter.getDateTimeFormat());
+// MMM D, YYYY h:mm A
+```
+
+### isDateValid(value), isTimeValid(value), isDateTimeValid(value)
+
+Check whether input value has valid format and can be parsed to internal date representation.
+
+```js
+console.log(datetimeFormatter.isDateValid('qwerty'));
+// false
+
+console.log(datetimeFormatter.isDateTimeValid('oct 12 2013 12:12 pm'));
+// true
+```
+
+### formatDate(value), formatTime(value), formatDateTime(value)
+
+Receive either Date object or valid ISO string and returns value string in localized format.
+Throw an exception in case of not valid string.
+
+```js
+console.log(datetimeFormatter.formatDate('2013-12-12'));
+// Dec 12, 2013
+
+console.log(datetimeFormatter.formatDateTime(new Date()));
+// Nov 6, 2013 7:32 PM
+```
+
+### unformatDate(value), unformatTime(value), unformatDateTime(value, timezoneOffset)
+
+Receives localized string data and convert in to ISO format string, unformatDateTime optionally can receive
+timezone offset - if no offset is set default offset will be used.
+Throw an exception in case of not valid string.
+
+```js
+console.log(datetimeFormatter.unformatDate('Dec 12, 2013'));
+// 2013-12-12
+
+console.log(datetimeFormatter.unformatDateTime('Nov 6, 2013 7:32 PM'));
+// 2013-11-06T19:32:00+0200
+```
