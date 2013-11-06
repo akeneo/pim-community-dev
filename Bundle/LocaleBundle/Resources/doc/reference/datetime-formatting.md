@@ -8,7 +8,7 @@ Table of Contents
     - [formatDate](#formatdate)
     - [formatTime](#formattime)
     - [getPattern](#getpattern)
-  - [PHP DateTime Format Converters]
+  - [PHP DateTime Format Converters](#converters)
   - [Twig Extensions](#twig)
   - [JS DateTime Formatter](#js)
 
