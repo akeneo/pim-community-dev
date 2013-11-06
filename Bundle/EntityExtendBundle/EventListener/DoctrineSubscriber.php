@@ -43,22 +43,6 @@ class DoctrineSubscriber implements EventSubscriber
             if ($config->is('is_extend')) {
                 $cmBuilder = new ClassMetadataBuilder($event->getClassMetadata());
 
-                /**
-                 * Generate doctrine proxy classes
-                 */
-                $isAutoGenerrated = $em->getConfiguration()->getAutoGenerateProxyClasses();
-                if (!$isAutoGenerrated) {
-                    $proxyFileName = $em->getConfiguration()->getProxyDir()
-                        . DIRECTORY_SEPARATOR . '__CG__' . str_replace('\\', '', $className) . '.php';
-                    if (!file_exists($proxyFileName)) {
-                        $proxyFactory = $em->getProxyFactory();
-                        $proxyDir     = $em->getConfiguration()->getProxyDir();
-                        $meta         = $event->getClassMetadata();
-
-                        $proxyFactory->generateProxyClasses([$meta], $proxyDir);
-                    }
-                }
-
                 if ($config->is('index')) {
                     foreach ($config->get('index') as $columnName => $enabled) {
                         $fieldConfig = $configProvider->getConfig($className, $columnName);
