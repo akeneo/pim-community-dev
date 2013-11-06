@@ -40,7 +40,8 @@ PHP Number Formatter
 
 **Service id:** oro_locale.formatter.number
 
-Formats different styles of numbers in localized format. Proxies intl extension class [NumberFormatter](http://www.php.net/manual/en/class.numberformatter.php).
+This class formats different styles of numbers in localized format and proxies intl extension class
+[NumberFormatter](http://www.php.net/manual/en/class.numberformatter.php).
 
 Constants
 ---------
@@ -203,10 +204,10 @@ string *public* *formatPercent*(mixed *value*[, array *attributes*[, array *text
 Formats percent number.
 
 ```
-echo $numberFormatter->formatDecimal(1);
+echo $numberFormatter->formatPercent(1);
 // outputs: "100%"
 
-echo $numberFormatter->formatDecimal(.567, array(), array(), array(), 'en_US');
+echo $numberFormatter->formatPercent(.567, array(), array(), array(), 'en_US');
 // outputs: "56,7%"
 ```
 
@@ -251,10 +252,10 @@ string *public* *formatOrdinal*(mixed *value*[, array *attributes*[, array *text
 Formats ordinal number. If locale is not specified default one will be used.
 
 ```
-echo $numberFormatter->formatDuration(1);
+echo $numberFormatter->formatOrdinal(1);
 // outputs: "1st"
 
-echo $numberFormatter->formatDuration(3, array(), array(), array(), 'en_US');
+echo $numberFormatter->formatOrdinal(3, array(), array(), array(), 'en_US');
 // outputs: "3rd"
 ```
 
@@ -382,11 +383,87 @@ This snippet shows an example of using custom formatting options. It outputs a s
 
 ###oro_format_percent
 
+This filter formats percent number according localized format.
+
+This example outputs a string: 100%
+
+```
+{{ 1|oro_format_percent }}
+```
+
+You can override formatting options.
+This snippet shows an example of using custom formatting options. It outputs a string: +56,7 %
+
+```
+{{ .5671|oro_format_percent({
+    attributes: { fraction_digits: 1 },
+    textAttributes: { positive_prefix: '+' },
+    symbols: { decimal_separator: ',' },
+    locale: 'ru_RU'
+}) }}
+```
+
 ###oro_format_spellout
+
+This filter formats a number in spellout style.
+
+This example outputs a string: "one"
+
+```
+{{ 1|oro_format_spellout }}
+```
+
+This example demonstrates using custom locale in options. Other possible options are: attributes, textAttributes, symbols
+like in all other Twig number formatters filters in this bundle.
+
+This line outputs a string: twelve
+
+```
+{{ 1|oro_format_spellout({ locale: 'en_US' }) }}
+```
 
 ###oro_format_duration
 
+This filter formats a number in duration style.
+
+Example of simple usage, this line outputs a string: 1:01:01
+
+```
+{{ 3661|oro_format_duration }}
+```
+
+Next example demonstrates how custom options could be passed. Other possible options are: attributes and symbols
+like in all other Twig number formatters filters in this bundle.
+
+This line outputs a string: 1 hour, 1 minute, 1 second
+
+```
+{{ 3661|oro_format_duration({
+    locale: 'en_US',
+    textAttributes: { default_ruleset: '%with-words' }
+}) }}
+```
+
 ###oro_format_ordinal
+
+This filter formats a number in ordinal style.
+
+Example of simple usage, this line outputs a string: 3rd
+
+```
+{{ 3|oro_format_ordinal }}
+```
+
+Next example demonstrates how custom options could be passed. Other possible options are: attributes, textAttributes and symbols
+like in all other Twig number formatters filters in this bundle.
+
+This line outputs a string: 4th
+
+```
+{{ 4|oro_format_ordinal({
+    locale: 'en_US'
+}) }}
+```
 
 Functions
 ---------
