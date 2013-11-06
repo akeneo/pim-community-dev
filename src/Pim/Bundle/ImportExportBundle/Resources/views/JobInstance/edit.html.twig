@@ -25,13 +25,12 @@
         {{ elements.form_errors(form) }}
 
         {% set navbarTabs = ['General properties'] %}
-        {% if form.vars.value.id %}
-             {% set navbarTabs = navbarTabs|merge(['History']) %}
-        {% endif %}
-
         {% for step in form.job.steps %}
             {% set navbarTabs = navbarTabs|merge([step.vars.value.name]) %}
         {% endfor %}
+        {% if form.vars.value.id %}
+             {% set navbarTabs = navbarTabs|merge(['History']) %}
+        {% endif %}
 
         {{ elements.form_navbar(navbarTabs) }}
 
