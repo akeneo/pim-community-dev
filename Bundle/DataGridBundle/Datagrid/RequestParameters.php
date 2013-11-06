@@ -7,10 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 class RequestParameters
 {
     const ADDITIONAL_PARAMETERS = '_parameters';
-    /** @TODO MOVE TO FLEXIBLE */
-    const SCOPE_PARAMETER = '_scope';
-
-    const DEFAULT_ROOT_PARAM = 'grid';
+    const DEFAULT_ROOT_PARAM    = 'grid';
 
     /** @var string */
     protected $rootParam;
@@ -59,17 +56,6 @@ class RequestParameters
     public function getLocale()
     {
         return $this->getRequest()->getLocale();
-    }
-
-    /**
-     * @return string
-     */
-    public function getScope()
-    {
-        /** @TODO MOVE TO FLEXIBLE */
-        $rootValue = $this->getRootParameterValue();
-
-        return isset($rootValue[self::SCOPE_PARAMETER]) ? $rootValue[self::SCOPE_PARAMETER] : null;
     }
 
     /**
