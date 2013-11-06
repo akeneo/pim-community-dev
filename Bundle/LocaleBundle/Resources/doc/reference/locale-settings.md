@@ -225,8 +225,8 @@ $timeZone = $locale->getTimeZone();
 Currencies
 ==========
 
-Locale Settings stores default currency of application. [Number formatter](./number-formatting.md) uses this currency
-for formatting currency when currency is not specified.
+Locale Settings stores default currency of application. [Number formatter](./number-formatting.md) uses it for
+formatting when currency is not specified.
 
 Example of getting currency from Locale Settings:
 
