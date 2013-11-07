@@ -41,16 +41,6 @@ class CategoryExtension extends \Twig_Extension
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function getFilters()
-    {
-        return array(
-            'state' => new \Twig_Filter_Method($this, 'getState')
-        );
-    }
-
-    /**
      * Count products for a category
      *
      * @param CategoryInterface $category
@@ -66,7 +56,16 @@ class CategoryExtension extends \Twig_Extension
             ->countProductsLinked($category, !$nested);
     }
 
-    public function defineState($category, $hasChild = false, $selectNode = null)
+    /**
+     * Define the state of a category
+     *
+     * @param CategoryInterface $category
+     * @param boolean           $hasChild
+     * @param CategoryInterface $selectNode the selected node
+     *
+     * @return string
+     */
+    public function defineState(CategoryInterface $category, $hasChild = false, CategoryInterface $selectNode = null)
     {
         $state = $category->hasChildren() ? 'closed' : 'leaf';
 
