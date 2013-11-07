@@ -486,9 +486,10 @@ class ProductDatagridManager extends FlexibleDatagridManager
         if ($this->securityFacade->isGranted('pim_catalog_product_remove')) {
             $actions[] = new DeleteMassAction(
                 array(
-                    'name'  => 'delete',
-                    'label' => $this->translate('Delete'),
-                    'icon'  => 'trash'
+                    'name'    => 'delete',
+                    'label'   => $this->translate('Delete'),
+                    'icon'    => 'trash',
+                    'route'   => 'pim_catalog_mass_edit_action_delete'
                 )
             );
         }

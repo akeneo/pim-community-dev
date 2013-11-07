@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Pim\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttributeOptionValue;
+use JMS\Serializer\Annotation\ExclusionPolicy;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -14,6 +15,8 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="pim_catalog_attribute_option_value")
  * @ORM\Entity
+ * 
+ * @ExclusionPolicy("all")
  */
 class AttributeOptionValue extends AbstractEntityAttributeOptionValue
 {

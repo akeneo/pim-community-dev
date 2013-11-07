@@ -53,7 +53,8 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
     {
         $users = $this->userRepository->findAll();
 
-        $localeCode   = current($this->getLocaleManager()->getActiveCodes());
+        $localeCodes   = $this->getLocaleManager()->getActiveCodes();
+        $localeCode = in_array('en_US', $localeCodes) ? 'en_US' : current($localeCodes);
         $locale       = current($this->getLocaleManager()->getLocales(array('code' => $localeCode)));
         $localeAttr   = $this->findAttribute('cataloglocale');
         $localeOption = $this->findAttributeOptionWithValue($localeAttr, $locale->getCode());

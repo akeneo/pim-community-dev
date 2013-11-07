@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexibleValue;
 use Pim\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttributeOption;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
@@ -23,6 +24,8 @@ use Pim\Bundle\CatalogBundle\Entity\ProductPrice;
  *     @ORM\Index(name="integer_idx", columns={"value_integer"})
  * })
  * @ORM\Entity
+ * 
+ * @ExclusionPolicy("all")
  */
 class ProductValue extends AbstractEntityFlexibleValue implements ProductValueInterface
 {
