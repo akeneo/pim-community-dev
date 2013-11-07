@@ -19,19 +19,16 @@ datagrid:
                 route: oro_entity_update
                 params:
                     - id
-                    - entity_id
             view_link:
                 type: url
                 route: oro_entity_view
                 params:
                     - id
-                    - entity_id
             delete_link:
                 type: url
                 route: oro_entity_delete
                 params:
                     - id
-                    - entity_id
 
         actions:
             # TODO: add dynamic acl_resources

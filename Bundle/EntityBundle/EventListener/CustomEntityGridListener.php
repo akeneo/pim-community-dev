@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\EntityBundle\EventListener;
 
+use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
 use Oro\Bundle\DataGridBundle\Event\BuildAfter;
@@ -18,9 +19,13 @@ use Oro\Bundle\EntityExtendBundle\Tools\ExtendConfigDumper;
 class CustomEntityGridListener extends AbstractConfigGridListener
 {
     const GRID_NAME = 'custom-entity-grid';
+    const PATH_FROM = '[source][query][from]';
 
     /** @var ConfigManager */
     protected $configManager;
+
+    /** @var RequestParameters */
+    protected $requestParams;
 
     /** @var null original entity class */
     protected $entityClass = null;
@@ -44,17 +49,26 @@ class CustomEntityGridListener extends AbstractConfigGridListener
     );
 
     protected $typeMap = array(
-        'string'   => 'text',
-        'integer'  => 'integer',
-        'smallint' => 'integer',
-        'bigint'   => 'integer',
+        'string'   => 'string',
+        'integer'  => 'number',
+        'smallint' => 'number',
+        'bigint'   => 'number',
         'boolean'  => 'boolean',
         'decimal'  => 'decimal',
-        'date'     => 'date',
-        'text'     => 'text',
+        'date'     => 'datetime',
+        'text'     => 'string',
         'float'    => 'decimal',
     );
 
+    /**
+     * @param ConfigManager $configManager
+     * @param RequestParameters $requestParameters
+     */
+    public function __construct(ConfigManager $configManager, RequestParameters $requestParameters)
+    {
+        $this->configManager = $configManager;
+        $this->requestParams = $requestParameters;
+    }
 
     /**
      * @param BuildAfter $event
@@ -64,28 +78,36 @@ class CustomEntityGridListener extends AbstractConfigGridListener
         $datasource = $event->getDatagrid()->getDatasource();
         if ($datasource instanceof OrmDatasource) {
             $queryBuilder = $datasource->getQueryBuilder();
-
-            $this->prepareQuery($queryBuilder, 'ce', 'cev', PropertyConfigContainer::TYPE_ENTITY);
         }
     }
 
     /**
      * @param BuildBefore $event
+     * @return bool
      */
     public function onBuildBefore(BuildBefore $event)
     {
+        $this->entityClass = $this->requestParams->get('entity_class');
+        if (empty($this->entityClass)) {
+            return false;
+        }
+
         $config = $event->getConfig();
 
         // get dynamic columns
-        $additionalColumnSettings = $this->getDynamicFields();
+        $additionalColumnSettings = $this->getDynamicFields(
+            $config->offsetGetByPath('[source][query][from][0][alias]', 'ce')
+        );
         $filtersSorters           = $this->getDynamicSortersAndFilters($additionalColumnSettings);
-        $additionalColumnSettings = [
-            'columns' => $additionalColumnSettings,
-            'sorters' => $filtersSorters['sorters'],
-            'filters' => $filtersSorters['filters'],
-        ];
+        $additionalColumnSettings = array_merge(
+            $additionalColumnSettings,
+            [
+                'sorters' => $filtersSorters['sorters'],
+                'filters' => $filtersSorters['filters'],
+            ]
+        );
 
-        foreach (['columns', 'sorters', 'filters'] as $itemName) {
+        foreach (['columns', 'sorters', 'filters', 'source'] as $itemName) {
             $path = '[' . $itemName . ']';
 
             // get already defined items
@@ -95,6 +117,10 @@ class CustomEntityGridListener extends AbstractConfigGridListener
             // set new item set with dynamic columns/sorters/filters
             $config->offsetSetByPath($path, $items);
         }
+
+        $from = $config->offsetGetByPath(self::PATH_FROM, []);
+        $from[0] = array_merge($from[0], ['table' => $this->entityClass]);
+        $config->offsetSetByPath('[source][query][from]', $from);
     }
 
     /**
@@ -102,7 +128,7 @@ class CustomEntityGridListener extends AbstractConfigGridListener
      */
     protected function getDynamicFields($alias = null, $itemsType = null)
     {
-        $fields = [];
+        $fields = $select = [];
 
         /** @var ConfigProvider $extendConfigProvider */
         $extendConfigProvider = $this->configManager->getProvider('extend');
@@ -140,7 +166,7 @@ class CustomEntityGridListener extends AbstractConfigGridListener
 
                     $field = [
                         $code => [
-                            'type'        => $this->typeMap[$fieldConfig->getFieldType()],
+                            'type'        => 'field',
                             'label'       => $label,
                             'field_name'  => $code,
                             'filter_type' => $this->filterMap[$fieldConfig->getFieldType()],
@@ -150,6 +176,7 @@ class CustomEntityGridListener extends AbstractConfigGridListener
                             'show_filter' => true,
                         ]
                     ];
+                    $select[] = $alias . '.' . $code;
 
                     // add field according to priority if exists
                     if (isset($item['options']['priority']) && !isset($fields[$item['options']['priority']])) {
@@ -169,6 +196,11 @@ class CustomEntityGridListener extends AbstractConfigGridListener
             $orderedFields = array_merge($orderedFields, $field);
         }
 
-        return $orderedFields;
+        return [
+            'columns' => $orderedFields,
+            'source' => [
+                'query' => ['select' => $select],
+            ]
+        ];
     }
 }
