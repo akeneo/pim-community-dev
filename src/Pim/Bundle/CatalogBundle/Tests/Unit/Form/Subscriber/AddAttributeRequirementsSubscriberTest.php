@@ -96,11 +96,13 @@ class AddAttributeRequirementsSubscriberTest extends \PHPUnit_Framework_TestCase
         $requirementsForm = $this->getFormMock();
         $form->expects($this->any())
             ->method('get')
-            ->will($this->returnValueMap(
-                array(
-                    array('attributeRequirements', $requirementsForm)
+            ->will(
+                $this->returnValueMap(
+                    array(
+                        array('attributeRequirements', $requirementsForm)
+                    )
                 )
-            ));
+            );
         $requirementsForm->expects($this->once())
             ->method('remove')
             ->with('baz');

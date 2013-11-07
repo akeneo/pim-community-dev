@@ -51,12 +51,14 @@ class FamilyFactoryTest extends \PHPUnit_Framework_TestCase
         $this->attributeRequirementFactory
             ->expects($this->any())
             ->method('createAttributeRequirement')
-            ->will($this->returnValueMap(
-                array(
-                    array($identifier, $channel1, true, $requirement1),
-                    array($identifier, $channel2, true, $requirement2),
+            ->will(
+                $this->returnValueMap(
+                    array(
+                        array($identifier, $channel1, true, $requirement1),
+                        array($identifier, $channel2, true, $requirement2),
+                    )
                 )
-            ));
+            );
 
         $family = $this->factory->createFamily();
 
