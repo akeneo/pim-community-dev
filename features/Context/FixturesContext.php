@@ -1089,6 +1089,7 @@ class FixturesContext extends RawMinkContext
     {
         $this->placeholderValues['file to import'] = $filename =
             sprintf('/tmp/pim-import/behat-import-%s.csv', substr(md5(rand()), 0, 7));
+        @rmdir(dirname($filename));
         @mkdir(dirname($filename), 0777, true);
 
         file_put_contents($filename, (string) $string);
