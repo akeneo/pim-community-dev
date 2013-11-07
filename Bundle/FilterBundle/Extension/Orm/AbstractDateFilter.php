@@ -16,13 +16,9 @@ abstract class AbstractDateFilter extends AbstractFilter
      */
     const DATETIME_FORMAT = 'Y-m-d';
 
-    /** @var DateFormatExtension */
-    protected $localeExtension;
-
-    public function __construct(FormFactoryInterface $factory, DateFormatExtension $localeExtension)
+    public function __construct(FormFactoryInterface $factory)
     {
         parent::__construct($factory);
-        $this->localeExtension = $localeExtension;
     }
 
     /**
@@ -77,13 +73,19 @@ abstract class AbstractDateFilter extends AbstractFilter
         }
 
         if (isset($data['value']['start'])) {
-            $data['value']['start'] = $data['value']['start']->format(static::DATETIME_FORMAT);
+            /** @var \DateTime $startDate */
+            $startDate = $data['value']['start'];
+            $startDate->setTimezone(new \DateTimeZone('UTC'));
+            $data['value']['start'] = $startDate->format(static::DATETIME_FORMAT);
         } else {
             $data['value']['start'] = null;
         }
 
         if (isset($data['value']['end'])) {
-            $data['value']['end'] = $data['value']['end']->format(static::DATETIME_FORMAT);
+            /** @var \DateTime $endDate */
+            $endDate = $data['value']['end'];
+            $endDate->setTimezone(new \DateTimeZone('UTC'));
+            $data['value']['end'] = $endDate->format(static::DATETIME_FORMAT);
         } else {
             $data['value']['end'] = null;
         }
@@ -308,9 +310,6 @@ abstract class AbstractDateFilter extends AbstractFilter
         $metadata                          = parent::getMetadata();
         $metadata['typeValues']            = $formView->vars['type_values'];
         $metadata['externalWidgetOptions'] = $formView->vars['widget_options'];
-
-        $metadata['externalWidgetOptions']['dateFormat'] = $this->localeExtension->getJqueryDateFormat();
-        $metadata['externalWidgetOptions']['timeFormat'] = $this->localeExtension->getJqueryTimeFormat();
 
         return $metadata;
     }

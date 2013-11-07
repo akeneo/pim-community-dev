@@ -1,15 +1,5 @@
 config:
-    shim:
-        'backgrid':
-            deps:
-                - 'jquery'
-                - 'underscore'
-                - 'backbone'
-            exports: 'Backgrid'
-
     paths:
-        'backbone/pageable-collection': 'bundles/orogrid/lib/backbone-pageable.js'
-        'backgrid': 'bundles/orogrid/lib/backgrid/backgrid.js'
         'oro/grid/action-launcher': 'bundles/orogrid/js/datagrid/action-launcher.js'
         'oro/grid/abstract-action': 'bundles/orogrid/js/datagrid/action/abstract-action.js'
         'oro/grid/delete-action': 'bundles/orogrid/js/datagrid/action/delete-action.js'
@@ -51,6 +41,4 @@ config:
         'oro/grid/router': 'bundles/orogrid/js/datagrid/router.js'
         'oro/grid/row': 'bundles/orogrid/js/datagrid/row.js'
         'oro/grid/toolbar': 'bundles/orogrid/js/datagrid/toolbar.js'
-        'oro/loading-mask': 'bundles/orogrid/js/loading-mask.js'
-        'oro/pageable-collection': 'bundles/orogrid/js/pageable-collection.js'
 

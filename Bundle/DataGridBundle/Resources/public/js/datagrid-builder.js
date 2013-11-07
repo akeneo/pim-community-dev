@@ -12,9 +12,9 @@ function($, _, Backbone, __, tools, mediator, registry, LoadingMask,
         cellModuleName = 'oro/datagrid/{{type}}-cell',
         actionModuleName = 'oro/datagrid/{{type}}-action',
         cellTypes = {
-            date:     'moment',
-            datetime: 'moment',
-            decimal:  'number'
+            integer:   'number',
+            decimal:   'number',
+            percent:   'number'
         },
 
         helpers = {

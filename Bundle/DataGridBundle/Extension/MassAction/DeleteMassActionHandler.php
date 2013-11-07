@@ -3,6 +3,7 @@
 namespace Oro\Bundle\DataGridBundle\Extension\MassAction;
 
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Query\Parameter;
 
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -100,7 +101,15 @@ class DeleteMassActionHandler implements MassActionHandlerInterface
      */
     protected function prepareIterableResult(IterableResultInterface $result)
     {
-        return new ConstantPagerIterableResult($result->getSource());
+        $results =  new ConstantPagerIterableResult($result->getSource());
+        $params = [];
+        /** @var Parameter $param */
+        foreach ($result->getSource()->getParameters() as $param) {
+            $params[$param->getName()] = $param->getValue();
+        }
+        $results->setParameters($params);
+
+        return $results;
     }
 
     /**

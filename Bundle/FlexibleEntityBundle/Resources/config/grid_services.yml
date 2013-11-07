@@ -25,7 +25,6 @@ services:
     oro_flexibleentity.grid.extension.formatter.property:
         class: %oro_flexibleentity.grid.extension.formatter.property.class%
         arguments:
-            - @oro_locale.twig.dateformat
             - @translator
         tags:
             - { name:  oro_datagrid.extension.formatter.property, type: flexible_field }
@@ -71,7 +70,6 @@ services:
         class: %oro_flexibleentity.grid.extension.filter.date.class%
         arguments:
             - @form.factory
-            - @oro_locale.twig.dateformat
             - @oro_flexibleentity.grid.extension.flexible_filter_utility
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: flexible_date }
@@ -80,7 +78,6 @@ services:
         class: %oro_flexibleentity.grid.extension.filter.datetime.class%
         arguments:
             - @form.factory
-            - @oro_locale.twig.dateformat
             - @oro_flexibleentity.grid.extension.flexible_filter_utility
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: flexible_datetime }

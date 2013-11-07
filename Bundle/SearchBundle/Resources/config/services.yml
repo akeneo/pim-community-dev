@@ -69,7 +69,6 @@ services:
     oro_search.extension.formatter.property.search_result_property:
         class: %oro_search.extension.formatter.property.search_result_property.class%
         arguments:
-            - @oro_locale.twig.dateformat
             - @twig
             - %oro_search.entities_config%
 

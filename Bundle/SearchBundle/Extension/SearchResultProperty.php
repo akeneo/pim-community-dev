@@ -6,9 +6,7 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Security\Core\Util\ClassUtils;
 
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
-use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\PropertyConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\TwigTemplateProperty;
-use Oro\Bundle\LocaleBundle\Twig\DateFormatExtension;
 
 class SearchResultProperty extends TwigTemplateProperty
 {
@@ -16,11 +14,10 @@ class SearchResultProperty extends TwigTemplateProperty
     protected $entitiesConfig;
 
     public function __construct(
-        DateFormatExtension $dateFormatExtension,
         \Twig_Environment $environment,
         $config
     ) {
-        parent::__construct($dateFormatExtension, $environment);
+        parent::__construct($environment);
 
         $this->entitiesConfig = $config;
     }

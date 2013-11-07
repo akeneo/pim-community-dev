@@ -1,14 +1,14 @@
 /* global define */
-define(['oro/grid/datetime-cell'],
+define(['oro/datagrid/datetime-cell'],
 function(DatagridDateTimeCell) {
     'use strict';
 
     /**
      * Date column cell
      *
-     * @export  oro/grid/date-cell
-     * @class   oro.grid.DateCell
-     * @extends oro.grid.DateTimeCell
+     * @export  oro/datagrid/date-cell
+     * @class   oro.datagrid.DateCell
+     * @extends oro.datagrid.DateTimeCell
      */
     return DatagridDateTimeCell.extend({type: 'date'});
 });

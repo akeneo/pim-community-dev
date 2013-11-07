@@ -1,14 +1,14 @@
 /* global define */
-define(['underscore', 'oro/grid/cell-formatter', 'oro/formatter/number'],
+define(['underscore', 'oro/datagrid/cell-formatter', 'oro/formatter/number'],
 function(_, CellFormatter, formatter) {
     'use strict';
 
     /**
      * Cell formatter that format percent representation
      *
-     * @export oro/grid/number-formatter
-     * @class  oro.grid.NumberFormatter
-     * @extends oro.grid.CellFormatter
+     * @export oro/datagrid/number-formatter
+     * @class  oro.datagrid.NumberFormatter
+     * @extends oro.datagrid.CellFormatter
      */
     var NumberFormatter = function (options) {
         options = options ? _.clone(options) : {};

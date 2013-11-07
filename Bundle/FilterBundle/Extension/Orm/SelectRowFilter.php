@@ -62,7 +62,7 @@ class SelectRowFilter extends ChoiceFilter
         $expectedChoices = [SelectRowFilterType::NOT_SELECTED_VALUE, SelectRowFilterType::SELECTED_VALUE];
         if (empty($data['value'])
             || !in_array($data['value'], $expectedChoices)) {
-            $data['value'] = null;
+            return false;
         }
 
         if (isset($data['in']) && !is_array($data['in'])) {
