@@ -8,6 +8,7 @@ use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Oro\Bundle\BatchBundle\Entity\StepExecution;
 use Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\ImportExportBundle\Cache\EntityCache;
 use Pim\Bundle\VersioningBundle\EventListener\AddVersionListener;
 
@@ -83,9 +84,9 @@ class OrmProductWriter extends AbstractConfigurableStepElement implements
         EntityCache $entityCache,
         AddVersionListener $addVersionListener
     ) {
-        $this->productManager = $productManager;
-        $this->entityManager  = $entityManager;
-        $this->entityCache    = $entityCache;
+        $this->productManager     = $productManager;
+        $this->entityManager      = $entityManager;
+        $this->entityCache        = $entityCache;
         $this->addVersionListener = $addVersionListener;
     }
 
@@ -103,7 +104,10 @@ class OrmProductWriter extends AbstractConfigurableStepElement implements
     public function write(array $items)
     {
         $this->addVersionListener->setRealTimeVersioning(false);
-        $this->productManager->saveAll($items, true);
+        foreach ($items as $item) {
+            $this->incrementCount($item);
+            $this->productManager->save($item, true);
+        }
         $this->productManager->handleAllMedia($items);
         $this->stepExecution->setWriteCount(count($items));
 
@@ -123,5 +127,14 @@ class OrmProductWriter extends AbstractConfigurableStepElement implements
     public function setStepExecution(StepExecution $stepExecution)
     {
         $this->stepExecution = $stepExecution;
+    }
+
+    protected function incrementCount(ProductInterface $product)
+    {
+        if ($product->getId()) {
+            $this->stepExecution->incrementUpdateCount();
+        } else {
+            $this->stepExecution->incrementCreationCount();
+        }
     }
 }
