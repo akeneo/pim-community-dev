@@ -80,7 +80,7 @@
                                 data-hide-label="{{ 'Hide item'|trans }}">
                                 {{ 'Display item'|trans }}
                             </a>
-                            <table class="data table-striped table-bordered table-hover">
+                            <table class="hide table-striped table-bordered table-hover">
                                 {% for key, value in warning.item %}
                                 <tr>
                                     <td>{{ key }}</td>
@@ -130,7 +130,7 @@
 
                         event.preventDefault();
 
-                        $(this).siblings('table.data').toggle();
+                        $(this).siblings('table').toggleClass('hide');
                         $(this).text(newLabel);
                     });
                 });

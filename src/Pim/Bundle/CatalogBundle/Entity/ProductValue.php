@@ -134,6 +134,7 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
      *     cascade={"persist", "refresh"},
      *     inversedBy="value"
      * )
+     * @ORM\JoinColumn(name="media_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $media;
 

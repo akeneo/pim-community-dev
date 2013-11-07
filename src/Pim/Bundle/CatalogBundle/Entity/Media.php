@@ -75,7 +75,7 @@ class Media
      *     targetEntity="Pim\Bundle\CatalogBundle\Model\ProductValueInterface",
      *     mappedBy="media"
      * )
-     * @ORM\JoinColumn(name="value_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\JoinColumn(name="value_id", referencedColumnName="id", onDelete="SET NULL")
      */
     protected $value;
 

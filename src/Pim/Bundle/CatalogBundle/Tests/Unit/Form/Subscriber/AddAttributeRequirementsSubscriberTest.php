@@ -65,6 +65,9 @@ class AddAttributeRequirementsSubscriberTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($requirements['name_mobile'], $existingRequirement);
     }
 
+    /**
+     * Test related method
+     */
     public function testPostSetData()
     {
         $mobile      = $this->getChannelMock('mobile');
@@ -80,10 +83,12 @@ class AddAttributeRequirementsSubscriberTest extends \PHPUnit_Framework_TestCase
         $requirement2->expects($this->once())
             ->method('setRequired')
             ->with(true);
-        $family = $this->getFamilyMock(array(
-            'foo' => $requirement1,
-            'baz' => $requirement2
-        ));
+        $family = $this->getFamilyMock(
+            array(
+                'foo' => $requirement1,
+                'baz' => $requirement2
+            )
+        );
 
         $form   = $this->getFormMock();
         $event  = $this->getEventMock($family, $form);
@@ -91,9 +96,13 @@ class AddAttributeRequirementsSubscriberTest extends \PHPUnit_Framework_TestCase
         $requirementsForm = $this->getFormMock();
         $form->expects($this->any())
             ->method('get')
-            ->will($this->returnValueMap(array(
-                array('attributeRequirements', $requirementsForm)
-            )));
+            ->will(
+                $this->returnValueMap(
+                    array(
+                        array('attributeRequirements', $requirementsForm)
+                    )
+                )
+            );
         $requirementsForm->expects($this->once())
             ->method('remove')
             ->with('baz');
@@ -170,7 +179,8 @@ class AddAttributeRequirementsSubscriberTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param mixed $data * @param Form $form
+     * @param mixed $data
+     * @param Form  $form
      *
      * @return \Symfony\Component\Form\FormEvent
      */
@@ -193,6 +203,8 @@ class AddAttributeRequirementsSubscriberTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param array $requirements
+     *
      * @return \Pim\Bundle\CatalogBundle\Entity\Family
      */
     protected function getFamilyMock(array $requirements)
@@ -218,6 +230,8 @@ class AddAttributeRequirementsSubscriberTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param string $type
+     *
      * @return \Pim\Bundle\CatalogBundle\Entity\ProductAttribute
      */
     protected function getProductAttributeMock($type)
