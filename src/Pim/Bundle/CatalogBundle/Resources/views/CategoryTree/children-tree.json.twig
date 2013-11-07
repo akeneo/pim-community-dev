@@ -13,7 +13,7 @@
 
 {% if parent is not null %}
     {% include 'PimCatalogBundle:CategoryTree:_category_tree.html.twig'
-            with { 'category': parent, 'product_count': product_count, 'nested': nested, 'children': children } %}
+        with { 'category': parent, 'product_count': product_count, 'nested': nested, 'children': children } %}
 {% else %}
     {{ children }}
 {% endif %}

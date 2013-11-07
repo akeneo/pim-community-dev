@@ -171,30 +171,12 @@ class CategoryTreeController extends AbstractDoctrineController
             $selectNode = null;
         }
 
-        // FIXME: Simplify and use a single helper method able to manage both cases
         if ($selectNode !== null) {
             $categories = $this->categoryManager->getChildren($parent->getId(), $selectNode->getId());
-
-//             var_dump($categories);
-
-            if ($includeParent) {
-                $data = CategoryHelper::childrenTreeResponse($categories, $selectNode, $withProductsCount, $parent);
-            } else {
-                $parent = null;
-                $data = CategoryHelper::childrenTreeResponse($categories, $selectNode, $withProductsCount);
-            }
-
-            return $this->render(
-                'PimCatalogBundle:CategoryTree:children-tree.json.twig',
-                array(
-                    'categories'    => $categories,
-                    'parent'        => $parent,
-                    'nested'        => $nested,
-                    'product_count' => $withProductsCount
-                )
-            );
+            $view = 'children-tree.json.twig';
         } else {
             $categories = $this->categoryManager->getChildren($parent->getId());
+            $view = 'children.json.twig';
         }
 
         if (!$includeParent) {
@@ -202,7 +184,7 @@ class CategoryTreeController extends AbstractDoctrineController
         }
 
         return $this->render(
-            'PimCatalogBundle:CategoryTree:children.json.twig',
+            sprintf('PimCatalogBundle:CategoryTree:%s', $view),
             array(
                 'categories'    => $categories,
                 'parent'        => $parent,
