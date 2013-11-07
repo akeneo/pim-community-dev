@@ -331,7 +331,6 @@ workflows:
                 frontend_options:                           # options of transition
                     icon: 'icon-ok'
                     class: 'btn-primary'
-
             not_answered:
                 label: "Not answered"
                 step_to: end_call
