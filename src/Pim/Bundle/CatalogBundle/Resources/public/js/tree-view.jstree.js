@@ -12,8 +12,8 @@ define(
                 dataLocale         = $el.attr('data-datalocale'),
                 selectedNode       = $el.attr('data-node-id') || -1,
                 selectedTree       = $el.attr('data-tree-id') || -1,
-                selectedNodeOrTree = selectedNode in [0, -1] ? selectedTree : selectedNode,
-                includeChildren    = false;
+                includeChildren    = $el.attr('data-include-sub') || false,
+                selectedNodeOrTree = selectedNode in [0, -1] ? selectedTree : selectedNode;
 
             this.config = {
                 'core': {
@@ -29,8 +29,8 @@ define(
                     'types'
                 ],
                 'nested_switch': {
-                    state:    false,
-                    label:    __('Include sub-categories'),
+                    state:    includeChildren,
+                    label:    __('jstree.include_sub'),
                     callback: function(state) {
                         includeChildren = state;
                         $el.jstree('refresh');
