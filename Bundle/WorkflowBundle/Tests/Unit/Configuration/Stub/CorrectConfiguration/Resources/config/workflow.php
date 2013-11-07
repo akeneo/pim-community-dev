@@ -66,9 +66,13 @@ return array(
                         '@or' => array(
                             'rules' => array(
                                 '@true' => null,
-                                '@equals' => array
+                                '@equals' => array(
+                                    'rules' => array(1, 1),
+                                    'message' => 'Not equals'
+                                )
                             )
-                        )
+                        ),
+                        'message' => 'Fail upper level'
                     )
                 ),
                 'post_actions' => array(
