@@ -24,21 +24,24 @@ class CalendarConnectionRepository extends EntityRepository
      * Returns a query builder which can be used to get a list of connected calendars
      *
      * @param int $calendarId
+     * @param int|null $userId
      * @return QueryBuilder
      */
-    public function getConnectionListQueryBuilder($calendarId)
+    public function getConnectionListQueryBuilder($calendarId, $userId = null)
     {
-        return $this->createQueryBuilder('a')
-            ->select(
-                'a.color, a.backgroundColor'
-                . ', ac.id as calendar, ac.name as calendarName'
-                . ', u.id as owner, u.firstName as ownerFirstName, u.lastName as ownerLastName'
-            )
-            ->innerJoin('a.calendar', 'c')
-            ->innerJoin('a.connectedCalendar', 'ac')
-            ->innerJoin('ac.owner', 'u')
-            ->where('c.id = :id')
-            ->orderBy('a.createdAt')
+        $qb = $this->createQueryBuilder('calendarConnection')
+            ->select('calendarConnection, connectedCalendar, owner')
+            ->innerJoin('calendarConnection.calendar', 'calendar')
+            ->innerJoin('calendarConnection.connectedCalendar', 'connectedCalendar')
+            ->innerJoin('connectedCalendar.owner', 'owner')
+            ->where('calendar.id = :id')
+            ->orderBy('calendarConnection.createdAt')
             ->setParameter('id', $calendarId);
+
+        if (null !== $userId) {
+            $qb->andWhere('owner.id = :userId')->setParameter('userId', $userId);
+        }
+
+        return $qb;
     }
 }

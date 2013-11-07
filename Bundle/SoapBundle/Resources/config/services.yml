@@ -14,4 +14,4 @@ services:
         arguments:                    ["@file_locator", "@besimple.soap.definition.loader.annot_class"]
         public:                       false
         tags:
-          - { name: besimple.soap.definition.loader }
+            - { name: besimple.soap.definition.loader }

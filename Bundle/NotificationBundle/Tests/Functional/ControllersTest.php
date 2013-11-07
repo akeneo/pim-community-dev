@@ -46,7 +46,7 @@ class ControllersTest extends WebTestCase
 
         $this->templateUpdate  = $notificationManager
             ->getRepository('OroEmailBundle:EmailTemplate')
-            ->findOneBy(array('name' => 'update_user', 'entityName' => self::ENTITY_NAME));
+            ->findOneBy(array('entityName' => self::ENTITY_NAME));
     }
 
     public function testIndex()
@@ -61,7 +61,6 @@ class ControllersTest extends WebTestCase
      */
     public function testCreate()
     {
-        $this->markTestIncomplete('BAP-2168');
         $crawler = $this->client->request('GET', $this->client->generate('oro_notification_emailnotification_create'));
 
         // prepare data for next tests

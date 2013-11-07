@@ -31,6 +31,8 @@ use Oro\Bundle\ImapBundle\Entity\ImapEmailOrigin;
 use Oro\Bundle\ImapBundle\Entity\ImapConfigurationOwnerInterface;
 use Oro\Bundle\TagBundle\Entity\Tag;
 
+use Oro\Bundle\LocaleBundle\Model\FullNameInterface;
+
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 
 use DateTime;
@@ -69,7 +71,8 @@ class User extends AbstractEntityFlexible implements
     Taggable,
     EmailOwnerInterface,
     EmailHolderInterface,
-    ImapConfigurationOwnerInterface
+    ImapConfigurationOwnerInterface,
+    FullNameInterface
 {
     const ROLE_DEFAULT   = 'ROLE_USER';
     const ROLE_ANONYMOUS = 'IS_AUTHENTICATED_ANONYMOUSLY';
@@ -104,11 +107,23 @@ class User extends AbstractEntityFlexible implements
     protected $email;
 
     /**
+     * Name prefix
+     *
+     * @var string
+     *
+     * @ORM\Column(name="name_prefix", type="string", length=255, nullable=true)
+     * @Soap\ComplexType("string", nillable=true)
+     * @Type("string")
+     * @Oro\Versioned
+     */
+    protected $namePrefix;
+
+    /**
      * First name
      *
      * @var string
      *
-     * @ORM\Column(name="firstname", type="string", length=100, nullable=true)
+     * @ORM\Column(name="first_name", type="string", length=255, nullable=true)
      * @Soap\ComplexType("string")
      * @Type("string")
      * @Oro\Versioned
@@ -116,11 +131,23 @@ class User extends AbstractEntityFlexible implements
     protected $firstName;
 
     /**
+     * Middle name
+     *
+     * @var string
+     *
+     * @ORM\Column(name="middle_name", type="string", length=255, nullable=true)
+     * @Soap\ComplexType("string", nillable=true)
+     * @Type("string")
+     * @Oro\Versioned
+     */
+    protected $middleName;
+
+    /**
      * Last name
      *
      * @var string
      *
-     * @ORM\Column(name="lastname", type="string", length=100, nullable=true)
+     * @ORM\Column(name="last_name", type="string", length=255, nullable=true)
      * @Soap\ComplexType("string")
      * @Type("string")
      * @Oro\Versioned
@@ -128,11 +155,23 @@ class User extends AbstractEntityFlexible implements
     protected $lastName;
 
     /**
+     * Name suffix
+     *
+     * @var string
+     *
+     * @ORM\Column(name="name_suffix", type="string", length=255, nullable=true)
+     * @Soap\ComplexType("string", nillable=true)
+     * @Type("string")
+     * @Oro\Versioned
+     */
+    protected $nameSuffix;
+
+    /**
      * @var DateTime
      *
-     * @ORM\Column(name="birthday", type="datetime", nullable=true)
+     * @ORM\Column(name="birthday", type="date", nullable=true)
      * @Soap\ComplexType("date", nillable=true)
-     * @Type("dateTime")
+     * @Type("date")
      * @Oro\Versioned
      */
     protected $birthday;
@@ -238,15 +277,6 @@ class User extends AbstractEntityFlexible implements
      * @Soap\ComplexType("string", nillable=true)
      */
     protected $owner;
-
-    /**
-     * Set name formatting using "%first%" and "%last%" placeholders
-     *
-     * @var string
-     *
-     * @Exclude
-     */
-    protected $nameFormat;
 
     /**
      * @var Role[]
@@ -403,7 +433,7 @@ class User extends AbstractEntityFlexible implements
 
     /**
      * Get entity class name.
-     * TODO: This is a temporary solution for get 'view' route in twig. Will be removed after EntityConfigBundle is finished
+     * TODO: Remove this temporary solution for get 'view' route in twig after EntityConfigBundle is finished
      * @return string
      */
     public function getClass()
@@ -452,7 +482,7 @@ class User extends AbstractEntityFlexible implements
      *
      * @return string
      */
-    public function getFirstname()
+    public function getFirstName()
     {
         return $this->firstName;
     }
@@ -462,30 +492,39 @@ class User extends AbstractEntityFlexible implements
      *
      * @return string
      */
-    public function getLastname()
+    public function getLastName()
     {
         return $this->lastName;
     }
 
     /**
-     * Return full name according to name format
+     * Return middle name
      *
-     * @see User::setNameFormat()
-     * @param  string $format [optional]
      * @return string
      */
-    public function getFullname($format = '')
+    public function getMiddleName()
     {
-        return str_replace(
-            array('%first%', '%last%'),
-            array($this->getFirstname(), $this->getLastname()),
-            $format ? $format : $this->getNameFormat()
-        );
+        return $this->middleName;
     }
 
-    public function getName()
+    /**
+     * Return name prefix
+     *
+     * @return string
+     */
+    public function getNamePrefix()
     {
-        return $this->getFullname();
+        return $this->namePrefix;
+    }
+
+    /**
+     * Return name suffix
+     *
+     * @return string
+     */
+    public function getNameSuffix()
+    {
+        return $this->nameSuffix;
     }
 
     /**
@@ -583,16 +622,6 @@ class User extends AbstractEntityFlexible implements
     }
 
     /**
-     * Get full name format. Defaults to "%first% %last%".
-     *
-     * @return string
-     */
-    public function getNameFormat()
-    {
-        return $this->nameFormat ?  $this->nameFormat : '%first% %last%';
-    }
-
-    /**
      * Get user created date/time
      *
      * @return DateTime
@@ -671,7 +700,7 @@ class User extends AbstractEntityFlexible implements
      * @param  string $firstName [optional] New first name value. Null by default.
      * @return User
      */
-    public function setFirstname($firstName = null)
+    public function setFirstName($firstName = null)
     {
         $this->firstName = $firstName;
 
@@ -682,11 +711,41 @@ class User extends AbstractEntityFlexible implements
      * @param  string $lastName [optional] New last name value. Null by default.
      * @return User
      */
-    public function setLastname($lastName = null)
+    public function setLastName($lastName = null)
     {
         $this->lastName = $lastName;
 
         return $this;
+    }
+
+    /**
+     * Set middle name
+     *
+     * @param string $middleName
+     */
+    public function setMiddleName($middleName)
+    {
+        $this->middleName = $middleName;
+    }
+
+    /**
+     * Set name prefix
+     *
+     * @param string $namePrefix
+     */
+    public function setNamePrefix($namePrefix)
+    {
+        $this->namePrefix = $namePrefix;
+    }
+
+    /**
+     * Set name suffix
+     *
+     * @param string $nameSuffix
+     */
+    public function setNameSuffix($nameSuffix)
+    {
+        $this->nameSuffix = $nameSuffix;
     }
 
     /**
@@ -719,7 +778,8 @@ class User extends AbstractEntityFlexible implements
     public function setImageFile(UploadedFile $imageFile)
     {
         $this->imageFile = $imageFile;
-        $this->updated = new DateTime('now', new \DateTimeZone('UTC')); // this will trigger PreUpdate callback even if only image has been changed
+        // this will trigger PreUpdate callback even if only image has been changed
+        $this->updated = new DateTime('now', new \DateTimeZone('UTC'));
 
         return $this;
     }
@@ -822,19 +882,6 @@ class User extends AbstractEntityFlexible implements
     public function setLoginCount($count)
     {
         $this->loginCount = $count;
-
-        return $this;
-    }
-
-    /**
-     * Set new format for a full name display. Use %first% and %last% placeholders, for example: "%last%, %first%".
-     *
-     * @param  string $format New format string
-     * @return User
-     */
-    public function setNameFormat($format)
-    {
-        $this->nameFormat = $format;
 
         return $this;
     }

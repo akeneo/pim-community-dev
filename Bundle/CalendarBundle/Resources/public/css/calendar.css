@@ -1,6 +1,12 @@
 .calendar-container {
     position: relative;
+    padding-right: 10px;
 }
+
+.calendars {
+    padding-left: 10px;
+}
+
 .calendars li {
     color: #fff;
     background-color: #80a8e7;

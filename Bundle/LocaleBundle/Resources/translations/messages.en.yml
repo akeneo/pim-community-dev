@@ -1,0 +1,22 @@
+oro.locale:
+    address_format:
+        region_name_type:
+            parish: "parish"
+            state: "state"
+            island: "island"
+            county: "county"
+            area: "area"
+            prefecture: "prefecture"
+            do_si: "do_si"
+            department: "department"
+            district: "district"
+            province: "province"
+
+    form:
+        tooltip:
+            locale: "Select the locale option used to format numbers, addresses, names and dates"
+            location: " Location will be used to format addresses when 'Format address by address country' option is disabled"
+            format_address_by_address_country: "Selecting this option will enabled addresses to be formatted by the country they are in. Disabeling this option will cause the addresses to be formatted in your location address format"
+            language: "Select the system language you wish to use"
+            timezone: "Select the timezone for displaying date and time"
+            currency: "Select the default currency"

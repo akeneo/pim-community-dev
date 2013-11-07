@@ -13,10 +13,6 @@
         <% }) %>
     </ul>
     <address>
-        <% if (firstName || lastName) { %><%= firstName %>&nbsp;<%= lastName %><br /><% } %>
-        <%= street %>&nbsp;<%= street2 %><br />
-        <%= city %>, <%= state %><br />
-        <%= postalCode %><br />
-        <%= country %><br />
+        <%= formatted_address %>
     </address>
 </script>
