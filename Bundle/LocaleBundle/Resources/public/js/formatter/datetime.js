@@ -85,12 +85,31 @@ function(localeSettings, moment) {
          * @returns {string}
          */
         formatDate: function(value) {
+            return this.getMomentForBackendDate(value).format(this.getDateFormat());
+        },
+
+        /**
+         * Get Date object based on formatted backend date string
+         *
+         * @param {string} value
+         * @returns {Date}
+         */
+        unformatBackendDate: function(value) {
+            return this.getMomentForBackendDate(value).toDate();
+        },
+
+        /**
+         * Get moment object based on formatted backend date string
+         *
+         * @param {string} value
+         * @returns {moment}
+         */
+        getMomentForBackendDate: function(value) {
             var momentDate = moment(value);
             if (!momentDate.isValid()) {
                 throw new Error('Invalid backend date ' + value);
             }
-
-            return momentDate.format(this.getDateFormat());
+            return momentDate;
         },
 
         /**
@@ -98,12 +117,31 @@ function(localeSettings, moment) {
          * @returns {string}
          */
         formatTime: function(value) {
+            return this.getMomentForBackendTime(value).format(this.getTimeFormat());
+        },
+
+        /**
+         * Get Date object based on formatted backend time string
+         *
+         * @param {string} value
+         * @returns {Date}
+         */
+        unformatBackendTime: function(value) {
+            return this.getMomentForBackendTime(value).toDate();
+        },
+
+        /**
+         * Get moment object based on formatted backend date string
+         *
+         * @param {string} value
+         * @returns {moment}
+         */
+        getMomentForBackendTime: function(value) {
             var momentTime = moment(value, ['HH:mm:ss', 'HH:mm']);
             if (!momentTime.isValid()) {
                 throw new Error('Invalid backend time ' + value);
             }
-
-            return momentTime.format(this.getTimeFormat());
+            return momentTime;
         },
 
         /**
@@ -111,41 +149,48 @@ function(localeSettings, moment) {
          * @returns {string}
          */
         formatDateTime: function(value) {
+            return this.getMomentForBackendDateTime(value).format(this.getDateTimeFormat());
+        },
+
+        /**
+         * Get Date object based on formatted backend date time string
+         *
+         * @param {string} value
+         * @returns {Date}
+         */
+        unformatBackendDateTime: function(value) {
+            return this.getMomentForBackendDateTime(value).toDate();
+        },
+
+        /**
+         * Get moment object based on formatted backend date time string
+         *
+         * @param {string} value
+         * @returns {moment}
+         */
+        getMomentForBackendDateTime: function(value) {
             moment().zone(this.timezoneOffset);
             var momentDateTime = moment(value);
             if (!momentDateTime.isValid()) {
                 throw new Error('Invalid backend datetime ' + value);
             }
-
-            return momentDateTime.format(this.getDateTimeFormat());
+            return momentDateTime;
         },
 
         /**
          * @param {string} value
          * @returns {string}
          */
-        unformatDate: function(value) {
-            if (this._isDateObject(value)) {
-                value = this.formatDate(value);
-            } else if (!this.isDateValid(value)) {
-                throw new Error('Invalid frontend date ' + value);
-            }
-
-            return moment(value, this.getDateFormat()).format(this.backendFormats.date);
+        convertDateToBackendFormat: function(value) {
+            return this.getMomentForFrontendDate(value).format(this.backendFormats.date);
         },
 
         /**
          * @param {string} value
          * @returns {string}
          */
-        unformatTime: function(value) {
-            if (this._isDateObject(value)) {
-                value = this.formatTime(value);
-            } else if (!this.isTimeValid(value)) {
-                throw new Error('Invalid frontend time ' + value);
-            }
-
-            return moment(value, this.getTimeFormat()).format(this.backendFormats.time);
+        convertTimeToBackendFormat: function(value) {
+            return this.getMomentForFrontendTime(value).format(this.backendFormats.time);
         },
 
         /**
@@ -153,8 +198,71 @@ function(localeSettings, moment) {
          * @param {string} [timezoneOffset]
          * @returns {string}
          */
-        unformatDateTime: function(value, timezoneOffset) {
-            if (this._isDateObject(value)) {
+        convertDateTimeToBackendFormat: function(value, timezoneOffset) {
+            return this.getMomentForFrontendDateTime(value, timezoneOffset).format(this.backendFormats.datetime);
+        },
+
+        /**
+         * Get moment object based on formatted frontend date string
+         *
+         * @param {string} value
+         * @returns {moment}
+         */
+        getMomentForFrontendDate: function(value) {
+            if (this.isDateObject(value)) {
+                return this.formatDate(value);
+            } else if (!this.isDateValid(value)) {
+                throw new Error('Invalid frontend date ' + value);
+            }
+
+            return moment(value, this.getDateFormat());
+        },
+
+        /**
+         * Get Date object based on formatted frontend date string
+         *
+         * @param {string} value
+         * @returns {Date}
+         */
+        unformatDate: function(value) {
+            return this.getMomentForFrontendDate(value).toDate();
+        },
+
+        /**
+         * Get moment object based on formatted frontend time string
+         *
+         * @param {string} value
+         * @returns {moment}
+         */
+        getMomentForFrontendTime: function(value) {
+            if (this.isDateObject(value)) {
+                value = this.formatTime(value);
+            } else if (!this.isTimeValid(value)) {
+                throw new Error('Invalid frontend time ' + value);
+            }
+
+            return moment(value, this.getTimeFormat());
+        },
+
+        /**
+         * Get Date object based on formatted frontend time string
+         *
+         * @param {string} value
+         * @returns {Date}
+         */
+        unformatTime: function(value) {
+            return this.getMomentForFrontendTime(value).toDate();
+        },
+
+        /**
+         * Get moment object based on formatted frontend date time string
+         *
+         * @param {string} value
+         * @param {string} [timezoneOffset]
+         * @returns {moment}
+         */
+        getMomentForFrontendDateTime: function(value, timezoneOffset) {
+            if (this.isDateObject(value)) {
                 value = this.formatDateTime(value);
             } else if (!this.isDateTimeValid(value)) {
                 throw new Error('Invalid frontend datetime ' + value);
@@ -163,7 +271,18 @@ function(localeSettings, moment) {
             timezoneOffset = timezoneOffset || this.timezoneOffset;
             moment().zone(timezoneOffset);
 
-            return moment(value, this.getDateTimeFormat()).format(this.backendFormats.datetime);
+            return moment(value, this.getDateTimeFormat());
+        },
+
+        /**
+         * Get Date object based on formatted frontend date time string
+         *
+         * @param {string} value
+         * @param {string} [timezoneOffset]
+         * @returns {Date}
+         */
+        unformatDateTime: function(value, timezoneOffset) {
+            return this.getMomentForFrontendDateTime(value, timezoneOffset).toDate();
         },
 
         /**
@@ -173,7 +292,7 @@ function(localeSettings, moment) {
          * @param {string|Date} obj
          * @returns {boolean}
          */
-        _isDateObject: function(obj) {
+        isDateObject: function(obj) {
             return Object.prototype.toString.call(obj) == '[object Date]'
         }
     }

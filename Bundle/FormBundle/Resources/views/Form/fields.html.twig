@@ -384,7 +384,7 @@
                 function () {
                     var selectorValue = selector.val();
                     if (datetimeFormatter.isDateValid(selectorValue)) {
-                        actual.val(datetimeFormatter.unformatDate(selectorValue));
+                        actual.val(datetimeFormatter.convertDateToBackendFormat(selectorValue));
                     } else {
                         actual.val('');
                     }
@@ -436,7 +436,7 @@
                 function () {
                     var selectorValue = selector.val();
                     if (datetimeFormatter.isDateTimeValid(selectorValue)) {
-                        actual.val(datetimeFormatter.unformatDateTime(selectorValue));
+                        actual.val(datetimeFormatter.convertDateTimeToBackendFormat(selectorValue));
                     } else {
                         actual.val('');
                     }

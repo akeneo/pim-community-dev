@@ -359,16 +359,36 @@ console.log(datetimeFormatter.formatDateTime(new Date()));
 // Nov 6, 2013 7:32 PM
 ```
 
-### unformatDate(value), unformatTime(value), unformatDateTime(value, timezoneOffset)
+### convertDateToBackendFormat(value), convertTimeToBackendFormat(value), convertDateTimeToBackendFormat(value, timezoneOffset)
 
-Receives localized string data and convert in to ISO format string, unformatDateTime optionally can receive
+Receives localized string data and convert in to ISO format string, *convertDateTimeToBackendFormat* optionally can receive
 timezone offset - if no offset is set default offset will be used.
 Throws an exception in case of not valid string.
 
 ```js
-console.log(datetimeFormatter.unformatDate('Dec 12, 2013'));
+console.log(datetimeFormatter.convertDateToBackendFormat('Dec 12, 2013'));
 // 2013-12-12
 
-console.log(datetimeFormatter.unformatDateTime('Nov 6, 2013 7:32 PM'));
+console.log(datetimeFormatter.convertDateTimeToBackendFormat('Nov 6, 2013 7:32 PM'));
 // 2013-11-06T19:32:00+0200
 ```
+
+### getMomentForBackendDate(value), getMomentForBackendTime(value), getMomentForBackendDateTime(value)
+
+Receives either Date object or valid ISO string and returns moment object instance.
+Throws an exception in case of not valid string.
+
+### getMomentForFrontendDate(value), getMomentForFrontendTime(value), getMomentForFrontendDateTime(value[, timezoneOffset])
+
+Receives valid formatted string and returns moment object instance.
+Throws an exception in case of not valid string.
+
+### unformatDate(value), unformatTime(value), unformatDateTime(value[, timezoneOffset])
+
+Receives valid formatted string and returns Date object instance.
+Throws an exception in case of not valid string.
+
+### unformatBackendDate(value), unformatBackendTime(value), unformatBackendDateTime(value)
+
+Receives either Date object or valid ISO string and returns Date object instance.
+Throws an exception in case of not valid string.
