@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "fe699f3f061ba4d7f99ede89797fb9d5",
+    "hash": "586055ab9d1599dd5da59a380134da13",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -69,17 +69,17 @@
         },
         {
             "name": "akeneo/DemoBundle",
-            "version": "dev-master",
+            "version": "dev-flexibleentity",
             "target-dir": "Pim/Bundle/DemoBundle",
             "source": {
                 "type": "git",
                 "url": "https://github.com/akeneo/DemoBundle.git",
-                "reference": "c9406d0069cf6dd56897d62fda5a97ba62f3cfc7"
+                "reference": "4a58dc06d96608d5b77c2a02709dec920e16d8c6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/akeneo/DemoBundle/zipball/c9406d0069cf6dd56897d62fda5a97ba62f3cfc7",
-                "reference": "c9406d0069cf6dd56897d62fda5a97ba62f3cfc7",
+                "url": "https://api.github.com/repos/akeneo/DemoBundle/zipball/4a58dc06d96608d5b77c2a02709dec920e16d8c6",
+                "reference": "4a58dc06d96608d5b77c2a02709dec920e16d8c6",
                 "shasum": ""
             },
             "require": {
@@ -114,10 +114,10 @@
                 "Generator"
             ],
             "support": {
-                "source": "https://github.com/akeneo/DemoBundle/tree/master",
+                "source": "https://github.com/akeneo/DemoBundle/tree/flexibleentity",
                 "issues": "https://github.com/akeneo/DemoBundle/issues"
             },
-            "time": "2013-11-05 10:02:08"
+            "time": "2013-11-07 08:58:54"
         },
         {
             "name": "apy/jsfv-bundle",
