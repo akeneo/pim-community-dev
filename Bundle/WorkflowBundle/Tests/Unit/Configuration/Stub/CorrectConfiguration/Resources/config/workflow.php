@@ -44,6 +44,7 @@ return array(
                 'frontend_options' => array(
                     'class' => 'foo'
                 ),
+                'form_type' => 'custom_workflow_transition',
                 'form_options' => array(
                     'attribute_fields' => array(
                         'first_attribute' => array(
@@ -97,6 +98,7 @@ return array(
                 'frontend_options' => array(
                     'icon' => 'bar'
                 ),
+                'form_type' => 'oro_workflow_step',
                 'form_options' => array(),
             )
         ),

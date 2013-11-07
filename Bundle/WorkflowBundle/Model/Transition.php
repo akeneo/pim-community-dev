@@ -5,7 +5,6 @@ namespace Oro\Bundle\WorkflowBundle\Model;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Bundle\WorkflowBundle\Model\Condition\ConditionInterface;
 use Oro\Bundle\WorkflowBundle\Model\PostAction\PostActionInterface;
-use Oro\Bundle\WorkflowBundle\Model\Step;
 
 class Transition
 {
@@ -43,6 +42,16 @@ class Transition
      * @var array
      */
     protected $frontendOptions = array();
+
+    /**
+     * @var string
+     */
+    protected $formType;
+
+    /**
+     * @var array
+     */
+    protected $formOptions = array();
 
     /**
      * Set label.
@@ -125,7 +134,7 @@ class Transition
     /**
      * Get post action.
      *
-     * @return PostActionInterface
+     * @return PostActionInterface|null
      */
     public function getPostAction()
     {
@@ -213,7 +222,7 @@ class Transition
      * Set frontend options.
      *
      * @param array $frontendOptions
-     * @return Attribute
+     * @return Transition
      */
     public function setFrontendOptions(array $frontendOptions)
     {
@@ -229,5 +238,41 @@ class Transition
     public function getFrontendOptions()
     {
         return $this->frontendOptions;
+    }
+
+    /**
+     * @param string $formType
+     * @return Transition
+     */
+    public function setFormType($formType)
+    {
+        $this->formType = $formType;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFormType()
+    {
+        return $this->formType;
+    }
+
+    /**
+     * @param array $formOptions
+     * @return Transition
+     */
+    public function setFormOptions(array $formOptions)
+    {
+        $this->formOptions = $formOptions;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getFormOptions()
+    {
+        return $this->formOptions;
     }
 }

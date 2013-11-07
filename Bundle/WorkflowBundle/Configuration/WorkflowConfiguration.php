@@ -196,6 +196,10 @@ class WorkflowConfiguration implements ConfigurationInterface
                         ->prototype('variable')
                         ->end()
                     ->end()
+                    ->scalarNode('form_type')
+                        // @TODO Use the name of Transition form added in BAP-2157
+                        ->defaultValue(OroWorkflowStep::NAME)
+                    ->end()
                     ->arrayNode('form_options')
                         ->prototype('variable')
                         ->end()

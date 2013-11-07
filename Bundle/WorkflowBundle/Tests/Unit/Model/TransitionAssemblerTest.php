@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\WorkflowBundle\Tests\Unit\Model;
 
+use Oro\Bundle\WorkflowBundle\Form\Type\OroWorkflowStep;
 use Oro\Bundle\WorkflowBundle\Model\Transition;
 use Oro\Bundle\WorkflowBundle\Model\TransitionAssembler;
 use Oro\Bundle\WorkflowBundle\Model\Condition\Configurable as ConfigurableCondition;
@@ -148,6 +149,16 @@ class TransitionAssemblerTest extends \PHPUnit_Framework_TestCase
             'step' => $this->getStep()
         );
 
+        $configuration = array_merge(
+            $configuration,
+            array(
+                'is_start' => false,
+                'form_type' => OroWorkflowStep::NAME,
+                'form_options' => array(),
+                'frontend_options' => array(),
+            )
+        );
+
         $expectedCondition = null;
         $expectedPostAction = null;
         if (array_key_exists('conditions', $transitionDefinition)) {
@@ -187,6 +198,8 @@ class TransitionAssemblerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($configuration['label'], $actualTransition->getLabel());
         $this->assertEquals($configuration['frontend_options'], $actualTransition->getFrontendOptions());
         $this->assertEquals($configuration['is_start'], $actualTransition->isStart());
+        $this->assertEquals($configuration['form_type'], $actualTransition->getFormType());
+        $this->assertEquals($configuration['form_options'], $actualTransition->getFormOptions());
         $this->assertEquals($expectedCondition, $actualTransition->getCondition());
         $this->assertEquals($expectedPostAction, $actualTransition->getPostAction());
     }
@@ -199,7 +212,7 @@ class TransitionAssemblerTest extends \PHPUnit_Framework_TestCase
                     'transition_definition' => 'empty_definition',
                     'label' => 'label',
                     'step_to' => 'step',
-                    'is_start' => false,
+                    'form_type' => 'custom_workflow_transition',
                     'frontend_options' => array('class' => 'foo', 'icon' => 'bar'),
                 ),
                 'transitionDefinition' => $this->transitionDefinitions['empty_definition'],
@@ -209,8 +222,6 @@ class TransitionAssemblerTest extends \PHPUnit_Framework_TestCase
                     'transition_definition' => 'with_condition',
                     'label' => 'label',
                     'step_to' => 'step',
-                    'is_start' => false,
-                    'frontend_options' => array(),
                 ),
                 'transitionDefinition' => $this->transitionDefinitions['with_condition'],
             ),
@@ -219,8 +230,6 @@ class TransitionAssemblerTest extends \PHPUnit_Framework_TestCase
                     'transition_definition' => 'with_post_actions',
                     'label' => 'label',
                     'step_to' => 'step',
-                    'is_start'=> false,
-                    'frontend_options' => array(),
                 ),
                 'transitionDefinition' => $this->transitionDefinitions['with_post_actions'],
             ),
@@ -229,8 +238,6 @@ class TransitionAssemblerTest extends \PHPUnit_Framework_TestCase
                     'transition_definition' => 'full_definition',
                     'label' => 'label',
                     'step_to' => 'step',
-                    'is_start' => false,
-                    'frontend_options' => array(),
                 ),
                 'transitionDefinition' => $this->transitionDefinitions['full_definition'],
             ),
@@ -240,7 +247,6 @@ class TransitionAssemblerTest extends \PHPUnit_Framework_TestCase
                     'label' => 'label',
                     'step_to' => 'step',
                     'is_start' => true,
-                    'frontend_options' => array(),
                 ),
                 'transitionDefinition' => $this->transitionDefinitions['empty_definition'],
             ),

@@ -4,8 +4,8 @@ namespace Oro\Bundle\WorkflowBundle\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
-use Oro\Bundle\WorkflowBundle\Model\Transition;
 use Oro\Bundle\WorkflowBundle\Exception\AssemblerException;
+use Oro\Bundle\WorkflowBundle\Form\Type\OroWorkflowStep;
 use Oro\Bundle\WorkflowBundle\Model\Condition\ConditionFactory;
 use Oro\Bundle\WorkflowBundle\Model\PostAction\PostActionFactory;
 use Oro\Bundle\WorkflowBundle\Model\Condition\Configurable as ConfigurableCondition;
@@ -96,16 +96,16 @@ class TransitionAssembler extends AbstractAssembler
         if (empty($steps[$stepToName])) {
             throw new AssemblerException(sprintf('Step "%s" not found', $stepToName));
         }
-        $stepTo = $steps[$stepToName];
-        $frontendOptions = $this->getOption($options, 'frontend_options', array());
-        $isStart = $this->getOption($options, 'is_start', false);
 
         $transition = new Transition();
         $transition->setName($name)
             ->setLabel($options['label'])
-            ->setStepTo($stepTo)
-            ->setStart($isStart)
-            ->setFrontendOptions($frontendOptions);
+            ->setStepTo($steps[$stepToName])
+            ->setStart($this->getOption($options, 'is_start', false))
+            // @TODO Use the name of Transition form added in BAP-2157
+            ->setFormType($this->getOption($options, 'form_type', OroWorkflowStep::NAME))
+            ->setFormOptions($this->getOption($options, 'form_options', array()))
+            ->setFrontendOptions($this->getOption($options, 'frontend_options', array()));
 
         if (!empty($definition['conditions'])) {
             $condition = $this->conditionFactory->create(ConfigurableCondition::ALIAS, $definition['conditions']);

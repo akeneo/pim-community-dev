@@ -30,6 +30,8 @@ class TransitionTest extends \PHPUnit_Framework_TestCase
             'label' => array('label', 'test'),
             'stepTo' => array('stepTo', $this->getStepMock('testStep')),
             'frontendOptions' => array('frontendOptions', array('key' => 'value')),
+            'form_type' => array('formType', 'custom_workflow_transition'),
+            'form_options' => array('formOptions', array('one', 'two')),
             'condition' => array(
                 'condition',
                 $this->getMock('Oro\Bundle\WorkflowBundle\Model\Condition\ConditionInterface')
