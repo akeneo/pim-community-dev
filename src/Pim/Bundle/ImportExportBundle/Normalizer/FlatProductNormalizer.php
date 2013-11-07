@@ -45,6 +45,9 @@ class FlatProductNormalizer implements NormalizerInterface
      */
     protected $fields = array();
 
+    /** @var Pim\Bundle\CatalogBundle\Entity\Channel */
+    protected $channel;
+
     /**
      * Constructor
      *
@@ -66,6 +69,10 @@ class FlatProductNormalizer implements NormalizerInterface
      */
     public function normalize($object, $format = null, array $context = array())
     {
+        if (isset($context['channel'])) {
+            $this->channel = $context['channel'];
+        }
+
         $this->results = $this->normalizeValue($identifier = $object->getIdentifier());
 
         $this->normalizeFamily($object->getFamily());
@@ -74,18 +81,29 @@ class FlatProductNormalizer implements NormalizerInterface
 
         $this->normalizeCategories($object->getCategoryCodes());
 
-        $values = array();
-        foreach ($object->getValues() as $value) {
-            if ($value === $identifier) {
-                continue;
+        $filteredValues = array_filter(
+            $object->getValues(),
+            function ($value) use ($identifier) {
+                return (
+                    ($value !== $identifier) &&
+                    (
+                        ($this->channel == null) ||
+                        (!$value->getAttribute()->getScopable()) ||
+                        ($value->getAttribute()->getScopable() && $value->getScope() == $this->channel->getCode())
+                    )
+                );
             }
-            $values = array_merge(
-                $values,
+        );
+
+        $normalizedValues = array();
+        foreach ($filteredValues as $value) {
+            $normalizedValues = array_merge(
+                $normalizedValues,
                 $this->normalizeValue($value)
             );
         }
-        ksort($values);
-        $this->results = array_merge($this->results, $values);
+        ksort($normalizedValues);
+        $this->results = array_merge($this->results, $normalizedValues);
 
         return $this->results;
     }
