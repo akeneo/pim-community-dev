@@ -24,7 +24,7 @@ class CalculateCompletenessCommand extends ContainerAwareCommand
         $this
             ->setName('pim:completeness:calculate')
             ->setDescription('Launch the product completeness calculation')
-            ->addArgument('size', InputArgument::OPTIONAL, 'Max number of completenesses to calculate', 100);
+            ->addArgument('size', InputArgument::OPTIONAL, 'Max number of completenesses to calculate');
     }
 
     /**

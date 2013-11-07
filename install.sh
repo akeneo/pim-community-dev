@@ -112,7 +112,7 @@ if [ $TASK = 'db' ] || [ $TASK = 'all' ]; then
     php app/console oro:search:create-index
     php app/console pim:search:reindex en_US
     php app/console pim:versioning:refresh
-    php app/console pim:product:completeness-calculator
+    php app/console pim:completeness:calculate
 fi
 
 if [ $TASK = 'assets' ] || [ $TASK = 'all' ]; then
