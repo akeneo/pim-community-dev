@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\CatalogBundle\Entity\Association;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
@@ -17,6 +18,8 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
  *
  * @ORM\Table(name="pim_catalog_product_association")
  * @ORM\Entity(repositoryClass="Pim\Bundle\CatalogBundle\Entity\Repository\ProductAssociationRepository")
+ * 
+ * @ExclusionPolicy("all")
  */
 class ProductAssociation
 {
