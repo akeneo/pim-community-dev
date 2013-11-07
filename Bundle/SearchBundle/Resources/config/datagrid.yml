@@ -8,12 +8,6 @@ datagrid:
                 type: search-result
                 template: ~
                 frontend_type: html
-#            url:
-#                label: URL
-#                type: callback
-#                callable: ~
-#                frontend_type: string
-
         properties: ~
         sorters: ~
         filters: ~

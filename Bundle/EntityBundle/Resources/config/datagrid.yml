@@ -15,17 +15,20 @@ datagrid:
 
         properties:
             update_link:
-                type: url
+                type: callback
+                callable: @oro_entity.event_listener.custom_entity_grid_subscriber->getLinkProperty
                 route: oro_entity_update
                 params:
                     - id
             view_link:
-                type: url
+                type: callback
+                callable: @oro_entity.event_listener.custom_entity_grid_subscriber->getLinkProperty
                 route: oro_entity_view
                 params:
                     - id
             delete_link:
-                type: url
+                type: callback
+                callable: @oro_entity.event_listener.custom_entity_grid_subscriber->getLinkProperty
                 route: oro_entity_delete
                 params:
                     - id

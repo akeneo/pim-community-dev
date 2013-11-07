@@ -15,6 +15,8 @@ use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 use Oro\Bundle\EntityConfigBundle\Provider\PropertyConfigContainer;
 use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendConfigDumper;
+use Symfony\Bundle\FrameworkBundle\Routing\Router;
+use Symfony\Component\HttpFoundation\Request;
 
 class CustomEntityGridListener extends AbstractConfigGridListener
 {
@@ -35,6 +37,12 @@ class CustomEntityGridListener extends AbstractConfigGridListener
 
     /** @var  integer parent entity id */
     protected $parentId;
+
+    /** @var Router */
+    protected $router;
+
+    /** @var Request */
+    protected $request;
 
     protected $filterMap = array(
         'string'   => 'string',
@@ -63,11 +71,16 @@ class CustomEntityGridListener extends AbstractConfigGridListener
     /**
      * @param ConfigManager $configManager
      * @param RequestParameters $requestParameters
+     * @param Router $router
      */
-    public function __construct(ConfigManager $configManager, RequestParameters $requestParameters)
-    {
+    public function __construct(
+        ConfigManager $configManager,
+        RequestParameters $requestParameters,
+        Router $router
+    ) {
         $this->configManager = $configManager;
         $this->requestParams = $requestParameters;
+        $this->router = $router;
     }
 
     /**
@@ -87,8 +100,8 @@ class CustomEntityGridListener extends AbstractConfigGridListener
      */
     public function onBuildBefore(BuildBefore $event)
     {
-        $this->entityClass = $this->requestParams->get('entity_class');
-        if (empty($this->entityClass)) {
+        $entityClass = $this->getEntityClass();
+        if (empty($entityClass)) {
             return false;
         }
 
@@ -202,5 +215,67 @@ class CustomEntityGridListener extends AbstractConfigGridListener
                 'query' => ['select' => $select],
             ]
         ];
+    }
+
+    /**
+     * @param string $gridName
+     * @param string $keyName
+     * @param array $node
+     *
+     * @return callable
+     */
+    public function getLinkProperty($gridName, $keyName, $node)
+    {
+        $router    = $this->router;
+        if (!isset($node['route'])) {
+            return false;
+        } else {
+            $route = $node['route'];
+        }
+
+        $requestParams = $this->requestParams;
+
+        return function (ResultRecord $record) use ($router, $requestParams, $route) {
+            $className = $requestParams->get('entity_class');
+            return $router->generate(
+                $route,
+                array(
+                    'entity_id' => str_replace('\\', '_', $className),
+                    'id' => $record->getValue('id')
+                )
+            );
+        };
+    }
+
+    public function getEntityClass()
+    {
+        if (empty($this->entityClass)) {
+            $entityClass = $this->requestParams->get('entity_class');
+            if (empty($entityClass)) {
+                $entityClass = str_replace('_', '\\', $this->request->attributes->get('id'));
+            }
+
+            $this->entityClass = $entityClass;
+        }
+
+        return $this->entityClass;
+    }
+
+    /**
+     * @return Request
+     */
+    protected function getRequest()
+    {
+        return $this->request;
+    }
+
+    /**
+     * @param Request $request
+     */
+    public function setRequest(Request $request = null)
+    {
+        if ($request instanceof Request) {
+            $this->request = $request;
+        }
     }
 }

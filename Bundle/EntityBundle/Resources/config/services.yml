@@ -32,5 +32,8 @@ services:
         arguments:
             - @oro_entity_config.config_manager
             - @oro_datagrid.datagrid.request_params
+            - @router
+        calls:
+            - [setRequest, [@?request=]]
         tags:
             - { name: kernel.event_subscriber }
