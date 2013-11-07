@@ -295,18 +295,23 @@ class ProductTest extends \PHPUnit_Framework_TestCase
     {
         $this->product->addValue(
             $this->getValueMock(
-                $this->getAttributeMock(null, 'pim_catalog_text')
+                $this->getAttributeMock(null, 'pim_catalog_identifier', 'sku')
             )
         );
         $this->product->addValue(
             $this->getValueMock(
-                $this->getAttributeMock(null, 'pim_catalog_image'),
+                $this->getAttributeMock(null, 'pim_catalog_text', 'name')
+            )
+        );
+        $this->product->addValue(
+            $this->getValueMock(
+                $this->getAttributeMock(null, 'pim_catalog_image', 'view'),
                 $view = $this->getMediaMock()
             )
         );
         $this->product->addValue(
             $this->getValueMock(
-                $this->getAttributeMock(null, 'pim_catalog_file'),
+                $this->getAttributeMock(null, 'pim_catalog_file', 'manual'),
                 $manual = $this->getMediaMock()
             )
         );
@@ -385,7 +390,7 @@ class ProductTest extends \PHPUnit_Framework_TestCase
      *
      * @return \Pim\Bundle\CatalogBundle\Entity\ProductAttribute
      */
-    protected function getAttributeMock($group = null, $type = 'pim_catalog_text')
+    protected function getAttributeMock($group = null, $type = 'pim_catalog_text', $code = null)
     {
         $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductAttribute');
 
@@ -396,6 +401,14 @@ class ProductTest extends \PHPUnit_Framework_TestCase
         $attribute->expects($this->any())
             ->method('getAttributeType')
             ->will($this->returnValue($type));
+
+        $attribute->expects($this->any())
+            ->method('getCode')
+            ->will($this->returnValue($code));
+
+        $attribute->expects($this->any())
+            ->method('getData')
+            ->will($this->returnValue('foo'));
 
         return $attribute;
     }
@@ -478,10 +491,10 @@ class ProductTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return \Pim\Bundle\FlexibleEntityBundle\Entity\Media
+     * @return \Pim\Bundle\CatalogBundle\Entity\Media
      */
     protected function getMediaMock()
     {
-        return $this->getMock('Pim\Bundle\FlexibleEntityBundle\Entity\Media');
+        return $this->getMock('Pim\Bundle\CatalogBundle\Entity\Media');
     }
 }

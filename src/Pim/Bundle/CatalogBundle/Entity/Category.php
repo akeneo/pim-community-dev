@@ -37,7 +37,7 @@ use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
  *      }
  *  }
  * )
- * 
+ *
  * @ExclusionPolicy("all")
  */
 class Category extends AbstractSegment implements CategoryInterface, TranslatableInterface

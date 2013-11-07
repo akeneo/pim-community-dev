@@ -43,7 +43,7 @@ class ChangeFamilyTest extends \PHPUnit_Framework_TestCase
         $this->productManager
             ->expects($this->once())
             ->method('saveAll')
-            ->with($products, true);
+            ->with($products, false);
 
         $this->action->setFamily($family);
         $this->action->perform($products);

@@ -91,16 +91,33 @@ table.grid {
 }
 
 .jstree-root > a > .jstree-checkbox {
-    display: none;
+  display: none;
 }
 
 #tree_toolbar {
-    display: block;
-    padding: 16px 20px 16px 20px;
-    margin-bottom: 10px;
-    background: #efefef url("../../oroui/img/bg-gray-box.png") repeat-x;
-    border: solid #ccc;
-    border-width: 1px 0;
+  display: block;
+  padding: 16px 20px 16px 20px;
+  margin-bottom: 10px;
+  background: #efefef url("../../oroui/img/bg-gray-box.png") repeat-x;
+  border: solid #ccc;
+  border-width: 1px 0;
+}
+
+#nested_switch {
+  display: block;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background: #efefef url("../../oroui/img/bg-gray-box.png") repeat-x;
+  border: solid #ccc;
+  border-width: 1px 0;
+  .has-switch {
+    margin: 5px;
+  }
+  label.control-label {
+    padding-top: 9px;
+    padding-left: 9px;
+  }
 }
 
 a.back-link {
@@ -264,9 +281,6 @@ tr.warning, tr.error {
   .title {
     color: #444444;
     font-weight: bold;
-  }
-  span.data {
-    display: none;
   }
 }
 

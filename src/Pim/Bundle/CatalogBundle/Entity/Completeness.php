@@ -6,7 +6,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Product completeness entity
@@ -16,7 +15,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Pim\Bundle\CatalogBundle\Entity\Repository\CompletenessRepository")
  * @ORM\Table(
  *     name="pim_catalog_completeness",
  *     uniqueConstraints={
@@ -26,7 +25,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
  *         )
  *     }
  * )
- * 
+ *
  * @ExclusionPolicy("all")
  */
 class Completeness
@@ -44,6 +43,7 @@ class Completeness
      * @var Locale $locale
      *
      * @ORM\ManyToOne(targetEntity="Pim\Bundle\CatalogBundle\Entity\Locale")
+     * @ORM\JoinColumn(name="locale_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
      */
     protected $locale;
 
@@ -51,7 +51,7 @@ class Completeness
      * @var \Pim\Bundle\CatalogBundle\Entity\Channel $channel
      *
      * @ORM\ManyToOne(targetEntity="Pim\Bundle\CatalogBundle\Entity\Channel")
-     * @ORM\JoinColumn(name="channel_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\JoinColumn(name="channel_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
      */
     protected $channel;
 
@@ -77,36 +77,16 @@ class Completeness
     protected $requiredCount = 0;
 
     /**
-     * @var datetime $updated
-     *
-     * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(type="datetime")
-     */
-    protected $updated;
-
-    /**
      * @var \Pim\Bundle\CatalogBundle\Model\ProductInterface
      *
      * @ORM\ManyToOne(
      *     targetEntity="Pim\Bundle\CatalogBundle\Model\ProductInterface",
      *     inversedBy="completenesses"
      * )
-     * @ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
      */
     protected $product;
 
-    /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
-     *
-     * @ORM\ManyToMany(targetEntity="Pim\Bundle\CatalogBundle\Entity\ProductAttribute")
-     * @ORM\JoinTable(
-     *     name="pim_catalog_completenesses_attributes",
-     *     joinColumns={@ORM\JoinColumn(name="completeness_id", referencedColumnName="id", onDelete="CASCADE")},
-     *     inverseJoinColumns={
-     *         @ORM\JoinColumn(name="attribute_id", referencedColumnName="id", onDelete="CASCADE")
-     *     }
-     * )
-     */
     protected $missingAttributes;
 
     /**
@@ -233,30 +213,6 @@ class Completeness
     public function setRequiredCount($requiredCount)
     {
         $this->requiredCount = $requiredCount;
-
-        return $this;
-    }
-
-    /**
-     * Getter updated datetime
-     *
-     * @return datetime
-     */
-    public function getUpdated()
-    {
-        return $this->updated;
-    }
-
-    /**
-     * Setter updated datetime
-     *
-     * @param datetime $updated
-     *
-     * @return Completeness
-     */
-    public function setUpdated($updated)
-    {
-        $this->updated = $updated;
 
         return $this;
     }

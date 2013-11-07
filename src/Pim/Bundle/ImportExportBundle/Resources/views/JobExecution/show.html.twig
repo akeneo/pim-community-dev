@@ -59,7 +59,12 @@
                         <td>{{ step.status }}</td>
                         <td>{{ step.readCount }}</td>
                         <td>{{ step.filterCount }}</td>
-                        <td>{{ step.writeCount }}</td>
+                        <td>
+                            {{ step.writeCount }}
+                            {% if step.creationCount + step.updateCount == step.writeCount%}
+                                ({{ '%count% created'|trans({'%count%': step.creationCount}) }}, {{ '%count% updated'|trans({'%count%': step.updateCount}) }})
+                            {% endif %}
+                        </td>
                         <td>{{ step.startTime is empty ? "-" : step.startTime|date("Y-m-d H:i:s") }}</td>
                         <td>{{ step.endTime is empty ? "-" : step.endTime|date("Y-m-d H:i:s") }}</td>
                     </tr>
@@ -75,15 +80,14 @@
                                 data-hide-label="{{ 'Hide item'|trans }}">
                                 {{ 'Display item'|trans }}
                             </a>
-                            <span class="data">
-<pre>
-{{ 'Item'|trans }} (
-{% for key, value in warning.item %}
-    {{ key }} => {{ value }}
-{% endfor %}
-)
-</pre>
-                            </span>
+                            <table class="hide table-striped table-bordered table-hover">
+                                {% for key, value in warning.item %}
+                                <tr>
+                                    <td>{{ key }}</td>
+                                    <td>{{ value }}</td>
+                                </tr>
+                                {% endfor %}
+                            </table>
                         </td>
                     </tr>
                     {% endfor %}
@@ -126,7 +130,7 @@
 
                         event.preventDefault();
 
-                        $(this).siblings('span.data').toggle();
+                        $(this).siblings('table').toggleClass('hide');
                         $(this).text(newLabel);
                     });
                 });

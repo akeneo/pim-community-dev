@@ -83,7 +83,7 @@ class ProductCsvSerializerProcessorTest extends \PHPUnit_Framework_TestCase
      */
     public function getMediaMock()
     {
-        return $this->getMock('Pim\Bundle\FlexibleEntityBundle\Entity\Media');
+        return $this->getMock('Pim\Bundle\CatalogBundle\Entity\Media');
     }
 
     /**

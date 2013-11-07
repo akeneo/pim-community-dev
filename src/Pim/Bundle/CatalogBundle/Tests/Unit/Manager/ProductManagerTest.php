@@ -320,11 +320,11 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
      *
      * @param string $filename
      *
-     * @return \Pim\Bundle\FlexibleEntityBundle\Entity\Media
+     * @return \Pim\Bundle\CatalogBundle\Entity\Media
      */
     protected function getMediaMock($filename = null)
     {
-        $media = $this->getMock('Pim\Bundle\FlexibleEntityBundle\Entity\Media', array('getFile', 'isRemoved'));
+        $media = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Media');
 
         $media->expects($this->any())
               ->method('getFile')

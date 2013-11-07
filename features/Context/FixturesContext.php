@@ -23,10 +23,10 @@ use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Entity\ProductPrice;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\Currency;
+use Pim\Bundle\CatalogBundle\Entity\Media;
 use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Gherkin\Node\PyStringNode;
-use Oro\Bundle\FlexibleEntityBundle\Entity\Media;
 
 /**
  * A context for creating entities
@@ -691,7 +691,7 @@ class FixturesContext extends RawMinkContext
                 $category->setParent($parent);
             }
 
-            if (isset($data['products'])) {
+            if (isset($data['products']) && trim($data['products']) != '') {
                 $skus = explode(',', $data['products']);
                 foreach ($skus as $sku) {
                     $category->addProduct($this->getOrCreateProduct(trim($sku)));
@@ -1089,6 +1089,7 @@ class FixturesContext extends RawMinkContext
     {
         $this->placeholderValues['file to import'] = $filename =
             sprintf('/tmp/pim-import/behat-import-%s.csv', substr(md5(rand()), 0, 7));
+        @rmdir(dirname($filename));
         @mkdir(dirname($filename), 0777, true);
 
         file_put_contents($filename, (string) $string);

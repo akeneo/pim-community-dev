@@ -71,8 +71,7 @@ services:
         arguments:
             - '@pim_grid.datagrid.helper'
             - '@pim_catalog.manager.channel'
-            - '@pim_catalog.manager.product'
-            - '@pim_catalog.calculator.completeness'
+            - '@pim_catalog.factory.family'
 
     pim_catalog.controller.locale:
         scope: request
@@ -105,6 +104,7 @@ services:
             - '@pim_catalog.manager.locale'
             - '@pim_versioning.manager.audit'
             - '@oro_security.security_facade'
+            - '@pim_catalog.helper.completeness'
 
     pim_catalog.controller.mass_edit_action:
         scope: request

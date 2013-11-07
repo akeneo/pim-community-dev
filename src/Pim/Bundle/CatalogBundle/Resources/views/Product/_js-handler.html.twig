@@ -1,6 +1,6 @@
 <script type="text/javascript">
     require(
-        ['jquery', 'underscore', 'oro/mediator', 'pim/tree/associate', 'pim/scopable', 'pim/formupdatelistener', 'pim/dialog', 'pim/dialogform', 'oro/messenger', 'backbone/bootstrap-modal', 'jquery.currencyfield'],
+        ['jquery', 'underscore', 'oro/mediator', 'pim/tree/associate', 'pim/scopable', 'pim/formupdatelistener', 'pim/dialog', 'pim/dialogform', 'oro/messenger', 'backbone/bootstrap-modal', 'jquery.currencyfield', 'jquery.select2'],
         function ($, _, mediator, TreeAssociate, Scopable, FormUpdateListener, Dialog, DialogForm, messenger) {
             'use strict';
             $(function () {
@@ -21,7 +21,7 @@
                         }
                         var callback = function(data) {
                             if (data.status) {
-                                $field.siblings('select.select2-offscreen').first().append('<option value="' + data.option.id + '">' + data.option.label + '</option');
+                                $field.siblings('select.select2-offscreen').first().append('<option value="' + data.option.id + '" selected="selected">' + data.option.label + '</option').select2();
                                 messenger.notificationFlashMessage('success', '{{ "flash.attribute.option created"|trans }}');
                             } else {
                                 messenger.notificationFlashMessage('error', '{{ "flash.attribute.error creating option"|trans }}');

@@ -41,14 +41,13 @@ class ProductManager extends FlexibleManager
     /**
      * Constructor
      *
-     * @param string                   $flexibleName           Entity name
-     * @param array                    $flexibleConfig         Global flexible entities configuration array
-     * @param ObjectManager            $storageManager         Storage manager
-     * @param EventDispatcherInterface $eventDispatcher        Event dispatcher
-     * @param AttributeTypeFactory     $attributeTypeFactory   Attribute type factory
-     * @param MediaManager             $mediaManager           Media manager
-     * @param ProductBuilder           $builder                Product builder
-     * @param CompletenessCalculator   $completenessCalculator Completeness calculator
+     * @param string                   $flexibleName         Entity name
+     * @param array                    $flexibleConfig       Global flexible entities configuration array
+     * @param ObjectManager            $storageManager       Storage manager
+     * @param EventDispatcherInterface $eventDispatcher      Event dispatcher
+     * @param AttributeTypeFactory     $attributeTypeFactory Attribute type factory
+     * @param MediaManager             $mediaManager         Media manager
+     * @param ProductBuilder           $builder              Product builder
      */
     public function __construct(
         $flexibleName,
@@ -57,8 +56,7 @@ class ProductManager extends FlexibleManager
         EventDispatcherInterface $eventDispatcher,
         AttributeTypeFactory $attributeTypeFactory,
         MediaManager $mediaManager,
-        ProductBuilder $builder,
-        CompletenessCalculator $completenessCalculator
+        ProductBuilder $builder
     ) {
         parent::__construct(
             $flexibleName,
@@ -68,9 +66,8 @@ class ProductManager extends FlexibleManager
             $attributeTypeFactory
         );
 
-        $this->mediaManager           = $mediaManager;
-        $this->completenessCalculator = $completenessCalculator;
-        $this->builder                = $builder;
+        $this->mediaManager = $mediaManager;
+        $this->builder      = $builder;
     }
 
     /**
@@ -228,37 +225,27 @@ class ProductManager extends FlexibleManager
      * Save a product
      *
      * @param ProductInterface $product
-     * @param boolean          $calculateCompleteness
-     *
-     * @return null
+     * @param boolean          $recalculate Wether or not to directly recalculate the completeness
+     * @param boolean          $flush       Wether or not to flush the entity manager
      */
-    public function save(ProductInterface $product, $postpone = false, $flush = true)
+    public function save(ProductInterface $product, $recalculate = true, $flush = true)
     {
         $this->storageManager->persist($product);
-
-        if ($postpone) {
-            $this->completenessCalculator->schedule($product);
-        } else {
-            $this->completenessCalculator->calculateForAProduct($product);
-        }
+        $this->getCompletenessRepository()->schedule($product);
 
         if ($flush) {
             $this->storageManager->flush();
         }
+
+        if ($recalculate) {
+            $this->getCompletenessRepository()->createProductCompletenesses($product);
+        }
     }
 
-    public function saveAll(array $products, $postpone = false, $flush = true)
+    public function saveAll(array $products, $recalculate = false, $flush = true)
     {
         foreach ($products as $product) {
-            if (!$product instanceof \Pim\Bundle\CatalogBundle\Model\ProductInterface) {
-                throw new \InvalidArgumentException(
-                    sprintf(
-                        'Expected instance of Pim\Bundle\CatalogBundle\Model\ProductInterface, got %s',
-                        get_class($product)
-                    )
-                );
-            }
-            $this->save($product, $postpone, false);
+            $this->save($product, $recalculate, false);
         }
 
         if ($flush) {
@@ -341,7 +328,7 @@ class ProductManager extends FlexibleManager
                 $productAssociation->setAssociation($association);
                 $product->addProductAssociation($productAssociation);
             }
-            $this->save($product, true);
+            $this->storageManager->flush();
         }
     }
 
@@ -375,5 +362,15 @@ class ProductManager extends FlexibleManager
             $value->getScope(),
             time()
         );
+    }
+
+    /**
+     * Get the completeness repository
+     *
+     * @return \Doctrine\ORM\EntityRepository
+     */
+    protected function getCompletenessRepository()
+    {
+        return $this->storageManager->getRepository('PimCatalogBundle:Completeness');
     }
 }

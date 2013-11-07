@@ -14,8 +14,6 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
-use Doctrine\Common\Collections\ArrayCollection;
-
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
@@ -23,7 +21,6 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\GridBundle\Helper\DatagridHelperInterface;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
-use Pim\Bundle\CatalogBundle\Helper\CategoryHelper;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Exception\DeleteException;
 
@@ -99,25 +96,17 @@ class CategoryTreeController extends AbstractDoctrineController
      */
     public function listTreeAction(Request $request)
     {
-        $selectNodeId = $request->get('select_node_id');
-        $selectNode = null;
-
-        if ($selectNodeId != null) {
-            try {
-                $selectNode = $this->findCategory($selectNodeId);
-            } catch (NotFoundHttpException $e) {
-                $selectNode = null;
-            }
-        }
-        if ($selectNode === null) {
+        $selectNodeId = $request->get('select_node_id', -1);
+        try {
+            $selectNode = $this->findCategory($selectNodeId);
+        } catch (NotFoundHttpException $e) {
             $selectNode = $this->getDefaultTree();
         }
 
-        $trees = $this->categoryManager->getTrees();
-
-        $treesResponse = CategoryHelper::treesResponse($trees, $selectNode);
-
-        return array('trees' => $treesResponse);
+        return array(
+            'trees' => $this->categoryManager->getTrees(),
+            'selectedTreeId' => $selectNode->isRoot() ? $selectNode->getId() : $selectNode->getRoot()
+        );
     }
 
     /**
@@ -129,8 +118,8 @@ class CategoryTreeController extends AbstractDoctrineController
      */
     public function moveNodeAction(Request $request)
     {
-        $segmentId = $request->get('id');
-        $parentId = $request->get('parent');
+        $segmentId     = $request->get('id');
+        $parentId      = $request->get('parent');
         $prevSiblingId = $request->get('prev_sibling');
 
         if ($request->get('copy') == 1) {
@@ -138,7 +127,6 @@ class CategoryTreeController extends AbstractDoctrineController
         } else {
             $this->categoryManager->move($segmentId, $parentId, $prevSiblingId);
         }
-
         $this->categoryManager->getStorageManager()->flush();
 
         return new JsonResponse(array('status' => 1));
@@ -162,47 +150,43 @@ class CategoryTreeController extends AbstractDoctrineController
         try {
             $parent = $this->findCategory($request->get('id'));
         } catch (NotFoundHttpException $e) {
-            return array('data' => array());
+            return array('categories' => array());
         }
 
-        $selectNodeId      = $request->get('select_node_id');
-        $withProductsCount = (boolean) $request->get('with_products_count', false);
-        $includeParent     = $request->get('include_parent', false);
+        $selectNodeId      = $this->getRequest()->get('select_node_id', -1);
+        $withProductsCount = (bool) $this->getRequest()->get('with_products_count', false);
+        $includeParent     = (bool) $this->getRequest()->get('include_parent', false);
+        $includeSub        = (bool) $this->getRequest()->get('include_sub', false);
 
-        $selectNode = null;
+        try {
+            $selectNode = $this->findCategory($selectNodeId);
 
-        if ($selectNodeId != null) {
-            try {
-                $selectNode = $this->findCategory($selectNodeId);
-            } catch (NotFoundHttpException $e) {
+            if (!$this->categoryManager->isAncestor($parent, $selectNode)) {
                 $selectNode = null;
             }
-        }
-
-        if (($selectNode != null)
-            && (!$this->categoryManager->isAncestor($parent, $selectNode))) {
+        } catch (NotFoundHttpException $e) {
             $selectNode = null;
         }
 
-        // FIXME: Simplify and use a single helper method able to manage both cases
-        if ($selectNode != null) {
+        if ($selectNode !== null) {
             $categories = $this->categoryManager->getChildren($parent->getId(), $selectNode->getId());
-            if ($includeParent) {
-                $data = CategoryHelper::childrenTreeResponse($categories, $selectNode, $withProductsCount, $parent);
-            } else {
-                $data = CategoryHelper::childrenTreeResponse($categories, $selectNode, $withProductsCount);
-            }
-
+            $view = 'PimCatalogBundle:CategoryTree:children-tree.json.twig';
         } else {
             $categories = $this->categoryManager->getChildren($parent->getId());
-            if ($includeParent) {
-                $data = CategoryHelper::childrenResponse($categories, $withProductsCount, $parent);
-            } else {
-                $data = CategoryHelper::childrenResponse($categories, $withProductsCount);
-            }
+            $view = 'PimCatalogBundle:CategoryTree:children.json.twig';
         }
 
-        return array('data' => $data);
+        return $this->render(
+            $view,
+            array(
+                'categories'    => $categories,
+                'parent'        => ($includeParent) ? $parent : null,
+                'include_sub'   => $includeSub,
+                'product_count' => $withProductsCount,
+                'select_node'   => $selectNode
+            ),
+            new JsonResponse()
+        );
     }
 
     /**
@@ -216,15 +200,7 @@ class CategoryTreeController extends AbstractDoctrineController
      */
     public function listItemsAction(Category $category)
     {
-        $products = new ArrayCollection();
-
-        if (is_object($category)) {
-            $products = $category->getProducts();
-        }
-
-        $data = CategoryHelper::productsResponse($products);
-
-        return array('data' => $data);
+        return array('products' => $category->getProducts());
     }
 
     /**

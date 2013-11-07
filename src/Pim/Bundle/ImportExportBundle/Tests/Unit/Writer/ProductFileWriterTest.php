@@ -85,11 +85,11 @@ class ProductFileWriterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return \Pim\Bundle\FlexibleEntityBundle\Entity\Media
+     * @return \Pim\Bundle\CatalogBundle\Entity\Media
      */
     protected function getMediaMock()
     {
-        return $this->getMock('Pim\Bundle\FlexibleEntityBundle\Entity\Media');
+        return $this->getMock('Pim\Bundle\CatalogBundle\Entity\Media');
     }
 
     /**

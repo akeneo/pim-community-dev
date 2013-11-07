@@ -30,7 +30,7 @@ use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
  *      }
  *  }
  * )
- * 
+ *
  * @ExclusionPolicy("all")
  */
 class Family implements TranslatableInterface
@@ -236,7 +236,9 @@ class Family implements TranslatableInterface
      */
     public function addAttribute(ProductAttribute $attribute)
     {
-        $this->attributes[] = $attribute;
+        if (!$this->attributes->contains($attribute)) {
+            $this->attributes->add($attribute);
+        }
 
         return $this;
     }

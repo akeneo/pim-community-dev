@@ -26,17 +26,16 @@ Feature: Add a new option to a choice attribute directly from the product edit f
       | en_US | 19 inches |
     And I press the "Save" button in the popin
     Then I should see flash message "Option successfully created"
-    When I change the Diameter to "19 inches"
     And I save the product
     Then the product Diameter should be "19 inches"
 
   Scenario: Sucessfully add a new option to a multi select attribute
-    Given I add a new option to the "Widths" attribute
-    And I fill in the following information in the popin:
+    Given I change the Widths to "[215]"
+    And I add a new option to the "Widths" attribute
+    When I fill in the following information in the popin:
       | Code  | 245    |
       | en_US | 245 mm |
     And I press the "Save" button in the popin
     Then I should see flash message "Option successfully created"
-    When I change the Widths to "[215], 245 mm"
     And I save the product
     Then the product Widths should be "[215], 245 mm"
