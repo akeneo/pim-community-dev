@@ -19,7 +19,7 @@ define(
                 state: _.extend(OroPageableCollection.prototype.state, {
                     categoryId: '',
                     treeId: '',
-                    includeSub: false
+                    includeSub: 0
                 }),
                 /**
                  * Sets the category for the collection
@@ -30,7 +30,7 @@ define(
                  */
                 setCategory: function(treeId, categoryId, includeSub) {
                     treeId = (categoryId === '') ? '' : treeId;
-                    if (treeId !== this.state.treeId || categoryId !== this.state.categoryId || includeSub !== this.state.includeSub) {
+                    if (treeId !== this.state.treeId || categoryId !== this.state.categoryId || +includeSub !== this.state.includeSub) {
                         this.updateState({ treeId: treeId, categoryId: categoryId, includeSub: +includeSub });
                         this.url = this.setCategoryInUrl(this.url);
                         return true;
