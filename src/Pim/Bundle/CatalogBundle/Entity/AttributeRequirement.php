@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 
 /**
@@ -14,6 +15,8 @@ use Pim\Bundle\CatalogBundle\Entity\Channel;
  *
  * @ORM\Entity
  * @ORM\Table(name="pim_catalog_attribute_requirement")
+ * 
+ * @ExclusionPolicy("all")
  */
 class AttributeRequirement
 {

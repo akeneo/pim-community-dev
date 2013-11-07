@@ -8,7 +8,9 @@
 - Introduce command "pim:completeness:calculate" size argument to manage number of completenesses to calculate
 
 ## Improvements
+- Export media into separated sub directories
 - Separate product groups and variants management
+- Display number of created/updated products during import
 - Speed up completeness calculation
 
 ## Bug fixes

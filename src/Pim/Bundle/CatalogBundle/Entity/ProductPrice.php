@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 
 /**
@@ -14,6 +15,8 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
  *
  * @ORM\Table(name="pim_catalog_product_value_price")
  * @ORM\Entity
+ * 
+ * @ExclusionPolicy("all")
  */
 class ProductPrice
 {

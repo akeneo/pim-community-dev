@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -24,6 +25,8 @@ use Doctrine\ORM\Mapping as ORM;
  *         )
  *     }
  * )
+ * 
+ * @ExclusionPolicy("all")
  */
 class Completeness
 {

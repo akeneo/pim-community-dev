@@ -4,11 +4,13 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use JMS\Serializer\Annotation\ExclusionPolicy;
 use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexibleValue;
 use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttributeOption;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Entity\ProductPrice;
+use Pim\Bundle\CatalogBundle\Entity\Media;
 
 /**
  * Value for a product attribute
@@ -23,6 +25,8 @@ use Pim\Bundle\CatalogBundle\Entity\ProductPrice;
  *     @ORM\Index(name="integer_idx", columns={"value_integer"})
  * })
  * @ORM\Entity
+ * 
+ * @ExclusionPolicy("all")
  */
 class ProductValue extends AbstractEntityFlexibleValue implements ProductValueInterface
 {
@@ -125,8 +129,11 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
      *
      * @var Media $media
      *
-     * @ORM\OneToOne(targetEntity="Oro\Bundle\FlexibleEntityBundle\Entity\Media", cascade={"persist", "refresh"})
-     * @ORM\JoinColumn(name="media_id", referencedColumnName="id", onDelete="SET NULL")
+     * @ORM\OneToOne(
+     *     targetEntity="Pim\Bundle\CatalogBundle\Entity\Media",
+     *     cascade={"persist", "refresh"},
+     *     mappedBy="value"
+     * )
      */
     protected $media;
 
@@ -181,7 +188,7 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
     /**
      * Get media
      *
-     * @return \Oro\Bundle\FlexibleEntityBundle\Entity\Media
+     * @return \Pim\Bundle\CatalogBundle\Entity\Media
      */
     public function getMedia()
     {
@@ -191,12 +198,13 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
     /**
      * Set media
      *
-     * @param \Oro\Bundle\FlexibleEntityBundle\Entity\Media $media
+     * @param Pim\Bundle\CatalogBundle\Entity\Media $media
      *
      * @return ProductValue
      */
-    public function setMedia($media)
+    public function setMedia(Media $media)
     {
+        $media->setValue($this);
         $this->media = $media;
 
         return $this;
