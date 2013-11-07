@@ -43,7 +43,7 @@ class ConditionAssembler extends AbstractAssembler
         $conditionParameters = $this->getEntityParameters($configuration);
         if (is_array($conditionParameters)) {
             foreach ($conditionParameters as $key => $conditionParameter) {
-                if ($this->isService($conditionParameter) || $key == 'rules') {
+                if ($this->isService($conditionParameter) || $key === 'rules') {
                     $options[$key] = $this->assemble($conditionParameter);
                 } else {
                     $options[$key] = $conditionParameter;
