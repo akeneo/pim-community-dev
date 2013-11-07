@@ -74,6 +74,12 @@ class SystemAwareResolver implements ContainerAwareInterface
      */
     public function resolveSystemCall($datagridName, $key, $val)
     {
+        // resolve only scalar value, if it's not - value was already resolved
+        // this can happen in case of extended grid definitions
+        if (!is_scalar($val)) {
+            return $val;
+        }
+
         switch (true) {
             case preg_match('#%([\w\._]+)%#', $val, $match):
                 $val = $this->container->getParameter($match[1]);
