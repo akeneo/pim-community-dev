@@ -127,7 +127,7 @@ class FormatterExtension extends AbstractExtension
     }
 
     /**
-     * Validates specified too configuration
+     * Validates specified type configuration
      *
      * @param array  $config
      * @param string $type

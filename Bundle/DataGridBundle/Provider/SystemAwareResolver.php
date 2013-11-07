@@ -7,7 +7,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class SystemAwareResolver implements ContainerAwareInterface
 {
-    /**
+    /**W
      * @var ContainerInterface
      */
     protected $container;
@@ -72,7 +72,7 @@ class SystemAwareResolver implements ContainerAwareInterface
      *
      * @return string
      */
-    public function resolveSystemCall($datagridName, $key, $val)
+    protected function resolveSystemCall($datagridName, $key, $val)
     {
         // resolve only scalar value, if it's not - value was already resolved
         // this can happen in case of extended grid definitions
