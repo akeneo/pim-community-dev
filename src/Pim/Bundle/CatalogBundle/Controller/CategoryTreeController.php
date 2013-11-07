@@ -23,7 +23,6 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\GridBundle\Helper\DatagridHelperInterface;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
-use Pim\Bundle\CatalogBundle\Helper\CategoryHelper;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Exception\DeleteException;
 
@@ -156,9 +155,9 @@ class CategoryTreeController extends AbstractDoctrineController
             return array('categories' => array());
         }
 
-        $selectNodeId      = $request->get('select_node_id', -1);
-        $withProductsCount = (boolean) $request->get('with_products_count', false);
-        $includeParent     = $request->get('include_parent', false);
+        $selectNodeId      = $this->getRequest()->get('select_node_id', -1);
+        $withProductsCount = (bool) $this->getRequest()->get('with_products_count', false);
+        $includeParent     = (bool) $this->getRequest()->get('include_parent', false);
         $nested            = (bool) $this->getRequest()->get('nested', false);
 
         try {
@@ -173,10 +172,10 @@ class CategoryTreeController extends AbstractDoctrineController
 
         if ($selectNode !== null) {
             $categories = $this->categoryManager->getChildren($parent->getId(), $selectNode->getId());
-            $view = 'children-tree.json.twig';
+            $view = 'PimCatalogBundle:CategoryTree:children-tree.json.twig';
         } else {
             $categories = $this->categoryManager->getChildren($parent->getId());
-            $view = 'children.json.twig';
+            $view = 'PimCatalogBundle:CategoryTree:children.json.twig';
         }
 
         if (!$includeParent) {
@@ -184,7 +183,7 @@ class CategoryTreeController extends AbstractDoctrineController
         }
 
         return $this->render(
-            sprintf('PimCatalogBundle:CategoryTree:%s', $view),
+            $view,
             array(
                 'categories'    => $categories,
                 'parent'        => $parent,
