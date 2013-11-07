@@ -9,6 +9,7 @@
 ## Improvements
 - Export media into separated sub directories
 - Separate product groups and variants management
+- Display number of created/updated products during import
 
 ## Bug fixes
 - Mass delete products
