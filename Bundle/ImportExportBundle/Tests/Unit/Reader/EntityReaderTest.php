@@ -31,7 +31,7 @@ class EntityReaderTest extends \PHPUnit_Framework_TestCase
             ->getMock();
 
         $this->managerRegistry = $this->getMock('Doctrine\Common\Persistence\ManagerRegistry');
-        $this->reader = new EntityReader($this->managerRegistry, $this->contextRegistry);
+        $this->reader = new EntityReader($this->contextRegistry, $this->managerRegistry);
     }
 
     public function testReadMockIterator()
