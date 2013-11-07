@@ -134,10 +134,7 @@ function(_, Backbone, __, app, messenger, LoadingMask,
             var fcEvent = this.getCalendarElement().fullCalendar('clientEvents', eventModel.get('id'))[0];
             // copy all fields, except id, from event to fcEvent
             fcEvent = _.extend(fcEvent, _.pick(eventModel.attributes, _.keys(_.omit(fcEvent, ['id']))));
-            // convert start and end dates from RFC 3339 string to Date object
-            fcEvent.start = this.convertToViewDateTime(fcEvent.start);
-            fcEvent.end = this.convertToViewDateTime(fcEvent.end);
-
+            this.prepareViewModel(fcEvent);
             this.getCalendarElement().fullCalendar('updateEvent', fcEvent);
         },
 
@@ -248,7 +245,10 @@ function(_, Backbone, __, app, messenger, LoadingMask,
         },
 
         convertToViewDateTime: function (s) {
-            return dateTimeFormatter.formatDateTime(s);
+            if (!_.isDate(s)) {
+                s = $.fullCalendar.parseISO8601(s);
+            }
+            return s;
         },
 
         formatDateTimeForModel: function (d) {
