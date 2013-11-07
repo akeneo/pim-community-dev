@@ -38,6 +38,21 @@ class ProductBuilder
     protected $currencyManager;
 
     /**
+     * @var array
+     */
+    protected $scopeRows = null;
+
+    /**
+     * @var array
+     */
+    protected $localeRows = null;
+
+    /**
+     * @var array
+     */
+    protected $scopeToLocaleRows = null;
+
+    /**
      * Constructor
      *
      * @param string          $productClass    Entity name
@@ -75,7 +90,6 @@ class ProductBuilder
                     return !in_array($value, $existingValues);
                 }
             );
-
             foreach ($missingValues as $value) {
                 $this->addProductValue($product, $attribute, $value['locale'], $value['scope']);
             }
@@ -190,7 +204,6 @@ class ProductBuilder
         $product->addValue($value);
     }
 
-
     /**
      * Returns an array of product values for the passed attribute
      *
@@ -222,24 +235,15 @@ class ProductBuilder
     protected function getExpectedValues(ProductAttribute $attribute)
     {
         $requiredValues = array();
-        if ($attribute->getScopable()) {
-            $channels = $this->getChannels();
-            if ($attribute->getTranslatable()) {
-                foreach ($channels as $channel) {
-                    foreach ($channel->getLocales() as $locale) {
-                        $requiredValues[] = array('locale' => $locale->getCode(), 'scope' => $channel->getCode());
-                    }
-                }
-            } else {
-                foreach ($channels as $channel) {
-                    $requiredValues[] = array('locale' => null, 'scope' => $channel->getCode());
-                }
-            }
+        if ($attribute->getScopable() and $attribute->getTranslatable()) {
+            $requiredValues = $this->getScopeToLocaleRows();
+
+        } elseif ($attribute->getScopable()) {
+            $requiredValues = $this->getScopeRows();
+
         } elseif ($attribute->getTranslatable()) {
-            $locales = $this->getLocales();
-            foreach ($locales as $locale) {
-                $requiredValues[] = array('locale' => $locale->getCode(), 'scope' => null);
-            }
+            $requiredValues = $this->getLocaleRows();
+
         } else {
             $requiredValues[] = array('locale' => null, 'scope' => null);
         }
@@ -266,22 +270,58 @@ class ProductBuilder
     }
 
     /**
-     * Return available channels
+     * Return rows for available locales
      *
-     * @return ArrayCollection
+     * @return array
      */
-    protected function getChannels()
+    protected function getLocaleRows()
     {
-        return $this->objectManager->getRepository('PimCatalogBundle:Channel')->findAll();
+        if (!$this->localeRows) {
+            $locales = $this->objectManager->getRepository('PimCatalogBundle:Locale')->getActivatedLocales();
+            $this->localeRows = array();
+            foreach ($locales as $locale) {
+                $this->localeRows[]= array('locale' => $locale->getCode(), 'scope' => null);
+            }
+        }
+
+        return $this->localeRows;
     }
 
     /**
-     * Return available locales
+     * Return rows for available channels
      *
-     * @return ArrayCollection
+     * @return array
      */
-    protected function getLocales()
+    protected function getScopeRows()
     {
-        return $this->objectManager->getRepository('PimCatalogBundle:Locale')->getActivatedLocales();
+        if (!$this->scopeRows) {
+            $channels = $this->objectManager->getRepository('PimCatalogBundle:Channel')->findAll();
+            $this->scopeRows = array();
+            foreach ($channels as $channel) {
+                $this->scopeRows[]= array('locale' => null, 'scope' => $channel->getCode());
+            }
+        }
+
+        return $this->scopeRows;
+    }
+
+    /**
+     * Return rows for available channels and theirs locales
+     *
+     * @return array
+     */
+    protected function getScopeToLocaleRows()
+    {
+        if (!$this->scopeToLocaleRows) {
+            $channels = $this->objectManager->getRepository('PimCatalogBundle:Channel')->findAll();
+            $this->scopeToLocaleRows = array();
+            foreach ($channels as $channel) {
+                foreach ($channel->getLocales() as $locale) {
+                    $this->scopeToLocaleRows[]= array('locale' => $locale->getCode(), 'scope' => $channel->getCode());
+                }
+            }
+        }
+
+        return $this->scopeToLocaleRows;
     }
 }
