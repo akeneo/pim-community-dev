@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\WorkflowBundle\Model\Condition;
 
-class NotEqualTo implements ConditionInterface
+class NotEqualTo extends AbstractCondition
 {
     /**
      * @var EqualTo

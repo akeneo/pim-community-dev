@@ -61,7 +61,15 @@ return array(
         'transition_definitions' => array(
             'first_transition_definition' => array(
                 'conditions' => array(
-                    '@true' => null
+                    '@and' => array(
+                        '@true' => null,
+                        '@or' => array(
+                            'rules' => array(
+                                '@true' => null,
+                                '@equals' => array
+                            )
+                        )
+                    )
                 ),
                 'post_actions' => array(
                     array(

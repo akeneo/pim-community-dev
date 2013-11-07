@@ -25,11 +25,6 @@ class ConditionFactoryTest extends \PHPUnit_Framework_TestCase
     );
 
     /**
-     * @var array
-     */
-    protected $testOptions = array('key' => 'value');
-
-    /**
      * @var \PHPUnit_Framework_MockObject_MockObject
      */
     protected $container;
@@ -72,19 +67,59 @@ class ConditionFactoryTest extends \PHPUnit_Framework_TestCase
         $this->model->create(self::TEST_TYPE);
     }
 
-    public function testCreate()
+    /**
+     * @dataProvider optionsDataProvider
+     * @param array $options
+     */
+    public function testCreate(array $options)
     {
+        $initOptions = $options;
         $conditionMock = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\Condition\ConditionInterface')
             ->getMock();
+        if (isset($options['message'])) {
+            unset($initOptions['message']);
+
+            $translator = $this->getMockBuilder('Symfony\Component\Translation\TranslatorInterface')
+                ->getMockForAbstractClass();
+            $translatedMessage = 'Translated message';
+            $translator->expects($this->once())
+                ->method('trans')
+                ->with($options['message'])
+                ->will($this->returnValue($translatedMessage));
+
+            $this->container->expects($this->at(1))
+                ->method('get')
+                ->with('translator')
+                ->will($this->returnValue($translator));
+            $conditionMock->expects($this->once())
+                ->method('setMessage')
+                ->with($translatedMessage);
+        }
+        if (isset($options['rules'])) {
+            $initOptions = $options['rules'];
+        }
         $conditionMock->expects($this->once())
             ->method('initialize')
-            ->with($this->testOptions);
+            ->with($initOptions);
 
-        $this->container->expects($this->once())
+        $this->container->expects($this->at(0))
             ->method('get')
             ->with(self::TEST_TYPE_SERVICE)
             ->will($this->returnValue($conditionMock));
 
-        $this->model->create(self::TEST_TYPE, $this->testOptions);
+        $this->model->create(self::TEST_TYPE, $options);
+    }
+
+    /**
+     * @return array
+     */
+    public function optionsDataProvider()
+    {
+        return array(
+            array(array('key' => 'value')),
+            array(array('key' => 'value', 'message' => 'Test')),
+            array(array('key', 'value', 'message' => 'Test')),
+            array(array('rules' => array('key', 'value'), 'message' => 'Test')),
+        );
     }
 }

@@ -52,6 +52,14 @@ class ConditionFactory
             throw new \RunTimeException(sprintf('The service `%s` must implement `ConditionInterface`', $id));
         }
 
+        if (isset($options['message'])) {
+            $message = $this->container->get('translator')->trans($options['message']);
+            unset($options['message']);
+            $condition->setMessage($message);
+        }
+        if (isset($options['rules'])) {
+            $options = $options['rules'];
+        }
         $condition->initialize($options);
 
         return $condition;

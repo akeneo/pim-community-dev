@@ -43,6 +43,7 @@ class WorkflowConfiguration implements ConfigurationInterface
     }
 
     /**
+     * @param NodeBuilder $nodeBuilder
      * @return NodeBuilder
      */
     public function addWorkflowNodes(NodeBuilder $nodeBuilder)

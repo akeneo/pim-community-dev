@@ -7,6 +7,21 @@ use Oro\Bundle\WorkflowBundle\Exception\ConditionException;
 interface ConditionInterface
 {
     /**
+     * Set condition error message.
+     *
+     * @param string $message
+     * @return ConditionInterface
+     */
+    public function setMessage($message);
+
+    /**
+     * Get error message text.
+     *
+     * @return string
+     */
+    public function getMessage();
+
+    /**
      * Check if context meets condition requirements.
      *
      * @param mixed $context

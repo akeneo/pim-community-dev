@@ -5,7 +5,7 @@ namespace Oro\Bundle\WorkflowBundle\Model\Condition;
 use Oro\Bundle\WorkflowBundle\Exception\ConditionException;
 use Oro\Bundle\WorkflowBundle\Model\ContextAccessor;
 
-abstract class AbstractComparison implements ConditionInterface
+abstract class AbstractComparison extends AbstractCondition
 {
     /**
      * @var string
@@ -30,6 +30,14 @@ abstract class AbstractComparison implements ConditionInterface
     public function __construct(ContextAccessor $contextAccessor)
     {
         $this->contextAccessor = $contextAccessor;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getMessage()
+    {
+        return vsprintf($this->message, array('left' => $this->left, 'right' => $this->right));
     }
 
     /**

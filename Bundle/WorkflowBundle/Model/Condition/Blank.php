@@ -5,7 +5,7 @@ namespace Oro\Bundle\WorkflowBundle\Model\Condition;
 use Oro\Bundle\WorkflowBundle\Exception\ConditionException;
 use Oro\Bundle\WorkflowBundle\Model\ContextAccessor;
 
-class Blank implements ConditionInterface
+class Blank extends AbstractCondition
 {
     /**
      * @var ContextAccessor

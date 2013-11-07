@@ -10,6 +10,29 @@ use Oro\Bundle\WorkflowBundle\Model\Condition\ConditionInterface;
 class ArrayCondition extends ArrayCollection implements ConditionInterface
 {
     /**
+     * @var string
+     */
+    protected $message;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setMessage($message)
+    {
+        $this->message = $message;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getMessage()
+    {
+        return $this->message;
+    }
+
+    /**
      * @param array $options
      * @return ConditionInterface
      * @throws ConditionException

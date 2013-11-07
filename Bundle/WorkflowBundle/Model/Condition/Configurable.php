@@ -5,9 +5,10 @@ namespace Oro\Bundle\WorkflowBundle\Model\Condition;
 use Oro\Bundle\WorkflowBundle\Model\Condition\ConditionAssembler;
 use Oro\Bundle\WorkflowBundle\Model\Condition\ConditionInterface;
 
-class Configurable implements ConditionInterface
+class Configurable extends AbstractCondition
 {
     const ALIAS = 'configurable';
+    const DEFAULT_MESSAGE = 'Some conditions are not met';
 
     /**
      * @var array
@@ -27,6 +28,18 @@ class Configurable implements ConditionInterface
     public function __construct(ConditionAssembler $assembler)
     {
         $this->assembler = $assembler;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getMessage()
+    {
+        if ($this->message) {
+            return $this->message;
+        }
+
+        return self::DEFAULT_MESSAGE;
     }
 
     /**

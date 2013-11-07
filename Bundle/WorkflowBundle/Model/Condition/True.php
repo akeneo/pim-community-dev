@@ -4,7 +4,7 @@ namespace Oro\Bundle\WorkflowBundle\Model\Condition;
 
 use Oro\Bundle\WorkflowBundle\Exception\ConditionException;
 
-class True implements ConditionInterface
+class True extends AbstractCondition
 {
     /**
      * Always return TRUE
