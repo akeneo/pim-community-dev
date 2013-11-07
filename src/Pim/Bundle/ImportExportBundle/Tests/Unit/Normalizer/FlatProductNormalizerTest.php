@@ -15,7 +15,9 @@ use Pim\Bundle\CatalogBundle\Exception\MissingIdentifierException;
  */
 class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
 {
-    private $normalizer;
+    protected $normalizer;
+
+    protected $mediaManager;
 
     /**
      * @return array
@@ -35,7 +37,8 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->normalizer = new FlatProductNormalizer();
+        $this->mediaManager = $this->getMediaManagerMock();
+        $this->normalizer = new FlatProductNormalizer($this->mediaManager);
     }
 
     /**
@@ -58,7 +61,12 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
     public function testNormalizeProduct()
     {
         $now    = new \DateTime();
-        $media  = $this->getMediaMock('kb0001.jpg');
+        $media  = $this->getMediaMock();
+        $this->mediaManager
+            ->expects($this->any())
+            ->method('getExportPath')
+            ->with($media)
+            ->will($this->returnValue('files/media.jpg'));
 
         $values = array(
             $this->getValueMock($this->getAttributeMock('name', true), 'Brouette', 'fr_FR'),
@@ -88,7 +96,7 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
             'name-en_US'    => 'Wheelbarrow',
             'name-es_ES'    => 'Carretilla',
             'name-fr_FR'    => 'Brouette',
-            'visual'        => 'kb0001.jpg',
+            'visual'        => 'files/media.jpg',
         );
 
         $this->assertArrayEquals($result, $this->normalizer->normalize($product, 'csv'));
@@ -170,7 +178,7 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
      *
      * @return ProductInterface
      */
-    private function getProductMock($identifier = null, array $values = array(), $family = null, $categories = '')
+    protected function getProductMock($identifier = null, array $values = array(), $family = null, $categories = '')
     {
         $product = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Product');
         if ($identifier) {
@@ -205,7 +213,7 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
      *
      * @return ProductValue
      */
-    private function getValueMock($attribute = null, $data = null, $locale = null)
+    protected function getValueMock($attribute = null, $data = null, $locale = null)
     {
         $value = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductValue');
 
@@ -231,7 +239,7 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
      *
      * @return ProductAttribute
      */
-    private function getAttributeMock($code, $translatable = false, $type = 'pim_catalog_text')
+    protected function getAttributeMock($code, $translatable = false, $type = 'pim_catalog_text')
     {
         $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductAttribute');
 
@@ -255,7 +263,7 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
      *
      * @return Family
      */
-    private function getFamilyMock($code)
+    protected function getFamilyMock($code)
     {
         $family = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Family');
 
@@ -269,16 +277,18 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
     /**
      * @param string $filename
      *
-     * @return \Oro\Bundle\FlexibleEntityBundle\Entity\Media
+     * @return \Pim\Bundle\CatalogBundle\Entity\Media
      */
-    private function getMediaMock($filename)
+    protected function getMediaMock()
     {
-        $media = $this->getMock('Oro\Bundle\FlexibleEntityBundle\Entity\Media');
+        return $this->getMock('Pim\Bundle\CatalogBundle\Entity\Media');
+    }
 
-        $media->expects($this->any())
-            ->method('getFilename')
-            ->will($this->returnValue($filename));
-
-        return $media;
+    protected function getMediaManagerMock()
+    {
+        return $this
+            ->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\MediaManager')
+            ->disableOriginalConstructor()
+            ->getMock();
     }
 }

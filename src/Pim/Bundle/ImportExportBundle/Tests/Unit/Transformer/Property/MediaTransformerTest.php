@@ -4,7 +4,7 @@ namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Transformer\Property;
 
 use Pim\Bundle\ImportExportBundle\Transformer\Property\MediaTransformer;
 use Symfony\Component\HttpFoundation\File\File;
-use Oro\Bundle\FlexibleEntityBundle\Entity\Media;
+use Pim\Bundle\CatalogBundle\Entity\Media;
 
 /**
  * Tests related class
@@ -72,7 +72,7 @@ class MediaTransformerTest extends \PHPUnit_Framework_TestCase
                 $productValue
                     ->expects($this->once())
                     ->method('setMedia')
-                    ->with($this->isInstanceOf('Oro\Bundle\FlexibleEntityBundle\Entity\Media'))
+                    ->with($this->isInstanceOf('Pim\Bundle\CatalogBundle\Entity\Media'))
                     ->will(
                         $this->returnCallback(
                             function ($createdMedia) use ($test) {

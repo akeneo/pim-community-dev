@@ -7,6 +7,7 @@
 - Add a default tree per user
 
 ## Improvements
+- Export media into separated sub directories
 - Separate product groups and variants management
 
 ## Bug fixes
