@@ -52,7 +52,7 @@ class LoadUserAttrData extends AbstractFixture implements OrderedFixtureInterfac
         $storageManager = $this->userManager->getStorageManager();
 
         $attribute = $this->createAttributeWithOptions(
-            'oro_flexibleentity_simpleselect',
+            'pim_flexibleentity_simpleselect',
             'cataloglocale',
             $this->getLocales(),
             true,
@@ -61,7 +61,7 @@ class LoadUserAttrData extends AbstractFixture implements OrderedFixtureInterfac
         $storageManager->persist($attribute);
 
         $attribute = $this->createAttributeWithOptions(
-            'oro_flexibleentity_simpleselect',
+            'pim_flexibleentity_simpleselect',
             'catalogscope',
             $this->getScopes(),
             true,
@@ -70,7 +70,7 @@ class LoadUserAttrData extends AbstractFixture implements OrderedFixtureInterfac
         $storageManager->persist($attribute);
 
         $attribute = $this->createAttributeWithOptions(
-            'oro_flexibleentity_simpleselect',
+            'pim_flexibleentity_simpleselect',
             'defaulttree',
             $this->getTrees(),
             true,
