@@ -24,13 +24,12 @@ class IndexText
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Item", inversedBy="textFields")
+     * @ORM\ManyToOne(targetEntity="Item", inversedBy="stringFields")
      * @ORM\JoinColumn(name="item_id", referencedColumnName="id", nullable=false)
      */
     private $item;
 
     /**
-     *
      * @var string
      *
      * @ORM\Column(name="field", type="string", length=250, nullable=false)
