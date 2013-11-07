@@ -353,9 +353,12 @@ class ItemStepTest extends \PHPUnit_Framework_TestCase
             );
 
         $reader = $this->getMock('Oro\\Bundle\\BatchBundle\\Tests\\Unit\\Item\\ItemReaderTestHelper');
-        $reader->expects($this->any())
+        $reader->expects($this->at(0))
             ->method('read')
             ->will($this->returnValue(array('foo' => 'bar')));
+        $reader->expects($this->at(1))
+            ->method('read')
+            ->will($this->returnValue(null));
 
         $processor = $this->getMock('Oro\\Bundle\\BatchBundle\\Tests\\Unit\\Item\\ItemProcessorTestHelper');
         $processor->expects($this->any())
