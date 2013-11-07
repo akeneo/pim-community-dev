@@ -30,7 +30,7 @@ define(
                 ],
                 'nested_switch': {
                     state:    includeChildren,
-                    label:    __('Include sub-categories'),
+                    label:    __('jstree.include_sub'),
                     callback: function(state) {
                         includeChildren = state;
                         $el.jstree('refresh');
