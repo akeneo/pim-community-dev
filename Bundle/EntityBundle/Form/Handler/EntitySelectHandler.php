@@ -9,7 +9,12 @@ use Symfony\Component\HttpFoundation\Request;
 
 use Oro\Bundle\EntityBundle\Form\Type\EntitySelectType;
 use Oro\Bundle\EntityBundle\ORM\OroEntityManager;
+
+use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
+use Oro\Bundle\EntityExtendBundle\Tools\ExtendConfigDumper;
+
 use Oro\Bundle\FormBundle\Autocomplete\SearchHandlerInterface;
+
 use Oro\Bundle\SearchBundle\Engine\Indexer;
 
 class EntitySelectHandler implements SearchHandlerInterface
@@ -35,9 +40,14 @@ class EntitySelectHandler implements SearchHandlerInterface
     protected $properties = array('id', 'text');
 
     /**
-     * @var boolean
+     * @var bool
      */
     private $hasMore;
+
+    /**
+     * @var bool
+     */
+    protected $isCustomField = false;
 
     /**
      * @param OroEntityManager $entityManager
@@ -55,7 +65,15 @@ class EntitySelectHandler implements SearchHandlerInterface
         $result = array();
 
         if ($this->entityName && $this->fieldName) {
-            $result[$this->fieldName] = $this->getPropertyValue($this->fieldName, $item);
+            if ($this->isCustomField) {
+                $result[$this->fieldName] = $this->getPropertyValue(
+                    ExtendConfigDumper::FIELD_PREFIX . $this->fieldName,
+                    $item
+                );
+            } else {
+                $result[$this->fieldName] = $this->getPropertyValue($this->fieldName, $item);
+            }
+
             foreach ($this->properties as $property) {
                 $result[$property] = $this->getPropertyValue($property, $item);
             }
@@ -72,6 +90,14 @@ class EntitySelectHandler implements SearchHandlerInterface
         list($query, $targetEntity, $targetField) = explode(',', $query);
 
         $this->entityName = str_replace('_', '\\', $targetEntity);
+
+        $fieldConfig = $this->entityManager->getExtendManager()->getConfigProvider()
+            ->getConfig($this->entityName, $targetField);
+
+        if ($fieldConfig->is('owner', ExtendManager::OWNER_CUSTOM)) {
+            $this->isCustomField = true;
+        }
+
         $this->fieldName  = $targetField;
 
         return $this->formatResult($this->searchEntities($query, $targetField));
@@ -104,6 +130,10 @@ class EntitySelectHandler implements SearchHandlerInterface
     {
         /** @var QueryBuilder $queryBuilder */
         $queryBuilder = $this->entityManager->getRepository($this->entityName)->createQueryBuilder('e');
+
+        if ($this->isCustomField) {
+            $targetField = ExtendConfigDumper::FIELD_PREFIX . $targetField;
+        }
 
         $queryBuilder->where(
             $queryBuilder->expr()->like(

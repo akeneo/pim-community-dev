@@ -135,7 +135,7 @@ class EmailBody
      */
     public function setContent($bodyContent)
     {
-        $this->bodyContent = $bodyContent;
+        $this->bodyContent = ($bodyContent === null ? '' : $bodyContent);
 
         return $this;
     }

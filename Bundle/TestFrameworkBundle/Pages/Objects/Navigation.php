@@ -12,9 +12,14 @@ class Navigation extends Page
     protected $pinbar;
     protected $xpathMenu = '';
 
-    public function __construct($testCase, $redirect = true)
+    public function __construct($testCase, $args = array())
     {
-        parent::__construct($testCase, $redirect);
+        if (array_key_exists('url', $args)) {
+            $this->redirectUrl = $args['url'];
+        }
+
+        parent::__construct($testCase);
+
         $this->tabs = $this->byId("main-menu");
 
         $this->pinbar = $this->byXPath("//div[contains(@class, 'pin-bar')]");

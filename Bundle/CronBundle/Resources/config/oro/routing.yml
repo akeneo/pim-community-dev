@@ -1,0 +1,4 @@
+oro_cron_bundle:
+    resource:     "@OroCronBundle/Controller"
+    type:         annotation
+    prefix:       /cron

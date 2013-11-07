@@ -190,8 +190,11 @@ class CustomEntityDatagrid extends DatagridManager
                         $fieldConfig->getFieldName()
                     );
 
-                    $label               = $entityConfig->get('label') ?: $fieldConfig->getFieldName();
-                    $code                = ExtendConfigDumper::PREFIX . $fieldConfig->getFieldName();
+                    $label = $entityConfig->get('label') ?: $fieldConfig->getFieldName();
+                    $code  = $extendConfig->is('owner', ExtendManager::OWNER_CUSTOM)
+                        ? ExtendConfigDumper::FIELD_PREFIX . $fieldConfig->getFieldName()
+                        : $fieldConfig->getFieldName();
+
                     $this->queryFields[] = $code;
 
                     $fieldObject = new FieldDescription();

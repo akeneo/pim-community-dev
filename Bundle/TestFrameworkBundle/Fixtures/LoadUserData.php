@@ -34,9 +34,9 @@ class LoadUserData extends AbstractFixture implements ContainerAwareInterface, O
         /** @var UserManager $userManager */
         $userManager = $this->container->get('oro_user.manager');
 
-        $this->loadAttributes($userManager);
-
-        $admin = $userManager->createUser();
+        $admin  = $manager
+            ->getRepository('OroUserBundle:User')
+            ->findOneBy(array('username' => 'admin'));
 
         $role  = $manager
             ->getRepository('OroUserBundle:Role')
@@ -49,23 +49,33 @@ class LoadUserData extends AbstractFixture implements ContainerAwareInterface, O
             ->getRepository('OroOrganizationBundle:BusinessUnit')
             ->findOneBy(array('name' => 'Main'));
 
-        $api   = new UserApi();
-        $api->setApiKey('admin_api_key')
-            ->setUser($admin);
+        if (!$admin) {
 
-        $admin
-            ->setUsername('admin')
-            ->setPlainPassword('admin')
+            $this->loadAttributes($userManager);
+
+            $admin = $userManager->createUser();
+
+            $admin
+                ->setUsername('admin')
+                ->addRole($role)
+                ->addGroup($group);
+        }
+
+        $admin->setPlainPassword('admin')
             ->setFirstname('John')
             ->setLastname('Doe')
             ->setEmail('admin@example.com')
-            ->setApi($api)
-            ->addRole($role)
-            ->addGroup($group)
+            ->setOwner($unit)
             ->setBusinessUnits(
                 new ArrayCollection(array($unit))
-            )
-            ->setOwner($unit);
+            );
+
+        $api   = new UserApi();
+        if (!$admin->getApi()) {
+            $api->setApiKey('admin_api_key')
+                ->setUser($admin);
+            $admin->setApi($api);
+        }
 
         $this->addReference('default_user', $admin);
 

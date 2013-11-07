@@ -36,6 +36,7 @@ abstract class OroKernel extends Kernel
                 $cache->write($dumper->dump());
             }
 
+            // require instead of require_once used to correctly handle sub-requests
             $bundles = require $cache;
         }
 
@@ -49,10 +50,12 @@ abstract class OroKernel extends Kernel
 
         $finder
             ->files()
-            ->in(array(
-                $this->getRootDir() . '/../src',
-                $this->getRootDir() . '/../vendor',
-            ))
+            ->in(
+                array(
+                    $this->getRootDir() . '/../src',
+                    $this->getRootDir() . '/../vendor',
+                )
+            )
             ->name('bundles.yml');
 
         foreach ($finder as $file) {
@@ -72,6 +75,7 @@ abstract class OroKernel extends Kernel
 
                 if (!isset($bundles[$class])) {
                     $bundles[$class] = array(
+                        'name'     => $class,
                         'kernel'   => $kernel,
                         'priority' => $priority,
                     );
@@ -79,17 +83,37 @@ abstract class OroKernel extends Kernel
             }
         }
 
-        uasort($bundles, function ($a, $b) {
-            $p1 = (int) $a['priority'];
-            $p2 = (int) $b['priority'];
-
-            if ($p1 == $p2) {
-                return 0;
-            }
-
-            return ($p1 < $p2) ? -1 : 1;
-        });
+        uasort($bundles, array($this, 'compareBundles'));
 
         return $bundles;
+    }
+
+    public function compareBundles($a, $b)
+    {
+        // @todo: this is preliminary algorithm. we need to implement more sophisticated one,
+        // for example using bundle dependency info from composer.json
+        $p1 = (int) $a['priority'];
+        $p2 = (int) $b['priority'];
+
+        if ($p1 == $p2) {
+            $n1 = (string) $a['name'];
+            $n2 = (string) $b['name'];
+
+            // make sure OroCRM bundles follow Oro bundles
+            if (strpos($n1, 'Oro') === 0 && strpos($n2, 'Oro') === 0) {
+                if (strpos($n1, 'OroCRM') === 0) {
+                    return 1;
+                }
+                if (strpos($n2, 'OroCRM') === 0) {
+                    return -1;
+                }
+            }
+
+            // bundles with the same priorities are sorted alphabetically
+            return strcasecmp($n1, $n2);
+        }
+
+        // sort be priority
+        return ($p1 < $p2) ? -1 : 1;
     }
 }

@@ -48,8 +48,12 @@ class Indexer
      * @param ObjectMapper $mapper
      * @param SecurityProvider $securityProvider
      */
-    public function __construct(ObjectManager $em, AbstractEngine $adapter, ObjectMapper $mapper, SecurityProvider $securityProvider)
-    {
+    public function __construct(
+        ObjectManager $em,
+        AbstractEngine $adapter,
+        ObjectMapper $mapper,
+        SecurityProvider $securityProvider
+    ) {
         $this->em      = $em;
         $this->adapter = $adapter;
         $this->mapper  = $mapper;
@@ -172,10 +176,10 @@ class Indexer
         if (!empty($queryFromEntities) && $queryFromEntities[0] !== '*') {
             foreach ($queryFromEntities as $key => $fromEntityAlias) {
                 if (!in_array($fromEntityAlias, $entitiesList)) {
-                    unset ($queryFromEntities[$key]);
+                    unset($queryFromEntities[$key]);
                 }
             }
-            $query->from($allowedEntities);
+            $query->from($queryFromEntities);
         } else {
             $query->from($allowedEntities);
         }

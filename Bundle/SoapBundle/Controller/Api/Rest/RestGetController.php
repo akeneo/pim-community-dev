@@ -5,7 +5,6 @@ namespace Oro\Bundle\SoapBundle\Controller\Api\Rest;
 use Oro\Bundle\SoapBundle\Controller\Api\EntityManagerAwareInterface;
 use Symfony\Component\HttpFoundation\Response;
 
-use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\Proxy\Proxy;
 use Doctrine\ORM\UnitOfWork;
 
@@ -19,8 +18,8 @@ abstract class RestGetController extends FOSRestController implements EntityMana
     /**
      * GET entities list
      *
-     * @param int $page
-     * @param int $limit
+     * @param  int      $page
+     * @param  int      $limit
      * @return Response
      */
     public function handleGetListRequest($page = 1, $limit = self::ITEMS_PER_PAGE)
@@ -40,7 +39,7 @@ abstract class RestGetController extends FOSRestController implements EntityMana
     /**
      * GET single item
      *
-     * @param mixed $id
+     * @param  mixed    $id
      * @return Response
      */
     public function handleGetRequest($id)
@@ -58,7 +57,7 @@ abstract class RestGetController extends FOSRestController implements EntityMana
     /**
      * Prepare entity for serialization
      *
-     * @param mixed $entity
+     * @param  mixed $entity
      * @return array
      */
     protected function getPreparedItem($entity)
@@ -91,12 +90,12 @@ abstract class RestGetController extends FOSRestController implements EntityMana
      * Prepare entity field for serialization
      *
      * @param string $field
-     * @param mixed $value
+     * @param mixed  $value
      */
     protected function transformEntityField($field, &$value)
     {
         if ($value instanceof Proxy && method_exists($value, '__toString')) {
-            $value = (string)$value;
+            $value = (string) $value;
         } elseif ($value instanceof \DateTime) {
             $value = $value->format('c');
         }

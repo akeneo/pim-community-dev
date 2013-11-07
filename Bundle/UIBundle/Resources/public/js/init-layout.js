@@ -9,9 +9,10 @@ function(mediator) {
         }, 50);
     });
 });
-require(['jquery', 'underscore', 'oro/translator', 'oro/app', 'oro/mediator', 'oro/layout', 'oro/navigation', 'oro/modal', 'oro/messenger',
+require(['jquery', 'underscore', 'oro/translator', 'oro/app', 'oro/mediator', 'oro/layout', 'oro/navigation',
+    'oro/delete-confirmation', 'oro/messenger',
     'bootstrap', 'jquery-ui', 'jquery-ui-timepicker'],
-function($, _, __, app, mediator, layout, Navigation, Modal, messenger) {
+function($, _, __, app, mediator, layout, Navigation, DeleteConfirmation, messenger) {
     'use strict';
 
     /* ============================================================
@@ -245,10 +246,8 @@ function($, _, __, app, mediator, layout, Navigation, Modal, messenger) {
                 el = $(this),
                 message = el.data('message');
 
-            confirm = new Modal({
-                title: __('Delete Confirmation'),
-                content: message,
-                okText: __('Yes, Delete')
+            confirm = new DeleteConfirmation({
+                content: message
             });
 
             confirm.on('ok', function() {
@@ -270,6 +269,8 @@ function($, _, __, app, mediator, layout, Navigation, Modal, messenger) {
                             } else {
                                 window.location.href = el.data('redirect');
                             }
+                        } else if (navigation) {
+                            navigation.loadingMask.hide();
                         }
                     },
                     error: function () {

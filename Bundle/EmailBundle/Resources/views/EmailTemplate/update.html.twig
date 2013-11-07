@@ -1,6 +1,6 @@
 {% extends 'OroUIBundle:actions:update.html.twig' %}
 {% form_theme form with [
-    'OroUIBundle:Form:fields.html.twig',
+    'OroFormBundle:Form:fields.html.twig',
 ]%}
 {% import 'OroEmailBundle::macros.html.twig' as _emailMacros %}
 {% set title = form.vars.value.id
@@ -57,14 +57,15 @@
                     'label': 'Delete'
                 })
             }}
-            {{ UI.buttonSeparator() }}
         {% endif %}
-        {{ cancelButton }}
-
+    {% endif %}
+    {% if form.vars.value.isEditable %}
+        {{ UI.buttonSeparator() }}
+    {% endif %}
+    {{ cancelButton  }}
+    {% if form.vars.value.isEditable %}
         {{ UI.saveAndStayButton('oro_email_emailtemplate_update') }}
         {{ UI.saveAndCloseButton() }}
-    {% else %}
-        {{ cancelButton  }}
     {% endif %}
 {% endblock navButtons %}
 

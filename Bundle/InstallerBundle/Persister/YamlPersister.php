@@ -14,11 +14,18 @@ class YamlPersister
     protected $paramFile;
 
     /**
-     * @param string $paramFile Path to parameters.yml file
+     * @param string $dir Path to parameters storage directory
+     * @param string $env Current environment
      */
-    public function __construct($paramFile)
+    public function __construct($dir, $env)
     {
-        $this->paramFile = $paramFile;
+        if (file_exists($file = $dir . '/parameters_' . $env . '.yml')) {
+            $this->paramFile = $file;
+        } elseif (file_exists($dir . '/parameters_' . $env . '.yml.dist')) {
+            $this->paramFile = $dir . '/parameters_' . $env . '.yml';
+        } else {
+            $this->paramFile = $dir . '/parameters.yml';
+        }
     }
 
     public function parse()

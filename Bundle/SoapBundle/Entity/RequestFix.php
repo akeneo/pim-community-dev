@@ -3,7 +3,6 @@
 namespace Oro\Bundle\SoapBundle\Entity;
 
 use Doctrine\Common\Persistence\ObjectRepository;
-use Doctrine\Common\Util\ClassUtils;
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttribute;
@@ -26,10 +25,10 @@ class RequestFix
     /**
      * Fix Request object so forms can be handled correctly
      *
-     * @param string $entityClass
-     * @param array $data
-     * @param string $attributeKey
-     * @param string $requestAttributeKey
+     * @param  string $entityClass
+     * @param  array  $data
+     * @param  string $attributeKey
+     * @param  string $requestAttributeKey
      * @return array
      */
     public function getFixedAttributesData($entityClass, array $data, $attributeKey = 'values', $requestAttributeKey = 'attributes')
@@ -72,7 +71,7 @@ class RequestFix
             $data[$attributeKey][$attrCode][$type] = $default;
 
             foreach ($attrVal as $fieldCode => $fieldValue) {
-                if ($attr->getCode() == (string)$fieldCode) {
+                if ($attr->getCode() == (string) $fieldCode) {
                     if (is_array($fieldValue)) {
                         if (array_key_exists('scope', $fieldValue)) {
                             $data[$attributeKey][$attrCode]['scope'] = $fieldValue['scope'];
@@ -82,7 +81,7 @@ class RequestFix
                         }
                         $fieldValue = $fieldValue['value'];
                     }
-                    $data[$attributeKey][$attrCode][$type] = (string)$fieldValue;
+                    $data[$attributeKey][$attrCode][$type] = (string) $fieldValue;
 
                     break;
                 }

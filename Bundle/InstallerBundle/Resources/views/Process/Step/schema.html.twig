@@ -1,7 +1,7 @@
 {% extends 'OroInstallerBundle::layout.html.twig' %}
 {% use 'OroInstallerBundle::progress.html.twig' %}
 
-{% set step, steps = 'schema', ['cache', 'drop', 'clear', 'create', 'fixtures', 'init-config', 'init-extend', 'update-config'] %}
+{% set step, steps = 'schema', ['cache', 'schema-drop', 'clear', 'schema-create', 'init-config', 'init-extend', 'update-config', 'schema-update', 'fixtures'] %}
 
 {% block title %}{{ 'process.step.schema.header'|trans }} - {{ parent() }}{% endblock %}
 
