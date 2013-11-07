@@ -3,7 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\Twig;
 
 use Pim\Bundle\CatalogBundle\Entity\Category;
-
 use Pim\Bundle\CatalogBundle\Twig\CategoryExtension;
 
 /**
@@ -112,32 +111,47 @@ class CategoryExtensionTest extends \PHPUnit_Framework_TestCase
      */
     public function testDefineStateWithChild()
     {
-        // open
+        // test open state
         $category = $this->getCategoryMock();
 
         $state = $this->categoryExtension->defineState($category, true);
         $this->assertEquals('open', $state);
 
-        // open + toselect
+        // test open state with root node
         $category = $this->getCategoryMock(array('is_root' => true));
 
         $state = $this->categoryExtension->defineState($category, true);
         $this->assertEquals('open jstree-root', $state);
-
-        // open + toselect + root
-
-        // open + root
     }
 
+    /**
+     * Test defineState method with selected node
+     */
     public function testDefineStateWithSelectedNode()
     {
-        $selectCategory = $this->getCategoryMock(array('id' => 3));
+        $selectedCategory = $this->getCategoryMock(array('id' => 3));
 
-        // leaf + to select + root
+        // test open state with selected node
         $category = $this->getCategoryMock(array('id' => 3));
 
-        $state = $this->categoryExtension->defineState($category, false, $selectCategory);
+        $state = $this->categoryExtension->defineState($category, true, $selectedCategory);
+        $this->assertEquals('open toselect', $state);
+
+        // test leaf state with selected node
+        $state = $this->categoryExtension->defineState($category, false, $selectedCategory);
         $this->assertEquals('leaf toselect', $state);
+
+        // test close state with selected node
+        $category = $this->getCategoryMock(array('id' => 3, 'is_root' => true));
+
+        $state = $this->categoryExtension->defineState($category, false, $selectedCategory);
+        $this->assertEquals('leaf toselect jstree-root', $state);
+
+        // test close state with different selected node
+        $seletedCategory = $this->getCategoryMock(array('id' => 5));
+
+        $state = $this->categoryExtension->defineState($category, false, $seletedCategory);
+        $this->assertEquals('leaf jstree-root', $state);
     }
 
     /**
@@ -159,13 +173,6 @@ class CategoryExtensionTest extends \PHPUnit_Framework_TestCase
                 ->expects($this->any())
                 ->method('getId')
                 ->will($this->returnValue($properties['id']));
-        }
-
-        if (isset($properties['parent'])) {
-            $category
-                ->expects($this->any())
-                ->method('getParent')
-                ->will($this->returnValue($properties['parent']));
         }
 
         if (isset($properties['has_children'])) {
