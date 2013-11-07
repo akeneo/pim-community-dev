@@ -5,16 +5,19 @@
 - History of changes for import / export profiles
 - Allow creating new options for simple select and multiselect attributes directly from the product edit form
 - Add a default tree per user
+- Introduce command "pim:completeness:calculate" size argument to manage number of completenesses to calculate
 
 ## Improvements
 - Export media into separated sub directories
 - Separate product groups and variants management
 - Display number of created/updated products during import
+- Speed up completeness calculation
 
 ## Bug fixes
 - Mass delete products
 
 ## BC breaks
+- Command "pim:product:completeness-calculator" has been replaced into "pim:completeness:calculate"
 
 
 # 1.0.0-beta-2 - "Hold the Lion, Please" (2013-10-29)

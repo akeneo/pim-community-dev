@@ -17,6 +17,7 @@
                     {% include 'PimCatalogBundle:Product:_healthbar.html.twig'
                         with {
                             'channel': channel,
+                            'locale': locale,
                             'completeness': product.completeness(locale.code, channel.code),
                             'product': product
                     } %}

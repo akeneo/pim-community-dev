@@ -67,4 +67,3 @@ services:
         class: %pim_grid.datagrid.helper.class%
         arguments:
             - '@service_container'
-

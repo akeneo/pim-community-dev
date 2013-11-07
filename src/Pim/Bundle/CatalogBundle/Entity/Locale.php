@@ -29,7 +29,7 @@ use Pim\Bundle\CatalogBundle\Validator\Constraints as PimAssert;
  *      }
  *  }
  * )
- * 
+ *
  * @ExclusionPolicy("all")
  */
 class Locale

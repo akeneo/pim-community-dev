@@ -144,4 +144,21 @@ class ProductRepository extends FlexibleEntityRepository
 
         return $qb->getQuery()->getResult();
     }
+
+    public function findByMissingCompleteness(Channel $channel)
+    {
+        return $this
+            ->findByWithAttributesQB()
+            ->andWhere(
+                'Entity.id NOT IN (
+                    SELECT p.id FROM Pim\Bundle\CatalogBundle\Entity\Product p
+                    LEFT JOIN p.completenesses c
+                    LEFT JOIN c.channel ch
+                    WHERE ch.id = :channel
+                )'
+            )
+            ->setParameter('channel', $channel->getId())
+            ->getQuery()
+            ->execute();
+    }
 }

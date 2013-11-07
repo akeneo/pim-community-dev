@@ -3,9 +3,10 @@
 namespace Pim\Bundle\ImportExportBundle\Reader;
 
 use Symfony\Component\Validator\Constraints as Assert;
+use Pim\Bundle\ImportExportBundle\Validator\Constraints\Channel as ChannelConstraint;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Pim\Bundle\ImportExportBundle\Validator\Constraints\Channel;
+use Pim\Bundle\CatalogBundle\Entity\Channel;
 
 /**
  * Product reader
@@ -17,23 +18,28 @@ use Pim\Bundle\ImportExportBundle\Validator\Constraints\Channel;
 class ProductReader extends ORMReader
 {
     /**
-     * @var EntityManager
-     */
-    protected $em;
-
-    /**
+     * @var string
+     *
      * @Assert\NotBlank
-     * @Channel
+     * @ChannelConstraint
      */
     protected $channel;
+
+    /** @var ProductManager */
+    protected $productManager;
+
+    /** @var ChannelManager */
+    protected $channelManager;
 
     /**
      * @param ProductManager $productManager
      * @param ChannelManager $channelManager
      */
-    public function __construct(ProductManager $productManager, ChannelManager $channelManager)
-    {
-        $this->repository     = $productManager->getFlexibleRepository();
+    public function __construct(
+        ProductManager $productManager,
+        ChannelManager $channelManager
+    ) {
+        $this->productManager = $productManager;
         $this->channelManager = $channelManager;
     }
 
@@ -44,7 +50,15 @@ class ProductReader extends ORMReader
     {
         if (!$this->query) {
             $channel = current($this->channelManager->getChannels(array('code' => $this->channel)));
-            $this->query = $this->repository
+            if (!$channel) {
+                throw new \InvalidArgumentException(
+                    sprintf('Could not find the channel %s', $this->channel)
+                );
+            }
+
+            $this->getCompletenessRepository()->createChannelCompletenesses($channel);
+
+            $this->query = $this->getProductRepository()
                 ->buildByChannelAndCompleteness($channel)
                 ->getQuery();
         }
@@ -84,5 +98,28 @@ class ProductReader extends ORMReader
                 )
             )
         );
+    }
+
+    /**
+     * Get the product repository
+     *
+     * @return \Doctrine\ORM\EntityRepository
+     */
+    protected function getProductRepository()
+    {
+        return $this->productManager->getFlexibleRepository();
+    }
+
+    /**
+     * Get the completeness repository
+     *
+     * @return \Doctrine\ORM\EntityRepository
+     */
+    protected function getCompletenessRepository()
+    {
+        return $this
+            ->productManager
+            ->getStorageManager()
+            ->getRepository('PimCatalogBundle:Completeness');
     }
 }

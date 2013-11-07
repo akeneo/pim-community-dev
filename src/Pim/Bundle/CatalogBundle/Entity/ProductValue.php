@@ -25,7 +25,7 @@ use Pim\Bundle\CatalogBundle\Entity\Media;
  *     @ORM\Index(name="integer_idx", columns={"value_integer"})
  * })
  * @ORM\Entity
- * 
+ *
  * @ExclusionPolicy("all")
  */
 class ProductValue extends AbstractEntityFlexibleValue implements ProductValueInterface
@@ -132,7 +132,7 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
      * @ORM\OneToOne(
      *     targetEntity="Pim\Bundle\CatalogBundle\Entity\Media",
      *     cascade={"persist", "refresh"},
-     *     mappedBy="value"
+     *     inversedBy="value"
      * )
      */
     protected $media;
