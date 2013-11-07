@@ -5,7 +5,7 @@
 {% endspaceless %}
 
 {{ form_start(form, {
-    'action': path('pim_catalog_productattribute_create_option', { id: attribute.id }),
+    'action': path('pim_catalog_productattribute_create_option', { id: attribute.id, dataLocale: dataLocale }),
     'class': 'form-inline',
     'attr': {
         'data-title': 'Create a new option'|trans,
@@ -19,5 +19,15 @@
 
     <div class="row-fluid">
         {{ form_row(form.code) }}
-    </div>
+        {% form_theme form 'PimCatalogBundle:Form:simple_layout.html.twig' %}
+
+        <div class="control-group">
+            <label class="control-label" for="{{ form.optionValues|first.value.vars.id }}">
+                {{ form.optionValues|first.locale.vars.value }}
+            </label>
+            <div class="controls">
+                {{ form_row(form.optionValues|first) }}
+            </div>
+        </div>
+
 {{ form_end(form) }}

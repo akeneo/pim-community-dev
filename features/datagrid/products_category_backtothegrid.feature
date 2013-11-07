@@ -19,36 +19,30 @@ Feature: Product category back to the grid
       | tshirts        | catalog | TShirts  | purple-tshirt,green-tshirt |
       | trousers       | catalog | Trousers |                            |
     And I am logged in as "admin"
+    And I am on the products page
+    And I select the "Catalog" tree
 
-  @insulated
   Scenario: Successfully restore category filter without hashnav
-    Given I am on the products page
-    And I filter per category "tshirts"
+    Given I filter per category "tshirts"
     And I am on the products page
     Then I should see products purple-tshirt and green-tshirt
     And I should not see products akeneo-mug
 
-  @insulated
   Scenario: Successfully restore category filter with hashnav
-    Given I am on the products page
-    And I filter per category "tshirts"
+    Given I filter per category "tshirts"
     And I click on the "purple-tshirt" row
     And I click back to grid
     Then I should see products purple-tshirt and green-tshirt
     And I should not see products akeneo-mug
 
-  @insulated
   Scenario: Successfully restore unclassified category filter without hashnav
-    Given I am on the products page
-    And I filter per unclassified category
+    Given I filter per unclassified category
     And I am on the products page
     Then I should see products akeneo-mug
     And I should not see products purple-tshirt and green-tshirt
 
-  @insulated
   Scenario: Successfully restore unclassified category filter with hashnav
-    Given I am on the products page
-    And I filter per unclassified category
+    Given I filter per unclassified category
     And I click on the "akeneo-mug" row
     And I click back to grid
     Then I should see products akeneo-mug

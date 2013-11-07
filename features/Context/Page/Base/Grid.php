@@ -105,7 +105,7 @@ class Grid extends Index
      *
      * @param string $filterName
      * @param string $value
-     * @param string $operator :if false, no operator will be selected
+     * @param string $operator   :if false, no operator will be selected
      */
     public function filterBy($filterName, $value, $operator = false)
     {
@@ -584,5 +584,61 @@ class Grid extends Index
     protected function getRows()
     {
         return $this->getElement('Grid content')->findAll('css', 'tr');
+    }
+
+    /**
+     * @param string $code
+     */
+    public function filterPerFamily($code)
+    {
+        $elt = $this->getElement('Filters')->find('css', sprintf(':contains("%s") select', $code));
+
+        if (!$elt) {
+            throw new \Exception(sprintf('Could not find filter for family "%s".', $code));
+        }
+
+        $elt->selectOption($code);
+    }
+
+    /**
+     * @param string $action   Type of filtering (>, >=, etc.)
+     * @param number $value    Value to filter
+     * @param string $currency Currency on which filter
+     */
+    public function filterPerPrice($action, $value, $currency)
+    {
+        $filter = $this->getFilter('Price');
+        if (!$filter) {
+            throw new \Exception('Could not find filter for price.');
+        }
+
+        $this->openFilter($filter);
+
+        $criteriaElt = $filter->find('css', 'div.filter-criteria');
+        $criteriaElt->fillField('value', $value);
+
+        // Open the dropdown menu with currency list and click on $currency line
+        $this->pressButton('Currency');
+        $this->pressButton($currency);
+
+        // Open the dropdown menu with action list and click on $action line
+        $this->pressButton('Action');
+        $this->pressbutton($action);
+
+        $filter->find('css', 'button.filter-update')->click();
+    }
+
+    /**
+     * @param string $code
+     */
+    public function filterPerChannel($code)
+    {
+        $elt = $this->getElement('Filters')->find('css', sprintf(':contains("%s") select', $code));
+
+        if (!$elt) {
+            throw new \Exception(sprintf('Could not find filter for channel "%s".', $code));
+        }
+
+        $elt->selectOption($code);
     }
 }

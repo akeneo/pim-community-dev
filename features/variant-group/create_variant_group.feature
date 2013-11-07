@@ -44,10 +44,10 @@ Feature: Variant group creation
     Then I should see validation error "Group code may contain only letters, numbers and underscores."
 
   Scenario: Fail to create a variant filling an already used code
-    Given I am on the variant groups page
-    And the following product groups:
+    Given the following product groups:
       | code    | label          | attributes  | type    |
       | TSHIRT  | T-Shirt Akeneo | size, color | VARIANT |
+    And I am on the variant groups page
     When I create a new variant group
     And I fill in the following information in the popin:
       | Code | TSHIRT  |

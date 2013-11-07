@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 
 /**
@@ -19,6 +20,8 @@ use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
  *          @ORM\UniqueConstraint(name="locale_foreign_key_idx", columns={"locale", "foreign_key"})
  *      }
  * )
+ * 
+ * @ExclusionPolicy("all")
  */
 class CategoryTranslation extends AbstractTranslation
 {

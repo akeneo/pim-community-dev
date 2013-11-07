@@ -21,17 +21,17 @@ Feature: Filter products per price
     And a "postit" product
     And a "book" product
     And the following product attributes:
-      | label       | required | translatable | scopable | type   |
-      | SKU         | yes      | no           | no       | text   |
-      | price       | no       | no           | yes      | prices |
+      | label | required | translatable | scopable | type   |
+      | SKU   | yes      | no           | no       | text   |
+      | price | no       | no           | yes      | prices |
     And the following product values:
-      | product | attribute   | locale |scope      | value                    |
-      | postit  | SKU         |        |           | postit                   |
-      | postit  | price       |        | mobile    | 10.5                     |
-      | postit  | price       |        | ecommerce | 12.5                     |
-      | book    | SKU         |        |           | book                     |
-      | book    | price       |        | mobile    | 20                       |
-      | book    | price       |        | ecommerce | 22.5                     |
+      | product | attribute | scope     | value  |
+      | postit  | SKU       |           | postit |
+      | postit  | price     | mobile    | 10.5   |
+      | postit  | price     | ecommerce | 12.5   |
+      | book    | SKU       |           | book   |
+      | book    | price     | mobile    | 20     |
+      | book    | price     | ecommerce | 22.5   |
     And I am logged in as "admin"
 
   Scenario: Successfully display filters
@@ -49,7 +49,6 @@ Feature: Filter products per price
     And I should see product book
     And I should not see product postit
 
-  @insulated
   Scenario: Successfully filter per Price with "greater than" action and decimal number
     Given I am on the products page
     When I make visible the filter "Price"
@@ -58,7 +57,6 @@ Feature: Filter products per price
     And I should see product book
     And I should not see product postit
 
-  @insulated
   Scenario: Successfully filter per Price with "equal" action
     Given I am on the products page
     When I make visible the filter "Price"
@@ -67,7 +65,6 @@ Feature: Filter products per price
     And I should see product postit
     And I should not see product book
 
-  @insulated
   Scenario: Successfully filter per Price with "less than" action
     Given I am on the products page
     When I make visible the filter "Price"
@@ -76,7 +73,6 @@ Feature: Filter products per price
     And I should see product postit
     And I should not see product book
 
-  @insulated
   Scenario: Successfully filter per Price with "less or equal" action
     Given I am on the products page
     When I make visible the filter "Price"
@@ -85,7 +81,6 @@ Feature: Filter products per price
     And I should see product postit
     And I should not see product book
 
-  @insulated
   Scenario: Successfully filter per Price with useless filter
     Given I am on the products page
     When I make visible the filter "Price"
@@ -93,7 +88,6 @@ Feature: Filter products per price
     Then the grid should contain 2 elements
     And I should see product postit and book
 
-  @insulated
   Scenario: Successfully filter per Price with no result values
     Given I am on the products page
     When I make visible the filter "Price"

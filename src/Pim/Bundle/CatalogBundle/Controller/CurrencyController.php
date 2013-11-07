@@ -14,7 +14,7 @@ use Symfony\Component\Translation\TranslatorInterface;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
-use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
+use Pim\Bundle\GridBundle\Helper\DatagridHelperInterface;
 use Pim\Bundle\CatalogBundle\Entity\Currency;
 
 /**
@@ -27,9 +27,9 @@ use Pim\Bundle\CatalogBundle\Entity\Currency;
 class CurrencyController extends AbstractDoctrineController
 {
     /**
-     * @var DatagridWorkerInterface
+     * @var DatagridHelperInterface
      */
-    private $datagridWorker;
+    private $datagridHelper;
 
     /**
      * Constructor
@@ -42,7 +42,7 @@ class CurrencyController extends AbstractDoctrineController
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
      * @param RegistryInterface        $doctrine
-     * @param DatagridWorkerInterface  $datagridWorker
+     * @param DatagridHelperInterface  $datagridHelper
      */
     public function __construct(
         Request $request,
@@ -53,7 +53,7 @@ class CurrencyController extends AbstractDoctrineController
         ValidatorInterface $validator,
         TranslatorInterface $translator,
         RegistryInterface $doctrine,
-        DatagridWorkerInterface $datagridWorker
+        DatagridHelperInterface $datagridHelper
     ) {
         parent::__construct(
             $request,
@@ -66,7 +66,7 @@ class CurrencyController extends AbstractDoctrineController
             $doctrine
         );
 
-        $this->datagridWorker = $datagridWorker;
+        $this->datagridHelper = $datagridHelper;
     }
     /**
      * List currencies
@@ -84,7 +84,7 @@ class CurrencyController extends AbstractDoctrineController
             ->select('c')
             ->from('PimCatalogBundle:Currency', 'c');
 
-        $datagrid = $this->datagridWorker->getDatagrid('currency', $queryBuilder);
+        $datagrid = $this->datagridHelper->getDatagrid('currency', $queryBuilder);
 
         $view = ('json' === $request->getRequestFormat()) ?
             'OroGridBundle:Datagrid:list.json.php' : 'PimCatalogBundle:Currency:index.html.twig';

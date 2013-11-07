@@ -66,7 +66,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iFilterPerPrice($action, $value, $currency)
     {
-        $this->getPage('Product index')->filterPerPrice($action, $value, $currency);
+        $this->datagrid->filterPerPrice($action, $value, $currency);
         $this->wait();
     }
 
@@ -78,7 +78,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function iFilterPerCategory($code)
     {
         $category = $this->getFixturesContext()->getCategory($code);
-        $this->getPage('Product index')->clickCategoryFilterLink($category);
+        $this->getCurrentPage()->clickCategoryFilterLink($category);
         $this->wait();
     }
 
@@ -87,7 +87,8 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iFilterPerUnclassifiedCategory()
     {
-        $this->getPage('Product index')->clickUnclassifiedCategoryFilterLink();
+        $this->wait();
+        $this->getCurrentPage()->clickUnclassifiedCategoryFilterLink();
         $this->wait();
     }
 
@@ -98,7 +99,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iFilterPerFamily($code)
     {
-        $this->getPage('Product index')->filterPerFamily($code);
+        $this->datagrid->filterPerFamily($code);
         $this->wait();
     }
 
@@ -109,7 +110,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iFilterPerChannel($code)
     {
-        $this->getPage('Product index')->filterPerChannel($code);
+        $this->datagrid->filterPerChannel($code);
         $this->wait();
     }
 
@@ -535,12 +536,10 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $name
-     *
      * @return \SensioLabs\Behat\PageObjectExtension\PageObject\Page
      */
-    public function getPage($name)
+    public function getCurrentPage()
     {
-        return $this->getNavigationContext()->getPage($name);
+        return $this->getNavigationContext()->getCurrentPage();
     }
 }

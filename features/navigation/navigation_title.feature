@@ -91,16 +91,15 @@ Feature: Well display navigation titles
     When I edit the "sku-1" product
     Then I should see the title "Products sku-1 | Edit"
 
-  @skip
   Scenario: Successfully display the variant page titles
-    Given there is no variant
+    Given there is no product group
     And the following attribute:
       | code      | label      | type                     |
       | color     | Color      | pim_catalog_multiselect  |
-    And the following variant:
-      | code | label      | attributes |
-      | MUG  | Mug Akeneo | color      |
-    When I am on the variants page
+    And the following product group:
+      | code | label      | attributes | type    |
+      | MUG  | Mug Akeneo | color      | VARIANT |
+    When I am on the variant groups page
     Then I should see the title "Variant groups"
-    When I edit the "MUG" variant
+    When I edit the "MUG" variant group
     Then I should see the title "Variant groups Mug Akeneo | Edit"

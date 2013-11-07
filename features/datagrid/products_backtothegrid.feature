@@ -43,7 +43,6 @@ Feature: Products back to the grid
       | book    | description | fr_FR  | mobile    | Ma descr livre mobile    |
     And I am logged in as "admin"
 
-  @insulated
   Scenario: Successfully restore filters without hashnav
     Given I am on the products page
     When I filter by "SKU" with value "book"
@@ -52,7 +51,6 @@ Feature: Products back to the grid
     And I should see products book
     And I should not see products postit
 
-  @insulated
   Scenario: Successfully restore filters with hashnav
     Given I am on the products page
     When I filter by "SKU" with value "book"
