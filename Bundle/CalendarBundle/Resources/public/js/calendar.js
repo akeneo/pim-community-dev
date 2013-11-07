@@ -235,24 +235,17 @@ function(_, Backbone, __, app, messenger, LoadingMask,
         },
 
         prepareViewModel : function (fcEvent) {
-            // convert start and end dates from RFC 3339 string to Date object
-            fcEvent.start = this.convertToViewDateTime(fcEvent.start);
-            fcEvent.end = this.convertToViewDateTime(fcEvent.end);
+            // convert start and end dates from backend formatted string to Date object
+            fcEvent.start = dateTimeFormatter.unformatBackendDateTime(fcEvent.start);
+            fcEvent.end = dateTimeFormatter.unformatBackendDateTime(fcEvent.end);
             // set an event text and background colors the same as the owning calendar
             var colors = this.connectionsView.getCalendarColors(fcEvent.calendar);
             fcEvent.textColor = colors.color;
             fcEvent.color = colors.backgroundColor;
         },
 
-        convertToViewDateTime: function (s) {
-            if (!_.isDate(s)) {
-                s = $.fullCalendar.parseISO8601(s);
-            }
-            return s;
-        },
-
-        formatDateTimeForModel: function (d) {
-            return dateTimeFormatter.unformatDateTime(d);
+        formatDateTimeForModel: function (date) {
+            return dateTimeFormatter.convertDateTimeToBackendFormat(date);
         },
 
         showSavingMask: function() {
