@@ -14,6 +14,16 @@ class AclPermissionController extends Controller
      */
     public function aclPermissionAccessLevelsAction()
     {
-        return new JsonResponse($this->get('oro_security.acl.manager')->getAccessLevelsForObject($this->getRequest()->get('oid')));
+        $levels = $this
+            ->get('oro_security.acl.manager')
+            ->getAccessLevelsForObject($this->getRequest()->get('oid'));
+        $translator = $this->get('translator');
+        foreach ($levels as $id => $label) {
+            $levels[$id] = $translator->trans($label);
+        }
+
+        return new JsonResponse(
+            $levels
+        );
     }
 }

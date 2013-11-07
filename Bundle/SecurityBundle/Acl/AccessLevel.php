@@ -14,6 +14,8 @@ final class AccessLevel
      */
     public static $allAccessLevelNames = array('BASIC', 'LOCAL', 'DEEP', 'GLOBAL', 'SYSTEM');
 
+    const NONE_LEVEL_LABEL = 'Access-level-NONE';
+
     /**
      * Unknown access level.
      */
@@ -72,7 +74,7 @@ final class AccessLevel
     public static function getAccessLevelName($value)
     {
         if ($value > self::NONE_LEVEL) {
-            return self::$allAccessLevelNames[$value - 1];
+            return 'Access-level-' . self::$allAccessLevelNames[$value - 1];
         }
 
         return null;
@@ -86,7 +88,7 @@ final class AccessLevel
      */
     public static function getAccessLevelNames($value = self::BASIC_LEVEL)
     {
-        $names = array('NONE');
+        $names = [self::NONE_LEVEL_LABEL];
         for ($level = $value; $level <= self::SYSTEM_LEVEL; $level++) {
             $name = self::getAccessLevelName($level);
             $names[$level] = $name;

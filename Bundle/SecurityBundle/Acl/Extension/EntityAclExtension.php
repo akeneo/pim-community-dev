@@ -162,7 +162,7 @@ class EntityAclExtension extends AbstractAclExtension
             if (!$metadata->hasOwner()) {
 
                 return array(
-                    AccessLevel::NONE_LEVEL => 'NONE',
+                    AccessLevel::NONE_LEVEL => AccessLevel::NONE_LEVEL_LABEL,
                     AccessLevel::SYSTEM_LEVEL => AccessLevel::getAccessLevelName(AccessLevel::SYSTEM_LEVEL)
                 );
             } elseif ($metadata->isUserOwned()) {

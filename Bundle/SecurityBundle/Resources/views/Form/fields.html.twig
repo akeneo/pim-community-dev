@@ -10,7 +10,7 @@
                 {% if level_label %}
                     {{ level_label|trans({}, translation_domain) }}
                 {% else %}
-                    {{ 'NONE'|trans({}, translation_domain) }}
+                    {{ 'Access-level-NONE'|trans({}, translation_domain) }}
                 {% endif %}
             </a>
             {% set type = type|default('hidden') %}

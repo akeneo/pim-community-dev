@@ -5,3 +5,9 @@ EDIT: Edit
 DELETE: Delete
 ASSIGN: Assign
 SHARE: Share
+Access-level-BASIC: Me
+Access-level-LOCAL: Me, my business units
+Access-level-DEEP: Me, my business units and sub business units
+Access-level-GLOBAL: Me and my organization
+Access-level-SYSTEM: All system
+Access-level-NONE: Access denied
