@@ -97,7 +97,7 @@ class TransitionAssembler extends AbstractAssembler
             throw new AssemblerException(sprintf('Step "%s" not found', $stepToName));
         }
         $stepTo = $steps[$stepToName];
-        $transitionOptions = $this->getOption($options, 'options', array());
+        $frontendOptions = $this->getOption($options, 'frontend_options', array());
         $isStart = $this->getOption($options, 'is_start', false);
 
         $transition = new Transition();
@@ -105,7 +105,7 @@ class TransitionAssembler extends AbstractAssembler
             ->setLabel($options['label'])
             ->setStepTo($stepTo)
             ->setStart($isStart)
-            ->setOptions($transitionOptions);
+            ->setFrontendOptions($frontendOptions);
 
         if (!empty($definition['conditions'])) {
             $condition = $this->conditionFactory->create(ConfigurableCondition::ALIAS, $definition['conditions']);

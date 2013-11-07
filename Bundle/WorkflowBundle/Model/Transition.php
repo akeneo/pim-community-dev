@@ -42,7 +42,7 @@ class Transition
     /**
      * @var array
      */
-    protected $options;
+    protected $frontendOptions = array();
 
     /**
      * Set label.
@@ -210,59 +210,24 @@ class Transition
     }
 
     /**
-     * Set options.
+     * Set frontend options.
      *
-     * @param array $options
+     * @param array $frontendOptions
      * @return Attribute
      */
-    public function setOptions(array $options)
+    public function setFrontendOptions(array $frontendOptions)
     {
-        $this->options = $options;
+        $this->frontendOptions = $frontendOptions;
         return $this;
     }
 
     /**
-     * Get options.
+     * Get frontend options.
      *
      * @return array
      */
-    public function getOptions()
+    public function getFrontendOptions()
     {
-        return $this->options;
-    }
-
-    /**
-     * Set option by key.
-     *
-     * @param string $key
-     * @param mixed $value
-     * @return Attribute
-     */
-    public function setOption($key, $value)
-    {
-        $this->options[$key] = $value;
-        return $this;
-    }
-
-    /**
-     * Get option by key.
-     *
-     * @param string $key
-     * @return null|mixed
-     */
-    public function getOption($key)
-    {
-        return $this->hasOption($key) ? $this->options[$key] : null;
-    }
-
-    /**
-     * Check for option availability by key.
-     *
-     * @param string $key
-     * @return bool
-     */
-    public function hasOption($key)
-    {
-        return isset($this->options[$key]);
+        return $this->frontendOptions;
     }
 }

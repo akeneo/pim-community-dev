@@ -185,6 +185,7 @@ class TransitionAssemblerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('test', $actualTransition->getName());
         $this->assertEquals($steps['step'], $actualTransition->getStepTo());
         $this->assertEquals($configuration['label'], $actualTransition->getLabel());
+        $this->assertEquals($configuration['frontend_options'], $actualTransition->getFrontendOptions());
         $this->assertEquals($configuration['is_start'], $actualTransition->isStart());
         $this->assertEquals($expectedCondition, $actualTransition->getCondition());
         $this->assertEquals($expectedPostAction, $actualTransition->getPostAction());
@@ -199,6 +200,7 @@ class TransitionAssemblerTest extends \PHPUnit_Framework_TestCase
                     'label' => 'label',
                     'step_to' => 'step',
                     'is_start' => false,
+                    'frontend_options' => array('class' => 'foo', 'icon' => 'bar'),
                 ),
                 'transitionDefinition' => $this->transitionDefinitions['empty_definition'],
             ),
@@ -208,6 +210,7 @@ class TransitionAssemblerTest extends \PHPUnit_Framework_TestCase
                     'label' => 'label',
                     'step_to' => 'step',
                     'is_start' => false,
+                    'frontend_options' => array(),
                 ),
                 'transitionDefinition' => $this->transitionDefinitions['with_condition'],
             ),
@@ -217,6 +220,7 @@ class TransitionAssemblerTest extends \PHPUnit_Framework_TestCase
                     'label' => 'label',
                     'step_to' => 'step',
                     'is_start'=> false,
+                    'frontend_options' => array(),
                 ),
                 'transitionDefinition' => $this->transitionDefinitions['with_post_actions'],
             ),
@@ -226,6 +230,7 @@ class TransitionAssemblerTest extends \PHPUnit_Framework_TestCase
                     'label' => 'label',
                     'step_to' => 'step',
                     'is_start' => false,
+                    'frontend_options' => array(),
                 ),
                 'transitionDefinition' => $this->transitionDefinitions['full_definition'],
             ),
@@ -235,6 +240,7 @@ class TransitionAssemblerTest extends \PHPUnit_Framework_TestCase
                     'label' => 'label',
                     'step_to' => 'step',
                     'is_start' => true,
+                    'frontend_options' => array(),
                 ),
                 'transitionDefinition' => $this->transitionDefinitions['empty_definition'],
             ),
