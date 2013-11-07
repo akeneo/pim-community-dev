@@ -7,7 +7,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class SystemAwareResolver implements ContainerAwareInterface
 {
-    /**
+    /**W
      * @var ContainerInterface
      */
     protected $container;
@@ -68,7 +68,7 @@ class SystemAwareResolver implements ContainerAwareInterface
      *
      * @return string
      */
-    public function resolveSystemCall($datagridName, $key, $val)
+    protected function resolveSystemCall($datagridName, $key, $val)
     {
         switch (true) {
             case preg_match('#%([\w\._]+)%#', $val, $match):

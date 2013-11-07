@@ -26,6 +26,7 @@ datagrid:
     DATAGRID_NAME_HERE:
         source:
             type: YOUR_ADAPTER_TYPE
+            acl_resource: SOME_RESOURCE_IF_NEEDED
 ```
 
-Note: your adapter should take care about validation of configuration.
+Note: your adapter should take care about validation of it's configuration.

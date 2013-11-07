@@ -52,6 +52,7 @@ class OrmPagerExtension extends AbstractExtension
      */
     public function isApplicable(DatagridConfiguration $config)
     {
+        /** @TODO disabled when hidden on toolbar */
         // enabled by default for ORM datasource
         return $config->offsetGetByPath(Builder::DATASOURCE_TYPE_PATH) == OrmDatasource::TYPE;
     }

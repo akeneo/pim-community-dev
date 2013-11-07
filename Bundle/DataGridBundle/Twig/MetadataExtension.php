@@ -50,16 +50,14 @@ class MetadataExtension extends \Twig_Extension
      * Returns grid metadata array
      *
      * @param string $name
-     * @param array  $additionalParams
+     * @param array  $params
      *
      * @return \stdClass
      */
-    public function getGridMetadata($name, $additionalParams = [])
+    public function getGridMetadata($name, $params = [])
     {
         $metaData = $this->manager->getDatagrid($name)->getMetadata();
-
-        $additionalParams = array_merge([$name => $additionalParams], ['gridName' => $name]);
-        $metaData->offsetAddToArray('options', ['url' => $this->router->generate(self::ROUTE, $additionalParams)]);
+        $metaData->offsetAddToArray('options', ['url' => $this->generateUrl($name, $params)]);
 
         return $metaData->toArray();
     }
@@ -70,17 +68,30 @@ class MetadataExtension extends \Twig_Extension
      *
      * @param \Twig_Environment $twig
      * @param string            $name
-     * @param array             $additionalParams
+     * @param array             $params
      *
      * @return mixed
      */
-    public function getGridData(\Twig_Environment $twig, $name, $additionalParams = [])
+    public function getGridData(\Twig_Environment $twig, $name, $params = [])
     {
-        $additionalParams = array_merge(
-            [$name => array_merge($additionalParams, $this->requestParams->getRootParameterValue())],
-            ['gridName' => $name]
-        );
+        return $twig->getExtension('actions')->renderUri($this->generateUrl($name, $params, true));
+    }
 
-        return $twig->getExtension('actions')->renderUri($this->router->generate(self::ROUTE, $additionalParams));
+    /**
+     * @param string $name
+     * @param array  $params
+     * @param bool   $mixRequest
+     *
+     * @return string
+     */
+    protected function generateUrl($name, $params, $mixRequest = false)
+    {
+        $additional = $mixRequest ? $this->requestParams->getRootParameterValue() : [];
+        $params     = [
+            $name      => array_merge($params, $additional),
+            'gridName' => $name
+        ];
+
+        return $this->router->generate(self::ROUTE, $params);
     }
 }
