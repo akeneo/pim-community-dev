@@ -63,6 +63,7 @@ class MailerType extends AbstractType
                         'ssl'       => 'SSL',
                         'tls'       => 'TLS',
                     ),
+                    'client_validation' => false,
                 )
             )
             ->add(

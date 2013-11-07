@@ -103,6 +103,47 @@ class ControllersTest extends WebTestCase
         $this->assertContains("User saved", $crawler->html());
     }
 
+    public function testApiGen()
+    {
+        $this->client->request(
+            'GET',
+            $this->client->generate('oro_user_index', array('_format' =>'json')) .
+            '?users[_filter][username][value]=testUser1',
+            array(
+                'users[_pager][_page]' => 1,
+                'users[_pager][_per_page]' => 10,
+                'users[_sort_by][username]' => 'ASC',
+                'users[_filter][username][type]' => '',
+            )
+        );
+        $result = $this->client->getResponse();
+        ToolsAPI::assertJsonResponse($result, 200);
+
+        $result = ToolsAPI::jsonToArray($result->getContent());
+        $result = reset($result['data']);
+
+        $this->client->request(
+            'GET',
+            $this->client->generate('oro_user_apigen', array('id' => $result['id'])),
+            array(),
+            array(),
+            array('HTTP_X-Requested-With' => 'XMLHttpRequest')
+        );
+
+        /** @var User $user */
+        $user = $this->client
+            ->getContainer()
+            ->get('doctrine')
+            ->getRepository('OroUserBundle:User')
+            ->findOneBy(array('id' => $result['id']));
+
+        $result = $this->client->getResponse();
+        ToolsAPI::assertJsonResponse($result, 200, '');
+
+        //verify result
+        $this->assertEquals($user->getApi()->getApiKey(), trim($result->getContent(), '"'));
+    }
+
     public function testViewProfile()
     {
         $this->client->request('GET', $this->client->generate('oro_user_profile_view'));

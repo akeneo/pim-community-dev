@@ -23,7 +23,12 @@ class InstallCommand extends ContainerAwareCommand
             ->addOption('user-firstname', null, InputOption::VALUE_OPTIONAL, 'User first name')
             ->addOption('user-lastname', null, InputOption::VALUE_OPTIONAL, 'User last name')
             ->addOption('user-password', null, InputOption::VALUE_OPTIONAL, 'User password')
-            ->addOption('sample-data', null, InputOption::VALUE_OPTIONAL, 'Load sample data');
+            ->addOption(
+                'sample-data',
+                null,
+                InputOption::VALUE_OPTIONAL,
+                'Determines whether sample data need to be loaded or not'
+            );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -88,6 +93,7 @@ class InstallCommand extends ContainerAwareCommand
             ->runCommand('oro:entity-config:init', $output)
             ->runCommand('oro:entity-extend:init', $output)
             ->runCommand('oro:entity-extend:update-config', $output)
+            ->runCommand('doctrine:schema:update', $output, array('--force' => true, '--no-interaction' => true))
             ->runCommand('doctrine:fixtures:load', $output, array('--no-interaction' => true, '--append' => true));
 
         $output->writeln('');
@@ -134,7 +140,7 @@ class InstallCommand extends ContainerAwareCommand
         $container->get('oro_user.manager')->updateUser($user);
 
         $demo = isset($options['sample-data'])
-            ? true
+            ? !$options['sample-data'] || strtolower($options['sample-data']) == 'y'
             : $dialog->askConfirmation($output, '<question>Load sample data (y/n)?</question> ', false);
 
         // load demo fixtures
@@ -164,7 +170,6 @@ class InstallCommand extends ContainerAwareCommand
         $input->setInteractive(false);
 
         $this
-            ->runCommand('doctrine:schema:update', $output, array('--force' => true, '--no-interaction' => true))
             ->runCommand('oro:search:create-index', $output)
             ->runCommand('oro:navigation:init', $output)
             ->runCommand('oro:localization:dump', $output)

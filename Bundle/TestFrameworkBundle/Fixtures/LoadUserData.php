@@ -38,40 +38,44 @@ class LoadUserData extends AbstractFixture implements ContainerAwareInterface, O
             ->getRepository('OroUserBundle:User')
             ->findOneBy(array('username' => 'admin'));
 
+        $role  = $manager
+            ->getRepository('OroUserBundle:Role')
+            ->findOneBy(array('role' => 'ROLE_ADMINISTRATOR'));
+        $group = $manager
+            ->getRepository('OroUserBundle:Group')
+            ->findOneBy(array('name' => 'Administrators'));
+
+        $unit = $manager
+            ->getRepository('OroOrganizationBundle:BusinessUnit')
+            ->findOneBy(array('name' => 'Main'));
+
         if (!$admin) {
 
             $this->loadAttributes($userManager);
 
             $admin = $userManager->createUser();
 
-            $role  = $manager
-                ->getRepository('OroUserBundle:Role')
-                ->findOneBy(array('role' => 'ROLE_ADMINISTRATOR'));
-            $group = $manager
-                ->getRepository('OroUserBundle:Group')
-                ->findOneBy(array('name' => 'Administrators'));
-
-            $unit = $manager
-                ->getRepository('OroOrganizationBundle:BusinessUnit')
-                ->findOneBy(array('name' => 'Main'));
             $admin
                 ->setUsername('admin')
-                ->setPlainPassword('admin')
-                ->setFirstname('John')
-                ->setLastname('Doe')
-                ->setEmail('admin@example.com')
                 ->addRole($role)
-                ->addGroup($group)
-                ->setBusinessUnits(
-                    new ArrayCollection(array($unit))
-                )
-                ->setOwner($unit);
+                ->addGroup($group);
         }
 
+        $admin->setPlainPassword('admin')
+            ->setFirstname('John')
+            ->setLastname('Doe')
+            ->setEmail('admin@example.com')
+            ->setOwner($unit)
+            ->setBusinessUnits(
+                new ArrayCollection(array($unit))
+            );
+
         $api   = new UserApi();
-        $api->setApiKey('admin_api_key')
-            ->setUser($admin);
-        $admin->setApi($api);
+        if (!$admin->getApi()) {
+            $api->setApiKey('admin_api_key')
+                ->setUser($admin);
+            $admin->setApi($api);
+        }
 
         $this->addReference('default_user', $admin);
 

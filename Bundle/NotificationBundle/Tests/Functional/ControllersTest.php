@@ -2,14 +2,11 @@
 
 namespace Oro\Bundle\NotificationBundle\Tests\Functional;
 
-use Symfony\Component\DomCrawler\Form;
-use Symfony\Component\DomCrawler\Field\ChoiceFormField;
-use Doctrine\ORM\EntityManager;
-
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Oro\Bundle\TestFrameworkBundle\Test\ToolsAPI;
 use Oro\Bundle\TestFrameworkBundle\Test\Client;
-use \Oro\Bundle\EmailBundle\Entity\EmailTemplate;
+use Symfony\Component\DomCrawler\Form;
+use Symfony\Component\DomCrawler\Field\ChoiceFormField;
 
 /**
  * @outputBuffering enabled
@@ -17,6 +14,12 @@ use \Oro\Bundle\EmailBundle\Entity\EmailTemplate;
  */
 class ControllersTest extends WebTestCase
 {
+    const ENTITY_NAME = 'Oro\Bundle\UserBundle\Entity\User';
+
+    protected $eventUpdate;
+    protected $eventCreate;
+    protected $templateUpdate;
+
     /**
      * @var Client
      */
@@ -30,6 +33,22 @@ class ControllersTest extends WebTestCase
         );
     }
 
+    protected function prepareData()
+    {
+        $notificationManager = $this->client->getContainer()->get('doctrine');
+        $this->eventUpdate  = $notificationManager
+            ->getRepository('OroNotificationBundle:Event')
+            ->findOneBy(array('name' => 'oro.notification.event.entity_post_update'));
+
+        $this->eventCreate  = $notificationManager
+            ->getRepository('OroNotificationBundle:Event')
+            ->findOneBy(array('name' => 'oro.notification.event.entity_post_persist'));
+
+        $this->templateUpdate  = $notificationManager
+            ->getRepository('OroEmailBundle:EmailTemplate')
+            ->findOneBy(array('entityName' => self::ENTITY_NAME));
+    }
+
     public function testIndex()
     {
         $this->client->request('GET', $this->client->generate('oro_notification_emailnotification_index'));
@@ -37,27 +56,31 @@ class ControllersTest extends WebTestCase
         ToolsAPI::assertJsonResponse($result, 200, 'text/html; charset=UTF-8');
     }
 
+    /**
+     * @depends testIndex
+     */
     public function testCreate()
     {
         $crawler = $this->client->request('GET', $this->client->generate('oro_notification_emailnotification_create'));
 
-        $emailTemplate = $this->getEmailTemplate('EmailBundle:update_user');
+        // prepare data for next tests
+        $this->prepareData();
 
         /** @var Form $form */
         $form = $crawler->selectButton('Save and Close')->form();
         $form['emailnotification[entityName]'] = 'Oro\Bundle\UserBundle\Entity\User';
-        $form['emailnotification[event]'] = '3';
+        $form['emailnotification[event]'] = $this->eventUpdate->getId();
         $doc = new \DOMDocument("1.0");
         $doc->loadHTML(
             '<select required="required" name="emailnotification[template]" id="emailnotification_template" ' .
             'tabindex="-1" class="select2-offscreen"> ' .
             '<option value="" selected="selected"></option> ' .
-            '<option value="' . $emailTemplate->getId() . '">' . $emailTemplate->getName() . '</option> </select>'
+            '<option value="' . $this->templateUpdate->getId() . '">EmailBundle:' . $this->templateUpdate->getName() . '</option> </select>'
         );
 
         $field = new ChoiceFormField($doc->getElementsByTagName('select')->item(0));
         $form->set($field);
-        $form['emailnotification[template]'] = $emailTemplate->getId();
+        $form['emailnotification[template]'] = $this->templateUpdate->getId();
         $form['emailnotification[recipientList][users]'] = '1';
         $form['emailnotification[recipientList][groups][0]'] = '1';
         $form['emailnotification[recipientList][email]'] = 'admin@example.com';
@@ -79,9 +102,6 @@ class ControllersTest extends WebTestCase
             $this->client->generate('oro_notification_emailnotification_index', array('_format' =>'json')),
             array('emailnotification[_pager][_page]' => 1, 'emailnotification[_pager][_per_page]' => 1)
         );
-
-        $emailTemplate = $this->getEmailTemplate('EmailBundle:update_user');
-
         $result = $this->client->getResponse();
         ToolsAPI::assertJsonResponse($result, 200);
 
@@ -92,21 +112,25 @@ class ControllersTest extends WebTestCase
             'GET',
             $this->client->generate('oro_notification_emailnotification_update', array('id' => $result['id']))
         );
+
+        // prepare data for next tests
+        $this->prepareData();
+
         /** @var Form $form */
         $form = $crawler->selectButton('Save and Close')->form();
         $form['emailnotification[entityName]'] = 'Oro\Bundle\UserBundle\Entity\User';
-        $form['emailnotification[event]'] = '3';
+        $form['emailnotification[event]'] = $this->eventCreate->getId();
         $doc = new \DOMDocument("1.0");
         $doc->loadHTML(
             '<select required="required" name="emailnotification[template]" id="emailnotification_template" ' .
             'tabindex="-1" class="select2-offscreen"> ' .
             '<option value="" selected="selected"></option> ' .
-            '<option value="' . $emailTemplate->getId() . '">' . $emailTemplate->getName() . '</option> </select>'
+            '<option value="' . $this->templateUpdate->getId() . '">EmailBundle:' . $this->templateUpdate->getName() . '</option> </select>'
         );
 
         $field = new ChoiceFormField($doc->getElementsByTagName('select')->item(0));
         $form->set($field);
-        $form['emailnotification[template]'] = $emailTemplate->getId();
+        $form['emailnotification[template]'] = $this->templateUpdate->getId();
         $form['emailnotification[recipientList][users]'] = '1';
         $form['emailnotification[recipientList][groups][0]'] = '1';
         $form['emailnotification[recipientList][email]'] = 'admin@example.com';
@@ -141,25 +165,5 @@ class ControllersTest extends WebTestCase
 
         $result = $this->client->getResponse();
         ToolsAPI::assertJsonResponse($result, 204);
-    }
-
-    /**
-     * @param string $name
-     * @return EmailTemplate
-     * @throws \LogicException
-     */
-    protected function getEmailTemplate($name)
-    {
-        /** @var EntityManager $entityManager */
-        $entityManager = $this->client->getKernel()->getContainer()->get('doctrine.orm.entity_manager');
-        $emailTemplate = $entityManager->getRepository('OroEmailBundle:EmailTemplate')->findOneBy(
-            array('name' => $name)
-        );
-
-        if (!$emailTemplate) {
-            throw new \LogicException(sprintf('Cant\'t find template with name %s', $name));
-        }
-
-        return $emailTemplate;
     }
 }
