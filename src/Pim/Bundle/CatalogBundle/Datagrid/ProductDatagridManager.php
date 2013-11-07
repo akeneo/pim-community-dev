@@ -636,30 +636,22 @@ class ProductDatagridManager extends FlexibleDatagridManager
      */
     protected function prepareQueryForCategory(ProxyQueryInterface $proxyQuery, $rootAlias)
     {
-        if ($this->filterTreeId != static::UNCLASSIFIED_CATEGORY) {
-            $categoryRepository = $this->categoryManager->getEntityRepository();
-            $categoryExists = ($this->filterCategoryId != static::UNCLASSIFIED_CATEGORY)
-                && $categoryRepository->find($this->filterCategoryId) != null;
-            $treeExists = $categoryRepository->find($this->filterTreeId) != null;
-            if ($categoryExists and $this->filterIncludeSub == 1) {
-
-
-                $productIds = $categoryRepository->getLinkedProductIds($this->filterCategoryId, true);
-                $productIds = (empty($productIds)) ? array(0) : $productIds;
-                $expression = $proxyQuery->expr()->in($rootAlias .'.id', $productIds);
-                $proxyQuery->andWhere($expression);
-
-            } elseif ($categoryExists) {
-                $productIds = $categoryRepository->getLinkedProductIds($this->filterCategoryId, false);
-                $productIds = (empty($productIds)) ? array(0) : $productIds;
-                $expression = $proxyQuery->expr()->in($rootAlias .'.id', $productIds);
-                $proxyQuery->andWhere($expression);
-            } elseif ($treeExists) {
-                $productIds = $categoryRepository->getLinkedProductIds($this->filterTreeId, true);
-                $productIds = (empty($productIds)) ? array(0) : $productIds;
-                $expression = $proxyQuery->expr()->notIn($rootAlias .'.id', $productIds);
-                $proxyQuery->andWhere($expression);
-            }
+        $repository = $this->categoryManager->getEntityRepository();
+        $categoryExists = ($this->filterCategoryId != static::UNCLASSIFIED_CATEGORY)
+            && $repository->find($this->filterCategoryId) != null;
+        $treeExists = ($this->filterTreeId != static::UNCLASSIFIED_CATEGORY)
+            && $repository->find($this->filterTreeId) != null;
+        if ($treeExists && $categoryExists) {
+            $includeSub = ($this->filterIncludeSub == 1);
+            $productIds = $repository->getLinkedProductIds($this->filterCategoryId, $includeSub);
+            $productIds = (empty($productIds)) ? array(0) : $productIds;
+            $expression = $proxyQuery->expr()->in($rootAlias .'.id', $productIds);
+            $proxyQuery->andWhere($expression);
+        } elseif ($treeExists) {
+            $productIds = $repository->getLinkedProductIds($this->filterTreeId, true);
+            $productIds = (empty($productIds)) ? array(0) : $productIds;
+            $expression = $proxyQuery->expr()->notIn($rootAlias .'.id', $productIds);
+            $proxyQuery->andWhere($expression);
         }
     }
 
