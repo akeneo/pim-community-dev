@@ -94,10 +94,12 @@ define(
                     }
                 }).on('after_tree_loaded.jstree', function (e, root_node_id) {
                     $(document).one('ajaxStop', function () {
-                        $el.jstree('create', -1, 'last', {
-                            'attr': { 'class': 'jstree-unclassified', 'id': 'node_' },
-                            'data': { 'title': _.__('jstree.all') }
-                        }, null, true);
+                        if (!$('#node_').length) {
+                            $el.jstree('create', -1, 'last', {
+                                'attr': { 'class': 'jstree-unclassified', 'id': 'node_' },
+                                'data': { 'title': _.__('jstree.all') }
+                            }, null, true);
+                        }
                         if (-1 === selectedNode) {
                             $el.jstree('select_node', '#node_');
                         }
