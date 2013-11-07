@@ -68,7 +68,7 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
             ->with($media)
             ->will($this->returnValue('files/media.jpg'));
 
-        $values = array(
+        $values = new ArrayCollection(array(
             $this->getValueMock($this->getAttributeMock('name', true), 'Brouette', 'fr_FR'),
             $this->getValueMock($this->getAttributeMock('name', true), 'Wheelbarrow', 'en_US'),
             $this->getValueMock($this->getAttributeMock('name', true), 'Carretilla', 'es_ES'),
@@ -78,7 +78,7 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
                 new ArrayCollection(array('roue', 'poignées', 'benne'))
             ),
             $this->getValueMock($this->getAttributeMock('visual'), $media)
-        );
+        ));
         $identifier = $this->getValueMock(
             $this->getAttributeMock('sku', false, false, 'pim_catalog_identifier'),
             'KB0001'
@@ -106,7 +106,7 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
     {
         $now    = new \DateTime();
 
-        $values = array(
+        $values = new ArrayCollection(array(
             $this->getValueMock($this->getAttributeMock('name', true, true), 'Brou.', 'fr_FR', 'mobile'),
             $this->getValueMock($this->getAttributeMock('name', true, true), 'Brouette', 'fr_FR', 'ecommerce'),
             $this->getValueMock($this->getAttributeMock('name', true, true), 'WB', 'en_US', 'mobile'),
@@ -118,7 +118,7 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
                 $this->getAttributeMock('elements'),
                 new ArrayCollection(array('roue', 'poignées', 'benne'))
             ),
-        );
+        ));
         $identifier = $this->getValueMock(
             $this->getAttributeMock('sku', false, false, 'pim_catalog_identifier'),
             'KB0001'
@@ -148,7 +148,7 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
     {
         $now    = new \DateTime();
 
-        $values = array(
+        $values = new ArrayCollection(array(
             $this->getValueMock($this->getAttributeMock('name', true, true), 'Brou.', 'fr_FR', 'mobile'),
             $this->getValueMock($this->getAttributeMock('name', true, true), 'Brouette', 'fr_FR', 'ecommerce'),
             $this->getValueMock($this->getAttributeMock('name', true, true), 'WB', 'en_US', 'mobile'),
@@ -160,7 +160,7 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
                 $this->getAttributeMock('elements'),
                 new ArrayCollection(array('roue', 'poignées', 'benne'))
             ),
-        );
+        ));
         $identifier = $this->getValueMock(
             $this->getAttributeMock('sku', false, false, 'pim_catalog_identifier'),
             'KB0001'
@@ -195,7 +195,7 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
     public function testNormalizeProductWithoutFamily()
     {
         $now = new \DateTime();
-        $values = array(
+        $values = new ArrayCollection(array(
             $this->getValueMock($this->getAttributeMock('name', true), 'Brouette', 'fr_FR'),
             $this->getValueMock($this->getAttributeMock('name', true), 'Wheelbarrow', 'en_US'),
             $this->getValueMock($this->getAttributeMock('name', true), 'Carretilla', 'es_ES'),
@@ -204,7 +204,7 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
                 $this->getAttributeMock('elements'),
                 new ArrayCollection(array('roue', 'poignées', 'benne'))
             ),
-        );
+        ));
         $identifier = $this->getValueMock($this->getAttributeMock('sku', false, false, 'pim_catalog_identifier'), 'KB0001');
         $product    = $this->getProductMock($identifier, $values, null, 'cat1, cat2, cat3');
 
@@ -229,7 +229,7 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
     public function testNormalizeProductWithoutIdentifier()
     {
         $now = new \DateTime();
-        $values = array(
+        $values = new ArrayCollection(array(
             $this->getValueMock($this->getAttributeMock('name', true), 'Brouette', 'fr_FR'),
             $this->getValueMock($this->getAttributeMock('name', true), 'Wheelbarrow', 'en_US'),
             $this->getValueMock($this->getAttributeMock('name', true), 'Carretilla', 'es_ES'),
@@ -238,7 +238,7 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
                 $this->getAttributeMock('elements'),
                 new ArrayCollection(array('roue', 'poignées', 'benne'))
             ),
-        );
+        ));
         $family  = $this->getFamilyMock('garden-tool');
         $product = $this->getProductMock(null, $values, $family, 'cat1,cat2,cat3');
 
@@ -265,7 +265,7 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
      *
      * @return ProductInterface
      */
-    protected function getProductMock($identifier = null, array $values = array(), $family = null, $categories = '')
+    protected function getProductMock($identifier = null, ArrayCollection $values = null, $family = null, $categories = '')
     {
         $product = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Product');
         if ($identifier) {

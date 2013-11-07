@@ -19,7 +19,20 @@ class ProductCsvSerializerProcessor extends HeterogeneousCsvSerializerProcessor
      */
     public function process($products)
     {
-        $csv = parent::process($products);
+        $channel = new \Pim\Bundle\CatalogBundle\Entity\Channel();
+        $channel->setCode('mobile');
+        $csv =  $this->serializer->serialize(
+            $products,
+            'csv',
+            array(
+                'delimiter'     => $this->delimiter,
+                'enclosure'     => $this->enclosure,
+                'withHeader'    => $this->withHeader,
+                'heterogeneous' => true,
+                'channel' => $channel
+            )
+        );
+
 
         if (!is_array($products)) {
             $products = array($products);

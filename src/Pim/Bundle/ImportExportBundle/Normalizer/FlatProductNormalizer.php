@@ -81,8 +81,7 @@ class FlatProductNormalizer implements NormalizerInterface
 
         $this->normalizeCategories($object->getCategoryCodes());
 
-        $filteredValues = array_filter(
-            $object->getValues(),
+        $filteredValues = $object->getValues()->filter(
             function ($value) use ($identifier) {
                 return (
                     ($value !== $identifier) &&
