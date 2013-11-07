@@ -157,6 +157,7 @@ class ProductController extends AbstractDoctrineController
         $gridManager = $this->datagridHelper->getDatagridManager('product');
         $gridManager->setFilterTreeId($request->get('treeId', 0));
         $gridManager->setFilterCategoryId($request->get('categoryId', 0));
+        $gridManager->setIncludeSub($request->get('includeSub', 0));
         $datagrid = $gridManager->getDatagrid();
 
         switch ($request->getRequestFormat()) {

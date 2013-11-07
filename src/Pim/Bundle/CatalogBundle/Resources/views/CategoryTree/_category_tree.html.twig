@@ -1,0 +1,11 @@
+{% set has_child = children is defined and children|length > 0 ? true : false %}
+{
+    "attr": {"id":"node_{{ category.id }}"},
+    "data": "{{ category.label|raw }}{% if product_count %} ({{ count_products(category, include_sub) }}){% endif %}",
+    "state": "{{ define_state(category, has_child, select_node) }}"
+    {% if has_child %}
+        ,"children":
+            {% include 'PimCatalogBundle:CategoryTree:children-tree.json.twig'
+                with { 'categories': children } %}
+    {% endif %}
+}
