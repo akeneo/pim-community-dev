@@ -1,6 +1,6 @@
 define(
-    ['jquery', 'underscore', 'routing', 'oro/registry', 'jquery.jstree', 'jstree/jquery.jstree.tree_selector', 'jstree/jquery.jstree.nested_switch'],
-    function ($, _, Routing, Registry) {
+    ['jquery', 'underscore', 'routing', 'oro/registry', 'oro/translator', 'jquery.jstree', 'jstree/jquery.jstree.tree_selector', 'jstree/jquery.jstree.nested_switch'],
+    function ($, _, Routing, Registry, __) {
         'use strict';
 
         return function (elementId) {
@@ -12,7 +12,8 @@ define(
                 dataLocale         = $el.attr('data-datalocale'),
                 selectedNode       = $el.attr('data-node-id') || -1,
                 selectedTree       = $el.attr('data-tree-id') || -1,
-                selectedNodeOrTree = selectedNode in [0, -1] ? selectedTree : selectedNode;
+                selectedNodeOrTree = selectedNode in [0, -1] ? selectedTree : selectedNode,
+                includeChildren    = false;
 
             this.config = {
                 'core': {
@@ -27,6 +28,14 @@ define(
                     'crrm',
                     'types'
                 ],
+                'nested_switch': {
+                    state:    false,
+                    label:    __('Include sub-categories'),
+                    callback: function(state) {
+                        includeChildren = state;
+                        $el.trigger('select_node.jstree');
+                    }
+                },
                 'tree_selector': {
                     'ajax': {
                         'url': Routing.generate('pim_catalog_categorytree_listtree', { '_format': 'json', 'dataLocale': dataLocale, 'select_node_id': selectedNodeOrTree })
@@ -45,12 +54,12 @@ define(
                         'data': function (node) {
                             // the result is fed to the AJAX request `data` option
                             var id = (node && node !== -1) ? node.attr('id').replace('node_', '') : -1;
-                            
+
                             return {
                                 'id': id,
                                 'select_node_id': selectedNode,
                                 'with_products_count': 1,
-                                'include_sub': _.first($('#nested_switch_input')).checked ? 1 : 0
+                                'include_sub': includeChildren
                             };
                         }
                     }
@@ -107,7 +116,7 @@ define(
                     }
                     var nodeId = getNodeId($.jstree._focused().get_selected()),
                         treeId = getNodeId($('#tree').find('li').first());
-                    updateGrid(treeId, nodeId, 1); // TODO : fix
+                    updateGrid(treeId, nodeId, includeChildren);
                 });
             };
 
