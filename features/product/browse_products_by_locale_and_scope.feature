@@ -26,7 +26,6 @@ Feature: Browse products by locale and scope
       | postit  | image       |        | ecommerce | large.jpeg               |
       | postit  | image       |        | mobile    | small.jpeg               |
       | postit  | description | en_US  | ecommerce | My ecommerce description |
-      | postit  | description | en_US  | mobile    | My mobile description    |
       | postit  | description | fr_FR  | ecommerce | Ma description ecommerce |
       | postit  | description | fr_FR  | mobile    | Ma description mobile    |
     And I am logged in as "admin"
@@ -56,7 +55,6 @@ Feature: Browse products by locale and scope
       | image       | small.jpeg |
       | description |            |
       | family      | furniture  |
-    #en_US is not enable to mobile
 
   Scenario: Successfully display french ecommerce products data on products page
     Given I am on the products page
