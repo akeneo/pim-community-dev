@@ -4,9 +4,9 @@ namespace Pim\Bundle\ImportExportBundle\Transformer\Property;
 
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
-use Oro\Bundle\FlexibleEntityBundle\Entity\Media;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\ImportExportBundle\Exception\InvalidValueException;
+use Pim\Bundle\CatalogBundle\Entity\Media;
 
 /**
  * Media attribute transformer

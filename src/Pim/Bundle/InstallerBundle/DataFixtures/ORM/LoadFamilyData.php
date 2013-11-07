@@ -45,7 +45,7 @@ class LoadFamilyData extends AbstractInstallerFixture
      */
     protected function createFamily($code, $data)
     {
-        $family = new Family();
+        $family = $this->container->get('pim_catalog.factory.family')->createFamily();
         $family->setCode($code);
 
         foreach ($data['labels'] as $locale => $translation) {

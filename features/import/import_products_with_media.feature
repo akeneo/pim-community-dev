@@ -83,3 +83,26 @@ Feature: Import media with products
     And the product "fanatic-freewave-76" should have the following values:
       | frontView  | **empty** |
       | userManual | **empty** |
+
+  Scenario: Fail to import product with media attributes if the media doesn't actually exist
+    Given the following file to import:
+    """
+    sku;family;groups;frontView;name;userManual;categories
+    fanatic-freewave-76;funboard;;fanatic-freewave-76.gif;"Fanatic Freewave 76";fanatic-freewave-76.txt;sport
+    """
+    And the following job "acme_product_import" configuration:
+      | element   | property          | value                |
+      | reader    | filePath          | {{ file to import }} |
+      | reader    | uploadAllowed     | no                   |
+      | reader    | delimiter         | ;                    |
+      | reader    | enclosure         | "                    |
+      | reader    | escape            | \                    |
+      | processor | enabled           | yes                  |
+      | processor | categories column | categories           |
+      | processor | family column     | family               |
+    And I am logged in as "Julia"
+    When I am on the "acme_product_import" import job page
+    And I launch the import job
+    Then there should be 0 product
+    And I should see "frontView: File not found"
+    And I should see "userManual: File not found"
