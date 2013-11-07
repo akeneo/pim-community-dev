@@ -6,9 +6,7 @@ function Date(field, params)
         return true;
     }
 
-    var date = new window.Date(String(value))
-
-    if (!/^\d+$/.test(value) && !isNaN(date.getTime())) {
+    if (datetimeFormatter.isDateValid(String(value))) {
         return true;
     }
 

@@ -1,6 +1,6 @@
 {% extends bap.layout %}
 {% if form %}
-    {% form_theme form with ['OroConfigBundle:Form:fields.html.twig'] %}
+    {% form_theme form with ['OroConfigBundle:Form:fields.html.twig', 'OroFormBundle:Form:fields.html.twig'] %}
 {% endif %}
 {% import 'OroConfigBundle::macros.html.twig' as configUI %}
 

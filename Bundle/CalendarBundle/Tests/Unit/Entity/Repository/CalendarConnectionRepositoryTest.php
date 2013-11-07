@@ -40,14 +40,12 @@ class CalendarConnectionRepositoryTest extends OrmTestCase
         $qb = $repo->getConnectionListQueryBuilder(1);
 
         $this->assertEquals(
-            'SELECT a.color, a.backgroundColor'
-            . ', ac.id as calendar, ac.name as calendarName'
-            . ', u.id as owner, u.firstName as ownerFirstName, u.lastName as ownerLastName'
-            . ' FROM Oro\Bundle\CalendarBundle\Entity\CalendarConnection a'
-            . ' INNER JOIN a.calendar c'
-            . ' INNER JOIN a.connectedCalendar ac'
-            . ' INNER JOIN ac.owner u'
-            . ' WHERE c.id = :id ORDER BY a.createdAt ASC',
+            'SELECT calendarConnection, connectedCalendar, owner'
+            . ' FROM Oro\Bundle\CalendarBundle\Entity\CalendarConnection calendarConnection'
+            . ' INNER JOIN calendarConnection.calendar calendar'
+            . ' INNER JOIN calendarConnection.connectedCalendar connectedCalendar'
+            . ' INNER JOIN connectedCalendar.owner owner'
+            . ' WHERE calendar.id = :id ORDER BY calendarConnection.createdAt ASC',
             $qb->getQuery()->getDQL()
         );
     }

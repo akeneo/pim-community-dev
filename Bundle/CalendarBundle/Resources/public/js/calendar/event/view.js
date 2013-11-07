@@ -1,8 +1,10 @@
 /* global define */
-define(['jquery', 'underscore', 'backbone', 'oro/translator', 'oro/dialog-widget', 'oro/layout',
-    'oro/loading-mask', 'oro/form-validation', 'oro/delete-confirmation'],
-function($, _, Backbone, __, DialogWidget, layout, LoadingMask, FormValidation, DeleteConfirmation) {
+define(['underscore', 'backbone', 'oro/translator', 'oro/dialog-widget','oro/loading-mask', 'oro/form-validation',
+    'oro/delete-confirmation', 'oro/calendar/event/model'],
+function(_, Backbone, __, DialogWidget, LoadingMask, FormValidation, DeleteConfirmation, EventModel) {
     'use strict';
+
+    var $ = Backbone.$;
 
     /**
      * @export  oro/calendar/event/view
@@ -15,34 +17,49 @@ function($, _, Backbone, __, DialogWidget, layout, LoadingMask, FormValidation, 
             loadingMaskContent: '.loading-content'
         },
 
-        initialize: function() {
-            var templateHtml = $(this.options.formTemplateSelector).html();
-            templateHtml = templateHtml
-                .replace(/\{\s*(\w+)\s*\}/g, '<%- $1 %>')
-                .replace(/checkedif="(\w+)"/g, '<% if ($1) { %> checked="checked"<% } %>');
-            this.template = _.template(templateHtml);
-            var dateMatch = templateHtml.match(/data-dateformat="([^"]*)"/);
-            this.options.dateformat = dateMatch[1];
-            var timeMatch = templateHtml.match(/data-timeformat="([^"]*)"/);
-            this.options.timeformat = timeMatch[1];
+        options: {
+            formTemplateSelector: null,
+            formValidationScriptUrl: null,
+            calendar: null
         },
 
-        getCollection: function() {
-            return this.options.collection;
+        initialize: function() {
+            var templateHtml = $(this.options.formTemplateSelector).html();
+            this.template = _.template(templateHtml);
+
+            this.listenTo(this.model, 'sync', this.onModelSave);
+            this.listenTo(this.model, 'destroy', this.onModelDelete);
+        },
+
+        remove: function() {
+            this.trigger('remove');
+            this._hideMask();
+            Backbone.View.prototype.remove.apply(this, arguments);
+        },
+
+        onModelSave: function() {
+            this.trigger('addEvent', this.model);
+            this.eventDialog.remove();
+            this.remove();
+        },
+
+        onModelDelete: function() {
+            this.eventDialog.remove();
+            this.remove();
         },
 
         render: function() {
-            // prepare dialog content
-            var title = this.model.isNew() ? __('Add New Event') : __('Edit Event');
-            var data = this.model.toJSON();
-            // convert start and end dates from RFC 3339 string to jQuery date/time string
-            data.start = this.convertDateTimeFromModelToDatepicker(data.start);
-            data.end = this.convertDateTimeFromModelToDatepicker(data.end);
-            var el = this.template(data);
             // create a dialog
+            if (!this.model) {
+                this.model = new EventModel();
+            }
+            var modelData = this.model.toJSON();
+            var eventForm = this.template(modelData);
+            eventForm = this.fillForm(eventForm, modelData);
+
             this.eventDialog = new DialogWidget({
-                el: el,
-                title: title,
+                el: eventForm,
+                title: this.model.isNew() ? __('Add New Event') : __('Edit Event'),
                 stateEnabled: false,
                 incrementalPosition: false,
                 loadingMaskEnabled: false,
@@ -51,22 +68,15 @@ function($, _, Backbone, __, DialogWidget, layout, LoadingMask, FormValidation, 
                     resizable: false,
                     width: 475,
                     autoResize: true,
-                    close: _.bind(function() {
-                        delete this.model;
-                        this.loadingMask.remove();
-                        this.loadingMask = null;
-                    }, this)
+                    close: _.bind(this.remove, this)
                 }
             });
-
-            // init controls and show the dialog
-            layout.init(this.eventDialog.$el);
             this.eventDialog.render();
 
             // override form submit behavior
-            var form = this.eventDialog.$el.find('input:submit').closest('form');
-            form.off('submit');
-            form.on('submit', _.bind(function (e) {
+            this.eventDialog.form
+                .off('submit')
+                .on('submit', _.bind(function (e) {
                     e.preventDefault();
                     e.stopImmediatePropagation();
                     this.saveModel();
@@ -74,18 +84,18 @@ function($, _, Backbone, __, DialogWidget, layout, LoadingMask, FormValidation, 
                 }, this));
 
             // subscribe to 'delete event' event
-            this.eventDialog.$el.closest('.ui-dialog').find(this.options.formDeleteButtonSelector)
-                .on('click', _.bind(function (e) {
-                    var el = $(e.target);
-                    var confirm = new DeleteConfirmation({
-                        content: el.data('message')
-                    });
-                    confirm.on('ok', _.bind(function() {
-                        this.deleteModel();
-                    }, this));
-                    confirm.open();
-                    return false;
-                }, this));
+            var onDelete = _.bind(function (e) {
+                e.preventDefault();
+                var el = $(e.target);
+                var confirm = new DeleteConfirmation({
+                    content: el.data('message')
+                });
+                confirm.on('ok', _.bind(this.deleteModel, this));
+                confirm.open();
+            }, this);
+            this.eventDialog.getAction('delete', 'adopted', function(deleteAction) {
+                deleteAction.on('click', onDelete);
+            });
 
             // init form validation script
             if (!_.isUndefined(this.options.formValidationScriptUrl)
@@ -101,157 +111,99 @@ function($, _, Backbone, __, DialogWidget, layout, LoadingMask, FormValidation, 
         },
 
         saveModel: function() {
-            this.showSavingMask(true);
+            this.showSavingMask();
             try {
                 var data = this.getEventFormData();
+                data.calendar = this.options.calendar;
 
-                if (this.model.isNew()) {
-                    data.calendar = this.getCollection().getCalendar();
-                    // set model fields
-                    _.each(data, _.bind(function (value, key) {
-                        this.model.set(key, value);
-                    }, this));
-                    this.getCollection().create(this.model, {
-                        wait: true,
-                        success: _.bind(function () {
-                            this.showSavingMask(false);
-                            this.eventDialog.remove();
-                        }, this),
-                        error: _.bind(function (collection, response) {
-                            this.showSavingMask(false);
-                            this.showError(response.responseJSON);
-                        }, this)
-                    });
-                } else {
-                    this.model.save(data, {
-                        wait: true,
-                        success: _.bind(function () {
-                            this.showSavingMask(false);
-                            this.eventDialog.remove();
-                        }, this),
-                        error: _.bind(function (model, response) {
-                            this.showSavingMask(false);
-                            this.showError(response.responseJSON);
-                        }, this)
-                    });
-                }
+                this.model.save(data, {
+                    wait: true,
+                    error: _.bind(this._handleResponseError, this)
+                });
             } catch (err) {
-                this.showSavingMask(false);
                 this.showError(err);
             }
         },
 
         deleteModel: function() {
-            this.showDeletingMask(true);
+            this.showDeletingMask();
             try {
                 this.model.destroy({
                     wait: true,
-                    success: _.bind(function () {
-                        this.showDeletingMask(false);
-                        this.eventDialog.remove();
-                    }, this),
-                    error: _.bind(function (model, response) {
-                        this.showDeletingMask(false);
-                        this.showError(response.responseJSON);
-                    }, this)
+                    error: _.bind(this._handleResponseError, this)
                 });
             } catch (err) {
-                this.showDeletingMask(false);
                 this.showError(err);
             }
         },
 
-        showSavingMask: function(show) {
-            this._showMask(show, 'Saving...');
+        showSavingMask: function() {
+            this._showMask(__('Saving...'));
         },
 
-        showDeletingMask: function(show) {
-            this._showMask(show, 'Deleting...');
+        showDeletingMask: function() {
+            this._showMask(__('Deleting...'));
         },
 
-        _showMask: function(show, message) {
+        _showMask: function(message) {
             if (this.loadingMask) {
-                if (show) {
-                    this.loadingMask.$el
-                        .find(this.selectors.loadingMaskContent)
-                        .text(__(message));
-                    this.loadingMask.show();
-                } else {
-                    this.loadingMask.hide();
-                }
+                this.loadingMask.$el
+                    .find(this.selectors.loadingMaskContent)
+                    .text(message);
+                this.loadingMask.show();
             }
         },
 
+        _hideMask: function() {
+            if (this.loadingMask) {
+                this.loadingMask.hide();
+            }
+        },
+
+        _handleResponseError: function(model, response) {
+            this.showError(response.responseJSON);
+        },
+
         showError: function (err) {
+            this._hideMask();
             if (this.eventDialog) {
                 FormValidation.handleErrors(this.eventDialog.$el.parent(), err);
             }
         },
 
+        fillForm: function(form, modelData) {
+            form = $(form);
+            _.each(modelData, function(value, key) {
+                var input = form.find('[name$="[' + key + ']"]');
+                if (input.length) {
+                    if (input.is(':checkbox')) {
+                        input.prop('checked', value);
+                    } else {
+                        input.val(value);
+                    }
+                    input.change();
+                }
+            });
+            return form;
+        },
+
         getEventFormData: function () {
-            var keys = ['title', 'start', 'end', 'allDay', 'reminder'];
+            var fieldNameRegex = /\[(\w+)\]$/;
             var data = {};
-            var container = this.eventDialog.$el.parent();
-            var eventFormFieldPrefix = FormValidation.getFormFieldPrefix(container);
-            _.each(keys, function (key) {
-                var el = container.find('#' + eventFormFieldPrefix + key);
-                if (el.attr('type') == 'checkbox') {
-                    data[key] = el.is(':checked');
-                } else {
-                    data[key] = el.val();
+            var formData = this.eventDialog.form.serializeArray();
+            formData = formData.concat(this.eventDialog.form.find('input[type=checkbox]:not(:checked)')
+                .map(function() {
+                    return {"name": this.name, "value": false};
+                }).get()
+            );
+            _.each(formData, function (dataItem) {
+                var fieldNameData = fieldNameRegex.exec(dataItem.name);
+                if (fieldNameData && fieldNameData.length == 2) {
+                    data[fieldNameData[1]] = dataItem.value;
                 }
             });
 
-            // convert start and end dates from jQuery date/time string to RFC 3339 string
-            data.start = this.convertDateTimeFromDatepickerToModel(data.start);
-            data.end = this.convertDateTimeFromDatepickerToModel(data.end);
-
             return data;
-        },
-
-        convertDateTimeFromDatepickerToModel: function (s) {
-            var d = $.datepicker.parseDateTime(
-                this.options.dateformat,
-                this.options.timeformat,
-                s,
-                {},
-                {separator: ' ', timeFormat: this.options.timeformat}
-            );
-            return this.formatDateTimeForModel(d);
-        },
-
-        convertDateTimeFromModelToDatepicker: function (s) {
-            var d = this.convertToViewDateTime(s);
-            var t = {hour: d.getHours(), minute: d.getMinutes(), second: d.getSeconds()};
-            return $.datepicker.formatDate(this.options.dateformat, d) + ' ' +
-                $.datepicker.formatTime(this.options.timeformat, t);
-        },
-
-        formatDateTimeForModel: function (d) {
-            if (_.isNull(d)) {
-                return '';
-            }
-            d = new Date(d.getTime() - this.options.timezoneOffset * 60000);
-            return d.getFullYear() +
-                '-' + this.pad((d.getMonth() + 1)) +
-                '-' + this.pad(d.getDate()) +
-                'T' + this.pad(d.getHours()) +
-                ':' + this.pad(d.getMinutes()) +
-                ':' + this.pad(d.getSeconds()) +
-                '.000Z';
-        },
-
-        convertToViewDateTime: function (s) {
-            var d = $.fullCalendar.parseISO8601(s, true);
-            return new Date(d.getTime() + this.options.timezoneOffset * 60000);
-        },
-
-        pad: function (s) {
-            s += '';
-            if (s.length === 1) {
-                s = '0' + s;
-            }
-            return s;
         }
     });
 });

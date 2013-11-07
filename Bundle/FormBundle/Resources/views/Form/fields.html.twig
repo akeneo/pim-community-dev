@@ -311,48 +311,6 @@
                     {% if tooltip_placement is defined %}data-placement="{{ tooltip_placement }}"{% endif %}
                     data-content="{{ tooltip }}"
                     data-toggle="popover"></i>
-                <script type="text/javascript">
-                    require(['jquery', 'bootstrap-tooltip'],
-                    function($) {
-                        var container = $('[for="{{ id }}"]');
-                        var handlePopoverMouseout = function (e, popover) {
-                            var popoverHandler = $(e.relatedTarget).closest('.popover');
-                            if (!popoverHandler.length) {
-                                popover.data('popover-timer',
-                                    setTimeout(function() {
-                                        popover.popover('hide');
-                                        popover.data('popover-active', false);
-                                    }, 500)
-                                );
-                            } else {
-                                popoverHandler.one('mouseout', function(evt) {
-                                    handlePopoverMouseout(evt, popover);
-                                });
-                            }
-                        };
-                        container.find('[data-toggle="popover"]')
-                            .popover({
-                                animation: true,
-                                delay: { show: 0, hide: 0 },
-                                html: true,
-                                trigger: 'manual'
-                            })
-                            .mouseover(function() {
-                                var popoverEl = $(this);
-                                clearTimeout(popoverEl.data('popover-timer'));
-                                if (!popoverEl.data('popover-active')) {
-                                    popoverEl.data('popover-active', true);
-                                    $(this).popover('show');
-                                }
-                            })
-                            .mouseout(function(e) {
-                                var popover = $(this);
-                                setTimeout(function() {
-                                    handlePopoverMouseout(e, popover);
-                                }, 500);
-                            });
-                    });
-                </script>
             {% endif %}
             {% if required and not isRadioLabel %}
                 <em>*</em>
@@ -361,3 +319,129 @@
         </label>
     {% endspaceless %}
 {% endblock form_label %}
+
+{% block oro_money_currency_addon %}
+    <span class="add-on">{{ currency_symbol }}</span>
+{% endblock oro_money_currency_addon %}
+
+{% block oro_money_widget %}
+    {% spaceless %}
+        {% if currency_symbol_prepend is null %}
+            {% set div_input_class = '' %}
+        {% elseif currency_symbol_prepend == true %}
+            {% set div_input_class = 'input-prepend' %}
+        {% else %}
+            {% set div_input_class = 'input-append' %}
+        {% endif %}
+
+        {% set attr = attr|merge({'class': (attr.class|default('') ~ ' input-addon')|trim}) %}
+
+        <div class="{{ div_input_class }}">
+            {% set money_field = money_pattern %}
+            {% set money_field = money_field|replace({ '{{ widget }}': block('form_widget_simple') }) %}
+            {% set money_field = money_field|replace({ '{{ currency }}': block('oro_money_currency_addon') }) %}
+            {{ money_field|raw }}
+        </div>
+    {% endspaceless %}
+{% endblock oro_money_widget %}
+
+{% block oro_date_widget %}
+    {% set actual_id = id %}
+    {% set selector_name = 'date_selector_' ~ id %}
+    {% set selector_id = selector_name %}
+
+    {# Actual date field that uses ISO format #}
+    {% set attr = attr|merge({'data-input-id': selector_id}) %}
+    <span style="display:none">{{ block('date_widget') }}</span>
+
+    {# Visible fake datepicker field that uses localized format #}
+    <input type="text"
+           name="{{ selector_name }}"
+           id="{{ selector_id }}"
+           placeholder="{{ placeholder|trans }}" />
+
+    <script type="text/javascript">
+        require(['jquery', 'oro/formatter/datetime', 'jquery-ui'],
+        function($, datetimeFormatter) {
+            var selector = $("#{{ selector_id }}");
+            var actual = $("#{{ actual_id }}");
+            var sync = function() {
+                selector.val(datetimeFormatter.formatDate(actual.val()));
+            };
+            actual.on('change', sync);
+            if (actual.val().length) {
+                sync();
+            }
+            selector.datepicker({
+                altField: '#{{ actual_id }}',
+                altFormat: 'yy-mm-dd',
+                changeMonth: true,
+                changeYear: true,
+                yearRange: '-80:+1',
+                showButtonPanel: true
+            });
+            selector.keyup(
+                function () {
+                    var selectorValue = selector.val();
+                    if (datetimeFormatter.isDateValid(selectorValue)) {
+                        actual.val(datetimeFormatter.convertDateToBackendFormat(selectorValue));
+                    } else {
+                        actual.val('');
+                    }
+                }
+            );
+        });
+    </script>
+{% endblock oro_date_widget %}
+
+{% block oro_datetime_widget %}
+    {% set actual_id = id %}
+    {% set selector_name = 'datetime_selector_' ~ id %}
+    {% set selector_id = selector_name %}
+
+    {# Actual date field that uses ISO format #}
+    {% set attr = attr|merge({'data-input-id': selector_id}) %}
+    <span style="display:none">{{ block('datetime_widget') }}</span>
+
+    {# Visible fake datetimepicker field that uses localized format #}
+    <input type="text"
+           name="{{ selector_name }}"
+           id="{{ selector_id }}"
+           placeholder="{{ placeholder|trans }}" />
+
+    <script type="text/javascript">
+        require(['jquery', 'oro/formatter/datetime', 'jquery-ui-timepicker'],
+        function($, datetimeFormatter) {
+            var selector = $("#{{ selector_id }}");
+            var actual = $("#{{ actual_id }}");
+            var sync = function() {
+                selector.val(datetimeFormatter.formatDateTime(actual.val()));
+            };
+            actual.on('change', sync);
+            if (actual.val().length) {
+                sync();
+            }
+            selector.datetimepicker({
+                altField: '#{{ actual_id }}',
+                altFormat: 'yy-mm-dd',
+                altTimeFormat: 'HH:mm:ssz',
+                altFieldTimeOnly: false,
+                altSeparator: 'T',
+                changeMonth: true,
+                changeYear: true,
+                yearRange: '-80:+1',
+                showButtonPanel: true
+            });
+            selector.keyup(
+                function () {
+                    var selectorValue = selector.val();
+                    if (datetimeFormatter.isDateTimeValid(selectorValue)) {
+                        actual.val(datetimeFormatter.convertDateTimeToBackendFormat(selectorValue));
+                    } else {
+                        actual.val('');
+                    }
+                }
+            );
+        });
+    </script>
+{% endblock oro_datetime_widget %}

@@ -1,6 +1,7 @@
 parameters:
     oro_form.type.date.class:                       Oro\Bundle\FormBundle\Form\Type\OroDateType
     oro_form.type.datetime.class:                   Oro\Bundle\FormBundle\Form\Type\OroDateTimeType
+    oro_form.type.money.class:                      Oro\Bundle\FormBundle\Form\Type\OroMoneyType
     oro_form.type.entity_identifier.class:          Oro\Bundle\FormBundle\Form\Type\EntityIdentifierType
     oro_form.type.jqueryselect2_hidden.class:       Oro\Bundle\FormBundle\Form\Type\OroJquerySelect2HiddenType
     oro_form.extension.data_block.class:            Oro\Bundle\FormBundle\Form\Extension\DataBlockExtension
@@ -18,8 +19,18 @@ services:
 
     oro_form.type.datetime:
         class: %oro_form.type.datetime.class%
+        arguments:
+            - @oro_locale.settings
         tags:
             - { name: form.type, alias: oro_datetime }
+
+    oro_form.type.money:
+        class: %oro_form.type.money.class%
+        arguments:
+            - @oro_locale.settings
+            - @oro_locale.formatter.number
+        tags:
+            - { name: form.type, alias: oro_money }
 
     oro_form.type.icon:
         class: %oro_form.type.icon.class%

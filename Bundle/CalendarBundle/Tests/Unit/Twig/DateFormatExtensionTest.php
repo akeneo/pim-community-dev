@@ -7,9 +7,6 @@ use Oro\Bundle\CalendarBundle\Twig\DateFormatExtension;
 class DateFormatExtensionTest extends \PHPUnit_Framework_TestCase
 {
     /** @var \PHPUnit_Framework_MockObject_MockObject */
-    protected $env;
-
-    /** @var \PHPUnit_Framework_MockObject_MockObject */
     protected $formatter;
 
     /** @var DateFormatExtension */
@@ -17,15 +14,11 @@ class DateFormatExtensionTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->env = $this->getMockBuilder('\Twig_Environment')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->formatter = $this->getMockBuilder('Oro\Bundle\LocaleBundle\Twig\DateFormatExtension')
+        $this->formatter = $this->getMockBuilder('Oro\Bundle\LocaleBundle\Formatter\DateTimeFormatter')
             ->disableOriginalConstructor()
             ->getMock();
         $this->formatter->expects($this->any())
-            ->method('formatDateTime')
+            ->method('format')
             ->will($this->returnValue('DateTime'));
         $this->formatter->expects($this->any())
             ->method('formatDate')
@@ -45,7 +38,7 @@ class DateFormatExtensionTest extends \PHPUnit_Framework_TestCase
         $startDate = new \DateTime($start);
         $endDate = $end === null ? null : new \DateTime($end);
 
-        $result = $this->extension->formatCalendarDateRange($this->env, $startDate, $endDate, $skipTime);
+        $result = $this->extension->formatCalendarDateRange($startDate, $endDate, $skipTime);
 
         $this->assertEquals($expected, $result);
     }

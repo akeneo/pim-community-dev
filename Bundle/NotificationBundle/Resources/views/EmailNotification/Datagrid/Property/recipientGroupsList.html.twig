@@ -1,0 +1,5 @@
+<ul>
+    {% for group in value if group is not empty %}
+        <li>{{ group.name }}</li>
+    {% endfor %}
+</ul>

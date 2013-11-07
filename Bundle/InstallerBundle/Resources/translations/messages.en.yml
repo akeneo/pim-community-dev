@@ -64,6 +64,7 @@ process:
             fixtures:      Load sample data
             search:        Create search index
             navigation:    Init navigation
+            localization:  Dump localization
             assets:        Install assets
             assetic:       Dump assetic
             assetic-oro:   Dump Oro assetic
