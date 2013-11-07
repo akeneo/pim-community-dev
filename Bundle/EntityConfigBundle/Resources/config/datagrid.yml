@@ -45,17 +45,17 @@ datagrid:
                     - id
         actions:
             # @TODO check why those actions dont have ACL
-            update:
-                type: navigate
-                label: Update
-                icon: edit
-                link: update_link
-                rowAction: true
             view:
                 type: navigate
                 label: View
                 icon: book
                 link: view_link
+                rowAction: true
+            update:
+                type: navigate
+                label: Update
+                icon: edit
+                link: update_link
         sorters:
             columns:
                 name:

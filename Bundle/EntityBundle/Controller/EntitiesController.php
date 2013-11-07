@@ -137,16 +137,10 @@ class EntitiesController extends Controller
         $entityConfig = $entityConfigProvider->getConfig($extendEntityName);
         $fieldConfig  = $extendConfigProvider->getConfig($extendEntityName, $fieldName);
 
-        /** @var  CustomEntityDatagrid $datagrid */
-        $datagridManager = $this->get('oro_entity.relation_datagrid.manager');
-        $datagridManager->setCustomEntityClass($fieldConfig->get('target_entity'));
-        $datagridManager->setRelationConfig($fieldConfig);
-
         $extendEntity = $this->getDoctrine()->getRepository($extendEntityName)->find($id);
         if (!$extendEntity) {
             $extendEntity = new $extendEntityName;
         }
-        $datagridManager->setRelation($extendEntity);
 
         $added   = $this->getRequest()->get('added');
         $removed = $this->getRequest()->get('removed');
@@ -163,15 +157,7 @@ class EntitiesController extends Controller
             $removed = [];
         }
 
-        $datagridManager->setAdditionalParameters(['data_in' => $added, 'data_not_in' => $removed]);
-        $datagridManager->setEntityName($fieldConfig->get('target_entity'));
-
-        $view = $datagridManager->getDatagrid()->createView();
-
-        return 'json' == $this->getRequest()->getRequestFormat()
-            ? $this->get('oro_grid.renderer')->renderResultsJsonResponse($view)
-            : [
-                'datagrid'        => $view,
+        return [
                 'entity_id'       => $className,
                 'entity_class'    => $extendEntityName,
                 'label'           => $entityConfig->get('label'),

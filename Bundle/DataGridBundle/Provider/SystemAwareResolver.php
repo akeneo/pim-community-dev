@@ -12,6 +12,9 @@ class SystemAwareResolver implements ContainerAwareInterface
      */
     protected $container;
 
+    /** @var array parent configuration array node */
+    protected $parentNode;
+
     public function __construct(ContainerInterface $container)
     {
         $this->setContainer($container);
@@ -27,6 +30,7 @@ class SystemAwareResolver implements ContainerAwareInterface
     {
         foreach ($datagridDefinition as $key => $val) {
             if (is_array($val)) {
+                $this->parentNode = $val;
                 $datagridDefinition[$key] = $this->resolve($datagridName, $val);
                 continue;
             }
@@ -104,7 +108,8 @@ class SystemAwareResolver implements ContainerAwareInterface
                     ->get($service)
                     ->$method(
                         $datagridName,
-                        $key
+                        $key,
+                        $this->parentNode
                     );
                 break;
             // service pass @service
