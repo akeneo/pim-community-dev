@@ -179,7 +179,7 @@ class MediaManagerTest extends \PHPUnit_Framework_TestCase
     /**
      * @param mixed $file
      *
-     * @return \Oro\Bundle\FlexibleEntityBundle\Entity\Media
+     * @return \Pim\Bundle\CatalogBundle\Entity\Media
      */
     protected function getMediaMock($file = null)
     {

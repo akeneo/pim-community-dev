@@ -18,11 +18,6 @@ class MediaTest extends \PHPUnit_Framework_TestCase
         $this->media = new Media();
     }
 
-    public function testExtendsOroMedia()
-    {
-        $this->assertInstanceOf('Oro\Bundle\FlexibleEntityBundle\Entity\Media', $this->media);
-    }
-
     public function testSetGetValue()
     {
         $value = $this->getMock('Pim\Bundle\CatalogBundle\Model\ProductValueInterface');

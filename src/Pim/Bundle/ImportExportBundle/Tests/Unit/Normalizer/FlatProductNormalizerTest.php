@@ -277,7 +277,7 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
     /**
      * @param string $filename
      *
-     * @return \Oro\Bundle\FlexibleEntityBundle\Entity\Media
+     * @return \Pim\Bundle\CatalogBundle\Entity\Media
      */
     protected function getMediaMock()
     {
