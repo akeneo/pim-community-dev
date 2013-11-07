@@ -326,7 +326,7 @@ class Contact extends AbstractEntity implements Entity
             //click Add
             $addButton = $this->byXpath(
                 "//div[@class='row-oro'][div[@id='orocrm_contact_form_addresses_collection']]" .
-                    "//a[@class='btn add-list-item']"
+                "//a[@class='btn add-list-item']"
             );
             $this->moveto($addButton);
             $addButton->click();
