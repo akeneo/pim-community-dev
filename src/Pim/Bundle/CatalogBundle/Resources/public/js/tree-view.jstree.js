@@ -33,7 +33,7 @@ define(
                     label:    __('Include sub-categories'),
                     callback: function(state) {
                         includeChildren = state;
-                        $el.trigger('select_node.jstree');
+                        $el.jstree('refresh');
                     }
                 },
                 'tree_selector': {
@@ -59,7 +59,7 @@ define(
                                 'id': id,
                                 'select_node_id': selectedNode,
                                 'with_products_count': 1,
-                                'include_sub': includeChildren
+                                'include_sub': +includeChildren
                             };
                         }
                     }
