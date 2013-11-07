@@ -35,7 +35,8 @@ class CategoryExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'count_products' => new \Twig_Function_Method($this, 'countProducts')
+            'count_products' => new \Twig_Function_Method($this, 'countProducts'),
+            'define_state'   => new \Twig_Function_Method($this, 'defineState')
         );
     }
 
@@ -65,16 +66,17 @@ class CategoryExtension extends \Twig_Extension
             ->countProductsLinked($category, !$nested);
     }
 
-    /**
-     * Return the state of the category (leaf if no children, closed otherwise)
-     *
-     * @param CategoryInterface $category
-     *
-     * @return string
-     */
-    public function getState(CategoryInterface $category)
+    public function defineState($category, $hasChild = false, $selectNode = null)
     {
         $state = $category->hasChildren() ? 'closed' : 'leaf';
+
+        if ($hasChild === true) {
+            $state = 'open';
+        }
+
+        if ($selectNode !== null && $category->getId() === $selectNode->getId()) {
+            $state .= ' toselect';
+        }
 
         if ($category->isRoot()) {
             $state .= ' jstree-root';

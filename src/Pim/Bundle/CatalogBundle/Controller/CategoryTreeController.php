@@ -158,7 +158,7 @@ class CategoryTreeController extends AbstractDoctrineController
         $selectNodeId      = $this->getRequest()->get('select_node_id', -1);
         $withProductsCount = (bool) $this->getRequest()->get('with_products_count', false);
         $includeParent     = (bool) $this->getRequest()->get('include_parent', false);
-        $nested            = (bool) $this->getRequest()->get('nested', false);
+        $includeSub        = (bool) $this->getRequest()->get('include_sub', false);
 
         try {
             $selectNode = $this->findCategory($selectNodeId);
@@ -178,17 +178,14 @@ class CategoryTreeController extends AbstractDoctrineController
             $view = 'PimCatalogBundle:CategoryTree:children.json.twig';
         }
 
-        if (!$includeParent) {
-            $parent = null;
-        }
-
         return $this->render(
             $view,
             array(
                 'categories'    => $categories,
-                'parent'        => $parent,
-                'nested'        => $nested,
-                'product_count' => $withProductsCount
+                'parent'        => ($includeParent) ? $parent : null,
+                'include_sub'   => $includeSub,
+                'product_count' => $withProductsCount,
+                'select_node'   => $selectNode
             ),
             new JsonResponse()
         );
