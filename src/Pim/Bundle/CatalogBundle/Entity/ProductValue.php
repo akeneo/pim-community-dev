@@ -132,7 +132,7 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
      * @ORM\OneToOne(
      *     targetEntity="Pim\Bundle\CatalogBundle\Entity\Media",
      *     cascade={"persist", "refresh"},
-     *     mappedBy="value"
+     *     inversedBy="value"
      * )
      */
     protected $media;

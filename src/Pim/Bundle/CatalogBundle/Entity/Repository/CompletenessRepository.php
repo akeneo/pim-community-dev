@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 use Pim\Bundle\CatalogBundle\Doctrine\EntityRepository;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Product;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
  * Completeness repository
