@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use JMS\Serializer\Annotation\ExclusionPolicy;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
@@ -26,6 +27,8 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
  *      }
  *  }
  * )
+ * 
+ * @ExclusionPolicy("all")
  */
 class Currency
 {

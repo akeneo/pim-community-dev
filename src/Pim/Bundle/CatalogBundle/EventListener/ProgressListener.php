@@ -47,7 +47,7 @@ class ProgressListener
             function (ProgressEvent $event) use ($output, &$progress, $message) {
                 if (0 == $event->getTreatedItems()) {
                     if (null !== $progress) {
-                       $progress->finish();
+                        $progress->finish();
                     }
                     if ($message) {
                         $output->writeln(sprintf($message, $event->getSection()));

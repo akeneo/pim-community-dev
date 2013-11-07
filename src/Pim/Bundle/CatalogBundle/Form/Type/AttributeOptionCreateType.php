@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Pim\Bundle\CatalogBundle\Form\Type\AttributeOptionValueType;
 
 /**
  * Form type for creating a new AttributeOption
@@ -20,7 +21,18 @@ class AttributeOptionCreateType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('code', 'text', array('required' => true));
+        $builder
+            ->add('code', 'text', array('required' => true))
+            ->add(
+                'optionValues',
+                'collection',
+                array(
+                    'type'         => new AttributeOptionValueType(),
+                    'allow_add'    => true,
+                    'allow_delete' => true,
+                    'by_reference' => false
+                )
+            );
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation\ExclusionPolicy;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 
 /**
@@ -23,6 +24,8 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
  *      }
  *  }
  * )
+ * 
+ * @ExclusionPolicy("all")
  */
 class GroupType
 {
