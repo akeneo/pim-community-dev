@@ -346,6 +346,20 @@ class ProductManager extends FlexibleManager
     }
 
     /**
+     * Remove products
+     *
+     * @param integer[] $ids
+     */
+    public function removeAll(array $ids)
+    {
+        $products = $this->getFlexibleRepository()->findByIds($ids);
+        foreach ($products as $product) {
+            $this->storageManager->remove($product);
+        }
+        $this->storageManager->flush();
+    }
+
+    /**
      * @param ProductInterface $product
      * @param ProductValue     $value
      *

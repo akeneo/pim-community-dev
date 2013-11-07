@@ -25,6 +25,7 @@ use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
+use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
 use Pim\Bundle\CatalogBundle\Exception\DeleteException;
 use Pim\Bundle\VersioningBundle\Manager\AuditManager;
 
@@ -308,19 +309,27 @@ class ProductAttributeController extends AbstractDoctrineController
      *
      * @param Request          $request
      * @param ProductAttribute $attribute
+     * @param string           $dataLocale
      *
      * @Template("PimCatalogBundle:ProductAttribute:form_options.html.twig")
      * @AclAncestor("pim_catalog_attribute_edit")
      * @return Response
      */
-    public function createOptionAction(Request $request, ProductAttribute $attribute)
+    public function createOptionAction(Request $request, ProductAttribute $attribute, $dataLocale)
     {
         if (!$request->isXmlHttpRequest() || !in_array($attribute->getAttributeType(), $this->choiceAttributeTypes)) {
             return $this->redirectToRoute('pim_catalog_productattribute_edit', array('id'=> $attribute->getId()));
         }
 
         $option = new AttributeOption();
+
+        $optionValue = new AttributeOptionValue();
+        $optionValue->setLocale($dataLocale);
+        $optionValue->setValue('');
+        $option->addOptionValue($optionValue);
+
         $attribute->addOption($option);
+
         $form = $this->createForm('pim_attribute_option_create', $option);
 
         if ($request->isMethod('POST')) {
@@ -332,7 +341,7 @@ class ProductAttributeController extends AbstractDoctrineController
                     'status' => 1,
                     'option' => array(
                         'id'    => $option->getId(),
-                        'label' => $option->__toString()
+                        'label' => $option->setLocale($dataLocale)->__toString()
                     )
                 );
 
@@ -341,8 +350,9 @@ class ProductAttributeController extends AbstractDoctrineController
         }
 
         return array(
-            'attribute' => $attribute,
-            'form'      => $form->createView()
+            'attribute'  => $attribute,
+            'dataLocale' => $dataLocale,
+            'form'       => $form->createView()
         );
     }
 

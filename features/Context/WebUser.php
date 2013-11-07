@@ -1392,6 +1392,23 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string $products
+     *
+     * @When /^I mass-delete products (.*)$/
+     */
+    public function iMassDeleteProducts($products)
+    {
+        $page = $this->getPage('Product index');
+
+        foreach ($this->listToArray($products) as $product) {
+            $page->selectRow($product);
+        }
+
+        $page->massDelete();
+        $this->wait();
+    }
+
+    /**
      * @param string $operation
      *
      * @Given /^I choose the "([^"]*)" operation$/

@@ -47,12 +47,12 @@ Feature: Export media with products
     Then exported file of "acme_product_export" should contain:
     """
     sku;family;groups;categories;frontView;name;userManual
-    bic-core-148;funboard;;sport;behat-bic-core-148.gif;"Bic Core 148";behat-bic-core-148.txt
-    fanatic-freewave-76;funboard;;sport;behat-fanatic-freewave-76.gif;"Fanatic Freewave 76";behat-fanatic-freewave-76.txt
+    bic-core-148;funboard;;sport;files/bic-core-148/frontView/bic-core-148.gif;"Bic Core 148";files/bic-core-148/userManual/bic-core-148.txt
+    fanatic-freewave-76;funboard;;sport;files/fanatic-freewave-76/frontView/fanatic-freewave-76.gif;"Fanatic Freewave 76";files/fanatic-freewave-76/userManual/fanatic-freewave-76.txt
 
     """
     Then export directory of "acme_product_export" should contain the following media:
-      | behat-bic-core-148.gif        |
-      | behat-bic-core-148.txt        |
-      | behat-fanatic-freewave-76.gif |
-      | behat-fanatic-freewave-76.txt |
+      | files/bic-core-148/frontView/bic-core-148.gif                |
+      | files/bic-core-148/userManual/bic-core-148.txt               |
+      | files/fanatic-freewave-76/frontView/fanatic-freewave-76.gif  |
+      | files/fanatic-freewave-76/userManual/fanatic-freewave-76.txt |

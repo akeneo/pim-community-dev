@@ -104,4 +104,12 @@ class Index extends Grid
     {
         $this->pressButton('Mass Edition');
     }
+
+    /**
+     * Press the mass delete button
+     */
+    public function massDelete()
+    {
+        $this->pressButton('Delete');
+    }
 }
