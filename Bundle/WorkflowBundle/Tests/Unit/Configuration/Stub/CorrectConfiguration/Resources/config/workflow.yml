@@ -31,8 +31,15 @@ workflows:
                 step_to: first_step
                 is_start: true
                 transition_definition: first_transition_definition
-                options:
-                    first_key: first_value
+                frontend_options:
+                    class: foo
+                form_options:
+                    attribute_fields:
+                        first_attribute:
+                            form_type: text
+                            label: 'First Attribute'
+                            options:
+                                required: true
         transition_definitions:
             first_transition_definition:
                 conditions:
@@ -58,7 +65,7 @@ workflows:
                 label: 'Second Transition'
                 step_to: second_step
                 transition_definition: second_transition_definition
-                options:
-                    second_key: second_value
+                frontend_options:
+                    icon: bar
         transition_definitions:
             second_transition_definition: []

@@ -41,8 +41,19 @@ return array(
                 'step_to' => 'first_step',
                 'is_start' => true,
                 'transition_definition' => 'first_transition_definition',
-                'options' => array(
-                    'first_key' => 'first_value'
+                'frontend_options' => array(
+                    'class' => 'foo'
+                ),
+                'form_options' => array(
+                    'attribute_fields' => array(
+                        'first_attribute' => array(
+                            'label' => 'First Attribute',
+                            'form_type' => 'text',
+                            'options' => array(
+                                'required' => 1
+                            )
+                        )
+                    )
                 ),
             )
         ),
@@ -83,9 +94,10 @@ return array(
                 'step_to' => 'second_step',
                 'is_start' => false,
                 'transition_definition' => 'second_transition_definition',
-                'options' => array(
-                    'second_key' => 'second_value'
+                'frontend_options' => array(
+                    'icon' => 'bar'
                 ),
+                'form_options' => array(),
             )
         ),
         'transition_definitions' => array(

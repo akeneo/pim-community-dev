@@ -3,10 +3,10 @@
         {% if not enabled %}disabled="disabled"{% endif %}
         data-href="{{ url }}"
         data-redirect-to-workflow="{{ redirectToWorkflow }}"
-        class="btn icons-holder-text no-hash {% if transition.options.frontend is defined and transition.options.frontend.class is defined %}{{ transition.options.frontend.class }}{% endif %}"
+        class="btn icons-holder-text no-hash {% if transition.frontend_options is defined and transition.frontend_options.class is defined %}{{ transition.frontend_options.class }}{% endif %}"
         id="transition-{{ workflow.name }}-{{ transition.name }}">
-        {% if transition.options.frontend is defined and transition.options.frontend.icon is defined %}
-            <i class="{{ transition.options.frontend.icon }} hide-text">{{ transition.label|trans }}</i>
+        {% if transition.frontend_options is defined and transition.frontend_options.icon is defined %}
+            <i class="{{ transition.frontend_options.icon }} hide-text">{{ transition.label|trans }}</i>
         {% endif %}
         {{ transition.label|trans }}
     </button>

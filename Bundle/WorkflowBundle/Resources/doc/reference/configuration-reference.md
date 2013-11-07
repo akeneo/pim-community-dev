@@ -307,9 +307,12 @@ Transition configuration has next options:
     *boolean*
     If true than this transition can be used to start new workflow. At least one start transition is required if
     workflow doesn't have start_step attribute.
-* **options**
-    Options of transition that can have additional configuration, for example option with name
-    frontend (a list of frontend options)
+* **frontend_options**
+    Can have such frontend options as **class** (a CSS class applied to transition button), **icon**
+    (CSS class of icon of transition button).
+* **form_options**
+    These options will be passed to form type of transition, they can contain options for form types of attributes that
+    will be shown when user clicks transition button.
 
 Example
 -------
@@ -325,10 +328,10 @@ workflows:
                                                             # when transition will be performed
 
                 transition_definition: connected_definition # A reference to Transition Definition configuration
-                options:                                    # options of transition
-                    frontend:
-                        icon: 'icon-ok'
-                        class: 'btn-primary'
+                frontend_options:                           # options of transition
+                    icon: 'icon-ok'
+                    class: 'btn-primary'
+
             not_answered:
                 label: "Not answered"
                 step_to: end_call
