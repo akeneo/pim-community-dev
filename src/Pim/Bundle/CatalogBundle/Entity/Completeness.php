@@ -25,7 +25,7 @@ use Doctrine\ORM\Mapping as ORM;
  *         )
  *     }
  * )
- * 
+ *
  * @ExclusionPolicy("all")
  */
 class Completeness

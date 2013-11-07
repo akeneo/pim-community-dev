@@ -6,7 +6,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Pim\Bundle\ImportExportBundle\Validator\Constraints\Channel as ChannelConstraint;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Pim\Bundle\CatalogBundle\Calculator\CompletenessCalculator;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 
 /**
@@ -33,8 +32,8 @@ class ProductReader extends ORMReader
     protected $channelManager;
 
     /**
-     * @param ProductManager         $productManager
-     * @param ChannelManager         $channelManager
+     * @param ProductManager $productManager
+     * @param ChannelManager $channelManager
      */
     public function __construct(
         ProductManager $productManager,

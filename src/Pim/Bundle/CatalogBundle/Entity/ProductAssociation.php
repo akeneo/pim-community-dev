@@ -18,7 +18,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
  *
  * @ORM\Table(name="pim_catalog_product_association")
  * @ORM\Entity(repositoryClass="Pim\Bundle\CatalogBundle\Entity\Repository\ProductAssociationRepository")
- * 
+ *
  * @ExclusionPolicy("all")
  */
 class ProductAssociation

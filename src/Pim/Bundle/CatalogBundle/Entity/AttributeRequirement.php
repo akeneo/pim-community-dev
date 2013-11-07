@@ -15,7 +15,7 @@ use Pim\Bundle\CatalogBundle\Entity\Channel;
  *
  * @ORM\Entity
  * @ORM\Table(name="pim_catalog_attribute_requirement")
- * 
+ *
  * @ExclusionPolicy("all")
  */
 class AttributeRequirement

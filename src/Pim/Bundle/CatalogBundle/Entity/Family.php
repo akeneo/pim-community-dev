@@ -30,7 +30,7 @@ use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
  *      }
  *  }
  * )
- * 
+ *
  * @ExclusionPolicy("all")
  */
 class Family implements TranslatableInterface

@@ -28,7 +28,7 @@ use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
  *      }
  *  }
  * )
- * 
+ *
  * @ExclusionPolicy("all")
  */
 class Association implements TranslatableInterface

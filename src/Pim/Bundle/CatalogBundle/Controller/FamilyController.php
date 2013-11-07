@@ -18,7 +18,6 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\GridBundle\Helper\DatagridHelperInterface;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Model\AvailableProductAttributes;
 use Pim\Bundle\CatalogBundle\Form\Type\AvailableProductAttributesType;

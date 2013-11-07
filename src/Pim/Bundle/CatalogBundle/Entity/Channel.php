@@ -29,7 +29,7 @@ use Pim\Bundle\CatalogBundle\Entity\Locale;
  *      }
  *  }
  * )
- * 
+ *
  * @ExclusionPolicy("all")
  */
 class Channel

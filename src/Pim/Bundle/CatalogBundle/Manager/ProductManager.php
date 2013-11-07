@@ -41,13 +41,13 @@ class ProductManager extends FlexibleManager
     /**
      * Constructor
      *
-     * @param string                   $flexibleName           Entity name
-     * @param array                    $flexibleConfig         Global flexible entities configuration array
-     * @param ObjectManager            $storageManager         Storage manager
-     * @param EventDispatcherInterface $eventDispatcher        Event dispatcher
-     * @param AttributeTypeFactory     $attributeTypeFactory   Attribute type factory
-     * @param MediaManager             $mediaManager           Media manager
-     * @param ProductBuilder           $builder                Product builder
+     * @param string                   $flexibleName         Entity name
+     * @param array                    $flexibleConfig       Global flexible entities configuration array
+     * @param ObjectManager            $storageManager       Storage manager
+     * @param EventDispatcherInterface $eventDispatcher      Event dispatcher
+     * @param AttributeTypeFactory     $attributeTypeFactory Attribute type factory
+     * @param MediaManager             $mediaManager         Media manager
+     * @param ProductBuilder           $builder              Product builder
      */
     public function __construct(
         $flexibleName,
@@ -226,7 +226,7 @@ class ProductManager extends FlexibleManager
      *
      * @param ProductInterface $product
      * @param boolean          $recalculate Wether or not to directly recalculate the completeness
-     * @param boolean          $flush Wether or not to flush the entity manager
+     * @param boolean          $flush       Wether or not to flush the entity manager
      */
     public function save(ProductInterface $product, $recalculate = true, $flush = true)
     {
