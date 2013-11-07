@@ -10,6 +10,8 @@ parameters:
     pim_catalog.form.type.product_value.class:          Pim\Bundle\CatalogBundle\Form\Type\ProductValueType
     pim_catalog.form.type.image.class:                  Pim\Bundle\CatalogBundle\Form\Type\ImageType
     pim_catalog.form.type.edit_common_attributes.class: Pim\Bundle\CatalogBundle\Form\Type\MassEditAction\EditCommonAttributesType
+    pim_catalog.extension.type.media.class:             Pim\Bundle\CatalogBundle\Form\Type\MediaTypeExtension
+    pim_catalog.extension.type.image.class:             Pim\Bundle\CatalogBundle\Form\Type\ImageTypeExtension
 
     pim_catalog.form.handler.product_create.class:     Pim\Bundle\CatalogBundle\Form\Handler\ProductCreateHandler
 
