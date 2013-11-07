@@ -30,8 +30,8 @@ define(
                  */
                 setCategory: function(treeId, categoryId, includeSub) {
                     treeId = (categoryId === '') ? '' : treeId;
-                    includeSub = (includeSub === '') ? 1 : 0;
-                    if (treeId !== this.state.treeId || categoryId !== this.state.categoryId || includeSub !== $this.state.includeSub) {
+                    includeSub = (includeSub === '') ? 0 : 1;
+                    if (treeId !== this.state.treeId || categoryId !== this.state.categoryId || includeSub !== this.state.includeSub) {
                         this.updateState({ treeId: treeId, categoryId: categoryId, includeSub: includeSub });
                         this.url = this.setCategoryInUrl(this.url);
                         return true;
