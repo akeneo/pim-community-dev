@@ -183,13 +183,25 @@ class CategoryTreeController extends AbstractDoctrineController
         // FIXME: Simplify and use a single helper method able to manage both cases
         if ($selectNode !== null) {
             $categories = $this->categoryManager->getChildren($parent->getId(), $selectNode->getId());
+
+//             var_dump($categories);
+
             if ($includeParent) {
                 $data = CategoryHelper::childrenTreeResponse($categories, $selectNode, $withProductsCount, $parent);
             } else {
+                $parent = null;
                 $data = CategoryHelper::childrenTreeResponse($categories, $selectNode, $withProductsCount);
             }
 
-            return $this->render('PimCatalogBundle:CategoryTree:children-tree.html.twig', array('data' => $data));
+            return $this->render(
+                'PimCatalogBundle:CategoryTree:children-tree.json.twig',
+                array(
+                    'categories'    => $categories,
+                    'parent'        => $parent,
+                    'nested'        => $nested,
+                    'product_count' => $withProductsCount
+                )
+            );
         } else {
             $categories = $this->categoryManager->getChildren($parent->getId());
         }

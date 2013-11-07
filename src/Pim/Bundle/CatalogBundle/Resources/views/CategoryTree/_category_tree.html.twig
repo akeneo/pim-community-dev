@@ -1,0 +1,14 @@
+{
+    "attr": {"id":"node_{{ category.id }}"},
+    "data": "{{ category.label|raw }}{% if product_count %} ({{ count_products(category, nested) }}){% endif %}",
+    "state": "{{ category|state }}"
+    {% if children is defined and children|length > 0%}
+        ,"children":
+            {% include 'PimCatalogBundle:CategoryTree:children-tree.json.twig'
+                with {
+                    'categories': children,
+                    'product_count': product_count,
+                    'nested': nested
+                } %}
+    {% endif %}
+}
