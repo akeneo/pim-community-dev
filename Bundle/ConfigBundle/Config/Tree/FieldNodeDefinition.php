@@ -78,7 +78,10 @@ class FieldNodeDefinition extends AbstractNodeDefinition
             array(
                 'target_field' => $this
             ),
-            array_intersect_key($this->getOptions(), array_flip(array('label', 'required', 'block', 'subblock')))
+            array_intersect_key(
+                $this->getOptions(),
+                array_flip(array('label', 'required', 'block', 'subblock', 'tooltip'))
+            )
         );
     }
 

@@ -81,7 +81,7 @@ services:
             - @oro_email.email.entity.builder=
             - @oro_email.direct_mailer
             - @logger
-            - @oro_config.twig.config_extension
+            - @oro_locale.formatter.name
 
     oro_email.form.email:
         class: Symfony\Component\Form\Form

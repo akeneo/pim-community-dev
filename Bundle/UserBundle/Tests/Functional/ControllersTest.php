@@ -2,7 +2,6 @@
 
 namespace Oro\Bundle\UserBundle\Tests\Functional;
 
-use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\TestFrameworkBundle\Test\WebTestCase;
 use Oro\Bundle\TestFrameworkBundle\Test\ToolsAPI;
 use Oro\Bundle\TestFrameworkBundle\Test\Client;
@@ -42,7 +41,7 @@ class ControllersTest extends WebTestCase
         $form['oro_user_user_form[plainPassword][second]'] = 'password';
         $form['oro_user_user_form[firstName]'] = 'First Name';
         $form['oro_user_user_form[lastName]'] = 'Last Name';
-        $form['oro_user_user_form[birthday]'] = '7/1/13';
+        $form['oro_user_user_form[birthday]'] = '2013-01-01';
         $form['oro_user_user_form[email]'] = 'test@test.com';
         //$form['oro_user_user_form[tags][owner]'] = 'tags1';
         //$form['oro_user_user_form[tags][all]'] = null;
@@ -89,7 +88,7 @@ class ControllersTest extends WebTestCase
         $form['oro_user_user_form[username]'] = 'testUser1';
         $form['oro_user_user_form[firstName]'] = 'First Name';
         $form['oro_user_user_form[lastName]'] = 'Last Name';
-        $form['oro_user_user_form[birthday]'] = '1/1/13';
+        $form['oro_user_user_form[birthday]'] = '2013-01-02';
         $form['oro_user_user_form[email]'] = 'test@test.com';
         $form['oro_user_user_form[groups][1]'] = 2;
         $form['oro_user_user_form[rolesCollection][2]'] = 4;
@@ -163,7 +162,7 @@ class ControllersTest extends WebTestCase
         );
         /** @var Form $form */
         $form = $crawler->selectButton('Save and Close')->form();
-        $form['oro_user_user_form[birthday]'] = '01/01/1999';
+        $form['oro_user_user_form[birthday]'] = '1999-01-01';
 
         $this->client->followRedirects(true);
         $crawler = $this->client->submit($form);
@@ -180,6 +179,6 @@ class ControllersTest extends WebTestCase
         );
         /** @var Form $form */
         $form = $crawler->selectButton('Save and Close')->form();
-        $this->assertEquals('1/1/99', $form['oro_user_user_form[birthday]']->getValue());
+        $this->assertEquals('1999-01-01', $form['oro_user_user_form[birthday]']->getValue());
     }
 }

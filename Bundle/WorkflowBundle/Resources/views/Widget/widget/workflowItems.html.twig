@@ -1,4 +1,3 @@
-{% import 'OroLocaleBundle::macros.html.twig' as Locale %}
 {% import 'OroUIBundle::macros.html.twig' as UI %}
 
 <div class="widget-content workflow-items">
@@ -53,7 +52,7 @@
                             {% endif %}
                         </td>
                         <td>
-                            {{ Locale.date(data.workflowItem.createdAt) }}
+                            {{ data.workflowItem.createdAt|oro_format_datetime }}
                         </td>
                         <td>
                             {% if not enabled %}

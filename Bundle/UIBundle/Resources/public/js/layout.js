@@ -34,31 +34,6 @@ function($, __) {
             container = $(container || document.body);
             this.styleForm(container);
 
-            container.find('input.datepicker').each(function (index, el) {
-                el = $(el);
-                el.datepicker({
-                    dateFormat: el.attr('data-dateformat') || 'm/d/y',
-                    changeMonth: true,
-                    changeYear: true,
-                    yearRange: '-80:+1',
-                    showButtonPanel: true,
-                    currentText: __('Now')
-                });
-            });
-
-            container.find('input.datetimepicker').each(function (index, el) {
-                el = $(el);
-                el.datetimepicker({
-                    dateFormat: el.attr('data-dateformat') || 'm/d/y',
-                    timeFormat: el.attr('data-timeformat') || 'hh:mm tt',
-                    changeMonth: true,
-                    changeYear: true,
-                    yearRange: '-80:+1',
-                    showButtonPanel: true,
-                    currentText: __('Now')
-                });
-            });
-
             container.find('[data-spy="scroll"]').each(function () {
                 var $spy = $(this);
                 $spy.scrollspy($spy.data());
@@ -68,6 +43,43 @@ function($, __) {
             });
 
             container.find('[data-toggle="tooltip"]').tooltip();
+
+            var handlePopoverMouseout = function (e, popover) {
+                var popoverHandler = $(e.relatedTarget).closest('.popover');
+                if (!popoverHandler.length) {
+                    popover.data('popover-timer',
+                        setTimeout(function() {
+                            popover.popover('hide');
+                            popover.data('popover-active', false);
+                        }, 500)
+                    );
+                } else {
+                    popoverHandler.one('mouseout', function(evt) {
+                        handlePopoverMouseout(evt, popover);
+                    });
+                }
+            };
+            $('form label [data-toggle="popover"]')
+                .popover({
+                    animation: true,
+                    delay: { show: 0, hide: 0 },
+                    html: true,
+                    trigger: 'manual'
+                })
+                .mouseover(function() {
+                    var popoverEl = $(this);
+                    clearTimeout(popoverEl.data('popover-timer'));
+                    if (!popoverEl.data('popover-active')) {
+                        popoverEl.data('popover-active', true);
+                        $(this).popover('show');
+                    }
+                })
+                .mouseout(function(e) {
+                    var popover = $(this);
+                    setTimeout(function() {
+                        handlePopoverMouseout(e, popover);
+                    }, 500);
+                });
         },
 
         hideProgressBar: function() {

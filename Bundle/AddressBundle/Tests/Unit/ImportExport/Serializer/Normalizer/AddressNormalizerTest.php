@@ -80,8 +80,12 @@ class AddressNormalizerTest extends \PHPUnit_Framework_TestCase
             'without_country_and_region' => array(
                 $this->createAddress()
                     ->setLabel('label')
+                    ->setOrganization('Test Ltd.')
+                    ->setNamePrefix('prefix')
                     ->setFirstName('first_name')
+                    ->setMiddleName('middle_name')
                     ->setLastName('last_name')
+                    ->setNameSuffix('suffix')
                     ->setStreet('street')
                     ->setStreet2('street2')
                     ->setCity('city')
@@ -90,8 +94,12 @@ class AddressNormalizerTest extends \PHPUnit_Framework_TestCase
                 ,
                 array(
                     'label' => 'label',
+                    'organization' => 'Test Ltd.',
+                    'namePrefix' => 'prefix',
                     'firstName' => 'first_name',
+                    'middleName' => 'middle_name',
                     'lastName' => 'last_name',
+                    'nameSuffix' => 'suffix',
                     'street' => 'street',
                     'street2' => 'street2',
                     'city' => 'city',
@@ -108,8 +116,12 @@ class AddressNormalizerTest extends \PHPUnit_Framework_TestCase
                 ,
                 array(
                     'label' => null,
+                    'organization' => null,
+                    'namePrefix' => null,
                     'firstName' => null,
+                    'middleName' => null,
                     'lastName' => null,
+                    'nameSuffix' => null,
                     'street' => null,
                     'street2' => null,
                     'city' => null,
@@ -123,8 +135,12 @@ class AddressNormalizerTest extends \PHPUnit_Framework_TestCase
                 $this->createAddress()->setCountry($this->createCountry('US')),
                 array(
                     'label' => null,
+                    'organization' => null,
+                    'namePrefix' => null,
                     'firstName' => null,
+                    'middleName' => null,
                     'lastName' => null,
+                    'nameSuffix' => null,
                     'street' => null,
                     'street2' => null,
                     'city' => null,

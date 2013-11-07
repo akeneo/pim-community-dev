@@ -2,17 +2,17 @@
 
 namespace Oro\Bundle\CalendarBundle\Twig;
 
-use Oro\Bundle\LocaleBundle\Twig\DateFormatExtension as LocaleDateFormatExtension;
+use Oro\Bundle\LocaleBundle\Formatter\DateTimeFormatter;
 
 class DateFormatExtension extends \Twig_Extension
 {
-    /** @var LocaleDateFormatExtension */
+    /** @var DateTimeFormatter */
     protected $formatter;
 
     /**
-     * @param LocaleDateFormatExtension $formatter
+     * @param DateTimeFormatter $formatter
      */
-    public function __construct(LocaleDateFormatExtension $formatter)
+    public function __construct(DateTimeFormatter $formatter)
     {
         $this->formatter = $formatter;
     }
@@ -25,8 +25,7 @@ class DateFormatExtension extends \Twig_Extension
         return array(
             'calendar_date_range' => new \Twig_Function_Method(
                 $this,
-                'formatCalendarDateRange',
-                array('needs_environment' => true)
+                'formatCalendarDateRange'
             )
         );
     }
@@ -47,28 +46,26 @@ class DateFormatExtension extends \Twig_Extension
      *          Thu Oct 17, 2013 5:00pm – Thu Oct 18, 2013 5:00pm - when $skipTime = false
      *          Thu Oct 17, 2013 – Thu Oct 18, 2013 - when $skipTime = true
      *
-     * @param \Twig_Environment $env
-     * @param \DateTime|null    $startDate
+     * @param \DateTime         $startDate
      * @param \DateTime|null    $endDate
      * @param bool              $skipTime
      * @param string|null       $dateTimeFormat
-     * @param string|null       $dateFormat
-     * @param string|null       $timeFormat
+     * @param string|int|null   $dateType \IntlDateFormatter constant or it's string name
+     * @param string|int|null   $timeType \IntlDateFormatter constant or it's string name
      * @param string|null       $locale
-     * @param string|null       $timezone
+     * @param string|null       $timeZone
      *
      * @return string
      */
     public function formatCalendarDateRange(
-        \Twig_Environment $env,
-        \DateTime $startDate = null,
+        \DateTime $startDate,
         \DateTime $endDate = null,
         $skipTime = false,
         $dateTimeFormat = null,
-        $dateFormat = null,
-        $timeFormat = null,
+        $dateType = null,
+        $timeType = null,
         $locale = null,
-        $timezone = null
+        $timeZone = null
     ) {
         if (is_null($startDate)) {
             // exit because nothing to format.
@@ -80,21 +77,21 @@ class DateFormatExtension extends \Twig_Extension
         // check if $endDate is not specified or $startDate equals to $endDate
         if (is_null($endDate) || $startDate == $endDate) {
             return $skipTime
-                ? $this->formatter->formatDate($env, $startDate, $dateFormat, $locale, $timezone)
-                : $this->formatter->formatDateTime($env, $startDate, $dateTimeFormat, $locale, $timezone);
+                ? $this->formatter->formatDate($startDate, $dateType, $locale, $timeZone)
+                : $this->formatter->format($startDate, $dateType, $timeType, $locale, $timeZone);
         }
 
         // check if $startDate and $endDate are the same day
         if ($startDate->format('Ymd') == $endDate->format('Ymd')) {
             if ($skipTime) {
-                return $this->formatter->formatDate($env, $startDate, $dateFormat, $locale, $timezone);
+                return $this->formatter->formatDate($startDate, $dateType, $locale, $timeZone);
             }
 
             return sprintf(
                 '%s %s - %s',
-                $this->formatter->formatDate($env, $startDate, $dateFormat, $locale, $timezone),
-                $this->formatter->formatTime($env, $startDate, $timeFormat, $locale, $timezone),
-                $this->formatter->formatTime($env, $endDate, $timeFormat, $locale, $timezone)
+                $this->formatter->formatDate($startDate, $dateType, $locale, $timeZone),
+                $this->formatter->formatTime($startDate, $timeType, $locale, $timeZone),
+                $this->formatter->formatTime($endDate, $timeType, $locale, $timeZone)
             );
         }
 
@@ -102,15 +99,15 @@ class DateFormatExtension extends \Twig_Extension
         if ($skipTime) {
             return sprintf(
                 '%s - %s',
-                $this->formatter->formatDate($env, $startDate, $dateFormat, $locale, $timezone),
-                $this->formatter->formatDate($env, $endDate, $dateFormat, $locale, $timezone)
+                $this->formatter->formatDate($startDate, $dateType, $locale, $timeZone),
+                $this->formatter->formatDate($endDate, $dateType, $locale, $timeZone)
             );
         }
 
         return sprintf(
             '%s - %s',
-            $this->formatter->formatDateTime($env, $startDate, $dateTimeFormat, $locale, $timezone),
-            $this->formatter->formatDateTime($env, $endDate, $dateTimeFormat, $locale, $timezone)
+            $this->formatter->format($startDate, $dateTimeFormat, $locale, $timeZone),
+            $this->formatter->format($endDate, $dateTimeFormat, $locale, $timeZone)
         );
     }
 

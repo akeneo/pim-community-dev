@@ -210,23 +210,6 @@ class RestApiTest extends WebTestCase
     }
 
     /**
-     * @return array
-     */
-    public function testGetRegions()
-    {
-        $this->client->request(
-            'GET',
-            $this->client->generate('oro_api_get_regions')
-        );
-
-        /** @var $result Response */
-        $result = $this->client->getResponse();
-        ToolsAPI::assertJsonResponse($result, 200);
-        $result = ToolsAPI::jsonToArray($result->getContent());
-        return array_slice($result, 0, 5);
-    }
-
-    /**
      * @depends testGetRegions
      * @param $regions
      */

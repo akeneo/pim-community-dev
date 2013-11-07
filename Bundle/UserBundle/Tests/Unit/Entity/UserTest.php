@@ -309,14 +309,8 @@ class UserTest extends \PHPUnit_Framework_TestCase
         $first = 'James';
         $last  = 'Bond';
 
-        $user->setFirstname($first);
-        $user->setLastname($last);
-
-        $this->assertEquals($user->getFullname(), sprintf('%s %s', $first, $last));
-
-        $user->setNameFormat('%last%, %first%');
-
-        $this->assertEquals($user->getFullname(), sprintf('%s, %s', $last, $first));
+        $user->setFirstName($first);
+        $user->setLastName($last);
     }
 
     public function testDates()
@@ -421,8 +415,11 @@ class UserTest extends \PHPUnit_Framework_TestCase
         return array(
             array('username', 'test'),
             array('email', 'test'),
+            array('nameprefix', 'test'),
             array('firstname', 'test'),
+            array('middlename', 'test'),
             array('lastname', 'test'),
+            array('namesuffix', 'test'),
             array('birthday', new \DateTime()),
             array('image', 'test'),
             array('password', 'test'),
