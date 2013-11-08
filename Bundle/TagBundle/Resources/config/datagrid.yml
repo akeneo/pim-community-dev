@@ -30,6 +30,7 @@ datagrid:
                 frontend_type: integer
 
         properties:
+            id: ~
             update_link:
                 type: url
                 route: oro_tag_update
@@ -81,7 +82,7 @@ datagrid:
             delete:
                 type:          delete
                 label:         Delete
-                link:          update_link
+                link:          delete_link
                 icon:          trash
                 acl_resource:  oro_tag_delete
 
@@ -110,5 +111,4 @@ datagrid:
             entity:
                 label: Item
                 type: search-result
-                template: OroTagBundle::Search\result.html.twig
                 frontend_type: html

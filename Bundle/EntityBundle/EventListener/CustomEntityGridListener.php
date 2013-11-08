@@ -96,8 +96,16 @@ class CustomEntityGridListener extends AbstractConfigGridListener
      */
     public function onBuildBefore(BuildBefore $event)
     {
-        $entityClass = $this->getEntityClass();
+        $entityClass = $this->getRequestParam('class_name');
         if (empty($entityClass)) {
+            $entityClass = $this->request->attributes->get('id');
+        }
+
+        if (empty($this->entityClass) && $entityClass !== false) {
+            $this->entityClass = str_replace('_', '\\', $entityClass);
+        }
+
+        if (empty($this->entityClass)) {
             return false;
         }
 
@@ -127,6 +135,7 @@ class CustomEntityGridListener extends AbstractConfigGridListener
             $config->offsetSetByPath($path, $items);
         }
 
+        // set entity to select from
         $from = $config->offsetGetByPath(self::PATH_FROM, []);
         $from[0] = array_merge($from[0], ['table' => $this->entityClass]);
         $config->offsetSetByPath('[source][query][from]', $from);
@@ -287,18 +296,31 @@ class CustomEntityGridListener extends AbstractConfigGridListener
         };
     }
 
-    public function getEntityClass()
+    /**
+     * Trying to get request param
+     * - first from current request query
+     * - then from master request attributes
+     *
+     * @param $paramName
+     * @param bool $default
+     * @return mixed
+     */
+    protected function getRequestParam($paramName, $default = false)
     {
-        if (empty($this->entityClass)) {
-            $entityClass = $this->requestParams->get('entity_class');
-            if (empty($entityClass)) {
-                $entityClass = str_replace('_', '\\', $this->request->attributes->get('id'));
-            }
+        $paramValue = $this->requestParams->get($paramName, $default);
+        if ($paramValue === false) {
+            $paramNameCamelCase = str_replace(
+                ' ',
+                '',
+                lcfirst(
+                    ucwords(str_replace('_', ' ', $paramName))
+                )
+            );
 
-            $this->entityClass = $entityClass;
+            $paramValue = $this->request->attributes->get($paramNameCamelCase, $default);
         }
 
-        return $this->entityClass;
+        return $paramValue;
     }
 
     /**
