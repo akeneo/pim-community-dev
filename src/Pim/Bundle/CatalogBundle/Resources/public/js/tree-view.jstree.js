@@ -108,16 +108,20 @@ define(
                             'attr': { 'class': 'jstree-unclassified', 'id': 'node_0' },
                             'data': { 'title': _.__('jstree.unclassified') }
                         }, null, true);
-                        if (0 == selectedNode) {
+                        if (0 === +selectedNode) {
                             $el.jstree('select_node', '#node_0');
                         }
                     });
                 }).on('select_node.jstree', function () {
                     function getNodeId(node) {
-                        return (node && node.attr('id')) ? node.attr('id').replace('node_', '') : '';
+                        var nodeId = (node && node.attr('id')) ? node.attr('id').replace('node_', '') : '';
+                        return nodeId !== '' ? nodeId : -1;
                     }
                     var nodeId = getNodeId($.jstree._focused().get_selected()),
                         treeId = getNodeId($('#tree').find('li').first());
+                    if (nodeId !== '') {
+                        selectedNode = nodeId;
+                    }
                     updateGrid(treeId, nodeId, includeChildren);
                 });
             };
