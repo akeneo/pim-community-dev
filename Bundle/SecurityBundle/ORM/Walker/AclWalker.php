@@ -14,8 +14,11 @@ use Doctrine\ORM\Query\AST\InExpression;
 use Doctrine\ORM\Query\AST\WhereClause;
 use Doctrine\ORM\Query\AST\Join;
 use Doctrine\ORM\Query\AST\Subselect;
+use Doctrine\ORM\Query\AST\RangeVariableDeclaration;
+use Doctrine\ORM\Query\AST\ComparisonExpression;
 
 use Oro\Bundle\SecurityBundle\ORM\Walker\Condition\AclConditionStorage;
+use Oro\Bundle\SecurityBundle\ORM\Walker\Condition\JoinAssociationCondition;
 use Oro\Bundle\SecurityBundle\ORM\Walker\Condition\SubRequestAclConditionStorage;
 use Oro\Bundle\SecurityBundle\ORM\Walker\Condition\AclCondition;
 use Oro\Bundle\SecurityBundle\ORM\Walker\Condition\JoinAclCondition;
@@ -97,27 +100,72 @@ class AclWalker extends TreeWalkerAdapter
             $fromClause = $AST->fromClause;
         }
         foreach ($joinConditions as $condition) {
-            /** @var JoinAclCondition $condition */
-            $conditionalFactor = $this->getConditionalFactor($condition);
-
             /** @var Join $join */
             $join = $fromClause
                 ->identificationVariableDeclarations[$condition->getFromKey()]
                 ->joins[$condition->getJoinKey()];
-
-            $aclConditionalFactors = array($conditionalFactor);
-            if ($join->conditionalExpression instanceof ConditionalPrimary) {
-                array_unshift($aclConditionalFactors, $join->conditionalExpression);
-                $join->conditionalExpression = new ConditionalTerm(
-                    $aclConditionalFactors
-                );
+            if (!($condition instanceof JoinAssociationCondition)) {
+                /** @var JoinAclCondition $condition */
+                $conditionalFactor = $this->getConditionalFactor($condition);
+                $aclConditionalFactors = array($conditionalFactor);
+                if ($join->conditionalExpression instanceof ConditionalPrimary) {
+                    array_unshift($aclConditionalFactors, $join->conditionalExpression);
+                    $join->conditionalExpression = new ConditionalTerm(
+                        $aclConditionalFactors
+                    );
+                } else {
+                    $join->conditionalExpression->conditionalFactors = array_merge(
+                        $join->conditionalExpression->conditionalFactors,
+                        $aclConditionalFactors
+                    );
+                }
             } else {
-                $join->conditionalExpression->conditionalFactors = array_merge(
-                    $join->conditionalExpression->conditionalFactors,
-                    $aclConditionalFactors
-                );
+                $fromClause
+                    ->identificationVariableDeclarations[$condition->getFromKey()]
+                    ->joins[$condition->getJoinKey()] = $this->getJoinFromJoinAssociationCondition($join, $condition);
             }
         }
+    }
+
+    /**
+     * @param Join $join
+     * @param JoinAssociationCondition $condition
+     * @return Join
+     */
+    protected function getJoinFromJoinAssociationCondition(Join $join, JoinAssociationCondition $condition)
+    {
+        $joinAssociationPathExpression = $join->joinAssociationDeclaration->joinAssociationPathExpression;
+
+        $leftExpression = new ArithmeticExpression();
+        $pathExpression = new PathExpression(
+            self::EXPECTED_TYPE,
+            $joinAssociationPathExpression->identificationVariable,
+            $joinAssociationPathExpression->associationField
+        );
+        $pathExpression->type = PathExpression::TYPE_SINGLE_VALUED_ASSOCIATION;
+        $leftExpression->simpleArithmeticExpression = $pathExpression;
+
+        $conditionalFactors = [];
+        foreach ($condition->getJoinConditions() as $joinCondition) {
+            $rightExpression = new ArithmeticExpression();
+            $pathExpression = new PathExpression(
+                self::EXPECTED_TYPE,
+                $condition->getEntityAlias(),
+                $joinCondition['referencedColumnName']
+            );
+            $pathExpression->type = PathExpression::TYPE_STATE_FIELD;
+            $rightExpression->simpleArithmeticExpression = $pathExpression;
+            $factor = new ConditionalPrimary();
+            $factor->simpleConditionalExpression = new ComparisonExpression($leftExpression, '=', $rightExpression);
+            $conditionalFactors[] = $factor;
+        }
+        $conditionalFactors[] = $this->getConditionalFactor($condition);
+        $associationDeclaration = new RangeVariableDeclaration($condition->getEntityClass(), $condition->getEntityAlias());
+
+        $newJoin = new Join($join->joinType, $associationDeclaration);
+        $newJoin->conditionalExpression = new ConditionalTerm($conditionalFactors);
+
+         return $newJoin;
     }
 
     /**

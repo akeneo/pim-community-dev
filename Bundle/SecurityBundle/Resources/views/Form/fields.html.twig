@@ -8,7 +8,8 @@
         <div class="access_level_value_link">
             <a href="javascript:void(0);">
                 {% if level_label %}
-                    {{ level_label|trans({}, translation_domain) }}
+                    {% set label = 'Access-level-' ~ level_label %}
+                    {{ label|trans({}, translation_domain) }}
                 {% else %}
                     {{ 'Access-level-NONE'|trans({}, translation_domain) }}
                 {% endif %}

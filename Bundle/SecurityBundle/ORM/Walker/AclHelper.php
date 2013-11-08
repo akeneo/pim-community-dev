@@ -9,11 +9,14 @@ use Doctrine\ORM\Query\AST\Subselect;
 use Doctrine\ORM\Query\AST\RangeVariableDeclaration;
 use Doctrine\ORM\Query\AST\Join;
 use Doctrine\ORM\Query\AST\ConditionalPrimary;
+use Doctrine\ORM\Query\AST\IdentificationVariableDeclaration;
+use Doctrine\ORM\EntityManager;
 
 use Oro\Bundle\SecurityBundle\ORM\Walker\Condition\AclConditionStorage;
 use Oro\Bundle\SecurityBundle\ORM\Walker\Condition\SubRequestAclConditionStorage;
 use Oro\Bundle\SecurityBundle\ORM\Walker\Condition\AclCondition;
 use Oro\Bundle\SecurityBundle\ORM\Walker\Condition\JoinAclCondition;
+use Oro\Bundle\SecurityBundle\ORM\Walker\Condition\JoinAssociationCondition;
 
 /**
  * Class ACLHelper
@@ -27,6 +30,11 @@ class ACLHelper
      * @var OwnershipFilterBuilder
      */
     protected $builder;
+
+    /**
+     * @var EntityManager
+     */
+    protected $em;
 
     /**
      * @param $builder
@@ -49,13 +57,17 @@ class ACLHelper
         if ($query instanceof QueryBuilder) {
             $query = $query->getQuery();
         }
+        $this->em = $query->getEntityManager();
         $aclQuery = $this->cloneQuery($query);
 
         $ast = $query->getAST();
         if ($ast instanceof SelectStatement) {
-            list ($whereConditions, $joinConditions) = $this->processRequest($ast, $permission);
+            list ($whereConditions, $joinConditions) = $this->processRequest($ast, $permission, $query);
             $conditionStorage = new AclConditionStorage($whereConditions, $joinConditions);
-            $this->processSubRequests($ast, $conditionStorage, $permission);
+            if ($ast->whereClause) {
+                $this->processSubRequests($ast, $conditionStorage, $permission, $query);
+            }
+
 
             if (!$conditionStorage->isEmpty()) {
                 $aclQuery->setHint(Query::HINT_CUSTOM_TREE_WALKERS,
@@ -157,18 +169,52 @@ class ACLHelper
                             $permission,
                             true
                         );
-                        if ($condition) {
-                            $condition->setFromKey($fromKey);
-                            $condition->setJoinKey($joinKey);
-                            $joinConditions[] = $condition;
-                        }
+                    } else {
+                        $condition = $this->processJoinAssociationPathExpression(
+                            $identificationVariableDeclaration, $joinKey, $permission
+                        );
                     }
-
+                    if ($condition) {
+                        $condition->setFromKey($fromKey);
+                        $condition->setJoinKey($joinKey);
+                        $joinConditions[] = $condition;
+                    }
                 }
             }
         }
 
         return array($whereConditions, $joinConditions);
+    }
+
+    /**
+     * @param IdentificationVariableDeclaration $declaration
+     * @param $key
+     * @param $permission
+     * @return JoinAssociationCondition
+     */
+    protected function processJoinAssociationPathExpression(IdentificationVariableDeclaration $declaration, $key,  $permission)
+    {
+        $metadata = $this->em->getClassMetadata($declaration->rangeVariableDeclaration->abstractSchemaName);
+        /** @var Join $join */
+        $join = $declaration->joins[$key];
+        $fieldName = $join->joinAssociationDeclaration->joinAssociationPathExpression->associationField;
+
+        $associationMapping = $metadata->getAssociationMapping($fieldName);
+        $targetEntity = $associationMapping['targetEntity'];
+
+        $resultData = $this->builder->getAclConditionData($targetEntity, $permission);
+
+        if ($resultData && is_array($resultData)) {
+            list($entityField, $value) = $resultData;
+
+            return new JoinAssociationCondition(
+                $join->joinAssociationDeclaration->aliasIdentificationVariable,
+                $entityField,
+                $value,
+                $targetEntity,
+                $associationMapping['joinColumns']
+            );
+        }
     }
 
     /**
