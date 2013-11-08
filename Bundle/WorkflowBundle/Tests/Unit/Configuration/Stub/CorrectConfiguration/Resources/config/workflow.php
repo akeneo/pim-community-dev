@@ -110,7 +110,7 @@ return array(
                 'frontend_options' => array(
                     'icon' => 'bar'
                 ),
-                'form_type' => 'oro_workflow_step',
+                'form_type' => 'oro_workflow_attributes',
                 'form_options' => array(),
             )
         ),

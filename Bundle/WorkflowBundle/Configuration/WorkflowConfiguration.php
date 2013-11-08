@@ -9,6 +9,7 @@ use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 
 use Oro\Bundle\WorkflowBundle\Form\Type\WorkflowStepType;
+use Oro\Bundle\WorkflowBundle\Form\Type\WorkflowAttributesType;
 use Oro\Bundle\WorkflowBundle\Model\Workflow;
 
 class WorkflowConfiguration implements ConfigurationInterface
@@ -198,8 +199,7 @@ class WorkflowConfiguration implements ConfigurationInterface
                         ->end()
                     ->end()
                     ->scalarNode('form_type')
-                        // @TODO Use the name of Transition form added in BAP-2157
-                        ->defaultValue(WorkflowStepType::NAME)
+                        ->defaultValue(WorkflowAttributesType::NAME)
                     ->end()
                     ->arrayNode('form_options')
                         ->prototype('variable')
