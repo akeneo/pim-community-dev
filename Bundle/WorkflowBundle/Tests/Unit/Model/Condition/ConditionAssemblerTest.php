@@ -49,21 +49,26 @@ class ConditionAssemblerTest extends \PHPUnit_Framework_TestCase
             array(
                 array(
                     '@or' => array(
-                        array(
-                            '@and' => array(
-                                array('@graterOrEquals' => array('$contact.budget', 2000)),
-                                array('@isDevMode' => null),
-                                array(
-                                    '@inChoiceList' => array(
-                                        'type' => '$contact.type',
-                                        array('a' => 1, 'b' => 2)
+                        'rules' => array(
+                            array(
+                                '@and' => array(
+                                    array('@graterOrEquals' =>
+                                        array('rules' => array('$contact.budget', 2000))
+                                    ),
+                                    array('@isDevMode' => null),
+                                    array(
+                                        '@inChoiceList' => array(
+                                            'type' => '$contact.type',
+                                            array('a' => 1, 'b' => 2)
+                                        )
                                     )
                                 )
+                            ),
+                            array(
+                                '@notEmpty' => array('$lead.name')
                             )
                         ),
-                        array(
-                            '@notEmpty' => array('$lead.name')
-                        )
+                        'message' => 'Or fail'
                     )
                 ),
                 array(

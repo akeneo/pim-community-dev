@@ -41,9 +41,10 @@ class ConditionAssembler extends AbstractAssembler
         $options = array();
         $conditionType = $this->getEntityType($configuration);
         $conditionParameters = $this->getEntityParameters($configuration);
+        $conditionParameters = $this->parseRules($conditionParameters);
         if (is_array($conditionParameters)) {
             foreach ($conditionParameters as $key => $conditionParameter) {
-                if ($this->isService($conditionParameter) || $key === 'rules') {
+                if ($this->isService($conditionParameter)) {
                     $options[$key] = $this->assemble($conditionParameter);
                 } else {
                     $options[$key] = $conditionParameter;
@@ -53,9 +54,30 @@ class ConditionAssembler extends AbstractAssembler
             $options[] = $conditionParameters;
         }
 
+        $message = null;
+        if (isset($options['message'])) {
+            $message = $options['message'];
+            unset($options['message']);
+        }
         $passedOptions = $this->configurationPass->pass($options);
 
         $serviceName = $this->getServiceName($conditionType);
-        return $this->factory->create($serviceName, $passedOptions);
+        return $this->factory->create($serviceName, $passedOptions, $message);
+    }
+
+    /**
+     * @param array $conditionParameters
+     * @return array
+     */
+    protected function parseRules($conditionParameters)
+    {
+        $result = $conditionParameters;
+        if (isset($conditionParameters['rules'])) {
+            $result = $conditionParameters['rules'];
+            if (isset($conditionParameters['message'])) {
+                $result['message'] = $conditionParameters['message'];
+            }
+        }
+        return $result;
     }
 }
