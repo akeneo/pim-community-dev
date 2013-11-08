@@ -993,6 +993,18 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string $status
+     * @param string $locator
+     *
+     * @When /^I (un)?check the "([^"]*)" switch$/
+     */
+    public function iCheckTheSwitch($status, $locator)
+    {
+        $this->getCurrentPage()->toggleSwitch($locator, $status === '');
+        $this->wait();
+    }
+
+    /**
      * @param Product $product
      *
      * @Given /^(product "([^"]*)") should be disabled$/
