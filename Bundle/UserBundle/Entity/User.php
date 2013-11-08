@@ -103,11 +103,23 @@ class User extends ExtendUser implements
     protected $email;
 
     /**
+     * Name prefix
+     *
+     * @var string
+     *
+     * @ORM\Column(name="name_prefix", type="string", length=255, nullable=true)
+     * @Soap\ComplexType("string", nillable=true)
+     * @Type("string")
+     * @Oro\Versioned
+     */
+    protected $namePrefix;
+
+    /**
      * First name
      *
      * @var string
      *
-     * @ORM\Column(name="firstname", type="string", length=100, nullable=true)
+     * @ORM\Column(name="first_name", type="string", length=255, nullable=true)
      * @Soap\ComplexType("string")
      * @Type("string")
      * @Oro\Versioned
@@ -115,11 +127,23 @@ class User extends ExtendUser implements
     protected $firstName;
 
     /**
+     * Middle name
+     *
+     * @var string
+     *
+     * @ORM\Column(name="middle_name", type="string", length=255, nullable=true)
+     * @Soap\ComplexType("string", nillable=true)
+     * @Type("string")
+     * @Oro\Versioned
+     */
+    protected $middleName;
+
+    /**
      * Last name
      *
      * @var string
      *
-     * @ORM\Column(name="lastname", type="string", length=100, nullable=true)
+     * @ORM\Column(name="last_name", type="string", length=255, nullable=true)
      * @Soap\ComplexType("string")
      * @Type("string")
      * @Oro\Versioned
@@ -127,11 +151,23 @@ class User extends ExtendUser implements
     protected $lastName;
 
     /**
+     * Name suffix
+     *
+     * @var string
+     *
+     * @ORM\Column(name="name_suffix", type="string", length=255, nullable=true)
+     * @Soap\ComplexType("string", nillable=true)
+     * @Type("string")
+     * @Oro\Versioned
+     */
+    protected $nameSuffix;
+
+    /**
      * @var DateTime
      *
-     * @ORM\Column(name="birthday", type="datetime", nullable=true)
+     * @ORM\Column(name="birthday", type="date", nullable=true)
      * @Soap\ComplexType("date", nillable=true)
-     * @Type("dateTime")
+     * @Type("date")
      * @Oro\Versioned
      */
     protected $birthday;
@@ -406,7 +442,7 @@ class User extends ExtendUser implements
 
     /**
      * Get entity class name.
-     * TODO: This is a temporary solution for get 'view' route in twig. Will be removed after EntityConfigBundle is finished
+     * TODO: Remove this temporary solution for get 'view' route in twig after EntityConfigBundle is finished
      * @return string
      */
     public function getClass()
@@ -455,7 +491,7 @@ class User extends ExtendUser implements
      *
      * @return string
      */
-    public function getFirstname()
+    public function getFirstName()
     {
         return $this->firstName;
     }
@@ -465,7 +501,7 @@ class User extends ExtendUser implements
      *
      * @return string
      */
-    public function getLastname()
+    public function getLastName()
     {
         return $this->lastName;
     }
@@ -481,7 +517,7 @@ class User extends ExtendUser implements
     {
         return str_replace(
             array('%first%', '%last%'),
-            array($this->getFirstname(), $this->getLastname()),
+            array($this->getFirstName(), $this->getLastName()),
             $format ? $format : $this->getNameFormat()
         );
     }
@@ -489,6 +525,36 @@ class User extends ExtendUser implements
     public function getName()
     {
         return $this->getFullname();
+    }
+
+    /**
+     * Return middle name
+     *
+     * @return string
+     */
+    public function getMiddleName()
+    {
+        return $this->middleName;
+    }
+
+    /**
+     * Return name prefix
+     *
+     * @return string
+     */
+    public function getNamePrefix()
+    {
+        return $this->namePrefix;
+    }
+
+    /**
+     * Return name suffix
+     *
+     * @return string
+     */
+    public function getNameSuffix()
+    {
+        return $this->nameSuffix;
     }
 
     /**
@@ -648,17 +714,6 @@ class User extends ExtendUser implements
     }
 
     /**
-     * @param integer $id
-     * @return User
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-
-        return $this;
-    }
-
-    /**
      *
      * @param  string $username New username
      * @return User
@@ -685,7 +740,7 @@ class User extends ExtendUser implements
      * @param  string $firstName [optional] New first name value. Null by default.
      * @return User
      */
-    public function setFirstname($firstName = null)
+    public function setFirstName($firstName = null)
     {
         $this->firstName = $firstName;
 
@@ -696,11 +751,41 @@ class User extends ExtendUser implements
      * @param  string $lastName [optional] New last name value. Null by default.
      * @return User
      */
-    public function setLastname($lastName = null)
+    public function setLastName($lastName = null)
     {
         $this->lastName = $lastName;
 
         return $this;
+    }
+
+    /**
+     * Set middle name
+     *
+     * @param string $middleName
+     */
+    public function setMiddleName($middleName)
+    {
+        $this->middleName = $middleName;
+    }
+
+    /**
+     * Set name prefix
+     *
+     * @param string $namePrefix
+     */
+    public function setNamePrefix($namePrefix)
+    {
+        $this->namePrefix = $namePrefix;
+    }
+
+    /**
+     * Set name suffix
+     *
+     * @param string $nameSuffix
+     */
+    public function setNameSuffix($nameSuffix)
+    {
+        $this->nameSuffix = $nameSuffix;
     }
 
     /**
@@ -733,7 +818,8 @@ class User extends ExtendUser implements
     public function setImageFile(UploadedFile $imageFile)
     {
         $this->imageFile = $imageFile;
-        $this->updated = new DateTime('now', new \DateTimeZone('UTC')); // this will trigger PreUpdate callback even if only image has been changed
+        // this will trigger PreUpdate callback even if only image has been changed
+        $this->updated = new DateTime('now', new \DateTimeZone('UTC'));
 
         return $this;
     }

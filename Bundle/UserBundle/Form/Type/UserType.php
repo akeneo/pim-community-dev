@@ -66,18 +66,18 @@ class UserType extends AbstractType
                 'rolesCollection',
                 'entity',
                 array(
-                    'label'         => 'Roles',
-                    'class'         => 'OroUserBundle:Role',
-                    'property'      => 'label',
+                    'label'          => 'Roles',
+                    'class'          => 'OroUserBundle:Role',
+                    'property'       => 'label',
                     'query_builder' => function (EntityRepository $er) {
                         return $er->createQueryBuilder('r')
                             ->where('r.role <> :anon')
                             ->setParameter('anon', User::ROLE_ANONYMOUS);
                     },
-                    'multiple'      => true,
-                    'expanded'      => true,
-                    'required'      => !$this->isMyProfilePage,
-                    'read_only'     => $this->isMyProfilePage,
+                    'multiple'       => true,
+                    'expanded'       => true,
+                    'required'       => !$this->isMyProfilePage,
+                    'read_only'      => $this->isMyProfilePage,
                     'disabled'      => $this->isMyProfilePage,
                 )
             )
@@ -85,13 +85,13 @@ class UserType extends AbstractType
                 'groups',
                 'entity',
                 array(
-                    'class'     => 'OroUserBundle:Group',
-                    'property'  => 'name',
-                    'multiple'  => true,
-                    'expanded'  => true,
-                    'required'  => false,
-                    'read_only' => $this->isMyProfilePage,
-                    'disabled'  => $this->isMyProfilePage
+                    'class'          => 'OroUserBundle:Group',
+                    'property'       => 'name',
+                    'multiple'       => true,
+                    'expanded'       => true,
+                    'required'       => false,
+                    'read_only'      => $this->isMyProfilePage,
+                    'disabled'       => $this->isMyProfilePage
                 )
             )
             ->add(
@@ -179,47 +179,71 @@ class UserType extends AbstractType
                 'username',
                 'text',
                 array(
-                    'required' => true,
+                    'required'       => true,
                 )
             )
             ->add(
                 'email',
                 'email',
                 array(
-                    'label'    => 'E-mail',
-                    'required' => true,
+                    'label'          => 'E-mail',
+                    'required'       => true,
+                )
+            )
+            ->add(
+                'namePrefix',
+                'text',
+                array(
+                    'label'          => 'Name prefix',
+                    'required'       => false,
                 )
             )
             ->add(
                 'firstName',
                 'text',
                 array(
-                    'label'    => 'First name',
-                    'required' => true,
+                    'label'          => 'First name',
+                    'required'       => true,
+                )
+            )
+            ->add(
+                'middleName',
+                'text',
+                array(
+                    'label'          => 'Middle name',
+                    'required'       => false,
                 )
             )
             ->add(
                 'lastName',
                 'text',
                 array(
-                    'label'    => 'Last name',
-                    'required' => true,
+                     'label'          => 'Last name',
+                     'required'       => true,
+                )
+            )
+            ->add(
+                'nameSuffix',
+                'text',
+                array(
+                    'label'          => 'Name suffix',
+                    'required'       => false,
                 )
             )
             ->add(
                 'birthday',
                 'oro_date',
                 array(
-                    'label'    => 'Date of birth',
-                    'required' => false,
+                    'label'          => 'Date of birth',
+                    'required'       => false,
                 )
             )
             ->add(
                 'imageFile',
                 'file',
                 array(
-                    'label'    => 'Avatar',
-                    'required' => false,
+                    'label'          => 'Avatar',
+                    'required'       => false,
                 )
             );
     }
