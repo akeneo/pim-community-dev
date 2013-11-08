@@ -3,8 +3,8 @@
     {% set gridName = 'entity-relation-grid' %}
 
     {% set gridParams = {
-        'data_in': app.request.get('added'),
-        'data_not_in': app.request.get('removed'),
+        'data_in': app.request.get('added')|split(','),
+        'data_not_in': app.request.get('removed')|split(','),
         'class_name': entity_class,
         'entity_id': entity_id,
         'field_name': app.request.get('fieldName'),

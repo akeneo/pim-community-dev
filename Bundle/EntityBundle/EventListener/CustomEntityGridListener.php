@@ -96,8 +96,16 @@ class CustomEntityGridListener extends AbstractConfigGridListener
      */
     public function onBuildBefore(BuildBefore $event)
     {
-        $entityClass = $this->getEntityClass();
+        $entityClass = $this->getRequestParam('class_name');
         if (empty($entityClass)) {
+            $entityClass = $this->request->attributes->get('id');
+        }
+
+        if (empty($this->entityClass) && $entityClass !== false) {
+            $this->entityClass = str_replace('_', '\\', $entityClass);
+        }
+
+        if (empty($this->entityClass)) {
             return false;
         }
 
@@ -286,20 +294,6 @@ class CustomEntityGridListener extends AbstractConfigGridListener
                 )
             );
         };
-    }
-
-    /**
-     * @return string
-     */
-    public function getEntityClass()
-    {
-        $entityClass = $this->getRequestParam('entity_class');
-
-        if (empty($this->entityClass) && $entityClass !== false) {
-            $this->entityClass = str_replace('_', '\\', $entityClass);
-        }
-
-        return $this->entityClass;
     }
 
     /**

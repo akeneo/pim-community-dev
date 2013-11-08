@@ -81,6 +81,9 @@ datagrid:
                 label: Assigned
                 editable: true
 
+        properties:
+            id: ~
+
         sorters:
             columns:
                 assigned:
