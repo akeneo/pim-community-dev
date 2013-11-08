@@ -81,33 +81,47 @@
     {% set id = 'user-profile' %}
 
     {% set dataBlocks = [{
-            'title': 'General'|trans,
-            'class': 'active'|trans,
-            'subblocks': [
-                {
-                    'title': '',
-                    'data': [
-                        form_row(form.enabled),
-                        form_row(form.username),
-                        form.plainPassword is defined ? form_row(form.plainPassword) : '',
-                        form_row(form.firstName),
-                        form_row(form.lastName),
-                        form_row(form.birthday),
-                        form_row(form.imageFile),
-                    ]
-                },
-                {
-                    'title': '',
-                    'data': [
-                        form_row(form.email),
-                        UI.collectionField(form.emails, 'Additional emails'|trans, 'Add another email'|trans),
-                        form_row(form.tags)
-                    ]
-                }
-            ]
-        }]
+        'title': 'General'|trans,
+        'class': 'active'|trans,
+        'subblocks': [
+            {
+                'title': '',
+                'data': [
+                    form_row(form.enabled),
+                    form_row(form.username),
+                    form.plainPassword is defined ? form_row(form.plainPassword) : '',
+                    form_row(form.firstName),
+                    form_row(form.lastName),
+                    form_row(form.birthday),
+                    form_row(form.imageFile),
+                ]
+            },
+            {
+                'title': '',
+                'data': [
+                    form_row(form.email),
+                    UI.collectionField(form.emails, 'Additional emails'|trans, 'Add another email'|trans),
+                    form_row(form.tags)
+                ]
+            }
+        ]
+    }] %}
 
-    %}
+    {% if form.additional is defined and form.additional.children|length > 0 %}
+        {% set additionalData = [] %}
+        {% for value in form.additional %}
+            {% set additionalData = additionalData|merge([form_row(value)]) %}
+        {% endfor %}
+
+        {% set dataBlocks = dataBlocks|merge([{
+            'title': 'Additional'|trans,
+            'subblocks': [{
+                'title': '',
+                'useSpan': false,
+                'data' : additionalData
+            }]
+        }] ) %}
+    {% endif %}
 
     {% if form.groups is defined or form.rolesCollection is defined %}
         {% macro userRoles(form) %}
@@ -117,36 +131,32 @@
                 </div>
             {% endif %}
         {% endmacro %}
-        {% set dataBlocks = dataBlocks|merge(
-            [{
-                'title': 'Groups and Roles'|trans,
-                'subblocks': [
-                    {
-                        'title': '',
-                        'data': [
-                            form.groups is defined ? form_row(form.groups, { attr: { class: 'horizontal' } }) : null,
-                            _self.userRoles(form)
-                        ]
-                    }
-                ]
-            }]
-        ) %}
+        {% set dataBlocks = dataBlocks|merge( [{
+            'title': 'Groups and Roles'|trans,
+            'subblocks': [
+                {
+                    'title': '',
+                    'data': [
+                        form.groups is defined ? form_row(form.groups, { attr: { class: 'horizontal' } }) : null,
+                        _self.userRoles(form)
+                    ]
+                }
+            ]
+        }] ) %}
     {% endif %}
 
     {% if form.change_password is defined %}
-        {% set dataBlocks = dataBlocks|merge(
-            [{
-                'title': 'Passwords'|trans,
-                'subblocks': [
-                    {
-                        'title': '',
-                        'data': [
-                            form_widget(form.change_password)
-                        ]
-                    }
-                ]
-            }]
-        ) %}
+        {% set dataBlocks = dataBlocks|merge( [{
+            'title': 'Passwords'|trans,
+            'subblocks': [
+                {
+                    'title': '',
+                    'data': [
+                        form_widget(form.change_password)
+                    ]
+                }
+            ]
+        }] ) %}
     {% endif %}
 
     {% macro businessUnitsTree(form, businessUnits) %}
@@ -154,37 +164,32 @@
             {% include 'OroOrganizationBundle:BusinessUnit:businessUnitsTree.html.twig' with {'businessUnits': businessUnits, 'hasId': form.vars.value.id ? true : false} %}
         </div>
     {% endmacro %}
-    {% set dataBlocks = dataBlocks|merge(
-        [{
-            'title': 'Business Units'|trans,
-            'subblocks': [
-                {
-                    'title': '',
-                    'useSpan': false,
-                    'data': [
-                        _self.businessUnitsTree(form, businessUnits)
-                    ]
-                }
-            ]
-        }]
-        )
-    %}
+
+    {% set dataBlocks = dataBlocks|merge( [{
+        'title': 'Business Units'|trans,
+        'subblocks': [
+            {
+                'title': '',
+                'useSpan': false,
+                'data': [
+                    _self.businessUnitsTree(form, businessUnits)
+                ]
+            }
+        ]
+    }] ) %}
 
     {% set dataBlocks = dataBlocks|merge([{
-            'title': 'Email synchronization settings',
-            'subblocks': [{
-                'title': '',
-                'data': [form_widget(form.imapConfiguration)]
-            }]
-        }])
-    %}
+        'title': 'Email synchronization settings',
+        'subblocks': [{
+            'title': '',
+            'data': [form_widget(form.imapConfiguration)]
+        }]
+    }]) %}
 
-    {% set data =
-        {
-            'formErrors': form_errors(form)? form_errors(form) : null,
-            'dataBlocks': dataBlocks,
-        }
-    %}
+    {% set data = {
+        'formErrors': form_errors(form)? form_errors(form) : null,
+        'dataBlocks': dataBlocks,
+    } %}
     {{ parent() }}
     </div>
 {% endblock content_data %}

@@ -89,45 +89,97 @@
 
     {#{{ render(controller('OroEmailBundle:Email:activities', {'emails': entity.emails})) }}#}
 
-    {% set dataBlocks = [
-        {
-            'title': 'General'|trans,
-            'class': 'active',
-            'subblocks': [
-                {
-                    'title': 'Basic Information'|trans,
-                    'data': [
-                        UI.attibuteRow('User name'|trans, entity.username),
-                        UI.attibuteRow('First name'|trans, entity.firstname),
-                        UI.attibuteRow('Last name'|trans, entity.lastname),
-                        UI.attibuteRow('Birthday'|trans, entity.birthday ? Locale.date(entity.birthday) : 'N/A'),
-                        UI.renderAttribute('API key'|trans, _self.api_data_block(entity))
-                    ]
-                },
-                {
+    {% set dataBlocks = [{
+        'title': 'General'|trans,
+        'class': 'active',
+        'subblocks': [
+            {
+                'title': 'Basic Information'|trans,
+                'data': [
+                    UI.attibuteRow('User name'|trans, entity.username),
+                    UI.attibuteRow('First name'|trans, entity.firstname),
+                    UI.attibuteRow('Last name'|trans, entity.lastname),
+                    UI.attibuteRow('Birthday'|trans, entity.birthday ? Locale.date(entity.birthday) : 'N/A'),
+                    UI.renderAttribute('API key'|trans, _self.api_data_block(entity))
+                ]
+            },
+            {
                 'title': 'Contact Information'|trans,
                 'data': dataSubBlocks
-                }
-            ]
-        }
-    ]
-    %}
+            }
+        ]
+    }] %}
+
+    {#
+      EntityExtend fields START
+    #}
+    {% set additional = [ ] %}
+    {% set additional_fields = [ ] %}
+    {% macro attibuteRow(title, value) %}
+        {% import 'OroUIBundle::macros.html.twig' as UI %}
+        {% macro attribute_data(value) %}
+          <div class="clearfix-oro">
+              <p class="control-label">{{ value|raw }}</p>
+          </div>
+        {% endmacro %}
+        {{ UI.renderAttribute(title, _self.attribute_data(value)) }}
+    {% endmacro %}
+    {% if dynamic|length %}
+        {% for label, item in dynamic %}
+            {% if item is iterable %}
+                {% set data = '' %}
+                {% for value in item.values %}
+                    {% if value.link is defined and value.link != false  %}
+                        {% set data = data ~ '<a href="' ~ value.link ~ '">' ~ value.title ~ '</a>' %}
+                    {% else %}
+                        {% set data = data ~ value.title %}
+                    {% endif %}
+                    {% if not loop.last %}
+                        {% set data = data ~ ', ' %}
+                    {% endif %}
+                {% endfor %}
+                {% set item = data %}
+          {% endif %}
+
+          {% set additional = additional|merge([_self.attibuteRow(label|trans, item)]) %}
+      {% endfor %}
+
+      {% if additional|length %}
+          {% set col = 2 %}
+          {% set attributes = {} %}
+          {% set half = (additional|length / col)|ceil %}
+
+          {% for value in additional %}
+              {% set attributes = attributes | merge([value]) %}
+              {% if loop.index % half == 0  and not loop.last %}
+                  {% set additional_fields = additional_fields|merge([{'title' : null, 'data' : attributes}]) %}
+                  {% set attributes = {} %}
+              {% endif %}
+          {% endfor %}
+
+          {% set additional_fields = additional_fields|merge([{'title' : null, 'data' : attributes}]) %}
+      {% endif %}
+
+      {% set dataBlocks = dataBlocks|merge([ {
+          'title': 'Additional Information',
+          'subblocks': additional_fields
+      }] ) %}
+    {% endif %}
+    {#
+      EntityExtend fields END
+    #}
 
     {% if resource_granted('oro_email_view') %}
-        {% set dataBlocks = dataBlocks|merge
-            (
-                    [{
-                        'title': 'User emails'|trans,
-                        'subblocks': [
-                            {
-                                'title': '',
-                                'useSpan': false,
-                                'data': [UI.gridBlock(gridId), Email.renderJs()]
-                            }
-                        ]
-                    }]
-            )
-        %}
+        {% set dataBlocks = dataBlocks|merge( [{
+            'title': 'User emails'|trans,
+            'subblocks': [
+                {
+                    'title': '',
+                    'useSpan': false,
+                    'data': [UI.gridBlock(gridId), Email.renderJs()]
+                }
+            ]
+        }] ) %}
     {% endif %}
 
     {% set data = { 'dataBlocks': dataBlocks } %}

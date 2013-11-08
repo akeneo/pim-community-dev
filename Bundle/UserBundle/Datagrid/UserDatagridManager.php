@@ -2,7 +2,6 @@
 
 namespace Oro\Bundle\UserBundle\Datagrid;
 
-use Oro\Bundle\GridBundle\Datagrid\DatagridManager;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
@@ -10,7 +9,9 @@ use Oro\Bundle\GridBundle\Filter\FilterInterface;
 use Oro\Bundle\GridBundle\Action\ActionInterface;
 use Oro\Bundle\GridBundle\Property\UrlProperty;
 
-class UserDatagridManager extends DatagridManager
+use Oro\Bundle\EntityBundle\Datagrid\AbstractDatagrid;
+
+class UserDatagridManager extends AbstractDatagrid
 {
     /**
      * {@inheritDoc}
@@ -36,6 +37,8 @@ class UserDatagridManager extends DatagridManager
         $this->addFieldCreated($fieldsCollection);
         $this->addFieldUpdated($fieldsCollection);
         $this->addFieldStatus($fieldsCollection);
+
+        $this->addDynamicFields();
     }
 
     /**
@@ -190,7 +193,7 @@ class UserDatagridManager extends DatagridManager
             array(
                  'type'        => FieldDescriptionInterface::TYPE_DATETIME,
                  'label'       => 'Created at',
-                 'field_name'  => 'created',
+                 'field_name'  => 'createdAt',
                  'filter_type' => FilterInterface::TYPE_DATETIME,
                  'required'    => false,
                  'sortable'    => true,
@@ -212,7 +215,7 @@ class UserDatagridManager extends DatagridManager
             array(
                  'type'        => FieldDescriptionInterface::TYPE_DATETIME,
                  'label'       => 'Updated at',
-                 'field_name'  => 'updated',
+                 'field_name'  => 'updatedAt',
                  'filter_type' => FilterInterface::TYPE_DATETIME,
                  'required'    => false,
                  'sortable'    => true,
