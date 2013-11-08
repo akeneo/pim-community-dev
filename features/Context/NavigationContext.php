@@ -62,6 +62,8 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
         'variant groups'           => 'VariantGroup index',
         'attribute groups'         => 'AttributeGroup index',
         'attribute group creation' => 'AttributeGroup creation',
+        'dashboard'                => 'Dashboard index',
+        'search'                   => 'Search index',
     );
 
     /**
