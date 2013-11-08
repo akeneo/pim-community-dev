@@ -108,7 +108,7 @@ services:
         class: %oro_locale.locale_listener.class%
         arguments:
             - @oro_locale.settings
-            - @translator
+            - %installed%
         calls:
             - [ setRequest, [@?request=] ]
         tags:
