@@ -1,0 +1,8 @@
+Oro\Bundle\CalendarBundle\Entity\CalendarEvent:
+    properties:
+        title:
+            - NotBlank:     ~
+        start:
+            - NotBlank:     ~
+        end:
+            - NotBlank:     ~

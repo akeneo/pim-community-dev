@@ -1,0 +1,2 @@
+bundles:
+    - {name: Oro\Bundle\EntityBundle\OroEntityBundle, priority: -10 }

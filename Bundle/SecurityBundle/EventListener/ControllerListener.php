@@ -7,7 +7,6 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\HttpFoundation\Request;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 
 class ControllerListener
@@ -25,7 +24,7 @@ class ControllerListener
     /**
      * Constructor
      *
-     * @param SecurityFacade $securityFacade
+     * @param SecurityFacade  $securityFacade
      * @param LoggerInterface $logger
      */
     public function __construct(
@@ -41,7 +40,7 @@ class ControllerListener
      *
      * This method is executed just before any controller action.
      *
-     * @param FilterControllerEvent $event
+     * @param  FilterControllerEvent $event
      * @throws AccessDeniedException
      */
     public function onKernelController(FilterControllerEvent $event)
@@ -66,7 +65,7 @@ class ControllerListener
 
             if (!$this->securityFacade->isClassMethodGranted($className, $method)) {
                 if ($event->getRequestType() === HttpKernelInterface::MASTER_REQUEST) {
-                    throw new AccessDeniedException('Access denied.');
+                    throw new AccessDeniedException(sprintf('Access denied to %s::%s.', $className, $method));
                 }
             }
         }

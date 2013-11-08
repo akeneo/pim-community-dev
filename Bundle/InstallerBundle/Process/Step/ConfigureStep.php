@@ -9,7 +9,7 @@ class ConfigureStep extends AbstractStep
     public function displayAction(ProcessContextInterface $context)
     {
         if ($this->container->hasParameter('installed') && $this->container->getParameter('installed')) {
-            return $this->redirect($this->getRequest()->getBasePath() . '/install.php');
+            return $this->redirect($this->generateUrl('oro_default'));
         }
 
         return $this->render(
@@ -32,8 +32,6 @@ class ConfigureStep extends AbstractStep
             $data = $form->getData();
 
             $this->get('oro_installer.yaml_persister')->dump($data);
-
-            $this->runCommand('cache:clear');
 
             return $this->complete();
         }

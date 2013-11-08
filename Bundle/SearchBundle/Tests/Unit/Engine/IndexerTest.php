@@ -1,233 +1,348 @@
 <?php
-namespace Oro\Bundle\SearchBundle\Tests\Unit\Engine;
 
-use Doctrine\Common\Persistence\ObjectManager;
+namespace Oro\Bundle\SearchBundle\Tests\Unit\Engine;
 
 use Oro\Bundle\SearchBundle\Engine\Indexer;
 use Oro\Bundle\SearchBundle\Event\PrepareResultItemEvent;
 use Oro\Bundle\SearchBundle\Query\Query;
+use Oro\Bundle\SearchBundle\Query\Result;
 use Oro\Bundle\SearchBundle\Query\Result\Item;
 
 class IndexerTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
-     * @var \Oro\Bundle\SearchBundle\Engine\Indexer
+     * @var Indexer
      */
     protected $indexService;
-    protected $om;
+
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $entityManager;
+
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
     protected $mapper;
-    protected $repository;
-    protected $connector;
-    protected $dispatcher;
+
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $adapter;
+
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $securityProvider;
+
+    /**
+     * @var array
+     */
+    protected $config = array(
+        'Oro\Bundle\DataBundle\Entity\Product' => array(
+            'alias' => 'test_product',
+            'label' => 'test product',
+            'fields' => array(
+                array(
+                    'name' => 'name',
+                    'target_type' => 'string',
+                    'target_fields' => array('name', 'all_data')
+                ),
+                array(
+                    'name' => 'description',
+                    'target_type' => 'string',
+                    'target_fields' => array('description', 'all_data')
+                ),
+                array(
+                    'name' => 'price',
+                    'target_type' => 'decimal',
+                    'target_fields' => array('price')
+                ),
+                array(
+                    'name' => 'count',
+                    'target_type' => 'integer',
+                    'target_fields' => array('count')
+                ),
+                array(
+                    'name' => 'createDate',
+                    'target_type' => 'datetime',
+                    'target_fields' => array('create_date')
+                ),
+                array(
+                    'name' => 'manufacturer',
+                    'relation_type' => 'to',
+                    'relation_fields' => array(
+                        array(
+                            'name' => 'name',
+                            'target_type' => 'string',
+                            'target_fields' => array('manufacturer', 'all_data')
+                        )
+                    )
+                ),
+            )
+        ),
+        'Oro\Bundle\DataBundle\Entity\Customer' => array(
+            'alias' => 'test_customer',
+            'label' => 'test customer',
+            'fields' => array(),
+        ),
+    );
 
     public function setUp()
     {
-        if (!interface_exists('Doctrine\Common\Persistence\ObjectManager')) {
-            $this->markTestSkipped('Doctrine Common has to be installed for this test to run.');
-        }
-
-        $this->om = $this->getMockBuilder('Doctrine\ORM\EntityManager')
+        $this->entityManager = $this->getMockBuilder('Doctrine\ORM\EntityManager')
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->repository = $this->getMock('Doctrine\Common\Persistence\ObjectRepository');
-
-        $this->dispatcher = $this->getMockBuilder('Symfony\Component\EventDispatcher\EventDispatcher')
+        $this->adapter = $this->getMockBuilder('Oro\Bundle\SearchBundle\Engine\AbstractEngine')
             ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->om->expects($this->any())
-            ->method('getRepository')
-            ->with($this->equalTo('OroTestBundle:test'))
-            ->will($this->returnValue($this->repository));
-
-        $this->connector = $this->getMockForAbstractClass(
-            'Oro\Bundle\SearchBundle\Engine\AbstractEngine',
-            array(
-                 $this->om,
-                 $this->dispatcher,
-                 false
-            )
-        );
+            ->setMethods(array('search'))
+            ->getMockForAbstractClass();
 
         $this->mapper = $this->getMockBuilder('Oro\Bundle\SearchBundle\Engine\ObjectMapper')
             ->disableOriginalConstructor()
+            ->setMethods(array('getMappingConfig', 'getEntitiesListAliases'))
             ->getMock();
-
-        $this->connector->expects($this->any())
-            ->method('searchQuery')
-            ->will($this->returnValue(array()));
-
-        $this->config = array(
-            'Oro\Bundle\DataBundle\Entity\Product' => array(
-                'alias' => 'test_alias',
-                'label' => 'test product',
-                'fields' => array(
-                    array(
-                        'name' => 'name',
-                        'target_type' => 'string',
-                        'target_fields' => array('name', 'all_data')
-                    ),
-                    array(
-                        'name' => 'description',
-                        'target_type' => 'string',
-                        'target_fields' => array('description', 'all_data')
-                    ),
-                    array(
-                        'name' => 'price',
-                        'target_type' => 'decimal',
-                        'target_fields' => array('price')
-                    ),
-                    array(
-                        'name' => 'count',
-                        'target_type' => 'integer',
-                        'target_fields' => array('count')
-                    ),
-                    array(
-                        'name' => 'createDate',
-                        'target_type' => 'datetime',
-                        'target_fields' => array('create_date')
-                    ),
-                    array(
-                        'name' => 'manufacturer',
-                        'relation_type' => 'to',
-                        'relation_fields' => array(
-                            array(
-                                'name' => 'name',
-                                'target_type' => 'string',
-                                'target_fields' => array('manufacturer', 'all_data')
-                            )
-                        )
-                    ),
-                )
-            )
-        );
-
-        $this->indexService = new Indexer(
-            $this->om,
-            $this->connector,
-            $this->mapper
-        );
-    }
-
-    /**
-     * Get query builder with select instance
-     */
-    public function testSelect()
-    {
-        $this->mapper->expects($this->once())
-            ->method('getMappingConfig')
-            ->will($this->returnValue($this->config));
-
-        $select = $this->indexService->select();
-        $this->assertEquals('select', $select->getQuery());
-    }
-
-    /**
-     * Run query with query builder
-     */
-    public function testQuery()
-    {
-        $this->mapper->expects($this->once())
-            ->method('getMappingConfig')
-            ->will($this->returnValue($this->config));
-
-        $select = $this->indexService->select();
-
-        $resultItem = new Item($this->om);
-        $this->connector->expects($this->once())
-            ->method('doSearch')
-            ->with($select)
-            ->will($this->returnValue(array('results' => array($resultItem), 'records_count' => 1)));
-
-        $this->dispatcher->expects($this->once())
-            ->method('dispatch')
-            ->with(PrepareResultItemEvent::EVENT_NAME, new PrepareResultItemEvent($resultItem));
-
-        $this->indexService->query($select);
-    }
-
-    /**
-     * Run simple search
-     */
-    public function testSimpleSearch()
-    {
-        $this->connector->expects($this->any())
-            ->method('doSearch')
-            ->will($this->returnValue(array('results' => array(), 'records_count' => 10)));
-
         $this->mapper->expects($this->any())
             ->method('getMappingConfig')
             ->will($this->returnValue($this->config));
+        $config = $this->config;
+        $this->mapper->expects($this->any())
+            ->method('getEntitiesListAliases')
+            ->will(
+                $this->returnCallback(
+                    function () use ($config) {
+                        $aliases = array();
+                        foreach ($config as $entityName => $entityOptions) {
+                            if (!empty($entityOptions['alias'])) {
+                                $aliases[$entityName] = $entityOptions['alias'];
+                            }
+                        }
+                        return $aliases;
+                    }
+                )
+            );
 
-        $select = $this->indexService->simpleSearch('test', 0, 0);
-        $query = $select->getQuery();
-        $from = $query->getFrom();
-        $searchCondition = $query->getOptions();
+        $this->securityProvider = $this->getMockBuilder('Oro\Bundle\SearchBundle\Security\SecurityProvider')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->securityProvider->expects($this->any())
+            ->method('isGranted')
+            ->will($this->returnValue(true));
+        $this->securityProvider->expects($this->any())
+            ->method('isProtectedEntity')
+            ->will($this->returnValue(true));
 
-        $this->assertEquals('*', $from[0]);
-        $this->assertEquals(Indexer::TEXT_ALL_DATA_FIELD, $searchCondition[0]['fieldName']);
-        $this->assertEquals(Query::OPERATOR_CONTAINS, $searchCondition[0]['condition']);
-        $this->assertEquals('test', $searchCondition[0]['fieldValue']);
-        $this->assertEquals(Query::TYPE_TEXT, $searchCondition[0]['fieldType']);
-        $this->assertEquals(Query::KEYWORD_AND, $searchCondition[0]['type']);
+        $this->indexService = new Indexer(
+            $this->entityManager,
+            $this->adapter,
+            $this->mapper,
+            $this->securityProvider
+        );
+    }
 
-        $this->indexService->simpleSearch('test', 0, 10, 'test_product', 2);
-        $this->indexService->simpleSearch('test', 2, 10);
+    public function testSelect()
+    {
+        $query = $this->indexService->select();
+
+        $this->assertAttributeEquals($this->entityManager, 'em', $query);
+        $this->assertEquals($this->config, $query->getMappingConfig());
+        $this->assertEquals('select', $query->getQuery());
+    }
+
+    public function testQuery()
+    {
+        $select = $this->indexService->select();
+
+        $resultItem = new Item($this->entityManager);
+        $searchResults = array($resultItem);
+
+        $this->adapter->expects($this->once())
+            ->method('search')
+            ->will(
+                $this->returnCallback(
+                    function (Query $query) use ($searchResults) {
+                        return new Result($query, $searchResults, count($searchResults));
+                    }
+                )
+            );
+
+        $result = $this->indexService->query($select);
+        $this->assertEquals($searchResults, $result->getElements());
+        $this->assertEquals(count($searchResults), $result->getRecordsCount());
     }
 
     /**
-     * Run advanced search
+     * @return array
      */
+    public function simpleSearchDataProvider()
+    {
+        return array(
+            'no extra parameters' => array(
+                'expectedQuery'
+                    => 'select from test_product, test_customer where and((text)all_text ~ qwerty)',
+                'string' => 'qwerty',
+            ),
+            'custom offset' => array(
+                'expectedQuery'
+                    => 'select from test_product, test_customer where and((text)all_text ~ qwerty) offset 10',
+                'string' => 'qwerty',
+                'offset' => 10,
+            ),
+            'custom offset custom maxResults' => array(
+                'expectedQuery'
+                    => 'select from test_product, test_customer where and((text)all_text ~ qwerty) limit 200 offset 10',
+                'string' => 'qwerty',
+                'offset' => 10,
+                'maxResults' => 200,
+            ),
+            'custom from' => array(
+                'expectedQuery'
+                    => 'select from test_customer where and((text)all_text ~ qwerty)',
+                'string' => 'qwerty',
+                'offset' => 0,
+                'maxResults' => 0,
+                'from' => 'test_customer',
+            ),
+            'all custom parameters' => array(
+                'expectedQuery'
+                    => 'select from test_customer where and((text)all_text ~ qwerty) limit 200 offset 400',
+                'string' => 'qwerty',
+                'offset' => 10,
+                'maxResults' => 200,
+                'from' => 'test_customer',
+                'page' => 3,
+            ),
+            'unknown from' => array(
+                'expectedQuery'
+                    => 'select where and((text)all_text ~ qwerty)',
+                'string' => 'qwerty',
+                'offset' => 0,
+                'maxResults' => 0,
+                'from' => 'unknown_entity',
+            ),
+        );
+    }
+
+    /**
+     * @param string $expectedQuery
+     * @param string $string
+     * @param int $offset
+     * @param int $maxResults
+     * @param null $from
+     * @param int $page
+     * @dataProvider simpleSearchDataProvider
+     */
+    public function testSimpleSearch($expectedQuery, $string, $offset = 0, $maxResults = 0, $from = null, $page = 0)
+    {
+        $searchResults = array('one', 'two', 'three');
+
+        $this->adapter->expects($this->any())
+            ->method('search')
+            ->will(
+                $this->returnCallback(
+                    function (Query $query) use ($searchResults) {
+                        return new Result($query, $searchResults, count($searchResults));
+                    }
+                )
+            );
+
+        $result = $this->indexService->simpleSearch($string, $offset, $maxResults, $from, $page);
+        $actualQuery = $this->combineQueryString($result->getQuery());
+
+        if ($result->getQuery()->getFrom()) {
+            $this->assertEquals($searchResults, $result->getElements());
+            $this->assertEquals(count($searchResults), $result->getRecordsCount());
+        } else {
+            $this->assertEmpty($result->getElements());
+            $this->assertEquals(0, $result->getRecordsCount());
+        }
+        $this->assertEquals($actualQuery, $expectedQuery);
+    }
+
     public function testAdvancedSearch()
     {
-        $this->connector->expects($this->any())
-            ->method('doSearch')
-            ->will($this->returnValue(array('results' => array(), 'records_count' => 10)));
+        $searchResults = array('one', 'two', 'three');
 
-        $this->mapper->expects($this->once())
-            ->method('getMappingConfig')
-            ->will($this->returnValue($this->config));
+        $this->adapter->expects($this->any())
+            ->method('search')
+            ->will(
+                $this->returnCallback(
+                    function (Query $query) use ($searchResults) {
+                        return new Result($query, $searchResults, count($searchResults));
+                    }
+                )
+            );
 
-        $select = $this->indexService->advancedSearch(
-            'from (test_product, test_category)
-            where name ~ "test string" and integer count = 10 and decimal price in (10, 12, 15)
-            order_by name offset 10 max_results 5'
-        );
-        $query = $select->getQuery();
-        $from = $query->getFrom();
-        $searchCondition = $query->getOptions();
+        $sourceQuery = 'from (test_product, test_category)' .
+            ' where name ~ "test string" and integer count = 10 and decimal price in (10, 12, 15)' .
+            ' order_by name offset 10 max_results 5';
+        $expectedQuery = 'select from test_product' .
+            ' where and((text)name ~ test string) and((integer)count = 10) and((decimal)price in (10, 12, 15))' .
+            ' order by name asc limit 5 offset 10';
 
-        $this->assertEquals('test_product', $from[0]);
-        $this->assertEquals('test_category', $from[1]);
+        $result = $this->indexService->advancedSearch($sourceQuery);
+        $actualQuery = $this->combineQueryString($result->getQuery());
 
-        $this->assertEquals('name', $searchCondition[0]['fieldName']);
-        $this->assertEquals(Query::OPERATOR_CONTAINS, $searchCondition[0]['condition']);
-        $this->assertEquals('test string', $searchCondition[0]['fieldValue']);
-        $this->assertEquals(Query::TYPE_TEXT, $searchCondition[0]['fieldType']);
-        $this->assertEquals(Query::KEYWORD_AND, $searchCondition[0]['type']);
+        $this->assertEquals($searchResults, $result->getElements());
+        $this->assertEquals(count($searchResults), $result->getRecordsCount());
+        $this->assertEquals($expectedQuery, $actualQuery);
+    }
 
-        $this->assertEquals('count', $searchCondition[1]['fieldName']);
-        $this->assertEquals(Query::OPERATOR_EQUALS, $searchCondition[1]['condition']);
-        $this->assertEquals(10, $searchCondition[1]['fieldValue']);
-        $this->assertEquals(Query::TYPE_INTEGER, $searchCondition[1]['fieldType']);
-        $this->assertEquals(Query::KEYWORD_AND, $searchCondition[1]['type']);
+    /**
+     * @param Query $query
+     * @return string
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     */
+    protected function combineQueryString(Query $query)
+    {
+        $selectString = $query->getQuery();
 
-        $this->assertEquals('price', $searchCondition[2]['fieldName']);
-        $this->assertEquals(Query::OPERATOR_IN, $searchCondition[2]['condition']);
-        $this->assertEquals(10, $searchCondition[2]['fieldValue'][0]);
-        $this->assertEquals(12, $searchCondition[2]['fieldValue'][1]);
-        $this->assertEquals(15, $searchCondition[2]['fieldValue'][2]);
-        $this->assertEquals(Query::TYPE_DECIMAL, $searchCondition[2]['fieldType']);
-        $this->assertEquals(Query::KEYWORD_AND, $searchCondition[2]['type']);
+        $fromString = '';
+        if ($query->getFrom()) {
+            $fromString .=  ' from ' . implode(', ', $query->getFrom());
+        }
 
-        $this->assertEquals('name', $query->getOrderBy());
-        $this->assertEquals(Query::TYPE_TEXT, $query->getOrderType());
-        $this->assertEquals(Query::ORDER_ASC, $query->getOrderDirection());
+        $whereParts = array();
+        foreach ($query->getOptions() as $whereOptions) {
+            if (is_array($whereOptions['fieldValue'])) {
+                $whereOptions['fieldValue'] = '(' . implode(', ', $whereOptions['fieldValue']) . ')';
+            }
+            $whereParts[] = sprintf(
+                '%s((%s)%s %s %s)',
+                $whereOptions['type'],
+                $whereOptions['fieldType'],
+                $whereOptions['fieldName'],
+                $whereOptions['condition'],
+                $whereOptions['fieldValue']
+            );
+        }
+        $whereString = '';
+        if ($whereParts) {
+            $whereString .= ' where ' . implode(' ', $whereParts);
+        }
 
-        $this->assertEquals(10, $query->getFirstResult());
+        $orderByString = '';
+        if ($query->getOrderBy()) {
+            $orderByString .= ' ' . $query->getOrderBy();
+        }
+        if ($query->getOrderDirection()) {
+            $orderByString .= ' ' . $query->getOrderDirection();
+        }
+        if ($orderByString) {
+            $orderByString = ' order by' . $orderByString;
+        }
 
-        $this->assertEquals(5, $query->getMaxResults());
+        $limitString = '';
+        if ($query->getMaxResults() && $query->getMaxResults() != Query::INFINITY) {
+            $limitString = ' limit ' . $query->getMaxResults();
+        }
+
+        $offsetString = '';
+        if ($query->getFirstResult()) {
+            $offsetString .= ' offset ' . $query->getFirstResult();
+        }
+
+        return $selectString . $fromString. $whereString . $orderByString . $limitString . $offsetString;
     }
 }

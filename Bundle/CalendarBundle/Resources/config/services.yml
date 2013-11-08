@@ -1,0 +1,65 @@
+parameters:
+    oro_calendar.calendar.entity.class:                          Oro\Bundle\CalendarBundle\Entity\Calendar
+    oro_calendar.calendar_connection.entity.class:               Oro\Bundle\CalendarBundle\Entity\CalendarConnection
+    oro_calendar.calendar_event.entity.class:                    Oro\Bundle\CalendarBundle\Entity\CalendarEvent
+    oro_calendar.listener.entity_subscriber.class:               Oro\Bundle\CalendarBundle\EventListener\EntitySubscriber
+    oro_calendar.calendar_connection.manager.api.class:          Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
+    oro_calendar.calendar_event.manager.api.class:               Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
+    oro_calendar.reminders_sender.class:                         Oro\Bundle\CalendarBundle\Notification\RemindersSender
+    oro_calendar.remind_time_calculator.class:                   Oro\Bundle\CalendarBundle\Notification\RemindTimeCalculator
+    oro_calendar.twig.dateformat.class:                          Oro\Bundle\CalendarBundle\Twig\DateFormatExtension
+    oro_calendar.provider.calendar_config.class:                 Oro\Bundle\CalendarBundle\Provider\CalendarDateTimeConfigProvider
+    oro_calendar.format_converter.date_time.full_calendar.class: Oro\Bundle\CalendarBundle\Converter\FullCalendarDateTimeFormatConverter
+
+services:
+    oro_calendar.reminders_sender:
+        scope: prototype
+        class: %oro_calendar.reminders_sender.class%
+        arguments:
+            - @doctrine.orm.entity_manager
+            - @oro_notification.email_processor
+
+    oro_calendar.remind_time_calculator:
+        public: false
+        class: %oro_calendar.remind_time_calculator.class%
+        arguments:
+            - %oro_calendar.reminder_time%
+
+    oro_calendar.listener.entity_subscriber:
+        public: false
+        class: %oro_calendar.listener.entity_subscriber.class%
+        arguments:
+            - @oro_calendar.remind_time_calculator
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }
+
+    oro_calendar.calendar_connection.manager.api:
+        class: %oro_calendar.calendar_connection.manager.api.class%
+        arguments:
+            - %oro_calendar.calendar_connection.entity.class%
+            - @doctrine.orm.entity_manager
+
+    oro_calendar.calendar_event.manager.api:
+        class: %oro_calendar.calendar_event.manager.api.class%
+        arguments:
+            - %oro_calendar.calendar_event.entity.class%
+            - @doctrine.orm.entity_manager
+
+    oro_calendar.twig.dateformat:
+        class: %oro_calendar.twig.dateformat.class%
+        arguments:
+            - @oro_locale.formatter.date_time
+        tags:
+            - { name: twig.extension }
+
+    oro_calendar.provider.calendar_config:
+        class: %oro_calendar.provider.calendar_config.class%
+        arguments:
+            - @oro_locale.settings
+
+    oro_calendar.format_converter.date_time.full_calendar:
+        class: %oro_calendar.format_converter.date_time.full_calendar.class%
+        arguments:
+            - @oro_locale.formatter.date_time
+        tags:
+            - { name: oro_locale.format_converter.date_time, alias: fullcalendar }

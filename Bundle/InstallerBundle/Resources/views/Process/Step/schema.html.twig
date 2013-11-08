@@ -1,0 +1,55 @@
+{% extends 'OroInstallerBundle::layout.html.twig' %}
+{% use 'OroInstallerBundle::progress.html.twig' %}
+
+{% set step, steps = 'schema', ['cache', 'schema-drop', 'clear', 'schema-create', 'init-config', 'init-extend', 'update-config', 'schema-update', 'fixtures'] %}
+
+{% block title %}{{ 'process.step.schema.header'|trans }} - {{ parent() }}{% endblock %}
+
+{% block content %}
+<div class="page-title">
+    <h2>{{ 'process.step.schema.header'|trans }}</h2>
+</div>
+
+<div class="well">
+    <table class="table">
+         <col width="75%" valign="top">
+         <col width="25%" valign="top">
+         <thead>
+             <tr>
+                 <th>{{ 'process.operation'|trans }}</th>
+                 <th>{{ 'process.status'|trans }}</th>
+             </tr>
+         </thead>
+         <tbody>
+             {% for step in steps %}
+             <tr>
+                 <td><span id="step-{{ step }}"></span>{{ ('process.step.schema.' ~ step)|trans }}</td>
+                 <td>&nbsp;</td>
+             </tr>
+             {% endfor %}
+         </tbody>
+    </table>
+
+    <div class="button-set">
+        <div class="pull-right">
+            <a href="{{ path('sylius_flow_display', { scenarioAlias: 'oro_installer', stepName: 'configure' }) }}" class="button back"><span>{{ 'process.button.back'|trans }}</span></a>
+            <a href="javascript: void(0)" class="button next primary disabled">
+                <span>{{ 'process.button.next'|trans }}</span>
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascript %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        $(function() {
+            ajaxQueue(
+                [{% for step in steps %}'{{ step}}'{{ loop.last ? '' : ', ' }}{% endfor %}],
+                '{{ path('sylius_flow_forward', { scenarioAlias: 'oro_installer', stepName: 'schema' }) }}'
+            );
+        });
+    </script>
+{% endblock javascript %}

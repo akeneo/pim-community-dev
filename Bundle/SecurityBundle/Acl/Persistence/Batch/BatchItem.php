@@ -105,13 +105,13 @@ class BatchItem
     /**
      * Associates an ACE with the given attributes with this item
      *
-     * @param string $type The ACE type. Can be one of AclManager::*_ACE constants
+     * @param string      $type  The ACE type. Can be one of AclManager::*_ACE constants
      * @param string|null $field The name of a field.
      *                           Set to null for class-based or object-based ACE
      *                           Set to not null class-field-based or object-field-based ACE
-     * @param SID $sid
-     * @param bool $granting
-     * @param int $mask
+     * @param SID         $sid
+     * @param bool        $granting
+     * @param int         $mask
      * @param string|null $strategy If null the strategy should not be changed for existing ACE
      *                              or the appropriate strategy should be  selected automatically for new ACE
      *                                  ALL strategy is used for $granting = true
@@ -129,13 +129,13 @@ class BatchItem
     /**
      * Deletes an ACE with the given attributes from the list of ACEs associated with this item
      *
-     * @param string $type The ACE type. Can be one of AclManager::*_ACE constants
+     * @param string      $type  The ACE type. Can be one of AclManager::*_ACE constants
      * @param string|null $field The name of a field.
      *                           Set to null for class-based or object-based ACE
      *                           Set to not null class-field-based or object-field-based ACE
-     * @param SID $sid
-     * @param bool $granting
-     * @param int $mask
+     * @param SID       $sid
+     * @param bool      $granting
+     * @param int       $mask
      * @param bool|null $strategy
      */
     public function removeAce($type, $field, SID $sid, $granting, $mask, $strategy)
@@ -163,7 +163,7 @@ class BatchItem
     /**
      * Deletes all ACEs the given type and security identity from the list of ACEs associated with this item
      *
-     * @param string $type The ACE type. Can be one of AclManager::*_ACE constants
+     * @param string      $type  The ACE type. Can be one of AclManager::*_ACE constants
      * @param string|null $field The name of a field.
      *                           Set to null for class-based or object-based ACE
      *                           Set to not null class-field-based or object-field-based ACE

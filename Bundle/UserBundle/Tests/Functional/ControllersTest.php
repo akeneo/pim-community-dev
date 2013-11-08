@@ -41,7 +41,7 @@ class ControllersTest extends WebTestCase
         $form['oro_user_user_form[plainPassword][second]'] = 'password';
         $form['oro_user_user_form[firstName]'] = 'First Name';
         $form['oro_user_user_form[lastName]'] = 'Last Name';
-        $form['oro_user_user_form[birthday]'] = '7/1/13';
+        $form['oro_user_user_form[birthday]'] = '2013-01-01';
         $form['oro_user_user_form[email]'] = 'test@test.com';
         //$form['oro_user_user_form[tags][owner]'] = 'tags1';
         //$form['oro_user_user_form[tags][all]'] = null;
@@ -88,7 +88,7 @@ class ControllersTest extends WebTestCase
         $form['oro_user_user_form[username]'] = 'testUser1';
         $form['oro_user_user_form[firstName]'] = 'First Name';
         $form['oro_user_user_form[lastName]'] = 'Last Name';
-        $form['oro_user_user_form[birthday]'] = '1/1/13';
+        $form['oro_user_user_form[birthday]'] = '2013-01-02';
         $form['oro_user_user_form[email]'] = 'test@test.com';
         $form['oro_user_user_form[groups][1]'] = 2;
         $form['oro_user_user_form[rolesCollection][2]'] = 4;
@@ -101,6 +101,47 @@ class ControllersTest extends WebTestCase
         $result = $this->client->getResponse();
         ToolsAPI::assertJsonResponse($result, 200, 'text/html; charset=UTF-8');
         $this->assertContains("User saved", $crawler->html());
+    }
+
+    public function testApiGen()
+    {
+        $this->client->request(
+            'GET',
+            $this->client->generate('oro_user_index', array('_format' =>'json')) .
+            '?users[_filter][username][value]=testUser1',
+            array(
+                'users[_pager][_page]' => 1,
+                'users[_pager][_per_page]' => 10,
+                'users[_sort_by][username]' => 'ASC',
+                'users[_filter][username][type]' => '',
+            )
+        );
+        $result = $this->client->getResponse();
+        ToolsAPI::assertJsonResponse($result, 200);
+
+        $result = ToolsAPI::jsonToArray($result->getContent());
+        $result = reset($result['data']);
+
+        $this->client->request(
+            'GET',
+            $this->client->generate('oro_user_apigen', array('id' => $result['id'])),
+            array(),
+            array(),
+            array('HTTP_X-Requested-With' => 'XMLHttpRequest')
+        );
+
+        /** @var User $user */
+        $user = $this->client
+            ->getContainer()
+            ->get('doctrine')
+            ->getRepository('OroUserBundle:User')
+            ->findOneBy(array('id' => $result['id']));
+
+        $result = $this->client->getResponse();
+        ToolsAPI::assertJsonResponse($result, 200, '');
+
+        //verify result
+        $this->assertEquals($user->getApi()->getApiKey(), trim($result->getContent(), '"'));
     }
 
     public function testViewProfile()
@@ -121,7 +162,7 @@ class ControllersTest extends WebTestCase
         );
         /** @var Form $form */
         $form = $crawler->selectButton('Save and Close')->form();
-        $form['oro_user_user_form[birthday]'] = '01/01/1999/';
+        $form['oro_user_user_form[birthday]'] = '1999-01-01';
 
         $this->client->followRedirects(true);
         $crawler = $this->client->submit($form);
@@ -138,6 +179,6 @@ class ControllersTest extends WebTestCase
         );
         /** @var Form $form */
         $form = $crawler->selectButton('Save and Close')->form();
-        $this->assertEquals('1/1/99', $form['oro_user_user_form[birthday]']->getValue());
+        $this->assertEquals('1999-01-01', $form['oro_user_user_form[birthday]']->getValue());
     }
 }

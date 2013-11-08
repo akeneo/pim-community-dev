@@ -15,7 +15,8 @@
         "nelmio/api-doc-bundle": "dev-master",
         "oro/form-bundle": "dev-master",
         "oro/translation-bundle": "dev-master",
-        "besimple/soap-bundle": "dev-master"
+        "besimple/soap-bundle": "dev-master",
+        "oro/requirejs-bundle": "dev-master"
     },
     "autoload": {
         "psr-0": { "Oro\\Bundle\\AddressBundle": "" }

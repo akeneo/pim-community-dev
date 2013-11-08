@@ -4,9 +4,12 @@ namespace Oro\Bundle\TestFrameworkBundle\Tests\Selenium;
 
 use Oro\Bundle\TestFrameworkBundle\Pages\Objects\Login;
 use Oro\Bundle\TestFrameworkBundle\Pages\Objects\Users;
+use Oro\Bundle\TestFrameworkBundle\Test\Selenium2TestCase;
 
-class AdvancedSearchTest extends \PHPUnit_Extensions_Selenium2TestCase
+class AdvancedSearchTest extends Selenium2TestCase
 {
+    protected $coverageScriptUrl = PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_TESTS_URL_COVERAGE;
+
     protected function setUp()
     {
         $this->setHost(PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_HOST);
@@ -34,10 +37,7 @@ class AdvancedSearchTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->openUsers();
         $users = new Users($this);
         $userData = $users->getRandomEntity();
-        $login->openNavigation()
-            ->tab('Search')
-            ->menu('Advanced search')
-            ->open();
+        $login->openNavigation(array('url' => '/search/advanced-search-page'));
         //Fill advanced search input field
         $login->byId('query')->value($query . $userData[$userField]);
         $login->byId('sendButton')->click();

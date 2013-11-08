@@ -1,3 +1,0 @@
-oro_soap_api:
-    resource: "@BeSimpleSoapBundle/Resources/config/routing/webservicecontroller.xml"
-    prefix:   /

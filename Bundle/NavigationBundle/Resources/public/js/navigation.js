@@ -71,6 +71,7 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
             scrollLinks:         'a[href^=#]',
             forms:               'form',
             content:             '#content',
+            userMenu:            '#top-page .user-menu',
             container:           '#container',
             loadingMask:         '.hash-loading-mask',
             searchDropdown:      '#search-div',
@@ -273,6 +274,7 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
                         headers: this.headerObject,
                         data: stringState,
                         beforeSend: function( xhr ) {
+                            $.isActive(false);
                             //remove standard ajax header because we already have a custom header sent
                             xhr.setRequestHeader('X-Requested-With', {toString: function(){ return ''; }});
                         },
@@ -680,7 +682,7 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
              * Processing links in 3 dots menu after item is added (e.g. favourites)
              */
             mediator.bind(
-                "navigaion_item:added",
+                "navigation_item:added",
                 function (item) {
                     this.processClicks(item.find(this.selectors.links));
                 },
@@ -882,6 +884,7 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
                         var content = data.content;
                         this.selectorCached.container.html(content);
                         this.selectorCached.menu.html(data.mainMenu);
+                        this.selectorCached.userMenu.html(data.userMenu);
                         this.selectorCached.breadcrumb.html(data.breadcrumb);
                         /**
                          * Collecting javascript from head and append them to content
@@ -894,6 +897,7 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
                          */
                         document.title = data.title;
                         this.processClicks(this.selectorCached.menu.find(this.selectors.links));
+                        this.processClicks(this.selectorCached.userMenu.find(this.selectors.links));
                         this.disableEmptyLinks(this.selectorCached.menu.find(this.selectors.scrollLinks));
                         this.processClicks(this.selectorCached.container.find(this.selectors.links));
                         this.processAnchors(this.selectorCached.container.find(this.selectors.scrollLinks));
@@ -946,6 +950,7 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
             if (urlParts[1]) {
                 redirectUrl = urlParts[1];
             }
+            $.isActive(true);
             if(data.fullRedirect) {
                 var delimiter = '?';
                 if (redirectUrl.indexOf(delimiter) !== -1) {

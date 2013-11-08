@@ -2,110 +2,67 @@ oro_system_configuration:
     groups:
         localization:
             title: 'Localization'
-            icon:  'icon-time'
+            icon:  'icon-flag'
 
-        locale_options:
-            title: 'Locale options'
-
-        number_formats:
-            title: 'Nubmer formats'
+        locale_settings:
+            title: 'Localization options'
 
     fields:
         oro_locale.locale:
-            type: locale
+            type: oro_locale
+            priority: 70
             options:
                 label: 'Locale'
+                tooltip: oro.locale.form.tooltip.locale
+                required: true
+                constraints:
+                    - NotBlank: ~
+
+        oro_locale.country:
+            type: oro_locale_country
+            priority: 60
+            options:
+                label: 'Location'
+                tooltip: oro.locale.form.tooltip.location
+                required: true
+                constraints:
+                    - NotBlank: ~
+
+        oro_locale.format_address_by_address_country:
+            type: oro_config_checkbox
+            priority: 50
+            options:
+                label: 'Format address by address country'
+                tooltip: oro.locale.form.tooltip.format_address_by_address_country
+                required: true
+
+        oro_locale.language:
+            type: oro_locale
+            priority: 40
+            options:
+                label: 'Language'
+                tooltip: oro.locale.form.tooltip.language
                 required: true
                 constraints:
                     - NotBlank: ~
 
         oro_locale.timezone:
-            type: timezone
-            priority: 253
+            type: oro_locale_timezone
+            priority: 30
             options:
                 label: 'Timezone'
+                tooltip: oro.locale.form.tooltip.timezone
                 required: true
                 constraints:
                     - NotBlank: ~
 
-        oro_locale.default_currency:
-            type: currency
+        oro_locale.currency:
+            type: oro_currency
+            priority: 20
             options:
-                label: 'Default currency'
+                label: 'Currency'
+                tooltip: oro.locale.form.tooltip.currency
                 required: true
-                constraints:
-                    - NotBlank: ~
-
-        oro_locale.date_format:
-            type: choice
-            priority: 255
-            options:
-                label: 'Date format'
-                required: true
-                choices:
-                      "d M Y": "dd MMM yyyy"
-                      "m/d/y": "mm/dd/yy"
-                      "d.m.Y": "dd.mm.yyyy"
-                      "d.m.y": "dd.mm.yy"
-                      "j.n.y": "d.m.yy"
-                      "d/m/y": "dd/mm/yy"
-                      "y/m/d": "yy/mm/dd"
-                      "Y-m-d": "yyyyy-mm-dd"
-                constraints:
-                    - NotBlank: ~
-
-        oro_locale.time_format:
-            type: choice
-            priority: 254
-            options:
-                label: 'Time format'
-                required: true
-                choices:
-                      "H:i":  "HH:mm (24H)"
-                      "G:i": "H:mm (24H)"
-                      "h:i a": "HH:mm am/pm"
-                      "g:i a": "H:mm am/pm"
-                      "h:i A": "HH:mm AM/PM"
-                      "g:i A": "H:mm AM/PM"
-                constraints:
-                    - NotBlank: ~
-
-        oro_locale.decimal_symbol:
-            type: text
-            options:
-                label: 'Decimal symbol'
-                required: true
-                constraints:
-                    - NotBlank: ~
-                    - Length:   1
-
-        oro_locale.thousands_separator:
-            type: text
-            options:
-                label: '1000s separator'
-                required: false
-                constraints:
-                    - Length:
-                        max: 1
-
-        oro_locale.number_of_decimals:
-            type: text
-            options:
-                label: 'Number of digits after decimal'
-                required: true
-                constraints:
-                    - NotBlank: ~
-                    - Length:   1
-                    - Regex:    "/^[0-9]{1}$/"
-                    - Range:
-                        min:    0
-
-        oro_locale.name_format:
-            type: text
-            options:
-                label: 'Name format'
-                required: true
-                #tooltip: 'Available variables:<br> %%firstname%%, %%lastname%%'
                 constraints:
                     - NotBlank: ~
 
@@ -118,16 +75,12 @@ oro_system_configuration:
                             localization:
                                 priority: 254
                                 children:
-                                    locale_options:
+                                    locale_settings:
+                                        priority: 100
                                         children:
-#                                            - oro_locale.locale
-#                                            - oro_locale.default_currency
+                                            - oro_locale.locale
+                                            - oro_locale.country
+                                            - oro_locale.format_address_by_address_country
+                                            - oro_locale.language
                                             - oro_locale.timezone
-                                            - oro_locale.date_format
-                                            - oro_locale.time_format
-                                            - oro_locale.name_format
-#                                    number_formats:
-#                                        children:
-#                                            - oro_locale.decimal_symbol
-#                                            - oro_locale.thousands_separator
-#                                            - oro_locale.number_of_decimals
+                                            - oro_locale.currency

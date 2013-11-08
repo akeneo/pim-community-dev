@@ -1,0 +1,100 @@
+parameters:
+    oro_email.form.subscriber.emailtemplate.class:        Oro\Bundle\EmailBundle\Form\EventListener\BuildTemplateFormSubscriber
+    oro_email.form.type.emailtemplate.class:              Oro\Bundle\EmailBundle\Form\Type\EmailTemplateType
+    oro_email.form.type.emailtemplate_select.class:       Oro\Bundle\EmailBundle\Form\Type\EmailTemplateSelectType
+    oro_email.form.type.emailtemplate_translation.class:  Oro\Bundle\EmailBundle\Form\Type\EmailTemplateTranslationType
+    oro_email.form.handler.emailtemplate.class:           Oro\Bundle\EmailBundle\Form\Handler\EmailTemplateHandler
+    oro_email.form.type.emailtemplate.api.class:          Oro\Bundle\EmailBundle\Form\Type\EmailTemplateApiType
+    oro_email.form.handler.email.class:                   Oro\Bundle\EmailBundle\Form\Handler\EmailHandler
+    oro_email.form.type.email.class:                      Oro\Bundle\EmailBundle\Form\Type\EmailType
+    oro_email.form.type.email_address.class:              Oro\Bundle\EmailBundle\Form\Type\EmailAddressType
+
+services:
+    oro_email.form.subscriber.emailtemplate:
+        class: %oro_email.form.subscriber.emailtemplate.class%
+        arguments:
+            - @doctrine.orm.entity_manager
+            - @form.factory
+
+    oro_email.form.emailtemplate:
+        class: Symfony\Component\Form\Form
+        factory_method: createNamed
+        factory_service: form.factory
+        arguments: ["oro_email_emailtemplate", "oro_email_emailtemplate", null]
+
+    oro_email.form.type.emailtemplate:
+        class: %oro_email.form.type.emailtemplate.class%
+        arguments: [ %oro_config.entities% ]
+        tags:
+            - { name: form.type, alias: oro_email_emailtemplate }
+
+    oro_email.form.type.emailtemplate_translation:
+        class: %oro_email.form.type.emailtemplate_translation.class%
+        tags:
+            - { name: form.type, alias: oro_email_emailtemplate_translatation }
+
+    oro_email.form.type.emailtemplate_select:
+        class: %oro_email.form.type.emailtemplate_select.class%
+        tags:
+            - { name: form.type, alias: oro_email_template_list }
+
+    oro_email.form.handler.emailtemplate:
+        class: %oro_email.form.handler.emailtemplate.class%
+        scope: request
+        arguments:
+            - @oro_email.form.emailtemplate
+            - @request
+            - @doctrine.orm.entity_manager
+            - @translator
+
+    oro_email.form.type.emailtemplate.api:
+        class: %oro_email.form.type.emailtemplate.api.class%
+        arguments: [ %oro_config.entities% ]
+        tags:
+            - { name: form.type, alias: oro_email_emailtemplate_api }
+
+    oro_email.form.emailtemplate.api:
+        class: Symfony\Component\Form\Form
+        factory_method: createNamed
+        factory_service: form.factory
+        arguments: ["oro_email_emailtemplate_api", "oro_email_emailtemplate_api", null]
+
+    oro_email.form.handler.emailtemplate.api:
+        class: %oro_email.form.handler.emailtemplate.class%
+        scope: request
+        arguments:
+            - @oro_email.form.emailtemplate.api
+            - @request
+            - @doctrine.orm.entity_manager
+            - @translator
+
+    oro_email.form.handler.email:
+        class: %oro_email.form.handler.email.class%
+        scope: request
+        arguments:
+            - @oro_email.form.email
+            - @request
+            - @doctrine.orm.entity_manager
+            - @translator
+            - @security.context
+            - @oro_email.email.address.manager
+            - @oro_email.email.entity.builder=
+            - @oro_email.direct_mailer
+            - @logger
+            - @oro_locale.formatter.name
+
+    oro_email.form.email:
+        class: Symfony\Component\Form\Form
+        factory_method: createNamed
+        factory_service: form.factory
+        arguments: ["oro_email_email", "oro_email_email", null]
+
+    oro_email.form.type.email:
+        class: %oro_email.form.type.email.class%
+        tags:
+            - { name: form.type, alias: oro_email_email }
+
+    oro_email.form.type.email_address:
+        class: %oro_email.form.type.email_address.class%
+        tags:
+            - { name: form.type, alias: oro_email_email_address }

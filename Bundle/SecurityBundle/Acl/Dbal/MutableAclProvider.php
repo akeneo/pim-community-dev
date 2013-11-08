@@ -2,10 +2,17 @@
 
 namespace Oro\Bundle\SecurityBundle\Acl\Dbal;
 
+use Doctrine\DBAL\Driver\Connection;
+use Symfony\Component\Security\Acl\Model\PermissionGrantingStrategyInterface;
+use Symfony\Component\Security\Acl\Model\AclCacheInterface;
+
+use Symfony\Component\Security\Acl\Model\ObjectIdentityInterface;
+
 use Symfony\Component\Security\Acl\Dbal\MutableAclProvider as BaseMutableAclProvider;
 use Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity;
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 use Symfony\Component\Security\Acl\Model\SecurityIdentityInterface;
+use Symfony\Component\Security\Acl\Domain\Acl;
 
 /**
  * This class extends the standard Symfony MutableAclProvider.
@@ -19,6 +26,50 @@ use Symfony\Component\Security\Acl\Model\SecurityIdentityInterface;
  */
 class MutableAclProvider extends BaseMutableAclProvider
 {
+    /**
+     * @var PermissionGrantingStrategyInterface
+     */
+    protected $permissionStrategy;
+
+    /**
+     * Constructor.
+     *
+     * @param Connection                          $connection
+     * @param PermissionGrantingStrategyInterface $permissionGrantingStrategy
+     * @param array                               $options
+     * @param AclCacheInterface                   $cache
+     */
+    public function __construct(
+        Connection $connection,
+        PermissionGrantingStrategyInterface $permissionGrantingStrategy,
+        array $options,
+        AclCacheInterface $cache = null
+    ) {
+        $this->permissionStrategy = $permissionGrantingStrategy;
+        parent::__construct($connection, $permissionGrantingStrategy, $options, $cache);
+
+    }
+
+    /**
+     * Clear cache by $oid
+     *
+     * @param ObjectIdentityInterface $oid
+     */
+    public function clearOidCache(ObjectIdentityInterface $oid)
+    {
+        $this->cache->evictFromCacheByIdentity($oid);
+    }
+
+    /**
+     * Put in cache empty ACL object for given OID
+     *
+     * @param ObjectIdentityInterface $oid
+     */
+    public function cacheEmptyAcl(ObjectIdentityInterface $oid)
+    {
+        $this->cache->putInCache(new Acl(0, $oid, $this->permissionStrategy, array(), true));
+    }
+
     /**
      * Initiates a transaction
      */

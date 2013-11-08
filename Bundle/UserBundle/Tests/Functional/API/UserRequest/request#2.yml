@@ -2,12 +2,15 @@
 request:
     username: User_2_%str%
     email: user_2_%str%@example.com
+    namePrefix: Mr.
     firstName: firstName
+    middleName: middleName
     lastName: lastName
+    nameSuffix: Sn.
     enabled: true
     plainPassword: 123123q
     lastLogin: ~
-    rolesCollection: [1]
+    rolesCollection: [3]
     groups: ~
     values: ~
     owner: 1

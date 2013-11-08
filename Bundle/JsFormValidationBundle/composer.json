@@ -8,7 +8,9 @@
     "require": {
         "php": ">=5.3.3",
         "symfony/framework-bundle": ">=2.1,<2.3-dev",
-        "apy/jsfv-bundle": "2.1.*@dev"
+        "apy/jsfv-bundle": "2.1.*@dev",
+        "oro/requirejs-bundle": "dev-master",
+        "oro/locale-bundle": "dev-master"
     },
     "autoload": {
         "psr-0": { "Oro\\Bundle\\JsFormValidationBundle": "" }

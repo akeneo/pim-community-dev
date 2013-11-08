@@ -1,0 +1,13 @@
+oro_email:
+    resource:     "@OroEmailBundle/Controller"
+    type:         annotation
+    prefix:       /email
+
+oro_email_bundle_api:
+    resource:     "@OroEmailBundle/Resources/config/oro/routing_api.yml"
+    type:         rest
+    prefix:       api/rest/{version}
+    requirements:
+        version:  latest|v1
+    defaults:
+        version:  latest

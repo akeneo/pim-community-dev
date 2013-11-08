@@ -1,17 +1,18 @@
 {% extends 'OroUIBundle:actions:update.html.twig' %}
-{% import 'OroLocaleBundle::macros.html.twig' as Locale %}
-{% set format = oro_config_value('oro_locale.name_format') %}
-{% form_theme form with ['OroUIBundle:Form:fields.html.twig', 'OroFormBundle:Form:fields.html.twig', 'OroTagBundle:Form:fields.html.twig'] %}
+{% form_theme form with ['OroFormBundle:Form:fields.html.twig', 'OroTagBundle:Form:fields.html.twig'] %}
 
-{% set title = form.vars.value.id ? form.vars.value.fullname(format)|default('N/A') ~ ' - ' ~ 'Update User'|trans : 'New User'|trans %}
-{% oro_title_set({params : {"%username%": form.vars.value.fullname(format)|default('N/A') }}) %}
+{% set fullname = form.vars.value|oro_format_name|default('N/A') %}
+{% oro_title_set({params : {"%username%": fullname }}) %}
 {% set audit_entity_class = 'Oro_Bundle_UserBundle_Entity_User' %}
 {% if editRoute %}
     {% set formAction = path(editRoute) %}
 {% else %}
     {% set formAction = form.vars.value.id ? path('oro_user_update', { id: form.vars.value.id}) : path('oro_user_create') %}
 {% endif %}
+
 {% block head_script %}
+    {# TODO: Find a better way to handle such dependencies in https://magecore.atlassian.net/browse/BAP-1971 #}
+    {% include 'OroUIBundle:Js:jquery_jstree.config.js.twig' %}
     <script type="text/javascript">
         require(['jquery', 'jquery.jstree', 'jstree/jquery.hotkeys'],
         function($){
@@ -23,8 +24,7 @@
                             return ['businessUnits[' + n.data('id') + ']', 1]
                         },
                         two_state: true
-                    },
-                    "plugins": ["themes", "html_data", "ui", "checkbox", "hotkeys"]
+                    }
                 });
             });
         });
@@ -57,7 +57,7 @@
             'entity':      form.vars.value,
             'indexPath':   path('oro_user_index'),
             'indexLabel': 'Users'|trans,
-            'entityTitle': form.vars.value.fullname(format)|default('N/A'),
+            'entityTitle': fullname,
             'hasAvatar':   true,
             'imagePath':   form.vars.value.imagePath,
         }
@@ -70,7 +70,7 @@
 
 {% block stats %}
     {{ parent() }}
-    <li>{{ 'Last logged in'|trans }}: {{ form.vars.value.lastLogin ? Locale.time(form.vars.value.lastLogin) : 'N/A' }}</li>
+    <li>{{ 'Last logged in'|trans }}: {{ form.vars.value.lastLogin ? form.vars.value.lastLogin|oro_format_datetime : 'N/A' }}</li>
     <li>{{ 'Login count'|trans }}: {{ form.vars.value.loginCount|default(0) }}</li>
 {% endblock stats %}
 
@@ -88,8 +88,11 @@
                         form_row(form.enabled),
                         form_row(form.username),
                         form.plainPassword is defined ? form_row(form.plainPassword) : '',
+                        form_row(form.namePrefix),
                         form_row(form.firstName),
+                        form_row(form.middleName),
                         form_row(form.lastName),
+                        form_row(form.nameSuffix),
                         form_row(form.birthday),
                         form_row(form.imageFile),
                     ]

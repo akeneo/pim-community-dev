@@ -227,7 +227,9 @@ class SearchHandler implements SearchHandlerInterface
     {
         $result = array();
 
-        $result[$this->idFieldName] = $this->getPropertyValue($this->idFieldName, $item);
+        if ($this->idFieldName) {
+            $result[$this->idFieldName] = $this->getPropertyValue($this->idFieldName, $item);
+        }
 
         foreach ($this->properties as $property) {
             $result[$property] = $this->getPropertyValue($property, $item);

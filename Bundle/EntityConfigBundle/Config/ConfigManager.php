@@ -5,7 +5,6 @@ namespace Oro\Bundle\EntityConfigBundle\Config;
 use Doctrine\Common\Collections\ArrayCollection;
 
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Mapping\ClassMetadataInfo;
 
 use Metadata\MetadataFactory;
 
@@ -20,7 +19,6 @@ use Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink;
 use Oro\Bundle\EntityConfigBundle\Metadata\EntityMetadata;
 use Oro\Bundle\EntityConfigBundle\Metadata\FieldMetadata;
 
-use Oro\Bundle\EntityConfigBundle\Provider\PropertyConfigContainer;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProviderBag;
 
@@ -93,18 +91,18 @@ class ConfigManager
     protected $configChangeSets;
 
     /**
-     * @param MetadataFactory     $metadataFactory
-     * @param EventDispatcher     $eventDispatcher
-     * @param ServiceLink         $providerBagLink
-     * @param ConfigModelManager  $modelManager
-     * @param ServiceLink         $securityLink
+     * @param MetadataFactory    $metadataFactory
+     * @param EventDispatcher    $eventDispatcher
+     * @param ServiceLink        $providerBagLink
+     * @param ConfigModelManager $modelManager
+     * @param AuditManager       $auditManager
      */
     public function __construct(
         MetadataFactory $metadataFactory,
         EventDispatcher $eventDispatcher,
         ServiceLink $providerBagLink,
         ConfigModelManager $modelManager,
-        ServiceLink $securityLink
+        AuditManager $auditManager
     ) {
         $this->metadataFactory = $metadataFactory;
         $this->eventDispatcher = $eventDispatcher;
@@ -116,7 +114,7 @@ class ConfigManager
         $this->configChangeSets = new ArrayCollection;
 
         $this->modelManager = $modelManager;
-        $this->auditManager = new AuditManager($this, $securityLink);
+        $this->auditManager = $auditManager;
     }
 
     /**
@@ -204,8 +202,8 @@ class ConfigManager
         }
 
         $result = $this->cache->getConfigurable($className, $fieldName);
-        if ($result === null) {
-            $result = (bool)$this->modelManager->findModel($className, $fieldName);
+        if ($result === false) {
+            $result = (bool) $this->modelManager->findModel($className, $fieldName) ? : null;
 
             $this->cache->setConfigurable($result, $className, $fieldName);
         }
@@ -321,6 +319,7 @@ class ConfigManager
         if ($this->cache) {
             $this->cache->removeAllConfigurable();
         }
+        $this->modelManager->clearCheckDatabase();
     }
 
     /**
@@ -368,6 +367,7 @@ class ConfigManager
 
             if ($this->cache) {
                 $this->cache->removeConfigFromCache($config->getId());
+                $this->cache->removeAllConfigurable();
             }
         }
 
@@ -458,6 +458,29 @@ class ConfigManager
     }
 
     /**
+     * Checks if the configuration model for the given class exists
+     *
+     * @param string $className
+     * @return bool
+     */
+    public function hasConfigEntityModel($className)
+    {
+        return null !== $this->modelManager->findModel($className);
+    }
+
+    /**
+     * Checks if the configuration model for the given field exist
+     *
+     * @param string $className
+     * @param string $fieldName
+     * @return bool
+     */
+    public function hasConfigFieldModel($className, $fieldName)
+    {
+        return null !== $this->modelManager->findModel($className, $fieldName);
+    }
+
+    /**
      * TODO:: check class name for custom entity
      *
      * @param string $className
@@ -494,6 +517,46 @@ class ConfigManager
 
     /**
      * @param string $className
+     *
+     * @TODO: need refactoring. Join updateConfigEntityModel and updateConfigFieldModel.
+     *        may be need introduce MetadataWithDefaultValuesInterface
+     *        need handling for removed values
+     *        need refactor getConfig
+     *        need to find out more appropriate name for this method
+     */
+    public function updateConfigEntityModel($className)
+    {
+        $metadata = $this->getEntityMetadata($className);
+        foreach ($this->getProviders() as $provider) {
+            $scope = $provider->getScope();
+            // try to get default values from annotation
+            $defaultValues = array();
+            if (isset($metadata->defaultValues[$scope])) {
+                $defaultValues = $metadata->defaultValues[$scope];
+            }
+            // combine them with default values from config file
+            $defaultValues = array_merge(
+                $provider->getPropertyConfig()->getDefaultValues(),
+                $defaultValues
+            );
+
+            // set missing values with default ones
+            $hasChanges = false;
+            $config = $provider->getConfig($className);
+            foreach ($defaultValues as $code => $value) {
+                if (!$config->has($code)) {
+                    $config->set($code, $value);
+                    $hasChanges = true;
+                }
+            }
+            if ($hasChanges) {
+                $provider->persist($config);
+            }
+        }
+    }
+
+    /**
+     * @param string $className
      * @param string $fieldName
      * @param string $fieldType
      * @param string $mode
@@ -524,6 +587,47 @@ class ConfigManager
         }
 
         return $fieldModel;
+    }
+
+    /**
+     * @param string $className
+     * @param string $fieldName
+     *
+     * @TODO: need refactoring. Join updateConfigEntityModel and updateConfigFieldModel.
+     *        may be need introduce MetadataWithDefaultValuesInterface
+     *        need handling for removed values
+     *        need refactor getConfig
+     *        need to find out more appropriate name for this method
+     */
+    public function updateConfigFieldModel($className, $fieldName)
+    {
+        $metadata = $this->getFieldMetadata($className, $fieldName);
+        foreach ($this->getProviders() as $provider) {
+            $scope = $provider->getScope();
+            // try to get default values from annotation
+            $defaultValues = array();
+            if (isset($metadata->defaultValues[$scope])) {
+                $defaultValues = $metadata->defaultValues[$scope];
+            }
+            // combine them with default values from config file
+            $defaultValues = array_merge(
+                $provider->getPropertyConfig()->getDefaultValues(),
+                $defaultValues
+            );
+
+            // set missing values with default ones
+            $hasChanges = false;
+            $config = $provider->getConfig($className, $fieldName);
+            foreach ($defaultValues as $code => $value) {
+                if (!$config->has($code)) {
+                    $config->set($code, $value);
+                    $hasChanges = true;
+                }
+            }
+            if ($hasChanges) {
+                $provider->persist($config);
+            }
+        }
     }
 
     /**

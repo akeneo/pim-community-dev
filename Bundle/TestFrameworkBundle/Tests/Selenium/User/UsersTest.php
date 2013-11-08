@@ -3,8 +3,9 @@
 namespace Oro\Bundle\TestFrameworkBundle\Tests\Selenium;
 
 use Oro\Bundle\TestFrameworkBundle\Pages\Objects\Login;
+use Oro\Bundle\TestFrameworkBundle\Test\Selenium2TestCase;
 
-class UsersTest extends \PHPUnit_Extensions_Selenium2TestCase
+class UsersTest extends Selenium2TestCase
 {
     protected $coverageScriptUrl = PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_TESTS_URL_COVERAGE;
 
@@ -40,8 +41,8 @@ class UsersTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->setOwner('Main')
             ->setFirstpassword('123123q')
             ->setSecondpassword('123123q')
-            ->setFirstname('First_'.$username)
-            ->setLastname('Last_'.$username)
+            ->setFirstName('First_'.$username)
+            ->setLastName('Last_'.$username)
             ->setEmail($username.'@mail.com')
             ->setRoles(array('Manager'))
             ->save()
@@ -72,8 +73,8 @@ class UsersTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->edit()
             ->assertTitle('First_' . $username . ' Last_' . $username . ' - Edit - Users - Users Management - System')
             ->setUsername($newUsername)
-            ->setFirstname('First_' . $newUsername)
-            ->setLastname('Last_' . $newUsername)
+            ->setFirstName('First_' . $newUsername)
+            ->setLastName('Last_' . $newUsername)
             ->save()
             ->assertMessage('User saved')
             ->toGrid()

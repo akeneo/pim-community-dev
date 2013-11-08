@@ -15,7 +15,8 @@
         "oro/form-bundle": "dev-master",
         "oro/user-bundle": "dev-master",
         "oro/entity-bundle": "dev-master",
-        "oro/entity-config-bundle": "dev-master"
+        "oro/entity-config-bundle": "dev-master",
+        "oro/requirejs-bundle": "dev-master"
     },
     "autoload": {
         "psr-0": { "Oro\\Bundle\\EntityExtendBundle": "" }

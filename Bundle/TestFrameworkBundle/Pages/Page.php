@@ -104,7 +104,7 @@ class Page
     {
         $this->test->waitUntil(
             function ($testCase) {
-                $status = $testCase->execute(array('script' => 'return jQuery.active == 0', 'args' => array()));
+                $status = $testCase->execute(array('script' => 'return !jQuery.isActive()', 'args' => array()));
                 if ($status) {
                     return true;
                 } else {
@@ -165,16 +165,15 @@ class Page
     {
         PHPUnit_Framework_Assert::assertTrue(
             $this->isElementPresent(
-                "//div[contains(@class,'alert') and not(contains(@class, 'alert-empty')) and not(contains(@class, 'alert-error'))]"
+                "//div[@id = 'flash-messages']//div[@class = 'message']"
             ),
             'Flash message is missing'
         );
         $actualResult = $this->byXPath(
-            "//div[contains(@class,'alert') and not(contains(@class, 'alert-empty')) and not(contains(@class, 'alert-error'))]/div"
-        )->text();
+            "//div[@id = 'flash-messages']//div[@class = 'message']"
+        )->attribute('innerHTML');
 
-        PHPUnit_Framework_Assert::assertEquals($messageText, $actualResult, $message
-        );
+        PHPUnit_Framework_Assert::assertEquals($messageText, trim($actualResult), $message);
         return $this;
     }
 
@@ -191,8 +190,7 @@ class Page
         );
         $actualResult = $this->byXPath("//div[contains(@class,'alert') and not(contains(@class, 'alert-empty'))]/div")->text();
 
-        PHPUnit_Framework_Assert::assertEquals($messageText, $actualResult, $message
-        );
+        PHPUnit_Framework_Assert::assertEquals($messageText, trim($actualResult), $message);
         return $this;
     }
     /**

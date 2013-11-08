@@ -1,15 +1,15 @@
 /* global define */
-define(['jquery', 'underscore', 'backbone'],
-function($, _, Backbone) {
+define(['jquery', 'underscore'],
+function($, _) {
     'use strict';
 
     var defaults = {
             container: '',
             delay: false,
-            template: $.noop,
-            flashMessageKey: 'flash'
+            template: $.noop
         },
         queue = [],
+        storageKey = 'flash',
 
         /**
          * Same arguments as for Oro.NotificationMessage
@@ -17,7 +17,7 @@ function($, _, Backbone) {
         showMessage = function(type, message, options) {
             var opt = _.extend({}, defaults, options || {}),
                 $el = $(opt.template({type: type, message: message})).appendTo(opt.container),
-                delay = (!_.isUndefined(options) && _.has(options, 'delay')) ? options.delay : (opt.flash && 5000),
+                delay = opt.delay || (opt.flash && 5000),
                 actions = {close: _.bind($el.alert, $el, 'close')};
             if (delay) {
                 _.delay(actions.close, delay);
@@ -29,25 +29,18 @@ function($, _, Backbone) {
          * Get flash messages from localStorage or cookie
          */
         getStoredMessages = function() {
-            var flashMessages = localStorage ? localStorage.getItem(defaults.flashMessageKey) : $.cookie(defaults.flashMessageKey);
-            flashMessages = $.parseJSON(flashMessages);
-
-            if (!(flashMessages instanceof Array)) {
-                flashMessages = [];
-            }
-
-            return flashMessages;
+            var messages = localStorage ? localStorage.getItem(storageKey) : $.cookie(storageKey);
+            return JSON.parse(messages) || [];
         },
 
         /**
          * Set stored messages to cookie or localStorage
          */
         setStoredMessages = function(flashMessages) {
-            var flashMessages = JSON.stringify(flashMessages);
+            var messages = JSON.stringify(flashMessages);
             localStorage ?
-                localStorage.setItem(defaults.flashMessageKey, flashMessages) :
-                $.cookie(defaults.flashMessageKey, flashMessages);
-
+                localStorage.setItem(storageKey, messages) :
+                $.cookie(storageKey, messages);
             return true;
         };
 

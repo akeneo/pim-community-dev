@@ -12,8 +12,8 @@ use Oro\Bundle\EntityBundle\ORM\EntityClassAccessor;
 use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdAccessor;
 use Oro\Bundle\SecurityBundle\Acl\Extension\OwnershipDecisionMakerInterface;
 use Oro\Bundle\EntityBundle\ORM\EntityClassResolver;
-use Oro\Bundle\EntityBundle\Owner\Metadata\OwnershipMetadataProvider;
-use Oro\Bundle\EntityBundle\Owner\Metadata\OwnershipMetadata;
+use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadataProvider;
+use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadata;
 use Oro\Bundle\SecurityBundle\Acl\Exception\InvalidAclMaskException;
 use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdentityFactory;
 use Oro\Bundle\SecurityBundle\Annotation\Acl as AclAnnotation;
@@ -262,7 +262,6 @@ class EntityAclExtension extends AbstractAclExtension
         return $maskBuilderClassName::getPatternFor($mask);
     }
 
-
     /**
      * {@inheritdoc}
      */
@@ -379,8 +378,15 @@ class EntityAclExtension extends AbstractAclExtension
      */
     public function getAllowedPermissions(ObjectIdentity $oid)
     {
-        $result = array_keys($this->permissionToMaskBuilderIdentity);
-        if ($oid->getType() !== ObjectIdentityFactory::ROOT_IDENTITY_TYPE) {
+        if ($oid->getType() === ObjectIdentityFactory::ROOT_IDENTITY_TYPE) {
+            $result = array_keys($this->permissionToMaskBuilderIdentity);
+        } else {
+            $config = $this->entityMetadataProvider->getMetadata($oid->getType());
+            $result = $config->getPermissions();
+            if (empty($result)) {
+                $result = array_keys($this->map);
+            }
+
             $metadata = $this->getMetadata($oid);
             if (!$metadata->hasOwner()) {
                 foreach ($result as $key => $value) {

@@ -1,0 +1,11 @@
+oro_calendar:
+    resource:     "@OroCalendarBundle/Controller"
+    type:         annotation
+    prefix:       /calendar
+
+oro_calendar_api:
+    resource: "@OroCalendarBundle/Resources/config/oro/routing_api.yml"
+    type: rest
+    prefix: api/rest/{version}
+    defaults:
+        version:  latest

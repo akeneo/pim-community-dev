@@ -1,0 +1,11 @@
+<script type='text/javascript'>
+require(['underscore', 'jquery', 'jquery.jstree'],
+function(_, $){
+    $(function() {
+        $.jstree._themes = {{ asset('bundles/oroui/lib/jstree/themes/')|json_encode|raw }};
+        _.extend($.jstree.defaults, {
+            plugins: ['themes', 'html_data', 'ui', 'checkbox', 'hotkeys']
+        });
+    });
+});
+</script>

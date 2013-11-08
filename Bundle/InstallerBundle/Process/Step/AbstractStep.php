@@ -3,6 +3,7 @@
 namespace Oro\Bundle\InstallerBundle\Process\Step;
 
 use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\StreamOutput;
 
@@ -19,6 +20,29 @@ abstract class AbstractStep extends ControllerStep
      * @var StreamOutput
      */
     protected $output;
+
+    /**
+     *
+     * @param  string $command
+     * @param  array  $params
+     * @return mixed
+     */
+    protected function handleAjaxAction($command, $params = array())
+    {
+        $this->runCommand($command, $params);
+
+        return $this->getRequest()->isXmlHttpRequest()
+            ? new JsonResponse(array('result' => true))
+            : $this->redirect(
+                $this->generateUrl(
+                    'sylius_flow_display',
+                    array(
+                        'scenarioAlias' => 'oro_installer',
+                        'stepName'      => $this->getName(),
+                    )
+                )
+            );
+    }
 
     /**
      * Execute Symfony2 command

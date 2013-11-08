@@ -1,21 +1,40 @@
 /* global define */
-define(['backgrid'],
-function(Backgrid) {
+define(['underscore', 'backgrid', 'oro/datagrid/number-formatter'],
+function(_, Backgrid, NumberFormatter) {
     'use strict';
 
     /**
-     * Number column cell. Added missing behaviour.
-     *
-     * Triggers events:
-     *  - "edit" when a cell is entering edit mode and an editor
-     *  - "editing" when a cell has finished switching to edit mode
-     *  - "edited" when cell editing is finished
+     * Number column cell.
      *
      * @export  oro/datagrid/number-cell
      * @class   oro.datagrid.NumberCell
      * @extends Backgrid.NumberCell
      */
     return Backgrid.NumberCell.extend({
+        /** @property {oro.datagrid.NumberFormatter} */
+        formatterPrototype: NumberFormatter,
+
+        /** @property {String} */
+        style: 'decimal',
+
+        /**
+         * @inheritDoc
+         */
+        initialize: function (options) {
+            _.extend(this, options);
+            Backgrid.Cell.prototype.initialize.apply(this, arguments);
+            this.formatter = this.createFormatter();
+        },
+
+        /**
+         * Creates number cell formatter
+         *
+         * @return {oro.datagrid.NumberFormatter}
+         */
+        createFormatter: function() {
+            return new this.formatterPrototype({style: this.style});
+        },
+
         /**
          * @inheritDoc
          */
@@ -24,16 +43,6 @@ function(Backgrid) {
                 e.stopPropagation();
             }
             return Backgrid.NumberCell.prototype.enterEditMode.apply(this, arguments);
-        },
-
-        /**
-         * @inheritDoc
-         */
-        exitEditMode: function (e) {
-            if (this.column.get("editable")) {
-                this.trigger("edited", this);
-            }
-            return Backgrid.NumberCell.prototype.exitEditMode.apply(this, arguments);
         }
     });
 });

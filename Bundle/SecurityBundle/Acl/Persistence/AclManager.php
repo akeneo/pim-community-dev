@@ -5,9 +5,6 @@ namespace Oro\Bundle\SecurityBundle\Acl\Persistence;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Security\Acl\Dbal\AclProvider;
 use Symfony\Component\Security\Acl\Exception\NotAllAclsFoundException;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Role\RoleInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Acl\Model\SecurityIdentityInterface as SID;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity as OID;
 use Symfony\Component\Security\Acl\Model\MutableAclInterface as ACL;
@@ -870,6 +867,7 @@ class AclManager extends AbstractAclManager
             $this->aceProvider->getAces($acl, $type, $field),
             function ($ace) use (&$sid) {
                 /** @var EntryInterface $ace */
+
                 return $sid->equals($ace->getSecurityIdentity());
             }
         );
@@ -985,6 +983,9 @@ class AclManager extends AbstractAclManager
         $acl = null;
         $state = BatchItem::STATE_NONE;
         try {
+            // We need clear ACL cache before finding ACL because it is possible that
+            // non valid empty ACL is cached by MutableAclProvider::cacheEmptyAcl() method
+            $this->aclProvider->clearOidCache($oid);
             $acl = $this->aclProvider->findAcl($oid);
         } catch (AclNotFoundException $ex) {
             if ($ifNotExist === true) {

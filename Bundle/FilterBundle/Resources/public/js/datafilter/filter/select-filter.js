@@ -20,7 +20,7 @@ function(_, __, AbstractFilter, MultiselectDecorator) {
             '<div class="btn filter-select filter-criteria-selector">' +
                 '<%= label %>: ' +
                 '<select>' +
-                    '<% _.each(options, function (hint, value) { %><option value="<%= value %>"><%= hint %></option><% }); %>' +
+                    '<% _.each(options, function (option) { %><option value="<%= option.value %>"><%= option.label %></option><% }); %>' +
                 '</select>' +
             '</div>' +
             '<a href="<%= nullLink %>" class="disable-filter"><i class="icon-remove hide-text"><%- _.__("Close") %></i></a>'
@@ -31,7 +31,7 @@ function(_, __, AbstractFilter, MultiselectDecorator) {
          *
          * @property
          */
-        options: {},
+        choices: [],
 
         /**
          * Placeholder for default value
@@ -138,14 +138,12 @@ function(_, __, AbstractFilter, MultiselectDecorator) {
          * @return {*}
          */
         render: function () {
+            var options =  this.choices.slice(0);
             this.$el.empty();
 
-            var additionalOptions = {};
             if (this.populateDefault) {
-                additionalOptions = {"": this.placeholder};
+                options.unshift({value: '', label: this.placeholder});
             }
-
-            var options = _.extend(additionalOptions, this.options);
 
             this.$el.append(
                 this.template({
@@ -263,7 +261,7 @@ function(_, __, AbstractFilter, MultiselectDecorator) {
          */
         _onSelectChange: function() {
             // set value
-            this.setValue(this._readDOMValue());
+            this.setValue(this._formatRawValue(this._readDOMValue()));
 
             // update dropdown
             var widget = this.$(this.containerSelector);

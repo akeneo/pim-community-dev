@@ -12,6 +12,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class IndexText
 {
+    const HYPHEN_SUBSTITUTION = '__HYPHEN__';
+
     /**
      * @var integer
      *
@@ -22,7 +24,7 @@ class IndexText
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Item", inversedBy="stringFields")
+     * @ORM\ManyToOne(targetEntity="Item", inversedBy="textFields")
      * @ORM\JoinColumn(name="item_id", referencedColumnName="id", nullable=false)
      */
     private $item;
@@ -35,7 +37,7 @@ class IndexText
     private $field;
 
     /**
-     * @var text
+     * @var string
      *
      * @ORM\Column(name="value", type="text", nullable=false)
      */
@@ -82,7 +84,9 @@ class IndexText
      */
     public function setValue($value)
     {
-        $this->value = $value;
+        $processedValue = str_replace('-', self::HYPHEN_SUBSTITUTION, $value);
+
+        $this->value = $processedValue;
 
         return $this;
     }
@@ -94,7 +98,13 @@ class IndexText
      */
     public function getValue()
     {
-        return $this->value;
+        if (null !== $this->value) {
+            $originalValue = str_replace(self::HYPHEN_SUBSTITUTION, '-', $this->value);
+        } else {
+            $originalValue = null;
+        }
+
+        return $originalValue;
     }
 
     /**

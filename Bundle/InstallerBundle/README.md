@@ -21,3 +21,35 @@ $ wget http://getcomposer.org/composer.phar
 $ php composer.phar install
 $ php app/console oro:install
 ```
+
+## Events ##
+To add additional actions to the installation process you may use event listeners.
+Currently only "onFinish" installer event dispatched.
+
+Example:
+
+``` yaml
+services:
+    installer.listener.finish.event:
+        class:  Acme\Bundle\MyBundle\EventListener\MyListener
+        tags:
+            - { name: kernel.event_listener, event: installer.finish, method: onFinish }
+```
+
+``` php
+<?php
+
+namespace Acme\Bundle\MyBundle\EventListener;
+
+class MyListener
+{
+    public function onFinish()
+    {
+        // do something
+    }
+}
+
+```
+
+## Sample data ##
+To provide demo fixtures for your bundle just place them in "YourBundle\DataFixtures\Demo" directory.

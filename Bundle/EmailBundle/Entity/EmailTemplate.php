@@ -11,6 +11,7 @@ use Gedmo\Translatable\Translatable;
 use Symfony\Component\Validator\Constraints as Assert;
 
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
+use Oro\Bundle\EmailBundle\Model\EmailTemplateInterface;
 
 /**
  * EmailTemplate
@@ -32,7 +33,7 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
  *  }
  * )
  */
-class EmailTemplate implements Translatable
+class EmailTemplate implements EmailTemplateInterface, Translatable
 {
     /**
      * @var integer
@@ -49,6 +50,13 @@ class EmailTemplate implements Translatable
      * @ORM\Column(name="isSystem", type="boolean")
      */
     protected $isSystem;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="isEditable", type="boolean")
+     */
+    protected $isEditable;
 
     /**
      * @var string
@@ -121,18 +129,32 @@ class EmailTemplate implements Translatable
      */
     public function __construct($name = '', $content = '', $type = 'html', $isSystem = false)
     {
+        // name can be overridden from email template
+        $this->name = $name;
         // isSystem can be overridden from email template
         $this->isSystem = $isSystem;
+        // isEditable can be overridden from email template
+        $this->isEditable = false;
 
-        foreach (array('subject', 'entityName', 'isSystem') as $templateParam) {
+        $boolParams = array('isSystem', 'isEditable');
+        $templateParams = array('name', 'subject', 'entityName', 'isSystem', 'isEditable');
+        foreach ($templateParams as $templateParam) {
             if (preg_match('#@' . $templateParam . '\s?=\s?(.*)\n#i', $content, $match)) {
-                $this->$templateParam = trim($match[1]);
+                $val = trim($match[1]);
+                if (isset($boolParams[$templateParam])) {
+                    $val = (bool) $val;
+                }
+                $this->$templateParam = $val;
                 $content = trim(str_replace($match[0], '', $content));
             }
         }
 
+        // make sure that user's template is editable
+        if (!$this->isSystem && !$this->isEditable) {
+            $this->isEditable = true;
+        }
+
         $this->type = $type;
-        $this->name = $name;
         $this->content = $content;
         $this->translations = new ArrayCollection();
     }
@@ -263,7 +285,7 @@ class EmailTemplate implements Translatable
     }
 
     /**
-     * Set is template system
+     * Set a flag indicates whether a template is system or not.
      *
      * @param boolean $isSystem
      * @return EmailTemplate
@@ -276,13 +298,39 @@ class EmailTemplate implements Translatable
     }
 
     /**
-     * Get is template system
+     * Get a flag indicates whether a template is system or not.
+     * System templates cannot be removed or changed.
      *
      * @return boolean
      */
     public function getIsSystem()
     {
         return $this->isSystem;
+    }
+
+    /**
+     * Get a flag indicates whether a template can be changed.
+     *
+     * @param boolean $isEditable
+     * @return EmailTemplate
+     */
+    public function setIsEditable($isEditable)
+    {
+        $this->isEditable = $isEditable;
+
+        return $this;
+    }
+
+    /**
+     * Get a flag indicates whether a template can be changed.
+     * For user's templates this flag has no sense (these templates always have this flag true)
+     * But editable system templates can be changed (but cannot be removed or renamed).
+     *
+     * @return boolean
+     */
+    public function getIsEditable()
+    {
+        return $this->isEditable;
     }
 
     /**
@@ -367,6 +415,7 @@ class EmailTemplate implements Translatable
         $this->parent = $this->id;
         $this->id = null;
         $this->isSystem = false;
+        $this->isEditable = true;
 
         if ($this->getTranslations() instanceof ArrayCollection) {
             $clonedTranslations = new ArrayCollection();

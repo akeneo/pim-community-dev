@@ -29,6 +29,11 @@ class SubBlockConfig implements FormConfigInterface
      */
     protected $data = array();
 
+    /**
+     * @var bool
+     */
+    protected $useSpan;
+
     public function __construct($code)
     {
         $this->code = $code;
@@ -141,6 +146,25 @@ class SubBlockConfig implements FormConfigInterface
     }
 
     /**
+     * @param boolean $useSpan
+     * @return $this
+     */
+    public function setUseSpan($useSpan)
+    {
+        $this->useSpan = $useSpan !== null ? $useSpan : true;
+
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getUseSpan()
+    {
+        return $this->useSpan;
+    }
+
+    /**
      * @return array
      */
     public function toArray()
@@ -149,7 +173,8 @@ class SubBlockConfig implements FormConfigInterface
             'code'        => $this->code,
             'title'       => $this->title,
             'description' => $this->description,
-            'data'        => $this->data
+            'data'        => $this->data,
+            'useSpan'     => $this->useSpan,
         );
     }
 }

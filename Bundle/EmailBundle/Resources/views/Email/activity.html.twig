@@ -6,6 +6,6 @@
 <tr>
     <td class="integer-cell" style="display: none;">{{ entity.id }}</td>
     <td class="string-cell">{{ EA.email_address(entity.fromEmailAddress, entity.fromName, format) }}</td>
-    <td class="string-cell"><a class="view-email-entity-btn no-hash" title="{{ entity.subject }}" href="{{ path('oro_email_view', {id:entity.id}) }}">{{ entity.subject }}</a></td>
+    <td class="string-cell"><a class="view-email-button no-hash" title="{{ entity.subject }}" href="{{ path('oro_email_view', {id:entity.id}) }}">{{ entity.subject }}</a></td>
     <td class="datetime-cell">{{ Locale.time(entity.sentAt) }}</td>
 </tr>

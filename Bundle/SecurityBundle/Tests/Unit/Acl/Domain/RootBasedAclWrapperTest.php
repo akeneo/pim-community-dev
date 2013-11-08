@@ -120,7 +120,9 @@ class RootBasedAclWrapperTest extends \PHPUnit_Framework_TestCase
     public function testGetObjectIdentity()
     {
         $id = new ObjectIdentity('1', 'SomeType');
-
+        $this->acl->expects($this->once())
+            ->method('getObjectAces')
+            ->will($this->returnValue(array('test')));
         $obj = new RootBasedAclWrapper($this->acl, $this->rootAcl);
         $this->acl->expects($this->once())
             ->method('getObjectIdentity')

@@ -11,9 +11,9 @@ use Oro\Bundle\GridBundle\Action\ActionInterface;
 use Oro\Bundle\GridBundle\Property\CallbackProperty;
 
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
-use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigIdInterface;
+use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigId;
+
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
-use Oro\Bundle\EntityConfigBundle\Provider\PropertyConfigContainer;
 
 use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendConfigDumper;
@@ -172,7 +172,7 @@ class CustomEntityDatagrid extends DatagridManager
                 && !$extendConfig->get('is_deleted')
 
             ) {
-                /** @var FieldConfigIdInterface $fieldConfig */
+                /** @var FieldConfigId $fieldConfig */
                 $fieldConfig = $extendConfig->getId();
 
                 /** @var ConfigProvider $datagridProvider */
@@ -190,8 +190,11 @@ class CustomEntityDatagrid extends DatagridManager
                         $fieldConfig->getFieldName()
                     );
 
-                    $label               = $entityConfig->get('label') ?: $fieldConfig->getFieldName();
-                    $code                = ExtendConfigDumper::PREFIX . $fieldConfig->getFieldName();
+                    $label = $entityConfig->get('label') ?: $fieldConfig->getFieldName();
+                    $code  = $extendConfig->is('owner', ExtendManager::OWNER_CUSTOM)
+                        ? ExtendConfigDumper::FIELD_PREFIX . $fieldConfig->getFieldName()
+                        : $fieldConfig->getFieldName();
+
                     $this->queryFields[] = $code;
 
                     $fieldObject = new FieldDescription();

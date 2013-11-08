@@ -1,9 +1,13 @@
 Emails
 =======
 
+Sending emails without a spool
+------------------------------
+In some cases you need to send an email directly, bypassing a spool even when you application is configured to use the spool. To achieve this you can use `oro_email.direct_mailer` service.
+
 Database Diagram
 ----------------
-[Database Diagram](EmailBundle Database Structure.png)
+![Database Diagram](EmailBundle Database Structure.png)
 
 Email Address Owners
 --------------------
