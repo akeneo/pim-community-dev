@@ -3,6 +3,7 @@
         {% if not enabled %}disabled="disabled"{% endif %}
         data-href="{{ url }}"
         data-redirect-to-workflow="{{ redirectToWorkflow }}"
+        data-has-attributes="true"
         class="btn icons-holder-text no-hash {% if transition.frontend_options is defined and transition.frontend_options.class is defined %}{{ transition.frontend_options.class }}{% endif %}"
         id="transition-{{ workflow.name }}-{{ transition.name }}">
         {% if transition.frontend_options is defined and transition.frontend_options.icon is defined %}
@@ -14,71 +15,18 @@
 
 {% macro renderTransitionsJs(transitionsData, blockId) %}
     <script type="text/javascript">
-        require(['jquery', 'oro/messenger', 'oro/translator', 'oro/navigation'],
-        function($, messenger, __, Navigation){
+        require(['jquery', 'oro/workflow-transition-handler'],
+        function($, workflowTransitionHandler) {
+            'use strict';
+
             $(function() {
                 var container = $('#{{ blockId }}');
                 {% for data in transitionsData %}
-                    container.on('click', '#transition-{{ data.workflow.name }}-{{ data.transition.name }}', function(e) {
-                        var element = $(this);
-                        e.preventDefault();
-                        $.getJSON($(this).data('href'))
-                            .done(function(response) {
-                                var doRedirect = function(redirectUrl) {
-                                    var navigation = Navigation.getInstance();
-                                    if (navigation) {
-                                        navigation.setLocation(redirectUrl);
-                                    } else {
-                                        window.location.href = redirectUrl;
-                                    }
-                                };
-                                var doReload = function() {
-                                    var navigation = Navigation.getInstance();
-                                    if (navigation) {
-                                        navigation.loadPage();
-                                    } else {
-                                        window.location.reload();
-                                    }
-                                };
-
-                                /** Handle redirectUrl result parameter for RedirectPostAction */
-                                element.one('transitions_success', function(e, response) {
-                                    if (response.workflowItem
-                                            && response.workflowItem.result
-                                            && response.workflowItem.result.redirectUrl
-                                    ) {
-                                        e.stopImmediatePropagation();
-                                        doRedirect(response.workflowItem.result.redirectUrl);
-                                    }
-                                });
-                                /** Handle redirect-to-workflow element data parameter */
-                                element.one('transitions_success', function(e, response) {
-                                    var workflowItemId = null;
-                                    if (response.workflowItem && response.workflowItem.id) {
-                                        workflowItemId = response.workflowItem.id;
-                                    }
-                                    var needRedirect = element.data('redirect-to-workflow');
-                                    if (needRedirect && workflowItemId) {
-                                        e.stopImmediatePropagation();
-                                        var redirectUrl = Routing.generate(
-                                            'oro_workflow_step_edit',
-                                            {id: workflowItemId}
-                                        );
-                                        doRedirect(redirectUrl);
-                                    }
-                                });
-                                /** By default reload page */
-                                element.one('transitions_success', doReload);
-                                element.trigger('transitions_success', [response]);
-                            })
-                            .fail(function(jqxhr, textStatus, error) {
-                                element.one('transitions_failure', function() {
-                                    messenger.notificationFlashMessage('error', __('Could not perform transition'));
-                                });
-                                element.trigger('transitions_failure', [jqxhr, textStatus, error]);
-                            });
-                        return false;
-                    });
+                    container.on(
+                        'click',
+                        '#transition-{{ data.workflow.name }}-{{ data.transition.name }}',
+                        workflowTransitionHandler
+                    );
                 {% endfor %}
             });
         });
