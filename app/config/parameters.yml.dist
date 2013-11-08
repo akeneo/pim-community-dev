@@ -25,4 +25,4 @@ parameters:
 
     installed:         true
 
-    load_demo_data: true
+    load_demo_data:    true
