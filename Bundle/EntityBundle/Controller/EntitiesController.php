@@ -142,21 +142,6 @@ class EntitiesController extends Controller
             $extendEntity = new $extendEntityName;
         }
 
-        $added   = $this->getRequest()->get('added');
-        $removed = $this->getRequest()->get('removed');
-
-        if ($added) {
-            $added = explode(',', $added);
-        } else {
-            $added = [];
-        }
-
-        if ($removed) {
-            $removed = explode(',', $removed);
-        } else {
-            $removed = [];
-        }
-
         return [
                 'entity_id'       => $className,
                 'entity_class'    => $extendEntityName,

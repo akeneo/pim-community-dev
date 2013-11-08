@@ -2,6 +2,8 @@
 
 namespace Oro\Bundle\EntityBundle\EventListener;
 
+use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
+use Oro\Bundle\DataGridBundle\Event\BuildAfter;
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
 use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigId;
@@ -11,6 +13,8 @@ use Oro\Bundle\EntityExtendBundle\Tools\ExtendConfigDumper;
 
 class RelationEntityGridListener extends CustomEntityGridListener
 {
+    const GRID_NAME = 'entity-relation-grid';
+
     /**
      * @var ConfigInterface
      */
@@ -23,17 +27,93 @@ class RelationEntityGridListener extends CustomEntityGridListener
     protected $hasAssignedExpression;
 
     /**
+     * @param BuildAfter $event
+     */
+    public function onBuildAfter(BuildAfter $event)
+    {
+        $datasource = $event->getDatagrid()->getDatasource();
+        if ($datasource instanceof OrmDatasource) {
+            $queryBuilder = $datasource->getQueryBuilder();
+
+            $added   = $this->request->get('added');
+            $removed = $this->request->get('removed');
+
+            if ($added) {
+                $added = explode(',', $added);
+            } else {
+                $added = [0];
+            }
+
+            if ($removed) {
+                $removed = explode(',', $removed);
+            } else {
+                $removed = [0];
+            }
+
+            $parameters = [
+                'data_in' => $added,
+                'data_not_in' => $removed,
+                'relation' => $this->relation
+            ];
+
+            $queryBuilder->setParameters($parameters);
+        }
+    }
+
+    /**
      * @param BuildBefore $event
      * @return bool
      */
     public function onBuildBefore(BuildBefore $event)
     {
+        // get field config, extendEntity, $added, $removed
+        $extendEntityName = $this->getRequestParam('class_name');
+        $extendEntityName = str_replace('_', '\\', $extendEntityName);
+        $fieldName = $this->getRequestParam('field_name');
+        $entityId = $this->getRequestParam('id');
+
+        /** @var ConfigProvider $entityConfigProvider */
+        //$entityConfigProvider = $this->configManager->getProvider('entity');
+        $extendConfigProvider = $this->configManager->getProvider('extend');
+
+        //$entityConfig = $entityConfigProvider->getConfig($extendEntityName);
+        $fieldConfig  = $extendConfigProvider->getConfig($extendEntityName, $fieldName);
+
+        $this->entityClass = $fieldConfig->get('target_entity');
+        $this->relationConfig = $fieldConfig;
+
+        // set extendEntity
+        $extendEntity = $this->configManager
+            ->getEntityManager()
+            ->getRepository($extendEntityName)
+            ->find($entityId);
+        if (!$extendEntity) {
+            $extendEntity = new $extendEntityName;
+        }
+        $this->relation = $extendEntity;
+
+//        $className = $this->relationConfig->getId()->getClassName();
+//        $relFieldName = $this->relationConfig->getId()->getFieldName();
+
         parent::onBuildBefore($event);
+    }
 
-        $config = $event->getConfig();
-        $select = $this->getHasAssignedExpression() . ' as assigned';
+    /**
+     * {@inheritdoc}
+     */
+    protected function getDynamicFields($alias = null, $itemsType = null)
+    {
+        $result = parent::getDynamicFields($alias, $itemsType);
 
-        $config->offsetAddToArrayByPath('[source][query][select]', $select);
+        $result = array_merge_recursive(
+            $result,
+            ['source' => [
+                'query' => ['select' => [$this->getHasAssignedExpression() . ' as assigned']],
+                ]
+            ]
+        );
+
+        return $result;
     }
 
     /**
@@ -65,6 +145,7 @@ class RelationEntityGridListener extends CustomEntityGridListener
             $this->queryFields[] = $code;
 
             $field = $field = $this->createFieldArrayDefinition($code, $label, $fieldConfig);
+            $select = $alias . '.' . $code;
         }
 
         return [$field, $select];

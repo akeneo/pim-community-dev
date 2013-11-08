@@ -2,12 +2,21 @@
 <div class="widget-content grid-widget-content">
     {% set gridName = 'entity-relation-grid' %}
 
-    {% set stateParameters = {
-        'parameters': {
-            'data_in': app.request.get('added'),
-            'data_not_in': app.request.get('removed')
-        }
+    {% set gridParams = {
+        'data_in': app.request.get('added'),
+        'data_not_in': app.request.get('removed'),
+        'class_name': entity_class,
+        'entity_id': entity_id,
+        'field_name': app.request.get('fieldName'),
+        'id': app.request.get('id')
     } %}
+
+    {#{% set stateParameters = {#}
+        {#'parameters': {#}
+            {#'data_in': app.request.get('added'),#}
+            {#'data_not_in': app.request.get('removed')#}
+        {#}#}
+    {#} %}#}
     {#{% placeholder prepare_grid with {#}
         {#'datagrid'  : datagrid,#}
         {#'selector'  : '#' ~ gridId,#}
@@ -20,7 +29,7 @@
     </style>
 
     {% block content %}
-        {{ dataGrid.renderGrid(gridName, {}) }}
+        {{ dataGrid.renderGrid(gridName, gridParams) }}
         <input type="hidden" name="appendRelation" id="appendRelation" value="{{ app.request.get('added') }}" />
         <input type="hidden" name="removeRelation" id="removeRelation" value="{{ app.request.get('removed') }}" />
     {% endblock %}

@@ -127,6 +127,7 @@ class CustomEntityGridListener extends AbstractConfigGridListener
             $config->offsetSetByPath($path, $items);
         }
 
+        // set entity to select from
         $from = $config->offsetGetByPath(self::PATH_FROM, []);
         $from[0] = array_merge($from[0], ['table' => $this->entityClass]);
         $config->offsetSetByPath('[source][query][from]', $from);
@@ -287,18 +288,45 @@ class CustomEntityGridListener extends AbstractConfigGridListener
         };
     }
 
+    /**
+     * @return string
+     */
     public function getEntityClass()
     {
-        if (empty($this->entityClass)) {
-            $entityClass = $this->requestParams->get('entity_class');
-            if (empty($entityClass)) {
-                $entityClass = str_replace('_', '\\', $this->request->attributes->get('id'));
-            }
+        $entityClass = $this->getRequestParam('entity_class');
 
-            $this->entityClass = $entityClass;
+        if (empty($this->entityClass) && $entityClass !== false) {
+            $this->entityClass = str_replace('_', '\\', $entityClass);
         }
 
         return $this->entityClass;
+    }
+
+    /**
+     * Trying to get request param
+     * - first from current request query
+     * - then from master request attributes
+     *
+     * @param $paramName
+     * @param bool $default
+     * @return mixed
+     */
+    protected function getRequestParam($paramName, $default = false)
+    {
+        $paramValue = $this->requestParams->get($paramName, $default);
+        if ($paramValue === false) {
+            $paramNameCamelCase = str_replace(
+                ' ',
+                '',
+                lcfirst(
+                    ucwords(str_replace('_', ' ', $paramName))
+                )
+            );
+
+            $paramValue = $this->request->attributes->get($paramNameCamelCase, $default);
+        }
+
+        return $paramValue;
     }
 
     /**
