@@ -8,7 +8,7 @@ Now implemented only sorter for ORM datasource.
 
 Settings
 ---------
-Pager setting should be placed under `sorters` tree node.
+Sorters setting should be placed under `sorters` tree node.
 
 ```
 datagrid:
@@ -52,8 +52,13 @@ datagrid:
                                          # like in this example it will be added automatically
                 someColumn:
                     data_name: someAlias
+                    apply_callback: callable # if you want to apply some operations instead of just adding ORDER BY
             default:
                 label: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC # sorters enabled by default, key is a column name
 
             enable_multisort: true|false # is multisorting mode enabled ? False by default
 ```
+
+**Note:** _Customization could be done using `apply_callback` options_
+
+**Note:** _Column name should be equal as name of correspond column_

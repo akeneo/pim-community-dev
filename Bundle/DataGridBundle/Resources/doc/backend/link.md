@@ -31,3 +31,9 @@ Acme\Bundle\DemoBundle\SomeClass::TEST
 PHP is_callable used to determine if it's callable or should be treated as constant.
 
 If it's not callable and no constant exists with such name in the class, value became unchanged.
+
+Service injection
+-----
+```
+some_key: @some.serviceID
+```

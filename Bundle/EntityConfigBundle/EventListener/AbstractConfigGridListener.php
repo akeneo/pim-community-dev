@@ -16,6 +16,12 @@ use Oro\Bundle\EntityConfigBundle\Config\ConfigModelManager;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 use Oro\Bundle\FilterBundle\Extension\Configuration as FilterConfiguration;
 
+/**
+ * Class AbstractConfigGridListener
+ * @package Oro\Bundle\EntityConfigBundle\EventListener
+ *
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ */
 abstract class AbstractConfigGridListener implements EventSubscriberInterface
 {
     const TYPE_HTML     = 'html';
@@ -160,6 +166,7 @@ abstract class AbstractConfigGridListener implements EventSubscriberInterface
      * @param array $orderedFields
      *
      * @return array
+     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function getDynamicSortersAndFilters(array $orderedFields)
     {
