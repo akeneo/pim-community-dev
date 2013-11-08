@@ -15,7 +15,6 @@ datagrid:
                     - a.objectId
                     - a.data
                     - a.loggedAt
-                    - u.id
                     - >
                       CONCAT(
                         CONCAT(
