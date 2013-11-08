@@ -75,5 +75,22 @@ datagrid:
                 from:
                     - { table: OroEntityConfigBundle:EntityConfigModel, alias: ce }
 
+        columns:
+            assigned:
+                frontend_type: boolean
+                label: Assigned
+                editable: true
 
+        sorters:
+            columns:
+                assigned:
+                    data_name: assigned
+            default:
+                assigned: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+
+        filters:
+            columns:
+                assigned:
+                    type: boolean
+                    data_name: assigned
 
