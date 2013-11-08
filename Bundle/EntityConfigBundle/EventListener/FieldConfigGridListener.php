@@ -67,6 +67,4 @@ class FieldConfigGridListener extends AbstractConfigGridListener
 
         return parent::prepareQuery($query, $rootAlias, $alias, $itemsType);
     }
-
-
 }

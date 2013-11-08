@@ -107,6 +107,4 @@ class EntityConfigGridListener extends AbstractConfigGridListener
 
         return $this->filterChoices[$scope];
     }
-
-
 }
