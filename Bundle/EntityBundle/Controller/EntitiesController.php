@@ -137,11 +137,6 @@ class EntitiesController extends Controller
         $entityConfig = $entityConfigProvider->getConfig($extendEntityName);
         $fieldConfig  = $extendConfigProvider->getConfig($extendEntityName, $fieldName);
 
-        $extendEntity = $this->getDoctrine()->getRepository($extendEntityName)->find($id);
-        if (!$extendEntity) {
-            $extendEntity = new $extendEntityName;
-        }
-
         return [
                 'entity_id'       => $className,
                 'entity_class'    => $extendEntityName,
