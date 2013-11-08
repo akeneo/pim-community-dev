@@ -30,6 +30,12 @@ Requirements
 Akeneo PIM is based on Symfony 2, Doctrine 2 and [OroPlatform][3].
 These dependencies will be installed automatically with [Composer][2].
 
+Web browsers
+------------
+ - tested : Chrome & Firefox
+ - supported : IE 10, Safari
+ - not supported : IE < 10
+
 Installation instructions
 -------------------------
 ## Using Composer to install dependencies
