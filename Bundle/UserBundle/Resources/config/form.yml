@@ -9,6 +9,7 @@ parameters:
     oro_user.form.type.user_select.class:       Oro\Bundle\UserBundle\Form\Type\UserSelectType
     oro_user.form.type.user_multiselect.class:  Oro\Bundle\UserBundle\Form\Type\UserMultiSelectType
     oro_user.form.type.gender.class:            Oro\Bundle\UserBundle\Form\Type\GenderType
+    oro_user.form.type.email.class:             Oro\Bundle\UserBundle\Form\Type\EmailType
     oro_user.form.type.change_password.class:   Oro\Bundle\UserBundle\Form\Type\ChangePasswordType
     oro_user.form.handler.user.class:           Oro\Bundle\UserBundle\Form\Handler\UserHandler
     oro_user.form.handler.reset.class:          Oro\Bundle\UserBundle\Form\Handler\ResetHandler
@@ -85,6 +86,11 @@ services:
         arguments:                    ["@oro_user.change_password.subscriber"]
         tags:
              - { name: form.type, alias: oro_change_password }
+
+    oro_user.form.type.email:
+        class: %oro_user.form.type.email.class%
+        tags:
+             - { name: form.type, alias: oro_user_email }
 
     oro_user.form.type.role.api:
         class:                        %oro_user.form.type.role.api.class%

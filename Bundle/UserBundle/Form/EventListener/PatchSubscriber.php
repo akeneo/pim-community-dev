@@ -44,8 +44,14 @@ class PatchSubscriber implements EventSubscriberInterface
             $ary = array();
 
             foreach ($form->all() as $name => $child) {
-                if ($data = $this->unbind($child)) {
-                    $ary[$name] = $data;
+                $value = $this->unbind($child);
+                if (null !== $value // if not null
+                    || (
+                        (is_array($value) || $value instanceof Collection)
+                        && count($value) > 0 // if not empty array or collection
+                    )
+                ) {
+                    $ary[$name] = $value;
                 }
             }
 

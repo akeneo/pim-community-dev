@@ -122,11 +122,11 @@ class InstallCommand extends ContainerAwareCommand
                 ? $options['user-email']
                 : $dialog->ask($output, '<question>Email:</question> ')
             )
-            ->setFirstname(isset($options['user-firstname'])
+            ->setFirstName(isset($options['user-firstname'])
                 ? $options['user-firstname']
                 : $dialog->ask($output, '<question>First name:</question> ')
             )
-            ->setLastname(isset($options['user-lastname'])
+            ->setLastName(isset($options['user-lastname'])
                 ? $options['user-lastname']
                 : $dialog->ask($output, '<question>Last name:</question> ')
             )
@@ -172,6 +172,7 @@ class InstallCommand extends ContainerAwareCommand
         $this
             ->runCommand('oro:search:create-index', $output)
             ->runCommand('oro:navigation:init', $output)
+            ->runCommand('oro:localization:dump', $output)
             ->runCommand('assets:install', $output)
             ->runCommand('assetic:dump', $output)
             ->runCommand('oro:assetic:dump', $output)

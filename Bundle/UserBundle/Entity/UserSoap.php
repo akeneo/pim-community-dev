@@ -29,12 +29,27 @@ class UserSoap extends User
     /**
      * @Soap\ComplexType("string")
      */
+    protected $namePrefix;
+
+    /**
+     * @Soap\ComplexType("string")
+     */
     protected $firstName;
 
     /**
      * @Soap\ComplexType("string")
      */
+    protected $middleName;
+
+    /**
+     * @Soap\ComplexType("string")
+     */
     protected $lastName;
+
+    /**
+     * @Soap\ComplexType("string")
+     */
+    protected $nameSuffix;
 
     /**
      * @Exclude

@@ -2,7 +2,6 @@
 {% import 'OroTagBundle::macros.html.twig' as _tag %}
 {% import 'OroUIBundle::macros.html.twig' as UI %}
 {% import 'OroEmailBundle::macros.html.twig' as Email %}
-{% import 'OroLocaleBundle::macros.html.twig' as Locale %}
 
 {% set gridId = 'users-email-grid' %}
 {% block head_script %}
@@ -10,8 +9,8 @@
     {% placeholder prepare_grid with {'datagrid': datagrid, 'selector': '#' ~ gridId} %}
 {% endblock %}
 
-{% set format = oro_config_value('oro_locale.name_format') %}
-{% oro_title_set({params : {"%username%": entity.fullname(format)|default('N/A') }}) %}
+{% set fullname = entity|oro_format_name|default('N/A') %}
+{% oro_title_set({params : {"%username%": fullname }}) %}
 {% set audit_entity_class = 'Oro_Bundle_UserBundle_Entity_User' %}
 {% macro api_data_block(user) %}
 <div class="horizontal">
@@ -53,7 +52,7 @@
         'entity':      entity,
         'indexPath':   path('oro_user_index'),
         'indexLabel': 'Users'|trans,
-        'entityTitle': entity.fullname(format)|default('N/A'),
+        'entityTitle': fullname,
         'hasAvatar':   true,
         'imagePath':   entity.imagePath,
     }
@@ -74,7 +73,7 @@
 
 {% block stats %}
     {{ parent() }}
-    <li>{{ 'Last logged in'|trans }}: {{ entity.lastLogin ? Locale.time(entity.lastLogin) : 'N/A' }}</li>
+    <li>{{ 'Last logged in'|trans }}: {{ entity.lastLogin ? entity.lastLogin|oro_format_datetime : 'N/A' }}</li>
     <li>{{ 'Login count'|trans }}: {{ entity.loginCount|default(0) }}</li>
 {% endblock stats %}
 
@@ -89,26 +88,32 @@
 
     {#{{ render(controller('OroEmailBundle:Email:activities', {'emails': entity.emails})) }}#}
 
-    {% set dataBlocks = [{
-        'title': 'General'|trans,
-        'class': 'active',
-        'subblocks': [
-            {
-                'title': 'Basic Information'|trans,
-                'data': [
-                    UI.attibuteRow('User name'|trans, entity.username),
-                    UI.attibuteRow('First name'|trans, entity.firstname),
-                    UI.attibuteRow('Last name'|trans, entity.lastname),
-                    UI.attibuteRow('Birthday'|trans, entity.birthday ? Locale.date(entity.birthday) : 'N/A'),
-                    UI.renderAttribute('API key'|trans, _self.api_data_block(entity))
-                ]
-            },
-            {
+    {% set dataBlocks = [
+        {
+            'title': 'General'|trans,
+            'class': 'active',
+            'subblocks': [
+                {
+                    'title': 'Basic Information'|trans,
+                    'data': [
+                        UI.attibuteRow('User name'|trans, entity.username),
+                        entity.namePrefix ? UI.attibuteRow('Name prefix'|trans, entity.namePrefix),
+                        UI.attibuteRow('First name'|trans, entity.firstName|default('N/A')),
+                        entity.middleName ? UI.attibuteRow('Middle name'|trans, entity.middleName),
+                        UI.attibuteRow('Last name'|trans, entity.lastName|default('N/A')),
+                        entity.nameSuffix ? UI.attibuteRow('Name suffix'|trans, entity.nameSuffix),
+                        UI.attibuteRow('Birthday'|trans, entity.birthday ? entity.birthday|oro_format_date : 'N/A'),
+                        UI.renderAttribute('API key'|trans, _self.api_data_block(entity))
+                    ]
+                },
+                {
                 'title': 'Contact Information'|trans,
                 'data': dataSubBlocks
-            }
-        ]
-    }] %}
+                }
+            ]
+        }
+    ]
+    %}
 
     {#
       EntityExtend fields START
@@ -170,16 +175,20 @@
     #}
 
     {% if resource_granted('oro_email_view') %}
-        {% set dataBlocks = dataBlocks|merge( [{
-            'title': 'User emails'|trans,
-            'subblocks': [
-                {
-                    'title': '',
-                    'useSpan': false,
-                    'data': [UI.gridBlock(gridId), Email.renderJs()]
-                }
-            ]
-        }] ) %}
+        {% set dataBlocks = dataBlocks|merge
+            (
+                    [{
+                        'title': 'User emails'|trans,
+                        'subblocks': [
+                            {
+                                'title': '',
+                                'useSpan': false,
+                                'data': [UI.gridBlock(gridId), Email.renderJs()]
+                            }
+                        ]
+                    }]
+            )
+        %}
     {% endif %}
 
     {% set data = { 'dataBlocks': dataBlocks } %}

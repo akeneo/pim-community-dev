@@ -16,13 +16,25 @@ Oro\Bundle\UserBundle\Entity\User:
             target_type:            text
             target_fields:          [email]
         -
+            name:                   namePrefix
+            target_type:            text
+            target_fields:          [namePrefix]
+        -
             name:                   firstName
             target_type:            text
             target_fields:          [firstName]
         -
+            name:                   middleName
+            target_type:            text
+            target_fields:          [middleName]
+        -
             name:                   lastName
             target_type:            text
             target_fields:          [lastName]
+        -
+            name:                   nameSuffix
+            target_type:            text
+            target_fields:          [nameSuffix]
         -
             name:                   birthday
             target_type:            birthday

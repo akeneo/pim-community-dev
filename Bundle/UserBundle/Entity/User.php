@@ -2,8 +2,6 @@
 
 namespace Oro\Bundle\UserBundle\Entity;
 
-
-use Oro\Bundle\UserBundle\Model\ExtendUser;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -19,18 +17,25 @@ use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
 
 use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
 
+use Oro\Bundle\EmailBundle\Entity\EmailOwnerInterface;
+use Oro\Bundle\EmailBundle\Model\EmailHolderInterface;
+
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
+
+use Oro\Bundle\ImapBundle\Entity\ImapEmailOrigin;
+use Oro\Bundle\ImapBundle\Entity\ImapConfigurationOwnerInterface;
+
+use Oro\Bundle\LocaleBundle\Model\FullNameInterface;
+
+use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
+
 use Oro\Bundle\TagBundle\Entity\Taggable;
+use Oro\Bundle\TagBundle\Entity\Tag;
+
+use Oro\Bundle\UserBundle\Model\ExtendUser;
 use Oro\Bundle\UserBundle\Entity\Status;
 use Oro\Bundle\UserBundle\Entity\Email;
 use Oro\Bundle\UserBundle\Entity\EntityUploadedImageInterface;
-use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
-use Oro\Bundle\EmailBundle\Entity\EmailOwnerInterface;
-use Oro\Bundle\EmailBundle\Model\EmailHolderInterface;
-use Oro\Bundle\ImapBundle\Entity\ImapEmailOrigin;
-use Oro\Bundle\ImapBundle\Entity\ImapConfigurationOwnerInterface;
-use Oro\Bundle\TagBundle\Entity\Tag;
-
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 
 use DateTime;
 
@@ -68,7 +73,8 @@ class User extends ExtendUser implements
     Taggable,
     EmailOwnerInterface,
     EmailHolderInterface,
-    ImapConfigurationOwnerInterface
+    ImapConfigurationOwnerInterface,
+    FullNameInterface
 {
     const ROLE_DEFAULT   = 'ROLE_USER';
     const ROLE_ANONYMOUS = 'IS_AUTHENTICATED_ANONYMOUSLY';
@@ -273,15 +279,6 @@ class User extends ExtendUser implements
      * @Soap\ComplexType("string", nillable=true)
      */
     protected $owner;
-
-    /**
-     * Set name formatting using "%first%" and "%last%" placeholders
-     *
-     * @var string
-     *
-     * @Exclude
-     */
-    protected $nameFormat;
 
     /**
      * @var Role[]
@@ -507,27 +504,6 @@ class User extends ExtendUser implements
     }
 
     /**
-     * Return full name according to name format
-     *
-     * @see User::setNameFormat()
-     * @param  string $format [optional]
-     * @return string
-     */
-    public function getFullname($format = '')
-    {
-        return str_replace(
-            array('%first%', '%last%'),
-            array($this->getFirstName(), $this->getLastName()),
-            $format ? $format : $this->getNameFormat()
-        );
-    }
-
-    public function getName()
-    {
-        return $this->getFullname();
-    }
-
-    /**
      * Return middle name
      *
      * @return string
@@ -649,16 +625,6 @@ class User extends ExtendUser implements
     public function getLoginCount()
     {
         return $this->loginCount;
-    }
-
-    /**
-     * Get full name format. Defaults to "%first% %last%".
-     *
-     * @return string
-     */
-    public function getNameFormat()
-    {
-        return $this->nameFormat ?  $this->nameFormat : '%first% %last%';
     }
 
     /**
@@ -922,19 +888,6 @@ class User extends ExtendUser implements
     public function setLoginCount($count)
     {
         $this->loginCount = $count;
-
-        return $this;
-    }
-
-    /**
-     * Set new format for a full name display. Use %first% and %last% placeholders, for example: "%last%, %first%".
-     *
-     * @param  string $format New format string
-     * @return User
-     */
-    public function setNameFormat($format)
-    {
-        $this->nameFormat = $format;
 
         return $this;
     }
