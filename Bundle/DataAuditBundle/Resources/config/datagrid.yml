@@ -154,13 +154,13 @@ datagrid:
                 label: Old values
                 type: twig
                 template: OroDataAuditBundle:Datagrid:Property/old.html.twig
-                frontend_type: string
+                frontend_type: html
                 data_name: data
             new:
                 label: New values
                 type: twig
                 template: OroDataAuditBundle:Datagrid:Property/new.html.twig
-                frontend_type: string
+                frontend_type: html
                 data_name: data
         properties: ~
         sorters:
