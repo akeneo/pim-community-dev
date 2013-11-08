@@ -52,12 +52,20 @@ datagrid:
                 icon: trash
                 link: delete_link
 
-        sorters: ~ # no pre-defined sorters
+        sorters: ~
         filters: ~
 
     entity-relation-grid:
         options:
             entityHint: entity
+            requireJSModules:
+              - oro/datagrid/column-form-listener
+            columnListener:
+                dataField: id
+                columnName: assigned
+                selectors:
+                    included: '#appendRelation'
+                    excluded: '#removeRelation'
         source:
             acl_resource: ~
             type: orm
@@ -66,4 +74,6 @@ datagrid:
                     - ce.id
                 from:
                     - { table: OroEntityConfigBundle:EntityConfigModel, alias: ce }
+
+
 
