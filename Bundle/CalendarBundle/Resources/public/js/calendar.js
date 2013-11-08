@@ -153,6 +153,8 @@ function(_, Backbone, __, app, messenger, LoadingMask,
         select: function(start, end) {
             if (!this.eventView) {
                 try {
+                    // TODO: All date values must be in UTC representation according to config timezone,
+                    // https://magecore.atlassian.net/browse/BAP-2203
                     var eventModel = new EventModel({
                         start: this.formatDateTimeForModel(start),
                         end: this.formatDateTimeForModel(end),
