@@ -105,7 +105,7 @@ function(localeSettings, moment) {
          * @returns {moment}
          */
         getMomentForBackendDate: function(value) {
-            var momentDate = moment(value);
+            var momentDate = moment.utc(value);
             if (!momentDate.isValid()) {
                 throw new Error('Invalid backend date ' + value);
             }
@@ -137,7 +137,7 @@ function(localeSettings, moment) {
          * @returns {moment}
          */
         getMomentForBackendTime: function(value) {
-            var momentTime = moment(value, ['HH:mm:ss', 'HH:mm']);
+            var momentTime = moment.utc(value, ['HH:mm:ss', 'HH:mm']);
             if (!momentTime.isValid()) {
                 throw new Error('Invalid backend time ' + value);
             }
@@ -169,8 +169,7 @@ function(localeSettings, moment) {
          * @returns {moment}
          */
         getMomentForBackendDateTime: function(value) {
-            moment().zone(this.timezoneOffset);
-            var momentDateTime = moment(value);
+            var momentDateTime = moment.utc(value).zone(this.timezoneOffset);
             if (!momentDateTime.isValid()) {
                 throw new Error('Invalid backend datetime ' + value);
             }
@@ -215,7 +214,7 @@ function(localeSettings, moment) {
                 throw new Error('Invalid frontend date ' + value);
             }
 
-            return moment(value, this.getDateFormat());
+            return moment.utc(value, this.getDateFormat());
         },
 
         /**
@@ -241,7 +240,7 @@ function(localeSettings, moment) {
                 throw new Error('Invalid frontend time ' + value);
             }
 
-            return moment(value, this.getTimeFormat());
+            return moment.utc(value, this.getTimeFormat());
         },
 
         /**
@@ -269,9 +268,15 @@ function(localeSettings, moment) {
             }
 
             timezoneOffset = timezoneOffset || this.timezoneOffset;
-            moment().zone(timezoneOffset);
 
-            return moment(value, this.getDateTimeFormat());
+            var datetimeFormat = this.getDateTimeFormat();
+            // tell which timezone must be used
+            if (datetimeFormat.indexOf('Z') === -1) {
+                datetimeFormat += ' Z';
+                value += ' ' + timezoneOffset;
+            }
+
+            return moment.utc(value, datetimeFormat).zone(timezoneOffset);
         },
 
         /**

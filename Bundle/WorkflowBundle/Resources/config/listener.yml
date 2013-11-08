@@ -1,18 +1,10 @@
 parameters:
     oro_workflow.listener.subscriver.workflow_definition.class: Oro\Bundle\WorkflowBundle\EventListener\WorkflowDefinitionSubscriber
-    oro_workflow.listener.subscriber.workflow_bind_entity.class: Oro\Bundle\WorkflowBundle\EventListener\WorkflowBindEntitySubscriber
     oro_workflow.listener.subscriber.workflow_data_serialize.class: Oro\Bundle\WorkflowBundle\EventListener\WorkflowDataSerializeSubscriber
 
 services:
     oro_workflow.listener.subscriver.workflow_definition:
         class: %oro_workflow.listener.subscriver.workflow_definition.class%
-        tags:
-            - { name: doctrine.event_subscriber }
-
-    oro_workflow.listener.subscriber.workflow_bind_entity:
-        class: %oro_workflow.listener.subscriber.workflow_bind_entity.class%
-        arguments:
-            - @oro_workflow.entity_binder
         tags:
             - { name: doctrine.event_subscriber }
 
