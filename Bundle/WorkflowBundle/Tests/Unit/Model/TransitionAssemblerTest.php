@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\WorkflowBundle\Tests\Unit\Model;
 
-use Oro\Bundle\WorkflowBundle\Form\Type\OroWorkflowStep;
+use Oro\Bundle\WorkflowBundle\Form\Type\WorkflowStepType;
 use Oro\Bundle\WorkflowBundle\Model\Transition;
 use Oro\Bundle\WorkflowBundle\Model\TransitionAssembler;
 use Oro\Bundle\WorkflowBundle\Model\Condition\Configurable as ConfigurableCondition;
@@ -153,7 +153,7 @@ class TransitionAssemblerTest extends \PHPUnit_Framework_TestCase
             $configuration,
             array(
                 'is_start' => false,
-                'form_type' => OroWorkflowStep::NAME,
+                'form_type' => WorkflowStepType::NAME,
                 'form_options' => array(),
                 'frontend_options' => array(),
             )

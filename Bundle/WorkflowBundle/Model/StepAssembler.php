@@ -5,10 +5,8 @@ namespace Oro\Bundle\WorkflowBundle\Model;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 
-use Oro\Bundle\WorkflowBundle\Model\Step;
-use Oro\Bundle\WorkflowBundle\Model\Attribute;
 use Oro\Bundle\WorkflowBundle\Exception\UnknownAttributeException;
-use Oro\Bundle\WorkflowBundle\Form\Type\OroWorkflowStep;
+use Oro\Bundle\WorkflowBundle\Form\Type\WorkflowStepType;
 use Oro\Bundle\WorkflowBundle\Exception\InvalidParameterException;
 
 class StepAssembler extends AbstractAssembler
@@ -67,7 +65,7 @@ class StepAssembler extends AbstractAssembler
             ->setOrder($this->getOption($options, 'order', 0))
             ->setIsFinal($this->getOption($options, 'is_final', false))
             ->setAllowedTransitions($this->getOption($options, 'allowed_transitions', array()))
-            ->setFormType($this->getOption($options, 'form_type', OroWorkflowStep::NAME))
+            ->setFormType($this->getOption($options, 'form_type', WorkflowStepType::NAME))
             ->setFormOptions($formOptions);
 
         return $step;

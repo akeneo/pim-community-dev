@@ -4,7 +4,7 @@ namespace Oro\Bundle\WorkflowBundle\Tests\Unit\Model;
 
 use Oro\Bundle\WorkflowBundle\Model\Step;
 use Oro\Bundle\WorkflowBundle\Model\StepAssembler;
-use Oro\Bundle\WorkflowBundle\Form\Type\OroWorkflowStep;
+use Oro\Bundle\WorkflowBundle\Form\Type\WorkflowStepType;
 use Oro\Bundle\WorkflowBundle\Model\Attribute;
 
 class StepAssemblerTest extends \PHPUnit_Framework_TestCase
@@ -172,7 +172,7 @@ class StepAssemblerTest extends \PHPUnit_Framework_TestCase
         $order,
         $isFinal,
         array $transitions,
-        $formType = OroWorkflowStep::NAME,
+        $formType = WorkflowStepType::NAME,
         array $formOptions = array()
     ) {
         $step = new Step();

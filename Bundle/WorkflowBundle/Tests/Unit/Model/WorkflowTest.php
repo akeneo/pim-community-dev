@@ -8,9 +8,6 @@ use Oro\Bundle\WorkflowBundle\Model\Workflow;
 use Oro\Bundle\WorkflowBundle\Model\Step;
 use Oro\Bundle\WorkflowBundle\Model\Transition;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
-use Oro\Bundle\WorkflowBundle\Model\AttributeManager;
-use Oro\Bundle\WorkflowBundle\Model\StepManager;
-use Oro\Bundle\WorkflowBundle\Model\TransitionManager;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowTransitionRecord;
 
 /**
@@ -658,10 +655,6 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
      */
     protected function createWorkflow()
     {
-        return new Workflow(
-            new StepManager(),
-            new AttributeManager(),
-            new TransitionManager()
-        );
+        return new Workflow();
     }
 }

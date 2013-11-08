@@ -13,9 +13,6 @@ use Oro\Bundle\WorkflowBundle\Configuration\WorkflowConfiguration;
 use Oro\Bundle\WorkflowBundle\Model\AttributeAssembler;
 use Oro\Bundle\WorkflowBundle\Model\StepAssembler;
 use Oro\Bundle\WorkflowBundle\Model\TransitionAssembler;
-use Oro\Bundle\WorkflowBundle\Model\AttributeManager;
-use Oro\Bundle\WorkflowBundle\Model\StepManager;
-use Oro\Bundle\WorkflowBundle\Model\TransitionManager;
 
 class WorkflowAssemblerTest extends \PHPUnit_Framework_TestCase
 {
@@ -48,11 +45,7 @@ class WorkflowAssemblerTest extends \PHPUnit_Framework_TestCase
      */
     protected function createWorkflow()
     {
-        return new Workflow(
-            new StepManager(),
-            new AttributeManager(),
-            new TransitionManager()
-        );
+        return new Workflow();
     }
 
     /**

@@ -49,7 +49,13 @@ class WidgetController extends Controller
         $stepForm = $this->createForm(
             $displayStep->getFormType(),
             $workflowData,
-            array('stepName' => $showStepName, 'workflowItem' => $workflowItem)
+            array_merge(
+                $displayStep->getFormOptions(),
+                array(
+                    'step_name' => $showStepName,
+                    'workflow_item' => $workflowItem,
+                )
+            )
         );
 
         $saved = false;

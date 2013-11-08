@@ -10,8 +10,6 @@ use Oro\Bundle\WorkflowBundle\Entity\WorkflowTransitionRecord;
 use Oro\Bundle\WorkflowBundle\Exception\ForbiddenTransitionException;
 use Oro\Bundle\WorkflowBundle\Exception\UnknownStepException;
 use Oro\Bundle\WorkflowBundle\Exception\UnknownTransitionException;
-use Oro\Bundle\WorkflowBundle\Model\Step;
-use Oro\Bundle\WorkflowBundle\Model\Transition;
 
 class Workflow
 {
@@ -55,18 +53,18 @@ class Workflow
     protected $label;
 
     /**
-     * @param StepManager $stepManager
-     * @param AttributeManager $attributeManager
-     * @param TransitionManager $transitionManager
+     * @param StepManager|null $stepManager
+     * @param AttributeManager|null $attributeManager
+     * @param TransitionManager|null $transitionManager
      */
     public function __construct(
-        StepManager $stepManager,
-        AttributeManager $attributeManager,
-        TransitionManager $transitionManager
+        StepManager $stepManager = null,
+        AttributeManager $attributeManager = null,
+        TransitionManager $transitionManager = null
     ) {
-        $this->stepManager       = $stepManager;
-        $this->attributeManager  = $attributeManager;
-        $this->transitionManager = $transitionManager;
+        $this->stepManager       = $stepManager ? $stepManager : new StepManager();
+        $this->attributeManager  = $attributeManager ? $attributeManager : new AttributeManager();
+        $this->transitionManager = $transitionManager ? $transitionManager : new TransitionManager();
 
         $this->enabled = true;
     }
