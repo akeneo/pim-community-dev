@@ -54,28 +54,32 @@ class CalendarConnectionController extends FOSRestController implements
         $manager = $this->getManager();
         /** @var CalendarConnectionRepository $repo */
         $repo = $manager->getRepository();
-        $qb   = $repo->getConnectionListQueryBuilder($id);
 
         /** @var SecurityFacade $securityFacade */
         $securityFacade = $this->get('oro_security.security_facade');
         if (!$securityFacade->isGranted('oro_calendar_connection_view')) {
-            $qb
-                ->andWhere('u.id = :userId')
-                ->setParameter('userId', $this->getUser()->getId());
+            $qb = $repo->getConnectionListQueryBuilder($id, $this->getUser()->getId());
+        } else {
+            $qb = $repo->getConnectionListQueryBuilder($id);
         }
 
-        $result = $qb->getQuery()->getArrayResult();
-        foreach ($result as $key => $item) {
-            if ($item['calendarName'] === null) {
-                $result[$key]['calendarName'] = $this->getOwnerName(
-                    $item['ownerFirstName'],
-                    $item['ownerLastName']
+        $result = array();
+        /** @var CalendarConnection $calendarConnection */
+        foreach ($qb->getQuery()->getResult() as $calendarConnection) {
+            $item = array();
+            $item['color']           = $calendarConnection->getColor();
+            $item['backgroundColor'] = $calendarConnection->getBackgroundColor();
+            $item['calendar']        = $calendarConnection->getConnectedCalendar()->getId();
+            $item['calendarName']    = $calendarConnection->getConnectedCalendar()->getName();
+            $item['owner']           = $calendarConnection->getConnectedCalendar()->getOwner()->getId();
+            // prohibit to remove the current calendar from the list of connected calendar.
+            $item['removable']       = ($calendarConnection->getConnectedCalendar()->getId() != $id);
+            if (!$item['calendarName']) {
+                $item['calendarName'] = $this->getOwnerName(
+                    $calendarConnection->getConnectedCalendar()
                 );
             }
-            unset($result[$key]['ownerFirstName']);
-            unset($result[$key]['ownerLastName']);
-            // prohibit to remove the current calendar from the list of connected calendar.
-            $result[$key]['removable'] = ($item['calendar'] != $id);
+            $result[] = $item;
         }
 
         return new Response(json_encode($result), Codes::HTTP_OK);
@@ -134,10 +138,7 @@ class CalendarConnectionController extends FOSRestController implements
         );
         $calendarName = $connectedCalendar->getName();
         if (empty($calendarName)) {
-            $calendarName = $this->getOwnerName(
-                $connectedCalendar->getOwner()->getFirstName(),
-                $connectedCalendar->getOwner()->getLastName()
-            );
+            $calendarName = $this->getOwnerName($connectedCalendar);
         }
         $data['calendarName'] = $calendarName;
 
@@ -187,31 +188,11 @@ class CalendarConnectionController extends FOSRestController implements
     /**
      * Returns calendar owner name formatted based on system configuration
      *
-     * @param string $firstName
-     * @param string $lastName
+     * @param Calendar $calendar
      * @return string
      */
-    protected function getOwnerName($firstName, $lastName)
+    protected function getOwnerName(Calendar $calendar)
     {
-        return str_replace(
-            array('%first%', '%last%'),
-            array($firstName, $lastName),
-            $this->getUserNameFormat()
-        );
-    }
-
-    /**
-     * Gets a string used to format calendar owner name
-     *
-     * @return string
-     */
-    protected function getUserNameFormat()
-    {
-        if ($this->userNameFormat === null) {
-            $this->userNameFormat = $this->get('oro_config.twig.config_extension')
-                ->getUserValue('oro_locale.name_format');
-        }
-
-        return $this->userNameFormat;
+        return $this->get('oro_locale.formatter.name')->format($calendar->getOwner());
     }
 }

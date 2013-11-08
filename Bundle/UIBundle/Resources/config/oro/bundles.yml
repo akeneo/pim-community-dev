@@ -1,2 +1,2 @@
 bundles:
-    - Oro\Bundle\UIBundle\OroUIBundle
+    - { name: Oro\Bundle\UIBundle\OroUIBundle, priority: -20 }

@@ -1,0 +1,26 @@
+{
+    "name": "oro/locale-bundle",
+    "type": "symfony-bundle",
+    "description": "BAP Locale Bundle",
+    "keywords": ["BAP", "Localization"],
+    "homepage": "https://github.com/laboro/LocaleBundle",
+    "license": "MIT",
+    "require": {
+        "php": ">=5.3.3",
+        "ext-intl": "*",
+        "lib-ICU": ">=4.4",
+        "symfony/symfony": ">=2.1",
+        "oro/requirejs-bundle": "dev-master",
+        "oro/config-bundle": "dev-master"
+    },
+    "autoload": {
+        "psr-0": { "Oro\\Bundle\\LocaleBundle": "" }
+    },
+    "target-dir": "Oro/Bundle/LocaleBundle",
+    "minimum-stability": "dev",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}

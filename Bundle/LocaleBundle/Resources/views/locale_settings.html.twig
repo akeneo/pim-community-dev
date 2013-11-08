@@ -1,0 +1,82 @@
+<script type="text/javascript">
+require(['jquery', 'oro/locale-settings'],
+function($, localeSettings) {
+    {% set dateTimeFormats = {} %}
+    {% for formatterName in oro_datetime_formatter_list() %}
+        {% set currentFormats = {
+            'date': oro_date_format(formatterName),
+            'time': oro_time_format(formatterName),
+            'datetime': oro_datetime_format(formatterName),
+        } %}
+        {% set dateTimeFormats = dateTimeFormats|merge({ (formatterName) : currentFormats }) %}
+    {% endfor %}
+
+    {% set numberFormatSettings = {} %}
+    {% for style in ['decimal', 'percent', 'currency'] %}
+        {% set numberFormatSettings = numberFormatSettings|merge({
+            (style): {
+                'grouping_size':       oro_locale_number_attribute('grouping_size', style),
+                'grouping_used':       oro_locale_number_attribute('grouping_used', style),
+                'max_fraction_digits': oro_locale_number_attribute('max_fraction_digits', style),
+                'min_fraction_digits': oro_locale_number_attribute('min_fraction_digits', style),
+
+                'negative_prefix':   oro_locale_number_text_attribute('negative_prefix', style),
+                'negative_suffix':   oro_locale_number_text_attribute('negative_suffix', style),
+                'positive_prefix':   oro_locale_number_text_attribute('positive_prefix', style),
+                'positive_suffix':   oro_locale_number_text_attribute('positive_suffix', style),
+                'currency_code':     oro_locale_number_text_attribute('currency_code', style),
+                'padding_character': oro_locale_number_text_attribute('padding_character', style),
+
+                'decimal_separator_symbol':           oro_locale_number_symbol('decimal_separator_symbol', style),
+                'grouping_separator_symbol':          oro_locale_number_symbol('grouping_separator_symbol', style),
+                'monetary_separator_symbol':          oro_locale_number_symbol('monetary_separator_symbol', style),
+                'monetary_grouping_separator_symbol': oro_locale_number_symbol('monetary_grouping_separator_symbol', style),
+                'currency_symbol':                    oro_locale_number_symbol('currency_symbol', style),
+                'zero_digit_symbol':                  oro_locale_number_symbol('zero_digit_symbol', style),
+            }
+        }) %}
+    {% endfor %}
+
+    {% set localeConfigurationClass = '\\Oro\\Bundle\\LocaleBundle\\DependencyInjection\\Configuration::' %}
+    {% set defaults = {
+        'locale':   constant(localeConfigurationClass ~ 'DEFAULT_LOCALE'),
+        'language': constant(localeConfigurationClass ~ 'DEFAULT_LANGUAGE'),
+        'country':  constant(localeConfigurationClass ~ 'DEFAULT_COUNTRY'),
+        'currency': constant(localeConfigurationClass ~ 'DEFAULT_CURRENCY')
+    } %}
+
+    {% set settings = {
+        'locale':   oro_locale(),
+        'language': oro_language(),
+        'country':  oro_country(),
+        'currency': oro_currency(),
+        'timezone': oro_timezone(),
+        'timezone_offset': oro_timezone_offset(),
+        'format_address_by_address_country': oro_format_address_by_address_country(),
+        'format': {
+            'datetime': dateTimeFormats,
+            'number': numberFormatSettings
+        },
+        'calendar': {
+            'dow': {
+                'wide':        oro_calendar_day_of_week_names('wide'),
+                'abbreviated': oro_calendar_day_of_week_names('abbreviated'),
+                'short':       oro_calendar_day_of_week_names('short'),
+                'narrow':      oro_calendar_day_of_week_names('narrow'),
+            },
+            'months': {
+                'wide':        oro_calendar_month_names('wide'),
+                'abbreviated': oro_calendar_month_names('abbreviated'),
+                'narrow':      oro_calendar_month_names('narrow'),
+            },
+            'first_dow': oro_calendar_first_day_of_week()
+        }
+    } %}
+
+    var defaults = {{ defaults|json_encode|raw }};
+    var settings = {{ settings|json_encode|raw }};
+
+    localeSettings.extendDefaults(defaults);
+    localeSettings.extendSettings(settings);
+});
+</script>

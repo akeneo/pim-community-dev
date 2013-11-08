@@ -47,8 +47,8 @@ class AbstractFlexibleDateFilterTest extends FlexibleFilterTestCase
             'between' => array(
                 'data' => array(
                     'value' => array(
-                        'start' => new \DateTime('2013-01-01'),
-                        'end' => new \DateTime('2014-01-01'),
+                        'start' => new \DateTime('2013-01-01', new \DateTimeZone('UTC')),
+                        'end' => new \DateTime('2014-01-01', new \DateTimeZone('UTC')),
                     ),
                     'type' => DateRangeFilterType::TYPE_BETWEEN
                 ),
@@ -60,7 +60,7 @@ class AbstractFlexibleDateFilterTest extends FlexibleFilterTestCase
             'between_only_start' => array(
                 'data' => array(
                     'value' => array(
-                        'start' => new \DateTime('2013-01-01'),
+                        'start' => new \DateTime('2013-01-01', new \DateTimeZone('UTC')),
                     ),
                     'type' => DateRangeFilterType::TYPE_BETWEEN
                 ),
@@ -71,7 +71,7 @@ class AbstractFlexibleDateFilterTest extends FlexibleFilterTestCase
             'between_only_end' => array(
                 'data' => array(
                     'value' => array(
-                        'end' => new \DateTime('2014-01-01'),
+                        'end' => new \DateTime('2014-01-01', new \DateTimeZone('UTC')),
                     ),
                     'type' => DateRangeFilterType::TYPE_BETWEEN
                 ),
@@ -82,8 +82,8 @@ class AbstractFlexibleDateFilterTest extends FlexibleFilterTestCase
             'not_between' => array(
                 'data' => array(
                     'value' => array(
-                        'start' => new \DateTime('2013-01-01'),
-                        'end' => new \DateTime('2014-01-01'),
+                        'start' => new \DateTime('2013-01-01', new \DateTimeZone('UTC')),
+                        'end' => new \DateTime('2014-01-01', new \DateTimeZone('UTC')),
                     ),
                     'type' => DateRangeFilterType::TYPE_NOT_BETWEEN
                 ),

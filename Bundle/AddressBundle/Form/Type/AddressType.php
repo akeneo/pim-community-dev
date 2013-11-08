@@ -33,8 +33,12 @@ class AddressType extends AbstractType
         $builder
             ->add('id', 'hidden')
             ->add('label', 'text', array('required' => false, 'label' => 'Label'))
+            ->add('namePrefix', 'text', array('required' => false, 'label' => 'Name Prefix'))
             ->add('firstName', 'text', array('required' => false, 'label' => 'First Name'))
+            ->add('middleName', 'text', array('required' => false, 'label' => 'Middle Name'))
             ->add('lastName', 'text', array('required' => false, 'label' => 'Last Name'))
+            ->add('nameSuffix', 'text', array('required' => false, 'label' => 'Name Suffix'))
+            ->add('organization', 'text', array('required' => false, 'label' => 'Organization'))
             ->add('country', 'oro_country', array('required' => true, 'label' => 'Country'))
             ->add('street', 'text', array('required' => true, 'label' => 'Street'))
             ->add('street2', 'text', array('required' => false, 'label' => 'Street 2'))
