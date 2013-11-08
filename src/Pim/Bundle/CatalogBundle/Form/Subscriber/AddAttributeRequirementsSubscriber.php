@@ -5,7 +5,6 @@ namespace Pim\Bundle\CatalogBundle\Form\Subscriber;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
-use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 
@@ -72,9 +71,7 @@ class AddAttributeRequirementsSubscriber implements EventSubscriberInterface
             }
         }
 
-        $requirements = new ArrayCollection(
-            array_merge($requirements, $family->getAttributeRequirements())
-        );
+        $requirements = array_merge($requirements, $family->getAttributeRequirements());
 
         $family->setAttributeRequirements($requirements);
     }

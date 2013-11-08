@@ -460,9 +460,9 @@ class Family implements TranslatableInterface
      *
      * @return Family
      */
-    public function setAttributeRequirements($requirements)
+    public function setAttributeRequirements(array $requirements)
     {
-        $this->requirements = $requirements;
+        $this->requirements = new ArrayCollection($requirements);
 
         return $this;
     }
