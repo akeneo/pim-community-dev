@@ -310,14 +310,18 @@ class ProductAttribute extends AbstractEntityAttribute implements
         switch ($this->getBackendType()) {
             case 'option':
                 $default = $this->getDefaultOptions()->isEmpty() ? null : $this->getDefaultOptions()->first();
+                break;
             case 'options':
                 $default = $this->getDefaultOptions();
+                break;
             case 'date':
                 $date = new \DateTime();
                 $date->setTimestamp((int) $this->defaultValue);
                 $default = $date;
+                break;
             case 'boolean':
                 $default = (bool) $this->defaultValue;
+                break;
             default:
                 $default = $this->defaultValue;
         }
