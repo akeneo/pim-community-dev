@@ -48,6 +48,11 @@ class Workflow
     protected $transitionManager;
 
     /**
+     * @var EntityBinder
+     */
+    protected $entityBinder;
+
+    /**
      * @var string
      */
     protected $label;
@@ -62,11 +67,19 @@ class Workflow
         AttributeManager $attributeManager = null,
         TransitionManager $transitionManager = null
     ) {
-        $this->stepManager       = $stepManager ? $stepManager : new StepManager();
+        $this->stepManager = $stepManager ? $stepManager : new StepManager();
         $this->attributeManager  = $attributeManager ? $attributeManager : new AttributeManager();
         $this->transitionManager = $transitionManager ? $transitionManager : new TransitionManager();
 
         $this->enabled = true;
+    }
+
+    /**
+     * @param EntityBinder $entityBinder
+     */
+    public function setEntityBinder(EntityBinder $entityBinder)
+    {
+        $this->entityBinder = $entityBinder;
     }
 
     /**
@@ -372,11 +385,27 @@ class Workflow
             $transitionRecord = $this->createTransitionRecord($workflowItem, $transition);
             $transition->transit($workflowItem);
             $workflowItem->addTransitionRecord($transitionRecord);
+            $this->bindEntities($workflowItem);
         } else {
             throw new ForbiddenTransitionException(
                 sprintf('Transition "%s" is not allowed.', $transition->getName())
             );
         }
+    }
+
+    /**
+     * Bind entities to workflow item
+     *
+     * @param WorkflowItem $workflowItem
+     * @return bool
+     * @throws \LogicException
+     */
+    public function bindEntities(WorkflowItem $workflowItem)
+    {
+        if (!$this->entityBinder) {
+            throw new \LogicException('Entity binder is not set.');
+        }
+        return $this->entityBinder->bindEntities($workflowItem);
     }
 
     /**

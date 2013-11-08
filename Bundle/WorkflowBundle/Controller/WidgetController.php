@@ -64,6 +64,7 @@ class WidgetController extends Controller
 
             if ($stepForm->isValid()) {
                 $workflowItem->setUpdated();
+                $workflow->bindEntities($workflowItem);
                 $this->getEntityManager()->flush();
 
                 $saved = true;
