@@ -67,7 +67,8 @@ class EmailQueryFactory
         $firstName = sprintf('COALESCE(%s, \'\')', implode(', ', $firstNames));
         $lastName = sprintf('COALESCE(%s, \'\')', implode(', ', $lastNames));
 
-        $nameFormat = $userConfigManager->get('oro_locale.name_format');
+        // TODO: refactor usage of email name formats https://magecore.atlassian.net/browse/BAP-2007
+        $nameFormat = '%first% %last%';
         $this->fromEmailExpression = $this->buildFromEmailExpression($nameFormat, $firstName, $lastName)
             . ' as FromEmailExpression';
     }

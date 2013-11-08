@@ -35,7 +35,7 @@ class Opportunity extends AbstractEntity implements Entity
         $this->proposedsolution = $this->byId('orocrm_sales_opportunity_form_proposedSolution');
         $this->closereason = $this->select($this->byId('orocrm_sales_opportunity_form_closeReason'));
         $this->closerevenu = $this->byId('orocrm_sales_opportunity_form_closeRevenue');
-        $this->closedate = $this->byId('orocrm_sales_opportunity_form_closeDate');
+        $this->closedate = $this->byId('date_selector_orocrm_sales_opportunity_form_closeDate');
         $this->owner = $this->byXpath("//div[@id='s2id_orocrm_sales_opportunity_form_owner']/a");
 
         return $this;

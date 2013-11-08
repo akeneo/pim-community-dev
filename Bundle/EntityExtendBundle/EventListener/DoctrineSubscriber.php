@@ -100,16 +100,17 @@ class DoctrineSubscriber implements EventSubscriber
                             $builder->build();
                             break;
                         case 'oneToMany':
+                            /** create 1:* */
                             $builder = $cmBuilder->createOneToMany($fieldName, $relation['target_entity']);
                             $builder->mappedBy($targetFieldName);
 
                             $builder->cascadeDetach();
                             $builder->build();
 
-                            $cmBuilder->addOwningOneToOne(
-                                $defaultName,
-                                $relation['target_entity']
-                            );
+                            /** create 1:1 default */
+                            $builder = $cmBuilder->createOneToOne($defaultName, $relation['target_entity']);
+                            $builder->addJoinColumn($defaultName . '_id', 'id', true, false, 'SET NULL');
+                            $builder->build();
                             break;
                         case 'manyToMany':
                             if ($relation['owner']) {

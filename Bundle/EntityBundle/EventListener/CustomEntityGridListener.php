@@ -2,21 +2,20 @@
 
 namespace Oro\Bundle\EntityBundle\EventListener;
 
+use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
+use Symfony\Bundle\FrameworkBundle\Routing\Router;
+use Symfony\Component\HttpFoundation\Request;
+
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
-use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
 use Oro\Bundle\DataGridBundle\Event\BuildAfter;
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
-use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigId;
 use Oro\Bundle\EntityConfigBundle\EventListener\AbstractConfigGridListener;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
-use Oro\Bundle\EntityConfigBundle\Provider\PropertyConfigContainer;
 use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendConfigDumper;
-use Symfony\Bundle\FrameworkBundle\Routing\Router;
-use Symfony\Component\HttpFoundation\Request;
 
 class CustomEntityGridListener extends AbstractConfigGridListener
 {
@@ -88,10 +87,7 @@ class CustomEntityGridListener extends AbstractConfigGridListener
      */
     public function onBuildAfter(BuildAfter $event)
     {
-        $datasource = $event->getDatagrid()->getDatasource();
-        if ($datasource instanceof OrmDatasource) {
-            $queryBuilder = $datasource->getQueryBuilder();
-        }
+
     }
 
     /**
@@ -148,56 +144,25 @@ class CustomEntityGridListener extends AbstractConfigGridListener
         $extendConfigs        = $extendConfigProvider->getConfigs($this->entityClass);
 
         foreach ($extendConfigs as $extendConfig) {
-            if ($extendConfig->get('state') != ExtendManager::STATE_NEW
-                && !$extendConfig->get('is_deleted')
+            if ($extendConfig->get('state') != ExtendManager::STATE_NEW && !$extendConfig->get('is_deleted')) {
+                list($field, $selectField) = $this->getDynamicFieldItem($alias, $extendConfig);
 
-            ) {
-                /** @var FieldConfigId $fieldConfig */
-                $fieldConfig = $extendConfig->getId();
-
-                /** @var ConfigProvider $datagridProvider */
-                $datagridConfigProvider = $this->configManager->getProvider('datagrid');
-                $datagridConfig         = $datagridConfigProvider->getConfig(
-                    $this->entityClass,
-                    $fieldConfig->getFieldName()
-                );
-
-                if ($datagridConfig->is('is_visible')) {
-                    /** @var ConfigProvider $entityConfigProvider */
-                    $entityConfigProvider = $this->configManager->getProvider('entity');
-                    $entityConfig         = $entityConfigProvider->getConfig(
-                        $this->entityClass,
-                        $fieldConfig->getFieldName()
-                    );
-
-                    $label = $entityConfig->get('label') ?: $fieldConfig->getFieldName();
-                    $code  = $extendConfig->is('owner', ExtendManager::OWNER_CUSTOM)
-                        ? ExtendConfigDumper::FIELD_PREFIX . $fieldConfig->getFieldName()
-                        : $fieldConfig->getFieldName();
-
-                    $this->queryFields[] = $code;
-
-                    $field = [
-                        $code => [
-                            'type'        => 'field',
-                            'label'       => $label,
-                            'field_name'  => $code,
-                            'filter_type' => $this->filterMap[$fieldConfig->getFieldType()],
-                            'required'    => false,
-                            'sortable'    => true,
-                            'filterable'  => true,
-                            'show_filter' => true,
-                        ]
-                    ];
-                    $select[] = $alias . '.' . $code;
-
-                    // add field according to priority if exists
-                    if (isset($item['options']['priority']) && !isset($fields[$item['options']['priority']])) {
-                        $fields[$item['options']['priority']] = $field;
-                    } else {
-                        $fields[] = $field;
-                    }
+                if (!empty($field)) {
+                    $fields[] = $field;
                 }
+
+                if (!empty($selectField)) {
+                    $select[] = $selectField;
+                }
+
+                // add field according to priority if exists
+                /*
+                if (isset($item['options']['priority']) && !isset($fields[$item['options']['priority']])) {
+                    $fields[$item['options']['priority']] = $field;
+                } else {
+                    $fields[] = $field;
+                }
+                */
             }
         }
 
@@ -209,10 +174,85 @@ class CustomEntityGridListener extends AbstractConfigGridListener
             $orderedFields = array_merge($orderedFields, $field);
         }
 
-        return [
+        $result = [
             'columns' => $orderedFields,
-            'source' => [
-                'query' => ['select' => $select],
+        ];
+
+        if (!empty($select)) {
+            $result = array_merge(
+                $result,
+                ['source' => [
+                    'query' => ['select' => $select],
+                    ]
+                ]
+            );
+        }
+
+        return $result;
+    }
+
+    /**
+     * Get dynamic field or empty array if field is not visible
+     *
+     * @param $alias
+     * @param ConfigInterface $extendConfig
+     * @return array
+     */
+    public function getDynamicFieldItem($alias, ConfigInterface $extendConfig)
+    {
+        /** @var FieldConfigId $fieldConfig */
+        $fieldConfig = $extendConfig->getId();
+
+        /** @var ConfigProvider $datagridProvider */
+        $datagridConfigProvider = $this->configManager->getProvider('datagrid');
+        $datagridConfig         = $datagridConfigProvider->getConfig(
+            $this->entityClass,
+            $fieldConfig->getFieldName()
+        );
+
+        $select = '';
+        $field = [];
+        if ($datagridConfig->is('is_visible')) {
+            /** @var ConfigProvider $entityConfigProvider */
+            $entityConfigProvider = $this->configManager->getProvider('entity');
+            $entityConfig         = $entityConfigProvider->getConfig(
+                $this->entityClass,
+                $fieldConfig->getFieldName()
+            );
+
+            $label = $entityConfig->get('label') ?: $fieldConfig->getFieldName();
+            $code  = $extendConfig->is('owner', ExtendManager::OWNER_CUSTOM)
+                ? ExtendConfigDumper::FIELD_PREFIX . $fieldConfig->getFieldName()
+                : $fieldConfig->getFieldName();
+
+            $this->queryFields[] = $code;
+
+            $field = $this->createFieldArrayDefinition($code, $label, $fieldConfig);
+            $select = $alias . '.' . $code;
+        }
+
+        return [$field, $select];
+    }
+
+    /**
+     * @param string $code
+     * @param $label
+     * @param FieldConfigId $fieldConfig
+     *
+     * @return array
+     */
+    protected function createFieldArrayDefinition($code, $label, FieldConfigId $fieldConfig)
+    {
+        return [
+            $code => [
+                'type'        => 'field',
+                'label'       => $label,
+                'field_name'  => $code,
+                'filter_type' => $this->filterMap[$fieldConfig->getFieldType()],
+                'required'    => false,
+                'sortable'    => true,
+                'filterable'  => true,
+                'show_filter' => true,
             ]
         ];
     }

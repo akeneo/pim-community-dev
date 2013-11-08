@@ -7,6 +7,7 @@ use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 use Oro\Bundle\DataGridBundle\Event\BuildAfter;
+use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 
 class AuditHistoryGridListener
 {
@@ -31,6 +32,19 @@ class AuditHistoryGridListener
     }
 
     /**
+     * Used only for auditfield-log-grid grid (subscribed in services.yml)
+     *
+     * @param BuildBefore $event
+     */
+    public function onBuildBefore(BuildBefore $event)
+    {
+        $config = $event->getConfig();
+
+        $fieldName = $this->requestParams->get(self::GRID_PARAM_FIELD_NAME, false);
+        $config->offsetSetByPath('[columns][diffs][context][field_name]', $fieldName);
+    }
+
+    /**
      * @param BuildAfter $event
      */
     public function onBuildAfter(BuildAfter $event)
@@ -49,7 +63,7 @@ class AuditHistoryGridListener
             }
 
             $fieldName = $this->requestParams->get(self::GRID_PARAM_FIELD_NAME, false);
-            if (!empty($fieldName) && isset($this->paramsToBind['fieldName'])) {
+            if (!empty($fieldName) && in_array('fieldName', $this->paramsToBind)) {
                 $queryParameters['fieldName'] = $fieldName;
             }
 

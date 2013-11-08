@@ -6,7 +6,6 @@ use Doctrine\ORM\QueryBuilder;
 
 use Symfony\Component\Form\FormFactoryInterface;
 
-use Oro\Bundle\LocaleBundle\Twig\DateFormatExtension;
 use Oro\Bundle\FilterBundle\Extension\Orm\AbstractDateFilter;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\DateRangeFilterType;
 
@@ -17,10 +16,9 @@ abstract class AbstractFlexibleDateFilter extends AbstractDateFilter
 
     public function __construct(
         FormFactoryInterface $factory,
-        DateFormatExtension $localeExtension,
         FlexibleFilterUtility $util
     ) {
-        parent::__construct($factory, $localeExtension);
+        parent::__construct($factory);
         $this->util     = $util;
         $this->paramMap = FlexibleFilterUtility::$paramMap;
     }

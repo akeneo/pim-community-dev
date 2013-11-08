@@ -46,10 +46,11 @@ class Manager implements ManagerInterface
      */
     public function getDatagrid($name)
     {
-        $config = $this->getConfigurationForGrid($name);
-
         // prepare for work with current grid
         $this->requestParams->setRootParameter($name);
+
+        $config = $this->getConfigurationForGrid($name);
+
         $datagrid = $this->getDatagridBuilder()->build($config);
 
         return $datagrid;

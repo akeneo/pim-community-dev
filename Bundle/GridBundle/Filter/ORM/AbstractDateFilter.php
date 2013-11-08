@@ -65,13 +65,19 @@ abstract class AbstractDateFilter extends AbstractFilter
         }
 
         if (isset($data['value']['start'])) {
-            $data['value']['start'] = $data['value']['start']->format(static::DATETIME_FORMAT);
+            /** @var \DateTime $startDate */
+            $startDate = $data['value']['start'];
+            $startDate->setTimezone(new \DateTimeZone('UTC'));
+            $data['value']['start'] = $startDate->format(static::DATETIME_FORMAT);
         } else {
             $data['value']['start'] = null;
         }
 
         if (isset($data['value']['end'])) {
-            $data['value']['end'] = $data['value']['end']->format(static::DATETIME_FORMAT);
+            /** @var \DateTime $endDate */
+            $endDate = $data['value']['end'];
+            $endDate->setTimezone(new \DateTimeZone('UTC'));
+            $data['value']['end'] = $endDate->format(static::DATETIME_FORMAT);
         } else {
             $data['value']['end'] = null;
         }

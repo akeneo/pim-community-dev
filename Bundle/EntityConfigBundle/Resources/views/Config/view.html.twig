@@ -1,7 +1,5 @@
 {% extends 'OroUIBundle:actions:view.html.twig' %}
-{% import 'OroLocaleBundle::macros.html.twig' as Locale %}
 {% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
-
 {% set gridName = 'entityfields-grid' %}
 {% oro_title_set({params : {"%entityName%": entity_config.get('label')|default('N/A') }}) %}
 
@@ -40,8 +38,8 @@
 {% endblock pageHeader %}
 
 {% block stats %}
-    <li>{{ 'Created'|trans }}: {{ Locale.time(entity.created) }}</li>
-    <li>{{ 'Updated'|trans }}: {{ Locale.time(entity.updated) }}</li>
+    <li>{{ 'Created'|trans }}: {{ entity.created|oro_format_datetime }}</li>
+    <li>{{ 'Updated'|trans }}: {{ entity.updated|oro_format_datetime }}</li>
     {% if link %}
     <li>{{ ['<a href="', link, '">', 'Number of records'|trans, ': ', entity_count|default(0) , '</a>']|join|raw }}</li>
     {% else %}

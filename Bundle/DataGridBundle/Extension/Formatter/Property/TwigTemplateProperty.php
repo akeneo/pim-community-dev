@@ -2,7 +2,6 @@
 
 namespace Oro\Bundle\DataGridBundle\Extension\Formatter\Property;
 
-use Oro\Bundle\LocaleBundle\Twig\DateFormatExtension;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 
 class TwigTemplateProperty extends AbstractProperty
@@ -20,10 +19,8 @@ class TwigTemplateProperty extends AbstractProperty
     protected $reservedKeys = ['record', 'value'];
 
     public function __construct(
-        DateFormatExtension $dateFormatExtension,
         \Twig_Environment $environment
     ) {
-        parent::__construct($dateFormatExtension);
         $this->environment = $environment;
     }
 

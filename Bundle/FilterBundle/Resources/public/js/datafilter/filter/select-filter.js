@@ -274,7 +274,7 @@ function(_, __, AbstractFilter, MultiselectDecorator) {
          */
         _onSelectChange: function() {
             // set value
-            this.setValue(this._readDOMValue());
+            this.setValue(this._formatRawValue(this._readDOMValue()));
 
             // update dropdown
             var widget = this.$(this.containerSelector);

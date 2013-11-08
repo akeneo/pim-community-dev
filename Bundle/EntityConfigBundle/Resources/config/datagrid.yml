@@ -144,9 +144,7 @@ datagrid:
             type: orm
             query:
                 select:
-                    - log.id
-#                    - diff.id
-                    - log.loggedAt
+                    - log
                     - >
                       CONCAT(
                         CONCAT(
@@ -177,8 +175,9 @@ datagrid:
                 label: Diffs
                 type: twig
                 template: OroEntityConfigBundle:Audit:data.html.twig
-                frontend_type: string
-                data_name: diff
+                frontend_type: html
+                context:
+                    config_manager: @oro_entity_config.config_manager
             loggedAt:
                 label: Logged at
                 type: field
@@ -201,6 +200,10 @@ datagrid:
                     inner:
                         diffs:
                             condition: diff.className = :objectClass AND diff.fieldName IS NULL
+        columns:
+            diffs:
+                context:
+                    is_entity: true
 
     auditfield-log-grid:
         extend: entity-audit-grid
@@ -210,3 +213,8 @@ datagrid:
                     inner:
                         diffs:
                             condition: diff.className = :objectClass AND diff.fieldName = :fieldName
+        columns:
+            diffs:
+                context:
+                    is_entity: false
+                    field_name: ~ # set from buildBefore in event listener

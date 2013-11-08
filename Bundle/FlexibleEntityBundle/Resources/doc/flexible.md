@@ -12,7 +12,7 @@ This customer class contains fields mapped at development time, here, email, fir
 
 We want give possibility to final user add some custom attributes when he'll use application.
 
-We use the basic entity repository, and define by mapping which value table to use. 
+We use the basic entity repository, and define by mapping which value table to use.
 
 ```php
 namespace Acme\Bundle\DemoFlexibleEntityBundle\Entity;
@@ -95,7 +95,7 @@ class CustomerValue extends AbstractEntityFlexibleValue
 
 We inherit some basic backend types for value, as varchar, text, integer, decimal, datetime, etc, which are in fact fields of a value.
 
-If you want use more complex attributes as list, media, metric related to a unit, a price related to a currency, you need to define mapping to advanced backend entity. 
+If you want use more complex attributes as list, media, metric related to a unit, a price related to a currency, you need to define mapping to advanced backend entity.
 
 You can also define your own backend type, the attribute backend type is used to know what getter / setter use to bind the value data.
 
@@ -118,7 +118,7 @@ For instance, to use a list of options as backend, add the following mapping in 
 
 And related getter / setter :
 * getOption / setOption : for list with one selectable item
-* getOptions / setOptions : for list with many selectable items 
+* getOptions / setOptions : for list with many selectable items
 
 You can use Media, Metric and Price as advanced backend.
 
@@ -177,8 +177,8 @@ $cm->getStorageManager()->flush();
 // create customer with basic fields mapped in customer entity
 $customer = $cm->createFlexible();
 $customer->setEmail('name@mail.com');
-$customer->setFirstname('Nicolas');
-$customer->setLastname('Dupont');
+$customer->setFirstName('Nicolas');
+$customer->setLastName('Dupont');
 
 // add a value (long version ...)
 $attCompany = $cm->getEntityRepository()->findAttributeByCode('company');

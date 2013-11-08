@@ -2,17 +2,19 @@
 {% for val in value %}
     {% set items = config_manager.getProvider(val.scope).getPropertyConfig().getItems(is_entity ? 'entity' : 'type') %}
 
-    {% for key, data in val.diff if (is_entity and val.fieldName() == null) or (is_entity == false and val.fieldName() == field_name) %}
-        {% if items[key]['form']['options']['label'] is defined %}
-            {% set label = items[key]['form']['options']['label'] %}
-        {% elseif items[key]['options']['label'] is defined %}
-            {% set label = items[key]['options']['label'] %}
-        {% else %}
-            {% set label = key|capitalize|replace('_',' ') %}
-        {% endif %}
-        <li>
-            <b>{{ label }}</b>: <s>{{ data[0]|default('N/A') }}</s> {{ data[1] }}
-        </li>
-    {% endfor %}
+    {% if (is_entity and val.fieldName() == null) or (is_entity == false and val.fieldName() == field_name) %}
+        {% for key, data in val.diff %}
+            {% if items[key]['form']['options']['label'] is defined %}
+                {% set label = items[key]['form']['options']['label'] %}
+            {% elseif items[key]['options']['label'] is defined %}
+                {% set label = items[key]['options']['label'] %}
+            {% else %}
+                {% set label = key|capitalize|replace('_',' ') %}
+            {% endif %}
+            <li>
+                <b>{{ label }}</b>: <s>{{ data[0]|default('N/A') }}</s> {{ data[1] }}
+            </li>
+        {% endfor %}
+    {% endif %}
 {% endfor %}
 </ul>

@@ -151,3 +151,4 @@ datagrid:
 
         action_configuration: @oro_email.emailtemplate.datagrid_helper->getActionConfigurationClosure
         views_list : @oro_email.emailtemplate.datagrid_view_list
+        options: { entityHint: email template }

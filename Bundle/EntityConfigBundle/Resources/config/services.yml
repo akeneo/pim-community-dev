@@ -91,3 +91,4 @@ services:
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.audit-log-grid, method: onBuildAfter }
             - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.auditfield-log-grid, method: onBuildAfter }
+            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.auditfield-log-grid, method: onBuildBefore }

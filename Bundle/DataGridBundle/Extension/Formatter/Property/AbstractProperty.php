@@ -2,14 +2,10 @@
 
 namespace Oro\Bundle\DataGridBundle\Extension\Formatter\Property;
 
-use Oro\Bundle\LocaleBundle\Twig\DateFormatExtension;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 
 abstract class AbstractProperty implements PropertyInterface
 {
-    /** @var DateFormatExtension */
-    protected $dateFormatExtension;
-
     /** @var array */
     protected $params;
 
@@ -27,12 +23,6 @@ abstract class AbstractProperty implements PropertyInterface
 
     /** @var array */
     protected $excludeParams = [];
-
-    public function __construct(DateFormatExtension $dateFormatExtension)
-    {
-        /** @TODO refactor property localization */
-        $this->dateFormatExtension = $dateFormatExtension;
-    }
 
     /**
      * {@inheritdoc}
@@ -214,22 +204,14 @@ abstract class AbstractProperty implements PropertyInterface
         $metadata = [];
 
         switch ($this->getOr(self::FRONTEND_TYPE_KEY)) {
-            case self::TYPE_DATETIME:
-                $metadata = [
-                    'modelFormat'     => 'YYYY-MM-DD hh:mm:ss',
-                    'displayFormat'   => $this->dateFormatExtension->getMomentDateTimeFormat(),
-                    'displayInUTC'    => false,
-                    'displayTimeZone' => $this->dateFormatExtension->getTimeZone()
-                ];
-                break;
-            case self::TYPE_DATE:
-                $metadata = [
-                    'modelFormat'   => 'YYYY-MM-DD',
-                    'displayFormat' => $this->dateFormatExtension->getMomentDateFormat(),
-                ];
-                break;
             case self::TYPE_INTEGER:
-                $metadata = ['orderSeparator' => ''];
+                $metadata = ['style' => 'integer'];
+                break;
+            case self::TYPE_DECIMAL:
+                $metadata = ['style' => 'decimal'];
+                break;
+            case self::TYPE_PERCENT:
+                $metadata = ['style' => 'percent'];
                 break;
             case self::TYPE_BOOLEAN:
                 $metadata = ['width' => 10];
