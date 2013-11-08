@@ -41,14 +41,14 @@ datagrid:
 
             recipientUsersList:
                 type: twig
-                template: OroNotificationBundle:EmailNotification:Datagrid/Property/recipientList.html.twig
+                template: OroNotificationBundle:EmailNotification:Datagrid/Property/recipientUsersList.html.twig
                 label: oro.notification.datagrid.recipient.user
                 frontend_type: html
 
             recipientGroupsList:
                 type: twig
                 label: oro.notification.datagrid.recipient.group
-                template: OroNotificationBundle:EmailNotification:Datagrid/Property/recipientList.html.twig
+                template: OroNotificationBundle:EmailNotification:Datagrid/Property/recipientGroupsList.html.twig
                 choices: @oro_notification.event_listener.email_notification_service->getRecipientGroupsChoices
                 frontend_type: html
 
