@@ -133,6 +133,37 @@ class WorkflowConfiguration implements ConfigurationInterface
                         ->prototype('scalar')
                         ->end()
                     ->end()
+                    ->arrayNode('view_attributes')
+                        ->prototype('variable')
+                            ->beforeNormalization()
+                                ->always(
+                                    function ($value) {
+                                        if (!is_array($value)) {
+                                            $value = array('attribute' => $value);
+                                        }
+                                        return $value;
+                                    }
+                                )
+                            ->end()
+                            ->validate()
+                                ->always(
+                                    function ($value) {
+                                        if (!isset($value['attribute']) && !isset($value['path'])) {
+                                            throw new \Exception('"attribute" or "path" is required option.');
+                                        }
+                                        if (isset($value['path']) && 0 !== strpos($value['path'], '$')) {
+                                            throw new \Exception('"path" should start with "$" symbol.');
+                                        }
+                                        if (!isset($value['attribute']) && !isset($value['label'])) {
+                                            throw new \Exception('"label" is required when "attribute" is empty.');
+                                        }
+                                        return $value;
+                                    }
+                                )
+                            ->end()
+                        ->end()
+                        /** Cannot add specific nodes in form_options, because it can contain any value*/
+                    ->end()
                 ->end()
             ->end();
 

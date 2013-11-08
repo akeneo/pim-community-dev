@@ -58,6 +58,12 @@ class StepAssembler extends AbstractAssembler
             }
         }
 
+        $viewAttributes = $this->assembleViewAttributes(
+            $this->getOption($formOptions, 'view_attributes', array()),
+            $name,
+            $existingAttributeNames
+        );
+
         $step = new Step();
         $step->setName($name)
             ->setLabel($options['label'])
@@ -66,9 +72,34 @@ class StepAssembler extends AbstractAssembler
             ->setIsFinal($this->getOption($options, 'is_final', false))
             ->setAllowedTransitions($this->getOption($options, 'allowed_transitions', array()))
             ->setFormType($this->getOption($options, 'form_type', WorkflowStepType::NAME))
-            ->setFormOptions($formOptions);
+            ->setFormOptions($formOptions)
+            ->setViewAttributes($viewAttributes);
 
         return $step;
+    }
+
+    /**
+     * @param array $viewAttributesOptions
+     * @param string $stepName
+     * @param array $existingAttributeNames
+     * @return array
+     * @throws UnknownAttributeException
+     */
+    protected function assembleViewAttributes(array $viewAttributesOptions, $stepName, array $existingAttributeNames)
+    {
+        $result = array();
+        foreach ($viewAttributesOptions as $viewAttributeOptions) {
+            if (isset($viewAttributeOptions['attribute'])) {
+                $attributeName = $viewAttributeOptions['attribute'];
+                if (!in_array($viewAttributeOptions['attribute'], $existingAttributeNames)) {
+                    throw new UnknownAttributeException(
+                        sprintf('Unknown attribute "%s" at step "%s"', $attributeName, $stepName)
+                    );
+                }
+            }
+            $result[] = new StepViewAttribute($viewAttributeOptions);
+        }
+        return $result;
     }
 
     /**

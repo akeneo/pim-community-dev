@@ -24,6 +24,11 @@ return array(
                     )
                 ),
                 'allowed_transitions' => array('first_transition'),
+                'view_attributes' => array(
+                    array('attribute' => 'first_attribute', 'view_type' => 'custom_view_type'),
+                    array('path' => '$first_attribute.name', 'label' => 'Custom label'),
+                    array('attribute' => 'first_attribute'),
+                ),
             )
         ),
         'attributes' => array(
@@ -98,6 +103,7 @@ return array(
                 'form_type' => 'custom_workflow_step',
                 'allowed_transitions' => array(),
                 'form_options' => array(),
+                'view_attributes' => array(),
             )
         ),
         'attributes' => array(),
