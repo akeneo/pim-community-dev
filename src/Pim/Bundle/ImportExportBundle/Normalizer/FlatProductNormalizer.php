@@ -45,9 +45,6 @@ class FlatProductNormalizer implements NormalizerInterface
      */
     protected $fields = array();
 
-    /** @var Pim\Bundle\CatalogBundle\Entity\Channel */
-    protected $channel;
-
     /**
      * Constructor
      *
@@ -69,8 +66,9 @@ class FlatProductNormalizer implements NormalizerInterface
      */
     public function normalize($object, $format = null, array $context = array())
     {
-        if (isset($context['channel'])) {
-            $this->channel = $context['channel'];
+        $scopeCode = null;
+        if (isset($context['scopeCode'])) {
+            $scopeCode = $context['scopeCode'];
         }
 
         $this->results = $this->normalizeValue($identifier = $object->getIdentifier());
@@ -82,13 +80,13 @@ class FlatProductNormalizer implements NormalizerInterface
         $this->normalizeCategories($object->getCategoryCodes());
 
         $filteredValues = $object->getValues()->filter(
-            function ($value) use ($identifier) {
+            function ($value) use ($identifier, $scopeCode) {
                 return (
                     ($value !== $identifier) &&
                     (
-                        ($this->channel == null) ||
+                        ($scopeCode == null) ||
                         (!$value->getAttribute()->getScopable()) ||
-                        ($value->getAttribute()->getScopable() && $value->getScope() == $this->channel->getCode())
+                        ($value->getAttribute()->getScopable() && $value->getScope() == $scopeCode)
                     )
                 );
             }
