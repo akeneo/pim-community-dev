@@ -61,6 +61,8 @@ class ControllersTest extends WebTestCase
 
     public function testUpdate()
     {
+        $this->markTestSkipped("BAP-1820");
+
         $this->client->request(
             'GET',
             $this->client->generate('oro_user_index', array('_format' =>'json')) .
@@ -105,6 +107,8 @@ class ControllersTest extends WebTestCase
 
     public function testApiGen()
     {
+        $this->markTestSkipped("BAP-1820");
+
         $this->client->request(
             'GET',
             $this->client->generate('oro_user_index', array('_format' =>'json')) .
