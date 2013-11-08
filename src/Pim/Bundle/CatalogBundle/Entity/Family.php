@@ -445,8 +445,10 @@ class Family implements TranslatableInterface
      */
     public function addAttributeRequirement(AttributeRequirement $requirement)
     {
-        $requirement->setFamily($this);
-        $this->requirements[] = $requirement;
+        if (!$this->requirements->contains($requirement)) {
+            $requirement->setFamily($this);
+            $this->requirements->add($requirement);
+        }
 
         return $this;
     }

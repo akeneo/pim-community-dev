@@ -1,6 +1,7 @@
 parameters:
-    pim_catalog.imagine.local_dir_resolver.class:    Pim\Bundle\CatalogBundle\Imagine\Cache\Resolver\LocalDirResolver
-    pim_catalog.event_listener.progress.class:       Pim\Bundle\CatalogBundle\EventListener\ProgressListener
+    pim_catalog.imagine.local_dir_resolver.class:                  Pim\Bundle\CatalogBundle\Imagine\Cache\Resolver\LocalDirResolver
+    pim_catalog.event_listener.progress.class:                     Pim\Bundle\CatalogBundle\EventListener\ProgressListener
+    pim_catalog.event_listener.create_attribute_requirement.class: Pim\Bundle\CatalogBundle\EventListener\CreateAttributeRequirementSubscriber
 
 services:
     # Attribute property types
@@ -35,6 +36,13 @@ services:
         class: %pim_catalog.event_listener.user_preferences.class%
         calls:
             - [ setContainer, [ '@service_container' ] ]
+        tags:
+            - { name: doctrine.event_subscriber }
+
+    pim_catalog.event_listener.create_attribute_requirement:
+        class: %pim_catalog.event_listener.create_attribute_requirement.class%
+        arguments:
+            - '@pim_catalog.factory.attribute_requirement'
         tags:
             - { name: doctrine.event_subscriber }
 
