@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
-
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\SegmentationTreeBundle\Entity\Repository\SegmentRepository;
@@ -52,8 +50,8 @@ class CategoryRepository extends SegmentRepository
         $rootAlias = $qb->getRootAliases();
         $firstRootAlias = $rootAlias[0];
 
-        $qb->select($qb->expr()->count('p'))
-           ->join($firstRootAlias .'.products', 'p');
+        $qb->select($qb->expr()->count('distinct p'))
+            ->join($firstRootAlias .'.products', 'p');
 
         return $qb->getQuery()->getSingleScalarResult();
     }

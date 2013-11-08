@@ -13,6 +13,9 @@ use Pim\Bundle\CatalogBundle\Factory\FamilyFactory;
  */
 class FamilyFactoryTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
         $this->productManager = $this->getProductManagerMock();
@@ -25,6 +28,9 @@ class FamilyFactoryTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * Test related method
+     */
     public function testCreateFamily()
     {
         $identifier = $this->getProductAttributeMock('sku');
@@ -45,10 +51,14 @@ class FamilyFactoryTest extends \PHPUnit_Framework_TestCase
         $this->attributeRequirementFactory
             ->expects($this->any())
             ->method('createAttributeRequirement')
-            ->will($this->returnValueMap(array(
-                array($identifier, $channel1, true, $requirement1),
-                array($identifier, $channel2, true, $requirement2),
-            )));
+            ->will(
+                $this->returnValueMap(
+                    array(
+                        array($identifier, $channel1, true, $requirement1),
+                        array($identifier, $channel2, true, $requirement2),
+                    )
+                )
+            );
 
         $family = $this->factory->createFamily();
 
@@ -57,10 +67,13 @@ class FamilyFactoryTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($identifier, $family->getAttributes()->first());
 
         $this->assertCount(2, $family->getAttributeRequirements());
-        $this->assertEquals(array(
-            'sku_channel1' => $requirement1,
-            'sku_channel2' => $requirement2,
-        ), $family->getAttributeRequirements());
+        $this->assertEquals(
+            array(
+                'sku_channel1' => $requirement1,
+                'sku_channel2' => $requirement2,
+            ),
+            $family->getAttributeRequirements()
+        );
     }
 
     /**
@@ -94,6 +107,8 @@ class FamilyFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param string $code
+     *
      * @return \Pim\Bundle\CatalogBundle\Entity\ProductAttribute
      */
     protected function getProductAttributeMock($code)
@@ -108,6 +123,8 @@ class FamilyFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param string $code
+     *
      * @return \Pim\Bundle\CatalogBundle\Entity\Channel
      */
     protected function getChannelMock($code)
@@ -122,6 +139,9 @@ class FamilyFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param ProductAttribute $attribute
+     * @param Channel          $channel
+     *
      * @return \Pim\Bundle\CatalogBundle\Entity\AttributeRequirement
      */
     protected function getAttributeRequirementMock($attribute, $channel)

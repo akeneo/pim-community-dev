@@ -37,7 +37,7 @@ Feature: Filter products per category
 
   Scenario: Successfully display all products classified in Trousers or its children on products page
     Given I am on the products page
-    When I check "Include sub-categories"
+    When I check the "Include sub-categories" switch
     And I select the "Catalog" tree
     And I filter per category "trousers"
     Then I should see products blue-jeans

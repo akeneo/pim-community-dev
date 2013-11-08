@@ -30,6 +30,17 @@ class ProductValueNotBlankValidator extends ConstraintValidator
             return;
         }
 
+        $this->validateData($value, $constraint);
+    }
+
+    /**
+     * Validate the product value data
+     *
+     * @param ProductValueInterface $value
+     * @param Constraint            $constraint
+     */
+    protected function validateData(ProductValueInterface $value, Constraint $constraint)
+    {
         $data = $value->getData();
 
         if ($data === null) {

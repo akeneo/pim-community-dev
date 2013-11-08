@@ -14,6 +14,7 @@ Important Note: this application is not production ready and is intended for eva
 
 Requirements
 ------------
+## System
  - PHP 5.4.4 or above
  - PHP Modules:
     - php5-curl
@@ -29,6 +30,11 @@ Requirements
 
 Akeneo PIM is based on Symfony 2, Doctrine 2 and [OroPlatform][3].
 These dependencies will be installed automatically with [Composer][2].
+
+## Web browsers
+ - tested : Chrome & Firefox
+ - supported : IE 10, Safari
+ - not supported : IE < 10
 
 Installation instructions
 -------------------------
@@ -114,7 +120,7 @@ Configure crontab
 To ensure that completeness is as up to date as possible, you can configure the following crontab
 line:
 
-    */5 * * * * php app/console pim:product:completeness-calculator > /tmp/completeness.log
+    */2 * * * * php app/console pim:completeness:calculate > /tmp/completeness.log
 
 In case you import data without running the versionning system in real time, you can make sure
 the versionning is recalculated appropriately with this crontab line (assuming you filled the 

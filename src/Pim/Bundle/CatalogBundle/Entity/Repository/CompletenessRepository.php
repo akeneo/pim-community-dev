@@ -93,9 +93,7 @@ SQL;
      */
     public function createChannelCompletenesses(Channel $channel)
     {
-        $this->createCompletenesses(array(
-            'channel' => $channel->getId()
-        ));
+        $this->createCompletenesses(array('channel' => $channel->getId()));
     }
 
     /**
@@ -105,9 +103,7 @@ SQL;
      */
     public function createProductCompletenesses(Product $product)
     {
-        $this->createCompletenesses(array(
-            'product' => $product->getId()
-        ));
+        $this->createCompletenesses(array('product' => $product->getId()));
     }
 
     /**
@@ -137,7 +133,8 @@ SQL;
     /**
      * Insert missing completeness according to the criteria
      *
-     * @param array $criteria
+     * @param array   $criteria
+     * @param inreger $limit
      */
     protected function createCompletenesses(array $criteria, $limit = null)
     {
@@ -158,7 +155,8 @@ SQL;
     /**
      * Get the sql query to insert completeness
      *
-     * @param array $criteria
+     * @param array   $criteria
+     * @param inreger $limit
      *
      * @return string
      */

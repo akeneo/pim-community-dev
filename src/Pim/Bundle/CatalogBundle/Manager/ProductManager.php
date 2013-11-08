@@ -231,11 +231,11 @@ class ProductManager extends FlexibleManager
     public function save(ProductInterface $product, $recalculate = true, $flush = true)
     {
         $this->storageManager->persist($product);
-        $this->getCompletenessRepository()->schedule($product);
 
         if ($flush) {
             $this->storageManager->flush();
         }
+        $this->getCompletenessRepository()->schedule($product);
 
         if ($recalculate) {
             $this->getCompletenessRepository()->createProductCompletenesses($product);
