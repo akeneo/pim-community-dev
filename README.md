@@ -14,6 +14,7 @@ Important Note: this application is not production ready and is intended for eva
 
 Requirements
 ------------
+## System
  - PHP 5.4.4 or above
  - PHP Modules:
     - php5-curl
@@ -30,8 +31,7 @@ Requirements
 Akeneo PIM is based on Symfony 2, Doctrine 2 and [OroPlatform][3].
 These dependencies will be installed automatically with [Composer][2].
 
-Web browsers
-------------
+## Web browsers
  - tested : Chrome & Firefox
  - supported : IE 10, Safari
  - not supported : IE < 10
