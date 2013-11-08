@@ -9,8 +9,8 @@ Formatters
 ### Field
 ```
 column_name:
-    type: field
-    frontend_type: date|datetime|decimal|integer|percent|options|text|html|boolean # optional default string
+    type: field # default value `field`, so this key could be skipped here
+    frontend_type: date|datetime|decimal|integer|percent|select|text|html|boolean # optional default string
     data_name: someAlias.someField # optional, key in result that should represent this field
 ```
 Represents default data field.
@@ -52,6 +52,8 @@ column_name:
     callable: @link # required
 ```
 Used when field should be formatted using some callback, format [see](./../../link.md).
+
+**Note:** _option `frontened_type` could be applied to formatter of any type, it will be used for formatting cell data on frontend_
 
 Customization
 -----------
