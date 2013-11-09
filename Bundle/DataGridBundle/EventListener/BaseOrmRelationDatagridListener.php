@@ -30,9 +30,9 @@ class BaseOrmRelationDatagridListener
     protected $isEditMode;
 
     /**
-     * @param string $paramName Parameter name that should be taken from request and binded to query
+     * @param string            $paramName  Parameter name that should be taken from request and binded to query
      * @param RequestParameters $requestParams
-     * @param bool $isEditMode whether or not to add data_in, data_not_in params to query
+     * @param bool              $isEditMode whether or not to add data_in, data_not_in params to query
      */
     public function __construct($paramName, RequestParameters $requestParams, $isEditMode = true)
     {
@@ -62,10 +62,23 @@ class BaseOrmRelationDatagridListener
             /** @var QueryBuilder $query */
             $queryBuilder = $datasource->getQueryBuilder();
 
+            $additionalParams = $this->requestParams->get(RequestParameters::ADDITIONAL_PARAMETERS);
+            if (isset($additionalParams[self::GRID_PARAM_DATA_IN])) {
+                $dataIn = $additionalParams[self::GRID_PARAM_DATA_IN];
+            } else {
+                $dataIn = [0];
+            }
+
+            if (isset($additionalParams[self::GRID_PARAM_DATA_NOT_IN])) {
+                $dataOut = $additionalParams[self::GRID_PARAM_DATA_NOT_IN];
+            } else {
+                $dataOut = [0];
+            }
+
             $queryParameters = array(
                 $this->paramName => $this->requestParams->get($this->paramName, null),
-                'data_in'        => $this->requestParams->get(self::GRID_PARAM_DATA_IN, [0]),
-                'data_not_in'    => $this->requestParams->get(self::GRID_PARAM_DATA_NOT_IN, [0]),
+                'data_in'        => $dataIn,
+                'data_not_in'    => $dataOut,
             );
 
             if (!$this->isEditMode) {

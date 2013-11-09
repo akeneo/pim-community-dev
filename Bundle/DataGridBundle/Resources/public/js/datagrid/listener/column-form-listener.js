@@ -3,6 +3,8 @@ define(['jquery', 'underscore', 'oro/translator', 'oro/mediator', 'oro/modal', '
 function($, _, __, mediator, Modal, AbstractListener) {
     'use strict';
 
+    var initialized = false;
+
     /**
      * Listener for entity edit form and datagrid
      *
@@ -254,15 +256,25 @@ function($, _, __, mediator, Modal, AbstractListener) {
                 this.confirmModal[type].on('ok', _.bind(callback, this));
             }
             this.confirmModal[type].open();
+        },
+        _initHandler: function (grid, $el) {
+            var metadata = $el.data('metadata'),
+                options = metadata.options || {};
+            if (options.columnListener) {
+                initialized = true;
+                new ColumnFormListener(_.extend({grid: grid}, metadata.options.columnListener));
+            }
         }
     });
 
     ColumnFormListener.init = function () {
-        mediator.on('datagrid:created', function (grid, $el) {
-            var metadata = $el.data('metadata'),
-                options = metadata.options || {};
-            if (options.columnListener) {
-                new ColumnFormListener(_.extend({grid: grid}, metadata.options.columnListener));
+        var self = this;
+        initialized = false;
+
+        mediator.once('datagrid:created', self.prototype._initHandler);
+        mediator.once('hash_navigation_request:start', function() {
+            if (!initialized) {
+                mediator.off('datagrid:created', self.prototype._initHandler);
             }
         });
     };

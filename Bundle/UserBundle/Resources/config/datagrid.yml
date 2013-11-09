@@ -275,7 +275,8 @@ datagrid:
             email:
                 label: oro.user.grid.users.columns.email
 
-        properties: ~
+        properties:
+            id: ~
 
         sorters:
             columns:

@@ -184,7 +184,7 @@ function($, _, Backbone, __, tools, mediator, registry, LoadingMask,
      */
     return function (builders) {
         var $container = $(document),
-            $grids = ($container.is(gridSelector) && $container) || $container.find(gridSelector);
+            $grids = $container.find(gridSelector);
         $grids.each(function (i, el) {
             var $el = $(el);
             _.each(builders, function (builder) {

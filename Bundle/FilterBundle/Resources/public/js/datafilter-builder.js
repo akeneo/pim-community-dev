@@ -66,19 +66,19 @@ function($, _, tools,  mediator, FiltersManager) {
         },
         initHandler = function (collection, $el) {
             methods.initBuilder.call({$el: $el, collection: collection});
+            initialized = true;
         };
 
     return {
         init: function () {
-            if (initialized) {
-                return;
-            }
-            mediator.on('datagrid_collection_set_after', initHandler);
-            initialized = true;
-        },
-        destroy: function () {
-            mediator.off('datagrid_collection_set_after', initHandler);
             initialized = false;
+
+            mediator.once('datagrid_collection_set_after', initHandler);
+            mediator.once('hash_navigation_request:start', function() {
+                if (!initialized) {
+                    mediator.off('datagrid_collection_set_after', initHandler);
+                }
+            });
         }
     };
 });

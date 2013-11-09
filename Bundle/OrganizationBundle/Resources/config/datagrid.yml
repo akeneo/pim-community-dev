@@ -139,6 +139,7 @@ datagrid:
             hasCurrentBusinessUnit:
                 label: Has business unit
                 type: field
+                editable: true
                 frontend_type: boolean
         filters:
             columns:
