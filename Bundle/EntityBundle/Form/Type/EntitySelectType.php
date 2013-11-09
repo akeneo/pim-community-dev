@@ -56,7 +56,7 @@ class EntitySelectType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'placeholder'        => 'oro.entity.form.choose_entity',
+                'placeholder'        => 'oro.form.choose_value',
                 'allowClear'         => true,
                 'autocomplete_alias' => 'entity_select',
             )
