@@ -21,7 +21,7 @@
                         }
                         var callback = function(data) {
                             if (data.status) {
-                                $field.siblings('select.select2-offscreen').first().append('<option value="' + data.option.id + '" selected="selected">' + data.option.label + '</option').select2();
+                                $field.siblings('select.select2-offscreen').first().append('<option value="' + data.option.id + '" selected="selected">' + data.option.label + '</option').select2().trigger('change');
                                 messenger.notificationFlashMessage('success', '{{ "flash.attribute.option created"|trans }}');
                             } else {
                                 messenger.notificationFlashMessage('error', '{{ "flash.attribute.error creating option"|trans }}');
