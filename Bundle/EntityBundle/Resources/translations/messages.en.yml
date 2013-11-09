@@ -3,3 +3,5 @@ oro:
         controller:
             message:
                 saved: "Entity saved"
+        form:
+            choose_entity: Choose an entity...

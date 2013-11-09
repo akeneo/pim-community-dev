@@ -6,8 +6,9 @@ function($, _) {
     /**
      * @export oro/select2-config
      */
-    var Select2Config = function (config, url, perPage, excluded) {
+    var Select2Config = function (config, attachedElementType, url, perPage, excluded) {
         this.config = config;
+        this.attachedElementType = attachedElementType;
         this.url = url;
         this.perPage = perPage;
         this.excluded = excluded;
@@ -22,7 +23,7 @@ function($, _) {
             if (this.config.formatSelection === undefined) {
                 this.config.formatSelection = this.format(this.config.selection_template || false);
             }
-            if (this.config.initSelection === undefined) {
+            if (this.config.initSelection === undefined && this.attachedElementType !== 'select') {
                 this.config.initSelection = _.bind(this.initSelection, this);
             }
 
@@ -43,7 +44,7 @@ function($, _) {
                 return data;
             };
 
-            if (this.config.ajax === undefined) {
+            if (this.config.ajax === undefined && this.attachedElementType !== 'select') {
                 this.config.ajax = {
                     'url': this.url,
                     'data': function (query, page) {
@@ -58,12 +59,14 @@ function($, _) {
                     }
                 };
             }
-            var resultsMethod = this.config.ajax.results;
-            this.config.ajax.results = function(data, page) {
-                return filterData(resultsMethod(data, page));
-            };
-            if (this.config.ajax.quietMillis === undefined) {
-                this.config.ajax.quietMillis = 700;
+            if (this.config.ajax !== undefined) {
+                var resultsMethod = this.config.ajax.results;
+                this.config.ajax.results = function(data, page) {
+                    return filterData(resultsMethod(data, page));
+                };
+                if (this.config.ajax.quietMillis === undefined) {
+                    this.config.ajax.quietMillis = 700;
+                }
             }
             if (this.config.escapeMarkup === undefined) {
                 this.config.escapeMarkup = function (m) { return m; };

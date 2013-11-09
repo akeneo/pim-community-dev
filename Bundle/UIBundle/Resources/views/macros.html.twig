@@ -248,11 +248,13 @@
         title - title of sub block
         data - array with data fields (i.e. form_row() or attibuteRow() data)
         isForm - flag what scroll block mut contain the form
-        useSpan - flag to indicate is subblock must have span6 css class or not
+        useSpan - flag to indicate is subblock must have css class specified in spanClass parameter or not
+        spanClass - css class name of subblock, if this parameter is not specified the css class is span6
 #}
-{% macro scrollSubblock(title, data, isForm, useSpan) %}
+{% macro scrollSubblock(title, data, isForm, useSpan, spanClass) %}
+    {% set spanClass = spanClass|default('span6') %}
     {% if useSpan is not defined or useSpan == true %}
-        {% set span = 'span6' %}
+        {% set span = spanClass %}
     {% else %}
         {% set span = '' %}
     {% endif %}
@@ -279,19 +281,20 @@
                 'data' - array with data fields (i.e. form_row() or attibuteRow() data)
             ]
         isForm - flag what scroll block mut contain the form
+        useSubBlockDivider - indicates if 'row-fluid-divider' css class should be added to a row when there are more than one subblocks
 #}
-{% macro scrollBlock(blockId, title, subblocks, isForm) %}
+{% macro scrollBlock(blockId, title, subblocks, isForm, useSubBlockDivider) %}
     {% set cols = subblocks|length %}
     <div class="usser-row">
         <h4 id="{{ blockId }}" class="scrollspy-title">{{ title|trans }}</h4>
-        <div class="row-fluid {% if cols > 1 %}row-fluid-divider{% endif %}">
+        <div class="row-fluid {% if cols > 1 and (useSubBlockDivider is not defined or useSubBlockDivider == true) %}row-fluid-divider{% endif %}">
             {% if isForm is defined and isForm == true %}
                 <fieldset class="form-horizontal">
             {% else %}
                 <div class="form-horizontal">
             {% endif %}
                 {% for subblock in subblocks %}
-                    {{ _self.scrollSubblock(subblock.title|length ? subblock.title : null, subblock.data, isForm, subblock.useSpan is defined ? subblock.useSpan : true) }}
+                    {{ _self.scrollSubblock(subblock.title|length ? subblock.title : null, subblock.data, isForm, subblock.useSpan is defined ? subblock.useSpan : true, subblock.spanClass is defined ? subblock.spanClass : '') }}
                 {% endfor %}
             {% if isForm is defined and isForm == true %}
                 </fieldset>
@@ -314,6 +317,7 @@
                 [
                     'title' - title of scroll block
                     'class' - additional css class for scroll block menu item
+                    'useSubBlockDivider' - [optional] indicates if 'row-fluid-divider' css class should be added to a row when there are more than one subblocks
                     'subblocks' - array with scroll sub blocks:
                         [
                             'title' - title of sub block
@@ -355,7 +359,7 @@
         {% endif %}
         <div data-spy="scroll" data-target="#{{ dataTarget }}" data-offset="50" class="scrollspy container-fluid scrollable-container{% if isForm %} form-container{% endif %}">
             {% for scrollBlock in dataBlocks %}
-                {{ _self.scrollBlock("scroll-" ~ loop.index, scrollBlock.title, scrollBlock.subblocks, isForm) }}
+                {{ _self.scrollBlock("scroll-" ~ loop.index, scrollBlock.title, scrollBlock.subblocks, isForm, scrollBlock.useSubBlockDivider is defined ? scrollBlock.useSubBlockDivider : true) }}
             {% endfor %}
             {% if data.hiddenData is defined or isForm %}
                 <div class="hide">

@@ -1,26 +1,34 @@
 parameters:
-    oro_entity.form.type.custom_entity.class:                  Oro\Bundle\EntityBundle\Form\Type\CustomEntityType
-    oro_entity.form.type.entity_select.class:                  Oro\Bundle\EntityBundle\Form\Type\EntitySelectType
-    oro_entity.form.handler.entity_select.class:               Oro\Bundle\EntityBundle\Form\Handler\EntitySelectHandler
+    oro_entity.form.type.custom_entity.class:         Oro\Bundle\EntityBundle\Form\Type\CustomEntityType
+    oro_entity.type.entity_choice.class:              Oro\Bundle\EntityBundle\Form\Type\EntityChoiceType
+    oro_entity.form.type.entity_select.class:         Oro\Bundle\EntityBundle\Form\Type\EntitySelectType
+    oro_entity.form.handler.entity_select.class:      Oro\Bundle\EntityBundle\Form\Handler\EntitySelectHandler
 
 services:
     oro_entity.form.type.custom_entity:
-        class:                                                 %oro_entity.form.type.custom_entity.class%
+        class: %oro_entity.form.type.custom_entity.class%
         arguments:
             - @oro_entity_config.config_manager
             - @router
         tags:
             - { name: form.type, alias: custom_entity_type }
 
+    oro_entity.type.entity_choice:
+        class: %oro_entity.type.entity_choice.class%
+        arguments:
+            - @oro_entity_config.provider.entity
+        tags:
+            - { name: form.type, alias: oro_entity_choice }
+
     oro_entity.form.type.entity_select:
-        class:                                                 %oro_entity.form.type.entity_select.class%
+        class: %oro_entity.form.type.entity_select.class%
         arguments:
             - @doctrine.orm.entity_manager
         tags:
             - { name: form.type, alias: oro_entity_select }
 
     oro_entity.form.handler.entity_select:
-        class:                                                 %oro_entity.form.handler.entity_select.class%
+        class: %oro_entity.form.handler.entity_select.class%
         arguments:
             - @doctrine.orm.entity_manager
         tags:

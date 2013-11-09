@@ -60,11 +60,11 @@ class FormTypeExtension extends AbstractTypeExtension
     /**
      * Constructor
      *
-     * @param SecurityContextInterface $securityContext
+     * @param SecurityContextInterface  $securityContext
      * @param OwnershipMetadataProvider $ownershipMetadataProvider
-     * @param BusinessUnitManager $manager
-     * @param SecurityFacade $securityFacade
-     * @param TranslatorInterface $translator
+     * @param BusinessUnitManager       $manager
+     * @param SecurityFacade            $securityFacade
+     * @param TranslatorInterface       $translator
      */
     public function __construct(
         SecurityContextInterface $securityContext,
@@ -73,12 +73,12 @@ class FormTypeExtension extends AbstractTypeExtension
         SecurityFacade $securityFacade,
         TranslatorInterface $translator
     ) {
-        $this->securityContext = $securityContext;
+        $this->securityContext           = $securityContext;
         $this->ownershipMetadataProvider = $ownershipMetadataProvider;
-        $this->manager = $manager;
-        $this->securityFacade = $securityFacade;
-        $this->translator = $translator;
-        $this->fieldName = RecordOwnerDataListener::OWNER_FIELD_NAME;
+        $this->manager                   = $manager;
+        $this->securityFacade            = $securityFacade;
+        $this->translator                = $translator;
+        $this->fieldName                 = RecordOwnerDataListener::OWNER_FIELD_NAME;
     }
 
     /**
@@ -93,7 +93,7 @@ class FormTypeExtension extends AbstractTypeExtension
 
     /**
      * @param FormBuilderInterface $builder
-     * @param array $options
+     * @param array                $options
      * @throws \LogicException when getOwner method isn't implemented for entity with ownership type
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -166,10 +166,10 @@ class FormTypeExtension extends AbstractTypeExtension
                 'text',
                 array(
                     'disabled' => true,
-                    'data' => $owner ? $owner->getName() : '',
-                    'mapped' => false,
+                    'data'     => $owner ? $owner->getName() : '',
+                    'mapped'   => false,
                     'required' => false,
-                    'label' => $this->fieldLabel
+                    'label'    => $this->fieldLabel
                 )
             );
         }
@@ -189,7 +189,7 @@ class FormTypeExtension extends AbstractTypeExtension
                 $this->fieldName,
                 'oro_user_select',
                 array(
-                    'required' => true,
+                    'required'    => true,
                     'constraints' => array(new NotBlank())
                 )
             );
@@ -198,8 +198,8 @@ class FormTypeExtension extends AbstractTypeExtension
 
     /**
      * @param FormBuilderInterface $builder
-     * @param User $user
-     * @param string $className
+     * @param User                 $user
+     * @param string               $className
      */
     protected function addBusinessUnitOwnerField(FormBuilderInterface $builder, User $user, $className)
     {
@@ -213,7 +213,7 @@ class FormTypeExtension extends AbstractTypeExtension
         if (!new $className instanceof BusinessUnit) {
             $validation = array(
                 'constraints' => array(new NotBlank()),
-                'required' => true,
+                'required'    => true,
             );
         } else {
             $this->fieldLabel = 'Parent';
@@ -230,10 +230,13 @@ class FormTypeExtension extends AbstractTypeExtension
                 array_merge(
                     array(
                         'empty_value' => $this->translator->trans('oro.business_unit.form.choose_business_user'),
-                        'choices' => $businessUnits,
-                        'mapped' => true,
-                        'attr' => array('is_safe' => true),
-                        'label' => $this->fieldLabel
+                        'choices'     => $businessUnits,
+                        'mapped'      => true,
+                        'label'       => $this->fieldLabel,
+                        'configs'     => array(
+                            'is_translate_option' => false,
+                            'is_safe'             => true
+                        )
                     ),
                     $validation
                 )
@@ -246,11 +249,11 @@ class FormTypeExtension extends AbstractTypeExtension
                     'entity',
                     array_merge(
                         array(
-                            'class' => 'OroOrganizationBundle:BusinessUnit',
+                            'class'    => 'OroOrganizationBundle:BusinessUnit',
                             'property' => 'name',
-                            'choices' => $businessUnits,
-                            'mapped' => true,
-                            'label' => $this->fieldLabel
+                            'choices'  => $businessUnits,
+                            'mapped'   => true,
+                            'label'    => $this->fieldLabel
                         ),
                         $validation
                     )
@@ -261,20 +264,20 @@ class FormTypeExtension extends AbstractTypeExtension
 
     /**
      * @param FormBuilderInterface $builder
-     * @param User $user
+     * @param User                 $user
      */
     protected function addOrganizationOwnerField(FormBuilderInterface $builder, User $user)
     {
         $fieldOptions = array(
-            'class' => 'OroOrganizationBundle:Organization',
-            'property' => 'name',
-            'mapped' => true,
-            'required' => true,
+            'class'       => 'OroOrganizationBundle:Organization',
+            'property'    => 'name',
+            'mapped'      => true,
+            'required'    => true,
             'constraints' => array(new NotBlank())
         );
         if (!$this->assignIsGranted) {
             $organizations = array();
-            $bu = $user->getBusinessUnits();
+            $bu            = $user->getBusinessUnits();
             /** @var $businessUnit BusinessUnit */
             foreach ($bu as $businessUnit) {
                 $organizations[] = $businessUnit->getOrganization();
@@ -287,14 +290,14 @@ class FormTypeExtension extends AbstractTypeExtension
     /**
      * Prepare choice options for a hierarchical select
      *
-     * @param $options
+     * @param     $options
      * @param int $level
      * @return array
      */
     protected function getTreeOptions($options, $level = 0)
     {
         $choices = array();
-        $blanks = str_repeat("&nbsp;&nbsp;&nbsp;", $level);
+        $blanks  = str_repeat("&nbsp;&nbsp;&nbsp;", $level);
         foreach ($options as $option) {
             $choices += array($option['id'] => $blanks . $option['name']);
             if (isset($option['children'])) {

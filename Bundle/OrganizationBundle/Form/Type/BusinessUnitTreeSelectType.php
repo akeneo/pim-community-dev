@@ -33,6 +33,18 @@ class BusinessUnitTreeSelectType extends AbstractType
     /**
      * {@inheritdoc}
      */
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(
+            array(
+                'configs' => array()
+            )
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
         return 'oro_business_unit_tree_select';
