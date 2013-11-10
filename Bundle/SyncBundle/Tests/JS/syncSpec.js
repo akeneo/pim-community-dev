@@ -1,5 +1,5 @@
-/* global require, describe, it, expect, beforeEach, afterEach, spyOn, jasmine */
-require(['oro/sync'],
+/* global define, require, describe, it, expect, beforeEach, afterEach, spyOn, jasmine */
+define(['oro/sync'],
 function (sync) {
     'use strict';
 

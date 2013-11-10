@@ -1,5 +1,5 @@
-/* global require, describe, it, expect */
-require(['oro/mediator', 'backbone'],
+/* global define, describe, it, expect */
+define(['oro/mediator', 'backbone'],
 function(mediator, Backbone) {
     'use strict';
 

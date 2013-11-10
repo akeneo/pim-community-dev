@@ -30,11 +30,11 @@ Paths used in configuratin:
 ## Running
 To run test call command
 ```bash
-karma start app/karma.config.js.dist --single-run
+karma start app/karma.conf.js.dist --single-run
 ```
 Or if you have **Karma** installed locally:
 ```bash
-./node_module/.bin/karma start app/karma.config.js.dist --single-run
+./node_modules/.bin/karma start app/karma.conf.js.dist --single-run
 ```
 To run testsuite with custom configuration, you might find useful command line parameters which overwrites parameters in configuration file (see [documentation](http://karma-runner.github.io/0.10/config/files.html)). But usually it's better to create own configuration file, just copy `app/karma.config.js.dist` file to `app/karma.config.js` and modify it.
 
@@ -46,7 +46,7 @@ For developer which use **PHPStorm** will be usefull couple extensions:
 How to write tests with **Jasmine** see [documentation](http://pivotal.github.io/jasmine/).
 Here's just trivial case, that's how look spec for `oro/mediator` module:
 ```js
-require(['oro/mediator', 'backbone'],
+define(['oro/mediator', 'backbone'],
 function(mediator, Backbone) {
     'use strict';
 
@@ -58,7 +58,7 @@ function(mediator, Backbone) {
     });
 });
 ```
-First, in require section necessary modules are loaded. And then, inside tree of `describe()` and `it()` calls specified tests assertions.
+First, in define section required modules are loaded. And then, inside tree of `describe()` and `it()` calls specified tests assertions.
 
 This approach allows to test public API of a module. But what about mocking depended on modules and internal module's functional.
 
@@ -66,7 +66,7 @@ Here comes **[karma-requirejs-exposure](https://github.com/laboro/karma-requirej
 
 See example how it works:
 ```js
-require(['some/module'],
+define(['some/module'],
 function(module) {
   'use strict';
 
