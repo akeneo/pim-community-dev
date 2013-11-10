@@ -58,7 +58,7 @@ class JobExecutionController extends AbstractDoctrineController
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
      * @param RegistryInterface        $doctrine
-     * @param DatagridHelperInterface  $dataGridHelper
+     * @param DatagridHelperInterface  $datagridHelper
      * @param BatchLogHandler          $batchLogHandler
      * @param JobExecutionArchiver     $archiver
      * @param string                   $jobType

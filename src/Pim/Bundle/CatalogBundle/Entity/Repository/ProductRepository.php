@@ -145,6 +145,12 @@ class ProductRepository extends FlexibleEntityRepository
         return $qb->getQuery()->getResult();
     }
 
+    /**
+     * Find products with missing completeness
+     * @param Channel $channel
+     *
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
     public function findByMissingCompleteness(Channel $channel)
     {
         return $this
