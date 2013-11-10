@@ -1,5 +1,5 @@
-/* global define, require, describe, it, expect, beforeEach, afterEach, spyOn, jasmine */
-define(['oro/sync/wamp', 'backbone'],
+/* global require, describe, it, expect, beforeEach, afterEach, spyOn, jasmine */
+require(['oro/sync/wamp', 'backbone'],
 function(Wamp, Backbone) {
     'use strict';
 
