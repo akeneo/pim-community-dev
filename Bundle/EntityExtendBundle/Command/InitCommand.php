@@ -124,9 +124,20 @@ class InitCommand extends ContainerAwareCommand
                 );
             }
 
-            $mode     = isset($fieldConfig['mode']) ? $fieldConfig['mode'] : ConfigModelManager::MODE_DEFAULT;
-            $owner    = isset($fieldConfig['owner']) ? $fieldConfig['owner'] : ExtendManager::OWNER_SYSTEM;
-            $isExtend = isset($fieldConfig['is_extend']) ? $fieldConfig['is_extend'] : false;
+            $mode = ConfigModelManager::MODE_DEFAULT;
+            if (isset($fieldConfig['mode'])) {
+                $mode = $fieldConfig['mode'];
+            }
+
+            $owner = ExtendManager::OWNER_SYSTEM;
+            if (isset($fieldConfig['owner'])) {
+                $owner = $fieldConfig['owner'];
+            }
+
+            $isExtend = false;
+            if (isset($fieldConfig['is_extend'])) {
+                $isExtend = $fieldConfig['is_extend'];
+            }
 
             $extendManager->createField(
                 $className,
