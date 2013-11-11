@@ -67,9 +67,6 @@ class OroBuildCommand extends ContainerAwareCommand
             }
 
             $output->writeln('Cleaning up');
-            if (false === @unlink($mainConfigFilePath)) {
-                throw new \RuntimeException('Unable to remove file ' . $mainConfigFilePath);
-            }
             if (false === @unlink($buildConfigFilePath)) {
                 throw new \RuntimeException('Unable to remove file ' . $buildConfigFilePath);
             }

@@ -14,6 +14,7 @@ datagrid:
         columns: ~ # no static columns
 
         properties:
+            id: ~
             update_link:
                 type: callback
                 callable: @oro_entity.event_listener.custom_entity_grid_subscriber->getLinkProperty

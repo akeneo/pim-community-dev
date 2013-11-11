@@ -63,6 +63,7 @@ datagrid:
                 frontend_type: boolean
 
         properties:
+            id: ~
             update_link:
                 type: url
                 route: oro_notification_emailnotification_update
@@ -82,7 +83,7 @@ datagrid:
                 link: update_link
                 rowAction: true
             delete:
-                type: navigate
+                type: delete
                 label: Delete
                 acl_resource: oro_notification_emailnotification_remove
                 icon: trash

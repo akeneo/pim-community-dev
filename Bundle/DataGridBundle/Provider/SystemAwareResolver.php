@@ -44,8 +44,8 @@ class SystemAwareResolver implements ContainerAwareInterface
 
                 // merge them and remove extend directive
                 $datagridDefinition = array_merge_recursive(
-                    $datagridDefinition,
-                    $definition->toArray()
+                    $definition->toArray(),
+                    $datagridDefinition
                 );
                 unset($datagridDefinition['extend']);
 

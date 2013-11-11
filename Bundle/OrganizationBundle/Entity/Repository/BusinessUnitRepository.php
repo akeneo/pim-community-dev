@@ -95,9 +95,10 @@ class BusinessUnitRepository extends EntityRepository
     {
         $options = [];
 
-        $result = $this->createQueryBuilder($alias)
+        $result = $this->_em->createQueryBuilder()
+            ->select($alias)
+            ->from($entity, $alias)
             ->add('select', $alias . '.' . $field)
-            ->add('from', $entity . ' ' . $alias)
             ->distinct($alias . '.' . $field)
             ->getQuery()
             ->getArrayResult();

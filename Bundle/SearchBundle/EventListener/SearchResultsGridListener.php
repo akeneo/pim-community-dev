@@ -7,6 +7,7 @@ use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 use Oro\Bundle\DataGridBundle\Event\BuildAfter;
 use Oro\Bundle\SearchBundle\Extension\Pager\IndexerQuery;
 use Oro\Bundle\SearchBundle\Engine\Indexer;
+use Oro\Bundle\SearchBundle\Extension\SearchDatasource;
 use Oro\Bundle\SearchBundle\Query\Query;
 
 class SearchResultsGridListener
@@ -39,7 +40,7 @@ class SearchResultsGridListener
     public function onBuildAfter(BuildAfter $event)
     {
         $datasource = $event->getDatagrid()->getDatasource();
-        if ($datasource instanceof OrmDatasource) {
+        if ($datasource instanceof SearchDatasource) {
             /** @var $query Query */
             $query = new IndexerQuery(
                 $this->indexer,
