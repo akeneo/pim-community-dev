@@ -1,10 +1,10 @@
 <?php
 
-namespace Oro\Bundle\NotificationBundle\EventListener;
+namespace Oro\Bundle\NotificationBundle\Provider;
 
 use Doctrine\ORM\EntityManager;
 
-class EmailNotificationGridListener
+class EmailNotificationGridHelper
 {
     /** @var EntityManager */
     protected $em;
