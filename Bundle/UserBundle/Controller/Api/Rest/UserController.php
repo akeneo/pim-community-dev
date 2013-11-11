@@ -2,11 +2,9 @@
 
 namespace Oro\Bundle\UserBundle\Controller\Api\Rest;
 
-use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-
-use Oro\Bundle\SoapBundle\Controller\Api\Rest\RestController;
-use Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager;
 use Symfony\Component\Form\FormInterface;
+
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 
 use FOS\Rest\Util\Codes;
 use FOS\RestBundle\Routing\ClassResourceInterface;
@@ -15,8 +13,10 @@ use FOS\RestBundle\Controller\Annotations\QueryParam;
 
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+
+use Oro\Bundle\SoapBundle\Controller\Api\Rest\RestController;
+use Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager;
 use Oro\Bundle\SoapBundle\Form\Handler\ApiFormHandler;
-use Oro\Bundle\SoapBundle\Entity\Manager\ApiFlexibleEntityManager;
 
 /**
  * @NamePrefix("oro_api_")
