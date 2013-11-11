@@ -281,12 +281,7 @@ class OroWorkflowStepTest extends FormIntegrationTestCase
      */
     protected function createWorkflow($workflowName)
     {
-        $workflow = new Workflow(
-            new StepManager(),
-            new AttributeManager(),
-            new TransitionManager()
-        );
-
+        $workflow = new Workflow();
         $workflow->setName($workflowName);
 
         return $workflow;

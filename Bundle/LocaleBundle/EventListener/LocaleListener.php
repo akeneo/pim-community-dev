@@ -14,14 +14,21 @@ class LocaleListener implements EventSubscriberInterface
     /**
      * @var LocaleSettings
      */
-    private $localeSettings;
+    protected $localeSettings;
+
+    /**
+     * @var bool
+     */
+    protected $isInstalled;
 
     /**
      * @param LocaleSettings $localeSettings
+     * @param string|bool|null $installed
      */
-    public function __construct(LocaleSettings $localeSettings)
+    public function __construct(LocaleSettings $localeSettings, $installed)
     {
         $this->localeSettings = $localeSettings;
+        $this->isInstalled = !empty($installed);
     }
 
     /**
@@ -33,10 +40,12 @@ class LocaleListener implements EventSubscriberInterface
             return;
         }
 
-        if (!$request->attributes->get('_locale')) {
-            $request->setLocale($this->localeSettings->getLanguage());
+        if ($this->isInstalled) {
+            if (!$request->attributes->get('_locale')) {
+                $request->setLocale($this->localeSettings->getLanguage());
+            }
+            $this->setPhpDefaultLocale($this->localeSettings->getLocale());
         }
-        $this->setPhpDefaultLocale($this->localeSettings->getLocale());
     }
 
     /**
