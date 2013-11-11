@@ -29,10 +29,11 @@ datagrid:
                 frontend_type: select
                 choices: @oro_entity_config.event_listener.entityconfig_grid_listener->getChoicesModule
             updated:
-                label: Updated at
+                label: Update at
                 frontend_type: datetime
 
         properties:
+            id: ~
             update_link:
                 type: url
                 route: oro_entityconfig_update

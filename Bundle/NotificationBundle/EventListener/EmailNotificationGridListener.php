@@ -4,8 +4,6 @@ namespace Oro\Bundle\NotificationBundle\EventListener;
 
 use Doctrine\ORM\EntityManager;
 
-use Oro\Bundle\DataGridBundle\Event\BuildAfter;
-
 class EmailNotificationGridListener
 {
     /** @var EntityManager */
