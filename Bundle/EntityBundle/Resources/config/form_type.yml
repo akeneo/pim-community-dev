@@ -1,6 +1,7 @@
 parameters:
     oro_entity.form.type.custom_entity.class:         Oro\Bundle\EntityBundle\Form\Type\CustomEntityType
     oro_entity.type.entity_choice.class:              Oro\Bundle\EntityBundle\Form\Type\EntityChoiceType
+    oro_entity.type.entity_field_choice.class:        Oro\Bundle\EntityBundle\Form\Type\EntityFieldChoiceType
     oro_entity.form.type.entity_select.class:         Oro\Bundle\EntityBundle\Form\Type\EntitySelectType
     oro_entity.form.handler.entity_select.class:      Oro\Bundle\EntityBundle\Form\Handler\EntitySelectHandler
 
@@ -19,6 +20,15 @@ services:
             - @oro_entity_config.provider.entity
         tags:
             - { name: form.type, alias: oro_entity_choice }
+
+    oro_entity.type.entity_field_choice:
+        class: %oro_entity.type.entity_field_choice.class%
+        arguments:
+            - @doctrine
+            - @oro_entity.orm.entity_class_resolver
+            - @oro_entity_config.provider.entity
+        tags:
+            - { name: form.type, alias: oro_entity_field_choice }
 
     oro_entity.form.type.entity_select:
         class: %oro_entity.form.type.entity_select.class%

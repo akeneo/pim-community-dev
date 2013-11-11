@@ -111,13 +111,19 @@ function($, _) {
         },
 
         getTitle: function(data, properties) {
-            var title = '', result, i;
+            var title = '', result;
             if (data) {
-                result = [];
-                _.each(properties, function(property) {
-                    result.push(data[property]);
-                });
-                title = result.join(' ');
+                if (properties === undefined) {
+                    if (data.text !== undefined) {
+                        title = data.text;
+                    }
+                } else {
+                    result = [];
+                    _.each(properties, function(property) {
+                        result.push(data[property]);
+                    });
+                    title = result.join(' ');
+                }
             }
             return title;
         }
