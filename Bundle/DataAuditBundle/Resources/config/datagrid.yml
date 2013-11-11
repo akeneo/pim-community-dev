@@ -1,5 +1,7 @@
 datagrid:
     audit-grid:
+        options:
+            entityHint: audit
         source:
             acl_resource: oro_dataaudit_history
             type: orm
@@ -13,7 +15,6 @@ datagrid:
                     - a.objectId
                     - a.data
                     - a.loggedAt
-                    - u.id
                     - >
                       CONCAT(
                         CONCAT(
@@ -36,11 +37,13 @@ datagrid:
             version:
                 label: Version
             objectClass:
-                label: Object class
+                label: Entity type
+                frontend_type: select
+                choices: @oro_dataaudit.dataaudit_grid_service->getObjectClassOptions
             objectName:
-                label: Object name
+                label: Entity name
             objectId:
-                label: Object id
+                label: Entity id
                 frontend_type: integer
             data:
                 label: Data
@@ -51,7 +54,7 @@ datagrid:
                 label: Author
             loggedAt:
                 label: Logged at
-                frontend_type: date
+                frontend_type: datetime
 
         properties: ~
         sorters:
@@ -77,7 +80,6 @@ datagrid:
         filters:
             columns:
                 action:
-                    label: Action
                     type: choice
                     data_name: a.action
                     options:
@@ -87,11 +89,10 @@ datagrid:
                                 create: Created
                                 remove: Deleted
                 version:
-                    label: Version
                     type: number
                     data_name: a.version
+                    enabled: false
                 objectClass:
-                    label: Object class
                     type: choice
                     data_name: a.objectClass
                     options:
@@ -113,6 +114,7 @@ datagrid:
                 loggedAt:
                     type: datetime
                     data_name: a.loggedAt
+                    enabled: false
 
     audit-history-grid:
         source:

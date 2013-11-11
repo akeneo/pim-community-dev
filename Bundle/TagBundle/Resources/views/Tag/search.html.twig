@@ -9,10 +9,8 @@
     <script type="text/javascript">
         require(['jquery'],
         function($) {
-            $(function() {
-                // hide header
-                $('div[data-type="datagrid"] thead').remove();
-            });
+            // hide header
+            $('div[data-type="datagrid"] thead').remove();
         });
     </script>
 {% endblock %}
@@ -55,7 +53,7 @@
                 </td>
                 <td class="tag-search-results-column">
                     <div id="tag-search-results-grid">
-                        {{ dataGrid.renderGrid(gridName, {from: from, tag_id: tag.id}) }}
+                        {{ dataGrid.renderGrid(gridName, {from: from, tag_id: tag.id}, { cssClass: 'tag-search-grid' }) }}
                     </div>
                 </td>
             </tr>

@@ -16,9 +16,9 @@
             {% if fieldValue.old.timestamp is defined %}
                 <s>{{ fieldValue.old|oro_format_datetime }}</s>
             {% else %}
-                <s>{{ fieldValue.old }}</s>
+                <s>{{ fieldValue.old|default('') }}</s>
             {% endif %}
-            {{ fieldValue.new.timestamp is defined ? fieldValue.new|oro_format_datetime : fieldValue.new }}
+            {{ fieldValue.new.timestamp is defined ? fieldValue.new|oro_format_datetime : fieldValue.new|default('') }}
         </li>
     {% endif %}
 {% endfor %}
