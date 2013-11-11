@@ -2,6 +2,9 @@
 
 namespace Oro\Bundle\WorkflowBundle\Model;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Bundle\WorkflowBundle\Model\Condition\ConditionInterface;
 use Oro\Bundle\WorkflowBundle\Model\PostAction\PostActionInterface;
@@ -167,15 +170,16 @@ class Transition
      * Check is transition allowed for current workflow item.
      *
      * @param WorkflowItem $workflowItem
+     * @param Collection|null $errors
      * @return boolean
      */
-    public function isAllowed(WorkflowItem $workflowItem)
+    public function isAllowed(WorkflowItem $workflowItem, Collection $errors = null)
     {
         if (!$this->condition) {
             return true;
         }
 
-        return $this->condition->isAllowed($workflowItem);
+        return $this->condition->isAllowed($workflowItem, $errors);
     }
 
     /**

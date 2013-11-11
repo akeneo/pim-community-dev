@@ -2,6 +2,8 @@
 
 namespace Oro\Bundle\WorkflowBundle\Model\Condition;
 
+use Doctrine\Common\Collections\Collection;
+
 use Oro\Bundle\WorkflowBundle\Exception\ConditionException;
 
 interface ConditionInterface
@@ -22,12 +24,13 @@ interface ConditionInterface
     public function getMessage();
 
     /**
-     * Check if context meets condition requirements.
+     * Check if context meets condition requirements, optionally add error to collection
      *
      * @param mixed $context
+     * @param Collection|null $errors
      * @return boolean
      */
-    public function isAllowed($context);
+    public function isAllowed($context, Collection $errors = null);
 
     /**
      * Initialize condition based on passed options.

@@ -39,7 +39,7 @@ class WorkflowAttributesType extends AbstractType
 
         if (!empty($options['attribute_fields'])) {
             foreach ($options['attribute_fields'] as $attributeName => $attributeOptions) {
-                $attribute = $workflow->getAttribute($attributeName);
+                $attribute = $workflow->getAttributeManager()->getAttribute($attributeName);
                 if (!$attribute) {
                     throw new InvalidConfigurationException(
                         sprintf(

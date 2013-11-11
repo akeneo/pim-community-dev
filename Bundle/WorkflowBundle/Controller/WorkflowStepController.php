@@ -27,7 +27,7 @@ class WorkflowStepController extends Controller
         /** @var WorkflowManager $workflowManager */
         $workflowManager = $this->get('oro_workflow.manager');
         $workflow = $workflowManager->getWorkflow($workflowItem);
-        $currentStep = $workflow->getStep($workflowItem->getCurrentStepName());
+        $currentStep = $workflow->getStepManager()->getStep($workflowItem->getCurrentStepName());
 
         $data = array(
             'workflow' => $workflow,

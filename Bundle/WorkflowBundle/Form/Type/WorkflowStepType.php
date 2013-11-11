@@ -55,7 +55,7 @@ class WorkflowStepType extends AbstractType
                         $stepName = $workflowItem->getCurrentStepName();
                     }
 
-                    if (!$workflow->getStep($stepName)) {
+                    if (!$workflow->getStepManager()->getStep($stepName)) {
                         throw new InvalidConfigurationException(
                             sprintf(
                                 'Invalid reference to unknown step "%s" of workflow "%s".',
@@ -73,7 +73,7 @@ class WorkflowStepType extends AbstractType
                     /** @var WorkflowItem $workflowItem */
                     $workflowItem = $options['workflow_item'];
 
-                    $step = $workflow->getStep($options['step_name']);
+                    $step = $workflow->getStepManager()->getStep($options['step_name']);
 
                     if ($step->getName() !== $workflowItem->getCurrentStepName() || $workflowItem->isClosed()) {
                         $disableAttributeFields = true;

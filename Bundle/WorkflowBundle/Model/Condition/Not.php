@@ -2,6 +2,8 @@
 
 namespace Oro\Bundle\WorkflowBundle\Model\Condition;
 
+use Doctrine\Common\Collections\Collection;
+
 use Oro\Bundle\WorkflowBundle\Exception\ConditionException;
 
 class Not extends AbstractCondition
@@ -15,11 +17,17 @@ class Not extends AbstractCondition
      * Returns negation of embedded condition
      *
      * @param mixed $context
+     * @param Collection|null $errors
      * @return boolean
      */
-    public function isAllowed($context)
+    public function isAllowed($context, Collection $errors = null)
     {
-        return !$this->condition->isAllowed($context);
+        $isAllowed = !$this->condition->isAllowed($context, $errors);
+        if (!$isAllowed) {
+            $this->addError($errors);
+        }
+
+        return $isAllowed;
     }
 
     /**

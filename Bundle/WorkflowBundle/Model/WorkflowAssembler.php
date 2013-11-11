@@ -87,10 +87,11 @@ class WorkflowAssembler extends AbstractAssembler
             ->setName($workflowDefinition->getName())
             ->setLabel($workflowDefinition->getLabel())
             ->setType($workflowDefinition->getType())
-            ->setEnabled($workflowDefinition->isEnabled())
-            ->setAttributes($attributes)
-            ->setSteps($steps)
-            ->setTransitions($transitions);
+            ->setEnabled($workflowDefinition->isEnabled());
+
+        $workflow->getStepManager()->setSteps($steps);
+        $workflow->getAttributeManager()->setAttributes($attributes);
+        $workflow->getTransitionManager()->setTransitions($transitions);
 
         $this->validateWorkflow($workflow);
 
@@ -103,7 +104,7 @@ class WorkflowAssembler extends AbstractAssembler
      */
     protected function validateWorkflow(Workflow $workflow)
     {
-        $startTransitions = $workflow->getTransitions()->filter(
+        $startTransitions = $workflow->getTransitionManager()->getTransitions()->filter(
             function (Transition $transition) {
                 return $transition->isStart();
             }
@@ -119,7 +120,7 @@ class WorkflowAssembler extends AbstractAssembler
 
         if ($workflow->getType() == Workflow::TYPE_ENTITY) {
             /** @var Step $step */
-            foreach ($workflow->getSteps() as $step) {
+            foreach ($workflow->getStepManager()->getSteps() as $step) {
                 if ($step->getFormOptions()) {
                     throw new AssemblerException(
                         sprintf(

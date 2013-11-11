@@ -3,6 +3,7 @@
 namespace Oro\Bundle\WorkflowBundle\Tests\Unit\Model\PostAction\Stub;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 use Oro\Bundle\WorkflowBundle\Exception\ConditionException;
 use Oro\Bundle\WorkflowBundle\Model\Condition\ConditionInterface;
@@ -45,12 +46,9 @@ class ArrayCondition extends ArrayCollection implements ConditionInterface
     }
 
     /**
-     * Check if context meets condition requirements.
-     *
-     * @param mixed $context
-     * @return boolean
+     * {@inheritDoc}
      */
-    public function isAllowed($context)
+    public function isAllowed($context, Collection $errors = null)
     {
         $isAllowed = $this->get('allowed');
 

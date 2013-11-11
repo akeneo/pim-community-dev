@@ -6,7 +6,7 @@ use Symfony\Component\DependencyInjection\Definition;
 
 use Oro\Bundle\WorkflowBundle\DependencyInjection\OroWorkflowExtension;
 
-class OroTranslationExtensionTest extends \PHPUnit_Framework_TestCase
+class OroWorkflowExtensionTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var array
