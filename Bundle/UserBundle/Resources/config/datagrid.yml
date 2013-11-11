@@ -1,5 +1,7 @@
 datagrid:
     users-grid:
+        options:
+            entityHint: user
         source:
             acl_resource: oro_user_user_view
             type: orm
@@ -38,6 +40,7 @@ datagrid:
                    - Active
 
         properties:
+            id: ~
             update_link:
                 type: url
                 route: oro_user_update
@@ -118,11 +121,13 @@ datagrid:
             delete:
                 type:          delete
                 label:         Delete
-                link:          update_link
+                link:          delete_link
                 icon:          trash
                 acl_resource:  oro_user_user_delete
 
     groups-grid:
+        options:
+            entityHint: group
         source:
             acl_resource: oro_user_group_view
             type: orm
@@ -137,6 +142,7 @@ datagrid:
                 label: oro.user.grid.groups.columns.name
 
         properties:
+            id: ~
             update_link:
                 type: url
                 route: oro_user_group_update
@@ -160,7 +166,7 @@ datagrid:
             delete:
                 type:          delete
                 label:         Delete
-                link:          update_link
+                link:          delete_link
                 icon:          trash
                 acl_resource:  oro_user_group_remove
 
@@ -178,6 +184,8 @@ datagrid:
                     data_name: g.name
 
     roles-grid:
+        options:
+            entityHint: role
         source:
             acl_resource: oro_user_role_view
             type: orm
@@ -196,6 +204,7 @@ datagrid:
                 label: oro.user.grid.roles.columns.label
 
         properties:
+            id: ~
             update_link:
                 type: url
                 route: oro_user_role_update
@@ -219,7 +228,7 @@ datagrid:
             delete:
                 type:          delete
                 label:         Delete
-                link:          update_link
+                link:          delete_link
                 icon:          trash
                 acl_resource:  oro_user_role_remove
 
@@ -318,18 +327,18 @@ datagrid:
                     type: boolean
                     data_name: has_role
                     filter_by_having: true
-                username:
-                    type: string
-                    data_name: u.username
-                email:
-                    type: string
-                    data_name: u.email
                 firstName:
                     type: string
                     data_name: u.firstName
                 lastName:
                     type: string
                     data_name: u.lastName
+                username:
+                    type: string
+                    data_name: u.username
+                email:
+                    type: string
+                    data_name: u.email
         sorters:
             multiple_sorting: true
             columns:

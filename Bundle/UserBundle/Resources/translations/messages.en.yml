@@ -105,7 +105,7 @@ oro:
                     email:       "Email"
                     firstName:   "First name"
                     lastName:    "Last name"
-                    created:     "Created"
+                    created:     "Created at"
                     updated:     "Updated at"
                     enabled:     "Status"
 
