@@ -1,9 +1,7 @@
 <?php
 namespace Oro\Bundle\WorkflowBundle\Tests\Unit\Model;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\WorkflowBundle\Model\Step;
-use Oro\Bundle\WorkflowBundle\Model\StepViewAttribute;
 
 class StepTest extends \PHPUnit_Framework_TestCase
 {
@@ -90,8 +88,8 @@ class StepTest extends \PHPUnit_Framework_TestCase
     public function testSetGetViewAttributes()
     {
         $viewAttributes = array(
-            new StepViewAttribute(array('attribute' => 'foo')),
-            new StepViewAttribute(array('attribute' => 'bar'))
+            array('attribute' => 'foo'),
+            array('attribute' => 'bar')
         );
         $this->step->setViewAttributes($viewAttributes);
 
