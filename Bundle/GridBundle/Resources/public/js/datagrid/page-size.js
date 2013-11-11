@@ -6,8 +6,8 @@ function($, _, Backbone, __) {
     /**
      * Datagrid page size widget
      *
-     * @export oro/datagrid/page-size
-     * @class   oro.datagrid.PageSize
+     * @export oro/grid/page-size
+     * @class   oro.grid.PageSize
      * @extends Backbone.View
      */
     return Backbone.View.extend({

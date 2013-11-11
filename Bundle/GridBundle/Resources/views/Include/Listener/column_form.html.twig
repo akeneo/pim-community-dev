@@ -1,8 +1,8 @@
 <script type="text/javascript">
-    require(['jquery', 'underscore', 'oro/datagrid/column-form-listener'],
+    require(['jquery', 'underscore', 'oro/grid/column-form-listener'],
     function($, _, ColumnFormListener) {
         $(function() {
-            /** @type {oro.datagrid.ColumnFormListener} */
+            /** @type {oro.grid.ColumnFormListener} */
             new ColumnFormListener(_.extend({
                 datagridName: {{ datagridView.datagrid.name|json_encode|raw }},
                 dataField: 'id'

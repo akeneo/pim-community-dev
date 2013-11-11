@@ -6,8 +6,8 @@ function(_, Backgrid) {
     /**
      * Select column cell. Added missing behaviour.
      *
-     * @export  oro/datagrid/select-cell
-     * @class   oro.datagrid.SelectCell
+     * @export  oro/grid/select-cell
+     * @class   oro.grid.SelectCell
      * @extends Backgrid.SelectCell
      */
     return Backgrid.SelectCell.extend({

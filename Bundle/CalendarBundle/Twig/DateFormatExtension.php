@@ -46,7 +46,7 @@ class DateFormatExtension extends \Twig_Extension
      *          Thu Oct 17, 2013 5:00pm – Thu Oct 18, 2013 5:00pm - when $skipTime = false
      *          Thu Oct 17, 2013 – Thu Oct 18, 2013 - when $skipTime = true
      *
-     * @param \DateTime         $startDate
+     * @param \DateTime|null    $startDate
      * @param \DateTime|null    $endDate
      * @param bool              $skipTime
      * @param string|null       $dateTimeFormat
@@ -58,7 +58,7 @@ class DateFormatExtension extends \Twig_Extension
      * @return string
      */
     public function formatCalendarDateRange(
-        \DateTime $startDate,
+        \DateTime $startDate = null,
         \DateTime $endDate = null,
         $skipTime = false,
         $dateTimeFormat = null,

@@ -13,7 +13,7 @@ use Oro\Bundle\OrganizationBundle\Form\Type\OwnershipType;
 class RecordOwnerDataListener
 {
     /**
-     * TODO: Refactor direct field name useage after extened entities are implemented
+     * TODO: Refactor direct field name usage after extended entities will be implemented
      */
     const OWNER_FIELD_NAME = 'owner';
 

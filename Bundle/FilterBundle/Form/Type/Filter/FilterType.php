@@ -45,6 +45,7 @@ class FilterType extends AbstractType
 
     /**
      * @param array $options
+     *
      * @return array
      */
     protected function createOperatorOptions(array $options)
@@ -54,11 +55,13 @@ class FilterType extends AbstractType
             $result['choices'] = $options['operator_choices'];
         }
         $result = array_merge($result, $options['operator_options']);
+
         return $result;
     }
 
     /**
      * @param array $options
+     *
      * @return array
      */
     protected function createFieldOptions(array $options)
@@ -71,10 +74,10 @@ class FilterType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $children = $form->all();
-        $view->vars['value']['type'] = $children['type']->getViewData();
+        $children                     = $form->all();
+        $view->vars['value']['type']  = $children['type']->getViewData();
         $view->vars['value']['value'] = $children['value']->getViewData();
-        $view->vars['show_filter'] = $options['show_filter'];
+        $view->vars['show_filter']    = $options['show_filter'];
     }
 
     /**
@@ -84,16 +87,22 @@ class FilterType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'field_type' => 'text',
-                'field_options' => array(),
+                'field_type'       => 'text',
+                'field_options'    => array(),
                 'operator_choices' => array(),
-                'operator_type' => 'choice',
+                'operator_type'    => 'choice',
                 'operator_options' => array(),
-                'show_filter' => false,
+                'show_filter'      => false,
             )
-        )
-        ->setRequired(
-            array('field_type', 'field_options', 'operator_choices', 'operator_type', 'operator_options', 'show_filter')
+        )->setRequired(
+            array(
+                'field_type',
+                'field_options',
+                'operator_choices',
+                'operator_type',
+                'operator_options',
+                'show_filter'
+            )
         );
     }
 }
