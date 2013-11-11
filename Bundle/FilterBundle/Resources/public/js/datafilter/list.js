@@ -139,7 +139,7 @@ function($, _, Backbone, mediator, MultiselectDecorator) {
         },
 
         /**
-         * Returns list of filter values
+         * Returns list of filter raw values
          */
         getValues: function() {
             var values = {};
@@ -153,7 +153,7 @@ function($, _, Backbone, mediator, MultiselectDecorator) {
         },
 
         /**
-         * Sets values for filters
+         * Sets raw values for filters
          */
         setValues: function(values) {
             _.each(values, function(value, name) {

@@ -32,12 +32,12 @@ class InstallationStep extends AbstractStep
                 return $this->getRequest()->isXmlHttpRequest()
                     ? new JsonResponse(array('result' => true))
                     : $this->redirect('');
-            case 'schema':
-                return $this->handleAjaxAction('doctrine:schema:update', array('--force' => true));
             case 'search':
                 return $this->handleAjaxAction('oro:search:create-index');
             case 'navigation':
                 return $this->handleAjaxAction('oro:navigation:init');
+            case 'localization':
+                return $this->handleAjaxAction('oro:localization:dump');
             case 'assets':
                 return $this->handleAjaxAction('assets:install', array('target' => './'));
             case 'assetic':

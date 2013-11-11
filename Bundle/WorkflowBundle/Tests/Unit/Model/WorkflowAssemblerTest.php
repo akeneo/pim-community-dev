@@ -48,11 +48,7 @@ class WorkflowAssemblerTest extends \PHPUnit_Framework_TestCase
      */
     protected function createWorkflow()
     {
-        return new Workflow(
-            new StepManager(),
-            new AttributeManager(),
-            new TransitionManager()
-        );
+        return new Workflow();
     }
 
     /**

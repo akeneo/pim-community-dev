@@ -356,10 +356,43 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
             ->method('transit')
             ->with($workflowItem);
 
+        $entityBinder = $this->getMockEntityBinder();
+        $entityBinder->expects($this->once())->method('bindEntities')->with($workflowItem);
+
         $workflow = $this->createWorkflow();
         $workflow->setTransitions(array($transition));
         $workflow->setSteps(array($step));
+        $workflow->setEntityBinder($entityBinder);
         $workflow->transit($workflowItem, 'transition');
+    }
+
+    public function testBindEntities()
+    {
+        $workflowItem = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Entity\WorkflowItem')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $entityBinder = $this->getMockEntityBinder();
+        $entityBinder->expects($this->once())->method('bindEntities')->with($workflowItem)
+            ->will($this->returnValue(true));
+
+        $workflow = $this->createWorkflow();
+        $workflow->setEntityBinder($entityBinder);
+        $this->assertTrue($workflow->bindEntities($workflowItem));
+    }
+
+    /**
+     * @expectedException \LogicException
+     * @expectedExceptionMessage Entity binder is not set
+     */
+    public function testBindEntitiesFails()
+    {
+        $workflowItem = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Entity\WorkflowItem')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $workflow = $this->createWorkflow();
+        $workflow->bindEntities($workflowItem);
     }
 
     public function testSetAttributes()
@@ -509,8 +542,15 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
         }
         $transitions = new ArrayCollection($transitions);
 
+        $entityBinder = $this->getMockEntityBinder();
+        $entityBinder->expects($this->once())->method('bindEntities')
+            ->with(
+                $this->isInstanceOf('Oro\Bundle\WorkflowBundle\Entity\WorkflowItem')
+            );
+
         $workflow = $this->createWorkflow();
         $workflow->setTransitions($transitions);
+        $workflow->setEntityBinder($entityBinder);
         $item = $workflow->start($data, $transitionName);
         $this->assertInstanceOf('Oro\Bundle\WorkflowBundle\Entity\WorkflowItem', $item);
         $this->assertEquals($data, $item->getData()->getValues());
@@ -658,10 +698,16 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
      */
     protected function createWorkflow()
     {
-        return new Workflow(
-            new StepManager(),
-            new AttributeManager(),
-            new TransitionManager()
-        );
+        return new Workflow();
+    }
+
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function getMockEntityBinder()
+    {
+        return $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\EntityBinder')
+            ->disableOriginalConstructor()
+            ->getMock();
     }
 }

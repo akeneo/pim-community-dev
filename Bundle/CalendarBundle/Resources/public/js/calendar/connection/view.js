@@ -48,6 +48,7 @@ function($, _, Backbone, __, app, messenger, ConnectionCollection, ConnectionMod
 
         initialize: function() {
             this.options.collection = this.options.collection || new ConnectionCollection();
+            this.options.collection.setCalendar(this.options.calendar);
             this.template = _.template($(this.options.itemTemplateSelector).html());
 
             this.defaultColors = this.findColors('4986E7');
@@ -99,15 +100,19 @@ function($, _, Backbone, __, app, messenger, ConnectionCollection, ConnectionMod
             }, this));
 
             this.$el.find(this.selectors.itemContainer).append(el);
+
+            this.trigger('connectionAdd', model);
         },
 
         onModelChanged: function(model){
             this.setCalendarColorCache(model.get('calendar'), model.get('color'), model.get('backgroundColor'));
+            this.trigger('connectionChange', model);
         },
 
         onModelDeleted: function(model) {
             this.resetCalendarColorCache(model.get('calendar'));
             this.$el.find(this.selectors.findItemByCalendar(model.get('calendar'))).remove();
+            this.trigger('connectionRemove', model);
         },
 
         addModel: function (ownerId) {
@@ -215,22 +220,22 @@ function($, _, Backbone, __, app, messenger, ConnectionCollection, ConnectionMod
         },
 
         showAddError: function (err) {
-            this._showError(err, 'Sorry, the calendar adding was failed');
+            this._showError(err, __('Sorry, the calendar adding was failed'));
         },
 
         showDeleteError: function (err) {
-            this._showError(err, 'Sorry, the calendar excluding was failed');
+            this._showError(err, __('Sorry, the calendar excluding was failed'));
         },
 
         showError: function (err) {
-            this._showError(err, 'Sorry, unexpected error was occurred');
+            this._showError(err, __('Sorry, unexpected error was occurred'));
         },
 
         _showError: function (err, message) {
             if (!_.isUndefined(console)) {
                 console.error(_.isUndefined(err.stack) ? err : err.stack);
             }
-            var msg = __(message);
+            var msg = message;
             if (app.debug) {
                 if (!_.isUndefined(err.message)) {
                     msg += ': ' + err.message;

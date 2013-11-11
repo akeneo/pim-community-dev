@@ -3,10 +3,13 @@ parameters:
     oro_config.user.class:                                                       Oro\Bundle\ConfigBundle\Config\UserConfigManager
     oro_config.twig_extension.class:                                             Oro\Bundle\ConfigBundle\Twig\ConfigExtension
     oro_config.provider.system_configuration.form_provider.class:                Oro\Bundle\ConfigBundle\Provider\SystemConfigurationFormProvider
+
     oro_config.form.config_subscriber.class:                                     Oro\Bundle\ConfigBundle\Form\EventListener\ConfigSubscriber
+    oro_config.form.handler.config.class:                                        Oro\Bundle\ConfigBundle\Form\Handler\ConfigHandler
+
     oro_config.type.form.class:                                                  Oro\Bundle\ConfigBundle\Form\Type\FormType
     oro_config.type.form_field.class:                                            Oro\Bundle\ConfigBundle\Form\Type\FormFieldType
-    oro_config.form.handler.config.class:                                        Oro\Bundle\ConfigBundle\Form\Handler\ConfigHandler
+    oro_config.type.config_checkbox.class:                                       Oro\Bundle\ConfigBundle\Form\Type\ConfigCheckbox
 
 services:
     oro_config.user:
@@ -54,6 +57,11 @@ services:
         class:                        %oro_config.type.form_field.class%
         tags:
             - { name: form.type, alias: oro_config_form_field_type }
+
+    oro_config.type.config_checkbox:
+        class:                        %oro_config.type.config_checkbox.class%
+        tags:
+            - { name: form.type, alias: oro_config_checkbox }
 
     oro_config.form.handler.config:
         class: %oro_config.form.handler.config.class%

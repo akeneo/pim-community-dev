@@ -3,21 +3,24 @@
 namespace Oro\Bundle\EmailBundle\Form\Handler;
 
 use Psr\Log\LoggerInterface;
-use Oro\Bundle\EmailBundle\Entity\EmailFolder;
-use Oro\Bundle\EmailBundle\Entity\InternalEmailOrigin;
-use Oro\Bundle\EmailBundle\Entity\Manager\EmailAddressManager;
+
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Translation\Translator;
+use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
+
 use Doctrine\ORM\EntityManager;
 
 use Oro\Bundle\EmailBundle\Form\Model\Email;
 use Oro\Bundle\EmailBundle\Builder\EmailEntityBuilder;
 use Oro\Bundle\EmailBundle\Entity\Util\EmailUtil;
-use Symfony\Component\Security\Core\SecurityContextInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Oro\Bundle\ConfigBundle\Twig\ConfigExtension;
+use Oro\Bundle\EmailBundle\Entity\EmailFolder;
+use Oro\Bundle\EmailBundle\Entity\InternalEmailOrigin;
+use Oro\Bundle\EmailBundle\Entity\Manager\EmailAddressManager;
+
+use Oro\Bundle\LocaleBundle\Formatter\NameFormatter;
 
 class EmailHandler
 {
@@ -67,9 +70,9 @@ class EmailHandler
     protected $logger;
 
     /**
-     * @var ConfigExtension
+     * @var NameFormatter
      */
-    protected $configExtension;
+    protected $nameFormatter;
 
     /**
      * Constructor
@@ -83,7 +86,7 @@ class EmailHandler
      * @param EmailEntityBuilder       $emailEntityBuilder
      * @param \Swift_Mailer            $mailer
      * @param LoggerInterface          $logger
-     * @param ConfigExtension          $configExtension
+     * @param NameFormatter            $nameFormatter
      *
      * @SuppressWarnings(PHPMD.ExcessiveParameterList)
      */
@@ -97,7 +100,7 @@ class EmailHandler
         EmailEntityBuilder $emailEntityBuilder,
         \Swift_Mailer $mailer,
         LoggerInterface $logger,
-        ConfigExtension $configExtension
+        NameFormatter $nameFormatter
     ) {
         $this->form                = $form;
         $this->request             = $request;
@@ -108,7 +111,7 @@ class EmailHandler
         $this->emailEntityBuilder  = $emailEntityBuilder;
         $this->mailer              = $mailer;
         $this->logger              = $logger;
-        $this->configExtension     = $configExtension;
+        $this->nameFormatter       = $nameFormatter;
     }
 
     /**
@@ -195,7 +198,7 @@ class EmailHandler
                 $model->setFrom(
                     EmailUtil::buildFullEmailAddress(
                         $user->getEmail(),
-                        $this->getOwnerName($user->getFirstname(), $user->getLastname())
+                        $this->nameFormatter->format($user)
                     )
                 );
             }
@@ -260,7 +263,7 @@ class EmailHandler
                 if ($owner) {
                     $emailAddress = EmailUtil::buildFullEmailAddress(
                         $emailAddress,
-                        $this->getOwnerName($owner->getFirstname(), $owner->getLastname())
+                        $this->nameFormatter->format($owner)
                     );
                 }
             }
@@ -283,38 +286,5 @@ class EmailHandler
         }
 
         return null;
-    }
-
-    /**
-     * Returns email address owner name formatted based on system configuration
-     *
-     * @param string $firstName
-     * @param string $lastName
-     * @return string
-     */
-    protected function getOwnerName($firstName, $lastName)
-    {
-        return str_replace(
-            array('%first%', '%last%'),
-            array($firstName, $lastName),
-            $this->getUserNameFormat()
-        );
-    }
-
-    protected $userNameFormat = null;
-
-    /**
-     * Gets a string used to format email address owner name
-     *
-     * @return string
-     */
-    protected function getUserNameFormat()
-    {
-        if ($this->userNameFormat === null) {
-            $this->userNameFormat = $this->configExtension
-                ->getUserValue('oro_locale.name_format');
-        }
-
-        return $this->userNameFormat;
     }
 }
