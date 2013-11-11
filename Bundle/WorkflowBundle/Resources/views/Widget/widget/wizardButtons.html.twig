@@ -4,6 +4,16 @@
 <div class="widget-content" id="{{ blockId }}">
     <div class="btn-group">
         {% for data in transitionsData %}
+            {% set dialogUrl = null %}
+            {% if data.transition.formOptions|length > 0 %}
+                {% set dialogUrl = path(
+                    'oro_workflow_widget_transition_form',
+                    {
+                        workflowItemId: data.workflowItem.id,
+                        transitionName: data.transition.name
+                    }
+                ) %}
+            {% endif %}
             {{ workflowMacros.renderTransitionButton(
                 data.workflow,
                 data.transition,
@@ -14,7 +24,9 @@
                         workflowItemId: data.workflowItem.id,
                         transitionName: data.transition.name
                     }
-                )
+                ),
+                false,
+                dialogUrl
             ) }}
         {% endfor %}
     </div>
