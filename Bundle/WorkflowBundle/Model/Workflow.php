@@ -32,7 +32,7 @@ class Workflow
     /**
      * @var boolean
      */
-    protected $enabled;
+    protected $enabled = true;
 
     /**
      * @var StepManager
@@ -82,8 +82,6 @@ class Workflow
         $this->stepManager = $stepManager ? $stepManager : new StepManager();
         $this->attributeManager  = $attributeManager ? $attributeManager : new AttributeManager();
         $this->transitionManager = $transitionManager ? $transitionManager : new TransitionManager();
-
-        $this->enabled = true;
     }
 
     /**

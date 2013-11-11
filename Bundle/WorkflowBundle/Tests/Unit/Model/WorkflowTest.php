@@ -204,12 +204,16 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
         $workflow = $this->createWorkflow();
         $workflow->setTranslator($this->getMockTranslator());
         $this->assertFalse($workflow->isTransitionAllowed($workflowItem, 'test'));
+
+        $expectedErrors = array('oro.workflow.message.transition_not_exist');
+        $this->assertEquals($expectedErrors, $workflow->getErrors()->getValues());
     }
 
     /**
      * @param bool $isAllowed
      * @param string $transitionName
      * @param bool $isStartTransition
+     * @param array $errors
      * @param string $stepName
      * @param bool $isAllowedForStep
      * @dataProvider isAllowedDataProvider
@@ -217,6 +221,7 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
     public function testIsTransitionAllowed(
         $isAllowed,
         $transitionName,
+        $errors = array(),
         $isStartTransition = false,
         $stepName = null,
         $isAllowedForStep = false
@@ -245,6 +250,7 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
         $workflow->getStepManager()->setSteps(array($step));
 
         $this->assertEquals($isAllowed, $workflow->isTransitionAllowed($workflowItem, $transitionName));
+        $this->assertEquals($errors, $workflow->getErrors()->getValues());
     }
 
     /**
@@ -256,39 +262,45 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
             'no transition' => array(
                 'isAllowed'      => false,
                 'transitionName' => 'unknown_transition',
+                'errors'         => array('oro.workflow.message.transition_not_exist'),
             ),
             'no_current_step_start_step' => array(
                 'isAllowed'         => true,
                 'transitionName'    => 'transition',
+                'errors'            => array(),
                 'isStartTransition' => true,
                 'stepName'          => 'unknown_step',
             ),
             'no_current_step_not_start_step' => array(
                 'isAllowed'         => false,
                 'transitionName'    => 'transition',
+                'errors'            => array('oro.workflow.message.transition_is_not_start'),
                 'isStartTransition' => false,
                 'stepName'          => 'unknown_step',
             ),
             'not allowed for step' => array(
                 'isAllowed'         => false,
                 'transitionName'    => 'transition',
+                'errors'            => array('oro.workflow.message.transition_not_allowed_at_step'),
                 'isStartTransition' => false,
                 'stepName'          => 'step',
                 'isAllowedForStep'  => false,
             ),
             'not allowed for workflow item' => array(
-                'isAllowed'                => false,
-                'transitionName'           => 'transition',
-                'isStartTransition'        => false,
-                'stepName'                 => 'step',
-                'isAllowedForStep'         => true,
+                'isAllowed'         => false,
+                'transitionName'    => 'transition',
+                'errors'            => array('oro.workflow.message.some_conditions_not_met'),
+                'isStartTransition' => false,
+                'stepName'          => 'step',
+                'isAllowedForStep'  => true,
             ),
             'allowed for workflow item' => array(
-                'isAllowed'                => true,
-                'transitionName'           => 'transition',
-                'isStartTransition'        => false,
-                'stepName'                 => 'step',
-                'isAllowedForStep'         => true,
+                'isAllowed'         => true,
+                'transitionName'    => 'transition',
+                'errors'            => array(),
+                'isStartTransition' => false,
+                'stepName'          => 'step',
+                'isAllowedForStep'  => true,
             ),
         );
     }
@@ -727,7 +739,13 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
             ->getMockForAbstractClass();
         $translator->expects($this->any())
             ->method('trans')
-            ->will($this->returnArgument(0));
+            ->will(
+                $this->returnCallback(
+                    function ($id, array $arguments = array()) {
+                        return strtr($id, $arguments);
+                    }
+                )
+            );
 
         return $translator;
     }
