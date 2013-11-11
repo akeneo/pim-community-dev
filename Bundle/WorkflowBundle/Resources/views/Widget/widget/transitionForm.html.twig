@@ -4,7 +4,7 @@
             require(['oro/widget-manager'],
             function(widgetManager){
                 widgetManager.getWidgetInstance({{ app.request.get('_wid')|json_encode|raw }}, function(widget) {
-                    widget.trigger('formSave', {{ data|json_encode|raw }});
+                    widget.trigger('formSave', {{ data|default({})|json_encode|raw }});
                 });
             });
         </script>
