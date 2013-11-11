@@ -1,5 +1,6 @@
 {% extends 'OroUIBundle:actions:view.html.twig' %}
-{% set gridId = 'fields-grid' %}
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+{% set gridName = 'entityfields-grid' %}
 {% oro_title_set({params : {"%entityName%": entity_config.get('label')|default('N/A') }}) %}
 
 {% if resource_granted('oro_entityconfig_manage') %}
@@ -24,12 +25,6 @@
         {% endfor %}
     {% endif %}
 {% endblock navButtons %}
-
-{% block head_script %}
-    {{ parent() }}
-
-    {% placeholder prepare_grid with {'datagrid': entity_fields, 'selector': '#' ~ gridId, 'parameters': ''} %}
-{% endblock %}
 
 {% block pageHeader %}
     {% set breadcrumbs = {
@@ -92,7 +87,7 @@
                     {
                         'title': '',
                         'useSpan': false,
-                        'data': [UI.gridBlock(gridId)]
+                        'data': [dataGrid.renderGrid(gridName, {entityId: entity.id}, { cssClass: 'inner-grid' })]
                     }
                 ]
             }

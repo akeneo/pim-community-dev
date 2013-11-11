@@ -1,34 +1,229 @@
-parameters:
-    oro_organization.business_unit_datagrid_manager.class: Oro\Bundle\OrganizationBundle\Datagrid\BusinessUnitDatagridManager
-    oro_organization.business_unit_update_user_datagrid_manager.class: Oro\Bundle\OrganizationBundle\Datagrid\BusinessUnitUpdateUserDatagridManager
-    oro_organization.business_unit_view_user_datagrid_manager.class: Oro\Bundle\OrganizationBundle\Datagrid\BusinessUnitViewUserDatagridManager
+datagrid:
+    business-unit-grid:
+        options:
+            entityHint: business unit
+        source:
+            acl_resource: oro_business_unit_view
+            type: orm
+            query:
+                select:
+                    - u.id
+                    - u.name
+                    - u.email
+                    - u.phone
+                    - u.createdAt
+                    - owner.name as ownerName
+                    - organization.name as organizationName
+                from:
+                    - { table: OroOrganizationBundle:BusinessUnit, alias: u }
+                join:
+                    left:
+                        organization:
+                            join: u.organization
+                            alias: organization
+                        owner:
+                            join: u.owner
+                            alias: owner
 
-services:
-    oro_organization.business_unit_datagrid_manager:
-        class: %oro_organization.business_unit_datagrid_manager.class%
-        tags:
-            - name: oro_grid.datagrid.manager
-              datagrid_name: business_units
-              entity_name: Oro\Bundle\OrganizationBundle\Entity\BusinessUnit
-              entity_hint: business unit
-              route_name: oro_business_unit_index
+        columns:
+            name:
+                label: oro.business_unit.datagrid.name
+            email:
+                label: oro.business_unit.datagrid.email
+            phone:
+                label: oro.business_unit.datagrid.phone
+            ownerName:
+                label: oro.business_unit.datagrid.owner
+            organizationName:
+                label: oro.business_unit.datagrid.organization
+            createdAt:
+                label: oro.business_unit.datagrid.created_at
+                frontend_type: datetime
 
-    oro_organization.business_unit_update_user_datagrid_manager:
-            class: %oro_organization.business_unit_update_user_datagrid_manager.class%
-            tags:
-                - name: oro_grid.datagrid.manager
-                  datagrid_name: business_units_update_users
-                  entity_name: Oro\Bundle\UserBundle\Entity\User
-                  query_entity_alias: user
-                  entity_hint: user
-                  route_name: oro_business_update_unit_user_grid
+        properties:
+            id: ~
+            update_link:
+                type: url
+                route: oro_business_unit_update
+                params:
+                    - id
+            view_link:
+                type: url
+                route: oro_business_unit_view
+                params:
+                    - id
+            delete_link:
+                type: url
+                route: oro_api_delete_businessunit
+                params:
+                    - id
 
-    oro_organization.business_unit_view_user_datagrid_manager:
-            class: %oro_organization.business_unit_view_user_datagrid_manager.class%
-            tags:
-                - name: oro_grid.datagrid.manager
-                  datagrid_name: business_units_view_users
-                  entity_name: Oro\Bundle\UserBundle\Entity\User
-                  query_entity_alias: user
-                  entity_hint: user
-                  route_name: oro_business_view_unit_user_grid
+        actions:
+            view:
+                type:          navigate
+                label:         oro.business_unit.datagrid.action.view
+                link:          view_link
+                icon:          user
+                acl_resource:  oro_business_unit_view
+                rowAction:     true
+            update:
+                type:          navigate
+                label:         oro.business_unit.datagrid.action.update
+                link:          update_link
+                icon:          edit
+                acl_resource:  oro_business_unit_update
+            delete:
+                type:          delete
+                label:         oro.business_unit.datagrid.action.delete
+                link:          delete_link
+                icon:          trash
+                acl_resource:  oro_business_unit_delete
+
+        sorters:
+            columns:
+                name:
+                    data_name: u.name
+                email:
+                    data_name: u.email
+                phone:
+                    data_name: u.phone
+                ownerName:
+                    data_name: owner.name
+                organizationName:
+                    data_name: organization.name
+                createdAt:
+                    data_name: u.createdAt
+
+            default:
+                name: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
+
+        filters:
+            columns:
+                name:
+                    type: string
+                    data_name: u.name
+                email:
+                    type: string
+                    data_name: u.email
+                phone:
+                    type: string
+                    data_name: u.phone
+                ownerName:
+                    type: choice
+                    data_name: ownerName
+                    filter_by_having: true
+                    options:
+                          field_options:
+                              choices: @oro_organization.provider.business_units_grid->getOwnerChoices
+                organizationName:
+                    type: choice
+                    data_name: organizationName
+                    filter_by_having: true
+                    options:
+                          field_options:
+                              choices: @oro_organization.provider.business_units_grid->getOrganizationChoices
+                createdAt:
+                    type: datetime
+                    data_name: u.createdAt
+
+    bu-update-users-grid:
+        extend: user-relation-grid
+        source:
+            acl_resource: oro_business_unit_update
+            query:
+                select:
+                    - >
+                      (CASE WHEN (:business_unit_id IS NOT NULL) THEN
+                        CASE WHEN (:business_unit_id MEMBER OF u.businessUnits OR u.id IN (:data_in)) AND u.id NOT IN (:data_not_in)
+                        THEN true ELSE false END
+                      ELSE
+                        CASE WHEN u.id IN (:data_in) AND u.id NOT IN (:data_not_in)
+                        THEN true ELSE false END
+                      END) as hasCurrentBusinessUnit
+        columns:
+            hasCurrentBusinessUnit:
+                label: Has business unit
+                editable: true
+                frontend_type: boolean
+            firstName:
+                label: oro.user.grid.users.columns.firstName
+            lastName:
+                label: oro.user.grid.users.columns.lastName
+            username:
+                label: oro.user.grid.users.columns.username
+            email:
+                label: oro.user.grid.users.columns.email
+        filters:
+            columns:
+                hasCurrentBusinessUnit:
+                    type: boolean
+                    data_name: hasCurrentBusinessUnit
+                    filter_by_having: true
+                firstName:
+                    type: string
+                    data_name: u.firstName
+                lastName:
+                    type: string
+                    data_name: u.lastName
+                username:
+                    type: string
+                    data_name: u.username
+                email:
+                    type: string
+                    data_name: u.email
+        sorters:
+            columns:
+                hasCurrentBusinessUnit:
+                    data_name: hasCurrentBusinessUnit
+            default:
+                hasCurrentBusinessUnit: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+                lastName: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
+
+        options:
+            entityHint: user
+            requireJSModules:
+              - oro/datagrid/column-form-listener
+            columnListener:
+                dataField: id
+                columnName: hasCurrentBusinessUnit
+                selectors:
+                    included: '#businessUnitAppendUsers'
+                    excluded: '#businessUnitRemoveUsers'
+
+    bu-view-users-grid:
+        extend: user-relation-grid
+        options:
+            entityHint: user
+        source:
+            acl_resource: oro_business_unit_view
+            query:
+                where:
+                    and:
+                        - :business_unit_id MEMBER OF u.businessUnits
+        columns:
+            firstName:
+                label: oro.user.grid.users.columns.firstName
+            lastName:
+                label: oro.user.grid.users.columns.lastName
+            username:
+                label: oro.user.grid.users.columns.username
+            email:
+                label: oro.user.grid.users.columns.email
+        sorters:
+            default:
+                lastName: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
+
+        filters:
+            columns:
+                firstName:
+                    type: string
+                    data_name: u.firstName
+                lastName:
+                    type: string
+                    data_name: u.lastName
+                username:
+                    type: string
+                    data_name: u.username
+                email:
+                    type: string
+                    data_name: u.email

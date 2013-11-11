@@ -5,7 +5,7 @@ function($, __, localeSettings) {
 
     var locale = localeSettings.locale;
 
-    var separator = localeSettings.getVendorDateTimeFormat('jquery_ui', 'datetime')
+    var separator = localeSettings.getVendorDateTimeFormat('jquery_ui', 'datetime', '')
         .replace(localeSettings.getVendorDateTimeFormat('jquery_ui', 'date'), '')
         .replace(localeSettings.getVendorDateTimeFormat('jquery_ui', 'time'), '');
 

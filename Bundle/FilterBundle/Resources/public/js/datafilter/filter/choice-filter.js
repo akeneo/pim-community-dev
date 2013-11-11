@@ -30,7 +30,7 @@ function($, _, __, TextFilter) {
                             '<% }); %>' +
                         '</ul>' +
                         '<input type="text" name="value" value="">' +
-                        '<input class="name_input" type="hidden" name="<%= name %>" id="<%= name %>" value="<%= _.invert(choices)[first] %>"/>' +
+                        '<input class="name_input" type="hidden" name="<%= name %>" id="<%= name %>" value="<%= _.first(choices).value %>"/>' +
                         '</div>' +
                     '</div>' +
                     '<button class="btn btn-primary filter-update" type="button"><%- _.__("Update") %></button>' +
@@ -59,6 +59,21 @@ function($, _, __, TextFilter) {
         emptyValue: {
             value: '',
             type: ''
+        },
+
+        /**
+         * Initialize.
+         *
+         * @param {Object} options
+         */
+        initialize: function() {
+            // temp code to keep backward compatible
+            if ($.isPlainObject(this.choices)) {
+                this.choices = _.map(this.choices, function(option, i) {
+                    return {value: i.toString(), label: option};
+                });
+            }
+            TextFilter.prototype.initialize.apply(this, arguments);
         },
 
         /**

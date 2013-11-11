@@ -31,6 +31,7 @@ class ControllersTest extends WebTestCase
 
     public function testIndexJson()
     {
+        return $this->markTestSkipped("BAP-1820");
         $tags = array('tags[_pager][_page]' => 1, 'tags[_pager][_per_page]' => 10, 'tags[_sort_by][tag]' => 'ASC');
 
         $this->client->request('GET', $this->client->generate('oro_tag_index', array('_format' => 'json')), $tags);

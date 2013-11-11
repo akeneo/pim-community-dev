@@ -11,11 +11,11 @@ use Symfony\Component\Form\FormView;
 class NumberFilterType extends AbstractType
 {
     const TYPE_GREATER_EQUAL = 1;
-    const TYPE_GREATER_THAN = 2;
-    const TYPE_EQUAL = 3;
-    const TYPE_LESS_EQUAL = 4;
-    const TYPE_LESS_THAN = 5;
-    const NAME = 'oro_type_number_filter';
+    const TYPE_GREATER_THAN  = 2;
+    const TYPE_EQUAL         = 3;
+    const TYPE_LESS_EQUAL    = 4;
+    const TYPE_LESS_THAN     = 5;
+    const NAME               = 'oro_type_number_filter';
 
     const DATA_INTEGER = 'data_integer';
     const DATA_DECIMAL = 'data_decimal';
@@ -55,28 +55,27 @@ class NumberFilterType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $operatorChoices = array(
-            self::TYPE_EQUAL => $this->translator->trans('label_type_equal', array(), 'OroFilterBundle'),
-            self::TYPE_GREATER_EQUAL =>
-                $this->translator->trans('label_type_greater_equal', array(), 'OroFilterBundle'),
-            self::TYPE_GREATER_THAN => $this->translator->trans('label_type_greater_than', array(), 'OroFilterBundle'),
-            self::TYPE_LESS_EQUAL => $this->translator->trans('label_type_less_equal', array(), 'OroFilterBundle'),
-            self::TYPE_LESS_THAN => $this->translator->trans('label_type_less_than', array(), 'OroFilterBundle'),
+            self::TYPE_EQUAL         => $this->translator->trans('oro.filter.form.label_type_equal'),
+            self::TYPE_GREATER_EQUAL => $this->translator->trans('oro.filter.form.label_type_greater_equal'),
+            self::TYPE_GREATER_THAN  => $this->translator->trans('oro.filter.form.label_type_greater_than'),
+            self::TYPE_LESS_EQUAL    => $this->translator->trans('oro.filter.form.label_type_less_equal'),
+            self::TYPE_LESS_THAN     => $this->translator->trans('oro.filter.form.label_type_less_than'),
         );
 
         $resolver->setDefaults(
             array(
-                'field_type' => 'number',
-                'operator_choices' => $operatorChoices,
-                'data_type' => self::DATA_INTEGER,
+                'field_type'        => 'number',
+                'operator_choices'  => $operatorChoices,
+                'data_type'         => self::DATA_INTEGER,
                 'formatter_options' => array()
             )
         );
     }
 
     /**
-     * @param FormView $view
+     * @param FormView      $view
      * @param FormInterface $form
-     * @param array $options
+     * @param array         $options
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {

@@ -14,12 +14,13 @@ parameters:
     oro_user.role.manager.api.class:    Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
     oro_user.group.manager.class:       Oro\Bundle\UserBundle\Entity\Manager\GroupManager
     oro_user.group.manager.api.class:   Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
+    oro_user.entity_with_image.subscriber.class:            Oro\Bundle\UserBundle\Entity\EventListener\UploadedImageSubscriber
+    oro_user.autocomplete.user.search_handler:              Oro\Bundle\UserBundle\Autocomplete\UserSearchHandler
+    oro_user.email.owner.provider.class:                    Oro\Bundle\UserBundle\Entity\Provider\EmailOwnerProvider
+    oro_user.gender_provider.class:                         Oro\Bundle\UserBundle\Provider\GenderProvider
+    oro_user.change_password.subscriber.class:              Oro\Bundle\UserBundle\Form\EventListener\ChangePasswordSubscriber
+    oro_user.event_listener.user_email_grid_listener.class: Oro\Bundle\UserBundle\EventListener\UserEmailGridListener
 
-    oro_user.entity_with_image.subscriber.class:  Oro\Bundle\UserBundle\Entity\EventListener\UploadedImageSubscriber
-    oro_user.autocomplete.user.search_handler:    Oro\Bundle\UserBundle\Autocomplete\UserSearchHandler
-    oro_user.email.owner.provider.class:          Oro\Bundle\UserBundle\Entity\Provider\EmailOwnerProvider
-    oro_user.gender_provider.class:               Oro\Bundle\UserBundle\Provider\GenderProvider
-    oro_user.change_password.subscriber.class:    Oro\Bundle\UserBundle\Form\EventListener\ChangePasswordSubscriber
 
 services:
     oro_user.manager:
@@ -124,3 +125,30 @@ services:
         arguments:
             - @form.factory
             - @security.context
+
+    oro_user.event_listener.user_email_grid_listener:
+        class: %oro_user.event_listener.user_email_grid_listener.class%
+        arguments:
+          - @doctrine.orm.entity_manager
+          - @oro_email.datagrid_query_factory
+          - @oro_datagrid.datagrid.request_params
+        calls:
+          - [setEmailSync, [@?oro_imap.email_synchronizer=]]
+        tags:
+          - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.users-email-grid, method: onBuildAfter }
+
+    oro_user.event_listener.role_users_grid_listener:
+        class: %oro_datagrid.event_listener.base_orm_relation.class%
+        arguments:
+          - role_id
+          - @oro_datagrid.datagrid.request_params
+        tags:
+          - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.role-users-grid, method: onBuildAfter }
+
+    oro_user.event_listener.group_users_grid_listener:
+        class: %oro_datagrid.event_listener.base_orm_relation.class%
+        arguments:
+          - group_id
+          - @oro_datagrid.datagrid.request_params
+        tags:
+          - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.group-users-grid, method: onBuildAfter }

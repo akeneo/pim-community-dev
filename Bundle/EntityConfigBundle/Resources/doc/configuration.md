@@ -25,7 +25,7 @@ oro_entity_config:
                     grid:                                           # Define how this property is displayed in a data grid (same as in DatagridManager)
                         type:               string
                         label:              'Label'
-                        filter_type:        oro_grid_orm_string
+                        filter_type:        string
                         required:           true
                         sortable:           true
                         filterable:         true
@@ -46,7 +46,7 @@ oro_entity_config:
                     grid:
                         type:               boolean
                         label:              'Auditable'
-                        filter_type:        oro_grid_orm_boolean
+                        filter_type:        boolean
                         required:           true
                         sortable:           true
                         filterable:         true

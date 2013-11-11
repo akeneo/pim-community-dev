@@ -32,6 +32,11 @@ parameters:
     oro_email.email_renderer.class: Oro\Bundle\EmailBundle\Provider\EmailRenderer
     oro_email.twig.email_security_policy.class: Twig_Sandbox_SecurityPolicy
 
+    oro_email.datagrid_query_factory.class: Oro\Bundle\EmailBundle\Datagrid\EmailQueryFactory
+
+    oro_email.emailtemplate.datagrid_view_list.class: Oro\Bundle\EmailBundle\Datagrid\EmailTemplatesViewList
+    oro_email.emailtemplate.datagrid_helper.class:    Oro\Bundle\EmailBundle\Datagrid\EmailTemplatesGridHelper
+
 services:
     oro_email.entity.cache.warmer:
         public: false
@@ -190,3 +195,20 @@ services:
             - @security.context
         tags:
             - { name: validator.constraint_validator, alias: oro_email.variables_validator }
+
+    oro_email.datagrid_query_factory:
+        class: %oro_email.datagrid_query_factory.class%
+        arguments:
+            - @doctrine
+            - %oro_email.email.entity.class%
+            - @oro_email.email.owner.provider.storage
+            - @oro_config.user
+
+    oro_email.emailtemplate.datagrid_view_list:
+        class: %oro_email.emailtemplate.datagrid_view_list.class%
+        arguments:
+            - @translator
+
+    oro_email.emailtemplate.datagrid_helper:
+        class: %oro_email.emailtemplate.datagrid_helper.class%
+        arguments: [%oro_config.entities%]

@@ -1,55 +1,221 @@
-parameters:
-    oro_entity_config.datagrid.manager.class:               Oro\Bundle\EntityConfigBundle\Datagrid\ConfigDatagridManager
-    oro_entity_config.entityfieldsdatagrid.manager.class:   Oro\Bundle\EntityConfigBundle\Datagrid\EntityFieldsDatagridManager
-    oro_entity_config.audit_datagrid.manager.class:         Oro\Bundle\EntityConfigBundle\Datagrid\AuditDatagridManager
-    oro_entity_config.audit_field_datagrid.manager.class:   Oro\Bundle\EntityConfigBundle\Datagrid\AuditFieldDatagridManager
+datagrid:
+    # Entity config entities grid
+    entityconfig-grid:
+        options:
+            entityHint: entity
+            toolbarOptions:
+                pageSize:
+                    default_per_page: 50
+        source:
+            acl_resource: oro_entityconfig_manage
+            type: orm
+            query:
+                select:
+                    - ce.id
+                    - ce.className
+                    - ce.updated
+                    - ce.mode
+                from:
+                    - { table: OroEntityConfigBundle:EntityConfigModel, alias: ce }
+        columns:
+            name:
+                label: Name
+                data_name: className
+                frontend_type: select
+                choices: @oro_entity_config.event_listener.entityconfig_grid_listener->getChoicesName
+            module:
+                label: Module
+                data_name: className
+                frontend_type: select
+                choices: @oro_entity_config.event_listener.entityconfig_grid_listener->getChoicesModule
+            updated:
+                label: Update at
+                frontend_type: datetime
 
-services:
-    oro_entity_config.datagrid.manager:
-        class:                                  %oro_entity_config.datagrid.manager.class%
-        arguments:
-          - @oro_entity_config.config_manager
-        tags:
-            - name:                             oro_grid.datagrid.manager
-              datagrid_name:                    entity
-              entity_name:                      Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel
-              entity_hint:                      entity
-              route_name:                       oro_entityconfig_index
-              query_entity_alias:               ce
+        properties:
+            id: ~
+            update_link:
+                type: url
+                route: oro_entityconfig_update
+                params:
+                    - id
+            view_link:
+                type: url
+                route: oro_entityconfig_view
+                params:
+                    - id
+        actions:
+            # @TODO check why those actions dont have ACL
+            view:
+                type: navigate
+                label: View
+                icon: book
+                link: view_link
+                rowAction: true
+            update:
+                type: navigate
+                label: Update
+                icon: edit
+                link: update_link
+        sorters:
+            columns:
+                name:
+                    data_name: ce.className
+                module:
+                    data_name: ce.className
+                updated:
+                    data_name: ce.updated
+        filters:
+            columns:
+                name:
+                    type: choice
+                    data_name: ce.className
+                    options:
+                        field_options:
+                            multiple: true
+                            choices: @oro_entity_config.event_listener.entityconfig_grid_listener->getChoicesName
+                module:
+                    type: choice
+                    data_name: ce.className
+                    options:
+                        field_options:
+                            multiple: true
+                            choices: @oro_entity_config.event_listener.entityconfig_grid_listener->getChoicesModule
+                updated:
+                    type: datetime
+                    data_name: ce.updated
 
-    oro_entity_config.entityfieldsdatagrid.manager:
-        class:                                  %oro_entity_config.entityfieldsdatagrid.manager.class%
-        arguments:
-          - @oro_entity_config.config_manager
-        tags:
-            - name:                             oro_grid.datagrid.manager
-              datagrid_name:                    field
-              entity_name:                      Oro\Bundle\EntityConfigBundle\Entity\FieldConfigModel
-              entity_hint:                      fields
-              route_name:                       oro_entityconfig_fields
-              query_entity_alias:               cf
-              identifier_field:                 id
+    # Entity field datagrid
+    entityfields-grid:
+        options:
+            entityHint: fields
+            toolbarOptions:
+                pageSize:
+                    default_per_page: 50
+        source:
+            # TODO: check oro_entityconfig_view acl (403) right now
+            acl_resource: oro_entityconfig_manage
+            type: orm
+            query:
+                select:
+                    - cf.id
+                    - ce.className
+                    - cf.fieldName
+                    - cf.type
+                    - cf.mode
+                from:
+                    - { table: OroEntityConfigBundle:FieldConfigModel, alias: cf }
 
-    oro_entity_config.audit_datagrid.manager:
-        class:                                  %oro_entity_config.audit_datagrid.manager.class%
-        arguments:
-          - @oro_entity_config.config_manager
-        tags:
-            - name:                             oro_grid.datagrid.manager
-              datagrid_name:                    entity_audit_log
-              entity_name:                      Oro\Bundle\EntityConfigBundle\Entity\ConfigLog
-              entity_hint:                      history
-              route_name:                       oro_entityconfig_audit
-              query_entity_alias:               log
+        columns:
+            fieldName:
+                label: Name
+                frontend_type: string
+            type:
+                label: Data Type
+                frontend_type: string
 
-    oro_entity_config.audit_field_datagrid.manager:
-        class:                                  %oro_entity_config.audit_field_datagrid.manager.class%
-        arguments:
-          - @oro_entity_config.config_manager
-        tags:
-            - name:                             oro_grid.datagrid.manager
-              datagrid_name:                    entity_audit_field_log
-              entity_name:                      Oro\Bundle\EntityConfigBundle\Entity\ConfigLog
-              entity_hint:                      history
-              route_name:                       oro_entityconfig_audit_field
-              query_entity_alias:               log
+        properties:
+            update_link:
+                type: url
+                route: oro_entityconfig_field_update
+                params:
+                    - id
+        actions:
+            # @TODO check why those actions dont have ACL
+            update:
+                type: navigate
+                label: Edit
+                icon: edit
+                link: update_link
+                rowAction: true
+        sorters:
+            columns:
+                fieldName:
+                    data_name: cf.fieldName
+                type:
+                    data_name: cf.type
+        filters: ~
+
+    # Audit entity log grid
+    entity-audit-grid:
+        options:
+            entityHint: history
+        source:
+            acl_resource: oro_entityconfig_manage
+            type: orm
+            query:
+                select:
+                    - log
+                    - >
+                      CONCAT(
+                        CONCAT(
+                            CONCAT(u.firstName, ' '),
+                            CONCAT(u.lastName, ' ')
+                        ),
+                        CONCAT(' - ', u.email)
+                      ) as author
+                from:
+                    - { table: OroEntityConfigBundle:ConfigLog, alias: log }
+                join:
+                    left:
+                        user:
+                            join: log.user
+                            alias: u
+                    inner:
+                        diffs:
+                            join: log.diffs
+                            alias: diff
+                            conditionType: WITH
+
+        columns:
+            author:
+                label: Author
+                type: field
+                frontend_type: string
+            diffs:
+                label: Diffs
+                type: twig
+                template: OroEntityConfigBundle:Audit:data.html.twig
+                frontend_type: html
+                context:
+                    config_manager: @oro_entity_config.config_manager
+            loggedAt:
+                label: Logged at
+                type: field
+                frontend_type: datetime
+
+        sorters:
+            columns:
+                author:
+                    data_name: author
+                loggedAt:
+                    data_name: log.loggedAt
+            default:
+                loggedAt: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+
+    audit-log-grid:
+        extend: entity-audit-grid
+        source:
+            query:
+                join:
+                    inner:
+                        diffs:
+                            condition: diff.className = :objectClass AND diff.fieldName IS NULL
+        columns:
+            diffs:
+                context:
+                    is_entity: true
+
+    auditfield-log-grid:
+        extend: entity-audit-grid
+        source:
+            query:
+                join:
+                    inner:
+                        diffs:
+                            condition: diff.className = :objectClass AND diff.fieldName = :fieldName
+        columns:
+            diffs:
+                context:
+                    is_entity: false
+                    field_name: ~ # set from buildBefore in event listener

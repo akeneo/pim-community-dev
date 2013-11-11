@@ -16,7 +16,7 @@ class TextFilterTypeTest extends AbstractTypeTestCase
 
     protected function setUp()
     {
-        $translator = $this->createMockTranslator();
+        $translator             = $this->createMockTranslator();
         $this->formExtensions[] = new CustomFormExtension(array(new FilterType($translator)));
 
         parent::setUp();
@@ -44,13 +44,13 @@ class TextFilterTypeTest extends AbstractTypeTestCase
         return array(
             array(
                 'defaultOptions' => array(
-                    'field_type' => 'text',
+                    'field_type'       => 'text',
                     'operator_choices' => array(
-                        TextFilterType::TYPE_CONTAINS => 'label_type_contains',
-                        TextFilterType::TYPE_NOT_CONTAINS => 'label_type_not_contains',
-                        TextFilterType::TYPE_EQUAL => 'label_type_equals',
-                        TextFilterType::TYPE_STARTS_WITH => 'label_type_start_with',
-                        TextFilterType::TYPE_ENDS_WITH => 'label_type_end_with',
+                        TextFilterType::TYPE_CONTAINS     => 'oro.filter.form.label_type_contains',
+                        TextFilterType::TYPE_NOT_CONTAINS => 'oro.filter.form.label_type_not_contains',
+                        TextFilterType::TYPE_EQUAL        => 'oro.filter.form.label_type_equals',
+                        TextFilterType::TYPE_STARTS_WITH  => 'oro.filter.form.label_type_start_with',
+                        TextFilterType::TYPE_ENDS_WITH    => 'oro.filter.form.label_type_end_with',
                     )
                 )
             )

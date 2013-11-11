@@ -2,12 +2,9 @@
 {% import 'OroTagBundle::macros.html.twig' as _tag %}
 {% import 'OroUIBundle::macros.html.twig' as UI %}
 {% import 'OroEmailBundle::macros.html.twig' as Email %}
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
 
-{% set gridId = 'users-email-grid' %}
-{% block head_script %}
-    {{ parent() }}
-    {% placeholder prepare_grid with {'datagrid': datagrid, 'selector': '#' ~ gridId} %}
-{% endblock %}
+{% set gridName = 'users-email-grid' %}
 
 {% set fullname = entity|oro_format_name|default('N/A') %}
 {% oro_title_set({params : {"%username%": fullname }}) %}
@@ -183,7 +180,10 @@
                             {
                                 'title': '',
                                 'useSpan': false,
-                                'data': [UI.gridBlock(gridId), Email.renderJs()]
+                                'data': [
+                                    dataGrid.renderGrid(gridName, {userId: entity.id}, { cssClass: 'inner-grid' }),
+                                    Email.renderJs()
+                                ]
                             }
                         ]
                     }]

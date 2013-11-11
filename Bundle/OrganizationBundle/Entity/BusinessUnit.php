@@ -2,14 +2,14 @@
 
 namespace Oro\Bundle\OrganizationBundle\Entity;
 
-use Oro\Bundle\UserBundle\Entity\User;
-
-use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
-use DateTime;
+
 use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
+
+use Oro\Bundle\UserBundle\Entity\User;
+use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 
 /**
  * BusinessUnit
@@ -284,7 +284,7 @@ class BusinessUnit
     /**
      * Get user created date/time
      *
-     * @return DateTime
+     * @return \DateTime
      */
     public function getCreatedAt()
     {
@@ -294,7 +294,7 @@ class BusinessUnit
     /**
      * Get user last update date/time
      *
-     * @return DateTime
+     * @return \DateTime
      */
     public function getUpdatedAt()
     {
