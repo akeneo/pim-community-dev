@@ -53,7 +53,7 @@ abstract class AbstractCondition implements ConditionInterface
     }
 
     /**
-     * Check if context meets condition requirements.
+     * This method should be overridden in descendant classes
      *
      * @param mixed $context
      * @return boolean

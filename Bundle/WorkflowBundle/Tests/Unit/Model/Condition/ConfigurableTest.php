@@ -39,11 +39,13 @@ class ConfigurableTest extends \PHPUnit_Framework_TestCase
         $workflowItem = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Entity\WorkflowItem')
             ->disableOriginalConstructor()
             ->getMock();
+        $errors = $this->getMockForAbstractClass('Doctrine\Common\Collections\Collection');
 
         $realCondition = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\Condition\ConditionInterface')
             ->getMockForAbstractClass();
         $realCondition->expects($this->exactly(2))
             ->method('isAllowed')
+            ->with($workflowItem, $errors)
             ->will($this->returnValue(true));
 
         $this->assembler->expects($this->once())
@@ -52,7 +54,7 @@ class ConfigurableTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($realCondition));
 
         $this->condition->initialize($options);
-        $this->assertTrue($this->condition->isAllowed($workflowItem));
-        $this->assertTrue($this->condition->isAllowed($workflowItem));
+        $this->assertTrue($this->condition->isAllowed($workflowItem, $errors));
+        $this->assertTrue($this->condition->isAllowed($workflowItem, $errors));
     }
 }

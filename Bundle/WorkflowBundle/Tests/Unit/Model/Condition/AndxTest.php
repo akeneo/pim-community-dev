@@ -2,6 +2,8 @@
 
 namespace Oro\Bundle\WorkflowBundle\Tests\Unit\Model\Condition;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 use Oro\Bundle\WorkflowBundle\Model\Condition;
 
 class AndxTest extends \PHPUnit_Framework_TestCase
@@ -29,17 +31,35 @@ class AndxTest extends \PHPUnit_Framework_TestCase
 
     public function testIsAllowedFalse()
     {
+        $currentConditionError = 'Current condition error';
+        $nestedConditionError = 'Nested condition error';
+
+        $this->condition->setMessage($currentConditionError);
+
+        $falseConditionWithError = new Condition\False();
+        $falseConditionWithError->setMessage($nestedConditionError);
+
         $this->condition->initialize(
             array(
                 new Condition\True(),
-                new Condition\False(),
+                $falseConditionWithError,
             )
         );
-        $this->assertFalse($this->condition->isAllowed('anything'));
+        $errors = new ArrayCollection();
+        $this->assertFalse($this->condition->isAllowed('anything', $errors));
+        $this->assertEquals(
+            array($nestedConditionError, $currentConditionError),
+            $errors->getValues()
+        );
     }
 
     public function testIsAllowedEmpty()
     {
-        $this->assertFalse($this->condition->isAllowed('anything'));
+        $currentConditionError = 'Current condition error';
+        $this->condition->setMessage($currentConditionError);
+
+        $errors = new ArrayCollection();
+        $this->assertFalse($this->condition->isAllowed('anything', $errors));
+        $this->assertEquals(array($currentConditionError), $errors->getValues());
     }
 }

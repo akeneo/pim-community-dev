@@ -37,7 +37,11 @@ abstract class AbstractComparison extends AbstractCondition
      */
     public function getMessage()
     {
-        return vsprintf($this->message, array('left' => $this->left, 'right' => $this->right));
+        if (null === $this->message) {
+            return null;
+        }
+
+        return strtr($this->message, array('%left%' => $this->left, '%right%' => $this->right));
     }
 
     /**
