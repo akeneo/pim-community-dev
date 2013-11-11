@@ -680,6 +680,17 @@ class User extends ExtendUser implements
     }
 
     /**
+     * @param int $id
+     * @return mixed
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    /**
      *
      * @param  string $username New username
      * @return User

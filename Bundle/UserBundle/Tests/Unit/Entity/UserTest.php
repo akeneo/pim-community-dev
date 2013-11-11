@@ -379,8 +379,8 @@ class UserTest extends \PHPUnit_Framework_TestCase
             ->getMock();
         $user = new User();
         $this->assertSame($user, $user->setImageFile($file));
-        $this->assertInstanceOf('\DateTime', $user->getUpdated());
-        $this->assertEquals($user->getUpdated(), $user->getUpdatedAt());
+        $this->assertInstanceOf('\DateTime', $user->getUpdatedAt());
+        $this->assertEquals($user->getUpdatedAt(), $user->getUpdatedAt());
         $this->assertEquals($file, $user->getImageFile());
         $this->assertSame($user, $user->unsetImageFile());
         $this->assertNull($user->getImageFile());
@@ -437,7 +437,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
     {
         $user = new User();
         $user->preUpdate();
-        $this->assertInstanceOf('\DateTime', $user->getUpdated());
+        $this->assertInstanceOf('\DateTime', $user->getUpdatedAt());
     }
 
     public function testBusinessUnit()
