@@ -3,6 +3,7 @@
 namespace Oro\Bundle\WorkflowBundle\Controller;
 
 use Doctrine\ORM\EntityManager;
+use Oro\Bundle\WorkflowBundle\Serializer\WorkflowAwareSerializer;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -79,6 +80,116 @@ class WidgetController extends Controller
             'currentStep' => $currentStep,
             'form' => $stepForm->createView(),
             'workflowItem' => $workflowItem,
+        );
+    }
+
+    /**
+     * @Route(
+     *      "/transition/create/attributes/{transitionName}/{workflowName}",
+     *      name="oro_workflow_widget_start_transition_form"
+     * )
+     * @Template("OroWorkflowBundle:Widget:transitionForm.html.twig")
+     * @AclAncestor("oro_workflow")
+     * @param string $transitionName
+     * @param string $workflowName
+     * @return array
+     */
+    public function startTransitionFormAction($transitionName, $workflowName)
+    {
+        /** @var WorkflowManager $workflowManager */
+        $workflowManager = $this->get('oro_workflow.manager');
+        $workflow = $workflowManager->getWorkflow($workflowName);
+
+        $workflowItem = new WorkflowItem();
+        $workflowItem->setWorkflowName($workflow->getName());
+
+        $saved = false;
+        $transitionForm = $this->getTransitionForm($workflow, $workflowItem, $transitionName);
+        $data = null;
+        if ($this->getRequest()->isMethod('POST')) {
+            $transitionForm->submit($this->getRequest());
+
+            if ($transitionForm->isValid()) {
+                /** @var WorkflowAwareSerializer $serializer */
+                $serializer = $this->get('oro_workflow.serializer.data.serializer');
+                $serializer->setWorkflowName($workflow->getName());
+                $data = $serializer->serialize($workflowItem->getData(), 'json');
+
+                $saved = true;
+            }
+        }
+
+        return array(
+            'data' => $data,
+            'saved' => $saved,
+            'workflowItem' => $workflowItem,
+            'form' => $transitionForm->createView(),
+        );
+    }
+
+    /**
+     * @Route(
+     *      "/transition/edit/attributes/{transitionName}/{workflowItemId}",
+     *      name="oro_workflow_widget_transition_form"
+     * )
+     * @ParamConverter("workflowItem", options={"id"="workflowItemId"})
+     * @Template("OroWorkflowBundle:Widget:transitionForm.html.twig")
+     * @AclAncestor("oro_workflow")
+     * @param string $transitionName
+     * @param WorkflowItem $workflowItem
+     * @return array
+     */
+    public function transitionFormAction($transitionName, WorkflowItem $workflowItem)
+    {
+        $this->get('oro_workflow.http.workflow_item_validator')->validate($workflowItem);
+
+        /** @var WorkflowManager $workflowManager */
+        $workflowManager = $this->get('oro_workflow.manager');
+        $workflow = $workflowManager->getWorkflow($workflowItem);
+
+        $transitionForm = $this->getTransitionForm($workflow, $workflowItem, $transitionName);
+
+        $saved = false;
+        if ($this->getRequest()->isMethod('POST')) {
+            $transitionForm->submit($this->getRequest());
+
+            if ($transitionForm->isValid()) {
+                $workflowItem->setUpdated();
+                $workflow->bindEntities($workflowItem);
+                $this->getEntityManager()->flush();
+
+                $saved = true;
+            }
+        }
+
+        return array(
+            'saved' => $saved,
+            'workflowItem' => $workflowItem,
+            'form' => $transitionForm->createView(),
+        );
+    }
+
+    /**
+     * Get transition form.
+     *
+     * @param Workflow $workflow
+     * @param WorkflowItem $workflowItem
+     * @param string $transitionName
+     * @return \Symfony\Component\Form\Form
+     */
+    protected function getTransitionForm(Workflow $workflow, WorkflowItem $workflowItem, $transitionName)
+    {
+        $transition = $workflow->getTransitionManager()->getTransition($transitionName);
+
+        return $this->createForm(
+            $transition->getFormType(),
+            $workflowItem->getData(),
+            array_merge(
+                $transition->getFormOptions(),
+                array(
+                    'workflow_item' => $workflowItem,
+                )
+            )
         );
     }
 
