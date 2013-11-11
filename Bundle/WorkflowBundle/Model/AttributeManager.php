@@ -60,7 +60,7 @@ class AttributeManager
     /**
      * Get attributes with option "managed_entity"
      *
-     * @return Collection
+     * @return Collection|Attribute[]
      */
     public function getManagedEntityAttributes()
     {
@@ -74,7 +74,7 @@ class AttributeManager
     /**
      * Get list of attributes that require binding
      *
-     * @return Collection
+     * @return Collection|Attribute[]
      */
     public function getBindEntityAttributes()
     {

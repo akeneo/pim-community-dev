@@ -33,7 +33,7 @@ class Blank extends AbstractCondition
      * @param mixed $context
      * @return boolean
      */
-    public function isAllowed($context)
+    protected function isConditionAllowed($context)
     {
         $value = $this->contextAccessor->getValue($context, $this->target);
         return '' === $value || null === $value;

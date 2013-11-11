@@ -37,11 +37,11 @@ class WidgetController extends Controller
         $workflowManager = $this->get('oro_workflow.manager');
         $workflow = $workflowManager->getWorkflow($workflowItem);
         $workflowData = $workflowItem->getData();
-        $displayStep = $workflow->getStep($showStepName);
+        $displayStep = $workflow->getStepManager()->getStep($showStepName);
         if (!$displayStep) {
             throw new BadRequestHttpException(sprintf('There is no step "%s"', $showStepName));
         }
-        $currentStep = $workflow->getStep($workflowItem->getCurrentStepName());
+        $currentStep = $workflow->getStepManager()->getStep($workflowItem->getCurrentStepName());
         if (!$currentStep) {
             throw new BadRequestHttpException(sprintf('There is no step "%s"', $workflowItem->getCurrentStepName()));
         }
@@ -74,7 +74,7 @@ class WidgetController extends Controller
         return array(
             'saved' => $saved,
             'workflow' => $workflow,
-            'steps' => $workflow->getOrderedSteps(),
+            'steps' => $workflow->getStepManager()->getOrderedSteps(),
             'displayStep' => $displayStep,
             'currentStep' => $currentStep,
             'form' => $stepForm->createView(),
@@ -145,13 +145,13 @@ class WidgetController extends Controller
             $workflowManager = $this->get('oro_workflow.manager');
             $workflow = $workflowManager->getWorkflow($workflowItem);
 
-            $currentStep = $workflow->getStep($workflowItem->getCurrentStepName());
+            $currentStep = $workflow->getStepManager()->getStep($workflowItem->getCurrentStepName());
 
             foreach ($currentStep->getAllowedTransitions() as $transitionName) {
                 $transitionsData[] = array(
                     'workflow' => $workflowManager->getWorkflow($workflowItem),
                     'workflowItem' => $workflowItem,
-                    'transition' => $workflow->getTransition($transitionName),
+                    'transition' => $workflow->getTransitionManager()->getTransition($transitionName),
                 );
             }
         }
@@ -184,7 +184,7 @@ class WidgetController extends Controller
                 $workflowItemsData[] = array(
                     'workflow' => $workflowManager->getWorkflow($workflowItem),
                     'workflowItem' => $workflowItem,
-                    'currentStep' => $workflow->getStep($workflowItem->getCurrentStepName()),
+                    'currentStep' => $workflow->getStepManager()->getStep($workflowItem->getCurrentStepName()),
                     'transitions' => $transitions
                 );
             }

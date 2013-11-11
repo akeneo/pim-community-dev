@@ -74,7 +74,7 @@ class WorkflowDataNormalizer extends SerializerAwareNormalizer implements Normal
      */
     protected function getAttribute(Workflow $workflow, $attributeName)
     {
-        $attribute = $workflow->getAttribute($attributeName);
+        $attribute = $workflow->getAttributeManager()->getAttribute($attributeName);
         if (!$attribute) {
             throw new SerializerException(
                 sprintf(

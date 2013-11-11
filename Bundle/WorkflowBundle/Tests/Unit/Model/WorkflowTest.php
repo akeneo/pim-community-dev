@@ -64,7 +64,7 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
     public function testGetStepsEmpty()
     {
         $workflow = $this->createWorkflow();
-        $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $workflow->getSteps());
+        $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $workflow->getStepManager()->getSteps());
     }
 
     public function testGetOrderedSteps()
@@ -78,8 +78,8 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
         $steps = new ArrayCollection(array($stepTwo, $stepOne, $stepThree));
 
         $workflow = $this->createWorkflow();
-        $workflow->setSteps($steps);
-        $ordered = $workflow->getOrderedSteps();
+        $workflow->getStepManager()->setSteps($steps);
+        $ordered = $workflow->getStepManager()->getOrderedSteps();
         $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $ordered);
         $this->assertSame($stepOne, $ordered->get(0), 'Steps are not in correct order');
         $this->assertSame($stepTwo, $ordered->get(1), 'Steps are not in correct order');
@@ -102,15 +102,15 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
 
         $workflow = $this->createWorkflow();
 
-        $workflow->setSteps(array($stepOne, $stepTwo));
-        $steps = $workflow->getSteps();
+        $workflow->getStepManager()->setSteps(array($stepOne, $stepTwo));
+        $steps = $workflow->getStepManager()->getSteps();
         $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $steps);
         $expected = array('step1' => $stepOne, 'step2' => $stepTwo);
         $this->assertEquals($expected, $steps->toArray());
 
         $stepsCollection = new ArrayCollection(array('step1' => $stepOne, 'step2' => $stepTwo));
-        $workflow->setSteps($stepsCollection);
-        $steps = $workflow->getSteps();
+        $workflow->getStepManager()->setSteps($stepsCollection);
+        $steps = $workflow->getStepManager()->getSteps();
         $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $steps);
         $expected = array('step1' => $stepOne, 'step2' => $stepTwo);
         $this->assertEquals($expected, $steps->toArray());
@@ -119,7 +119,10 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
     public function testGetTransitionsEmpty()
     {
         $workflow = $this->createWorkflow();
-        $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $workflow->getTransitions());
+        $this->assertInstanceOf(
+            'Doctrine\Common\Collections\ArrayCollection',
+            $workflow->getTransitionManager()->getTransitions()
+        );
     }
 
     public function testGetTransition()
@@ -127,9 +130,9 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
         $transition = $this->getTransitionMock('transition');
 
         $workflow = $this->createWorkflow();
-        $workflow->setTransitions(array($transition));
+        $workflow->getTransitionManager()->setTransitions(array($transition));
 
-        $this->assertEquals($transition, $workflow->getTransition('transition'));
+        $this->assertEquals($transition, $workflow->getTransitionManager()->getTransition('transition'));
     }
 
     public function testSetTransitions()
@@ -148,8 +151,8 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
 
         $workflow = $this->createWorkflow();
 
-        $workflow->setTransitions(array($transitionOne, $transitionTwo));
-        $transitions = $workflow->getTransitions();
+        $workflow->getTransitionManager()->setTransitions(array($transitionOne, $transitionTwo));
+        $transitions = $workflow->getTransitionManager()->getTransitions();
         $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $transitions);
         $expected = array('transition1' => $transitionOne, 'transition2' => $transitionTwo);
         $this->assertEquals($expected, $transitions->toArray());
@@ -157,8 +160,8 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
         $transitionsCollection = new ArrayCollection(
             array('transition1' => $transitionOne, 'transition2' => $transitionTwo)
         );
-        $workflow->setTransitions($transitionsCollection);
-        $transitions = $workflow->getTransitions();
+        $workflow->getTransitionManager()->setTransitions($transitionsCollection);
+        $transitions = $workflow->getTransitionManager()->getTransitions();
         $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $transitions);
         $expected = array('transition1' => $transitionOne, 'transition2' => $transitionTwo);
         $this->assertEquals($expected, $transitions->toArray());
@@ -199,6 +202,7 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
             ->getMock();
 
         $workflow = $this->createWorkflow();
+        $workflow->setTranslator($this->getMockTranslator());
         $this->assertFalse($workflow->isTransitionAllowed($workflowItem, 'test'));
     }
 
@@ -236,8 +240,9 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($isAllowedForStep));
 
         $workflow = $this->createWorkflow();
-        $workflow->setTransitions(array($transition));
-        $workflow->setSteps(array($step));
+        $workflow->setTranslator($this->getMockTranslator());
+        $workflow->getTransitionManager()->setTransitions(array($transition));
+        $workflow->getStepManager()->setSteps(array($step));
 
         $this->assertEquals($isAllowed, $workflow->isTransitionAllowed($workflowItem, $transitionName));
     }
@@ -309,8 +314,9 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(false));
 
         $workflow = $this->createWorkflow();
-        $workflow->setTransitions(array($transition));
-        $workflow->setSteps(array($step));
+        $workflow->setTranslator($this->getMockTranslator());
+        $workflow->getTransitionManager()->setTransitions(array($transition));
+        $workflow->getStepManager()->setSteps(array($step));
         $workflow->transit($workflowItem, 'transition');
     }
 
@@ -357,8 +363,8 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
         $entityBinder->expects($this->once())->method('bindEntities')->with($workflowItem);
 
         $workflow = $this->createWorkflow();
-        $workflow->setTransitions(array($transition));
-        $workflow->setSteps(array($step));
+        $workflow->getTransitionManager()->setTransitions(array($transition));
+        $workflow->getStepManager()->setSteps(array($step));
         $workflow->setEntityBinder($entityBinder);
         $workflow->transit($workflowItem, 'transition');
     }
@@ -408,15 +414,15 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
 
         $workflow = $this->createWorkflow();
 
-        $workflow->setAttributes(array($attributeOne, $attributeTwo));
-        $attributes = $workflow->getAttributes();
+        $workflow->getAttributeManager()->setAttributes(array($attributeOne, $attributeTwo));
+        $attributes = $workflow->getAttributeManager()->getAttributes();
         $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $attributes);
         $expected = array('attr1' => $attributeOne, 'attr2' => $attributeTwo);
         $this->assertEquals($expected, $attributes->toArray());
 
         $attributeCollection = new ArrayCollection(array('attr1' => $attributeOne, 'attr2' => $attributeTwo));
-        $workflow->setAttributes($attributeCollection);
-        $attributes = $workflow->getAttributes();
+        $workflow->getAttributeManager()->setAttributes($attributeCollection);
+        $attributes = $workflow->getAttributeManager()->getAttributes();
         $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $attributes);
         $expected = array('attr1' => $attributeOne, 'attr2' => $attributeTwo);
         $this->assertEquals($expected, $attributes->toArray());
@@ -442,9 +448,9 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(true));
 
         $workflow = $this->createWorkflow();
-        $workflow->setAttributes(array($attributeOne, $attributeTwo, $attributeThree));
+        $workflow->getAttributeManager()->setAttributes(array($attributeOne, $attributeTwo, $attributeThree));
 
-        $managedEntitiesAttributes = $workflow->getManagedEntityAttributes();
+        $managedEntitiesAttributes = $workflow->getAttributeManager()->getManagedEntityAttributes();
         $this->assertEquals(2, $managedEntitiesAttributes->count());
         $this->assertEquals($attributeOne, $managedEntitiesAttributes->get('attribute_one'));
         $this->assertEquals($attributeThree, $managedEntitiesAttributes->get('attribute_three'));
@@ -470,9 +476,9 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(true));
 
         $workflow = $this->createWorkflow();
-        $workflow->setAttributes(array($attributeOne, $attributeTwo, $attributeThree));
+        $workflow->getAttributeManager()->setAttributes(array($attributeOne, $attributeTwo, $attributeThree));
 
-        $bindEntitiesAttributes = $workflow->getBindEntityAttributes();
+        $bindEntitiesAttributes = $workflow->getAttributeManager()->getBindEntityAttributes();
         $this->assertEquals(2, $bindEntitiesAttributes->count());
         $this->assertEquals($attributeOne, $bindEntitiesAttributes->get('attribute_one'));
         $this->assertEquals($attributeThree, $bindEntitiesAttributes->get('attribute_three'));
@@ -498,17 +504,20 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(true));
 
         $workflow = $this->createWorkflow();
-        $workflow->setAttributes(array($attributeOne, $attributeTwo, $attributeThree));
+        $workflow->getAttributeManager()->setAttributes(array($attributeOne, $attributeTwo, $attributeThree));
 
-        $this->assertEquals(array('attribute_one', 'attribute_three'), $workflow->getBindEntityAttributeNames());
+        $this->assertEquals(
+            array('attribute_one', 'attribute_three'),
+            $workflow->getAttributeManager()->getBindEntityAttributeNames()
+        );
     }
 
     public function testGetStepAttributes()
     {
         $attributes = new ArrayCollection();
         $workflow = $this->createWorkflow();
-        $workflow->setAttributes($attributes);
-        $this->assertEquals($attributes, $workflow->getAttributes());
+        $workflow->getAttributeManager()->setAttributes($attributes);
+        $this->assertEquals($attributes, $workflow->getAttributeManager()->getAttributes());
     }
 
     public function testGetStep()
@@ -517,10 +526,10 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
         $step2 = $this->getStepMock('step2');
 
         $workflow = $this->createWorkflow();
-        $workflow->setSteps(array($step1, $step2));
+        $workflow->getStepManager()->setSteps(array($step1, $step2));
 
-        $this->assertEquals($step1, $workflow->getStep('step1'));
-        $this->assertEquals($step2, $workflow->getStep('step2'));
+        $this->assertEquals($step1, $workflow->getStepManager()->getStep('step1'));
+        $this->assertEquals($step2, $workflow->getStepManager()->getStep('step2'));
     }
 
     /**
@@ -545,7 +554,7 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
             ->with($this->isInstanceOf('Oro\Bundle\WorkflowBundle\Entity\WorkflowItem'));
 
         $workflow = $this->createWorkflow();
-        $workflow->setTransitions($transitions);
+        $workflow->getTransitionManager()->setTransitions($transitions);
         $workflow->setEntityBinder($entityBinder);
         $item = $workflow->start($data, $transitionName);
         $this->assertInstanceOf('Oro\Bundle\WorkflowBundle\Entity\WorkflowItem', $item);
@@ -603,7 +612,7 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
         $expected = new ArrayCollection(array($allowedStartTransition));
 
         $workflow = $this->createWorkflow();
-        $workflow->setTransitions($transitions);
+        $workflow->getTransitionManager()->setTransitions($transitions);
         $this->assertEquals($expected, $workflow->getAllowedStartTransitions());
     }
 
@@ -615,8 +624,8 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
         $attributes = new ArrayCollection(array('test' => $attribute));
 
         $workflow = $this->createWorkflow();
-        $workflow->setAttributes($attributes);
-        $this->assertSame($attribute, $workflow->getAttribute('test'));
+        $workflow->getAttributeManager()->setAttributes($attributes);
+        $this->assertSame($attribute, $workflow->getAttributeManager()->getAttribute('test'));
     }
 
     protected function getStepMock($name)
@@ -666,8 +675,8 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
         $step->setAllowedTransitions(array($secondTransition->getName()));
 
         $workflow = $this->createWorkflow();
-        $workflow->setSteps(array($step));
-        $workflow->setTransitions(array($firstTransition, $secondTransition));
+        $workflow->getStepManager()->setSteps(array($step));
+        $workflow->getTransitionManager()->setTransitions(array($firstTransition, $secondTransition));
 
         $workflowItem = new WorkflowItem();
         $workflowItem->setCurrentStepName($step->getName());
@@ -705,5 +714,21 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
         return $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\EntityBinder')
             ->disableOriginalConstructor()
             ->getMock();
+    }
+
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function getMockTranslator()
+    {
+        $translator = $this->getMockBuilder('Symfony\Component\Translation\TranslatorInterface')
+            ->disableOriginalConstructor()
+            ->setMethods(array('trans'))
+            ->getMockForAbstractClass();
+        $translator->expects($this->any())
+            ->method('trans')
+            ->will($this->returnArgument(0));
+
+        return $translator;
     }
 }

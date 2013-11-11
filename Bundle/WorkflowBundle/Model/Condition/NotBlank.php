@@ -25,7 +25,7 @@ class NotBlank extends AbstractCondition
      * @param mixed $context
      * @return boolean
      */
-    public function isAllowed($context)
+    protected function isConditionAllowed($context)
     {
         return !$this->blankCondition->isAllowed($context);
     }

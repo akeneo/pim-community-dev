@@ -44,10 +44,10 @@ abstract class AbstractWorkflowAttributesTypeTestCase extends FormIntegrationTes
         $workflow->setName($workflowName);
 
         foreach ($attributes as $name => $attribute) {
-            $workflow->getAttributes()->set($name, $attribute);
+            $workflow->getAttributeManager()->getAttributes()->set($name, $attribute);
         }
 
-        $workflow->setSteps($steps);
+        $workflow->getStepManager()->setSteps($steps);
 
         return $workflow;
     }

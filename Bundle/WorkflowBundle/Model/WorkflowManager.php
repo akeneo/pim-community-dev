@@ -201,7 +201,7 @@ class WorkflowManager
     {
         $workflow = $this->getWorkflow($workflowItem);
 
-        foreach ($workflow->getManagedEntityAttributes() as $attribute) {
+        foreach ($workflow->getAttributeManager()->getManagedEntityAttributes() as $attribute) {
             $attributeName = $attribute->getName();
             if (!$workflowItem->getData()->get($attributeName)) {
                 return false;
@@ -253,7 +253,7 @@ class WorkflowManager
         $entityClass = $this->doctrineHelper->getEntityClass($entity);
 
         /** @var Attribute $attribute */
-        foreach ($workflow->getManagedEntityAttributes() as $attribute) {
+        foreach ($workflow->getAttributeManager()->getManagedEntityAttributes() as $attribute) {
             if ($attribute->getOption('class') == $entityClass) {
                 return $attribute;
             }
