@@ -6,8 +6,8 @@ Feature: Filter products per category
 
   Background:
     Given the following product attributes:
-      | label       | required |
-      | SKU         | yes      |
+      | label | required |
+      | SKU   | yes      |
     And the following products:
       | sku           |
       | purple-tshirt |
@@ -15,11 +15,11 @@ Feature: Filter products per category
       | akeneo-mug    |
       | blue-jeans    |
     And the following categories:
-      | code      | parent   | label    | products                   |
-      | catalog   |          | Catalog  |                            |
-      | tshirts   | catalog  | TShirts  | purple-tshirt,green-tshirt |
-      | trousers  | catalog  | Trousers |                            |
-      | jeans     | trousers | Jeans    | blue-jeans                 |
+      | code     | parent   | label    | products                   |
+      | catalog  |          | Catalog  |                            |
+      | tshirts  | catalog  | TShirts  | purple-tshirt,green-tshirt |
+      | trousers | catalog  | Trousers |                            |
+      | jeans    | trousers | Jeans    | blue-jeans                 |
     And I am logged in as "admin"
 
   Scenario: Successfully display all products classified in T-shirts on products page

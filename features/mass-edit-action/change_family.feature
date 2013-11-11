@@ -10,10 +10,10 @@ Feature: Change family of many products at once
       | Food     |
       | Clothing |
     And the following products:
-      | sku       | family    |
-      | coffee    | Food      |
-      | hamburger |           |
-      | jeans     | Clothing  |
+      | sku       | family   |
+      | coffee    | Food     |
+      | hamburger |          |
+      | jeans     | Clothing |
     And I am logged in as "Julia"
     And I am on the products page
 

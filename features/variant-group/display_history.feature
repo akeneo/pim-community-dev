@@ -6,8 +6,8 @@ Feature: Display the variant group history
   Background:
     Given there is no product group
     And the following attributes:
-      | code      | label      | type                     |
-      | color     | Color      | pim_catalog_simpleselect |
+      | code  | label | type                     |
+      | color | Color | pim_catalog_simpleselect |
     And I am logged in as "admin"
 
   @javascript
