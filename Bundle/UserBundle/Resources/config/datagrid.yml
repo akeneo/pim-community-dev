@@ -265,15 +265,7 @@ datagrid:
                 from:
                     - { table: OroUserBundle:User, alias: u }
 
-        columns:
-            firstName:
-                label: oro.user.grid.users.columns.firstName
-            lastName:
-                label: oro.user.grid.users.columns.lastName
-            username:
-                label: oro.user.grid.users.columns.username
-            email:
-                label: oro.user.grid.users.columns.email
+        columns: []
 
         properties:
             id: ~
@@ -291,20 +283,7 @@ datagrid:
             default:
                 id: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
 
-        filters:
-            columns:
-                username:
-                    type: string
-                    data_name: u.username
-                email:
-                    type: string
-                    data_name: u.email
-                firstName:
-                    type: string
-                    data_name: u.firstName
-                lastName:
-                    type: string
-                    data_name: u.lastName
+        filters: []
 
     role-users-grid:
         extend: user-relation-grid
@@ -325,17 +304,38 @@ datagrid:
                 label: Has role
                 editable: true
                 frontend_type: boolean
+            firstName:
+                label: oro.user.grid.users.columns.firstName
+            lastName:
+                label: oro.user.grid.users.columns.lastName
+            username:
+                label: oro.user.grid.users.columns.username
+            email:
+                label: oro.user.grid.users.columns.email
         filters:
             columns:
                 has_role:
                     type: boolean
                     data_name: has_role
                     filter_by_having: true
+                username:
+                    type: string
+                    data_name: u.username
+                email:
+                    type: string
+                    data_name: u.email
+                firstName:
+                    type: string
+                    data_name: u.firstName
+                lastName:
+                    type: string
+                    data_name: u.lastName
         sorters:
             multiple_sorting: true
             columns:
                 has_role:
                     data_name: has_role
+
             default:
                 has_role: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
                 lastName: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
@@ -369,12 +369,32 @@ datagrid:
                 label: Has group
                 editable: true
                 frontend_type: boolean
+            firstName:
+                label: oro.user.grid.users.columns.firstName
+            lastName:
+                label: oro.user.grid.users.columns.lastName
+            username:
+                label: oro.user.grid.users.columns.username
+            email:
+                label: oro.user.grid.users.columns.email
         filters:
             columns:
                 has_group:
                     type: boolean
                     data_name: has_group
                     filter_by_having: true
+                username:
+                    type: string
+                    data_name: u.username
+                email:
+                    type: string
+                    data_name: u.email
+                firstName:
+                    type: string
+                    data_name: u.firstName
+                lastName:
+                    type: string
+                    data_name: u.lastName
         sorters:
             multiple_sorting: true
             columns:

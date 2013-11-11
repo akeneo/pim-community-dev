@@ -143,15 +143,34 @@ datagrid:
         columns:
             hasCurrentBusinessUnit:
                 label: Has business unit
-                type: field
                 editable: true
                 frontend_type: boolean
+            firstName:
+                label: oro.user.grid.users.columns.firstName
+            lastName:
+                label: oro.user.grid.users.columns.lastName
+            username:
+                label: oro.user.grid.users.columns.username
+            email:
+                label: oro.user.grid.users.columns.email
         filters:
             columns:
                 hasCurrentBusinessUnit:
                     type: boolean
                     data_name: hasCurrentBusinessUnit
                     filter_by_having: true
+                firstName:
+                    type: string
+                    data_name: u.firstName
+                lastName:
+                    type: string
+                    data_name: u.lastName
+                username:
+                    type: string
+                    data_name: u.username
+                email:
+                    type: string
+                    data_name: u.email
         sorters:
             columns:
                 hasCurrentBusinessUnit:
@@ -181,6 +200,30 @@ datagrid:
                 where:
                     and:
                         - :business_unit_id MEMBER OF u.businessUnits
+        columns:
+            firstName:
+                label: oro.user.grid.users.columns.firstName
+            lastName:
+                label: oro.user.grid.users.columns.lastName
+            username:
+                label: oro.user.grid.users.columns.username
+            email:
+                label: oro.user.grid.users.columns.email
         sorters:
             default:
                 lastName: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
+
+        filters:
+            columns:
+                firstName:
+                    type: string
+                    data_name: u.firstName
+                lastName:
+                    type: string
+                    data_name: u.lastName
+                username:
+                    type: string
+                    data_name: u.username
+                email:
+                    type: string
+                    data_name: u.email
