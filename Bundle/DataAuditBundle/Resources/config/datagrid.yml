@@ -151,7 +151,7 @@ datagrid:
             loggedAt:
                 label: Logged at
                 type: field
-                frontend_type: date
+                frontend_type: datetime
             old:
                 label: Old values
                 type: twig
