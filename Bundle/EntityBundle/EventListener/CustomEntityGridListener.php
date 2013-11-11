@@ -285,7 +285,7 @@ class CustomEntityGridListener extends AbstractConfigGridListener
         $requestParams = $this->requestParams;
 
         return function (ResultRecord $record) use ($router, $requestParams, $route) {
-            $className = $requestParams->get('entity_class');
+            $className = $requestParams->get('class_name');
             return $router->generate(
                 $route,
                 array(
