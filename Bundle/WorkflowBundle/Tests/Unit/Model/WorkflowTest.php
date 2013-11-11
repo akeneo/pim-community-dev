@@ -236,6 +236,7 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
         $transition = $this->getTransitionMock('transition', $isStartTransition);
         $transition->expects($this->any())
             ->method('isAllowed')
+            ->with($workflowItem, $this->isInstanceOf('Doctrine\Common\Collections\Collection'))
             ->will($this->returnValue($isAllowed));
 
         $step = $this->getStepMock('step');

@@ -283,7 +283,7 @@ class Workflow
             return false;
         }
 
-        $isAllowed = $transition->isAllowed($workflowItem);
+        $isAllowed = $transition->isAllowed($workflowItem, $this->errors);
         if (!$isAllowed && $this->errors->isEmpty()) {
             $this->errors->add(
                 $this->translator->trans('oro.workflow.message.some_conditions_not_met')
