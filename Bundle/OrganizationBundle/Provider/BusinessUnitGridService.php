@@ -49,12 +49,13 @@ class BusinessUnitGridService
      */
     protected function getChoices($field, $entity, $alias = 'bu')
     {
-        if (!isset($this->choices[$field])) {
-            $this->choices[$field] = $this->em
+        $key = $entity . '|' . $field;
+        if (!isset($this->choices[$key])) {
+            $this->choices[$key] = $this->em
                 ->getRepository('Oro\Bundle\OrganizationBundle\Entity\BusinessUnit')
                 ->getGridFilterChoices($field, $entity, $alias);
         }
 
-        return $this->choices[$field];
+        return $this->choices[$key];
     }
 }

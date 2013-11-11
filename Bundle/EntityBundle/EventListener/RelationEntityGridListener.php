@@ -92,9 +92,6 @@ class RelationEntityGridListener extends CustomEntityGridListener
         }
         $this->relation = $extendEntity;
 
-//        $className = $this->relationConfig->getId()->getClassName();
-//        $relFieldName = $this->relationConfig->getId()->getFieldName();
-
         parent::onBuildBefore($event);
     }
 

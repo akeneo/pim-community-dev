@@ -1,5 +1,7 @@
 datagrid:
     business-unit-grid:
+        options:
+            entityHint: business unit
         source:
             acl_resource: oro_business_unit_view
             type: orm
@@ -30,15 +32,16 @@ datagrid:
                 label: oro.business_unit.datagrid.email
             phone:
                 label: oro.business_unit.datagrid.phone
-            owner:
+            ownerName:
                 label: oro.business_unit.datagrid.owner
-            organization:
+            organizationName:
                 label: oro.business_unit.datagrid.organization
-            created_at:
+            createdAt:
                 label: oro.business_unit.datagrid.created_at
                 frontend_type: datetime
 
         properties:
+            id: ~
             update_link:
                 type: url
                 route: oro_business_unit_update
@@ -72,7 +75,7 @@ datagrid:
             delete:
                 type:          delete
                 label:         oro.business_unit.datagrid.action.delete
-                link:          update_link
+                link:          delete_link
                 icon:          trash
                 acl_resource:  oro_business_unit_delete
 
@@ -84,11 +87,11 @@ datagrid:
                     data_name: u.email
                 phone:
                     data_name: u.phone
-                owner:
+                ownerName:
                     data_name: owner.name
-                organization:
+                organizationName:
                     data_name: organization.name
-                created_at:
+                createdAt:
                     data_name: u.createdAt
 
             default:
@@ -105,19 +108,21 @@ datagrid:
                 phone:
                     type: string
                     data_name: u.phone
-                owner:
+                ownerName:
                     type: choice
-                    data_name: u.ownerName
+                    data_name: ownerName
+                    filter_by_having: true
                     options:
                           field_options:
                               choices: @oro_organization.provider.business_units_grid->getOwnerChoices
-                organization:
+                organizationName:
                     type: choice
-                    data_name: u.organizationName
+                    data_name: organizationName
+                    filter_by_having: true
                     options:
                           field_options:
                               choices: @oro_organization.provider.business_units_grid->getOrganizationChoices
-                created_at:
+                createdAt:
                     type: datetime
                     data_name: u.createdAt
 
@@ -156,6 +161,7 @@ datagrid:
                 lastName: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
 
         options:
+            entityHint: user
             requireJSModules:
               - oro/datagrid/column-form-listener
             columnListener:
@@ -167,6 +173,8 @@ datagrid:
 
     bu-view-users-grid:
         extend: user-relation-grid
+        options:
+            entityHint: user
         source:
             acl_resource: oro_business_unit_view
             query:
