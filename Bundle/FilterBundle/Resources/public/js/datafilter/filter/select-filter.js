@@ -133,6 +133,19 @@ function(_, __, AbstractFilter, MultiselectDecorator) {
         },
 
         /**
+         * Initialize.
+         *
+         * @param {Object} options
+         */
+        initialize: function() {
+            // temp code to keep backward compatible
+            this.choices = _.map(this.choices, function(option, i) {
+                return _.isString(option) ? {value: i, label: option} : option;
+            });
+            AbstractFilter.prototype.initialize.apply(this, arguments);
+        },
+
+        /**
          * Render filter template
          *
          * @return {*}

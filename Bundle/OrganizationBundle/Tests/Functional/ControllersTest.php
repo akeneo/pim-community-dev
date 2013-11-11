@@ -38,6 +38,7 @@ class ControllersTest extends WebTestCase
      */
     public function testUpdateUsers()
     {
+        $this->markTestSkipped("BAP-1820");
         $id  = null;
         $this->client->request(
             'GET',

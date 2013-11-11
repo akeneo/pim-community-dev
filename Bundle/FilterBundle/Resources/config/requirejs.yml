@@ -20,5 +20,7 @@ config:
         'oro/datafilter/text-filter': 'bundles/orofilter/js/datafilter/filter/text-filter.js'
         'oro/datafilter/abstract-formatter': 'bundles/orofilter/js/datafilter/formatter/abstract-formatter.js'
         'oro/datafilter/number-formatter': 'bundles/orofilter/js/datafilter/formatter/number-formatter.js'
-        'oro/datafilter/list': 'bundles/orofilter/js/datafilter/list.js'
+        'oro/datafilter/filters-manager': 'bundles/orofilter/js/datafilter/filters-manager.js'
+        'oro/datafilter/collection-filters-manager': 'bundles/orofilter/js/datafilter/collection-filters-manager.js'
+        'oro/datafilter-builder': 'bundles/orofilter/js/datafilter-builder.js'
         'oro/multiselect-decorator': 'bundles/orofilter/js/multiselect-decorator.js'

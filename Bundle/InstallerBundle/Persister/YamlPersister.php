@@ -63,7 +63,7 @@ class YamlPersister
         }
 
         if (false === file_put_contents($this->paramFile, Yaml::dump(array('parameters' => $parameters)))) {
-            throw new \RuntimeException(sprintf('Failed to write to %s.', $this->file));
+            throw new \RuntimeException(sprintf('Failed to write to %s.', $this->paramFile));
         }
     }
 }

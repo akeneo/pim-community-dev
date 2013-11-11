@@ -1,14 +1,14 @@
 /* global define */
-define(['underscore', 'oro/datagrid/cell-formatter', 'oro/formatter/number'],
+define(['underscore', 'oro/grid/cell-formatter', 'oro/formatter/number'],
 function(_, CellFormatter, formatter) {
     'use strict';
 
     /**
      * Cell formatter that format percent representation
      *
-     * @export oro/datagrid/number-formatter
-     * @class  oro.datagrid.NumberFormatter
-     * @extends oro.datagrid.CellFormatter
+     * @export oro/grid/number-formatter
+     * @class  oro.grid.NumberFormatter
+     * @extends oro.grid.CellFormatter
      */
     var NumberFormatter = function (options) {
         options = options ? _.clone(options) : {};
@@ -34,7 +34,7 @@ function(_, CellFormatter, formatter) {
          * @inheritDoc
          */
         fromRaw: function (rawData) {
-            if (rawData == null || rawData == '') {
+            if (rawData === null || rawData === '') {
                 return '';
             }
             return this.formatter.apply(this, arguments);
@@ -44,7 +44,7 @@ function(_, CellFormatter, formatter) {
          * @inheritDoc
          */
         toRaw: function (formattedData) {
-            if (formattedData == null || formattedData == '') {
+            if (formattedData === null || formattedData === '') {
                 return null;
             }
             return formatter.unformat(formattedData);
