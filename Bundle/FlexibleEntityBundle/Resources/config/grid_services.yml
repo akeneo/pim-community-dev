@@ -1,0 +1,91 @@
+parameters:
+    oro_flexibleentity.grid.listener.class:                           Oro\Bundle\FlexibleEntityBundle\Grid\EventListener
+    oro_flexibleentity.grid.extension.formatter.property.class:       Oro\Bundle\FlexibleEntityBundle\Grid\Extension\Formatter\Property\FlexibleFieldProperty
+
+    oro_flexibleentity.grid.extension.flexible_filter_utility.class:  Oro\Bundle\FlexibleEntityBundle\Grid\Extension\Filter\FlexibleFilterUtility
+
+    oro_flexibleentity.grid.extension.filter.string.class:            Oro\Bundle\FlexibleEntityBundle\Grid\Extension\Filter\FlexibleStringFilter
+    oro_flexibleentity.grid.extension.filter.choice.class:            Oro\Bundle\FlexibleEntityBundle\Grid\Extension\Filter\FlexibleChoiceFilter
+    oro_flexibleentity.grid.extension.filter.number.class:            Oro\Bundle\FlexibleEntityBundle\Grid\Extension\Filter\FlexibleNumberFilter
+    oro_flexibleentity.grid.extension.filter.entity.class:            Oro\Bundle\FlexibleEntityBundle\Grid\Extension\Filter\FlexibleEntityFilter
+    oro_flexibleentity.grid.extension.filter.date.class:              Oro\Bundle\FlexibleEntityBundle\Grid\Extension\Filter\FlexibleDateRangeFilter
+    oro_flexibleentity.grid.extension.filter.datetime.class:          Oro\Bundle\FlexibleEntityBundle\Grid\Extension\Filter\FlexibleDateTimeRangeFilter
+    oro_flexibleentity.grid.extension.filter.boolean.class:           Oro\Bundle\FlexibleEntityBundle\Grid\Extension\Filter\FlexibleBooleanFilter
+
+services:
+    oro_flexibleentity.grid.listener:
+        class: %oro_flexibleentity.grid.listener.class%
+        arguments:
+            - @oro_flexibleentity.registry
+            - @oro_datagrid.datagrid.request_params
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before, method: buildBefore}
+            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after,  method: buildAfter}
+
+    oro_flexibleentity.grid.extension.formatter.property:
+        class: %oro_flexibleentity.grid.extension.formatter.property.class%
+        arguments:
+            - @translator
+        tags:
+            - { name:  oro_datagrid.extension.formatter.property, type: flexible_field }
+
+    oro_flexibleentity.grid.extension.flexible_filter_utility:
+        class: %oro_flexibleentity.grid.extension.flexible_filter_utility.class%
+        arguments:
+            - @oro_flexibleentity.registry
+
+    oro_flexibleentity.grid.extension.filter.string:
+        class: %oro_flexibleentity.grid.extension.filter.string.class%
+        arguments:
+            - @form.factory
+            - @oro_flexibleentity.grid.extension.flexible_filter_utility
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: flexible_string }
+
+    oro_flexibleentity.grid.extension.filter.choice:
+        class: %oro_flexibleentity.grid.extension.filter.choice.class%
+        arguments:
+            - @form.factory
+            - @oro_flexibleentity.grid.extension.flexible_filter_utility
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: flexible_choice }
+
+    oro_flexibleentity.grid.extension.filter.number:
+        class: %oro_flexibleentity.grid.extension.filter.number.class%
+        arguments:
+            - @form.factory
+            - @oro_flexibleentity.grid.extension.flexible_filter_utility
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: flexible_number }
+
+    oro_flexibleentity.grid.extension.filter.entity:
+        class: %oro_flexibleentity.grid.extension.filter.entity.class%
+        arguments:
+            - @form.factory
+            - @oro_flexibleentity.grid.extension.flexible_filter_utility
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: flexible_entity }
+
+    oro_flexibleentity.grid.extension.filter.date:
+        class: %oro_flexibleentity.grid.extension.filter.date.class%
+        arguments:
+            - @form.factory
+            - @oro_flexibleentity.grid.extension.flexible_filter_utility
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: flexible_date }
+
+    oro_flexibleentity.grid.extension.filter.datetime:
+        class: %oro_flexibleentity.grid.extension.filter.datetime.class%
+        arguments:
+            - @form.factory
+            - @oro_flexibleentity.grid.extension.flexible_filter_utility
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: flexible_datetime }
+
+    oro_flexibleentity.grid.extension.filter.boolean:
+        class: %oro_flexibleentity.grid.extension.filter.boolean.class%
+        arguments:
+            - @form.factory
+            - @oro_flexibleentity.grid.extension.flexible_filter_utility
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: flexible_boolean }

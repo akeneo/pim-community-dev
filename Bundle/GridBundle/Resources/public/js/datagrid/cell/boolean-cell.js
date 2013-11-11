@@ -6,8 +6,8 @@ function($, _, Backgrid) {
     /**
      * Boolean column cell. Added missing behaviour.
      *
-     * @export  oro/datagrid/boolean-cell
-     * @class   oro.datagrid.BooleanCell
+     * @export  oro/grid/boolean-cell
+     * @class   oro.grid.BooleanCell
      * @extends Backgrid.BooleanCell
      */
     return Backgrid.BooleanCell.extend({

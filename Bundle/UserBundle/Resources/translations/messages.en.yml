@@ -97,3 +97,22 @@ oro:
             status:
                 message:
                     saved: "Status saved"
+
+        grid:
+            users:
+                columns:
+                    username:    "Username"
+                    email:       "Email"
+                    firstName:   "First name"
+                    lastName:    "Last name"
+                    created:     "Created"
+                    updated:     "Updated at"
+                    enabled:     "Status"
+
+            roles:
+                columns:
+                    label:       "Label"
+
+            groups:
+                columns:
+                    name:       "Name"

@@ -6,8 +6,8 @@ function(_, Backgrid, DateTimeFormatter) {
     /**
      * Date formatter for date cell
      *
-     * @export  oro/datagrid/date-formatter
-     * @class   oro.datagrid.DateTimeFormatter
+     * @export  oro/grid/date-formatter
+     * @class   oro.grid.DateTimeFormatter
      * @extends Backgrid.CellFormatter
      */
     var DatagridDateTimeFormatter = function (options) {

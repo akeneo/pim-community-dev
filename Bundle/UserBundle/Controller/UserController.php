@@ -2,24 +2,21 @@
 
 namespace Oro\Bundle\UserBundle\Controller;
 
-use Symfony\Component\HttpKernel\Exception\HttpException;
-use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-use Oro\Bundle\UserBundle\Autocomplete\UserSearchHandler;
-
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
+
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\UserBundle\Entity\UserApi;
+use Oro\Bundle\UserBundle\Autocomplete\UserSearchHandler;
 
 use Oro\Bundle\OrganizationBundle\Entity\Manager\BusinessUnitManager;
-use Oro\Bundle\UserBundle\Datagrid\UserEmailDatagridManager;
+use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 
 class UserController extends Controller
 {
@@ -126,15 +123,12 @@ class UserController extends Controller
      *      requirements={"_format"="html|json"},
      *      defaults={"_format" = "html"}
      * )
+     * @Template
      * @AclAncestor("oro_user_user_view")
      */
     public function indexAction()
     {
-        $view = $this->get('oro_user.user_datagrid_manager')->getDatagrid()->createView();
-
-        return 'json' == $this->getRequest()->getRequestFormat()
-            ? $this->get('oro_grid.renderer')->renderResultsJsonResponse($view)
-            : $this->render('OroUserBundle:User:index.html.twig', array('datagrid' => $view));
+        return array();
     }
 
     /**
@@ -182,31 +176,15 @@ class UserController extends Controller
      */
     protected function view(User $user, $editRoute = '')
     {
-        /** @var UserEmailDatagridManager $manager */
-        $manager = $this->get('oro_user.email.datagrid_manager');
-        $manager->setUser($user);
-        if (array_key_exists(
-            'refresh',
-            $manager->getDatagrid()->getParameters()->get(ParametersInterface::ADDITIONAL_PARAMETERS)
-        )) {
-            $origin = $user->getImapConfiguration();
-            if ($origin) {
-                $this->get('oro_imap.email_synchronizer')->syncOrigins(array($origin->getId()));
-            }
-        }
-        $view = $manager->getDatagrid()->createView();
-
         $output = array(
             'entity' => $user,
-            'datagrid' => $view
         );
 
         if ($editRoute) {
             $output = array_merge($output, array('editRoute' => $editRoute));
         }
-        return 'json' == $this->getRequest()->getRequestFormat()
-            ? $this->get('oro_grid.renderer')->renderResultsJsonResponse($view)
-            : $output;
+
+        return $output;
     }
 
     /**

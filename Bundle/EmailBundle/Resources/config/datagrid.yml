@@ -1,21 +1,154 @@
-parameters:
-    oro_email.emailtemplate.datagrid_manager.class:   Oro\Bundle\EmailBundle\Datagrid\EmailTemplateDatagridManager
-    oro_email.emailtemplate.datagrid_view_list.class: Oro\Bundle\EmailBundle\Datagrid\EmailTemplatesViewList
+datagrid:
+    email-grid:
+        source:
+            acl_resource: oro_email_view
+            type: orm
+            query:
+                select:
+                    - e
+                    - @oro_email.datagrid_query_factory->getFromEmailExpression()
+                from:
+                    - { table: OroEmailBundle:Email, alias: e }
+                join:
+                    inner:
+                        from_email_address:
+                            join: e.fromEmailAddress
+                            alias: a
 
-services:
-    oro_email.emailtemplate.datagrid_view_list:
-        class: %oro_email.emailtemplate.datagrid_view_list.class%
-        arguments:
-            - @translator
+        columns:
+            fromEmailAddress:
+                type: twig
+                label: oro.email.datagrid.email.from_name
+                frontend_type: html
+                template: OroEmailBundle:Email:Datagrid/Property/from.html.twig
+            subject:
+                type: twig
+                label: oro.email.datagrid.email.subject
+                frontend_type: html
+                template: OroEmailBundle:Email:Datagrid/Property/subject.html.twig
+            sentAt:
+                label: oro.email.datagrid.email.sentAt
+                frontend_type: datetime
+            recipients:
+                type: twig
+                label: oro.email.datagrid.email.recipients
+                frontend_type: html
+                template: OroEmailBundle:Email:Datagrid/Property/recipients.html.twig
+        properties:
+            id: ~
+        sorters:
+            columns:
+                subject: { data_name: e.subject }
+                sentAt:  { data_name: e.sentAt }
+            default: { sentAt: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC }
 
-    oro_email.emailtemplate.datagrid_manager:
-        class: %oro_email.emailtemplate.datagrid_manager.class%
-        arguments: [%oro_config.entities%]
-        tags:
-            - name: oro_grid.datagrid.manager
-              datagrid_name: emailtemplate
-              entity_name: %oro_email.emailtemplate.entity.class%
-              entity_hint: email template
-              route_name: oro_email_emailtemplate_index
-              identifier_field: "id"
-              views_list: oro_email.emailtemplate.datagrid_view_list
+        filters:
+            columns:
+                fromEmailAddress: { type: string,   data_name: a.email }
+                subject:          { type: string,   data_name: e.subject }
+                sentAt:           { type: datetime, data_name: e.sentAt }
+        options: { entityHint: email }
+
+    email-templates:
+        source:
+            type: orm
+            acl_resource: oro_email_emailtemplate_index
+            query:
+                select:
+                    - t.id
+                    - t.entityName
+                    - t.name
+                    - t.type
+                    - t.isSystem
+                from:
+                    - { table: %oro_email.emailtemplate.entity.class%, alias: t }
+
+        columns:
+            entityName:
+                type:           twig
+                frontend_type:  html
+                label:          oro.email.datagrid.emailtemplate.column.entity_name
+                template:       OroNotificationBundle:EmailNotification:Datagrid/Property/entityName.html.twig
+            name:
+                label:          oro.email.datagrid.emailtemplate.column.name
+            type:
+                frontend_type:  select
+                label:          oro.email.datagrid.emailtemplate.column.type
+                choices:        @oro_email.emailtemplate.datagrid_helper->getTypeChoices
+            isSystem:
+                frontend_type:  select
+                label:          oro.email.datagrid.emailtemplate.column.isSystem
+                choices:        @oro_email.emailtemplate.datagrid_helper->getSystemChoices
+        properties:
+            id: ~
+            update_link:
+                type: url
+                route: oro_email_emailtemplate_update
+                params: [ id ]
+            clone_link:
+                type: url
+                route: oro_email_emailtemplate_clone
+                params: [ id ]
+            delete_link:
+                type: url
+                route: oro_api_delete_emailtemplate
+                params: [ id ]
+
+        filters:
+            columns:
+                entityName:
+                    type:      choice
+                    label:     oro.email.datagrid.emailtemplate.column.entity_name
+                    data_name: t.entityName
+                    options:
+                        translation_domain: config
+                        field_options:
+                            multiple:       true
+                            choices:        @oro_email.emailtemplate.datagrid_helper->getEntityNameChoices
+                name:
+                    type:      string
+                    data_name: t.name
+                    label:     oro.email.datagrid.emailtemplate.column.name
+                type:
+                    type:            choice
+                    label:           oro.email.datagrid.emailtemplate.column.type
+                    data_name:       t.type
+                    options:
+                        field_options:
+                            choices: @oro_email.emailtemplate.datagrid_helper->getTypeChoices
+
+                isSystem:
+                    type:           boolean
+                    label:          oro.email.datagrid.emailtemplate.column.isSystem
+                    data_name:      t.isSystem
+
+        sorters:
+            columns:
+                name:     { data_name: t.name }
+                type:     { data_name: t.type }
+                isSystem: { data_name: t.isSystem }
+
+        actions:
+            update:
+                type:         navigate
+                label:        oro.email.datagrid.emailtemplate.action.update
+                link:         update_link
+                icon:         edit
+                acl_resource: oro_email_emailtemplate_update
+                rowAction:    true
+            clone:
+                type:         navigate
+                label:        oro.email.datagrid.emailtemplate.action.clone
+                link:         clone_link
+                icon:         share
+                acl_resource: oro_email_emailtemplate_create
+            delete:
+                type:         delete
+                label:        oro.email.datagrid.emailtemplate.action.delete
+                acl_resource: oro_email_emailtemplate_remove
+                icon:         trash
+                link:         delete_link
+
+        action_configuration: @oro_email.emailtemplate.datagrid_helper->getActionConfigurationClosure
+        views_list : @oro_email.emailtemplate.datagrid_view_list
+        options: { entityHint: email template }

@@ -1,77 +1,395 @@
-parameters:
-    oro_user.user_datagrid_manager.class:                 Oro\Bundle\UserBundle\Datagrid\UserDatagridManager
-    oro_user.role_datagrid_manager.class:                 Oro\Bundle\UserBundle\Datagrid\RoleDatagridManager
-    oro_user.group_datagrid_manager.class:                Oro\Bundle\UserBundle\Datagrid\GroupDatagridManager
-    oro_user.role_user_datagrid_manager.class:            Oro\Bundle\UserBundle\Datagrid\RoleUserDatagridManager
-    oro_user.group_user_datagrid_manager.class:           Oro\Bundle\UserBundle\Datagrid\GroupUserDatagridManager
-    oro_user.email.datagrid_manager.class:                Oro\Bundle\UserBundle\Datagrid\UserEmailDatagridManager
-    oro_user.email.datagrid_query_factory.class:          Oro\Bundle\UserBundle\Datagrid\UserEmailQueryFactory
+datagrid:
+    users-grid:
+        source:
+            acl_resource: oro_user_user_view
+            type: orm
+            query:
+                select:
+                    - u.id
+                    - u.username
+                    - u.email
+                    - u.firstName
+                    - u.lastName
+                    - u.created
+                    - u.updated
+                    - u.enabled
+                from:
+                    - { table: OroUserBundle:User, alias: u }
+        columns:
+            username:
+                label: oro.user.grid.users.columns.username
+            email:
+                label: oro.user.grid.users.columns.email
+            firstName:
+                label: oro.user.grid.users.columns.firstName
+            lastName:
+                label: oro.user.grid.users.columns.lastName
+            created:
+                label: oro.user.grid.users.columns.created
+                frontend_type: datetime
+            updated:
+                label: oro.user.grid.users.columns.updated
+                frontend_type: datetime
+            enabled:
+                label: oro.user.grid.users.columns.enabled
+                frontend_type: select
+                choices:
+                   - Inactive
+                   - Active
 
-services:
-    oro_user.user_datagrid_manager:
-        class: %oro_user.user_datagrid_manager.class%
-        tags:
-            - name: oro_grid.datagrid.manager
-              datagrid_name: users
-              entity_name: Oro\Bundle\UserBundle\Entity\User
-              entity_hint: user
-              flexible: true
-              route_name: oro_user_index
+        properties:
+            update_link:
+                type: url
+                route: oro_user_update
+                params:
+                    - id
+            view_link:
+                type: url
+                route: oro_user_view
+                params:
+                    - id
+            delete_link:
+                type: url
+                route: oro_api_delete_user
+                params:
+                    - id
+        sorters:
+            columns:
+                username:
+                    data_name: u.username
+                email:
+                    data_name: u.email
+                firstName:
+                    data_name: u.firstName
+                lastName:
+                    data_name: u.lastName
+                created:
+                    data_name: u.created
+                updated:
+                    data_name: u.updated
+                enabled:
+                    data_name: u.enabled
+            default:
+                username: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
 
-    oro_user.role_datagrid_manager:
-        class: %oro_user.role_datagrid_manager.class%
-        tags:
-            - name: oro_grid.datagrid.manager
-              datagrid_name: user_roles
-              entity_name: Oro\Bundle\UserBundle\Entity\Role
-              query_entity_alias: user_role
-              entity_hint: role
-              route_name: oro_user_role_index
+        filters:
+            columns:
+                username:
+                    type: string
+                    data_name: u.username
+                email:
+                    type: string
+                    data_name: u.email
+                firstName:
+                    type: string
+                    data_name: u.firstName
+                lastName:
+                    type: string
+                    data_name: u.lastName
+                created:
+                    type: datetime
+                    data_name: u.created
+                updated:
+                    type: datetime
+                    data_name: u.updated
+                enabled:
+                    type: choice
+                    data_name: u.enabled
+                    options:
+                        field_options:
+                            choices:
+                               - Inactive
+                               - Active
 
-    oro_user.group_datagrid_manager:
-        class: %oro_user.group_datagrid_manager.class%
-        tags:
-            - name: oro_grid.datagrid.manager
-              datagrid_name: user_groups
-              entity_name: Oro\Bundle\UserBundle\Entity\Group
-              query_entity_alias: user_group
-              entity_hint: group
-              route_name: oro_user_group_index
+        actions:
+            view:
+                type:          navigate
+                label:         View
+                link:          view_link
+                icon:          user
+                acl_resource:  oro_user_user_view
+                rowAction:     true
+            update:
+                type:          navigate
+                label:         Update
+                link:          update_link
+                icon:          edit
+                acl_resource:  oro_user_user_update
+            delete:
+                type:          delete
+                label:         Delete
+                link:          update_link
+                icon:          trash
+                acl_resource:  oro_user_user_delete
 
-    oro_user.role_user_datagrid_manager:
-        class: %oro_user.role_user_datagrid_manager.class%
-        tags:
-            - name: oro_grid.datagrid.manager
-              datagrid_name: user_roleusers
-              entity_name: Oro\Bundle\UserBundle\Entity\User
-              query_entity_alias: user
-              entity_hint: user
-              route_name: oro_user_role_user_grid
+    groups-grid:
+        source:
+            acl_resource: oro_user_group_view
+            type: orm
+            query:
+                select:
+                    - g.id
+                    - g.name
+                from:
+                    - { table: OroUserBundle:Group, alias: g }
+        columns:
+            name:
+                label: oro.user.grid.groups.columns.name
 
-    oro_user.group_user_datagrid_manager:
-        class: %oro_user.group_user_datagrid_manager.class%
-        tags:
-            - name: oro_grid.datagrid.manager
-              datagrid_name: user_groupusers
-              entity_name: Oro\Bundle\UserBundle\Entity\User
-              query_entity_alias: user
-              entity_hint: user
-              route_name: oro_user_group_user_grid
+        properties:
+            update_link:
+                type: url
+                route: oro_user_group_update
+                params:
+                    - id
 
-    oro_user.email.datagrid_manager:
-        class: %oro_user.email.datagrid_manager.class%
-        tags:
-            - name: oro_grid.datagrid.manager
-              datagrid_name: user_emails
-              entity_name: %oro_email.email.entity.class%
-              query_factory: oro_user.email.datagrid_query_factory
-              entity_hint: email
-              route_name: oro_user_view
+            delete_link:
+                type: url
+                route: oro_api_delete_group
+                params:
+                    - id
 
-    oro_user.email.datagrid_query_factory:
-        class: %oro_user.email.datagrid_query_factory.class%
-        arguments:
-            - @doctrine
-            - %oro_email.email.entity.class%
-            - @oro_email.email.owner.provider.storage
-            - @oro_config.user
+        actions:
+            update:
+                type:          navigate
+                label:         Update
+                link:          update_link
+                icon:          edit
+                acl_resource:  oro_user_group_update
+                rowAction:     true
+            delete:
+                type:          delete
+                label:         Delete
+                link:          update_link
+                icon:          trash
+                acl_resource:  oro_user_group_remove
+
+        sorters:
+            columns:
+                name:
+                    data_name: g.name
+            default:
+                name: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
+
+        filters:
+            columns:
+                name:
+                    type: string
+                    data_name: g.name
+
+    roles-grid:
+        source:
+            acl_resource: oro_user_role_view
+            type: orm
+            query:
+                select:
+                    - r.id
+                    - r.role
+                    - r.label
+                from:
+                    - { table: OroUserBundle:Role, alias: r }
+                where:
+                    and:
+                        - r.role <> '%oro_user.entity.class%::ROLE_ANONYMOUS'
+        columns:
+            label:
+                label: oro.user.grid.roles.columns.label
+
+        properties:
+            update_link:
+                type: url
+                route: oro_user_role_update
+                params:
+                    - id
+
+            delete_link:
+                type: url
+                route: oro_api_delete_role
+                params:
+                    - id
+
+        actions:
+            update:
+                type:          navigate
+                label:         Update
+                link:          update_link
+                icon:          edit
+                acl_resource:  oro_user_role_update
+                rowAction:     true
+            delete:
+                type:          delete
+                label:         Delete
+                link:          update_link
+                icon:          trash
+                acl_resource:  oro_user_role_remove
+
+        sorters:
+            columns:
+                label:
+                    data_name: r.label
+            default:
+                label: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
+
+        filters:
+            columns:
+                label:
+                    type: string
+                    data_name: r.label
+
+    users-email-grid:
+        extend: email-grid
+        source:
+            query:
+                join:
+                    inner:
+                        folder:
+                            join: e.folder
+                            alias: f
+                        origin:
+                            join: f.origin
+                            alias: o
+                where:
+                    and:
+                        - o.id = :origin_id
+
+    user-relation-grid:
+        source:
+            type: orm
+            query:
+                select:
+                    - u.id
+                    - u.username
+                    - u.email
+                    - u.firstName
+                    - u.lastName
+                from:
+                    - { table: OroUserBundle:User, alias: u }
+
+        columns:
+            firstName:
+                label: oro.user.grid.users.columns.firstName
+            lastName:
+                label: oro.user.grid.users.columns.lastName
+            username:
+                label: oro.user.grid.users.columns.username
+            email:
+                label: oro.user.grid.users.columns.email
+
+        properties:
+            id: ~
+
+        sorters:
+            columns:
+                username:
+                    data_name: u.username
+                email:
+                    data_name: u.email
+                firstName:
+                    data_name: u.firstName
+                lastName:
+                    data_name: u.lastName
+            default:
+                id: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
+
+        filters:
+            columns:
+                username:
+                    type: string
+                    data_name: u.username
+                email:
+                    type: string
+                    data_name: u.email
+                firstName:
+                    type: string
+                    data_name: u.firstName
+                lastName:
+                    type: string
+                    data_name: u.lastName
+
+    role-users-grid:
+        extend: user-relation-grid
+        source:
+            acl_resource: oro_user_role_update
+            query:
+                select:
+                    - >
+                      (CASE WHEN (:role_id IS NOT NULL) THEN
+                        CASE WHEN (:role_id MEMBER OF u.roles OR u.id IN (:data_in)) AND u.id NOT IN (:data_not_in)
+                        THEN true ELSE false END
+                      ELSE
+                        CASE WHEN u.id IN (:data_in) AND u.id NOT IN (:data_not_in)
+                        THEN true ELSE false END
+                      END) as has_role
+        columns:
+            has_role:
+                label: Has role
+                editable: true
+                frontend_type: boolean
+        filters:
+            columns:
+                has_role:
+                    type: boolean
+                    data_name: has_role
+                    filter_by_having: true
+        sorters:
+            multiple_sorting: true
+            columns:
+                has_role:
+                    data_name: has_role
+            default:
+                has_role: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+                lastName: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
+
+        options:
+            requireJSModules:
+              - oro/datagrid/column-form-listener
+            columnListener:
+                dataField: id
+                columnName: has_role
+                selectors:
+                    included: '#roleAppendUsers'
+                    excluded: '#roleRemoveUsers'
+
+    group-users-grid:
+        extend: user-relation-grid
+        source:
+            acl_resource: oro_user_group_update
+            query:
+                select:
+                    - >
+                      (CASE WHEN (:group_id IS NOT NULL) THEN
+                        CASE WHEN (:group_id MEMBER OF u.groups OR u.id IN (:data_in)) AND u.id NOT IN (:data_not_in)
+                        THEN true ELSE false END
+                      ELSE
+                        CASE WHEN u.id IN (:data_in) AND u.id NOT IN (:data_not_in)
+                        THEN true ELSE false END
+                      END) as has_group
+        columns:
+            has_group:
+                label: Has group
+                editable: true
+                frontend_type: boolean
+        filters:
+            columns:
+                has_group:
+                    type: boolean
+                    data_name: has_group
+                    filter_by_having: true
+        sorters:
+            multiple_sorting: true
+            columns:
+                has_group:
+                    data_name: has_group
+            default:
+                has_group: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+                lastName: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
+
+        options:
+            requireJSModules:
+              - oro/datagrid/column-form-listener
+            columnListener:
+                dataField: id
+                columnName: has_group
+                selectors:
+                    included: '#groupAppendUsers'
+                    excluded: '#groupRemoveUsers'

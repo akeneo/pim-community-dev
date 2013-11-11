@@ -1,6 +1,6 @@
 /* global define */
 define(['jquery', 'underscore', 'backbone', 'routing', 'oro/navigation', 'oro/translator', 'oro/mediator',
-    'oro/messenger', 'oro/error', 'oro/modal', 'oro/datagrid/action-launcher'],
+    'oro/messenger', 'oro/error', 'oro/modal', 'oro/grid/action-launcher'],
 function($, _, Backbone, routing, Navigation, __, mediator, messenger, error, Modal, ActionLauncher) {
     'use strict';
 
@@ -11,8 +11,8 @@ function($, _, Backbone, routing, Navigation, __, mediator, messenger, error, Mo
      *  - "preExecute" before action is executed
      *  - "postExecute" after action is executed
      *
-     * @export  oro/datagrid/abstract-action
-     * @class   oro.datagrid.AbstractAction
+     * @export  oro/grid/abstract-action
+     * @class   oro.grid.AbstractAction
      * @extends Backbone.View
      */
     return Backbone.View.extend({
@@ -25,7 +25,7 @@ function($, _, Backbone, routing, Navigation, __, mediator, messenger, error, Mo
         /** @property {String} */
         name: null,
 
-        /** @property {oro.datagrid.Grid} */
+        /** @property {oro.grid.Grid} */
         datagrid: null,
 
         /** @property {string} */
@@ -91,7 +91,7 @@ function($, _, Backbone, routing, Navigation, __, mediator, messenger, error, Mo
          * Creates launcher
          *
          * @param {Object} options Launcher options
-         * @return {oro.datagrid.ActionLauncher}
+         * @return {oro.grid.ActionLauncher}
          */
         createLauncher: function(options) {
             options = options || {};

@@ -30,6 +30,8 @@ parameters:
     oro_notification.mailer.transport.spool_entity.class: Oro\Bundle\NotificationBundle\Entity\SpoolItem
 
     swiftmailer.mailer.db_spool_mailer.spool.enabled: true
+
+    oro_notification.event_listener.email_notification_service.class: Oro\Bundle\NotificationBundle\EventListener\EmailNotificationGridListener
 services:
     # Email notification form services
     oro_notification.form.email_notification:
@@ -152,3 +154,9 @@ services:
 
     swiftmailer.mailer.db_spool_mailer.transport.real:
         alias: swiftmailer.transport.real
+
+    oro_notification.event_listener.email_notification_service:
+        class: %oro_notification.event_listener.email_notification_service.class%
+        arguments:
+            - @doctrine.orm.entity_manager
+            - %oro_config.entities%

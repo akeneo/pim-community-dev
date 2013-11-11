@@ -26,7 +26,7 @@ oro_entity_config:
                     grid:
                         type:               html
                         label:              'Label'
-                        filter_type:        oro_grid_orm_string
+                        filter_type:        string
                         required:           true
                         sortable:           true
                         filterable:         true
@@ -80,7 +80,7 @@ oro_entity_config:
                     grid:
                         type:               string
                         label:              'Label'
-                        filter_type:        oro_grid_orm_string
+                        filter_type:        string
                         required:           true
                         sortable:           true
                         filterable:         false
