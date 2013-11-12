@@ -6,18 +6,18 @@ Feature: Product category back to the grid
 
   Background:
     Given the following product attributes:
-      | label       | required |
-      | SKU         | yes      |
+      | label | required |
+      | SKU   | yes      |
     And the following products:
       | sku           |
       | purple-tshirt |
       | green-tshirt  |
       | akeneo-mug    |
     And the following categories:
-      | code           | parent  | label    | products                   |
-      | catalog        |         | Catalog  |                            |
-      | tshirts        | catalog | TShirts  | purple-tshirt,green-tshirt |
-      | trousers       | catalog | Trousers |                            |
+      | code     | parent  | label    | products                   |
+      | catalog  |         | Catalog  |                            |
+      | tshirts  | catalog | TShirts  | purple-tshirt,green-tshirt |
+      | trousers | catalog | Trousers |                            |
     And I am logged in as "admin"
     And I am on the products page
     And I select the "Catalog" tree

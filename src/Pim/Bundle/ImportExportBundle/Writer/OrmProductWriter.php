@@ -129,6 +129,9 @@ class OrmProductWriter extends AbstractConfigurableStepElement implements
         $this->stepExecution = $stepExecution;
     }
 
+    /**
+     * @param ProductInterface $product
+     */
     protected function incrementCount(ProductInterface $product)
     {
         if ($product->getId()) {

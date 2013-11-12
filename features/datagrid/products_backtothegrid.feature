@@ -22,7 +22,7 @@ Feature: Products back to the grid
       | image       | no       | no           | yes      |
       | description | no       | yes          | yes      |
     And the following product values:
-      | product | attribute   | locale |scope      | value                    |
+      | product | attribute   | locale | scope     | value                    |
       | postit  | SKU         |        |           | postit                   |
       | postit  | name        | en_US  |           | Post it                  |
       | postit  | name        | fr_FR  |           | Etiquette                |

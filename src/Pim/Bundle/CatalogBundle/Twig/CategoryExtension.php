@@ -61,7 +61,7 @@ class CategoryExtension extends \Twig_Extension
      *
      * @param CategoryInterface $category
      * @param boolean           $hasChild
-     * @param CategoryInterface $selectNode the selected node
+     * @param CategoryInterface $selectNode
      *
      * @return string
      */

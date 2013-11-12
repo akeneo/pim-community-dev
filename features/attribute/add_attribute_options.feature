@@ -28,14 +28,14 @@ Feature: Add attribute options
   Scenario: Fail to create a select attribute with an empty option
     Given I select the attribute type "Simple select"
     And I fill in the following information:
-     | Code    | color |
+     | Code | color |
     And I save the attribute
     Then I should see "Code must be specified for all options"
 
   Scenario: Successfully create a select attribute with some options
     Given I select the attribute type "Simple select"
     And I fill in the following information:
-     | Code    | color |
+     | Code | color |
     And I visit the "Values" tab
     And I create the following attribute options:
       | Code  | Selected by default |

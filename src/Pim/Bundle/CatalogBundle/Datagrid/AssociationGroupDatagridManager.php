@@ -208,13 +208,13 @@ class AssociationGroupDatagridManager extends DatagridManager
      */
     protected function getHasAssociationExpression()
     {
-        $hasAssociationExpression =
+        $expression =
             'CASE WHEN ' .
             '(pa IS NOT NULL OR o.id IN (:data_in)) ' .
             'AND o.id NOT IN (:data_not_in) ' .
             'THEN true ELSE false END';
 
-        return $hasAssociationExpression;
+        return $expression;
     }
 
     /**

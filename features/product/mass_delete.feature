@@ -20,4 +20,3 @@ Feature: Delete many product at once
     Then I should not see product pim
     Then I should not see product pam
     Then I should not see product poum
-

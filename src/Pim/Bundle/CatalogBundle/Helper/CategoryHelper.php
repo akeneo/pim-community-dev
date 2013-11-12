@@ -50,20 +50,6 @@ class CategoryHelper
         $result = array();
 
         foreach ($categories as $category) {
-            $state = 'leaf';
-
-            if (count($category['__children']) > 0) {
-                $state = 'open';
-            } else {
-                if ($category['item']->hasChildren()) {
-                    $state = 'closed';
-                }
-            }
-
-            if (in_array($category['item']->getId(), $selectedIds)) {
-                $state .= ' jstree-checked';
-            }
-
             $children = static::formatCategoryAndCount($category['__children'], $selectedIds, $count);
 
             $selectedChildren = 0;
@@ -78,24 +64,53 @@ class CategoryHelper
             $label = $category['item']->getLabel();
 
             if ($selectedChildren > 0) {
-                $label = '<strong>'.$label.'</strong>';
-            }
-
-            if ($category['item']->getParent() == null) {
-                $state .= ' jstree-root';
+                $label = sprintf('<strong>%s</strong>', $label);
             }
 
             $result[] = array(
                 'attr' => array(
-                    'id' => 'node_'. $category['item']->getId()
+                    'id' => sprintf('node_%d', $category['item']->getId())
                 ),
                 'data'  => $label,
-                'state' => $state,
+                'state' => static::getCategoryState($category, $selectedIds),
                 'children' => $children,
                 'selectedChildrenCount' => $selectedChildren
             );
         }
 
         return $result;
+    }
+
+    /**
+     * Get the jstree state of the category
+     *
+     * @param array $category
+     * @param array $selectedIds
+     *
+     * @return string
+     * @static
+     */
+    protected static function getCategoryState(array $category, $selectedIds = null)
+    {
+        $children = $category['__children'];
+        $category = $category['item'];
+
+        if (count($children) > 0) {
+            $state = 'open';
+        } elseif ($category->hasChildren()) {
+            $state = 'closed';
+        } else {
+            $state = 'leaf';
+        }
+
+        if (in_array($category->getId(), $selectedIds)) {
+            $state .= ' jstree-checked';
+        }
+
+        if ($category->isRoot()) {
+            $state .= ' jstree-root';
+        }
+
+        return $state;
     }
 }

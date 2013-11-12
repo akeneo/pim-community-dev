@@ -22,7 +22,7 @@ Feature: Variant group creation
     Given I am on the variant groups page
     When I create a new variant group
     And I fill in the following information in the popin:
-      | Code | MUG     |
+      | Code | MUG |
     And I select the axis "Color"
     And I press the "Save" button
     Then I am on the variant groups page
@@ -45,12 +45,12 @@ Feature: Variant group creation
 
   Scenario: Fail to create a variant filling an already used code
     Given the following product groups:
-      | code    | label          | attributes  | type    |
-      | TSHIRT  | T-Shirt Akeneo | size, color | VARIANT |
+      | code   | label          | attributes  | type    |
+      | TSHIRT | T-Shirt Akeneo | size, color | VARIANT |
     And I am on the variant groups page
     When I create a new variant group
     And I fill in the following information in the popin:
-      | Code | TSHIRT  |
+      | Code | TSHIRT |
     And I press the "Save" button
     Then I should see validation error "This value is already used."
 
@@ -58,6 +58,6 @@ Feature: Variant group creation
     Given I am on the variant groups page
     When I create a new variant group
     And I fill in the following information in the popin:
-      | Code | MUG     |
+      | Code | MUG |
     And I press the "Save" button
     Then I should see validation error "This collection should contain 1 element or more."

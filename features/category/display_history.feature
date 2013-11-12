@@ -8,7 +8,7 @@ Feature: Display the category history
     Given I am logged in as "admin"
     And I am on the category tree creation page
     When I fill in the following information:
-      | Code    | book |
+      | Code | book |
     And I save the category
     And I edit the "book" category
     When I visit the "History" tab

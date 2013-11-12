@@ -68,6 +68,7 @@ class CategoryExtensionTest extends \PHPUnit_Framework_TestCase
      *
      * @param string $name
      * @param string $methodName
+     * @param array  $twigFunctions
      */
     protected function assertFunction($name, $methodName, $twigFunctions)
     {
