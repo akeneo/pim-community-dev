@@ -12,11 +12,11 @@ use Oro\Bundle\FilterBundle\Form\Type\DateRangeType;
 
 class DateRangeFilterType extends AbstractType
 {
-    const TYPE_BETWEEN = 1;
+    const TYPE_BETWEEN     = 1;
     const TYPE_NOT_BETWEEN = 2;
-    const TYPE_MORE_THAN = 3;
-    const TYPE_LESS_THAN = 4;
-    const NAME = 'oro_type_date_range_filter';
+    const TYPE_MORE_THAN   = 3;
+    const TYPE_LESS_THAN   = 4;
+    const NAME             = 'oro_type_date_range_filter';
 
     /**
      * @var TranslatorInterface
@@ -53,14 +53,10 @@ class DateRangeFilterType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $operatorChoices = array(
-            self::TYPE_BETWEEN
-                => $this->translator->trans('label_date_type_between', array(), 'OroFilterBundle'),
-            self::TYPE_NOT_BETWEEN
-                => $this->translator->trans('label_date_type_not_between', array(), 'OroFilterBundle'),
-            self::TYPE_MORE_THAN
-                => $this->translator->trans('label_date_type_more_than', array(), 'OroFilterBundle'),
-            self::TYPE_LESS_THAN
-                => $this->translator->trans('label_date_type_less_than', array(), 'OroFilterBundle'),
+            self::TYPE_BETWEEN     => $this->translator->trans('oro.filter.form.label_date_type_between'),
+            self::TYPE_NOT_BETWEEN => $this->translator->trans('oro.filter.form.label_date_type_not_between'),
+            self::TYPE_MORE_THAN   => $this->translator->trans('oro.filter.form.label_date_type_more_than'),
+            self::TYPE_LESS_THAN   => $this->translator->trans('oro.filter.form.label_date_type_less_than'),
         );
 
         $typeValues = array(
@@ -72,26 +68,24 @@ class DateRangeFilterType extends AbstractType
 
         $resolver->setDefaults(
             array(
-                'field_type' => DateRangeType::NAME,
+                'field_type'       => DateRangeType::NAME,
                 'operator_choices' => $operatorChoices,
-                'widget_options' => array(),
-                'type_values' => $typeValues
+                'widget_options'   => array(),
+                'type_values'      => $typeValues
             )
         );
     }
 
     /**
-     * @param FormView $view
+     * @param FormView      $view
      * @param FormInterface $form
-     * @param array $options
+     * @param array         $options
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $view->vars['type_values'] = $options['type_values'];
 
-        $widgetOptions = array(
-            'firstDay'   => 0,
-        );
+        $widgetOptions                = array('firstDay' => 0);
         $view->vars['widget_options'] = array_merge($widgetOptions, $options['widget_options']);
     }
 }

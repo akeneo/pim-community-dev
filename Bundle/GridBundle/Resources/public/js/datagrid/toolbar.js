@@ -1,14 +1,14 @@
 /* global define */
-define(['underscore', 'backbone', 'oro/translator', 'oro/datagrid/pagination-input',
-    'oro/datagrid/page-size', 'oro/datagrid/actions-panel'],
+define(['underscore', 'backbone', 'oro/translator', 'oro/grid/pagination-input',
+    'oro/grid/page-size', 'oro/grid/actions-panel'],
 function(_, Backbone, __, PaginationInput, PageSize, ActionsPanel) {
     'use strict';
 
     /**
      * Datagrid toolbar widget
      *
-     * @export oro/datagrid/toolbar
-     * @class   oro.datagrid.Toolbar
+     * @export oro/grid/toolbar
+     * @class   oro.grid.Toolbar
      * @extends Backbone.View
      */
     return Backbone.View.extend({

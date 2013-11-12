@@ -1,13 +1,13 @@
 /* global define */
-define(['underscore', 'backgrid', 'oro/datagrid/number-formatter'],
+define(['underscore', 'backgrid', 'oro/grid/number-formatter'],
 function(_, Backgrid, NumberFormatter) {
     'use strict';
 
     /**
      * Number column cell.
      *
-     * @export  oro/datagrid/number-cell
-     * @class   oro.datagrid.NumberCell
+     * @export  oro/grid/number-cell
+     * @class   oro.grid.NumberCell
      * @extends Backgrid.NumberCell
      */
     return Backgrid.NumberCell.extend({

@@ -35,15 +35,7 @@ class EmailTemplateController extends Controller
      */
     public function indexAction()
     {
-        /** @var EmailTemplateDatagridManager $gridManager */
-        $gridManager = $this->get('oro_email.emailtemplate.datagrid_manager');
-        $datagridView = $gridManager->getDatagrid()->createView();
-
-        if ('json' == $this->getRequest()->getRequestFormat()) {
-            return $this->get('oro_grid.renderer')->renderResultsJsonResponse($datagridView);
-        }
-
-        return array('datagrid' => $datagridView);
+        return [];
     }
 
     /**

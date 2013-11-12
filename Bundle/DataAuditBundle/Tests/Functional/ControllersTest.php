@@ -35,6 +35,8 @@ class ControllersTest extends WebTestCase
 
     public function setUp()
     {
+        $this->markTestSkipped("BAP-1820");
+
         $this->client = static::createClient(
             array(),
             array_merge(ToolsAPI::generateBasicHeader(), array('HTTP_X-CSRF-Header' => 1))

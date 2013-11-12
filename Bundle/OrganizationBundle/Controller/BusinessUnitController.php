@@ -9,9 +9,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
-use Oro\Bundle\OrganizationBundle\Datagrid\BusinessUnitUpdateUserDatagridManager;
-use Oro\Bundle\OrganizationBundle\Datagrid\BusinessUnitViewUserDatagridManager;
-use Oro\Bundle\OrganizationBundle\Datagrid\BusinessUnitDatagridManager;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
@@ -50,7 +47,6 @@ class BusinessUnitController extends Controller
     public function viewAction(BusinessUnit $entity)
     {
         return array(
-            'datagrid' => $this->getBusinessUnitDatagridManager($entity, 'view')->getDatagrid()->createView(),
             'entity' => $entity,
         );
     }
@@ -71,7 +67,7 @@ class BusinessUnitController extends Controller
     {
         return $this->update($entity);
     }
-    
+
     /**
      * @Route(
      *      "/{_format}",
@@ -84,15 +80,7 @@ class BusinessUnitController extends Controller
      */
     public function indexAction(Request $request)
     {
-        /** @var BusinessUnitDatagridManager $gridManager */
-        $gridManager = $this->get('oro_organization.business_unit_datagrid_manager');
-        $datagridView = $gridManager->getDatagrid()->createView();
-
-        if ('json' == $this->getRequest()->getRequestFormat()) {
-            return $this->get('oro_grid.renderer')->renderResultsJsonResponse($datagridView);
-        }
-
-        return array('datagrid' => $datagridView);
+        return array();
     }
 
     /**
@@ -176,7 +164,6 @@ class BusinessUnitController extends Controller
         }
 
         return array(
-            'datagrid' => $this->getBusinessUnitDatagridManager($entity, 'update')->getDatagrid()->createView(),
             'form'     => $this->get('oro_organization.form.business_unit')->createView(),
         );
     }
