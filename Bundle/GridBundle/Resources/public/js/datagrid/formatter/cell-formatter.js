@@ -6,8 +6,8 @@ function(_, Backgrid) {
     /**
      * Cell formatter with fixed fromRaw method
      *
-     * @export  oro/datagrid/cell-formatter
-     * @class   oro.datagrid.CellFormatter
+     * @export  oro/grid/cell-formatter
+     * @class   oro.grid.CellFormatter
      * @extends Backgrid.CellFormatter
      */
     var CellFormatter = function () {};

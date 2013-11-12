@@ -1,8 +1,11 @@
 {% extends 'OroUIBundle:actions:index.html.twig' %}
 {% import 'OroUIBundle::macros.html.twig' as UI %}
 
-{% set gridId = 'custom_entity' %}
+{% set gridName = 'custom-entity-grid' %}
+{# grid params #}
+{% set params = {class_name: entity_class} %}
 {% set pageTitle = 'Entities' %}
+
 {% oro_title_set({params : {"%entityName%": label|default('N/A') }}) %}
 
 {% block pageHeader %}

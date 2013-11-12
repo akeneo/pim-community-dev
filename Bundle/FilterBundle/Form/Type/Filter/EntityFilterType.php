@@ -46,6 +46,7 @@ class EntityFilterType extends AbstractChoiceType
                     if (!empty($options['translatable'])) {
                         $value = 'translatable_entity';
                     }
+
                     return $value;
                 }
             )

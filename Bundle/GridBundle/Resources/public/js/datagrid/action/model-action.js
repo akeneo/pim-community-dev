@@ -1,14 +1,14 @@
 /* global define */
-define(['underscore', 'oro/datagrid/abstract-action'],
+define(['underscore', 'oro/grid/abstract-action'],
 function(_, AbstractAction) {
     'use strict';
 
     /**
      * Basic model action class.
      *
-     * @export  oro/datagrid/model-action
-     * @class   oro.datagrid.ModelAction
-     * @extends oro.datagrid.AbstractAction
+     * @export  oro/grid/model-action
+     * @class   oro.grid.ModelAction
+     * @extends oro.grid.AbstractAction
      */
     return AbstractAction.extend({
         /** @property {Backbone.Model} */

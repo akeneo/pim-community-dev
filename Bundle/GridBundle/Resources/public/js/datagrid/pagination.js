@@ -6,8 +6,8 @@ function($, _, Backbone) {
     /**
      * Datagrid pagination widget
      *
-     * @export  oro/datagrid/pagination
-     * @class   oro.datagrid.Pagination
+     * @export  oro/grid/pagination
+     * @class   oro.grid.Pagination
      * @extends Backbone.View
      */
     return Backbone.View.extend({

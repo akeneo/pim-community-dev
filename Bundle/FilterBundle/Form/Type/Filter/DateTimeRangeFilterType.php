@@ -12,9 +12,9 @@ use Oro\Bundle\FilterBundle\Form\Type\DateTimeRangeType;
 
 class DateTimeRangeFilterType extends AbstractType
 {
-    const TYPE_BETWEEN = DateRangeFilterType::TYPE_BETWEEN;
+    const TYPE_BETWEEN     = DateRangeFilterType::TYPE_BETWEEN;
     const TYPE_NOT_BETWEEN = DateRangeFilterType::TYPE_NOT_BETWEEN;
-    const NAME = 'oro_type_datetime_range_filter';
+    const NAME             = 'oro_type_datetime_range_filter';
 
     /**
      * @var TranslatorInterface
@@ -58,15 +58,13 @@ class DateTimeRangeFilterType extends AbstractType
     }
 
     /**
-     * @param FormView $view
+     * @param FormView      $view
      * @param FormInterface $form
-     * @param array $options
+     * @param array         $options
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $widgetOptions = array(
-            'firstDay'   => 0,
-        );
+        $widgetOptions                = array('firstDay' => 0);
         $view->vars['widget_options'] = array_merge($widgetOptions, $options['widget_options']);
     }
 }

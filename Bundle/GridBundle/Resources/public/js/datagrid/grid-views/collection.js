@@ -1,4 +1,4 @@
-define(['backbone', 'oro/datagrid/grid-views/model'],
+define(['backbone', 'oro/grid/grid-views/model'],
     function (Backbone, GridViewsModel) {
         'use strict';
 

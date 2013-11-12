@@ -1,6 +1,7 @@
 {% import 'OroEmailBundle::macros.html.twig' as EA %}
 
 {% set valueArray = value.toArray %}
+{% set recipients = {} %}
 {% if value.first %}
     {% set recipients = value.first.email.getRecipients() %}
 {% endif %}

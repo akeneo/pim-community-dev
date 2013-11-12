@@ -1,18 +1,16 @@
 {% extends bap.layout %}
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
 
+{% set gridName = 'tag-results-grid' %}
 {% oro_title_set({ params: { '%tag.name%': tag.name } }) %}
 
 {% block head_script %}
     {{ parent() }}
-    {% include 'OroGridBundle:Include:javascript.html.twig' with { datagridView: datagrid, selector: '#tag-search-results-grid' } %}
     <script type="text/javascript">
-        require(['jquery', 'oro/registry'],
-        function($, registry) {
-            $(function() {
-                // hide header
-                var searchDatagrid = registry.getElement('datagrid', {{ datagrid.datagrid.name|json_encode|raw }});
-                searchDatagrid.header.$el.remove();
-            });
+        require(['jquery'],
+        function($) {
+            // hide header
+            $('div[data-type="datagrid"] thead').remove();
         });
     </script>
 {% endblock %}
@@ -54,7 +52,9 @@
                     {% endfor %}
                 </td>
                 <td class="tag-search-results-column">
-                    <div id="tag-search-results-grid"></div>
+                    <div id="tag-search-results-grid">
+                        {{ dataGrid.renderGrid(gridName, {from: from, tag_id: tag.id}, { cssClass: 'tag-search-grid' }) }}
+                    </div>
                 </td>
             </tr>
         </table>

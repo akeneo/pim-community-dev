@@ -97,6 +97,7 @@ class ControllersTest extends WebTestCase
      */
     public function testUpdate()
     {
+        $this->markTestSkipped("BAP-1820");
         $this->client->request(
             'GET',
             $this->client->generate('oro_notification_emailnotification_index', array('_format' =>'json')),
@@ -147,6 +148,7 @@ class ControllersTest extends WebTestCase
      */
     public function testDelete()
     {
+        $this->markTestSkipped("BAP-1820");
         $this->client->request(
             'GET',
             $this->client->generate('oro_notification_emailnotification_index', array('_format' =>'json')),

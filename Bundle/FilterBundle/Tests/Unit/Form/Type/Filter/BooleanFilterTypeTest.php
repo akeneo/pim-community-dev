@@ -19,8 +19,8 @@ class BooleanFilterTypeTest extends AbstractTypeTestCase
      * @var array
      */
     protected $booleanChoices = array(
-        BooleanFilterType::TYPE_YES => 'label_type_yes',
-        BooleanFilterType::TYPE_NO  => 'label_type_no',
+        BooleanFilterType::TYPE_YES => 'oro.filter.form.label_type_yes',
+        BooleanFilterType::TYPE_NO  => 'oro.filter.form.label_type_no',
     );
 
     protected function setUp()
@@ -59,8 +59,7 @@ class BooleanFilterTypeTest extends AbstractTypeTestCase
         return array(
             array(
                 'defaultOptions' => array(
-                    'field_options' => array('choices' => $this->booleanChoices),
-                    'translation_domain' => 'OroFilterBundle'
+                    'field_options' => array('choices' => $this->booleanChoices)
                 )
             )
         );
