@@ -41,7 +41,7 @@ class ProductCsvSerializerProcessor extends HeterogeneousCsvSerializerProcessor
     }
 
     /**
-     * Set channel                                                                                                                       
+     * Set channel
      * @param string $channel
      */
     public function setChannel($channel)
@@ -109,5 +109,4 @@ class ProductCsvSerializerProcessor extends HeterogeneousCsvSerializerProcessor
             )
         );
     }
-
 }
