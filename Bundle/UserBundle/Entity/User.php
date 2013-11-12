@@ -369,18 +369,18 @@ class User extends ExtendUser implements
     protected $imapConfiguration;
 
     /**
-     * @var datetime $created
+     * @var \DateTime $createdAt
      *
      * @ORM\Column(type="datetime")
      */
-    protected $created;
+    protected $createdAt;
 
     /**
-     * @var datetime $updated
+     * @var \DateTime $updatedAt
      *
      * @ORM\Column(type="datetime")
      */
-    protected $updated;
+    protected $updatedAt;
 
     public function __construct()
     {
@@ -536,7 +536,7 @@ class User extends ExtendUser implements
     /**
      * Return birthday
      *
-     * @return DateTime
+     * @return \DateTime
      */
     public function getBirthday()
     {
@@ -610,7 +610,7 @@ class User extends ExtendUser implements
     /**
      * Gets the last login time.
      *
-     * @return DateTime
+     * @return \DateTime
      */
     public function getLastLogin()
     {
@@ -630,21 +630,21 @@ class User extends ExtendUser implements
     /**
      * Get user created date/time
      *
-     * @return DateTime
+     * @return \DateTime
      */
     public function getCreatedAt()
     {
-        return $this->created;
+        return $this->createdAt;
     }
 
     /**
      * Get user last update date/time
      *
-     * @return DateTime
+     * @return \DateTime
      */
     public function getUpdatedAt()
     {
-        return $this->updated;
+        return $this->updatedAt;
     }
 
     /**
@@ -691,7 +691,6 @@ class User extends ExtendUser implements
     }
 
     /**
-     *
      * @param  string $username New username
      * @return User
      */
@@ -796,7 +795,7 @@ class User extends ExtendUser implements
     {
         $this->imageFile = $imageFile;
         // this will trigger PreUpdate callback even if only image has been changed
-        $this->updated = new DateTime('now', new \DateTimeZone('UTC'));
+        $this->updatedAt = new DateTime('now', new \DateTimeZone('UTC'));
 
         return $this;
     }
@@ -910,6 +909,28 @@ class User extends ExtendUser implements
     public function setApi(UserApi $api)
     {
         $this->api = $api;
+
+        return $this;
+    }
+
+    /**
+     * @param \DateTime $createdAt
+     * @return $this
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * @param \DateTime $updatedAt
+     * @return $this
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }
@@ -1160,8 +1181,8 @@ class User extends ExtendUser implements
      */
     public function beforeSave()
     {
-        $this->created = new DateTime('now', new \DateTimeZone('UTC'));
-        $this->updated = new DateTime('now', new \DateTimeZone('UTC'));
+        $this->createdAt = new DateTime('now', new \DateTimeZone('UTC'));
+        $this->updatedAt = new DateTime('now', new \DateTimeZone('UTC'));
         $this->loginCount = 0;
     }
 
@@ -1172,7 +1193,7 @@ class User extends ExtendUser implements
      */
     public function preUpdate()
     {
-        $this->updated = new DateTime('now', new \DateTimeZone('UTC'));
+        $this->updatedAt = new DateTime('now', new \DateTimeZone('UTC'));
     }
 
     /**

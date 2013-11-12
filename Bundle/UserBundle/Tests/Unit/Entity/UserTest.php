@@ -428,8 +428,8 @@ class UserTest extends \PHPUnit_Framework_TestCase
             array('passwordRequestedAt', new \DateTime()),
             array('lastLogin', new \DateTime()),
             array('loginCount', 11),
-            array('created', new \DateTime()),
-            array('updated', new \DateTime()),
+            array('createdAt', new \DateTime()),
+            array('updatedAt', new \DateTime()),
         );
     }
 
