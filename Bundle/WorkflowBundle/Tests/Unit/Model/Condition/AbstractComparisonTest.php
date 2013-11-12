@@ -3,12 +3,12 @@
 namespace Oro\Bundle\WorkflowBundle\Tests\Unit\Model\Condition;
 
 use Oro\Bundle\WorkflowBundle\Model\Condition;
-use Oro\Bundle\WorkflowBundle\Model\ContextAccessor;
+use Oro\Bundle\WorkflowBundle\Model\Condition\AbstractComparison;
 
 class AbstractComparisonTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
+     * @var AbstractComparison|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $condition;
 
@@ -129,5 +129,15 @@ class AbstractComparisonTest extends \PHPUnit_Framework_TestCase
     public function testInitializeFailsWithInvalidOptionsCount()
     {
         $this->condition->initialize(array());
+    }
+
+    public function testGetMessage()
+    {
+        $this->condition->initialize(array(1, 2));
+
+        $this->assertNull($this->condition->getMessage());
+
+        $this->condition->setMessage('compare %left% with %right%');
+        $this->assertEquals('compare 1 with 2', $this->condition->getMessage());
     }
 }

@@ -1,13 +1,9 @@
 placeholders:
     scripts_after:
         items:
-            flash_ws_js:
-                order: 309
             sync_js:
                 order: 310
 
 items:
-    flash_ws_js:
-        template: OroSyncBundle::flash_ws_js.html.twig
     sync_js:
         template: OroSyncBundle::sync_js.html.twig

@@ -218,7 +218,7 @@ class WorkflowManager
      * @return array
      * @throws UnknownAttributeException
      */
-    protected function getWorkflowData(Workflow $workflow, $entity = null, array $data = array())
+    public function getWorkflowData(Workflow $workflow, $entity = null, array $data = array())
     {
         // try to find appropriate entity
         if ($entity) {

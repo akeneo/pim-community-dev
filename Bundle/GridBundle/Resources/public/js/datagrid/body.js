@@ -1,5 +1,5 @@
 /* global define */
-define(['underscore', 'backgrid', 'oro/datagrid/row'],
+define(['underscore', 'backgrid', 'oro/grid/row'],
 function(_, Backgrid, Row) {
     'use strict';
 
@@ -9,8 +9,8 @@ function(_, Backgrid, Row) {
      * Triggers events:
      *  - "rowClicked" when row of body is clicked
      *
-     * @export  oro/datagrid/body
-     * @class   oro.datagrid.Body
+     * @export  oro/grid/body
+     * @class   oro.grid.Body
      * @extends Backgrid.Body
      */
     return Backgrid.Body.extend({

@@ -1,23 +1,16 @@
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
 <div class="widget-content grid-widget-content">
-    {% set gridId = "entity-grid-" ~ random() %}
-    {% set listenerParameters = {
-        'columnName': 'assigned',
-        'selectors': {
-            'included': '#appendRelation',
-            'excluded': '#removeRelation'
-        }
-    } %}
-    {% set stateParameters = {
-        'parameters': {
-            'data_in': app.request.get('added'),
-            'data_not_in': app.request.get('removed')
-        }
-    } %}
-    {% placeholder prepare_grid with {
-        'datagrid'  : datagrid,
-        'selector'  : '#' ~ gridId,
-        'parameters': listenerParameters,
-        'state'     : stateParameters
+    {% set gridName = 'entity-relation-grid' %}
+
+    {% set gridParams = {
+        '_parameters' : {
+            'data_in': app.request.get('added')|split(','),
+            'data_not_in': app.request.get('removed')|split(','),
+        },
+        'class_name': entity_class,
+        'entity_id': entity_id,
+        'field_name': app.request.get('fieldName'),
+        'id': app.request.get('id')
     } %}
 
     <style type="text/css">
@@ -25,7 +18,7 @@
     </style>
 
     {% block content %}
-        <div id="{{ gridId }}"></div>
+        {{ dataGrid.renderGrid(gridName, gridParams) }}
         <input type="hidden" name="appendRelation" id="appendRelation" value="{{ app.request.get('added') }}" />
         <input type="hidden" name="removeRelation" id="removeRelation" value="{{ app.request.get('removed') }}" />
     {% endblock %}
@@ -58,7 +51,7 @@
                     $(function() {
                         /** @type {oro.datagrid.CallbackListener} */
                         new CallbackListener({
-                            datagridName: {{ datagrid.datagrid.name|json_encode|raw }},
+                            datagridName: {{ gridName|json_encode|raw }},
                             dataField: 'id',
                             columnName: 'assigned',
                             processCallback: function (value, model, listener) {

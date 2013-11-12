@@ -45,6 +45,7 @@ return array(
                 'label' => 'First Transition',
                 'step_to' => 'first_step',
                 'is_start' => true,
+                'is_hidden' => true,
                 'transition_definition' => 'first_transition_definition',
                 'frontend_options' => array(
                     'class' => 'foo'
@@ -85,6 +86,12 @@ return array(
                         '@custom_post_action' => null
 
                     )
+                ),
+                'init_actions' => array(
+                    array(
+                        '@custom_post_action' => null
+
+                    )
                 )
             )
         ),
@@ -112,6 +119,7 @@ return array(
                 'label' => 'Second Transition',
                 'step_to' => 'second_step',
                 'is_start' => false,
+                'is_hidden' => false,
                 'transition_definition' => 'second_transition_definition',
                 'frontend_options' => array(
                     'icon' => 'bar'
@@ -123,7 +131,8 @@ return array(
         'transition_definitions' => array(
             'second_transition_definition' => array(
                 'conditions' => array(),
-                'post_actions' => array()
+                'post_actions' => array(),
+                'init_actions' => array()
             )
         ),
         'type' => 'wizard'

@@ -3,6 +3,7 @@
 namespace Oro\Bundle\WorkflowBundle\Controller\Api\Rest;
 
 use Doctrine\ORM\EntityManager;
+use Oro\Bundle\WorkflowBundle\Model\WorkflowData;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpFoundation\Request;
@@ -55,11 +56,25 @@ class WorkflowController extends FOSRestController
             $entityClass = $this->getRequest()->get('entityClass');
             $entityId = $this->getRequest()->get('entityId');
 
+            $data = $this->getRequest()->get('data');
+            $dataArray = array();
+            if ($data) {
+                $serializer = $this->get('oro_workflow.serializer.data.serializer');
+                $serializer->setWorkflowName($workflowName);
+                /** @var WorkflowData $data */
+                $data = $serializer->deserialize(
+                    $data,
+                    'Oro\Bundle\WorkflowBundle\Model\WorkflowData',
+                    'json'
+                );
+                $dataArray = $data->getValues();
+            }
+
             if ($entityClass && $entityId) {
                 $entity = $this->getEntityReference($entityClass, $entityId);
             }
 
-            $workflowItem = $workflowManager->startWorkflow($workflowName, $entity, $transitionName);
+            $workflowItem = $workflowManager->startWorkflow($workflowName, $entity, $transitionName, $dataArray);
         } catch (HttpException $e) {
             return $this->handleError($e->getMessage(), $e->getStatusCode());
         } catch (WorkflowNotFoundException $e) {

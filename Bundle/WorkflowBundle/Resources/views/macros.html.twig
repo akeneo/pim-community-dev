@@ -1,9 +1,10 @@
-{% macro renderTransitionButton(workflow, transition, enabled, url, redirectToWorkflow) %}
+{% macro renderTransitionButton(workflow, transition, enabled, url, redirectToWorkflow, dialogUrl) %}
     <button type="button"
         {% if not enabled %}disabled="disabled"{% endif %}
-        data-href="{{ url }}"
+        data-transition-url="{{ url }}"
         data-redirect-to-workflow="{{ redirectToWorkflow }}"
-        data-has-attributes="true"
+        data-transition-label="{{ transition.label|trans }}"
+        {% if dialogUrl %}data-dialog-url="{{ dialogUrl }}"{% endif %}
         class="btn icons-holder-text no-hash {% if transition.frontendOptions is defined and transition.frontendOptions.class is defined %}{{ transition.frontendOptions.class }}{% endif %}"
         id="transition-{{ workflow.name }}-{{ transition.name }}">
         {% if transition.frontendOptions is defined and transition.frontendOptions.icon is defined %}

@@ -32,7 +32,7 @@ class Workflow
     /**
      * @var boolean
      */
-    protected $enabled;
+    protected $enabled = true;
 
     /**
      * @var StepManager
@@ -82,8 +82,6 @@ class Workflow
         $this->stepManager = $stepManager ? $stepManager : new StepManager();
         $this->attributeManager  = $attributeManager ? $attributeManager : new AttributeManager();
         $this->transitionManager = $transitionManager ? $transitionManager : new TransitionManager();
-
-        $this->enabled = true;
     }
 
     /**
@@ -285,7 +283,7 @@ class Workflow
             return false;
         }
 
-        $isAllowed = $transition->isAllowed($workflowItem);
+        $isAllowed = $transition->isAllowed($workflowItem, $this->errors);
         if (!$isAllowed && $this->errors->isEmpty()) {
             $this->errors->add(
                 $this->translator->trans('oro.workflow.message.some_conditions_not_met')
@@ -350,7 +348,7 @@ class Workflow
      * @return WorkflowItem
      * @throws \LogicException
      */
-    protected function createWorkflowItem(array $data = array())
+    public function createWorkflowItem(array $data = array())
     {
         $workflowItem = new WorkflowItem();
         $workflowItem->setWorkflowName($this->getName());

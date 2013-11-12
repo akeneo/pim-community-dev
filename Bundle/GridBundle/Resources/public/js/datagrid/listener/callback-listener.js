@@ -1,14 +1,14 @@
 /* global define */
-define(['oro/datagrid/abstract-listener'],
+define(['oro/grid/abstract-listener'],
 function(AbstractListener) {
     'use strict';
 
     /**
      * Listener with custom callback to execute
      *
-     * @export  oro/datagrid/callback-listener
-     * @class   oro.datagrid.CallbackListener
-     * @extends oro.datagrid.AbstractListener
+     * @export  oro/grid/callback-listener
+     * @class   oro.grid.CallbackListener
+     * @extends oro.grid.AbstractListener
      */
     return AbstractListener.extend({
         /** @param {Call} */

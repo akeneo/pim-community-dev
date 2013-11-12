@@ -25,7 +25,7 @@ An example how to get a value of a configuration attribute:
 <?php
     /** @var ConfigProvider $acmeConfigProvider */
     $acmeConfigProvider = $this->get('oro_entity_config.provider.acme');
-    
+
     // retrieve a value of 'demo_attr' attribute for 'AcmeBundle\Entity\SomeEntity' entity
     // the value of $demoAttr variable will be 'Demo'
     $demoAttr = $acmeConfigProvider->getConfig('AcmeBundle\Entity\SomeEntity')->get('demo_attr');
@@ -54,7 +54,7 @@ The result is demonstrated in the following code:
 <?php
     /** @var ConfigProvider $acmeConfigProvider */
     $acmeConfigProvider = $this->get('oro_entity_config.provider.acme');
-    
+
     // retrieve a value of 'demo_attr' attribute for 'AcmeBundle\Entity\SomeEntity' entity
     // the value of $demoAttr1 variable will be 'Demo'
     $demoAttr1 = $acmeConfigProvider->getConfig('AcmeBundle\Entity\SomeEntity')->get('demo_attr');
@@ -76,8 +76,8 @@ oro_entity_config:
                         type:               string               # sets the attribute type
                         label:              'Demo Attr'          # sets the data grid column name
                         show_filter:        true                 # the next three lines configure a filter for 'Demo Attr' column
-                        filterable:         true 
-                        filter_type:        oro_grid_orm_string
+                        filterable:         true
+                        filter_type:        string
                         sortable:           true                 # allows an administrator to sort rows clicks on 'Demo Attr' column
                     form:
                         type:               text                 # sets the attribute type

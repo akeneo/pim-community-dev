@@ -3,8 +3,9 @@ function($, messenger, __, Navigation) {
     'use strict';
 
     var navigation = Navigation.getInstance();
-    var performTransition = function(element) {
-        $.getJSON(element.data('href'))
+    var performTransition = function(element, data) {
+        data = data || false;
+        $.getJSON(element.data('transition-url'), {'data': data})
             .done(function(response) {
                 var doRedirect = function(redirectUrl) {
                     if (navigation) {
@@ -69,13 +70,12 @@ function($, messenger, __, Navigation) {
         e.preventDefault();
 
         var element = $(this);
-        if (element.data('has-attributes')) {
+        if (element.data('dialog-url')) {
             require(['oro/dialog-widget'],
             function(DialogWidget) {
                 var transitionFormWidget = new DialogWidget({
                     title: element.data('transition-label') || element.html(),
-                    /** TODO: replace with URL of transition form widget **/
-                    el: $('<div><span>Transition form stub</span><div class="widget-actions"><button data-action-name="execute">Execute</button></div></div>'),
+                    url: element.data('dialog-url'),
                     stateEnabled: false,
                     incrementalPosition: false,
                     loadingMaskEnabled: false,
@@ -86,18 +86,11 @@ function($, messenger, __, Navigation) {
                         autoResize: true
                     }
                 });
-                transitionFormWidget.on('transitionFormSaved', function() {
+                transitionFormWidget.on('formSave', function(data) {
                     transitionFormWidget.remove();
-                    performTransition(element)
+                    performTransition(element, data);
                 });
                 transitionFormWidget.render();
-
-                /** TODO: Remove this stub handler **/
-                transitionFormWidget.getAction('form_submit', 'adopted', function(action) {
-                    action.on('click', function() {
-                        transitionFormWidget.trigger('transitionFormSaved');
-                    });
-                });
             });
         } else {
             performTransition(element);

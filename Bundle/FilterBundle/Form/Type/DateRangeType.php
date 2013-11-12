@@ -63,9 +63,9 @@ class DateRangeType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $children = $form->all();
+        $children                     = $form->all();
         $view->vars['value']['start'] = $children['start']->getViewData();
-        $view->vars['value']['end'] = $children['end']->getViewData();
+        $view->vars['value']['end']   = $children['end']->getViewData();
     }
 
     /**
@@ -75,10 +75,10 @@ class DateRangeType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'field_type' => 'date',
-                'field_options' => array(),
+                'field_type'          => 'date',
+                'field_options'       => array(),
                 'start_field_options' => array(),
-                'end_field_options' => array(),
+                'end_field_options'   => array(),
             )
         );
     }

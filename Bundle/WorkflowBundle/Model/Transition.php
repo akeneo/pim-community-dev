@@ -37,9 +37,19 @@ class Transition
     protected $postAction;
 
     /**
+     * @var PostActionInterface|null
+     */
+    protected $initAction;
+
+    /**
      * @var bool
      */
     protected $start = false;
+
+    /**
+     * @var bool
+     */
+    protected $hidden = false;
 
     /**
      * @var array
@@ -183,6 +193,18 @@ class Transition
     }
 
     /**
+     * Initialize workflow item with init actions.
+     *
+     * @param WorkflowItem $workflowItem
+     */
+    public function initialize(WorkflowItem $workflowItem)
+    {
+        if ($this->initAction) {
+            $this->initAction->execute($workflowItem);
+        }
+    }
+
+    /**
      * Run transition process.
      *
      * @param WorkflowItem $workflowItem
@@ -278,5 +300,41 @@ class Transition
     public function getFormOptions()
     {
         return $this->formOptions;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isHidden()
+    {
+        return $this->hidden;
+    }
+
+    /**
+     * @param boolean $hidden
+     * @return Transition
+     */
+    public function setHidden($hidden)
+    {
+        $this->hidden = $hidden;
+        return $this;
+    }
+
+    /**
+     * @return null|PostActionInterface
+     */
+    public function getInitAction()
+    {
+        return $this->initAction;
+    }
+
+    /**
+     * @param PostActionInterface $initAction
+     * @return Transition
+     */
+    public function setInitAction(PostActionInterface $initAction)
+    {
+        $this->initAction = $initAction;
+        return $this;
     }
 }

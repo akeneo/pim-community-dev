@@ -1,7 +1,7 @@
 /* global define */
 define(['jquery', 'underscore', 'oro/datafilter/date-filter', 'oro/locale-settings'],
     function($, _, DateFilter, localeSettings) {
-        'use strict';
+    'use strict';
     /**
      * Datetime filter: filter type as option + interval begin and end dates
      *

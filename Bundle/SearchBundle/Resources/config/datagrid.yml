@@ -1,45 +1,13 @@
-parameters:
-    oro_search.datagrid_results.datagrid_name:                oro_search_results
-    oro_search.datagrid_results.datagrid_manager.class:       Oro\Bundle\SearchBundle\Datagrid\SearchDatagridManager
-    oro_search.datagrid_results.datagrid_builder.class:       Oro\Bundle\SearchBundle\Datagrid\SearchDatagridBuilder
-    oro_search.datagrid_results.query_factory.class:          Oro\Bundle\SearchBundle\Datagrid\IndexerQueryFactory
-    oro_search.datagrid_results.entity_result_listener.class: Oro\Bundle\SearchBundle\Datagrid\EntityResultListener
-
-services:
-    oro_search.datagrid_results.datagrid_manager:
-        class: %oro_search.datagrid_results.datagrid_manager.class%
-        arguments: [%oro_search.twig.item_container_template%]
-        tags:
-            - name: oro_grid.datagrid.manager
-              datagrid_name: %oro_search.datagrid_results.datagrid_name%
-              entity_hint: results
-              route_name: oro_search_results_ajax
-              query_factory: oro_search.datagrid_results.query_factory
-              datagrid_builder: oro_search.datagrid_results.datagrid_builder
-
-    oro_search.datagrid_results.query_factory:
-        class: %oro_search.datagrid_results.query_factory.class%
-        arguments:
-            - @oro_search.index
-
-    oro_search.datagrid_results.datagrid_builder:
-        class: %oro_search.datagrid_results.datagrid_builder.class%
-        arguments:
-            - @form.factory
-            - @event_dispatcher
-            - @oro_security.security_facade
-            - @oro_grid.filter.factory
-            - @oro_grid.sorter.factory
-            - @oro_grid.action.factory
-            - %oro_grid.datagrid.class%
-
-    oro_search.datagrid_results.entity_result_listener:
-        class: %oro_search.datagrid_results.entity_result_listener.class%
-        arguments:
-            - @oro_search.formatter.result_formatter
-            - %oro_search.datagrid_results.datagrid_name%
-            - @event_dispatcher
-        tags:
-            - name: kernel.event_listener
-              event: oro_grid.datagrid.result
-              method: processResult
+datagrid:
+    search-grid:
+        source:
+            type: search
+        columns:
+            entity:
+                label: Item
+                type: search-result
+                template: ~
+                frontend_type: html
+        properties: ~
+        sorters: ~
+        filters: ~

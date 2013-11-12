@@ -1,0 +1,33 @@
+<div class="container-fluid form-container widget-content">
+    {% if saved %}
+        <script type="text/javascript">
+            require(['oro/widget-manager'],
+            function(widgetManager){
+                widgetManager.getWidgetInstance({{ app.request.get('_wid')|json_encode|raw }}, function(widget) {
+                    widget.trigger('formSave', {{ data|default({})|json_encode|raw }});
+                });
+            });
+        </script>
+    {% elseif form.vars.errors|length > 0 %}
+        <div class="alert alert-error">
+            {{ form_errors(form) }}
+        </div>
+    {% endif %}
+
+    {{ JSFV(form) }}
+
+    <form method="post"
+          data-nohash="true"
+          data-disable-autofocus="true"
+          id="{{ form.vars.name }}"
+          action="{{ app.request.uri }}"
+          class="form-horizontal"
+    >
+        {{ form_rest(form) }}
+
+        <div class="widget-actions">
+            <button type="reset" class="btn">{{ 'Cancel'|trans }}</button>
+            <button type="submit" class="btn btn-success">{{ 'Transit'|trans }}</button>
+        </div>
+    </form>
+</div>

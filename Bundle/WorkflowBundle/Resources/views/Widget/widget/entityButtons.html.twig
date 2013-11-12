@@ -1,5 +1,6 @@
 {% import 'OroWorkflowBundle::macros.html.twig' as workflowMacros %}
 
+{% set dialogUrl = null %}
 {% set blockId = 'entity-transitions-container-' ~ random() %}
 <div class="widget-content" id="{{ blockId }}">
     {# Show buttons for entity workflows #}
@@ -7,6 +8,15 @@
         {% for data in transitionsData if data.workflow.type == 'entity' %}
             {# Show button for start or transit entity workflow #}
             {% if data.workflowItem is defined %}
+                {% if data.transition.formOptions|length > 0 %}
+                    {% set dialogUrl = path(
+                        'oro_workflow_widget_transition_form',
+                        {
+                            workflowItemId: data.workflowItem.id,
+                            transitionName: data.transition.name
+                        }
+                    ) %}
+                {% endif %}
                 {# Existing workflow #}
                 {% set url = path(
                     'oro_workflow_api_rest_workflow_transit',
@@ -16,6 +26,17 @@
                     }
                 ) %}
             {% else %}
+                {% if data.transition.formOptions|length > 0 %}
+                    {% set dialogUrl = path(
+                        'oro_workflow_widget_start_transition_form',
+                        {
+                            workflowName: data.workflow.name,
+                            transitionName: data.transition.name,
+                            entityClass: entity_class,
+                            entityId: entity_id,
+                        }
+                    ) %}
+                {% endif %}
                 {# New workflow #}
                 {% set url = path(
                     'oro_workflow_api_rest_workflow_start',
@@ -27,13 +48,24 @@
                     }
                 ) %}
             {% endif %}
-            {{ workflowMacros.renderTransitionButton(data.workflow, data.transition, true, url, false) }}
+            {{ workflowMacros.renderTransitionButton(data.workflow, data.transition, true, url, false, dialogUrl) }}
         {% endfor %}
     </div>
 
     {# Show buttons that for start new wizard workflows #}
     <div class="btn-group">
         {% for data in transitionsData if data.workflow.type == 'wizard' and data.workflowItem is not defined  %}
+            {% if data.transition.formOptions|length > 0 %}
+                {% set dialogUrl = path(
+                    'oro_workflow_widget_start_transition_form',
+                    {
+                        workflowName: data.workflow.name,
+                        transitionName: data.transition.name,
+                        entityClass: entity_class,
+                        entityId: entity_id,
+                    }
+                ) %}
+            {% endif %}
             {{ workflowMacros.renderTransitionButton(
                 data.workflow,
                 data.transition,
@@ -47,7 +79,8 @@
                         transitionName: data.transition.name
                     }
                 ),
-                true
+                true,
+                dialogUrl
             ) }}
         {% endfor %}
     </div>

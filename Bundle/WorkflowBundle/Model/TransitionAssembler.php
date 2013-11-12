@@ -75,6 +75,7 @@ class TransitionAssembler extends AbstractAssembler
             $definitions[$name] = array(
                 'conditions' => $this->getOption($options, 'conditions', array()),
                 'post_actions' => $this->getOption($options, 'post_actions', array()),
+                'init_actions' => $this->getOption($options, 'init_actions', array()),
             );
         }
 
@@ -102,6 +103,7 @@ class TransitionAssembler extends AbstractAssembler
             ->setLabel($options['label'])
             ->setStepTo($steps[$stepToName])
             ->setStart($this->getOption($options, 'is_start', false))
+            ->setHidden($this->getOption($options, 'is_hidden', false))
             ->setFormType($this->getOption($options, 'form_type', WorkflowAttributesType::NAME))
             ->setFormOptions($this->getOption($options, 'form_options', array()))
             ->setFrontendOptions($this->getOption($options, 'frontend_options', array()));
@@ -114,6 +116,11 @@ class TransitionAssembler extends AbstractAssembler
         if (!empty($definition['post_actions'])) {
             $postAction = $this->postActionFactory->create(ConfigurablePostAction::ALIAS, $definition['post_actions']);
             $transition->setPostAction($postAction);
+        }
+
+        if (!empty($definition['init_actions'])) {
+            $initAction = $this->postActionFactory->create(ConfigurablePostAction::ALIAS, $definition['init_actions']);
+            $transition->setInitAction($initAction);
         }
 
         return $transition;

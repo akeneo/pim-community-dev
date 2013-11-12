@@ -1,14 +1,14 @@
 /* global define */
-define(['oro/datagrid/model-action'],
+define(['oro/grid/model-action'],
 function(ModelAction) {
     'use strict';
 
     /**
      * Ajax action, triggers REST AJAX request
      *
-     * @export  oro/datagrid/ajax-action
-     * @class   oro.datagrid.AjaxAction
-     * @extends oro.datagrid.ModelAction
+     * @export  oro/grid/ajax-action
+     * @class   oro.grid.AjaxAction
+     * @extends oro.grid.ModelAction
      */
     return ModelAction.extend();
 });
