@@ -6,6 +6,8 @@ use Doctrine\ORM\EntityManager;
 use Oro\Bundle\WorkflowBundle\Model\Transition;
 use Oro\Bundle\WorkflowBundle\Serializer\WorkflowAwareSerializer;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Form;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
@@ -115,6 +117,7 @@ class WidgetController extends Controller
         $data = null;
         if ($this->getRequest()->isMethod('POST')) {
             $transitionForm->submit($this->getRequest());
+            $this->applyWorkflowErrors($workflow, $workflowItem, $transitionName, $transitionForm);
 
             if ($transitionForm->isValid()) {
                 /** @var WorkflowAwareSerializer $serializer */
@@ -159,6 +162,7 @@ class WidgetController extends Controller
         $saved = false;
         if ($this->getRequest()->isMethod('POST')) {
             $transitionForm->submit($this->getRequest());
+            $this->applyWorkflowErrors($workflow, $workflowItem, $transitionName, $transitionForm);
 
             if ($transitionForm->isValid()) {
                 $workflowItem->setUpdated();
@@ -177,12 +181,28 @@ class WidgetController extends Controller
     }
 
     /**
+     * @param Workflow $workflow
+     * @param WorkflowItem $workflowItem
+     * @param string $transitionName
+     * @param Form $form
+     */
+    protected function applyWorkflowErrors(Workflow $workflow, WorkflowItem $workflowItem, $transitionName, Form $form)
+    {
+        if (!$workflow->isTransitionAllowed($workflowItem, $transitionName)) {
+            $errors = $workflow->getErrors();
+            foreach ($errors as $error) {
+                $form->addError(new FormError($error));
+            }
+        }
+    }
+
+    /**
      * Get transition form.
      *
      * @param Workflow $workflow
      * @param WorkflowItem $workflowItem
      * @param string $transitionName
-     * @return \Symfony\Component\Form\Form
+     * @return Form
      */
     protected function getTransitionForm(Workflow $workflow, WorkflowItem $workflowItem, $transitionName)
     {
