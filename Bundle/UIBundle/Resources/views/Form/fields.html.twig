@@ -14,46 +14,6 @@
     {% endspaceless %}
 {% endblock form_row %}
 
-{% block form_row_flex %}
-    {% spaceless %}
-        {% set col = attr['data-col'] is defined ? attr['data-col'] : 0 %}
-
-        {% if col > 1 %}
-            {# calculate Bootstrap class for 12-columns grid system #}
-            {% set class = 'span' ~ (12 // col) %}
-
-            {% for attribute in form %}
-                {% if loop.first %}
-                    <div class="{{ class }}">
-                {% endif %}
-
-                {{ form_widget(attribute) }}
-                {{ form_errors(attribute) }}
-
-                {% if loop.index % ((loop.length / col)|ceil) == 0  and not loop.last %}
-                    </div>
-                    <div class="{{ class }}">
-                {% endif %}
-
-                {% if loop.last %}
-                    </div>
-                {% endif %}
-            {% endfor %}
-        {% else %}
-            {% for attribute in form %}
-                {{ form_widget(attribute) }}
-                {{ form_errors(attribute) }}
-            {% endfor %}
-        {% endif %}
-
-        {% for attribute in form %}
-            {% if (attribute.values is defined) %}
-                {{ form_row(attribute.values) }}
-            {% endif %}
-        {% endfor %}
-    {% endspaceless %}
-{% endblock form_row_flex %}
-
 {% block choice_widget_collapsed %}
     {% if client_validation %}
     <script type="text/javascript">
