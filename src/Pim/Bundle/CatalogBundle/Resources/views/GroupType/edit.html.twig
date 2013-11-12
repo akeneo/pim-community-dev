@@ -1,13 +1,36 @@
 {% extends 'PimCatalogBundle::layout.html.twig' %}
 
-{% oro_title_set({ params: { '%grouptype.code%': form.vars.value.code } }) %}
+{% oro_title_set({ params: { '%grouptype.label%': form.vars.value.label } }) %}
+
+{% block head_script %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        require(
+            ['jquery', 'pim/formupdatelistener'],
+            function ($, FormUpdateListener){
+                'use strict';
+                $(function() {
+                    new FormUpdateListener($('#{{ form.vars.id }}'));
+                });
+            }
+        );
+    </script>
+{% endblock %}
 
 {% block content %}
     {{ JSFV(form) }}
+    {{ form_start(form, {
+        'action': path('pim_catalog_group_type_edit', { id: form.vars.value.id}),
+        'attr': {
+            'data-updated-title': 'confirmation.leave'|trans,
+            'data-updated-message': 'confirmation.discard changes'|trans({ '%entity%': 'group type'|trans })
+        }
+    }) }}
 
-        {% set title = 'grouptype.edit'|trans ~ ' - ' ~ form.vars.value.code %}
+        {% set title = 'grouptype.edit'|trans ~ ' - ' ~ form.vars.value.label %}
 
-        {% set confirmationMessage = 'confirmation.remove.grouptype'|trans({ '%name%': form.vars.value.code }) %}
+        {% set confirmationMessage = 'confirmation.remove.grouptype'|trans({ '%name%': form.vars.value.label }) %}
         {% set buttons %}
             {{ elements.backLink(path('pim_catalog_group_type_index')) }}
             {{
@@ -37,7 +60,7 @@
             {{ elements.form_errors(form) }}
 
             <div class="tab-pane active" id="properties">
-                {{ elements.accordion({ 'General Properties': form_row(form.code) }) }}
+                {{ elements.accordion({ 'General Properties': form_row(form.code), 'Locale values': form_row(form.label) }) }}
             </div>
         </div>
     {{ form_end(form) }}

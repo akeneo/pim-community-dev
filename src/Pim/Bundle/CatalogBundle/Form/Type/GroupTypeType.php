@@ -22,6 +22,16 @@ class GroupTypeType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('code');
+        $builder->add(
+            'label',
+            'pim_translatable_field',
+            array(
+                'field'             => 'label',
+                'translation_class' => 'Pim\\Bundle\\CatalogBundle\\Entity\\GroupTypeTranslation',
+                'entity_class'      => 'Pim\\Bundle\\CatalogBundle\\Entity\\GroupType',
+                'property_path'     => 'translations'
+            )
+        );
     }
 
     /**
