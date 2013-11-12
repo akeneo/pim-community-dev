@@ -141,11 +141,12 @@ class WorkflowAttributesType extends AbstractType
         $resolver->setDefaults(
             array(
                 'data_class' => 'Oro\Bundle\WorkflowBundle\Model\WorkflowData',
-                'disable_attribute_fields' => false
+                'disable_attribute_fields' => false,
+                'attribute_fields' => array()
             )
         );
 
-        $resolver->setOptional(array('workflow', 'workflow_item', 'workflow_name'));
+        $resolver->setOptional(array('attribute_fields', 'workflow', 'workflow_item', 'workflow_name'));
 
         $resolver->setAllowedTypes(
             array(
