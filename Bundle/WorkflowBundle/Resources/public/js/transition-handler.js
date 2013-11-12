@@ -4,8 +4,7 @@ function($, messenger, __, Navigation) {
 
     var navigation = Navigation.getInstance();
     var performTransition = function(element, data) {
-        data = data || false;
-        $.getJSON(element.data('transition-url'), {'data': data})
+        $.getJSON(element.data('transition-url'), data ? {'data': data} : null)
             .done(function(response) {
                 var doRedirect = function(redirectUrl) {
                     if (navigation) {
