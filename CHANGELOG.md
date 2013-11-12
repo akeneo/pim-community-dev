@@ -6,6 +6,7 @@
 - Allow creating new options for simple select and multiselect attributes directly from the product edit form
 - Add a default tree per user
 - Introduce command "pim:completeness:calculate" size argument to manage number of completenesses to calculate
+- Switching tree to see sub-categories products count and allow filtering on it
 
 ## Improvements
 - Export media into separated sub directories
