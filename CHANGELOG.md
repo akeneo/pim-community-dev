@@ -14,6 +14,7 @@
 - Display number of created/updated products during import
 - Speed up completeness calculation
 - Display the "has product" filter by default
+- Display currency label in currencies datagrid
 
 ## Bug fixes
 - Mass delete products
