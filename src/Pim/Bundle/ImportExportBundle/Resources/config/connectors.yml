@@ -68,7 +68,9 @@ services:
 
     pim_import_export.processor.product_csv_serializer:
         class: %pim_import_export.processor.product_csv_serializer.class%
-        parent: pim_import_export.processor.heterogeneous_csv_serializer
+        arguments:
+            - '@pim_serializer'
+            - '@pim_catalog.manager.channel'
 
     pim_import_export.processor.dummy:
         class: %pim_import_export.processor.dummy.class%

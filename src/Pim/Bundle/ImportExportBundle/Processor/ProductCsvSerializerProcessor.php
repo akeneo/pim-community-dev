@@ -2,6 +2,11 @@
 
 namespace Pim\Bundle\ImportExportBundle\Processor;
 
+use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
+use Pim\Bundle\ImportExportBundle\Validator\Constraints\Channel;
+
 /**
  * Product serializer into csv processor
  *
@@ -14,13 +19,50 @@ namespace Pim\Bundle\ImportExportBundle\Processor;
  */
 class ProductCsvSerializerProcessor extends HeterogeneousCsvSerializerProcessor
 {
+
+    /**
+     * @Assert\NotBlank
+     * @Channel
+     */
+    protected $channel;
+
+    /**
+     * @var ChannelManager
+     */
+    protected $channelManager;
+
+    /**
+     * @param ChannelManager $channelManager
+     */
+    public function __construct(SerializerInterface $serializer, ChannelManager $channelManager)
+    {
+        parent::__construct($serializer);
+        $this->channelManager = $channelManager;
+    }
+
+    /**
+     * Set channel                                                                                                                       
+     * @param string $channel
+     */
+    public function setChannel($channel)
+    {
+        $this->channel = $channel;
+    }
+
+    /**
+     * Get channel
+     * @return string
+     */
+    public function getChannel()
+    {
+        return $this->channel;
+    }
+
     /**
      * {@inheritdoc}
      */
     public function process($products)
     {
-        $channel = new \Pim\Bundle\CatalogBundle\Entity\Channel();
-        $channel->setCode('mobile');
         $csv =  $this->serializer->serialize(
             $products,
             'csv',
@@ -29,7 +71,7 @@ class ProductCsvSerializerProcessor extends HeterogeneousCsvSerializerProcessor
                 'enclosure'     => $this->enclosure,
                 'withHeader'    => $this->withHeader,
                 'heterogeneous' => true,
-                'channel' => $channel
+                'scopeCode'     => $this->channel
             )
         );
 
@@ -48,4 +90,24 @@ class ProductCsvSerializerProcessor extends HeterogeneousCsvSerializerProcessor
             'media' => $media
         );
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getConfigurationFields()
+    {
+        return array_merge(
+            parent::getConfigurationFields(),
+            array(
+                'channel' => array(
+                    'type' => 'choice',
+                    'options' => array(
+                        'choices' => $this->channelManager->getChannelChoices(),
+                        'required' => true
+                    )
+                )
+            )
+        );
+    }
+
 }
