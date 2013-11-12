@@ -7,7 +7,7 @@
 {% endmacro %}
 
 {% macro render_view_attribute_col(workflowItem, viewAttributes) %}
-    <div class="span6">
+    <div class="span4 offset1">
         {% for viewAttribute in viewAttributes %}
             {{ oro_workflow_render_view_attribute_row(workflowItem, viewAttribute) }}
         {% endfor %}
@@ -68,23 +68,6 @@
         </ul>
     </div>
 
-    {% if displayStep.viewAttributes|length %}
-        <div class="row-fluid form-horizontal">
-            <div class="form-horizontal box-content row-fluid">
-                {% set attrsPerCol = 4 %}
-                {% set numberOfColumns = 2 %}
-                {% set formAttrsPerCol = displayStep.viewAttributes|length/numberOfColumns %}
-                {% if formAttrsPerCol > attrsPerCol  %}
-                    {% set attrsPerCol = formAttrsPerCol %}
-                {% endif %}
-                {% for colNum in 1..numberOfColumns %}
-                    {% set start = (colNum - 1) * attrsPerCol %}
-                    {{ _self.render_view_attribute_col(workflowItem, displayStep.viewAttributes|slice(start, attrsPerCol)) }}
-                {% endfor %}
-            </div>
-        </div>
-    {% endif %}
-
     {% if saved %}
         <script type="text/javascript">
             require(['oro/widget-manager'],
@@ -100,36 +83,53 @@
         </div>
     {% endif %}
 
-    {% if displayStep.formOptions.attribute_fields is defined and displayStep.formOptions.attribute_fields|length %}
-        {{ JSFV(form) }}
-        <div class="form-container">
-            <form method="post"
-                data-nohash="true"
-                data-disable-autofocus="true"
-                id="{{ form.vars.name }}"
-                action="{{ path('oro_workflow_widget_step_form', {workflowItemId: workflowItem.id}) }}"
-                class="form-horizontal">
+    <div class="form-container">
+        {% if displayStep.viewAttributes|length %}
+            <div class="form-horizontal">
                 <div class="step-form-container row-fluid">
-                    {% set fieldsPerCol = 4 %}
+                    {% set attrsPerCol = 4 %}
                     {% set numberOfColumns = 2 %}
-                    {% set formFieldsPerCol = form|length/numberOfColumns %}
-                    {% if formFieldsPerCol > fieldsPerCol  %}
-                        {% set fieldsPerCol = formFieldsPerCol %}
+                    {% set formAttrsPerCol = displayStep.viewAttributes|length/numberOfColumns %}
+                    {% if formAttrsPerCol > attrsPerCol  %}
+                        {% set attrsPerCol = formAttrsPerCol %}
                     {% endif %}
                     {% for colNum in 1..numberOfColumns %}
-                        {% set start = (colNum - 1) * fieldsPerCol %}
-                        {{ _self.render_form_col(form|slice(start, fieldsPerCol)) }}
+                        {% set start = (colNum - 1) * attrsPerCol %}
+                        {{ _self.render_view_attribute_col(workflowItem, displayStep.viewAttributes|slice(start, attrsPerCol)) }}
                     {% endfor %}
                 </div>
+            </div>
+        {% endif %}
 
-                {% if saveAllowed %}
-                    <div class="widget-actions">
-                        <button type="submit" class="btn btn-success btn-small">{{ 'Save'|trans }}</button>
-                    </div>
+        {% if displayStep.formOptions.attribute_fields is defined and displayStep.formOptions.attribute_fields|length %}
+        {{ JSFV(form) }}
+        <form method="post"
+            data-nohash="true"
+            data-disable-autofocus="true"
+            id="{{ form.vars.name }}"
+            action="{{ path('oro_workflow_widget_step_form', {workflowItemId: workflowItem.id}) }}"
+            class="form-horizontal">
+            <div class="step-form-container row-fluid">
+                {% set fieldsPerCol = 4 %}
+                {% set numberOfColumns = 2 %}
+                {% set formFieldsPerCol = form|length/numberOfColumns %}
+                {% if formFieldsPerCol > fieldsPerCol  %}
+                    {% set fieldsPerCol = formFieldsPerCol %}
                 {% endif %}
-            </form>
-        </div>
-    {% endif %}
+                {% for colNum in 1..numberOfColumns %}
+                    {% set start = (colNum - 1) * fieldsPerCol %}
+                    {{ _self.render_form_col(form|slice(start, fieldsPerCol)) }}
+                {% endfor %}
+            </div>
+
+            {% if saveAllowed %}
+                <div class="widget-actions">
+                    <button type="submit" class="btn btn-success btn-small">{{ 'Save'|trans }}</button>
+                </div>
+            {% endif %}
+        </form>
+        {% endif %}
+    </div>
 
     <script type="text/javascript">
         require(['oro/widget-manager'],
