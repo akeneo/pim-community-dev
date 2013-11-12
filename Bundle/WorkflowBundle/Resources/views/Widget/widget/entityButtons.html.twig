@@ -1,5 +1,6 @@
 {% import 'OroWorkflowBundle::macros.html.twig' as workflowMacros %}
 
+{% set dialogUrl = null %}
 {% set blockId = 'entity-transitions-container-' ~ random() %}
 <div class="widget-content" id="{{ blockId }}">
     {# Show buttons for entity workflows #}
@@ -30,7 +31,9 @@
                         'oro_workflow_widget_start_transition_form',
                         {
                             workflowName: data.workflow.name,
-                            transitionName: data.transition.name
+                            transitionName: data.transition.name,
+                            entityClass: entity_class,
+                            entityId: entity_id,
                         }
                     ) %}
                 {% endif %}
@@ -57,7 +60,9 @@
                     'oro_workflow_widget_start_transition_form',
                     {
                         workflowName: data.workflow.name,
-                        transitionName: data.transition.name
+                        transitionName: data.transition.name,
+                        entityClass: entity_class,
+                        entityId: entity_id,
                     }
                 ) %}
             {% endif %}

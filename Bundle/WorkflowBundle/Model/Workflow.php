@@ -348,7 +348,7 @@ class Workflow
      * @return WorkflowItem
      * @throws \LogicException
      */
-    protected function createWorkflowItem(array $data = array())
+    public function createWorkflowItem(array $data = array())
     {
         $workflowItem = new WorkflowItem();
         $workflowItem->setWorkflowName($this->getName());

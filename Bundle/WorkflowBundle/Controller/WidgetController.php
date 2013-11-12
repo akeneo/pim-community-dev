@@ -3,6 +3,7 @@
 namespace Oro\Bundle\WorkflowBundle\Controller;
 
 use Doctrine\ORM\EntityManager;
+use Oro\Bundle\WorkflowBundle\Model\Transition;
 use Oro\Bundle\WorkflowBundle\Serializer\WorkflowAwareSerializer;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -100,8 +101,14 @@ class WidgetController extends Controller
         $workflowManager = $this->get('oro_workflow.manager');
         $workflow = $workflowManager->getWorkflow($workflowName);
 
-        $workflowItem = new WorkflowItem();
-        $workflowItem->setWorkflowName($workflow->getName());
+        $initData = array();
+        $entityClass = $this->getRequest()->get('entityClass');
+        $entityId = $this->getRequest()->get('entityId');
+        if ($entityClass && $entityId) {
+            $entity = $this->getEntityReference($entityClass, $entityId);
+            $initData = $workflowManager->getWorkflowData($workflow, $entity, $initData);
+        }
+        $workflowItem = $workflow->createWorkflowItem($initData);
 
         $saved = false;
         $transitionForm = $this->getTransitionForm($workflow, $workflowItem, $transitionName);
@@ -180,6 +187,7 @@ class WidgetController extends Controller
     protected function getTransitionForm(Workflow $workflow, WorkflowItem $workflowItem, $transitionName)
     {
         $transition = $workflow->getTransitionManager()->getTransition($transitionName);
+        $transition->initialize($workflowItem);
 
         return $this->createForm(
             $transition->getFormType(),
@@ -211,23 +219,29 @@ class WidgetController extends Controller
         $transitionsData = array();
         foreach ($newWorkflows as $workflow) {
             $transitions = $workflowManager->getAllowedStartTransitions($workflow, $entity);
+            /** @var Transition $transition */
             foreach ($transitions as $transition) {
-                $transitionsData[] = array(
-                    'workflow' => $workflowManager->getWorkflow($workflow),
-                    'transition' => $transition,
-                );
+                if (!$transition->isHidden()) {
+                    $transitionsData[] = array(
+                        'workflow' => $workflowManager->getWorkflow($workflow),
+                        'transition' => $transition,
+                    );
+                }
             }
         }
 
         /** @var WorkflowItem $workflowItem */
         foreach ($existingWorkflowItems as $workflowItem) {
             $transitions = $workflowManager->getAllowedTransitions($workflowItem);
+            /** @var Transition $transition */
             foreach ($transitions as $transition) {
-                $transitionsData[] = array(
-                    'workflow' => $workflowManager->getWorkflow($workflowItem),
-                    'workflowItem' => $workflowItem,
-                    'transition' => $transition,
-                );
+                if (!$transition->isHidden()) {
+                    $transitionsData[] = array(
+                        'workflow' => $workflowManager->getWorkflow($workflowItem),
+                        'workflowItem' => $workflowItem,
+                        'transition' => $transition,
+                    );
+                }
             }
         }
 

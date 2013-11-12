@@ -55,8 +55,8 @@ class WorkflowController extends FOSRestController
             $entity = null;
             $entityClass = $this->getRequest()->get('entityClass');
             $entityId = $this->getRequest()->get('entityId');
-            $data = $this->getRequest()->get('data');
 
+            $data = $this->getRequest()->get('data');
             $dataArray = array();
             if ($data) {
                 $serializer = $this->get('oro_workflow.serializer.data.serializer');
