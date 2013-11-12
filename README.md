@@ -14,7 +14,7 @@ Important Note: this application is not production ready and is intended for eva
 
 Requirements
 ------------
- - PHP 5.4.4 or above
+ - PHP 5.4.* (5.4.4 or above, Akeneo PIM has not been yet tested with PHP 5.5)
  - PHP Modules:
     - php5-curl
     - php5-gd
