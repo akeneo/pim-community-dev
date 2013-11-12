@@ -1,6 +1,6 @@
-    define(
-    ['jquery', 'underscore', 'routing', 'oro/registry', 'jquery.jstree', 'jstree/jquery.jstree.tree_selector'],
-    function ($, _, Routing, Registry) {
+define(
+    ['jquery', 'underscore', 'routing', 'oro/registry', 'oro/translator', 'jquery.jstree', 'jstree/jquery.jstree.tree_selector', 'jstree/jquery.jstree.nested_switch'],
+    function ($, _, Routing, Registry, __) {
         'use strict';
 
         return function (elementId) {
@@ -12,6 +12,7 @@
                 dataLocale         = $el.attr('data-datalocale'),
                 selectedNode       = $el.attr('data-node-id') || -1,
                 selectedTree       = $el.attr('data-tree-id') || -1,
+                includeChildren    = $el.attr('data-include-sub') || false,
                 selectedNodeOrTree = selectedNode in [0, -1] ? selectedTree : selectedNode;
 
             this.config = {
@@ -20,12 +21,21 @@
                 },
                 'plugins': [
                     'tree_selector',
+                    'nested_switch',
                     'themes',
                     'json_data',
                     'ui',
                     'crrm',
                     'types'
                 ],
+                'nested_switch': {
+                    state:    includeChildren,
+                    label:    __('jstree.include_sub'),
+                    callback: function(state) {
+                        includeChildren = state;
+                        $el.jstree('refresh');
+                    }
+                },
                 'tree_selector': {
                     'ajax': {
                         'url': Routing.generate('pim_catalog_categorytree_listtree', { '_format': 'json', 'dataLocale': dataLocale, 'select_node_id': selectedNodeOrTree })
@@ -44,10 +54,12 @@
                         'data': function (node) {
                             // the result is fed to the AJAX request `data` option
                             var id = (node && node !== -1) ? node.attr('id').replace('node_', '') : -1;
+
                             return {
                                 'id': id,
                                 'select_node_id': selectedNode,
-                                'with_products_count': 1
+                                'with_products_count': 1,
+                                'include_sub': +includeChildren
                             };
                         }
                     }
@@ -68,9 +80,9 @@
                 }
             };
 
-            function updateGrid(treeId, categoryId) {
+            function updateGrid(treeId, categoryId, includeSub) {
                 var collection = Registry.getElement('datagrid', 'products').collection;
-                if (collection.setCategory(treeId, categoryId)) {
+                if (collection.setCategory(treeId, categoryId, includeSub)) {
                     $('.grid-toolbar .icon-refresh').click();
                 }
             }
@@ -82,10 +94,12 @@
                     }
                 }).on('after_tree_loaded.jstree', function (e, root_node_id) {
                     $(document).one('ajaxStop', function () {
-                        $el.jstree('create', -1, 'last', {
-                            'attr': { 'class': 'jstree-unclassified', 'id': 'node_' },
-                            'data': { 'title': _.__('jstree.all') }
-                        }, null, true);
+                        if (!$('#node_').length) {
+                            $el.jstree('create', -1, 'last', {
+                                'attr': { 'class': 'jstree-unclassified', 'id': 'node_' },
+                                'data': { 'title': _.__('jstree.all') }
+                            }, null, true);
+                        }
                         if (-1 === selectedNode) {
                             $el.jstree('select_node', '#node_');
                         }
@@ -94,17 +108,21 @@
                             'attr': { 'class': 'jstree-unclassified', 'id': 'node_0' },
                             'data': { 'title': _.__('jstree.unclassified') }
                         }, null, true);
-                        if (0 == selectedNode) {
+                        if (0 === +selectedNode) {
                             $el.jstree('select_node', '#node_0');
                         }
                     });
                 }).on('select_node.jstree', function () {
                     function getNodeId(node) {
-                        return (node && node.attr('id')) ? node.attr('id').replace('node_', '') : '';
+                        var nodeId = (node && node.attr('id')) ? node.attr('id').replace('node_', '') : '';
+                        return nodeId !== '' ? nodeId : -1;
                     }
                     var nodeId = getNodeId($.jstree._focused().get_selected()),
                         treeId = getNodeId($('#tree').find('li').first());
-                    updateGrid(treeId, nodeId);
+                    if (nodeId !== '') {
+                        selectedNode = nodeId;
+                    }
+                    updateGrid(treeId, nodeId, includeChildren);
                 });
             };
 

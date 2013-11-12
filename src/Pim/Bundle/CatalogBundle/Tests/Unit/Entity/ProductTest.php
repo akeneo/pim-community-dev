@@ -387,6 +387,7 @@ class ProductTest extends \PHPUnit_Framework_TestCase
     /**
      * @param mixed  $group
      * @param string $type
+     * @param string $code
      *
      * @return \Pim\Bundle\CatalogBundle\Entity\ProductAttribute
      */

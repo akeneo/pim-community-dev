@@ -19,10 +19,10 @@ Feature: Associate a product
     | upsell | Upsell       |
     | subst  | Substitution |
   And the following product groups:
-    | code              | label                  | attributes | type   |
-    | x_sell_beverages  | Cross sell beverages   |            | X_SELL |
-    | upsell_beverages  | Upsell beverages       |            | X_SELL |
-    | subst_beverages   | Substitution beverages |            | X_SELL |
+    | code             | label                  | attributes | type   |
+    | x_sell_beverages | Cross sell beverages   |            | X_SELL |
+    | upsell_beverages | Upsell beverages       |            | X_SELL |
+    | subst_beverages  | Substitution beverages |            | X_SELL |
   And I am logged in as "Julia"
 
   Scenario: Associate a product to another product

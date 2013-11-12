@@ -24,7 +24,7 @@ Feature: Create an export
     When I visit the "History" tab
     Then there should be 1 update
     And I should see history:
-      | action | version | data       |
+      | action | version | data                       |
       | create | 1       | code:mobile_product_export |
 
   Scenario: Fail to create an unknown product export

@@ -10,8 +10,8 @@ Feature: Filter products
       | furniture |
       | library   |
     And the following attributes:
-      | code      | label      | type                     |
-      | color     | Color      | pim_catalog_simpleselect |
+      | code  | label | type                     |
+      | color | Color | pim_catalog_simpleselect |
     And the following "color" attribute options: Black and White
     And the following products:
       | sku    | family    |

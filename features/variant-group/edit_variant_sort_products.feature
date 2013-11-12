@@ -28,8 +28,8 @@ Feature: Edit a variant group adding/removing products
       | POSTIT  | color     | Blue  |
       | POSTIT  | size      | XL    |
     And the following product groups:
-      | code   | label      | attributes  | products | type    |
-      | POSTIT | Postit     | color, size | POSTIT   | VARIANT |
+      | code   | label  | attributes  | products | type    |
+      | POSTIT | Postit | color, size | POSTIT   | VARIANT |
     And I am logged in as "admin"
 
   Scenario: Successfully sort products

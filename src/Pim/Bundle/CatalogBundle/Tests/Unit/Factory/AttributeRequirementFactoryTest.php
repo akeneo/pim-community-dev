@@ -13,11 +13,17 @@ use Pim\Bundle\CatalogBundle\Factory\AttributeRequirementFactory;
  */
 class AttributeRequirementFactoryTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
         $this->factory = new AttributeRequirementFactory();
     }
 
+    /**
+     * Test related method
+     */
     public function testCreateAttributeRequirement()
     {
         $productAttribute = $this->getProductAttributeMock();
@@ -30,6 +36,9 @@ class AttributeRequirementFactoryTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($requirement->isRequired());
     }
 
+    /**
+     * Test related method
+     */
     public function testCreateUnrequiredAttributeRequirement()
     {
         $productAttribute = $this->getProductAttributeMock();

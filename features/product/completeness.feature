@@ -10,9 +10,9 @@ Feature: Display the completeness of a product
       | furniture |
       | phone     |
     And the following products:
-      | sku         | family    | enabled |
-      | postit      | furniture | yes     |
-      | smartphone  | phone     | yes     |
+      | sku        | family    | enabled |
+      | postit     | furniture | yes     |
+      | smartphone | phone     | yes     |
     And a "postit" product
     And a "smartphone" product
     And the following product attributes:
@@ -33,14 +33,14 @@ Feature: Display the completeness of a product
       | postit     | description | fr_FR  | mobile    |                          |
       | smartphone | name        | fr_FR  |           | smartphone               |
     And the following attribute requirements:
-      | family     | attribute   | scope     | required |
-      | furniture  | name        | ecommerce | yes      |
-      | furniture  | image       | ecommerce | yes      |
-      | furniture  | description | ecommerce | yes      |
-      | furniture  | name        | mobile    | yes      |
-      | furniture  | description | mobile    | yes      |
-      | phone      | name        | ecommerce | yes      |
-      | phone      | name        | mobile    | no       |
+      | family    | attribute   | scope     | required |
+      | furniture | name        | ecommerce | yes      |
+      | furniture | image       | ecommerce | yes      |
+      | furniture | description | ecommerce | yes      |
+      | furniture | name        | mobile    | yes      |
+      | furniture | description | mobile    | yes      |
+      | phone     | name        | ecommerce | yes      |
+      | phone     | name        | mobile    | no       |
     And I am logged in as "admin"
     And I launched the completeness calculator
 

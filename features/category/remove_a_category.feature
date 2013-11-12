@@ -6,8 +6,8 @@ Feature: Remove a category
 
   Background:
   Given the following product attributes:
-    | label       | required |
-    | SKU         | yes      |
+    | label | required |
+    | SKU   | yes      |
   And the following products:
     | sku       |
     | shoes-f-1 |

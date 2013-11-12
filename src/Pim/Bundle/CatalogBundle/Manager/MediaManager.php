@@ -64,7 +64,7 @@ class MediaManager
 
     /**
      * @param Media  $media
-     * @param string $target
+     * @param string $targetDir
      *
      * @return boolean true on success, false on failure
      */

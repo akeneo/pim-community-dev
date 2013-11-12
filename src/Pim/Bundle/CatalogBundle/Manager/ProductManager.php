@@ -224,24 +224,31 @@ class ProductManager extends FlexibleManager
     /**
      * Save a product
      *
-     * @param ProductInterface $product
-     * @param boolean          $recalculate Wether or not to directly recalculate the completeness
-     * @param boolean          $flush       Wether or not to flush the entity manager
+     * @param ProductInterface $product     The product to save
+     * @param boolean          $recalculate Whether or not to directly recalculate the completeness
+     * @param boolean          $flush       Whether or not to flush the entity manager
      */
     public function save(ProductInterface $product, $recalculate = true, $flush = true)
     {
         $this->storageManager->persist($product);
-        $this->getCompletenessRepository()->schedule($product);
 
         if ($flush) {
             $this->storageManager->flush();
         }
+        $this->getCompletenessRepository()->schedule($product);
 
         if ($recalculate) {
             $this->getCompletenessRepository()->createProductCompletenesses($product);
         }
     }
 
+    /**
+     * Save multiple products
+     *
+     * @param ProductInterface[] $products    The products to save
+     * @param boolean            $recalculate Wether or not to directly recalculate the completeness
+     * @param boolean            $flush       Wether or not to flush the entity manager
+     */
     public function saveAll(array $products, $recalculate = false, $flush = true)
     {
         foreach ($products as $product) {
@@ -298,6 +305,9 @@ class ProductManager extends FlexibleManager
         }
     }
 
+    /**
+     * @param ProductInterface[] $products
+     */
     public function handleAllMedia(array $products)
     {
         foreach ($products as $product) {

@@ -962,7 +962,10 @@ class WebUser extends RawMinkContext
      */
     public function iPressTheButtonInThePopin($button)
     {
-        $this->getCurrentPage()->find('css', sprintf('.ui-dialog button:contains("%s")', $button))->press();
+        $this
+            ->getCurrentPage()
+            ->find('css', sprintf('.ui-dialog button:contains("%s")', $button))
+            ->press();
         $this->wait();
     }
 
@@ -989,6 +992,18 @@ class WebUser extends RawMinkContext
         $this->getCurrentPage()->toggleSwitch('To enable', $status);
         $this->getCurrentPage()->next();
         $this->getCurrentPage()->confirm();
+        $this->wait();
+    }
+
+    /**
+     * @param string $status
+     * @param string $locator
+     *
+     * @When /^I (un)?check the "([^"]*)" switch$/
+     */
+    public function iCheckTheSwitch($status, $locator)
+    {
+        $this->getCurrentPage()->toggleSwitch($locator, $status === '');
         $this->wait();
     }
 

@@ -17,7 +17,7 @@ Feature: Product group creation
     Given I am on the product groups page
     When I create a new product group
     And I fill in the following information in the popin:
-      | Code | Cross  |
+      | Code | Cross |
     And I select "X_SELL" from "Type"
     And I press the "Save" button
     Then I am on the product groups page
@@ -39,11 +39,11 @@ Feature: Product group creation
 
   Scenario: Fail to create a group filling an already used code
     Given the following product groups:
-      | code    | label          | type   |
-      | TSHIRT  | T-Shirt Akeneo | X_SELL |
+      | code   | label          | type   |
+      | TSHIRT | T-Shirt Akeneo | X_SELL |
     And I am on the product groups page
     When I create a new product group
     And I fill in the following information in the popin:
-      | Code | TSHIRT  |
+      | Code | TSHIRT |
     And I press the "Save" button
     Then I should see validation error "This value is already used."
