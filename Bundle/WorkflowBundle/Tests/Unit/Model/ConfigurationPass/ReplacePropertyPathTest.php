@@ -1,12 +1,12 @@
 <?php
 
-namespace Oro\Bundle\WorkflowBundle\Tests\Unit\Model\Pass;
+namespace Oro\Bundle\WorkflowBundle\Tests\Unit\Model\ConfigurationPass;
 
 use Symfony\Component\PropertyAccess\PropertyPath;
 
-use Oro\Bundle\WorkflowBundle\Model\Pass\ParameterPass;
+use Oro\Bundle\WorkflowBundle\Model\ConfigurationPass\ReplacePropertyPath;
 
-class ParameterPassTest extends \PHPUnit_Framework_TestCase
+class ReplacePropertyPathTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @param array $sourceData
@@ -15,10 +15,10 @@ class ParameterPassTest extends \PHPUnit_Framework_TestCase
      *
      * @dataProvider passDataProvider
      */
-    public function testPass(array $sourceData, array $expectedData, $prefix = null)
+    public function testPassConfiguration(array $sourceData, array $expectedData, $prefix = null)
     {
-        $parameterPass = new ParameterPass($prefix);
-        $actualData = $parameterPass->pass($sourceData);
+        $parameterPass = new ReplacePropertyPath($prefix);
+        $actualData = $parameterPass->passConfiguration($sourceData);
 
         $this->assertEquals($expectedData, $this->replacePropertyPathsWithElements($actualData));
     }

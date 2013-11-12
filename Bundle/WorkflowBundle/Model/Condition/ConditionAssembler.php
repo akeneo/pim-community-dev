@@ -2,9 +2,7 @@
 
 namespace Oro\Bundle\WorkflowBundle\Model\Condition;
 
-use Oro\Bundle\WorkflowBundle\Model\Condition\ConditionFactory;
 use Oro\Bundle\WorkflowBundle\Model\AbstractAssembler;
-use Oro\Bundle\WorkflowBundle\Model\Pass\PassInterface;
 
 class ConditionAssembler extends AbstractAssembler
 {
@@ -14,18 +12,11 @@ class ConditionAssembler extends AbstractAssembler
     protected $factory;
 
     /**
-     * @var PassInterface
-     */
-    protected $configurationPass;
-
-    /**
      * @param ConditionFactory $factory
-     * @param PassInterface $configurationPass
      */
-    public function __construct(ConditionFactory $factory, PassInterface $configurationPass)
+    public function __construct(ConditionFactory $factory)
     {
-        $this->factory           = $factory;
-        $this->configurationPass = $configurationPass;
+        $this->factory = $factory;
     }
 
     /**
@@ -59,7 +50,7 @@ class ConditionAssembler extends AbstractAssembler
             $message = $options['message'];
             unset($options['message']);
         }
-        $passedOptions = $this->configurationPass->pass($options);
+        $passedOptions = $this->passConfiguration($options);
 
         $serviceName = $this->getServiceName($conditionType);
         return $this->factory->create($serviceName, $passedOptions, $message);

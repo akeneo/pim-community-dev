@@ -7,7 +7,6 @@ use Oro\Bundle\WorkflowBundle\Model\PostAction\PostActionInterface;
 use Oro\Bundle\WorkflowBundle\Model\PostAction\TreeExecutor;
 use Oro\Bundle\WorkflowBundle\Model\PostAction\PostActionFactory;
 use Oro\Bundle\WorkflowBundle\Model\Condition\ConditionFactory;
-use Oro\Bundle\WorkflowBundle\Model\Pass\ParameterPass;
 use Oro\Bundle\WorkflowBundle\Tests\Unit\Model\PostAction\Stub\ArrayPostAction;
 use Oro\Bundle\WorkflowBundle\Tests\Unit\Model\PostAction\Stub\ArrayCondition;
 
@@ -62,12 +61,12 @@ class PostActionAssemblerTest extends \PHPUnit_Framework_TestCase
                 )
             );
 
-        $pass = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\Pass\PassInterface')
-            ->disableOriginalConstructor()
-            ->setMethods(array('pass'))
-            ->getMockForAbstractClass();
-        $pass->expects($this->any())
-            ->method('pass')
+        $configurationPass = $this->getMockBuilder(
+            'Oro\Bundle\WorkflowBundle\Model\ConfigurationPass\ConfigurationPassInterface'
+        )->getMockForAbstractClass();
+
+        $configurationPass->expects($this->any())
+            ->method('passConfiguration')
             ->with($this->isType('array'))
             ->will(
                 $this->returnCallback(
@@ -80,8 +79,8 @@ class PostActionAssemblerTest extends \PHPUnit_Framework_TestCase
 
         /** @var PostActionFactory $postActionFactory */
         /** @var ConditionFactory $conditionFactory */
-        /** @var ParameterPass $pass */
-        $assembler = new PostActionAssembler($postActionFactory, $conditionFactory, $pass);
+        $assembler = new PostActionAssembler($postActionFactory, $conditionFactory);
+        $assembler->addConfigurationPass($configurationPass);
         /** @var TreeExecutor $actualTree */
         $actualTree = $assembler->assemble($source);
         $this->assertInstanceOf('Oro\Bundle\WorkflowBundle\Model\PostAction\TreeExecutor', $actualTree);

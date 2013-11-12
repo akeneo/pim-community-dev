@@ -151,11 +151,13 @@ class WorkflowConfiguration implements ConfigurationInterface
                                         if (!isset($value['attribute']) && !isset($value['path'])) {
                                             throw new \Exception('"attribute" or "path" is required option.');
                                         }
-                                        if (isset($value['path']) && 0 !== strpos($value['path'], '$')) {
-                                            throw new \Exception('"path" should start with "$" symbol.');
-                                        }
                                         if (!isset($value['attribute']) && !isset($value['label'])) {
                                             throw new \Exception('"label" is required when "attribute" is empty.');
+                                        }
+                                        foreach (array('path', 'attribute', 'label') as $option) {
+                                            if (isset($value[$option]) && !is_string($value[$option])) {
+                                                throw new \Exception(sprintf('Option "%s" must be a string.', $option));
+                                            }
                                         }
                                         return $value;
                                     }

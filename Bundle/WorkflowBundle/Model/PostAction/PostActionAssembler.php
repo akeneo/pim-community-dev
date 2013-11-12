@@ -2,11 +2,7 @@
 
 namespace Oro\Bundle\WorkflowBundle\Model\PostAction;
 
-use Oro\Bundle\WorkflowBundle\Model\PostAction\TreeExecutor;
-use Oro\Bundle\WorkflowBundle\Model\PostAction\PostActionFactory;
-use Oro\Bundle\WorkflowBundle\Model\PostAction\PostActionInterface;
 use Oro\Bundle\WorkflowBundle\Model\AbstractAssembler;
-use Oro\Bundle\WorkflowBundle\Model\Pass\PassInterface;
 use Oro\Bundle\WorkflowBundle\Model\Condition\ConditionFactory;
 use Oro\Bundle\WorkflowBundle\Model\Condition\Configurable as ConfigurableCondition;
 
@@ -28,23 +24,15 @@ class PostActionAssembler extends AbstractAssembler
     protected $conditionFactory;
 
     /**
-     * @var PassInterface
-     */
-    protected $configurationPass;
-
-    /**
      * @param PostActionFactory $postActionFactory
      * @param ConditionFactory $conditionFactory
-     * @param PassInterface $configurationPass
      */
     public function __construct(
         PostActionFactory $postActionFactory,
-        ConditionFactory $conditionFactory,
-        PassInterface $configurationPass
+        ConditionFactory $conditionFactory
     ) {
         $this->postActionFactory = $postActionFactory;
         $this->conditionFactory  = $conditionFactory;
-        $this->configurationPass = $configurationPass;
     }
 
     /**
@@ -92,7 +80,7 @@ class PostActionAssembler extends AbstractAssembler
                     $postAction = $this->assemble($options);
                 } else {
                     $actionParameters = $this->getOption($options, self::PARAMETERS_KEY, $options);
-                    $passedActionParameters = $this->configurationPass->pass($actionParameters);
+                    $passedActionParameters = $this->passConfiguration($actionParameters);
                     $postAction = $this->postActionFactory->create(
                         $serviceName,
                         $passedActionParameters,
