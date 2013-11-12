@@ -17,4 +17,13 @@ class Index extends Base
      * @var string
      */
     protected $path = '/search/';
+
+    /**
+     * {@inheritdoc}
+     */
+    public function fillField($locator, $value)
+    {
+        $searchField = $this->getElement('Container')->find('css', 'input#search');
+        $searchField->setValue($value);
+    }
 }
