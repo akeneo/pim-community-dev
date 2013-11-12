@@ -185,8 +185,9 @@ class InstallCommand extends ContainerAwareCommand
 
         $this->getContainer()->get('oro_installer.yaml_persister')->dump($params);
 
+        $this->runCommand('cache:clear', $output);
+ 
         $output->writeln('');
-
         return $this;
     }
 
@@ -195,6 +196,7 @@ class InstallCommand extends ContainerAwareCommand
      *
      * @param array  $collection
      * @param string $header
+     * @param OutputInterface $output
      */
     protected function renderTable(array $collection, $header, OutputInterface $output)
     {
