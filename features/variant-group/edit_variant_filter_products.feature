@@ -71,7 +71,7 @@ Feature: Edit a variant group adding/removing products
 
   Scenario: Successfully display filters on the product datagrid when I edit a variant group
     Given I am on the "MUG" variant group page
-    Then I should see the filters SKU, Color and Family
+    Then I should see the filters Has product, SKU, Color and Family
     And I should not see the filters Created at and Updated at
     And the grid should contain 3 elements
     And I should see products MUG_1, MUG_2 and POSTIT
@@ -79,7 +79,7 @@ Feature: Edit a variant group adding/removing products
 
   Scenario: Successfully display filters on the product datagrid when I edit a variant group with 2 axes
     Given I am on the "POSTIT" variant group page
-    Then I should see the filters SKU, Color, Size and Family
+    Then I should see the filters Has product, SKU, Color, Size and Family
     And I should not see the filters Created at and Updated at
     And the grid should contain 2 elements
     And I should see products MUG_1 and POSTIT

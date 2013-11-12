@@ -12,6 +12,7 @@
 - Separate product groups and variants management
 - Display number of created/updated products during import
 - Speed up completeness calculation
+- Display the "has product" filter by default
 
 ## Bug fixes
 - Mass delete products
