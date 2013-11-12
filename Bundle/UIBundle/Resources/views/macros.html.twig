@@ -149,17 +149,15 @@
             {% if parameters.dataRedirect is defined %}
                 data-redirect="{{ parameters.dataRedirect  }}"
             {% endif %}
-
             {% if parameters.data is defined %}
-                {% for actionName,actionValue in parameters.data %}
-                data-{{ actionName }}="{{ actionValue  }}"
+                {% for dataItemName,dataItemValue in parameters.data %}
+                data-{{ dataItemName }}="{{ dataItemValue|raw }}"
                 {% endfor %}
             {% endif %}
             {% if (parameters.title is defined) %}
                 title="{{ parameters.title|trans }}"
             {% endif %}
-           >
-           <i class="icon-trash hide-text">{{ parameters.label|trans }}</i>{{ parameters.label|trans }}
+           ><i class="icon-trash hide-text">{{ parameters.label|trans }}</i>{{ parameters.label|trans -}}
         </a>
     </div>
 {% endmacro %}
