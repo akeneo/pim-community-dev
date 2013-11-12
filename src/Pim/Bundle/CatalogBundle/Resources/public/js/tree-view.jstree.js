@@ -15,6 +15,10 @@ define(
                 includeChildren    = $el.attr('data-include-sub') || false,
                 selectedNodeOrTree = selectedNode in [0, -1] ? selectedTree : selectedNode;
 
+            var getTreeUrl = function() {
+                return Routing.generate('pim_catalog_categorytree_listtree', { '_format': 'json', 'dataLocale': dataLocale, 'select_node_id': selectedNodeOrTree, 'include_sub': +includeChildren });
+            }
+
             this.config = {
                 'core': {
                     'animation': 200
@@ -33,12 +37,14 @@ define(
                     label:    __('jstree.include_sub'),
                     callback: function(state) {
                         includeChildren = state;
+
+                        $el.jstree('instance').data.tree_selector.ajax.url = getTreeUrl();
                         $el.jstree('refresh');
                     }
                 },
-                'tree_selector': {
-                    'ajax': {
-                        'url': Routing.generate('pim_catalog_categorytree_listtree', { '_format': 'json', 'dataLocale': dataLocale, 'select_node_id': selectedNodeOrTree })
+                tree_selector: {
+                    ajax: {
+                        'url': getTreeUrl()
                     },
                     'auto_open_root': true,
                     'node_label_field': 'label',

@@ -2,7 +2,7 @@
 {% for tree in trees %}
     {
         "id": {{ tree.id }},
-        "label": "{{ tree.label|raw }}",
+        "label": "{{ tree.label|raw }} ({{ count_products(tree, include_sub) }})",
         "selected": "{{ tree.id == selectedTreeId ? 'true' : 'false' }}"
     }
     {% if not loop.last %},{% endif %}
