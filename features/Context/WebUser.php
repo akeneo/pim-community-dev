@@ -962,7 +962,10 @@ class WebUser extends RawMinkContext
      */
     public function iPressTheButtonInThePopin($button)
     {
-        $this->getCurrentPage()->find('css', sprintf('.ui-dialog button:contains("%s")', $button))->press();
+        $this
+            ->getCurrentPage()
+            ->find('css', sprintf('.ui-dialog button:contains("%s")', $button))
+            ->press();
         $this->wait();
     }
 
