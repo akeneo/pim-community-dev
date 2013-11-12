@@ -12,7 +12,7 @@ class OroWorkflowExtensionTest extends \PHPUnit_Framework_TestCase
      * @var array
      */
     protected $expectedDefinitions = array(
-        'oro_workflow.pass.parameter',
+        'oro_workflow.configuration_pass.replace_property_path',
         'oro_workflow.condition_factory',
         'oro_workflow.post_action_factory',
         'oro_workflow.configuration.config_provider',
@@ -23,7 +23,7 @@ class OroWorkflowExtensionTest extends \PHPUnit_Framework_TestCase
      * @var array
      */
     protected $expectedParameters = array(
-        'oro_workflow.pass.parameter.class',
+        'oro_workflow.configuration_pass.replace_property_path.class',
         'oro_workflow.condition_factory.class',
         'oro_workflow.post_action_factory.class',
         'oro_workflow.configuration.config_provider.class',

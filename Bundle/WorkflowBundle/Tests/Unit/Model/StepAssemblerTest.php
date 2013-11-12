@@ -2,6 +2,8 @@
 
 namespace Oro\Bundle\WorkflowBundle\Tests\Unit\Model;
 
+use Symfony\Component\PropertyAccess\PropertyPath;
+
 use Oro\Bundle\WorkflowBundle\Model\Step;
 use Oro\Bundle\WorkflowBundle\Model\StepAssembler;
 use Oro\Bundle\WorkflowBundle\Form\Type\WorkflowStepType;
@@ -46,7 +48,26 @@ class StepAssemblerTest extends \PHPUnit_Framework_TestCase
      */
     public function testAssemble($configuration, $attributes, $expectedStep)
     {
+        $configurationPass = $this->getMockBuilder(
+            'Oro\Bundle\WorkflowBundle\Model\ConfigurationPass\ConfigurationPassInterface'
+        )->getMockForAbstractClass();
+
+        $configurationPass->expects($this->any())
+            ->method('passConfiguration')
+            ->with($this->isType('array'))
+            ->will(
+                $this->returnCallback(
+                    function (array $data) {
+                        if (isset($data['path'])) {
+                            $data['path'] = new PropertyPath('data.' . str_replace('$', '', $data['path']));
+                        }
+                        return $data;
+                    }
+                )
+            );
+
         $assembler = new StepAssembler();
+        $assembler->addConfigurationPass($configurationPass);
         $steps = $assembler->assemble($configuration, $attributes);
         $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $steps);
         $this->assertCount(1, $steps);
@@ -115,10 +136,10 @@ class StepAssemblerTest extends \PHPUnit_Framework_TestCase
                         array(
                             array(
                                 'attribute' => 'attribute_one',
-                                'path' => '$attribute_one',
+                                'path' => new PropertyPath('data.attribute_one'),
                                 'label' => 'Attribute One'
                             ),
-                            array('path' => '$attribute_one.foo', 'label' => 'Custom Label')
+                            array('path' => new PropertyPath('data.attribute_one.foo'), 'label' => 'Custom Label')
                         )
                     )
             ),

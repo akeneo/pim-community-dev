@@ -27,10 +27,12 @@ class ConditionAssemblerTest extends \PHPUnit_Framework_TestCase
                 )
             );
 
-        $parametersPass = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\Pass\PassInterface')
-            ->getMockForAbstractClass();
-        $parametersPass->expects($this->any())
-            ->method('pass')
+        $configurationPass = $this->getMockBuilder(
+            'Oro\Bundle\WorkflowBundle\Model\ConfigurationPass\ConfigurationPassInterface'
+        )->getMockForAbstractClass();
+
+        $configurationPass->expects($this->any())
+            ->method('passConfiguration')
             ->will(
                 $this->returnCallback(
                     function ($options) {
@@ -38,7 +40,10 @@ class ConditionAssemblerTest extends \PHPUnit_Framework_TestCase
                     }
                 )
             );
-        $assembler = new ConditionAssembler($factory, $parametersPass);
+
+        $assembler = new ConditionAssembler($factory);
+        $assembler->addConfigurationPass($configurationPass);
+
         $actual = $assembler->assemble($configuration);
         $this->assertEquals($expected, $actual);
     }

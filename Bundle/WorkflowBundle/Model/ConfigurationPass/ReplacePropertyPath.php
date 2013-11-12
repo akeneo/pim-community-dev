@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\WorkflowBundle\Model\Pass;
+namespace Oro\Bundle\WorkflowBundle\Model\ConfigurationPass;
 
 use Symfony\Component\PropertyAccess\PropertyPath;
 
@@ -8,7 +8,7 @@ use Symfony\Component\PropertyAccess\PropertyPath;
  * Passes through configuration array and replaces parameter strings ($parameter.name)
  * with appropriate PropertyPath objects
  */
-class ParameterPass implements PassInterface
+class ReplacePropertyPath implements ConfigurationPassInterface
 {
     /**
      * @var string
@@ -26,13 +26,13 @@ class ParameterPass implements PassInterface
     /**
      * {@inheritDoc}
      */
-    public function pass(array $data)
+    public function passConfiguration(array $data)
     {
         foreach ($data as $key => $value) {
             if (is_array($value)) {
-                $data[$key] = $this->pass($value);
-            } elseif (is_string($value) && $this->isParameter($value)) {
-                $data[$key] = $this->convertParameterToPropertyPath($value);
+                $data[$key] = $this->passConfiguration($value);
+            } elseif ($this->isStringPropertyPath($value)) {
+                $data[$key] = $this->parsePropertyPath($value);
             }
         }
 
@@ -40,21 +40,23 @@ class ParameterPass implements PassInterface
     }
 
     /**
-     * @param string $string
+     * @param string $path
      * @return bool
      */
-    protected function isParameter($string)
+    protected function isStringPropertyPath($path)
     {
-        return strpos($string, '$') === 0;
+        return is_string($path)
+            && preg_match('/^\$\.?[a-zA-Z_\x7f-\xff][\.a-zA-Z0-9_\x7f-\xff\[\]]*$/', $path);
     }
 
     /**
-     * @param string $string
+     * @param string $value
      * @return PropertyPath
+     * @throws \InvalidArgumentException
      */
-    protected function convertParameterToPropertyPath($string)
+    protected function parsePropertyPath($value)
     {
-        $property = substr($string, 1);
+        $property = substr($value, 1);
 
         if (0 === strpos($property, '.')) {
             $property = substr($property, 1);

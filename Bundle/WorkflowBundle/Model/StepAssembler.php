@@ -120,7 +120,9 @@ class StepAssembler extends AbstractAssembler
             if (isset($viewAttribute['attribute'])) {
                 $attributeName = $viewAttribute['attribute'];
                 $this->assertAttributeExists($attributeName, $stepName);
-                $viewAttribute['path'] = '$' . $viewAttribute['attribute'];
+                if (!isset($viewAttribute['path'])) {
+                    $viewAttribute['path'] = '$' . $viewAttribute['attribute'];
+                }
                 if (!isset($viewAttribute['label'])) {
                     $viewAttribute['label'] = $this->attributes[$viewAttribute['attribute']]->getLabel();
                 }
@@ -141,7 +143,7 @@ class StepAssembler extends AbstractAssembler
                     )
                 );
             }
-            $result[] = $viewAttribute;
+            $result[] = $this->passConfiguration($viewAttribute);
         }
         return $result;
     }
