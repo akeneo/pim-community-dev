@@ -24,22 +24,16 @@ class ValidNumberRangeValidator extends ConstraintValidator
         $min = $entity->getNumberMin();
         $max = $entity->getNumberMax();
 
-        if ($min) {
-            if (!$this->isNumberValid($entity, $min)) {
-                $this->context->addViolationAt('numberMin', $constraint->invalidNumberMessage);
-            }
+        if ($min && !$this->isNumberValid($entity, $min)) {
+            $this->context->addViolationAt('numberMin', $constraint->invalidNumberMessage);
         }
 
-        if ($max) {
-            if (!$this->isNumberValid($entity, $max)) {
-                $this->context->addViolationAt('numberMax', $constraint->invalidNumberMessage);
-            }
+        if ($max && !$this->isNumberValid($entity, $max)) {
+            $this->context->addViolationAt('numberMax', $constraint->invalidNumberMessage);
         }
 
-        if ($min && $max) {
-            if ($min >= $max) {
-                $this->context->addViolationAt('numberMax', $constraint->message);
-            }
+        if ($min && $max && $min >= $max) {
+            $this->context->addViolationAt('numberMax', $constraint->message);
         }
     }
 

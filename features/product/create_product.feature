@@ -17,8 +17,8 @@ Feature: Product creation
     Given I create a new product
     Then I should see the SKU, Reference and Family fields
     And I fill in the following information in the popin:
-      | SKU       | barbecue  |
-      | Reference | BBQ       |
+      | SKU       | barbecue |
+      | Reference | BBQ      |
     And I press the "Save" button
     Then I edit the "barbecue" product
     Then I should see "Family: N/A"

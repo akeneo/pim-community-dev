@@ -32,9 +32,10 @@ class LoadCategoryData extends AbstractInstallerFixture
 
     /**
      * Create a category
-     * @param string $code Category code
+     * @param string $code
+     * @param array  $data
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Category
+     * @return Category
      */
     protected function createCategory($code, array $data)
     {

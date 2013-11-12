@@ -14,6 +14,9 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class ProductValueTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         $this->value = new ProductValue();
@@ -117,6 +120,9 @@ class ProductValueTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->value->isRemovable());
     }
 
+    /**
+     * Test related method
+     */
     public function testGetSetMedia()
     {
         $media = $this->getMediaMock();

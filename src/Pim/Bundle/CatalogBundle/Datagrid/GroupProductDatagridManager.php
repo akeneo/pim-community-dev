@@ -102,7 +102,8 @@ class GroupProductDatagridManager extends FlexibleDatagridManager
                 'sortable'        => true,
                 'filter_type'     => FilterInterface::TYPE_BOOLEAN,
                 'filterable'      => true,
-                'filter_by_where' => true
+                'filter_by_where' => true,
+                'show_filter'     => true
             )
         );
 

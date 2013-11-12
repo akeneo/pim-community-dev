@@ -64,9 +64,15 @@ class PricesTransformerTest extends \PHPUnit_Framework_TestCase
         $this->transformer->transform(' 15 USD, 30 CHF');
     }
 
+    /**
+     * @param float  $data
+     * @param string $currency
+     *
+     * @return ProductPrice
+     */
     protected function getPrice($data, $currency)
     {
-        $price = new ProductPrice;
+        $price = new ProductPrice();
 
         return $price->setData($data)->setCurrency($currency);
     }

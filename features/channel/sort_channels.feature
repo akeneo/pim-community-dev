@@ -14,8 +14,8 @@ Feature: Sort channels
     And the following channels:
       | code      | label     | locales      | category  |
       | ecommerce | Ecommerce |              | default   |
-      | mobile    | Mobile    |              | default   |
-      | FOO       | foo       | fr_FR, en_US | master    |
+      | mobile    | Mobile    |              | default   |
+      | FOO       | foo       | fr_FR, en_US | master    |
       | BAR       | bar       | de_DE        | ecommerce |
       | BAZ       | baz       | fr_FR        | mobile    |
       | QUX       | qux       | en_US        | ipad      |
