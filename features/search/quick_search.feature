@@ -18,4 +18,4 @@ Feature: Search in Akeneo PIM
     When I fill in the following information:
       | search | e |
     And I press the "Search" button
-    Then the grid should contain 53 elements
+    Then I should see the column Item
