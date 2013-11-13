@@ -3,9 +3,8 @@ attributes:
         labels:
             en_US: SKU
             fr_FR: SKU
-        type:        pim_catalog_identifier
-        description: the product sku
-        group:       general
+        type:  pim_catalog_identifier
+        group: general
         parameters:
             required:            true
             unique:              true
@@ -16,9 +15,8 @@ attributes:
         labels:
             en_US: Name
             fr_FR: Nom
-        type:        pim_catalog_text
-        description: the product name
-        group:       general
+        type:  pim_catalog_text
+        group: general
         parameters:
             translatable:        true
             useableAsGridColumn: true
@@ -28,9 +26,8 @@ attributes:
         labels:
             en_US: Price
             fr_FR: Prix
-        type:        pim_catalog_price_collection
-        description: the product price
-        group:       marketing
+        type:  pim_catalog_price_collection
+        group: marketing
         parameters:
             useableAsGridColumn: true
             useableAsGridFilter: true
@@ -42,9 +39,8 @@ attributes:
         labels:
             en_US: Short Description
             fr_FR: Description courte
-        type:        pim_catalog_textarea
-        description: the product short description
-        group:       general
+        type:  pim_catalog_textarea
+        group: general
         parameters:
             translatable:        true
             scopable:            true
@@ -56,9 +52,8 @@ attributes:
         labels:
             en_US: Long Description
             fr_FR: Description longue
-        type:        pim_catalog_textarea
-        description: the product long description
-        group:       general
+        type:  pim_catalog_textarea
+        group: general
         parameters:
             translatable:        true
             scopable:            true
@@ -70,9 +65,8 @@ attributes:
         labels:
             en_US: Release date
             fr_FR: Date de sortie
-        type:        pim_catalog_date
-        description: the product date
-        group:       general
+        type:  pim_catalog_date
+        group: general
         parameters:
             useableAsGridColumn: true
             useableAsGridFilter: true
@@ -83,9 +77,8 @@ attributes:
         labels:
             en_US: File upload
             fr_FR: Fichier téléchargé
-        type:        pim_catalog_file
-        description: File upload
-        group:       seo
+        type:  pim_catalog_file
+        group: seo
         parameters:
             maxFileSize: 2
             sortOrder:   1
@@ -93,18 +86,16 @@ attributes:
         labels:
             en_US: Image upload
             fr_FR: Image téléchargée
-        type:        pim_catalog_image
-        description: File upload
-        group:       seo
+        type:  pim_catalog_image
+        group: seo
         parameters:
             sortOrder: 2
     size:
         labels:
             en_US: Size
             fr_FR: Taille
-        type:        pim_catalog_simpleselect
-        description: Size
-        group:       sizes
+        type:  pim_catalog_simpleselect
+        group: sizes
         parameters:
             useableAsGridColumn: true
             useableAsGridFilter: true
@@ -135,9 +126,8 @@ attributes:
         labels:
             en_US: Color
             fr_FR: Couleur
-        type:        pim_catalog_multiselect
-        description: Couleur
-        group:       colors
+        type:  pim_catalog_multiselect
+        group: colors
         parameters:
             useableAsGridColumn: true
             useableAsGridFilter: true
@@ -167,9 +157,8 @@ attributes:
         labels:
             en_US: Manufacturer
             fr_FR: Fabriquant
-        type:        pim_catalog_simpleselect
-        description: Manufacturer
-        group:       general
+        type:  pim_catalog_simpleselect
+        group: general
         parameters:
             useableAsGridColumn: true
             useableAsGridFilter: true
@@ -187,9 +176,8 @@ attributes:
         labels:
             en_US: Unique color
             fr_FR: Couleur unique
-        type:        pim_catalog_simpleselect
-        description: Couleur unique
-        group:       colors
+        type:  pim_catalog_simpleselect
+        group: colors
         parameters:
             useableAsGridColumn: true
             useableAsGridFilter: true
