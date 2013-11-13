@@ -198,7 +198,8 @@ flash:
         created: Group type successfully created
         updated: Group type successfully updated
         removed: Group type successfully removed
-        variant removed: Group type variant can't be removed
+        cant remove variant: Group type variant can't be removed
+        cant remove used: Group type is used by some groups and can't be removed
 
     association:
         created: Association successfully created

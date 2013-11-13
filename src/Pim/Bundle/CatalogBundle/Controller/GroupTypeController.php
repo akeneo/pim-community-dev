@@ -21,6 +21,7 @@ use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\GridBundle\Helper\DatagridHelperInterface;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\CatalogBundle\Form\Handler\GroupTypeHandler;
+use Pim\Bundle\CatalogBundle\Exception\DeleteException;
 
 /**
  * Group type controller
@@ -175,8 +176,9 @@ class GroupTypeController extends AbstractDoctrineController
     public function removeAction(GroupType $groupType)
     {
         if ($groupType->isVariant()) {
-            $this->addFlash('error', 'flash.group type.variant removed');
-
+            throw new DeleteException($this->getTranslator()->trans('flash.group type.cant remove variant'));
+        } elseif (count($groupType->getGroups()) > 0) {
+            throw new DeleteException($this->getTranslator()->trans('flash.group type.cant remove used'));
         } else {
             $this->getManager()->remove($groupType);
             $this->getManager()->flush();

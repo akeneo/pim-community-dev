@@ -56,6 +56,16 @@ class GroupType implements TranslatableInterface
     protected $variant;
 
     /**
+     * @var ArrayCollection $options
+     *
+     * @ORM\OneToMany(
+     *     targetEntity="Pim\Bundle\CatalogBundle\Entity\Group",
+     *     mappedBy="type"
+     * )
+     */
+    protected $groups;
+
+    /**
      * Used locale to override Translation listener's locale
      * this is not a mapped field of entity metadata, just a simple property
      *
@@ -81,6 +91,7 @@ class GroupType implements TranslatableInterface
     public function __construct()
     {
         $this->translations = new ArrayCollection();
+        $this->groups = new ArrayCollection();
         $this->variant = false;
     }
 
@@ -140,6 +151,16 @@ class GroupType implements TranslatableInterface
         $this->variant = $variant;
 
         return $this;
+    }
+
+    /**
+     * Get groups
+     *
+     * @return ArrayCollection
+     */
+    public function getGroups()
+    {
+        return $this->groups;
     }
 
     /**
