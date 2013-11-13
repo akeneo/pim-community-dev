@@ -56,7 +56,10 @@ class LoadAttributeData extends AbstractInstallerFixture
     {
         $attribute = $this->getProductManager()->createAttribute($data['type']);
         $attribute->setCode($code);
-        $attribute->setGroup($this->getReference('attribute-group.'.$data['group']));
+
+        if (isset($data['group'])) {
+            $attribute->setGroup($this->getReference('attribute-group.'.$data['group']));
+        }
 
         foreach ($data['labels'] as $locale => $label) {
             $translation = $this->createTranslation($attribute, $locale, $label);
