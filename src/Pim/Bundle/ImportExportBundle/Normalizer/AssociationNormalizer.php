@@ -31,9 +31,8 @@ class AssociationNormalizer implements NormalizerInterface
     public function normalize($association, $format = null, array $context = array())
     {
         return array(
-            'code'  => $association->getCode(),
-            'label' => $this->normalizeLabel($association)
-        );
+            'code'  => $association->getCode()
+        ) + $this->getNormalizedLabelsArray($association);
     }
 
     /**
@@ -50,13 +49,13 @@ class AssociationNormalizer implements NormalizerInterface
     }
 
     /**
-     * Normalize the label
+     * Returns an array containing the label values
      *
      * @param Association $association
      *
      * @return array
      */
-    protected function normalizeLabel(Association $association)
+    protected function getNormalizedLabelsArray(Association $association)
     {
         $labels = array();
         foreach ($association->getTranslations() as $translation) {
