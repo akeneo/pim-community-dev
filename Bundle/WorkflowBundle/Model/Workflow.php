@@ -268,12 +268,10 @@ class Workflow
                         array('%transition%' => $transition->getName())
                     )
                 );
+                return false;
             }
-            return $isStart;
-        }
-
-        // if transition is not allowed for current step
-        if (!$currentStep->isAllowedTransition($transition->getName())) {
+        } elseif (!$currentStep->isAllowedTransition($transition->getName())) {
+            // if transition is not allowed for current step
             $this->errors->add(
                 $this->translator->trans(
                     'oro.workflow.message.%transition%_not_allowed_at_%step%',

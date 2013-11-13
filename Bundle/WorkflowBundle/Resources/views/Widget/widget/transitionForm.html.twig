@@ -1,4 +1,4 @@
-<div class="container-fluid form-container widget-content">
+<div class="widget-content">
     {% if saved %}
         <script type="text/javascript">
             require(['oro/widget-manager'],
@@ -28,9 +28,11 @@
           data-disable-autofocus="true"
           id="{{ form.vars.name }}"
           action="{{ app.request.uri }}"
-          class="form-horizontal"
+          class="form-dialog"
     >
+        <fieldset class="form-horizontal">
         {{ form_rest(form) }}
+        </fieldset>
 
         <div class="widget-actions">
             <button type="reset" class="btn">{{ 'Cancel'|trans }}</button>
