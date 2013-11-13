@@ -33,7 +33,7 @@ connector:
             type:  export
             steps:
                 export:
-                    title:     pim_import_export.jobs.association_export.export_title
+                    title:     pim_import_export.jobs.association_export.export.title
                     reader:    pim_import_export.reader.association
                     processor: pim_import_export.processor.homogeneous_csv_serializer
                     writer:    pim_import_export.writer.file
