@@ -2,9 +2,12 @@
 
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Processor;
 
+use Doctrine\ORM\EntityManager;
+
+use Symfony\Component\Validator\ValidatorInterface;
+
 use Pim\Bundle\CatalogBundle\Entity\Association;
 use Pim\Bundle\CatalogBundle\Entity\AssociationTranslation;
-
 use Pim\Bundle\ImportExportBundle\Processor\ValidAssociationCreationProcessor;
 
 /**
@@ -14,30 +17,25 @@ use Pim\Bundle\ImportExportBundle\Processor\ValidAssociationCreationProcessor;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ValidAssociationCreationProcessorTest extends \PHPUnit_Framework_TestCase
+class ValidAssociationCreationProcessorTest extends AbstractValidCreationProcessorTestCase
 {
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function createProcessor(EntityManager $em, ValidatorInterface $validator)
     {
-        $this->em        = $this->mock('Doctrine\ORM\EntityManager');
-        $this->validator = $this->getMock('Symfony\Component\Validator\ValidatorInterface');
-
-        $this->processor = new ValidAssociationCreationProcessor(
+        return new ValidAssociationCreationProcessor(
             $this->em,
             $this->validator
         );
-        $this->stepExecution = $this->getStepExecutionMock();
-        $this->processor->setStepExecution($this->stepExecution);
     }
 
     /**
      * Test related method
      */
-    public function testGetConfigurationFields()
+    protected function getExpectedConfigurationFields()
     {
-        $this->assertEquals(array(), $this->processor->getConfigurationFields());
+        return array();
     }
 
     /**
@@ -153,24 +151,6 @@ class ValidAssociationCreationProcessorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param string $class
-     *
-     * @return mixed
-     */
-    protected function mock($class)
-    {
-        return $this->getMockBuilder($class)->disableOriginalConstructor()->getMock();
-    }
-
-    /**
-     * @return EntityRepository
-     */
-    protected function getRepositoryMock()
-    {
-        return $this->mock('Doctrine\ORM\EntityRepository');
-    }
-
-    /**
      * Create an array representing a single CSV row
      *
      * @param string $code
@@ -207,38 +187,5 @@ class ValidAssociationCreationProcessorTest extends \PHPUnit_Framework_TestCase
         $association->addTranslation($french);
 
         return $association;
-    }
-
-    /**
-     * @param array $violations
-     *
-     * @return \Symfony\Component\Validator\ConstraintViolationList
-     */
-    protected function getConstraintViolationListMock(array $violations = array())
-    {
-        $list = $this->getMock('Symfony\Component\Validator\ConstraintViolationList');
-
-        $list
-            ->expects($this->any())
-            ->method('count')
-            ->will($this->returnValue(count($violations)));
-
-        $list
-            ->expects($this->any())
-            ->method('getIterator')
-            ->will($this->returnValue(new \ArrayIterator($violations)));
-
-        return $list;
-    }
-
-    /**
-     * @return \Oro\Bundle\BatchBundle\Entity\StepExecution
-     */
-    protected function getStepExecutionMock()
-    {
-        return $this
-            ->getMockBuilder('Oro\Bundle\BatchBundle\Entity\StepExecution')
-            ->disableOriginalConstructor()
-            ->getMock();
     }
 }
