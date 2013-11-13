@@ -13,6 +13,9 @@ use Doctrine\ORM\EntityManager;
  */
 class AttributeReader extends ORMCursorReader
 {
+    /**
+     * @var EntityManager
+     */
     protected $em;
 
     /**
