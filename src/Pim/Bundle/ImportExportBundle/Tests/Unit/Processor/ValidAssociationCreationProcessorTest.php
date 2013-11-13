@@ -88,6 +88,9 @@ class ValidAssociationCreationProcessorTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * Test the process method returning validation errors
+     */
     public function testInvalidProcess()
     {
         $repository = $this->getRepositoryMock();
@@ -133,6 +136,9 @@ class ValidAssociationCreationProcessorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($data['result'], $this->processor->process($data['csv']));
     }
 
+    /**
+     * @return array
+     */
     protected function getInvalidAssociationData()
     {
         return array(
