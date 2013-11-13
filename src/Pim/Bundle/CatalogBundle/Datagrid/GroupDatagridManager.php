@@ -128,7 +128,7 @@ class GroupDatagridManager extends DatagridManager
                 'show_filter'     => true,
                 'multiple'        => false,
                 'class'           => 'PimCatalogBundle:GroupType',
-                'property'        => 'code',
+                'property'        => 'label',
                 'filter_by_where' => true,
             )
         );
@@ -178,18 +178,18 @@ class GroupDatagridManager extends DatagridManager
             ->select('g')
             ->from('PimCatalogBundle:Group', 'g');
 
-        $rootAlias = $proxyQuery->getRootAlias();
-        $labelExpr = sprintf(
-            "(CASE WHEN translation.label IS NULL THEN %s.code ELSE translation.label END)",
-            $rootAlias
-        );
+        $groupLabelExpr = "(CASE WHEN translation.label IS NULL THEN g.code ELSE translation.label END)";
+        $typeLabelExpr = "(CASE WHEN typTrans.label IS NULL THEN typ.code ELSE typTrans.label END)";
 
         $proxyQuery
-            ->addSelect(sprintf("%s AS groupLabel", $labelExpr), true)
+            ->addSelect(sprintf("%s AS groupLabel", $groupLabelExpr), true)
+            ->addSelect(sprintf("%s AS typeLabel", $typeLabelExpr), true)
             ->addSelect('translation.label', true);
 
         $proxyQuery
-            ->leftJoin($rootAlias .'.translations', 'translation', 'WITH', 'translation.locale = :localeCode');
+            ->leftJoin('g.translations', 'translation', 'WITH', 'translation.locale = :localeCode')
+            ->leftJoin('g.type', 'typ')
+            ->leftJoin('typ.translations', 'typTrans', 'WITH', 'typTrans.locale = :localeCode');
 
         $this->applyJoinOnGroupType($proxyQuery);
 
