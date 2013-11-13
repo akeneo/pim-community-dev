@@ -62,6 +62,6 @@ class AssociationNormalizer implements NormalizerInterface
             $labels[$translation->getLocale()] = $translation->getLabel();
         }
 
-        return $labels;
+        return array('label' => $labels);
     }
 }
