@@ -199,4 +199,14 @@ class TransitionTest extends \PHPUnit_Framework_TestCase
         $obj->setFrontendOptions($frontendOptions);
         $this->assertEquals($frontendOptions, $obj->getFrontendOptions());
     }
+
+    public function testHasForm()
+    {
+        $obj = new Transition();
+
+        $this->assertFalse($obj->hasForm()); // by default transition has form
+
+        $obj->setFormOptions(array('key' => 'value'));
+        $this->assertTrue($obj->hasForm());
+    }
 }

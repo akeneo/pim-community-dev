@@ -267,6 +267,14 @@ class Transition
     }
 
     /**
+     * @return bool
+     */
+    public function hasForm()
+    {
+        return !empty($this->formOptions);
+    }
+
+    /**
      * @param string $formType
      * @return Transition
      */
