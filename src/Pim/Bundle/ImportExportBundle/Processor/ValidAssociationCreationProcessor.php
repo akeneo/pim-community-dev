@@ -73,6 +73,14 @@ class ValidAssociationCreationProcessor extends AbstractConfigurableStepElement 
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getConfigurationFields()
+    {
+        return array();
+    }
+
+    /**
      * Receives an array of associations and processes them
      *
      * @param mixed $data Data to be processed
@@ -86,24 +94,6 @@ class ValidAssociationCreationProcessor extends AbstractConfigurableStepElement 
 
         foreach ($this->data as $item) {
             $this->processItem($item);
-        }
-
-        foreach ($this->associations as $association) {
-            $parent = $this->data->filter(
-                function ($item) use ($association) {
-                    return $item['code'] === $association->getCode();
-                }
-            )->first();
-            $parentCode = $parent['parent'];
-            if ($parentCode) {
-                $this->addParent($association, $parentCode);
-            } else {
-                $association->setParent(null);
-            }
-        }
-
-        if ($this->circularRefsChecked === true) {
-            $this->checkCircularReferences();
         }
 
         return $this->associations->toArray();
@@ -136,7 +126,7 @@ class ValidAssociationCreationProcessor extends AbstractConfigurableStepElement 
 
             return;
         } else {
-            $this->$associations[] = $association;
+            $this->associations[] = $association;
         }
     }
 
