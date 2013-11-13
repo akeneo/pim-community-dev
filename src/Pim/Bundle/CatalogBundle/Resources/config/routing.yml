@@ -57,4 +57,4 @@ media:
 
 grouptype:
     resource: '@PimCatalogBundle/Resources/config/routing/grouptype.yml'
-    prefix: /enrich/group-type
+    prefix: /configuration/group-type

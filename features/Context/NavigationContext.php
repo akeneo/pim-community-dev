@@ -56,6 +56,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
         'locales'                  => 'Locale index',
         'products'                 => 'Product index',
         'product groups'           => 'ProductGroup index',
+        'group types'              => 'GroupType index',
         'users'                    => 'User index',
         'user roles'               => 'UserRole index',
         'user groups'              => 'UserGroup index',
