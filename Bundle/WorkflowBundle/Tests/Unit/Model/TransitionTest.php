@@ -40,7 +40,42 @@ class TransitionTest extends \PHPUnit_Framework_TestCase
                 'postAction',
                 $this->getMock('Oro\Bundle\WorkflowBundle\Model\Action\ActionInterface')
             ),
+            'initAction' => array(
+                'initAction',
+                $this->getMock('Oro\Bundle\WorkflowBundle\Model\Action\ActionInterface')
+            )
         );
+    }
+
+    public function testHidden()
+    {
+        $transition = new Transition();
+        $this->assertFalse($transition->isHidden());
+        $this->assertInstanceOf(
+            'Oro\Bundle\WorkflowBundle\Model\Transition',
+            $transition->setHidden(true)
+        );
+        $this->assertTrue($transition->isHidden());
+        $this->assertInstanceOf(
+            'Oro\Bundle\WorkflowBundle\Model\Transition',
+            $transition->setHidden(false)
+        );
+        $this->assertFalse($transition->isHidden());
+    }
+
+    public function testInitialize()
+    {
+        $workflowItem = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Entity\WorkflowItem')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $obj = new Transition();
+        $action = $this->getMock('Oro\Bundle\WorkflowBundle\Model\Action\ActionInterface');
+        $action->expects($this->once())
+            ->method('execute')
+            ->with($workflowItem);
+        $obj->setInitAction($action);
+        $obj->initialize($workflowItem);
     }
 
     /**
