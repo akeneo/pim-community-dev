@@ -14,6 +14,9 @@ pim_import_export:
     association_export:
       title: Export associations (CSV)
       export.title: Configuration
+    group_export:
+      title: Export groups (CSV)
+      export.title: Configuration
     product_import:
       title: Import produits (CSV)
       import.title: Configuration
@@ -25,6 +28,9 @@ pim_import_export:
       import.title: Configuration
     association_import:
       title: Import associations (CSV)
+      import.title: Configuration
+    groupe_import:
+      title: Import groupes (CSV)
       import.title: Configuration
 oro_batch:
   product_reader:
@@ -38,6 +44,8 @@ oro_batch:
     title: Extraction des attributs
   association_reader:
     title: Extraction des associations
+  group_reader:
+    title: Extraction des groupes
   csv_reader:
     title: Reader CSV
     filePath:
@@ -120,6 +128,10 @@ oro_batch:
     circularRefsChecked:
       label: Check circular references
       help: If yes, data will be processed to make sure that there are no circular references between the categories
+    valid_association_creation_processor:
+      title: Création d'associations
+    valid_group_creation_processor:
+      title: Création de groupes
   heterogeneous_csv_serializer_processor:
     title: Settings
     delimiter:
@@ -175,6 +187,8 @@ oro_batch:
     title: Product storage
   orm_association_writer:
     title: Association storage
+  orm_group_writer:
+    title: Group storage
 Import management: Import management
 Import %job.name% | Edit: Import %job.name% | Edit
 Import %job.name% | Show: Import %job.name% | Show
