@@ -3,7 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\EventListener;
 
 use Doctrine\Common\EventSubscriber;
-use Doctrine\ORM\Events;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Pim\Bundle\CatalogBundle\Factory\AttributeRequirementFactory;
@@ -36,7 +35,7 @@ class CreateAttributeRequirementSubscriber implements EventSubscriber
      */
     public function getSubscribedEvents()
     {
-        return array(Events::prePersist);
+        return array('prePersist');
     }
 
     /**
