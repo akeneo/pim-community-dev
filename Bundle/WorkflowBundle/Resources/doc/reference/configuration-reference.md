@@ -352,6 +352,8 @@ Transition definition configuration has next options.
     Configuration of Conditions that must satisfy to allow transition
 * **post_actions**
     Configuration of Post Actions that must be performed after transit to next step will be performed.
+* **init_actions**
+    Configuration of Init Actions that may be performed on workflow item before conditions and post actions.
 
 Example
 -------
@@ -368,6 +370,8 @@ workflows:
                 # Set call_successfull = true
                 post_actions:
                     @assign_value: [$call_successfull, true]
+                init_actions:
+                    @increment_value: [$call_attempt]
             not_answered_definition: # Callee did not answer
                 # Make sure that caller waited at least 60 seconds
                 conditions: # call_timeout not empty and >= 60
@@ -442,10 +446,10 @@ Post actions configuration complements Transition Definition configuration. All 
 performed during transition AFTER conditions will be qualified and current Step of Workflow Item will be changed to
 the corresponding one (step_to option) in the Transition.
 
-Single Post Action configuration consists from alias of Post Action (which is a unique name of Post Action) and options
+Single Post Action configuration consists from alias of Action (which is a unique name of Action) and options
 (if such are required).
 
-Similarly to Conditions alias of Post Action starts from "@" symbol and must refer to registered PostAction. For
+Similarly to Conditions alias of Post Action starts from "@" symbol and must refer to registered Action. For
 example "@create_entity" refers to Post Action which creates entity.
 
 Example
@@ -466,6 +470,32 @@ workflows:
                             comment: $conversation_comment
                             successful: $conversation_successful
                             call: $phone_call
+```
+
+Init Actions
+============
+
+Init actions configuration complements Transition Definition configuration. All configured Init Actions may be
+performed before transition. One of possible init actions usage scenario is to fill workflow item with default values,
+which will be used by transition form if any.
+
+Single Init Action configuration consists from alias of Action (which is a unique name of Post Action) and options
+(if such are required).
+
+Similarly to Conditions alias of Init Action starts from "@" symbol and must refer to registered Action. For
+example "@create_entity" refers to Action which creates entity.
+
+Example
+-------
+
+```
+workflows:
+    phone_call:
+        # ...
+        transition_definitions:
+            # some transition definition
+                init_actions:
+                    - @increment_value: [$call_attempt]
 ```
 
 Example Workflow Configuration
