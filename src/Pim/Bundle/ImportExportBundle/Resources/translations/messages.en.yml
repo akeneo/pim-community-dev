@@ -25,6 +25,9 @@ pim_import_export:
         attribute_import:
             title: Attribute import in CSV
             import.title: Configuration
+        association_import:
+            title: Association import in CSV
+            import.title: Configuration
 
 ## Step elements (readers, processors, writers)
 oro_batch:
@@ -130,6 +133,15 @@ oro_batch:
             label: Check circular references
             help: If yes, data will be processed to make sure that there are no circular references between the categories
 
+    valid_association_creation_processor:
+        title: Association creation
+        labelDelimiter:
+            label: Label delimiter
+            help: One character separating the labels in each locale
+        localeDelimiter:
+            label: Locale delimiter
+            help: One character separating the title from the locale
+
     heterogeneous_csv_serializer_processor:
         title: Settings
         delimiter:
@@ -189,6 +201,9 @@ oro_batch:
 
     orm_product_writer:
         title: Product storage
+
+    orm_association_writer:
+        title: Association storage
 
 # Page titles:
 Import management:        Import management

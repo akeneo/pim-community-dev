@@ -11,6 +11,9 @@ pim_import_export:
     attribute_export:
       title: Export attributs (CSV)
       export.title: Configuration
+    association_export:
+      title: Export associations (CSV)
+      export.title: Configuration
     product_import:
       title: Import produits (CSV)
       import.title: Configuration
@@ -19,6 +22,9 @@ pim_import_export:
       import.title: Configuration
     attribute_import:
       title: Import attributs (CSV)
+      import.title: Configuration
+    association_import:
+      title: Import associations (CSV)
       import.title: Configuration
 oro_batch:
   product_reader:
@@ -30,6 +36,8 @@ oro_batch:
     title: Extraction des catégories
   attribute_reader:
     title: Extraction des attributs
+  association_reader:
+    title: Extraction des associations
   csv_reader:
     title: Reader CSV
     filePath:
@@ -165,6 +173,8 @@ oro_batch:
     title: Category storage
   orm_product_writer:
     title: Product storage
+  orm_association_writer:
+    title: Association storage
 Import management: Import management
 Import %job.name% | Edit: Import %job.name% | Edit
 Import %job.name% | Show: Import %job.name% | Show
