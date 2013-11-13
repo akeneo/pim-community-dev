@@ -73,7 +73,7 @@ services:
             - '@doctrine.orm.entity_manager'
             - '@security.context'
 
-    pim_catalog.manager.variant_group:
-        class: %pim_catalog.manager.variant_group.class%
+    pim_catalog.manager.group:
+        class: %pim_catalog.manager.group.class%
         arguments:
             - '@doctrine.orm.entity_manager'

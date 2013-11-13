@@ -54,3 +54,7 @@ association:
 media:
     resource: '@PimCatalogBundle/Resources/config/routing/media.yml'
     prefix: /media
+
+grouptype:
+    resource: '@PimCatalogBundle/Resources/config/routing/grouptype.yml'
+    prefix: /configuration/group-type

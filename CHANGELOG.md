@@ -7,6 +7,7 @@
 - Add a default tree per user
 - Introduce command "pim:completeness:calculate" size argument to manage number of completenesses to calculate
 - Switching tree to see sub-categories products count and allow filtering on it
+- Group types management
 
 ## Improvements
 - Export media into separated sub directories
