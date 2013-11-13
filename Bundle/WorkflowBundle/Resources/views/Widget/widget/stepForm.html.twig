@@ -102,32 +102,32 @@
         {% endif %}
 
         {% if displayStep.formOptions.attribute_fields is defined and displayStep.formOptions.attribute_fields|length %}
-        {{ JSFV(form) }}
-        <form method="post"
-            data-nohash="true"
-            data-disable-autofocus="true"
-            id="{{ form.vars.name }}"
-            action="{{ path('oro_workflow_widget_step_form', {workflowItemId: workflowItem.id}) }}"
-            class="form-horizontal">
-            <div class="step-form-container row-fluid">
-                {% set fieldsPerCol = 4 %}
-                {% set numberOfColumns = 2 %}
-                {% set formFieldsPerCol = form|length/numberOfColumns %}
-                {% if formFieldsPerCol > fieldsPerCol  %}
-                    {% set fieldsPerCol = formFieldsPerCol %}
-                {% endif %}
-                {% for colNum in 1..numberOfColumns %}
-                    {% set start = (colNum - 1) * fieldsPerCol %}
-                    {{ _self.render_form_col(form|slice(start, fieldsPerCol)) }}
-                {% endfor %}
-            </div>
-
-            {% if saveAllowed %}
-                <div class="widget-actions">
-                    <button type="submit" class="btn btn-success btn-small">{{ 'Save'|trans }}</button>
+            {{ JSFV(form) }}
+            <form method="post"
+                data-nohash="true"
+                data-disable-autofocus="true"
+                id="{{ form.vars.name }}"
+                action="{{ path('oro_workflow_widget_step_form', {workflowItemId: workflowItem.id}) }}"
+                class="form-horizontal">
+                <div class="step-form-container row-fluid">
+                    {% set fieldsPerCol = 4 %}
+                    {% set numberOfColumns = 2 %}
+                    {% set formFieldsPerCol = form|length/numberOfColumns %}
+                    {% if formFieldsPerCol > fieldsPerCol  %}
+                        {% set fieldsPerCol = formFieldsPerCol %}
+                    {% endif %}
+                    {% for colNum in 1..numberOfColumns %}
+                        {% set start = (colNum - 1) * fieldsPerCol %}
+                        {{ _self.render_form_col(form|slice(start, fieldsPerCol)) }}
+                    {% endfor %}-
                 </div>
-            {% endif %}
-        </form>
+
+                {% if saveAllowed %}
+                    <div class="widget-actions">
+                        <button type="submit" class="btn btn-success btn-small">{{ 'Save'|trans }}</button>
+                    </div>
+                {% endif %}
+            </form>
         {% endif %}
     </div>
 

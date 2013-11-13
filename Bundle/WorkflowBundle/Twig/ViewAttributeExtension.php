@@ -18,6 +18,11 @@ class ViewAttributeExtension extends \Twig_Extension
     protected $templateNames = array();
 
     /**
+     * @var \Twig_Template[]
+     */
+    protected $loadedTemplates;
+
+    /**
      * @var string[]
      */
     protected $templatesCache = array();
@@ -106,6 +111,7 @@ class ViewAttributeExtension extends \Twig_Extension
      * @param WorkflowItem $workflowItem
      * @param array $viewAttribute
      * @return string
+     * @throws \InvalidArgumentException
      */
     protected function renderViewAttributeBlock(
         $blockName,
@@ -113,11 +119,15 @@ class ViewAttributeExtension extends \Twig_Extension
         WorkflowItem $workflowItem,
         array $viewAttribute
     ) {
-        if (isset($viewAttribute['path'])) {
-            $viewAttribute['value'] = $this->getValueByPropertyPath($workflowItem, $viewAttribute['path']);
-        } else {
-            $viewAttribute['value'] = null;
+        if (!isset($viewAttribute['path'])) {
+            throw new \InvalidArgumentException('Option "path" is not found in view attribute.');
         }
+
+        if (!isset($viewAttribute['label'])) {
+            throw new \InvalidArgumentException('Option "label" is not found in view attribute.');
+        }
+
+        $viewAttribute['value'] = $this->getValueByPropertyPath($workflowItem, $viewAttribute['path']);
 
         $viewAttribute['workflow_item'] = $workflowItem;
 
@@ -156,9 +166,7 @@ class ViewAttributeExtension extends \Twig_Extension
         }
 
         foreach ($blocksNamesFallback as $blockName) {
-            foreach (array_reverse($this->templateNames) as $templateName) {
-                /** @var \Twig_Template $template */
-                $template = $environment->loadTemplate($templateName);
+            foreach ($this->loadTemplates($environment) as $template) {
                 if ($template->hasBlock($blockName)) {
                     return $this->templatesCache[$cacheKey] = array($blockName, $template);
                 }
@@ -169,9 +177,24 @@ class ViewAttributeExtension extends \Twig_Extension
             sprintf(
                 'Cannot find view attribute block "%s" in templates "%s".',
                 $originalBlockName,
-                implode('", "', array_reverse($this->templateNames))
+                implode('", "', $this->templateNames)
             )
         );
+    }
+
+    /**
+     * @param \Twig_Environment $environment
+     * @return \Twig_Template[]
+     */
+    protected function loadTemplates(\Twig_Environment $environment)
+    {
+        if (null === $this->loadedTemplates) {
+            $this->loadedTemplates = array();
+            foreach (array_reverse($this->templateNames) as $templateName) {
+                $this->loadedTemplates[$templateName] = $environment->loadTemplate($templateName);
+            }
+        }
+        return $this->loadedTemplates;
     }
 
     /**

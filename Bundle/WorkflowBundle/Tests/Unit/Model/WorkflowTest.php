@@ -15,6 +15,11 @@ use Oro\Bundle\WorkflowBundle\Entity\WorkflowTransitionRecord;
  */
 class WorkflowTest extends \PHPUnit_Framework_TestCase
 {
+    protected function setUp()
+    {
+        $this->markTestIncomplete();
+    }
+
     /**
      * @dataProvider propertiesDataProvider
      * @param string $property
