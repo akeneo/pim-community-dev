@@ -108,7 +108,6 @@ class ValidAssociationCreationProcessor extends AbstractConfigurableStepElement 
     {
         $association = $this->getAssociation($item);
 
-        $association->setCode($item['code']);
         foreach ($item as $key => $value) {
             if (preg_match('/^label-(.+)/', $key, $matches)) {
                 $association->setLocale($matches[1]);
@@ -140,8 +139,10 @@ class ValidAssociationCreationProcessor extends AbstractConfigurableStepElement 
     private function getAssociation(array $item)
     {
         $association = $this->findAssociation($item['code']);
+
         if (!$association) {
             $association = new Association();
+            $association->setCode($item['code']);
         }
 
         return $association;
