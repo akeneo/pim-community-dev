@@ -3,6 +3,7 @@ parameters:
     pim_import_export.reader.category.class:                        Pim\Bundle\ImportExportBundle\Reader\CategoryReader
     pim_import_export.reader.attribute.class:                       Pim\Bundle\ImportExportBundle\Reader\AttributeReader
     pim_import_export.reader.association.class:                     Pim\Bundle\ImportExportBundle\Reader\AssociationReader
+    pim_import_export.reader.group.class:                           Pim\Bundle\ImportExportBundle\Reader\GroupReader
     pim_import_export.reader.csv.class:                             Pim\Bundle\ImportExportBundle\Reader\CsvReader
     pim_import_export.reader.product_csv.class:                     Pim\Bundle\ImportExportBundle\Reader\ProductCsvReader
     pim_import_export.reader.csv_file.class:                        Pim\Bundle\ImportExportBundle\Reader\CsvFileReader
@@ -13,10 +14,12 @@ parameters:
     pim_import_export.processor.valid_category_creation.class:      Pim\Bundle\ImportExportBundle\Processor\ValidCategoryCreationProcessor
     pim_import_export.processor.product_csv_serializer.class:       Pim\Bundle\ImportExportBundle\Processor\ProductCsvSerializerProcessor
     pim_import_export.processor.valid_association_creation.class:   Pim\Bundle\ImportExportBundle\Processor\ValidAssociationCreationProcessor
+    pim_import_export.processor.valid_group_creation.class:         Pim\Bundle\ImportExportBundle\Processor\ValidGroupCreationProcessor
 
     pim_import_export.writer.orm_product.class:                     Pim\Bundle\ImportExportBundle\Writer\OrmProductWriter
     pim_import_export.writer.orm_category.class:                    Pim\Bundle\ImportExportBundle\Writer\OrmCategoryWriter
     pim_import_export.writer.orm_association.class:                 Pim\Bundle\ImportExportBundle\Writer\OrmAssociationWriter
+    pim_import_export.writer.orm_group.class:                       Pim\Bundle\ImportExportBundle\Writer\OrmGroupWriter
 
     pim_import_export.writer.file.class:                            Pim\Bundle\ImportExportBundle\Writer\FileWriter
     pim_import_export.writer.product_file.class:                    Pim\Bundle\ImportExportBundle\Writer\ProductFileWriter
@@ -46,6 +49,11 @@ services:
 
     pim_import_export.reader.association:
         class: %pim_import_export.reader.association.class%
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+
+    pim_import_export.reader.group:
+        class: %pim_import_export.reader.group.class%
         arguments:
             - '@doctrine.orm.default_entity_manager'
 
@@ -98,6 +106,12 @@ services:
             - '@doctrine.orm.default_entity_manager'
             - '@validator'
 
+    pim_import_export.processor.valid_group_creation:
+        class: %pim_import_export.processor.valid_group_creation.class%
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - '@validator'
+
     # writers
     pim_import_export.writer.file:
         class: %pim_import_export.writer.file.class%
@@ -126,5 +140,10 @@ services:
 
     pim_import_export.writer.orm_association:
         class: %pim_import_export.writer.orm_association.class%
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+
+    pim_import_export.writer.orm_group:
+        class: %pim_import_export.writer.orm_group.class%
         arguments:
             - '@doctrine.orm.default_entity_manager'
