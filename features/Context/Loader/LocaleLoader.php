@@ -15,27 +15,12 @@ use Pim\Bundle\InstallerBundle\DataFixtures\ORM\LoadLocaleData;
 class LocaleLoader extends LoadLocaleData
 {
     /**
-     * @var string Path of the fixtures file
-     */
-    protected $filePath;
-
-    /**
      * @param string $filePath
      *
      * @return LocaleLoader
      */
     public function setFilePath($filePath)
     {
-        $this->filePath = $filePath;
-
         return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getFilePath()
-    {
-        return $this->filePath;
     }
 }
