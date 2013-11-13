@@ -13,8 +13,8 @@ Feature: Display available field options
       | Identifier    | Max characters, Validation rule, Searchable                                                                                  |
       | Yes/No        | Default value                                                                                                                |
       | Date          | Default value, Date type, Min date, Max date, Searchable                                                                     |
-      | File          | Max file size, Allowed extensions                                                                                            |
-      | Image         | Max file size, Allowed extensions                                                                                            |
+      | File          | Max file size (MB), Allowed extensions                                                                                       |
+      | Image         | Max file size (MB), Allowed extensions                                                                                       |
       | Metric        | Default value, Min number, Max number, Allow decimals, Allow negative values, Metric family, Default metric unit, Searchable |
       | Price         | Min number, Max number, Allow decimals, Searchable                                                                           |
       | Number        | Default value, Min number, Max number, Allow decimals, Allow negative values, Searchable                                     |
