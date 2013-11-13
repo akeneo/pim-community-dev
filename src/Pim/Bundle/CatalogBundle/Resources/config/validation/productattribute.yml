@@ -115,7 +115,7 @@ Pim\Bundle\CatalogBundle\Entity\ProductAttribute:
             - GreaterThanOrEqual:
                 value: 0
             - Type:
-                type: integer
+                type: numeric
                 groups: [pim_catalog_file, pim_catalog_image]
         defaultValue:
             - Blank:
