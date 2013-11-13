@@ -17,17 +17,18 @@ use Oro\Bundle\SecurityBundle\ORM\Walker\Condition\SubRequestAclConditionStorage
 use Oro\Bundle\SecurityBundle\ORM\Walker\Condition\AclCondition;
 use Oro\Bundle\SecurityBundle\ORM\Walker\Condition\JoinAclCondition;
 use Oro\Bundle\SecurityBundle\ORM\Walker\Condition\JoinAssociationCondition;
+use Oro\Bundle\SecurityBundle\ORM\Walker\Condition\AccessDeniedCondition;
 
 /**
  * Class ACLHelper
  * This class analyse input query for acl and mark it with ORO_ACL_WALKER if it need to be ACL protected.
  */
-class ACLHelper
+class AclHelper
 {
     const ORO_ACL_WALKER = 'Oro\Bundle\SecurityBundle\ORM\Walker\AclWalker';
 
     /**
-     * @var OwnershipFilterBuilder
+     * @var OwnershipConditionDataBuilder
      */
     protected $builder;
 
@@ -39,7 +40,7 @@ class ACLHelper
     /**
      * @param $builder
      */
-    function __construct(OwnershipFilterBuilder $builder)
+    function __construct(OwnershipConditionDataBuilder $builder)
     {
         $this->builder = $builder;
     }
@@ -57,8 +58,8 @@ class ACLHelper
         if ($query instanceof QueryBuilder) {
             $query = $query->getQuery();
         }
+        /** @var Query $query */
         $this->em = $query->getEntityManager();
-        $aclQuery = $this->cloneQuery($query);
 
         $ast = $query->getAST();
         if ($ast instanceof SelectStatement) {
@@ -68,19 +69,18 @@ class ACLHelper
                 $this->processSubRequests($ast, $conditionStorage, $permission, $query);
             }
 
-
             if (!$conditionStorage->isEmpty()) {
-                $aclQuery->setHint(Query::HINT_CUSTOM_TREE_WALKERS,
+                $query->setHint(Query::HINT_CUSTOM_TREE_WALKERS,
                     array_merge(
-                        $aclQuery->getHints(),
+                        $query->getHints(),
                         array(self::ORO_ACL_WALKER)
                     )
                 );
-                $aclQuery->setHint(AclWalker::ORO_ACL_CONDITION, $conditionStorage);
+                $query->setHint(AclWalker::ORO_ACL_CONDITION, $conditionStorage);
             }
         }
 
-        return $aclQuery;
+        return $query;
     }
 
     /**
@@ -214,6 +214,11 @@ class ACLHelper
                 $targetEntity,
                 $associationMapping['joinColumns']
             );
+        } elseif ($resultData === false) {
+            return new AccessDeniedCondition(
+                $join->joinAssociationDeclaration->aliasIdentificationVariable,
+                $targetEntity
+            );
         }
     }
 
@@ -246,24 +251,12 @@ class ACLHelper
                     $entityAlias, $entityField, $value
                 );
             }
+        } elseif ($resultData === false) {
+            return new AccessDeniedCondition(
+                $entityAlias
+            );
         }
 
         return null;
-    }
-
-    /**
-     * @param Query $query
-     * @return Query
-     */
-    protected function cloneQuery(Query $query)
-    {
-        $aclAppliedQuery = clone $query;
-        $params = $query->getParameters();
-
-        foreach ($params as $param) {
-            $aclAppliedQuery->setParameter($param->getName(), $param->getValue(), $param->getType());
-        }
-
-        return $aclAppliedQuery;
     }
 }

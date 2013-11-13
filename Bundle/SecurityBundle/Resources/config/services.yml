@@ -53,12 +53,14 @@ parameters:
     oro_security.acl.listenerclass:                            Oro\Bundle\SecurityBundle\EventListener\AclListener
 
     oro_security.acl_helper.class:                             Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper
-    oro_security.orm.ownership_sql_walker_builder.class:       Oro\Bundle\SecurityBundle\ORM\Walker\OwnershipFilterBuilder
+    oro_security.orm.ownership_sql_walker_builder.class:       Oro\Bundle\SecurityBundle\ORM\Walker\OwnershipConditionDataBuilder
     oro_security.ownership_tree_provider.class:                Oro\Bundle\SecurityBundle\Owner\OwnerTreeProvider
     oro_security.ownership_tree_provider.cache.class:          Doctrine\Common\Cache\FilesystemCache
     oro_security.ownership_tree.cache.warmer.class:            Oro\Bundle\SecurityBundle\Cache\OwnerTreeCacheWarmer
     oro_security.ownership_tree.cache.clearer.class:           Oro\Bundle\SecurityBundle\Cache\OwnerTreeCacheCleaner
     oro_security.ownership_tree_subscriber.class:              Oro\Bundle\SecurityBundle\EventListener\OwnerTreeListener
+
+    oro_security.event_listener.datgrid.get_datasource.class:  Oro\Bundle\SecurityBundle\EventListener\DataGridListener
 
 services:
     oro_security.security_facade:
@@ -408,3 +410,10 @@ services:
         tags:
             - { name: doctrine.event_listener, event: onFlush }
             - { name: doctrine.event_listener, event: postFlush }
+
+    oro_security.event_listener.datgrid.get_datasource:
+        class: %oro_security.event_listener.datgrid.get_datasource.class%
+        arguments:
+            - @oro_security.acl_helper
+        tags:
+          - { name: kernel.event_listener, event: oro_datagrid.datgrid.get_results.before, method: applyAclToQuery }

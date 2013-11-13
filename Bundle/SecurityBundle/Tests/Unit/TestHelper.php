@@ -121,6 +121,9 @@ class TestHelper
             ->method('getManagers')
             ->will($this->testCase->returnValue(array('default' => $em)));
         $doctrine->expects($this->testCase->any())
+            ->method('getManagerForClass')
+            ->will($this->testCase->returnValue(new \stdClass()));
+        $doctrine->expects($this->testCase->any())
             ->method('getManager')
             ->with($this->testCase->equalTo('default'))
             ->will($this->testCase->returnValue($em));

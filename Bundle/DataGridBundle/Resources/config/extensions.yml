@@ -25,6 +25,8 @@ services:
             - { name: oro_datagrid.extension }
 
     oro_datagrid.extension.pager.orm.pager:
+        arguments:
+            - @event_dispatcher
         class: %oro_datagrid.extension.pager.orm.pager.class%
 
     oro_datagrid.extension.orm_sorter:

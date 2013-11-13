@@ -4,12 +4,15 @@ namespace Oro\Bundle\DataGridBundle\Datasource\Orm;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\QueryConverter\YamlConverter;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
+use Oro\Bundle\DataGridBundle\Event\GetResultsBefore;
+
 
 class OrmDatasource implements DatasourceInterface
 {
@@ -21,9 +24,13 @@ class OrmDatasource implements DatasourceInterface
     /** @var EntityManager */
     protected $em;
 
-    public function __construct(EntityManager $em)
+    /** @var EventDispatcher */
+    protected $eventDispatcher;
+
+    public function __construct(EntityManager $em, EventDispatcher $eventDispatcher)
     {
         $this->em = $em;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -44,7 +51,11 @@ class OrmDatasource implements DatasourceInterface
      */
     public function getResults()
     {
-        $results = $this->qb->getQuery()->execute();
+        $query  = $this->qb->getQuery();
+        $event = new GetResultsBefore($query);
+        $this->eventDispatcher->dispatch(GetResultsBefore::NAME, $event);
+
+        $results = $query->execute();
         $rows    = [];
         foreach ($results as $result) {
             $rows[] = new ResultRecord($result);

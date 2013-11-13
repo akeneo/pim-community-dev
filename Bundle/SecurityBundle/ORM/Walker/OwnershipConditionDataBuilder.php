@@ -17,7 +17,7 @@ use Oro\Bundle\EntityConfigBundle\DependencyInjection\Utils\ServiceLink;
 /**
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
-class OwnershipFilterBuilder
+class OwnershipConditionDataBuilder
 {
     /**
      * @var ServiceLink
@@ -78,7 +78,7 @@ class OwnershipFilterBuilder
      * @param $permissions
      * @return null|array
      */
-    public function getAclConditionData($entityClassName, $permissions)
+    public function getAclConditionData($entityClassName, $permissions = 'VIEW')
     {
         if ($this->aclVoter === null
             || !$this->getUserId()

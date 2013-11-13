@@ -6,6 +6,13 @@
 {% set gridName = 'role-users-grid' %}
 {% set formAction = entityId ? path('oro_user_role_update', { 'id': entityId}) : path('oro_user_role_create') %}
 
+{% block head_script %}
+    {{ parent() }}
+    <script type="text/javascript">
+        require(['oro/security-access-levels'])
+    </script>
+{% endblock %}
+
 {% block navButtons %}
     {% if entityId and resource_granted('oro_user_role_remove') %}
         {{ UI.deleteButton({
