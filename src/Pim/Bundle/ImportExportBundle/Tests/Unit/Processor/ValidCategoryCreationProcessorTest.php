@@ -242,26 +242,6 @@ class ValidCategoryCreationProcessorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param boolean $valid
-     *
-     * @return Form
-     */
-    protected function getFormMock($valid = true)
-    {
-        $form = $this->mock('Symfony\Component\Form\Form');
-
-        $form->expects($this->any())
-            ->method('isValid')
-            ->will($this->returnValue($valid));
-
-        $form->expects($this->any())
-            ->method('getErrors')
-            ->will($this->returnValue(array()));
-
-        return $form;
-    }
-
-    /**
      * @return EntityRepository
      */
     protected function getRepositoryMock()
