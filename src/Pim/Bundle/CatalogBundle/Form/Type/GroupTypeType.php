@@ -6,6 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Doctrine\ORM\EntityRepository;
+use Pim\Bundle\CatalogBundle\Form\Subscriber\DisableCodeFieldSubscriber;
 
 /**
  * Type for group type form
@@ -32,6 +33,7 @@ class GroupTypeType extends AbstractType
                 'property_path'     => 'translations'
             )
         );
+        $builder->addEventSubscriber(new DisableCodeFieldSubscriber());
     }
 
     /**

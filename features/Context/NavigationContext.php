@@ -229,8 +229,21 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     public function iAmOnTheVariantGroupEditPage($identifier)
     {
         $page = 'VariantGroup';
-        $getter = sprintf('get%s', $page);
         $entity = $this->getFixturesContext()->getProductGroup($identifier);
+        $this->openPage(sprintf('%s edit', $page), array('id' => $entity->getId()));
+    }
+
+    /**
+     * @param string $identifier
+     *
+     * @Given /^I am on the "([^"]*)" group type page$/
+     * @Given /^I edit the "([^"]*)" group type$/
+     */
+    public function iAmOnTheGroupTypeEditPage($identifier)
+    {
+        $page = 'GroupType';
+        $getter = sprintf('get%s', $page);
+        $entity = $this->getFixturesContext()->$getter($identifier);
         $this->openPage(sprintf('%s edit', $page), array('id' => $entity->getId()));
     }
 
