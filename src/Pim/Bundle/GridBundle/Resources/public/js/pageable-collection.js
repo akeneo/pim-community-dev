@@ -6,29 +6,32 @@
  * @returns {unresolved}
  */
 define(
-    ["oro/pageable-collection-orig", "oro/app", "underscore"],
+    ['oro/pageable-collection-orig', 'oro/app', 'underscore'],
     function(OroPageableCollection, app, _){
         var parent = OroPageableCollection.prototype,
             TREE_REGEX = /(&?treeId=(\d+))/,
             CATEGORY_REGEX = /(&?categoryId=(\d+))/,
+            INCLUDE_SUB_REGEX = /(&?includeSub=(\d+))/,
             PageableCollection = OroPageableCollection.extend({
                 /**
                  * @inheritdoc
                  */
                 state: _.extend(OroPageableCollection.prototype.state, {
                     categoryId: '',
-                    treeId: ''
+                    treeId: '',
+                    includeSub: 0
                 }),
                 /**
                  * Sets the category for the collection
                  *
                  * @param {int} treeId
                  * @param {int} categoryId
+                 * @param {int} includeSub
                  */
-                setCategory: function(treeId, categoryId) {
+                setCategory: function(treeId, categoryId, includeSub) {
                     treeId = (categoryId === '') ? '' : treeId;
-                    if (treeId !== this.state.treeId || categoryId !== this.state.categoryId) {
-                        this.updateState({ treeId: treeId, categoryId: categoryId });
+                    if (treeId !== this.state.treeId || categoryId !== this.state.categoryId || +includeSub !== this.state.includeSub) {
+                        this.updateState({ treeId: treeId, categoryId: categoryId, includeSub: +includeSub });
                         this.url = this.setCategoryInUrl(this.url);
                         return true;
                     } else {
@@ -36,17 +39,18 @@ define(
                     }
                 },
                 setCategoryInUrl: function(url) {
-                    url = url.replace(CATEGORY_REGEX, '').replace(TREE_REGEX, '');
+                    url = url.replace(CATEGORY_REGEX, '').replace(TREE_REGEX, '').replace(INCLUDE_SUB_REGEX, '');
                     var qs = app.packToQueryString({
                                 categoryId: this.state.categoryId,
-                                treeId: this.state.treeId
+                                treeId: this.state.treeId,
+                                includeSub: this.state.includeSub
                             });
-                    if ("?" === _.last(url)) {
+                    if ('?' === _.last(url)) {
                         url += qs;
-                    } else if (-1 === url.indexOf("?")) {
-                        url += "?" + qs;
+                    } else if (-1 === url.indexOf('?')) {
+                        url += '?' + qs;
                     } else {
-                        url += "&" + qs;
+                        url += '&' + qs;
                     }
                     return url;
                 },
@@ -56,15 +60,18 @@ define(
                 encodeStateData: function(stateObject) {
                     var encodedStateData = parent.encodeStateData.call(this, stateObject);
                     if (stateObject.treeId) {
-                        encodedStateData += "&treeId=" + stateObject.treeId;
+                        encodedStateData += '&treeId=' + stateObject.treeId;
                     }
                     if (stateObject.categoryId) {
-                        encodedStateData += "&categoryId=" + stateObject.categoryId;
+                        encodedStateData += '&categoryId=' + stateObject.categoryId;
+                    }
+                    if (stateObject.includeSub) {
+                        encodedStateData += '&includeSub=' + stateObject.includeSub;
                     }
                     if (stateObject.dataLocale) {
-                        encodedStateData += "&dataLocale=" + stateObject.dataLocale;
+                        encodedStateData += '&dataLocale=' + stateObject.dataLocale;
                     }
-                    if ("&" === encodedStateData[0]) {
+                    if ('&' === encodedStateData[0]) {
                         encodedStateData = encodedStateData.substr(1);
                     }
                     return encodedStateData;
@@ -80,6 +87,9 @@ define(
                     }
                     if (QSData.categoryId) {
                         data.categoryId = QSData.categoryId;
+                    }
+                    if (QSData.includeSub) {
+                        data.includeSub = QSData.includeSub;
                     }
                     if (QSData.dataLocale) {
                         data.dataLocale = QSData.dataLocale;
@@ -99,6 +109,9 @@ define(
                     }
                     if (state.treeId) {
                         queryParams.treeId = state.treeId;
+                    }
+                    if (state.includeSub) {
+                        queryParams.includeSub = state.includeSub;
                     }
                     if (state.dataLocale) {
                         queryParams.dataLocale = state.dataLocale;

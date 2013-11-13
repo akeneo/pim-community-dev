@@ -15,7 +15,7 @@ use Pim\Bundle\CatalogBundle\Entity\Channel;
  *
  * @ORM\Entity
  * @ORM\Table(name="pim_catalog_attribute_requirement")
- * 
+ *
  * @ExclusionPolicy("all")
  */
 class AttributeRequirement
@@ -33,6 +33,7 @@ class AttributeRequirement
      * @var Family $family
      *
      * @ORM\ManyToOne(targetEntity="Pim\Bundle\CatalogBundle\Entity\Family", inversedBy="requirements")
+     * @ORM\JoinColumn(name="family_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
      */
     protected $family;
 
@@ -40,7 +41,7 @@ class AttributeRequirement
      * @var ProductAttribute $attribute
      *
      * @ORM\ManyToOne(targetEntity="Pim\Bundle\CatalogBundle\Entity\ProductAttribute")
-     * @ORM\JoinColumn(name="attribute_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\JoinColumn(name="attribute_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
      */
     protected $attribute;
 
@@ -48,7 +49,7 @@ class AttributeRequirement
      * @var Channel $channel
      *
      * @ORM\ManyToOne(targetEntity="Pim\Bundle\CatalogBundle\Entity\Channel")
-     * @ORM\JoinColumn(name="channel_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\JoinColumn(name="channel_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
      */
     protected $channel;
 

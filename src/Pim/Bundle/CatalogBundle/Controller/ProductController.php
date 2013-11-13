@@ -35,6 +35,7 @@ use Pim\Bundle\CatalogBundle\Model\AvailableProductAttributes;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\ImportExportBundle\Normalizer\FlatProductNormalizer;
 use Pim\Bundle\VersioningBundle\Manager\AuditManager;
+use Pim\Bundle\CatalogBundle\Helper\CompletenessHelper;
 
 /**
  * Product Controller
@@ -76,6 +77,11 @@ class ProductController extends AbstractDoctrineController
     private $securityFacade;
 
     /**
+     * @var CompletenessHelper
+     */
+    private $completenessHelper;
+
+    /**
      * @staticvar int
      */
     const BATCH_SIZE = 250;
@@ -97,6 +103,7 @@ class ProductController extends AbstractDoctrineController
      * @param LocaleManager            $localeManager
      * @param AuditManager             $auditManager
      * @param SecurityFacade           $securityFacade
+     * @param CompletenessHelper       $completenessHelper
      */
     public function __construct(
         Request $request,
@@ -112,7 +119,8 @@ class ProductController extends AbstractDoctrineController
         CategoryManager $categoryManager,
         LocaleManager $localeManager,
         AuditManager $auditManager,
-        SecurityFacade $securityFacade
+        SecurityFacade $securityFacade,
+        CompletenessHelper $completenessHelper
     ) {
         parent::__construct(
             $request,
@@ -131,6 +139,7 @@ class ProductController extends AbstractDoctrineController
         $this->localeManager        = $localeManager;
         $this->auditManager         = $auditManager;
         $this->securityFacade       = $securityFacade;
+        $this->completenessHelper   = $completenessHelper;
 
         $this->productManager->setLocale($this->getDataLocale());
     }
@@ -148,6 +157,7 @@ class ProductController extends AbstractDoctrineController
         $gridManager = $this->datagridHelper->getDatagridManager('product');
         $gridManager->setFilterTreeId($request->get('treeId', 0));
         $gridManager->setFilterCategoryId($request->get('categoryId', 0));
+        $gridManager->setIncludeSub($request->get('includeSub', 0));
         $datagrid = $gridManager->getDatagrid();
 
         switch ($request->getRequestFormat()) {
@@ -291,7 +301,7 @@ class ProductController extends AbstractDoctrineController
      */
     public function editAction(Request $request, $id)
     {
-        $product  = $this->findProductOr404($id);
+        $product = $this->findProductOr404($id);
 
         $this->productManager->ensureAllAssociations($product);
 
@@ -363,6 +373,7 @@ class ProductController extends AbstractDoctrineController
             'associationProductGrid' => $associationProductGridView,
             'associationGroupGrid'   => $associationGroupGridView,
             'locales'                => $this->localeManager->getUserLocales(),
+            'completenessHelper'     => $this->completenessHelper
         );
     }
 

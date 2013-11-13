@@ -6,11 +6,11 @@ Feature: Delete a channel
 
   Background:
     Given the following categories:
-      | code           | label          |
-      | ipad_catalog   | iPad Catalog   |
+      | code         | label        |
+      | ipad_catalog | iPad Catalog |
     And the following channels:
-      | code | label | locales      | category       |
-      | FOO  | foo   | fr_FR, en_US | ipad_catalog   |
+      | code | label | locales      | category     |
+      | FOO  | foo   | fr_FR, en_US | ipad_catalog |
     And I am logged in as "admin"
 
   Scenario: Successfully delete a channel from the grid

@@ -24,41 +24,41 @@ Feature: Filter products
       | image       | no       | no           | yes      |
       | description | no       | yes          | yes      |
     And the following product values:
-      | product | attribute   | locale |scope      | value                    |
-      | postit  | SKU         |        |           | postit                   |
-      | postit  | name        | en_US  |           | Post it                  |
-      | postit  | name        | fr_FR  |           | Etiquette                |
-      | postit  | image       |        | ecommerce | large.jpeg               |
-      | postit  | image       |        | mobile    | small.jpeg               |
-      | postit  | description | en_US  | ecommerce | My ecommerce description |
-      | postit  | description | en_US  | mobile    | My mobile description    |
-      | postit  | description | fr_FR  | ecommerce | Ma description ecommerce |
-      | postit  | description | fr_FR  | mobile    | Ma description mobile    |
-      | book    | SKU         |        |           | book                     |
-      | book    | name        | en_US  |           | Book                     |
-      | book    | name        | fr_FR  |           | Livre                    |
-      | book    | image       |        | ecommerce | book_large.jpeg          |
-      | book    | image       |        | mobile    | book_small.jpeg          |
-      | book    | description | en_US  | ecommerce | My ecommerce book descr  |
-      | book    | description | en_US  | mobile    | My mobile book descr     |
-      | book    | description | fr_FR  | ecommerce | Ma descr livre ecommerce |
-      | book    | description | fr_FR  | mobile    | Ma descr livre mobile    |
-      | book2   | SKU         |        |           | book2                    |
-      | book2   | name        | en_US  |           | Book2                    |
-      | book2   | name        | fr_FR  |           | Livre2                   |
-      | book2   | image       |        | ecommerce | book2_large.jpeg         |
-      | book2   | image       |        | mobile    | book2_small.jpeg         |
-      | book2   | description | en_US  | ecommerce | My ecommerce book2 descr |
-      | book2   | description | en_US  | mobile    | My mobile book2 descr    |
-      | book2   | description | fr_FR  | ecommerce | Ma descr livre2 ecommerce|
-      | book2   | description | fr_FR  | mobile    | Ma descr livre2 mobile   |
-      | ebook   | SKU         |        |           | ebook                    |
-      | ebook   | name        | en_US  |           | eBook                    |
-      | ebook   | name        | fr_FR  |           | Ebook                    |
-      | ebook   | description | en_US  | ecommerce | My ecommerce ebook descr |
-      | ebook   | description | en_US  | mobile    | My mobile ebook descr    |
-      | ebook   | description | fr_FR  | ecommerce | Ma descr ebook ecommerce |
-      | ebook   | description | fr_FR  | mobile    | Ma descr ebook mobile    |
+      | product | attribute   | locale | scope     | value                     |
+      | postit  | SKU         |        |           | postit                    |
+      | postit  | name        | en_US  |           | Post it                   |
+      | postit  | name        | fr_FR  |           | Etiquette                 |
+      | postit  | image       |        | ecommerce | large.jpeg                |
+      | postit  | image       |        | mobile    | small.jpeg                |
+      | postit  | description | en_US  | ecommerce | My ecommerce description  |
+      | postit  | description | en_US  | mobile    | My mobile description     |
+      | postit  | description | fr_FR  | ecommerce | Ma description ecommerce  |
+      | postit  | description | fr_FR  | mobile    | Ma description mobile     |
+      | book    | SKU         |        |           | book                      |
+      | book    | name        | en_US  |           | Book                      |
+      | book    | name        | fr_FR  |           | Livre                     |
+      | book    | image       |        | ecommerce | book_large.jpeg           |
+      | book    | image       |        | mobile    | book_small.jpeg           |
+      | book    | description | en_US  | ecommerce | My ecommerce book descr   |
+      | book    | description | en_US  | mobile    | My mobile book descr      |
+      | book    | description | fr_FR  | ecommerce | Ma descr livre ecommerce  |
+      | book    | description | fr_FR  | mobile    | Ma descr livre mobile     |
+      | book2   | SKU         |        |           | book2                     |
+      | book2   | name        | en_US  |           | Book2                     |
+      | book2   | name        | fr_FR  |           | Livre2                    |
+      | book2   | image       |        | ecommerce | book2_large.jpeg          |
+      | book2   | image       |        | mobile    | book2_small.jpeg          |
+      | book2   | description | en_US  | ecommerce | My ecommerce book2 descr  |
+      | book2   | description | en_US  | mobile    | My mobile book2 descr     |
+      | book2   | description | fr_FR  | ecommerce | Ma descr livre2 ecommerce |
+      | book2   | description | fr_FR  | mobile    | Ma descr livre2 mobile    |
+      | ebook   | SKU         |        |           | ebook                     |
+      | ebook   | name        | en_US  |           | eBook                     |
+      | ebook   | name        | fr_FR  |           | Ebook                     |
+      | ebook   | description | en_US  | ecommerce | My ecommerce ebook descr  |
+      | ebook   | description | en_US  | mobile    | My mobile ebook descr     |
+      | ebook   | description | fr_FR  | ecommerce | Ma descr ebook ecommerce  |
+      | ebook   | description | fr_FR  | mobile    | Ma descr ebook mobile     |
     And I am logged in as "admin"
 
   Scenario: Successfully display filters

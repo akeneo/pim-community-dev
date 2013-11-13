@@ -128,7 +128,7 @@ class ProductRepository extends FlexibleEntityRepository
             ->where(':variantGroup MEMBER OF Product.groups')
             ->setParameter('variantGroup', $variantGroup);
 
-        $i = 0;
+        $index = 0;
         foreach ($criteria as $item) {
             $code = $item['attribute']->getCode();
             $qb
@@ -136,12 +136,35 @@ class ProductRepository extends FlexibleEntityRepository
                     'Product.values',
                     sprintf('Value_%s', $code),
                     'WITH',
-                    sprintf('Value_%s.attribute = ?%d AND Value_%s.option = ?%d', $code, ++$i, $code, ++$i)
+                    sprintf('Value_%s.attribute = ?%d AND Value_%s.option = ?%d', $code, ++$index, $code, ++$index)
                 )
-                ->setParameter($i - 1, $item['attribute'])
-                ->setParameter($i, $item['option']);
+                ->setParameter($index - 1, $item['attribute'])
+                ->setParameter($index, $item['option']);
         }
 
         return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * Find products with missing completeness
+     * @param Channel $channel
+     *
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
+    public function findByMissingCompleteness(Channel $channel)
+    {
+        return $this
+            ->findByWithAttributesQB()
+            ->andWhere(
+                'Entity.id NOT IN (
+                    SELECT p.id FROM Pim\Bundle\CatalogBundle\Entity\Product p
+                    LEFT JOIN p.completenesses c
+                    LEFT JOIN c.channel ch
+                    WHERE ch.id = :channel
+                )'
+            )
+            ->setParameter('channel', $channel->getId())
+            ->getQuery()
+            ->execute();
     }
 }

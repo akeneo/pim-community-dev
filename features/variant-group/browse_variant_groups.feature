@@ -8,16 +8,16 @@ Feature: Browse variant groups
     Given there is no product group
     And the following attributes:
       | code      | label      | type                     |
-      | multi     | Multi      | pim_catalog_multiselect  |
+      | multi     | Multi      | pim_catalog_multiselect  |
       | color     | Color      | pim_catalog_simpleselect |
       | size      | Size       | pim_catalog_simpleselect |
       | dimension | Dimensions | pim_catalog_simpleselect |
     And the following product groups:
       | code           | label          | attributes  | type    |
-      | tshirt_akeneo  | T-Shirt Akeneo | size, color | VARIANT |
+      | tshirt_akeneo  | T-Shirt Akeneo | size, color | VARIANT |
       | mug_akeneo     | Mug Akeneo     | color       | VARIANT |
       | sticker_akeneo | Sticker Akeneo | dimension   | VARIANT |
-      | cross_sell     | Cross Sell     |             | X_SELL |
+      | cross_sell     | Cross Sell     |             | X_SELL  |
     And I am logged in as "admin"
 
   Scenario: Successfully display variant groups

@@ -22,7 +22,10 @@ class FileType extends OroFileType
         $properties = array(
             array(
                 'name'      => 'maxFileSize',
-                'fieldType' => 'integer'
+                'fieldType' => 'number',
+                'options'   => array(
+                    'precision' => 2
+                )
             ),
             array(
                 'name'    => 'allowedExtensions',

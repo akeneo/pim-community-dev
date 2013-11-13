@@ -30,7 +30,7 @@ use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
  *      }
  *  }
  * )
- * 
+ *
  * @ExclusionPolicy("all")
  */
 class Family implements TranslatableInterface
@@ -236,7 +236,9 @@ class Family implements TranslatableInterface
      */
     public function addAttribute(ProductAttribute $attribute)
     {
-        $this->attributes[] = $attribute;
+        if (!$this->attributes->contains($attribute)) {
+            $this->attributes->add($attribute);
+        }
 
         return $this;
     }
@@ -443,8 +445,10 @@ class Family implements TranslatableInterface
      */
     public function addAttributeRequirement(AttributeRequirement $requirement)
     {
-        $requirement->setFamily($this);
-        $this->requirements[] = $requirement;
+        if (!$this->requirements->contains($requirement)) {
+            $requirement->setFamily($this);
+            $this->requirements->add($requirement);
+        }
 
         return $this;
     }
@@ -456,9 +460,9 @@ class Family implements TranslatableInterface
      *
      * @return Family
      */
-    public function setAttributeRequirements($requirements)
+    public function setAttributeRequirements(array $requirements)
     {
-        $this->requirements = $requirements;
+        $this->requirements = new ArrayCollection($requirements);
 
         return $this;
     }

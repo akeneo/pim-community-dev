@@ -31,7 +31,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
  *      }
  *  }
  * )
- * 
+ *
  * @ExclusionPolicy("all")
  */
 class Group implements TranslatableInterface, GroupSequenceProviderInterface

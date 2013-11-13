@@ -7,7 +7,7 @@ Feature: Browse associations
   Background:
     Given the following associations:
       | code         | label        |
-      | cross_sell   | Cross sell   |
+      | cross_sell   | Cross sell   |
       | up_sell      | Upsell       |
       | substitution | Substitution |
     And I am logged in as "admin"

@@ -19,8 +19,8 @@ Feature: Execute a job
       | men     | Men     | master |
       | women   | Women   | master |
     And the following product groups:
-      | code  | label      | attributes  | type   |
-      | CROSS | Bag Cross  |             | X_SELL |
+      | code  | label     | attributes | type   |
+      | CROSS | Bag Cross |            | X_SELL |
     And the following attributes:
       | code        | label       | type                         |
       | name        | Name        | pim_catalog_text             |
@@ -192,8 +192,8 @@ Feature: Execute a job
       | EUR  | yes       |
     And a "SKU-001" product
     And the following product values:
-      | product | attribute  | value            |
-      | SKU-001 | Prices     | 100 EUR, 150 USD |
+      | product | attribute | value            |
+      | SKU-001 | Prices    | 100 EUR, 150 USD |
     And the following file to import:
       """
       sku;prices

@@ -30,7 +30,7 @@ function(DeleteAction, Navigation, $, _, __) {
                         (function(navigation, stateData, messageText) {
                             navigation.addFlashMessage('success', messageText);
                             navigation.navigate(
-                                "url=" + navigation.url.split("?").shift() + "|g/" +
+                                'url=' + navigation.url.split('?').shift() + '|g/' +
                                 stateData + '&boost=' + new Date().getTime(),
                                 {trigger: true}
                             );

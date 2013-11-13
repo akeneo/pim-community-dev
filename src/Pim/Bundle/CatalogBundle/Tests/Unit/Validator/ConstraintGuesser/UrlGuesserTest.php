@@ -39,7 +39,7 @@ class UrlGuesserTest extends ConstraintGuesserTest
     {
         $this->assertTrue(
             $this->target->supportAttribute(
-                $this->getAttributeMock(array('attributeType' => 'pim_catalog_text',))
+                $this->getAttributeMock(array('attributeType' => 'pim_catalog_text'))
             )
         );
     }

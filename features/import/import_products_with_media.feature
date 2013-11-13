@@ -71,8 +71,8 @@ Feature: Import media with products
       | processor | categories column | categories           |
       | processor | family column     | family               |
     And import directory of "acme_product_import" contain the following media:
-      | bic-core-148.gif        |
-      | bic-core-148.txt        |
+      | bic-core-148.gif |
+      | bic-core-148.txt |
     When I am on the "acme_product_import" import job page
     And I launch the import job
     And I wait for the job to finish

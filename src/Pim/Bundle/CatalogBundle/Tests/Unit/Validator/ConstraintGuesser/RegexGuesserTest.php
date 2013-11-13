@@ -38,7 +38,7 @@ class RegexGuesserTest extends ConstraintGuesserTest
     public function testSupportAttribute()
     {
         $this->assertTrue(
-            $this->target->supportAttribute($this->getAttributeMock(array('attributeType' => 'pim_catalog_text',)))
+            $this->target->supportAttribute($this->getAttributeMock(array('attributeType' => 'pim_catalog_text')))
         );
     }
 
@@ -61,7 +61,7 @@ class RegexGuesserTest extends ConstraintGuesserTest
         $this->assertConstraintsConfiguration(
             'Symfony\Component\Validator\Constraints\Regex',
             $constraints,
-            array('pattern' => '/foo/',)
+            array('pattern' => '/foo/')
         );
     }
 

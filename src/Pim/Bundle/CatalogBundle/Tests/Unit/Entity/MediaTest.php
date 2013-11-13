@@ -13,11 +13,17 @@ use Pim\Bundle\CatalogBundle\Entity\Media;
  */
 class MediaTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         $this->media = new Media();
     }
 
+    /**
+     * Test related method
+     */
     public function testSetGetValue()
     {
         $value = $this->getMock('Pim\Bundle\CatalogBundle\Model\ProductValueInterface');

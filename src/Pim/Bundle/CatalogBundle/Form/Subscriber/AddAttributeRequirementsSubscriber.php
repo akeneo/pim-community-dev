@@ -5,7 +5,6 @@ namespace Pim\Bundle\CatalogBundle\Form\Subscriber;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
-use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 
@@ -36,7 +35,10 @@ class AddAttributeRequirementsSubscriber implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return array(FormEvents::PRE_SET_DATA => 'preSetData');
+        return array(
+            FormEvents::PRE_SET_DATA  => 'preSetData',
+            FormEvents::POST_SET_DATA => 'postSetData',
+        );
     }
 
     /**
@@ -69,10 +71,31 @@ class AddAttributeRequirementsSubscriber implements EventSubscriberInterface
             }
         }
 
-        $requirements = new ArrayCollection(
-            array_merge($requirements, $family->getAttributeRequirements())
-        );
+        $requirements = array_merge($requirements, $family->getAttributeRequirements());
 
         $family->setAttributeRequirements($requirements);
+    }
+
+    /**
+     * Remove identifier attributes from form fields and make sure they are always required
+     *
+     * @param FormEvent $event
+     */
+    public function postSetData(FormEvent $event)
+    {
+        $family = $event->getData();
+
+        if (null === $family || !$family instanceof Family) {
+            return;
+        }
+
+        $form = $event->getForm();
+
+        foreach ($family->getAttributeRequirements() as $key => $requirement) {
+            if ('pim_catalog_identifier' === $requirement->getAttribute()->getAttributeType()) {
+                $requirement->setRequired(true);
+                $form->get('attributeRequirements')->remove($key);
+            }
+        }
     }
 }
