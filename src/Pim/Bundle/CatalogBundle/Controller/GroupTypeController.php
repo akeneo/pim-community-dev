@@ -129,7 +129,7 @@ class GroupTypeController extends AbstractDoctrineController
         $groupType = new GroupType();
 
         if ($this->groupTypeHandler->process($groupType)) {
-            $this->addFlash('success', 'flash.group_type.created');
+            $this->addFlash('success', 'flash.group type.created');
 
             $url = $this->generateUrl(
                 'pim_catalog_group_type_edit',
@@ -157,7 +157,7 @@ class GroupTypeController extends AbstractDoctrineController
     public function editAction(GroupType $groupType)
     {
         if ($this->groupTypeHandler->process($groupType)) {
-            $this->addFlash('success', 'flash.group_type.updated');
+            $this->addFlash('success', 'flash.group type.updated');
         }
 
         return array(
@@ -174,8 +174,13 @@ class GroupTypeController extends AbstractDoctrineController
      */
     public function removeAction(GroupType $groupType)
     {
-        $this->getManager()->remove($groupType);
-        $this->getManager()->flush();
+        if ($groupType->isVariant()) {
+            $this->addFlash('error', 'flash.group type.variant removed');
+
+        } else {
+            $this->getManager()->remove($groupType);
+            $this->getManager()->flush();
+        }
 
         if ($this->getRequest()->isXmlHttpRequest()) {
             return new Response('', 204);

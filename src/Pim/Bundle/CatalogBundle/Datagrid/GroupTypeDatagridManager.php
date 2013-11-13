@@ -35,7 +35,6 @@ class GroupTypeDatagridManager extends DatagridManager
     {
         return array(
             new UrlProperty('edit_link', $this->router, 'pim_catalog_group_type_edit', array('id')),
-            new UrlProperty('delete_link', $this->router, 'pim_catalog_group_type_remove', array('id'))
         );
     }
 
@@ -122,18 +121,7 @@ class GroupTypeDatagridManager extends DatagridManager
         $clickAction['name'] = 'rowClick';
         $clickAction['options']['runOnRowClick'] = true;
 
-        $deleteAction = array(
-            'name'         => 'delete',
-            'type'         => ActionInterface::TYPE_DELETE,
-            'acl_resource' => 'pim_catalog_group_type_remove',
-            'options'      => array(
-                'label' => $this->translate('Delete'),
-                'icon'  => 'trash',
-                'link'  => 'delete_link'
-            )
-        );
-
-        return array($clickAction, $editAction, $deleteAction);
+        return array($clickAction, $editAction);
     }
 
     /**
