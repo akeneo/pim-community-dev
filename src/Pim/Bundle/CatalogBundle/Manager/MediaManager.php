@@ -98,6 +98,10 @@ class MediaManager
      */
     public function getExportPath(Media $media)
     {
+        if (empty($media->getFilePath())) {
+            return '';
+        }
+
         $value     = $media->getValue();
         $attribute = $value->getAttribute();
         $target    = sprintf(
