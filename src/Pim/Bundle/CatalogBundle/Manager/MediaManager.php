@@ -70,7 +70,7 @@ class MediaManager
      */
     public function copy(Media $media, $targetDir)
     {
-        if (empty($media->getFilePath())) {
+        if ($media->getFilePath() === null) {
             return false;
         }
 
