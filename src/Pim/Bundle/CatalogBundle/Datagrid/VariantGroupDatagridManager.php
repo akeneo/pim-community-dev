@@ -57,7 +57,7 @@ class VariantGroupDatagridManager extends GroupDatagridManager
      */
     protected function createAxisField(FieldDescriptionCollection $fieldsCollection)
     {
-        $choices = $this->variantGroupManager->getAvailableAxisChoices();
+        $choices = $this->groupManager->getAvailableAxisChoices();
 
         $field = new FieldDescription();
         $field->setName('attribute');

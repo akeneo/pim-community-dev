@@ -13,7 +13,7 @@ use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
 
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
-use Pim\Bundle\CatalogBundle\Manager\VariantGroupManager;
+use Pim\Bundle\CatalogBundle\Manager\GroupManager;
 
 /**
  * Group datagrid manager
@@ -30,9 +30,9 @@ class GroupDatagridManager extends DatagridManager
     protected $localeManager;
 
     /**
-     * @var VariantGroupManager
+     * @var GroupManager
      */
-    protected $variantGroupManager;
+    protected $groupManager;
 
     /**
      * {@inheritdoc}
@@ -114,6 +114,7 @@ class GroupDatagridManager extends DatagridManager
      */
     protected function createTypeField(FieldDescriptionCollection $fieldsCollection)
     {
+        $choices = $this->groupManager->getTypeChoices(false);
         $field = new FieldDescription();
         $field->setName('type');
         $field->setOptions(
@@ -121,15 +122,13 @@ class GroupDatagridManager extends DatagridManager
                 'type'            => FieldDescriptionInterface::TYPE_TEXT,
                 'label'           => $this->translate('Type'),
                 'field_name'      => 'type',
-                'filter_type'     => FilterInterface::TYPE_ENTITY,
+                'filter_type'     => FilterInterface::TYPE_CHOICE,
                 'required'        => false,
                 'sortable'        => true,
                 'filterable'      => true,
                 'show_filter'     => true,
-                'multiple'        => false,
-                'class'           => 'PimCatalogBundle:GroupType',
-                'property'        => 'label',
-                'filter_by_where' => true,
+                'field_options'   => array('choices' => $choices),
+                'filter_by_where' => true
             )
         );
         $fieldsCollection->add($field);
@@ -223,15 +222,15 @@ class GroupDatagridManager extends DatagridManager
     }
 
     /**
-     * Set the variant group manager
+     * Set the group manager
      *
-     * @param VariantGroupManager $variantGroupManager
+     * @param GroupManager $groupManager
      *
-     * @return \Pim\Bundle\CatalogBundle\Datagrid\VariantGroupDatagridManager
+     * @return \Pim\Bundle\CatalogBundle\Datagrid\GroupDatagridManager
      */
-    public function setVariantGroupManager(VariantGroupManager $variantGroupManager)
+    public function setGroupManager(GroupManager $groupManager)
     {
-        $this->variantGroupManager = $variantGroupManager;
+        $this->groupManager = $groupManager;
 
         return $this;
     }

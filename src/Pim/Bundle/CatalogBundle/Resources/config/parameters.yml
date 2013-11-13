@@ -57,7 +57,7 @@ parameters:
     pim_catalog.form.handler.channel.class:  Pim\Bundle\CatalogBundle\Form\Handler\ChannelHandler
     pim_catalog.form.type.channel.class:     Pim\Bundle\CatalogBundle\Form\Type\ChannelType
 
-    pim_catalog.manager.variant_group.class:      Pim\Bundle\CatalogBundle\Manager\VariantGroupManager
+    pim_catalog.manager.group.class:      Pim\Bundle\CatalogBundle\Manager\GroupManager
 
     pim_catalog.entity.group.class:       Pim\Bundle\CatalogBundle\Entity\Group
     pim_catalog.form.handler.group.class: Pim\Bundle\CatalogBundle\Form\Handler\GroupHandler
