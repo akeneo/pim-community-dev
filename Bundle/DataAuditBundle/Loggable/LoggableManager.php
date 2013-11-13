@@ -11,7 +11,6 @@ use Doctrine\ORM\EntityManager;
 use Oro\Bundle\DataAuditBundle\Metadata\PropertyMetadata;
 use Oro\Bundle\UserBundle\Entity\User;
 
-use Oro\Bundle\EntityBundle\ORM\EntityClassAccessor;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 
 use Oro\Bundle\DataAuditBundle\Entity\Audit;
@@ -265,6 +264,8 @@ class LoggableManager
      * @SuppressWarnings(PHPMD.NPathComplexity)
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     *
+     * @throws \ReflectionException
      */
     protected function createLogEntity($action, $entity)
     {
@@ -546,7 +547,7 @@ class LoggableManager
 
     protected function checkAuditable($entityClassName)
     {
-        if ($this->hasConfig($entityClassName)) {
+        if (!$this->hasConfig($entityClassName)) {
             return;
         }
 
