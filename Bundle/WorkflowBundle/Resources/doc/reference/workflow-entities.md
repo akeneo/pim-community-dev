@@ -138,7 +138,7 @@ Creates instances of Transition Conditions based on type (alias) and options.
 Post Action
 -----------
 **Interface:**
-Oro\Bundle\WorkflowBundle\Model\PostAction\PostActionInterface
+Oro\Bundle\WorkflowBundle\Model\Action\ActionInterface
 
 **Description:**
 Basic interface for Transition Post Actions. Detailed description
@@ -150,7 +150,7 @@ Basic interface for Transition Post Actions. Detailed description
 Post Action Factory
 -------------------
 **Class:**
-Oro\Bundle\WorkflowBundle\Model\PostAction\PostActionFactory
+Oro\Bundle\WorkflowBundle\Model\Action\ActionFactory
 
 **Description:**
 Creates instances of Transition Post Actions based on type (alias) and options.
@@ -221,13 +221,13 @@ assemble(configuration) - assemble configuration and returns root Condition inst
 Post Action Assembler
 ---------------------
 **Class:**
-Oro\Bundle\WorkflowBundle\Model\PostAction\PostActionAssembler
+Oro\Bundle\WorkflowBundle\Model\Action\ActionAssembler
 
 **Description:**
-Walks through Post Action configuration and creates instance of appropriate Post Actions using Post Action Factory.
+Walks through Action configuration and creates instance of appropriate Actions using Action Factory.
 
 **Methods:**
-* **assemble(configuration)** - assemble configuration and returns instance of list Post Action.
+* **assemble(configuration)** - assemble configuration and returns instance of list Action.
 
 Database Entities
 =================

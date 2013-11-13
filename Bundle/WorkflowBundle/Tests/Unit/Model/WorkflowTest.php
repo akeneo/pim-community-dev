@@ -716,7 +716,9 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
      */
     protected function createWorkflow()
     {
-        return new Workflow();
+        $workflow = new Workflow();
+        $workflow->setTranslator($this->getMockTranslator());
+        return $workflow;
     }
 
     /**

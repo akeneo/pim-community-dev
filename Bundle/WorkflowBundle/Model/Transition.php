@@ -7,7 +7,7 @@ use Doctrine\Common\Collections\Collection;
 
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Bundle\WorkflowBundle\Model\Condition\ConditionInterface;
-use Oro\Bundle\WorkflowBundle\Model\PostAction\PostActionInterface;
+use Oro\Bundle\WorkflowBundle\Model\Action\ActionInterface;
 
 class Transition
 {
@@ -32,12 +32,12 @@ class Transition
     protected $condition;
 
     /**
-     * @var PostActionInterface|null
+     * @var ActionInterface|null
      */
     protected $postAction;
 
     /**
-     * @var PostActionInterface|null
+     * @var ActionInterface|null
      */
     protected $initAction;
 
@@ -135,10 +135,10 @@ class Transition
     /**
      * Set post action.
      *
-     * @param PostActionInterface $postAction
+     * @param ActionInterface $postAction
      * @return Transition
      */
-    public function setPostAction(PostActionInterface $postAction = null)
+    public function setPostAction(ActionInterface $postAction = null)
     {
         $this->postAction = $postAction;
         return $this;
@@ -147,7 +147,7 @@ class Transition
     /**
      * Get post action.
      *
-     * @return PostActionInterface|null
+     * @return ActionInterface|null
      */
     public function getPostAction()
     {
@@ -329,7 +329,7 @@ class Transition
     }
 
     /**
-     * @return null|PostActionInterface
+     * @return null|ActionInterface
      */
     public function getInitAction()
     {
@@ -337,10 +337,10 @@ class Transition
     }
 
     /**
-     * @param PostActionInterface $initAction
+     * @param ActionInterface $initAction
      * @return Transition
      */
-    public function setInitAction(PostActionInterface $initAction)
+    public function setInitAction(ActionInterface $initAction)
     {
         $this->initAction = $initAction;
         return $this;
