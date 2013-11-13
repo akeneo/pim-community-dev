@@ -5,13 +5,13 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 use Doctrine\Common\Persistence\ObjectManager;
 
 /**
- * Variant group manager
+ * Group manager
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class VariantGroupManager
+class GroupManager
 {
     /**
      * @var ObjectManager
@@ -50,6 +50,28 @@ class VariantGroupManager
         $choices = array();
         foreach ($attributes as $attribute) {
             $choices[$attribute->getId()] = $attribute->getLabel();
+        }
+        asort($choices);
+
+        return $choices;
+    }
+
+    /**
+     * Get axis as choice list
+     *
+     * @param $isVariant
+     *
+     * @return array
+     */
+    public function getTypeChoices($isVariant)
+    {
+        $types = $this->objectManager
+            ->getRepository('PimCatalogBundle:GroupType')
+            ->findBy(array('variant' => $isVariant));
+
+        $choices = array();
+        foreach ($types as $type) {
+            $choices[$type->getId()] = $type->getLabel();
         }
         asort($choices);
 

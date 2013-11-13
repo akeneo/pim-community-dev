@@ -52,6 +52,18 @@ class TransformationContext extends RawMinkContext
     /**
      * @param string $code
      *
+     * @Transform /^"([^"]*)" group type$/
+     *
+     * @return GroupType
+     */
+    public function castGroupTypeCodeToGroupType($code)
+    {
+        return $this->getFixturesContext()->getGroupType($code);
+    }
+
+    /**
+     * @param string $code
+     *
      * @Transform /^"([^"]*)" family$/
      *
      * @return Family

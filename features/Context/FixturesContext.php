@@ -929,6 +929,22 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param TableNode $table
+     *
+     * @Given /^the following group types?:$/
+     */
+    public function theFollowingGroupTypes(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $code = $data['code'];
+            $label = isset($data['label']) ? $data['label'] : null;
+            $isVariant = isset($data['is_variant']) ? $data['is_variant'] : 0;
+
+            $this->createGroupType($code, $label, $isVariant);
+        }
+    }
+
+    /**
      * @param string $attribute
      * @param string $options
      *
@@ -1237,15 +1253,17 @@ class FixturesContext extends RawMinkContext
 
     /**
      * @param string  $code
+     * @param string  $label
      * @param boolean $isVariant
      *
      * @return GroupType
      */
-    private function createGroupType($code, $isVariant)
+    private function createGroupType($code, $label, $isVariant)
     {
         $type = new GroupType();
         $type->setCode($code);
         $type->setVariant($isVariant);
+        $type->setLocale('en_US')->setLabel($label);
 
         $this->persist($type);
 
