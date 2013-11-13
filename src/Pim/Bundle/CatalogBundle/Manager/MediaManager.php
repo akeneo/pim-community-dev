@@ -98,7 +98,7 @@ class MediaManager
      */
     public function getExportPath(Media $media)
     {
-        if (empty($media->getFilePath())) {
+        if ($media->getFilePath() === null) {
             return '';
         }
 
