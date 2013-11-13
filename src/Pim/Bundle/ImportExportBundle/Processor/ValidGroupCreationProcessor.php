@@ -125,7 +125,7 @@ class ValidGroupCreationProcessor extends AbstractConfigurableStepElement implem
 
             return;
         } else {
-            $this->associations[] = $association;
+            $this->groups[] = $group;
         }
     }
 
