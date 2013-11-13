@@ -170,7 +170,7 @@ class GroupType implements TranslatableInterface
      */
     public function __toString()
     {
-        return $this->getCode();
+        return $this->getLabel();
     }
 
     /**
