@@ -28,6 +28,16 @@ connector:
                     reader:    pim_import_export.reader.attribute
                     processor: pim_import_export.processor.homogeneous_csv_serializer
                     writer:    pim_import_export.writer.file
+        association_export:
+            title: pim_import_export.jobs.association_export.title
+            type:  export
+            steps:
+                export:
+                    title:     pim_import_export.jobs.association_export.export_title
+                    reader:    pim_import_export.reader.association
+                    processor: pim_import_export.processor.homogeneous_csv_serializer
+                    writer:    pim_import_export.writer.file
+            
         product_import:
             title: pim_import_export.jobs.product_import.title
             type:  import
