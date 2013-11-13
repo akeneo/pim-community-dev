@@ -21,7 +21,7 @@ function($, messenger, __, Navigation) {
                     }
                 };
 
-                /** Handle redirectUrl result parameter for RedirectPostAction */
+                /** Handle redirectUrl result parameter for RedirectAction */
                 element.one('transitions_success', function(e, response) {
                     if (response.workflowItem
                         && response.workflowItem.result

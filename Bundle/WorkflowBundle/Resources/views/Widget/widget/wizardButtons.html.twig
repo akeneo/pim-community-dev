@@ -14,10 +14,11 @@
                     }
                 ) %}
             {% endif %}
+            {% set enabled = data.transition.hasForm() or data.workflow.isTransitionAllowed(data.workflowItem, data.transition) %}
             {{ workflowMacros.renderTransitionButton(
                 data.workflow,
                 data.transition,
-                data.workflow.isTransitionAllowed(data.workflowItem, data.transition),
+                enabled,
                 path(
                     'oro_workflow_api_rest_workflow_transit',
                     {

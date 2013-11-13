@@ -38,7 +38,7 @@ class TransitionTest extends \PHPUnit_Framework_TestCase
             ),
             'postAction' => array(
                 'postAction',
-                $this->getMock('Oro\Bundle\WorkflowBundle\Model\PostAction\PostActionInterface')
+                $this->getMock('Oro\Bundle\WorkflowBundle\Model\Action\ActionInterface')
             ),
         );
     }
@@ -100,7 +100,7 @@ class TransitionTest extends \PHPUnit_Framework_TestCase
             ->with($workflowItem)
             ->will($this->returnValue(false));
 
-        $postAction = $this->getMock('Oro\Bundle\WorkflowBundle\Model\PostAction\PostActionInterface');
+        $postAction = $this->getMock('Oro\Bundle\WorkflowBundle\Model\Action\ActionInterface');
         $postAction->expects($this->never())
             ->method('execute');
 
@@ -138,7 +138,7 @@ class TransitionTest extends \PHPUnit_Framework_TestCase
             ->with($workflowItem)
             ->will($this->returnValue(true));
 
-        $postAction = $this->getMock('Oro\Bundle\WorkflowBundle\Model\PostAction\PostActionInterface');
+        $postAction = $this->getMock('Oro\Bundle\WorkflowBundle\Model\Action\ActionInterface');
         $postAction->expects($this->once())
             ->method('execute')
             ->with($workflowItem);
@@ -198,5 +198,15 @@ class TransitionTest extends \PHPUnit_Framework_TestCase
         $frontendOptions = array('class' => 'foo', 'icon' => 'bar');
         $obj->setFrontendOptions($frontendOptions);
         $this->assertEquals($frontendOptions, $obj->getFrontendOptions());
+    }
+
+    public function testHasForm()
+    {
+        $obj = new Transition();
+
+        $this->assertFalse($obj->hasForm()); // by default transition has form
+
+        $obj->setFormOptions(array('key' => 'value'));
+        $this->assertTrue($obj->hasForm());
     }
 }

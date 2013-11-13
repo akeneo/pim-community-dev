@@ -7,9 +7,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\WorkflowBundle\Exception\AssemblerException;
 use Oro\Bundle\WorkflowBundle\Form\Type\WorkflowAttributesType;
 use Oro\Bundle\WorkflowBundle\Model\Condition\ConditionFactory;
-use Oro\Bundle\WorkflowBundle\Model\PostAction\PostActionFactory;
+use Oro\Bundle\WorkflowBundle\Model\Action\ActionFactory;
 use Oro\Bundle\WorkflowBundle\Model\Condition\Configurable as ConfigurableCondition;
-use Oro\Bundle\WorkflowBundle\Model\PostAction\Configurable as ConfigurablePostAction;
+use Oro\Bundle\WorkflowBundle\Model\Action\Configurable as ConfigurableAction;
 
 class TransitionAssembler extends AbstractAssembler
 {
@@ -19,20 +19,20 @@ class TransitionAssembler extends AbstractAssembler
     protected $conditionFactory;
 
     /**
-     * @var PostActionFactory
+     * @var ActionFactory
      */
-    protected $postActionFactory;
+    protected $actionFactory;
 
     /**
      * @param ConditionFactory $conditionFactory
-     * @param PostActionFactory $postActionFactory
+     * @param ActionFactory $actionFactory
      */
     public function __construct(
         ConditionFactory $conditionFactory,
-        PostActionFactory $postActionFactory
+        ActionFactory $actionFactory
     ) {
         $this->conditionFactory = $conditionFactory;
-        $this->postActionFactory = $postActionFactory;
+        $this->actionFactory = $actionFactory;
     }
 
     /**
@@ -114,12 +114,12 @@ class TransitionAssembler extends AbstractAssembler
         }
 
         if (!empty($definition['post_actions'])) {
-            $postAction = $this->postActionFactory->create(ConfigurablePostAction::ALIAS, $definition['post_actions']);
+            $postAction = $this->actionFactory->create(ConfigurableAction::ALIAS, $definition['post_actions']);
             $transition->setPostAction($postAction);
         }
 
         if (!empty($definition['init_actions'])) {
-            $initAction = $this->postActionFactory->create(ConfigurablePostAction::ALIAS, $definition['init_actions']);
+            $initAction = $this->actionFactory->create(ConfigurableAction::ALIAS, $definition['init_actions']);
             $transition->setInitAction($initAction);
         }
 
