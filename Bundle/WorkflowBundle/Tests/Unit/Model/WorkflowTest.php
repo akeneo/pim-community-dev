@@ -559,6 +559,11 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
         } else {
             $transitions[$transitionName] = $this->getTransitionMock($transitionName, true, 'step_name');
         }
+        foreach ($transitions as $transition) {
+            $transition->expects($this->once())
+                ->method('isAllowed')
+                ->will($this->returnValue(true));
+        }
         $transitions = new ArrayCollection($transitions);
 
         $entityBinder = $this->getMockEntityBinder();
