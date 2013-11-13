@@ -32,6 +32,11 @@ abstract class AbstractValidCreationProcessorTestCase extends \PHPUnit_Framework
     protected $processor;
 
     /**
+     * @var \Oro\Bundle\BatchBundle\Entity\StepExecution
+     */
+    protected $stepExecution;
+
+    /**
      * {@inheritdoc}
      */
     protected function setUp()
