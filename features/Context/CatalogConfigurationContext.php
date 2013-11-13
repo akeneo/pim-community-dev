@@ -2,8 +2,9 @@
 
 namespace Context;
 
-use Behat\MinkExtension\Context\RawMinkContext;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
+use Behat\MinkExtension\Context\RawMinkContext;
+use Behat\Behat\Event\ScenarioEvent;
 
 /**
  * A context for initializing catalog configuration
@@ -14,6 +15,11 @@ use Doctrine\Common\DataFixtures\ReferenceRepository;
  */
 class CatalogConfigurationContext extends RawMinkContext
 {
+    /**
+     * @var boolean
+     */
+    protected $catalogInitialized = false;
+
     /**
      * @var string Catalog configuration path
      */
@@ -45,6 +51,39 @@ class CatalogConfigurationContext extends RawMinkContext
         'GroupLoader'          => 'groups',
         'AssociationLoader'    => 'associations',
     );
+
+    /**
+     * Initialize the default catalog configuration if the configuration has not been initialized by background steps
+     * and no configuration is specified in the scenario
+     *
+     * @param object $event
+     *
+     * @BeforeScenario
+     */
+    public function initialize(ScenarioEvent $event)
+    {
+        if ($this->catalogInitialized) {
+            return;
+        }
+
+        $steps = $event->getScenario()->getSteps();
+
+        foreach ($steps as $step) {
+            if (preg_match('/^(?:a|the) "([^"]*)" catalog configuration$/', $step->getText())) {
+                return;
+            }
+        }
+
+        $this->aCatalogConfiguration('default');
+    }
+
+    /**
+     * @AfterScenario
+     */
+    public function resetState()
+    {
+        $this->catalogInitialized = false;
+    }
 
     /**
      * Initialize the reference repository
@@ -85,6 +124,8 @@ class CatalogConfigurationContext extends RawMinkContext
             $file = sprintf('%s/%s.yml', $directory, $fileName);
             $this->runLoader($loader, $file);
         }
+
+        $this->catalogInitialized = true;
     }
 
     /**

@@ -91,51 +91,6 @@ class FixturesContext extends RawMinkContext
     /**
      * @BeforeScenario
      */
-    public function resetCurrentLocale()
-    {
-        foreach ($this->locales as $locale) {
-            $this->createLocale($locale);
-        }
-    }
-
-    /**
-     * @BeforeScenario
-     */
-    public function resetChannels()
-    {
-        $tree = $this->createTree('default');
-        foreach ($this->channels as $code => $locales) {
-            $this->createChannel($code, ucfirst($code), $locales, $tree);
-        }
-
-        $this->flush();
-    }
-
-    /**
-     * @BeforeScenario
-     */
-    public function createRequiredAttribute()
-    {
-        $this->createAttribute('SKU', false, 'identifier', true);
-    }
-
-    /**
-     * @BeforeScenario
-     */
-    public function resetGroupTypes()
-    {
-        $types = array(
-            'VARIANT' => 1,
-            'X_SELL'  => 0,
-        );
-        foreach ($types as $code => $isVariant) {
-            $this->createGroupType($code, $isVariant);
-        }
-    }
-
-    /**
-     * @BeforeScenario
-     */
     public function clearUOW()
     {
         $this->getEntityManager()->clear();
