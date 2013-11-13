@@ -34,8 +34,16 @@ class CatalogConfigurationContext extends RawMinkContext
      * @var array Entity loaders and corresponding files
      */
     protected $entityLoaders = array(
+        'CurrencyLoader'       => 'currencies',
+        'LocaleLoader'         => 'locales',
+        'CategoryLoader'       => 'categories',
+        'ChannelLoader'        => 'channels',
         'AttributeGroupLoader' => 'attribute_groups',
         'AttributeLoader'      => 'attributes',
+        'FamilyLoader'         => 'families',
+        'GroupTypeLoader'      => 'group_types',
+        'GroupLoader'          => 'groups',
+        'AssociationLoader'    => 'associations',
     );
 
     /**

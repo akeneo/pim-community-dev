@@ -2,17 +2,17 @@
 
 namespace Context\Loader;
 
-use Pim\Bundle\InstallerBundle\DataFixtures\ORM\LoadAttributeGroupData;
+use Pim\Bundle\InstallerBundle\DataFixtures\ORM\LoadCurrencyData;
 
 /**
- * Loader for attribute groups
+ * Loader for currencies
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  */
-class AttributeGroupLoader extends LoadAttributeGroupData
+class CurrencyLoader extends LoadCurrencyData
 {
     /**
      * @var string Path of the fixtures file
@@ -22,7 +22,7 @@ class AttributeGroupLoader extends LoadAttributeGroupData
     /**
      * @param string $filePath
      *
-     * @return AttributeGroupLoader
+     * @return CurrencyLoader
      */
     public function setFilePath($filePath)
     {

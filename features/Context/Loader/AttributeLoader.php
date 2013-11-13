@@ -14,6 +14,9 @@ use Pim\Bundle\InstallerBundle\DataFixtures\ORM\LoadAttributeData;
  */
 class AttributeLoader extends LoadAttributeData
 {
+    /**
+     * @var string Path of the fixtures file
+     */
     protected $filePath;
 
     /**
