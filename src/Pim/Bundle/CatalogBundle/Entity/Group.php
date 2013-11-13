@@ -382,6 +382,20 @@ class Group implements TranslatableInterface, GroupSequenceProviderInterface
     }
 
     /**
+     * Setter for attributes property
+     *
+     * @param ProductAttribute[] $attributes
+     *
+     * @return Group
+     */
+    public function setAttributes(array $attributes = array())
+    {
+        $this->attributes = $attributes;
+
+        return $this;
+    }
+
+    /**
      * Return the identifier-based validation group for validation of properties
      * @return string[]
      */
