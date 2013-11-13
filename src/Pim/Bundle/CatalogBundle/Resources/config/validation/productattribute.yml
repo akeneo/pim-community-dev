@@ -112,10 +112,11 @@ Pim\Bundle\CatalogBundle\Entity\ProductAttribute:
                 choices: [date, time, datetime]
                 groups: [pim_catalog_date]
         maxFileSize:
-            - GreaterThanOrEqual:
-                value: 0
+            - Range:
+                min: 0.01
+                max: 9999.99
             - Type:
-                type: integer
+                type: numeric
                 groups: [pim_catalog_file, pim_catalog_image]
         defaultValue:
             - Blank:

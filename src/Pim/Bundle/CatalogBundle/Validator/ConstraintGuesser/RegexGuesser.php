@@ -37,7 +37,7 @@ class RegexGuesser implements ConstraintGuesserInterface
         $constraints = array();
 
         if ('regexp' === $attribute->getValidationRule() && $pattern = $attribute->getValidationRegexp()) {
-            $constraints[] = new Assert\Regex(array('pattern' => $pattern,));
+            $constraints[] = new Assert\Regex(array('pattern' => $pattern));
         }
 
         return $constraints;

@@ -49,7 +49,7 @@ class RangeGuesser implements ConstraintGuesserInterface
         }
 
         if (null !== $min || null !== $max) {
-            $constraints[] = new Range(array('min' => $min, 'max' => $max,));
+            $constraints[] = new Range(array('min' => $min, 'max' => $max));
         }
 
         return $constraints;

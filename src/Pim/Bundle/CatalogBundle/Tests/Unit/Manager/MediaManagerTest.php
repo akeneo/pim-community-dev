@@ -167,6 +167,10 @@ class MediaManagerTest extends \PHPUnit_Framework_TestCase
             ->method('getOriginalFilename')
             ->will($this->returnValue('phpunit-file.txt'));
 
+        $media->expects($this->any())
+            ->method('getFilePath')
+            ->will($this->returnValue('filePath'));
+
         $this->assertEquals($exportPath, $this->manager->getExportPath($media));
     }
 

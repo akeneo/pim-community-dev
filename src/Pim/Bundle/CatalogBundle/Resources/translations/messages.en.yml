@@ -305,7 +305,7 @@ Date max:                Max date
 Default currency:        Default currency
 Metric family:           Metric family
 Default metric unit:     Default metric unit
-Max file size:           Max file size
+Max file size:           Max file size (MB)
 Allowed file extensions: Allowed file extensions
 
 # Family

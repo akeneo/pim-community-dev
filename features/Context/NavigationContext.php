@@ -75,7 +75,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     }
 
     /**
-     * @BeforeScenario
+     * @AfterScenario
      */
     public function resetCurrentPage()
     {

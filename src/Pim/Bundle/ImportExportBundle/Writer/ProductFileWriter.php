@@ -45,7 +45,9 @@ class ProductFileWriter extends FileWriter
 
         foreach ($items as $data) {
             foreach ($data['media'] as $media) {
-                $this->mediaManager->copy($media, $this->directoryName);
+                if ($media) {
+                    $this->mediaManager->copy($media, $this->directoryName);
+                }
             }
         }
     }

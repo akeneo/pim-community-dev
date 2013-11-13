@@ -37,6 +37,7 @@ class LocaleExtension extends \Twig_Extension
             'locale_label' => new \Twig_Function_Method($this, 'localeLabel'),
             'currency_symbol' => new \Twig_Function_Method($this, 'currencySymbol'),
             'locale_currency' => new \Twig_Function_Method($this, 'localeCurrency'),
+            'currency_label'  => new \Twig_Function_Method($this, 'currencyLabel')
         );
     }
 
@@ -84,6 +85,19 @@ class LocaleExtension extends \Twig_Extension
     public function localeCurrency()
     {
         return $this->localeHelper->getLocaleCurrency();
+    }
+
+    /**
+     * Returns the currency label
+     *
+     * @param string $code
+     * @param string $locale
+     *
+     * @return string
+     */
+    public function currencyLabel($code, $locale = null)
+    {
+        return $this->localeHelper->getCurrencyLabel($code, $locale);
     }
 
     /**
