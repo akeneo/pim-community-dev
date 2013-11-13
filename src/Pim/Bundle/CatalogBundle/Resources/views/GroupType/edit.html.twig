@@ -1,6 +1,6 @@
 {% extends 'PimCatalogBundle::layout.html.twig' %}
 
-{% oro_title_set({ params: { '%grouptype.label%': form.vars.value.label } }) %}
+{% oro_title_set({ params: { '%group type.label%': form.vars.value.label } }) %}
 
 {% block head_script %}
     {{ parent() }}
@@ -28,9 +28,9 @@
         }
     }) }}
 
-        {% set title = 'grouptype.edit'|trans ~ ' - ' ~ form.vars.value.label %}
+        {% set title = 'group type.edit'|trans ~ ' - ' ~ form.vars.value.label %}
 
-        {% set confirmationMessage = 'confirmation.remove.grouptype'|trans({ '%name%': form.vars.value.label }) %}
+        {% set confirmationMessage = 'confirmation.remove.group type'|trans({ '%name%': form.vars.value.label }) %}
         {% set buttons %}
             {{ elements.backLink(path('pim_catalog_group_type_index')) }}
             {{

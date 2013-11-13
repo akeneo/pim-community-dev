@@ -92,6 +92,15 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @Given /^I create a new group type$/
+     */
+    public function iCreateANewGroupType()
+    {
+        $entity = 'GroupType';
+        $this->iCreateANew($entity);
+    }
+
+    /**
      * @Given /^I create a new variant group$/
      */
     public function iCreateANewVariantGroup()

@@ -81,6 +81,7 @@ class GroupType implements TranslatableInterface
     public function __construct()
     {
         $this->translations = new ArrayCollection();
+        $this->variant = false;
     }
 
     /**

@@ -22,13 +22,13 @@
     </script>
 
     {% if title is not defined %}
-        {% set title = 'grouptype.overview'|trans %}
+        {% set title = 'group type.overview'|trans %}
     {% endif %}
 
     {% if buttons is not defined %}
         {% set buttons %}
             {{ elements.createBtn(
-                'group',
+                'group type',
                 null,
                 { 'id': 'create-group-type', 'data-form': 'dialog', 'data-form-url': path('pim_catalog_group_type_create') }
             ) }}

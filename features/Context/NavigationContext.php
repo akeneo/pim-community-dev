@@ -10,6 +10,7 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\Association;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\Family;
+use Pim\Bundle\CatalogBundle\Entity\GroupType;
 
 /**
  * Context for navigating the website
@@ -277,6 +278,17 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     public function iShouldBeOnTheAttributeGroupPage(AttributeGroup $group)
     {
         $expectedAddress = $this->getPage('AttributeGroup edit')->getUrl(array('id' => $group->getId()));
+        $this->assertAddress($expectedAddress);
+    }
+
+    /**
+     * @param GroupType $groupType
+     *
+     * @Given /^I should be on the ("([^"]*)" group type) page$/
+     */
+    public function iShouldBeOnTheGroupTypePage(GroupType $groupType)
+    {
+        $expectedAddress = $this->getPage('GroupType edit')->getUrl(array('id' => $groupType->getId()));
         $this->assertAddress($expectedAddress);
     }
 
