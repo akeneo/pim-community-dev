@@ -38,6 +38,7 @@ class SoapRolesApiTest extends WebTestCase
      */
     public function testCreateRole($request, $response)
     {
+        $this->markTestSkipped('BAP-1530 ACL API');
         if (is_null($request['label'])) {
             $request['label'] = self::DEFAULT_VALUE;
         }
