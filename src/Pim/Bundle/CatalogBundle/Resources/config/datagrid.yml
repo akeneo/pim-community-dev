@@ -117,6 +117,8 @@ services:
               datagrid_name: group_types
               entity_hint: group type
               route_name: pim_catalog_group_type_index
+        calls:
+            - [ setLocaleManager, ['@pim_catalog.manager.locale'] ]
 
     pim_catalog.datagrid.manager.association:
         class: %pim_catalog.datagrid.manager.association_datagrid.class%

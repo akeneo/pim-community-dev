@@ -12,6 +12,8 @@ use Oro\Bundle\GridBundle\Property\UrlProperty;
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
 
+use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
+
 /**
  * Group type datagrid manager
  *
@@ -21,6 +23,11 @@ use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
  */
 class GroupTypeDatagridManager extends DatagridManager
 {
+    /**
+     * @var LocaleManager
+     */
+    protected $localeManager;
+
     /**
      * {@inheritdoc}
      */
@@ -37,15 +44,16 @@ class GroupTypeDatagridManager extends DatagridManager
      */
     protected function configureFields(FieldDescriptionCollection $fieldsCollection)
     {
-        $this->createCodeField($fieldsCollection);
+        $fieldsCollection->add($this->createCodeField());
+        $fieldsCollection->add($this->createLabelField());
     }
 
     /**
      * Create code field
      *
-     * @param FieldDescriptionCollection $fieldsCollection
+     * @return FieldDescription
      */
-    protected function createCodeField(FieldDescriptionCollection $fieldsCollection)
+    protected function createCodeField()
     {
         $field = new FieldDescription();
         $field->setName('code');
@@ -61,7 +69,37 @@ class GroupTypeDatagridManager extends DatagridManager
                 'show_filter' => true,
             )
         );
-        $fieldsCollection->add($field);
+
+        return $field;
+    }
+
+    /**
+     * Create label field
+     *
+     * @return FieldDescription
+     */
+    protected function createLabelField()
+    {
+        $field = new FieldDescription();
+        $field->setName('label');
+        $field->setOptions(
+            array(
+                'type'        => FieldDescriptionInterface::TYPE_TEXT,
+                'label'       => $this->translate('Label'),
+                'field_name'  => 'groupTypeLabel',
+                'expression'  => 'translation.label',
+                'filter_type' => FilterInterface::TYPE_STRING,
+                'required'    => false,
+                'sortable'    => true,
+                'filterable'  => true,
+                'show_filter' => true,
+            )
+        );
+        $field->setProperty(
+            new TwigTemplateProperty($field, 'PimGridBundle:Rendering:_toString.html.twig')
+        );
+
+        return $field;
     }
 
     /**
@@ -103,9 +141,44 @@ class GroupTypeDatagridManager extends DatagridManager
      */
     protected function prepareQuery(ProxyQueryInterface $proxyQuery)
     {
+        $rootAlias = 'g';
         $proxyQuery
-            ->select('g')
-            ->from('PimCatalogBundle:GroupType', 'g');
+            ->select($rootAlias)
+            ->from('PimCatalogBundle:GroupType', $rootAlias);
+        $labelExpr = sprintf(
+            "(CASE WHEN translation.label IS NULL THEN %s.code ELSE translation.label END)",
+            $rootAlias
+        );
+        $proxyQuery
+            ->addSelect(sprintf("%s AS groupTypeLabel", $labelExpr), true)
+            ->addSelect('translation.label', true);
+        $proxyQuery
+            ->leftJoin($rootAlias .'.translations', 'translation', 'WITH', 'translation.locale = :localeCode');
+
+        $proxyQuery->setParameter('localeCode', $this->getCurrentLocale());
+    }
+
+    /**
+     * Set the locale manager
+     *
+     * @param LocaleManager $localeManager
+     *
+     * @return AssociationDatagridManager
+     */
+    public function setLocaleManager(LocaleManager $localeManager)
+    {
+        $this->localeManager = $localeManager;
+
+        return $this;
+    }
+
+    /**
+     * Get the current locale code from the locale manager
+     *
+     * @return string
+     */
+    protected function getCurrentLocale()
+    {
+        return $this->localeManager->getUserLocale()->getCode();
     }
 }
-
