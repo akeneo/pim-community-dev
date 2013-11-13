@@ -39,7 +39,7 @@ abstract class AbstractValidCreationProcessorTestCase extends \PHPUnit_Framework
         $this->em        = $this->mock('Doctrine\ORM\EntityManager');
         $this->validator = $this->getMock('Symfony\Component\Validator\ValidatorInterface');
 
-        $this->processor = $this->createProcessor($this->em, $this->validator);
+        $this->processor = $this->createProcessor();
 
         $this->stepExecution = $this->getStepExecutionMock();
         $this->processor->setStepExecution($this->stepExecution);
@@ -48,14 +48,11 @@ abstract class AbstractValidCreationProcessorTestCase extends \PHPUnit_Framework
     /**
      * Create processor
      *
-     * @param EntityManager $em
-     * @param ValidatorInterface $validator
-     *
      * @return AbstractConfigurableStepElement
      *
      * @abstract
      */
-    abstract protected function createProcessor(EntityManager $em, ValidatorInterface $validator);
+    abstract protected function createProcessor();
 
     /**
      * @param string $class

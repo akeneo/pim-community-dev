@@ -2,10 +2,6 @@
 
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Processor;
 
-use Doctrine\ORM\EntityManager;
-
-use Symfony\Component\Validator\ValidatorInterface;
-
 use Pim\Bundle\CatalogBundle\Entity\Association;
 use Pim\Bundle\CatalogBundle\Entity\AssociationTranslation;
 use Pim\Bundle\ImportExportBundle\Processor\ValidAssociationCreationProcessor;
@@ -22,7 +18,7 @@ class ValidAssociationCreationProcessorTest extends AbstractValidCreationProcess
     /**
      * {@inheritdoc}
      */
-    protected function createProcessor(EntityManager $em, ValidatorInterface $validator)
+    protected function createProcessor()
     {
         return new ValidAssociationCreationProcessor(
             $this->em,
