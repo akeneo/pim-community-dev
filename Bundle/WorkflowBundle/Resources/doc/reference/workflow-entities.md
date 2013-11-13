@@ -64,6 +64,7 @@ and AttributeManager
 * **getManagedEntityAttributes()** - gets list of Attributes of managed entities
 * **getAttributes()** - gets list of all Attributes
 * **getOrderedSteps()** - gets ordered list of all Steps
+* **createWorkflowItem(array data)** - create WorkflowItem instance and initialize it with passed data
 
 Workflow Registry
 -----------------

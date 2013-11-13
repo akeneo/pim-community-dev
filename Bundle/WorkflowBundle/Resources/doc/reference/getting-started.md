@@ -37,6 +37,9 @@ to specified Conditions, and then performs transition Post Actions. Transition c
 means that this transition can be used to create new Workflow Item and start Workflow. Contains name, label and options
 as additional parameters.
 
+* **Init Action** - additional action that performed before Transition, can be used to manage entities (create, find),
+manipulate attributes (assign values), perform any other actions.
+
 * **Condition** - defines whether specific Transition is allowed with specified input data, conditions can be nested.
 
 * **Post Action** - additional action that performed after Transition, can be used to manage entities (create, find),
