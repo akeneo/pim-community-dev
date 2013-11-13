@@ -23,9 +23,8 @@
             $(function() {
                 var container = $('#{{ blockId }}');
                 {% for data in transitionsData %}
-                    container.on(
+                    container.find('#transition-{{ data.workflow.name }}-{{ data.transition.name }}').on(
                         'click',
-                        '#transition-{{ data.workflow.name }}-{{ data.transition.name }}',
                         workflowTransitionHandler
                     );
                 {% endfor %}
