@@ -13,22 +13,14 @@ use Pim\Bundle\CatalogBundle\Entity\CategoryTranslation;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ValidCategoryCreationProcessorTest extends \PHPUnit_Framework_TestCase
+class ValidCategoryCreationProcessorTest extends AbstractValidCreationProcessorTestCase
 {
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    public function createProcessor()
     {
-        $this->em        = $this->mock('Doctrine\ORM\EntityManager');
-        $this->validator = $this->getMock('Symfony\Component\Validator\ValidatorInterface');
-
-        $this->processor = new ValidCategoryCreationProcessor(
-            $this->em,
-            $this->validator
-        );
-        $this->stepExecution = $this->getStepExecutionMock();
-        $this->processor->setStepExecution($this->stepExecution);
+        return new ValidCategoryCreationProcessor($this->em, $this->validator);
     }
 
     /**
@@ -45,14 +37,13 @@ class ValidCategoryCreationProcessorTest extends \PHPUnit_Framework_TestCase
     /**
      * Test getConfigurationFields method
      */
-    public function testGetConfigurationFields()
+    protected function getExpectedConfigurationFields()
     {
-        $configurationFields = array(
+        return array(
             'circularRefsChecked' => array(
                 'type' => 'switch',
             ),
         );
-        $this->assertEquals($configurationFields, $this->processor->getConfigurationFields());
     }
 
     /**
@@ -232,24 +223,6 @@ class ValidCategoryCreationProcessorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param string $class
-     *
-     * @return mixed
-     */
-    protected function mock($class)
-    {
-        return $this->getMockBuilder($class)->disableOriginalConstructor()->getMock();
-    }
-
-    /**
-     * @return EntityRepository
-     */
-    protected function getRepositoryMock()
-    {
-        return $this->mock('Doctrine\ORM\EntityRepository');
-    }
-
-    /**
      * @param sring $code
      * @param sring $parent
      *
@@ -277,36 +250,5 @@ class ValidCategoryCreationProcessorTest extends \PHPUnit_Framework_TestCase
         }
 
         return $category;
-    }
-
-    /**
-     * @param array $violations
-     *
-     * @return \Symfony\Component\Validator\ConstraintViolationList
-     */
-    protected function getConstraintViolationListMock(array $violations = array())
-    {
-        $list = $this->getMock('Symfony\Component\Validator\ConstraintViolationList');
-
-        $list->expects($this->any())
-            ->method('count')
-            ->will($this->returnValue(count($violations)));
-
-        $list->expects($this->any())
-            ->method('getIterator')
-            ->will($this->returnValue(new \ArrayIterator($violations)));
-
-        return $list;
-    }
-
-    /**
-     * @return \Oro\Bundle\BatchBundle\Entity\StepExecution
-     */
-    protected function getStepExecutionMock()
-    {
-        return $this
-            ->getMockBuilder('Oro\Bundle\BatchBundle\Entity\StepExecution')
-            ->disableOriginalConstructor()
-            ->getMock();
     }
 }

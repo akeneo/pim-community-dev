@@ -2,9 +2,6 @@
 
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Processor;
 
-use Doctrine\ORM\EntityManager;
-use Symfony\Component\Validator\ValidatorInterface;
-
 /**
  * Abstract for validation processor test
  *
