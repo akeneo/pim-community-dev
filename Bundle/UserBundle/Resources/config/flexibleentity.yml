@@ -1,6 +1,0 @@
-entities_config:
-    Oro\Bundle\UserBundle\Entity\User:
-        flexible_manager:     oro_user.manager.flexible
-        flexible_class:       Oro\Bundle\UserBundle\Entity\User
-        flexible_value_class: Oro\Bundle\UserBundle\Entity\UserValue
-        flexible_init_mode:   all_attributes

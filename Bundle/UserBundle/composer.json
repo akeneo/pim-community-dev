@@ -15,7 +15,6 @@
         "liip/imagine-bundle": "dev-master",
         "doctrine/data-fixtures": "@dev",
         "doctrine/doctrine-fixtures-bundle": "@dev",
-        "oro/flexible-entity-bundle": "dev-master",
         "oro/ui-bundle": "dev-master",
         "oro/soap-bundle": "dev-master",
         "oro/grid-bundle": "dev-master",

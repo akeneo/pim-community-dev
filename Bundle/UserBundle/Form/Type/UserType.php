@@ -2,21 +2,21 @@
 
 namespace Oro\Bundle\UserBundle\Form\Type;
 
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\HttpFoundation\Request;
+
 use Doctrine\ORM\EntityRepository;
 
-use Oro\Bundle\FlexibleEntityBundle\Form\Type\FlexibleType;
 use Oro\Bundle\UserBundle\Form\EventListener\UserSubscriber;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\UserBundle\Form\Type\EmailType;
-use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 
-class UserType extends FlexibleType
+class UserType extends AbstractType
 {
     /**
      * @var SecurityContextInterface
@@ -29,18 +29,15 @@ class UserType extends FlexibleType
     protected $isMyProfilePage;
 
     /**
-     * @param FlexibleManager          $flexibleManager flexible manager
      * @param SecurityContextInterface $security        Security context
-     * @param Request                  $request         Request
+     * @param Request $request         Request
      */
     public function __construct(
-        FlexibleManager $flexibleManager,
         SecurityContextInterface $security,
         Request $request
     ) {
-        parent::__construct($flexibleManager, '');
 
-        $this->security   = $security;
+        $this->security = $security;
         if ($request->attributes->get('_route') == 'oro_user_profile_update') {
             $this->isMyProfilePage = true;
         } else {
@@ -48,14 +45,17 @@ class UserType extends FlexibleType
         }
     }
 
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $this->addEntityFields($builder);
+    }
+
+
     /**
      * {@inheritdoc}
      */
     public function addEntityFields(FormBuilderInterface $builder)
     {
-        // add default flexible fields
-        parent::addEntityFields($builder);
-
         // user fields
         $builder->addEventSubscriber(
             new UserSubscriber($builder->getFormFactory(), $this->security)
@@ -91,7 +91,7 @@ class UserType extends FlexibleType
                     'expanded'       => true,
                     'required'       => false,
                     'read_only'      => $this->isMyProfilePage,
-                    'disabled'      => $this->isMyProfilePage
+                    'disabled'       => $this->isMyProfilePage
                 )
             )
             ->add(
@@ -129,37 +129,13 @@ class UserType extends FlexibleType
     }
 
     /**
-     * Add entity fields to form builder
-     *
-     * @param FormBuilderInterface $builder
-     * @param array $options
-     */
-    public function addDynamicAttributesFields(FormBuilderInterface $builder, array $options)
-    {
-        $builder->add(
-            'values',
-            'collection',
-            array(
-                'type'          => 'oro_user_user_value',
-                'property_path' => 'values',
-                'allow_add'     => true,
-                'allow_delete'  => true,
-                'by_reference'  => false,
-                'attr'          => array(
-                    'data-col'  => 2,
-                )
-            )
-        );
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(
             array(
-                'data_class'           => $this->flexibleClass,
+                'data_class'           => 'Oro\Bundle\UserBundle\Entity\User',
                 'intention'            => 'user',
                 'validation_groups'    => function ($form) {
                     if ($form instanceof FormInterface) {
@@ -175,10 +151,10 @@ class UserType extends FlexibleType
                         : array('Registration', 'User', 'Default');
                 },
                 'extra_fields_message' => 'This form should not contain extra fields: "{{ extra_fields }}"',
-                'error_mapping' => array(
+                'error_mapping'        => array(
                     'roles' => 'rolesCollection'
                 ),
-                'cascade_validation' => true
+                'cascade_validation'   => true
             )
         );
     }
