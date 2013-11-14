@@ -6,10 +6,10 @@ Feature: Sort locales
 
   Background:
     Given the following locales:
-      | code  | fallback | activated |
-      | de_DE |          | no        |
-      | en_US |          | yes       |
-      | fr_FR |          | yes       |
+      | code  | activated |
+      | de_DE | no        |
+      | en_US | yes       |
+      | fr_FR | yes       |
     And I am logged in as "admin"
 
   Scenario: Successfully sort locales
