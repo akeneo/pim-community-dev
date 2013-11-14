@@ -8,6 +8,8 @@
 - Introduce command "pim:completeness:calculate" size argument to manage number of completenesses to calculate
 - Switching tree to see sub-categories products count and allow filtering on it
 - Group types management
+- Import/Export product groups
+- Import/Export associations
 
 ## Improvements
 - Export media into separated sub directories

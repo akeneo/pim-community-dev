@@ -5,13 +5,13 @@ namespace Pim\Bundle\ImportExportBundle\Reader;
 use Doctrine\ORM\EntityManager;
 
 /**
- * Attribute reader
+ * Group reader
  *
- * @author    Filips Alpe <filips@akeneo.com>
+ * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeReader extends ORMCursorReader
+class GroupReader extends ORMCursorReader
 {
     /**
      * @var EntityManager
@@ -19,6 +19,8 @@ class AttributeReader extends ORMCursorReader
     protected $em;
 
     /**
+     * Constructor
+     *
      * @param EntityManager $em
      */
     public function __construct(EntityManager $em)
@@ -33,7 +35,7 @@ class AttributeReader extends ORMCursorReader
     {
         if (!$this->query) {
             $this->query = $this->em
-                ->getRepository('PimCatalogBundle:ProductAttribute')
+                ->getRepository('PimCatalogBundle:Group')
                 ->createQueryBuilder('c')
                 ->getQuery();
         }

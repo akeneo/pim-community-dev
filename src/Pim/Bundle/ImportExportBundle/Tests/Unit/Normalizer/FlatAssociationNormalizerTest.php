@@ -46,7 +46,8 @@ class FlatAssociationNormalizerTest extends AssociationNormalizerTest
             array(
                 array(
                     'code'  => 'mycode',
-                    'label' => 'en_US:My label, fr_FR:Mon étiquette',
+                    'label-en_US' => 'My label',
+                    'label-fr_FR' => 'Mon étiquette'
                 )
             ),
         );
