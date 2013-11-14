@@ -42,8 +42,14 @@ class LoadCategoryData extends AbstractInstallerFixture
         $category = new Category();
         $category->setCode($code);
         $this->setReference('category.'. $code, $category);
+
         foreach ($data['labels'] as $locale => $label) {
             $this->createLabel($category, $locale, $label);
+        }
+
+        if (isset($data['parent'])) {
+            $parent = $this->getReference('category.' . $data['parent']);
+            $category->setParent($parent);
         }
 
         return $category;
@@ -58,7 +64,7 @@ class LoadCategoryData extends AbstractInstallerFixture
      */
     protected function createLabel(Category $category, $locale, $label)
     {
-        $translation = new CategoryTranslation;
+        $translation = new CategoryTranslation();
         $translation
             ->setLabel($label)
             ->setLocale($locale)
