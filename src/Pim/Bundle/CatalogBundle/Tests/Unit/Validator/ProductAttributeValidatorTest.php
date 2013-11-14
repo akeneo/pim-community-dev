@@ -30,7 +30,7 @@ class ProductAttributeValidatorTest extends \PHPUnit_Framework_TestCase
     /**
      * {@inheritdoc}
      */
-    public function tearDown()
+    protected function tearDown()
     {
         $this->context = null;
 

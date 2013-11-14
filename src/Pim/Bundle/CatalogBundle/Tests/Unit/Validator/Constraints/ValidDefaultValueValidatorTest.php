@@ -34,7 +34,7 @@ class ValidDefaultValueValidatorTest extends \PHPUnit_Framework_TestCase
     /**
      * {@inheritdoc}
      */
-    public function tearDown()
+    protected function tearDown()
     {
         $this->context = null;
         $this->validator = null;

@@ -73,7 +73,7 @@ class AttributeTypeManagerTest extends WebTestCase
     /**
      * {@inheritdoc}
      */
-    public function tearDown()
+    protected function tearDown()
     {
         $this->executionContext = null;
 
