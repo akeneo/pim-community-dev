@@ -143,12 +143,14 @@ class ValidGroupCreationProcessor extends AbstractConfigurableStepElement implem
             $group = new Group();
             $group->setCode($item['code']);
 
-            $groupType = $this->getGroupType($item);
-            $group->setType($groupType);
+            $groupType = $this->findGroupType($item);
+            if ($groupType) {
+                $group->setType($groupType);
 
-            if ($group->getType()->isVariant()) {
-                $axis = $this->getAxis($item);
-                $group->setAttributes($axis);
+                if ($group->getType()->isVariant()) {
+                    $axis = $this->getAxis($item);
+                    $group->setAttributes($axis);
+                }
             }
         }
 
@@ -177,7 +179,7 @@ class ValidGroupCreationProcessor extends AbstractConfigurableStepElement implem
      *
      * @return GroupType null
      */
-    private function getGroupType(array $item)
+    private function findGroupType(array $item)
     {
         return $this
             ->entityManager
@@ -222,6 +224,6 @@ class ValidGroupCreationProcessor extends AbstractConfigurableStepElement implem
         return $this
             ->entityManager
             ->getRepository('PimCatalogBundle:ProductAttribute')
-            ->findOneBy(array('code' => $attributeCode));
+            ->findOneBy(array('code' => $code));
     }
 }

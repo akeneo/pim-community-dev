@@ -741,6 +741,22 @@ class FixturesContext extends RawMinkContext
     /**
      * @param TableNode $table
      *
+     * @Then /^there should be the following groups:$/
+     */
+    public function thereShouldBeTheFollowingGroups(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $group = $this->getProductGroup($data['code']);
+            $this->getEntityManager()->refresh($group);
+
+            assertEquals($data['label-en_US'], $group->getTranslation('en_US')->getLabel());
+            assertEquals($data['label-fr_FR'], $group->getTranslation('fr_FR')->getLabel());
+        }
+    }
+
+    /**
+     * @param TableNode $table
+     *
      * @Given /^the following channels?:$/
      */
     public function theFollowingChannels(TableNode $table)
