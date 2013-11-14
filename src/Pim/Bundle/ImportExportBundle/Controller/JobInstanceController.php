@@ -352,14 +352,13 @@ class JobInstanceController extends AbstractDoctrineController
         if (count($violations) === 0 || count($uploadViolations) === 0) {
             $jobExecution = new JobExecution();
             $jobExecution->setJobInstance($jobInstance);
-            $job = $jobInstance->getJob();
 
             $uploadMode = false;
             if ($request->isMethod('POST') && count($uploadViolations) === 0) {
                 $form = $this->createUploadForm();
                 $form->handleRequest($request);
                 if ($form->isValid()) {
-                    $uploadMode = $this->runJob($job, $form->getData());
+                    $uploadMode = $this->runJob($jobInstance, $form->getData());
                 }
             }
 
@@ -372,7 +371,7 @@ class JobInstanceController extends AbstractDoctrineController
                 $this->rootDir,
                 $this->environment,
                 $this->getUser()->getEmail(),
-                $uploadMode ? sprintf('-c \'%s\'', json_encode($job->getConfiguration())) : '',
+                $uploadMode ? sprintf('-c \'%s\'', json_encode($jobInstance->getJob()->getConfiguration())) : '',
                 $instanceCode,
                 $executionId,
                 $this->rootDir
@@ -390,12 +389,12 @@ class JobInstanceController extends AbstractDoctrineController
     /**
      * Run job instance
      *
-     * @param JobInstance $job
+     * @param JobInstance $jobInstance
      * @param mixed $data
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|boolean
      */
-    protected function runJob(JobInstance $job, $data)
+    protected function runJob(JobInstance $jobInstance, $data)
     {
         $media = $data['file'];
         $file = $media->getFile();
@@ -406,6 +405,7 @@ class JobInstanceController extends AbstractDoctrineController
             $file->getFilename() . substr($filename, strrpos($filename, '.'))
         );
 
+        $job = $jobInstance->getJob();
         foreach ($job->getSteps() as $step) {
             $reader = $step->getReader();
 
