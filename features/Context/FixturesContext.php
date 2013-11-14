@@ -21,7 +21,6 @@ use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Entity\ProductPrice;
 use Pim\Bundle\CatalogBundle\Entity\Group;
-use Pim\Bundle\CatalogBundle\Entity\Currency;
 use Pim\Bundle\CatalogBundle\Entity\Media;
 use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
@@ -356,22 +355,6 @@ class FixturesContext extends RawMinkContext
         }
 
         $this->flush();
-    }
-
-    /**
-     * @param TableNode $table
-     *
-     * @Given /^the following currencies:$/
-     */
-    public function theFollowingCurrencies(TableNode $table)
-    {
-        foreach ($table->getHash() as $data) {
-            $currency = new Currency();
-            $currency->setCode($data['code']);
-            $currency->setActivated($data['activated'] === 'yes');
-
-            $this->persist($currency);
-        }
     }
 
     /**

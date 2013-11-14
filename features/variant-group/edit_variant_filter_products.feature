@@ -9,11 +9,6 @@ Feature: Edit a variant group adding/removing products
       | code      | label     |
       | mug       | Mug       |
       | furniture | Furniture |
-    And the following currencies:
-      | code | activated |
-      | USD  | yes       |
-      | EUR  | yes       |
-      | GBP  | no        |
     And the following products:
       | sku    | family    |
       | MUG_1  | mug       |

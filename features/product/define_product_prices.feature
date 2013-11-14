@@ -4,10 +4,6 @@ Feature: Define product prices
   I need to be able to define prices in different currencies for for each locale
 
   Background:
-    Given the following currencies:
-      | code | activated |
-      | USD  | yes       |
-      | EUR  | yes       |
     Given the following channels:
       | code      | currencies |
       | ecommerce | EUR, USD   |
