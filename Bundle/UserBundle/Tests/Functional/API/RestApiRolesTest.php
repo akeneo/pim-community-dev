@@ -25,7 +25,6 @@ class RestApiRolesTest extends WebTestCase
      */
     public function testApiCreateRole()
     {
-        $this->markTestSkipped('BAP-1530 ACL API');
         $roleName = 'Role_'.mt_rand(100, 500);
         $request = array(
             "role" => array(

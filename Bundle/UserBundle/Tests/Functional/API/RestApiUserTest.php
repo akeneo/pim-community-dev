@@ -26,7 +26,6 @@ class RestApiUserTest extends WebTestCase
      */
     public function testApiCreateRole()
     {
-        $this->markTestSkipped('BAP-1530 ACL API');
         $request = array(
             "role" => array (
                 "label" => "new_label_" . mt_rand(),
@@ -107,7 +106,6 @@ class RestApiUserTest extends WebTestCase
      */
     public function testApiCreateGroup()
     {
-        $this->markTestSkipped('BAP-1530 ACL API');
         $requestGroup = array(
             "group" => array (
                 "name" => 'new_group_' . mt_rand(),
