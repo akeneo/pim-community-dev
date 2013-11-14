@@ -85,7 +85,7 @@ class UniqueVariantAxisValidator extends ConstraintValidator
     {
         foreach ($entity->getGroups() as $variantGroup) {
             if ($variantGroup->getType()->isVariant()) {
-                $matchingProducts = $this->getMatchingProducts();
+                $matchingProducts = $this->getMatchingProducts($variantGroup, $entity);
                 if (count($matchingProducts) !== 0) {
                     $values = array();
                     foreach ($criteria as $item) {
