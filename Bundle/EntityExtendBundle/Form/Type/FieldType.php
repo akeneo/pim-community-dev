@@ -26,6 +26,7 @@ class FieldType extends AbstractType
         'oneToMany'  => 'Relation one to many',
         'manyToOne'  => 'Relation many to one',
         'manyToMany' => 'Relation many to many',
+        'optionSet'  => 'Option set'
     );
 
     /**

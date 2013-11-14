@@ -303,3 +303,48 @@ oro_entity_config:
                     options:
                         default_value:      false
                         auditable:          false
+
+                #OptionSet form type
+                set_expanded:
+                    options:
+                        allowed_type:       [optionSet]
+                    form:
+                        type:               choice
+                        options:
+                            required:       false
+                            choices:        ['No', 'Yes']
+                            empty_value:    false
+                            label:          'Expanded'
+                            block:          entity
+                            subblock:       properties
+                set_options:
+                    options:
+                        #default_value:      255
+                        allowed_type:       [optionSet]
+                        required_property:
+                            config_id:
+                                scope:      extend
+                            code:           owner
+                            value:          Custom
+#                    constraints:
+#                        - Regex:            "/^[0-9]*$/"
+#                        - Range:
+#                            min:            1
+#                            max:            255
+                    form:
+                        type:               oro_entity_option_set_collection
+                        options:
+                            required:       false
+                            label:          'Option(s)'
+                            block:          entity
+                            subblock:       properties
+                            type:           oro_entity_option_set
+
+
+#            'emails',
+#            'oro_email_collection',
+#            array(
+#                'type' => 'oro_email',
+#                'required' => false,
+#                'options' => array('data_class' => 'OroCRM\Bundle\ContactBundle\Entity\ContactEmail')
+#            )
