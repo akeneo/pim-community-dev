@@ -99,14 +99,7 @@ class UniqueVariantAxisValidator extends ConstraintValidator
      */
     protected function validateVariantGroup(Group $variantGroup)
     {
-        $criteria = array();
-        foreach ($variantGroup->getAttributes() as $attribute) {
-            $value = $entity->getValue($attribute->getCode());
-            $criteria[] = array(
-                'attribute' => $attribute,
-                'option'    => $value ? $value->getOption() : null,
-            );
-        }
+        $criteria = $this->prepareVariantGroupCriterias();
 
         $repository = $this->manager->getFlexibleRepository();
         $matchingProducts = $repository->findAllForVariantGroup($variantGroup, $criteria);
@@ -130,6 +123,27 @@ class UniqueVariantAxisValidator extends ConstraintValidator
                 implode(', ', $values)
             );
         }
+    }
+
+    /**
+     * Prepare variant group criterias
+     *
+     * @param Group $variantGroup
+     *
+     * @return array
+     */
+    protected function prepareVariantGroupCriterias(Group $variantGroup)
+    {
+        $criteria = array();
+        foreach ($variantGroup->getAttributes() as $attribute) {
+            $value = $entity->getValue($attribute->getCode());
+            $criteria[] = array(
+                'attribute' => $attribute,
+                'option'    => $value ? $value->getOption() : null,
+            );
+        }
+
+        return $criteria;
     }
 
     /**
