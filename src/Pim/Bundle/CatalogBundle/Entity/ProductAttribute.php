@@ -27,13 +27,13 @@ use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
  * @ORM\Entity(repositoryClass="Pim\Bundle\CatalogBundle\Entity\Repository\ProductAttributeRepository")
  * @Assert\GroupSequenceProvider
  * @Config(
- *  defaultValues={
- *      "entity"={"label"="Attribute", "plural_label"="Attributes"},
- *      "security"={
- *          "type"="ACL",
- *          "group_name"=""
- *      }
- *  }
+ *    defaultValues={
+ *        "entity"={"label"="Attribute", "plural_label"="Attributes"},
+ *        "security"={
+ *            "type"="ACL",
+ *            "group_name"=""
+ *        }
+ *    }
  * )
  *
  * @ExclusionPolicy("all")
@@ -315,9 +315,8 @@ class ProductAttribute extends AbstractEntityAttribute implements
                 $default = $this->getDefaultOptions();
                 break;
             case 'date':
-                $date = new \DateTime();
-                $date->setTimestamp((int) $this->defaultValue);
-                $default = $date;
+                $default = new \DateTime();
+                $default->setTimestamp((int) $this->defaultValue);
                 break;
             case 'boolean':
                 $default = (bool) $this->defaultValue;
