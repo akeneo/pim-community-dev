@@ -137,7 +137,8 @@ function($, _, __, tools) {
     var validators = [
         'oro/validator/notblank',
         'oro/validator/length',
-        'oro/validator/email'
+        'oro/validator/email',
+        'oro/validator/count'
     ];
     _.each(validators, $.validator.loadMethod);
 });
