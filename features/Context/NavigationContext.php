@@ -81,18 +81,8 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
      */
     public function resetCurrentPage()
     {
-        $this->getMainContext()->executeScript('sessionStorage.clear();');
+        $this->getMainContext()->executeScript('sessionStorage.clear(); typeof $ !== "undefined" && $(window).off("beforeunload");');
         $this->currentPage = null;
-    }
-
-    /**
-     * @AfterScenario
-     */
-    public function disableNavigationConfirmation()
-    {
-        if (strpos($this->currentPage, 'edit') || strpos($this->currentPage, 'creation')) {
-            $this->getMainContext()->executeScript('typeof $ !== "undefined" && $(window).off("beforeunload");');
-        }
     }
 
     /**

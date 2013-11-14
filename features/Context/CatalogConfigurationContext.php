@@ -5,6 +5,7 @@ namespace Context;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Behat\Event\ScenarioEvent;
+use Behat\Behat\Event\OutlineExampleEvent;
 
 /**
  * A context for initializing catalog configuration
@@ -60,13 +61,17 @@ class CatalogConfigurationContext extends RawMinkContext
      *
      * @BeforeScenario
      */
-    public function initialize(ScenarioEvent $event)
+    public function initialize($event)
     {
         if ($this->catalogInitialized) {
             return;
         }
 
-        $steps = $event->getScenario()->getSteps();
+        if ($event instanceof ScenarioEvent) {
+            $steps = $event->getScenario()->getSteps();
+        } elseif ($event instanceof OutlineExampleEvent) {
+            $steps = $event->getOutline()->getSteps();
+        }
 
         foreach ($steps as $step) {
             if (preg_match('/^(?:a|the) "([^"]*)" catalog configuration$/', $step->getText())) {
