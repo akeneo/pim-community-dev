@@ -6,6 +6,9 @@ use Oro\Bundle\WorkflowBundle\Model\AbstractAssembler;
 
 class ConditionAssembler extends AbstractAssembler
 {
+    const PARAMETERS_KEY = 'parameters';
+    const MESSAGE_KEY = 'message';
+
     /**
      * @var ConditionFactory
      */
@@ -32,9 +35,9 @@ class ConditionAssembler extends AbstractAssembler
         $options = array();
         $conditionType = $this->getEntityType($configuration);
         $conditionParameters = $this->getEntityParameters($configuration);
-        $conditionParameters = $this->parseRules($conditionParameters);
-        if (is_array($conditionParameters)) {
-            foreach ($conditionParameters as $key => $conditionParameter) {
+        $conditionParameters = $this->parseParameters($conditionParameters);
+        if (is_array($conditionParameters[self::PARAMETERS_KEY])) {
+            foreach ($conditionParameters[self::PARAMETERS_KEY] as $key => $conditionParameter) {
                 if ($this->isService($conditionParameter)) {
                     $options[$key] = $this->assemble($conditionParameter);
                 } else {
@@ -42,13 +45,15 @@ class ConditionAssembler extends AbstractAssembler
                 }
             }
         } else {
-            $options[] = $conditionParameters;
+            $options[] = $conditionParameters[self::PARAMETERS_KEY];
         }
 
         $message = null;
-        if (isset($options['message'])) {
-            $message = $options['message'];
-            unset($options['message']);
+        if (isset($conditionParameters[self::MESSAGE_KEY])) {
+            $message = $conditionParameters[self::MESSAGE_KEY];
+        } elseif (isset($options[self::MESSAGE_KEY])) {
+            $message = $options[self::MESSAGE_KEY];
+            unset($options[self::MESSAGE_KEY]);
         }
         $passedOptions = $this->passConfiguration($options);
 
@@ -60,14 +65,16 @@ class ConditionAssembler extends AbstractAssembler
      * @param array $conditionParameters
      * @return array
      */
-    protected function parseRules($conditionParameters)
+    protected function parseParameters($conditionParameters)
     {
-        $result = $conditionParameters;
-        if (isset($conditionParameters['rules'])) {
-            $result = $conditionParameters['rules'];
-            if (isset($conditionParameters['message'])) {
-                $result['message'] = $conditionParameters['message'];
+        $result = array();
+        if (isset($conditionParameters[self::PARAMETERS_KEY])) {
+            $result[self::PARAMETERS_KEY] = $conditionParameters[self::PARAMETERS_KEY];
+            if (isset($conditionParameters[self::MESSAGE_KEY])) {
+                $result[self::MESSAGE_KEY] = $conditionParameters[self::MESSAGE_KEY];
             }
+        } else {
+            $result[self::PARAMETERS_KEY] = $conditionParameters;
         }
         return $result;
     }

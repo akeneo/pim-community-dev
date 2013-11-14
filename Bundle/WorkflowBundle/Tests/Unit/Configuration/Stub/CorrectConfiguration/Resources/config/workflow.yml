@@ -52,10 +52,10 @@ workflows:
                     @and:
                         @true: ~
                         @or:
-                            rules:
+                            parameters:
                                 @true: ~
                                 @equals:
-                                    rules: [1, 1]
+                                    parameters: [1, 1]
                                     message: "Not equals"
                         message: "Fail upper level"
                 post_actions:

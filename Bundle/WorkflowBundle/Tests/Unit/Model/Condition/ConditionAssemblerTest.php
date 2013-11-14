@@ -3,7 +3,6 @@
 namespace Oro\Bundle\WorkflowBundle\Tests\Unit\Model\Condition;
 
 use Oro\Bundle\WorkflowBundle\Model\Condition\ConditionAssembler;
-use Oro\Bundle\WorkflowBundle\Model\Pass\ParameterPass;
 
 class ConditionAssemblerTest extends \PHPUnit_Framework_TestCase
 {
@@ -54,11 +53,11 @@ class ConditionAssemblerTest extends \PHPUnit_Framework_TestCase
             array(
                 array(
                     '@or' => array(
-                        'rules' => array(
+                        'parameters' => array(
                             array(
                                 '@and' => array(
                                     array('@graterOrEquals' =>
-                                        array('rules' => array('$contact.budget', 2000))
+                                        array('parameters' => array('$contact.budget', 2000))
                                     ),
                                     array('@isDevMode' => null),
                                     array(
