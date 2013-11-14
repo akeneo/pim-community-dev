@@ -5,7 +5,8 @@ Feature: Association creation
   I need to be able to manually create an association
 
   Background:
-    Given I am logged in as "admin"
+    Given the "default" catalog configuration
+    And I am logged in as "admin"
 
   Scenario: Successfully create an association
     Given I am on the associations page
