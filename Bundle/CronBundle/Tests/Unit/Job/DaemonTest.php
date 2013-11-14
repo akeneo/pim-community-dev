@@ -24,7 +24,7 @@ class DaemonTest extends \PHPUnit_Framework_TestCase
 
         $this->object = $this->getMockBuilder('Oro\Bundle\CronBundle\Job\Daemon')
             ->setConstructorArgs(array('app', 10))
-            ->setMethods(array('getPidProcess', 'getQueueRunProcess', 'getQueueStopProcess'))
+            ->setMethods(array('getPid', 'getPidProcess', 'getQueueRunProcess', 'getQueueStopProcess'))
             ->getMock();
 
         $this->process = $this->getMockBuilder('Symfony\Component\Process\Process')
@@ -92,7 +92,7 @@ class DaemonTest extends \PHPUnit_Framework_TestCase
             ->method('getOutput')
             ->will($this->returnValue(''));
 
-        $this->process
+        $this->object
             ->expects($this->once())
             ->method('getPid')
             ->will($this->returnValue(null));
@@ -107,12 +107,12 @@ class DaemonTest extends \PHPUnit_Framework_TestCase
             ->method('getOutput')
             ->will($this->returnValue(''));
 
-        $this->process
+        $this->object
             ->expects($this->once())
             ->method('getPid')
             ->will($this->returnValue(111));
 
-        $this->assertNotEmpty($this->object->run());
+        $this->assertEquals(111, $this->object->run());
     }
 
     /**
