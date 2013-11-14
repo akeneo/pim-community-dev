@@ -1,0 +1,12 @@
+groups:
+    caterpillar_boots:
+        type: VARIANT
+        labels:
+            en_US: Caterpillar boots
+        attributes:
+            - color
+            - size
+    similar_boots:
+        type: RELATED
+        labels:
+            en_US: Similar boots
