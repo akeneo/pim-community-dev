@@ -70,10 +70,10 @@ return array(
                     '@and' => array(
                         '@true' => null,
                         '@or' => array(
-                            'rules' => array(
+                            'parameters' => array(
                                 '@true' => null,
                                 '@equals' => array(
-                                    'rules' => array(1, 1),
+                                    'parameters' => array(1, 1),
                                     'message' => 'Not equals'
                                 )
                             )
