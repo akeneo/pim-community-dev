@@ -108,6 +108,8 @@ class CatalogConfigurationContext extends RawMinkContext
      */
     public function aCatalogConfiguration($catalog)
     {
+        $started = microtime(true);
+
         $directory = sprintf('%s/%s/%s', __DIR__, $this->catalogPath, strtolower($catalog));
 
         if (!file_exists($directory)) {
@@ -117,6 +119,9 @@ class CatalogConfigurationContext extends RawMinkContext
         }
 
         $this->createCatalog($directory);
+
+        $elapsed = number_format(microtime(true) - $started, 2);
+        $this->printDebug(sprintf('Created "%s" catalog, took %s seconds', $catalog, (string) $elapsed));
     }
 
     /**
