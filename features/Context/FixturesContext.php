@@ -725,6 +725,22 @@ class FixturesContext extends RawMinkContext
     /**
      * @param TableNode $table
      *
+     * @Then /^there should be the following associations:$/
+     */
+    public function thereShouldBeTheFollowingAssociations(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $association = $this->getAssociation($data['code']);
+            $this->getEntityManager()->refresh($association);
+
+            assertEquals($data['label-en_US'], $association->getTranslation('en_US')->getLabel());
+            assertEquals($data['label-fr_FR'], $association->getTranslation('fr_FR')->getLabel());
+        }
+    }
+
+    /**
+     * @param TableNode $table
+     *
      * @Given /^the following channels?:$/
      */
     public function theFollowingChannels(TableNode $table)
