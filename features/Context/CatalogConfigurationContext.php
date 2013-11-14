@@ -42,7 +42,7 @@ class CatalogConfigurationContext extends RawMinkContext
      */
     protected $entityLoaders = array(
         'CurrencyLoader'       => 'currencies',
-        'LocaleLoader'         => 'locales',
+        'LocaleLoader'         => null,
         'CategoryLoader'       => 'categories',
         'ChannelLoader'        => 'channels',
         'AttributeGroupLoader' => 'attribute_groups',
@@ -51,6 +51,8 @@ class CatalogConfigurationContext extends RawMinkContext
         'GroupTypeLoader'      => 'group_types',
         'GroupLoader'          => 'groups',
         'AssociationLoader'    => 'associations',
+        'UserAttrLoader'       => null,
+        'UserLoader'           => 'users',
     );
 
     /**
@@ -126,7 +128,7 @@ class CatalogConfigurationContext extends RawMinkContext
 
         foreach ($this->entityLoaders as $loaderName => $fileName) {
             $loader = sprintf('%s\%s', $this->entityLoaderPath, $loaderName);
-            $file = sprintf('%s/%s.yml', $directory, $fileName);
+            $file = $fileName !== null ? sprintf('%s/%s.yml', $directory, $fileName) : null;
             $this->runLoader($loader, $file);
         }
 
@@ -143,7 +145,9 @@ class CatalogConfigurationContext extends RawMinkContext
         $loader = new $loaderClass();
         $loader->setContainer($this->getContainer());
         $loader->setReferenceRepository($this->referenceRepository);
-        $loader->setFilePath($filePath);
+        if ($filePath !== null) {
+            $loader->setFilePath($filePath);
+        }
         $loader->load($this->getEntityManager());
     }
 

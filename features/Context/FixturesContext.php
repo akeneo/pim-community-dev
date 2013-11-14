@@ -9,7 +9,6 @@ use Oro\Bundle\BatchBundle\Entity\JobInstance;
 use Oro\Bundle\DataAuditBundle\Entity\Audit;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Oro\Bundle\UserBundle\Entity\User;
-use Oro\Bundle\UserBundle\Entity\UserApi;
 use Pim\Bundle\CatalogBundle\Entity\Association;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
@@ -1183,7 +1182,7 @@ class FixturesContext extends RawMinkContext
             return $user;
         }
 
-        return $this->createUser($username, $password, $apiKey);
+        throw new \Exception('Users should be created in catalog configuration!');
     }
 
     /**
@@ -1592,119 +1591,6 @@ class FixturesContext extends RawMinkContext
         $price->setCurrency($currency);
 
         return $price;
-    }
-
-    /**
-     * @param string $username
-     * @param strng  $password
-     * @param string $apiKey
-     *
-     * @return User
-     */
-    private function createUser($username, $password = null, $apiKey = null)
-    {
-        $password     = $password ?: $username . 'pass';
-        $apiKey       = $apiKey ?: $username . '_api_key';
-        $email        = $username.'@example.com';
-        $locale       = 'en_US';
-        $localeOption = null;
-        $scope        = 'ecommerce';
-        $scopeOption  = null;
-
-        $user = $this->getUserManager()->createUser();
-        $user
-            ->setUsername($username)
-            ->setPlainPassword($password)
-            ->setFirstname('John')
-            ->setLastname('Doe')
-            ->setEmail($email)
-            ->addRole($this->getOrCreateRole(array('role' => 'ROLE_ADMINISTRATOR')));
-
-        $manager = $this->getContainer()->get('oro_user.manager.flexible');
-
-        $localeAttribute = $manager->getAttributeRepository()->findOneBy(array('code' => 'cataloglocale'));
-
-        if (!$localeAttribute) {
-            $localeAttribute = $manager->createAttribute('oro_flexibleentity_simpleselect');
-            $localeAttribute->setCode('cataloglocale')->setLabel('Catalog locale');
-            foreach ($this->locales as $localeCode) {
-                $option = $manager->createAttributeOption();
-                $optionValue = $manager->createAttributeOptionValue()->setValue($localeCode);
-                $option->addOptionValue($optionValue);
-                $localeAttribute->addOption($option);
-                if ($locale == $localeCode) {
-                    $localeOption = $option;
-                }
-            }
-            $this->persist($localeAttribute);
-        } else {
-            $localeOption = $localeAttribute->getOptions()->filter(
-                function ($option) use ($locale) {
-                    return $option->getOptionValue()->getValue() === $locale;
-                }
-            )->first();
-        }
-
-        $localeValue = $manager->createFlexibleValue();
-        $localeValue->setAttribute($localeAttribute);
-        $localeValue->setOption($localeOption);
-        $user->addValue($localeValue);
-
-        $scopeAttribute = $manager->getAttributeRepository()->findOneBy(array('code' => 'catalogscope'));
-
-        if (!$scopeAttribute) {
-            $scopeAttribute = $manager->createAttribute('oro_flexibleentity_simpleselect');
-            $scopeAttribute->setCode('catalogscope')->setLabel('Catalog scope');
-            foreach (array_keys($this->channels) as $scopeCode) {
-                $option = $manager->createAttributeOption();
-                $optionValue = $manager->createAttributeOptionValue()->setValue($scopeCode);
-                $option->addOptionValue($optionValue);
-                $scopeAttribute->addOption($option);
-                if ($scope == $scopeCode) {
-                    $scopeOption = $option;
-                }
-            }
-            $this->persist($scopeAttribute);
-        } else {
-            $scopeOption = $scopeAttribute->getOptions()->filter(
-                function ($option) use ($scope) {
-                    return $option->getOptionValue()->getValue() === $scope;
-                }
-            )->first();
-        }
-
-        $scopeValue = $manager->createFlexibleValue();
-        $scopeValue->setAttribute($scopeAttribute);
-        $scopeValue->setOption($scopeOption);
-        $user->addValue($scopeValue);
-
-        $treeAttribute = $manager->getAttributeRepository()->findOneBy(array('code' => 'defaulttree'));
-
-        if (!$treeAttribute) {
-            $treeAttribute = $manager->createAttribute('oro_flexibleentity_simpleselect');
-            $treeAttribute->setCode('defaulttree')->setLabel('Default tree');
-            $treeOption = $manager->createAttributeOption();
-            $optionValue = $manager->createAttributeOptionValue()->setValue('default');
-            $treeOption->addOptionValue($optionValue);
-            $treeAttribute->addOption($treeOption);
-            $this->persist($treeAttribute);
-        } else {
-            $treeOption = $treeAttribute->getOptions()->first();
-        }
-
-        $scopeValue = $manager->createFlexibleValue();
-        $scopeValue->setAttribute($treeAttribute);
-        $scopeValue->setOption($treeOption);
-        $user->addValue($scopeValue);
-
-        $this->getUserManager()->updateUser($user);
-
-        $api = new UserApi();
-        $api->setApiKey($username.'_api_key')->setUser($user);
-
-        $this->persist($api);
-
-        return $user;
     }
 
     /**
