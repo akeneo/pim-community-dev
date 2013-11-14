@@ -3,7 +3,6 @@
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Form\Type;
 
 use Pim\Bundle\CatalogBundle\Tests\Unit\Form\Type\AbstractFormTypeTest;
-
 use Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceType;
 
 /**
