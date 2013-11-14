@@ -85,7 +85,7 @@ class UniqueVariantAxisValidator extends ConstraintValidator
     {
         foreach ($entity->getGroups() as $variantGroup) {
             if ($variantGroup->getType()->isVariant()) {
-                $this->validateVariantGroup($entity, $variantGroup);
+                $this->validateVariantGroup($entity, $variantGroup, $constraint);
             }
         }
     }
@@ -97,7 +97,7 @@ class UniqueVariantAxisValidator extends ConstraintValidator
      *
      * @return null
      */
-    protected function validateVariantGroup(ProductInterface $entity, Group $variantGroup)
+    protected function validateVariantGroup(ProductInterface $entity, Group $variantGroup, Constraint $constraint)
     {
         $criteria = $this->prepareVariantGroupCriterias();
 
