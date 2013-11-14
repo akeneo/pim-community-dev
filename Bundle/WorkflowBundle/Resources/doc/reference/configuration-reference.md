@@ -307,6 +307,11 @@ Transition configuration has next options:
     *boolean*
     If true than this transition can be used to start new workflow. At least one start transition is required if
     workflow doesn't have start_step attribute.
+* **form_type**
+    *string (oro_workflow_attributes - default)*
+    A form type that will be used to render form of transition.
+* **form_options**
+    These options will be passed to form type of transition, they can contain options for form types of attributes.
 * **frontend_options**
     Can have such frontend options as **class** (a CSS class applied to transition button), **icon**
     (CSS class of icon of transition button).
@@ -331,6 +336,12 @@ workflows:
                 frontend_options:                           # options of transition
                     icon: 'icon-ok'
                     class: 'btn-primary'
+                form_options:
+                    attribute_fields:
+                        budget_amount:
+                            form_type: oro_money
+                            options:
+                                required: false
             not_answered:
                 label: "Not answered"
                 step_to: end_call
