@@ -1,6 +1,7 @@
 parameters:
     oro_workflow.form.type.attributes.class: Oro\Bundle\WorkflowBundle\Form\Type\WorkflowAttributesType
     oro_workflow.form.type.step.class: Oro\Bundle\WorkflowBundle\Form\Type\WorkflowStepType
+    oro_workflow.form.type.transition.class: Oro\Bundle\WorkflowBundle\Form\Type\WorkflowTransitionType
 
 services:
     oro_workflow.form.type.attributes:
@@ -13,3 +14,9 @@ services:
         class: %oro_workflow.form.type.step.class%
         tags:
             - { name: form.type, alias: oro_workflow_step }
+
+
+    oro_workflow.form.type.transition:
+        class: %oro_workflow.form.type.transition.class%
+        tags:
+            - { name: form.type, alias: oro_workflow_transition }

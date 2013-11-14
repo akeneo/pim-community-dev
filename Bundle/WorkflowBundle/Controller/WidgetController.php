@@ -5,8 +5,6 @@ namespace Oro\Bundle\WorkflowBundle\Controller;
 use Doctrine\ORM\EntityManager;
 
 use Symfony\Component\Form\Form;
-use Symfony\Component\Form\FormError;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -22,7 +20,6 @@ use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
 use Oro\Bundle\WorkflowBundle\Model\Transition;
 use Oro\Bundle\WorkflowBundle\Model\DoctrineHelper;
 use Oro\Bundle\WorkflowBundle\Serializer\WorkflowAwareSerializer;
-use Oro\Bundle\WorkflowBundle\Validator\Constraints\TransitionIsAllowed;
 use Oro\Bundle\WorkflowBundle\Exception\NotManageableEntityException;
 
 class WidgetController extends Controller
@@ -200,9 +197,7 @@ class WidgetController extends Controller
                 $transition->getFormOptions(),
                 array(
                     'workflow_item' => $workflowItem,
-                    'constraints' => array(
-                        new TransitionIsAllowed($workflowItem, $transitionName)
-                    )
+                    'transition_name' => $transitionName
                 )
             )
         );

@@ -42,6 +42,12 @@ class WorkflowStepType extends AbstractType
         $resolver->setRequired(array('workflow_item'));
         $resolver->setOptional(array('step_name'));
 
+        $resolver->setAllowedTypes(
+            array(
+                'step_name' => 'string',
+            )
+        );
+
         $resolver->setNormalizers(
             array(
                 'step_name' => function (Options $options, $stepName) {

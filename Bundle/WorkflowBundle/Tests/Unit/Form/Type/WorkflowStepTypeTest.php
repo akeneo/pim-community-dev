@@ -17,7 +17,7 @@ class WorkflowStepTypeTest extends AbstractWorkflowAttributesTypeTestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->type = new WorkflowStepType($this->workflowRegistry);
+        $this->type = new WorkflowStepType();
     }
 
     protected function tearDown()

@@ -1,5 +1,8 @@
 <?php
 
+use Oro\Bundle\WorkflowBundle\Form\Type\WorkflowStepType;
+use Oro\Bundle\WorkflowBundle\Form\Type\WorkflowTransitionType;
+
 return array(
     'first_workflow' => array(
         'label' => 'First Workflow',
@@ -11,7 +14,7 @@ return array(
                 'template' => 'My:Custom:template.html.twig',
                 'order' => 1,
                 'is_final' => true,
-                'form_type' => 'oro_workflow_step',
+                'form_type' => WorkflowStepType::NAME,
                 'form_options' => array(
                     'attribute_fields' => array(
                         'first_attribute' => array(
@@ -124,7 +127,7 @@ return array(
                 'frontend_options' => array(
                     'icon' => 'bar'
                 ),
-                'form_type' => 'oro_workflow_attributes',
+                'form_type' => WorkflowTransitionType::NAME,
                 'form_options' => array(),
             )
         ),

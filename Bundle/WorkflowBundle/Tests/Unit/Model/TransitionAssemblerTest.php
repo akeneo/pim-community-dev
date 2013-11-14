@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\WorkflowBundle\Tests\Unit\Model;
 
-use Oro\Bundle\WorkflowBundle\Form\Type\WorkflowStepType;
+use Oro\Bundle\WorkflowBundle\Form\Type\WorkflowTransitionType;
 use Oro\Bundle\WorkflowBundle\Model\Transition;
 use Oro\Bundle\WorkflowBundle\Model\TransitionAssembler;
 use Oro\Bundle\WorkflowBundle\Model\Condition\Configurable as ConfigurableCondition;
@@ -153,16 +153,6 @@ class TransitionAssemblerTest extends \PHPUnit_Framework_TestCase
             'step' => $this->getStep()
         );
 
-        $configuration = array_merge(
-            $configuration,
-            array(
-                'is_start' => false,
-                'form_type' => WorkflowStepType::NAME,
-                'form_options' => array(),
-                'frontend_options' => array(),
-            )
-        );
-
         $expectedCondition = null;
         $expectedAction = null;
         if (array_key_exists('conditions', $transitionDefinition)) {
@@ -198,6 +188,17 @@ class TransitionAssemblerTest extends \PHPUnit_Framework_TestCase
             $this->transitionDefinitions,
             $steps
         );
+
+        $configuration = array_merge(
+            array(
+                'is_start' => false,
+                'form_type' => WorkflowTransitionType::NAME,
+                'form_options' => array(),
+                'frontend_options' => array(),
+            ),
+            $configuration
+        );
+
         $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $transitions);
         $this->assertCount(1, $transitions);
         $this->assertTrue($transitions->containsKey('test'));
