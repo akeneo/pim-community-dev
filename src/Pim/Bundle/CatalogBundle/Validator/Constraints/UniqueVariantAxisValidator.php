@@ -85,38 +85,50 @@ class UniqueVariantAxisValidator extends ConstraintValidator
     {
         foreach ($entity->getGroups() as $variantGroup) {
             if ($variantGroup->getType()->isVariant()) {
-                $criteria = array();
-                foreach ($variantGroup->getAttributes() as $attribute) {
-                    $value = $entity->getValue($attribute->getCode());
-                    $criteria[] = array(
-                        'attribute' => $attribute,
-                        'option'    => $value ? $value->getOption() : null,
-                    );
-                }
-
-                $repository = $this->manager->getFlexibleRepository();
-                $matchingProducts = $repository->findAllForVariantGroup($variantGroup, $criteria);
-
-                $matchingProducts = array_filter(
-                    $matchingProducts,
-                    function ($product) use ($entity) {
-                        return $product->getId() !== $entity->getId();
-                    }
-                );
-
-                if (count($matchingProducts) !== 0) {
-                    $values = array();
-                    foreach ($criteria as $item) {
-                        $values[] = sprintf('%s: %s', $item['attribute']->getCode(), (string) $item['option']);
-                    }
-                    $this->addViolation(
-                        $constraint,
-                        $entity->getLabel(),
-                        $variantGroup->getLabel(),
-                        implode(', ', $values)
-                    );
-                }
+                $this->validateVariantGroup($variantGroup);
             }
+        }
+    }
+
+    /**
+     * Validate a variant group
+     *
+     * @param Group $variantGroup
+     *
+     * @return null
+     */
+    protected function validateVariantGroup(Group $variantGroup)
+    {
+        $criteria = array();
+        foreach ($variantGroup->getAttributes() as $attribute) {
+            $value = $entity->getValue($attribute->getCode());
+            $criteria[] = array(
+                'attribute' => $attribute,
+                'option'    => $value ? $value->getOption() : null,
+            );
+        }
+
+        $repository = $this->manager->getFlexibleRepository();
+        $matchingProducts = $repository->findAllForVariantGroup($variantGroup, $criteria);
+
+        $matchingProducts = array_filter(
+            $matchingProducts,
+            function ($product) use ($entity) {
+                return $product->getId() !== $entity->getId();
+            }
+        );
+
+        if (count($matchingProducts) !== 0) {
+            $values = array();
+            foreach ($criteria as $item) {
+                $values[] = sprintf('%s: %s', $item['attribute']->getCode(), (string) $item['option']);
+            }
+            $this->addViolation(
+                $constraint,
+                $entity->getLabel(),
+                $variantGroup->getLabel(),
+                implode(', ', $values)
+            );
         }
     }
 
