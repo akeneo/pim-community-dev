@@ -23,7 +23,7 @@ Feature: Import associations
     And I launch the import job
     And I wait for the job to finish
     Then there should be the following associations:
-      | code    | label      | label-en_US | label-fr_FR      |
-      | default | [default]  |             |                  |
-      | X_SELL  | Cross Sell | Cross Sell  | Vente croisée    |
-      | UPSELL  | Upsell     | Upsell      | Vente incitative |
+      | code    | label-en_US | label-fr_FR      |
+      | default |             |                  |
+      | X_SELL  | Cross Sell  | Vente croisée    |
+      | UPSELL  | Upsell      | Vente incitative |
