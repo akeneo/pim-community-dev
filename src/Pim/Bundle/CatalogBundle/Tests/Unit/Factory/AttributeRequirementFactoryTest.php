@@ -16,7 +16,7 @@ class AttributeRequirementFactoryTest extends \PHPUnit_Framework_TestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->factory = new AttributeRequirementFactory();
     }

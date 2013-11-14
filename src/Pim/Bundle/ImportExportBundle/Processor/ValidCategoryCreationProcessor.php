@@ -329,6 +329,6 @@ class ValidCategoryCreationProcessor extends AbstractConfigurableStepElement imp
      */
     private function findCategory($code)
     {
-        return $this->entityManager ->getRepository('PimCatalogBundle:Category')->findOneBy(array('code' => $code));
+        return $this->entityManager->getRepository('PimCatalogBundle:Category')->findOneBy(array('code' => $code));
     }
 }

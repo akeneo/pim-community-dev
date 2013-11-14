@@ -26,7 +26,7 @@ class ProductAttributeTypeTest extends AbstractFormTypeTest
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp()
     {
         parent::setUp();
 

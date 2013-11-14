@@ -16,7 +16,7 @@ class RegisterAttributeConstraintGuessersPassTest extends \PHPUnit_Framework_Tes
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->target = new RegisterAttributeConstraintGuessersPass();
     }

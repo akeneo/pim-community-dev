@@ -50,7 +50,7 @@ class TranslatableFieldTypeTest extends TypeTestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp()
     {
         parent::setUp();
 

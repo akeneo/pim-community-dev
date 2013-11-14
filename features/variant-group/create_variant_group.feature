@@ -26,7 +26,7 @@ Feature: Variant group creation
     And I select the axis "Color"
     And I press the "Save" button
     Then I am on the variant groups page
-    And I should see group MUG
+    And I should see groups MUG
 
   Scenario: Fail to create a variant missing the code
     Given I am on the variant groups page

@@ -105,7 +105,7 @@ class GroupTypeTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedCode, $this->type->__toString());
     }
 
-   /**
+    /**
      * Test getter/setter for translations property
      */
     public function testTranslations()
