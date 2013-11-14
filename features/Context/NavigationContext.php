@@ -92,11 +92,8 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
      */
     public function iAmLoggedInAs($username)
     {
-        $password = $username;
-        $this->getFixturesContext()->getOrCreateUser($username, $password);
-
         $this->username = $username;
-        $this->password = $password;
+        $this->password = $username;
     }
 
     /**

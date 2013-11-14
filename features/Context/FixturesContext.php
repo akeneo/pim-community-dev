@@ -1170,22 +1170,6 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @param string $username
-     * @param string $password
-     * @param string $apiKey
-     *
-     * @return User
-     */
-    public function getOrCreateUser($username, $password = null, $apiKey = null)
-    {
-        if ($user = $this->getRepository('OroUserBundle:User')->findOneBy(array('username' => $username))) {
-            return $user;
-        }
-
-        throw new \Exception('Users should be created in catalog configuration!');
-    }
-
-    /**
      * @param string $language
      *
      * @return string
@@ -1688,14 +1672,6 @@ class FixturesContext extends RawMinkContext
     private function getMediaManager()
     {
         return $this->getContainer()->get('pim_catalog.manager.media');
-    }
-
-    /**
-     * @return \Oro\Bundle\UserBundle\Entity\UserManager
-     */
-    private function getUserManager()
-    {
-        return $this->getContainer()->get('oro_user.manager');
     }
 
     /**
