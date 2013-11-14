@@ -35,6 +35,8 @@ workflows:
                 step_to: first_step
                 is_start: true
                 is_hidden: true
+                is_unavailable_hidden: true
+                message: "Test message"
                 transition_definition: first_transition_definition
                 frontend_options:
                     class: foo

@@ -5,7 +5,6 @@ namespace Oro\Bundle\WorkflowBundle\Model;
 use Doctrine\Common\Collections\ArrayCollection;
 
 use Oro\Bundle\WorkflowBundle\Exception\AssemblerException;
-use Oro\Bundle\WorkflowBundle\Form\Type\WorkflowAttributesType;
 use Oro\Bundle\WorkflowBundle\Form\Type\WorkflowTransitionType;
 use Oro\Bundle\WorkflowBundle\Model\Condition\ConditionFactory;
 use Oro\Bundle\WorkflowBundle\Model\Action\ActionFactory;
@@ -103,8 +102,10 @@ class TransitionAssembler extends AbstractAssembler
         $transition->setName($name)
             ->setLabel($options['label'])
             ->setStepTo($steps[$stepToName])
+            ->setMessage($this->getOption($options, 'message', null))
             ->setStart($this->getOption($options, 'is_start', false))
             ->setHidden($this->getOption($options, 'is_hidden', false))
+            ->setUnavailableHidden($this->getOption($options, 'is_unavailable_hidden', false))
             ->setFormType($this->getOption($options, 'form_type', WorkflowTransitionType::NAME))
             ->setFormOptions($this->getOption($options, 'form_options', array()))
             ->setFrontendOptions($this->getOption($options, 'frontend_options', array()));

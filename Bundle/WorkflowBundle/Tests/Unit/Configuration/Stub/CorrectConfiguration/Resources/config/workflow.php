@@ -49,6 +49,8 @@ return array(
                 'step_to' => 'first_step',
                 'is_start' => true,
                 'is_hidden' => true,
+                'is_unavailable_hidden' => true,
+                'message' => 'Test message',
                 'transition_definition' => 'first_transition_definition',
                 'frontend_options' => array(
                     'class' => 'foo'
@@ -123,6 +125,7 @@ return array(
                 'step_to' => 'second_step',
                 'is_start' => false,
                 'is_hidden' => false,
+                'is_unavailable_hidden' => false,
                 'transition_definition' => 'second_transition_definition',
                 'frontend_options' => array(
                     'icon' => 'bar'

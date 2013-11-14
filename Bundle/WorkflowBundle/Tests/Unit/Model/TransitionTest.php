@@ -13,9 +13,13 @@ class TransitionTest extends \PHPUnit_Framework_TestCase
      */
     public function testGettersAndSetters($property, $value)
     {
-        $getter = 'get' . ucfirst($property);
-        $setter = 'set' . ucfirst($property);
+        $ucProp = ucfirst($property);
+        $setter = 'set' . $ucProp;
         $obj = new Transition();
+        $getter = 'get' . $ucProp;
+        if (!method_exists($obj, $getter)) {
+            $getter = 'is' . $ucProp;
+        }
         $this->assertInstanceOf(
             'Oro\Bundle\WorkflowBundle\Model\Transition',
             call_user_func_array(array($obj, $setter), array($value))
@@ -28,6 +32,10 @@ class TransitionTest extends \PHPUnit_Framework_TestCase
         return array(
             'name' => array('name', 'test'),
             'label' => array('label', 'test'),
+            'message' => array('message', 'test'),
+            'hidden' => array('hidden', true),
+            'start' => array('start', true),
+            'unavailableHidden' => array('unavailableHidden', true),
             'stepTo' => array('stepTo', $this->getStepMock('testStep')),
             'frontendOptions' => array('frontendOptions', array('key' => 'value')),
             'form_type' => array('formType', 'custom_workflow_transition'),

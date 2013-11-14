@@ -109,11 +109,13 @@ class WidgetController extends Controller
             $entity = $this->getEntityReference($entityClass, $entityId);
             $initData = $workflowManager->getWorkflowData($workflow, $entity, $initData);
         }
-        $workflowItem = $workflow->createWorkflowItem($initData);
 
-        $saved = false;
-        $transitionForm = $this->getTransitionForm($workflow, $workflowItem, $transitionName);
+        $workflowItem = $workflow->createWorkflowItem($initData);
+        $transition = $workflow->getTransitionManager()->getTransition($transitionName);
+        $transitionForm = $this->getTransitionForm($workflowItem, $transition);
+
         $data = null;
+        $saved = false;
         if ($this->getRequest()->isMethod('POST')) {
             $transitionForm->submit($this->getRequest());
 
@@ -128,6 +130,7 @@ class WidgetController extends Controller
         }
 
         return array(
+            'transition' => $transition,
             'data' => $data,
             'saved' => $saved,
             'workflowItem' => $workflowItem,
@@ -155,7 +158,8 @@ class WidgetController extends Controller
         $workflowManager = $this->get('oro_workflow.manager');
         $workflow = $workflowManager->getWorkflow($workflowItem);
 
-        $transitionForm = $this->getTransitionForm($workflow, $workflowItem, $transitionName);
+        $transition = $workflow->getTransitionManager()->getTransition($transitionName);
+        $transitionForm = $this->getTransitionForm($workflowItem, $transition);
 
         $saved = false;
         if ($this->getRequest()->isMethod('POST')) {
@@ -171,6 +175,7 @@ class WidgetController extends Controller
         }
 
         return array(
+            'transition' => $transition,
             'saved' => $saved,
             'workflowItem' => $workflowItem,
             'form' => $transitionForm->createView(),
@@ -180,16 +185,13 @@ class WidgetController extends Controller
     /**
      * Get transition form.
      *
-     * @param Workflow $workflow
      * @param WorkflowItem $workflowItem
-     * @param string $transitionName
+     * @param Transition $transition
      * @return Form
      */
-    protected function getTransitionForm(Workflow $workflow, WorkflowItem $workflowItem, $transitionName)
+    protected function getTransitionForm(WorkflowItem $workflowItem, Transition $transition)
     {
-        $transition = $workflow->getTransitionManager()->getTransition($transitionName);
         $transition->initialize($workflowItem);
-
         return $this->createForm(
             $transition->getFormType(),
             $workflowItem->getData(),
@@ -197,7 +199,7 @@ class WidgetController extends Controller
                 $transition->getFormOptions(),
                 array(
                     'workflow_item' => $workflowItem,
-                    'transition_name' => $transitionName
+                    'transition_name' => $transition->getName()
                 )
             )
         );

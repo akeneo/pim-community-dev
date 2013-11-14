@@ -67,6 +67,16 @@ class Transition
     protected $formOptions = array();
 
     /**
+     * @var string
+     */
+    protected $message;
+
+    /**
+     * @var bool
+     */
+    protected $unavailableHidden = false;
+
+    /**
      * Set label.
      *
      * @param string $label
@@ -343,6 +353,42 @@ class Transition
     public function setInitAction(ActionInterface $initAction)
     {
         $this->initAction = $initAction;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMessage()
+    {
+        return $this->message;
+    }
+
+    /**
+     * @param string $message
+     * @return Transition
+     */
+    public function setMessage($message)
+    {
+        $this->message = $message;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isUnavailableHidden()
+    {
+        return $this->unavailableHidden;
+    }
+
+    /**
+     * @param boolean $unavailableHidden
+     * @return Transition
+     */
+    public function setUnavailableHidden($unavailableHidden)
+    {
+        $this->unavailableHidden = $unavailableHidden;
         return $this;
     }
 }

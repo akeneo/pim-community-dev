@@ -4,6 +4,7 @@
         data-transition-url="{{ url }}"
         data-redirect-to-workflow="{{ redirectToWorkflow }}"
         data-transition-label="{{ transition.label|trans }}"
+        {% if transition.message %}data-message="{{ transition.message|trans }}"{% endif %}
         {% if dialogUrl %}data-dialog-url="{{ dialogUrl }}"{% endif %}
         class="btn icons-holder-text no-hash {% if transition.frontendOptions is defined and transition.frontendOptions.class is defined %}{{ transition.frontendOptions.class }}{% endif %}"
         id="transition-{{ workflow.name }}-{{ transition.name }}">
