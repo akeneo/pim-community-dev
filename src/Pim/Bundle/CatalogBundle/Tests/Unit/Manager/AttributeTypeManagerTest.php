@@ -52,7 +52,7 @@ class AttributeTypeManagerTest extends WebTestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->markTestSkipped('Due to Symfony 2.3 Upgrade, GlobalExecutionContext issue');
         parent::setUp();

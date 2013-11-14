@@ -16,7 +16,7 @@ class FileGuesserTest extends ConstraintGuesserTest
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->target = new FileGuesser();
     }

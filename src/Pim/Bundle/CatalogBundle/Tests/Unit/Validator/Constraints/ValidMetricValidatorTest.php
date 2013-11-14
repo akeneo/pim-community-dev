@@ -47,7 +47,7 @@ class ValidMetricValidatorTest extends \PHPUnit_Framework_TestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->context = $this->getMock('Symfony\Component\Validator\ExecutionContext', array(), array(), '', false);
         $this->validator = new ValidMetricValidator($this->measures);

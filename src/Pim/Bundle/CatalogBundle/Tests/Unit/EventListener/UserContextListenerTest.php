@@ -33,7 +33,7 @@ class UserContextListenerTest extends \PHPUnit_Framework_TestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->translatableListener = $this->getTranslatableListenerMock();
         $this->securityContext = $this->getSecurityContextMock();
