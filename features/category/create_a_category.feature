@@ -3,9 +3,12 @@ Feature: Create a category
   As a user
   I need to be able to create a new category tree or a node of a category tree
 
+  Background:
+    Given the "default" catalog configuration
+    And I am logged in as "admin"
+
   Scenario: Create a category tree
-    Given I am logged in as "admin"
-    And I am on the category tree creation page
+    Given I am on the category tree creation page
     When I fill in the following information:
       | Code | shoe |
     And I save the category
@@ -16,7 +19,6 @@ Feature: Create a category
     Given the following category:
       | code | label |
       | shoe | Shoe  |
-    And I am logged in as "admin"
     And I am on the category "shoe" node creation page
     When I fill in the following information:
       | Code | flipflap |
@@ -29,7 +31,6 @@ Feature: Create a category
     Given the following category:
       | code | label | parent  |
       | shoe | Shoe  | default |
-    And I am logged in as "admin"
     And I am on the categories page
     When I right click on the "Shoe" category
     And I click on "Create" in the right click menu

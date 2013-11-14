@@ -291,6 +291,14 @@ class FixturesContext extends RawMinkContext
                 $product->setEnabled($data['enabled'] === 'yes');
             }
 
+            if (isset($data['categories'])) {
+                $categoryCodes = $this->listToArray($data['categories']);
+                foreach ($categoryCodes as $code) {
+                    $category = $this->getCategory($code);
+                    $product->addCategory($category);
+                }
+            }
+
             $this->getProductManager()->save($product);
         }
     }

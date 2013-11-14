@@ -5,7 +5,8 @@ Feature: Display the category history
 
   @javascript
   Scenario: Display category updates
-    Given I am logged in as "admin"
+    Given the "default" catalog configuration
+    And I am logged in as "admin"
     And I am on the category tree creation page
     When I fill in the following information:
       | Code | book |
