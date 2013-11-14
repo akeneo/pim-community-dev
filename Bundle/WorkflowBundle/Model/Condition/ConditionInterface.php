@@ -17,13 +17,6 @@ interface ConditionInterface
     public function setMessage($message);
 
     /**
-     * Get error message text.
-     *
-     * @return string
-     */
-    public function getMessage();
-
-    /**
      * Check if context meets condition requirements, optionally add error to collection
      *
      * @param mixed $context

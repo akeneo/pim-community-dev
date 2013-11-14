@@ -54,9 +54,7 @@ class ConditionFactory
         }
 
         if ($message) {
-            $condition->setMessage(
-                $this->container->get('translator')->trans($message)
-            );
+            $condition->setMessage($message);
         }
         $condition->initialize($options);
 

@@ -3,24 +3,26 @@
 namespace Oro\Bundle\WorkflowBundle\Controller;
 
 use Doctrine\ORM\EntityManager;
-use Oro\Bundle\WorkflowBundle\Model\Transition;
-use Oro\Bundle\WorkflowBundle\Serializer\WorkflowAwareSerializer;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-
-use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
-use Oro\Bundle\WorkflowBundle\Model\Workflow;
-use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+
+use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
+use Oro\Bundle\WorkflowBundle\Model\Workflow;
+use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
+use Oro\Bundle\WorkflowBundle\Model\Transition;
 use Oro\Bundle\WorkflowBundle\Model\DoctrineHelper;
+use Oro\Bundle\WorkflowBundle\Serializer\WorkflowAwareSerializer;
+use Oro\Bundle\WorkflowBundle\Validator\Constraints\TransitionIsAllowed;
 use Oro\Bundle\WorkflowBundle\Exception\NotManageableEntityException;
 
 class WidgetController extends Controller
@@ -117,7 +119,6 @@ class WidgetController extends Controller
         $data = null;
         if ($this->getRequest()->isMethod('POST')) {
             $transitionForm->submit($this->getRequest());
-            $this->applyWorkflowErrors($workflow, $workflowItem, $transitionName, $transitionForm);
 
             if ($transitionForm->isValid()) {
                 /** @var WorkflowAwareSerializer $serializer */
@@ -162,7 +163,6 @@ class WidgetController extends Controller
         $saved = false;
         if ($this->getRequest()->isMethod('POST')) {
             $transitionForm->submit($this->getRequest());
-            $this->applyWorkflowErrors($workflow, $workflowItem, $transitionName, $transitionForm);
 
             if ($transitionForm->isValid()) {
                 $workflowItem->setUpdated();
@@ -178,22 +178,6 @@ class WidgetController extends Controller
             'workflowItem' => $workflowItem,
             'form' => $transitionForm->createView(),
         );
-    }
-
-    /**
-     * @param Workflow $workflow
-     * @param WorkflowItem $workflowItem
-     * @param string $transitionName
-     * @param Form $form
-     */
-    protected function applyWorkflowErrors(Workflow $workflow, WorkflowItem $workflowItem, $transitionName, Form $form)
-    {
-        if (!$workflow->isTransitionAllowed($workflowItem, $transitionName)) {
-            $errors = $workflow->getErrors();
-            foreach ($errors as $error) {
-                $form->addError(new FormError($error));
-            }
-        }
     }
 
     /**
@@ -216,6 +200,9 @@ class WidgetController extends Controller
                 $transition->getFormOptions(),
                 array(
                     'workflow_item' => $workflowItem,
+                    'constraints' => array(
+                        new TransitionIsAllowed($workflowItem, $transitionName)
+                    )
                 )
             )
         );

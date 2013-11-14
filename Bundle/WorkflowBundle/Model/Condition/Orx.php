@@ -16,7 +16,7 @@ class Orx extends AbstractComposite
     public function isAllowed($context, Collection $errors = null)
     {
         if (!$this->conditions) {
-            $this->addError($errors);
+            $this->addError($context, $errors);
             return false;
         }
 
@@ -26,7 +26,7 @@ class Orx extends AbstractComposite
             }
         }
 
-        $this->addError($errors);
+        $this->addError($context, $errors);
 
         return false;
     }

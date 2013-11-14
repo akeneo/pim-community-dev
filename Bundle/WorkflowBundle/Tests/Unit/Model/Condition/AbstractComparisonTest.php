@@ -2,6 +2,8 @@
 
 namespace Oro\Bundle\WorkflowBundle\Tests\Unit\Model\Condition;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 use Oro\Bundle\WorkflowBundle\Model\Condition;
 use Oro\Bundle\WorkflowBundle\Model\Condition\AbstractComparison;
 
@@ -131,13 +133,49 @@ class AbstractComparisonTest extends \PHPUnit_Framework_TestCase
         $this->condition->initialize(array());
     }
 
-    public function testGetMessage()
+    public function testAddError()
     {
-        $this->condition->initialize(array(1, 2));
+        $context = array('foo' => 'fooValue', 'bar' => 'barValue');
+        $options = array('left' => 'foo', 'right' => 'bar');
 
-        $this->assertNull($this->condition->getMessage());
+        $left = $options['left'];
+        $right = $options['right'];
 
-        $this->condition->setMessage('compare %left% with %right%');
-        $this->assertEquals('compare 1 with 2', $this->condition->getMessage());
+        $this->condition->initialize($options);
+        $message = 'Compare {{ left }} with {{ right }}.';
+        $this->condition->setMessage($message);
+
+        $this->contextAccessor->expects($this->at(0))->method('getValue')
+            ->with($context, $left)
+            ->will($this->returnValue($context[$left]));
+
+        $this->contextAccessor->expects($this->at(1))->method('getValue')
+            ->with($context, $right)
+            ->will($this->returnValue($context[$right]));
+
+        $this->condition->expects($this->once())->method('doCompare')
+            ->with($context[$left], $context[$right])
+            ->will($this->returnValue(false));
+
+        $this->contextAccessor->expects($this->at(2))->method('getValue')
+            ->with($context, $left)
+            ->will($this->returnValue($context[$left]));
+
+        $this->contextAccessor->expects($this->at(3))->method('getValue')
+            ->with($context, $right)
+            ->will($this->returnValue($context[$right]));
+
+        $errors = new ArrayCollection();
+
+        $this->assertFalse($this->condition->isAllowed($context, $errors));
+
+        $this->assertEquals(1, $errors->count());
+        $this->assertEquals(
+            array(
+                $message,
+                array('{{ left }}' => $context[$left], '{{ right }}' => $context[$right])
+            ),
+            $errors->get(0)
+        );
     }
 }

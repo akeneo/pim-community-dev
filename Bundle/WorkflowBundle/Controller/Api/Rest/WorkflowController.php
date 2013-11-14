@@ -21,7 +21,7 @@ use Oro\Bundle\WorkflowBundle\Exception\WorkflowNotFoundException;
 use Oro\Bundle\WorkflowBundle\Model\Workflow;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowManager;
-use Oro\Bundle\WorkflowBundle\Exception\UnknownTransitionException;
+use Oro\Bundle\WorkflowBundle\Exception\InvalidTransitionException;
 use Oro\Bundle\WorkflowBundle\Exception\ForbiddenTransitionException;
 use Oro\Bundle\WorkflowBundle\Exception\UnknownAttributeException;
 
@@ -81,7 +81,7 @@ class WorkflowController extends FOSRestController
             return $this->handleError($e->getMessage(), Codes::HTTP_NOT_FOUND);
         } catch (UnknownAttributeException $e) {
             return $this->handleError($e->getMessage(), Codes::HTTP_BAD_REQUEST);
-        } catch (UnknownTransitionException $e) {
+        } catch (InvalidTransitionException $e) {
             return $this->handleError($e->getMessage(), Codes::HTTP_BAD_REQUEST);
         } catch (ForbiddenTransitionException $e) {
             return $this->handleError($e->getMessage(), Codes::HTTP_FORBIDDEN);
@@ -149,7 +149,7 @@ class WorkflowController extends FOSRestController
             $this->get('oro_workflow.manager')->transit($workflowItem, $transitionName);
         } catch (WorkflowNotFoundException $e) {
             return $this->handleError($e->getMessage(), Codes::HTTP_NOT_FOUND);
-        } catch (UnknownTransitionException $e) {
+        } catch (InvalidTransitionException $e) {
             return $this->handleError($e->getMessage(), Codes::HTTP_BAD_REQUEST);
         } catch (ForbiddenTransitionException $e) {
             return $this->handleError($e->getMessage(), Codes::HTTP_FORBIDDEN);

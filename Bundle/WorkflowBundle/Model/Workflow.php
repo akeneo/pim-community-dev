@@ -2,8 +2,6 @@
 
 namespace Oro\Bundle\WorkflowBundle\Model;
 
-use Symfony\Component\Translation\TranslatorInterface;
-
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -11,7 +9,7 @@ use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowTransitionRecord;
 use Oro\Bundle\WorkflowBundle\Exception\ForbiddenTransitionException;
 use Oro\Bundle\WorkflowBundle\Exception\UnknownStepException;
-use Oro\Bundle\WorkflowBundle\Exception\UnknownTransitionException;
+use Oro\Bundle\WorkflowBundle\Exception\InvalidTransitionException;
 
 class Workflow
 {
@@ -55,11 +53,6 @@ class Workflow
     protected $entityBinder;
 
     /**
-     * @var TranslatorInterface
-     */
-    protected $translator;
-
-    /**
      * @var string
      */
     protected $label;
@@ -90,14 +83,6 @@ class Workflow
     public function setEntityBinder(EntityBinder $entityBinder)
     {
         $this->entityBinder = $entityBinder;
-    }
-
-    /**
-     * @param TranslatorInterface $translator
-     */
-    public function setTranslator(TranslatorInterface $translator)
-    {
-        $this->translator = $translator;
     }
 
     /**
@@ -236,19 +221,26 @@ class Workflow
      *
      * @param WorkflowItem $workflowItem
      * @param string|Transition $transition
+     * @param Collection $errors
+     * @param bool $fireExceptions
      * @return bool
+     * @throws InvalidTransitionException
      */
-    public function isTransitionAllowed(WorkflowItem $workflowItem, $transition)
-    {
-        $this->errors = new ArrayCollection();
-
+    public function isTransitionAllowed(
+        WorkflowItem $workflowItem,
+        $transition,
+        Collection $errors = null,
+        $fireExceptions = false
+    ) {
         // get current transition
-        $transition = $this->transitionManager->extractTransition($transition);
-        if (!$transition) {
-            $this->errors->add(
-                $this->translator->trans('oro.workflow.message.transition_not_exist')
-            );
-            return false;
+        try {
+            $transition = $this->transitionManager->extractTransition($transition);
+        } catch (InvalidTransitionException $e) {
+            if ($fireExceptions) {
+                throw $e;
+            } else {
+                return false;
+            }
         }
 
         // get current step
@@ -262,41 +254,27 @@ class Workflow
         if (!$currentStep) {
             $isStart = $transition->isStart();
             if (!$isStart) {
-                $this->errors->add(
-                    $this->translator->trans(
-                        'oro.workflow.message.%transition%_is_not_start',
-                        array('%transition%' => $transition->getName())
-                    )
-                );
+                if ($fireExceptions) {
+                    throw InvalidTransitionException::notStartTransition(
+                        $workflowItem->getWorkflowName(),
+                        $transition->getName()
+                    );
+                }
                 return false;
             }
         } elseif (!$currentStep->isAllowedTransition($transition->getName())) {
             // if transition is not allowed for current step
-            $this->errors->add(
-                $this->translator->trans(
-                    'oro.workflow.message.%transition%_not_allowed_at_%step%',
-                    array('%transition%' => $transition->getName(), '%step%' => $currentStep->getName())
-                )
-            );
+            if ($fireExceptions) {
+                throw InvalidTransitionException::stepHasNoAllowedTransition(
+                    $workflowItem->getWorkflowName(),
+                    $currentStep->getName(),
+                    $transition->getName()
+                );
+            }
             return false;
         }
 
-        $isAllowed = $transition->isAllowed($workflowItem, $this->errors);
-        if (!$isAllowed && $this->errors->isEmpty()) {
-            $this->errors->add(
-                $this->translator->trans('oro.workflow.message.some_conditions_not_met')
-            );
-        }
-
-        return $isAllowed;
-    }
-
-    /**
-     * @return Collection
-     */
-    public function getErrors()
-    {
-        return $this->errors;
+        return $transition->isAllowed($workflowItem, $errors);
     }
 
     /**
@@ -306,7 +284,6 @@ class Workflow
      * @param string|Transition $transition
      * @throws ForbiddenTransitionException
      * @throws UnknownStepException
-     * @throws UnknownTransitionException
      */
     public function transit(WorkflowItem $workflowItem, $transition)
     {

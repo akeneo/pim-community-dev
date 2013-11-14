@@ -12,8 +12,3 @@
 "Delete": "Delete"
 "Actions": "Actions"
 "Step information saved": "Step information saved"
-
-oro.workflow.message.transition_not_exist: 'Requested transition does not exist'
-oro.workflow.message.%transition%_is_not_start: '"%transition%" is not start transition'
-oro.workflow.message.%transition%_not_allowed_at_%step%: '"%transition%" transition is not allowed at step "%step%"'
-oro.workflow.message.some_conditions_not_met: "Some transition conditions are not met"

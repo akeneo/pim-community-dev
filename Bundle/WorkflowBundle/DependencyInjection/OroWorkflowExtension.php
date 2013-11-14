@@ -27,5 +27,6 @@ class OroWorkflowExtension extends Extension
         $loader->load('twig_extensions.yml');
         $loader->load('listener.yml');
         $loader->load('http.yml');
+        $loader->load('validator.yml');
     }
 }

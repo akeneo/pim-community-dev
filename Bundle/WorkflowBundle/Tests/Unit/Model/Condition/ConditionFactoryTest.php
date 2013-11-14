@@ -74,27 +74,15 @@ class ConditionFactoryTest extends \PHPUnit_Framework_TestCase
         $conditionMock = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\Condition\ConditionInterface')
             ->getMock();
 
-        $translator = $this->getMockBuilder('Symfony\Component\Translation\TranslatorInterface')
-            ->getMockForAbstractClass();
-        $translatedMessage = 'Translated message';
-        $translator->expects($this->once())
-            ->method('trans')
-            ->with($message)
-            ->will($this->returnValue($translatedMessage));
-
-        $this->container->expects($this->at(1))
-            ->method('get')
-            ->with('translator')
-            ->will($this->returnValue($translator));
         $conditionMock->expects($this->once())
             ->method('setMessage')
-            ->with($translatedMessage);
+            ->with($message);
 
         $conditionMock->expects($this->once())
             ->method('initialize')
             ->with($options);
 
-        $this->container->expects($this->at(0))
+        $this->container->expects($this->once())
             ->method('get')
             ->with(self::TEST_TYPE_SERVICE)
             ->will($this->returnValue($conditionMock));

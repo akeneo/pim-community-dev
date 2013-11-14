@@ -24,7 +24,7 @@ class Not extends AbstractCondition
     {
         $isAllowed = !$this->condition->isAllowed($context, $errors);
         if (!$isAllowed) {
-            $this->addError($errors);
+            $this->addError($context, $errors);
         }
 
         return $isAllowed;

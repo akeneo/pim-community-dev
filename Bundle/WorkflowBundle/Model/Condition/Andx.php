@@ -16,13 +16,13 @@ class Andx extends AbstractComposite
     public function isAllowed($context, Collection $errors = null)
     {
         if (!$this->conditions) {
-            $this->addError($errors);
+            $this->addError($context, $errors);
             return false;
         }
 
         foreach ($this->conditions as $condition) {
             if (!$condition->isAllowed($context, $errors)) {
-                $this->addError($errors);
+                $this->addError($context, $errors);
                 return false;
             }
         }

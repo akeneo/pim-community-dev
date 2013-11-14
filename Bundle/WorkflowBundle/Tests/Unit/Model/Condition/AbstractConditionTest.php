@@ -8,13 +8,22 @@ use Oro\Bundle\WorkflowBundle\Model\Condition\AbstractCondition;
 
 class AbstractConditionTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $condition;
+
+    protected function setUp()
+    {
+        $this->condition = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\Condition\AbstractCondition')
+            ->setMethods(array('isConditionAllowed'))
+            ->getMockForAbstractClass();
+    }
+
     public function testMessages()
     {
-        /** @var AbstractCondition $condition */
-        $condition = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\Condition\AbstractCondition')
-            ->getMockForAbstractClass();
-        $this->assertSame($condition, $condition->setMessage('Test'));
-        $this->assertEquals('Test', $condition->getMessage());
+        $this->assertSame($this->condition, $this->condition->setMessage('Test'));
+        $this->assertAttributeEquals('Test', 'message', $this->condition);
     }
 
     /**
@@ -28,25 +37,21 @@ class AbstractConditionTest extends \PHPUnit_Framework_TestCase
         $errorMessage = 'Some error message';
         $context = array('key' => 'value');
 
-        $condition = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\Condition\AbstractCondition')
-            ->setMethods(array('isConditionAllowed'))
-            ->getMockForAbstractClass();
-        $condition->expects($this->any())
+        $this->condition->expects($this->any())
             ->method('isConditionAllowed')
             ->with($context)
             ->will($this->returnValue($allowed));
 
-        /** @var $condition AbstractCondition */
         if ($message) {
-            $condition->setMessage($errorMessage);
+            $this->condition->setMessage($errorMessage);
         }
 
         // without message collection
-        $this->assertEquals($allowed, $condition->isAllowed($context));
+        $this->assertEquals($allowed, $this->condition->isAllowed($context));
 
         // with message collection
         $errors = new ArrayCollection();
-        $this->assertEquals($allowed, $condition->isAllowed($context, $errors));
+        $this->assertEquals($allowed, $this->condition->isAllowed($context, $errors));
         if ($expectMessage) {
             $this->assertEquals(array($errorMessage), $errors->getValues());
         } else {
@@ -86,5 +91,29 @@ class AbstractConditionTest extends \PHPUnit_Framework_TestCase
         $condition = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\Condition\AbstractCondition')
             ->getMockForAbstractClass();
         $this->assertFalse($condition->isAllowed('anything'));
+    }
+
+    public function testAddError()
+    {
+        $context = array('foo' => 'fooValue', 'bar' => 'barValue');
+        $options = array('left' => 'foo', 'right' => 'bar');
+
+        $left = $options['left'];
+        $right = $options['right'];
+
+        $this->condition->initialize($options);
+        $message = 'Error message.';
+        $this->condition->setMessage($message);
+
+        $this->condition->expects($this->once())->method('isConditionAllowed')
+            ->with($context)
+            ->will($this->returnValue(false));
+
+        $errors = new ArrayCollection();
+
+        $this->assertFalse($this->condition->isAllowed($context, $errors));
+
+        $this->assertEquals(1, $errors->count());
+        $this->assertEquals($message, $errors->get(0));
     }
 }

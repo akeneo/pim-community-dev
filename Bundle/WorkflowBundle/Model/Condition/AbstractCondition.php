@@ -24,7 +24,7 @@ abstract class AbstractCondition implements ConditionInterface
     /**
      * {@inheritdoc}
      */
-    public function getMessage()
+    protected function getMessage()
     {
         return $this->message;
     }
@@ -36,20 +36,35 @@ abstract class AbstractCondition implements ConditionInterface
     {
         $isAllowed = $this->isConditionAllowed($context);
         if (!$isAllowed) {
-            $this->addError($errors);
+            $this->addError($context, $errors);
         }
 
         return $isAllowed;
     }
 
     /**
+     * @param mixed $context
      * @param Collection|null $errors
      */
-    protected function addError(Collection $errors = null)
+    protected function addError($context, Collection $errors = null)
     {
-        if ($errors && $this->message) {
-            $errors->add($this->message);
+        if ($errors && $this->getMessage()) {
+            $messageParameters = $this->getMessageParameters($context);
+            if ($messageParameters) {
+                $errors->add(array($this->getMessage(), $messageParameters));
+            } else {
+                $errors->add($this->getMessage());
+            }
         }
+    }
+
+    /**
+     * @param mixed $context
+     * @return array
+     */
+    protected function getMessageParameters($context)
+    {
+        return array();
     }
 
     /**

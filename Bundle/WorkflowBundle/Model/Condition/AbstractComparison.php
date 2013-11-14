@@ -35,13 +35,12 @@ abstract class AbstractComparison extends AbstractCondition
     /**
      * {@inheritdoc}
      */
-    public function getMessage()
+    protected function getMessageParameters($context)
     {
-        if (null === $this->message) {
-            return null;
-        }
-
-        return strtr($this->message, array('%left%' => $this->left, '%right%' => $this->right));
+        return array(
+            '{{ left }}' => $this->contextAccessor->getValue($context, $this->left),
+            '{{ right }}' => $this->contextAccessor->getValue($context, $this->right)
+        );
     }
 
     /**
