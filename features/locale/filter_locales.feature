@@ -5,33 +5,20 @@ Feature: Filter locales
   I need to be able to filter locales in the catalog
 
   Background:
-    Given the following locales:
-      | code  | activated |
-      | de_DE | no        |
-      | en_US | yes       |
-      | fr_FR | yes       |
-    And I am logged in as "admin"
-
-  Scenario: Successfully display filters
-    Given I am on the locales page
+    Given I am logged in as "admin"
+    And I am on the locales page
     Then I should see the filters Code and Activated
-    And the grid should contain 3 elements
-    And I should see locales de_DE, en_US and fr_FR
 
   Scenario: Successfully filter by code
-    Given I am on the locales page
-    When I filter by "Code" with value "e"
-    Then the grid should contain 2 elements
-    And I should see locales de_DE and en_US
-    And I should not see locales fr_FR
+    Given I filter by "Code" with value "as"
+    Then the grid should contain 1 element
+    And I should see locale as_IN
 
   Scenario: Successfully filter by activated
-    Given I am on the locales page
-    When I filter by "Activated" with value "yes"
+    Given I filter by "Activated" with value "yes"
     Then the grid should contain 2 elements
     And I should see locales en_US and fr_FR
-    And I should not see locale de_DE
     When I filter by "Activated" with value "no"
+    And I filter by "Code" with value "de_DE"
     Then the grid should contain 1 element
-    And I should see locales de_DE
-    And I should not see locale en_US and fr_FR
+    And I should see locale de_DE
