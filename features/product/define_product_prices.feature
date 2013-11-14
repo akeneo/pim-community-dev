@@ -1,17 +1,9 @@
 Feature: Define product prices
   In order to define a product prices
   As Julia
-  I need to be able to define prices in different currencies for for each locale
+  I need to be able to define prices in different currencies for each locale
 
   Background:
-    Given the following currencies:
-      | code | activated |
-      | USD  | yes       |
-      | EUR  | yes       |
-    Given the following channels:
-      | code      | currencies |
-      | ecommerce | EUR, USD   |
-      | mobile    | EUR, USD   |
     Given a "bike" product
     And the following product attributes:
       | product | label        | type   | translatable |

@@ -12,8 +12,6 @@ Feature: Filter channels
       | ipad   | IPad   |
     And the following channels:
       | code      | label     | locales      | category |
-      | ecommerce | Ecommerce |              | default  |
-      | mobile    | Mobile    |              | default  |
       | FOO       | foo       | fr_FR, en_US | master   |
       | BAR       | bar       | de_DE        | master   |
       | BAZ       | baz       | fr_FR        | mobile   |
