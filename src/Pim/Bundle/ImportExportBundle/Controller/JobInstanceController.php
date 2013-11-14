@@ -359,35 +359,7 @@ class JobInstanceController extends AbstractDoctrineController
                 $form = $this->createUploadForm();
                 $form->handleRequest($request);
                 if ($form->isValid()) {
-                    $data = $form->getData();
-                    $media = $data['file'];
-                    $file = $media->getFile();
-
-                    $filename = $file->getClientOriginalName();
-                    $file = $file->move(
-                        sys_get_temp_dir(),
-                        $file->getFilename() . substr($filename, strrpos($filename, '.'))
-                    );
-
-                    foreach ($job->getSteps() as $step) {
-                        $reader = $step->getReader();
-
-                        if ($reader instanceof UploadedFileAwareInterface) {
-                            $constraints = $reader->getUploadedFileConstraints();
-                            $errors = $this->getValidator()->validateValue($file, $constraints);
-
-                            if ($errors->count()) {
-                                foreach ($errors as $error) {
-                                    $this->addFlash('error', $error->getMessage());
-                                }
-
-                                return $this->redirectToShowView($jobInstance->getId());
-                            }
-
-                            $reader->setUploadedFile($file);
-                            $uploadMode = true;
-                        }
-                    }
+                    $uploadMode = $this->runJob($job, $form->getData());
                 }
             }
 
@@ -413,6 +385,48 @@ class JobInstanceController extends AbstractDoctrineController
         }
 
         return $this->redirectToShowView($jobInstance->getId());
+    }
+
+    /**
+     * Run job instance
+     *
+     * @param JobInstance $job
+     * @param mixed $data
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|boolean
+     */
+    protected function runJob(JobInstance $job, $data)
+    {
+        $media = $data['file'];
+        $file = $media->getFile();
+
+        $filename = $file->getClientOriginalName();
+        $file = $file->move(
+            sys_get_temp_dir(),
+            $file->getFilename() . substr($filename, strrpos($filename, '.'))
+        );
+
+        foreach ($job->getSteps() as $step) {
+            $reader = $step->getReader();
+
+            if ($reader instanceof UploadedFileAwareInterface) {
+                $constraints = $reader->getUploadedFileConstraints();
+                $errors = $this->getValidator()->validateValue($file, $constraints);
+
+                if ($errors->count()) {
+                    foreach ($errors as $error) {
+                        $this->addFlash('error', $error->getMessage());
+                    }
+
+                    return $this->redirectToShowView($jobInstance->getId());
+                }
+
+                $reader->setUploadedFile($file);
+                $uploadMode = true;
+            }
+        }
+
+        return $uploadMode;
     }
 
     /**
