@@ -114,6 +114,11 @@ services:
         tags:
             - { name: form.type, alias: pim_catalog_group }
 
+    pim_catalog.form.type.group_type:
+        class: %pim_catalog.form.type.group_type.class%
+        tags:
+            - { name: form.type, alias: pim_catalog_group_type }
+
     pim_catalog.form.type.association:
         class: %pim_catalog.form.type.association.class%
         tags:
@@ -128,3 +133,14 @@ services:
         class: %pim_catalog.form.type.product_association.class%
         tags:
             - { name: form.type, alias: pim_catalog_product_association }
+
+    # Form extensions
+    pim_catalog.extension.type.image:
+        class: %pim_catalog.extension.type.image.class%
+        tags:
+            - { name: form.type_extension, alias: pim_image }
+
+    pim_catalog.extension.type.media:
+        class: %pim_catalog.extension.type.media.class%
+        tags:
+            - { name: form.type_extension, alias: oro_media }

@@ -13,12 +13,18 @@ use Pim\Bundle\CatalogBundle\MassEditAction\ChangeFamily;
  */
 class ChangeFamilyTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         $this->productManager = $this->getProductManagerMock();
         $this->action = new ChangeFamily($this->productManager);
     }
 
+    /**
+     * Test related method
+     */
     public function testPerform()
     {
         $products = array(
@@ -43,7 +49,7 @@ class ChangeFamilyTest extends \PHPUnit_Framework_TestCase
         $this->productManager
             ->expects($this->once())
             ->method('saveAll')
-            ->with($products, true);
+            ->with($products, false);
 
         $this->action->setFamily($family);
         $this->action->perform($products);
@@ -60,6 +66,9 @@ class ChangeFamilyTest extends \PHPUnit_Framework_TestCase
             ->getMock();
     }
 
+    /**
+     * @return \Pim\Bundle\CatalogBundle\Entity\Product
+     */
     private function getProductMock()
     {
         return $this->getMock('Pim\Bundle\CatalogBundle\Entity\Product');

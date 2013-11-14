@@ -11,7 +11,14 @@ namespace Pim\Bundle\ImportExportBundle\Exception;
  */
 class InvalidValueException extends \InvalidArgumentException
 {
+    /**
+     * @var string
+     */
     protected $rawMessage;
+
+    /**
+     * @var array
+     */
     protected $messageParameters;
 
     /**

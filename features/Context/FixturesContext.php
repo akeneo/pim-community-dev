@@ -129,7 +129,7 @@ class FixturesContext extends RawMinkContext
             'X_SELL'  => 0,
         );
         foreach ($types as $code => $isVariant) {
-            $this->createGroupType($code, $isVariant);
+            $this->createGroupType($code, $code, $isVariant);
         }
     }
 
@@ -691,7 +691,7 @@ class FixturesContext extends RawMinkContext
                 $category->setParent($parent);
             }
 
-            if (isset($data['products'])) {
+            if (isset($data['products']) && trim($data['products']) != '') {
                 $skus = explode(',', $data['products']);
                 foreach ($skus as $sku) {
                     $category->addProduct($this->getOrCreateProduct(trim($sku)));
@@ -719,6 +719,38 @@ class FixturesContext extends RawMinkContext
             } else {
                 assertEquals($data['parent'], $category->getParent()->getCode());
             }
+        }
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Then /^there should be the following associations:$/
+     */
+    public function thereShouldBeTheFollowingAssociations(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $association = $this->getAssociation($data['code']);
+            $this->getEntityManager()->refresh($association);
+
+            assertEquals($data['label-en_US'], $association->getTranslation('en_US')->getLabel());
+            assertEquals($data['label-fr_FR'], $association->getTranslation('fr_FR')->getLabel());
+        }
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Then /^there should be the following groups:$/
+     */
+    public function thereShouldBeTheFollowingGroups(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $group = $this->getProductGroup($data['code']);
+            $this->getEntityManager()->refresh($group);
+
+            assertEquals($data['label-en_US'], $group->getTranslation('en_US')->getLabel());
+            assertEquals($data['label-fr_FR'], $group->getTranslation('fr_FR')->getLabel());
         }
     }
 
@@ -970,6 +1002,22 @@ class FixturesContext extends RawMinkContext
             $label = isset($data['label']) ? $data['label'] : null;
 
             $this->createAssociation($code, $label);
+        }
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Given /^the following group types?:$/
+     */
+    public function theFollowingGroupTypes(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $code = $data['code'];
+            $label = isset($data['label']) ? $data['label'] : null;
+            $isVariant = isset($data['is_variant']) ? $data['is_variant'] : 0;
+
+            $this->createGroupType($code, $label, $isVariant);
         }
     }
 
@@ -1282,15 +1330,17 @@ class FixturesContext extends RawMinkContext
 
     /**
      * @param string  $code
+     * @param string  $label
      * @param boolean $isVariant
      *
      * @return GroupType
      */
-    private function createGroupType($code, $isVariant)
+    private function createGroupType($code, $label, $isVariant)
     {
         $type = new GroupType();
         $type->setCode($code);
         $type->setVariant($isVariant);
+        $type->setLocale('en_US')->setLabel($label);
 
         $this->persist($type);
 

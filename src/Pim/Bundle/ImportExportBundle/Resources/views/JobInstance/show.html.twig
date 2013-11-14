@@ -28,9 +28,9 @@
 
     {% set left %}
         <ul class="inline">
-           <li>{{ 'Code'|trans }}: {{ jobInstance.code }}</li>
-           <li>{{ 'Connector'|trans }}: {{ jobInstance.job.name|trans }}</li>
-       </ul>
+            <li>{{ 'Job'|trans }}: {{ jobInstance.job.name|trans }}</li>
+            <li>{{ 'Connector'|trans }}: {{ jobInstance.connector|trans }}</li>
+        </ul>
     {% endset %}
 
     {% set buttons %}

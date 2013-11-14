@@ -34,8 +34,8 @@ Feature: Edit a product group
       | POSTIT  | color     | Blue  |
       | POSTIT  | size      | M     |
     And the following product groups:
-      | code | label      | type    |
-      | MUG  | MUG Akeneo | X_SELL  |
+      | code | label      | type   |
+      | MUG  | MUG Akeneo | X_SELL |
     And I am logged in as "admin"
 
   Scenario: Successfully display the edit view for a group

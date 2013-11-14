@@ -31,7 +31,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
  *      }
  *  }
  * )
- * 
+ *
  * @ExclusionPolicy("all")
  */
 class Group implements TranslatableInterface, GroupSequenceProviderInterface
@@ -55,7 +55,7 @@ class Group implements TranslatableInterface, GroupSequenceProviderInterface
     /**
      * @var GroupType
      *
-     * @ORM\ManyToOne(targetEntity="Pim\Bundle\CatalogBundle\Entity\GroupType")
+     * @ORM\ManyToOne(targetEntity="Pim\Bundle\CatalogBundle\Entity\GroupType", inversedBy="groups")
      * @ORM\JoinColumn(name="type_id", referencedColumnName="id", nullable=false)
      */
     protected $type;
@@ -379,6 +379,20 @@ class Group implements TranslatableInterface, GroupSequenceProviderInterface
             },
             $this->getAttributes()->toArray()
         );
+    }
+
+    /**
+     * Setter for attributes property
+     *
+     * @param ProductAttribute[] $attributes
+     *
+     * @return Group
+     */
+    public function setAttributes(array $attributes = array())
+    {
+        $this->attributes = $attributes;
+
+        return $this;
     }
 
     /**

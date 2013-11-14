@@ -13,7 +13,7 @@ use Oro\Bundle\GridBundle\Sorter\SorterInterface;
 
 use Pim\Bundle\CatalogBundle\Entity\Association;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
-use Pim\Bundle\CatalogBundle\Manager\VariantGroupManager;
+use Pim\Bundle\CatalogBundle\Manager\GroupManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\GridBundle\Filter\FilterInterface;
 
@@ -32,9 +32,9 @@ class AssociationGroupDatagridManager extends DatagridManager
     private $localeManager;
 
     /**
-     * @var VariantGroupManager
+     * @var GroupManager
      */
-    private $variantGroupManager;
+    private $groupManager;
 
     /**
      * @var ProductInterface $product
@@ -61,15 +61,15 @@ class AssociationGroupDatagridManager extends DatagridManager
     }
 
     /**
-     * Set the variant group manager
+     * Set the group manager
      *
-     * @param VariantGroupManager $variantGroupManager
+     * @param GroupManager $groupManager
      *
      * @return AssociationGroupDatagridManager
      */
-    public function setVariantGroupManager(VariantGroupManager $variantGroupManager)
+    public function setGroupManager(GroupManager $groupManager)
     {
-        $this->variantGroupManager = $variantGroupManager;
+        $this->groupManager = $groupManager;
 
         return $this;
     }
@@ -208,13 +208,13 @@ class AssociationGroupDatagridManager extends DatagridManager
      */
     protected function getHasAssociationExpression()
     {
-        $hasAssociationExpression =
+        $expression =
             'CASE WHEN ' .
             '(pa IS NOT NULL OR o.id IN (:data_in)) ' .
             'AND o.id NOT IN (:data_not_in) ' .
             'THEN true ELSE false END';
 
-        return $hasAssociationExpression;
+        return $expression;
     }
 
     /**

@@ -86,20 +86,6 @@ class Form extends Base
     }
 
     /**
-     * Toggle the bootstrapSwitch on or off
-     *
-     * @param string  $locator
-     * @param boolean $on
-     */
-    public function toggleSwitch($locator, $on = true)
-    {
-        $field = $this->findField($locator);
-        if ($field->isChecked() != $on) {
-            $field->getParent()->find('css', 'label')->click();
-        }
-    }
-
-    /**
      * Get validation errors
      *
      * @return array:string

@@ -50,8 +50,8 @@ class CategoryRepository extends SegmentRepository
         $rootAlias = $qb->getRootAliases();
         $firstRootAlias = $rootAlias[0];
 
-        $qb->select($qb->expr()->count('p'))
-           ->join($firstRootAlias .'.products', 'p');
+        $qb->select($qb->expr()->count('distinct p'))
+            ->join($firstRootAlias .'.products', 'p');
 
         return $qb->getQuery()->getSingleScalarResult();
     }

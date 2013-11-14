@@ -16,7 +16,7 @@ class NotBlankGuesserTest extends ConstraintGuesserTest
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->target = new NotBlankGuesser();
     }
@@ -47,7 +47,7 @@ class NotBlankGuesserTest extends ConstraintGuesserTest
     {
         $this->assertContainsInstanceOf(
             'Symfony\Component\Validator\Constraints\NotBlank',
-            $this->target->guessConstraints($this->getAttributeMock(array('required' => true,)))
+            $this->target->guessConstraints($this->getAttributeMock(array('required' => true)))
         );
     }
 

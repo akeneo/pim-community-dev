@@ -146,6 +146,10 @@ class MediaManagerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param string $locale
+     * @param string $scope
+     * @param string $exportPath
+     *
      * @dataProvider getExportPathData
      */
     public function testGetExportPath($locale, $scope, $exportPath)
@@ -163,9 +167,16 @@ class MediaManagerTest extends \PHPUnit_Framework_TestCase
             ->method('getOriginalFilename')
             ->will($this->returnValue('phpunit-file.txt'));
 
+        $media->expects($this->any())
+            ->method('getFilePath')
+            ->will($this->returnValue('filePath'));
+
         $this->assertEquals($exportPath, $this->manager->getExportPath($media));
     }
 
+    /**
+     * @return array
+     */
     public static function getExportPathData()
     {
         return array(
@@ -232,6 +243,14 @@ class MediaManagerTest extends \PHPUnit_Framework_TestCase
         return $filesystem;
     }
 
+    /**
+     * @param object           $entity
+     * @param ProductAttribute $attribute
+     * @param string           $locale
+     * @param string           $scope
+     *
+     * @return ProductValue
+     */
     protected function getValueMock($entity, $attribute, $locale = null, $scope = null)
     {
         $value = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductValue');
@@ -255,6 +274,11 @@ class MediaManagerTest extends \PHPUnit_Framework_TestCase
         return $value;
     }
 
+    /**
+     * @param string $identifier
+     *
+     * @return Product
+     */
     protected function getProductMock($identifier)
     {
         $product = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Product');
@@ -266,6 +290,13 @@ class MediaManagerTest extends \PHPUnit_Framework_TestCase
         return $product;
     }
 
+    /**
+     * @param string  $code
+     * @param boolean $localisable
+     * @param boolean $scopable
+     *
+     * @return ProductAttribute
+     */
     protected function getAttributeMock($code, $localisable = false, $scopable = false)
     {
         $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductAttribute');

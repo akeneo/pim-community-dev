@@ -13,7 +13,7 @@ Feature: Delete a product group
 
   Scenario: Successfully delete a product group from the grid
     Given I am on the product groups page
-    And I should see group MUG
+    And I should see groups MUG
     When I click on the "Delete" action of the row which contains "MUG"
     And I confirm the deletion
     Then I should not see product group MUG

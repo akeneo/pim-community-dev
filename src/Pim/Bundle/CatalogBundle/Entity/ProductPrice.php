@@ -15,7 +15,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
  *
  * @ORM\Table(name="pim_catalog_product_value_price")
  * @ORM\Entity
- * 
+ *
  * @ExclusionPolicy("all")
  */
 class ProductPrice

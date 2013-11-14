@@ -29,7 +29,7 @@ use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
  *      }
  *  }
  * )
- * 
+ *
  * @ExclusionPolicy("all")
  */
 class AttributeGroup implements TranslatableInterface

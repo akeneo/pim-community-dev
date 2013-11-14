@@ -20,7 +20,7 @@ use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
  *          @ORM\UniqueConstraint(name="locale_foreign_key_idx", columns={"locale", "foreign_key"})
  *      }
  * )
- * 
+ *
  * @ExclusionPolicy("all")
  */
 class ProductAttributeTranslation extends AbstractTranslation

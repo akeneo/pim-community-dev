@@ -200,7 +200,7 @@ class EditCommonAttributesTest extends \PHPUnit_Framework_TestCase
         $this->productManager
             ->expects($this->once())
             ->method('saveAll')
-            ->with(array($foo, $bar), true);
+            ->with(array($foo, $bar), false);
 
         $this->action->perform(array($foo, $bar));
     }

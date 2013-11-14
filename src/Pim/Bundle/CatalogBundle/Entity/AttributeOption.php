@@ -16,7 +16,7 @@ use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttributeOption
  *
  * @ORM\Table(name="pim_catalog_attribute_option")
  * @ORM\Entity(repositoryClass="Pim\Bundle\CatalogBundle\Entity\Repository\AttributeOptionRepository")
- * 
+ *
  * @ExclusionPolicy("all")
  */
 class AttributeOption extends AbstractEntityAttributeOption

@@ -19,7 +19,7 @@ class ProductNormalizerTest extends \PHPUnit_Framework_TestCase
     /**
      * Prepare the normalizer
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->normalizer = new ProductNormalizer($this->getRouterMock());
         $this->normalizer->setChannel($this->getChannelMock());

@@ -383,8 +383,6 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param string $filename
-     *
      * @return \Pim\Bundle\CatalogBundle\Entity\Media
      */
     protected function getMediaMock()
@@ -392,6 +390,9 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
         return $this->getMock('Pim\Bundle\CatalogBundle\Entity\Media');
     }
 
+    /**
+     * @return \Pim\Bundle\CatalogBundle\Manager\MediaManager
+     */
     protected function getMediaManagerMock()
     {
         return $this

@@ -65,6 +65,6 @@ class ChangeFamily extends AbstractMassEditAction
         foreach ($products as $product) {
             $product->setFamily($this->family);
         }
-        $this->manager->saveAll($products, true);
+        $this->manager->saveAll($products, false);
     }
 }

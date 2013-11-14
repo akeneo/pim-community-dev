@@ -73,9 +73,9 @@ class Media
     /**
      * @ORM\OneToOne(
      *     targetEntity="Pim\Bundle\CatalogBundle\Model\ProductValueInterface",
-     *     inversedBy="media"
+     *     mappedBy="media"
      * )
-     * @ORM\JoinColumn(name="value_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\JoinColumn(name="value_id", referencedColumnName="id", onDelete="SET NULL")
      */
     protected $value;
 

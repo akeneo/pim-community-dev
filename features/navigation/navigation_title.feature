@@ -94,8 +94,8 @@ Feature: Well display navigation titles
   Scenario: Successfully display the variant page titles
     Given there is no product group
     And the following attribute:
-      | code      | label      | type                     |
-      | color     | Color      | pim_catalog_multiselect  |
+      | code  | label | type                    |
+      | color | Color | pim_catalog_multiselect |
     And the following product group:
       | code | label      | attributes | type    |
       | MUG  | Mug Akeneo | color      | VARIANT |

@@ -13,7 +13,7 @@ Feature: Browse product groups
       | size  | Size  | pim_catalog_simpleselect |
     And the following product groups:
       | code          | label          | attributes  | type    |
-      | tshirt_akeneo | T-Shirt Akeneo | size, color | VARIANT |
+      | tshirt_akeneo | T-Shirt Akeneo | size, color | VARIANT |
       | mug_akeneo    | Mug Akeneo     | color       | VARIANT |
       | CROSS_SELL_1  | Cross Sell     |             | X_SELL  |
       | CROSS_SELL_2  | Relational     |             | X_SELL  |

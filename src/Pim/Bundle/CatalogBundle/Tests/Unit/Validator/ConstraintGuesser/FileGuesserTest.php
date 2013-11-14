@@ -16,7 +16,7 @@ class FileGuesserTest extends ConstraintGuesserTest
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->target = new FileGuesser();
     }
@@ -38,11 +38,11 @@ class FileGuesserTest extends ConstraintGuesserTest
     public function testSupportAttribute()
     {
         $this->assertTrue(
-            $this->target->supportAttribute($this->getAttributeMock(array('attributeType' => 'pim_catalog_file',)))
+            $this->target->supportAttribute($this->getAttributeMock(array('attributeType' => 'pim_catalog_file')))
         );
 
         $this->assertTrue(
-            $this->target->supportAttribute($this->getAttributeMock(array('attributeType' => 'pim_catalog_image',)))
+            $this->target->supportAttribute($this->getAttributeMock(array('attributeType' => 'pim_catalog_image')))
         );
     }
 
@@ -51,15 +51,16 @@ class FileGuesserTest extends ConstraintGuesserTest
      */
     public function testGuessFileMaxSizeConstraint()
     {
+        $maxSize = 5.5;
         $constraints = $this->target->guessConstraints(
-            $this->getAttributeMock(array('attributeType' => 'pim_catalog_file', 'maxFileSize'   => 5000,))
+            $this->getAttributeMock(array('attributeType' => 'pim_catalog_file', 'maxFileSize' => $maxSize))
         );
 
         $this->assertContainsInstanceOf('Pim\Bundle\CatalogBundle\Validator\Constraints\File', $constraints);
         $this->assertConstraintsConfiguration(
             'Pim\Bundle\CatalogBundle\Validator\Constraints\File',
             $constraints,
-            array('maxSize' => 5000,)
+            array('maxSize' => $maxSize * 1024 . 'k')
         );
     }
 
@@ -71,7 +72,7 @@ class FileGuesserTest extends ConstraintGuesserTest
         $constraints = $this->target->guessConstraints(
             $this->getAttributeMock(
                 array(
-                    'attributeType'         => 'pim_catalog_file',
+                    'attributeType'     => 'pim_catalog_file',
                     'allowedExtensions' => array('gif', 'jpg'),
                 )
             )
@@ -81,7 +82,7 @@ class FileGuesserTest extends ConstraintGuesserTest
         $this->assertConstraintsConfiguration(
             'Pim\Bundle\CatalogBundle\Validator\Constraints\File',
             $constraints,
-            array('allowedExtensions' => array('gif', 'jpg'),)
+            array('allowedExtensions' => array('gif', 'jpg'))
         );
     }
 
@@ -93,8 +94,8 @@ class FileGuesserTest extends ConstraintGuesserTest
         $constraints = $this->target->guessConstraints(
             $this->getAttributeMock(
                 array(
-                    'attributeType'         => 'pim_catalog_file',
-                    'maxFileSize'           => 5000,
+                    'attributeType'     => 'pim_catalog_file',
+                    'maxFileSize'       => 5,
                     'allowedExtensions' => array('gif', 'jpg'),
                 )
             )
@@ -104,7 +105,7 @@ class FileGuesserTest extends ConstraintGuesserTest
         $this->assertConstraintsConfiguration(
             'Pim\Bundle\CatalogBundle\Validator\Constraints\File',
             $constraints,
-            array('maxSize' => 5000, 'allowedExtensions' => array('gif', 'jpg'),)
+            array('maxSize' => '5M', 'allowedExtensions' => array('gif', 'jpg'))
         );
     }
 }
