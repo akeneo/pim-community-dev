@@ -407,3 +407,15 @@
 {% macro gridBlock(gridId) %}
     <div id="{{ gridId }}"></div>
 {% endmacro %}
+
+{#
+    Render attributes of HTML element.
+    Parameters:
+        attr - attributes
+#}
+{% macro attributes(attr) %}
+    {% spaceless %}
+        {% set attr = attr|default({}) %}
+        {% for attrname, attrvalue in attr %}{% if attrname in ['placeholder', 'title'] %}{{ attrname }}="{{ attrvalue|trans({}, translation_domain) }}" {% else %}{{ attrname }}="{{ attrvalue }}" {% endif %}{% endfor %}
+    {% endspaceless %}
+{% endmacro %}

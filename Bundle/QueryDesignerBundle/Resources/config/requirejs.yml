@@ -1,0 +1,7 @@
+config:
+    paths:
+        'oro/query-designer': 'bundles/oroquerydesigner/js/query-designer.js'
+        'oro/query-designer/abstract-view': 'bundles/oroquerydesigner/js/query-designer/abstract-view.js'
+        'oro/query-designer/column/collection': 'bundles/oroquerydesigner/js/query-designer/column/collection.js'
+        'oro/query-designer/column/model': 'bundles/oroquerydesigner/js/query-designer/column/model.js'
+        'oro/query-designer/column/view': 'bundles/oroquerydesigner/js/query-designer/column/view.js'

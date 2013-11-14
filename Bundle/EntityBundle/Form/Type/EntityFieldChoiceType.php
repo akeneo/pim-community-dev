@@ -5,48 +5,26 @@ namespace Oro\Bundle\EntityBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\OptionsResolver\Options;
-use Symfony\Bridge\Doctrine\ManagerRegistry;
-use Oro\Bundle\EntityBundle\ORM\EntityClassResolver;
-use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
+use Oro\Bundle\EntityBundle\Manager\EntityFieldManager;
 use Oro\Bundle\FormBundle\Form\Type\ChoiceListItem;
 
-/**
- * @todo: THIS CLASS IS NOT FINISHED YET
- */
 class EntityFieldChoiceType extends AbstractType
 {
     const NAME = 'oro_entity_field_choice';
 
     /**
-     * @var ManagerRegistry
+     * @var EntityFieldManager
      */
-    protected $doctrine;
-
-    /**
-     * @var EntityClassResolver
-     */
-    protected $entityClassResolver;
-
-    /**
-     * @var ConfigProvider
-     */
-    protected $entityConfigProvider;
+    protected $manager;
 
     /**
      * Constructor
      *
-     * @param ManagerRegistry     $doctrine
-     * @param EntityClassResolver $entityClassResolver
-     * @param ConfigProvider      $entityConfigProvider
+     * @param EntityFieldManager $manager
      */
-    public function __construct(
-        ManagerRegistry $doctrine,
-        EntityClassResolver $entityClassResolver,
-        ConfigProvider $entityConfigProvider
-    ) {
-        $this->doctrine             = $doctrine;
-        $this->entityConfigProvider = $entityConfigProvider;
-        $this->entityClassResolver  = $entityClassResolver;
+    public function __construct(EntityFieldManager $manager)
+    {
+        $this->manager = $manager;
     }
 
     /**
@@ -58,16 +36,16 @@ class EntityFieldChoiceType extends AbstractType
         $choices = function (Options $options) use ($that) {
             return empty($options['entity'])
                 ? array() // return empty list if entity is not specified
-                : $that->getChoices($options['entity'], $options['include_related']);
+                : $that->getChoices($options['entity'], $options['with_relations']);
         };
 
         $resolver->setDefaults(
             array(
-                'entity'          => null,
-                'include_related' => true,
-                'choices'         => $choices,
-                'empty_value'     => '',
-                'configs'         => array(
+                'entity'         => null,
+                'with_relations' => false,
+                'choices'        => $choices,
+                'empty_value'    => '',
+                'configs'        => array(
                     'is_translate_option'     => false,
                     'placeholder'             => 'oro.entity.form.choose_entity_field',
                     'result_template_twig'    => 'OroEntityBundle:Choice:entity_field/result.html.twig',
@@ -80,80 +58,35 @@ class EntityFieldChoiceType extends AbstractType
     /**
      * Returns a list of choices
      *
-     * @param string $entityName
-     * @param bool   $includeRelated
-     * @return array of entities which can be used to build a report
-     *               key = full class name, value = ChoiceListItem
+     * @param string $entityName    Entity name. Can be full class name or short form: Bundle:Entity.
+     * @param bool   $withRelations Indicates whether fields of related entities should be returned as well.
+     * @return array
      */
-    protected function getChoices($entityName, $includeRelated)
+    protected function getChoices($entityName, $withRelations)
     {
         $choices = array();
-        $this->fillChoices($choices, $this->entityClassResolver->getEntityClass($entityName), $includeRelated);
-        $this->sortChoices($choices);
+        $items   = $this->manager->getFields($entityName, $withRelations);
+        foreach ($items as $entity) {
+            foreach ($entity['fields'] as $field) {
+                $key           = $this->getChoiceKey($entity['name'], $field['name'], $withRelations);
+                $choices[$key] = $field['label'];
+            }
+        }
 
         return $choices;
     }
 
     /**
-     * @param array  $choices
-     * @param string $className
-     * @param bool   $includeRelated
-     */
-    protected function fillChoices(array &$choices, $className, $includeRelated)
-    {
-        $metadata = $this->doctrine->getManagerForClass($className)->getClassMetadata($className);
-        foreach ($metadata->getFieldNames() as $fieldName) {
-            $key           = $this->getChoiceKey($className, $fieldName, $includeRelated);
-            $choices[$key] = $this->getFieldLabel($className, $fieldName);
-        }
-        if ($includeRelated) {
-            foreach ($metadata->getAssociationNames() as $associationNames) {
-                $choices[$associationNames] = $associationNames;
-            }
-        }
-    }
-
-    /**
      * @param string $className
      * @param string $fieldName
-     * @param bool   $includeRelated
+     * @param bool   $withRelations
      * @return string
      */
-    protected function getChoiceKey($className, $fieldName, $includeRelated)
+    protected function getChoiceKey($className, $fieldName, $withRelations)
     {
-        return $includeRelated
+        return $withRelations
             ? sprintf('%s::%s', $className, $fieldName)
             : $fieldName;
-    }
-
-    /**
-     * @param string $className
-     * @param string $fieldName
-     * @return string
-     */
-    protected function getFieldLabel($className, $fieldName)
-    {
-        if ($this->entityConfigProvider->hasConfig($className, $fieldName)) {
-            return $this->entityConfigProvider->getConfig($className, $fieldName)->get('label');
-        }
-
-        return $fieldName;
-    }
-
-    /**
-     * Sorts choices
-     *
-     * @param array $choices
-     */
-    protected function sortChoices(array &$choices)
-    {
-        // sort choices by entity name and then by field name
-        uasort(
-            $choices,
-            function ($a, $b) {
-                return strcmp((string)$a, (string)$b);
-            }
-        );
     }
 
     /**

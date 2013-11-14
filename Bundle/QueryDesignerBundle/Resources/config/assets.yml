@@ -1,0 +1,3 @@
+css:
+    'querydesigner':
+        - '@OroQueryDesignerBundle/Resources/public/css/query-designer.css'

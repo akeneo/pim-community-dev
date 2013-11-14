@@ -1,0 +1,28 @@
+.form-horizontal .query-designer-form .control-group {
+    float: left;
+}
+.form-horizontal .query-designer-form .control-group label.control-label {
+    width: auto;
+    margin-left: 15px;
+}
+.form-horizontal .query-designer-form .control-group .controls {
+    margin-left: 10px;
+    float: left;
+}
+.form-horizontal .query-designer-form .select2-container {
+    width: 150px !important;
+}
+.form-horizontal .query-designer-form input[type="text"] {
+    width: 150px;
+}
+.form-horizontal .query-designer-form select,
+.form-horizontal .query-designer-form .controls div.selector select {
+    width: 60px;
+}
+.form-horizontal .query-designer-form .btn-group {
+    margin-left: 20px;
+}
+.query-designer-grid-container .grid .sorting-column,
+.query-designer-grid-container .grid .sorting-cell {
+    width: 100px;
+}
