@@ -382,9 +382,12 @@ class FixturesContext extends RawMinkContext
     public function theFollowingLocales(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
-            $locale = $this->getOrCreateLocale($data['code']);
+            $locale = $this->getLocale($data['code']);
 
-            $locale->setFallback($data['fallback']);
+            if (isset($data['fallback'])) {
+                $locale->setFallback($data['fallback']);
+            }
+
             if ($data['activated'] === 'yes') {
                 $locale->activate();
             }
@@ -744,7 +747,7 @@ class FixturesContext extends RawMinkContext
 
                 if ($data['locales']) {
                     foreach ($this->listToArray($data['locales']) as $localeCode) {
-                        $channel->addLocale($this->getOrCreateLocale($localeCode));
+                        $channel->addLocale($this->getLocale($localeCode));
                     }
                 }
 
@@ -1417,21 +1420,6 @@ class FixturesContext extends RawMinkContext
     /**
      * @param string $code
      *
-     * @return Locale
-     */
-    private function createLocale($code)
-    {
-        $locale = new Locale();
-        $locale->setCode($code);
-
-        $this->persist($locale);
-
-        return $locale;
-    }
-
-    /**
-     * @param string $code
-     *
      * @return Category
      */
     private function createTree($code)
@@ -1475,7 +1463,7 @@ class FixturesContext extends RawMinkContext
         }
 
         foreach ($locales as $localeCode) {
-            $channel->addLocale($this->getOrCreateLocale($localeCode));
+            $channel->addLocale($this->getLocale($localeCode));
         }
 
         foreach ($currencies as $currencyCode) {
