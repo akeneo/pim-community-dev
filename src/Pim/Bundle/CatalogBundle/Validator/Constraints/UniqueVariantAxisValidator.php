@@ -99,10 +99,7 @@ class UniqueVariantAxisValidator extends ConstraintValidator
      */
     protected function validateVariantGroup(ProductInterface $entity, Group $variantGroup, Constraint $constraint)
     {
-        $criteria = $this->prepareVariantGroupCriterias();
-
-        $repository = $this->manager->getFlexibleRepository();
-        $matchingProducts = $repository->findAllForVariantGroup($variantGroup, $criteria);
+        $matchingProducts = $this->getMatchingProducts($variantGroup);
 
         $matchingProducts = array_filter(
             $matchingProducts,
@@ -123,6 +120,21 @@ class UniqueVariantAxisValidator extends ConstraintValidator
                 implode(', ', $values)
             );
         }
+    }
+
+    /**
+     * Get the matching products for specified variant group
+     *
+     * @param Group $variantGroup
+     *
+     * @return ProductInterface[]
+     */
+    protected function getMatchingProducts(Group $variantGroup)
+    {
+        $criteria = $this->prepareVariantGroupCriterias();
+        $repository = $this->manager->getFlexibleRepository();
+
+        return $repository->findAllForVariantGroup($variantGroup, $criteria);
     }
 
     /**
