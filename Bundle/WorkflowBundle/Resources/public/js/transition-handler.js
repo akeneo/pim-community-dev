@@ -1,5 +1,5 @@
-define(['jquery', 'oro/messenger', 'oro/translator', 'oro/navigation'],
-function($, messenger, __, Navigation) {
+define(['jquery', 'oro/messenger', 'oro/translator', 'oro/navigation', 'oro/modal'],
+function($, messenger, __, Navigation, Modal) {
     'use strict';
 
     var navigation = Navigation.getInstance();
@@ -92,7 +92,19 @@ function($, messenger, __, Navigation) {
                 transitionFormWidget.render();
             });
         } else {
-            performTransition(element);
+            var message = element.data('message');
+            if (message) {
+                var confirm = new Modal({
+                    title: element.data('transition-label'),
+                    content: message
+                });
+                confirm.on('ok', function() {
+                    performTransition(element);
+                });
+                confirm.open();
+            } else {
+                performTransition(element);
+            }
         }
     }
 });

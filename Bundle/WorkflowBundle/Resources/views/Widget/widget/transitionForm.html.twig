@@ -21,6 +21,9 @@
         </div>
     {% endif %}
 
+    {% if transition.message %}
+    <div class="alert">{{ transition.message|trans }}</div>
+    {% endif %}
     <form method="post"
           data-nohash="true"
           data-disable-autofocus="true"
