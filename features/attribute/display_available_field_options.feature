@@ -5,7 +5,8 @@ Feature: Display available field options
   I need to see only relevant validation fields given the attribute type
 
   Background:
-    Given I am logged in as "admin"
+    Given the "default" catalog configuration
+    And I am logged in as "admin"
     And I am on the attribute creation page
 
   Scenario: Successfully display available parameter fields for attribute types

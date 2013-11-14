@@ -4,7 +4,8 @@ Feature: Create an attribute
   I need to create a text attribute
 
   Background:
-    Given I am logged in as "admin"
+    Given the "default" catalog configuration
+    And I am logged in as "admin"
     And I am on the attribute creation page
     And I select the attribute type "Text"
 

@@ -5,7 +5,8 @@ Feature: Add attribute options
   I need to add and remove options for attributes of type "Multi select" and "Simple select"
 
   Background:
-    Given I am logged in as "admin"
+    Given the "default" catalog configuration
+    And I am logged in as "admin"
     And I am on the attribute creation page
 
   Scenario Outline: Sucessfully display the Options section when creating an attribute
