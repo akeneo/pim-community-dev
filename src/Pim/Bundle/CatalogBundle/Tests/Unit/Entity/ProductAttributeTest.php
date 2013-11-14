@@ -407,7 +407,7 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($this->attribute->getMaxFileSize());
 
         // Change value and assert new
-        $size = 1024;
+        $size = 1.23;
         $this->assertEntity($this->attribute->setMaxFileSize($size));
         $this->assertEquals($size, $this->attribute->getMaxFileSize());
     }

@@ -55,7 +55,7 @@ class Group implements TranslatableInterface, GroupSequenceProviderInterface
     /**
      * @var GroupType
      *
-     * @ORM\ManyToOne(targetEntity="Pim\Bundle\CatalogBundle\Entity\GroupType")
+     * @ORM\ManyToOne(targetEntity="Pim\Bundle\CatalogBundle\Entity\GroupType", inversedBy="groups")
      * @ORM\JoinColumn(name="type_id", referencedColumnName="id", nullable=false)
      */
     protected $type;

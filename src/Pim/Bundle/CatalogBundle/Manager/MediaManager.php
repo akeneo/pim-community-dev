@@ -70,6 +70,10 @@ class MediaManager
      */
     public function copy(Media $media, $targetDir)
     {
+        if ($media->getFilePath() === null) {
+            return false;
+        }
+
         $targetDir = sprintf('%s/%s', $targetDir, $this->getExportPath($media));
 
         if (!is_dir(dirname($targetDir))) {
@@ -94,6 +98,10 @@ class MediaManager
      */
     public function getExportPath(Media $media)
     {
+        if ($media->getFilePath() === null) {
+            return '';
+        }
+
         $value     = $media->getValue();
         $attribute = $value->getAttribute();
         $target    = sprintf(

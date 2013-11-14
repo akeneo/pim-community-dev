@@ -57,11 +57,16 @@ parameters:
     pim_catalog.form.handler.channel.class:  Pim\Bundle\CatalogBundle\Form\Handler\ChannelHandler
     pim_catalog.form.type.channel.class:     Pim\Bundle\CatalogBundle\Form\Type\ChannelType
 
-    pim_catalog.manager.variant_group.class:      Pim\Bundle\CatalogBundle\Manager\VariantGroupManager
+    pim_catalog.manager.group.class:      Pim\Bundle\CatalogBundle\Manager\GroupManager
 
     pim_catalog.entity.group.class:       Pim\Bundle\CatalogBundle\Entity\Group
     pim_catalog.form.handler.group.class: Pim\Bundle\CatalogBundle\Form\Handler\GroupHandler
     pim_catalog.form.type.group.class:    Pim\Bundle\CatalogBundle\Form\Type\GroupType
+
+    pim_catalog.entity.group_type.class:       Pim\Bundle\CatalogBundle\Entity\GroupType
+    pim_catalog.form.handler.group_type.class: Pim\Bundle\CatalogBundle\Form\Handler\GroupTypeHandler
+    pim_catalog.form.type.group_type.class:    Pim\Bundle\CatalogBundle\Form\Type\GroupTypeType
+
     pim_catalog.entity.association.class:       Pim\Bundle\CatalogBundle\Entity\Association
     pim_catalog.form.handler.association.class: Pim\Bundle\CatalogBundle\Form\Handler\AssociationHandler
     pim_catalog.form.type.association.class:    Pim\Bundle\CatalogBundle\Form\Type\AssociationType
