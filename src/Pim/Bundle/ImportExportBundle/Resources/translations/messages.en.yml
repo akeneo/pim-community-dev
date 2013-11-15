@@ -13,6 +13,9 @@ pim_import_export:
         attribute_export:
             title: Attribute export in CSV
             export.title: Configuration
+        attribute_option_export:
+            title: Attribute option export in CSV
+            export.title: Configuration
         association_export:
             title: Association export in CSV
             export.title: Configuration
@@ -27,6 +30,9 @@ pim_import_export:
             import.title: Configuration
         attribute_import:
             title: Attribute import in CSV
+            import.title: Configuration
+        attribute_option_import:
+            title: Attribute option import in CSV
             import.title: Configuration
         association_import:
             title: Association import in CSV
@@ -51,6 +57,9 @@ oro_batch:
 
     attribute_reader:
         title: Attribute extraction
+
+    attribute_option_reader:
+        title: Attribute option extraction
 
     association_reader:
         title: Association extraction
@@ -95,7 +104,7 @@ oro_batch:
             help: Whether or not to allow uploading the file directly
 
     csv_file_reader:
-        title: CSV File Reader
+        title: Read the CSV File
         filePath:
             label: File
             help: The csv file to import
@@ -150,6 +159,12 @@ oro_batch:
 
     valid_group_creation_processor:
         title: Group creation
+
+    valid_attribute_creation_processor:
+        title: Create / update attributes
+
+    valid_attribute_option_creation_processor:
+        title: Create / update attribute options
 
     heterogeneous_csv_serializer_processor:
         title: Settings
@@ -219,6 +234,9 @@ oro_batch:
 
     orm_group_writer:
         title: Group storage
+
+    orm_attribute_writer:
+        title: Save attributes
 
 # Page titles:
 Import management:        Import management
