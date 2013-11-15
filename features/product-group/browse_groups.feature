@@ -6,7 +6,6 @@ Feature: Browse product groups
 
   Background:
     Given the "default" catalog configuration
-    And there is no product group
     And the following attributes:
       | code  | label | type                     |
       | multi | Multi | pim_catalog_multiselect  |

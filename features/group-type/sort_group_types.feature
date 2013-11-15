@@ -6,11 +6,6 @@ Feature: Sort group types
 
   Background:
     Given the "default" catalog configuration
-    And there is no group type
-    And the following group types:
-      | code    | label    |
-      | related | Relation |
-      | special | Special  |
     And I am logged in as "admin"
 
   Scenario: Successfully sort the group types in the grid
