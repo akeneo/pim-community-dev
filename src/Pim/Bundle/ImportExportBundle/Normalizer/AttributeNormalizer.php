@@ -79,10 +79,17 @@ class AttributeNormalizer implements NormalizerInterface
                 'default_metric_unit'     => (string) $attribute->getDefaultMetricUnit(),
                 'allowed_extensions'      => implode(self::ITEM_SEPARATOR, $attribute->getAllowedExtensions()),
                 'max_file_size'           => (string) $attribute->getMaxFileSize(),
-                'options'                 => $this->normalizeOptions($attribute),
-                'default_options'         => $this->normalizeDefaultOptions($attribute)
             )
         );
+        if (isset($context['versioning'])) {
+            $results = array_merge(
+                $results,
+                array(
+                    'options'         => $this->normalizeOptions($attribute),
+                    'default_options' => $this->normalizeDefaultOptions($attribute)
+                )
+            );
+        }
 
         return $results;
     }

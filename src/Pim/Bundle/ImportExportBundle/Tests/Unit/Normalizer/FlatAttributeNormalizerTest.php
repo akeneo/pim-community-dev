@@ -114,7 +114,7 @@ class FlatAttributeNormalizerTest extends AttributeNormalizerTest
 
         $this->assertEquals(
             $expectedResult,
-            $this->normalizer->normalize($attribute, 'csv')
+            $this->normalizer->normalize($attribute, $this->format, array('versioning' => true))
         );
     }
 

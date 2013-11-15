@@ -139,7 +139,7 @@ class AttributeNormalizerTest extends \PHPUnit_Framework_TestCase
             }
         }
 
-        $normalized = $this->normalizer->normalize($attribute, $this->format);
+        $normalized = $this->normalizer->normalize($attribute, $this->format, array('versioning' => true));
         $this->assertEquals($expectedResult, $normalized);
     }
 
