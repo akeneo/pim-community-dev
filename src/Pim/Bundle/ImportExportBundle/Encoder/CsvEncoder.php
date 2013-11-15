@@ -28,8 +28,19 @@ class CsvEncoder implements EncoderInterface
      */
     protected $hasHeader      = false;
 
+    /**
+     * @var string
+     */
     protected $delimiter;
+
+    /**
+     * @var string
+     */
     protected $enclosure;
+
+    /**
+     * @var string
+     */
     protected $withHeader;
 
     /**
