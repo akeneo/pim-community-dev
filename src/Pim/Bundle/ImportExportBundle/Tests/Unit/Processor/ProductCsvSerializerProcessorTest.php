@@ -19,7 +19,8 @@ class ProductCsvSerializerProcessorTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->serializer   = $this->getSerializerMock();
-        $this->processor    = new ProductCsvSerializerProcessor($this->serializer);
+        $this->channelManager = $this->getChannelManagerMock();
+        $this->processor    = new ProductCsvSerializerProcessor($this->serializer, $this->channelManager);
     }
 
     /**
@@ -84,6 +85,16 @@ class ProductCsvSerializerProcessorTest extends \PHPUnit_Framework_TestCase
     public function getMediaMock()
     {
         return $this->getMock('Pim\Bundle\CatalogBundle\Entity\Media');
+    }
+
+    /**
+     * @return PHPUnit_Framework_MockObject_MockObject
+     */
+    public function getChannelManagerMock()
+    {
+        return $this->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\ChannelManager')
+            ->disableOriginalConstructor()
+            ->getMock();
     }
 
     /**

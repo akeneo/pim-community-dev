@@ -30,7 +30,7 @@ class ProductPrice
     protected $id;
 
     /**
-     * @var ProductValue
+     * @var ProductValueInterface
      *
      * @ORM\ManyToOne(targetEntity="Pim\Bundle\CatalogBundle\Model\ProductValueInterface", inversedBy="prices")
      * @ORM\JoinColumn(name="value_id", referencedColumnName="id", onDelete="CASCADE")
@@ -139,7 +139,7 @@ class ProductPrice
     /**
      * Get value
      *
-     * @return ProductValue $value
+     * @return ProductValueInterface $value
      */
     public function getValue()
     {
@@ -149,7 +149,7 @@ class ProductPrice
     /**
      * Set value
      *
-     * @param ProductValue $value
+     * @param ProductValueInterface $value
      *
      * @return ProductPrice
      */
