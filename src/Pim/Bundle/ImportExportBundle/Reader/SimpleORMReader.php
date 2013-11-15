@@ -21,16 +21,16 @@ class SimpleORMReader extends ORMReader
     /**
      * @var string
      */
-    protected $entityClassName;
+    protected $className;
 
     /**
-     * @param ObjectManager $om
-     * @param string        $entityClassName
+     * @param ObjectManager $om        The object manager
+     * @param string        $className The entity or document class name used
      */
-    public function __construct(ObjectManager $om, $entityClassName)
+    public function __construct(ObjectManager $om, $className)
     {
         $this->om              = $om;
-        $this->entityClassName = $entityClassName;
+        $this->className = $className;
     }
 
     /**
@@ -40,7 +40,7 @@ class SimpleORMReader extends ORMReader
     {
         if (!$this->query) {
             $this->query = $this->om
-                ->getRepository($this->entityClassName)
+                ->getRepository($this->className)
                 ->createQueryBuilder('c')
                 ->getQuery();
         }
