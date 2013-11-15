@@ -64,9 +64,15 @@ class ORMReader extends AbstractConfigurableStepElement implements
      * Get query to execute
      *
      * @return \Doctrine\ORM\AbstractQuery
+     *
+     * @throws ORMReaderException
      */
     protected function getQuery()
     {
+        if (!$this->query) {
+            throw new ORMReaderException('Need a query to read database');
+        }
+
         return $this->query;
     }
 
