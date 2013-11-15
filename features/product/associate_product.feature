@@ -5,25 +5,26 @@ Feature: Associate a product
   I need to associate a product to other products and groups
 
   Background:
-  Given the following products:
-    | sku            |
-    | black_tea      |
-    | african_coffee |
-    | indian_coffee  |
-    | coffee_mug     |
-    | tea_mug        |
-    | akeneo_mug     |
-  And the following associations:
-    | code   | label        |
-    | x_sell | Cross sell   |
-    | upsell | Upsell       |
-    | subst  | Substitution |
-  And the following product groups:
-    | code             | label                  | attributes | type   |
-    | x_sell_beverages | Cross sell beverages   |            | X_SELL |
-    | upsell_beverages | Upsell beverages       |            | X_SELL |
-    | subst_beverages  | Substitution beverages |            | X_SELL |
-  And I am logged in as "Julia"
+    Given the "default" catalog configuration
+    And the following products:
+      | sku            |
+      | black_tea      |
+      | african_coffee |
+      | indian_coffee  |
+      | coffee_mug     |
+      | tea_mug        |
+      | akeneo_mug     |
+    And the following associations:
+      | code   | label        |
+      | x_sell | Cross sell   |
+      | upsell | Upsell       |
+      | subst  | Substitution |
+    And the following product groups:
+      | code             | label                  | attributes | type   |
+      | x_sell_beverages | Cross sell beverages   |            | X_SELL |
+      | upsell_beverages | Upsell beverages       |            | X_SELL |
+      | subst_beverages  | Substitution beverages |            | X_SELL |
+    And I am logged in as "Julia"
 
   Scenario: Associate a product to another product
     Given I edit the "african_coffee" product

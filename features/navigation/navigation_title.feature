@@ -5,7 +5,8 @@ Feature: Well display navigation titles
   I need to be able to see title depending of the catalog page
 
   Background:
-    Given I am logged in as "admin"
+    Given the "default" catalog configuration
+    And I am logged in as "admin"
 
   Scenario: Successfully display the attribute page titles
     Given the following attribute:

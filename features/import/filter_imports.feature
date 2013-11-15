@@ -5,7 +5,8 @@ Feature: Filter import profiles
   I need to be able to filter import profiles in the catalog
 
   Background:
-    Given the following jobs:
+    Given the "default" catalog configuration
+    And the following jobs:
       | connector            | alias           | code                 | label                        | type   |
       | Akeneo CSV Connector | product_export  | acme_product_export  | Product export for Acme.com  | export |
       | Akeneo CSV Connector | product_import  | acme_product_import  | Product import for Acme.com  | import |

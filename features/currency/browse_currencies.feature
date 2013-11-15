@@ -5,7 +5,8 @@ Feature: Browse currencies
   I need to be able to see active and inactive currencies in the catalog
 
   Background:
-    Given I am logged in as "admin"
+    Given the "default" catalog configuration
+    And I am logged in as "admin"
     And I am on the currencies page
 
   Scenario: Successfully display currencies

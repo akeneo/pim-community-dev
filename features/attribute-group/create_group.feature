@@ -4,7 +4,8 @@ Feature: Attribute group creation
   I need to be able to create an attribute group
 
   Scenario: Succesfully create an attribute group
-    Given I am logged in as "Julia"
+    Given the "default" catalog configuration
+    And I am logged in as "Julia"
     When I am on the attribute group creation page
     And I change the Code to "seo"
     And I save the attribute group

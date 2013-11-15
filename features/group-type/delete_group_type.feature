@@ -5,7 +5,8 @@ Feature: Delete a group type
   I need to be able to delete group types
 
   Background:
-    Given there is no group type
+    Given the "default" catalog configuration
+    And there is no group type
     And the following group types:
       | code    | label   |
       | related | Related |

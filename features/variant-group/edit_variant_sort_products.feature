@@ -5,7 +5,8 @@ Feature: Edit a variant group adding/removing products
   I need to be able to add and remove product from a variant group
 
   Background:
-    Given the following families:
+    Given the "default" catalog configuration
+    And the following families:
       | code      | label     |
       | mug       | Mug       |
       | furniture | Furniture |

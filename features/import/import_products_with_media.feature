@@ -4,7 +4,8 @@ Feature: Import media with products
   I need to be able to import them along with the products
 
   Background:
-    Given the following families:
+    Given the "default" catalog configuration
+    And the following families:
       | code     |
       | funboard |
     And the following categories:

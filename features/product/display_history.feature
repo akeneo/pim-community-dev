@@ -5,7 +5,8 @@ Feature: Display the product history
   I need to have access to a product history
 
   Scenario: Display product updates
-    Given the following product attributes:
+    Given the "default" catalog configuration
+    And the following product attributes:
       | label        | required |
       | SKU          | yes      |
       | Brand        | no       |

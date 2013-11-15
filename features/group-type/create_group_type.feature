@@ -5,7 +5,8 @@ Feature: Group type creation
   I need to be able to manually create a group type
 
   Background:
-    Given I am logged in as "admin"
+    Given the "default" catalog configuration
+    And I am logged in as "admin"
 
   Scenario: Successfully create a group type
     Given I am on the group types page

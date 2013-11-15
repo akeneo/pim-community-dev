@@ -4,7 +4,8 @@ Feature: Set the attribute used as label
   I need to be able to set the attribute used as the label
 
   Background:
-    Given the following family:
+    Given the "default" catalog configuration
+    And the following family:
       | code |
       | Bags |
     And the following product attributes:

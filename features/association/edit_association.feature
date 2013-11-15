@@ -5,34 +5,26 @@ Feature: Edit an association
   I need to be able to edit an association
 
   Background:
-    Given the following associations:
-      | code       |
-      | up_sell    |
-      | cross_sell |
+    Given a "footwear" catalog configuration
     And I am logged in as "admin"
 
   Scenario: Successfully display the edit view for an association
-    Given I am on the "up_sell" association page
+    Given I am on the "UPSELL" association page
     Then I should see the Code field
     And the field Code should be disabled
 
   Scenario: Successfully edit an association
-    Given I am on the "up_sell" association page
+    Given I am on the "SUBSTITUTION" association page
     When I fill in the following information:
-      | English (United States) | My upsell |
+      | English (United States) | My substitution |
     And I press the "Save" button
-    Then I should see "My upsell"
+    Then I should see "My substitution"
 
   Scenario: Successfully display a message when there are unsaved changes
-    Given I am on the "up_sell" association page
+    Given I am on the "PACK" association page
     When I fill in the following information:
-      | English (United States) | up_sell |
+      | English (United States) | My pack |
     Then I should see "There are unsaved changes."
-
-  Scenario: Successfully have a confirmation popup when I change page with unsaved changes
-    Given I am on the "up_sell" association page
-    When I fill in the following information:
-      | English (United States) | up_sell |
     And I click on the Akeneo logo
     Then I should see a confirm dialog with the following content:
       | title   | Are you sure you want to leave this page?                        |

@@ -5,7 +5,8 @@ Feature: Delete many product at once
   I need to be able to remove many products at once
 
   Background:
-    Given the following products:
+    Given the "default" catalog configuration
+    And the following products:
       | sku  |
       | pim  |
       | pam  |

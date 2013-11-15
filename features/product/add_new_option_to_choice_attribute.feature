@@ -5,7 +5,8 @@ Feature: Add a new option to a choice attribute directly from the product edit f
   I need to be able to create a new attribute option without leaving the product edit page
 
   Background:
-    Given a "car_tire" product
+    Given the "default" catalog configuration
+    And a "car_tire" product
     And the following attributes:
       | code     | label    | type                     |
       | diameter | Diameter | pim_catalog_simpleselect |

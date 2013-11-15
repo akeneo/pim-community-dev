@@ -119,7 +119,7 @@ class WebUser extends RawMinkContext
         foreach ($pages->getHash() as $data) {
             $url = $this->getSession()->evaluateScript(sprintf('return Routing.generate("%s");', $data['page']));
             $this->getMainContext()->executeScript(
-                sprintf("require(['oro/navigation'], function(Nav) { Nav.getInstance().setLocation('%s'); } );", $url)
+                sprintf("require(['oro/navigation'], function (Nav) { Nav.getInstance().setLocation('%s'); } );", $url)
             );
             $this->wait();
 
@@ -182,18 +182,19 @@ class WebUser extends RawMinkContext
     public function iShouldSeeTheCategoryUnderTheCategory($not, $child, $parent)
     {
         $this->wait(); // Make sure that the tree is loaded
-        $not = ($not !== '') ? true : false;
 
         $parentNode = $this->getCurrentPage()->findCategoryInTree($parent);
         $childNode = $parentNode->getParent()->find('css', sprintf('li a:contains(%s)', $child));
 
-        if (($not && $childNode) || (!$not && !$childNode)) {
+        if ($not && $childNode) {
             throw $this->createExpectationException(
-                sprintf(
-                    'Expecting to see category "%s" under the category "%s", not found',
-                    $child,
-                    $parent
-                )
+                sprintf('Expecting not to see category "%s" under the category "%s"', $child, $parent)
+            );
+        }
+
+        if (!$not && !$childNode) {
+            throw $this->createExpectationException(
+                sprintf('Expecting to see category "%s" under the category "%s", not found', $child, $parent)
             );
         }
     }
@@ -632,21 +633,24 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @param string $attribute
+     * @param string $attributes
      * @param string $group
      *
-     * @Given /^I should see attribute "([^"]*)" in group "([^"]*)"$/
+     * @Given /^I should see attributes? "([^"]*)" in group "([^"]*)"$/
      */
-    public function iShouldSeeAttributeInGroup($attribute, $group)
+    public function iShouldSeeAttributesInGroup($attributes, $group)
     {
-        if (!$this->getCurrentPage()->getAttribute($attribute, $group)) {
-            throw $this->createExpectationException(
-                sprintf(
-                    'Expecting to see attribute %s under group %s, but was not present.',
-                    $attribute,
-                    $group
-                )
-            );
+        $attributes = $this->listToArray($attributes);
+        foreach ($attributes as $attribute) {
+            if (!$this->getCurrentPage()->getAttribute($attribute, $group)) {
+                throw $this->createExpectationException(
+                    sprintf(
+                        'Expecting to see attribute %s under group %s, but was not present.',
+                        $attribute,
+                        $group
+                    )
+                );
+            }
         }
     }
 

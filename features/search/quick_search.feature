@@ -5,7 +5,8 @@ Feature: Search in Akeneo PIM
   I need to be able to search what I want
 
   Background:
-    Given the following product:
+    Given the "default" catalog configuration
+    And the following product:
       | sku          |
       | product_test |
     And the following category:

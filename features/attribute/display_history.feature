@@ -4,7 +4,8 @@ Feature: Display the attribute history
   I need to have access to a attribute history
 
   Background:
-    Given I am logged in as "Julia"
+    Given the "default" catalog configuration
+    And I am logged in as "Julia"
 
   @javascript
   Scenario: Succesfully edit a attribute and see the history
