@@ -31,8 +31,9 @@ class AttributeOptionNormalizer implements NormalizerInterface
     public function normalize($entity, $format = null, array $context = array())
     {
         $results = array(
-            'attribute' => $entity->getAttribute()->getCode(),
-            'code'      => $entity->getCode()
+            'attribute'  => $entity->getAttribute()->getCode(),
+            'code'       => $entity->getCode(),
+            'is_default' => ($entity->isDefault()) ? 1 : 0,
         );
         $results = array_merge(
             $results,

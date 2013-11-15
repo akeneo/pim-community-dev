@@ -72,8 +72,9 @@ class AttributeOptionNormalizerTest extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 array(
-                    'attribute' => 'color',
-                    'code'  => 'red',
+                    'attribute'  => 'color',
+                    'code'       => 'red',
+                    'is_default' => 0,
                     'label' => array('en_US' => 'Red', 'fr_FR' => 'Rouge')
                 )
             ),
