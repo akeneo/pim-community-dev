@@ -16,7 +16,7 @@
 - Separate product groups and variants management
 - Display number of created/updated products during import
 - Speed up completeness calculation
-- Display the "has product" filter by default
+- Display the "has product" filter by default in the product grid of group edit view
 - Display currency label in currencies datagrid
 
 ## Bug fixes

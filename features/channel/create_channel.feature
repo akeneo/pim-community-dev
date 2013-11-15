@@ -9,10 +9,6 @@ Feature: Create a channel
       | code           | label          |
       | ipad_catalog   | iPad Catalog   |
       | mobile_catelog | Mobile Catalog |
-    And the following currencies:
-      | code | activated |
-      | EUR  | yes       |
-      | USD  | yes       |
     And I am logged in as "admin"
 
   Scenario: Succesfully create a channel

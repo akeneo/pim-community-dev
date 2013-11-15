@@ -134,6 +134,9 @@ oro_batch:
     withHeader:
       label: With header
       help: Whether or not to print the column name
+    channel:
+      label: Ausgabekanal
+      help: Ausgabekanal in welchem der importierte Wert angelegt werden soll
   homogeneous_csv_serializer_processor:
     title: Einstellungen
     delimiter:

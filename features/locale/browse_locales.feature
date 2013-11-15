@@ -14,8 +14,7 @@ Feature: Browse locales
 
   Scenario: Successfully display locales
     Given I am on the locales page
-    Then the grid should contain 3 elements
-    And I should see the columns Code and Activated
+    Then I should see the columns Code and Activated
+    When I filter by "Activated" with value "yes"
+    Then the grid should contain 2 elements
     And I should see activated locales en_US and fr_FR
-    And I should see deactivated locales de_DE
-

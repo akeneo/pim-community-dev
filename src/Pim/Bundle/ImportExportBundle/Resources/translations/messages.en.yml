@@ -171,6 +171,9 @@ oro_batch:
         withHeader:
             label: With header
             help: Whether or not to print the column name
+        channel:
+            label: Channel
+            help: The channel in which create the imported value
 
     homogeneous_csv_serializer_processor:
         title: Settings

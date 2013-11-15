@@ -155,11 +155,7 @@ Feature: Execute a job
     Then there should be 10 products
 
   Scenario: Successfully import products prices
-    Given the following currencies:
-      | code | activated |
-      | USD  | yes       |
-      | EUR  | yes       |
-    And the following file to import:
+    Given the following file to import:
       """
       sku;prices
       SKU-001;"100 EUR, 90 USD"
@@ -186,11 +182,7 @@ Feature: Execute a job
       | prices | 50.00 EUR |
 
   Scenario: Successfully update existing products prices
-    Given the following currencies:
-      | code | activated |
-      | USD  | yes       |
-      | EUR  | yes       |
-    And a "SKU-001" product
+    Given a "SKU-001" product
     And the following product values:
       | product | attribute | value            |
       | SKU-001 | Prices    | 100 EUR, 150 USD |
