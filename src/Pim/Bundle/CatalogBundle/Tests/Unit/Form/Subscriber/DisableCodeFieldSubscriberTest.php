@@ -2,16 +2,16 @@
 
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\Form\Subscriber;
 
-use Pim\Bundle\CatalogBundle\Form\Subscriber\ChannelSubscriber;
+use Pim\Bundle\CatalogBundle\Form\Subscriber\DisableCodeFieldSubscriber;
 
 /**
- * Tests related class
+ * Test related class
  *
- * @author    Antoine Guigan <antoine@akeneo.com>
+ * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ChannelSubscriberTest extends \PHPUnit_Framework_TestCase
+class DisableCodeFieldSubscriberTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @return array
@@ -45,26 +45,31 @@ class ChannelSubscriberTest extends \PHPUnit_Framework_TestCase
         if ($id === null) {
             $event->expects($this->once())
                 ->method('getData')
-                ->will($this->returnValue(null));
+                ->will($this->returnValue($id));
             $event->expects($this->never())
                 ->method('getForm');
         } else {
-            $channel = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Product');
+            $channel = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Channel');
             $event->expects($this->once())
                 ->method('getData')
                 ->will($this->returnValue($channel));
             $channel->expects($this->once())
                 ->method('getId')
                 ->will($this->returnValue($id));
-            $form->expects($this->once())
-                ->method('add')
-                ->with(
-                    $this->equalTo('code'),
-                    $this->equalTo('text'),
-                    $this->equalTo(array('disabled'=>(bool) $id))
-                );
+            if ($id) {
+                $form->expects($this->once())
+                    ->method('add')
+                    ->with(
+                        $this->equalTo('code'),
+                        $this->equalTo('text'),
+                        $this->equalTo(array('disabled' => true, 'read_only' => true))
+                    );
+            } else {
+                $form->expects($this->never())
+                    ->method('add');
+            }
         }
-        $subscriber = new ChannelSubscriber();
-        $subscriber->addCodeField($event);
+        $subscriber = new DisableCodeFieldSubscriber();
+        $subscriber->postSetData($event);
     }
 }

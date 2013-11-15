@@ -174,8 +174,8 @@ class JobInstanceController extends AbstractDoctrineController
         return $this->render(
             sprintf('PimImportExportBundle:%s:edit.html.twig', ucfirst($this->getJobType())),
             array(
+                'jobInstance' => $jobInstance,
                 'form'      => $form->createView(),
-                'connector' => $connector,
                 'alias'     => $alias,
             )
         );
@@ -266,6 +266,7 @@ class JobInstanceController extends AbstractDoctrineController
         return $this->render(
             sprintf('PimImportExportBundle:%s:edit.html.twig', ucfirst($this->getJobType())),
             array(
+                'jobInstance'     => $jobInstance,
                 'form'            => $form->createView(),
                 'historyDatagrid' => $historyDatagrid->createView()
             )
@@ -387,7 +388,7 @@ class JobInstanceController extends AbstractDoctrineController
      * Run job instance
      *
      * @param JobInstance $jobInstance
-     * @param mixed $data
+     * @param mixed       $data
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|boolean
      */

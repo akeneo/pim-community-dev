@@ -27,7 +27,7 @@ class GroupSubscriber implements EventSubscriberInterface
 
     /**
      * Post set data event
-     * Disable code and axis fields
+     * Disable axis fields
      *
      * @param FormEvent $event
      */
@@ -41,8 +41,6 @@ class GroupSubscriber implements EventSubscriberInterface
         $form = $event->getForm();
 
         if ($group->getId()) {
-            $form->add('code', 'text', array('disabled' => true));
-
             $form->add(
                 'attributes',
                 'entity',

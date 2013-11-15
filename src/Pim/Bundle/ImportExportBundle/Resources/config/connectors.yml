@@ -1,13 +1,10 @@
 parameters:
-    pim_import_export.reader.product.class:                         Pim\Bundle\ImportExportBundle\Reader\ProductReader
-    pim_import_export.reader.category.class:                        Pim\Bundle\ImportExportBundle\Reader\CategoryReader
-    pim_import_export.reader.attribute.class:                       Pim\Bundle\ImportExportBundle\Reader\AttributeReader
-    pim_import_export.reader.attribute_option.class:                Pim\Bundle\ImportExportBundle\Reader\AttributeOptionReader
-    pim_import_export.reader.association.class:                     Pim\Bundle\ImportExportBundle\Reader\AssociationReader
-    pim_import_export.reader.group.class:                           Pim\Bundle\ImportExportBundle\Reader\GroupReader
-    pim_import_export.reader.csv.class:                             Pim\Bundle\ImportExportBundle\Reader\CsvReader
-    pim_import_export.reader.product_csv.class:                     Pim\Bundle\ImportExportBundle\Reader\ProductCsvReader
-    pim_import_export.reader.csv_file.class:                        Pim\Bundle\ImportExportBundle\Reader\CsvFileReader
+    pim_import_export.reader.product.class:                         Pim\Bundle\ImportExportBundle\Reader\ORM\ProductReader
+    pim_import_export.reader.entity.class:                          Pim\Bundle\ImportExportBundle\Reader\ORM\EntityReader
+    
+    pim_import_export.reader.csv.class:                             Pim\Bundle\ImportExportBundle\Reader\File\CsvReader
+    pim_import_export.reader.product_csv.class:                     Pim\Bundle\ImportExportBundle\Reader\File\ProductCsvReader
+    pim_import_export.reader.csv_file.class:                        Pim\Bundle\ImportExportBundle\Reader\File\CsvFileReader
 
     pim_import_export.processor.homogeneous_csv_serializer.class:   Pim\Bundle\ImportExportBundle\Processor\HomogeneousCsvSerializerProcessor
     pim_import_export.processor.heterogeneous_csv_serializer.class: Pim\Bundle\ImportExportBundle\Processor\HeterogeneousCsvSerializerProcessor
@@ -19,10 +16,10 @@ parameters:
     pim_import_export.processor.valid_attribute_creation.class:     Pim\Bundle\ImportExportBundle\Processor\ValidAttributeCreationProcessor
     pim_import_export.processor.valid_attribute_option_creation.class: Pim\Bundle\ImportExportBundle\Processor\ValidAttributeOptionCreationProcessor
 
-    pim_import_export.writer.orm_product.class:                     Pim\Bundle\ImportExportBundle\Writer\OrmProductWriter
-    pim_import_export.writer.orm_category.class:                    Pim\Bundle\ImportExportBundle\Writer\OrmCategoryWriter
-    pim_import_export.writer.orm_association.class:                 Pim\Bundle\ImportExportBundle\Writer\OrmAssociationWriter
-    pim_import_export.writer.orm_group.class:                       Pim\Bundle\ImportExportBundle\Writer\OrmGroupWriter
+    pim_import_export.writer.orm_product.class:                     Pim\Bundle\ImportExportBundle\Writer\ORMProductWriter
+    pim_import_export.writer.orm_category.class:                    Pim\Bundle\ImportExportBundle\Writer\ORMCategoryWriter
+    pim_import_export.writer.orm_association.class:                 Pim\Bundle\ImportExportBundle\Writer\ORMAssociationWriter
+    pim_import_export.writer.orm_group.class:                       Pim\Bundle\ImportExportBundle\Writer\ORMGroupWriter
     pim_import_export.writer.orm_attribute.class:                   Pim\Bundle\ImportExportBundle\Writer\OrmAttributeWriter
 
     pim_import_export.writer.file.class:                            Pim\Bundle\ImportExportBundle\Writer\FileWriter
@@ -42,29 +39,34 @@ services:
             - '@pim_catalog.manager.channel'
 
     pim_import_export.reader.category:
-        class: %pim_import_export.reader.category.class%
+        class: %pim_import_export.reader.entity.class%
         arguments:
             - '@doctrine.orm.default_entity_manager'
+            - %pim_catalog.entity.category.class%
 
     pim_import_export.reader.attribute:
-        class: %pim_import_export.reader.attribute.class%
+        class: %pim_import_export.reader.entity.class%
         arguments:
             - '@doctrine.orm.default_entity_manager'
+            - %pim_catalog.entity.product_attribute.class%
 
     pim_import_export.reader.attribute_option:
-        class: %pim_import_export.reader.attribute_option.class%
+        class: %pim_import_export.reader.entity.class%
         arguments:
             - '@doctrine.orm.default_entity_manager'
+            - %pim_catalog.entity.product_attribute_option.class%
 
     pim_import_export.reader.association:
-        class: %pim_import_export.reader.association.class%
+        class: %pim_import_export.reader.entity.class%
         arguments:
             - '@doctrine.orm.default_entity_manager'
+            - %pim_catalog.entity.association.class%
 
     pim_import_export.reader.group:
-        class: %pim_import_export.reader.group.class%
+        class: %pim_import_export.reader.entity.class%
         arguments:
             - '@doctrine.orm.default_entity_manager'
+            - %pim_catalog.entity.group.class%
 
     pim_import_export.reader.csv:
         class: %pim_import_export.reader.csv.class%

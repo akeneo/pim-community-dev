@@ -20,7 +20,7 @@ class ValidProductCreationProcessorTest extends \PHPUnit_Framework_TestCase
     public function testProcess()
     {
         $productTransformer = $this
-            ->getMockBuilder('Pim\Bundle\ImportExportBundle\Transformer\OrmProductTransformer')
+            ->getMockBuilder('Pim\Bundle\ImportExportBundle\Transformer\ORMProductTransformer')
             ->disableOriginalConstructor()
             ->getMock();
 

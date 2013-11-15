@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Reader;
+namespace Pim\Bundle\ImportExportBundle\Reader\File;
 
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\File;

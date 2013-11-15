@@ -12,6 +12,13 @@
     {{ JSFV(form) }}
     {{ form_start(form, { 'action': actionRoute }) }}
 
+        {% set left %}
+            <ul class="inline">
+                <li>{{ 'Job'|trans }}: {{ jobInstance.job.name|trans }}</li>
+                <li>{{ 'Connector'|trans }}: {{ jobInstance.connector|trans }}</li>
+            </ul>
+        {% endset %}
+
         {% set buttons %}
             {{ elements.backLink(indexRoute) }}
             {% if form.vars.value.id %}
@@ -20,7 +27,7 @@
             {{ elements.submitBtn }}
         {% endset %}
 
-        {{ elements.page_header(title, buttons) }}
+        {{ elements.page_header(title, buttons, null, left) }}
 
         {{ elements.form_errors(form) }}
 

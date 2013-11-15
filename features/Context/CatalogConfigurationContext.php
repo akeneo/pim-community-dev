@@ -43,6 +43,7 @@ class CatalogConfigurationContext extends RawMinkContext
         'GroupTypeLoader'      => 'group_types',
         'GroupLoader'          => 'groups',
         'AssociationLoader'    => 'associations',
+        'JobLoader'            => 'jobs',
         'UserAttrLoader'       => null,
         'UserLoader'           => 'users',
     );

@@ -1,8 +1,8 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Reader;
+namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Reader\File;
 
-use Pim\Bundle\ImportExportBundle\Reader\CsvReader;
+use Pim\Bundle\ImportExportBundle\Reader\File\CsvReader;
 
 /**
  * Test related class
@@ -41,7 +41,7 @@ class CsvReaderTest extends \PHPUnit_Framework_TestCase
      */
     public function testRead()
     {
-        $this->reader->setFilePath(__DIR__ . '/../../fixtures/import.csv');
+        $this->reader->setFilePath(__DIR__ . '/../../../fixtures/import.csv');
 
         $this->stepExecution
             ->expects($this->exactly(3))
@@ -71,7 +71,7 @@ class CsvReaderTest extends \PHPUnit_Framework_TestCase
      */
     public function testInvalidCsvRead()
     {
-        $this->reader->setFilePath(__DIR__ . '/../../fixtures/invalid_import.csv');
+        $this->reader->setFilePath(__DIR__ . '/../../../fixtures/invalid_import.csv');
 
         $this->reader->read();
         $this->assertNull($this->reader->read());
