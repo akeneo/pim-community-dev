@@ -1,8 +1,8 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Writer;
+namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Writer\File;
 
-use Pim\Bundle\ImportExportBundle\Writer\ProductFileWriter;
+use Pim\Bundle\ImportExportBundle\Writer\File\ProductWriter;
 
 /**
  * Test related class
@@ -11,7 +11,7 @@ use Pim\Bundle\ImportExportBundle\Writer\ProductFileWriter;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductFileWriterTest extends \PHPUnit_Framework_TestCase
+class ProductWriterTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * {@inheritdoc}
@@ -19,7 +19,7 @@ class ProductFileWriterTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->mediaManager = $this->getMediaManagerMock();
-        $this->writer = new ProductFileWriter($this->mediaManager);
+        $this->writer = new ProductWriter($this->mediaManager);
         $this->writer->setStepExecution($this->getStepExecutionMock());
     }
 
@@ -28,7 +28,7 @@ class ProductFileWriterTest extends \PHPUnit_Framework_TestCase
      */
     public function testIsAnInstanceOfFileWriter()
     {
-        $this->assertInstanceOf('Pim\Bundle\ImportExportBundle\Writer\FileWriter', $this->writer);
+        $this->assertInstanceOf('Pim\Bundle\ImportExportBundle\Writer\File\FileWriter', $this->writer);
     }
 
     /**
