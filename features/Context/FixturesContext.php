@@ -365,29 +365,6 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @param TableNode $table
-     *
-     * @Given /^the following locales:$/
-     */
-    public function theFollowingLocales(TableNode $table)
-    {
-        foreach ($table->getHash() as $data) {
-            $locale = $this->getLocale($data['code']);
-
-            if (isset($data['fallback'])) {
-                $locale->setFallback($data['fallback']);
-            }
-
-            if ($data['activated'] === 'yes') {
-                $locale->activate();
-            }
-
-            $this->persist($locale, false);
-        }
-        $this->flush();
-    }
-
-    /**
      * @param string $entityName
      *
      * @Given /^there is no (.*)$/
