@@ -165,10 +165,7 @@ class JobInstanceController extends AbstractDoctrineController
                 $this->getManager()->persist($jobInstance);
                 $this->getManager()->flush();
 
-                $this->addFlash(
-                    'success',
-                    sprintf('The %s has been successfully created.', $this->getJobType())
-                );
+                $this->addFlash('success', sprintf('The %s has been successfully created.', $this->getJobType()));
 
                 return $this->redirectToShowView($jobInstance->getId());
             }
