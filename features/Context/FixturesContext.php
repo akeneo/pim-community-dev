@@ -507,9 +507,8 @@ class FixturesContext extends RawMinkContext
     public function theFollowingProductValue(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
-            $data = array_merge(array('scope' => null, 'locale' => null), $data);
-            $data['locale']= (empty($data['locale'])) ? null : $data['locale'];
-            $data['scope']= (empty($data['scope'])) ? null : $data['scope'];
+            $data['locale'] = empty($data['locale']) ? null : $data['locale'];
+            $data['scope']  = empty($data['scope']) ? null : $data['scope'];
 
             $product = $this->getProduct($data['product']);
             $value   = $product->getValue($this->camelize($data['attribute']), $data['locale'], $data['scope']);
