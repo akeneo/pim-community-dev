@@ -70,45 +70,45 @@ After it, form fields which have this constraint will be processed by this valid
 
 ## Conformity server side validations to client once
 ```
-+--------------+---------+-----+------------------------+-------+
-| Server side  | Symfony | Oro |       Client side      | Comt. |
-+--------------+---------+-----+------------------------+-------+
-| All          |    √    |     |                        |  (2)  |
-| Blank        |    √    |     |                        |       |
-| Callback     |    √    |     |                        |  (2)  |
-| Choice       |    √    |     |                        |  (2)  |
-| Collection   |    √    |     |                        |  (2)  |
-| Count        |         |  √  | oro/validator/count    |  (1)  |
-| Country      |    √    |     |                        |       |
-| DateTime     |    √    |  √  |                        |       |
-| Date         |    √    |  √  | oro/validator/date     |       |
-| Email        |    √    |     | oro/validator/email    |       |
-| False        |    √    |     |                        |       |
-| File         |    √    |     |                        |  (2)  |
-| Image        |    √    |     |                        |  (2)  |
-| Ip           |    √    |     |                        |       |
-| Language     |    √    |     |                        |       |
-| Length       |    √    |     | oro/validator/length   |       |
-| Locale       |    √    |     |                        |       |
-| MaxLength    |    √    |     |                        |       |
-| Max          |    √    |  √  |                        |       |
-| MinLength    |    √    |     |                        |       |
-| Min          |    √    |  √  |                        |       |
-| NotBlank     |    √    |     | oro/validator/notblank |       |
-| NotNull      |    √    |  √  |                        |  (3)  |
-| Null         |    √    |     |                        |       |
-| Range        |    √    |  √  | oro/validator/range    |       |
-| Regex        |    √    |     | oro/validator/regex    |       |
-| Repeated     |    √    |     |                        |       |
-| SizeLength   |    √    |     |                        |       |
-| Size         |    √    |  √  |                        |       |
-| Time         |    √    |     |                        |       |
-| True         |    √    |     |                        |       |
-| Type         |    √    |     |                        |  (2)  |
-| UniqueEntity |    √    |     |                        |       |
-| Url          |    √    |     | oro/validator/url      |       |
-+--------------+---------+-----+------------------------+-------+
++--------------+---------+-----+------------------------+---------+
+| Server side  | Symfony | Oro |       Client side      | Coment. |
++--------------+---------+-----+------------------------+---------+
+| All          |    √    |     |                        |   (2)   |
+| Blank        |    √    |     |                        |         |
+| Callback     |    √    |     |                        |   (2)   |
+| Choice       |    √    |     |                        |   (2)   |
+| Collection   |    √    |     |                        |   (2)   |
+| Count        |         |  √  | oro/validator/count    |   (1)   |
+| Country      |    √    |     |                        |         |
+| DateTime     |    √    |  √  |                        |         |
+| Date         |    √    |  √  | oro/validator/date     |         |
+| Email        |    √    |     | oro/validator/email    |         |
+| False        |    √    |     |                        |         |
+| File         |    √    |     |                        |   (2)   |
+| Image        |    √    |     |                        |   (2)   |
+| Ip           |    √    |     |                        |         |
+| Language     |    √    |     |                        |         |
+| Length       |    √    |     | oro/validator/length   |         |
+| Locale       |    √    |     |                        |         |
+| MaxLength    |    √    |     |                        |         |
+| Max          |    √    |  √  |                        |         |
+| MinLength    |    √    |     |                        |         |
+| Min          |    √    |  √  |                        |         |
+| NotBlank     |    √    |     | oro/validator/notblank |         |
+| NotNull      |    √    |  √  |                        |   (2)   |
+| Null         |    √    |     |                        |   (2)   |
+| Range        |    √    |  √  | oro/validator/range    |         |
+| Regex        |    √    |     | oro/validator/regex    |         |
+| Repeated     |    √    |     |                        |         |
+| SizeLength   |    √    |     |                        |         |
+| Size         |    √    |  √  |                        |         |
+| Time         |    √    |     |                        |         |
+| True         |    √    |     |                        |         |
+| Type         |    √    |     |                        |   (2)   |
+| UniqueEntity |    √    |     |                        |         |
+| Url          |    √    |     | oro/validator/url      |         |
++--------------+---------+-----+------------------------+---------+
 ```
-1 - supports only group of checkboxes with same name (like `user[role][]`)
-2 - can't be supported on client side
-3 - is it same as NotBlank? (there's no difference for client side null and empty)
+
+ 1. supports only group of checkboxes with same name (like `user[role][]`)
+ 2. can't be supported on client side
