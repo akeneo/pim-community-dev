@@ -337,26 +337,21 @@ class ProductAttribute extends AbstractEntityAttribute implements
      */
     public function setDefaultValue($defaultValue)
     {
-        if (is_null($defaultValue)) {
+        if (is_null($defaultValue)
+            || ($defaultValue instanceof ArrayCollection && $defaultValue->isEmpty())) {
             $this->defaultValue = null;
-
-            return $this;
-        } elseif ($defaultValue instanceof ArrayCollection && $defaultValue->isEmpty()) {
-            $this->defaultOption = null;
-
-            return $this;
-        }
-
-        switch ($this->getBackendType()) {
-            case 'date':
-                $this->defaultValue = $defaultValue->format('U');
-                break;
-            case 'boolean':
-                $this->defaultValue = (int) $defaultValue;
-                break;
-            default:
-                $this->defaultValue = $defaultValue;
-                break;
+        } else {
+            switch ($this->getBackendType()) {
+                case 'date':
+                    $this->defaultValue = $defaultValue->format('U');
+                    break;
+                case 'boolean':
+                    $this->defaultValue = (int) $defaultValue;
+                    break;
+                default:
+                    $this->defaultValue = $defaultValue;
+                    break;
+            }
         }
 
         return $this;
