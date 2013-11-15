@@ -40,11 +40,6 @@ class FixturesContext extends RawMinkContext
         'german'  => 'de_DE',
     );
 
-    private $channels = array(
-        'ecommerce' => array('en_US', 'fr_FR'),
-        'mobile'    => array('fr_FR'),
-    );
-
     private $attributeTypes = array(
         'text'         => 'pim_catalog_text',
         'number'       => 'pim_catalog_number',
@@ -279,10 +274,9 @@ class FixturesContext extends RawMinkContext
     public function theFollowingProduct(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
-            $data = array_merge(array('family' => null), $data);
-
             $product = $this->aProduct($data['sku']);
-            if ($data['family']) {
+
+            if (!empty($data['family'])) {
                 $product->setFamily($this->getFamily($data['family']));
             }
 
@@ -1231,18 +1225,17 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @param mixed $data
+     * @param string $sku
      *
      * @return Product
      */
-    private function createProduct($data)
+    private function createProduct($sku)
     {
         $product = $this->getProductManager()->createFlexible();
-        $sku     = $this->getAttribute('SKU');
-        $value   = $this->createValue($sku, $data);
 
-        $product->addValue($value);
-        $this->persist($product);
+        $product->getIdentifier()->setData($sku);
+
+        $this->getProductManager()->save($product);
 
         return $product;
     }
