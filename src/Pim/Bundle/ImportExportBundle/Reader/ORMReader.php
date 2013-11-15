@@ -2,13 +2,14 @@
 
 namespace Pim\Bundle\ImportExportBundle\Reader;
 
-use Pim\Bundle\ImportExportBundle\Exception\ORMReaderException;
-
 use Doctrine\ORM\AbstractQuery;
+
 use Oro\Bundle\BatchBundle\Entity\StepExecution;
 use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Oro\Bundle\BatchBundle\Item\ItemReaderInterface;
 use Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
+
+use Pim\Bundle\ImportExportBundle\Exception\ORMReaderException;
 
 /**
  * ORM reader

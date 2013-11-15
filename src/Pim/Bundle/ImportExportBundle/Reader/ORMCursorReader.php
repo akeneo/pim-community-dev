@@ -2,11 +2,14 @@
 
 namespace Pim\Bundle\ImportExportBundle\Reader;
 
-use Oro\Bundle\BatchBundle\Item\ItemReaderInterface;
 use Doctrine\ORM\AbstractQuery;
+
+use Oro\Bundle\BatchBundle\Item\ItemReaderInterface;
 use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Oro\Bundle\BatchBundle\Entity\StepExecution;
 use Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
+
+use Pim\Bundle\ImportExportBundle\Exception\ORMReaderException;
 
 /**
  * ORM cursor reader
@@ -19,6 +22,9 @@ class ORMCursorReader extends AbstractConfigurableStepElement implements
     ItemReaderInterface,
     StepExecutionAwareInterface
 {
+    /**
+     * @var AbstractQuery
+     */
     protected $query;
 
     /**
@@ -26,6 +32,9 @@ class ORMCursorReader extends AbstractConfigurableStepElement implements
      */
     protected $stepExecution;
 
+    /**
+     * @var \Doctrine\ORM\Internal\Hydration\IterableResult
+     */
     private $cursor;
 
     /**
@@ -43,7 +52,7 @@ class ORMCursorReader extends AbstractConfigurableStepElement implements
     public function read()
     {
         if (!$this->cursor) {
-            $this->cursor = $this->query->iterate();
+            $this->cursor = $this->getQuery()->iterate();
         }
 
         if ($data = $this->cursor->next()) {
@@ -51,6 +60,22 @@ class ORMCursorReader extends AbstractConfigurableStepElement implements
 
             return $data;
         }
+    }
+
+    /**
+     * Get query to execute
+     *
+     * @return \Doctrine\ORM\AbstractQuery
+     *
+     * @throws ORMReaderException
+     */
+    protected function getQuery()
+    {
+        if (!$this->query) {
+            throw new ORMReaderException('Need a query to read database');
+        }
+
+        return $this->query;
     }
 
     /**

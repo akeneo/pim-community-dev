@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ImportExportBundle\Reader;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManager;
 
 /**
  * ORM Reader for simple entities without query join needed
@@ -11,12 +11,12 @@ use Doctrine\Common\Persistence\ObjectManager;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class SimpleORMReader extends ORMReader
+class SimpleORMReader extends ORMCursorReader
 {
     /**
-     * @var ObjectManager
+     * @var EntityManager
      */
-    protected $om;
+    protected $em;
 
     /**
      * @var string
@@ -24,12 +24,12 @@ class SimpleORMReader extends ORMReader
     protected $className;
 
     /**
-     * @param ObjectManager $om        The object manager
-     * @param string        $className The entity or document class name used
+     * @param EntityManager $em        The entity manager
+     * @param string        $className The entity class name used
      */
-    public function __construct(ObjectManager $om, $className)
+    public function __construct(EntityManager $em, $className)
     {
-        $this->om              = $om;
+        $this->em        = $em;
         $this->className = $className;
     }
 
@@ -39,7 +39,7 @@ class SimpleORMReader extends ORMReader
     protected function getQuery()
     {
         if (!$this->query) {
-            $this->query = $this->om
+            $this->query = $this->em
                 ->getRepository($this->className)
                 ->createQueryBuilder('c')
                 ->getQuery();
