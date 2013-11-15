@@ -38,9 +38,7 @@ class UserManager implements UserProviderInterface
      */
     public function __construct($class, ObjectManager $om, EncoderFactoryInterface $encoderFactory)
     {
-        $metadata = $om->getClassMetadata($class);
-
-        $this->class          = $metadata->getName();
+        $this->class          = $class;
         $this->om             = $om;
         $this->encoderFactory = $encoderFactory;
     }
