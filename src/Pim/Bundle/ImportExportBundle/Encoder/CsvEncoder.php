@@ -48,13 +48,13 @@ class CsvEncoder implements EncoderInterface
      */
     public function encode($data, $format, array $context = array())
     {
-        $this->initializeContext($context);
-
         if (!is_array($data)) {
             throw new \InvalidArgumentException(
                 sprintf('Expecting data of type array, got "%s".', gettype($data))
             );
         }
+
+        $this->initializeContext($context);
 
         $output = fopen('php://temp', 'r+');
 
