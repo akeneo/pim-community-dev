@@ -1,8 +1,7 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Writer;
+namespace Pim\Bundle\ImportExportBundle\Writer\ORM;
 
-use Doctrine\ORM\EntityManager;
 use Oro\Bundle\BatchBundle\Item\ItemWriterInterface;
 use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Oro\Bundle\BatchBundle\Entity\StepExecution;
@@ -19,7 +18,7 @@ use Pim\Bundle\VersioningBundle\EventListener\AddVersionListener;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ORMProductWriter extends AbstractConfigurableStepElement implements
+class ProductWriter extends Writer implements
     ItemWriterInterface,
     StepExecutionAwareInterface
 {
@@ -27,11 +26,6 @@ class ORMProductWriter extends AbstractConfigurableStepElement implements
      * @var ProductManager
      */
     protected $productManager;
-
-    /**
-     * @var EntityManager
-     */
-    protected $entityManager;
 
     /**
      * @var AddVersionListener
@@ -72,6 +66,7 @@ class ORMProductWriter extends AbstractConfigurableStepElement implements
         'Oro\\Bundle\\FlexibleEntityBundle\\Entity\\Attribute',
         'Oro\\Bundle\\UserBundle\\Entity\\UserApi'
     );
+
     /**
      * @param ProductManager     $productManager
      * @param EntityManager      $entityManager
@@ -106,10 +101,10 @@ class ORMProductWriter extends AbstractConfigurableStepElement implements
         $this->addVersionListener->setRealTimeVersioning(false);
         foreach ($items as $item) {
             $this->incrementCount($item);
-            $this->productManager->save($item, false);
         }
         $this->productManager->handleAllMedia($items);
         $this->stepExecution->setWriteCount(count($items));
+        $this->productManager->saveAll($items, false);
 
         $storageManager = $this->productManager->getStorageManager();
 
@@ -119,14 +114,6 @@ class ORMProductWriter extends AbstractConfigurableStepElement implements
             }
         }
         $this->entityCache->clear();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setStepExecution(StepExecution $stepExecution)
-    {
-        $this->stepExecution = $stepExecution;
     }
 
     /**

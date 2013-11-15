@@ -62,6 +62,15 @@ class Writer extends AbstractConfigurableStepElement implements
         }
 
         $this->em->flush();
+
+        $this->postWrite();
+    }
+
+    /**
+     * Post write method
+     */
+    protected function postWrite()
+    {
     }
 
     /**
