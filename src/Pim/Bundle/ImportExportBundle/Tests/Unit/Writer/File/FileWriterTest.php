@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Writer;
+namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Writer\File;
 
 use Pim\Bundle\ImportExportBundle\Writer\File\FileWriter;
 
