@@ -103,9 +103,13 @@ function($, _, __, tools) {
         return func.apply(this, _.rest(arguments));
     });
 
-    // loader for custom validation methods
+    /**
+     * Loader for custom validation methods
+     *
+     * @param {string|Array.<string>} module name of AMD module or list of modules
+     */
     $.validator.loadMethod = function (module) {
-        tools.loadModules([module], function (validators) {
+        tools.loadModules($.makeArray(module), function (validators) {
             _.each(validators, function(args) {
                 $.validator.addMethod.apply($.validator, args);
             });
@@ -134,7 +138,7 @@ function($, _, __, tools) {
     });
 
     // general validation methods
-    var validators = [
+    var methods = [
         'oro/validator/count',
         'oro/validator/date',
         'oro/validator/email',
@@ -144,5 +148,5 @@ function($, _, __, tools) {
         'oro/validator/regex',
         'oro/validator/url'
     ];
-    _.each(validators, $.validator.loadMethod);
+    $.validator.loadMethod(methods);
 });
