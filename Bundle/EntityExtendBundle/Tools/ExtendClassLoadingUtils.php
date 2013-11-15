@@ -15,7 +15,7 @@ class ExtendClassLoadingUtils
      */
     public static function getEntityBaseCacheDir($cacheDir)
     {
-        return $cacheDir . '/entities';
+        return $cacheDir . '/oro_entities/Extend';
     }
 
     /**
@@ -26,7 +26,7 @@ class ExtendClassLoadingUtils
      */
     public static function getEntityCacheDir($cacheDir)
     {
-        return $cacheDir . '/entities/Extend/Entity';
+        return $cacheDir . '/oro_entities/Extend/Entity';
     }
 
     /**
@@ -49,7 +49,7 @@ class ExtendClassLoadingUtils
     {
         $loader = new UniversalClassLoader();
         $loader->registerNamespaces(
-            array('Extend\\' => self::getEntityBaseCacheDir($cacheDir))
+            array('Extend\\' => $cacheDir . '/oro_entities')
         );
         $loader->register();
     }
