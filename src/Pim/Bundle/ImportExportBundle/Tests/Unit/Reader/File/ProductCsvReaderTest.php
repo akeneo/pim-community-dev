@@ -62,7 +62,7 @@ class ProductCsvReaderTest extends CsvReaderTest
      */
     public function testReadDuplicateUniqueValue()
     {
-        $this->reader->setFilePath(__DIR__ . '/../../fixtures/duplicate_values.csv');
+        $this->reader->setFilePath(__DIR__ . '/../../../fixtures/duplicate_values.csv');
 
         $this->reader->read();
         $this->reader->read();
@@ -74,14 +74,14 @@ class ProductCsvReaderTest extends CsvReaderTest
      */
     public function testMediaPathAreAbsolute()
     {
-        $this->reader->setFilePath(__DIR__ . '/../../fixtures/with_media.csv');
+        $this->reader->setFilePath(__DIR__ . '/../../../fixtures/with_media.csv');
 
         $this->assertEquals(
             array(
                 'sku'          => 'SKU-001',
                 'name'         => 'door',
-                'view'         => __DIR__ . '/../../fixtures/sku-001.jpg',
-                'manual-fr_FR' => __DIR__ . '/../../fixtures/sku-001.txt',
+                'view'         => __DIR__ . '/../../../fixtures/sku-001.jpg',
+                'manual-fr_FR' => __DIR__ . '/../../../fixtures/sku-001.txt',
             ),
             $this->reader->read()
         );

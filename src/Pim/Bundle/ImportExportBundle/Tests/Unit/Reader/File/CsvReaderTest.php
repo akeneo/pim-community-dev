@@ -41,7 +41,7 @@ class CsvReaderTest extends \PHPUnit_Framework_TestCase
      */
     public function testRead()
     {
-        $this->reader->setFilePath(__DIR__ . '/../../fixtures/import.csv');
+        $this->reader->setFilePath(__DIR__ . '/../../../fixtures/import.csv');
 
         $this->stepExecution
             ->expects($this->exactly(3))
@@ -71,7 +71,7 @@ class CsvReaderTest extends \PHPUnit_Framework_TestCase
      */
     public function testInvalidCsvRead()
     {
-        $this->reader->setFilePath(__DIR__ . '/../../fixtures/invalid_import.csv');
+        $this->reader->setFilePath(__DIR__ . '/../../../fixtures/invalid_import.csv');
 
         $this->reader->read();
         $this->assertNull($this->reader->read());
