@@ -4,8 +4,10 @@ Feature: Export media with products
   As Julia
   I need to be able to export them along with the products
 
+  @skip Due to an issue with completeness calculation
   Scenario: Successfully export media
-    Given the following family:
+    Given the "default" catalog configuration
+    And the following family:
       | code     |
       | funboard |
     And the following products:
@@ -36,6 +38,7 @@ Feature: Export media with products
     And the following job "acme_product_export" configuration:
       | element   | property      | value               |
       | reader    | channel       | ecommerce           |
+      | processor | channel       | ecommerce           |
       | processor | delimiter     | ;                   |
       | processor | enclosure     | "                   |
       | processor | withHeader    | yes                 |
