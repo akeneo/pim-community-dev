@@ -39,6 +39,20 @@ function(_, Backbone, __, FormValidation, DeleteConfirmation) {
         /** @property jQuery */
         columnSelector: null,
 
+        /** @property {Array} */
+        fieldLabelGetters: [
+            // select element
+            function (el, name, value) {
+                if (el.get(0).tagName.toLowerCase() == 'select') {
+                    var opt = el.find('option[value="' + value + '"]');
+                    if (opt.length === 1) {
+                        return opt.text();
+                    }
+                }
+                return null;
+            },
+        ],
+
         initialize: function() {
             this.options.collection = this.options.collection || new this.collectionClass();
 
@@ -85,7 +99,7 @@ function(_, Backbone, __, FormValidation, DeleteConfirmation) {
         onModelAdded: function(model) {
             var data = model.toJSON();
             _.each(data, _.bind(function (value, key) {
-                data[key] = this.getLocalizedText(key, value);
+                data[key] = this.getFieldLabel(key, value);
             }, this));
             var item = $(this.itemTemplate(data));
             this.bindItemActions(item);
@@ -96,7 +110,7 @@ function(_, Backbone, __, FormValidation, DeleteConfirmation) {
         onModelChanged: function(model) {
             var data = model.toJSON();
             _.each(data, _.bind(function (value, key) {
-                data[key] = this.getLocalizedText(key, value);
+                data[key] = this.getFieldLabel(key, value);
             }, this));
             var item = $(this.itemTemplate(data));
             this.bindItemActions(item);
@@ -297,9 +311,26 @@ function(_, Backbone, __, FormValidation, DeleteConfirmation) {
             });
         },
 
-        getLocalizedText: function (key, value) {
-            var el = this.form.find('select[name$="\\[' + key + '\\]"] option[value="' + value + '"]');
-            return (el.length === 1) ? el.text() : value;
+        addFieldLabelGetter: function (callback) {
+            this.fieldLabelGetters.unshift(callback)
+        },
+
+        getFieldLabel: function (name, value) {
+            var el = this.form.find('[name$="\\[' + name + '\\]"]');
+            if (el.length == 1) {
+                var result = null;
+                for (var i = 0; i < this.fieldLabelGetters.length; i++) {
+                    var callback = this.fieldLabelGetters[i];
+                    result = callback(el, name, value);
+                    if (result !== null) {
+                        break;
+                    }
+                }
+                if (result !== null) {
+                    return result;
+                }
+            }
+            return value;
         },
 
         createNewModel: function () {
