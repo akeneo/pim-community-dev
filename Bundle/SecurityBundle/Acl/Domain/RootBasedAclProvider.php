@@ -55,30 +55,43 @@ class RootBasedAclProvider implements AclProviderInterface
      */
     public function findAcl(ObjectIdentityInterface $oid, array $sids = array())
     {
-        $rootOid = $this->objectIdentityFactory->root($oid->getIdentifier());
+        $rootOid = $this->objectIdentityFactory->root($oid);
         try {
-            $acl = $this->baseAclProvider->findAcl($oid, $sids);
-            try {
-                $rootAcl = $this->baseAclProvider->findAcl($rootOid, $sids);
-            } catch (AclNotFoundException $noRootAcl) {
-                return $acl;
-            }
-
-            return new RootBasedAclWrapper($acl, $rootAcl);
+            $acl = $this->getAcl($oid, $sids, $rootOid);
         } catch (AclNotFoundException $noAcl) {
-            // Try to get ACL for root object
             try {
-                $this->baseAclProvider->cacheEmptyAcl($oid);
+                // Try to get ACL for underlying object
+                $underlyingOid = $this->objectIdentityFactory->underlie($oid);
+                $acl = $this->getAcl($underlyingOid, $sids, $rootOid);
+            } catch (AclNotFoundException $noUnderlyingAcl) {
+                // Try to get ACL for root object
+                try {
+                    $this->baseAclProvider->cacheEmptyAcl($oid);
 
-                return $this->baseAclProvider->findAcl($rootOid, $sids);
-            } catch (AclNotFoundException $noRootAcl) {
-                throw new AclNotFoundException(
-                    sprintf('There is no ACL for %s. The root ACL %s was not found as well.', $oid, $rootOid),
-                    0,
-                    $noAcl
-                );
+                    return $this->baseAclProvider->findAcl($rootOid, $sids);
+                } catch (AclNotFoundException $noRootAcl) {
+                    throw new AclNotFoundException(
+                        sprintf('There is no ACL for %s. The root ACL %s was not found as well.', $oid, $rootOid),
+                        0,
+                        $noAcl
+                    );
+                }
             }
         }
+
+        return $acl;
+    }
+
+    protected function getAcl($oid, $sids, $rootOid)
+    {
+        $acl = $this->baseAclProvider->findAcl($oid, $sids);
+        try {
+            $rootAcl = $this->baseAclProvider->findAcl($rootOid, $sids);
+        } catch (AclNotFoundException $noRootAcl) {
+            return $acl;
+        }
+
+        return new RootBasedAclWrapper($acl, $rootAcl);
     }
 
     /**

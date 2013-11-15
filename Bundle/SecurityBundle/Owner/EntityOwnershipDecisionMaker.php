@@ -47,20 +47,20 @@ class EntityOwnershipDecisionMaker implements OwnershipDecisionMakerInterface
     /**
      * Constructor
      *
-     * @param OwnerTree                 $ownerTree
+     * @param OwnerTreeProvider         $treeProvider
      * @param EntityClassAccessor       $entityClassAccessor
      * @param ObjectIdAccessor          $objectIdAccessor
      * @param EntityOwnerAccessor       $entityOwnerAccessor
      * @param OwnershipMetadataProvider $metadataProvider
      */
     public function __construct(
-        OwnerTree $ownerTree,
+        OwnerTreeProvider $treeProvider,
         EntityClassAccessor $entityClassAccessor,
         ObjectIdAccessor $objectIdAccessor,
         EntityOwnerAccessor $entityOwnerAccessor,
         OwnershipMetadataProvider $metadataProvider
     ) {
-        $this->tree = $ownerTree;
+        $this->tree = $treeProvider->getTree();
         $this->entityClassAccessor = $entityClassAccessor;
         $this->objectIdAccessor = $objectIdAccessor;
         $this->entityOwnerAccessor = $entityOwnerAccessor;

@@ -54,7 +54,7 @@ class OwnershipConditionDataBuilder
      * @param ObjectIdAccessor $objectIdAccessor
      * @param EntitySecurityMetadataProvider $entityMetadataProvider
      * @param OwnershipMetadataProvider $metadataProvider
-     * @param $treeProvider
+     * @param OwnerTreeProvider $treeProvider
      * @param AclVoter $aclVoter
      */
     public function __construct(

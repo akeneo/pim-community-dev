@@ -4,6 +4,7 @@ namespace Oro\Bundle\SecurityBundle\Acl\Domain;
 
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Oro\Bundle\SecurityBundle\Acl\Extension\AclExtensionSelector;
+use Symfony\Component\Security\Acl\Exception\AclNotFoundException;
 use Symfony\Component\Security\Acl\Exception\InvalidDomainObjectException;
 
 /**
@@ -48,6 +49,25 @@ class ObjectIdentityFactory
         }
 
         return new ObjectIdentity($oidOrExtensionKey, static::ROOT_IDENTITY_TYPE);
+    }
+
+    /**
+     * Constructs an underlying ObjectIdentity for given ObjectIdentity
+     *
+     * @param ObjectIdentity $oid
+     * @return ObjectIdentity
+     * @throws AclNotFoundException
+     */
+    public function underlie(ObjectIdentity $oid)
+    {
+        $extensionKey = $this->extensionSelector
+            ->select($oid)
+            ->getExtensionKey();
+        if ($extensionKey == $oid->getIdentifier() || $oid->getIdentifier() == self::ROOT_IDENTITY_TYPE) {
+            throw new AclNotFoundException();
+        }
+
+        return new ObjectIdentity($extensionKey, $oid->getType());
     }
 
     /**

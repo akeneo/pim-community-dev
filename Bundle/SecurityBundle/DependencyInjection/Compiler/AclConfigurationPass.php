@@ -26,6 +26,10 @@ class AclConfigurationPass implements CompilerPassInterface
 
     const DEFAULT_ACL_CACHE_CLASS = 'Oro\Bundle\SecurityBundle\Acl\Cache\AclCache';
 
+    const DOCTRINE_CONVERTER = 'sensio_framework_extra.converter.doctrine.orm';
+    const DOCTRINE_CONVERTER_CLASS = 'Oro\Bundle\SecurityBundle\Request\ParamConverter\DoctrineParamConverter';
+    const SECURITY_FACADE_SERVICE = 'oro_security.security_facade';
+
     /**
      * {@inheritDoc}
      */
@@ -35,6 +39,16 @@ class AclConfigurationPass implements CompilerPassInterface
         $this->configureDefaultAclProvider($container);
         $this->configureDefaultAclCache($container);
         $this->configureDefaultAclVoter($container);
+        $this->configureParamConverter($container);
+    }
+
+    protected function configureParamConverter(ContainerBuilder $container)
+    {
+        if ($container->hasDefinition(self::DOCTRINE_CONVERTER)) {
+            $paramConverterDef = $container->getDefinition(self::DOCTRINE_CONVERTER);
+            $paramConverterDef->setClass(self::DOCTRINE_CONVERTER_CLASS);
+            $paramConverterDef->addArgument(new Reference(self::SECURITY_FACADE_SERVICE));
+        }
     }
 
 

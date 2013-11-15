@@ -86,8 +86,16 @@ class TestHelper
             $ownerTree = new OwnerTree();
         }
 
+        $treeProviderMock = $this->testCase->getMockBuilder('Oro\Bundle\SecurityBundle\Owner\OwnerTreeProvider')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $treeProviderMock->expects($this->testCase->any())
+            ->method('getTree')
+            ->will($this->testCase->returnValue($ownerTree));
+
         $decisionMaker = new EntityOwnershipDecisionMaker(
-            $ownerTree,
+            $treeProviderMock,
             $classAccessor,
             $idAccessor,
             new EntityOwnerAccessor($classAccessor, $metadataProvider),
