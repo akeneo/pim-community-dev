@@ -28,3 +28,20 @@ Feature: Edit an identifier attribute
     And I press the "Save" button
     And I visit the "Parameters" tab
     Then I should see validation error "An identifier attribute already exists."
+
+  Scenario: Successfully edit an identifier attribute
+    Given I am on the "SKU" attribute page
+    When I fill in the following information:
+      | Max characters | 199 |
+    And I press the "Save" button
+    Then I should see "199"
+
+  @javascript
+  Scenario: Successfully display a message when there are unsaved changes
+    Given I am on the "SKU" attribute page
+    And I change the "Validation rule" to "Regular expression"
+    Then I should see "There are unsaved changes."
+    And I click on the Akeneo logo
+    Then I should see a confirm dialog with the following content:
+      | title   | Are you sure you want to leave this page?                      |
+      | content | You will lose changes to the attribute if you leave this page. |
