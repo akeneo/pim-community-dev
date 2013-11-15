@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\ImportExportBundle\Reader;
 
+use Pim\Bundle\ImportExportBundle\Exception\ORMReaderException;
+
 use Doctrine\ORM\AbstractQuery;
 use Oro\Bundle\BatchBundle\Entity\StepExecution;
 use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
@@ -19,6 +21,9 @@ class ORMReader extends AbstractConfigurableStepElement implements
     ItemReaderInterface,
     StepExecutionAwareInterface
 {
+    /**
+     * @var AbstractQuery
+     */
     protected $query;
 
     /**
@@ -26,6 +31,9 @@ class ORMReader extends AbstractConfigurableStepElement implements
      */
     protected $stepExecution;
 
+    /**
+     * @var bool
+     */
     private $executed = false;
 
     /**
@@ -45,11 +53,21 @@ class ORMReader extends AbstractConfigurableStepElement implements
         if (!$this->executed) {
             $this->executed = true;
 
-            $result = $this->query->execute();
+            $result = $this->getQuery()->execute();
             $this->stepExecution->setReadCount(count($result));
 
             return empty($result) ? null : $result;
         }
+    }
+
+    /**
+     * Get query to execute
+     *
+     * @return \Doctrine\ORM\AbstractQuery
+     */
+    protected function getQuery()
+    {
+        return $this->query;
     }
 
     /**
