@@ -52,24 +52,24 @@ class TransitionIsAllowedValidator extends ConstraintValidator
                 case InvalidTransitionException::UNKNOWN_TRANSITION:
                     $errors->add(
                         array(
-                            $constraint->unknownTransitionMessage,
-                            array('{{ transition }}' => $transitionName)
+                            'message' => $constraint->unknownTransitionMessage,
+                            'parameters' => array('{{ transition }}' => $transitionName)
                         )
                     );
                     break;
                 case InvalidTransitionException::NOT_START_TRANSITION:
                     $errors->add(
                         array(
-                            $constraint->notStartTransitionMessage,
-                            array('{{ transition }}' => $transitionName)
+                            'message' => $constraint->notStartTransitionMessage,
+                            'parameters' => array('{{ transition }}' => $transitionName)
                         )
                     );
                     break;
                 case InvalidTransitionException::STEP_HAS_NO_ALLOWED_TRANSITION:
                     $errors->add(
                         array(
-                            $constraint->stepHasNotAllowedTransitionMessage,
-                            array(
+                            'message' => $constraint->stepHasNotAllowedTransitionMessage,
+                            'parameters' => array(
                                 '{{ transition }}' => $transitionName,
                                 '{{ step }}' => $workflowItem->getCurrentStepName()
                             )
@@ -81,12 +81,8 @@ class TransitionIsAllowedValidator extends ConstraintValidator
 
         if (!$result) {
             if ($errors->count()) {
-                foreach ($errors as $errorMessage) {
-                    $params = array();
-                    if (is_array($errorMessage)) {
-                        list($errorMessage, $params) = array_values($errorMessage);
-                    }
-                    $this->context->addViolation($errorMessage, $params);
+                foreach ($errors as $error) {
+                    $this->context->addViolation($error['message'], $error['parameters']);
                 }
             } else {
                 $this->context->addViolation($constraint->someConditionsNotMetMessage);

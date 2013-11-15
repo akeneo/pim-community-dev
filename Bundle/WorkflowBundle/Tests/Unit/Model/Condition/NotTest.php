@@ -39,7 +39,11 @@ class NotTest extends \PHPUnit_Framework_TestCase
         $errors = new ArrayCollection();
         $this->condition->initialize(array($falseConditionWithError));
         $this->assertTrue($this->condition->isAllowed('anything', $errors));
-        $this->assertEquals(array($nestedConditionError), $errors->getValues());
+        $this->assertEquals(1, $errors->count());
+        $this->assertEquals(
+            array('message' => $nestedConditionError, 'parameters' => array()),
+            $errors->get(0)
+        );
 
         $trueConditionWithError = new Condition\True();
         $trueConditionWithError->setMessage($nestedConditionError);
@@ -47,7 +51,11 @@ class NotTest extends \PHPUnit_Framework_TestCase
         $errors = new ArrayCollection();
         $this->condition->initialize(array($trueConditionWithError));
         $this->assertFalse($this->condition->isAllowed('anything', $errors));
-        $this->assertEquals(array($currentConditionError), $errors->getValues());
+        $this->assertEquals(1, $errors->count());
+        $this->assertEquals(
+            array('message' => $currentConditionError, 'parameters' => array()),
+            $errors->get(0)
+        );
     }
 
     // @codingStandardsIgnoreStart

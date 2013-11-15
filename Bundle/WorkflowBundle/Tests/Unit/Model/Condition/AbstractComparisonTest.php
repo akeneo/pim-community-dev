@@ -172,8 +172,8 @@ class AbstractComparisonTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(1, $errors->count());
         $this->assertEquals(
             array(
-                $message,
-                array('{{ left }}' => $context[$left], '{{ right }}' => $context[$right])
+                'message' => $message,
+                'parameters' => array('{{ left }}' => $context[$left], '{{ right }}' => $context[$right])
             ),
             $errors->get(0)
         );

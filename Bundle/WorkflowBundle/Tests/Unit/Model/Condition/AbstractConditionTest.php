@@ -53,7 +53,11 @@ class AbstractConditionTest extends \PHPUnit_Framework_TestCase
         $errors = new ArrayCollection();
         $this->assertEquals($allowed, $this->condition->isAllowed($context, $errors));
         if ($expectMessage) {
-            $this->assertEquals(array($errorMessage), $errors->getValues());
+            $this->assertEquals(1, $errors->count());
+            $this->assertEquals(
+                array('message' => $errorMessage, 'parameters' => array()),
+                $errors->get(0)
+            );
         } else {
             $this->assertEmpty($errors->getValues());
         }
@@ -114,6 +118,6 @@ class AbstractConditionTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->condition->isAllowed($context, $errors));
 
         $this->assertEquals(1, $errors->count());
-        $this->assertEquals($message, $errors->get(0));
+        $this->assertEquals(array('message' => $message, 'parameters' => array()), $errors->get(0));
     }
 }

@@ -47,9 +47,14 @@ class AndxTest extends \PHPUnit_Framework_TestCase
         );
         $errors = new ArrayCollection();
         $this->assertFalse($this->condition->isAllowed('anything', $errors));
+        $this->assertEquals(2, $errors->count());
         $this->assertEquals(
-            array($nestedConditionError, $currentConditionError),
-            $errors->getValues()
+            array('message' => $nestedConditionError, 'parameters' => array()),
+            $errors->get(0)
+        );
+        $this->assertEquals(
+            array('message' => $currentConditionError, 'parameters' => array()),
+            $errors->get(1)
         );
     }
 
@@ -60,6 +65,10 @@ class AndxTest extends \PHPUnit_Framework_TestCase
 
         $errors = new ArrayCollection();
         $this->assertFalse($this->condition->isAllowed('anything', $errors));
-        $this->assertEquals(array($currentConditionError), $errors->getValues());
+        $this->assertEquals(1, $errors->count());
+        $this->assertEquals(
+            array('message' => $currentConditionError, 'parameters' => array(),),
+            $errors->get(0)
+        );
     }
 }

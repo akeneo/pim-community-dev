@@ -50,11 +50,7 @@ abstract class AbstractCondition implements ConditionInterface
     {
         if ($errors && $this->getMessage()) {
             $messageParameters = $this->getMessageParameters($context);
-            if ($messageParameters) {
-                $errors->add(array($this->getMessage(), $messageParameters));
-            } else {
-                $errors->add($this->getMessage());
-            }
+            $errors->add(array('message' => $this->getMessage(), 'parameters' => $messageParameters));
         }
     }
 
