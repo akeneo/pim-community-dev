@@ -249,6 +249,26 @@ oro_entity_config:
                             block:          entity
                             subblock:       properties
 
+                is_deleted:
+                    options:
+                        default_value:      false
+                        auditable:          false
+                    grid:
+                        # TODO: remove/deprecate show_column key here with GridBundle
+                        show_column:        false
+                        renderable:         false
+                        query:
+                            operator:       '!='
+                            value:          true
+
+                is_inverse:
+                    options:
+                        default_value:      false
+                        auditable:          false
+
+                #
+                # Relations form type fields
+                #
                 relation:
                     options:
                         allowed_type:       [oneToMany, manyToOne, manyToMany]
@@ -287,24 +307,9 @@ oro_entity_config:
                         auditable:          false
                         serializable:       true
 
-                is_deleted:
-                    options:
-                        default_value:      false
-                        auditable:          false
-                    grid:
-                        # TODO: remove/deprecate show_column key here with GridBundle
-                        show_column:        false
-                        renderable:         false
-                        query:
-                            operator:       '!='
-                            value:          true
-
-                is_inverse:
-                    options:
-                        default_value:      false
-                        auditable:          false
-
-                #OptionSet form type
+                #
+                # OptionSet form type fields
+                #
                 set_expanded:
                     options:
                         allowed_type:       [optionSet]
@@ -319,18 +324,12 @@ oro_entity_config:
                             subblock:       properties
                 set_options:
                     options:
-                        #default_value:      255
                         allowed_type:       [optionSet]
                         required_property:
                             config_id:
                                 scope:      extend
                             code:           owner
                             value:          Custom
-#                    constraints:
-#                        - Regex:            "/^[0-9]*$/"
-#                        - Range:
-#                            min:            1
-#                            max:            255
                     form:
                         type:               oro_entity_option_set_collection
                         options:
@@ -339,7 +338,6 @@ oro_entity_config:
                             block:          entity
                             subblock:       properties
                             type:           oro_entity_option_set
-
 
 #            'emails',
 #            'oro_email_collection',

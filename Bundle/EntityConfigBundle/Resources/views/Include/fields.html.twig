@@ -1,0 +1,81 @@
+{% block oro_entity_option_set_widget %}
+    <div class="email-holder {% if form.option.vars.errors|length > 0 %} validation-error{% endif %}">
+        <div class="input-append collection-element-primary">
+            {{ form_widget(form.option) }}
+            <label class="add-on" title="{{ 'Default'|trans }}">
+                {{ form_widget(form.default) }}
+                {{ form_widget(form.priority) }}
+            </label>
+        </div>
+        {{ form_errors(form.option) }}
+    </div>
+    {{ form_rest(form) }}
+{%  endblock oro_entity_option_set_widget %}
+
+{#{% block integer_widget %}#}
+    {#asd#}
+{#{% endblock integer_widget %}#}
+
+{#{% block oro_item_collection_widget %}#}
+    {#{% spaceless %}#}
+        {#{% set prototypeHtml = _self.oro_collection_item_prototype(form) %}#}
+        {#<div class="row-oro">#}
+            {#<div class="oro-item-collection collection-fields-list" id="{{ id }}_collection" data-prototype="{{ prototypeHtml|escape }}">#}
+                {#{% if form.children|length %}#}
+                    {#{% for child in form.children %}#}
+                        {#{{ _self.oro_collection_item_prototype(child) }}#}
+                    {#{% endfor %}#}
+                {#{% elseif show_form_when_empty %}#}
+                    {#{{ prototypeHtml|replace({'__name__': '0'})|raw }}#}
+                {#{% endif %}#}
+            {#</div>#}
+            {#<a class="btn add-list-item" href="javascript: void(0);"><i class="icon-plus"></i>{{ 'Add'|trans }}</a>#}
+        {#</div>#}
+        {#{{ _self.oro_item_collection_validate_primary_js(_context) }}#}
+    {#{% endspaceless %}#}
+{#{% endblock %}#}
+
+{% macro oro_item_collection_validate_primary_js(context) %}
+    {% set form = context.form %}
+    {% set show_form_when_empty = context.show_form_when_empty %}
+    {% set id = context.id %}
+    {% set has_primary = form.vars.prototype.primary is defined %}
+    {% set has_types = form.vars.prototype.types is defined %}
+    {% if has_primary or has_types or show_form_when_empty %}
+        <script type="text/javascript">
+            require(['jquery'],
+            function($){
+                $(function() {
+                    var container = $('#{{ id }}_collection');
+
+                {% if has_primary %}
+                    /**
+                     * Allow only 1 primary checkbox to be checked.
+                     * This logic convert checkbox logic to logic used in radiobutton
+                     */
+                    container.on('click', '[name$="[default]"]', function() {
+                        container.find('[name$="[default]"]').each(function (idx, el) {
+                            el.checked = false;
+                        });
+                        this.checked = true;
+                    });
+                {% endif %}
+
+                {% if has_types %}
+                    /**
+                     * Allow only 1 item with selected type
+                     */
+                    container.on('click', '[name$="[types][]"]', function() {
+                        if (this.checked) {
+                            container.find('[name$="[types][]"][value="' + this.value + '"]').each(function (idx, el) {
+                                el.checked = false;
+                            });
+                            this.checked = true;
+                        }
+                    });
+                {% endif %}
+                });
+            });
+        </script>
+    {% endif %}
+{% endmacro %}

@@ -1,3 +1,8 @@
 #entity_extend_unique_key_collection select{
     margin:0;
 }
+#oro_entity_config_type .removeRow{
+     text-indent:-999;
+     font-size:0;
+     line-height:0;
+}

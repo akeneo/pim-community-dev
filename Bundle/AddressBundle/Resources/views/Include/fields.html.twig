@@ -66,19 +66,6 @@
     {{ form_rest(form) }}
 {%  endblock %}
 
-{% block oro_entity_option_set_widget %}
-    <div class="email-holder {% if form.option.vars.errors|length > 0 %} validation-error{% endif %}">
-        <div class="input-append collection-element-primary">
-            {{ form_widget(form.option) }}
-            <label class="add-on" title="{{ 'Default'|trans }}">
-                {{ form_widget(form.default) }}
-            </label>
-        </div>
-        {{ form_errors(form.option) }}
-    </div>
-    {{ form_rest(form) }}
-{%  endblock %}
-
 {% block oro_phone_widget %}
     <div class="email-holder {% if form.phone.vars.errors|length > 0 %} validation-error{% endif %}">
         <div class="input-append collection-element-primary">
