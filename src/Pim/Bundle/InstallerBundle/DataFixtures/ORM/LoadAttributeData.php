@@ -13,7 +13,6 @@ use Pim\Bundle\CatalogBundle\Entity\ProductAttributeTranslation;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
- *
  */
 class LoadAttributeData extends AbstractInstallerFixture
 {
@@ -56,7 +55,10 @@ class LoadAttributeData extends AbstractInstallerFixture
     {
         $attribute = $this->getProductManager()->createAttribute($data['type']);
         $attribute->setCode($code);
-        $attribute->setGroup($this->getReference('attribute-group.'.$data['group']));
+
+        if (isset($data['group'])) {
+            $attribute->setGroup($this->getReference('attribute-group.'.$data['group']));
+        }
 
         foreach ($data['labels'] as $locale => $label) {
             $translation = $this->createTranslation($attribute, $locale, $label);

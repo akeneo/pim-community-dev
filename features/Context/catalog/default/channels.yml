@@ -1,0 +1,17 @@
+channels:
+    ecommerce:
+        label: E-Commerce
+        locales:
+            - en_US
+            - fr_FR
+        currencies:
+            - EUR
+            - USD
+        tree: default
+    mobile:
+        label: Mobile
+        locales:
+            - fr_FR
+        currencies:
+            - EUR
+        tree: default

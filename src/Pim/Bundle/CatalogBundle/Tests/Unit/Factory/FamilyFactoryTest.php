@@ -16,7 +16,7 @@ class FamilyFactoryTest extends \PHPUnit_Framework_TestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->productManager = $this->getProductManagerMock();
         $this->channelManager = $this->getChannelManagerMock();

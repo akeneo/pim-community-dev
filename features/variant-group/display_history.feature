@@ -4,7 +4,8 @@ Feature: Display the variant group history
   I need to have access to a variant group history
 
   Background:
-    Given there is no product group
+    Given the "default" catalog configuration
+    And there is no product group
     And the following attributes:
       | code  | label | type                     |
       | color | Color | pim_catalog_simpleselect |
@@ -19,7 +20,7 @@ Feature: Display the variant group history
     And I select the axis "Color"
     And I press the "Save" button
     Then I am on the variant groups page
-    And I should see group AkeneoShirt
+    And I should see groups AkeneoShirt
     When I am on the "AkeneoShirt" variant group page
     And I visit the "History" tab
     Then there should be 1 update

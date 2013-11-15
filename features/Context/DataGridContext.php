@@ -44,6 +44,11 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function theGridShouldContainElement($count)
     {
+        if ($count > 10) {
+            $this->datagrid->changePageSize(100);
+            $this->wait();
+        }
+
         assertEquals(
             intval($count),
             $actualCount = $this->datagrid->getToolbarCount(),
@@ -323,17 +328,24 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      * @throws ExpectationException
      *
      * @Then /^I should see products? (.*)$/
-     * @Then /^I should see attributes? (?!(.*)in group )(.*)$/
+     * @Then /^I should see attributes? (?!(?:.*)in group )(.*)$/
      * @Then /^I should see channels? (.*)$/
      * @Then /^I should see locales? (.*)$/
      * @Then /^I should see (?:import|export) profiles? (.*)$/
      * @Then /^I should see (?:(?:entit|currenc)(?:y|ies)) (.*)$/
-     * @Then /^I should see groups? (.*)$/
+     * @Then /^I should see groups (.*)$/
      * @Then /^I should see associations? (.*)$/
+     * @Then /^I should see group types? (.*)$/
+     * @Then /^I should see users (.*)$/
      */
     public function iShouldSeeEntities($elements)
     {
         $elements = $this->getMainContext()->listToArray($elements);
+
+        if (count($elements) > 10) {
+            $this->datagrid->changePageSize(100);
+            $this->wait();
+        }
 
         foreach ($elements as $element) {
             if (!$this->datagrid->getRow($element)) {

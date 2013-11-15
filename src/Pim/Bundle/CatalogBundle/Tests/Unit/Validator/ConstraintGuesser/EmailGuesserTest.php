@@ -16,7 +16,7 @@ class EmailGuesserTest extends ConstraintGuesserTest
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->target = new EmailGuesser();
     }

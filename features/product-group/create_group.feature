@@ -5,7 +5,8 @@ Feature: Product group creation
   I need to be able to manually create a group
 
   Background:
-    Given I am logged in as "admin"
+    Given the "default" catalog configuration
+    And I am logged in as "admin"
 
   Scenario: Successfully display all required fields in the group creation form
     Given I am on the product groups page
@@ -21,7 +22,7 @@ Feature: Product group creation
     And I select "X_SELL" from "Type"
     And I press the "Save" button
     Then I am on the product groups page
-    And I should see group Cross
+    And I should see groups Cross
 
   Scenario: Fail to create a group missing the code
     Given I am on the product groups page

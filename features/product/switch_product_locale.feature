@@ -4,7 +4,8 @@ Feature: Switch product locale
   I need to be able to switch product locale
 
   Background:
-    Given a "Computer" product
+    Given the "default" catalog configuration
+    And a "Computer" product
     And the "Computer" product has the following translations:
       | locale  | attribute | value      |
       | english | name      | computer   |

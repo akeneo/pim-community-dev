@@ -5,7 +5,8 @@ Feature: Define the attribute requirement
   I need to be able to define which attributes are required or not for a given channel
 
   Background:
-    Given the following family:
+    Given the "default" catalog configuration
+    And the following family:
       | code       |
       | Smartphone |
     And the following product attributes:

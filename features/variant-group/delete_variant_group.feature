@@ -5,7 +5,8 @@ Feature: Delete a variant group
   I need to be able to delete variant groups
 
   Background:
-    Given there is no product group
+    Given the "default" catalog configuration
+    And there is no product group
     And the following families:
       | code      | label     |
       | mug       | Mug       |
@@ -42,7 +43,7 @@ Feature: Delete a variant group
 
   Scenario: Successfully delete a variant group from the grid
     Given I am on the variant groups page
-    And I should see group MUG
+    And I should see groups MUG
     When I click on the "Delete" action of the row which contains "MUG"
     And I confirm the deletion
     Then the grid should contain 1 element
@@ -53,4 +54,4 @@ Feature: Delete a variant group
     When I press the "Delete" button
     And I confirm the deletion
     Then the grid should contain 1 element
-    And I should not see group "POSTIT"
+    And I should not see groups "POSTIT"

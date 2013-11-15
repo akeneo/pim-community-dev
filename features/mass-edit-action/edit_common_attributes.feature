@@ -5,7 +5,8 @@ Feature: Edit common attributes of many products at once
   I need to be able to edit some common attributes of many products at once
 
   Background:
-    Given a "lamp" product
+    Given the "default" catalog configuration
+    And a "lamp" product
     And a "ceiling" product
     And a "torch" product
     And the following attribute group:
@@ -61,11 +62,7 @@ Feature: Edit common attributes of many products at once
     And the english name of ceiling should be "Lamp"
 
   Scenario: Succesfully update many price values at once
-    Given the following currencies:
-      | code | activated |
-      | USD  | yes       |
-      | EUR  | yes       |
-    And I am on the products page
+    Given I am on the products page
     When I mass-edit products lamp and torch
     And I choose the "Edit attributes" operation
     And I display the Price attribute

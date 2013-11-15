@@ -5,7 +5,8 @@ Feature: Display the completeness of a product
   I need to be able to display the completeness of a product
 
   Background:
-    Given the following families:
+    Given the "default" catalog configuration
+    And the following families:
       | code      |
       | furniture |
       | phone     |

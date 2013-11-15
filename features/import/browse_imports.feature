@@ -5,13 +5,14 @@ Feature: Browse imports
   I need to be able to view a list of them
 
   Background:
-    Given the following jobs:
+    Given the "default" catalog configuration
+    And the following jobs:
       | connector            | alias           | code                 | label                        | type   |
       | Akeneo CSV Connector | product_export  | acme_product_export  | Product export for Acme.com  | export |
       | Akeneo CSV Connector | product_import  | acme_product_import  | Product import for Acme.com  | import |
       | Akeneo CSV Connector | category_import | acme_category_import | Category import for Acme.com | import |
       | Akeneo CSV Connector | category_import | foo_category_import  | Category import for foo      | import |
-    Given I am logged in as "admin"
+    And I am logged in as "admin"
 
   Scenario: Successfully display all the import jobs
     Given I am on the imports page

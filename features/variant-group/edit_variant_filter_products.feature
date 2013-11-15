@@ -5,15 +5,11 @@ Feature: Edit a variant group adding/removing products
   I need to be able to add and remove product from a variant group
 
   Background:
-    Given the following families:
+    Given the "default" catalog configuration
+    And the following families:
       | code      | label     |
       | mug       | Mug       |
       | furniture | Furniture |
-    And the following currencies:
-      | code | activated |
-      | USD  | yes       |
-      | EUR  | yes       |
-      | GBP  | no        |
     And the following products:
       | sku    | family    |
       | MUG_1  | mug       |
@@ -149,8 +145,7 @@ Feature: Edit a variant group adding/removing products
 
   Scenario: Successfully filter by has product
     Given I am on the "MUG" variant group page
-    When I make visible the filter "Has product"
-    And I filter by "Has product" with value "no"
+    When I filter by "Has product" with value "no"
     Then the grid should contain 3 elements
     And I should see product MUG_1, MUG_2 and POSTIT
     And I should not see products MUG_3

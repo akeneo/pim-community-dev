@@ -1,0 +1,20 @@
+categories:
+    2014_collection:
+        labels:
+            en_US: 2014 collection
+    summer_collection:
+        labels:
+            en_US: Summer collection
+        parent: 2014_collection
+    winter_collection:
+        labels:
+            en_US: Winter collection
+        parent: 2014_collection
+    winter_boots:
+        labels:
+            en_US: Winter boots
+        parent: winter_collection
+    sandals:
+        labels:
+            en_US: Sandals
+        parent: summer_collection

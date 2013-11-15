@@ -7,13 +7,16 @@
 - Add a default tree per user
 - Introduce command "pim:completeness:calculate" size argument to manage number of completenesses to calculate
 - Switching tree to see sub-categories products count and allow filtering on it
+- Group types management
+- Import/Export product groups
+- Import/Export associations
 
 ## Improvements
 - Export media into separated sub directories
 - Separate product groups and variants management
 - Display number of created/updated products during import
 - Speed up completeness calculation
-- Display the "has product" filter by default
+- Display the "has product" filter by default in the product grid of group edit view
 - Display currency label in currencies datagrid
 
 ## Bug fixes

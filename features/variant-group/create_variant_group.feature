@@ -5,7 +5,8 @@ Feature: Variant group creation
   I need to be able to manually create a variant group
 
   Background:
-    Given the following attributes:
+    Given the "default" catalog configuration
+    And the following attributes:
       | code      | label      | type                     |
       | color     | Color      | pim_catalog_simpleselect |
       | size      | Size       | pim_catalog_simpleselect |
@@ -26,7 +27,7 @@ Feature: Variant group creation
     And I select the axis "Color"
     And I press the "Save" button
     Then I am on the variant groups page
-    And I should see group MUG
+    And I should see groups MUG
 
   Scenario: Fail to create a variant missing the code
     Given I am on the variant groups page

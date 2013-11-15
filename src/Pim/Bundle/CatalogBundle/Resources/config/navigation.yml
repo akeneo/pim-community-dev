@@ -74,6 +74,9 @@ oro_menu_config:
         pim_catalog_association:
             label: Associations
             route: pim_catalog_association_index
+        pim_catalog_group_type:
+            label: Group types
+            route: pim_catalog_group_type_index
 
         oro_tag_list:
             display: false
@@ -108,6 +111,7 @@ oro_menu_config:
                         pim_enrich_attribute: ~
                         pim_enrich_family: ~
                         pim_catalog_association: ~
+                        pim_catalog_group_type: ~
                         pim_catalog_currency: ~
                         pim_catalog_locale: ~
 

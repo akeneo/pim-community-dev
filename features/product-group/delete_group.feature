@@ -5,7 +5,8 @@ Feature: Delete a product group
   I need to be able to delete groups
 
   Background:
-    Given there is no product group
+    Given the "default" catalog configuration
+    And there is no product group
     And the following product groups:
       | code | label      | type   |
       | MUG  | MUG Akeneo | X_SELL |
@@ -13,7 +14,7 @@ Feature: Delete a product group
 
   Scenario: Successfully delete a product group from the grid
     Given I am on the product groups page
-    And I should see group MUG
+    And I should see groups MUG
     When I click on the "Delete" action of the row which contains "MUG"
     And I confirm the deletion
     Then I should not see product group MUG

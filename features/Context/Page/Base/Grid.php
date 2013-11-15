@@ -162,6 +162,17 @@ class Grid extends Index
     }
 
     /**
+     * @param int $num
+     */
+    public function changePageSize($num)
+    {
+        assertContains($num, array(10, 25, 50, 100), 'Only 10, 25, 50 and 100 records per page are available');
+        $element = $this->getElement('Grid toolbar')->find('css', '.page-size');
+        $element->find('css', 'button')->click();
+        $element->find('css', sprintf('ul.dropdown-menu li a:contains("%d")', $num))->click();
+    }
+
+    /**
      * Get the text in the specified column of the specified row
      * @param string $column
      * @param string $row

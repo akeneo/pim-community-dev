@@ -33,7 +33,7 @@ class ProductValueNotBlankValidatorTest extends \PHPUnit_Framework_TestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->validator = new ProductValueNotBlankValidator();
         $this->constraint = new ProductValueNotBlank(array('channel' => $this->getChannel()));

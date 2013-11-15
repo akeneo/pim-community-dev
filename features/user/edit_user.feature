@@ -4,7 +4,8 @@ Feature: Edit a user
   I need to be able to edit a user
 
   Background:
-    Given I am logged in as "admin"
+    Given the "default" catalog configuration
+    And I am logged in as "admin"
 
   Scenario: Successfully edit a user
     Given I edit the "admin" user

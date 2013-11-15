@@ -85,25 +85,7 @@ class UniqueVariantAxisValidator extends ConstraintValidator
     {
         foreach ($entity->getGroups() as $variantGroup) {
             if ($variantGroup->getType()->isVariant()) {
-                $criteria = array();
-                foreach ($variantGroup->getAttributes() as $attribute) {
-                    $value = $entity->getValue($attribute->getCode());
-                    $criteria[] = array(
-                        'attribute' => $attribute,
-                        'option'    => $value ? $value->getOption() : null,
-                    );
-                }
-
-                $repository = $this->manager->getFlexibleRepository();
-                $matchingProducts = $repository->findAllForVariantGroup($variantGroup, $criteria);
-
-                $matchingProducts = array_filter(
-                    $matchingProducts,
-                    function ($product) use ($entity) {
-                        return $product->getId() !== $entity->getId();
-                    }
-                );
-
+                $matchingProducts = $this->getMatchingProducts($variantGroup, $entity);
                 if (count($matchingProducts) !== 0) {
                     $values = array();
                     foreach ($criteria as $item) {
@@ -118,6 +100,38 @@ class UniqueVariantAxisValidator extends ConstraintValidator
                 }
             }
         }
+    }
+
+    /**
+     * Get matching products
+     *
+     * @param Group            $variantGroup the variant group
+     * @param ProductInterface $entity       the product
+     *
+     * @return ProductInterface[]
+     */
+    protected function getMatchingProducts(Group $variantGroup, ProductInterface $entity)
+    {
+        $criteria = array();
+        foreach ($variantGroup->getAttributes() as $attribute) {
+            $value = $entity->getValue($attribute->getCode());
+            $criteria[] = array(
+                'attribute' => $attribute,
+                'option'    => $value ? $value->getOption() : null,
+            );
+        }
+
+        $repository = $this->manager->getFlexibleRepository();
+        $matchingProducts = $repository->findAllForVariantGroup($variantGroup, $criteria);
+
+        $matchingProducts = array_filter(
+            $matchingProducts,
+            function ($product) use ($entity) {
+                return $product->getId() !== $entity->getId();
+            }
+        );
+
+        return $matchingProducts;
     }
 
     /**

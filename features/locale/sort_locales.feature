@@ -5,11 +5,7 @@ Feature: Sort locales
   I need to be able to sort locales by several columns in the catalog
 
   Background:
-    Given the following locales:
-      | code  | fallback | activated |
-      | de_DE |          | no        |
-      | en_US |          | yes       |
-      | fr_FR |          | yes       |
+    Given the "default" catalog configuration
     And I am logged in as "admin"
 
   Scenario: Successfully sort locales

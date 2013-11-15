@@ -5,11 +5,7 @@ Feature: Filter products per price
   I need to be able to filter products per price in the catalog
 
   Background:
-    Given the following currencies:
-      | code | activated |
-      | USD  | yes       |
-      | EUR  | yes       |
-      | GBP  | no        |
+    Given the "default" catalog configuration
     And the following family:
       | code      |
       | furniture |

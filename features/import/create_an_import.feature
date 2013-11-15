@@ -5,7 +5,8 @@ Feature: Create an import
 
   @javascript
   Scenario: Successfully create a product import into csv
-    Given I am logged in as "admin"
+    Given the "default" catalog configuration
+    And I am logged in as "admin"
     And I am on the imports page
     And I create a new "Product import in CSV" import
     When I fill in the following information:

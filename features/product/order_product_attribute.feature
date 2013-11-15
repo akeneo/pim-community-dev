@@ -3,10 +3,14 @@ Feature: Order product attributes
   As a user
   I need to be able to set an order parameter which will manage fields order
 
+  Background:
+    Given the "default" catalog configuration
+    And a "Car" product
+    And I am logged in as "admin"
+
   @javascript
   Scenario: Successfully update an attribute position
-    Given a "Car" product
-    And the following attribute group:
+    Given the following attribute group:
       | code    | label   |
       | general | General |
     And the following product attribute:
@@ -14,7 +18,6 @@ Feature: Order product attributes
       | Car     | Release Date | General | 1        |
       | Car     | Color        | General | 2        |
       | Car     | Price        | General | 3        |
-    And I am logged in as "admin"
     When I am on the "General" attribute group page
     And I visit the "Attributes" tab
     Then the attribute "Price" should be in position 3
@@ -25,8 +28,7 @@ Feature: Order product attributes
     And the attribute "Color" should be in position 3
 
   Scenario: Display product attribute fields ordered by their position
-    Given a "Car" product
-    And the following attribute groups:
+    Given the following attribute groups:
       | code    | label   |
       | general | General |
       | shape   | Shape   |
@@ -38,7 +40,6 @@ Feature: Order product attributes
       | Car     | Color        | 10       | Shape   |
       | Car     | Weight       | 30       | Shape   |
       | Car     | Height       | 20       | Shape   |
-    And I am logged in as "admin"
     When I am on the "Car" product page
     Then attributes in group "General" should be File upload, Release date and Manufacturer
     And attributes in group "Shape" should be Color, Height and Weight

@@ -1,10 +1,11 @@
 Feature: Display the attribute group history
   In order to know who, when and what changes has been made to an attribute group
   As Julia
-  I need to have access to a attribute group history
+  I need to have access to attribute group history
 
   Background:
-    Given I am logged in as "Julia"
+    Given the "default" catalog configuration
+    And I am logged in as "Julia"
     And the following product attributes:
       | label       |
       | Description |
