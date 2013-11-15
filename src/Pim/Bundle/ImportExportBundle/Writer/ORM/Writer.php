@@ -59,7 +59,7 @@ class Writer extends AbstractConfigurableStepElement implements
 
         foreach ($items as $entity) {
             $this->em->persist($entity);
-            $this->stepExecution->incrementWriteCount();
+            $this->incrementCount($entity);
         }
 
         $this->em->flush();
@@ -80,5 +80,17 @@ class Writer extends AbstractConfigurableStepElement implements
     public function setStepExecution(StepExecution $stepExecution)
     {
         $this->stepExecution = $stepExecution;
+    }
+
+    /**
+     * @param object $entity
+     */
+    protected function incrementCount($entity)
+    {
+        if ($entity->getId()) {
+            $this->stepExecution->incrementUpdateCount();
+        } else {
+            $this->stepExecution->incrementCreationCount();
+        }
     }
 }
