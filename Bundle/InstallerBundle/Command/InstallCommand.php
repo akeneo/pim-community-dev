@@ -252,7 +252,7 @@ class InstallCommand extends ContainerAwareCommand
     {
         $params = array_merge(
             array(
-                'command' => $command,
+                'command'    => $command,
                 '--no-debug' => true,
             ),
             $params

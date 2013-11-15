@@ -5,11 +5,8 @@ namespace Oro\Bundle\EntityExtendBundle\Command;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputOption;
 
-use Doctrine\ORM\Mapping\Driver\YamlDriver;
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendConfigDumper;
-use Oro\Bundle\EntityExtendBundle\Tools\ExtendClassLoadingUtils;
 
 class DumpCommand extends ContainerAwareCommand
 {
