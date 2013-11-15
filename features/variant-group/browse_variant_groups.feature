@@ -5,7 +5,8 @@ Feature: Browse variant groups
   I need to be able to see variant groups
 
   Background:
-    Given there is no product group
+    Given the "default" catalog configuration
+    And there is no product group
     And the following attributes:
       | code      | label      | type                     |
       | multi     | Multi      | pim_catalog_multiselect  |

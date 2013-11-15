@@ -5,7 +5,8 @@ Feature: Browse locales
   I need to be able to see active and inactive locales in the catalog
 
   Background:
-    Given the following locales:
+    Given the "default" catalog configuration
+    And the following locales:
       | code  | fallback | activated |
       | de_DE |          | no        |
       | en_US |          | yes       |

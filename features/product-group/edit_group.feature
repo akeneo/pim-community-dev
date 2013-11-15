@@ -5,7 +5,8 @@ Feature: Edit a product group
   I need to be able to edit a product group
 
   Background:
-    Given the following families:
+    Given the "default" catalog configuration
+    And the following families:
       | code      | label     |
       | mug       | Mug       |
       | furniture | Furniture |

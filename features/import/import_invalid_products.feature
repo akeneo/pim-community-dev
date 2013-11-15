@@ -4,7 +4,8 @@ Feature: Import invalid products
   I need to know which row are incorrect and why
 
   Scenario: Fail to import malformed prices
-    Given the following product:
+    Given the "default" catalog configuration
+    And the following product:
       | sku         |
       | honda-civic |
     And the following product attributes:

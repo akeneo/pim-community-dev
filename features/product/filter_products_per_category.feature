@@ -5,7 +5,8 @@ Feature: Filter products per category
   I need to be able to manually filter products per category
 
   Background:
-    Given the following product attributes:
+    Given the "default" catalog configuration
+    And the following product attributes:
       | label | required |
       | SKU   | yes      |
     And the following products:

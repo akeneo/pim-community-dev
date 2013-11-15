@@ -5,7 +5,8 @@ Feature: Navigate the application in hash navigation mode
   I need to allow users to navigate from page to page without a complete page reload
 
   Scenario: Navigate in hash navigation mode
-    Given I am logged in as "admin"
+    Given the "default" catalog configuration
+    And I am logged in as "admin"
     And I am on the home page
     Then I should be able visit the following pages without errors
     | page                                 |

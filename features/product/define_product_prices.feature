@@ -4,7 +4,8 @@ Feature: Define product prices
   I need to be able to define prices in different currencies for each locale
 
   Background:
-    Given a "bike" product
+    Given the "default" catalog configuration
+    And a "bike" product
     And the following product attributes:
       | product | label        | type   | translatable |
       | bike    | Public price | prices | yes          |

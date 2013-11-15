@@ -5,7 +5,8 @@ Feature: Edit common attributes of many products at once
   I need to be able to edit some common attributes of many products at once
 
   Background:
-    Given a "lamp" product
+    Given the "default" catalog configuration
+    And a "lamp" product
     And a "ceiling" product
     And a "torch" product
     And the following attribute group:

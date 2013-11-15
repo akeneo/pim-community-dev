@@ -4,7 +4,8 @@ Feature: Import partial product informations
   I need to be able to import products without specifying all its properties
 
   Scenario: Successfully keep the product family if it is not present in the import file
-    Given the following family:
+    Given the "default" catalog configuration
+    And the following family:
       | code       |
       | sports-car |
     And the following product:

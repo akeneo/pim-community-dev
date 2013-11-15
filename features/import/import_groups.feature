@@ -5,7 +5,8 @@ Feature: Import groups
   I need to be able to import groups
 
   Scenario: Successfully import associations
-    Given the following jobs:
+    Given the "default" catalog configuration
+    And the following jobs:
       | connector            | alias        | code              | label                 | type   |
       | Akeneo CSV Connector | group_import | acme_group_import | Group import for Acme | import |
     And I am logged in as "Julia"

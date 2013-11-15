@@ -5,7 +5,8 @@ Feature: Filter products
   I need to be able to filter products in the catalog
 
   Background:
-    Given the following family:
+    Given the "default" catalog configuration
+    And the following family:
       | code      |
       | furniture |
       | library   |

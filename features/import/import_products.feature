@@ -5,7 +5,8 @@ Feature: Execute a job
   I need to be able to import products
 
   Background:
-    Given the following families:
+    Given the "default" catalog configuration
+    And the following families:
       | code |
       | Bag  |
       | Hat  |

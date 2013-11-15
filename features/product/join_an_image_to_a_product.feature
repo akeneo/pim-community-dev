@@ -4,7 +4,8 @@ Feature: Join an image to a product
   I need to be able to upload it and preview it
 
   Background:
-    Given a "Car" product
+    Given the "default" catalog configuration
+    And a "Car" product
     And the following product attribute:
       | product | label  | type  |
       | Car     | Visual | image |

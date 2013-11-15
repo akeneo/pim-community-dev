@@ -5,7 +5,8 @@ Feature: Filter product groups
   I need to be able to filter product groups in the catalog
 
   Background:
-    Given there is no product group
+    Given the "default" catalog configuration
+    And there is no product group
     And the following attributes:
       | code  | label | type                     |
       | color | Color | pim_catalog_simpleselect |
