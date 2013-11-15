@@ -633,21 +633,24 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @param string $attribute
+     * @param string $attributes
      * @param string $group
      *
-     * @Given /^I should see attribute "([^"]*)" in group "([^"]*)"$/
+     * @Given /^I should see attributes? "([^"]*)" in group "([^"]*)"$/
      */
-    public function iShouldSeeAttributeInGroup($attribute, $group)
+    public function iShouldSeeAttributesInGroup($attributes, $group)
     {
-        if (!$this->getCurrentPage()->getAttribute($attribute, $group)) {
-            throw $this->createExpectationException(
-                sprintf(
-                    'Expecting to see attribute %s under group %s, but was not present.',
-                    $attribute,
-                    $group
-                )
-            );
+        $attributes = $this->listToArray($attributes);
+        foreach ($attributes as $attribute) {
+            if (!$this->getCurrentPage()->getAttribute($attribute, $group)) {
+                throw $this->createExpectationException(
+                    sprintf(
+                        'Expecting to see attribute %s under group %s, but was not present.',
+                        $attribute,
+                        $group
+                    )
+                );
+            }
         }
     }
 

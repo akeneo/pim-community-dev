@@ -4,7 +4,8 @@ Feature: Family creation
   I need to be able to create a family
 
   Scenario: Succesfully create a family
-    Given I am logged in as "admin"
+    Given the "default" catalog configuration
+    And I am logged in as "admin"
     When I am on the family creation page
     And I change the Code to "computer"
     And I save the family
