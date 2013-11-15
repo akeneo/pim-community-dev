@@ -174,3 +174,8 @@ services:
         class: %pim_import_export.writer.orm.entity.class%
         arguments:
             - '@doctrine.orm.default_entity_manager'
+
+    pim_import_export.writer.orm_attribute_option:
+        class: %pim_import_export.writer.orm.entity.class%
+        arguments:
+            - '@doctrine.orm.default_entity_manager'

@@ -37,7 +37,6 @@ connector:
                     reader:    pim_import_export.reader.attribute_option
                     processor: pim_import_export.processor.heterogeneous_csv_serializer
                     writer:    pim_import_export.writer.file
-
         association_export:
             title: pim_import_export.jobs.association_export.title
             type:  export
@@ -92,7 +91,7 @@ connector:
                     title:     pim_import_export.jobs.attribute_option_import.import.title
                     reader:    pim_import_export.reader.csv_file
                     processor: pim_import_export.processor.valid_attribute_option_creation
-                    writer:    pim_import_export.writer.dummy #orm_attribute
+                    writer:    pim_import_export.writer.orm_attribute_option
         association_import:
             title: pim_import_export.jobs.association_import.title
             type: import
