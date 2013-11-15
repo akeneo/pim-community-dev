@@ -37,6 +37,9 @@ pim_import_export:
 
 ## Step elements (readers, processors, writers)
 oro_batch:
+    dummy_reader.title:    Dummy reader
+    dummy_processor.title: Dummy processor
+    dummy_writer.title:    Dummy writer
     product_reader:
         title: Scope
         channel:
