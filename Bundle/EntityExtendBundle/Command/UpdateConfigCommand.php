@@ -2,14 +2,9 @@
 
 namespace Oro\Bundle\EntityExtendBundle\Command;
 
-use Doctrine\ORM\EntityManager;
-
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-
-use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
-use Oro\Bundle\EntityExtendBundle\Tools\Generator;
 
 class UpdateConfigCommand extends ContainerAwareCommand
 {
