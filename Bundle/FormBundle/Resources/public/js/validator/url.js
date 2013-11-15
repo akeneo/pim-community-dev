@@ -4,16 +4,16 @@ function ($, _, __) {
     'use strict';
 
     var defaultParam = {
-        message: 'This value should not be blank.'
+        message: 'This value is not a valid URL.'
     };
 
     /**
-     * @export oro/validator/notblank
+     * @export oro/validator/url
      */
     return [
-        'NotBlank',
+        'Url',
         function () {
-            return $.validator.methods.required.apply(this, arguments);
+            return $.validator.methods.url.apply(this, arguments);
         },
         function (param) {
             param = _.extend({}, defaultParam, param);

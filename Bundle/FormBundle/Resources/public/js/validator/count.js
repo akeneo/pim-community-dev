@@ -10,9 +10,12 @@ function (_, numberValidator) {
     };
 
     /**
+     * Calculates value
      *
-     * @param validator
-     * @param element
+     * For now supports only collection of checkbox with same name
+     *
+     * @param {$.validator} validator
+     * @param {Element} element
      */
     function getCount(validator, element) {
         return validator.findByName(element.name).filter(':checked').length;

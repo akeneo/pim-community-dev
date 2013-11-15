@@ -3,6 +3,12 @@ define(['underscore', 'oro/translator'],
 function (_, __) {
     'use strict';
 
+    var defaultParam = {
+        exactMessage: '',
+        maxMessage: '',
+        minMessage: ''
+    };
+
     /**
      * Check if number fits the range, then returns true, if not - returns one of numbers -1 0 1
      *  -1 - less than minimum
@@ -41,6 +47,7 @@ function (_, __) {
         function (param, element, value) {
             var result,
                 message, placeholders = {}, number;
+            param = _.extend({}, defaultParam, param);
             value = _.isUndefined(value) ? this.elementValue(element) : value;
             result = between(Number(value), param.min, param.max);
             switch (result) {

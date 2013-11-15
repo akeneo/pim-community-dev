@@ -135,10 +135,14 @@ function($, _, __, tools) {
 
     // general validation methods
     var validators = [
-        'oro/validator/notblank',
-        'oro/validator/length',
+        'oro/validator/count',
+        'oro/validator/date',
         'oro/validator/email',
-        'oro/validator/count'
+        'oro/validator/length',
+        'oro/validator/notblank',
+        'oro/validator/range',
+        'oro/validator/regex',
+        'oro/validator/url'
     ];
     _.each(validators, $.validator.loadMethod);
 });
