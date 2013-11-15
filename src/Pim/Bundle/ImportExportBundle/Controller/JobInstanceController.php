@@ -388,7 +388,7 @@ class JobInstanceController extends AbstractDoctrineController
      * Run job instance
      *
      * @param JobInstance $jobInstance
-     * @param mixed $data
+     * @param mixed       $data
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|boolean
      */

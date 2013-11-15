@@ -314,7 +314,7 @@ class EditCommonAttributes extends AbstractMassEditAction
     /**
      * Get product value
      *
-     * @param ProductInterface $product
+     * @param ProductInterface      $product
      * @param ProductValueInterface $value
      *
      * @return ProductValueInterface
