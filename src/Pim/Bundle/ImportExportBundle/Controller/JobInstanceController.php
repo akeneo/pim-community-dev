@@ -139,7 +139,7 @@ class JobInstanceController extends AbstractDoctrineController
      *
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|template
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function createAction(Request $request)
     {
@@ -186,7 +186,7 @@ class JobInstanceController extends AbstractDoctrineController
      *
      * @param integer $id
      *
-     * @return template
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function showAction($id)
     {
@@ -229,7 +229,7 @@ class JobInstanceController extends AbstractDoctrineController
      * @param Request $request
      * @param integer $id
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|template
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function editAction(Request $request, $id)
     {
@@ -278,7 +278,7 @@ class JobInstanceController extends AbstractDoctrineController
      * @param Request $request
      * @param integer $id
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|template
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function historyAction(Request $request, $id)
     {
@@ -331,7 +331,7 @@ class JobInstanceController extends AbstractDoctrineController
      * @param Request $request
      * @param integer $id
      *
-     * @return RedirectResponse
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function launchAction(Request $request, $id)
     {
