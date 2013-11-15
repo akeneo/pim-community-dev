@@ -10,6 +10,8 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\ArrayInput;
 
 use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
+use Symfony\Component\Process\PhpExecutableFinder;
+use Symfony\Component\Process\ProcessBuilder;
 
 class InstallCommand extends ContainerAwareCommand
 {
@@ -54,7 +56,9 @@ class InstallCommand extends ContainerAwareCommand
         $output->writeln('<info>Oro requirements check:</info>');
 
         if (!class_exists('OroRequirements')) {
-            require_once $this->getContainer()->getParameter('kernel.root_dir') . DIRECTORY_SEPARATOR . 'OroRequirements.php';
+            require_once $this->getContainer()->getParameter('kernel.root_dir')
+                . DIRECTORY_SEPARATOR
+                . 'OroRequirements.php';
         }
 
         $collection = new \OroRequirements();
@@ -65,7 +69,9 @@ class InstallCommand extends ContainerAwareCommand
         $this->renderTable($collection->getRecommendations(), 'Optional recommendations', $output);
 
         if (count($collection->getFailedRequirements())) {
-            throw new \RuntimeException('Some system requirements are not fulfilled. Please check output messages and fix them.');
+            throw new \RuntimeException(
+                'Some system requirements are not fulfilled. Please check output messages and fix them.'
+            );
         }
 
         $output->writeln('');
@@ -87,14 +93,24 @@ class InstallCommand extends ContainerAwareCommand
         $input->setInteractive(false);
 
         $this
-            ->runCommand('oro:entity-extend:clear', $output)
-            ->runCommand('doctrine:schema:drop', $output, array('--force' => true, '--full-database' => true))
-            ->runCommand('doctrine:schema:create', $output)
-            ->runCommand('oro:entity-config:init', $output)
-            ->runCommand('oro:entity-extend:init', $output)
-            ->runCommand('oro:entity-extend:update-config', $output)
-            ->runCommand('doctrine:schema:update', $output, array('--force' => true, '--no-interaction' => true))
-            ->runCommand('doctrine:fixtures:load', $output, array('--no-interaction' => true, '--append' => true));
+            ->runCommand('oro:entity-extend:clear', $input, $output)
+            ->runCommand('doctrine:schema:drop', $input, $output, array('--force' => true, '--full-database' => true))
+            ->runCommand('doctrine:schema:create', $input, $output)
+            ->runCommand('oro:entity-config:init', $input, $output)
+            ->runCommand('oro:entity-extend:init', $input, $output)
+            ->runCommand('oro:entity-extend:update-config', $input, $output)
+            ->runCommand(
+                'doctrine:schema:update',
+                $input,
+                $output,
+                array('--process-isolation' => true, '--force' => true, '--no-interaction' => true)
+            )
+            ->runCommand(
+                'doctrine:fixtures:load',
+                $input,
+                $output,
+                array('--no-interaction' => true, '--append' => true)
+            );
 
         $output->writeln('');
         $output->writeln('<info>Administration setup.</info>');
@@ -113,27 +129,27 @@ class InstallCommand extends ContainerAwareCommand
             return $value;
         };
 
+        $userName = isset($options['user-name'])
+            ? $options['user-name']
+            : $dialog->ask($output, '<question>Username:</question> ');
+        $userEmail = isset($options['user-email'])
+            ? $options['user-email']
+            : $dialog->ask($output, '<question>Email:</question> ');
+        $userFirstName = isset($options['user-firstname'])
+            ? $options['user-firstname']
+            : $dialog->ask($output, '<question>First name:</question> ');
+        $userLastName = isset($options['user-lastname'])
+            ? $options['user-lastname']
+            : $dialog->ask($output, '<question>Last name:</question> ');
+        $userPassword = isset($options['user-password'])
+            ? $options['user-password']
+            : $dialog->askHiddenResponseAndValidate($output, '<question>Password:</question> ', $passValidator);
         $user
-            ->setUsername(isset($options['user-name'])
-                ? $options['user-name']
-                : $dialog->ask($output, '<question>Username:</question> ')
-            )
-            ->setEmail(isset($options['user-email'])
-                ? $options['user-email']
-                : $dialog->ask($output, '<question>Email:</question> ')
-            )
-            ->setFirstName(isset($options['user-firstname'])
-                ? $options['user-firstname']
-                : $dialog->ask($output, '<question>First name:</question> ')
-            )
-            ->setLastName(isset($options['user-lastname'])
-                ? $options['user-lastname']
-                : $dialog->ask($output, '<question>Last name:</question> ')
-            )
-            ->setPlainPassword(isset($options['user-password'])
-                ? $options['user-password']
-                : $dialog->askHiddenResponseAndValidate($output, '<question>Password:</question> ', $passValidator)
-            )
+            ->setUsername($userName)
+            ->setEmail($userEmail)
+            ->setFirstName($userFirstName)
+            ->setLastName($userLastName)
+            ->setPlainPassword($userPassword)
             ->setEnabled(true)
             ->addRole($role);
 
@@ -170,14 +186,14 @@ class InstallCommand extends ContainerAwareCommand
         $input->setInteractive(false);
 
         $this
-            ->runCommand('oro:search:create-index', $output)
-            ->runCommand('oro:navigation:init', $output)
-            ->runCommand('oro:localization:dump', $output)
-            ->runCommand('assets:install', $output)
-            ->runCommand('assetic:dump', $output)
-            ->runCommand('oro:assetic:dump', $output)
-            ->runCommand('oro:translation:dump', $output)
-            ->runCommand('oro:requirejs:build', $output);
+            ->runCommand('oro:search:create-index', $input, $output)
+            ->runCommand('oro:navigation:init', $input, $output)
+            ->runCommand('oro:localization:dump', $input, $output)
+            ->runCommand('assets:install', $input, $output)
+            ->runCommand('assetic:dump', $input, $output)
+            ->runCommand('oro:assetic:dump', $input, $output)
+            ->runCommand('oro:translation:dump', $input, $output)
+            ->runCommand('oro:requirejs:build', $input, $output);
 
         $params = $this->getContainer()->get('oro_installer.yaml_persister')->parse();
 
@@ -185,7 +201,7 @@ class InstallCommand extends ContainerAwareCommand
 
         $this->getContainer()->get('oro_installer.yaml_persister')->dump($params);
 
-        $this->runCommand('cache:clear', $output);
+        $this->runCommand('cache:clear', $input, $output);
  
         $output->writeln('');
         return $this;
@@ -210,28 +226,78 @@ class InstallCommand extends ContainerAwareCommand
             if ($requirement->isFulfilled()) {
                 $table->addRow(array('OK', $requirement->getTestMessage()));
             } else {
-                $table->addRow(array(
-                    $requirement->isOptional() ? 'WARNING' : 'ERROR',
-                    $requirement->getHelpText()
-                ));
+                $table->addRow(
+                    array(
+                        $requirement->isOptional() ? 'WARNING' : 'ERROR',
+                        $requirement->getHelpText()
+                    )
+                );
             }
         }
 
         $table->render($output);
     }
 
-    private function runCommand($command, OutputInterface $output, $params = array())
+    /**
+     * Launches a command.
+     * If '--process-isolation' parameter is specified the command will be launched as a separate process.
+     *
+     * @param string          $command
+     * @param InputInterface  $input
+     * @param OutputInterface $output
+     * @param array           $params
+     * @return InstallCommand
+     */
+    private function runCommand($command, InputInterface $input, OutputInterface $output, $params = array())
     {
         $params = array_merge(
             array(
-                'command'    => $command,
+                'command' => $command,
                 '--no-debug' => true,
             ),
             $params
         );
+        if ($input->hasOption('env') && $input->getOption('env') !== 'dev') {
+            $params['--env'] = $input->getOption('env');
+        }
 
-        $this->getApplication()->setAutoExit(false);
-        $this->getApplication()->run(new ArrayInput($params), $output);
+        if (array_key_exists('--process-isolation', $params)) {
+            unset($params['--process-isolation']);
+            $phpFinder = new PhpExecutableFinder();
+            $php = $phpFinder->find();
+            $pb = new ProcessBuilder();
+            $pb
+                ->add($php)
+                ->add($_SERVER['argv'][0]);
+            foreach ($params as $param => $val) {
+                if ($param && '-' === $param[0]) {
+                    if ($val === true) {
+                        $pb->add($param);
+                    } else {
+                        $pb->add($param . '=' . $val);
+                    }
+                } else {
+                    $pb->add($val);
+                }
+            }
+            $process = $pb
+                ->inheritEnvironmentVariables(true)
+                ->getProcess();
+
+            $process->run(
+                function ($type, $data) use ($output) {
+                    $output->writeln($data);
+                }
+            );
+            $ret = $process->getExitCode();
+        } else {
+            $this->getApplication()->setAutoExit(false);
+            $ret = $this->getApplication()->run(new ArrayInput($params), $output);
+        }
+
+        if (0 !== $ret) {
+            $output->writeln(sprintf('<error>The command terminated with an error status (%s)</error>', $ret));
+        }
 
         return $this;
     }
