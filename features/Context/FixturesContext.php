@@ -564,7 +564,7 @@ class FixturesContext extends RawMinkContext
                         $options = $value->getAttribute()->getOptions();
                         $optionValue = null;
                         foreach ($options as $option) {
-                            if ($option->getCode() === $data['value']) {
+                            if ((string) $option->getCode() === $data['value']) {
                                 $optionValue = $option;
                             }
                         }
@@ -580,7 +580,11 @@ class FixturesContext extends RawMinkContext
                 }
             } else {
                 $code = $this->camelize($data['attribute']);
-                $attribute = $this->getAttribute($code);
+                $attribute = $this->findAttribute($code);
+                if (!$attribute) {
+                    $code = implode('_', explode(' ', strtolower($data['attribute'])));
+                    $attribute = $this->getAttribute($code);
+                }
                 $value = $this->createValue($attribute, $data['value'], $data['locale'], $data['scope']);
                 $product->addValue($value);
             }
