@@ -71,6 +71,8 @@ UI blocks:
 * buttons with possible transitions
 * custom blocks configured by developer (for example information block with some entity data)
 
+![Example of Wizard Workflow UI](../images/wizard-workflow-ui-example.png)
+
 **Entity Workflow**
 
 Unlike wizard, entity Workflow doesn't have special page and it's directly managed on entity page. Another difference
