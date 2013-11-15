@@ -1,6 +1,7 @@
 parameters:
     pim_import_export.reader.product.class:                         Pim\Bundle\ImportExportBundle\Reader\ORM\ProductReader
     pim_import_export.reader.entity.class:                          Pim\Bundle\ImportExportBundle\Reader\ORM\EntityReader
+    pim_import_export.reader.cursor_entity.class:                   Pim\Bundle\ImportExportBundle\Reader\ORM\CursorEntityReader
     
     pim_import_export.reader.csv.class:                             Pim\Bundle\ImportExportBundle\Reader\File\CsvReader
     pim_import_export.reader.product_csv.class:                     Pim\Bundle\ImportExportBundle\Reader\File\ProductCsvReader
@@ -57,7 +58,7 @@ services:
             - %pim_catalog.entity.product_attribute_option.class%
 
     pim_import_export.reader.association:
-        class: %pim_import_export.reader.entity.class%
+        class: %pim_import_export.reader.cursor_entity.class%
         arguments:
             - '@doctrine.orm.default_entity_manager'
             - %pim_catalog.entity.association.class%
