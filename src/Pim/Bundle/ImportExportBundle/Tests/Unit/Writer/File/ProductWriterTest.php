@@ -28,7 +28,7 @@ class ProductWriterTest extends \PHPUnit_Framework_TestCase
      */
     public function testIsAnInstanceOfFileWriter()
     {
-        $this->assertInstanceOf('Pim\Bundle\ImportExportBundle\Writer\FileWriter', $this->writer);
+        $this->assertInstanceOf('Pim\Bundle\ImportExportBundle\Writer\File\FileWriter', $this->writer);
     }
 
     /**
