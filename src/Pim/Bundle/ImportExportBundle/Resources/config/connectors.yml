@@ -132,7 +132,6 @@ services:
         class: %pim_import_export.writer.orm.product.class%
         arguments:
             - '@pim_catalog.manager.product'
-            - '@doctrine.orm.default_entity_manager'
             - '@pim_import_export.entity_cache'
             - '@pim_versioning.event_listener.addversion'
 

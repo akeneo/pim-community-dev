@@ -2,10 +2,13 @@
 
 namespace Pim\Bundle\ImportExportBundle\Writer\ORM;
 
+use Doctrine\ORM\EntityManager;
+
 use Oro\Bundle\BatchBundle\Item\ItemWriterInterface;
 use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Oro\Bundle\BatchBundle\Entity\StepExecution;
 use Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
+
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\ImportExportBundle\Cache\EntityCache;
@@ -18,7 +21,7 @@ use Pim\Bundle\VersioningBundle\EventListener\AddVersionListener;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductWriter extends Writer implements
+class ProductWriter extends AbstractConfigurableStepElement implements
     ItemWriterInterface,
     StepExecutionAwareInterface
 {
@@ -38,14 +41,14 @@ class ProductWriter extends Writer implements
     protected $identifierAttribute;
 
     /**
-     * @var StepExecution
-     */
-    protected $stepExecution;
-
-    /**
      * @var EntityCache
      */
     protected $entityCache;
+
+    /**
+     * @var StepExecution
+     */
+    protected $stepExecution;
 
     /**
      * Entities which should not be cleared on flush
@@ -69,18 +72,15 @@ class ProductWriter extends Writer implements
 
     /**
      * @param ProductManager     $productManager
-     * @param EntityManager      $entityManager
      * @param EntityCache        $entityCache
      * @param AddVersionListener $addVersionListener
      */
     public function __construct(
         ProductManager $productManager,
-        EntityManager $entityManager,
         EntityCache $entityCache,
         AddVersionListener $addVersionListener
     ) {
         $this->productManager     = $productManager;
-        $this->entityManager      = $entityManager;
         $this->entityCache        = $entityCache;
         $this->addVersionListener = $addVersionListener;
     }
@@ -114,6 +114,14 @@ class ProductWriter extends Writer implements
             }
         }
         $this->entityCache->clear();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setStepExecution(StepExecution $stepExecution)
+    {
+        $this->stepExecution = $stepExecution;
     }
 
     /**
