@@ -73,29 +73,6 @@ class LoadUserData extends AbstractFixture implements ContainerAwareInterface, O
         $userManager->updateUser($admin);
     }
 
-    /**
-     * Persist object
-     *
-     * @param UserManager $entityManager
-     * @param mixed $object
-     * @return void
-     */
-    private function persist($entityManager, $object)
-    {
-        $entityManager->getStorageManager()->persist($object);
-    }
-
-    /**
-     * Flush objects
-     *
-     * @param UserManager $entityManager
-     * @return void
-     */
-    private function flush($entityManager)
-    {
-        $entityManager->getStorageManager()->flush();
-    }
-
     public function getOrder()
     {
         return 110;

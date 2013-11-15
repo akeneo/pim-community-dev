@@ -71,9 +71,9 @@ class Daemon
 
         $process = $this->getQueueRunProcess();
 
-        $process->start();
+        $process->run();
 
-        return $process->getPid();
+        return $this->getPid();
     }
 
     /**
@@ -168,12 +168,18 @@ class Daemon
             $this->phpExec = escapeshellarg($finder->find());
         }
 
-        return sprintf(
+        $runCommand = sprintf(
             '%s %sconsole jms-job-queue:run --max-runtime=999999999 --max-concurrent-jobs=%u --env=%s',
             $this->phpExec,
             $this->rootDir . DIRECTORY_SEPARATOR,
             max($this->maxJobs, 1),
             escapeshellarg($this->env)
         );
+        
+        if (!defined('PHP_WINDOWS_VERSION_BUILD')) {
+            $runCommand = "nohup {$runCommand} > /dev/null 2>&1 &";
+        }
+
+        return $runCommand;
     }
 }
