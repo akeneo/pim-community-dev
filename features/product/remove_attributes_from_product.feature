@@ -3,11 +3,14 @@ Feature: Remove an attribute from a product
   As a user
   I need to be able to remove an attribute
 
-  Scenario: Fail to remove an attribute belonging to the family of the product
-    Given the following family:
+  Background:
+    Given the "default" catalog configuration
+    And the following family:
       | code    |
       | vehicle |
-    And the following product attribute:
+
+  Scenario: Fail to remove an attribute belonging to the family of the product
+    Given the following product attribute:
       | label | Group   | family  |
       | Model | General | vehicle |
     And the following products:
@@ -19,10 +22,7 @@ Feature: Remove an attribute from a product
 
   @javascript
   Scenario: Successfully remove an attribute from a product
-    Given the following family:
-      | code    |
-      | vehicle |
-    And the following products:
+    Given the following products:
       | sku    | family  |
       | kangoo | vehicle |
     And the following product attribute:
@@ -37,10 +37,7 @@ Feature: Remove an attribute from a product
 
   @javascript
   Scenario: Successfully remove a scopable attribute from a product
-    Given the following family:
-      | code    |
-      | vehicle |
-    And the following products:
+    Given the following products:
       | sku    | family  |
       | kangoo | vehicle |
     And the following product attribute:

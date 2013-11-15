@@ -5,7 +5,8 @@ Feature: Browse products by locale and scope
   I need to be able to browse products data by locale and scope
 
   Background:
-    Given the following family:
+    Given the "default" catalog configuration
+    And the following family:
       | code      |
       | furniture |
     And the following products:
@@ -29,10 +30,10 @@ Feature: Browse products by locale and scope
       | postit  | description | fr_FR  | ecommerce | Ma description ecommerce |
       | postit  | description | fr_FR  | mobile    | Ma description mobile    |
     And I am logged in as "admin"
+    And I am on the products page
 
   Scenario: Successfully display english ecommerce products data on products page
-    Given I am on the products page
-    When I switch the locale to "en_US"
+    Given I switch the locale to "en_US"
     And I filter by "Channel" with value "Ecommerce"
     Then I should see product postit
     And the row "postit" should contain:
@@ -44,8 +45,7 @@ Feature: Browse products by locale and scope
       | family      | furniture                |
 
   Scenario: Successfully display english mobile products data on products page
-    Given I am on the products page
-    When I switch the locale to "en_US"
+    Given I switch the locale to "en_US"
     And I filter by "Channel" with value "Mobile"
     Then I should see product postit
     And the row "postit" should contain:
@@ -57,8 +57,7 @@ Feature: Browse products by locale and scope
       | family      | furniture  |
 
   Scenario: Successfully display french ecommerce products data on products page
-    Given I am on the products page
-    When I switch the locale to "fr_FR"
+    Given I switch the locale to "fr_FR"
     And I filter by "Channel" with value "Ecommerce"
     Then I should see product postit
     And the row "postit" should contain:
@@ -70,8 +69,7 @@ Feature: Browse products by locale and scope
       | family        | furniture                |
 
   Scenario: Successfully display french mobile products data on products page
-    Given I am on the products page
-    When I switch the locale to "fr_FR"
+    Given I switch the locale to "fr_FR"
     And I filter by "Channel" with value "Mobile"
     Then I should see product postit
     And the row "postit" should contain:

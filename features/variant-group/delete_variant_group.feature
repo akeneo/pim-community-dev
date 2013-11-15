@@ -5,7 +5,8 @@ Feature: Delete a variant group
   I need to be able to delete variant groups
 
   Background:
-    Given there is no product group
+    Given the "default" catalog configuration
+    And there is no product group
     And the following families:
       | code      | label     |
       | mug       | Mug       |

@@ -5,7 +5,8 @@ Feature: Add attributes to a product
   I need to be able to add attributes to a product
 
   Background:
-    Given a "Car" product
+    Given the "default" catalog configuration
+    And a "Car" product
     And the following attribute group:
       | code    | label   |
       | general | General |

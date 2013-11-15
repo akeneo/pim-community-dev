@@ -37,6 +37,9 @@ pim_import_export:
 
 ## Step elements (readers, processors, writers)
 oro_batch:
+    dummy_reader.title:    Dummy reader
+    dummy_processor.title: Dummy processor
+    dummy_writer.title:    Dummy writer
     product_reader:
         title: Scope
         channel:
@@ -48,10 +51,10 @@ oro_batch:
 
     attribute_reader:
         title: Attribute extraction
-        
+
     association_reader:
         title: Association extraction
-    
+
     group_reader:
         title: Group extraction
 
@@ -209,7 +212,7 @@ oro_batch:
         title: Category storage
 
     orm_product_writer:
-        title: Product storagev
+        title: Product storage
 
     orm_association_writer:
         title: Association storage

@@ -5,7 +5,8 @@ Feature: Execute a job
   I need to be able to execute a valid export
 
   Background:
-    Given the following job:
+    Given the "default" catalog configuration
+    And the following job:
       | connector            | alias          | code                | label                       | type   |
       | Akeneo CSV Connector | product_import | acme_product_import | Product import for Acme.com | import |
 

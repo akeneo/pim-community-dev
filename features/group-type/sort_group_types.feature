@@ -5,7 +5,8 @@ Feature: Sort group types
   I need to be able to sort group types by several columns
 
   Background:
-    Given there is no group type
+    Given the "default" catalog configuration
+    And there is no group type
     And the following group types:
       | code    | label    |
       | related | Relation |

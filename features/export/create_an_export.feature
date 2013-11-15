@@ -3,10 +3,13 @@ Feature: Create an export
   As a user
   I need to be able to create export jobs
 
+  Background:
+    Given the "default" catalog configuration
+    And I am logged in as "admin"
+
   @javascript
   Scenario: Successfully create a product export into csv
-    Given I am logged in as "admin"
-    And I am on the exports page
+    Given I am on the exports page
     And I create a new "Product export in CSV" export
     When I fill in the following information:
       | Code  | mobile_product_export |
@@ -28,7 +31,6 @@ Feature: Create an export
       | create | 1       | code:mobile_product_export |
 
   Scenario: Fail to create an unknown product export
-    Given I am logged in as "admin"
-    And I try to create an unknown export
+    Given I try to create an unknown export
     Then I should be redirected on the export index page
     And I should see "Failed to create an export with an unknown job definition."

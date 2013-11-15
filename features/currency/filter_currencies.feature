@@ -5,7 +5,8 @@ Feature: Filter currencies
   I need to be able to filter currencies in the catalog
 
   Background:
-    Given I am logged in as "admin"
+    Given the "default" catalog configuration
+    And I am logged in as "admin"
     And I am on the currencies page
     Then I should see the filters "Code" and "Activated"
 

@@ -5,7 +5,8 @@ Feature: Variant group creation
   I need to be able to manually create a variant group
 
   Background:
-    Given the following attributes:
+    Given the "default" catalog configuration
+    And the following attributes:
       | code      | label      | type                     |
       | color     | Color      | pim_catalog_simpleselect |
       | size      | Size       | pim_catalog_simpleselect |

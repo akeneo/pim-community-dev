@@ -4,8 +4,6 @@ namespace Context;
 
 use Doctrine\Common\DataFixtures\ReferenceRepository;
 use Behat\MinkExtension\Context\RawMinkContext;
-use Behat\Behat\Event\ScenarioEvent;
-use Behat\Behat\Event\OutlineExampleEvent;
 
 /**
  * A context for initializing catalog configuration
@@ -17,18 +15,12 @@ use Behat\Behat\Event\OutlineExampleEvent;
 class CatalogConfigurationContext extends RawMinkContext
 {
     /**
-     * @var boolean
-     */
-    protected $catalogInitialized = false;
-
-    /**
      * @var string Catalog configuration path
      */
     protected $catalogPath = 'catalog';
 
     /**
-     * Fixture reference repository
-     * @var ReferenceRepository
+     * @var ReferenceRepository Fixture reference repository
      */
     protected $referenceRepository;
 
@@ -56,51 +48,6 @@ class CatalogConfigurationContext extends RawMinkContext
     );
 
     /**
-     * Initialize the default catalog configuration if the configuration has not been initialized by background steps
-     * and no configuration is specified in the scenario
-     *
-     * @param object $event
-     *
-     * @BeforeScenario
-     */
-    public function initialize($event)
-    {
-        if ($this->catalogInitialized) {
-            return;
-        }
-
-        if ($event instanceof ScenarioEvent) {
-            $steps = $event->getScenario()->getSteps();
-        } elseif ($event instanceof OutlineExampleEvent) {
-            $steps = $event->getOutline()->getSteps();
-        }
-
-        foreach ($steps as $step) {
-            if (preg_match('/^(?:a|the) "([^"]*)" catalog configuration$/', $step->getText())) {
-                return;
-            }
-        }
-
-        $this->aCatalogConfiguration('default');
-    }
-
-    /**
-     * @AfterScenario
-     */
-    public function resetState()
-    {
-        $this->catalogInitialized = false;
-    }
-
-    /**
-     * Initialize the reference repository
-     */
-    private function initializeReferenceRepository()
-    {
-        $this->referenceRepository = new ReferenceRepository($this->getEntityManager());
-    }
-
-    /**
      * @param string $catalog
      *
      * @throws ExpectationException If configuration is not found
@@ -108,8 +55,6 @@ class CatalogConfigurationContext extends RawMinkContext
      */
     public function aCatalogConfiguration($catalog)
     {
-        $started = microtime(true);
-
         $directory = sprintf('%s/%s/%s', __DIR__, $this->catalogPath, strtolower($catalog));
 
         if (!file_exists($directory)) {
@@ -119,9 +64,6 @@ class CatalogConfigurationContext extends RawMinkContext
         }
 
         $this->createCatalog($directory);
-
-        $elapsed = number_format(microtime(true) - $started, 2);
-        $this->printDebug(sprintf('Created "%s" catalog, took %s seconds', $catalog, (string) $elapsed));
     }
 
     /**
@@ -136,8 +78,14 @@ class CatalogConfigurationContext extends RawMinkContext
             $file = $fileName !== null ? sprintf('%s/%s.yml', $directory, $fileName) : null;
             $this->runLoader($loader, $file);
         }
+    }
 
-        $this->catalogInitialized = true;
+    /**
+     * Initialize the reference repository
+     */
+    private function initializeReferenceRepository()
+    {
+        $this->referenceRepository = new ReferenceRepository($this->getEntityManager());
     }
 
     /**

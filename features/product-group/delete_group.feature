@@ -5,7 +5,8 @@ Feature: Delete a product group
   I need to be able to delete groups
 
   Background:
-    Given there is no product group
+    Given the "default" catalog configuration
+    And there is no product group
     And the following product groups:
       | code | label      | type   |
       | MUG  | MUG Akeneo | X_SELL |

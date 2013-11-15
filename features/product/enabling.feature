@@ -4,9 +4,12 @@ Feature: Enable and disable a product
   As a user
   I need to be able to enable or disable a product
 
+  Background:
+    Given the "default" catalog configuration
+    And I am logged in as "admin"
+
   Scenario: Successfully disable a product
     Given an enabled "boat" product
-    And I am logged in as "admin"
     When I am on the "boat" product page
     And I disable the product
     Then I should see flash message "Product successfully updated"
@@ -14,7 +17,6 @@ Feature: Enable and disable a product
 
   Scenario: Successfully enable a product
     Given a disabled "boat" product
-    And I am logged in as "admin"
     When I am on the "boat" product page
     And I enable the product
     Then I should see flash message "Product successfully updated"

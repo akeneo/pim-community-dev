@@ -5,7 +5,8 @@ Feature: Product creation
   I need to be able to manually create a product
 
   Background:
-    Given the following product attribute:
+    Given the "default" catalog configuration
+    And the following product attribute:
       | label       | required |
       | SKU         | yes      |
       | Reference   | yes      |
