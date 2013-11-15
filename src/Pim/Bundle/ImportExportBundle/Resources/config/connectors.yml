@@ -2,9 +2,9 @@ parameters:
     pim_import_export.reader.product.class:                         Pim\Bundle\ImportExportBundle\Reader\ORM\ProductReader
     pim_import_export.reader.entity.class:                          Pim\Bundle\ImportExportBundle\Reader\ORM\EntityReader
     
-    pim_import_export.reader.csv.class:                             Pim\Bundle\ImportExportBundle\Reader\CsvReader
-    pim_import_export.reader.product_csv.class:                     Pim\Bundle\ImportExportBundle\Reader\ProductCsvReader
-    pim_import_export.reader.csv_file.class:                        Pim\Bundle\ImportExportBundle\Reader\CsvFileReader
+    pim_import_export.reader.csv.class:                             Pim\Bundle\ImportExportBundle\Reader\File\CsvReader
+    pim_import_export.reader.product_csv.class:                     Pim\Bundle\ImportExportBundle\Reader\File\ProductCsvReader
+    pim_import_export.reader.csv_file.class:                        Pim\Bundle\ImportExportBundle\Reader\File\CsvFileReader
 
     pim_import_export.processor.homogeneous_csv_serializer.class:   Pim\Bundle\ImportExportBundle\Processor\HomogeneousCsvSerializerProcessor
     pim_import_export.processor.heterogeneous_csv_serializer.class: Pim\Bundle\ImportExportBundle\Processor\HeterogeneousCsvSerializerProcessor
