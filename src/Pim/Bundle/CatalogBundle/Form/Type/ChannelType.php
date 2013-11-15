@@ -11,7 +11,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
 use Pim\Bundle\CatalogBundle\Entity\Repository\CurrencyRepository;
 use Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository;
-use Pim\Bundle\CatalogBundle\Form\Subscriber\ChannelSubscriber;
+use Pim\Bundle\CatalogBundle\Form\Subscriber\DisableCodeFieldSubscriber;
 use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
 use Pim\Bundle\CatalogBundle\Helper\SortHelper;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
@@ -94,7 +94,7 @@ class ChannelType extends AbstractType
                     }
                 )
             )
-            ->addEventSubscriber(new ChannelSubscriber());
+            ->addEventSubscriber(new DisableCodeFieldSubscriber());
     }
 
     /**
