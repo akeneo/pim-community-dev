@@ -1,8 +1,8 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Reader;
+namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Reader\File;
 
-use Pim\Bundle\ImportExportBundle\Reader\CsvReader;
+use Pim\Bundle\ImportExportBundle\Reader\File\CsvReader;
 
 /**
  * Test related class

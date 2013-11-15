@@ -3,7 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Archiver;
 
 use Oro\Bundle\BatchBundle\Entity\JobExecution;
-use Pim\Bundle\ImportExportBundle\Reader\CsvReader;
+use Pim\Bundle\ImportExportBundle\Reader\File\CsvReader;
 use Pim\Bundle\ImportExportBundle\Writer\FileWriter;
 
 /**

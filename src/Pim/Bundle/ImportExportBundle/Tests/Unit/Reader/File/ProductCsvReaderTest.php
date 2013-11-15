@@ -1,8 +1,8 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Reader;
+namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Reader\File;
 
-use Pim\Bundle\ImportExportBundle\Reader\ProductCsvReader;
+use Pim\Bundle\ImportExportBundle\Reader\File\ProductCsvReader;
 
 /**
  * Test related class
@@ -33,7 +33,7 @@ class ProductCsvReaderTest extends CsvReaderTest
      */
     public function testExtendsCsvReader()
     {
-        $this->assertInstanceOf('Pim\Bundle\ImportExportBundle\Reader\CsvReader', $this->reader);
+        $this->assertInstanceOf('Pim\Bundle\ImportExportBundle\Reader\File\CsvReader', $this->reader);
     }
 
     /**
