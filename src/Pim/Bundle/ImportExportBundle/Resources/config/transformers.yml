@@ -1,5 +1,5 @@
 parameters:
-    pim_import_export.transformer.product.class:                Pim\Bundle\ImportExportBundle\Transformer\OrmProductTransformer
+    pim_import_export.transformer.product.class:                Pim\Bundle\ImportExportBundle\Transformer\ORMProductTransformer
     pim_import_export.transformer.property.default.class:       Pim\Bundle\ImportExportBundle\Transformer\Property\DefaultTransformer
     pim_import_export.transformer.property.entity.class:        Pim\Bundle\ImportExportBundle\Transformer\Property\EntityTransformer
     pim_import_export.transformer.property.media.class:         Pim\Bundle\ImportExportBundle\Transformer\Property\MediaTransformer

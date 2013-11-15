@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Transformer;
 
-use Pim\Bundle\ImportExportBundle\Transformer\OrmProductTransformer;
+use Pim\Bundle\ImportExportBundle\Transformer\ORMProductTransformer;
 use Pim\Bundle\ImportExportBundle\Exception\InvalidValueException;
 
 /**
@@ -12,7 +12,7 @@ use Pim\Bundle\ImportExportBundle\Exception\InvalidValueException;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class OrmProductTransformerTest extends \PHPUnit_Framework_TestCase
+class ORMProductTransformerTest extends \PHPUnit_Framework_TestCase
 {
     protected $productValues;
     protected $productManager;
@@ -85,7 +85,7 @@ class OrmProductTransformerTest extends \PHPUnit_Framework_TestCase
             ->method('setValue')
             ->will($this->returnCallback(array($this, 'setProductValue')));
 
-        $this->transformer = new OrmProductTransformer(
+        $this->transformer = new ORMProductTransformer(
             $this->productManager,
             $this->productValidator,
             $this->attributeCache,
