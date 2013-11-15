@@ -93,7 +93,6 @@ Feature: Well display navigation titles
     Then I should see the title "Products sku-1 | Edit"
 
   Scenario: Successfully display the variant page titles
-    Given there is no product group
     And the following attribute:
       | code  | label | type                    |
       | color | Color | pim_catalog_multiselect |
