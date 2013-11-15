@@ -6,7 +6,6 @@ use Symfony\Component\HttpFoundation\File\File;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Util\Inflector;
 use Oro\Bundle\BatchBundle\Entity\JobInstance;
-use Oro\Bundle\DataAuditBundle\Entity\Audit;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Oro\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\CatalogBundle\Entity\Association;
@@ -816,35 +815,6 @@ class FixturesContext extends RawMinkContext
         }
 
         $this->flush();
-    }
-
-    /**
-     * @param string    $entityName
-     * @param string    $id
-     * @param TableNode $table
-     *
-     * @Given /^the following (\w+) "([^"]*)" updates:$/
-     */
-    public function theFollowingUpdates($entityName, $id, TableNode $table)
-    {
-        $entity = $this->getEntity(ucfirst($entityName), $id);
-
-        foreach ($table->getHash() as $data) {
-            $audit = new Audit();
-            $audit->setAction($data['action']);
-            $audit->setLoggedAt(new \DateTime($data['loggedAt']));
-            $audit->setObjectId($entity->getId());
-            $audit->setObjectClass(get_class($entity));
-            $audit->setObjectName((string) $entity);
-            $audit->setVersion(1);
-            list($field, $change) = explode(': ', $data['change']);
-            list($old, $new) = explode(' => ', $change);
-            $audit->setData(array($field => array('old' => $old, 'new' => $new)));
-            $user = $this->getUser($data['updatedBy']);
-            $audit->setUsername($user->getUsername());
-            $audit->setUser($user);
-            $this->persist($audit);
-        }
     }
 
     /**
