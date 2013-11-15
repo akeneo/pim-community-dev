@@ -13,6 +13,9 @@ use Doctrine\ORM\EntityManager;
  */
 class CategoryReader extends ORMReader
 {
+    /**
+     * @var EntityManager
+     */
     protected $em;
 
     /**
