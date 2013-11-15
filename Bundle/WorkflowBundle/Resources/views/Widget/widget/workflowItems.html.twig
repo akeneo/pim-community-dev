@@ -25,7 +25,6 @@
                     <th>{% trans %}Workflow Name{% endtrans %}</th>
                     <th>{% trans %}Current Step{% endtrans %}</th>
                     <th>{% trans %}Start Date{% endtrans %}</th>
-                    <th>{% trans %}Status{% endtrans %}</th>
                     {% if allow_delete %}
                         <th>{% trans %}Actions{% endtrans %}</th>
                     {% endif %}
@@ -53,15 +52,6 @@
                         </td>
                         <td>
                             {{ data.workflowItem.createdAt|oro_format_datetime }}
-                        </td>
-                        <td>
-                            {% if not enabled %}
-                                <span class="label">{% trans %}Disabled{% endtrans %}</span>
-                            {% elseif closed %}
-                                <span class="label label-inverse">{% trans %}Closed{% endtrans %}</span>
-                            {% else %}
-                                <span class="label label-success">{% trans %}Active{% endtrans %}</span>
-                            {% endif %}
                         </td>
                         {% if allow_delete %}
                             <td style="width: 90px;">
