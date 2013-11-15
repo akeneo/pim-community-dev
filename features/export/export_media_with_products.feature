@@ -46,4 +46,3 @@ Feature: Export media with products
       | files/SNKRS-1R/side_view/SNKRS-1R.png   |
       | files/SNKRS-1C/side_view/SNKRS-1C-s.png |
       | files/SNKRS-1C/top_view/SNKRS-1C-t.png  |
-      | files/SNKRS-1R/side_view/SNKRS-1R.png   |
