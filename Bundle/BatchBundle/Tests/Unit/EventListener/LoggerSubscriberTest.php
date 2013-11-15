@@ -35,7 +35,7 @@ class LoggerSubscriberTest extends \PHPUnit_Framework_TestCase
                 EventInterface::STEP_EXECUTION_INTERRUPTED => 'stepExecutionInterrupted',
                 EventInterface::STEP_EXECUTION_ERRORED     => 'stepExecutionErrored',
                 EventInterface::STEP_EXECUTION_COMPLETED   => 'stepExecutionCompleted',
-                EventInterface::INVALID_READER_EXECUTION   => 'invalidReaderExecution',
+                EventInterface::INVALID_ITEM               => 'invalidItem',
             ),
             LoggerSubscriber::getSubscribedEvents()
         );
@@ -172,67 +172,22 @@ class LoggerSubscriberTest extends \PHPUnit_Framework_TestCase
         $this->subscriber->stepExecutionCompleted($event);
     }
 
-    public function testInvalidReaderExecution()
+    public function testInvalidItemExecution()
     {
         $this->logger
             ->expects($this->once())
             ->method('warning')
             ->with(
-                $this->matchesRegularExpression(
-                    '/^The .+ was unable to handle the following data: \[foo => bar\] '.
-                    '\(REASON: This is a valid reason\.\)\.$/'
-                )
+                'The Oro\Bundle\BatchBundle\Item\ItemReaderInterface was unable ' .
+                'to handle the following item: [foo => bar] (REASON: This is a valid reason.)'
             );
 
-        $stepExecution = $this->getStepExecutionMock();
-        $stepExecution->expects($this->any())
-            ->method('getReaderWarnings')
-            ->will(
-                $this->returnValue(
-                    array(
-                        array(
-                            'reader' => $this->getMock('Oro\Bundle\BatchBundle\Item\ItemReaderInterface'),
-                            'reason' => 'This is a valid reason.',
-                            'data' => array('foo' => 'bar'),
-                        )
-                    )
-                )
-            );
-
-        $event = $this->getStepExecutionEventMock($stepExecution);
-        $this->subscriber->invalidReaderExecution($event);
-    }
-
-    public function testDoNotLogTwiceTheSameInvalidReaderExecution()
-    {
-        $this->logger
-            ->expects($this->once())
-            ->method('warning')
-            ->with(
-                $this->matchesRegularExpression(
-                    '/^The .+ was unable to handle the following data: \[foo => bar\] '.
-                    '\(REASON: This is a valid reason\.\)\.$/'
-                )
-            );
-
-        $stepExecution = $this->getStepExecutionMock();
-        $stepExecution->expects($this->any())
-            ->method('getReaderWarnings')
-            ->will(
-                $this->returnValue(
-                    array(
-                        array(
-                            'reader' => $this->getMock('Oro\Bundle\BatchBundle\Item\ItemReaderInterface'),
-                            'reason' => 'This is a valid reason.',
-                            'data' => array('foo' => 'bar'),
-                        )
-                    )
-                )
-            );
-
-        $event = $this->getStepExecutionEventMock($stepExecution);
-        $this->subscriber->invalidReaderExecution($event);
-        $this->subscriber->invalidReaderExecution($event);
+        $event = $this->getInvalidItemEvent(
+            'Oro\Bundle\BatchBundle\Item\ItemReaderInterface',
+            'This is a valid reason.',
+            array('foo' => 'bar')
+        );
+        $this->subscriber->invalidItem($event);
     }
 
     private function getLoggerMock()
@@ -282,5 +237,33 @@ class LoggerSubscriberTest extends \PHPUnit_Framework_TestCase
             ->getMockBuilder('Oro\Bundle\BatchBundle\Entity\StepExecution')
             ->disableOriginalConstructor()
             ->getMock();
+    }
+
+    /**
+     * @param string $class
+     * @param string $reason
+     * @param array  $item
+     *
+     * @return PHPUnit_Framework_MockObject_MockObjec
+     */
+    private function getInvalidItemEvent($class, $reason, $item)
+    {
+        $invalidItem = $this->getMockBuilder('Oro\Bundle\BatchBundle\Event\InvalidItemEvent')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $invalidItem->expects($this->any())
+            ->method('getClass')
+            ->will($this->returnValue($class));
+
+        $invalidItem->expects($this->any())
+            ->method('getReason')
+            ->will($this->returnValue($reason));
+
+        $invalidItem->expects($this->any())
+            ->method('getItem')
+            ->will($this->returnValue($item));
+
+        return $invalidItem;
     }
 }
