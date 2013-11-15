@@ -32,7 +32,8 @@ class ProductCsvSerializerProcessor extends HeterogeneousCsvSerializerProcessor
     protected $channelManager;
 
     /**
-     * @param ChannelManager $channelManager
+     * @param SerializerInterface $serializer
+     * @param ChannelManager      $channelManager
      */
     public function __construct(SerializerInterface $serializer, ChannelManager $channelManager)
     {
@@ -74,7 +75,6 @@ class ProductCsvSerializerProcessor extends HeterogeneousCsvSerializerProcessor
                 'scopeCode'     => $this->channel
             )
         );
-
 
         if (!is_array($products)) {
             $products = array($products);

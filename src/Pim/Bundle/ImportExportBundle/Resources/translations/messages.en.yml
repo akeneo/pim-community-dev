@@ -48,10 +48,10 @@ oro_batch:
 
     attribute_reader:
         title: Attribute extraction
-        
+
     association_reader:
         title: Association extraction
-    
+
     group_reader:
         title: Group extraction
 
@@ -209,7 +209,7 @@ oro_batch:
         title: Category storage
 
     orm_product_writer:
-        title: Product storagev
+        title: Product storage
 
     orm_association_writer:
         title: Association storage
