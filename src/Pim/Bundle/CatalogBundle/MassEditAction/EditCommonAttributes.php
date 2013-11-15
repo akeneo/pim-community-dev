@@ -396,7 +396,7 @@ class EditCommonAttributes extends AbstractMassEditAction
      * @param Locale           $locale
      * @param Channel          $channel
      *
-     * @return ProductValue
+     * @return ProductValueInterface
      */
     protected function createValue(ProductAttribute $attribute, Locale $locale, Channel $channel = null)
     {
