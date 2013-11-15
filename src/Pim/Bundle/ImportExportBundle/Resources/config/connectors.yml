@@ -15,6 +15,9 @@ parameters:
     pim_import_export.processor.valid_group_creation.class:         Pim\Bundle\ImportExportBundle\Processor\ValidGroupCreationProcessor
 
     pim_import_export.writer.orm_product.class:                     Pim\Bundle\ImportExportBundle\Writer\ORMProductWriter
+    
+    pim_import_export.writer.orm.class:                             Pim\Bundle\ImportExportBundle\Writer\ORM\Writer
+    
     pim_import_export.writer.orm_category.class:                    Pim\Bundle\ImportExportBundle\Writer\ORMCategoryWriter
     pim_import_export.writer.orm_association.class:                 Pim\Bundle\ImportExportBundle\Writer\ORMAssociationWriter
     pim_import_export.writer.orm_group.class:                       Pim\Bundle\ImportExportBundle\Writer\ORMGroupWriter
@@ -143,11 +146,11 @@ services:
             - '@doctrine.orm.default_entity_manager'
 
     pim_import_export.writer.orm_association:
-        class: %pim_import_export.writer.orm_association.class%
+        class: %pim_import_export.writer.orm.class%
         arguments:
             - '@doctrine.orm.default_entity_manager'
 
     pim_import_export.writer.orm_group:
-        class: %pim_import_export.writer.orm_group.class%
+        class: %pim_import_export.writer.orm.class%
         arguments:
             - '@doctrine.orm.default_entity_manager'
