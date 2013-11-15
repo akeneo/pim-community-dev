@@ -31,7 +31,6 @@
     href="javascript:void(0);" data-dialog="confirm" data-title="{{ title }}" data-message="{{ message }}" data-url="{{ url }}" data-redirect-url="{{ redirectUrl }}" data-method="DELETE" data-error-message="{% trans %}The element could not be deleted{% endtrans %}" data-success-message="{{ successMessage }}"
 {% endspaceless %}{% endmacro %}
 
-
 {% macro deleteLink(url, redirectUrl, message, title, successMessage) %}{% spaceless %}
     {% import _self as elements %}
     <a class="btn icons-holder-text no-hash" title="{{ 'btn.delete'|trans|capitalize }}" {{elements.deleteLinkAttributes(url, redirectUrl, message, title, successMessage)}} >
@@ -123,4 +122,23 @@
             </div>
         {% endfor %}
     </div>
+{% endmacro %}
+
+{% macro updated(formId) %}
+{% spaceless %}
+    <div class="pull-right entity-updated">
+        <span id="updated" class="label label-warning hide">{{ 'info.updated'|trans }}</span>
+    </div>
+    <script type="text/javascript">
+        require(
+            ['jquery', 'pim/formupdatelistener'],
+            function ($, FormUpdateListener) {
+                'use strict';
+                $(function () {
+                    new FormUpdateListener($('#{{ formId }}'));
+                });
+            }
+        );
+    </script>
+{% endspaceless %}
 {% endmacro %}

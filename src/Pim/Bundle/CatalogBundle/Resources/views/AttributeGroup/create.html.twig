@@ -2,19 +2,25 @@
 
 {% block groupTab %}
 {{ JSFV(form) }}
-{{ form_start(form, { 'action': path('pim_catalog_attributegroup_create') }) }}
+{{ form_start(form, {
+    'action': path('pim_catalog_attributegroup_create'),
+    'attr': {
+        'data-updated-title': 'confirmation.leave'|trans,
+        'data-updated-message': 'confirmation.discard changes'|trans({ '%entity%': 'attribute group'|trans })
+    }
+}) }}
 
-    {{ elements.page_header('attribute group.create'|trans, elements.submitBtn) }}
+    {{ elements.page_header('attribute group.create'|trans, elements.submitBtn, null, null, elements.updated(form.vars.id)) }}
 
     {{ elements.form_navbar('Properties') }}
 
     <div class="tab-content">
-
         {{ elements.form_errors(form) }}
 
         <div class="tab-pane active" id="properties">
             {{ elements.accordion({ 'General Properties': form_row(form.code), 'Group values': form_row(form.label) }) }}
         </div>
+
         {{ form_row(form.sort_order) }}
     </div>
 

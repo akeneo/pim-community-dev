@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Form\Type;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Pim\Bundle\CatalogBundle\Form\Subscriber\DisableCodeFieldSubscriber;
 
 /**
  * Type for AttributeGroup form
@@ -22,20 +23,20 @@ class AttributeGroupType extends AbstractType
     {
         parent::buildForm($builder, $options);
 
-        $builder->add('code');
-
-        $builder->add(
-            'label',
-            'pim_translatable_field',
-            array(
-                'field'             => 'label',
-                'translation_class' => 'Pim\\Bundle\\CatalogBundle\\Entity\\AttributeGroupTranslation',
-                'entity_class'      => 'Pim\\Bundle\\CatalogBundle\\Entity\\AttributeGroup',
-                'property_path'     => 'translations'
+        $builder
+            ->add('code')
+            ->add(
+                'label',
+                'pim_translatable_field',
+                array(
+                    'field'             => 'label',
+                    'translation_class' => 'Pim\\Bundle\\CatalogBundle\\Entity\\AttributeGroupTranslation',
+                    'entity_class'      => 'Pim\\Bundle\\CatalogBundle\\Entity\\AttributeGroup',
+                    'property_path'     => 'translations'
+                )
             )
-        );
-
-        $builder->add('sort_order', 'hidden');
+            ->add('sort_order', 'hidden')
+            ->addEventSubscriber(new DisableCodeFieldSubscriber());
     }
 
     /**

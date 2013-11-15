@@ -6,7 +6,6 @@ use Symfony\Component\HttpFoundation\File\File;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Util\Inflector;
 use Oro\Bundle\BatchBundle\Entity\JobInstance;
-use Oro\Bundle\DataAuditBundle\Entity\Audit;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Oro\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\CatalogBundle\Entity\Association;
@@ -39,11 +38,6 @@ class FixturesContext extends RawMinkContext
         'english' => 'en_US',
         'french'  => 'fr_FR',
         'german'  => 'de_DE',
-    );
-
-    private $channels = array(
-        'ecommerce' => array('en_US', 'fr_FR'),
-        'mobile'    => array('fr_FR'),
     );
 
     private $attributeTypes = array(
@@ -280,10 +274,9 @@ class FixturesContext extends RawMinkContext
     public function theFollowingProduct(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
-            $data = array_merge(array('family' => null), $data);
-
             $product = $this->aProduct($data['sku']);
-            if ($data['family']) {
+
+            if (!empty($data['family'])) {
                 $product->setFamily($this->getFamily($data['family']));
             }
 
@@ -362,29 +355,6 @@ class FixturesContext extends RawMinkContext
             }
         }
 
-        $this->flush();
-    }
-
-    /**
-     * @param TableNode $table
-     *
-     * @Given /^the following locales:$/
-     */
-    public function theFollowingLocales(TableNode $table)
-    {
-        foreach ($table->getHash() as $data) {
-            $locale = $this->getLocale($data['code']);
-
-            if (isset($data['fallback'])) {
-                $locale->setFallback($data['fallback']);
-            }
-
-            if ($data['activated'] === 'yes') {
-                $locale->activate();
-            }
-
-            $this->persist($locale, false);
-        }
         $this->flush();
     }
 
@@ -537,9 +507,8 @@ class FixturesContext extends RawMinkContext
     public function theFollowingProductValue(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
-            $data = array_merge(array('scope' => null, 'locale' => null), $data);
-            $data['locale']= (empty($data['locale'])) ? null : $data['locale'];
-            $data['scope']= (empty($data['scope'])) ? null : $data['scope'];
+            $data['locale'] = empty($data['locale']) ? null : $data['locale'];
+            $data['scope']  = empty($data['scope']) ? null : $data['scope'];
 
             $product = $this->getProduct($data['product']);
             $value   = $product->getValue($this->camelize($data['attribute']), $data['locale'], $data['scope']);
@@ -564,7 +533,7 @@ class FixturesContext extends RawMinkContext
                         $options = $value->getAttribute()->getOptions();
                         $optionValue = null;
                         foreach ($options as $option) {
-                            if ($option->getCode() === $data['value']) {
+                            if ((string) $option->getCode() === $data['value']) {
                                 $optionValue = $option;
                             }
                         }
@@ -580,7 +549,11 @@ class FixturesContext extends RawMinkContext
                 }
             } else {
                 $code = $this->camelize($data['attribute']);
-                $attribute = $this->getAttribute($code);
+                $attribute = $this->findAttribute($code);
+                if (!$attribute) {
+                    $code = implode('_', explode(' ', strtolower($data['attribute'])));
+                    $attribute = $this->getAttribute($code);
+                }
                 $value = $this->createValue($attribute, $data['value'], $data['locale'], $data['scope']);
                 $product->addValue($value);
             }
@@ -812,35 +785,6 @@ class FixturesContext extends RawMinkContext
         }
 
         $this->flush();
-    }
-
-    /**
-     * @param string    $entityName
-     * @param string    $id
-     * @param TableNode $table
-     *
-     * @Given /^the following (\w+) "([^"]*)" updates:$/
-     */
-    public function theFollowingUpdates($entityName, $id, TableNode $table)
-    {
-        $entity = $this->getEntity(ucfirst($entityName), $id);
-
-        foreach ($table->getHash() as $data) {
-            $audit = new Audit();
-            $audit->setAction($data['action']);
-            $audit->setLoggedAt(new \DateTime($data['loggedAt']));
-            $audit->setObjectId($entity->getId());
-            $audit->setObjectClass(get_class($entity));
-            $audit->setObjectName((string) $entity);
-            $audit->setVersion(1);
-            list($field, $change) = explode(': ', $data['change']);
-            list($old, $new) = explode(' => ', $change);
-            $audit->setData(array($field => array('old' => $old, 'new' => $new)));
-            $user = $this->getUser($data['updatedBy']);
-            $audit->setUsername($user->getUsername());
-            $audit->setUser($user);
-            $this->persist($audit);
-        }
     }
 
     /**
@@ -1280,18 +1224,17 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @param mixed $data
+     * @param string $sku
      *
      * @return Product
      */
-    private function createProduct($data)
+    private function createProduct($sku)
     {
         $product = $this->getProductManager()->createFlexible();
-        $sku     = $this->getAttribute('SKU');
-        $value   = $this->createValue($sku, $data);
 
-        $product->addValue($value);
-        $this->persist($product);
+        $product->getIdentifier()->setData($sku);
+
+        $this->getProductManager()->save($product);
 
         return $product;
     }

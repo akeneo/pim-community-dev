@@ -1,0 +1,34 @@
+jobs:
+    footwear_product_export:
+        connector: Akeneo CSV Connector
+        alias:     product_export
+        label:     Footwear product export
+        type:      export
+        configuration:
+            reader:
+                channel: mobile
+            processor:
+                channel:    mobile
+                delimiter:  ;
+                enclosure:  '"'
+                withHeader: true
+            writer:
+                directoryName: /tmp/product_export
+                fileName:      product_export.csv
+    footwear_product_import:
+        connector: Akeneo CSV Connector
+        alias:     product_import
+        label:     Footwear product import
+        type:      import
+        configuration:
+            reader:
+                filePath:      /tmp/product_import/product_import.csv
+                uploadAllowed: true
+                delimiter:     ;
+                enclosure:     '"'
+                escape:        '\'
+            processor:
+                enabled:          true
+                categoriesColumn: categories
+                familyColumn:     family
+                groupsColumn:     groups
