@@ -37,13 +37,11 @@ class AttributeNormalizer implements NormalizerInterface
      */
     public function normalize($attribute, $format = null, array $context = array())
     {
-        $attributeTypes = explode('_', $attribute->getAttributeType());
-
         $dateMin = (is_null($attribute->getDateMin())) ? '' : $attribute->getDateMin()->format(\DateTime::ISO8601);
         $dateMax = (is_null($attribute->getDateMax())) ? '' : $attribute->getDateMax()->format(\DateTime::ISO8601);
 
         $results = array(
-            'type' => end($attributeTypes),
+            'type' => $attribute->getAttributeType(),
             'code' => $attribute->getCode()
         );
         $results = array_merge(

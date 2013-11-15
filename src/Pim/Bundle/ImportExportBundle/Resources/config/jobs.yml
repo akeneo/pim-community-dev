@@ -80,9 +80,9 @@ connector:
             steps:
                 import:
                     title:     pim_import_export.jobs.attribute_import.import.title
-                    reader:    pim_import_export.reader.dummy #csv_file
-                    processor: pim_import_export.processor.dummy #valid_attribute_creation
-                    writer:    pim_import_export.writer.dummy #orm_attribute
+                    reader:    pim_import_export.reader.csv_file
+                    processor: pim_import_export.processor.valid_attribute_creation
+                    writer:    pim_import_export.writer.orm_attribute
         attribute_option_import:
             title: pim_import_export.jobs.attribute_option_import.title
             type:  import
