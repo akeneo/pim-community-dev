@@ -51,7 +51,8 @@ class FlatAttributeNormalizerTest extends AttributeNormalizerTest
                 array(
                     'type'                   => 'multiselect',
                     'code'                   => 'color',
-                    'label'                  => 'default:Color,en:Color,fr:Couleur',
+                    'label-en_US'            => 'Color',
+                    'label-fr_FR'            => 'Coleur',
                     'group'                  => 'general',
                     'sort_order'             => '5',
                     'required'               => '0',
@@ -70,7 +71,8 @@ class FlatAttributeNormalizerTest extends AttributeNormalizerTest
                 array(
                     'type'                   => 'text',
                     'code'                   => 'description',
-                    'label'                  => 'default:Description,en:Description,fr:Description',
+                    'label-en_US'            => 'Color',
+                    'label-fr_FR'            => 'Coleur',
                     'group'                  => 'info',
                     'sort_order'             => '1',
                     'required'               => '1',
@@ -122,13 +124,12 @@ class FlatAttributeNormalizerTest extends AttributeNormalizerTest
      */
     protected function addLabels($attribute, $data)
     {
-        $labels = explode(',', $data['label']);
-        foreach ($labels as $label) {
-            $label  = explode(':', $label);
-            $locale = reset($label);
-            $label  = end($label);
-            $translation = $attribute->getTranslation($locale);
-            $translation->setLabel($label);
+        foreach ($data as $key => $label) {
+            if (strpos($key, 'label-') !== false) {
+                $locale = str_replace('label-', '', $key);
+                $translation = $attribute->getTranslation($locale);
+                $translation->setLabel($label);
+            }
         }
     }
 
