@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Writer;
 
-use Pim\Bundle\ImportExportBundle\Writer\ProductFileWriter;
+use Pim\Bundle\ImportExportBundle\Writer\File\ProductWriter;
 
 /**
  * Test related class
@@ -19,7 +19,7 @@ class ProductFileWriterTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->mediaManager = $this->getMediaManagerMock();
-        $this->writer = new ProductFileWriter($this->mediaManager);
+        $this->writer = new ProductWriter($this->mediaManager);
         $this->writer->setStepExecution($this->getStepExecutionMock());
     }
 

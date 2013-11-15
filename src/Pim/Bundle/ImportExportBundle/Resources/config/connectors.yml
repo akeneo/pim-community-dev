@@ -18,8 +18,8 @@ parameters:
     pim_import_export.writer.orm.entity.class:                      Pim\Bundle\ImportExportBundle\Writer\ORM\Writer
     pim_import_export.writer.orm.category.class:                    Pim\Bundle\ImportExportBundle\Writer\ORM\CategoryWriter
 
-    pim_import_export.writer.file.class:                            Pim\Bundle\ImportExportBundle\Writer\FileWriter
-    pim_import_export.writer.file.product.class:                    Pim\Bundle\ImportExportBundle\Writer\ProductFileWriter
+    pim_import_export.writer.file.class:                            Pim\Bundle\ImportExportBundle\Writer\File\FileWriter
+    pim_import_export.writer.file.product.class:                    Pim\Bundle\ImportExportBundle\Writer\File\ProductWriter
 
     pim_import_export.reader.dummy.class:                           Pim\Bundle\ImportExportBundle\Reader\DummyReader
     pim_import_export.processor.dummy.class:                        Pim\Bundle\ImportExportBundle\Processor\DummyProcessor

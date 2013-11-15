@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Writer;
 
-use Pim\Bundle\ImportExportBundle\Writer\FileWriter;
+use Pim\Bundle\ImportExportBundle\Writer\File\FileWriter;
 
 /**
  * Test related class
