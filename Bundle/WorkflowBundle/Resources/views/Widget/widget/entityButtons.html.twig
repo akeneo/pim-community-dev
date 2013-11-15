@@ -1,76 +1,62 @@
 {% import 'OroWorkflowBundle::macros.html.twig' as workflowMacros %}
 
-{% set dialogUrl = null %}
 {% set blockId = 'entity-transitions-container-' ~ random() %}
 <div class="widget-content" id="{{ blockId }}">
     {# Show buttons for entity workflows #}
     <div class="btn-group">
         {% for data in transitionsData if data.workflow.type == 'entity' %}
             {# Show button for start or transit entity workflow #}
-            {% if data.workflowItem is defined %}
-                {% if data.transition.formOptions|length > 0 %}
-                    {% set dialogUrl = path(
-                        'oro_workflow_widget_transition_form',
-                        {
-                            workflowItemId: data.workflowItem.id,
-                            transitionName: data.transition.name
-                        }
-                    ) %}
-                {% endif %}
-                {# Existing workflow #}
-                {% set url = path(
-                    'oro_workflow_api_rest_workflow_transit',
-                    {
-                        workflowItemId: data.workflowItem.id,
-                        transitionName: data.transition.name
-                    }
-                ) %}
-            {% else %}
-                {% if data.transition.formOptions|length > 0 %}
-                    {% set dialogUrl = path(
+            {% set transitionData = {
+                'redirect-to-workflow': false,
+                'enabled': true,
+                'transition-label': data.transition.label|trans,
+                'message': data.transition.message|trans
+            } %}
+
+            {% if data.workflowItem is not defined %}
+                {% set data = data|merge({'workflowItem': null}) %}
+                {% if data.transition.hasForm() %}
+                    {% set transitionData = transitionData|merge({'dialog-url': path(
                         'oro_workflow_widget_start_transition_form',
                         {
                             workflowName: data.workflow.name,
                             transitionName: data.transition.name,
                             entityClass: entity_class,
                             entityId: entity_id,
-                        }
-                    ) %}
+                        })
+                    }) %}
                 {% endif %}
+
                 {# New workflow #}
-                {% set url = path(
+                {% set transitionData = transitionData|merge({'transition-url': path(
                     'oro_workflow_api_rest_workflow_start',
                     {
                         workflowName: data.workflow.name,
                         entityClass: entity_class,
                         entityId: entity_id,
                         transitionName: data.transition.name
-                    }
-                ) %}
+                    })
+                }) %}
             {% endif %}
-            {{ workflowMacros.renderTransitionButton(data.workflow, data.transition, true, url, false, dialogUrl) }}
+
+            {{ workflowMacros.renderTransitionButton(
+                data.workflow,
+                data.transition,
+                data.workflowItem,
+                transitionData
+            ) }}
         {% endfor %}
     </div>
 
     {# Show buttons that for start new wizard workflows #}
     <div class="btn-group">
         {% for data in transitionsData if data.workflow.type == 'wizard' and data.workflowItem is not defined  %}
-            {% if data.transition.formOptions|length > 0 %}
-                {% set dialogUrl = path(
-                    'oro_workflow_widget_start_transition_form',
-                    {
-                        workflowName: data.workflow.name,
-                        transitionName: data.transition.name,
-                        entityClass: entity_class,
-                        entityId: entity_id,
-                    }
-                ) %}
-            {% endif %}
-            {{ workflowMacros.renderTransitionButton(
-                data.workflow,
-                data.transition,
-                true,
-                path(
+            {% set transitionData = {
+                'redirect-to-workflow': true,
+                'enabled': true,
+                'transition-label': data.transition.label|trans,
+                'message': data.transition.message|trans,
+                'transition-url': path(
                     'oro_workflow_api_rest_workflow_start',
                     {
                         workflowName: data.workflow.name,
@@ -79,8 +65,24 @@
                         transitionName: data.transition.name
                     }
                 ),
-                true,
-                dialogUrl
+            } %}
+            {% if data.transition.hasForm() %}
+                {% set transitionData = transitionData|merge({'dialog-url': path(
+                    'oro_workflow_widget_start_transition_form',
+                    {
+                        workflowName: data.workflow.name,
+                        transitionName: data.transition.name,
+                        entityClass: entity_class,
+                        entityId: entity_id,
+                    })
+                }) %}
+            {% endif %}
+
+            {{ workflowMacros.renderTransitionButton(
+                data.workflow,
+                data.transition,
+                null,
+                transitionData
             ) }}
         {% endfor %}
     </div>

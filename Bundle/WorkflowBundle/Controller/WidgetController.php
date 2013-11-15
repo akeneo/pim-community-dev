@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\WorkflowBundle\Controller;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
 
 use Symfony\Component\Form\Form;
@@ -277,11 +278,18 @@ class WidgetController extends Controller
             $currentStep = $workflow->getStepManager()->getStep($workflowItem->getCurrentStepName());
 
             foreach ($currentStep->getAllowedTransitions() as $transitionName) {
-                $transitionsData[] = array(
-                    'workflow' => $workflowManager->getWorkflow($workflowItem),
-                    'workflowItem' => $workflowItem,
-                    'transition' => $workflow->getTransitionManager()->getTransition($transitionName),
-                );
+                $errors = new ArrayCollection();
+                $transition = $workflow->getTransitionManager()->getTransition($transitionName);
+                $isAllowed = $workflow->isTransitionAllowed($workflowItem, $transition, $errors);
+                if ($isAllowed || !$transition->isUnavailableHidden()) {
+                    $transitionsData[] = array(
+                        'workflow' => $workflowManager->getWorkflow($workflowItem),
+                        'workflowItem' => $workflowItem,
+                        'transition' => $transition,
+                        'isAllowed' => $isAllowed,
+                        'errors' => $errors
+                    );
+                }
             }
         }
 
