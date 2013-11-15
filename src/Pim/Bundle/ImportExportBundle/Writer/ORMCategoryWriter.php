@@ -3,26 +3,26 @@
 namespace Pim\Bundle\ImportExportBundle\Writer;
 
 use Doctrine\ORM\EntityManager;
-use Oro\Bundle\BatchBundle\Entity\StepExecution;
-use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Oro\Bundle\BatchBundle\Item\ItemWriterInterface;
+use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
+use Oro\Bundle\BatchBundle\Entity\StepExecution;
 use Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 
 /**
- * Group writer using ORM method
+ * Category writer using ORM method
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class OrmGroupWriter extends AbstractConfigurableStepElement implements
+class ORMCategoryWriter extends AbstractConfigurableStepElement implements
     ItemWriterInterface,
     StepExecutionAwareInterface
 {
     /**
      * @var EntityManager
      */
-    protected $em;
+    protected $entityManager;
 
     /**
      * @var StepExecution
@@ -30,13 +30,11 @@ class OrmGroupWriter extends AbstractConfigurableStepElement implements
     protected $stepExecution;
 
     /**
-     * Constructor
-     *
-     * @param EntityManager $em
+     * @param EntityManager $entityManager
      */
-    public function __construct(EntityManager $em)
+    public function __construct(EntityManager $entityManager)
     {
-        $this->em = $em;
+        $this->entityManager  = $entityManager;
     }
 
     /**
@@ -56,12 +54,15 @@ class OrmGroupWriter extends AbstractConfigurableStepElement implements
             $items = call_user_func_array('array_merge', $items);
         }
 
-        foreach ($items as $group) {
-            $this->em->persist($group);
+        foreach ($items as $category) {
+            $this->entityManager->persist($category);
             $this->stepExecution->incrementWriteCount();
         }
 
-        $this->em->flush();
+        $this->entityManager->flush();
+
+        $this->entityManager->clear('Oro\\Bundle\\SearchBundle\\Entity\\Item');
+        $this->entityManager->clear('Oro\\Bundle\\SearchBundle\\Entity\\IndexText');
     }
 
     /**

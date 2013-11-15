@@ -6,7 +6,7 @@ use Oro\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Oro\Bundle\BatchBundle\Entity\StepExecution;
-use Pim\Bundle\ImportExportBundle\Transformer\OrmProductTransformer;
+use Pim\Bundle\ImportExportBundle\Transformer\ORMProductTransformer;
 
 /**
  * Product import processor
@@ -20,7 +20,7 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
  StepExecutionAwareInterface
 {
     /**
-     * @var OrmProductTransformer
+     * @var ORMProductTransformer
      */
     protected $transformer;
 
@@ -52,9 +52,9 @@ class ValidProductCreationProcessor extends AbstractConfigurableStepElement impl
     /**
      * Constructor
      *
-     * @param OrmProductTransformer $transformer
+     * @param ORMProductTransformer $transformer
      */
-    public function __construct(OrmProductTransformer $transformer)
+    public function __construct(ORMProductTransformer $transformer)
     {
         $this->transformer = $transformer;
     }

@@ -9,13 +9,13 @@ use Oro\Bundle\BatchBundle\Item\ItemWriterInterface;
 use Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 
 /**
- * Association writer using ORM method
+ * Group writer using ORM method
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class OrmAssociationWriter extends AbstractConfigurableStepElement implements
+class ORMGroupWriter extends AbstractConfigurableStepElement implements
     ItemWriterInterface,
     StepExecutionAwareInterface
 {
@@ -56,8 +56,8 @@ class OrmAssociationWriter extends AbstractConfigurableStepElement implements
             $items = call_user_func_array('array_merge', $items);
         }
 
-        foreach ($items as $association) {
-            $this->em->persist($association);
+        foreach ($items as $group) {
+            $this->em->persist($group);
             $this->stepExecution->incrementWriteCount();
         }
 

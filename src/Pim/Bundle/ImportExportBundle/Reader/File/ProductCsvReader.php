@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Reader;
+namespace Pim\Bundle\ImportExportBundle\Reader\File;
 
 use Doctrine\ORM\EntityManager;
 use Oro\Bundle\BatchBundle\Item\InvalidItemException;

@@ -1,8 +1,8 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Reader;
+namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Reader\ORM;
 
-use Pim\Bundle\ImportExportBundle\Reader\ORMCursorReader;
+use Pim\Bundle\ImportExportBundle\Reader\ORM\CursorReader;
 
 /**
  * Test related class
@@ -11,14 +11,14 @@ use Pim\Bundle\ImportExportBundle\Reader\ORMCursorReader;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ORMCursorReaderTest extends \PHPUnit_Framework_TestCase
+class CursorReaderTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * {@inheritdoc}
      */
     protected function setUp()
     {
-        $this->reader = new ORMCursorReader();
+        $this->reader = new CursorReader();
         $this->stepExecution = $this->getStepExecutionMock();
 
         $this->reader->setStepExecution($this->stepExecution);

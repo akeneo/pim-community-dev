@@ -1,12 +1,15 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Reader;
+namespace Pim\Bundle\ImportExportBundle\Reader\ORM;
 
 use Doctrine\ORM\AbstractQuery;
+
 use Oro\Bundle\BatchBundle\Entity\StepExecution;
 use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Oro\Bundle\BatchBundle\Item\ItemReaderInterface;
 use Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
+
+use Pim\Bundle\ImportExportBundle\Exception\ORMReaderException;
 
 /**
  * ORM reader
@@ -15,10 +18,13 @@ use Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ORMReader extends AbstractConfigurableStepElement implements
+class Reader extends AbstractConfigurableStepElement implements
     ItemReaderInterface,
     StepExecutionAwareInterface
 {
+    /**
+     * @var AbstractQuery
+     */
     protected $query;
 
     /**
@@ -26,6 +32,9 @@ class ORMReader extends AbstractConfigurableStepElement implements
      */
     protected $stepExecution;
 
+    /**
+     * @var bool
+     */
     private $executed = false;
 
     /**
@@ -45,11 +54,27 @@ class ORMReader extends AbstractConfigurableStepElement implements
         if (!$this->executed) {
             $this->executed = true;
 
-            $result = $this->query->execute();
+            $result = $this->getQuery()->execute();
             $this->stepExecution->setReadCount(count($result));
 
             return empty($result) ? null : $result;
         }
+    }
+
+    /**
+     * Get query to execute
+     *
+     * @return \Doctrine\ORM\AbstractQuery
+     *
+     * @throws ORMReaderException
+     */
+    protected function getQuery()
+    {
+        if (!$this->query) {
+            throw new ORMReaderException('Need a query to read database');
+        }
+
+        return $this->query;
     }
 
     /**
