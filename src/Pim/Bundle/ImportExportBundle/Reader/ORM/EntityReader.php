@@ -1,17 +1,17 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Reader;
+namespace Pim\Bundle\ImportExportBundle\Reader\ORM;
 
 use Doctrine\ORM\EntityManager;
 
 /**
- * ORM Reader for simple entities without query join needed
+ * ORM Reader for simple entities without query join
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class SimpleORMReader extends ORMCursorReader
+class EntityReader extends ORMCursorReader
 {
     /**
      * @var EntityManager

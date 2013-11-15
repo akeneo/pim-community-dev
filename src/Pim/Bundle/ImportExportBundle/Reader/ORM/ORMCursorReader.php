@@ -1,24 +1,24 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Reader;
+namespace Pim\Bundle\ImportExportBundle\Reader\ORM;
 
 use Doctrine\ORM\AbstractQuery;
 
-use Oro\Bundle\BatchBundle\Entity\StepExecution;
-use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Oro\Bundle\BatchBundle\Item\ItemReaderInterface;
+use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
+use Oro\Bundle\BatchBundle\Entity\StepExecution;
 use Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 
 use Pim\Bundle\ImportExportBundle\Exception\ORMReaderException;
 
 /**
- * ORM reader
+ * ORM cursor reader
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ORMReader extends AbstractConfigurableStepElement implements
+class ORMCursorReader extends AbstractConfigurableStepElement implements
     ItemReaderInterface,
     StepExecutionAwareInterface
 {
@@ -33,9 +33,9 @@ class ORMReader extends AbstractConfigurableStepElement implements
     protected $stepExecution;
 
     /**
-     * @var bool
+     * @var \Doctrine\ORM\Internal\Hydration\IterableResult
      */
-    private $executed = false;
+    private $cursor;
 
     /**
      * Set query used by the reader
@@ -51,13 +51,14 @@ class ORMReader extends AbstractConfigurableStepElement implements
      */
     public function read()
     {
-        if (!$this->executed) {
-            $this->executed = true;
+        if (!$this->cursor) {
+            $this->cursor = $this->getQuery()->iterate();
+        }
 
-            $result = $this->getQuery()->execute();
-            $this->stepExecution->setReadCount(count($result));
+        if ($data = $this->cursor->next()) {
+            $this->stepExecution->incrementReadCount();
 
-            return empty($result) ? null : $result;
+            return $data;
         }
     }
 

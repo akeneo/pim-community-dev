@@ -1,6 +1,6 @@
 parameters:
-    pim_import_export.reader.product.class:                         Pim\Bundle\ImportExportBundle\Reader\ProductReader
-    pim_import_export.reader.simple_orm.class:                      Pim\Bundle\ImportExportBundle\Reader\SimpleORMReader
+    pim_import_export.reader.product.class:                         Pim\Bundle\ImportExportBundle\Reader\ORM\ProductReader
+    pim_import_export.reader.entity.class:                          Pim\Bundle\ImportExportBundle\Reader\ORM\EntityReader
     
     pim_import_export.reader.csv.class:                             Pim\Bundle\ImportExportBundle\Reader\CsvReader
     pim_import_export.reader.product_csv.class:                     Pim\Bundle\ImportExportBundle\Reader\ProductCsvReader
@@ -36,25 +36,25 @@ services:
             - '@pim_catalog.manager.channel'
 
     pim_import_export.reader.category:
-        class: %pim_import_export.reader.simple_orm.class%
+        class: %pim_import_export.reader.entity.class%
         arguments:
             - '@doctrine.orm.default_entity_manager'
             - %pim_catalog.entity.category.class%
 
     pim_import_export.reader.attribute:
-        class: %pim_import_export.reader.simple_orm.class%
+        class: %pim_import_export.reader.entity.class%
         arguments:
             - '@doctrine.orm.default_entity_manager'
             - %pim_catalog.entity.product_attribute.class%
 
     pim_import_export.reader.association:
-        class: %pim_import_export.reader.simple_orm.class%
+        class: %pim_import_export.reader.entity.class%
         arguments:
             - '@doctrine.orm.default_entity_manager'
             - %pim_catalog.entity.association.class%
 
     pim_import_export.reader.group:
-        class: %pim_import_export.reader.simple_orm.class%
+        class: %pim_import_export.reader.entity.class%
         arguments:
             - '@doctrine.orm.default_entity_manager'
             - %pim_catalog.entity.group.class%

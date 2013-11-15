@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Reader;
+namespace Pim\Bundle\ImportExportBundle\Reader\ORM;
 
 use Symfony\Component\Validator\Constraints as Assert;
 use Pim\Bundle\ImportExportBundle\Validator\Constraints\Channel as ChannelConstraint;
