@@ -5,18 +5,6 @@
 {% block head_script %}
     {{ parent() }}
 
-    <script type="text/javascript">
-        require(
-            ['jquery', 'pim/formupdatelistener'],
-            function ($, FormUpdateListener){
-                'use strict';
-                $(function() {
-                    new FormUpdateListener($('#{{ form.vars.id }}'));
-                });
-            }
-        );
-    </script>
-
     {% set listenerParameters = {
         'columnName': 'has_product',
         'selectors': {
@@ -79,13 +67,7 @@
            </ul>
         {% endset %}
 
-        {% set right %}
-            <div class="pull-right entity-updated">
-                <span id="updated" class="label label-warning hide">{{ 'info.updated'|trans }}</span>
-            </div>
-        {% endset %}
-
-        {{ elements.page_header(title, buttons, null, left, right) }}
+        {{ elements.page_header(title, buttons, null, left, elements.updated(form.vars.id)) }}
 
         {{ elements.form_navbar(['Products', 'Properties', 'History']) }}
 

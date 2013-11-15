@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Writer;
+namespace Pim\Bundle\ImportExportBundle\Writer\File;
 
 use Symfony\Component\Validator\Constraints as Assert;
 use Oro\Bundle\BatchBundle\Item\ItemWriterInterface;
@@ -29,6 +29,9 @@ class FileWriter extends AbstractConfigurableStepElement implements
      */
     protected $fileName = 'export_%datetime%.csv';
 
+    /**
+     * @var StepExecution
+     */
     protected $stepExecution;
 
     private $handler;

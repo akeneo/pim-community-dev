@@ -30,13 +30,7 @@
         {{ elements.submitBtn() }}
     {% endset %}
 
-    {% set right %}
-        <div class="pull-right entity-updated">
-            <span id="updated" class="label label-warning hide">{{ 'info.updated'|trans }}</span>
-        </div>
-    {% endset %}
-
-    {{ elements.page_header(title, buttons, null, null, right) }}
+    {{ elements.page_header(title, buttons, null, null, elements.updated(form.vars.id)) }}
 
     {{ elements.form_navbar(['Properties', 'Attributes', 'History']) }}
 
@@ -70,13 +64,11 @@
 
     <script type="text/javascript">
         require(
-            ['jquery', 'pim/formupdatelistener'],
-            function($, FormUpdateListener){
+            ['jquery'],
+            function ($) {
                 'use strict';
 
                 $(function() {
-                    new FormUpdateListener($('#{{ form.vars.id }}'));
-
                     $('.group').click(function() {
                         $(this).parent().find('tr:not(.group)').toggle();
                         $(this).find('i').toggleClass('icon-expand-alt icon-collapse-alt');

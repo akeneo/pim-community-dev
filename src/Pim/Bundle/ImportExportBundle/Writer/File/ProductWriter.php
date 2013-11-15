@@ -1,8 +1,7 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Writer;
+namespace Pim\Bundle\ImportExportBundle\Writer\File;
 
-use Pim\Bundle\ImportExportBundle\Writer\FileWriter;
 use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 
 /**
@@ -14,7 +13,7 @@ use Pim\Bundle\CatalogBundle\Manager\MediaManager;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductFileWriter extends FileWriter
+class ProductWriter extends FileWriter
 {
     /** @var MediaManager */
     protected $mediaManager;

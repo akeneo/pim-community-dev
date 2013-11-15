@@ -1,12 +1,14 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Writer;
+namespace Pim\Bundle\ImportExportBundle\Writer\ORM;
 
 use Doctrine\ORM\EntityManager;
+
 use Oro\Bundle\BatchBundle\Item\ItemWriterInterface;
 use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Oro\Bundle\BatchBundle\Entity\StepExecution;
 use Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
+
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\ImportExportBundle\Cache\EntityCache;
@@ -19,7 +21,7 @@ use Pim\Bundle\VersioningBundle\EventListener\AddVersionListener;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ORMProductWriter extends AbstractConfigurableStepElement implements
+class ProductWriter extends AbstractConfigurableStepElement implements
     ItemWriterInterface,
     StepExecutionAwareInterface
 {
@@ -27,11 +29,6 @@ class ORMProductWriter extends AbstractConfigurableStepElement implements
      * @var ProductManager
      */
     protected $productManager;
-
-    /**
-     * @var EntityManager
-     */
-    protected $entityManager;
 
     /**
      * @var AddVersionListener
@@ -44,14 +41,14 @@ class ORMProductWriter extends AbstractConfigurableStepElement implements
     protected $identifierAttribute;
 
     /**
-     * @var StepExecution
-     */
-    protected $stepExecution;
-
-    /**
      * @var EntityCache
      */
     protected $entityCache;
+
+    /**
+     * @var StepExecution
+     */
+    protected $stepExecution;
 
     /**
      * Entities which should not be cleared on flush
@@ -72,20 +69,18 @@ class ORMProductWriter extends AbstractConfigurableStepElement implements
         'Oro\\Bundle\\FlexibleEntityBundle\\Entity\\Attribute',
         'Oro\\Bundle\\UserBundle\\Entity\\UserApi'
     );
+
     /**
      * @param ProductManager     $productManager
-     * @param EntityManager      $entityManager
      * @param EntityCache        $entityCache
      * @param AddVersionListener $addVersionListener
      */
     public function __construct(
         ProductManager $productManager,
-        EntityManager $entityManager,
         EntityCache $entityCache,
         AddVersionListener $addVersionListener
     ) {
         $this->productManager     = $productManager;
-        $this->entityManager      = $entityManager;
         $this->entityCache        = $entityCache;
         $this->addVersionListener = $addVersionListener;
     }
@@ -106,10 +101,10 @@ class ORMProductWriter extends AbstractConfigurableStepElement implements
         $this->addVersionListener->setRealTimeVersioning(false);
         foreach ($items as $item) {
             $this->incrementCount($item);
-            $this->productManager->save($item, false);
         }
         $this->productManager->handleAllMedia($items);
         $this->stepExecution->setWriteCount(count($items));
+        $this->productManager->saveAll($items, false);
 
         $storageManager = $this->productManager->getStorageManager();
 
