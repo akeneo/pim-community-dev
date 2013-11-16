@@ -6,15 +6,14 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query;
 
-use Oro\Bundle\BatchBundle\Entity\StepExecution;
 use Oro\Bundle\BatchBundle\ORM\Query\BufferedQueryResultIterator;
-use Oro\Bundle\ImportExportBundle\Context\ContextInterface;
-use Oro\Bundle\ImportExportBundle\Context\ContextRegistry;
 
+use Oro\Bundle\ImportExportBundle\Context\ContextRegistry;
 use Oro\Bundle\ImportExportBundle\Exception\InvalidConfigurationException;
 use Oro\Bundle\ImportExportBundle\Exception\LogicException;
+use Oro\Bundle\ImportExportBundle\Context\ContextInterface;
 
-class EntityReader implements ReaderInterface
+class EntityReader extends AbstractReader
 {
     /**
      * @var \Iterator
@@ -32,21 +31,20 @@ class EntityReader implements ReaderInterface
     protected $registry;
 
     /**
-     * @var ContextRegistry
+     * @param ContextRegistry $contextRegistry
+     * @param ManagerRegistry $registry
      */
-    protected $contextRegistry;
-
-    public function __construct(ManagerRegistry $registry, ContextRegistry $contextRegistry)
+    public function __construct(ContextRegistry $contextRegistry, ManagerRegistry $registry)
     {
+        parent::__construct($contextRegistry);
+
         $this->registry = $registry;
-        $this->contextRegistry = $contextRegistry;
     }
 
     /**
-     * @param StepExecution $stepExecution
      * @return object|null
      */
-    public function read(StepExecution $stepExecution)
+    public function read()
     {
         $iterator = $this->getSourceIterator();
         if (!$this->rewound) {
@@ -57,7 +55,7 @@ class EntityReader implements ReaderInterface
         $result = null;
         if ($iterator->valid()) {
             $result = $iterator->current();
-            $context = $this->getContext($stepExecution);
+            $context = $this->getContext();
             $context->incrementReadOffset();
             $context->incrementReadCount();
             $iterator->next();
@@ -79,33 +77,22 @@ class EntityReader implements ReaderInterface
     }
 
     /**
-     * @param StepExecution $stepExecution
+     * @param ContextInterface $context
      * @throws InvalidConfigurationException
      */
-    public function setStepExecution(StepExecution $stepExecution)
+    protected function initializeFromContext(ContextInterface $context)
     {
-        $context = $this->getContext($stepExecution);
-
         if ($context->hasOption('entityName')) {
             $this->setSourceEntityName($context->getOption('entityName'));
         } elseif ($context->hasOption('queryBuilder')) {
             $this->setSourceQueryBuilder($context->getOption('queryBuilder'));
         } elseif ($context->hasOption('query')) {
             $this->setSourceQuery($context->getOption('query'));
-        } else {
+        } elseif (!$this->sourceIterator) {
             throw new InvalidConfigurationException(
                 'Configuration of entity reader must contain either "entityName", "queryBuilder" or "query".'
             );
         }
-    }
-
-    /**
-     * @param StepExecution $stepExecution
-     * @return ContextInterface
-     */
-    protected function getContext(StepExecution $stepExecution)
-    {
-        return $this->contextRegistry->getByStepExecution($stepExecution);
     }
 
     /**

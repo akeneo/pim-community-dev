@@ -2,61 +2,17 @@
 
 {% block form_row %}
     {% spaceless %}
-        {% if form|is_flexible %}
-            {{ block('form_row_flex') }}
-        {% else %}
-            <div class="control-group{% if attr.class is defined %} {{ attr.class }}{% endif %}">
-                {% if label is not sameas(false) %}
-                {{ form_label(form, '' , { label_attr: label_attr|merge({ class: 'control-label' })}) }}
-                {% endif %}
-                <div class="controls{% if errors|length > 0 %} validation-error{% endif %}">
-                    {{ form_widget(form) }}
-                    {{ form_errors(form) }}
-                </div>
+        <div class="control-group{% if attr.class is defined %} {{ attr.class }}{% endif %}">
+            {% if label is not sameas(false) %}
+            {{ form_label(form, '' , { label_attr: label_attr|merge({ class: 'control-label' })}) }}
+            {% endif %}
+            <div class="controls{% if errors|length > 0 %} validation-error{% endif %}">
+                {{ form_widget(form) }}
+                {{ form_errors(form) }}
             </div>
-        {% endif %}
+        </div>
     {% endspaceless %}
 {% endblock form_row %}
-
-{% block form_row_flex %}
-    {% spaceless %}
-        {% set col = attr['data-col'] is defined ? attr['data-col'] : 0 %}
-
-        {% if col > 1 %}
-            {# calculate Bootstrap class for 12-columns grid system #}
-            {% set class = 'span' ~ (12 // col) %}
-
-            {% for attribute in form %}
-                {% if loop.first %}
-                    <div class="{{ class }}">
-                {% endif %}
-
-                {{ form_widget(attribute) }}
-                {{ form_errors(attribute) }}
-
-                {% if loop.index % ((loop.length / col)|ceil) == 0  and not loop.last %}
-                    </div>
-                    <div class="{{ class }}">
-                {% endif %}
-
-                {% if loop.last %}
-                    </div>
-                {% endif %}
-            {% endfor %}
-        {% else %}
-            {% for attribute in form %}
-                {{ form_widget(attribute) }}
-                {{ form_errors(attribute) }}
-            {% endfor %}
-        {% endif %}
-
-        {% for attribute in form %}
-            {% if (attribute.values is defined) %}
-                {{ form_row(attribute.values) }}
-            {% endif %}
-        {% endfor %}
-    {% endspaceless %}
-{% endblock form_row_flex %}
 
 {% block choice_widget_collapsed %}
     {% if client_validation %}

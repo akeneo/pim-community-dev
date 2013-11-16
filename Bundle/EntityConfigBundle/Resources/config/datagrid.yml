@@ -182,7 +182,7 @@ datagrid:
             loggedAt:
                 label: Logged at
                 type: field
-                frontend_type: date
+                frontend_type: datetime
 
         sorters:
             columns:

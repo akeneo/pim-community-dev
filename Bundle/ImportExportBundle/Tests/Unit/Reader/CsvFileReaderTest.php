@@ -113,13 +113,12 @@ class CsvFileReaderTest extends \PHPUnit_Framework_TestCase
                         'field_two' => 'test2',
                         'field_three' => 'test3',
                     ),
-                    false,
+                    array(),
                     array(
                         'field_one' => 'after_new1',
                         'field_two' => 'after_new2',
                         'field_three' => 'after_new3',
                     ),
-                    false
                 )
             ),
             array(
@@ -143,13 +142,12 @@ class CsvFileReaderTest extends \PHPUnit_Framework_TestCase
                         'h2' => 'test2',
                         'h3' => 'test3',
                     ),
-                    false,
+                    array(),
                     array(
                         'h1' => 'after_new1',
                         'h2' => 'after_new2',
                         'h3' => 'after_new3',
                     ),
-                    false
                 )
             ),
             array(
@@ -161,21 +159,21 @@ class CsvFileReaderTest extends \PHPUnit_Framework_TestCase
                     array('field_one', 'field_two', 'field_three'),
                     array('1', '2', '3'),
                     array('test1', 'test2', 'test3'),
-                    false,
+                    array(),
                     array('after_new1', 'after_new2', 'after_new3'),
-                    false
                 )
             )
         );
     }
 
+    /**
+     * @expectedException Oro\Bundle\BatchBundle\Item\InvalidItemException
+     * @expectedExceptionMessage Expecting to get 3 columns, actually got 2
+     */
     public function testReadError()
     {
         $context = $this->getContextWithOptionsMock(array('filePath' => __DIR__ . '/fixtures/import_incorrect.csv'));
         $stepExecution = $this->getMockStepExecution($context);
-        $stepExecution->expects($this->once())
-            ->method('addReaderWarning')
-            ->with(get_class($this->reader), 'Expecting to get 3 columns, actually got 2');
         $this->reader->setStepExecution($stepExecution);
         $this->reader->read($stepExecution);
     }
