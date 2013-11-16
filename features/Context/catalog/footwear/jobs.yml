@@ -1,20 +1,4 @@
 jobs:
-    footwear_product_export:
-        connector: Akeneo CSV Connector
-        alias:     product_export
-        label:     Footwear product export
-        type:      export
-        configuration:
-            reader:
-                channel: mobile
-            processor:
-                channel:    mobile
-                delimiter:  ;
-                enclosure:  '"'
-                withHeader: true
-            writer:
-                directoryName: /tmp/product_export
-                fileName:      product_export.csv
     footwear_product_import:
         connector: Akeneo CSV Connector
         alias:     product_import
@@ -32,3 +16,46 @@ jobs:
                 categoriesColumn: categories
                 familyColumn:     family
                 groupsColumn:     groups
+    footwear_product_export:
+        connector: Akeneo CSV Connector
+        alias:     product_export
+        label:     Footwear product export
+        type:      export
+        configuration:
+            reader:
+                channel: mobile
+            processor:
+                channel:    mobile
+                delimiter:  ;
+                enclosure:  '"'
+                withHeader: true
+            writer:
+                directoryName: /tmp/product_export
+                fileName:      product_export.csv
+    footwear_category_import:
+        connector: Akeneo CSV Connector
+        alias:     category_import
+        label:     Footwear category import
+        type:      import
+        configuration:
+            reader:
+                filePath:      /tmp/category_import/category_import.csv
+                uploadAllowed: true
+                delimiter:     ;
+                enclosure:     '"'
+                escape:        '\'
+            processor:
+                circularRefsChecked: true
+    footwear_category_export:
+        connector: Akeneo CSV Connector
+        alias:     category_export
+        label:     Footwear category export
+        type:      export
+        configuration:
+            processor:
+                delimiter:  ;
+                enclosure:  '"'
+                withHeader: true
+            writer:
+                directoryName: /tmp/category_export
+                fileName:      category_export.csv
