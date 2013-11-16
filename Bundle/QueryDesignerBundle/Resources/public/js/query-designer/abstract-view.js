@@ -27,11 +27,18 @@ function(_, Backbone, __, FormValidation, DeleteConfirmation) {
             saveButton:     '.save-button',
             addButton:      '.add-button',
             editButton:     '.edit-button',
-            deleteButton:   '.delete-button'
+            deleteButton:   '.delete-button',
+            columnSelector: '[data-purpose="column-selector"]'
         },
 
         /** @property */
-        optionTemplate: _.template('<option value="<%- id %>"><%- text %></option>'),
+        optionTemplate: _.template('<option value="<%- field.name %>"'
+            + '<% if (!_.isUndefined(field.type)) { %> data-type="<%- field.type %>"<% } %>'
+            + '<% if (!_.isUndefined(field.relation_type)) { %> data-relation-type="<%- field.relation_type %>"<% } %>'
+            + '<% if (!_.isUndefined(field.related_entity_name)) { %> data-related-entity-name="<%- field.related_entity_name %>"<% } %>'
+            + '><%- field.label %>'
+            + '</option>'
+        ),
 
         /** @property jQuery */
         form: null,
@@ -40,23 +47,16 @@ function(_, Backbone, __, FormValidation, DeleteConfirmation) {
         columnSelector: null,
 
         /** @property {Array} */
-        fieldLabelGetters: [
-            // select element
-            function (el, name, value) {
-                if (el.get(0).tagName.toLowerCase() == 'select') {
-                    var opt = el.find('option[value="' + value + '"]');
-                    if (opt.length === 1) {
-                        return opt.text();
-                    }
-                }
-                return null;
-            },
-        ],
+        fieldLabelGetters: [],
 
         initialize: function() {
             this.options.collection = this.options.collection || new this.collectionClass();
 
             this.itemTemplate = _.template($(this.options.itemTemplateSelector).html());
+
+            // prepare field label getters
+            this.addFieldLabelGetter(this.getSelectFieldLabel);
+            this.addFieldLabelGetter(this.getColumnFieldLabel);
 
             // subscribe to collection events
             this.listenTo(this.getCollection(), 'add', this.onModelAdded);
@@ -169,17 +169,12 @@ function(_, Backbone, __, FormValidation, DeleteConfirmation) {
             this.resetForm();
         },
 
-        updateColumnSelector: function (data) {
+        updateColumnSelector: function (fields) {
             var emptyText = this.columnSelector.find('option[value=""]').text();
             this.columnSelector.empty();
-            this.columnSelector.append(this.optionTemplate({'id': '', 'text': emptyText}));
-            _.each(data, _.bind(function (entity) {
-                _.each(entity.fields, _.bind(function (field) {
-                    this.columnSelector.append(this.optionTemplate({
-                        'id': entity['name'] + '::' +field['name'],
-                        'text': field['label']
-                    }));
-                }, this));
+            this.columnSelector.append(this.optionTemplate({field: {name: '', label: emptyText}}));
+            _.each(fields, _.bind(function (field) {
+                this.columnSelector.append(this.optionTemplate({field: field}));
             }, this));
             this.columnSelector.val('');
             this.columnSelector.attr('disabled', false);
@@ -188,7 +183,7 @@ function(_, Backbone, __, FormValidation, DeleteConfirmation) {
 
         initForm: function () {
             this.form = $(this.options.itemFormSelector);
-            this.columnSelector = this.form.find('[data-purpose="column-selector"]');
+            this.columnSelector = this.form.find(this.selectors.columnSelector);
 
             var onAdd = _.bind(function (e) {
                 e.preventDefault();
@@ -331,6 +326,31 @@ function(_, Backbone, __, FormValidation, DeleteConfirmation) {
                 }
             }
             return value;
+        },
+
+        getSelectFieldLabel: function (el, name, value) {
+            if (el.get(0).tagName.toLowerCase() == 'select') {
+                var opt = el.find('option[value="' + value + '"]');
+                if (opt.length === 1) {
+                    return opt.text();
+                }
+            }
+            return null;
+        },
+
+        getColumnFieldLabel: function (el, name, value) {
+            if (el.data('purpose') == 'column-selector') {
+                var opt = el.find('option[value="' + value.replace(/\\/g,"\\\\").replace(/:/g,"\\:") + '"]');
+                if (opt.length === 1) {
+                    var select2 = el.data('select2');
+                    return select2.opts.formatSelection({
+                            id: opt.val(),
+                            text: opt.text(),
+                            element: opt.get()
+                        }, null, select2.opts.escapeMarkup);
+                }
+            }
+            return null;
         },
 
         createNewModel: function () {

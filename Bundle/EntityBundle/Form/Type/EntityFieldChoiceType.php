@@ -5,7 +5,7 @@ namespace Oro\Bundle\EntityBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\OptionsResolver\Options;
-use Oro\Bundle\EntityBundle\Manager\EntityFieldManager;
+use Oro\Bundle\EntityBundle\Provider\EntityFieldProvider;
 use Oro\Bundle\FormBundle\Form\Type\ChoiceListItem;
 
 class EntityFieldChoiceType extends AbstractType
@@ -13,18 +13,18 @@ class EntityFieldChoiceType extends AbstractType
     const NAME = 'oro_entity_field_choice';
 
     /**
-     * @var EntityFieldManager
+     * @var EntityFieldProvider
      */
-    protected $manager;
+    protected $provider;
 
     /**
      * Constructor
      *
-     * @param EntityFieldManager $manager
+     * @param EntityFieldProvider $provider
      */
-    public function __construct(EntityFieldManager $manager)
+    public function __construct(EntityFieldProvider $provider)
     {
-        $this->manager = $manager;
+        $this->provider = $provider;
     }
 
     /**
@@ -60,17 +60,22 @@ class EntityFieldChoiceType extends AbstractType
      *
      * @param string $entityName    Entity name. Can be full class name or short form: Bundle:Entity.
      * @param bool   $withRelations Indicates whether fields of related entities should be returned as well.
-     * @return array
+     * @return array of entity fields
+     *               key = field name, value = ChoiceListItem
      */
     protected function getChoices($entityName, $withRelations)
     {
         $choices = array();
-        $items   = $this->manager->getFields($entityName, $withRelations);
-        foreach ($items as $entity) {
-            foreach ($entity['fields'] as $field) {
-                $key           = $this->getChoiceKey($entity['name'], $field['name'], $withRelations);
-                $choices[$key] = $field['label'];
+        $fields  = $this->provider->getFields($entityName, $withRelations);
+        foreach ($fields as $field) {
+            $attributes = array(
+                'data-type' => $field['type']
+            );
+            if (isset($field['related_entity_name'])) {
+                $attributes['data-related-entity-name'] = $field['related_entity_name'];
+                $attributes['data-relation-type'] = $field['relation_type'];
             }
+            $choices[$field['name']] = new ChoiceListItem($field['label'], $attributes);
         }
 
         return $choices;

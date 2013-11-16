@@ -20,9 +20,9 @@
 {% macro query_designer_column_template(id) %}
     <script type="text/html" id="{{ id }}">
         <tr data-id="<%= id %>">
-            <td class="string-cell"><%- name %></td>
-            <td class="string-cell"><%- label %></td>
-            <td class="sorting-cell"><%- sorting %></td>
+            <td class="name-cell"><%= name %></td>
+            <td class="label-cell"><%= label %></td>
+            <td class="sorting-cell"><%= sorting %></td>
             <td class="action-cell">
                 <a href="javascript: void(0);" class="action no-hash edit-button"
                    title="{{ 'oro.querydesigner.datagrid.action.update_column'|trans }}"

@@ -4,7 +4,8 @@ namespace Oro\Bundle\EntityBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
+use Symfony\Component\OptionsResolver\Options;
+use Oro\Bundle\EntityBundle\Provider\EntityProvider;
 use Oro\Bundle\FormBundle\Form\Type\ChoiceListItem;
 
 class EntityChoiceType extends AbstractType
@@ -12,18 +13,18 @@ class EntityChoiceType extends AbstractType
     const NAME = 'oro_entity_choice';
 
     /**
-     * @var ConfigProvider
+     * @var EntityProvider
      */
-    protected $entityConfigProvider;
+    protected $provider;
 
     /**
      * Constructor
      *
-     * @param ConfigProvider $entityConfigProvider
+     * @param EntityProvider $provider
      */
-    public function __construct(ConfigProvider $entityConfigProvider)
+    public function __construct(EntityProvider $provider)
     {
-        $this->entityConfigProvider = $entityConfigProvider;
+        $this->provider = $provider;
     }
 
     /**
@@ -31,10 +32,16 @@ class EntityChoiceType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
+        $that    = $this;
+        $choices = function (Options $options) use ($that) {
+            return $that->getChoices($options['show_plural']);
+        };
+
         $resolver->setDefaults(
             array(
-                'choices'     => $this->getChoices(),
+                'choices'     => $choices,
                 'empty_value' => '',
+                'show_plural' => true,
                 'configs'     => array(
                     'is_translate_option'     => false,
                     'placeholder'             => 'oro.entity.form.choose_entity',
@@ -48,44 +55,25 @@ class EntityChoiceType extends AbstractType
     /**
      * Returns a list of choices
      *
-     * @return array of entities which can be used to build a report
+     * @param bool $showPlural If true a plural label will be used as a choice text; otherwise, a label will be used
+     * @return array of entities
      *               key = full class name, value = ChoiceListItem
      */
-    protected function getChoices()
+    protected function getChoices($showPlural)
     {
         $choices = array();
 
-        // get all configurable entities
-        $configs = $this->entityConfigProvider->getConfigs();
-        foreach ($configs as $config) {
-            $choices[$config->getId()->getClassName()] = new ChoiceListItem(
-                $config->get('plural_label'),
+        $entities = $this->provider->getEntities($showPlural);
+        foreach ($entities as $entity) {
+            $choices[$entity['name']] = new ChoiceListItem(
+                $showPlural ? $entity['plural_label'] : $entity['label'],
                 array(
-                    'data-icon' => $config->get('icon')
+                    'data-icon' => $entity['icon']
                 )
             );
         }
 
-        // sort choices
-        $this->sortChoices($choices);
-
         return $choices;
-    }
-
-    /**
-     * Sorts choices
-     *
-     * @param array $choices
-     */
-    protected function sortChoices(array &$choices)
-    {
-        // sort choices by entity name
-        uasort(
-            $choices,
-            function ($a, $b) {
-                return strcmp((string)$a, (string)$b);
-            }
-        );
     }
 
     /**

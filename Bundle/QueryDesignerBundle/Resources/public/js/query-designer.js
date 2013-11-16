@@ -17,6 +17,7 @@ function(_, Backbone, __, app, messenger, routing,
         options: {
             entity: null,
             storageElementSelector: null,
+            loadColumnsUrl: null,
             columnsOptions: {
                 collection: null,
                 itemTemplateSelector: null,
@@ -34,6 +35,12 @@ function(_, Backbone, __, app, messenger, routing,
         storageEl: null,
 
         initialize: function() {
+            this.options.loadColumnsUrl = this.options.loadColumnsUrl || function (entityName) {
+                return routing.generate('oro_api_get_entity_fields', {
+                    'entityName': entityName,
+                    'with-relations': true
+                })
+            };
         },
 
         hasData: function () {
@@ -43,10 +50,7 @@ function(_, Backbone, __, app, messenger, routing,
         changeEntity: function (entity) {
             this.disableColumnSelectors();
             $.ajax({
-                url: routing.generate('oro_api_get_entity_fields', {'entityName': entity.replace(/\\/g,"_")}),
-                data: {
-                    'with-relations': true
-                },
+                url: this.options.loadColumnsUrl(entity.replace(/\\/g,"_")),
                 success: _.bind(function(data) {
                     this.options.entity = entity;
                     this.columnsView.getCollection().reset();
@@ -91,8 +95,8 @@ function(_, Backbone, __, app, messenger, routing,
             this.columnsView.getColumnSelector().attr('disabled', true);
         },
 
-        updateColumnSelectors: function (data) {
-            this.columnsView.updateColumnSelector(data);
+        updateColumnSelectors: function (fields) {
+            this.columnsView.updateColumnSelector(fields);
         },
 
         showError: function (err) {

@@ -26,3 +26,7 @@
 .query-designer-grid-container .grid .sorting-cell {
     width: 100px;
 }
+.query-designer-grid-container .grid .label-cell {
+    text-transform: uppercase;
+    font-weight: bold;
+}

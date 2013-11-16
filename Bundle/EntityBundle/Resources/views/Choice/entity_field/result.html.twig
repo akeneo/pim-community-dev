@@ -1,1 +1,1 @@
-<%= highlight(text) %>
+<% if (!id) { %><i class="<%= $(element).data('icon') %> hide-text"></i>&nbsp;<%= text %><% } else { %>&nbsp;&nbsp;&nbsp;<%= highlight(text) %><% }%>

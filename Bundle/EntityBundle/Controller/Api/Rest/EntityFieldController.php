@@ -2,7 +2,6 @@
 
 namespace Oro\Bundle\EntityBundle\Controller\Api\Rest;
 
-use Symfony\Component\Form\Form;
 use Symfony\Component\HttpFoundation\Response;
 
 use FOS\RestBundle\Controller\Annotations\NamePrefix;
@@ -15,7 +14,7 @@ use FOS\Rest\Util\Codes;
 
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 
-use Oro\Bundle\EntityBundle\Manager\EntityFieldManager;
+use Oro\Bundle\EntityBundle\Provider\EntityFieldProvider;
 use Oro\Bundle\EntityBundle\Exception\InvalidEntityException;
 
 /**
@@ -25,7 +24,7 @@ use Oro\Bundle\EntityBundle\Exception\InvalidEntityException;
 class EntityFieldController extends FOSRestController implements ClassResourceInterface
 {
     /**
-     * Get calendar connections.
+     * Get entity fields.
      *
      * @param string $entityName Entity full class name; backslashes (\) should be replaced with underscore (_).
      *
@@ -39,7 +38,6 @@ class EntityFieldController extends FOSRestController implements ClassResourceIn
      * )
      *
      * @return Response
-     * @throws \InvalidArgumentException
      */
     public function getFieldsAction($entityName)
     {
@@ -47,10 +45,10 @@ class EntityFieldController extends FOSRestController implements ClassResourceIn
         $withRelations = (bool)$this->getRequest()->get('with-relations');
 
         $statusCode = Codes::HTTP_OK;
-        /** @var EntityFieldManager $manager */
-        $manager = $this->get('oro_entity.entity_field_manager');
+        /** @var EntityFieldProvider $provider */
+        $provider = $this->get('oro_entity.entity_field_provider');
         try {
-            $result = $manager->getFields($entityName, $withRelations);
+            $result = $provider->getFields($entityName, $withRelations);
         } catch (InvalidEntityException $ex) {
             $statusCode = Codes::HTTP_NOT_FOUND;
             $result = array('message' => $ex->getMessage());
