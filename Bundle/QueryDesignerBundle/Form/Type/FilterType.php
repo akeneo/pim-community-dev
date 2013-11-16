@@ -16,7 +16,7 @@ class FilterType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('columnName', 'oro_entity_field_choice', array('required' => true));
+            ->add('columnName', $builder->getOption('column_choice_type'), array('required' => true));
     }
 
     /**
@@ -26,8 +26,9 @@ class FilterType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'data_class' => 'Oro\Bundle\QueryDesignerBundle\Model\Filter',
-                'intention'  => 'query_designer_filter'
+                'data_class'         => 'Oro\Bundle\QueryDesignerBundle\Model\Filter',
+                'intention'          => 'query_designer_filter',
+                'column_choice_type' => 'oro_entity_field_choice',
             )
         );
     }

@@ -16,7 +16,7 @@ class ColumnType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', 'oro_entity_field_choice', array('required' => true))
+            ->add('name', $builder->getOption('column_choice_type'), array('required' => true))
             ->add('label', 'text', array('required' => true))
             ->add('sorting', 'oro_sorting_choice', array('required' => false));
     }
@@ -28,8 +28,9 @@ class ColumnType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'data_class' => 'Oro\Bundle\QueryDesignerBundle\Model\Column',
-                'intention'  => 'query_designer_column'
+                'data_class'         => 'Oro\Bundle\QueryDesignerBundle\Model\Column',
+                'intention'          => 'query_designer_column',
+                'column_choice_type' => 'oro_entity_field_choice',
             )
         );
     }

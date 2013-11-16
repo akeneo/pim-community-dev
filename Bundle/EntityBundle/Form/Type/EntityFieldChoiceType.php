@@ -68,12 +68,11 @@ class EntityFieldChoiceType extends AbstractType
         $choices = array();
         $fields  = $this->provider->getFields($entityName, $withRelations);
         foreach ($fields as $field) {
-            $attributes = array(
-                'data-type' => $field['type']
-            );
-            if (isset($field['related_entity_name'])) {
-                $attributes['data-related-entity-name'] = $field['related_entity_name'];
-                $attributes['data-relation-type'] = $field['relation_type'];
+            $attributes = [];
+            foreach ($field as $key => $val) {
+                if (!in_array($key, ['name', 'label'])) {
+                    $attributes['data-' . str_replace('_', '-', $key)] = $val;
+                }
             }
             $choices[$field['name']] = new ChoiceListItem($field['label'], $attributes);
         }

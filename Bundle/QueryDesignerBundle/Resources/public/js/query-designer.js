@@ -1,8 +1,8 @@
 /* global define */
-define(['underscore', 'backbone', 'oro/translator', 'oro/app', 'oro/messenger', 'routing',
-    'oro/query-designer/column/collection', 'oro/query-designer/column/model', 'oro/query-designer/column/view'],
-function(_, Backbone, __, app, messenger, routing,
-         ColumnCollection, ColumnModel, ColumnView) {
+define(['underscore', 'backbone', 'oro/translator', 'oro/app', 'oro/messenger', 'routing', 'oro/loading-mask',
+    'oro/query-designer/column/view'],
+function(_, Backbone, __, app, messenger, routing, LoadingMask,
+         ColumnView) {
     'use strict';
 
     var $ = Backbone.$;
@@ -15,7 +15,7 @@ function(_, Backbone, __, app, messenger, routing,
     return Backbone.View.extend({
         /** @property {Object} */
         options: {
-            entity: null,
+            entityName: null,
             storageElementSelector: null,
             loadColumnsUrl: null,
             columnsOptions: {
@@ -28,10 +28,13 @@ function(_, Backbone, __, app, messenger, routing,
             }
         },
 
-        /** @property */
-        columnsView: ColumnView,
+        /** @property {oro.LoadingMask} */
+        loadingMask: null,
 
-        /** @property jQuery */
+        /** @property {oro.queryDesigner.column.View} */
+        columnsView: null,
+
+        /** @property {jQuery} */
         storageEl: null,
 
         initialize: function() {
@@ -43,60 +46,69 @@ function(_, Backbone, __, app, messenger, routing,
             };
         },
 
-        hasData: function () {
-            return !this.columnsView.getCollection().isEmpty();
+        isEmpty: function () {
+            return this.columnsView.getCollection().isEmpty();
         },
 
-        changeEntity: function (entity) {
-            this.disableColumnSelectors();
+        changeEntity: function (entityName) {
+            this.disableViews();
             $.ajax({
-                url: this.options.loadColumnsUrl(entity.replace(/\\/g,"_")),
+                url: this.options.loadColumnsUrl(entityName.replace(/\\/g,"_")),
                 success: _.bind(function(data) {
-                    this.options.entity = entity;
-                    this.columnsView.getCollection().reset();
-                    this.updateColumnSelectors(data);
+                    this.updateColumnSelectors(entityName, data);
+                    this.enableViews();
                 }, this),
                 error: _.bind(function (jqXHR) {
                     this.showError(jqXHR.responseJSON);
-                    this.enableColumnSelectors();
+                    this.enableViews();
                 }, this)
             });
         },
 
-        updateColumnStorage: function (columns) {
-            var data = {
-                columns: columns
-            };
-            this.storageEl.val(JSON.stringify(data));
+        updateColumnStorage: function () {
+            if (this.storageEl) {
+                var columns = this.columnsView.getCollection().toJSON();
+                _.each(columns, function (value) {
+                    delete value.id;
+                });
+                var data = {
+                    columns: columns
+                };
+                this.storageEl.val(JSON.stringify(data));
+            }
         },
 
         render: function() {
-            // prepare options for child views
-            if (_.isNull(this.options.storageElementSelector)) {
-                _.extend(this.options.columnsOptions, {
-                    updateStorage: _.bind(this.updateColumnStorage, this)
-                });
-            } else {
+            if (this.options.storageElementSelector) {
                 this.storageEl = $(this.options.storageElementSelector);
             }
 
+            // initialize loading mask control
+            this.loadingMask = new LoadingMask();
+            this.$el.append(this.loadingMask.render().$el);
+
             // initialize columns view
-            this.columnsView = new this.columnsView(this.options.columnsOptions);
+            var columnsOptions = _.extend(this.options.columnsOptions, {entityName: this.options.entityName});
+            this.columnsView = new ColumnView(columnsOptions);
+            this.listenTo(this.columnsView, 'collection:change', _.bind(this.updateColumnStorage, this))
             this.columnsView.render();
+            delete this.options.columnsOptions;
 
             return this;
         },
 
-        enableColumnSelectors: function () {
-            this.columnsView.getColumnSelector().attr('disabled', false);
+        enableViews: function () {
+            this.loadingMask.hide();
         },
 
-        disableColumnSelectors: function () {
-            this.columnsView.getColumnSelector().attr('disabled', true);
+        disableViews: function () {
+            this.loadingMask.show();
         },
 
-        updateColumnSelectors: function (fields) {
-            this.columnsView.updateColumnSelector(fields);
+        updateColumnSelectors: function (entityName, entityFields) {
+            this.options.entityName = entityName;
+            this.columnsView.changeEntity(entityName);
+            this.columnsView.updateColumnSelector(entityFields);
         },
 
         showError: function (err) {
