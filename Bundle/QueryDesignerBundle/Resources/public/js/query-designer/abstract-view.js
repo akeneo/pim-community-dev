@@ -19,6 +19,8 @@ function(_, Backbone, __, FormValidation, DeleteConfirmation) {
             itemTemplateSelector: null,
             itemFormSelector: null,
             columnChainTemplateSelector: null,
+            fieldsLabel: 'Fields',
+            relatedLabel: 'Related',
             findEntity: function (entityName) {
                 return {name: entityName, label: entityName, plural_label: entityName, icon: null};
             }
@@ -34,6 +36,12 @@ function(_, Backbone, __, FormValidation, DeleteConfirmation) {
             deleteButton:   '.delete-button',
             columnSelector: '[data-purpose="column-selector"]'
         },
+
+        /** @property */
+        columnSelectOptGroupTemplate: _.template('<optgroup label="<%- label %>"'
+            + '><%= options %>'
+            + '</optgroup>'
+        ),
 
         /** @property */
         columnSelectOptionTemplate: _.template('<option value="<%- name %>"'
@@ -182,12 +190,41 @@ function(_, Backbone, __, FormValidation, DeleteConfirmation) {
                 var emptyText = this.columnSelector.find('option[value=""]').text();
                 this.columnSelector.empty();
                 this.columnSelector.append(this.columnSelectOptionTemplate({name: '', label: emptyText}));
-                _.each(columns, _.bind(function (column) {
-                    this.columnSelector.append(this.columnSelectOptionTemplate(column));
-                }, this));
+                var content = this.getSelectColumnSelectorContent(columns);
+                if (content != '') {
+                    this.columnSelector.append(content);
+                }
             }
             this.columnSelector.val('');
             this.columnSelector.trigger('change');
+        },
+
+        getSelectColumnSelectorContent: function (columns) {
+            var fields = '';
+            var relations = '';
+            _.each(columns, _.bind(function (column) {
+                if (_.isUndefined(column['related_entity_name'])) {
+                    fields += this.columnSelectOptionTemplate(column);
+                } else {
+                    relations += this.columnSelectOptionTemplate(column);
+                }
+            }, this));
+
+            if (relations == '') {
+                return fields;
+            }
+            var result = '';
+            if (fields != '') {
+                result += this.columnSelectOptGroupTemplate({
+                    label: this.options.fieldsLabel,
+                    options: fields
+                });
+            }
+            result += this.columnSelectOptGroupTemplate({
+                label: this.options.relatedLabel,
+                options: relations
+            });
+            return result;
         },
 
         initForm: function () {

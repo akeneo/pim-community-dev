@@ -53,32 +53,42 @@ class EntityFieldProvider
     /**
      * Returns fields for the given entity
      *
-     * @param string $entityName        Entity name. Can be full class name or short form: Bundle:Entity.
-     * @param bool   $withRelations     Indicates whether fields of related entities should be returned as well.
-     * @param bool   $withEntityDetails Indicates whether details of related entity should be returned as well.
+     * @param string $entityName             Entity name. Can be full class name or short form: Bundle:Entity.
+     * @param bool   $withRelations          Indicates whether fields of related entities should be returned as well.
+     * @param bool   $withEntityDetails      Indicates whether details of related entity should be returned as well.
+     * @param int    $deepLevel              The maximum deep level of related entities.
+     * @param bool   $lastDeepLevelRelations The maximum deep level of related entities.
      * @return array of fields sorted by field label (relations follows fields)
-     *                                  .       'name'          - field name
-     *                                  .       'type'          - field type
-     *                                  .       'label'         - field label
-     *                                  If a field represents a relation and $withRelations = true
-     *                                  the following attributes are added:
-     *                                  .       'relation_type'       - relation type
-     *                                  .       'related_entity_name' - entity full class name
-     *                                  If a field represents a relation and $withEntityDetails = true
-     *                                  the following attributes are added:
-     *                                  .       'related_entity_label'        - entity label
-     *                                  .       'related_entity_plural_label' - entity plural label
-     *                                  .       'related_entity_icon'         - an icon associated with an entity
+     *                                       .       'name'          - field name
+     *                                       .       'type'          - field type
+     *                                       .       'label'         - field label
+     *                                       If a field represents a relation and $withRelations = true
+     *                                       the following attributes are added:
+     *                                       .       'relation_type'       - relation type
+     *                                       .       'related_entity_name' - entity full class name
+     *                                       If a field represents a relation and $withEntityDetails = true
+     *                                       the following attributes are added:
+     *                                       .       'related_entity_label'        - entity label
+     *                                       .       'related_entity_plural_label' - entity plural label
+     *                                       .       'related_entity_icon'         - an icon associated with an entity
+     *                                       If a field represents a relation and $deepLevel > 0
+     *                                       the related entity fields are added:
+     *                                       .       'related_entity_fields'       - array of fields
      * @throws InvalidEntityException
      */
-    public function getFields($entityName, $withRelations = false, $withEntityDetails = false)
-    {
+    public function getFields(
+        $entityName,
+        $withRelations = false,
+        $withEntityDetails = false,
+        $deepLevel = 0,
+        $lastDeepLevelRelations = false
+    ) {
         $result    = array();
         $className = $this->entityClassResolver->getEntityClass($entityName);
         $em        = $this->getManagerForClass($className);
         $this->addFields($result, $className, $em);
         if ($withRelations) {
-            $this->addRelations($result, $className, $em, $withEntityDetails);
+            $this->addRelations($result, $className, $em, $withEntityDetails, $deepLevel - 1, $lastDeepLevelRelations);
         }
         $this->sortFields($result);
 
@@ -132,9 +142,17 @@ class EntityFieldProvider
      * @param string        $className
      * @param EntityManager $em
      * @param bool          $withEntityDetails
+     * @param int           $relationDeepLevel
+     * @param bool          $lastDeepLevelRelations
      */
-    protected function addRelations(array &$result, $className, EntityManager $em, $withEntityDetails)
-    {
+    protected function addRelations(
+        array &$result,
+        $className,
+        EntityManager $em,
+        $withEntityDetails,
+        $relationDeepLevel,
+        $lastDeepLevelRelations
+    ) {
         // only configurable entities are supported
         if ($this->entityConfigProvider->hasConfig($className)) {
             $metadata = $em->getClassMetadata($className);
@@ -150,7 +168,9 @@ class EntityFieldProvider
                         $this->getFieldLabel($className, $associationName),
                         $this->getRelationType($className, $associationName),
                         $targetClassName,
-                        $withEntityDetails
+                        $withEntityDetails,
+                        $relationDeepLevel,
+                        $lastDeepLevelRelations
                     );
                 }
             }
@@ -167,6 +187,8 @@ class EntityFieldProvider
      * @param string $relationType
      * @param string $relatedEntityName
      * @param bool   $withEntityDetails
+     * @param int    $relationDeepLevel
+     * @param bool   $lastDeepLevelRelations
      */
     protected function addRelation(
         array &$result,
@@ -175,7 +197,9 @@ class EntityFieldProvider
         $label,
         $relationType,
         $relatedEntityName,
-        $withEntityDetails
+        $withEntityDetails,
+        $relationDeepLevel,
+        $lastDeepLevelRelations
     ) {
         $relation = array(
             'name'                => $name,
@@ -191,6 +215,21 @@ class EntityFieldProvider
                     $relation['related_entity_' . $key] = $val;
                 }
             }
+        }
+        if ($relationDeepLevel >= 0) {
+            // set some exceptions
+            // todo: we need to find more proper way to do this
+            if ($relationDeepLevel > 0 && ($name === 'owner' || $name === 'createdBy' || $name === 'updatedBy')) {
+                $relationDeepLevel = 0;
+            }
+            $relation['related_entity_fields'] =
+                $this->getFields(
+                    $relatedEntityName,
+                    $withEntityDetails && ($relationDeepLevel > 0 || $lastDeepLevelRelations),
+                    $withEntityDetails,
+                    $relationDeepLevel,
+                    $lastDeepLevelRelations
+                );
         }
 
         $result[] = $relation;

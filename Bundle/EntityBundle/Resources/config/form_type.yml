@@ -25,6 +25,7 @@ services:
         class: %oro_entity.form.type.entity_field_choice.class%
         arguments:
             - @oro_entity.entity_field_provider
+            - @translator
         tags:
             - { name: form.type, alias: oro_entity_field_choice }
 

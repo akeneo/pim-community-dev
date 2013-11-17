@@ -5,6 +5,7 @@ namespace Oro\Bundle\EntityBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\OptionsResolver\Options;
+use Symfony\Component\Translation\TranslatorInterface;
 use Oro\Bundle\EntityBundle\Provider\EntityFieldProvider;
 use Oro\Bundle\FormBundle\Form\Type\ChoiceListItem;
 
@@ -18,13 +19,20 @@ class EntityFieldChoiceType extends AbstractType
     protected $provider;
 
     /**
+     * @var TranslatorInterface
+     */
+    protected $translator;
+
+    /**
      * Constructor
      *
      * @param EntityFieldProvider $provider
+     * @param TranslatorInterface $translator
      */
-    public function __construct(EntityFieldProvider $provider)
+    public function __construct(EntityFieldProvider $provider, TranslatorInterface $translator)
     {
-        $this->provider       = $provider;
+        $this->provider   = $provider;
+        $this->translator = $translator;
     }
 
     /**
@@ -65,8 +73,9 @@ class EntityFieldChoiceType extends AbstractType
      */
     protected function getChoices($entityName, $withRelations)
     {
-        $choices = array();
-        $fields  = $this->provider->getFields($entityName, $withRelations, true);
+        $choiceFields    = array();
+        $choiceRelations = array();
+        $fields          = $this->provider->getFields($entityName, $withRelations, true);
         foreach ($fields as $field) {
             $attributes = [];
             foreach ($field as $key => $val) {
@@ -74,8 +83,21 @@ class EntityFieldChoiceType extends AbstractType
                     $attributes['data-' . str_replace('_', '-', $key)] = $val;
                 }
             }
-            $choices[$field['name']] = new ChoiceListItem($field['label'], $attributes);
+            if (!isset($field['related_entity_name'])) {
+                $choiceFields[$field['name']] = new ChoiceListItem($field['label'], $attributes);
+            } else {
+                $choiceRelations[$field['name']] = new ChoiceListItem($field['label'], $attributes);
+            }
         }
+
+        if (empty($choiceRelations)) {
+            return $choiceFields;
+        }
+        $choices = array();
+        if (!empty($choiceFields)) {
+            $choices[$this->translator->trans('oro.entity.form.entity_fields')] = $choiceFields;
+        }
+        $choices[$this->translator->trans('oro.entity.form.entity_related')] = $choiceRelations;
 
         return $choices;
     }

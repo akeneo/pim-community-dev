@@ -41,7 +41,8 @@ function(_, Backbone, __, app, messenger, routing, LoadingMask,
             this.options.loadColumnsUrl = this.options.loadColumnsUrl || function (entityName) {
                 return routing.generate('oro_api_get_entity_fields', {
                     'entityName': entityName,
-                    'with-relations': true
+                    'with-relations': true,
+                    'with-entity-details': true
                 })
             };
         },
