@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\ImportExportBundle\Writer\ORM;
 
-use Doctrine\ORM\EntityManager;
-
 use Oro\Bundle\BatchBundle\Item\ItemWriterInterface;
 use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Oro\Bundle\BatchBundle\Entity\StepExecution;
