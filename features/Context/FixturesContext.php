@@ -304,7 +304,9 @@ class FixturesContext extends RawMinkContext
      */
     public function anEnabledOrDisabledProduct($status, $sku)
     {
-        $this->aProduct($sku)->setEnabled($status === 'enabled');
+        $product = $this->aProduct($sku);
+        $product->setEnabled($status === 'enabled');
+        $this->persist($product);
     }
 
     /**
