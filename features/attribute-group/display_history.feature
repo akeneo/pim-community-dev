@@ -13,40 +13,41 @@ Feature: Display the attribute group history
   @javascript
   Scenario: Succesfully edit a group and see the history
     Given I am on the attribute group creation page
-    And I change the Code to "Tecnical"
+    And I change the Code to "Technical"
     And I save the group
     When I visit the "History" tab
     Then there should be 1 update
     And I should see history:
-      | action | version | data          |
-      | create | 1       | code:Tecnical |
+      | action | version | property | value     |
+      | create | 1       | code     | Technical |
     When I visit the "Properties" tab
-    And I change the Code to "Technical"
+    And I fill in the following information:
+      | English (United States) | My technical group |
     And I save the group
     When I visit the "History" tab
     Then there should be 2 updates
     And I should see history:
-      | action | version | data                   |
-      | create | 1       | code:Tecnical          |
-      | update | 2       | code:TecnicalTechnical |
+      | action | version | property | value                    |
+      | create | 1       | code     | Technical                |
+      | update | 2       | label    | en_US:My technical group |
     When I visit the "Attributes" tab
     And I add available attributes Description
     Then I should see flash message "Attributes successfully added to the attribute group"
     When I visit the "History" tab
     Then there should be 3 updates
     And I should see history:
-      | action | version | data                   |
-      | create | 1       | code:Tecnical          |
-      | update | 2       | code:TecnicalTechnical |
-      | update | 3       | attributes:description |
+      | action | version | property   | value                    |
+      | create | 1       | code       | Technical                |
+      | update | 2       | label      | en_US:My technical group |
+      | update | 3       | attributes | description              |
     When I visit the "Attributes" tab
     And I remove the "Description" attribute
     Then I should see flash message "Attribute successfully removed from the attribute group"
     When I visit the "History" tab
     Then there should be 4 updates
     And I should see history:
-      | action | version | data                   |
-      | create | 1       | code:Tecnical          |
-      | update | 2       | code:TecnicalTechnical |
-      | update | 3       | attributes:description |
-      | update | 4       | attributes:description |
+      | action | version | property   | value                    |
+      | create | 1       | code       | Technical                |
+      | update | 2       | label      | en_US:My technical group |
+      | update | 3       | attributes | description              |
+      | update | 4       | attributes |                          |
