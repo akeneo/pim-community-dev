@@ -218,6 +218,11 @@ class AclWalker extends TreeWalkerAdapter
         return $resultCondition;
     }
 
+    protected function getAccessDeniedCondition()
+    {
+
+    }
+
     /**
      * @param AclCondition $whereCondition
      * @return InExpression

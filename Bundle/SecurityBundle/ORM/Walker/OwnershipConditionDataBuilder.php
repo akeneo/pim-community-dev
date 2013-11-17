@@ -84,16 +84,14 @@ class OwnershipConditionDataBuilder
             || !$this->getUserId()
             || !$this->entityMetadataProvider->isProtectedEntity($entityClassName)
         ) {
-            null;
+            return null;
         }
 
-        $condition = null;
+        $condition = false;
 
         $observer = new OneShotIsGrantedObserver();
         $this->aclVoter->addOneShotIsGrantedObserver($observer);
         $isGranted = $this->getSecurityContext()->isGranted($permissions, 'entity:' . $entityClassName);
-
-        $constraint = null;
 
         if ($isGranted) {
             $condition = $this->buildConstraintIfAccessIsGranted(
@@ -121,7 +119,7 @@ class OwnershipConditionDataBuilder
         $accessLevel,
         OwnershipMetadata $metadata
     ) {
-        $constraint = null;
+        $constraint = false;
 
         if (AccessLevel::SYSTEM_LEVEL === $accessLevel) {
             $constraint = null;
@@ -310,7 +308,7 @@ class OwnershipConditionDataBuilder
             );
         }
 
-        return null;
+        return false;
     }
 
     /**
