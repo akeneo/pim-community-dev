@@ -65,6 +65,6 @@
     </div>
 {% endmacro %}
 
-{% macro query_designer_entity_template(id) %}
-    <script type="text/html" id="{{ id }}"><% if (icon) { %><i class="<%= icon %> hide-text"></i>&nbsp;<% } %><%= text %></script>
+{% macro query_designer_column_chain_template(id) %}
+    <script type="text/html" id="{{ id }}"><% _.each(obj, function (column, index, list) { %><% if (!_.isUndefined(column.entity.icon) && column.entity.icon != '') { %><i class="<%= column.entity.icon %> hide-text"></i>&nbsp;<% } %><% if (index < list.length - 1) { %><%= column.entity.plural_label %>&nbsp;(<%= column.label %>)&nbsp;><% } else { %><%= column.entity.label %>&nbsp;<%= column.label %><% } %><% }) %></script>
 {% endmacro %}

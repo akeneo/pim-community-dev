@@ -70,7 +70,7 @@ class EntityFieldChoiceType extends AbstractType
         foreach ($fields as $field) {
             $attributes = [];
             foreach ($field as $key => $val) {
-                if (!in_array($key, ['name', 'label'])) {
+                if (!in_array($key, ['name'])) {
                     $attributes['data-' . str_replace('_', '-', $key)] = $val;
                 }
             }

@@ -65,11 +65,15 @@ class EntityChoiceType extends AbstractType
 
         $entities = $this->provider->getEntities($showPlural);
         foreach ($entities as $entity) {
+            $attributes = [];
+            foreach ($entity as $key => $val) {
+                if (!in_array($key, ['name'])) {
+                    $attributes['data-' . str_replace('_', '-', $key)] = $val;
+                }
+            }
             $choices[$entity['name']] = new ChoiceListItem(
                 $showPlural ? $entity['plural_label'] : $entity['label'],
-                array(
-                    'data-icon' => $entity['icon']
-                )
+                $attributes
             );
         }
 

@@ -235,7 +235,7 @@ class EntityFieldProvider
                     }
                 }
 
-                return strcmp($a['label'], $b['label']);
+                return strcasecmp($a['label'], $b['label']);
             }
         );
     }

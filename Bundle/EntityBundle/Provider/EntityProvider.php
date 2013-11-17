@@ -90,7 +90,7 @@ class EntityProvider
         usort(
             $entities,
             function ($a, $b) use (&$attrName) {
-                return strcmp($a[$attrName], $b[$attrName]);
+                return strcasecmp($a[$attrName], $b[$attrName]);
             }
         );
     }

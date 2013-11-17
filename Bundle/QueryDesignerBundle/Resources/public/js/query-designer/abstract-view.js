@@ -18,7 +18,7 @@ function(_, Backbone, __, FormValidation, DeleteConfirmation) {
             entityName: null,
             itemTemplateSelector: null,
             itemFormSelector: null,
-            entityTemplateSelector: null,
+            columnChainTemplateSelector: null,
             findEntity: function (entityName) {
                 return {name: entityName, label: entityName, plural_label: entityName, icon: null};
             }
@@ -37,7 +37,7 @@ function(_, Backbone, __, FormValidation, DeleteConfirmation) {
 
         /** @property */
         columnSelectOptionTemplate: _.template('<option value="<%- column.name %>"'
-            + '<% _.each(_.omit(column, ["name", "label"]), function (val, key) { %> data-<%- key.replace(/_/g,"-") %>="<%- val %>"<% }) %>'
+            + '<% _.each(_.omit(column, ["name"]), function (val, key) { %> data-<%- key.replace(/_/g,"-") %>="<%- val %>"<% }) %>'
             + '><%- column.label %>'
             + '</option>'
         ),
@@ -54,12 +54,18 @@ function(_, Backbone, __, FormValidation, DeleteConfirmation) {
         /** @property {Array} */
         fieldLabelGetters: [],
 
+        /** @property */
+        itemTemplate: null,
+
+        /** @property */
+        columnChainTemplate: null,
+
         initialize: function() {
             this.options.collection = this.options.collection || new this.collectionClass();
             this.fieldNames = _.without(_.keys((this.createNewModel()).attributes), 'id');
 
             this.itemTemplate = _.template($(this.options.itemTemplateSelector).html());
-            this.entityTemplate = _.template($(this.options.entityTemplateSelector).html());
+            this.columnChainTemplate = _.template($(this.options.columnChainTemplateSelector).html());
 
             // prepare field label getters
             this.addFieldLabelGetter(this.getSelectFieldLabel);
@@ -344,8 +350,33 @@ function(_, Backbone, __, FormValidation, DeleteConfirmation) {
 
         getColumnFieldLabel: function (field, name, value) {
             if (field.attr('name') == this.columnSelector.attr('name')) {
-                var val = value.split('::');
-                console.log(val);
+                var columnLabel = null;
+                if (this.columnSelector.get(0).tagName.toLowerCase() == 'select') {
+                    columnLabel = this.columnSelector
+                        .find('option[value="' + value.replace(/\\/g,"\\\\").replace(/:/g,"\\:") + '"]')
+                        .data('label');
+                } else {
+                    columnLabel = value;
+                }
+                var columns = [];
+                _.each(value.split(','), _.bind(function (item, index) {
+                    var entity = null;
+                    var name = null;
+                    if (index == 0) {
+                        entity = this.options.entityName;
+                        name = item;
+                    } else {
+                        var pair = item.split('::');
+                        entity = pair[0];
+                        name = pair[1];
+                    }
+                    entity = this.options.findEntity(entity);
+                    columns.push({
+                        entity: entity,
+                        label: columnLabel
+                    });
+                }, this));
+                return this.columnChainTemplate(columns);
             }
             return null;
         }
