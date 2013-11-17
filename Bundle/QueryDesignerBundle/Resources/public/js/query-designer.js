@@ -88,12 +88,20 @@ function(_, Backbone, __, app, messenger, routing, LoadingMask,
             this.loadingMask = new LoadingMask();
             this.$el.append(this.loadingMask.render().$el);
 
+            var data = [];
+            if (this.storageEl) {
+                var data = JSON.parse(this.storageEl.val());
+            }
+
             // initialize columns view
             var columnsOptions = _.extend(this.options.columnsOptions, {entityName: this.options.entityName});
             this.columnsView = new ColumnView(columnsOptions);
-            this.listenTo(this.columnsView, 'collection:change', _.bind(this.updateColumnStorage, this))
             this.columnsView.render();
             delete this.options.columnsOptions;
+            if (!_.isUndefined(data['columns']) && !_.isEmpty(data['columns'])) {
+                this.columnsView.getCollection().reset(data['columns']);
+            }
+            this.listenTo(this.columnsView, 'collection:change', _.bind(this.updateColumnStorage, this));
 
             return this;
         },

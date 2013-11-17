@@ -152,6 +152,16 @@ function(_, Backbone, __, FormValidation, DeleteConfirmation) {
         onResetCollection: function () {
             this.getContainer().empty();
             this.resetForm();
+            this.getCollection().each(_.bind(function (model) {
+                model.set('id', _.uniqueId('column'));
+                var data = model.toJSON();
+                _.each(data, _.bind(function (value, name) {
+                    data[name] = this.getFieldLabel(name, value);
+                }, this));
+                var item = $(this.itemTemplate(data));
+                this.bindItemActions(item);
+                this.getContainer().append(item);
+            }, this));
             this.trigger('collection:change');
         },
 
