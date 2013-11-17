@@ -3,7 +3,6 @@
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Normalizer;
 
 use Pim\Bundle\ImportExportBundle\Normalizer\FlatAttributeOptionNormalizer;
-use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
 

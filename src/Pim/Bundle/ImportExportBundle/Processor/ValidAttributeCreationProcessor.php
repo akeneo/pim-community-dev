@@ -3,7 +3,6 @@
 namespace Pim\Bundle\ImportExportBundle\Processor;
 
 use Symfony\Component\Validator\ValidatorInterface;
-use Doctrine\ORM\EntityManager;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Inflector\Inflector;
 use Oro\Bundle\BatchBundle\Item\ItemProcessorInterface;
