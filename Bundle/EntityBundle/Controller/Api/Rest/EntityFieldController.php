@@ -31,6 +31,9 @@ class EntityFieldController extends FOSRestController implements ClassResourceIn
      * @QueryParam(
      *      name="with-relations", requirements="(true)|(false)", nullable=true, strict=true, default="false",
      *      description="Indicates whether fields of related entities should be returned as well.")
+     * @QueryParam(
+     *      name="with-entity-details", requirements="(true)|(false)", nullable=true, strict=true, default="false",
+     *      description="Indicates whether details of related entity should be returned as well.")
      * @Get(name="oro_api_get_entity_fields", requirements={"entityName"="((\w+)_)+(\w+)"})
      * @ApiDoc(
      *      description="Get entity fields",
@@ -41,17 +44,18 @@ class EntityFieldController extends FOSRestController implements ClassResourceIn
      */
     public function getFieldsAction($entityName)
     {
-        $entityName = str_replace('_', '\\', $entityName);
-        $withRelations = (bool)$this->getRequest()->get('with-relations');
+        $entityName        = str_replace('_', '\\', $entityName);
+        $withRelations     = (bool)$this->getRequest()->get('with-relations');
+        $withEntityDetails = (bool)$this->getRequest()->get('with-relations');
 
         $statusCode = Codes::HTTP_OK;
         /** @var EntityFieldProvider $provider */
         $provider = $this->get('oro_entity.entity_field_provider');
         try {
-            $result = $provider->getFields($entityName, $withRelations);
+            $result = $provider->getFields($entityName, $withRelations, $withEntityDetails);
         } catch (InvalidEntityException $ex) {
             $statusCode = Codes::HTTP_NOT_FOUND;
-            $result = array('message' => $ex->getMessage());
+            $result     = array('message' => $ex->getMessage());
         }
 
         return $this->handleView($this->view($result, $statusCode));

@@ -24,7 +24,7 @@ class EntityFieldChoiceType extends AbstractType
      */
     public function __construct(EntityFieldProvider $provider)
     {
-        $this->provider = $provider;
+        $this->provider       = $provider;
     }
 
     /**
@@ -61,12 +61,12 @@ class EntityFieldChoiceType extends AbstractType
      * @param string $entityName    Entity name. Can be full class name or short form: Bundle:Entity.
      * @param bool   $withRelations Indicates whether fields of related entities should be returned as well.
      * @return array of entity fields
-     *               key = field name, value = ChoiceListItem
+     *                              key = field name, value = ChoiceListItem
      */
     protected function getChoices($entityName, $withRelations)
     {
         $choices = array();
-        $fields  = $this->provider->getFields($entityName, $withRelations);
+        $fields  = $this->provider->getFields($entityName, $withRelations, true);
         foreach ($fields as $field) {
             $attributes = [];
             foreach ($field as $key => $val) {

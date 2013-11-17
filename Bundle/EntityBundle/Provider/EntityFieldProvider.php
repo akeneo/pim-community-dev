@@ -11,9 +11,9 @@ use Oro\Bundle\EntityBundle\Exception\InvalidEntityException;
 class EntityFieldProvider
 {
     /**
-     * @var ManagerRegistry
+     * @var ConfigProvider
      */
-    protected $doctrine;
+    protected $entityConfigProvider;
 
     /**
      * @var EntityClassResolver
@@ -21,50 +21,64 @@ class EntityFieldProvider
     protected $entityClassResolver;
 
     /**
-     * @var ConfigProvider
+     * @var ManagerRegistry
      */
-    protected $entityConfigProvider;
+    protected $doctrine;
+
+    /**
+     * @var EntityProvider
+     */
+    protected $entityProvider;
 
     /**
      * Constructor
      *
-     * @param ManagerRegistry     $doctrine
-     * @param EntityClassResolver $entityClassResolver
      * @param ConfigProvider      $entityConfigProvider
+     * @param EntityClassResolver $entityClassResolver
+     * @param ManagerRegistry     $doctrine
+     * @param EntityProvider      $entityProvider
      */
     public function __construct(
-        ManagerRegistry $doctrine,
+        ConfigProvider $entityConfigProvider,
         EntityClassResolver $entityClassResolver,
-        ConfigProvider $entityConfigProvider
+        ManagerRegistry $doctrine,
+        EntityProvider $entityProvider
     ) {
-        $this->doctrine             = $doctrine;
         $this->entityConfigProvider = $entityConfigProvider;
         $this->entityClassResolver  = $entityClassResolver;
+        $this->doctrine             = $doctrine;
+        $this->entityProvider       = $entityProvider;
     }
 
     /**
      * Returns fields for the given entity
      *
-     * @param string $entityName    Entity name. Can be full class name or short form: Bundle:Entity.
-     * @param bool   $withRelations Indicates whether fields of related entities should be returned as well.
+     * @param string $entityName        Entity name. Can be full class name or short form: Bundle:Entity.
+     * @param bool   $withRelations     Indicates whether fields of related entities should be returned as well.
+     * @param bool   $withEntityDetails Indicates whether details of related entity should be returned as well.
      * @return array of fields sorted by field label (relations follows fields)
-     *                              .       'name'          - field name
-     *                              .       'type'          - field type
-     *                              .       'label'         - field label
-     *                              If a field represents a relation and $withRelations = true
-     *                              the following attributes are added:
-     *                              .       'relation_type' - relation type
-     *                              .       'related_entity_name' - entity full class name
+     *                                  .       'name'          - field name
+     *                                  .       'type'          - field type
+     *                                  .       'label'         - field label
+     *                                  If a field represents a relation and $withRelations = true
+     *                                  the following attributes are added:
+     *                                  .       'relation_type'       - relation type
+     *                                  .       'related_entity_name' - entity full class name
+     *                                  If a field represents a relation and $withEntityDetails = true
+     *                                  the following attributes are added:
+     *                                  .       'related_entity_label'        - entity label
+     *                                  .       'related_entity_plural_label' - entity plural label
+     *                                  .       'related_entity_icon'         - an icon associated with an entity
      * @throws InvalidEntityException
      */
-    public function getFields($entityName, $withRelations)
+    public function getFields($entityName, $withRelations = false, $withEntityDetails = false)
     {
         $result    = array();
         $className = $this->entityClassResolver->getEntityClass($entityName);
         $em        = $this->getManagerForClass($className);
         $this->addFields($result, $className, $em);
         if ($withRelations) {
-            $this->addRelations($result, $className, $em);
+            $this->addRelations($result, $className, $em, $withEntityDetails);
         }
         $this->sortFields($result);
 
@@ -117,8 +131,9 @@ class EntityFieldProvider
      * @param array         $result
      * @param string        $className
      * @param EntityManager $em
+     * @param bool          $withEntityDetails
      */
-    protected function addRelations(array &$result, $className, EntityManager $em)
+    protected function addRelations(array &$result, $className, EntityManager $em, $withEntityDetails)
     {
         // only configurable entities are supported
         if ($this->entityConfigProvider->hasConfig($className)) {
@@ -134,7 +149,8 @@ class EntityFieldProvider
                         $targetMetadata->getTypeOfField($targetFieldName),
                         $this->getFieldLabel($className, $associationName),
                         $this->getRelationType($className, $associationName),
-                        $targetClassName
+                        $targetClassName,
+                        $withEntityDetails
                     );
                 }
             }
@@ -149,17 +165,35 @@ class EntityFieldProvider
      * @param string $type
      * @param string $label
      * @param string $relationType
-     * @param string $relaterEntityName
+     * @param string $relatedEntityName
+     * @param bool   $withEntityDetails
      */
-    protected function addRelation(array &$result, $name, $type, $label, $relationType, $relaterEntityName)
-    {
-        $result[] = array(
+    protected function addRelation(
+        array &$result,
+        $name,
+        $type,
+        $label,
+        $relationType,
+        $relatedEntityName,
+        $withEntityDetails
+    ) {
+        $relation = array(
             'name'                => $name,
             'type'                => $type,
             'label'               => $label,
             'relation_type'       => $relationType,
-            'related_entity_name' => $relaterEntityName
+            'related_entity_name' => $relatedEntityName
         );
+        if ($withEntityDetails) {
+            $entity = $this->entityProvider->getEntity($relatedEntityName);
+            foreach ($entity as $key => $val) {
+                if (!in_array($key, ['name'])) {
+                    $relation['related_entity_' . $key] = $val;
+                }
+            }
+        }
+
+        $result[] = $relation;
     }
 
     /**

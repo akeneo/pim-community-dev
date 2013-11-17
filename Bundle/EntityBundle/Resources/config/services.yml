@@ -56,10 +56,12 @@ services:
         class: %oro_entity.entity_provider.class%
         arguments:
             - @oro_entity_config.provider.entity
+            - @oro_entity.orm.entity_class_resolver
 
     oro_entity.entity_field_provider:
         class: %oro_entity.entity_field_provider.class%
         arguments:
-            - @doctrine
-            - @oro_entity.orm.entity_class_resolver
             - @oro_entity_config.provider.entity
+            - @oro_entity.orm.entity_class_resolver
+            - @doctrine
+            - @oro_entity.entity_provider

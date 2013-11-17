@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\EntityBundle\Provider;
 
+use Oro\Bundle\EntityBundle\ORM\EntityClassResolver;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 
 class EntityProvider
@@ -12,13 +13,22 @@ class EntityProvider
     protected $entityConfigProvider;
 
     /**
+     * @var EntityClassResolver
+     */
+    protected $entityClassResolver;
+
+    /**
      * Constructor
      *
-     * @param ConfigProvider $entityConfigProvider
+     * @param ConfigProvider      $entityConfigProvider
+     * @param EntityClassResolver $entityClassResolver
      */
-    public function __construct(ConfigProvider $entityConfigProvider)
-    {
+    public function __construct(
+        ConfigProvider $entityConfigProvider,
+        EntityClassResolver $entityClassResolver
+    ) {
         $this->entityConfigProvider = $entityConfigProvider;
+        $this->entityClassResolver  = $entityClassResolver;
     }
 
     /**
@@ -38,6 +48,32 @@ class EntityProvider
         $this->sortEntities($result, $sortByPluralLabel ? 'plural_label' : 'label');
 
         return $result;
+    }
+
+    /**
+     * Returns entity
+     *
+     * @param string $entityName Entity name. Can be full class name or short form: Bundle:Entity.
+     * @return array contains entity details:
+     *                           .    'name'          - entity full class name
+     *                           .    'label'         - entity label
+     *                           .    'plural_label'  - entity plural label
+     *                           .    'icon'          - an icon associated with an entity
+     */
+    public function getEntity($entityName)
+    {
+        $className = $this->entityClassResolver->getEntityClass($entityName);
+        $config    = $this->entityConfigProvider->getConfig($className);
+        $result    = array();
+        $this->addEntity(
+            $result,
+            $config->getId()->getClassName(),
+            $config->get('label'),
+            $config->get('plural_label'),
+            $config->get('icon')
+        );
+
+        return reset($result);
     }
 
     /**

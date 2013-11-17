@@ -71,6 +71,9 @@ function($, _) {
             if (this.config.escapeMarkup === undefined) {
                 this.config.escapeMarkup = function (m) { return m; };
             }
+            if (this.config.dropdownAutoWidth === undefined) {
+                this.config.dropdownAutoWidth = true;
+            }
             return this.config;
         },
 

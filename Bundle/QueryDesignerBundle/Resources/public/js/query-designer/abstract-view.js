@@ -36,9 +36,9 @@ function(_, Backbone, __, FormValidation, DeleteConfirmation) {
         },
 
         /** @property */
-        columnSelectOptionTemplate: _.template('<option value="<%- column.name %>"'
-            + '<% _.each(_.omit(column, ["name"]), function (val, key) { %> data-<%- key.replace(/_/g,"-") %>="<%- val %>"<% }) %>'
-            + '><%- column.label %>'
+        columnSelectOptionTemplate: _.template('<option value="<%- name %>"'
+            + '<% _.each(_.omit(obj, ["name"]), function (val, key) { %> data-<%- key.replace(/_/g,"-") %>="<%- val %>"<% }) %>'
+            + '><%- label %>'
             + '</option>'
         ),
 
@@ -181,9 +181,9 @@ function(_, Backbone, __, FormValidation, DeleteConfirmation) {
             if (this.columnSelector.get(0).tagName.toLowerCase() == 'select') {
                 var emptyText = this.columnSelector.find('option[value=""]').text();
                 this.columnSelector.empty();
-                this.columnSelector.append(this.columnSelectOptionTemplate({column: {name: '', label: emptyText}}));
+                this.columnSelector.append(this.columnSelectOptionTemplate({name: '', label: emptyText}));
                 _.each(columns, _.bind(function (column) {
-                    this.columnSelector.append(this.columnSelectOptionTemplate({column: column}));
+                    this.columnSelector.append(this.columnSelectOptionTemplate(column));
                 }, this));
             }
             this.columnSelector.val('');
