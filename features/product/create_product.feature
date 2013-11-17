@@ -5,24 +5,15 @@ Feature: Product creation
   I need to be able to manually create a product
 
   Background:
-    Given the "default" catalog configuration
-    And the following product attribute:
-      | label       | required |
-      | SKU         | yes      |
-      | Reference   | yes      |
-      | Description | no       |
+    Given a "footwear" catalog configuration
     And I am logged in as "admin"
     And I am on the products page
 
   Scenario: Successfully create a product
     Given I create a new product
-    Then I should see the SKU, Reference and Family fields
+    Then I should see the SKU and Family fields
     And I fill in the following information in the popin:
-      | SKU       | barbecue |
-      | Reference | BBQ      |
+      | SKU | caterpillar_1 |
     And I press the "Save" button
-    Then I edit the "barbecue" product
     Then I should see "Family: N/A"
-    And I should see "Attributes"
-    And I should see "Reference"
-    And I should see "SKU"
+    And I should see "caterpillar_1"
