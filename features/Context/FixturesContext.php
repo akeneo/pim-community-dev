@@ -559,6 +559,7 @@ class FixturesContext extends RawMinkContext
                 $value = $this->createValue($attribute, $data['value'], $data['locale'], $data['scope']);
                 $product->addValue($value);
             }
+            $this->getProductManager()->save($product);
         }
 
         $this->flush();

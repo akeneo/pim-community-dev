@@ -1493,13 +1493,12 @@ class WebUser extends RawMinkContext
      */
     public function exportedFileOfShouldContain($code, PyStringNode $csv)
     {
-        $path = $this
+        $config = $this
             ->getFixturesContext()
-            ->getJobInstance($code)
-            ->getJob()
-            ->getSteps()[0]
-            ->getWriter()
-            ->getPath();
+            ->getJobInstance($code)->getRawConfiguration();
+        $config = reset($config);
+
+        $path = sprintf('%s/%s', $config['writer']['directoryName'], $config['writer']['fileName']);
 
         if (!is_file($path)) {
             throw $this->createExpectationException(
@@ -1526,13 +1525,12 @@ class WebUser extends RawMinkContext
      */
     public function exportDirectoryOfShouldContainTheFollowingMedia($code, TableNode $table)
     {
-        $path = $this
+        $config = $this
             ->getFixturesContext()
-            ->getJobInstance($code)
-            ->getJob()
-            ->getSteps()[0]
-            ->getWriter()
-            ->getDirectoryName();
+            ->getJobInstance($code)->getRawConfiguration();
+        $config = reset($config);
+
+        $path = $config['writer']['directoryName'];
 
         if (!is_dir($path)) {
             throw $this->createExpectationException(
