@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Processor;
+namespace Pim\Bundle\ImportExportBundle\Processor\CsvSerializer;
 
 /**
  * Serialize homogeneous data into csv
@@ -9,7 +9,7 @@ namespace Pim\Bundle\ImportExportBundle\Processor;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class HomogeneousCsvSerializerProcessor extends CsvSerializerProcessor
+class HomogeneousProcessor extends Processor
 {
     /**
      * {@inheritdoc}

@@ -1,8 +1,8 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Processor;
+namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Processor\CsvSerializer;
 
-use Pim\Bundle\ImportExportBundle\Processor\HomogeneousCsvSerializerProcessor;
+use Pim\Bundle\ImportExportBundle\Processor\CsvSerializer\HomogeneousProcessor;
 
 /**
  * Test related class
@@ -11,7 +11,7 @@ use Pim\Bundle\ImportExportBundle\Processor\HomogeneousCsvSerializerProcessor;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class HomogeneousCsvSerializerProcessorTest extends \PHPUnit_Framework_TestCase
+class HomogeneousProcessorTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * {@inheritdoc}
@@ -23,7 +23,7 @@ class HomogeneousCsvSerializerProcessorTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->processor = new HomogeneousCsvSerializerProcessor($this->serializer);
+        $this->processor = new HomogeneousProcessor($this->serializer);
     }
 
     /**

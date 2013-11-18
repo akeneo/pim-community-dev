@@ -20,7 +20,7 @@ use Pim\Bundle\CatalogBundle\Entity\Association;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ValidAssociationCreationProcessor extends AbstractConfigurableStepElement implements
+class AssociationProcessor extends AbstractConfigurableStepElement implements
     ItemProcessorInterface,
     StepExecutionAwareInterface
 {
