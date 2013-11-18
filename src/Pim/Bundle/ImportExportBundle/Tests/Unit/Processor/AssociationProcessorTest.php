@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Processor;
 
-use Pim\Bundle\CatalogBundle\Entity\Group;
-use Pim\Bundle\CatalogBundle\Entity\GroupTranslation;
-use Pim\Bundle\ImportExportBundle\Processor\ValidGroupCreationProcessor;
+use Pim\Bundle\CatalogBundle\Entity\Association;
+use Pim\Bundle\CatalogBundle\Entity\AssociationTranslation;
+use Pim\Bundle\ImportExportBundle\Processor\AssociationProcessor;
 
 /**
  * Test related class
@@ -13,18 +13,21 @@ use Pim\Bundle\ImportExportBundle\Processor\ValidGroupCreationProcessor;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ValidGroupCreationProcessorTest extends AbstractValidCreationProcessorTestCase
+class AssociationProcessorTest extends AbstractProcessorTestCase
 {
     /**
      * {@inheritdoc}
      */
     protected function createProcessor()
     {
-        return new ValidGroupCreationProcessor($this->em, $this->validator);
+        return new AssociationProcessor(
+            $this->em,
+            $this->validator
+        );
     }
 
     /**
-     * {@inheritdoc}
+     * Test related method
      */
     protected function getExpectedConfigurationFields()
     {
@@ -42,38 +45,39 @@ class ValidGroupCreationProcessorTest extends AbstractValidCreationProcessorTest
             ->method('getRepository')
             ->will($this->returnValue($repository));
 
-        $groupsMap = array(
-            array(array('code' => 'group_1'), null, $this->getGroup('group_1')),
-            array(array('code' => 'group_2'), null, $this->getGroup('group_2'))
+        $associationsMap = array(
+            array(array('code' => 'association_1'), null, $this->getAssociation('association_1')),
+            array(array('code' => 'association_2'), null, $this->getAssociation('association_2'))
         );
 
         $repository
             ->expects($this->any())
             ->method('findOneBy')
-            ->will($this->returnValueMap($groupsMap));
+            ->will($this->returnValueMap($associationsMap));
 
         $this->validator
             ->expects($this->any())
             ->method('validate')
-            ->will($this->returnValue($this->getconstraintViolationListMock()));
+            ->will($this->returnValue($this->getConstraintViolationListMock()));
 
-        $data = $this->getValidGroupData();
+        $data = $this->getValidAssociationData();
+
         $this->assertEquals($data['result'], $this->processor->process($data['csv']));
     }
 
     /**
      * @return array
      */
-    protected function getValidGroupData()
+    protected function getValidAssociationData()
     {
         return array(
             'csv' => array(
-                $this->getRow('group_1'),
-                $this->getRow('group_2')
+                $this->getRow('association_1'),
+                $this->getRow('association_2')
             ),
             'result' => array(
-                $this->getGroup('group_1'),
-                $this->getGroup('group_2')
+                $this->getAssociation('association_1'),
+                $this->getAssociation('association_2')
             )
         );
     }
@@ -89,15 +93,15 @@ class ValidGroupCreationProcessorTest extends AbstractValidCreationProcessorTest
             ->method('getRepository')
             ->will($this->returnValue($repository));
 
-        $groupsMap = array(
-            array(array('code' => 'group_1'), null, $this->getGroup('group_1')),
-            array(array('code' => 'group_2'), null, $this->getGroup('group_2'))
+        $associationsMap = array(
+            array(array('code' => 'association_1'), null, $this->getAssociation('association_1')),
+            array(array('code' => 'association_2'), null, $this->getAssociation('association_2'))
         );
 
         $repository
             ->expects($this->any())
             ->method('findOneBy')
-            ->will($this->returnValueMap($groupsMap));
+            ->will($this->returnValueMap($associationsMap));
 
         $withViolations    = $this->getConstraintViolationListMock(array('The foo error message'));
         $withoutViolations = $this->getConstraintViolationListMock();
@@ -113,7 +117,7 @@ class ValidGroupCreationProcessorTest extends AbstractValidCreationProcessorTest
             ->will(
                 $this->returnCallback(
                     function ($object) use ($withViolations, $withoutViolations) {
-                        if ($object->getCode() === 'group_1') {
+                        if ($object->getCode() === 'association_1') {
                             return $withoutViolations;
                         }
 
@@ -122,22 +126,22 @@ class ValidGroupCreationProcessorTest extends AbstractValidCreationProcessorTest
                 )
             );
 
-        $data = $this->getInvalidGroupData();
+        $data = $this->getInvalidAssociationData();
         $this->assertEquals($data['result'], $this->processor->process($data['csv']));
     }
 
     /**
      * @return array
      */
-    protected function getInvalidGroupData()
+    protected function getInvalidAssociationData()
     {
         return array(
             'csv' => array(
-                $this->getRow('group_1'),
-                $this->getRow('group_2')
+                $this->getRow('association_1'),
+                $this->getRow('association_2')
             ),
             'result' => array(
-                $this->getGroup('group_1')
+                $this->getAssociation('association_1')
             )
         );
     }
@@ -154,32 +158,30 @@ class ValidGroupCreationProcessorTest extends AbstractValidCreationProcessorTest
         return array(
             'code'        => $code,
             'label-en_US' => sprintf('%s (en)', ucfirst($code)),
-            'label-fr_FR' => sprintf('%s (fr)', ucfirst($code))
+            'label-fr_FR' => sprintf('%s (fr)', ucfirst($code)),
         );
     }
 
     /**
-     * Create a group entity from properties
-     *
      * @param string $code
      *
-     * @return Group
+     * @return Association
      */
-    protected function getGroup($code)
+    protected function getAssociation($code)
     {
-        $group = new Group();
-        $group->setCode($code);
+        $association = new Association();
+        $association->setCode($code);
 
-        $english = new GroupTranslation();
+        $english = new AssociationTranslation();
         $english->setLocale('en_US');
         $english->setLabel(ucfirst($code) .' (en)');
-        $group->addTranslation($english);
+        $association->addTranslation($english);
 
-        $french = new GroupTranslation();
+        $french = new AssociationTranslation();
         $french->setLocale('fr_FR');
         $french->setLabel(ucfirst($code) .' (fr)');
-        $group->addTranslation($french);
+        $association->addTranslation($french);
 
-        return $group;
+        return $association;
     }
 }
