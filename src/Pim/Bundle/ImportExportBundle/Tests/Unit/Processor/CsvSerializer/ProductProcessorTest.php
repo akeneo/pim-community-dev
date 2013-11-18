@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Processor;
+namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Processor\CsvSerializer;
 
 use Pim\Bundle\ImportExportBundle\Processor\CsvSerializer\ProductProcessor;
 
