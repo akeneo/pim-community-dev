@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Doctrine\ORM\EntityManager;
 use Oro\Bundle\UserBundle\Entity\UserManager;
 use Oro\Bundle\UserBundle\Entity\User;
+use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 
 /**
@@ -45,16 +46,22 @@ class UserPreferencesListenerTest extends WebTestCase
     public function testRemoveChannel()
     {
         $prefix = sha1(rand(0, 9999999));
+
+        $category = new Category();
+        $category->setCode('TEST_TREE');
+
         $channel1 = new Channel();
         $channel1
             ->setCode($prefix . 'channel1')
-            ->setLabel('channel1');
+            ->setLabel('channel1')
+            ->setCategory($category);
         $this->entityManager->persist($channel1);
 
         $channel2 = new Channel();
         $channel2
             ->setCode($prefix . 'channel2')
-            ->setLabel('channel2');
+            ->setLabel('channel2')
+            ->setCategory($category);
         $this->entityManager->persist($channel2);
 
         $this->entityManager->flush();
@@ -93,5 +100,25 @@ class UserPreferencesListenerTest extends WebTestCase
         foreach ($attribute->getOptions() as $option) {
             $this->assertNotEquals($prefix . 'channel2', $option->getOptionValue()->getValue());
         }
+    }
+
+    /**
+     * Create a channel entity
+     *
+     * @param string $code
+     * @param string $label
+     * @param string $category
+     *
+     * @return \Pim\Bundle\CatalogBundle\Entity\Channel
+     */
+    protected function createChannel($code, $label, $category)
+    {
+        $channel = new Channel();
+        $channel
+            ->setCode($code)
+            ->setLabel($label)
+            ->setCategory($category);
+
+        return $channel;
     }
 }
