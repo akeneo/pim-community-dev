@@ -1489,6 +1489,7 @@ class WebUser extends RawMinkContext
      * @param string       $code
      * @param PyStringNode $csv
      *
+     * @return null
      * @Then /^exported file of "([^"]*)" should contain:$/
      */
     public function exportedFileOfShouldContain($code, PyStringNode $csv)
@@ -1506,12 +1507,56 @@ class WebUser extends RawMinkContext
             );
         }
 
-        if (md5_file($path) !== md5((string) $csv)) {
-            throw $this->createExpectationException(
+        $delimiter = isset($config['processor']['delimiter']) ? $config['processor']['delimiter'] : ';';
+        $enclosure = isset($config['processor']['enclosure']) ? $config['processor']['enclosure'] : '"';
+        $escape    = isset($config['processor']['escape'])    ? $config['processor']['escape']    : '\\';
+
+        $csvFile = new \SplFileObject($path);
+        $csvFile->setFlags(
+            \SplFileObject::READ_CSV   |
+            \SplFileObject::READ_AHEAD |
+            \SplFileObject::SKIP_EMPTY |
+            \SplFileObject::DROP_NEW_LINE
+        );
+        $csvFile->setCsvControl($delimiter, $enclosure, $escape);
+
+        $expectedLines = array();
+        foreach ($csv->getLines() as $line) {
+            if (!empty($line)) {
+                $expectedLines[] = explode($delimiter, str_replace($enclosure, '', $line));
+            }
+        }
+
+        $actualLines = array();
+        while ($data = $csvFile->fgetcsv()) {
+            if (!empty($data)) {
+                $actualLines[] = array_map(
+                    function ($item) use ($enclosure) {
+                        return str_replace($enclosure, '', $item);
+                    },
+                    $data
+                );
+            }
+        }
+
+        $expectedCount = count($expectedLines);
+        $actualCount   = count($actualLines);
+        assertSame(
+            $expectedCount,
+            $actualCount,
+            sprintf('Expecting to see %d rows, found %d', $expectedCount, $actualCount)
+        );
+
+        foreach ($expectedLines as $index => $expectedLine) {
+            $actualLine = $actualLines[$index];
+            assertEquals(
+                $expectedLine,
+                $actualLine,
                 sprintf(
-                    "File \"%s\" doesn't contains the expected csv:\n%s",
-                    $path,
-                    file_get_contents($path)
+                    'Expecting row %d to be "%s", found "%s"',
+                    $index,
+                    implode($delimiter, $expectedLine),
+                    implode($delimiter, $actualLine)
                 )
             );
         }
