@@ -11,8 +11,8 @@ use Oro\Bundle\BatchBundle\Item\ItemProcessorInterface;
  * An abstract processor to serialize data into csv
  *
  * Use either one of the following services given the type of data to serialize
- *   - HeterogeneousProcessor (id: pim_import_export.processor.heterogeneous_csv_serializer)
- *   - HomogeneousProcessor   (id: pim_import_export.processor.homogeneous_csv_serializer)
+ *   - HeterogeneousProcessor (id: pim_import_export.processor.csv_serializer.heterogeneous)
+ *   - HomogeneousProcessor   (id: pim_import_export.processor.csv_serializer.homogeneous)
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
