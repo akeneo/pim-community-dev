@@ -10,6 +10,7 @@
 - Group types management
 - Import/Export product groups
 - Import/Export associations
+- Upload and import an archive
 
 ## Improvements
 - Export media into separated sub directories
@@ -18,6 +19,7 @@
 - Speed up completeness calculation
 - Display the "has product" filter by default in the product grid of group edit view
 - Display currency label in currencies datagrid
+- Disable changing the code of all configuration-related entities
 
 ## Bug fixes
 - Mass delete products
