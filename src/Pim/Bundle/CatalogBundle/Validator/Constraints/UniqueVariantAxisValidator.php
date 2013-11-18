@@ -85,7 +85,7 @@ class UniqueVariantAxisValidator extends ConstraintValidator
     {
         foreach ($entity->getGroups() as $variantGroup) {
             if ($variantGroup->getType()->isVariant()) {
-                $criteria = $this->prepareQueryCriterias($variantGroup);
+                $criteria = $this->prepareQueryCriterias($variantGroup, $entity);
                 $matchingProducts = $this->getMatchingProducts($variantGroup, $entity, $criteria);
                 if (count($matchingProducts) !== 0) {
                     $values = array();
@@ -106,18 +106,19 @@ class UniqueVariantAxisValidator extends ConstraintValidator
     /**
      * Prepare query criteria for variant group
      *
-     * @param Group $variantGroup
+     * @param Group            $variantGroup
+     * @param ProductInterface $entity
      *
      * @return array
      */
-    protected function prepareQueryCriterias(Group $variantGroup)
+    protected function prepareQueryCriterias(Group $variantGroup, ProductInterface $entity)
     {
         $criteria = array();
         foreach ($variantGroup->getAttributes() as $attribute) {
             $value = $entity->getValue($attribute->getCode());
             $criteria[] = array(
-                    'attribute' => $attribute,
-                    'option'    => $value ? $value->getOption() : null,
+                'attribute' => $attribute,
+                'option'    => $value ? $value->getOption() : null,
             );
         }
 
