@@ -55,3 +55,9 @@
         </div>
     {{ form_end(form) }}
 {% endblock %}
+
+{% block head_script_component %}
+    {{ parent() }}
+
+    {% include 'OroGridBundle:Include:javascript.html.twig' with { 'datagridView': historyDatagrid, 'selector': '#history-grid' } %}
+{% endblock %}
