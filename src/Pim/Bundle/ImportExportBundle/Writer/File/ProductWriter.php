@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\ImportExportBundle\Writer\File;
 
+use Symfony\Component\Filesystem\Filesystem;
 use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 
 /**
@@ -24,6 +25,9 @@ class ProductWriter extends FileWriter
     /** @var string */
     protected $archivePath;
 
+    /** @var string */
+    protected $mediaPath;
+
     /**
      * Constructor
      *
@@ -32,6 +36,18 @@ class ProductWriter extends FileWriter
     public function __construct(MediaManager $mediaManager)
     {
         $this->mediaManager = $mediaManager;
+    }
+
+    /**
+     * Remove the files if an archive has been created
+     */
+    public function __destruct()
+    {
+        if ($this->mediaPath) {
+            $fileSystem = new Filesystem();
+            $fileSystem->remove($this->mediaPath);
+            unlink(parent::getPath());
+        }
     }
 
     /**
@@ -63,6 +79,11 @@ class ProductWriter extends FileWriter
                     if ($result === true) {
                         $exportPath = $this->mediaManager->getExportPath($media);
                         $this->addToArchive(sprintf('%s/%s', $this->directoryName, $exportPath), $exportPath);
+
+                        if ($this->mediaPath === null) {
+                            $mediaPath = explode(DIRECTORY_SEPARATOR, $exportPath);
+                            $this->mediaPath = sprintf('%s/%s', $this->directoryName, reset($mediaPath));
+                        }
                     }
                 }
             }
