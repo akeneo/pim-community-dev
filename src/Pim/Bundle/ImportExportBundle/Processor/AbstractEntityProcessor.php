@@ -24,8 +24,8 @@ use Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
  * @abstract
  */
 abstract class AbstractEntityProcessor extends AbstractConfigurableStepElement implements
-     ItemProcessorInterface,
-     StepExecutionAwareInterface
+    ItemProcessorInterface,
+    StepExecutionAwareInterface
 {
     /**
      * Entity manager
