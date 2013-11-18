@@ -52,9 +52,12 @@ class RelationEntityGridListener extends CustomEntityGridListener
 
             $parameters = [
                 'data_in' => $added,
-                'data_not_in' => $removed,
-                'relation' => $this->relation
+                'data_not_in' => $removed
             ];
+
+            if ($this->relation->getId() != null) {
+                $parameters['relation'] = $this->relation;
+            }
 
             $queryBuilder->setParameters($parameters);
         }

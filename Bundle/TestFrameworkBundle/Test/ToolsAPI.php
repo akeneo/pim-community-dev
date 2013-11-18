@@ -94,7 +94,7 @@ class ToolsAPI
      * Test API response
      *
      * @param array $response
-     * @param array $result
+     * @param $result
      * @param $debugInfo
      */
     public static function assertEqualsResponse($response, $result, $debugInfo = '')
@@ -187,5 +187,22 @@ class ToolsAPI
         if (!is_null($value)) {
             $value = str_replace('%str%', $random, $value);
         }
+    }
+
+    /**
+     * @param Client $test
+     * @param $gridName
+     * @param array $filter
+     * @return null|\Symfony\Component\HttpFoundation\Response
+    */
+    public static function getEntityGrid($test, $gridName, $filter = array())
+    {
+        $test->request(
+            'GET',
+            $test->generate('oro_datagrid_index', array('gridName' => $gridName)),
+            $filter
+        );
+
+        return $test->getResponse();
     }
 }

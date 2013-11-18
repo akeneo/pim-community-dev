@@ -18,10 +18,7 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $treeBuilder->root('oro_entity')
-            ->children()
-                ->scalarNode('cache_dir')->cannotBeEmpty()->defaultValue('%kernel.cache_dir%/oro_entity')->end()
-            ->end();
+        $treeBuilder->root('oro_entity');
 
         return $treeBuilder;
     }
