@@ -50,19 +50,19 @@ Feature: Display the completeness of a product
     When I visit the "Completeness" tab
     Then I should see the completeness summary
     And I should see the completeness:
-      | channel   | locale                  | state    | message          | ratio |
-      | ecommerce | English (United States) | success  | Complete         | 100%  |
-      | ecommerce | French (France)         | warning  | 1 missing value  | 67%   |
-      | mobile    | English (United States) | disabled | 1 missing value  | 50%   |
-      | mobile    | French (France)         | danger   | 2 missing values | 0%    |
+      | channel    | locale                  | state    | message          | ratio |
+      | e-commerce | English (United States) | success  | Complete         | 100%  |
+      | e-commerce | French (France)         | warning  | 1 missing value  | 67%   |
+      | mobile     | English (United States) | disabled | 1 missing value  | 50%   |
+      | mobile     | French (France)         | danger   | 2 missing values | 0%    |
 
   Scenario: Successfully display the completeness for a second product
     Given I am on the "smartphone" product page
     When I visit the "Completeness" tab
     Then I should see the completeness summary
     And I should see the completeness:
-      | channel   | locale                  | state    | message         | ratio |
-      | ecommerce | English (United States) | danger   | 1 missing value | 0%    |
-      | ecommerce | French (France)         | success  | Complete        | 100%  |
-      | mobile    | English (United States) | disabled | Complete        | 100%  |
-      | mobile    | French (France)         | success  | Complete        | 100%  |
+      | channel    | locale                  | state    | message         | ratio |
+      | e-commerce | English (United States) | danger   | 1 missing value | 0%    |
+      | e-commerce | French (France)         | success  | Complete        | 100%  |
+      | mobile     | English (United States) | disabled | Complete        | 100%  |
+      | mobile     | French (France)         | success  | Complete        | 100%  |
