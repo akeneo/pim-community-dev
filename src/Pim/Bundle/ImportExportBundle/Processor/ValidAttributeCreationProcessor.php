@@ -7,8 +7,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Inflector\Inflector;
 use Oro\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
-use Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
-use Oro\Bundle\BatchBundle\Entity\StepExecution;
 use Oro\Bundle\BatchBundle\Item\InvalidItemException;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\manager\ProductManager;
@@ -23,8 +21,7 @@ use Pim\Bundle\CatalogBundle\manager\ProductManager;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class ValidAttributeCreationProcessor extends AbstractConfigurableStepElement implements
-    ItemProcessorInterface,
-    StepExecutionAwareInterface
+    ItemProcessorInterface
 {
     /**
      * Product manager
@@ -48,11 +45,6 @@ class ValidAttributeCreationProcessor extends AbstractConfigurableStepElement im
     protected $attributes;
 
     /**
-     * @var StepExecution
-     */
-    protected $stepExecution;
-
-    /**
      * Constructor
      *
      * @param ProductManager     $productManager
@@ -64,14 +56,6 @@ class ValidAttributeCreationProcessor extends AbstractConfigurableStepElement im
     ) {
         $this->productManager = $productManager;
         $this->validator      = $validator;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setStepExecution(StepExecution $stepExecution)
-    {
-        $this->stepExecution = $stepExecution;
     }
 
     /**
@@ -105,23 +89,26 @@ class ValidAttributeCreationProcessor extends AbstractConfigurableStepElement im
      * If the attribute is valid, it is stored into the attribute property
      *
      * @param array $item
+     *
+     * @throws InvalidItemException
      */
     private function processItem($item)
     {
         $attribute = $this->getAttribute($item);
-
         $this->updateLabels($attribute, $item);
         $this->updateGroup($attribute, $item);
         $this->updateParameters($attribute, $item);
 
         $violations = $this->validator->validate($attribute);
         if ($violations->count() > 0) {
+            $messages = array();
             foreach ($violations as $violation) {
-                $this->stepExecution->addError((string) $violation);
+                $messages[]= (string) $violation;
             }
+            throw new InvalidItemException(implode(', ', $messages), $item);
 
-            return;
         } else {
+
             $this->attributes[] = $attribute;
         }
     }
@@ -148,6 +135,8 @@ class ValidAttributeCreationProcessor extends AbstractConfigurableStepElement im
      *
      * @param ProductAttribute $attribute
      * @param array            $item
+     * 
+     * @throws InvalidItemException
      */
     protected function updateGroup(ProductAttribute $attribute, array $item)
     {
@@ -186,7 +175,7 @@ class ValidAttributeCreationProcessor extends AbstractConfigurableStepElement im
     protected function prepareParameters($data)
     {
         $parameters = array();
-        $exclude = array('code', 'type', 'group', 'available_locales', 'localizable', 'scope', 'default_value');
+        $exclude = array('code', 'type', 'group', 'available_locales', 'is_translatable', 'is_scopable', 'default_value');
         foreach (array_keys($data) as $key) {
             if (!in_array($key, $exclude) and !preg_match('/^label-(.+)/', $key, $matches)) {
                 $parameters[Inflector::camelize($key)] = $data[$key];
