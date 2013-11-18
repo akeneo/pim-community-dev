@@ -30,6 +30,7 @@ Overview
 ========
 
 Configuration of Workfow declares all aspects related to specific workflow:
+
 * basic properties of workflow like name and label
 * steps and transitions
 * attributes involved in workflow
@@ -48,6 +49,7 @@ Configuration Loading
 =====================
 
 To load configuration execute a command
+
 ```
 php app/console doctrine:fixtures:load --app/console doctrine:fixtures:load --append --fixtures=/path/to/bundles/WorkflowBundle/DataFixture
 ```
@@ -55,9 +57,9 @@ php app/console doctrine:fixtures:load --app/console doctrine:fixtures:load --ap
 This command will save configuration from all workflow.yml files of loaded bundles into WorkflowDefinition entities.
 It can be used in both cases when you want to load a new workflow or update existed one.
 
-**Warning**
-* --append options is crucial, if you skip it your data will be lost.
-* Workflow configuration cannot be merged, it means that you cannot override workflow that is defined in other bundle.
+**Warning** *--append* options is crucial, if you skip it your database will be purged.
+
+Workflow configuration cannot be merged, it means that you cannot override workflow that is defined in other bundle.
 If you will declare a workflow and another bundle will declare it's own workflow with the same name the command will
 trigger exception and data won't saved.
 
@@ -68,10 +70,10 @@ Root element of configuration is "workflows". Under this element workflows can b
 
 Single workflow configuration has next properties:
 
-* **unique name***
+* **name**
     Workflow should have a unique name in scope of all application. As workflow configuration doesn't support merging
     two workflows with the same name will lead to exception during configuration loading.
-* **label***
+* **label**
     *string*
     This value will be shown in the UI
 * **enabled**
@@ -80,7 +82,7 @@ Single workflow configuration has next properties:
 * **type**
     *string ("wizard", "entity" - default)*
     type of workflow.
-* **start_step***
+* **start_step**
     *string*
     The name of start step. It's optional if Workflow has start transition, otherwise start_step is required.
 * **attributes**
@@ -113,17 +115,17 @@ workflows:                        # Root elements
 Attributes Configuration
 ========================
 
-Workflow define schema of attributes. When Workflow Item is created it can manipulate it's own data that is mapped by
-Attributes. Each attribute must to have a type and may have options. When Workflow Item is saved it's data is
-serialized according to configuration of attributes. Saving data that is not mapped by any attribute or mismatched with
-attribute type is restricted.
+Workflow define configuration of attributes. When Workflow Item is created it can manipulate it's own data
+(Workflow Data) that is mapped by Attributes. Each attribute must to have a type and may have options.
+When Workflow Item is saved it's data is serialized according to configuration of attributes. Saving data that is
+not mapped by any attribute or mismatched with attribute type is restricted.
 
-Attribute described with next configuration:
+Single attribute can be described with next configuration:
 
 * **unique name***
     Workflow attributes should have unique name in scope of Workflow that they belong to.
     Step configuration references attributes by this value.
-* **type***
+* **type**
     *string*
     Type of attribute. Next types are supported:
     * **boolean**
@@ -141,7 +143,7 @@ Attribute described with next configuration:
     * **entity**
         Doctrine entity, option "class" is required and must be a class of Doctrine entity, also options
         "managed_entity", "bind" and "multiple" can be used
-* **label***
+* **label**
     *string*
     Label can be shown in the UI
 * **options**
@@ -212,7 +214,7 @@ workflows:
 Steps configuration
 ===================
 
-Steps are like nodes in graph of workflow's transitions. Step must have a unique name and label and can optionally
+Steps are like nodes in graph of Workflow Transitions. Step must have a unique name and label and can optionally
 contain form options, allowed transitions and other options. If Workflow has type wizard user will be able to see in
 what step Workflow instance is at the moment, possible transitions and form of current step (if it is configured
 via form options). Step can be connected with attributes via form options. On different step it is possible to attach
@@ -220,15 +222,16 @@ any attribute with any form options.
 
 Summarizing all above, step has next configuration:
 
-* **unique name***
+* **name**
     *string*
     Step must have unique name in scope of Workflow
-* **label***
+* **label**
     *string*
     Label of step, can be shown in UI if Workflow has type wizard
 * **template**
     *string*
-    A custom Twig template that is used to render Worklflow in step in wizard page. By default template OroWorkflowBundle:WorkflowStep:edit.html.twig is used.
+    A custom Twig template that is used to render Worklflow in step in wizard page.
+    By default template OroWorkflowBundle:WorkflowStep:edit.html.twig is used.
 * **order**
     *integer*
     This value is used in wizard page to sort steps in UI.
@@ -240,6 +243,10 @@ Summarizing all above, step has next configuration:
     A form type that will be used to render form of step.
 * **form_options**
     These options will be passed to form type of step, they can contain options for form types of attributes.
+* **view_attributes**
+    List of attributes that will be shown when step is selected on Workflow wizard UI. Custom path could be specified
+    instead of name of attribute. Each view attribute could have "view_type" option which is used to find Twig block
+    than will render value.
 * **allowed_transitions**
     Optional list of allowed transitions. If no transitions are allowed it's same as is_final option set to true
 
@@ -264,6 +271,8 @@ workflows:
                             form_type: integer # this is a name of form type that will be added to step form to represent value of attribute
                             options:           # any options that should be applied to form type that represents attribute's value
                                 required: true
+                view_attributes:
+                    - { path: $phone_call.number, label: "Phone number" } # render number property of phone_call attribute
             start_conversation:
                 label: 'Call Phone Conversation'
                 template: 'AcmeDemoWorkflowBundle:Workflow:phoneCall.html.twig'
@@ -281,10 +290,14 @@ workflows:
                                 choices: {1: 'Yes', 0: 'No'}
                                 required: true
                                 multiple: false
+                view_attributes:
+                    - call_timeout # render call_timeout attribute
             end_call:
                 label: 'End Phone Call'
                 template: 'AcmeDemoWorkflowBundle:Workflow:phoneCall.html.twig'
                 is_final: true
+                view_attributes:
+                    - { attribute: conversation_result, view_type: custom } # render conversation_result attribute using custom block
 ```
 
 Transitions Configuration
@@ -307,9 +320,15 @@ Transition configuration has next options:
     *boolean*
     If true than this transition can be used to start new workflow. At least one start transition is required if
     workflow doesn't have start_step attribute.
-* **options**
-    Options of transition that can have additional configuration, for example option with name
-    frontend (a list of frontend options)
+* **form_type**
+    *string (oro_workflow_attributes - default)*
+    A form type that will be used to render form of transition.
+* **frontend_options**
+    Can have such frontend options as **class** (a CSS class applied to transition button), **icon**
+    (CSS class of icon of transition button).
+* **form_options**
+    These options will be passed to form type of transition, they can contain options for form types of attributes that
+    will be shown when user clicks transition button.
 
 Example
 -------
@@ -325,10 +344,15 @@ workflows:
                                                             # when transition will be performed
 
                 transition_definition: connected_definition # A reference to Transition Definition configuration
-                options:                                    # options of transition
-                    frontend:
-                        icon: 'icon-ok'
-                        class: 'btn-primary'
+                frontend_options:
+                    icon: 'icon-ok'                         # add icon to transition button with class "icon-ok"
+                    class: 'btn-primary'                    # add css class "btn-primary" to transition button
+                form_options:
+                    attribute_fields:                       # fields of form that will be shown when transition button is clicked
+                        call_timeout:
+                            form_type: integer
+                            options:
+                                required: false
             not_answered:
                 label: "Not answered"
                 step_to: end_call
@@ -342,7 +366,7 @@ workflows:
 Transition Definition Configuration
 ===================================
 
-Transition Definition is used by Transition to check Conditions and to perform Post Actions.
+Transition Definition is used by Transition to check Conditions and to perform Init Action and Post Actions.
 
 Transition definition configuration has next options.
 
@@ -350,6 +374,8 @@ Transition definition configuration has next options.
     Configuration of Conditions that must satisfy to allow transition
 * **post_actions**
     Configuration of Post Actions that must be performed after transit to next step will be performed.
+* **init_actions**
+    Configuration of Init Actions that may be performed on workflow item before conditions and post actions.
 
 Example
 -------
@@ -365,7 +391,9 @@ workflows:
                     @not_blank: [$call_timeout]
                 # Set call_successfull = true
                 post_actions:
-                    @assign_value: [$call_successfull, true]
+                    - @assign_value: [$call_successfull, true]
+                init_actions:
+                    - @increment_value: [$call_attempt]
             not_answered_definition: # Callee did not answer
                 # Make sure that caller waited at least 60 seconds
                 conditions: # call_timeout not empty and >= 60
@@ -402,6 +430,9 @@ Conditions configuration is a part of Transition Definition Configuration. It de
 that are applied on the Workflow Item to check is the Transition could be performed. Single condition configuration
 contains alias - a unique name of condition and options.
 
+Optionally each condition can have a constraint message. All messages of not passed conditions will be shown to user
+when transition could not be performed.
+
 Alias of condition starts from "@" symbol and must refer to registered condition. For example "@or" refers to logical
 OR condition.
 
@@ -426,25 +457,33 @@ workflows:
                         - @blank: [$call_timeout]
                         - @or:
                             - @and:
-                                - @greater_or_equal: [$call_timeout, 60]
-                                - @less: [$call_timeout, 100]
+                                message: Call timeout must be between 60 and 100
+                                parameters:
+                                    - @greater_or_equal: [$call_timeout, 60]
+                                    - @less: [$call_timeout, 100]
                             - @and:
-                                - @less_or_equal: [$call_timeout, 30]
-                                - @greater: [$call_timeout, 0]
+                                message: Call timeout must be between 0 and 30
+                                parameters:
+                                    - @less_or_equal: [$call_timeout, 30]
+                                    - @greater: [$call_timeout, 0]
 ```
 
-Post Actions
-============
+Post Actions and Init Action
+============================
 
-Post actions configuration complements Transition Definition configuration. All configured Post Actions will be
-performed during transition AFTER conditions will be qualified and current Step of Workflow Item will be changed to
-the corresponding one (step_to option) in the Transition.
+Post Actions and Init Action configuration complements Transition Definition configuration.
 
-Single Post Action configuration consists from alias of Post Action (which is a unique name of Post Action) and options
+Post Actions will be performed during transition AFTER conditions will be qualified and current Step of Workflow Item
+will be changed to the corresponding one (step_to option) in the Transition.
+
+Init Actions may be performed before transition. One of possible init actions usage scenario is to fill Workflow
+Item with default values, which will be used by Transition form if it any exist.
+
+Action configuration consists from alias of Action (which is a unique name of Action) and options
 (if such are required).
 
-Similarly to Conditions alias of Post Action starts from "@" symbol and must refer to registered PostAction. For
-example "@create_entity" refers to Post Action which creates entity.
+Similarly to Conditions alias of Action starts from "@" symbol and must refer to registered Action. For example
+"@create_entity" refers to Action which creates entity.
 
 Example
 -------
@@ -455,6 +494,8 @@ workflows:
         # ...
         transition_definitions:
             # some transition definition
+                init_actions:
+                    - @assign_value: [$call_attempt, 1]
                 post_actions:
                     - @create_entity: # create an entity PhoneConversation
                         class: Acme\Bundle\DemoWorkflowBundle\Entity\PhoneConversation
@@ -469,8 +510,7 @@ workflows:
 Example Workflow Configuration
 ==============================
 
-An example of this Workflow can be found in Acme\Bundle\DemoWorkflowBundle.
-There are two entities that are involved in this Workflow:
+In this example configuration of Workflow there are two entities:
 
 * Phone Call
 * Phone Conversation
@@ -505,6 +545,8 @@ workflows:
                             form_type: integer
                             options:
                                 required: true
+                view_attributes:
+                    - { path: $phone_call.number, label: "Phone number" } # render number property of phone_call attribute
             start_conversation:
                 label: 'Call Phone Conversation'
                 template: 'AcmeDemoWorkflowBundle:Workflow:phoneCall.html.twig'
@@ -522,10 +564,14 @@ workflows:
                                 choices: {1: 'Yes', 0: 'No'}
                                 required: true
                                 multiple: false
+                view_attributes:
+                    - call_timeout # render call_timeout attribute
             end_call:
                 label: 'End Phone Call'
                 template: 'AcmeDemoWorkflowBundle:Workflow:phoneCall.html.twig'
                 is_final: true
+                view_attributes:
+                    - { attribute: conversation_result, view_type: custom } # render conversation_result attribute using custom block
         attributes:
             phone_call:
                 label: Phone Call
@@ -559,6 +605,15 @@ workflows:
                 label: 'Connected'
                 step_to: start_conversation
                 transition_definition: connected_definition
+                frontend_options:
+                    icon: 'icon-ok'                         # add icon to transition button with class "icon-ok"
+                    class: 'btn-primary'                    # add css class "btn-primary" to transition button
+                form_options:
+                    attribute_fields:                       # fields of form that will be shown when transition button is clicked
+                        call_timeout:
+                            form_type: integer
+                            options:
+                                required: false
             not_answered:
                 label: "Not answered"
                 step_to: end_call
@@ -575,6 +630,8 @@ workflows:
                 # Set call_successfull = true
                 post_actions:
                     - @assign_value: [$call_successfull, true]
+                init_actions:
+                    - @increment_value: [$call_attempt]
             not_answered_definition: # Callee did not answer
                 # Make sure that caller waited at least 60 seconds
                 conditions: # call_timeout not empty and >= 60

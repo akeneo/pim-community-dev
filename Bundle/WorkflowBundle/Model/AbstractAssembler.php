@@ -3,9 +3,32 @@
 namespace Oro\Bundle\WorkflowBundle\Model;
 
 use Oro\Bundle\WorkflowBundle\Exception\AssemblerException;
+use Oro\Bundle\WorkflowBundle\Model\ConfigurationPass\ConfigurationPassInterface;
 
 abstract class AbstractAssembler
 {
+    /**
+     * @var ConfigurationPassInterface[]
+     */
+    protected $configurationPasses = array();
+
+    public function addConfigurationPass(ConfigurationPassInterface $configurationPass)
+    {
+        $this->configurationPasses[] = $configurationPass;
+    }
+
+    /**
+     * @param array $data
+     * @return array
+     */
+    protected function passConfiguration(array $data)
+    {
+        foreach ($this->configurationPasses as $configurationPass) {
+            $data = $configurationPass->passConfiguration($data);
+        }
+        return $data;
+    }
+
     /**
      * Get entity type
      *

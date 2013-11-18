@@ -23,29 +23,35 @@ Main Entities
 
 Workflow consists of several related entities.
 
-* **Step** - entity that shows current status of Workflow, has form options that will be used to rendered attributes on
-step form as a fields and list of allowed transitions that will rendered as a buttons. Before rendering each
-transitions checked is it allowed for current Workflow Item. Contains name, label and template as additional parameters.
+* **Step** - entity that shows current state of Workflow. It can have form, attributes to display, allowed transitions
+that will be rendered as a buttons when step is displayed, name, label and template and some other additional
+parameters.
 
-* **Attribute** - entity that represent one value in Workflow Item, can be bind to a step form, but doesn't know about
-it's form representation. Attribute knows about its type (string, object, entity etc.) and additional options to specify
-whether it contains managed entity, should entity be bound to Workflow Item and can entity have several related
-instances of Workflow Item. Contains name and label as additional parameters.
+* **Attribute** - entity that represent a value in Workflow Item. Attribute consists of name, label, attribute type
+(string, object, entity etc.) and additional options depending on type (for example "class" when type is "object").
 
-* **Transition** - action that change current step of Workflow Item (i.e. moves it from one step to another) according
-to specified Conditions, and then performs transition Post Actions. Transition can be used as a start transition - it
-means that this transition can be used to create new Workflow Item and start Workflow. Contains name, label and options
-as additional parameters.
+* **Transition** - action that change current step of Workflow Item (i.e. moves it from one step to another). Transition
+is allowed if it's Conditions are satisfied. Before Transition performed Init Actions are executed and after
+transition performed - Post Actions are executed. Transition can be used as a start transition - it means that this
+transition will start Workflow and create new instance of Workflow Item. Transition optionally could have a form. In
+this case this form will be showed to user when Transition button is clicked. Transition contains name, label and some
+additional options.
 
-* **Condition** - defines whether specific Transition is allowed with specified input data, conditions can be nested.
+* **Condition** - defines whether specific Transition is allowed with specified input data. Conditions can be nested.
 
-* **Post Action** - additional action that performed after Transition, can be used to manage entities (create, find),
-manipulate attributes (assign values), perform any other actions.
+* **Actions** - actions are assigned to Transition and executed when Transition performed. There are two kind of actions:
+Init Action and Post Actions. The difference between them is that Init Actions are executed before Transition and
+Post Actions are executed after Transition. Actions can be used to manage entities (create, find), manipulate attributes
+(assign values) and to perform any other actions.
 
-* **Workflow Item** - entity related to specific instance of Workflow, contains all Attribute values entered by user or
-automatically in active session and save it in DB, used as main entry point for all manipulations with Attributes.
-One entity can have several related Workflow Items of one Workflow type. Contains Worfklow name, current Step name and
-list of bound entities (these entities that must know about this Workflow Item).
+* **Workflow** - aggregates steps, attributes and transitions. Workflow is a model that doesn't have own state but it
+can have instances as Workflow Items.
+
+* **Workflow Data** - aggregated by Workflow Item. Each value associated with Attribute.
+Those values can be entered by user directly or assigned via Actions.
+
+* **Workflow Item** - associated with Workflow and indirectly associated with Steps, Transitions and
+Attributes. Has it's own state in Workflow Data, current Step name, list of bound entities and other data.
 
 Entity and Wizard Workflows
 ===========================
@@ -54,12 +60,20 @@ There are two types of Workflows:
 * wizard
 * entity (default)
 
+**Wizard Workflow**
+
 When user starts wizard Workflow then he will be redirected to special Workflow page. On this page he can see next
 UI blocks:
-* current step label attributes form
+* list of steps labels as links
+* optional area with form of step
+* optional area with view attributes of step
 * all other steps and their forms in read only mode
-* possible transitions
+* buttons with possible transitions
 * custom blocks configured by developer (for example information block with some entity data)
+
+![Example of Wizard Workflow UI](../images/wizard-workflow-ui-example.png)
+
+**Entity Workflow**
 
 Unlike wizard, entity Workflow doesn't have special page and it's directly managed on entity page. Another difference
 from wizard Workflow is that steps of entity Workflow cannot have forms and user performs transitions on managed entity
@@ -68,15 +82,16 @@ page by clicking on Workflow buttons.
 How it works?
 =============
 
-In both cases when user clicks button with start transition in the background a new instance of Workflow Item of
-specific Workflow is created and, if required, managed entity instance is set to it.
+When user clicks button with start transition (and submit transition form if it's exist) in the background
+a new instance of Workflow Item of specific Workflow is created.
 
 Each Step has a list of allowed Transitions, and each Transition has list of Conditions that define whether this
-Transition can be performed with specific Workflow Item data. If Transition is allowed then user can perform it.
-If transition has Post Actions then these Post Actions will be performed right after transition. So, user can move
-through Steps of Workflow until he reach the final Step where Workflow will be finished and Workflow Item will be
-marked as closed. It's also possible that Workflow doesn't have final step, in this case user can perform transitions
-until they are allowed.
+Transition can be performed with specific Workflow Item state. If Transition is allowed then user can perform it.
+If Transition has Init Actions they are executed before Transition. If transition has Post Actions then
+these Post Actions will be performed right after Transition. So, user can move through Steps of Workflow until
+he reach the final Step where Workflow will be finished and Workflow Item will be marked as closed.
+It's also possible that Workflow doesn't have a final step. In this case user can perform transitions until they are
+allowed.
 
 Workflow Item stores all collected data and current step, so, user can stop his progress on Workflow at any moment and
 then return to it, and Workflow will have exactly the same state.
@@ -99,8 +114,8 @@ of the entity. Managed entities attributes are bound by default.
 Configuration
 =============
 
-All Workflow entities except Workflow Item is described in configuration. Let's look as the example of simple Workflow
-configuration that creates new user.
+All Workflow entities are described in configuration. Look at example of simple Workflow configuration that creates a
+new user.
 
 ```
 workflows:

@@ -4,7 +4,7 @@ namespace Oro\Bundle\WorkflowBundle\Model\Condition;
 
 use Oro\Bundle\WorkflowBundle\Exception\ConditionException;
 
-class True implements ConditionInterface
+class True extends AbstractCondition
 {
     /**
      * Always return TRUE
@@ -12,7 +12,7 @@ class True implements ConditionInterface
      * @param mixed $context
      * @return boolean
      */
-    public function isAllowed($context)
+    protected function isConditionAllowed($context)
     {
         return true;
     }

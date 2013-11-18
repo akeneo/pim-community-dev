@@ -493,8 +493,15 @@ class WorkflowManagerTest extends \PHPUnit_Framework_TestCase
      */
     protected function createWorkflow($name = self::TEST_WORKFLOW_NAME, array $entityAttributes = array())
     {
+        $attributeManager = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\AttributeManager')
+            ->setMethods(array('getManagedEntityAttributes'))
+            ->getMock();
+        $attributeManager->expects($this->any())
+            ->method('getManagedEntityAttributes')
+            ->will($this->returnValue($entityAttributes));
+
         $worklflow = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\Workflow')
-            ->setConstructorArgs(array(new StepManager(), new AttributeManager(), new TransitionManager()))
+            ->setConstructorArgs(array(null, $attributeManager, null))
             ->setMethods(
                 array(
                     'getManagedEntityAttributes',
@@ -505,9 +512,6 @@ class WorkflowManagerTest extends \PHPUnit_Framework_TestCase
                 )
             )
             ->getMock();
-        $worklflow->expects($this->any())
-            ->method('getManagedEntityAttributes')
-            ->will($this->returnValue($entityAttributes));
 
         /** @var Workflow $worklflow */
         $worklflow->setName($name);

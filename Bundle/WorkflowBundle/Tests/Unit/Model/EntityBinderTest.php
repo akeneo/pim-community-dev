@@ -36,6 +36,11 @@ class EntityBinderTest extends \PHPUnit_Framework_TestCase
     protected $workflow;
 
     /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $attributeManager;
+
+    /**
      * @var EntityBinder
      */
     protected $binder;
@@ -51,10 +56,11 @@ class EntityBinderTest extends \PHPUnit_Framework_TestCase
             ->getMock();
         $this->workflowItem = $this->getMock('Oro\Bundle\WorkflowBundle\Entity\WorkflowItem');
         $this->workflowData = $this->getMock('Oro\Bundle\WorkflowBundle\Model\WorkflowData');
+        $this->attributeManager = $this->getMock('Oro\Bundle\WorkflowBundle\Model\AttributeManager');
         $this->workflow = $this->getMock(
             'Oro\Bundle\WorkflowBundle\Model\Workflow',
-            array(),
-            array(new StepManager(), new AttributeManager(), new TransitionManager())
+            null,
+            array(null, $this->attributeManager, null)
         );
 
         $this->binder = new EntityBinder($this->workflowRegistry, $this->doctrineHelper);
@@ -83,7 +89,7 @@ class EntityBinderTest extends \PHPUnit_Framework_TestCase
         $this->workflowRegistry->expects($this->once())->method('getWorkflow')->with($workflowName)
             ->will($this->returnValue($this->workflow));
 
-        $this->workflow->expects($this->once())->method('getBindEntityAttributeNames')
+        $this->attributeManager->expects($this->once())->method('getBindEntityAttributeNames')
             ->will($this->returnValue($bindAttributeNames));
 
         $this->workflowData->expects($this->once())->method('getValues')->with($bindAttributeNames)
@@ -113,7 +119,7 @@ class EntityBinderTest extends \PHPUnit_Framework_TestCase
         $this->workflowRegistry->expects($this->once())->method('getWorkflow')->with($workflowName)
             ->will($this->returnValue($this->workflow));
 
-        $this->workflow->expects($this->once())->method('getBindEntityAttributeNames')
+        $this->attributeManager->expects($this->once())->method('getBindEntityAttributeNames')
             ->will($this->returnValue($bindAttributeNames));
 
         $this->workflowData->expects($this->once())->method('getValues')->with($bindAttributeNames)

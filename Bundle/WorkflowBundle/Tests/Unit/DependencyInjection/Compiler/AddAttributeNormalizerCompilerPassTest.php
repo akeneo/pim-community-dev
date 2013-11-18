@@ -2,8 +2,6 @@
 
 namespace Oro\Bundle\WorkflowBundle\Tests\Unit\DependencyInjection\Compiler;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
-
 use Oro\Bundle\WorkflowBundle\DependencyInjection\Compiler\AddAttributeNormalizerCompilerPass;
 use Symfony\Component\DependencyInjection\Reference;
 
