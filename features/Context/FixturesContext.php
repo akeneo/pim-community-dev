@@ -937,11 +937,27 @@ class FixturesContext extends RawMinkContext
      * @param string $identifier
      * @param string $value
      *
-     * @Given /^the (\w+) (\w+) of (\w+) should be "([^"]*)"$/
+     * @Given /^the (\w+) (\w+) of "([^"]*)" should be "([^"]*)"$/
      */
     public function theOfShouldBe($lang, $attribute, $identifier, $value)
     {
         $productValue = $this->getProductValue($identifier, strtolower($attribute), $this->locales[$lang]);
+
+        assertEquals($value, $productValue->getData());
+    }
+
+    /**
+     * @param string $lang
+     * @param string $scope
+     * @param string $attribute
+     * @param string $identifier
+     * @param string $value
+     *
+     * @Given /^the (\w+) (\w+) (\w+) of "([^"]*)" should be "([^"]*)"$/
+     */
+    public function theScopableOfShouldBe($lang, $scope, $attribute, $identifier, $value)
+    {
+        $productValue = $this->getProductValue($identifier, strtolower($attribute), $this->locales[$lang], $scope);
 
         assertEquals($value, $productValue->getData());
     }
@@ -1103,15 +1119,40 @@ class FixturesContext extends RawMinkContext
      * @param string $productCode
      * @param string $familyCode
      *
-     * @Given /^family of "([^"]*)" should be "([^"]*)"$/
+     * @Given /^(?:the )?family of "([^"]*)" should be "([^"]*)"$/
      */
-    public function familyOfShouldBe($productCode, $familyCode)
+    public function theFamilyOfShouldBe($productCode, $familyCode)
     {
         $family = $this->getProduct($productCode)->getFamily();
         if (!$family) {
             throw \Exception(sprintf('Product "%s" doesn\'t have a family', $productCode));
         }
         assertEquals($familyCode, $family->getCode());
+    }
+
+    /**
+     * @param string $productCode
+     * @param string $categoryCodes
+     *
+     * @return null
+     * @Given /^(?:the )?categor(?:y|ies) of "([^"]*)" should be "([^"]*)"$/
+     */
+    public function theCategoriesOfShouldBe($productCode, $categoryCodes)
+    {
+        $categories = $this->getProduct($productCode)->getCategories();
+        if (!$categories) {
+            if (!$categoryCodes) {
+                return;
+            } else {
+                throw \Exception(sprintf('Product "%s" doesn\'t belong to any categories', $productCode));
+            }
+        }
+        $categories = $categories->map(
+            function ($category) {
+                return $category->getCode();
+            }
+        )->toArray();
+        assertEquals($this->listToArray($categoryCodes), $categories);
     }
 
     /**

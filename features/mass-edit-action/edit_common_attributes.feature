@@ -57,9 +57,9 @@ Feature: Edit common attributes of many products at once
     And I display the Name attribute
     And I change the "Name" to "Lamp"
     And I move on to the next step
-    Then the english name of lamp should be "Lamp"
-    And the english name of torch should be "Lamp"
-    And the english name of ceiling should be "Lamp"
+    Then the english name of "lamp" should be "Lamp"
+    And the english name of "torch" should be "Lamp"
+    And the english name of "ceiling" should be "Lamp"
 
   Scenario: Succesfully update many price values at once
     Given I am on the products page

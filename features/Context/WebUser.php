@@ -1201,9 +1201,10 @@ class WebUser extends RawMinkContext
      */
     public function iUploadAndImportTheFile($file)
     {
-        $this
-            ->getPage('Import show')
-            ->uploadAndImportFile($this->replacePlaceholders($file));
+        $this->getCurrentPage()->clickLink('Upload and import');
+        $this->attachFileToField($this->replacePlaceholders($file), 'Drop a file or click here');
+        $this->getCurrentPage()->pressButton('Upload and import now');
+
         sleep(10);
         $this->getMainContext()->reload();
         $this->wait();
