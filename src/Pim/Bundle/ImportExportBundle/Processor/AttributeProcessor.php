@@ -135,7 +135,7 @@ class AttributeProcessor extends AbstractConfigurableStepElement implements Item
      *
      * @param ProductAttribute $attribute
      * @param array            $item
-     * 
+     *
      * @throws InvalidItemException
      */
     protected function updateGroup(ProductAttribute $attribute, array $item)
