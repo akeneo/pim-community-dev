@@ -34,7 +34,7 @@ Feature: Browse products by locale and scope
 
   Scenario: Successfully display english ecommerce products data on products page
     Given I switch the locale to "en_US"
-    And I filter by "Channel" with value "Ecommerce"
+    And I filter by "Channel" with value "E-Commerce"
     Then I should see product postit
     And the row "postit" should contain:
       | column      | value                    |
@@ -58,11 +58,11 @@ Feature: Browse products by locale and scope
 
   Scenario: Successfully display french ecommerce products data on products page
     Given I switch the locale to "fr_FR"
-    And I filter by "Channel" with value "Ecommerce"
+    And I filter by "Channel" with value "E-Commerce"
     Then I should see product postit
     And the row "postit" should contain:
       | column        | value                    |
-      | [SKU]         | postit                   |
+      | SKU           | postit                   |
       | [name]        | Etiquette                |
       | [image]       | large.jpeg               |
       | [description] | Ma description ecommerce |
@@ -74,7 +74,7 @@ Feature: Browse products by locale and scope
     Then I should see product postit
     And the row "postit" should contain:
       | column        | value                 |
-      | [SKU]         | postit                |
+      | SKU           | postit                |
       | [name]        | Etiquette             |
       | [image]       | small.jpeg            |
       | [description] | Ma description mobile |
