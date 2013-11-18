@@ -88,10 +88,10 @@ class OwnershipConditionDataBuilder
             || !$this->getUserId()
             || !$this->entityMetadataProvider->isProtectedEntity($entityClassName)
         ) {
-            return null;
+            return [];
         }
 
-        $condition = [];
+        $condition = null;
 
         $observer = new OneShotIsGrantedObserver();
         $this->aclVoter->addOneShotIsGrantedObserver($observer);

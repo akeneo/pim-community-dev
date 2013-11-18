@@ -37,6 +37,8 @@ class AclHelper
      */
     protected $em;
 
+    protected $entityAliases;
+
     /**
      * @param $builder
      */
@@ -55,6 +57,7 @@ class AclHelper
      */
     public function apply($query, $permission = "VIEW")
     {
+        $this->entityAliases = [];
         if ($query instanceof QueryBuilder) {
             $query = $query->getQuery();
         }
@@ -171,6 +174,7 @@ class AclHelper
             if (!empty($identificationVariableDeclaration->joins)) {
                 /** @var $join Join */
                 foreach ($identificationVariableDeclaration->joins as $joinKey => $join) {
+                    //check if join is simple join (join some_table on (some_table.id = parent_table.id))
                     if ($join->joinAssociationDeclaration instanceof RangeVariableDeclaration) {
                         $condition = $this->processRangeVariableDeclaration(
                             $join->joinAssociationDeclaration,
@@ -204,13 +208,21 @@ class AclHelper
      */
     protected function processJoinAssociationPathExpression(IdentificationVariableDeclaration $declaration, $key,  $permission)
     {
-        $metadata = $this->em->getClassMetadata($declaration->rangeVariableDeclaration->abstractSchemaName);
         /** @var Join $join */
         $join = $declaration->joins[$key];
+
+        $joinParentEntityAlias = $join->joinAssociationDeclaration->joinAssociationPathExpression->identificationVariable;
+        $joinParentClass = $this->entityAliases[$joinParentEntityAlias];
+        $metadata = $this->em->getClassMetadata($joinParentClass);
+
         $fieldName = $join->joinAssociationDeclaration->joinAssociationPathExpression->associationField;
 
         $associationMapping = $metadata->getAssociationMapping($fieldName);
         $targetEntity = $associationMapping['targetEntity'];
+
+        if (!isset($this->entityAliases[$join->joinAssociationDeclaration->aliasIdentificationVariable])) {
+            $this->entityAliases[$join->joinAssociationDeclaration->aliasIdentificationVariable] = $targetEntity;
+        }
 
         $resultData = $this->builder->getAclConditionData($targetEntity, $permission);
 
@@ -243,12 +255,13 @@ class AclHelper
         $permission,
         $isJoin = false
     ) {
+        $this->addEntityAlias($rangeVariableDeclaration);
         $entityName = $rangeVariableDeclaration->abstractSchemaName;
         $entityAlias = $rangeVariableDeclaration->aliasIdentificationVariable;
 
         $resultData = $this->builder->getAclConditionData($entityName, $permission);
 
-        if (is_array($resultData)) {
+        if ($resultData === null || !empty($resultData)) {
             $entityField = $value = null;
             if (!empty($resultData)) {
                 list($entityField, $value) = $resultData;
@@ -267,5 +280,13 @@ class AclHelper
         }
 
         return null;
+    }
+
+    protected function addEntityAlias(RangeVariableDeclaration $rangeDeclaration)
+    {
+        $alias = $rangeDeclaration->aliasIdentificationVariable;
+        if (!isset($this->entityAliases[$alias])) {
+            $this->entityAliases[$alias] = $rangeDeclaration->abstractSchemaName;
+        }
     }
 }
