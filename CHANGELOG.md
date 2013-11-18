@@ -24,7 +24,7 @@
 
 ## BC breaks
 - Command "pim:product:completeness-calculator" has been replaced into "pim:completeness:calculate"
-
+- Refactor in ImportExport bundle for Readers, Writers and Processors
 
 # 1.0.0-beta-2 - "Hold the Lion, Please" (2013-10-29)
 
