@@ -76,6 +76,7 @@ attributes:
         parameters:
             useableAsGridColumn: true
             useableAsGridFilter: true
+            dateType:            'date'
             dateMin:             '2012-01-01'
             dateMax:             '2014-01-01'
             sortOrder:           5
@@ -97,6 +98,7 @@ attributes:
         description: File upload
         group:       seo
         parameters:
+            maxFileSize: 2000
             sortOrder: 2
     size:
         labels:
