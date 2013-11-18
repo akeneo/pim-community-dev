@@ -89,7 +89,7 @@ function(_, Backbone, __, app, messenger, routing, LoadingMask,
             this.$el.append(this.loadingMask.render().$el);
 
             var data = [];
-            if (this.storageEl) {
+            if (this.storageEl && this.storageEl.val() != '') {
                 var data = JSON.parse(this.storageEl.val());
             }
 
