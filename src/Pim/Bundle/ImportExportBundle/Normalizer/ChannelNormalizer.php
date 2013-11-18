@@ -39,7 +39,7 @@ class ChannelNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceOf Channel && in_array($format, $this->supportedFormats);
+        return $data instanceof Channel && in_array($format, $this->supportedFormats);
     }
 
     /**
