@@ -150,9 +150,11 @@ class ChannelController extends AbstractDoctrineController
             );
         }
 
+        $historyGrid = $channel->getId() ?$this->getHistoryGrid($channel)->createView() : null;
+
         return array(
             'form' => $this->channelForm->createView(),
-            'historyDatagrid' => $this->getHistoryGrid($channel)->createView()
+            'historyDatagrid' => $historyGrid
         );
     }
 
