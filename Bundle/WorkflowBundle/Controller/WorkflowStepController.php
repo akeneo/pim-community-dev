@@ -3,7 +3,7 @@
 namespace Oro\Bundle\WorkflowBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Bundle\WorkflowBundle\Model\Workflow;
@@ -27,7 +27,14 @@ class WorkflowStepController extends Controller
         /** @var WorkflowManager $workflowManager */
         $workflowManager = $this->get('oro_workflow.manager');
         $workflow = $workflowManager->getWorkflow($workflowItem);
-        $currentStep = $workflow->getStep($workflowItem->getCurrentStepName());
+
+        if ($workflow->getType() != Workflow::TYPE_WIZARD) {
+            throw new BadRequestHttpException(
+                sprintf('Workflow type "%s" is not compatible with edit action.', $workflow->getType())
+            );
+        }
+
+        $currentStep = $workflow->getStepManager()->getStep($workflowItem->getCurrentStepName());
 
         $data = array(
             'workflow' => $workflow,

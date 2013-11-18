@@ -4,7 +4,7 @@ namespace Oro\Bundle\WorkflowBundle\Model\Condition;
 
 use Oro\Bundle\WorkflowBundle\Exception\ConditionException;
 
-abstract class AbstractComposite implements ConditionInterface
+abstract class AbstractComposite extends AbstractCondition
 {
     /**
      * @var ConditionInterface[]

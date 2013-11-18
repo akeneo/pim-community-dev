@@ -108,8 +108,9 @@ class FieldNodeDefinition extends AbstractNodeDefinition
     /**
      * @param $name
      * @param $options
-     *
      * @return mixed
+     *
+     * TODO: use ConstraintFactory here, https://magecore.atlassian.net/browse/BAP-2270
      */
     protected function newConstraint($name, $options)
     {

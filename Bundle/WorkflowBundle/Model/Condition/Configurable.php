@@ -2,10 +2,9 @@
 
 namespace Oro\Bundle\WorkflowBundle\Model\Condition;
 
-use Oro\Bundle\WorkflowBundle\Model\Condition\ConditionAssembler;
-use Oro\Bundle\WorkflowBundle\Model\Condition\ConditionInterface;
+use Doctrine\Common\Collections\Collection;
 
-class Configurable implements ConditionInterface
+class Configurable extends AbstractCondition
 {
     const ALIAS = 'configurable';
 
@@ -41,12 +40,12 @@ class Configurable implements ConditionInterface
     /**
      * {@inheritdoc}
      */
-    public function isAllowed($context)
+    public function isAllowed($context, Collection $errors = null)
     {
         if (!$this->condition) {
             $this->condition = $this->assembler->assemble($this->configuration);
         }
 
-        return $this->condition->isAllowed($context);
+        return $this->condition->isAllowed($context, $errors);
     }
 }

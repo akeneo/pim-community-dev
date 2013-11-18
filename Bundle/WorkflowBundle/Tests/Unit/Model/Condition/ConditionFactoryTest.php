@@ -25,11 +25,6 @@ class ConditionFactoryTest extends \PHPUnit_Framework_TestCase
     );
 
     /**
-     * @var array
-     */
-    protected $testOptions = array('key' => 'value');
-
-    /**
      * @var \PHPUnit_Framework_MockObject_MockObject
      */
     protected $container;
@@ -74,17 +69,34 @@ class ConditionFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function testCreate()
     {
+        $options = array('key' => 'value');
+        $message = 'Test';
         $conditionMock = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\Condition\ConditionInterface')
             ->getMock();
+
+        $conditionMock->expects($this->once())
+            ->method('setMessage')
+            ->with($message);
+
         $conditionMock->expects($this->once())
             ->method('initialize')
-            ->with($this->testOptions);
+            ->with($options);
 
         $this->container->expects($this->once())
             ->method('get')
             ->with(self::TEST_TYPE_SERVICE)
             ->will($this->returnValue($conditionMock));
 
-        $this->model->create(self::TEST_TYPE, $this->testOptions);
+        $this->model->create(self::TEST_TYPE, $options, $message);
+    }
+
+    /**
+     * @return array
+     */
+    public function optionsDataProvider()
+    {
+        return array(
+            array(),
+        );
     }
 }
