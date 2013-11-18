@@ -13,9 +13,13 @@ class TransitionTest extends \PHPUnit_Framework_TestCase
      */
     public function testGettersAndSetters($property, $value)
     {
-        $getter = 'get' . ucfirst($property);
-        $setter = 'set' . ucfirst($property);
+        $ucProp = ucfirst($property);
+        $setter = 'set' . $ucProp;
         $obj = new Transition();
+        $getter = 'get' . $ucProp;
+        if (!method_exists($obj, $getter)) {
+            $getter = 'is' . $ucProp;
+        }
         $this->assertInstanceOf(
             'Oro\Bundle\WorkflowBundle\Model\Transition',
             call_user_func_array(array($obj, $setter), array($value))
@@ -28,17 +32,58 @@ class TransitionTest extends \PHPUnit_Framework_TestCase
         return array(
             'name' => array('name', 'test'),
             'label' => array('label', 'test'),
+            'message' => array('message', 'test'),
+            'hidden' => array('hidden', true),
+            'start' => array('start', true),
+            'unavailableHidden' => array('unavailableHidden', true),
             'stepTo' => array('stepTo', $this->getStepMock('testStep')),
-            'options' => array('options', array('key' => 'value')),
+            'frontendOptions' => array('frontendOptions', array('key' => 'value')),
+            'form_type' => array('formType', 'custom_workflow_transition'),
+            'form_options' => array('formOptions', array('one', 'two')),
             'condition' => array(
                 'condition',
                 $this->getMock('Oro\Bundle\WorkflowBundle\Model\Condition\ConditionInterface')
             ),
             'postAction' => array(
                 'postAction',
-                $this->getMock('Oro\Bundle\WorkflowBundle\Model\PostAction\PostActionInterface')
+                $this->getMock('Oro\Bundle\WorkflowBundle\Model\Action\ActionInterface')
             ),
+            'initAction' => array(
+                'initAction',
+                $this->getMock('Oro\Bundle\WorkflowBundle\Model\Action\ActionInterface')
+            )
         );
+    }
+
+    public function testHidden()
+    {
+        $transition = new Transition();
+        $this->assertFalse($transition->isHidden());
+        $this->assertInstanceOf(
+            'Oro\Bundle\WorkflowBundle\Model\Transition',
+            $transition->setHidden(true)
+        );
+        $this->assertTrue($transition->isHidden());
+        $this->assertInstanceOf(
+            'Oro\Bundle\WorkflowBundle\Model\Transition',
+            $transition->setHidden(false)
+        );
+        $this->assertFalse($transition->isHidden());
+    }
+
+    public function testInitialize()
+    {
+        $workflowItem = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Entity\WorkflowItem')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $obj = new Transition();
+        $action = $this->getMock('Oro\Bundle\WorkflowBundle\Model\Action\ActionInterface');
+        $action->expects($this->once())
+            ->method('execute')
+            ->with($workflowItem);
+        $obj->setInitAction($action);
+        $obj->initialize($workflowItem);
     }
 
     /**
@@ -98,7 +143,7 @@ class TransitionTest extends \PHPUnit_Framework_TestCase
             ->with($workflowItem)
             ->will($this->returnValue(false));
 
-        $postAction = $this->getMock('Oro\Bundle\WorkflowBundle\Model\PostAction\PostActionInterface');
+        $postAction = $this->getMock('Oro\Bundle\WorkflowBundle\Model\Action\ActionInterface');
         $postAction->expects($this->never())
             ->method('execute');
 
@@ -136,7 +181,7 @@ class TransitionTest extends \PHPUnit_Framework_TestCase
             ->with($workflowItem)
             ->will($this->returnValue(true));
 
-        $postAction = $this->getMock('Oro\Bundle\WorkflowBundle\Model\PostAction\PostActionInterface');
+        $postAction = $this->getMock('Oro\Bundle\WorkflowBundle\Model\Action\ActionInterface');
         $postAction->expects($this->once())
             ->method('execute')
             ->with($workflowItem);
@@ -187,14 +232,24 @@ class TransitionTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($obj->isStart());
     }
 
-    public function testGetSetOption()
+    public function testGetSetFrontendOption()
     {
         $obj = new Transition();
-        $obj->setOptions(array('key' => 'test'));
-        $this->assertEquals('test', $obj->getOption('key'));
-        $obj->setOption('key2', 'test2');
-        $this->assertEquals(array('key' => 'test', 'key2' => 'test2'), $obj->getOptions());
-        $obj->setOption('key', 'test_changed');
-        $this->assertEquals('test_changed', $obj->getOption('key'));
+
+        $this->assertEquals(array(), $obj->getFrontendOptions());
+
+        $frontendOptions = array('class' => 'foo', 'icon' => 'bar');
+        $obj->setFrontendOptions($frontendOptions);
+        $this->assertEquals($frontendOptions, $obj->getFrontendOptions());
+    }
+
+    public function testHasForm()
+    {
+        $obj = new Transition();
+
+        $this->assertFalse($obj->hasForm()); // by default transition has form
+
+        $obj->setFormOptions(array('key' => 'value'));
+        $this->assertTrue($obj->hasForm());
     }
 }

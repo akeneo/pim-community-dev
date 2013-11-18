@@ -1,5 +1,6 @@
 {% extends 'OroUIBundle:actions:update.html.twig' %}
 {% form_theme form with 'OroFormBundle:Form:fields.html.twig' %}
+{% set title = form.vars.value.id ? form.vars.value.name|default('N/A') : 'New Tag'|trans %}
 {% if form.vars.value.id %}
     {% oro_title_set({params : {"%tag.name%": form.vars.value.name} }) %}
 {% endif %}

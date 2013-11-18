@@ -13,9 +13,6 @@ use Oro\Bundle\WorkflowBundle\Configuration\WorkflowConfiguration;
 use Oro\Bundle\WorkflowBundle\Model\AttributeAssembler;
 use Oro\Bundle\WorkflowBundle\Model\StepAssembler;
 use Oro\Bundle\WorkflowBundle\Model\TransitionAssembler;
-use Oro\Bundle\WorkflowBundle\Model\AttributeManager;
-use Oro\Bundle\WorkflowBundle\Model\StepManager;
-use Oro\Bundle\WorkflowBundle\Model\TransitionManager;
 
 class WorkflowAssemblerTest extends \PHPUnit_Framework_TestCase
 {
@@ -270,9 +267,9 @@ class WorkflowAssemblerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($workflowDefinition->getName(), $actualWorkflow->getName());
         $this->assertEquals($workflowDefinition->getLabel(), $actualWorkflow->getLabel());
         $this->assertEquals($workflowDefinition->isEnabled(), $actualWorkflow->isEnabled());
-        $this->assertEquals($attributes, $actualWorkflow->getAttributes());
-        $this->assertEquals($steps, $actualWorkflow->getSteps());
-        $this->assertEquals($transitions, $actualWorkflow->getTransitions());
+        $this->assertEquals($attributes, $actualWorkflow->getAttributeManager()->getAttributes());
+        $this->assertEquals($steps, $actualWorkflow->getStepManager()->getSteps());
+        $this->assertEquals($transitions, $actualWorkflow->getTransitionManager()->getTransitions());
     }
 
     /**

@@ -11,16 +11,15 @@ Table of Contents
    - [Attribute](#attribute)
    - [Condition](#condition)
    - [Condition Factory](#condition-factory)
-   - [Post Action](#post-action)
-   - [Post Action Factory](#post-action-factory)
+   - [Action](#action)
+   - [Action Factory](#action-factory)
  - [Entity Assemblers](#entity-assemblers)
    - [Workflow Assembler](#workflow-assembler)
    - [Step Assembler](#step-assembler)
    - [Transition Assembler](#transition-assembler)
    - [Attribute Assembler](#attribute-assembler)
    - [Condition Assembler](#condition-assembler)
-   - [Post Action Assembler](#post-action-assembler)
-   - [Post Action Assembler](#post-action-assembler)
+   - [Action Assembler](#action-assembler)
  - [Database Entities](#database-entities)
    - [Workflow Definition](#workflow-definition)
    - [Workflow Definition Repository](#workflow-definition-repository)
@@ -65,6 +64,7 @@ and AttributeManager
 * **getManagedEntityAttributes()** - gets list of Attributes of managed entities
 * **getAttributes()** - gets list of all Attributes
 * **getOrderedSteps()** - gets ordered list of all Steps
+* **createWorkflowItem(array data)** - create WorkflowItem instance and initialize it with passed data
 
 Workflow Registry
 -----------------
@@ -98,7 +98,7 @@ Transition
 Oro\Bundle\WorkflowBundle\Model\Transition
 
 **Description:**
-Encapsulates transition parameters, contains condition and post action, has next step property.
+Encapsulates transition parameters, contains init action, condition and post action, has next step property.
 
 **Methods:**
 * **isAllowed(WorkflowItem)** - calculates whether this transition allowed for WorkflowItem;
@@ -135,28 +135,28 @@ Creates instances of Transition Conditions based on type (alias) and options.
 **Methods:**
 * **create(type, options)** - creates specific instance of Transition Condition.
 
-Post Action
+Action
 -----------
 **Interface:**
-Oro\Bundle\WorkflowBundle\Model\PostAction\PostActionInterface
+Oro\Bundle\WorkflowBundle\Model\Action\ActionInterface
 
 **Description:**
-Basic interface for Transition Post Actions. Detailed description
+Basic interface for Transition Actions. Detailed description
 
 **Methods:**
-* **initialize(options)** - initialize specific post action based on input options;
-* **execute(context)** - execute specific post action for current context (usually context is WorkflowItem).
+* **initialize(options)** - initialize specific action based on input options;
+* **execute(context)** - execute specific action for current context (usually context is WorkflowItem).
 
-Post Action Factory
+Action Factory
 -------------------
 **Class:**
-Oro\Bundle\WorkflowBundle\Model\PostAction\PostActionFactory
+Oro\Bundle\WorkflowBundle\Model\Action\ActionFactory
 
 **Description:**
-Creates instances of Transition Post Actions based on type (alias) and options.
+Creates instances of Transition Actions based on type (alias) and options.
 
 **Methods:**
-* **create(type, options)** - creates specific instance of Transition Post Action.
+* **create(type, options)** - creates specific instance of Transition Action.
 
 Entity Assemblers
 =================
@@ -191,7 +191,7 @@ Oro\Bundle\WorkflowBundle\Model\TransitionAssembler
 
 **Description:**
 Creates instances of Transitions based on transition configuration, transition definition configuration and list of
-Step entities. Uses Condition Factory and Post Action Factory to create configurable conditions and post actions.
+Step entities. Uses Condition Factory and Action Factory to create configurable conditions and actions.
 
 **Methods:**
 * **assemble(configuration, definitionsConfiguration, steps)** - assemble and returns list of Transitions.
@@ -218,16 +218,16 @@ Recursively walks through Condition configuration and creates instance of approp
 **Methods:**
 assemble(configuration) - assemble configuration and returns root Condition instance.
 
-Post Action Assembler
+Action Assembler
 ---------------------
 **Class:**
-Oro\Bundle\WorkflowBundle\Model\PostAction\PostActionAssembler
+Oro\Bundle\WorkflowBundle\Model\Action\ActionAssembler
 
 **Description:**
-Walks through Post Action configuration and creates instance of appropriate Post Actions using Post Action Factory.
+Walks through Action configuration and creates instance of appropriate Actions using Action Factory.
 
 **Methods:**
-* **assemble(configuration)** - assemble configuration and returns instance of list Post Action.
+* **assemble(configuration)** - assemble configuration and returns instance of list Action.
 
 Database Entities
 =================
@@ -257,7 +257,7 @@ Oro\Bundle\WorkflowBundle\Entity\WorkflowItem
 
 **Description:**
 Specific instance of Workflow, contains state of workflow - data as instance of WorkflowData,
-temporary storage of result of last applied transition post actions as instance of WorkflowResult, current step name,
+temporary storage of result of last applied transition actions as instance of WorkflowResult, current step name,
 list of related entities as list of WorkflowBindEntity entities, log of all applied transitions as list of
 WorkflowTransitionRecord entities.
 
@@ -299,7 +299,7 @@ Workflow Result
 Oro\Bundle\WorkflowBundle\Model\WorkflowResult
 
 **Description:**
-Container of results of last applied transition post actions. This data is not persistable so it can be used only once
+Container of results of last applied transition actions. This data is not persistable so it can be used only once
 right after successful transition.
 
 Context Accessor
@@ -308,7 +308,7 @@ Context Accessor
 Oro\Bundle\WorkflowBundle\Model\ContextAccessor
 
 **Description:**
-Context is used in post action and conditions and thereby it's usually an instance of Workflow Item.
+Context is used in action and conditions and thereby it's usually an instance of Workflow Item.
 This class is a simple helper that encapsulates logic of accessing properties of context using
 Symfony\Component\PropertyAccess\PropertyAccessor.
 

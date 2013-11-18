@@ -18,7 +18,7 @@ class OroWorkflowExtension extends Extension
         $loader->load('services.yml');
         $loader->load('prototypes.yml');
         $loader->load('conditions.yml');
-        $loader->load('post_actions.yml');
+        $loader->load('actions.yml');
         $loader->load('assemblers.yml');
         $loader->load('form_types.yml');
         $loader->load('serializer.yml');
@@ -27,5 +27,6 @@ class OroWorkflowExtension extends Extension
         $loader->load('twig_extensions.yml');
         $loader->load('listener.yml');
         $loader->load('http.yml');
+        $loader->load('validator.yml');
     }
 }

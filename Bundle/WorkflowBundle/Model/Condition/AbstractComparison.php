@@ -5,7 +5,7 @@ namespace Oro\Bundle\WorkflowBundle\Model\Condition;
 use Oro\Bundle\WorkflowBundle\Exception\ConditionException;
 use Oro\Bundle\WorkflowBundle\Model\ContextAccessor;
 
-abstract class AbstractComparison implements ConditionInterface
+abstract class AbstractComparison extends AbstractCondition
 {
     /**
      * @var string
@@ -33,12 +33,23 @@ abstract class AbstractComparison implements ConditionInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    protected function getMessageParameters($context)
+    {
+        return array(
+            '{{ left }}' => $this->contextAccessor->getValue($context, $this->left),
+            '{{ right }}' => $this->contextAccessor->getValue($context, $this->right)
+        );
+    }
+
+    /**
      * Check if values equals.
      *
      * @param mixed $context
      * @return boolean
      */
-    public function isAllowed($context)
+    protected function isConditionAllowed($context)
     {
         return $this->doCompare(
             $this->contextAccessor->getValue($context, $this->left),

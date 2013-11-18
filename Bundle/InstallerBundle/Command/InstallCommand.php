@@ -3,13 +3,11 @@
 namespace Oro\Bundle\InstallerBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
-use Symfony\Bridge\Doctrine\DataFixtures\ContainerAwareLoader;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\ArrayInput;
 
-use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
 use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Process\ProcessBuilder;
 
@@ -109,7 +107,7 @@ class InstallCommand extends ContainerAwareCommand
                 'doctrine:fixtures:load',
                 $input,
                 $output,
-                array('--no-interaction' => true, '--append' => true)
+                array('--process-isolation' => true, '--no-interaction' => true, '--append' => true)
             );
 
         $output->writeln('');
@@ -163,22 +161,16 @@ class InstallCommand extends ContainerAwareCommand
         $container->get('oro_user.manager')->updateUser($user);
 
         $demo = isset($options['sample-data'])
-            ? !$options['sample-data'] || strtolower($options['sample-data']) == 'y'
+            ? strtolower($options['sample-data']) == 'y'
             : $dialog->askConfirmation($output, '<question>Load sample data (y/n)?</question> ', false);
 
         // load demo fixtures
         if ($demo) {
-            $loader = new ContainerAwareLoader($container);
-
-            foreach ($container->get('kernel')->getBundles() as $bundle) {
-                if (is_dir($path = $bundle->getPath() . '/DataFixtures/Demo')) {
-                    $loader->loadFromDirectory($path);
-                }
-            }
-
-            $executor = new ORMExecutor($container->get('doctrine.orm.entity_manager'));
-
-            $executor->execute($loader->getFixtures(), true);
+            $this->runCommand(
+                'oro:demo:fixtures:load',
+                $input,
+                $output,
+                array('--process-isolation' => true, '--process-timeout' => 300));
         }
 
         $output->writeln('');
@@ -248,6 +240,8 @@ class InstallCommand extends ContainerAwareCommand
     /**
      * Launches a command.
      * If '--process-isolation' parameter is specified the command will be launched as a separate process.
+     * In this case you can parameter '--process-timeout' to set the process timeout
+     * in seconds. Default timeout is 60 seconds.
      *
      * @param string          $command
      * @param InputInterface  $input
@@ -276,6 +270,12 @@ class InstallCommand extends ContainerAwareCommand
             $pb
                 ->add($php)
                 ->add($_SERVER['argv'][0]);
+
+            if (array_key_exists('--process-timeout', $params)) {
+                $pb->setTimeout($params['--process-timeout']);
+                unset($params['--process-timeout']);
+            }
+
             foreach ($params as $param => $val) {
                 if ($param && '-' === $param[0]) {
                     if ($val === true) {
@@ -287,13 +287,14 @@ class InstallCommand extends ContainerAwareCommand
                     $pb->add($val);
                 }
             }
+
             $process = $pb
                 ->inheritEnvironmentVariables(true)
                 ->getProcess();
 
             $process->run(
                 function ($type, $data) use ($output) {
-                    $output->writeln($data);
+                    $output->write($data);
                 }
             );
             $ret = $process->getExitCode();
