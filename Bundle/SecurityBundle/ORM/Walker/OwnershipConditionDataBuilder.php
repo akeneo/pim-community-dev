@@ -74,6 +74,10 @@ class OwnershipConditionDataBuilder
     }
 
     /**
+     * Get data for query acl access level check
+     * Return null if entity has full access, empty array if user does't have access to the entity
+     *  and array with entity field and field values witch user have access.
+     *
      * @param $entityClassName
      * @param $permissions
      * @return null|array
@@ -87,7 +91,7 @@ class OwnershipConditionDataBuilder
             return null;
         }
 
-        $condition = false;
+        $condition = [];
 
         $observer = new OneShotIsGrantedObserver();
         $this->aclVoter->addOneShotIsGrantedObserver($observer);
@@ -119,20 +123,20 @@ class OwnershipConditionDataBuilder
         $accessLevel,
         OwnershipMetadata $metadata
     ) {
-        $constraint = false;
+        $constraint = null;
 
         if (AccessLevel::SYSTEM_LEVEL === $accessLevel) {
-            $constraint = null;
+            $constraint = [];
         } elseif (!$metadata->hasOwner()) {
             if (AccessLevel::GLOBAL_LEVEL === $accessLevel) {
                 if ($this->metadataProvider->getOrganizationClass() === $targetEntityClassName) {
                     $orgIds = $this->tree->getUserOrganizationIds($this->getUserId());
                     $constraint = $this->getCondition($orgIds, $metadata, 'id');
                 } else {
-                    $constraint = null;
+                    $constraint = [];
                 }
             } else {
-                $constraint = null;
+                $constraint = [];
             }
         } else {
             if (AccessLevel::BASIC_LEVEL === $accessLevel) {
@@ -308,7 +312,7 @@ class OwnershipConditionDataBuilder
             );
         }
 
-        return false;
+        return [];
     }
 
     /**

@@ -128,6 +128,8 @@ class AclWalker extends TreeWalkerAdapter
     }
 
     /**
+     * Generate Join condition for join wothout "on" statement
+     *
      * @param Join $join
      * @param JoinAssociationCondition $condition
      * @return Join
@@ -205,12 +207,18 @@ class AclWalker extends TreeWalkerAdapter
     }
 
     /**
+     * Get acl access level condition
+     *
      * @param AclCondition $condition
      * @return ConditionalPrimary
      */
     protected function getConditionalFactor(AclCondition $condition)
     {
-        $expression = $this->getInExpression($condition);
+        if ($condition->getValue() == null && $condition->getEntityField() == null) {
+            $expression = $this->getAccessDeniedExpression();
+        } else {
+            $expression = $this->getInExpression($condition);
+        }
 
         $resultCondition = new ConditionalPrimary();
         $resultCondition->simpleConditionalExpression = $expression;
@@ -218,12 +226,24 @@ class AclWalker extends TreeWalkerAdapter
         return $resultCondition;
     }
 
-    protected function getAccessDeniedCondition()
+    /**
+     * Generates "1=0" expression
+     *
+     * @return ComparisonExpression
+     */
+    protected function getAccessDeniedExpression()
     {
+        $leftExpression = new ArithmeticExpression();
+        $leftExpression->simpleArithmeticExpression = new Literal(Literal::NUMERIC, 1);
+        $rightExpression = new ArithmeticExpression();
+        $rightExpression->simpleArithmeticExpression = new Literal(Literal::NUMERIC, 0);
 
+        return new ComparisonExpression($leftExpression, '=', $rightExpression);
     }
 
     /**
+     * generate "in()" expression
+     *
      * @param AclCondition $whereCondition
      * @return InExpression
      */
@@ -239,6 +259,8 @@ class AclWalker extends TreeWalkerAdapter
     }
 
     /**
+     * Generate path expression
+     *
      * @param AclCondition $whereCondition
      * @return PathExpression
      */
@@ -256,6 +278,8 @@ class AclWalker extends TreeWalkerAdapter
     }
 
     /**
+     * Get array with literal from acl condition value array
+     *
      * @param AclCondition $whereCondition
      * @return array
      */

@@ -69,6 +69,7 @@ class AclHelper
                 $this->processSubRequests($ast, $conditionStorage, $permission, $query);
             }
 
+            // We have access level check conditions. So mark query for acl walker.
             if (!$conditionStorage->isEmpty()) {
                 $query->setHint(Query::HINT_CUSTOM_TREE_WALKERS,
                     array_merge(
@@ -84,6 +85,8 @@ class AclHelper
     }
 
     /**
+     * Check subrequests for acl access level
+     *
      * @param SelectStatement $ast
      * @param AclConditionStorage $storage
      * @param $permission
@@ -124,6 +127,8 @@ class AclHelper
     }
 
     /**
+     * Check Access levels for subrequest
+     *
      * @param Subselect $subSelect
      * @param $permission
      * @return SubRequestAclConditionStorage
@@ -131,10 +136,13 @@ class AclHelper
     protected function processSubRequest(Subselect $subSelect, $permission)
     {
         list ($whereConditions, $joinConditions) = $this->processRequest($subSelect, $permission);
+
         return new SubRequestAclConditionStorage($whereConditions, $joinConditions);
     }
 
     /**
+     * Check request
+     *
      * @param Subselect|SelectStatement $select
      * @param string $permission
      * @return array
@@ -187,6 +195,8 @@ class AclHelper
     }
 
     /**
+     * Process Joins without "on" statement
+     *
      * @param IdentificationVariableDeclaration $declaration
      * @param $key
      * @param $permission
@@ -205,7 +215,10 @@ class AclHelper
         $resultData = $this->builder->getAclConditionData($targetEntity, $permission);
 
         if ($resultData && is_array($resultData)) {
-            list($entityField, $value) = $resultData;
+            $entityField = $value = null;
+            if (!empty($resultData)) {
+                list($entityField, $value) = $resultData;
+            }
 
             return new JoinAssociationCondition(
                 $join->joinAssociationDeclaration->aliasIdentificationVariable,
@@ -214,15 +227,12 @@ class AclHelper
                 $targetEntity,
                 $associationMapping['joinColumns']
             );
-        } elseif ($resultData === false) {
-            return new AccessDeniedCondition(
-                $join->joinAssociationDeclaration->aliasIdentificationVariable,
-                $targetEntity
-            );
         }
     }
 
     /**
+     * Process where statement
+     *
      * @param RangeVariableDeclaration $rangeVariableDeclaration
      * @param $permission
      * @param bool $isJoin
@@ -238,8 +248,11 @@ class AclHelper
 
         $resultData = $this->builder->getAclConditionData($entityName, $permission);
 
-        if ($resultData && is_array($resultData)) {
-            list($entityField, $value) = $resultData;
+        if (is_array($resultData)) {
+            $entityField = $value = null;
+            if (!empty($resultData)) {
+                list($entityField, $value) = $resultData;
+            }
             if ($isJoin) {
 
                 return new JoinAclCondition(
@@ -251,10 +264,6 @@ class AclHelper
                     $entityAlias, $entityField, $value
                 );
             }
-        } elseif ($resultData === false) {
-            return new AccessDeniedCondition(
-                $entityAlias
-            );
         }
 
         return null;

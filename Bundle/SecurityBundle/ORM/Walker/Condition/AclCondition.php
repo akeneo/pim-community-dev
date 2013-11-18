@@ -20,9 +20,12 @@ class AclCondition
      */
     protected $value;
 
-
-
-    public function __construct($entityAlias, $entityField, $value)
+    /**
+     * @param $entityAlias
+     * @param null $entityField
+     * @param null $value
+     */
+    public function __construct($entityAlias, $entityField = null, $value = null)
     {
         $this->entityAlias = $entityAlias;
         $this->entityField = $entityField;
