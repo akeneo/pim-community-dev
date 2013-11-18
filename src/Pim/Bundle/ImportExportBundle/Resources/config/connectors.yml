@@ -1,7 +1,7 @@
 parameters:
     pim_import_export.reader.orm.product.class:                     Pim\Bundle\ImportExportBundle\Reader\ORM\ProductReader
     pim_import_export.reader.orm.entity.class:                      Pim\Bundle\ImportExportBundle\Reader\ORM\EntityReader
-    
+
     pim_import_export.reader.file.csv.class:                        Pim\Bundle\ImportExportBundle\Reader\File\CsvReader
     pim_import_export.reader.file.product_csv.class:                Pim\Bundle\ImportExportBundle\Reader\File\ProductCsvReader
     pim_import_export.reader.file.csv_file.class:                   Pim\Bundle\ImportExportBundle\Reader\File\CsvFileReader

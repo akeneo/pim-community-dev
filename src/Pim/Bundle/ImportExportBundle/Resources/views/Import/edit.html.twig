@@ -4,6 +4,7 @@
     path('pim_importexport_import_edit', { 'id': form.vars.value.id }) :
     path('pim_importexport_import_create', { 'connector': jobInstance.connector, 'alias': alias }) %}
 
+{% set entityName = 'import profile' %}
 {% set title = form.vars.value.id ? 'import profile.edit'|trans ~ ' - ' ~ form.vars.value.label : 'import profile.create'|trans %}
 
 {% set indexRoute = path('pim_importexport_import_index') %}

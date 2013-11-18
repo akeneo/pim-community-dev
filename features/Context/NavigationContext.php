@@ -171,6 +171,28 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     }
 
     /**
+     * @param JobInstance $job
+     *
+     * @Given /^I am on the ("([^"]*)" import job) edit page$/
+     */
+    public function iAmOnTheImportJobEditPage(JobInstance $job)
+    {
+        $this->openPage('Import edit', array('id' => $job->getId()));
+        $this->wait();
+    }
+
+    /**
+     * @param JobInstance $job
+     *
+     * @Given /^I am on the ("([^"]*)" export job) edit page$/
+     */
+    public function iAmOnTheExportJobEditPage(JobInstance $job)
+    {
+        $this->openPage('Export edit', array('id' => $job->getId()));
+        $this->wait();
+    }
+
+    /**
      * @param string $jobTitle
      * @param string $jobType
      *

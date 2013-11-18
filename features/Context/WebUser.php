@@ -126,10 +126,12 @@ class WebUser extends RawMinkContext
             $currentUrl = $this->getSession()->getCurrentUrl();
             $currentUrl = explode('#url=', $currentUrl);
             $currentUrl = end($currentUrl);
+            $currentUrl = explode('|g/', $currentUrl);
+            $currentUrl = reset($currentUrl);
 
             assertTrue(
-                (bool) (($url === $currentUrl) || ($url ."|g/" === $currentUrl)),
-                sprintf('Error ocurred on page "%s"', $data['page'])
+                $url === $currentUrl || $url . '/' === $currentUrl || $url === $currentUrl . '/',
+                sprintf('Expecting the url of page "%s" to be "%s", not "%s"', $data['page'], $url, $currentUrl)
             );
 
             $loadedCorrectly = (bool) $this->getSession()->evaluateScript('return $(\'img[alt="Akeneo"]\').length;');

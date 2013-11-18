@@ -6,15 +6,8 @@ Feature: Export associations
   @javascript
   Scenario: Successfully export associations
     Given a "footwear" catalog configuration
-    And the following job:
-      | connector            | alias              | code                        | label                       | type   |
-      | Akeneo CSV Connector | association_export | footwear_association_export | Footwear association export | export |
     And I am logged in as "Julia"
-    And the following job "footwear_association_export" configuration:
-      | element | property      | value                  |
-      | writer  | directoryName | /tmp/                  |
-      | writer  | fileName      | association_export.csv |
     And I am on the "footwear_association_export" export job page
     When I launch the export job
     And I wait for the job to finish
-    Then file "/tmp/association_export.csv" should contain 5 rows
+    Then file "/tmp/association_export/association_export.csv" should contain 5 rows

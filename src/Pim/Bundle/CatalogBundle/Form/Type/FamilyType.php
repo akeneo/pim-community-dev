@@ -5,9 +5,10 @@ namespace Pim\Bundle\CatalogBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Pim\Bundle\CatalogBundle\Form\Subscriber\AddAttributeAsLabelSubscriber;
 use Pim\Bundle\CatalogBundle\Form\Type\AttributeRequirementType;
+use Pim\Bundle\CatalogBundle\Form\Subscriber\AddAttributeAsLabelSubscriber;
 use Pim\Bundle\CatalogBundle\Form\Subscriber\AddAttributeRequirementsSubscriber;
+use Pim\Bundle\CatalogBundle\Form\Subscriber\DisableCodeFieldSubscriber;
 
 /**
  * Type for family form
@@ -41,7 +42,8 @@ class FamilyType extends AbstractType
             )
             ->add('attributeRequirements', 'collection', array('type' => new AttributeRequirementType()))
             ->addEventSubscriber(new AddAttributeAsLabelSubscriber($factory))
-            ->addEventSubscriber(new AddAttributeRequirementsSubscriber($channels, $attributes));
+            ->addEventSubscriber(new AddAttributeRequirementsSubscriber($channels, $attributes))
+            ->addEventSubscriber(new DisableCodeFieldSubscriber());
     }
 
     /**

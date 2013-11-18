@@ -8,23 +8,18 @@ Feature: Edit a family
     And I am logged in as "admin"
     And I am on the families page
 
+  Scenario: Successfully display the edit view for a family
+    Given I edit the "Sneakers" family
+    Then I should see the Code field
+    And the field Code should be disabled
+
   Scenario: Successfully edit a family
     Given I edit the "Sneakers" family
-    When I change the Code to "sneakers_2"
+    When I fill in the following information:
+      | English (United States) | My family |
     And I save the family
     Then I should see "Family successfully updated"
-
-  Scenario: Fail to set an already used code
-    Given I edit the "Sneakers" family
-    When I change the Code to "sandals"
-    And I save the family
-    Then I should see a tooltip "This value is already used."
-
-  Scenario: Fail to set a non-valid code
-    Given I edit the "Sneakers" family
-    When I change the Code to an invalid value
-    And I save the family
-    Then I should see a tooltip "Family code may contain only letters, numbers and underscores"
+    And I should see "My family"
 
   Scenario: Successfully set the translations of the name
     Given I am on the "Boots" family page
