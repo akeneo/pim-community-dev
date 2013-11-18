@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Processor;
 
-use Pim\Bundle\ImportExportBundle\Processor\HomogeneousCsvSerializerProcessor;
+use Pim\Bundle\ImportExportBundle\Processor\CsvSerializer\HomogeneousCsvSerializerProcessor;
 
 /**
  * Test related class

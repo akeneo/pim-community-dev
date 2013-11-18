@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Processor;
+namespace Pim\Bundle\ImportExportBundle\Processor\CsvSerializer;
 
 /**
  * Serialize heterogeneous data into csv
