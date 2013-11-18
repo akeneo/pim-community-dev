@@ -2,11 +2,6 @@
 
 namespace Oro\Bundle\InstallerBundle\Process\Step;
 
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Bridge\Doctrine\DataFixtures\ContainerAwareLoader;
-
-use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
-
 use Sylius\Bundle\FlowBundle\Process\Context\ProcessContextInterface;
 
 class InstallationStep extends AbstractStep
@@ -17,21 +12,7 @@ class InstallationStep extends AbstractStep
 
         switch ($this->getRequest()->query->get('action')) {
             case 'fixtures':
-                $loader = new ContainerAwareLoader($this->container);
-
-                foreach ($this->get('kernel')->getBundles() as $bundle) {
-                    if (is_dir($path = $bundle->getPath() . '/DataFixtures/Demo')) {
-                        $loader->loadFromDirectory($path);
-                    }
-                }
-
-                $executor = new ORMExecutor($this->getDoctrine()->getManager());
-
-                $executor->execute($loader->getFixtures(), true);
-
-                return $this->getRequest()->isXmlHttpRequest()
-                    ? new JsonResponse(array('result' => true))
-                    : $this->redirect('');
+                return $this->handleAjaxAction('oro:demo:fixtures:load');
             case 'search':
                 return $this->handleAjaxAction('oro:search:create-index');
             case 'navigation':
