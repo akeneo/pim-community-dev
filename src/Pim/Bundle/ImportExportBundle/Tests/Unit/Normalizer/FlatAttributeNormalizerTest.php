@@ -49,7 +49,7 @@ class FlatAttributeNormalizerTest extends AttributeNormalizerTest
         return array(
             array(
                 array(
-                    'type'                   => 'multiselect',
+                    'type'                   => 'pim_catalog_multiselect',
                     'code'                   => 'color',
                     'label-en_US'            => 'Color',
                     'label-fr_FR'            => 'Coleur',
@@ -69,7 +69,7 @@ class FlatAttributeNormalizerTest extends AttributeNormalizerTest
             ),
             array(
                 array(
-                    'type'                   => 'text',
+                    'type'                   => 'pim_catalog_text',
                     'code'                   => 'description',
                     'label-en_US'            => 'Color',
                     'label-fr_FR'            => 'Coleur',
