@@ -31,8 +31,7 @@ function($, _, __, Modal) {
                     title: __('Schema update confirmation'),
                     content: '<p>' + __('Your config changes will be applied to schema.') +
                         '</p></p>' + __('It may take few minutes...') + '</p>',
-                    okText: __('Yes, Proceed'),
-                    okButtonClass: 'btn-primary'
+                    okText: __('Yes, Proceed')
                 });
             confirmUpdate.on('ok', doAction);
             confirmUpdate.open();
