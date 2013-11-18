@@ -83,6 +83,7 @@ attributes:
         parameters:
             maxFileSize: 2
             sortOrder:   1
+            allowedExtensions: 'pdf'
     image_upload:
         labels:
             en_US: Image upload
@@ -92,6 +93,7 @@ attributes:
         parameters:
             maxFileSize: 2000
             sortOrder: 2
+            allowedExtensions: 'gif,jpeg,png'
     size:
         labels:
             en_US: Size
