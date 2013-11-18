@@ -81,9 +81,6 @@ class JobTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(BatchStatus::STARTED, $jobExecution->getStatus()->getValue(), 'Batch status started');
     }
 
-    /**
-     * @group fail
-     */
     public function testExecuteException()
     {
         $exception = new \Exception('My test exception');

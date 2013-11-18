@@ -21,16 +21,12 @@ interface ItemReaderInterface
      * <strong>must</strong> return <code>null</code> at the end of the input
      * data set.
      *
-     * @throws ParseException if there is a problem parsing the current record
+     * @throws InvalidItemException if there is a problem reading the current record
      * (but the next one may still be valid)
-     * @throws NonTransientResourceException if there is a fatal exception in
-     * the underlying resource. After throwing this exception implementations
-     * should endeavour to return null from subsequent calls to read.
-     * @throws UnexpectedInputException if there is an uncategorised problem
-     * with the input data. Assume potentially transient, so subsequent calls to
-     * read might succeed.
-     * @throws \Exception if an there is a non-specific error.
-     * @return null|mixed Returns false in case of reading error
+     * @throws \Exception if an there is a non-specific error. (step execution will
+     * be stopped in that case)
+     *
+     * @return null|mixed
      */
-    public function read(StepExecution $stepExecution);
+    public function read();
 }

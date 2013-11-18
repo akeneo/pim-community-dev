@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\BatchBundle\Item;
 
-use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\File\File;
 
 /**
  * Interface for reader with uploaded file
@@ -20,5 +20,5 @@ interface UploadedFileAwareInterface
      *
      * @param UploadedFile $uploadedFile
      */
-    public function setUploadedFile(UploadedFile $uploadedFile);
+    public function setUploadedFile(File $uploadedFile);
 }

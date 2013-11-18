@@ -2,10 +2,8 @@
 
 namespace Oro\Bundle\EntityExtendBundle;
 
-use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-use Symfony\Component\ClassLoader\UniversalClassLoader;
 use Symfony\Component\Process\PhpExecutableFinder;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
@@ -13,11 +11,11 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 
-use Oro\Bundle\EntityExtendBundle\Tools\Generator;
 use Oro\Bundle\EntityExtendBundle\Exception\RuntimeException;
 
 use Oro\Bundle\EntityExtendBundle\DependencyInjection\Compiler\EntityManagerPass;
 use Symfony\Component\Process\Process;
+use Oro\Bundle\EntityExtendBundle\Tools\ExtendClassLoadingUtils;
 
 class OroEntityExtendBundle extends Bundle
 {
@@ -26,103 +24,54 @@ class OroEntityExtendBundle extends Bundle
     public function __construct(KernelInterface $kernel)
     {
         $this->kernel = $kernel;
+        ExtendClassLoadingUtils::registerClassLoader($this->kernel->getCacheDir());
     }
 
     public function boot()
     {
-        $this->initExtend();
+        $this->ensureInitialized();
     }
 
     public function build(ContainerBuilder $container)
     {
-        $this->initExtend();
+        $this->ensureInitialized();
 
         $container->addCompilerPass(new EntityManagerPass());
         $container->addCompilerPass(
             DoctrineOrmMappingsPass::createYamlMappingDriver(
                 array(
-                    $this->kernel->getCacheDir() . '/entities/Extend/Entity' => 'Extend\Entity'
+                    ExtendClassLoadingUtils::getEntityCacheDir($this->kernel->getCacheDir()) => 'Extend\Entity'
                 )
             )
         );
     }
 
-    private function initExtend()
+    private function ensureInitialized()
     {
-        $this->checkCacheFolder();
-        $this->checkCache();
-        $this->registerAutoloader();
-        $this->loadAlias();
+        $this->ensureDirExists(ExtendClassLoadingUtils::getEntityCacheDir($this->kernel->getCacheDir()));
+        $this->ensureCacheInitialized();
+        $this->ensureAliasesSet();
     }
 
-    private function registerAutoloader()
+    private function ensureCacheInitialized()
     {
-        $loader = new UniversalClassLoader();
-        $loader->registerNamespaces(
-            array('Extend\\' => $this->kernel->getCacheDir() . '/entities')
-        );
-        $loader->register();
-    }
-
-    private function loadAlias()
-    {
-        $aliasPath = $this->kernel->getCacheDir() . '/entities/Extend/Entity/alias.yml';
-        if (file_exists($aliasPath)
-            && (!isset($_SERVER['argv']) || !in_array('oro:entity-extend:update-config', $_SERVER['argv']))
-        ) {
-            $aliases = \Symfony\Component\Yaml\Yaml::parse(
-                file_get_contents($aliasPath, FILE_USE_INCLUDE_PATH)
-            );
-
-            if (is_array($aliases)) {
-                foreach ($aliases as $className => $alias) {
-                    if (class_exists($className) && !class_exists($alias, false)) {
-                        $aliasArr = explode('\\', $alias);
-                        $shortAlias = array_pop($aliasArr);
-
-                        class_alias($className, $shortAlias);
-                        class_alias($className, $alias);
-                    }
-                }
-            }
-        }
-    }
-
-    private function checkCacheFolder()
-    {
-        $cacheDirs = array(
-            $this->kernel->getCacheDir() . '/entities/Extend/Entity',
-            $this->kernel->getCacheDir() . '/entities/Extend/Validator',
-        );
-
-        foreach ($cacheDirs as $dir) {
-            if (!is_dir($dir)) {
-                if (false === @mkdir($dir, 0777, true)) {
-                    throw new RuntimeException(sprintf('Could not create cache directory "%s".', $dir));
-                }
-            }
-        }
-    }
-
-    private function checkCache()
-    {
-        $cacheDir = $this->kernel->getCacheDir() . '/entities';
-        if (!file_exists($cacheDir . '/entity_config.yml')
-            && (!isset($_SERVER['argv'])  || !in_array('oro:entity-extend:dump', $_SERVER['argv']))
-        ) {
-            if (file_exists($cacheDir . '/Extend/Entity/alias.yml')) {
-                unlink($cacheDir . '/Extend/Entity/alias.yml');
-            }
+        $aliasesPath = ExtendClassLoadingUtils::getAliasesPath($this->kernel->getCacheDir());
+        if (!$this->isCommandExecuting('oro:entity-extend:dump') && !file_exists($aliasesPath)) {
+            // We have to warm up the extend entities cache in separate process
+            // to allow this process continue executing.
+            // The problem is we need initialized DI contained for warming up this cache,
+            // but in this moment we are exactly doing this for the current process.
             $console = escapeshellarg($this->getPhp()) . ' ' . escapeshellarg($this->kernel->getRootDir() . '/console');
             $env     = $this->kernel->getEnvironment();
-
             $process = new Process($console . ' oro:entity-extend:dump' . ' --env ' . $env);
             $process->run();
         }
+    }
 
-        if (count(scandir($cacheDir . '/Extend/Entity')) == 2) {
-            $generator = new Generator($cacheDir);
-            $generator->generate();
+    private function ensureAliasesSet()
+    {
+        if (!$this->isCommandExecuting('oro:entity-extend:update-config')) {
+            ExtendClassLoadingUtils::setAliases($this->kernel->getCacheDir());
         }
     }
 
@@ -136,5 +85,31 @@ class OroEntityExtendBundle extends Bundle
         }
 
         return $phpPath;
+    }
+
+    /**
+     * Checks if directory exists and attempts to create it if it doesn't exist.
+     *
+     * @param string $dir
+     * @throws RuntimeException
+     */
+    private function ensureDirExists($dir)
+    {
+        if (!is_dir($dir)) {
+            if (false === @mkdir($dir, 0777, true)) {
+                throw new RuntimeException(sprintf('Could not create cache directory "%s".', $dir));
+            }
+        }
+    }
+
+    /**
+     * Indicates if the given command is being executed.
+     *
+     * @param string $commandName
+     * @return bool
+     */
+    private function isCommandExecuting($commandName)
+    {
+        return isset($_SERVER['argv']) && in_array($commandName, $_SERVER['argv']);
     }
 }

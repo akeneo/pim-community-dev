@@ -25,5 +25,10 @@ class OroBatchExtension extends Extension
         $loader->load('services.yml');
 
         $container->setParameter('oro_batch.mail_notifier.sender_email', $config['sender_email']);
+        if ($config['enable_mail_notification']) {
+            $container
+                ->getDefinition('oro_batch.mail_notifier')
+                ->addTag('oro_batch.notifier');
+        }
     }
 }
