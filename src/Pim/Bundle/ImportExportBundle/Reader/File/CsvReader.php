@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\ImportExportBundle\Reader\File;
 
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\File;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\File as AssertFile;
@@ -26,7 +27,17 @@ class CsvReader extends AbstractConfigurableStepElement implements
 {
     /**
      * @Assert\NotBlank(groups={"Execution"})
-     * @AssertFile(groups={"Execution"}, allowedExtensions={"csv", "zip"})
+     * @AssertFile(
+     *     groups={"Execution"},
+     *     allowedExtensions={"csv", "zip"},
+     *     mimeTypes={
+     *         "text/csv",
+     *         "text/comma-separated-values",
+     *         "text/plain",
+     *         "application/csv",
+     *         "application/zip"
+     *     }
+     * )
      */
     protected $filePath;
 
@@ -61,9 +72,25 @@ class CsvReader extends AbstractConfigurableStepElement implements
     protected $stepExecution;
 
     /**
+     * @var string $file
+     */
+    protected $file;
+
+    /**
      * @var SplFileObject
      */
     protected $csv;
+
+    /**
+     * Remove the extracted directory
+     */
+    public function __destruct()
+    {
+        if ($this->file !== $this->filePath) {
+            $fileSystem = new Filesystem();
+            $fileSystem->remove(dirname($this->file));
+        }
+    }
 
     /**
      * Get uploaded file constraints
@@ -74,7 +101,18 @@ class CsvReader extends AbstractConfigurableStepElement implements
     {
         return array(
             new Assert\NotBlank(),
-            new AssertFile(array('allowedExtensions' => array('csv', 'zip'))),
+            new AssertFile(
+                array(
+                    'allowedExtensions' => array('csv', 'zip'),
+                    'mimeTypes'         => array(
+                        'text/csv',
+                        'text/comma-separated-values',
+                        'text/plain',
+                        'application/csv',
+                        'application/zip'
+                    )
+                )
+            )
         );
     }
 
@@ -207,11 +245,13 @@ class CsvReader extends AbstractConfigurableStepElement implements
     public function read()
     {
         if (null === $this->csv) {
-            if (pathinfo($this->filePath, PATHINFO_EXTENSION) === 'zip') {
+            if (mime_content_type($this->filePath) === 'application/zip') {
                 $this->extractZipArchive();
+            } else {
+                $this->file = $this->filePath;
             }
 
-            $this->csv = new \SplFileObject($this->filePath);
+            $this->csv = new \SplFileObject($this->file);
             $this->csv->setFlags(
                 \SplFileObject::READ_CSV   |
                 \SplFileObject::READ_AHEAD |
@@ -276,32 +316,45 @@ class CsvReader extends AbstractConfigurableStepElement implements
 
     /**
      * Extract the zip archive to be imported
+     * @throws \RuntimeException When archive cannot be opened or extracted
+     * or does not contain exactly one csv file
      */
     protected function extractZipArchive()
     {
         $archive = new \ZipArchive();
 
-        if ($archive->open($this->filePath) !== true) {
-            throw new \RuntimeException('An error occured while extracting the archive.');
+        $status = $archive->open($this->filePath);
+
+        if ($status !== true) {
+            throw new \RuntimeException(sprintf('Error "%d" occured while opening the zip archive.', $status));
         } else {
             $targetDir = sprintf(
-                '%s/%s',
+                '%s/%s_%d_%s',
                 pathinfo($this->filePath, PATHINFO_DIRNAME),
-                pathinfo($this->filePath, PATHINFO_FILENAME)
+                pathinfo($this->filePath, PATHINFO_FILENAME),
+                $this->stepExecution->getId(),
+                md5(microtime() . $this->stepExecution->getId())
             );
 
-            $archive->extractTo($targetDir);
+            if ($archive->extractTo($targetDir) !== true) {
+                throw new \RuntimeException('Error occured while extracting the zip archive.');
+            }
+
             $archive->close();
 
             $csvFiles = glob($targetDir . '/*.[cC][sS][vV]');
 
-            if (1 !== $csvCount = count($csvFiles)) {
+            $csvCount = count($csvFiles);
+            if (1 !== $csvCount) {
                 throw new \RuntimeException(
-                    sprintf('Expecting the archive to contain exactly 1 csv file, found %d', $csvCount)
+                    sprintf(
+                        'Expecting the root directory of the archive to contain exactly 1 csv file, found %d',
+                        $csvCount
+                    )
                 );
             }
 
-            $this->filePath = reset($csvFiles);
+            $this->file = reset($csvFiles);
         }
     }
 }

@@ -26,10 +26,6 @@ class FileValidator extends BaseFileValidator
             $value = $value->getFile();
         }
 
-        if (null === $value || '' === $value) {
-            return;
-        }
-
         parent::validate($value, $constraint);
 
         $this->validateAllowedExtension($value, $constraint);
