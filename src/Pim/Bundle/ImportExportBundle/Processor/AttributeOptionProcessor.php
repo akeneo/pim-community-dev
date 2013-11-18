@@ -7,8 +7,6 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
-use Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
-use Oro\Bundle\BatchBundle\Entity\StepExecution;
 use Oro\Bundle\BatchBundle\Item\InvalidItemException;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
@@ -23,8 +21,7 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeOptionProcessor extends AbstractConfigurableStepElement implements
-    ItemProcessorInterface, StepExecutionAwareInterface
+class AttributeOptionProcessor extends AbstractConfigurableStepElement implements ItemProcessorInterface
 {
     /**
      * Entity manager
@@ -48,11 +45,6 @@ class AttributeOptionProcessor extends AbstractConfigurableStepElement implement
     protected $options;
 
     /**
-     * @var StepExecution
-     */
-    protected $stepExecution;
-
-    /**
      * Constructor
      *
      * @param EntityManager      $entityManager
@@ -64,14 +56,6 @@ class AttributeOptionProcessor extends AbstractConfigurableStepElement implement
     ) {
         $this->entityManager = $entityManager;
         $this->validator     = $validator;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setStepExecution(StepExecution $stepExecution)
-    {
-        $this->stepExecution = $stepExecution;
     }
 
     /**
@@ -105,6 +89,8 @@ class AttributeOptionProcessor extends AbstractConfigurableStepElement implement
      * If the option is valid, it is stored into the option property
      *
      * @param array $item
+     *
+     * @throws InvalidItemException
      */
     private function processItem($item)
     {
@@ -128,11 +114,12 @@ class AttributeOptionProcessor extends AbstractConfigurableStepElement implement
 
         $violations = $this->validator->validate($option);
         if ($violations->count() > 0) {
+            $messages = array();
             foreach ($violations as $violation) {
-                $this->stepExecution->addError((string) $violation);
+                $messages[]= (string) $violation;
             }
+            throw new InvalidItemException(implode(', ', $messages), $item);
 
-            return;
         } else {
             $this->options[] = $option;
         }

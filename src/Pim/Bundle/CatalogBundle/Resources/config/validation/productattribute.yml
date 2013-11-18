@@ -115,6 +115,7 @@ Pim\Bundle\CatalogBundle\Entity\ProductAttribute:
             - Range:
                 min: 0.01
                 max: 9999.99
+                groups: [pim_catalog_file, pim_catalog_image]
             - Type:
                 type: numeric
                 groups: [pim_catalog_file, pim_catalog_image]
