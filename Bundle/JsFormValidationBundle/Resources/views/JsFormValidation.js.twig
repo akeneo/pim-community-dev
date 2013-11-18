@@ -243,8 +243,7 @@ var jsfv = (function () {
                         form.find('.error>:input,:input.error').first().focus();
                         e.stopImmediatePropagation();
                     }
-                    //return submitForm;
-                    return false;
+                    return submitForm;
                 });
             }
 {% endif %}
