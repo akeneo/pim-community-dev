@@ -15,20 +15,20 @@ Feature: Upload and import products with media
     And product "CAT-002" should be enabled
     And product "CAT-003" should be enabled
     And the product "CAT-001" should have the following values:
-      | categories  | winter_collection |
-      | family      | boots             |
-      | name        | Caterepillar 1    |
-      | description | Model 1 boots     |
-      | side_view   | cat_001.png       |
+      | categories               | winter_collection |
+      | family                   | boots             |
+      | name-EN_US               | Caterepillar 1    |
+      | description-en_US-mobile | Model 1 boots     |
+      | side_view                | cat_001.png       |
     And the product "CAT-002" should have the following values:
-      | categories  | winter_collection |
-      | family      | boots             |
-      | name        | Caterepillar 2    |
-      | description | Model 2 boots     |
-      | side_view   | cat_002.png       |
+      | categories               | winter_collection |
+      | family                   | boots             |
+      | name-EN_US               | Caterepillar 2    |
+      | description-en_US-mobile | Model 2 boots     |
+      | side_view                | cat_002.png       |
     And the product "CAT-003" should have the following values:
-      | categories  | winter_collection |
-      | family      | boots             |
-      | name        | Caterepillar 3    |
-      | description | Model 3 boots     |
-      | side_view   | cat_003.png       |
+      | categories               | winter_collection |
+      | family                   | boots             |
+      | name-EN_US               | Caterepillar 3    |
+      | description-en_US-mobile | Model 3 boots     |
+      | side_view                | cat_003.png       |
