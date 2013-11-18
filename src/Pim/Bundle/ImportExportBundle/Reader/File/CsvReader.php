@@ -26,7 +26,7 @@ class CsvReader extends AbstractConfigurableStepElement implements
 {
     /**
      * @Assert\NotBlank(groups={"Execution"})
-     * @AssertFile(groups={"Execution"}, allowedExtensions={"csv"})
+     * @AssertFile(groups={"Execution"}, allowedExtensions={"csv", "zip"})
      */
     protected $filePath;
 
@@ -74,7 +74,7 @@ class CsvReader extends AbstractConfigurableStepElement implements
     {
         return array(
             new Assert\NotBlank(),
-            new AssertFile(array('allowedExtensions' => array('csv'))),
+            new AssertFile(array('allowedExtensions' => array('csv', 'zip'))),
         );
     }
 
@@ -207,6 +207,36 @@ class CsvReader extends AbstractConfigurableStepElement implements
     public function read()
     {
         if (null === $this->csv) {
+            if (pathinfo($this->filePath, PATHINFO_EXTENSION) === 'zip') {
+                $archive = new \ZipArchive();
+
+                if ($archive->open($this->filePath) !== true) {
+                    throw new \RuntimeException('An error occured while extracting the archive.');
+                } else {
+                    $targetDir = sprintf(
+                        '%s/%s',
+                        pathinfo($this->filePath, PATHINFO_DIRNAME),
+                        pathinfo($this->filePath, PATHINFO_FILENAME)
+                    );
+
+                    $archive->extractTo($targetDir);
+                    $archive->close();
+
+                    $csvFiles = glob($targetDir . '/*.[cC][sS][vV]');
+
+                    if (count($csvFiles) !== 1) {
+                        throw new \RuntimeException(
+                            sprintf(
+                                'Expecting the archive to contain exactly 1 csv file, found %d',
+                                count($csvFiles)
+                            )
+                        );
+                    }
+
+                    $this->filePath = reset($csvFiles);
+                }
+            }
+
             $this->csv = new \SplFileObject($this->filePath);
             $this->csv->setFlags(
                 \SplFileObject::READ_CSV   |
