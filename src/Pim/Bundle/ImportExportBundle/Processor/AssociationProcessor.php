@@ -41,7 +41,7 @@ class AssociationProcessor extends AbstractEntityProcessor
 
             return;
         } else {
-            $this->associations[] = $association;
+            $this->entities[] = $association;
         }
     }
 
