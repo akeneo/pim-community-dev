@@ -53,23 +53,21 @@ class AttributeNormalizer implements NormalizerInterface
             array(
                 'available_locales'       => $this->normalizeAvailableLocales($attribute),
                 'group'                   => $attribute->getVirtualGroup()->getCode(),
-                'sort_order'              => $attribute->getSortOrder(),
-                'required'                => $attribute->getRequired(),
-                'unique'                  => $attribute->getUnique(),
-                'searchable'              => $attribute->getSearchable(),
-                'localizable'             => $attribute->getTranslatable(),
-                'scope'                   => $attribute->getScopable() ? self::CHANNEL_SCOPE : self::GLOBAL_SCOPE,
-                'useable_as_grid_column'  => (string) (int) $attribute->isUseableAsGridColumn(),
-                'useable_as_grid_filter'  => (string) (int) $attribute->isUseableAsGridFilter(),
+                'sort_order'              => (int) $attribute->getSortOrder(),
+                'required'                => (int) $attribute->getRequired(),
+                'unique'                  => (int) $attribute->getUnique(),
+                'searchable'              => (int) $attribute->getSearchable(),
+                'useable_as_grid_column'  => (int) $attribute->isUseableAsGridColumn(),
+                'useable_as_grid_filter'  => (int) $attribute->isUseableAsGridFilter(),
                 'default_value'           => (string) $attribute->getDefaultValue(),
-                'max_characters'          => (string) $attribute->getMaxCharacters(),
+                'max_characters'          => (int) $attribute->getMaxCharacters(),
                 'validation_rule'         => (string) $attribute->getValidationRule(),
                 'validation_regexp'       => (string) $attribute->getValidationRegexp(),
-                'wysiwyg_enabled'         => (string) $attribute->isWysiwygEnabled(),
-                'number_min'              => (string) $attribute->getNumberMin(),
-                'number_max'              => (string) $attribute->getNumberMax(),
-                'decimals_allowed'        => (string) $attribute->isDecimalsAllowed(),
-                'negative_allowed'        => (string) $attribute->isNegativeAllowed(),
+                'wysiwyg_enabled'         => (int) $attribute->isWysiwygEnabled(),
+                'number_min'              => (int) $attribute->getNumberMin(),
+                'number_max'              => (int) $attribute->getNumberMax(),
+                'decimals_allowed'        => (int) $attribute->isDecimalsAllowed(),
+                'negative_allowed'        => (int) $attribute->isNegativeAllowed(),
                 'date_min'                => $dateMin,
                 'date_max'                => $dateMax,
                 'date_type'               => (string) $attribute->getDateType(),
@@ -83,8 +81,18 @@ class AttributeNormalizer implements NormalizerInterface
             $results = array_merge(
                 $results,
                 array(
+                    'localizable'     => (int) $attribute->getTranslatable(),
+                    'scope'           => $attribute->getScopable() ? self::CHANNEL_SCOPE : self::GLOBAL_SCOPE,
                     'options'         => $this->normalizeOptions($attribute),
                     'default_options' => $this->normalizeDefaultOptions($attribute)
+                )
+            );
+        } else {
+            $results = array_merge(
+                $results,
+                array(
+                    'is_translatable' => (int) $attribute->getTranslatable(),
+                    'is_scopable'     => (int) $attribute->getScopable(),
                 )
             );
         }
