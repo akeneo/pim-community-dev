@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\ImportExportBundle\Normalizer;
 
+use Pim\Bundle\CatalogBundle\Entity\Channel;
+
 /**
  * A normalizer to transform a channel entity into a flat array
  *
@@ -15,4 +17,24 @@ class FlatChannelNormalizer extends ChannelNormalizer
      * @var array
      */
     protected $supportedFormats = array('csv');
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function normalizeCurrencies(Channel $channel)
+    {
+        $currencies = parent::normalizeCurrencies($channel);
+
+        return implode(',', $currencies);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function normalizeLocales(Channel $channel)
+    {
+        $locales = parent::normalizeLocales($channel);
+
+        return implode(',', $locales);
+    }
 }
