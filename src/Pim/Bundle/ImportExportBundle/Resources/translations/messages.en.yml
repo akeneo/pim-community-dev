@@ -109,7 +109,7 @@ oro_batch:
             label: Allow file upload
             help: Whether or not to allow uploading the file directly
 
-    valid_product_creation_processor:
+    product_processor:
         title: Product creation
         enabled:
             label: Enable the product?
@@ -130,7 +130,7 @@ oro_batch:
             label: Channel
             help: The channel in which create the imported value
 
-    valid_category_creation_processor:
+    category_processor:
         title: Category creation
         labelDelimiter:
             label: Label delimiter
@@ -142,56 +142,57 @@ oro_batch:
             label: Check circular references
             help: If yes, data will be processed to make sure that there are no circular references between the categories
 
-    valid_association_creation_processor:
+    association_processor:
         title: Association creation
 
-    valid_group_creation_processor:
+    group_processor:
         title: Group creation
 
-    valid_attribute_creation_processor:
+    attribute_processor:
         title: Create / update attributes
 
-    valid_attribute_option_creation_processor:
-        title: Create / update attribute options
+    attribute_option_processor:
+        title: Create / update attributes
 
-    heterogeneous_processor:
-        title: Settings
-        delimiter:
-            label: Delimiter
-            help: One character used to set the field delimiter
-        enclosure:
-            label: Enclosure
-            help: One character used to set the field enclosure
-        withHeader:
-            label: With header
-            help: Whether or not to print the column name
+    csv_serializer:
+        heterogeneous_processor:
+            title: Settings
+            delimiter:
+                label: Delimiter
+                help: One character used to set the field delimiter
+            enclosure:
+                label: Enclosure
+                help: One character used to set the field enclosure
+            withHeader:
+                label: With header
+                help: Whether or not to print the column name
 
-    product_processor:
-        title: Settings
-        delimiter:
-            label: Delimiter
-            help: One character used to set the field delimiter
-        enclosure:
-            label: Enclosure
-            help: One character used to set the field enclosure
-        withHeader:
-            label: With header
-            help: Whether or not to print the column name
-        channel:
-            label: Channel
-            help: The channel in which create the imported value
+        product_processor:
+            title: Settings
+            delimiter:
+                label: Delimiter
+                help: One character used to set the field delimiter
+            enclosure:
+                label: Enclosure
+                help: One character used to set the field enclosure
+            withHeader:
+                label: With header
+                help: Whether or not to print the column name
+            channel:
+                label: Channel
+                help: The channel in which create the imported value
 
-    homogeneous_processor:
-        title: Settings
-        delimiter:
-            label: Delimiter
-            help: One character used to set the field delimiter
-        enclosure:
-            label: Enclosure
-            help: One character used to set the field enclosure
-        withHeader:
-            label: With header
-            help: Whether or not to print the column name
+        homogeneous_processor:
+            title: Settings
+            delimiter:
+                label: Delimiter
+                help: One character used to set the field delimiter
+            enclosure:
+                label: Enclosure
+                help: One character used to set the field enclosure
+            withHeader:
+                label: With header
+        help: Whether or not to print the column name
 
     file_writer:
         title: Output
@@ -211,20 +212,14 @@ oro_batch:
             label: File name
             help: The name of the generated file.
 
-    orm_category_writer:
+    category_writer:
         title: Category storage
 
-    orm_product_writer:
+    product_writer:
         title: Product storage
 
-    orm_association_writer:
-        title: Association storage
-
-    orm_group_writer:
-        title: Group storage
-
-    orm_attribute_writer:
-        title: Save attributes
+    writer:
+        title: Entity storage
 
 # Page titles:
 Import management:        Import management

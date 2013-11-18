@@ -19,7 +19,6 @@ use Pim\Bundle\ImportExportBundle\Validator\Constraints\Channel;
  */
 class ProductProcessor extends HeterogeneousProcessor
 {
-
     /**
      * @Assert\NotBlank
      * @Channel
@@ -38,6 +37,7 @@ class ProductProcessor extends HeterogeneousProcessor
     public function __construct(SerializerInterface $serializer, ChannelManager $channelManager)
     {
         parent::__construct($serializer);
+
         $this->channelManager = $channelManager;
     }
 

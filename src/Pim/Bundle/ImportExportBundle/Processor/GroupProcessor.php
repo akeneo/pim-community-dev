@@ -2,13 +2,6 @@
 
 namespace Pim\Bundle\ImportExportBundle\Processor;
 
-use Symfony\Component\Validator\ValidatorInterface;
-use Doctrine\ORM\EntityManager;
-use Doctrine\Common\Collections\ArrayCollection;
-use Oro\Bundle\BatchBundle\Item\ItemProcessorInterface;
-use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
-use Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
-use Oro\Bundle\BatchBundle\Entity\StepExecution;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 
 /**
@@ -20,91 +13,12 @@ use Pim\Bundle\CatalogBundle\Entity\Group;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GroupProcessor extends AbstractConfigurableStepElement implements
-    ItemProcessorInterface,
-    StepExecutionAwareInterface
+class GroupProcessor extends AbstractEntityProcessor
 {
     /**
-     * Entity manager
-     *
-     * @var EntityManager
-     */
-    protected $entityManager;
-
-    /**
-     * Property for storing data during execution
-     *
-     * @var ArrayCollection
-     */
-    protected $data;
-
-    /**
-     * Property for storing valid groups during execution
-     *
-     * @var ArrayCollection
-     */
-    protected $groups;
-
-    /**
-     * @var StepExecution
-     */
-    protected $stepExecution;
-
-    /**
-     * Constructor
-     *
-     * @param EntityManager      $entityManager
-     * @param ValidatorInterface $validator
-     */
-    public function __construct(
-        EntityManager $entityManager,
-        ValidatorInterface $validator
-    ) {
-        $this->entityManager = $entityManager;
-        $this->validator     = $validator;
-    }
-
-    /**
      * {@inheritdoc}
      */
-    public function setStepExecution(StepExecution $stepExecution)
-    {
-        $this->stepExecution = $stepExecution;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigurationFields()
-    {
-        return array();
-    }
-
-    /**
-     * Receives an array of groups and processes them
-     *
-     * @param mixed $data Data to be processed
-     *
-     * @return Group[]
-     */
-    public function process($data)
-    {
-        $this->data   = new ArrayCollection($data);
-        $this->groups = new ArrayCollection();
-
-        foreach ($this->data as $item) {
-            $this->processItem($item);
-        }
-
-        return $this->groups->toArray();
-    }
-
-    /**
-     * If the group is valid, it is stored into the groups property
-     *
-     * @param array $item
-     */
-    private function processItem($item)
+    protected function processItem($item)
     {
         $group = $this->getGroup($item);
 
@@ -125,7 +39,7 @@ class GroupProcessor extends AbstractConfigurableStepElement implements
 
             return;
         } else {
-            $this->groups[] = $group;
+            $this->entities[] = $group;
         }
     }
 
