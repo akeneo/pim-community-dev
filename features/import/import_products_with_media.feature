@@ -104,6 +104,7 @@ Feature: Import media with products
     And I am logged in as "Julia"
     When I am on the "acme_product_import" import job page
     And I launch the import job
-    Then there should be 0 product
+    And I wait for the job to finish
+    Then there should be 0 products
     And I should see "frontView: File not found"
     And I should see "userManual: File not found"
