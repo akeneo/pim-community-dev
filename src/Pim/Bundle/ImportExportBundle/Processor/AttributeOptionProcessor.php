@@ -95,8 +95,30 @@ class AttributeOptionProcessor extends AbstractConfigurableStepElement implement
     private function processItem($item)
     {
         $option = $this->getOption($item);
-
         $option->setDefault((bool) $item['is_default']);
+        $this->updateLabels($option, $item);
+
+        $violations = $this->validator->validate($option);
+        if ($violations->count() > 0) {
+            $messages = array();
+            foreach ($violations as $violation) {
+                $messages[]= (string) $violation;
+            }
+            throw new InvalidItemException(implode(', ', $messages), $item);
+
+        } else {
+            $this->options[] = $option;
+        }
+    }
+
+    /**
+     * Set labels
+     *
+     * @param AttributeOption $option
+     * @param array           $item
+     */
+    protected function updateLabels(AttributeOption $option, array $item)
+    {
         foreach ($item as $key => $data) {
             if (preg_match('/^label-(.+)/', $key, $matches)) {
                 $locale = $matches[1];
@@ -111,18 +133,6 @@ class AttributeOptionProcessor extends AbstractConfigurableStepElement implement
             }
         }
         $option->setLocale(null);
-
-        $violations = $this->validator->validate($option);
-        if ($violations->count() > 0) {
-            $messages = array();
-            foreach ($violations as $violation) {
-                $messages[]= (string) $violation;
-            }
-            throw new InvalidItemException(implode(', ', $messages), $item);
-
-        } else {
-            $this->options[] = $option;
-        }
     }
 
     /**
