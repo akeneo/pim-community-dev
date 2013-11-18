@@ -49,32 +49,34 @@ class FlatAttributeNormalizerTest extends AttributeNormalizerTest
         return array(
             array(
                 array(
-                    'type'                   => 'multiselect',
+                    'type'                   => 'pim_catalog_multiselect',
                     'code'                   => 'color',
-                    'label'                  => 'default:Color,en:Color,fr:Couleur',
+                    'label-en_US'            => 'Color',
+                    'label-fr_FR'            => 'Coleur',
                     'group'                  => 'general',
-                    'sort_order'             => '5',
-                    'required'               => '0',
-                    'unique'                 => '0',
+                    'sort_order'             => 5,
+                    'required'               => 0,
+                    'unique'                 => 0,
                     'default_options'        => 'en:Red,fr:Rouge',
                     'searchable'             => '1',
                     'localizable'            => '1',
                     'available_locales'      => 'All',
                     'scope'                  => 'Global',
                     'options'                => 'Code:green,en:Green,fr:Vert|Code:red,en:Red,fr:Rouge',
-                    'useable_as_grid_column' => '1',
-                    'useable_as_grid_filter' => '0',
+                    'useable_as_grid_column' => 1,
+                    'useable_as_grid_filter' => 0,
                 )
             ),
             array(
                 array(
-                    'type'                   => 'text',
+                    'type'                   => 'pim_catalog_text',
                     'code'                   => 'description',
-                    'label'                  => 'default:Description,en:Description,fr:Description',
+                    'label-en_US'            => 'Color',
+                    'label-fr_FR'            => 'Coleur',
                     'group'                  => 'info',
-                    'sort_order'             => '1',
-                    'required'               => '1',
-                    'unique'                 => '0',
+                    'sort_order'             => 1,
+                    'required'               => 1,
+                    'unique'                 => 0,
                     'default_value'          => 'No description',
                     'default_options'        => '',
                     'searchable'             => '1',
@@ -82,8 +84,8 @@ class FlatAttributeNormalizerTest extends AttributeNormalizerTest
                     'available_locales'      => 'en,fr',
                     'scope'                  => 'Channel',
                     'options'                => '',
-                    'useable_as_grid_column' => '1',
-                    'useable_as_grid_filter' => '1',
+                    'useable_as_grid_column' => 1,
+                    'useable_as_grid_filter' => 1,
                     'max_characters'         => '200',
                     'validation_rule'        => 'regexp',
                     'validation_regexp'      => '^[a-zA-Z0-9 ]*$',
@@ -112,7 +114,7 @@ class FlatAttributeNormalizerTest extends AttributeNormalizerTest
 
         $this->assertEquals(
             $expectedResult,
-            $this->normalizer->normalize($attribute, 'csv')
+            $this->normalizer->normalize($attribute, $this->format, array('versioning' => true))
         );
     }
 
@@ -122,13 +124,12 @@ class FlatAttributeNormalizerTest extends AttributeNormalizerTest
      */
     protected function addLabels($attribute, $data)
     {
-        $labels = explode(',', $data['label']);
-        foreach ($labels as $label) {
-            $label  = explode(':', $label);
-            $locale = reset($label);
-            $label  = end($label);
-            $translation = $attribute->getTranslation($locale);
-            $translation->setLabel($label);
+        foreach ($data as $key => $label) {
+            if (strpos($key, 'label-') !== false) {
+                $locale = str_replace('label-', '', $key);
+                $translation = $attribute->getTranslation($locale);
+                $translation->setLabel($label);
+            }
         }
     }
 

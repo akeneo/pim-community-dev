@@ -26,7 +26,16 @@ connector:
                 export:
                     title:     pim_import_export.jobs.attribute_export.export.title
                     reader:    pim_import_export.reader.attribute
-                    processor: pim_import_export.processor.csv_serializer.homogeneous
+                    processor: pim_import_export.processor.csv_serializer.heterogeneous
+                    writer:    pim_import_export.writer.file
+        attribute_option_export:
+            title: pim_import_export.jobs.attribute_option_export.title
+            type:  export
+            steps:
+                export:
+                    title:     pim_import_export.jobs.attribute_option_export.export.title
+                    reader:    pim_import_export.reader.attribute_option
+                    processor: pim_import_export.processor.csv_serializer.heterogeneous
                     writer:    pim_import_export.writer.file
         association_export:
             title: pim_import_export.jobs.association_export.title
@@ -71,9 +80,18 @@ connector:
             steps:
                 import:
                     title:     pim_import_export.jobs.attribute_import.import.title
-                    reader:    pim_import_export.reader.dummy    #TODO: to replace by concrete implementation
-                    processor: pim_import_export.processor.dummy #TODO: to replace by concrete implementation
-                    writer:    pim_import_export.writer.dummy    #TODO: to replace by concrete implementation
+                    reader:    pim_import_export.reader.csv_file
+                    processor: pim_import_export.processor.attribute
+                    writer:    pim_import_export.writer.orm_attribute
+        attribute_option_import:
+            title: pim_import_export.jobs.attribute_option_import.title
+            type:  import
+            steps:
+                import:
+                    title:     pim_import_export.jobs.attribute_option_import.import.title
+                    reader:    pim_import_export.reader.csv_file
+                    processor: pim_import_export.processor.attribute_option
+                    writer:    pim_import_export.writer.orm_attribute_option
         association_import:
             title: pim_import_export.jobs.association_import.title
             type: import

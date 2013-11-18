@@ -23,18 +23,25 @@ abstract class Processor extends AbstractConfigurableStepElement implements Item
     /**
      * @Assert\NotBlank
      * @Assert\Choice(choices={",", ";", "|"}, message="The value must be one of , or ; or |")
+     * @var string
      */
     protected $delimiter = ';';
 
     /**
      * @Assert\NotBlank
      * @Assert\Choice(choices={"""", "'"}, message="The value must be one of "" or '")
+     * @var string
      */
     protected $enclosure = '"';
 
+    /**
+     * @var boolean
+     */
     protected $withHeader = true;
 
     /**
+     * Constructor
+     *
      * @param SerializerInterface $serializer
      */
     public function __construct(SerializerInterface $serializer)
