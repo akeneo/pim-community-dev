@@ -52,20 +52,8 @@ oro_batch:
             label: Channel
             help: The channel you want to export
 
-    category_reader:
-        title: Category extraction
-
-    attribute_reader:
-        title: Attribute extraction
-
-    attribute_option_reader:
-        title: Attribute option extraction
-
-    association_reader:
-        title: Association extraction
-
-    group_reader:
-        title: Group extraction
+    entity_reader:
+        title: Entity extraction
 
     csv_reader:
         title: CSV Reader
@@ -104,7 +92,7 @@ oro_batch:
             help: Whether or not to allow uploading the file directly
 
     csv_file_reader:
-        title: Read the CSV File
+        title: CSV File Reader
         filePath:
             label: File
             help: The csv file to import
@@ -166,7 +154,7 @@ oro_batch:
     valid_attribute_option_creation_processor:
         title: Create / update attribute options
 
-    heterogeneous_csv_serializer_processor:
+    heterogeneous_processor:
         title: Settings
         delimiter:
             label: Delimiter
@@ -178,7 +166,7 @@ oro_batch:
             label: With header
             help: Whether or not to print the column name
 
-    product_csv_serializer_processor:
+    product_processor:
         title: Settings
         delimiter:
             label: Delimiter
@@ -193,7 +181,7 @@ oro_batch:
             label: Channel
             help: The channel in which create the imported value
 
-    homogeneous_csv_serializer_processor:
+    homogeneous_processor:
         title: Settings
         delimiter:
             label: Delimiter
@@ -214,7 +202,7 @@ oro_batch:
             label: File name
             help: The name of the generated file.
 
-    product_file_writer:
+    product_writer:
         title: Output
         directoryName:
             label: Directory path

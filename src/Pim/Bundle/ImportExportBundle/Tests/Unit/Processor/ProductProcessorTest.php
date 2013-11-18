@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Processor;
 
-use Pim\Bundle\ImportExportBundle\Processor\ValidProductCreationProcessor;
+use Pim\Bundle\ImportExportBundle\Processor\ProductProcessor;
 
 /**
  * Test related class
@@ -11,7 +11,7 @@ use Pim\Bundle\ImportExportBundle\Processor\ValidProductCreationProcessor;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ValidProductCreationProcessorTest extends \PHPUnit_Framework_TestCase
+class ProductProcessorTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
@@ -24,7 +24,7 @@ class ValidProductCreationProcessorTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $processor = new ValidProductCreationProcessor($productTransformer);
+        $processor = new ProductProcessor($productTransformer);
 
         $processor->setEnabled('enabled');
         $processor->setFamilyColumn('fml');

@@ -11,7 +11,7 @@ namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Processor;
  *
  * @abstract
  */
-abstract class AbstractValidCreationProcessorTestCase extends \PHPUnit_Framework_TestCase
+abstract class AbstractProcessorTestCase extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var \Doctrine\ORM\EntityManager

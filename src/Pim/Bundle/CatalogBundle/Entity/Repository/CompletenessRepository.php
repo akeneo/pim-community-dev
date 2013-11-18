@@ -123,11 +123,13 @@ SQL;
      */
     public function schedule(ProductInterface $product)
     {
-        $query = $this->_em->createQuery(
-            'DELETE FROM Pim\Bundle\CatalogBundle\Entity\Completeness c WHERE c.product = :product'
-        );
-        $query->setParameter('product', $product);
-        $query->execute();
+        if ($product->getId()) {
+            $query = $this->_em->createQuery(
+                'DELETE FROM Pim\Bundle\CatalogBundle\Entity\Completeness c WHERE c.product = :product'
+            );
+            $query->setParameter('product', $product);
+            $query->execute();
+        }
     }
 
     /**
