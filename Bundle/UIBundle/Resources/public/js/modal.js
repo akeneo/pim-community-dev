@@ -16,7 +16,7 @@ function(_, Backbone, __) {
         className: 'modal oro-modal-danger',
 
         /** @property {String} */
-        okButtonClass: 'btn-danger',
+        okButtonClass: 'btn-primary',
 
         /** @property {Object} */
         template: _.template('\
