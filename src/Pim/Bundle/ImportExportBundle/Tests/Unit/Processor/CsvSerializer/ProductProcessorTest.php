@@ -29,7 +29,7 @@ class ProductProcessorTest extends \PHPUnit_Framework_TestCase
     public function testInstanceOfHeterogeneousProcessor()
     {
         $this->assertInstanceOf(
-            'Pim\Bundle\ImportExportBundle\Processor\HeterogeneousProcessor',
+            'Pim\Bundle\ImportExportBundle\Processor\CsvSerializer\HeterogeneousProcessor',
             $this->processor
         );
     }
