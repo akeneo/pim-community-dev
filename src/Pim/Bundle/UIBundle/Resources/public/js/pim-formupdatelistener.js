@@ -18,7 +18,7 @@ define(
                         return;
                     }
                     self.updated = true;
-                    $('#updated').show();
+                    $('#updated').removeClass('hide');
 
                     $form.off('change', formUpdated);
                     $(document).off('click', '#' + $form.attr('id') + ' ins.jstree-checkbox', formUpdated);

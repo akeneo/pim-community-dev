@@ -25,7 +25,7 @@ require(
                 );
             }
 
-            function initializeForm() {
+            function initializeForm(preventUpdate) {
                 $(formName+' .switch:not(.has-switch)').bootstrapSwitch();
                 $('[data-toggle="tooltip"]').tooltip();
 
@@ -79,9 +79,13 @@ require(
                         placeholder: '{{ "Choose a unit"|trans }}'
                     });
                 }).trigger('change');
+
+                if (preventUpdate) {
+                    $('#updated').addClass('hide');
+                }
             }
 
-            initializeForm();
+            initializeForm(true);
 
             function initializeOptions() {
                 $optionList = $('table#sortable_options');
