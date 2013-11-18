@@ -168,17 +168,33 @@ class StepExecutionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedString, (string) $this->stepExecution);
     }
 
-    public function testAddReaderWarning()
+    public function testAddWarning()
     {
-        $reader = $this->getMock('Oro\Bundle\BatchBundle\Item\ItemReaderInterface');
-        $reason = 'something is wrong';
-        $data = array('foo' => 'bar');
-
-        $this->stepExecution->addReaderWarning($reader, $reason, $data);
+        $this->stepExecution->addWarning(
+            'foo',
+            'something is wrong on line 1',
+            array('foo' => 'bar')
+        );
+        $this->stepExecution->addWarning(
+            'bar',
+            'something is wrong on line 2',
+            array('baz' => false)
+        );
 
         $this->assertEquals(
-            array(array('reader' => $reader, 'reason' => $reason, 'data' => $data)),
-            $this->stepExecution->getReaderWarnings()
+            array(
+                array(
+                    'name'   => 'oro_batch.foo.title',
+                    'reason' => 'something is wrong on line 1',
+                    'item'   => array('foo' => 'bar')
+                ),
+                array(
+                    'name'   => 'oro_batch.bar.title',
+                    'reason' => 'something is wrong on line 2',
+                    'item'   => array('baz' => false)
+                )
+            ),
+            $this->stepExecution->getWarnings()
         );
     }
 

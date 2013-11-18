@@ -2,9 +2,9 @@
 
 namespace Oro\Bundle\UserBundle\Controller\Api\Rest;
 
-use Nelmio\ApiDocBundle\Annotation\ApiDoc;
-
 use Symfony\Component\Form\FormInterface;
+
+use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 
 use FOS\Rest\Util\Codes;
 use FOS\RestBundle\Routing\ClassResourceInterface;
@@ -13,14 +13,15 @@ use FOS\RestBundle\Controller\Annotations\QueryParam;
 
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+
+use Oro\Bundle\SoapBundle\Controller\Api\Rest\RestController;
+use Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager;
 use Oro\Bundle\SoapBundle\Form\Handler\ApiFormHandler;
-use Oro\Bundle\SoapBundle\Entity\Manager\ApiFlexibleEntityManager;
-use Oro\Bundle\SoapBundle\Controller\Api\Rest\FlexibleRestController;
 
 /**
  * @NamePrefix("oro_api_")
  */
-class UserController extends FlexibleRestController implements ClassResourceInterface
+class UserController extends RestController implements ClassResourceInterface
 {
     /**
      * Get the list of users
@@ -221,7 +222,7 @@ class UserController extends FlexibleRestController implements ClassResourceInte
     /**
      * Get entity Manager
      *
-     * @return ApiFlexibleEntityManager
+     * @return ApiEntityManager
      */
     public function getManager()
     {

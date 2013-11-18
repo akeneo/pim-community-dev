@@ -50,7 +50,6 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
         /**
          * links - Selector for all links that will be processed by hash navigation
          * scrollLinks - Selector for anchor links
-         * forms - Selector for all forms that will be processed by hash navigation
          * content - Selector for ajax response content area
          * container - Selector for main content area
          * loadingMask - Selector for loading spinner
@@ -69,7 +68,6 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
         selectors: {
             links:               'a:not([href^=#],[href^=javascript],[href^=mailto],[href^=skype],[href^=ftp],[href^=callto],[href^=tel]),span[data-url]',
             scrollLinks:         'a[href^=#]',
-            forms:               'form',
             content:             '#content',
             userMenu:            '#top-page .user-menu',
             container:           '#container',
@@ -748,7 +746,7 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
             this.processClicks(this.selectorCached.links);
             this.disableEmptyLinks(this.selectorCached.menu.find(this.selectors.scrollLinks));
 
-            this.processForms(this.selectors.forms);
+            this.processForms();
             this.processAnchors(this.selectorCached.container.find(this.selectors.scrollLinks));
 
             this.loadingMask = new LoadingMask();
@@ -901,7 +899,6 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
                         this.disableEmptyLinks(this.selectorCached.menu.find(this.selectors.scrollLinks));
                         this.processClicks(this.selectorCached.container.find(this.selectors.links));
                         this.processAnchors(this.selectorCached.container.find(this.selectors.scrollLinks));
-                        this.processForms(this.selectorCached.container.find(this.selectors.forms));
                         this.processPinButton(data);
                         this.restoreFormState(this.tempCache);
                         if (!options.fromCache) {
@@ -1122,12 +1119,10 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
 
         /**
          * Processing forms submit events
-         *
-         * @param {String} selector
          */
-        processForms: function(selector) {
-            $(selector).on('submit', _.bind(function (e) {
-                var $form = $(e.currentTarget);
+        processForms: function() {
+            $('body').on('submit', _.bind(function (e) {
+                var $form = $(e.target);
                 if ($form.data('nohash')) {
                     return;
                 }

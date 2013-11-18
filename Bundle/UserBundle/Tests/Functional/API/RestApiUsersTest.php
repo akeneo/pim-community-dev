@@ -34,7 +34,6 @@ class RestUsersApiTest extends WebTestCase
                 "firstName" => "firstName",
                 "lastName" => "lastName",
                 "rolesCollection" => array("3"),
-                "attributes" => array("company" => "Some test company"),
                 "owner" => "1",
             )
         );
