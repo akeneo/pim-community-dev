@@ -21,6 +21,9 @@ class ProductWriter extends FileWriter
     /** @var \ZipArchive */
     protected $archive;
 
+    /** @var string */
+    protected $archivePath;
+
     /**
      * Constructor
      *
@@ -29,6 +32,14 @@ class ProductWriter extends FileWriter
     public function __construct(MediaManager $mediaManager)
     {
         $this->mediaManager = $mediaManager;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPath()
+    {
+        return $this->archivePath ?: parent::getPath();
     }
 
     /**
@@ -76,12 +87,12 @@ class ProductWriter extends FileWriter
         if (null === $this->archive) {
             $baseFile = $this->getPath();
             $this->archive = new \ZipArchive();
-            $archivePath = sprintf('%s/%s.zip',
+            $this->archivePath = sprintf('%s/%s.zip',
                 pathinfo($baseFile, PATHINFO_DIRNAME),
                 pathinfo($baseFile, PATHINFO_FILENAME)
             );
 
-            $status = $this->archive->open($archivePath, \ZIPARCHIVE::CREATE);
+            $status = $this->archive->open($this->archivePath, \ZIPARCHIVE::CREATE);
 
             if ($status !== true) {
                 throw new \RuntimeException(sprintf('Error "%d" occured when creating the zip archive.', $status));
