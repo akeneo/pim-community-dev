@@ -33,7 +33,7 @@ class AttributeGroupTranslation extends AbstractTranslation
      * Change foreign key to add constraint and work with basic entity
      *
      * @ORM\ManyToOne(targetEntity="AttributeGroup", inversedBy="translations")
-     * @ORM\JoinColumn(name="foreign_key", referencedColumnName="id")
+     * @ORM\JoinColumn(name="foreign_key", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $foreignKey;
 

@@ -79,8 +79,7 @@ class GroupType implements TranslatableInterface
      * @ORM\OneToMany(
      *     targetEntity="Pim\Bundle\CatalogBundle\Entity\GroupTypeTranslation",
      *     mappedBy="foreignKey",
-     *     cascade={"persist", "remove"},
-     *     orphanRemoval=true
+     *     cascade={"persist"}
      * )
      */
     protected $translations;

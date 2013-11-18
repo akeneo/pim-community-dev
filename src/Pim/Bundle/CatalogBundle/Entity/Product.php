@@ -100,8 +100,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface
      * @ORM\OneToMany(
      *     targetEntity="Pim\Bundle\CatalogBundle\Entity\ProductAssociation",
      *     mappedBy="owner",
-     *     cascade={"persist", "remove", "refresh"},
-     *     orphanRemoval=true
+     *     cascade={"persist", "refresh"}
      * )
      */
     protected $productAssociations;
@@ -112,7 +111,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface
      * @ORM\OneToMany(
      *     targetEntity="Pim\Bundle\CatalogBundle\Entity\Completeness",
      *     mappedBy="product",
-     *     cascade={"persist", "remove", "refresh"}
+     *     cascade={"persist", "refresh"}
      * )
      */
     protected $completenesses;
