@@ -9,6 +9,7 @@ use Oro\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Oro\Bundle\BatchBundle\Item\InvalidItemException;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
+use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\manager\ProductManager;
 
 /**
@@ -139,7 +140,7 @@ class AttributeProcessor extends AbstractConfigurableStepElement implements Item
      */
     protected function updateGroup(ProductAttribute $attribute, array $item)
     {
-        if (empty($item['group'])) {
+        if (empty($item['group']) or $item['group'] == AttributeGroup::DEFAULT_GROUP_CODE) {
             $attribute->setGroup(null);
         } else {
             $group = $this->findAttributeGroup($item['group']);
@@ -174,14 +175,11 @@ class AttributeProcessor extends AbstractConfigurableStepElement implements Item
     protected function prepareParameters($data)
     {
         $parameters = array();
-        $exclude = array('code', 'type', 'group', 'available_locales', 'is_translatable', 'is_scopable', 'default_value');
-        foreach (array_keys($data) as $key) {
-            if (!in_array($key, $exclude) and !preg_match('/^label-(.+)/', $key, $matches)) {
-                $parameters[Inflector::camelize($key)] = $data[$key];
-            }
+
+        $booleanParams = array('useable_as_grid_column', 'useable_as_grid_filter', 'unique');
+        foreach ($booleanParams as $key) {
+            $parameters[Inflector::camelize($key)] = (bool) $data[$key];
         }
-        $parameters['dateMin']= (isset($parameters['dateMin'])) ? new \DateTime($parameters['dateMin']) : null;
-        $parameters['dateMax']= (isset($parameters['dateMax'])) ? new \DateTime($parameters['dateMax']) : null;
 
         return $parameters;
     }
@@ -199,6 +197,8 @@ class AttributeProcessor extends AbstractConfigurableStepElement implements Item
         if (!$attribute) {
             $attribute = $this->productManager->createAttribute($item['type']);
             $attribute->setCode($item['code']);
+            $attribute->setTranslatable((bool) $item['is_translatable']);
+            $attribute->setScopable((bool) $item['is_scopable']);
         }
 
         return $attribute;
