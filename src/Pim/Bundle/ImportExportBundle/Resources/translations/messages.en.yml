@@ -13,6 +13,9 @@ pim_import_export:
         attribute_export:
             title: Attribute export in CSV
             export.title: Configuration
+        attribute_option_export:
+            title: Attribute option export in CSV
+            export.title: Configuration
         association_export:
             title: Association export in CSV
             export.title: Configuration
@@ -27,6 +30,9 @@ pim_import_export:
             import.title: Configuration
         attribute_import:
             title: Attribute import in CSV
+            import.title: Configuration
+        attribute_option_import:
+            title: Attribute option import in CSV
             import.title: Configuration
         association_import:
             title: Association import in CSV
@@ -141,6 +147,12 @@ oro_batch:
 
     group_processor:
         title: Group creation
+
+    attribute_processor:
+        title: Create / update attributes
+
+    attribute_option_processor:
+        title: Create / update attributes
 
     csv_serializer:
         heterogeneous_processor:
