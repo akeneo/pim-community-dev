@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Processor;
 
-use Pim\Bundle\ImportExportBundle\Processor\CsvSerializer\ProductCsvSerializerProcessor;
+use Pim\Bundle\ImportExportBundle\Processor\CsvSerializer\ProductProcessor;
 
 /**
  * Test related class
@@ -11,7 +11,7 @@ use Pim\Bundle\ImportExportBundle\Processor\CsvSerializer\ProductCsvSerializerPr
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductCsvSerializerProcessorTest extends \PHPUnit_Framework_TestCase
+class ProductProcessorTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * {@inheritdoc}
@@ -20,16 +20,16 @@ class ProductCsvSerializerProcessorTest extends \PHPUnit_Framework_TestCase
     {
         $this->serializer   = $this->getSerializerMock();
         $this->channelManager = $this->getChannelManagerMock();
-        $this->processor    = new ProductCsvSerializerProcessor($this->serializer, $this->channelManager);
+        $this->processor    = new ProductProcessor($this->serializer, $this->channelManager);
     }
 
     /**
      * Test related method
      */
-    public function testInstanceOfHeterogeneousCsvSerializerProcessor()
+    public function testInstanceOfHeterogeneousProcessor()
     {
         $this->assertInstanceOf(
-            'Pim\Bundle\ImportExportBundle\Processor\HeterogeneousCsvSerializerProcessor',
+            'Pim\Bundle\ImportExportBundle\Processor\HeterogeneousProcessor',
             $this->processor
         );
     }

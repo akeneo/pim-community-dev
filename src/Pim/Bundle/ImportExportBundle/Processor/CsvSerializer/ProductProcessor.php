@@ -17,7 +17,7 @@ use Pim\Bundle\ImportExportBundle\Validator\Constraints\Channel;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductCsvSerializerProcessor extends HeterogeneousCsvSerializerProcessor
+class ProductProcessor extends HeterogeneousProcessor
 {
 
     /**
