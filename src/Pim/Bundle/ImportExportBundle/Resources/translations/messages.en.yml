@@ -200,17 +200,14 @@ oro_batch:
             label: File name
             help: The name of the generated file.
 
-    orm_category_writer:
+    category_writer:
         title: Category storage
 
-    orm_product_writer:
+    product_writer:
         title: Product storage
 
-    orm_association_writer:
-        title: Association storage
-
-    orm_group_writer:
-        title: Group storage
+    writer:
+        title: Entity storage
 
 # Page titles:
 Import management:        Import management
