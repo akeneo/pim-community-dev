@@ -152,7 +152,7 @@ class ChannelController extends AbstractDoctrineController
 
         return array(
             'form' => $this->channelForm->createView(),
-            'historyDatagrid' => $this->getHistoryGrid($channel)
+            'historyDatagrid' => $this->getHistoryGrid($channel)->createView()
         );
     }
 
