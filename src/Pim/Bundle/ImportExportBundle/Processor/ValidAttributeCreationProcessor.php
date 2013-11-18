@@ -110,28 +110,9 @@ class ValidAttributeCreationProcessor extends AbstractConfigurableStepElement im
     {
         $attribute = $this->getAttribute($item);
 
-        foreach ($item as $key => $value) {
-            if (preg_match('/^label-(.+)/', $key, $matches)) {
-                $attribute->setLocale($matches[1]);
-                $attribute->setLabel($value);
-            }
-        }
-        $attribute->setLocale(null);
-
-        if (empty($item['group'])) {
-            $attribute->setGroup(null);
-        } else {
-            $group = $this->findAttributeGroup($item['group']);
-            if (!$group) {
-                throw new InvalidItemException(
-                    sprintf('The "%s" group not exists.', $item['group']),
-                    $item
-                );
-            }
-        }
-
-        $parameters = $this->prepareParameters($item);
-        $attribute->setParameters($parameters);
+        $this->updateLabels($attribute, $item);
+        $this->updateGroup($attribute, $item);
+        $this->updateParameters($attribute, $item);
 
         $violations = $this->validator->validate($attribute);
         if ($violations->count() > 0) {
@@ -143,6 +124,78 @@ class ValidAttributeCreationProcessor extends AbstractConfigurableStepElement im
         } else {
             $this->attributes[] = $attribute;
         }
+    }
+
+    /**
+     * Set labels
+     *
+     * @param ProductAttribute $attribute
+     * @param array            $item
+     */
+    protected function updateLabels(ProductAttribute $attribute, array $item)
+    {
+        foreach ($item as $key => $value) {
+            if (preg_match('/^label-(.+)/', $key, $matches)) {
+                $attribute->setLocale($matches[1]);
+                $attribute->setLabel($value);
+            }
+        }
+        $attribute->setLocale(null);
+    }
+
+    /**
+     * Set group
+     *
+     * @param ProductAttribute $attribute
+     * @param array            $item
+     */
+    protected function updateGroup(ProductAttribute $attribute, array $item)
+    {
+        if (empty($item['group'])) {
+            $attribute->setGroup(null);
+        } else {
+            $group = $this->findAttributeGroup($item['group']);
+            if (!$group) {
+                throw new InvalidItemException(
+                    sprintf('The "%s" group not exists.', $item['group']),
+                    $item
+                );
+            }
+        }
+    }
+
+    /**
+     * Set parameters
+     *
+     * @param ProductAttribute $attribute
+     * @param array            $item
+     */
+    protected function updateParameters(ProductAttribute $attribute, array $item)
+    {
+        $parameters = $this->prepareParameters($item);
+        $attribute->setParameters($parameters);
+    }
+
+    /**
+     * Prepare parameters
+     *
+     * @param array $data
+     *
+     * @return array
+     */
+    protected function prepareParameters($data)
+    {
+        $parameters = array();
+        $exclude = array('code', 'type', 'group', 'available_locales', 'localizable', 'scope', 'default_value');
+        foreach (array_keys($data) as $key) {
+            if (!in_array($key, $exclude) and !preg_match('/^label-(.+)/', $key, $matches)) {
+                $parameters[Inflector::camelize($key)] = $data[$key];
+            }
+        }
+        $parameters['dateMin']= (isset($parameters['dateMin'])) ? new \DateTime($parameters['dateMin']) : null;
+        $parameters['dateMax']= (isset($parameters['dateMax'])) ? new \DateTime($parameters['dateMax']) : null;
+
+        return $parameters;
     }
 
     /**
@@ -193,27 +246,5 @@ class ValidAttributeCreationProcessor extends AbstractConfigurableStepElement im
             ->getStorageManager()
             ->getRepository('PimCatalogBundle:AttributeGroup')
             ->findOneBy(array('code' => $code));
-    }
-
-    /**
-     * Prepare parameters
-     *
-     * @param array $data
-     *
-     * @return array
-     */
-    public function prepareParameters($data)
-    {
-        $parameters = array();
-        $exclude = array('code', 'type', 'group', 'available_locales', 'localizable', 'scope', 'default_value');
-        foreach (array_keys($data) as $key) {
-            if (!in_array($key, $exclude) and !preg_match('/^label-(.+)/', $key, $matches)) {
-                $parameters[Inflector::camelize($key)] = $data[$key];
-            }
-        }
-        $parameters['dateMin']= (isset($parameters['dateMin'])) ? new \DateTime($parameters['dateMin']) : null;
-        $parameters['dateMax']= (isset($parameters['dateMax'])) ? new \DateTime($parameters['dateMax']) : null;
-
-        return $parameters;
     }
 }
