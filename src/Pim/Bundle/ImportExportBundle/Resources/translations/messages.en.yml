@@ -155,44 +155,45 @@ oro_batch:
         title: Create / update attributes
 
     csv_serializer:
-        heterogeneous_processor:
-            title: Settings
-            delimiter:
-                label: Delimiter
-                help: One character used to set the field delimiter
-            enclosure:
-                label: Enclosure
-                help: One character used to set the field enclosure
-            withHeader:
-                label: With header
-                help: Whether or not to print the column name
-
-        product_processor:
-            title: Settings
-            delimiter:
-                label: Delimiter
-                help: One character used to set the field delimiter
-            enclosure:
-                label: Enclosure
-                help: One character used to set the field enclosure
-            withHeader:
-                label: With header
-                help: Whether or not to print the column name
-            channel:
-                label: Channel
-                help: The channel in which create the imported value
-
-        homogeneous_processor:
-            title: Settings
-            delimiter:
-                label: Delimiter
-                help: One character used to set the field delimiter
-            enclosure:
-                label: Enclosure
-                help: One character used to set the field enclosure
-            withHeader:
-                label: With header
         help: Whether or not to print the column name
+
+    heterogeneous_processor:
+        title: Settings
+        delimiter:
+            label: Delimiter
+            help: One character used to set the field delimiter
+        enclosure:
+            label: Enclosure
+            help: One character used to set the field enclosure
+        withHeader:
+            label: With header
+            help: Whether or not to print the column name
+
+    product_processor:
+        title: Settings
+        delimiter:
+            label: Delimiter
+            help: One character used to set the field delimiter
+        enclosure:
+            label: Enclosure
+            help: One character used to set the field enclosure
+        withHeader:
+            label: With header
+            help: Whether or not to print the column name
+        channel:
+            label: Channel
+            help: The channel in which create the imported value
+
+    homogeneous_processor:
+        title: Settings
+        delimiter:
+            label: Delimiter
+            help: One character used to set the field delimiter
+        enclosure:
+            label: Enclosure
+            help: One character used to set the field enclosure
+        withHeader:
+            label: With header
 
     file_writer:
         title: Output
