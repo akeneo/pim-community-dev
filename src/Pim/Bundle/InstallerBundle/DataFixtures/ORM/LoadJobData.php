@@ -22,12 +22,14 @@ class LoadJobData extends AbstractInstallerFixture
     {
         $configuration = Yaml::parse(realpath($this->getFilePath()));
 
-        foreach ($configuration['jobs'] as $code => $data) {
-            $job = $this->createJob($code, $data);
-            $manager->persist($job);
-        }
+        if (isset($configuration['jobs'])) {
+            foreach ($configuration['jobs'] as $code => $data) {
+                $job = $this->createJob($code, $data);
+                $manager->persist($job);
+            }
 
-        $manager->flush();
+            $manager->flush();
+        }
     }
 
     /**
