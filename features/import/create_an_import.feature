@@ -17,7 +17,8 @@ Feature: Create an import
     Then I should see "Import profile - Mobile product import"
 
   Scenario: Fail to create an unknown product import
-    Given I am logged in as "admin"
-    And I try to create an unknown import
+    Given the "default" catalog configuration
+    And I am logged in as "admin"
+    When I try to create an unknown import
     Then I should be redirected on the import index page
     And I should see "Failed to create an import with an unknown job definition."
