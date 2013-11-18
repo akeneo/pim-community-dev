@@ -26,10 +26,8 @@ oro_batch:
     channel:
       label: Ausgabekanal
       help: Der Ausgabekanal, den Sie exportieren möchten
-  category_reader:
-    title: Extraktion der Kategorien
-  attribute_reader:
-    title: Extraktion der Attribute
+  entity_reader:
+    title: __Entity extraction
   csv_reader:
     title: CSV-Reader
     filePath:
@@ -112,7 +110,7 @@ oro_batch:
     circularRefsChecked:
       label: Prüfen Sie auf Zirkelbezüge
       help: Falls ja, werden die Daten verarbeitet, um sicherzustellen, dass keine Zirkelbezüge zwischen den Kategorien existieren
-  heterogeneous_csv_serializer_processor:
+  heterogeneous_processor:
     title: Einstellungen
     delimiter:
       label: Trennzeichen
@@ -123,7 +121,7 @@ oro_batch:
     withHeader:
       label: Mit Kopfzeile
       help: Auswahl, ob die Spaltenüberschrift mit ausgegeben werden sollen oder nicht
-  product_csv_serializer_processor:
+  product_processor:
     title: Settings
     delimiter:
       label: Delimiter
@@ -137,7 +135,7 @@ oro_batch:
     channel:
       label: Ausgabekanal
       help: Ausgabekanal in welchem der importierte Wert angelegt werden soll
-  homogeneous_csv_serializer_processor:
+  homogeneous_processor:
     title: Einstellungen
     delimiter:
       label: Trennzeichen
@@ -156,7 +154,7 @@ oro_batch:
     fileName:
       label: Dateiname
       help: Name der generierten Datei.
-  product_file_writer:
+  product_writer:
     title: Output
     directoryName:
       label: Directory path
