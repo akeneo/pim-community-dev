@@ -6,4 +6,5 @@ versionable:
     - Pim\Bundle\CatalogBundle\Entity\Group
     - Pim\Bundle\CatalogBundle\Entity\ProductAttribute
     - Pim\Bundle\CatalogBundle\Entity\AttributeGroup
+    - Pim\Bundle\CatalogBundle\Entity\Channel
     - Oro\Bundle\BatchBundle\Entity\JobInstance
