@@ -208,33 +208,7 @@ class CsvReader extends AbstractConfigurableStepElement implements
     {
         if (null === $this->csv) {
             if (pathinfo($this->filePath, PATHINFO_EXTENSION) === 'zip') {
-                $archive = new \ZipArchive();
-
-                if ($archive->open($this->filePath) !== true) {
-                    throw new \RuntimeException('An error occured while extracting the archive.');
-                } else {
-                    $targetDir = sprintf(
-                        '%s/%s',
-                        pathinfo($this->filePath, PATHINFO_DIRNAME),
-                        pathinfo($this->filePath, PATHINFO_FILENAME)
-                    );
-
-                    $archive->extractTo($targetDir);
-                    $archive->close();
-
-                    $csvFiles = glob($targetDir . '/*.[cC][sS][vV]');
-
-                    if (count($csvFiles) !== 1) {
-                        throw new \RuntimeException(
-                            sprintf(
-                                'Expecting the archive to contain exactly 1 csv file, found %d',
-                                count($csvFiles)
-                            )
-                        );
-                    }
-
-                    $this->filePath = reset($csvFiles);
-                }
+                $this->extractZipArchive();
             }
 
             $this->csv = new \SplFileObject($this->filePath);
@@ -298,5 +272,36 @@ class CsvReader extends AbstractConfigurableStepElement implements
     public function setStepExecution(StepExecution $stepExecution)
     {
         $this->stepExecution = $stepExecution;
+    }
+
+    /**
+     * Extract the zip archive to be imported
+     */
+    protected function extractZipArchive()
+    {
+        $archive = new \ZipArchive();
+
+        if ($archive->open($this->filePath) !== true) {
+            throw new \RuntimeException('An error occured while extracting the archive.');
+        } else {
+            $targetDir = sprintf(
+                '%s/%s',
+                pathinfo($this->filePath, PATHINFO_DIRNAME),
+                pathinfo($this->filePath, PATHINFO_FILENAME)
+            );
+
+            $archive->extractTo($targetDir);
+            $archive->close();
+
+            $csvFiles = glob($targetDir . '/*.[cC][sS][vV]');
+
+            if (1 !== $csvCount = count($csvFiles)) {
+                throw new \RuntimeException(
+                    sprintf('Expecting the archive to contain exactly 1 csv file, found %d', $csvCount)
+                );
+            }
+
+            $this->filePath = reset($csvFiles);
+        }
     }
 }
