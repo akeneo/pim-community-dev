@@ -2,14 +2,10 @@
 
 namespace Pim\Bundle\ImportExportBundle\Processor;
 
-use Symfony\Component\Validator\ValidatorInterface;
-use Doctrine\ORM\EntityManager;
 use Doctrine\Common\Collections\ArrayCollection;
-use Oro\Bundle\BatchBundle\Item\ItemProcessorInterface;
-use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
-use Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
-use Oro\Bundle\BatchBundle\Entity\StepExecution;
+
 use Pim\Bundle\CatalogBundle\Entity\Category;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 
 /**
  * Valid category creation (or update) processor
@@ -20,56 +16,14 @@ use Pim\Bundle\CatalogBundle\Entity\Category;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CategoryProcessor extends AbstractConfigurableStepElement implements
-    ItemProcessorInterface,
-    StepExecutionAwareInterface
+class CategoryProcessor extends AbstractEntityProcessor
 {
-    /**
-     * Entity manager
-     *
-     * @var EntityManager
-     */
-    protected $entityManager;
-
     /**
      * If true, category data will be checked to make sure that there are no circular references between the categories
      *
      * @var boolean
      */
     protected $circularRefsChecked = true;
-
-    /**
-     * Property for storing data during execution
-     *
-     * @var ArrayCollection
-     */
-    protected $data;
-
-    /**
-     * Property for storing valid categories during execution
-     *
-     * @var ArrayCollection
-     */
-    protected $categories;
-
-    /**
-     * @var StepExecution
-     */
-    protected $stepExecution;
-
-    /**
-     * Constructor
-     *
-     * @param EntityManager      $entityManager
-     * @param ValidatorInterface $validator
-     */
-    public function __construct(
-        EntityManager $entityManager,
-        ValidatorInterface $validator
-    ) {
-        $this->entityManager = $entityManager;
-        $this->validator     = $validator;
-    }
 
     /**
      * Set circularRefsChecked
@@ -94,14 +48,6 @@ class CategoryProcessor extends AbstractConfigurableStepElement implements
     /**
      * {@inheritdoc}
      */
-    public function setStepExecution(StepExecution $stepExecution)
-    {
-        $this->stepExecution = $stepExecution;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getConfigurationFields()
     {
         return array(
@@ -112,22 +58,20 @@ class CategoryProcessor extends AbstractConfigurableStepElement implements
     }
 
     /**
-     * Receives an array of categories and processes them
-     *
-     * @param mixed $data Data to be processed
+     * {@inheritdoc}
      *
      * @return Category[]
      */
     public function process($data)
     {
         $this->data = new ArrayCollection($data);
-        $this->categories = new ArrayCollection();
+        $this->entities = new ArrayCollection();
 
         foreach ($this->data as $item) {
             $this->processItem($item);
         }
 
-        foreach ($this->categories as $category) {
+        foreach ($this->entities as $category) {
             $parent = $this->data->filter(
                 function ($item) use ($category) {
                     return $item['code'] === $category->getCode();
@@ -145,16 +89,15 @@ class CategoryProcessor extends AbstractConfigurableStepElement implements
             $this->checkCircularReferences();
         }
 
-        return $this->categories->toArray();
+        return $this->entities->toArray();
     }
 
     /**
-     * Transforms a category to a form-compatible format and binds it to the CategoryType
-     * If the category is valid, it is stored into the categories property
+     * {@inheritdoc}
      *
-     * @param array $item
+     * Transforms a category to a form-compatible format and binds it to the CategoryType
      */
-    private function processItem($item)
+    protected function processItem($item)
     {
         $category = $this->getCategory($item);
 
@@ -177,19 +120,19 @@ class CategoryProcessor extends AbstractConfigurableStepElement implements
 
             return;
         } else {
-            $this->categories[] = $category;
+            $this->entities[] = $category;
         }
     }
 
     /**
      * Assigns a parent to the category
      *
-     * @param Category $category
-     * @param string   $parentCode
+     * @param CategoryInterface $category
+     * @param string            $parentCode
      *
      * @return null
      */
-    private function addParent(Category $category, $parentCode)
+    private function addParent(CategoryInterface $category, $parentCode)
     {
         if ($category->getCode() === $parentCode) {
             $this->processInvalidParent($parentCode);
@@ -202,7 +145,7 @@ class CategoryProcessor extends AbstractConfigurableStepElement implements
         if ($parent) {
             $category->setParent($parent);
         } else {
-            $parent = $this->categories->filter(
+            $parent = $this->entities->filter(
                 function ($category) use ($parentCode) {
                     return $category->getCode() === $parentCode;
                 }
@@ -243,7 +186,7 @@ class CategoryProcessor extends AbstractConfigurableStepElement implements
 
         $em = $this->entityManager;
         foreach ($invalidCodes as $code) {
-            $this->categories = $this->categories->filter(
+            $this->entities = $this->entities->filter(
                 function ($category) use ($code, $em) {
                     if ($category->getCode() === $code) {
                         $em->detach($category);
@@ -271,7 +214,7 @@ class CategoryProcessor extends AbstractConfigurableStepElement implements
      */
     private function checkCircularReferences()
     {
-        $categories = $this->categories->filter(
+        $categories = $this->entities->filter(
             function ($category) {
                 return $category->getParent() !== null;
             }
