@@ -9,6 +9,7 @@ services:
             - '@event_dispatcher'
             - '@oro_flexibleentity.attributetype.factory'
             - '@pim_catalog.manager.media'
+            - '@pim_catalog.manager.completeness'
             - '@pim_catalog.builder.product'
         tags:
             - { name: oro_flexibleentity_manager, entity: %pim_catalog.entity.product.class%}
@@ -77,3 +78,10 @@ services:
         class: %pim_catalog.manager.group.class%
         arguments:
             - '@doctrine.orm.entity_manager'
+
+    pim_catalog.manager.completeness:
+        class: %pim_catalog.manager.completeness.class%
+        arguments:
+            - '@doctrine'
+            - %pim_catalog.entity.product.class%
+            - %pim_catalog.entity.product_value.class%

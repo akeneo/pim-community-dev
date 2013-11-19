@@ -63,6 +63,8 @@ class AppKernel extends Kernel
             new Pim\Bundle\ImportExportBundle\PimImportExportBundle(),
             new Pim\Bundle\DemoBundle\PimDemoBundle(),
             new Pim\Bundle\VersioningBundle\PimVersioningBundle(),
+            new Pim\Bundle\IcecatDemoBundle\PimIcecatDemoBundle(),
+            new Pim\Bundle\DemoBuilderBundle\PimDemoBuilderBundle()
         );
 
         $bundles = array_merge($bundles, $pimBundles);

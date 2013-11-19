@@ -1,8 +1,5 @@
+# Please do not remove placeholder, to keep the listener getting registered
 doctrine:
     orm:
         resolve_target_entities:
-            Symfony\Component\Security\Core\User\UserInterface:   Oro\Bundle\UserBundle\Entity\User
-            Pim\Bundle\CatalogBundle\Model\ProductValueInterface: Pim\Bundle\CatalogBundle\Entity\ProductValue
-            Pim\Bundle\CatalogBundle\Model\ProductInterface:      Pim\Bundle\CatalogBundle\Entity\Product
-            Pim\Bundle\CatalogBundle\Model\CategoryInterface:     Pim\Bundle\CatalogBundle\Entity\Category
-            Pim\Bundle\ImportExportBundle\Model\ExportInterface:  Pim\Bundle\ImportExportBundle\Entity\Export
+            placeholder: placeholder
