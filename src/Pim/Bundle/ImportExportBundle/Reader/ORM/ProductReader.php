@@ -6,7 +6,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Pim\Bundle\ImportExportBundle\Validator\Constraints\Channel as ChannelConstraint;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 
 /**
  * Product reader
@@ -25,22 +25,34 @@ class ProductReader extends Reader
      */
     protected $channel;
 
-    /** @var ProductManager */
+    /**
+     * @var ProductManager
+     */
     protected $productManager;
 
-    /** @var ChannelManager */
+    /**
+     * @var ChannelManager
+     */
     protected $channelManager;
 
     /**
-     * @param ProductManager $productManager
-     * @param ChannelManager $channelManager
+     * @var CompletenessManager
+     */
+    protected $completenessManager;
+
+    /**
+     * @param ProductManager      $productManager
+     * @param ChannelManager      $channelManager
+     * @param CompletenessManager $completenessManager
      */
     public function __construct(
         ProductManager $productManager,
-        ChannelManager $channelManager
+        ChannelManager $channelManager,
+        CompletenessManager $completenessManager
     ) {
         $this->productManager = $productManager;
         $this->channelManager = $channelManager;
+        $this->completenessManager = $completenessManager;
     }
 
     /**
@@ -56,7 +68,7 @@ class ProductReader extends Reader
                 );
             }
 
-            $this->getCompletenessRepository()->createChannelCompletenesses($channel);
+            $this->getCompletenessManager()->createChannelCompletenesses($channel);
 
             $this->query = $this->getProductRepository()
                 ->buildByChannelAndCompleteness($channel)
@@ -110,16 +122,4 @@ class ProductReader extends Reader
         return $this->productManager->getFlexibleRepository();
     }
 
-    /**
-     * Get the completeness repository
-     *
-     * @return \Doctrine\ORM\EntityRepository
-     */
-    protected function getCompletenessRepository()
-    {
-        return $this
-            ->productManager
-            ->getStorageManager()
-            ->getRepository('PimCatalogBundle:Completeness');
-    }
 }
