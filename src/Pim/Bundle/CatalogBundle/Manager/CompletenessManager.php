@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\CompletenessQueryBuilder;
+use Pim\Bundle\CatalogBundle\Entity\Channel;
 
 /**
  * Manages completeness
