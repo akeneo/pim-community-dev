@@ -3,6 +3,7 @@
 ## Features
 - History of changes for groups and variant groups
 - History of changes for import / export profiles
+- History of changes for channels
 - Allow creating new options for simple select and multiselect attributes directly from the product edit form
 - Add a default tree per user
 - Introduce command "pim:completeness:calculate" size argument to manage number of completenesses to calculate
