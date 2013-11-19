@@ -47,7 +47,7 @@ class FlatFamilyNormalizer extends FamilyNormalizer
     {
         $attributes = parent::normalizeAttributes($family);
 
-        return implode(', ', $attributes);
+        return implode(',', $attributes);
     }
 
     /**
@@ -62,9 +62,9 @@ class FlatFamilyNormalizer extends FamilyNormalizer
         $requirements = parent::normalizeRequirements($family);
         $flat = array();
         foreach ($requirements as $channel => $attributes) {
-            $flat[]= $channel.':'.implode(', ', $attributes);
+            $flat[]= $channel.':'.implode(',', $attributes);
         }
 
-        return implode('| ', $flat);
+        return implode('|', $flat);
     }
 }

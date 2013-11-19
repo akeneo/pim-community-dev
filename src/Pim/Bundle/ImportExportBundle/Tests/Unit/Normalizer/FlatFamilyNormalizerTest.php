@@ -49,9 +49,9 @@ class FlatFamilyNormalizerTest extends FamilyNormalizerTest
                     'code'             => 'mycode',
                     'label-en_US'      => 'My label',
                     'label-fr_FR'      => 'Mon étiquette',
-                    'attributes'       => 'attribute1, attribute2, attribute3',
+                    'attributes'       => 'attribute1,attribute2,attribute3',
                     'attributeAsLabel' => 'attribute1',
-                    'requirements'     => 'channel1:attribute1, attribute2| channel2:attribute1, attribute3',
+                    'requirements'     => 'channel1:attribute1,attribute2|channel2:attribute1,attribute3',
                 )
             ),
         );

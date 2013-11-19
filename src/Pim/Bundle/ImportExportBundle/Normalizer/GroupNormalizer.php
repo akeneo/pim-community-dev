@@ -33,12 +33,8 @@ class GroupNormalizer implements NormalizerInterface
         $results = array(
             'code' => $object->getCode(),
             'type' => $object->getType()->getCode(),
-        );
-        $results = array_merge(
-            $results,
-            $this->getNormalizedLabelsArray($object)
-        );
-        $results['attributes']= $this->normalizeAttributes($object);
+            'attributes' => $this->normalizeAttributes($object)
+        ) + $this->normalizeLabel($object);
 
         return $results;
     }
