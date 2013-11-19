@@ -31,8 +31,10 @@ class AssociationNormalizerTest extends NormalizerTestCase
     {
         return array(
             array('Pim\Bundle\CatalogBundle\Entity\Association', 'json',  true),
+            array('Pim\Bundle\CatalogBundle\Entity\Association', 'xml', true),
             array('Pim\Bundle\CatalogBundle\Entity\Association', 'csv', false),
             array('stdClass', 'json',  false),
+            array('stdClass', 'xml', false),
             array('stdClass', 'csv', false),
         );
     }

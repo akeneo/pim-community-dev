@@ -29,10 +29,15 @@ class CategoryNormalizerTest extends NormalizerTestCase
     public static function getSupportNormalizationData()
     {
         return array(
-            array('Pim\Bundle\CatalogBundle\Model\CategoryInterface', 'json',  true),
+            array('Pim\Bundle\CatalogBundle\Model\CategoryInterface', 'json', true),
+            array('Pim\Bundle\CatalogBundle\Model\CategoryInterface', 'xml', true),
             array('Pim\Bundle\CatalogBundle\Model\CategoryInterface', 'csv', false),
-            array('stdClass',                                         'json',  false),
-            array('stdClass',                                         'csv', false),
+            array('Pim\Bundle\CatalogBundle\Entity\Category', 'json', true),
+            array('Pim\Bundle\CatalogBundle\Entity\Category', 'xml', true),
+            array('Pim\Bundle\CatalogBundle\Entity\Category', 'csv', false),
+            array('stdClass', 'json', false),
+            array('stdClass', 'xml', false),
+            array('stdClass', 'csv', false),
         );
     }
 

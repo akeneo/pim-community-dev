@@ -34,9 +34,11 @@ class FamilyNormalizerTest extends NormalizerTestCase
     public static function getSupportNormalizationData()
     {
         return array(
-            array('Pim\Bundle\CatalogBundle\Entity\Family', 'json',  true),
+            array('Pim\Bundle\CatalogBundle\Entity\Family', 'json', true),
+            array('Pim\Bundle\CatalogBundle\Entity\Family', 'xml', true),
             array('Pim\Bundle\CatalogBundle\Entity\Family', 'csv', false),
-            array('stdClass', 'json',  false),
+            array('stdClass', 'json', false),
+            array('stdClass', 'xml', false),
             array('stdClass', 'csv', false),
         );
     }

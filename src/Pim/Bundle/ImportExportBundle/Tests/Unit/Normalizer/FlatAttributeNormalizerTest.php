@@ -32,10 +32,12 @@ class FlatAttributeNormalizerTest extends AttributeNormalizerTest
     public static function getSupportNormalizationData()
     {
         return array(
-            array('Pim\Bundle\CatalogBundle\Entity\ProductAttribute', 'csv',  true),
+            array('Pim\Bundle\CatalogBundle\Entity\ProductAttribute', 'csv', true),
+            array('Pim\Bundle\CatalogBundle\Entity\ProductAttribute', 'xml', false),
             array('Pim\Bundle\CatalogBundle\Entity\ProductAttribute', 'json', false),
-            array('stdClass',                                         'csv',  false),
-            array('stdClass',                                         'json', false),
+            array('stdClass', 'csv', false),
+            array('stdClass', 'xml', false),
+            array('stdClass', 'json', false),
         );
     }
 

@@ -33,10 +33,12 @@ class AttributeNormalizerTest extends NormalizerTestCase
     public static function getSupportNormalizationData()
     {
         return array(
-            array('Pim\Bundle\CatalogBundle\Entity\ProductAttribute', 'json',  true),
+            array('Pim\Bundle\CatalogBundle\Entity\ProductAttribute', 'json', true),
+            array('Pim\Bundle\CatalogBundle\Entity\ProductAttribute', 'xml', true),
             array('Pim\Bundle\CatalogBundle\Entity\ProductAttribute', 'csv', false),
-            array('stdClass',                                         'json',  false),
-            array('stdClass',                                         'csv', false),
+            array('stdClass', 'json', false),
+            array('stdClass', 'xml', false),
+            array('stdClass', 'csv', false),
         );
     }
 

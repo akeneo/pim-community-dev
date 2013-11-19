@@ -30,9 +30,11 @@ class JobInstanceNormalizerTest extends NormalizerTestCase
     {
         return array(
             array('Oro\Bundle\BatchBundle\Entity\JobInstance', 'json', true),
+            array('Oro\Bundle\BatchBundle\Entity\JobInstance', 'xml', true),
             array('Oro\Bundle\BatchBundle\Entity\JobInstance', 'csv', false),
-            array('stdClass',                                  'json', false),
-            array('stdClass',                                  'csv', false),
+            array('stdClass', 'json', false),
+            array('stdClass', 'xml', false),
+            array('stdClass', 'csv', false),
         );
     }
 

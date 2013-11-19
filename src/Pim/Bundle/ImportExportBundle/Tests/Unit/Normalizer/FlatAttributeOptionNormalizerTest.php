@@ -31,8 +31,10 @@ class FlatAttributeOptionNormalizerTest extends AttributeOptionNormalizerTest
     {
         return array(
             array('Pim\Bundle\CatalogBundle\Entity\AttributeOption', 'json', false),
+            array('Pim\Bundle\CatalogBundle\Entity\AttributeOption', 'xml', false),
             array('Pim\Bundle\CatalogBundle\Entity\AttributeOption', 'csv', true),
-            array('stdClass', 'json',  false),
+            array('stdClass', 'json', false),
+            array('stdClass', 'xml', false),
             array('stdClass', 'csv', false),
         );
     }

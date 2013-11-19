@@ -30,9 +30,11 @@ class FlatJobInstanceNormalizerTest extends JobInstanceNormalizerTest
     {
         return array(
             array('Oro\Bundle\BatchBundle\Entity\JobInstance', 'json', false),
+            array('Oro\Bundle\BatchBundle\Entity\JobInstance', 'xml', false),
             array('Oro\Bundle\BatchBundle\Entity\JobInstance', 'csv', true),
-            array('stdClass',                                  'json',  false),
-            array('stdClass',                                  'csv', false),
+            array('stdClass', 'json', false),
+            array('stdClass', 'xml', false),
+            array('stdClass', 'csv', false),
         );
     }
 
