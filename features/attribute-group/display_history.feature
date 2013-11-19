@@ -27,27 +27,27 @@ Feature: Display the attribute group history
     When I visit the "History" tab
     Then there should be 2 updates
     And I should see history:
-      | action | version | property | value                    |
-      | create | 1       | code     | Technical                |
-      | update | 2       | label    | en_US:My technical group |
+      | action | version | property    | value              |
+      | create | 1       | code        | Technical          |
+      | update | 2       | label-en_US | My technical group |
     When I visit the "Attributes" tab
     And I add available attributes Description
     Then I should see flash message "Attributes successfully added to the attribute group"
     When I visit the "History" tab
     Then there should be 3 updates
     And I should see history:
-      | action | version | property   | value                    |
-      | create | 1       | code       | Technical                |
-      | update | 2       | label      | en_US:My technical group |
-      | update | 3       | attributes | description              |
+      | action | version | property    | value              |
+      | create | 1       | code        | Technical          |
+      | update | 2       | label-en_US | My technical group |
+      | update | 3       | attributes  | description        |
     When I visit the "Attributes" tab
     And I remove the "Description" attribute
     Then I should see flash message "Attribute successfully removed from the attribute group"
     When I visit the "History" tab
     Then there should be 4 updates
     And I should see history:
-      | action | version | property   | value                    |
-      | create | 1       | code       | Technical                |
-      | update | 2       | label      | en_US:My technical group |
-      | update | 3       | attributes | description              |
-      | update | 4       | attributes |                          |
+      | action | version | property    | value              |
+      | create | 1       | code        | Technical          |
+      | update | 2       | label-en_US | My technical group |
+      | update | 3       | attributes  | description        |
+      | update | 4       | attributes  |                    |
