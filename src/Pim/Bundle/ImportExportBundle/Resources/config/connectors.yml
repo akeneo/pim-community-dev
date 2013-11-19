@@ -9,7 +9,7 @@ parameters:
     pim_import_export.processor.csv_serializer.homogeneous.class:   Pim\Bundle\ImportExportBundle\Processor\CsvSerializer\HomogeneousProcessor
     pim_import_export.processor.csv_serializer.heterogeneous.class: Pim\Bundle\ImportExportBundle\Processor\CsvSerializer\HeterogeneousProcessor
     pim_import_export.processor.csv_serializer.product.class:       Pim\Bundle\ImportExportBundle\Processor\CsvSerializer\ProductProcessor
-    
+
     pim_import_export.processor.product.class:                      Pim\Bundle\ImportExportBundle\Processor\ProductProcessor
     pim_import_export.processor.category.class:                     Pim\Bundle\ImportExportBundle\Processor\CategoryProcessor
     pim_import_export.processor.association.class:                  Pim\Bundle\ImportExportBundle\Processor\AssociationProcessor
@@ -36,6 +36,7 @@ services:
         arguments:
             - '@pim_catalog.manager.product'
             - '@pim_catalog.manager.channel'
+            - '@pim_catalog.manager.completeness'
 
     pim_import_export.reader.orm.category:
         class: %pim_import_export.reader.orm.entity.class%

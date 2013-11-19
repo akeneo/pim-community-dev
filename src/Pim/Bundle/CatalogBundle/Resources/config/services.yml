@@ -176,3 +176,10 @@ services:
         class: %pim_catalog.helper.completeness.class%
         arguments:
             - '@validator'
+
+    pim_catalog.doctrine.completeness_query_builder:
+        class: %pim_catalog.doctrine.completeness_query_builder.class%
+        arguments:
+            - '@doctrine'
+            - %pim_catalog.entity.product.class%
+            - %pim_catalog.entity.product_value.class%

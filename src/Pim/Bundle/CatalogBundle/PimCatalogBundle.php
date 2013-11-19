@@ -23,6 +23,7 @@ class PimCatalogBundle extends Bundle
         parent::build($container);
 
         $container
+            ->addCompilerPass(new Compiler\ResolveDoctrineOrmTargetEntitiesPass())
             ->addCompilerPass(new Compiler\RegisterAttributeConstraintGuessersPass())
             ->addCompilerPass(new Compiler\RegisterMassEditActionsPass());
     }
