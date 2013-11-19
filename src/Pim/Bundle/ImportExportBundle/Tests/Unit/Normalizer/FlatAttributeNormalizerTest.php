@@ -23,7 +23,7 @@ class FlatAttributeNormalizerTest extends AttributeNormalizerTest
     protected function setUp()
     {
         $this->normalizer = new FlatAttributeNormalizer();
-        $this->format = 'csv';
+        $this->format     = 'csv';
     }
 
     /**
@@ -90,29 +90,6 @@ class FlatAttributeNormalizerTest extends AttributeNormalizerTest
                     'wysiwyg_enabled'        => '1',
                 )
             )
-        );
-    }
-
-    /**
-     * Test normalize method
-     * @param array $data
-     *
-     * @dataProvider getNormalizeData
-     */
-    public function testNormalize(array $data)
-    {
-        $attribute = $this->createAttribute($data);
-
-        $expectedResult = $data;
-        foreach ($this->getOptionalProperties() as $property) {
-            if (!array_key_exists($property, $expectedResult)) {
-                $expectedResult[$property] = '';
-            }
-        }
-
-        $this->assertEquals(
-            $expectedResult,
-            $this->normalizer->normalize($attribute, 'csv')
         );
     }
 
