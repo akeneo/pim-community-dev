@@ -16,9 +16,9 @@ class FlatChannelNormalizerTest extends ChannelNormalizerTest
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function createNormalizer()
     {
-        $this->normalizer = new FlatChannelNormalizer();
+        return new FlatChannelNormalizer();
     }
 
     /**
@@ -56,11 +56,11 @@ class FlatChannelNormalizerTest extends ChannelNormalizerTest
     /**
      * {@inheritdoc}
      */
-    protected function createChannel(array $data)
+    protected function createEntity(array $data)
     {
         $data['currencies'] = explode(',', $data['currencies']);
         $data['locales']    = explode(',', $data['locales']);
 
-        return parent::createChannel($data);
+        return parent::createEntity($data);
     }
 }

@@ -16,62 +16,26 @@ use Pim\Bundle\CatalogBundle\Entity\Locale;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ChannelNormalizerTest extends \PHPUnit_Framework_TestCase
+class ChannelNormalizerTest extends NormalizerTestCase
 {
     /**
-     * @var ChannelNormalizer
+     * {@inheritdoc}
      */
-    protected $normalizer;
-
-    /**
-     * @var string
-     */
-    protected $format;
+    protected function createNormalizer()
+    {
+        return new ChannelNormalizer();
+    }
 
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected static function getEntityClassName()
     {
-        $this->normalizer = new ChannelNormalizer();
-        $this->format     = 'json';
+        return 'Pim\Bundle\CatalogBundle\Entity\Channel';
     }
 
     /**
-     * Data provider for testing supportsNormalization method
-     * @return array
-     * @static
-     */
-    public static function getSupportNormalizationData()
-    {
-        return array(
-            array('Pim\Bundle\CatalogBundle\Entity\Channel', 'json', true),
-            array('Pim\Bundle\CatalogBundle\Entity\Channel', 'xml', true),
-            array('Pim\Bundle\CatalogBundle\Entity\Channel', 'csv', false),
-            array('stdClass', 'json', false),
-            array('stdClass', 'csv', false)
-        );
-    }
-
-    /**
-     * Test related method
-     * @param mixed   $class
-     * @param string  $format
-     * @param boolean $isSupported
-     *
-     * @dataProvider getSupportNormalizationData
-     */
-    public function testSupportNormalization($class, $format, $isSupported)
-    {
-        $data = $this->getMock($class);
-
-        $this->assertSame($isSupported, $this->normalizer->supportsNormalization($data, $format));
-    }
-
-    /**
-     * Data provider for testing normalize method
-     * @return array
-     * @static
+     * {@inheritdoc}
      */
     public static function getNormalizeData()
     {
@@ -89,27 +53,10 @@ class ChannelNormalizerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test normalize method
-     * @param array $data
-     *
-     * @dataProvider getNormalizeData
+     * {@inheritdoc}
+     * @return Channel
      */
-    public function testNormalize(array $data)
-    {
-        $channel = $this->createChannel($data);
-
-        $this->assertEquals(
-            $data,
-            $this->normalizer->normalize($channel, 'csv')
-        );
-    }
-
-    /**
-     * Create a channel
-     * @param array $data
-     * @return \Pim\Bundle\CatalogBundle\Entity\Channel
-     */
-    protected function createChannel(array $data)
+    protected function createEntity(array $data)
     {
         $channel = new Channel();
         $channel->setCode($data['code']);
