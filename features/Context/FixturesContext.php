@@ -1380,7 +1380,7 @@ class FixturesContext extends RawMinkContext
             case $this->attributeTypes['prices']:
                 $prices = $this->listToPrices($data);
                 foreach ($prices as $currency => $data) {
-                    $value->getPrice($currency)->setData($data);
+                    $value->addPrice($this->createPrice($data, $currency));
                 }
                 break;
 
