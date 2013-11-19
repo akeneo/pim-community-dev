@@ -118,7 +118,7 @@ class FamilyNormalizerTest extends NormalizerTestCase
     }
 
     /**
-     * @param array $data
+     * @param array  $data
      * @return mixed
      */
     protected function getLabels($data)

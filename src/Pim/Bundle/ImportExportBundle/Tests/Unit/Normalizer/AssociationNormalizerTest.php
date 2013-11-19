@@ -4,7 +4,6 @@ namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Normalizer;
 
 use Pim\Bundle\ImportExportBundle\Normalizer\AssociationNormalizer;
 use Pim\Bundle\CatalogBundle\Entity\Association;
-use Pim\Bundle\CatalogBundle\Entity\AssociationTranslation;
 
 /**
  * Association normalizer test
@@ -75,7 +74,7 @@ class AssociationNormalizerTest extends NormalizerTestCase
 
     /**
      * Returns label property
-     * @param array $data
+     * @param  array $data
      * @return mixed
      */
     protected function getLabels($data)
