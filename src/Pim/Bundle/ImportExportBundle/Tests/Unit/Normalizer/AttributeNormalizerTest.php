@@ -75,7 +75,7 @@ class AttributeNormalizerTest extends \PHPUnit_Framework_TestCase
         return array(
             array(
                 array(
-                    'type'                   => 'multiselect',
+                    'type'                   => 'pim_catalog_multiselect',
                     'code'                   => 'color',
                     'label'                  => array('en' => 'Color', 'fr' => 'Couleur'),
                     'group'                  => 'general',
@@ -97,7 +97,7 @@ class AttributeNormalizerTest extends \PHPUnit_Framework_TestCase
             ),
             array(
                 array(
-                    'type'                   => 'text',
+                    'type'                   => 'pim_catalog_text',
                     'code'                   => 'description',
                     'label'                  => array('en' => 'Description', 'fr' => 'Description'),
                     'group'                  => 'info',
@@ -139,7 +139,7 @@ class AttributeNormalizerTest extends \PHPUnit_Framework_TestCase
             }
         }
 
-        $normalized = $this->normalizer->normalize($attribute, $this->format);
+        $normalized = $this->normalizer->normalize($attribute, $this->format, array('versioning' => true));
         $this->assertEquals($expectedResult, $normalized);
     }
 
@@ -177,7 +177,7 @@ class AttributeNormalizerTest extends \PHPUnit_Framework_TestCase
     protected function createAttribute(array $data)
     {
         $attribute = new ProductAttribute();
-        $attribute->setAttributeType(sprintf('pim_catalog_%s', strtolower($data['type'])));
+        $attribute->setAttributeType($data['type']);
 
         $this->addLabels($attribute, $data);
 

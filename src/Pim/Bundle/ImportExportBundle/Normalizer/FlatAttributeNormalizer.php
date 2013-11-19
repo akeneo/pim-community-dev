@@ -48,21 +48,16 @@ class FlatAttributeNormalizer extends AttributeNormalizer
      *
      * @param ProductAttribute $attribute
      *
-     * @return string
+     * @return array
      */
     protected function normalizeLabel(ProductAttribute $attribute)
     {
-        $pattern = self::LOCALIZABLE_PATTERN;
-        $labels = $attribute->getTranslations()->map(
-            function ($translation) use ($pattern) {
-                $label = str_replace('{locale}', $translation->getLocale(), $pattern);
-                $label = str_replace('{value}', $translation->getLabel(), $label);
+        $values = array();
+        foreach ($attribute->getTranslations() as $translation) {
+            $values[sprintf('label-%s', $translation->getLocale())] = $translation->getLabel();
+        }
 
-                return $label;
-            }
-        )->toArray();
-
-        return implode(self::ITEM_SEPARATOR, $labels);
+        return $values;
     }
 
     /**

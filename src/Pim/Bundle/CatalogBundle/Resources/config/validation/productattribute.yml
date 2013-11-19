@@ -102,11 +102,6 @@ Pim\Bundle\CatalogBundle\Entity\ProductAttribute:
                     - pim_catalog_file
                     - pim_catalog_metric
                     - pim_catalog_boolean
-        options:
-            - Count:
-                min: 1
-                minMessage: You must specify at least one option
-                groups: [pim_catalog_simpleselect, pim_catalog_multiselect]
         dateType:
             - Choice:
                 choices: [date, time, datetime]
@@ -115,6 +110,7 @@ Pim\Bundle\CatalogBundle\Entity\ProductAttribute:
             - Range:
                 min: 0.01
                 max: 9999.99
+                groups: [pim_catalog_file, pim_catalog_image]
             - Type:
                 type: numeric
                 groups: [pim_catalog_file, pim_catalog_image]
@@ -143,7 +139,7 @@ Pim\Bundle\CatalogBundle\Entity\ProductAttribute:
                 groups: [pim_catalog_date]
         validationRule:
             - Choice:
-                choices: [url, email, regexp]
+                choices: [null, url, email, regexp]
                 groups: [pim_catalog_text]
         validationRegexp:
             - Blank:

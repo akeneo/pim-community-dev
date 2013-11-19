@@ -42,7 +42,7 @@ class VersionBuilder
         $resourceName = get_class($versionable);
         $resourceId   = $versionable->getId();
         // TODO: we don't use direct json serialize due to convert to audit data based on array_diff
-        $data         = $this->serializer->normalize($versionable, 'csv');
+        $data         = $this->serializer->normalize($versionable, 'csv', array('versioning' => true));
 
         return new Version($resourceName, $resourceId, $numVersion, $data, $user);
     }

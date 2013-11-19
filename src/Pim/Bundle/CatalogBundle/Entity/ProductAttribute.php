@@ -277,6 +277,7 @@ class ProductAttribute extends AbstractEntityAttribute implements
         $this->useableAsGridFilter = false;
         $this->availableLocales    = new ArrayCollection();
         $this->translations        = new ArrayCollection();
+        $this->validationRule      = null;
     }
 
     /**
