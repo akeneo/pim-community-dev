@@ -12,25 +12,19 @@ use Pim\Bundle\ImportExportBundle\Normalizer\JobInstanceNormalizer;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class JobInstanceNormalizerTest extends \PHPUnit_Framework_TestCase
+class JobInstanceNormalizerTest extends NormalizerTestCase
 {
     /**
-     * @var JobInstanceNormalizer
+     * {@inheritdoc}
      */
-    protected $normalizer;
-
-    /**
-     * @var string
-     */
-    protected $format;
+    protected $format = 'json';
 
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function createNormalizer()
     {
-        $this->normalizer = new JobInstanceNormalizer();
-        $this->format = 'json';
+        return new JobInstanceNormalizer();
     }
 
     /**
@@ -84,28 +78,12 @@ class JobInstanceNormalizerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test normalize method
-     * @param array $data
-     *
-     * @dataProvider getNormalizeData
-     */
-    public function testNormalize(array $data)
-    {
-        $entity = $this->createJobInstance($data);
-
-        $this->assertEquals(
-            $data,
-            $this->normalizer->normalize($entity, $this->format)
-        );
-    }
-
-    /**
      * Create a job instance
      * @param array $data
      *
      * @return JobInstance
      */
-    protected function createJobInstance(array $data)
+    protected function createEntity(array $data)
     {
         $job = new JobInstance($data['connector'], $data['type'], 'alias');
         $job->setCode($data['code']);

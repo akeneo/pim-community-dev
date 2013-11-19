@@ -17,10 +17,14 @@ class FlatJobInstanceNormalizerTest extends JobInstanceNormalizerTest
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected $format = 'csv';
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function createNormalizer()
     {
-        $this->normalizer = new FlatJobInstanceNormalizer();
-        $this->format = 'csv';
+        return new FlatJobInstanceNormalizer();
     }
 
     /**
