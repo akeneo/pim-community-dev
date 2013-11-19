@@ -163,7 +163,8 @@ class InstallCommand extends ContainerAwareCommand
                 'oro:demo:fixtures:load',
                 $input,
                 $output,
-                array('--process-isolation' => true, '--process-timeout' => 300));
+                array('--process-isolation' => true, '--process-timeout' => 300)
+            );
         }
 
         $output->writeln('');
@@ -187,12 +188,13 @@ class InstallCommand extends ContainerAwareCommand
             ->runCommand('oro:translation:dump', $input, $output)
             ->runCommand('oro:requirejs:build', $input, $output);
 
-        $params = $this->getContainer()->get('oro_installer.yaml_persister')->parse();
-
+        // update installed flag in parameters.yml
+        $dumper = $this->getContainer()->get('oro_installer.yaml_persister');
+        $params = $dumper->parse();
         $params['system']['installed'] = date('c');
+        $dumper->dump($params);
 
-        $this->getContainer()->get('oro_installer.yaml_persister')->dump($params);
-
+        // clear the cache set installed flag in DI container
         $this->runCommand('cache:clear', $input, $output);
  
         $output->writeln('');

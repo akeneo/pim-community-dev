@@ -125,11 +125,10 @@ class DoctrineSubscriber implements EventSubscriber
                                         $relation['target_entity']
                                     )
                                 );
+                                $builder->build();
 
-                                $cmBuilder->addOwningOneToOne(
-                                    $defaultName,
-                                    $relation['target_entity']
-                                );
+                                $builder = $cmBuilder->createOneToOne($defaultName, $relation['target_entity']);
+                                $builder->addJoinColumn($defaultName . '_id', 'id', true, false, 'SET NULL');
 
                                 $builder->build();
                             } else {

@@ -29,6 +29,17 @@ class InstallationStep extends AbstractStep
                 return $this->handleAjaxAction('oro:translation:dump');
             case 'requirejs':
                 return $this->handleAjaxAction('oro:requirejs:build');
+            case 'finish':
+                // everything was fine - update installed flag in parameters.yml
+                $dumper = $this->container->get('oro_installer.yaml_persister');
+                $params = $dumper->parse();
+                $params['system']['installed'] = date('c');
+                $dumper->dump($params);
+                // launch 'cache:clear' to set installed flag in DI container
+                // suppress warning: ini_set(): A session is active. You cannot change the session
+                // module's ini settings at this time
+                error_reporting(E_ALL ^ E_WARNING);
+                return $this->handleAjaxAction('cache:clear');
         }
 
         return $this->render(

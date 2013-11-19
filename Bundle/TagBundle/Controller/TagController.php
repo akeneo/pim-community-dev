@@ -74,7 +74,6 @@ class TagController extends Controller
     {
         // path to datagrid subrequest
         $from = $request->get('from');
-        $entityId = $entity->getId();
 
         /** @var \Oro\Bundle\TagBundle\Provider\SearchProvider $provider */
         $provider = $this->get('oro_tag.provider.search_provider');
