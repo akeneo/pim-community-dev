@@ -99,9 +99,9 @@ Widget container events:
  - **beforeContentLoad** - triggered before content loading started
  - **contentLoad** - triggered on content load
  - **contentLoadError** - triggered in case of content loading error
- - **widget:add:action:<section>:<action_key>** - triggered when action is added,
-   <section> is action section name passed to addAction method,
-   <action_key> is action name passed to addAction method
+ - **widget:add:action:&lt;section&gt;:&lt;action_key&gt;** - triggered when action is added,
+   &lt;section&gt; is action section name passed to addAction method,
+   &lt;action_key&gt; is action name passed to addAction method
  - **renderStart** - triggered before widget rendering
  - **widgetRender** - triggered on widget rendering
  - **renderComplete** - triggered on widget rendering complete
@@ -110,8 +110,8 @@ Global events triggered on mediator:
 
  - **widget_remove** - triggered on mediator when widget is removed
  - **widget_initialize** - triggered on mediator when widget is created
- - **widget:render:<wid>** - triggered on widget render
-    <wid> is widget identifier string
+ - **widget:render:&lt;wid&gt;** - triggered on widget render
+    &lt;wid&gt; is widget identifier string
 
 ### abstract-widget.js Methods
 
@@ -326,8 +326,8 @@ API
 
 Global events triggered on mediator:
 
- - **widget_registration:wid:<wid>** - triggered when widget instance added
-    <wid> is widget identifier string
+ - **widget_registration:wid:&lt;wid&gt;** - triggered when widget instance added
+    &lt;wid&gt; is widget identifier string
 
 ### widget-manager.js Methods
 
