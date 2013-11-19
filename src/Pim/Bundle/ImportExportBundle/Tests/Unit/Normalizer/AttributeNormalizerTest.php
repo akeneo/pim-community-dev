@@ -42,6 +42,29 @@ class AttributeNormalizerTest extends NormalizerTestCase
     }
 
     /**
+     * Test normalize method
+     * @param array $data
+     *
+     * @dataProvider getNormalizeData
+     */
+    public function testNormalize(array $data)
+    {
+        $attribute = $this->createEntity($data);
+
+        $expectedResult = $data;
+        foreach ($this->getOptionalProperties() as $property) {
+            if (!array_key_exists($property, $expectedResult)) {
+                $expectedResult[$property] = '';
+            }
+        }
+
+        $this->assertEquals(
+            $expectedResult,
+            $this->normalizer->normalize($attribute, $this->format, array('versioning' => true))
+        );
+    }
+
+    /**
      * Data provider for testing normalize method
      * @return array
      */
@@ -95,26 +118,6 @@ class AttributeNormalizerTest extends NormalizerTestCase
                 )
             )
         );
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @dataProvider getNormalizeData
-     */
-    public function testNormalize(array $data)
-    {
-        $attribute = $this->createEntity($data);
-
-        $expectedResult = $data;
-        foreach ($this->getOptionalProperties() as $property) {
-            if (!array_key_exists($property, $expectedResult)) {
-                $expectedResult[$property] = '';
-            }
-        }
-
-        $normalized = $this->normalizer->normalize($attribute, $this->format, array('versioning' => true));
-        $this->assertEquals($expectedResult, $normalized);
     }
 
     /**

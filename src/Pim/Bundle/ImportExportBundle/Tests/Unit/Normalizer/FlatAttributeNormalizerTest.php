@@ -96,29 +96,6 @@ class FlatAttributeNormalizerTest extends AttributeNormalizerTest
     }
 
     /**
-     * Test normalize method
-     * @param array $data
-     *
-     * @dataProvider getNormalizeData
-     */
-    public function testNormalize(array $data)
-    {
-        $attribute = $this->createAttribute($data);
-
-        $expectedResult = $data;
-        foreach ($this->getOptionalProperties() as $property) {
-            if (!array_key_exists($property, $expectedResult)) {
-                $expectedResult[$property] = '';
-            }
-        }
-
-        $this->assertEquals(
-            $expectedResult,
-            $this->normalizer->normalize($attribute, $this->format, array('versioning' => true))
-        );
-    }
-
-    /**
      * @param ProductAttribute $attribute
      * @param array            $data
      */
