@@ -49,6 +49,7 @@ class UserPreferencesListenerTest extends WebTestCase
 
         $category = new Category();
         $category->setCode('TEST_TREE');
+        $this->entityManager->persist($category);
 
         $channel1 = new Channel();
         $channel1
