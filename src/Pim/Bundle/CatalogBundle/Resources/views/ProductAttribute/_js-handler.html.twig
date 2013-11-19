@@ -1,7 +1,7 @@
 <script type="text/javascript">
 require(
-    ['jquery', 'underscore', 'pim/initselect2', 'pim/formupdatelistener', 'jquery.select2', 'bootstrap.bootstrapswitch', 'bootstrap-tooltip'],
-    function ($, _, initSelect2, FormUpdateListener) {
+    ['jquery', 'underscore', 'pim/initselect2', 'jquery.select2', 'bootstrap.bootstrapswitch', 'bootstrap-tooltip'],
+    function ($, _, initSelect2) {
         'use strict';
         $(function() {
             var measures = {% include 'PimUIBundle::measures.html.twig' with measures %};
@@ -25,7 +25,7 @@ require(
                 );
             }
 
-            function initializeForm() {
+            function initializeForm(preventUpdate) {
                 $(formName+' .switch:not(.has-switch)').bootstrapSwitch();
                 $('[data-toggle="tooltip"]').tooltip();
 
@@ -79,9 +79,13 @@ require(
                         placeholder: '{{ "Choose a unit"|trans }}'
                     });
                 }).trigger('change');
+
+                if (preventUpdate) {
+                    $('#updated').addClass('hide');
+                }
             }
 
-            initializeForm();
+            initializeForm(true);
 
             function initializeOptions() {
                 $optionList = $('table#sortable_options');
@@ -175,8 +179,6 @@ require(
                     $(this).prev().val($(this).is(':checked') ? 1 : 0);
                 });
             }
-
-            new FormUpdateListener($(formName));
         });
     }
 );

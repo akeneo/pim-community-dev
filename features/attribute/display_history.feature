@@ -20,8 +20,8 @@ Feature: Display the attribute history
     When I visit the "History" tab
     Then there should be 1 update
     And I should see history:
-      | action | version | data           |
-      | create | 1       | code:packaging |
+      | action | version | property | value     |
+      | create | 1       | code     | packaging |
     And I visit the "Values" tab
     And I create the following attribute options:
       | Code      | Selected by default |
@@ -29,4 +29,3 @@ Feature: Display the attribute history
     And I save the attribute
     When I visit the "History" tab
     Then there should be 2 updates
-

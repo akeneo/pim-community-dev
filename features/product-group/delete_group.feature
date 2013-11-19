@@ -6,7 +6,6 @@ Feature: Delete a product group
 
   Background:
     Given the "default" catalog configuration
-    And there is no product group
     And the following product groups:
       | code | label      | type   |
       | MUG  | MUG Akeneo | X_SELL |

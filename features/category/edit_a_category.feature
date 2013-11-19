@@ -7,12 +7,18 @@ Feature: Edit a category
   Given a "footwear" catalog configuration
   And I am logged in as "admin"
 
-  Scenario: Edit a category
+  Scenario: Successfully display the edit view for a category
     Given I edit the "Sandals" category
-    And I change the Code to "summer_sandals"
+    Then I should see the Code field
+    And the field Code should be disabled
+
+  Scenario: Successfully edit a category
+    Given I edit the "Sandals" category
+    When I fill in the following information:
+      | English (United States) | My sandals |
     And I save the category
-    Then I should be on the category "summer_sandals" edit page
-    And I should see "Category successfully updated"
+    Then I should be on the category "sandals" edit page
+    And I should see "My sandals"
 
   @javascript
   Scenario: Go to category edit page from the category tree
@@ -33,7 +39,8 @@ Feature: Edit a category
   @javascript
   Scenario: Successfully display a message when there are unsaved changes
     Given I edit the "winter_boots" category
-    When I change the Code to "autumn_boots"
+    When I fill in the following information:
+      | English (United States) | My winter boots |
     Then I should see "There are unsaved changes."
     And I click on the Akeneo logo
     Then I should see a confirm dialog with the following content:

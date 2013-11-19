@@ -6,9 +6,11 @@
 
     {{ JSFV(form) }}
     {{ form_start(form, {
-        'action': form.vars.value.id ?
-            path('pim_catalog_channel_edit', { id: form.vars.value.id }) :
-            path('pim_catalog_channel_create')
+        'action': form.vars.value.id ? path('pim_catalog_channel_edit', { id: form.vars.value.id }) : path('pim_catalog_channel_create'),
+        'attr': {
+            'data-updated-title': 'confirmation.leave'|trans,
+            'data-updated-message': 'confirmation.discard changes'|trans({ '%entity%': 'channel'|trans })
+        }
     }) }}
 
         {% set title = form.vars.value.id ? 'channel.edit'|trans ~ ' - ' ~ form.vars.value.label : 'channel.create'|trans %}
@@ -24,7 +26,7 @@
             {{ elements.submitBtn() }}
         {% endset %}
 
-        {{ elements.page_header(title, buttons) }}
+        {{ elements.page_header(title, buttons, null, null, elements.updated(form.vars.id)) }}
 
         <div class="row-fluid">
             {{ elements.form_errors(form) }}

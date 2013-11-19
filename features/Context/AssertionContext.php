@@ -174,25 +174,31 @@ class AssertionContext extends RawMinkContext
      *
      * @Then /^I should see history:$/
      */
-    public function iShouldSeeHistoryWithData(TableNode $table)
+    public function iShouldSeeHistory(TableNode $table)
     {
-        $expectedUpdates = $table->getHash();
+        $updates = array();
         $rows = $this->getCurrentPage()->getHistoryRows();
-        foreach ($expectedUpdates as $updateRow) {
-            $isPresent = false;
-            foreach ($rows as $row) {
-                $rowStr       = str_replace(array(' ', "\n"), '', strip_tags(nl2br($row->getHtml())));
-                $actionFound  = (strpos($rowStr, $updateRow['action']) !== false);
-                $versionFound = (strpos($rowStr, $updateRow['version']) !== false);
-                $dataFound    = (strpos($rowStr, $updateRow['data']) !== false);
-                if ($actionFound && $versionFound && $dataFound) {
-                    $isPresent = true;
-                    break;
-                }
+        foreach ($rows as $row) {
+            $action  = $row->find('css', 'td.string-cell')->getHtml();
+            $version = $row->find('css', 'td.integer-cell')->getHtml();
+
+            $items = $row->find('css', 'td.string-cell ul')->findAll('css', 'li');
+
+            foreach ($items as $item) {
+                $property = trim($item->find('css', 'b')->getHtml());
+                $property = str_replace(':', '', $property);
+                $value = $item->getHtml();
+                $value = trim(preg_replace('/(<b>.*<\/b>)|(<s>.*<\/s>)/', '', $value));
+                $updates[] = sprintf('%s-%s-%s-%s', $action, $version, $property, $value);
             }
-            if (!$isPresent) {
+        }
+
+        $expectedUpdates = $table->getHash();
+        foreach ($expectedUpdates as $row) {
+            $expectedUpdate = sprintf('%s-%s-%s-%s', $row['action'], $row['version'], $row['property'], $row['value']);
+            if (!in_array($expectedUpdate, $updates)) {
                 throw $this->createExpectationException(
-                    sprintf('Expecting to see history data %s, not found', implode(', ', $updateRow))
+                    sprintf('Expecting to see history row %s, not found', implode(', ', $row))
                 );
             }
         }

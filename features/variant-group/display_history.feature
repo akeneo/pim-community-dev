@@ -3,28 +3,23 @@ Feature: Display the variant group history
   As a user
   I need to have access to a variant group history
 
-  Background:
-    Given the "default" catalog configuration
-    And there is no product group
-    And the following attributes:
-      | code  | label | type                     |
-      | color | Color | pim_catalog_simpleselect |
-    And I am logged in as "admin"
-
   @javascript
   Scenario: Succesfully edit a variant group and see the history
-    Given I am on the variant groups page
+    Given a "footwear" catalog configuration
+    And I am logged in as "Julia"
+    And I am on the variant groups page
     When I create a new variant group
     And I fill in the following information in the popin:
-      | Code | AkeneoShirt |
-    And I select the axis "Color"
+      | Code | converse_sneakers |
+    And I select the axis "Size"
     And I press the "Save" button
-    Then I am on the variant groups page
-    And I should see groups AkeneoShirt
-    When I am on the "AkeneoShirt" variant group page
+    And I am on the variant groups page
+    Then I should see groups converse_sneakers and caterpillar_boots
+    When I am on the "converse_sneakers" variant group page
     And I visit the "History" tab
     Then there should be 1 update
     And I should see history:
-      | action | version | data                                         |
-      | create | 1       | code:AkeneoShirttype:VARIANTattributes:color |
-
+      | action | version | property   | value             |
+      | create | 1       | code       | converse_sneakers |
+      | create | 1       | type       | VARIANT           |
+      | create | 1       | attributes | size              |

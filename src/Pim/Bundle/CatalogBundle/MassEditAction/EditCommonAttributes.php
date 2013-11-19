@@ -286,11 +286,7 @@ class EditCommonAttributes extends AbstractMassEditAction
      */
     protected function setProductValue(ProductInterface $product, ProductValueInterface $value)
     {
-        $productValue = $product->getValue(
-            $value->getAttribute()->getCode(),
-            $value->getAttribute()->getTranslatable() ? $this->getLocale()->getCode() : null,
-            $value->getAttribute()->getScopable() ? $value->getScope() : null
-        );
+        $productValue = $this->getProductValue($product, $value);
 
         switch ($value->getAttribute()->getAttributeType()) {
             case 'pim_catalog_price_collection':
@@ -313,6 +309,23 @@ class EditCommonAttributes extends AbstractMassEditAction
             default:
                 $productValue->setData($value->getData());
         }
+    }
+
+    /**
+     * Get product value
+     *
+     * @param ProductInterface      $product
+     * @param ProductValueInterface $value
+     *
+     * @return ProductValueInterface
+     */
+    protected function getProductValue(ProductInterface $product, ProductValueInterface $value)
+    {
+        return $product->getValue(
+            $value->getAttribute()->getCode(),
+            $value->getAttribute()->getTranslatable() ? $this->getLocale()->getCode() : null,
+            $value->getAttribute()->getScopable() ? $value->getScope() : null
+        );
     }
 
     /**
@@ -396,7 +409,7 @@ class EditCommonAttributes extends AbstractMassEditAction
      * @param Locale           $locale
      * @param Channel          $channel
      *
-     * @return ProductValue
+     * @return ProductValueInterface
      */
     protected function createValue(ProductAttribute $attribute, Locale $locale, Channel $channel = null)
     {

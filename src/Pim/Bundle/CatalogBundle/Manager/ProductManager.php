@@ -8,9 +8,9 @@ use Doctrine\ORM\NoResultException;
 use Pim\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory;
 use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Entity\ProductAssociation;
-use Pim\Bundle\CatalogBundle\Entity\ProductValue;
 use Pim\Bundle\CatalogBundle\Calculator\CompletenessCalculator;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 
@@ -357,12 +357,12 @@ class ProductManager extends FlexibleManager
     }
 
     /**
-     * @param ProductInterface $product
-     * @param ProductValue     $value
+     * @param ProductInterface      $product
+     * @param ProductValueInterface $value
      *
      * @return string
      */
-    protected function generateFilenamePrefix(ProductInterface $product, ProductValue $value)
+    protected function generateFilenamePrefix(ProductInterface $product, ProductValueInterface $value)
     {
         return sprintf(
             '%s-%s-%s-%s-%s',

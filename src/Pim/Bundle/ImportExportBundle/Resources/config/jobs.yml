@@ -7,8 +7,8 @@ connector:
             steps:
                 export:
                     title:     pim_import_export.jobs.product_export.export.title
-                    reader:    pim_import_export.reader.product
-                    processor: pim_import_export.processor.product_csv_serializer
+                    reader:    pim_import_export.reader.orm.product
+                    processor: pim_import_export.processor.csv_serializer.product
                     writer:    pim_import_export.writer.product_file
         category_export:
             title: pim_import_export.jobs.category_export.title
@@ -16,8 +16,8 @@ connector:
             steps:
                 export:
                     title:     pim_import_export.jobs.category_export.export.title
-                    reader:    pim_import_export.reader.category
-                    processor: pim_import_export.processor.heterogeneous_csv_serializer
+                    reader:    pim_import_export.reader.orm.category
+                    processor: pim_import_export.processor.csv_serializer.heterogeneous
                     writer:    pim_import_export.writer.file
         attribute_export:
             title: pim_import_export.jobs.attribute_export.title
@@ -25,8 +25,17 @@ connector:
             steps:
                 export:
                     title:     pim_import_export.jobs.attribute_export.export.title
-                    reader:    pim_import_export.reader.attribute
-                    processor: pim_import_export.processor.homogeneous_csv_serializer
+                    reader:    pim_import_export.reader.orm.attribute
+                    processor: pim_import_export.processor.csv_serializer.heterogeneous
+                    writer:    pim_import_export.writer.file
+        attribute_option_export:
+            title: pim_import_export.jobs.attribute_option_export.title
+            type:  export
+            steps:
+                export:
+                    title:     pim_import_export.jobs.attribute_option_export.export.title
+                    reader:    pim_import_export.reader.orm.attribute_option
+                    processor: pim_import_export.processor.csv_serializer.heterogeneous
                     writer:    pim_import_export.writer.file
         association_export:
             title: pim_import_export.jobs.association_export.title
@@ -34,8 +43,8 @@ connector:
             steps:
                 export:
                     title:     pim_import_export.jobs.association_export.export.title
-                    reader:    pim_import_export.reader.association
-                    processor: pim_import_export.processor.homogeneous_csv_serializer
+                    reader:    pim_import_export.reader.orm.association
+                    processor: pim_import_export.processor.csv_serializer.homogeneous
                     writer:    pim_import_export.writer.file
         group_export:
             title: pim_import_export.jobs.group_export.title
@@ -43,10 +52,10 @@ connector:
             steps:
                 export:
                     title:     pim_import_export.jobs.group_export.export.title
-                    reader:    pim_import_export.reader.group
-                    processor: pim_import_export.processor.homogeneous_csv_serializer
+                    reader:    pim_import_export.reader.orm.group
+                    processor: pim_import_export.processor.csv_serializer.homogeneous
                     writer:    pim_import_export.writer.file
-            
+
         product_import:
             title: pim_import_export.jobs.product_import.title
             type:  import
@@ -54,8 +63,8 @@ connector:
                 import:
                     title:     pim_import_export.jobs.product_import.import.title
                     reader:    pim_import_export.reader.product_csv
-                    processor: pim_import_export.processor.valid_product_creation
-                    writer:    pim_import_export.writer.orm_product
+                    processor: pim_import_export.processor.product
+                    writer:    pim_import_export.writer.orm.product
         category_import:
             title: pim_import_export.jobs.category_import.title
             type:  import
@@ -63,17 +72,26 @@ connector:
                 import:
                     title:     pim_import_export.jobs.category_import.import.title
                     reader:    pim_import_export.reader.csv_file
-                    processor: pim_import_export.processor.valid_category_creation
-                    writer:    pim_import_export.writer.orm_category
+                    processor: pim_import_export.processor.category
+                    writer:    pim_import_export.writer.orm.category
         attribute_import:
             title: pim_import_export.jobs.attribute_import.title
             type:  import
             steps:
                 import:
                     title:     pim_import_export.jobs.attribute_import.import.title
-                    reader:    pim_import_export.reader.dummy    #TODO: to replace by concrete implementation
-                    processor: pim_import_export.processor.dummy #TODO: to replace by concrete implementation
-                    writer:    pim_import_export.writer.dummy    #TODO: to replace by concrete implementation
+                    reader:    pim_import_export.reader.csv_file
+                    processor: pim_import_export.processor.attribute
+                    writer:    pim_import_export.writer.orm.attribute
+        attribute_option_import:
+            title: pim_import_export.jobs.attribute_option_import.title
+            type:  import
+            steps:
+                import:
+                    title:     pim_import_export.jobs.attribute_option_import.import.title
+                    reader:    pim_import_export.reader.csv_file
+                    processor: pim_import_export.processor.attribute_option
+                    writer:    pim_import_export.writer.orm.attribute_option
         association_import:
             title: pim_import_export.jobs.association_import.title
             type: import
@@ -81,8 +99,8 @@ connector:
                 import:
                     title:     pim_import_export.jobs.association_import.import.title
                     reader:    pim_import_export.reader.csv_file
-                    processor: pim_import_export.processor.valid_association_creation
-                    writer:    pim_import_export.writer.orm_association
+                    processor: pim_import_export.processor.association
+                    writer:    pim_import_export.writer.orm.association
         group_import:
             title: pim_import_export.jobs.group_import.title
             type: import
@@ -90,6 +108,5 @@ connector:
                 import:
                     title:     pim_import_export.jobs.group_import.import.title
                     reader:    pim_import_export.reader.csv_file
-                    processor: pim_import_export.processor.valid_group_creation
-                    writer:    pim_import_export.writer.orm_group
-                    
+                    processor: pim_import_export.processor.group
+                    writer:    pim_import_export.writer.orm.group

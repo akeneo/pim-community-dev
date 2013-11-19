@@ -26,10 +26,6 @@ oro_batch:
     channel:
       label: Ausgabekanal
       help: Der Ausgabekanal, den Sie exportieren möchten
-  category_reader:
-    title: Extraktion der Kategorien
-  attribute_reader:
-    title: Extraktion der Attribute
   csv_reader:
     title: CSV-Reader
     filePath:
@@ -81,7 +77,7 @@ oro_batch:
     uploadAllowed:
       label: Datei-Upload erlauben
       help: Auswahl, ob ein direkter Datei-Upload möglich sein soll oder nicht
-  valid_product_creation_processor:
+  product_processor:
     title: Produktanlage
     enabled:
       label: Produkt aktivieren?
@@ -101,7 +97,7 @@ oro_batch:
     channel:
       label: Ausgabekanal
       help: Ausgabekanal in welchem der importierte Wert angelegt werden soll
-  valid_category_creation_processor:
+  category_processor:
     title: Kategorieanlage
     labelDelimiter:
       label: Feldbezeichner-Trennzeichen
@@ -112,18 +108,19 @@ oro_batch:
     circularRefsChecked:
       label: Prüfen Sie auf Zirkelbezüge
       help: Falls ja, werden die Daten verarbeitet, um sicherzustellen, dass keine Zirkelbezüge zwischen den Kategorien existieren
-  heterogeneous_csv_serializer_processor:
-    title: Einstellungen
-    delimiter:
-      label: Trennzeichen
-      help: Ein einzelnes Zeichen, welches als Feld-Trennzeichen verwendet wird
-    enclosure:
-      label: Eingeschlossen von
-      help: Ein einzelnes Zeichen, von dem das Feld eingeschlossen wird
-    withHeader:
-      label: Mit Kopfzeile
-      help: Auswahl, ob die Spaltenüberschrift mit ausgegeben werden sollen oder nicht
-  product_csv_serializer_processor:
+  csv_serializer:
+    heterogeneous_processor:
+        title: Einstellungen
+        delimiter:
+          label: Trennzeichen
+          help: Ein einzelnes Zeichen, welches als Feld-Trennzeichen verwendet wird
+        enclosure:
+          label: Eingeschlossen von
+          help: Ein einzelnes Zeichen, von dem das Feld eingeschlossen wird
+        withHeader:
+          label: Mit Kopfzeile
+          help: Auswahl, ob die Spaltenüberschrift mit ausgegeben werden sollen oder nicht
+  product_processor:
     title: Settings
     delimiter:
       label: Delimiter
@@ -137,7 +134,7 @@ oro_batch:
     channel:
       label: Ausgabekanal
       help: Ausgabekanal in welchem der importierte Wert angelegt werden soll
-  homogeneous_csv_serializer_processor:
+  homogeneous_processor:
     title: Einstellungen
     delimiter:
       label: Trennzeichen
@@ -156,7 +153,7 @@ oro_batch:
     fileName:
       label: Dateiname
       help: Name der generierten Datei.
-  product_file_writer:
+  product_writer:
     title: Output
     directoryName:
       label: Directory path

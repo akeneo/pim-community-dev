@@ -1,7 +1,7 @@
 <script type="text/javascript">
     require(
-        ['jquery', 'underscore', 'oro/mediator', 'pim/tree/associate', 'pim/scopable', 'pim/formupdatelistener', 'pim/dialog', 'pim/dialogform', 'oro/messenger', 'backbone/bootstrap-modal', 'jquery.currencyfield', 'jquery.select2'],
-        function ($, _, mediator, TreeAssociate, Scopable, FormUpdateListener, Dialog, DialogForm, messenger) {
+        ['jquery', 'underscore', 'oro/mediator', 'pim/tree/associate', 'pim/scopable', 'pim/dialog', 'pim/dialogform', 'oro/messenger', 'backbone/bootstrap-modal', 'jquery.currencyfield', 'jquery.select2'],
+        function ($, _, mediator, TreeAssociate, Scopable, Dialog, DialogForm, messenger) {
             'use strict';
             $(function () {
                 {% if resource_granted('pim_catalog_product_categories_view') %}
@@ -32,8 +32,6 @@
                 {% endif %}
 
                 $('form div.currency').currencyField();
-
-                new FormUpdateListener($('#{{ form.vars.id }}'));
 
                 $('#default_channel').select2('destroy').css('padding', '0').on('change', function (e) {
                     e.preventDefault();

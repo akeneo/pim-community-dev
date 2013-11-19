@@ -9,6 +9,7 @@ use Pim\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexible;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Exception\MissingIdentifierException;
 use Pim\Bundle\CatalogBundle\Entity\Association;
 use Pim\Bundle\CatalogBundle\Entity\Category;
@@ -156,7 +157,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface
     /**
      * Get the identifier of the product
      *
-     * @return ProductValue the identifier of the product
+     * @return ProductValueInterface the identifier of the product
      *
      * @throws MissingIdentifierException if no identifier could be found
      */

@@ -6,7 +6,6 @@ Feature: Sort variant groups
 
   Background:
     Given the "default" catalog configuration
-    And there is no product group
     And the following attributes:
       | code      | label      | type                     |
       | color     | Color      | pim_catalog_simpleselect |

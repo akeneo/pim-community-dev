@@ -27,13 +27,13 @@ use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
  * @ORM\Entity(repositoryClass="Pim\Bundle\CatalogBundle\Entity\Repository\ProductAttributeRepository")
  * @Assert\GroupSequenceProvider
  * @Config(
- *  defaultValues={
- *      "entity"={"label"="Attribute", "plural_label"="Attributes"},
- *      "security"={
- *          "type"="ACL",
- *          "group_name"=""
- *      }
- *  }
+ *    defaultValues={
+ *        "entity"={"label"="Attribute", "plural_label"="Attributes"},
+ *        "security"={
+ *            "type"="ACL",
+ *            "group_name"=""
+ *        }
+ *    }
  * )
  *
  * @ExclusionPolicy("all")
@@ -279,6 +279,7 @@ class ProductAttribute extends AbstractEntityAttribute implements
         $this->useableAsGridFilter = false;
         $this->availableLocales    = new ArrayCollection();
         $this->translations        = new ArrayCollection();
+        $this->validationRule      = null;
     }
 
     /**
@@ -309,15 +310,14 @@ class ProductAttribute extends AbstractEntityAttribute implements
 
         switch ($this->getBackendType()) {
             case 'option':
-                $default = $this->getDefaultOptions()->first() ?: null;
+                $default = $this->getDefaultOptions()->first();
                 break;
             case 'options':
                 $default = $this->getDefaultOptions();
                 break;
             case 'date':
-                $date = new \DateTime();
-                $date->setTimestamp((int) $this->defaultValue);
-                $default = $date;
+                $default = new \DateTime();
+                $default->setTimestamp((int) $this->defaultValue);
                 break;
             case 'boolean':
                 $default = (bool) $this->defaultValue;
@@ -338,26 +338,21 @@ class ProductAttribute extends AbstractEntityAttribute implements
      */
     public function setDefaultValue($defaultValue)
     {
-        if (is_null($defaultValue)) {
+        if (is_null($defaultValue)
+            || ($defaultValue instanceof ArrayCollection && $defaultValue->isEmpty())) {
             $this->defaultValue = null;
-
-            return $this;
-        } elseif ($defaultValue instanceof ArrayCollection && $defaultValue->isEmpty()) {
-            $this->defaultOption = null;
-
-            return $this;
-        }
-
-        switch ($this->getBackendType()) {
-            case 'date':
-                $this->defaultValue = $defaultValue->format('U');
-                break;
-            case 'boolean':
-                $this->defaultValue = (int) $defaultValue;
-                break;
-            default:
-                $this->defaultValue = $defaultValue;
-                break;
+        } else {
+            switch ($this->getBackendType()) {
+                case 'date':
+                    $this->defaultValue = $defaultValue->format('U');
+                    break;
+                case 'boolean':
+                    $this->defaultValue = (int) $defaultValue;
+                    break;
+                default:
+                    $this->defaultValue = $defaultValue;
+                    break;
+            }
         }
 
         return $this;

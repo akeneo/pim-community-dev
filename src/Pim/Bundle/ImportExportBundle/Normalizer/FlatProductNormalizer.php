@@ -66,7 +66,6 @@ class FlatProductNormalizer implements NormalizerInterface
      */
     public function normalize($object, $format = null, array $context = array())
     {
-        print_r($context);
         $scopeCode = null;
         if (isset($context['scopeCode'])) {
             $scopeCode = $context['scopeCode'];

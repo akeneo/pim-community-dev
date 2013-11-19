@@ -9,21 +9,25 @@ Feature: Display the category history
     And I am logged in as "admin"
     And I am on the category tree creation page
     When I fill in the following information:
-      | Code | book |
+      | Code                    | book          |
+      | English (United States) | Book category |
     And I save the category
     And I edit the "book" category
     When I visit the "History" tab
     Then there should be 1 update
     And I should see history:
-    | action | version | data      |
-    | create | 1       | code:book |
+    | action | version | property    | value         |
+    | create | 1       | code        | book          |
+    | create | 1       | label-en_US | Book category |
     When I visit the "Properties" tab
-    And I change the Code to "ebook"
+    And I fill in the following information:
+      | English (United States) | My book category |
     And I save the category
-    And I edit the "ebook" category
+    And I edit the "book" category
     When I visit the "History" tab
     Then there should be 2 updates
     And I should see history:
-    | action | version | data           |
-    | create | 1       | code:book      |
-    | update | 2       | code:bookebook |
+    | action | version | property    | value            |
+    | create | 1       | code        | book             |
+    | create | 1       | label-en_US | Book category    |
+    | update | 2       | label-en_US | My book category |

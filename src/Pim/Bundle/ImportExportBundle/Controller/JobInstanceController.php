@@ -139,7 +139,7 @@ class JobInstanceController extends AbstractDoctrineController
      *
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|template
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function createAction(Request $request)
     {
@@ -165,10 +165,7 @@ class JobInstanceController extends AbstractDoctrineController
                 $this->getManager()->persist($jobInstance);
                 $this->getManager()->flush();
 
-                $this->addFlash(
-                    'success',
-                    sprintf('The %s has been successfully created.', $this->getJobType())
-                );
+                $this->addFlash('success', sprintf('The %s has been successfully created.', $this->getJobType()));
 
                 return $this->redirectToShowView($jobInstance->getId());
             }
@@ -177,8 +174,8 @@ class JobInstanceController extends AbstractDoctrineController
         return $this->render(
             sprintf('PimImportExportBundle:%s:edit.html.twig', ucfirst($this->getJobType())),
             array(
+                'jobInstance' => $jobInstance,
                 'form'      => $form->createView(),
-                'connector' => $connector,
                 'alias'     => $alias,
             )
         );
@@ -189,7 +186,7 @@ class JobInstanceController extends AbstractDoctrineController
      *
      * @param integer $id
      *
-     * @return template
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function showAction($id)
     {
@@ -232,7 +229,7 @@ class JobInstanceController extends AbstractDoctrineController
      * @param Request $request
      * @param integer $id
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|template
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function editAction(Request $request, $id)
     {
@@ -269,6 +266,7 @@ class JobInstanceController extends AbstractDoctrineController
         return $this->render(
             sprintf('PimImportExportBundle:%s:edit.html.twig', ucfirst($this->getJobType())),
             array(
+                'jobInstance'     => $jobInstance,
                 'form'            => $form->createView(),
                 'historyDatagrid' => $historyDatagrid->createView()
             )
@@ -281,7 +279,7 @@ class JobInstanceController extends AbstractDoctrineController
      * @param Request $request
      * @param integer $id
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|template
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function historyAction(Request $request, $id)
     {
@@ -334,7 +332,7 @@ class JobInstanceController extends AbstractDoctrineController
      * @param Request $request
      * @param integer $id
      *
-     * @return RedirectResponse
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function launchAction(Request $request, $id)
     {
@@ -352,42 +350,13 @@ class JobInstanceController extends AbstractDoctrineController
         if (count($violations) === 0 || count($uploadViolations) === 0) {
             $jobExecution = new JobExecution();
             $jobExecution->setJobInstance($jobInstance);
-            $job = $jobInstance->getJob();
 
             $uploadMode = false;
             if ($request->isMethod('POST') && count($uploadViolations) === 0) {
                 $form = $this->createUploadForm();
                 $form->handleRequest($request);
                 if ($form->isValid()) {
-                    $data = $form->getData();
-                    $media = $data['file'];
-                    $file = $media->getFile();
-
-                    $filename = $file->getClientOriginalName();
-                    $file = $file->move(
-                        sys_get_temp_dir(),
-                        $file->getFilename() . substr($filename, strrpos($filename, '.'))
-                    );
-
-                    foreach ($job->getSteps() as $step) {
-                        $reader = $step->getReader();
-
-                        if ($reader instanceof UploadedFileAwareInterface) {
-                            $constraints = $reader->getUploadedFileConstraints();
-                            $errors = $this->getValidator()->validateValue($file, $constraints);
-
-                            if ($errors->count()) {
-                                foreach ($errors as $error) {
-                                    $this->addFlash('error', $error->getMessage());
-                                }
-
-                                return $this->redirectToShowView($jobInstance->getId());
-                            }
-
-                            $reader->setUploadedFile($file);
-                            $uploadMode = true;
-                        }
-                    }
+                    $uploadMode = $this->runJob($jobInstance, $form->getData());
                 }
             }
 
@@ -400,7 +369,7 @@ class JobInstanceController extends AbstractDoctrineController
                 $this->rootDir,
                 $this->environment,
                 $this->getUser()->getEmail(),
-                $uploadMode ? sprintf('-c \'%s\'', json_encode($job->getConfiguration())) : '',
+                $uploadMode ? sprintf('-c \'%s\'', json_encode($jobInstance->getJob()->getConfiguration())) : '',
                 $instanceCode,
                 $executionId,
                 $this->rootDir
@@ -413,6 +382,49 @@ class JobInstanceController extends AbstractDoctrineController
         }
 
         return $this->redirectToShowView($jobInstance->getId());
+    }
+
+    /**
+     * Run job instance
+     *
+     * @param JobInstance $jobInstance
+     * @param mixed       $data
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|boolean
+     */
+    protected function runJob(JobInstance $jobInstance, $data)
+    {
+        $media = $data['file'];
+        $file = $media->getFile();
+
+        $filename = $file->getClientOriginalName();
+        $file = $file->move(
+            sys_get_temp_dir(),
+            $file->getFilename() . substr($filename, strrpos($filename, '.'))
+        );
+
+        $job = $jobInstance->getJob();
+        foreach ($job->getSteps() as $step) {
+            $reader = $step->getReader();
+
+            if ($reader instanceof UploadedFileAwareInterface) {
+                $constraints = $reader->getUploadedFileConstraints();
+                $errors = $this->getValidator()->validateValue($file, $constraints);
+
+                if ($errors->count()) {
+                    foreach ($errors as $error) {
+                        $this->addFlash('error', $error->getMessage());
+                    }
+
+                    return $this->redirectToShowView($jobInstance->getId());
+                }
+
+                $reader->setUploadedFile($file);
+                $uploadMode = true;
+            }
+        }
+
+        return $uploadMode;
     }
 
     /**

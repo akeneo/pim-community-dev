@@ -16,6 +16,7 @@ parameters:
     pim_catalog.form.handler.product_create.class:     Pim\Bundle\CatalogBundle\Form\Handler\ProductCreateHandler
 
     pim_catalog.entity.product_attribute.class:        Pim\Bundle\CatalogBundle\Entity\ProductAttribute
+    pim_catalog.entity.product_attribute_option.class: Pim\Bundle\CatalogBundle\Entity\AttributeOption
     pim_catalog.entity.product_value.class:            Pim\Bundle\CatalogBundle\Entity\ProductValue
 
     pim_catalog.form.type.product_attribute.class:       Pim\Bundle\CatalogBundle\Form\Type\ProductAttributeType

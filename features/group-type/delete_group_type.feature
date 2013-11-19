@@ -6,16 +6,11 @@ Feature: Delete a group type
 
   Background:
     Given the "default" catalog configuration
-    And there is no group type
-    And the following group types:
-      | code    | label   |
-      | related | Related |
-      | special | Special |
     And I am logged in as "admin"
 
   Scenario: Successfully delete a group type from the edit page
-    Given I edit the "related" group type
+    Given I edit the "X_SELL" group type
     When I press the "Delete" button
     And I confirm the deletion
     Then the grid should contain 1 element
-    And I should not see association "related"
+    And I should not see group type "X_SELL"

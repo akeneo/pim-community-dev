@@ -6,7 +6,6 @@ Feature: Delete a variant group
 
   Background:
     Given the "default" catalog configuration
-    And there is no product group
     And the following families:
       | code      | label     |
       | mug       | Mug       |

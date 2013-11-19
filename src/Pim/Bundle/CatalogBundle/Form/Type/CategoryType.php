@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Form\Type;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Oro\Bundle\SegmentationTreeBundle\Form\Type\AbstractSegmentType;
+use Pim\Bundle\CatalogBundle\Form\Subscriber\DisableCodeFieldSubscriber;
 
 /**
  * Type for category form
@@ -49,6 +50,8 @@ class CategoryType extends AbstractSegmentType
         parent::buildForm($builder, $options);
 
         $this->addLabelField($builder);
+
+        $builder->addEventSubscriber(new DisableCodeFieldSubscriber());
 
         if ($options['import_mode']) {
             $builder->add('dynamic');
