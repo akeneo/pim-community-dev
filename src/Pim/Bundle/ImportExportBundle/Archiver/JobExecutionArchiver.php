@@ -36,26 +36,21 @@ class JobExecutionArchiver
      */
     public function archive(JobExecution $jobExecution)
     {
-        $jobInstance = $jobExecution->getJobInstance();
+        $job = $jobExecution->getJobInstance()->getJob();
         $archivePath = $this->getJobExecutionPath($jobExecution);
 
-        $job         = $jobInstance->getJob();
         foreach ($job->getSteps() as $step) {
             $reader = $step->getReader();
             $writer = $step->getWriter();
+
             if ($reader instanceof CsvReader) {
-                $sourcePath = $reader->getFilePath();
-                if (file_exists($sourcePath)) {
-                    $this->copyFile($sourcePath, $archivePath);
-                }
-            }
-            if ($writer instanceof FileWriter) {
-                $sourcePath = $writer->getPath();
+                $this->copyFileIfExists($reader->getFilePath(), $archivePath);
+            } elseif ($writer instanceof FileWriter) {
                 if ($writer instanceof ArchivableWriterInterface && count($writer->getWrittenFiles()) > 1) {
-                    $archivePath = sprintf('%s/%s.zip', $archivePath, pathinfo($sourcePath, PATHINFO_FILENAME));
+                    $archivePath = sprintf('%s/%s.zip', $archivePath, pathinfo($writer->getPath(), PATHINFO_FILENAME));
                     $this->createZipArchive($writer->getWrittenFiles(), $archivePath);
-                } elseif (file_exists($sourcePath)) {
-                    $this->copyFile($sourcePath, $archivePath);
+                } else {
+                    $this->copyFileIfExists($writer->getPath(), $archivePath);
                 }
             }
         }
@@ -110,12 +105,14 @@ class JobExecutionArchiver
      * @param string $sourcePath
      * @param string $archivePath
      */
-    protected function copyFile($sourcePath, $archivePath)
+    protected function copyFileIfExists($sourcePath, $archivePath)
     {
-        $this->ensureDir($archivePath);
-        $sourceName = basename($sourcePath);
-        $destPath   = $archivePath.$sourceName;
-        copy($sourcePath, $destPath);
+        if (file_exists($sourcePath)) {
+            $this->ensureDir($archivePath);
+            $sourceName = basename($sourcePath);
+            $destPath   = $archivePath.$sourceName;
+            copy($sourcePath, $destPath);
+        }
     }
 
     /**
