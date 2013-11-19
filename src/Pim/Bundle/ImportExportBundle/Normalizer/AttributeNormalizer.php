@@ -43,6 +43,7 @@ class AttributeNormalizer implements NormalizerInterface
                 'unique'                  => (int) $object->getUnique(),
                 'useable_as_grid_column'  => (int) $object->isUseableAsGridColumn(),
                 'useable_as_grid_filter'  => (int) $object->isUseableAsGridFilter(),
+                'allowed_extensions'      => implode(self::ITEM_SEPARATOR, $object->getAllowedExtensions()),
             )
         );
         if (isset($context['versioning'])) {
@@ -103,7 +104,6 @@ class AttributeNormalizer implements NormalizerInterface
             'date_type'           => (string) $attribute->getDateType(),
             'metric_family'       => (string) $attribute->getMetricFamily(),
             'default_metric_unit' => (string) $attribute->getDefaultMetricUnit(),
-            'allowed_extensions'  => implode(self::ITEM_SEPARATOR, $attribute->getAllowedExtensions()),
             'max_file_size'       => (string) $attribute->getMaxFileSize(),
         );
     }

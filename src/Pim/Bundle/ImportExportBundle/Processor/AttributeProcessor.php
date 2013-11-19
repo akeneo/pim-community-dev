@@ -126,6 +126,9 @@ class AttributeProcessor extends AbstractEntityProcessor
             $parameters[Inflector::camelize($key)] = (bool) $data[$key];
         }
 
+        $extensions = 'allowed_extensions';
+        $parameters[Inflector::camelize($extensions)] = $data[$extensions];
+
         return $parameters;
     }
 
