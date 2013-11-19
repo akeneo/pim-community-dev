@@ -4,42 +4,68 @@
             {{ form_widget(form.option) }}
             <label class="add-on" title="{{ 'Default'|trans }}">
                 {{ form_widget(form.default) }}
-                {{ form_widget(form.priority) }}
+                {{ block('option_set_sortable') }}
             </label>
         </div>
         {{ form_errors(form.option) }}
     </div>
     {{ form_rest(form) }}
-{%  endblock oro_entity_option_set_widget %}
+    <script type="text/javascript">
+        require(['jquery'],
+            function($){
+                $( "#oro_entity_config_type_extend_set_options_collection" ).sortable();
+                $( "#oro_entity_config_type_extend_set_options_collection" ).disableSelection();
+            }
+        );
+    </script>
+{% endblock %}
 
-{#{% block integer_widget %}#}
-    {#asd#}
-{#{% endblock integer_widget %}#}
+{% block option_set_sortable %}
+    {% set type = type|default('hidden') %}
+    qwe
+    <input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+{% endblock %}
 
-{#{% block oro_item_collection_widget %}#}
-    {#{% spaceless %}#}
-        {#{% set prototypeHtml = _self.oro_collection_item_prototype(form) %}#}
-        {#<div class="row-oro">#}
-            {#<div class="oro-item-collection collection-fields-list" id="{{ id }}_collection" data-prototype="{{ prototypeHtml|escape }}">#}
-                {#{% if form.children|length %}#}
-                    {#{% for child in form.children %}#}
-                        {#{{ _self.oro_collection_item_prototype(child) }}#}
-                    {#{% endfor %}#}
-                {#{% elseif show_form_when_empty %}#}
-                    {#{{ prototypeHtml|replace({'__name__': '0'})|raw }}#}
-                {#{% endif %}#}
-            {#</div>#}
-            {#<a class="btn add-list-item" href="javascript: void(0);"><i class="icon-plus"></i>{{ 'Add'|trans }}</a>#}
-        {#</div>#}
-        {#{{ _self.oro_item_collection_validate_primary_js(_context) }}#}
-    {#{% endspaceless %}#}
-{#{% endblock %}#}
+{% macro oro_collection_item_prototype(widget) %}
+    {% if 'prototype' in widget.vars|keys %}
+        {% set form = widget.vars.prototype %}
+        {% set name = widget.vars.prototype.vars.name %}
+    {% else %}
+        {% set form = widget %}
+        {% set name = widget.vars.full_name %}
+    {% endif %}
+    <div data-content="{{ name }}">
+        <div class="row-oro oro-multiselect-holder">
+            {{ form_widget(form) }}
+            <button class="removeRow btn btn-action btn-link" type="button" data-related="{{ name }}">×</button>
+        </div>
+    </div>
+{% endmacro %}
 
-{% macro oro_item_collection_validate_primary_js(context) %}
+{% block oro_item_collection_widget %}
+    {% spaceless %}
+        {% set prototypeHtml = _self.oro_collection_item_prototype(form) %}
+        <div class="row-oro">
+            <div class="oro-item-collection collection-fields-list" id="{{ id }}_collection" data-prototype="{{ prototypeHtml|escape }}">
+                {% if form.children|length %}
+                    {% for child in form.children %}
+                        {{ _self.oro_collection_item_prototype(child) }}
+                    {% endfor %}
+                {% elseif show_form_when_empty %}
+                    {{ prototypeHtml|replace({'__name__': '0'})|raw }}
+                {% endif %}
+            </div>
+            <a class="btn add-list-item" href="javascript: void(0);"><i class="icon-plus"></i>{{ 'Add'|trans }}</a>
+        </div>
+        {{ _self.oro_item_collection_validate_default_js(_context) }}
+    {% endspaceless %}
+{% endblock %}
+
+{% macro oro_item_collection_validate_default_js(context) %}
     {% set form = context.form %}
     {% set show_form_when_empty = context.show_form_when_empty %}
     {% set id = context.id %}
-    {% set has_primary = form.vars.prototype.primary is defined %}
+    {% set has_primary = form.vars.prototype.default is defined %}
     {% set has_types = form.vars.prototype.types is defined %}
     {% if has_primary or has_types or show_form_when_empty %}
         <script type="text/javascript">

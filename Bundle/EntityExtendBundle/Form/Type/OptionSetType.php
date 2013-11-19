@@ -19,7 +19,7 @@ class OptionSetType extends AbstractType
                 'text',
                 [
                     'label' => 'Value',
-                    'required' => true
+                    'required' => true,
                 ]
             )
             ->add(
@@ -27,15 +27,15 @@ class OptionSetType extends AbstractType
                 'radio',
                 [
                     'label' => 'Default',
-                    'required' => false
+                    'required' => false,
                 ]
             )
             ->add(
                 'priority',
-                'integer',
+                'hidden',
                 [
                     'label' => 'Priority',
-                    'required' => false
+                    'required' => false,
                 ]
             );
     }
