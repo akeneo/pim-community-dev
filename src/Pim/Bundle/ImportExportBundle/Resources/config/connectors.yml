@@ -3,8 +3,8 @@ parameters:
     pim_import_export.reader.orm.entity.class:                      Pim\Bundle\ImportExportBundle\Reader\ORM\EntityReader
 
     pim_import_export.reader.file.csv.class:                        Pim\Bundle\ImportExportBundle\Reader\File\CsvReader
-    pim_import_export.reader.file.product_csv.class:                Pim\Bundle\ImportExportBundle\Reader\File\ProductCsvReader
-    pim_import_export.reader.file.csv_file.class:                   Pim\Bundle\ImportExportBundle\Reader\File\CsvFileReader
+    pim_import_export.reader.file.csv_product.class:                Pim\Bundle\ImportExportBundle\Reader\File\CsvProductReader
+    pim_import_export.reader.file.csv_category.class:               Pim\Bundle\ImportExportBundle\Reader\File\CsvCategoryReader
 
     pim_import_export.processor.csv_serializer.homogeneous.class:   Pim\Bundle\ImportExportBundle\Processor\CsvSerializer\HomogeneousProcessor
     pim_import_export.processor.csv_serializer.heterogeneous.class: Pim\Bundle\ImportExportBundle\Processor\CsvSerializer\HeterogeneousProcessor
@@ -68,14 +68,14 @@ services:
             - '@doctrine.orm.default_entity_manager'
             - %pim_catalog.entity.group.class%
 
-    pim_import_export.reader.csv:
+    pim_import_export.reader.file.csv:
         class: %pim_import_export.reader.file.csv.class%
 
-    pim_import_export.reader.csv_file:
-        class: %pim_import_export.reader.file.csv_file.class%
+    pim_import_export.reader.file.csv_category:
+        class: %pim_import_export.reader.file.csv_category.class%
 
-    pim_import_export.reader.product_csv:
-        class: %pim_import_export.reader.file.product_csv.class%
+    pim_import_export.reader.file.csv_product:
+        class: %pim_import_export.reader.file.csv_product.class%
         arguments:
             - '@doctrine.orm.default_entity_manager'
 

@@ -91,8 +91,7 @@ define(
                 if (typeof Storage !== 'undefined') {
                     restoreFormState();
 
-                    $('form.form-horizontal').on('submit', saveFormState);
-                    $('#locale-switcher').find('a').on('click', saveFormState);
+                    $('a[data-toggle="tab"]').on('shown', saveFormState);
                 }
 
                 // Initialize slimbox

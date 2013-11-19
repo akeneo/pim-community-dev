@@ -61,25 +61,13 @@ class AssociationProcessorTest extends AbstractProcessorTestCase
             ->method('validate')
             ->will($this->returnValue($this->getConstraintViolationListMock()));
 
-        $data = $this->getValidAssociationData();
-
-        $this->assertEquals($data['result'], $this->processor->process($data['csv']));
-    }
-
-    /**
-     * @return array
-     */
-    protected function getValidAssociationData()
-    {
-        return array(
-            'csv' => array(
-                $this->getRow('association_1'),
-                $this->getRow('association_2')
-            ),
-            'result' => array(
-                $this->getAssociation('association_1'),
-                $this->getAssociation('association_2')
-            )
+        $this->assertEquals(
+            $this->getAssociation('association_1'),
+            $this->processor->process($this->getRow('association_1'))
+        );
+        $this->assertEquals(
+            $this->getAssociation('association_2'),
+            $this->processor->process($this->getRow('association_2'))
         );
     }
 
@@ -123,23 +111,13 @@ class AssociationProcessorTest extends AbstractProcessorTestCase
                 )
             );
 
-        $data = $this->getInvalidAssociationData();
-        $this->assertEquals($data['result'], $this->processor->process($data['csv']));
-    }
-
-    /**
-     * @return array
-     */
-    protected function getInvalidAssociationData()
-    {
-        return array(
-            'csv' => array(
-                $this->getRow('association_1'),
-                $this->getRow('association_2')
-            ),
-            'result' => array(
-                $this->getAssociation('association_1')
-            )
+        $this->assertEquals(
+            $this->getAssociation('association_1'),
+            $this->processor->process($this->getRow('association_1'))
+        );
+        $this->assertEquals(
+            $this->getAssociation('association_2'),
+            $this->processor->process($this->getRow('association_2'))
         );
     }
 

@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Reader\File;
 
-use Pim\Bundle\ImportExportBundle\Reader\File\ProductCsvReader;
+use Pim\Bundle\ImportExportBundle\Reader\File\CsvProductReader;
 
 /**
  * Test related class
@@ -11,14 +11,14 @@ use Pim\Bundle\ImportExportBundle\Reader\File\ProductCsvReader;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductCsvReaderTest extends CsvReaderTest
+class CsvProductReaderTest extends CsvReaderTest
 {
     /**
      * {@inheritdoc}
      */
     protected function setUp()
     {
-        $this->reader = new ProductCsvReader(
+        $this->reader = new CsvProductReader(
             $this->getEntityManagerMock(
                 array('sku', 'name'),
                 array('view', 'manual')

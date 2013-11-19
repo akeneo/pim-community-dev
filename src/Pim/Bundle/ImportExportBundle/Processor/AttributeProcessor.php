@@ -31,18 +31,11 @@ class AttributeProcessor extends AbstractConfigurableStepElement implements Item
     protected $productManager;
 
     /**
-     * Property for storing data during execution
+     * Validator
      *
-     * @var ArrayCollection
+     * @var ValidatorInterface
      */
-    protected $data;
-
-    /**
-     * Property for storing valid attributes during execution
-     *
-     * @var ArrayCollection
-     */
-    protected $attributes;
+    protected $validator;
 
     /**
      * Constructor
@@ -67,32 +60,13 @@ class AttributeProcessor extends AbstractConfigurableStepElement implements Item
     }
 
     /**
-     * Receives an array of attributes and processes them
-     *
-     * @param mixed $data Data to be processed
-     *
-     * @return ProductAttribute[]
-     */
-    public function process($data)
-    {
-        $this->data   = new ArrayCollection($data);
-        $this->attributes = new ArrayCollection();
-
-        foreach ($this->data as $item) {
-            $this->processItem($item);
-        }
-
-        return $this->attributes->toArray();
-    }
-
-    /**
      * If the attribute is valid, it is stored into the attribute property
      *
      * @param array $item
      *
      * @throws InvalidItemException
      */
-    private function processItem($item)
+    public function process($item)
     {
         $attribute = $this->getAttribute($item);
         $this->updateLabels($attribute, $item);
@@ -109,7 +83,7 @@ class AttributeProcessor extends AbstractConfigurableStepElement implements Item
 
         } else {
 
-            $this->attributes[] = $attribute;
+            return $attribute;
         }
     }
 

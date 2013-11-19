@@ -3,14 +3,13 @@
 namespace Pim\Bundle\ImportExportBundle\Reader\File;
 
 /**
- * Csv file reader
- * Reads the whole csv file
+ * Csv file reader, reads the whole csv file to deal with category parents and circular references
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CsvFileReader extends CsvReader
+class CsvCategoryReader extends CsvReader
 {
     /**
      * Since this reader reads the whole file at once, store the executed state
