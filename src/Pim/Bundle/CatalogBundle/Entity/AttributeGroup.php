@@ -100,8 +100,7 @@ class AttributeGroup implements TranslatableInterface
      * @ORM\OneToMany(
      *     targetEntity="Pim\Bundle\CatalogBundle\Entity\AttributeGroupTranslation",
      *     mappedBy="foreignKey",
-     *     cascade={"persist", "remove"},
-     *     orphanRemoval=true
+     *     cascade={"persist"}
      * )
      */
     protected $translations;

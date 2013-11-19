@@ -32,7 +32,7 @@ class CalculateCompletenessCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->getCompletenessRepository()->createAllCompletenesses(
+        $this->getCompletenessManager()->createAllCompletenesses(
             $input->getArgument('size')
         );
     }
@@ -40,22 +40,12 @@ class CalculateCompletenessCommand extends ContainerAwareCommand
     /**
      * Get the completeness repository
      *
-     * @return \Doctrine\ORM\EntityRepository
+     * @return \Pim\Bundle\CatalogBundle\Manager\CompletenessManager
      */
-    protected function getCompletenessRepository()
+    protected function getCompletenessManager()
     {
         return $this
-            ->getEntityManager()
-            ->getRepository('PimCatalogBundle:Completeness');
-    }
-
-    /**
-     * Get the entity manager
-     *
-     * @return \Doctrine\ORM\EntityManager
-     */
-    protected function getEntityManager()
-    {
-        return $this->getContainer()->get('doctrine.orm.entity_manager');
+            ->getContainer()
+            ->get('pim_catalog.manager.completeness');
     }
 }

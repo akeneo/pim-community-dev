@@ -50,8 +50,7 @@ class ProductAttribute extends AbstractEntityAttribute implements
      * @ORM\OneToMany(
      *     targetEntity="Pim\Bundle\CatalogBundle\Entity\AttributeOption",
      *     mappedBy="attribute",
-     *     cascade={"persist", "remove"},
-     *     orphanRemoval=true
+     *     cascade={"persist"}
      * )
      * @ORM\OrderBy({"sortOrder" = "ASC"})
      */
@@ -225,8 +224,7 @@ class ProductAttribute extends AbstractEntityAttribute implements
      * @ORM\OneToMany(
      *     targetEntity="Pim\Bundle\CatalogBundle\Entity\ProductAttributeTranslation",
      *     mappedBy="foreignKey",
-     *     cascade={"persist", "remove"},
-     *     orphanRemoval=true
+     *     cascade={"persist"}
      * )
      */
     protected $translations;
@@ -279,6 +277,7 @@ class ProductAttribute extends AbstractEntityAttribute implements
         $this->useableAsGridFilter = false;
         $this->availableLocales    = new ArrayCollection();
         $this->translations        = new ArrayCollection();
+        $this->validationRule      = null;
     }
 
     /**

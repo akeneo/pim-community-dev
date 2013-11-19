@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\ImportExportBundle\Processor;
 
+use Oro\Bundle\BatchBundle\Item\InvalidItemException;
 use Pim\Bundle\CatalogBundle\Entity\Association;
 
 /**
@@ -35,11 +36,12 @@ class AssociationProcessor extends AbstractEntityProcessor
 
         $violations = $this->validator->validate($association);
         if ($violations->count() > 0) {
+            $messages = array();
             foreach ($violations as $violation) {
-                $this->stepExecution->addError((string) $violation);
+                $messages[]= (string) $violation;
             }
+            throw new InvalidItemException(implode(', ', $messages), $item);
 
-            return;
         } else {
             $this->entities[] = $association;
         }

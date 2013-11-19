@@ -29,11 +29,6 @@ abstract class AbstractProcessorTestCase extends \PHPUnit_Framework_TestCase
     protected $processor;
 
     /**
-     * @var \Oro\Bundle\BatchBundle\Entity\StepExecution
-     */
-    protected $stepExecution;
-
-    /**
      * {@inheritdoc}
      */
     protected function setUp()
@@ -42,9 +37,6 @@ abstract class AbstractProcessorTestCase extends \PHPUnit_Framework_TestCase
         $this->validator = $this->getMock('Symfony\Component\Validator\ValidatorInterface');
 
         $this->processor = $this->createProcessor();
-
-        $this->stepExecution = $this->getStepExecutionMock();
-        $this->processor->setStepExecution($this->stepExecution);
     }
 
     /**
@@ -72,17 +64,6 @@ abstract class AbstractProcessorTestCase extends \PHPUnit_Framework_TestCase
     protected function getRepositoryMock()
     {
         return $this->mock('Doctrine\ORM\EntityRepository');
-    }
-
-    /**
-     * \Oro\Bundle\BatchBundle\Entity\StepExecution
-     */
-    protected function getStepExecutionMock()
-    {
-        return $this
-            ->getMockBuilder('Oro\Bundle\BatchBundle\Entity\StepExecution')
-            ->disableOriginalConstructor()
-            ->getMock();
     }
 
     /**

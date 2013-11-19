@@ -128,3 +128,54 @@ jobs:
             writer:
                 directoryName: /tmp/group_export
                 fileName:      group_export.csv
+    footwear_attribute_import:
+        connector: Akeneo CSV Connector
+        alias:     attribute_import
+        label:     Footwear attribute import
+        type:      import
+        configuration:
+            reader:
+                filePath:      /tmp/attribute_import/attribute_import.csv
+                uploadAllowed: true
+                delimiter:     ;
+                enclosure:     '"'
+                escape:        '\'
+    footwear_attribute_export:
+        connector: Akeneo CSV Connector
+        alias:     attribute_export
+        label:     Footwear attribute export
+        type:      export
+        configuration:
+            processor:
+                delimiter:  ;
+                enclosure:  '"'
+                withHeader: true
+            writer:
+                directoryName: /tmp/attribute_export
+                fileName:      attribute_export.csv
+    footwear_option_import:
+        connector: Akeneo CSV Connector
+        alias:     attribute_option_import
+        label:     Footwear option import
+        type:      import
+        configuration:
+            reader:
+                filePath:      /tmp/attribute_import/option_import.csv
+                uploadAllowed: true
+                delimiter:     ;
+                enclosure:     '"'
+                escape:        '\'
+    footwear_option_export:
+        connector: Akeneo CSV Connector
+        alias:     attribute_option_export
+        label:     Footwear option export
+        type:      export
+        configuration:
+            processor:
+                delimiter:  ;
+                enclosure:  '"'
+                withHeader: true
+            writer:
+                directoryName: /tmp/option_export
+                fileName:      option_export.csv
+

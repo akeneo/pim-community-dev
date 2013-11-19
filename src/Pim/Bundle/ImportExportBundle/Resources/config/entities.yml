@@ -1,0 +1,2 @@
+parameters:
+    pim_import_export.entity.export.class: Pim\Bundle\ImportExportBundle\Entity\Export

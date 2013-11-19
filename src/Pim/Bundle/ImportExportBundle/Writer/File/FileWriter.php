@@ -20,12 +20,12 @@ class FileWriter extends AbstractConfigurableStepElement implements
     StepExecutionAwareInterface
 {
     /**
-     * @Assert\NotBlank
+     * @Assert\NotBlank(groups={"Execution"})
      */
     protected $directoryName;
 
     /**
-     * @Assert\NotBlank
+     * @Assert\NotBlank(groups={"Execution"})
      */
     protected $fileName = 'export_%datetime%.csv';
 

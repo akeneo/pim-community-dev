@@ -8,8 +8,12 @@
 - Introduce command "pim:completeness:calculate" size argument to manage number of completenesses to calculate
 - Switching tree to see sub-categories products count and allow filtering on it
 - Group types management
-- Import/Export product groups
-- Import/Export associations
+- Import/Export product groups (CSV)
+- Import/Export associations (CSV)
+- Import/Export attributes (CSV)
+- Import/Export attribute options (CSV)
+- Upload and import an archive
+- Download an archive containing the exported products along with media
 
 ## Improvements
 - Export media into separated sub directories
@@ -18,6 +22,7 @@
 - Speed up completeness calculation
 - Display the "has product" filter by default in the product grid of group edit view
 - Display currency label in currencies datagrid
+- Disable changing the code of all configuration-related entities
 
 ## Bug fixes
 - Mass delete products

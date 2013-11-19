@@ -4,6 +4,7 @@ parameters:
     pim_import_export.transformer.property.entity.class:        Pim\Bundle\ImportExportBundle\Transformer\Property\EntityTransformer
     pim_import_export.transformer.property.media.class:         Pim\Bundle\ImportExportBundle\Transformer\Property\MediaTransformer
     pim_import_export.transformer.property.date.class:          Pim\Bundle\ImportExportBundle\Transformer\Property\DateTransformer
+    pim_import_export.transformer.property.boolean.class:       Pim\Bundle\ImportExportBundle\Transformer\Property\BooleanTransformer
     pim_import_export.transformer.property.metric.class:        Pim\Bundle\ImportExportBundle\Transformer\Property\MetricTransformer
     pim_import_export.transformer.property.prices.class:        Pim\Bundle\ImportExportBundle\Transformer\Property\PricesTransformer
 
@@ -78,3 +79,10 @@ services:
         tags:
             - name: pim_import_export.transformer.product.attribute
               backend_type: date
+
+    pim_import_export.transformer.attribute.boolean:
+        class: '%pim_import_export.transformer.property.boolean.class%'
+        public: false
+        tags:
+            - name: pim_import_export.transformer.product.attribute
+              backend_type: boolean

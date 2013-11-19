@@ -77,8 +77,7 @@ class Family implements TranslatableInterface
      * @ORM\OneToMany(
      *     targetEntity="Pim\Bundle\CatalogBundle\Entity\FamilyTranslation",
      *     mappedBy="foreignKey",
-     *     cascade={"persist", "remove"},
-     *     orphanRemoval=true
+     *     cascade={"persist"}
      * )
      */
     protected $translations;
@@ -95,7 +94,7 @@ class Family implements TranslatableInterface
      * @ORM\OneToMany(
      *     targetEntity="Pim\Bundle\CatalogBundle\Entity\AttributeRequirement",
      *     mappedBy="family",
-     *     cascade={"persist", "remove"}
+     *     cascade={"persist"}
      * )
      */
     protected $requirements;

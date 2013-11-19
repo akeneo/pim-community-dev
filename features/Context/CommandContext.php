@@ -20,8 +20,7 @@ class CommandContext extends RawMinkContext
     {
         $this
             ->getContainer()
-            ->get('doctrine.orm.entity_manager')
-            ->getRepository('PimCatalogBundle:Completeness')
+            ->get('pim_catalog.manager.completeness')
             ->createAllCompletenesses();
     }
 

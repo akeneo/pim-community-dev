@@ -63,8 +63,7 @@ class Association implements TranslatableInterface
      * @ORM\OneToMany(
      *     targetEntity="Pim\Bundle\CatalogBundle\Entity\AssociationTranslation",
      *     mappedBy="foreignKey",
-     *     cascade={"persist", "remove"},
-     *     orphanRemoval=true
+     *     cascade={"persist"}
      * )
      */
     protected $translations;
