@@ -24,7 +24,7 @@ class CompletenessManager
     /**
      * @var CompletenessQueryBuilder
      */
-    protected $completenessQueryBuilder;
+    protected $completenessQB;
 
     /**
      * Constructor
@@ -32,10 +32,10 @@ class CompletenessManager
      * @param RegistryInterface        $doctrine
      * @param CompletenessQueryBuilder $completenessQueryBuilder
      */
-    public function __construct(RegistryInterface $doctrine, CompletenessQueryBuilder $completenessQueryBuilder)
+    public function __construct(RegistryInterface $doctrine, CompletenessQueryBuilder $completenessQB)
     {
-        $this->doctrine = $doctrine;
-        $this->completenessQueryBuilder = $completenessQueryBuilder;
+        $this->doctrine       = $doctrine;
+        $this->completenessQB = $completenessQB;
     }
 
     /**
