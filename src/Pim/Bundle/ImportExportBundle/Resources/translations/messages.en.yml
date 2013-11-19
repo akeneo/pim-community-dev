@@ -205,7 +205,7 @@ oro_batch:
             help: The name of the generated file.
 
     product_writer:
-        title: Output
+        title: Product storage
         directoryName:
             label: Directory path
             help: Where to write the generated file on the file system
@@ -215,9 +215,6 @@ oro_batch:
 
     category_writer:
         title: Category storage
-
-    product_writer:
-        title: Product storage
 
     writer:
         title: Entity storage
