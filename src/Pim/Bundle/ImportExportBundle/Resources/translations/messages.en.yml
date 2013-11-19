@@ -110,7 +110,7 @@ oro_batch:
             help: Whether or not to allow uploading the file directly
 
     product_processor:
-        title: Product creation
+        title: Transform product
         enabled:
             label: Enable the product?
             help: Whether or not imported product should be enabled
@@ -126,6 +126,18 @@ oro_batch:
         categoriesDelimiter:
             label: Categories delimiter
             help: Character used to separate the category codes
+        channel:
+            label: Channel
+            help: The channel in which create the imported value
+        delimiter:
+            label: Delimiter
+            help: One character used to set the field delimiter
+        enclosure:
+            label: Enclosure
+            help: One character used to set the field enclosure
+        withHeader:
+            label: With header
+            help: Whether or not to print the column name
         channel:
             label: Channel
             help: The channel in which create the imported value
@@ -168,21 +180,6 @@ oro_batch:
         withHeader:
             label: With header
             help: Whether or not to print the column name
-
-    product_processor:
-        title: Settings
-        delimiter:
-            label: Delimiter
-            help: One character used to set the field delimiter
-        enclosure:
-            label: Enclosure
-            help: One character used to set the field enclosure
-        withHeader:
-            label: With header
-            help: Whether or not to print the column name
-        channel:
-            label: Channel
-            help: The channel in which create the imported value
 
     homogeneous_processor:
         title: Settings
