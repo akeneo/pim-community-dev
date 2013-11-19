@@ -13,10 +13,13 @@ use Pim\Bundle\CatalogBundle\Manager\MediaManager;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductWriter extends FileWriter
+class ProductWriter extends FileWriter implements ArchivableWriterInterface
 {
     /** @var MediaManager */
     protected $mediaManager;
+
+    /** @var array */
+    protected $writtenFiles = array();
 
     /**
      * Constructor
@@ -42,12 +45,26 @@ class ProductWriter extends FileWriter
             )
         );
 
+        $this->writtenFiles[$this->getPath()] = basename($this->getPath());
+
         foreach ($items as $data) {
             foreach ($data['media'] as $media) {
                 if ($media) {
-                    $this->mediaManager->copy($media, $this->directoryName);
+                    $result = $this->mediaManager->copy($media, $this->directoryName);
+                    if ($result === true) {
+                        $exportPath = $this->mediaManager->getExportPath($media);
+                        $this->writtenFiles[sprintf('%s/%s', $this->directoryName, $exportPath)] = $exportPath;
+                    }
                 }
             }
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getWrittenFiles()
+    {
+        return $this->writtenFiles;
     }
 }
