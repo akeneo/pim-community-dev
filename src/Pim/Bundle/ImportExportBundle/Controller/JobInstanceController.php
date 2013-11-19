@@ -347,19 +347,11 @@ class JobInstanceController extends AbstractDoctrineController
         $violations       = $this->getValidator()->validate($jobInstance, array('Default', 'Execution'));
         $uploadViolations = $this->getValidator()->validate($jobInstance, array('Default', 'UploadExecution'));
 
-        if (count($violations) === 0 || count($uploadViolations) === 0) {
+        $uploadMode = $uploadViolations->count() === 0 ? $this->configureUploadJob($jobInstance) : false;
+
+        if ($uploadMode === true || $violations->count() === 0) {
             $jobExecution = new JobExecution();
             $jobExecution->setJobInstance($jobInstance);
-
-            $uploadMode = false;
-            if ($request->isMethod('POST') && count($uploadViolations) === 0) {
-                $form = $this->createUploadForm();
-                $form->handleRequest($request);
-                if ($form->isValid()) {
-                    $uploadMode = $this->runJob($jobInstance, $form->getData());
-                }
-            }
-
             $this->getManager()->persist($jobExecution);
             $this->getManager()->flush();
             $instanceCode = $jobExecution->getJobInstance()->getCode();
@@ -385,42 +377,49 @@ class JobInstanceController extends AbstractDoctrineController
     }
 
     /**
-     * Run job instance
+     * Configure job instance for uploaded file
      *
      * @param JobInstance $jobInstance
-     * @param mixed       $data
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|boolean
+     * @return boolean
      */
-    protected function runJob(JobInstance $jobInstance, $data)
+    protected function configureUploadJob(JobInstance $jobInstance)
     {
-        $media = $data['file'];
-        $file = $media->getFile();
+        $uploadMode = false;
 
-        $filename = $file->getClientOriginalName();
-        $file = $file->move(
-            sys_get_temp_dir(),
-            $file->getFilename() . substr($filename, strrpos($filename, '.'))
-        );
+        $request = $this->getRequest();
+        if ($request->isMethod('POST')) {
+            $form = $this->createUploadForm();
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $data  = $form->getData();
+                $media = $data['file'];
+                $file  = $media->getFile();
 
-        $job = $jobInstance->getJob();
-        foreach ($job->getSteps() as $step) {
-            $reader = $step->getReader();
+                $filename = $file->getClientOriginalName();
+                $file = $file->move(
+                    sys_get_temp_dir(),
+                    $file->getFilename() . substr($filename, strrpos($filename, '.'))
+                );
 
-            if ($reader instanceof UploadedFileAwareInterface) {
-                $constraints = $reader->getUploadedFileConstraints();
-                $errors = $this->getValidator()->validateValue($file, $constraints);
+                $job = $jobInstance->getJob();
+                foreach ($job->getSteps() as $step) {
+                    $reader = $step->getReader();
 
-                if ($errors->count()) {
-                    foreach ($errors as $error) {
-                        $this->addFlash('error', $error->getMessage());
+                    if ($reader instanceof UploadedFileAwareInterface) {
+                        $constraints = $reader->getUploadedFileConstraints();
+                        $errors = $this->getValidator()->validateValue($file, $constraints);
+
+                        if ($errors->count() !== 0) {
+                            foreach ($errors as $error) {
+                                $this->addFlash('error', $error->getMessage());
+                            }
+                        } else {
+                            $reader->setUploadedFile($file);
+                            $uploadMode = true;
+                        }
                     }
-
-                    return $this->redirectToShowView($jobInstance->getId());
                 }
-
-                $reader->setUploadedFile($file);
-                $uploadMode = true;
             }
         }
 
