@@ -1,0 +1,126 @@
+Pim\Bundle\CatalogBundle\Entity\Category:
+    type: entity
+    table: pim_catalog_category
+    inheritanceType: SINGLE_TABLE
+    discriminatorColumn:
+        name: discr
+        type: string
+        length: null
+        columnDefinition: null
+        fieldName: discr
+    discriminatorMap:
+        category: Pim\Bundle\CatalogBundle\Entity\Category
+    repositoryClass: Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository
+    uniqueConstraints:
+        pim_category_code_uc:
+            columns:
+                - code
+    gedmo:
+        tree:
+            type: nested
+
+    fields:
+        id:
+            type: integer
+            scale: 0
+            length: null
+            unique: false
+            nullable: false
+            precision: 0
+            id: true
+            generator:
+                strategy: IDENTITY
+        code:
+            type: string
+            scale: 0
+            length: 100
+            unique: true
+            nullable: false
+            precision: 0
+        created:
+            type: datetime
+            scale: 0
+            length: null
+            unique: false
+            nullable: false
+            precision: 0
+            gedmo:
+                timestampable:
+                    on: create
+        root:
+            type: integer
+            scale: 0
+            length: null
+            unique: false
+            nullable: true
+            precision: 0
+            gedmo:
+                - treeRoot
+        left:
+            type: integer
+            scale: 0
+            length: null
+            unique: false
+            nullable: true
+            precision: 0
+            column: lft
+            gedmo:
+                - treeLeft
+        right:
+            type: integer
+            scale: 0
+            length: null
+            unique: false
+            nullable: true
+            precision: 0
+            column: rgt
+            gedmo:
+                - treeRight
+    oneToMany:
+        translations:
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\CategoryTranslation
+            cascade:
+                - persist
+            mappedBy: foreignKey
+            inversedBy: null
+            orphanRemoval: false
+            orderBy: null
+        channels:
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\Channel
+            cascade: {  }
+            mappedBy: category
+            inversedBy: null
+            orphanRemoval: false
+            orderBy: null
+        children:
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\Category
+            cascade:
+                - persist
+            mappedBy: parent
+            inversedBy: null
+            orphanRemoval: false
+            orderBy:
+                left: ASC
+    manyToOne:
+        parent:
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\Category
+            cascade: {  }
+            mappedBy: null
+            inversedBy: children
+            joinColumns:
+                parent_id:
+                    referencedColumnName: id
+                    onDelete: 'SET NULL'
+            orphanRemoval: false
+            gedmo:
+                - treeParent
+    manyToMany:
+        products:
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\Product
+            cascade: {  }
+            mappedBy: categories
+            inversedBy: null
+            joinTable: {  }
+            orderBy: null
+            fetch: EXTRA_LAZY
+    lifecycleCallbacks: {  }

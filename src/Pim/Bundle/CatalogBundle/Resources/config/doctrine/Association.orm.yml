@@ -1,0 +1,52 @@
+Pim\Bundle\CatalogBundle\Entity\Association:
+    type: entity
+    table: pim_catalog_association
+    repositoryClass: Pim\Bundle\CatalogBundle\Entity\Repository\AssociationRepository
+    fields:
+        id:
+            type: integer
+            scale: 0
+            length: null
+            unique: false
+            nullable: false
+            precision: 0
+            id: true
+            generator:
+                strategy: IDENTITY
+        code:
+            type: string
+            scale: 0
+            length: 100
+            unique: false
+            nullable: false
+            precision: 0
+        created:
+            type: datetime
+            scale: 0
+            length: null
+            unique: false
+            nullable: false
+            precision: 0
+            gedmo:
+                timestampable:
+                    on: create
+        updated:
+            type: datetime
+            scale: 0
+            length: null
+            unique: false
+            nullable: false
+            precision: 0
+            gedmo:
+                timestampable:
+                    on: update
+    oneToMany:
+        translations:
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\AssociationTranslation
+            cascade:
+                - persist
+            mappedBy: foreignKey
+            inversedBy: null
+            orphanRemoval: true
+            orderBy: null
+    lifecycleCallbacks: {  }

@@ -1,0 +1,76 @@
+Pim\Bundle\CatalogBundle\Entity\Completeness:
+    type: entity
+    table: pim_catalog_completeness
+    repositoryClass: Pim\Bundle\CatalogBundle\Entity\Repository\CompletenessRepository
+    uniqueConstraints:
+        searchunique_idx:
+            columns:
+                - channel_id
+                - locale_id
+                - product_id
+    fields:
+        id:
+            type: integer
+            scale: 0
+            length: null
+            unique: false
+            nullable: false
+            precision: 0
+            id: true
+            generator:
+                strategy: IDENTITY
+        ratio:
+            type: integer
+            scale: 0
+            length: null
+            unique: false
+            nullable: false
+            precision: 0
+        missingCount:
+            type: integer
+            scale: 0
+            length: null
+            unique: false
+            nullable: false
+            precision: 0
+            column: missing_count
+        requiredCount:
+            type: integer
+            scale: 0
+            length: null
+            unique: false
+            nullable: false
+            precision: 0
+            column: required_count
+    manyToOne:
+        locale:
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\Locale
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                locale_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: false
+        channel:
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\Channel
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinColumns:
+                channel_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: false
+        product:
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\Product
+            cascade: {  }
+            mappedBy: null
+            inversedBy: completenesses
+            joinColumns:
+                product_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 
@@ -13,43 +12,29 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @ORM\Table(name="pim_catalog_product_value_price")
- * @ORM\Entity
- *
  * @ExclusionPolicy("all")
  */
 class ProductPrice
 {
     /**
      * @var integer $id
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
 
     /**
      * @var ProductValueInterface
-     *
-     * @ORM\ManyToOne(targetEntity="Pim\Bundle\CatalogBundle\Model\ProductValueInterface", inversedBy="prices")
-     * @ORM\JoinColumn(name="value_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $value;
 
     /**
      * Store decimal value
      * @var double $decimal
-     *
-     * @ORM\Column(name="data", type="decimal", scale=2, nullable=true)
      */
     protected $data;
 
     /**
      * Currency code
      * @var string $currency
-     *
-     * @ORM\Column(name="currency_code", type="string", length=5, nullable=false)
      */
     protected $currency;
 

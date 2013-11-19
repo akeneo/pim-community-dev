@@ -5,7 +5,6 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 
 /**
@@ -15,8 +14,6 @@ use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @ORM\Table(name="pim_catalog_currency")
- * @ORM\Entity(repositoryClass="Pim\Bundle\CatalogBundle\Entity\Repository\CurrencyRepository")
  * @UniqueEntity("code")
  * @Config(
  *  defaultValues={
@@ -34,31 +31,21 @@ class Currency
 {
     /**
      * @var integer $id
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
 
     /**
      * @var string $code
-     *
-     * @ORM\Column(name="code", type="string", length=3, unique=true)
      */
     protected $code;
 
     /**
      * @var boolean $activated
-     *
-     * @ORM\Column(name="is_activated", type="boolean")
      */
     protected $activated;
 
     /**
      * @var ArrayCollection $locales
-     *
-     * @ORM\OneToMany(targetEntity="Locale", mappedBy="defaultCurrency")
      */
     protected $locales;
 

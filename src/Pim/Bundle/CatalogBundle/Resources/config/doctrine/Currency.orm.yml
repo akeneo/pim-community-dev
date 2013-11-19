@@ -1,0 +1,39 @@
+Pim\Bundle\CatalogBundle\Entity\Currency:
+    type: entity
+    table: pim_catalog_currency
+    repositoryClass: Pim\Bundle\CatalogBundle\Entity\Repository\CurrencyRepository
+    fields:
+        id:
+            type: integer
+            scale: 0
+            length: null
+            unique: false
+            nullable: false
+            precision: 0
+            id: true
+            generator:
+                strategy: IDENTITY
+        code:
+            type: string
+            scale: 0
+            length: 3
+            unique: true
+            nullable: false
+            precision: 0
+        activated:
+            type: boolean
+            scale: 0
+            length: null
+            unique: false
+            nullable: false
+            precision: 0
+            column: is_activated
+    oneToMany:
+        locales:
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\Locale
+            cascade: {  }
+            mappedBy: defaultCurrency
+            inversedBy: null
+            orphanRemoval: false
+            orderBy: null
+    lifecycleCallbacks: {  }

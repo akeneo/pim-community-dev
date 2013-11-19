@@ -1,0 +1,338 @@
+Pim\Bundle\CatalogBundle\Entity\ProductAttribute:
+    type: entity
+    table: pim_catalog_attribute
+    indexes:
+        searchcode_idx:
+            columns:
+                - code
+    repositoryClass: Pim\Bundle\CatalogBundle\Entity\Repository\ProductAttributeRepository
+    uniqueConstraints:
+        searchunique_idx:
+            columns:
+                - code
+                - entity_type
+    fields:
+        id:
+            type: integer
+            scale: 0
+            length: null
+            unique: false
+            nullable: false
+            precision: 0
+            id: true
+            generator:
+                strategy: IDENTITY
+        sortOrder:
+            type: integer
+            scale: 0
+            length: null
+            unique: false
+            nullable: false
+            precision: 0
+            column: sort_order
+        variant:
+            type: string
+            scale: 0
+            length: 255
+            unique: false
+            nullable: true
+            precision: 0
+        smart:
+            type: boolean
+            scale: 0
+            length: null
+            unique: false
+            nullable: false
+            precision: 0
+            column: is_smart
+        useableAsGridColumn:
+            type: boolean
+            scale: 0
+            length: null
+            unique: false
+            nullable: false
+            precision: 0
+            options:
+                default: false
+            column: useable_as_grid_column
+        useableAsGridFilter:
+            type: boolean
+            scale: 0
+            length: null
+            unique: false
+            nullable: false
+            precision: 0
+            options:
+                default: false
+            column: useable_as_grid_filter
+        maxCharacters:
+            type: smallint
+            scale: 0
+            length: null
+            unique: false
+            nullable: true
+            precision: 0
+            column: max_characters
+        validationRule:
+            type: string
+            scale: 0
+            length: 10
+            unique: false
+            nullable: true
+            precision: 0
+            column: validation_rule
+        validationRegexp:
+            type: string
+            scale: 0
+            length: 255
+            unique: false
+            nullable: true
+            precision: 0
+            column: validation_regexp
+        wysiwygEnabled:
+            type: boolean
+            scale: 0
+            length: null
+            unique: false
+            nullable: true
+            precision: 0
+            column: wysiwyg_enabled
+        numberMin:
+            type: decimal
+            scale: 4
+            length: null
+            unique: false
+            nullable: true
+            precision: 14
+            column: number_min
+        numberMax:
+            type: decimal
+            scale: 4
+            length: null
+            unique: false
+            nullable: true
+            precision: 14
+            column: number_max
+        decimalsAllowed:
+            type: boolean
+            scale: 0
+            length: null
+            unique: false
+            nullable: true
+            precision: 0
+            column: decimals_allowed
+        negativeAllowed:
+            type: boolean
+            scale: 0
+            length: null
+            unique: false
+            nullable: true
+            precision: 0
+            column: negative_allowed
+        dateType:
+            type: string
+            scale: 0
+            length: 20
+            unique: false
+            nullable: true
+            precision: 0
+            column: date_type
+        dateMin:
+            type: datetime
+            scale: 0
+            length: null
+            unique: false
+            nullable: true
+            precision: 0
+            column: date_min
+        dateMax:
+            type: datetime
+            scale: 0
+            length: null
+            unique: false
+            nullable: true
+            precision: 0
+            column: date_max
+        metricFamily:
+            type: string
+            scale: 0
+            length: 30
+            unique: false
+            nullable: true
+            precision: 0
+            column: metric_family
+        defaultMetricUnit:
+            type: string
+            scale: 0
+            length: 30
+            unique: false
+            nullable: true
+            precision: 0
+            column: default_metric_unit
+        maxFileSize:
+            type: decimal
+            scale: 2
+            length: null
+            unique: false
+            nullable: true
+            precision: 6
+            column: max_file_size
+        allowedExtensions:
+            type: string
+            scale: 0
+            length: 255
+            unique: false
+            nullable: true
+            precision: 0
+            column: allowed_extensions
+        required:
+            type: boolean
+            scale: 0
+            length: null
+            unique: false
+            nullable: false
+            precision: 0
+            column: is_required
+        unique:
+            type: boolean
+            scale: 0
+            length: null
+            unique: false
+            nullable: false
+            precision: 0
+            column: is_unique
+        defaultValue:
+            type: text
+            scale: 0
+            length: 65532
+            unique: false
+            nullable: true
+            precision: 0
+            column: default_value
+        searchable:
+            type: boolean
+            scale: 0
+            length: null
+            unique: false
+            nullable: false
+            precision: 0
+            column: is_searchable
+        translatable:
+            type: boolean
+            scale: 0
+            length: null
+            unique: false
+            nullable: false
+            precision: 0
+            column: is_translatable
+        scopable:
+            type: boolean
+            scale: 0
+            length: null
+            unique: false
+            nullable: false
+            precision: 0
+            column: is_scopable
+        code:
+            type: string
+            scale: 0
+            length: 255
+            unique: false
+            nullable: false
+            precision: 0
+        entityType:
+            type: string
+            scale: 0
+            length: 255
+            unique: false
+            nullable: false
+            precision: 0
+            column: entity_type
+        attributeType:
+            type: string
+            scale: 0
+            length: 255
+            unique: false
+            nullable: false
+            precision: 0
+            column: attribute_type
+        backendType:
+            type: string
+            scale: 0
+            length: 255
+            unique: false
+            nullable: false
+            precision: 0
+            column: backend_type
+        backendStorage:
+            type: string
+            scale: 0
+            length: 255
+            unique: false
+            nullable: false
+            precision: 0
+            column: backend_storage
+        created:
+            type: datetime
+            scale: 0
+            length: null
+            unique: false
+            nullable: false
+            precision: 0
+        updated:
+            type: datetime
+            scale: 0
+            length: null
+            unique: false
+            nullable: false
+            precision: 0
+    oneToMany:
+        options:
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\AttributeOption
+            cascade:
+                - persist
+            mappedBy: attribute
+            inversedBy: null
+            orphanRemoval: true
+            orderBy:
+                sortOrder: ASC
+        translations:
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\ProductAttributeTranslation
+            cascade:
+                - persist
+            mappedBy: foreignKey
+            inversedBy: null
+            orphanRemoval: true
+            orderBy: null
+    manyToOne:
+        group:
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\AttributeGroup
+            cascade: {  }
+            mappedBy: null
+            inversedBy: attributes
+            joinColumns:
+                group_id:
+                    referencedColumnName: id
+                    onDelete: 'SET NULL'
+            orphanRemoval: false
+    manyToMany:
+        availableLocales:
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\Locale
+            cascade: {  }
+            mappedBy: null
+            inversedBy: null
+            joinTable:
+                name: pim_catalog_attribute_locale
+                schema: null
+                joinColumns:
+                    -
+                        name: productattribute_id
+                        referencedColumnName: id
+                        onDelete: CASCADE
+                inverseJoinColumns:
+                    -
+                        name: locale_id
+                        referencedColumnName: id
+                        onDelete: CASCADE
+            orderBy: null
+    lifecycleCallbacks: {  }

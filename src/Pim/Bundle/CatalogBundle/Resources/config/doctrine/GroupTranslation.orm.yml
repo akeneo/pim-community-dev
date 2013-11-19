@@ -1,0 +1,45 @@
+Pim\Bundle\CatalogBundle\Entity\GroupTranslation:
+    type: entity
+    table: pim_catalog_group_translation
+    uniqueConstraints:
+        locale_foreign_key_idx:
+            columns:
+                - locale
+                - foreign_key
+    fields:
+        id:
+            type: integer
+            scale: 0
+            length: null
+            unique: false
+            nullable: false
+            precision: 0
+            id: true
+            generator:
+                strategy: IDENTITY
+        label:
+            type: string
+            scale: 0
+            length: 100
+            unique: false
+            nullable: true
+            precision: 0
+        locale:
+            type: string
+            scale: 0
+            length: 10
+            unique: false
+            nullable: false
+            precision: 0
+    manyToOne:
+        foreignKey:
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\Group
+            cascade: {  }
+            mappedBy: null
+            inversedBy: translations
+            joinColumns:
+                foreign_key:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+            orphanRemoval: false
+    lifecycleCallbacks: {  }

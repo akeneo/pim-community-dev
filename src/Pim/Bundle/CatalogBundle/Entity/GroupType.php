@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
@@ -16,8 +15,6 @@ use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @ORM\Entity(repositoryClass="Pim\Bundle\CatalogBundle\Entity\Repository\GroupTypeRepository")
- * @ORM\Table(name="pim_catalog_group_type")
  * @Config(
  *  defaultValues={
  *      "entity"={"label"="Group type", "plural_label"="Group types"},
@@ -34,34 +31,21 @@ class GroupType implements TranslatableInterface
 {
     /**
      * @var integer $id
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
 
     /**
      * @var string $code
-     *
-     * @ORM\Column(name="code", type="string", length=50, unique=true)
      */
     protected $code;
 
     /**
      * @var string $entity
-     *
-     * @ORM\Column(name="is_variant", type="boolean")
      */
     protected $variant;
 
     /**
-     * @var ArrayCollection $options
-     *
-     * @ORM\OneToMany(
-     *     targetEntity="Pim\Bundle\CatalogBundle\Entity\Group",
-     *     mappedBy="type"
-     * )
+     * @var ArrayCollection $groups
      */
     protected $groups;
 
@@ -75,12 +59,6 @@ class GroupType implements TranslatableInterface
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection $translations
-     *
-     * @ORM\OneToMany(
-     *     targetEntity="Pim\Bundle\CatalogBundle\Entity\GroupTypeTranslation",
-     *     mappedBy="foreignKey",
-     *     cascade={"persist"}
-     * )
      */
     protected $translations;
 

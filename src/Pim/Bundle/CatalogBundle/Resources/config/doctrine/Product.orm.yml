@@ -1,0 +1,131 @@
+Pim\Bundle\CatalogBundle\Entity\Product:
+    type: entity
+    table: pim_catalog_product
+    repositoryClass: Pim\Bundle\CatalogBundle\Entity\Repository\ProductRepository
+    fields:
+        id:
+            type: integer
+            scale: 0
+            length: null
+            unique: false
+            nullable: false
+            precision: 0
+            id: true
+            generator:
+                strategy: IDENTITY
+        enabled:
+            type: boolean
+            scale: 0
+            length: null
+            unique: false
+            nullable: false
+            precision: 0
+            column: is_enabled
+        created:
+            type: datetime
+            scale: 0
+            length: null
+            unique: false
+            nullable: false
+            precision: 0
+        updated:
+            type: datetime
+            scale: 0
+            length: null
+            unique: false
+            nullable: false
+            precision: 0
+    manyToOne:
+        family:
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\Family
+            cascade:
+                - persist
+                - refresh
+            mappedBy: null
+            inversedBy: products
+            joinColumns:
+                family_id:
+                    referencedColumnName: id
+                    onDelete: 'SET NULL'
+            orphanRemoval: false
+    manyToMany:
+        groups:
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\Group
+            cascade: {  }
+            mappedBy: null
+            inversedBy: products
+            joinTable:
+                name: pim_catalog_group_product
+                schema: null
+                joinColumns:
+                    -
+                        name: product_id
+                        unique: false
+                        nullable: true
+                        onDelete: CASCADE
+                        columnDefinition: null
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    -
+                        name: group_id
+                        unique: false
+                        nullable: true
+                        onDelete: CASCADE
+                        columnDefinition: null
+                        referencedColumnName: id
+            orderBy: null
+        categories:
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\Category
+            cascade: {  }
+            mappedBy: null
+            inversedBy: products
+            joinTable:
+                name: pim_catalog_category_product
+                schema: null
+                joinColumns:
+                    -
+                        name: product_id
+                        unique: false
+                        nullable: true
+                        onDelete: CASCADE
+                        columnDefinition: null
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    -
+                        name: category_id
+                        unique: false
+                        nullable: true
+                        onDelete: CASCADE
+                        columnDefinition: null
+                        referencedColumnName: id
+            orderBy: null
+    oneToMany:
+        productAssociations:
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\ProductAssociation
+            cascade:
+                - persist
+                - refresh
+            mappedBy: owner
+            inversedBy: null
+            orphanRemoval: true
+            orderBy: null
+        completenesses:
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\Completeness
+            cascade:
+                - persist
+                - refresh
+            mappedBy: product
+            inversedBy: null
+            orphanRemoval: false
+            orderBy: null
+        values:
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\ProductValue
+            cascade:
+                - remove
+                - persist
+                - refresh
+            mappedBy: entity
+            inversedBy: null
+            orphanRemoval: false
+            orderBy: null
+    lifecycleCallbacks: {  }

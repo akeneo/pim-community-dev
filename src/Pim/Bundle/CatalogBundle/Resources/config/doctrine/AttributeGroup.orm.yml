@@ -1,0 +1,68 @@
+Pim\Bundle\CatalogBundle\Entity\AttributeGroup:
+    type: entity
+    table: pim_catalog_attribute_group
+    repositoryClass: Pim\Bundle\CatalogBundle\Entity\Repository\AttributeGroupRepository
+    fields:
+        id:
+            type: integer
+            scale: 0
+            length: null
+            unique: false
+            nullable: false
+            precision: 0
+            id: true
+            generator:
+                strategy: IDENTITY
+        code:
+            type: string
+            scale: 0
+            length: 100
+            unique: false
+            nullable: false
+            precision: 0
+        sortOrder:
+            type: integer
+            scale: 0
+            length: null
+            unique: false
+            nullable: false
+            precision: 0
+            column: sort_order
+        created:
+            type: datetime
+            scale: 0
+            length: null
+            unique: false
+            nullable: false
+            precision: 0
+            gedmo:
+                timestampable:
+                    on: create
+        updated:
+            type: datetime
+            scale: 0
+            length: null
+            unique: false
+            nullable: false
+            precision: 0
+            gedmo:
+                timestampable:
+                    on: create
+    oneToMany:
+        attributes:
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\ProductAttribute
+            cascade: {  }
+            mappedBy: group
+            inversedBy: null
+            orphanRemoval: false
+            orderBy:
+                sortOrder: ASC
+        translations:
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\AttributeGroupTranslation
+            cascade:
+                - persist
+            mappedBy: foreignKey
+            inversedBy: null
+            orphanRemoval: true
+            orderBy: null
+    lifecycleCallbacks: {  }

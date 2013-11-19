@@ -5,7 +5,6 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Pim\Bundle\CatalogBundle\Validator\Constraints as PimAssert;
 
@@ -16,8 +15,6 @@ use Pim\Bundle\CatalogBundle\Validator\Constraints as PimAssert;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @ORM\Table(name="pim_catalog_locale")
- * @ORM\Entity(repositoryClass="Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository")
  * @UniqueEntity("code")
  * @PimAssert\ValidLocaleFallback
  * @Config(
@@ -36,51 +33,32 @@ class Locale
 {
     /**
      * @var integer $id
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
 
     /**
      * @var string $code
-     *
-     * @ORM\Column(name="code", type="string", length=20, unique=true)
      */
     protected $code;
 
     /**
      * @var string $fallback
-     *
-     * @ORM\Column(name="fallback", type="string", length=10, nullable=true)
      */
     protected $fallback;
 
     /**
      * @var Currency $defaultCurrency
-     *
-     * @ORM\ManyToOne(targetEntity="Currency", inversedBy="locales")
-     * @ORM\JoinColumn(name="default_currency_id", referencedColumnName="id")
-     *
      * TODO : must be removed
      */
     protected $defaultCurrency;
 
     /**
      * @var boolean $activated
-     *
-     * @ORM\Column(name="is_activated", type="boolean")
      */
     protected $activated = false;
 
     /**
      * @var ArrayCollection
-     *
-     * @ORM\ManyToMany(
-     *     targetEntity="Pim\Bundle\CatalogBundle\Entity\Channel",
-     *     mappedBy="locales"
-     * )
      */
     protected $channels;
 

@@ -1,0 +1,44 @@
+Pim\Bundle\CatalogBundle\Entity\GroupType:
+    type: entity
+    table: pim_catalog_group_type
+    repositoryClass: Pim\Bundle\CatalogBundle\Entity\Repository\GroupTypeRepository
+    fields:
+        id:
+            type: integer
+            scale: 0
+            length: null
+            unique: false
+            nullable: false
+            precision: 0
+            id: true
+            generator:
+                strategy: IDENTITY
+        code:
+            type: string
+            scale: 0
+            length: 50
+            unique: true
+            nullable: false
+            precision: 0
+        variant:
+            type: boolean
+            scale: 0
+            length: null
+            unique: false
+            nullable: false
+            precision: 0
+            column: is_variant
+    oneToMany:
+        groups:
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\Group
+            mappedBy: type
+        translations:
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\GroupTranslation
+            cascade:
+                - persist
+            mappedBy: foreignKey
+            inversedBy: null
+            orphanRemoval: true
+            orderBy: null
+
+    lifecycleCallbacks: {  }

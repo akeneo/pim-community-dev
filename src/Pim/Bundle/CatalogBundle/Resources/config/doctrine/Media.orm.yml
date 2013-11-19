@@ -1,0 +1,55 @@
+Pim\Bundle\CatalogBundle\Entity\Media:
+    type: entity
+    table: pim_catalog_media
+    fields:
+        id:
+            type: integer
+            scale: 0
+            length: null
+            unique: false
+            nullable: false
+            precision: 0
+            id: true
+            generator:
+                strategy: IDENTITY
+        filename:
+            type: string
+            scale: 0
+            length: 255
+            unique: true
+            nullable: true
+            precision: 0
+        filePath:
+            type: string
+            scale: 0
+            length: 255
+            unique: true
+            nullable: true
+            precision: 0
+            column: filepath
+        originalFilename:
+            type: string
+            scale: 0
+            length: null
+            unique: false
+            nullable: true
+            precision: 0
+        mimeType:
+            type: string
+            scale: 0
+            length: 255
+            unique: false
+            nullable: true
+            precision: 0
+    oneToOne:
+        value:
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\ProductValue
+            cascade: {  }
+            mappedBy: media
+            inversedBy: null
+            joinColumns:
+                value_id:
+                    referencedColumnName: id
+                    onDelete: 'SET NULL'
+            orphanRemoval: false
+    lifecycleCallbacks: {  }
