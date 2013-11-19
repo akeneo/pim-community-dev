@@ -101,7 +101,7 @@ if [ $TASK = 'db' ] || [ $TASK = 'all' ]; then
     php app/console doctrine:schema:create
     php app/console cache:clear
     echo "Loading ORO fixtures"
-    php app/console doctrine:fixtures:load -v $ORO_FIXTURES --no-interaction
+    php app/console doctrine:fixtures:load $ORO_FIXTURES --no-interaction
     echo "Loading PIM fixtures"
     php app/console doctrine:fixtures:load $PIM_FIXTURES --no-interaction --append
     php app/console oro:entity-config:init
