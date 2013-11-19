@@ -33,7 +33,7 @@ class AssociationTranslation extends AbstractTranslation
      * Change foreign key to add constraint and work with basic entity
      *
      * @ORM\ManyToOne(targetEntity="Pim\Bundle\CatalogBundle\Entity\Association", inversedBy="translations")
-     * @ORM\JoinColumn(name="foreign_key", referencedColumnName="id")
+     * @ORM\JoinColumn(name="foreign_key", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $foreignKey;
 
