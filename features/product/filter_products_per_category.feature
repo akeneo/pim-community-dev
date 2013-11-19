@@ -50,3 +50,9 @@ Feature: Filter products per category
     And I filter per unclassified category
     Then I should see products akeneo-mug
     And I should not see products purple-tshirt, green-tshirt and blue-jeans
+
+  Scenario: Successfully display all products on products page by default
+    Given I am on the products page
+    When I select the "Catalog" tree
+    Then I should see products akeneo-mug, purple-tshirt, green-tshirt and blue-jeans
+
