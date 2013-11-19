@@ -17,4 +17,27 @@ class Edit extends Form
      * @var string
      */
     protected $path = '/configuration/association/{id}/edit';
+
+    /**
+     * {@inheritdoc}
+     */
+    public function __construct($session, $pageFactory, $parameters = array())
+    {
+        parent::__construct($session, $pageFactory, $parameters);
+
+        $this->elements = array_merge(
+            $this->elements,
+            array(
+                'Updates grid' => array('css' => '#history table.grid')
+            )
+        );
+    }
+
+    /**
+     * @return NodeElement[]
+     */
+    public function getHistoryRows()
+    {
+        return $this->getElement('Updates grid')->findAll('css', 'tbody tr');
+    }
 }
