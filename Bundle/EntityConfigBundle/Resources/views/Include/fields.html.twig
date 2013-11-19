@@ -4,6 +4,8 @@
             {{ form_widget(form.option) }}
             <label class="add-on" title="{{ 'Default'|trans }}">
                 {{ form_widget(form.default) }}
+            </label>
+            <label class="add-on" title="{{ 'Priority'|trans }}">
                 {{ block('option_set_sortable') }}
             </label>
         </div>
@@ -22,7 +24,7 @@
 
 {% block option_set_sortable %}
     {% set type = type|default('hidden') %}
-    qwe
+    <i class="icon-align-justify"></i>
     <input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
 {% endblock %}
 
