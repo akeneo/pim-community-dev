@@ -21,7 +21,7 @@ class AssociationProcessor extends AbstractEntityProcessor
      *
      * @param array $item
      */
-    protected function processItem($item)
+    public function process($item)
     {
         $association = $this->getAssociation($item);
 
@@ -43,7 +43,7 @@ class AssociationProcessor extends AbstractEntityProcessor
             throw new InvalidItemException(implode(', ', $messages), $item);
 
         } else {
-            $this->entities[] = $association;
+            return $association;
         }
     }
 
