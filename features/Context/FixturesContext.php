@@ -3,7 +3,6 @@
 namespace Context;
 
 use Symfony\Component\HttpFoundation\File\File;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Util\Inflector;
 use Oro\Bundle\BatchBundle\Entity\JobInstance;
 use Oro\Bundle\UserBundle\Entity\Role;
@@ -524,12 +523,9 @@ class FixturesContext extends RawMinkContext
                 }
                 if ($data['value']) {
                     if ($value->getAttribute()->getAttributeType() === $this->attributeTypes['prices']) {
-                        foreach ($value->getPrices() as $price) {
-                            $value->removePrice($price);
-                        }
-                        $prices = $this->createPricesFromString($data['value']);
-                        foreach ($prices as $price) {
-                            $value->addPrice($price);
+                        $prices = $this->listToPrices($data['value']);
+                        foreach ($prices as $currency => $data) {
+                            $value->getPrice($currency)->setData($data);
                         }
                     } elseif ($value->getAttribute()->getAttributeType() === $this->attributeTypes['simpleselect']) {
                         $options = $value->getAttribute()->getOptions();
@@ -735,6 +731,21 @@ class FixturesContext extends RawMinkContext
                 );
             }
         }
+    }
+
+    /**
+     * @param string $locale
+     * @param string $channel
+     *
+     * @Given /^I add the "([^"]*)" locale to the "([^"]*)" channel$/
+     */
+    public function iAddTheLocaleToTheChannel($locale, $channel)
+    {
+        $channel = $this->getChannel($channel);
+
+        $localeCode = isset($this->locales[$locale]) ? $this->locales[$locale] : $locale;
+        $channel->addLocale($this->getLocale($localeCode));
+        $this->persist($channel);
     }
 
     /**
@@ -1345,9 +1356,9 @@ class FixturesContext extends RawMinkContext
 
         switch ($attribute->getAttributeType()) {
             case $this->attributeTypes['prices']:
-                $prices = $this->createPricesFromString($data);
-                foreach ($prices as $price) {
-                    $value->addPrice($price);
+                $prices = $this->listToPrices($data);
+                foreach ($prices as $currency => $data) {
+                    $value->getPrice($currency)->setData($data);
                 }
                 break;
 
@@ -1512,9 +1523,9 @@ class FixturesContext extends RawMinkContext
     /**
      * @param string $prices
      *
-     * @return ArrayCollection:Price
+     * @return array
      */
-    private function createPricesFromString($prices)
+    private function listToPrices($prices)
     {
         $prices = explode(',', $prices);
         $data = array();
@@ -1538,10 +1549,10 @@ class FixturesContext extends RawMinkContext
                 }
             );
             $currency = !empty($currency) ? reset($currency) : 'EUR';
-            $data[] = $this->createPrice($amount, $currency);
+            $data[$currency] = $amount;
         }
 
-        return new ArrayCollection($data);
+        return $data;
     }
 
     /**
