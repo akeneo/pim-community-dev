@@ -68,7 +68,7 @@ class ProductReader extends Reader
                 );
             }
 
-            $this->getCompletenessManager()->createChannelCompletenesses($channel);
+            $this->completenessManager->createChannelCompletenesses($channel);
 
             $this->query = $this->getProductRepository()
                 ->buildByChannelAndCompleteness($channel)
