@@ -128,9 +128,10 @@ class FlatProductNormalizer implements NormalizerInterface
     protected function normalizeValue($value)
     {
         $data = $value->getData();
-
         if (empty($this->fields) || isset($this->fields[$this->getFieldValue($value)])) {
-            if ($data instanceof \DateTime) {
+            if (is_bool($data)) {
+                $data = ($data) ? 1 : 0;
+            } elseif ($data instanceof \DateTime) {
                 $data = $data->format('m/d/Y');
             } elseif ($data instanceof \Pim\Bundle\CatalogBundle\Entity\AttributeOption) {
                 $data = $data->getCode();
