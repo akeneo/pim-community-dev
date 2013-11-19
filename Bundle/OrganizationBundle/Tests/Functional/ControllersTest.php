@@ -36,28 +36,31 @@ class ControllersTest extends WebTestCase
     /**
      * @return array
      */
-    public function testUpdateUsers()
+    protected function getUser()
     {
-        $this->markTestSkipped("BAP-1820");
-        $id  = null;
-        $this->client->request(
-            'GET',
-            $this->client->generate('oro_business_update_unit_user_grid')
+        $request = array(
+            "user" => array (
+                "username" => 'user_' . mt_rand(),
+                "email" => 'test_'  . mt_rand() . '@test.com',
+                "enabled" => '1',
+                "plainPassword" => '1231231q',
+                "firstName" => "firstName",
+                "lastName" => "lastName",
+                "rolesCollection" => array("3"),
+                "owner" => "1",
+            )
         );
-
+        $this->client->request('POST', $this->client->generate('oro_api_post_user'), $request);
         $result = $this->client->getResponse();
-        ToolsAPI::assertJsonResponse($result, 200);
+        ToolsAPI::assertJsonResponse($result, 201);
         $result = ToolsAPI::jsonToArray($result->getContent());
-        $result = reset($result['data']);
+        $result['request'] = $request;
         return $result;
     }
 
-    /**
-     * @depends testUpdateUsers
-     * @param array $user
-     */
-    public function testCreate($user)
+    public function testCreate()
     {
+        $user = $this->getUser();
         $crawler = $this->client->request('GET', $this->client->generate('oro_business_unit_create'));
         /** @var Form $form */
         $form = $crawler->selectButton('Save and Close')->form();
@@ -75,6 +78,8 @@ class ControllersTest extends WebTestCase
         $result = $this->client->getResponse();
         ToolsAPI::assertJsonResponse($result, 200, 'text/html; charset=UTF-8');
         $this->assertContains("Business Unit saved", $crawler->html());
+
+        return $user;
     }
 
     /**
@@ -83,19 +88,14 @@ class ControllersTest extends WebTestCase
      */
     public function testUpdate()
     {
-        $this->client->request(
-            'GET',
-            $this->client->generate('oro_business_unit_index', array('_format' =>'json'))
-            . '?business_units[_filter][name][value]=testBU',
+        $result = ToolsAPI::getEntityGrid(
+            $this->client,
+            'business-unit-grid',
             array(
-                'business_units[_filter][name][type]' => null,
-                'business_units[_pager][_page]' => 1,
-                'business_units[_pager][_per_page]' => 10,
-                'business_units[_sort_by][name]' => 'ASC'
+                'business-unit-grid[_filter][name][value]' => 'testBU'
             )
         );
 
-        $result = $this->client->getResponse();
         ToolsAPI::assertJsonResponse($result, 200);
 
         $result = ToolsAPI::jsonToArray($result->getContent());
@@ -117,20 +117,14 @@ class ControllersTest extends WebTestCase
         ToolsAPI::assertJsonResponse($result, 200, 'text/html; charset=UTF-8');
         $this->assertContains("Business Unit saved", $crawler->html());
 
-        //get id
-        $this->client->request(
-            'GET',
-            $this->client->generate('oro_business_unit_index', array('_format' =>'json'))
-            . '?business_units[_filter][name][value]=testBU_Updated',
+        $result = ToolsAPI::getEntityGrid(
+            $this->client,
+            'business-unit-grid',
             array(
-                'business_units[_filter][name][type]' => null,
-                'business_units[_pager][_page]' => 1,
-                'business_units[_pager][_per_page]' => 10,
-                'business_units[_sort_by][name]' => 'ASC'
+                'business-unit-grid[_filter][name][value]' => 'testBU_Updated'
             )
         );
 
-        $result = $this->client->getResponse();
         ToolsAPI::assertJsonResponse($result, 200);
 
         $result = ToolsAPI::jsonToArray($result->getContent());
@@ -157,21 +151,24 @@ class ControllersTest extends WebTestCase
 
     /**
      * @depends testUpdate
-     * @depends testUpdateUsers
+     * @depends testCreate
      * @param string $id
      * @param array $user
      */
     public function testViewUsers($id, $user)
     {
-        $this->client->request(
-            'GET',
-            $this->client->generate('oro_business_view_unit_user_grid', array('id' => $id))
+        $result = ToolsAPI::getEntityGrid(
+            $this->client,
+            'bu-view-users-grid',
+            array(
+                'bu-view-users-grid[business_unit_id]' => $id
+            )
         );
 
-        $result = $this->client->getResponse();
         ToolsAPI::assertJsonResponse($result, 200);
         $result = ToolsAPI::jsonToArray($result->getContent());
         $result = reset($result['data']);
-        $this->assertEquals($user['username'], $result['username']);
+
+        $this->assertEquals($user['request']['user']['username'], $result['username']);
     }
 }

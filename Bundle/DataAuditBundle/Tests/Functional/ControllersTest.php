@@ -35,8 +35,6 @@ class ControllersTest extends WebTestCase
 
     public function setUp()
     {
-        $this->markTestSkipped("BAP-1820");
-
         $this->client = static::createClient(
             array(),
             array_merge(ToolsAPI::generateBasicHeader(), array('HTTP_X-CSRF-Header' => 1))
@@ -57,7 +55,6 @@ class ControllersTest extends WebTestCase
         $form['oro_user_user_form[email]'] = $this->userData['email'];
         $form['oro_user_user_form[groups][1]'] = 2;
         $form['oro_user_user_form[rolesCollection][1]'] = true;
-        $form['oro_user_user_form[values][company][varchar]'] = $this->userData['company'];
         $form['oro_user_user_form[owner]'] = 1;
 
         $this->client->followRedirects(true);
@@ -75,36 +72,46 @@ class ControllersTest extends WebTestCase
         ToolsAPI::assertJsonResponse($result, 200, 'text/html; charset=UTF-8');
     }
 
-    public function testHistory()
+    /**
+     * @return array
+     */
+    public function testAudit()
     {
         $this->prepareFixture();
-        $this->client->request(
-            'GET',
-            $this->client->generate('oro_dataaudit_index', array('_format' =>'json')),
+
+        $result = ToolsAPI::getEntityGrid(
+            $this->client,
+            'audit-grid',
             array(
-                'audit[_filter][objectName][type]' => null,
-                'audit[_filter][objectName][value]' => $this->userData['username'],
-                'audit[_pager][_page]' => 1,
-                'audit[_pager][_per_page]' => 10,
-                'audit[_sort_by][action]' => 'ASC')
+                'audit-grid[_filter][objectName][type]' => 1,
+                'audit-grid[_filter][objectName][value]' => $this->userData['username'],
+                'audit-grid[_filter][objectClass][value]' => 'Oro\\Bundle\\CalendarBundle\\Entity\\User'
+            )
         );
 
-        $result = $this->client->getResponse();
         ToolsAPI::assertJsonResponse($result, 200);
         $result = ToolsAPI::jsonToArray($result->getContent());
         $result = reset($result['data']);
-        $this->client->request(
-            'GET',
-            $this->client->generate(
-                'oro_dataaudit_history',
-                array(
-                    'entity' => str_replace('\\', '_', $result['objectClass']),
-                    'id' => $result['objectId'],
-                    '_format' =>'json'
-                )
+
+        return $result;
+    }
+
+    /**
+     * @depends testAudit
+     * @param $result
+     */
+    public function testAuditHistory($result)
+    {
+
+        $result = ToolsAPI::getEntityGrid(
+            $this->client,
+            'audit-history-grid',
+            array(
+                'audit-history-grid[object_class]' => str_replace('\\', '_', $result['objectClass']),
+                'audit-history-grid[object_id]' => $result['objectId']
             )
         );
-        $result = $this->client->getResponse();
+
         ToolsAPI::assertJsonResponse($result, 200);
         $result = ToolsAPI::jsonToArray($result->getContent());
         $result = reset($result['data']);
