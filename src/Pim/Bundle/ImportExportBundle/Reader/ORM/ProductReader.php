@@ -121,5 +121,4 @@ class ProductReader extends Reader
     {
         return $this->productManager->getFlexibleRepository();
     }
-
 }
