@@ -625,6 +625,28 @@ class FixturesContext extends RawMinkContext
     /**
      * @param TableNode $table
      *
+     * @Then /^there should be the following attributes:$/
+     */
+    public function thereShouldBeTheFollowingAttributes(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $attribute = $this->getAttribute($data['code']);
+            $this->getEntityManager()->refresh($attribute);
+
+            assertEquals($data['label-en_US'], $attribute->getTranslation('en_US')->getLabel());
+            assertEquals($data['type'], $attribute->getAttributeType());
+            assertEquals(($data['is_translatable'] == 1), $attribute->getTranslatable());
+            assertEquals(($data['is_scopable'] == 1), $attribute->getScopable());
+            assertEquals($data['group'], $attribute->getGroup()->getCode());
+            assertEquals(($data['useable_as_grid_column'] == 1), $attribute->isUseableAsGridColumn());
+            assertEquals(($data['useable_as_grid_filter'] == 1), $attribute->isUseableAsGridFilter());
+            assertEquals(($data['unique'] == 1), $attribute->getUnique());
+        }
+    }
+
+    /**
+     * @param TableNode $table
+     *
      * @Then /^there should be the following categories:$/
      */
     public function thereShouldBeTheFollowingCategories(TableNode $table)

@@ -114,7 +114,7 @@ class AttributeProcessor extends AbstractConfigurableStepElement implements Item
      */
     protected function updateGroup(ProductAttribute $attribute, array $item)
     {
-        if (empty($item['group']) or $item['group'] == AttributeGroup::DEFAULT_GROUP_CODE) {
+        if (empty($item['group']) || $item['group'] == AttributeGroup::DEFAULT_GROUP_CODE) {
             $attribute->setGroup(null);
         } else {
             $group = $this->findAttributeGroup($item['group']);
@@ -124,6 +124,7 @@ class AttributeProcessor extends AbstractConfigurableStepElement implements Item
                     $item
                 );
             }
+            $attribute->setGroup($group);
         }
     }
 
