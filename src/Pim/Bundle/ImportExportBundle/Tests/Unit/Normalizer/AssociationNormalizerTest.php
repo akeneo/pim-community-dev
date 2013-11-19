@@ -25,22 +25,22 @@ class AssociationNormalizerTest extends NormalizerTestCase
     }
 
     /**
-     * Data provider for testing supportsNormalization method
-     * @return array
+     * {@inheritdoc}
      */
     public static function getSupportNormalizationData()
     {
         return array(
             array('Pim\Bundle\CatalogBundle\Entity\Association', 'json',  true),
+            array('Pim\Bundle\CatalogBundle\Entity\Association', 'xml', true),
             array('Pim\Bundle\CatalogBundle\Entity\Association', 'csv', false),
             array('stdClass', 'json',  false),
+            array('stdClass', 'xml', false),
             array('stdClass', 'csv', false),
         );
     }
 
     /**
-     * Data provider for testing normalize method
-     * @return array
+     * {@inheritdoc}
      */
     public static function getNormalizeData()
     {
@@ -55,8 +55,7 @@ class AssociationNormalizerTest extends NormalizerTestCase
     }
 
     /**
-     * Create a association
-     * @param array $data
+     * {@inheritdoc}
      *
      * @return Association
      */

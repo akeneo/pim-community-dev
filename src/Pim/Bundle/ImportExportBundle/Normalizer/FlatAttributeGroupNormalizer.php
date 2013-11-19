@@ -14,14 +14,9 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 class FlatAttributeGroupNormalizer extends AttributeGroupNormalizer
 {
     /**
-     * @var string[]
-     */
-    protected $supportedFormats = array('csv');
-
-    /**
      * @var array
      */
-    protected $results;
+    protected $supportedFormats = array('csv');
 
     /**
      * {@inheritdoc}

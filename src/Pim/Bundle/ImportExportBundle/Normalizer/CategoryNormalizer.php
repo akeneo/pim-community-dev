@@ -15,42 +15,24 @@ use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 class CategoryNormalizer implements NormalizerInterface
 {
     /**
-     * @var array()
+     * @var array
      */
     protected $supportedFormats = array('json', 'xml');
 
     /**
-     * @var array()
-     */
-    protected $results;
-
-    /**
-     * Transforms an object into a flat array
-     *
-     * @param object $object
-     * @param string $format
-     * @param array  $context
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function normalize($object, $format = null, array $context = array())
     {
-        $this->results = array(
+        return array(
             'code'    => $object->getCode(),
             'parent'  => $object->getParent() ? $object->getParent()->getCode() : '',
             'dynamic' => (string) $object->isDynamic(),
-        ) + $this->getNormalizedLabelsArray($object);
-
-        return $this->results;
+        ) + $this->normalizeLabel($object);
     }
 
     /**
-     * Indicates whether this normalizer can normalize the given data
-     *
-     * @param mixed  $data
-     * @param string $format
-     *
-     * @return boolean
+     * {@inheritdoc}
      */
     public function supportsNormalization($data, $format = null)
     {
@@ -64,7 +46,7 @@ class CategoryNormalizer implements NormalizerInterface
      *
      * @return array
      */
-    protected function getNormalizedLabelsArray(CategoryInterface $category)
+    protected function normalizeLabel(CategoryInterface $category)
     {
         $labels = array();
         foreach ($category->getTranslations() as $translation) {

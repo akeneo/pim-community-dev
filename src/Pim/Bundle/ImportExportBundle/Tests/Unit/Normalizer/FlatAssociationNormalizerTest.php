@@ -24,22 +24,22 @@ class FlatAssociationNormalizerTest extends AssociationNormalizerTest
     }
 
     /**
-     * Data provider for testing supportsNormalization method
-     * @return array
+     * {@inheritdoc}
      */
     public static function getSupportNormalizationData()
     {
         return array(
-            array('Pim\Bundle\CatalogBundle\Entity\Association', 'csv',  true),
+            array('Pim\Bundle\CatalogBundle\Entity\Association', 'csv', true),
+            array('Pim\Bundle\CatalogBundle\Entity\Association', 'xml', false),
             array('Pim\Bundle\CatalogBundle\Entity\Association', 'json', false),
-            array('stdClass', 'csv',  false),
+            array('stdClass', 'csv', false),
+            array('stdClass', 'xml', false),
             array('stdClass', 'json', false),
         );
     }
 
     /**
-     * Data provider for testing normalize method
-     * @return array
+     * {@inheritdoc}
      */
     public static function getNormalizeData()
     {

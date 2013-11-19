@@ -21,7 +21,7 @@ class FlatGroupNormalizer extends GroupNormalizer
     /**
      * {@inheritdoc}
      */
-    protected function getNormalizedLabelsArray(Group $group)
+    protected function normalizeLabel(Group $group)
     {
         $values = array();
         foreach ($group->getTranslations() as $translation) {
@@ -32,11 +32,7 @@ class FlatGroupNormalizer extends GroupNormalizer
     }
 
     /**
-     * Normalize the attributes
-     *
-     * @param Group $group
-     *
-     * @return array
+     * {@inheritdoc}
      */
     protected function normalizeAttributes(Group $group)
     {

@@ -15,41 +15,26 @@ use Pim\Bundle\CatalogBundle\Entity\Group;
 class GroupNormalizer implements NormalizerInterface
 {
     /**
-     * @var array()
+     * @var array
      */
     protected $supportedFormats = array('json', 'xml');
 
     /**
-     * Transforms an object into a flat array
-     *
-     * @param object $object
-     * @param string $format
-     * @param array  $context
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function normalize($object, $format = null, array $context = array())
     {
         $results = array(
             'code' => $object->getCode(),
             'type' => $object->getType()->getCode(),
-        );
-        $results = array_merge(
-            $results,
-            $this->getNormalizedLabelsArray($object)
-        );
-        $results['attributes']= $this->normalizeAttributes($object);
+            'attributes' => $this->normalizeAttributes($object)
+        ) + $this->normalizeLabel($object);
 
         return $results;
     }
 
     /**
-     * Indicates whether this normalizer can normalize the given data
-     *
-     * @param mixed  $data
-     * @param string $format
-     *
-     * @return boolean
+     * {@inheritdoc}
      */
     public function supportsNormalization($data, $format = null)
     {
@@ -63,7 +48,7 @@ class GroupNormalizer implements NormalizerInterface
      *
      * @return array
      */
-    protected function getNormalizedLabelsArray(Group $group)
+    protected function normalizeLabel(Group $group)
     {
         $labels = array();
         foreach ($group->getTranslations() as $group) {

@@ -16,7 +16,7 @@ use Pim\Bundle\CatalogBundle\Entity\Channel;
 class ChannelNormalizer implements NormalizerInterface
 {
     /**
-     * @var array()
+     * @var array
      */
     protected $supportedFormats = array('json', 'xml');
 

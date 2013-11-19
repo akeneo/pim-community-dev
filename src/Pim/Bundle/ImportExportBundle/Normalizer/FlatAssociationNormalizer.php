@@ -21,7 +21,7 @@ class FlatAssociationNormalizer extends AssociationNormalizer
     /**
      * {@inheritdoc}
      */
-    protected function getNormalizedLabelsArray(Association $association)
+    protected function normalizeLabel(Association $association)
     {
         $values = array();
         foreach ($association->getTranslations() as $translation) {

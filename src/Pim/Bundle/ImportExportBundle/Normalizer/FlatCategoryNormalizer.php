@@ -21,7 +21,7 @@ class FlatCategoryNormalizer extends CategoryNormalizer
     /**
      * {@inheritdoc}
      */
-    protected function getNormalizedLabelsArray(CategoryInterface $category)
+    protected function normalizeLabel(CategoryInterface $category)
     {
         $values = array();
         foreach ($category->getTranslations() as $translation) {

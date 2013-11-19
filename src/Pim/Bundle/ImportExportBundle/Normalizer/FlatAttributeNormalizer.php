@@ -26,29 +26,7 @@ class FlatAttributeNormalizer extends AttributeNormalizer
     protected $supportedFormats = array('csv');
 
     /**
-     * @var array
-     */
-    protected $results;
-
-    /**
-     * Indicates whether this normalizer can normalize the given data
-     *
-     * @param mixed  $data
-     * @param string $format
-     *
-     * @return boolean
-     */
-    public function supportsNormalization($data, $format = null)
-    {
-        return $data instanceof ProductAttribute && in_array($format, $this->supportedFormats);
-    }
-
-    /**
-     * Normalize the label
-     *
-     * @param ProductAttribute $attribute
-     *
-     * @return array
+     * {@inheritdoc}
      */
     protected function normalizeLabel(ProductAttribute $attribute)
     {
@@ -61,11 +39,7 @@ class FlatAttributeNormalizer extends AttributeNormalizer
     }
 
     /**
-     * Normalize available locales
-     *
-     * @param ProductAttribute $attribute
-     *
-     * @return string
+     * {@inheritdoc}
      */
     protected function normalizeAvailableLocales($attribute)
     {
@@ -84,11 +58,7 @@ class FlatAttributeNormalizer extends AttributeNormalizer
     }
 
     /**
-     * Normalize options
-     *
-     * @param ProductAttribute $attribute
-     *
-     * @return string
+     * {@inheritdoc}
      */
     protected function normalizeOptions($attribute)
     {
@@ -114,11 +84,7 @@ class FlatAttributeNormalizer extends AttributeNormalizer
     }
 
     /**
-     * Normalize default options
-     *
-     * @param ProductAttribute $attribute
-     *
-     * @return string
+     * {@inheritdoc}
      */
     protected function normalizeDefaultOptions($attribute)
     {

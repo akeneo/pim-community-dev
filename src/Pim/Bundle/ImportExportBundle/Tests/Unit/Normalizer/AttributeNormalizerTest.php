@@ -28,23 +28,22 @@ class AttributeNormalizerTest extends NormalizerTestCase
     }
 
     /**
-     * Data provider for testing supportsNormalization method
-     * @return array
+     * {@inheritdoc}
      */
     public static function getSupportNormalizationData()
     {
         return array(
-            array('Pim\Bundle\CatalogBundle\Entity\ProductAttribute', 'json',  true),
+            array('Pim\Bundle\CatalogBundle\Entity\ProductAttribute', 'json', true),
+            array('Pim\Bundle\CatalogBundle\Entity\ProductAttribute', 'xml', true),
             array('Pim\Bundle\CatalogBundle\Entity\ProductAttribute', 'csv', false),
-            array('stdClass',                                         'json',  false),
-            array('stdClass',                                         'csv', false),
+            array('stdClass', 'json', false),
+            array('stdClass', 'xml', false),
+            array('stdClass', 'csv', false),
         );
     }
 
     /**
-     * Test normalize method
-     * @param array $data
-     *
+     * {@inheritdoc}
      * @dataProvider getNormalizeData
      */
     public function testNormalize(array $data)
@@ -65,8 +64,7 @@ class AttributeNormalizerTest extends NormalizerTestCase
     }
 
     /**
-     * Data provider for testing normalize method
-     * @return array
+     * {@inheritdoc}
      */
     public static function getNormalizeData()
     {
@@ -146,8 +144,7 @@ class AttributeNormalizerTest extends NormalizerTestCase
     }
 
     /**
-     * Create a attribute
-     * @param array $data
+     * {@inheritdoc}
      *
      * @return ProductAttribute
      */

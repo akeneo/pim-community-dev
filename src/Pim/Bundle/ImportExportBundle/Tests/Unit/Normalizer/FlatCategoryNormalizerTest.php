@@ -24,22 +24,25 @@ class FlatCategoryNormalizerTest extends CategoryNormalizerTest
     }
 
     /**
-     * Data provider for testing supportsNormalization method
-     * @return array
+     * {@inheritdoc}
      */
     public static function getSupportNormalizationData()
     {
         return array(
-            array('Pim\Bundle\CatalogBundle\Model\CategoryInterface', 'csv',  true),
+            array('Pim\Bundle\CatalogBundle\Model\CategoryInterface', 'csv', true),
+            array('Pim\Bundle\CatalogBundle\Model\CategoryInterface', 'xml', false),
             array('Pim\Bundle\CatalogBundle\Model\CategoryInterface', 'json', false),
-            array('stdClass',                                         'csv',  false),
-            array('stdClass',                                         'json', false),
+            array('Pim\Bundle\CatalogBundle\Entity\Category', 'csv', true),
+            array('Pim\Bundle\CatalogBundle\Entity\Category', 'xml', false),
+            array('Pim\Bundle\CatalogBundle\Entity\Category', 'json', false),
+            array('stdClass', 'csv', false),
+            array('stdClass', 'xml', false),
+            array('stdClass', 'json', false),
         );
     }
 
     /**
-     * Data provider for testing normalize method
-     * @return array
+     * {@inheritdoc}
      */
     public static function getNormalizeData()
     {
@@ -66,9 +69,7 @@ class FlatCategoryNormalizerTest extends CategoryNormalizerTest
     }
 
     /**
-     * @param array $data
-     *
-     * @return array
+     * {@inheritdoc}
      */
     protected function getLabels($data)
     {

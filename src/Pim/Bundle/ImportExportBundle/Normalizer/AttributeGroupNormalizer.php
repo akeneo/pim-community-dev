@@ -2,9 +2,8 @@
 
 namespace Pim\Bundle\ImportExportBundle\Normalizer;
 
-use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
-
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 
 /**
  * Attribute group normalizer
@@ -16,27 +15,20 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class AttributeGroupNormalizer implements NormalizerInterface
 {
     /**
-     * @var string[]
+     * @var array
      */
     protected $supportedFormats = array('json', 'xml');
 
     /**
-     * @var array
-     */
-    protected $results;
-
-    /**
      * {@inheritdoc}
      */
-    public function normalize($group, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = array())
     {
-        $this->results = array(
-            'code'       => $group->getCode(),
-            'sortOrder'  => $group->getSortOrder(),
-            'attributes' => $this->normalizeAttributes($group)
-        ) + $this->normalizeLabel($group);
-
-        return $this->results;
+        return array(
+            'code'       => $object->getCode(),
+            'sortOrder'  => $object->getSortOrder(),
+            'attributes' => $this->normalizeAttributes($object)
+        ) + $this->normalizeLabel($object);
     }
 
     /**

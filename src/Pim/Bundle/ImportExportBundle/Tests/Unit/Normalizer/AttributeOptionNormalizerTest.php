@@ -14,58 +14,34 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeOptionNormalizerTest extends \PHPUnit_Framework_TestCase
+class AttributeOptionNormalizerTest extends NormalizerTestCase
 {
-    /**
-     * @var AttributeOptionNormalizer
-     */
-    protected $normalizer;
-
-    /**
-     * @var string
-     */
-    protected $format = 'json';
-
     /**
      * {@inheritdoc}
      */
     protected function setUp()
     {
         $this->normalizer = new AttributeOptionNormalizer();
+        $this->format     = 'json';
     }
 
     /**
-     * Data provider for testing supportsNormalization method
-     * @return array
+     * {@inheritdoc}
      */
     public static function getSupportNormalizationData()
     {
         return array(
             array('Pim\Bundle\CatalogBundle\Entity\AttributeOption', 'json',  true),
+            array('Pim\Bundle\CatalogBundle\Entity\AttributeOption', 'xml', true),
             array('Pim\Bundle\CatalogBundle\Entity\AttributeOption', 'csv', false),
             array('stdClass', 'json',  false),
+            array('stdClass', 'xml',  false),
             array('stdClass', 'csv', false),
         );
     }
 
     /**
-     * Test supportsNormalization method
-     * @param mixed   $class
-     * @param string  $format
-     * @param boolean $isSupported
-     *
-     * @dataProvider getSupportNormalizationData
-     */
-    public function testSupportNormalization($class, $format, $isSupported)
-    {
-        $data = $this->getMock($class);
-
-        $this->assertSame($isSupported, $this->normalizer->supportsNormalization($data, $format));
-    }
-
-    /**
-     * Data provider for testing normalize method
-     * @return array
+     * {@inheritdoc}
      */
     public static function getNormalizeData()
     {
@@ -82,27 +58,11 @@ class AttributeOptionNormalizerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test normalize method
-     * @param array $expectedResult
-     *
-     * @dataProvider getNormalizeData
-     */
-    public function testNormalize(array $expectedResult)
-    {
-        $option = $this->createAttributeOption($expectedResult);
-        $this->assertEquals(
-            $expectedResult,
-            $this->normalizer->normalize($option, $this->format)
-        );
-    }
-
-    /**
-     * Create an attribute option
-     * @param array $data
+     * {@inheritdoc}
      *
      * @return AttributeOption
      */
-    protected function createAttributeOption(array $data)
+    protected function createEntity(array $data)
     {
         $attribute = new ProductAttribute();
         $attribute->setCode($data['attribute']);

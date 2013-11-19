@@ -24,22 +24,22 @@ class FlatGroupNormalizerTest extends GroupNormalizerTest
     }
 
     /**
-     * Data provider for testing supportsNormalization method
-     * @return array
+     * {@inheritdoc}
      */
     public static function getSupportNormalizationData()
     {
         return array(
-            array('Pim\Bundle\CatalogBundle\Entity\Group', 'csv',  true),
+            array('Pim\Bundle\CatalogBundle\Entity\Group', 'csv', true),
+            array('Pim\Bundle\CatalogBundle\Entity\Group', 'xml', false),
             array('Pim\Bundle\CatalogBundle\Entity\Group', 'json', false),
-            array('stdClass',                              'csv',  false),
-            array('stdClass',                              'json', false),
+            array('stdClass', 'csv', false),
+            array('stdClass', 'xml', false),
+            array('stdClass', 'json', false),
         );
     }
 
     /**
-     * Data provider for testing normalize method
-     * @return array
+     * {@inheritdoc}
      */
     public static function getNormalizeData()
     {
@@ -64,9 +64,7 @@ class FlatGroupNormalizerTest extends GroupNormalizerTest
     }
 
     /**
-     * @param array $data
-     *
-     * @return array
+     * {@inheritdoc}
      */
     protected function getLabels($data)
     {
@@ -77,9 +75,7 @@ class FlatGroupNormalizerTest extends GroupNormalizerTest
     }
 
     /**
-     * @param array $data
-     *
-     * @return array
+     * {@inheritdoc}
      */
     protected function getAttributes($data)
     {

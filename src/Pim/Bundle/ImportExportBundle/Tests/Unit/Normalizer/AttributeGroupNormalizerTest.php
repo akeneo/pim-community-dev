@@ -26,23 +26,22 @@ class AttributeGroupNormalizerTest extends NormalizerTestCase
     }
 
     /**
-     * Data provider for testing supportsNormalization method
-     * @return array
+     * {@inheritdoc}
      */
     public static function getSupportNormalizationData()
     {
         return array(
-            array('Pim\Bundle\CatalogBundle\Entity\AttributeGroup', 'json',  true),
+            array('Pim\Bundle\CatalogBundle\Entity\AttributeGroup', 'json', true),
+            array('Pim\Bundle\CatalogBundle\Entity\AttributeGroup', 'xml', true),
             array('Pim\Bundle\CatalogBundle\Entity\AttributeGroup', 'csv', false),
-            array('stdClass', 'json',  false),
+            array('stdClass', 'json', false),
+            array('stdClass', 'xml', false),
             array('stdClass', 'csv', false),
         );
     }
 
     /**
-     * Data provider for testing normalize method
-     * @return array
-     * @static
+     * {@inheritdoc}
      */
     public static function getNormalizeData()
     {
@@ -59,7 +58,7 @@ class AttributeGroupNormalizerTest extends NormalizerTestCase
     }
 
     /**
-     * Create attribute group
+     * {@inheritdoc}
      *
      * @return AttributeGroup
      */
