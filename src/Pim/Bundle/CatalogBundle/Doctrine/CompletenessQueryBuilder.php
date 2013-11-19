@@ -231,7 +231,7 @@ SQL;
         }
 
         switch ($mapping['type']) {
-            case ClassMetadataInfo::MANY_TO_MANY :
+            case ClassMetadataInfo::MANY_TO_MANY:
                 return array(
                     sprintf(
                         '%s.%s',
@@ -240,10 +240,10 @@ SQL;
                     )
                 );
 
-            case ClassMetadataInfo::MANY_TO_ONE :
+            case ClassMetadataInfo::MANY_TO_ONE:
                 return array(sprintf('v.%s', $mapping['joinColumns'][0]['name']));
 
-            case ClassMetadataInfo::ONE_TO_MANY :
+            case ClassMetadataInfo::ONE_TO_MANY:
                 return $this->getClassContentFields($mapping['targetEntity'], $prefix);
 
             default:
@@ -311,7 +311,7 @@ SQL;
         }
 
         switch ($mapping['type']) {
-            case ClassMetadataInfo::MANY_TO_MANY :
+            case ClassMetadataInfo::MANY_TO_MANY:
                 return array(
                     sprintf(
                         'LEFT JOIN %s %s ON %s.%s=v.id ',
@@ -322,7 +322,7 @@ SQL;
                     )
                 );
 
-            case ClassMetadataInfo::ONE_TO_MANY :
+            case ClassMetadataInfo::ONE_TO_MANY:
                 $relatedMetadata = $this->getClassMetadata($mapping['targetEntity']);
                 $relatedMapping = $relatedMetadata->getAssociationMapping($mapping['mappedBy']);
 
@@ -336,7 +336,7 @@ SQL;
                     )
                 );
 
-            default :
+            default:
                 return array();
         }
     }
