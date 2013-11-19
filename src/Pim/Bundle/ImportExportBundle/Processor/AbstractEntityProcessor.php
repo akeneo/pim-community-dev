@@ -38,6 +38,11 @@ abstract class AbstractEntityProcessor extends AbstractConfigurableStepElement i
     protected $validator;
 
     /**
+     * @var array
+     */
+    protected $identifiers;
+
+    /**
      * Constructor
      *
      * @param EntityManager      $entityManager
@@ -47,6 +52,7 @@ abstract class AbstractEntityProcessor extends AbstractConfigurableStepElement i
     {
         $this->entityManager = $entityManager;
         $this->validator     = $validator;
+        $this->identifiers   = array();
     }
 
     /**
@@ -58,7 +64,7 @@ abstract class AbstractEntityProcessor extends AbstractConfigurableStepElement i
     }
 
     /**
-     * Validate te entity
+     * Validate the entity
      *
      * @param mixed $entity
      * @param array $item
@@ -76,5 +82,26 @@ abstract class AbstractEntityProcessor extends AbstractConfigurableStepElement i
 
             throw new InvalidItemException(implode(', ', $messages), $item);
         }
+
+        $identifier = $this->getIdentifier($entity);
+        if (in_array($identifier, $this->identifiers)) {
+            throw new InvalidItemException(
+                sprintf('Twin ! the entity "%s" has already been processed', $identifier),
+                $item
+            );
+        }
+        $this->identifiers[]= $identifier;
+    }
+
+    /**
+     * Get entity identifier
+     *
+     * @param object $entity
+     *
+     * @return string
+     */
+    protected function getIdentifier($entity)
+    {
+        return $entity->getCode();
     }
 }

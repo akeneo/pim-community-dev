@@ -62,7 +62,7 @@ class AttributeOptionProcessor extends AbstractEntityProcessor
      *
      * @return AttributeOption
      */
-    private function getOption(array $item)
+    protected function getOption(array $item)
     {
         $attribute = $this->findAttribute($item['attribute']);
         if (!$attribute) {
@@ -95,7 +95,7 @@ class AttributeOptionProcessor extends AbstractEntityProcessor
      *
      * @return ProductAttribute|null
      */
-    private function findAttribute($code)
+    protected function findAttribute($code)
     {
         return $this
             ->entityManager
@@ -111,11 +111,19 @@ class AttributeOptionProcessor extends AbstractEntityProcessor
      *
      * @return AttributeOption|null
      */
-    private function findOption(ProductAttribute $attribute, $code)
+    protected function findOption(ProductAttribute $attribute, $code)
     {
         return $this
             ->entityManager
             ->getRepository('PimCatalogBundle:AttributeOption')
             ->findOneBy(array('attribute' => $attribute->getId(), 'code' => $code));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getIdentifier($entity)
+    {
+        return $entity->getAttribute()->getCode().'-'.$entity->getCode();
     }
 }
