@@ -3,7 +3,6 @@
 namespace Pim\Bundle\ImportExportBundle\Processor;
 
 use Symfony\Component\Validator\ValidatorInterface;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Inflector\Inflector;
 use Oro\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
@@ -64,6 +63,8 @@ class AttributeProcessor extends AbstractConfigurableStepElement implements Item
      *
      * @param array $item
      *
+     * @return ProductAttribute
+     *
      * @throws InvalidItemException
      */
     public function process($item)
@@ -82,7 +83,6 @@ class AttributeProcessor extends AbstractConfigurableStepElement implements Item
             throw new InvalidItemException(implode(', ', $messages), $item);
 
         } else {
-
             return $attribute;
         }
     }

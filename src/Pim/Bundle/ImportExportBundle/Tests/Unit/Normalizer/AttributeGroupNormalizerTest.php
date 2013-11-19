@@ -4,7 +4,6 @@ namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Normalizer;
 
 use Pim\Bundle\ImportExportBundle\Normalizer\AttributeGroupNormalizer;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
-use Pim\Bundle\CatalogBundle\Entity\AttributeGroupTranslation;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 
 /**

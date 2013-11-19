@@ -5,7 +5,6 @@ namespace Pim\Bundle\ImportExportBundle\Processor;
 use Symfony\Component\Validator\ValidatorInterface;
 
 use Doctrine\ORM\EntityManager;
-use Doctrine\Common\Collections\ArrayCollection;
 
 use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Oro\Bundle\BatchBundle\Item\ItemProcessorInterface;

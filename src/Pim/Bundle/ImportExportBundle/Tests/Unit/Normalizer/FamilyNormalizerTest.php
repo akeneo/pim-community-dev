@@ -6,7 +6,6 @@ use Pim\Bundle\CatalogBundle\Entity\Channel;
 
 use Pim\Bundle\ImportExportBundle\Normalizer\FamilyNormalizer;
 use Pim\Bundle\CatalogBundle\Entity\Family;
-use Pim\Bundle\CatalogBundle\Entity\FamilyTranslation;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
 
@@ -118,7 +117,8 @@ class FamilyNormalizerTest extends NormalizerTestCase
     }
 
     /**
-     * @param array  $data
+     * @param array $data
+     *
      * @return mixed
      */
     protected function getLabels($data)
