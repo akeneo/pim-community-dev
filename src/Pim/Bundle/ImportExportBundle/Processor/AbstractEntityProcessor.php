@@ -31,18 +31,11 @@ abstract class AbstractEntityProcessor extends AbstractConfigurableStepElement i
     protected $entityManager;
 
     /**
-     * Property for storing data during execution
+     * Validator
      *
-     * @var ArrayCollection
+     * @var ValidatorInterface
      */
-    protected $data;
-
-    /**
-     * Property for storing valid entities during execution
-     *
-     * @var ArrayCollection
-     */
-    protected $entities;
+    protected $validator;
 
     /**
      * Constructor
@@ -65,30 +58,4 @@ abstract class AbstractEntityProcessor extends AbstractConfigurableStepElement i
     {
         return array();
     }
-
-    /**
-     * Receives an array of entities and processes them
-     *
-     * @param mixed $data Data to be processed
-     *
-     * @return object[]
-     */
-    public function process($data)
-    {
-        $this->data = new ArrayCollection($data);
-        $this->entities = new ArrayCollection();
-
-        foreach ($this->data as $item) {
-            $this->processItem($item);
-        }
-
-        return $this->entities->toArray();
-    }
-
-    /**
-     * If the entity is valid, it is stored into the entities property
-     *
-     * @param array $item
-     */
-    abstract protected function processItem($item);
 }
