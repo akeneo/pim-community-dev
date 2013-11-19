@@ -6,7 +6,7 @@ jobs:
         type:      import
         configuration:
             reader:
-                filePath:      /product.csv
+                filePath:      /tmp/product.csv
                 uploadAllowed: true
                 delimiter:     ;
                 enclosure:     '"'
