@@ -110,16 +110,10 @@ class CompletenessQueryBuilder
                             AND (v.scope_code = c.code OR v.scope_code IS NULL)
                             AND (v.locale_code = l.code OR v.locale_code IS NULL)
                             AND v.entity_id = p.id
-                        JOIN (
-                            SELECT p.id as product_id, ch.id as channel_id FROM pim_catalog_channel ch
-                                JOIN %product_interface% p
-                                LEFT JOIN pim_catalog_completeness c
-                                    ON c.product_id = p.id
-                                    AND c.channel_id = ch.id
-                                    WHERE c.id IS NULL
-                        ) as pending_product ON pending_product.product_id = p.id AND pending_product.channel_id = c.id
+                        LEFT JOIN pim_catalog_completeness co ON co.product_id = p.id AND co.channel_id = c.id
+                            AND co.locale_id = l.id
                         %product_value_joins%
-                    WHERE %product_value_conditions% AND r.required = true
+                    WHERE (%product_value_conditions%) AND r.required = true AND co.id IS NULL
 SQL;
     }
 
