@@ -283,7 +283,8 @@
 {% macro scrollBlock(blockId, title, subblocks, isForm) %}
     {% set cols = subblocks|length %}
     <div class="usser-row">
-        <h4 id="{{ blockId }}" class="scrollspy-title">{{ title|trans }}</h4>
+        <h4 class="scrollspy-title">{{ title|trans }}</h4>
+        <div id="{{ blockId }}" class="scrollspy-nav-target"></div>
         <div class="row-fluid {% if cols > 1 %}row-fluid-divider{% endif %}">
             {% if isForm is defined and isForm == true %}
                 <fieldset class="form-horizontal">
