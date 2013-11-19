@@ -3,6 +3,7 @@
 namespace Oro\Bundle\InstallerBundle\Process\Step;
 
 use Sylius\Bundle\FlowBundle\Process\Context\ProcessContextInterface;
+use Oro\Bundle\InstallerBundle\InstallerEvents;
 
 class InstallationStep extends AbstractStep
 {
@@ -30,8 +31,9 @@ class InstallationStep extends AbstractStep
             case 'requirejs':
                 return $this->handleAjaxAction('oro:requirejs:build');
             case 'finish':
+                $this->get('event_dispatcher')->dispatch(InstallerEvents::FINISH);
                 // everything was fine - update installed flag in parameters.yml
-                $dumper = $this->container->get('oro_installer.yaml_persister');
+                $dumper = $this->get('oro_installer.yaml_persister');
                 $params = $dumper->parse();
                 $params['system']['installed'] = date('c');
                 $dumper->dump($params);
