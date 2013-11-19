@@ -32,11 +32,7 @@ class FlatGroupNormalizer extends GroupNormalizer
     }
 
     /**
-     * Normalize the attributes
-     *
-     * @param Group $group
-     *
-     * @return array
+     * {@inheritdoc}
      */
     protected function normalizeAttributes(Group $group)
     {

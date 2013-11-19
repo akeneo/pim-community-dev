@@ -27,39 +27,32 @@ class AttributeNormalizer implements NormalizerInterface
     protected $supportedFormats = array('json', 'xml');
 
     /**
-     * Transforms an object into a flat array
-     *
-     * @param ProductAttribute $attribute
-     * @param string           $format
-     * @param array            $context
-     *
-     * @return array
+     * {@inheritdoc}
      */
-    public function normalize($attribute, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = array())
     {
         $results = array(
-            'type' => $attribute->getAttributeType(),
-            'code' => $attribute->getCode()
-        );
-        $results = array_merge($results, $this->normalizeLabel($attribute));
+            'type' => $object->getAttributeType(),
+            'code' => $object->getCode()
+        ) + $this->normalizeLabel($object);
+
         $results = array_merge(
             $results,
             array(
-                'group'                   => $attribute->getVirtualGroup()->getCode(),
-                'unique'                  => (int) $attribute->getUnique(),
-                'useable_as_grid_column'  => (int) $attribute->isUseableAsGridColumn(),
-                'useable_as_grid_filter'  => (int) $attribute->isUseableAsGridFilter(),
+                'group'                   => $object->getVirtualGroup()->getCode(),
+                'unique'                  => (int) $object->getUnique(),
+                'useable_as_grid_column'  => (int) $object->isUseableAsGridColumn(),
+                'useable_as_grid_filter'  => (int) $object->isUseableAsGridFilter(),
             )
         );
         if (isset($context['versioning'])) {
-            $results = array_merge($results, $this->getVersionedData($attribute));
-
+            $results = array_merge($results, $this->getVersionedData($object));
         } else {
             $results = array_merge(
                 $results,
                 array(
-                    'is_translatable' => (int) $attribute->getTranslatable(),
-                    'is_scopable'     => (int) $attribute->getScopable(),
+                    'is_translatable' => (int) $object->getTranslatable(),
+                    'is_scopable'     => (int) $object->getScopable(),
                 )
             );
         }
@@ -68,12 +61,7 @@ class AttributeNormalizer implements NormalizerInterface
     }
 
     /**
-     * Indicates whether this normalizer can normalize the given data
-     *
-     * @param mixed  $data
-     * @param string $format
-     *
-     * @return boolean
+     * {@inheritdoc}
      */
     public function supportsNormalization($data, $format = null)
     {

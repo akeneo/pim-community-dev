@@ -20,37 +20,19 @@ class CategoryNormalizer implements NormalizerInterface
     protected $supportedFormats = array('json', 'xml');
 
     /**
-     * @var array
-     */
-    protected $results;
-
-    /**
-     * Transforms an object into a flat array
-     *
-     * @param object $object
-     * @param string $format
-     * @param array  $context
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function normalize($object, $format = null, array $context = array())
     {
-        $this->results = array(
+        return array(
             'code'    => $object->getCode(),
             'parent'  => $object->getParent() ? $object->getParent()->getCode() : '',
             'dynamic' => (string) $object->isDynamic(),
         ) + $this->normalizeLabel($object);
-
-        return $this->results;
     }
 
     /**
-     * Indicates whether this normalizer can normalize the given data
-     *
-     * @param mixed  $data
-     * @param string $format
-     *
-     * @return boolean
+     * {@inheritdoc}
      */
     public function supportsNormalization($data, $format = null)
     {

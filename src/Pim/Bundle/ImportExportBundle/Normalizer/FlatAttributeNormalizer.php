@@ -26,11 +26,7 @@ class FlatAttributeNormalizer extends AttributeNormalizer
     protected $supportedFormats = array('csv');
 
     /**
-     * Normalize the label
-     *
-     * @param ProductAttribute $attribute
-     *
-     * @return array
+     * {@inheritdoc}
      */
     protected function normalizeLabel(ProductAttribute $attribute)
     {
@@ -43,11 +39,7 @@ class FlatAttributeNormalizer extends AttributeNormalizer
     }
 
     /**
-     * Normalize available locales
-     *
-     * @param ProductAttribute $attribute
-     *
-     * @return string
+     * {@inheritdoc}
      */
     protected function normalizeAvailableLocales($attribute)
     {
@@ -66,11 +58,7 @@ class FlatAttributeNormalizer extends AttributeNormalizer
     }
 
     /**
-     * Normalize options
-     *
-     * @param ProductAttribute $attribute
-     *
-     * @return string
+     * {@inheritdoc}
      */
     protected function normalizeOptions($attribute)
     {
@@ -96,11 +84,7 @@ class FlatAttributeNormalizer extends AttributeNormalizer
     }
 
     /**
-     * Normalize default options
-     *
-     * @param ProductAttribute $attribute
-     *
-     * @return string
+     * {@inheritdoc}
      */
     protected function normalizeDefaultOptions($attribute)
     {

@@ -14,16 +14,12 @@ use Oro\Bundle\BatchBundle\Entity\JobInstance;
 class FlatJobInstanceNormalizer extends JobInstanceNormalizer
 {
     /**
-     * @var array()
+     * @var array
      */
     protected $supportedFormats = array('csv');
 
     /**
-     * Get normalized configuration
-     *
-     * @param JobInstance $job
-     *
-     * @return mixed
+     * {@inheritdoc}
      */
     protected function normalizeConfiguration(JobInstance $job)
     {

@@ -19,11 +19,6 @@ class FlatFamilyNormalizer extends FamilyNormalizer
     protected $supportedFormats = array('csv');
 
     /**
-     * @var array
-     */
-    protected $results;
-
-    /**
      * {@inheritdoc}
      */
     protected function normalizeLabel(Family $family)
@@ -37,11 +32,7 @@ class FlatFamilyNormalizer extends FamilyNormalizer
     }
 
     /**
-     * Normalize the attributes
-     *
-     * @param Family $family
-     *
-     * @return string
+     * {@inheritdoc}
      */
     protected function normalizeAttributes(Family $family)
     {
@@ -51,11 +42,7 @@ class FlatFamilyNormalizer extends FamilyNormalizer
     }
 
     /**
-     * Normalize the requirements
-     *
-     * @param Family $family
-     *
-     * @return string
+     * {@inheritdoc}
      */
     protected function normalizeRequirements(Family $family)
     {

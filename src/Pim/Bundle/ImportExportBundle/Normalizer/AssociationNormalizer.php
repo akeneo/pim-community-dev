@@ -20,28 +20,17 @@ class AssociationNormalizer implements NormalizerInterface
     protected $supportedFormats = array('json', 'xml');
 
     /**
-     * Transforms an object into a flat array
-     *
-     * @param object $association
-     * @param string $format
-     * @param array  $context
-     *
-     * @return array
+     * {@inheritdoc}
      */
-    public function normalize($association, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = array())
     {
         return array(
-            'code'  => $association->getCode()
-        ) + $this->normalizeLabel($association);
+            'code'  => $object->getCode()
+        ) + $this->normalizeLabel($object);
     }
 
     /**
-     * Indicates whether this normalizer can normalize the given data
-     *
-     * @param mixed  $data
-     * @param string $format
-     *
-     * @return boolean
+     * {@inheritdoc}
      */
     public function supportsNormalization($data, $format = null)
     {
