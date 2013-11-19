@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Processor;
 
+use Oro\Bundle\BatchBundle\Item\InvalidItemException;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\GroupTranslation;
 use Pim\Bundle\ImportExportBundle\Processor\GroupProcessor;
@@ -80,6 +81,7 @@ class GroupProcessorTest extends AbstractProcessorTestCase
 
     /**
      * Test the process method returning validation errors
+     * @expectedException Oro\Bundle\BatchBundle\Item\InvalidItemException
      */
     public function testInvalidProcess()
     {
@@ -101,11 +103,6 @@ class GroupProcessorTest extends AbstractProcessorTestCase
 
         $withViolations    = $this->getConstraintViolationListMock(array('The foo error message'));
         $withoutViolations = $this->getConstraintViolationListMock();
-
-        $this->stepExecution
-            ->expects($this->exactly(1))
-            ->method('addError')
-            ->with('The foo error message');
 
         $this->validator
             ->expects($this->any())

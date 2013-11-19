@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Processor;
 
+use Oro\Bundle\BatchBundle\Item\InvalidItemException;
 use Pim\Bundle\ImportExportBundle\Processor\CategoryProcessor;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\CategoryTranslation;
@@ -99,6 +100,9 @@ class CategoryProcessorTest extends AbstractProcessorTestCase
 
     /**
      * Test related method
+     *
+     * @expectedException Oro\Bundle\BatchBundle\Item\InvalidItemException
+     *
      * @return null
      */
     public function testInvalidProcess()
@@ -120,11 +124,6 @@ class CategoryProcessorTest extends AbstractProcessorTestCase
 
         $withViolations    = $this->getConstraintViolationListMock(array('The foo error message'));
         $withoutViolations = $this->getConstraintViolationListMock();
-
-        $this->stepExecution
-            ->expects($this->exactly(3))
-            ->method('addError')
-            ->with('The foo error message');
 
         $this->validator
             ->expects($this->any())
