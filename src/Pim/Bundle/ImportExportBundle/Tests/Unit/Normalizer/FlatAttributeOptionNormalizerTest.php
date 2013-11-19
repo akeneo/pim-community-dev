@@ -25,8 +25,7 @@ class FlatAttributeOptionNormalizerTest extends AttributeOptionNormalizerTest
     }
 
     /**
-     * Data provider for testing supportsNormalization method
-     * @return array
+     * {@inheritdoc}
      */
     public static function getSupportNormalizationData()
     {
@@ -39,8 +38,7 @@ class FlatAttributeOptionNormalizerTest extends AttributeOptionNormalizerTest
     }
 
     /**
-     * Data provider for testing normalize method
-     * @return array
+     * {@inheritdoc}
      */
     public static function getNormalizeData()
     {
@@ -58,10 +56,7 @@ class FlatAttributeOptionNormalizerTest extends AttributeOptionNormalizerTest
     }
 
     /**
-     * Add attribute option labels
-     *
-     * @param AttributeOption $option
-     * @param array           $data
+     * {@inheritdoc}
      */
     protected function addAttributeOptionLabels(AttributeOption $option, array $data)
     {
