@@ -1352,8 +1352,8 @@ class WebUser extends RawMinkContext
      */
     public function iShouldSeeTheCompletenessSummary()
     {
-        $this->getPage('Product edit')->findCompletenessContent();
-        $this->getPage('Product edit')->findCompletenessLegend();
+        $this->getCurrentPage()->findCompletenessContent();
+        $this->getCurrentPage()->findCompletenessLegend();
     }
 
     /**
@@ -1368,9 +1368,9 @@ class WebUser extends RawMinkContext
             $locale  = $data['locale'];
 
             try {
-                $this->getPage('Product edit')->checkCompletenessState($channel, $locale, $data['state']);
-                $this->getPage('Product edit')->checkCompletenessRatio($channel, $locale, $data['ratio']);
-                $this->getPage('Product edit')->checkCompletenessMessage($channel, $locale, $data['message']);
+                $this->getCurrentPage()->checkCompletenessState($channel, $locale, $data['state']);
+                $this->getCurrentPage()->checkCompletenessRatio($channel, $locale, $data['ratio']);
+                $this->getCurrentPage()->checkCompletenessMessage($channel, $locale, $data['message']);
             } catch (\InvalidArgumentException $e) {
                 throw $this->createExpectationException($e->getMessage());
             }
