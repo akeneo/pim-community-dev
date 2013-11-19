@@ -30,7 +30,7 @@ class CompletenessManager
      * Constructor
      *
      * @param RegistryInterface        $doctrine
-     * @param CompletenessQueryBuilder $completenessQueryBuilder
+     * @param CompletenessQueryBuilder $completenessQB
      */
     public function __construct(RegistryInterface $doctrine, CompletenessQueryBuilder $completenessQB)
     {
@@ -92,7 +92,7 @@ class CompletenessManager
      */
     protected function createCompletenesses(array $criteria, $limit = null)
     {
-        $sql = $this->completenessQueryBuilder->getInsertCompletenessSQL($criteria, $limit);
+        $sql = $this->completenessQB->getInsertCompletenessSQL($criteria, $limit);
         $stmt = $this->doctrine->getConnection()->prepare($sql);
 
         foreach ($criteria as $placeholder => $value) {
