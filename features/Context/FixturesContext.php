@@ -53,20 +53,21 @@ class FixturesContext extends RawMinkContext
     );
 
     private $entities = array(
-        'Product'        => 'PimCatalogBundle:Product',
-        'Attribute'      => 'PimCatalogBundle:ProductAttribute',
-        'AttributeGroup' => 'PimCatalogBundle:AttributeGroup',
-        'Channel'        => 'PimCatalogBundle:Channel',
-        'Currency'       => 'PimCatalogBundle:Currency',
-        'Family'         => 'PimCatalogBundle:Family',
-        'Category'       => 'PimCatalogBundle:Category',
-        'Association'    => 'PimCatalogBundle:Association',
-        'JobInstance'    => 'OroBatchBundle:JobInstance',
-        'User'           => 'OroUserBundle:User',
-        'Role'           => 'OroUserBundle:Role',
-        'Locale'         => 'PimCatalogBundle:Locale',
-        'ProductGroup'   => 'PimCatalogBundle:Group',
-        'GroupType'      => 'PimCatalogBundle:GroupType',
+        'Product'         => 'PimCatalogBundle:Product',
+        'Attribute'       => 'PimCatalogBundle:ProductAttribute',
+        'AttributeGroup'  => 'PimCatalogBundle:AttributeGroup',
+        'AttributeOption' => 'PimCatalogBundle:AttributeOption',
+        'Channel'         => 'PimCatalogBundle:Channel',
+        'Currency'        => 'PimCatalogBundle:Currency',
+        'Family'          => 'PimCatalogBundle:Family',
+        'Category'        => 'PimCatalogBundle:Category',
+        'Association'     => 'PimCatalogBundle:Association',
+        'JobInstance'     => 'OroBatchBundle:JobInstance',
+        'User'            => 'OroUserBundle:User',
+        'Role'            => 'OroUserBundle:Role',
+        'Locale'          => 'PimCatalogBundle:Locale',
+        'ProductGroup'    => 'PimCatalogBundle:Group',
+        'GroupType'       => 'PimCatalogBundle:GroupType',
     );
 
     private $placeholderValues = array();
@@ -644,6 +645,24 @@ class FixturesContext extends RawMinkContext
             if ($data['allowed_extensions'] != '') {
                 assertEquals(explode(',', $data['allowed_extensions']), $attribute->getAllowedExtensions());
             }
+        }
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Then /^there should be the following options:$/
+     */
+    public function thereShouldBeTheFollowingOptions(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $attribute = $this->getEntityOrException('Attribute', array('code' => $data['attribute']));
+            $option = $this->getEntityOrException('AttributeOption', array('code' => $data['code'], 'attribute' => $attribute));
+            $this->getEntityManager()->refresh($option);
+
+            $option->setLocale('en_US');
+            assertEquals($data['label-en_US'], (string) $option);
+            assertEquals(($data['is_default'] == 1), $option->isDefault());
         }
     }
 
