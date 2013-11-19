@@ -3,10 +3,8 @@
 namespace Pim\Bundle\ImportExportBundle\Processor;
 
 use Symfony\Component\Validator\ValidatorInterface;
+use Doctrine\ORM\EntityManager;
 use Doctrine\Common\Inflector\Inflector;
-use Oro\Bundle\BatchBundle\Item\ItemProcessorInterface;
-use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
-use Oro\Bundle\BatchBundle\Item\InvalidItemException;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\manager\ProductManager;
@@ -20,7 +18,7 @@ use Pim\Bundle\CatalogBundle\manager\ProductManager;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeProcessor extends AbstractConfigurableStepElement implements ItemProcessorInterface
+class AttributeProcessor extends AbstractEntityProcessor
 {
     /**
      * Product manager
@@ -30,42 +28,22 @@ class AttributeProcessor extends AbstractConfigurableStepElement implements Item
     protected $productManager;
 
     /**
-     * Validator
-     *
-     * @var ValidatorInterface
-     */
-    protected $validator;
-
-    /**
      * Constructor
-     *
-     * @param ProductManager     $productManager
+     * @param EntityManager      $manager
      * @param ValidatorInterface $validator
+     * @param ProductManager     $productManager
      */
     public function __construct(
-        ProductManager $productManager,
-        ValidatorInterface $validator
+        EntityManager $manager,
+        ValidatorInterface $validator,
+        ProductManager $productManager
     ) {
+        parent::__construct($manager, $validator);
         $this->productManager = $productManager;
-        $this->validator      = $validator;
     }
 
     /**
      * {@inheritdoc}
-     */
-    public function getConfigurationFields()
-    {
-        return array();
-    }
-
-    /**
-     * If the attribute is valid, it is stored into the attribute property
-     *
-     * @param array $item
-     *
-     * @return ProductAttribute
-     *
-     * @throws InvalidItemException
      */
     public function process($item)
     {
@@ -74,17 +52,9 @@ class AttributeProcessor extends AbstractConfigurableStepElement implements Item
         $this->updateGroup($attribute, $item);
         $this->updateParameters($attribute, $item);
 
-        $violations = $this->validator->validate($attribute);
-        if ($violations->count() > 0) {
-            $messages = array();
-            foreach ($violations as $violation) {
-                $messages[]= (string) $violation;
-            }
-            throw new InvalidItemException(implode(', ', $messages), $item);
+        $this->validate($attribute, $item);
 
-        } else {
-            return $attribute;
-        }
+        return $attribute;
     }
 
     /**
@@ -189,8 +159,7 @@ class AttributeProcessor extends AbstractConfigurableStepElement implements Item
     private function findAttribute($code)
     {
         return $this
-            ->productManager
-            ->getStorageManager()
+            ->entityManager
             ->getRepository('PimCatalogBundle:ProductAttribute')
             ->findOneBy(array('code' => $code));
     }
@@ -205,8 +174,7 @@ class AttributeProcessor extends AbstractConfigurableStepElement implements Item
     private function findAttributeGroup($code)
     {
         return $this
-            ->productManager
-            ->getStorageManager()
+            ->entityManager
             ->getRepository('PimCatalogBundle:AttributeGroup')
             ->findOneBy(array('code' => $code));
     }

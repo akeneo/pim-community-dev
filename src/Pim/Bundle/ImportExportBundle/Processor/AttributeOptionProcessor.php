@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\ImportExportBundle\Processor;
 
-use Oro\Bundle\BatchBundle\Item\InvalidItemException;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
@@ -19,11 +18,7 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
 class AttributeOptionProcessor extends AbstractEntityProcessor
 {
     /**
-     * If the option is valid, it is stored into the option property
-     *
-     * @param array $item
-     *
-     * @throws InvalidItemException
+     * {@inheritdoc}
      */
     public function process($item)
     {
@@ -31,17 +26,9 @@ class AttributeOptionProcessor extends AbstractEntityProcessor
         $option->setDefault((bool) $item['is_default']);
         $this->updateLabels($option, $item);
 
-        $violations = $this->validator->validate($option);
-        if ($violations->count() > 0) {
-            $messages = array();
-            foreach ($violations as $violation) {
-                $messages[]= (string) $violation;
-            }
-            throw new InvalidItemException(implode(', ', $messages), $item);
+        $this->validate($option, $item);
 
-        } else {
-            return $option;
-        }
+        return $option;
     }
 
     /**
