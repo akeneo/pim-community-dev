@@ -11,6 +11,7 @@ parameters:
     oro_form.extension.client_validation.class:     Oro\Bundle\FormBundle\Form\Extension\ClientValidationExtension
     oro_form.extension.constraint_as_option.class:  Oro\Bundle\FormBundle\Form\Extension\ConstraintAsOptionExtension
     oro_form.extension.tooltip.class:               Oro\Bundle\FormBundle\Form\Extension\TooltipFormExtension
+    oro_form.extension.js_validation.class:         Oro\Bundle\FormBundle\Form\Extension\JsValidationExtension
 
 services:
     # Form types
@@ -80,5 +81,11 @@ services:
         class: %oro_form.extension.constraint_as_option.class%
         arguments:
             - @oro_form.validator.constraint_factory
+        tags:
+            - { name: form.type_extension, alias: form }
+
+    oro_form.extension.js_validation:
+        class: %oro_form.extension.js_validation.class%
+        arguments: [@validator.mapping.class_metadata_factory]
         tags:
             - { name: form.type_extension, alias: form }

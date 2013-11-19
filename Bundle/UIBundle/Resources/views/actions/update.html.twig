@@ -2,8 +2,7 @@
 {% import 'OroUIBundle::macros.html.twig' as UI %}
 
 {% block page_container %}
-    {% block content %}
-        {{ JSFV(form) }}
+    {% block content %}        {{ JSFV(form) }}
         <form id="{{ form.vars.name }}" action="{{ formAction }}" {{ form_enctype(form) }}
               method="post" data-collect="true" class="scrollable-substructure">
             <div class="navigation clearfix navbar-extra navbar-extra-right">
@@ -73,5 +72,11 @@
                 {% endblock content_data %}
             </div>
         </form>
+        <script>
+            require(['jquery', 'jquery.validate'],
+                function ($) {
+                    //$('#{{ form.vars.name }}').validate({debug: false});
+                });
+        </script>
     {% endblock content %}
 {% endblock %}
