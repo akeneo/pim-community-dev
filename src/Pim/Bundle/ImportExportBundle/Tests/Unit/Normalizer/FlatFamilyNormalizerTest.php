@@ -20,6 +20,7 @@ class FlatFamilyNormalizerTest extends FamilyNormalizerTest
     protected function setUp()
     {
         $this->normalizer = new FlatFamilyNormalizer();
+        $this->format     = 'csv';
     }
 
     /**
@@ -52,21 +53,6 @@ class FlatFamilyNormalizerTest extends FamilyNormalizerTest
                     'requirements'     => 'channel1:attribute1, attribute2| channel2:attribute1, attribute3',
                 )
             ),
-        );
-    }
-
-    /**
-     * Test normalize method
-     * @param array $expectedResult
-     *
-     * @dataProvider getNormalizeData
-     */
-    public function testNormalize(array $expectedResult)
-    {
-        $family = $this->createFamily($expectedResult);
-        $this->assertEquals(
-            $expectedResult,
-            $this->normalizer->normalize($family, 'csv')
         );
     }
 }
