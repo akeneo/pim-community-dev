@@ -2,10 +2,10 @@
 
 namespace Oro\Bundle\OrganizationBundle\Form\Extension;
 
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
 use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadataProvider;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Form\FormEvents;
@@ -17,9 +17,7 @@ use Oro\Bundle\OrganizationBundle\Event\RecordOwnerDataListener;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\OrganizationBundle\Entity\Manager\BusinessUnitManager;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Oro\Bundle\OrganizationBundle\Form\Type\OwnershipType;
 use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
-use Oro\Bundle\OrganizationBundle\Form\Type\BusinessUnitType;
 
 class FormTypeExtension extends AbstractTypeExtension
 {
@@ -53,8 +51,14 @@ class FormTypeExtension extends AbstractTypeExtension
      */
     protected $fieldName;
 
+    /**
+     * @var string
+     */
     protected $fieldLabel = 'Owner';
 
+    /**
+     * @var bool
+     */
     protected $assignIsGranted;
 
     /**
@@ -98,17 +102,16 @@ class FormTypeExtension extends AbstractTypeExtension
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $dataClassName = $builder->getForm()->getConfig()->getDataClass();
+        $dataClassName = $builder->getFormConfig()->getDataClass();
         if (!$dataClassName) {
             return;
         }
-        if (!$this->securityContext->getToken()) {
+
+        $user = $this->getCurrentUser();
+        if (!$user) {
             return;
         }
-        $user = $this->securityContext->getToken()->getUser();
-        if (!$user || is_string($user)) {
-            return;
-        }
+
         $metadata = $this->ownershipMetadataProvider->getMetadata($dataClassName);
         if ($metadata->hasOwner()) {
             if (!method_exists($dataClassName, 'getOwner')) {
@@ -155,6 +158,7 @@ class FormTypeExtension extends AbstractTypeExtension
         $entity = $event->getData();
 
         if (is_object($entity)
+            && method_exists($entity, 'getId')
             && $entity->getId()
             && $form->has($this->fieldName)
             && !$this->assignIsGranted
@@ -172,6 +176,43 @@ class FormTypeExtension extends AbstractTypeExtension
                     'label' => $this->fieldLabel
                 )
             );
+        }
+
+        if (is_object($entity)
+            && method_exists($entity, 'getId')
+            && !$entity->getId()
+            && $form->has($this->fieldName)
+        ) {
+            $this->setPredefinedOwner($form);
+        }
+    }
+
+    /**
+     * @param FormInterface $form
+     */
+    protected function setPredefinedOwner(FormInterface $form)
+    {
+        $ownerForm = $form->get($this->fieldName);
+        if ($ownerForm->getData()) {
+            return;
+        }
+
+        $dataClassName = $form->getConfig()->getDataClass();
+        $metadata = $this->ownershipMetadataProvider->getMetadata($dataClassName);
+        if ($metadata->hasOwner()) {
+            $defaultOwner = null;
+
+            if ($metadata->isUserOwned() && $this->assignIsGranted) {
+                $defaultOwner = $this->getCurrentUser();
+            } elseif ($metadata->isBusinessUnitOwned()) {
+                $defaultOwner = $this->getCurrentBusinessUnit();
+            } elseif ($metadata->isOrganizationOwned()) {
+                $defaultOwner = $this->getCurrentOrganization();
+            }
+
+            if ($defaultOwner) {
+                $ownerForm->setData($defaultOwner);
+            }
         }
     }
 
@@ -257,6 +298,66 @@ class FormTypeExtension extends AbstractTypeExtension
                 );
             }
         }
+    }
+
+    /**
+     * @return null|BusinessUnit
+     */
+    protected function getCurrentBusinessUnit()
+    {
+        $user = $this->getCurrentUser();
+        if (!$user) {
+            return null;
+        }
+
+        $businessUnits = $user->getBusinessUnits();
+        if (!$this->assignIsGranted) {
+            return $businessUnits->first();
+        }
+
+        // if assign is granted then only allowed business units can be used
+        $allowedBusinessUnits = array_keys($this->getTreeOptions($this->manager->getBusinessUnitsTree()));
+
+        /** @var BusinessUnit $businessUnit */
+        foreach ($businessUnits as $businessUnit) {
+            if (in_array($businessUnit->getId(), $allowedBusinessUnits)) {
+                return $businessUnit;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @return null|User
+     */
+    protected function getCurrentUser()
+    {
+        $token = $this->securityContext->getToken();
+        if (!$token) {
+            return null;
+        }
+
+        /** @var User $user */
+        $user = $token->getUser();
+        if (!$user || is_string($user)) {
+            return null;
+        }
+
+        return $user;
+    }
+
+    /**
+     * @return bool|Organization
+     */
+    protected function getCurrentOrganization()
+    {
+        $businessUnit = $this->getCurrentBusinessUnit();
+        if (!$businessUnit) {
+            return true;
+        }
+
+        return $businessUnit->getOrganization();
     }
 
     /**
