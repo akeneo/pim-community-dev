@@ -20,6 +20,7 @@ class FlatFamilyNormalizerTest extends FamilyNormalizerTest
     protected function setUp()
     {
         $this->normalizer = new FlatFamilyNormalizer();
+        $this->format     = 'csv';
     }
 
     /**
@@ -46,7 +47,8 @@ class FlatFamilyNormalizerTest extends FamilyNormalizerTest
             array(
                 array(
                     'code'             => 'mycode',
-                    'label'            => 'en_US:My label, fr_FR:Mon étiquette',
+                    'label-en_US'      => 'My label',
+                    'label-fr_FR'      => 'Mon étiquette',
                     'attributes'       => 'attribute1, attribute2, attribute3',
                     'attributeAsLabel' => 'attribute1',
                     'requirements'     => 'channel1:attribute1, attribute2| channel2:attribute1, attribute3',
@@ -56,17 +58,13 @@ class FlatFamilyNormalizerTest extends FamilyNormalizerTest
     }
 
     /**
-     * Test normalize method
-     * @param array $expectedResult
-     *
-     * @dataProvider getNormalizeData
+     * {@inheritdoc}
      */
-    public function testNormalize(array $expectedResult)
+    protected function getLabels($data)
     {
-        $family = $this->createFamily($expectedResult);
-        $this->assertEquals(
-            $expectedResult,
-            $this->normalizer->normalize($family, 'csv')
+        return array(
+            'en_US' => $data['label-en_US'],
+            'fr_FR' => $data['label-fr_FR']
         );
     }
 }

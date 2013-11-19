@@ -20,7 +20,7 @@ class FlatJobInstanceNormalizerTest extends JobInstanceNormalizerTest
     protected function setUp()
     {
         $this->normalizer = new FlatJobInstanceNormalizer();
-        $this->format = 'csv';
+        $this->format     = 'csv';
     }
 
     /**

@@ -20,6 +20,7 @@ class FlatAssociationNormalizerTest extends AssociationNormalizerTest
     protected function setUp()
     {
         $this->normalizer = new FlatAssociationNormalizer();
+        $this->format     = 'csv';
     }
 
     /**
@@ -54,17 +55,13 @@ class FlatAssociationNormalizerTest extends AssociationNormalizerTest
     }
 
     /**
-     * Test normalize method
-     * @param array $expectedResult
-     *
-     * @dataProvider getNormalizeData
+     * {@inheritdoc}
      */
-    public function testNormalize(array $expectedResult)
+    protected function getLabels($data)
     {
-        $association = $this->createAssociation($expectedResult);
-        $this->assertEquals(
-            $expectedResult,
-            $this->normalizer->normalize($association, 'csv')
+        return array(
+            'en_US' => $data['label-en_US'],
+            'fr_FR' => $data['label-fr_FR']
         );
     }
 }

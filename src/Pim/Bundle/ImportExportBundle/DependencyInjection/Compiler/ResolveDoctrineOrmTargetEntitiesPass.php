@@ -3,6 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\DependencyInjection\Compiler;
 
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\AbstractResolveDoctrineOrmTargetEntitiesPass;
+
 /**
  * Resolves doctrine ORM Target entities
  *
@@ -12,6 +13,9 @@ use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\AbstractResolveDoctrin
  */
 class ResolveDoctrineOrmTargetEntitiesPass extends AbstractResolveDoctrineOrmTargetEntitiesPass
 {
+    /**
+     * {@inheritdoc}
+     */
     protected function getParametersMapping()
     {
         return array(

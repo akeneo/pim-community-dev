@@ -150,9 +150,45 @@ class ChannelController extends AbstractDoctrineController
             );
         }
 
+        $historyGrid = $channel->getId() ?$this->getHistoryGrid($channel)->createView() : null;
+
         return array(
-            'form' => $this->channelForm->createView()
+            'form' => $this->channelForm->createView(),
+            'historyDatagrid' => $historyGrid
         );
+    }
+
+    /**
+     * Get channel history datagrid
+     *
+     * @param Channel $channel
+     *
+     * @return \Oro\Bundle\GridBundle\Datagrid\Datagrid
+     */
+    protected function getHistoryGrid(Channel $channel)
+    {
+        return $this->datagridHelper->getDataAuditDatagrid(
+            $channel,
+            'pim_catalog_channel_history',
+            array('id' => $channel->getId())
+        );
+    }
+
+    /**
+     * History of a channel
+     *
+     * @param Request $request
+     * @param Channel $channel
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function historyAction(Request $request, Channel $channel)
+    {
+        $historyGridView = $this->getHistoryGrid($channel)->createView();
+
+        if ('json' === $request->getRequestFormat()) {
+            return $this->datagridHelper->getDatagridRenderer()->renderResultsJsonResponse($historyGridView);
+        }
     }
 
     /**

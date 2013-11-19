@@ -20,6 +20,7 @@ class FlatGroupNormalizerTest extends GroupNormalizerTest
     protected function setUp()
     {
         $this->normalizer = new FlatGroupNormalizer();
+        $this->format     = 'csv';
     }
 
     /**
@@ -60,19 +61,6 @@ class FlatGroupNormalizerTest extends GroupNormalizerTest
                 )
             ),
         );
-    }
-
-    /**
-     * Test normalize method
-     * @param array $expected
-     *
-     * @dataProvider getNormalizeData
-     */
-    public function testNormalize(array $expected)
-    {
-        $group = $this->createGroup($expected);
-        $result = $this->normalizer->normalize($group, 'csv');
-        $this->assertEquals($expected, $result);
     }
 
     /**

@@ -2,6 +2,8 @@ parameters:
     pim_serializer.class:                                  Symfony\Component\Serializer\Serializer
     pim_serializer.encoder.xml.class:                      Symfony\Component\Serializer\Encoder\XmlEncoder
     pim_serializer.encoder.json.class:                     Symfony\Component\Serializer\Encoder\JsonEncoder
+    pim_serializer.encoder.csv.class:                      Pim\Bundle\ImportExportBundle\Encoder\CsvEncoder
+
     pim_serializer.normalizer.product.class:               Pim\Bundle\ImportExportBundle\Normalizer\ProductNormalizer
     pim_serializer.normalizer.flat_product.class:          Pim\Bundle\ImportExportBundle\Normalizer\FlatProductNormalizer
     pim_serializer.normalizer.category.class:              Pim\Bundle\ImportExportBundle\Normalizer\CategoryNormalizer
@@ -17,11 +19,12 @@ parameters:
     pim_serializer.normalizer.association.class:           Pim\Bundle\ImportExportBundle\Normalizer\AssociationNormalizer
     pim_serializer.normalizer.flat_association.class:      Pim\Bundle\ImportExportBundle\Normalizer\FlatAssociationNormalizer
     pim_serializer.normalizer.get_set_method.class:        Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer
-    pim_serializer.encoder.csv.class:                      Pim\Bundle\ImportExportBundle\Encoder\CsvEncoder
     pim_serializer.normalizer.group.class:                 Pim\Bundle\ImportExportBundle\Normalizer\GroupNormalizer
     pim_serializer.normalizer.flat_group.class:            Pim\Bundle\ImportExportBundle\Normalizer\FlatGroupNormalizer
     pim_serializer.normalizer.job_instance.class:          Pim\Bundle\ImportExportBundle\Normalizer\JobInstanceNormalizer
     pim_serializer.normalizer.flat_job_instance.class:     Pim\Bundle\ImportExportBundle\Normalizer\FlatJobInstanceNormalizer
+    pim_serializer.normalizer.channel.class:              Pim\Bundle\ImportExportBundle\Normalizer\ChannelNormalizer
+    pim_serializer.normalizer.flat_channel.class:         Pim\Bundle\ImportExportBundle\Normalizer\FlatChannelNormalizer
 
 services:
     pim_serializer:
@@ -120,6 +123,16 @@ services:
 
     pim_serializer.normalizer.flat_job_instance:
         class: %pim_serializer.normalizer.flat_job_instance.class%
+        tags:
+            - { name: pim_serializer.normalizer }
+
+    pim_serializer.normalizer.channel:
+        class: %pim_serializer.normalizer.channel.class%
+        tags:
+            - { name: pim_serializer.normalizer }
+
+    pim_serializer.normalizer.flat_channel:
+        class: %pim_serializer.normalizer.flat_channel.class%
         tags:
             - { name: pim_serializer.normalizer }
 

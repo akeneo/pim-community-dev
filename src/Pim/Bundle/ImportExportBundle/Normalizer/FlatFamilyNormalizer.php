@@ -24,21 +24,16 @@ class FlatFamilyNormalizer extends FamilyNormalizer
     protected $results;
 
     /**
-     * Normalize the label
-     *
-     * @param Family $family
-     *
-     * @return string
+     * {@inheritdoc}
      */
     protected function normalizeLabel(Family $family)
     {
-        $labels = parent::normalizeLabel($family);
-        $flat = array();
-        foreach ($labels as $locale => $label) {
-            $flat[]= $locale.':'.$label;
+        $values= array();
+        foreach ($family->getTranslations() as $translation) {
+            $values[sprintf('label-%s', $translation->getLocale())] = $translation->getLabel();
         }
 
-        return implode(', ', $flat);
+        return $values;
     }
 
     /**

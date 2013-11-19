@@ -20,6 +20,7 @@ class FlatCategoryNormalizerTest extends CategoryNormalizerTest
     protected function setUp()
     {
         $this->normalizer = new FlatCategoryNormalizer();
+        $this->format     = 'csv';
     }
 
     /**
@@ -62,19 +63,6 @@ class FlatCategoryNormalizerTest extends CategoryNormalizerTest
                 )
             ),
         );
-    }
-
-    /**
-     * Test normalize method
-     * @param array $expected
-     *
-     * @dataProvider getNormalizeData
-     */
-    public function testNormalize(array $expected)
-    {
-        $category = $this->createCategory($expected);
-        $result = $this->normalizer->normalize($category, 'csv');
-        $this->assertEquals($expected, $result);
     }
 
     /**
