@@ -2,12 +2,11 @@
 
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Normalizer;
 
-use Pim\Bundle\ImportExportBundle\Normalizer\ChannelNormalizer;
-
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Currency;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
+use Pim\Bundle\ImportExportBundle\Normalizer\ChannelNormalizer;
 
 /**
  * Test related class
@@ -21,6 +20,11 @@ class ChannelNormalizerTest extends NormalizerTestCase
     /**
      * {@inheritdoc}
      */
+    protected $format = 'json';
+
+    /**
+     * {@inheritdoc}
+     */
     protected function createNormalizer()
     {
         return new ChannelNormalizer();
@@ -29,9 +33,16 @@ class ChannelNormalizerTest extends NormalizerTestCase
     /**
      * {@inheritdoc}
      */
-    protected static function getEntityClassName()
+    public static function getSupportNormalizationData()
     {
-        return 'Pim\Bundle\CatalogBundle\Entity\Channel';
+        return array(
+            array('Pim\Bundle\CatalogBundle\Entity\Channel', 'json', true),
+            array('Pim\Bundle\CatalogBundle\Entity\Channel', 'xml', true),
+            array('Pim\Bundle\CatalogBundle\Entity\Channel', 'csv', false),
+            array('stdClass', 'json', false),
+            array('stdClass', 'xml', false),
+            array('stdClass', 'csv', false)
+        );
     }
 
     /**

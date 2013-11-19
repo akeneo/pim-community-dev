@@ -16,6 +16,11 @@ class FlatChannelNormalizerTest extends ChannelNormalizerTest
     /**
      * {@inheritdoc}
      */
+    protected $format = 'csv';
+
+    /**
+     * {@inheritdoc}
+     */
     protected function createNormalizer()
     {
         return new FlatChannelNormalizer();
@@ -31,6 +36,7 @@ class FlatChannelNormalizerTest extends ChannelNormalizerTest
             array('Pim\Bundle\CatalogBundle\Entity\Channel', 'xml', false),
             array('Pim\Bundle\CatalogBundle\Entity\Channel', 'csv', true),
             array('stdClass', 'json', false),
+            array('stdClass', 'xml', false),
             array('stdClass', 'csv', false)
         );
     }

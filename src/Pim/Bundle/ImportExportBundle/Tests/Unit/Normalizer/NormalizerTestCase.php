@@ -19,6 +19,12 @@ abstract class NormalizerTestCase extends \PHPUnit_Framework_TestCase
     protected $normalizer;
 
     /**
+     * Format for normalization
+     * @var string
+     */
+    protected $format = null;
+
+    /**
      * {@inheritdoc}
      */
     protected function setUp()
@@ -34,28 +40,12 @@ abstract class NormalizerTestCase extends \PHPUnit_Framework_TestCase
     abstract protected function createNormalizer();
 
     /**
-     * Get entity class name
-     * @return string
+     * Data provider for testing supportsNormalization method
+     * @return array
      * @abstract
      * @static
      */
-    abstract protected static function getEntityClassName();
-
-    /**
-     * Data provider for testing supportsNormalization method
-     * @return array
-     * @static
-     */
-    public static function getSupportNormalizationData()
-    {
-        return array(
-            array(static::getEntityClassName(), 'json', true),
-            array(static::getEntityClassName(), 'xml', true),
-            array(static::getEntityClassName(), 'csv', false),
-            array('stdClass', 'json', false),
-            array('stdClass', 'json', false)
-        );
-    }
+    abstract public static function getSupportNormalizationData();
 
     /**
      * Test related method
@@ -90,7 +80,7 @@ abstract class NormalizerTestCase extends \PHPUnit_Framework_TestCase
     {
         $entity = $this->createEntity($data);
 
-        $this->assertEquals($data, $this->normalizer->normalize($entity, 'csv'));
+        $this->assertEquals($data, $this->normalizer->normalize($entity, $this->format));
     }
 
     /**
