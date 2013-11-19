@@ -146,10 +146,7 @@ class AttributeNormalizerTest extends NormalizerTestCase
     }
 
     /**
-     * Create a attribute
-     * @param array $data
-     *
-     * @return ProductAttribute
+     * {@inheritdoc}
      */
     protected function createEntity(array $data)
     {
