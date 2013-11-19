@@ -1,0 +1,115 @@
+{% block workflow_view_attribute_row %}
+    <div class="control-group">
+        <label class="control-label">{{ label }}</label>
+        <div class="controls">
+            <p class="control-label">{{ oro_workflow_render_view_attribute_value(workflow_item, _context) }}</p>
+        </div>
+    </div>
+{% endblock %}
+
+{% block workflow_view_attribute_value %}
+    {% if value is not empty %}
+        {{ value }}
+    {% else %}
+        N/A
+    {% endif %}
+{% endblock %}
+
+{% block string_workflow_view_attribute_value %}
+    {% if value is not empty %}
+        {{ value }}
+    {% else %}
+        N/A
+    {% endif %}
+{% endblock %}
+
+{% block date_workflow_view_attribute_value %}
+    {% if value is not empty %}
+        {{ value|oro_format_date }}
+    {% else %}
+        N/A
+    {% endif %}
+{% endblock %}
+
+{% block datetime_workflow_view_attribute_value %}
+    {% if value is not empty %}
+        {{ value|oro_format_datetime }}
+    {% else %}
+        N/A
+    {% endif %}
+{% endblock %}
+
+{% block time_workflow_view_attribute_value %}
+    {% if value is not empty %}
+        {{ value|oro_format_time }}
+    {% else %}
+        N/A
+    {% endif %}
+{% endblock %}
+
+{% block currency_workflow_view_attribute_value %}
+    {% if value is not empty %}
+        {% if currency_path is defined %}
+            {% set currency = oro_workflow_get_value_by_path(workflow_item, currency_path) %}
+        {% endif %}
+        {{ value|oro_format_currency({currency: currency|default(null)}) }}
+    {% else %}
+        N/A
+    {% endif %}
+{% endblock %}
+
+{% block decimal_workflow_view_attribute_value %}
+    {% if value is not empty %}
+        {{ value|oro_format_decimal }}
+    {% else %}
+        N/A
+    {% endif %}
+{% endblock %}
+
+{% block percent_workflow_view_attribute_value %}
+    {% if value is not empty %}
+        {{ value|oro_format_percent }}
+    {% else %}
+        N/A
+    {% endif %}
+{% endblock %}
+
+{% block spellout_workflow_view_attribute_value %}
+    {% if value is not empty %}
+        {{ value|oro_format_spellout }}
+    {% else %}
+        N/A
+    {% endif %}
+{% endblock %}
+
+{% block duration_workflow_view_attribute_value %}
+    {% if value is not empty %}
+        {{ value|oro_format_duration }}
+    {% else %}
+        N/A
+    {% endif %}
+{% endblock %}
+
+{% block ordinal_workflow_view_attribute_value %}
+    {% if value is not empty %}
+        {{ value|oro_format_ordinal }}
+    {% else %}
+        N/A
+    {% endif %}
+{% endblock %}
+
+{% block address_workflow_view_attribute_value %}
+    {% if value is not empty %}
+        {{ value|oro_format_address }}
+    {% else %}
+        N/A
+    {% endif %}
+{% endblock %}
+
+{% block name_workflow_view_attribute_value %}
+    {% if value is not empty %}
+        {{ value|oro_format_name }}
+    {% else %}
+        N/A
+    {% endif %}
+{% endblock %}

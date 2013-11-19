@@ -1,0 +1,101 @@
+parameters:
+    oro_workflow.action_factory.class: Oro\Bundle\WorkflowBundle\Model\Action\ActionFactory
+
+    oro_workflow.action.tree.class: Oro\Bundle\WorkflowBundle\Model\Action\TreeExecutor
+    oro_workflow.action.configurable.class: Oro\Bundle\WorkflowBundle\Model\Action\Configurable
+    oro_workflow.action.assign_value.class: Oro\Bundle\WorkflowBundle\Model\Action\AssignValue
+    oro_workflow.action.unset_value.class: Oro\Bundle\WorkflowBundle\Model\Action\UnsetValue
+    oro_workflow.action.create_entity.class: Oro\Bundle\WorkflowBundle\Model\Action\CreateEntity
+    oro_workflow.action.request_entity.class: Oro\Bundle\WorkflowBundle\Model\Action\RequestEntity
+    oro_workflow.action.call_method.class: Oro\Bundle\WorkflowBundle\Model\Action\CallMethod
+    oro_workflow.action.start_workflow.class: Oro\Bundle\WorkflowBundle\Model\Action\StartWorkflow
+    oro_workflow.action.close_workflow.class: Oro\Bundle\WorkflowBundle\Model\Action\CloseWorkflow
+    oro_workflow.action.redirect.class: Oro\Bundle\WorkflowBundle\Model\Action\Redirect
+    oro_workflow.action.redirect_to_workflow.class: Oro\Bundle\WorkflowBundle\Model\Action\RedirectToWorkflow
+
+services:
+    oro_workflow.action_factory:
+        class: %oro_workflow.action_factory.class%
+        arguments:
+            - @service_container
+            - []
+
+    oro_workflow.action.tree:
+        class: %oro_workflow.action.tree.class%
+        arguments:
+            - @?logger
+        tags:
+            - { name: oro_workflow.action, alias: tree }
+
+    oro_workflow.action.configurable:
+        class: %oro_workflow.action.configurable.class%
+        arguments:
+            - @oro_workflow.action_assembler
+        tags:
+            - { name: oro_workflow.action, alias: configurable }
+
+    oro_workflow.action.assign_value:
+        class: %oro_workflow.action.assign_value.class%
+        arguments:
+            - @oro_workflow.context_accessor
+        tags:
+            - { name: oro_workflow.action, alias: assign_value }
+
+    oro_workflow.action.unset_value:
+        class: %oro_workflow.action.unset_value.class%
+        arguments:
+            - @oro_workflow.action.assign_value
+        tags:
+            - { name: oro_workflow.action, alias: unset_value }
+
+    oro_workflow.action.create_entity:
+        class: %oro_workflow.action.create_entity.class%
+        arguments:
+            - @oro_workflow.context_accessor
+            - @doctrine
+        tags:
+            - { name: oro_workflow.action, alias: create_entity }
+
+    oro_workflow.action.request_entity:
+        class: %oro_workflow.action.request_entity.class%
+        arguments:
+            - @oro_workflow.context_accessor
+            - @doctrine
+        tags:
+            - { name: oro_workflow.action, alias: request_entity|find_entity }
+
+    oro_workflow.action.call_method:
+        class: %oro_workflow.action.call_method.class%
+        arguments:
+            - @oro_workflow.context_accessor
+        tags:
+            - { name: oro_workflow.action, alias: call_method }
+
+    oro_workflow.action.start_workflow:
+        class: %oro_workflow.action.start_workflow.class%
+        arguments:
+            - @oro_workflow.context_accessor
+            - @oro_workflow.manager
+        tags:
+            - { name: oro_workflow.action, alias: start_workflow }
+
+    oro_workflow.action.close_workflow:
+        class: %oro_workflow.action.close_workflow.class%
+        tags:
+            - { name: oro_workflow.action, alias: close_workflow }
+
+    oro_workflow.action.redirect:
+        class: %oro_workflow.action.redirect.class%
+        arguments:
+            - @oro_workflow.context_accessor
+            - @router
+            - 'result.redirectUrl'
+        tags:
+            - { name: oro_workflow.action, alias: redirect }
+
+    oro_workflow.action.redirect_to_workflow:
+        class: %oro_workflow.action.redirect_to_workflow.class%
+        arguments:
+            - @oro_workflow.action.redirect
+        tags:
+            - { name: oro_workflow.action, alias: redirect_to_workflow }

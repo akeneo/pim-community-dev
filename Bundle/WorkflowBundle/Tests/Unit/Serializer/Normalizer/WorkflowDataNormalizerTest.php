@@ -31,6 +31,11 @@ class WorkflowDataNormalizerTest extends \PHPUnit_Framework_TestCase
     protected $attribute;
 
     /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $attributeManager;
+
+    /**
      * @var WorkflowDataNormalizer
      */
     protected $normalizer;
@@ -41,10 +46,11 @@ class WorkflowDataNormalizerTest extends \PHPUnit_Framework_TestCase
             'Oro\Bundle\WorkflowBundle\Serializer\Normalizer\AttributeNormalizer'
         );
         $this->serializer = $this->getMock('Oro\Bundle\WorkflowBundle\Serializer\WorkflowAwareSerializer');
+        $this->attributeManager = $this->getMock('Oro\Bundle\WorkflowBundle\Model\AttributeManager');
         $this->workflow = $this->getMock(
             'Oro\Bundle\WorkflowBundle\Model\Workflow',
-            array(),
-            array(new StepManager(), new AttributeManager(), new TransitionManager())
+            array('getName'),
+            array(null, $this->attributeManager, null)
         );
         $this->attribute = $this->getMock('Oro\Bundle\WorkflowBundle\Model\Attribute');
         $this->normalizer = new WorkflowDataNormalizer();
@@ -91,7 +97,7 @@ class WorkflowDataNormalizerTest extends \PHPUnit_Framework_TestCase
         $this->serializer->expects($this->once())->method('getWorkflow')->will($this->returnValue($this->workflow));
 
         $this->workflow->expects($this->once())->method('getName')->will($this->returnValue($workflowName));
-        $this->workflow->expects($this->once())->method('getAttribute')->with('foo');
+        $this->attributeManager->expects($this->once())->method('getAttribute')->with('foo');
 
         if ($direction == 'normalization') {
             $this->normalizer->normalize($data);
@@ -116,7 +122,7 @@ class WorkflowDataNormalizerTest extends \PHPUnit_Framework_TestCase
         $this->serializer->expects($this->once())->method('getWorkflow')->will($this->returnValue($this->workflow));
 
         $this->workflow->expects($this->once())->method('getName')->will($this->returnValue($workflowName));
-        $this->workflow->expects($this->once())->method('getAttribute')->with($attributeName)
+        $this->attributeManager->expects($this->once())->method('getAttribute')->with($attributeName)
             ->will($this->returnValue($this->attribute));
 
         $this->attributeNormalizer->expects($this->once())->method('supports' . ucfirst($direction))
@@ -150,7 +156,7 @@ class WorkflowDataNormalizerTest extends \PHPUnit_Framework_TestCase
         $this->serializer->expects($this->once())->method('getWorkflow')
             ->will($this->returnValue($this->workflow));
 
-        $this->workflow->expects($this->once())->method('getAttribute')
+        $this->attributeManager->expects($this->once())->method('getAttribute')
             ->with($attributeName)
             ->will($this->returnValue($this->attribute));
 
@@ -188,7 +194,7 @@ class WorkflowDataNormalizerTest extends \PHPUnit_Framework_TestCase
         $serializer->expects($this->once())->method('getWorkflow')
             ->will($this->returnValue($this->workflow));
 
-        $this->workflow->expects($this->once())->method('getAttribute')
+        $this->attributeManager->expects($this->once())->method('getAttribute')
             ->with($attributeName)
             ->will($this->returnValue($this->attribute));
 
@@ -222,7 +228,7 @@ class WorkflowDataNormalizerTest extends \PHPUnit_Framework_TestCase
         $this->serializer->expects($this->once())->method('getWorkflow')
             ->will($this->returnValue($this->workflow));
 
-        $this->workflow->expects($this->once())->method('getAttribute')
+        $this->attributeManager->expects($this->once())->method('getAttribute')
             ->with($attributeName)
             ->will($this->returnValue($this->attribute));
 

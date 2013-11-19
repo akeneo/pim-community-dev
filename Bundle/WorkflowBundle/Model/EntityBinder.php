@@ -45,7 +45,7 @@ class EntityBinder
         }
 
         $workflow = $this->workflowRegistry->getWorkflow($workflowItem->getWorkflowName());
-        $bindAttributeNames = $workflow->getBindEntityAttributeNames();
+        $bindAttributeNames = $workflow->getAttributeManager()->getBindEntityAttributeNames();
         $entitiesToBind = $workflowData->getValues($bindAttributeNames);
 
         return $workflowItem->syncBindEntities($this->createBindEntities($entitiesToBind));

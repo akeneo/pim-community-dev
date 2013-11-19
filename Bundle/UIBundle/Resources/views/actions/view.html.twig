@@ -29,10 +29,12 @@
                                             {% set ownerName = entity.owner.name %}
                                         {% endif %}
                                     {% endif %}
-                                    {% if ownerPath is defined %}
-                                        <a href="{{ ownerPath }}">{{ ownerName }}</a>
-                                    {% else %}
-                                        {{ ownerName }}
+                                    {% if ownerName is defined %}
+                                        {% if ownerPath is defined %}
+                                            <a href="{{ ownerPath }}">{{ ownerName }}</a>
+                                        {% else %}
+                                            {{ ownerName }}
+                                        {% endif %}
                                     {% endif %}
                                 </li>
                             {% endif %}

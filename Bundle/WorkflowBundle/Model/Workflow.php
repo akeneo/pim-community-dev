@@ -9,9 +9,7 @@ use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowTransitionRecord;
 use Oro\Bundle\WorkflowBundle\Exception\ForbiddenTransitionException;
 use Oro\Bundle\WorkflowBundle\Exception\UnknownStepException;
-use Oro\Bundle\WorkflowBundle\Exception\UnknownTransitionException;
-use Oro\Bundle\WorkflowBundle\Model\Step;
-use Oro\Bundle\WorkflowBundle\Model\Transition;
+use Oro\Bundle\WorkflowBundle\Exception\InvalidTransitionException;
 
 class Workflow
 {
@@ -32,7 +30,7 @@ class Workflow
     /**
      * @var boolean
      */
-    protected $enabled;
+    protected $enabled = true;
 
     /**
      * @var StepManager
@@ -60,6 +58,11 @@ class Workflow
     protected $label;
 
     /**
+     * @var Collection
+     */
+    protected $errors;
+
+    /**
      * @param StepManager|null $stepManager
      * @param AttributeManager|null $attributeManager
      * @param TransitionManager|null $transitionManager
@@ -72,8 +75,6 @@ class Workflow
         $this->stepManager = $stepManager ? $stepManager : new StepManager();
         $this->attributeManager  = $attributeManager ? $attributeManager : new AttributeManager();
         $this->transitionManager = $transitionManager ? $transitionManager : new TransitionManager();
-
-        $this->enabled = true;
     }
 
     /**
@@ -173,147 +174,27 @@ class Workflow
     }
 
     /**
-     * Get step by name
-     *
-     * @param string $stepName
-     * @return Step
+     * @return StepManager
      */
-    public function getStep($stepName)
+    public function getStepManager()
     {
-        return $this->stepManager->getStep($stepName);
+        return $this->stepManager;
     }
 
     /**
-     * Set steps.
-     *
-     * @param Step[]|Collection $steps
-     * @return Workflow
+     * @return AttributeManager
      */
-    public function setSteps($steps)
+    public function getAttributeManager()
     {
-        $this->stepManager->setSteps($steps);
-        return $this;
+        return $this->attributeManager;
     }
 
     /**
-     * Get steps.
-     *
-     * @return Collection|Step[]
+     * @return TransitionManager
      */
-    public function getSteps()
+    public function getTransitionManager()
     {
-        return $this->stepManager->getSteps();
-    }
-
-    /**
-     * Get steps sorted by order.
-     *
-     * @return Collection|Step[]
-     */
-    public function getOrderedSteps()
-    {
-        $steps = $this->getSteps()->toArray();
-        usort(
-            $steps,
-            function (Step $stepOne, Step $stepTwo) {
-                return ($stepOne->getOrder() >= $stepTwo->getOrder()) ? 1 : -1;
-            }
-        );
-        return new ArrayCollection($steps);
-    }
-
-    /**
-     * Set attributes.
-     *
-     * @param Attribute[]|Collection $attributes
-     * @return Workflow
-     */
-    public function setAttributes($attributes)
-    {
-        $this->attributeManager->setAttributes($attributes);
-        return $this;
-    }
-
-    /**
-     * Get step attributes.
-     *
-     * @return Collection|Attribute[]
-     */
-    public function getAttributes()
-    {
-        return $this->attributeManager->getAttributes();
-    }
-
-    /**
-     * Get attribute by name
-     *
-     * @param string $attributeName
-     * @return Attribute|null
-     */
-    public function getAttribute($attributeName)
-    {
-        return $this->attributeManager->getAttribute($attributeName);
-    }
-
-    /**
-     * Get attributes with option "managed_entity"
-     *
-     * @return Collection|Attribute[]
-     */
-    public function getManagedEntityAttributes()
-    {
-        return $this->attributeManager->getManagedEntityAttributes();
-    }
-
-    /**
-     * Get list of attributes that require binding
-     *
-     * @return Collection|Attribute[]
-     */
-    public function getBindEntityAttributes()
-    {
-        return $this->attributeManager->getBindEntityAttributes();
-    }
-
-    /**
-     * Get list of attributes names that require binding
-     *
-     * @return array
-     */
-    public function getBindEntityAttributeNames()
-    {
-        return $this->attributeManager->getBindEntityAttributeNames();
-    }
-
-    /**
-     * Set transitions.
-     *
-     * @param Transition[]|Collection $transitions
-     * @return Workflow
-     */
-    public function setTransitions($transitions)
-    {
-        $this->transitionManager->setTransitions($transitions);
-        return $this;
-    }
-
-    /**
-     * Get transitions.
-     *
-     * @return Collection|Transition[]
-     */
-    public function getTransitions()
-    {
-        return $this->transitionManager->getTransitions();
-    }
-
-    /**
-     * @param string $transitionName
-     * @return Transition|null
-     */
-    public function getTransition($transitionName)
-    {
-        return $this->transitionManager->getTransition($transitionName);
+        return $this->transitionManager;
     }
 
     /**
@@ -340,34 +221,60 @@ class Workflow
      *
      * @param WorkflowItem $workflowItem
      * @param string|Transition $transition
+     * @param Collection $errors
+     * @param bool $fireExceptions
      * @return bool
+     * @throws InvalidTransitionException
      */
-    public function isTransitionAllowed(WorkflowItem $workflowItem, $transition)
-    {
+    public function isTransitionAllowed(
+        WorkflowItem $workflowItem,
+        $transition,
+        Collection $errors = null,
+        $fireExceptions = false
+    ) {
         // get current transition
-        $transition = $this->transitionManager->extractTransition($transition);
-        if (!$transition) {
-            return false;
+        try {
+            $transition = $this->transitionManager->extractTransition($transition);
+        } catch (InvalidTransitionException $e) {
+            if ($fireExceptions) {
+                throw $e;
+            } else {
+                return false;
+            }
         }
 
         // get current step
         $currentStep = null;
         $currentStepName = $workflowItem->getCurrentStepName();
         if ($currentStepName) {
-            $currentStep = $this->getStep($currentStepName);
+            $currentStep = $this->stepManager->getStep($currentStepName);
         }
 
         // if there is no current step - consider transition as a start transition
         if (!$currentStep) {
-            return $transition->isStart();
-        }
-
-        // if transition is not allowed for current step
-        if (!$currentStep->isAllowedTransition($transition->getName())) {
+            $isStart = $transition->isStart();
+            if (!$isStart) {
+                if ($fireExceptions) {
+                    throw InvalidTransitionException::notStartTransition(
+                        $workflowItem->getWorkflowName(),
+                        $transition->getName()
+                    );
+                }
+                return false;
+            }
+        } elseif (!$currentStep->isAllowedTransition($transition->getName())) {
+            // if transition is not allowed for current step
+            if ($fireExceptions) {
+                throw InvalidTransitionException::stepHasNoAllowedTransition(
+                    $workflowItem->getWorkflowName(),
+                    $currentStep->getName(),
+                    $transition->getName()
+                );
+            }
             return false;
         }
 
-        return $transition->isAllowed($workflowItem);
+        return $transition->isAllowed($workflowItem, $errors);
     }
 
     /**
@@ -377,7 +284,6 @@ class Workflow
      * @param string|Transition $transition
      * @throws ForbiddenTransitionException
      * @throws UnknownStepException
-     * @throws UnknownTransitionException
      */
     public function transit(WorkflowItem $workflowItem, $transition)
     {
@@ -417,7 +323,7 @@ class Workflow
      * @return WorkflowItem
      * @throws \LogicException
      */
-    protected function createWorkflowItem(array $data = array())
+    public function createWorkflowItem(array $data = array())
     {
         $workflowItem = new WorkflowItem();
         $workflowItem->setWorkflowName($this->getName());
@@ -469,7 +375,7 @@ class Workflow
     public function getAllowedTransitions(WorkflowItem $workflowItem)
     {
         $currentStepName = $workflowItem->getCurrentStepName();
-        $currentStep = $this->getStep($currentStepName);
+        $currentStep = $this->stepManager->getStep($currentStepName);
         if (!$currentStep) {
             throw new UnknownStepException($currentStepName);
         }
@@ -478,7 +384,7 @@ class Workflow
         $transitionNames = $currentStep->getAllowedTransitions();
         foreach ($transitionNames as $transitionName) {
             if ($this->isTransitionAllowed($workflowItem, $transitionName)) {
-                $transition = $this->getTransition($transitionName);
+                $transition = $this->transitionManager->getTransition($transitionName);
                 $allowedTransitions->add($transition);
             }
         }

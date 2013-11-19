@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\WorkflowBundle\Tests\Unit\Model\Condition;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\WorkflowBundle\Model\Condition;
 
 class NotTest extends \PHPUnit_Framework_TestCase
@@ -23,6 +24,38 @@ class NotTest extends \PHPUnit_Framework_TestCase
 
         $this->condition->initialize(array(new Condition\False()));
         $this->assertTrue($this->condition->isAllowed('anything'));
+    }
+
+    public function testIsAllowedWithErrors()
+    {
+        $currentConditionError = 'Current condition error';
+        $nestedConditionError = 'Nested condition error';
+
+        $this->condition->setMessage($currentConditionError);
+
+        $falseConditionWithError = new Condition\False();
+        $falseConditionWithError->setMessage($nestedConditionError);
+
+        $errors = new ArrayCollection();
+        $this->condition->initialize(array($falseConditionWithError));
+        $this->assertTrue($this->condition->isAllowed('anything', $errors));
+        $this->assertEquals(1, $errors->count());
+        $this->assertEquals(
+            array('message' => $nestedConditionError, 'parameters' => array()),
+            $errors->get(0)
+        );
+
+        $trueConditionWithError = new Condition\True();
+        $trueConditionWithError->setMessage($nestedConditionError);
+
+        $errors = new ArrayCollection();
+        $this->condition->initialize(array($trueConditionWithError));
+        $this->assertFalse($this->condition->isAllowed('anything', $errors));
+        $this->assertEquals(1, $errors->count());
+        $this->assertEquals(
+            array('message' => $currentConditionError, 'parameters' => array()),
+            $errors->get(0)
+        );
     }
 
     // @codingStandardsIgnoreStart

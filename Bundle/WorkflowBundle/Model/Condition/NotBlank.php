@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\WorkflowBundle\Model\Condition;
 
-class NotBlank implements ConditionInterface
+class NotBlank extends AbstractCondition
 {
     /**
      * @var Blank
@@ -25,7 +25,7 @@ class NotBlank implements ConditionInterface
      * @param mixed $context
      * @return boolean
      */
-    public function isAllowed($context)
+    protected function isConditionAllowed($context)
     {
         return !$this->blankCondition->isAllowed($context);
     }

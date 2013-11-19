@@ -11,7 +11,6 @@ workflows:
                 is_final: true
                 allowed_transitions:
                     - first_transition
-                form_type: oro_workflow_step
                 form_options:
                     attribute_fields:
                         first_attribute:
@@ -19,6 +18,11 @@ workflows:
                             label: 'First Attribute'
                             options:
                                 required: true
+                view_attributes:
+                    - { attribute: 'first_attribute', view_type: 'custom_view_type' }
+                    - { path: '$first_attribute.name', label: 'Custom label' }
+                    - first_attribute
+
         attributes:
             first_attribute:
                 label: 'First Attribute'
@@ -30,14 +34,35 @@ workflows:
                 label: 'First Transition'
                 step_to: first_step
                 is_start: true
+                is_hidden: true
+                is_unavailable_hidden: true
+                message: "Test message"
                 transition_definition: first_transition_definition
-                options:
-                    first_key: first_value
+                frontend_options:
+                    class: foo
+                form_type: custom_workflow_transition
+                form_options:
+                    attribute_fields:
+                        first_attribute:
+                            form_type: text
+                            label: 'First Attribute'
+                            options:
+                                required: true
         transition_definitions:
             first_transition_definition:
                 conditions:
-                    @true: ~
+                    @and:
+                        @true: ~
+                        @or:
+                            parameters:
+                                @true: ~
+                                @equals:
+                                    parameters: [1, 1]
+                                    message: "Not equals"
+                        message: "Fail upper level"
                 post_actions:
+                    - @custom_post_action: ~
+                init_actions:
                     - @custom_post_action: ~
     second_workflow:
         label: 'Second Workflow'
@@ -58,7 +83,7 @@ workflows:
                 label: 'Second Transition'
                 step_to: second_step
                 transition_definition: second_transition_definition
-                options:
-                    second_key: second_value
+                frontend_options:
+                    icon: bar
         transition_definitions:
             second_transition_definition: []

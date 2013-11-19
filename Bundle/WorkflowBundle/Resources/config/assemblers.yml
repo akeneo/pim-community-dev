@@ -1,16 +1,16 @@
 parameters:
-    oro_workflow.pass.parameter.class: Oro\Bundle\WorkflowBundle\Model\Pass\ParameterPass
+    oro_workflow.configuration_pass.replace_property_path.class: Oro\Bundle\WorkflowBundle\Model\ConfigurationPass\ReplacePropertyPath
 
     oro_workflow.condition_assembler.class: Oro\Bundle\WorkflowBundle\Model\Condition\ConditionAssembler
-    oro_workflow.post_action_assembler.class: Oro\Bundle\WorkflowBundle\Model\PostAction\PostActionAssembler
+    oro_workflow.action_assembler.class: Oro\Bundle\WorkflowBundle\Model\Action\ActionAssembler
     oro_workflow.attribute_assembler.class: Oro\Bundle\WorkflowBundle\Model\AttributeAssembler
     oro_workflow.step_assembler.class: Oro\Bundle\WorkflowBundle\Model\StepAssembler
     oro_workflow.transition_assembler.class: Oro\Bundle\WorkflowBundle\Model\TransitionAssembler
     oro_workflow.workflow_assembler.class: Oro\Bundle\WorkflowBundle\Model\WorkflowAssembler
 
 services:
-    oro_workflow.pass.parameter:
-        class: %oro_workflow.pass.parameter.class%
+    oro_workflow.configuration_pass.replace_property_path:
+        class: %oro_workflow.configuration_pass.replace_property_path.class%
         arguments:
             - "data"
 
@@ -18,26 +18,30 @@ services:
         class: %oro_workflow.condition_assembler.class%
         arguments:
             - @oro_workflow.condition_factory
-            - @oro_workflow.pass.parameter
+        calls:
+            - [addConfigurationPass, [@oro_workflow.configuration_pass.replace_property_path]]
 
-    oro_workflow.post_action_assembler:
-        class: %oro_workflow.post_action_assembler.class%
+    oro_workflow.action_assembler:
+        class: %oro_workflow.action_assembler.class%
         arguments:
-            - @oro_workflow.post_action_factory
+            - @oro_workflow.action_factory
             - @oro_workflow.condition_factory
-            - @oro_workflow.pass.parameter
+        calls:
+            - [addConfigurationPass, [@oro_workflow.configuration_pass.replace_property_path]]
 
     oro_workflow.attribute_assembler:
         class: %oro_workflow.attribute_assembler.class%
 
     oro_workflow.step_assembler:
         class: %oro_workflow.step_assembler.class%
+        calls:
+            - [addConfigurationPass, [@oro_workflow.configuration_pass.replace_property_path]]
 
     oro_workflow.transition_assembler:
         class: %oro_workflow.transition_assembler.class%
         arguments:
             - @oro_workflow.condition_factory
-            - @oro_workflow.post_action_factory
+            - @oro_workflow.action_factory
 
     oro_workflow.workflow_assembler:
         class: %oro_workflow.workflow_assembler.class%
