@@ -37,7 +37,6 @@ class FamilyNormalizer implements NormalizerInterface
     {
         $this->results = array(
             'code'             => $family->getCode(),
-//             'label'            => $this->normalizeLabel($family),
             'attributes'       => $this->normalizeAttributes($family),
             'attributeAsLabel' => ($family->getAttributeAsLabel()) ? $family->getAttributeAsLabel()->getCode() : '',
             'requirements'     => $this->normalizeRequirements($family),
