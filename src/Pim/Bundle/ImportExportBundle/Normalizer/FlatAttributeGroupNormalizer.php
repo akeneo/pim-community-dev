@@ -28,13 +28,12 @@ class FlatAttributeGroupNormalizer extends AttributeGroupNormalizer
      */
     protected function normalizeLabel(AttributeGroup $group)
     {
-        $labels = parent::normalizeLabel($group);
-        $flat = array();
-        foreach ($labels as $locale => $label) {
-            $flat[]= $locale.':'.$label;
+        $values = array();
+        foreach ($group->getTranslations() as $translation) {
+            $values[sprintf('label-%s', $translation->getLocale())] = $translation->getLabel();
         }
 
-        return implode(', ', $flat);
+        return $values;
     }
 
     /**
@@ -44,6 +43,6 @@ class FlatAttributeGroupNormalizer extends AttributeGroupNormalizer
     {
         $attributes = parent::normalizeAttributes($group);
 
-        return implode(', ', $attributes);
+        return implode(',', $attributes);
     }
 }

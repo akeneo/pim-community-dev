@@ -37,11 +37,11 @@ class FamilyNormalizer implements NormalizerInterface
     {
         $this->results = array(
             'code'             => $family->getCode(),
-            'label'            => $this->normalizeLabel($family),
+//             'label'            => $this->normalizeLabel($family),
             'attributes'       => $this->normalizeAttributes($family),
             'attributeAsLabel' => ($family->getAttributeAsLabel()) ? $family->getAttributeAsLabel()->getCode() : '',
             'requirements'     => $this->normalizeRequirements($family),
-        );
+        ) + $this->normalizeLabel($family);
 
         return $this->results;
     }
@@ -73,7 +73,7 @@ class FamilyNormalizer implements NormalizerInterface
             $labels[$translation->getLocale()]= $translation->getLabel();
         }
 
-        return $labels;
+        return array('label' => $labels);
     }
 
     /**
