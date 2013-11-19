@@ -20,6 +20,7 @@ class FlatAttributeGroupNormalizerTest extends AttributeGroupNormalizerTest
     protected function setUp()
     {
         $this->normalizer = new FlatAttributeGroupNormalizer();
+        $this->format     = 'csv';
     }
 
     /**
@@ -47,26 +48,27 @@ class FlatAttributeGroupNormalizerTest extends AttributeGroupNormalizerTest
             array(
                 array(
                     'code'       => 'mycode',
-                    'label'      => 'en_US:My name, fr_FR:Mon nom',
+                    'label-en_US' => 'My name',
+                    'label-fr_FR' => 'Mon nom',
                     'sortOrder'  => 5,
-                    'attributes' => 'attribute1, attribute2, attribute3'
+                    'attributes' => 'attribute1,attribute2,attribute3'
                 )
             ),
         );
     }
 
-    /**
-     * Test normalize method
-     * @param array $expectedResult
-     *
-     * @dataProvider getNormalizeData
-     */
-    public function testNormalize(array $expectedResult)
+    protected function getLabels($data)
     {
-        $group = $this->createGroup($expectedResult);
-        $this->assertEquals(
-            $expectedResult,
-            $this->normalizer->normalize($group, 'csv')
+        return array(
+            'en_US' => $data['label-en_US'],
+            'fr_FR' => $data['label-fr_FR']
         );
+    }
+
+    protected function createEntity(array $data)
+    {
+        $data['attributes'] = explode(',', $data['attributes']);
+
+        return parent::createEntity($data);
     }
 }

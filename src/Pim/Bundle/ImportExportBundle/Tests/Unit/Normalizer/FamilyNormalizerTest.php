@@ -75,10 +75,8 @@ class FamilyNormalizerTest extends NormalizerTestCase
         $family = new Family();
         $family->setCode('mycode');
 
-        $translations = array('en_US' => 'My label', 'fr_FR' => 'Mon étiquette');
-        foreach ($translations as $locale => $label) {
-            $translation = new FamilyTranslation();
-            $translation->setLocale($locale);
+        foreach ($this->getLabels($data) as $locale => $label) {
+            $translation = $family->getTranslation($locale);
             $translation->setLabel($label);
             $family->addTranslation($translation);
         }
@@ -118,5 +116,14 @@ class FamilyNormalizerTest extends NormalizerTestCase
         $family->setAttributeRequirements($attrRequirements);
 
         return $family;
+    }
+
+    /**
+     * @param array $data
+     * @return mixed
+     */
+    protected function getLabels($data)
+    {
+        return $data['label'];
     }
 }

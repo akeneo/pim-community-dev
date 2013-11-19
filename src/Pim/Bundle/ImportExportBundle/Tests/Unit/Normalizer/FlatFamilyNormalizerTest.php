@@ -47,12 +47,24 @@ class FlatFamilyNormalizerTest extends FamilyNormalizerTest
             array(
                 array(
                     'code'             => 'mycode',
-                    'label'            => 'en_US:My label, fr_FR:Mon étiquette',
+                    'label-en_US'      => 'My label',
+                    'label-fr_FR'      => 'Mon étiquette',
                     'attributes'       => 'attribute1, attribute2, attribute3',
                     'attributeAsLabel' => 'attribute1',
                     'requirements'     => 'channel1:attribute1, attribute2| channel2:attribute1, attribute3',
                 )
             ),
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getLabels($data)
+    {
+        return array(
+            'en_US' => $data['label-en_US'],
+            'fr_FR' => $data['label-fr_FR']
         );
     }
 }
