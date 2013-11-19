@@ -21,7 +21,7 @@ class FlatAttributeOptionNormalizer extends AttributeOptionNormalizer
     /**
      * {@inheritdoc}
      */
-    protected function getNormalizedLabelsArray(AttributeOption $entity)
+    protected function normalizeLabel(AttributeOption $entity)
     {
         $values = array();
         foreach ($entity->getOptionValues() as $translation) {

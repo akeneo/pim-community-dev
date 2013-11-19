@@ -37,7 +37,7 @@ class AttributeOptionNormalizer implements NormalizerInterface
         );
         $results = array_merge(
             $results,
-            $this->getNormalizedLabelsArray($entity)
+            $this->normalizeLabel($entity)
         );
 
         return $results;
@@ -63,7 +63,7 @@ class AttributeOptionNormalizer implements NormalizerInterface
      *
      * @return array
      */
-    protected function getNormalizedLabelsArray(AttributeOption $entity)
+    protected function normalizeLabel(AttributeOption $entity)
     {
         $labels = array();
         foreach ($entity->getOptionValues() as $translation) {

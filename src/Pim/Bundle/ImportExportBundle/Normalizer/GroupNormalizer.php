@@ -63,7 +63,7 @@ class GroupNormalizer implements NormalizerInterface
      *
      * @return array
      */
-    protected function getNormalizedLabelsArray(Group $group)
+    protected function normalizeLabel(Group $group)
     {
         $labels = array();
         foreach ($group->getTranslations() as $group) {

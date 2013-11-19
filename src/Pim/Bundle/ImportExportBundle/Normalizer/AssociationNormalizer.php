@@ -32,7 +32,7 @@ class AssociationNormalizer implements NormalizerInterface
     {
         return array(
             'code'  => $association->getCode()
-        ) + $this->getNormalizedLabelsArray($association);
+        ) + $this->normalizeLabel($association);
     }
 
     /**
@@ -55,7 +55,7 @@ class AssociationNormalizer implements NormalizerInterface
      *
      * @return array
      */
-    protected function getNormalizedLabelsArray(Association $association)
+    protected function normalizeLabel(Association $association)
     {
         $labels = array();
         foreach ($association->getTranslations() as $translation) {

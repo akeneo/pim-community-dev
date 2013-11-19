@@ -39,7 +39,7 @@ class CategoryNormalizer implements NormalizerInterface
             'code'    => $object->getCode(),
             'parent'  => $object->getParent() ? $object->getParent()->getCode() : '',
             'dynamic' => (string) $object->isDynamic(),
-        ) + $this->getNormalizedLabelsArray($object);
+        ) + $this->normalizeLabel($object);
 
         return $this->results;
     }
@@ -64,7 +64,7 @@ class CategoryNormalizer implements NormalizerInterface
      *
      * @return array
      */
-    protected function getNormalizedLabelsArray(CategoryInterface $category)
+    protected function normalizeLabel(CategoryInterface $category)
     {
         $labels = array();
         foreach ($category->getTranslations() as $translation) {
