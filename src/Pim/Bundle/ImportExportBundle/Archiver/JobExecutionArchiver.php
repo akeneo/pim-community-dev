@@ -62,21 +62,6 @@ class JobExecutionArchiver
     }
 
     /**
-     * Copy the source path to the archive
-     * @param string $sourcePath
-     * @param string $archivePath
-     */
-    protected function copyFile($sourcePath, $archivePath)
-    {
-        $sourceName = basename($sourcePath);
-        $destPath   = $archivePath.$sourceName;
-        if (!is_dir($archivePath)) {
-            mkdir($archivePath, 0777, true);
-        }
-        copy($sourcePath, $destPath);
-    }
-
-    /**
      * Get download file path
      * @param JobExecution $jobExecution
      *
@@ -121,6 +106,30 @@ class JobExecutionArchiver
     }
 
     /**
+     * Copy the source path to the archive
+     * @param string $sourcePath
+     * @param string $archivePath
+     */
+    protected function copyFile($sourcePath, $archivePath)
+    {
+        $this->ensureDir($archivePath);
+        $sourceName = basename($sourcePath);
+        $destPath   = $archivePath.$sourceName;
+        copy($sourcePath, $destPath);
+    }
+
+    /**
+     * Ensure that a directory exists - if it doesn't, it will be created
+     * @param string $directory
+     */
+    protected function ensureDir($directory)
+    {
+        if (!is_dir($directory)) {
+            mkdir($directory, 0755, true);
+        }
+    }
+
+    /**
      * Create a zip archive with the execution results.
      *
      * @param array  $writtenFiles
@@ -130,11 +139,7 @@ class JobExecutionArchiver
      */
     protected function createZipArchive($writtenFiles, $archivePath)
     {
-        $archiveDir = pathinfo($archivePath, PATHINFO_DIRNAME);
-
-        if (!is_dir($archiveDir)) {
-            mkdir($archiveDir, 0755, true);
-        }
+        $this->ensureDir(pathinfo($archivePath, PATHINFO_DIRNAME));
 
         $archive = new \ZipArchive();
         $status = $archive->open($archivePath, \ZIPARCHIVE::CREATE);
