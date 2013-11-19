@@ -17,14 +17,10 @@ class JobInstanceNormalizerTest extends NormalizerTestCase
     /**
      * {@inheritdoc}
      */
-    protected $format = 'json';
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function createNormalizer()
+    protected function setUp()
     {
-        return new JobInstanceNormalizer();
+        $this->normalizer = new JobInstanceNormalizer();
+        $this->format     = 'json';
     }
 
     /**

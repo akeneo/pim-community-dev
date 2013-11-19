@@ -20,14 +20,10 @@ class ChannelNormalizerTest extends NormalizerTestCase
     /**
      * {@inheritdoc}
      */
-    protected $format = 'json';
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function createNormalizer()
+    protected function setUp()
     {
-        return new ChannelNormalizer();
+        $this->normalizer = new ChannelNormalizer();
+        $this->format     = 'json';
     }
 
     /**

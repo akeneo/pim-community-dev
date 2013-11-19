@@ -16,14 +16,10 @@ class FlatChannelNormalizerTest extends ChannelNormalizerTest
     /**
      * {@inheritdoc}
      */
-    protected $format = 'csv';
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function createNormalizer()
+    protected function setUp()
     {
-        return new FlatChannelNormalizer();
+        $this->normalizer = new FlatChannelNormalizer();
+        $this->format     = 'csv';
     }
 
     /**

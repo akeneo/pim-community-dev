@@ -22,22 +22,7 @@ abstract class NormalizerTestCase extends \PHPUnit_Framework_TestCase
      * Format for normalization
      * @var string
      */
-    protected $format = null;
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function setUp()
-    {
-        $this->normalizer = $this->createNormalizer();
-    }
-
-    /**
-     * Create normalizer
-     * @return NormalizerInterface
-     * @abstract
-     */
-    abstract protected function createNormalizer();
+    protected $format;
 
     /**
      * Data provider for testing supportsNormalization method
