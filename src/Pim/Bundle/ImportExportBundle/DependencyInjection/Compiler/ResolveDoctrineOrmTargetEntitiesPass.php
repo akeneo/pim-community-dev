@@ -3,6 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\DependencyInjection\Compiler;
 
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\AbstractResolveDoctrineOrmTargetEntitiesPass;
+
 /**
  * Resolves doctrine ORM Target entities
  *
