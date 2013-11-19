@@ -51,9 +51,9 @@ class CompletenessManager
     /**
      * Insert missing completenesses for a given product
      *
-     * @param Product $product
+     * @param ProductInterface $product
      */
-    public function createProductCompletenesses(Product $product)
+    public function createProductCompletenesses(ProductInterface $product)
     {
         $this->createCompletenesses(array('product' => $product->getId()));
     }
