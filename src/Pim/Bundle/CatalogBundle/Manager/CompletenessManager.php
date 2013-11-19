@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Doctrine\CompletenessQueryBuilder;
 
 /**
@@ -52,7 +53,7 @@ class CompletenessManager
      *
      * @param Product $product
      */
-    public function createProductCompletenesses(Product $product)
+    public function createProductCompletenesses(ProductInterface $product)
     {
         $this->createCompletenesses(array('product' => $product->getId()));
     }
