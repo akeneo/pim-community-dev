@@ -2,11 +2,6 @@
 
 namespace Pim\Bundle\ImportExportBundle\Processor;
 
-use Symfony\Component\Validator\ValidatorInterface;
-use Doctrine\ORM\EntityManager;
-use Doctrine\Common\Collections\ArrayCollection;
-use Oro\Bundle\BatchBundle\Item\ItemProcessorInterface;
-use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Oro\Bundle\BatchBundle\Item\InvalidItemException;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
@@ -21,70 +16,8 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeOptionProcessor extends AbstractConfigurableStepElement implements ItemProcessorInterface
+class AttributeOptionProcessor extends AbstractEntityProcessor
 {
-    /**
-     * Entity manager
-     *
-     * @var EntityManager
-     */
-    protected $entityManager;
-
-    /**
-     * Property for storing data during execution
-     *
-     * @var ArrayCollection
-     */
-    protected $data;
-
-    /**
-     * Property for storing valid options during execution
-     *
-     * @var ArrayCollection
-     */
-    protected $options;
-
-    /**
-     * Constructor
-     *
-     * @param EntityManager      $entityManager
-     * @param ValidatorInterface $validator
-     */
-    public function __construct(
-        EntityManager $entityManager,
-        ValidatorInterface $validator
-    ) {
-        $this->entityManager = $entityManager;
-        $this->validator     = $validator;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getConfigurationFields()
-    {
-        return array();
-    }
-
-    /**
-     * Receives an array of options and processes them
-     *
-     * @param mixed $data Data to be processed
-     *
-     * @return ProductAttribute[]
-     */
-    public function process($data)
-    {
-        $this->data   = new ArrayCollection($data);
-        $this->options = new ArrayCollection();
-
-        foreach ($this->data as $item) {
-            $this->processItem($item);
-        }
-
-        return $this->options->toArray();
-    }
-
     /**
      * If the option is valid, it is stored into the option property
      *
@@ -92,7 +25,7 @@ class AttributeOptionProcessor extends AbstractConfigurableStepElement implement
      *
      * @throws InvalidItemException
      */
-    private function processItem($item)
+    public function process($item)
     {
         $option = $this->getOption($item);
         $option->setDefault((bool) $item['is_default']);
@@ -107,7 +40,7 @@ class AttributeOptionProcessor extends AbstractConfigurableStepElement implement
             throw new InvalidItemException(implode(', ', $messages), $item);
 
         } else {
-            $this->options[] = $option;
+            return $option;
         }
     }
 
