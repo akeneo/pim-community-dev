@@ -19,7 +19,7 @@ class GroupProcessor extends AbstractEntityProcessor
     /**
      * {@inheritdoc}
      */
-    protected function processItem($item)
+    public function process($item)
     {
         $group = $this->getGroup($item);
 
@@ -41,7 +41,7 @@ class GroupProcessor extends AbstractEntityProcessor
             throw new InvalidItemException(implode(', ', $messages), $item);
 
         } else {
-            $this->entities[] = $group;
+            return $group;
         }
     }
 

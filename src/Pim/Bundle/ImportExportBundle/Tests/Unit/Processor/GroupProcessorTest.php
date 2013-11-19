@@ -58,24 +58,13 @@ class GroupProcessorTest extends AbstractProcessorTestCase
             ->method('validate')
             ->will($this->returnValue($this->getconstraintViolationListMock()));
 
-        $data = $this->getValidGroupData();
-        $this->assertEquals($data['result'], $this->processor->process($data['csv']));
-    }
-
-    /**
-     * @return array
-     */
-    protected function getValidGroupData()
-    {
-        return array(
-            'csv' => array(
-                $this->getRow('group_1'),
-                $this->getRow('group_2')
-            ),
-            'result' => array(
-                $this->getGroup('group_1'),
-                $this->getGroup('group_2')
-            )
+        $this->assertEquals(
+            $this->getGroup('group_1'),
+            $this->processor->process($this->getRow('group_1'))
+        );
+        $this->assertEquals(
+            $this->getGroup('group_2'),
+            $this->processor->process($this->getRow('group_2'))
         );
     }
 
@@ -119,8 +108,14 @@ class GroupProcessorTest extends AbstractProcessorTestCase
                 )
             );
 
-        $data = $this->getInvalidGroupData();
-        $this->assertEquals($data['result'], $this->processor->process($data['csv']));
+        $this->assertEquals(
+            $this->getGroup('group_1'),
+            $this->processor->process($this->getRow('group_1'))
+        );
+        $this->assertEquals(
+            $this->getGroup('group_2'),
+            $this->processor->process($this->getRow('group_2'))
+        );
     }
 
     /**
