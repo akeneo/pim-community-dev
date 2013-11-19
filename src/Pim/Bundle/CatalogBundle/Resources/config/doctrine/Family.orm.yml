@@ -51,16 +51,14 @@ Pim\Bundle\CatalogBundle\Entity\Family:
                 name: pim_catalog_family_attribute
                 schema: null
                 joinColumns:
-                    -
-                        name: family_id
+                     family_id:
                         unique: false
                         nullable: true
                         onDelete: CASCADE
                         columnDefinition: null
                         referencedColumnName: id
                 inverseJoinColumns:
-                    -
-                        name: attribute_id
+                    attribute_id:
                         unique: false
                         nullable: true
                         onDelete: CASCADE
@@ -79,7 +77,6 @@ Pim\Bundle\CatalogBundle\Entity\Family:
         requirements:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\AttributeRequirement
             cascade:
-                - remove
                 - persist
             mappedBy: family
             inversedBy: null

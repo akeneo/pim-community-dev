@@ -53,15 +53,6 @@ class Family implements TranslatableInterface
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection $requirements
-<<<<<<< HEAD
-     *
-     * @ORM\OneToMany(
-     *     targetEntity="Pim\Bundle\CatalogBundle\Entity\AttributeRequirement",
-     *     mappedBy="family",
-     *     cascade={"persist"}
-     * )
-=======
->>>>>>> 316a717... PIM-1555 Switch all entities from bundle as it's atomic (either all annotations or all file mapping)
      */
     protected $requirements;
 

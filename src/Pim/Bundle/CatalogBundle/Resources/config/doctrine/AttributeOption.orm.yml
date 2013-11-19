@@ -51,9 +51,9 @@ Pim\Bundle\CatalogBundle\Entity\AttributeOption:
             mappedBy: null
             inversedBy: options
             joinColumns:
-                onDelete: CASCADE
                 attribute_id:
                     referencedColumnName: id
+                    onDelete: CASCADE
             orphanRemoval: false
     oneToMany:
         optionValues:

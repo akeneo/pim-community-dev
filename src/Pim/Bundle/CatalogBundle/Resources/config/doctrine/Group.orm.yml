@@ -25,7 +25,7 @@ Pim\Bundle\CatalogBundle\Entity\Group:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\GroupType
             cascade: {  }
             mappedBy: null
-            inversedBy: null
+            inversedBy: groups
             joinColumns:
                 type_id:
                     referencedColumnName: id

@@ -140,16 +140,14 @@ Pim\Bundle\CatalogBundle\Entity\ProductValue:
                 name: pim_catalog_value_option
                 schema: null
                 joinColumns:
-                    -
-                        name: value_id
+                    value_id:
                         unique: false
                         nullable: true
                         onDelete: CASCADE
                         columnDefinition: null
                         referencedColumnName: id
                 inverseJoinColumns:
-                    -
-                        name: option_id
+                    option_id:
                         unique: false
                         nullable: true
                         onDelete: CASCADE
