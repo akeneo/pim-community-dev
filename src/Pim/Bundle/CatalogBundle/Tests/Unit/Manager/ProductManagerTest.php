@@ -121,8 +121,8 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
             $this->getEventDispatcherInterfaceMock(),
             $this->getAttributeTypeFactoryMock(),
             $mediaManager ?: $this->getMediaManagerMock(),
-            $this->getProductBuilderMock(),
-            $this->getCompletenessCalculatorMock()
+            $this->getCompletenessManagerMock(),
+            $this->getProductBuilderMock()
         );
     }
 
@@ -379,15 +379,10 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
             ->getMock();
     }
 
-    /**
-     * @return \Pim\Bundle\CatalogBundle\Calculator\CompletenessCalculator
-     */
-    protected function getCompletenessCalculatorMock()
-    {
+    protected function getCompletenessManagerMock() {
         return $this
-            ->getMockBuilder('Pim\Bundle\CatalogBundle\Calculator\CompletenessCalculator')
+            ->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\CompletenessManager')
             ->disableOriginalConstructor()
             ->getMock();
-
     }
 }
