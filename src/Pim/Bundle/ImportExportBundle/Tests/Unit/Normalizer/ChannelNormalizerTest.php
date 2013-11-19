@@ -61,6 +61,7 @@ class ChannelNormalizerTest extends NormalizerTestCase
 
     /**
      * {@inheritdoc}
+     *
      * @return Channel
      */
     protected function createEntity(array $data)

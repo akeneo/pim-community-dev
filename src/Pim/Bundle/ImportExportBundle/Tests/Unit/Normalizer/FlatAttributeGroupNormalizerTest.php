@@ -24,8 +24,7 @@ class FlatAttributeGroupNormalizerTest extends AttributeGroupNormalizerTest
     }
 
     /**
-     * Data provider for testing supportsNormalization method
-     * @return array
+     * {@inheritdoc}
      */
     public static function getSupportNormalizationData()
     {
@@ -38,9 +37,7 @@ class FlatAttributeGroupNormalizerTest extends AttributeGroupNormalizerTest
     }
 
     /**
-     * Data provider for testing normalize method
-     * @return array
-     * @static
+     * {@inheritdoc}
      */
     public static function getNormalizeData()
     {
@@ -57,18 +54,24 @@ class FlatAttributeGroupNormalizerTest extends AttributeGroupNormalizerTest
         );
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    protected function createEntity(array $data)
+    {
+        $data['attributes'] = explode(',', $data['attributes']);
+
+        return parent::createEntity($data);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function getLabels($data)
     {
         return array(
             'en_US' => $data['label-en_US'],
             'fr_FR' => $data['label-fr_FR']
         );
-    }
-
-    protected function createEntity(array $data)
-    {
-        $data['attributes'] = explode(',', $data['attributes']);
-
-        return parent::createEntity($data);
     }
 }

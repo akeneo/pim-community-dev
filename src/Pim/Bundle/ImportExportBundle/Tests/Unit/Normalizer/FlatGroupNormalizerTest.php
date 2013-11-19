@@ -24,8 +24,7 @@ class FlatGroupNormalizerTest extends GroupNormalizerTest
     }
 
     /**
-     * Data provider for testing supportsNormalization method
-     * @return array
+     * {@inheritdoc}
      */
     public static function getSupportNormalizationData()
     {
@@ -38,8 +37,7 @@ class FlatGroupNormalizerTest extends GroupNormalizerTest
     }
 
     /**
-     * Data provider for testing normalize method
-     * @return array
+     * {@inheritdoc}
      */
     public static function getNormalizeData()
     {
@@ -64,9 +62,7 @@ class FlatGroupNormalizerTest extends GroupNormalizerTest
     }
 
     /**
-     * @param array $data
-     *
-     * @return array
+     * {@inheritdoc}
      */
     protected function getLabels($data)
     {
@@ -77,9 +73,7 @@ class FlatGroupNormalizerTest extends GroupNormalizerTest
     }
 
     /**
-     * @param array $data
-     *
-     * @return array
+     * {@inheritdoc}
      */
     protected function getAttributes($data)
     {

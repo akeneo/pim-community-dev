@@ -29,8 +29,7 @@ class FamilyNormalizerTest extends NormalizerTestCase
     }
 
     /**
-     * Data provider for testing supportsNormalization method
-     * @return array
+     * {@inheritdoc}
      */
     public static function getSupportNormalizationData()
     {
@@ -43,8 +42,7 @@ class FamilyNormalizerTest extends NormalizerTestCase
     }
 
     /**
-     * Data provider for testing normalize method
-     * @return array
+     * {@inheritdoc}
      */
     public static function getNormalizeData()
     {
@@ -65,8 +63,7 @@ class FamilyNormalizerTest extends NormalizerTestCase
     }
 
     /**
-     * Create a family
-     * @param array $data
+     * {@inheritdoc}
      *
      * @return Family
      */

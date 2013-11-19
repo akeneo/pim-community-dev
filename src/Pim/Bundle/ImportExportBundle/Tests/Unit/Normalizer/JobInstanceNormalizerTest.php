@@ -24,8 +24,7 @@ class JobInstanceNormalizerTest extends NormalizerTestCase
     }
 
     /**
-     * Data provider for testing supportsNormalization method
-     * @return array
+     * {@inheritdoc}
      */
     public static function getSupportNormalizationData()
     {
@@ -38,10 +37,7 @@ class JobInstanceNormalizerTest extends NormalizerTestCase
     }
 
     /**
-     * Test supportsNormalization method
-     * @param mixed   $class
-     * @param string  $format
-     * @param boolean $isSupported
+     * {@inheritdoc}
      *
      * @dataProvider getSupportNormalizationData
      */
@@ -55,8 +51,7 @@ class JobInstanceNormalizerTest extends NormalizerTestCase
     }
 
     /**
-     * Data provider for testing normalize method
-     * @return array
+     * {@inheritdoc}
      */
     public static function getNormalizeData()
     {
@@ -74,8 +69,7 @@ class JobInstanceNormalizerTest extends NormalizerTestCase
     }
 
     /**
-     * Create a job instance
-     * @param array $data
+     * {@inheritdoc}
      *
      * @return JobInstance
      */

@@ -26,8 +26,7 @@ class AttributeGroupNormalizerTest extends NormalizerTestCase
     }
 
     /**
-     * Data provider for testing supportsNormalization method
-     * @return array
+     * {@inheritdoc}
      */
     public static function getSupportNormalizationData()
     {
@@ -40,9 +39,7 @@ class AttributeGroupNormalizerTest extends NormalizerTestCase
     }
 
     /**
-     * Data provider for testing normalize method
-     * @return array
-     * @static
+     * {@inheritdoc}
      */
     public static function getNormalizeData()
     {
@@ -59,7 +56,7 @@ class AttributeGroupNormalizerTest extends NormalizerTestCase
     }
 
     /**
-     * Create attribute group
+     * {@inheritdoc}
      *
      * @return AttributeGroup
      */

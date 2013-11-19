@@ -64,6 +64,7 @@ class GroupNormalizerTest extends NormalizerTestCase
 
     /**
      * {@inheritdoc}
+     *
      * @return Group
      */
     protected function createEntity(array $data)

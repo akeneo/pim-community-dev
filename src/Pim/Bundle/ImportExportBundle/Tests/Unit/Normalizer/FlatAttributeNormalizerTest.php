@@ -27,8 +27,7 @@ class FlatAttributeNormalizerTest extends AttributeNormalizerTest
     }
 
     /**
-     * Data provider for testing supportsNormalization method
-     * @return array
+     * {@inheritdoc}
      */
     public static function getSupportNormalizationData()
     {
@@ -41,8 +40,7 @@ class FlatAttributeNormalizerTest extends AttributeNormalizerTest
     }
 
     /**
-     * Data provider for testing normalize method
-     * @return array
+     * {@inheritdoc}
      */
     public static function getNormalizeData()
     {

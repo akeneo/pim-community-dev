@@ -16,16 +16,12 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
 class FlatAttributeOptionNormalizerTest extends AttributeOptionNormalizerTest
 {
     /**
-     * @var string
-     */
-    protected $format = 'csv';
-
-    /**
      * {@inheritdoc}
      */
     protected function setUp()
     {
         $this->normalizer = new FlatAttributeOptionNormalizer();
+        $this->format     = 'csv';
     }
 
     /**

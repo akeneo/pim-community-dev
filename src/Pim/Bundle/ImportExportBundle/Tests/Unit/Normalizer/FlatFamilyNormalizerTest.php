@@ -24,8 +24,7 @@ class FlatFamilyNormalizerTest extends FamilyNormalizerTest
     }
 
     /**
-     * Data provider for testing supportsNormalization method
-     * @return array
+     * {@inheritdoc}
      */
     public static function getSupportNormalizationData()
     {
@@ -38,8 +37,7 @@ class FlatFamilyNormalizerTest extends FamilyNormalizerTest
     }
 
     /**
-     * Data provider for testing normalize method
-     * @return array
+     * {@inheritdoc}
      */
     public static function getNormalizeData()
     {

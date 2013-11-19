@@ -25,8 +25,7 @@ class AssociationNormalizerTest extends NormalizerTestCase
     }
 
     /**
-     * Data provider for testing supportsNormalization method
-     * @return array
+     * {@inheritdoc}
      */
     public static function getSupportNormalizationData()
     {
@@ -39,8 +38,7 @@ class AssociationNormalizerTest extends NormalizerTestCase
     }
 
     /**
-     * Data provider for testing normalize method
-     * @return array
+     * {@inheritdoc}
      */
     public static function getNormalizeData()
     {
@@ -55,8 +53,7 @@ class AssociationNormalizerTest extends NormalizerTestCase
     }
 
     /**
-     * Create a association
-     * @param array $data
+     * {@inheritdoc}
      *
      * @return Association
      */

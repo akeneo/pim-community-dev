@@ -28,8 +28,7 @@ class AttributeNormalizerTest extends NormalizerTestCase
     }
 
     /**
-     * Data provider for testing supportsNormalization method
-     * @return array
+     * {@inheritdoc}
      */
     public static function getSupportNormalizationData()
     {
@@ -42,9 +41,7 @@ class AttributeNormalizerTest extends NormalizerTestCase
     }
 
     /**
-     * Test normalize method
-     * @param array $data
-     *
+     * {@inheritdoc}
      * @dataProvider getNormalizeData
      */
     public function testNormalize(array $data)
@@ -65,8 +62,7 @@ class AttributeNormalizerTest extends NormalizerTestCase
     }
 
     /**
-     * Data provider for testing normalize method
-     * @return array
+     * {@inheritdoc}
      */
     public static function getNormalizeData()
     {
@@ -147,6 +143,8 @@ class AttributeNormalizerTest extends NormalizerTestCase
 
     /**
      * {@inheritdoc}
+     *
+     * @return ProductAttribute
      */
     protected function createEntity(array $data)
     {

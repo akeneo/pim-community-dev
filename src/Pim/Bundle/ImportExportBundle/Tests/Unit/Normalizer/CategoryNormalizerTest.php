@@ -24,8 +24,7 @@ class CategoryNormalizerTest extends NormalizerTestCase
     }
 
     /**
-     * Data provider for testing supportsNormalization method
-     * @return array
+     * {@inheritdoc}
      */
     public static function getSupportNormalizationData()
     {
@@ -38,8 +37,7 @@ class CategoryNormalizerTest extends NormalizerTestCase
     }
 
     /**
-     * Data provider for testing normalize method
-     * @return array
+     * {@inheritdoc}
      */
     public static function getNormalizeData()
     {
@@ -64,8 +62,7 @@ class CategoryNormalizerTest extends NormalizerTestCase
     }
 
     /**
-     * Create a category
-     * @param array $data
+     * {@inheritdoc}
      *
      * @return Category
      */
