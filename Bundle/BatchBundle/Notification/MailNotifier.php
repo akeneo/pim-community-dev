@@ -38,6 +38,11 @@ class MailNotifier implements Notifier
     protected $senderEmail;
 
     /**
+     * @var string $recipientEmail
+     */
+    protected $recipientEmail;
+
+    /**
      * @param BatchLogHandler          $logger
      * @param SecurityContextInterface $securityContext
      * @param \Twig_Environment        $twig
@@ -59,17 +64,29 @@ class MailNotifier implements Notifier
     }
 
     /**
+     * Set the recipient email
+     *
+     * @param string $recipientEmail
+     *
+     * @return MailNotifier
+     */
+    public function setRecipientEmail($recipientEmail)
+    {
+        $this->recipientEmail = $recipientEmail;
+
+        return $this;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function notify(JobExecution $jobExecution)
     {
-        $user = $this->getUser();
-        if (!$user) {
+        if (null === $email = $this->getEmail()) {
             return;
         }
 
         $parameters = array(
-            'user'         => $user,
             'jobExecution' => $jobExecution,
             'log'          => $this->logger->getFilename(),
         );
@@ -80,7 +97,7 @@ class MailNotifier implements Notifier
         $message = $this->mailer->createMessage();
         $message->setSubject('Job has been executed');
         $message->setFrom($this->senderEmail);
-        $message->setTo($user->getEmail());
+        $message->setTo($email);
         $message->setBody($txtBody, 'text/plain');
         $message->addPart($htmlBody, 'text/html');
 
@@ -90,10 +107,14 @@ class MailNotifier implements Notifier
     /**
      * Get the current authenticated user
      *
-     * @return null|UserInterface
+     * @return null|string
      */
-    private function getUser()
+    private function getEmail()
     {
+        if ($this->recipientEmail) {
+            return $this->recipientEmail;
+        }
+
         if (null === $token = $this->securityContext->getToken()) {
             return;
         }
@@ -102,6 +123,6 @@ class MailNotifier implements Notifier
             return;
         }
 
-        return $user;
+        return $user->getEmail();
     }
 }

@@ -23,7 +23,7 @@ class Generator
     /**
      * @var string
      */
-    protected $entityDir;
+    protected $entityCacheDir;
 
     /**
      * @var Writer
@@ -35,46 +35,35 @@ class Generator
      */
     public function __construct($cacheDir)
     {
-        $this->cacheDir  = $cacheDir;
-        $this->entityDir = $cacheDir . '/Extend/Entity';
+        $this->cacheDir = $cacheDir;
+        $this->entityCacheDir = ExtendClassLoadingUtils::getEntityCacheDir($cacheDir);
     }
 
-    public function generate()
-    {
-        if (!file_exists($this->cacheDir . '/entity_config.yml')) {
-            return;
-        }
-
-        $data = Yaml::parse(file_get_contents($this->cacheDir . '/entity_config.yml'));
-
-        foreach ($data as $item) {
-            $this->generateYaml($item);
-            $this->generateClass($item);
-        }
-
-        $this->generateAlias($data);
-    }
-
-    public function generateYaml($item)
-    {
-        $classNameArray = explode('\\', $item['entity']);
-        file_put_contents(
-            $this->entityDir . '/' . array_pop($classNameArray) . '.orm.yml',
-            Yaml::dump($item['doctrine'], 5)
-        );
-    }
-
-    public function generateAlias($data)
+    /**
+     * Generates extended entities
+     *
+     * @param array $config
+     */
+    public function generate(array $config)
     {
         $aliases = array();
-
-        foreach ($data as $item) {
+        foreach ($config as $item) {
+            $this->generateYaml($item);
+            $this->generateClass($item);
             if ($item['type'] == 'Extend') {
                 $aliases[$item['entity']] = $item['parent'];
             }
         }
+        file_put_contents(ExtendClassLoadingUtils::getAliasesPath($this->cacheDir), Yaml::dump($aliases));
+    }
 
-        file_put_contents($this->entityDir . '/alias.yml', Yaml::dump($aliases));
+    protected function generateYaml($item)
+    {
+        $classNameArray = explode('\\', $item['entity']);
+        file_put_contents(
+            $this->entityCacheDir . '/' . array_pop($classNameArray) . '.orm.yml',
+            Yaml::dump($item['doctrine'], 5)
+        );
     }
 
     protected function generateClass($item)
@@ -118,7 +107,7 @@ class Generator
         $classArray = explode('\\', $item['entity']);
         $className  = array_pop($classArray);
 
-        $filePath = $this->entityDir . '/' . $className . '.php';
+        $filePath = $this->entityCacheDir . '/' . $className . '.php';
         $strategy = new DefaultGeneratorStrategy();
         file_put_contents($filePath, "<?php\n\n" . $strategy->generate($class));
     }

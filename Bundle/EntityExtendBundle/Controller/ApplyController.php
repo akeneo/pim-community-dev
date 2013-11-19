@@ -72,7 +72,6 @@ class ApplyController extends Controller
         /**
          * Generate doctrine proxy classes for extended entities
          */
-
         /** @var ConfigManager $configManager */
         $configManager   = $this->get('oro_entity_config.config_manager');
         $em              = $configManager->getEntityManager();

@@ -51,9 +51,6 @@ services:
             - @twig
             - @mailer
             - %oro_batch.mail_notifier.sender_email%
-        # There is no need to send email on each job
-        # tags:
-        #     - { name: oro_batch.notifier }
 
     oro_batch.step_factory:
         class: %oro_batch.step_factory.class%

@@ -11,7 +11,7 @@ class ReaderStub implements ItemReaderInterface, StepExecutionAwareInterface
     /**
      * {@inheritDoc}
      */
-    public function read(StepExecution $stepExecution)
+    public function read()
     {
     }
 

@@ -37,7 +37,6 @@ class TargetType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        //$builder->addEventSubscriber(new TargetSubscriber($this->configManager));
         $builder->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'preSetData'));
     }
 

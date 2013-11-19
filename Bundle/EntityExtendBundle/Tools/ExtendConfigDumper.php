@@ -4,7 +4,6 @@ namespace Oro\Bundle\EntityExtendBundle\Tools;
 
 use Oro\Bundle\EntityConfigBundle\Config\Config;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\Yaml\Yaml;
 
 use Oro\Bundle\EntityBundle\ORM\OroEntityManager;
 
@@ -68,31 +67,29 @@ class ExtendConfigDumper
 
     public function dump()
     {
-        $yml            = [];
+        $schemas   = [];
         $extendProvider = $this->em->getExtendManager()->getConfigProvider();
         $configs        = $extendProvider->getConfigs();
         foreach ($configs as $config) {
-            if ($schema = $config->get('schema')) {
-                $yml[$config->getId()->getClassName()] = $schema;
+            $schema = $config->get('schema');
+            if ($schema) {
+                $schemas[$config->getId()->getClassName()] = $schema;
             }
         }
 
-        if ($yml) {
-            file_put_contents(
-                $this->cacheDir . '/entity_config.yml',
-                Yaml::dump($yml, 8)
-            );
-        }
+        $generator = new Generator($this->cacheDir);
+        $generator->generate($schemas);
     }
 
     public function clear()
     {
         $filesystem = new Filesystem();
-        if ($filesystem->exists($this->cacheDir)) {
-            $filesystem->remove([$this->cacheDir]);
+        $baseCacheDir = ExtendClassLoadingUtils::getEntityBaseCacheDir($this->cacheDir);
+        if ($filesystem->exists($baseCacheDir)) {
+            $filesystem->remove([$baseCacheDir]);
         }
 
-        $filesystem->mkdir($this->cacheDir . '/Extend/Entity');
+        $filesystem->mkdir(ExtendClassLoadingUtils::getEntityCacheDir($this->cacheDir));
 
         /** @var ExtendClassMetadataFactory $metadataFactory */
         $metadataFactory = $this->em->getMetadataFactory();

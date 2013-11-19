@@ -22,5 +22,5 @@ interface EventInterface
     const STEP_EXECUTION_INTERRUPTED = 'oro_batch.step_execution_interrupted';
     const STEP_EXECUTION_ERRORED     = 'oro_batch.step_execution_errored';
     const STEP_EXECUTION_COMPLETED   = 'oro_batch.step_execution_completed';
-    const INVALID_READER_EXECUTION   = 'oro_batch.invalid_reader_execution';
+    const INVALID_ITEM               = 'oro_batch.invalid_item';
 }

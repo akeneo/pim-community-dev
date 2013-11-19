@@ -1,10 +1,8 @@
 parameters:
     oro_user.manager.class:             Oro\Bundle\UserBundle\Entity\UserManager
-    oro_user.manager.flexible.class:    Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager
-    oro_user.manager.api.class:         Oro\Bundle\SoapBundle\Entity\Manager\ApiFlexibleEntityManager
+    oro_user.manager.api.class:         Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
     oro_user.status.manager.class:      Oro\Bundle\UserBundle\Entity\Manager\StatusManager
     oro_user.entity.class:              Oro\Bundle\UserBundle\Entity\User
-    oro_user.entity.value.class:        Oro\Bundle\UserBundle\Entity\UserValue
     oro_user.group.entity.class:        Oro\Bundle\UserBundle\Entity\Group
     oro_user.role.entity.class:         Oro\Bundle\UserBundle\Entity\Role
     oro_user.security.provider.class:   Oro\Bundle\UserBundle\Security\UserProvider
@@ -16,7 +14,6 @@ parameters:
     oro_user.role.manager.api.class:    Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
     oro_user.group.manager.class:       Oro\Bundle\UserBundle\Entity\Manager\GroupManager
     oro_user.group.manager.api.class:   Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
-    oro_user.attribute_type.user.class: Oro\Bundle\UserBundle\AttributeType\UserType
     oro_user.entity_with_image.subscriber.class:            Oro\Bundle\UserBundle\Entity\EventListener\UploadedImageSubscriber
     oro_user.autocomplete.user.search_handler:              Oro\Bundle\UserBundle\Autocomplete\UserSearchHandler
     oro_user.email.owner.provider.class:                    Oro\Bundle\UserBundle\Entity\Provider\EmailOwnerProvider
@@ -24,30 +21,17 @@ parameters:
     oro_user.change_password.subscriber.class:              Oro\Bundle\UserBundle\Form\EventListener\ChangePasswordSubscriber
     oro_user.event_listener.user_email_grid_listener.class: Oro\Bundle\UserBundle\EventListener\UserEmailGridListener
 
-services:
-    oro_user.manager.flexible:
-        class:                        "%oro_user.manager.flexible.class%"
-        arguments:                    [%oro_user.entity.class%, %oro_flexibleentity.flexible_config%, "@doctrine.orm.entity_manager", "@event_dispatcher", @oro_flexibleentity.attributetype.factory]
-        tags:
-            - { name: oro_flexibleentity_manager, entity: %oro_user.entity.class%}
-        calls:
-            - [ addAttributeType, ['oro_flexibleentity_text'] ]
-            - [ addAttributeType, ['oro_flexibleentity_textarea'] ]
-            - [ addAttributeType, ['oro_flexibleentity_money'] ]
-            - [ addAttributeType, ['oro_flexibleentity_simpleselect'] ]
-            - [ addAttributeType, ['oro_flexibleentity_multiselect'] ]
-            - [ addAttributeType, ['oro_flexibleentity_url'] ]
 
+services:
     oro_user.manager:
         class:                        %oro_user.manager.class%
-        arguments:                    [%oro_user.entity.class%, "@doctrine.orm.entity_manager", "@oro_user.manager.flexible", "@security.encoder_factory"]
+        arguments:                    [%oro_user.entity.class%, "@doctrine.orm.entity_manager", "@security.encoder_factory"]
 
     oro_user.manager.api:
         class: %oro_user.manager.api.class%
         arguments:
             - %oro_user.entity.class%
             - @doctrine.orm.entity_manager
-            - @oro_user.manager.flexible
 
     oro_user.security.provider:
         class:                        %oro_user.security.provider.class%
@@ -107,16 +91,6 @@ services:
         arguments:
             - %oro_user.group.entity.class%
             - @doctrine.orm.entity_manager
-
-    # Flexible attribute
-    oro_user.attribute_type.user:
-        class: %oro_user.attribute_type.user.class%
-        arguments:
-            - "user"
-            - "oro_user_select"
-            - @oro_flexibleentity.validator.attribute_constraint_guesser
-        tags:
-            - { name: oro_flexibleentity.attributetype, alias: oro_user_attribute_user }
 
     oro_user.entity_with_image.subscriber:
         class: %oro_user.entity_with_image.subscriber.class%

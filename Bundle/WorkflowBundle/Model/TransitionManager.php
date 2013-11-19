@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
+use Oro\Bundle\WorkflowBundle\Exception\InvalidTransitionException;
 
 class TransitionManager
 {
@@ -32,11 +33,16 @@ class TransitionManager
 
     /**
      * @param string $transitionName
-     * @return Transition|null
+     * @return Transition
+     * @throws InvalidTransitionException
      */
     public function getTransition($transitionName)
     {
-        return $this->transitions->get($transitionName);
+        $result = $this->transitions->get($transitionName);
+        if (!$result) {
+            throw InvalidTransitionException::unknownTransition($transitionName);
+        }
+        return $result;
     }
 
     /**
@@ -68,7 +74,12 @@ class TransitionManager
     protected function assertTransitionArgument($transition)
     {
         if (!is_string($transition) && !$transition instanceof Transition) {
-            throw new \InvalidArgumentException('Expected transition argument type is string or Transition');
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Expected transition argument type is string or Transition, but %s given',
+                    is_object($transition) ? get_class($transition) : gettype($transition)
+                )
+            );
         }
     }
 
@@ -76,7 +87,7 @@ class TransitionManager
      * Receive transition by name or object
      *
      * @param string|Transition $transition
-     * @return null|Transition
+     * @return Transition
      */
     public function extractTransition($transition)
     {

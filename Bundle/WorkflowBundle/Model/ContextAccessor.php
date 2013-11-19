@@ -5,8 +5,6 @@ namespace Oro\Bundle\WorkflowBundle\Model;
 use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
-
-use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
 use Symfony\Component\PropertyAccess\PropertyPathInterface;
 
 class ContextAccessor
@@ -44,10 +42,9 @@ class ContextAccessor
         if ($value instanceof PropertyPath) {
             try {
                 return $this->getPropertyAccessor()->getValue($context, $value);
-            } catch (NoSuchPropertyException $e) {
+            } catch (\Exception $e) {
                 return null;
             }
-
         } else {
             return $value;
         }

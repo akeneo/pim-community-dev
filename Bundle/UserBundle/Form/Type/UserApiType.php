@@ -15,7 +15,6 @@ class UserApiType extends UserType
      */
     public function addEntityFields(FormBuilderInterface $builder)
     {
-        // add default flexible fields
         parent::addEntityFields($builder);
 
         $builder

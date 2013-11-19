@@ -45,9 +45,7 @@ class LoadUserData extends AbstractFixture implements ContainerAwareInterface, O
             ->findOneBy(array('name' => 'Main'));
 
         if (!$admin) {
-
             $admin = $userManager->createUser();
-
             $admin
                 ->setUsername('admin')
                 ->addRole($role)
@@ -73,29 +71,6 @@ class LoadUserData extends AbstractFixture implements ContainerAwareInterface, O
         $this->addReference('default_user', $admin);
 
         $userManager->updateUser($admin);
-    }
-
-    /**
-     * Persist object
-     *
-     * @param UserManager $entityManager
-     * @param mixed $object
-     * @return void
-     */
-    private function persist($entityManager, $object)
-    {
-        $entityManager->getStorageManager()->persist($object);
-    }
-
-    /**
-     * Flush objects
-     *
-     * @param UserManager $entityManager
-     * @return void
-     */
-    private function flush($entityManager)
-    {
-        $entityManager->getStorageManager()->flush();
     }
 
     public function getOrder()

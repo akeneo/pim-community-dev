@@ -12,8 +12,6 @@ use Doctrine\ORM\QueryBuilder;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 
-use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
-
 class UserManager implements UserProviderInterface
 {
     /**
@@ -27,11 +25,6 @@ class UserManager implements UserProviderInterface
     protected $om;
 
     /**
-     * @var FlexibleManager
-     */
-    protected $flexManager;
-
-    /**
      * @var EncoderFactoryInterface
      */
     protected $encoderFactory;
@@ -41,16 +34,14 @@ class UserManager implements UserProviderInterface
      *
      * @param string                  $class          Entity name
      * @param ObjectManager           $om             Object manager
-     * @param FlexibleManager         $flexManager    Proxied flexible manager
      * @param EncoderFactoryInterface $encoderFactory
      */
-    public function __construct($class, ObjectManager $om, $flexManager, EncoderFactoryInterface $encoderFactory)
+    public function __construct($class, ObjectManager $om, EncoderFactoryInterface $encoderFactory)
     {
         $metadata = $om->getClassMetadata($class);
 
         $this->class          = $metadata->getName();
         $this->om             = $om;
-        $this->flexManager    = $flexManager;
         $this->encoderFactory = $encoderFactory;
     }
 
@@ -309,14 +300,5 @@ class UserManager implements UserProviderInterface
     public function getStorageManager()
     {
         return $this->om;
-    }
-
-    public function __call($name, $args)
-    {
-        if (method_exists($this->flexManager, $name)) {
-            return call_user_func_array(array($this->flexManager, $name), $args);
-        }
-
-        throw new \RuntimeException(sprintf('Unknown method "%s"', $name));
     }
 }

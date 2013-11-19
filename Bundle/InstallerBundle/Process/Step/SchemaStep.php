@@ -12,6 +12,9 @@ class SchemaStep extends AbstractStep
 
         switch ($this->getRequest()->query->get('action')) {
             case 'cache':
+                // suppress warning: ini_set(): A session is active. You cannot change the session
+                // module's ini settings at this time
+                error_reporting(E_ALL ^ E_WARNING);
                 return $this->handleAjaxAction('cache:clear');
             case 'clear':
                 return $this->handleAjaxAction('oro:entity-extend:clear');
@@ -22,6 +25,12 @@ class SchemaStep extends AbstractStep
                 );
             case 'schema-create':
                 return $this->handleAjaxAction('doctrine:schema:create');
+            case 'init-config':
+                return $this->handleAjaxAction('oro:entity-config:init');
+            case 'init-extend':
+                return $this->handleAjaxAction('oro:entity-extend:init');
+            case 'update-config':
+                return $this->handleAjaxAction('oro:entity-extend:update-config');
             case 'schema-update':
                 return $this->handleAjaxAction('doctrine:schema:update', array('--force' => true));
             case 'fixtures':
@@ -29,12 +38,6 @@ class SchemaStep extends AbstractStep
                     'doctrine:fixtures:load',
                     array('--no-interaction' => true, '--append' => true)
                 );
-            case 'init-config':
-                return $this->handleAjaxAction('oro:entity-config:init');
-            case 'init-extend':
-                return $this->handleAjaxAction('oro:entity-extend:init');
-            case 'update-config':
-                return $this->handleAjaxAction('oro:entity-extend:update-config');
         }
 
         return $this->render('OroInstallerBundle:Process/Step:schema.html.twig');

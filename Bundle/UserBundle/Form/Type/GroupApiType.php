@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\UserBundle\Form\Type;
 
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 use Oro\Bundle\UserBundle\Form\EventListener\PatchSubscriber;
@@ -13,9 +14,6 @@ class GroupApiType extends GroupType
      */
     public function addEntityFields(FormBuilderInterface $builder)
     {
-        // add default flexible fields
-        parent::addEntityFields($builder);
-
         $builder->addEventSubscriber(new PatchSubscriber());
     }
 
@@ -26,9 +24,7 @@ class GroupApiType extends GroupType
     {
         parent::setDefaultOptions($resolver);
 
-        $resolver->setDefaults(array(
-            'csrf_protection' => false,
-        ));
+        $resolver->setDefaults(['csrf_protection' => false]);
     }
 
     /**

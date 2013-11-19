@@ -1,6 +1,5 @@
 Oro\Bundle\UserBundle\Entity\User:
     alias:                          oro_user
-    flexible_manager:               oro_user.manager.flexible
     title_fields:                   [username]
     route:
         name:                       oro_user_view

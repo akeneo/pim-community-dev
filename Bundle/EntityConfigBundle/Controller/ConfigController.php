@@ -35,7 +35,7 @@ class ConfigController extends Controller
 {
 
     /**
-     * Lists all Flexible entities.
+     * Lists all configurable entities.
      * @Route("/", name="oro_entityconfig_index")
      * Acl(
      *      id="oro_entityconfig",

@@ -29,7 +29,7 @@ class ArrayReader implements ItemReaderInterface
     /**
      * {@inheritdoc}
      */
-    public function read(StepExecution $stepExecution)
+    public function read()
     {
         $item = null;
 

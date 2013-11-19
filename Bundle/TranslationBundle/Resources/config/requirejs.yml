@@ -3,5 +3,5 @@ config:
         'translator':
             exports: 'Translator'
     paths:
-        'translator': 'bundles/bazingaexposetranslation/js/translator.min.js'
+        'translator': 'bundles/orotranslation/lib/translator.js'
         'oro/translator': 'bundles/orotranslation/js/translator.js'

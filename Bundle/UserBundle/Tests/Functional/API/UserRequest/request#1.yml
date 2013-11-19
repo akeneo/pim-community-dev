@@ -12,7 +12,6 @@ request:
     lastLogin: ~
     rolesCollection: [3]
     groups: ~
-    values: ~
     owner: 1
 response:
     return: true

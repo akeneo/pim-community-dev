@@ -2,11 +2,6 @@
 
 namespace Oro\Bundle\InstallerBundle\Process\Step;
 
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Bridge\Doctrine\DataFixtures\ContainerAwareLoader;
-
-use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
-
 use Sylius\Bundle\FlowBundle\Process\Context\ProcessContextInterface;
 
 class InstallationStep extends AbstractStep
@@ -17,21 +12,7 @@ class InstallationStep extends AbstractStep
 
         switch ($this->getRequest()->query->get('action')) {
             case 'fixtures':
-                $loader = new ContainerAwareLoader($this->container);
-
-                foreach ($this->get('kernel')->getBundles() as $bundle) {
-                    if (is_dir($path = $bundle->getPath() . '/DataFixtures/Demo')) {
-                        $loader->loadFromDirectory($path);
-                    }
-                }
-
-                $executor = new ORMExecutor($this->getDoctrine()->getManager());
-
-                $executor->execute($loader->getFixtures(), true);
-
-                return $this->getRequest()->isXmlHttpRequest()
-                    ? new JsonResponse(array('result' => true))
-                    : $this->redirect('');
+                return $this->handleAjaxAction('oro:demo:fixtures:load');
             case 'search':
                 return $this->handleAjaxAction('oro:search:create-index');
             case 'navigation':
@@ -48,6 +29,17 @@ class InstallationStep extends AbstractStep
                 return $this->handleAjaxAction('oro:translation:dump');
             case 'requirejs':
                 return $this->handleAjaxAction('oro:requirejs:build');
+            case 'finish':
+                // everything was fine - update installed flag in parameters.yml
+                $dumper = $this->container->get('oro_installer.yaml_persister');
+                $params = $dumper->parse();
+                $params['system']['installed'] = date('c');
+                $dumper->dump($params);
+                // launch 'cache:clear' to set installed flag in DI container
+                // suppress warning: ini_set(): A session is active. You cannot change the session
+                // module's ini settings at this time
+                error_reporting(E_ALL ^ E_WARNING);
+                return $this->handleAjaxAction('cache:clear');
         }
 
         return $this->render(

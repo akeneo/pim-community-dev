@@ -370,7 +370,7 @@
                 selector.val(datetimeFormatter.formatDate(actual.val()));
             };
             actual.on('change', sync);
-            if (actual.val().length) {
+            if (actual.val() && actual.val().length) {
                 sync();
             }
             selector.datepicker({
@@ -419,7 +419,7 @@
                 selector.val(datetimeFormatter.formatDateTime(actual.val()));
             };
             actual.on('change', sync);
-            if (actual.val().length) {
+            if (actual.val() && actual.val().length) {
                 sync();
             }
             selector.datetimepicker({

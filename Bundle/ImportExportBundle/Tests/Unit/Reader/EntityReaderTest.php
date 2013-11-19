@@ -31,7 +31,7 @@ class EntityReaderTest extends \PHPUnit_Framework_TestCase
             ->getMock();
 
         $this->managerRegistry = $this->getMock('Doctrine\Common\Persistence\ManagerRegistry');
-        $this->reader = new EntityReader($this->managerRegistry, $this->contextRegistry);
+        $this->reader = new EntityReader($this->contextRegistry, $this->managerRegistry);
     }
 
     public function testReadMockIterator()
@@ -67,12 +67,13 @@ class EntityReaderTest extends \PHPUnit_Framework_TestCase
         $context->expects($this->exactly(3))->method('incrementReadCount');
 
         $stepExecution = $this->getMockStepExecution($context);
+        $this->reader->setStepExecution($stepExecution);
 
-        $this->assertEquals($fooEntity, $this->reader->read($stepExecution));
-        $this->assertEquals($barEntity, $this->reader->read($stepExecution));
-        $this->assertEquals($bazEntity, $this->reader->read($stepExecution));
-        $this->assertNull($this->reader->read($stepExecution));
-        $this->assertNull($this->reader->read($stepExecution));
+        $this->assertEquals($fooEntity, $this->reader->read());
+        $this->assertEquals($barEntity, $this->reader->read());
+        $this->assertEquals($bazEntity, $this->reader->read());
+        $this->assertNull($this->reader->read());
+        $this->assertNull($this->reader->read());
     }
 
     public function testReadRealIterator()
@@ -92,12 +93,13 @@ class EntityReaderTest extends \PHPUnit_Framework_TestCase
         $context->expects($this->exactly(3))->method('incrementReadCount');
 
         $stepExecution = $this->getMockStepExecution($context);
+        $this->reader->setStepExecution($stepExecution);
 
-        $this->assertEquals($fooEntity, $this->reader->read($stepExecution));
-        $this->assertEquals($barEntity, $this->reader->read($stepExecution));
-        $this->assertEquals($bazEntity, $this->reader->read($stepExecution));
-        $this->assertNull($this->reader->read($stepExecution));
-        $this->assertNull($this->reader->read($stepExecution));
+        $this->assertEquals($fooEntity, $this->reader->read());
+        $this->assertEquals($barEntity, $this->reader->read());
+        $this->assertEquals($bazEntity, $this->reader->read());
+        $this->assertNull($this->reader->read());
+        $this->assertNull($this->reader->read());
     }
 
     /**

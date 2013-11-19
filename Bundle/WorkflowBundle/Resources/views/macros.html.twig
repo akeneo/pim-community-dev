@@ -1,12 +1,48 @@
-{% macro renderTransitionButton(workflow, transition, enabled, url, redirectToWorkflow) %}
+{% macro renderTransitionButton(workflow, transition, workflowItem, transitionData) %}
+    {% if (transitionData['dialog-url'] is not defined or not transitionData['dialog-url']) and transition.hasForm() %}
+        {% set transitionData = transitionData|merge({
+            'dialog-url': path(
+                'oro_workflow_widget_transition_form',
+                {
+                    workflowItemId: workflowItem.id,
+                    transitionName: transition.name
+                }
+            )
+        }) %}
+    {% endif %}
+
+    {% if transitionData['transition-url'] is not defined or not transitionData['transition-url'] %}
+        {% set transitionData = transitionData|merge({'transition-url':
+            path(
+                'oro_workflow_api_rest_workflow_transit',
+                {
+                    workflowItemId: workflowItem.id,
+                    transitionName: transition.name
+                }
+            )
+        }) %}
+    {% endif %}
+
+    {% if not transitionData['enabled'] and transitionData['transition-condition-messages'] %}
+        {% set conditionMessages = [] %}
+        {% for error in transitionData['transition-condition-messages'] %}
+            {% set conditionMessages = conditionMessages|merge(['<li>' ~ error.message|trans(error.parameters) ~ '</li>']) %}
+        {% endfor %}
+        {% set transitionData = transitionData|merge({
+            'transition-condition-messages': '<ol>' ~ conditionMessages|join ~ '</ol>'
+        }) %}
+    {% endif %}
+
     <button type="button"
-        {% if not enabled %}disabled="disabled"{% endif %}
-        data-href="{{ url }}"
-        data-redirect-to-workflow="{{ redirectToWorkflow }}"
-        class="btn icons-holder-text no-hash {% if transition.options.frontend is defined and transition.options.frontend.class is defined %}{{ transition.options.frontend.class }}{% endif %}"
+        {% for key, value in transitionData %}
+            data-{{ key }}="{{ value }}"
+        {% endfor %}
+        class="btn icons-holder-text no-hash
+            {% if not transitionData.enabled %}disabled{% endif %}
+            {% if transition.frontendOptions is defined and transition.frontendOptions.class is defined %}{{ transition.frontendOptions.class }}{% endif %}"
         id="transition-{{ workflow.name }}-{{ transition.name }}">
-        {% if transition.options.frontend is defined and transition.options.frontend.icon is defined %}
-            <i class="{{ transition.options.frontend.icon }} hide-text">{{ transition.label|trans }}</i>
+        {% if transition.frontendOptions is defined and transition.frontendOptions.icon is defined %}
+            <i class="{{ transition.frontendOptions.icon }} hide-text">{{ transition.label|trans }}</i>
         {% endif %}
         {{ transition.label|trans }}
     </button>
@@ -14,71 +50,29 @@
 
 {% macro renderTransitionsJs(transitionsData, blockId) %}
     <script type="text/javascript">
-        require(['jquery', 'oro/messenger', 'oro/translator', 'oro/navigation'],
-        function($, messenger, __, Navigation){
+        require(['jquery', 'oro/workflow-transition-handler', 'popover-extra-placements'],
+        function($, workflowTransitionHandler) {
+            'use strict';
+
             $(function() {
                 var container = $('#{{ blockId }}');
                 {% for data in transitionsData %}
-                    container.on('click', '#transition-{{ data.workflow.name }}-{{ data.transition.name }}', function(e) {
-                        var element = $(this);
-                        e.preventDefault();
-                        $.getJSON($(this).data('href'))
-                            .done(function(response) {
-                                var doRedirect = function(redirectUrl) {
-                                    var navigation = Navigation.getInstance();
-                                    if (navigation) {
-                                        navigation.setLocation(redirectUrl);
-                                    } else {
-                                        window.location.href = redirectUrl;
-                                    }
-                                };
-                                var doReload = function() {
-                                    var navigation = Navigation.getInstance();
-                                    if (navigation) {
-                                        navigation.loadPage();
-                                    } else {
-                                        window.location.reload();
-                                    }
-                                };
-
-                                /** Handle redirectUrl result parameter for RedirectPostAction */
-                                element.one('transitions_success', function(e, response) {
-                                    if (response.workflowItem
-                                            && response.workflowItem.result
-                                            && response.workflowItem.result.redirectUrl
-                                    ) {
-                                        e.stopImmediatePropagation();
-                                        doRedirect(response.workflowItem.result.redirectUrl);
-                                    }
-                                });
-                                /** Handle redirect-to-workflow element data parameter */
-                                element.one('transitions_success', function(e, response) {
-                                    var workflowItemId = null;
-                                    if (response.workflowItem && response.workflowItem.id) {
-                                        workflowItemId = response.workflowItem.id;
-                                    }
-                                    var needRedirect = element.data('redirect-to-workflow');
-                                    if (needRedirect && workflowItemId) {
-                                        e.stopImmediatePropagation();
-                                        var redirectUrl = Routing.generate(
-                                            'oro_workflow_step_edit',
-                                            {id: workflowItemId}
-                                        );
-                                        doRedirect(redirectUrl);
-                                    }
-                                });
-                                /** By default reload page */
-                                element.one('transitions_success', doReload);
-                                element.trigger('transitions_success', [response]);
-                            })
-                            .fail(function(jqxhr, textStatus, error) {
-                                element.one('transitions_failure', function() {
-                                    messenger.notificationFlashMessage('error', __('Could not perform transition'));
-                                });
-                                element.trigger('transitions_failure', [jqxhr, textStatus, error]);
-                            });
-                        return false;
-                    });
+                (function(transitionBtn) {
+                    if (transitionBtn.data('enabled')) {
+                        transitionBtn.on(
+                            'click',
+                            workflowTransitionHandler
+                        );
+                    } else {
+                        transitionBtn.popover({
+                            'html': true,
+                            'placement': 'bottomRight',
+                            'trigger': 'hover',
+                            'title': '<i class="icon-exclamation-sign"></i>' + {{ 'Unmet conditions'|trans|json_encode|raw }},
+                            'content': transitionBtn.data('transition-condition-messages')
+                        });
+                    }
+                })(container.find('#transition-{{ data.workflow.name }}-{{ data.transition.name }}'));
                 {% endfor %}
             });
         });

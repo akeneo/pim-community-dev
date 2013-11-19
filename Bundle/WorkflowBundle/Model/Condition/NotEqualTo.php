@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\WorkflowBundle\Model\Condition;
 
-class NotEqualTo implements ConditionInterface
+class NotEqualTo extends AbstractCondition
 {
     /**
      * @var EqualTo
@@ -25,7 +25,7 @@ class NotEqualTo implements ConditionInterface
      * @param mixed $context
      * @return boolean
      */
-    public function isAllowed($context)
+    protected function isConditionAllowed($context)
     {
         return !$this->equalToCondition->isAllowed($context);
     }

@@ -1,6 +1,5 @@
 parameters:
     oro_user.form.type.user.class:              Oro\Bundle\UserBundle\Form\Type\UserType
-    oro_user.form.type.user_value.class:        Oro\Bundle\UserBundle\Form\Type\UserValueType
     oro_user.form.type.user.api.class:          Oro\Bundle\UserBundle\Form\Type\UserApiType
     oro_user.form.type.reset.class:             Oro\Bundle\UserBundle\Form\Type\ResetType
     oro_user.form.type.role.api.class:          Oro\Bundle\UserBundle\Form\Type\RoleApiType
@@ -71,22 +70,14 @@ services:
     oro_user.form.type.user:
         scope: request
         class:                        %oro_user.form.type.user.class%
-        arguments:                    [@oro_user.manager.flexible, "@security.context", "@request"]
+        arguments:                    ["@security.context", "@request"]
         tags:
             - { name: form.type, alias: oro_user_user }
-
-    oro_user.form.type.user_value:
-        class: %oro_user.form.type.user_value.class%
-        arguments:
-            - @oro_user.manager.flexible
-            - @oro_flexibleentity.value_form.value_subscriber
-        tags:
-            - { name: form.type, alias: oro_user_user_value }
 
     oro_user.form.type.user.api:
         scope: request
         class:                        %oro_user.form.type.user.api.class%
-        arguments:                    [@oro_user.manager.flexible, "@security.context", "@request"]
+        arguments:                    ["@security.context", "@request"]
         tags:
             - { name: form.type, alias: user }
 

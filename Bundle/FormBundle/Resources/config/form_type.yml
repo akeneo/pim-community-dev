@@ -4,10 +4,12 @@ parameters:
     oro_form.type.money.class:                      Oro\Bundle\FormBundle\Form\Type\OroMoneyType
     oro_form.type.entity_identifier.class:          Oro\Bundle\FormBundle\Form\Type\EntityIdentifierType
     oro_form.type.jqueryselect2_hidden.class:       Oro\Bundle\FormBundle\Form\Type\OroJquerySelect2HiddenType
-    oro_form.extension.data_block.class:            Oro\Bundle\FormBundle\Form\Extension\DataBlockExtension
-    oro_form.extension.client_validation.class:     Oro\Bundle\FormBundle\Form\Extension\ClientValidationExtension
     oro_form.type.icon.class:                       Oro\Bundle\FormBundle\Form\Type\OroIconType
     oro_form.type.multiple_entity.class:            Oro\Bundle\FormBundle\Form\Type\MultipleEntityType
+
+    oro_form.extension.data_block.class:            Oro\Bundle\FormBundle\Form\Extension\DataBlockExtension
+    oro_form.extension.client_validation.class:     Oro\Bundle\FormBundle\Form\Extension\ClientValidationExtension
+    oro_form.extension.constraint_as_option.class:  Oro\Bundle\FormBundle\Form\Extension\ConstraintAsOptionExtension
     oro_form.extension.tooltip.class:               Oro\Bundle\FormBundle\Form\Extension\TooltipFormExtension
 
 services:
@@ -51,6 +53,14 @@ services:
         tags:
             - { name: form.type, alias: oro_jqueryselect2_hidden }
 
+    oro_form.type.multiple_entity:
+        class: %oro_form.type.multiple_entity.class%
+        arguments:
+            - @doctrine.orm.entity_manager
+        tags:
+            - { name: form.type, alias: oro_multiple_entity }
+
+    # Form extensions
     oro_form.extension.data_block:
         class: %oro_form.extension.data_block.class%
         tags:
@@ -61,14 +71,14 @@ services:
         tags:
             - { name: form.type_extension, alias: form }
 
-    oro_form.type.multiple_entity:
-        class: %oro_form.type.multiple_entity.class%
-        arguments:
-            - @doctrine.orm.entity_manager
-        tags:
-            - { name: form.type, alias: oro_multiple_entity }
-
     oro_help.form.tooltip_extension:
         class: %oro_form.extension.tooltip.class%
         tags:
-            - {name: form.type_extension, alias: form }
+            - { name: form.type_extension, alias: form }
+
+    oro_form.extension.constraint_as_option:
+        class: %oro_form.extension.constraint_as_option.class%
+        arguments:
+            - @oro_form.validator.constraint_factory
+        tags:
+            - { name: form.type_extension, alias: form }

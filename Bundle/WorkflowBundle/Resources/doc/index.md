@@ -6,4 +6,4 @@ OroWorkflowBundle Documentation
 - [Workflow Entities](./reference/workflow-entities.md)
     - [Classes Diagram](./reference/workflow-entities/classes-diagram.md)
     - [Transition Conditions](./reference/workflow-entities/transition-conditions.md)
-    - [Transition Post Actions](./reference/workflow-entities/transition-post-actions.md)
+    - [Transition Actions](./reference/workflow-entities/transition-actions.md)

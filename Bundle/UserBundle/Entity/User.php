@@ -2,7 +2,6 @@
 
 namespace Oro\Bundle\UserBundle\Entity;
 
-
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -16,24 +15,27 @@ use JMS\Serializer\Annotation\Exclude;
 
 use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
 
-use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexible;
-
 use Oro\Bundle\DataAuditBundle\Metadata\Annotation as Oro;
 
-use Oro\Bundle\TagBundle\Entity\Taggable;
-use Oro\Bundle\UserBundle\Entity\Status;
-use Oro\Bundle\UserBundle\Entity\Email;
-use Oro\Bundle\UserBundle\Entity\EntityUploadedImageInterface;
-use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
 use Oro\Bundle\EmailBundle\Entity\EmailOwnerInterface;
 use Oro\Bundle\EmailBundle\Model\EmailHolderInterface;
+
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
+
 use Oro\Bundle\ImapBundle\Entity\ImapEmailOrigin;
 use Oro\Bundle\ImapBundle\Entity\ImapConfigurationOwnerInterface;
-use Oro\Bundle\TagBundle\Entity\Tag;
 
 use Oro\Bundle\LocaleBundle\Model\FullNameInterface;
 
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
+use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
+
+use Oro\Bundle\TagBundle\Entity\Taggable;
+use Oro\Bundle\TagBundle\Entity\Tag;
+
+use Oro\Bundle\UserBundle\Model\ExtendUser;
+use Oro\Bundle\UserBundle\Entity\Status;
+use Oro\Bundle\UserBundle\Entity\Email;
+use Oro\Bundle\UserBundle\Entity\EntityUploadedImageInterface;
 
 use DateTime;
 
@@ -43,13 +45,13 @@ use DateTime;
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  * @SuppressWarnings(PHPMD.ExcessiveClassLength)
  * @SuppressWarnings(PHPMD.TooManyFields)
- * @ORM\Entity(repositoryClass="Oro\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository")
+ * @ORM\Entity()
  * @ORM\Table(name="oro_user")
  * @ORM\HasLifecycleCallbacks()
  * @Oro\Loggable
  * @Config(
  *      routeName="oro_user_index",
- *      routeView="oro_user_user_view",
+ *      routeView="oro_user_view",
  *      defaultValues={
  *          "entity"={"icon"="icon-user", "label"="User", "plural_label"="Users"},
  *          "ownership"={
@@ -64,7 +66,7 @@ use DateTime;
  *      }
  * )
  */
-class User extends AbstractEntityFlexible implements
+class User extends ExtendUser implements
     AdvancedUserInterface,
     \Serializable,
     EntityUploadedImageInterface,
@@ -307,14 +309,6 @@ class User extends AbstractEntityFlexible implements
     protected $groups;
 
     /**
-     * @var \Oro\Bundle\FlexibleEntityBundle\Model\AbstractFlexibleValue[]
-     *
-     * @ORM\OneToMany(targetEntity="UserValue", mappedBy="entity", cascade={"persist", "remove"}, orphanRemoval=true)
-     * @Exclude
-     */
-    protected $values;
-
-    /**
      * @ORM\OneToOne(
      *  targetEntity="UserApi", mappedBy="user", cascade={"persist", "remove"}, orphanRemoval=true, fetch="EXTRA_LAZY"
      * )
@@ -374,10 +368,22 @@ class User extends AbstractEntityFlexible implements
      */
     protected $imapConfiguration;
 
+    /**
+     * @var \DateTime $createdAt
+     *
+     * @ORM\Column(type="datetime")
+     */
+    protected $createdAt;
+
+    /**
+     * @var \DateTime $updatedAt
+     *
+     * @ORM\Column(type="datetime")
+     */
+    protected $updatedAt;
+
     public function __construct()
     {
-        parent::__construct();
-
         $this->salt            = base_convert(sha1(uniqid(mt_rand(), true)), 16, 36);
         $this->roles           = new ArrayCollection();
         $this->groups          = new ArrayCollection();
@@ -530,7 +536,7 @@ class User extends AbstractEntityFlexible implements
     /**
      * Return birthday
      *
-     * @return DateTime
+     * @return \DateTime
      */
     public function getBirthday()
     {
@@ -604,7 +610,7 @@ class User extends AbstractEntityFlexible implements
     /**
      * Gets the last login time.
      *
-     * @return DateTime
+     * @return \DateTime
      */
     public function getLastLogin()
     {
@@ -624,21 +630,21 @@ class User extends AbstractEntityFlexible implements
     /**
      * Get user created date/time
      *
-     * @return DateTime
+     * @return \DateTime
      */
     public function getCreatedAt()
     {
-        return $this->created;
+        return $this->createdAt;
     }
 
     /**
      * Get user last update date/time
      *
-     * @return DateTime
+     * @return \DateTime
      */
     public function getUpdatedAt()
     {
-        return $this->updated;
+        return $this->updatedAt;
     }
 
     /**
@@ -674,7 +680,17 @@ class User extends AbstractEntityFlexible implements
     }
 
     /**
-     *
+     * @param int $id
+     * @return mixed
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    /**
      * @param  string $username New username
      * @return User
      */
@@ -779,7 +795,7 @@ class User extends AbstractEntityFlexible implements
     {
         $this->imageFile = $imageFile;
         // this will trigger PreUpdate callback even if only image has been changed
-        $this->updated = new DateTime('now', new \DateTimeZone('UTC'));
+        $this->updatedAt = new DateTime('now', new \DateTimeZone('UTC'));
 
         return $this;
     }
@@ -893,6 +909,28 @@ class User extends AbstractEntityFlexible implements
     public function setApi(UserApi $api)
     {
         $this->api = $api;
+
+        return $this;
+    }
+
+    /**
+     * @param \DateTime $createdAt
+     * @return $this
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
+     * @param \DateTime $updatedAt
+     * @return $this
+     */
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }
@@ -1143,7 +1181,8 @@ class User extends AbstractEntityFlexible implements
      */
     public function beforeSave()
     {
-        $this->created = new DateTime('now', new \DateTimeZone('UTC'));
+        $this->createdAt = new DateTime('now', new \DateTimeZone('UTC'));
+        $this->updatedAt = new DateTime('now', new \DateTimeZone('UTC'));
         $this->loginCount = 0;
     }
 
@@ -1154,7 +1193,7 @@ class User extends AbstractEntityFlexible implements
      */
     public function preUpdate()
     {
-        $this->updated = new DateTime('now', new \DateTimeZone('UTC'));
+        $this->updatedAt = new DateTime('now', new \DateTimeZone('UTC'));
     }
 
     /**

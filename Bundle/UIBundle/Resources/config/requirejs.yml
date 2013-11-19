@@ -33,6 +33,9 @@ config:
         'bootstrap-tooltip':
             deps:
                 - 'bootstrap'
+        'popover-extra-placements':
+            deps:
+                - 'bootstrap-tooltip'
         'underscore':
             exports: '_'
         'backbone':
@@ -73,6 +76,7 @@ config:
         'jstree/jquery.hotkeys': 'bundles/oroui/lib/jstree/jquery.hotkeys.js'
         'bootstrap': 'bundles/oroui/lib/bootstrap.min.js'
         'bootstrap-tooltip': 'bundles/oroui/lib/bootstrap/js/bootstrap-tooltip.js'
+        'popover-extra-placements': 'bundles/oroui/lib/bootstrap/js/popover-extra-placements.js'
         'underscore': 'bundles/oroui/lib/underscore.js'
         'backbone': 'bundles/oroui/lib/backbone.js'
         'backbone/bootstrap-modal': 'bundles/oroui/lib/backbone.bootstrap-modal.js'

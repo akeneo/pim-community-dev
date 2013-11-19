@@ -3,14 +3,13 @@
 namespace Oro\Bundle\BatchBundle\Step;
 
 use Symfony\Component\Validator\Constraints as Assert;
-
+use Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Oro\Bundle\BatchBundle\Entity\StepExecution;
+use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Oro\Bundle\BatchBundle\Item\ItemReaderInterface;
 use Oro\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Oro\Bundle\BatchBundle\Item\ItemWriterInterface;
-use Oro\Bundle\BatchBundle\Event\EventInterface;
-use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
-use Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
+use Oro\Bundle\BatchBundle\Item\InvalidItemException;
 
 /**
  * Basic step implementation that read items, process them and write them
@@ -162,33 +161,58 @@ class ItemStep extends AbstractStep
      */
     public function doExecute(StepExecution $stepExecution)
     {
-        $itemsToWrite = array();
-        $writeCount = 0;
+        $itemsToWrite  = array();
+        $writeCount    = 0;
+        $stopExecution = false;
 
         $this->initializeStepComponents($stepExecution);
 
-        while (($item = $this->reader->read($stepExecution)) !== null) {
-            if (false === $item) {
-                $this->dispatchStepExecutionEvent(EventInterface::INVALID_READER_EXECUTION, $stepExecution);
+        while (!$stopExecution) {
+            // Reading
+            try {
+                if (null === $item = $this->reader->read()) {
+                    $stopExecution = true;
+
+                    continue;
+                }
+            } catch (InvalidItemException $e) {
+                $this->handleStepExecutionWarning($stepExecution, $this->reader, $e);
+
                 continue;
             }
 
-            if (null !== $processedItem = $this->processor->process($item)) {
-                if (false === $processedItem) {
-                    continue;
-                }
+            // Processing
+            try {
+                $processedItem = $this->processor->process($item);
+            } catch (InvalidItemException $e) {
+                $this->handleStepExecutionWarning($stepExecution, $this->processor, $e);
+
+                continue;
+            }
+
+            // Writing
+            if (null !== $processedItem) {
                 $itemsToWrite[] = $processedItem;
                 $writeCount++;
-                if (0 === $writeCount % $this->batchSize) {
+            }
+            if (0 === $writeCount % $this->batchSize) {
+                try {
                     $this->writer->write($itemsToWrite);
                     $itemsToWrite = array();
+                } catch (InvalidItemException $e) {
+                    $this->handleStepExecutionWarning($stepExecution, $this->writer, $e);
+
+                    continue;
                 }
             }
         }
 
         if (count($itemsToWrite) > 0) {
-            $this->writer->write($itemsToWrite);
-            $itemsToWrite = array();
+            try {
+                $this->writer->write($itemsToWrite);
+            } catch (InvalidItemException $e) {
+                $this->handleStepExecutionWarning($stepExecution, $this->writer, $e);
+            }
         }
     }
 
@@ -208,5 +232,27 @@ class ItemStep extends AbstractStep
         if ($this->writer instanceof StepExecutionAwareInterface) {
             $this->writer->setStepExecution($stepExecution);
         }
+    }
+
+    /**
+     * Handle step execution warning
+     *
+     * @param StepExecution $stepExecution
+     * @param object $element
+     * @param InvalidItemException $e
+     */
+    private function handleStepExecutionWarning(
+        StepExecution $stepExecution,
+        $element,
+        InvalidItemException $e
+    ) {
+        if ($element instanceof AbstractConfigurableStepElement) {
+            $warningName = $element->getName();
+        } else {
+            $warningName = get_class($element);
+        }
+
+        $stepExecution->addWarning($warningName, $e->getMessage(), $e->getItem());
+        $this->dispatchInvalidItemEvent(get_class($element), $e->getMessage(), $e->getItem());
     }
 }

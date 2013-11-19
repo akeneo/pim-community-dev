@@ -165,15 +165,6 @@ class CustomEntityGridListener extends AbstractConfigGridListener
                 if (!empty($selectField)) {
                     $select[] = $selectField;
                 }
-
-                // add field according to priority if exists
-                /*
-                if (isset($item['options']['priority']) && !isset($fields[$item['options']['priority']])) {
-                    $fields[$item['options']['priority']] = $field;
-                } else {
-                    $fields[] = $field;
-                }
-                */
             }
         }
 

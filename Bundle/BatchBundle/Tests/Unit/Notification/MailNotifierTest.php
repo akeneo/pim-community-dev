@@ -51,7 +51,6 @@ class MailNotifierTest extends \PHPUnit_Framework_TestCase
 
         $jobExecution = $this->getDisabledConstructorMock('Oro\Bundle\BatchBundle\Entity\JobExecution');
         $parameters = array(
-            'user'         => $user,
             'jobExecution' => $jobExecution,
             'log'          => '/tmp/foo.log',
         );
@@ -99,6 +98,63 @@ class MailNotifierTest extends \PHPUnit_Framework_TestCase
             ->method('send')
             ->with($message);
 
+        $this->notifier->notify($jobExecution);
+    }
+
+    public function testNotifyIfRecipientEmailIsSet()
+    {
+        $this->handler
+            ->expects($this->once())
+            ->method('getFilename')
+            ->will($this->returnValue('/tmp/foo.log'));
+
+        $jobExecution = $this->getDisabledConstructorMock('Oro\Bundle\BatchBundle\Entity\JobExecution');
+        $parameters = array(
+            'jobExecution' => $jobExecution,
+            'log'          => '/tmp/foo.log',
+        );
+        $this->twig
+            ->expects($this->exactly(2))
+            ->method('render')
+            ->will(
+                $this->returnValueMap(
+                    array(
+                        array('OroBatchBundle:Mails:notification.txt.twig', $parameters, 'notification'),
+                        array('OroBatchBundle:Mails:notification.html.twig', $parameters, '<p>notification</p>'),
+                    )
+                )
+            );
+
+        $message = $this->getDisabledConstructorMock('\Swift_Message');
+        $this->mailer
+            ->expects($this->once())
+            ->method('createMessage')
+            ->will($this->returnValue($message));
+
+        $message->expects($this->once())
+            ->method('setSubject')
+            ->with('Job has been executed');
+
+        $message->expects($this->once())
+            ->method('setFrom')
+            ->with('no-reply@example.com');
+
+        $message->expects($this->once())
+            ->method('setTo')
+            ->with('patricia.jekyll@example.com');
+        $message->expects($this->once())
+            ->method('setBody')
+            ->with('notification', 'text/plain');
+        $message->expects($this->once())
+            ->method('addPart')
+            ->with('<p>notification</p>', 'text/html');
+
+        $this->mailer
+            ->expects($this->once())
+            ->method('send')
+            ->with($message);
+
+        $this->notifier->setRecipientEmail('patricia.jekyll@example.com');
         $this->notifier->notify($jobExecution);
     }
 

@@ -7,7 +7,7 @@ use JMS\Serializer\Annotation\Exclude;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\MappedSuperclass(repositoryClass="Oro\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository")
+ * @ORM\MappedSuperclass()
  */
 class UserSoap extends User
 {
@@ -86,10 +86,6 @@ class UserSoap extends User
      */
     protected $owner;
 
-    /**
-     * @Soap\ComplexType("Oro\Bundle\SoapBundle\Entity\FlexibleAttribute[]", nillable=true)
-     */
-    protected $attributes;
 
     public function setRolesCollection($collection)
     {
@@ -99,13 +95,5 @@ class UserSoap extends User
     public function getRolesCollection()
     {
         return $this->rolesCollection;
-    }
-
-    /**
-     * @return \Oro\Bundle\SoapBundle\Entity\FlexibleAttribute[]
-     */
-    public function getAttributes()
-    {
-        return $this->attributes;
     }
 }

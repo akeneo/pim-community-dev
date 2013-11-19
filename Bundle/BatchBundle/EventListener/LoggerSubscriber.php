@@ -7,6 +7,7 @@ use Psr\Log\LoggerInterface;
 use Oro\Bundle\BatchBundle\Event\JobExecutionEvent;
 use Oro\Bundle\BatchBundle\Event\EventInterface;
 use Oro\Bundle\BatchBundle\Event\StepExecutionEvent;
+use Oro\Bundle\BatchBundle\Event\InvalidItemEvent;
 use Oro\Bundle\BatchBundle\Entity\StepExecution;
 
 /**
@@ -19,11 +20,6 @@ class LoggerSubscriber implements EventSubscriberInterface
      * @var LoggerInterface $logger
      */
     protected $logger;
-
-    /**
-     * @var integer $readerWarningCount
-     */
-    private $readerWarningCount = 0;
 
     /**
      * @param LoggerInterface $logger
@@ -49,7 +45,7 @@ class LoggerSubscriber implements EventSubscriberInterface
             EventInterface::STEP_EXECUTION_INTERRUPTED => 'stepExecutionInterrupted',
             EventInterface::STEP_EXECUTION_ERRORED     => 'stepExecutionErrored',
             EventInterface::STEP_EXECUTION_COMPLETED   => 'stepExecutionCompleted',
-            EventInterface::INVALID_READER_EXECUTION   => 'invalidReaderExecution',
+            EventInterface::INVALID_ITEM               => 'invalidItem',
         );
     }
 
@@ -183,28 +179,18 @@ class LoggerSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * Log the step execution when the reader execution was invalid
+     * Log invalid item event
      *
      * @param StepExecutionEvent $event
      */
-    public function invalidReaderExecution(StepExecutionEvent $event)
+    public function invalidItem(InvalidItemEvent $event)
     {
-        $stepExecution  = $event->getStepExecution();
-        $readerWarnings = $stepExecution->getReaderWarnings();
-
-        if (count($readerWarnings) <= $this->readerWarningCount) {
-            return;
-        }
-
-        $lastWarning = end($readerWarnings);
-        $this->readerWarningCount++;
-
         $this->logger->warning(
             sprintf(
-                'The %s was unable to handle the following data: %s (REASON: %s).',
-                get_class($lastWarning['reader']),
-                $this->formatAsString($lastWarning['data']),
-                $lastWarning['reason']
+                'The %s was unable to handle the following item: %s (REASON: %s)',
+                $event->getClass(),
+                $this->formatAsString($event->getItem()),
+                $event->getReason()
             )
         );
     }

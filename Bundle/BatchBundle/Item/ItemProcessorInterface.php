@@ -16,13 +16,14 @@ interface ItemProcessorInterface
 {
     /**
      * Process the provided item, returning a potentially modified or new item for continued
-     * processing.  If the returned result is null, it is assumed that processing of the item
-     * should not continue.
+     * processing. It should not return null, instead it should throw an InvalidItemException
+     * in case of warning;
      *
      * @param mixed $item item to be processed
      *
-     * @return mixed Potentially modified or new item for continued processing, null if processing of the
-     *  provided item should not continue.
+     * @return mixed Potentially modified or new item for continued processing
+     * @throws InvalidItemException if there is a problem processing the current record
+     * (but the next one may still be valid)
      * @throws \Exception
      */
     public function process($item);
