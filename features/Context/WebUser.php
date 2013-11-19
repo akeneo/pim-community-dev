@@ -219,6 +219,7 @@ class WebUser extends RawMinkContext
     public function iVisitTheGroup($group)
     {
         $this->getCurrentPage()->visitGroup($group);
+        $this->wait();
     }
 
     /* -------------------- Other methods -------------------- */
