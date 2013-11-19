@@ -74,12 +74,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/akeneo/DemoBundle.git",
-                "reference": "4a58dc06d96608d5b77c2a02709dec920e16d8c6"
+                "reference": "709d469335d921d43e3501572275ba245364b4d7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/akeneo/DemoBundle/zipball/4a58dc06d96608d5b77c2a02709dec920e16d8c6",
-                "reference": "4a58dc06d96608d5b77c2a02709dec920e16d8c6",
+                "url": "https://api.github.com/repos/akeneo/DemoBundle/zipball/709d469335d921d43e3501572275ba245364b4d7",
+                "reference": "709d469335d921d43e3501572275ba245364b4d7",
                 "shasum": ""
             },
             "require": {
@@ -117,7 +117,7 @@
                 "source": "https://github.com/akeneo/DemoBundle/tree/flexibleentity",
                 "issues": "https://github.com/akeneo/DemoBundle/issues"
             },
-            "time": "2013-11-07 08:58:54"
+            "time": "2013-11-19 10:26:14"
         },
         {
             "name": "apy/jsfv-bundle",
