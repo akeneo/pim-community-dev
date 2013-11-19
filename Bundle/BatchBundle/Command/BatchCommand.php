@@ -13,6 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Monolog\Handler\StreamHandler;
 use Doctrine\ORM\EntityManager;
 use Oro\Bundle\BatchBundle\Entity\JobExecution;
+use Oro\Bundle\BatchBundle\Entity\JobInstance;
 use Oro\Bundle\BatchBundle\Job\ExitStatus;
 use Oro\Bundle\BatchBundle\Job\BatchStatus;
 
@@ -76,27 +77,7 @@ class BatchCommand extends ContainerAwareCommand
             );
         }
 
-        $validator = $this->getValidator();
-
-        // Override mail notifier recipient email
-        if ($email = $input->getOption('email')) {
-            $errors = $validator->validateValue($email, new Assert\Email());
-            if (count($errors) > 0) {
-                throw new \RuntimeException(
-                    sprintf('Email "%s" is invalid: %s', $email, $this->getErrorMessages($errors))
-                );
-            }
-            $this
-                ->getMailNotifier()
-                ->setRecipientEmail($email);
-        }
-
-        $errors = $validator->validate($jobInstance, array('Default', 'Execution'));
-        if (count($errors) > 0) {
-            throw new \RuntimeException(
-                sprintf('Job "%s" is invalid: %s', $code, $this->getErrorMessages($errors))
-            );
-        }
+        $this->validate($input, $jobInstance);
 
         $executionId = $input->getArgument('execution');
         if ($executionId) {
@@ -138,6 +119,36 @@ class BatchCommand extends ContainerAwareCommand
             );
         }
     }
+
+    /**
+     * Validate job instance
+     */
+    protected function validate(InputInterface $input, JobInstance $jobInstance)
+    {
+        $validator = $this->getValidator();
+
+        // Override mail notifier recipient email
+        $email = $input->getOption('email');
+        if ($email) {
+            $errors = $validator->validateValue($email, new Assert\Email());
+            if (count($errors) > 0) {
+                throw new \RuntimeException(
+                    sprintf('Email "%s" is invalid: %s', $email, $this->getErrorMessages($errors))
+                );
+            }
+            $this
+                ->getMailNotifier()
+                ->setRecipientEmail($email);
+        }
+
+        $errors = $validator->validate($jobInstance, array('Default', 'Execution'));
+        if (count($errors) > 0) {
+            throw new \RuntimeException(
+                sprintf('Job "%s" is invalid: %s', $jobInstance->getCode(), $this->getErrorMessages($errors))
+            );
+        }
+    }
+
 
     /**
      * @return EntityManager
