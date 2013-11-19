@@ -20,6 +20,7 @@ Feature: Display the attribute group history
     And I should see history:
       | action | version | property | value     |
       | create | 1       | code     | Technical |
+
     When I visit the "Properties" tab
     And I fill in the following information:
       | English (United States) | My technical group |
@@ -30,6 +31,7 @@ Feature: Display the attribute group history
       | action | version | property    | value              |
       | create | 1       | code        | Technical          |
       | update | 2       | label-en_US | My technical group |
+
     When I visit the "Attributes" tab
     And I add available attributes Description
     Then I should see flash message "Attributes successfully added to the attribute group"
@@ -40,6 +42,7 @@ Feature: Display the attribute group history
       | create | 1       | code        | Technical          |
       | update | 2       | label-en_US | My technical group |
       | update | 3       | attributes  | description        |
+
     When I visit the "Attributes" tab
     And I remove the "Description" attribute
     Then I should see flash message "Attribute successfully removed from the attribute group"
