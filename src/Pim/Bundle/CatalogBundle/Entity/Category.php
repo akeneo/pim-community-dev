@@ -112,7 +112,7 @@ class Category extends AbstractSegment implements CategoryInterface, Translatabl
      * @ORM\OneToMany(
      *     targetEntity="Pim\Bundle\CatalogBundle\Entity\CategoryTranslation",
      *     mappedBy="foreignKey",
-     *     cascade={"persist", "remove"}
+     *     cascade={"persist"}
      * )
      */
     protected $translations;
