@@ -21,7 +21,7 @@ abstract class AbstractResolveDoctrineOrmTargetEntitiesPass implements CompilerP
     public function process(ContainerBuilder $container)
     {
         $definition = $container->findDefinition('doctrine.orm.listeners.resolve_target_entity');
-        foreach ($this->getParametersMapping() as $interface=>$parameterName) {
+        foreach ($this->getParametersMapping() as $interface => $parameterName) {
             $definition->addMethodCall(
                 'addResolveTargetEntity',
                 array(
