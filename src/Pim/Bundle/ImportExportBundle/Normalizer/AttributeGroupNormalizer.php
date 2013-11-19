@@ -32,10 +32,9 @@ class AttributeGroupNormalizer implements NormalizerInterface
     {
         $this->results = array(
             'code'       => $group->getCode(),
-            'label'      => $this->normalizeLabel($group),
             'sortOrder'  => $group->getSortOrder(),
             'attributes' => $this->normalizeAttributes($group)
-        );
+        ) + $this->normalizeLabel($group);
 
         return $this->results;
     }
@@ -62,7 +61,7 @@ class AttributeGroupNormalizer implements NormalizerInterface
             $labels[$translation->getLocale()] = $translation->getLabel();
         }
 
-        return $labels;
+        return array('label' => $labels);
     }
 
     /**

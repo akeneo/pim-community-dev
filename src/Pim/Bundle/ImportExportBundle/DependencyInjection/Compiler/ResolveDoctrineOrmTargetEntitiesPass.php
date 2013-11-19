@@ -13,6 +13,9 @@ use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler\AbstractResolveDoctrin
  */
 class ResolveDoctrineOrmTargetEntitiesPass extends AbstractResolveDoctrineOrmTargetEntitiesPass
 {
+    /**
+     * {@inheritdoc}
+     */
     protected function getParametersMapping()
     {
         return array(

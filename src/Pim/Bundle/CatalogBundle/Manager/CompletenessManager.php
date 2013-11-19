@@ -6,6 +6,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Doctrine\CompletenessQueryBuilder;
+use Pim\Bundle\CatalogBundle\Entity\Channel;
 
 /**
  * Manages completeness
@@ -51,7 +52,7 @@ class CompletenessManager
     /**
      * Insert missing completenesses for a given product
      *
-     * @param Product $product
+     * @param ProductInterface $product
      */
     public function createProductCompletenesses(ProductInterface $product)
     {
