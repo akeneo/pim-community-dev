@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\ImportExportBundle\Writer\File;
 
-use Symfony\Component\Filesystem\Filesystem;
 use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 
 /**
@@ -14,19 +13,13 @@ use Pim\Bundle\CatalogBundle\Manager\MediaManager;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductWriter extends FileWriter
+class ProductWriter extends FileWriter implements ArchivableWriterInterface
 {
     /** @var MediaManager */
     protected $mediaManager;
 
-    /** @var \ZipArchive */
-    protected $archive;
-
-    /** @var string */
-    protected $archivePath;
-
-    /** @var string */
-    protected $mediaPath;
+    /** @var array */
+    protected $writtenFiles = array();
 
     /**
      * Constructor
@@ -36,26 +29,6 @@ class ProductWriter extends FileWriter
     public function __construct(MediaManager $mediaManager)
     {
         $this->mediaManager = $mediaManager;
-    }
-
-    /**
-     * Remove the files if an archive has been created
-     */
-    public function __destruct()
-    {
-        if ($this->mediaPath) {
-            $fileSystem = new Filesystem();
-            $fileSystem->remove($this->mediaPath);
-            unlink(parent::getPath());
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPath()
-    {
-        return $this->archivePath ?: parent::getPath();
     }
 
     /**
@@ -72,64 +45,26 @@ class ProductWriter extends FileWriter
             )
         );
 
+        $this->writtenFiles[$this->getPath()] = basename($this->getPath());
+
         foreach ($items as $data) {
             foreach ($data['media'] as $media) {
                 if ($media) {
                     $result = $this->mediaManager->copy($media, $this->directoryName);
                     if ($result === true) {
                         $exportPath = $this->mediaManager->getExportPath($media);
-                        $this->addToArchive(sprintf('%s/%s', $this->directoryName, $exportPath), $exportPath);
-
-                        if ($this->mediaPath === null) {
-                            $mediaPath = explode(DIRECTORY_SEPARATOR, $exportPath);
-                            $this->mediaPath = sprintf('%s/%s', $this->directoryName, reset($mediaPath));
-                        }
+                        $this->writtenFiles[sprintf('%s/%s', $this->directoryName, $exportPath)] = $exportPath;
                     }
                 }
             }
         }
-
-        if (null !== $this->archive) {
-            $this->archive->close();
-        }
     }
 
     /**
-     * Add a file to the archive.
-     * The archive is created only if this method is called at least once.
-     *
-     * @param string $fullPath
-     * @param string $localPath
-     *
-     * @throws \RuntimeException If an error occurs when creating the archive
+     * {@inheritdoc}
      */
-    protected function addToArchive($fullPath, $localPath)
+    public function getWrittenFiles()
     {
-        if (null === $this->archive) {
-            $baseFile = $this->getPath();
-            $this->archive = new \ZipArchive();
-            $this->archivePath = sprintf('%s/%s.zip',
-                pathinfo($baseFile, PATHINFO_DIRNAME),
-                pathinfo($baseFile, PATHINFO_FILENAME)
-            );
-
-            $status = $this->archive->open($this->archivePath, \ZIPARCHIVE::CREATE);
-
-            if ($status !== true) {
-                throw new \RuntimeException(sprintf('Error "%d" occured when creating the zip archive.', $status));
-            }
-
-            $this->addToArchive($baseFile, basename($baseFile));
-        }
-
-        $status = $this->archive->addFile($fullPath, $localPath);
-        if ($status !== true) {
-            throw new \RuntimeException(
-                sprintf(
-                    'Unknown error occured when adding file "%s" to the zip archive.',
-                    $fullPath
-                )
-            );
-        }
+        return $this->writtenFiles;
     }
 }
