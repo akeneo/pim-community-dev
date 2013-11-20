@@ -6,7 +6,7 @@ use Oro\Bundle\TestFrameworkBundle\Pages\PageFilteredGrid;
 
 class Opportunities extends PageFilteredGrid
 {
-    const URL = 'sales/opportunity';
+    const URL = 'opportunity';
 
     public function __construct($testCase, $redirect = true)
     {
