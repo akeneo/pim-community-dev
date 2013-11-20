@@ -17,14 +17,15 @@ use Pim\Bundle\CatalogBundle\Validator\Constraints as PimAssert;
  *
  * @UniqueEntity("code")
  * @PimAssert\ValidLocaleFallback
+ *
  * @Config(
- *  defaultValues={
- *      "entity"={"label"="Locale", "plural_label"="Locales"},
- *      "security"={
- *          "type"="ACL",
- *          "group_name"=""
- *      }
- *  }
+ *     defaultValues={
+ *         "entity"={"label"="Locale", "plural_label"="Locales"},
+ *          "security"={
+ *              "type"="ACL",
+ *              "group_name"=""
+ *          }
+ *     }
  * )
  *
  * @ExclusionPolicy("all")
