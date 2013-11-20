@@ -51,19 +51,4 @@ class AssociationNormalizer implements NormalizerInterface
     {
         return $data instanceof Association && in_array($format, $this->supportedFormats);
     }
-
-    /**
-     * Returns an array containing the label values
-     *
-     * @param Association $association
-     *
-     * @return array
-     */
-    protected function normalizeLabel(Association $association)
-    {
-        $normalizer = new LabelTranslationNormalizer();
-        $translations = $normalizer->normalize($association);
-
-        return array('label' => $translations);
-    }
 }
