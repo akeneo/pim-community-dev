@@ -3,6 +3,7 @@ namespace Oro\Bundle\NavigationBundle\Event;
 
 use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 
@@ -12,19 +13,25 @@ class ResponseHashnavListener
     const HASH_NAVIGATION_HEADER = 'x-oro-hash-navigation';
 
     /**
-     * @var \Symfony\Component\Security\Core\SecurityContextInterface
+     * @var SecurityContextInterface
      */
     protected $security;
 
     /**
-     * @var \Symfony\Bundle\FrameworkBundle\Templating\EngineInterface
+     * @var EngineInterface
      */
     protected $templating;
 
-    public function __construct(SecurityContextInterface $security, EngineInterface $templating)
+    /**
+     * @var Kernel
+     */
+    protected $appKernel;
+
+    public function __construct(SecurityContextInterface $security, EngineInterface $templating, Kernel $appKernel)
     {
         $this->security = $security;
         $this->templating = $templating;
+        $this->appKernel = $appKernel;
     }
 
     /**
@@ -45,7 +52,7 @@ class ResponseHashnavListener
                     $isFullRedirect = true;
                 }
             }
-            if ($response->isNotFound() || $response->isForbidden()) {
+            if ($response->isNotFound() || ($response->isForbidden() && $this->appKernel->getEnvironment() == 'dev')) {
                 $location = $request->getUri();
                 $isFullRedirect = true;
             }

@@ -974,7 +974,11 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
                 document.body.innerHTML = XMLHttpRequest.responseText;
                 this.updateDebugToolbar(XMLHttpRequest);
             } else {
-                this.showMessage(__('Sorry, page was not loaded correctly'));
+                var message = 'Sorry, page was not loaded correctly';
+                if (XMLHttpRequest.status == 403) {
+                    message = 'You does not have permission to this action'
+                }
+                this.showMessage(__(message));
                 this.loadingMask.hide();
             }
         },

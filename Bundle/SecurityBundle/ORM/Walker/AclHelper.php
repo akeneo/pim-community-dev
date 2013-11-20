@@ -237,7 +237,7 @@ class AclHelper
                 $entityField,
                 $value,
                 $targetEntity,
-                $associationMapping['joinColumns']
+                isset($associationMapping['joinColumns']) ? $associationMapping['joinColumns'] : $associationMapping['mappedBy']
             );
         }
     }

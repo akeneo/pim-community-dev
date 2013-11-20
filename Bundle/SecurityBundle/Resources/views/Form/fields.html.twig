@@ -8,10 +8,10 @@
         <div class="access_level_value_link">
             <a href="javascript:void(0);">
                 {% if level_label %}
-                    {% set label = 'Access-level-' ~ level_label %}
+                    {% set label = 'oro.security.access-level.' ~ level_label %}
                     {{ label|trans({}, translation_domain) }}
                 {% else %}
-                    {{ 'Access-level-NONE'|trans({}, translation_domain) }}
+                    {{ 'oro.security.access-level.NONE'|trans({}, translation_domain) }}
                 {% endif %}
             </a>
             {% set type = type|default('hidden') %}
@@ -38,8 +38,9 @@
                 <th>
                     &nbsp;
                 </th>
+                {% set width = ((100/(privileges_config['permissions']|length + 1))-1)|number_format(0) %}
                 {% for field in privileges_config['permissions'] %}
-                    <th class="a-center">
+                    <th width="{{ width }}%">
                         {{ field|trans }}
                     </th>
                 {% endfor %}
@@ -76,7 +77,7 @@
 
 {% block oro_acl_permission_collection_widget %}
     {% for field in privileges_config['permissions'] %}
-        <td class="a-center">
+        <td>
             {% for permission in form %}
                 {% if permission.vars.value.name == field %}
                     {{ form_widget(permission) }}

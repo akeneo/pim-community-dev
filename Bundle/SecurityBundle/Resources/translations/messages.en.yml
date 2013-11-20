@@ -5,9 +5,12 @@ EDIT: Edit
 DELETE: Delete
 ASSIGN: Assign
 SHARE: Share
-Access-level-BASIC: User
-Access-level-LOCAL: Business Unit
-Access-level-DEEP: Division
-Access-level-GLOBAL: Organization
-Access-level-SYSTEM: System
-Access-level-NONE: None
+oro:
+    security:
+        access-level:
+            BASIC: User
+            LOCAL: Business Unit
+            DEEP: Division
+            GLOBAL: Organization
+            SYSTEM: System
+            NONE: None
