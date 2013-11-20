@@ -122,7 +122,8 @@ class Edit extends Creation
      */
     public function isAttributeRequired($attributeCode, $channelCode)
     {
-        $checkbox = $this->find('css', sprintf('#pim_family_attributeRequirements_%s_%s_required', $attributeCode, $channelCode));
+        $selector = '#pim_family_attributeRequirements_%s_%s_required';
+        $checkbox = $this->find('css', sprintf($selector, $attributeCode, $channelCode));
         if (!$checkbox) {
             throw new \RuntimeException(
                 sprintf(
