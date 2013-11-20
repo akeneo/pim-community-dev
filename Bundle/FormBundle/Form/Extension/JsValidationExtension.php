@@ -28,12 +28,43 @@ class JsValidationExtension extends AbstractTypeExtension
     {
         $validationGroups = $this->getValidationGroups($view);
 
-        if ($options['data_class']) {
-            $metadata = $this->metadataFactory->getMetadataFor($options['data_class']);
+        if ($view->parent) {
+            return;
+        }
+        $this->processFormView($view, $validationGroups);
 
+        return;
+
+        if ($options['data_class']) {
             foreach ($this->getMappedChildren($view) as $child) {
                 $constraints = $this->getFormViewConstraints($child, $metadata, $validationGroups);
                 $this->addDataValidationAttribute($child, $constraints);
+            }
+        }
+    }
+
+    protected function processFormView(FormView $view, array $validationGroups)
+    {
+        $constraints = array();
+        if (isset($view->vars['data_class'])) {
+            $metadata = $this->metadataFactory->getMetadataFor($view->vars['data_class']);
+            $constraints = $metadata->properties;
+        }
+        if ($view->children && $view->parent) {
+            $required = isset($view->vars['required']) ? $view->vars['required'] : false;
+            $view->vars['attr']['data-validation'] = json_encode(
+                array('Required' => array('required' => $required))
+            );
+        }
+        foreach ($this->getMappedChildren($view) as $child) {
+            $childConstraints = $this->getFormViewConstraints($child, $constraints, $validationGroups);
+            $this->addDataValidationAttribute($child, $childConstraints);
+
+            if ($child->children) {
+                $this->processFormView($child, $validationGroups);
+            }
+            if (isset($child->vars['prototype']) && $child->vars['prototype'] instanceof FormView) {
+                $this->processFormView($child->vars['prototype'], $validationGroups);
             }
         }
     }
@@ -93,20 +124,23 @@ class JsValidationExtension extends AbstractTypeExtension
         return $result;
     }
 
-    protected function getFormViewConstraints(FormView $view, MetadataInterface $metadata, array $validationGroups)
+    /**
+     * @param FormView $view
+     * @param Constraint[] $constraints
+     * @param array $validationGroups
+     * @return array
+     */
+    protected function getFormViewConstraints(FormView $view, array $constraints, array $validationGroups)
     {
-        /** @var PropertyMetadataInterface[] $properties */
-        $properties = $metadata->properties;
-        $constraints = array();
-        if (isset($properties[$view->vars['name']])) {
-            /** @var Constraint[] $constraints */
-            $constraints = $properties[$view->vars['name']]->getConstraints();
+        $allConstraints = array();
+        if (isset($constraints[$view->vars['name']])) {
+            $allConstraints = $constraints[$view->vars['name']]->constraints;
         }
         if (isset($view->vars['constraints'])) {
-            $constraints = array_merge($constraints, $view->vars['constraints']);
+            $allConstraints = array_merge($allConstraints, $view->vars['constraints']);
         }
         $result = array();
-        foreach ($constraints as $constraint) {
+        foreach ($allConstraints as $constraint) {
             if (array_intersect($validationGroups, $constraint->groups)) {
                 $result[] = $constraint;
             }
