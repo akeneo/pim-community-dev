@@ -3,6 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Normalizer;
 
 use Pim\Bundle\ImportExportBundle\Normalizer\FlatAttributeGroupNormalizer;
+use Pim\Bundle\ImportExportBundle\Normalizer\FlatLabelTranslationNormalizer;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 
 /**
@@ -19,7 +20,7 @@ class FlatAttributeGroupNormalizerTest extends AttributeGroupNormalizerTest
      */
     protected function setUp()
     {
-        $this->normalizer = new FlatAttributeGroupNormalizer();
+        $this->normalizer = new FlatAttributeGroupNormalizer(new FlatLabelTranslationNormalizer());
         $this->format     = 'csv';
     }
 
