@@ -68,6 +68,11 @@ class ProductValueNotBlankValidator extends ConstraintValidator
                 if (!$media || $media->__toString() === '') {
                     $this->context->addViolation($constraint->messageNotBlank);
                 }
+            } elseif ($attribute->getBackendType() === 'metric') {
+                $metric = $value->getMetric();
+                if (!$metric || $metric->getData() === null) {
+                    $this->context->addViolation($constraint->messageNotBlank);
+                }
             }
         }
     }
