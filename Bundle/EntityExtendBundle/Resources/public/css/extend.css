@@ -1,3 +1,7 @@
 #entity_extend_unique_key_collection select {
     margin:0;
 }
+#oro_entity_config_type_extend_set_options_collection i.icon-list {
+    background: none;
+    font-size: 14px;
+}

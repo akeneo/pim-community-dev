@@ -320,11 +320,16 @@ oro_entity_config:
                             choices:        ['No', 'Yes']
                             empty_value:    false
                             label:          'Expanded'
+                            attr:
+                                class:      is-option-set-expanded
                             block:          entity
                             subblock:       properties
                 set_options:
                     options:
                         allowed_type:       [optionSet]
+                        auditable:          false
+                        serializable:       true
+
                         required_property:
                             config_id:
                                 scope:      extend
@@ -337,12 +342,5 @@ oro_entity_config:
                             label:          'Option(s)'
                             block:          entity
                             subblock:       properties
-                            type:           oro_entity_option_set
-
-#            'emails',
-#            'oro_email_collection',
-#            array(
-#                'type' => 'oro_email',
-#                'required' => false,
-#                'options' => array('data_class' => 'OroCRM\Bundle\ContactBundle\Entity\ContactEmail')
-#            )
+                            #type:           oro_entity_option_set
+                            data_class:     Oro\Bundle\EntityExtendBundle\Entity\OptionSet

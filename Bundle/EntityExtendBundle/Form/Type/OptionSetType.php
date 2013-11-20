@@ -4,6 +4,7 @@ namespace Oro\Bundle\EntityExtendBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class OptionSetType extends AbstractType
 {
@@ -14,8 +15,9 @@ class OptionSetType extends AbstractType
     {
         $builder
             ->add('id', 'hidden')
+            ->add('priority', 'hidden')
             ->add(
-                'option',
+                'label',
                 'text',
                 [
                     'label' => 'Value',
@@ -29,16 +31,20 @@ class OptionSetType extends AbstractType
                     'label' => 'Default',
                     'required' => false,
                 ]
-            )
-            ->add(
-                'priority',
-                'hidden',
-                [
-                    'label' => 'Priority',
-                    'required' => false,
-                ]
             );
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    /*public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(
+            [
+                'data_class' => 'Oro\Bundle\EntityExtendBundle\Entity\OptionSet',
+            ]
+        );
+    }*/
 
     /**
      * {@inheritdoc}

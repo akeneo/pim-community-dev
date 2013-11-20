@@ -48,7 +48,7 @@ class RelationType extends AbstractType
 
     public function preSubmitData(FormEvent $event)
     {
-        $data         = $event->getData();
+        $data = $event->getData();
         if (!$data) {
             $data = $event->getForm()->getParent()->getData();
         }
