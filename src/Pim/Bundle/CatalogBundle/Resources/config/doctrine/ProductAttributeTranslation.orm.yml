@@ -15,9 +15,9 @@ Pim\Bundle\CatalogBundle\Entity\ProductAttributeTranslation:
         label:
             type: string
             length: 64
+            nullable: true
         locale:
             type: string
-            scale: 0
             length: 20
     manyToOne:
         foreignKey:

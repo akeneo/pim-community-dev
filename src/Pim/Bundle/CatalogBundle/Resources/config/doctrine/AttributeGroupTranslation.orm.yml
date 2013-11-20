@@ -15,8 +15,10 @@ Pim\Bundle\CatalogBundle\Entity\AttributeGroupTranslation:
         label:
             type: string
             length: 100
+            nullable: true
         locale:
             type: string
+            length: 20
     manyToOne:
         foreignKey:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\AttributeGroup

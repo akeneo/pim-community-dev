@@ -15,8 +15,10 @@ Pim\Bundle\CatalogBundle\Entity\FamilyTranslation:
         label:
             type: string
             length: 64
+            nullable: true
         locale:
             type: string
+            length: 20
     manyToOne:
         foreignKey:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\Family

@@ -38,6 +38,11 @@ Pim\Bundle\CatalogBundle\Entity\Category:
             type: integer
             gedmo:
                 - treeRoot
+        level:
+            type: integer
+            column: lvl
+            gedmo:
+                - treeLevel
         left:
             type: integer
             column: lft

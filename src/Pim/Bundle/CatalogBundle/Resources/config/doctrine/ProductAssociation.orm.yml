@@ -14,6 +14,7 @@ Pim\Bundle\CatalogBundle\Entity\ProductAssociation:
             joinColumns:
                 association_id:
                     referencedColumnName: id
+                    nullable: false
                     onDelete: CASCADE
         owner:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\Product
@@ -21,6 +22,7 @@ Pim\Bundle\CatalogBundle\Entity\ProductAssociation:
             joinColumns:
                 owner_id:
                     referencedColumnName: id
+                    nullable: false
                     onDelete: CASCADE
     manyToMany:
         groups:

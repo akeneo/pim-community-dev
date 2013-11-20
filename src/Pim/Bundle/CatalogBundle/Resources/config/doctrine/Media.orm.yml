@@ -22,6 +22,7 @@ Pim\Bundle\CatalogBundle\Entity\Media:
         mimeType:
             type: string
             length: 255
+            column: mime_type
     oneToOne:
         value:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\ProductValue

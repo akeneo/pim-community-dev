@@ -15,6 +15,7 @@ Pim\Bundle\CatalogBundle\Entity\GroupTranslation:
         label:
             type: string
             length: 100
+            nullable: true
         locale:
             type: string
             length: 20
