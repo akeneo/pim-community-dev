@@ -26,16 +26,17 @@ class EntitySubscriberTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->subscriber = new EntitySubscriber(new RemindTimeCalculator(15));
-        $this->em         = $this->getMockBuilder('Doctrine\ORM\EntityManager')
+        $this->em = $this->getMockBuilder('Doctrine\ORM\EntityManager')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->uow        = $this->getMockBuilder('\Doctrine\ORM\UnitOfWork')
+        $this->uow = $this->getMockBuilder('\Doctrine\ORM\UnitOfWork')
             ->disableOriginalConstructor()
             ->getMock();
         $this->em->expects($this->any())
             ->method('getUnitOfWork')
             ->will($this->returnValue($this->uow));
+
+        $this->subscriber = new EntitySubscriber(new RemindTimeCalculator(15));
     }
 
     public function testGetSubscribedEvents()
@@ -368,19 +369,19 @@ class EntitySubscriberTest extends \PHPUnit_Framework_TestCase
             ->method('getScheduledEntityInsertions')
             ->will($this->returnValue(array($user)));
         $this->em->expects($this->at(1))
+            ->method('persist')
+            ->with($this->equalTo($newCalendar));
+        $this->em->expects($this->at(2))
+            ->method('persist')
+            ->with($this->equalTo($newConnection));
+        $this->em->expects($this->at(3))
             ->method('getClassMetadata')
             ->with('OroCalendarBundle:Calendar')
             ->will($this->returnValue($calendarMetadata));
-        $this->em->expects($this->at(2))
+        $this->em->expects($this->at(4))
             ->method('getClassMetadata')
             ->with('OroCalendarBundle:CalendarConnection')
             ->will($this->returnValue($connectionMetadata));
-        $this->em->expects($this->at(3))
-            ->method('persist')
-            ->with($this->equalTo($newCalendar));
-        $this->em->expects($this->at(4))
-            ->method('persist')
-            ->with($this->equalTo($newConnection));
         $this->uow->expects($this->at(1))
             ->method('computeChangeSet')
             ->with($calendarMetadata, $newCalendar);

@@ -3,6 +3,8 @@
 namespace Oro\Bundle\CalendarBundle\EventListener;
 
 use Doctrine\Common\EventSubscriber;
+use Doctrine\ORM\Mapping\ClassMetadata;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Events;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
@@ -21,8 +23,16 @@ class EntitySubscriber implements EventSubscriber
     protected $remindTimeCalculator;
 
     /**
-     * Constructor
-     *
+     * @var ClassMetadata
+     */
+    protected $calendarMetadata;
+
+    /**
+     * @var ClassMetadata
+     */
+    protected $calendarConnectionMetadata;
+
+    /**
      * @param RemindTimeCalculator $remindTimeCalculator
      */
     public function __construct(RemindTimeCalculator $remindTimeCalculator)
@@ -111,10 +121,8 @@ class EntitySubscriber implements EventSubscriber
      */
     public function onFlush(OnFlushEventArgs $event)
     {
-        $em                      = $event->getEntityManager();
-        $uow                     = $em->getUnitOfWork();
-        $calendarMetadata        = $em->getClassMetadata('OroCalendarBundle:Calendar');
-        $connectionMetadata      = $em->getClassMetadata('OroCalendarBundle:CalendarConnection');
+        $em  = $event->getEntityManager();
+        $uow = $em->getUnitOfWork();
 
         foreach ($uow->getScheduledEntityInsertions() as $entity) {
             if ($entity instanceof User) {
@@ -127,9 +135,37 @@ class EntitySubscriber implements EventSubscriber
 
                 $em->persist($calendar);
                 $em->persist($calendarConnection);
-                $uow->computeChangeSet($calendarMetadata, $calendar);
-                $uow->computeChangeSet($connectionMetadata, $calendarConnection);
+                // can't inject entity manager through constructor because of circular dependency
+                $uow->computeChangeSet($this->getCalendarMetadata($em), $calendar);
+                $uow->computeChangeSet($this->getCalendarConnectionMetadata($em), $calendarConnection);
             }
         }
+    }
+
+    /**
+     * @param EntityManager $entityManager
+     * @return ClassMetadata
+     */
+    protected function getCalendarMetadata(EntityManager $entityManager)
+    {
+        if (!$this->calendarMetadata) {
+            $this->calendarMetadata = $entityManager->getClassMetadata('OroCalendarBundle:Calendar');
+        }
+
+        return $this->calendarMetadata;
+    }
+
+    /**
+     * @param EntityManager $entityManager
+     * @return ClassMetadata
+     */
+    protected function getCalendarConnectionMetadata(EntityManager $entityManager)
+    {
+        if (!$this->calendarConnectionMetadata) {
+            $this->calendarConnectionMetadata
+                = $entityManager->getClassMetadata('OroCalendarBundle:CalendarConnection');
+        }
+
+        return $this->calendarConnectionMetadata;
     }
 }
