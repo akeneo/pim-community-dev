@@ -165,6 +165,7 @@ function($, _, __, tools) {
         'oro/validator/notnull',
         'oro/validator/range',
         'oro/validator/regex',
+        'oro/validator/repeated',
         'oro/validator/url'
     ];
     $.validator.loadMethod(methods);

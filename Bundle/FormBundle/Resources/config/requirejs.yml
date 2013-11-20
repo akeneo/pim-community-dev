@@ -20,6 +20,7 @@ config:
         'oro/validator/number': 'bundles/oroform/js/validator/number.js'
         'oro/validator/range': 'bundles/oroform/js/validator/range.js'
         'oro/validator/regex': 'bundles/oroform/js/validator/regex.js'
+        'oro/validator/repeated': 'bundles/oroform/js/validator/repeated.js'
         'oro/validator/url': 'bundles/oroform/js/validator/url.js'
 
         'oro/select2-config': 'bundles/oroform/js/select2-config.js'
