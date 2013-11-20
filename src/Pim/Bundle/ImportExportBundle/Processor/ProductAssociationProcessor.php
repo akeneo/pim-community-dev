@@ -138,8 +138,6 @@ class ProductAssociationProcessor extends AbstractEntityProcessor
         $relatedTo = array('_groups', '_products');
         $associations = array();
 
-        array('_groups' => array(), '_products' => array());
-
         foreach ($item as $key => $value) {
             foreach ($relatedTo as $type) {
                 if (strpos($key, $type) !== false && $value != '') {
