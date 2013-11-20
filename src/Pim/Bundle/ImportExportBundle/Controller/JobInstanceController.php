@@ -392,15 +392,9 @@ class JobInstanceController extends AbstractDoctrineController
             $form = $this->createUploadForm();
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $data  = $form->getData();
-                $media = $data['file'];
-                $file  = $media->getFile();
-
-                $filename = $file->getClientOriginalName();
-                $file = $file->move(
-                    sys_get_temp_dir(),
-                    $file->getFilename() . substr($filename, strrpos($filename, '.'))
-                );
+                $data = $form->get('file')->getData();
+                $file = $data->getFile();
+                $file = $file->move(sys_get_temp_dir(), $file->getClientOriginalName());
 
                 $job = $jobInstance->getJob();
                 foreach ($job->getSteps() as $step) {
