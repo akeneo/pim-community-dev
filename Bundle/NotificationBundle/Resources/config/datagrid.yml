@@ -54,12 +54,10 @@ datagrid:
 
             emailRecipient:
                 label: oro.notification.datagrid.recipient.custom_email
-                data_name: recipientList.email
                 frontend_type: string
 
             ownerRecipient:
                 label: oro.notification.datagrid.recipient.owner
-                data_name: recipientList.owner
                 frontend_type: boolean
 
         properties:
@@ -132,8 +130,8 @@ datagrid:
 
                 emailRecipient:
                     type: string
-                    data_name: recipientList.email
+                    data_name: emailRecipient
 
                 ownerRecipient:
                     type: boolean
-                    data_name: recipientList.owner
+                    data_name: ownerRecipient
