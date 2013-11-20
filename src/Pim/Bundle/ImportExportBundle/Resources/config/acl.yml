@@ -71,7 +71,7 @@ pim_importexport_import_report:
     label: Export report manipulation
 pim_importexport_import_report_index:
     type: action
-    label: View export report list
+    label: View import report list
 pim_importexport_import_report_show:
     type: action
     label: View export report details
