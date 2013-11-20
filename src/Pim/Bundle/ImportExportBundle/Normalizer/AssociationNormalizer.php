@@ -20,13 +20,28 @@ class AssociationNormalizer implements NormalizerInterface
     protected $supportedFormats = array('json', 'xml');
 
     /**
+     * @var LabelTranslationNormalizer
+     */
+    protected $translationNormalizer;
+
+    /**
+     * Constructor
+     *
+     * @param LabelTranslationNormalizer $translationNormalizer
+     */
+    public function __construct(LabelTranslationNormalizer $translationNormalizer)
+    {
+        $this->translationNormalizer = $translationNormalizer;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function normalize($object, $format = null, array $context = array())
     {
         return array(
             'code'  => $object->getCode()
-        ) + $this->normalizeLabel($object);
+        ) + $this->translationNormalizer->normalize($object, $format, $context);
     }
 
     /**
@@ -46,11 +61,9 @@ class AssociationNormalizer implements NormalizerInterface
      */
     protected function normalizeLabel(Association $association)
     {
-        $labels = array();
-        foreach ($association->getTranslations() as $translation) {
-            $labels[$translation->getLocale()] = $translation->getLabel();
-        }
+        $normalizer = new LabelTranslationNormalizer();
+        $translations = $normalizer->normalize($association);
 
-        return array('label' => $labels);
+        return array('label' => $translations);
     }
 }
