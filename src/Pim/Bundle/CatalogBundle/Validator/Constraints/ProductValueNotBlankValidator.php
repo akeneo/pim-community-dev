@@ -56,6 +56,19 @@ class ProductValueNotBlankValidator extends ConstraintValidator
             return;
         }
 
+        $this->validateComplexValue($value, $constraint);
+    }
+
+    /**
+     * Validate a more complex value that doesn't store the data itself
+     *
+     * @param ProductValueInterface $value
+     * @param Constraint            $constraint
+     *
+     * @return null
+     */
+    protected function validateComplexValue(ProductValueInterface $value, Constraint $constraint)
+    {
         if ($value->getAttribute()) {
             $backendType = $value->getAttribute()->getBackendType();
 
