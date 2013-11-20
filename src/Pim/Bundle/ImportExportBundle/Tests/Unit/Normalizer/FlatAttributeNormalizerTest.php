@@ -3,6 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Normalizer;
 
 use Pim\Bundle\ImportExportBundle\Normalizer\FlatAttributeNormalizer;
+use Pim\Bundle\ImportExportBundle\Normalizer\FlatLabelTranslationNormalizer;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
@@ -22,7 +23,7 @@ class FlatAttributeNormalizerTest extends AttributeNormalizerTest
      */
     protected function setUp()
     {
-        $this->normalizer = new FlatAttributeNormalizer();
+        $this->normalizer = new FlatAttributeNormalizer(new FlatLabelTranslationNormalizer());
         $this->format     = 'csv';
     }
 

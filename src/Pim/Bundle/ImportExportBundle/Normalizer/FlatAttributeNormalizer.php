@@ -28,19 +28,6 @@ class FlatAttributeNormalizer extends AttributeNormalizer
     /**
      * {@inheritdoc}
      */
-    protected function normalizeLabel(ProductAttribute $attribute)
-    {
-        $values = array();
-        foreach ($attribute->getTranslations() as $translation) {
-            $values[sprintf('label-%s', $translation->getLocale())] = $translation->getLabel();
-        }
-
-        return $values;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     protected function normalizeAvailableLocales($attribute)
     {
         $availableLocales = $attribute->getAvailableLocales();
