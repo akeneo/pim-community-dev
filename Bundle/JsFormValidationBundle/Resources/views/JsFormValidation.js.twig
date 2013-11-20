@@ -226,7 +226,7 @@ var jsfv = (function () {
 
                 // autofocus on a first form filed (if it has no value)
                 if (!form.data('disable-autofocus')) {
-                    field = form.find(':input:visible:not(.offscreen):not(button):not([disabled]):not([readonly])').first();
+                    field = form.find(':input:visible:not(.offscreen):not(.select2):not(.select2-focusser):not(button):not([disabled]):not([readonly])').first();
                     if (!field.val()) {
                         field.focus();
                     }

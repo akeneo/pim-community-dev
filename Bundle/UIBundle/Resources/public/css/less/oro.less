@@ -3851,7 +3851,10 @@ input:focus:invalid:focus,
 textarea:focus:invalid:focus,
 select:focus:invalid:focus,
 div.selector.focus,
-div.uploader.focus{
+div.uploader.focus,
+.select2-container-active .select2-choice,
+.select2-container-active .select2-choices
+{
   border-color: rgba(82, 168, 236, 0.8);
   outline: 0;
   outline: thin dotted \9;
@@ -4213,6 +4216,16 @@ Version: 3.4.1 Timestamp: Thu Jun 27 18:02:10 PDT 2013
   text-overflow: ellipsis;
 }
 
+/** TODO: replace this with better solution for clear results block of select2 **/
+.select2-container .select2-choice abbr:before {
+  content: "x";
+  font-size: 11px;
+  font-weight: bold;
+  position: absolute;
+  right: 0;
+  top: -8px;
+}
+
 .select2-container .select2-choice abbr {
   display: none;
   width: 12px;
@@ -4364,10 +4377,6 @@ Version: 3.4.1 Timestamp: Thu Jun 27 18:02:10 PDT 2013
 
 }
 
-.select2-container-active .select2-choice,
-.select2-container-active .select2-choices {
-  outline: none;
-}
 body .select2-dropdown-open {
   border-color:#aaa;
   .select2-choice {
