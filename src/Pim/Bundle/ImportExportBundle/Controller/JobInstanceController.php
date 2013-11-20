@@ -12,6 +12,7 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 use Oro\Bundle\BatchBundle\Connector\ConnectorRegistry;
@@ -347,7 +348,7 @@ class JobInstanceController extends AbstractDoctrineController
         $violations       = $this->getValidator()->validate($jobInstance, array('Default', 'Execution'));
         $uploadViolations = $this->getValidator()->validate($jobInstance, array('Default', 'UploadExecution'));
 
-        $uploadMode = $uploadViolations->count() === 0 ? $this->configureUploadJob($jobInstance) : false;
+        $uploadMode = $uploadViolations->count() === 0 ? $this->processUploadForm($jobInstance) : false;
 
         if ($uploadMode === true || $violations->count() === 0) {
             $jobExecution = new JobExecution();
@@ -377,16 +378,14 @@ class JobInstanceController extends AbstractDoctrineController
     }
 
     /**
-     * Configure job instance for uploaded file
+     * Process the upload form
      *
      * @param JobInstance $jobInstance
      *
      * @return boolean
      */
-    protected function configureUploadJob(JobInstance $jobInstance)
+    protected function processUploadForm(JobInstance $jobInstance)
     {
-        $uploadMode = false;
-
         $request = $this->getRequest();
         if ($request->isMethod('POST')) {
             $form = $this->createUploadForm();
@@ -396,28 +395,47 @@ class JobInstanceController extends AbstractDoctrineController
                 $file = $data->getFile();
                 $file = $file->move(sys_get_temp_dir(), $file->getClientOriginalName());
 
-                $job = $jobInstance->getJob();
-                foreach ($job->getSteps() as $step) {
-                    $reader = $step->getReader();
+                return $this->configureUploadJob($jobInstance, $file);
+            }
+        }
 
-                    if ($reader instanceof UploadedFileAwareInterface) {
-                        $constraints = $reader->getUploadedFileConstraints();
-                        $errors = $this->getValidator()->validateValue($file, $constraints);
+        return false;
+    }
 
-                        if ($errors->count() !== 0) {
-                            foreach ($errors as $error) {
-                                $this->addFlash('error', $error->getMessage());
-                            }
-                        } else {
-                            $reader->setUploadedFile($file);
-                            $uploadMode = true;
-                        }
+    /**
+     * Configure job instance for uploaded file
+     *
+     * @param JobInstance $jobInstance
+     * @param File        $file
+     *
+     * @return boolean
+     */
+    protected function configureUploadJob(JobInstance $jobInstance, File $file)
+    {
+        $success = false;
+
+        $job = $jobInstance->getJob();
+        foreach ($job->getSteps() as $step) {
+            $reader = $step->getReader();
+
+            if ($reader instanceof UploadedFileAwareInterface) {
+                $constraints = $reader->getUploadedFileConstraints();
+                $errors = $this->getValidator()->validateValue($file, $constraints);
+
+                if ($errors->count() !== 0) {
+                    foreach ($errors as $error) {
+                        $this->addFlash('error', $error->getMessage());
                     }
+
+                    return false;
+                } else {
+                    $reader->setUploadedFile($file);
+                    $success = true;
                 }
             }
         }
 
-        return $uploadMode;
+        return $success;
     }
 
     /**
