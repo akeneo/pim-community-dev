@@ -56,32 +56,31 @@ class ProductValueNotBlankValidator extends ConstraintValidator
             return;
         }
 
-        $attribute = $value->getAttribute();
-        if ($attribute) {
-            if ($attribute->getBackendType() === 'prices') {
-                $channel = $constraint->getChannel();
-                if (!$this->validatePrices($value, $channel)) {
-                    $this->context->addViolation($constraint->messageNotBlank);
-                }
-            } elseif ($attribute->getBackendType() === 'media') {
-                $media = $value->getMedia();
-                if (!$media || $media->__toString() === '') {
-                    $this->context->addViolation($constraint->messageNotBlank);
-                }
+        if ($value->getAttribute()) {
+            $backendType = $value->getAttribute()->getBackendType();
+
+            if ($backendType === 'prices') {
+                $this->validatePrices($value, $constraint);
+            } elseif ($backendType === 'media') {
+                $this->validateMedia($value, $constraint);
+            } elseif ($backendType === 'metric') {
+                $this->validateMetric($value, $constraint);
             }
         }
     }
 
     /**
-     * Validate that prices contains expected currencies
+     * Validate that prices contain the currencies required by the channel
      *
      * @param ProductValueInterface $value
-     * @param Channel               $channel
+     * @param Constraint            $constraint
      *
-     * @return boolean
+     * @return null
      */
-    protected function validatePrices(ProductValueInterface $value, Channel $channel)
+    protected function validatePrices(ProductValueInterface $value, Constraint $constraint)
     {
+        $channel = $constraint->getChannel();
+
         $expectedCurrencies = array_map(
             function ($currency) {
                 return $currency->getCode();
@@ -92,12 +91,38 @@ class ProductValueNotBlankValidator extends ConstraintValidator
             foreach ($value->getData() as $price) {
                 if ($price->getCurrency() === $currency) {
                     if ($price->getData() === null) {
-                        return false;
+                        $this->context->addViolation($constraint->messageNotBlank);
                     }
                 }
             }
         }
+    }
 
-        return true;
+    /**
+     * Check if the media is not empty
+     *
+     * @param ProductValueInterface $value
+     * @param Constraint            $constraint
+     */
+    protected function validateMedia(ProductValueInterface $value, Constraint $constraint)
+    {
+        $media = $value->getMedia();
+        if (!$media || $media->__toString() === '') {
+            $this->context->addViolation($constraint->messageNotBlank);
+        }
+    }
+
+    /**
+     * Check if the metric value is not empty
+     *
+     * @param ProductValueInterface $value
+     * @param Constraint            $constraint
+     */
+    protected function validateMetric(ProductValueInterface $value, Constraint $constraint)
+    {
+        $metric = $value->getMetric();
+        if (!$metric || $metric->getData() === null) {
+            $this->context->addViolation($constraint->messageNotBlank);
+        }
     }
 }
