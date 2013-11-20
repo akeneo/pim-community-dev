@@ -65,7 +65,7 @@ class FlatProductNormalizer implements NormalizerInterface
             $scopeCode = $context['scopeCode'];
         }
 
-        $this->results = $this->normalizeValue($identifier = $object->getIdentifier());
+        $this->results = $this->normalizeValue($object->getIdentifier());
 
         $this->normalizeFamily($object->getFamily());
 
@@ -73,7 +73,7 @@ class FlatProductNormalizer implements NormalizerInterface
 
         $this->normalizeCategories($object->getCategoryCodes());
 
-        $normalizedValues = $this->normalizeValues($object);
+        $normalizedValues = $this->normalizeValues($object, $scopeCode);
 
         $this->results = array_merge($this->results, $normalizedValues);
 
@@ -84,11 +84,14 @@ class FlatProductNormalizer implements NormalizerInterface
      * Normalize values
      *
      * @param ProductInterface $product
+     * @param string           $scopeCode
      *
      * @return array
      */
-    protected function normalizeValues(ProductInterface $product)
+    protected function normalizeValues(ProductInterface $product, $scopeCode)
     {
+        $identifier = $product->getIdentifier();
+
         $filteredValues = $product->getValues()->filter(
             function ($value) use ($identifier, $scopeCode) {
                 return (
