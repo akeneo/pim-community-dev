@@ -84,7 +84,13 @@ class ORMProductTransformer
 
         $this->mapValues($values, $mapping);
         $attributeValues = array_diff_key($values, $this->propertyTransformers);
+        foreach (array_keys($attributeValues) as $key) {
+            if (strpos($key, '_groups') !== false || strpos($key, '_products') !== false) {
+                unset($attributeValues[$key]);
+            }
+        }
         $propertyValues = array_intersect_key($values, $this->propertyTransformers);
+
         if (!$this->attributeCache->isInitialized()) {
             $this->attributeCache->initialize(array_keys($attributeValues));
         }
