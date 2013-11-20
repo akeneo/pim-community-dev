@@ -45,10 +45,21 @@ class JsValidationExtension extends AbstractTypeExtension
             $value[$this->getConstraintName($constraint)] = $this->getConstraintProperties($constraint);
         }
         if ($value) {
-            if (!isset($view->vars['attr'])) {
-                $view->vars['attr'] = array();
+            $target = $view;
+            if (isset($view->vars['type']) && $view->vars['type'] == 'repeated') {
+                $repeatedNames = array_keys($view->vars['value']);
+                $target = $view->children[$repeatedNames[0]];
+                $value['Repeated'] = array(
+                    'first_name' => $repeatedNames[0],
+                    'second_name' => $repeatedNames[1],
+                    'invalid_message' => $view->vars['invalid_message'],
+                    'invalid_message_parameters' => $view->vars['invalid_message_parameters'],
+                );
             }
-            $view->vars['attr']['data-validation'] = json_encode($value);
+            if (!isset($target->vars['attr'])) {
+                $target->vars['attr'] = array();
+            }
+            $target->vars['attr']['data-validation'] = json_encode($value);
         }
     }
 
