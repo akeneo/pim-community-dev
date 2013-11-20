@@ -6,7 +6,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 
 /**
- * A normalizer to transform a category entity into a flat array
+ * A normalizer to transform a category entity into an array
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -20,6 +20,21 @@ class CategoryNormalizer implements NormalizerInterface
     protected $supportedFormats = array('json', 'xml');
 
     /**
+     * @var LabelTranslationNormalizer
+     */
+    protected $translationNormalizer;
+
+    /**
+     * Constructor
+     *
+     * @param LabelTranslationNormalizer $translationNormalizer
+     */
+    public function __construct(LabelTranslationNormalizer $translationNormalizer)
+    {
+        $this->translationNormalizer = $translationNormalizer;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function normalize($object, $format = null, array $context = array())
@@ -28,7 +43,7 @@ class CategoryNormalizer implements NormalizerInterface
             'code'    => $object->getCode(),
             'parent'  => $object->getParent() ? $object->getParent()->getCode() : '',
             'dynamic' => (string) $object->isDynamic(),
-        ) + $this->normalizeLabel($object);
+        ) + $this->translationNormalizer->normalize($object, $format, $context);
     }
 
     /**
@@ -37,22 +52,5 @@ class CategoryNormalizer implements NormalizerInterface
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof CategoryInterface && in_array($format, $this->supportedFormats);
-    }
-
-    /**
-     * Returns an array containing the label values
-     *
-     * @param CategoryInterface $category
-     *
-     * @return array
-     */
-    protected function normalizeLabel(CategoryInterface $category)
-    {
-        $labels = array();
-        foreach ($category->getTranslations() as $translation) {
-            $labels[$translation->getLocale()]= $translation->getLabel();
-        }
-
-        return array('label' => $labels);
     }
 }

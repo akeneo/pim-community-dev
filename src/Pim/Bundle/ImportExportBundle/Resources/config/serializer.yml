@@ -52,11 +52,15 @@ services:
 
     pim_serializer.normalizer.category:
         class: %pim_serializer.normalizer.category.class%
+        arguments: 
+            - '@pim_serializer.normalizer.label_translation'
         tags:
             - { name: pim_serializer.normalizer }
 
     pim_serializer.normalizer.flat_category:
         class: %pim_serializer.normalizer.flat_category.class%
+        arguments: 
+            - '@pim_serializer.normalizer.flat_label_translation'
         tags:
             - { name: pim_serializer.normalizer }
 
