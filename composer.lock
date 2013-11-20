@@ -3477,7 +3477,7 @@
         },
         {
             "name": "oro/platform",
-            "version": "dev-maintenance/pim_beta1",
+            "version": "dev-maintenance/pim_beta3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/akeneo/platform.git",
