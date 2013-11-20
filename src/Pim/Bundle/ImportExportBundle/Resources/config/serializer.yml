@@ -23,8 +23,11 @@ parameters:
     pim_serializer.normalizer.flat_group.class:            Pim\Bundle\ImportExportBundle\Normalizer\FlatGroupNormalizer
     pim_serializer.normalizer.job_instance.class:          Pim\Bundle\ImportExportBundle\Normalizer\JobInstanceNormalizer
     pim_serializer.normalizer.flat_job_instance.class:     Pim\Bundle\ImportExportBundle\Normalizer\FlatJobInstanceNormalizer
-    pim_serializer.normalizer.channel.class:              Pim\Bundle\ImportExportBundle\Normalizer\ChannelNormalizer
-    pim_serializer.normalizer.flat_channel.class:         Pim\Bundle\ImportExportBundle\Normalizer\FlatChannelNormalizer
+    pim_serializer.normalizer.channel.class:               Pim\Bundle\ImportExportBundle\Normalizer\ChannelNormalizer
+    pim_serializer.normalizer.flat_channel.class:          Pim\Bundle\ImportExportBundle\Normalizer\FlatChannelNormalizer
+
+    pim_serializer.normalizer.label_translation.class:     Pim\Bundle\ImportExportBundle\Normalizer\LabelTranslationNormalizer
+    pim_serializer.normalizer.flat_label_translation.class:Pim\Bundle\ImportExportBundle\Normalizer\FlatLabelTranslationNormalizer
 
 services:
     pim_serializer:
@@ -98,11 +101,15 @@ services:
 
     pim_serializer.normalizer.association:
         class: %pim_serializer.normalizer.association.class%
+        arguments: 
+            - '@pim_serializer.normalizer.label_translation'
         tags:
             - { name: pim_serializer.normalizer }
 
     pim_serializer.normalizer.flat_association:
         class: %pim_serializer.normalizer.flat_association.class%
+        arguments: 
+            - '@pim_serializer.normalizer.flat_label_translation'
         tags:
             - { name: pim_serializer.normalizer }
 
@@ -135,6 +142,16 @@ services:
         class: %pim_serializer.normalizer.flat_channel.class%
         tags:
             - { name: pim_serializer.normalizer }
+
+    pim_serializer.normalizer.label_translation:
+        class: %pim_serializer.normalizer.label_translation.class%
+        tags:
+            - { name: pim_serializer.normalizer}
+
+    pim_serializer.normalizer.flat_label_translation:
+        class: %pim_serializer.normalizer.flat_label_translation.class%
+        tags:
+            - { name: pim_serializer.normalizer}
 
     pim_serializer.normalizer.get_set_method:
         public: false
