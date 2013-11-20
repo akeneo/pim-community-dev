@@ -278,7 +278,11 @@
 
     <target name="install-all-behat" description="Setup db and install assets for Behat">
         <exec executable="./install.sh">
-          <arg value="all" />
+          <arg value="assets" />
+          <arg value="behat" />
+        </exec>
+        <exec executable="./install.sh">
+          <arg value="db" />
           <arg value="behat" />
         </exec>
     </target>
