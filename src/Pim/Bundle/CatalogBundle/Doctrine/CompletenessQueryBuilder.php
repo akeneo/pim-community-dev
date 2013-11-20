@@ -161,7 +161,6 @@ SQL;
     /**
      * Returns an array of replacements for the query
      *
-     * @param  type  $sql
      * @return array
      */
     protected function getReplacements()
@@ -214,8 +213,9 @@ SQL;
     /**
      * Returns the fields for an association
      *
-     * @param  array  $mapping
-     * @param  string $prefix
+     * @param array  $mapping
+     * @param string $prefix
+     *
      * @return array
      */
     protected function getAssociationFields($mapping, $prefix)
@@ -251,8 +251,9 @@ SQL;
      *
      * Override this method if some fields of a related entity should not be considered
      *
-     * @param  string $className
-     * @param  string $prefix
+     * @param string $className
+     * @param string $prefix
+     *
      * @return array
      */
     protected function getClassContentFields($className, $prefix)
@@ -298,8 +299,9 @@ SQL;
     /**
      * Returns the SQL joins for an association
      *
-     * @param  array  $mapping
-     * @param  string $prefix
+     * @param array  $mapping
+     * @param string $prefix
+     *
      * @return array
      */
     protected function getAssociationJoins($mapping, $prefix)
@@ -372,18 +374,20 @@ SQL;
     /**
      * Returns the alias for an association
      *
-     * @param  int    $index
+     * @param int $index
+     *
      * @return string
      */
     protected function getAssociationAlias($index)
     {
-        return sprintf('_rel_%s', $index);
+        return sprintf('_rel_%d', $index);
     }
 
     /**
      * Returns the meta data for a class
      *
-     * @param  string $className
+     * @param string $className
+     *
      * @return array
      */
     protected function getClassMetadata($className)
