@@ -68,16 +68,16 @@ pim_importexport_export_report_download_files:
 # Import reports
 pim_importexport_import_report:
     type: action
-    label: Export report manipulation
+    label: Import report manipulation
 pim_importexport_import_report_index:
     type: action
     label: View import report list
 pim_importexport_import_report_show:
     type: action
-    label: View export report details
+    label: View import report details
 pim_importexport_import_report_download_log:
     type: action
-    label: Download export report log
+    label: Download import report log
 pim_importexport_import_report_download_files:
     type: action
     label: Download imported files
