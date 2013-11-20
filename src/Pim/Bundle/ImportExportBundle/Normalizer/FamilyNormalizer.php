@@ -20,11 +20,6 @@ class FamilyNormalizer implements NormalizerInterface
     protected $supportedFormats = array('json', 'xml');
 
     /**
-     * @var array
-     */
-    protected $results;
-
-    /**
      * {@inheritdoc}
      */
     public function normalize($object, $format = null, array $context = array())
