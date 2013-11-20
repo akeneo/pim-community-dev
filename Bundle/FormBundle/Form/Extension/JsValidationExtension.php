@@ -49,12 +49,20 @@ class JsValidationExtension extends AbstractTypeExtension
             if (isset($view->vars['type']) && $view->vars['type'] == 'repeated') {
                 $repeatedNames = array_keys($view->vars['value']);
                 $target = $view->children[$repeatedNames[0]];
-                $value['Repeated'] = array(
+
+                $secondValue = array();
+                $secondValue['Repeated'] = array(
                     'first_name' => $repeatedNames[0],
                     'second_name' => $repeatedNames[1],
                     'invalid_message' => $view->vars['invalid_message'],
                     'invalid_message_parameters' => $view->vars['invalid_message_parameters'],
                 );
+                $second = $view->children[$repeatedNames[1]];
+
+                if (!isset($second->vars['attr'])) {
+                    $second->vars['attr'] = array();
+                }
+                $second->vars['attr']['data-validation'] = json_encode($secondValue);
             }
             if (!isset($target->vars['attr'])) {
                 $target->vars['attr'] = array();
