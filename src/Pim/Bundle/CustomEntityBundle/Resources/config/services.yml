@@ -1,0 +1,38 @@
+parameters:
+    pim_custom_entity.configuration.registry.class:         Pim\Bundle\CustomEntityBundle\Configuration\Registry
+    pim_custom_entity.configuration.default.class:          Pim\Bundle\CustomEntityBundle\Configuration\Configuration
+    pim_custom_entity.controller.class:                     Pim\Bundle\CustomEntityBundle\Controller\Controller
+    pim_custom_entity.worker.default.class:                 Pim\Bundle\CustomEntityBundle\ControllerWorker\Worker
+    pim_custom_entity.worker.datagrid.class:                Pim\Bundle\CustomEntityBundle\ControllerWorker\DatagridWorker
+    pim_custom_entity.manager.orm.class:                    Pim\Bundle\CustomEntityBundle\Manager\OrmManager
+
+services:
+    pim_custom_entity.configuration.registry:
+        class: %pim_custom_entity.configuration.registry.class%
+
+    pim_custom_entity.controller:
+        class: %pim_custom_entity.controller.class%
+        scope: request
+        arguments:
+            - '@request'
+            - '@pim_custom_entity.configuration.registry'
+
+    pim_custom_entity.worker.default:
+        class: %pim_custom_entity.worker.default.class%
+        arguments:
+            - '@form.factory'
+            - '@templating'
+            - '@router'
+            - '@translator'
+
+    pim_custom_entity.worker.datagrid:
+        class: %pim_custom_entity.worker.datagrid.class%
+        parent: pim_custom_entity.worker.default
+        arguments:
+            - '@pim_grid.datagrid.helper'
+
+    pim_custom_entity.manager.orm:
+        class: %pim_custom_entity.manager.orm.class%
+        arguments:
+            - '@doctrine'
+            - '@property_accessor'

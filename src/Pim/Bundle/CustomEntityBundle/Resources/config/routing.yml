@@ -1,0 +1,22 @@
+pim_customentity_index:
+    path: /{customEntityName}/.{_format}
+    defaults: { _controller: pim_customentity.controller:workerAction, _format: html, workerAction: indexAction }
+    requirements:
+        _format: html|json|csv
+
+pim_customentity_create:
+    path: /{customEntityName}/create
+    defaults: { _controller: pim_customentity.controller:workerAction, workerAction: createAction }
+
+pim_customentity_edit:
+    path: /{customEntityName}/{id}/edit
+    defaults: { _controller: pim_customentity.controller:workerAction, workerAction: editAction }
+    requirements:
+        id: \d+
+
+pim_customentity_remove:
+    path: /{customEntityName}/{id}/remove
+    defaults: { _controller: pim_customentity.controller:workerAction, workerAction: removeAction }
+    requirements:
+        id: \d+
+    methods: [DELETE, POST]

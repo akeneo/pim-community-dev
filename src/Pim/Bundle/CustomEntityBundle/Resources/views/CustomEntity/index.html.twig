@@ -1,0 +1,36 @@
+{% extends baseTemplate %}
+
+{% set title = (customEntityName ~ ".overview")|trans %}
+
+{% block head_script %}
+    {{ parent() }}
+    {% include 'OroGridBundle:Include:javascript.html.twig' with {'datagridView': datagrid, 'selector': '#' ~ customEntityName ~ '-grid'} %}
+{% endblock %}
+
+{% block content %}
+
+<div class="navigation clearfix navbar-extra navbar-extra-right">
+    {% set buttons %}
+        {{ elements.createBtn(
+            customEntityName,
+            null,
+            { id: "create-" ~ customEntityName, "data-form": "dialog", "data-form-url": path(createRoute, {customEntityName: customEntityName}) }
+        ) }}
+        <script type="text/javascript">
+            require(
+                ['jquery', 'pim/dialogform'],
+                function ($, dialogForm) {
+                    'use strict';
+                    $(function() {
+                        new dialogForm('#create-{{ customEntityName }}');
+                    });
+                }
+            );
+        </script>
+    {% endset %}
+
+    {{ elements.page_header(title, buttons, null) }}
+</div>
+
+<div id="{{ customEntityName }}-grid"></div>
+{% endblock %}
