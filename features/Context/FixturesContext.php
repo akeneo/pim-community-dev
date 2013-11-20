@@ -1300,7 +1300,7 @@ class FixturesContext extends RawMinkContext
         $product = $this->getProduct($identifier);
 
         $productValue = $product->getValue($attribute, $locale, $scope);
-        if (!$productValue) {
+        if (!$productValue || !$productValue->getId()) {
             throw new \InvalidArgumentException(
                 sprintf(
                     'Could not find product value for attribute "%s" in locale "%s" for scope "%s"',
