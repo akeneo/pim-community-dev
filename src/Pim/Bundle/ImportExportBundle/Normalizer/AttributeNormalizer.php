@@ -27,16 +27,16 @@ class AttributeNormalizer implements NormalizerInterface
     protected $supportedFormats = array('json', 'xml');
 
     /**
-     * @var LabelTranslationNormalizer
+     * @var TranslationNormalizer
      */
     protected $translationNormalizer;
 
     /**
      * Constructor
      *
-     * @param LabelTranslationNormalizer $translationNormalizer
+     * @param TranslationNormalizer $translationNormalizer
      */
-    public function __construct(LabelTranslationNormalizer $translationNormalizer)
+    public function __construct(TranslationNormalizer $translationNormalizer)
     {
         $this->translationNormalizer = $translationNormalizer;
     }

@@ -3,7 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Normalizer;
 
 use Pim\Bundle\ImportExportBundle\Normalizer\CategoryNormalizer;
-use Pim\Bundle\ImportExportBundle\Normalizer\LabelTranslationNormalizer;
+use Pim\Bundle\ImportExportBundle\Normalizer\TranslationNormalizer;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 
 /**
@@ -20,7 +20,7 @@ class CategoryNormalizerTest extends NormalizerTestCase
      */
     protected function setUp()
     {
-        $this->normalizer = new CategoryNormalizer(new LabelTranslationNormalizer());
+        $this->normalizer = new CategoryNormalizer(new TranslationNormalizer());
         $this->format     = 'json';
     }
 

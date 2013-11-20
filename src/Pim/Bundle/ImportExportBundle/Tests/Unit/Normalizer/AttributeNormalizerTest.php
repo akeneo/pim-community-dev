@@ -3,7 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Normalizer;
 
 use Pim\Bundle\ImportExportBundle\Normalizer\AttributeNormalizer;
-use Pim\Bundle\ImportExportBundle\Normalizer\LabelTranslationNormalizer;
+use Pim\Bundle\ImportExportBundle\Normalizer\TranslationNormalizer;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
@@ -24,7 +24,7 @@ class AttributeNormalizerTest extends NormalizerTestCase
      */
     protected function setUp()
     {
-        $this->normalizer = new AttributeNormalizer(new LabelTranslationNormalizer());
+        $this->normalizer = new AttributeNormalizer(new TranslationNormalizer());
         $this->format     = 'json';
     }
 

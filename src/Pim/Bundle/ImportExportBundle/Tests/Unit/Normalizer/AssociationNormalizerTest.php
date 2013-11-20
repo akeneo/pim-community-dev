@@ -3,7 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Normalizer;
 
 use Pim\Bundle\ImportExportBundle\Normalizer\AssociationNormalizer;
-use Pim\Bundle\ImportExportBundle\Normalizer\LabelTranslationNormalizer;
+use Pim\Bundle\ImportExportBundle\Normalizer\TranslationNormalizer;
 use Pim\Bundle\CatalogBundle\Entity\Association;
 
 /**
@@ -20,7 +20,7 @@ class AssociationNormalizerTest extends NormalizerTestCase
      */
     protected function setUp()
     {
-        $this->normalizer = new AssociationNormalizer(new LabelTranslationNormalizer());
+        $this->normalizer = new AssociationNormalizer(new TranslationNormalizer());
         $this->format     = 'json';
     }
 

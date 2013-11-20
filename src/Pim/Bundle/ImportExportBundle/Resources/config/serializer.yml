@@ -27,8 +27,8 @@ parameters:
     pim_serializer.normalizer.channel.class:                Pim\Bundle\ImportExportBundle\Normalizer\ChannelNormalizer
     pim_serializer.normalizer.flat_channel.class:           Pim\Bundle\ImportExportBundle\Normalizer\FlatChannelNormalizer
 
-    pim_serializer.normalizer.label_translation.class:      Pim\Bundle\ImportExportBundle\Normalizer\LabelTranslationNormalizer
-    pim_serializer.normalizer.flat_label_translation.class: Pim\Bundle\ImportExportBundle\Normalizer\FlatLabelTranslationNormalizer
+    pim_serializer.normalizer.label_translation.class:      Pim\Bundle\ImportExportBundle\Normalizer\TranslationNormalizer
+    pim_serializer.normalizer.flat_label_translation.class: Pim\Bundle\ImportExportBundle\Normalizer\FlatTranslationNormalizer
 
 services:
     pim_serializer:

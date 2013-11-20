@@ -3,7 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Normalizer;
 
 use Pim\Bundle\ImportExportBundle\Normalizer\FlatFamilyNormalizer;
-use Pim\Bundle\ImportExportBundle\Normalizer\FlatLabelTranslationNormalizer;
+use Pim\Bundle\ImportExportBundle\Normalizer\FlatTranslationNormalizer;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 
 /**
@@ -20,7 +20,7 @@ class FlatFamilyNormalizerTest extends FamilyNormalizerTest
      */
     protected function setUp()
     {
-        $this->normalizer = new FlatFamilyNormalizer(new FlatLabelTranslationNormalizer());
+        $this->normalizer = new FlatFamilyNormalizer(new FlatTranslationNormalizer());
         $this->format     = 'csv';
     }
 
