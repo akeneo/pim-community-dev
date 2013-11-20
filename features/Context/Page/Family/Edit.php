@@ -115,17 +115,25 @@ class Edit extends Creation
     }
 
     /**
-     * @param string $attribute
-     * @param string $channel
+     * @param string $attributeCode
+     * @param string $channelCode
      *
      * @return boolean
      */
-    public function isAttributeRequired($attribute, $channel)
+    public function isAttributeRequired($attributeCode, $channelCode)
     {
-        $cell        = $this->getAttributeRequirementCell($attribute, $channel);
-        $requirement = $cell->find('css', 'input');
+        $checkbox = $this->find('css', sprintf('#pim_family_attributeRequirements_%s_%s_required', $attributeCode, $channelCode));
+        if (!$checkbox) {
+            throw new \RuntimeException(
+                sprintf(
+                    'Couldn\'t find "%s" attribute requirement for channel "%s"',
+                    $attributeCode,
+                    $channelCode
+                )
+            );
+        }
 
-        return $requirement->isChecked();
+        return $checkbox->isChecked();
     }
 
     /**
