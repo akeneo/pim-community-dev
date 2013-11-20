@@ -337,14 +337,9 @@ SQL;
                 );
             case ClassMetadataInfo::ONE_TO_ONE:
                 $relatedMetadata = $this->getClassMetadata($mapping['targetEntity']);
-                if (isset($mapping['inversedBy'])) {
-                    $joinPattern = 'LEFT JOIN %s %s ON %s.%s=v.id';
-                    $relatedMapping = $relatedMetadata->getAssociationMapping($mapping['inversedBy']);
-                    $joinColumn = $relatedMapping['joinColumns'][0]['name'];
-                } else {
-                    $joinPattern = 'LEFT JOIN %s %s ON %s.id=v.%s';
-                    $joinColumn = $mapping['joinColumns'][0]['name'];
-                }
+
+                $joinPattern = 'LEFT JOIN %s %s ON %s.id=v.%s';
+                $joinColumn = $mapping['joinColumns'][0]['name'];
 
                 return array(
                     sprintf(
