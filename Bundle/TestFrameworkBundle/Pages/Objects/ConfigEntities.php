@@ -41,7 +41,7 @@ class ConfigEntities extends PageFilteredGrid
         $this->byXPath("//td[@class='action-cell']//a[contains(., '...')]")->click();
         $this->waitForAjax();
         $this->byXpath("//td[@class='action-cell']//a[@title= 'Remove']")->click();
-        $this->waitForAjax();
+        //$this->waitForAjax();
 
         return $this;
     }
