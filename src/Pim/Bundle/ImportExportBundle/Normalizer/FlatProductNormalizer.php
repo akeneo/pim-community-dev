@@ -73,7 +73,23 @@ class FlatProductNormalizer implements NormalizerInterface
 
         $this->normalizeCategories($object->getCategoryCodes());
 
-        $filteredValues = $object->getValues()->filter(
+        $normalizedValues = $this->normalizeValues($object);
+
+        $this->results = array_merge($this->results, $normalizedValues);
+
+        return $this->results;
+    }
+
+    /**
+     * Normalize values
+     *
+     * @param ProductInterface $product
+     *
+     * @return array
+     */
+    protected function normalizeValues(ProductInterface $product)
+    {
+        $filteredValues = $product->getValues()->filter(
             function ($value) use ($identifier, $scopeCode) {
                 return (
                     ($value !== $identifier) &&
@@ -94,9 +110,8 @@ class FlatProductNormalizer implements NormalizerInterface
             );
         }
         ksort($normalizedValues);
-        $this->results = array_merge($this->results, $normalizedValues);
 
-        return $this->results;
+        return $normalizedValues;
     }
 
     /**
