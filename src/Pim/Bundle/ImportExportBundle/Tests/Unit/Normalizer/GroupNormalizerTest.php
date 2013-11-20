@@ -3,6 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Normalizer;
 
 use Pim\Bundle\ImportExportBundle\Normalizer\GroupNormalizer;
+use Pim\Bundle\ImportExportBundle\Normalizer\LabelTranslationNormalizer;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
@@ -21,7 +22,7 @@ class GroupNormalizerTest extends NormalizerTestCase
      */
     protected function setUp()
     {
-        $this->normalizer = new GroupNormalizer();
+        $this->normalizer = new GroupNormalizer(new LabelTranslationNormalizer());
         $this->format     = 'json';
     }
 

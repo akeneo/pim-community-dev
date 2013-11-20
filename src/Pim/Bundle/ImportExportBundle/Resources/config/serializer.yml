@@ -132,11 +132,15 @@ services:
 
     pim_serializer.normalizer.group:
         class: %pim_serializer.normalizer.group.class%
+        arguments: 
+            - '@pim_serializer.normalizer.label_translation'
         tags:
             - { name: pim_serializer.normalizer }
 
     pim_serializer.normalizer.flat_group:
         class: %pim_serializer.normalizer.flat_group.class%
+        arguments: 
+            - '@pim_serializer.normalizer.flat_label_translation'
         tags:
             - { name: pim_serializer.normalizer }
 

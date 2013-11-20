@@ -20,6 +20,21 @@ class GroupNormalizer implements NormalizerInterface
     protected $supportedFormats = array('json', 'xml');
 
     /**
+     * @var LabelTranslationNormalizer
+     */
+    protected $translationNormalizer;
+
+    /**
+     * Constructor
+     *
+     * @param LabelTranslationNormalizer $translationNormalizer
+     */
+    public function __construct(LabelTranslationNormalizer $translationNormalizer)
+    {
+        $this->translationNormalizer = $translationNormalizer;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function normalize($object, $format = null, array $context = array())
@@ -28,7 +43,7 @@ class GroupNormalizer implements NormalizerInterface
             'code' => $object->getCode(),
             'type' => $object->getType()->getCode(),
             'attributes' => $this->normalizeAttributes($object)
-        ) + $this->normalizeLabel($object);
+        ) + $this->translationNormalizer->normalize($object, $format, $context);
 
         return $results;
     }
@@ -39,23 +54,6 @@ class GroupNormalizer implements NormalizerInterface
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof Group && in_array($format, $this->supportedFormats);
-    }
-
-    /**
-     * Returns an array containing the label values
-     *
-     * @param Group $group
-     *
-     * @return array
-     */
-    protected function normalizeLabel(Group $group)
-    {
-        $labels = array();
-        foreach ($group->getTranslations() as $group) {
-            $labels[$group->getLocale()]= $group->getLabel();
-        }
-
-        return array('label' => $labels);
     }
 
     /**
