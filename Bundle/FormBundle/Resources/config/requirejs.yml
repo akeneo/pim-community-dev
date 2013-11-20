@@ -16,6 +16,7 @@ config:
         'oro/validator/email': 'bundles/oroform/js/validator/email.js'
         'oro/validator/length': 'bundles/oroform/js/validator/length.js'
         'oro/validator/notblank': 'bundles/oroform/js/validator/notblank.js'
+        'oro/validator/notnull': 'bundles/oroform/js/validator/notnull.js'
         'oro/validator/number': 'bundles/oroform/js/validator/number.js'
         'oro/validator/range': 'bundles/oroform/js/validator/range.js'
         'oro/validator/regex': 'bundles/oroform/js/validator/regex.js'

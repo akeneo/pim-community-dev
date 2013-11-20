@@ -63,6 +63,20 @@ function($, _, __, tools) {
         });
     }
 
+    /**
+     * Looks for validation error message holder
+     *
+     * @param {Element} element
+     * @returns {jQuery}
+     */
+    function getErrorTarget(element) {
+        var $target = $(validationBelongs(element));
+        if ($target.parent().is('.selector, .uploader, .input-append, .input-prepend')) {
+            $target = $target.parent();
+        }
+        return $target;
+    }
+
     // turn off adding rules from attributes
     $.validator.attributeRules = function () {return {};};
 
@@ -77,6 +91,15 @@ function($, _, __, tools) {
                 rules[method] = {param: param};
             } else if ($(element.form).data('validator').settings.debug) {
                 console.error('Validation method "' + method + '" does not exist');
+            }
+        });
+        // make sure required validators are at front
+        _.each(['NotNull', 'NotBlank'], function (name) {
+            if (rules[name]) {
+                var _rules = {};
+                _rules[name] = rules[name];
+                delete rules[name];
+                rules = $.extend(_rules, rules);
             }
         });
         return rules;
@@ -120,16 +143,11 @@ function($, _, __, tools) {
         errorElement: 'span',
         errorClass: 'validation-faled',
         errorPlacement: function (label, $el) {
-            // finds element which validation rule was violated and inserts label after it
-            label.insertAfter(validationBelongs($el));
+            label.insertAfter(getErrorTarget($el));
         },
         highlight: function (element) {
-            var $target = $(validationBelongs(element));
             this.settings.unhighlight.call(this, element);
-            if ($target.parent().is('.selector, .uploader, .input-append, .input-prepend')) {
-                $target = $target.parent();
-            }
-            $target.addClass('error').closest('.controls').addClass('validation-error');
+            getErrorTarget(element).addClass('error').closest('.controls').addClass('validation-error');
         },
         unhighlight: function(element) {
             $(element).closest('.error').removeClass('error')
@@ -144,6 +162,7 @@ function($, _, __, tools) {
         'oro/validator/email',
         'oro/validator/length',
         'oro/validator/notblank',
+        'oro/validator/notnull',
         'oro/validator/range',
         'oro/validator/regex',
         'oro/validator/url'
