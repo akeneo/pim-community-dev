@@ -3,6 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Normalizer;
 
 use Pim\Bundle\ImportExportBundle\Normalizer\FlatAssociationNormalizer;
+use Pim\Bundle\ImportExportBundle\Normalizer\FlatLabelTranslationNormalizer;
 use Pim\Bundle\CatalogBundle\Entity\Association;
 
 /**
@@ -19,7 +20,7 @@ class FlatAssociationNormalizerTest extends AssociationNormalizerTest
      */
     protected function setUp()
     {
-        $this->normalizer = new FlatAssociationNormalizer();
+        $this->normalizer = new FlatAssociationNormalizer(new FlatLabelTranslationNormalizer());
         $this->format     = 'csv';
     }
 
