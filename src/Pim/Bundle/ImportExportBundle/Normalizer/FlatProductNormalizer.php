@@ -73,6 +73,8 @@ class FlatProductNormalizer implements NormalizerInterface
 
         $this->normalizeCategories($object->getCategoryCodes());
 
+        $this->normalizeAssociations($object->getProductAssociations());
+
         $normalizedValues = $this->normalizeValues($object, $scopeCode);
 
         $this->results = array_merge($this->results, $normalizedValues);
@@ -228,6 +230,31 @@ class FlatProductNormalizer implements NormalizerInterface
     {
         if (empty($this->fields) || isset($this->fields[self::FIELD_CATEGORY])) {
             $this->results[self::FIELD_CATEGORY] = $categories;
+        }
+    }
+
+    /**
+     * Normalize associations
+     *
+     * @param ProductAssociation[] $productAssociations
+     */
+    protected function normalizeAssociations($productAssociations = array())
+    {
+        foreach ($productAssociations as $productAssociation) {
+            $columnPrefix = $productAssociation->getAssociation()->getCode();
+
+            $groups = array();
+            foreach ($productAssociation->getGroups() as $group) {
+                $groups[] = $group->getCode();
+            }
+
+            $products = array();
+            foreach ($productAssociation->getProducts() as $product) {
+                $products[] = $product->getIdentifier();
+            }
+
+            $this->results[$columnPrefix .'_groups'] = implode(',', $groups);
+            $this->results[$columnPrefix .'_products'] = implode(',', $products);
         }
     }
 }
