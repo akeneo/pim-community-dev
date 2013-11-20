@@ -5,26 +5,16 @@ Pim\Bundle\CatalogBundle\Entity\Group:
     fields:
         id:
             type: integer
-            scale: 0
-            length: null
-            unique: false
-            nullable: false
-            precision: 0
             id: true
             generator:
-                strategy: IDENTITY
+                strategy: AUTO
         code:
             type: string
-            scale: 0
             length: 50
             unique: true
-            nullable: false
-            precision: 0
     manyToOne:
         type:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\GroupType
-            cascade: {  }
-            mappedBy: null
             inversedBy: groups
             joinColumns:
                 type_id:
@@ -34,43 +24,21 @@ Pim\Bundle\CatalogBundle\Entity\Group:
     manyToMany:
         attributes:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\ProductAttribute
-            cascade: {  }
-            mappedBy: null
-            inversedBy: null
             joinTable:
                 name: pim_catalog_group_attribute
                 schema: null
                 joinColumns:
-                    -
-                        name: group_id
-                        unique: false
-                        nullable: true
-                        onDelete: null
-                        columnDefinition: null
+                    group_id:
                         referencedColumnName: id
                 inverseJoinColumns:
-                    -
-                        name: attribute_id
-                        unique: false
-                        nullable: true
-                        onDelete: null
-                        columnDefinition: null
+                    attribute_id:
                         referencedColumnName: id
-            orderBy: null
         products:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\Product
-            cascade: {  }
             mappedBy: groups
-            inversedBy: null
-            joinTable: {  }
-            orderBy: null
     oneToMany:
         translations:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\GroupTranslation
+            mappedBy: foreignKey
             cascade:
                 - persist
-            mappedBy: foreignKey
-            inversedBy: null
-            orphanRemoval: true
-            orderBy: null
-    lifecycleCallbacks: {  }

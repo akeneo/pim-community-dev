@@ -5,38 +5,20 @@ Pim\Bundle\CatalogBundle\Entity\Family:
     fields:
         id:
             type: integer
-            scale: 0
-            length: null
-            unique: false
-            nullable: false
-            precision: 0
             id: true
             generator:
-                strategy: IDENTITY
+                strategy: AUTO
         code:
             type: string
-            scale: 0
             length: 100
             unique: true
-            nullable: false
-            precision: 0
         created:
             type: datetime
-            scale: 0
-            length: null
-            unique: false
-            nullable: false
-            precision: 0
             gedmo:
                 timestampable:
                     on: create
         updated:
             type: datetime
-            scale: 0
-            length: null
-            unique: false
-            nullable: false
-            precision: 0
             gedmo:
                 timestampable:
                     on: update
@@ -45,59 +27,34 @@ Pim\Bundle\CatalogBundle\Entity\Family:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\ProductAttribute
             cascade:
                 - persist
-            mappedBy: null
-            inversedBy: null
             joinTable:
                 name: pim_catalog_family_attribute
-                schema: null
                 joinColumns:
                      family_id:
-                        unique: false
-                        nullable: true
-                        onDelete: CASCADE
-                        columnDefinition: null
                         referencedColumnName: id
+                        onDelete: CASCADE
                 inverseJoinColumns:
                     attribute_id:
-                        unique: false
-                        nullable: true
-                        onDelete: CASCADE
-                        columnDefinition: null
                         referencedColumnName: id
-            orderBy: null
+                        onDelete: CASCADE
     oneToMany:
         translations:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\FamilyTranslation
+            mappedBy: foreignKey
             cascade:
                 - persist
-            mappedBy: foreignKey
-            inversedBy: null
-            orphanRemoval: true
-            orderBy: null
         requirements:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\AttributeRequirement
+            mappedBy: family
             cascade:
                 - persist
-            mappedBy: family
-            inversedBy: null
-            orphanRemoval: false
-            orderBy: null
         products:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\Product
-            cascade: {  }
             mappedBy: family
-            inversedBy: null
-            orphanRemoval: false
-            orderBy: null
     manyToOne:
         attributeAsLabel:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\ProductAttribute
-            cascade: {  }
-            mappedBy: null
-            inversedBy: null
             joinColumns:
                 label_attribute_id:
                     referencedColumnName: id
                     onDelete: 'SET NULL'
-            orphanRemoval: false
-    lifecycleCallbacks: {  }

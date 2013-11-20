@@ -11,66 +11,37 @@ Pim\Bundle\CatalogBundle\Entity\Completeness:
     fields:
         id:
             type: integer
-            scale: 0
-            length: null
-            unique: false
-            nullable: false
-            precision: 0
             id: true
             generator:
-                strategy: IDENTITY
+                strategy: AUTO
         ratio:
             type: integer
-            scale: 0
-            length: null
-            unique: false
-            nullable: false
-            precision: 0
         missingCount:
             type: integer
-            scale: 0
-            length: null
-            unique: false
-            nullable: false
-            precision: 0
             column: missing_count
         requiredCount:
             type: integer
-            scale: 0
-            length: null
-            unique: false
-            nullable: false
-            precision: 0
             column: required_count
     manyToOne:
         locale:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\Locale
-            cascade: {  }
-            mappedBy: null
-            inversedBy: null
             joinColumns:
                 locale_id:
                     referencedColumnName: id
                     onDelete: CASCADE
-            orphanRemoval: false
+                    nullable: false
         channel:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\Channel
-            cascade: {  }
-            mappedBy: null
-            inversedBy: null
             joinColumns:
                 channel_id:
                     referencedColumnName: id
                     onDelete: CASCADE
-            orphanRemoval: false
+                    nullable: false
         product:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\Product
-            cascade: {  }
-            mappedBy: null
             inversedBy: completenesses
             joinColumns:
                 product_id:
                     referencedColumnName: id
                     onDelete: CASCADE
-            orphanRemoval: false
-    lifecycleCallbacks: {  }
+                    nullable: false

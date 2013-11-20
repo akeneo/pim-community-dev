@@ -5,64 +5,33 @@ Pim\Bundle\CatalogBundle\Entity\AttributeGroup:
     fields:
         id:
             type: integer
-            scale: 0
-            length: null
-            unique: false
-            nullable: false
-            precision: 0
             id: true
             generator:
-                strategy: IDENTITY
+                strategy: AUTO 
         code:
             type: string
-            scale: 0
-            length: 100
-            unique: false
-            nullable: false
-            precision: 0
+            unique: true
         sortOrder:
             type: integer
-            scale: 0
-            length: null
-            unique: false
-            nullable: false
-            precision: 0
             column: sort_order
         created:
             type: datetime
-            scale: 0
-            length: null
-            unique: false
-            nullable: false
-            precision: 0
             gedmo:
                 timestampable:
                     on: create
         updated:
             type: datetime
-            scale: 0
-            length: null
-            unique: false
-            nullable: false
-            precision: 0
             gedmo:
                 timestampable:
                     on: create
     oneToMany:
         attributes:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\ProductAttribute
-            cascade: {  }
             mappedBy: group
-            inversedBy: null
-            orphanRemoval: false
             orderBy:
                 sortOrder: ASC
         translations:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\AttributeGroupTranslation
+            mappedBy: foreignKey
             cascade:
                 - persist
-            mappedBy: foreignKey
-            inversedBy: null
-            orphanRemoval: true
-            orderBy: null
-    lifecycleCallbacks: {  }

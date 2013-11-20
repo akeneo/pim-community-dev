@@ -4,50 +4,31 @@ Pim\Bundle\CatalogBundle\Entity\AttributeRequirement:
     fields:
         id:
             type: integer
-            scale: 0
-            length: null
-            unique: false
-            nullable: false
-            precision: 0
             id: true
             generator:
-                strategy: IDENTITY
+                strategy: AUTO
         required:
             type: boolean
-            scale: 0
-            length: null
-            unique: false
-            nullable: false
-            precision: 0
     manyToOne:
         family:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\Family
-            cascade: {  }
-            mappedBy: null
             inversedBy: requirements
             joinColumns:
                 family_id:
                     referencedColumnName: id
                     onDelete: CASCADE
-            orphanRemoval: false
+                    nullable: false
         attribute:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\ProductAttribute
-            cascade: {  }
-            mappedBy: null
-            inversedBy: null
             joinColumns:
                 attribute_id:
                     referencedColumnName: id
                     onDelete: CASCADE
-            orphanRemoval: false
+                    nullable: false
         channel:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\Channel
-            cascade: {  }
-            mappedBy: null
-            inversedBy: null
             joinColumns:
                 channel_id:
                     referencedColumnName: id
                     onDelete: CASCADE
-            orphanRemoval: false
-    lifecycleCallbacks: {  }
+                    nullable: false

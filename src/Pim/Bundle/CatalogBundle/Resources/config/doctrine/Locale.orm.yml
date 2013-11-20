@@ -5,52 +5,28 @@ Pim\Bundle\CatalogBundle\Entity\Locale:
     fields:
         id:
             type: integer
-            scale: 0
-            length: null
-            unique: false
-            nullable: false
-            precision: 0
             id: true
             generator:
-                strategy: IDENTITY
+                strategy: AUTO
         code:
             type: string
-            scale: 0
             length: 20
             unique: true
-            nullable: false
-            precision: 0
         fallback:
             type: string
-            scale: 0
-            length: 10
-            unique: false
+            length: 20
             nullable: true
-            precision: 0
         activated:
             type: boolean
-            scale: 0
-            length: null
-            unique: false
-            nullable: false
-            precision: 0
             column: is_activated
     manyToOne:
         defaultCurrency:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\Currency
-            cascade: {  }
-            mappedBy: null
             inversedBy: locales
             joinColumns:
                 default_currency_id:
                     referencedColumnName: id
-            orphanRemoval: false
     manyToMany:
         channels:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\Channel
-            cascade: {  }
             mappedBy: locales
-            inversedBy: null
-            joinTable: {  }
-            orderBy: null
-    lifecycleCallbacks: {  }

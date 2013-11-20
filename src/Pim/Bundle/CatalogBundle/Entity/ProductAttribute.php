@@ -46,11 +46,6 @@ class ProductAttribute extends AbstractEntityAttribute implements
     protected $sortOrder = 0;
 
     /**
-     * @var string $variant
-     */
-    protected $variant;
-
-    /**
      * @var boolean $smart
      */
     protected $smart;
@@ -189,7 +184,6 @@ class ProductAttribute extends AbstractEntityAttribute implements
         $this->translatable        = false;
         $this->scopable            = false;
         $this->smart               = false;
-        $this->variant             = false;
         $this->useableAsGridColumn = false;
         $this->useableAsGridFilter = false;
         $this->availableLocales    = new ArrayCollection();
@@ -295,54 +289,6 @@ class ProductAttribute extends AbstractEntityAttribute implements
     public function __toString()
     {
         return $this->getLabel();
-    }
-
-    /**
-     * Predicate for smart property
-     *
-     * @return boolean $smart
-     */
-    public function isSmart()
-    {
-        return $this->smart;
-    }
-
-    /**
-     * Set smart
-     *
-     * @param boolean $smart
-     *
-     * @return ProductAttribute
-     */
-    public function setSmart($smart)
-    {
-        $this->smart = $smart;
-
-        return $this;
-    }
-
-    /**
-     * Get variant
-     *
-     * @return string $variant
-     */
-    public function getVariant()
-    {
-        return $this->variant;
-    }
-
-    /**
-     * Set variant
-     *
-     * @param string $variant
-     *
-     * @return ProductAttribute
-     */
-    public function setVariant($variant)
-    {
-        $this->variant = $variant;
-
-        return $this;
     }
 
     /**

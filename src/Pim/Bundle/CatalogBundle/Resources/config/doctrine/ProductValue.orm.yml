@@ -16,169 +16,110 @@ Pim\Bundle\CatalogBundle\Entity\ProductValue:
     fields:
         id:
             type: integer
-            scale: 0
-            length: null
-            unique: false
-            nullable: false
-            precision: 0
             id: true
             generator:
-                strategy: IDENTITY
+                strategy: AUTO
         varchar:
             type: string
-            scale: 0
             length: 255
-            unique: false
             nullable: true
-            precision: 0
             column: value_string
         integer:
             type: integer
-            scale: 0
-            length: null
-            unique: false
             nullable: true
-            precision: 0
             column: value_integer
         decimal:
             type: decimal
             scale: 4
-            length: null
-            unique: false
             nullable: true
             precision: 14
             column: value_decimal
         boolean:
             type: boolean
-            scale: 0
-            length: null
-            unique: false
             nullable: true
-            precision: 0
             column: value_boolean
         text:
             type: text
-            scale: 0
-            length: null
-            unique: false
             nullable: true
-            precision: 0
             column: value_text
         date:
             type: date
-            scale: 0
-            length: null
-            unique: false
             nullable: true
-            precision: 0
             column: value_date
         datetime:
             type: datetime
-            scale: 0
-            length: null
-            unique: false
             nullable: true
-            precision: 0
             column: value_datetime
         locale:
             type: string
-            scale: 0
             length: 20
-            unique: false
             nullable: true
-            precision: 0
             column: locale_code
         scope:
             type: string
-            scale: 0
             length: 20
-            unique: false
             nullable: true
-            precision: 0
             column: scope_code
     manyToOne:
         attribute:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\ProductAttribute
-            cascade: {  }
-            mappedBy: null
-            inversedBy: null
             joinColumns:
                 attribute_id:
                     referencedColumnName: id
                     onDelete: CASCADE
                     nullable: false
-            orphanRemoval: false
         option:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\AttributeOption
             cascade:
                 - persist
                 - refresh
-            mappedBy: null
-            inversedBy: null
             joinColumns:
                 option_id:
                     referencedColumnName: id
                     onDelete: 'SET NULL'
-            orphanRemoval: false
         entity:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\Product
-            cascade: {  }
-            mappedBy: null
             inversedBy: values
             joinColumns:
                 entity_id:
                     referencedColumnName: id
-            orphanRemoval: false
     manyToMany:
         options:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\AttributeOption
             cascade:
                 - refresh
-            mappedBy: null
-            inversedBy: null
             joinTable:
                 name: pim_catalog_value_option
-                schema: null
                 joinColumns:
                     value_id:
-                        unique: false
+                        referencedColumnName: id
                         nullable: true
                         onDelete: CASCADE
-                        columnDefinition: null
-                        referencedColumnName: id
                 inverseJoinColumns:
                     option_id:
-                        unique: false
+                        referencedColumnName: id
                         nullable: true
                         onDelete: CASCADE
-                        columnDefinition: null
-                        referencedColumnName: id
-            orderBy: null
     oneToOne:
         media:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\Media
             cascade:
                 - persist
                 - refresh
-            mappedBy: null
             inversedBy: value
             joinColumns:
                 media_id:
                     referencedColumnName: id
                     onDelete: CASCADE
-            orphanRemoval: false
         metric:
             targetEntity: Oro\Bundle\FlexibleEntityBundle\Entity\Metric
             cascade:
                 - persist
                 - refresh
-            mappedBy: null
-            inversedBy: null
             joinColumns:
                 metric_id:
                     referencedColumnName: id
                     onDelete: 'SET NULL'
-            orphanRemoval: false
     oneToMany:
         prices:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\ProductPrice
@@ -187,8 +128,5 @@ Pim\Bundle\CatalogBundle\Entity\ProductValue:
                 - persist
                 - refresh
             mappedBy: value
-            inversedBy: null
-            orphanRemoval: false
             orderBy:
                 currency: ASC
-    lifecycleCallbacks: {  }

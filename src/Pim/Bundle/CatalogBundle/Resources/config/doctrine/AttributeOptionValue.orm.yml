@@ -4,38 +4,22 @@ Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue:
     fields:
         id:
             type: integer
-            scale: 0
-            length: null
-            unique: false
-            nullable: false
-            precision: 0
             id: true
             generator:
-                strategy: IDENTITY
+                strategy: AUTO
         locale:
-            type: string
-            scale: 0
             length: 20
-            unique: false
             nullable: true
-            precision: 0
             column: locale_code
         value:
             type: string
-            scale: 0
             length: 255
-            unique: false
-            nullable: false
-            precision: 0
     manyToOne:
         option:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\AttributeOption
-            cascade: {  }
-            mappedBy: null
             inversedBy: optionValues
             joinColumns:
                 option_id:
                     referencedColumnName: id
+                    nullable: false
                     onDelete: CASCADE
-            orphanRemoval: false
-    lifecycleCallbacks: {  }
