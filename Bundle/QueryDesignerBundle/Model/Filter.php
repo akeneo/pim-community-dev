@@ -10,6 +10,11 @@ class Filter
     protected $columnName;
 
     /**
+     * @var string
+     */
+    protected $criterion;
+
+    /**
      * Get column name
      *
      * @return string
@@ -27,5 +32,25 @@ class Filter
     public function setColumnName($columnName)
     {
         $this->columnName = $columnName;
+    }
+
+    /**
+     * Get column label
+     *
+     * @return string
+     */
+    public function getCriterion()
+    {
+        return $this->criterion;
+    }
+
+    /**
+     * Set column label
+     *
+     * @param string $criterion
+     */
+    public function setLabel($criterion)
+    {
+        $this->criterion = $criterion;
     }
 }

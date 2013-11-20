@@ -1,3 +1,72 @@
+{% macro query_designer_filter_list(attr) %}
+    {% import 'OroUIBundle::macros.html.twig' as UI %}
+    {% set attr = attr|default({})|merge({'class': (attr.class|default('') ~ ' grid-container query-designer-grid-container')|trim}) %}
+    <div{{ UI.attributes(attr) }}>
+        <table class="grid table-hover table table-bordered table-condensed" style="display: table;">
+            <thead>
+            <tr>
+                <th class="index-column"><span>{{ 'oro.querydesigner.datagrid.filter.index'|trans }}</span></th>
+                <th class="string-column"><span>{{ 'oro.querydesigner.datagrid.filter.filter'|trans }}</span></th>
+                <th class="action-column"><span>{{ 'oro.querydesigner.datagrid.filter.actions'|trans }}</span></th>
+            </tr>
+            </thead>
+            <tbody class="column-container">
+            </tbody>
+        </table>
+    </div>
+{% endmacro %}
+
+{% macro query_designer_filter_template(id) %}
+    <script type="text/html" id="{{ id }}">
+        <tr data-id="<%= id %>">
+            <td class="index-cell"><%= index %></td>
+            <td class="string-cell"><%= condition %></td>
+            <td class="action-cell">
+                <a href="javascript: void(0);" class="action no-hash edit-button"
+                   title="{{ 'oro.querydesigner.datagrid.action.update_filter'|trans }}"
+                ><i class="icon-edit hide-text"></i></a>
+                <a href="javascript: void(0);" class="action no-hash delete-button"
+                   data-message="{{ 'oro.querydesigner.datagrid.action.delete_filter_confirmation'|trans }}"
+                   title="{{ 'oro.querydesigner.datagrid.action.delete_filter'|trans }}"
+                ><i class="icon-trash hide-text"></i></a>
+            </td>
+        </tr>
+    </script>
+{% endmacro %}
+
+{% macro query_designer_filter_form(form, attr) %}
+    {% import 'OroUIBundle::macros.html.twig' as UI %}
+    {% set attr = attr|default({})|merge({'class': (attr.class|default('') ~ ' query-designer-form clearfix')|trim}) %}
+    <div{{ UI.attributes(attr) }}>
+        {{ form_row(form.columnName, {
+            'label': 'oro.querydesigner.form.column'|trans,
+            'attr': {
+                'data-purpose': 'column-selector'
+            }
+        }) }}
+        {{ form_row(form.criterion, {
+            'label': 'oro.querydesigner.form.criterion'|trans,
+            'attr': {
+                'data-purpose': 'criterion-selector'
+            }
+        }) }}
+        {{ UI.clientButton({
+            'visible': false,
+            'aCss': 'no-hash cancel-button',
+            'label' : 'oro.querydesigner.form.action.cancel'|trans
+        }) }}
+        {{ UI.clientButton({
+            'visible': false,
+            'aCss': 'no-hash btn-success save-button',
+            'label' : 'oro.querydesigner.form.action.save'|trans
+        }) }}
+        {{ UI.clientButton({
+            'aCss': 'no-hash btn-primary add-button',
+            'label' : 'oro.querydesigner.form.action.add'|trans
+        }) }}
+    </div>
+{% endmacro %}
+
 {% macro query_designer_column_list(attr) %}
     {% import 'OroUIBundle::macros.html.twig' as UI %}
     {% set attr = attr|default({})|merge({'class': (attr.class|default('') ~ ' grid-container query-designer-grid-container')|trim}) %}
@@ -5,8 +74,8 @@
         <table class="grid table-hover table table-bordered table-condensed" style="display: table;">
             <thead>
             <tr>
-                <th><span>{{ 'oro.querydesigner.datagrid.column.column'|trans }}</span></th>
-                <th><span>{{ 'oro.querydesigner.datagrid.column.label'|trans }}</span></th>
+                <th class="name-column"><span>{{ 'oro.querydesigner.datagrid.column.column'|trans }}</span></th>
+                <th class="label-column"><span>{{ 'oro.querydesigner.datagrid.column.label'|trans }}</span></th>
                 <th class="sorting-column"><span>{{ 'oro.querydesigner.datagrid.column.sorting'|trans }}</span></th>
                 <th class="action-column"><span>{{ 'oro.querydesigner.datagrid.column.actions'|trans }}</span></th>
             </tr>
@@ -38,7 +107,7 @@
 
 {% macro query_designer_column_form(form, attr) %}
     {% import 'OroUIBundle::macros.html.twig' as UI %}
-    {% set attr = attr|default({})|merge({'class': (attr.class|default('') ~ ' query-designer-form')|trim}) %}
+    {% set attr = attr|default({})|merge({'class': (attr.class|default('') ~ ' query-designer-form clearfix')|trim}) %}
     <div{{ UI.attributes(attr) }}>
         {{ form_row(form.name, {
             'label': 'oro.querydesigner.form.column'|trans,

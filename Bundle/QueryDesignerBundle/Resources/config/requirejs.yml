@@ -1,7 +1,13 @@
 config:
     paths:
         'oro/query-designer': 'bundles/oroquerydesigner/js/query-designer.js'
+        'oro/query-designer/filter-manager': 'bundles/oroquerydesigner/js/query-designer/filter-manager.js'
+        'oro/query-designer/filter-builder': 'bundles/oroquerydesigner/js/query-designer/filter-builder.js'
+        'oro/datafilter/none-filter': 'bundles/oroquerydesigner/js/datafilter/filter/none-filter.js'
         'oro/query-designer/abstract-view': 'bundles/oroquerydesigner/js/query-designer/abstract-view.js'
         'oro/query-designer/column/collection': 'bundles/oroquerydesigner/js/query-designer/column/collection.js'
         'oro/query-designer/column/model': 'bundles/oroquerydesigner/js/query-designer/column/model.js'
         'oro/query-designer/column/view': 'bundles/oroquerydesigner/js/query-designer/column/view.js'
+        'oro/query-designer/filter/collection': 'bundles/oroquerydesigner/js/query-designer/filter/collection.js'
+        'oro/query-designer/filter/model': 'bundles/oroquerydesigner/js/query-designer/filter/model.js'
+        'oro/query-designer/filter/view': 'bundles/oroquerydesigner/js/query-designer/filter/view.js'

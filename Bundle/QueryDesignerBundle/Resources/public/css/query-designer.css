@@ -22,6 +22,19 @@
 .form-horizontal .query-designer-form .btn-group {
     margin-left: 20px;
 }
+.form-horizontal .query-designer-form .filter-box {
+    padding: 0;
+    border: 0;
+}
+.form-horizontal .query-designer-form .filter-box .btn-group {
+    margin: 0;
+}
+.form-horizontal .query-designer-form .filter-box .btn-group .btn {
+    font-weight: normal;
+}
+.form-horizontal .query-designer-form .filter-box .filter-item {
+    padding: 0;
+}
 .query-designer-grid-container .grid .sorting-column,
 .query-designer-grid-container .grid .sorting-cell {
     width: 100px;
@@ -29,4 +42,8 @@
 .query-designer-grid-container .grid .label-cell {
     text-transform: uppercase;
     font-weight: bold;
+}
+.query-designer-grid-container .grid .index-column,
+.query-designer-grid-container .grid .index-cell {
+    width: 36px;
 }

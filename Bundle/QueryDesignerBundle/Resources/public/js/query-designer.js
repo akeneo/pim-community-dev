@@ -1,8 +1,8 @@
 /* global define */
 define(['underscore', 'backbone', 'oro/translator', 'oro/app', 'oro/messenger', 'routing', 'oro/loading-mask',
-    'oro/query-designer/column/view'],
+    'oro/query-designer/column/view', 'oro/query-designer/filter/view'],
 function(_, Backbone, __, app, messenger, routing, LoadingMask,
-         ColumnView) {
+         ColumnView, FilterView) {
     'use strict';
 
     var $ = Backbone.$;
@@ -34,6 +34,9 @@ function(_, Backbone, __, app, messenger, routing, LoadingMask,
         /** @property {oro.queryDesigner.column.View} */
         columnsView: null,
 
+        /** @property {oro.queryDesigner.filter.View} */
+        filtersView: null,
+
         /** @property {jQuery} */
         storageEl: null,
 
@@ -48,7 +51,8 @@ function(_, Backbone, __, app, messenger, routing, LoadingMask,
         },
 
         isEmpty: function () {
-            return this.columnsView.getCollection().isEmpty();
+            return this.columnsView.getCollection().isEmpty()
+                && this.filtersView.getCollection().isEmpty();
         },
 
         changeEntity: function (entityName) {
@@ -66,14 +70,19 @@ function(_, Backbone, __, app, messenger, routing, LoadingMask,
             });
         },
 
-        updateColumnStorage: function () {
+        updateStorage: function () {
             if (this.storageEl) {
                 var columns = this.columnsView.getCollection().toJSON();
                 _.each(columns, function (value) {
                     delete value.id;
                 });
+                var filters = this.filtersView.getCollection().toJSON();
+                _.each(filters, function (value) {
+                    delete value.id;
+                });
                 var data = {
-                    columns: columns
+                    columns: columns,
+                    filters: filters
                 };
                 this.storageEl.val(JSON.stringify(data));
             }
@@ -88,9 +97,10 @@ function(_, Backbone, __, app, messenger, routing, LoadingMask,
             this.loadingMask = new LoadingMask();
             this.$el.append(this.loadingMask.render().$el);
 
+            // get source data
             var data = [];
             if (this.storageEl && this.storageEl.val() != '') {
-                var data = JSON.parse(this.storageEl.val());
+                data = JSON.parse(this.storageEl.val());
             }
 
             // initialize columns view
@@ -101,7 +111,17 @@ function(_, Backbone, __, app, messenger, routing, LoadingMask,
             if (!_.isUndefined(data['columns']) && !_.isEmpty(data['columns'])) {
                 this.columnsView.getCollection().reset(data['columns']);
             }
-            this.listenTo(this.columnsView, 'collection:change', _.bind(this.updateColumnStorage, this));
+            this.listenTo(this.columnsView, 'collection:change', _.bind(this.updateStorage, this));
+
+            // initialize filters view
+            var filtersOptions = _.extend(this.options.filtersOptions, {entityName: this.options.entityName});
+            this.filtersView = new FilterView(filtersOptions);
+            this.filtersView.render();
+            delete this.options.filtersOptions;
+            if (!_.isUndefined(data['filters']) && !_.isEmpty(data['filters'])) {
+                this.filtersView.getCollection().reset(data['filters']);
+            }
+            this.listenTo(this.filtersView, 'collection:change', _.bind(this.updateStorage, this));
 
             return this;
         },
@@ -116,8 +136,12 @@ function(_, Backbone, __, app, messenger, routing, LoadingMask,
 
         updateColumnSelectors: function (entityName, entityFields) {
             this.options.entityName = entityName;
+
             this.columnsView.changeEntity(entityName);
             this.columnsView.updateColumnSelector(entityFields);
+
+            this.filtersView.changeEntity(entityName);
+            this.filtersView.updateColumnSelector(entityFields);
         },
 
         showError: function (err) {

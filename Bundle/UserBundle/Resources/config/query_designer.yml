@@ -1,0 +1,9 @@
+filters:
+    user_enabled:
+        applicable: [{entity: %oro_user.entity.class%, field: enabled}]
+        type:       choice
+        options:
+            field_options:
+                choices:
+                    - Inactive
+                    - Active
