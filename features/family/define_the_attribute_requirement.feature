@@ -5,27 +5,27 @@ Feature: Define the attribute requirement
   I need to be able to define which attributes are required or not for a given channel
 
   Background:
-    Given the "default" catalog configuration
-    And the following family:
-      | code       |
-      | Smartphone |
-    And the following product attributes:
-      | label       | family     |
-      | Description | Smartphone |
-      | Name        | Smartphone |
+    Given a "footwear" catalog configuration
     And I am logged in as "admin"
-    And I am on the "Smartphone" family page
+    And I am on the "Boots" family page
 
-  Scenario: Succesfully display all the channel attribute requirements
+  Scenario: Succesfully display the attribute requirements
     Given I visit the "Attributes" tab
-    Then attribute "Description" should not be required in channels Mobile and Ecommerce
-    And attribute "Name" should not be required in channels Mobile and Ecommerce
+    Then attribute "name" should be required in channels mobile and tablet
+    And attribute "lace_color" should not be required in channels mobile and tablet
+    And attribute "side_view" should be required in channel tablet
+    And attribute "side_view" should not be required in channel mobile
 
   Scenario: Succesfully make an attribute required for a channel
     Given I visit the "Attributes" tab
-    And I switch the attribute "Description" requirement in channel "Mobile"
+    And I switch the attribute "Rating" requirement in channel "Mobile"
     And I save the family
     And I visit the "Attributes" tab
-    Then attribute "Description" should be required in channel Mobile
-    But attribute "Description" should not be required in channel Ecommerce
-    And attribute "Name" should not be required in channels Mobile and Ecommerce
+    Then attribute "rating" should be required in channels mobile and tablet
+
+  Scenario: Succesfully make an attribute optional for a channel
+    Given I visit the "Attributes" tab
+    And I switch the attribute "Description" requirement in channel "Tablet"
+    And I save the family
+    And I visit the "Attributes" tab
+    Then attribute "description" should not be required in channels mobile and tablet

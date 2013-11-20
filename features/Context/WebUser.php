@@ -1324,7 +1324,7 @@ class WebUser extends RawMinkContext
         $channels = $this->listToArray($channels);
         $expectation = $not === '';
         foreach ($channels as $channel) {
-            if ($expectation !== $this->getPage('Family edit')->isAttributeRequired($attribute, $channel)) {
+            if ($expectation !== $this->getCurrentPage()->isAttributeRequired($attribute, $channel)) {
                 throw $this->createExpectationException(
                     sprintf(
                         'Attribute %s should be%s required in channel %s',
@@ -1345,7 +1345,7 @@ class WebUser extends RawMinkContext
      */
     public function iSwitchTheAttributeRequirementInChannel($attribute, $channel)
     {
-        $this->getPage('Family edit')->switchAttributeRequirement($attribute, $channel);
+        $this->getCurrentPage()->switchAttributeRequirement($attribute, $channel);
     }
 
     /**
