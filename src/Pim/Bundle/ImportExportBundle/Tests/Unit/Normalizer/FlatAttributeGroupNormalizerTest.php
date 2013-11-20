@@ -4,7 +4,6 @@ namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Normalizer;
 
 use Pim\Bundle\ImportExportBundle\Normalizer\FlatAttributeGroupNormalizer;
 use Pim\Bundle\ImportExportBundle\Normalizer\FlatLabelTranslationNormalizer;
-use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 
 /**
  * Attribute group flat normalizer
