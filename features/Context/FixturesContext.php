@@ -657,7 +657,10 @@ class FixturesContext extends RawMinkContext
     {
         foreach ($table->getHash() as $data) {
             $attribute = $this->getEntityOrException('Attribute', array('code' => $data['attribute']));
-            $option = $this->getEntityOrException('AttributeOption', array('code' => $data['code'], 'attribute' => $attribute));
+            $option = $this->getEntityOrException(
+                'AttributeOption',
+                array('code' => $data['code'], 'attribute' => $attribute)
+            );
             $this->getEntityManager()->refresh($option);
 
             $option->setLocale('en_US');
