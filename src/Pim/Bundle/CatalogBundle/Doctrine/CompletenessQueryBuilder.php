@@ -238,6 +238,7 @@ SQL;
                 return array(sprintf('v.%s', $mapping['joinColumns'][0]['name']));
 
             case ClassMetadataInfo::ONE_TO_MANY:
+            case ClassMetadataInfo::ONE_TO_ONE:
                 return $this->getClassContentFields($mapping['targetEntity'], $prefix);
 
             default:
@@ -256,8 +257,11 @@ SQL;
      */
     protected function getClassContentFields($className, $prefix)
     {
-        if ('Pim\Bundle\CatalogBundle\Entity\ProductPrice' == $className) {
+        if ('Oro\Bundle\FlexibleEntityBundle\Entity\Metric' == $className ||
+            'Pim\Bundle\CatalogBundle\Entity\ProductPrice' == $className) {
             return array(sprintf('%s.%s', $prefix, 'data'));
+        } elseif ('Pim\Bundle\CatalogBundle\Entity\Media' == $className) {
+            return array(sprintf('%s.%s', $prefix, 'filename'));
         } else {
             return array_map(
                 function ($name) use ($prefix) {
@@ -327,6 +331,26 @@ SQL;
                         $prefix,
                         $prefix,
                         $relatedMapping['joinColumns'][0]['name']
+                    )
+                );
+            case ClassMetadataInfo::ONE_TO_ONE:
+                $relatedMetadata = $this->getClassMetadata($mapping['targetEntity']);
+                if (isset($mapping['inversedBy'])) {
+                    $joinPattern = 'LEFT JOIN %s %s ON %s.%s=v.id';
+                    $relatedMapping = $relatedMetadata->getAssociationMapping($mapping['inversedBy']);
+                    $joinColumn = $relatedMapping['joinColumns'][0]['name'];
+                } else {
+                    $joinPattern = 'LEFT JOIN %s %s ON %s.id=v.%s';
+                    $joinColumn = $mapping['joinColumns'][0]['name'];
+                }
+
+                return array(
+                    sprintf(
+                        $joinPattern,
+                        $relatedMetadata->getTableName(),
+                        $prefix,
+                        $prefix,
+                        $joinColumn
                     )
                 );
 
