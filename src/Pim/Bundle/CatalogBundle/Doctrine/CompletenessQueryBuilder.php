@@ -269,7 +269,7 @@ SQL;
                 },
                 array_diff(
                     $this->getClassMetadata($className)->getColumnNames(),
-                    array('id')
+                    array('id', 'locale_code', 'scope_code')
                 )
             );
         }
