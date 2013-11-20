@@ -79,7 +79,7 @@ class ProductValueNotBlankValidatorTest extends \PHPUnit_Framework_TestCase
     {
         $attribute = new ProductAttribute();
         $attribute->setCode('price');
-        $attribute->setAttributeType('pim_catalog_price_collection');
+        $attribute->setAttributeType('pim_catalog_price_collection')->setBackendType('prices');
         $price = new ProductPrice();
         $price->setCurrency('EUR');
         $price->setData(12.5);
@@ -135,7 +135,7 @@ class ProductValueNotBlankValidatorTest extends \PHPUnit_Framework_TestCase
     {
         $attribute = new ProductAttribute();
         $attribute->setCode('price');
-        $attribute->setAttributeType('pim_catalog_price_collection');
+        $attribute->setAttributeType('pim_catalog_price_collection')->setBackendType('prices');
         $price = new ProductPrice();
         $price->setCurrency('EUR');
         $price->setData(null);

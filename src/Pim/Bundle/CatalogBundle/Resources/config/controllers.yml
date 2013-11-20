@@ -73,6 +73,7 @@ services:
             - '@pim_grid.datagrid.helper'
             - '@pim_catalog.manager.channel'
             - '@pim_catalog.factory.family'
+            - '@pim_catalog.manager.completeness'
 
     pim_catalog.controller.locale:
         scope: request

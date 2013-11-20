@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\ImportExportBundle\Processor;
 
-use Oro\Bundle\BatchBundle\Item\InvalidItemException;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 
 /**
@@ -32,17 +31,9 @@ class GroupProcessor extends AbstractEntityProcessor
 
         $group->setLocale(null);
 
-        $violations = $this->validator->validate($group);
-        if ($violations->count() > 0) {
-            $messages = array();
-            foreach ($violations as $violation) {
-                $messages[]= (string) $violation;
-            }
-            throw new InvalidItemException(implode(', ', $messages), $item);
+        $this->validate($group, $item);
 
-        } else {
-            return $group;
-        }
+        return $group;
     }
 
     /**

@@ -124,6 +124,7 @@ attributes:
         parameters:
             maxFileSize: 1
             sortOrder:   1
+            allowedExtensions: gif,png,jpeg
     top_view:
         labels:
             en_US: Top view
@@ -132,6 +133,7 @@ attributes:
         parameters:
             maxFileSize: 1
             sortOrder:   2
+            allowedExtensions: gif,png,jpeg
     size:
         labels:
             en_US: Size

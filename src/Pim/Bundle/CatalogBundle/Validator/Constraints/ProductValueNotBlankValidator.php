@@ -56,10 +56,23 @@ class ProductValueNotBlankValidator extends ConstraintValidator
             return;
         }
 
-        if ($value->getAttribute() and $value->getAttribute()->getAttributeType() === 'pim_catalog_price_collection') {
-            $channel = $constraint->getChannel();
-            if (!$this->validatePrices($value, $channel)) {
-                $this->context->addViolation($constraint->messageNotBlank);
+        $attribute = $value->getAttribute();
+        if ($attribute) {
+            if ($attribute->getBackendType() === 'prices') {
+                $channel = $constraint->getChannel();
+                if (!$this->validatePrices($value, $channel)) {
+                    $this->context->addViolation($constraint->messageNotBlank);
+                }
+            } elseif ($attribute->getBackendType() === 'media') {
+                $media = $value->getMedia();
+                if (!$media || $media->__toString() === '') {
+                    $this->context->addViolation($constraint->messageNotBlank);
+                }
+            } elseif ($attribute->getBackendType() === 'metric') {
+                $metric = $value->getMetric();
+                if (!$metric || $metric->getData() === null) {
+                    $this->context->addViolation($constraint->messageNotBlank);
+                }
             }
         }
     }

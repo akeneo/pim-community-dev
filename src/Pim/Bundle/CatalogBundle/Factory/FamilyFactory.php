@@ -15,8 +15,19 @@ use Pim\Bundle\CatalogBundle\Entity\Family;
  */
 class FamilyFactory
 {
+    /**
+     * @var ProductManager
+     */
     protected $productManager;
+
+    /**
+     * @var ChannelManager
+     */
     protected $channelManager;
+
+    /**
+     * @var AttributeRequirementFactory
+     */
     protected $factory;
 
     /**

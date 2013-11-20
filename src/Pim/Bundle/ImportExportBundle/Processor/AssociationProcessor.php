@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\ImportExportBundle\Processor;
 
-use Oro\Bundle\BatchBundle\Item\InvalidItemException;
 use Pim\Bundle\CatalogBundle\Entity\Association;
 
 /**
@@ -17,9 +16,7 @@ use Pim\Bundle\CatalogBundle\Entity\Association;
 class AssociationProcessor extends AbstractEntityProcessor
 {
     /**
-     * If the association is valid, it is stored into the associations property
-     *
-     * @param array $item
+     * {@inheritdoc}
      */
     public function process($item)
     {
@@ -31,20 +28,11 @@ class AssociationProcessor extends AbstractEntityProcessor
                 $association->setLabel($value);
             }
         }
-
         $association->setLocale(null);
 
-        $violations = $this->validator->validate($association);
-        if ($violations->count() > 0) {
-            $messages = array();
-            foreach ($violations as $violation) {
-                $messages[]= (string) $violation;
-            }
-            throw new InvalidItemException(implode(', ', $messages), $item);
+        $this->validate($association, $item);
 
-        } else {
-            return $association;
-        }
+        return $association;
     }
 
     /**

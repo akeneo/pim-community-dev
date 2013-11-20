@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\ImportExportBundle\Processor;
 
-use Oro\Bundle\BatchBundle\Item\InvalidItemException;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
@@ -19,11 +18,7 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
 class AttributeOptionProcessor extends AbstractEntityProcessor
 {
     /**
-     * If the option is valid, it is stored into the option property
-     *
-     * @param array $item
-     *
-     * @throws InvalidItemException
+     * {@inheritdoc}
      */
     public function process($item)
     {
@@ -31,17 +26,9 @@ class AttributeOptionProcessor extends AbstractEntityProcessor
         $option->setDefault((bool) $item['is_default']);
         $this->updateLabels($option, $item);
 
-        $violations = $this->validator->validate($option);
-        if ($violations->count() > 0) {
-            $messages = array();
-            foreach ($violations as $violation) {
-                $messages[]= (string) $violation;
-            }
-            throw new InvalidItemException(implode(', ', $messages), $item);
+        $this->validate($option, $item);
 
-        } else {
-            return $option;
-        }
+        return $option;
     }
 
     /**
@@ -75,7 +62,7 @@ class AttributeOptionProcessor extends AbstractEntityProcessor
      *
      * @return AttributeOption
      */
-    private function getOption(array $item)
+    protected function getOption(array $item)
     {
         $attribute = $this->findAttribute($item['attribute']);
         if (!$attribute) {
@@ -108,7 +95,7 @@ class AttributeOptionProcessor extends AbstractEntityProcessor
      *
      * @return ProductAttribute|null
      */
-    private function findAttribute($code)
+    protected function findAttribute($code)
     {
         return $this
             ->entityManager
@@ -124,11 +111,19 @@ class AttributeOptionProcessor extends AbstractEntityProcessor
      *
      * @return AttributeOption|null
      */
-    private function findOption(ProductAttribute $attribute, $code)
+    protected function findOption(ProductAttribute $attribute, $code)
     {
         return $this
             ->entityManager
             ->getRepository('PimCatalogBundle:AttributeOption')
             ->findOneBy(array('attribute' => $attribute->getId(), 'code' => $code));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getIdentifier($entity)
+    {
+        return $entity->getAttribute()->getCode().'-'.$entity->getCode();
     }
 }

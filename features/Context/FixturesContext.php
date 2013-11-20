@@ -53,20 +53,21 @@ class FixturesContext extends RawMinkContext
     );
 
     private $entities = array(
-        'Product'        => 'PimCatalogBundle:Product',
-        'Attribute'      => 'PimCatalogBundle:ProductAttribute',
-        'AttributeGroup' => 'PimCatalogBundle:AttributeGroup',
-        'Channel'        => 'PimCatalogBundle:Channel',
-        'Currency'       => 'PimCatalogBundle:Currency',
-        'Family'         => 'PimCatalogBundle:Family',
-        'Category'       => 'PimCatalogBundle:Category',
-        'Association'    => 'PimCatalogBundle:Association',
-        'JobInstance'    => 'OroBatchBundle:JobInstance',
-        'User'           => 'OroUserBundle:User',
-        'Role'           => 'OroUserBundle:Role',
-        'Locale'         => 'PimCatalogBundle:Locale',
-        'ProductGroup'   => 'PimCatalogBundle:Group',
-        'GroupType'      => 'PimCatalogBundle:GroupType',
+        'Product'         => 'PimCatalogBundle:Product',
+        'Attribute'       => 'PimCatalogBundle:ProductAttribute',
+        'AttributeGroup'  => 'PimCatalogBundle:AttributeGroup',
+        'AttributeOption' => 'PimCatalogBundle:AttributeOption',
+        'Channel'         => 'PimCatalogBundle:Channel',
+        'Currency'        => 'PimCatalogBundle:Currency',
+        'Family'          => 'PimCatalogBundle:Family',
+        'Category'        => 'PimCatalogBundle:Category',
+        'Association'     => 'PimCatalogBundle:Association',
+        'JobInstance'     => 'OroBatchBundle:JobInstance',
+        'User'            => 'OroUserBundle:User',
+        'Role'            => 'OroUserBundle:Role',
+        'Locale'          => 'PimCatalogBundle:Locale',
+        'ProductGroup'    => 'PimCatalogBundle:Group',
+        'GroupType'       => 'PimCatalogBundle:GroupType',
     );
 
     private $placeholderValues = array();
@@ -619,6 +620,52 @@ class FixturesContext extends RawMinkContext
             }
 
             $this->persist($category);
+        }
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Then /^there should be the following attributes:$/
+     */
+    public function thereShouldBeTheFollowingAttributes(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $attribute = $this->getAttribute($data['code']);
+            $this->getEntityManager()->refresh($attribute);
+
+            assertEquals($data['label-en_US'], $attribute->getTranslation('en_US')->getLabel());
+            assertEquals($data['type'], $attribute->getAttributeType());
+            assertEquals(($data['is_translatable'] == 1), $attribute->getTranslatable());
+            assertEquals(($data['is_scopable'] == 1), $attribute->getScopable());
+            assertEquals($data['group'], $attribute->getGroup()->getCode());
+            assertEquals(($data['useable_as_grid_column'] == 1), $attribute->isUseableAsGridColumn());
+            assertEquals(($data['useable_as_grid_filter'] == 1), $attribute->isUseableAsGridFilter());
+            assertEquals(($data['unique'] == 1), $attribute->getUnique());
+            if ($data['allowed_extensions'] != '') {
+                assertEquals(explode(',', $data['allowed_extensions']), $attribute->getAllowedExtensions());
+            }
+        }
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Then /^there should be the following options:$/
+     */
+    public function thereShouldBeTheFollowingOptions(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $attribute = $this->getEntityOrException('Attribute', array('code' => $data['attribute']));
+            $option = $this->getEntityOrException(
+                'AttributeOption',
+                array('code' => $data['code'], 'attribute' => $attribute)
+            );
+            $this->getEntityManager()->refresh($option);
+
+            $option->setLocale('en_US');
+            assertEquals($data['label-en_US'], (string) $option);
+            assertEquals(($data['is_default'] == 1), $option->isDefault());
         }
     }
 
@@ -1358,7 +1405,7 @@ class FixturesContext extends RawMinkContext
             case $this->attributeTypes['prices']:
                 $prices = $this->listToPrices($data);
                 foreach ($prices as $currency => $data) {
-                    $value->getPrice($currency)->setData($data);
+                    $value->addPrice($this->createPrice($data, $currency));
                 }
                 break;
 

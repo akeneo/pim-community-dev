@@ -308,6 +308,10 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
             ->method('getCategoryCodes')
             ->will($this->returnValue($categories));
 
+        $product->expects($this->any())
+            ->method('getProductAssociations')
+            ->will($this->returnValue(array()));
+
         return $product;
     }
 

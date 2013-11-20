@@ -128,8 +128,9 @@ services:
     pim_import_export.processor.attribute:
         class: %pim_import_export.processor.attribute.class%
         arguments:
-            - '@pim_catalog.manager.product'
+            - '@doctrine.orm.default_entity_manager'
             - '@validator'
+            - '@pim_catalog.manager.product'
 
     pim_import_export.processor.attribute_option:
         class: %pim_import_export.processor.attribute_option.class%
