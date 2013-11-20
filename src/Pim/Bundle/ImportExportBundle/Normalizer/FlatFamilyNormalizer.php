@@ -21,19 +21,6 @@ class FlatFamilyNormalizer extends FamilyNormalizer
     /**
      * {@inheritdoc}
      */
-    protected function normalizeLabel(Family $family)
-    {
-        $values= array();
-        foreach ($family->getTranslations() as $translation) {
-            $values[sprintf('label-%s', $translation->getLocale())] = $translation->getLabel();
-        }
-
-        return $values;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     protected function normalizeAttributes(Family $family)
     {
         $attributes = parent::normalizeAttributes($family);

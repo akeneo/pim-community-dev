@@ -20,6 +20,21 @@ class FamilyNormalizer implements NormalizerInterface
     protected $supportedFormats = array('json', 'xml');
 
     /**
+     * @var LabelTranslationNormalizer
+     */
+    protected $translationNormalizer;
+
+    /**
+     * Constructor
+     *
+     * @param LabelTranslationNormalizer $translationNormalizer
+     */
+    public function __construct(LabelTranslationNormalizer $translationNormalizer)
+    {
+        $this->translationNormalizer = $translationNormalizer;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function normalize($object, $format = null, array $context = array())
@@ -29,7 +44,7 @@ class FamilyNormalizer implements NormalizerInterface
             'attributes'       => $this->normalizeAttributes($object),
             'attributeAsLabel' => ($object->getAttributeAsLabel()) ? $object->getAttributeAsLabel()->getCode() : '',
             'requirements'     => $this->normalizeRequirements($object),
-        ) + $this->normalizeLabel($object);
+        ) + $this->translationNormalizer->normalize($object, $format, $context);
     }
 
     /**
@@ -38,23 +53,6 @@ class FamilyNormalizer implements NormalizerInterface
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof Family && in_array($format, $this->supportedFormats);
-    }
-
-    /**
-     * Normalize the label
-     *
-     * @param Family $family
-     *
-     * @return array
-     */
-    protected function normalizeLabel(Family $family)
-    {
-        $labels = array();
-        foreach ($family->getTranslations() as $translation) {
-            $labels[$translation->getLocale()]= $translation->getLabel();
-        }
-
-        return array('label' => $labels);
     }
 
     /**

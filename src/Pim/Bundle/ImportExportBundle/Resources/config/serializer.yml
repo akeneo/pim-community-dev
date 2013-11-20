@@ -90,11 +90,15 @@ services:
 
     pim_serializer.normalizer.family:
         class: %pim_serializer.normalizer.family.class%
+        arguments: 
+            - '@pim_serializer.normalizer.label_translation'
         tags:
             - { name: pim_serializer.normalizer }
 
     pim_serializer.normalizer.flat_family:
         class: %pim_serializer.normalizer.flat_family.class%
+        arguments: 
+            - '@pim_serializer.normalizer.flat_label_translation'
         tags:
             - { name: pim_serializer.normalizer }
 

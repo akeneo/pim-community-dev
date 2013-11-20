@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Normalizer;
 
-use Pim\Bundle\CatalogBundle\Entity\Channel;
-
 use Pim\Bundle\ImportExportBundle\Normalizer\FamilyNormalizer;
+use Pim\Bundle\ImportExportBundle\Normalizer\FlatFamilyNormalizer;
+use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
@@ -23,7 +23,7 @@ class FamilyNormalizerTest extends NormalizerTestCase
      */
     protected function setUp()
     {
-        $this->normalizer = new FamilyNormalizer();
+        $this->normalizer = new FamilyNormalizer(new FlatFamilyNormalizer($translationNormalizer)));
         $this->format     = 'json';
     }
 
