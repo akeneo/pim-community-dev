@@ -27,6 +27,7 @@
 
 ## Bug fixes
 - Mass delete products
+- Fix some issues with import ACL translations (issues#484)
 
 ## BC breaks
 - Command "pim:product:completeness-calculator" has been replaced into "pim:completeness:calculate"
