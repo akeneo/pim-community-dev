@@ -113,20 +113,23 @@ class EntitySubscriber implements EventSubscriber
     {
         $em                      = $event->getEntityManager();
         $uow                     = $em->getUnitOfWork();
-        $needChangeSetsComputing = false;
+        $calendarMetadata        = $em->getClassMetadata('OroCalendarBundle:Calendar');
+        $connectionMetadata      = $em->getClassMetadata('OroCalendarBundle:CalendarConnection');
+
         foreach ($uow->getScheduledEntityInsertions() as $entity) {
             if ($entity instanceof User) {
                 // create a default calendar to a new user
                 $calendar = new Calendar();
                 $calendar->setOwner($entity);
                 // connect the calendar to itself
-                $calendar->addConnection(new CalendarConnection($calendar));
+                $calendarConnection = new CalendarConnection($calendar);
+                $calendar->addConnection($calendarConnection);
+
                 $em->persist($calendar);
-                $needChangeSetsComputing = true;
+                $em->persist($calendarConnection);
+                $uow->computeChangeSet($calendarMetadata, $calendar);
+                $uow->computeChangeSet($connectionMetadata, $calendarConnection);
             }
-        }
-        if ($needChangeSetsComputing) {
-            $uow->computeChangeSets();
         }
     }
 }
