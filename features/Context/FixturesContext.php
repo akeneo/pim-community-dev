@@ -823,8 +823,17 @@ class FixturesContext extends RawMinkContext
             $attribute->setLabel($data['label']);
 
             if (isset($data['group'])) {
-                $group = $this->findAttributeGroup($data['group']);
+                $group = $this->getAttributeGroup($data['group']);
                 $attribute->setGroup($group);
+            }
+
+            if (isset($data['families'])) {
+                $familyCodes = $this->listToArray($data['families']);
+                foreach ($familyCodes as $code) {
+                    $family = $this->getFamily($code);
+                    $family->addAttribute($attribute);
+                    $this->persist($family, false);
+                }
             }
 
             $this->persist($attribute);
@@ -1288,17 +1297,17 @@ class FixturesContext extends RawMinkContext
      */
     private function getProductValue($identifier, $attribute, $locale = null, $scope = null)
     {
-        $product = $this->getProductManager()->findByIdentifier($identifier);
-        if (!$product) {
-            throw new \InvalidArgumentException(
-                sprintf('Could not find product with identifier "%s"', $identifier)
-            );
-        }
+        $product = $this->getProduct($identifier);
 
         $productValue = $product->getValue($attribute, $locale, $scope);
         if (!$productValue) {
             throw new \InvalidArgumentException(
-                sprintf('Could not find product value for attribute "%s" in locale "%s"', $attribute, $locale)
+                sprintf(
+                    'Could not find product value for attribute "%s" in locale "%s" for scope "%s"',
+                    $attribute,
+                    $locale,
+                    $scope
+                )
             );
         }
         $this->getEntityManager()->refresh($productValue);
