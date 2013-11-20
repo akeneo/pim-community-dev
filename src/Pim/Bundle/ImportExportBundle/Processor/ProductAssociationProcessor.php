@@ -63,28 +63,13 @@ class ProductAssociationProcessor extends AbstractEntityProcessor
                 throw new InvalidItemException(sprintf("The association %s doesn't exist", $code), $item);
             }
 
-            $productAssociation = $product->getProductAssociationForAssociation($association);
-            if (!$productAssociation) {
-                $productAssociation = new ProductAssociation();
-                $productAssociation->setOwner($product);
-                $productAssociation->setAssociation($association);
-            }
+            $productAssociation = $this->getProductAssociation($product, $association);
 
             foreach ($associationData as $type => $relatedObjects) {
                 if ($type == '_products') {
                     $this->addProducts($productAssociation, $relatedObjects, $product->getIdentifier());
                 } else {
-                    $groupCodes = explode(',', $relatedObjects);
-                    foreach ($groupCodes as $groupCode) {
-                        $related = $this->findGroup($groupCode);
-                        if (!$related) {
-                            throw new InvalidItemException(
-                                sprintf("The related group %s doesn't exist", $groupCode),
-                                $item
-                            );
-                        }
-                        $productAssociation->addGroup($related);
-                    }
+                    $this->addGroups($productAssociation, $relatedObjects);
                 }
             }
             $productAssociations[]= $productAssociation;
@@ -121,6 +106,27 @@ class ProductAssociationProcessor extends AbstractEntityProcessor
     }
 
     /**
+     * Add groups to the association
+     *
+     * @param ProductAssociation $association
+     * @param string             $codes
+     */
+    protected function addGroups(ProductAssociation $association, $codes)
+    {
+        $groupCodes = explode(',', $codes);
+        foreach ($groupCodes as $groupCode) {
+            $related = $this->findGroup($groupCode);
+            if (!$related) {
+                throw new InvalidItemException(
+                    sprintf("The related group %s doesn't exist", $groupCode),
+                    $item
+                );
+            }
+            $association->addGroup($related);
+        }
+    }
+
+    /**
      * Prepare product associations data
      *
      * @param array $item
@@ -147,6 +153,26 @@ class ProductAssociationProcessor extends AbstractEntityProcessor
         }
 
         return $associations;
+    }
+
+    /**
+     * Get the existing product association or create a new one
+     *
+     * @param ProductInterface $product
+     * @param Association      $association
+     *
+     * @return ProductAssociation
+     */
+    protected function getProductAssociation(ProductInterface $product, Association $association)
+    {
+        $productAssociation = $product->getProductAssociationForAssociation($association);
+        if (!$productAssociation) {
+            $productAssociation = new ProductAssociation();
+            $productAssociation->setOwner($product);
+            $productAssociation->setAssociation($association);
+        }
+
+        return $productAssociation;
     }
 
     /**
