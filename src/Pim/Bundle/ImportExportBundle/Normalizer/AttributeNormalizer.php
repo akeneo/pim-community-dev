@@ -27,6 +27,21 @@ class AttributeNormalizer implements NormalizerInterface
     protected $supportedFormats = array('json', 'xml');
 
     /**
+     * @var TranslationNormalizer
+     */
+    protected $translationNormalizer;
+
+    /**
+     * Constructor
+     *
+     * @param TranslationNormalizer $translationNormalizer
+     */
+    public function __construct(TranslationNormalizer $translationNormalizer)
+    {
+        $this->translationNormalizer = $translationNormalizer;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function normalize($object, $format = null, array $context = array())
@@ -34,7 +49,7 @@ class AttributeNormalizer implements NormalizerInterface
         $results = array(
             'type' => $object->getAttributeType(),
             'code' => $object->getCode()
-        ) + $this->normalizeLabel($object);
+        ) + $this->translationNormalizer->normalize($object, $format, $context);
 
         $results = array_merge(
             $results,
@@ -106,23 +121,6 @@ class AttributeNormalizer implements NormalizerInterface
             'default_metric_unit' => (string) $attribute->getDefaultMetricUnit(),
             'max_file_size'       => (string) $attribute->getMaxFileSize(),
         );
-    }
-
-    /**
-     * Normalize the label
-     *
-     * @param ProductAttribute $attribute
-     *
-     * @return array
-     */
-    protected function normalizeLabel(ProductAttribute $attribute)
-    {
-        $labels = array();
-        foreach ($attribute->getTranslations() as $translation) {
-            $labels[$translation->getLocale()]= $translation->getLabel();
-        }
-
-        return array('label' => $labels);
     }
 
     /**

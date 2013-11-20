@@ -3,7 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Normalizer;
 
 use Pim\Bundle\ImportExportBundle\Normalizer\FlatGroupNormalizer;
-use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\ImportExportBundle\Normalizer\FlatTranslationNormalizer;
 
 /**
  * Test related class
@@ -19,7 +19,7 @@ class FlatGroupNormalizerTest extends GroupNormalizerTest
      */
     protected function setUp()
     {
-        $this->normalizer = new FlatGroupNormalizer();
+        $this->normalizer = new FlatGroupNormalizer(new FlatTranslationNormalizer());
         $this->format     = 'csv';
     }
 
