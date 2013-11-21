@@ -67,9 +67,9 @@ class ProductAssociationProcessor extends AbstractEntityProcessor
 
             foreach ($associationData as $type => $relatedObjects) {
                 if ($type === '_products') {
-                    $this->addProducts($productAssociation, $relatedObjects, $product->getIdentifier());
+                    $this->addProducts($productAssociation, $relatedObjects, $product->getIdentifier(), $item);
                 } else {
-                    $this->addGroups($productAssociation, $relatedObjects);
+                    $this->addGroups($productAssociation, $relatedObjects, $item);
                 }
             }
             $productAssociations[] = $productAssociation;
@@ -84,8 +84,9 @@ class ProductAssociationProcessor extends AbstractEntityProcessor
      * @param ProductAssociation $association
      * @param string             $identifiers
      * @param string             $productIdentifier
+     * @param object             $item
      */
-    protected function addProducts(ProductAssociation $association, $identifiers, $productIdentifier)
+    protected function addProducts(ProductAssociation $association, $identifiers, $productIdentifier, $item)
     {
         $skus = explode(',', $identifiers);
         foreach ($skus as $sku) {
@@ -110,8 +111,9 @@ class ProductAssociationProcessor extends AbstractEntityProcessor
      *
      * @param ProductAssociation $association
      * @param string             $codes
+     * @param object             $item
      */
-    protected function addGroups(ProductAssociation $association, $codes)
+    protected function addGroups(ProductAssociation $association, $codes, $item)
     {
         $groupCodes = explode(',', $codes);
         foreach ($groupCodes as $groupCode) {
