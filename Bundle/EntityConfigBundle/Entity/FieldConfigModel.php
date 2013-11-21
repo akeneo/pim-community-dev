@@ -3,13 +3,12 @@
 namespace Oro\Bundle\EntityConfigBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+
 use Doctrine\ORM\Mapping as ORM;
 
 use Doctrine\ORM\PersistentCollection;
 
 use Oro\Bundle\EntityConfigBundle\Config\ConfigModelManager;
-use Oro\Bundle\EntityExtendBundle\Entity\OptionSet;
 
 /**
  * @ORM\Table(name="oro_entity_config_field")
@@ -45,11 +44,7 @@ class FieldConfigModel extends AbstractConfigModel
 
     /**
      * @var OptionSet[]|PersistentCollection
-     *
-     * @ORM\OneToMany(targetEntity="Oro\Bundle\EntityExtendBundle\Entity\OptionSet",
-     *     mappedBy="field_id", cascade={"all"}, orphanRemoval=true
-     * )
-     * @ORM\OrderBy({"priority" = "ASC"})
+     * @ORM\OneToMany(targetEntity="OptionSet", mappedBy="field", cascade={"all"})
      */
     protected $options;
 
@@ -70,7 +65,6 @@ class FieldConfigModel extends AbstractConfigModel
         $this->type      = $type;
         $this->mode      = ConfigModelManager::MODE_DEFAULT;
         $this->values    = new ArrayCollection;
-        $this->options   = new ArrayCollection;
         $this->fieldName = $fieldName;
     }
 
@@ -137,21 +131,5 @@ class FieldConfigModel extends AbstractConfigModel
     public function getEntity()
     {
         return $this->entity;
-    }
-
-    /**
-     * @param \Doctrine\Common\Collections\Collection $options
-     */
-    public function setOptions($options)
-    {
-        $this->options = $options;
-    }
-
-    /**
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getOptions()
-    {
-        return $this->options;
     }
 }

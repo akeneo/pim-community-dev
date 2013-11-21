@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\EntityConfigBundle\Form\EventListener;
 
+use Oro\Bundle\EntityConfigBundle\Entity\OptionSet;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 use Symfony\Component\Form\FormEvent;
@@ -52,12 +53,18 @@ class ConfigSubscriber implements EventSubscriberInterface
         }
 
         $data = $event->getData();
+        $options = [];
 
         foreach ($this->configManager->getProviders() as $provider) {
             if (isset($data[$provider->getScope()])) {
                 $config = $provider->getConfig($className, $fieldName);
 
-                $config->setValues($data[$provider->getScope()]);
+                $values = $data[$provider->getScope()];
+                if (isset($values['set_options'])) {
+                    $options = $values['set_options'];
+                    unset($values['set_options']);
+                }
+                $config->setValues($values);
 
                 $this->configManager->persist($config);
             }
@@ -65,6 +72,30 @@ class ConfigSubscriber implements EventSubscriberInterface
 
         if ($event->getForm()->isValid()) {
             $this->configManager->flush();
+        }
+
+        $em = $this->configManager->getEntityManager();
+        if (count($options)) {
+            foreach ($options as $option) {
+                if (is_array($option)) {
+                    $optionSet = new OptionSet();
+                    $optionSet->setField($configModel);
+                    $optionSet->setData(
+                        $option['id'],
+                        $option['priority'],
+                        $option['label'],
+                        (bool) $option['default']
+                    );
+                } elseif (!$option->getId()) {
+                    $optionSet = $option;
+                    $optionSet->setField($configModel);
+                } else {
+                    $optionSet = $option;
+                }
+
+                $em->persist($optionSet);
+            }
+            $em->flush();
         }
     }
 }

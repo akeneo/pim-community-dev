@@ -7,18 +7,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class OptionSetCollectionType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $builder->add(
-            'options',
-            new OptionSetType(),
-            [
-                //'data_class' => 'Oro\Bundle\EntityExtendBundle\Entity\OptionSet'
-            ]
-        );
-    }
-
-
     /**
      * {@inheritdoc}
      */

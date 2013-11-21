@@ -3,17 +3,20 @@
 namespace Oro\Bundle\EntityConfigBundle\Form\Type;
 
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-use Oro\Bundle\EntityConfigBundle\Entity\FieldConfigModel;
-use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
-
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
-use Oro\Bundle\EntityConfigBundle\Provider\PropertyConfigContainer;
+
 use Oro\Bundle\EntityConfigBundle\Form\EventListener\ConfigSubscriber;
+
+use Oro\Bundle\EntityConfigBundle\Entity\FieldConfigModel;
+use Oro\Bundle\EntityConfigBundle\Entity\OptionSet;
+
+use Oro\Bundle\EntityConfigBundle\Provider\PropertyConfigContainer;
 
 class ConfigType extends AbstractType
 {
@@ -62,11 +65,17 @@ class ConfigType extends AbstractType
                         $configModel
                     ),
                     array(
-                        'block_config' => (array) $provider->getPropertyConfig()->getFormBlockConfig($configType)
+                        'block_config' => (array)$provider->getPropertyConfig()->getFormBlockConfig($configType)
                     )
                 );
                 $data[$provider->getScope()] = $config->all();
             }
+        }
+
+        if ($fieldType == 'optionSet') {
+            $data['extend']['set_options'] =
+                $this->configManager->getEntityManager()->getRepository(OptionSet::ENTITY_NAME)
+                    ->findBy(['field' => $configModel->getId()], ['priority' => 'ASC']);
         }
 
         $builder->setData($data);

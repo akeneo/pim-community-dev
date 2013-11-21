@@ -342,5 +342,4 @@ oro_entity_config:
                             label:          'Option(s)'
                             block:          entity
                             subblock:       properties
-                            #type:           oro_entity_option_set
-                            data_class:     Oro\Bundle\EntityExtendBundle\Entity\OptionSet
+                            type:           oro_entity_option_set

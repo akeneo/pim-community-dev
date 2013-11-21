@@ -3,7 +3,7 @@
         <div class="input-append collection-element-primary">
             {{ form_widget(form.label) }}
             <label class="add-on" title="{{ 'Default'|trans }}">
-                {{ form_widget(form.default) }}
+                {{ form_widget(form.is_default) }}
             </label>
             <label class="add-on" title="{{ 'Priority'|trans }}">
                 <i class="icon-list handle"></i>
@@ -57,7 +57,7 @@
     {% set form = context.form %}
     {% set id = context.id %}
     {% set show_form_when_empty = context.show_form_when_empty %}
-    {% set has_default = form.vars.prototype.default is defined %}
+    {% set has_default = form.vars.prototype.is_default is defined %}
 
     {% if has_default or show_form_when_empty %}
         <script type="text/javascript">
@@ -71,8 +71,8 @@
                      * Allow only 1 primary checkbox to be checked.
                      * This logic convert checkbox logic to logic used in radiobutton
                      */
-                    container.on('click', '[name$="[default]"]', function() {
-                        container.find('[name$="[default]"]').each(function (idx, el) {
+                    container.on('click', '[name$="[is_default]"]', function() {
+                        container.find('[name$="[is_default]"]').each(function (idx, el) {
                             el.checked = false;
                         });
                         this.checked = true;

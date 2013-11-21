@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\EntityExtendBundle\Controller;
 
+use Oro\Bundle\EntityConfigBundle\Entity\OptionSet;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
