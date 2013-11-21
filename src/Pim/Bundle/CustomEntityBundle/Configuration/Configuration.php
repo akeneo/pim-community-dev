@@ -9,12 +9,12 @@ use Pim\Bundle\CustomEntityBundle\Manager\ManagerInterface;
 
 /**
  * Configuration for an ORM custom entity
- * 
+ *
  * The following options are defined :
- * 
+ *
  *   - entity_class:                The class of the custom entity (REQUIRED)
  *   - edit_form_type:              The form type used for edition (REQUIRED)
- * 
+ *
  *   - base_template:               The base template from which all templates are extended
  *   - index_template:              The template for the index action
  *   - query_builder_options:       Options passed to the manager for generating the index QueryBuilder
@@ -32,7 +32,7 @@ use Pim\Bundle\CustomEntityBundle\Manager\ManagerInterface;
  *   - create_options:              Options passed to the manager for entity creation
  *   - edit_after_create:           Set to true to redirect to the edit page after entity creation
  *   - remove_route:                The remove route
- * 
+ *
  *
  * @author    Antoine Guigan <antoine@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)

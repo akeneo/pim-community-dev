@@ -5,6 +5,7 @@ parameters:
     pim_custom_entity.controller.strategy.crud.class:       Pim\Bundle\CustomEntityBundle\Controller\Strategy\CrudStrategy
     pim_custom_entity.controller.strategy.datagrid.class:   Pim\Bundle\CustomEntityBundle\Controller\Strategy\DatagridStrategy
     pim_custom_entity.manager.orm.class:                    Pim\Bundle\CustomEntityBundle\Manager\OrmManager
+    pim_custom_entity.type.filter.custom_entity.class:      Pim\Bundle\CustomEntityBundle\Form\CustomEntityFilterType
 
 services:
     pim_custom_entity.configuration.registry:
@@ -36,3 +37,10 @@ services:
         arguments:
             - '@doctrine'
             - '@property_accessor'
+
+    pim_custom_entity.type.filter.custom_entity:
+        class: %pim_custom_entity.type.filter.custom_entity.class%
+        arguments:
+            - '@doctrine'
+        tags:
+            - { name: form.type, alias: pim_custom_entity_filter_entity }
