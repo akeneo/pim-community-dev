@@ -66,11 +66,12 @@ Here comes **[karma-requirejs-exposure](https://github.com/laboro/karma-requirej
 
 See example how it works:
 ```js
-define(['some/module'],
-function(module) {
+define(['some/module', 'requirejs-exposure'],
+function(module, requirejsExposure) {
   'use strict';
 
-  var exposure = require('some/module/exposure');
+  // get exposure instance for tested module
+  var exposure = requirejsExposure.disclose('some/module');
 
   describe('some/module', function () {
     var foo;
@@ -80,7 +81,7 @@ function(module) {
     beforeEach(function () {
       // create mock object with stub method 'do'
       foo = jasmine.createSpyObj('foo', ['do']);
-      // before each test pass it off instead of original
+      // before each test, pass it off instead of original
       exposure.substitute('foo').by(foo);
     });
     afterEach(function () {
