@@ -150,7 +150,9 @@ function($, _, __, tools) {
         unhighlight: function(element) {
             $(element).closest('.error').removeClass('error')
                 .closest('.controls').removeClass('validation-error');
-        }
+        },
+        // ignore all invisible elements except input type=hidden
+        ignore: ":hidden:not([type=hidden])"
     });
 
     // general validation methods
