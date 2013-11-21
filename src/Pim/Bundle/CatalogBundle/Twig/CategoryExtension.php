@@ -37,10 +37,51 @@ class CategoryExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
+            'list_trees_response'      => new \Twig_Function_Method($this, 'listTreesResponse'),
             'list_categories_response' => new \Twig_Function_Method($this, 'listCategoriesResponse'),
             'count_products' => new \Twig_Function_Method($this, 'countProducts'),
             'define_state'   => new \Twig_Function_Method($this, 'defineState')
         );
+    }
+
+    public function listTreesResponse(array $trees, $selectedCategoryId = null, $includeSub = false)
+    {
+        $return = array();
+
+        foreach ($trees as $i => $tree) {
+            $selectedTree = false;
+
+            if ($tree->getId() === $selectedCategoryId) {
+                $selectedTree = true;
+            }
+
+            $return[] = array(
+                'id' => $tree->getId(),
+                'label' => $this->getLabel($tree),
+                'selected' => $selectedTree ? "true" : "false"
+            );
+        }
+
+        return $return;
+    }
+
+    /**
+     * Returns category label with(out?) count and can include sub-categories
+     *
+     * @param CategoryInterface $category
+     * @param boolean           $count      predicate to add the count or not
+     * @param boolean           $includeSub include sub-categories for the count
+     *
+     * @return string
+     */
+    protected function getLabel(CategoryInterface $category, $count = false, $includeSub = false)
+    {
+        $label = $category->getLabel();
+        if ($count) {
+            $label = $label .'('. $this->countProducts($category, $includeSub) .')';
+        }
+
+        return $label;
     }
 
     public function listCategoriesResponse(array $categories, Collection $selectedCategories)
