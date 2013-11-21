@@ -40,6 +40,7 @@ class SummaryFormatter extends ProgressFormatter
         $fileName = $event->getFeature()->getFile();
         $relativeName = substr($fileName, strpos($fileName, 'features'));
 
+        $this->writeLn();
         $this->write(sprintf('Executed feature %s', $relativeName));
     }
 }
