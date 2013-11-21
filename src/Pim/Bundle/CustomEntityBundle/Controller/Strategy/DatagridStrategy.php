@@ -67,8 +67,8 @@ class DatagridStrategy extends CrudStrategy
             $configuration,
             $request,
             ('json' === $request->getRequestFormat())
-                ? 'OroGridBundle:Datagrid:list.json.php'
-                : $configuration->getIndexTemplate(),
+            ? 'OroGridBundle:Datagrid:list.json.php'
+            : $configuration->getIndexTemplate(),
             array('datagrid' => $datagrid->createView())
         );
     }

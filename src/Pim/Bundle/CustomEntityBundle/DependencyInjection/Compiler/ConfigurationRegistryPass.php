@@ -28,7 +28,7 @@ class ConfigurationRegistryPass implements CompilerPassInterface
     public function process(ContainerBuilder $container)
     {
         $definition = $container->getDefinition(self::CONFIGURATION_REGISTRY_SERVICE);
-        foreach ($container->findTaggedServiceIds(self::CONFIGURATION_TAG) as $serviceId => $tags) {
+        foreach (array_keys($container->findTaggedServiceIds(self::CONFIGURATION_TAG)) as $serviceId) {
             $definition->addMethodCall('add', array(new Reference($serviceId)));
         }
     }

@@ -22,7 +22,9 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
     {
         $this->propertyAccessor = new PropertyAccessor;
         $this->manager = $this->getMock('Pim\Bundle\CustomEntityBundle\Manager\ManagerInterface');
-        $this->controllerStrategy = $this->getMock('Pim\Bundle\CustomEntityBundle\Controller\Strategy\StrategyInterface');
+        $this->controllerStrategy = $this->getMock(
+            'Pim\Bundle\CustomEntityBundle\Controller\Strategy\StrategyInterface'
+        );
     }
 
     public function testDefaultOptions()

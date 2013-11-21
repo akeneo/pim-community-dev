@@ -25,7 +25,7 @@ class DatagridManagerPass implements CompilerPassInterface
         $tags = $container->findTaggedServiceIds(self::TAG_NAME);
         $registryService = $container->getDefinition(self::REGISTRY_SERVICE);
 
-        foreach ($tags as $serviceId=>$tag) {
+        foreach ($tags as $serviceId => $tag) {
             if (isset($tag[0]['custom_entity_name'])) {
                 $registryService->addMethodCall(
                     'addParameterReplacement',
