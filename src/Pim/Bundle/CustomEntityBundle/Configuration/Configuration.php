@@ -73,7 +73,7 @@ class Configuration implements ConfigurationInterface
         $this->name = $name;
         $this->manager = $manager;
         $this->controllerStrategy = $controllerStrategy;
-        $optionsResolver = new OptionsResolver;
+        $optionsResolver = new OptionsResolver();
         $this->setDefaultOptions($optionsResolver);
         $this->options = $optionsResolver->resolve($options);
     }
@@ -165,7 +165,7 @@ class Configuration implements ConfigurationInterface
      */
     public function getCreateFormType()
     {
-        return $this->options['create_form_type']?:$this->options['edit_form_type'];
+        return $this->options['create_form_type'] ?: $this->options['edit_form_type'];
     }
 
     /**
