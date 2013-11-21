@@ -970,13 +970,19 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
          * @param {String} errorThrown
          */
         processError: function(XMLHttpRequest, textStatus, errorThrown) {
+            var message403 = 'You do not have permission to this action';
             if (app.debug) {
-                document.body.innerHTML = XMLHttpRequest.responseText;
+                if (XMLHttpRequest.status == 403) {
+                    this.showMessage(__(message403));
+                    this.loadingMask.hide();
+                } else {
+                    document.body.innerHTML = XMLHttpRequest.responseText;
+                }
                 this.updateDebugToolbar(XMLHttpRequest);
             } else {
                 var message = 'Sorry, page was not loaded correctly';
                 if (XMLHttpRequest.status == 403) {
-                    message = 'You does not have permission to this action'
+                    message = message403;
                 }
                 this.showMessage(__(message));
                 this.loadingMask.hide();

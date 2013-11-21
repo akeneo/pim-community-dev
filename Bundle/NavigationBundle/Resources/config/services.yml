@@ -241,7 +241,7 @@ services:
         class: %oro_navigation.event.response_hashnav.listener.class%
         tags:
             - { name: kernel.event_listener, event: kernel.response, method: onResponse }
-        arguments:                    [@security.context, @templating, @kernel]
+        arguments:                    [@security.context, @templating]
 
     oro_navigation.twig.hash_nav_extension:
         class:        %oro_navigation.twig_hash_nav_extension.class%

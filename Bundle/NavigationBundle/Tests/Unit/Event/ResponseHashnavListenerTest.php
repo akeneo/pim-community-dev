@@ -46,17 +46,9 @@ class ResponseHashnavListenerTest extends \PHPUnit_Framework_TestCase
             ->method('getResponse')
             ->will($this->returnValue($this->response));
 
-        $appKernel = $this->getMockBuilder('Symfony\Component\HttpKernel\Kernel')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $appKernel->expects($this->any())
-            ->method('getEnvironment')
-            ->will($this->returnValue('dev'));
-
         $this->securityContext = $this->getMock('Symfony\Component\Security\Core\SecurityContextInterface');
         $this->templating = $this->getMock('Symfony\Bundle\FrameworkBundle\Templating\EngineInterface');
-        $this->listener = new ResponseHashnavListener($this->securityContext, $this->templating, $appKernel);
+        $this->listener = new ResponseHashnavListener($this->securityContext, $this->templating);
     }
 
     public function testPlainRequest()
@@ -98,12 +90,6 @@ class ResponseHashnavListenerTest extends \PHPUnit_Framework_TestCase
     public function testHashRequestNotFound()
     {
         $this->response->setStatusCode(404);
-        $this->serverErrorHandle();
-    }
-
-    public function testHashRequestForbidden()
-    {
-        $this->response->setStatusCode(403);
         $this->serverErrorHandle();
     }
 
