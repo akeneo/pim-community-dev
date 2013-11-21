@@ -113,8 +113,12 @@ function(_, Backbone, __, FormValidation, DeleteConfirmation) {
             this.getCollection().reset();
         },
 
+        initModel: function (model, index) {
+            model.set('id', _.uniqueId('designer'));
+        },
+
         addModel: function(model) {
-            model.set('id', _.uniqueId('column'));
+            this.initModel(model, this.getCollection().size());
             this.getCollection().add(model);
         },
 
@@ -130,11 +134,7 @@ function(_, Backbone, __, FormValidation, DeleteConfirmation) {
         },
 
         onModelChanged: function(model) {
-            var data = model.toJSON();
-            _.each(data, _.bind(function (value, name) {
-                data[name] = this.getFieldLabel(name, value);
-            }, this));
-            var item = $(this.itemTemplate(data));
+            var item = $(this.itemTemplate(this.prepareItemTemplateData(model)));
             this.bindItemActions(item);
             this.getContainer().find('[data-id="' + model.id + '"]').outerHTML(item);
             this.trigger('collection:change');
@@ -148,13 +148,9 @@ function(_, Backbone, __, FormValidation, DeleteConfirmation) {
         onResetCollection: function () {
             this.getContainer().empty();
             this.resetForm();
-            this.getCollection().each(_.bind(function (model) {
-                model.set('id', _.uniqueId('column'));
-                var data = model.toJSON();
-                _.each(data, _.bind(function (value, name) {
-                    data[name] = this.getFieldLabel(name, value);
-                }, this));
-                var item = $(this.itemTemplate(data));
+            this.getCollection().each(_.bind(function (model, index) {
+                this.initModel(model, index);
+                var item = $(this.itemTemplate(this.prepareItemTemplateData(model)));
                 this.bindItemActions(item);
                 this.getContainer().append(item);
             }, this));

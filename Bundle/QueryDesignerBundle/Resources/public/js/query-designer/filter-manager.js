@@ -27,6 +27,11 @@ define(['jquery', 'underscore', 'backbone', 'oro/app', 'oro/mediator'],
             activeFilter: null,
 
             /**
+             * @property {String}
+             */
+            activeFilterName: null,
+
+            /**
              * Initialize filter list options
              *
              * @param {Object} options
@@ -67,8 +72,9 @@ define(['jquery', 'underscore', 'backbone', 'oro/app', 'oro/mediator'],
              */
             setActiveFilter: function (criteria) {
                 var foundFilter = null;
+                var foundFilterName = null;
                 var foundFilterMatchedBy = null;
-                _.each(this.options.filters, function(filter) {
+                _.each(this.options.filters, function(filter, filterName) {
                     var isApplicable = false;
                     if (!_.isEmpty(filter.applicable)) {
                         // if filter.applicable an array check if all items conforms the criteria
@@ -97,6 +103,7 @@ define(['jquery', 'underscore', 'backbone', 'oro/app', 'oro/mediator'],
                     }
                     if (isApplicable) {
                         foundFilter = filter;
+                        foundFilterName = filterName;
                     }
                 });
                 if (foundFilter !== this.activeFilter) {
@@ -104,6 +111,7 @@ define(['jquery', 'underscore', 'backbone', 'oro/app', 'oro/mediator'],
                         this.activeFilter.hide();
                     }
                     this.activeFilter = foundFilter;
+                    this.activeFilterName = foundFilterName;
                     this.activeFilter.show();
                 }
                 this.activeFilter.reset();
@@ -112,11 +120,26 @@ define(['jquery', 'underscore', 'backbone', 'oro/app', 'oro/mediator'],
             /**
              * Returns a string representation of the given value
              *
-             * @param {Object} value
+             * @param {Object} data
              * @return {String}
              */
-            getCriteriaHint: function(value) {
-                return this.activeFilter._getCriteriaHint(value);
+            getCriteriaHint: function(data) {
+                var filter = this.activeFilter;
+                if (data.filter != this.activeFilterName) {
+                    filter = _.find(this.options.filters, function(filter, filterName) {
+                        return (data.filter == filterName);
+                    });
+                }
+                return filter._getCriteriaHint(data.data);
+            },
+
+            /**
+             * Returns a name of an active filter
+             *
+             * @returns {String}
+             */
+            getName: function() {
+                return this.activeFilterName;
             },
 
             /**

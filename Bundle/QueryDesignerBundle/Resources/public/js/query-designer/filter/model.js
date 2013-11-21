@@ -10,7 +10,7 @@ function(Backbone) {
      */
     return Backbone.Model.extend({
         defaults: {
-            id : 0,
+            id : null,
             index : null,
             columnName : null,
             criterion: null

@@ -35,6 +35,7 @@ function(AbstractView, FilterCollection, filterBuilder) {
             filterBuilder.init(this.criterionSelector.parent(), _.bind(function (filterManager) {
                 this.filterManager = filterManager;
                 this.listenTo(this.filterManager, "update_value", this.onCriterionValueUpdated);
+                this.trigger('filter_manager_initialized');
             }, this));
 
             // set criterion selector when a column changed
@@ -53,11 +54,38 @@ function(AbstractView, FilterCollection, filterBuilder) {
             }, this));
         },
 
+        initModel: function (model, index) {
+            AbstractView.prototype.initModel.apply(this, arguments);
+            model.set('index', index + 1);
+        },
+
+        deleteModel: function(model) {
+            AbstractView.prototype.deleteModel.apply(this, arguments);
+            this.getCollection().each(function (m) {
+                if (m.get('index') > model.get('index')) {
+                    m.set('index', m.get('index') - 1);
+                }
+            });
+        },
+
+        onResetCollection: function () {
+            if (!_.isNull(this.filterManager)) {
+                AbstractView.prototype.onResetCollection.apply(this, arguments);
+            } else {
+                this.once('filter_manager_initialized', function() {
+                    AbstractView.prototype.onResetCollection.apply(this, arguments);
+                }, this);
+            }
+        },
+
         onCriterionValueUpdated: function () {
             this.criterionSelector.val(
                 this.filterManager.isEmptyValue()
                     ? ''
-                    : JSON.stringify(this.filterManager.getValue())
+                    : JSON.stringify({
+                        filter: this.filterManager.getName(),
+                        data: this.filterManager.getValue()
+                      })
             );
         },
 
