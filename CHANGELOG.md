@@ -15,6 +15,7 @@
 - Import/Export attribute options (CSV)
 - Upload and import an archive
 - Download an archive containing the exported products along with media
+- Add the column "enabled" in the CSV file for importing products
 
 ## Improvements
 - Export media into separated sub directories
