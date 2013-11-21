@@ -116,7 +116,7 @@ class CategoryProcessor extends AbstractEntityProcessor
         if ($violations->count() > 0) {
             $messages = array();
             foreach ($violations as $violation) {
-                $messages[]= (string) $violation;
+                $messages[] = (string) $violation;
             }
             throw new InvalidItemException(implode(', ', $messages), $item);
 

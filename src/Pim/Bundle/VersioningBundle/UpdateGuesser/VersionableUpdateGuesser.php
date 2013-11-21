@@ -46,7 +46,7 @@ class VersionableUpdateGuesser implements UpdateGuesserInterface
     {
         $pendings = array();
         if (in_array(get_class($entity), $this->versionableEntities)) {
-            $pendings[]= $entity;
+            $pendings[] = $entity;
         }
 
         return $pendings;

@@ -318,7 +318,7 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
     {
         $existingCurrencies = array();
         foreach ($this->getPrices() as $price) {
-            $existingCurrencies[]= $price->getCurrency();
+            $existingCurrencies[] = $price->getCurrency();
         }
         $newCurrencies = array_diff($activeCurrencies, $existingCurrencies);
         foreach ($newCurrencies as $currency) {
