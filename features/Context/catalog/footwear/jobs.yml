@@ -57,24 +57,6 @@ jobs:
                 withHeader: true
             writer:
                 filePath: /tmp/category_export/category_export.csv
-    footwear_attribute_import:
-        connector:     Akeneo CSV Connector
-        alias:         attribute_import
-        label:         Footwear attribute import
-        type:          import
-        configuration: ~
-    footwear_attribute_export:
-        connector: Akeneo CSV Connector
-        alias:     attribute_export
-        label:     Footwear attribute export
-        type:      export
-        configuration:
-            processor:
-                delimiter:  ;
-                enclosure:  '"'
-                withHeader: true
-            writer:
-                filePath: /tmp/attribute_export/attribute_export.csv
     footwear_association_import:
         connector: Akeneo CSV Connector
         alias:     association_import
