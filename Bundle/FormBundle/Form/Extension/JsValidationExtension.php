@@ -51,9 +51,9 @@ class JsValidationExtension extends AbstractTypeExtension
         $constraints = $this->extractMetadataConstraints($view);
         if ($view->children && $view->parent && !isset($view->vars['choices'])) {
             $required = isset($view->vars['required']) ? $view->vars['required'] : false;
-            $view->vars['attr']['data-validation'] = json_encode(
-                array('Required' => array('required' => $required))
-            );
+            if (!$required) {
+                $view->vars['attr']['data-validation-optional-group'] = null;
+            }
         }
         foreach ($this->getMappedChildren($view) as $child) {
             $childConstraints = $this->getFormViewConstraints($child, $constraints, $validationGroups);
