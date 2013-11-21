@@ -174,21 +174,40 @@
     {% if resource_granted('oro_email_view') %}
         {% set dataBlocks = dataBlocks|merge
             (
-                    [{
-                        'title': 'User emails'|trans,
-                        'subblocks': [
-                            {
-                                'title': '',
-                                'useSpan': false,
-                                'data': [
-                                    dataGrid.renderGrid(gridName, {userId: entity.id}, { cssClass: 'inner-grid' }),
-                                    Email.renderJs()
-                                ]
-                            }
-                        ]
-                    }]
+                [{
+                    'title': 'User emails'|trans,
+                    'subblocks': [
+                        {
+                            'title': '',
+                            'useSpan': false,
+                            'data': [
+                                dataGrid.renderGrid(gridName, {userId: entity.id}, { cssClass: 'inner-grid' }),
+                                Email.renderJs()
+                            ]
+                        }
+                    ]
+                }]
             )
         %}
+    {% endif %}
+
+    {%- set additional_data -%}
+        {% placeholder oro_user_view_additional_data %}
+    {%- endset -%}
+
+    {% if additional_data is not empty %}
+        {% set dataBlocks = dataBlocks|merge(
+            [{
+                'title': 'Additional data'|trans,
+                'subblocks': [
+                    {
+                        'title': '',
+                        'useSpan': false,
+                        'data': [additional_data]
+                    }
+                ]
+            }]
+        ) %}
     {% endif %}
 
     {% set data = { 'dataBlocks': dataBlocks } %}
