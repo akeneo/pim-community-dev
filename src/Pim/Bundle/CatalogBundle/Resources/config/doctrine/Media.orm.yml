@@ -15,13 +15,16 @@ Pim\Bundle\CatalogBundle\Entity\Media:
             type: string
             scale: 0
             length: 500
+            nullable: true
             column: file_path
         originalFilename:
             type: string
+            nullable: true
             column: original_filename
         mimeType:
             type: string
             length: 255
+            nullable: true
             column: mime_type
     oneToOne:
         value:
