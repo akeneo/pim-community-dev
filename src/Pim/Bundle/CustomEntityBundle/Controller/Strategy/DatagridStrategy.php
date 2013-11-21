@@ -63,14 +63,10 @@ class DatagridStrategy extends CrudStrategy
         $routeGenerator = $datagrid->getRouteGenerator();
         $routeGenerator->setRouteParameters(array('customEntityName' => $configuration->getName()));
 
-        return $this->render(
-            $configuration,
-            $request,
-            ('json' === $request->getRequestFormat())
-            ? 'OroGridBundle:Datagrid:list.json.php'
-            : $configuration->getIndexTemplate(),
-            array('datagrid' => $datagrid->createView())
-        );
+        $template = ($request->getRequestFormat() === 'json')
+            ? 'OroGridBundle:Datagrid:list.json.php' : $configuration->getIndexTemplate();
+
+        return $this->render($configuration, $request, $template, array('datagrid' => $datagrid->createView()));
     }
 
     /**
