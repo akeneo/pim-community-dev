@@ -4,9 +4,9 @@ namespace Oro\Bundle\DataAuditBundle\Loggable;
 use Symfony\Component\Routing\Exception\InvalidParameterException;
 
 use Doctrine\Common\Collections\Collection;
-
 use Doctrine\ORM\PersistentCollection;
 use Doctrine\ORM\EntityManager;
+use Doctrine\Common\Util\ClassUtils;
 
 use Oro\Bundle\DataAuditBundle\Metadata\PropertyMetadata;
 use Oro\Bundle\UserBundle\Entity\User;
@@ -182,17 +182,17 @@ class LoggableManager
 
         if ($this->pendingLogEntityInserts && array_key_exists($oid, $this->pendingLogEntityInserts)) {
             $logEntry     = $this->pendingLogEntityInserts[$oid];
-            $logEntryMeta = $em->getClassMetadata(get_class($logEntry));
+            $logEntryMeta = $em->getClassMetadata(ClassUtils::getClass($logEntry));
 
             $id = $this->getIdentifier($entity);
             $logEntryMeta->getReflectionProperty('objectId')->setValue($logEntry, $id);
+
             $uow->scheduleExtraUpdate(
                 $logEntry,
                 array(
                     'objectId' => array(null, $id)
                 )
             );
-
             $uow->setOriginalEntityProperty(spl_object_hash($logEntry), 'objectId', $id);
 
             unset($this->pendingLogEntityInserts[$oid]);
@@ -215,6 +215,7 @@ class LoggableManager
                 );
                 $uow->setOriginalEntityProperty(spl_object_hash($logEntry), 'objectId', $data);
             }
+
             unset($this->pendingRelatedEntities[$oid]);
         }
     }

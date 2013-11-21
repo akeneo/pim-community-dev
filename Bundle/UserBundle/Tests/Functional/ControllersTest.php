@@ -61,20 +61,14 @@ class ControllersTest extends WebTestCase
 
     public function testUpdate()
     {
-        $this->markTestSkipped("BAP-1820");
-
-        $this->client->request(
-            'GET',
-            $this->client->generate('oro_user_index', array('_format' =>'json')) .
-            '?users[_filter][username][value]=testUser1',
+        $result = ToolsAPI::getEntityGrid(
+            $this->client,
+            'users-grid',
             array(
-                'users[_pager][_page]' => 1,
-                'users[_pager][_per_page]' => 10,
-                'users[_sort_by][username]' => 'ASC',
-                'users[_filter][username][type]' => '',
+                'users-grid[_filter][username][value]' => 'testUser1'
             )
         );
-        $result = $this->client->getResponse();
+
         ToolsAPI::assertJsonResponse($result, 200);
 
         $result = ToolsAPI::jsonToArray($result->getContent());
@@ -88,14 +82,12 @@ class ControllersTest extends WebTestCase
         $form = $crawler->selectButton('Save and Close')->form();
         $form['oro_user_user_form[enabled]'] = 1;
         $form['oro_user_user_form[username]'] = 'testUser1';
-        $form['oro_user_user_form[firstName]'] = 'First Name';
-        $form['oro_user_user_form[lastName]'] = 'Last Name';
+        $form['oro_user_user_form[firstName]'] = 'First Name Updated';
+        $form['oro_user_user_form[lastName]'] = 'Last Name Updated';
         $form['oro_user_user_form[birthday]'] = '2013-01-02';
         $form['oro_user_user_form[email]'] = 'test@test.com';
         $form['oro_user_user_form[groups][1]'] = 2;
         $form['oro_user_user_form[rolesCollection][2]'] = 4;
-        //$form['oro_user_user_form[values][company][varchar]'] = 'company_update';
-        //$form['oro_user_user_form[values][gender][option]'] = 6;
 
         $this->client->followRedirects(true);
         $crawler = $this->client->submit($form);
@@ -107,20 +99,14 @@ class ControllersTest extends WebTestCase
 
     public function testApiGen()
     {
-        $this->markTestSkipped("BAP-1820");
-
-        $this->client->request(
-            'GET',
-            $this->client->generate('oro_user_index', array('_format' =>'json')) .
-            '?users[_filter][username][value]=testUser1',
+        $result = ToolsAPI::getEntityGrid(
+            $this->client,
+            'users-grid',
             array(
-                'users[_pager][_page]' => 1,
-                'users[_pager][_per_page]' => 10,
-                'users[_sort_by][username]' => 'ASC',
-                'users[_filter][username][type]' => '',
+                'users-grid[_filter][username][value]' => 'testUser1'
             )
         );
-        $result = $this->client->getResponse();
+
         ToolsAPI::assertJsonResponse($result, 200);
 
         $result = ToolsAPI::jsonToArray($result->getContent());
