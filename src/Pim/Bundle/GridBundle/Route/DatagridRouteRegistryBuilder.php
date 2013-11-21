@@ -87,8 +87,6 @@ class DatagridRouteRegistryBuilder
             }
         }
 
-        var_dump($regexps);
-
         return $regexps;
     }
 }
