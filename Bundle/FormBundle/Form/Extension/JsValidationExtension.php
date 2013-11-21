@@ -62,7 +62,7 @@ class JsValidationExtension extends AbstractTypeExtension
             $view->vars['attr']['data-validation-optional-group'] = null;
         }
 
-        //
+        // Add "data-validation" to form view
         $this->addDataValidationAttribute($view);
 
         if (isset($view->vars['prototype']) && $view->vars['prototype'] instanceof FormView) {
