@@ -39,18 +39,25 @@ class JavascriptRegExpTranslator
      * Translates a PHP regexp to Javascript
      *
      * @param string $regexp
-     *
+     * @param array  $parameterValues
+     * 
      * @return string
      * @throws JavascriptRegexpTranslatorException
      */
-    public function translate($regexp)
+    public function translate($regexp, array $parameterValues = array())
     {
+        foreach ($parameterValues as $name => $value) {
+        $regexp = preg_replace(
+                sprintf('/\(\?P<%s>([^()]|(?<group>\(((?>[^()]+)|(?&group))*\)))+\)/', $name),
+                $value,
+                $regexp
+            );
+        }
         foreach ($this->unsupported as $unsupportedRegexp) {
             if (preg_match($unsupportedRegexp, $regexp)) {
                 throw new JavascriptRegexpTranslatorException();
             }
         }
-
         return sprintf(
             '/%s/',
             preg_replace(

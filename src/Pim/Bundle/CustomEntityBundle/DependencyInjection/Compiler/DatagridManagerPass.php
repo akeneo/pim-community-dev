@@ -15,6 +15,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 class DatagridManagerPass implements CompilerPassInterface
 {
     const TAG_NAME = 'oro_grid.datagrid.manager';
+    const REGISTRY_SERVICE = 'pim_grid.routes_registry.builder';
 
     /**
      * {@inheritdoc}
@@ -22,9 +23,14 @@ class DatagridManagerPass implements CompilerPassInterface
     public function process(ContainerBuilder $container)
     {
         $tags = $container->findTaggedServiceIds(self::TAG_NAME);
+        $registryService = $container->getDefinition(self::REGISTRY_SERVICE);
 
         foreach ($tags as $serviceId=>$tag) {
             if (isset($tag[0]['custom_entity_name'])) {
+                $registryService->addMethodCall(
+                    'addParameterReplacement',
+                    array($tag[0]['datagrid_name'], 'customEntityName', $tag[0]['custom_entity_name'])
+                );
                 $container->getDefinition($serviceId)
                     ->addMethodCall('setCustomEntityName', array($tag[0]['custom_entity_name']));
             }
