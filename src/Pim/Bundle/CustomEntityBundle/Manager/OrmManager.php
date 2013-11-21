@@ -24,6 +24,11 @@ class OrmManager implements OrmManagerInterface
      */
     protected $propertyAccessor;
 
+    /**
+     * Constructor
+     * @param RegistryInterface         $doctrine
+     * @param PropertyAccessorInterface $propertyAccessor
+     */
     public function __construct(RegistryInterface $doctrine, PropertyAccessorInterface $propertyAccessor)
     {
         $this->doctrine = $doctrine;
