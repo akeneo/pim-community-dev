@@ -3,7 +3,7 @@
 define(['jquery', 'underscore', 'oro/translator', 'jquery.validate'],
 function ($, _, __) {
     'use strict';
-//"Repeated":{"first_name":"first","second_name":"second","invalid_message":"This value is not valid.","invalid_message_parameters":null}}"
+
     var defaultParam = {
         invalid_message: 'This value is not valid.',
         invalid_message_parameters: {}
@@ -18,7 +18,7 @@ function ($, _, __) {
             // validator should be added to repeated field (second one)
             var id = element.id.slice(0, -(params.second_name || '').length) + (params.first_name || ''),
                 firstElement = document.getElementById(id);
-            return this.optional(element) || value === this.elementValue(firstElement);
+            return this.optional(firstElement) || value === this.elementValue(firstElement);
         },
         function (param) {
             param = _.extend({}, defaultParam, param);

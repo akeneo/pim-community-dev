@@ -25,7 +25,7 @@ function (_, __) {
         if (!_.isUndefined(min) && min === max) {
             result = number === parseInt(min, 10) || 0;
         } else {
-            if (!_.isUndefined(min) && max !== null) {
+            if (!_.isUndefined(min) && min !== null) {
                 result = number >= parseInt(min, 10) || -1;
             }
             if (result === true && !_.isUndefined(max) && max !== null) {
