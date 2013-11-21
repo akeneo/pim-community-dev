@@ -10,7 +10,7 @@
                 <th class="action-column"><span>{{ 'oro.querydesigner.datagrid.filter.actions'|trans }}</span></th>
             </tr>
             </thead>
-            <tbody class="column-container">
+            <tbody class="item-container">
             </tbody>
         </table>
     </div>
@@ -20,7 +20,7 @@
     <script type="text/html" id="{{ id }}">
         <tr data-id="<%= id %>">
             <td class="index-cell"><%= index %></td>
-            <td class="string-cell"><%= condition %></td>
+            <td class="string-cell"><%= filter %></td>
             <td class="action-cell">
                 <a href="javascript: void(0);" class="action no-hash edit-button"
                    title="{{ 'oro.querydesigner.datagrid.action.update_filter'|trans }}"
@@ -80,7 +80,7 @@
                 <th class="action-column"><span>{{ 'oro.querydesigner.datagrid.column.actions'|trans }}</span></th>
             </tr>
             </thead>
-            <tbody class="column-container">
+            <tbody class="item-container">
             </tbody>
         </table>
     </div>

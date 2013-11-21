@@ -1,17 +1,26 @@
 /* jshint browser:true */
 /* global define, require */
-define(['jquery', 'underscore', 'oro/tools', 'oro/query-designer/filter-manager'],
-function($, _, tools, FilterManager) {
+define(['jquery', 'underscore', 'oro/tools', 'oro/mediator', 'oro/query-designer/filter-manager'],
+function($, _, tools, mediator, FilterManager) {
     'use strict';
 
     var
+        initialized = false,
         filterModuleName = 'oro/datafilter/{{type}}-filter',
+        filterTypes = {
+            string:      'choice',
+            choice:      'select',
+            selectrow:   'select-row',
+            multichoice: 'multiselect',
+            boolean:     'select'
+        },
         methods = {
             /**
              * Initializes data filters
              */
             initBuilder: function () {
-                this.metadata = _.extend({filters: []}, this.$el.data('metadata'));
+                var metadata = this.$el.closest('[data-metadata]').data('metadata');
+                this.metadata = _.extend({filters: []}, metadata);
                 this.metadata.filters.push({type: 'none', applicable: {}});
                 this.modules = {};
                 methods.collectModules.call(this);
@@ -24,7 +33,8 @@ function($, _, tools, FilterManager) {
             collectModules: function () {
                 var modules = this.modules;
                 _.each(this.metadata.filters || {}, function (filter) {
-                    modules[filter.type] = filterModuleName.replace('{{type}}', filter.type);
+                    var type = filter.type;
+                    modules[type] = filterModuleName.replace('{{type}}', filterTypes[type] || type);
                 });
             },
 
@@ -34,8 +44,8 @@ function($, _, tools, FilterManager) {
             build: function () {
                 var options = methods.combineOptions.call(this);
                 var manager = new FilterManager(options);
-                this.$el.append(manager.render().$el);
-                this.$el.data('manager', manager);
+                this.$el.prepend(manager.render().$el);
+                mediator.trigger('query_designer_filter_manager_initialized', manager);
             },
 
             /**
@@ -62,10 +72,22 @@ function($, _, tools, FilterManager) {
          * Initializes query designer filters
          *
          * @param {jQuery} $el Container
+         * @param {Function} callback A function which should be called when the initialization finished
          */
-        init: function ($el) {
-            var obj = {$el: $el};
-            methods.initBuilder.call(obj);
+        init: function ($el, callback) {
+            var initializedHandler = _.bind(function (manager) {
+                initialized = true;
+                callback(manager);
+            }, this);
+            mediator.once('query_designer_filter_manager_initialized', initializedHandler);
+
+            methods.initBuilder.call({$el: $el});
+
+            mediator.once('hash_navigation_request:start', function() {
+                if (!initialized) {
+                    mediator.off('query_designer_filter_manager_initialized', initializedHandler);
+                }
+            });
         }
     };
 });

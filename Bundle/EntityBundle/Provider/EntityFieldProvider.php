@@ -62,6 +62,8 @@ class EntityFieldProvider
      *                                       .       'name'          - field name
      *                                       .       'type'          - field type
      *                                       .       'label'         - field label
+     *                                       If a field is an identifier (primary key in terms of a database)
+     *                                       .       'identifier'    - true for an identifier field
      *                                       If a field represents a relation and $withRelations = true
      *                                       the following attributes are added:
      *                                       .       'relation_type'       - relation type
@@ -112,7 +114,8 @@ class EntityFieldProvider
                     $result,
                     $fieldName,
                     $metadata->getTypeOfField($fieldName),
-                    $this->getFieldLabel($className, $fieldName)
+                    $this->getFieldLabel($className, $fieldName),
+                    $metadata->isIdentifier($fieldName)
                 );
             }
         }
@@ -125,14 +128,19 @@ class EntityFieldProvider
      * @param string $name
      * @param string $type
      * @param string $label
+     * @param bool   $isIdentifier
      */
-    protected function addField(array &$result, $name, $type, $label)
+    protected function addField(array &$result, $name, $type, $label, $isIdentifier)
     {
-        $result[] = array(
+         $field = array(
             'name'  => $name,
             'type'  => $type,
             'label' => $label
         );
+        if ($isIdentifier) {
+            $field['identifier'] = true;
+        }
+        $result[] = $field;
     }
 
     /**

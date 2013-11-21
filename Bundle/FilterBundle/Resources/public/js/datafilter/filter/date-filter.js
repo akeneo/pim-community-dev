@@ -183,9 +183,9 @@ function($, _, __, ChoiceFilter, localeSettings) {
          * @inheritDoc
          */
         _getCriteriaHint: function() {
-            var value = this._getDisplayValue(),
-                hint = '',
-                option, start, end, type;
+            var hint = '',
+                option, start, end, type,
+                value = (arguments.length > 0) ? this._getDisplayValue(arguments[0]) : this._getDisplayValue();
             if (value.value) {
                 start = value.value.start;
                 end   = value.value.end;

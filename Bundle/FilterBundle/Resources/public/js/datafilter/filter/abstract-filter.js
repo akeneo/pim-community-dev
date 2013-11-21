@@ -246,6 +246,21 @@ function($, _, Backbone, app) {
         },
 
         /**
+         * Determines whether a filter value is empty or not
+         * Unlike isEmpty method this method should take in account only data values.
+         * For example if a filter has a string value and comparison type, the comparison type
+         * should be ignored in this method.
+         *
+         * @return {Boolean}
+         */
+        isEmptyValue: function() {
+            if (_.has(this.emptyValue, 'value') && _.has(this.value, 'value')) {
+                return app.isEqualsLoosely(this.value.value, this.emptyValue.value);
+            }
+            return true;
+        },
+
+        /**
          * Gets input value. Radio inputs are supported.
          *
          * @param {String|Object} input
@@ -310,13 +325,23 @@ function($, _, Backbone, app) {
         },
 
         /**
+         * Returns a string representation of the given value
+         *
+         * @return {String}
+         */
+        _getCriteriaHint: function() {
+            return '';
+        },
+
+        /**
          * Get current value formatted to display format
          *
          * @return {*}
          * @protected
          */
         _getDisplayValue: function() {
-            return this._formatDisplayValue(this.getValue());
+            var value = (arguments.length > 0) ? arguments[0] : this.getValue();
+            return this._formatDisplayValue(value);
         },
 
         /**

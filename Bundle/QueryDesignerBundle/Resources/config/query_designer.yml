@@ -1,38 +1,17 @@
-filters_map:
-    string:
-        class:  Oro\Bundle\FilterBundle\Extension\Orm\StringFilter
-        module: oro/datafilter/text-filter
-    number:
-        class:  Oro\Bundle\FilterBundle\Extension\Orm\NumberFilter
-        module: oro/datafilter/number-filter
-    date:
-        class:  Oro\Bundle\FilterBundle\Extension\Orm\DateRangeFilter
-        module: oro/datafilter/date-filter
-    datetime:
-        class:  Oro\Bundle\FilterBundle\Extension\Orm\DateTimeRangeFilter
-        module: oro/datafilter/datetime-filter
-    choice:
-        class:  Oro\Bundle\FilterBundle\Extension\Orm\BooleanFilter
-        module: oro/datafilter/choice-filter
-
-filters:
-    string:
-        applicable: [{type: string}, {type: text}]
-        type:       string
-    number:
-        applicable: [{type: integer}, {type: smallint}, {type: bigint}, {type: decimal}, {type: float}]
-        type:       number
-    date:
-        applicable: [{type: date}]
-        type:       date
-    datetime:
-        applicable: [{type: datetime}]
-        type:       datetime
-    bool:
-        applicable: [{type: boolean}]
-        type:       choice
-        options:
-            field_options:
-                choices:
-                    - No
-                    - Yes
+query-designer:
+    filters:
+        string:
+            applicable: [{type: string}, {type: text}]
+            type:       string
+        number:
+            applicable: [{type: integer}, {type: smallint}, {type: bigint}, {type: decimal}, {type: float}]
+            type:       number
+        date:
+            applicable: [{type: date}]
+            type:       date
+        datetime:
+            applicable: [{type: datetime}]
+            type:       datetime
+        boolean:
+            applicable: [{type: boolean}]
+            type:       boolean

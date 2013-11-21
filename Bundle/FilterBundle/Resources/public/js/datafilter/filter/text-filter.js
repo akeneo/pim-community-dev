@@ -308,7 +308,7 @@ function($, _, __, AbstractFilter) {
          * @protected
          */
         _getCriteriaHint: function() {
-            var value = this._getDisplayValue();
+            var value = (arguments.length > 0) ? this._getDisplayValue(arguments[0]) : this._getDisplayValue();
             return value.value ? '"' + value.value + '"': this.defaultCriteriaHint;
         }
     });

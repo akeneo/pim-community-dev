@@ -28,7 +28,7 @@ function(_, Backbone, __, FormValidation, DeleteConfirmation) {
 
         /** @property {Object} */
         selectors: {
-            itemContainer:  '.column-container',
+            itemContainer:  '.item-container',
             cancelButton:   '.cancel-button',
             saveButton:     '.save-button',
             addButton:      '.add-button',
@@ -54,13 +54,13 @@ function(_, Backbone, __, FormValidation, DeleteConfirmation) {
         form: null,
 
         /** @property {Array} */
-        fieldNames: [],
+        fieldNames: null,
 
         /** @property {jQuery} */
         columnSelector: null,
 
         /** @property {Array} */
-        fieldLabelGetters: [],
+        fieldLabelGetters: null,
 
         /** @property */
         itemTemplate: null,
@@ -101,7 +101,7 @@ function(_, Backbone, __, FormValidation, DeleteConfirmation) {
         },
 
         getContainer: function() {
-            return $(this.selectors.itemContainer);
+            return this.$el.find(this.selectors.itemContainer);
         },
 
         getColumnSelector: function () {
@@ -123,11 +123,7 @@ function(_, Backbone, __, FormValidation, DeleteConfirmation) {
         },
 
         onModelAdded: function(model) {
-            var data = model.toJSON();
-            _.each(data, _.bind(function (value, name) {
-                data[name] = this.getFieldLabel(name, value);
-            }, this));
-            var item = $(this.itemTemplate(data));
+            var item = $(this.itemTemplate(this.prepareItemTemplateData(model)));
             this.bindItemActions(item);
             this.getContainer().append(item);
             this.trigger('collection:change');
@@ -261,6 +257,14 @@ function(_, Backbone, __, FormValidation, DeleteConfirmation) {
             this.$el.find(this.selectors.cancelButton).on('click', onCancel);
         },
 
+        prepareItemTemplateData: function (model) {
+            var data = model.toJSON();
+            _.each(data, _.bind(function (value, name) {
+                data[name] = this.getFieldLabel(name, value);
+            }, this));
+            return data;
+        },
+
         toggleFormButtons: function (modelId) {
             if (_.isNull(modelId)) {
                 modelId = '';
@@ -367,7 +371,10 @@ function(_, Backbone, __, FormValidation, DeleteConfirmation) {
         },
 
         addFieldLabelGetter: function (callback) {
-            this.fieldLabelGetters.unshift(_.bind(callback, this));
+            if (_.isNull(this.fieldLabelGetters)) {
+                this.fieldLabelGetters = [];
+            }
+            this.fieldLabelGetters.unshift(callback);
         },
 
         getFieldLabel: function (name, value) {
@@ -376,7 +383,7 @@ function(_, Backbone, __, FormValidation, DeleteConfirmation) {
             if (field.length == 1) {
                 for (var i = 0; i < this.fieldLabelGetters.length; i++) {
                     var callback = this.fieldLabelGetters[i];
-                    result = callback(field, name, value);
+                    result = callback.call(this, field, name, value);
                     if (result !== null) {
                         break;
                     }

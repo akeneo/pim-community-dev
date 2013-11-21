@@ -92,7 +92,7 @@ function($, _, __, TextFilter) {
          */
         _getCriteriaHint: function() {
             var option, hint,
-                value = this._getDisplayValue();
+                value = (arguments.length > 0) ? this._getDisplayValue(arguments[0]) : this._getDisplayValue();
             if (!value.value) {
                 hint = this.defaultCriteriaHint;
             } else {
