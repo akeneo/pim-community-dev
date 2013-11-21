@@ -48,7 +48,7 @@ class WorkflowAttributesTypeTest extends AbstractWorkflowAttributesTypeTestCase
         $form->submit($submitData);
 
         $this->assertTrue($form->isSynchronized());
-        $this->assertEquals($formData, $form->getData());
+        $this->assertEquals($formData, $form->getData(), 'Actual form data does not equal expected form data');
     }
 
     /**

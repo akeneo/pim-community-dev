@@ -2,9 +2,12 @@
 
 namespace Oro\Bundle\WorkflowBundle\Form\Type;
 
+use Oro\Bundle\WorkflowBundle\Model\WorkflowData;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Exception\InvalidConfigurationException;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\OptionsResolver\Options;
 
@@ -51,6 +54,19 @@ class WorkflowAttributesType extends AbstractType
                 }
                 $this->addAttributeField($builder, $attribute, $attributeOptions, $options);
             }
+
+            $builder->addEventListener(
+                FormEvents::PRE_SET_DATA,
+                function (FormEvent $event) use ($options) {
+                    /** @var WorkflowData $data */
+                    $data = $event->getData();
+                    if ($data instanceof WorkflowData) {
+                        $rawData = $data->getValues(array_keys($options['attribute_fields']));
+                        $formData = new WorkflowData($rawData);
+                        $event->setData($formData);
+                    }
+                }
+            );
         }
     }
 

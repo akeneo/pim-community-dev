@@ -25,6 +25,7 @@
                     <th>{% trans %}Workflow Name{% endtrans %}</th>
                     <th>{% trans %}Current Step{% endtrans %}</th>
                     <th>{% trans %}Start Date{% endtrans %}</th>
+                    <th>{% trans %}Transitions{% endtrans %}</th>
                     {% if allow_delete %}
                         <th>{% trans %}Actions{% endtrans %}</th>
                     {% endif %}
@@ -53,6 +54,9 @@
                         <td>
                             {{ data.workflowItem.createdAt|oro_format_datetime }}
                         </td>
+                        <td>
+                            <div id="workflow-transitions-{{ data.workflowItem.id }}"></div>
+                        </td>
                         {% if allow_delete %}
                             <td style="width: 90px;">
                                 {{ UI.deleteButton({
@@ -75,8 +79,8 @@
         {% trans %}No workflow items are available{% endtrans %}
     </p>
     <script type="text/javascript">
-        require(['jquery', 'oro/widget-manager'],
-        function($, widgetManager){
+        require(['jquery', 'oro/widget-manager', 'oro/buttons-widget'],
+        function($, widgetManager, ButtonsWidget){
             widgetManager.getWidgetInstance({{ app.request.get('_wid')|json_encode|raw }}, function(widget){
                 var wiTable = widget.$el.find('table');
                 var noItemsText = widget.$el.find('.no-workflow-items-text');
@@ -90,6 +94,19 @@
                     }
                     widget.trigger('workflowItemRemoved');
                 });
+
+                {% for data in workflows_items_data %}
+                (function() {
+                    var transitionsWidget = new ButtonsWidget({
+                        'el': widget.$('#workflow-transitions-{{ data.workflowItem.id }}'),
+                        'url': {{ path('oro_workflow_widget_buttons_wizard', {workflowItemId: data.workflowItem.id})|json_encode|raw }}
+                    });
+                    transitionsWidget.on('renderStart', function(el) {
+                        el.find('.btn').addClass('btn-mini');
+                    });
+                    transitionsWidget.render();
+                })();
+                {% endfor %}
             });
         });
     </script>
