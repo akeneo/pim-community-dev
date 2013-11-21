@@ -32,6 +32,7 @@ class DatagridStrategy extends CrudStrategy
      * @param FormFactoryInterface    $formFactory
      * @param EngineInterface         $templating
      * @param RouterInterface         $router
+     * @param TranslatorInterface     $translator
      * @param DatagridHelperInterface $datagridHelper
      */
     public function __construct(

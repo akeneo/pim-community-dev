@@ -43,7 +43,7 @@ class Controller
     public function action($customEntityName, $actionName)
     {
         if (!$this->configurationRegistry->has($customEntityName)) {
-            throw new NotFoundHttpException;
+            throw new NotFoundHttpException();
         }
 
         $configuration = $this->configurationRegistry->get($customEntityName);
