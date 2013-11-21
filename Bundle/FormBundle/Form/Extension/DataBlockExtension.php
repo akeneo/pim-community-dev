@@ -19,8 +19,7 @@ class DataBlockExtension extends AbstractTypeExtension
                 'block',
                 'subblock',
                 'block_config',
-                'tooltip',
-                'type'
+                'tooltip'
             )
         );
     }
@@ -46,10 +45,6 @@ class DataBlockExtension extends AbstractTypeExtension
 
         if (isset($options['tooltip'])) {
             $view->vars['tooltip'] = $options['tooltip'];
-        }
-
-        if (isset($options['type'])) {
-            $view->vars['type'] = $options['type'];
         }
     }
 

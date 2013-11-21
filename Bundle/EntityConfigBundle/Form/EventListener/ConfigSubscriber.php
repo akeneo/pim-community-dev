@@ -52,7 +52,7 @@ class ConfigSubscriber implements EventSubscriberInterface
             $className = $configModel->getClassName();
         }
 
-        $data = $event->getData();
+        $data    = $event->getData();
         $options = [];
 
         foreach ($this->configManager->getProviders() as $provider) {
@@ -60,6 +60,7 @@ class ConfigSubscriber implements EventSubscriberInterface
                 $config = $provider->getConfig($className, $fieldName);
 
                 $values = $data[$provider->getScope()];
+
                 if (isset($values['set_options'])) {
                     $options = $values['set_options'];
                     unset($values['set_options']);
@@ -74,8 +75,20 @@ class ConfigSubscriber implements EventSubscriberInterface
             $this->configManager->flush();
         }
 
-        $em = $this->configManager->getEntityManager();
+        /**
+         * OptionSet management
+         */
         if (count($options)) {
+            $em           = $this->configManager->getEntityManager();
+            $optionValues = $oldOptions = $configModel->getOptions()->getValues();
+            $newOptions   = [];
+            array_walk_recursive(
+                $oldOptions,
+                function (&$oldOption) {
+                    $oldOption = $oldOption->getId();
+                }
+            );
+
             foreach ($options as $option) {
                 if (is_array($option)) {
                     $optionSet = new OptionSet();
@@ -84,7 +97,7 @@ class ConfigSubscriber implements EventSubscriberInterface
                         $option['id'],
                         $option['priority'],
                         $option['label'],
-                        (bool) $option['default']
+                        (bool)$option['default']
                     );
                 } elseif (!$option->getId()) {
                     $optionSet = $option;
@@ -93,8 +106,17 @@ class ConfigSubscriber implements EventSubscriberInterface
                     $optionSet = $option;
                 }
 
-                $em->persist($optionSet);
+                $newOptions[] = $optionSet->getId();
+                if (!in_array($optionSet, $optionValues)) {
+                    $em->persist($optionSet);
+                }
             }
+
+            $delOptions = array_diff($oldOptions, $newOptions);
+            foreach ($delOptions as $key => $delOption) {
+                $em->remove($configModel->getOptions()->getValues()[$key]);
+            }
+
             $em->flush();
         }
     }

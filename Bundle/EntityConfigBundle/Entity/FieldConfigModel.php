@@ -65,6 +65,7 @@ class FieldConfigModel extends AbstractConfigModel
         $this->type      = $type;
         $this->mode      = ConfigModelManager::MODE_DEFAULT;
         $this->values    = new ArrayCollection;
+        $this->options   = new ArrayCollection;
         $this->fieldName = $fieldName;
     }
 
@@ -131,5 +132,21 @@ class FieldConfigModel extends AbstractConfigModel
     public function getEntity()
     {
         return $this->entity;
+    }
+
+    /**
+     * @param \Doctrine\ORM\PersistentCollection|\Oro\Bundle\EntityConfigBundle\Entity\OptionSet[] $options
+     */
+    public function setOptions($options)
+    {
+        $this->options = $options;
+    }
+
+    /**
+     * @return \Doctrine\ORM\PersistentCollection|\Oro\Bundle\EntityConfigBundle\Entity\OptionSet[]
+     */
+    public function getOptions()
+    {
+        return $this->options;
     }
 }
