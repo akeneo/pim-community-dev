@@ -9,6 +9,30 @@ use Pim\Bundle\CustomEntityBundle\Manager\ManagerInterface;
 
 /**
  * Configuration for an ORM custom entity
+ * 
+ * The following options are defined :
+ * 
+ *   - entity_class:                The class of the custom entity (REQUIRED)
+ *   - edit_form_type:              The form type used for edition (REQUIRED)
+ * 
+ *   - base_template:               The base template from which all templates are extended
+ *   - index_template:              The template for the index action
+ *   - query_builder_options:       Options passed to the manager for generating the index QueryBuilder
+ *   - datagrid_namespace:          The namespace for the datagrid
+ *   - find_options:                Options passed to the manager for finding entities
+ *   - edit_route:                  The edit route
+ *   - edit_template:               The edit template
+ *   - edit_form_options:           Options for the edit form
+ *   - create_route:                The create route
+ *   - create_template:             The create template
+ *   - create_form_type:            The form type used for creation. If not supplied, edit_form_type will be used
+ *   - create_form_options:         Options passed to the create form type. If create_form_type is not supplied,
+ *                                  the edit_form_options will be used
+ *   - create_default_properties:   An array of default properties for the created objects
+ *   - create_options:              Options passed to the manager for entity creation
+ *   - edit_after_create:           Set to true to redirect to the edit page after entity creation
+ *   - remove_route:                The remove route
+ * 
  *
  * @author    Antoine Guigan <antoine@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -131,7 +155,7 @@ class Configuration implements ConfigurationInterface
      */
     public function getCreateFormOptions()
     {
-        return (null === $this->options['create_form_options'])
+        return (null === $this->options['create_form_type'])
             ? $this->options['edit_form_options']
             : $this->options['create_form_options'];
     }
@@ -284,8 +308,8 @@ class Configuration implements ConfigurationInterface
                 'edit_template'                     => 'PimCustomEntityBundle:CustomEntity:edit.html.twig',
                 'index_template'                    => 'PimCustomEntityBundle:CustomEntity:index.html.twig',
                 'create_template'                   => 'PimCustomEntityBundle:CustomEntity:quickcreate.html.twig',
-                'create_form_options'               => null,
                 'create_form_type'                  => null,
+                'create_form_options'               => null,
                 'create_default_properties'         => array(),
                 'create_options'                    => array(),
                 'index_route'                       => 'pim_customentity_index',
