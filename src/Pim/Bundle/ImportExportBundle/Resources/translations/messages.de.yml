@@ -147,20 +147,14 @@ oro_batch:
       help: Auswahl, ob die Spaltenüberschriften mit ausgegeben werden sollen oder nicht
   file_writer:
     title: Ausgabe
-    directoryName:
-      label: Verzeichnispfad
-      help: Verzeichnis, in welches die generierte Datei abgelegt werden soll
-    fileName:
-      label: Dateiname
-      help: Name der generierten Datei.
+    filePath:
+      label: __File path
+      help: __Where to write the generated file on the file system
   product_writer:
     title: Output
-    directoryName:
-      label: Directory path
-      help: Where to write the generated file on the file system
-    fileName:
-      label: File name
-      help: The name of the generated file.
+    filePath:
+      label: __File path
+      help: __Where to write the generated file on the file system
   orm_category_writer:
     title: Kategorie-Speicher
   orm_product_writer:
