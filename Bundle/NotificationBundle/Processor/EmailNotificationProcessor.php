@@ -153,9 +153,10 @@ class EmailNotificationProcessor extends AbstractNotificationProcessor
      *
      * @param string $command
      * @param array  $commandArgs
+     * @param bool $needFlush
      * @return boolean|integer
      */
-    protected function addJob($command, $commandArgs = array())
+    protected function addJob($command, $commandArgs = array(), $needFlush = false)
     {
         $commandArgs = array_merge(
             array(
@@ -170,6 +171,6 @@ class EmailNotificationProcessor extends AbstractNotificationProcessor
             $commandArgs[] = '--no-debug';
         }
 
-        return parent::addJob($command, $commandArgs);
+        return parent::addJob($command, $commandArgs, $needFlush);
     }
 }
