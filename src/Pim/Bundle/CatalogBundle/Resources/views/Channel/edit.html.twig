@@ -28,20 +28,38 @@
 
         {{ elements.page_header(title, buttons, null, null, elements.updated(form.vars.id)) }}
 
-        <div class="row-fluid">
+        {% if form.vars.value.id %}
+            {{ elements.form_navbar(['Properties', 'History']) }}
+        {% else %}
+            {{ elements.form_navbar(['Properties']) }}
+        {% endif %}
+
+        <div class="row-fluid tab-content">
             {{ elements.form_errors(form) }}
 
-            {{ form_row(form.id) }}
-
-            {{ form_row(form.code) }}
-
-            {{ form_row(form.label) }}
-
-            {{ form_row(form.currencies) }}
-
-            {{ form_row(form.locales) }}
-
-            {{ form_row(form.category) }}
+            <div class="tab-pane active" id="properties">
+                {% set generalProperties %}
+                    {{ form_row(form.code) }}
+                    {{ form_row(form.label) }}
+                    {{ form_row(form.currencies) }}
+                    {{ form_row(form.locales) }}
+                    {{ form_row(form.category) }}
+                {% endset %}
+                {{ elements.accordion({ 'General Properties': generalProperties }) }}
+            </div>
+            {% if form.vars.value.id %}
+                <div class="tab-pane" id="history">
+                    <div id="history-grid"></div>
+                </div>
+            {% endif %}
         </div>
     {{ form_end(form) }}
+{% endblock %}
+
+{% block head_script_component %}
+    {{ parent() }}
+
+{% if form.vars.value.id %}
+    {% include 'OroGridBundle:Include:javascript.html.twig' with { 'datagridView': historyDatagrid, 'selector': '#history-grid' } %}
+{% endif %}
 {% endblock %}

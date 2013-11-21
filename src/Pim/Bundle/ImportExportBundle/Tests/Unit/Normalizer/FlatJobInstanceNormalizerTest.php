@@ -20,26 +20,26 @@ class FlatJobInstanceNormalizerTest extends JobInstanceNormalizerTest
     protected function setUp()
     {
         $this->normalizer = new FlatJobInstanceNormalizer();
-        $this->format = 'csv';
+        $this->format     = 'csv';
     }
 
     /**
-     * Data provider for testing supportsNormalization method
-     * @return array
+     * {@inheritdoc}
      */
     public static function getSupportNormalizationData()
     {
         return array(
             array('Oro\Bundle\BatchBundle\Entity\JobInstance', 'json', false),
+            array('Oro\Bundle\BatchBundle\Entity\JobInstance', 'xml', false),
             array('Oro\Bundle\BatchBundle\Entity\JobInstance', 'csv', true),
-            array('stdClass',                                  'json',  false),
-            array('stdClass',                                  'csv', false),
+            array('stdClass', 'json', false),
+            array('stdClass', 'xml', false),
+            array('stdClass', 'csv', false),
         );
     }
 
     /**
-     * Data provider for testing normalize method
-     * @return array
+     * {@inheritdoc}
      */
     public static function getNormalizeData()
     {

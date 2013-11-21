@@ -442,6 +442,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iCheckTheRows($rows)
     {
+        $this->wait();
         $rows = $this->getMainContext()->listToArray($rows);
 
         foreach ($rows as $row) {

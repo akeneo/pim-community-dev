@@ -2,7 +2,6 @@ parameters:
     pim_catalog.manager.product.class:                  Pim\Bundle\CatalogBundle\Manager\ProductManager
     pim_catalog.builder.product.class:                  Pim\Bundle\CatalogBundle\Builder\ProductBuilder
 
-    pim_catalog.entity.product.class:                   Pim\Bundle\CatalogBundle\Entity\Product
     pim_catalog.form.type.product.view.class:           Pim\Bundle\CatalogBundle\Form\View\ProductFormView
     pim_catalog.form.type.product.class:                Pim\Bundle\CatalogBundle\Form\Type\ProductType
     pim_catalog.form.type.product_edit.class:           Pim\Bundle\CatalogBundle\Form\Type\ProductEditType
@@ -13,23 +12,17 @@ parameters:
     pim_catalog.extension.type.media.class:             Pim\Bundle\CatalogBundle\Form\Type\MediaTypeExtension
     pim_catalog.extension.type.image.class:             Pim\Bundle\CatalogBundle\Form\Type\ImageTypeExtension
 
-    pim_catalog.form.handler.product_create.class:     Pim\Bundle\CatalogBundle\Form\Handler\ProductCreateHandler
-
-    pim_catalog.entity.product_attribute.class:        Pim\Bundle\CatalogBundle\Entity\ProductAttribute
-    pim_catalog.entity.product_attribute_option.class: Pim\Bundle\CatalogBundle\Entity\AttributeOption
-    pim_catalog.entity.product_value.class:            Pim\Bundle\CatalogBundle\Entity\ProductValue
+    pim_catalog.manager.completeness.class:                 Pim\Bundle\CatalogBundle\Manager\CompletenessManager
+    pim_catalog.doctrine.completeness_query_builder.class:  Pim\Bundle\CatalogBundle\Doctrine\CompletenessQueryBuilder
 
     pim_catalog.form.type.product_attribute.class:       Pim\Bundle\CatalogBundle\Form\Type\ProductAttributeType
     pim_catalog.form.type.attribute_option_create.class: Pim\Bundle\CatalogBundle\Form\Type\AttributeOptionCreateType
     pim_catalog.form.handler.product_attribute.class:    Pim\Bundle\CatalogBundle\Form\Handler\ProductAttributeHandler
 
-    pim_catalog.entity.attribute_group.class:          Pim\Bundle\CatalogBundle\Entity\AttributeGroup
     pim_catalog.form.handler.attribute_group.class:         Pim\Bundle\CatalogBundle\Form\Handler\AttributeGroupHandler
     pim_catalog.form.type.family.class:                     Pim\Bundle\CatalogBundle\Form\Type\FamilyType
     pim_catalog.form.type.attribute_group.class:            Pim\Bundle\CatalogBundle\Form\Type\AttributeGroupType
 
-    pim_catalog.entity.category.class:                 Pim\Bundle\CatalogBundle\Entity\Category
-    pim_catalog.entity.category_translation.class:     Pim\Bundle\CatalogBundle\Entity\CategoryTranslation
     pim_catalog.manager.category.class:                Pim\Bundle\CatalogBundle\Manager\CategoryManager
     pim_catalog.form.type.category.class:              Pim\Bundle\CatalogBundle\Form\Type\CategoryType
 
@@ -60,19 +53,15 @@ parameters:
 
     pim_catalog.manager.group.class:      Pim\Bundle\CatalogBundle\Manager\GroupManager
 
-    pim_catalog.entity.group.class:       Pim\Bundle\CatalogBundle\Entity\Group
     pim_catalog.form.handler.group.class: Pim\Bundle\CatalogBundle\Form\Handler\GroupHandler
     pim_catalog.form.type.group.class:    Pim\Bundle\CatalogBundle\Form\Type\GroupType
 
-    pim_catalog.entity.group_type.class:       Pim\Bundle\CatalogBundle\Entity\GroupType
     pim_catalog.form.handler.group_type.class: Pim\Bundle\CatalogBundle\Form\Handler\GroupTypeHandler
     pim_catalog.form.type.group_type.class:    Pim\Bundle\CatalogBundle\Form\Type\GroupTypeType
 
-    pim_catalog.entity.association.class:       Pim\Bundle\CatalogBundle\Entity\Association
     pim_catalog.form.handler.association.class: Pim\Bundle\CatalogBundle\Form\Handler\AssociationHandler
     pim_catalog.form.type.association.class:    Pim\Bundle\CatalogBundle\Form\Type\AssociationType
 
-    pim_catalog.entity.product_association.class:    Pim\Bundle\CatalogBundle\Entity\ProductAssociation
     pim_catalog.form.type.product_association.class: Pim\Bundle\CatalogBundle\Form\Type\ProductAssociationType
 
     pim_catalog.event_listener.user_preferences.class:    Pim\Bundle\CatalogBundle\EventListener\UserPreferencesListener

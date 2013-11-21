@@ -5,10 +5,10 @@ namespace Pim\Bundle\ImportExportBundle\Processor;
 use Symfony\Component\Validator\ValidatorInterface;
 
 use Doctrine\ORM\EntityManager;
-use Doctrine\Common\Collections\ArrayCollection;
 
 use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Oro\Bundle\BatchBundle\Item\ItemProcessorInterface;
+use Oro\Bundle\BatchBundle\Item\InvalidItemException;
 
 /**
  * Abstract entity processor to validate entity and create/update it
@@ -31,18 +31,16 @@ abstract class AbstractEntityProcessor extends AbstractConfigurableStepElement i
     protected $entityManager;
 
     /**
-     * Property for storing data during execution
+     * Validator
      *
-     * @var ArrayCollection
+     * @var ValidatorInterface
      */
-    protected $data;
+    protected $validator;
 
     /**
-     * Property for storing valid entities during execution
-     *
-     * @var ArrayCollection
+     * @var array
      */
-    protected $entities;
+    protected $identifiers;
 
     /**
      * Constructor
@@ -50,12 +48,11 @@ abstract class AbstractEntityProcessor extends AbstractConfigurableStepElement i
      * @param EntityManager      $entityManager
      * @param ValidatorInterface $validator
      */
-    public function __construct(
-        EntityManager $entityManager,
-        ValidatorInterface $validator
-    ) {
+    public function __construct(EntityManager $entityManager, ValidatorInterface $validator)
+    {
         $this->entityManager = $entityManager;
         $this->validator     = $validator;
+        $this->identifiers   = array();
     }
 
     /**
@@ -67,28 +64,44 @@ abstract class AbstractEntityProcessor extends AbstractConfigurableStepElement i
     }
 
     /**
-     * Receives an array of entities and processes them
+     * Validate the entity
      *
-     * @param mixed $data Data to be processed
+     * @param mixed $entity
+     * @param array $item
      *
-     * @return object[]
+     * @throws InvalidItemException
      */
-    public function process($data)
+    public function validate($entity, $item)
     {
-        $this->data = new ArrayCollection($data);
-        $this->entities = new ArrayCollection();
+        $violations = $this->validator->validate($entity);
+        if ($violations->count() > 0) {
+            $messages = array();
+            foreach ($violations as $violation) {
+                $messages[]= (string) $violation;
+            }
 
-        foreach ($this->data as $item) {
-            $this->processItem($item);
+            throw new InvalidItemException(implode(', ', $messages), $item);
         }
 
-        return $this->entities->toArray();
+        $identifier = $this->getIdentifier($entity);
+        if (in_array($identifier, $this->identifiers)) {
+            throw new InvalidItemException(
+                sprintf('Twin ! the entity "%s" has already been processed', $identifier),
+                $item
+            );
+        }
+        $this->identifiers[]= $identifier;
     }
 
     /**
-     * If the entity is valid, it is stored into the entities property
+     * Get entity identifier
      *
-     * @param array $item
+     * @param object $entity
+     *
+     * @return string
      */
-    abstract protected function processItem($item);
+    protected function getIdentifier($entity)
+    {
+        return $entity->getCode();
+    }
 }

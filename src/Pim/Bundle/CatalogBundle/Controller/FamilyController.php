@@ -2,28 +2,29 @@
 
 namespace Pim\Bundle\CatalogBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Validator\ValidatorInterface;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
-use Pim\Bundle\GridBundle\Helper\DatagridHelperInterface;
-use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Entity\Family;
-use Pim\Bundle\CatalogBundle\Model\AvailableProductAttributes;
-use Pim\Bundle\CatalogBundle\Form\Type\AvailableProductAttributesType;
-use Symfony\Component\HttpFoundation\Response;
 use Pim\Bundle\CatalogBundle\Exception\DeleteException;
 use Pim\Bundle\CatalogBundle\Factory\FamilyFactory;
+use Pim\Bundle\CatalogBundle\Form\Type\AvailableProductAttributesType;
+use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
+use Pim\Bundle\CatalogBundle\Model\AvailableProductAttributes;
+use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
+use Pim\Bundle\GridBundle\Helper\DatagridHelperInterface;
 
 /**
  * Family controller
@@ -43,6 +44,9 @@ class FamilyController extends AbstractDoctrineController
     /** @var FamilyFactory */
     private $factory;
 
+    /** @var CompletenessManager */
+    private $completenessManager;
+
     /**
      * Constructor
      *
@@ -57,6 +61,7 @@ class FamilyController extends AbstractDoctrineController
      * @param DatagridHelperInterface  $datagridHelper
      * @param ChannelManager           $channelManager
      * @param FamilyFactory            $factory
+     * @param CompletenessManager      $completenessManager
      */
     public function __construct(
         Request $request,
@@ -69,7 +74,8 @@ class FamilyController extends AbstractDoctrineController
         RegistryInterface $doctrine,
         DatagridHelperInterface $datagridHelper,
         ChannelManager $channelManager,
-        FamilyFactory $factory
+        FamilyFactory $factory,
+        CompletenessManager $completenessManager
     ) {
         parent::__construct(
             $request,
@@ -82,9 +88,10 @@ class FamilyController extends AbstractDoctrineController
             $doctrine
         );
 
-        $this->datagridHelper = $datagridHelper;
-        $this->channelManager = $channelManager;
-        $this->factory        = $factory;
+        $this->datagridHelper      = $datagridHelper;
+        $this->channelManager      = $channelManager;
+        $this->factory             = $factory;
+        $this->completenessManager = $completenessManager;
     }
 
     /**
@@ -147,7 +154,7 @@ class FamilyController extends AbstractDoctrineController
             $form->submit($request);
             if ($form->isValid()) {
                 foreach ($family->getProducts() as $product) {
-                    $this->getCompletenessRepository()->schedule($product);
+                    $this->completenessManager->schedule($product);
                 }
                 $this->getManager()->flush();
                 $this->addFlash('success', 'flash.family.updated');
@@ -302,15 +309,5 @@ class FamilyController extends AbstractDoctrineController
         );
 
         return $historyGrid;
-    }
-
-    /**
-     * Get the completeness repository
-     *
-     * @return \Doctrine\ORM\EntityRepository
-     */
-    protected function getCompletenessRepository()
-    {
-        return $this->getRepository('PimCatalogBundle:Completeness');
     }
 }

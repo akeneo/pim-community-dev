@@ -6,7 +6,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 
 /**
- * A normalizer to transform a group entity into a array
+ * A normalizer to transform a group entity into an array
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -15,62 +15,45 @@ use Pim\Bundle\CatalogBundle\Entity\Group;
 class GroupNormalizer implements NormalizerInterface
 {
     /**
-     * @var array()
+     * @var array
      */
     protected $supportedFormats = array('json', 'xml');
 
     /**
-     * Transforms an object into a flat array
+     * @var TranslationNormalizer
+     */
+    protected $translationNormalizer;
+
+    /**
+     * Constructor
      *
-     * @param object $object
-     * @param string $format
-     * @param array  $context
-     *
-     * @return array
+     * @param TranslationNormalizer $translationNormalizer
+     */
+    public function __construct(TranslationNormalizer $translationNormalizer)
+    {
+        $this->translationNormalizer = $translationNormalizer;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function normalize($object, $format = null, array $context = array())
     {
         $results = array(
             'code' => $object->getCode(),
             'type' => $object->getType()->getCode(),
-        );
-        $results = array_merge(
-            $results,
-            $this->getNormalizedLabelsArray($object)
-        );
-        $results['attributes']= $this->normalizeAttributes($object);
+            'attributes' => $this->normalizeAttributes($object)
+        ) + $this->translationNormalizer->normalize($object, $format, $context);
 
         return $results;
     }
 
     /**
-     * Indicates whether this normalizer can normalize the given data
-     *
-     * @param mixed  $data
-     * @param string $format
-     *
-     * @return boolean
+     * {@inheritdoc}
      */
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof Group && in_array($format, $this->supportedFormats);
-    }
-
-    /**
-     * Returns an array containing the label values
-     *
-     * @param Group $group
-     *
-     * @return array
-     */
-    protected function getNormalizedLabelsArray(Group $group)
-    {
-        $labels = array();
-        foreach ($group->getTranslations() as $group) {
-            $labels[$group->getLocale()]= $group->getLabel();
-        }
-
-        return array('label' => $labels);
     }
 
     /**

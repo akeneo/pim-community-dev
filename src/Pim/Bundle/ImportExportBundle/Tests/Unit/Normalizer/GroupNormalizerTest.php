@@ -3,6 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Normalizer;
 
 use Pim\Bundle\ImportExportBundle\Normalizer\GroupNormalizer;
+use Pim\Bundle\ImportExportBundle\Normalizer\TranslationNormalizer;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
@@ -14,53 +15,34 @@ use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GroupNormalizerTest extends \PHPUnit_Framework_TestCase
+class GroupNormalizerTest extends NormalizerTestCase
 {
-    /**
-     * @var CategoryNormalizer
-     */
-    protected $normalizer;
-
     /**
      * {@inheritdoc}
      */
     protected function setUp()
     {
-        $this->normalizer = new GroupNormalizer();
+        $this->normalizer = new GroupNormalizer(new TranslationNormalizer());
+        $this->format     = 'json';
     }
 
     /**
-     * Data provider for testing supportsNormalization method
-     * @return array
+     * {@inheritdoc}
      */
     public static function getSupportNormalizationData()
     {
         return array(
-            array('Pim\Bundle\CatalogBundle\Entity\Group', 'json',  true),
+            array('Pim\Bundle\CatalogBundle\Entity\Group', 'json', true),
+            array('Pim\Bundle\CatalogBundle\Entity\Group', 'xml', true),
             array('Pim\Bundle\CatalogBundle\Entity\Group', 'csv', false),
-            array('stdClass',                              'json',  false),
-            array('stdClass',                              'csv', false),
+            array('stdClass', 'json', false),
+            array('stdClass', 'xml', false),
+            array('stdClass', 'csv', false),
         );
     }
 
     /**
-     * Test supportsNormalization method
-     * @param mixed   $class
-     * @param string  $format
-     * @param boolean $isSupported
-     *
-     * @dataProvider getSupportNormalizationData
-     */
-    public function testSupportNormalization($class, $format, $isSupported)
-    {
-        $data = $this->getMock($class);
-
-        $this->assertSame($isSupported, $this->normalizer->supportsNormalization($data, $format));
-    }
-
-    /**
-     * Data provider for testing normalize method
-     * @return array
+     * {@inheritdoc}
      */
     public static function getNormalizeData()
     {
@@ -84,35 +66,18 @@ class GroupNormalizerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test normalize method
-     * @param array $data
-     *
-     * @dataProvider getNormalizeData
-     */
-    public function testNormalize(array $data)
-    {
-        $group = $this->createGroup($data);
-
-        $this->assertEquals(
-            $data,
-            $this->normalizer->normalize($group, 'csv')
-        );
-    }
-
-    /**
-     * Create a group
-     * @param array $data
+     * {@inheritdoc}
      *
      * @return Group
      */
-    protected function createGroup(array $data)
+    protected function createEntity(array $data)
     {
         $group = new Group();
         $group->setCode($data['code']);
 
         $type = new GroupType();
         $type->setCode($data['type']);
-        $type->setVariant(($data['type'] == 'VARIANT'));
+        $type->setVariant(($data['type'] === 'VARIANT'));
         $group->setType($type);
 
         foreach ($this->getLabels($data) as $locale => $label) {

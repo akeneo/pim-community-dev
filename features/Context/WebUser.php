@@ -219,6 +219,7 @@ class WebUser extends RawMinkContext
     public function iVisitTheGroup($group)
     {
         $this->getCurrentPage()->visitGroup($group);
+        $this->wait();
     }
 
     /* -------------------- Other methods -------------------- */
@@ -1323,7 +1324,7 @@ class WebUser extends RawMinkContext
         $channels = $this->listToArray($channels);
         $expectation = $not === '';
         foreach ($channels as $channel) {
-            if ($expectation !== $this->getPage('Family edit')->isAttributeRequired($attribute, $channel)) {
+            if ($expectation !== $this->getCurrentPage()->isAttributeRequired($attribute, $channel)) {
                 throw $this->createExpectationException(
                     sprintf(
                         'Attribute %s should be%s required in channel %s',
@@ -1344,7 +1345,7 @@ class WebUser extends RawMinkContext
      */
     public function iSwitchTheAttributeRequirementInChannel($attribute, $channel)
     {
-        $this->getPage('Family edit')->switchAttributeRequirement($attribute, $channel);
+        $this->getCurrentPage()->switchAttributeRequirement($attribute, $channel);
     }
 
     /**
@@ -1352,8 +1353,8 @@ class WebUser extends RawMinkContext
      */
     public function iShouldSeeTheCompletenessSummary()
     {
-        $this->getPage('Product edit')->findCompletenessContent();
-        $this->getPage('Product edit')->findCompletenessLegend();
+        $this->getCurrentPage()->findCompletenessContent();
+        $this->getCurrentPage()->findCompletenessLegend();
     }
 
     /**
@@ -1368,9 +1369,9 @@ class WebUser extends RawMinkContext
             $locale  = $data['locale'];
 
             try {
-                $this->getPage('Product edit')->checkCompletenessState($channel, $locale, $data['state']);
-                $this->getPage('Product edit')->checkCompletenessRatio($channel, $locale, $data['ratio']);
-                $this->getPage('Product edit')->checkCompletenessMessage($channel, $locale, $data['message']);
+                $this->getCurrentPage()->checkCompletenessState($channel, $locale, $data['state']);
+                $this->getCurrentPage()->checkCompletenessRatio($channel, $locale, $data['ratio']);
+                $this->getCurrentPage()->checkCompletenessMessage($channel, $locale, $data['message']);
             } catch (\InvalidArgumentException $e) {
                 throw $this->createExpectationException($e->getMessage());
             }

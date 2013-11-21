@@ -1,27 +1,34 @@
 parameters:
-    pim_serializer.class:                                  Symfony\Component\Serializer\Serializer
-    pim_serializer.encoder.xml.class:                      Symfony\Component\Serializer\Encoder\XmlEncoder
-    pim_serializer.encoder.json.class:                     Symfony\Component\Serializer\Encoder\JsonEncoder
-    pim_serializer.normalizer.product.class:               Pim\Bundle\ImportExportBundle\Normalizer\ProductNormalizer
-    pim_serializer.normalizer.flat_product.class:          Pim\Bundle\ImportExportBundle\Normalizer\FlatProductNormalizer
-    pim_serializer.normalizer.category.class:              Pim\Bundle\ImportExportBundle\Normalizer\CategoryNormalizer
-    pim_serializer.normalizer.flat_category.class:         Pim\Bundle\ImportExportBundle\Normalizer\FlatCategoryNormalizer
-    pim_serializer.normalizer.attribute.class:             Pim\Bundle\ImportExportBundle\Normalizer\AttributeNormalizer
-    pim_serializer.normalizer.flat_attribute.class:        Pim\Bundle\ImportExportBundle\Normalizer\FlatAttributeNormalizer
-    pim_serializer.normalizer.attribute_option.class:      Pim\Bundle\ImportExportBundle\Normalizer\AttributeOptionNormalizer
-    pim_serializer.normalizer.flat_attribute_option.class: Pim\Bundle\ImportExportBundle\Normalizer\FlatAttributeOptionNormalizer
-    pim_serializer.normalizer.family.class:                Pim\Bundle\ImportExportBundle\Normalizer\FamilyNormalizer
-    pim_serializer.normalizer.flat_family.class:           Pim\Bundle\ImportExportBundle\Normalizer\FlatFamilyNormalizer
-    pim_serializer.normalizer.attribute_group.class:       Pim\Bundle\ImportExportBundle\Normalizer\AttributeGroupNormalizer
-    pim_serializer.normalizer.flat_attribute_group.class:  Pim\Bundle\ImportExportBundle\Normalizer\FlatAttributeGroupNormalizer
-    pim_serializer.normalizer.association.class:           Pim\Bundle\ImportExportBundle\Normalizer\AssociationNormalizer
-    pim_serializer.normalizer.flat_association.class:      Pim\Bundle\ImportExportBundle\Normalizer\FlatAssociationNormalizer
-    pim_serializer.normalizer.get_set_method.class:        Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer
-    pim_serializer.encoder.csv.class:                      Pim\Bundle\ImportExportBundle\Encoder\CsvEncoder
-    pim_serializer.normalizer.group.class:                 Pim\Bundle\ImportExportBundle\Normalizer\GroupNormalizer
-    pim_serializer.normalizer.flat_group.class:            Pim\Bundle\ImportExportBundle\Normalizer\FlatGroupNormalizer
-    pim_serializer.normalizer.job_instance.class:          Pim\Bundle\ImportExportBundle\Normalizer\JobInstanceNormalizer
-    pim_serializer.normalizer.flat_job_instance.class:     Pim\Bundle\ImportExportBundle\Normalizer\FlatJobInstanceNormalizer
+    pim_serializer.class:                                   Symfony\Component\Serializer\Serializer
+    pim_serializer.encoder.xml.class:                       Symfony\Component\Serializer\Encoder\XmlEncoder
+    pim_serializer.encoder.json.class:                      Symfony\Component\Serializer\Encoder\JsonEncoder
+    pim_serializer.encoder.csv.class:                       Pim\Bundle\ImportExportBundle\Encoder\CsvEncoder
+
+    pim_serializer.normalizer.get_set_method.class:         Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer
+
+    pim_serializer.normalizer.product.class:                Pim\Bundle\ImportExportBundle\Normalizer\ProductNormalizer
+    pim_serializer.normalizer.flat_product.class:           Pim\Bundle\ImportExportBundle\Normalizer\FlatProductNormalizer
+    pim_serializer.normalizer.category.class:               Pim\Bundle\ImportExportBundle\Normalizer\CategoryNormalizer
+    pim_serializer.normalizer.flat_category.class:          Pim\Bundle\ImportExportBundle\Normalizer\FlatCategoryNormalizer
+    pim_serializer.normalizer.attribute.class:              Pim\Bundle\ImportExportBundle\Normalizer\AttributeNormalizer
+    pim_serializer.normalizer.flat_attribute.class:         Pim\Bundle\ImportExportBundle\Normalizer\FlatAttributeNormalizer
+    pim_serializer.normalizer.attribute_option.class:       Pim\Bundle\ImportExportBundle\Normalizer\AttributeOptionNormalizer
+    pim_serializer.normalizer.flat_attribute_option.class:  Pim\Bundle\ImportExportBundle\Normalizer\FlatAttributeOptionNormalizer
+    pim_serializer.normalizer.family.class:                 Pim\Bundle\ImportExportBundle\Normalizer\FamilyNormalizer
+    pim_serializer.normalizer.flat_family.class:            Pim\Bundle\ImportExportBundle\Normalizer\FlatFamilyNormalizer
+    pim_serializer.normalizer.attribute_group.class:        Pim\Bundle\ImportExportBundle\Normalizer\AttributeGroupNormalizer
+    pim_serializer.normalizer.flat_attribute_group.class:   Pim\Bundle\ImportExportBundle\Normalizer\FlatAttributeGroupNormalizer
+    pim_serializer.normalizer.association.class:            Pim\Bundle\ImportExportBundle\Normalizer\AssociationNormalizer
+    pim_serializer.normalizer.flat_association.class:       Pim\Bundle\ImportExportBundle\Normalizer\FlatAssociationNormalizer
+    pim_serializer.normalizer.group.class:                  Pim\Bundle\ImportExportBundle\Normalizer\GroupNormalizer
+    pim_serializer.normalizer.flat_group.class:             Pim\Bundle\ImportExportBundle\Normalizer\FlatGroupNormalizer
+    pim_serializer.normalizer.job_instance.class:           Pim\Bundle\ImportExportBundle\Normalizer\JobInstanceNormalizer
+    pim_serializer.normalizer.flat_job_instance.class:      Pim\Bundle\ImportExportBundle\Normalizer\FlatJobInstanceNormalizer
+    pim_serializer.normalizer.channel.class:                Pim\Bundle\ImportExportBundle\Normalizer\ChannelNormalizer
+    pim_serializer.normalizer.flat_channel.class:           Pim\Bundle\ImportExportBundle\Normalizer\FlatChannelNormalizer
+
+    pim_serializer.normalizer.label_translation.class:      Pim\Bundle\ImportExportBundle\Normalizer\TranslationNormalizer
+    pim_serializer.normalizer.flat_label_translation.class: Pim\Bundle\ImportExportBundle\Normalizer\FlatTranslationNormalizer
 
 services:
     pim_serializer:
@@ -45,21 +52,29 @@ services:
 
     pim_serializer.normalizer.category:
         class: %pim_serializer.normalizer.category.class%
+        arguments: 
+            - '@pim_serializer.normalizer.label_translation'
         tags:
             - { name: pim_serializer.normalizer }
 
     pim_serializer.normalizer.flat_category:
         class: %pim_serializer.normalizer.flat_category.class%
+        arguments: 
+            - '@pim_serializer.normalizer.flat_label_translation'
         tags:
             - { name: pim_serializer.normalizer }
 
     pim_serializer.normalizer.attribute:
         class: %pim_serializer.normalizer.attribute.class%
+        arguments: 
+            - '@pim_serializer.normalizer.label_translation'
         tags:
             - { name: pim_serializer.normalizer }
 
     pim_serializer.normalizer.flat_attribute:
         class: %pim_serializer.normalizer.flat_attribute.class%
+        arguments: 
+            - '@pim_serializer.normalizer.flat_label_translation'
         tags:
             - { name: pim_serializer.normalizer }
 
@@ -75,41 +90,57 @@ services:
 
     pim_serializer.normalizer.family:
         class: %pim_serializer.normalizer.family.class%
+        arguments: 
+            - '@pim_serializer.normalizer.label_translation'
         tags:
             - { name: pim_serializer.normalizer }
 
     pim_serializer.normalizer.flat_family:
         class: %pim_serializer.normalizer.flat_family.class%
+        arguments: 
+            - '@pim_serializer.normalizer.flat_label_translation'
         tags:
             - { name: pim_serializer.normalizer }
 
     pim_serializer.normalizer.attribute_group:
         class: %pim_serializer.normalizer.attribute_group.class%
+        arguments: 
+            - '@pim_serializer.normalizer.label_translation'
         tags:
             - { name: pim_serializer.normalizer }
 
     pim_serializer.normalizer.flat_attribute_group:
         class: %pim_serializer.normalizer.flat_attribute_group.class%
+        arguments: 
+            - '@pim_serializer.normalizer.flat_label_translation'
         tags:
             - { name: pim_serializer.normalizer }
 
     pim_serializer.normalizer.association:
         class: %pim_serializer.normalizer.association.class%
+        arguments: 
+            - '@pim_serializer.normalizer.label_translation'
         tags:
             - { name: pim_serializer.normalizer }
 
     pim_serializer.normalizer.flat_association:
         class: %pim_serializer.normalizer.flat_association.class%
+        arguments: 
+            - '@pim_serializer.normalizer.flat_label_translation'
         tags:
             - { name: pim_serializer.normalizer }
 
     pim_serializer.normalizer.group:
         class: %pim_serializer.normalizer.group.class%
+        arguments: 
+            - '@pim_serializer.normalizer.label_translation'
         tags:
             - { name: pim_serializer.normalizer }
 
     pim_serializer.normalizer.flat_group:
         class: %pim_serializer.normalizer.flat_group.class%
+        arguments: 
+            - '@pim_serializer.normalizer.flat_label_translation'
         tags:
             - { name: pim_serializer.normalizer }
 
@@ -122,6 +153,26 @@ services:
         class: %pim_serializer.normalizer.flat_job_instance.class%
         tags:
             - { name: pim_serializer.normalizer }
+
+    pim_serializer.normalizer.channel:
+        class: %pim_serializer.normalizer.channel.class%
+        tags:
+            - { name: pim_serializer.normalizer }
+
+    pim_serializer.normalizer.flat_channel:
+        class: %pim_serializer.normalizer.flat_channel.class%
+        tags:
+            - { name: pim_serializer.normalizer }
+
+    pim_serializer.normalizer.label_translation:
+        class: %pim_serializer.normalizer.label_translation.class%
+        tags:
+            - { name: pim_serializer.normalizer}
+
+    pim_serializer.normalizer.flat_label_translation:
+        class: %pim_serializer.normalizer.flat_label_translation.class%
+        tags:
+            - { name: pim_serializer.normalizer}
 
     pim_serializer.normalizer.get_set_method:
         public: false

@@ -25,10 +25,15 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
     public static function getSupportNormalizationData()
     {
         return array(
-            array('Pim\Bundle\CatalogBundle\Model\ProductInterface', 'csv',  true),
+            array('Pim\Bundle\CatalogBundle\Model\ProductInterface', 'csv', true),
+            array('Pim\Bundle\CatalogBundle\Model\ProductInterface', 'xml', false),
             array('Pim\Bundle\CatalogBundle\Model\ProductInterface', 'json', false),
-            array('stdClass',                                        'csv',  false),
-            array('stdClass',                                        'json', false),
+            array('Pim\Bundle\CatalogBundle\Entity\Product', 'csv', true),
+            array('Pim\Bundle\CatalogBundle\Entity\Product', 'xml', false),
+            array('Pim\Bundle\CatalogBundle\Entity\Product', 'json', false),
+            array('stdClass', 'csv', false),
+            array('stdClass', 'xml', false),
+            array('stdClass', 'json', false),
         );
     }
 
@@ -302,6 +307,10 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
         $product->expects($this->any())
             ->method('getCategoryCodes')
             ->will($this->returnValue($categories));
+
+        $product->expects($this->any())
+            ->method('getProductAssociations')
+            ->will($this->returnValue(array()));
 
         return $product;
     }

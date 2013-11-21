@@ -19,7 +19,9 @@ class PimImportExportBundle extends Connector
      */
     public function build(ContainerBuilder $container)
     {
-        $container->addCompilerPass(new DependencyInjection\Compiler\ReplacePimSerializerArgumentsPass());
-        $container->addCompilerPass(new DependencyInjection\Compiler\PropertyTransformersPass());
+        $container
+            ->addCompilerPass(new DependencyInjection\Compiler\ResolveDoctrineOrmTargetEntitiesPass())
+            ->addCompilerPass(new DependencyInjection\Compiler\ReplacePimSerializerArgumentsPass())
+            ->addCompilerPass(new DependencyInjection\Compiler\PropertyTransformersPass());
     }
 }

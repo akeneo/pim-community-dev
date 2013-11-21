@@ -3,6 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Normalizer;
 
 use Pim\Bundle\ImportExportBundle\Normalizer\AttributeNormalizer;
+use Pim\Bundle\ImportExportBundle\Normalizer\TranslationNormalizer;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
@@ -16,59 +17,55 @@ use Pim\Bundle\CatalogBundle\Entity\Locale;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeNormalizerTest extends \PHPUnit_Framework_TestCase
+class AttributeNormalizerTest extends NormalizerTestCase
 {
-    /**
-     * @var Normalizer
-     */
-    protected $normalizer;
-
-    /**
-     * @var string
-     */
-    protected $format;
-
     /**
      * {@inheritdoc}
      */
     protected function setUp()
     {
-        $this->normalizer = new AttributeNormalizer();
-        $this->format = 'json';
+        $this->normalizer = new AttributeNormalizer(new TranslationNormalizer());
+        $this->format     = 'json';
     }
 
     /**
-     * Data provider for testing supportsNormalization method
-     * @return array
+     * {@inheritdoc}
      */
     public static function getSupportNormalizationData()
     {
         return array(
-            array('Pim\Bundle\CatalogBundle\Entity\ProductAttribute', 'json',  true),
+            array('Pim\Bundle\CatalogBundle\Entity\ProductAttribute', 'json', true),
+            array('Pim\Bundle\CatalogBundle\Entity\ProductAttribute', 'xml', true),
             array('Pim\Bundle\CatalogBundle\Entity\ProductAttribute', 'csv', false),
-            array('stdClass',                                         'json',  false),
-            array('stdClass',                                         'csv', false),
+            array('stdClass', 'json', false),
+            array('stdClass', 'xml', false),
+            array('stdClass', 'csv', false),
         );
     }
 
     /**
-     * Test supportsNormalization method
-     * @param mixed   $class
-     * @param string  $format
-     * @param boolean $isSupported
-     *
-     * @dataProvider getSupportNormalizationData
+     * {@inheritdoc}
+     * @dataProvider getNormalizeData
      */
-    public function testSupportNormalization($class, $format, $isSupported)
+    public function testNormalize(array $data)
     {
-        $data = $this->getMock($class);
+        $attribute = $this->createEntity($data);
 
-        $this->assertSame($isSupported, $this->normalizer->supportsNormalization($data, $format));
+        $expectedResult = $data;
+        foreach ($this->getOptionalProperties() as $property) {
+            if (!array_key_exists($property, $expectedResult)) {
+                $expectedResult[$property] = '';
+            }
+        }
+
+        $this->assertEquals(
+            $expectedResult,
+            $this->normalizer->normalize($attribute, $this->format, array('versioning' => true))
+        );
     }
 
     /**
-     * Data provider for testing normalize method
-     * @return array
+     * {@inheritdoc}
      */
     public static function getNormalizeData()
     {
@@ -123,27 +120,6 @@ class AttributeNormalizerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test normalize method
-     * @param array $data
-     *
-     * @dataProvider getNormalizeData
-     */
-    public function testNormalize(array $data)
-    {
-        $attribute = $this->createAttribute($data);
-
-        $expectedResult = $data;
-        foreach ($this->getOptionalProperties() as $property) {
-            if (!array_key_exists($property, $expectedResult)) {
-                $expectedResult[$property] = '';
-            }
-        }
-
-        $normalized = $this->normalizer->normalize($attribute, $this->format, array('versioning' => true));
-        $this->assertEquals($expectedResult, $normalized);
-    }
-
-    /**
      * @return array
      */
     protected function getOptionalProperties()
@@ -169,12 +145,11 @@ class AttributeNormalizerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Create a attribute
-     * @param array $data
+     * {@inheritdoc}
      *
      * @return ProductAttribute
      */
-    protected function createAttribute(array $data)
+    protected function createEntity(array $data)
     {
         $attribute = new ProductAttribute();
         $attribute->setAttributeType($data['type']);

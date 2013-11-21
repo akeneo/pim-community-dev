@@ -11,7 +11,6 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Entity\ProductAssociation;
-use Pim\Bundle\CatalogBundle\Calculator\CompletenessCalculator;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 
 /**
@@ -29,9 +28,9 @@ class ProductManager extends FlexibleManager
     protected $mediaManager;
 
     /**
-     * @var CompletenessCalculator
+     * @var CompletenessManager
      */
-    protected $completenessCalculator;
+    protected $completenessManager;
 
     /**
      * @var ProductBuilder
@@ -56,6 +55,7 @@ class ProductManager extends FlexibleManager
         EventDispatcherInterface $eventDispatcher,
         AttributeTypeFactory $attributeTypeFactory,
         MediaManager $mediaManager,
+        CompletenessManager $completenessManager,
         ProductBuilder $builder
     ) {
         parent::__construct(
@@ -66,8 +66,9 @@ class ProductManager extends FlexibleManager
             $attributeTypeFactory
         );
 
-        $this->mediaManager = $mediaManager;
-        $this->builder      = $builder;
+        $this->mediaManager         = $mediaManager;
+        $this->completenessManager  = $completenessManager;
+        $this->builder              = $builder;
     }
 
     /**
@@ -235,10 +236,10 @@ class ProductManager extends FlexibleManager
         if ($flush) {
             $this->storageManager->flush();
         }
-        $this->getCompletenessRepository()->schedule($product);
+        $this->completenessManager->schedule($product);
 
         if ($recalculate) {
-            $this->getCompletenessRepository()->createProductCompletenesses($product);
+            $this->completenessManager->createProductCompletenesses($product);
         }
     }
 
@@ -372,15 +373,5 @@ class ProductManager extends FlexibleManager
             $value->getScope(),
             time()
         );
-    }
-
-    /**
-     * Get the completeness repository
-     *
-     * @return \Doctrine\ORM\EntityRepository
-     */
-    protected function getCompletenessRepository()
-    {
-        return $this->storageManager->getRepository('PimCatalogBundle:Completeness');
     }
 }

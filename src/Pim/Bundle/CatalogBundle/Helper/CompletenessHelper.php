@@ -49,7 +49,7 @@ class CompletenessHelper
                     $value      = $product->getValue($attribute->getCode(), $locale->getCode(), $channel->getCode());
                     $constraint = new ProductValueNotBlank(array('channel' => $channel));
 
-                    if (count($this->validator->validateValue($value, $constraint))) {
+                    if ($this->validator->validateValue($value, $constraint)->count()) {
                         $missingAttributes[] = $attribute;
                     }
                 }

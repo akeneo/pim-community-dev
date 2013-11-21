@@ -24,32 +24,35 @@ Feature: Display the family history
     And I should see history:
       | action | version | property | value |
       | create | 1       | code     | Flyer |
+
     When I visit the "Properties" tab
     And I change the english Label to "Fly"
     And I save the family
     When I visit the "History" tab
     Then there should be 2 updates
     And I should see history:
-      | action | version | property | value     |
-      | create | 1       | code     | Flyer     |
-      | update | 2       | label    | en_US:Fly |
+      | action | version | property    | value |
+      | create | 1       | code        | Flyer |
+      | update | 2       | label-en_US | Fly   |
+
     When I visit the "Attributes" tab
     And I add available attributes Description
     When I visit the "History" tab
     Then there should be 3 updates
     And I should see history:
-      | action | version | property   | value            |
-      | create | 1       | code       | Flyer            |
-      | update | 2       | label      | en_US:Fly        |
-      | update | 3       | attributes | sku, description |
+      | action | version | property    | value           |
+      | create | 1       | code        | Flyer           |
+      | update | 2       | label-en_US | Fly             |
+      | update | 3       | attributes  | sku,description |
+
     When I visit the "Attributes" tab
     And I remove the "Description" attribute
     Then I should see flash message "Attribute successfully removed from the family"
     When I visit the "History" tab
     Then there should be 4 updates
     And I should see history:
-      | action | version | property   | value            |
-      | create | 1       | code       | Flyer            |
-      | update | 2       | label      | en_US:Fly        |
-      | update | 3       | attributes | sku, description |
-      | update | 4       | attributes | sku              |
+      | action | version | property    | value           |
+      | create | 1       | code        | Flyer           |
+      | update | 2       | label-en_US | Fly             |
+      | update | 3       | attributes  | sku,description |
+      | update | 4       | attributes  | sku             |

@@ -36,44 +36,24 @@ class JobExecutionArchiver
      */
     public function archive(JobExecution $jobExecution)
     {
-        $jobInstance = $jobExecution->getJobInstance();
+        $job = $jobExecution->getJobInstance()->getJob();
         $archivePath = $this->getJobExecutionPath($jobExecution);
 
-        $job         = $jobInstance->getJob();
         foreach ($job->getSteps() as $step) {
             $reader = $step->getReader();
             $writer = $step->getWriter();
-            if ($reader instanceof CsvReader) {
-                $sourcePath = $reader->getFilePath();
-                if (file_exists($sourcePath)) {
-                    $this->copyFile($sourcePath, $archivePath);
-                }
-            }
-            if ($writer instanceof FileWriter) {
-                $sourcePath = $writer->getPath();
-                if ($writer instanceof ArchivableWriterInterface && count($writer->getWrittenFiles()) > 1) {
-                    $archivePath = sprintf('%s/%s.zip', $archivePath, pathinfo($sourcePath, PATHINFO_FILENAME));
-                    $this->createZipArchive($writer->getWrittenFiles(), $archivePath);
-                } elseif (file_exists($sourcePath)) {
-                    $this->copyFile($sourcePath, $archivePath);
-                }
-            }
-        }
-    }
 
-    /**
-     * Copy the source path to the archive
-     * @param string $sourcePath
-     * @param string $archivePath
-     */
-    protected function copyFile($sourcePath, $archivePath)
-    {
-        $sourceName = basename($sourcePath);
-        $destPath   = $archivePath.$sourceName;
-        if (!is_dir($archivePath)) {
-            mkdir($archivePath, 0777, true);
+            if ($reader instanceof CsvReader) {
+                $this->copyFileIfExists($reader->getFilePath(), $archivePath);
+            } elseif ($writer instanceof FileWriter) {
+                if ($writer instanceof ArchivableWriterInterface && count($writer->getWrittenFiles()) > 1) {
+                    $archivePath = sprintf('%s/%s.zip', $archivePath, pathinfo($writer->getPath(), PATHINFO_FILENAME));
+                    $this->createZipArchive($writer->getWrittenFiles(), $archivePath);
+                } else {
+                    $this->copyFileIfExists($writer->getPath(), $archivePath);
+                }
+            }
         }
-        copy($sourcePath, $destPath);
     }
 
     /**
@@ -121,6 +101,32 @@ class JobExecutionArchiver
     }
 
     /**
+     * Copy the source path to the archive
+     * @param string $sourcePath
+     * @param string $archivePath
+     */
+    protected function copyFileIfExists($sourcePath, $archivePath)
+    {
+        if (file_exists($sourcePath)) {
+            $this->ensureDir($archivePath);
+            $sourceName = basename($sourcePath);
+            $destPath   = $archivePath.$sourceName;
+            copy($sourcePath, $destPath);
+        }
+    }
+
+    /**
+     * Ensure that a directory exists - if it doesn't, it will be created
+     * @param string $directory
+     */
+    protected function ensureDir($directory)
+    {
+        if (!is_dir($directory)) {
+            mkdir($directory, 0755, true);
+        }
+    }
+
+    /**
      * Create a zip archive with the execution results.
      *
      * @param array  $writtenFiles
@@ -130,11 +136,7 @@ class JobExecutionArchiver
      */
     protected function createZipArchive($writtenFiles, $archivePath)
     {
-        $archiveDir = pathinfo($archivePath, PATHINFO_DIRNAME);
-
-        if (!is_dir($archiveDir)) {
-            mkdir($archiveDir, 0755, true);
-        }
+        $this->ensureDir(pathinfo($archivePath, PATHINFO_DIRNAME));
 
         $archive = new \ZipArchive();
         $status = $archive->open($archivePath, \ZIPARCHIVE::CREATE);

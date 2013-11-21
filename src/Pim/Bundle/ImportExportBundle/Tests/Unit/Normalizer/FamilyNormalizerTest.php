@@ -2,11 +2,10 @@
 
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Normalizer;
 
-use Pim\Bundle\CatalogBundle\Entity\Channel;
-
 use Pim\Bundle\ImportExportBundle\Normalizer\FamilyNormalizer;
+use Pim\Bundle\ImportExportBundle\Normalizer\TranslationNormalizer;
+use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Family;
-use Pim\Bundle\CatalogBundle\Entity\FamilyTranslation;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
 
@@ -17,53 +16,34 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FamilyNormalizerTest extends \PHPUnit_Framework_TestCase
+class FamilyNormalizerTest extends NormalizerTestCase
 {
-    /**
-     * @var FamilyNormalizer
-     */
-    protected $normalizer;
-
     /**
      * {@inheritdoc}
      */
     protected function setUp()
     {
-        $this->normalizer = new FamilyNormalizer();
+        $this->normalizer = new FamilyNormalizer(new TranslationNormalizer());
+        $this->format     = 'json';
     }
 
     /**
-     * Data provider for testing supportsNormalization method
-     * @return array
+     * {@inheritdoc}
      */
     public static function getSupportNormalizationData()
     {
         return array(
-            array('Pim\Bundle\CatalogBundle\Entity\Family', 'json',  true),
+            array('Pim\Bundle\CatalogBundle\Entity\Family', 'json', true),
+            array('Pim\Bundle\CatalogBundle\Entity\Family', 'xml', true),
             array('Pim\Bundle\CatalogBundle\Entity\Family', 'csv', false),
-            array('stdClass', 'json',  false),
+            array('stdClass', 'json', false),
+            array('stdClass', 'xml', false),
             array('stdClass', 'csv', false),
         );
     }
 
     /**
-     * Test supportsNormalization method
-     * @param mixed   $class
-     * @param string  $format
-     * @param boolean $isSupported
-     *
-     * @dataProvider getSupportNormalizationData
-     */
-    public function testSupportNormalization($class, $format, $isSupported)
-    {
-        $data = $this->getMock($class);
-
-        $this->assertSame($isSupported, $this->normalizer->supportsNormalization($data, $format));
-    }
-
-    /**
-     * Data provider for testing normalize method
-     * @return array
+     * {@inheritdoc}
      */
     public static function getNormalizeData()
     {
@@ -84,35 +64,17 @@ class FamilyNormalizerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test normalize method
-     * @param array $expectedResult
-     *
-     * @dataProvider getNormalizeData
-     */
-    public function testNormalize(array $expectedResult)
-    {
-        $family = $this->createFamily($expectedResult);
-        $this->assertEquals(
-            $expectedResult,
-            $this->normalizer->normalize($family, 'json')
-        );
-    }
-
-    /**
-     * Create a family
-     * @param array $data
+     * {@inheritdoc}
      *
      * @return Family
      */
-    protected function createFamily(array $data)
+    protected function createEntity(array $data)
     {
         $family = new Family();
         $family->setCode('mycode');
 
-        $translations = array('en_US' => 'My label', 'fr_FR' => 'Mon étiquette');
-        foreach ($translations as $locale => $label) {
-            $translation = new FamilyTranslation();
-            $translation->setLocale($locale);
+        foreach ($this->getLabels($data) as $locale => $label) {
+            $translation = $family->getTranslation($locale);
             $translation->setLabel($label);
             $family->addTranslation($translation);
         }
@@ -152,5 +114,15 @@ class FamilyNormalizerTest extends \PHPUnit_Framework_TestCase
         $family->setAttributeRequirements($attrRequirements);
 
         return $family;
+    }
+
+    /**
+     * @param array $data
+     *
+     * @return mixed
+     */
+    protected function getLabels($data)
+    {
+        return $data['label'];
     }
 }

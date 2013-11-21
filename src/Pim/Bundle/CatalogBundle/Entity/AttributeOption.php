@@ -34,6 +34,7 @@ class AttributeOption extends AbstractEntityAttributeOption
      * @var Attribute $attribute
      *
      * @ORM\ManyToOne(targetEntity="ProductAttribute", inversedBy="options")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     protected $attribute;
 
@@ -41,7 +42,7 @@ class AttributeOption extends AbstractEntityAttributeOption
      * @var ArrayCollection $values
      *
      * @ORM\OneToMany(
-     *     targetEntity="AttributeOptionValue", mappedBy="option", cascade={"persist", "remove"}, orphanRemoval=true
+     *     targetEntity="AttributeOptionValue", mappedBy="option", cascade={"persist"}
      * )
      */
     protected $optionValues;

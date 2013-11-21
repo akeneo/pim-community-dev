@@ -12,6 +12,7 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 use Oro\Bundle\BatchBundle\Connector\ConnectorRegistry;
@@ -347,19 +348,11 @@ class JobInstanceController extends AbstractDoctrineController
         $violations       = $this->getValidator()->validate($jobInstance, array('Default', 'Execution'));
         $uploadViolations = $this->getValidator()->validate($jobInstance, array('Default', 'UploadExecution'));
 
-        if (count($violations) === 0 || count($uploadViolations) === 0) {
+        $uploadMode = $uploadViolations->count() === 0 ? $this->processUploadForm($jobInstance) : false;
+
+        if ($uploadMode === true || $violations->count() === 0) {
             $jobExecution = new JobExecution();
             $jobExecution->setJobInstance($jobInstance);
-
-            $uploadMode = false;
-            if ($request->isMethod('POST') && count($uploadViolations) === 0) {
-                $form = $this->createUploadForm();
-                $form->handleRequest($request);
-                if ($form->isValid()) {
-                    $uploadMode = $this->runJob($jobInstance, $form->getData());
-                }
-            }
-
             $this->getManager()->persist($jobExecution);
             $this->getManager()->flush();
             $instanceCode = $jobExecution->getJobInstance()->getCode();
@@ -385,23 +378,41 @@ class JobInstanceController extends AbstractDoctrineController
     }
 
     /**
-     * Run job instance
+     * Process the upload form
      *
      * @param JobInstance $jobInstance
-     * @param mixed       $data
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|boolean
+     * @return boolean
      */
-    protected function runJob(JobInstance $jobInstance, $data)
+    protected function processUploadForm(JobInstance $jobInstance)
     {
-        $media = $data['file'];
-        $file = $media->getFile();
+        $request = $this->getRequest();
+        if ($request->isMethod('POST')) {
+            $form = $this->createUploadForm();
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $data = $form->get('file')->getData();
+                $file = $data->getFile();
+                $file = $file->move(sys_get_temp_dir(), $file->getClientOriginalName());
 
-        $filename = $file->getClientOriginalName();
-        $file = $file->move(
-            sys_get_temp_dir(),
-            $file->getFilename() . substr($filename, strrpos($filename, '.'))
-        );
+                return $this->configureUploadJob($jobInstance, $file);
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Configure job instance for uploaded file
+     *
+     * @param JobInstance $jobInstance
+     * @param File        $file
+     *
+     * @return boolean
+     */
+    protected function configureUploadJob(JobInstance $jobInstance, File $file)
+    {
+        $success = false;
 
         $job = $jobInstance->getJob();
         foreach ($job->getSteps() as $step) {
@@ -411,20 +422,20 @@ class JobInstanceController extends AbstractDoctrineController
                 $constraints = $reader->getUploadedFileConstraints();
                 $errors = $this->getValidator()->validateValue($file, $constraints);
 
-                if ($errors->count()) {
+                if ($errors->count() !== 0) {
                     foreach ($errors as $error) {
                         $this->addFlash('error', $error->getMessage());
                     }
 
-                    return $this->redirectToShowView($jobInstance->getId());
+                    return false;
+                } else {
+                    $reader->setUploadedFile($file);
+                    $success = true;
                 }
-
-                $reader->setUploadedFile($file);
-                $uploadMode = true;
             }
         }
 
-        return $uploadMode;
+        return $success;
     }
 
     /**

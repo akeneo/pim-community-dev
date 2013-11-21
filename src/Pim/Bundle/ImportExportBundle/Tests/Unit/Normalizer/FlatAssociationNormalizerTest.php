@@ -3,6 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Normalizer;
 
 use Pim\Bundle\ImportExportBundle\Normalizer\FlatAssociationNormalizer;
+use Pim\Bundle\ImportExportBundle\Normalizer\FlatTranslationNormalizer;
 use Pim\Bundle\CatalogBundle\Entity\Association;
 
 /**
@@ -19,26 +20,27 @@ class FlatAssociationNormalizerTest extends AssociationNormalizerTest
      */
     protected function setUp()
     {
-        $this->normalizer = new FlatAssociationNormalizer();
+        $this->normalizer = new FlatAssociationNormalizer(new FlatTranslationNormalizer());
+        $this->format     = 'csv';
     }
 
     /**
-     * Data provider for testing supportsNormalization method
-     * @return array
+     * {@inheritdoc}
      */
     public static function getSupportNormalizationData()
     {
         return array(
-            array('Pim\Bundle\CatalogBundle\Entity\Association', 'csv',  true),
+            array('Pim\Bundle\CatalogBundle\Entity\Association', 'csv', true),
+            array('Pim\Bundle\CatalogBundle\Entity\Association', 'xml', false),
             array('Pim\Bundle\CatalogBundle\Entity\Association', 'json', false),
-            array('stdClass', 'csv',  false),
+            array('stdClass', 'csv', false),
+            array('stdClass', 'xml', false),
             array('stdClass', 'json', false),
         );
     }
 
     /**
-     * Data provider for testing normalize method
-     * @return array
+     * {@inheritdoc}
      */
     public static function getNormalizeData()
     {
@@ -54,17 +56,13 @@ class FlatAssociationNormalizerTest extends AssociationNormalizerTest
     }
 
     /**
-     * Test normalize method
-     * @param array $expectedResult
-     *
-     * @dataProvider getNormalizeData
+     * {@inheritdoc}
      */
-    public function testNormalize(array $expectedResult)
+    protected function getLabels($data)
     {
-        $association = $this->createAssociation($expectedResult);
-        $this->assertEquals(
-            $expectedResult,
-            $this->normalizer->normalize($association, 'csv')
+        return array(
+            'en_US' => $data['label-en_US'],
+            'fr_FR' => $data['label-fr_FR']
         );
     }
 }

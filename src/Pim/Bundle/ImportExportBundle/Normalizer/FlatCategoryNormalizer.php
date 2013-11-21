@@ -17,17 +17,4 @@ class FlatCategoryNormalizer extends CategoryNormalizer
      * @var array
      */
     protected $supportedFormats = array('csv');
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function getNormalizedLabelsArray(CategoryInterface $category)
-    {
-        $values = array();
-        foreach ($category->getTranslations() as $translation) {
-            $values[sprintf('label-%s', $translation->getLocale())] = $translation->getLabel();
-        }
-
-        return $values;
-    }
 }
