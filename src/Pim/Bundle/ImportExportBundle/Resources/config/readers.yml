@@ -57,5 +57,14 @@ services:
         arguments:
             - '@doctrine.orm.default_entity_manager'
 
+    pim_import_export.reader.file.csv_attribute_option:
+        class: %pim_import_export.reader.file.csv.class%
+        arguments:
+            - '@pim_import_export.csv.attribute_option_validator'
+
+    pim_import_export.reader.file.csv:
+        class: %pim_import_export.reader.file.csv.class%
+
+
     pim_import_export.reader.dummy:
         class: %pim_import_export.reader.dummy.class%
