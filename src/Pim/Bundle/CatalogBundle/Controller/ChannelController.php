@@ -146,7 +146,7 @@ class ChannelController extends AbstractDoctrineController
             $this->addFlash('success', 'flash.channel.saved');
 
             return $this->redirect(
-                $this->generateUrl('pim_catalog_channel_index')
+                $this->generateUrl('pim_catalog_channel_edit', array('id' => $channel->getId()))
             );
         }
 
