@@ -2,9 +2,10 @@
 
 namespace Pim\Bundle\CustomEntityBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Pim\Bundle\CustomEntityBundle\Configuration\Registry;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Controller for custom entities
@@ -38,7 +39,12 @@ class Controller
     }
 
     /**
-     * {@inheritdoc}
+     * Default action
+     *
+     * @param  string                $customEntityName
+     * @param  string                $actionName
+     * @return Response
+     * @throws NotFoundHttpException
      */
     public function action($customEntityName, $actionName)
     {
