@@ -68,6 +68,7 @@ class AclWalker extends TreeWalkerAdapter
     {
         if (!is_null($aclCondition->getSubRequests())) {
             $subRequests = $aclCondition->getSubRequests();
+
             foreach ($subRequests as $subRequest) {
                 /** @var SubRequestAclConditionStorage $subRequest */
                 $subselect = $AST
@@ -76,6 +77,7 @@ class AclWalker extends TreeWalkerAdapter
                     ->conditionalFactors[$subRequest->getFactorId()]
                     ->simpleConditionalExpression
                     ->subselect;
+
                 if (!is_null($subRequest->getWhereConditions()) && count($subRequest->getWhereConditions())) {
                     $this->addAclToWhereClause($subselect, $subRequest->getWhereConditions());
                 }
@@ -148,12 +150,14 @@ class AclWalker extends TreeWalkerAdapter
         $leftExpression->simpleArithmeticExpression = $pathExpression;
 
         $conditionalFactors = [];
-        foreach ($condition->getJoinConditions() as $joinCondition) {
+
+        $joinConditionsArray = is_array($condition->getJoinConditions()) ? $condition->getJoinConditions() : array($condition->getJoinConditions());
+        foreach ($joinConditionsArray as $joinCondition) {
             $rightExpression = new ArithmeticExpression();
             $pathExpression = new PathExpression(
                 self::EXPECTED_TYPE,
                 $condition->getEntityAlias(),
-                $joinCondition['referencedColumnName']
+                is_string($joinCondition) ? $joinCondition : $joinCondition['referencedColumnName']
             );
             $pathExpression->type = PathExpression::TYPE_STATE_FIELD;
             $rightExpression->simpleArithmeticExpression = $pathExpression;

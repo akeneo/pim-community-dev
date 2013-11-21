@@ -68,6 +68,14 @@ class AclConditionStorage
     }
 
     /**
+     * @param SubRequestAclConditionStorage|SubRequestAclConditionStorage[] $subRequests
+     */
+    public function addSubRequests($subRequests)
+    {
+        $this->subRequests[] = $subRequests;
+    }
+
+    /**
      * @return SubRequestAclConditionStorage|SubRequestAclConditionStorage[]
      */
     public function getSubRequests()

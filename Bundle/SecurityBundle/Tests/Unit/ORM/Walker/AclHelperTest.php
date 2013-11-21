@@ -35,7 +35,7 @@ class AclHelperTest extends OrmTestCase
     /**
      * @dataProvider dataProvider
      */
-    public function testApply($queryBuilder, $conditions, $resultHandler, $walkerResult)
+    public function testApply(QueryBuilder $queryBuilder, $conditions, $resultHandler, $walkerResult)
     {
         $this->conditionBuilder = $this->getMockBuilder(
             'Oro\Bundle\SecurityBundle\ORM\Walker\OwnershipConditionDataBuilder'
@@ -65,6 +65,7 @@ class AclHelperTest extends OrmTestCase
         $parserResult = $this->getMockBuilder('Doctrine\ORM\Query\ParserResult')
             ->disableOriginalConstructor()
             ->getMock();
+        $this->assertEquals($query->getDQL(), $queryBuilder->getDQL());
 
         $this->walker = new AclWalker($query, $parserResult, []);
         $resultAst = $this->walker->walkSelectStatement($query->getAST());
@@ -236,7 +237,7 @@ class AclHelperTest extends OrmTestCase
         $this->assertEmpty($conditions->getJoinConditions());
         $whereCondition = $conditions->getWhereConditions()[0];
         $this->assertEquals([3,2,1], $whereCondition->getValue());
-        $subRequest = $conditions->getSubRequests();
+        $subRequest = $conditions->getSubRequests()[0];
         $this->assertEquals([3,2,1], $subRequest->getWhereConditions()[0]->getValue());
         $this->assertEquals('Doctrine\Tests\Models\CMS\CmsArticle', $subRequest->getJoinConditions()[0]->getEntityClass());
         $this->assertEquals('Doctrine\Tests\Models\CMS\CmsComment', $subRequest->getJoinConditions()[1]->getEntityClass());
@@ -255,8 +256,9 @@ class AclHelperTest extends OrmTestCase
             ->conditionalExpression
             ->conditionalFactors[0]
             ->simpleConditionalExpression
-            ->subselec;
-
+            ->subselect;
+        $expression = $subselect->whereClause->conditionalExpression->conditionalFactors[1]->simpleConditionalExpression;
+        $this->assertEquals([3,2,1], $this->collectLiterals($expression->literals));
     }
 
     /**

@@ -98,16 +98,19 @@ class AclHelper
     {
         $conditionalExpression = $ast->whereClause->conditionalExpression;
         if ($conditionalExpression instanceof ConditionalPrimary) {
+            // we have request with only one where condition
             $expression = $conditionalExpression->simpleConditionalExpression;
             if (isset($expression->subselect)
                 && $expression->subselect instanceof Subselect
             ) {
                 $subRequestAclStorage = $this->processSubRequest($expression->subselect, $permission);
                 if (!$subRequestAclStorage->isEmpty()) {
-                    $storage->setSubRequests($subRequestAclStorage);
+                    $subRequestAclStorage->setFactorId(0);
+                    $storage->addSubRequests($subRequestAclStorage);
                 }
             }
         } else {
+            // we have request with only many where conditions
             $subQueryAcl = [];
             foreach ($conditionalExpression->conditionalFactors as $factorId => $expression) {
                 if (isset($expression->simpleConditionalExpression->subselect)
