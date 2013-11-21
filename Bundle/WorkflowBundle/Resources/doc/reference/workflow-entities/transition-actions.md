@@ -49,7 +49,7 @@ See syntax examples:
 
 ```
 - @alias_of_action:
-    condition:
+    conditions:
         # optional condition configuration
     parameters:
         - some_parameters: some_value
@@ -80,7 +80,7 @@ Assign Value
 **Configuration Example**
 ```
 - @assign_value:
-    condition:
+    conditions:
         # optional condition configuration
     parameters: [$call_successfull, true]
 
@@ -110,7 +110,7 @@ Unset Value
 **Configuration Example**
 ```
 - @unset_value:
-    condition:
+    conditions:
         # optional condition configuration
     parameters: [$call_successfull]
 
@@ -141,7 +141,7 @@ Create Entity
 **Configuration Example**
 ```
 - @create_entity:
-    condition:
+    conditions:
         # optional condition configuration
     parameters:
         class: Acme\Bundle\DemoWorkflowBundle\Entity\PhoneConversation
@@ -182,7 +182,7 @@ Find Entity
 **Configuration Example**
 ```
 - @find_entity:
-    condition:
+    conditions:
         # optional condition configuration
     parameters:
         class: OroCRM\Bundle\SalesBundle\Entity\LeadStatus
@@ -215,7 +215,7 @@ Call Method
 **Configuration Example**
 ```
 - @call_method:
-    condition:
+    conditions:
         # optional condition configuration
     parameters:
         object: $lead.contact
@@ -249,7 +249,7 @@ Start Workflow
 **Configuration Example**
 ```
 - @start_workflow: # start workflow and create workflow item
-    condition:
+    conditions:
         # optional condition configuration
     parameters:
         name: sales
@@ -353,7 +353,7 @@ Tree Executor
 **Configuration Example**
 ```
 - @tree:
-    condition:
+    conditions:
         # optional condition configuration
     actions:
         - @create_entity:
