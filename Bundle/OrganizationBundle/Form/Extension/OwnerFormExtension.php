@@ -2,29 +2,34 @@
 
 namespace Oro\Bundle\OrganizationBundle\Form\Extension;
 
-use Oro\Bundle\OrganizationBundle\Entity\Organization;
-use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadataProvider;
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
-use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Translation\TranslatorInterface;
+
+use Doctrine\Common\Persistence\ManagerRegistry;
 
 use Oro\Bundle\OrganizationBundle\Event\RecordOwnerDataListener;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\OrganizationBundle\Entity\Manager\BusinessUnitManager;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
+use Oro\Bundle\OrganizationBundle\Form\EventListener\OwnerFormSubscriber;
+use Oro\Bundle\OrganizationBundle\Entity\Organization;
+use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadataProvider;
 
-class FormTypeExtension extends AbstractTypeExtension
+class OwnerFormExtension extends AbstractTypeExtension
 {
     /**
      * @var SecurityContextInterface
      */
     protected $securityContext;
+
+    /**
+     * @var ManagerRegistry
+     */
+    protected $managerRegistry;
 
     /**
      * @var OwnershipMetadataProvider
@@ -34,7 +39,7 @@ class FormTypeExtension extends AbstractTypeExtension
     /**
      * @var BusinessUnitManager
      */
-    protected $manager;
+    protected $businessUnitManager;
 
     /**
      * @var SecurityFacade
@@ -59,27 +64,33 @@ class FormTypeExtension extends AbstractTypeExtension
     /**
      * @var bool
      */
-    protected $assignIsGranted;
+    protected $isAssignGranted;
 
     /**
-     * Constructor
-     *
+     * @var User
+     */
+    protected $currentUser;
+
+    /**
      * @param SecurityContextInterface $securityContext
+     * @param ManagerRegistry $managerRegistry
      * @param OwnershipMetadataProvider $ownershipMetadataProvider
-     * @param BusinessUnitManager $manager
+     * @param BusinessUnitManager $businessUnitManager
      * @param SecurityFacade $securityFacade
      * @param TranslatorInterface $translator
      */
     public function __construct(
         SecurityContextInterface $securityContext,
+        ManagerRegistry $managerRegistry,
         OwnershipMetadataProvider $ownershipMetadataProvider,
-        BusinessUnitManager $manager,
+        BusinessUnitManager $businessUnitManager,
         SecurityFacade $securityFacade,
         TranslatorInterface $translator
     ) {
         $this->securityContext = $securityContext;
+        $this->managerRegistry = $managerRegistry;
         $this->ownershipMetadataProvider = $ownershipMetadataProvider;
-        $this->manager = $manager;
+        $this->businessUnitManager = $businessUnitManager;
         $this->securityFacade = $securityFacade;
         $this->translator = $translator;
         $this->fieldName = RecordOwnerDataListener::OWNER_FIELD_NAME;
@@ -113,107 +124,47 @@ class FormTypeExtension extends AbstractTypeExtension
         }
 
         $metadata = $this->ownershipMetadataProvider->getMetadata($dataClassName);
-        if ($metadata->hasOwner()) {
-            if (!method_exists($dataClassName, 'getOwner')) {
-                throw new \LogicException(
-                    sprintf('Method getOwner must be implemented for %s entity.', $dataClassName)
-                );
-            }
-
-            /**
-             * TODO: Implement object-based assign check after access levels are supported
-             */
-            $this->assignIsGranted = $this->securityFacade->isGranted('ASSIGN', 'entity:' . $dataClassName);
-
-            /**
-             * Adding listener to hide owner field for update pages
-             * if assign permission is not granted
-             */
-            $builder->addEventListener(
-                FormEvents::POST_SET_DATA,
-                array($this, 'postSetData')
-            );
-
-            if ($metadata->isUserOwned() && $this->assignIsGranted) {
-                $this->addUserOwnerField($builder);
-            } elseif ($metadata->isBusinessUnitOwned()) {
-                $this->addBusinessUnitOwnerField($builder, $user, $dataClassName);
-            } elseif ($metadata->isOrganizationOwned()) {
-                $this->addOrganizationOwnerField($builder, $user);
-            }
-        }
-    }
-
-    /**
-     * Process form after data is set and remove/disable owner field depending on permissions
-     *
-     * @param FormEvent $event
-     */
-    public function postSetData(FormEvent $event)
-    {
-        $form = $event->getForm();
-        if ($form->getParent()) {
+        if (!$metadata->hasOwner()) {
             return;
         }
-        $entity = $event->getData();
 
-        if (is_object($entity)
-            && method_exists($entity, 'getId')
-            && $entity->getId()
-            && $form->has($this->fieldName)
-            && !$this->assignIsGranted
-        ) {
-            $owner = $form->get($this->fieldName)->getData();
-            $form->remove($this->fieldName);
-            $form->add(
+        if (!method_exists($dataClassName, 'getOwner')) {
+            throw new \LogicException(
+                sprintf('Method getOwner must be implemented for %s entity.', $dataClassName)
+            );
+        }
+
+        /**
+         * TODO: Implement object-based assign check after access levels are supported
+         */
+        $this->isAssignGranted = $this->securityFacade->isGranted('ASSIGN', 'entity:' . $dataClassName);
+
+        $defaultOwner = null;
+
+        if ($metadata->isUserOwned() && $this->isAssignGranted) {
+            $this->addUserOwnerField($builder);
+            $defaultOwner = $user;
+        } elseif ($metadata->isBusinessUnitOwned()) {
+            $this->addBusinessUnitOwnerField($builder, $user, $dataClassName);
+            $defaultOwner = $this->getCurrentBusinessUnit();
+        } elseif ($metadata->isOrganizationOwned()) {
+            $this->addOrganizationOwnerField($builder, $user);
+            $defaultOwner = $this->getCurrentOrganization();
+        }
+
+        /**
+         * Adding subscriber to hide owner field for update pages if assign permission is not granted
+         * and set default owner value
+         */
+        $builder->addEventSubscriber(
+            new OwnerFormSubscriber(
+                $this->managerRegistry,
                 $this->fieldName,
-                'text',
-                array(
-                    'disabled' => true,
-                    'data' => $owner ? $owner->getName() : '',
-                    'mapped' => false,
-                    'required' => false,
-                    'label' => $this->fieldLabel
-                )
-            );
-        }
-
-        if (is_object($entity)
-            && method_exists($entity, 'getId')
-            && !$entity->getId()
-            && $form->has($this->fieldName)
-        ) {
-            $this->setPredefinedOwner($form);
-        }
-    }
-
-    /**
-     * @param FormInterface $form
-     */
-    protected function setPredefinedOwner(FormInterface $form)
-    {
-        $ownerForm = $form->get($this->fieldName);
-        if ($ownerForm->getData()) {
-            return;
-        }
-
-        $dataClassName = $form->getConfig()->getDataClass();
-        $metadata = $this->ownershipMetadataProvider->getMetadata($dataClassName);
-        if ($metadata->hasOwner()) {
-            $defaultOwner = null;
-
-            if ($metadata->isUserOwned() && $this->assignIsGranted) {
-                $defaultOwner = $this->getCurrentUser();
-            } elseif ($metadata->isBusinessUnitOwned()) {
-                $defaultOwner = $this->getCurrentBusinessUnit();
-            } elseif ($metadata->isOrganizationOwned()) {
-                $defaultOwner = $this->getCurrentOrganization();
-            }
-
-            if ($defaultOwner) {
-                $ownerForm->setData($defaultOwner);
-            }
-        }
+                $this->fieldLabel,
+                $this->isAssignGranted,
+                $defaultOwner
+            )
+        );
     }
 
     /**
@@ -221,20 +172,14 @@ class FormTypeExtension extends AbstractTypeExtension
      */
     protected function addUserOwnerField(FormBuilderInterface $builder)
     {
-        /**
-         * Showing user owner box for entities with owner type USER if assign permission is
-         * granted.
-         */
-        if ($this->assignIsGranted) {
-            $builder->add(
-                $this->fieldName,
-                'oro_user_select',
-                array(
-                    'required' => true,
-                    'constraints' => array(new NotBlank())
-                )
-            );
-        }
+        $builder->add(
+            $this->fieldName,
+            'oro_user_select',
+            array(
+                'required' => true,
+                'constraints' => array(new NotBlank())
+            )
+        );
     }
 
     /**
@@ -247,24 +192,24 @@ class FormTypeExtension extends AbstractTypeExtension
         /**
          * Owner field is required for all entities except business unit
          */
-        $validation = array('required' => false);
-        /**
-         * TODO: Replace this check with class names check without instances
-         */
-        if (!new $className instanceof BusinessUnit) {
+        $businessUnitClass = 'Oro\Bundle\OrganizationBundle\Entity\BusinessUnit';
+        if ($className != $businessUnitClass && !is_subclass_of($className, $businessUnitClass)) {
             $validation = array(
                 'constraints' => array(new NotBlank()),
                 'required' => true,
             );
         } else {
+            $validation = array(
+                'required' => false
+            );
             $this->fieldLabel = 'Parent';
         }
 
-        if ($this->assignIsGranted) {
+        if ($this->isAssignGranted) {
             /**
              * If assign permission is granted, showing all available business units
              */
-            $businessUnits = $this->getTreeOptions($this->manager->getBusinessUnitsTree());
+            $businessUnits = $this->getTreeOptions($this->businessUnitManager->getBusinessUnitsTree());
             $builder->add(
                 $this->fieldName,
                 'oro_business_unit_tree_select',
@@ -311,12 +256,12 @@ class FormTypeExtension extends AbstractTypeExtension
         }
 
         $businessUnits = $user->getBusinessUnits();
-        if (!$this->assignIsGranted) {
+        if (!$this->isAssignGranted) {
             return $businessUnits->first();
         }
 
         // if assign is granted then only allowed business units can be used
-        $allowedBusinessUnits = array_keys($this->getTreeOptions($this->manager->getBusinessUnitsTree()));
+        $allowedBusinessUnits = array_keys($this->getTreeOptions($this->businessUnitManager->getBusinessUnitsTree()));
 
         /** @var BusinessUnit $businessUnit */
         foreach ($businessUnits as $businessUnit) {
@@ -333,18 +278,24 @@ class FormTypeExtension extends AbstractTypeExtension
      */
     protected function getCurrentUser()
     {
-        $token = $this->securityContext->getToken();
-        if (!$token) {
-            return null;
+        if (null === $this->currentUser) {
+            $token = $this->securityContext->getToken();
+            if (!$token) {
+                $this->currentUser = false;
+                return false;
+            }
+
+            /** @var User $user */
+            $user = $token->getUser();
+            if (!$user || is_string($user)) {
+                $this->currentUser = false;
+                return false;
+            }
+
+            $this->currentUser = $user;
         }
 
-        /** @var User $user */
-        $user = $token->getUser();
-        if (!$user || is_string($user)) {
-            return null;
-        }
-
-        return $user;
+        return $this->currentUser;
     }
 
     /**
@@ -373,7 +324,7 @@ class FormTypeExtension extends AbstractTypeExtension
             'required' => true,
             'constraints' => array(new NotBlank())
         );
-        if (!$this->assignIsGranted) {
+        if (!$this->isAssignGranted) {
             $organizations = array();
             $bu = $user->getBusinessUnits();
             /** @var $businessUnit BusinessUnit */
