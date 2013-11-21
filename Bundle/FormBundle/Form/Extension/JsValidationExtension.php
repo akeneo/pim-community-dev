@@ -26,6 +26,9 @@ class JsValidationExtension extends AbstractTypeExtension
      */
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
+        if (isset($options['error_mapping'])) {
+            $view->vars['error_mapping'] = $options['error_mapping'];
+        }
         $validationGroups = $this->getValidationGroups($view);
 
         if ($view->parent) {
@@ -45,12 +48,8 @@ class JsValidationExtension extends AbstractTypeExtension
 
     protected function processFormView(FormView $view, array $validationGroups)
     {
-        $constraints = array();
-        if (isset($view->vars['data_class'])) {
-            $metadata = $this->metadataFactory->getMetadataFor($view->vars['data_class']);
-            $constraints = $metadata->properties;
-        }
-        if ($view->children && $view->parent) {
+        $constraints = $this->extractMetadataConstraints($view);
+        if ($view->children && $view->parent && !isset($view->vars['choices'])) {
             $required = isset($view->vars['required']) ? $view->vars['required'] : false;
             $view->vars['attr']['data-validation'] = json_encode(
                 array('Required' => array('required' => $required))
@@ -67,6 +66,24 @@ class JsValidationExtension extends AbstractTypeExtension
                 $this->processFormView($child->vars['prototype'], $validationGroups);
             }
         }
+    }
+
+    protected function extractMetadataConstraints(FormView $view)
+    {
+        $constraints = array();
+        if (isset($view->vars['data_class'])) {
+            $metadata = $this->metadataFactory->getMetadataFor($view->vars['data_class']);
+            $constraints = $metadata->properties;
+        }
+        if (!empty($constraints) && !empty($view->vars['error_mapping'])) {
+            foreach ($view->vars['error_mapping'] as $originalName => $mappedName) {
+                if (isset($constraints[$originalName])) {
+                    $constraints[$mappedName] = $constraints[$originalName];
+                }
+            }
+        }
+
+        return $constraints;
     }
 
     protected function addDataValidationAttribute(FormView $view, array $constraints)
