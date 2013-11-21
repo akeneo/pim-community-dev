@@ -46,11 +46,6 @@ class ProductAttribute extends AbstractEntityAttribute implements
     protected $sortOrder = 0;
 
     /**
-     * @var boolean $smart
-     */
-    protected $smart;
-
-    /**
      * @var AttributeGroup
      */
     protected $group;
@@ -183,7 +178,6 @@ class ProductAttribute extends AbstractEntityAttribute implements
         $this->searchable          = false;
         $this->translatable        = false;
         $this->scopable            = false;
-        $this->smart               = false;
         $this->useableAsGridColumn = false;
         $this->useableAsGridFilter = false;
         $this->availableLocales    = new ArrayCollection();
