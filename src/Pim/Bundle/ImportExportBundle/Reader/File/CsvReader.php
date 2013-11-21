@@ -12,7 +12,7 @@ use Oro\Bundle\BatchBundle\Entity\StepExecution;
 use Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Oro\Bundle\BatchBundle\Item\InvalidItemException;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\File as AssertFile;
-use Pim\Bundle\CatalogBundle\Validator\Csv\RowValidatorInterface;
+use Pim\Bundle\ImportExportBundle\Validator\Csv\RowValidatorInterface;
 
 /**
  * Csv reader
