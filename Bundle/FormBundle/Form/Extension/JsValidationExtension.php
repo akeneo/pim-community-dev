@@ -38,25 +38,15 @@ class JsValidationExtension extends AbstractTypeExtension
             return;
         }
         $this->processFormView($view, $validationGroups);
-
-        return;
-
-        if ($options['data_class']) {
-            foreach ($this->getMappedChildren($view) as $child) {
-                $constraints = $this->getFormViewConstraints($child, $metadata, $validationGroups);
-                $this->addDataValidationAttribute($child, $constraints);
-            }
-        }
     }
 
     protected function processFormView(FormView $view, array $validationGroups)
     {
         $constraints = $this->extractMetadataConstraints($view);
-        if ($view->children && $view->parent && !isset($view->vars['choices'])) {
-            if (!$view->vars['required'] || $view->vars['inherit_data']) {
-                $view->vars['attr']['data-validation-optional-group'] = null;
-            }
+        if ($this->isOptionalGroup($view)) {
+            $view->vars['attr']['data-validation-optional-group'] = null;
         }
+
         foreach ($view->children as $child) {
             $childConstraints = $this->getFormViewConstraints($child, $constraints, $validationGroups);
             $this->addDataValidationAttribute($child, $childConstraints);
@@ -65,9 +55,37 @@ class JsValidationExtension extends AbstractTypeExtension
                 $this->processFormView($child, $validationGroups);
             }
             if (isset($child->vars['prototype']) && $child->vars['prototype'] instanceof FormView) {
+                $this->processFormView($child, $validationGroups);
                 $this->processFormView($child->vars['prototype'], $validationGroups);
             }
         }
+    }
+
+    protected function isOptionalGroup(FormView $view)
+    {
+        if (isset($view->vars['prototype']) && $view->vars['prototype'] instanceof FormView) {
+            return true;
+        }
+
+        if (!$view->children) {
+            return false;
+        }
+
+        if (!$view->parent) {
+            return false;
+        }
+
+        if (isset($view->vars['choices'])) {
+            return false;
+        }
+
+        if ($view->vars['required']) {
+            if (!$view->vars['inherit_data']) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     protected function extractMetadataConstraints(FormView $view)

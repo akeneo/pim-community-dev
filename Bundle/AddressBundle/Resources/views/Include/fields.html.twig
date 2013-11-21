@@ -124,8 +124,10 @@
 {% block oro_item_collection_widget %}
     {% spaceless %}
         {% set prototypeHtml = _self.oro_collection_item_prototype(form) %}
+        {% set attr = attr|merge({'class': (attr.class is defined ? attr.class ~ ' ' : '') ~ 'oro-item-collection collection-fields-list' }) %}
+        {% set id = id ~ '_collection' %}
         <div class="row-oro">
-            <div class="oro-item-collection collection-fields-list" id="{{ id }}_collection" data-prototype="{{ prototypeHtml|escape }}">
+            <div {{ block('widget_container_attributes') }} data-prototype="{{ prototypeHtml|escape }}">
                 {% if form.children|length %}
                     {% for child in form.children %}
                         {{ _self.oro_collection_item_prototype(child) }}
@@ -151,7 +153,7 @@
             require(['jquery'],
             function($){
                 $(function() {
-                    var container = $('#{{ id }}_collection');
+                    var container = $('#{{ id }}');
 
                 {% if has_primary %}
                     /**
