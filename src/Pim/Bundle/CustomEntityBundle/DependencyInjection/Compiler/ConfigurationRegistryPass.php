@@ -25,6 +25,9 @@ class ConfigurationRegistryPass implements CompilerPassInterface
      */
     const CONFIGURATION_TAG = 'pim_custom_entity.configuration';
 
+    /**
+     * {@inheritdoc}
+     */
     public function process(ContainerBuilder $container)
     {
         $definition = $container->getDefinition(self::CONFIGURATION_REGISTRY_SERVICE);
