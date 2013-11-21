@@ -1,16 +1,17 @@
 <?php
 
-namespace Oro\Bundle\AddressBundle\ImportExport\Serializer\Normalizer;
+namespace Oro\Bundle\FormBundle\ImportExport\Serializer\Normalizer;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
 use Oro\Bundle\ImportExportBundle\Serializer\Normalizer\CollectionNormalizer;
-use Oro\Bundle\AddressBundle\Entity\PrimaryItem;
+
+use Oro\Bundle\FormBundle\Entity\PrimaryItem;
 
 class PrimaryItemCollectionNormalizer extends CollectionNormalizer
 {
-    const PRIMARY_ITEM_TYPE = 'Oro\Bundle\AddressBundle\Entity\PrimaryItem';
+    const PRIMARY_ITEM_TYPE = 'Oro\Bundle\FormBundle\Entity\PrimaryItem';
 
     /**
      * Returned normalized data where first element is primary

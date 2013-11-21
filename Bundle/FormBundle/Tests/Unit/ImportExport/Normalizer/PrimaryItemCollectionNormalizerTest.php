@@ -1,9 +1,9 @@
 <?php
 
-namespace Oro\Bundle\ImportExportBundle\Tests\Unit\ImportExport\Serializer\Normalizer;
+namespace Oro\Bundle\FormBundle\Tests\Unit\ImportExport\Serializer\Normalizer;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Oro\Bundle\AddressBundle\ImportExport\Serializer\Normalizer\PrimaryItemCollectionNormalizer;
+use Oro\Bundle\FormBundle\ImportExport\Serializer\Normalizer\PrimaryItemCollectionNormalizer;
 
 class PrimaryItemCollectionNormalizerTest extends \PHPUnit_Framework_TestCase
 {

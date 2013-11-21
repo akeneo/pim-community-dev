@@ -1,8 +1,8 @@
 <?php
 
-namespace Oro\Bundle\AddressBundle\Tests\Unit\Validator\Constraints;
+namespace Oro\Bundle\FormBundle\Tests\Unit\Validator\Constraints;
 
-use Oro\Bundle\AddressBundle\Validator\Constraints\ContainsPrimaryValidator;
+use Oro\Bundle\FormBundle\Validator\Constraints\ContainsPrimaryValidator;
 
 class ContainsPrimaryValidatorTest extends \PHPUnit_Framework_TestCase
 {
@@ -29,7 +29,7 @@ class ContainsPrimaryValidatorTest extends \PHPUnit_Framework_TestCase
         $context->expects($this->never())
             ->method('addViolation');
 
-        $constraint = $this->getMock('Oro\Bundle\AddressBundle\Validator\Constraints\ContainsPrimary');
+        $constraint = $this->getMock('Oro\Bundle\FormBundle\Validator\Constraints\ContainsPrimary');
         $validator = new ContainsPrimaryValidator();
         $validator->initialize($context);
 
@@ -52,7 +52,11 @@ class ContainsPrimaryValidatorTest extends \PHPUnit_Framework_TestCase
                 array($this->getPrimaryItemMock(false), $this->getPrimaryItemMock(true))
             ),
             'empty item and primary' => array(
-                array($this->getPrimaryItemMock(false, true), $this->getPrimaryItemMock(true), $this->getPrimaryItemMock(false, true))
+                array(
+                    $this->getPrimaryItemMock(false, true),
+                    $this->getPrimaryItemMock(true),
+                    $this->getPrimaryItemMock(false, true)
+                )
             )
         );
     }
@@ -70,7 +74,7 @@ class ContainsPrimaryValidatorTest extends \PHPUnit_Framework_TestCase
             ->method('addViolation')
             ->with('One of items must be set as primary.');
 
-        $constraint = $this->getMock('Oro\Bundle\AddressBundle\Validator\Constraints\ContainsPrimary');
+        $constraint = $this->getMock('Oro\Bundle\FormBundle\Validator\Constraints\ContainsPrimary');
         $validator = new ContainsPrimaryValidator();
         $validator->initialize($context);
 
@@ -103,7 +107,7 @@ class ContainsPrimaryValidatorTest extends \PHPUnit_Framework_TestCase
      */
     protected function getPrimaryItemMock($isPrimary)
     {
-        $item = $this->getMockBuilder('Oro\Bundle\AddressBundle\Entity\PrimaryItem')
+        $item = $this->getMockBuilder('Oro\Bundle\FormBundle\Entity\PrimaryItem')
             ->disableOriginalConstructor()
             ->getMock();
 

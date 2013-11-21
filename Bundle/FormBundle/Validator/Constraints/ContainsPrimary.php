@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\AddressBundle\Validator\Constraints;
+namespace Oro\Bundle\FormBundle\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 

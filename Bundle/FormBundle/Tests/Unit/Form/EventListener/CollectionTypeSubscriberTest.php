@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\AddressBundle\Tests\Unit\EventListener;
+namespace Oro\Bundle\FormBundle\Tests\Unit\EventListener;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -8,17 +8,12 @@ use Symfony\Component\Form\Test\FormInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
-use Oro\Bundle\AddressBundle\Form\EventListener\ItemCollectionTypeSubscriber;
+use Oro\Bundle\FormBundle\Form\EventListener\CollectionTypeSubscriber;
 
-class ItemCollectionTypeSubscriberTest extends \PHPUnit_Framework_TestCase
+class CollectionTypeSubscriberTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var string
-     */
-    protected $typedAddressClass;
-
-    /**
-     * @var ItemCollectionTypeSubscriber
+     * @var CollectionTypeSubscriber
      */
     protected $subscriber;
 
@@ -27,8 +22,7 @@ class ItemCollectionTypeSubscriberTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->typedAddressClass = $this->getMockClass('Oro\Bundle\AddressBundle\Entity\AbstractTypedAddress');
-        $this->subscriber = new ItemCollectionTypeSubscriber();
+        $this->subscriber = new CollectionTypeSubscriber();
     }
 
     public function testGetSubscribedEvents()
@@ -42,11 +36,11 @@ class ItemCollectionTypeSubscriberTest extends \PHPUnit_Framework_TestCase
 
     public function testPostSubmit()
     {
-        $itemEmpty = $this->getMock('Oro\Bundle\AddressBundle\Entity\EmptyItem');
+        $itemEmpty = $this->getMock('Oro\Bundle\FormBundle\Entity\EmptyItem');
         $itemEmpty->expects($this->once())
             ->method('isEmpty')
             ->will($this->returnValue(true));
-        $itemNotEmpty = $this->getMock('Oro\Bundle\AddressBundle\Entity\EmptyItem');
+        $itemNotEmpty = $this->getMock('Oro\Bundle\FormBundle\Entity\EmptyItem');
         $itemNotEmpty->expects($this->once())
             ->method('isEmpty')
             ->will($this->returnValue(false));

@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\AddressBundle\Form\Type;
+namespace Oro\Bundle\FormBundle\Form\Type;
 
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
@@ -8,9 +8,9 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-use Oro\Bundle\AddressBundle\Form\EventListener\ItemCollectionTypeSubscriber;
+use Oro\Bundle\FormBundle\Form\EventListener\CollectionTypeSubscriber;
 
-class ItemCollectionType extends AbstractType
+class CollectionType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -18,7 +18,7 @@ class ItemCollectionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->addEventSubscriber(
-            new ItemCollectionTypeSubscriber()
+            new CollectionTypeSubscriber()
         );
     }
 
@@ -67,6 +67,6 @@ class ItemCollectionType extends AbstractType
      */
     public function getName()
     {
-        return 'oro_item_collection';
+        return 'oro_collection';
     }
 }

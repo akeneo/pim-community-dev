@@ -116,70 +116,19 @@
     {{ block('oro_address_rows') }}
 {%  endblock %}
 
-{% macro oro_collection_item_prototype(widget) %}
-    {% if 'prototype' in widget.vars|keys %}
-        {% set form = widget.vars.prototype %}
-        {% set name = widget.vars.prototype.vars.name %}
-    {% else %}
-        {% set form = widget %}
-        {% set name = widget.vars.full_name %}
-    {% endif %}
-    <div data-content="{{ name }}" data-validation-optional-group>
-        <div class="row-oro oro-multiselect-holder">
-            {{ form_widget(form) }}
-            <button class="removeRow btn btn-action btn-link" type="button" data-related="{{ name }}">×</button>
-        </div>
-    </div>
-{% endmacro %}
-
-{% block oro_item_collection_widget %}
-    {% spaceless %}
-        {% set prototypeHtml = _self.oro_collection_item_prototype(form) %}
-        {% set attr = attr|merge({'class': (attr.class is defined ? attr.class ~ ' ' : '') ~ 'oro-item-collection collection-fields-list' }) %}
-        {% set id = id ~ '_collection' %}
-        <div class="row-oro">
-            <div {{ block('widget_container_attributes') }} data-prototype="{{ prototypeHtml|escape }}">
-                {% if form.children|length %}
-                    {% for child in form.children %}
-                        {{ _self.oro_collection_item_prototype(child) }}
-                    {% endfor %}
-                {% elseif show_form_when_empty %}
-                    {{ prototypeHtml|replace({'__name__': '0'})|raw }}
-                {% endif %}
-            </div>
-            <a class="btn add-list-item" href="javascript: void(0);"><i class="icon-plus"></i>{{ 'Add'|trans }}</a>
-        </div>
-        {{ _self.oro_item_collection_validate_primary_js(_context) }}
-    {% endspaceless %}
+{% block oro_address_collection_widget %}
+    {{ block('oro_collection_widget') }}
+    {% set id = id ~ '_collection' %}
+    {{ _self.oro_collection_validate_types_js(_context) }}
 {% endblock %}
 
-{% macro oro_item_collection_validate_primary_js(context) %}
-    {% set form = context.form %}
-    {% set show_form_when_empty = context.show_form_when_empty %}
-    {% set id = context.id %}
-    {% set has_primary = form.vars.prototype.primary is defined %}
-    {% set has_types = form.vars.prototype.types is defined %}
-    {% if has_primary or has_types or show_form_when_empty %}
+{% macro oro_collection_validate_types_js(context) %}
+    {% if context.form.vars.prototype.types is defined %}
         <script type="text/javascript">
             require(['jquery'],
             function($){
                 $(function() {
-                    var container = $('#{{ id }}');
-
-                {% if has_primary %}
-                    /**
-                     * Allow only 1 primary checkbox to be checked.
-                     * This logic convert checkbox logic to logic used in radiobutton
-                     */
-                    container.on('click', '[name$="[primary]"]', function() {
-                        container.find('[name$="[primary]"]').each(function (idx, el) {
-                            el.checked = false;
-                        });
-                        this.checked = true;
-                    });
-                {% endif %}
-
-                {% if has_types %}
+                    var container = $('#{{ context.id }}');
                     /**
                      * Allow only 1 item with selected type
                      */
@@ -191,7 +140,6 @@
                             this.checked = true;
                         }
                     });
-                {% endif %}
                 });
             });
         </script>

@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\AddressBundle\Entity;
+namespace Oro\Bundle\FormBundle\Entity;
 
 interface EmptyItem
 {

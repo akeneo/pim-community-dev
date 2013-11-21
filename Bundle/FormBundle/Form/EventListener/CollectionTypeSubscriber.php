@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\AddressBundle\Form\EventListener;
+namespace Oro\Bundle\FormBundle\Form\EventListener;
 
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormEvent;
@@ -9,9 +9,9 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 use Doctrine\Common\Collections\Collection;
 
-use Oro\Bundle\AddressBundle\Entity\EmptyItem;
+use Oro\Bundle\FormBundle\Entity\EmptyItem;
 
-class ItemCollectionTypeSubscriber implements EventSubscriberInterface
+class CollectionTypeSubscriber implements EventSubscriberInterface
 {
     /**
      * {@inheritdoc}
@@ -46,7 +46,7 @@ class ItemCollectionTypeSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * Remove empty addresses to prevent validation.
+     * Remove empty items to prevent validation.
      *
      * @param FormEvent $event
      */
@@ -71,7 +71,7 @@ class ItemCollectionTypeSubscriber implements EventSubscriberInterface
 
         $items = $notEmptyItems;
 
-        // Set first non empty address for new item as primary
+        // Set first non empty item for new item as primary
         if ($items && !$hasPrimary && $this->isParentFormDataNew($event->getForm()) || count($items) == 1) {
             $items[current(array_keys($items))]['primary'] = true;
         }

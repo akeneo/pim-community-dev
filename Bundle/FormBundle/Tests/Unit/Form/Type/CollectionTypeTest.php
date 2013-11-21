@@ -1,13 +1,13 @@
 <?php
-namespace Oro\Bundle\AddressBundle\Tests\Unit\Form\Type;
+namespace Oro\Bundle\FormBundle\Tests\Unit\Form\Type;
 
 use Symfony\Component\Form\FormView;
-use Oro\Bundle\AddressBundle\Form\Type\ItemCollectionType;
+use Oro\Bundle\FormBundle\Form\Type\CollectionType;
 
-class ItemCollectionTypeTest extends \PHPUnit_Framework_TestCase
+class CollectionTypeTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var ItemCollectionType
+     * @var CollectionType
      */
     protected $type;
 
@@ -16,7 +16,7 @@ class ItemCollectionTypeTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->type = new ItemCollectionType();
+        $this->type = new CollectionType();
     }
 
     public function testBuildForm()
@@ -25,7 +25,7 @@ class ItemCollectionTypeTest extends \PHPUnit_Framework_TestCase
 
         $builder->expects($this->once())
             ->method('addEventSubscriber')
-            ->with($this->isInstanceOf('Oro\Bundle\AddressBundle\Form\EventListener\ItemCollectionTypeSubscriber'));
+            ->with($this->isInstanceOf('Oro\Bundle\FormBundle\Form\EventListener\CollectionTypeSubscriber'));
 
         $options = array();
         $this->type->buildForm($builder, $options);
@@ -61,6 +61,6 @@ class ItemCollectionTypeTest extends \PHPUnit_Framework_TestCase
 
     public function testGetName()
     {
-        $this->assertEquals('oro_item_collection', $this->type->getName());
+        $this->assertEquals('oro_collection', $this->type->getName());
     }
 }

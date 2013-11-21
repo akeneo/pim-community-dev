@@ -1,12 +1,12 @@
 <?php
 
-namespace Oro\Bundle\AddressBundle\Validator\Constraints;
+namespace Oro\Bundle\FormBundle\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
-use Oro\Bundle\AddressBundle\Entity\PrimaryItem;
+use Oro\Bundle\FormBundle\Entity\PrimaryItem;
 
 class ContainsPrimaryValidator extends ConstraintValidator
 {

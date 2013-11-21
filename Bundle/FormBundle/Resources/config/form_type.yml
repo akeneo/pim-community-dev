@@ -6,6 +6,7 @@ parameters:
     oro_form.type.jqueryselect2_hidden.class:       Oro\Bundle\FormBundle\Form\Type\OroJquerySelect2HiddenType
     oro_form.type.icon.class:                       Oro\Bundle\FormBundle\Form\Type\OroIconType
     oro_form.type.multiple_entity.class:            Oro\Bundle\FormBundle\Form\Type\MultipleEntityType
+    oro_form.type.collection.class:                 Oro\Bundle\FormBundle\Form\Type\CollectionType
 
     oro_form.extension.data_block.class:            Oro\Bundle\FormBundle\Form\Extension\DataBlockExtension
     oro_form.extension.client_validation.class:     Oro\Bundle\FormBundle\Form\Extension\ClientValidationExtension
@@ -60,6 +61,12 @@ services:
             - @doctrine.orm.entity_manager
         tags:
             - { name: form.type, alias: oro_multiple_entity }
+
+    # Collections form types
+    oro_form.type.collection:
+        class: %oro_form.type.collection.class%
+        tags:
+             - { name: form.type, alias: oro_collection }
 
     # Form extensions
     oro_form.extension.data_block:
