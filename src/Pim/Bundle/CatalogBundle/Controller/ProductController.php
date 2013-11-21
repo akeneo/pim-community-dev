@@ -502,9 +502,7 @@ class ProductController extends AbstractDoctrineController
         }
         $trees = $this->categoryManager->getFilledTree($parent, $categories);
 
-        $treesData = CategoryHelper::listCategoriesResponse($trees, $categories);
-
-        return array('trees' => $treesData);
+        return array('trees' => $trees, 'categories' => $categories);
     }
 
     /**
