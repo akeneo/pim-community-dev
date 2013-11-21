@@ -3,8 +3,6 @@
 namespace Oro\Bundle\FormBundle\Form\Extension;
 
 use Symfony\Component\Validator\MetadataFactoryInterface;
-use Symfony\Component\Validator\MetadataInterface;
-use Symfony\Component\Validator\PropertyMetadataInterface;
 use Symfony\Component\Validator\Constraint;
 
 use Symfony\Component\Form\AbstractTypeExtension;
@@ -13,6 +11,16 @@ use Symfony\Component\Form\FormInterface;
 
 class JsValidationExtension extends AbstractTypeExtension
 {
+    /**
+     * @var array
+     */
+    protected $validationGroups;
+
+    /**
+     * @var array
+     */
+    protected $metadataConstraintsCache;
+
     /**
      * @param MetadataFactoryInterface $metadataFactory
      */
@@ -26,61 +34,79 @@ class JsValidationExtension extends AbstractTypeExtension
      */
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
-        if (isset($options['error_mapping'])) {
-            $view->vars['error_mapping'] = $options['error_mapping'];
+        // Pass to form view options that will be used by this extension logic
+        foreach (array('error_mapping', 'inherit_data') as $passableViewOption) {
+            if (isset($options[$passableViewOption])) {
+                $view->vars[$passableViewOption] = $options[$passableViewOption];
+            }
         }
-        if (isset($options['inherit_data'])) {
-            $view->vars['inherit_data'] = $options['inherit_data'];
-        }
-        $validationGroups = $this->getValidationGroups($view);
 
-        if ($view->parent) {
-            return;
+        // Begin to initialize form views with JS validation data starting from the most root element
+        if (!$view->parent) {
+            $this->validationGroups = $this->extractValidationGroups($view);
+            $this->initFormViewJsValidationData($view);
+            unset($this->validationGroups);
+            unset($this->metadataConstraintsCache);
         }
-        $this->processFormView($view, $validationGroups);
     }
 
-    protected function processFormView(FormView $view, array $validationGroups)
+    /**
+     * Initializes attributes of form view to pass JS validation data
+     *
+     * @param FormView $view
+     */
+    protected function initFormViewJsValidationData(FormView $view)
     {
-        $constraints = $this->extractMetadataConstraints($view);
-        if ($this->isOptionalGroup($view)) {
+        // Add "data-validation-optional-group" to form view if required.
+        if ($this->isOptionalEmbeddedFormView($view)) {
             $view->vars['attr']['data-validation-optional-group'] = null;
         }
 
-        foreach ($view->children as $child) {
-            $childConstraints = $this->getFormViewConstraints($child, $constraints, $validationGroups);
-            $this->addDataValidationAttribute($child, $childConstraints);
+        //
+        $this->addDataValidationAttribute($view);
 
-            if ($child->children) {
-                $this->processFormView($child, $validationGroups);
-            }
-            if (isset($child->vars['prototype']) && $child->vars['prototype'] instanceof FormView) {
-                $this->processFormView($child, $validationGroups);
-                $this->processFormView($child->vars['prototype'], $validationGroups);
-            }
+        if (isset($view->vars['prototype']) && $view->vars['prototype'] instanceof FormView) {
+            $this->initFormViewJsValidationData($view->vars['prototype']);
+        }
+
+        foreach ($view->children as $child) {
+            $this->initFormViewJsValidationData($child);
         }
     }
 
-    protected function isOptionalGroup(FormView $view)
+    /**
+     * Detects if current form view represents an embedded form view that is optional, so validation will
+     * run only if one of the children is filled in.
+     *
+     * @param FormView $view
+     * @return bool
+     */
+    protected function isOptionalEmbeddedFormView(FormView $view)
     {
+        // Should have children
         if (!$view->children) {
             return false;
         }
 
+        // Should have parent
         if (!$view->parent) {
             return false;
         }
 
+        // Should not be a field with choices, suchs as checkboxes, radio or select
         if (isset($view->vars['choices'])) {
             return false;
         }
 
+
         if ($view->vars['required']) {
+            // if required should not inherit data
             if (!$view->vars['inherit_data']) {
                 return false;
             }
         }
 
+        // Should not be required
         if ($view->vars['required']) {
             return false;
         }
@@ -88,32 +114,23 @@ class JsValidationExtension extends AbstractTypeExtension
         return true;
     }
 
-    protected function extractMetadataConstraints(FormView $view)
+    /**
+     * Adds attribute to form view that contain data for JS validation
+     *
+     * @param FormView $view
+     */
+    protected function addDataValidationAttribute(FormView $view)
     {
-        $constraints = array();
-        if (isset($view->vars['data_class'])) {
-            $metadata = $this->metadataFactory->getMetadataFor($view->vars['data_class']);
-            $constraints = $metadata->properties;
-        }
-        if (!empty($constraints) && !empty($view->vars['error_mapping'])) {
-            foreach ($view->vars['error_mapping'] as $originalName => $mappedName) {
-                if (isset($constraints[$originalName])) {
-                    $constraints[$mappedName] = $constraints[$originalName];
-                }
-            }
-        }
+        $constraints = $this->getFormViewConstraints($view);
 
-        return $constraints;
-    }
-
-    protected function addDataValidationAttribute(FormView $view, array $constraints)
-    {
         $value = array();
         foreach ($constraints as $constraint) {
             $value[$this->getConstraintName($constraint)] = $this->getConstraintProperties($constraint);
         }
+
         if ($value) {
             $target = $view;
+            // @TODO Move this logic of handling repeated form type outside of this extension class, use events instead
             if (isset($view->vars['type']) && $view->vars['type'] == 'repeated') {
                 $repeatedNames = array_keys($view->vars['value']);
                 $target = $view->children[$repeatedNames[0]];
@@ -139,6 +156,12 @@ class JsValidationExtension extends AbstractTypeExtension
         }
     }
 
+    /**
+     * Gets constraint name based on object
+     *
+     * @param Constraint $constraint
+     * @return mixed|string
+     */
     protected function getConstraintName(Constraint $constraint)
     {
         $class = get_class($constraint);
@@ -149,6 +172,12 @@ class JsValidationExtension extends AbstractTypeExtension
         return $class;
     }
 
+    /**
+     * Gets all properties of constraint that will be passed to JS validation
+     *
+     * @param Constraint $constraint
+     * @return array
+     */
     protected function getConstraintProperties(Constraint $constraint)
     {
         $result = get_object_vars($constraint);
@@ -162,44 +191,98 @@ class JsValidationExtension extends AbstractTypeExtension
     }
 
     /**
+     * Gets constraints that should be checked on form view
+     *
      * @param FormView $view
-     * @param Constraint[] $constraints
-     * @param array $validationGroups
      * @return array
      */
-    protected function getFormViewConstraints(FormView $view, array $constraints, array $validationGroups)
+    protected function getFormViewConstraints(FormView $view)
     {
-        $allConstraints = array();
-        $isMapped = (!isset($view->vars['mapped']) || $view->vars['mapped']);
-        if ($isMapped && isset($constraints[$view->vars['name']])) {
-            $allConstraints = $constraints[$view->vars['name']]->constraints;
-        }
+        $constraints = $this->getMetadataConstraints($view);
+
         if (isset($view->vars['constraints'])) {
-            $allConstraints = array_merge($allConstraints, $view->vars['constraints']);
+            $constraints = array_merge($constraints, $view->vars['constraints']);
         }
+
         $result = array();
-        foreach ($allConstraints as $constraint) {
-            if (array_intersect($validationGroups, $constraint->groups)) {
+        foreach ($constraints as $constraint) {
+            if (array_intersect($this->validationGroups, $constraint->groups)) {
                 $result[] = $constraint;
             }
         }
+
         return $result;
     }
 
     /**
+     * Gets constraints for form view based on metadata
+     *
      * @param FormView $view
      * @return array
      */
-    protected function getValidationGroups(FormView $view)
+    protected function getMetadataConstraints(FormView $view)
     {
-        $result = isset($view->vars['validation_groups']) ?
-            $view->vars['validation_groups'] : array('Default');
+        $isMapped = (!isset($view->vars['mapped']) || $view->vars['mapped']);
 
-        if (is_callable($result)) {
-            $result = call_user_func($result, $view);
+        if (!$view->parent || !$isMapped) {
+            return array();
+        }
+
+        $name = $view->vars['name'];
+        $parentName = $view->parent->vars['full_name'];
+
+        if (!isset($this->metadataConstraintsCache[$parentName])) {
+            $this->metadataConstraintsCache[$parentName] = $this->extractMetadataPropertiesConstraints($view->parent);
+        }
+
+        $result = array();
+
+        if (isset($this->metadataConstraintsCache[$parentName][$name])) {
+            $result = $this->metadataConstraintsCache[$parentName][$name]->constraints;
         }
 
         return $result;
+    }
+
+    /**
+     * Extracts constraints based on validation metadata
+     *
+     * @param FormView $view
+     * @return array
+     */
+    protected function extractMetadataPropertiesConstraints(FormView $view)
+    {
+        $constraints = array();
+        if (isset($view->vars['data_class'])) {
+            $metadata = $this->metadataFactory->getMetadataFor($view->vars['data_class']);
+            $constraints = $metadata->properties;
+        }
+        if (!empty($constraints) && !empty($view->vars['error_mapping'])) {
+            foreach ($view->vars['error_mapping'] as $originalName => $mappedName) {
+                if (isset($constraints[$originalName])) {
+                    $constraints[$mappedName] = $constraints[$originalName];
+                }
+            }
+        }
+
+        return $constraints;
+    }
+
+    /**
+     * Extracts validation groups option from form view
+     *
+     * @param FormView $view
+     * @return array
+     */
+    protected function extractValidationGroups(FormView $view)
+    {
+        $validationGroups = isset($view->vars['validation_groups']) ?
+            $view->vars['validation_groups'] : array('Default');
+
+        if (is_callable($validationGroups)) {
+            $validationGroups = call_user_func($validationGroups, $view);
+        }
+        return $validationGroups;
     }
 
     /**
