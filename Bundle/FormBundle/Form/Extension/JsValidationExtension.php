@@ -29,6 +29,9 @@ class JsValidationExtension extends AbstractTypeExtension
         if (isset($options['error_mapping'])) {
             $view->vars['error_mapping'] = $options['error_mapping'];
         }
+        if (isset($options['inherit_data'])) {
+            $view->vars['inherit_data'] = $options['inherit_data'];
+        }
         $validationGroups = $this->getValidationGroups($view);
 
         if ($view->parent) {
@@ -50,12 +53,11 @@ class JsValidationExtension extends AbstractTypeExtension
     {
         $constraints = $this->extractMetadataConstraints($view);
         if ($view->children && $view->parent && !isset($view->vars['choices'])) {
-            $required = isset($view->vars['required']) ? $view->vars['required'] : false;
-            if (!$required) {
+            if (!$view->vars['required'] || $view->vars['inherit_data']) {
                 $view->vars['attr']['data-validation-optional-group'] = null;
             }
         }
-        foreach ($this->getMappedChildren($view) as $child) {
+        foreach ($view->children as $child) {
             $childConstraints = $this->getFormViewConstraints($child, $constraints, $validationGroups);
             $this->addDataValidationAttribute($child, $childConstraints);
 
@@ -150,7 +152,8 @@ class JsValidationExtension extends AbstractTypeExtension
     protected function getFormViewConstraints(FormView $view, array $constraints, array $validationGroups)
     {
         $allConstraints = array();
-        if (isset($constraints[$view->vars['name']])) {
+        $isMapped = (!isset($view->vars['mapped']) || $view->vars['mapped']);
+        if ($isMapped && isset($constraints[$view->vars['name']])) {
             $allConstraints = $constraints[$view->vars['name']]->constraints;
         }
         if (isset($view->vars['constraints'])) {
@@ -162,29 +165,6 @@ class JsValidationExtension extends AbstractTypeExtension
                 $result[] = $constraint;
             }
         }
-        return $result;
-    }
-
-    /**
-     * @param FormView $view
-     * @return FormView[]
-     */
-    protected function getMappedChildren(FormView $view)
-    {
-        $result = array();
-
-        foreach ($view->children as $child) {
-            if (isset($child->vars['property_path']) &&
-                $child->vars['property_path'] === false) {
-                continue;
-            }
-            if (isset($child->vars['mapped']) &&
-                $child->vars['mapped'] === false) {
-                continue;
-            }
-            $result[] = $child;
-        }
-
         return $result;
     }
 
