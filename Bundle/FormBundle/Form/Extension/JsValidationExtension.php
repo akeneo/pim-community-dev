@@ -63,10 +63,6 @@ class JsValidationExtension extends AbstractTypeExtension
 
     protected function isOptionalGroup(FormView $view)
     {
-        if (isset($view->vars['prototype']) && $view->vars['prototype'] instanceof FormView) {
-            return true;
-        }
-
         if (!$view->children) {
             return false;
         }
@@ -83,6 +79,10 @@ class JsValidationExtension extends AbstractTypeExtension
             if (!$view->vars['inherit_data']) {
                 return false;
             }
+        }
+
+        if ($view->vars['required']) {
+            return false;
         }
 
         return true;

@@ -80,7 +80,12 @@
 {%  endblock %}
 
 {% block oro_address_widget %}
-    {{ form_errors(form) }}
+    <div {{ block('widget_container_attributes') }}>
+        {{ block('oro_address_rows') }}
+    </div>
+{%  endblock %}
+
+{% block oro_address_rows %}
     {{ form_row(form.id) }}
     {{ form_row(form.label) }}
     {{ form_row(form.namePrefix) }}
@@ -100,9 +105,15 @@
 {%  endblock %}
 
 {% block oro_typed_address_widget %}
+    <div {{ block('widget_container_attributes') }}>
+        {{ block('oro_typed_address_rows') }}
+    </div>
+{%  endblock %}
+
+{% block oro_typed_address_rows %}
     {{ form_row(form.types) }}
     {{ form_row(form.primary) }}
-    {{ block('oro_address_widget') }}
+    {{ block('oro_address_rows') }}
 {%  endblock %}
 
 {% macro oro_collection_item_prototype(widget) %}
@@ -113,7 +124,7 @@
         {% set form = widget %}
         {% set name = widget.vars.full_name %}
     {% endif %}
-    <div data-content="{{ name }}">
+    <div data-content="{{ name }}" data-validation-optional-group>
         <div class="row-oro oro-multiselect-holder">
             {{ form_widget(form) }}
             <button class="removeRow btn btn-action btn-link" type="button" data-related="{{ name }}">×</button>
