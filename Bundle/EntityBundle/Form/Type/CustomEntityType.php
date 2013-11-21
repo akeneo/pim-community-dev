@@ -103,10 +103,6 @@ class CustomEntityType extends AbstractType
                 ];
 
                 switch ($fieldConfigId->getFieldType()) {
-//                    case 'optionSet':
-//                        $options['type'] = 'oro_entity_option_set';
-//                        $options['data_class'] = 'Oro\bundle\EntityConfigBundle\Entity\OptionSet';
-//                        break;
                     case 'boolean':
                         $options['empty_value'] = false;
                         $options['choices']     = ['No', 'Yes'];

@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\EntityExtendBundle\Form\Type;
 
-use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
+//use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -12,12 +12,13 @@ class OptionSetType extends AbstractType
     /**
      * @var ConfigProvider
      */
+    /*
     protected $configProvider;
 
     public function __construct(ConfigProvider $configProvider)
     {
         $this->configProvider = $configProvider;
-    }
+    }*/
 
     /**
      * {@inheritdoc}
@@ -43,8 +44,6 @@ class OptionSetType extends AbstractType
                     'required' => false,
                 ]
             );
-
-        //$builder->setData()
     }
 
     /**
@@ -52,11 +51,7 @@ class OptionSetType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(
-            [
-                'data_class' => 'Oro\Bundle\EntityConfigBundle\Entity\OptionSet',
-            ]
-        );
+        $resolver->setDefaults(['data_class' => 'Oro\Bundle\EntityConfigBundle\Entity\OptionSet']);
     }
 
     /**
