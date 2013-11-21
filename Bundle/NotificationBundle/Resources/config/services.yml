@@ -136,7 +136,6 @@ services:
             - @doctrine.orm.entity_manager
             - %oro_notification.mailer.transport.spool_entity.class%
 
-
     oro_notification.mailer.transport.eventdispatcher:
         parent: swiftmailer.transport.eventdispatcher.abstract
 

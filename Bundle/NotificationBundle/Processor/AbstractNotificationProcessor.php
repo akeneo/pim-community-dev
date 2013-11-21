@@ -33,11 +33,12 @@ abstract class AbstractNotificationProcessor
     /**
      * Add command to job queue if it has not been added earlier
      *
-     * @param $command
-     * @param $commandArgs
+     * @param string $command
+     * @param array $commandArgs
+     * @param boolean $needFlush
      * @return boolean|integer
      */
-    protected function addJob($command, $commandArgs)
+    protected function addJob($command, $commandArgs = array(), $needFlush = false)
     {
         $currJob = $this->em
             ->createQuery("SELECT j FROM JMSJobQueueBundle:Job j WHERE j.command = :command AND j.state <> :state")
@@ -48,7 +49,9 @@ abstract class AbstractNotificationProcessor
         if (!$currJob) {
             $job = new Job($command, $commandArgs);
             $this->em->persist($job);
-            $this->em->flush($job);
+            if ($needFlush) {
+                $this->em->flush($job);
+            }
         }
 
         return $currJob ? $currJob->getId() : true;
