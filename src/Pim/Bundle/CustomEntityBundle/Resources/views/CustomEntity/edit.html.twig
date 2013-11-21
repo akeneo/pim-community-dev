@@ -1,68 +1,49 @@
 {% extends baseTemplate %}
 
+{% oro_title_set({ params: { ('%' ~ customEntityName ~ '.label%'): form.vars.value ~ "" } }) %}
+
 {% block content %}
-{% set title = (customEntityName ~ ".edit")|trans %}
+    {{ JSFV(form) }}
+    {{ form_start(form, {
+        'action': path(editRoute, { id: form.vars.value.id, customEntityName: customEntityName}),
+        'attr': {
+            'data-updated-title': 'confirmation.leave'|trans,
+            'data-updated-message': 'confirmation.discard changes'|trans({ '%entity%': customEntityName|trans })
+        }
+    }) }}
 
-<form id="{{ form.vars.id }}" class="form-horizontal form-register" action="{{ path(editRoute, { customEntityName: customEntityName, id: form.vars.value.id }) }}" method="POST">
+        {% block custom_entity_page_header %}
+            {% set title = (customEntityName ~ '.edit')|trans ~ ' - ' ~ form.vars.value %}
+            {% set indexUrl = path(indexRoute, { customEntityName: customEntityName }) %}
+            {% set buttons %}
+                {{ elements.backLink(indexUrl) }}
+                {{
+                    elements.deleteLink(
+                        path(removeRoute, { customEntityName: customEntityName, id: form.vars.value.id }),
+                        indexUrl,
+                        ("confirmation.remove." ~ customEntityName)|trans,
+                        '',
+                        ("flash." ~ customEntityName ~ ".removed")|trans
+                    )
+                }}
+                {{ elements.submitBtn() }}
+            {% endset %}
+            {{ elements.page_header(title, buttons, null, null, elements.updated(form.vars.id)) }}
+        {% endblock %}
+        {% block custom_entity_form_tabs %}
+            {{ elements.form_navbar(['Properties']) }}
 
-    <div class="navigation clearfix navbar-extra navbar-extra-right">
-        <div class="row-fluid">
-            <div class="pull-right">
-                <div class="pull-right">
-                    <div class="btn-group icons-holder">
-                        <a class="btn" href="{{ path(indexRoute, {customEntityName: customEntityName}) }}" title="{{ 'Back to grid' | trans }}"><i class="icon-chevron-left"></i></a>
-                    </div>
-                    <div class="btn-group icons-holder">
-                            <a {{ elements.deleteLinkAttributes(
-                                path(removeRoute, { customEntityName: customEntityName, id: form.vars.value.id }),
-                                path(indexRoute, { customEntityName: customEntityName }),
-                                ("confirmation.remove." ~ customEntityName)|trans,
-                                "",
-                                ("flash." ~ customEntityName ~ ".remove")|trans
-                            ) }} class="btn icons-holder-text" id="btn-delete-color" title="{{ 'Delete'|trans }}"><i class="icon-trash hide-text">{{ 'Remove'|trans }}</i>Delete</a>
-                    </div>
-                    <div class="btn-group">
-                        <button type="submit" class="btn btn-primary"><i class="hide-text">Save </i> {{ ' Save'|trans }}</button>
-                    </div>
-                </div>
-            </div>
-            <div class="pull-left">
-                <div class="navbar-content pull-left">
-                    <div class="navbar-title clearfix-oro">
-                        <div class="sub-title">{{ title }} {{ form.vars.value.label }}</div>
-                    </div>
-                    <ul class="inline">
-                       <li>{{ 'Last update'|trans }}: {{ form.vars.value.updated|date("Y-m-d") }}</li>
-                       <li>{{ 'Created'|trans }}: {{ form.vars.value.created|date("Y-m-d") }}</li>
-                   </ul>
-               </div>
-            </div>
-        </div>
-    </div>
+            <div class="row-fluid tab-content">
 
-    <div class="row-fluid">
-        {% if form.vars.errors|length %}
-            <div class="alert alert-error">
-                {{ form_errors(form) }}
-            </div>
-        {% endif %}
+                {{ elements.form_errors(form) }}
 
-        <div id="accordion1" class="accordion">
-            <div class="accordion-group">
-                <div class="accordion-heading">
-                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#collapseOne">
-                        <i class="fa-icon-collapse-alt"></i>
-                        {{ "General Properties"|trans }}
-                    </a>
-                </div>
-                <div id="collapseOne" class="accordion-body in">
-                    <div class="accordion-inner">
+                <div class="tab-pane active" id="properties">
+                    {% block custom_entity_form_properties %}
+                        {{ elements.accordion({ 'General Properties': form_widget(form) }) }}
                         {{ form_widget(form) }}
-                    </div>
+                    {% endblock %}
                 </div>
             </div>
-        </div>
-    </div>
-    {{ form_row(form._token) }}
-</form>
+        {% endblock %}
+    {{ form_end(form) }}
 {% endblock %}
