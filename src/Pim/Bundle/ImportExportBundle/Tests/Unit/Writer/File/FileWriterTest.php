@@ -13,8 +13,7 @@ use Pim\Bundle\ImportExportBundle\Writer\File\FileWriter;
  */
 class FileWriterTest extends \PHPUnit_Framework_TestCase
 {
-    const EXPORT_DIRECTORY = '/tmp';
-    const EXPORT_FILE = 'test';
+    const EXPORT_PATH = '/tmp/test';
     const EXPECT_PATH = '/tmp/constat';
 
     /**
@@ -32,7 +31,7 @@ class FileWriterTest extends \PHPUnit_Framework_TestCase
     protected function tearDown()
     {
         @unlink(self::EXPECT_PATH);
-        @unlink(sprintf('%s/%s', self::EXPORT_DIRECTORY, self::EXPORT_FILE));
+        @unlink(self::EXPORT_PATH);
     }
 
     /**
@@ -52,13 +51,11 @@ class FileWriterTest extends \PHPUnit_Framework_TestCase
     {
         file_put_contents(self::EXPECT_PATH, 'foo');
 
-        $this->writer->setDirectoryName(self::EXPORT_DIRECTORY);
-        $this->writer->setFileName(self::EXPORT_FILE);
+        $this->writer->setFilePath(self::EXPORT_PATH);
         $this->writer->write(array('foo'));
 
-        $filename = sprintf('%s/%s', self::EXPORT_DIRECTORY, self::EXPORT_FILE);
-        $this->assertFileExists($filename);
-        $this->assertFileEquals(self::EXPECT_PATH, $filename);
+        $this->assertFileExists(self::EXPORT_PATH);
+        $this->assertFileEquals(self::EXPECT_PATH, self::EXPORT_PATH);
     }
 
     /**
@@ -66,8 +63,7 @@ class FileWriterTest extends \PHPUnit_Framework_TestCase
      */
     public function testIncrementWriteCount()
     {
-        $this->writer->setDirectoryName(self::EXPORT_DIRECTORY);
-        $this->writer->setFileName(self::EXPORT_FILE);
+        $this->writer->setFilePath(self::EXPORT_PATH);
 
         $this->stepExecution->expects($this->exactly(2))
             ->method('incrementWriteCount');

@@ -194,21 +194,14 @@ oro_batch:
 
     file_writer:
         title: Output
-        directoryName:
-            label: Directory path
+        filePath:
+            label: File path
             help: Where to write the generated file on the file system
-        fileName:
-            label: File name
-            help: The name of the generated file.
-
     product_writer:
         title: Product storage
-        directoryName:
-            label: Directory path
+        filePath:
+            label: File path
             help: Where to write the generated file on the file system
-        fileName:
-            label: File name
-            help: The name of the generated file.
 
     category_writer:
         title: Category storage

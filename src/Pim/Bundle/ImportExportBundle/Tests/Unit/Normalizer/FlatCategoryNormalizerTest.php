@@ -3,6 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Normalizer;
 
 use Pim\Bundle\ImportExportBundle\Normalizer\FlatCategoryNormalizer;
+use Pim\Bundle\ImportExportBundle\Normalizer\FlatTranslationNormalizer;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 
 /**
@@ -19,7 +20,7 @@ class FlatCategoryNormalizerTest extends CategoryNormalizerTest
      */
     protected function setUp()
     {
-        $this->normalizer = new FlatCategoryNormalizer();
+        $this->normalizer = new FlatCategoryNormalizer(new FlatTranslationNormalizer());
         $this->format     = 'csv';
     }
 

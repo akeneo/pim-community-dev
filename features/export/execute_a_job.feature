@@ -9,17 +9,15 @@ Feature: Execute a job
 
   Scenario: Fail to see the execute button of a job with validation errors
     Given the following job "footwear_product_export" configuration:
-      | element   | property      | value |
-      | writer    | directoryName |       |
-      | writer    | fileName      |       |
+      | element | property | value |
+      | writer  | filePath |       |
     When I am on the "footwear_product_export" export job page
     Then I should not see the "Export now" link
 
   Scenario: Fail to launch a job with validation errors
     Given the following job "footwear_product_export" configuration:
-      | element   | property      | value |
-      | writer    | directoryName |       |
-      | writer    | fileName      |       |
+      | element | property | value |
+      | writer  | filePath |       |
     When I launch the "footwear_product_export" export job
     Then I should not see "The export is running."
     And I should not see "An error occured during the export execution."
