@@ -10,11 +10,12 @@ Pim\Bundle\CatalogBundle\Entity\Channel:
                 strategy: AUTO
         code:
             type: string
-            length: 50
+            length: 100
             unique: true
         label:
             type: string
             length: 100
+            nullable: true
     manyToOne:
         category:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\Category

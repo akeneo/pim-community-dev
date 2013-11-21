@@ -10,7 +10,7 @@ Pim\Bundle\CatalogBundle\Entity\GroupType:
                 strategy: AUTO
         code:
             type: string
-            length: 50
+            length: 100
             unique: true
         variant:
             type: boolean

@@ -14,11 +14,11 @@ Pim\Bundle\CatalogBundle\Entity\AssociationTranslation:
                 strategy: AUTO   
         label:
             type: string
-            length: 64
+            length: 100
             nullable: true
         locale:
             type: string
-            length: 10
+            length: 20
     manyToOne:
         foreignKey:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\Association

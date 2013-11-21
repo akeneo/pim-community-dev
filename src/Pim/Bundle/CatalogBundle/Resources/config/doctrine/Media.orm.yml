@@ -13,7 +13,6 @@ Pim\Bundle\CatalogBundle\Entity\Media:
             nullable: true
         filePath:
             type: string
-            scale: 0
             length: 500
             nullable: true
             column: file_path

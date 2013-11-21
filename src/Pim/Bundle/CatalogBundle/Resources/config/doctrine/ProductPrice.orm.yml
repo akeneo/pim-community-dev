@@ -13,7 +13,7 @@ Pim\Bundle\CatalogBundle\Entity\ProductPrice:
             nullable: true
         currency:
             type: string
-            length: 5
+            length: 3
             column: currency_code
     manyToOne:
         value:

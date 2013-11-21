@@ -10,6 +10,7 @@ Pim\Bundle\CatalogBundle\Entity\AttributeGroup:
                 strategy: AUTO 
         code:
             type: string
+            length: 100
             unique: true
         sortOrder:
             type: integer

@@ -10,7 +10,7 @@ Pim\Bundle\CatalogBundle\Entity\AttributeOption:
                 strategy: AUTO
         code:
             type: string
-            length: 255
+            length: 100
         default:
             type: boolean
             column: is_default

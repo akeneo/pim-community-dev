@@ -57,7 +57,7 @@ Pim\Bundle\CatalogBundle\Entity\ProductValue:
             column: locale_code
         scope:
             type: string
-            length: 20
+            length: 100
             nullable: true
             column: scope_code
     manyToOne:

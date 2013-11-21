@@ -10,7 +10,7 @@ Pim\Bundle\CatalogBundle\Entity\Group:
                 strategy: AUTO
         code:
             type: string
-            length: 50
+            length: 100
             unique: true
     manyToOne:
         type:

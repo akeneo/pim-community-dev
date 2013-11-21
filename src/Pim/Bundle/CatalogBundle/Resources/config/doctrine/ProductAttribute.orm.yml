@@ -124,7 +124,7 @@ Pim\Bundle\CatalogBundle\Entity\ProductAttribute:
             column: is_scopable
         code:
             type: string
-            length: 255
+            length: 100
         entityType:
             type: string
             length: 255
