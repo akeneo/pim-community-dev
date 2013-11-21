@@ -2,9 +2,6 @@
 
 namespace Pim\Bundle\ImportExportBundle\Validator\Csv;
 
-use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\Regex;
-
 /**
  * Validates a csv attribute row
  *
