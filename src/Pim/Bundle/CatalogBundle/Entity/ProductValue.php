@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexibleValue;
@@ -19,85 +18,59 @@ use Pim\Bundle\CatalogBundle\Entity\Media;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @ORM\Table(name="pim_catalog_product_value", indexes={
- *     @ORM\Index(name="value_idx", columns={"attribute_id", "locale_code", "scope_code"}),
- *     @ORM\Index(name="varchar_idx", columns={"value_string"}),
- *     @ORM\Index(name="integer_idx", columns={"value_integer"})
- * })
- * @ORM\Entity
- *
  * @ExclusionPolicy("all")
  */
 class ProductValue extends AbstractEntityFlexibleValue implements ProductValueInterface
 {
     /**
      * @var Oro\Bundle\FlexibleEntityBundle\Entity\Attribute $attribute
-     *
-     * @ORM\ManyToOne(targetEntity="Pim\Bundle\CatalogBundle\Entity\ProductAttribute")
-     * @ORM\JoinColumn(name="attribute_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
      */
     protected $attribute;
 
     /**
      * @var ProductInterface $entity
-     *
-     * @ORM\ManyToOne(targetEntity="Pim\Bundle\CatalogBundle\Model\ProductInterface", inversedBy="values")
      */
     protected $entity;
 
     /**
      * Store varchar value
      * @var string $varchar
-     *
-     * @ORM\Column(name="value_string", type="string", length=255, nullable=true)
      */
     protected $varchar;
 
     /**
      * Store int value
      * @var integer $integer
-     *
-     * @ORM\Column(name="value_integer", type="integer", nullable=true)
      */
     protected $integer;
 
     /**
      * Store decimal value
      * @var double $decimal
-     *
-     * @ORM\Column(name="value_decimal", type="decimal", precision=14, scale=4, nullable=true)
      */
     protected $decimal;
 
     /**
      * Store boolean value
      * @var boolean $boolean
-     *
-     * @ORM\Column(name="value_boolean", type="boolean", nullable=true)
      */
     protected $boolean;
 
     /**
      * Store text value
      * @var string $text
-     *
-     * @ORM\Column(name="value_text", type="text", nullable=true)
      */
     protected $text;
 
     /**
      * Store date value
      * @var date $date
-     *
-     * @ORM\Column(name="value_date", type="date", nullable=true)
      */
     protected $date;
 
     /**
      * Store datetime value
      * @var date $datetime
-     *
-     * @ORM\Column(name="value_datetime", type="datetime", nullable=true)
      */
     protected $datetime;
 
@@ -105,12 +78,6 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
      * Store options values
      *
      * @var ArrayCollection options
-     *
-     * @ORM\ManyToMany(targetEntity="Pim\Bundle\CatalogBundle\Entity\AttributeOption", cascade={"refresh"})
-     * @ORM\JoinTable(name="pim_catalog_value_option",
-     *      joinColumns={@ORM\JoinColumn(name="value_id", referencedColumnName="id", onDelete="CASCADE")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="option_id", referencedColumnName="id", onDelete="CASCADE")}
-     * )
      */
     protected $options;
 
@@ -118,9 +85,6 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
      * Store simple option value
      *
      * @var Pim\Bundle\CatalogBundle\Entity\AttributeOption $option
-     *
-     * @ORM\ManyToOne(targetEntity="Pim\Bundle\CatalogBundle\Entity\AttributeOption", cascade={"persist", "refresh"})
-     * @ORM\JoinColumn(name="option_id", referencedColumnName="id", onDelete="SET NULL")
      */
     protected $option;
 
@@ -128,13 +92,6 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
      * Store upload values
      *
      * @var Media $media
-     *
-     * @ORM\OneToOne(
-     *     targetEntity="Pim\Bundle\CatalogBundle\Entity\Media",
-     *     cascade={"persist", "refresh"},
-     *     inversedBy="value"
-     * )
-     * @ORM\JoinColumn(name="media_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $media;
 
@@ -142,9 +99,6 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
      * Store metric value
      *
      * @var Metric $metric
-     *
-     * @ORM\OneToOne(targetEntity="Oro\Bundle\FlexibleEntityBundle\Entity\Metric", cascade={"persist", "refresh"})
-     * @ORM\JoinColumn(name="metric_id", referencedColumnName="id", onDelete="SET NULL")
      */
     protected $metric;
 
@@ -152,13 +106,6 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
      * Store prices value
      *
      * @var ArrayCollection $prices
-     *
-     * @ORM\OneToMany(
-     *     targetEntity="Pim\Bundle\CatalogBundle\Entity\ProductPrice",
-     *     mappedBy="value",
-     *     cascade={"persist", "remove", "refresh"}
-     * )
-     * @ORM\OrderBy({"currency" = "ASC"})
      */
     protected $prices;
 

@@ -102,7 +102,6 @@ class CategoryProcessor extends AbstractEntityProcessor
         $category = $this->getCategory($item);
 
         $category->setCode($item['code']);
-        $category->setDynamic((bool) $item['dynamic']);
         foreach ($item as $key => $value) {
             if (preg_match('/^label-(.+)/', $key, $matches)) {
                 $category->setLocale($matches[1]);
