@@ -62,6 +62,11 @@ services:
         arguments:
             - '@pim_import_export.csv.attribute_option_validator'
 
+    pim_import_export.reader.file.csv_attribute:
+        class: %pim_import_export.reader.file.csv.class%
+        arguments:
+            - '@pim_import_export.csv.attribute_validator'
+
     pim_import_export.reader.file.csv:
         class: %pim_import_export.reader.file.csv.class%
 
