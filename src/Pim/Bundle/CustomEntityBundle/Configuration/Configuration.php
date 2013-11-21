@@ -4,7 +4,7 @@ namespace Pim\Bundle\CustomEntityBundle\Configuration;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Pim\Bundle\CustomEntityBundle\ControllerWorker\WorkerInterface;
+use Pim\Bundle\CustomEntityBundle\Controller\Strategy\StrategyInterface;
 use Pim\Bundle\CustomEntityBundle\Manager\ManagerInterface;
 
 /**
@@ -27,9 +27,9 @@ class Configuration implements ConfigurationInterface
     protected $manager;
 
     /**
-     * @var WorkerInterface
+     * @var StrategyInterface
      */
-    protected $worker;
+    protected $controllerStrategy;
 
     /**
      * @var array
@@ -44,11 +44,11 @@ class Configuration implements ConfigurationInterface
      * @param WorkerInterface  $worker
      * @param array            $options
      */
-    public function __construct($name, ManagerInterface $manager, WorkerInterface $worker, array $options)
+    public function __construct($name, ManagerInterface $manager, StrategyInterface $controllerStrategy, array $options)
     {
         $this->name = $name;
         $this->manager = $manager;
-        $this->worker = $worker;
+        $this->controllerStrategy = $controllerStrategy;
         $optionsResolver = new OptionsResolver;
         $this->setDefaultOptions($optionsResolver);
         $this->options = $optionsResolver->resolve($options);
@@ -73,9 +73,9 @@ class Configuration implements ConfigurationInterface
     /**
      * {@inheritdoc}
      */
-    public function getWorker()
+    public function getControllerStrategy()
     {
-        return $this->worker;
+        return $this->controllerStrategy;
     }
 
     /**

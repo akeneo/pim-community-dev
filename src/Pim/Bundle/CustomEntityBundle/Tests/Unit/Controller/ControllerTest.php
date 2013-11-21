@@ -28,18 +28,18 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
         $this->controller = new Controller($this->request, $this->configurationRegistry);
     }
 
-    public function testWorkerAction()
+    public function testAction()
     {
-        $worker = $this->getMockBuilder('Pim\Bundle\CustomEntityBundle\ControllerWorker\WorkerInterface')
+        $controllerStrategy = $this->getMockBuilder('Pim\Bundle\CustomEntityBundle\Controller\Strategy\strategyInterface')
             ->setMethods(array('action'))
             ->getMock();
 
         $configuration = $this->getMock('Pim\Bundle\CustomEntityBundle\Configuration\ConfigurationInterface');
         $configuration->expects($this->once())
-            ->method('getWorker')
-            ->will($this->returnValue($worker));
+            ->method('getControllerStrategy')
+            ->will($this->returnValue($controllerStrategy));
 
-        $worker->expects($this->once())
+        $controllerStrategy->expects($this->once())
             ->method('action')
             ->with($this->identicalTo($configuration), $this->identicalTo($this->request))
             ->will($this->returnValue('success'));
@@ -54,7 +54,7 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo('name'))
             ->will($this->returnValue($configuration));
 
-        $this->assertEquals('success', $this->controller->workerAction('name', 'action'));
+        $this->assertEquals('success', $this->controller->action('name', 'action'));
     }
 
     /**
@@ -66,6 +66,6 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
             ->method('has')
             ->with($this->equalTo('name'))
             ->will($this->returnValue(false));
-        $this->controller->workerAction('name', 'action');
+        $this->controller->action('name', 'action');
     }
 }

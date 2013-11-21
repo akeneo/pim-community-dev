@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\CustomEntityBundle\Configuration;
 
-use Pim\Bundle\CustomEntityBundle\ControllerWorker\WorkerInterface;
 use Pim\Bundle\CustomEntityBundle\Manager\ManagerInterface;
+use Pim\Bundle\CustomEntityBundle\Controller\Strategy\StrategyInterface;
 
 /**
  * Common interface for configuration services
@@ -60,9 +60,9 @@ interface ConfigurationInterface
     public function getIndexTemplate();
 
     /**
-     * @return WorkerInterface
+     * @return StrategyInterface
      */
-    public function getWorker();
+    public function getControllerStrategy();
 
     /**
      * @return string

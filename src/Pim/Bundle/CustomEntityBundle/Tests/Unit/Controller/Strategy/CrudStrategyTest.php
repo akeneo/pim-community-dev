@@ -1,8 +1,8 @@
 <?php
 
-namespace Pim\Bundle\CustomEntityBundle\Tests\Unit\ControllerWorker;
+namespace Pim\Bundle\CustomEntityBundle\Tests\Unit\Controller\Strategy;
 
-use Pim\Bundle\CustomEntityBundle\ControllerWorker\Worker;
+use Pim\Bundle\CustomEntityBundle\Controller\Strategy\CrudStrategy;
 
 /**
  * Tests related class
@@ -11,14 +11,14 @@ use Pim\Bundle\CustomEntityBundle\ControllerWorker\Worker;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class WorkerTest extends AbstractWorkerTest
+class CrudStrategyTest extends AbstractStrategyTest
 {
-    protected $worker;
+    protected $strategy;
 
     protected function setUp()
     {
         parent::setUp();
-        $this->worker = new Worker($this->formFactory, $this->templating, $this->router, $this->translator);
+        $this->strategy = new CrudStrategy($this->formFactory, $this->templating, $this->router, $this->translator);
     }
 
     public function getFormActionData()
@@ -56,6 +56,7 @@ class WorkerTest extends AbstractWorkerTest
         $this->configuration->expects($this->any())
             ->method('getCreateRedirectRouteParameters')
             ->will($this->returnValue(array('create_redirect_route_parameters')));
+
         $this->manager->expects($this->once())
             ->method('create')
             ->with(
@@ -64,10 +65,12 @@ class WorkerTest extends AbstractWorkerTest
                 $this->equalTo(array('create_options'))
             )
             ->will($this->returnValue($entity));
-        $form = $this->getMockForm('create_form_type', $entity, array('create_form_options'));
+
         $this->request->expects($this->once())
             ->method('getMethod')
             ->will($this->returnValue($post ? 'POST' : 'GET'));
+
+        $form = $this->getMockForm('create_form_type', $entity, array('create_form_options'));
         if ($post) {
             $form->expects($this->once())
                 ->method('bind')
@@ -79,6 +82,7 @@ class WorkerTest extends AbstractWorkerTest
             $form->expects($this->never())
                 ->method('bind');
         }
+
         if ($valid) {
             $this->router->expects($this->once())
                 ->method('generate')
@@ -93,7 +97,9 @@ class WorkerTest extends AbstractWorkerTest
                 ->will($this->returnValue('form_view'));
             $this->assertRendered('create_template', array('form'=>'form_view'));
         }
-        $result = $this->worker->createAction($this->configuration, $this->request);
+
+        $result = $this->strategy->createAction($this->configuration, $this->request);
+
         if ($valid) {
             $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $result);
         } else {
@@ -167,7 +173,7 @@ class WorkerTest extends AbstractWorkerTest
                 ->will($this->returnValue('form_view'));
             $this->assertRendered('edit_template', array('form'=>'form_view'));
         }
-        $result = $this->worker->editAction($this->configuration, $this->request);
+        $result = $this->strategy->editAction($this->configuration, $this->request);
         if ($valid) {
             $this->assertInstanceOf('Symfony\Component\HttpFoundation\RedirectResponse', $result);
             $this->assertEquals('url', $result->getTargetUrl());
@@ -187,7 +193,7 @@ class WorkerTest extends AbstractWorkerTest
         $this->manager->expects($this->once())
             ->method('find')
             ->will($this->returnValue(null));
-        $this->worker->editAction($this->configuration, $this->request);
+        $this->strategy->editAction($this->configuration, $this->request);
     }
 
     public function testRemove()
@@ -211,7 +217,7 @@ class WorkerTest extends AbstractWorkerTest
         $this->manager->expects($this->once())
             ->method('remove')
             ->with($this->equalTo($entity));
-        $response = $this->worker->removeAction($this->configuration, $this->request);
+        $response = $this->strategy->removeAction($this->configuration, $this->request);
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $response);
         $this->assertEquals(204, $response->getStatusCode());
     }
@@ -227,7 +233,7 @@ class WorkerTest extends AbstractWorkerTest
         $this->manager->expects($this->once())
             ->method('find')
             ->will($this->returnValue(null));
-        $this->worker->removeAction($this->configuration, $this->request);
+        $this->strategy->removeAction($this->configuration, $this->request);
     }
 
     protected function getMockForm($type, $entity, $options)

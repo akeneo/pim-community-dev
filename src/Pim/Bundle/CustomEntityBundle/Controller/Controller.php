@@ -40,7 +40,7 @@ class Controller
     /**
      * {@inheritdoc}
      */
-    public function workerAction($customEntityName, $workerAction)
+    public function action($customEntityName, $actionName)
     {
         if (!$this->configurationRegistry->has($customEntityName)) {
             throw new NotFoundHttpException;
@@ -49,7 +49,7 @@ class Controller
         $configuration = $this->configurationRegistry->get($customEntityName);
 
         return call_user_func(
-            array($configuration->getWorker(), $workerAction),
+            array($configuration->getControllerStrategy(), $actionName),
             $configuration,
             $this->request
         );

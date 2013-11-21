@@ -33,7 +33,7 @@ class OrmManager implements OrmManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function createEntity($entityClass, array $defaultValues = array(), array $options = array())
+    public function create($entityClass, array $defaultValues = array(), array $options = array())
     {
         $object = new $entityClass;
         foreach ($defaultValues as $propertyPath => $value) {
@@ -46,7 +46,7 @@ class OrmManager implements OrmManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function findEntity($entityClass, $id, array $options = array())
+    public function find($entityClass, $id, array $options = array())
     {
         return $this->doctrine->getRepository($entityClass)->find($id);
     }
@@ -75,7 +75,7 @@ class OrmManager implements OrmManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function removeEntity($entity)
+    public function remove($entity)
     {
         $em = $this->doctrine->getManager();
         $em->remove($entity);

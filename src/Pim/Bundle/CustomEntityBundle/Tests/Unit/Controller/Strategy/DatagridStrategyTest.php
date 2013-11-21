@@ -1,8 +1,8 @@
 <?php
 
-namespace Pim\Bundle\CustomEntityBundle\Tests\Unit\ControllerWorker;
+namespace Pim\Bundle\CustomEntityBundle\Tests\Unit\Controller\Strategy;
 
-use Pim\Bundle\CustomEntityBundle\ControllerWorker\DatagridWorker;
+use Pim\Bundle\CustomEntityBundle\Controller\Strategy\DatagridStrategy;
 
 /**
  * Tests related class
@@ -11,16 +11,16 @@ use Pim\Bundle\CustomEntityBundle\ControllerWorker\DatagridWorker;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class DatagridWorkerTest extends AbstractWorkerTest
+class DatagridStrategyTest extends AbstractStrategyTest
 {
     protected $datagridHelper;
-    protected $worker;
+    protected $strategy;
 
     protected function setUp()
     {
         parent::setUp();
         $this->datagridHelper = $this->getMock('Pim\Bundle\GridBundle\Helper\DatagridHelperInterface');
-        $this->worker = new DatagridWorker(
+        $this->strategy = new DatagridStrategy(
             $this->formFactory,
             $this->templating,
             $this->router,
@@ -89,6 +89,6 @@ class DatagridWorkerTest extends AbstractWorkerTest
             ('json' == $requestFormat) ? 'OroGridBundle:Datagrid:list.json.php' : 'index_template',
             array('datagrid' => 'datagrid_view')
         );
-        $result = $this->worker->indexAction($this->configuration, $this->request);
+        $this->assertEquals('success', $this->strategy->indexAction($this->configuration, $this->request));
     }
 }

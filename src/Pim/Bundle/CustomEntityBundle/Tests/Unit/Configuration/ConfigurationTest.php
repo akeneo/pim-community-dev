@@ -16,13 +16,13 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
 {
     protected $propertyAccessor;
     protected $manager;
-    protected $worker;
+    protected $controllerStrategy;
 
     protected function setUp()
     {
         $this->propertyAccessor = new PropertyAccessor;
         $this->manager = $this->getMock('Pim\Bundle\CustomEntityBundle\Manager\ManagerInterface');
-        $this->worker = $this->getMock('Pim\Bundle\CustomEntityBundle\ControllerWorker\WorkerInterface');
+        $this->controllerStrategy = $this->getMock('Pim\Bundle\CustomEntityBundle\Controller\Strategy\StrategyInterface');
     }
 
     public function testDefaultOptions()
@@ -50,7 +50,7 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
                 'query_builder_options'             => array(),
                 'datagrid_namespace'                => 'pim_custom_entity',
                 'manager'                           => $this->manager,
-                'worker'                            => $this->worker
+                'controller_strategy'               => $this->controllerStrategy
             )
         );
     }
@@ -172,6 +172,6 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
             'edit_form_type'    => 'edit_form_type'
         );
 
-        return new Configuration('name', $this->manager, $this->worker, $options);
+        return new Configuration('name', $this->manager, $this->controllerStrategy, $options);
     }
 }

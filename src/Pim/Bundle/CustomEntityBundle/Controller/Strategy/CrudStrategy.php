@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CustomEntityBundle\ControllerWorker;
+namespace Pim\Bundle\CustomEntityBundle\Controller\Strategy;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,7 +18,7 @@ use Pim\Bundle\CustomEntityBundle\Configuration\ConfigurationInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Worker implements WorkerInterface
+class CrudStrategy implements StrategyInterface
 {
     /**
      * @var FormFactoryInterface

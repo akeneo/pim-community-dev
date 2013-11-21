@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CustomEntityBundle\Tests\Unit\ControllerWorker;
+namespace Pim\Bundle\CustomEntityBundle\Tests\Unit\Controller\Strategy;
 
 /**
  * Base class for worker tests
@@ -9,7 +9,7 @@ namespace Pim\Bundle\CustomEntityBundle\Tests\Unit\ControllerWorker;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-abstract class AbstractWorkerTest extends \PHPUnit_Framework_TestCase
+abstract class AbstractStrategyTest extends \PHPUnit_Framework_TestCase
 {
     protected $formFactory;
     protected $templating;
