@@ -30,11 +30,9 @@ In additional Oro allows you to protect data on different levels:
 
  - **System**: Allows to gives a user a permissions to access to all records within the system.
  - **Organization**: Allows to gives a user a permissions to access to all records within the organization, regardless of the business unit hierarchical level to which a record belongs or the user is assigned to.
- - **Subordinate Business Unit**: Allows to gives a user a permissions to access to records in all business units are assigned to the user and all business units subordinate to business units are assigned to the user.
+ - **Division**: Allows to gives a user a permissions to access to records in all business units are assigned to the user and all business units subordinate to business units are assigned to the user.
  - **Business Unit**: Allows to gives a user a permissions to access to records in all business units are assigned to the user.
  - **User**: Allows to gives a user a permissions to access to own records and records that are shared with the user.
-
- `*` **NOTE: Currently only System level is supported**
 
 Also the following permissions are supported:
 
@@ -50,7 +48,7 @@ Also the following permissions are supported:
 ### Examples
 
  - If a user has **VIEW Contact on User level** privileges, this user can view all contacts he/she owns.
- - If a user has the **VIEW Account on Business Unit level** privilege, this user can view all accounts in all business units assigned to this user, but cannot view accounts in any child business units.
+ - If a user has the **VIEW Account on Division level** privilege, this user can view all accounts in all business units assigned to this user, but cannot view accounts in any child business units.
  - If a user has the **VIEW Account on Subordinate Business Unit level** privilege, this user can view all accounts in all business units assigned to this user, and all accounts in any child business units of these business units.
  - If a user has the **VIEW Account on Organization level** privilege, this user can view all accounts in all organizations assigned to this user.
  - If a user has the **VIEW Account on System level** privilege, this user can view all accounts regardless of which organizations this user or an account belongs.
