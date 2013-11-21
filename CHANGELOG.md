@@ -24,6 +24,7 @@
 - Display the "has product" filter by default in the product grid of group edit view
 - Display currency label in currencies datagrid
 - Disable changing the code of all configuration-related entities
+- Merge the directory and filename of export profiles into a single file path property
 
 ## Bug fixes
 - Mass delete products
