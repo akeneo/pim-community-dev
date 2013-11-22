@@ -17,7 +17,7 @@ jobs:
                     categoriesColumn: categories
                     familyColumn:     family
                     groupsColumn:     groups
-            import_association:
+            import_associations:
                 reader:
                     filePath:      /tmp/product.csv
                     uploadAllowed: true
