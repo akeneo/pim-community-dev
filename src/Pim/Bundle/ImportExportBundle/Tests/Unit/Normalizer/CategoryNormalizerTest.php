@@ -3,6 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Normalizer;
 
 use Pim\Bundle\ImportExportBundle\Normalizer\CategoryNormalizer;
+use Pim\Bundle\ImportExportBundle\Normalizer\TranslationNormalizer;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 
 /**
@@ -19,27 +20,30 @@ class CategoryNormalizerTest extends NormalizerTestCase
      */
     protected function setUp()
     {
-        $this->normalizer = new CategoryNormalizer();
+        $this->normalizer = new CategoryNormalizer(new TranslationNormalizer());
         $this->format     = 'json';
     }
 
     /**
-     * Data provider for testing supportsNormalization method
-     * @return array
+     * {@inheritdoc}
      */
     public static function getSupportNormalizationData()
     {
         return array(
-            array('Pim\Bundle\CatalogBundle\Model\CategoryInterface', 'json',  true),
+            array('Pim\Bundle\CatalogBundle\Model\CategoryInterface', 'json', true),
+            array('Pim\Bundle\CatalogBundle\Model\CategoryInterface', 'xml', true),
             array('Pim\Bundle\CatalogBundle\Model\CategoryInterface', 'csv', false),
-            array('stdClass',                                         'json',  false),
-            array('stdClass',                                         'csv', false),
+            array('Pim\Bundle\CatalogBundle\Entity\Category', 'json', true),
+            array('Pim\Bundle\CatalogBundle\Entity\Category', 'xml', true),
+            array('Pim\Bundle\CatalogBundle\Entity\Category', 'csv', false),
+            array('stdClass', 'json', false),
+            array('stdClass', 'xml', false),
+            array('stdClass', 'csv', false),
         );
     }
 
     /**
-     * Data provider for testing normalize method
-     * @return array
+     * {@inheritdoc}
      */
     public static function getNormalizeData()
     {
@@ -48,24 +52,21 @@ class CategoryNormalizerTest extends NormalizerTestCase
                 array(
                     'code'    => 'root_category',
                     'label'   => array('en' => 'Root category', 'fr' => 'Categorie racine'),
-                    'parent'  => '',
-                    'dynamic' => '0',
+                    'parent'  => ''
                 )
             ),
             array(
                 array(
                     'code'    => 'child_category',
                     'label'   => array('en' => 'Child category', 'fr' => 'fr:Catégorie enfant'),
-                    'parent'  => '1',
-                    'dynamic' => '0',
+                    'parent'  => '1'
                 )
             ),
         );
     }
 
     /**
-     * Create a category
-     * @param array $data
+     * {@inheritdoc}
      *
      * @return Category
      */
@@ -85,8 +86,6 @@ class CategoryNormalizerTest extends NormalizerTestCase
             $parent->setCode($data['parent']);
             $category->setParent($parent);
         }
-
-        $category->setDynamic($data['dynamic']);
 
         return $category;
     }

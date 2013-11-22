@@ -14,27 +14,9 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 class FlatAttributeGroupNormalizer extends AttributeGroupNormalizer
 {
     /**
-     * @var string[]
-     */
-    protected $supportedFormats = array('csv');
-
-    /**
      * @var array
      */
-    protected $results;
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function normalizeLabel(AttributeGroup $group)
-    {
-        $values = array();
-        foreach ($group->getTranslations() as $translation) {
-            $values[sprintf('label-%s', $translation->getLocale())] = $translation->getLabel();
-        }
-
-        return $values;
-    }
+    protected $supportedFormats = array('csv');
 
     /**
      * {@inheritdoc}

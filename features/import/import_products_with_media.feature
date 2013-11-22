@@ -89,7 +89,7 @@ Feature: Import media with products
     Given the following file to import:
     """
     sku;family;groups;frontView;name;userManual;categories
-    fanatic-freewave-76;funboard;;fanatic-freewave-76.gif;"Fanatic Freewave 76";fanatic-freewave-76.txt;sport
+    fanatic-freewave-76;funboard;;fanatic-freewave-76.jpg;"Fanatic Freewave 76";fanatic-freewave-76.pdf;sport
     """
     And the following job "acme_product_import" configuration:
       | element   | property          | value                |

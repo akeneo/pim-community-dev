@@ -48,7 +48,7 @@ class UserPreferencesListenerTest extends WebTestCase
         $prefix = sha1(rand(0, 9999999));
 
         $category = new Category();
-        $category->setCode('TEST_TREE');
+        $category->setCode($prefix .'TEST_TREE');
         $this->entityManager->persist($category);
 
         $channel1 = new Channel();

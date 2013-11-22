@@ -20,36 +20,19 @@ class AttributeOptionNormalizer implements NormalizerInterface
     protected $supportedFormats = array('json', 'xml');
 
     /**
-     * Transforms an object into a flat array
-     *
-     * @param object $entity
-     * @param string $format
-     * @param array  $context
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function normalize($entity, $format = null, array $context = array())
     {
-        $results = array(
+        return array(
             'attribute'  => $entity->getAttribute()->getCode(),
             'code'       => $entity->getCode(),
             'is_default' => ($entity->isDefault()) ? 1 : 0,
-        );
-        $results = array_merge(
-            $results,
-            $this->getNormalizedLabelsArray($entity)
-        );
-
-        return $results;
+        ) + $this->normalizeLabel($entity);
     }
 
     /**
-     * Indicates whether this normalizer can normalize the given data
-     *
-     * @param mixed  $data
-     * @param string $format
-     *
-     * @return boolean
+     * {@inheritdoc}
      */
     public function supportsNormalization($data, $format = null)
     {
@@ -63,7 +46,7 @@ class AttributeOptionNormalizer implements NormalizerInterface
      *
      * @return array
      */
-    protected function getNormalizedLabelsArray(AttributeOption $entity)
+    protected function normalizeLabel(AttributeOption $entity)
     {
         $labels = array();
         foreach ($entity->getOptionValues() as $translation) {

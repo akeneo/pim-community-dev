@@ -21,23 +21,6 @@ class FlatGroupNormalizer extends GroupNormalizer
     /**
      * {@inheritdoc}
      */
-    protected function getNormalizedLabelsArray(Group $group)
-    {
-        $values = array();
-        foreach ($group->getTranslations() as $translation) {
-            $values[sprintf('label-%s', $translation->getLocale())] = $translation->getLabel();
-        }
-
-        return $values;
-    }
-
-    /**
-     * Normalize the attributes
-     *
-     * @param Group $group
-     *
-     * @return array
-     */
     protected function normalizeAttributes(Group $group)
     {
         $attributes = parent::normalizeAttributes($group);

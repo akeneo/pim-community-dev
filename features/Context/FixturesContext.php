@@ -3,7 +3,6 @@
 namespace Context;
 
 use Symfony\Component\HttpFoundation\File\File;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Util\Inflector;
 use Oro\Bundle\BatchBundle\Entity\JobInstance;
 use Oro\Bundle\UserBundle\Entity\Role;
@@ -54,20 +53,21 @@ class FixturesContext extends RawMinkContext
     );
 
     private $entities = array(
-        'Product'        => 'PimCatalogBundle:Product',
-        'Attribute'      => 'PimCatalogBundle:ProductAttribute',
-        'AttributeGroup' => 'PimCatalogBundle:AttributeGroup',
-        'Channel'        => 'PimCatalogBundle:Channel',
-        'Currency'       => 'PimCatalogBundle:Currency',
-        'Family'         => 'PimCatalogBundle:Family',
-        'Category'       => 'PimCatalogBundle:Category',
-        'Association'    => 'PimCatalogBundle:Association',
-        'JobInstance'    => 'OroBatchBundle:JobInstance',
-        'User'           => 'OroUserBundle:User',
-        'Role'           => 'OroUserBundle:Role',
-        'Locale'         => 'PimCatalogBundle:Locale',
-        'ProductGroup'   => 'PimCatalogBundle:Group',
-        'GroupType'      => 'PimCatalogBundle:GroupType',
+        'Product'         => 'PimCatalogBundle:Product',
+        'Attribute'       => 'PimCatalogBundle:ProductAttribute',
+        'AttributeGroup'  => 'PimCatalogBundle:AttributeGroup',
+        'AttributeOption' => 'PimCatalogBundle:AttributeOption',
+        'Channel'         => 'PimCatalogBundle:Channel',
+        'Currency'        => 'PimCatalogBundle:Currency',
+        'Family'          => 'PimCatalogBundle:Family',
+        'Category'        => 'PimCatalogBundle:Category',
+        'Association'     => 'PimCatalogBundle:Association',
+        'JobInstance'     => 'OroBatchBundle:JobInstance',
+        'User'            => 'OroUserBundle:User',
+        'Role'            => 'OroUserBundle:Role',
+        'Locale'          => 'PimCatalogBundle:Locale',
+        'ProductGroup'    => 'PimCatalogBundle:Group',
+        'GroupType'       => 'PimCatalogBundle:GroupType',
     );
 
     private $placeholderValues = array();
@@ -524,12 +524,9 @@ class FixturesContext extends RawMinkContext
                 }
                 if ($data['value']) {
                     if ($value->getAttribute()->getAttributeType() === $this->attributeTypes['prices']) {
-                        foreach ($value->getPrices() as $price) {
-                            $value->removePrice($price);
-                        }
-                        $prices = $this->createPricesFromString($data['value']);
-                        foreach ($prices as $price) {
-                            $value->addPrice($price);
+                        $prices = $this->listToPrices($data['value']);
+                        foreach ($prices as $currency => $data) {
+                            $value->getPrice($currency)->setData($data);
                         }
                     } elseif ($value->getAttribute()->getAttributeType() === $this->attributeTypes['simpleselect']) {
                         $options = $value->getAttribute()->getOptions();
@@ -623,6 +620,52 @@ class FixturesContext extends RawMinkContext
             }
 
             $this->persist($category);
+        }
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Then /^there should be the following attributes:$/
+     */
+    public function thereShouldBeTheFollowingAttributes(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $attribute = $this->getAttribute($data['code']);
+            $this->getEntityManager()->refresh($attribute);
+
+            assertEquals($data['label-en_US'], $attribute->getTranslation('en_US')->getLabel());
+            assertEquals($data['type'], $attribute->getAttributeType());
+            assertEquals(($data['is_translatable'] == 1), $attribute->getTranslatable());
+            assertEquals(($data['is_scopable'] == 1), $attribute->getScopable());
+            assertEquals($data['group'], $attribute->getGroup()->getCode());
+            assertEquals(($data['useable_as_grid_column'] == 1), $attribute->isUseableAsGridColumn());
+            assertEquals(($data['useable_as_grid_filter'] == 1), $attribute->isUseableAsGridFilter());
+            assertEquals(($data['unique'] == 1), $attribute->getUnique());
+            if ($data['allowed_extensions'] != '') {
+                assertEquals(explode(',', $data['allowed_extensions']), $attribute->getAllowedExtensions());
+            }
+        }
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Then /^there should be the following options:$/
+     */
+    public function thereShouldBeTheFollowingOptions(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $attribute = $this->getEntityOrException('Attribute', array('code' => $data['attribute']));
+            $option = $this->getEntityOrException(
+                'AttributeOption',
+                array('code' => $data['code'], 'attribute' => $attribute)
+            );
+            $this->getEntityManager()->refresh($option);
+
+            $option->setLocale('en_US');
+            assertEquals($data['label-en_US'], (string) $option);
+            assertEquals(($data['is_default'] == 1), $option->isDefault());
         }
     }
 
@@ -738,6 +781,21 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param string $locale
+     * @param string $channel
+     *
+     * @Given /^I add the "([^"]*)" locale to the "([^"]*)" channel$/
+     */
+    public function iAddTheLocaleToTheChannel($locale, $channel)
+    {
+        $channel = $this->getChannel($channel);
+
+        $localeCode = isset($this->locales[$locale]) ? $this->locales[$locale] : $locale;
+        $channel->addLocale($this->getLocale($localeCode));
+        $this->persist($channel);
+    }
+
+    /**
      * @param TableNode $table
      *
      * @Given /^the following attributes?:$/
@@ -764,9 +822,32 @@ class FixturesContext extends RawMinkContext
             $attribute->setLocale('en_US');
             $attribute->setLabel($data['label']);
 
+            if ($data['type'] === 'pim_catalog_metric') {
+                if (!empty($data['metric family']) && !empty($data['default metric unit'])) {
+                    $attribute->setMetricFamily($data['metric family']);
+                    $attribute->setDefaultMetricUnit($data['default metric unit']);
+                } else {
+                    throw new \InvalidArgumentException(
+                        sprintf(
+                            'Expecting metric family and default metric unit to be defined for attribute "%s"',
+                            $data['code']
+                        )
+                    );
+                }
+            }
+
             if (isset($data['group'])) {
-                $group = $this->findAttributeGroup($data['group']);
+                $group = $this->getAttributeGroup($data['group']);
                 $attribute->setGroup($group);
+            }
+
+            if (isset($data['families'])) {
+                $familyCodes = $this->listToArray($data['families']);
+                foreach ($familyCodes as $code) {
+                    $family = $this->getFamily($code);
+                    $family->addAttribute($attribute);
+                    $this->persist($family, false);
+                }
             }
 
             $this->persist($attribute);
@@ -783,7 +864,7 @@ class FixturesContext extends RawMinkContext
         foreach ($table->getHash() as $data) {
             $this
                 ->getAttribute($data['attribute'])
-                ->setLocale($this->getLocaleCode($data['lang']))
+                ->setLocale($this->getLocaleCode($data['locale']))
                 ->setLabel($data['label']);
         }
 
@@ -1230,22 +1311,41 @@ class FixturesContext extends RawMinkContext
      */
     private function getProductValue($identifier, $attribute, $locale = null, $scope = null)
     {
-        $product = $this->getProductManager()->findByIdentifier($identifier);
-        if (!$product) {
+        $product = $this->getProduct($identifier);
+
+        $this->getEntityManager()->refresh($product);
+
+        $values = $product->getValues()->filter(
+            function ($value) use ($attribute, $locale, $scope) {
+                return $value->isMatching($attribute, $locale, $scope);
+            }
+        );
+
+        if (!$values->count()) {
             throw new \InvalidArgumentException(
-                sprintf('Could not find product with identifier "%s"', $identifier)
+                sprintf(
+                    'Could not find product value for attribute "%s" in locale "%s" for scope "%s"',
+                    $attribute,
+                    $locale,
+                    $scope
+                )
             );
         }
 
-        $productValue = $product->getValue($attribute, $locale, $scope);
-        if (!$productValue) {
-            throw new \InvalidArgumentException(
-                sprintf('Could not find product value for attribute "%s" in locale "%s"', $attribute, $locale)
+        if ($values->count() > 1) {
+            throw new \Exception(
+                sprintf(
+                    '"%s": expecting to see only one value for attribute "%s" in locale "%s" for scope "%s", found %d',
+                    $identifier,
+                    $attribute,
+                    $locale,
+                    $scope,
+                    $values->count()
+                )
             );
         }
-        $this->getEntityManager()->refresh($productValue);
 
-        return $productValue;
+        return $values->first();
     }
 
     /**
@@ -1345,9 +1445,9 @@ class FixturesContext extends RawMinkContext
 
         switch ($attribute->getAttributeType()) {
             case $this->attributeTypes['prices']:
-                $prices = $this->createPricesFromString($data);
-                foreach ($prices as $price) {
-                    $value->addPrice($price);
+                $prices = $this->listToPrices($data);
+                foreach ($prices as $currency => $data) {
+                    $value->addPrice($this->createPrice($data, $currency));
                 }
                 break;
 
@@ -1512,9 +1612,9 @@ class FixturesContext extends RawMinkContext
     /**
      * @param string $prices
      *
-     * @return ArrayCollection:Price
+     * @return array
      */
-    private function createPricesFromString($prices)
+    private function listToPrices($prices)
     {
         $prices = explode(',', $prices);
         $data = array();
@@ -1538,10 +1638,10 @@ class FixturesContext extends RawMinkContext
                 }
             );
             $currency = !empty($currency) ? reset($currency) : 'EUR';
-            $data[] = $this->createPrice($amount, $currency);
+            $data[$currency] = $amount;
         }
 
-        return new ArrayCollection($data);
+        return $data;
     }
 
     /**

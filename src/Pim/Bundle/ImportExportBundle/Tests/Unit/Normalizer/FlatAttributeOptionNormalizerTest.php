@@ -16,35 +16,31 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
 class FlatAttributeOptionNormalizerTest extends AttributeOptionNormalizerTest
 {
     /**
-     * @var string
-     */
-    protected $format = 'csv';
-
-    /**
      * {@inheritdoc}
      */
     protected function setUp()
     {
         $this->normalizer = new FlatAttributeOptionNormalizer();
+        $this->format     = 'csv';
     }
 
     /**
-     * Data provider for testing supportsNormalization method
-     * @return array
+     * {@inheritdoc}
      */
     public static function getSupportNormalizationData()
     {
         return array(
             array('Pim\Bundle\CatalogBundle\Entity\AttributeOption', 'json', false),
+            array('Pim\Bundle\CatalogBundle\Entity\AttributeOption', 'xml', false),
             array('Pim\Bundle\CatalogBundle\Entity\AttributeOption', 'csv', true),
-            array('stdClass', 'json',  false),
+            array('stdClass', 'json', false),
+            array('stdClass', 'xml', false),
             array('stdClass', 'csv', false),
         );
     }
 
     /**
-     * Data provider for testing normalize method
-     * @return array
+     * {@inheritdoc}
      */
     public static function getNormalizeData()
     {
@@ -62,10 +58,7 @@ class FlatAttributeOptionNormalizerTest extends AttributeOptionNormalizerTest
     }
 
     /**
-     * Add attribute option labels
-     *
-     * @param AttributeOption $option
-     * @param array           $data
+     * {@inheritdoc}
      */
     protected function addAttributeOptionLabels(AttributeOption $option, array $data)
     {

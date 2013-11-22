@@ -3,6 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Normalizer;
 
 use Pim\Bundle\ImportExportBundle\Normalizer\FlatAttributeNormalizer;
+use Pim\Bundle\ImportExportBundle\Normalizer\FlatTranslationNormalizer;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
@@ -22,27 +23,27 @@ class FlatAttributeNormalizerTest extends AttributeNormalizerTest
      */
     protected function setUp()
     {
-        $this->normalizer = new FlatAttributeNormalizer();
+        $this->normalizer = new FlatAttributeNormalizer(new FlatTranslationNormalizer());
         $this->format     = 'csv';
     }
 
     /**
-     * Data provider for testing supportsNormalization method
-     * @return array
+     * {@inheritdoc}
      */
     public static function getSupportNormalizationData()
     {
         return array(
-            array('Pim\Bundle\CatalogBundle\Entity\ProductAttribute', 'csv',  true),
+            array('Pim\Bundle\CatalogBundle\Entity\ProductAttribute', 'csv', true),
+            array('Pim\Bundle\CatalogBundle\Entity\ProductAttribute', 'xml', false),
             array('Pim\Bundle\CatalogBundle\Entity\ProductAttribute', 'json', false),
-            array('stdClass',                                         'csv',  false),
-            array('stdClass',                                         'json', false),
+            array('stdClass', 'csv', false),
+            array('stdClass', 'xml', false),
+            array('stdClass', 'json', false),
         );
     }
 
     /**
-     * Data provider for testing normalize method
-     * @return array
+     * {@inheritdoc}
      */
     public static function getNormalizeData()
     {

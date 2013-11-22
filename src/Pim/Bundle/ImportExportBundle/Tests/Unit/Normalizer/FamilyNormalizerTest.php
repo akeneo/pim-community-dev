@@ -2,11 +2,10 @@
 
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Normalizer;
 
-use Pim\Bundle\CatalogBundle\Entity\Channel;
-
 use Pim\Bundle\ImportExportBundle\Normalizer\FamilyNormalizer;
+use Pim\Bundle\ImportExportBundle\Normalizer\TranslationNormalizer;
+use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Family;
-use Pim\Bundle\CatalogBundle\Entity\FamilyTranslation;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
 
@@ -24,27 +23,27 @@ class FamilyNormalizerTest extends NormalizerTestCase
      */
     protected function setUp()
     {
-        $this->normalizer = new FamilyNormalizer();
+        $this->normalizer = new FamilyNormalizer(new TranslationNormalizer());
         $this->format     = 'json';
     }
 
     /**
-     * Data provider for testing supportsNormalization method
-     * @return array
+     * {@inheritdoc}
      */
     public static function getSupportNormalizationData()
     {
         return array(
-            array('Pim\Bundle\CatalogBundle\Entity\Family', 'json',  true),
+            array('Pim\Bundle\CatalogBundle\Entity\Family', 'json', true),
+            array('Pim\Bundle\CatalogBundle\Entity\Family', 'xml', true),
             array('Pim\Bundle\CatalogBundle\Entity\Family', 'csv', false),
-            array('stdClass', 'json',  false),
+            array('stdClass', 'json', false),
+            array('stdClass', 'xml', false),
             array('stdClass', 'csv', false),
         );
     }
 
     /**
-     * Data provider for testing normalize method
-     * @return array
+     * {@inheritdoc}
      */
     public static function getNormalizeData()
     {
@@ -65,8 +64,7 @@ class FamilyNormalizerTest extends NormalizerTestCase
     }
 
     /**
-     * Create a family
-     * @param array $data
+     * {@inheritdoc}
      *
      * @return Family
      */
@@ -120,6 +118,7 @@ class FamilyNormalizerTest extends NormalizerTestCase
 
     /**
      * @param array $data
+     *
      * @return mixed
      */
     protected function getLabels($data)

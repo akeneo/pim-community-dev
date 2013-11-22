@@ -73,7 +73,7 @@ oro_batch:
             label: Allow file upload
             help: Whether or not to allow uploading the file directly
 
-    product_csv_reader:
+    csv_product_reader:
         title: CSV Reader
         filePath:
             label: File
@@ -91,7 +91,7 @@ oro_batch:
             label: Allow file upload
             help: Whether or not to allow uploading the file directly
 
-    csv_file_reader:
+    csv_category_reader:
         title: CSV File Reader
         filePath:
             label: File
@@ -194,21 +194,14 @@ oro_batch:
 
     file_writer:
         title: Output
-        directoryName:
-            label: Directory path
+        filePath:
+            label: File path
             help: Where to write the generated file on the file system
-        fileName:
-            label: File name
-            help: The name of the generated file.
-
     product_writer:
         title: Product storage
-        directoryName:
-            label: Directory path
+        filePath:
+            label: File path
             help: Where to write the generated file on the file system
-        fileName:
-            label: File name
-            help: The name of the generated file.
 
     category_writer:
         title: Category storage

@@ -61,6 +61,7 @@ class ChannelNormalizerTest extends NormalizerTestCase
 
     /**
      * {@inheritdoc}
+     *
      * @return Channel
      */
     protected function createEntity(array $data)
@@ -87,7 +88,7 @@ class ChannelNormalizerTest extends NormalizerTestCase
 
     /**
      * Create a currency
-     * @param string $currencyCode
+     * @param  string                                             $currencyCode
      * @return \Pim\Bundle\ImportExportBundle\Normalizer\Currency
      */
     protected function createCurrency($currencyCode)
@@ -100,7 +101,7 @@ class ChannelNormalizerTest extends NormalizerTestCase
 
     /**
      * Create a locale
-     * @param string $localeCode
+     * @param  string                                  $localeCode
      * @return \Pim\Bundle\CatalogBundle\Entity\Locale
      */
     protected function createLocale($localeCode)
@@ -113,7 +114,7 @@ class ChannelNormalizerTest extends NormalizerTestCase
 
     /**
      * Create a category
-     * @param string $categoryCode
+     * @param  string                                    $categoryCode
      * @return \Pim\Bundle\CatalogBundle\Entity\Category
      */
     protected function createCategory($categoryCode)

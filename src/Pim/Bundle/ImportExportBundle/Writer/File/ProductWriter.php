@@ -50,10 +50,10 @@ class ProductWriter extends FileWriter implements ArchivableWriterInterface
         foreach ($items as $data) {
             foreach ($data['media'] as $media) {
                 if ($media) {
-                    $result = $this->mediaManager->copy($media, $this->directoryName);
+                    $result = $this->mediaManager->copy($media, dirname($this->getPath()));
                     if ($result === true) {
                         $exportPath = $this->mediaManager->getExportPath($media);
-                        $this->writtenFiles[sprintf('%s/%s', $this->directoryName, $exportPath)] = $exportPath;
+                        $this->writtenFiles[sprintf('%s/%s', dirname($this->getPath()), $exportPath)] = $exportPath;
                     }
                 }
             }

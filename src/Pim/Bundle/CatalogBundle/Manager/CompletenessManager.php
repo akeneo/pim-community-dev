@@ -24,18 +24,18 @@ class CompletenessManager
     /**
      * @var CompletenessQueryBuilder
      */
-    protected $completenessQueryBuilder;
+    protected $completenessQB;
 
     /**
      * Constructor
      *
      * @param RegistryInterface        $doctrine
-     * @param CompletenessQueryBuilder $completenessQueryBuilder
+     * @param CompletenessQueryBuilder $completenessQB
      */
-    public function __construct(RegistryInterface $doctrine, CompletenessQueryBuilder $completenessQueryBuilder)
+    public function __construct(RegistryInterface $doctrine, CompletenessQueryBuilder $completenessQB)
     {
-        $this->doctrine = $doctrine;
-        $this->completenessQueryBuilder = $completenessQueryBuilder;
+        $this->doctrine       = $doctrine;
+        $this->completenessQB = $completenessQB;
     }
 
     /**
@@ -92,7 +92,7 @@ class CompletenessManager
      */
     protected function createCompletenesses(array $criteria, $limit = null)
     {
-        $sql = $this->completenessQueryBuilder->getInsertCompletenessSQL($criteria, $limit);
+        $sql = $this->completenessQB->getInsertCompletenessSQL($criteria, $limit);
         $stmt = $this->doctrine->getConnection()->prepare($sql);
 
         foreach ($criteria as $placeholder => $value) {

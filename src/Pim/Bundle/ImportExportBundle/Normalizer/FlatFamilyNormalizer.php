@@ -19,52 +19,26 @@ class FlatFamilyNormalizer extends FamilyNormalizer
     protected $supportedFormats = array('csv');
 
     /**
-     * @var array
-     */
-    protected $results;
-
-    /**
      * {@inheritdoc}
-     */
-    protected function normalizeLabel(Family $family)
-    {
-        $values= array();
-        foreach ($family->getTranslations() as $translation) {
-            $values[sprintf('label-%s', $translation->getLocale())] = $translation->getLabel();
-        }
-
-        return $values;
-    }
-
-    /**
-     * Normalize the attributes
-     *
-     * @param Family $family
-     *
-     * @return string
      */
     protected function normalizeAttributes(Family $family)
     {
         $attributes = parent::normalizeAttributes($family);
 
-        return implode(', ', $attributes);
+        return implode(',', $attributes);
     }
 
     /**
-     * Normalize the requirements
-     *
-     * @param Family $family
-     *
-     * @return string
+     * {@inheritdoc}
      */
     protected function normalizeRequirements(Family $family)
     {
         $requirements = parent::normalizeRequirements($family);
         $flat = array();
         foreach ($requirements as $channel => $attributes) {
-            $flat[]= $channel.':'.implode(', ', $attributes);
+            $flat[]= $channel.':'.implode(',', $attributes);
         }
 
-        return implode('| ', $flat);
+        return implode('|', $flat);
     }
 }

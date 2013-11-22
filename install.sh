@@ -102,8 +102,10 @@ if [ $TASK = 'db' ] || [ $TASK = 'all' ]; then
     php app/console cache:clear
     echo "Loading ORO fixtures"
     php app/console doctrine:fixtures:load $ORO_FIXTURES --no-interaction
-    echo "Loading PIM fixtures"
-    php app/console doctrine:fixtures:load $PIM_FIXTURES --no-interaction --append
+    if [ $ENV != 'behat' ]; then
+        echo "Loading PIM fixtures"
+        php app/console doctrine:fixtures:load $PIM_FIXTURES --no-interaction --append
+    fi
     php app/console oro:entity-config:init
     php app/console oro:entity-extend:init
     php app/console oro:entity-extend:update-config

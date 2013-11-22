@@ -37,9 +37,9 @@ Feature: Export products with media
     Then exported file of "footwear_product_export" should contain:
     """
     sku;family;groups;categories;color;description-en_US-mobile;lace_color;manufacturer;name-en_US;price;rating;side_view;size;top_view;weather_conditions
-    SNKRS-1B;sneakers;;summer_collection;black;;;;"Model 1";",50.00 EUR,,70.00 USD";;;45;;
-    SNKRS-1R;sneakers;;summer_collection;red;;;;"Model 1";",50.00 EUR,,70.00 USD";;files/SNKRS-1R/side_view/SNKRS-1R.png;45;;
-    SNKRS-1C;sneakers;;summer_collection;charcoal;;;;"Model 1";",55.00 EUR,,75.00 USD";;files/SNKRS-1C/side_view/SNKRS-1C-s.png;45;files/SNKRS-1C/top_view/SNKRS-1C-t.png;
+    SNKRS-1B;sneakers;;summer_collection;black;;;;"Model 1";"50.00 EUR,70.00 USD";;;45;;
+    SNKRS-1R;sneakers;;summer_collection;red;;;;"Model 1";"50.00 EUR,70.00 USD";;files/SNKRS-1R/side_view/SNKRS-1R.png;45;;
+    SNKRS-1C;sneakers;;summer_collection;charcoal;;;;"Model 1";"55.00 EUR,75.00 USD";;files/SNKRS-1C/side_view/SNKRS-1C-s.png;45;files/SNKRS-1C/top_view/SNKRS-1C-t.png;
 
     """
     And export directory of "footwear_product_export" should contain the following media:

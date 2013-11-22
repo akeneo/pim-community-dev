@@ -3,6 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Normalizer;
 
 use Pim\Bundle\ImportExportBundle\Normalizer\GroupNormalizer;
+use Pim\Bundle\ImportExportBundle\Normalizer\TranslationNormalizer;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
@@ -21,7 +22,7 @@ class GroupNormalizerTest extends NormalizerTestCase
      */
     protected function setUp()
     {
-        $this->normalizer = new GroupNormalizer();
+        $this->normalizer = new GroupNormalizer(new TranslationNormalizer());
         $this->format     = 'json';
     }
 
@@ -31,10 +32,12 @@ class GroupNormalizerTest extends NormalizerTestCase
     public static function getSupportNormalizationData()
     {
         return array(
-            array('Pim\Bundle\CatalogBundle\Entity\Group', 'json',  true),
+            array('Pim\Bundle\CatalogBundle\Entity\Group', 'json', true),
+            array('Pim\Bundle\CatalogBundle\Entity\Group', 'xml', true),
             array('Pim\Bundle\CatalogBundle\Entity\Group', 'csv', false),
-            array('stdClass',                              'json',  false),
-            array('stdClass',                              'csv', false),
+            array('stdClass', 'json', false),
+            array('stdClass', 'xml', false),
+            array('stdClass', 'csv', false),
         );
     }
 
@@ -64,6 +67,7 @@ class GroupNormalizerTest extends NormalizerTestCase
 
     /**
      * {@inheritdoc}
+     *
      * @return Group
      */
     protected function createEntity(array $data)

@@ -20,59 +20,39 @@ class FamilyNormalizer implements NormalizerInterface
     protected $supportedFormats = array('json', 'xml');
 
     /**
-     * @var array
+     * @var TranslationNormalizer
      */
-    protected $results;
+    protected $translationNormalizer;
 
     /**
-     * Transforms an object into a flat array
+     * Constructor
      *
-     * @param object $family
-     * @param string $format
-     * @param array  $context
-     *
-     * @return array
+     * @param TranslationNormalizer $translationNormalizer
      */
-    public function normalize($family, $format = null, array $context = array())
+    public function __construct(TranslationNormalizer $translationNormalizer)
     {
-        $this->results = array(
-            'code'             => $family->getCode(),
-            'attributes'       => $this->normalizeAttributes($family),
-            'attributeAsLabel' => ($family->getAttributeAsLabel()) ? $family->getAttributeAsLabel()->getCode() : '',
-            'requirements'     => $this->normalizeRequirements($family),
-        ) + $this->normalizeLabel($family);
-
-        return $this->results;
+        $this->translationNormalizer = $translationNormalizer;
     }
 
     /**
-     * Indicates whether this normalizer can normalize the given data
-     *
-     * @param mixed  $data
-     * @param string $format
-     *
-     * @return boolean
+     * {@inheritdoc}
+     */
+    public function normalize($object, $format = null, array $context = array())
+    {
+        return array(
+            'code'             => $object->getCode(),
+            'attributes'       => $this->normalizeAttributes($object),
+            'attributeAsLabel' => ($object->getAttributeAsLabel()) ? $object->getAttributeAsLabel()->getCode() : '',
+            'requirements'     => $this->normalizeRequirements($object),
+        ) + $this->translationNormalizer->normalize($object, $format, $context);
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof Family && in_array($format, $this->supportedFormats);
-    }
-
-    /**
-     * Normalize the label
-     *
-     * @param Family $family
-     *
-     * @return array
-     */
-    protected function normalizeLabel(Family $family)
-    {
-        $labels = array();
-        foreach ($family->getTranslations() as $translation) {
-            $labels[$translation->getLocale()]= $translation->getLabel();
-        }
-
-        return array('label' => $labels);
     }
 
     /**

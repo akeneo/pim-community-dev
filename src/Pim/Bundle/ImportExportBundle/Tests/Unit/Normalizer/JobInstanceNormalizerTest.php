@@ -24,24 +24,22 @@ class JobInstanceNormalizerTest extends NormalizerTestCase
     }
 
     /**
-     * Data provider for testing supportsNormalization method
-     * @return array
+     * {@inheritdoc}
      */
     public static function getSupportNormalizationData()
     {
         return array(
             array('Oro\Bundle\BatchBundle\Entity\JobInstance', 'json', true),
+            array('Oro\Bundle\BatchBundle\Entity\JobInstance', 'xml', true),
             array('Oro\Bundle\BatchBundle\Entity\JobInstance', 'csv', false),
-            array('stdClass',                                  'json', false),
-            array('stdClass',                                  'csv', false),
+            array('stdClass', 'json', false),
+            array('stdClass', 'xml', false),
+            array('stdClass', 'csv', false),
         );
     }
 
     /**
-     * Test supportsNormalization method
-     * @param mixed   $class
-     * @param string  $format
-     * @param boolean $isSupported
+     * {@inheritdoc}
      *
      * @dataProvider getSupportNormalizationData
      */
@@ -55,8 +53,7 @@ class JobInstanceNormalizerTest extends NormalizerTestCase
     }
 
     /**
-     * Data provider for testing normalize method
-     * @return array
+     * {@inheritdoc}
      */
     public static function getNormalizeData()
     {
@@ -74,8 +71,7 @@ class JobInstanceNormalizerTest extends NormalizerTestCase
     }
 
     /**
-     * Create a job instance
-     * @param array $data
+     * {@inheritdoc}
      *
      * @return JobInstance
      */

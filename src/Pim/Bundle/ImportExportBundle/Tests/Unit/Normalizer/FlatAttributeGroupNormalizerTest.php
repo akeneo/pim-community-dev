@@ -3,7 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Normalizer;
 
 use Pim\Bundle\ImportExportBundle\Normalizer\FlatAttributeGroupNormalizer;
-use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
+use Pim\Bundle\ImportExportBundle\Normalizer\FlatTranslationNormalizer;
 
 /**
  * Attribute group flat normalizer
@@ -19,28 +19,27 @@ class FlatAttributeGroupNormalizerTest extends AttributeGroupNormalizerTest
      */
     protected function setUp()
     {
-        $this->normalizer = new FlatAttributeGroupNormalizer();
+        $this->normalizer = new FlatAttributeGroupNormalizer(new FlatTranslationNormalizer());
         $this->format     = 'csv';
     }
 
     /**
-     * Data provider for testing supportsNormalization method
-     * @return array
+     * {@inheritdoc}
      */
     public static function getSupportNormalizationData()
     {
         return array(
-            array('Pim\Bundle\CatalogBundle\Entity\AttributeGroup', 'csv',  true),
+            array('Pim\Bundle\CatalogBundle\Entity\AttributeGroup', 'csv', true),
+            array('Pim\Bundle\CatalogBundle\Entity\AttributeGroup', 'xml', false),
             array('Pim\Bundle\CatalogBundle\Entity\AttributeGroup', 'json', false),
-            array('stdClass', 'csv',  false),
+            array('stdClass', 'csv', false),
+            array('stdClass', 'xml', false),
             array('stdClass', 'json', false),
         );
     }
 
     /**
-     * Data provider for testing normalize method
-     * @return array
-     * @static
+     * {@inheritdoc}
      */
     public static function getNormalizeData()
     {
@@ -57,18 +56,24 @@ class FlatAttributeGroupNormalizerTest extends AttributeGroupNormalizerTest
         );
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    protected function createEntity(array $data)
+    {
+        $data['attributes'] = explode(',', $data['attributes']);
+
+        return parent::createEntity($data);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function getLabels($data)
     {
         return array(
             'en_US' => $data['label-en_US'],
             'fr_FR' => $data['label-fr_FR']
         );
-    }
-
-    protected function createEntity(array $data)
-    {
-        $data['attributes'] = explode(',', $data['attributes']);
-
-        return parent::createEntity($data);
     }
 }

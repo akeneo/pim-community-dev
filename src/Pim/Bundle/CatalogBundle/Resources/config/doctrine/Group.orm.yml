@@ -1,0 +1,44 @@
+Pim\Bundle\CatalogBundle\Entity\Group:
+    type: entity
+    table: pim_catalog_group
+    repositoryClass: Pim\Bundle\CatalogBundle\Entity\Repository\GroupRepository
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        code:
+            type: string
+            length: 100
+            unique: true
+    manyToOne:
+        type:
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\GroupType
+            inversedBy: groups
+            joinColumns:
+                type_id:
+                    referencedColumnName: id
+                    nullable: false
+            orphanRemoval: false
+    manyToMany:
+        attributes:
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\ProductAttribute
+            joinTable:
+                name: pim_catalog_group_attribute
+                schema: null
+                joinColumns:
+                    group_id:
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    attribute_id:
+                        referencedColumnName: id
+        products:
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\Product
+            mappedBy: groups
+    oneToMany:
+        translations:
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\GroupTranslation
+            mappedBy: foreignKey
+            cascade:
+                - persist

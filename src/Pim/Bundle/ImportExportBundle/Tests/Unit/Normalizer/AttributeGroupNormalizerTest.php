@@ -3,8 +3,8 @@
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Normalizer;
 
 use Pim\Bundle\ImportExportBundle\Normalizer\AttributeGroupNormalizer;
+use Pim\Bundle\ImportExportBundle\Normalizer\TranslationNormalizer;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
-use Pim\Bundle\CatalogBundle\Entity\AttributeGroupTranslation;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 
 /**
@@ -21,28 +21,27 @@ class AttributeGroupNormalizerTest extends NormalizerTestCase
      */
     protected function setUp()
     {
-        $this->normalizer = new AttributeGroupNormalizer();
+        $this->normalizer = new AttributeGroupNormalizer(new TranslationNormalizer());
         $this->format     = 'json';
     }
 
     /**
-     * Data provider for testing supportsNormalization method
-     * @return array
+     * {@inheritdoc}
      */
     public static function getSupportNormalizationData()
     {
         return array(
-            array('Pim\Bundle\CatalogBundle\Entity\AttributeGroup', 'json',  true),
+            array('Pim\Bundle\CatalogBundle\Entity\AttributeGroup', 'json', true),
+            array('Pim\Bundle\CatalogBundle\Entity\AttributeGroup', 'xml', true),
             array('Pim\Bundle\CatalogBundle\Entity\AttributeGroup', 'csv', false),
-            array('stdClass', 'json',  false),
+            array('stdClass', 'json', false),
+            array('stdClass', 'xml', false),
             array('stdClass', 'csv', false),
         );
     }
 
     /**
-     * Data provider for testing normalize method
-     * @return array
-     * @static
+     * {@inheritdoc}
      */
     public static function getNormalizeData()
     {
@@ -59,7 +58,7 @@ class AttributeGroupNormalizerTest extends NormalizerTestCase
     }
 
     /**
-     * Create attribute group
+     * {@inheritdoc}
      *
      * @return AttributeGroup
      */
@@ -85,7 +84,7 @@ class AttributeGroupNormalizerTest extends NormalizerTestCase
 
     /**
      * Get labels
-     * @param array $data
+     * @param  array $data
      * @return array
      */
     protected function getLabels($data)
@@ -95,7 +94,7 @@ class AttributeGroupNormalizerTest extends NormalizerTestCase
 
     /**
      * Get attributes
-     * @param array $data
+     * @param  array              $data
      * @return ProductAttribute[]
      */
     protected function getAttributes($data)

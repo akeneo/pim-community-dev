@@ -27,39 +27,48 @@ class AttributeNormalizer implements NormalizerInterface
     protected $supportedFormats = array('json', 'xml');
 
     /**
-     * Transforms an object into a flat array
-     *
-     * @param ProductAttribute $attribute
-     * @param string           $format
-     * @param array            $context
-     *
-     * @return array
+     * @var TranslationNormalizer
      */
-    public function normalize($attribute, $format = null, array $context = array())
+    protected $translationNormalizer;
+
+    /**
+     * Constructor
+     *
+     * @param TranslationNormalizer $translationNormalizer
+     */
+    public function __construct(TranslationNormalizer $translationNormalizer)
+    {
+        $this->translationNormalizer = $translationNormalizer;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function normalize($object, $format = null, array $context = array())
     {
         $results = array(
-            'type' => $attribute->getAttributeType(),
-            'code' => $attribute->getCode()
-        );
-        $results = array_merge($results, $this->normalizeLabel($attribute));
+            'type' => $object->getAttributeType(),
+            'code' => $object->getCode()
+        ) + $this->translationNormalizer->normalize($object, $format, $context);
+
         $results = array_merge(
             $results,
             array(
-                'group'                   => $attribute->getVirtualGroup()->getCode(),
-                'unique'                  => (int) $attribute->getUnique(),
-                'useable_as_grid_column'  => (int) $attribute->isUseableAsGridColumn(),
-                'useable_as_grid_filter'  => (int) $attribute->isUseableAsGridFilter(),
+                'group'                   => $object->getVirtualGroup()->getCode(),
+                'unique'                  => (int) $object->getUnique(),
+                'useable_as_grid_column'  => (int) $object->isUseableAsGridColumn(),
+                'useable_as_grid_filter'  => (int) $object->isUseableAsGridFilter(),
+                'allowed_extensions'      => implode(self::ITEM_SEPARATOR, $object->getAllowedExtensions()),
             )
         );
         if (isset($context['versioning'])) {
-            $results = array_merge($results, $this->getVersionedData($attribute));
-
+            $results = array_merge($results, $this->getVersionedData($object));
         } else {
             $results = array_merge(
                 $results,
                 array(
-                    'is_translatable' => (int) $attribute->getTranslatable(),
-                    'is_scopable'     => (int) $attribute->getScopable(),
+                    'is_translatable' => (int) $object->getTranslatable(),
+                    'is_scopable'     => (int) $object->getScopable(),
                 )
             );
         }
@@ -68,12 +77,7 @@ class AttributeNormalizer implements NormalizerInterface
     }
 
     /**
-     * Indicates whether this normalizer can normalize the given data
-     *
-     * @param mixed  $data
-     * @param string $format
-     *
-     * @return boolean
+     * {@inheritdoc}
      */
     public function supportsNormalization($data, $format = null)
     {
@@ -115,26 +119,8 @@ class AttributeNormalizer implements NormalizerInterface
             'date_type'           => (string) $attribute->getDateType(),
             'metric_family'       => (string) $attribute->getMetricFamily(),
             'default_metric_unit' => (string) $attribute->getDefaultMetricUnit(),
-            'allowed_extensions'  => implode(self::ITEM_SEPARATOR, $attribute->getAllowedExtensions()),
             'max_file_size'       => (string) $attribute->getMaxFileSize(),
         );
-    }
-
-    /**
-     * Normalize the label
-     *
-     * @param ProductAttribute $attribute
-     *
-     * @return array
-     */
-    protected function normalizeLabel(ProductAttribute $attribute)
-    {
-        $labels = array();
-        foreach ($attribute->getTranslations() as $translation) {
-            $labels[$translation->getLocale()]= $translation->getLabel();
-        }
-
-        return array('label' => $labels);
     }
 
     /**

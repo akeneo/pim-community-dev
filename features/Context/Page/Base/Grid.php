@@ -101,11 +101,9 @@ class Grid extends Index
     }
 
     /**
-     * Filter the filter name by the value
-     *
-     * @param string $filterName
-     * @param string $value
-     * @param string $operator   :if false, no operator will be selected
+     * @param string $filterName The name of the filter
+     * @param string $value      The value to filter by
+     * @param string $operator   If false, no operator will be selected
      */
     public function filterBy($filterName, $value, $operator = false)
     {
@@ -412,7 +410,9 @@ class Grid extends Index
      */
     private function activateFilter($filterName)
     {
-        $this->clickOnFilterToManage($filterName);
+        if (!$this->getFilter($filterName)->isVisible()) {
+            $this->clickOnFilterToManage($filterName);
+        }
 
         if (!$this->getFilter($filterName)->isVisible()) {
             throw new \InvalidArgumentException(
@@ -429,7 +429,9 @@ class Grid extends Index
      */
     private function deactivateFilter($filterName)
     {
-        $this->clickOnFilterToManage($filterName);
+        if ($this->getFilter($filterName)->isVisible()) {
+            $this->clickOnFilterToManage($filterName);
+        }
 
         if ($this->getFilter($filterName)->isVisible()) {
             throw new \InvalidArgumentException(
@@ -559,7 +561,7 @@ class Grid extends Index
             }
         }
 
-        if (!$headers) {
+        if (!isset($headers) || !$headers) {
             throw new \InvalidArgumentException('No visible grids found');
         }
 

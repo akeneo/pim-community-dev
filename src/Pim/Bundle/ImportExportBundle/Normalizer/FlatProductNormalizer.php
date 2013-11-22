@@ -56,13 +56,7 @@ class FlatProductNormalizer implements NormalizerInterface
     }
 
     /**
-     * Transforms an object into a flat array
-     *
-     * @param object $object
-     * @param string $format
-     * @param array  $context
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function normalize($object, $format = null, array $context = array())
     {
@@ -71,7 +65,7 @@ class FlatProductNormalizer implements NormalizerInterface
             $scopeCode = $context['scopeCode'];
         }
 
-        $this->results = $this->normalizeValue($identifier = $object->getIdentifier());
+        $this->results = $this->normalizeValue($object->getIdentifier());
 
         $this->normalizeFamily($object->getFamily());
 
@@ -79,7 +73,28 @@ class FlatProductNormalizer implements NormalizerInterface
 
         $this->normalizeCategories($object->getCategoryCodes());
 
-        $filteredValues = $object->getValues()->filter(
+        $this->normalizeAssociations($object->getProductAssociations());
+
+        $normalizedValues = $this->normalizeValues($object, $scopeCode);
+
+        $this->results = array_merge($this->results, $normalizedValues);
+
+        return $this->results;
+    }
+
+    /**
+     * Normalize values
+     *
+     * @param ProductInterface $product
+     * @param string           $scopeCode
+     *
+     * @return array
+     */
+    protected function normalizeValues(ProductInterface $product, $scopeCode)
+    {
+        $identifier = $product->getIdentifier();
+
+        $filteredValues = $product->getValues()->filter(
             function ($value) use ($identifier, $scopeCode) {
                 return (
                     ($value !== $identifier) &&
@@ -100,18 +115,12 @@ class FlatProductNormalizer implements NormalizerInterface
             );
         }
         ksort($normalizedValues);
-        $this->results = array_merge($this->results, $normalizedValues);
 
-        return $this->results;
+        return $normalizedValues;
     }
 
     /**
-     * Indicates whether this normalizer can normalize the given data
-     *
-     * @param mixed  $data
-     * @param string $format
-     *
-     * @return boolean
+     * {@inheritdoc}
      */
     public function supportsNormalization($data, $format = null)
     {
@@ -221,6 +230,31 @@ class FlatProductNormalizer implements NormalizerInterface
     {
         if (empty($this->fields) || isset($this->fields[self::FIELD_CATEGORY])) {
             $this->results[self::FIELD_CATEGORY] = $categories;
+        }
+    }
+
+    /**
+     * Normalize associations
+     *
+     * @param ProductAssociation[] $productAssociations
+     */
+    protected function normalizeAssociations($productAssociations = array())
+    {
+        foreach ($productAssociations as $productAssociation) {
+            $columnPrefix = $productAssociation->getAssociation()->getCode();
+
+            $groups = array();
+            foreach ($productAssociation->getGroups() as $group) {
+                $groups[] = $group->getCode();
+            }
+
+            $products = array();
+            foreach ($productAssociation->getProducts() as $product) {
+                $products[] = $product->getIdentifier();
+            }
+
+            $this->results[$columnPrefix .'_groups'] = implode(',', $groups);
+            $this->results[$columnPrefix .'_products'] = implode(',', $products);
         }
     }
 }
