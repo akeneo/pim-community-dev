@@ -47,25 +47,47 @@ class CategoryExtension extends \Twig_Extension
         );
     }
 
-    public function listTreesResponse(array $trees, $selectedCategoryId = null, $includeSub = false)
+    /**
+     * List root categories (trees) for jstree
+     *
+     * @param array $trees
+     * @param integer $selectedTreeId
+     * @param boolean $includeSub
+     *
+     * @return array
+     */
+    public function listTreesResponse(array $trees, $selectedTreeId = null, $includeSub = false)
     {
         $return = array();
 
-        foreach ($trees as $i => $tree) {
-            $selectedTree = false;
-
-            if ($tree->getId() === $selectedCategoryId) {
-                $selectedTree = true;
-            }
-
-            $return[] = array(
-                'id' => $tree->getId(),
-                'label' => $this->getLabel($tree),
-                'selected' => $selectedTree ? "true" : "false"
-            );
+        foreach ($trees as $tree) {
+            $return[] = $this->formatTree($tree, $selectedTreeId);
         }
 
         return $return;
+    }
+
+    /**
+     * Format a tree for jstree js plugin
+     * Returns an array formated as :
+     * array(
+     *     'id'    => int,       // the tree id
+     *     'label' => string,    // the tree label
+     *     'selected' => boolean // predicate to know if the tree is selected or not
+     * )
+     *
+     * @param CategoryInterface $tree
+     * @param integer           $selectedTreeId
+     *
+     * @return array
+     */
+    protected function formatTree(CategoryInterface $tree, $selectedTreeId)
+    {
+        return array(
+            'id' => $tree->getId(),
+            'label' => $this->getLabel($tree),
+            'selected' => ($tree->getId() === $selectedTreeId) ? 'true' : 'false'
+        );
     }
 
     public function childrenTreeResponse(
@@ -79,12 +101,12 @@ class CategoryExtension extends \Twig_Extension
 
         if ($parent !== null) {
             $result = array(
-                    'attr' => array(
-                        'id' => 'node_'. $parent->getId()
-                    ),
-                    'data' => $parent->getLabel(),
-                    'state' => $this->defineCategoryState($parent),
-                    'children' => $result
+                'attr' => array(
+                    'id' => 'node_'. $parent->getId()
+                ),
+                'data' => $parent->getLabel(),
+                'state' => $this->defineCategoryState($parent),
+                'children' => $result
             );
         }
 
@@ -114,7 +136,6 @@ class CategoryExtension extends \Twig_Extension
 
     public function childrenResponse(array $categories, Category $parent = null, $withProductsCount = false, $includeSub = false)
     {
-
         $result = array();
 
         foreach ($categories as $category) {
@@ -141,25 +162,6 @@ class CategoryExtension extends \Twig_Extension
         }
 
         return $result;
-    }
-
-    /**
-     * Returns category label with(out?) count and can include sub-categories
-     *
-     * @param CategoryInterface $category
-     * @param boolean           $count      predicate to add the count or not
-     * @param boolean           $includeSub include sub-categories for the count
-     *
-     * @return string
-     */
-    protected function getLabel(CategoryInterface $category, $count = false, $includeSub = false)
-    {
-        $label = $category->getLabel();
-        if ($count) {
-            $label = $label .'('. $this->countProducts($category, $includeSub) .')';
-        }
-
-        return $label;
     }
 
     public function listCategoriesResponse(array $categories, Collection $selectedCategories)
@@ -207,6 +209,25 @@ class CategoryExtension extends \Twig_Extension
         }
 
         return $result;
+    }
+
+    /**
+     * Returns category label with(out?) count and can include sub-categories
+     *
+     * @param CategoryInterface $category
+     * @param boolean           $count      predicate to add the count or not
+     * @param boolean           $includeSub include sub-categories for the count
+     *
+     * @return string
+     */
+    protected function getLabel(CategoryInterface $category, $count = false, $includeSub = false)
+    {
+        $label = $category->getLabel();
+        if ($count) {
+            $label = $label .'('. $this->countProducts($category, $includeSub) .')';
+        }
+
+        return $label;
     }
 
     /**
