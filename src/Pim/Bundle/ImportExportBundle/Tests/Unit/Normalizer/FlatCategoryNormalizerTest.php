@@ -53,8 +53,7 @@ class FlatCategoryNormalizerTest extends CategoryNormalizerTest
                     'code'        => 'root_category',
                     'label-en_US' => 'Root category',
                     'label-fr_FR' => 'Categorie racine',
-                    'parent'      => '',
-                    'dynamic'     => '0',
+                    'parent'      => ''
                 )
             ),
             array(
@@ -62,8 +61,7 @@ class FlatCategoryNormalizerTest extends CategoryNormalizerTest
                     'code'        => 'child_category',
                     'label-en_US' => 'Root category',
                     'label-fr_FR' => 'Categorie racine',
-                    'parent'      => '1',
-                    'dynamic'     => '0',
+                    'parent'      => '1'
                 )
             ),
         );

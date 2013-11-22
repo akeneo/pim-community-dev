@@ -30,13 +30,9 @@ Feature: Create an attribute
     Then I should see validation error "This regular expression is not valid."
 
   @info Codes 'associations', 'categories', 'categoryId', 'completeness', 'enabled', 'family', 'groups', 'productAssociations', 'products', 'scope', 'treeId' and 'values' are reserved for grid filters and import/export column names
-  Scenario Outline: Fail to create a text attribute with a code that is a reserved word
-    Given I change the Code to "<invalid code>"
-    And I save the attribute
-    Then I should see validation error "This code is not available."
-
-    Examples:
-      | invalid code        |
+  Scenario: Fail to create a text attribute with a code that is a reserved word
+    Then the following attribute codes should not be available:
+      | code                |
       | associations        |
       | categories          |
       | categoryId          |

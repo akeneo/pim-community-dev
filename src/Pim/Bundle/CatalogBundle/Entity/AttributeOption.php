@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttributeOption;
@@ -14,17 +13,12 @@ use Pim\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttributeOption
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  *
- * @ORM\Table(name="pim_catalog_attribute_option")
- * @ORM\Entity(repositoryClass="Pim\Bundle\CatalogBundle\Entity\Repository\AttributeOptionRepository")
- *
  * @ExclusionPolicy("all")
  */
 class AttributeOption extends AbstractEntityAttributeOption
 {
     /**
      * @var string $code
-     *
-     * @ORM\Column(name="code", type="string", length=255)
      */
     protected $code;
 
@@ -32,18 +26,11 @@ class AttributeOption extends AbstractEntityAttributeOption
      * Overrided to change target entity name
      *
      * @var Attribute $attribute
-     *
-     * @ORM\ManyToOne(targetEntity="ProductAttribute", inversedBy="options")
-     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     protected $attribute;
 
     /**
      * @var ArrayCollection $values
-     *
-     * @ORM\OneToMany(
-     *     targetEntity="AttributeOptionValue", mappedBy="option", cascade={"persist"}
-     * )
      */
     protected $optionValues;
 
@@ -51,8 +38,6 @@ class AttributeOption extends AbstractEntityAttributeOption
      * Specifies whether this AttributeOption is the default option for the attribute
      *
      * @var boolean $default
-     *
-     * @ORM\Column(name="is_default", type="boolean")
      */
     protected $default = false;
 

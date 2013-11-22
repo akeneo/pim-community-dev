@@ -410,7 +410,9 @@ class Grid extends Index
      */
     private function activateFilter($filterName)
     {
-        $this->clickOnFilterToManage($filterName);
+        if (!$this->getFilter($filterName)->isVisible()) {
+            $this->clickOnFilterToManage($filterName);
+        }
 
         if (!$this->getFilter($filterName)->isVisible()) {
             throw new \InvalidArgumentException(
@@ -427,7 +429,9 @@ class Grid extends Index
      */
     private function deactivateFilter($filterName)
     {
-        $this->clickOnFilterToManage($filterName);
+        if ($this->getFilter($filterName)->isVisible()) {
+            $this->clickOnFilterToManage($filterName);
+        }
 
         if ($this->getFilter($filterName)->isVisible()) {
             throw new \InvalidArgumentException(

@@ -25,6 +25,11 @@ class DatagridRouteRegistryBuilder
     protected $routes = array();
 
     /**
+     * @var array An array of parameter replacesments, indexed by datagrid name
+     */
+    protected $paramReplacements;
+
+    /**
      * Constructor
      *
      * @param Router $router
@@ -45,6 +50,17 @@ class DatagridRouteRegistryBuilder
         $this->routes[$datagridName] = $routeName;
     }
 
+    /***
+     * Adds a parameter replacement to a route
+     */
+    public function addParameterReplacement($datagridName, $parameterName, $parameterValue)
+    {
+        if (!isset($this->paramReplacements[$datagridName])) {
+            $this->paramReplacements[$datagridName] = array();
+        }
+        $this->paramReplacements[$datagridName][$parameterName] = $parameterValue;
+    }
+
     /**
      * Returns an array of regexps for each configured route, indexed by datagrid name
      *
@@ -60,7 +76,12 @@ class DatagridRouteRegistryBuilder
             $route = $routeCollection->get($routeName);
             if ($route) {
                 try {
-                    $regexps[$datagridName] = $translator->translate($route->compile()->getRegex());
+                    $regexps[$datagridName] = $translator->translate(
+                        $route->compile()->getRegex(),
+                        isset($this->paramReplacements[$datagridName])
+                        ? $this->paramReplacements[$datagridName]
+                        : array()
+                    );
                 } catch (JavascriptRegexpTranslatorException $ex) {
                 }
             }

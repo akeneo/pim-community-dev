@@ -9,6 +9,7 @@ parameters:
     pim_import_export.processor.group.class:                        Pim\Bundle\ImportExportBundle\Processor\GroupProcessor
     pim_import_export.processor.attribute.class:                    Pim\Bundle\ImportExportBundle\Processor\AttributeProcessor
     pim_import_export.processor.attribute_option.class:             Pim\Bundle\ImportExportBundle\Processor\AttributeOptionProcessor
+    pim_import_export.processor.product_association.class:          Pim\Bundle\ImportExportBundle\Processor\ProductAssociationProcessor
 
     pim_import_export.processor.dummy.class:                        Pim\Bundle\ImportExportBundle\Processor\DummyProcessor
 
@@ -36,6 +37,13 @@ services:
         class: %pim_import_export.processor.product.class%
         arguments:
             - '@pim_import_export.transformer.product'
+
+    pim_import_export.processor.product_association:
+        class: %pim_import_export.processor.product_association.class%
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+            - '@validator'
+            - '@pim_catalog.manager.product'
 
     pim_import_export.processor.category:
         class: %pim_import_export.processor.category.class%

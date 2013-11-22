@@ -53,10 +53,6 @@ class ProductAttributeType extends AttributeType
 
         $this->addFieldLabel($builder);
 
-        $this->addFieldVariantBehavior($builder);
-
-        $this->addFieldSmart($builder);
-
         $this->addFieldUseableAsGridColumn($builder);
 
         $this->addFieldUseableAsGridFilter($builder);
@@ -92,34 +88,6 @@ class ProductAttributeType extends AttributeType
                 'property_path'     => 'translations'
             )
         );
-    }
-
-    /**
-     * Add a field for variant behavior
-     * @param FormBuilderInterface $builder
-     */
-    protected function addFieldVariantBehavior(FormBuilderInterface $builder)
-    {
-        $builder->add(
-            'variant',
-            'choice',
-            array(
-                'choices' => array(
-                    0 => 'Always override',
-                    1 => 'A selection of variants',
-                    2 => 'Ask'
-                )
-            )
-        );
-    }
-
-    /**
-     * Add a field for smart
-     * @param FormBuilderInterface $builder
-     */
-    protected function addFieldSmart(FormBuilderInterface $builder)
-    {
-        $builder->add('smart', 'switch');
     }
 
     /**

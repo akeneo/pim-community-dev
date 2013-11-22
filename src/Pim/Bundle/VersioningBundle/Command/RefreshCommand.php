@@ -71,7 +71,7 @@ class RefreshCommand extends ContainerAwareCommand
                 $versionable = $this->getPendingManager()->getRelatedVersionable($pending);
                 if (!in_array(spl_object_hash($versionable), $versioned)) {
                     $this->getAddVersionListener()->createVersionAndAudit($em, $versionable, $user);
-                    $versioned[]= spl_object_hash($versionable);
+                    $versioned[] = spl_object_hash($versionable);
                 }
                 $em->remove($pending);
                 $ind++;

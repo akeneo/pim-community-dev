@@ -6,7 +6,6 @@ use Symfony\Component\Validator\GroupSequenceProviderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Pim\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttribute;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
@@ -20,11 +19,6 @@ use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @ORM\Table(
- *     name="pim_catalog_attribute", indexes={@ORM\Index(name="searchcode_idx", columns={"code"})},
- *     uniqueConstraints={@ORM\UniqueConstraint(name="searchunique_idx", columns={"code", "entity_type"})}
- * )
- * @ORM\Entity(repositoryClass="Pim\Bundle\CatalogBundle\Entity\Repository\ProductAttributeRepository")
  * @Assert\GroupSequenceProvider
  * @Config(
  *    defaultValues={
@@ -46,167 +40,104 @@ class ProductAttribute extends AbstractEntityAttribute implements
      * Overrided to change target entity name
      *
      * @var ArrayCollection $options
-     *
-     * @ORM\OneToMany(
-     *     targetEntity="Pim\Bundle\CatalogBundle\Entity\AttributeOption",
-     *     mappedBy="attribute",
-     *     cascade={"persist"}
-     * )
-     * @ORM\OrderBy({"sortOrder" = "ASC"})
      */
     protected $options;
 
-    /**
-     * @ORM\Column(name="sort_order", type="integer")
-     */
     protected $sortOrder = 0;
 
     /**
-     * @var string $variant
-     *
-     * @ORM\Column(name="variant", type="string", length=255, nullable=true)
-     */
-    protected $variant;
-
-    /**
-     * @var boolean $smart
-     *
-     * @ORM\Column(name="is_smart", type="boolean")
-     */
-    protected $smart;
-
-    /**
      * @var AttributeGroup
-     *
-     * @ORM\ManyToOne(targetEntity="AttributeGroup", inversedBy="attributes")
-     * @ORM\JoinColumn(name="group_id", referencedColumnName="id", onDelete="SET NULL")
      */
     protected $group;
 
     /**
      * @var boolean $useableAsGridColumn
-     *
-     * @ORM\Column(name="useable_as_grid_column", type="boolean", options={"default" = false})
      */
     protected $useableAsGridColumn;
 
     /**
      * @var boolean $useableAsGridFilter
-     *
-     * @ORM\Column(name="useable_as_grid_filter", type="boolean", options={"default" = false})
      */
     protected $useableAsGridFilter;
 
     /**
      * @var $availableLocales ArrayCollection
-     *
-     * @ORM\ManyToMany(targetEntity="Pim\Bundle\CatalogBundle\Entity\Locale")
-     * @ORM\JoinTable(name="pim_catalog_attribute_locale")
      */
     protected $availableLocales;
 
     /**
      * @var integer $maxCharacters
-     *
-     * @ORM\Column(name="max_characters", type="smallint", nullable=true)
      */
     protected $maxCharacters;
 
     /**
      * @var string $validationRule
-     *
-     * @ORM\Column(name="validation_rule", type="string", length=10, nullable=true)
      */
     protected $validationRule;
 
     /**
      * @var string $validationRegexp
-     *
-     * @ORM\Column(name="validation_regexp", type="string", length=255, nullable=true)
      */
     protected $validationRegexp;
 
     /**
      * @var boolean $wysiwygEnabled
-     *
-     * @ORM\Column(name="wysiwyg_enabled", type="boolean", nullable=true)
      */
     protected $wysiwygEnabled;
 
     /**
      * @var decimal $numberMin
-     *
-     * @ORM\Column(name="number_min", type="decimal", precision=14, scale=4, nullable=true)
      */
     protected $numberMin;
 
     /**
      * @var decimal $numberMax
-     *
-     * @ORM\Column(name="number_max", type="decimal", precision=14, scale=4, nullable=true)
      */
     protected $numberMax;
 
     /**
      * @var boolean $decimalsAllowed
-     *
-     * @ORM\Column(name="decimals_allowed", type="boolean", nullable=true)
      */
     protected $decimalsAllowed;
 
     /**
      * @var boolean $negativeAllowed
-     *
-     * @ORM\Column(name="negative_allowed", type="boolean", nullable=true)
      */
     protected $negativeAllowed;
 
     /**
      * @var string $dateType
-     *
-     * @ORM\Column(name="date_type", type="string", length=20, nullable=true)
      */
     protected $dateType;
 
     /**
      * @var datetime $dateMin
-     *
-     * @ORM\Column(name="date_min", type="datetime", nullable=true)
      */
     protected $dateMin;
 
     /**
      * @var datetime $dateMax
-     *
-     * @ORM\Column(name="date_max", type="datetime", nullable=true)
      */
     protected $dateMax;
 
     /**
      * @var string $metricFamily
-     *
-     * @ORM\Column(name="metric_family", type="string", length=30, nullable=true)
      */
     protected $metricFamily;
 
     /**
      * @var string $defaultMetricUnit
-     *
-     * @ORM\Column(name="default_metric_unit", type="string", length=30, nullable=true)
      */
     protected $defaultMetricUnit;
 
     /**
      * @var decimal $maxFileSize
-     *
-     * @ORM\Column(name="max_file_size", type="decimal", precision=6, scale=2, nullable=true)
+     * expressed in MB so decimal is needed for values < 1 MB
      */
     protected $maxFileSize;
 
     /**
      * @var array $allowedExtensions
-     *
-     * @ORM\Column(name="allowed_extensions", type="string", length=255, nullable=true)
      */
     protected $allowedExtensions;
 
@@ -220,43 +151,19 @@ class ProductAttribute extends AbstractEntityAttribute implements
 
     /**
      * @var ArrayCollection $translations
-     *
-     * @ORM\OneToMany(
-     *     targetEntity="Pim\Bundle\CatalogBundle\Entity\ProductAttributeTranslation",
-     *     mappedBy="foreignKey",
-     *     cascade={"persist"}
-     * )
      */
     protected $translations;
 
-    /**
-     * @ORM\Column(name="is_required", type="boolean")
-     */
     protected $required;
 
-    /**
-     * @ORM\Column(name="is_unique", type="boolean")
-     */
     protected $unique;
 
-    /**
-     * @ORM\Column(name="default_value", type="text", length=65532, nullable=true)
-     */
     protected $defaultValue;
 
-    /**
-     * @ORM\Column(name="is_searchable", type="boolean")
-     */
     protected $searchable;
 
-    /**
-     * @ORM\Column(name="is_translatable", type="boolean")
-     */
     protected $translatable;
 
-    /**
-     * @ORM\Column(name="is_scopable", type="boolean")
-     */
     protected $scopable;
 
     /**
@@ -271,8 +178,6 @@ class ProductAttribute extends AbstractEntityAttribute implements
         $this->searchable          = false;
         $this->translatable        = false;
         $this->scopable            = false;
-        $this->smart               = false;
-        $this->variant             = false;
         $this->useableAsGridColumn = false;
         $this->useableAsGridFilter = false;
         $this->availableLocales    = new ArrayCollection();
@@ -378,54 +283,6 @@ class ProductAttribute extends AbstractEntityAttribute implements
     public function __toString()
     {
         return $this->getLabel();
-    }
-
-    /**
-     * Predicate for smart property
-     *
-     * @return boolean $smart
-     */
-    public function isSmart()
-    {
-        return $this->smart;
-    }
-
-    /**
-     * Set smart
-     *
-     * @param boolean $smart
-     *
-     * @return ProductAttribute
-     */
-    public function setSmart($smart)
-    {
-        $this->smart = $smart;
-
-        return $this;
-    }
-
-    /**
-     * Get variant
-     *
-     * @return string $variant
-     */
-    public function getVariant()
-    {
-        return $this->variant;
-    }
-
-    /**
-     * Set variant
-     *
-     * @param string $variant
-     *
-     * @return ProductAttribute
-     */
-    public function setVariant($variant)
-    {
-        $this->variant = $variant;
-
-        return $this;
     }
 
     /**

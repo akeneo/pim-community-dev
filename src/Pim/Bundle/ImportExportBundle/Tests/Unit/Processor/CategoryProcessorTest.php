@@ -216,8 +216,7 @@ class CategoryProcessorTest extends AbstractProcessorTestCase
             'code'    => $code,
             'parent'  => $parent,
             'label-en_US'   => sprintf('%s (en)', ucfirst($code)),
-            'label-fr_FR'   => sprintf('%s (fr)', ucfirst($code)),
-            'dynamic' => '0',
+            'label-fr_FR'   => sprintf('%s (fr)', ucfirst($code))
         );
     }
 

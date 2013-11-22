@@ -22,12 +22,7 @@ class FileWriter extends AbstractConfigurableStepElement implements
     /**
      * @Assert\NotBlank(groups={"Execution"})
      */
-    protected $directoryName;
-
-    /**
-     * @Assert\NotBlank(groups={"Execution"})
-     */
-    protected $fileName = 'export_%datetime%.csv';
+    protected $filePath = '/tmp/export_%datetime%.csv';
 
     /**
      * @var StepExecution
@@ -39,51 +34,27 @@ class FileWriter extends AbstractConfigurableStepElement implements
     private $resolvedFilePath;
 
     /**
-     * Set the filename
+     * Set the file path
      *
-     * @param string $fileName
+     * @param string $filePath
      *
      * @return FileWriter
      */
-    public function setFileName($fileName)
+    public function setFilePath($filePath)
     {
-        $this->fileName = $fileName;
+        $this->filePath = $filePath;
 
         return $this;
     }
 
     /**
-     * Get the filename
+     * Get the file path
      *
      * @return string
      */
-    public function getFileName()
+    public function getFilePath()
     {
-        return $this->fileName;
-    }
-
-    /**
-     * Set the directory name
-     *
-     * @param string $directoryName
-     *
-     * @return FileWriter
-     */
-    public function setDirectoryName($directoryName)
-    {
-        $this->directoryName = $directoryName;
-
-        return $this;
-    }
-
-    /**
-     * Get the directory name
-     *
-     * @return string
-     */
-    public function getDirectoryName()
-    {
-        return $this->directoryName;
+        return $this->filePath;
     }
 
     /**
@@ -94,14 +65,10 @@ class FileWriter extends AbstractConfigurableStepElement implements
     public function getPath()
     {
         if (!isset($this->resolvedFilePath)) {
-            return sprintf(
-                '%s/%s',
-                $this->directoryName,
-                strtr(
-                    $this->fileName,
-                    array(
-                        '%datetime%' => date('Y-m-d_H:i:s')
-                    )
+            $this->resolvedFilePath = strtr(
+                $this->filePath,
+                array(
+                    '%datetime%' => date('Y-m-d_H:i:s')
                 )
             );
         }
@@ -144,8 +111,7 @@ class FileWriter extends AbstractConfigurableStepElement implements
     public function getConfigurationFields()
     {
         return array(
-            'directoryName' => array(),
-            'fileName' => array()
+            'filePath' => array()
         );
     }
 

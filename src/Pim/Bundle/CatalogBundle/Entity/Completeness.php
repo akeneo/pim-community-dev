@@ -5,7 +5,6 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Product completeness entity
@@ -15,75 +14,42 @@ use Doctrine\ORM\Mapping as ORM;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @ORM\Entity(repositoryClass="Pim\Bundle\CatalogBundle\Entity\Repository\CompletenessRepository")
- * @ORM\Table(
- *     name="pim_catalog_completeness",
- *     uniqueConstraints={
- *         @ORM\UniqueConstraint(
- *             name="searchunique_idx",
- *             columns={"channel_id", "locale_id", "product_id"}
- *         )
- *     }
- * )
- *
  * @ExclusionPolicy("all")
  */
 class Completeness
 {
     /**
      * @var integer $id
-     *
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
      */
     protected $id;
 
     /**
      * @var Locale $locale
-     *
-     * @ORM\ManyToOne(targetEntity="Pim\Bundle\CatalogBundle\Entity\Locale")
-     * @ORM\JoinColumn(name="locale_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
      */
     protected $locale;
 
     /**
      * @var \Pim\Bundle\CatalogBundle\Entity\Channel $channel
-     *
-     * @ORM\ManyToOne(targetEntity="Pim\Bundle\CatalogBundle\Entity\Channel")
-     * @ORM\JoinColumn(name="channel_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
      */
     protected $channel;
 
     /**
      * @var integer $ratio
-     *
-     * @ORM\Column(type="integer")
      */
     protected $ratio = 100;
 
     /**
      * @var integer $missingCount
-     *
-     * @ORM\Column(name="missing_count", type="integer")
      */
     protected $missingCount = 0;
 
     /**
      * @var integer $requiredCount
-     *
-     * @ORM\Column(name="required_count", type="integer")
      */
     protected $requiredCount = 0;
 
     /**
      * @var \Pim\Bundle\CatalogBundle\Model\ProductInterface
-     *
-     * @ORM\ManyToOne(
-     *     targetEntity="Pim\Bundle\CatalogBundle\Model\ProductInterface",
-     *     inversedBy="completenesses"
-     * )
-     * @ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
      */
     protected $product;
 

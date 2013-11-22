@@ -102,7 +102,6 @@ class CategoryProcessor extends AbstractEntityProcessor
         $category = $this->getCategory($item);
 
         $category->setCode($item['code']);
-        $category->setDynamic((bool) $item['dynamic']);
         foreach ($item as $key => $value) {
             if (preg_match('/^label-(.+)/', $key, $matches)) {
                 $category->setLocale($matches[1]);
@@ -116,7 +115,7 @@ class CategoryProcessor extends AbstractEntityProcessor
         if ($violations->count() > 0) {
             $messages = array();
             foreach ($violations as $violation) {
-                $messages[]= (string) $violation;
+                $messages[] = (string) $violation;
             }
             throw new InvalidItemException(implode(', ', $messages), $item);
 

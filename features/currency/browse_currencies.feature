@@ -9,11 +9,14 @@ Feature: Browse currencies
     And I am logged in as "admin"
     And I am on the currencies page
 
-  Scenario: Successfully display currencies
-    Given I filter by "Activated" with value "yes"
-    Then the grid should contain 2 elements
-    And I should see activated currencies USD and EUR
-    And I should see the columns Code, Label and Activated
+  Scenario: Successfully view, sort and filter currencies
+    Then I should see the columns Code, Label and Activated
+    And the rows should be sorted ascending by code
+    And I should be able to sort the rows by code and activated
+    And I should be able to use the following filters:
+      | filter    | value | result      |
+      | Code      | EU    | EUR and XEU |
+      | Activated | yes   | USD and EUR |
 
   Scenario: Successfully activate a currency
     Given I filter by "Code" with value "GBP"
