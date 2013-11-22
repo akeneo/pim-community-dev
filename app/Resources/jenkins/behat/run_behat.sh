@@ -82,7 +82,7 @@ for PROC in `seq 1 $CONCURRENCY`; do
     echo "  - proc $PROC"
     export SYMFONY__DATABASE__NAME=$DB_PREFIX$PROC
     export SYMFONY__UPLOAD__DIR=product_$PROC
-    $BEHAT_CMD --profile=$PROFILE_PREFIX$PROC --stop-on-failure $FEATURE_NAME
+    $BEHAT_CMD --profile=$PROFILE_PREFIX$PROC --stop-on-failure -fsnippets $FEATURE_NAME
 done
 echo "Warming cache done."
 
