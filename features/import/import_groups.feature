@@ -31,8 +31,8 @@ Feature: Import groups
     AKENEO_VARIANT;;;RELATED;
     """
     And the following job "acme_group_import" configuration:
-      | element | property | value                |
-      | reader  | filePath | {{ file to import }} |
+      | step   | element | property | value                |
+      | import | reader  | filePath | {{ file to import }} |
     When I am on the "acme_group_import" import job page
     And I launch the import job
     And I wait for the job to finish
