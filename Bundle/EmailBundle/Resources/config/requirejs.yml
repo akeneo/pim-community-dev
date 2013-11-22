@@ -1,8 +1,4 @@
 config:
-    shim:
-        'jquery.bind-first':
-            deps:
-                - 'jquery'
     paths:
         'oro/email/template/collection': 'bundles/oroemail/js/email/template/collection.js'
         'oro/email/template/model': 'bundles/oroemail/js/email/template/model.js'
@@ -10,4 +6,3 @@ config:
         'oro/email/variable/model': 'bundles/oroemail/js/email/variable/model.js'
         'oro/email/variable/view': 'bundles/oroemail/js/email/variable/view.js'
         'oro/init-email': 'bundles/oroemail/js/init-email.js'
-        'jquery.bind-first': 'bundles/oroemail/lib/jquery.bind-first-0.2.1.js'
