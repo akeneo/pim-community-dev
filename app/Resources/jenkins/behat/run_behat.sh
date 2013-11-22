@@ -9,6 +9,7 @@
 XDEBUG_EXTENSION="xdebug.so"
 CHECK_WAIT=2
 OUTPUT=`mktemp`
+WARM_CACHE_FEATURE="features/channel/sort_channels.feature"
 
 usage() {
     echo "Usage: $0 (concurrency) (xdebug|noxdebug) (database_prefix) (profile_prefix) [behat command and options]"
@@ -70,6 +71,17 @@ for PROC in `seq 1 $CONCURRENCY`; do
     eval PID_$PROC=0
 done
 cd -
+
+# Warm the cache to avoid EntityConfig bug with UoW when cache is cold
+echo "Warming cache..."
+for PROC in `seq 1 $CONCURRENCY`; do
+    echo "  - proc $PROC"
+    export SYMFONY__DATABASE__NAME=$DB_PREFIX$PROC
+    export SYMFONY__UPLOAD__DIR=product_$PROC
+    $BEHAT_CMD --profile=$PROFILE_PREFIX$PROC $WARM_CACHE_FEATURE
+done
+echo "Warming cache done."
+
 
 FEATURES=`find $FEATURES_DIR/ -name *.feature`
 for FEATURE in $FEATURES; do

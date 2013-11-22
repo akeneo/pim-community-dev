@@ -11,9 +11,10 @@
 - Group types management
 - Import/Export product groups (CSV)
 - Import/Export associations (CSV)
+- Import/Export product associations (CSV)
 - Import/Export attributes (CSV)
 - Import/Export attribute options (CSV)
-- Upload and import an archive
+- Upload and import an archive (CSV and medias)
 - Download an archive containing the exported products along with media
 - Add the column "enabled" in the CSV file for importing products
 

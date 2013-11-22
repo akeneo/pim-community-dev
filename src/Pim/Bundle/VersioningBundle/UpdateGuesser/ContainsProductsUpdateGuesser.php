@@ -36,13 +36,13 @@ class ContainsProductsUpdateGuesser implements UpdateGuesserInterface
         if ($entity instanceof Group) {
             $products = $entity->getProducts();
             foreach ($products as $product) {
-                $pendings[]= $product;
+                $pendings[] = $product;
             }
 
         } elseif ($entity instanceof Category) {
             $products = $entity->getProducts();
             foreach ($products as $product) {
-                $pendings[]= $product;
+                $pendings[] = $product;
             }
         }
 
