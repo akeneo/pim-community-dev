@@ -41,8 +41,9 @@ class CategoryExtension extends \Twig_Extension
             'children_response'      => new \Twig_Function_Method($this, 'childrenResponse'),
             'children_tree_response'      => new \Twig_Function_Method($this, 'childrenTreeResponse'),
             'list_categories_response' => new \Twig_Function_Method($this, 'listCategoriesResponse'),
-            'count_products' => new \Twig_Function_Method($this, 'countProducts'),
-            'define_state'   => new \Twig_Function_Method($this, 'defineState')
+            'list_products'    => new \Twig_Function_Method($this, 'listProducts')
+//             'count_products' => new \Twig_Function_Method($this, 'countProducts'),
+//             'define_state'   => new \Twig_Function_Method($this, 'defineState')
         );
     }
 
@@ -274,5 +275,38 @@ class CategoryExtension extends \Twig_Extension
     public function getName()
     {
         return 'pim_category_extension';
+    }
+
+    /**
+     * List products for jstree
+     *
+     * @param array $products
+     *
+     * @return array
+     */
+    public function listProducts(array $products)
+    {
+        $productsList = array();
+        foreach ($products as $product) {
+            $productsList[] = $this->formatProduct($product);
+        }
+
+        return $productsList;
+    }
+
+    /**
+     * Format a product interface for jstree
+     *
+     * @param ProductInterface $product
+     *
+     * @return array
+     */
+    protected function formatProduct(ProductInterface $product)
+    {
+        return array(
+            'id'          => $product->getId(),
+            'name'        => $product->getIdentifier(),
+            'description' => (string) $product
+        );
     }
 }

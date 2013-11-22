@@ -1,10 +1,1 @@
-[
-{% for product in products %}
-    {
-        "id": {{ product.id }},
-        "name": "{{ product.identifier|raw }}",
-        "description": "{{ product.__toString|raw }}"
-    }
-    {% if not loop.last %},{% endif %}
-{% endfor %}
-]
+{{ list_products(products) }}
