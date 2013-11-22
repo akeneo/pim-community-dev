@@ -916,7 +916,10 @@ class FixturesContext extends RawMinkContext
         }
 
         foreach (array_keys($config) as $stepName) {
-            $config[$stepName] = array_merge(array('reader' => array(), 'processor' => array(), 'writer' => array()), $config[$stepName]);
+            $config[$stepName] = array_merge(
+                array('reader' => array(), 'processor' => array(), 'writer' => array()),
+                $config[$stepName]
+            );
             foreach ($steps as $step) {
                 if ($step->getName() == $stepName) {
                     $step->setConfiguration($config[$stepName]);
