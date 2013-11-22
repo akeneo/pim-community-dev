@@ -8,7 +8,6 @@ use Doctrine\ORM\EntityManager;
 
 use Oro\Bundle\WorkflowBundle\Exception\InvalidParameterException;
 use Oro\Bundle\WorkflowBundle\Exception\NotManageableEntityException;
-use Oro\Bundle\WorkflowBundle\Exception\ActionException;
 use Oro\Bundle\WorkflowBundle\Model\ContextAccessor;
 
 class RequestEntity extends AbstractAction
@@ -114,7 +113,10 @@ class RequestEntity extends AbstractAction
     {
         $entityClassName = $this->getEntityClassName();
         $entityManager = $this->getEntityManager($entityClassName);
-        $entityIdentifier = $this->applyCaseTransformation($this->getEntityIdentifier($context));
+
+        $entityIdentifier = $this->getEntityIdentifier($context);
+        $entityIdentifier = $this->applyCaseTransformation($entityIdentifier);
+        $entityIdentifier = $this->applyTrim($entityIdentifier);
 
         return $entityManager->getReference($entityClassName, $entityIdentifier);
     }
@@ -130,8 +132,12 @@ class RequestEntity extends AbstractAction
         $entityClassName = $this->getEntityClassName();
         $entityManager = $this->getEntityManager($entityClassName);
 
-        $where = $this->applyCaseTransformation($this->getWhere($context));
+        $where = $this->getWhere($context);
+        $where = $this->applyCaseTransformation($where);
+        $where = $this->applyTrim($where);
+
         $orderBy = $this->getOrderBy($context);
+        $orderBy = $this->applyTrim($orderBy);
 
         $queryBuilder = $entityManager->getRepository($entityClassName)->createQueryBuilder('e');
 
@@ -253,6 +259,23 @@ class RequestEntity extends AbstractAction
             }
         } elseif (is_string($data)) {
             $data = mb_strtolower($data);
+        }
+
+        return $data;
+    }
+
+    /**
+     * @param $data
+     * @return array|string
+     */
+    protected function applyTrim($data)
+    {
+        if (is_array($data)) {
+            foreach ($data as $key => $value) {
+                $data[$key] = trim($value);
+            }
+        } elseif (is_string($data)) {
+            $data = trim($data);
         }
 
         return $data;

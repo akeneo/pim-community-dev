@@ -197,11 +197,14 @@ class RequestEntityTest extends \PHPUnit_Framework_TestCase
         $context = new ItemStub($data);
         $entity = new \stdClass();
 
+        if (is_string($options['identifier'])) {
+            $options['identifier'] = trim($options['identifier']);
+        }
+
         $expectedIdentifier = $this->convertIdentifier($context, $options['identifier']);
         if (!empty($options['case_insensitive'])) {
             $expectedIdentifier = strtolower($expectedIdentifier);
         }
-        $this->assertNotEmpty($expectedIdentifier);
 
         $em = $this->getMockBuilder('\Doctrine\ORM\EntityManager')
             ->disableOriginalConstructor()
@@ -249,7 +252,7 @@ class RequestEntityTest extends \PHPUnit_Framework_TestCase
             'scalar_case_insensitive_identifier' => array(
                 'options' => array(
                     'class' => '\stdClass',
-                    'identifier' => 'DATA',
+                    'identifier' => ' DATA ',
                     'attribute' => new PropertyPath('entity_attribute'),
                     'case_insensitive' => true,
                 )
@@ -289,9 +292,9 @@ class RequestEntityTest extends \PHPUnit_Framework_TestCase
     {
         $options = array(
             'class' => '\stdClass',
-            'where' => array('name' => 'Qwerty'),
+            'where' => array('name' => ' Qwerty '),
             'attribute' => new PropertyPath('entity'),
-            'order_by' => array('createdDate' => 'asc'),
+            'order_by' => array('createdDate' => ' asc '),
             'case_insensitive' => $caseInsensitive
         );
 
@@ -304,8 +307,8 @@ class RequestEntityTest extends \PHPUnit_Framework_TestCase
 
         $expectedField = !empty($options['case_insensitive']) ? 'LOWER(e.name)' : 'e.name';
         $expectedValue = !empty($options['case_insensitive'])
-            ? strtolower($options['where']['name'])
-            : $options['where']['name'];
+            ? trim(strtolower($options['where']['name']))
+            : trim($options['where']['name']);
         $expectedParameter = 'parameter_0';
         $expectedOrder = 'e.createdDate';
 
@@ -315,7 +318,7 @@ class RequestEntityTest extends \PHPUnit_Framework_TestCase
         $queryBuilder->expects($this->once())->method('setParameter')
             ->with($expectedParameter, $expectedValue)->will($this->returnSelf());
         $queryBuilder->expects($this->once())->method('orderBy')
-            ->with($expectedOrder, $options['order_by']['createdDate'])->will($this->returnSelf());
+            ->with($expectedOrder, trim($options['order_by']['createdDate']))->will($this->returnSelf());
         $queryBuilder->expects($this->once())->method('getQuery')->will($this->returnValue($query));
 
         $repository = $this->getMockBuilder('Doctrine\ORM\EntityRepository')->disableOriginalConstructor()->getMock();
