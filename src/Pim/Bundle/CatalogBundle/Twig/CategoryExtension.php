@@ -67,10 +67,10 @@ class CategoryExtension extends \Twig_Extension
 
     /**
      * Format a tree for jstree js plugin
-     * Returns an array formated as :
+     * Returns an array formated as:
      * array(
-     *     'id'    => int,       // the tree id
-     *     'label' => string,    // the tree label
+     *     'id'       => int,    // the tree id
+     *     'label'    => string, // the tree label
      *     'selected' => boolean // predicate to know if the tree is selected or not
      * )
      *
@@ -95,7 +95,7 @@ class CategoryExtension extends \Twig_Extension
         $withProductCount = null,
         $includeSub = false
     ) {
-        $result = $this->formatCategory($categories, $selectedCategory, $withProductCount, $includeSub);
+        $result = $this->formatCategoriesFromArray($categories, $selectedCategory, $withProductCount, $includeSub);
 
         if ($parent !== null) {
             $result = array(
@@ -111,25 +111,59 @@ class CategoryExtension extends \Twig_Extension
         return $result;
     }
 
-    protected function formatCategory(array $categories, CategoryInterface $selectedCategory, $withProductCount = false, $includeSub = false)
+    /**
+     * Format categories from an array
+     *
+     * @param array             $categories
+     * @param CategoryInterface $selectedCategory
+     * @param boolean           $withProductCount
+     * @param boolean           $includeSub
+     *
+     * @return array
+     */
+    protected function formatCategoriesFromArray(array $categories, CategoryInterface $selectedCategory, $withProductCount = false, $includeSub = false)
     {
         $result = array();
 
         foreach ($categories as $category) {
-            $state = $this->defineCategoryStateFromArray($category, array($selectedCategory->getId()));
-            $label = $this->getLabel($category['item'], $withProductCount, $includeSub);
-
-            $result[] = array(
-                'attr' => array(
-                    'id' => 'node_'. $category['item']->getId()
-                ),
-                'data' => $label,
-                'state' => $state,
-                'children' => $this->formatCategory($category['__children'], $selectedCategory, $withProductCount, $includeSub)
-            );
+            $result[] = $this->formatCategoryFromArray($category, $selectedCategory, $withProductCount, $includeSub);
         }
 
         return $result;
+    }
+
+    /**
+     * Format a category from an array
+     * Returns an array formatted as:
+     * array(
+     *     'attr'     => array(
+     *         'id' => 'node_' + <categoryId>
+     *     ),
+     *     'data'     => string, // the category label + count if needed
+     *     'state'    => string, // the css classes for category state
+     *     'children' => array() // the same array for children
+     * )
+     *
+     * @param array $category
+     * @param CategoryInterface $selectedCategory
+     * @param boolean $withProductCount
+     * @param boolean $includeSub
+     *
+     * @return array
+     */
+    protected function formatCategoryFromArray(array $category, CategoryInterface $selectedCategory, $withProductCount = false, $includeSub = false)
+    {
+        $state = $this->defineCategoryStateFromArray($category, array($selectedCategory->getId()));
+        $label = $this->getLabel($category['item'], $withProductCount, $includeSub);
+
+        return array(
+            'attr'     => array(
+                'id' => 'node_'. $category['item']->getId()
+            ),
+            'data'     => $label,
+            'state'    => $state,
+            'children' => $this->formatCategoriesFromArray($category['__children'], $selectedCategory, $withProductCount, $includeSub)
+        );
     }
 
     public function childrenResponse(array $categories, Category $parent = null, $withProductsCount = false, $includeSub = false)
