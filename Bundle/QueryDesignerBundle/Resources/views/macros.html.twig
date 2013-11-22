@@ -34,7 +34,7 @@
     </script>
 {% endmacro %}
 
-{% macro query_designer_filter_form(form, attr) %}
+{% macro query_designer_filter_form(form, form_filters_logic, attr) %}
     {% import 'OroUIBundle::macros.html.twig' as UI %}
     {% set attr = attr|default({})|merge({'class': (attr.class|default('') ~ ' query-designer-form clearfix')|trim}) %}
     <div{{ UI.attributes(attr) }}>
@@ -63,6 +63,15 @@
         {{ UI.clientButton({
             'aCss': 'no-hash btn-primary add-button',
             'label' : 'oro.querydesigner.form.action.add'|trans
+        }) }}
+    </div>
+    <div class="query-designer-filter-logic-form query-designer-form clearfix">
+        {{ form_row(form_filters_logic, {
+            'label': 'oro.querydesigner.form.filter_logic'|trans,
+            'tooltip': 'oro.querydesigner.form.filter_logic_tooltip',
+            'attr': {
+                'data-purpose': 'filter-logic'
+            }
         }) }}
     </div>
 {% endmacro %}

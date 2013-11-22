@@ -29,3 +29,5 @@ oro:
             sorting_asc:        Asc
             sorting_desc:       Desc
             criterion:          Criterion
+            filter_logic:       Filter Logic
+            filter_logic_tooltip: Example: (1 AND 2) OR 3

@@ -79,10 +79,12 @@ function(_, Backbone, __, app, messenger, routing, LoadingMask,
                 var filters = this.filtersView.getCollection().toJSON();
                 _.each(filters, function (value) {
                     delete value.id;
+                    delete value.index;
                 });
                 var data = {
                     columns: columns,
-                    filters: filters
+                    filters: filters,
+                    filters_logic: this.filtersView.getFiltersLogic()
                 };
                 this.storageEl.val(JSON.stringify(data));
             }
@@ -121,9 +123,27 @@ function(_, Backbone, __, app, messenger, routing, LoadingMask,
             if (!_.isUndefined(data['filters']) && !_.isEmpty(data['filters'])) {
                 this.filtersView.getCollection().reset(data['filters']);
             }
+            if (!_.isUndefined(data['filters_logic']) && !_.isEmpty(data['filters_logic'])) {
+                this.filtersView.setFiltersLogic(data['filters_logic']);
+            }
             this.listenTo(this.filtersView, 'collection:change', _.bind(this.updateStorage, this));
 
+            this.$el.closest('form').on('submit', _.bind(function (e) {
+                this.onPreSubmit();
+                return true;
+            }, this));
+
             return this;
+        },
+
+        onPreSubmit: function () {
+            if (this.storageEl && this.storageEl.val() != '') {
+                var data = JSON.parse(this.storageEl.val());
+                if (!_.isUndefined(data['filters_logic']) && data['filters_logic'] != this.filtersView.getFiltersLogic()) {
+                    data['filters_logic'] = this.filtersView.getFiltersLogic();
+                    this.storageEl.val(JSON.stringify(data));
+                }
+            }
         },
 
         enableViews: function () {

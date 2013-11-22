@@ -47,3 +47,6 @@
 .query-designer-grid-container .grid .index-cell {
     width: 36px;
 }
+.form-horizontal .query-designer-filter-logic-form input[type=text] {
+    width: 400px;
+}

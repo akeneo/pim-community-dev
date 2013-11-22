@@ -20,6 +20,9 @@ function(AbstractView, FilterCollection, filterBuilder) {
         /** @property {oro.queryDesigner.FilterManager} */
         filterManager: null,
 
+        /** @property {jQuery} */
+        filtersLogicEl: null,
+
         initialize: function() {
             AbstractView.prototype.initialize.apply(this, arguments);
             this.addFieldLabelGetter(this.getCriterionFieldLabel);
@@ -29,6 +32,7 @@ function(AbstractView, FilterCollection, filterBuilder) {
             AbstractView.prototype.initForm.apply(this, arguments);
 
             this.criterionSelector = this.form.find('[data-purpose="criterion-selector"]');
+            this.filtersLogicEl = this.form.parent().find('[data-purpose="filter-logic"]');
 
             // load filters
             this.criterionSelector.hide();
@@ -54,9 +58,26 @@ function(AbstractView, FilterCollection, filterBuilder) {
             }, this));
         },
 
+        getFiltersLogic: function () {
+            return this.filtersLogicEl.val();
+        },
+
+        setFiltersLogic: function (str) {
+            this.filtersLogicEl.val(str);
+        },
+
         initModel: function (model, index) {
             AbstractView.prototype.initModel.apply(this, arguments);
             model.set('index', index + 1);
+        },
+
+        addModel: function(model) {
+            AbstractView.prototype.addModel.apply(this, arguments);
+            if (this.filtersLogicEl.val() == '') {
+                this.filtersLogicEl.val(this.filtersLogicEl.val() + model.get('index'));
+            } else {
+                this.filtersLogicEl.val(this.filtersLogicEl.val() + ' AND ' + model.get('index'));
+            }
         },
 
         deleteModel: function(model) {
