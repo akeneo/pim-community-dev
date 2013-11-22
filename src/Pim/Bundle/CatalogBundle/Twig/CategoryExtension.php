@@ -83,7 +83,7 @@ class CategoryExtension extends \Twig_Extension
                         'id' => 'node_'. $parent->getId()
                     ),
                     'data' => $parent->getLabel(),
-                    'state' => $this->defineState($parent),
+                    'state' => $this->defineCategoryState($parent),
                     'children' => $result
             );
         }
@@ -96,7 +96,7 @@ class CategoryExtension extends \Twig_Extension
         $result = array();
 
         foreach ($categories as $category) {
-            $state = $this->defineCategoryState($category, array($selectedCategory->getId()));
+            $state = $this->defineCategoryStateFromArray($category, array($selectedCategory->getId()));
             $label = $this->getLabel($category['item'], $withProductCount, $includeSub);
 
             $result[] = array(
@@ -125,7 +125,7 @@ class CategoryExtension extends \Twig_Extension
                     'id' => 'node_'. $category->getId()
                 ),
                 'data' => $label,
-                'state' => $this->defineState($category)
+                'state' => $this->defineCategoryState($category)
             );
         }
 
@@ -135,7 +135,7 @@ class CategoryExtension extends \Twig_Extension
                     'id' => 'node_'. $parent->getId()
                 ),
                 'data' => $this->getLabel($parent),
-                'state' => $this->defineState($parent),
+                'state' => $this->defineCategoryState($parent),
                 'children' => $result
             );
         }
@@ -200,7 +200,7 @@ class CategoryExtension extends \Twig_Extension
                     'id' => sprintf('node_%s', $category['item']->getId())
                 ),
                 'data' => $label,
-                'state' => $this->defineCategoryState($category, $selectedIds),
+                'state' => $this->defineCategoryStateFromArray($category, $selectedIds),
                 'children' => $children,
                 'selectedChildrenCount' => $selectedChildren
             );
@@ -230,11 +230,11 @@ class CategoryExtension extends \Twig_Extension
      *
      * @param CategoryInterface $category
      * @param boolean           $hasChild
-     * @param CategoryInterface $selectNode
+     * @param array             $selectedIds
      *
      * @return string
      */
-    public function defineState(CategoryInterface $category, $hasChild = false, array $selectedIds = array())
+    public function defineCategoryState(CategoryInterface $category, $hasChild = false, array $selectedIds = array())
     {
         $state = $category->hasChildren() ? 'closed' : 'leaf';
 
@@ -254,19 +254,24 @@ class CategoryExtension extends \Twig_Extension
     }
 
     /**
-     * TODO : Refactor with the method "defineState" just above
+     * Define category state from a category array
+     * array(
+     *     'item'       => CategoryInterface,
+     *     '__children' => array()
+     * )
+     *
      * @param array $category
      * @param array $selectedIds
+     *
      * @return string
      */
-    protected function defineCategoryState(array $category, $selectedIds = array())
+    protected function defineCategoryStateFromArray(array $category, $selectedIds = array())
     {
         $children = $category['__children'];
         $category = $category['item'];
-
         $hasChild = (count($children) > 0);
 
-        return $this->defineState($category, $hasChild, $selectedIds);
+        return $this->defineCategoryState($category, $hasChild, $selectedIds);
     }
 
     /**
