@@ -217,7 +217,7 @@ class CategoryExtension extends \Twig_Extension
      *
      * @return string
      */
-    public function countProducts(CategoryInterface $category, $nested)
+    protected function countProducts(CategoryInterface $category, $nested)
     {
         return $this
             ->categoryManager
