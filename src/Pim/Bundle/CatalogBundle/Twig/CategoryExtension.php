@@ -59,7 +59,7 @@ class CategoryExtension extends \Twig_Extension
         $return = array();
 
         foreach ($trees as $tree) {
-            $return[] = $this->formatTree($tree, $selectedTreeId);
+            $return[] = $this->formatTree($tree, $selectedTreeId, $includeSub);
         }
 
         return $return;
@@ -79,11 +79,13 @@ class CategoryExtension extends \Twig_Extension
      *
      * @return array
      */
-    protected function formatTree(CategoryInterface $tree, $selectedTreeId)
+    protected function formatTree(CategoryInterface $tree, $selectedTreeId, $includeSub)
     {
+        $label = $this->getLabel($tree, true, $includeSub);
+
         return array(
             'id' => $tree->getId(),
-            'label' => $this->getLabel($tree),
+            'label' => $label,
             'selected' => ($tree->getId() === $selectedTreeId) ? 'true' : 'false'
         );
     }
@@ -215,7 +217,6 @@ class CategoryExtension extends \Twig_Extension
             $children = $this->formatCategoriesAndCount($category['__children'], $selectedIds, $count);
 
             $selectedChildren = 0;
-
             foreach ($children as $child) {
                 $selectedChildren += $child['selectedChildrenCount'];
                 if (preg_match('/checked/', $child['state'])) {
@@ -223,8 +224,7 @@ class CategoryExtension extends \Twig_Extension
                 }
             }
 
-            $label = $category['item']->getLabel();
-
+            $label = $this->getLabel($category['item']);
             if ($selectedChildren > 0) {
                 $label = sprintf('<strong>%s</strong>', $label);
             }
@@ -256,7 +256,7 @@ class CategoryExtension extends \Twig_Extension
     {
         $label = $category->getLabel();
         if ($count) {
-            $label = $label .'('. $this->countProducts($category, $includeSub) .')';
+            $label = $label .' ('. $this->countProducts($category, $includeSub) .')';
         }
 
         return $label;
@@ -296,7 +296,7 @@ class CategoryExtension extends \Twig_Extension
         }
 
         if (in_array($category->getId(), $selectedIds)) {
-            $state .= ' toselect';
+            $state .= ' toselect jstree-checked';
         }
 
         if ($category->isRoot()) {
