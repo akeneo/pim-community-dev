@@ -2,8 +2,12 @@
 
 namespace Oro\Bundle\FormBundle\Form\Extension;
 
-use Symfony\Component\Validator\MetadataFactoryInterface;
-use Symfony\Component\Validator\Constraint;
+use Oro\Bundle\FormBundle\JsValidation\ConstraintsProvider;
+
+use Oro\Bundle\FormBundle\JsValidation\JsValidationEvents;
+use Oro\Bundle\FormBundle\JsValidation\Event;
+
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\FormView;
@@ -17,16 +21,15 @@ class JsValidationExtension extends AbstractTypeExtension
     protected $validationGroups;
 
     /**
-     * @var array
+     * @param ConstraintsProvider $constraintsProvider
+     * @param EventDispatcherInterface $eventDispatcher
      */
-    protected $metadataConstraintsCache;
-
-    /**
-     * @param MetadataFactoryInterface $metadataFactory
-     */
-    public function __construct(MetadataFactoryInterface $metadataFactory)
-    {
-        $this->metadataFactory = $metadataFactory;
+    public function __construct(
+        ConstraintsProvider $constraintsProvider,
+        EventDispatcherInterface $eventDispatcher
+    ) {
+        $this->constraintsProvider = $constraintsProvider;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -50,7 +53,6 @@ class JsValidationExtension extends AbstractTypeExtension
             $this->validationGroups = $this->extractValidationGroups($view);
             $this->initFormViewJsValidationData($view);
             unset($this->validationGroups);
-            unset($this->metadataConstraintsCache);
         }
     }
 
@@ -125,151 +127,39 @@ class JsValidationExtension extends AbstractTypeExtension
      */
     protected function addDataValidationAttribute(FormView $view)
     {
-        $constraints = $this->getFormViewConstraints($view);
+        $this->eventDispatcher->dispatch(JsValidationEvents::PRE_PROCESS, new Event\PreProcessEvent($view));
+
+        $constraints = $this->constraintsProvider->getFormViewConstraints($view, $this->validationGroups);
+
+        $this->eventDispatcher->dispatch(
+            JsValidationEvents::GET_CONSTRAINTS_EVENT,
+            new Event\GetConstraintsEvent(
+                $view,
+                $constraints
+            )
+        );
 
         $value = array();
         foreach ($constraints as $constraint) {
-            $value[$this->getConstraintName($constraint)] = $this->getConstraintProperties($constraint);
+            $name = $this->constraintsProvider->getConstraintName($constraint);
+            $value[$name] = $this->constraintsProvider->getConstraintProperties($constraint);
         }
 
         if ($value) {
-            $target = $view;
-            // @TODO Move this logic of handling repeated form type outside of this extension class, use events instead
-            if (isset($view->vars['type']) && $view->vars['type'] == 'repeated') {
-                $repeatedNames = array_keys($view->vars['value']);
-                $target = $view->children[$repeatedNames[0]];
-
-                $secondValue = array();
-                $secondValue['Repeated'] = array(
-                    'first_name' => $repeatedNames[0],
-                    'second_name' => $repeatedNames[1],
-                    'invalid_message' => $view->vars['invalid_message'],
-                    'invalid_message_parameters' => $view->vars['invalid_message_parameters'],
-                );
-                $second = $view->children[$repeatedNames[1]];
-
-                if (!isset($second->vars['attr'])) {
-                    $second->vars['attr'] = array();
-                }
-                $second->vars['attr']['data-validation'] = json_encode($secondValue);
+            if (!isset($view->vars['attr'])) {
+                $view->vars['attr'] = array();
             }
-            if (!isset($target->vars['attr'])) {
-                $target->vars['attr'] = array();
+            if (!isset($view->vars['attr']['data-validation']) || !is_array($view->vars['attr']['data-validation'])) {
+                $view->vars['attr']['data-validation'] = array();
             }
-            $target->vars['attr']['data-validation'] = json_encode($value);
-        }
-    }
-
-    /**
-     * Gets constraint name based on object
-     *
-     * @param Constraint $constraint
-     * @return mixed|string
-     */
-    protected function getConstraintName(Constraint $constraint)
-    {
-        $class = get_class($constraint);
-        $defaultClassPrefix = 'Symfony\\Component\\Validator\\Constraints\\';
-        if (0 === strpos($class, $defaultClassPrefix)) {
-            return str_replace($defaultClassPrefix, '', $class);
-        }
-        return $class;
-    }
-
-    /**
-     * Gets all properties of constraint that will be passed to JS validation
-     *
-     * @param Constraint $constraint
-     * @return array
-     */
-    protected function getConstraintProperties(Constraint $constraint)
-    {
-        $result = get_object_vars($constraint);
-        unset($result['groups']);
-        foreach ($result as $key => $value) {
-            if (is_object($value)) {
-                unset($result[$key]);
-            }
-        }
-        return $result;
-    }
-
-    /**
-     * Gets constraints that should be checked on form view
-     *
-     * @param FormView $view
-     * @return array
-     */
-    protected function getFormViewConstraints(FormView $view)
-    {
-        $constraints = $this->getMetadataConstraints($view);
-
-        if (isset($view->vars['constraints'])) {
-            $constraints = array_merge($constraints, $view->vars['constraints']);
+            $view->vars['attr']['data-validation'] = array_merge($value, $view->vars['attr']['data-validation']);
         }
 
-        $result = array();
-        foreach ($constraints as $constraint) {
-            if (array_intersect($this->validationGroups, $constraint->groups)) {
-                $result[] = $constraint;
-            }
+        $this->eventDispatcher->dispatch(JsValidationEvents::POST_PROCESS, new Event\PostProcessEvent($view));
+
+        if (isset($view->vars['attr']['data-validation']) && is_array($view->vars['attr']['data-validation'])) {
+            $view->vars['attr']['data-validation'] = json_encode($view->vars['attr']['data-validation']);
         }
-
-        return $result;
-    }
-
-    /**
-     * Gets constraints for form view based on metadata
-     *
-     * @param FormView $view
-     * @return array
-     */
-    protected function getMetadataConstraints(FormView $view)
-    {
-        $isMapped = (!isset($view->vars['mapped']) || $view->vars['mapped']);
-
-        if (!$view->parent || !$isMapped) {
-            return array();
-        }
-
-        $name = $view->vars['name'];
-        $parentName = $view->parent->vars['full_name'];
-
-        if (!isset($this->metadataConstraintsCache[$parentName])) {
-            $this->metadataConstraintsCache[$parentName] = $this->extractMetadataPropertiesConstraints($view->parent);
-        }
-
-        $result = array();
-
-        if (isset($this->metadataConstraintsCache[$parentName][$name])) {
-            $result = $this->metadataConstraintsCache[$parentName][$name]->constraints;
-        }
-
-        return $result;
-    }
-
-    /**
-     * Extracts constraints based on validation metadata
-     *
-     * @param FormView $view
-     * @return array
-     */
-    protected function extractMetadataPropertiesConstraints(FormView $view)
-    {
-        $constraints = array();
-        if (isset($view->vars['data_class'])) {
-            $metadata = $this->metadataFactory->getMetadataFor($view->vars['data_class']);
-            $constraints = $metadata->properties;
-        }
-        if (!empty($constraints) && !empty($view->vars['error_mapping'])) {
-            foreach ($view->vars['error_mapping'] as $originalName => $mappedName) {
-                if (isset($constraints[$originalName])) {
-                    $constraints[$mappedName] = $constraints[$originalName];
-                }
-            }
-        }
-
-        return $constraints;
     }
 
     /**

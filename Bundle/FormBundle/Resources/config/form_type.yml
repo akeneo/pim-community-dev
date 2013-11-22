@@ -13,6 +13,7 @@ parameters:
     oro_form.extension.constraint_as_option.class:  Oro\Bundle\FormBundle\Form\Extension\ConstraintAsOptionExtension
     oro_form.extension.tooltip.class:               Oro\Bundle\FormBundle\Form\Extension\TooltipFormExtension
     oro_form.extension.js_validation.class:         Oro\Bundle\FormBundle\Form\Extension\JsValidationExtension
+    oro_form.extension.repeated.class:              Oro\Bundle\FormBundle\Form\Extension\RepeatedTypeExtension
 
 services:
     # Form types
@@ -93,6 +94,11 @@ services:
 
     oro_form.extension.js_validation:
         class: %oro_form.extension.js_validation.class%
-        arguments: [@validator.mapping.class_metadata_factory]
+        arguments: [@oro_form.js_validation.constraints_provider, @event_dispatcher]
         tags:
             - { name: form.type_extension, alias: form }
+
+    oro_form.extension.repeated:
+        class: %oro_form.extension.repeated.class%
+        tags:
+            - { name: form.type_extension, alias: repeated }

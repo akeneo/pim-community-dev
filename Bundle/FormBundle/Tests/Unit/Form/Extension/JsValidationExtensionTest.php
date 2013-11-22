@@ -2,15 +2,22 @@
 
 namespace Oro\Bundle\FormBundle\Tests\Unit\Extension;
 
-use Oro\Bundle\FormBundle\Form\Extension\JsValidationExtension;
 use Symfony\Component\Form\FormView;
+
+use Oro\Bundle\FormBundle\Form\Extension\JsValidationExtension;
 
 class JsValidationExtensionTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject
      */
-    protected $metadataFactory;
+    protected $constraintsProvider;
+
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $eventDispatcher;
+
 
     /**
      * @var JsValidationExtension
@@ -19,8 +26,11 @@ class JsValidationExtensionTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->metadataFactory = $this->getMock('Symfony\Component\Validator\MetadataFactoryInterface');
-        $this->extension = new JsValidationExtension($this->metadataFactory);
+        $this->constraintsProvider = $this->getMockBuilder('Oro\Bundle\FormBundle\JsValidation\ConstraintsProvider')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->eventDispatcher = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
+        $this->extension = new JsValidationExtension($this->constraintsProvider, $this->eventDispatcher);
     }
 
     public function testBuildView()
