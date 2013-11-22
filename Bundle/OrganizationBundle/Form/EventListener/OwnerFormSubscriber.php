@@ -92,7 +92,7 @@ class OwnerFormSubscriber implements EventSubscriberInterface
             $isEntityExists = !empty($entityIdentifier);
         }
 
-        // if entity exists, form has field and assign is not granted - replace field with disabled text field,
+        // if entity exists and assign is not granted - replace field with disabled text field,
         // otherwise - set default owner value
         if ($isEntityExists) {
             $this->replaceOwnerField($form);
