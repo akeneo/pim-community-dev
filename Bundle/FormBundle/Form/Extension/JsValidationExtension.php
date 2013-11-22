@@ -34,8 +34,12 @@ class JsValidationExtension extends AbstractTypeExtension
      */
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
+        $passableViewOptions = array(
+            'error_mapping', 'inherit_data', 'data_class', 'constraints', 'property_path', 'mapped', 'validation_groups'
+        );
+
         // Pass to form view options that will be used by this extension logic
-        foreach (array('error_mapping', 'inherit_data', 'data_class') as $passableViewOption) {
+        foreach ($passableViewOptions as $passableViewOption) {
             if (isset($options[$passableViewOption])) {
                 $view->vars[$passableViewOption] = $options[$passableViewOption];
             }
