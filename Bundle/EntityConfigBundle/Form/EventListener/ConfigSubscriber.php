@@ -63,7 +63,7 @@ class ConfigSubscriber implements EventSubscriberInterface
 
                 if (isset($values['set_options'])) {
                     $options = $values['set_options'];
-                    unset($values['set_options']);
+                    $values['set_options'] = '';
                 }
                 $config->setValues($values);
 

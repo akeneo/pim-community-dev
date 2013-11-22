@@ -105,6 +105,14 @@ class OptionSet
     }
 
     /**
+     * @return string
+     */
+    public function getValue()
+    {
+        return $this->label;
+    }
+
+    /**
      * @param int $priority
      * @return $this
      */
