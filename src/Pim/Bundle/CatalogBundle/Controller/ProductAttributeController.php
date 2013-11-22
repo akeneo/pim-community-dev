@@ -369,9 +369,22 @@ class ProductAttributeController extends AbstractDoctrineController
     public function removeAction(Request $request, ProductAttribute $entity)
     {
         if ($entity->getAttributeType() === 'pim_catalog_identifier') {
+            $errorMessage = 'flash.attribute.identifier not removable';
+        } else {
+            $groupCount = $this->getRepository('PimCatalogBundle:Group')->countForAttribute($entity);
+            if ($groupCount > 0) {
+                $errorMessage = 'flash.attribute.used by groups';
+                $messageParameters = array('%count%' => $groupCount);
+            }
+        }
+
+        if (isset($errorMessage)) {
+            $messageParameters = isset($messageParameters) ? $messageParameters : array();
             if ($request->isXmlHttpRequest()) {
-                throw new DeleteException($this->getTranslator()->trans('flash.attribute.identifier not removable'));
+                throw new DeleteException($this->getTranslator()->trans($errorMessage, $messageParameters));
             } else {
+                $this->addFlash($errorMessage, $messageParameters);
+
                 return $this->redirectToRoute('pim_catalog_productattribute_index');
             }
         }
