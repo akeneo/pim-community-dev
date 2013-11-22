@@ -38,6 +38,8 @@ class CategoryExtension extends \Twig_Extension
     {
         return array(
             'list_trees_response'      => new \Twig_Function_Method($this, 'listTreesResponse'),
+            'children_response'      => new \Twig_Function_Method($this, 'childrenResponse'),
+            'children_tree_response'      => new \Twig_Function_Method($this, 'childrenTreeResponse'),
             'list_categories_response' => new \Twig_Function_Method($this, 'listCategoriesResponse'),
             'count_products' => new \Twig_Function_Method($this, 'countProducts'),
             'define_state'   => new \Twig_Function_Method($this, 'defineState')
@@ -77,7 +79,7 @@ class CategoryExtension extends \Twig_Extension
         if ($parent !== null) {
             $result = array(
                     'attr' => array(
-                            'id' => 'node_'. $parent->getId()
+                        'id' => 'node_'. $parent->getId()
                     ),
                     'data' => $parent->getLabel(),
                     'state' => $this->defineState($parent),
@@ -90,6 +92,8 @@ class CategoryExtension extends \Twig_Extension
 
     protected function formatCategory(array $categories, CategoryInterface $selectedCategory, $withProductCount = false, $includeSub = false)
     {
+        $result = array();
+
         foreach ($categories as $category) {
             $state = $this->defineCategoryState($category, array($selectedCategory->getId()));
             $label = $this->getLabel($category['item'], $withProductCount, $includeSub);
@@ -103,6 +107,8 @@ class CategoryExtension extends \Twig_Extension
                 'children' => $this->formatCategory($category['__children'], $selectedCategory, $withProductCount, $includeSub)
             );
         }
+
+        return $result;
     }
 
     public function childrenResponse(array $categories, Category $parent = null, $withProductsCount = false, $includeSub = false)
@@ -235,7 +241,7 @@ class CategoryExtension extends \Twig_Extension
             $state = 'open';
         }
 
-        if ($selectNode !== null && $category->getId() === $selectNode->getId()) {
+        if (in_array($category->getId(), $selectedIds)) {
             $state .= ' toselect';
         }
 
