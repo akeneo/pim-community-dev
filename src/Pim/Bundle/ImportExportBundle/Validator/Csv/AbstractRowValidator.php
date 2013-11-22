@@ -28,6 +28,16 @@ class AbstractRowValidator implements RowValidatorInterface
     protected $constraints = array();
 
     /**
+     * @var array
+     */
+    protected $booleanFields = array();
+
+    /**
+     * @var array
+     */
+    protected $notBlankFields = array();
+
+    /**
      * Constructor
      *
      * @param ValidatorInterface $validator
@@ -58,6 +68,28 @@ class AbstractRowValidator implements RowValidatorInterface
                 }
             }
         }
+    }
+
+    /**
+     * Get constraints to apply on each field
+     *
+     * @return array
+     */
+    protected function getFieldConstraints()
+    {
+        if (empty($this->constraints)) {
+            foreach ($this->notBlankFields as $field) {
+                $this->constraints[$field] = array($this->buildNotBlankConstraint($field));
+            }
+            foreach ($this->booleanFields as $field) {
+                if (!isset($this->constraints[$field])) {
+                    $this->constraints[$field]= array();
+                }
+                $this->constraints[$field][]= $this->buildBooleanConstraint($field);
+            }
+        }
+
+        return $this->constraints;
     }
 
     /**

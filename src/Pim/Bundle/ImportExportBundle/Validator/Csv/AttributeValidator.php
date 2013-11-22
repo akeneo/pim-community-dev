@@ -12,25 +12,14 @@ namespace Pim\Bundle\ImportExportBundle\Validator\Csv;
 class AttributeValidator extends AbstractRowValidator
 {
     /**
-     * Get constraints to apply on each field
-     *
-     * @return array
+     * @var array
      */
-    protected function getFieldConstraints()
-    {
-        if (empty($this->constraints)) {
-            $notBlankFields = array('type', 'code');
-            foreach ($notBlankFields as $field) {
-                $this->constraints[$field] = array($this->buildNotBlankConstraint($field));
-            }
-            $booleanFields = array(
-                'unique', 'useable_as_grid_column', 'useable_as_grid_filter', 'is_translatable', 'is_scopable'
-            );
-            foreach ($booleanFields as $field) {
-                $this->constraints[$field] = array($this->buildBooleanConstraint($field));
-            }
-        }
+    protected $notBlankFields = array('type', 'code');
 
-        return $this->constraints;
-    }
+    /**
+     * @var array
+     */
+    protected $booleanFields = array(
+        'unique', 'useable_as_grid_column', 'useable_as_grid_filter', 'is_translatable', 'is_scopable'
+    );
 }
