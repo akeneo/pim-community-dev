@@ -1,0 +1,29 @@
+Pim\Bundle\CatalogBundle\Entity\CategoryTranslation:
+    type: entity
+    table: pim_catalog_category_translation
+    uniqueConstraints:
+        locale_foreign_key_idx:
+            columns:
+                - locale
+                - foreign_key
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        label:
+            type: string
+            length: 100
+            nullable: true
+        locale:
+            type: string
+            length: 20
+    manyToOne:
+        foreignKey:
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\Category
+            inversedBy: translations
+            joinColumns:
+                foreign_key:
+                    referencedColumnName: id
+                    onDelete: CASCADE

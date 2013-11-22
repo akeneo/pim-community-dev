@@ -65,7 +65,7 @@ class AttributeGroupNormalizer implements NormalizerInterface
     {
         $attributes = array();
         foreach ($group->getAttributes() as $attribute) {
-            $attributes[]= $attribute->getCode();
+            $attributes[] = $attribute->getCode();
         }
 
         return $attributes;

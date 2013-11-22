@@ -199,7 +199,7 @@ class GroupProductDatagridManager extends FlexibleDatagridManager
         );
 
         foreach ($this->getFlexibleAttributes() as $attribute) {
-            if (!$attribute->isUseableAsGridColumn() || !$attribute->isUseableAsGridFilter()) {
+            if (!$attribute->isUseableAsGridFilter()) {
                 continue;
             }
 

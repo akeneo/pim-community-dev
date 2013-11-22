@@ -86,3 +86,5 @@ services:
         tags:
             - name: pim_import_export.transformer.product.attribute
               backend_type: boolean
+            - name: pim_import_export.transformer.product.property
+              property_path: enabled

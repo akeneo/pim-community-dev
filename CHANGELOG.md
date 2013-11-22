@@ -16,6 +16,7 @@
 - Import/Export attribute options (CSV)
 - Upload and import an archive (CSV and medias)
 - Download an archive containing the exported products along with media
+- Add the column "enabled" in the CSV file for importing products
 
 ## Improvements
 - Export media into separated sub directories
@@ -25,6 +26,7 @@
 - Display the "has product" filter by default in the product grid of group edit view
 - Display currency label in currencies datagrid
 - Disable changing the code of all configuration-related entities
+- Merge the directory and filename of export profiles into a single file path property
 
 ## Bug fixes
 - Mass delete products

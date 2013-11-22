@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
@@ -17,9 +16,6 @@ use Pim\Bundle\CatalogBundle\Entity\Locale;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @ORM\Table(name="pim_catalog_channel")
- * @ORM\Entity(repositoryClass="Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository")
- * @ORM\HasLifecycleCallbacks
  * @Config(
  *  defaultValues={
  *      "entity"={"label"="Channel", "plural_label"="Channels"},
@@ -36,63 +32,31 @@ class Channel
 {
     /**
      * @var integer $id
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
 
     /**
      * @var string $code
-     *
-     * @ORM\Column(name="code", type="string", length=50, unique=true)
      */
     protected $code;
 
     /**
      * @var string $label
-     *
-     * @ORM\Column(name="label", type="string", length=100)
      */
     protected $label;
 
     /**
      * @var Category $category
-     *
-     * @ORM\ManyToOne(
-     *     targetEntity="Pim\Bundle\CatalogBundle\Entity\Category",
-     *     inversedBy="channels"
-     * )
-     * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
      */
     protected $category;
 
     /**
      * @var ArrayCollection $currencies
-     *
-     * @ORM\ManyToMany(targetEntity="Pim\Bundle\CatalogBundle\Entity\Currency", cascade={"persist"})
-     * @ORM\JoinTable(
-     *    name="pim_catalog_channel_currency",
-     *    joinColumns={@ORM\JoinColumn(name="channel_id", referencedColumnName="id", onDelete="CASCADE")},
-     *    inverseJoinColumns={@ORM\JoinColumn(name="currency_id", referencedColumnName="id", onDelete="CASCADE")}
-     * )
      */
     protected $currencies;
 
     /**
      * @var ArrayCollection $locales
-     *
-     * @ORM\ManyToMany(
-     *     targetEntity="Pim\Bundle\CatalogBundle\Entity\Locale",
-     *     inversedBy="channels",
-     *     cascade={"persist"}
-     * )
-     * @ORM\JoinTable(
-     *    name="pim_catalog_channel_locale",
-     *    joinColumns={@ORM\JoinColumn(name="channel_id", referencedColumnName="id", onDelete="CASCADE")},
-     *    inverseJoinColumns={@ORM\JoinColumn(name="locale_id", referencedColumnName="id", onDelete="CASCADE")}
-     * )
      */
     protected $locales;
 
@@ -283,8 +247,6 @@ class Channel
 
     /**
      * Pre remove method to deactivate unusable locales
-     *
-     * @ORM\PreRemove
      */
     public function preRemove()
     {

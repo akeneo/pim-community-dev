@@ -4,49 +4,16 @@ Feature: Filter export profiles
   As a user
   I need to be able to filter export profiles in the catalog
 
-  Background:
-    Given the "default" catalog configuration
-    And the following jobs:
-      | connector            | alias            | code                  | label                       | type   |
-      | Akeneo CSV Connector | product_export   | acme_product_export   | Product export for Acme.com | export |
-      | Akeneo CSV Connector | attribute_export | acme_attribute_export | Attribute export            | export |
-      | Akeneo CSV Connector | product_export   | foo_product_export    | Product export for foo      | export |
-      | Akeneo CSV Connector | product_import   | acme_product_import   | Product import for Acme.com | import |
+  Scenario: Successfully filter export profiles
+    Given a "footwear" catalog configuration
     And I am logged in as "admin"
     And I am on the exports page
-
-  Scenario: Successfully display filters
-    Then I should see the filters Code, Label, Job, Connector and Status
-    And the grid should contain 3 elements
-    And I should see export profiles acme_product_export, acme_attribute_export and foo_product_export
-    And I should not see export profile acme_product_import
-
-  Scenario: Successfully filter by code
-    Given I filter by "Code" with value "acme"
-    Then the grid should contain 2 elements
-    And I should see export profiles acme_product_export and acme_attribute_export
-    And I should not see export profiles acme_product_import and acme_product_export
-
-  Scenario: Successfully filter by label
-    Given I filter by "Label" with value "Product export"
-    Then the grid should contain 2 elements
-    And I should see export profiles acme_product_export and foo_product_export
-    And I should not see export profiles acme_product_import and acme_attribute_export
-
-  Scenario: Successfully filter by job
-    Given I filter by "Job" with value "product_export"
-    Then the grid should contain 2 elements
-    And I should see export profiles acme_product_export and foo_product_export
-    And I should not see export profiles acme_product_import and acme_attribute_export
-
-  Scenario: Successfully filter by connector
-    Given I filter by "Connector" with value "Akeneo CSV Connector"
-    Then the grid should contain 3 elements
-    And I should see export profiles acme_product_export, acme_attribute_export and foo_product_export
-    And I should not see export profile acme_product_import
-
-  Scenario: Successfully filter by status
-    Given I filter by "Status" with value "Ready"
-    Then the grid should contain 3 elements
-    And I should see export profiles acme_product_export, acme_attribute_export and foo_product_export
-    And I should not see export profile acme_product_import
+    Then the grid should contain 6 elements
+    And I should see export profiles footwear_product_export, footwear_category_export, footwear_association_export, footwear_group_export, footwear_attribute_export and footwear_option_export
+    And I should be able to use the following filters:
+      | filter    | value                | result                                                                                                                                                      |
+      | Code      | at                   | footwear_association_export, footwear_attribute_export and footwear_category_export                                                                         |
+      | Label     | Product              | footwear_product_export                                                                                                                                     |
+      | Job       | group_export         | footwear_group_export                                                                                                                                       |
+      | Connector | Akeneo CSV Connector | footwear_product_export, footwear_category_export, footwear_association_export, footwear_group_export, footwear_attribute_export and footwear_option_export |
+      | Status    | Ready                | footwear_product_export, footwear_category_export, footwear_association_export, footwear_group_export, footwear_attribute_export and footwear_option_export |

@@ -1,0 +1,60 @@
+Pim\Bundle\CatalogBundle\Entity\Family:
+    type: entity
+    table: pim_catalog_family
+    repositoryClass: Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        code:
+            type: string
+            length: 100
+            unique: true
+        created:
+            type: datetime
+            gedmo:
+                timestampable:
+                    on: create
+        updated:
+            type: datetime
+            gedmo:
+                timestampable:
+                    on: update
+    manyToMany:
+        attributes:
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\ProductAttribute
+            cascade:
+                - persist
+            joinTable:
+                name: pim_catalog_family_attribute
+                joinColumns:
+                     family_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+                inverseJoinColumns:
+                    attribute_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+    oneToMany:
+        translations:
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\FamilyTranslation
+            mappedBy: foreignKey
+            cascade:
+                - persist
+        requirements:
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\AttributeRequirement
+            mappedBy: family
+            cascade:
+                - persist
+        products:
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\Product
+            mappedBy: family
+    manyToOne:
+        attributeAsLabel:
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\ProductAttribute
+            joinColumns:
+                label_attribute_id:
+                    referencedColumnName: id
+                    onDelete: 'SET NULL'
