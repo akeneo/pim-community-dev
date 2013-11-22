@@ -14,17 +14,19 @@ class ConfigPass implements CompilerPassInterface
         $settings  = array();
 
         foreach ($container->getExtensions() as $name => $extension) {
-            if (!$config = $extension->getConfiguration(array(), $container)) {
-                continue;
-            }
+            if (strpos($name, 'oro_') !== false) {
+                if (!$config = $extension->getConfiguration(array(), $container)) {
+                    continue;
+                }
 
-            $config = $processor->processConfiguration(
-                $config,
-                $container->getExtensionConfig($name)
-            );
+                $config = $processor->processConfiguration(
+                    $config,
+                    $container->getExtensionConfig($name)
+                );
 
-            if (isset($config['settings'])) {
-                $settings[$name] = $config['settings'];
+                if (isset($config['settings'])) {
+                    $settings[$name] = $config['settings'];
+                }
             }
         }
 

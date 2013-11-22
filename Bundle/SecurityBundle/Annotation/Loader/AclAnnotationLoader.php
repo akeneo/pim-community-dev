@@ -154,6 +154,12 @@ class AclAnnotationLoader extends AbstractLoader implements AclAnnotationLoaderI
             ->in($dirs)
             ->ignoreVCS(true);
 
-        return array_map('realpath', array_keys(iterator_to_array($finder)));
+        $result = array();
+        /** @var \SplFileInfo $file */
+        foreach ($finder as $file) {
+            $result[] = $file->getRealPath();
+        }
+
+        return $result;
     }
 }

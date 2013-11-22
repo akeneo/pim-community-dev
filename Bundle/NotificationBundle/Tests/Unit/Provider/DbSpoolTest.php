@@ -44,8 +44,11 @@ class DbSpoolTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test adding to spool/queueing message
+     *
+     * @param bool $flush
+     * @dataProvider queueMessageDataProvider
      */
-    public function testQueueMessage()
+    public function testQueueMessage($flush)
     {
         $message = $this->getMock('\Swift_Mime_Message');
 
@@ -54,12 +57,34 @@ class DbSpoolTest extends \PHPUnit_Framework_TestCase
             ->method('persist')
             ->with($this->isInstanceOf($this->className));
 
-        $this->em
-            ->expects($this->once())
-            ->method('flush')
-            ->with($this->isInstanceOf($this->className));
+        if ($flush) {
+            $this->em
+                ->expects($this->once())
+                ->method('flush')
+                ->with($this->isInstanceOf($this->className));
+        } else {
+            $this->em
+                ->expects($this->never())
+                ->method('flush');
+        }
 
+        $this->spool->setFlushOnQueue($flush);
         $this->assertTrue($this->spool->queueMessage($message));
+    }
+
+    /**
+     * @return array
+     */
+    public function queueMessageDataProvider()
+    {
+        return array(
+            'with flush' => array(
+                'flush' => true,
+            ),
+            'without flush' => array(
+                'flush' => false,
+            ),
+        );
     }
 
     /**
@@ -80,6 +105,7 @@ class DbSpoolTest extends \PHPUnit_Framework_TestCase
             ->method('flush')
             ->will($this->throwException(new \Exception('problem')));
 
+        $this->spool->setFlushOnQueue(true);
         $this->spool->queueMessage($message);
     }
 

@@ -191,16 +191,28 @@ class ToolsAPI
 
     /**
      * @param Client $test
-     * @param $gridName
+     * @param $gridParameters
      * @param array $filter
-     * @return null|\Symfony\Component\HttpFoundation\Response
-    */
-    public static function getEntityGrid($test, $gridName, $filter = array())
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public static function getEntityGrid($test, $gridParameters, $filter = array())
     {
+        if (is_string($gridParameters)) {
+            $gridParameters = array('gridName' => $gridParameters);
+        }
+
+        //transform parameters to nested array
+        $parameters = array();
+        foreach ($filter as $param => $value) {
+            $param .= '=' . $value;
+            parse_str($param, $output);
+            $parameters = array_merge_recursive($parameters, $output);
+        }
+
+        $gridParameters = array_merge_recursive($gridParameters, $parameters);
         $test->request(
             'GET',
-            $test->generate('oro_datagrid_index', array('gridName' => $gridName)),
-            $filter
+            $test->generate('oro_datagrid_index', $gridParameters)
         );
 
         return $test->getResponse();
