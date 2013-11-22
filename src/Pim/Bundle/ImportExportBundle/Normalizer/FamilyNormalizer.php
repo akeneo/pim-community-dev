@@ -66,7 +66,7 @@ class FamilyNormalizer implements NormalizerInterface
     {
         $attributes = array();
         foreach ($family->getAttributes() as $attribute) {
-            $attributes[]= $attribute->getCode();
+            $attributes[] = $attribute->getCode();
         }
 
         return $attributes;
@@ -88,7 +88,7 @@ class FamilyNormalizer implements NormalizerInterface
                 $required[$channelCode]= array();
             }
             if ($requirement->isRequired()) {
-                $required[$channelCode][]= $requirement->getAttribute()->getCode();
+                $required[$channelCode][] = $requirement->getAttribute()->getCode();
             }
         }
 

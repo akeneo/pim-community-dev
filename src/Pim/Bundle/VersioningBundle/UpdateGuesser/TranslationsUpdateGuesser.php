@@ -48,7 +48,7 @@ class TranslationsUpdateGuesser implements UpdateGuesserInterface
         if ($entity instanceof AbstractTranslation) {
             $translatedEntity = $entity->getForeignKey();
             if (in_array(get_class($translatedEntity), $this->versionableEntities)) {
-                $pendings[]= $translatedEntity;
+                $pendings[] = $translatedEntity;
             }
         }
 
