@@ -71,6 +71,9 @@ return array(
         ),
         'transition_definitions' => array(
             'first_transition_definition' => array(
+                'pre_conditions' => array(
+                    '@true' => null
+                ),
                 'conditions' => array(
                     '@and' => array(
                         '@true' => null,
@@ -136,6 +139,7 @@ return array(
         ),
         'transition_definitions' => array(
             'second_transition_definition' => array(
+                'pre_conditions' => array(),
                 'conditions' => array(),
                 'post_actions' => array(),
                 'init_actions' => array()

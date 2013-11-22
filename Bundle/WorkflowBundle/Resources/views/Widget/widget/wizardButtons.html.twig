@@ -7,7 +7,7 @@
             {% set transitionData = {
                 'redirect-to-workflow': false,
                 'transition-label': data.transition.label|trans,
-                'enabled': data.transition.hasForm() or data.isAllowed,
+                'enabled': data.isAllowed,
                 'message': data.transition.message|trans,
                 'transition-condition-messages': data.errors
             } %}

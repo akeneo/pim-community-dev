@@ -50,6 +50,8 @@ workflows:
                                 required: true
         transition_definitions:
             first_transition_definition:
+                pre_conditions:
+                    @true: ~
                 conditions:
                     @and:
                         @true: ~

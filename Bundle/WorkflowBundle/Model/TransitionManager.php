@@ -5,7 +5,6 @@ namespace Oro\Bundle\WorkflowBundle\Model;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 
-use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Bundle\WorkflowBundle\Exception\InvalidTransitionException;
 
 class TransitionManager
@@ -101,16 +100,15 @@ class TransitionManager
     }
 
     /**
-     * Get allowed start transitions
+     * Get start transitions
      *
-     * @param WorkflowItem $workflowItem
      * @return Collection
      */
-    public function getAllowedStartTransitions(WorkflowItem $workflowItem)
+    public function getStartTransitions()
     {
         return $this->getTransitions()->filter(
-            function (Transition $transition) use ($workflowItem) {
-                return $transition->isStart() && $transition->isAllowed($workflowItem);
+            function (Transition $transition) {
+                return $transition->isStart();
             }
         );
     }

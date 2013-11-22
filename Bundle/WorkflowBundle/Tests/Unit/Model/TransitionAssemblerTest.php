@@ -30,6 +30,9 @@ class TransitionAssemblerTest extends \PHPUnit_Framework_TestCase
      */
     protected $transitionDefinitions = array(
         'empty_definition' => array(),
+        'with_pre_condition' => array(
+            'pre_conditions' => array('@true' => null)
+        ),
         'with_condition' => array(
             'conditions' => array('@true' => null)
         ),
@@ -40,6 +43,7 @@ class TransitionAssemblerTest extends \PHPUnit_Framework_TestCase
             'init_actions' => array('@assign_value' => array('parameters' => array('$attribute', 'first_value')))
         ),
         'full_definition' => array(
+            'pre_conditions' => array('@true' => null),
             'conditions' => array('@true' => null),
             'post_actions' => array('@assign_value' => array('parameters' => array('$attribute', 'first_value'))),
             'init_actions' => array('@assign_value' => array('parameters' => array('$attribute', 'first_value'))),
@@ -155,9 +159,16 @@ class TransitionAssemblerTest extends \PHPUnit_Framework_TestCase
 
         $expectedCondition = null;
         $expectedAction = null;
+        $conditionFactoryCallCount = 0;
+        if (array_key_exists('pre_conditions', $transitionDefinition)) {
+            $conditionFactoryCallCount++;
+        }
         if (array_key_exists('conditions', $transitionDefinition)) {
+            $conditionFactoryCallCount++;
+        }
+        if ($conditionFactoryCallCount) {
             $expectedCondition = $this->getCondition();
-            $this->conditionFactory->expects($this->once())
+            $this->conditionFactory->expects($this->exactly($conditionFactoryCallCount))
                 ->method('create')
                 ->with(
                     ConfigurableCondition::ALIAS,
@@ -165,6 +176,7 @@ class TransitionAssemblerTest extends \PHPUnit_Framework_TestCase
                 )
                 ->will($this->returnValue($expectedCondition));
         }
+
         $actionFactoryCallCount = 0;
         if (array_key_exists('post_actions', $transitionDefinition)) {
             $actionFactoryCallCount++;

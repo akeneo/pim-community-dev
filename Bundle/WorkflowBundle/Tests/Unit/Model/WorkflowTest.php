@@ -707,7 +707,7 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
 
         $workflow = $this->createWorkflow();
         $workflow->getTransitionManager()->setTransitions($transitions);
-        $this->assertEquals($expected, $workflow->getAllowedStartTransitions());
+        $this->assertEquals($expected, $workflow->getStartTransitions());
     }
 
     public function testGetAttribute()
@@ -775,7 +775,7 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
         $workflowItem = new WorkflowItem();
         $workflowItem->setCurrentStepName($step->getName());
 
-        $actualTransitions = $workflow->getAllowedTransitions($workflowItem);
+        $actualTransitions = $workflow->getTransitionsByWorkflowItem($workflowItem);
         $this->assertEquals(array($secondTransition), $actualTransitions->getValues());
     }
 
@@ -789,7 +789,7 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
         $workflowItem->setCurrentStepName('unknown_step');
 
         $workflow = $this->createWorkflow();
-        $workflow->getAllowedTransitions($workflowItem);
+        $workflow->getTransitionsByWorkflowItem($workflowItem);
     }
 
     /**

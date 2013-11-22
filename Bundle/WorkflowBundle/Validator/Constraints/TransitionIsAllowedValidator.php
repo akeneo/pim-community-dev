@@ -33,7 +33,7 @@ class TransitionIsAllowedValidator extends ConstraintValidator
      * Checks if current workflow item allows transition
      *
      * @param WorkflowData $value
-     * @param TransitionIsAllowed $constraint
+     * @param Constraint $constraint
      */
     public function validate($value, Constraint $constraint)
     {

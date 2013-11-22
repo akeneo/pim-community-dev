@@ -82,7 +82,7 @@ class ConditionAssemblerTest extends \PHPUnit_Framework_TestCase
                                 '_and' => array(
                                     'passed' => array(
                                         array('_graterOrEquals' => array('passed' => array('$contact.budget', 2000))),
-                                        array('_isDevMode' => array('passed' => array(null))),
+                                        array('_isDevMode' => array('passed' => array())),
                                         array(
                                             '_inChoiceList' => array(
                                                 'passed' => array(

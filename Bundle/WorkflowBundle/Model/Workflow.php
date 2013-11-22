@@ -252,8 +252,7 @@ class Workflow
 
         // if there is no current step - consider transition as a start transition
         if (!$currentStep) {
-            $isStart = $transition->isStart();
-            if (!$isStart) {
+            if (!$transition->isStart()) {
                 if ($fireExceptions) {
                     throw InvalidTransitionException::notStartTransition(
                         $workflowItem->getWorkflowName(),
@@ -353,26 +352,53 @@ class Workflow
     }
 
     /**
-     * Get allowed start transitions.
+     * Get start transitions.
      *
-     * @param array $data
      * @return Collection|Transition[]
      */
-    public function getAllowedStartTransitions(array $data = array())
+    public function getStartTransitions()
     {
-        $workflowItem = $this->createWorkflowItem($data);
-
-        return $this->transitionManager->getAllowedStartTransitions($workflowItem);
+        return $this->transitionManager->getStartTransitions();
     }
 
     /**
-     * Get allowed transitions for existing workflow item.
+     * Check that start transition is available to show.
+     *
+     * @param string|Transition $transition
+     * @param array $data
+     * @param Collection $errors
+     * @return bool
+     */
+    public function isStartTransitionAvailable($transition, array $data = array(), Collection $errors = null)
+    {
+        $workflowItem = $this->createWorkflowItem($data);
+
+        return $this->isTransitionAvailable($transition, $workflowItem, $errors);
+    }
+
+    /**
+     * Check that transition is available to show.
+     *
+     * @param string|Transition $transition
+     * @param WorkflowItem $workflowItem
+     * @param Collection $errors
+     * @return bool
+     */
+    public function isTransitionAvailable($transition, WorkflowItem $workflowItem, Collection $errors = null)
+    {
+        $transition = $this->transitionManager->extractTransition($transition);
+
+        return $transition->isAvailable($workflowItem, $errors);
+    }
+
+    /**
+     * Get transitions for existing workflow item.
      *
      * @param WorkflowItem $workflowItem
      * @return Collection|Transition[]
      * @throws UnknownStepException
      */
-    public function getAllowedTransitions(WorkflowItem $workflowItem)
+    public function getTransitionsByWorkflowItem(WorkflowItem $workflowItem)
     {
         $currentStepName = $workflowItem->getCurrentStepName();
         $currentStep = $this->stepManager->getStep($currentStepName);
@@ -380,15 +406,13 @@ class Workflow
             throw new UnknownStepException($currentStepName);
         }
 
-        $allowedTransitions = new ArrayCollection();
+        $transitions = new ArrayCollection();
         $transitionNames = $currentStep->getAllowedTransitions();
         foreach ($transitionNames as $transitionName) {
-            if ($this->isTransitionAllowed($workflowItem, $transitionName)) {
-                $transition = $this->transitionManager->getTransition($transitionName);
-                $allowedTransitions->add($transition);
-            }
+            $transition = $this->transitionManager->getTransition($transitionName);
+            $transitions->add($transition);
         }
 
-        return $allowedTransitions;
+        return $transitions;
     }
 }

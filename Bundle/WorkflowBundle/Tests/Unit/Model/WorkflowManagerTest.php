@@ -97,7 +97,7 @@ class WorkflowManagerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(
             $allowedStartTransitions,
-            $this->workflowManager->getAllowedStartTransitions($workflow, $entity)
+            $this->workflowManager->getStartTransitions($workflow, $entity)
         );
     }
 
@@ -109,7 +109,7 @@ class WorkflowManagerTest extends \PHPUnit_Framework_TestCase
     {
         $entity = new \DateTime('now');
         $workflow = $this->createWorkflow('empty_workflow');
-        $this->workflowManager->getAllowedStartTransitions($workflow, $entity);
+        $this->workflowManager->getStartTransitions($workflow, $entity);
     }
 
     public function testGetAllowedTransitions()
@@ -137,7 +137,7 @@ class WorkflowManagerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(
             $allowedTransitions,
-            $this->workflowManager->getAllowedTransitions($workflowItem)
+            $this->workflowManager->getTransitionsByWorkflowItem($workflowItem)
         );
     }
 

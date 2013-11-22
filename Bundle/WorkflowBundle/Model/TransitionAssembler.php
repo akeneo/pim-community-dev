@@ -73,6 +73,7 @@ class TransitionAssembler extends AbstractAssembler
         $definitions = array();
         foreach ($configuration as $name => $options) {
             $definitions[$name] = array(
+                'pre_conditions' => $this->getOption($options, 'pre_conditions', array()),
                 'conditions' => $this->getOption($options, 'conditions', array()),
                 'post_actions' => $this->getOption($options, 'post_actions', array()),
                 'init_actions' => $this->getOption($options, 'init_actions', array()),
@@ -109,6 +110,11 @@ class TransitionAssembler extends AbstractAssembler
             ->setFormType($this->getOption($options, 'form_type', WorkflowTransitionType::NAME))
             ->setFormOptions($this->getOption($options, 'form_options', array()))
             ->setFrontendOptions($this->getOption($options, 'frontend_options', array()));
+
+        if (!empty($definition['pre_conditions'])) {
+            $condition = $this->conditionFactory->create(ConfigurableCondition::ALIAS, $definition['pre_conditions']);
+            $transition->setPreCondition($condition);
+        }
 
         if (!empty($definition['conditions'])) {
             $condition = $this->conditionFactory->create(ConfigurableCondition::ALIAS, $definition['conditions']);
