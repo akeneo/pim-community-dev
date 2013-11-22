@@ -131,7 +131,7 @@ class ProductAttribute extends AbstractEntityAttribute implements
     protected $defaultMetricUnit;
 
     /**
-     * @var decimal $maxFileSize 
+     * @var decimal $maxFileSize
      * expressed in MB so decimal is needed for values < 1 MB
      */
     protected $maxFileSize;
