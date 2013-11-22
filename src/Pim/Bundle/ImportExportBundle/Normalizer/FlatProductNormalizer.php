@@ -79,6 +79,8 @@ class FlatProductNormalizer implements NormalizerInterface
 
         $this->results = array_merge($this->results, $normalizedValues);
 
+        $this->results['enabled'] = (int) $object->isEnabled();
+
         return $this->results;
     }
 
