@@ -16,7 +16,7 @@
 - Import/Export attribute options (CSV)
 - Upload and import an archive (CSV and medias)
 - Download an archive containing the exported products along with media
-- Add the column "enabled" in the CSV file for importing products
+- Add the column "enabled" in the CSV file for products import/export and for versioning
 
 ## Improvements
 - Export media into separated sub directories
@@ -31,6 +31,7 @@
 ## Bug fixes
 - Mass delete products
 - Fix some issues with import ACL translations (issues#484)
+- Add a message when trying to delete an attribute used by one or more variant groups instead of throwing an error
 
 ## BC breaks
 - Command "pim:product:completeness-calculator" has been replaced into "pim:completeness:calculate"

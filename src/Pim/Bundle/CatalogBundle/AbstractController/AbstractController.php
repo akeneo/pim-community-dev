@@ -236,14 +236,15 @@ abstract class AbstractController
     /**
      * Add flash message
      *
-     * @param string $type    the flash type
-     * @param string $message the flash message
+     * @param string $type       the flash type
+     * @param string $message    the flash message
+     * @param array  $parameters the flash message parameters
      *
      * @return null
      */
-    protected function addFlash($type, $message)
+    protected function addFlash($type, $message, array $parameters = array())
     {
-        $this->request->getSession()->getFlashBag()->add($type, $this->translator->trans($message));
+        $this->request->getSession()->getFlashBag()->add($type, $this->translator->trans($message, $parameters));
     }
 
     /**

@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 
 use Pim\Bundle\CatalogBundle\Doctrine\EntityRepository;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
+use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 
 /**
  * Group repository
@@ -51,6 +52,27 @@ class GroupRepository extends EntityRepository
         }
 
         return $choices;
+    }
+
+    /**
+     * Return the number of groups containing the provided attribute
+     * @param ProductAttribute $attribute
+     *
+     * @return interger
+     */
+    public function countForAttribute(ProductAttribute $attribute)
+    {
+        $qb = $this->createQueryBuilder('g');
+
+        return $qb
+            ->select('count(g.id)')
+            ->join('g.attributes', 'attributes')
+            ->where(
+                $qb->expr()->in('attributes', ':attribute')
+            )
+            ->setParameter('attribute', $attribute)
+            ->getQuery()
+            ->getSingleScalarResult();
     }
 
     /**
