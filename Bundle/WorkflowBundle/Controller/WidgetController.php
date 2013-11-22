@@ -124,7 +124,7 @@ class WidgetController extends Controller
                 /** @var WorkflowAwareSerializer $serializer */
                 $serializer = $this->get('oro_workflow.serializer.data.serializer');
                 $serializer->setWorkflowName($workflow->getName());
-                $data = $serializer->serialize($transitionForm->getData(), 'json');
+                $data = $serializer->serialize($workflowItem->getData(), 'json');
 
                 $saved = true;
             }
