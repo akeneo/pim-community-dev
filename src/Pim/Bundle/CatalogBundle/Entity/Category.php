@@ -2,10 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\SegmentationTreeBundle\Entity\AbstractSegment;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
@@ -20,14 +18,6 @@ use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @ORM\Entity(repositoryClass="Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository")
- * @ORM\Table(
- *     name="pim_catalog_category",
- *     uniqueConstraints={@ORM\UniqueConstraint(name="pim_category_code_uc", columns={"code"})}
- * )
- * @Gedmo\Tree(type="nested")
- * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="discr", type="string")
  * @Config(
  *  defaultValues={
  *      "entity"={"label"="Category", "plural_label"="Categories"},
@@ -44,57 +34,26 @@ class Category extends AbstractSegment implements CategoryInterface, Translatabl
 {
     /**
      * @var Category $parent
-     *
-     * @Gedmo\TreeParent
-     * @ORM\ManyToOne(targetEntity="Pim\Bundle\CatalogBundle\Model\CategoryInterface", inversedBy="children")
-     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", onDelete="SET NULL")
      */
     protected $parent;
 
     /**
      * @var \Doctrine\Common\Collections\Collection $children
-     *
-     * @ORM\OneToMany(
-     *     targetEntity="Pim\Bundle\CatalogBundle\Model\CategoryInterface",
-     *     mappedBy="parent",
-     *     cascade={"persist"}
-     * )
-     * @ORM\OrderBy({"left" = "ASC"})
      */
     protected $children;
 
     /**
      * @var \Doctrine\Common\Collections\Collection $products
-     *
-     * @ORM\ManyToMany(
-     *     targetEntity="Pim\Bundle\CatalogBundle\Model\ProductInterface",
-     *     mappedBy="categories",
-     *     fetch="EXTRA_LAZY"
-     * )
      */
     protected $products;
 
     /**
      * @var string $code
-     *
-     * @ORM\Column(name="code", type="string", length=100, unique=true)
      */
     protected $code;
 
     /**
-     * Define if a node is dynamic or not
-     *
-     * @var boolean $isDynamic
-     *
-     * @ORM\Column(name="is_dynamic", type="boolean")
-     */
-    protected $dynamic = false;
-
-    /**
      * @var datetime
-     *
-     * @Gedmo\Timestampable
-     * @ORM\Column(type="datetime")
      */
     protected $created;
 
@@ -108,32 +67,13 @@ class Category extends AbstractSegment implements CategoryInterface, Translatabl
 
     /**
      * @var ArrayCollection $translations
-     *
-     * @ORM\OneToMany(
-     *     targetEntity="Pim\Bundle\CatalogBundle\Entity\CategoryTranslation",
-     *     mappedBy="foreignKey",
-     *     cascade={"persist"}
-     * )
      */
     protected $translations;
 
     /**
      * @var ArrayCollection $channels
-     *
-     * @ORM\OneToMany(
-     *     targetEntity="Pim\Bundle\CatalogBundle\Entity\Channel",
-     *     mappedBy="category"
-     * )
      */
     protected $channels;
-
-    /**
-     * @var integer $version
-     *
-     * @ORM\Column(name="version", type="integer")
-     * @ORM\Version
-     */
-    protected $version;
 
     /**
      * Constructor
@@ -205,30 +145,6 @@ class Category extends AbstractSegment implements CategoryInterface, Translatabl
     public function getProductsCount()
     {
         return $this->products->count();
-    }
-
-    /**
-     * Predicate to know if node is dynamic
-     *
-     * @return boolean
-     */
-    public function isDynamic()
-    {
-        return $this->dynamic;
-    }
-
-    /**
-     * Set if a node is dynamic
-     *
-     * @param boolean $dynamic
-     *
-     * @return Category
-     */
-    public function setDynamic($dynamic)
-    {
-        $this->dynamic = $dynamic;
-
-        return $this;
     }
 
     /**

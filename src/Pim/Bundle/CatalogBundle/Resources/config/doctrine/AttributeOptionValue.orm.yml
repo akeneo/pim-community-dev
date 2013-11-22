@@ -1,0 +1,25 @@
+Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue:
+    type: entity
+    table: pim_catalog_attribute_option_value
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        locale:
+            length: 20
+            nullable: true
+            column: locale_code
+        value:
+            type: string
+            length: 100
+    manyToOne:
+        option:
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\AttributeOption
+            inversedBy: optionValues
+            joinColumns:
+                option_id:
+                    referencedColumnName: id
+                    nullable: false
+                    onDelete: CASCADE

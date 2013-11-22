@@ -42,7 +42,6 @@ class CategoryNormalizer implements NormalizerInterface
         return array(
             'code'    => $object->getCode(),
             'parent'  => $object->getParent() ? $object->getParent()->getCode() : '',
-            'dynamic' => (string) $object->isDynamic(),
         ) + $this->translationNormalizer->normalize($object, $format, $context);
     }
 

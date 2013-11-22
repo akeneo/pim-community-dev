@@ -77,7 +77,7 @@ abstract class AbstractEntityProcessor extends AbstractConfigurableStepElement i
         if ($violations->count() > 0) {
             $messages = array();
             foreach ($violations as $violation) {
-                $messages[]= (string) $violation;
+                $messages[] = (string) $violation;
             }
 
             throw new InvalidItemException(implode(', ', $messages), $item);
@@ -90,7 +90,7 @@ abstract class AbstractEntityProcessor extends AbstractConfigurableStepElement i
                 $item
             );
         }
-        $this->identifiers[]= $identifier;
+        $this->identifiers[] = $identifier;
     }
 
     /**

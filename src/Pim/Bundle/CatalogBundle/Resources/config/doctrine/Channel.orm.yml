@@ -1,0 +1,62 @@
+Pim\Bundle\CatalogBundle\Entity\Channel:
+    type: entity
+    table: pim_catalog_channel
+    repositoryClass: Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        code:
+            type: string
+            length: 100
+            unique: true
+        label:
+            type: string
+            length: 100
+            nullable: true
+    manyToOne:
+        category:
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\Category
+            inversedBy: channels
+            joinColumns:
+                category_id:
+                    referencedColumnName: id
+    manyToMany:
+        currencies:
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\Currency
+            mappedBy: null
+            inversedBy: null
+            cascade:
+                - persist
+            joinTable:
+                name: pim_catalog_channel_currency
+                schema: null
+                joinColumns:
+                    channel_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+                inverseJoinColumns:
+                    currency_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+        locales:
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\Locale
+            inversedBy: channels
+            cascade:
+                - persist
+            joinTable:
+                name: pim_catalog_channel_locale
+                schema: null
+                joinColumns:
+                    channel_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+                inverseJoinColumns:
+                    locale_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+    lifecycleCallbacks:
+        preRemove:
+            - preRemove

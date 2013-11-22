@@ -3,9 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation\ExclusionPolicy;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
@@ -17,8 +15,6 @@ use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @ORM\Table(name="pim_catalog_association")
- * @ORM\Entity(repositoryClass="Pim\Bundle\CatalogBundle\Entity\Repository\AssociationRepository")
  * @Config(
  *  defaultValues={
  *      "entity"={"label"="Association", "plural_label"="Associations"},
@@ -35,17 +31,11 @@ class Association implements TranslatableInterface
 {
     /**
      * @var integer
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="code", type="string", length=100)
      */
     protected $code;
 
@@ -59,28 +49,16 @@ class Association implements TranslatableInterface
 
     /**
      * @var ArrayCollection $translations
-     *
-     * @ORM\OneToMany(
-     *     targetEntity="Pim\Bundle\CatalogBundle\Entity\AssociationTranslation",
-     *     mappedBy="foreignKey",
-     *     cascade={"persist"}
-     * )
      */
     protected $translations;
 
     /**
      * @var datetime $created
-     *
-     * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(type="datetime")
      */
     protected $created;
 
     /**
      * @var datetime $updated
-     *
-     * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(type="datetime")
      */
     protected $updated;
 

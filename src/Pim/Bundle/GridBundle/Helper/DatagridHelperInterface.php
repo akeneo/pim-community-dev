@@ -47,4 +47,9 @@ interface DatagridHelperInterface
      * @return DatagridManagerInterface
      */
     public function getDatagridManager($name, $namespace = 'pim_catalog');
+
+    /**
+     * @return Oro\Bundle\GridBundle\Renderer\GridRenderer
+     */
+    public function getDatagridRenderer();
 }
