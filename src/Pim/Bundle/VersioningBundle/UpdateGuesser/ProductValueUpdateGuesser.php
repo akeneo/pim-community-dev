@@ -32,11 +32,11 @@ class ProductValueUpdateGuesser implements UpdateGuesserInterface
         if ($entity instanceof ProductValueInterface) {
             $product = $entity->getEntity();
             if ($product) {
-                $pendings[]= $product;
+                $pendings[] = $product;
             }
 
         } elseif ($entity instanceof ProductPrice) {
-            $pendings[]= $entity->getValue()->getEntity();
+            $pendings[] = $entity->getValue()->getEntity();
         }
 
         return $pendings;

@@ -115,7 +115,7 @@ class GroupNormalizerTest extends NormalizerTestCase
         foreach ($codes as $code) {
             $attribute = new ProductAttribute();
             $attribute->setCode($code);
-            $attributes[]= $attribute;
+            $attributes[] = $attribute;
         }
 
         return $attributes;
