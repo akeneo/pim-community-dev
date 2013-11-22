@@ -49,7 +49,7 @@ Pim\Bundle\CatalogBundle\Entity\Family:
             cascade:
                 - persist
         products:
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\Product
+            targetEntity: Pim\Bundle\CatalogBundle\Model\Product
             mappedBy: family
     manyToOne:
         attributeAsLabel:

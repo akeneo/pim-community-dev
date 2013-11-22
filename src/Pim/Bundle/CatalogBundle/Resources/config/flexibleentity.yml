@@ -1,8 +1,8 @@
 entities_config:
     Pim\Bundle\CatalogBundle\Entity\Product:
         flexible_manager:             pim_catalog.manager.product
-        flexible_class:               Pim\Bundle\CatalogBundle\Entity\Product
-        flexible_value_class:         Pim\Bundle\CatalogBundle\Entity\ProductValue
+        flexible_class:               Pim\Bundle\CatalogBundle\Model\Product
+        flexible_value_class:         Pim\Bundle\CatalogBundle\Model\ProductValue
         attribute_class:              Pim\Bundle\CatalogBundle\Entity\ProductAttribute
         attribute_option_class:       Pim\Bundle\CatalogBundle\Entity\AttributeOption
         attribute_option_value_class: Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue

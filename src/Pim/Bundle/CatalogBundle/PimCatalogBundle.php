@@ -5,6 +5,8 @@ namespace Pim\Bundle\CatalogBundle;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler;
+use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
+//use Doctrine\Bundle\MongoDBBundle\DependencyInjection\Compiler\DoctrineMongoDBMappingsPass;
 
 /**
  * Pim Catalog Bundle
@@ -26,5 +28,26 @@ class PimCatalogBundle extends Bundle
             ->addCompilerPass(new Compiler\ResolveDoctrineOrmTargetEntitiesPass())
             ->addCompilerPass(new Compiler\RegisterAttributeConstraintGuessersPass())
             ->addCompilerPass(new Compiler\RegisterMassEditActionsPass());
+
+        $productMappings = array(
+            realpath(__DIR__ . '/Resources/config/model/doctrine') => 'Pim\Bundle\CatalogBundle\Model'
+        );
+
+        $container->addCompilerPass(
+            DoctrineOrmMappingsPass::createYamlMappingDriver(
+                $productMappings,
+                array('doctrine.orm.entity_manager'),
+                'pim_catalog.storage_driver.doctrine/orm'
+            )
+        );
+/*
+        $container->addCompilerPass(
+            DoctrineMongoDBMappingsPass::createYamlMappingDriver(
+                $productMappings,
+                array('doctrine.odm.mongodb.document_manager'),
+                'pim_catalog.storage_driver.doctrine/mongodb-odm'
+            )
+        );
+*/
     }
 }

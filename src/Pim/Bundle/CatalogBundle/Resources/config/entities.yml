@@ -1,7 +1,7 @@
 parameters:
-    pim_catalog.entity.product.class:                   Pim\Bundle\CatalogBundle\Entity\Product
+    pim_catalog.entity.product.class:                   Pim\Bundle\CatalogBundle\Model\Product
+    pim_catalog.entity.product_value.class:             Pim\Bundle\CatalogBundle\Model\ProductValue
     pim_catalog.entity.product_attribute.class:         Pim\Bundle\CatalogBundle\Entity\ProductAttribute
-    pim_catalog.entity.product_value.class:             Pim\Bundle\CatalogBundle\Entity\ProductValue
     pim_catalog.entity.attribute_group.class:           Pim\Bundle\CatalogBundle\Entity\AttributeGroup
     pim_catalog.entity.category.class:                  Pim\Bundle\CatalogBundle\Entity\Category
     pim_catalog.entity.category_translation.class:      Pim\Bundle\CatalogBundle\Entity\CategoryTranslation

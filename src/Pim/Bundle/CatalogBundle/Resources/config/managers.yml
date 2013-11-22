@@ -5,6 +5,7 @@ services:
         arguments:
             - %pim_catalog.entity.product.class%
             - %oro_flexibleentity.flexible_config%
+            - '@pim_catalog.object_manager.product'
             - '@doctrine.orm.entity_manager'
             - '@event_dispatcher'
             - '@oro_flexibleentity.attributetype.factory'
