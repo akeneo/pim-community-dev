@@ -1,0 +1,46 @@
+parameters:
+    pim_custom_entity.configuration.registry.class:         Pim\Bundle\CustomEntityBundle\Configuration\Registry
+    pim_custom_entity.configuration.default.class:          Pim\Bundle\CustomEntityBundle\Configuration\Configuration
+    pim_custom_entity.controller.class:                     Pim\Bundle\CustomEntityBundle\Controller\Controller
+    pim_custom_entity.controller.strategy.crud.class:       Pim\Bundle\CustomEntityBundle\Controller\Strategy\CrudStrategy
+    pim_custom_entity.controller.strategy.datagrid.class:   Pim\Bundle\CustomEntityBundle\Controller\Strategy\DatagridStrategy
+    pim_custom_entity.manager.orm.class:                    Pim\Bundle\CustomEntityBundle\Manager\OrmManager
+    pim_custom_entity.type.filter.custom_entity.class:      Pim\Bundle\CustomEntityBundle\Form\CustomEntityFilterType
+
+services:
+    pim_custom_entity.configuration.registry:
+        class: %pim_custom_entity.configuration.registry.class%
+
+    pim_custom_entity.controller:
+        class: %pim_custom_entity.controller.class%
+        scope: request
+        arguments:
+            - '@request'
+            - '@pim_custom_entity.configuration.registry'
+
+    pim_custom_entity.controller.strategy.crud:
+        class: %pim_custom_entity.controller.strategy.crud.class%
+        arguments:
+            - '@form.factory'
+            - '@templating'
+            - '@router'
+            - '@translator'
+
+    pim_custom_entity.controller.strategy.datagrid:
+        class: %pim_custom_entity.controller.strategy.datagrid.class%
+        parent: pim_custom_entity.controller.strategy.crud
+        arguments:
+            - '@pim_grid.datagrid.helper'
+
+    pim_custom_entity.manager.orm:
+        class: %pim_custom_entity.manager.orm.class%
+        arguments:
+            - '@doctrine'
+            - '@property_accessor'
+
+    pim_custom_entity.type.filter.custom_entity:
+        class: %pim_custom_entity.type.filter.custom_entity.class%
+        arguments:
+            - '@doctrine'
+        tags:
+            - { name: form.type, alias: pim_custom_entity_filter_entity }

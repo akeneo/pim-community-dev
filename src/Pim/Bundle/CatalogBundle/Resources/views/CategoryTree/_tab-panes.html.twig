@@ -1,9 +1,6 @@
 <div class="tab-pane active" id="properties">
     {% set generalProperties %}
         {{ form_row(form.code) }}
-        {% if form.dynamic is defined %}
-            {{ form_row(form.dynamic) }}
-        {% endif %}
     {% endset %}
 
     {% set nodeValues %}

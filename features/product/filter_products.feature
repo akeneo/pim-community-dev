@@ -62,29 +62,27 @@ Feature: Filter products
       | ebook   | description | fr_FR  | mobile    | Ma descr ebook mobile     |
     And I am logged in as "admin"
 
-  Scenario: Successfully display filters
+  Scenario: Successfully filter products using basic filters
     Given I am on the products page
-    Then I should see the filters SKU, Family and Enabled
-    And I should not see the filters Name, Image, Description
-    And the grid should contain 4 elements
+    Then the grid should contain 4 elements
     And I should see products postit and book and book2 and ebook
+    And I should be able to use the following filters:
+      | filter      | value | result                  |
+      | SKU         | book  | book, ebook and book2   |
+      | Name        | post  | postit                  |
+      | Description | book  | book, ebook and book2   |
+      | Enabled     | yes   | postit, ebook and book2 |
+      | Enabled     | no    | book                    |
 
   Scenario: Successfully hide/show filters
     Given I am on the products page
+    Then I should see the filters SKU, Family and Enabled
+    Then I should not see the filters Name, Image, Description
     When I make visible the filter "Name"
     And I make visible the filter "Description"
     And I hide the filter "SKU"
     Then I should see the filters Name, Description, Family and Enabled
     And I should not see the filters Image, SKU
-
-  Scenario: Successfully filter by SKU
-    Given I am on the products page
-    When I filter by "SKU" with value "book"
-    Then the grid should contain 3 elements
-    And I should see products book
-    And I should see products ebook
-    And I should see products book2
-    And I should not see products postit
 
   Scenario: Successfully filter by SKU that contains
     Given I am on the products page
@@ -95,7 +93,7 @@ Feature: Filter products
     And I should see products ebook
     And I should not see products postit
 
-  Scenario: Successfully filter by SKU that does not contains
+  Scenario: Successfully filter by SKU that does not contain
     Given I am on the products page
     When I filter by "SKU" with operator "does not contain" and value "book"
     Then the grid should contain 1 element
@@ -130,44 +128,6 @@ Feature: Filter products
     And I should see products ebook
     And I should not see products book2
     And I should not see products postit
-
-  Scenario: Successfully filter by Name
-    Given I am on the products page
-    When I make visible the filter "Name"
-    And I filter by "Name" with value "post"
-    Then the grid should contain 1 element
-    And I should see products postit
-    And I should not see products book
-    And I should not see products book2
-    And I should not see products ebook
-
-  Scenario: Successfully filter by Description
-    Given I am on the products page
-    When I make visible the filter "Description"
-    And I filter by "Description" with value "book"
-    Then the grid should contain 3 elements
-    And I should see products book
-    And I should see products book2
-    And I should see products ebook
-    And I should not see products postit
-
-  Scenario: Successfully display enabled products
-    Given I am on the products page
-    When I filter by "Enabled" with value "yes"
-    Then the grid should contain 3 elements
-    And I should see products postit
-    And I should see products book2
-    And I should see products ebook
-    And I should not see products book
-
-  Scenario: Successfully display disabled products
-    Given I am on the products page
-    When I filter by "Enabled" with value "no"
-    Then the grid should contain 1 element
-    And I should see products book
-    And I should not see products postit
-    And I should not see products book2
-    And I should not see products ebook
 
   Scenario: Successfully reset the filters
     Given I am on the products page

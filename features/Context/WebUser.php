@@ -1500,7 +1500,7 @@ class WebUser extends RawMinkContext
             ->getJobInstance($code)->getRawConfiguration();
         $config = reset($config);
 
-        $path = sprintf('%s/%s', $config['writer']['directoryName'], $config['writer']['fileName']);
+        $path = $config['writer']['filePath'];
 
         if (!is_file($path)) {
             throw $this->createExpectationException(
@@ -1576,7 +1576,7 @@ class WebUser extends RawMinkContext
             ->getJobInstance($code)->getRawConfiguration();
         $config = reset($config);
 
-        $path = $config['writer']['directoryName'];
+        $path = dirname($config['writer']['filePath']);
 
         if (!is_dir($path)) {
             throw $this->createExpectationException(

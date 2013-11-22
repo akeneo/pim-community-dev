@@ -45,31 +45,31 @@ class ProductWriterTest extends \PHPUnit_Framework_TestCase
         $this->mediaManager
             ->expects($this->at(0))
             ->method('copy')
-            ->with($media1, '/tmp/phpunit/');
+            ->with($media1, '/tmp/phpunit');
 
         $this->mediaManager
             ->expects($this->at(1))
             ->method('copy')
-            ->with($media2, '/tmp/phpunit/');
+            ->with($media2, '/tmp/phpunit');
 
         $this->mediaManager
             ->expects($this->at(2))
             ->method('copy')
-            ->with($media3, '/tmp/phpunit/');
+            ->with($media3, '/tmp/phpunit');
 
         $this->mediaManager
             ->expects($this->at(3))
             ->method('copy')
-            ->with($media3, '/tmp/phpunit/');
+            ->with($media3, '/tmp/phpunit');
 
         $this->mediaManager
             ->expects($this->at(4))
             ->method('copy')
-            ->with($media3, '/tmp/phpunit/');
+            ->with($media3, '/tmp/phpunit');
 
         $this
             ->writer
-            ->setDirectoryName('/tmp/phpunit/')
+            ->setFilePath('/tmp/phpunit/export.csv')
             ->write(
                 array(
                     array(

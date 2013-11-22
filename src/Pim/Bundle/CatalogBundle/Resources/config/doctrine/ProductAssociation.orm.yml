@@ -1,0 +1,51 @@
+Pim\Bundle\CatalogBundle\Entity\ProductAssociation:
+    type: entity
+    table: pim_catalog_product_association
+    repositoryClass: Pim\Bundle\CatalogBundle\Entity\Repository\ProductAssociationRepository
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    manyToOne:
+        association:
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\Association
+            joinColumns:
+                association_id:
+                    referencedColumnName: id
+                    nullable: false
+                    onDelete: CASCADE
+        owner:
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\Product
+            inversedBy: productAssociations
+            joinColumns:
+                owner_id:
+                    referencedColumnName: id
+                    nullable: false
+                    onDelete: CASCADE
+    manyToMany:
+        groups:
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\Group
+            joinTable:
+                name: pim_catalog_product_association_group
+                joinColumns:
+                    productassociation_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+                inverseJoinColumns:
+                    group_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+        products:
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\Product
+            joinTable:
+                name: pim_catalog_product_association_product
+                joinColumns:
+                    productassociation_id:
+                        onDelete: CASCADE
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    product_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE

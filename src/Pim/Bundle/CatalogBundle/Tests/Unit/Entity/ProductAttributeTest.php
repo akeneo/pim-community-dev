@@ -48,8 +48,6 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->attribute->getSearchable());
         $this->assertFalse($this->attribute->getTranslatable());
         $this->assertFalse($this->attribute->getScopable());
-        $this->assertFalse($this->attribute->isSmart());
-        $this->assertFalse($this->attribute->getVariant());
         $this->assertFalse($this->attribute->isUseableAsGridColumn());
         $this->assertFalse($this->attribute->isUseableAsGridFilter());
         $this->assertNull($this->attribute->isDecimalsAllowed());
@@ -115,32 +113,6 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
         // if empty translation, assert the expected code is returned
         $this->attribute->setLabel('');
         $this->assertEquals($expectedCode, $this->attribute->__toString());
-    }
-
-    /**
-     * Test getter/setter for variant property
-     */
-    public function testGetSetVariant()
-    {
-        $this->assertEmpty($this->attribute->getVariant());
-
-        // change value and assert new
-        $newVariant = 'test-variant';
-        $this->assertEntity($this->attribute->setVariant($newVariant));
-        $this->assertEquals($newVariant, $this->attribute->getVariant());
-    }
-
-    /**
-     * Test is/setter for smart property
-     */
-    public function testIsSetSmart()
-    {
-        $this->assertFalse($this->attribute->isSmart());
-
-        // change value and assert new
-        $newSmart = true;
-        $this->assertEntity($this->attribute->setSmart($newSmart));
-        $this->assertTrue($this->attribute->isSmart());
     }
 
     /**

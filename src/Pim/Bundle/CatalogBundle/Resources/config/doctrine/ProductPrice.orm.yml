@@ -1,0 +1,25 @@
+Pim\Bundle\CatalogBundle\Entity\ProductPrice:
+    type: entity
+    table: pim_catalog_product_value_price
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        data:
+            type: decimal
+            scale: 2
+            nullable: true
+        currency:
+            type: string
+            length: 3
+            column: currency_code
+    manyToOne:
+        value:
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\ProductValue
+            inversedBy: prices
+            joinColumns:
+                value_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE

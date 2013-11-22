@@ -1,0 +1,21 @@
+Pim\Bundle\CatalogBundle\Entity\Currency:
+    type: entity
+    table: pim_catalog_currency
+    repositoryClass: Pim\Bundle\CatalogBundle\Entity\Repository\CurrencyRepository
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        code:
+            type: string
+            length: 3
+            unique: true
+        activated:
+            type: boolean
+            column: is_activated
+    oneToMany:
+        locales:
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\Locale
+            mappedBy: defaultCurrency
