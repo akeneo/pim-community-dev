@@ -85,7 +85,7 @@ class FamilyNormalizerTest extends NormalizerTestCase
             $attribute = new ProductAttribute();
             $attribute->setCode($code);
             $family->addAttribute($attribute);
-            $attributes[]= $attribute;
+            $attributes[] = $attribute;
         }
 
         $family->setAttributeAsLabel(current($attributes));
@@ -109,7 +109,7 @@ class FamilyNormalizerTest extends NormalizerTestCase
             $attrRequirement->setAttribute($requirement['attribute']);
             $attrRequirement->setChannel($requirement['channel']);
             $attrRequirement->setRequired($requirement['required']);
-            $attrRequirements[]= $attrRequirement;
+            $attrRequirements[] = $attrRequirement;
         }
         $family->setAttributeRequirements($attrRequirements);
 
