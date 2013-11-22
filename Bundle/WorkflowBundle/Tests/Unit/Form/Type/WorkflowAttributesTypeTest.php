@@ -3,6 +3,7 @@
 namespace Oro\Bundle\WorkflowBundle\Tests\Unit\Form\Type;
 
 use Oro\Bundle\WorkflowBundle\Form\Type\WorkflowAttributesType;
+use Oro\Bundle\WorkflowBundle\Model\Workflow;
 
 class WorkflowAttributesTypeTest extends AbstractWorkflowAttributesTypeTestCase
 {
@@ -53,6 +54,8 @@ class WorkflowAttributesTypeTest extends AbstractWorkflowAttributesTypeTestCase
     }
 
     /**
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     *
      * @return array
      */
     public function submitDataProvider()
@@ -217,7 +220,7 @@ class WorkflowAttributesTypeTest extends AbstractWorkflowAttributesTypeTestCase
     /**
      * @dataProvider normalizersDataProvider
      */
-    public function testNormalizers(array $options, $expectedWorkflow)
+    public function testNormalizers(array $options, Workflow $expectedWorkflow)
     {
         $this->workflowRegistry->expects($this->once())->method('getWorkflow')
             ->with($expectedWorkflow->getName())->will($this->returnValue($expectedWorkflow));
