@@ -234,7 +234,7 @@ class CategoryExtension extends \Twig_Extension
      *
      * @return string
      */
-    public function defineCategoryState(CategoryInterface $category, $hasChild = false, array $selectedIds = array())
+    protected function defineCategoryState(CategoryInterface $category, $hasChild = false, array $selectedIds = array())
     {
         $state = $category->hasChildren() ? 'closed' : 'leaf';
 
