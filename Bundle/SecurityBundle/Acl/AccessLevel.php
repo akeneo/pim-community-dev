@@ -14,7 +14,7 @@ final class AccessLevel
      */
     public static $allAccessLevelNames = array('BASIC', 'LOCAL', 'DEEP', 'GLOBAL', 'SYSTEM');
 
-    const NONE_LEVEL_LABEL = 'NONE';
+    const NONE_LEVEL_NAME = 'NONE';
 
     /**
      * Unknown access level.
@@ -81,15 +81,17 @@ final class AccessLevel
     }
 
     /**
-     * Get array with access levels from NONE to $value
+     * Get array with access levels from $minLevel to the System level + None level
      *
-     * @param int $value
+     * @param int $minLevel The min level to find names from. The default value is BASIC_LEVEL
      * @return array
+     *   key = access level code,
+     *   value = access level name
      */
-    public static function getAccessLevelNames($value = self::BASIC_LEVEL)
+    public static function getAccessLevelNames($minLevel = self::BASIC_LEVEL)
     {
-        $names = [self::NONE_LEVEL_LABEL];
-        for ($level = $value; $level <= self::SYSTEM_LEVEL; $level++) {
+        $names = [self::NONE_LEVEL_NAME];
+        for ($level = $minLevel; $level <= self::SYSTEM_LEVEL; $level++) {
             $name = self::getAccessLevelName($level);
             $names[$level] = $name;
         }

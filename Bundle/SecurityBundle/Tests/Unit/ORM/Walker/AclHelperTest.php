@@ -129,7 +129,7 @@ class AclHelperTest extends OrmTestCase
         $this->assertNull($whereCondition->getValue());
     }
 
-    protected function resultWalker0(SelectStatement  $resultAst)
+    protected function resultWalker0(SelectStatement $resultAst)
     {
         // 1=0 expression
         $expression = $resultAst
@@ -158,7 +158,7 @@ class AclHelperTest extends OrmTestCase
         $whereCondition = $hints[AclWalker::ORO_ACL_CONDITION]->getWhereConditions()[0];
         $this->assertEquals('u', $whereCondition->getEntityAlias());
         $this->assertEquals('id', $whereCondition->getEntityField());
-        $this->assertEquals([1,2,3], $whereCondition->getValue());
+        $this->assertEquals([1, 2, 3], $whereCondition->getValue());
         $joinCondition = $hints[AclWalker::ORO_ACL_CONDITION]->getJoinConditions()[0];
         $this->assertEquals('address', $joinCondition->getEntityAlias());
         $this->assertEquals('Doctrine\Tests\Models\CMS\CmsAddress', $joinCondition->getEntityClass());
@@ -172,7 +172,7 @@ class AclHelperTest extends OrmTestCase
             ->conditionalExpression
             ->conditionalFactors[0]
             ->simpleConditionalExpression;
-        $this->assertEquals([1,2,3], $this->collectLiterals($expression->literals));
+        $this->assertEquals([1, 2, 3], $this->collectLiterals($expression->literals));
         $this->assertEquals('u', $expression->expression->simpleArithmeticExpression->identificationVariable);
         $join = $resultAst->fromClause->identificationVariableDeclarations[0]->joins[0];
         $this->assertEquals('Doctrine\Tests\Models\CMS\CmsAddress', $join->joinAssociationDeclaration->abstractSchemaName);
@@ -236,9 +236,9 @@ class AclHelperTest extends OrmTestCase
         $conditions = $hints[AclWalker::ORO_ACL_CONDITION];
         $this->assertEmpty($conditions->getJoinConditions());
         $whereCondition = $conditions->getWhereConditions()[0];
-        $this->assertEquals([3,2,1], $whereCondition->getValue());
+        $this->assertEquals([3, 2, 1], $whereCondition->getValue());
         $subRequest = $conditions->getSubRequests()[0];
-        $this->assertEquals([3,2,1], $subRequest->getWhereConditions()[0]->getValue());
+        $this->assertEquals([3, 2, 1], $subRequest->getWhereConditions()[0]->getValue());
         $this->assertEquals('Doctrine\Tests\Models\CMS\CmsArticle', $subRequest->getJoinConditions()[0]->getEntityClass());
         $this->assertEquals('Doctrine\Tests\Models\CMS\CmsComment', $subRequest->getJoinConditions()[1]->getEntityClass());
         $this->assertEquals([150], $subRequest->getJoinConditions()[2]->getValue());
@@ -251,14 +251,14 @@ class AclHelperTest extends OrmTestCase
             ->conditionalExpression
             ->conditionalFactors[1]
             ->simpleConditionalExpression;
-        $this->assertEquals([3,2,1], $this->collectLiterals($whereExpression->literals));
+        $this->assertEquals([3, 2, 1], $this->collectLiterals($whereExpression->literals));
         $subselect = $resultAst->whereClause
             ->conditionalExpression
             ->conditionalFactors[0]
             ->simpleConditionalExpression
             ->subselect;
         $expression = $subselect->whereClause->conditionalExpression->conditionalFactors[1]->simpleConditionalExpression;
-        $this->assertEquals([3,2,1], $this->collectLiterals($expression->literals));
+        $this->assertEquals([3, 2, 1], $this->collectLiterals($expression->literals));
     }
 
     /**

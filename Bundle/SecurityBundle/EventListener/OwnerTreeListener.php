@@ -63,16 +63,6 @@ class OwnerTreeListener
     }
 
     /**
-     * @param PostFlushEventArgs $args
-     */
-    public function postFlush(PostFlushEventArgs $args)
-    {
-        if ($this->needWarmap) {
-            $this->getTreeProvider()->warmUpCache();
-        }
-    }
-
-    /**
      * @param array $entities
      * @return bool
      */

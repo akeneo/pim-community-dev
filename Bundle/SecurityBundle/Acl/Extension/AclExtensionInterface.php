@@ -208,6 +208,8 @@ interface AclExtensionInterface
      *
      * @param $object
      * @return array
+     *  key = access level code,
+     *  value = access level name
      */
     public function getAccessLevelNames($object);
 }

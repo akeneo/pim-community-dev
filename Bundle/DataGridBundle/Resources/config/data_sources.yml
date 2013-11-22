@@ -6,6 +6,6 @@ services:
         class: %oro_datagrid.datasource.orm.class%
         arguments:
             - @doctrine.orm.entity_manager
-            - @event_dispatcher
+            - @oro_security.acl_helper
         tags:
             - { name: oro_datagrid.datasource, type: orm }

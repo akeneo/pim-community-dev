@@ -96,8 +96,7 @@ class OwnerTreeProvider
         $users = $this->em->getRepository('Oro\Bundle\UserBundle\Entity\User')->findAll();
         $businessUnits = $this->em->getRepository('Oro\Bundle\OrganizationBundle\Entity\BusinessUnit')->findAll();
 
-        foreach ($businessUnits as $businessUnit)
-        {
+        foreach ($businessUnits as $businessUnit) {
             /** @var \Oro\Bundle\OrganizationBundle\Entity\BusinessUnit $businessUnit */
             $tree->addBusinessUnit($businessUnit->getId(), $businessUnit->getOrganization()->getId());
             if ($businessUnit->getOwner()) {

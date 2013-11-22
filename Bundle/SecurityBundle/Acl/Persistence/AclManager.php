@@ -100,7 +100,7 @@ class AclManager extends AbstractAclManager
      * @param $object
      * @return array
      */
-    public function getAccessLevelsForObject($object)
+    public function getAccessLevels($object)
     {
         $extension = $this->getExtensionSelector()->select($object);
 

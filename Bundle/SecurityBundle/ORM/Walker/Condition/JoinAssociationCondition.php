@@ -22,7 +22,7 @@ class JoinAssociationCondition extends JoinAclCondition
      * @param $entityClass
      * @param $joinConditions
      */
-    public function __construct($entityAlias, $entityField = null, $value = null, $entityClass, $joinConditions)
+    public function __construct($entityAlias, $entityField = null, $value = null, $entityClass= null, $joinConditions= null)
     {
         $this->entityClass = $entityClass;
         $this->joinConditions = $joinConditions;
@@ -61,6 +61,4 @@ class JoinAssociationCondition extends JoinAclCondition
     {
         return $this->joinConditions;
     }
-
-
 }

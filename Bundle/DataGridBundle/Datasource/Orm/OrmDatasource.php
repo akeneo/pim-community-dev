@@ -4,15 +4,13 @@ namespace Oro\Bundle\DataGridBundle\Datasource\Orm;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\QueryConverter\YamlConverter;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
-use Oro\Bundle\DataGridBundle\Event\GetResultsBefore;
-
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
 class OrmDatasource implements DatasourceInterface
 {
@@ -24,13 +22,13 @@ class OrmDatasource implements DatasourceInterface
     /** @var EntityManager */
     protected $em;
 
-    /** @var EventDispatcher */
-    protected $eventDispatcher;
+    /** @var AclHelper */
+    protected $aclHelper;
 
-    public function __construct(EntityManager $em, EventDispatcher $eventDispatcher)
+    public function __construct(EntityManager $em, AclHelper $aclHelper)
     {
         $this->em = $em;
-        $this->eventDispatcher = $eventDispatcher;
+        $this->aclHelper = $aclHelper;
     }
 
     /**
@@ -51,9 +49,7 @@ class OrmDatasource implements DatasourceInterface
      */
     public function getResults()
     {
-        $query  = $this->qb->getQuery();
-        $event = new GetResultsBefore($query);
-        $this->eventDispatcher->dispatch(GetResultsBefore::NAME, $event);
+        $query = $this->aclHelper->apply($this->qb->getQuery());
 
         $results = $query->execute();
         $rows    = [];

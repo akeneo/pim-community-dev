@@ -39,4 +39,4 @@ class SubRequestAclConditionStorage extends AclConditionStorage
     {
         return $this->factorId;
     }
-} 
+}

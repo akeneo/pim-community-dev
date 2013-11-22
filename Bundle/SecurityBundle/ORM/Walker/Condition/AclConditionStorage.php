@@ -98,4 +98,4 @@ class AclConditionStorage
     {
         return $this->whereConditions;
     }
-} 
+}

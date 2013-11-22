@@ -53,17 +53,17 @@ class ObjectIdentityFactory
 
     /**
      * Constructs an underlying ObjectIdentity for given ObjectIdentity
+     * Underlying is class level ObjectIdentity for given object level ObjectIdentity.
      *
      * @param ObjectIdentity $oid
      * @return ObjectIdentity
      * @throws AclNotFoundException
      */
-    public function underlie(ObjectIdentity $oid)
+    public function underlying(ObjectIdentity $oid)
     {
-        $extensionKey = $this->extensionSelector
-            ->select($oid)
-            ->getExtensionKey();
-        if ($extensionKey == $oid->getIdentifier() || $oid->getIdentifier() == self::ROOT_IDENTITY_TYPE) {
+        if ($oid->getIdentifier() === self::ROOT_IDENTITY_TYPE
+            || $oid->getIdentifier() === ($extensionKey = $this->extensionSelector->select($oid)->getExtensionKey())
+        ) {
             throw new AclNotFoundException();
         }
 

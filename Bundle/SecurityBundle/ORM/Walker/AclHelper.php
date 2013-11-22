@@ -42,7 +42,7 @@ class AclHelper
     /**
      * @param $builder
      */
-    function __construct(OwnershipConditionDataBuilder $builder)
+    public function __construct(OwnershipConditionDataBuilder $builder)
     {
         $this->builder = $builder;
     }
@@ -66,10 +66,10 @@ class AclHelper
 
         $ast = $query->getAST();
         if ($ast instanceof SelectStatement) {
-            list ($whereConditions, $joinConditions) = $this->processRequest($ast, $permission, $query);
+            list ($whereConditions, $joinConditions) = $this->processSelect($ast, $permission, $query);
             $conditionStorage = new AclConditionStorage($whereConditions, $joinConditions);
             if ($ast->whereClause) {
-                $this->processSubRequests($ast, $conditionStorage, $permission, $query);
+                $this->processSubselects($ast, $conditionStorage, $permission, $query);
             }
 
             // We have access level check conditions. So mark query for acl walker.
@@ -94,7 +94,7 @@ class AclHelper
      * @param AclConditionStorage $storage
      * @param $permission
      */
-    protected function processSubRequests(SelectStatement $ast, AclConditionStorage $storage, $permission)
+    protected function processSubselects(SelectStatement $ast, AclConditionStorage $storage, $permission)
     {
         $conditionalExpression = $ast->whereClause->conditionalExpression;
         if ($conditionalExpression instanceof ConditionalPrimary) {
@@ -103,7 +103,7 @@ class AclHelper
             if (isset($expression->subselect)
                 && $expression->subselect instanceof Subselect
             ) {
-                $subRequestAclStorage = $this->processSubRequest($expression->subselect, $permission);
+                $subRequestAclStorage = $this->processSubselect($expression->subselect, $permission);
                 if (!$subRequestAclStorage->isEmpty()) {
                     $subRequestAclStorage->setFactorId(0);
                     $storage->addSubRequests($subRequestAclStorage);
@@ -116,7 +116,7 @@ class AclHelper
                 if (isset($expression->simpleConditionalExpression->subselect)
                     && $expression->simpleConditionalExpression->subselect instanceof Subselect
                 ) {
-                    $subRequestAclStorage = $this->processSubRequest(
+                    $subRequestAclStorage = $this->processSubselect(
                         $expression->simpleConditionalExpression->subselect,
                         $permission
                     );
@@ -139,9 +139,9 @@ class AclHelper
      * @param $permission
      * @return SubRequestAclConditionStorage
      */
-    protected function processSubRequest(Subselect $subSelect, $permission)
+    protected function processSubselect(Subselect $subSelect, $permission)
     {
-        list ($whereConditions, $joinConditions) = $this->processRequest($subSelect, $permission);
+        list ($whereConditions, $joinConditions) = $this->processSelect($subSelect, $permission);
 
         return new SubRequestAclConditionStorage($whereConditions, $joinConditions);
     }
@@ -153,7 +153,7 @@ class AclHelper
      * @param string $permission
      * @return array
      */
-    protected function processRequest($select, $permission)
+    protected function processSelect($select, $permission)
     {
         if ($select instanceof SelectStatement) {
             $isSubRequest = false;
@@ -209,7 +209,7 @@ class AclHelper
      * @param $permission
      * @return JoinAssociationCondition
      */
-    protected function processJoinAssociationPathExpression(IdentificationVariableDeclaration $declaration, $key,  $permission)
+    protected function processJoinAssociationPathExpression(IdentificationVariableDeclaration $declaration, $key, $permission)
     {
         /** @var Join $join */
         $join = $declaration->joins[$key];
@@ -270,12 +270,10 @@ class AclHelper
                 list($entityField, $value) = $resultData;
             }
             if ($isJoin) {
-
                 return new JoinAclCondition(
                     $entityAlias, $entityField, $value
                 );
             } else {
-
                 return new AclCondition(
                     $entityAlias, $entityField, $value
                 );

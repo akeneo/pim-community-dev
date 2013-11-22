@@ -61,7 +61,7 @@ class RootBasedAclProvider implements AclProviderInterface
         } catch (AclNotFoundException $noAcl) {
             try {
                 // Try to get ACL for underlying object
-                $underlyingOid = $this->objectIdentityFactory->underlie($oid);
+                $underlyingOid = $this->objectIdentityFactory->underlying($oid);
                 $acl = $this->getAcl($underlyingOid, $sids, $rootOid);
             } catch (AclNotFoundException $noUnderlyingAcl) {
                 // Try to get ACL for root object
@@ -82,7 +82,23 @@ class RootBasedAclProvider implements AclProviderInterface
         return $acl;
     }
 
-    protected function getAcl($oid, $sids, $rootOid)
+    /**
+     * {@inheritdoc}
+     */
+    public function findAcls(array $oids, array $sids = array())
+    {
+        return $this->baseAclProvider->findAcls($oids, $sids);
+    }
+
+    /**
+     * Get Acl based on given OID and Parent OID
+     *
+     * @param ObjectIdentityInterface $oid
+     * @param array $sids
+     * @param ObjectIdentityInterface $rootOid
+     * @return RootBasedAclWrapper|\Symfony\Component\Security\Acl\Model\AclInterface
+     */
+    protected function getAcl(ObjectIdentityInterface $oid, array $sids, ObjectIdentityInterface $rootOid)
     {
         $acl = $this->baseAclProvider->findAcl($oid, $sids);
         try {
@@ -92,13 +108,5 @@ class RootBasedAclProvider implements AclProviderInterface
         }
 
         return new RootBasedAclWrapper($acl, $rootAcl);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function findAcls(array $oids, array $sids = array())
-    {
-        return $this->baseAclProvider->findAcls($oids, $sids);
     }
 }

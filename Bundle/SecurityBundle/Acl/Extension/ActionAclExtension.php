@@ -35,7 +35,7 @@ class ActionAclExtension extends AbstractAclExtension
     public function getAccessLevelNames($object)
     {
         return array(
-            AccessLevel::NONE_LEVEL => AccessLevel::NONE_LEVEL_LABEL,
+            AccessLevel::NONE_LEVEL => AccessLevel::NONE_LEVEL_NAME,
             AccessLevel::SYSTEM_LEVEL => AccessLevel::getAccessLevelName(AccessLevel::SYSTEM_LEVEL)
         );
     }

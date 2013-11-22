@@ -101,7 +101,7 @@ class DoctrineParamConverterTest extends \PHPUnit_Framework_TestCase
 
         $objectRepository->expects($this->any())
             ->method('find')
-            ->will($this->returnValue($object =new \stdClass));
+            ->will($this->returnValue($object = new \stdClass));
 
 
         $this->securityFacade->expects($this->once())
@@ -135,4 +135,3 @@ class DoctrineParamConverterTest extends \PHPUnit_Framework_TestCase
         );
     }
 }
- 

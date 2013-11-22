@@ -26,7 +26,7 @@ class DoctrineParamConverter extends BaseParamConverter
      * @param ManagerRegistry $registry
      * @param SecurityFacade $securityFacade
      */
-    public function __construct(ManagerRegistry $registry = null, SecurityFacade $securityFacade)
+    public function __construct(ManagerRegistry $registry = null, SecurityFacade $securityFacade = null)
     {
         parent::__construct($registry);
         $this->securityFacade = $securityFacade;
@@ -44,7 +44,7 @@ class DoctrineParamConverter extends BaseParamConverter
      */
     public function apply(Request $request, ConfigurationInterface $configuration)
     {
-        $request->attributes->set('oro-access-checked', false);
+        $request->attributes->set('_oro_access_checked', false);
         $isSet = parent::apply($request, $configuration);
 
         if ($isSet) {
@@ -57,7 +57,7 @@ class DoctrineParamConverter extends BaseParamConverter
                 if (!$this->securityFacade->isGranted($permission, $object)) {
                     throw new AccessDeniedException('You do not get ' . $permission . ' permission for this object');
                 } else {
-                    $request->attributes->set('oro-access-checked', true);
+                    $request->attributes->set('_oro_access_checked', true);
                 }
             }
         }

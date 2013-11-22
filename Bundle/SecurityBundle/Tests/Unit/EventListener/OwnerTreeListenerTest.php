@@ -8,8 +8,6 @@ use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
 use Oro\Bundle\OrganizationBundle\Entity\Organization;
 
-
-
 class OwnerTreeListenerTest extends \PHPUnit_Framework_TestCase
 {
     /**
@@ -64,11 +62,6 @@ class OwnerTreeListenerTest extends \PHPUnit_Framework_TestCase
 
         $treeListener = new OwnerTreeListener($serviceLink);
         $treeListener->onFlush($args);
-        $treeListener->postFlush(
-            $this->getMockBuilder('Doctrine\ORM\Event\PostFlushEventArgs')
-                ->disableOriginalConstructor()
-                ->getMock()
-        );
     }
 
     /**

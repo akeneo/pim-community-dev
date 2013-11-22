@@ -6,10 +6,9 @@ use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 
 use Oro\Bundle\BatchBundle\ORM\Query\QueryCountCalculator;
-use Oro\Bundle\DataGridBundle\Event\GetResultsBefore;
 use Oro\Bundle\DataGridBundle\Extension\Pager\PagerInterface;
 use Oro\Bundle\DataGridBundle\Extension\Pager\AbstractPager;
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
 class Pager extends AbstractPager implements PagerInterface
 {
@@ -19,14 +18,14 @@ class Pager extends AbstractPager implements PagerInterface
     /** @var array */
     protected $parameters = [];
 
-    /** @var EventDispatcher */
-    protected $eventDispatcher;
+    /** @var AclHelper */
+    protected $aclHelper;
 
-    public function __construct(EventDispatcher $eventDispatcher, $maxPerPage = 10, QueryBuilder $qb = null)
+    public function __construct(AclHelper $aclHelper, $maxPerPage = 10, QueryBuilder $qb = null)
     {
         $this->qb = $qb;
         parent::__construct($maxPerPage);
-        $this->eventDispatcher = $eventDispatcher;
+        $this->aclHelper = $aclHelper;
     }
 
     /**
@@ -62,8 +61,7 @@ class Pager extends AbstractPager implements PagerInterface
             ->resetDQLPart('orderBy')
             ->getQuery();
 
-        $event = new GetResultsBefore($query);
-        $this->eventDispatcher->dispatch(GetResultsBefore::NAME, $event);
+        $query = $this->aclHelper->apply($query);
 
         return QueryCountCalculator::calculateCount($query);
     }

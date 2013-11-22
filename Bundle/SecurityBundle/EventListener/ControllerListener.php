@@ -45,7 +45,7 @@ class ControllerListener
      */
     public function onKernelController(FilterControllerEvent $event)
     {
-        if (!$event->getRequest()->attributes->get('oro-access-checked')) {
+        if (!$event->getRequest()->attributes->get('_oro_access_checked')) {
             $controller = $event->getController();
             /*
              * $controller passed can be either a class or a Closure. This is not usual in Symfony2 but it may happen.

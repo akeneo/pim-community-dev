@@ -22,10 +22,7 @@ require(['jquery', 'routing'],
                 var linkDiv = parentDiv.find(linkDivSelector);
                 link.hide();
                 $.ajax({
-                    url: routing.generate(accessLevelRoute, { _format: 'json' }),
-                    data: {
-                        oid: parentDiv.attr(objectIdentityAttribute)
-                    },
+                    url: routing.generate(accessLevelRoute, {oid: parentDiv.attr(objectIdentityAttribute), _format: 'json' }),
                     success: function (data) {
                         var selector = $('<select>');
                         selector.attr('name', parentDiv.attr(selectorNameAttribute));

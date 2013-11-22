@@ -155,17 +155,17 @@ class EntityAclExtension extends AbstractAclExtension
      */
     public function getAccessLevelNames($object)
     {
-        if ($this->getObjectType($object) === ObjectIdentityFactory::ROOT_IDENTITY_TYPE) {
+        if ($this->getObjectClassName($object) === ObjectIdentityFactory::ROOT_IDENTITY_TYPE) {
             $minLevel = AccessLevel::BASIC_LEVEL;
         } else {
             $metadata = $this->getMetadata($object);
             if (!$metadata->hasOwner()) {
-
                 return array(
-                    AccessLevel::NONE_LEVEL => AccessLevel::NONE_LEVEL_LABEL,
+                    AccessLevel::NONE_LEVEL => AccessLevel::NONE_LEVEL_NAME,
                     AccessLevel::SYSTEM_LEVEL => AccessLevel::getAccessLevelName(AccessLevel::SYSTEM_LEVEL)
                 );
-            } elseif ($metadata->isUserOwned()) {
+            }
+            if ($metadata->isUserOwned()) {
                 $minLevel = AccessLevel::BASIC_LEVEL;
             } elseif ($metadata->isBusinessUnitOwned()) {
                 $minLevel = AccessLevel::DEEP_LEVEL;
@@ -616,16 +616,16 @@ class EntityAclExtension extends AbstractAclExtension
      */
     protected function getMetadata($object)
     {
-        return $this->metadataProvider->getMetadata($this->getObjectType($object));
+        return $this->metadataProvider->getMetadata($this->getObjectClassName($object));
     }
 
     /**
-     * Gets type for given object
+     * Gets class name for given object
      *
      * @param $object
      * @return string
      */
-    protected function getObjectType($object)
+    protected function getObjectClassName($object)
     {
         if ($object instanceof ObjectIdentity) {
             $className = $object->getType();
@@ -636,7 +636,7 @@ class EntityAclExtension extends AbstractAclExtension
             $className = $this->entityClassAccessor->getClass($object);
         }
 
-        return$className;
+        return $className;
     }
 
     /**

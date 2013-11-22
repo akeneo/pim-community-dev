@@ -110,7 +110,7 @@ class RootBasedAclProviderTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($rootOid));
 
         $factory->expects($this->any())
-            ->method('underlie')
+            ->method('underlying')
             ->with($this->equalTo($oid))
             ->will($this->returnValue($underlyingOid));
 
@@ -145,7 +145,7 @@ class RootBasedAclProviderTest extends \PHPUnit_Framework_TestCase
                     $this->getOidKey($oid) => $acl,
                     $this->getOidKey($rootOid) => $rootAcl
                 ],
-                function($result) use ($acl){
+                function($result) use ($acl) {
                     $this->assertInstanceOf(
                         'Oro\Bundle\SecurityBundle\Acl\Domain\RootBasedAclWrapper',
                         $result
@@ -159,7 +159,7 @@ class RootBasedAclProviderTest extends \PHPUnit_Framework_TestCase
             [
                 [$oid, $rootOid, $underlyingOid],
                 [$this->getOidKey($oid) => $acl],
-                function($result) use ($acl){
+                function($result) use ($acl) {
                     $this->assertEquals($acl, $result);
                 }
             ],
@@ -169,7 +169,7 @@ class RootBasedAclProviderTest extends \PHPUnit_Framework_TestCase
                     $this->getOidKey($rootOid) => $rootAcl,
                     $this->getOidKey($underlyingOid) => $underlyingAcl
                 ],
-                function($result) use ($underlyingAcl){
+                function($result) use ($underlyingAcl) {
                     $reflection = new \ReflectionClass($result);
                     $aclReflection = $reflection->getProperty('acl');
                     $aclReflection->setAccessible(true);
@@ -179,7 +179,7 @@ class RootBasedAclProviderTest extends \PHPUnit_Framework_TestCase
             [
                 [$oid, $rootOid, $underlyingOid],
                 [],
-                function($result) {
+                function ($result) {
 
                 }
             ]
