@@ -42,8 +42,6 @@ class CategoryExtension extends \Twig_Extension
             'children_tree_response'      => new \Twig_Function_Method($this, 'childrenTreeResponse'),
             'list_categories_response' => new \Twig_Function_Method($this, 'listCategoriesResponse'),
             'list_products'    => new \Twig_Function_Method($this, 'listProducts')
-//             'count_products' => new \Twig_Function_Method($this, 'countProducts'),
-//             'define_state'   => new \Twig_Function_Method($this, 'defineState')
         );
     }
 
