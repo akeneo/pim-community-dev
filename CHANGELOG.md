@@ -31,6 +31,7 @@
 ## Bug fixes
 - Mass delete products
 - Fix some issues with import ACL translations (issues#484)
+- Add a message when trying to delete an attribute used by one or more variant groups instead of throwing an error
 
 ## BC breaks
 - Command "pim:product:completeness-calculator" has been replaced into "pim:completeness:calculate"
