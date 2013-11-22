@@ -142,6 +142,7 @@ flash:
         updated:                  Attribute successfully updated
         removed:                  Attribute successfully removed
         identifier not removable: Identifier attribute can not be removed
+        used by groups:           This attribute can not be removed because it is used by %count% groups
         option created:           Option successfully created
         error creating option:    Error ocurred when trying to create the option, please try again
     attribute group:
