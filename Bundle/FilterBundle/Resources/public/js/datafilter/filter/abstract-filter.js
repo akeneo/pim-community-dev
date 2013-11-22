@@ -26,6 +26,13 @@ function($, _, Backbone, app) {
         className: 'btn-group filter-item oro-drop',
 
         /**
+         * Is filter can be disabled
+         *
+         * @property {Boolean}
+         */
+        canDisable: true,
+
+        /**
          * Is filter enabled
          *
          * @property {Boolean}
@@ -47,11 +54,25 @@ function($, _, Backbone, app) {
         name: 'input_name',
 
         /**
+         * Placeholder for default value
+         *
+         * @property
+         */
+        placeholder: 'All',
+
+        /**
          * Label of filter
          *
          * @property {String}
          */
         label: 'Input Label',
+
+        /**
+         * Is filter label visible
+         *
+         * @property {Boolean}
+         */
+        showLabel: true,
 
         /**
          * Raw value of filter
@@ -91,6 +112,15 @@ function($, _, Backbone, app) {
             options = options || {};
             if (_.has(options, 'enabled')) {
                 this.enabled = options.enabled;
+            }
+            if (_.has(options, 'canDisable')) {
+                this.canDisable = options.canDisable;
+            }
+            if (_.has(options, 'placeholder')) {
+                this.placeholder = options.placeholder;
+            }
+            if (_.has(options, 'showLabel')) {
+                this.showLabel = options.showLabel;
             }
             this.defaultEnabled = this.enabled;
             Backbone.View.prototype.initialize.apply(this, arguments);

@@ -124,8 +124,18 @@
                 'data-purpose': 'column-selector'
             }
         }) }}
-        {{ form_row(form.label, {'label': 'oro.querydesigner.form.label'|trans}) }}
-        {{ form_row(form.sorting, {'label': 'oro.querydesigner.form.sorting'|trans}) }}
+        {{ form_row(form.label, {
+            'label': 'oro.querydesigner.form.label'|trans,
+            'attr': {
+                'class': 'label-text'
+            }
+        }) }}
+        {{ form_row(form.sorting, {
+            'label': 'oro.querydesigner.form.sorting'|trans,
+            'attr': {
+                'class': 'sorting-selector'
+            }
+        }) }}
         {{ UI.clientButton({
             'visible': false,
             'aCss': 'no-hash cancel-button',

@@ -225,7 +225,7 @@ function($, _, __, ChoiceFilter, localeSettings) {
                 }
             }
 
-            return this.defaultCriteriaHint;
+            return this.placeholder;
         },
 
         /**

@@ -94,7 +94,7 @@ function($, _, __, TextFilter) {
             var option, hint,
                 value = (arguments.length > 0) ? this._getDisplayValue(arguments[0]) : this._getDisplayValue();
             if (!value.value) {
-                hint = this.defaultCriteriaHint;
+                hint = this.placeholder;
             } else {
                 option = this._getChoiceOption(value.type);
                 hint = (option ? option.label + ' ' : '') + '"' + value.value + '"';

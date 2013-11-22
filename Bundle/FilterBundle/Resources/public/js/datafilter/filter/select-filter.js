@@ -18,12 +18,12 @@ function(_, __, AbstractFilter, MultiselectDecorator) {
          */
         template: _.template(
             '<div class="btn filter-select filter-criteria-selector">' +
-                '<%= label %>: ' +
+                '<% if (showLabel) { %><%= label %>: <% } %>' +
                 '<select>' +
                     '<% _.each(options, function (option) { %><option value="<%= option.value %>"><%= option.label %></option><% }); %>' +
                 '</select>' +
             '</div>' +
-            '<a href="<%= nullLink %>" class="disable-filter"><i class="icon-remove hide-text"><%- _.__("Close") %></i></a>'
+            '<% if (canDisable) { %><a href="<%= nullLink %>" class="disable-filter"><i class="icon-remove hide-text"><%- _.__("Close") %></i></a><% } %>'
         ),
 
         /**
@@ -32,13 +32,6 @@ function(_, __, AbstractFilter, MultiselectDecorator) {
          * @property
          */
         choices: [],
-
-        /**
-         * Placeholder for default value
-         *
-         * @property
-         */
-        placeholder: 'All',
 
         /**
          * Should default value be added to options list
@@ -161,9 +154,11 @@ function(_, __, AbstractFilter, MultiselectDecorator) {
             this.$el.append(
                 this.template({
                     label: this.label,
+                    showLabel: this.showLabel,
                     options: options,
                     placeholder: this.placeholder,
-                    nullLink: this.nullLink
+                    nullLink: this.nullLink,
+                    canDisable: this.canDisable
                 })
             );
 

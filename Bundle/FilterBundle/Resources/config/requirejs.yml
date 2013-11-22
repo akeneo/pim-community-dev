@@ -10,6 +10,7 @@ config:
         'jquery.multiselect': 'bundles/orofilter/lib/multiselect/jquery.multiselect.js'
         'jquery.multiselect.filter': 'bundles/orofilter/lib/multiselect/jquery.multiselect.filter.js'
         'oro/datafilter/abstract-filter': 'bundles/orofilter/js/datafilter/filter/abstract-filter.js'
+        'oro/datafilter/none-filter': 'bundles/orofilter/js/datafilter/filter/none-filter.js'
         'oro/datafilter/choice-filter': 'bundles/orofilter/js/datafilter/filter/choice-filter.js'
         'oro/datafilter/date-filter': 'bundles/orofilter/js/datafilter/filter/date-filter.js'
         'oro/datafilter/datetime-filter': 'bundles/orofilter/js/datafilter/filter/datetime-filter.js'

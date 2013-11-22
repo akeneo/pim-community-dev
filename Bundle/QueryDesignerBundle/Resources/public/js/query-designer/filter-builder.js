@@ -1,7 +1,7 @@
 /* jshint browser:true */
 /* global define, require */
-define(['jquery', 'underscore', 'oro/tools', 'oro/mediator', 'oro/query-designer/filter-manager'],
-function($, _, tools, mediator, FilterManager) {
+define(['jquery', 'underscore', 'oro/translator', 'oro/tools', 'oro/mediator', 'oro/query-designer/filter-manager'],
+function($, _, __, tools, mediator, FilterManager) {
     'use strict';
 
     var
@@ -21,7 +21,11 @@ function($, _, tools, mediator, FilterManager) {
             initBuilder: function () {
                 var metadata = this.$el.closest('[data-metadata]').data('metadata');
                 this.metadata = _.extend({filters: []}, metadata);
-                this.metadata.filters.push({type: 'none', applicable: {}});
+                this.metadata.filters.push({
+                    type: 'none',
+                    applicable: {},
+                    popupHint: __('Choose a column first')
+                });
                 this.modules = {};
                 methods.collectModules.call(this);
                 tools.loadModules(this.modules, _.bind(methods.build, this));
@@ -57,6 +61,9 @@ function($, _, tools, mediator, FilterManager) {
                 var filters = {},
                     modules = this.modules;
                 _.each(this.metadata.filters, function (options) {
+                    options.showLabel = false;
+                    options.canDisable = false;
+                    options.placeholder = __('Choose a criterion');
                     filters[options.type] = new (modules[options.type].extend(options));
                 });
                 return {filters: filters};
