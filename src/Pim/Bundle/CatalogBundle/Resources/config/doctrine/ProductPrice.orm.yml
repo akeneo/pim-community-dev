@@ -17,7 +17,7 @@ Pim\Bundle\CatalogBundle\Entity\ProductPrice:
             column: currency_code
     manyToOne:
         value:
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\ProductValue
+            targetEntity: Pim\Bundle\CatalogBundle\Model\ProductValueInterface
             inversedBy: prices
             joinColumns:
                 value_id:

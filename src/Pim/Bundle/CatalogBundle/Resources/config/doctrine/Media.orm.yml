@@ -27,7 +27,7 @@ Pim\Bundle\CatalogBundle\Entity\Media:
             column: mime_type
     oneToOne:
         value:
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\ProductValue
+            targetEntity: Pim\Bundle\CatalogBundle\Model\ProductValueInterface
             mappedBy: media
             joinColumns:
                 value_id:
