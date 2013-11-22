@@ -5,7 +5,6 @@
 </div>
 {% endfor %}
 
-{{ JSFV(form) }}
 <form id="{{ form.vars.name }}" action="{{ form.vars.value.id ? path('oro_user_group_update', { id: form.vars.value.id }) : path('oro_user_group_create') }}" method="post" class="form-register form-dialog">
     <fieldset class="form-horizontal">
         {{ form_widget(form) }}
@@ -17,3 +16,4 @@
         </div>
     </fieldset>
 </form>
+{{ oro_form_js_validation(form) }}

@@ -505,3 +505,14 @@
         </script>
     {% endif %}
 {% endmacro %}
+
+
+{% block oro_form_js_validation %}
+<script type="text/javascript">
+    require(['jquery', 'jquery.validate'],
+    function ($) {
+        var options = {{ js_options ? js_options|json_encode|raw : '{}' }};
+        $('#{{ form.vars.name }}').validate(options);
+    });
+</script>
+{% endblock %}

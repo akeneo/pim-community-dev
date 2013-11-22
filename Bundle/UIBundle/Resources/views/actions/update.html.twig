@@ -72,11 +72,6 @@
                 {% endblock content_data %}
             </div>
         </form>
-        <script>
-            require(['jquery', 'jquery.validate'],
-                function ($) {
-                    $('#{{ form.vars.name }}').validate();
-                });
-        </script>
+        {{ oro_form_js_validation(form) }}
     {% endblock content %}
 {% endblock %}
