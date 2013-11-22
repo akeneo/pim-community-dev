@@ -37,52 +37,20 @@ Feature: Filter available products for a variant group
     And I am logged in as "admin"
     And I am on the "caterpillar_boots" variant group page
 
-  Scenario: Successfully display filters on the product datagrid when I edit a variant group
-    Then I should see the filters Has product, SKU, Color, Size and Family
-    And I should not see the filters Created at and Updated at
-    And the grid should contain 3 elements
+  Scenario: Successfully filter the product datagrid when I edit a variant group
+    Then the grid should contain 3 elements
     And I should see products black_boots, white_boots and blue_boots
     And I should not see product sneakers
-
-  Scenario: Successfully filter by SKU
-    Given I filter by "SKU" with value "bl"
-    Then the grid should contain 2 elements
-    And I should see products black_boots and blue_boots
-    And I should not see products white_boots and sneakers
-
-  Scenario: Successfully filter by Family
-    Given I filter by "Family" with value "Sneakers"
-    Then the grid should contain 1 element
-    And I should see product blue_boots
-    And I should not see products black_boots, white_boots and sneakers
-
-  Scenario: Successfully filter by Color
-    Given I make visible the filter "Color"
-    And I filter by "Color" with value "Black"
-    Then the grid should contain 1 element
-    And I should see product black_boots
-    And I should not see products white_boots, sneakers and blue_boots
-
-  Scenario: Successfully filter by Size
-    Given I make visible the filter "Size"
-    And I filter by "Size" with value "42"
-    Then the grid should contain 1 element
-    And I should see product white_boots
-    And I should not see products black_boots, sneakers and blue_boots
-
-  Scenario: Successfully filter by localizable field
-    Given I make visible the filter "Name"
-    And I filter by "Name" with value "bl"
-    Then the grid should contain 2 elements
-    And I should see products black_boots and blue_boots
-    And I should not see products white_boots and sneakers
-
-  Scenario: Successfully filter by localizable and scopable field
-    Given I make visible the filter "Description"
-    And I filter by "Description" with value "great"
-    Then the grid should contain 1 elements
-    And I should see product white_boots
-    And I should not see products black_boots, blue_boots and sneakers
+    And I should be able to use the following filters:
+      | filter      | value    | result                                  |
+      | Has product | no       | black_boots, white_boots and blue_boots |
+      | SKU         | bl       | black_boots and blue_boots              |
+      | Family      | Sneakers | blue_boots                              |
+      | Color       | Black    | black_boots                             |
+      | Size        | 42       | white_boots                             |
+      | Name        | bl       | black_boots and blue_boots              |
+      | Description | great    | white_boots                             |
+    And I should not see the filters Created at and Updated at
 
   Scenario: Successfully filter by price
     Given I make visible the filter "Price"
@@ -90,8 +58,3 @@ Feature: Filter available products for a variant group
     Then the grid should contain 2 elements
     And I should see products black_boots and blue_boots
     And I should not see products sneakers and white_boots
-
-  Scenario: Successfully filter by has product
-    Given I filter by "Has product" with value "no"
-    Then the grid should contain 3 elements
-    And I should see products black_boots, white_boots and blue_boots
