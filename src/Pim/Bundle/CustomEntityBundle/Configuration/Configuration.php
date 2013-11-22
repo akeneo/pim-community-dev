@@ -26,7 +26,7 @@ use Pim\Bundle\CustomEntityBundle\Manager\ManagerInterface;
  *   - create_route:                The create route
  *   - create_template:             The create template
  *   - create_form_type:            The form type used for creation. If not supplied, edit_form_type will be used
- *   - create_form_options:         Options passed to the create form type. If create_form_type is not supplied,
+ *   - create_form_options:         Options passed to the create form type. If not supplied,
  *                                  the edit_form_options will be used
  *   - create_default_properties:   An array of default properties for the created objects
  *   - create_options:              Options passed to the manager for entity creation
@@ -155,7 +155,7 @@ class Configuration implements ConfigurationInterface
      */
     public function getCreateFormOptions()
     {
-        return (null === $this->options['create_form_type'])
+        return (null === $this->options['create_form_options'])
             ? $this->options['edit_form_options']
             : $this->options['create_form_options'];
     }
