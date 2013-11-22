@@ -47,7 +47,7 @@ class JavascriptRegExpTranslator
     public function translate($regexp, array $parameterValues = array())
     {
         foreach ($parameterValues as $name => $value) {
-        $regexp = preg_replace(
+            $regexp = preg_replace(
                 sprintf('/\(\?P<%s>([^()]|(?<group>\(((?>[^()]+)|(?&group))*\)))+\)/', $name),
                 $value,
                 $regexp

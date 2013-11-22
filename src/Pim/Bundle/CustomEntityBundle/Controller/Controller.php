@@ -24,18 +24,18 @@ class Controller
     /**
      * @var Registry
      */
-    protected $configurationRegistry;
+    protected $registry;
 
     /**
      * Constructor
      *
      * @param Request  $request
-     * @param Registry $configurationRegistry
+     * @param Registry $registry
      */
-    public function __construct(Request $request, Registry $configurationRegistry)
+    public function __construct(Request $request, Registry $registry)
     {
         $this->request = $request;
-        $this->configurationRegistry = $configurationRegistry;
+        $this->registry = $registry;
     }
 
     /**
@@ -48,11 +48,11 @@ class Controller
      */
     public function action($customEntityName, $actionName)
     {
-        if (!$this->configurationRegistry->has($customEntityName)) {
+        if (!$this->registry->has($customEntityName)) {
             throw new NotFoundHttpException();
         }
 
-        $configuration = $this->configurationRegistry->get($customEntityName);
+        $configuration = $this->registry->get($customEntityName);
 
         return call_user_func(
             array($configuration->getControllerStrategy(), $actionName),

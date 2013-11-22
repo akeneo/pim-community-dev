@@ -64,7 +64,7 @@ class CustomEntityFilterType extends AbstractType
         );
         $resolver->setNormalizers(
             array(
-                'field_options' => function (Options $options, $value) {
+                'field_options' => function (Options $options) {
                     $entities = $this->doctrine
                             ->getRepository($options['class'])
                             ->findBy(array(), isset($options['sort']) ? $options['sort'] : null);
