@@ -65,6 +65,77 @@ class CategoryExtension extends \Twig_Extension
         return $return;
     }
 
+    public function childrenTreeResponse(
+        array $categories,
+        CategoryInterface $selectedCategory = null,
+        CategoryInterface $parent = null,
+        $withProductCount = null,
+        $includeSub = false
+    ) {
+        $result = $this->formatCategory($categories, $selectedCategory, $withProductCount, $includeSub);
+
+        if ($parent !== null) {
+            $result = array(
+                    'attr' => array(
+                            'id' => 'node_'. $parent->getId()
+                    ),
+                    'data' => $parent->getLabel(),
+                    'state' => $this->defineState($parent),
+                    'children' => $result
+            );
+        }
+
+        return $result;
+    }
+
+    protected function formatCategory(array $categories, CategoryInterface $selectedCategory, $withProductCount = false, $includeSub = false)
+    {
+        foreach ($categories as $category) {
+            $state = $this->defineCategoryState($category, array($selectedCategory->getId()));
+            $label = $this->getLabel($category['item'], $withProductCount, $includeSub);
+
+            $result[] = array(
+                'attr' => array(
+                    'id' => 'node_'. $category['item']->getId()
+                ),
+                'data' => $label,
+                'state' => $state,
+                'children' => $this->formatCategory($category['__children'], $selectedCategory, $withProductCount, $includeSub)
+            );
+        }
+    }
+
+    public function childrenResponse(array $categories, Category $parent = null, $withProductsCount = false, $includeSub = false)
+    {
+
+        $result = array();
+
+        foreach ($categories as $category) {
+            $label = $this->getLabel($category, $withProductsCount, $includeSub);
+
+            $result[] = array(
+                'attr' => array(
+                    'id' => 'node_'. $category->getId()
+                ),
+                'data' => $label,
+                'state' => $this->defineState($category)
+            );
+        }
+
+        if ($parent !== null) {
+            $result = array(
+                'attr' => array(
+                    'id' => 'node_'. $parent->getId()
+                ),
+                'data' => $this->getLabel($parent),
+                'state' => $this->defineState($parent),
+                'children' => $result
+            );
+        }
+
+        return $result;
+    }
+
     /**
      * Returns category label with(out?) count and can include sub-categories
      *
@@ -156,7 +227,7 @@ class CategoryExtension extends \Twig_Extension
      *
      * @return string
      */
-    public function defineState(CategoryInterface $category, $hasChild = false, CategoryInterface $selectNode = null)
+    public function defineState(CategoryInterface $category, $hasChild = false, array $selectedIds = array())
     {
         $state = $category->hasChildren() ? 'closed' : 'leaf';
 
@@ -181,28 +252,14 @@ class CategoryExtension extends \Twig_Extension
      * @param array $selectedIds
      * @return string
      */
-    protected function defineCategoryState(array $category, $selectedIds = null)
+    protected function defineCategoryState(array $category, $selectedIds = array())
     {
         $children = $category['__children'];
         $category = $category['item'];
 
-        if (count($children) > 0) {
-            $state = 'open';
-        } elseif ($category->hasChildren()) {
-            $state = 'closed';
-        } else {
-            $state = 'leaf';
-        }
+        $hasChild = (count($children) > 0);
 
-        if (in_array($category->getId(), $selectedIds)) {
-            $state .= ' jstree-checked';
-        }
-
-        if ($category->isRoot()) {
-            $state .= ' jstree-root';
-        }
-
-        return $state;
+        return $this->defineState($category, $hasChild, $selectedIds);
     }
 
     /**
