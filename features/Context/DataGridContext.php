@@ -293,6 +293,43 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param TableNode $table
+     *
+     * @Then /^I should be able to use the following filters:$/
+     *
+     * @return Then[]
+     */
+    public function iShouldBeAbleToUseTheFollowingFilters(TableNode $table)
+    {
+        $data = $table->getHash();
+
+        $filters = array_unique(
+            array_map(
+                function ($item) {
+                    return $item['filter'];
+                },
+                $data
+            )
+        );
+
+        $steps = array(
+            new Then(sprintf('I should see the filters %s', implode(', ', $filters)))
+        );
+
+        foreach ($data as $item) {
+            $count = count($this->getMainContext()->listToArray($item['result']));
+            $filter = $item['filter'];
+            $steps[] = new Then(sprintf('I make visible the filter "%s"', $filter));
+            $steps[] = new Then(sprintf('I filter by "%s" with value "%s"', $filter, $item['value']));
+            $steps[] = new Then(sprintf('the grid should contain %d elements', $count));
+            $steps[] = new Then(sprintf('I should see entities %s', $item['result']));
+            $steps[] = new Then(sprintf('I hide the filter "%s"', $filter));
+        }
+
+        return $steps;
+    }
+
+    /**
      * @param string $columnName
      * @param string $order
      *

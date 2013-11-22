@@ -138,7 +138,7 @@ class LoadAttributeData extends AbstractInstallerFixture
                 $optionValue->setLocale($locale);
                 $option->addOptionValue($optionValue);
             }
-            $options[]= $option;
+            $options[] = $option;
             $this->addReference('product-attributeoption.'.$code, $option);
         }
 

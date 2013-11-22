@@ -4,20 +4,19 @@ Feature: Browse export profiles
   As a user
   I need to be able to view a list of them
 
-  Scenario: Successfully display the export jobs
-    Given the "default" catalog configuration
-    And the following jobs:
-      | connector            | alias            | code                  | label                       | type   |
-      | Akeneo CSV Connector | product_export   | acme_product_export   | Product export for Acme.com | export |
-      | Akeneo CSV Connector | attribute_export | acme_attribute_export | Attribute export            | export |
-      | Akeneo CSV Connector | product_export   | foo_product_export    | Product export for foo      | export |
-      | Akeneo CSV Connector | product_import   | acme_product_import   | Product import for Acme.com | import |
+  Scenario: Successfully view, sort and filter export jobs
+    Given a "footwear" catalog configuration
     And I am logged in as "admin"
     And I am on the exports page
-    Then the grid should contain 3 elements
+    Then the grid should contain 6 elements
     And I should see the columns Code, Label, Job, Connector and Status
-    And I should see export profiles acme_product_export, acme_attribute_export and foo_product_export
-    And I should not see export profile acme_product_import
-    And the row "acme_product_export" should contain:
-      | column    | value                |
-      | connector | Akeneo CSV Connector |
+    And I should see export profiles footwear_product_export, footwear_category_export, footwear_association_export, footwear_group_export, footwear_attribute_export and footwear_option_export
+    And the rows should be sorted ascending by code
+    And I should be able to sort the rows by code, label, job, connector and status
+    And I should be able to use the following filters:
+      | filter    | value                | result                                                                                                                                                      |
+      | Code      | at                   | footwear_association_export, footwear_attribute_export and footwear_category_export                                                                         |
+      | Label     | Product              | footwear_product_export                                                                                                                                     |
+      | Job       | group_export         | footwear_group_export                                                                                                                                       |
+      | Connector | Akeneo CSV Connector | footwear_product_export, footwear_category_export, footwear_association_export, footwear_group_export, footwear_attribute_export and footwear_option_export |
+      | Status    | Ready                | footwear_product_export, footwear_category_export, footwear_association_export, footwear_group_export, footwear_attribute_export and footwear_option_export |

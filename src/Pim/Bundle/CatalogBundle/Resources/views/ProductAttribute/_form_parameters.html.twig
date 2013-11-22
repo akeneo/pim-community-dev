@@ -53,9 +53,6 @@
 {% set backendParameters %}
     {{ form_row(form.group, { 'label': 'Attribute group' }) }}
 
-    {# form_row(form.variant, { 'label': 'Variants behavior when edited'|trans }) #}
-    {# form_row(form.smart) #}
-
     {% if form.searchable is defined %}
         {{ form_row(form.searchable) }}
     {% endif %}

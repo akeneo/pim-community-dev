@@ -18,8 +18,8 @@ Feature: Import associations
     UPSELL;Upsell;Vente incitative
     """
     And the following job "acme_association_import" configuration:
-      | element | property | value                |
-      | reader  | filePath | {{ file to import }} |
+      | step   | element | property | value                |
+      | import | reader  | filePath | {{ file to import }} |
     When I am on the "acme_association_import" import job page
     And I launch the import job
     And I wait for the job to finish

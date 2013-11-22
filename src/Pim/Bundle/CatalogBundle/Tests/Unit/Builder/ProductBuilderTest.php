@@ -207,7 +207,7 @@ class ProductBuilderTest extends \PHPUnit_Framework_TestCase
             foreach ($this->getLocales() as $locale) {
                 $channel->addLocale($locale);
             }
-            $channels[]= $channel;
+            $channels[] = $channel;
         }
 
         return $channels;

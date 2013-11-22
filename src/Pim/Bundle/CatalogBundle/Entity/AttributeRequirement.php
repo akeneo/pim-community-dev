@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 
@@ -13,50 +12,32 @@ use Pim\Bundle\CatalogBundle\Entity\Channel;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @ORM\Entity
- * @ORM\Table(name="pim_catalog_attribute_requirement")
- *
  * @ExclusionPolicy("all")
  */
 class AttributeRequirement
 {
     /**
      * @var integer $id
-     *
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
      */
     protected $id;
 
     /**
      * @var Family $family
-     *
-     * @ORM\ManyToOne(targetEntity="Pim\Bundle\CatalogBundle\Entity\Family", inversedBy="requirements")
-     * @ORM\JoinColumn(name="family_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
      */
     protected $family;
 
     /**
      * @var ProductAttribute $attribute
-     *
-     * @ORM\ManyToOne(targetEntity="Pim\Bundle\CatalogBundle\Entity\ProductAttribute")
-     * @ORM\JoinColumn(name="attribute_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
      */
     protected $attribute;
 
     /**
      * @var Channel $channel
-     *
-     * @ORM\ManyToOne(targetEntity="Pim\Bundle\CatalogBundle\Entity\Channel")
-     * @ORM\JoinColumn(name="channel_id", referencedColumnName="id", onDelete="CASCADE", nullable=false)
      */
     protected $channel;
 
     /**
      * @var boolean $required
-     *
-     * @ORM\Column(type="boolean")
      */
     protected $required = false;
 

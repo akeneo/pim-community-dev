@@ -1,0 +1,36 @@
+Pim\Bundle\CatalogBundle\Entity\AttributeOption:
+    type: entity
+    table: pim_catalog_attribute_option
+    repositoryClass: Pim\Bundle\CatalogBundle\Entity\Repository\AttributeOptionRepository
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        code:
+            type: string
+            length: 100
+        default:
+            type: boolean
+            column: is_default
+        translatable:
+            type: boolean
+            column: is_translatable
+        sortOrder:
+            type: integer
+            column: sort_order
+    manyToOne:
+        attribute:
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\ProductAttribute
+            inversedBy: options
+            joinColumns:
+                attribute_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+    oneToMany:
+        optionValues:
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue
+            cascade:
+                - persist
+            mappedBy: option

@@ -30,7 +30,7 @@ jenkins-1:
             kernel:
                 env: behat1
     formatter:
-        name: progress,junit
+        name: Context\SummaryFormatter,junit
         parameters:
             output_path: null,app/build/logs/behat/
     filters:
@@ -47,7 +47,7 @@ jenkins-2:
             kernel:
                 env: behat2
     formatter:
-        name: progress,junit
+        name: Context\SummaryFormatter,junit
         parameters:
             output_path: null,app/build/logs/behat/
     filters:
@@ -64,7 +64,7 @@ jenkins-3:
             kernel:
                 env: behat3
     formatter:
-        name: progress,junit
+        name: Context\SummaryFormatter,junit
         parameters:
             output_path: null,app/build/logs/behat/
     filters:
@@ -81,7 +81,7 @@ jenkins-4:
             kernel:
                 env: behat4
     formatter:
-        name: progress,junit
+        name: Context\SummaryFormatter,junit
         parameters:
             output_path: null,app/build/logs/behat/
     filters:
@@ -98,7 +98,7 @@ jenkins-pr-1:
             kernel:
                 env: behat1
     formatter:
-        name: progress,junit
+        name: Context\SummaryFormatter,junit
         parameters:
             output_path: null,app/build/logs/behat-pr/
     filters:
@@ -115,7 +115,7 @@ jenkins-pr-2:
             kernel:
                 env: behat2
     formatter:
-        name: progress,junit
+        name: Context\SummaryFormatter,junit
         parameters:
             output_path: null,app/build/logs/behat-pr/
     filters:
@@ -132,7 +132,7 @@ jenkins-pr-3:
             kernel:
                 env: behat3
     formatter:
-        name: progress,junit
+        name: Context\SummaryFormatter,junit
         parameters:
             output_path: null,app/build/logs/behat-pr/
     filters:
@@ -149,7 +149,7 @@ jenkins-pr-4:
             kernel:
                 env: behat4
     formatter:
-        name: progress,junit
+        name: Context\SummaryFormatter,junit
         parameters:
             output_path: null,app/build/logs/behat-pr/
     filters:
@@ -166,7 +166,7 @@ jenkins-coverage:
             kernel:
                 env: behat
     formatter:
-        name: progress,junit
+        name: Context\SummaryFormatter,junit
         parameters:
             output_path: null,app/build/logs/behat-coverage/
     filters:

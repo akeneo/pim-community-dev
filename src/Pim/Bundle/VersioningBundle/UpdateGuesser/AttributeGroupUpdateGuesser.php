@@ -29,15 +29,15 @@ class AttributeGroupUpdateGuesser implements UpdateGuesserInterface
     {
         $pendings = array();
         if ($entity instanceof ProductAttribute) {
-            $pendings[]= $entity;
+            $pendings[] = $entity;
             $changeset = $em->getUnitOfWork()->getEntityChangeSet($entity);
             if ($changeset and in_array('group', array_keys($changeset))) {
                 $groupChangeset = $changeset['group'];
                 if (isset($groupChangeset[0]) and $groupChangeset[0]) {
-                    $pendings[]= $groupChangeset[0];
+                    $pendings[] = $groupChangeset[0];
                 }
                 if (isset($groupChangeset[1]) and $groupChangeset[1]) {
-                    $pendings[]= $groupChangeset[1];
+                    $pendings[] = $groupChangeset[1];
                 }
             }
         }

@@ -1181,17 +1181,17 @@ class WebUser extends RawMinkContext
      */
     public function iWaitForTheJobToFinish()
     {
-        $timeout = 180;
+        $timeout = 60;
 
         while ($timeout && $refreshLink = $this->getCurrentPage()->findLink('Refresh')) {
-            sleep(5);
-            $timeout -= 5;
+            sleep(3);
+            $timeout -= 3;
             $refreshLink->click();
             $this->wait();
         }
 
-        if ($this->getCurrentPage()->findLink('Refresh')) {
-            throw $this->createExpectationException("The job didn't finish in 3 minutes");
+        if ($refreshLink) {
+            throw $this->createExpectationException("The job didn't finish in 1 minute");
         }
     }
 
@@ -1500,7 +1500,7 @@ class WebUser extends RawMinkContext
             ->getJobInstance($code)->getRawConfiguration();
         $config = reset($config);
 
-        $path = sprintf('%s/%s', $config['writer']['directoryName'], $config['writer']['fileName']);
+        $path = $config['writer']['filePath'];
 
         if (!is_file($path)) {
             throw $this->createExpectationException(
@@ -1576,7 +1576,7 @@ class WebUser extends RawMinkContext
             ->getJobInstance($code)->getRawConfiguration();
         $config = reset($config);
 
-        $path = $config['writer']['directoryName'];
+        $path = dirname($config['writer']['filePath']);
 
         if (!is_dir($path)) {
             throw $this->createExpectationException(

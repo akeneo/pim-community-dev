@@ -822,6 +822,20 @@ class FixturesContext extends RawMinkContext
             $attribute->setLocale('en_US');
             $attribute->setLabel($data['label']);
 
+            if ($data['type'] === 'pim_catalog_metric') {
+                if (!empty($data['metric family']) && !empty($data['default metric unit'])) {
+                    $attribute->setMetricFamily($data['metric family']);
+                    $attribute->setDefaultMetricUnit($data['default metric unit']);
+                } else {
+                    throw new \InvalidArgumentException(
+                        sprintf(
+                            'Expecting metric family and default metric unit to be defined for attribute "%s"',
+                            $data['code']
+                        )
+                    );
+                }
+            }
+
             if (isset($data['group'])) {
                 $group = $this->getAttributeGroup($data['group']);
                 $attribute->setGroup($group);
@@ -850,7 +864,7 @@ class FixturesContext extends RawMinkContext
         foreach ($table->getHash() as $data) {
             $this
                 ->getAttribute($data['attribute'])
-                ->setLocale($this->getLocaleCode($data['lang']))
+                ->setLocale($this->getLocaleCode($data['locale']))
                 ->setLabel($data['label']);
         }
 
@@ -890,16 +904,28 @@ class FixturesContext extends RawMinkContext
         $jobInstance = $this->getJobInstance($code);
         $job         = $registry->getJob($jobInstance);
         $steps       = $job->getSteps();
+        $stepNamePattern = 'pim_import_export.jobs.'.$jobInstance->getAlias().'.%s.title';
 
         foreach ($table->getHash() as $data) {
             $value = $this->replacePlaceholders($data['value']);
             if (in_array($value, array('yes', 'no'))) {
                 $value = 'yes' === $value;
             }
-            $config[$data['element']][$data['property']] = $value;
+            $stepName = sprintf($stepNamePattern, $data['step']);
+            $config[$stepName][$data['element']][$data['property']] = $value;
         }
-        $config = array_merge(array('reader' => array(), 'processor' => array(), 'writer' => array()), $config);
-        $steps[0]->setConfiguration($config);
+
+        foreach (array_keys($config) as $stepName) {
+            $config[$stepName] = array_merge(
+                array('reader' => array(), 'processor' => array(), 'writer' => array()),
+                $config[$stepName]
+            );
+            foreach ($steps as $step) {
+                if ($step->getName() == $stepName) {
+                    $step->setConfiguration($config[$stepName]);
+                }
+            }
+        }
         $jobInstance->setJob($job);
 
         $this->flush();

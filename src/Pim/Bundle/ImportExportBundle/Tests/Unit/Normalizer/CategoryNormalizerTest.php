@@ -52,16 +52,14 @@ class CategoryNormalizerTest extends NormalizerTestCase
                 array(
                     'code'    => 'root_category',
                     'label'   => array('en' => 'Root category', 'fr' => 'Categorie racine'),
-                    'parent'  => '',
-                    'dynamic' => '0',
+                    'parent'  => ''
                 )
             ),
             array(
                 array(
                     'code'    => 'child_category',
                     'label'   => array('en' => 'Child category', 'fr' => 'fr:Catégorie enfant'),
-                    'parent'  => '1',
-                    'dynamic' => '0',
+                    'parent'  => '1'
                 )
             ),
         );
@@ -88,8 +86,6 @@ class CategoryNormalizerTest extends NormalizerTestCase
             $parent->setCode($data['parent']);
             $category->setParent($parent);
         }
-
-        $category->setDynamic($data['dynamic']);
 
         return $category;
     }

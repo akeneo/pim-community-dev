@@ -52,16 +52,6 @@ class CategoryType extends AbstractSegmentType
         $this->addLabelField($builder);
 
         $builder->addEventSubscriber(new DisableCodeFieldSubscriber());
-
-        if ($options['import_mode']) {
-            $builder->add('dynamic');
-        }
-
-        /*
-        // Add isDynamic field is needed
-        $subscriber = new CategorySubscriber($builder->getFormFactory());
-        $builder->addEventSubscriber($subscriber);
-        */
     }
 
     /**
@@ -90,8 +80,7 @@ class CategoryType extends AbstractSegmentType
     {
         $resolver->setDefaults(
             array(
-                'data_class'  => $this->className,
-                'import_mode' => false
+                'data_class'  => $this->className
             )
         );
     }

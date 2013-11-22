@@ -72,7 +72,7 @@ class DatagridHelper implements DatagridHelperInterface
     }
 
     /**
-     * @return Oro\Bundle\GridBundle\Renderer\GridRenderer
+     * {@inheritdoc}
      */
     public function getDatagridRenderer()
     {

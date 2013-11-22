@@ -2,6 +2,7 @@
 
 namespace Context;
 
+use Behat\Behat\Context\Step\Then;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
@@ -238,6 +239,26 @@ class AssertionContext extends RawMinkContext
         fclose($file);
 
         assertEquals($rows, $rowCount, sprintf('Expecting file to contain %d rows, found %d.', $rows, $rowCount));
+    }
+
+    /**
+     * @param string    $entity
+     * @param TableNode $table
+     *
+     * @return Then[]
+     * @Then /^the following (.*) codes should not be available:$/
+     */
+    public function theFollowingCodesShouldNotBeAvailable($entity, TableNode $table)
+    {
+        $steps = array();
+
+        foreach ($table->getHash() as $item) {
+            $steps[] = new Then(sprintf('I change the Code to "%s"', $item['code']));
+            $steps[] = new Then(sprintf('I save the %s', $entity));
+            $steps[] = new Then('I should see validation error "This code is not available."');
+        }
+
+        return $steps;
     }
 
     /**
