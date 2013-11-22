@@ -19,7 +19,6 @@ function(_, Backbone, __, DialogWidget, LoadingMask, FormValidation, DeleteConfi
 
         options: {
             formTemplateSelector: null,
-            formValidationScriptUrl: null,
             calendar: null
         },
 
@@ -69,19 +68,12 @@ function(_, Backbone, __, DialogWidget, LoadingMask, FormValidation, DeleteConfi
                     width: 475,
                     autoResize: true,
                     close: _.bind(this.remove, this)
-                }
+                },
+                submitHandler: _.bind(function () {
+                    this.saveModel();
+                }, this)
             });
             this.eventDialog.render();
-
-            // override form submit behavior
-            this.eventDialog.form
-                .off('submit')
-                .on('submit', _.bind(function (e) {
-                    e.preventDefault();
-                    e.stopImmediatePropagation();
-                    this.saveModel();
-                    return false;
-                }, this));
 
             // subscribe to 'delete event' event
             var onDelete = _.bind(function (e) {
@@ -96,12 +88,6 @@ function(_, Backbone, __, DialogWidget, LoadingMask, FormValidation, DeleteConfi
             this.eventDialog.getAction('delete', 'adopted', function(deleteAction) {
                 deleteAction.on('click', onDelete);
             });
-
-            // init form validation script
-            if (!_.isUndefined(this.options.formValidationScriptUrl)
-                && !_.isEmpty(this.options.formValidationScriptUrl)) {
-                $.getScript(this.options.formValidationScriptUrl);
-            }
 
             // init loading mask control
             this.loadingMask = new LoadingMask();

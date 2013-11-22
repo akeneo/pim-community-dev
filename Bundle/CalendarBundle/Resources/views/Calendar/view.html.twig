@@ -97,6 +97,7 @@
                 </div>
             </fieldset>
         </form>
+        {{ oro_form_js_validation(event_form)|replace({'<script': '<% print("<sc" + "ript") %>', '</script>': '<% print("</sc" + "ript>") %>'})|raw }}
     </script>
 
     <script type="text/javascript">

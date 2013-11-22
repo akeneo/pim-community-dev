@@ -21,7 +21,10 @@ function(_, Backbone, mediator, LoadingMask, layout) {
             alias: null,
             wid: null,
             loadingMaskEnabled: true,
-            loadingElement: null
+            loadingElement: null,
+            submitHandler: function () {
+                this.trigger('adoptedFormSubmit', this.form, this);
+            }
         },
 
         loadingElement: null,
@@ -174,12 +177,6 @@ function(_, Backbone, mediator, LoadingMask, layout) {
                     if (formAction.length > 0 && formAction[0] !== '#') {
                         this.options.url = formAction;
                     }
-                    this.form.submit(function(e) {
-                        e.preventDefault();
-                        e.stopImmediatePropagation();
-                        self.trigger('adoptedFormSubmit', self.form, self);
-                        return false;
-                    });
                 }
 
                 _.each(actions, function(action, idx) {
@@ -422,6 +419,20 @@ function(_, Backbone, mediator, LoadingMask, layout) {
         },
 
         /**
+         * Bind submit handler for widget container defined in options
+         *
+         * @private
+         */
+        _bindSubmitHandler: function () {
+            this.$el.parent().on('submit', _.bind(function(e) {
+                if (!e.isDefaultPrevented()) {
+                    this.options.submitHandler.call(this);
+                }
+                e.preventDefault();
+            }, this));
+        },
+
+        /**
          * Initialize adopted action event handlers
          *
          * @param {HTMLElement} action
@@ -559,6 +570,7 @@ function(_, Backbone, mediator, LoadingMask, layout) {
         show: function() {
             this.setWidToElement(this.$el);
             this._renderActions();
+            this._bindSubmitHandler();
             this.trigger('widgetRender', this.$el, this);
             mediator.trigger('widget:render:' + this.getWid(), this.$el, this);
         },
