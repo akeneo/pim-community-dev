@@ -7,7 +7,7 @@ Pim\Bundle\CatalogBundle\Entity\AttributeGroup:
             type: integer
             id: true
             generator:
-                strategy: AUTO 
+                strategy: AUTO
         code:
             type: string
             length: 100

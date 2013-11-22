@@ -40,7 +40,7 @@ class JavascriptRegExpTranslator
      *
      * @param string $regexp
      * @param array  $parameterValues
-     * 
+     *
      * @return string
      * @throws JavascriptRegexpTranslatorException
      */
@@ -58,6 +58,7 @@ class JavascriptRegExpTranslator
                 throw new JavascriptRegexpTranslatorException();
             }
         }
+
         return sprintf(
             '/%s/',
             preg_replace(

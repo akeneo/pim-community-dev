@@ -26,7 +26,7 @@ class OrmManager implements OrmManagerInterface
 
     /**
      * Constructor
-     * 
+     *
      * @param RegistryInterface         $doctrine
      * @param PropertyAccessorInterface $propertyAccessor
      */

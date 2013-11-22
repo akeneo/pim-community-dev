@@ -14,7 +14,7 @@ use Pim\Bundle\CustomEntityBundle\Configuration\ConfigurationInterface;
 
 /**
  * Base strategy for custom entity controllers
- * 
+ *
  * @author    Antoine Guigan <antoine@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -64,8 +64,9 @@ class CrudStrategy implements StrategyInterface
     /**
      * Quick create action
      *
-     * @param  ConfigurationInterface $configuration
-     * @param  Request                $request
+     * @param ConfigurationInterface $configuration
+     * @param Request                $request
+     *
      * @return Response
      */
     public function createAction(ConfigurationInterface $configuration, Request $request)
@@ -110,8 +111,9 @@ class CrudStrategy implements StrategyInterface
     /**
      * Edit action
      *
-     * @param  ConfigurationInterface $configuration
-     * @param  Request                $request
+     * @param ConfigurationInterface $configuration
+     * @param Request                $request
+     *
      * @throws NotFoundHttpException
      * @return Response
      */
@@ -151,8 +153,9 @@ class CrudStrategy implements StrategyInterface
     /**
      * Remove action
      *
-     * @param  ConfigurationInterface $configuration
-     * @param  Request                $request
+     * @param ConfigurationInterface $configuration
+     * @param Request                $request
+     *
      * @throws NotFoundHttpException
      * @return Response
      */
@@ -167,8 +170,9 @@ class CrudStrategy implements StrategyInterface
     /**
      * Returns the entity of the request
      *
-     * @param  ConfigurationInterface $configuration
-     * @param  Request                $request
+     * @param ConfigurationInterface $configuration
+     * @param Request                $request
+     *
      * @throws NotFoundHttpException
      * @return object
      */
@@ -190,8 +194,9 @@ class CrudStrategy implements StrategyInterface
     /**
      * Creates an entity
      *
-     * @param  ConfigurationInterface $configuration
-     * @param  Request                $request
+     * @param ConfigurationInterface $configuration
+     * @param Request                $request
+     *
      * @return object
      */
     protected function createEntity(ConfigurationInterface $configuration, Request $request)
@@ -206,8 +211,9 @@ class CrudStrategy implements StrategyInterface
     /**
      * Returns the default view vars
      *
-     * @param  ConfigurationInterface $configuration
-     * @param  Request                $request
+     * @param ConfigurationInterface $configuration
+     * @param Request                $request
+     *
      * @return array
      */
     protected function getViewVars(ConfigurationInterface $configuration, Request $request)
@@ -225,10 +231,11 @@ class CrudStrategy implements StrategyInterface
     /**
      * Renders a template and returns a Response object
      *
-     * @param  ConfigurationInterface $configuration
-     * @param  Request                $request
-     * @param  string                 $template
-     * @param  array                  $parameters
+     * @param ConfigurationInterface $configuration
+     * @param Request                $request
+     * @param string                 $template
+     * @param array                  $parameters
+     *
      * @return Response
      */
     protected function render(
