@@ -30,9 +30,10 @@ class WorkflowAttributesTypeTest extends AbstractWorkflowAttributesTypeTestCase
         $submitData,
         $formData,
         array $formOptions,
-        array $childrenOptions
+        array $childrenOptions,
+        $sourceWorkflowData = null
     ) {
-        $form = $this->factory->create($this->type, null, $formOptions);
+        $form = $this->factory->create($this->type, $sourceWorkflowData, $formOptions);
 
         $this->assertSameSize($childrenOptions, $form->all());
 
@@ -97,6 +98,40 @@ class WorkflowAttributesTypeTest extends AbstractWorkflowAttributesTypeTestCase
                 'childrenOptions' => array(
                     'first'  => array('label' => 'First Custom', 'required' => true),
                     'second' => array('label' => 'Second Custom', 'required' => false),
+                ),
+            ),
+            'partial_fields' => array(
+                'submitData' => array('first' => 'first_string_modified'),
+                'formData' => $this->createWorkflowData(
+                    array(
+                        'first' => 'first_string_modified',
+                        'second' => 'second_string',
+                    )
+                ),
+                'formOptions' => array(
+                    'workflow' => $this->createWorkflow(
+                        'test_workflow_with_partial_attributes',
+                        array(
+                            'first' => $this->createAttribute('first', 'string', 'First'),
+                            'second' => $this->createAttribute('second', 'string', 'Second'),
+                        )
+                    ),
+                    'attribute_fields' => array(
+                        'first'  => array(
+                            'form_type' => 'text',
+                            'label' => 'First Custom',
+                            'options' => array('required' => true)
+                        ),
+                    )
+                ),
+                'childrenOptions' => array(
+                    'first'  => array('label' => 'First Custom', 'required' => true),
+                ),
+                'sourceWorkflowData' => $this->createWorkflowData(
+                    array(
+                        'first' => 'first_string',
+                        'second' => 'second_string',
+                    )
                 ),
             ),
             'disable_fields' => array(

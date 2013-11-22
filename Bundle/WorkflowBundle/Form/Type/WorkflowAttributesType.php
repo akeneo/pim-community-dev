@@ -25,6 +25,11 @@ class WorkflowAttributesType extends AbstractType
     protected $workflowRegistry;
 
     /**
+     * @var WorkflowData
+     */
+    protected $workflowData;
+
+    /**
      * @param WorkflowRegistry $workflowRegistry
      */
     public function __construct(WorkflowRegistry $workflowRegistry)
@@ -55,15 +60,30 @@ class WorkflowAttributesType extends AbstractType
                 $this->addAttributeField($builder, $attribute, $attributeOptions, $options);
             }
 
+            // extract only required attributes for form and create new WorkflowData based on them
             $builder->addEventListener(
                 FormEvents::PRE_SET_DATA,
                 function (FormEvent $event) use ($options) {
                     /** @var WorkflowData $data */
                     $data = $event->getData();
                     if ($data instanceof WorkflowData) {
+                        $this->workflowData = $data;
                         $rawData = $data->getValues(array_keys($options['attribute_fields']));
                         $formData = new WorkflowData($rawData);
                         $event->setData($formData);
+                    }
+                }
+            );
+
+            // copy submitted data to existing workflow data
+            $builder->addEventListener(
+                FormEvents::SUBMIT,
+                function (FormEvent $event) {
+                    /** @var WorkflowData $formData */
+                    $formData = $event->getData();
+                    if ($this->workflowData && $formData instanceof WorkflowData) {
+                        $this->workflowData->add($formData->getValues());
+                        $event->setData($this->workflowData);
                     }
                 }
             );
