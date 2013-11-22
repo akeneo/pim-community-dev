@@ -12,7 +12,6 @@ use Oro\Bundle\BatchBundle\Entity\StepExecution;
 use Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Oro\Bundle\BatchBundle\Item\InvalidItemException;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\File as AssertFile;
-use Pim\Bundle\ImportExportBundle\Validator\Csv\RowValidatorInterface;
 
 /**
  * Csv reader
@@ -81,21 +80,6 @@ class CsvReader extends AbstractConfigurableStepElement implements
      * @var SplFileObject
      */
     protected $csv;
-
-    /**
-     * @var RowValidatorInterface
-     */
-    protected $rowValidator;
-
-    /**
-     * Constructor
-     *
-     * @param RowValidatorInterface $validator
-     */
-    public function __construct(RowValidatorInterface $validator = null)
-    {
-        $this->rowValidator = $validator;
-    }
 
     /**
      * Remove the extracted directory
@@ -301,10 +285,6 @@ class CsvReader extends AbstractConfigurableStepElement implements
             $data = array_combine($this->fieldNames, $data);
         } else {
             throw new \RuntimeException('An error occured while reading the csv.');
-        }
-
-        if ($this->rowValidator) {
-            $this->rowValidator->validate($data);
         }
 
         return $data;

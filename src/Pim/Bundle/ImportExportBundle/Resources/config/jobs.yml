@@ -98,7 +98,7 @@ connector:
             steps:
                 import:
                     title:     pim_import_export.jobs.association_import.import.title
-                    reader:    pim_import_export.reader.file.csv
+                    reader:    pim_import_export.reader.file.csv_association
                     processor: pim_import_export.processor.association
                     writer:    pim_import_export.writer.orm.association
         group_import:
@@ -107,6 +107,6 @@ connector:
             steps:
                 import:
                     title:     pim_import_export.jobs.group_import.import.title
-                    reader:    pim_import_export.reader.file.csv
+                    reader:    pim_import_export.reader.file.csv_group
                     processor: pim_import_export.processor.group
                     writer:    pim_import_export.writer.orm.group

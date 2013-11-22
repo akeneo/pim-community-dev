@@ -6,8 +6,6 @@ parameters:
     pim_import_export.entity_cache.class:                                    Pim\Bundle\ImportExportBundle\Cache\EntityCache
     pim_import_export.attribute_cache.class:                                 Pim\Bundle\ImportExportBundle\Cache\AttributeCache
     pim_import_export.product_validator.class:                               Pim\Bundle\ImportExportBundle\Validator\Import\ProductImportValidator
-    pim_import_export.csv.attribute_option_validator.class:                  Pim\Bundle\ImportExportBundle\Validator\Csv\AttributeOptionValidator
-    pim_import_export.csv.attribute_validator.class:                         Pim\Bundle\ImportExportBundle\Validator\Csv\AttributeValidator
 
 services:
     pim_import_export.twig.normalize_configuration_extension:
@@ -50,14 +48,3 @@ services:
             - '@validator'
             - '@oro_flexibleentity.validator.attribute_constraint_guesser'
             - '@translator'
-
-    pim_import_export.csv.attribute_option_validator:
-        class: '%pim_import_export.csv.attribute_option_validator.class%'
-        arguments:
-            - '@validator'
-
-    pim_import_export.csv.attribute_validator:
-        class: '%pim_import_export.csv.attribute_validator.class%'
-        arguments:
-            - '@validator'
-
