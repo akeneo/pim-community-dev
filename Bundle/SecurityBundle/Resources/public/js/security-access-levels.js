@@ -22,11 +22,12 @@ require(['jquery', 'routing'],
                 var linkDiv = parentDiv.find(linkDivSelector);
                 link.hide();
                 $.ajax({
-                    url: routing.generate(accessLevelRoute, {oid: parentDiv.attr(objectIdentityAttribute), _format: 'json' }),
+                    url: routing.generate(accessLevelRoute, {oid: parentDiv.attr(objectIdentityAttribute)}),
                     success: function (data) {
                         var selector = $('<select>');
                         selector.attr('name', parentDiv.attr(selectorNameAttribute));
                         selector.attr('id', parentDiv.attr(selectorIdAttribute));
+                        selector.attr('class', 'security-permission');
                         $.each(data, function (value, text) {
                             var option = $('<option>').attr('value', value).text(text);
                             if (parentDiv.attr(valueAttribute) == value) {

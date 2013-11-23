@@ -29,6 +29,9 @@ abstract class RestController extends RestGetController implements
         if (!$entity) {
             return $this->handleView($this->view(null, Codes::HTTP_NOT_FOUND));
         }
+        if (!$this->get('oro_security.security_facade')->isGranted('UPDATE', $entity)) {
+            return $this->handleView($this->view(null, Codes::HTTP_FORBIDDEN));
+        }
 
         if ($this->processForm($entity)) {
             $view = $this->view(null, Codes::HTTP_NO_CONTENT);
@@ -71,6 +74,10 @@ abstract class RestController extends RestGetController implements
         $entity = $this->getManager()->find($id);
         if (!$entity) {
             return $this->handleView($this->view(null, Codes::HTTP_NOT_FOUND));
+        }
+
+        if (!$this->get('oro_security.security_facade')->isGranted('DELETE', $entity)) {
+            return $this->handleView($this->view(null, Codes::HTTP_FORBIDDEN));
         }
 
         $em = $this->getManager()->getObjectManager();

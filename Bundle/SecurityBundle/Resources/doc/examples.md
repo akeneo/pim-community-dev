@@ -5,6 +5,8 @@ Examples
  - **Mike** was created in child **Child business unit**. 
  - **Robert** was created in **Second business unit**.
 
+Users was assigned:
+
  - **John** was assigned to **Main business unit** and **Second business unit**
  - **Mary** was assigned to **Main business unit**
  - **Mike** was assigned to **Main business unit** and **Child business unit**
@@ -17,7 +19,7 @@ User ownersip type
  
  John was create **Account A**,  Mary was create **Account B**, Mike was create **Account C**, Robert was create **Account D**.
 
-**John** 
+###John 
 
 ![John-User][1]
 
@@ -29,7 +31,7 @@ John has access:
  - on **Organization access level**: Account A and Account B (creators of record are in Main Organizations) and Account D and Account C (creators of record are in Second Organizations).
  - on **System access level**: All accounts (creators are in same system).
 
-**Mary**.
+###Mary
 
 ![Mary-User][2]
 
@@ -41,7 +43,7 @@ Mary has access:
  - on **Organization access level**: Account A and Account B (creators of record are in Main Organizations).
  - on **System access level**: All accounts (creators are in same system).
 
-**Mike**.
+###Mike
 
 ![Mike-User][3]
 
@@ -53,7 +55,7 @@ Mike has access:
  - on **Organization access level**: Account A and Account B (creators of record are in Main Organizations) and Account D and Account C (creators of record are in Second Organizations).
  - on **System access level**: All accounts (creators are in same system).
 
-**Robert**.
+###Robert
 
 ![Robert-User][4]
 
@@ -74,7 +76,7 @@ We cannot set User access level. Minimal access level is Business unit.
  
  John was create **Account A** and make Main BU as owner,  Mary was create **Account B** and make Main BU as owner, Mike was create **Account C** and make Second BU as owner, Robert was create **Account D** and make Child BU as owner.
 
-**John** 
+###John 
 
 ![John-BU][5]
 
@@ -85,7 +87,7 @@ John has access:
  - on **Organization access level**: all records.
  - on **System access level**: all records.
 
-**Mary** 
+###Mary 
 
 ![Mary-BU][6]
 
@@ -96,7 +98,7 @@ Mary has access:
  - on **Organization access level**: Account A and Account B (record are in Main BU). 
  - on **System access level**: all records.
 
-**Mike** 
+###Mike 
 
 ![Mike-BU][7]
 
@@ -107,7 +109,7 @@ Mike has access:
  - on **Organization access level**: all records.
  - on **System access level**: all records.
 
-**Robert** 
+###Robert 
 
 ![Robert-BU][8]
 
@@ -127,7 +129,7 @@ We cannot set User, Business unit and Division access level. Minimal access leve
  
  John was create **Account A** and make Main organization as owner,  Mary was create **Account B** and make Main organization as owner, Mike was create **Account C** and make Second organization as owner, Robert was create **Account D** and make Second organization as owner.
 
-**John**,  **Mike**, **Robert**
+###John, Mike, Robert
 
 ![John-Mike-Robert-Organization][9]
 
@@ -136,7 +138,7 @@ John,  Mike and Robert has access:
  - on **Organization access level**: all records.
  - on **System access level**: all records.
 
-**Mary**
+###Mary
 
 ![Mary-Organization][10]
 
