@@ -17,8 +17,18 @@ class RootBasedAclProviderTest extends \PHPUnit_Framework_TestCase
     /** @var \PHPUnit_Framework_MockObject_MockObject */
     private $baseProvider;
 
+    private $acl;
+    private $rootAcl;
+    private $underlyingAcl;
+
+    private $oid;
+    private $rootOid;
+    private $underlyingOid;
+
     protected function setUp()
     {
+
+
         $this->baseProvider = $this->getMockBuilder('Oro\Bundle\SecurityBundle\Acl\Dbal\MutableAclProvider')
             ->disableOriginalConstructor()
             ->getMock();
@@ -80,7 +90,7 @@ class RootBasedAclProviderTest extends \PHPUnit_Framework_TestCase
     /**
      * @@dataProvider aclTestData
      */
-    public function testFindAclData($oids, $findAcl, $expect)
+    public function testFindAclData($oids, $findAcl, $expect, $parameter)
     {
         list($oid, $rootOid, $underlyingOid) = $oids;
         $factory = $this->getMockBuilder('Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdentityFactory')
@@ -122,7 +132,7 @@ class RootBasedAclProviderTest extends \PHPUnit_Framework_TestCase
         }
 
         $resultAcl = $provider->findAcl($oid, $sids);
-        $expect($resultAcl);
+        $this->$expect($resultAcl, $parameter);
     }
 
     public function aclTestData()
@@ -130,60 +140,62 @@ class RootBasedAclProviderTest extends \PHPUnit_Framework_TestCase
         $strategy = $this->getMockForAbstractClass(
             'Symfony\Component\Security\Acl\Model\PermissionGrantingStrategyInterface'
         );
-        $oid = new ObjectIdentity('test', 'Test');
-        $rootOid = new ObjectIdentity('entity', '(root)');
-        $underlyingOid = new ObjectIdentity('entity', 'Test');
+        $this->oid = new ObjectIdentity('test', 'Test');
+        $this->rootOid = new ObjectIdentity('entity', '(root)');
+        $this->underlyingOid = new ObjectIdentity('entity', 'Test');
 
-        $acl = new Acl(1, $oid, $strategy, [], false);
-        $rootAcl = new Acl(1, $rootOid, $strategy, [], false);
-        $underlyingAcl = new Acl(1, $underlyingOid, $strategy, [], false);
+        $this->acl = new Acl(1, $this->oid, $strategy, [], false);
+        $this->rootAcl = new Acl(1, $this->rootOid, $strategy, [], false);
+        $this->underlyingAcl = new Acl(1, $this->underlyingOid, $strategy, [], false);
 
         return [
             [
-                [$oid, $rootOid, $underlyingOid],
+                [$this->oid, $this->rootOid, $this->underlyingOid],
                 [
-                    $this->getOidKey($oid) => $acl,
-                    $this->getOidKey($rootOid) => $rootAcl
+                    $this->getOidKey($this->oid) => $this->acl,
+                    $this->getOidKey($this->rootOid) => $this->rootAcl
                 ],
-                function($result) use ($acl) {
-                    $this->assertInstanceOf(
-                        'Oro\Bundle\SecurityBundle\Acl\Domain\RootBasedAclWrapper',
-                        $result
-                    );
-                    $classReflection = new \ReflectionClass($result);
-                    $aclReflection = $classReflection->getProperty('acl');
-                    $aclReflection->setAccessible(true);
-                    $this->assertEquals($acl, $aclReflection->getValue($result));
-                }
+                'results1',
+                $this->acl
             ],
             [
-                [$oid, $rootOid, $underlyingOid],
-                [$this->getOidKey($oid) => $acl],
-                function($result) use ($acl) {
-                    $this->assertEquals($acl, $result);
-                }
+                [$this->oid, $this->rootOid, $this->underlyingOid],
+                [$this->getOidKey($this->oid) => $this->acl],
+                'results2',
+                $this->acl
             ],
             [
-                [$oid, $rootOid, $underlyingOid],
+                [$this->oid, $this->rootOid, $this->underlyingOid],
                 [
-                    $this->getOidKey($rootOid) => $rootAcl,
-                    $this->getOidKey($underlyingOid) => $underlyingAcl
+                    $this->getOidKey($this->rootOid) => $this->rootAcl,
+                    $this->getOidKey($this->underlyingOid) => $this->underlyingAcl
                 ],
-                function($result) use ($underlyingAcl) {
-                    $reflection = new \ReflectionClass($result);
-                    $aclReflection = $reflection->getProperty('acl');
-                    $aclReflection->setAccessible(true);
-                    $this->assertEquals($underlyingAcl, $aclReflection->getValue($result));
-                }
-            ],
-            [
-                [$oid, $rootOid, $underlyingOid],
-                [],
-                function ($result) {
-
-                }
+                'results3',
+                $this->underlyingAcl
             ]
         ];
+    }
+
+    protected function results1($result, $parameter) {
+        $this->assertInstanceOf(
+            'Oro\Bundle\SecurityBundle\Acl\Domain\RootBasedAclWrapper',
+            $result
+        );
+        $classReflection = new \ReflectionClass($result);
+        $aclReflection = $classReflection->getProperty('acl');
+        $aclReflection->setAccessible(true);
+        $this->assertEquals($parameter, $aclReflection->getValue($result));
+    }
+
+    protected function results2($result, $parameter) {
+        $this->assertEquals($parameter, $result);
+    }
+
+    protected function results3($result, $parameter) {
+        $reflection = new \ReflectionClass($result);
+        $aclReflection = $reflection->getProperty('acl');
+        $aclReflection->setAccessible(true);
+        $this->assertEquals($parameter, $aclReflection->getValue($result));
     }
 
     protected function getOidKey(ObjectIdentity $oid)
