@@ -117,12 +117,12 @@ class DoctrineParamConverterTest extends \PHPUnit_Framework_TestCase
 
         $this->converter->apply($request, $config);
 
-        $this->assertTrue($request->attributes->get('oro-access-checked'));
+        $this->assertTrue($request->attributes->get('_oro_access_checked'));
 
         if (!$isGranted) {
-            $this->assertFalse($request->attributes->get('oro-access-checked'));
+            $this->assertFalse($request->attributes->get('_oro_access_checked'));
         } else {
-            $this->assertTrue($request->attributes->get('oro-access-checked'));
+            $this->assertTrue($request->attributes->get('_oro_access_checked'));
         }
 
     }

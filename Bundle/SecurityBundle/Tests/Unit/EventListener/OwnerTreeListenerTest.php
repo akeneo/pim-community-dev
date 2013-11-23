@@ -51,13 +51,9 @@ class OwnerTreeListenerTest extends \PHPUnit_Framework_TestCase
         if ($isExpectedCache) {
             $treeProvider->expects($this->once())
                 ->method('clear');
-            $treeProvider->expects($this->once())
-                ->method('warmUpCache');
         } else {
             $treeProvider->expects($this->never())
                 ->method('clear');
-            $treeProvider->expects($this->never())
-                ->method('warmUpCache');
         }
 
         $treeListener = new OwnerTreeListener($serviceLink);
