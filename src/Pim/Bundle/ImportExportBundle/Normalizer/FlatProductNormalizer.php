@@ -75,13 +75,29 @@ class FlatProductNormalizer implements NormalizerInterface
 
         $this->normalizeAssociations($object->getProductAssociations());
 
-        $normalizedValues = $this->normalizeValues($object, $scopeCode);
+        $this->normalizeValues($object, $scopeCode);
 
-        $this->results = array_merge($this->results, $normalizedValues);
-
-        $this->results['enabled'] = (int) $object->isEnabled();
+        $this->normalizeProperties($object);
 
         return $this->results;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsNormalization($data, $format = null)
+    {
+        return $data instanceof ProductInterface && in_array($format, $this->supportedFormats);
+    }
+
+    /**
+     * Normalize properties
+     *
+     * @param ProductInterface $product
+     */
+    protected function normalizeProperties(ProductInterface $product)
+    {
+        $this->results['enabled'] = (int) $product->isEnabled();
     }
 
     /**
@@ -89,8 +105,6 @@ class FlatProductNormalizer implements NormalizerInterface
      *
      * @param ProductInterface $product
      * @param string           $scopeCode
-     *
-     * @return array
      */
     protected function normalizeValues(ProductInterface $product, $scopeCode)
     {
@@ -118,15 +132,7 @@ class FlatProductNormalizer implements NormalizerInterface
         }
         ksort($normalizedValues);
 
-        return $normalizedValues;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supportsNormalization($data, $format = null)
-    {
-        return $data instanceof ProductInterface && in_array($format, $this->supportedFormats);
+        $this->results = array_merge($this->results, $normalizedValues);
     }
 
     /**
