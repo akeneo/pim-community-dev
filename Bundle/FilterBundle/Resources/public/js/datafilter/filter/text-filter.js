@@ -76,15 +76,6 @@ function($, _, __, AbstractFilter) {
         },
 
         /**
-         * Empty value
-         *
-         * @property {String}
-         */
-        emptyValue: {
-            value: ''
-        },
-
-        /**
          * View events
          *
          * @property {Object}
@@ -96,6 +87,22 @@ function($, _, __, AbstractFilter) {
             'click .filter-criteria-selector': '_onClickCriteriaSelector',
             'click .filter-criteria .filter-criteria-hide': '_onClickCloseCriteria',
             'click .disable-filter': '_onClickDisableFilter'
+        },
+
+        /**
+         * Initialize.
+         *
+         * @param {Object} options
+         */
+        initialize: function() {
+            // init empty value object if it was not initialized so far
+            if (_.isUndefined(this.emptyValue)) {
+                this.emptyValue = {
+                    value: ''
+                };
+            }
+
+            AbstractFilter.prototype.initialize.apply(this, arguments);
         },
 
         /**

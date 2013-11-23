@@ -75,20 +75,6 @@ function($, _, Backbone, app) {
         showLabel: true,
 
         /**
-         * Raw value of filter
-         *
-         * @property {Object}
-         */
-        value: {},
-
-        /**
-         * Empty value object
-         *
-         * @property {Object}
-         */
-        emptyValue: {},
-
-        /**
          * Parent element active class
          *
          * @property {String}
@@ -123,6 +109,14 @@ function($, _, Backbone, app) {
                 this.showLabel = options.showLabel;
             }
             this.defaultEnabled = this.enabled;
+
+            // init empty value object if it was not initialized so far
+            if (_.isUndefined(this.emptyValue)) {
+                this.emptyValue = {};
+            }
+            // init raw value of filter
+            this.value = _.clone(this.emptyValue);
+
             Backbone.View.prototype.initialize.apply(this, arguments);
         },
 

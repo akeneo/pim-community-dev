@@ -56,6 +56,19 @@ function(AbstractView, FilterCollection, filterBuilder) {
                     }
                 }
             }, this));
+
+            // set criterion selector when underlined input control changed
+            this.criterionSelector.on('change', _.bind(function (e) {
+                if (_.isNull(this.filterManager) && !_.isUndefined(console)) {
+                    console.error('Cannot set a filter because the filter manager was not initialized yet.');
+                } else {
+                    if (e.currentTarget.value == '') {
+                        this.filterManager.reset();
+                    } else {
+                        this.filterManager.setActiveFilter(JSON.parse(e.currentTarget.value));
+                    }
+                }
+            }, this));
         },
 
         getFiltersLogic: function () {

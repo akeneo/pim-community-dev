@@ -11,12 +11,6 @@ function(_, ChoiceFilter, NumberFormatter) {
      * @extends oro.datafilter.ChoiceFilter
      */
     return ChoiceFilter.extend({
-        /** @property {oro.datafilter.NumberFormatter} */
-        formatter: null,
-
-        /** @property {Object} */
-        formatterOptions: {},
-
         /**
          * Initialize.
          *
@@ -26,6 +20,10 @@ function(_, ChoiceFilter, NumberFormatter) {
          */
         initialize: function(options) {
             options = options || {};
+            // init formatter options if it was not initialized so far
+            if (_.isUndefined(this.formatterOptions)) {
+                this.formatterOptions = {};
+            }
             this.formatter = new NumberFormatter(this.formatterOptions);
             ChoiceFilter.prototype.initialize.apply(this, arguments);
         },

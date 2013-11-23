@@ -38,15 +38,17 @@ function(_, Backbone, __, FormValidation, DeleteConfirmation) {
         },
 
         /** @property */
-        columnSelectOptGroupTemplate: _.template('<optgroup label="<%- label %>"'
-            + '><%= options %>'
+        columnSelectOptGroupTemplate: _.template(
+            '<optgroup label="<%- label %>"'
+                + '><%= options %>'
             + '</optgroup>'
         ),
 
         /** @property */
-        columnSelectOptionTemplate: _.template('<option value="<%- name %>"'
-            + '<% _.each(_.omit(obj, ["name"]), function (val, key) { %> data-<%- key.replace(/_/g,"-") %>="<%- val %>"<% }) %>'
-            + '><%- label %>'
+        columnSelectOptionTemplate: _.template(
+            '<option value="<%- name %>"'
+                + '<% _.each(_.omit(obj, ["name"]), function (val, key) { %> data-<%- key.replace(/_/g,"-") %>="<%- val %>"<% }) %>'
+                + '><%- label %>'
             + '</option>'
         ),
 
@@ -94,6 +96,30 @@ function(_, Backbone, __, FormValidation, DeleteConfirmation) {
             }, this));
 
             return this;
+        },
+
+        initForm: function () {
+            this.form = $(this.options.itemFormSelector);
+            this.columnSelector = this.form.find(this.selectors.columnSelector);
+
+            var onAdd = _.bind(function (e) {
+                e.preventDefault();
+                this.handleAddModel();
+            }, this);
+            this.$el.find(this.selectors.addButton).on('click', onAdd);
+
+            var onSave = _.bind(function (e) {
+                e.preventDefault();
+                var id = $(e.currentTarget).data('id');
+                this.handleSaveModel(id);
+            }, this);
+            this.$el.find(this.selectors.saveButton).on('click', onSave);
+
+            var onCancel = _.bind(function (e) {
+                e.preventDefault();
+                this.handleCancelButton();
+            }, this);
+            this.$el.find(this.selectors.cancelButton).on('click', onCancel);
         },
 
         getCollection: function() {
@@ -227,30 +253,6 @@ function(_, Backbone, __, FormValidation, DeleteConfirmation) {
                 options: relations
             });
             return result;
-        },
-
-        initForm: function () {
-            this.form = $(this.options.itemFormSelector);
-            this.columnSelector = this.form.find(this.selectors.columnSelector);
-
-            var onAdd = _.bind(function (e) {
-                e.preventDefault();
-                this.handleAddModel();
-            }, this);
-            this.$el.find(this.selectors.addButton).on('click', onAdd);
-
-            var onSave = _.bind(function (e) {
-                e.preventDefault();
-                var id = $(e.currentTarget).data('id');
-                this.handleSaveModel(id);
-            }, this);
-            this.$el.find(this.selectors.saveButton).on('click', onSave);
-
-            var onCancel = _.bind(function (e) {
-                e.preventDefault();
-                this.handleCancelButton();
-            }, this);
-            this.$el.find(this.selectors.cancelButton).on('click', onCancel);
         },
 
         prepareItemTemplateData: function (model) {

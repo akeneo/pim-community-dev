@@ -21,7 +21,7 @@ function($, _, __, TextFilter) {
                 '<div class="input-prepend">' +
                     '<div class="btn-group">' +
                         '<button class="btn dropdown-toggle" data-toggle="dropdown">' +
-                            '<%= first = _.first(choices).label %>' +
+                            '<%= selectedChoiceLabel %>' +
                             '<span class="caret"></span>' +
                         '</button>' +
                         '<ul class="dropdown-menu">' +
@@ -30,7 +30,7 @@ function($, _, __, TextFilter) {
                             '<% }); %>' +
                         '</ul>' +
                         '<input type="text" name="value" value="">' +
-                        '<input class="name_input" type="hidden" name="<%= name %>" id="<%= name %>" value="<%= _.first(choices).value %>"/>' +
+                        '<input class="name_input" type="hidden" name="<%= name %>" id="<%= name %>" value="<%= selectedChoice %>"/>' +
                         '</div>' +
                     '</div>' +
                     '<button class="btn btn-primary filter-update" type="button"><%- _.__("Update") %></button>' +
@@ -48,17 +48,19 @@ function($, _, __, TextFilter) {
             type: 'input[type="hidden"]'
         },
 
-        /** @property */
-        choices: [],
-
         /**
-         * Empty value object
+         * Filter events
          *
-         * @property {Object}
+         * @property
          */
-        emptyValue: {
-            value: '',
-            type: ''
+        events: {
+            'keyup input': '_onReadCriteriaInputKey',
+            'keydown [type="text"]': '_preventEnterProcessing',
+            'click .filter-update': '_onClickUpdateCriteria',
+            'click .filter-criteria-selector': '_onClickCriteriaSelector',
+            'click .filter-criteria .filter-criteria-hide': '_onClickCloseCriteria',
+            'click .disable-filter': '_onClickDisableFilter',
+            'click .choice_value': '_onClickChoiceValue'
         },
 
         /**
@@ -67,12 +69,25 @@ function($, _, __, TextFilter) {
          * @param {Object} options
          */
         initialize: function() {
+            // init filter content options if it was not initialized so far
+            if (_.isUndefined(this.choices)) {
+                this.choices = [];
+            }
             // temp code to keep backward compatible
             if ($.isPlainObject(this.choices)) {
                 this.choices = _.map(this.choices, function(option, i) {
                     return {value: i.toString(), label: option};
                 });
             }
+
+            // init empty value object if it was not initialized so far
+            if (_.isUndefined(this.emptyValue)) {
+                this.emptyValue = {
+                    type: (_.isEmpty(this.choices) ? '' : _.first(this.choices).value),
+                    value: ''
+                };
+            }
+
             TextFilter.prototype.initialize.apply(this, arguments);
         },
 
@@ -80,10 +95,22 @@ function($, _, __, TextFilter) {
          * @inheritDoc
          */
         _renderCriteria: function(el) {
-            $(el).append(this.popupCriteriaTemplate({
-                name: this.name,
-                choices: this.choices
-            }));
+            var selectedChoice = this.emptyValue.type;
+            var selectedChoiceLabel = '';
+            if (!_.isEmpty(this.choices)) {
+                var foundChoice = _.find(this.choices, function(choice) {
+                        return (choice.value == selectedChoice);
+                    });
+                selectedChoiceLabel = foundChoice.label;
+            }
+            $(el).append(
+                this.popupCriteriaTemplate({
+                    name: this.name,
+                    choices: this.choices,
+                    selectedChoice: selectedChoice,
+                    selectedChoiceLabel: selectedChoiceLabel
+                })
+            );
             return this;
         },
 
@@ -140,21 +167,6 @@ function($, _, __, TextFilter) {
             if (newValue.value || oldValue.value) {
                 this.trigger('update');
             }
-        },
-
-        /**
-         * Filter events
-         *
-         * @property
-         */
-        events: {
-            'keyup input': '_onReadCriteriaInputKey',
-            'keydown [type="text"]': '_preventEnterProcessing',
-            'click .filter-update': '_onClickUpdateCriteria',
-            'click .filter-criteria-selector': '_onClickCriteriaSelector',
-            'click .filter-criteria .filter-criteria-hide': '_onClickCloseCriteria',
-            'click .disable-filter': '_onClickDisableFilter',
-            'click .choice_value': '_onClickChoiceValue'
         },
 
         /**

@@ -73,39 +73,45 @@ define(['jquery', 'underscore', 'backbone', 'oro/app', 'oro/mediator'],
             setActiveFilter: function (criteria) {
                 var foundFilter = null;
                 var foundFilterName = null;
-                var foundFilterMatchedBy = null;
-                _.each(this.options.filters, function(filter, filterName) {
-                    var isApplicable = false;
-                    if (!_.isEmpty(filter.applicable)) {
-                        // if filter.applicable an array check if all items conforms the criteria
-                        var matched = _.find(filter.applicable, function(applicable) {
-                            var res = true;
-                            _.each(applicable, function (val, key) {
-                                if (!_.has(criteria, key) || !app.isEqualsLoosely(val, criteria[key])) {
-                                    res = false;
-                                }
+                if (!_.isUndefined(criteria.filter)) {
+                    // the criteria parameter represents a filter
+                    foundFilterName = criteria.filter;
+                    foundFilter = this.options.filters[foundFilterName];
+                } else {
+                    var foundFilterMatchedBy = null;
+                    _.each(this.options.filters, function(filter, filterName) {
+                        var isApplicable = false;
+                        if (!_.isEmpty(filter.applicable)) {
+                            // if filter.applicable an array check if all items conforms the criteria
+                            var matched = _.find(filter.applicable, function(applicable) {
+                                var res = true;
+                                _.each(applicable, function (val, key) {
+                                    if (!_.has(criteria, key) || !app.isEqualsLoosely(val, criteria[key])) {
+                                        res = false;
+                                    }
+                                });
+                                return res;
                             });
-                            return res;
-                        });
-                        if (!_.isUndefined(matched)) {
-                            if (_.isNull(foundFilterMatchedBy)
-                                // new rule is more exact
-                                || _.size(foundFilterMatchedBy) < _.size(matched)
-                                // 'type' rule is most low level one, so any other rule can override it
-                                || (_.size(foundFilterMatchedBy) == 1 && _.has(foundFilterMatchedBy, 'type'))) {
-                                foundFilterMatchedBy = matched;
-                                isApplicable = true;
+                            if (!_.isUndefined(matched)) {
+                                if (_.isNull(foundFilterMatchedBy)
+                                    // new rule is more exact
+                                    || _.size(foundFilterMatchedBy) < _.size(matched)
+                                    // 'type' rule is most low level one, so any other rule can override it
+                                    || (_.size(foundFilterMatchedBy) == 1 && _.has(foundFilterMatchedBy, 'type'))) {
+                                    foundFilterMatchedBy = matched;
+                                    isApplicable = true;
+                                }
                             }
+                        } else if (_.isNull(foundFilter)) {
+                            // if a filter was nor found so far, use a default filter
+                            isApplicable = true;
                         }
-                    } else if (_.isNull(foundFilter)) {
-                        // if a filter was nor found so far, use a default filter
-                        isApplicable = true;
-                    }
-                    if (isApplicable) {
-                        foundFilter = filter;
-                        foundFilterName = filterName;
-                    }
-                });
+                        if (isApplicable) {
+                            foundFilter = filter;
+                            foundFilterName = filterName;
+                        }
+                    });
+                }
                 if (foundFilter !== this.activeFilter) {
                     if (!_.isNull(this.activeFilter)) {
                         this.activeFilter.hide();
@@ -114,7 +120,11 @@ define(['jquery', 'underscore', 'backbone', 'oro/app', 'oro/mediator'],
                     this.activeFilterName = foundFilterName;
                     this.activeFilter.show();
                 }
-                this.activeFilter.reset();
+                if (_.isUndefined(criteria.data)) {
+                    this.activeFilter.reset();
+                } else {
+                    this.activeFilter.setValue(criteria.data);
+                }
             },
 
             /**
@@ -168,6 +178,13 @@ define(['jquery', 'underscore', 'backbone', 'oro/app', 'oro/mediator'],
             },
 
             /**
+             * Sets 'none' filter as active
+             */
+            reset: function() {
+                this.setActiveFilter({});
+            },
+
+            /**
              * Determines whether a filter value is empty or not
              *
              * @return {Boolean}
@@ -193,7 +210,7 @@ define(['jquery', 'underscore', 'backbone', 'oro/app', 'oro/mediator'],
                 this.$el.append(fragment);
 
                 // activate default filter
-                this.setActiveFilter({});
+                this.reset();
 
                 this.trigger("rendered");
 

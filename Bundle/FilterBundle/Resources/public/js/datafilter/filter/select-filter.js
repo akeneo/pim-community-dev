@@ -20,18 +20,13 @@ function(_, __, AbstractFilter, MultiselectDecorator) {
             '<div class="btn filter-select filter-criteria-selector">' +
                 '<% if (showLabel) { %><%= label %>: <% } %>' +
                 '<select>' +
-                    '<% _.each(options, function (option) { %><option value="<%= option.value %>"><%= option.label %></option><% }); %>' +
+                    '<% _.each(options, function (option) { %>' +
+                        '<option value="<%= option.value %>"<% if (option.value == emptyValue.type) { %> selected="selected"<% } %>><%= option.label %></option>' +
+                    '<% }); %>' +
                 '</select>' +
             '</div>' +
             '<% if (canDisable) { %><a href="<%= nullLink %>" class="disable-filter"><i class="icon-remove hide-text"><%- _.__("Close") %></i></a><% } %>'
         ),
-
-        /**
-         * Filter content options
-         *
-         * @property
-         */
-        choices: [],
 
         /**
          * Should default value be added to options list
@@ -93,15 +88,6 @@ function(_, __, AbstractFilter, MultiselectDecorator) {
         },
 
         /**
-         * Filter value object
-         *
-         * @property
-         */
-        emptyValue: {
-            value: ''
-        },
-
-        /**
          * Select widget menu opened flag
          *
          * @property
@@ -131,10 +117,22 @@ function(_, __, AbstractFilter, MultiselectDecorator) {
          * @param {Object} options
          */
         initialize: function() {
+            // init filter content options if it was not initialized so far
+            if (_.isUndefined(this.choices)) {
+                this.choices = [];
+            }
             // temp code to keep backward compatible
             this.choices = _.map(this.choices, function(option, i) {
                 return _.isString(option) ? {value: i, label: option} : option;
             });
+
+            // init empty value object if it was not initialized so far
+            if (_.isUndefined(this.emptyValue)) {
+                this.emptyValue = {
+                    value: ''
+                };
+            }
+
             AbstractFilter.prototype.initialize.apply(this, arguments);
         },
 
@@ -158,7 +156,8 @@ function(_, __, AbstractFilter, MultiselectDecorator) {
                     options: options,
                     placeholder: this.placeholder,
                     nullLink: this.nullLink,
-                    canDisable: this.canDisable
+                    canDisable: this.canDisable,
+                    emptyValue: this.emptyValue
                 })
             );
 
