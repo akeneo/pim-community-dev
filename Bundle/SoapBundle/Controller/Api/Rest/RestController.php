@@ -29,9 +29,6 @@ abstract class RestController extends RestGetController implements
         if (!$entity) {
             return $this->handleView($this->view(null, Codes::HTTP_NOT_FOUND));
         }
-        if (!$this->get('oro_security.security_facade')->isGranted('UPDATE', $entity)) {
-            return $this->handleView($this->view(null, Codes::HTTP_FORBIDDEN));
-        }
 
         if ($this->processForm($entity)) {
             $view = $this->view(null, Codes::HTTP_NO_CONTENT);
