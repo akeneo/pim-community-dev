@@ -100,7 +100,9 @@ class SecurityFacade
     {
         $annotation = $this->annotationProvider->findAnnotation($class, $method);
 
-        return $annotation->getPermission();
+        if ($annotation) {
+            return $annotation->getPermission();
+        }
     }
 
     /**
