@@ -40,12 +40,6 @@ class FlatProductNormalizer implements NormalizerInterface
     protected $results;
 
     /**
-     * Fields to export if needed
-     * @var array
-     */
-    protected $fields = array();
-
-    /**
      * Constructor
      *
      * @param Pim\Bundle\CatalogBundle\Manager\MediaManager $mediaManager
@@ -145,18 +139,16 @@ class FlatProductNormalizer implements NormalizerInterface
     protected function normalizeValue($value)
     {
         $data = $value->getData();
-        if (empty($this->fields) || isset($this->fields[$this->getFieldValue($value)])) {
-            if (is_bool($data)) {
-                $data = ($data) ? 1 : 0;
-            } elseif ($data instanceof \DateTime) {
-                $data = $data->format('m/d/Y');
-            } elseif ($data instanceof \Pim\Bundle\CatalogBundle\Entity\AttributeOption) {
-                $data = $data->getCode();
-            } elseif ($data instanceof \Doctrine\Common\Collections\Collection) {
-                $data = $this->normalizeCollectionData($data);
-            } elseif ($data instanceof Media) {
-                $data = $this->mediaManager->getExportPath($data);
-            }
+        if (is_bool($data)) {
+            $data = ($data) ? 1 : 0;
+        } elseif ($data instanceof \DateTime) {
+            $data = $data->format('m/d/Y');
+        } elseif ($data instanceof \Pim\Bundle\CatalogBundle\Entity\AttributeOption) {
+            $data = $data->getCode();
+        } elseif ($data instanceof \Doctrine\Common\Collections\Collection) {
+            $data = $this->normalizeCollectionData($data);
+        } elseif ($data instanceof Media) {
+            $data = $this->mediaManager->getExportPath($data);
         }
 
         return array($this->getFieldValue($value) => (string) $data);
@@ -212,9 +204,7 @@ class FlatProductNormalizer implements NormalizerInterface
      */
     protected function normalizeFamily(Family $family = null)
     {
-        if (empty($this->fields) || isset($this->fields[self::FIELD_FAMILY])) {
-            $this->results[self::FIELD_FAMILY] = $family ? $family->getCode() : '';
-        }
+        $this->results[self::FIELD_FAMILY] = $family ? $family->getCode() : '';
     }
 
     /**
@@ -224,9 +214,7 @@ class FlatProductNormalizer implements NormalizerInterface
      */
     protected function normalizeGroups($groups = null)
     {
-        if (empty($this->fields) || isset($this->fields[self::FIELD_GROUPS])) {
-            $this->results[self::FIELD_GROUPS] = $groups;
-        }
+        $this->results[self::FIELD_GROUPS] = $groups;
     }
 
     /**
@@ -236,9 +224,7 @@ class FlatProductNormalizer implements NormalizerInterface
      */
     protected function normalizeCategories($categories = '')
     {
-        if (empty($this->fields) || isset($this->fields[self::FIELD_CATEGORY])) {
-            $this->results[self::FIELD_CATEGORY] = $categories;
-        }
+        $this->results[self::FIELD_CATEGORY] = $categories;
     }
 
     /**
