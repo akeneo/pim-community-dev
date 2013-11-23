@@ -20,6 +20,9 @@ abstract class AbstractStrategyTest extends \PHPUnit_Framework_TestCase
     protected $configuration;
     protected $manager;
 
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         $this->formFactory = $this->getMock('Symfony\Component\Form\FormFactoryInterface');
@@ -76,6 +79,10 @@ abstract class AbstractStrategyTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($this->manager));
     }
 
+    /**
+     * @param string $type
+     * @param string $message
+     */
     protected function assertFlash($type, $message)
     {
         $this->translator
@@ -90,6 +97,10 @@ abstract class AbstractStrategyTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo($type), $this->equalTo('translated'));
     }
 
+    /**
+     * @param string $template
+     * @param array  $parameters
+     */
     protected function assertRendered($template, array $parameters = array())
     {
         $this->templating->expects($this->once())
