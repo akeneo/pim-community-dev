@@ -33,7 +33,6 @@ use Pim\Bundle\CustomEntityBundle\Manager\ManagerInterface;
  *   - edit_after_create:           Set to true to redirect to the edit page after entity creation
  *   - remove_route:                The remove route
  *
- *
  * @author    Antoine Guigan <antoine@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -63,10 +62,10 @@ class Configuration implements ConfigurationInterface
     /**
      * Constructor
      *
-     * @param string           $name
-     * @param ManagerInterface $manager
-     * @param WorkerInterface  $worker
-     * @param array            $options
+     * @param string            $name
+     * @param ManagerInterface  $manager
+     * @param StrategyInterface $controllerStrategy
+     * @param array             $options
      */
     public function __construct($name, ManagerInterface $manager, StrategyInterface $controllerStrategy, array $options)
     {

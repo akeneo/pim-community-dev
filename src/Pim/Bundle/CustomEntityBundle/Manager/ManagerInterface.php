@@ -14,8 +14,10 @@ interface ManagerInterface
     /**
      * Create an entity
      *
-     * @param  string $entityClass
-     * @param  array  $defaultValues
+     * @param string $entityClass
+     * @param array  $defaultValues
+     * @param array  $options
+     *
      * @return object
      */
     public function create($entityClass, array $defaultValues = array(), array $options = array());
@@ -23,8 +25,10 @@ interface ManagerInterface
     /**
      * Find an entity by id, returns null if the object is not found
      *
-     * @param  string $entityClass
-     * @param  mixed  $id
+     * @param string $entityClass
+     * @param mixed  $id
+     * @param array  $options
+     *
      * @return object
      */
     public function find($entityClass, $id, array $options = array());

@@ -107,7 +107,8 @@ interface ConfigurationInterface
     /**
      * Returns the route for redirects after successful entity creation
      *
-     * @param  object $entity
+     * @param object $entity
+     *
      * @return string
      */
     public function getCreateRedirectRoute($entity);
@@ -115,7 +116,8 @@ interface ConfigurationInterface
     /**
      * Returns the route parameters for redirects after successful entity creation
      *
-     * @param  object $entity
+     * @param object $entity
+     *
      * @return string
      */
     public function getCreateRedirectRouteParameters($entity);
@@ -144,13 +146,16 @@ interface ConfigurationInterface
     /**
      * Returns the route for redirects after successful entity update
      *
-     * @param  object $entity
+     * @param object $entity
+     *
      * @return string
      */
     public function getEditRedirectRoute($entity);
 
     /**
      * Returns the route parameters for redirects after successful entity update
+     *
+     * @param object $entity
      *
      * @return array
      */
