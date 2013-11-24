@@ -1297,7 +1297,7 @@ class FixturesContext extends RawMinkContext
                 'families'               => null,
                 'type'                   => 'text',
                 'scopable'               => 'no',
-                'localizable'            => 'no',
+                'translatable'           => 'no',
                 'useable as grid column' => false,
                 'useable as grid filter' => false,
             ),
@@ -1316,7 +1316,7 @@ class FixturesContext extends RawMinkContext
         $attribute->setLocale('en_US')->setLabel($data['label']); //TODO translation refactoring
 
         $attribute->setScopable(strtolower($data['scopable']) === 'yes');
-        $attribute->setTranslatable(strtolower($data['localizable']) === 'yes');
+        $attribute->setTranslatable(strtolower($data['translatable']) === 'yes');
         $attribute->setUseableAsGridColumn(strtolower($data['useable as grid column']) === 'yes');
         $attribute->setUseableAsGridFilter(strtolower($data['useable as grid filter']) === 'yes');
 
