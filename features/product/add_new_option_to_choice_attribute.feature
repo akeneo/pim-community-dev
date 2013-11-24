@@ -8,9 +8,9 @@ Feature: Add a new option to a choice attribute directly from the product edit f
     Given the "default" catalog configuration
     And a "car_tire" product
     And the following attributes:
-      | code     | label    | type                     |
-      | diameter | Diameter | pim_catalog_simpleselect |
-      | widths   | Widths   | pim_catalog_multiselect  |
+      | code     | label    | type         |
+      | diameter | Diameter | simpleselect |
+      | widths   | Widths   | multiselect  |
     And the following "Diameter" attribute options: 15 and 17
     And the following "Widths" attribute options: 215 and 225
     And the following product values:
