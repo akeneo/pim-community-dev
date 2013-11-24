@@ -12,7 +12,7 @@ There are 6 access levels:
  - **User**: Allows to gives a user a permissions to access to own records and records that are shared with the user.
  - **None**: Access denied.
 
-[Examples](./Resources/doc/examples.md)
+[Examples](./examples.md)
   
 There are several ways to protect the records with access levels.
 

@@ -49,6 +49,6 @@ Also the following permissions are supported:
 - [Implementation](./Resources/doc/implementation.md)
 - [UI](./Resources/doc/ui.md)
 - [ACL manager](./Resources/doc/acl-manager.md)
-- [Access levels] (./Resources/doc/examples.md)
-- [Examples](./Resources/doc/access-levels.md)
+- [Access levels] (./Resources/doc/access-levels.md)
+- [Examples](./Resources/doc/examples.md)
 
