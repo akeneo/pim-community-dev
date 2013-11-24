@@ -6,6 +6,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface as ContainerAwareInt;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface as OrderedFixtureInt;
 use Doctrine\Common\DataFixtures\AbstractFixture;
+use Oro\Bundle\BatchBundle\Item\InvalidItemException;
 
 /**
  * Abstract installer fixture
@@ -44,6 +45,28 @@ abstract class AbstractInstallerFixture extends AbstractFixture implements Order
     public function getFilePath()
     {
         return $this->files[$this->getEntity()];
+    }
+
+    /**
+     * Validate the entity
+     *
+     * @param object $entity
+     * @param array  $item
+     *
+     * @throws InvalidItemException
+     */
+    public function validate($entity, $item)
+    {
+        $validator = $this->container->get('validator');
+        $violations = $validator->validate($entity);
+        if ($violations->count() > 0) {
+            $messages = array();
+            foreach ($violations as $violation) {
+                $messages[] = (string) $violation;
+            }
+
+            throw new InvalidItemException(implode(', ', $messages), $item);
+        }
     }
 
     /**
