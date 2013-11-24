@@ -46,8 +46,9 @@ Also the following permissions are supported:
 
  `*` **NOTE: SHARE functionality isn't implemented yet, so SHARE permissions are not used**
 
-- [Examples](./Resources/doc/examples.md)
 - [Implementation](./Resources/doc/implementation.md)
 - [UI](./Resources/doc/ui.md)
 - [ACL manager](./Resources/doc/acl-manager.md)
+- [Access levels] (./Resources/doc/examples.md)
+- [Examples](./Resources/doc/access-levels.md)
 

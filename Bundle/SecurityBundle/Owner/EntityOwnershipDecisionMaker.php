@@ -60,7 +60,6 @@ class EntityOwnershipDecisionMaker implements OwnershipDecisionMakerInterface
         EntityOwnerAccessor $entityOwnerAccessor,
         OwnershipMetadataProvider $metadataProvider
     ) {
-        //$this->tree = $treeProvider->getTree();
         $this->treeProvider = $treeProvider;
         $this->entityClassAccessor = $entityClassAccessor;
         $this->objectIdAccessor = $objectIdAccessor;
