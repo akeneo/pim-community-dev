@@ -25,6 +25,7 @@ class LoadCategoryData extends AbstractInstallerFixture
 
         foreach ($configuration['categories'] as $code => $data) {
             $category = $this->createCategory($code, $data);
+            $this->validate($category, $data);
             $manager->persist($category);
         }
         $manager->flush();

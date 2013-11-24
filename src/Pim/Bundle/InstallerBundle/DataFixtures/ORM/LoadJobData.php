@@ -25,6 +25,7 @@ class LoadJobData extends AbstractInstallerFixture
         if (isset($configuration['jobs'])) {
             foreach ($configuration['jobs'] as $code => $data) {
                 $job = $this->createJob($code, $data);
+                $this->validate($job, $data);
                 $manager->persist($job);
             }
 
