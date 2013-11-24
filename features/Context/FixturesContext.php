@@ -235,31 +235,11 @@ class FixturesContext extends RawMinkContext
      * @param TableNode|null $translations
      *
      * @return Product
-     * @Given /^the "([^"]*)" product(?: has the following translations:)?$/
      * @Given /^a "([^"]*)" product$/
      */
     public function aProduct($sku, TableNode $translations = null)
     {
-        $attributes = array();
-        $product    = $this->getOrCreateProduct($sku);
-
-        if ($translations) {
-            foreach ($translations->getHash() as $translation) {
-                if (isset($attributes[$translation['attribute']])) {
-                    $attribute = $attributes[$translation['attribute']];
-                } else {
-                    $attribute = $this->createAttribute($translation['attribute'], true);
-                    $attributes[$translation['attribute']] = $attribute;
-                }
-
-                $value = $this->createValue(
-                    $attribute,
-                    $translation['value'],
-                    $this->getLocaleCode($translation['locale'])
-                );
-                $product->addValue($value);
-            }
-        }
+        $product = $this->getOrCreateProduct($sku);
 
         $this->getProductManager()->save($product);
 
