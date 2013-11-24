@@ -45,9 +45,9 @@ class OwnershipConditionDataBuilder
     protected $entityMetadataProvider;
 
     /**
-     * @var OwnerTree
+     * @var OwnerTreeProvider
      */
-    protected $tree;
+    protected $treeProvider;
 
     /**
      * @param ServiceLink $securityContextLink
@@ -70,7 +70,7 @@ class OwnershipConditionDataBuilder
         $this->objectIdAccessor = $objectIdAccessor;
         $this->entityMetadataProvider = $entityMetadataProvider;
         $this->metadataProvider = $metadataProvider;
-        $this->tree = $treeProvider->getTree();
+        $this->treeProvider = $treeProvider;
     }
 
     /**
@@ -123,6 +123,7 @@ class OwnershipConditionDataBuilder
         $accessLevel,
         OwnershipMetadata $metadata
     ) {
+        $tree = $this->treeProvider->getTree();
         $constraint = null;
 
         if (AccessLevel::SYSTEM_LEVEL === $accessLevel) {
@@ -130,7 +131,7 @@ class OwnershipConditionDataBuilder
         } elseif (!$metadata->hasOwner()) {
             if (AccessLevel::GLOBAL_LEVEL === $accessLevel) {
                 if ($this->metadataProvider->getOrganizationClass() === $targetEntityClassName) {
-                    $orgIds = $this->tree->getUserOrganizationIds($this->getUserId());
+                    $orgIds = $tree->getUserOrganizationIds($this->getUserId());
                     $constraint = $this->getCondition($orgIds, $metadata, 'id');
                 } else {
                     $constraint = [];
@@ -147,10 +148,10 @@ class OwnershipConditionDataBuilder
                 }
             } elseif (AccessLevel::LOCAL_LEVEL === $accessLevel) {
                 if ($this->metadataProvider->getBusinessUnitClass() === $targetEntityClassName) {
-                    $buIds = $this->tree->getUserBusinessUnitIds($this->getUserId());
+                    $buIds = $tree->getUserBusinessUnitIds($this->getUserId());
                     $constraint = $this->getCondition($buIds, $metadata, 'id');
                 } elseif ($metadata->isBusinessUnitOwned()) {
-                    $buIds = $this->tree->getUserBusinessUnitIds($this->getUserId());
+                    $buIds = $tree->getUserBusinessUnitIds($this->getUserId());
                     $constraint = $this->getCondition($buIds, $metadata);
                 } elseif ($metadata->isUserOwned()) {
                     $userIds = [];
@@ -173,7 +174,7 @@ class OwnershipConditionDataBuilder
                 }
             } elseif (AccessLevel::GLOBAL_LEVEL === $accessLevel) {
                 if ($metadata->isOrganizationOwned()) {
-                    $orgIds = $this->tree->getUserOrganizationIds($this->getUserId());
+                    $orgIds = $tree->getUserOrganizationIds($this->getUserId());
                     $constraint = $this->getCondition($orgIds, $metadata);
                 } elseif ($metadata->isBusinessUnitOwned()) {
                     $buIds = [];
@@ -217,10 +218,10 @@ class OwnershipConditionDataBuilder
      */
     protected function fillSubordinateBusinessUnitIds($userId, array &$result)
     {
-        $buIds = $this->tree->getUserBusinessUnitIds($userId);
+        $buIds = $this->treeProvider->getTree()->getUserBusinessUnitIds($userId);
         $result = array_merge($buIds, []);
         foreach ($buIds as $buId) {
-            $diff = array_diff($this->tree->getSubordinateBusinessUnitIds($buId), $result);
+            $diff = array_diff($this->treeProvider->getTree()->getSubordinateBusinessUnitIds($buId), $result);
             if (!empty($diff)) {
                 $result = array_merge($result, $diff);
             }
@@ -235,8 +236,8 @@ class OwnershipConditionDataBuilder
      */
     protected function fillBusinessUnitUserIds($userId, array &$result)
     {
-        foreach ($this->tree->getUserBusinessUnitIds($userId) as $buId) {
-            $userIds = $this->tree->getBusinessUnitUserIds($buId);
+        foreach ($this->treeProvider->getTree()->getUserBusinessUnitIds($userId) as $buId) {
+            $userIds = $this->treeProvider->getTree()->getBusinessUnitUserIds($buId);
             if (!empty($userIds)) {
                 $result = array_merge($result, $userIds);
             }
@@ -254,7 +255,7 @@ class OwnershipConditionDataBuilder
         $buIds = [];
         $this->fillSubordinateBusinessUnitIds($userId, $buIds);
         foreach ($buIds as $buId) {
-            $userIds = $this->tree->getBusinessUnitUserIds($buId);
+            $userIds = $this->treeProvider->getTree()->getBusinessUnitUserIds($buId);
             if (!empty($userIds)) {
                 $result = array_merge($result, $userIds);
             }
@@ -269,8 +270,8 @@ class OwnershipConditionDataBuilder
      */
     protected function fillOrganizationBusinessUnitIds($userId, array &$result)
     {
-        foreach ($this->tree->getUserOrganizationIds($userId) as $orgId) {
-            $buIds = $this->tree->getOrganizationBusinessUnitIds($orgId);
+        foreach ($this->treeProvider->getTree()->getUserOrganizationIds($userId) as $orgId) {
+            $buIds = $this->treeProvider->getTree()->getOrganizationBusinessUnitIds($orgId);
             if (!empty($buIds)) {
                 $result = array_merge($result, $buIds);
             }
@@ -285,9 +286,9 @@ class OwnershipConditionDataBuilder
      */
     protected function fillOrganizationUserIds($userId, array &$result)
     {
-        foreach ($this->tree->getUserOrganizationIds($userId) as $orgId) {
-            foreach ($this->tree->getOrganizationBusinessUnitIds($orgId) as $buId) {
-                $userIds = $this->tree->getBusinessUnitUserIds($buId);
+        foreach ($this->treeProvider->getTree()->getUserOrganizationIds($userId) as $orgId) {
+            foreach ($this->treeProvider->getTree()->getOrganizationBusinessUnitIds($orgId) as $buId) {
+                $userIds = $this->treeProvider->getTree()->getBusinessUnitUserIds($buId);
                 if (!empty($userIds)) {
                     $result = array_merge($result, $userIds);
                 }
