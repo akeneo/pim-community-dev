@@ -21,7 +21,7 @@ Feature: Filter products
     And the following attributes:
       | label       | required | translatable | scopable | useable as grid filter |
       | name        | no       | yes          | no       | yes                    |
-      | image       | no       | no           | yes      | no                     |
+      | image       | no       | no           | yes      | yes                    |
       | description | no       | yes          | yes      | yes                    |
     And the following product values:
       | product | attribute   | locale | scope     | value                     |
