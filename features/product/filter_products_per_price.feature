@@ -16,7 +16,7 @@ Feature: Filter products per price
       | book   | library   | no      |
     And a "postit" product
     And a "book" product
-    And the following product attributes:
+    And the following attributes:
       | label | required | translatable | scopable | type   |
       | SKU   | yes      | no           | no       | text   |
       | price | no       | no           | yes      | prices |

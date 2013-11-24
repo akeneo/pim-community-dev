@@ -435,67 +435,29 @@ class FixturesContext extends RawMinkContext
     /**
      * @param TableNode $table
      *
-     * @Given /^the following product attributes?:$/
+     * @Given /^the following attributes?:$/
      */
-    public function theFollowingProductAttributes(TableNode $table)
+    public function theFollowingAttributes(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
-            $data = array_merge(
-                array(
-                    'position'     => 0,
-                    'group'        => null,
-                    'product'      => null,
-                    'family'       => null,
-                    'required'     => 'no',
-                    'type'         => 'text',
-                    'scopable'     => false,
-                    'scopable'     => 'no',
-                    'translatable' => 'no',
-                ),
-                $data
-            );
+            $this->createAttribute($data);
+        }
 
-            try {
-                $code = $this->camelize($data['label']);
-                $attribute = $this->getAttribute($code);
-            } catch (\InvalidArgumentException $e) {
-                $attribute = $this->createAttribute($data['label'], false, $data['type']);
-            }
+        $this->flush();
+    }
 
-            $attribute->setSortOrder($data['position']);
-            $attribute->setGroup($this->findAttributeGroup($data['group']));
-            $attribute->setRequired(strtolower($data['required']) === 'yes');
-            $attribute->setScopable(strtolower($data['scopable']) === 'yes');
-            $attribute->setTranslatable(strtolower($data['translatable']) === 'yes');
-            $attribute->setUseableAsGridColumn(true);
-            $attribute->setUseableAsGridFilter(true);
-
-            if ($family = $data['family']) {
-                $family = $this->getFamily($family);
-                $family->addAttribute($attribute);
-            }
-
-            if ($data['type'] === 'metric') {
-                if (!empty($data['metric family']) && !empty($data['default metric unit'])) {
-                    $attribute->setMetricFamily($data['metric family']);
-                    $attribute->setDefaultMetricUnit($data['default metric unit']);
-                } else {
-                    throw new \InvalidArgumentException(
-                        sprintf(
-                            'Expecting metric family and default metric unit to be defined for attribute "%s"',
-                            $data['label']
-                        )
-                    );
-                }
-            }
-
-            if (!empty($data['product'])) {
-                $product = $this->getProduct($data['product']);
-                $value   = $this->createValue($attribute);
-
-                $product->addValue($value);
-                $this->getProductManager()->save($product);
-            }
+    /**
+     * @param TableNode $table
+     *
+     * @Given /^the following attribute label translations:$/
+     */
+    public function theFollowingAttributeLabelTranslations(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $this
+                ->getAttribute($data['attribute'])
+                ->setLocale($this->getLocaleCode($data['locale']))
+                ->setLabel($data['label']);
         }
 
         $this->flush();
@@ -793,82 +755,6 @@ class FixturesContext extends RawMinkContext
         $localeCode = isset($this->locales[$locale]) ? $this->locales[$locale] : $locale;
         $channel->addLocale($this->getLocale($localeCode));
         $this->persist($channel);
-    }
-
-    /**
-     * @param TableNode $table
-     *
-     * @Given /^the following attributes?:$/
-     */
-    public function theFollowingAttributes(TableNode $table)
-    {
-        foreach ($table->getHash() as $data) {
-            $data = array_merge(
-                array(
-                    'scopable'    => 'no',
-                    'localizable' => 'no',
-                    'group'       => null,
-                    'type'        => 'pim_catalog_text'
-                ),
-                $data
-            );
-
-            $attribute = $this->getProductManager()->createAttribute($data['type']);
-
-            $attribute->setCode($data['code']);
-            $attribute->setScopable($data['scopable'] === 'yes');
-            $attribute->setTranslatable($data['localizable'] === 'yes');
-
-            $attribute->setLocale('en_US');
-            $attribute->setLabel($data['label']);
-
-            if ($data['type'] === 'pim_catalog_metric') {
-                if (!empty($data['metric family']) && !empty($data['default metric unit'])) {
-                    $attribute->setMetricFamily($data['metric family']);
-                    $attribute->setDefaultMetricUnit($data['default metric unit']);
-                } else {
-                    throw new \InvalidArgumentException(
-                        sprintf(
-                            'Expecting metric family and default metric unit to be defined for attribute "%s"',
-                            $data['code']
-                        )
-                    );
-                }
-            }
-
-            if (isset($data['group'])) {
-                $group = $this->getAttributeGroup($data['group']);
-                $attribute->setGroup($group);
-            }
-
-            if (isset($data['families'])) {
-                $familyCodes = $this->listToArray($data['families']);
-                foreach ($familyCodes as $code) {
-                    $family = $this->getFamily($code);
-                    $family->addAttribute($attribute);
-                    $this->persist($family, false);
-                }
-            }
-
-            $this->persist($attribute);
-        }
-    }
-
-    /**
-     * @param TableNode $table
-     *
-     * @Given /^the following attribute label translations:$/
-     */
-    public function theFollowingAttributeLabelTranslations(TableNode $table)
-    {
-        foreach ($table->getHash() as $data) {
-            $this
-                ->getAttribute($data['attribute'])
-                ->setLocale($this->getLocaleCode($data['locale']))
-                ->setLabel($data['label']);
-        }
-
-        $this->flush();
     }
 
     /**
@@ -1396,25 +1282,70 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @param string  $label
-     * @param boolean $translatable
-     * @param string  $type
-     * @param boolean $showInGrid
+     * @param array $data
      *
      * @return ProductAttribute
      */
-    private function createAttribute($label, $translatable = true, $type = 'text', $showInGrid = false)
+    private function createAttribute($data)
     {
-        $attribute = $this->getProductManager()->createAttribute($this->getAttributeType($type));
-        $attribute->setCode($this->camelize($label));
-        $attribute->setLocale('en_US')->setLabel($label); //TODO translation refactoring
-        $attribute->setTranslatable($translatable);
-        $attribute->setUseableAsGridColumn($showInGrid);
-        $attribute->setUseableAsGridFilter($showInGrid);
-        if ('identifier' === $type) {
-            $attribute->setUnique(true);
-            $attribute->setRequired(true);
+        $data = array_merge(
+            array(
+                'code'                   => null,
+                'label'                  => null,
+                'position'               => 0,
+                'group'                  => null,
+                'families'               => null,
+                'type'                   => 'text',
+                'scopable'               => 'no',
+                'translatable'           => 'no',
+                'useable as grid column' => false,
+                'useable as grid filter' => false,
+            ),
+            $data
+        );
+
+        if ('identifier' === $data['type']) {
+            throw new \InvalidArgumentException('Identifier attribute can\'t be created after catalog initialization');
         }
+
+        $data['code'] = $data['code'] ?: $this->camelize($data['label']);
+
+        $attribute = $this->getProductManager()->createAttribute($this->getAttributeType($data['type']));
+
+        $attribute->setCode($data['code']);
+        $attribute->setLocale('en_US')->setLabel($data['label']); //TODO translation refactoring
+
+        $attribute->setScopable(strtolower($data['scopable']) === 'yes');
+        $attribute->setTranslatable(strtolower($data['translatable']) === 'yes');
+        $attribute->setUseableAsGridColumn(strtolower($data['useable as grid column']) === 'yes');
+        $attribute->setUseableAsGridFilter(strtolower($data['useable as grid filter']) === 'yes');
+
+        $attribute->setSortOrder($data['position']);
+
+        if ($data['group']) {
+            $attribute->setGroup($this->getAttributeGroup($data['group']));
+        }
+
+        if ($data['families']) {
+            foreach ($this->listToArray($data['families']) as $familyCode) {
+                $this->getFamily($familyCode)->addAttribute($attribute);
+            }
+        }
+
+        if ($data['type'] === 'metric') {
+            if (!empty($data['metric family']) && !empty($data['default metric unit'])) {
+                $attribute->setMetricFamily($data['metric family']);
+                $attribute->setDefaultMetricUnit($data['default metric unit']);
+            } else {
+                throw new \InvalidArgumentException(
+                    sprintf(
+                        'Expecting metric family and default metric unit to be defined for attribute "%s"',
+                        $data['label']
+                    )
+                );
+            }
+        }
+
         $this->persist($attribute);
 
         return $attribute;

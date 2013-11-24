@@ -7,8 +7,8 @@ Feature: Import options
   Scenario: Successfully import options
     Given the "default" catalog configuration
     And the following attributes:
-      | code         | label | type                     |
-      | manufacturer | Man   | pim_catalog_simpleselect |
+      | code         | label | type         |
+      | manufacturer | Man   | simpleselect |
     And the following jobs:
       | connector            | alias                   | code               | label                  | type   |
       | Akeneo CSV Connector | attribute_option_import | acme_option_import | Option import for Acme | import |

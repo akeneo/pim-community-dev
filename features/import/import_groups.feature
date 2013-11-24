@@ -11,9 +11,9 @@ Feature: Import groups
       | Akeneo CSV Connector | group_import | acme_group_import | Group import for Acme | import |
     And I am logged in as "Julia"
     And the following attributes:
-      | code  | label | type                     |
-      | color | Color | pim_catalog_simpleselect |
-      | size  | Size  | pim_catalog_simpleselect |
+      | code  | label | type         |
+      | color | Color | simpleselect |
+      | size  | Size  | simpleselect |
     And the following group types:
       | code    |
       | RELATED |

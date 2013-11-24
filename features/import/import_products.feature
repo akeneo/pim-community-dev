@@ -23,10 +23,10 @@ Feature: Execute a job
       | code  | label     | attributes | type   |
       | CROSS | Bag Cross |            | X_SELL |
     And the following attributes:
-      | code        | label       | type                         |
-      | name        | Name        | pim_catalog_text             |
-      | description | Description | pim_catalog_textarea         |
-      | prices      | Prices      | pim_catalog_price_collection |
+      | code        | label       | type     |
+      | name        | Name        | text     |
+      | description | Description | textarea |
+      | prices      | Prices      | prices   |
     And the following job:
       | connector            | alias          | code                | label                       | type   |
       | Akeneo CSV Connector | product_import | acme_product_import | Product import for Acme.com | import |

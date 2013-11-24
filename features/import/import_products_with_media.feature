@@ -11,7 +11,7 @@ Feature: Import media with products
     And the following categories:
       | code  | label | parent |
       | sport | Sport |        |
-    And the following product attributes:
+    And the following attributes:
       | label       | type  |
       | Name        | text  |
       | Front view  | image |

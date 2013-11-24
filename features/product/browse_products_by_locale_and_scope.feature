@@ -13,15 +13,14 @@ Feature: Browse products by locale and scope
       | sku    | family    |
       | postit | furniture |
     And a "postit" product
-    And the following product attributes:
-      | label       | required | translatable | scopable |
-      | SKU         | yes      | no           | no       |
-      | name        | no       | yes          | no       |
-      | image       | no       | no           | yes      |
-      | description | no       | yes          | yes      |
+    And the following attributes:
+      | label       | required | translatable | scopable | useable as grid column |
+      | name        | no       | yes          | no       | yes                    |
+      | image       | no       | no           | yes      | yes                    |
+      | description | no       | yes          | yes      | yes                    |
     And the following product values:
       | product | attribute   | locale | scope     | value                    |
-      | postit  | SKU         |        |           | postit                   |
+      | postit  | sku         |        |           | postit                   |
       | postit  | name        | en_US  |           | Post it                  |
       | postit  | name        | fr_FR  |           | Etiquette                |
       | postit  | image       |        | ecommerce | large.jpeg               |
@@ -38,7 +37,7 @@ Feature: Browse products by locale and scope
     Then I should see product postit
     And the row "postit" should contain:
       | column      | value                    |
-      | SKU         | postit                   |
+      | sku         | postit                   |
       | name        | Post it                  |
       | image       | large.jpeg               |
       | description | My ecommerce description |

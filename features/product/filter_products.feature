@@ -18,12 +18,11 @@ Feature: Filter products
     And a "book" product
     And a "book2" product
     And a "ebook" product
-    And the following product attributes:
-      | label       | required | translatable | scopable |
-      | SKU         | yes      | no           | no       |
-      | name        | no       | yes          | no       |
-      | image       | no       | no           | yes      |
-      | description | no       | yes          | yes      |
+    And the following attributes:
+      | label       | required | translatable | scopable | useable as grid filter |
+      | name        | no       | yes          | no       | yes                    |
+      | image       | no       | no           | yes      | no                     |
+      | description | no       | yes          | yes      | yes                    |
     And the following product values:
       | product | attribute   | locale | scope     | value                     |
       | postit  | SKU         |        |           | postit                    |
