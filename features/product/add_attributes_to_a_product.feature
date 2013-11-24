@@ -5,30 +5,23 @@ Feature: Add attributes to a product
   I need to be able to add attributes to a product
 
   Background:
-    Given the "default" catalog configuration
-    And a "Car" product
-    And the following attribute group:
-      | code    | label   |
-      | general | General |
-      | prices  | Prices  |
-    And the following product attribute:
-      | product | label        | group   |
-      | Car     | Release Date | General |
-    And the following product attributes:
-      | label            | group   |
-      | Long Description | General |
-      | Manufacturer     | General |
-      | Size             |         |
+    Given a "footwear" catalog configuration
+    And the following product:
+    | sku     | family  |
+    | sandals | sandals |
     And I am logged in as "admin"
 
   Scenario: Display attributes that are not related to the current product
-    Given I am on the "Car" product page
-    Then I should see available attributes Long Description and Manufacturer in group "General"
-    And I should see available attribute Size in group "Other"
-    But I should not see available attribute Release Date in group "General"
+    Given I am on the "sandals" product page
+    Then I should see available attribute Weather conditions in group "Product information"
+    And I should see available attribute Lace color in group "Colors"
+    And I should see available attribute Top view in group "Media"
+    But I should not see available attribute Side view in group "Media"
 
   Scenario: Successfully add attributes to a product
-    Given I am on the "Car" product page
-    And I add available attributes Long Description and Size
-    Then attributes in group "General" should be Release Date and Long Description
-    And attribute in group "Other" should be SKU and Size
+    Given I am on the "sandals" product page
+    And I add available attributes Weather conditions and Lace color
+    Then attributes in group "Colors" should be Color and Lace color
+    And I should see available attribute Top view in group "Media"
+    But I should not see available attribute Lace color in group "Colors"
+    And I should not see available attribute Weather conditions in group "Product information"

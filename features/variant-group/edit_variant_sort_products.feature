@@ -14,12 +14,10 @@ Feature: Edit a variant group adding/removing products
       | sku    | family    |
       | MUG_1  | mug       |
       | POSTIT | furniture |
-    And the following product attributes:
-      | product | code  | label | type         | required | translatable | scopable |
-      | MUG_1   | color | Color | simpleselect | no       | no           | no       |
-      | MUG_1   | size  | Size  | simpleselect | no       | no           | no       |
-      | POSTIT  | color | Color | simpleselect | no       | no           | no       |
-      | POSTIT  | size  | Size  | simpleselect | no       | no           | no       |
+    And the following attributes:
+      | code  | label | type         |
+      | color | Color | simpleselect |
+      | size  | Size  | simpleselect |
     And the following "color" attribute options: Yellow, Blue, Green and Red
     And the following "size" attribute options: XS, S, M, L and XL
     And the following product values:

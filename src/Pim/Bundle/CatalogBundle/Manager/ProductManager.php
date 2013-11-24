@@ -46,6 +46,7 @@ class ProductManager extends FlexibleManager
      * @param EventDispatcherInterface $eventDispatcher      Event dispatcher
      * @param AttributeTypeFactory     $attributeTypeFactory Attribute type factory
      * @param MediaManager             $mediaManager         Media manager
+     * @param CompletenessManager      $completenessManager  Completeness manager
      * @param ProductBuilder           $builder              Product builder
      */
     public function __construct(

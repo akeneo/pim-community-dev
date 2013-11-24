@@ -6,7 +6,7 @@ Feature: Display the attribute group history
   Background:
     Given the "default" catalog configuration
     And I am logged in as "Julia"
-    And the following product attributes:
+    And the following attributes:
       | label       |
       | Description |
 

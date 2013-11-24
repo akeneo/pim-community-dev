@@ -59,7 +59,7 @@ class GroupManager
     /**
      * Get axis as choice list
      *
-     * @param $isVariant
+     * @param boolean $isVariant
      *
      * @return array
      */
