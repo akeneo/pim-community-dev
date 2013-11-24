@@ -13,7 +13,6 @@ use Behat\Mink\Element\NodeElement;
  */
 class Grid extends Index
 {
-
     const FILTER_CONTAINS = 1;
     const FILTER_DOES_NOT_CONTAIN = 2;
     const FILTER_IS_EQUAL_TO = 3;
@@ -132,7 +131,7 @@ class Grid extends Index
      */
     public function countRows()
     {
-        return count($this->getElement('Grid content')->findAll('css', 'tr'));
+        return count($this->getRows());
     }
 
     /**
@@ -517,7 +516,7 @@ class Grid extends Index
             throw new \InvalidArgumentException(
                 sprintf(
                     'Trying to access cell %d of a row which has %d cell(s).',
-                    $position,
+                    $position + 1,
                     count($cells)
                 )
             );
