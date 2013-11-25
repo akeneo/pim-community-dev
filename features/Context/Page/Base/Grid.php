@@ -140,7 +140,11 @@ class Grid extends Index
      */
     public function countRows()
     {
-        return count($this->getRows());
+        try {
+            return count($this->getRows());
+        } catch (\InvalidArgumentException $e) {
+            return 0;
+        }
     }
 
     /**
