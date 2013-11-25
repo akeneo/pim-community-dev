@@ -3,7 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\Twig;
 
 use Doctrine\Common\Collections\Collection;
-
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 
@@ -38,10 +37,10 @@ class CategoryExtension extends \Twig_Extension
     {
         return array(
             'list_trees_response'      => new \Twig_Function_Method($this, 'listTreesResponse'),
-            'children_response'      => new \Twig_Function_Method($this, 'childrenResponse'),
-            'children_tree_response'      => new \Twig_Function_Method($this, 'childrenTreeResponse'),
+            'children_response'        => new \Twig_Function_Method($this, 'childrenResponse'),
+            'children_tree_response'   => new \Twig_Function_Method($this, 'childrenTreeResponse'),
             'list_categories_response' => new \Twig_Function_Method($this, 'listCategoriesResponse'),
-            'list_products'    => new \Twig_Function_Method($this, 'listProducts')
+            'list_products'            => new \Twig_Function_Method($this, 'listProducts')
         );
     }
 
@@ -57,7 +56,6 @@ class CategoryExtension extends \Twig_Extension
     public function listTreesResponse(array $trees, $selectedTreeId = null, $includeSub = false)
     {
         $return = array();
-
         foreach ($trees as $tree) {
             $return[] = $this->formatTree($tree, $selectedTreeId, $includeSub);
         }
@@ -83,10 +81,11 @@ class CategoryExtension extends \Twig_Extension
         $withProductCount = null,
         $includeSub = false
     ) {
-        $result = $this->formatCategoriesFromArray($categories, $selectedCategory, $withProductCount, $includeSub);
+        $selectedIds = array($selectedCategory->getId());
+        $result = $this->formatCategoriesFromArray($categories, $selectedIds, $withProductCount, $includeSub);
 
         if ($parent !== null) {
-            $result = $this->formatCategory($parent, array($selectedCategory->getId()), $withProductCount, $includeSub, $result);
+            $result = $this->formatCategory($parent, $selectedIds, $withProductCount, $includeSub, $result);
         }
 
         return $result;
@@ -96,18 +95,17 @@ class CategoryExtension extends \Twig_Extension
      * Format categories from an array
      *
      * @param array             $categories
-     * @param CategoryInterface $selectedCategory
+     * @param array             $selectedIds
      * @param boolean           $withProductCount
      * @param boolean           $includeSub
      *
      * @return array
      */
-    protected function formatCategoriesFromArray(array $categories, CategoryInterface $selectedCategory, $withProductCount = false, $includeSub = false)
+    protected function formatCategoriesFromArray(array $categories, array $selectedIds, $withProductCount = false, $includeSub = false)
     {
         $result = array();
-
         foreach ($categories as $category) {
-            $result[] = $this->formatCategoryFromArray($category, $selectedCategory, $withProductCount, $includeSub);
+            $result[] = $this->formatCategoryFromArray($category, $selectedIds, $withProductCount, $includeSub);
         }
 
         return $result;
@@ -125,16 +123,16 @@ class CategoryExtension extends \Twig_Extension
      *     'children' => array() // the same array for children
      * )
      *
-     * @param array             $category
-     * @param CategoryInterface $selectedCategory
-     * @param boolean           $withProductCount
-     * @param boolean           $includeSub
+     * @param array   $category
+     * @param array   $selectedIds
+     * @param boolean $withProductCount
+     * @param boolean $includeSub
      *
      * @return array
      */
-    protected function formatCategoryFromArray(array $category, CategoryInterface $selectedCategory, $withProductCount = false, $includeSub = false)
+    protected function formatCategoryFromArray(array $category, array $selectedIds, $withProductCount = false, $includeSub = false)
     {
-        $state = $this->defineCategoryStateFromArray($category, array($selectedCategory->getId()));
+        $state = $this->defineCategoryStateFromArray($category, $selectedIds);
         $label = $this->getLabel($category['item'], $withProductCount, $includeSub);
 
         return array(
@@ -143,7 +141,7 @@ class CategoryExtension extends \Twig_Extension
             ),
             'data'     => $label,
             'state'    => $state,
-            'children' => $this->formatCategoriesFromArray($category['__children'], $selectedCategory, $withProductCount, $includeSub)
+            'children' => $this->formatCategoriesFromArray($category['__children'], $selectedIds, $withProductCount, $includeSub)
         );
     }
 
@@ -244,7 +242,6 @@ class CategoryExtension extends \Twig_Extension
     protected function formatCategories(array $categories, $selectedIds = array(), $withProductCount = false, $includeSub = false)
     {
         $result = array();
-
         foreach ($categories as $category) {
             $result[] = $this->formatCategory($category, array(), $withProductCount, $includeSub);
         }
@@ -254,14 +251,15 @@ class CategoryExtension extends \Twig_Extension
 
     /**
      * List categories
+     *
      * @param array $categories
      * @param Collection $selectedCategories
+     *
      * @return array
      */
     public function listCategoriesResponse(array $categories, Collection $selectedCategories)
     {
         $selectedIds = array();
-
         foreach ($selectedCategories as $selectedCategory) {
             $selectedIds[] = $selectedCategory->getId();
         }
@@ -269,35 +267,53 @@ class CategoryExtension extends \Twig_Extension
         return $this->formatCategoriesAndCount($categories, $selectedIds, true);
     }
 
-    protected function formatCategoriesAndCount(array $categories, $selectedIds = array(), $count = false)
+    /**
+     * Format categories counting selected children
+     *
+     * @param array $categories
+     * @param array $selectedIds
+     *
+     * @return array
+     */
+    protected function formatCategoriesAndCount(array $categories, $selectedIds = array())
     {
         $result = array();
-
         foreach ($categories as $category) {
-            $children = $this->formatCategoriesAndCount($category['__children'], $selectedIds, $count);
+            $result[] = $this->formatCategoryAndCount($category, $selectedIds);
+        }
 
-            $selectedChildren = 0;
-            foreach ($children as $child) {
-                $selectedChildren += $child['selectedChildrenCount'];
-                if (preg_match('/checked/', $child['state'])) {
-                    $selectedChildren++;
-                }
+        return $result;
+    }
+
+    /**
+     * Format category and count selected children
+     *
+     * @param array $category
+     * @param array $selectedIds
+     * @param boolean $count
+     *
+     * @return array
+     */
+    protected function formatCategoryAndCount(array $category, array $selectedIds)
+    {
+        $children = $this->formatCategoriesAndCount($category['__children'], $selectedIds);
+
+        $result = $this->formatCategoryFromArray($category, $selectedIds, false, false);
+        $result['children'] = $children;
+
+        // count children
+        $selectedChildren = 0;
+        foreach ($children as $child) {
+            $selectedChildren += $child['selectedChildrenCount'];
+            if (preg_match('/checked/', $child['state'])) {
+                $selectedChildren++;
             }
+        }
+        $result['selectedChildrenCount'] = $selectedChildren;
 
-            $label = $this->getLabel($category['item']);
-            if ($selectedChildren > 0) {
-                $label = sprintf('<strong>%s</strong>', $label);
-            }
-
-            $result[] = array(
-                'attr' => array(
-                    'id' => sprintf('node_%s', $category['item']->getId())
-                ),
-                'data' => $label,
-                'state' => $this->defineCategoryStateFromArray($category, $selectedIds),
-                'children' => $children,
-                'selectedChildrenCount' => $selectedChildren
-            );
+        // set label in bold
+        if ($selectedChildren > 0) {
+            $result['data'] = sprintf('<strong>%s</strong>', $result['data']);
         }
 
         return $result;
