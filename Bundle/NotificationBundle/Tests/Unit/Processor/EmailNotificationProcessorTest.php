@@ -154,7 +154,7 @@ class EmailNotificationProcessorTest extends \PHPUnit_Framework_TestCase
 
         $this->entityManager->expects($this->once())
             ->method('persist');
-        $this->entityManager->expects($this->once())
+        $this->entityManager->expects($this->never())
             ->method('flush');
     }
 }
