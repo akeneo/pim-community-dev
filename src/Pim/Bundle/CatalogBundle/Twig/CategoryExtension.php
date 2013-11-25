@@ -36,11 +36,11 @@ class CategoryExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            'list_trees_response'      => new \Twig_Function_Method($this, 'listTreesResponse'),
             'children_response'        => new \Twig_Function_Method($this, 'childrenResponse'),
             'children_tree_response'   => new \Twig_Function_Method($this, 'childrenTreeResponse'),
             'list_categories_response' => new \Twig_Function_Method($this, 'listCategoriesResponse'),
-            'list_products'            => new \Twig_Function_Method($this, 'listProducts')
+            'list_products'            => new \Twig_Function_Method($this, 'listProducts'),
+            'list_trees_response'      => new \Twig_Function_Method($this, 'listTreesResponse')
         );
     }
 
@@ -389,16 +389,16 @@ class CategoryExtension extends \Twig_Extension
      * Count products for a category
      *
      * @param CategoryInterface $category
-     * @param bool              $nested
+     * @param bool              $includeSub
      *
      * @return string
      */
-    protected function countProducts(CategoryInterface $category, $nested)
+    protected function countProducts(CategoryInterface $category, $includeSub)
     {
         return $this
             ->categoryManager
             ->getEntityRepository()
-            ->countProductsLinked($category, !$nested);
+            ->countProductsLinked($category, !$includeSub);
     }
 
     /**
