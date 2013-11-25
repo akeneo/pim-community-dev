@@ -118,11 +118,7 @@ class OptionSelectType extends AbstractType
         foreach ($data as $option) {
             if (!in_array($option, $saved)) {
                 $optionRelation = new OptionSetRelation();
-                $optionRelation->setData(
-                    null,
-                    $model,
-                    $this->options->find($option)
-                );
+                $optionRelation->setData(null, $model, $this->options->find($option));
                 $toSave[] = $option;
 
                 $this->em->persist($optionRelation);
