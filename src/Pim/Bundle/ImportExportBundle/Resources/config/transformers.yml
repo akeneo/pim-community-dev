@@ -1,14 +1,33 @@
 parameters:
-    pim_import_export.transformer.product.class:                Pim\Bundle\ImportExportBundle\Transformer\ORMProductTransformer
-    pim_import_export.transformer.property.default.class:       Pim\Bundle\ImportExportBundle\Transformer\Property\DefaultTransformer
-    pim_import_export.transformer.property.entity.class:        Pim\Bundle\ImportExportBundle\Transformer\Property\EntityTransformer
-    pim_import_export.transformer.property.media.class:         Pim\Bundle\ImportExportBundle\Transformer\Property\MediaTransformer
-    pim_import_export.transformer.property.date.class:          Pim\Bundle\ImportExportBundle\Transformer\Property\DateTransformer
-    pim_import_export.transformer.property.boolean.class:       Pim\Bundle\ImportExportBundle\Transformer\Property\BooleanTransformer
-    pim_import_export.transformer.property.metric.class:        Pim\Bundle\ImportExportBundle\Transformer\Property\MetricTransformer
-    pim_import_export.transformer.property.prices.class:        Pim\Bundle\ImportExportBundle\Transformer\Property\PricesTransformer
+    pim_import_export.transformer.orm.class:                   Pim\Bundle\ImportExportBundle\Transformer\OrmTransformer
+    pim_import_export.transformer.label.class:                 Pim\Bundle\ImportExportBundle\Transformer\LabelTransformer
+    pim_import_export.transformer.property.translation.class:  Pim\Bundle\ImportExportBundle\Transformer\Property\TranslationTransformer
+    pim_import_export.transformer.product.class:               Pim\Bundle\ImportExportBundle\Transformer\ORMProductTransformer
+    pim_import_export.transformer.property.default.class:      Pim\Bundle\ImportExportBundle\Transformer\Property\DefaultTransformer
+    pim_import_export.transformer.property.entity.class:       Pim\Bundle\ImportExportBundle\Transformer\Property\EntityTransformer
+    pim_import_export.transformer.property.media.class:        Pim\Bundle\ImportExportBundle\Transformer\Property\MediaTransformer
+    pim_import_export.transformer.property.date.class:         Pim\Bundle\ImportExportBundle\Transformer\Property\DateTransformer
+    pim_import_export.transformer.property.boolean.class:      Pim\Bundle\ImportExportBundle\Transformer\Property\BooleanTransformer
+    pim_import_export.transformer.property.metric.class:       Pim\Bundle\ImportExportBundle\Transformer\Property\MetricTransformer
+    pim_import_export.transformer.property.prices.class:       Pim\Bundle\ImportExportBundle\Transformer\Property\PricesTransformer
 
 services:
+    pim_import_export.transformer.orm:
+        class: %pim_import_export.transformer.orm.class%
+        arguments:
+            - '@doctrine'
+            - '@property_accessor'
+            - '@pim_import_export.transformer.guesser'
+            - '@pim_import_export.transformer.label'
+
+    pim_import_export.transformer.label:
+        class: %pim_import_export.transformer.label.class%
+
+    pim_import_export.transformer.property.translation:
+        class: %pim_import_export.transformer.property.translation.class%
+        arguments:
+            - '@property_accessor'
+
     pim_import_export.transformer.product:
         class: '%pim_import_export.transformer.product.class%'
         public: false

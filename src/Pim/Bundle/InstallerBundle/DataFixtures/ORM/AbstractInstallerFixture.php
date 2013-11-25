@@ -63,7 +63,6 @@ abstract class AbstractInstallerFixture extends AbstractFixture implements Order
             foreach ($violations as $violation) {
                 $messages[] = (string) $violation;
             }
-
             throw new InvalidItemException(implode(', ', $messages), $item);
         }
     }
