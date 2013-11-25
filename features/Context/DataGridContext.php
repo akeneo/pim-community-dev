@@ -195,9 +195,9 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     /**
      * @param string $filterName
      *
-     * @Then /^I make visible the filter "([^"]*)"$/
+     * @Then /^I show the filter "([^"]*)"$/
      */
-    public function iMakeVisibleTheFilter($filterName)
+    public function iShowTheFilter($filterName)
     {
         $this->datagrid->showFilter($filterName);
     }
@@ -319,7 +319,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
         foreach ($data as $item) {
             $count = count($this->getMainContext()->listToArray($item['result']));
             $filter = $item['filter'];
-            $steps[] = new Then(sprintf('I make visible the filter "%s"', $filter));
+            $steps[] = new Then(sprintf('I show the filter "%s"', $filter));
             $steps[] = new Then(sprintf('I filter by "%s" with value "%s"', $filter, $item['value']));
             $steps[] = new Then(sprintf('the grid should contain %d elements', $count));
             $steps[] = new Then(sprintf('I should see entities %s', $item['result']));
