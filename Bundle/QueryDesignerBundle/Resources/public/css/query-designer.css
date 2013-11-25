@@ -43,6 +43,7 @@
     -webkit-border-bottom-right-radius: 3px;
     -moz-border-radius-bottomright: 3px;
 }
+.form-horizontal .query-designer-form .filter-box .filter-item .filter-select .select-filter-widget,
 .form-horizontal .query-designer-form .filter-box .filter-item .filter-criteria-hint {
     font-weight: normal;
 }
