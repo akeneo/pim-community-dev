@@ -94,10 +94,10 @@ class CategoryExtension extends \Twig_Extension
     /**
      * Format categories from an array
      *
-     * @param array             $categories
-     * @param array             $selectedIds
-     * @param boolean           $withProductCount
-     * @param boolean           $includeSub
+     * @param array   $categories
+     * @param array   $selectedIds
+     * @param boolean $withProductCount
+     * @param boolean $includeSub
      *
      * @return array
      */
@@ -250,8 +250,8 @@ class CategoryExtension extends \Twig_Extension
     /**
      * Format categories
      *
-     * @param array $categories
-     * @param array $selectedIds
+     * @param array   $categories
+     * @param array   $selectedIds
      * @param boolean $withProductCount
      * @param boolean $includeSub
      *
@@ -274,7 +274,7 @@ class CategoryExtension extends \Twig_Extension
     /**
      * List categories
      *
-     * @param array $categories
+     * @param array      $categories
      * @param Collection $selectedCategories
      *
      * @return array
