@@ -1,6 +1,6 @@
 /* global define */
-define(['jquery', 'underscore', 'oro/translator', 'oro/datafilter/text-filter'],
-function($, _, __, TextFilter) {
+define(['jquery', 'underscore', 'oro/translator', 'oro/app', 'oro/datafilter/text-filter'],
+function($, _, __, app, TextFilter) {
     'use strict';
 
     /**
@@ -164,7 +164,7 @@ function($, _, __, TextFilter) {
          * @inheritDoc
          */
         _triggerUpdate: function(newValue, oldValue) {
-            if (newValue.value || oldValue.value) {
+            if (!app.isEqualsLoosely(newValue.value, oldValue.value)) {
                 this.trigger('update');
             }
         },

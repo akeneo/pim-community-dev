@@ -215,6 +215,12 @@ define(['jquery', 'underscore', 'backbone', 'oro/app', 'oro/mediator'],
                 this.trigger("rendered");
 
                 return this;
+            },
+
+            ensurePopupCriteriaClosed: function () {
+                if (!_.isUndefined(this.activeFilter.ensurePopupCriteriaClosed)) {
+                    this.activeFilter.ensurePopupCriteriaClosed();
+                }
             }
         });
     });

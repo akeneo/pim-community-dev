@@ -17,7 +17,7 @@ function(_, Backbone, __, app, messenger, routing, LoadingMask,
         options: {
             entityName: null,
             storageElementSelector: null,
-            loadColumnsUrl: null,
+            getLoadColumnsUrl: null,
             columnsOptions: {
                 collection: null,
                 itemTemplateSelector: null,
@@ -41,12 +41,13 @@ function(_, Backbone, __, app, messenger, routing, LoadingMask,
         storageEl: null,
 
         initialize: function() {
-            this.options.loadColumnsUrl = this.options.loadColumnsUrl || function (entityName) {
+            this.options.getLoadColumnsUrl = this.options.getLoadColumnsUrl || function (entityName) {
                 return routing.generate('oro_api_get_entity_fields', {
                     'entityName': entityName,
                     'with-relations': true,
-                    'with-entity-details': true
-                })
+                    'with-entity-details': true,
+                    'deep-level': 1
+                });
             };
         },
 
@@ -58,7 +59,7 @@ function(_, Backbone, __, app, messenger, routing, LoadingMask,
         changeEntity: function (entityName) {
             this.disableViews();
             $.ajax({
-                url: this.options.loadColumnsUrl(entityName.replace(/\\/g,"_")),
+                url: this.options.getLoadColumnsUrl(entityName.replace(/\\/g,"_")),
                 success: _.bind(function(data) {
                     this.updateColumnSelectors(entityName, data);
                     this.enableViews();

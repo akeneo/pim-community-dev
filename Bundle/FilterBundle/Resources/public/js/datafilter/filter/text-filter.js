@@ -106,6 +106,16 @@ function($, _, __, AbstractFilter) {
         },
 
         /**
+         * Makes sure the criteria popup dialog is closed
+         */
+        ensurePopupCriteriaClosed: function () {
+            if (this.popupCriteriaShowed) {
+                this._hideCriteria();
+                this.setValue(this._formatRawValue(this._readDOMValue()));
+            }
+        },
+
+        /**
          * Handle key press on criteria input elements
          *
          * @param {Event} e

@@ -10,12 +10,12 @@ class ChoiceListItem
     /**
      * @var string
      */
-    protected $label;
+    private $label;
 
     /**
      * @var array
      */
-    protected $attributes;
+    private $attributes;
 
     /**
      * Constructor

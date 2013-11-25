@@ -39,17 +39,16 @@ function(_, Backbone, __, FormValidation, DeleteConfirmation) {
 
         /** @property */
         columnSelectOptGroupTemplate: _.template(
-            '<optgroup label="<%- label %>"'
-                + '><%= options %>'
-            + '</optgroup>'
+            '<optgroup label="<%- label %>">' +
+                '<%= options %>' +
+            '</optgroup>'
         ),
 
         /** @property */
         columnSelectOptionTemplate: _.template(
-            '<option value="<%- name %>"'
-                + '<% _.each(_.omit(obj, ["name"]), function (val, key) { %> data-<%- key.replace(/_/g,"-") %>="<%- val %>"<% }) %>'
-                + '><%- label %>'
-            + '</option>'
+            '<option value="<%- name %>"<% _.each(_.omit(obj, ["name"]), function (val, key) { %> data-<%- key.replace(/_/g,"-") %>="<%- val %>"<% }) %>>' +
+                '<%- label %>' +
+            '</option>'
         ),
 
         /** @property {jQuery} */
@@ -184,6 +183,7 @@ function(_, Backbone, __, FormValidation, DeleteConfirmation) {
         },
 
         handleAddModel: function() {
+            this.beforeFormSubmit();
             var model = this.createNewModel();
             if (this.validateFormData()) {
                 var data = this.getFormData();
@@ -194,6 +194,7 @@ function(_, Backbone, __, FormValidation, DeleteConfirmation) {
         },
 
         handleSaveModel: function(modelId) {
+            this.beforeFormSubmit();
             var model = this.getCollection().get(modelId);
             if (this.validateFormData()) {
                 model.set(this.getFormData());
@@ -230,11 +231,28 @@ function(_, Backbone, __, FormValidation, DeleteConfirmation) {
         getSelectColumnSelectorContent: function (columns) {
             var fields = '';
             var relations = '';
+            var isRelationsWithFields = false;
             _.each(columns, _.bind(function (column) {
                 if (_.isUndefined(column['related_entity_name'])) {
                     fields += this.columnSelectOptionTemplate(column);
                 } else {
-                    relations += this.columnSelectOptionTemplate(column);
+                    if (!_.isUndefined(column['related_entity_fields'])) {
+                        isRelationsWithFields = true;
+                        var relatedFields = '';
+                        _.each(column['related_entity_fields'], _.bind(function (relatedColumn) {
+                            relatedColumn = _.clone(relatedColumn);
+                            relatedColumn['name'] =
+                                column['name'] + ',' +
+                                column['related_entity_name'] + '::' + relatedColumn['name'];
+                            relatedFields += this.columnSelectOptionTemplate(relatedColumn);
+                        }, this));
+                        relations += this.columnSelectOptGroupTemplate({
+                            label: column['label'],
+                            options: relatedFields
+                        });
+                    } else {
+                        relations += this.columnSelectOptionTemplate(column);
+                    }
                 }
             }, this));
 
@@ -248,10 +266,14 @@ function(_, Backbone, __, FormValidation, DeleteConfirmation) {
                     options: fields
                 });
             }
-            result += this.columnSelectOptGroupTemplate({
-                label: this.options.relatedLabel,
-                options: relations
-            });
+            if (isRelationsWithFields) {
+                result += relations;
+            } else {
+                result += this.columnSelectOptGroupTemplate({
+                    label: this.options.relatedLabel,
+                    options: relations
+                });
+            }
             return result;
         },
 
@@ -313,20 +335,31 @@ function(_, Backbone, __, FormValidation, DeleteConfirmation) {
             this.toggleFormButtons(null);
         },
 
+        beforeFormSubmit: function () {
+        },
+
         validateFormData: function () {
             var isValid = true;
-            this.iterateFormData(function (name, el) {
+            this.iterateFormData(_.bind(function (name, el) {
                 FormValidation.removeFieldErrors(el);
-                if (el.is('[required]')) {
-                    var value = el.val();
-                    if (typeof(value) == 'undefined' || null === value || '' === value) {
-                        FormValidation.addFieldErrors(el, __('This value should not be blank.'));
-                        isValid = false;
-                    }
+                var msg = this.validateFormField(name, el);
+                if (!_.isNull(msg)) {
+                    FormValidation.addFieldErrors(el, __('This value should not be blank.'));
+                    isValid = false;
                 }
-            });
+            }, this));
 
             return isValid;
+        },
+
+        validateFormField: function (name, el) {
+            if (el.is('[required]')) {
+                var value = el.val();
+                if ('' === value) {
+                    return __('This value should not be blank.');
+                }
+            }
+            return null;
         },
 
         getFormData: function () {
@@ -402,35 +435,54 @@ function(_, Backbone, __, FormValidation, DeleteConfirmation) {
 
         getColumnFieldLabel: function (field, name, value) {
             if (field.attr('name') == this.columnSelector.attr('name')) {
-                var columnLabel = null;
-                if (this.columnSelector.get(0).tagName.toLowerCase() == 'select') {
-                    columnLabel = this.columnSelector
-                        .find('option[value="' + value.replace(/\\/g,"\\\\").replace(/:/g,"\\:") + '"]')
-                        .data('label');
-                } else {
-                    columnLabel = value;
+                if (value == '') {
+                    return '';
                 }
+
                 var columns = [];
-                _.each(value.split(','), _.bind(function (item, index) {
-                    var entity = null;
-                    var name = null;
-                    if (index == 0) {
-                        entity = this.options.entityName;
-                        name = item;
-                    } else {
-                        var pair = item.split('::');
-                        entity = pair[0];
-                        name = pair[1];
-                    }
-                    entity = this.options.findEntity(entity);
+                var chain = value.split(',');
+                if (_.size(chain) > 1) {
                     columns.push({
-                        entity: entity,
-                        label: columnLabel
+                        entity: this.options.findEntity(this.options.entityName),
+                        label: this.getColumnGroupLabel(value)
                     });
-                }, this));
+                    var lastValue = chain[0];
+                    _.each(_.rest(chain), _.bind(function (item) {
+                        lastValue += ',' + item;
+                        columns.push({
+                            entity: this.options.findEntity(item.split('::')[0]),
+                            label: this.getColumnLabel(lastValue)
+                        });
+                    }, this));
+                } else {
+                    columns.push({
+                        entity: this.options.findEntity(this.options.entityName),
+                        label: this.getColumnLabel(chain[0])
+                    });
+                }
+
                 return this.columnChainTemplate(columns);
             }
             return null;
+        },
+
+        getColumnLabel: function (value) {
+            if (this.columnSelector.get(0).tagName.toLowerCase() == 'select') {
+                return this.columnSelector
+                    .find('option[value="' + value.replace(/\\/g,"\\\\").replace(/:/g,"\\:") + '"]')
+                    .data('label');
+            }
+            return value;
+        },
+
+        getColumnGroupLabel: function (value) {
+            if (this.columnSelector.get(0).tagName.toLowerCase() == 'select') {
+                return this.columnSelector
+                    .find('option[value="' + value.replace(/\\/g,"\\\\").replace(/:/g,"\\:") + '"]')
+                    .parent()
+                    .attr('label');
+            }
+            return value;
         }
     });
 });

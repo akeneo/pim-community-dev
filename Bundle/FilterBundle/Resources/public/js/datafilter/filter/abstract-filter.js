@@ -349,7 +349,7 @@ function($, _, Backbone, app) {
         },
 
         /**
-         * Returns a string representation of the given value
+         * Get criteria hint value
          *
          * @return {String}
          */

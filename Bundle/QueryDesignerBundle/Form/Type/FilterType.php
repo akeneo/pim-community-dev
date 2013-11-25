@@ -35,6 +35,7 @@ class FilterType extends AbstractType
                             'required'        => true,
                             'entity'          => $form->getConfig()->getOption('entity'),
                             'with_relations'  => true,
+                            'deep_level'      => 1,
                             'auto_initialize' => false
                         )
                     )

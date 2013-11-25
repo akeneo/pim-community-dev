@@ -226,6 +226,19 @@ function(_, __, AbstractFilter, MultiselectDecorator) {
         },
 
         /**
+         * Get criteria hint value
+         *
+         * @return {String}
+         */
+        _getCriteriaHint: function() {
+            var value = (arguments.length > 0) ? this._getDisplayValue(arguments[0]) : this._getDisplayValue();
+            var choice = _.find(this.choices, function (c) {
+                return (c.value == value.value);
+            });
+            return !_.isUndefined(choice) ? choice.label : this.placeholder;
+        },
+
+        /**
          * Set design for select dropdown
          *
          * @protected

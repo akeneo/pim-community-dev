@@ -92,6 +92,15 @@ function($, _, __, AbstractFilter) {
         },
 
         /**
+         * Makes sure the criteria popup dialog is closed
+         */
+        ensurePopupCriteriaClosed: function () {
+            if (this.popupCriteriaShowed) {
+                this._hideCriteria();
+            }
+        },
+
+        /**
          * Handle click on criteria selector
          *
          * @param {Event} e
@@ -138,7 +147,6 @@ function($, _, __, AbstractFilter) {
 
             if (elem.get(0) !== e.target && !elem.has(e.target).length) {
                 this._hideCriteria();
-                this.setValue(this._formatRawValue(this._readDOMValue()));
                 e.stopPropagation();
             }
         },

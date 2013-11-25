@@ -1,6 +1,6 @@
 /* global define */
-define(['oro/query-designer/abstract-view', 'oro/query-designer/filter/collection', 'oro/query-designer/filter-builder'],
-function(AbstractView, FilterCollection, filterBuilder) {
+define(['underscore', 'oro/translator', 'oro/query-designer/abstract-view', 'oro/query-designer/filter/collection', 'oro/query-designer/filter-builder'],
+function(_, __, AbstractView, FilterCollection, filterBuilder) {
     'use strict';
 
     var $ = Backbone.$;
@@ -69,6 +69,13 @@ function(AbstractView, FilterCollection, filterBuilder) {
                     }
                 }
             }, this));
+        },
+
+        beforeFormSubmit: function () {
+            if (!_.isNull(this.filterManager)) {
+                this.filterManager.ensurePopupCriteriaClosed();
+            }
+            AbstractView.prototype.beforeFormSubmit.apply(this, arguments);
         },
 
         getFiltersLogic: function () {
