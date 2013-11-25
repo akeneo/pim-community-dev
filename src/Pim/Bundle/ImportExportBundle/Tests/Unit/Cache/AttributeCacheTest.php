@@ -343,7 +343,7 @@ class AttributeCacheTest extends \PHPUnit_Framework_TestCase
         $groups = array();
         foreach ($categories as $groupCode => $groupAttributeCodes) {
             if (!isset($this->groups[$groupCode])) {
-                $this->groups[$groupCode] = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Group');
+                $this->groups[$groupCode] = $this->getMock('Pim\Bundle\CatalogBundle\Model\Group');
                 $this->addAttributeCollection($this->groups[$groupCode], $groupCode, $groupAttributeCodes);
             }
             $groups[] = $this->groups[$groupCode];

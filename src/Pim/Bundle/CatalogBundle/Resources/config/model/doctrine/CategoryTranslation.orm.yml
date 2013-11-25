@@ -1,4 +1,4 @@
-Pim\Bundle\CatalogBundle\Entity\CategoryTranslation:
+Pim\Bundle\CatalogBundle\Model\CategoryTranslation:
     type: entity
     table: pim_catalog_category_translation
     uniqueConstraints:
@@ -21,7 +21,7 @@ Pim\Bundle\CatalogBundle\Entity\CategoryTranslation:
             length: 20
     manyToOne:
         foreignKey:
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\Category
+            targetEntity: Pim\Bundle\CatalogBundle\Model\Category
             inversedBy: translations
             joinColumns:
                 foreign_key:

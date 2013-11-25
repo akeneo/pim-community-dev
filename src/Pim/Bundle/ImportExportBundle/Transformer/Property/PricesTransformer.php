@@ -4,7 +4,7 @@ namespace Pim\Bundle\ImportExportBundle\Transformer\Property;
 
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Bundle\ImportExportBundle\Exception\InvalidValueException;
-use Pim\Bundle\CatalogBundle\Entity\ProductPrice;
+use Pim\Bundle\CatalogBundle\Model\ProductPrice;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 
 /**

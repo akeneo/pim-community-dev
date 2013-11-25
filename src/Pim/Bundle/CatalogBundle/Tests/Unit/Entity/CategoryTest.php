@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\Entity;
 
-use Pim\Bundle\CatalogBundle\Entity\CategoryTranslation;
-use Pim\Bundle\CatalogBundle\Entity\Product;
-use Pim\Bundle\CatalogBundle\Entity\Category;
+use Pim\Bundle\CatalogBundle\Model\CategoryTranslation;
+use Pim\Bundle\CatalogBundle\Model\Product;
+use Pim\Bundle\CatalogBundle\Model\Category;
 
 /**
  * Test related class
@@ -16,7 +16,7 @@ use Pim\Bundle\CatalogBundle\Entity\Category;
 class CategoryTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var Pim\Bundle\CatalogBundle\Entity\Category
+     * @var Pim\Bundle\CatalogBundle\Model\Category
      */
     protected $category;
 
@@ -31,7 +31,7 @@ class CategoryTest extends \PHPUnit_Framework_TestCase
     /**
      * Create a mock of flexible product entity
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Product
+     * @return \Pim\Bundle\CatalogBundle\Model\Product
      */
     protected function createProduct()
     {
@@ -171,7 +171,7 @@ class CategoryTest extends \PHPUnit_Framework_TestCase
         $this->assertEntity($this->category->addTranslation($newTranslation));
         $this->assertCount(1, $this->category->getTranslations());
         $this->assertInstanceOf(
-            'Pim\Bundle\CatalogBundle\Entity\CategoryTranslation',
+            'Pim\Bundle\CatalogBundle\Model\CategoryTranslation',
             $this->category->getTranslations()->first()
         );
 
@@ -193,17 +193,17 @@ class CategoryTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Assert entity
-     * @param Pim\Bundle\CatalogBundle\Entity\Category $entity
+     * @param Pim\Bundle\CatalogBundle\Model\Category $entity
      */
     protected function assertEntity($entity)
     {
-        $this->assertInstanceOf('Pim\Bundle\CatalogBundle\Entity\Category', $entity);
+        $this->assertInstanceOf('Pim\Bundle\CatalogBundle\Model\Category', $entity);
     }
 
     /**
      * Create CategoryTranslation entity
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\CategoryTranslation
+     * @return \Pim\Bundle\CatalogBundle\Model\CategoryTranslation
      */
     protected function createCategoryTranslation()
     {
@@ -213,10 +213,10 @@ class CategoryTest extends \PHPUnit_Framework_TestCase
     /**
      * Assert product entity
      *
-     * @param Pim\Bundle\CatalogBundle\Entity\Product $entity
+     * @param Pim\Bundle\CatalogBundle\Model\Product $entity
      */
     protected function assertProductEntity($entity)
     {
-        $this->assertInstanceOf('Pim\Bundle\CatalogBundle\Entity\Product', $entity);
+        $this->assertInstanceOf('Pim\Bundle\CatalogBundle\Model\Product', $entity);
     }
 }

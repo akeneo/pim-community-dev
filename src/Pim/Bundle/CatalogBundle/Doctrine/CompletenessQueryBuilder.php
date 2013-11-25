@@ -259,7 +259,7 @@ SQL;
     protected function getClassContentFields($className, $prefix)
     {
         if ('Oro\Bundle\FlexibleEntityBundle\Entity\Metric' == $className ||
-            'Pim\Bundle\CatalogBundle\Entity\ProductPrice' == $className) {
+            'Pim\Bundle\CatalogBundle\Model\ProductPrice' == $className) {
             return array(sprintf('%s.%s', $prefix, 'data'));
         } elseif ('Pim\Bundle\CatalogBundle\Entity\Media' == $className) {
             return array(sprintf('%s.%s', $prefix, 'filename'));

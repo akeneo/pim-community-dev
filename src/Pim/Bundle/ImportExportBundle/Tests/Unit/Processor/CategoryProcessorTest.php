@@ -4,8 +4,8 @@ namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Processor;
 
 use Oro\Bundle\BatchBundle\Item\InvalidItemException;
 use Pim\Bundle\ImportExportBundle\Processor\CategoryProcessor;
-use Pim\Bundle\CatalogBundle\Entity\Category;
-use Pim\Bundle\CatalogBundle\Entity\CategoryTranslation;
+use Pim\Bundle\CatalogBundle\Model\Category;
+use Pim\Bundle\CatalogBundle\Model\CategoryTranslation;
 
 /**
  * Test related class

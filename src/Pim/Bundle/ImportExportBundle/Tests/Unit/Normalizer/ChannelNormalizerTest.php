@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Normalizer;
 
-use Pim\Bundle\CatalogBundle\Entity\Category;
+use Pim\Bundle\CatalogBundle\Model\Category;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Currency;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
@@ -114,8 +114,8 @@ class ChannelNormalizerTest extends NormalizerTestCase
 
     /**
      * Create a category
-     * @param  string                                    $categoryCode
-     * @return \Pim\Bundle\CatalogBundle\Entity\Category
+     * @param  string                                   $categoryCode
+     * @return \Pim\Bundle\CatalogBundle\Model\Category
      */
     protected function createCategory($categoryCode)
     {

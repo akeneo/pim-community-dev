@@ -28,9 +28,9 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
             array('Pim\Bundle\CatalogBundle\Model\ProductInterface', 'csv', true),
             array('Pim\Bundle\CatalogBundle\Model\ProductInterface', 'xml', false),
             array('Pim\Bundle\CatalogBundle\Model\ProductInterface', 'json', false),
-            array('Pim\Bundle\CatalogBundle\Entity\Product', 'csv', true),
-            array('Pim\Bundle\CatalogBundle\Entity\Product', 'xml', false),
-            array('Pim\Bundle\CatalogBundle\Entity\Product', 'json', false),
+            array('Pim\Bundle\CatalogBundle\Model\Product', 'csv', true),
+            array('Pim\Bundle\CatalogBundle\Model\Product', 'xml', false),
+            array('Pim\Bundle\CatalogBundle\Model\Product', 'json', false),
             array('stdClass', 'csv', false),
             array('stdClass', 'xml', false),
             array('stdClass', 'json', false),
@@ -289,7 +289,7 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
         $family = null,
         $categories = ''
     ) {
-        $product = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Product');
+        $product = $this->getMock('Pim\Bundle\CatalogBundle\Model\Product');
         if ($identifier) {
             $identifierReturn = $this->returnValue($identifier);
         } else {
@@ -332,7 +332,7 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
      */
     protected function getValueMock($attribute = null, $data = null, $locale = null, $scope = null)
     {
-        $value = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductValue');
+        $value = $this->getMock('Pim\Bundle\CatalogBundle\Model\ProductValue');
 
         $value->expects($this->any())
             ->method('getAttribute')
@@ -400,11 +400,11 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return \Pim\Bundle\CatalogBundle\Entity\Media
+     * @return \Pim\Bundle\CatalogBundle\Model\Media
      */
     protected function getMediaMock()
     {
-        return $this->getMock('Pim\Bundle\CatalogBundle\Entity\Media');
+        return $this->getMock('Pim\Bundle\CatalogBundle\Model\Media');
     }
 
     /**

@@ -32,8 +32,8 @@ class CategoryTypeTest extends AbstractFormTypeTest
 
         // Create form type
         $this->type = new CategoryType(
-            'Pim\Bundle\CatalogBundle\Entity\Category',
-            'Pim\Bundle\CatalogBundle\Entity\CategoryTranslation'
+            'Pim\Bundle\CatalogBundle\Model\Category',
+            'Pim\Bundle\CatalogBundle\Model\CategoryTranslation'
         );
         $this->form = $this->factory->create($this->type);
     }
@@ -49,7 +49,7 @@ class CategoryTypeTest extends AbstractFormTypeTest
 
         // Assert option class
         $this->assertEquals(
-            'Pim\Bundle\CatalogBundle\Entity\Category',
+            'Pim\Bundle\CatalogBundle\Model\Category',
             $this->form->getConfig()->getDataClass()
         );
 

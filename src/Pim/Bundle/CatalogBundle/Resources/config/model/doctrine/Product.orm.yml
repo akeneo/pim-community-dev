@@ -1,4 +1,4 @@
-Pim\Bundle\CatalogBundle\Entity\Product:
+Pim\Bundle\CatalogBundle\Model\Product:
     type: entity
     table: pim_catalog_product
     repositoryClass: Pim\Bundle\CatalogBundle\Entity\Repository\ProductRepository
@@ -28,7 +28,7 @@ Pim\Bundle\CatalogBundle\Entity\Product:
                     onDelete: 'SET NULL'
     manyToMany:
         groups:
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\Group
+            targetEntity: Pim\Bundle\CatalogBundle\Model\Group
             inversedBy: products
             joinTable:
                 name: pim_catalog_group_product
@@ -41,7 +41,7 @@ Pim\Bundle\CatalogBundle\Entity\Product:
                         referencedColumnName: id
                         onDelete: CASCADE
         categories:
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\Category
+            targetEntity: Pim\Bundle\CatalogBundle\Model\Category
             inversedBy: products
             joinTable:
                 name: pim_catalog_category_product

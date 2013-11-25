@@ -6,7 +6,7 @@ use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\ImportExportBundle\Exception\InvalidValueException;
-use Pim\Bundle\CatalogBundle\Entity\Media;
+use Pim\Bundle\CatalogBundle\Model\Media;
 
 /**
  * Media attribute transformer

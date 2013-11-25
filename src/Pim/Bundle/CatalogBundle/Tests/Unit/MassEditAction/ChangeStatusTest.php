@@ -107,10 +107,10 @@ class ChangeStatusTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return \Pim\Bundle\CatalogBundle\Entity\Product
+     * @return \Pim\Bundle\CatalogBundle\Model\Product
      */
     protected function getProductMock()
     {
-        return $this->getMock('Pim\Bundle\CatalogBundle\Entity\Product');
+        return $this->getMock('Pim\Bundle\CatalogBundle\Model\Product');
     }
 }

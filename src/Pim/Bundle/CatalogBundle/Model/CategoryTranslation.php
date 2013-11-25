@@ -1,20 +1,20 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Entity;
+namespace Pim\Bundle\CatalogBundle\Model;
 
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 
 /**
- * Variant group translation
+ * Category translation entity
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * @ExclusionPolicy("all")
  */
-class GroupTranslation extends AbstractTranslation
+class CategoryTranslation extends AbstractTranslation
 {
     /**
      * All required columns are mapped through inherited superclass
@@ -35,7 +35,7 @@ class GroupTranslation extends AbstractTranslation
      *
      * @param string $label
      *
-     * @return GroupTranslation
+     * @return AbstractTranslation
      */
     public function setLabel($label)
     {
@@ -45,9 +45,9 @@ class GroupTranslation extends AbstractTranslation
     }
 
     /**
-     * Get the label
+     * Get label
      *
-     * @return string
+     * @return string $label
      */
     public function getLabel()
     {

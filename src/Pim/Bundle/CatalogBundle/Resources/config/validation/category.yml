@@ -1,4 +1,4 @@
-Pim\Bundle\CatalogBundle\Entity\Category:
+Pim\Bundle\CatalogBundle\Model\Category:
     constraints:
         - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
     properties:
@@ -12,7 +12,7 @@ Pim\Bundle\CatalogBundle\Entity\Category:
         translations:
             - Valid: ~
 
-Pim\Bundle\CatalogBundle\Entity\CategoryTranslation:
+Pim\Bundle\CatalogBundle\Model\CategoryTranslation:
     properties:
         label:
             - Length:

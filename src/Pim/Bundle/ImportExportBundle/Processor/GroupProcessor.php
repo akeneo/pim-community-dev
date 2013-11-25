@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ImportExportBundle\Processor;
 
-use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\CatalogBundle\Model\Group;
 
 /**
  * Valid group creation (or update) processor

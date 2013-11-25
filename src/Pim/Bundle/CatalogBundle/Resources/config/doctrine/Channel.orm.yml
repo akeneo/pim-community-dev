@@ -18,7 +18,7 @@ Pim\Bundle\CatalogBundle\Entity\Channel:
             nullable: true
     manyToOne:
         category:
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\Category
+            targetEntity: Pim\Bundle\CatalogBundle\Model\Category
             inversedBy: channels
             joinColumns:
                 category_id:

@@ -1,4 +1,4 @@
-Pim\Bundle\CatalogBundle\Entity\ProductPrice:
+Pim\Bundle\CatalogBundle\Model\ProductPrice:
     type: entity
     table: pim_catalog_product_value_price
     fields:
