@@ -107,6 +107,30 @@ function(_, __, AbstractView, FilterCollection, filterBuilder) {
                     m.set('index', m.get('index') - 1);
                 }
             });
+
+            // try to remove the deleted filter from filters logic
+            var filtersLogic = this.getFiltersLogic();
+            var newFiltersLogic = filtersLogic;
+            var index = '' + model.get('index');
+            if (filtersLogic == index || filtersLogic == 'NOT ' + index) {
+                newFiltersLogic = '';
+            } else {
+                newFiltersLogic = newFiltersLogic.replace(new RegExp(' \\((NOT )?' + index + '\\) ') , ' ');
+                newFiltersLogic = newFiltersLogic.replace(new RegExp(' (AND|OR) (NOT )?' + index + ' ') , ' ');
+                newFiltersLogic = newFiltersLogic.replace(new RegExp(' (AND|OR) (NOT )?' + index + '$') , '');
+                newFiltersLogic = newFiltersLogic.replace(new RegExp(' (NOT )?' + index + ' (AND|OR) ') , ' ');
+                newFiltersLogic = newFiltersLogic.replace(new RegExp('^(NOT )?' + index + ' (AND|OR) ') , '');
+            }
+            if (newFiltersLogic != filtersLogic) {
+                index = Number(index);
+                newFiltersLogic = newFiltersLogic.replace(/(\d+)/g, function (match) {
+                    if (Number(match) > index) {
+                        return '' + (Number(match) - 1);
+                    }
+                    return match;
+                });
+                this.setFiltersLogic(newFiltersLogic);
+            }
         },
 
         onResetCollection: function () {
