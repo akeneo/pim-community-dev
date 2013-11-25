@@ -1,8 +1,6 @@
 parameters:
     oro_form.validator.constraint_factory.class:               Oro\Bundle\FormBundle\Validator\ConstraintFactory
     oro_form.js_validation.constraints_provider.class:         Oro\Bundle\FormBundle\JsValidation\ConstraintsProvider
-    oro_form.js_validation.listener.repeated.class:            Oro\Bundle\FormBundle\JsValidation\EventListener\RepeatedTypeListener
-    oro_form.js_validation.listener.required_constraint.class: Oro\Bundle\FormBundle\JsValidation\EventListener\RequiredConstraintListener
     oro_form.twig.js_validation_extension.class:               Oro\Bundle\FormBundle\Twig\JsValidationExtension
     oro_form.twig.form.class:                                  Oro\Bundle\FormBundle\Twig\FormExtension
 
@@ -14,17 +12,6 @@ services:
         class: %oro_form.js_validation.constraints_provider.class%
         arguments:
             - @validator.mapping.class_metadata_factory
-
-    oro_form.js_validation.listener.repeated:
-        class: %oro_form.js_validation.listener.repeated.class%
-        tags:
-            - { name: kernel.event_listener, event: oro_js_validation.post_process, method: onPostProcess }
-
-
-    oro_form.js_validation.listener.required_constraint:
-        class: %oro_form.js_validation.listener.required_constraint.class%
-        tags:
-            - { name: kernel.event_listener, event: oro_js_validation.get_constraints, method: onGetConstraints }
 
     oro_form.twig.js_validation_extension:
         class: %oro_form.twig.js_validation_extension.class%

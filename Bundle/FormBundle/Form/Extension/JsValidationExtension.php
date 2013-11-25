@@ -2,34 +2,26 @@
 
 namespace Oro\Bundle\FormBundle\Form\Extension;
 
-use Oro\Bundle\FormBundle\JsValidation\ConstraintsProvider;
-
-use Oro\Bundle\FormBundle\JsValidation\JsValidationEvents;
-use Oro\Bundle\FormBundle\JsValidation\Event;
-
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-
 use Symfony\Component\Form\AbstractTypeExtension;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Validator\Constraint;
+
+use Oro\Bundle\FormBundle\JsValidation\ConstraintsProvider;
 
 class JsValidationExtension extends AbstractTypeExtension
 {
     /**
-     * @var array
+     * @var ConstraintsProvider
      */
-    protected $validationGroups;
+    protected $eventDispatcher;
 
     /**
      * @param ConstraintsProvider $constraintsProvider
-     * @param EventDispatcherInterface $eventDispatcher
      */
-    public function __construct(
-        ConstraintsProvider $constraintsProvider,
-        EventDispatcherInterface $eventDispatcher
-    ) {
+    public function __construct(ConstraintsProvider $constraintsProvider)
+    {
         $this->constraintsProvider = $constraintsProvider;
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -37,46 +29,22 @@ class JsValidationExtension extends AbstractTypeExtension
      */
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
-        $passableViewOptions = array(
-            'error_mapping', 'inherit_data', 'data_class', 'constraints', 'property_path', 'mapped', 'validation_groups'
-        );
-
-        // Pass to form view options that will be used by this extension logic
-        foreach ($passableViewOptions as $passableViewOption) {
-            if (isset($options[$passableViewOption])) {
-                $view->vars[$passableViewOption] = $options[$passableViewOption];
-            }
-        }
-
-        // Begin to initialize form views with JS validation data starting from the most root element
-        if (!$view->parent) {
-            $this->validationGroups = $this->extractValidationGroups($view);
-            $this->initFormViewJsValidationData($view);
-            unset($this->validationGroups);
-        }
+        $this->addDataValidationOptionalGroupAttribute($view, $options);
+        $this->addDataValidationAttribute($view, $form);
     }
 
     /**
-     * Initializes attributes of form view to pass JS validation data
+     * Adds "data-validation-optional-group" attribute to embedded form.
+     *
+     * Validation will run only if one of the children is filled in.
      *
      * @param FormView $view
+     * @param array $options
      */
-    protected function initFormViewJsValidationData(FormView $view)
+    protected function addDataValidationOptionalGroupAttribute(FormView $view, array $options)
     {
-        // Add "data-validation-optional-group" to form view if required.
-        if ($this->isOptionalEmbeddedFormView($view)) {
+        if ($this->isOptionalEmbeddedFormView($view, $options)) {
             $view->vars['attr']['data-validation-optional-group'] = null;
-        }
-
-        // Add "data-validation" to form view
-        $this->addDataValidationAttribute($view);
-
-        if (isset($view->vars['prototype']) && $view->vars['prototype'] instanceof FormView) {
-            $this->initFormViewJsValidationData($view->vars['prototype']);
-        }
-
-        foreach ($view->children as $child) {
-            $this->initFormViewJsValidationData($child);
         }
     }
 
@@ -85,35 +53,32 @@ class JsValidationExtension extends AbstractTypeExtension
      * run only if one of the children is filled in.
      *
      * @param FormView $view
+     * @param array $options
      * @return bool
      */
-    protected function isOptionalEmbeddedFormView(FormView $view)
+    protected function isOptionalEmbeddedFormView(FormView $view, array $options)
     {
-        // Should have children
+        // Optional embedded form view should have children
         if (!$view->children) {
             return false;
         }
 
-        // Should have parent
+        // Optional embedded form view should have parent
         if (!$view->parent) {
             return false;
         }
 
-        // Should not be a field with choices, suchs as checkboxes, radio or select
-        if (isset($view->vars['choices'])) {
+        // Optional embedded form view should not be a field with choices, such as checkboxes, radio or select
+        if (isset($options['choices'])) {
             return false;
         }
 
-
-        if ($view->vars['required']) {
-            // if required should not inherit data
-            if (!$view->vars['inherit_data']) {
-                return false;
+        // Optional embedded form view should not be required
+        if (isset($options['required']) && $options['required']) {
+            // Except case when it's inherit data
+            if (isset($options['inherit_data']) && $options['inherit_data']) {
+                return true;
             }
-        }
-
-        // Should not be required
-        if ($view->vars['required']) {
             return false;
         }
 
@@ -121,62 +86,103 @@ class JsValidationExtension extends AbstractTypeExtension
     }
 
     /**
-     * Adds attribute to form view that contain data for JS validation
+     * Adds "data-validation" attribute to form view that contain data for JS validation
      *
      * @param FormView $view
+     * @param FormInterface $form
      */
-    protected function addDataValidationAttribute(FormView $view)
+    protected function addDataValidationAttribute(FormView $view, FormInterface $form)
     {
-        $this->eventDispatcher->dispatch(JsValidationEvents::PRE_PROCESS, new Event\PreProcessEvent($view));
+        $data = $this->getConstraintsDataAsArray($form);
 
-        $constraints = $this->constraintsProvider->getFormViewConstraints($view, $this->validationGroups);
-
-        $this->eventDispatcher->dispatch(
-            JsValidationEvents::GET_CONSTRAINTS_EVENT,
-            new Event\GetConstraintsEvent(
-                $view,
-                $constraints
-            )
-        );
-
-        $value = array();
-        foreach ($constraints as $constraint) {
-            $name = $this->constraintsProvider->getConstraintName($constraint);
-            $value[$name] = $this->constraintsProvider->getConstraintProperties($constraint);
-        }
-
-        if ($value) {
+        if ($data) {
             if (!isset($view->vars['attr'])) {
                 $view->vars['attr'] = array();
             }
-            if (!isset($view->vars['attr']['data-validation']) || !is_array($view->vars['attr']['data-validation'])) {
-                $view->vars['attr']['data-validation'] = array();
+            if (isset($view->vars['attr']['data-validation'])) {
+                $originalData = $view->vars['attr']['data-validation'];
+                if (is_array($originalData)) {
+                    $data = array_merge($originalData, $data);
+                } elseif (is_string($originalData)) {
+                    $originalData = json_decode($originalData, true);
+                    if (is_array($originalData)) {
+                        $data = array_merge($originalData, $data);
+                    }
+                }
             }
-            $view->vars['attr']['data-validation'] = array_merge($value, $view->vars['attr']['data-validation']);
+            $view->vars['attr']['data-validation'] = $data;
         }
 
-        $this->eventDispatcher->dispatch(JsValidationEvents::POST_PROCESS, new Event\PostProcessEvent($view));
-
         if (isset($view->vars['attr']['data-validation']) && is_array($view->vars['attr']['data-validation'])) {
-            $view->vars['attr']['data-validation'] = json_encode($view->vars['attr']['data-validation']);
+            $view->vars['attr']['data-validation'] = json_encode(
+                $view->vars['attr']['data-validation'],
+                JSON_FORCE_OBJECT
+            );
         }
     }
 
     /**
-     * Extracts validation groups option from form view
-     *
-     * @param FormView $view
+     * @param FormInterface $form
      * @return array
      */
-    protected function extractValidationGroups(FormView $view)
+    protected function getConstraintsDataAsArray(FormInterface $form)
     {
-        $validationGroups = isset($view->vars['validation_groups']) ?
-            $view->vars['validation_groups'] : array('Default');
+        $constraints = $this->constraintsProvider->getFormConstraints($form);
 
-        if (is_callable($validationGroups)) {
-            $validationGroups = call_user_func($validationGroups, $view);
+        $value = array();
+        foreach ($constraints as $constraint) {
+            $name = $this->getConstraintName($constraint);
+            $value[$name] = $this->getConstraintProperties($constraint);
         }
-        return $validationGroups;
+
+        return $value;
+    }
+
+    /**
+     * Gets constraint name based on object
+     *
+     * @param Constraint $constraint
+     * @return mixed|string
+     */
+    protected function getConstraintName(Constraint $constraint)
+    {
+        $class = get_class($constraint);
+        $defaultClassPrefix = 'Symfony\\Component\\Validator\\Constraints\\';
+        if (0 === strpos($class, $defaultClassPrefix)) {
+            return str_replace($defaultClassPrefix, '', $class);
+        }
+        return $class;
+    }
+
+    /**
+     * Gets all properties of constraint that will be passed to JS validation
+     *
+     * @param Constraint $constraint
+     * @return array
+     */
+    protected function getConstraintProperties(Constraint $constraint)
+    {
+        $result = get_object_vars($constraint);
+        unset($result['groups']);
+        return $this->skipObjects($result);
+    }
+
+    /**
+     * @param array $value
+     * @return array
+     */
+    protected function skipObjects(array $value)
+    {
+        foreach ($value as $key => $element) {
+            if (is_object($element)) {
+                unset($value[$key]);
+            }
+            if (is_array($element)) {
+                $value[$key] = $this->skipObjects($element);
+            }
+        }
+
+        return $value;
     }
 
     /**

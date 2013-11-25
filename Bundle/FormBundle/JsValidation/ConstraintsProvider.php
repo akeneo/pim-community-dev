@@ -2,14 +2,11 @@
 
 namespace Oro\Bundle\FormBundle\JsValidation;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Form\FormInterface;
 
-use Symfony\Component\Form\FormView;
-
+use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Symfony\Component\Validator\MetadataFactoryInterface;
-use Symfony\Component\Validator\Constraint;
 
 class ConstraintsProvider
 {
@@ -34,22 +31,24 @@ class ConstraintsProvider
     /**
      * Gets constraints that should be checked on form view
      *
-     * @param FormView $view
-     * @param array $validationGroups
-     * @return Collection
+     * @param FormInterface $form
+     * @return Constraint[]
      */
-    public function getFormViewConstraints(FormView $view, array $validationGroups)
+    public function getFormConstraints(FormInterface $form)
     {
-        $constraints = $this->getMetadataConstraints($view);
+        $constraints = $this->getMetadataConstraints($form);
 
-        if (isset($view->vars['constraints'])) {
-            $constraints = array_merge($view->vars['constraints'], $constraints);
+        $embeddedConstraints = $form->getConfig()->getOption('constraints');
+        if ($embeddedConstraints) {
+            $constraints = array_merge($constraints, $embeddedConstraints);
         }
 
-        $result = new ArrayCollection();
+        $validationGroups = $this->getValidationGroups($form);
+
+        $result = array();
         foreach ($constraints as $constraint) {
             if (array_intersect($validationGroups, $constraint->groups)) {
-                $result->add($constraint);
+                $result[] = $constraint;
             }
         }
 
@@ -59,28 +58,29 @@ class ConstraintsProvider
     /**
      * Gets constraints for form view based on metadata
      *
-     * @param FormView $view
+     * @param FormInterface $form
      * @return array
      */
-    protected function getMetadataConstraints(FormView $view)
+    protected function getMetadataConstraints(FormInterface $form)
     {
-        $isMapped = (!isset($view->vars['mapped']) || $view->vars['mapped']);
+        $isMapped = $form->getConfig()->getOption('mapped', true);
 
-        if (!$view->parent || !$isMapped) {
+        if (!$form->getParent() || !$isMapped) {
             return array();
         }
 
-        $name = $view->vars['name'];
-        $parentName = $view->parent->vars['full_name'];
+        $name = $form->getName();
+        $parent = $form->getParent();
+        $parentKey = spl_object_hash($parent);
 
-        if (!isset($this->metadataConstraintsCache[$parentName])) {
-            $this->metadataConstraintsCache[$parentName] = $this->extractMetadataPropertiesConstraints($view->parent);
+        if (!isset($this->metadataConstraintsCache[$parentKey])) {
+            $this->metadataConstraintsCache[$parentKey] = $this->extractMetadataPropertiesConstraints($parent);
         }
 
         $result = array();
 
-        if (isset($this->metadataConstraintsCache[$parentName][$name])) {
-            $result = $this->metadataConstraintsCache[$parentName][$name]->constraints;
+        if (isset($this->metadataConstraintsCache[$parentKey][$name])) {
+            $result = $this->metadataConstraintsCache[$parentKey][$name]->constraints;
         }
 
         return $result;
@@ -89,19 +89,20 @@ class ConstraintsProvider
     /**
      * Extracts constraints based on validation metadata
      *
-     * @param FormView $view
+     * @param FormInterface $form
      * @return array
      */
-    protected function extractMetadataPropertiesConstraints(FormView $view)
+    protected function extractMetadataPropertiesConstraints(FormInterface $form)
     {
         $constraints = array();
-        if (isset($view->vars['data_class'])) {
+        if ($form->getConfig()->getDataClass()) {
             /** @var ClassMetadata $metadata */
-            $metadata = $this->metadataFactory->getMetadataFor($view->vars['data_class']);
+            $metadata = $this->metadataFactory->getMetadataFor($form->getConfig()->getDataClass());
             $constraints = $metadata->properties;
         }
-        if (!empty($constraints) && !empty($view->vars['error_mapping'])) {
-            foreach ($view->vars['error_mapping'] as $originalName => $mappedName) {
+        $errorMapping = $form->getConfig()->getOption('error_mapping');
+        if (!empty($constraints) && !empty($errorMapping)) {
+            foreach ($errorMapping as $originalName => $mappedName) {
                 if (isset($constraints[$originalName])) {
                     $constraints[$mappedName] = $constraints[$originalName];
                 }
@@ -112,49 +113,40 @@ class ConstraintsProvider
     }
 
     /**
-     * Gets constraint name based on object
+     * Returns the validation groups of the given form.
      *
-     * @param Constraint $constraint
-     * @return mixed|string
+     * @param FormInterface $form
+     * @return array
      */
-    public function getConstraintName(Constraint $constraint)
+    protected function getValidationGroups(FormInterface $form)
     {
-        $class = get_class($constraint);
-        $defaultClassPrefix = 'Symfony\\Component\\Validator\\Constraints\\';
-        if (0 === strpos($class, $defaultClassPrefix)) {
-            return str_replace($defaultClassPrefix, '', $class);
-        }
-        return $class;
+        do {
+            $groups = $form->getConfig()->getOption('validation_groups');
+
+            if (null !== $groups) {
+                return $this->resolveValidationGroups($groups, $form);
+            }
+
+            $form = $form->getParent();
+        } while (null !== $form);
+
+        return array(Constraint::DEFAULT_GROUP);
     }
 
     /**
-     * Gets all properties of constraint that will be passed to JS validation
+     * Post-processes the validation groups option for a given form.
      *
-     * @param Constraint $constraint
-     * @return array
+     * @param array|callable $groups The validation groups.
+     * @param FormInterface  $form   The validated form.
+     *
+     * @return array The validation groups.
      */
-    public function getConstraintProperties(Constraint $constraint)
+    protected function resolveValidationGroups($groups, FormInterface $form)
     {
-        $result = get_object_vars($constraint);
-        unset($result['groups']);
-        return $this->skipObjects($result);
-    }
-
-    /**
-     * @param array $value
-     * @return array
-     */
-    protected function skipObjects(array $value)
-    {
-        foreach ($value as $key => $element) {
-            if (is_object($element)) {
-                unset($value[$key]);
-            }
-            if (is_array($element)) {
-                $value[$key] = $this->skipObjects($element);
-            }
+        if (!is_string($groups) && is_callable($groups)) {
+            $groups = call_user_func($groups, $form);
         }
 
-        return $value;
+        return (array) $groups;
     }
 }
