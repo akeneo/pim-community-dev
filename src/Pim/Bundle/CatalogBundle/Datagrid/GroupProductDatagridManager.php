@@ -8,7 +8,7 @@ use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 
 use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
-use Oro\Bundle\GridBundle\Datagrid\FlexibleDatagridManager;
+use Pim\Bundle\GridBundle\Datagrid\FlexibleDatagridManager;
 use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
