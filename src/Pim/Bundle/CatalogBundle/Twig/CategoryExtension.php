@@ -101,8 +101,12 @@ class CategoryExtension extends \Twig_Extension
      *
      * @return array
      */
-    protected function formatCategoriesFromArray(array $categories, array $selectedIds, $withProductCount = false, $includeSub = false)
-    {
+    protected function formatCategoriesFromArray(
+        array $categories,
+        array $selectedIds,
+        $withProductCount = false,
+        $includeSub = false
+    ) {
         $result = array();
         foreach ($categories as $category) {
             $result[] = $this->formatCategoryFromArray($category, $selectedIds, $withProductCount, $includeSub);
@@ -130,8 +134,12 @@ class CategoryExtension extends \Twig_Extension
      *
      * @return array
      */
-    protected function formatCategoryFromArray(array $category, array $selectedIds, $withProductCount = false, $includeSub = false)
-    {
+    protected function formatCategoryFromArray(
+        array $category,
+        array $selectedIds,
+        $withProductCount = false,
+        $includeSub = false
+    ) {
         $state = $this->defineCategoryStateFromArray($category, $selectedIds);
         $label = $this->getLabel($category['item'], $withProductCount, $includeSub);
 
@@ -141,7 +149,8 @@ class CategoryExtension extends \Twig_Extension
             ),
             'data'     => $label,
             'state'    => $state,
-            'children' => $this->formatCategoriesFromArray($category['__children'], $selectedIds, $withProductCount, $includeSub)
+            'children' =>
+                $this->formatCategoriesFromArray($category['__children'], $selectedIds, $withProductCount, $includeSub)
         );
     }
 
@@ -163,8 +172,13 @@ class CategoryExtension extends \Twig_Extension
      *
      * @return array
      */
-    protected function formatCategory(CategoryInterface $category, array $selectedIds = array(), $withProductCount = false, $includeSub = false, array $children = array())
-    {
+    protected function formatCategory(
+        CategoryInterface $category,
+        array $selectedIds = array(),
+        $withProductCount = false,
+        $includeSub = false,
+        array $children = array()
+    ) {
         $state = $this->defineCategoryState($category, false, $selectedIds);
         $label = $this->getLabel($category, $withProductCount, $includeSub);
 
@@ -218,8 +232,12 @@ class CategoryExtension extends \Twig_Extension
      *
      * @return array
      */
-    public function childrenResponse(array $categories, CategoryInterface $parent = null, $withProductCount = false, $includeSub = false)
-    {
+    public function childrenResponse(
+        array $categories,
+        CategoryInterface $parent = null,
+        $withProductCount = false,
+        $includeSub = false
+    ) {
         $result = $this->formatCategories($categories, array(), $withProductCount, $includeSub);
 
         if ($parent !== null) {
@@ -239,8 +257,12 @@ class CategoryExtension extends \Twig_Extension
      *
      * @return array
      */
-    protected function formatCategories(array $categories, $selectedIds = array(), $withProductCount = false, $includeSub = false)
-    {
+    protected function formatCategories(
+        array $categories,
+        $selectedIds = array(),
+        $withProductCount = false,
+        $includeSub = false
+    ) {
         $result = array();
         foreach ($categories as $category) {
             $result[] = $this->formatCategory($category, array(), $withProductCount, $includeSub);
@@ -363,8 +385,11 @@ class CategoryExtension extends \Twig_Extension
      *
      * @return string
      */
-    protected function defineCategoryState(CategoryInterface $category, $hasChild = false, array $selectedIds = array())
-    {
+    protected function defineCategoryState(
+        CategoryInterface $category,
+        $hasChild = false,
+        array $selectedIds = array()
+    ) {
         $state = $category->hasChildren() ? 'closed' : 'leaf';
 
         if ($hasChild === true) {
@@ -404,14 +429,6 @@ class CategoryExtension extends \Twig_Extension
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'pim_category_extension';
-    }
-
-    /**
      * List products for jstree
      *
      * @param array $products
@@ -442,5 +459,13 @@ class CategoryExtension extends \Twig_Extension
             'name'        => $product->getIdentifier(),
             'description' => (string) $product
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return 'pim_category_extension';
     }
 }
