@@ -48,7 +48,7 @@ class CategoryExtension extends \Twig_Extension
     /**
      * List root categories (trees) for jstree
      *
-     * @param array $trees
+     * @param array   $trees
      * @param integer $selectedTreeId
      * @param boolean $includeSub
      *
@@ -66,30 +66,16 @@ class CategoryExtension extends \Twig_Extension
     }
 
     /**
-     * Format a tree for jstree js plugin
-     * Returns an array formated as:
-     * array(
-     *     'id'       => int,    // the tree id
-     *     'label'    => string, // the tree label
-     *     'selected' => boolean // predicate to know if the tree is selected or not
-     * )
+     * Format a list of categories
      *
-     * @param CategoryInterface $tree
-     * @param integer           $selectedTreeId
+     * @param array             $categories
+     * @param CategoryInterface $selectedCategory
+     * @param CategoryInterface $parent
+     * @param boolean           $withProductCount
+     * @param boolean           $includeSub
      *
      * @return array
      */
-    protected function formatTree(CategoryInterface $tree, $selectedTreeId, $includeSub)
-    {
-        $label = $this->getLabel($tree, true, $includeSub);
-
-        return array(
-            'id' => $tree->getId(),
-            'label' => $label,
-            'selected' => ($tree->getId() === $selectedTreeId) ? 'true' : 'false'
-        );
-    }
-
     public function childrenTreeResponse(
         array $categories,
         CategoryInterface $selectedCategory = null,
@@ -100,14 +86,9 @@ class CategoryExtension extends \Twig_Extension
         $result = $this->formatCategoriesFromArray($categories, $selectedCategory, $withProductCount, $includeSub);
 
         if ($parent !== null) {
-            $result = array(
-                'attr' => array(
-                    'id' => 'node_'. $parent->getId()
-                ),
-                'data' => $parent->getLabel(),
-                'state' => $this->defineCategoryState($parent),
-                'children' => $result
-            );
+            $childrenResult = $result;
+            $result = $this->formatCategory($parent, $selectedCategory, $withProductCount, $includeSub);
+            $result['children'] = $childrenResult;
         }
 
         return $result;
@@ -146,10 +127,10 @@ class CategoryExtension extends \Twig_Extension
      *     'children' => array() // the same array for children
      * )
      *
-     * @param array $category
+     * @param array             $category
      * @param CategoryInterface $selectedCategory
-     * @param boolean $withProductCount
-     * @param boolean $includeSub
+     * @param boolean           $withProductCount
+     * @param boolean           $includeSub
      *
      * @return array
      */
@@ -165,6 +146,63 @@ class CategoryExtension extends \Twig_Extension
             'data'     => $label,
             'state'    => $state,
             'children' => $this->formatCategoriesFromArray($category['__children'], $selectedCategory, $withProductCount, $includeSub)
+        );
+    }
+
+    /**
+     * Format a category from an array
+     * Returns an array formatted as:
+     * array(
+     *     'attr'     => array(
+     *         'id' => 'node_' + <categoryId>
+     *     ),
+     *     'data'     => string, // the category label + count if needed
+     *     'state'    => string, // the css classes for category state
+     * )
+     *
+     * @param CategoryInterface $category
+     * @param CategoryInterface $selectedCategory
+     * @param boolean           $withProductCount
+     * @param boolean           $includeSub
+     *
+     * @return array
+     */
+    protected function formatCategory(CategoryInterface $category, CategoryInterface $selectedCategory, $withProductCount, $includeSub)
+    {
+        $state = $this->defineCategoryState($category, false, array($selectedCategory->getId()));
+        $label = $this->getLabel($category, $withProductCount, $includeSub);
+
+        return array(
+            'attr'  => array(
+                'id' => 'node_'. $category->getId()
+            ),
+            'data'  => $label,
+            'state' => $state
+        );
+    }
+
+    /**
+     * Format a tree for jstree js plugin
+     * Returns an array formated as:
+     * array(
+     *     'id'       => int,    // the tree id
+     *     'label'    => string, // the tree label
+     *     'selected' => boolean // predicate to know if the tree is selected or not
+     * )
+     *
+     * @param CategoryInterface $tree
+     * @param integer           $selectedTreeId
+     *
+     * @return array
+     */
+    protected function formatTree(CategoryInterface $tree, $selectedTreeId, $includeSub)
+    {
+        $label = $this->getLabel($tree, true, $includeSub);
+
+        return array(
+            'id' => $tree->getId(),
+            'label' => $label,
+            'selected' => ($tree->getId() === $selectedTreeId) ? 'true' : 'false'
         );
     }
 
@@ -198,6 +236,12 @@ class CategoryExtension extends \Twig_Extension
         return $result;
     }
 
+    /**
+     * List categories
+     * @param array $categories
+     * @param Collection $selectedCategories
+     * @return array
+     */
     public function listCategoriesResponse(array $categories, Collection $selectedCategories)
     {
         $selectedIds = array();
