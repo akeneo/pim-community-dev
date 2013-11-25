@@ -1,4 +1,4 @@
-# 1.0.0-beta-3
+# 1.0.0-beta-3 - "Hare Conditioned"
 
 ## Features
 - History of changes for groups and variant groups
