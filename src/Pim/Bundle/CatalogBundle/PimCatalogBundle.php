@@ -6,7 +6,7 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler;
 use Doctrine\Bundle\DoctrineBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
-//use Doctrine\Bundle\MongoDBBundle\DependencyInjection\Compiler\DoctrineMongoDBMappingsPass;
+use Doctrine\Bundle\MongoDBBundle\DependencyInjection\Compiler\DoctrineMongoDBMappingsPass;
 
 /**
  * Pim Catalog Bundle
@@ -40,7 +40,7 @@ class PimCatalogBundle extends Bundle
                 'pim_catalog.storage_driver.doctrine/orm'
             )
         );
-/*
+
         $container->addCompilerPass(
             DoctrineMongoDBMappingsPass::createYamlMappingDriver(
                 $productMappings,
@@ -48,6 +48,5 @@ class PimCatalogBundle extends Bundle
                 'pim_catalog.storage_driver.doctrine/mongodb-odm'
             )
         );
-*/
     }
 }
