@@ -92,6 +92,74 @@ class CategoryExtension extends \Twig_Extension
     }
 
     /**
+     * List categories and children
+     *
+     * @param array             $categories
+     * @param CategoryInterface $parent
+     * @param boolean           $withProductsCount
+     * @param boolean           $includeSub
+     *
+     * @return array
+     */
+    public function childrenResponse(
+        array $categories,
+        CategoryInterface $parent = null,
+        $withProductCount = false,
+        $includeSub = false
+    ) {
+        $result = $this->formatCategories($categories, array(), $withProductCount, $includeSub);
+
+        if ($parent !== null) {
+            $result = $this->formatCategory($parent, array(), $withProductCount, $includeSub, $result);
+        }
+
+        return $result;
+    }
+
+    /**
+     * List categories
+     *
+     * @param array      $categories
+     * @param Collection $selectedCategories
+     *
+     * @return array
+     */
+    public function listCategoriesResponse(array $categories, Collection $selectedCategories)
+    {
+        $selectedIds = array();
+        foreach ($selectedCategories as $selectedCategory) {
+            $selectedIds[] = $selectedCategory->getId();
+        }
+
+        return $this->formatCategoriesAndCount($categories, $selectedIds, true);
+    }
+
+    /**
+     * List products for jstree
+     *
+     * @param array $products
+     *
+     * @return array
+     */
+    public function listProducts(array $products)
+    {
+        $productsList = array();
+        foreach ($products as $product) {
+            $productsList[] = $this->formatProduct($product);
+        }
+
+        return $productsList;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return 'pim_category_extension';
+    }
+
+    /**
      * Format categories from an array
      *
      * @param array   $categories
@@ -223,31 +291,6 @@ class CategoryExtension extends \Twig_Extension
     }
 
     /**
-     * List categories and children
-     *
-     * @param array             $categories
-     * @param CategoryInterface $parent
-     * @param boolean           $withProductsCount
-     * @param boolean           $includeSub
-     *
-     * @return array
-     */
-    public function childrenResponse(
-        array $categories,
-        CategoryInterface $parent = null,
-        $withProductCount = false,
-        $includeSub = false
-    ) {
-        $result = $this->formatCategories($categories, array(), $withProductCount, $includeSub);
-
-        if ($parent !== null) {
-            $result = $this->formatCategory($parent, array(), $withProductCount, $includeSub, $result);
-        }
-
-        return $result;
-    }
-
-    /**
      * Format categories
      *
      * @param array   $categories
@@ -272,24 +315,6 @@ class CategoryExtension extends \Twig_Extension
     }
 
     /**
-     * List categories
-     *
-     * @param array      $categories
-     * @param Collection $selectedCategories
-     *
-     * @return array
-     */
-    public function listCategoriesResponse(array $categories, Collection $selectedCategories)
-    {
-        $selectedIds = array();
-        foreach ($selectedCategories as $selectedCategory) {
-            $selectedIds[] = $selectedCategory->getId();
-        }
-
-        return $this->formatCategoriesAndCount($categories, $selectedIds, true);
-    }
-
-    /**
      * Format categories counting selected children
      *
      * @param array $categories
@@ -310,8 +335,8 @@ class CategoryExtension extends \Twig_Extension
     /**
      * Format category and count selected children
      *
-     * @param array $category
-     * @param array $selectedIds
+     * @param array   $category
+     * @param array   $selectedIds
      * @param boolean $count
      *
      * @return array
@@ -429,23 +454,6 @@ class CategoryExtension extends \Twig_Extension
     }
 
     /**
-     * List products for jstree
-     *
-     * @param array $products
-     *
-     * @return array
-     */
-    public function listProducts(array $products)
-    {
-        $productsList = array();
-        foreach ($products as $product) {
-            $productsList[] = $this->formatProduct($product);
-        }
-
-        return $productsList;
-    }
-
-    /**
      * Format a product interface for jstree
      *
      * @param ProductInterface $product
@@ -459,13 +467,5 @@ class CategoryExtension extends \Twig_Extension
             'name'        => $product->getIdentifier(),
             'description' => (string) $product
         );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'pim_category_extension';
     }
 }
