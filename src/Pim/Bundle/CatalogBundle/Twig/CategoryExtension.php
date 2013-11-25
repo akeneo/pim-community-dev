@@ -86,9 +86,7 @@ class CategoryExtension extends \Twig_Extension
         $result = $this->formatCategoriesFromArray($categories, $selectedCategory, $withProductCount, $includeSub);
 
         if ($parent !== null) {
-            $childrenResult = $result;
-            $result = $this->formatCategory($parent, $selectedCategory, $withProductCount, $includeSub);
-            $result['children'] = $childrenResult;
+            $result = $this->formatCategory($parent, array($selectedCategory->getId()), $withProductCount, $includeSub, $result);
         }
 
         return $result;
@@ -167,18 +165,24 @@ class CategoryExtension extends \Twig_Extension
      *
      * @return array
      */
-    protected function formatCategory(CategoryInterface $category, CategoryInterface $selectedCategory, $withProductCount, $includeSub)
+    protected function formatCategory(CategoryInterface $category, array $selectedIds = array(), $withProductCount = false, $includeSub = false, array $children = array())
     {
-        $state = $this->defineCategoryState($category, false, array($selectedCategory->getId()));
+        $state = $this->defineCategoryState($category, false, $selectedIds);
         $label = $this->getLabel($category, $withProductCount, $includeSub);
 
-        return array(
+        $result = array(
             'attr'  => array(
                 'id' => 'node_'. $category->getId()
             ),
             'data'  => $label,
             'state' => $state
         );
+
+        if (!empty($children)) {
+            $result['children'] = $children;
+        }
+
+        return $result;
     }
 
     /**
@@ -206,31 +210,43 @@ class CategoryExtension extends \Twig_Extension
         );
     }
 
-    public function childrenResponse(array $categories, Category $parent = null, $withProductsCount = false, $includeSub = false)
+    /**
+     * List categories and children
+     *
+     * @param array             $categories
+     * @param CategoryInterface $parent
+     * @param boolean           $withProductsCount
+     * @param boolean           $includeSub
+     *
+     * @return array
+     */
+    public function childrenResponse(array $categories, CategoryInterface $parent = null, $withProductCount = false, $includeSub = false)
+    {
+        $result = $this->formatCategories($categories, array(), $withProductCount, $includeSub);
+
+        if ($parent !== null) {
+            $result = $this->formatCategory($parent, array(), $withProductCount, $includeSub, $result);
+        }
+
+        return $result;
+    }
+
+    /**
+     * Format categories
+     *
+     * @param array $categories
+     * @param array $selectedIds
+     * @param boolean $withProductCount
+     * @param boolean $includeSub
+     *
+     * @return array
+     */
+    protected function formatCategories(array $categories, $selectedIds = array(), $withProductCount = false, $includeSub = false)
     {
         $result = array();
 
         foreach ($categories as $category) {
-            $label = $this->getLabel($category, $withProductsCount, $includeSub);
-
-            $result[] = array(
-                'attr' => array(
-                    'id' => 'node_'. $category->getId()
-                ),
-                'data' => $label,
-                'state' => $this->defineCategoryState($category)
-            );
-        }
-
-        if ($parent !== null) {
-            $result = array(
-                'attr' => array(
-                    'id' => 'node_'. $parent->getId()
-                ),
-                'data' => $this->getLabel($parent),
-                'state' => $this->defineCategoryState($parent),
-                'children' => $result
-            );
+            $result[] = $this->formatCategory($category, array(), $withProductCount, $includeSub);
         }
 
         return $result;
