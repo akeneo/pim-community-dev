@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\FormBundle\JsValidation;
+namespace Oro\Bundle\FormBundle\Form\Extension\JsValidation;
 
 use Symfony\Component\Form\FormInterface;
 

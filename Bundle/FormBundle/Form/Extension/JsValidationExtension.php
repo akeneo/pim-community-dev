@@ -7,7 +7,7 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Validator\Constraint;
 
-use Oro\Bundle\FormBundle\JsValidation\ConstraintsProvider;
+use Oro\Bundle\FormBundle\Form\Extension\JsValidation\ConstraintsProvider;
 
 class JsValidationExtension extends AbstractTypeExtension
 {
@@ -75,7 +75,7 @@ class JsValidationExtension extends AbstractTypeExtension
 
         // Optional embedded form view should not be required
         if (isset($options['required']) && $options['required']) {
-            // Except case when it's inherit data
+            // Except case when it inherits data
             if (isset($options['inherit_data']) && $options['inherit_data']) {
                 return true;
             }
@@ -96,9 +96,6 @@ class JsValidationExtension extends AbstractTypeExtension
         $data = $this->getConstraintsDataAsArray($form);
 
         if ($data) {
-            if (!isset($view->vars['attr'])) {
-                $view->vars['attr'] = array();
-            }
             if (isset($view->vars['attr']['data-validation'])) {
                 $originalData = $view->vars['attr']['data-validation'];
                 if (is_array($originalData)) {
@@ -122,6 +119,8 @@ class JsValidationExtension extends AbstractTypeExtension
     }
 
     /**
+     * Gets an array of constraints data that will be used in JS validation
+     *
      * @param FormInterface $form
      * @return array
      */
@@ -168,6 +167,8 @@ class JsValidationExtension extends AbstractTypeExtension
     }
 
     /**
+     * Recursively skips object values
+     *
      * @param array $value
      * @return array
      */

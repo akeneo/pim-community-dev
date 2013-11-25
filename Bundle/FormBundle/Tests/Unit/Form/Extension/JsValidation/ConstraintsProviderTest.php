@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\FormBundle\Tests\Unit\JsValidation\Event;
+namespace Oro\Bundle\FormBundle\Tests\Unit\Form\Extension\JsValidation;
 
 use Symfony\Component\Validator\Constraints;
 use Symfony\Component\Validator\Constraint;
@@ -9,7 +9,7 @@ use Symfony\Component\Form\FormConfigBuilder;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\Form;
 
-use Oro\Bundle\FormBundle\JsValidation\ConstraintsProvider;
+use Oro\Bundle\FormBundle\Form\Extension\JsValidation\ConstraintsProvider;
 
 class ConstraintsProviderTest extends \PHPUnit_Framework_TestCase
 {

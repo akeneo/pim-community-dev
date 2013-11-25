@@ -18,8 +18,8 @@ class RepeatedTypeExtension extends AbstractTypeExtension
 
         if (isset($view->vars['attr']['data-validation'])) {
             $first->vars['attr']['data-validation'] = $view->vars['attr']['data-validation'];
+            unset($view->vars['attr']['data-validation']);
         }
-        unset($view->vars['attr']['data-validation']);
 
         $secondValue = array();
         $secondValue['Repeated'] = array(
