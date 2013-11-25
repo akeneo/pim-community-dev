@@ -1,9 +1,9 @@
 /* global define, require, describe, it, expect, beforeEach, afterEach, spyOn, jasmine */
-define(['oro/sync'],
-function (sync) {
+define(['oro/sync', 'requirejs-exposure'],
+function (sync, requirejsExposure) {
     'use strict';
 
-    var exposure = require('oro/sync/exposure');
+    var exposure = requirejsExposure.disclose('oro/sync');
 
     describe('oro/sync', function () {
         var service, messenger, __;

@@ -22,6 +22,11 @@ class DbSpool extends \Swift_ConfigurableSpool
      */
     protected $entityClass;
 
+    /**
+     * @var bool
+     */
+    protected $flushOnQueue = false;
+
     public function __construct(EntityManager $em, $entityClass)
     {
         $this->em = $em;
@@ -68,7 +73,9 @@ class DbSpool extends \Swift_ConfigurableSpool
 
         try {
             $this->em->persist($mailObject);
-            $this->em->flush($mailObject);
+            if ($this->flushOnQueue) {
+                $this->em->flush($mailObject);
+            }
         } catch (\Exception $e) {
             throw new \Swift_IoException("Unable to persist object for enqueuing message");
         }
@@ -119,5 +126,13 @@ class DbSpool extends \Swift_ConfigurableSpool
         }
 
         return $count;
+    }
+
+    /**
+     * @param bool $flush
+     */
+    public function setFlushOnQueue($flush)
+    {
+        $this->flushOnQueue = $flush;
     }
 }
