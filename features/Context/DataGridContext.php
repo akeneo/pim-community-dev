@@ -50,13 +50,13 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
         }
 
         assertEquals(
-            intval($count),
+            $count,
             $actualCount = $this->datagrid->getToolbarCount(),
-            sprintf('Expecting to see %d record(s) in the datagrid, actually saw %d', $count, $actualCount)
+            sprintf('Expecting to see %d record(s) in the datagrid toolbar, actually saw %d', $count, $actualCount)
         );
 
         assertEquals(
-            intval($count),
+            $count,
             $actualCount = $this->datagrid->countRows(),
             sprintf('Expecting to see %d row(s) in the datagrid, actually saw %d.', $count, $actualCount)
         );

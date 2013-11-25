@@ -39,6 +39,35 @@ class Grid extends Index
     }
 
     /**
+     * Returns the currently visible grid, if there is one
+     *
+     * @return NodeElement
+     * @throws InvalidArgumentException
+     */
+    public function getGrid()
+    {
+        $grids = $this->getElement('Container')->findAll('css', $this->elements['Grid']['css']);
+
+        foreach ($grids as $grid) {
+            if ($grid->isVisible()) {
+                return $grid;
+            }
+        }
+
+        throw new \InvalidArgumentException('No visible grids found');
+    }
+
+    /**
+     * Returns the grid body
+     *
+     * @return NodeElement
+     */
+    public function getGridContent()
+    {
+        return $this->getGrid()->find('css', 'tbody');
+    }
+
+    /**
      * Get a row from the grid containing the value asked
      * @param string $value
      *
@@ -48,7 +77,7 @@ class Grid extends Index
     public function getRow($value)
     {
         $value = str_replace('"', '', $value);
-        $gridRow = $this->getElement('Grid content')->find('css', sprintf('tr:contains("%s")', $value));
+        $gridRow = $this->getGridContent()->find('css', sprintf('tr:contains("%s")', $value));
 
         if (!$gridRow) {
             throw new \InvalidArgumentException(
@@ -57,26 +86,6 @@ class Grid extends Index
         }
 
         return $gridRow;
-    }
-
-    /**
-     * Get row position
-     * @param string $value
-     *
-     * @throws \InvalidArgumentException
-     * @return int
-     */
-    public function getRowPosition($value)
-    {
-        foreach ($this->getRows() as $key => $row) {
-            if ($row->find('css', sprintf('td:contains("%s")', $value))) {
-                return $key;
-            }
-        }
-
-        throw new \InvalidArgumentException(
-            sprintf('Couldn\'t find a row for value "%s"', $value)
-        );
     }
 
     /**
@@ -249,16 +258,7 @@ class Grid extends Index
             return false;
         }
 
-        $rows = $this->getRows();
-        $rowCount = count($rows);
-        $values = array();
-        $currentRow = 0;
-        $columnPosition = $this->getColumnPosition($column);
-        while ($rowCount > 0) {
-            $values[] = $this->getRowCell($rows[$currentRow], $columnPosition)->getText();
-            $currentRow++;
-            $rowCount--;
-        }
+        $values = $this->getValuesInColumn($column);
         $sortedValues = $values;
         if ($order === 'ascending') {
             sort($sortedValues);
@@ -552,17 +552,7 @@ class Grid extends Index
      */
     protected function getColumnHeaders($withHidden = false, $withActions = true)
     {
-        $grids = $this->getElement('Container')->findAll('css', $this->elements['Grid']['css']);
-        foreach ($grids as $grid) {
-            if ($grid->isVisible()) {
-                $headers = $grid->findAll('css', 'thead th');
-                break;
-            }
-        }
-
-        if (!isset($headers) || !$headers) {
-            throw new \InvalidArgumentException('No visible grids found');
-        }
+        $headers = $this->getGrid()->findAll('css', 'thead th');
 
         if (!$withActions) {
             foreach ($headers as $key => $header) {
@@ -595,7 +585,7 @@ class Grid extends Index
      */
     protected function getRows()
     {
-        return $this->getElement('Grid content')->findAll('css', 'tr');
+        return $this->getGridContent()->findAll('css', 'tr');
     }
 
     /**
