@@ -5,7 +5,7 @@ namespace Oro\Bundle\EntityConfigBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="Oro\Bundle\EntityConfigBundle\Entity\Repository\OptionSetRelationRepository")
  * @ORM\Table(name="oro_entity_config_optionset_relation")
  * @ORM\HasLifecycleCallbacks
  */
@@ -21,17 +21,8 @@ class OptionSetRelation
     protected $id;
 
     /**
-     * @var EntityConfigModel
-     * @ORM\ManyToOne(targetEntity="EntityConfigModel", inversedBy="fields", cascade={"persist"})
-     * @ORM\JoinColumns({
-     *  @ORM\JoinColumn(name="entity_id", referencedColumnName="id")
-     * })
-     */
-    protected $entity;
-
-    /**
      * @var FieldConfigModel
-     * @ORM\ManyToOne(targetEntity="FieldConfigModel", inversedBy="options", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="FieldConfigModel", inversedBy="options")
      * @ORM\JoinColumns({
      *  @ORM\JoinColumn(referencedColumnName="id")
      * })
@@ -40,31 +31,12 @@ class OptionSetRelation
 
     /**
      * @var OptionSet
-     * @ORM\ManyToOne(targetEntity="OptionSet", inversedBy="options", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="OptionSet", inversedBy="relation")
      * @ORM\JoinColumns({
      *  @ORM\JoinColumn(referencedColumnName="id")
      * })
      */
     protected $option;
-
-    /**
-     * @param \Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel $entity
-     * @return $this
-     */
-    public function setEntity($entity)
-    {
-        $this->entity = $entity;
-
-        return $this;
-    }
-
-    /**
-     * @return \Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel
-     */
-    public function getEntity()
-    {
-        return $this->entity;
-    }
 
     /**
      * @param \Oro\Bundle\EntityConfigBundle\Entity\FieldConfigModel $field
@@ -121,5 +93,18 @@ class OptionSetRelation
     public function getOption()
     {
         return $this->option;
+    }
+
+    /**
+     * @param $id
+     * @param field
+     * @param $option
+     */
+    public function setData($id, $field, $option)
+    {
+        $this
+            ->setId($id)
+            ->setField($field)
+            ->setOption($option);
     }
 }

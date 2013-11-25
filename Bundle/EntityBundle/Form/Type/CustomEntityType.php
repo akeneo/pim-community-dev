@@ -45,7 +45,8 @@ class CustomEntityType extends AbstractType
         'manyToOne'  => 'oro_entity_select',
         'oneToMany'  => 'oro_multiple_entity',
         'manyToMany' => 'oro_multiple_entity',
-        'optionSet'  => 'choice',
+        'optionSet'  => 'oro_option_select',
+        //'optionSet'  => 'choice',
     ];
 
     /**
@@ -113,11 +114,12 @@ class CustomEntityType extends AbstractType
                         break;
                     case 'optionSet':
                         $options['multiple'] = $extendConfig->get('set_expanded');
-                        $modelOptions = $extendConfigProvider->getConfigManager()->getConfigFieldModel(
+                        $configFieldModel    = $extendConfigProvider->getConfigManager()->getConfigFieldModel(
                             $className,
                             $fieldConfigId->getFieldName()
-                        )->getOptions()->toArray();
+                        );
 
+                        $modelOptions = $configFieldModel->getOptions()->toArray();
                         uasort(
                             $modelOptions,
                             function ($a, $b) {
@@ -125,8 +127,20 @@ class CustomEntityType extends AbstractType
                             }
                         );
 
+                        $options['config_id'] = $extendConfig->getId();
+
                         foreach ($modelOptions as $option) {
                             $options['choices'][$option->getId()] = $option->getLabel();
+                            if ($option->getIsDefault()) {
+                                $options['data'][] = $option->getId();
+                            }
+                        }
+
+                        if ($extendConfig->is('set_expanded', false)) {
+                            $options['empty_value'] = 'oro.form.choose_value';
+                            if (isset($options['data']) && count($options['data'])) {
+                                $options['data'] = array_shift($options['data']);
+                            }
                         }
                         break;
                     case 'manyToOne':

@@ -22,7 +22,7 @@ class OptionSet
 
     /**
      * @var FieldConfigModel
-     * @ORM\ManyToOne(targetEntity="FieldConfigModel", inversedBy="options", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="FieldConfigModel", inversedBy="options")
      * @ORM\JoinColumns({
      *  @ORM\JoinColumn(referencedColumnName="id")
      * })
@@ -46,6 +46,12 @@ class OptionSet
      * @ORM\Column(type="boolean", nullable=true)
      */
     protected $is_default;
+
+    /**
+     * @ORM\OneToMany(targetEntity="OptionSetRelation", mappedBy="option", cascade={"remove"})
+     */
+    private $relation;
+
 
     /**
      * @return mixed
