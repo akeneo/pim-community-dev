@@ -11,16 +11,13 @@
 <div class="widget-content email-form">
     {% if saved %}
         <script type="text/javascript">
-            require(['underscore', 'oro/translator', 'oro/widget-manager', 'oro/messenger', 'oro/registry'],
-            function(_, __, widgetManager, messenger, registry) {
+            require(['underscore', 'oro/translator', 'oro/widget-manager', 'oro/messenger', 'oro/mediator'],
+            function(_, __, widgetManager, messenger, mediator) {
                 widgetManager.getWidgetInstance({{ app.request.get('_wid')|json_encode|raw }}, function(widget) {
                     messenger.notificationFlashMessage('success', __('The email was sent'));
                     widget.remove();
                     {% if form.vars.value.gridName|length %}
-                    var grid = registry.getElement('datagrid', {{ form.vars.value.gridName|json_encode|raw }});
-                    if (!_.isUndefined(grid)) {
-                        grid.getRefreshAction().execute();
-                    }
+                    mediator.trigger('datagrid:refresh:' + {{ form.vars.value.gridName|json_encode|raw }});
                     {% endif %}
                 });
             });

@@ -84,8 +84,6 @@ function($, _, Backbone, __, tools, mediator, registry, LoadingMask,
                 grid = new Grid(_.extend({collection: collection}, options));
                 this.$el.append(grid.render().$el);
                 mediator.trigger('datagrid:created', grid, this.$el);
-                // @todo delete
-                registry.setElement('datagrid', options.name, grid);
                 mediator.trigger('datagrid:created:' + options.name, grid);
 
                 if (options.routerEnabled !== false) {
@@ -185,6 +183,7 @@ function($, _, Backbone, __, tools, mediator, registry, LoadingMask,
     return function (builders) {
         var $container = $(document),
             $grids = $container.find(gridSelector);
+
         $grids.each(function (i, el) {
             var $el = $(el);
             _.each(builders, function (builder) {

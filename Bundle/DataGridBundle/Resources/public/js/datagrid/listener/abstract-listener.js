@@ -1,6 +1,6 @@
-/* global define */
-define(['underscore', 'backbone', 'oro/registry', 'oro/mediator'],
-function(_, Backbone, registry, mediator) {
+/*jslint nomen: true*/
+/*global define*/
+define(['underscore', 'backbone', 'oro/mediator'], function (_, Backbone, mediator) {
     'use strict';
 
     /**
@@ -26,7 +26,7 @@ function(_, Backbone, registry, mediator) {
          *
          * @param {Object} options
          */
-        initialize: function(options) {
+        initialize: function (options) {
 
             if (!_.has(options, 'columnName')) {
                 throw new Error('Data column name is not specified');
@@ -56,13 +56,8 @@ function(_, Backbone, registry, mediator) {
          * @param {String} datagridName
          * @private
          */
-        _assignDatagridAndSubscribe: function(datagridName) {
-            var datagrid = registry.getElement('datagrid', datagridName);
-            if (datagrid) {
-                this.setDatagridAndSubscribe(datagrid);
-            } else {
-                mediator.once("datagrid:created:" + datagridName, this.setDatagridAndSubscribe, this);
-            }
+        _assignDatagridAndSubscribe: function (datagridName) {
+            mediator.once("datagrid:created:" + datagridName, this.setDatagridAndSubscribe, this);
         },
 
         /**
@@ -70,7 +65,7 @@ function(_, Backbone, registry, mediator) {
          *
          * @param {oro.datagrid.Grid} datagrid
          */
-        setDatagridAndSubscribe: function(datagrid) {
+        setDatagridAndSubscribe: function (datagrid) {
             this.datagrid = datagrid;
             this.datagrid.collection.on('change:' + this.columnName, this._onModelEdited, this);
         },
@@ -96,7 +91,7 @@ function(_, Backbone, registry, mediator) {
          * @protected
          * @abstract
          */
-        _processValue: function(value, model) {
+        _processValue: function (value, model) {
             throw new Error('_processValue method is abstract and must be implemented');
         }
     });

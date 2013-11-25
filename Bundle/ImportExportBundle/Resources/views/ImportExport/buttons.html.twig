@@ -44,12 +44,7 @@
                     }
                 });
             };
-            var datagrid = registry.getElement('datagrid', datagridName);
-            if (datagrid) {
-                onGridAdd(datagrid);
-            } else {
-                mediator.once("datagrid:created:" + datagridName, onGridAdd);
-            }
+            mediator.once("datagrid:created:" + datagridName, onGridAdd);
             {% endif %}
         });
 
