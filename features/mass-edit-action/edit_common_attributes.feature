@@ -7,8 +7,8 @@ Feature: Edit common attributes of many products at once
   Background:
     Given a "footwear" catalog configuration
     And the following attribute:
-      | code   | label  | type               | metric family | default metric unit | families                 |
-      | weight | Weight | pim_catalog_metric | Weight        | GRAM                | boots, sneakers, sandals |
+      | code   | label  | type   | metric family | default metric unit | families                 |
+      | weight | Weight | metric | Weight        | GRAM                | boots, sneakers, sandals |
     And the following products:
      | sku      | family   |
      | boots    | boots    |

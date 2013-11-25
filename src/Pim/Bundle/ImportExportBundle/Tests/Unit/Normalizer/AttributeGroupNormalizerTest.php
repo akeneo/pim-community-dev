@@ -84,7 +84,8 @@ class AttributeGroupNormalizerTest extends NormalizerTestCase
 
     /**
      * Get labels
-     * @param  array $data
+     * @param array $data
+     *
      * @return array
      */
     protected function getLabels($data)
@@ -94,7 +95,8 @@ class AttributeGroupNormalizerTest extends NormalizerTestCase
 
     /**
      * Get attributes
-     * @param  array              $data
+     * @param array $data
+     *
      * @return ProductAttribute[]
      */
     protected function getAttributes($data)

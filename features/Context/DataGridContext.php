@@ -50,13 +50,13 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
         }
 
         assertEquals(
-            intval($count),
+            $count,
             $actualCount = $this->datagrid->getToolbarCount(),
-            sprintf('Expecting to see %d record(s) in the datagrid, actually saw %d', $count, $actualCount)
+            sprintf('Expecting to see %d record(s) in the datagrid toolbar, actually saw %d', $count, $actualCount)
         );
 
         assertEquals(
-            intval($count),
+            $count,
             $actualCount = $this->datagrid->countRows(),
             sprintf('Expecting to see %d row(s) in the datagrid, actually saw %d.', $count, $actualCount)
         );
@@ -370,10 +370,9 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      * @Then /^I should see locales? (.*)$/
      * @Then /^I should see (?:import|export) profiles? (.*)$/
      * @Then /^I should see (?:(?:entit|currenc)(?:y|ies)) (.*)$/
-     * @Then /^I should see groups (.*)$/
+     * @Then /^I should see groups? (?:types )?(.*)$/
      * @Then /^I should see associations? (.*)$/
-     * @Then /^I should see group types? (.*)$/
-     * @Then /^I should see users (.*)$/
+     * @Then /^I should see users? (.*)$/
      */
     public function iShouldSeeEntities($elements)
     {

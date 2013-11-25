@@ -110,6 +110,9 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayEquals($result, $this->normalizer->normalize($product, 'csv'));
     }
 
+    /**
+     * Test related method
+     */
     public function testNormalizeProductWithScope()
     {
         $now    = new \DateTime();
@@ -155,6 +158,9 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayEquals($result, $this->normalizer->normalize($product, 'csv'));
     }
 
+    /**
+     * Test related method
+     */
     public function testNormalizeOnScopeProductWithScope()
     {
         $now    = new \DateTime();
@@ -326,7 +332,8 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
     /**
      * @param ProductAttribute $attribute
      * @param mixed            $data
-     * @param mixed            $locale
+     * @param string           $locale
+     * @param string           $scope
      *
      * @return ProductValue
      */
@@ -356,6 +363,7 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
     /**
      * @param string  $code
      * @param boolean $translatable
+     * @param boolean $scopable
      * @param string  $type
      *
      * @return ProductAttribute

@@ -6,9 +6,6 @@ Feature: Filter products per category
 
   Background:
     Given the "default" catalog configuration
-    And the following product attributes:
-      | label | required |
-      | SKU   | yes      |
     And the following products:
       | sku           |
       | purple-tshirt |
@@ -55,4 +52,3 @@ Feature: Filter products per category
     Given I am on the products page
     When I select the "Catalog" tree
     Then I should see products akeneo-mug, purple-tshirt, green-tshirt and blue-jeans
-

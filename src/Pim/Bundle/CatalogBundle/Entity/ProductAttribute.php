@@ -815,7 +815,7 @@ class ProductAttribute extends AbstractEntityAttribute implements
         foreach ($parameters as $code => $value) {
             $method = 'set'.ucfirst($code);
             if (!method_exists($this, $method)) {
-                throw new \Exception(sprintf('The parameter "%s" doesnt exists.', $code));
+                throw new \Exception(sprintf('The parameter "%s" does not exist.', $code));
             }
             $this->$method($value);
         }

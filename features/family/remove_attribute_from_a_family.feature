@@ -9,10 +9,10 @@ Feature: Remove attribute from a family
     And the following family:
       | code |
       | Bags |
-    And the following product attributes:
-      | label            | family |
-      | Long Description | Bags   |
-      | Manufacturer     | Bags   |
+    And the following attributes:
+      | label            | families |
+      | Long Description | Bags     |
+      | Manufacturer     | Bags     |
     And I am logged in as "admin"
 
   Scenario: Successfully remove an attribute in a family

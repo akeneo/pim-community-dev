@@ -50,8 +50,11 @@ class DatagridRouteRegistryBuilder
         $this->routes[$datagridName] = $routeName;
     }
 
-    /***
+    /**
      * Adds a parameter replacement to a route
+     * @param string $datagridName
+     * @param string $parameterName
+     * @param string $parameterValue
      */
     public function addParameterReplacement($datagridName, $parameterName, $parameterValue)
     {
