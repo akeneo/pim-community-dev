@@ -17,6 +17,9 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
     protected $configurationRegistry;
     protected $controller;
 
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         $this->request = $this->getMockBuilder('Symfony\Component\HttpFoundation\Request')
@@ -28,6 +31,9 @@ class ControllerTest extends \PHPUnit_Framework_TestCase
         $this->controller = new Controller($this->request, $this->configurationRegistry);
     }
 
+    /**
+     * Test related method
+     */
     public function testAction()
     {
         $controllerStrategy = $this

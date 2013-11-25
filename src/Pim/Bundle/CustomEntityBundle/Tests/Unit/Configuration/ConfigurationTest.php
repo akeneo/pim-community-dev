@@ -18,6 +18,9 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
     protected $manager;
     protected $controllerStrategy;
 
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         $this->propertyAccessor = new PropertyAccessor;
@@ -27,6 +30,9 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * Test related method
+     */
     public function testDefaultOptions()
     {
         $this->assertConfigValues(
@@ -57,6 +63,9 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * Test related method
+     */
     public function testUserOptions()
     {
         $userOptions = array(
@@ -82,6 +91,9 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         $this->assertConfigValues($this->getConfiguration($userOptions), $userOptions);
     }
 
+    /**
+     * Test related method
+     */
     public function testWithoutCreateForm()
     {
         $this->assertConfigValues(
@@ -99,6 +111,9 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * Test related method
+     */
     public function testGetCreateRedirectAsIndex()
     {
         $entity = $this->getMockBuilder('stdClass')
@@ -117,6 +132,9 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * Test related method
+     */
     public function testGetCreateRedirectAsEdit()
     {
         $entity = $this->getMockBuilder('stdClass')
@@ -139,6 +157,9 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * Test related method
+     */
     public function testGetEditRedirect()
     {
         $entity = $this->getMockBuilder('stdClass')
@@ -156,6 +177,10 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @param Configuration $configuration
+     * @param array         $values
+     */
     protected function assertConfigValues(Configuration $configuration, array $values)
     {
         foreach ($values as $propertyPath => $value) {
@@ -167,6 +192,11 @@ class ConfigurationTest extends \PHPUnit_Framework_TestCase
         }
     }
 
+    /**
+     * @param array $options
+     *
+     * @return Configuration
+     */
     protected function getConfiguration(array $options = array())
     {
         $options = $options + array(

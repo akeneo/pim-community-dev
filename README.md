@@ -180,3 +180,7 @@ Known issues
 [1]:  http://symfony.com/doc/2.1/book/installation.html
 [2]:  http://getcomposer.org/
 [3]:  http://www.orocrm.com/oro-platform 
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/akeneo/pim-community-dev/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+

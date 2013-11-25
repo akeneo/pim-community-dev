@@ -379,6 +379,9 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
             ->getMock();
     }
 
+    /**
+     * @return \Pim\Bundle\CatalogBundle\Manager\CompletenessManager
+     */
     protected function getCompletenessManagerMock()
     {
         return $this

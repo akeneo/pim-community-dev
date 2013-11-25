@@ -11,7 +11,7 @@ Feature: Import media with products
     And the following categories:
       | code  | label | parent |
       | sport | Sport |        |
-    And the following product attributes:
+    And the following attributes:
       | label       | type  |
       | Name        | text  |
       | Front view  | image |
@@ -29,15 +29,20 @@ Feature: Import media with products
     fanatic-freewave-76;funboard;;fanatic-freewave-76.gif;"Fanatic Freewave 76";fanatic-freewave-76.txt;sport
     """
     And the following job "acme_product_import" configuration:
-      | element   | property          | value                |
-      | reader    | filePath          | {{ file to import }} |
-      | reader    | uploadAllowed     | no                   |
-      | reader    | delimiter         | ;                    |
-      | reader    | enclosure         | "                    |
-      | reader    | escape            | \                    |
-      | processor | enabled           | yes                  |
-      | processor | categories column | categories           |
-      | processor | family column     | family               |
+      | step                | element   | property          | value                |
+      | import              | reader    | filePath          | {{ file to import }} |
+      | import              | reader    | uploadAllowed     | no                   |
+      | import              | reader    | delimiter         | ;                    |
+      | import              | reader    | enclosure         | "                    |
+      | import              | reader    | escape            | \                    |
+      | import              | processor | enabled           | yes                  |
+      | import              | processor | categories column | categories           |
+      | import              | processor | family column     | family               |
+      | import_associations | reader    | filePath          | {{ file to import }} |
+      | import_associations | reader    | uploadAllowed     | no                   |
+      | import_associations | reader    | delimiter         | ;                    |
+      | import_associations | reader    | enclosure         | "                    |
+      | import_associations | reader    | escape            | \                    |
     And import directory of "acme_product_import" contain the following media:
       | bic-core-148.gif        |
       | bic-core-148.txt        |
@@ -62,15 +67,20 @@ Feature: Import media with products
     fanatic-freewave-76;funboard;;;"Fanatic Freewave 76";;sport
     """
     And the following job "acme_product_import" configuration:
-      | element   | property          | value                |
-      | reader    | filePath          | {{ file to import }} |
-      | reader    | uploadAllowed     | no                   |
-      | reader    | delimiter         | ;                    |
-      | reader    | enclosure         | "                    |
-      | reader    | escape            | \                    |
-      | processor | enabled           | yes                  |
-      | processor | categories column | categories           |
-      | processor | family column     | family               |
+      | step                |  element   | property          | value                |
+      | import              | reader    | filePath          | {{ file to import }} |
+      | import              | reader    | uploadAllowed     | no                   |
+      | import              | reader    | delimiter         | ;                    |
+      | import              | reader    | enclosure         | "                    |
+      | import              | reader    | escape            | \                    |
+      | import              | processor | enabled           | yes                  |
+      | import              | processor | categories column | categories           |
+      | import              | processor | family column     | family               |
+      | import_associations | reader    | filePath          | {{ file to import }} |
+      | import_associations | reader    | uploadAllowed     | no                   |
+      | import_associations | reader    | delimiter         | ;                    |
+      | import_associations | reader    | enclosure         | "                    |
+      | import_associations | reader    | escape            | \                    |
     And import directory of "acme_product_import" contain the following media:
       | bic-core-148.gif |
       | bic-core-148.txt |
@@ -92,15 +102,20 @@ Feature: Import media with products
     fanatic-freewave-76;funboard;;fanatic-freewave-76.jpg;"Fanatic Freewave 76";fanatic-freewave-76.pdf;sport
     """
     And the following job "acme_product_import" configuration:
-      | element   | property          | value                |
-      | reader    | filePath          | {{ file to import }} |
-      | reader    | uploadAllowed     | no                   |
-      | reader    | delimiter         | ;                    |
-      | reader    | enclosure         | "                    |
-      | reader    | escape            | \                    |
-      | processor | enabled           | yes                  |
-      | processor | categories column | categories           |
-      | processor | family column     | family               |
+      | step                | element   | property          | value                |
+      | import              | reader    | filePath          | {{ file to import }} |
+      | import              | reader    | uploadAllowed     | no                   |
+      | import              | reader    | delimiter         | ;                    |
+      | import              | reader    | enclosure         | "                    |
+      | import              | reader    | escape            | \                    |
+      | import              | processor | enabled           | yes                  |
+      | import              | processor | categories column | categories           |
+      | import              | processor | family column     | family               |
+      | import_associations | reader    | filePath          | {{ file to import }} |
+      | import_associations | reader    | uploadAllowed     | no                   |
+      | import_associations | reader    | delimiter         | ;                    |
+      | import_associations | reader    | enclosure         | "                    |
+      | import_associations | reader    | escape            | \                    |
     And I am logged in as "Julia"
     When I am on the "acme_product_import" import job page
     And I launch the import job

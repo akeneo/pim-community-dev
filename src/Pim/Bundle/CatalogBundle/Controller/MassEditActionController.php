@@ -283,10 +283,13 @@ class MassEditActionController extends AbstractDoctrineController
             $gridManager = $this->datagridHelper->getDatagridManager('product');
             $gridManager->setFilterTreeId($request->get('treeId', 0));
             $gridManager->setFilterCategoryId($request->get('categoryId', 0));
+            $gridManager->setIncludeSub($request->get('includeSub', 0));
             $parameters = $this->parametersParser->parse($request);
             $filters = $parameters['filters'];
+            $pager = array('_page' => 1, '_per_page' => 100000);
             $datagrid = $gridManager->getDatagrid();
             $datagrid->getParameters()->set(ParametersInterface::FILTER_PARAMETERS, $filters);
+            $datagrid->getParameters()->set(ParametersInterface::PAGER_PARAMETERS, $pager);
             $ids = $datagrid->getAllIds();
 
             return $ids;

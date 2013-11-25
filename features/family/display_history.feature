@@ -9,7 +9,7 @@ Feature: Display the family history
     And the following attribute group:
       | code    | label   |
       | general | General |
-    And the following product attributes:
+    And the following attributes:
       | label       | group   |
       | Description | General |
 

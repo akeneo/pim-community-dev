@@ -19,7 +19,8 @@ class Registry
     /**
      * Returns true if a configuration with the corresponding name exists
      *
-     * @param  string  $name
+     * @param string $name
+     *
      * @return boolean
      */
     public function has($name)
@@ -30,7 +31,8 @@ class Registry
     /**
      * Get a configuration
      *
-     * @param  string                 $name
+     * @param string $name
+     *
      * @return ConfigurationInterface
      */
     public function get($name)

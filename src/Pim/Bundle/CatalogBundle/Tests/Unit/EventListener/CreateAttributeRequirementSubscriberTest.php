@@ -13,17 +13,26 @@ use Pim\Bundle\CatalogBundle\EventListener\CreateAttributeRequirementSubscriber;
  */
 class CreateAttributeRequirementSubscriberTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         $this->factory    = $this->getAttributeRequirementFactoryMock();
         $this->subscriber = new CreateAttributeRequirementSubscriber($this->factory);
     }
 
+    /**
+     * Test related method
+     */
     public function testSubscribedEvents()
     {
         $this->assertEquals(array('prePersist'), $this->subscriber->getSubscribedEvents());
     }
 
+    /**
+     * Test related method
+     */
     public function testPrePersist()
     {
         $channel     = $this->getChannelMock();
@@ -89,6 +98,9 @@ class CreateAttributeRequirementSubscriberTest extends \PHPUnit_Framework_TestCa
         $this->subscriber->prePersist($event);
     }
 
+    /**
+     * Test related method
+     */
     public function testIgnoreNonChannelEntity()
     {
         $em    = $this->getEntityManagerMock(array());
@@ -107,6 +119,11 @@ class CreateAttributeRequirementSubscriberTest extends \PHPUnit_Framework_TestCa
         return $this->getMock('Pim\Bundle\CatalogBundle\Factory\AttributeRequirementFactory');
     }
 
+    /**
+     * @param array $families
+     *
+     * @return \Doctrine\ORM\EntityManager
+     */
     protected function getEntityManagerMock($families)
     {
         $em = $this
@@ -127,11 +144,19 @@ class CreateAttributeRequirementSubscriberTest extends \PHPUnit_Framework_TestCa
         return $em;
     }
 
+    /**
+     * @return \Pim\Bundle\CatalogBundle\Entity\Channel
+     */
     protected function getChannelMock()
     {
         return $this->getMock('Pim\Bundle\CatalogBundle\Entity\Channel');
     }
 
+    /**
+     * @param array $attributes
+     *
+     * @return \Pim\Bundle\CatalogBundle\Entity\Family
+     */
     protected function getFamilyMock(array $attributes)
     {
         $family = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Family');
@@ -144,6 +169,8 @@ class CreateAttributeRequirementSubscriberTest extends \PHPUnit_Framework_TestCa
     }
 
     /**
+     * @param array $families
+     *
      * @return \Doctrine\ORM\EntityRepository
      */
     protected function getFamilyRepositoryMock(array $families)
@@ -160,6 +187,12 @@ class CreateAttributeRequirementSubscriberTest extends \PHPUnit_Framework_TestCa
         return $repository;
     }
 
+    /**
+     * @param object $entity
+     * @param object $em
+     *
+     * @return \Doctrine\ORM\Event\LifecycleEventArgs
+     */
     protected function getEventMock($entity, $em)
     {
         $event = $this
@@ -178,6 +211,11 @@ class CreateAttributeRequirementSubscriberTest extends \PHPUnit_Framework_TestCa
         return $event;
     }
 
+    /**
+     * @param string $attributeType
+     *
+     * @return \Pim\Bundle\CatalogBundle\Entity\ProductAttribute
+     */
     protected function getProductAttributeMock($attributeType)
     {
         $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductAttribute');
@@ -189,6 +227,9 @@ class CreateAttributeRequirementSubscriberTest extends \PHPUnit_Framework_TestCa
         return $attribute;
     }
 
+    /**
+     * @return \Pim\Bundle\CatalogBundle\Entity\AttributeRequirement
+     */
     protected function getAttributeRequirementMock()
     {
         return $this->getMock('Pim\Bundle\CatalogBundle\Entity\AttributeRequirement');

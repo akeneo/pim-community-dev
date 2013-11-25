@@ -40,14 +40,14 @@ class JavascriptRegExpTranslator
      *
      * @param string $regexp
      * @param array  $parameterValues
-     * 
+     *
      * @return string
      * @throws JavascriptRegexpTranslatorException
      */
     public function translate($regexp, array $parameterValues = array())
     {
         foreach ($parameterValues as $name => $value) {
-        $regexp = preg_replace(
+            $regexp = preg_replace(
                 sprintf('/\(\?P<%s>([^()]|(?<group>\(((?>[^()]+)|(?&group))*\)))+\)/', $name),
                 $value,
                 $regexp
@@ -58,6 +58,7 @@ class JavascriptRegExpTranslator
                 throw new JavascriptRegexpTranslatorException();
             }
         }
+
         return sprintf(
             '/%s/',
             preg_replace(

@@ -37,6 +37,7 @@ class CategoryProcessorTest extends AbstractProcessorTestCase
 
     /**
      * Test getConfigurationFields method
+     * @return array
      */
     protected function getExpectedConfigurationFields()
     {
