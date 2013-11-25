@@ -34,7 +34,7 @@ Pim\Bundle\CatalogBundle\Entity\Group:
                     attribute_id:
                         referencedColumnName: id
         products:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\Product
+            targetEntity: Pim\Bundle\CatalogBundle\Model\ProductInterface
             mappedBy: groups
     oneToMany:
         translations:
