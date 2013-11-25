@@ -159,7 +159,7 @@ class ProductProcessor extends AbstractConfigurableStepElement implements ItemPr
      */
     public function process($item)
     {
-        return $this->transformer->getProduct(
+        return $this->transformer->transform(
             $item,
             array(
                 'family'        => $this->familyColumn,

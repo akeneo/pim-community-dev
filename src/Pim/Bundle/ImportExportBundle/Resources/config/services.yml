@@ -41,10 +41,11 @@ services:
         class: '%pim_import_export.attribute_cache.class%'
         arguments:
             - '@doctrine'
+            - '%pim_catalog.entity.product_attribute.class%'
 
     pim_import_export.product_validator:
         class: '%pim_import_export.product_validator.class%'
         arguments:
             - '@validator'
             - '@oro_flexibleentity.validator.attribute_constraint_guesser'
-            - '@translator'
+            - '@property_accessor'

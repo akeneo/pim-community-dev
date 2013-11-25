@@ -17,11 +17,11 @@ class LabelTransformer implements LabelTransformerInterface
     public function transform($label)
     {
         $data = array(
-            'label'  => trim($label),
+            'label'  => $label,
             'locale' => null,
             'scope'  => null,
         );
-        $parts = explode('-', $data['label']);
+        $parts = explode('-', $label);
         $data['name'] = array_shift($parts);
         $data['propertyPath'] = lcfirst(Inflector::classify($data['name']));
         if (count($parts) > 1) {

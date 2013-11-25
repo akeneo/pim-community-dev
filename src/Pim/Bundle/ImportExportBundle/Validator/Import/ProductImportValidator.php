@@ -2,14 +2,14 @@
 
 namespace Pim\Bundle\ImportExportBundle\Validator\Import;
 
-use Symfony\Component\Validator\ValidatorInterface;
-use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\Validator\ConstraintViolationListInterface;
-
 use Oro\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
-use Pim\Bundle\ImportExportBundle\Exception\InvalidValueException;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
+use Symfony\Component\Validator\ConstraintViolationList;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
+use Symfony\Component\Validator\ValidatorInterface;
 
 /**
  * Validates an imported product
@@ -31,9 +31,9 @@ class ProductImportValidator
     protected $constraintGuesser;
 
     /**
-     * @var TranslatorInterface
+     * @var PropertyAccessorInterface
      */
-    protected $translator;
+    protected $propertyAccessor;
 
     /**
      * @var array
@@ -45,66 +45,50 @@ class ProductImportValidator
      *
      * @param ValidatorInterface         $validator
      * @param ConstraintGuesserInterface $constraintGuesser
-     * @param TranslatorInterface        $translator
+     * @param PropertyAccessorInterface  $propertyAccessor
      */
     public function __construct(
         ValidatorInterface $validator,
         ConstraintGuesserInterface $constraintGuesser,
-        TranslatorInterface $translator
+        PropertyAccessorInterface $propertyAccessor
     ) {
         $this->validator = $validator;
         $this->constraintGuesser = $constraintGuesser;
-        $this->translator = $translator;
+        $this->propertyAccessor = $propertyAccessor;
     }
 
     /**
-     * Validates a list of property
+     * Validates a property
      *
      * @param ProductInterface $product
-     * @param array            $values
+     * @param string           $propertyPath
      *
-     * @return array an array of errors
+     * @return ConstraintViolationList
      */
-    public function validateProductProperties(ProductInterface $product, array $values)
+    public function validateProperty(ProductInterface $product, $propertyPath)
     {
-        $errors = array();
-        foreach ($values as $propertyPath => $value) {
-            $errors = array_merge(
-                $errors,
-                $this->getErrors(
-                    $propertyPath,
-                    $this->validator->validatePropertyValue($product, $propertyPath, $value)
-                )
-            );
-        }
-
-        return $errors;
+        return $this->validator->validateProperty($product, $propertyPath);
     }
 
     /**
      * Validates a ProductValue
      *
-     * @param string           $propertyPath
-     * @param ProductAttribute $attribute
-     * @param mixed            $value
-     *
-     * @return array an array of errors
+     * @param  ProductValueInterface            $productValue
+     * @param  ProductAttribute                 $attribute
+     * @return ConstraintViolationListInterface
      */
-    public function validateProductValue($propertyPath, ProductAttribute $attribute, $value)
+    public function validateProductValue(ProductValueInterface $productValue, ProductAttribute $attribute)
     {
-        return $this->getErrors(
-            $propertyPath,
-            $this->validator->validateValue(
-                $value,
+        return $this->validator->validateValue(
+                $this->propertyAccessor->getValue($productValue, $attribute->getBackendType()),
                 $this->getAttributeConstraints($attribute)
-            )
         );
     }
 
     /**
      * Returns an array of constraints for a given attribute
      *
-     * @param Entity\ProductAttribute $attribute
+     * @param ProductAttribute $attribute
      *
      * @return string
      */
@@ -120,62 +104,5 @@ class ProductImportValidator
         }
 
         return $this->constraints[$code];
-    }
-
-    /**
-     * Returns an array of error strings
-     *
-     * @param string                           $propertyPath
-     * @param ConstraintViolationListInterface $violations
-     *
-     * @return array
-     */
-    public function getErrors($propertyPath, ConstraintViolationListInterface $violations)
-    {
-        $errors = array();
-        foreach ($violations as $violation) {
-            $errors[] = $this->getTranslatedErrorMessage(
-                $propertyPath,
-                $violation->getMessageTemplate(),
-                $violation->getMessageParameters()
-            );
-        }
-
-        return $errors;
-    }
-
-    /**
-     * Returns a translated error message
-     *
-     * @param string $propertyPath
-     * @param string $message
-     * @param array  $parameters
-     *
-     * @return string
-     */
-    public function getTranslatedErrorMessage($propertyPath, $message, array $parameters = array())
-    {
-        return sprintf(
-            '%s: %s',
-            $propertyPath,
-            $this->translator->trans($message, $parameters)
-        );
-    }
-
-    /**
-     * Returns a translated InvalidValueException message
-     *
-     * @param string                $propertyPath
-     * @param InvalidValueException $exception
-     *
-     * @return string
-     */
-    public function getTranslatedExceptionMessage($propertyPath, InvalidValueException $exception)
-    {
-        return $this->getTranslatedErrorMessage(
-            $propertyPath,
-            $exception->getRawMessage(),
-            $exception->getMessageParameters()
-        );
     }
 }

@@ -2,7 +2,7 @@ parameters:
     pim_import_export.transformer.orm.class:                   Pim\Bundle\ImportExportBundle\Transformer\OrmTransformer
     pim_import_export.transformer.label.class:                 Pim\Bundle\ImportExportBundle\Transformer\LabelTransformer
     pim_import_export.transformer.property.translation.class:  Pim\Bundle\ImportExportBundle\Transformer\Property\TranslationTransformer
-    pim_import_export.transformer.product.class:               Pim\Bundle\ImportExportBundle\Transformer\ORMProductTransformer
+    pim_import_export.transformer.product.class:               Pim\Bundle\ImportExportBundle\Transformer\OrmProductTransformer
     pim_import_export.transformer.property.default.class:      Pim\Bundle\ImportExportBundle\Transformer\Property\DefaultTransformer
     pim_import_export.transformer.property.entity.class:       Pim\Bundle\ImportExportBundle\Transformer\Property\EntityTransformer
     pim_import_export.transformer.property.media.class:        Pim\Bundle\ImportExportBundle\Transformer\Property\MediaTransformer
@@ -19,6 +19,7 @@ services:
             - '@property_accessor'
             - '@pim_import_export.transformer.guesser'
             - '@pim_import_export.transformer.label'
+            - '@translator'
 
     pim_import_export.transformer.label:
         class: %pim_import_export.transformer.label.class%
@@ -30,12 +31,11 @@ services:
 
     pim_import_export.transformer.product:
         class: '%pim_import_export.transformer.product.class%'
-        public: false
+        parent: pim_import_export.transformer.orm
         arguments:
             - '@pim_catalog.manager.product'
             - '@pim_import_export.product_validator'
             - '@pim_import_export.attribute_cache'
-            - '@property_accessor'
 
     pim_import_export.transformer.property.default:
         class: '%pim_import_export.transformer.property.default.class%'
@@ -49,25 +49,6 @@ services:
         arguments:
             - '@pim_import_export.entity_cache'
         public: false
-        tags:
-            - name: pim_import_export.transformer.product.property
-              property_path: family
-              class: PimCatalogBundle:Family
-            - name: pim_import_export.transformer.product.property
-              property_path: categories
-              class: PimCatalogBundle:Category
-              multiple: true
-            - name: pim_import_export.transformer.product.property
-              property_path: groups
-              class: PimCatalogBundle:Group
-              multiple: true
-            - name: pim_import_export.transformer.product.attribute
-              backend_type: option
-              class: PimCatalogBundle:AttributeOption
-            - name: pim_import_export.transformer.product.attribute
-              backend_type: options
-              class: PimCatalogBundle:AttributeOption
-              multiple: true
 
     pim_import_export.transformer.attribute.media:
         class: '%pim_import_export.transformer.property.media.class%'
@@ -81,29 +62,15 @@ services:
         public: false
         arguments:
             - '@pim_catalog.manager.currency'
-        tags:
-            - name: pim_import_export.transformer.product.attribute
-              backend_type: prices
 
     pim_import_export.transformer.attribute.metric:
         class: '%pim_import_export.transformer.property.metric.class%'
         public: false
-        tags:
-            - name: pim_import_export.transformer.product.attribute
-              backend_type: metric
 
     pim_import_export.transformer.attribute.date:
         class: '%pim_import_export.transformer.property.date.class%'
         public: false
-        tags:
-            - name: pim_import_export.transformer.product.attribute
-              backend_type: date
 
     pim_import_export.transformer.attribute.boolean:
         class: '%pim_import_export.transformer.property.boolean.class%'
         public: false
-        tags:
-            - name: pim_import_export.transformer.product.attribute
-              backend_type: boolean
-            - name: pim_import_export.transformer.product.property
-              property_path: enabled
