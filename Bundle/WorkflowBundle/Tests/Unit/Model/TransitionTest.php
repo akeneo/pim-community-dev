@@ -115,31 +115,6 @@ class TransitionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $obj->isAllowed($workflowItem));
     }
 
-    /**
-     * @dataProvider isAllowedDataProvider
-     * @param bool $isAllowed
-     * @param bool $expected
-     */
-    public function testIsAvailable($isAllowed, $expected)
-    {
-        $workflowItem = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Entity\WorkflowItem')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $obj = new Transition();
-
-        if (null !== $isAllowed) {
-            $condition = $this->getMock('Oro\Bundle\WorkflowBundle\Model\Condition\ConditionInterface');
-            $condition->expects($this->once())
-                ->method('isAllowed')
-                ->with($workflowItem)
-                ->will($this->returnValue($isAllowed));
-            $obj->setPreCondition($condition);
-        }
-
-        $this->assertEquals($expected, $obj->isAvailable($workflowItem));
-    }
-
     public function isAllowedDataProvider()
     {
         return array(
@@ -153,6 +128,97 @@ class TransitionTest extends \PHPUnit_Framework_TestCase
             ),
             'no condition' => array(
                 'isAllowed' => null,
+                'expected'  => true,
+            ),
+        );
+    }
+
+    /**
+     * @dataProvider isAllowedDataProvider
+     * @param bool $isAllowed
+     * @param bool $expected
+     */
+    public function testIsAvailableWithForm($isAllowed, $expected)
+    {
+        $workflowItem = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Entity\WorkflowItem')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $obj = new Transition();
+        $obj->setFormOptions(array('key' => 'value'));
+
+        if (null !== $isAllowed) {
+            $condition = $this->getMock('Oro\Bundle\WorkflowBundle\Model\Condition\ConditionInterface');
+            $condition->expects($this->once())
+                ->method('isAllowed')
+                ->with($workflowItem)
+                ->will($this->returnValue($isAllowed));
+            $obj->setPreCondition($condition);
+        }
+
+        $this->assertEquals($expected, $obj->isAvailable($workflowItem));
+    }
+
+    /**
+     * @dataProvider isAvailableDataProvider
+     * @param bool $isAllowed
+     * @param bool $isAvailable
+     * @param bool $expected
+     */
+    public function testIsAvailableWithoutForm($isAllowed, $isAvailable, $expected)
+    {
+        $workflowItem = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Entity\WorkflowItem')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $obj = new Transition();
+
+        if (null !== $isAvailable) {
+            $preCondition = $this->getMock('Oro\Bundle\WorkflowBundle\Model\Condition\ConditionInterface');
+            $preCondition->expects($this->any())
+                ->method('isAllowed')
+                ->with($workflowItem)
+                ->will($this->returnValue($isAvailable));
+            $obj->setPreCondition($preCondition);
+        }
+        if (null !== $isAllowed) {
+            $condition = $this->getMock('Oro\Bundle\WorkflowBundle\Model\Condition\ConditionInterface');
+            $condition->expects($this->any())
+                ->method('isAllowed')
+                ->with($workflowItem)
+                ->will($this->returnValue($isAllowed));
+            $obj->setCondition($condition);
+        }
+
+        $this->assertEquals($expected, $obj->isAvailable($workflowItem));
+    }
+
+    public function isAvailableDataProvider()
+    {
+        return array(
+            'allowed' => array(
+                'isAllowed' => true,
+                'isAvailable' => true,
+                'expected'  => true
+            ),
+            'not allowed #1' => array(
+                'isAllowed' => false,
+                'isAvailable' => true,
+                'expected'  => false,
+            ),
+            'not allowed #2' => array(
+                'isAllowed' => true,
+                'isAvailable' => false,
+                'expected'  => false,
+            ),
+            'not allowed #3' => array(
+                'isAllowed' => false,
+                'isAvailable' => false,
+                'expected'  => false,
+            ),
+            'no conditions' => array(
+                'isAllowed' => null,
+                'isAvailable' => null,
                 'expected'  => true,
             ),
         );

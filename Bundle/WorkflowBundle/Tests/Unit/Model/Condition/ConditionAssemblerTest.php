@@ -60,6 +60,8 @@ class ConditionAssemblerTest extends \PHPUnit_Framework_TestCase
                                         array('parameters' => array('$contact.budget', 2000))
                                     ),
                                     array('@isDevMode' => null),
+                                    array('@isDevModeWithParameter' => 'test'),
+                                    array('@isDevModeWithMessage' => array('test', 'message' => 'TEST MSG')),
                                     array(
                                         '@inChoiceList' => array(
                                             'type' => '$contact.type',
@@ -83,6 +85,8 @@ class ConditionAssemblerTest extends \PHPUnit_Framework_TestCase
                                     'passed' => array(
                                         array('_graterOrEquals' => array('passed' => array('$contact.budget', 2000))),
                                         array('_isDevMode' => array('passed' => array())),
+                                        array('_isDevModeWithParameter' => array('passed' => array('test'))),
+                                        array('_isDevModeWithMessage' => array('passed' => array('test'))),
                                         array(
                                             '_inChoiceList' => array(
                                                 'passed' => array(

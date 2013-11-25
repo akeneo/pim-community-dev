@@ -458,9 +458,6 @@ class WorkflowItem
      */
     public function getResult()
     {
-        if (!$this->result) {
-            $this->result = new WorkflowResult();
-        }
         return $this->result;
     }
 
