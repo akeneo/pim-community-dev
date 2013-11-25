@@ -183,7 +183,6 @@ class FlexibleManager implements TranslatableInterface, ScopableInterface
         return $this;
     }
 
-
     /**
      * Get object manager
      *

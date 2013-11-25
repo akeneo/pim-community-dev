@@ -4,9 +4,6 @@ namespace Pim\Bundle\FlexibleEntityBundle\Tests\Unit;
 
 use Pim\Bundle\FlexibleEntityBundle\AttributeType\TextType;
 
-use Doctrine\Tests\OrmTestCase;
-use Doctrine\Common\Annotations\AnnotationReader;
-use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Symfony\Component\DependencyInjection\Container;
 use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Symfony\Component\EventDispatcher\EventDispatcher;

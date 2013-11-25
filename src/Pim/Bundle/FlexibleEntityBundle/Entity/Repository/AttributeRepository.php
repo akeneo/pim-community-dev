@@ -52,6 +52,7 @@ class AttributeRepository extends EntityRepository
         if (is_object($entityType)) {
             echo(get_class($entityType));
         }
+
         return self::CODE_ATTRIBUTES_PREFIX.$entityType;
     }
 }

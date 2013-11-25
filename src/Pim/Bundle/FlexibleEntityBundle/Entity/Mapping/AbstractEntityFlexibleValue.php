@@ -2,9 +2,7 @@
 
 namespace Pim\Bundle\FlexibleEntityBundle\Entity\Mapping;
 
-use Symfony\Component\HttpFoundation\File\File;
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractFlexible;
-use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractFlexibleValue;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;

@@ -3,7 +3,6 @@
 namespace Pim\Bundle\FlexibleEntityBundle\Form\EventListener;
 
 use Pim\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexibleValue;
-use Pim\Bundle\FlexibleEntityBundle\Model\AbstractFlexibleValue;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -53,7 +52,6 @@ class CollectionTypeSubscriber implements EventSubscriberInterface
     public function postBind(FormEvent $event)
     {
         $data = $event->getData();
-
 
         if ($data instanceof AbstractEntityFlexibleValue) {
             /** @var ArrayCollection $collection */

@@ -212,8 +212,7 @@ class FlexibleQueryBuilder
             return '(' . implode(' OR ', $conditions) . ')';
         }
 
-        switch ($operator)
-        {
+        switch ($operator) {
             case '=':
                 $condition = $this->qb->expr()->eq($field, $this->qb->expr()->literal($value))->__toString();
                 break;

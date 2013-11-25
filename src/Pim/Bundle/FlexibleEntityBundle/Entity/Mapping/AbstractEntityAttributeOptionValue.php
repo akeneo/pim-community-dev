@@ -3,7 +3,6 @@
 namespace Pim\Bundle\FlexibleEntityBundle\Entity\Mapping;
 
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttributeOptionValue;
-use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttributeOption;
 use Doctrine\ORM\Mapping as ORM;
 
 /**

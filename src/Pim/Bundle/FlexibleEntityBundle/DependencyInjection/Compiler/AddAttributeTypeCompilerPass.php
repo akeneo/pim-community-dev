@@ -2,10 +2,8 @@
 
 namespace Pim\Bundle\FlexibleEntityBundle\DependencyInjection\Compiler;
 
-use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
-use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 
 /**
  * CompilerPass to add attribute type to factory

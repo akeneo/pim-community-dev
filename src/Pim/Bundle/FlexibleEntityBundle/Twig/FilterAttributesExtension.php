@@ -29,9 +29,9 @@ class FilterAttributesExtension extends \Twig_Extension
      *
      * If third parameter equals true method will return attributes that not in given array(or string)
      *
-     * @param AbstractEntityFlexible   $entity
-     * @param string|array             $attributes
-     * @param bool                     $skip
+     * @param AbstractEntityFlexible $entity
+     * @param string|array           $attributes
+     * @param bool                   $skip
      *
      * @return ArrayCollection
      */

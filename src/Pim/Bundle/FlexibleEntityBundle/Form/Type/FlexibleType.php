@@ -7,7 +7,6 @@ use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * Base flexible form type

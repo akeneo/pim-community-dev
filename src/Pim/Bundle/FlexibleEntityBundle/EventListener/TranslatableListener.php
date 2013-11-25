@@ -5,9 +5,7 @@ namespace Pim\Bundle\FlexibleEntityBundle\EventListener;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Util\ClassUtils;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Pim\Bundle\FlexibleEntityBundle\Model\FlexibleInterface;
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttributeOption;
 use Pim\Bundle\FlexibleEntityBundle\Model\Behavior\TranslatableInterface;
 

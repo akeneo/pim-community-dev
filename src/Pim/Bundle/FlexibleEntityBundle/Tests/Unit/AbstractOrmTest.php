@@ -8,7 +8,6 @@ use Doctrine\Tests\OrmTestCase;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Symfony\Component\DependencyInjection\Container;
-use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 
 /**
  * Abstract test class which mock the entity manager

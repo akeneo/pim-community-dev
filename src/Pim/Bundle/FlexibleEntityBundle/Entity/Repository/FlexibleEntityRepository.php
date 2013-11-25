@@ -10,7 +10,6 @@ use Pim\Bundle\FlexibleEntityBundle\Exception\UnknownAttributeException;
 use Pim\Bundle\FlexibleEntityBundle\Model\Behavior\TranslatableInterface;
 use Pim\Bundle\FlexibleEntityBundle\Model\Behavior\ScopableInterface;
 use Pim\Bundle\FlexibleEntityBundle\Entity\Attribute;
-use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractFlexible;
 
 /**

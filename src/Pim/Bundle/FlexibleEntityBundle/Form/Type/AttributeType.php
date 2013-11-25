@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\FlexibleEntityBundle\Form\Type;
 
-use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Pim\Bundle\FlexibleEntityBundle\Form\EventListener\AttributeTypeSubscriber;
 use Symfony\Component\Form\FormBuilderInterface;

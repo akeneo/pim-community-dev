@@ -3,9 +3,6 @@
 namespace Pim\Bundle\FlexibleEntityBundle\Tests\Unit\Manager;
 
 use Doctrine\ORM\EntityManager;
-use Doctrine\Tests\OrmTestCase;
-
-use Symfony\Component\DependencyInjection\Container;
 
 use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManagerRegistry;

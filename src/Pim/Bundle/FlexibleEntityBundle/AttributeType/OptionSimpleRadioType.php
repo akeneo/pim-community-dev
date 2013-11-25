@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\FlexibleEntityBundle\AttributeType;
 
-use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
 
 /**

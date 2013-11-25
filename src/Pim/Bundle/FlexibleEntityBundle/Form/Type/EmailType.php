@@ -14,7 +14,6 @@ class EmailType extends CollectionItemAbstract
     const TYPE_CORPORATE = 1;
     const TYPE_PERSONAL  = 2;
 
-
     /**
      * {@inheritdoc}
      */

@@ -85,7 +85,6 @@ class DefaultValueListenerTest extends AbstractOrmTest
         $this->assertNotNull($this->value->getData());
         $this->assertEquals($this->defaultValue, $this->value->getData());
 
-
         // change value
         $this->value->setData($this->definedValue);
         $this->assertNotEquals($this->defaultValue, $this->value->getData());
