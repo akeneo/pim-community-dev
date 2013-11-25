@@ -176,7 +176,8 @@ class RootBasedAclProviderTest extends \PHPUnit_Framework_TestCase
         ];
     }
 
-    protected function results1($result, $parameter) {
+    protected function results1($result, $parameter)
+    {
         $this->assertInstanceOf(
             'Oro\Bundle\SecurityBundle\Acl\Domain\RootBasedAclWrapper',
             $result
@@ -187,11 +188,13 @@ class RootBasedAclProviderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($parameter, $aclReflection->getValue($result));
     }
 
-    protected function results2($result, $parameter) {
+    protected function results2($result, $parameter)
+    {
         $this->assertEquals($parameter, $result);
     }
 
-    protected function results3($result, $parameter) {
+    protected function results3($result, $parameter)
+    {
         $reflection = new \ReflectionClass($result);
         $aclReflection = $reflection->getProperty('acl');
         $aclReflection->setAccessible(true);
