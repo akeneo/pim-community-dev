@@ -21,7 +21,8 @@
         "oro/platform": "dev-maintenance/pim_beta3",
         "akeneo/DemoBundle": "dev-master",
         "knplabs/knp-gaufrette-bundle": "dev-master",
-        "incenteev/composer-parameter-handler": "~2.0"
+        "incenteev/composer-parameter-handler": "~2.0",
+        "doctrine/mongodb-odm-bundle": "3.0.*@dev"
     },
     "require-dev": {
         "behat/behat":  "2.4.*@stable",
