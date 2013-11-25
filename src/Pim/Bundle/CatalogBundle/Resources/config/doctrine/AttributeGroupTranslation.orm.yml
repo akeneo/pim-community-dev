@@ -11,7 +11,7 @@ Pim\Bundle\CatalogBundle\Entity\AttributeGroupTranslation:
             type: integer
             id: true
             generator:
-                strategy: AUTO 
+                strategy: AUTO
         label:
             type: string
             length: 100

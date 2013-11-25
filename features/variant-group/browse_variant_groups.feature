@@ -4,7 +4,7 @@ Feature: Browse variant groups
   As a user
   I need to be able to see variant groups
 
-  Background:
+  Scenario: Successfully view, sort and filter variant groups
     Given the "default" catalog configuration
     And the following attributes:
       | code      | label      | type                     |
@@ -14,15 +14,19 @@ Feature: Browse variant groups
       | dimension | Dimensions | pim_catalog_simpleselect |
     And the following product groups:
       | code           | label          | attributes  | type    |
-      | tshirt_akeneo  | T-Shirt Akeneo | size, color | VARIANT |
-      | mug_akeneo     | Mug Akeneo     | color       | VARIANT |
-      | sticker_akeneo | Sticker Akeneo | dimension   | VARIANT |
+      | tshirt_akeneo  | Akeneo T-Shirt | size, color | VARIANT |
+      | mug            | Mug            | color       | VARIANT |
+      | sticker_akeneo | Akeneo Sticker | dimension   | VARIANT |
       | cross_sell     | Cross Sell     |             | X_SELL  |
     And I am logged in as "admin"
-
-  Scenario: Successfully display variant groups
-    Given I am on the variant groups page
+    And I am on the variant groups page
     Then the grid should contain 3 elements
     And I should see the columns Code, Label and Axis
-    And I should see groups tshirt_akeneo, mug_akeneo and sticker_akeneo
-    And I should not see group cross_sell
+    And I should see groups tshirt_akeneo, mug and sticker_akeneo
+    And the rows should be sorted ascending by code
+    And I should be able to sort the rows by code and label
+    And I should be able to use the following filters:
+      | filter | value  | result                           |
+      | Code   | mug    | mug                              |
+      | Label  | Akeneo | tshirt_akeneo and sticker_akeneo |
+      | Axis   | Color  | tshirt_akeneo and mug            |

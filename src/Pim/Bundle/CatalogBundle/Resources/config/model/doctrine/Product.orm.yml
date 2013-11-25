@@ -67,7 +67,7 @@ Pim\Bundle\CatalogBundle\Model\Product:
                 - persist
                 - refresh
         values:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\ProductValue
+            targetEntity: Pim\Bundle\CatalogBundle\Model\ProductValueInterface
             mappedBy: entity
             cascade:
                 - remove

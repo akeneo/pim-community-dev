@@ -4,8 +4,8 @@ namespace Pim\Bundle\CatalogBundle\Builder;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
-use Pim\Bundle\CatalogBundle\Model\ProductValue;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 
 /**
@@ -158,7 +158,7 @@ class ProductBuilder
     /**
      * Create a product value
      *
-     * @return ProductValue
+     * @return ProductValueInterface
      */
     protected function createProductValue()
     {
@@ -281,7 +281,7 @@ class ProductBuilder
             $locales = $this->objectManager->getRepository('PimCatalogBundle:Locale')->getActivatedLocales();
             $this->localeRows = array();
             foreach ($locales as $locale) {
-                $this->localeRows[]= array('locale' => $locale->getCode(), 'scope' => null);
+                $this->localeRows[] = array('locale' => $locale->getCode(), 'scope' => null);
             }
         }
 
@@ -299,7 +299,7 @@ class ProductBuilder
             $channels = $this->objectManager->getRepository('PimCatalogBundle:Channel')->findAll();
             $this->scopeRows = array();
             foreach ($channels as $channel) {
-                $this->scopeRows[]= array('locale' => null, 'scope' => $channel->getCode());
+                $this->scopeRows[] = array('locale' => null, 'scope' => $channel->getCode());
             }
         }
 
@@ -318,7 +318,7 @@ class ProductBuilder
             $this->scopeToLocaleRows = array();
             foreach ($channels as $channel) {
                 foreach ($channel->getLocales() as $locale) {
-                    $this->scopeToLocaleRows[]= array('locale' => $locale->getCode(), 'scope' => $channel->getCode());
+                    $this->scopeToLocaleRows[] = array('locale' => $locale->getCode(), 'scope' => $channel->getCode());
                 }
             }
         }

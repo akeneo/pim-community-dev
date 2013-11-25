@@ -67,7 +67,7 @@ class GroupNormalizer implements NormalizerInterface
     {
         $attributes = array();
         foreach ($group->getAttributes() as $attribute) {
-            $attributes[]= $attribute->getCode();
+            $attributes[] = $attribute->getCode();
         }
         sort($attributes);
 

@@ -104,7 +104,7 @@ class CategoryRepository extends SegmentRepository
         $products = $qb->getQuery()->execute(array(), \Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
         $productIds = array();
         foreach ($products as $product) {
-            $productIds[]= $product['id'];
+            $productIds[] = $product['id'];
         }
         $productIds = array_unique($productIds);
 

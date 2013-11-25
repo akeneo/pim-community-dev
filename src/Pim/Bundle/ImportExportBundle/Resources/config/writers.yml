@@ -52,3 +52,8 @@ services:
         class: %pim_import_export.writer.orm.entity.class%
         arguments:
             - '@doctrine.orm.default_entity_manager'
+
+    pim_import_export.writer.orm.product_association:
+        class: %pim_import_export.writer.orm.entity.class%
+        arguments:
+            - '@doctrine.orm.default_entity_manager'

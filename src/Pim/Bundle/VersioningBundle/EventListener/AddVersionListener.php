@@ -183,7 +183,7 @@ class AddVersionListener implements EventSubscriber
                 $pending = new Pending($className, $versionable->getId(), $this->username);
                 $this->computeChangeSet($em, $pending);
             }
-            $this->versionedEntities[]= spl_object_hash($versionable);
+            $this->versionedEntities[] = spl_object_hash($versionable);
         }
         $this->versionableEntities = array();
         $em->flush();

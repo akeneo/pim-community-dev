@@ -44,27 +44,31 @@ class LoadJobData extends AbstractInstallerFixture
         $job->setCode($code);
         $job->setLabel($data['label']);
         $job->setType($data['type']);
-        $job->setRawConfiguration($this->prepareConfiguration($data));
+        $job->setRawConfiguration($this->prepareConfiguration($data['alias'], $data['steps']));
 
         return $job;
     }
 
     /**
-     * @param array $data
+     * @param string $alias
+     * @param array  $steps
      *
      * @return array
      */
-    protected function prepareConfiguration(array $data)
+    protected function prepareConfiguration($alias, array $steps)
     {
-        $title = sprintf('pim_import_export.jobs.%s.%s.title', $data['alias'], $data['type']);
+        $configuration = array();
+        foreach ($steps as $step => $data) {
+            $title = sprintf('pim_import_export.jobs.%s.%s.title', $alias, $step);
+            $config = array(
+                'reader'    => isset($data['reader']) ? $data['reader'] : array(),
+                'processor' => isset($data['processor']) ? $data['processor'] : array(),
+                'writer'    => isset($data['writer']) ? $data['writer'] : array(),
+            );
+            $configuration[$title]= $config;
+        }
 
-        $config = array(
-            'reader'    => isset($data['configuration']['reader']) ? $data['configuration']['reader'] : array(),
-            'processor' => isset($data['configuration']['processor']) ? $data['configuration']['processor'] : array(),
-            'writer'    => isset($data['configuration']['writer']) ? $data['configuration']['writer'] : array(),
-        );
-
-        return array($title => $config);
+        return $configuration;
     }
 
     /**

@@ -96,7 +96,7 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
         $result = array(
             'sku'           => 'KB0001',
             'family'        => 'garden-tool',
-            'groups'        => '',
+            'groups'        => null,
             'categories'    => 'cat1, cat2, cat3',
             'elements'      => 'roue,poignées,benne',
             'exportedAt'    => $now->format('m/d/Y'),
@@ -104,6 +104,7 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
             'name-es_ES'    => 'Carretilla',
             'name-fr_FR'    => 'Brouette',
             'visual'        => 'files/media.jpg',
+            'enabled'       => (int) true
         );
 
         $this->assertArrayEquals($result, $this->normalizer->normalize($product, 'csv'));
@@ -138,7 +139,7 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
         $result = array(
             'sku'           => 'KB0001',
             'family'        => 'garden-tool',
-            'groups'        => '',
+            'groups'        => null,
             'categories'    => 'cat1, cat2, cat3',
             'elements'      => 'roue,poignées,benne',
             'exportedAt'    => $now->format('m/d/Y'),
@@ -147,7 +148,8 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
             'name-es_ES-ecommerce' => 'Carretilla',
             'name-es_ES-mobile' => 'Carret.',
             'name-fr_FR-ecommerce' => 'Brouette',
-            'name-fr_FR-mobile' => 'Brou.'
+            'name-fr_FR-mobile' => 'Brou.',
+            'enabled'       => 1
         );
 
         $this->assertArrayEquals($result, $this->normalizer->normalize($product, 'csv'));
@@ -182,13 +184,14 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
         $result = array(
             'sku'           => 'KB0001',
             'family'        => 'garden-tool',
-            'groups'        => '',
+            'groups'        => null,
             'categories'    => 'cat1, cat2, cat3',
             'elements'      => 'roue,poignées,benne',
             'exportedAt'    => $now->format('m/d/Y'),
             'name-en_US-ecommerce' => 'Wheelbarrow',
             'name-es_ES-ecommerce' => 'Carretilla',
             'name-fr_FR-ecommerce' => 'Brouette',
+            'enabled'       => 1
         );
 
         $context = array('scopeCode' => 'ecommerce');
@@ -223,13 +226,14 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
         $result = array(
             'sku'        => 'KB0001',
             'family'     => '',
-            'groups'     => '',
+            'groups'     => null,
             'categories' => 'cat1, cat2, cat3',
             'elements'   => 'roue,poignées,benne',
             'exportedAt' => $now->format('m/d/Y'),
             'name-en_US' => 'Wheelbarrow',
             'name-es_ES' => 'Carretilla',
             'name-fr_FR' => 'Brouette',
+            'enabled'    => 1
         );
 
         $this->assertArrayEquals($result, $this->normalizer->normalize($product, 'csv'));
@@ -311,6 +315,10 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
         $product->expects($this->any())
             ->method('getProductAssociations')
             ->will($this->returnValue(array()));
+
+        $product->expects($this->any())
+            ->method('isEnabled')
+            ->will($this->returnValue(true));
 
         return $product;
     }

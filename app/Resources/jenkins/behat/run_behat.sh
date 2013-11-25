@@ -71,6 +71,22 @@ for PROC in `seq 1 $CONCURRENCY`; do
 done
 cd -
 
+# Warm the cache to avoid EntityConfig bug with UoW when cache is cold
+echo "Warming cache..."
+
+FEATURE=`find $FEATURES_DIR/ -name *.feature | head -n 1`
+FEATURE_NAME=`echo $FEATURE | sed -e 's#^.*/features/\(.*\)$#features/\1#'`
+echo "with feature $FEATURE_NAME"
+
+for PROC in `seq 1 $CONCURRENCY`; do
+    echo "  - proc $PROC"
+    export SYMFONY__DATABASE__NAME=$DB_PREFIX$PROC
+    export SYMFONY__UPLOAD__DIR=product_$PROC
+    $BEHAT_CMD --profile=$PROFILE_PREFIX$PROC --stop-on-failure $FEATURE_NAME
+done
+echo "Warming cache done."
+
+
 FEATURES=`find $FEATURES_DIR/ -name *.feature`
 for FEATURE in $FEATURES; do
 
@@ -90,7 +106,6 @@ for FEATURE in $FEATURES; do
                 if [ $? -ne 0 ]; then
                     export SYMFONY__DATABASE__NAME=$DB_PREFIX$PROC
                     export SYMFONY__UPLOAD__DIR=product_$PROC
-                    echo "Executing feature $FEATURE_NAME"
                     ($BEHAT_CMD --profile=$PROFILE_PREFIX$PROC $FEATURE_NAME 2>&1 | tee -a $OUTPUT) &
                     RESULT=$!
                     eval PID_$PROC=$RESULT
