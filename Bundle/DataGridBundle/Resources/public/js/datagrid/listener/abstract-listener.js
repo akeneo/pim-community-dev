@@ -1,6 +1,6 @@
-/*jslint nomen: true*/
+/*jslint browser: true, nomen: true*/
 /*global define*/
-define(['underscore', 'backbone', 'oro/mediator'], function (_, Backbone, mediator) {
+define(['underscore', 'jquery', 'backbone'], function (_, $, Backbone) {
     'use strict';
 
     /**
@@ -57,7 +57,7 @@ define(['underscore', 'backbone', 'oro/mediator'], function (_, Backbone, mediat
          * @private
          */
         _assignDatagridAndSubscribe: function (datagridName) {
-            mediator.once("datagrid:created:" + datagridName, this.setDatagridAndSubscribe, this);
+            $(document).one('datagrid:created:' + datagridName, this.setDatagridAndSubscribe.bind(this));
         },
 
         /**

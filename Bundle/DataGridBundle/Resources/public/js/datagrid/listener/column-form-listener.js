@@ -1,4 +1,4 @@
-/* global define */
+/*global define*/
 define(['jquery', 'underscore', 'oro/translator', 'oro/mediator', 'oro/modal', 'oro/datagrid/abstract-listener'],
 function($, _, __, mediator, Modal, AbstractListener) {
     'use strict';
@@ -25,7 +25,7 @@ function($, _, __, mediator, Modal, AbstractListener) {
          *
          * @param {Object} options
          */
-        initialize: function(options) {
+        initialize: function (options) {
             if (!_.has(options, 'selectors')) {
                 throw new Error('Field selectors is not specified');
             }
@@ -257,9 +257,11 @@ function($, _, __, mediator, Modal, AbstractListener) {
             }
             this.confirmModal[type].open();
         },
-        _initHandler: function (grid, $el) {
-            var metadata = $el.data('metadata'),
-                options = metadata.options || {};
+        _initHandler: function (e, grid) {
+            var $el = $(e.target);
+            var metadata = $el.data('metadata');
+            var options = metadata.options || {};
+
             if (options.columnListener) {
                 initialized = true;
                 new ColumnFormListener(_.extend({grid: grid}, metadata.options.columnListener));
@@ -267,14 +269,14 @@ function($, _, __, mediator, Modal, AbstractListener) {
         }
     });
 
-    ColumnFormListener.init = function () {
+    ColumnFormListener.init = function ($el) {
         var self = this;
         initialized = false;
 
-        mediator.once('datagrid:created', self.prototype._initHandler);
-        mediator.once('hash_navigation_request:start', function() {
+        $el.one('datagrid:created', self.prototype._initHandler);
+        mediator.once('hash_navigation_request:start', function () {
             if (!initialized) {
-                mediator.off('datagrid:created', self.prototype._initHandler);
+                $el.off('datagrid:created', self.prototype._initHandler);
             }
         });
     };

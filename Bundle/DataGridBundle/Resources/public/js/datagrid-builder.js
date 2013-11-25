@@ -1,11 +1,19 @@
-/* jshint browser:true */
-/* global define, require */
-define(['jquery', 'underscore', 'backbone', 'oro/translator', 'oro/tools', 'oro/mediator', 'oro/registry', 'oro/loading-mask',
-    'oro/pageable-collection', 'oro/datagrid/grid', 'oro/datagrid/router',
-    'oro/datagrid/grid-views/view'],
-function($, _, Backbone, __, tools, mediator, registry, LoadingMask,
-         PageableCollection, Grid, GridRouter, GridViewsView) {
+/*jslint vars: true, nomen: true, browser: true*/
+/*jshint browser: true*/
+/*global define, require*/
+define(function (require) {
     'use strict';
+
+    var $ = require('jquery');
+    var _ = require('underscore');
+    var __ = require('oro/translator');
+    var tools = require('oro/tools');
+    var mediator = require('oro/mediator');
+    var LoadingMask = require('oro/loading-mask');
+    var PageableCollection = require('oro/pageable-collection');
+    var Grid = require('oro/datagrid/grid');
+    var GridRouter = require('oro/datagrid/router');
+    var GridViewsView = require('oro/datagrid/grid-views/view');
 
     var gridSelector = '[data-type="datagrid"]:not([data-rendered])',
         gridGridViewsSelector = '.page-title > .navbar-extra .span9:last',
@@ -83,8 +91,8 @@ function($, _, Backbone, __, tools, mediator, registry, LoadingMask,
                 options = methods.combineGridOptions.call(this);
                 grid = new Grid(_.extend({collection: collection}, options));
                 this.$el.append(grid.render().$el);
-                mediator.trigger('datagrid:created', grid, this.$el);
-                mediator.trigger('datagrid:created:' + options.name, grid);
+                this.$el.trigger('datagrid:created', grid);
+                this.$el.trigger('datagrid:created:' + options.name, grid);
 
                 if (options.routerEnabled !== false) {
                     // register router
@@ -108,7 +116,7 @@ function($, _, Backbone, __, tools, mediator, registry, LoadingMask,
                     url: '\/user\/json',
                     state: _.extend({
                         filters: {},
-                        sorters:{}
+                        sorters: {}
                     }, this.metadata.state)
                 }, this.metadata.options);
             },
