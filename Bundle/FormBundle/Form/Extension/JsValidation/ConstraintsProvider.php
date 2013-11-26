@@ -39,7 +39,7 @@ class ConstraintsProvider
         $constraints = $this->getMetadataConstraints($form);
 
         $embeddedConstraints = $form->getConfig()->getOption('constraints');
-        if ($embeddedConstraints) {
+        if ($embeddedConstraints && is_array($embeddedConstraints)) {
             $constraints = array_merge($constraints, $embeddedConstraints);
         }
 
