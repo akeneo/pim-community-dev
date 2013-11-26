@@ -182,7 +182,6 @@ class ProductManager extends FlexibleManager
         } catch (NoResultException $ex) {
             return null;
         }
-
         return $em->createQuery(
             'SELECT p, v, f, o, pr ' .
             'FROM ' . $class . ' p ' .
@@ -192,7 +191,7 @@ class ProductManager extends FlexibleManager
             'LEFT JOIN v.prices pr ' .
             'WHERE p.id=:id'
         )
-            ->setParameter('attributes', $attributes)
+            ->setParameter('attributes', array_values($attributes))
             ->setParameter('id', $id)
             ->getSingleResult();
     }

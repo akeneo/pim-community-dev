@@ -89,7 +89,8 @@ abstract class AbstractTransformerProcessor extends AbstractConfigurableStepElem
                         )
                     )
                 );
-            }
+            },
+            array_values($errors), array_keys($errors)
         );
     }
 
