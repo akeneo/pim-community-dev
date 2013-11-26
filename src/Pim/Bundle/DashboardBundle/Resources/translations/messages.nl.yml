@@ -2,18 +2,20 @@
 pim_dashboard:
   menu:
     label:
-      collect: Collect
-      enrich: Enrich
-      spread: Spread
-      settings: Settings
+      collect: Verzamelen
+      enrich: Verrijken
+      spread: Verspreiden
+      settings: Instellingen
   link:
     label:
-      import_profile: Manage Import Profiles
-      import_report: Imports History
-      product: Manage Products
-      category: Manage Categories
-      channel: Manage Channels
-      export_profile: Manage Export Profiles
-      export_report: Exports History
-      attribute: Manage Attributes
-      family: Manage Families
+      import_profile: Importprofielen beheren
+      import_report: Importgeschiedenis
+      product: Producten beheren
+      category: Categorieën beheren
+      variant: Manage Variant Groups
+      group: Manage Groups
+      channel: Kanalen beheren
+      export_profile: Exportprofielen beheren
+      export_report: Exportgeschiedenis
+      attribute: Kenmerken beheren
+      family: Families beheren
