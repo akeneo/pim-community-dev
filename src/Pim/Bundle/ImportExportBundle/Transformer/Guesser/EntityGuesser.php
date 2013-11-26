@@ -24,12 +24,12 @@ class EntityGuesser implements GuesserInterface
      * @var RegistryInterface
      */
     protected $doctrine;
-    
+
     /**
      * Constructor
      *
      * @param PropertyTransformerInterface $transformer
-     * @param RegistryInterface $doctrine
+     * @param RegistryInterface            $doctrine
      */
     public function __construct(PropertyTransformerInterface $transformer, RegistryInterface $doctrine)
     {
@@ -51,6 +51,7 @@ class EntityGuesser implements GuesserInterface
         if (!$relatedMapping->hasField('code')) {
             return;
         }
+
         return array(
             $this->transformer,
             array(

@@ -4,7 +4,6 @@ namespace Pim\Bundle\ImportExportBundle\Transformer;
 
 use Oro\Bundle\BatchBundle\Item\InvalidItemException;
 use Pim\Bundle\ImportExportBundle\Exception\PropertyTransformerException;
-use Pim\Bundle\ImportExportBundle\Exception\TransformerException;
 use Pim\Bundle\ImportExportBundle\Exception\UnknownColumnException;
 use Pim\Bundle\ImportExportBundle\Transformer\Guesser\GuesserInterface;
 use Pim\Bundle\ImportExportBundle\Transformer\Property\EntityUpdaterInterface;

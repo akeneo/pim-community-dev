@@ -6,7 +6,6 @@ use Exception;
 use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Oro\Bundle\BatchBundle\Item\InvalidItemException;
 use Oro\Bundle\BatchBundle\Item\ItemProcessorInterface;
-use Pim\Bundle\ImportExportBundle\Exception\TransformerException;
 use Pim\Bundle\ImportExportBundle\Exception\TranslatableExceptionInterface;
 use Pim\Bundle\ImportExportBundle\Validator\Import\ImportValidatorInterface;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -104,6 +103,6 @@ abstract class AbstractTransformerProcessor extends AbstractConfigurableStepElem
     abstract protected function transform($item);
 
     abstract protected function getTransformedColumnsInfo();
-    
+
     abstract protected function getTransformerErrors();
 }

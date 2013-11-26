@@ -51,7 +51,7 @@ class ProductImportValidator extends ImportValidator
     {
         $identifier = $this->getIdentifier($columnsInfo, $entity);
         $this->checkIdentifier(get_class($entity), $identifier, $data);
-        
+
         foreach ($columnsInfo as $columnInfo) {
             if (isset($columnInfo['attribute'])) {
                 $violations = $this->validateProductValue($entity, $columnInfo);

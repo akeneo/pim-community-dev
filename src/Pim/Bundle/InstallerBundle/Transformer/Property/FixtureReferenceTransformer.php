@@ -30,10 +30,10 @@ class FixtureReferenceTransformer extends AbstractAssociationTransformer
 
     /**
      * Constructor
-     * 
+     *
      * @param PropertyTransformerInterface $entityTransformer
      */
-    function __construct(PropertyTransformerInterface $entityTransformer)
+    public function __construct(PropertyTransformerInterface $entityTransformer)
     {
         $this->entityTransformer = $entityTransformer;
     }

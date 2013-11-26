@@ -3,7 +3,6 @@
 namespace Pim\Bundle\ImportExportBundle\Transformer\Property;
 
 use Pim\Bundle\ImportExportBundle\Cache\EntityCache;
-use Pim\Bundle\ImportExportBundle\Exception\PropertyTransformerException;
 
 /**
  * Transform entity codes in entity arrays
