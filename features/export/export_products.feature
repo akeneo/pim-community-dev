@@ -51,7 +51,7 @@ Feature: Export products
     And I wait for the job to finish
     Then exported file of "ecommerce_product_export" should contain:
     """
-    sku;name-EN_US;name-EN_GB;name-fr_FR;name-de_DE;description-en_US;description-en_GB;description-fr_FR;description-de_DE;price;size;color;manufacturer;country_of_manufacture;material;categories;enabled
-    tshirt-white;"White t-shirt";"White t-shirt";"T-shirt blanc";"Weißes T-Shirt";"A stylish white t-shirt";"An elegant white t-shirt";"Un T-shirt blanc élégant";"Ein elegantes weißes T-Shirt";"10.00 EUR,15.00 USD,9.00 GBP";size_M;white;american_apparel;usa;cotton;"2013_collection,2014_collection,2015_collection";1
-    tshirt-black;"Black t-shirt";"Black t-shirt";"T-shirt noir";"Schwarzes T-Shirt";"A stylish black t-shirt";"An elegant black t-shirt";"Un T-shirt noir élégant";"Ein elegantes schwarzes T-Shirt";"10.00 EUR,15.00 USD,9.00 GBP";size_L;black;american_apparel;usa;cotton;"2013_collection,2014_collection,2015_collection";1
+    sku;name-en_US;name-en_GB;name-fr_FR;name-de_DE;description-en_US;description-en_GB;description-fr_FR;description-de_DE;price;size;color;manufacturer;country_of_manufacture;material;categories;enabled;family;groups;additional_colors;cost;customer_rating;customs_tax;handmade;image;number_in_stock;release_date;thumbnail;washing_temperature;weight
+    tshirt-white;"White t-shirt";"White t-shirt";"T-shirt blanc";"Weißes T-Shirt";"A stylish white t-shirt";"An elegant white t-shirt";"Un T-shirt blanc élégant";"Ein elegantes weißes T-Shirt";"10.00 EUR,15.00 USD,9.00 GBP";size_M;white;american_apparel;usa;cotton;"2013_collection,2014_collection,2015_collection";1;tshirts;;;;;;;;;;;;
+    tshirt-black;"Black t-shirt";"Black t-shirt";"T-shirt noir";"Schwarzes T-Shirt";"A stylish black t-shirt";"An elegant black t-shirt";"Un T-shirt noir élégant";"Ein elegantes schwarzes T-Shirt";"10.00 EUR,15.00 USD,9.00 GBP";size_L;black;american_apparel;usa;cotton;"2013_collection,2014_collection,2015_collection";1;tshirts;;;;;;;;;;;;
     """
