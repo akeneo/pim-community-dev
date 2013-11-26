@@ -7,9 +7,9 @@ use Oro\Bundle\FlexibleEntityBundle\Entity\Price;
 use Oro\Bundle\FlexibleEntityBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Family;
-use Pim\Bundle\CatalogBundle\Entity\Product;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
-use Pim\Bundle\CatalogBundle\Entity\ProductPrice;
+use Pim\Bundle\CatalogBundle\Model\ProductPrice;
+use Pim\Bundle\CatalogBundle\Model\Product;
 
 /**
  * Load products
@@ -103,9 +103,9 @@ class LoadProductData extends AbstractDemoFixture
 
             if (($ind % self::BATCH_SIZE) == 0) {
                 $pm->getStorageManager()->flush();
-                $pm->getStorageManager()->clear('Pim\\Bundle\\CatalogBundle\\Entity\\Product');
-                $pm->getStorageManager()->clear('Pim\\Bundle\\CatalogBundle\\Entity\\ProductValue');
-                $pm->getStorageManager()->clear('Pim\\Bundle\\CatalogBundle\\Entity\\ProductPrice');
+                $pm->getStorageManager()->clear('Pim\\Bundle\\CatalogBundle\\Model\\Product');
+                $pm->getStorageManager()->clear('Pim\\Bundle\\CatalogBundle\\Model\\ProductValue');
+                $pm->getStorageManager()->clear('Pim\\Bundle\\CatalogBundle\\Model\\ProductPrice');
                 $pm->getStorageManager()->clear('Oro\\Bundle\\SearchBundle\\Entity\\Item');
                 $pm->getStorageManager()->clear('Oro\\Bundle\\SearchBundle\\Entity\\IndexText');
             }
