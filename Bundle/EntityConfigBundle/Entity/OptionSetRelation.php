@@ -39,6 +39,30 @@ class OptionSetRelation
     protected $option;
 
     /**
+     * @ORM\Column(type="integer")
+     */
+    protected $entity_id;
+
+    /**
+     * @param int $entity_id
+     * @return $this
+     */
+    public function setEntityId($entity_id)
+    {
+        $this->entity_id = $entity_id;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEntityId()
+    {
+        return $this->entity_id;
+    }
+
+    /**
      * @param \Oro\Bundle\EntityConfigBundle\Entity\FieldConfigModel $field
      * @return $this
      */
@@ -97,13 +121,16 @@ class OptionSetRelation
 
     /**
      * @param $id
-     * @param field
+     * @param $entity_id
+     * @param $field
      * @param $option
+     * @internal param $field
      */
-    public function setData($id, $field, $option)
+    public function setData($id, $entity_id, $field, $option)
     {
         $this
             ->setId($id)
+            ->setEntityId($entity_id)
             ->setField($field)
             ->setOption($option);
     }

@@ -7,16 +7,40 @@ use Doctrine\ORM\EntityRepository;
 class OptionSetRelationRepository extends EntityRepository
 {
     /**
-     * @param $fieldConfigId
-     * @param array $values
+     * @param int $fieldConfigId
+     * @param int $entityId
      * @return array
      */
-    public function findByNotIn($fieldConfigId, $values)
+    public function findByFieldId($fieldConfigId, $entityId)
     {
         $qb = $this->createQueryBuilder('a');
         $qb->where(
             $qb->expr()->andX(
                 $qb->expr()->eq('a.field', $fieldConfigId),
+                $qb->expr()->eq('a.entity_id', $entityId)
+            )
+        );
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @param int $fieldConfigId
+     * @param int $entityId
+     * @param array $values
+     * @return array
+     */
+    public function findByNotIn($fieldConfigId, $entityId, $values)
+    {
+        if (empty($values)) {
+            return $this->findByFieldId($fieldConfigId, $entityId);
+        }
+
+        $qb = $this->createQueryBuilder('a');
+        $qb->where(
+            $qb->expr()->andX(
+                $qb->expr()->eq('a.field', $fieldConfigId),
+                $qb->expr()->eq('a.entity_id', $entityId),
                 $qb->expr()->notIn('a.option', $values)
             )
         );
@@ -26,15 +50,19 @@ class OptionSetRelationRepository extends EntityRepository
 
     /**
      * returns the number of entity's rows
-     * @param $fieldConfigId
+     * @param int $fieldConfigId
+     * @param $entityId
      * @return int
      */
-    public function count($fieldConfigId)
+    public function count($fieldConfigId, $entityId)
     {
         $qb = $this->createQueryBuilder('a');
         $qb->select('COUNT(a)')
             ->where(
-                $qb->expr()->eq('a.field', $fieldConfigId)
+                $qb->expr()->andX(
+                    $qb->expr()->eq('a.field', $fieldConfigId),
+                    $qb->expr()->eq('a.entity_id', $entityId)
+                )
             );
 
         return $qb->getQuery()->getSingleScalarResult();

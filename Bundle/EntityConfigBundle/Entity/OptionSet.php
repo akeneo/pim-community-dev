@@ -3,6 +3,7 @@
 namespace Oro\Bundle\EntityConfigBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\PersistentCollection;
 
 /**
  * @ORM\Entity()
@@ -48,10 +49,18 @@ class OptionSet
     protected $is_default;
 
     /**
+     * @var OptionSetRelation[]|PersistentCollection
      * @ORM\OneToMany(targetEntity="OptionSetRelation", mappedBy="option", cascade={"remove"})
      */
-    private $relation;
+    protected $relation;
 
+    /**
+     * @return mixed
+     */
+    public function getRelation()
+    {
+        return $this->relation;
+    }
 
     /**
      * @return mixed

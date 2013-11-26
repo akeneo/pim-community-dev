@@ -8,6 +8,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Router;
 
 use Oro\Bundle\EntityBundle\ORM\OroEntityManager;
 
@@ -20,7 +22,8 @@ use Oro\Bundle\EntityConfigBundle\Entity\Repository\OptionSetRelationRepository;
 
 class OptionSelectType extends AbstractType
 {
-    const NAME = 'oro_option_select';
+    const NAME   = 'oro_option_select';
+    const PARENT = 'choice';
 
     /**
      * @var ConfigManager
@@ -47,6 +50,9 @@ class OptionSelectType extends AbstractType
      */
     protected $relations;
 
+    /**
+     * @param ConfigManager $configManager
+     */
     public function __construct(ConfigManager $configManager)
     {
         $this->configManager  = $configManager;
@@ -70,14 +76,9 @@ class OptionSelectType extends AbstractType
 
     public function preSetData(FormEvent $event)
     {
-        $fieldConfigId = $event->getForm()->getConfig()->getOption('config_id');
-        $extendConfig  = $this->configManager->getConfig($fieldConfigId);
-        $model = $this->configManager->getConfigFieldModel(
-            $fieldConfigId->getClassName(),
-            $fieldConfigId->getFieldName()
-        );
+        list($entityId, $model, $extendConfig) = $this->prepareEvent($event);
 
-        if ($saved = $this->relations->findBy(['field' => $model])) {
+        if ($entityId && $saved = $this->relations->findByFieldId($model->getId(), $entityId)) {
             $data = [];
             foreach ($saved as $option) {
                 $data[] = $option->getOption()->getId();
@@ -88,25 +89,30 @@ class OptionSelectType extends AbstractType
             } else {
                 $event->setData(array_shift($data));
             }
+        } elseif ($entityId) {
+            $event->setData($extendConfig->is('set_expanded') ? [] : '');
         }
     }
 
     public function preSubmitData(FormEvent $event)
     {
-        $fieldConfigId = $event->getForm()->getConfig()->getOption('config_id');
-        $model = $this->configManager->getConfigFieldModel(
-            $fieldConfigId->getClassName(),
-            $fieldConfigId->getFieldName()
-        );
-        $saved = $this->relations->findBy(['field' => $model]);
-        array_walk(
-            $saved,
-            function (&$item) {
-                $item = $item->getOption()->getId();
-            }
-        );
+        list($entityId, $model) = $this->prepareEvent($event);
 
-        $data  = $event->getData();
+        $saved = [];
+        if ($entityId) {
+            $saved = $this->relations->findByFieldId($model->getId(), $entityId);
+            array_walk(
+                $saved,
+                function (&$item) {
+                    $item = $item->getOption()->getId();
+                }
+            );
+        }
+
+        $data = $event->getData();
+        if (empty($data)) {
+            $data = [];
+        }
         if (!is_array($data)) {
             $data = [$data];
         }
@@ -118,7 +124,7 @@ class OptionSelectType extends AbstractType
         foreach ($data as $option) {
             if (!in_array($option, $saved)) {
                 $optionRelation = new OptionSetRelation();
-                $optionRelation->setData(null, $model, $this->options->find($option));
+                $optionRelation->setData(null, $entityId, $model, $this->options->find($option));
                 $toSave[] = $option;
 
                 $this->em->persist($optionRelation);
@@ -128,8 +134,8 @@ class OptionSelectType extends AbstractType
         /**
          * Remove unselected
          */
-        if ($toSave && $this->relations->count($model->getId())) {
-            $toRemove = $this->relations->findByNotIn($model->getId(), implode(',', $toSave));
+        if ($entityId && $this->relations->count($model->getId(), $entityId)) {
+            $toRemove = $this->relations->findByNotIn($model->getId(), $entityId, $toSave);
             foreach ($toRemove as $option) {
                 $this->em->remove($option);
             }
@@ -139,11 +145,33 @@ class OptionSelectType extends AbstractType
     }
 
     /**
+     * @param FormEvent $event
+     * @return array
+     */
+    protected function prepareEvent(FormEvent $event)
+    {
+        $formData = $event->getForm()->getRoot()->getData();
+        if (!$formData) {
+            return;
+        }
+
+        $entityId      = $formData->getId();
+        $fieldConfigId = $event->getForm()->getConfig()->getOption('config_id');
+        $extendConfig  = $this->configManager->getConfig($fieldConfigId);
+        $model         = $this->configManager->getConfigFieldModel(
+            $fieldConfigId->getClassName(),
+            $fieldConfigId->getFieldName()
+        );
+
+        return [$entityId, $model, $extendConfig];
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getParent()
     {
-        return 'choice';
+        return self::PARENT;
     }
 
     /**
@@ -151,6 +179,6 @@ class OptionSelectType extends AbstractType
      */
     public function getName()
     {
-        return $this::NAME;
+        return self::NAME;
     }
 }

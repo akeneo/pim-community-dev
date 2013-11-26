@@ -313,6 +313,11 @@ oro_entity_config:
                 set_expanded:
                     options:
                         allowed_type:       [optionSet]
+#                        required_property:
+#                            config_id:
+#                                scope:      extend
+#                            code:           state
+#                            value:          New
                     form:
                         type:               choice
                         options:
@@ -328,16 +333,12 @@ oro_entity_config:
                     options:
                         allowed_type:       [optionSet]
                         auditable:          false
-                        required_property:
-                            config_id:
-                                scope:      extend
-                            code:           owner
-                            value:          Custom
+                        serializable:       true
                     form:
                         type:               oro_entity_option_set_collection
                         options:
                             required:       false
-                            label:          'Option(s)'
+                            label:          'Options'
                             block:          entity
                             subblock:       properties
                             type:           oro_entity_option_set

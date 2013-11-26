@@ -22,6 +22,8 @@ use Oro\Bundle\OrganizationBundle\Entity\Manager\BusinessUnitManager;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 
 use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
+use Oro\Bundle\EntityConfigBundle\Entity\OptionSetRelation;
+use Oro\Bundle\EntityConfigBundle\Entity\Repository\OptionSetRelationRepository;
 use Oro\Bundle\EntityConfigBundle\Metadata\EntityMetadata;
 
 use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
@@ -244,6 +246,27 @@ class UserController extends Controller
             if ($value instanceof \DateTime) {
                 $configFormat = $this->get('oro_config.global')->get('oro_locale.date_format') ? : 'Y-m-d';
                 $value        = $value->format($configFormat);
+            }
+
+            /** Prepare OptionSet field type */
+            if ($field->getId()->getFieldType() == 'optionSet') {
+                /** @var OptionSetRelationRepository  */
+                $osr = $configManager->getEntityManager()->getRepository(OptionSetRelation::ENTITY_NAME);
+
+                $model = $extendProvider->getConfigManager()->getConfigFieldModel(
+                    $field->getId()->getClassName(),
+                    $field->getId()->getFieldName()
+                );
+
+                $value = $osr->findByFieldId($model->getId(), $entity->getId());
+                array_walk(
+                    $value,
+                    function (&$item) {
+                        $item = ['title' => $item->getOption()->getLabel()];
+                    }
+                );
+
+                $value['values'] = $value;
             }
 
             /** Prepare Relation field type */
