@@ -2,13 +2,15 @@
 
 namespace Pim\Bundle\ImportExportBundle\Validator\Import;
 
-use Oro\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface;
-use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\ImportExportBundle\Cache\AttributeCache;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\ValidatorInterface;
+use Oro\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface;
+use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\ImportExportBundle\Cache\AttributeCache;
+use Pim\Bundle\ImportExportBundle\Validator\Import\ImportValidator;
 
 /**
  * Validates an imported product
@@ -30,6 +32,7 @@ class ProductImportValidator extends ImportValidator
     protected $constraints = array();
 
     /**
+     * Constructor
      *
      * @param ValidatorInterface         $validator
      * @param TranslatorInterface        $translator
@@ -104,6 +107,9 @@ class ProductImportValidator extends ImportValidator
         return $this->constraints[$code];
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function getIdentifier(array $columnsInfo, $entity)
     {
         foreach ($columnsInfo as $columnInfo) {
@@ -114,6 +120,14 @@ class ProductImportValidator extends ImportValidator
         }
     }
 
+    /**
+     * Returns a ProductValue
+     *
+     * @param ProductInterface $product
+     * @param array            $columnInfo
+     *
+     * @return ProductValueInterface
+     */
     protected function getProductValue(ProductInterface $product, array $columnInfo)
     {
         return $product->getValue($columnInfo['name'], $columnInfo['locale'], $columnInfo['scope']);

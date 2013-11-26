@@ -2,15 +2,16 @@
 
 namespace Pim\Bundle\ImportExportBundle\Transformer;
 
+use Symfony\Bridge\Doctrine\RegistryInterface;
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Oro\Bundle\BatchBundle\Item\InvalidItemException;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\ImportExportBundle\Cache\AttributeCache;
 use Pim\Bundle\ImportExportBundle\Transformer\Guesser\GuesserInterface;
 use Pim\Bundle\ImportExportBundle\Transformer\Property\SkipTransformer;
-use Symfony\Bridge\Doctrine\RegistryInterface;
-use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 /**
  * Specialized OrmTransformer for products
@@ -131,12 +132,14 @@ class OrmProductTransformer extends AbstractOrmTransformer
     }
 
     /**
+     * Sets a product value
      *
-     * @param  ProductInterface $product
-     * @param  ProductAttribute $attribute
-     * @param  array            $columnInfo
-     * @param  array            $transformerInfo
-     * @param  mixed            $value
+     * @param ProductInterface $product
+     * @param ProductAttribute $attribute
+     * @param array            $columnInfo
+     * @param array            $transformerInfo
+     * @param mixed            $value
+     *
      * @return array
      */
     protected function setProductValue(
@@ -155,7 +158,15 @@ class OrmProductTransformer extends AbstractOrmTransformer
         return parent::setProperty($productValue, $columnInfo, $transformerInfo, $value);
     }
 
-    protected function getProductValue($product,array $columnInfo)
+    /**
+     * Returns a ProductValue
+     *
+     * @param ProductInterface $product
+     * @param array            $columnInfo
+     *
+     * @return ProductValueInterface
+     */
+    protected function getProductValue(ProductInterface $product,array $columnInfo)
     {
         $productValue = $product->getValue($columnInfo['name'], $columnInfo['locale'], $columnInfo['scope']);
         if (!$productValue) {
@@ -166,6 +177,11 @@ class OrmProductTransformer extends AbstractOrmTransformer
         return $productValue;
     }
 
+    /**
+     * Initializes the attribute cache
+     *
+     * @param array $data
+     */
     protected function initializeAttributes($data)
     {
         if ($this->attributeCache->isInitialized()) {

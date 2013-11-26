@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\ImportExportBundle\Processor;
 
+use Symfony\Component\Translation\TranslatorInterface;
 use Oro\Bundle\BatchBundle\Entity\StepExecution;
 use Pim\Bundle\ImportExportBundle\Transformer\ORMProductTransformer;
 use Pim\Bundle\ImportExportBundle\Validator\Import\ImportValidatorInterface;
-use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Product import processor
@@ -47,6 +47,13 @@ class ProductProcessor extends AbstractTransformerProcessor
      */
     protected $stepExecution;
 
+    /**
+     * Constructor
+     *
+     * @param ImportValidatorInterface $validator
+     * @param TranslatorInterface      $translator
+     * @param OrmProductTransformer    $transformer
+     */
     public function __construct(
         ImportValidatorInterface $validator,
         TranslatorInterface $translator,
@@ -150,6 +157,9 @@ class ProductProcessor extends AbstractTransformerProcessor
         );
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function transform($item)
     {
         return $this->transformer->transform(
@@ -160,6 +170,9 @@ class ProductProcessor extends AbstractTransformerProcessor
         );
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function getMapping()
     {
         return array(
@@ -169,11 +182,17 @@ class ProductProcessor extends AbstractTransformerProcessor
         );
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function getTransformedColumnsInfo()
     {
         return $this->transformer->getTransformedColumnsInfo();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function getTransformerErrors()
     {
         return $this->transformer->getErrors();

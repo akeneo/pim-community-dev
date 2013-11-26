@@ -2,18 +2,19 @@
 
 namespace Pim\Bundle\ImportExportBundle\Processor;
 
-use Exception;
+use Symfony\Component\Translation\TranslatorInterface;
 use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Oro\Bundle\BatchBundle\Item\InvalidItemException;
 use Oro\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Pim\Bundle\ImportExportBundle\Exception\TranslatableExceptionInterface;
 use Pim\Bundle\ImportExportBundle\Validator\Import\ImportValidatorInterface;
-use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Description of AbstractProcessor
  *
- * @author Antoine Guigan <aguigan@qimnet.com>
+ * @author    Antoine Guigan <antoine@akeneo.com>
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 abstract class AbstractTransformerProcessor extends AbstractConfigurableStepElement implements ItemProcessorInterface
 {
@@ -47,7 +48,7 @@ abstract class AbstractTransformerProcessor extends AbstractConfigurableStepElem
         $this->mapValues($item);
         try {
             $entity = $this->transform($item);
-        } catch (Exception $ex) {
+        } catch (\Exception $ex) {
             if ($ex instanceof TranslatableExceptionInterface) {
                 $ex->translateMessage($this->translator);
             }
@@ -100,9 +101,25 @@ abstract class AbstractTransformerProcessor extends AbstractConfigurableStepElem
         return array();
     }
 
+    /**
+     * Transforms the array in an object
+     *
+     * @param  array  $item
+     * @return object
+     */
     abstract protected function transform($item);
 
+    /**
+     * Returns the column info of the transformed fields
+     *
+     * @return array
+     */
     abstract protected function getTransformedColumnsInfo();
 
+    /**
+     * Returns an array of errors for each columns
+     *
+     * @return array
+     */
     abstract protected function getTransformerErrors();
 }

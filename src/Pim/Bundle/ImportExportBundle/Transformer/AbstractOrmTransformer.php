@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\ImportExportBundle\Transformer;
 
+use Symfony\Bridge\Doctrine\RegistryInterface;
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Oro\Bundle\BatchBundle\Item\InvalidItemException;
 use Pim\Bundle\ImportExportBundle\Exception\PropertyTransformerException;
 use Pim\Bundle\ImportExportBundle\Exception\UnknownColumnException;
@@ -9,8 +11,6 @@ use Pim\Bundle\ImportExportBundle\Transformer\Guesser\GuesserInterface;
 use Pim\Bundle\ImportExportBundle\Transformer\Property\EntityUpdaterInterface;
 use Pim\Bundle\ImportExportBundle\Transformer\Property\PropertyTransformerInterface;
 use Pim\Bundle\ImportExportBundle\Transformer\Property\SkipTransformer;
-use Symfony\Bridge\Doctrine\RegistryInterface;
-use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 /**
  * Transforms an array in an entity

@@ -2,16 +2,18 @@
 
 namespace Pim\Bundle\ImportExportBundle\Validator\Import;
 
-use Oro\Bundle\BatchBundle\Item\InvalidItemException;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\ValidatorInterface;
+use Oro\Bundle\BatchBundle\Item\InvalidItemException;
 
 /**
- * Description of OrmImportValidator
+ * Validates an imported entity
  *
- * @author Antoine Guigan <aguigan@qimnet.com>
+ * @author    Antoine Guigan <antoine@akeneo.com>
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class ImportValidator implements ImportValidatorInterface
 {
@@ -42,6 +44,9 @@ class ImportValidator implements ImportValidatorInterface
         $this->translator = $translator;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function validate($entity, array $columnsInfo, array $data, array $errors = array())
     {
         $identifier = $this->getIdentifier($columnsInfo, $entity);
@@ -53,6 +58,15 @@ class ImportValidator implements ImportValidatorInterface
         }
     }
 
+    /**
+     * Checks if the identifier is not already used
+     *
+     * @param string $class
+     * @param mixed  $identifier
+     * @param array  $data
+     *
+     * @throws InvalidItemException
+     */
     protected function checkIdentifier($class, $identifier, $data)
     {
         if (!isset($this->identifiers[$class])) {
@@ -69,11 +83,27 @@ class ImportValidator implements ImportValidatorInterface
         $this->identifiers[$class][] = $identifier;
     }
 
+    /**
+     * Returns the identifier of the entity
+     *
+     * @param array  $columnsInfo
+     * @param object $entity
+     *
+     * @return mixed
+     */
     protected function getIdentifier(array $columnsInfo, $entity)
     {
         return $entity->getCode();
     }
 
+    /**
+     * Validates the properties of an entity
+     *
+     * @param type  $entity
+     * @param array $columnsInfo
+     *
+     * @return array
+     */
     protected function validateProperties($entity, array $columnsInfo)
     {
         $errors = array();
@@ -87,6 +117,13 @@ class ImportValidator implements ImportValidatorInterface
         return $errors;
     }
 
+    /**
+     * Returns an array of errors for a list of violations
+     *
+     * @param ConstraintViolationListInterface $violations
+     *
+     * @return array
+     */
     protected function getErrors(ConstraintViolationListInterface $violations)
     {
         $errors = array();

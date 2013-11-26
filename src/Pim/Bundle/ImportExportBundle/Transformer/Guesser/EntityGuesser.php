@@ -3,8 +3,8 @@
 namespace Pim\Bundle\ImportExportBundle\Transformer\Guesser;
 
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
-use Pim\Bundle\ImportExportBundle\Transformer\Property\PropertyTransformerInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
+use Pim\Bundle\ImportExportBundle\Transformer\Property\PropertyTransformerInterface;
 
 /**
  * Guesser for entity transformer

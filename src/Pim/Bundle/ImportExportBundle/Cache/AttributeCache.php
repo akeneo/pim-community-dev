@@ -2,13 +2,13 @@
 
 namespace Pim\Bundle\ImportExportBundle\Cache;
 
+use Symfony\Bridge\Doctrine\RegistryInterface;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\ImportExportBundle\Exception\ColumnLabelException;
 use Pim\Bundle\ImportExportBundle\Exception\UnknownColumnException;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * Caches the attributes of an import. Do not forget to call the reset method between two imports.
