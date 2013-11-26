@@ -115,11 +115,11 @@ function(_, __, AbstractView, FilterCollection, filterBuilder) {
             if (filtersLogic == index || filtersLogic == 'NOT ' + index) {
                 newFiltersLogic = '';
             } else {
-                newFiltersLogic = newFiltersLogic.replace(new RegExp(' \\((NOT )?' + index + '\\) ') , ' ');
-                newFiltersLogic = newFiltersLogic.replace(new RegExp(' (AND|OR) (NOT )?' + index + ' ') , ' ');
-                newFiltersLogic = newFiltersLogic.replace(new RegExp(' (AND|OR) (NOT )?' + index + '$') , '');
-                newFiltersLogic = newFiltersLogic.replace(new RegExp(' (NOT )?' + index + ' (AND|OR) ') , ' ');
-                newFiltersLogic = newFiltersLogic.replace(new RegExp('^(NOT )?' + index + ' (AND|OR) ') , '');
+                newFiltersLogic = newFiltersLogic.replace(new RegExp(' (AND|OR) (NOT )?\\((NOT )?' + index + '\\) ', 'i') , ' ');
+                newFiltersLogic = newFiltersLogic.replace(new RegExp(' (AND|OR) (NOT )?' + index + ' ', 'i') , ' ');
+                newFiltersLogic = newFiltersLogic.replace(new RegExp(' (AND|OR) (NOT )?' + index + '$', 'i') , '');
+                newFiltersLogic = newFiltersLogic.replace(new RegExp(' (NOT )?' + index + ' (AND|OR) ', 'i') , ' ');
+                newFiltersLogic = newFiltersLogic.replace(new RegExp('^(NOT )?' + index + ' (AND|OR) ', 'i') , '');
             }
             if (newFiltersLogic != filtersLogic) {
                 index = Number(index);
@@ -136,9 +136,15 @@ function(_, __, AbstractView, FilterCollection, filterBuilder) {
         onResetCollection: function () {
             if (!_.isNull(this.filterManager)) {
                 AbstractView.prototype.onResetCollection.apply(this, arguments);
+                if (this.getCollection().isEmpty()) {
+                    this.setFiltersLogic('');
+                }
             } else {
                 this.once('filter_manager_initialized', function() {
                     AbstractView.prototype.onResetCollection.apply(this, arguments);
+                    if (this.getCollection().isEmpty()) {
+                        this.setFiltersLogic('');
+                    }
                 }, this);
             }
         },
