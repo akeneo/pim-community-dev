@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Processor\CsvSerializer;
 
+use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\ImportExportBundle\Processor\CsvSerializer\ProductProcessor;
 
 /**
@@ -92,9 +93,18 @@ class ProductProcessorTest extends \PHPUnit_Framework_TestCase
      */
     public function getChannelManagerMock()
     {
-        return $this->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\ChannelManager')
+        $channel = new Channel();
+        $channel->setCode('mobile');
+
+        $mock = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\ChannelManager')
             ->disableOriginalConstructor()
             ->getMock();
+
+        $mock->expects($this->any())
+            ->method('getChannelByCode')
+            ->will($this->returnValue($channel));
+
+        return $mock;
     }
 
     /**
