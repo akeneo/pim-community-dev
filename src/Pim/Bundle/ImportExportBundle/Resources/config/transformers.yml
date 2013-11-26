@@ -40,7 +40,7 @@ services:
               multiple: true
             - name: pim_import_export.transformer.product.property
               property_path: groups
-              class: PimCatalogBundle:Group
+              class: Pim\Bundle\CatalogBundle\Model\Group
               multiple: true
             - name: pim_import_export.transformer.product.attribute
               backend_type: option
