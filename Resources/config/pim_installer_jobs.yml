@@ -17,6 +17,13 @@ jobs:
                     categoriesColumn: categories
                     familyColumn:     family
                     groupsColumn:     groups
+            import_associations:
+                reader:
+                    filePath:      /tmp/product.csv
+                    uploadAllowed: true
+                    delimiter:     ;
+                    enclosure:     '"'
+                    escape:        '\'
     product_export:
         connector: Akeneo CSV Connector
         alias:     product_export
