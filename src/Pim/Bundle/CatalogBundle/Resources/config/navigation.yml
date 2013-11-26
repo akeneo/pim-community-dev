@@ -22,7 +22,7 @@ oro_menu_config:
             route: pim_catalog_productattribute_index
         pim_enrich_family:
             label: Families
-            route: pim_catalog_family_create
+            route: pim_catalog_family_index
         pim_enrich_attributegroup:
             label: Attribute groups
             route: pim_catalog_attributegroup_create
