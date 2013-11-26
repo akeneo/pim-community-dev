@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Twig;
 use Doctrine\Common\Collections\Collection;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
  * Twig extension to render category from twig templates
