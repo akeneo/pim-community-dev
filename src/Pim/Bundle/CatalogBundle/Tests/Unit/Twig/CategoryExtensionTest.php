@@ -197,7 +197,6 @@ class CategoryExtensionTest extends \PHPUnit_Framework_TestCase
             ->expects($this->any())
             ->method('getEntityRepository')
             ->will($this->returnValue($repository));
-
     }
 
     /**
