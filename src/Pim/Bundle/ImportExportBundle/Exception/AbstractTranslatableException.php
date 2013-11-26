@@ -1,13 +1,8 @@
 <?php
 
-use Symfony\Component\Translation\TranslatorInterface;
+namespace Pim\Bundle\ImportExportBundle\Exception;
 
-/*
- *  This file is part of XXX
- *  (c) Antoine Guigan <aguigan@qimnet.com>
- *  This source file is subject to the MIT license that is bundled
- *  with this source code in the file LICENSE.
- */
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Description of AbstractTranslatableException
@@ -44,9 +39,19 @@ class AbstractTranslatableException extends \Exception implements TranslatableEx
         parent::__construct(strtr($rawMessage, $messageParameters), $code, $previous);
     }
 
+    public function getRawMessage()
+    {
+        return $this->rawMessage;
+    }
+
+    public function getMessageParameters()
+    {
+        return $this->messageParameters;
+    }
+
     /**
      * Translates the message in the current locale
-     * 
+     *
      * @param TranslatorInterface $translator
      */
     public function translateMessage(TranslatorInterface $translator)

@@ -6,7 +6,7 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Interface for translatable exceptions
- * 
+ *
  * @author Antoine Guigan <aguigan@qimnet.com>
  */
 interface TranslatableExceptionInterface

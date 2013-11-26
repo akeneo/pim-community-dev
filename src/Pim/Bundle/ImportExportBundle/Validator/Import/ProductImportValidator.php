@@ -5,9 +5,8 @@ namespace Pim\Bundle\ImportExportBundle\Validator\Import;
 use Oro\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
-use Symfony\Component\Validator\ConstraintViolationList;
+use Pim\Bundle\ImportExportBundle\Cache\AttributeCache;
+use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 
@@ -18,22 +17,12 @@ use Symfony\Component\Validator\ValidatorInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductImportValidator
+class ProductImportValidator extends ImportValidator
 {
-    /**
-     * @var ValidatorInterface
-     */
-    protected $validator;
-
     /**
      * @var ConstraintGuesserInterface
      */
     protected $constraintGuesser;
-
-    /**
-     * @var PropertyAccessorInterface
-     */
-    protected $propertyAccessor;
 
     /**
      * @var array
@@ -41,47 +30,54 @@ class ProductImportValidator
     protected $constraints = array();
 
     /**
-     * Constructor
      *
      * @param ValidatorInterface         $validator
+     * @param TranslatorInterface        $translator
      * @param ConstraintGuesserInterface $constraintGuesser
-     * @param PropertyAccessorInterface  $propertyAccessor
      */
     public function __construct(
         ValidatorInterface $validator,
-        ConstraintGuesserInterface $constraintGuesser,
-        PropertyAccessorInterface $propertyAccessor
+        TranslatorInterface $translator,
+        ConstraintGuesserInterface $constraintGuesser
     ) {
-        $this->validator = $validator;
+        parent::__construct($validator, $translator);
         $this->constraintGuesser = $constraintGuesser;
-        $this->propertyAccessor = $propertyAccessor;
     }
 
     /**
-     * Validates a property
-     *
-     * @param ProductInterface $product
-     * @param string           $propertyPath
-     *
-     * @return ConstraintViolationList
+     * {@inheritdoc}
      */
-    public function validateProperty(ProductInterface $product, $propertyPath)
+    public function validate($entity, array $columnsInfo, array $data, array $errors = array())
     {
-        return $this->validator->validateProperty($product, $propertyPath);
+        $this->checkIdentifier($this->getIdentifier($columnsInfo, $entity), $data);
+        foreach ($columnsInfo as $columnInfo) {
+            if (isset($columnInfo['attribute'])) {
+                $violations = $this->validateProductValue($entity, $columnInfo);
+            } else {
+                $violations = $this->validator->validateProperty($entity, $columnInfo['propertyPath']);
+            }
+
+            if ($violations->count()) {
+                $errors[$columnInfo['label']] = $this->getError($violations);
+            }
+        }
+
+        return $errors;
     }
 
     /**
      * Validates a ProductValue
      *
-     * @param  ProductValueInterface            $productValue
-     * @param  ProductAttribute                 $attribute
+     * @param ProductInterface $product
+     * @param ProductAttribute $attribute
+     *
      * @return ConstraintViolationListInterface
      */
-    public function validateProductValue(ProductValueInterface $productValue, ProductAttribute $attribute)
+    public function validateProductValue(ProductInterface $product, array $columnInfo)
     {
         return $this->validator->validateValue(
-                $this->propertyAccessor->getValue($productValue, $attribute->getBackendType()),
-                $this->getAttributeConstraints($attribute)
+                $this->getProductValue($product, $columnInfo)->getData(),
+                $this->getAttributeConstraints($columnInfo['attribute'])
         );
     }
 
@@ -104,5 +100,20 @@ class ProductImportValidator
         }
 
         return $this->constraints[$code];
+    }
+
+    protected function getIdentifier(array $columnsInfo, $entity)
+    {
+        foreach ($columnsInfo as $columnInfo) {
+            if (isset($columnInfo['attribute']) &&
+                AttributeCache::IDENTIFIER_ATTRIBUTE_TYPE === $columnInfo['attribute']->getAttributeType()) {
+                return $this->getProductValueData($entity, $columnInfo)->getData();
+            }
+        }
+    }
+
+    protected function getProductValueData(ProductInterface $product, array $columnInfo)
+    {
+        return $product->getValue($columnInfo['name'], $columnInfo['locale'], $columnInfo['locale']);
     }
 }

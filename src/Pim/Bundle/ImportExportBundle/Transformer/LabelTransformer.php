@@ -27,7 +27,7 @@ class LabelTransformer implements LabelTransformerInterface
                     $this->labels[$class] = array();
                 }
                 $data = array(
-                    'label'  => trim($label),
+                    'label'  => $label,
                     'locale' => null,
                     'scope'  => null,
                 );

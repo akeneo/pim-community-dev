@@ -3,14 +3,15 @@
 namespace Pim\Bundle\ImportExportBundle\Transformer;
 
 use Oro\Bundle\BatchBundle\Item\InvalidItemException;
-use Pim\Bundle\ImportExportBundle\Exception\InvalidValueException;
+use Pim\Bundle\ImportExportBundle\Exception\PropertyTransformerException;
+use Pim\Bundle\ImportExportBundle\Exception\TransformerException;
 use Pim\Bundle\ImportExportBundle\Exception\UnknownColumnException;
 use Pim\Bundle\ImportExportBundle\Transformer\Guesser\GuesserInterface;
 use Pim\Bundle\ImportExportBundle\Transformer\Property\EntityUpdaterInterface;
 use Pim\Bundle\ImportExportBundle\Transformer\Property\PropertyTransformerInterface;
+use Pim\Bundle\ImportExportBundle\Transformer\Property\SkipTransformer;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
-use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Transforms an array in an entity
@@ -42,11 +43,6 @@ abstract class AbstractOrmTransformer
     protected $labelTransformer;
 
     /**
-     * @var TranslatorInterface
-     */
-    protected $translator;
-
-    /**
      * @var array
      */
     protected $transformers = array();
@@ -54,7 +50,7 @@ abstract class AbstractOrmTransformer
     /**
      * @var array
      */
-    protected $columnInfos = array();
+    protected $transformedColumnsInfo;
 
     /**
      * Constructor
@@ -63,20 +59,27 @@ abstract class AbstractOrmTransformer
      * @param PropertyAccessorInterface $propertyAccessor
      * @param GuesserInterface          $guesser
      * @param LabelTransformerInterface $labelTransformer
-     * @param TranslatorInterface       $translator
      */
     public function __construct(
         RegistryInterface $doctrine,
         PropertyAccessorInterface $propertyAccessor,
         GuesserInterface $guesser,
-        LabelTransformerInterface $labelTransformer,
-        TranslatorInterface $translator
+        LabelTransformerInterface $labelTransformer
     ) {
         $this->doctrine = $doctrine;
         $this->propertyAccessor = $propertyAccessor;
         $this->guesser = $guesser;
         $this->labelTransformer = $labelTransformer;
-        $this->translator = $translator;
+    }
+
+    /**
+     * Return infos about the last imported columns
+     *
+     * @return array
+     */
+    public function getTransformedColumnsInfo()
+    {
+        return $this->transformedColumnsInfo;
     }
 
     /**
@@ -90,12 +93,13 @@ abstract class AbstractOrmTransformer
      */
     protected function doTransform($class, array $data, array $mapping = array(), array $defaults = array())
     {
+        $this->transformedColumnsInfo = array();
         $this->mapValues($data, $mapping);
         $entity = $this->getEntity($class, $data);
         $this->setDefaultValues($entity, $defaults);
         $errors = $this->setProperties($class, $entity, $data);
         if (count($errors)) {
-            throw new InvalidItemException(implode("\n", $errors), $data);
+            throw new TransformerException($errors);
         }
 
         return $entity;
@@ -106,7 +110,7 @@ abstract class AbstractOrmTransformer
         $errors = array();
 
         foreach ($data as $label => $value) {
-            $columnInfo = $this->getColumnInfo($class, $label);
+            $columnInfo = $this->labelTransformer->transform($class, $label);
             $transformerInfo = $this->getTransformerInfo($class, $columnInfo);
             if (!$transformerInfo) {
                 throw new UnknownColumnException(array($label));
@@ -131,10 +135,14 @@ abstract class AbstractOrmTransformer
      */
     protected function setProperty($entity, array $columnInfo, array $transformerInfo, $value)
     {
+        if ($transformerInfo[0] instanceof SkipTransformer) {
+            return array();
+        }
+
         try {
             $value = $transformerInfo[0]->transform($value, $transformerInfo[1]);
-        } catch (\Pim\Bundle\ImportExportBundle\Exception\InvalidValueException $ex) {
-            return array($this->getTranslatedExceptionMessage($columnInfo['label'], $ex));
+        } catch (PropertyTransformerException $ex) {
+            return array($ex->getRawMessage(), $ex->getMessageParameters());
         }
 
         if ($transformerInfo[0] instanceof EntityUpdaterInterface) {
@@ -142,6 +150,8 @@ abstract class AbstractOrmTransformer
         } else {
             $this->propertyAccessor->setValue($entity, $columnInfo['propertyPath'], $value);
         }
+
+        $this->transformedColumnsInfo[] = $columnInfo;
 
         return array();
     }
@@ -162,7 +172,6 @@ abstract class AbstractOrmTransformer
      * @param string $class
      * @param array  $columnInfo
      *
-     * @throws UnknownColumnException
      * @return array
      */
     protected function getTransformerInfo($class, $columnInfo)
@@ -176,49 +185,9 @@ abstract class AbstractOrmTransformer
                 $columnInfo,
                 $this->doctrine->getManager()->getClassMetadata($class)
             );
-
-            if (!$this->transformers[$class][$label]) {
-                throw new UnknownColumnException(sprintf('Property path %s not configured for class %s', $label, $class));
-            }
         }
 
         return $this->transformers[$class][$label];
-    }
-
-    /**
-     * Returns the information for a column label
-     *
-     * @param string $class
-     * @param string $label
-     *
-     * @return array
-     */
-    protected function getColumnInfo($class, $label)
-    {
-        if (!isset($this->columnInfos[$class][$label])) {
-            if (!isset($this->columnInfos[$class])) {
-                $this->columnInfos[$class] = array();
-            }
-            $this->columnInfos[$class][$label] = $this->labelTransformer->transform($label);
-        }
-
-        return $this->columnInfos[$class][$label];
-    }
-
-    /**
-     * Remaps values according to $mapping
-     *
-     * @param array &$values
-     * @param array $mapping
-     */
-    protected function mapValues(array &$values, array $mapping)
-    {
-        foreach ($mapping as $oldName => $newName) {
-            if ($oldName != $newName && isset($values[$oldName])) {
-                $values[$newName] = $values[$oldName];
-                unset($values[$oldName]);
-            }
-        }
     }
 
     /**
@@ -232,40 +201,5 @@ abstract class AbstractOrmTransformer
         foreach ($defaults as $propertyPath => $value) {
             $this->propertyAccessor->setValue($product, $propertyPath, $value);
         }
-    }
-
-    /**
-     * Returns a translated InvalidValueException message
-     *
-     * @param string                $propertyPath
-     * @param InvalidValueException $exception
-     *
-     * @return string
-     */
-    public function getTranslatedExceptionMessage($propertyPath, InvalidValueException $exception)
-    {
-        return $this->getTranslatedErrorMessage(
-            $propertyPath,
-            $exception->getRawMessage(),
-            $exception->getMessageParameters()
-        );
-    }
-
-    /**
-     * Returns a translated error message
-     *
-     * @param string $propertyPath
-     * @param string $message
-     * @param array  $parameters
-     *
-     * @return string
-     */
-    public function getTranslatedErrorMessage($propertyPath, $message, array $parameters = array())
-    {
-        return sprintf(
-            '%s: %s',
-            $propertyPath,
-            $this->translator->trans($message, $parameters)
-        );
     }
 }

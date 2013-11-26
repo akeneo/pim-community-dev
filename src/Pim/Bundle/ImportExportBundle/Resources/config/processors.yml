@@ -36,6 +36,8 @@ services:
     pim_import_export.processor.product:
         class: %pim_import_export.processor.product.class%
         arguments:
+            - '@pim_import_export.validator.product_import'
+            - '@translator'
             - '@pim_import_export.transformer.product'
 
     pim_import_export.processor.product_association:

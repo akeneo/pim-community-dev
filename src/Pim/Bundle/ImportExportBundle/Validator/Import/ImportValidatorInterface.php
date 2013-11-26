@@ -4,7 +4,7 @@ namespace Pim\Bundle\ImportExportBundle\Validator\Import;
 
 /**
  * Description of ImportValidatorInterface
- * 
+ *
  * @author Antoine Guigan <aguigan@qimnet.com>
  */
 interface ImportValidatorInterface

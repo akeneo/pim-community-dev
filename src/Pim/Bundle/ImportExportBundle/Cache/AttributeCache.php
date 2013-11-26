@@ -2,11 +2,12 @@
 
 namespace Pim\Bundle\ImportExportBundle\Cache;
 
-use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\ImportExportBundle\Exception\ColumnLabelException;
+use Pim\Bundle\ImportExportBundle\Exception\UnknownColumnException;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -19,14 +20,14 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 class AttributeCache
 {
     /**
+     * @staticvar the identifier attribute type
+     */
+    const IDENTIFIER_ATTRIBUTE_TYPE = 'pim_catalog_identifier';
+
+    /**
      * @var RegistryInterface
      */
     protected $doctrine;
-
-    /**
-     * @var string
-     */
-    protected $attributeClass;
 
     /**
      * @var array
@@ -37,6 +38,11 @@ class AttributeCache
      * @var ProductAttribute
      */
     protected $identifierAttribute;
+
+    /**
+     * @var boolean
+     */
+    protected $initialized=false;
 
     /**
      * @var array
@@ -50,20 +56,97 @@ class AttributeCache
 
     /**
      * Constructor
-     *
      * @param RegistryInterface $doctrine
-     * @param string            $attributeClass
      */
-    public function __construct(RegistryInterface $doctrine, $attributeClass)
+    public function __construct(RegistryInterface $doctrine)
     {
         $this->doctrine = $doctrine;
-        $this->attributeClass = $attributeClass;
     }
 
-    public function getAttributes(array $codes) {
-        return $this->getRepository()->findBy(array('code' => $codes));
+    /**
+     * Clears the cache
+     */
+    public function clear()
+    {
+        $this->attributes = null;
+        $this->columns = null;
+        $this->identifierAttribute = null;
+        $this->initialized = false;
     }
 
+    /**
+     * Initializes the cache with a set of column labels
+     *
+     * @param array $columnsInfo
+     *
+     * @throws UnknownColumnException
+     * @throws ColumnLabelException
+     */
+    public function initialize(array $columnsInfo)
+    {
+        $this->setAttributes($columnsInfo);
+        $this->initialized = true;
+    }
+
+    /**
+     * Returns true if the cache has been initialized
+     *
+     * @return boolean
+     */
+    public function isInitialized()
+    {
+        return $this->initialized;
+    }
+
+    /**
+     * Returns the attribute corresponding to the specified code
+     *
+     * @param string $code
+     *
+     * @return ProductAttribute
+     */
+    public function getAttribute($code)
+    {
+        return $this->attributes[$code];
+    }
+
+    /**
+     * Returns an array of cached attributes
+     *
+     * @return array
+     */
+    public function getAttributes()
+    {
+        return $this->attributes;
+    }
+
+    /**
+     * Returns the product attribute
+     *
+     * @return ProductAttribute
+     */
+    public function getIdentifierAttribute()
+    {
+        return $this->identifierAttribute;
+    }
+
+    /**
+     * Returns an array of information about the columns
+     *
+     * The following info is returned for each column :
+     *
+     * columnLabel:
+     *      attribute:  A ProductAttribute instance
+     *      code:       The code of the attribute
+     *      locale:     The locale of the column
+     *      scope:      The scope of the column
+     *
+     * @return array
+     */
+    public function getColumns()
+    {
+        return $this->columns;
+    }
 
     /**
      * Returns the required attribute codes for a product
@@ -145,10 +228,62 @@ class AttributeCache
     }
 
     /**
-     * @return EntityRepository
+     * Sets the attributes and identifierAttributes properties
+     *
+     * @param array $columnsInfo
+     *
+     * @throws UnknownColumnException
+     * @throws ColumnLabelException
      */
-    protected function getRepository()
+    protected function setAttributes($columnsInfo)
     {
-        return $this->doctrine->getRepository($this->attributeClass);
+        $codes = array_unique(
+            array_map(
+                function ($columnInfo) {
+                    return $columnInfo['code'];
+                },
+                $columnsInfo
+            )
+        );
+
+        $attributes = $this->doctrine->getRepository('PimCatalogBundle:ProductAttribute')
+                ->findBy(array('code' => $codes));
+
+        $this->attributes = array();
+        foreach ($attributes as $attribute) {
+            if (static::IDENTIFIER_ATTRIBUTE_TYPE === $attribute->getAttributeType()) {
+                $this->identifierAttribute = $attribute;
+            }
+            $this->attributes[$attribute->getCode()] = $attribute;
+        }
+        if (count($attributes) !== count($codes)) {
+            throw new UnknownColumnException(
+                array_diff(
+                    $codes,
+                    array_map(
+                        function ($attribute) {
+                            return $attribute->getCode();
+
+                        },
+                        $this->attributes
+                    )
+                )
+            );
+        }
+        foreach ($columnsInfo as $columnInfo) {
+            $attribute = $this->attributes[$columnInfo['name']];
+            if (!$columnInfo['locale'] && $attribute->getTranslatable()) {
+                throw new ColumnLabelException(
+                    'Column "%column%" needs a locale',
+                    array('%column%' => $columnInfo['label'])
+                );
+            }
+            if (!$columnInfo['scope'] && $attribute->getScopable()) {
+                throw new ColumnLabelException(
+                    'Column "%column%" needs a scope',
+                    array('%column%' => $columnInfo['label'])
+                );
+            }
+        }
     }
 }

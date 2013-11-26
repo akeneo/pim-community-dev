@@ -3,11 +3,10 @@
 namespace Pim\Bundle\ImportExportBundle\Validator\Import;
 
 use Oro\Bundle\BatchBundle\Item\InvalidItemException;
-use Pim\Bundle\ImportExportBundle\Transformer\LabelTransformerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
-use Zend\Validator\ValidatorInterface;
+use Symfony\Component\Validator\ValidatorInterface;
 
 /**
  * Description of OrmImportValidator
@@ -22,11 +21,6 @@ class ImportValidator implements ImportValidatorInterface
     protected $validator;
 
     /**
-     * @var LabelTransformerInterface
-     */
-    protected $labelTransformer;
-
-    /**
      * @var TranslatorInterface
      */
     protected $translator;
@@ -36,19 +30,31 @@ class ImportValidator implements ImportValidatorInterface
      */
     protected $identifiers = array();
 
-    public function validate($entity, array $data, array $errors = array())
+    /**
+     * Constructor
+     *
+     * @param ValidatorInterface  $validator
+     * @param TranslatorInterface $translator
+     */
+    public function __construct(ValidatorInterface $validator, TranslatorInterface $translator)
     {
-        $class = get_class($entity);
-        $this->checkIdentifier($class, $this->getIdentifier($entity), $data);
+        $this->validator = $validator;
+        $this->translator = $translator;
+    }
+
+    public function validate($entity, array $columnsInfo, array $data, array $errors = array())
+    {
+        $this->checkIdentifier($this->getIdentifier($columnsInfo, $entity), $data);
         if (!count($errors)) {
             return $this->getErrors($this->validator->validate($entity));
         } else {
-            return $this->validateProperties($class, $entity, $data, $errors);
+            return $this->validateProperties($entity, $columnsInfo) + $errors;
         }
     }
 
-    protected function checkIdentifier($class, $identifier, $data)
+    protected function checkIdentifier($identifier, $data)
     {
+        $class = get_class($data);
         if (!isset($this->identifiers[$class])) {
             $this->identifiers[$class] = array();
         } elseif (in_array($identifier, $this->identifiers[$class])) {
@@ -56,23 +62,24 @@ class ImportValidator implements ImportValidatorInterface
                 $this->translator->trans(
                     'Twin ! the entity "%identifier%" has already been processed',
                     array('%identifier%' => $identifier)
-                )
+                ),
+                $data
             );
         }
     }
 
-    protected function getIdentifier($entity)
+    protected function getIdentifier(array $columnsInfo, $entity)
     {
         return $entity->getCode();
     }
 
-    protected function validateProperties($class, $entity, $data, $errors) {
-        $columnInfos = $this->labelTransformer->transform($class, array_keys($data));
-        foreach ($columnInfos as $label=>$columnInfo) {
-            if (!isset($errors[$label])) {
-                $errors[$label] = $this->getError(
-                    $this->validator->validateProperty($entity, $columnInfo['propertyPath'])
-                );
+    protected function validateProperties($entity, array $columnsInfo)
+    {
+        $errors = array();
+        foreach ($columnsInfo as $label=>$columnInfo) {
+            $violations = $this->validator->validateProperty($entity, $columnInfo['propertyPath']);
+            if ($violations->count()) {
+                $errors[$label] = $this->getError($violations);
             }
         }
 
@@ -96,7 +103,7 @@ class ImportValidator implements ImportValidatorInterface
     protected function getError($violations)
     {
         $errors = array();
-        foreach($violations as $violation) {
+        foreach ($violations as $violation) {
             $errors[] = $this->getViolationError($violation);
         }
 

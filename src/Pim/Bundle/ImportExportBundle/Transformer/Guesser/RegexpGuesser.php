@@ -32,12 +32,12 @@ class RegexpGuesser implements GuesserInterface
 
     /**
      * Constructor
-     * 
+     *
      * @param PropertyTransformerInterface $transformer
-     * @param string $class
-     * @param array $skipRegexps
+     * @param string                       $class
+     * @param array                        $skipRegexps
      */
-    function __construct(PropertyTransformerInterface $transformer, $class, array $skipRegexps)
+    public function __construct(PropertyTransformerInterface $transformer, $class, array $skipRegexps)
     {
         $this->transformer = $transformer;
         $this->class = $class;
@@ -53,7 +53,7 @@ class RegexpGuesser implements GuesserInterface
             return;
         }
 
-        foreach($this->skipRegexps as $regexp) {
+        foreach ($this->skipRegexps as $regexp) {
             if (preg_match($regexp, $columnInfo['label'])) {
                 return;
             }

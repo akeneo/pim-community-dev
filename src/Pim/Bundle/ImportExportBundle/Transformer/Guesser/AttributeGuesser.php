@@ -12,7 +12,7 @@ use Pim\Bundle\ImportExportBundle\Transformer\Property\PropertyTransformerInterf
  *
  * @author Antoine Guigan <aguigan@qimnet.com>
  */
-class AttributeBackendTypeGuesser implements GuesserInterface
+class AttributeGuesser implements GuesserInterface
 {
     /**
      * @var PropertyTransformerInterface
@@ -36,13 +36,13 @@ class AttributeBackendTypeGuesser implements GuesserInterface
 
     /**
      * Constructor
-     * 
+     *
      * @param PropertyTransformerInterface $transformer
-     * @param AttributeCache $attributeCache
-     * @param string $class
-     * @param string $backendType
+     * @param AttributeCache               $attributeCache
+     * @param string                       $class
+     * @param string                       $backendType
      */
-    function __construct(
+    public function __construct(
         PropertyTransformerInterface $transformer,
         AttributeCache $attributeCache,
         $class,
@@ -62,7 +62,7 @@ class AttributeBackendTypeGuesser implements GuesserInterface
         if ($this->class !== $metadata->getName()) {
             return;
         }
-        
+
         $attribute = $this->attributeCache->getAttribute($columnInfo['name']);
         if ($this->backendType !== $attribute->getBackendType()) {
             return;

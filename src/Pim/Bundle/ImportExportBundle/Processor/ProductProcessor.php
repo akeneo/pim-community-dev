@@ -2,9 +2,10 @@
 
 namespace Pim\Bundle\ImportExportBundle\Processor;
 
-use Oro\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Oro\Bundle\BatchBundle\Entity\StepExecution;
 use Pim\Bundle\ImportExportBundle\Transformer\ORMProductTransformer;
+use Pim\Bundle\ImportExportBundle\Validator\Import\ImportValidatorInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Product import processor
@@ -14,7 +15,7 @@ use Pim\Bundle\ImportExportBundle\Transformer\ORMProductTransformer;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductProcessor extends AbstractProcessor implements ItemProcessorInterface
+class ProductProcessor extends AbstractTransformerProcessor
 {
     /**
      * @var ORMProductTransformer
@@ -45,7 +46,6 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
      * @var StepExecution
      */
     protected $stepExecution;
-
 
     public function __construct(
         ImportValidatorInterface $validator,
@@ -168,4 +168,10 @@ class ProductProcessor extends AbstractProcessor implements ItemProcessorInterfa
             'groups'        => $this->groupsColumn
         );
     }
+
+    protected function getTransformedColumnsInfo()
+    {
+        return $this->transformer->getTransformedColumnsInfo();
+    }
+
 }

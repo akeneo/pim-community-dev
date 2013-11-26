@@ -30,11 +30,11 @@ abstract class AbstractTransformerProcessor extends AbstractConfigurableStepElem
 
     /**
      * Constructor
-     * 
+     *
      * @param ImportValidatorInterface $validator
-     * @param TranslatorInterface $translator
+     * @param TranslatorInterface      $translator
      */
-    function __construct(ImportValidatorInterface $validator, TranslatorInterface $translator)
+    public function __construct(ImportValidatorInterface $validator, TranslatorInterface $translator)
     {
         $this->validator = $validator;
         $this->translator = $translator;
@@ -56,13 +56,12 @@ abstract class AbstractTransformerProcessor extends AbstractConfigurableStepElem
                 throw $ex;
             }
         }
-        $errors = $this->validator->validate($entity, $item, $errors);
+        $errors = $this->validator->validate($entity, $this->getTransformedColumnsInfo(), $item, $errors);
 
         if (count($errors)) {
             throw new InvalidItemException(implode("\n", $errors), $item);
         }
     }
-
 
     /**
      * Remaps values according to $mapping
@@ -97,4 +96,6 @@ abstract class AbstractTransformerProcessor extends AbstractConfigurableStepElem
     }
 
     abstract protected function transform($item);
+
+    abstract protected function getTransformedColumnsInfo();
 }

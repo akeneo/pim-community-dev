@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\ImportExportBundle\Transformer\Property;
 
-use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
-use Pim\Bundle\ImportExportBundle\Exception\InvalidValueException;
 use Pim\Bundle\CatalogBundle\Entity\ProductPrice;
+use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\ImportExportBundle\Exception\PropertyTransformerException;
 
 /**
  * Prices attribute transformer
@@ -50,11 +50,11 @@ class PricesTransformer implements PropertyTransformerInterface, EntityUpdaterIn
             }
 
             if (0 === preg_match('/^([^\s]+) (\w+)$/', $price, $matches)) {
-                throw new InvalidValueException('Malformed price: "%value%"', array('%value%' => $price));
+                throw new PropertyTransformerException('Malformed price: "%value%"', array('%value%' => $price));
             }
 
             if (!in_array($matches[2], $currencies)) {
-                throw new InvalidValueException(
+                throw new PropertyTransformerException(
                     'Currency "%currency%" is not active',
                     array('%currency%' => $matches[2])
                 );

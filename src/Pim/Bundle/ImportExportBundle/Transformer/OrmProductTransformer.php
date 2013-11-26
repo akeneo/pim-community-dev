@@ -3,17 +3,14 @@
 namespace Pim\Bundle\ImportExportBundle\Transformer;
 
 use Oro\Bundle\BatchBundle\Item\InvalidItemException;
-use Oro\Bundle\FlexibleEntityBundle\Entity\Attribute;
+use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\ImportExportBundle\Cache\AttributeCache;
-use Pim\Bundle\ImportExportBundle\Exception\UnknownColumnException;
 use Pim\Bundle\ImportExportBundle\Transformer\Guesser\GuesserInterface;
-use Pim\Bundle\ImportExportBundle\Validator\Import\ProductImportValidator;
+use Pim\Bundle\ImportExportBundle\Transformer\Property\SkipTransformer;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
-use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 /**
  * Specialized OrmTransformer for products
@@ -35,48 +32,35 @@ class OrmProductTransformer extends AbstractOrmTransformer
     protected $productManager;
 
     /**
-     * @var ProductImportValidator
-     */
-    protected $productValidator;
-
-    /**
      * @var AttributeCache
      */
     protected $attributeCache;
 
     /**
-     * @var string
-     */
-    protected $labelsHash;
-
-    /**
-     * @var array
-     */
-    protected $attributes;
-
-    /**
-     * @var Attribute 
-     */
-    protected $identifierAttribute;
-    
-    /**
      * @var array
      */
     protected $propertyColumns;
-            
+
+    /**
+     * Constructor
+     *
+     * @param RegistryInterface         $doctrine
+     * @param PropertyAccessorInterface $propertyAccessor
+     * @param GuesserInterface          $guesser
+     * @param LabelTransformerInterface $labelTransformer
+     * @param ProductManager            $productManager
+     * @param AttributeCache            $attributeCache
+     */
     public function __construct(
         RegistryInterface $doctrine,
         PropertyAccessorInterface $propertyAccessor,
         GuesserInterface $guesser,
         LabelTransformerInterface $labelTransformer,
-        TranslatorInterface $translator,
         ProductManager $productManager,
-        ProductImportValidator $productValidator,
         AttributeCache $attributeCache
     ) {
-        parent::__construct($doctrine, $propertyAccessor, $guesser, $labelTransformer, $translator);
+        parent::__construct($doctrine, $propertyAccessor, $guesser, $labelTransformer);
         $this->productManager = $productManager;
-        $this->productValidator = $productValidator;
         $this->attributeCache = $attributeCache;
     }
 
@@ -90,7 +74,8 @@ class OrmProductTransformer extends AbstractOrmTransformer
      */
     public function transform(array $data)
     {
-        $this->initializeAttributes(array_keys($data));
+        $this->initializeAttributes($data);
+
         return $this->doTransform($this->productManager->getFlexibleName(), $data);
     }
 
@@ -121,7 +106,7 @@ class OrmProductTransformer extends AbstractOrmTransformer
         $errors = array();
 
         foreach ($this->propertyColumns as $label) {
-            $columnInfo = $this->getColumnInfo($class, $label);
+            $columnInfo = $this->labelTransformer->transform($class, $label);
             $transformerInfo = $this->getTransformerInfo($class, $columnInfo);
             if ($transformerInfo) {
                 $errors = array_merge(
@@ -134,8 +119,8 @@ class OrmProductTransformer extends AbstractOrmTransformer
 
         $requiredAttributeCodes = $this->attributeCache->getRequiredAttributeCodes($entity);
         foreach ($data as $label => $value) {
-            $columnInfo = $this->getColumnInfo($class, $label);
-            $attribute = $this->attributes[$columnInfo['name']];
+            $columnInfo = $this->labelTransformer->transform($class, $label);
+            $attribute = $this->attributeCache->getAttribute($columnInfo['name']);
             $columnInfo['propertyPath'] = $attribute->getBackendType();
             $transformerInfo = $this->getTransformerInfo($flexibleValueClass, $columnInfo);
             if ('' != trim($value) || in_array($columnInfo['name'], $requiredAttributeCodes)) {
@@ -150,39 +135,28 @@ class OrmProductTransformer extends AbstractOrmTransformer
     }
 
     /**
-     * {@inheritdoc}
+     *
+     * @param  ProductInterface $product
+     * @param  ProductAttribute $attribute
+     * @param  array            $columnInfo
+     * @param  array            $transformerInfo
+     * @param  mixed            $value
+     * @return array
      */
-    protected function setProperty($entity, array $columnInfo, array $transformerInfo, $value)
-    {
-        $errors = parent::setProperty($entity, $columnInfo, $transformerInfo, $value);
-        if (!count($errors)) {
-            $errors = array_merge(
-                $errors,
-                $this->getViolationListErrors(
-                    $columnInfo['label'],
-                    $this->productValidator->validateProperty($entity, $columnInfo['propertyPath'])
-                )
-            );
+    protected function setProductValue(
+        ProductInterface $product,
+        ProductAttribute $attribute,
+        array $columnInfo,
+        array $transformerInfo,
+        $value
+    ) {
+        if ($transformerInfo[0] instanceof SkipTransformer) {
+            return array();
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function setProductValue($product, $attribute, array $columnInfo, array $transformerInfo, $value)
-    {
+        $columnInfo['attribute'] = $attribute;
         $productValue = $this->getProductValue($product, $columnInfo);
-        //TODO: check scope and locale
-        $errors = parent::setProperty($productValue, $columnInfo, $transformerInfo, $value);
-        if (!count($errors)) {
-            $errors = array_merge(
-                $errors,
-                $this->getViolationListErrors(
-                    $columnInfo['label'],
-                    $this->productValidator->validateProductValue($productValue, $attribute)
-                )
-            );
-        }
+
+        return parent::setProperty($productValue, $columnInfo, $transformerInfo, $value);
     }
 
     protected function getProductValue($product,array $columnInfo)
@@ -196,64 +170,24 @@ class OrmProductTransformer extends AbstractOrmTransformer
         return $productValue;
     }
 
-    /**
-     * Returns an array of error strings for a list of violations
-     *
-     * @param string                           $propertyPath
-     * @param ConstraintViolationListInterface $violations
-     *
-     * @return array
-     */
-    public function getViolationListErrors($propertyPath, ConstraintViolationListInterface $violations)
+    protected function initializeAttributes($data)
     {
-        $errors = array();
-        foreach ($violations as $violation) {
-            $errors[] = $this->getTranslatedErrorMessage(
-                $propertyPath,
-                $violation->getMessageTemplate(),
-                $violation->getMessageParameters()
-            );
-        }
-
-        return $errors;
-    }
-
-    protected function initializeAttributes($labels)
-    {
-        $hash = md5(serialize($labels));
-        if ($hash === $this->labelsHash) {
+        if ($this->attributeCache->isInitialized()) {
             return;
         }
 
         $class = $this->productManager->getFlexibleName();
-
-        $columnInfos = array_map(
-            function ($label) use ($class) {
-                return $this->getColumnInfo($class, $label);
-            },
-            $labels
-        );
-
+        $columnsInfo = $this->labelTransformer->transform($class, array_keys($data));
         $metadata = $this->doctrine->getManager()->getClassMetadata($class);
-        $codes = array();
+        $attributeColumnInfos = array();
         $this->propertyColumns = array();
-        foreach($columnInfos as $columnInfo) {
+        foreach ($columnsInfo as $label => $columnInfo) {
             if ($metadata->hasField($columnInfo['propertyPath'])) {
-                $this->propertyColumns[] = $columnInfo['label'];
+                $this->propertyColumns[] = $label;
             } else {
-                $codes[] = $columnInfo['name'];
-            }            
-        }
-        $this->attributes = array();
-        foreach($this->attributeCache->getAttributes($codes) as $attribute) {
-            $this->attributes[$attribute->getCode()] = $attribute;
-            if (self::IDENTIFIER_ATTRIBUTE_TYPE === $attribute->getAttributeType()) {
-                $this->identifierAttribute = $attribute;
+                $attributeColumnInfos[$label] = $columnInfo;
             }
         }
-
-        if (count($this->attributes) != count($codes)) {
-            throw new UnknownColumnException(array_diff($codes, array_keys($this->attributes)));
-        }
+        $this->attributeCache->initialize($attributeColumnInfos);
     }
 }

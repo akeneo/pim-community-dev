@@ -9,7 +9,7 @@ namespace Pim\Bundle\ImportExportBundle\Exception;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class UnknownColumnException extends \Exception
+class UnknownColumnException extends AbstractTranslatableException
 {
     /**
      * @var array
@@ -23,6 +23,9 @@ class UnknownColumnException extends \Exception
      */
     public function __construct(array $labels)
     {
-        parent::__construct(sprintf('Column %s doesn\'t exist.', explode(',', $labels)));
+        parent::__construct(
+            'Columns %labels% do not exist.',
+            array('%labels%' => implode(',', $labels))
+        );
     }
 }

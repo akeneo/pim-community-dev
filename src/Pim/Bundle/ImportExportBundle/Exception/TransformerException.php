@@ -54,7 +54,8 @@ class TransformerException extends Exception implements TranslatableExceptionInt
         );
     }
 
-    public function getMessage() {
+    public function getMessage()
+    {
         return implode(
             "\n",
             array_map(
