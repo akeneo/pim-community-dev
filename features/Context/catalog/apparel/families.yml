@@ -32,7 +32,6 @@ families:
                 - sku
                 - name
                 - description
-                - thumbnail
                 - price
                 - size
                 - color
@@ -49,7 +48,6 @@ families:
                 - sku
                 - name
                 - description
-                - image
                 - price
                 - size
                 - color
@@ -91,7 +89,6 @@ families:
                 - sku
                 - name
                 - description
-                - thumbnail
                 - price
                 - size
                 - color
@@ -108,7 +105,6 @@ families:
                 - sku
                 - name
                 - description
-                - image
                 - price
                 - size
                 - color
@@ -152,7 +148,6 @@ families:
                 - sku
                 - name
                 - description
-                - thumbnail
                 - price
                 - chest_size
                 - waist_size
@@ -171,7 +166,6 @@ families:
                 - sku
                 - name
                 - description
-                - image
                 - price
                 - chest_size
                 - waist_size
