@@ -793,7 +793,7 @@ attributes:
         group: internal
         parameters:
             availableLocales:
-                - en_US
+                - de_DE
             useableAsGridColumn: true
             useableAsGridFilter: true
             numberMin:           1
