@@ -43,20 +43,21 @@ abstract class AbstractTransformerProcessor extends AbstractConfigurableStepElem
     public function process($item)
     {
         $this->mapValues($item);
-        $errors = array();
         try {
             $entity = $this->transform($item);
         } catch (Exception $ex) {
             if ($ex instanceof TranslatableExceptionInterface) {
                 $ex->translateMessage($this->translator);
             }
-            if ($ex instanceof TransformerException) {
-                $errors = $ex->getTranslatedErrors();
-            } else {
-                throw $ex;
-            }
+            throw $ex;
         }
-        $errors = $this->validator->validate($entity, $this->getTransformedColumnsInfo(), $item, $errors);
+        $errors = array_map(
+            function ($args) {
+                return call_user_func_array(array($this->translator, 'trans'), $args);
+            },
+            $this->getTransformerErrors()
+        );
+        $this->validator->validate($entity, $this->getTransformedColumnsInfo(), $item, $errors);
 
         if (count($errors)) {
             throw new InvalidItemException(implode("\n", $errors), $item);
@@ -98,4 +99,6 @@ abstract class AbstractTransformerProcessor extends AbstractConfigurableStepElem
     abstract protected function transform($item);
 
     abstract protected function getTransformedColumnsInfo();
+    
+    abstract protected function getTransformerErrors();
 }

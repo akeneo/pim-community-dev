@@ -13,6 +13,7 @@ services:
 
     pim_import_export.transformer.guesser.translation:
         class: %pim_import_export.transformer.guesser.translation.class%
+        public: false
         arguments:
             - '@pim_import_export.transformer.property.translation'
         tags:
@@ -20,6 +21,7 @@ services:
 
     pim_import_export.transformer.guesser.skip_product_associations:
         class: %pim_import_export.transformer.guesser.regexp.class%
+        public: false
         arguments:
             - '@pim_import_export.transformer.property.skip'
             - %pim_catalog.entity.product.class%
@@ -29,6 +31,7 @@ services:
 
     pim_import_export.transformer.guesser.date:
         class: %pim_import_export.transformer.guesser.type.class%
+        public: false
         arguments:
             - '@pim_import_export.transformer.property.date'
             - date
@@ -38,6 +41,7 @@ services:
 
     pim_import_export.transformer.guesser.datetime:
         class: %pim_import_export.transformer.guesser.type.class%
+        public: false
         arguments:
             - '@pim_import_export.transformer.property.date'
             - datetime
@@ -47,6 +51,7 @@ services:
 
     pim_import_export.transformer.guesser.boolean:
         class: %pim_import_export.transformer.guesser.type.class%
+        public: false
         arguments:
             - '@pim_import_export.transformer.property.boolean'
             - boolean
@@ -56,40 +61,49 @@ services:
 
     pim_import_export.transformer.guesser.entity:
         class: %pim_import_export.transformer.guesser.entity.class%
+        public: false
         arguments:
             - '@pim_import_export.transformer.property.entity'
+            - '@doctrine'
         tags:
             - { name: pim_import_export.transformer.guesser, priority: 150 }
 
     pim_import_export.transformer.guesser.media:
         class: %pim_import_export.transformer.guesser.attribute.class%
+        public: false
         arguments:
             - '@pim_import_export.transformer.property.media'
             - '@pim_import_export.attribute_cache'
+            - %pim_catalog.entity.product_value.class%
             - media
         tags:
             - { name: pim_import_export.transformer.guesser, priority: 150 }
 
     pim_import_export.transformer.guesser.prices:
         class: %pim_import_export.transformer.guesser.attribute.class%
+        public: false
         arguments:
             - '@pim_import_export.transformer.property.prices'
             - '@pim_import_export.attribute_cache'
+            - %pim_catalog.entity.product_value.class%
             - prices
         tags:
             - { name: pim_import_export.transformer.guesser, priority: 150 }
 
     pim_import_export.transformer.guesser.metric:
         class: %pim_import_export.transformer.guesser.attribute.class%
+        public: false
         arguments:
             - '@pim_import_export.transformer.property.metric'
             - '@pim_import_export.attribute_cache'
-            - prices
+            - %pim_catalog.entity.product_value.class%
+            - metric
         tags:
             - { name: pim_import_export.transformer.guesser, priority: 150 }
 
     pim_import_export.transformer.guesser.default:
         class: %pim_import_export.transformer.guesser.default.class%
+        public: false
         arguments:
             - '@pim_import_export.transformer.property.default'
         tags:

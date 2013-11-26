@@ -174,4 +174,8 @@ class ProductProcessor extends AbstractTransformerProcessor
         return $this->transformer->getTransformedColumnsInfo();
     }
 
+    protected function getTransformerErrors()
+    {
+        return $this->transformer->getErrors();
+    }
 }

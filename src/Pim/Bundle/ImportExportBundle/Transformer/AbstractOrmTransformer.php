@@ -53,6 +53,11 @@ abstract class AbstractOrmTransformer
     protected $transformedColumnsInfo;
 
     /**
+     * @var array
+     */
+    protected $errors;
+
+    /**
      * Constructor
      *
      * @param RegistryInterface         $doctrine
@@ -83,6 +88,14 @@ abstract class AbstractOrmTransformer
     }
 
     /**
+     * Returns the errors for the last imported entity
+     */
+    public function getErrors()
+    {
+        return $this->errors;
+    }
+
+    /**
      * Transforms an array into an entity
      *
      * @param string $class
@@ -94,34 +107,24 @@ abstract class AbstractOrmTransformer
     protected function doTransform($class, array $data, array $mapping = array(), array $defaults = array())
     {
         $this->transformedColumnsInfo = array();
-        $this->mapValues($data, $mapping);
+        $this->errors = array();
         $entity = $this->getEntity($class, $data);
         $this->setDefaultValues($entity, $defaults);
-        $errors = $this->setProperties($class, $entity, $data);
-        if (count($errors)) {
-            throw new TransformerException($errors);
-        }
+        $this->setProperties($class, $entity, $data);
 
         return $entity;
     }
 
     protected function setProperties($class, $entity, array $data)
     {
-        $errors = array();
-
         foreach ($data as $label => $value) {
             $columnInfo = $this->labelTransformer->transform($class, $label);
             $transformerInfo = $this->getTransformerInfo($class, $columnInfo);
-            if (!$transformerInfo) {
-                throw new UnknownColumnException(array($label));
+            $error = $this->setProperty($entity, $columnInfo, $transformerInfo, $value);
+            if ($error) {
+                $this->errors[$label] = $error;
             }
-            $errors = array_merge(
-                $errors,
-                $this->setProperty($entity, $columnInfo, $transformerInfo, $value)
-            );
         }
-
-        return $errors;
     }
 
     /**
@@ -152,8 +155,6 @@ abstract class AbstractOrmTransformer
         }
 
         $this->transformedColumnsInfo[] = $columnInfo;
-
-        return array();
     }
 
     /**
@@ -185,6 +186,9 @@ abstract class AbstractOrmTransformer
                 $columnInfo,
                 $this->doctrine->getManager()->getClassMetadata($class)
             );
+            if (!$this->transformers[$class][$label]) {
+                throw new UnknownColumnException(array($label));
+            }
         }
 
         return $this->transformers[$class][$label];

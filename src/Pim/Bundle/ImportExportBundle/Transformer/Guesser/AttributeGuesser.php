@@ -3,7 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Transformer\Guesser;
 
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
-use Hermes\Bundle\ImportExportBundle\Transformer\Guesser\GuesserInterface;
+use Pim\Bundle\ImportExportBundle\Transformer\Guesser\GuesserInterface;
 use Pim\Bundle\ImportExportBundle\Cache\AttributeCache;
 use Pim\Bundle\ImportExportBundle\Transformer\Property\PropertyTransformerInterface;
 

@@ -44,7 +44,8 @@ class ImportValidator implements ImportValidatorInterface
 
     public function validate($entity, array $columnsInfo, array $data, array $errors = array())
     {
-        $this->checkIdentifier($this->getIdentifier($columnsInfo, $entity), $data);
+        $identifier = $this->getIdentifier($columnsInfo, $entity);
+        $this->checkIdentifier(get_class($entity), $identifier, $data);
         if (!count($errors)) {
             return $this->getErrors($this->validator->validate($entity));
         } else {
@@ -52,9 +53,8 @@ class ImportValidator implements ImportValidatorInterface
         }
     }
 
-    protected function checkIdentifier($identifier, $data)
+    protected function checkIdentifier($class, $identifier, $data)
     {
-        $class = get_class($data);
         if (!isset($this->identifiers[$class])) {
             $this->identifiers[$class] = array();
         } elseif (in_array($identifier, $this->identifiers[$class])) {
@@ -66,6 +66,7 @@ class ImportValidator implements ImportValidatorInterface
                 $data
             );
         }
+        $this->identifiers[$class][] = $identifier;
     }
 
     protected function getIdentifier(array $columnsInfo, $entity)

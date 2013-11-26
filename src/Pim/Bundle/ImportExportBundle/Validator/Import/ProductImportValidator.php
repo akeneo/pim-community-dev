@@ -49,7 +49,9 @@ class ProductImportValidator extends ImportValidator
      */
     public function validate($entity, array $columnsInfo, array $data, array $errors = array())
     {
-        $this->checkIdentifier($this->getIdentifier($columnsInfo, $entity), $data);
+        $identifier = $this->getIdentifier($columnsInfo, $entity);
+        $this->checkIdentifier(get_class($entity), $identifier, $data);
+        
         foreach ($columnsInfo as $columnInfo) {
             if (isset($columnInfo['attribute'])) {
                 $violations = $this->validateProductValue($entity, $columnInfo);
@@ -107,13 +109,13 @@ class ProductImportValidator extends ImportValidator
         foreach ($columnsInfo as $columnInfo) {
             if (isset($columnInfo['attribute']) &&
                 AttributeCache::IDENTIFIER_ATTRIBUTE_TYPE === $columnInfo['attribute']->getAttributeType()) {
-                return $this->getProductValueData($entity, $columnInfo)->getData();
+                return $this->getProductValue($entity, $columnInfo)->getData();
             }
         }
     }
 
-    protected function getProductValueData(ProductInterface $product, array $columnInfo)
+    protected function getProductValue(ProductInterface $product, array $columnInfo)
     {
-        return $product->getValue($columnInfo['name'], $columnInfo['locale'], $columnInfo['locale']);
+        return $product->getValue($columnInfo['name'], $columnInfo['locale'], $columnInfo['scope']);
     }
 }

@@ -240,7 +240,7 @@ class AttributeCache
         $codes = array_unique(
             array_map(
                 function ($columnInfo) {
-                    return $columnInfo['code'];
+                    return $columnInfo['name'];
                 },
                 $columnsInfo
             )

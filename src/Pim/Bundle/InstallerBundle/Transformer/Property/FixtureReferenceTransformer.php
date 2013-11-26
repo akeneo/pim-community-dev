@@ -18,14 +18,24 @@ use Pim\Bundle\ImportExportBundle\Transformer\Property\PropertyTransformerInterf
 class FixtureReferenceTransformer implements PropertyTransformerInterface
 {
     /**
+     * @var PropertyTransformerInterface
+     */
+    protected $entityTransformer;
+
+    /**
      * @var ReferenceRepository2
      */
     protected $referenceRepository;
 
     /**
-     * @var PropertyTransformerInterface
+     * Constructor
+     * 
+     * @param PropertyTransformerInterface $entityTransformer
      */
-    protected $entityTransformer;
+    function __construct(PropertyTransformerInterface $entityTransformer)
+    {
+        $this->entityTransformer = $entityTransformer;
+    }
 
     /**
      * Sets the reference repository

@@ -9,5 +9,5 @@ namespace Pim\Bundle\ImportExportBundle\Validator\Import;
  */
 interface ImportValidatorInterface
 {
-    public function validate($entity, array $data, array $errors = array());
+    public function validate($entity, array $columnsInfo, array $data, array $errors = array());
 }

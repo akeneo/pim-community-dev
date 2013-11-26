@@ -1,10 +1,8 @@
-parameters:
-    pim_installer.transformer.guesser.fixture_reference.class:       Pim\Bundle\InstallerBundle\Transformer\Guesser\FixtureReferenceGuesser
-
 services:
     pim_installer.transformer.guesser.fixture_reference:
-        class: %pim_installer.transformer.guesser.fixture_reference.class%
+        class: %pim_import_export.transformer.guesser.entity.class%
         arguments:
             - '@pim_installer.transformer.property.fixture_reference'
+            - '@doctrine'
         tags:
             - { name: pim_import_export.transformer.guesser, priority: 150 }

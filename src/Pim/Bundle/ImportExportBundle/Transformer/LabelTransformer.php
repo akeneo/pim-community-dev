@@ -34,11 +34,11 @@ class LabelTransformer implements LabelTransformerInterface
                 $parts = explode('-', $data['label']);
                 $data['name'] = array_shift($parts);
                 $data['propertyPath'] = lcfirst(Inflector::classify($data['name']));
-                if (count($parts) > 1) {
-                    $data['scope'] = array_shift($parts);
-                }
                 if (count($parts)) {
                     $data['locale'] = array_shift($parts);
+                }
+                if (count($parts)) {
+                    $data['scope'] = array_shift($parts);
                 }
 
                 $this->labels[$class][$label] = $data;

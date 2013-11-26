@@ -84,10 +84,11 @@ class OrmProductTransformer extends AbstractOrmTransformer
      */
     protected function getEntity($class, array $data)
     {
+        $identifierAttribute = $this->attributeCache->getIdentifierAttribute();
         $product = $this->productManager->getImportProduct(
-            $this->attributes,
-            $this->identifierAttribute,
-            $data[$this->identifierAttribute->getCode()]
+            $this->attributeCache->getAttributes(),
+            $identifierAttribute,
+            $data[$identifierAttribute->getCode()]
         );
 
         if (!$product) {
@@ -103,16 +104,13 @@ class OrmProductTransformer extends AbstractOrmTransformer
     protected function setProperties($class, $entity, array $data)
     {
         $flexibleValueClass = $this->productManager->getFlexibleValueName();
-        $errors = array();
 
         foreach ($this->propertyColumns as $label) {
             $columnInfo = $this->labelTransformer->transform($class, $label);
             $transformerInfo = $this->getTransformerInfo($class, $columnInfo);
-            if ($transformerInfo) {
-                $errors = array_merge(
-                    $errors,
-                    $this->setProperty($entity, $columnInfo, $transformerInfo, $data[$label])
-                );
+            $error = $this->setProperty($entity, $columnInfo, $transformerInfo, $data[$label]);
+            if ($error) {
+                $this->errors[$label] = $error;
             }
             unset($data[$label]);
         }
@@ -124,14 +122,12 @@ class OrmProductTransformer extends AbstractOrmTransformer
             $columnInfo['propertyPath'] = $attribute->getBackendType();
             $transformerInfo = $this->getTransformerInfo($flexibleValueClass, $columnInfo);
             if ('' != trim($value) || in_array($columnInfo['name'], $requiredAttributeCodes)) {
-                $errors = array_merge(
-                    $errors,
-                    $this->setProductValue($entity, $attribute, $data, $transformerInfo, $value)
-                );
+                $error = $this->setProductValue($entity, $attribute, $columnInfo, $transformerInfo, $value);
+                if ($error) {
+                    $this->errors[$label] = $error;
+                }
             }
         }
-
-        return $errors;
     }
 
     /**
@@ -163,7 +159,7 @@ class OrmProductTransformer extends AbstractOrmTransformer
     {
         $productValue = $product->getValue($columnInfo['name'], $columnInfo['locale'], $columnInfo['scope']);
         if (!$productValue) {
-            $productValue = $product->createValue($columnInfo['code'], $columnInfo['locale'], $columnInfo['scope']);
+            $productValue = $product->createValue($columnInfo['name'], $columnInfo['locale'], $columnInfo['scope']);
             $product->addValue($productValue);
         }
 
@@ -181,11 +177,12 @@ class OrmProductTransformer extends AbstractOrmTransformer
         $metadata = $this->doctrine->getManager()->getClassMetadata($class);
         $attributeColumnInfos = array();
         $this->propertyColumns = array();
-        foreach ($columnsInfo as $label => $columnInfo) {
-            if ($metadata->hasField($columnInfo['propertyPath'])) {
-                $this->propertyColumns[] = $label;
+        foreach ($columnsInfo as $columnInfo) {
+            $propertyPath = $columnInfo['propertyPath'];
+            if ($metadata->hasField($propertyPath) || $metadata->hasAssociation($propertyPath)) {
+                $this->propertyColumns[] = $columnInfo['label'];
             } else {
-                $attributeColumnInfos[$label] = $columnInfo;
+                $attributeColumnInfos[] = $columnInfo;
             }
         }
         $this->attributeCache->initialize($attributeColumnInfos);
