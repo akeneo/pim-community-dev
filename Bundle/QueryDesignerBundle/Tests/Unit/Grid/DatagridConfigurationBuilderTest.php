@@ -1,8 +1,8 @@
 <?php
 
-namespace Oro\Bundle\QueryDesignerBundle\Tests\Unit\Provider;
+namespace Oro\Bundle\QueryDesignerBundle\Tests\Unit\Grid;
 
-use Oro\Bundle\QueryDesignerBundle\Provider\DatagridConfigurationBuilder;
+use Oro\Bundle\QueryDesignerBundle\Grid\DatagridConfigurationBuilder;
 use Oro\Bundle\QueryDesignerBundle\Tests\Unit\Fixtures\QueryDesignerModel;
 
 class DatagridConfigurationBuilderTest extends \PHPUnit_Framework_TestCase

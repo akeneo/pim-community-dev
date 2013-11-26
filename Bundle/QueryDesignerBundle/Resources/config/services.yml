@@ -1,6 +1,7 @@
 parameters:
-    oro_querydesigner.querydesigner.manager.class:        Oro\Bundle\QueryDesignerBundle\QueryDesigner\Manager
-    oro_querydesigner.provider.resolver.class:            Oro\Bundle\QueryDesignerBundle\Provider\SystemAwareResolver
+    oro_querydesigner.querydesigner.manager.class:          Oro\Bundle\QueryDesignerBundle\QueryDesigner\Manager
+    oro_querydesigner.provider.resolver.class:              Oro\Bundle\QueryDesignerBundle\Provider\SystemAwareResolver
+    oro_querydesigner.grid.extension.orm_datasource.class:  Oro\Bundle\QueryDesignerBundle\Grid\Extension\OrmDatasourceExtension
 
 services:
     oro_querydesigner.querydesigner.manager:
@@ -13,3 +14,10 @@ services:
         class: %oro_querydesigner.provider.resolver.class%
         arguments:
             - @service_container
+
+    oro_querydesigner.grid.extension.orm_datasource:
+        class: %oro_querydesigner.grid.extension.orm_datasource.class%
+        arguments:
+            - @oro_querydesigner.querydesigner.manager
+        tags:
+            - { name: oro_datagrid.extension }
