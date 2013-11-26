@@ -57,7 +57,7 @@ class FixtureReferenceTransformer extends AbstractAssociationTransformer
         if ($this->referenceRepository && $this->referenceRepository->hasReference($refName)) {
             return $this->referenceRepository->getReference($refName);
         } else {
-            return $this->entityTransformer->getReference($class, $code);
+            return $this->entityTransformer->getEntity($class, $code);
         }
     }
 }
