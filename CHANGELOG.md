@@ -34,6 +34,7 @@
 - Add a message when trying to delete an attribute used by one or more variant groups instead of throwing an error
 - Selection of products in mass edit
 - Versioning of installed entities (from demo bundle)
+- For csv export of products, only export values related to selected channel and related locales
 
 ## BC breaks
 - Command "pim:product:completeness-calculator" has been replaced into "pim:completeness:calculate"
