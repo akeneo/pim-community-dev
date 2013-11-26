@@ -124,6 +124,20 @@ attributes:
                     en_GB: 5 stars
                     fr_FR: 5 étoiles
                     de_DE: 5 Sternen
+    release_date:
+        labels:
+            en_US: Release date
+            en_GB: Release date
+            fr_FR: Date de sortie
+            de_DE: Erscheinungsdatum
+        type:  pim_catalog_date
+        group: sales
+        parameters:
+            dateType:            date
+            scopable:            true
+            useableAsGridColumn: true
+            useableAsGridFilter: true
+            sortOrder:           3
     size:
         labels:
             en_US: Size
@@ -527,6 +541,19 @@ attributes:
                     en_GB: Vietnam
                     fr_FR: Viêt-Nam
                     de_DE: Vietnam
+    handmade:
+        labels:
+            en_US: Handmade
+            en_GB: Handmade
+            fr_FR: Fait main
+            de_DE: Handgefertigt
+        type:  pim_catalog_boolean
+        group: additional
+        parameters:
+            defaultValue:        false
+            useableAsGridColumn: true
+            useableAsGridFilter: true
+            sortOrder:           3
     weather_conditions:
         labels:
             en_US: Weather conditions
@@ -538,7 +565,7 @@ attributes:
         parameters:
             useableAsGridColumn: true
             useableAsGridFilter: true
-            sortOrder:           3
+            sortOrder:           4
         options:
             dry:
                 labels:
@@ -584,7 +611,21 @@ attributes:
             useableAsGridColumn: false
             useableAsGridFilter: false
             maxCharacters:       1000
-            sortOrder:           4
+            sortOrder:           5
+    washing_temperature:
+        labels:
+            en_US: Washing temperature
+            en_GB: Washing temperature
+            fr_FR: Température de lavage
+            de_DE: Waschtemperatur
+        type:  pim_catalog_metric
+        group: additional
+        parameters:
+            metricFamily:      Temperature
+            sortOrder:         6
+            defaultMetricUnit: CELCIUS
+            negativeAllowed:   false
+            numberMax:         100
     weight:
         labels:
             en_US: Weight
@@ -595,8 +636,10 @@ attributes:
         group: additional
         parameters:
             metricFamily:      Weight
-            sortOrder:         5
+            sortOrder:         7
             defaultMetricUnit: KILOGRAM
+            negativeAllowed:   false
+            numberMax:         10
     material:
         labels:
             en_US: Material
@@ -608,7 +651,7 @@ attributes:
         parameters:
             useableAsGridColumn: true
             useableAsGridFilter: true
-            sortOrder:           6
+            sortOrder:           8
         options:
             cotton:
                 labels:
@@ -663,7 +706,7 @@ attributes:
         parameters:
             useableAsGridColumn: false
             useableAsGridFilter: true
-            sortOrder:           7
+            sortOrder:           9
         options:
             additional_cotton:
                 labels:
@@ -713,7 +756,7 @@ attributes:
             en_GB: Cost
             fr_FR: Coût
             de_DE: Kosten
-        type:  pim_catalog_number
+        type:  pim_catalog_price_collection
         group: internal
         parameters:
             useableAsGridColumn: true
@@ -722,24 +765,42 @@ attributes:
             numberMax:           1000
             sortOrder:           1
             decimalsAllowed:     true
+            negativeAllowed:     false
+    number_in_stock:
+        labels:
+            en_US: Number in stock
+            en_GB: Number in stock
+            fr_FR: Nombre en stock
+            de_DE: Anzahl auf Lager
+        type:  pim_catalog_number
+        group: internal
+        parameters:
+            scopable:            true
+            useableAsGridColumn: true
+            useableAsGridFilter: true
+            numberMin:           1
+            numberMax:           10000
+            sortOrder:           2
+            decimalsAllowed:     false
+            negativeAllowed:     false
     customs_tax:
         labels:
             en_US: Customs tax
             en_GB: Customs tax
             fr_FR: Taxe de douanes
             de_DE: Zollsteuer
-        type:  pim_catalog_number
+        type:  pim_catalog_price_collection
         group: internal
         parameters:
             availableLocales:
                 - en_US
-            scopable:            true
             useableAsGridColumn: true
             useableAsGridFilter: true
             numberMin:           1
             numberMax:           1000
-            sortOrder:           2
+            sortOrder:           3
             decimalsAllowed:     true
+            negativeAllowed:     false
     datasheet:
         labels:
             en_US: Datasheet
@@ -750,7 +811,7 @@ attributes:
         group: internal
         parameters:
             maxFileSize:       10
-            sortOrder:         3
+            sortOrder:         4
             allowedExtensions: txt,pdf,doc,docx,csv,rtf
     attachment:
         labels:
@@ -762,5 +823,5 @@ attributes:
         group: internal
         parameters:
             maxFileSize:       10
-            sortOrder:         4
+            sortOrder:         5
             allowedExtensions: zip,rar,7z,txt,pdf,doc,docx,csv,rtf

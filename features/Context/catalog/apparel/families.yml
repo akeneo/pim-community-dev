@@ -13,14 +13,18 @@ families:
             - image
             - price
             - customer_rating
+            - release_date
             - size
             - color
             - additional_colors
             - manufacturer
             - country_of_manufacture
+            - handmade
+            - washing_temperature
             - weight
             - material
             - cost
+            - number_in_stock
             - customs_tax
         attributeAsLabel: name
         requirements:
@@ -66,16 +70,20 @@ families:
             - image
             - price
             - customer_rating
+            - release_date
             - size
             - color
             - additional_colors
             - manufacturer
             - country_of_manufacture
+            - handmade
             - care_instructions
+            - washing_temperature
             - weight
             - material
             - additional_materials
             - cost
+            - number_in_stock
             - customs_tax
         attributeAsLabel: name
         requirements:
@@ -121,18 +129,22 @@ families:
             - image
             - price
             - customer_rating
+            - release_date
             - chest_size
             - waist_size
             - color
             - additional_colors
             - manufacturer
             - country_of_manufacture
+            - handmade
             - weather_conditions
             - care_instructions
+            - washing_temperature
             - weight
             - material
             - additional_materials
             - cost
+            - number_in_stock
             - customs_tax
         attributeAsLabel: name
         requirements:
