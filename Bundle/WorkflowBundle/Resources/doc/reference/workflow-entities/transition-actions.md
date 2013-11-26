@@ -172,12 +172,15 @@ Find Entity
 
 **Alias:** find_entity|request_entity
 
-**Description:** Finds entity by identifier value and assigns saves reference to path.
+**Description:** Finds entity by identifier value or "where" condition and saves reference or entity to path.
 
 **Parameters:**
  - class - fully qualified class name of requested entity;
- - identifier - value of identifier of entity to find
- - attribute - target path where result of action will be saved.
+ - attribute - target path where result of action will be saved;
+ - identifier - value of identifier of entity to find;
+ - where - array of conditions to find entity, key is field name, value is scalar value or path;
+ - order_by - array of fields used to sort values, key is field name, value is direction (asc or desc);
+ - case_insensitive - boolean flag used to find entity using case insensitive search, default value is false.
 
 **Configuration Example**
 ```
@@ -196,6 +199,16 @@ OR
     identifier: 'canceled'
     attribute: $lead.status
 
+OR
+
+- @find_entity: # try to find account by company name
+    class: OroCRM\Bundle\AccountBundle\Entity\Account
+    attribute: $account
+    where:
+        name: $company_name
+    order_by:
+        date_created: desc
+    case_insensitive: true
 ```
 
 Call Method
