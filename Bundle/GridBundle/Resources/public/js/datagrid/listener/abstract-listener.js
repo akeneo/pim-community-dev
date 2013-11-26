@@ -1,4 +1,5 @@
-/* global define */
+/*jslint browser: true, vars: true, nomen: true*/
+/*global define*/
 define(['jquery', 'underscore', 'backbone'], function($, _, Backbone) {
     'use strict';
 
@@ -26,6 +27,8 @@ define(['jquery', 'underscore', 'backbone'], function($, _, Backbone) {
          * @param {Object} options
          */
         initialize: function(options) {
+            var listener = this;
+
             if (!_.has(options, 'columnName')) {
                 throw new Error('Data column name is not specified');
             }
@@ -39,22 +42,13 @@ define(['jquery', 'underscore', 'backbone'], function($, _, Backbone) {
 
             if (options.grid) {
                 this.setDatagridAndSubscribe(options.grid);
+            } else if (options.datagridName) {
+                $(document).once('datagrid:created:' + options.datagridName, function (e, grid) {
+                    listener.setDatagridAndSubscribe(grid);
+                });
             } else {
-                if (!_.has(options, 'datagridName')) {
-                    throw new Error('Datagrid name is not specified');
-                }
-                this._assignDatagridAndSubscribe(options.datagridName);
+                throw new Error('grid or datagridName is not specified');
             }
-        },
-
-        /**
-         * Subscribe to datagrid events
-         *
-         * @param {String} datagridName
-         * @private
-         */
-        _assignDatagridAndSubscribe: function(datagridName) {
-            $(document).one('datagrid:created:' + datagridName, this.setDatagridAndSubscribe, this);
         },
 
         /**

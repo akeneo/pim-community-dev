@@ -187,7 +187,6 @@ require(['jquery', 'underscore', 'backbone', 'oro/mediator', 'oro/loading-mask',
             var datagrid = new Grid(datagridParameters);
             $(datagridBodySelector).html(datagrid.render().$el);
             var datagridName = {{ datagrid.name|json_encode|raw }};
-            datagrid.$el.trigger('datagrid:created', datagrid);
             datagrid.$el.trigger('datagrid:created:' + datagridName, datagrid);
 
             {# @TODO Filter should not know anything about collection. #}

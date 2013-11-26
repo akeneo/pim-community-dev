@@ -91,7 +91,6 @@ define(function (require) {
                 options = methods.combineGridOptions.call(this);
                 grid = new Grid(_.extend({collection: collection}, options));
                 this.$el.append(grid.render().$el);
-                this.$el.trigger('datagrid:created', grid);
                 this.$el.trigger('datagrid:created:' + options.name, grid);
 
                 if (options.routerEnabled !== false) {
@@ -194,11 +193,12 @@ define(function (require) {
 
         $grids.each(function (i, el) {
             var $el = $(el);
+            var gridName = $el.data('metadata').options.gridName;
             _.each(builders, function (builder) {
                 if (!_.has(builder, 'init') || !$.isFunction(builder.init)) {
                     throw new TypeError('Builder does not have init method');
                 }
-                builder.init($el);
+                builder.init($el, gridName);
             });
             methods.initBuilder.call({$el: $(el)});
             $el.attr('data-rendered', true);

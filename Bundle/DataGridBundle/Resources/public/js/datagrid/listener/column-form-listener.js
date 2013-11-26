@@ -256,8 +256,11 @@ function($, _, __, mediator, Modal, AbstractListener) {
                 this.confirmModal[type].on('ok', _.bind(callback, this));
             }
             this.confirmModal[type].open();
-        },
-        _initHandler: function (e, grid) {
+        }
+    });
+
+    ColumnFormListener.init = function ($el, gridName) {
+        var initHandler = function (e, grid) {
             var $el = $(e.target);
             var metadata = $el.data('metadata');
             var options = metadata.options || {};
@@ -266,17 +269,12 @@ function($, _, __, mediator, Modal, AbstractListener) {
                 initialized = true;
                 new ColumnFormListener(_.extend({grid: grid}, metadata.options.columnListener));
             }
-        }
-    });
+        };
 
-    ColumnFormListener.init = function ($el) {
-        var self = this;
-        initialized = false;
-
-        $el.one('datagrid:created', self.prototype._initHandler);
+        $el.one('datagrid:created:' + gridName, initHandler);
         mediator.once('hash_navigation_request:start', function () {
             if (!initialized) {
-                $el.off('datagrid:created', self.prototype._initHandler);
+                $el.off('datagrid:created:' + gridName, initHandler);
             }
         });
     };

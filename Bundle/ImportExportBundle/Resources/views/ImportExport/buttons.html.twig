@@ -37,14 +37,14 @@
 
             {% if dataGridName is defined %}
             var datagridName = {{ dataGridName|json_encode|raw }};
-            var onGridAdd = function(datagrid) {
-                widget.on('importComplete', function(data) {
+            var onGridAdd = function (e, datagrid) {
+                widget.on('importComplete', function (data) {
                     if (data.success) {
                         datagrid.collection.fetch();
                     }
                 });
             };
-            mediator.once("datagrid:created:" + datagridName, onGridAdd);
+            $(document).one('datagrid:created:' + datagridName, onGridAdd);
             {% endif %}
         });
 
