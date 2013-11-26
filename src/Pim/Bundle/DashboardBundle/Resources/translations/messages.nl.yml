@@ -1,0 +1,19 @@
+---
+pim_dashboard:
+  menu:
+    label:
+      collect: Collect
+      enrich: Enrich
+      spread: Spread
+      settings: Settings
+  link:
+    label:
+      import_profile: Manage Import Profiles
+      import_report: Imports History
+      product: Manage Products
+      category: Manage Categories
+      channel: Manage Channels
+      export_profile: Manage Export Profiles
+      export_report: Exports History
+      attribute: Manage Attributes
+      family: Manage Families
