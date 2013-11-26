@@ -70,7 +70,7 @@ process:
             assetic-oro:   Dump Oro assetic
             translation:   Prepare translations
             requirejs:     Optimize RequireJS resources (this process might take few minutes)
-            cache:         Clear cache
+            finish:        Clear cache to finalize installation
         final:
             header:        Finish
             greeting:      Success!!!
