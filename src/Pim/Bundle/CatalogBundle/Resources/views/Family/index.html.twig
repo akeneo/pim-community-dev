@@ -3,8 +3,8 @@
 {% block head_script %}
     {{ parent() }}
 
-    {#{% include 'OroGridBundle:Include:javascript.html.twig' with {'datagridView': datagrid, 'selector': '#family-grid'} %}
-    {% include 'OroGridBundle:Include:stylesheet.html.twig' %}#}
+    {% include 'OroGridBundle:Include:javascript.html.twig' with {'datagridView': datagrid, 'selector': '#family-grid'} %}
+    {% include 'OroGridBundle:Include:stylesheet.html.twig' %}
 {% endblock %}
 
 {% block content %}

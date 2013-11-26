@@ -105,7 +105,6 @@ class FamilyController extends AbstractDoctrineController
      */
     public function indexAction(Request $request)
     {
-        return array();
         /** @var $queryBuilder QueryBuilder */
         $queryBuilder = $this->getManager()->createQueryBuilder();
         $queryBuilder
