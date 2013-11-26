@@ -1,6 +1,6 @@
 pim_catalog_family_index:
     path: /.{_format}
-    defaults: { _controller: pim_catalog.controller.family:indexAction }
+    defaults: { _controller: pim_catalog.controller.family:indexAction, _format: html }
     requirements:
         _format: html|json
 
