@@ -1,35 +1,47 @@
-/* jshint browser:true, devel:true */
-/* global define */
-define(['jquery', 'underscore', 'backbone', 'oro/translator', 'oro/app', 'oro/mediator', 'oro/messenger', 'oro/registry',
-    'oro/modal', 'oro/loading-mask', 'oro/navigation/pagestate/view', 'oro/navigation/pagestate/model',
-    'oro/pageable-collection', 'oro/widget-manager','jquery.form'],
-function($, _, Backbone, __, app, mediator, messenger, registry,
-         Modal, LoadingMask, PagestateView, PagestateModel,
-         PageableCollection, widgetManager) {
+/*jslint browser: true, vars: true, nomen: true*/
+/*jshint browser: true, devel: true*/
+/*global define*/
+define(function (require) {
     'use strict';
 
-    var Navigation,
-        instance,
-        pageCacheStates = {
-            state: {},
+    var $ = require('jquery');
+    var _ = require('underscore');
+    var Backbone = require('backbone');
+    var __ = require('oro/translator');
+    var app = require('oro/app');
+    var mediator = require('oro/mediator');
+    var messenger = require('oro/messenger');
+    var Modal = require('oro/modal');
+    var LoadingMask = require('oro/loading-mask');
+    var PagestateView = require('oro/navigation/pagestate/view');
+    var PagestateModel = require('oro/navigation/pagestate/model');
+    var PageableCollection = require('oro/pageable-collection');
+    var widgetManager = require('oro/widget-manager');
+    var _jqueryForm = require('jquery.form');
 
-            registerStateObject: function(type, fields) {
-                this.state[type] = {};
-                _.each(fields, function(field) {
-                    this.state[type][field] = '';
-                }, this);
-            },
+    var Navigation;
+    var instance;
+    var pinbarView = null;
+    var pageCacheStates = {
+        state: {},
 
-            saveObjectCache: function(type, values) {
-                _.each(values, function(value, key) {
-                    this.state[type][key] = value;
-                }, this);
-            },
+        registerStateObject: function(type, fields) {
+            this.state[type] = {};
+            _.each(fields, function(field) {
+                this.state[type][field] = '';
+            }, this);
+        },
 
-            getObjectCache: function(type) {
-                return this.state[type];
-            }
-        };
+        saveObjectCache: function(type, values) {
+            _.each(values, function(value, key) {
+                this.state[type][key] = value;
+            }, this);
+        },
+
+        getObjectCache: function(type) {
+            return this.state[type];
+        }
+    };
 
     pageCacheStates.registerStateObject('grid',['collection']);
     pageCacheStates.registerStateObject('form',['form_data']);
@@ -564,7 +576,6 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
                 "grid_load:complete",
                 function (collection) {
                     this.updateCachedContent('grid', {'collection': collection});
-                    var pinbarView = registry.getElement('pinbar_view');
                     if (pinbarView) {
                         var item = pinbarView.getItemForCurrentPage(true);
                         if (item.length && this.useCache) {
@@ -1136,9 +1147,11 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
 
                 if (url) {
                     $form.data('sent', true);
-                    registry.setElement('form_validate', true);
-                    mediator.trigger("hash_navigation_request:form-start", $form.get(0));
-                    if (registry.getElement('form_validate')) {
+                    var formStartSettings = {
+                        form_validate: true
+                    };
+                    mediator.trigger('hash_navigation_request:form-start', $form.get(0), formStartSettings);
+                    if (formStartSettings.form_validate) {
                         var data = $form.serialize();
                         if (this.method === 'get') {
                             if (data) {
@@ -1223,7 +1236,6 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
                     this.useCache = options.useCache;
                 }
                 url = url.replace(this.baseUrl, '').replace(/^(#\!?|\.)/, '');
-                var pinbarView = registry.getElement('pinbar_view');
                 if (pinbarView) {
                     var item = pinbarView.getItemForPage(url, true);
                     if (item.length) {
@@ -1284,6 +1296,15 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
      */
     Navigation.setup = function(options) {
         instance = new Navigation(options);
+    };
+
+    /**
+     * Register Pinbar view instance
+     *
+     * @param {Object} pinbarView
+     */
+    Navigation.registerPinbarView = function (instance) {
+        pinbarView = instance;
     };
 
     return Navigation;

@@ -55,7 +55,7 @@
     }
 %}
 
-require(['jquery', 'underscore', 'backbone', 'oro/mediator', 'oro/registry', 'oro/loading-mask',
+require(['jquery', 'underscore', 'backbone', 'oro/mediator', 'oro/loading-mask',
     'oro/grid/grid', 'oro/grid/router', 'oro/grid/pageable-collection', 'oro/grid/filter-list',
     'oro/grid/date-cell', 'oro/grid/datetime-cell', 'oro/grid/number-cell', 'oro/grid/boolean-cell',
     'oro/grid/html-cell', 'oro/grid/select-cell', 'oro/grid/string-cell',
@@ -63,7 +63,7 @@ require(['jquery', 'underscore', 'backbone', 'oro/mediator', 'oro/registry', 'or
     'oro/datafilter/choice-filter', 'oro/datafilter/number-filter', 'oro/datafilter/date-filter',
     'oro/datafilter/datetime-filter', 'oro/datafilter/select-filter', 'oro/datafilter/multiselect-filter',
     'oro/datafilter/select-row-filter', 'oro/grid/ajax-action', 'oro/grid/grid-views/view'],
-    function($, _, Backbone, mediator, registry, LoadingMask,
+    function($, _, Backbone, mediator, LoadingMask,
              Grid, GridRouter, PageableCollection, FilterList,
              DateCell, DateTimeCell, NumberCell, BooleanCell,
              HtmlCell, SelectCell, StringCell,
@@ -187,8 +187,8 @@ require(['jquery', 'underscore', 'backbone', 'oro/mediator', 'oro/registry', 'or
             var datagrid = new Grid(datagridParameters);
             $(datagridBodySelector).html(datagrid.render().$el);
             var datagridName = {{ datagrid.name|json_encode|raw }};
-            registry.setElement('datagrid', datagridName, datagrid);
-            mediator.trigger("datagrid:created:" + datagridName, datagrid);
+            datagrid.$el.trigger('datagrid:created', datagrid);
+            datagrid.$el.trigger('datagrid:created:' + datagridName, datagrid);
 
             {# @TODO Filter should not know anything about collection. #}
             {% for filter in datagrid.filters if filter.needCollection is defined and filter.needCollection %}

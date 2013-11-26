@@ -6,20 +6,6 @@
 
 {% oro_title_set({ params: { '%keyword%': searchString } }) %}
 
-{% block head_script %}
-    {{ parent() }}
-    <script type="text/javascript">
-        require(['jquery', 'oro/registry'],
-        function($, registry) {
-            $(function() {
-                // hide header
-                {#var searchDatagrid = registry.getElement('datagrid', {{ datagrid.datagrid.name|json_encode|raw }});#}
-                //searchDatagrid.header.$el.remove();
-            });
-        });
-    </script>
-{% endblock %}
-
 {% block page_container %}
     {% block content %}
     <div class="container-fluid search-header clearfix">

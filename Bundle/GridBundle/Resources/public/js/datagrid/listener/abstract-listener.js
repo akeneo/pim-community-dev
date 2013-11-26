@@ -1,6 +1,5 @@
 /* global define */
-define(['underscore', 'backbone', 'oro/registry', 'oro/mediator'],
-function(_, Backbone, registry, mediator) {
+define(['jquery', 'underscore', 'backbone'], function($, _, Backbone) {
     'use strict';
 
     /**
@@ -55,12 +54,7 @@ function(_, Backbone, registry, mediator) {
          * @private
          */
         _assignDatagridAndSubscribe: function(datagridName) {
-            var datagrid = registry.getElement('datagrid', datagridName);
-            if (datagrid) {
-                this.setDatagridAndSubscribe(datagrid);
-            } else {
-                mediator.once("datagrid:created:" + datagridName, this.setDatagridAndSubscribe, this);
-            }
+            $(document).one('datagrid:created:' + datagridName, this.setDatagridAndSubscribe, this);
         },
 
         /**
