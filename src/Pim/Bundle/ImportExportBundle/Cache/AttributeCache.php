@@ -274,13 +274,13 @@ class AttributeCache
             $attribute = $this->attributes[$columnInfo['name']];
             if (!$columnInfo['locale'] && $attribute->getTranslatable()) {
                 throw new ColumnLabelException(
-                    'Column "%column%" needs a locale',
+                    'The column "%column%" must contain a locale code',
                     array('%column%' => $columnInfo['label'])
                 );
             }
             if (!$columnInfo['scope'] && $attribute->getScopable()) {
                 throw new ColumnLabelException(
-                    'Column "%column%" needs a scope',
+                    'The column "%column%" must contain a scope code',
                     array('%column%' => $columnInfo['label'])
                 );
             }

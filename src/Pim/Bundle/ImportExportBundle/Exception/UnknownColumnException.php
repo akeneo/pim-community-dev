@@ -25,7 +25,7 @@ class UnknownColumnException extends TranslatableException
     {
         parent::__construct(
             'Columns %labels% do not exist.',
-            array('%labels%' => implode(',', $labels))
+            array('%labels%' => implode(', ', $labels))
         );
     }
 }

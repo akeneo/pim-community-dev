@@ -112,59 +112,18 @@ class AttributeCacheTest extends \PHPUnit_Framework_TestCase
 
         $this->attributeCache->initialize(
             array(
-                'identifier',
-                'col1',
-                'col2-locale1',
-                'col2-locale2',
-                'col3-locale-scope',
-                'col4-scope'
+                $this->getColumnInfo('identifier'),
+                $this->getColumnInfo('col1'),
+                $this->getColumnInfo('col2-locale1', 'col2', 'locale1'),
+                $this->getColumnInfo('col2-locale2', 'col2', 'locale2'),
+                $this->getColumnInfo('col3-locale-scope', 'col3', 'locale', 'scope'),
+                $this->getColumnInfo('col4-scope', 'col4', null, 'scope')
             )
         );
 
         $this->assertEquals($this->attributes, $this->attributeCache->getAttributes());
         $this->assertEquals($this->attributes['identifier'], $this->attributeCache->getIdentifierAttribute());
         $this->assertEquals($this->attributes['col1'], $this->attributeCache->getAttribute('col1'));
-        $this->assertEquals(
-            array(
-                'identifier' => array(
-                    'code'      => 'identifier',
-                    'locale'    => null,
-                    'scope'     => null,
-                    'attribute' => $this->attributes['identifier']
-                ),
-                'col1' => array(
-                    'code'      => 'col1',
-                    'locale'    => null,
-                    'scope'     => null,
-                    'attribute' => $this->attributes['col1']
-                ),
-                'col2-locale1' => array(
-                    'code'      => 'col2',
-                    'locale'    => 'locale1',
-                    'scope'     => null,
-                    'attribute' => $this->attributes['col2']
-                ),
-                'col2-locale2' => array(
-                    'code'      => 'col2',
-                    'locale'    => 'locale2',
-                    'scope'     => null,
-                    'attribute' => $this->attributes['col2']
-                ),
-                'col3-locale-scope' => array(
-                    'code'      => 'col3',
-                    'locale'    => 'locale',
-                    'scope'     => 'scope',
-                    'attribute' => $this->attributes['col3']
-                ),
-                'col4-scope' => array(
-                    'code'      => 'col4',
-                    'locale'    => null,
-                    'scope'     => 'scope',
-                    'attribute' => $this->attributes['col4']
-                )
-            ),
-            $this->attributeCache->getColumns()
-        );
         $this->assertTrue($this->attributeCache->isInitialized());
     }
 
@@ -174,7 +133,7 @@ class AttributeCacheTest extends \PHPUnit_Framework_TestCase
     public function testClear()
     {
         $this->initializeAttributes();
-        $this->attributeCache->initialize(array('identifier'));
+        $this->attributeCache->initialize(array($this->getColumnInfo('identifier')));
         $this->attributeCache->clear();
         $this->assertFalse($this->attributeCache->isInitialized());
         $this->assertNull($this->attributeCache->getAttributes());
@@ -183,8 +142,8 @@ class AttributeCacheTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage The column "col" must contain the local code
+     * @expectedException \Pim\Bundle\ImportExportBundle\Exception\ColumnLabelException
+     * @expectedExceptionMessage The column "col" must contain a locale code
      */
     public function testColumnWithoutLocale()
     {
@@ -192,12 +151,17 @@ class AttributeCacheTest extends \PHPUnit_Framework_TestCase
         $this->expectedQueryCodes = array('identifier', 'col');
         $this->addAttribute('col', true);
 
-        $this->attributeCache->initialize(array('identifier', 'col'));
+        $this->attributeCache->initialize(
+            array(
+                $this->getColumnInfo('identifier'),
+                $this->getColumnInfo('col')
+            )
+        );
     }
 
     /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage The column "col" must contain the scope code
+     * @expectedException \Pim\Bundle\ImportExportBundle\Exception\ColumnLabelException
+     * @expectedExceptionMessage The column "col" must contain a scope code
      */
     public function testColumnWithoutScope()
     {
@@ -205,12 +169,18 @@ class AttributeCacheTest extends \PHPUnit_Framework_TestCase
         $this->expectedQueryCodes = array('identifier', 'col');
         $this->addAttribute('col', false, true);
 
-        $this->attributeCache->initialize(array('identifier', 'col'));
+
+        $this->attributeCache->initialize(
+            array(
+                $this->getColumnInfo('identifier'),
+                $this->getColumnInfo('col')
+            )
+        );
     }
 
     /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage The column "col" must contain the local code
+     * @expectedException \Pim\Bundle\ImportExportBundle\Exception\ColumnLabelException
+     * @expectedExceptionMessage The column "col" must contain a locale code
      */
     public function testColumnWithoutLocalAndScope()
     {
@@ -218,19 +188,30 @@ class AttributeCacheTest extends \PHPUnit_Framework_TestCase
         $this->expectedQueryCodes = array('identifier', 'col');
         $this->addAttribute('col', true, true);
 
-        $this->attributeCache->initialize(array('identifier', 'col'));
+        $this->attributeCache->initialize(
+            array(
+                $this->getColumnInfo('identifier'),
+                $this->getColumnInfo('col')
+            )
+        );
     }
 
     /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage The following fields do not exist: col1, col2
+     * @expectedException \Pim\Bundle\ImportExportBundle\Exception\UnknownColumnException
+     * @expectedExceptionMessage Columns col1, col2 do not exist
      */
     public function testExtraColumns()
     {
         $this->initializeAttributes();
         $this->expectedQueryCodes = array('identifier', 'col1', 'col2');
 
-        $this->attributeCache->initialize(array('identifier', 'col1', 'col2'));
+        $this->attributeCache->initialize(
+            array(
+                $this->getColumnInfo('identifier'),
+                $this->getColumnInfo('col1'),
+                $this->getColumnInfo('col2'),
+            )
+        );
     }
 
     /**
@@ -387,5 +368,15 @@ class AttributeCacheTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($collection));
 
         return $collection;
+    }
+
+    protected function getColumnInfo($label, $name = null, $locale = null, $scope = null)
+    {
+        return array(
+            'label'     => $label,
+            'name'      => $name ?: $label,
+            'locale'    => $locale,
+            'scope'     => $scope
+        );
     }
 }
