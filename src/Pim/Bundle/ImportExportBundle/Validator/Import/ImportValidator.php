@@ -6,9 +6,7 @@ use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\ValidatorInterface;
-use Oro\Bundle\BatchBundle\Item\InvalidItemException;
 use Pim\Bundle\ImportExportBundle\Exception\DuplicateIdentifierException;
-
 
 /**
  * Validates an imported entity
@@ -89,9 +87,9 @@ class ImportValidator implements ImportValidatorInterface
 
     /**
      * Returns the label of the identifier column
-     * 
-     * @param array  $columnsInfo
-     * 
+     *
+     * @param array $columnsInfo
+     *
      * @return string
      */
     protected function getIdentifierColumn(array $columnsInfo)
@@ -102,8 +100,8 @@ class ImportValidator implements ImportValidatorInterface
     /**
      * Validates the properties of an entity
      *
-     * @param object  $entity
-     * @param array $columnsInfo
+     * @param object $entity
+     * @param array  $columnsInfo
      *
      * @return array
      */

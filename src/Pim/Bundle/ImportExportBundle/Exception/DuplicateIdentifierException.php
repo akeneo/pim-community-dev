@@ -15,7 +15,7 @@ use Symfony\Component\Translation\TranslatorInterface;
 class DuplicateIdentifierException extends InvalidItemException implements TranslatableExceptionInterface
 {
     protected $translatableException;
-    
+
     /**
      * Constructor
      *
@@ -32,7 +32,7 @@ class DuplicateIdentifierException extends InvalidItemException implements Trans
             )
         );
         parent::__construct($this->translatableException->getMessage(), $item);
-        
+
     }
 
     public function translateMessage(TranslatorInterface $translator)
