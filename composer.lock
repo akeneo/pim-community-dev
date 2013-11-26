@@ -74,12 +74,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/akeneo/DemoBundle.git",
-                "reference": "49336b1807d30f676b2efaa251c6ff293a715c49"
+                "reference": "06f8ea2c72d87c542429367f277f88d2f5bef382"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/akeneo/DemoBundle/zipball/49336b1807d30f676b2efaa251c6ff293a715c49",
-                "reference": "49336b1807d30f676b2efaa251c6ff293a715c49",
+                "url": "https://api.github.com/repos/akeneo/DemoBundle/zipball/06f8ea2c72d87c542429367f277f88d2f5bef382",
+                "reference": "06f8ea2c72d87c542429367f277f88d2f5bef382",
                 "shasum": ""
             },
             "require": {
@@ -117,7 +117,7 @@
                 "source": "https://github.com/akeneo/DemoBundle/tree/master",
                 "issues": "https://github.com/akeneo/DemoBundle/issues"
             },
-            "time": "2013-10-23 14:10:59"
+            "time": "2013-11-26 10:25:59"
         },
         {
             "name": "apy/jsfv-bundle",
