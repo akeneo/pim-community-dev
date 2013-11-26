@@ -371,7 +371,7 @@ class ProductAttributeController extends AbstractDoctrineController
         if ($entity->getAttributeType() === 'pim_catalog_identifier') {
             $errorMessage = 'flash.attribute.identifier not removable';
         } else {
-            $groupCount = $this->getRepository('PimCatalogBundle:Group')->countForAttribute($entity);
+            $groupCount = $this->getRepository('Pim\Bundle\CatalogBundle\Model\Group')->countForAttribute($entity);
             if ($groupCount > 0) {
                 $errorMessage = 'flash.attribute.used by groups';
                 $messageParameters = array('%count%' => $groupCount);

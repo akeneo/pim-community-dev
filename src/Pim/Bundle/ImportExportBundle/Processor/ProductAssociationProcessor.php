@@ -198,7 +198,7 @@ class ProductAssociationProcessor extends AbstractEntityProcessor
     {
         return $this
             ->entityManager
-            ->getRepository('PimCatalogBundle:Group')
+            ->getRepository('Pim\Bundle\CatalogBundle\Model\Group')
             ->findOneBy(array('code' => $code));
     }
 

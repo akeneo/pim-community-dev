@@ -33,19 +33,19 @@ pim_catalog_product:
 
 pim_catalog_product_index:
     type: entity
-    class: PimCatalogBundle:Product
+    class: Pim\Bundle\CatalogBundle\Model\Product
     permission: VIEW
 pim_catalog_product_create:
     type: entity
-    class: PimCatalogBundle:Product
+    class: Pim\Bundle\CatalogBundle\Model\Product
     permission: CREATE
 pim_catalog_product_edit:
     type: entity
-    class: PimCatalogBundle:Product
+    class: Pim\Bundle\CatalogBundle\Model\Product
     permission: EDIT
 pim_catalog_product_remove:
     type: entity
-    class: PimCatalogBundle:Product
+    class: Pim\Bundle\CatalogBundle\Model\Product
     permission: DELETE
 
 pim_catalog_product_add_attribute:
