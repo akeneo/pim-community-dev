@@ -3,7 +3,7 @@ Getting Started
 
 Table of Contents
 -----------------
- - [Attributes Type](#attribute-type)
+ - [Attributes Type](#attributes-type)
  - [Workflow Step Type](#workflow-step-type)
  - [Workflow Transition Type](#worfklow-transition-type)
 
