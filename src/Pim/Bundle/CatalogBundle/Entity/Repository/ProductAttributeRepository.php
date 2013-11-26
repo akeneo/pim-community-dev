@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 
-use Pim\Bundle\CatalogBundle\Entity\Family;
-
 use Oro\Bundle\FlexibleEntityBundle\Entity\Repository\AttributeRepository;
 
 /**
@@ -154,11 +152,9 @@ class ProductAttributeRepository extends AttributeRepository
     }
 
     /**
-     * Get available attributes for a specific family
+     * Get available attributes as label
      *
-     * @param Family $family
-     *
-     * @return
+     * @return array
      */
     protected function getAvailableAttributesAsLabel()
     {
