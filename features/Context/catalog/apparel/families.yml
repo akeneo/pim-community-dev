@@ -29,7 +29,6 @@ families:
         attributeAsLabel: name
         requirements:
             ecommerce:
-                - sku
                 - name
                 - description
                 - price
@@ -38,14 +37,12 @@ families:
                 - manufacturer
                 - material
             tablet:
-                - sku
                 - name
                 - price
                 - size
                 - color
                 - manufacturer
             print:
-                - sku
                 - name
                 - description
                 - price
@@ -86,7 +83,6 @@ families:
         attributeAsLabel: name
         requirements:
             ecommerce:
-                - sku
                 - name
                 - description
                 - price
@@ -95,14 +91,12 @@ families:
                 - manufacturer
                 - material
             tablet:
-                - sku
                 - name
                 - price
                 - size
                 - color
                 - manufacturer
             print:
-                - sku
                 - name
                 - description
                 - price
@@ -145,7 +139,6 @@ families:
         attributeAsLabel: name
         requirements:
             ecommerce:
-                - sku
                 - name
                 - description
                 - price
@@ -155,7 +148,6 @@ families:
                 - manufacturer
                 - material
             tablet:
-                - sku
                 - name
                 - price
                 - chest_size
@@ -163,7 +155,6 @@ families:
                 - color
                 - manufacturer
             print:
-                - sku
                 - name
                 - description
                 - price
