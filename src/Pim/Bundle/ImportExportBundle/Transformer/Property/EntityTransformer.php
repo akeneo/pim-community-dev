@@ -12,7 +12,7 @@ use Pim\Bundle\ImportExportBundle\Exception\PropertyTransformerException;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class EntityTransformer implements PropertyTransformerInterface
+class EntityTransformer extends AbstractAssociationTransformer
 {
     /**
      * @var EntityCache
@@ -32,30 +32,8 @@ class EntityTransformer implements PropertyTransformerInterface
     /**
      * {@inheritdoc}
      */
-    public function transform($value, array $options = array())
+    public function getReference($class, $value)
     {
-        $value = trim($value);
-
-        $multiple = (isset($options['multiple']) && $options['multiple']);
-        if (!$value) {
-            return $multiple ? array() : null;
-        }
-
-        $entityCache = $this->entityCache;
-        $transform = function ($value) use ($options, $entityCache) {
-            $entity = $entityCache->find($options['class'], $value);
-            if (!$entity) {
-                throw new PropertyTransformerException(
-                    'No entity of class "%class%" with code "%value%"',
-                    array('%class%' => $options['class'], '%value%' => $value)
-                );
-            }
-
-            return $entity;
-        };
-
-        return $multiple
-            ? array_map($transform, preg_split('/\s*,\s*/', $value))
-            : $transform($value);
+        return $this->entityCache->find($class, $value);
     }
 }

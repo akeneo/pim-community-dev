@@ -40,6 +40,9 @@ abstract class AbstractTransformerProcessor extends AbstractConfigurableStepElem
         $this->translator = $translator;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function process($item)
     {
         $this->mapValues($item);
@@ -62,6 +65,8 @@ abstract class AbstractTransformerProcessor extends AbstractConfigurableStepElem
         if (count($errors)) {
             throw new InvalidItemException(implode("\n", $errors), $item);
         }
+
+        return $entity;
     }
 
     /**

@@ -4,6 +4,7 @@ namespace Pim\Bundle\InstallerBundle\Transformer\Property;
 
 use Doctrine\Common\DataFixtures\ReferenceRepository;
 use Doctrine\Common\DataFixtures\ReferenceRepository as ReferenceRepository2;
+use Pim\Bundle\ImportExportBundle\Transformer\Property\AbstractAssociationTransformer;
 use Pim\Bundle\ImportExportBundle\Transformer\Property\PropertyTransformerInterface;
 
 /**
@@ -15,7 +16,7 @@ use Pim\Bundle\ImportExportBundle\Transformer\Property\PropertyTransformerInterf
  *
  * @author Antoine Guigan <aguigan@qimnet.com>
  */
-class FixtureReferenceTransformer implements PropertyTransformerInterface
+class FixtureReferenceTransformer extends AbstractAssociationTransformer
 {
     /**
      * @var PropertyTransformerInterface
@@ -50,37 +51,13 @@ class FixtureReferenceTransformer implements PropertyTransformerInterface
     /**
      * {@inheritdoc}
      */
-    public function transform($value, array $options = array())
-    {
-        $value = trim($value);
-
-        if (!$value) {
-            return $options['multiple'] ? array() : null;
-        }
-        $getReference = function ($value) use ($options) {
-            return $this->getReference($options['class'], $value);
-        };
-
-        return (isset($options['multiple']) && $options['multiple'])
-            ? array_map($getReference, preg_split('/s*,\s*/', $value))
-            : $getReference($value);
-    }
-
-    /**
-     * Returns an object for a given class and code
-     *
-     * @param string $class
-     * @param string $code
-     *
-     * @return object
-     */
-    protected function getReference($class, $code)
+    public function getReference($class, $code)
     {
         $refName = $class . '.' . $code;
         if ($this->referenceRepository && $this->referenceRepository->hasReference($refName)) {
             return $this->referenceRepository->getReference($refName);
         } else {
-            return $this->entityTransformer->transform($code, array('class' => $class));
+            return $this->entityTransformer->getReference($class, $code);
         }
     }
 }
