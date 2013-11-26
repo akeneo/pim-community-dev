@@ -172,7 +172,7 @@ class FamilyDatagridManager extends DatagridManager
 
         $clickAction = $editAction;
         $clickAction['name'] = 'rowClick';
-        $clicAction['options']['runOnRowClick'] = true;
+        $clickAction['options']['runOnRowClick'] = true;
 
         $deleteAction = array(
             'name'         => 'delete',
