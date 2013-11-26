@@ -1,21 +1,21 @@
 ---
-User: User
-Run demo: Run demo
+User: Gebruiker
+Run demo: Demo uitvoeren
 Product: Product
-Attribute list: Attribute list
-Attribute Group list: Attribute Group list
-Users: Users
-Roles: Roles
-Groups: Groups
-Configuration: Configuration
-Currency list: Currency list
-Locale list: Locale list
-Logged in as: Logged in as
-Logout: Logout
-Login: Login
-Previous: Previous
-Next: Next
-Channel list: Channel list
-Select file: Select file
-Change file: Change file
-Remove file: Remove file
+Attribute list: Kenmerkenlijst
+Attribute Group list: Kenmerkgroepenlijst
+Users: Gebruikers
+Roles: Rollen
+Groups: Groepen
+Configuration: Configuratie
+Currency list: Valutalijst
+Locale list: Taalgebiedenlijst
+Logged in as: Aangemeld als
+Logout: Afmelden
+Login: Aanmelden
+Previous: Vorige
+Next: Volgende
+Channel list: Kanalenlijst
+Select file: Selecteer bestand
+Change file: Bestand wijzigen
+Remove file: Bestand verwijderen

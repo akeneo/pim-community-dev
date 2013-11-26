@@ -1,97 +1,98 @@
 ---
 Close: Close
 Update: Update
-Selected Rows: Selected Rows
-Localized value: Localized value
+Selected Rows: Geselecteerde rijen
+Localized value: Gelokaliseerde waarde
 jstree:
-  all: All products
-  unclassified: Unclassified products
-  no_tree: No tree available
-Area: Area
+  all: Alle producten
+  unclassified: Niet-geclassificeerde producten
+  no_tree: Geen structuur beschikbaar
+  include_sub: Include sub-categories
+Area: Oppervlak
 ACRE: Acre
 ARE: Are
 ARPENT: Arpent
 CENTIARE: Centiare
 HECTARE: Hectare
-SQUARE_CENTIMETER: Square centimeter
-SQUARE_DECIMETER: Square decimeter
-SQUARE_DEKAMETER: Square dekameter
-SQUARE_FOOT: Square foot
-SQUARE_FURLONG: Square furlong
-SQUARE_HECTOMETER: Square hectometer
-SQUARE_INCH: Square inch
-SQUARE_KILOMETER: Square kilometer
-SQUARE_METER: Square meter
-SQUARE_MIL: Square mil
-SQUARE_MILE: Square mile
-SQUARE_MILLIMETER: Square millimeter
-SQUARE_YARD: Square yard
-Binary: Binary
+SQUARE_CENTIMETER: Vierkante centimeter
+SQUARE_DECIMETER: Vierkante decimeter
+SQUARE_DEKAMETER: Vierkante dekameter
+SQUARE_FOOT: Vierkante voet
+SQUARE_FURLONG: Vierkante furlong
+SQUARE_HECTOMETER: Vierkante hectometer
+SQUARE_INCH: Vierkante duim
+SQUARE_KILOMETER: Vierkante kilometer
+SQUARE_METER: Vierkante meter
+SQUARE_MIL: Vierkante mijl
+SQUARE_MILE: Vierkante mijl
+SQUARE_MILLIMETER: Vierkante millimeter
+SQUARE_YARD: Vierkante yard
+Binary: Binair
 BIT: Bit
 BYTE: Byte
 KILOBYTE: Kilobyte
 MEGABYTE: Megabyte
 GIGABYTE: Gigabyte
 TERABYTE: Terabyte
-Frequency: Frequency
+Frequency: Frequentie
 GIGAHERTZ: Gigahertz
 KILOHERTZ: Kilohertz
 MEGAHERTZ: Megahertz
 TERAHERTZ: Terahertz
 HERTZ: Hertz
-Length: Length
+Length: Lengte
 CENTIMETER: Centimeter
 CHAIN: Chain
 DECIMETER: Decimeter
 DEKAMETER: Dekameter
-FEET: Feet
+FEET: Voet
 FURLONG: Furlong
-INCH: Inch
+INCH: Duim
 HECTOMETER: Hectometer
 KILOMETER: Kilometer
 METER: Meter
-MIL: Mil
-MILE: Mile
+MIL: Mijl
+MILE: Mijl
 MILLIMETER: Millimeter
 YARD: Yard
-Power: Power
-GIGAWATT: Gigawatt
+Power: Vermogen
+GIGAWATT: GigaWatt
 KILOWATT: Kilowatt
 MEGAWATT: Megawatt
 TERAWATT: Terawatt
 WATT: Watt
-Speed: Speed
-FOOT_PER_SECOND: Foot per second
-FOOT_PER_HOUR: Foot per hour
-KILOMETER_PER_HOUR: Kilometer per hour
-METER_PER_HOUR: Meter per hour
-METER_PER_MINUTE: Meter per minute
-METER_PER_SECOND: Meter per second
-MILE_PER_HOUR: Mile per hour
-YARD_PER_HOUR: Yard per hour
-Temperature: Temperature
-CELCIUS: Celcius
+Speed: Snelheid
+FOOT_PER_SECOND: Voet per seconde
+FOOT_PER_HOUR: Voet per uur
+KILOMETER_PER_HOUR: Kilometer per uur
+METER_PER_HOUR: Meter per uur
+METER_PER_MINUTE: Meter per minuut
+METER_PER_SECOND: Meter per seconde
+MILE_PER_HOUR: Mijl per uur
+YARD_PER_HOUR: Yard per uur
+Temperature: Temperatuur
+CELCIUS: Celsius
 FAHRENHEIT: Fahrenheit
 KELVIN: Kelvin
 RANKINE: Rankine
 REAUMUR: Reaumur
 Volume: Volume
-BARREL: Barrel
+BARREL: Vat
 CENTILITER: Centiliter
-CUBIC_CENTIMETER: Cubic centimeter
-CUBIC_DECIMETER: Cubic decimeter
-CUBIC_FOOT: Cubic foot
-CUBIC_INCH: Cubic inch
-CUBIC_METER: Cubic meter
-CUBIC_MILLIMETER: Cubic millimeter
-CUBIC_YARD: Cubic yard
+CUBIC_CENTIMETER: Kubieke centimeter
+CUBIC_DECIMETER: Kubieke decimeter
+CUBIC_FOOT: Kubieke voet
+CUBIC_INCH: Kubieke duim
+CUBIC_METER: Kubieke meter
+CUBIC_MILLIMETER: Kubieke millimeter
+CUBIC_YARD: Kubieke yard
 DECILITER: Deciliter
 GALLON: Gallon
 LITER: Liter
 MILLILITER: Milliliter
 OUNCE: Ounce
 PINT: Pint
-Weight: Weight
+Weight: Gewicht
 DENIER: Denier
 GRAIN: Grain
 GRAM: Gram
@@ -100,5 +101,5 @@ LIVRE: Livre
 MARC: Marc
 MILLIGRAM: Milligram
 ONCE: Once
-POUND: Pound
+POUND: Pond
 TON: Ton

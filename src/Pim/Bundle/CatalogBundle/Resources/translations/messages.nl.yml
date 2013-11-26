@@ -1,348 +1,379 @@
 ---
 attribute:
-  overview: attribute overview
-  create: create attribute
-  edit: edit attribute
+  overview: kenmerkenoverzicht
+  create: kenmerk aanmaken
+  edit: kenmerk bewerken
 attribute group:
-  overview: attribute group overview
-  create: create attribute group
-  edit: edit attribute group
+  overview: kenmerkgroepoverzicht
+  create: kenmerkgroep aanmaken
+  edit: kenmerkgroep bewerken
 category:
-  overview: category overview
-  create: create category
-  edit: edit category
+  overview: categorie overzicht
+  create: categorie aanmaken
+  edit: categorie bewerken
 tree:
-  create: create tree
-  edit: edit tree
+  create: Structuur aanmaken
+  edit: Structuur bewerken
 channel:
-  overview: channel overview
-  create: create channel
-  edit: edit channel
+  overview: kanaal overzicht
+  create: maak kanaal
+  edit: bewerk kanaal
 currency:
-  overview: currency overview
-  create: create currency
-  edit: edit currency
+  overview: valuta overzicht
+  create: maak valuta
+  edit: bewerk valuta
 export profile:
-  overview: export profile overview
-  create: create export profile
-  edit: edit export profile
+  overview: exporteer profiel overzicht
+  create: Exportprofiel aanmaken
+  edit: Exportprofiel bewerken
 family:
-  overview: family overview
-  create: create family
-  edit: edit family
+  overview: Familieoverzicht
+  create: Familie aanmaken
+  edit: Familie bewerken
 import profile:
-  overview: import profile overview
-  create: create import profile
-  edit: edit import profile
+  overview: Importprofiel overzicht
+  create: Importprofiel aanmaken
+  edit: Importprofiel bewerken
 locale:
-  overview: locale overview
-  create: create locale
-  edit: edit locale
+  overview: Lokalisatieoverzicht
+  create: Lokalisatie aanmaken
+  edit: Lokalisatie bewerken
 product:
-  overview: product overview
-  create: create product
-  edit: edit product
+  overview: Productoverzicht
+  create: Product aanmaken
+  edit: Product bewerken
 group:
-  overview: group overview
-  create: create group
-  edit: edit group
+  overview: Groepsoverzicht
+  create: Groep aanmaken
+  edit: Groep bewerken
+variant group:
+  overview: variant group overview
+  create: create variant group
+  edit: edit variant group
 association:
-  overview: association overview
-  create: create association
-  edit: edit association
+  overview: Koppelingsoverzicht
+  create: Koppeling aanmaken
+  edit: Koppeling bewerken
+group type:
+  overview: group type overview
+  create: create group type
+  edit: edit group type
 export report:
-  overview: export reports
+  overview: Exporteer rapporten
 import report:
-  overview: import reports
-products: products
+  overview: Importeer rapporten
+products: Producten
 btn:
   create:
-    attribute: create attribute
-    attribute group: create attribute group
-    category: create category
-    tree: create tree
-    channel: create channel
-    currency: create currency
-    export profile: create export profile
-    family: create family
-    import profile: create import profile
-    locale: create locale
-    product: create product
-    group: create group
-    association: create association
-  edit: edit
-  save: save
-  remove: remove
-  delete: delete
-  cancel: cancel
-  next: next
-  back: back
-  confirm: confirm
-  to grid: back to grid
-  to parent: back to parent
+    attribute: kenmerk aanmaken
+    attribute group: kenmerkgroep aanmaken
+    category: Categorie aanmaken
+    tree: Structuur aanmaken
+    channel: Kanaal aanmaken
+    currency: Valuta aanmaken
+    export profile: Exportprofiel aanmaken
+    family: Familie aanmaken
+    import profile: Importprofiel aanmaken
+    locale: Lokalisatie aanmaken
+    product: Product aanmaken
+    group: Groep aanmaken
+    variant group: create variant group
+    association: Koppeling aanmaken
+    group type: create group type
+  edit: Bewerken
+  save: Opslaan
+  remove: Verwijderen
+  delete: Verwijderen
+  cancel: Annuleren
+  next: Volgende
+  back: Vorige
+  confirm: Bevestigen
+  to grid: Terug naar raster
+  to parent: Terug naar bovenliggende
 confirmation:
-  delete: Delete confirmation
-  leave: Are you sure you want to leave this page?
-  discard changes: You will lose changes to the %entity% if you leave the page.
+  delete: Bevestig verwijderen
+  leave: Weet u zeker dat u deze pagina wilt verlaten?
+  discard changes: Als u deze pagina verlaat worden veranderingen aan %entity% niet opgeslagen.
   remove:
-    item: Are you sure you want to delete this item?
-    attribute: Are you sure you want to delete the attribute %name%?
-    attribute group: Are you sure you want to delete the attribute group %name%?
-    category: Are you sure you want to delete the category %name%?
-    family: Are you sure you want to delete the family %name%?
-    product: Are you sure you want to delete the product %name%?
-    export profile: Are you sure you want to delete the export profile %name%?
-    import profile: Are you sure you want to delete the import profile %name%?
-    channel: Are you sure you want to delete the channel %name%?
-    group: Are you sure you want to delete the group %name%?
-    association: Are you sure you want to delete the association %name%?
+    item: Weet u zeker dat u dit item wilt verwijderen?
+    attribute: Weet u zeker dat u het kenmerk %name% wilt verwijderen?
+    attribute group: Weet u zeker dat u de kenmerkgroep %name% wilt verwijderen?
+    category: Weet u zeker dat u de categorie %name% wilt verwijderen?
+    family: Weet u zeker dat u de familie %name% wilt verwijderen?
+    product: Weet u zeker dat u het product %name% wilt verwijderen?
+    export profile: Weet u zeker dat u het exportprofiel %name% wilt verwijderen?
+    import profile: Weet u zeker dat u het importprofiel %name% wilt verwijderen?
+    channel: Weet u zeker dat u het kanaal %name% wilt verwijderen?
+    group: Weet u zeker dat u de groep %name% wilt verwijderen?
+    variant group: Are you sure you want to delete the variant group %name%?
+    association: Weet u zeker dat u de koppeling %name% wilt verwijderen?
+    group type: Are you sure you want to delete the group type %name%?
 flash:
   entity:
-    removed: Item was deleted
+    removed: Object is verwijderd
   attribute:
-    created: Attribute successfully created
-    updated: Attribute successfully updated
-    removed: Attribute successfully removed
-    identifier not removable: Identifier attribute can not be removed
+    created: Kenmerk succesvol aangemaakt
+    updated: Kenmerk succesvol bijgewerkt
+    removed: Kenmerk succesvol verwijderd
+    identifier not removable: Id-kenmerk kan niet worden verwijderd
+    used by groups: This attribute can not be removed because it is used by %count% groups
+    option created: Option successfully created
+    error creating option: Error ocurred when trying to create the option, please try again
   attribute group:
-    created: Attribute group successfully created
-    updated: Attribute group successfully updated
-    removed: Attribute group successfully removed
-    attributes added: Attributes successfully added to the attribute group
-    attribute removed: Attribute successfully removed from the attribute group
+    created: Kenmerkgroep succesvol aangemaakt
+    updated: Kenmerkgroep succesvol bijgewerkt
+    removed: Kenmerkgroep succesvol verwijderd
+    attributes added: Kenmerken succesvol toegevoegd aan de kenmerkgroep
+    attribute removed: Kenmerk succesvol verwijderd uit de kenmerkgroep
   category:
-    created: Category successfully created
-    updated: Category successfully updated
-    removed: Category successfully removed
+    created: Categorie succesvol aangemaakt
+    updated: Categorie succesvol bijgewerkt
+    removed: Categorie succesvol verwijderd
   tree:
-    created: Tree successfully created
-    updated: Tree successfully updated
-    removed: Tree successfully removed
-    not removable: Trees connected to channels cannot be removed.
+    created: Structuur succesvol aangemaakt
+    updated: Structuur succesvol bijgewerkt
+    removed: Structuur succesvol verwijderd
+    not removable: Structuren die zijn gekoppeld aan kanalen kunnen niet worden verwijderd.
   channel:
-    saved: Channel successfully saved
-    removed: Channel successfully removed
-    not removable: The last channel cannot be removed
+    saved: Kanaal succesvol opgeslagen
+    removed: Kanaal succesvol verwijderd
+    not removable: Het laatste kanaal kan niet worden verwijderd
   currency:
-    updated: Currency successfully updated
+    updated: Valuta succesvol bijgewerkt
   family:
-    created: Family successfully created
-    updated: Family successfully updated
-    removed: Family successfully removed
-    identifier not removable: Identifier attribute can not be removed from a family
-    label attribute not removable: This attribute can not be removed because it is used as the label of the family
-    attribute not found: The attribute does not belong to this family
-    attributes added: Attributes successfully added to the family
-    attribute removed: Attribute successfully removed from the family
+    created: Familie succesvol aangemaakt
+    updated: Familie succesvol bijgewerkt
+    removed: Familie succesvol verwijderd
+    identifier not removable: Id-kenmerk kan niet worden verwijderd uit een familie
+    label attribute not removable: Dit kenmerk kan niet worden verwijderd omdat het wordt gebruikt als het label van de familie
+    attribute not found: Het kenmerk behoort niet tot deze familie
+    attributes added: Kenmerken succesvol toegevoegd aan de familie
+    attribute removed: Kenmerk succesvol verwijderd uit de familie
   product:
-    created: Product successfully created
-    updated: Product successfully updated
-    removed: Product successfully removed
-    invalid: Please check your entry and try again
-    attributes added: Attributes successfully added to the product
-    attribute removed: Attribute successfully removed from the product
-    attribute not removable: The attribute can not be removed from this product
+    created: Product succesvol aangemaakt
+    updated: Product succesvol bijgewerkt
+    removed: Product succesvol verwijderd
+    invalid: Controleer uw invoer en probeer het opnieuw
+    attributes added: Kenmerken succesvol toegevoegd aan het product
+    attribute removed: Kenmerk succesvol verwijderd uit het product
+    attribute not removable: Het kenmerk kan niet van dit product worden verwijderd
   import:
-    removed: The import has been removed
+    removed: De import is verwijderd
   export:
-    removed: The export has been removed
+    removed: De export is verwijderd
   group:
-    created: Group successfully created
-    updated: Group successfully updated
-    removed: Group successfully removed
+    created: Groep succesvol aangemaakt
+    updated: Groep succesvol bijgewerkt
+    removed: Groep succesvol verwijderd
+  variant group:
+    created: Variant group successfully created
+    updated: Variant group successfully updated
+    removed: Variant group successfully removed
+  group type:
+    created: Group type successfully created
+    updated: Group type successfully updated
+    removed: Group type successfully removed
+    cant remove variant: "Group type variant can't be removed"
+    cant remove used: "Group type is used by some groups and can't be removed"
   association:
-    created: Association successfully created
-    updated: Association successfully updated
-    removed: Association successfully removed
-  error ocurred: Action failed. Please retry.
+    created: Koppeling succesvol aangemaakt
+    updated: Koppeling succesvol bijgewerkt
+    removed: Koppeling succesvol verwijderd
+  error ocurred: Actie mislukt. Probeer alstublieft opnieuw.
 info:
-  updated: There are unsaved changes.
+  updated: Er zijn niet-opgeslagen wijzigingen.
   category:
-    remove children: All sub-categories will be deleted.
-    keep products: Products in these categories will not be deleted.
+    remove children: Alle subcategorieën zullen worden verwijderd.
+    keep products: Producten in deze categorieën zullen niet worden verwijderd.
   product:
-    no available attributes: There are no more attributes to add
-    change family: Change the product family
-    change family to: Change the family to
-    merge attributes: Current attributes will be merged with the ones in the new family.
-    keep attributes: No attributes will be removed.
-    number of associations: %productCount% products and %groupCount% groups
-    enable: Enable
-    enabled: Enabled
-    disable: Disable
-    disabled: Disabled
+    no available attributes: Er zijn geen kenmerken meer om toe te voegen
+    change family: Wijzig de productfamilie
+    change family to: Wijzig de familie naar
+    merge attributes: Huidige kenmerken zullen worden samengevoegd met degenen in de nieuwe familie.
+    keep attributes: Er zullen geen kenmerken worden verwijderd.
+    number of associations: %productCount% producten en %groupCount% groepen
+    enable: Inschakelen
+    enabled: Ingeschakeld
+    disable: Uitschakelen
+    disabled: Uitgeschakeld
   group:
     axis:
       Variation axis: %attributes%
-    select products: Please select products that should belong to this group.
-    selectable products: The following selectable products have a defined value for each axis.
+    select products: Selecteer alstublieft de producten die behoren tot deze groep.
+    selectable products: De volgende selecteerbare producten hebben een gedefinieerde waarde voor elke as.
   association:
-    show products: Show products
-    show groups: Show groups
-    remove from products: Deleting the association will remove it from %count% products.
-Options: Options
-Created at: Created at
-Updated at: Updated at
-Created: Created
-Updated: Updated
-N/A: N/A
-Add an option: Add an option
-Manage products: Manage products
-Manage groups: Manage groups
+    show products: Toon producten
+    show groups: Toon groepen
+    remove from products: Verwijderen van de koppeling zal het verwijderen van %count% producten.
+Options: Opties
+Created at: Aangemaakt op
+Updated at: Bijgewerkt op
+Created: Aangemaakt
+Updated: Bijgewerkt
+N/A: Niet beschikbaar
+Add an option: Een optie toevoegen
+Manage products: Producten beheren
+Manage groups: Groepen beheren
 Code: Code
-Name: Name
+Name: Naam
 Type: Type
-Scope: Scope
-Required: Required
-Unique: Unique
-translatable: Translatable
-Scopable: Scopable
-Unique value: Unique value
-Attribute group: Attribute group
-Variants behavior when edited: Variants behavior when edited
-Edit: Edit
-Remove: Remove
-Delete: Delete
+Scope: Toepassingsgebied
+Required: Vereist
+Unique: Uniek
+translatable: Vertaalbaar
+Scopable: Bereik instelbaar
+Unique value: Unieke waarde
+Attribute group: Kenmerkgroep
+Variants behavior when edited: Gedrag van varianten bij wijzigingen
+Edit: Bewerken
+Remove: Verwijderen
+Delete: Verwijderen
 Parameters: Parameters
-Values: Values
-General parameters: General parameters
+Values: Waarden
+General parameters: Algemene parameters
 Backend parameters: Backend parameters
 Label: Label
-Default label: Default label
-Default value: Default value
-Attributetype: Attribute type
-searchable: Searchable
-Defaultvalue: Default value
+Default label: Standaard label
+Default value: Standaardwaarde
+Attributetype: Kenmerktype
+searchable: Doorzoekbaar
+Defaultvalue: Standaardwaarde
 Variant: Variant
-Smart: Smart
-Useable as grid column: Usable as grid column
-Useable as grid filter: Usable as grid filter
-Family: Family
-Available locales: Available locales
-Locale specific: Locale specific
-Label translations: Label translations
-default: Default
-Create: Create
-Cancel: Cancel
-Create a new product: Create a new product
-Choose a family: Choose a family
-Create a new association: Create a new association
-Global: Global
-Channel: Channel
-Always override: Always override
-Ask: Ask
-General Properties: General Properties
-Group values: Group values
-New group: New group
-Groups overview: Groups overview
-"Y-m-d h:i:s": Y-m-d h:i:s
-Max characters: Max characters
-Validation rule: Validation rule
-Validation regexp: Validation regexp
-Wysiwyg enabled: WYSIWYG enabled
-Number min: Min number
-Number max: Max number
-Decimals allowed: Allow decimals
-Negative allowed: Allow negative values
-Date type: Date type
-Date min: Min date
-Date max: Max date
-Default currency: Default currency
-Metric family: Metric family
-Default metric unit: Default metric unit
-Max file size: Max file size
-Allowed file extensions: Allowed file extensions
-Attributes: Attributes
-Title: Title
-Is dynamic: Is dynamic
+Smart: Slim
+Useable as grid column: Bruikbaar als rasterkolom
+Useable as grid filter: Bruikbaar als rasterfilter
+Family: Familie
+Available locales: Beschikbare lokalisaties
+Locale specific: Lokalisatiespecifiek
+Label translations: Labelvertalingen
+default: Standaard
+Create: Aanmaken
+Cancel: Annuleren
+Create a new product: Een nieuw product aanmaken
+Choose a family: Kies een familie
+Create a new association: Een nieuwe koppeling aanmaken
+Create a new option: Create a new option
+Global: Globaal
+Channel: Kanaal
+Always override: Altijd overschrijven
+Ask: Vragen
+General Properties: Algemene eigenschappen
+Group values: Groepswaarden
+New group: Nieuwe groep
+Groups overview: Groepenoverzicht
+"Y-m-d h:i:s": J-m-d u:m:s
+Max characters: Max tekens
+Validation rule: Validatieregel
+Validation regexp: Validatie regexp
+Wysiwyg enabled: WYSIWYG ingeschakeld
+Number min: Min aantal
+Number max: Max aantal
+Decimals allowed: Decimalen toestaan
+Negative allowed: Negatieve waarden toestaan
+Date type: Datumtype
+Date min: Vanaf datum
+Date max: Tot datum
+Default currency: Standaardvaluta
+Metric family: Meeteenhedenfamilie
+Default metric unit: Standaard meeteenheid
+Max file size: Max file size (MB)
+Allowed file extensions: Toegestane bestandsextensies
+Attributes: Kenmerken
+Title: Titel
 Dashboard: Dashboard
-Attribute groups: Attribute groups
-Attribute groups | Create: Attribute groups | Create
-Attribute groups %group.label% | Edit: Attribute groups %group.label% | Edit
-Attribute groups | Sort: Attribute groups | Sort
-Category trees: Category trees
-Category trees | List: Category trees | List
-Category trees | Manage: Category trees | Manage
-Category trees | View: Category trees | View
-Category trees | Create: Category trees | Create
-Category trees | Edit: Category trees | Edit
-Export profiles: Export profiles
-Export profiles | Create: Export profiles | Create
-Export profiles %export.label% | Edit: Export profiles %export.label% | Edit
-Import profiles: Import profiles
-Import profiles | Create: Import profiles | Create
-Import profiles %import.label% | Edit: Import profiles %import.label% | Edit
-Product attributes: Product attributes
-Product attributes | Create: Product attributes | Create
-Product attributes %attribute.label% | Edit: Product attributes %attribute.label% | Edit
-Products: Products
-Products | Create: Products | Create
-Products %product.sku% | Edit: Products %product.sku% | Edit
+Attribute groups: Kenmerkgroepen
+Attribute groups | Create: Kenmerkgroepen | Aanmaken
+Attribute groups %group.label% | Edit: Kenmerkgroepen %group.label% | Bewerken
+Attribute groups | Sort: Kenmerkgroepen | Sorteren
+Category trees: Categoriestructuren
+Category trees | List: Categoriestructuren|Lijst
+Category trees | Manage: Categoriestructuren|Beheren
+Category trees | View: Categoriestructuren|Bekijken
+Category trees | Create: Categoriestructuren|Aanmaken
+Category trees | Edit: Categoriestructuren|Bewerken
+Export profiles: Exportprofielen
+Export profiles | Create: Exportprofielen | Aanmaken
+Export profiles %export.label% | Edit: Exportprofielen %export.label%| Bewerken
+Import profiles: Importprofielen
+Import profiles | Create: Importprofielen|Aanmaken
+Import profiles %import.label% | Edit: Importprofielen %import.label%|Bewerken
+Product attributes: Productkenmerken
+Product attributes | Create: Productkenmerken | Aanmaken
+Product attributes %attribute.label% | Edit: Productkenmerken %attribute.label% | Bewerken
+Products: Producten
+Products | Create: Producten | Aanmaken
+Products %product.sku% | Edit: Producten %product.sku% | Bewerken
 Families: Families
-Families | Create: Families | Create
-Families %family.label% | Edit: Families %family.label% | Edit
-Channels: Channels
-Channels | Create: Channels | Create
-Channels %channel.label% | Edit: Channels %channel.label% | Edit
-Currencies: Currencies
-Locales: Locales
-Locales %locale.code% | Edit: Locales %locale.code% | Edit
-Groups: Groups
-Groups | Create: Groups | Create
-Groups %group.label% | Edit: Groups %group.label% | Edit
-Associations: Associations
-Associations | Create: Associations | Create
-Associations %association.label% | Edit: Associations %association.label% | Edit
-pim_catalog_identifier: Identifier
-pim_catalog_text: Text
-pim_catalog_textarea: Text Area
-pim_catalog_number: Number
-pim_catalog_price_collection: Price
-pim_catalog_multiselect: Multi select
-pim_catalog_simpleselect: Simple select
-pim_catalog_file: File
-pim_catalog_image: Image
-pim_catalog_boolean: Yes/No
-pim_catalog_date: Date
-pim_catalog_metric: Metric
-Fallback: Fallback
-Activated: Activated
-Disable: Disable
+Families | Create: Families|Aanmaken
+Families %family.label% | Edit: Families %family.label%|Bewerken
+Channels: Kanalen
+Channels | Create: Kanalen | Aanmaken
+Channels %channel.label% | Edit: Kanalen %channel.label% | Bewerken
+Currencies: Valuta
+Locales: Lokalisaties
+Locales %locale.code% | Edit: Lokalisatie %locale.code% | Bewerken
+Groups: Groepen
+Groups | Create: Groepen | Aanmaken
+Groups %group.label% | Edit: Groepen %group.label% | Bewerken
+Variant groups: Variant groups
+Variant groups | Create: Variant groups | Create
+Variant groups %group.label% | Edit: Variant groups %group.label% | Edit
+Associations: Koppelingen
+Associations | Create: Koppelingen|Aanmaken
+Associations %association.label% | Edit: Koppelingen %association.label%|Bewerken
+Group types: Group types
+Group types | Create: Group types | Create
+Group types %grouptype.label% | Edit: Group types %grouptype.label% | Edit
+pim_catalog_identifier: Id
+pim_catalog_text: Tekst
+pim_catalog_textarea: Tekstblok
+pim_catalog_number: Nummer
+pim_catalog_price_collection: Prijs
+pim_catalog_multiselect: Meervoudige selectie
+pim_catalog_simpleselect: Enkelvoudige selectie
+pim_catalog_file: Bestand
+pim_catalog_image: Afbeelding
+pim_catalog_boolean: Ja/Nee
+pim_catalog_date: Datum
+pim_catalog_metric: Meeteenheid
+Fallback: Alternatief
+Activated: Geactiveerd
+Disable: Uitschakelen
 pim_catalog.mass_edit_action:
-  page_title: Products
-  page_subtitle: Mass Edit (1 product)|Mass Edit (%count% products)
-  title: Choose operation
-  subtitle: Choose the operation you wish to perform on the selected product|Choose the operation you wish to perform on the selected %count% products
-  confirm: You are about to update a product with the following information, please confirm.|You are about to update %count% products with the following information, please confirm.
+  page_title: Producten
+  page_subtitle: Massaal bewerken (1 product)|Massaal bewerken (%count% producten)
+  title: Kies bewerking
+  subtitle: Kies de bewerking die u wilt uitvoeren op het geselecteerde product|Kies de bewerking die u wilt uitvoeren op de geselecteerde %count% producten
+  confirm: U staat op het punt een product bij te werken met de volgende informatie. Alstublieft bevestigen. |U staat op het punt %count% producten bij te werken met de volgende informatie. Alstublieft bevestigen.
   change-status:
-    label: Change status (enable / disable)
-    description: The selected products will be enabled or disabled.
-    success_flash: Product(s) status have been changed
+    label: Status wijzigen (inschakelen / uitschakelen)
+    description: De geselecteerde producten zullen worden ingeschakeld of uitgeschakeld.
+    success_flash: De status van één of meerdere producten is gewijzigd
   edit-common-attributes:
-    label: Edit attributes
-    description: "The selected product's attributes will be edited with following data for the chosen locale."
-    empty: Please select the attribute(s) you want to edit
-    success_flash: Product(s) attribute(s) have been updated
+    label: Kenmerken bewerken
+    description: De kenmerken van het geselecteerde product zullen worden bewerkt met de volgende gegevens voor de gekozen lokalisatie.
+    empty: Selecteer de kenmerken die u wilt bewerken
+    success_flash: Productkenmerken zijn bijgewerkt
   classify:
-    label: Classify products in categories
-    description: The products will be positioned into following categories, the existing placement is kept.
-    success_flash: Product(s) have been classified into selected categories
+    label: Producten in categorieën indelen
+    description: De producten zullen worden geplaatst in de volgende categorieën. De bestaande plaatsing wordt behouden.
+    success_flash: Producten zijn in geselecteerde categorieën ingedeeld
   change-family:
-    label: Change the family of products
-    description: The family of the selected products will be changed to the chosen family
-    success_flash: The family of selected product(s) has been successfully changed
+    label: Wijzigen van de productfamilie
+    description: De familie van de geselecteerde producten zal worden gewijzigd in de gekozen familie
+    success_flash: De familie van de geselecteerde producten is succesvol gewijzigd
 pim_catalog.completeness:
-  progress_bar.title: %ratio%% complete (1 required value)|%ratio%% complete (%count% required values)
-  subtitle: '{0} Complete|{1} 1 missing value|]1,Inf] %count% missing values'
-  missing_attributes: Missing value|Missing values
+  progress_bar.title: %ratio%% voltooid (1 vereiste waarde) | %ratio%% voltooid (%count% vereiste waarden)
+  subtitle: "{0} Voltooid|{1} 1 ontbrekende waarde|]1, Inf] %count% ontbrekende waarden"
+  missing_attributes: Ontbrekende waarde|Ontbrekende waarden
   legend:
-    locale_not_associated: Locale not associated to this channel
+    locale_not_associated: Lokalisatie niet gekoppeld aan dit kanaal
 pim_catalog.group:
-  axis.help: Axis are attributes which define variants of the variant group. Axis are attributes with options, not localizable and not scoped. It cannot be changed after the creation of the variant group.
+  axis.help: Assen zijn kenmerken die varianten van de variantgroep definiëren. Assen zijn kenmerken met opties, niet beschikbaar in een lokalisatie en zonder bereik. Het kan niet worden gewijzigd na het aanmaken van de variantgroep.
   type:
     VARIANT: Variant
-    X_SELL: X-Sell
-    ADDITIONAL: Additional
-    RELATED: Related
-Group: Group
-View group: View group
+    X_SELL: Cross-Sell
+    ADDITIONAL: Extra
+    RELATED: Gerelateerd
+Group: Groep
+View group: Bekijk groep

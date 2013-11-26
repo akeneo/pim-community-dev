@@ -21,13 +21,18 @@ class LoadCurrencyData extends AbstractInstallerFixture
     public function load(ObjectManager $manager)
     {
         $allCurrencies = $this->container->get('pim_catalog.helper.locale')->getCurrencyLabels();
-        $activatedCurrencies = Yaml::parse(realpath($this->getFilePath()));
+        $currencies = Yaml::parse(realpath($this->getFilePath()));
+        $activatedCurrencies = $currencies['currencies'];
+        $removedCurrencies   = $currencies['removed_currencies'];
 
-        foreach (array_keys($allCurrencies) as $currencyCode) {
-            $activated = in_array($currencyCode, $activatedCurrencies['currencies']);
+        // remove useless currencies
+        $allCurrencies = array_diff(array_keys($allCurrencies), $removedCurrencies);
+
+        foreach ($allCurrencies as $currencyCode) {
+            $activated = in_array($currencyCode, $activatedCurrencies);
             $currency = $this->createCurrency($currencyCode, $activated);
             $this->setReference('currency.'. $currencyCode, $currency);
-            $this->validate($currency, $allCurrencies[$currencyCode]);
+            $this->validate($currency, $currencyCode);
             $manager->persist($currency);
         }
 
