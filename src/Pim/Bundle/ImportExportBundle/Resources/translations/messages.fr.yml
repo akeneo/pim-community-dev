@@ -1,3 +1,4 @@
+---
 pim_import_export.status:
   - Disponible
 pim_import_export:
@@ -11,12 +12,6 @@ pim_import_export:
     attribute_export:
       title: Export attributs (CSV)
       export.title: Configuration
-    association_export:
-      title: Export associations (CSV)
-      export.title: Configuration
-    group_export:
-      title: Export groups (CSV)
-      export.title: Configuration
     product_import:
       title: Import produits (CSV)
       import.title: Configuration
@@ -26,20 +21,16 @@ pim_import_export:
     attribute_import:
       title: Import attributs (CSV)
       import.title: Configuration
-    association_import:
-      title: Import associations (CSV)
-      import.title: Configuration
-    groupe_import:
-      title: Import groupes (CSV)
-      import.title: Configuration
 oro_batch:
   product_reader:
     title: Portée
     channel:
       label: Canal
       help: Le canal que vous souhaitez exporter
-  entity_reader:
-    title: Extraction des entités
+  category_reader:
+    title: Extraction des catégories
+  attribute_reader:
+    title: Extraction des attributs
   csv_reader:
     title: Reader CSV
     filePath:
@@ -122,11 +113,7 @@ oro_batch:
     circularRefsChecked:
       label: Check circular references
       help: If yes, data will be processed to make sure that there are no circular references between the categories
-    valid_association_creation_processor:
-      title: Création d'associations
-    valid_group_creation_processor:
-      title: Création de groupes
-  heterogeneous_processor:
+  heterogeneous_csv_serializer_processor:
     title: Settings
     delimiter:
       label: Delimiter
@@ -137,7 +124,7 @@ oro_batch:
     withHeader:
       label: With header
       help: Whether or not to print the column name
-  product_processor:
+  product_csv_serializer_processor:
     title: Settings
     delimiter:
       label: Delimiter
@@ -148,10 +135,7 @@ oro_batch:
     withHeader:
       label: With header
       help: Whether or not to print the column name
-    channel:
-      label: Canal
-      help: The channel in which create the imported value
-  homogeneous_processor:
+  homogeneous_csv_serializer_processor:
     title: Settings
     delimiter:
       label: Delimiter
@@ -164,22 +148,24 @@ oro_batch:
       help: Whether or not to print the column name
   file_writer:
     title: Output
-    filePath:
-      label: __File path
-      help: __Where to write the generated file on the file system
-  product_writer:
+    directoryName:
+      label: Directory path
+      help: Where to write the generated file on the file system
+    fileName:
+      label: File name
+      help: The name of the generated file.
+  product_file_writer:
     title: Output
-    filePath:
-      label: __File path
-      help: __Where to write the generated file on the file system
+    directoryName:
+      label: Directory path
+      help: Where to write the generated file on the file system
+    fileName:
+      label: File name
+      help: The name of the generated file.
   orm_category_writer:
     title: Category storage
   orm_product_writer:
     title: Product storage
-  orm_association_writer:
-    title: Association storage
-  orm_group_writer:
-    title: Group storage
 Import management: Import management
 Import %job.name% | Edit: Import %job.name% | Edit
 Import %job.name% | Show: Import %job.name% | Show
