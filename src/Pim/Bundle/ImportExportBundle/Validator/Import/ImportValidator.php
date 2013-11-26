@@ -45,7 +45,7 @@ class ImportValidator implements ImportValidatorInterface
     {
         $this->checkIdentifier($entity, $columnsInfo, $data);
         if (!count($errors)) {
-            return $this->getErrors($this->validator->validate($entity));
+            return $this->getErrorMap($this->validator->validate($entity));
         } else {
             return $this->validateProperties($entity, $columnsInfo) + $errors;
         }

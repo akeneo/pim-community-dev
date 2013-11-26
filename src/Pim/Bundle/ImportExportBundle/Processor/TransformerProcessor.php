@@ -3,6 +3,8 @@
 namespace Pim\Bundle\ImportExportBundle\Processor;
 
 use Pim\Bundle\ImportExportBundle\Transformer\OrmTransformer;
+use Pim\Bundle\ImportExportBundle\Validator\Import\ImportValidatorInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Description of TransformerProcessor
@@ -23,6 +25,16 @@ class TransformerProcessor extends AbstractTransformerProcessor
      */
     protected $class;
 
+    public function __construct(
+        ImportValidatorInterface $validator,
+        TranslatorInterface $translator,
+        OrmTransformer $transformer,
+        $class
+    ) {
+        parent::__construct($validator, $translator);
+        $this->transformer = $transformer;
+        $this->class = $class;
+    }
     /**
      * {@inheritdoc}
      */
