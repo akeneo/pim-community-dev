@@ -172,8 +172,6 @@ class WorkflowAttributesType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setRequired(array('attribute_fields'));
-
         $resolver->setDefaults(
             array(
                 'data_class' => 'Oro\Bundle\WorkflowBundle\Model\WorkflowData',

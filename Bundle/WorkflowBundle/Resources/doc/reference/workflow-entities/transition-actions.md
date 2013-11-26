@@ -201,7 +201,7 @@ OR
 
 OR
 
-- @find_entity: # try to find account by company name
+- @find_entity:
     class: OroCRM\Bundle\AccountBundle\Entity\Account
     attribute: $account
     where:
