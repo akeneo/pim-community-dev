@@ -4,24 +4,24 @@ Feature: Set the attribute used as label
   I need to be able to set the attribute used as the label
 
   Background:
-    Given the following family:
+    Given the "default" catalog configuration
+    And the following family:
       | code |
       | Bags |
-    And the following product attributes:
-      | label       | family | type     |
-      | Brand       | Bags   | text     |
-      | Model       | Bags   | text     |
-      | Size        | Bags   | number   |
-      | Description | Bags   | textarea |
+    And the following attributes:
+      | label       | families | type     |
+      | Brand       | Bags     | text     |
+      | Model       | Bags     | text     |
+      | Size        | Bags     | number   |
+      | Description | Bags     | textarea |
+    And I am logged in as "admin"
 
   Scenario: Fail to set a non-text attribute as the family label
-    Given I am logged in as "admin"
-    When I am on the "Bags" family page
+    Given I am on the "Bags" family page
     Then eligible attributes as label should be Id, Brand and Model
 
   Scenario: Succesfully set a family attribute as the family label
-    Given I am logged in as "admin"
-    When I am on the "Bags" family page
+    Given I am on the "Bags" family page
     And I choose "Brand" as the label of the family
     Then I should see "Family successfully updated"
 
@@ -33,7 +33,6 @@ Feature: Set the attribute used as label
     And the following product value:
       | product  | attribute | value |
       | bag-jean | Brand     | Levis |
-    And I am logged in as "admin"
     When I am on the "bag-jean" product page
     Then the title of the product should be "Product/en Levis"
 
@@ -41,14 +40,12 @@ Feature: Set the attribute used as label
     Given the following products:
       | sku      |
       | bag-jean |
-    And I am logged in as "admin"
     When I am on the "bag-jean" product page
     Then the title of the product should be "Product/en bag-jean"
 
   @javascript
   Scenario: Fail to remove an attribute that is used as the family label
     Given the attribute "Brand" has been chosen as the family "Bags" label
-    And I am logged in as "admin"
     When I am on the "Bags" family page
     And I visit the "Attributes" tab
     And I remove the "Brand" attribute

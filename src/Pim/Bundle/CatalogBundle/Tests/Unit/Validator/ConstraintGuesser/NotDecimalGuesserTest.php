@@ -16,7 +16,7 @@ class NotDecimalGuesserTest extends ConstraintGuesserTest
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->target = new NotDecimalGuesser();
     }
@@ -38,17 +38,11 @@ class NotDecimalGuesserTest extends ConstraintGuesserTest
     public function testSupportAttribute()
     {
         $this->assertTrue(
-            $this->target->supportAttribute(
-                $this->getAttributeMock(array('attributeType' => 'pim_catalog_price_collection',))
-            )
+            $this->target->supportAttribute($this->getAttributeMock(array('attributeType' => 'pim_catalog_metric')))
         );
 
         $this->assertTrue(
-            $this->target->supportAttribute($this->getAttributeMock(array('attributeType' => 'pim_catalog_metric',)))
-        );
-
-        $this->assertTrue(
-            $this->target->supportAttribute($this->getAttributeMock(array('attributeType' => 'pim_catalog_number',)))
+            $this->target->supportAttribute($this->getAttributeMock(array('attributeType' => 'pim_catalog_number')))
         );
     }
 
@@ -58,7 +52,7 @@ class NotDecimalGuesserTest extends ConstraintGuesserTest
     public function testGuessNotDecimalConstraint()
     {
         $constraints = $this->target->guessConstraints(
-            $this->getAttributeMock(array('attributeType'   => 'pim_catalog_number', 'decimalsAllowed' => false,))
+            $this->getAttributeMock(array('attributeType' => 'pim_catalog_number', 'decimalsAllowed' => false))
         );
 
         $this->assertContainsInstanceOf('Pim\Bundle\CatalogBundle\Validator\Constraints\NotDecimal', $constraints);
@@ -73,7 +67,7 @@ class NotDecimalGuesserTest extends ConstraintGuesserTest
             0,
             count(
                 $this->target->guessConstraints(
-                    $this->getAttributeMock(array('attributeType'   => 'pim_catalog_number','decimalsAllowed' => true,))
+                    $this->getAttributeMock(array('attributeType' => 'pim_catalog_number', 'decimalsAllowed' => true))
                 )
             )
         );

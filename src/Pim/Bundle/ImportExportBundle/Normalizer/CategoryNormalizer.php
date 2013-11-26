@@ -6,7 +6,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 
 /**
- * A normalizer to transform a category entity into a flat array
+ * A normalizer to transform a category entity into an array
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -15,63 +15,41 @@ use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 class CategoryNormalizer implements NormalizerInterface
 {
     /**
-     * @var array()
+     * @var array
      */
     protected $supportedFormats = array('json', 'xml');
 
     /**
-     * @var array()
+     * @var TranslationNormalizer
      */
-    protected $results;
+    protected $translationNormalizer;
 
     /**
-     * Transforms an object into a flat array
+     * Constructor
      *
-     * @param object $object
-     * @param string $format
-     * @param array  $context
-     *
-     * @return array
+     * @param TranslationNormalizer $translationNormalizer
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function __construct(TranslationNormalizer $translationNormalizer)
     {
-        $this->results = array(
-            'code'    => $object->getCode(),
-            'parent'  => $object->getParent() ? $object->getParent()->getCode() : '',
-            'dynamic' => (string) $object->isDynamic(),
-            'label'   => $this->normalizeLabel($object)
-        );
-
-        return $this->results;
+        $this->translationNormalizer = $translationNormalizer;
     }
 
     /**
-     * Indicates whether this normalizer can normalize the given data
-     *
-     * @param mixed  $data
-     * @param string $format
-     *
-     * @return boolean
+     * {@inheritdoc}
+     */
+    public function normalize($object, $format = null, array $context = array())
+    {
+        return array(
+            'code'    => $object->getCode(),
+            'parent'  => $object->getParent() ? $object->getParent()->getCode() : '',
+        ) + $this->translationNormalizer->normalize($object, $format, $context);
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof CategoryInterface && in_array($format, $this->supportedFormats);
-    }
-
-    /**
-     * Normalize the label
-     *
-     * @param CategoryInterface $category
-     *
-     * @return array
-     */
-    protected function normalizeLabel(CategoryInterface $category)
-    {
-        $labels = array();
-        foreach ($category->getTranslations() as $translation) {
-            $labels[$translation->getLocale()]= $translation->getLabel();
-        }
-
-        return $labels;
     }
 }

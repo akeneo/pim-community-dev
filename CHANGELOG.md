@@ -1,3 +1,44 @@
+# 1.0.0-beta-3 - "Hare Conditioned"
+
+## Features
+- History of changes for groups and variant groups
+- History of changes for import / export profiles
+- History of changes for channels
+- Allow creating new options for simple select and multiselect attributes directly from the product edit form
+- Add a default tree per user
+- Introduce command "pim:completeness:calculate" size argument to manage number of completenesses to calculate
+- Switching tree to see sub-categories products count and allow filtering on it
+- Group types management
+- Import/Export product groups (CSV)
+- Import/Export associations (CSV)
+- Import/Export product associations (CSV)
+- Import/Export attributes (CSV)
+- Import/Export attribute options (CSV)
+- Upload and import an archive (CSV and medias)
+- Download an archive containing the exported products along with media
+- Add the column "enabled" in the CSV file for products import/export and for versioning
+
+## Improvements
+- Export media into separated sub directories
+- Separate product groups and variants management
+- Display number of created/updated products during import
+- Speed up completeness calculation
+- Display the "has product" filter by default in the product grid of group edit view
+- Display currency label in currencies datagrid
+- Disable changing the code of all configuration-related entities
+- Merge the directory and filename of export profiles into a single file path property
+
+## Bug fixes
+- Mass delete products
+- Fix some issues with import ACL translations (issues#484)
+- Add a message when trying to delete an attribute used by one or more variant groups instead of throwing an error
+- Selection of products in mass edit
+- Versioning of installed entities (from demo bundle)
+
+## BC breaks
+- Command "pim:product:completeness-calculator" has been replaced into "pim:completeness:calculate"
+- Refactor in ImportExport bundle for Readers, Writers and Processors
+
 # 1.0.0-beta-2 - "Hold the Lion, Please" (2013-10-29)
 
 ## Features

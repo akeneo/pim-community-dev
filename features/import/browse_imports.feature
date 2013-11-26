@@ -1,24 +1,22 @@
 @javascript
 Feature: Browse imports
-  In order to view the list of import jobs instance that have been created
+  In order to view the list of import job instances that have been created
   As a user
   I need to be able to view a list of them
 
-  Background:
-    Given the following jobs:
-      | connector            | alias           | code                 | label                        | type   |
-      | Akeneo CSV Connector | product_export  | acme_product_export  | Product export for Acme.com  | export |
-      | Akeneo CSV Connector | product_import  | acme_product_import  | Product import for Acme.com  | import |
-      | Akeneo CSV Connector | category_import | acme_category_import | Category import for Acme.com | import |
-      | Akeneo CSV Connector | category_import | foo_category_import  | Category import for foo      | import |
-    Given I am logged in as "admin"
-
-  Scenario: Successfully display all the import jobs
-    Given I am on the imports page
-    Then the grid should contain 3 elements
+  Scenario: Successfully view, sort and filter import jobs
+    Given a "footwear" catalog configuration
+    And I am logged in as "admin"
+    And I am on the imports page
+    Then the grid should contain 6 elements
     And I should see the columns Code, Label, Job, Connector and Status
-    And I should see import profiles acme_product_import, acme_category_import and foo_category_import
-    And I should not see import profile acme_product_export
-    And the row "acme_product_import" should contain:
-      | column    | value                |
-      | connector | Akeneo CSV Connector |
+    And I should see import profiles footwear_product_import, footwear_category_import, footwear_association_import, footwear_group_import, footwear_attribute_import and footwear_option_import
+    And the rows should be sorted ascending by code
+    And I should be able to sort the rows by code, label, job, connector and status
+    And I should be able to use the following filters:
+      | filter    | value                | result                                                                                                                                                      |
+      | Code      | at                   | footwear_association_import, footwear_attribute_import and footwear_category_import                                                                         |
+      | Label     | Product              | footwear_product_import                                                                                                                                     |
+      | Job       | group_import         | footwear_group_import                                                                                                                                       |
+      | Connector | Akeneo CSV Connector | footwear_product_import, footwear_category_import, footwear_association_import, footwear_group_import, footwear_attribute_import and footwear_option_import |
+      | Status    | Ready                | footwear_product_import, footwear_category_import, footwear_association_import, footwear_group_import, footwear_attribute_import and footwear_option_import |

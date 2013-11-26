@@ -244,14 +244,6 @@ class FamilyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test related method
-     */
-    public function testGetVersion()
-    {
-        $this->assertNull($this->family->getVersion());
-    }
-
-    /**
      * Test getter/setter for created property
      */
     public function testCreated()

@@ -1,130 +1,101 @@
-@javascript @insulated
+@javascript
 Feature: Edit common attributes of many products at once
-  In order to update the same information on many products
+  In order to update many products with the same information
   As Julia
-  I need to be able to edit some common attributes of many products at once
+  I need to be able to edit common attributes of many products at once
 
   Background:
-    Given a "lamp" product
-    And a "ceiling" product
-    And a "torch" product
-    And the following attribute group:
-      | code      | label     | locale  |
-      | general   | General   | english |
-      | technical | Technical | english |
-      | general   | Général   | french  |
-      | technical | Technique | french  |
-    And the following product attributes:
-      | product | label  | group     | translatable | scopable | type        | metric family | default metric unit | locale | scope |
-      | lamp    | Name   | general   | yes          | no       | text        |               |                     | en_US  |       |
-      | ceiling | Name   | general   | yes          | no       | text        |               |                     | en_US  |       |
-      | torch   | Name   | general   | yes          | no       | text        |               |                     | en_US  |       |
-      | lamp    | Colors | technical | no           | no       | multiselect |               |                     |        |       |
-      | ceiling | Colors | technical | no           | no       | multiselect |               |                     |        |       |
-      | torch   | Colors | technical | no           | no       | multiselect |               |                     |        |       |
-      | lamp    | Price  | general   | no           | no       | prices      |               |                     |        |       |
-      | torch   | Price  | general   | no           | no       | prices      |               |                     |        |       |
-      | ceiling | Visual | general   | no           | no       | image       |               |                     |        |       |
-      | torch   | Visual | general   | no           | no       | image       |               |                     |        |       |
-      | lamp    | Weight | technical | no           | no       | metric      | Weight        | KILOGRAM            |        |       |
-      | torch   | Weight | technical | no           | no       | metric      | Weight        | KILOGRAM            |        |       |
-    And the following attribute label translations:
-      | attribute | lang    | label    |
-      | name      | english | Name     |
-      | name      | french  | Nom      |
-      | colors    | english | Colors   |
-      | colors    | french  | Couleurs |
-      | price     | english | Price    |
-      | price     | french  | Prix     |
-      | visual    | english | Visual   |
-      | visual    | french  | Visuel   |
-      | weight    | english | Weight   |
-      | weight    | french  | Poids    |
+    Given a "footwear" catalog configuration
+    And the following attribute:
+      | code   | label  | type   | metric family | default metric unit | families                 |
+      | weight | Weight | metric | Weight        | GRAM                | boots, sneakers, sandals |
+    And the following products:
+     | sku      | family   |
+     | boots    | boots    |
+     | sneakers | sneakers |
+     | sandals  | sandals  |
     And I am logged in as "Julia"
+    And I am on the products page
 
   Scenario: Allow editing only common attributes
-    Given I am on the products page
-    When I mass-edit products lamp, torch and ceiling
+    Given I mass-edit products boots, sandals and sneakers
     And I choose the "Edit attributes" operation
-    Then I should see available attribute Name in group "General"
-    And I should see available attribute Colors in group "Technical"
+    Then I should see available attributes Name, Manufacturer and Description in group "Product information"
+    And I should see available attributes Price and Rating in group "Marketing"
+    And I should see available attribute Side view in group "Media"
+    And I should see available attribute Size in group "Sizes"
+    And I should see available attribute Color in group "Colors"
+    And I should see available attribute Weight in group "Other"
 
   Scenario: Succesfully update many text values at once
-    Given I am on the products page
-    When I mass-edit products lamp, torch and ceiling
+    Given I mass-edit products boots, sandals and sneakers
     And I choose the "Edit attributes" operation
     And I display the Name attribute
-    And I change the "Name" to "Lamp"
+    And I change the "Name" to "boots"
     And I move on to the next step
-    Then the english name of lamp should be "Lamp"
-    And the english name of torch should be "Lamp"
-    And the english name of ceiling should be "Lamp"
+    Then the english name of "boots" should be "boots"
+    And the english name of "sandals" should be "boots"
+    And the english name of "sneakers" should be "boots"
 
   Scenario: Succesfully update many price values at once
-    Given the following currencies:
-      | code | activated |
-      | USD  | yes       |
-      | EUR  | yes       |
-    And I am on the products page
-    When I mass-edit products lamp and torch
+    Given I mass-edit products boots and sandals
     And I choose the "Edit attributes" operation
     And I display the Price attribute
     And I change the "$ Price" to "100"
     And I change the "€ Price" to "150"
     And I move on to the next step
-    Then the prices "Price" of products lamp and torch should be:
+    Then the prices "Price" of products boots and sandals should be:
       | amount | currency |
       | 100    | USD      |
       | 150    | EUR      |
 
   Scenario: Succesfully update many file values at once
-    Given I am on the products page
-    When I mass-edit products torch and ceiling
+    Given I mass-edit products sandals and sneakers
     And I choose the "Edit attributes" operation
-    And I display the Visual attribute
-    And I attach file "akeneo.jpg" to "Visual"
+    And I display the Side view attribute
+    And I attach file "SNKRS-1R.png" to "Side view"
     And I move on to the next step
-    Then the file "Visual" of products torch and ceiling should be "akeneo.jpg"
+    Then the file "side_view" of products sandals and sneakers should be "SNKRS-1R.png"
 
   Scenario: Succesfully update many multi-valued values at once
-    Given the following "Colors" attribute options: Red, Blue and White
-    Given I am on the products page
-    When I mass-edit products lamp and ceiling
+    Given I mass-edit products boots and sneakers
     And I choose the "Edit attributes" operation
-    And I display the Colors attribute
-    And I change the "Colors" to "Red, Blue"
+    And I display the Weather conditions attribute
+    And I change the "Weather conditions" to "Dry, Hot"
     And I move on to the next step
-    Then the options "Colors" of products lamp and ceiling should be:
+    Then the options "weather_conditions" of products boots and sneakers should be:
       | value |
-      | Red   |
-      | Blue  |
+      | dry   |
+      | hot   |
 
   Scenario: Succesfully update many metric values at once
-    Given I am on the products page
-    When I mass-edit products lamp and torch
+    Given I mass-edit products boots and sandals
     And I choose the "Edit attributes" operation
     And I display the Weight attribute
     And I change the "Weight" to "600"
     And I move on to the next step
-    Then the metric "Weight" of products lamp and torch should be "600"
+    Then the metric "Weight" of products boots and sandals should be "600"
 
-  Scenario: Succesfully translate in english groups and labels
-    Given I am on the products page
-    When I mass-edit products lamp and torch
+  Scenario: Succesfully translate groups and labels in english
+    Given I mass-edit products boots and sandals
     And I choose the "Edit attributes" operation
-    And I display the Name and Colors attributes
-    Then I should see "Technical"
-    And I should see "General"
+    And I display the Name and Size attributes
+    Then I should see "Product information"
+    And I should see "Sizes"
     And I should see "Name"
-    And I should see "Colors"
+    And I should see "Size"
 
-  Scenario: Succesfully translate in french groups and labels
-    Given I am on the products page
-    When I mass-edit products lamp and torch
+  Scenario: Succesfully translate groups and labels in french
+    Given I add the "french" locale to the "mobile" channel
+    And the following attribute label translations:
+      | attribute | locale | label  |
+      | name      | french | Nom    |
+      | size      | french | Taille |
+    And I mass-edit products boots and sandals
     And I choose the "Edit attributes" operation
     And I switch the locale to "French (France)"
-    And I display the Nom and Couleur attributes
-    Then I should see "Technique"
-    And I should see "Général"
+    And I display the Nom and Taille attributes
+    Then I should see "[info]"
+    And I should see "[sizes]"
     And I should see "Nom"
-    And I should see "Couleurs"
+    And I should see "Taille"

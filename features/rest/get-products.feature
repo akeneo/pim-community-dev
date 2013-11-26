@@ -3,6 +3,9 @@ Feature: Expose product data via a REST API
   As a developer
   I need to expose product data via a REST API
 
+  Background:
+      Given the "default" catalog configuration
+
   Scenario: Fail to authenticate an anonymous user
     Given I send a GET request to "api/rest/ecommerce/products.json"
     Then the response code should be 401
@@ -14,11 +17,7 @@ Feature: Expose product data via a REST API
 
   Scenario: Successfully retrieve a product
     Given a "Car" product
-    And the following currencies:
-      | code | activated |
-      | USD  | yes       |
-      | EUR  | yes       |
-    And the following product attributes:
+    And the following attributes:
       | type   | label             | scopable | translatable |
       | prices | Price             | no       | no           |
       | text   | Color             | no       | yes          |

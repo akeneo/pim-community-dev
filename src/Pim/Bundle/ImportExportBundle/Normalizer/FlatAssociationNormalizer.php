@@ -19,20 +19,15 @@ class FlatAssociationNormalizer extends AssociationNormalizer
     protected $supportedFormats = array('csv');
 
     /**
-     * Normalize the label
-     *
-     * @param Association $association
-     *
-     * @return string
+     * {@inheritdoc}
      */
     protected function normalizeLabel(Association $association)
     {
-        $labels = parent::normalizeLabel($association);
-        $flat = array();
-        foreach ($labels as $locale => $label) {
-            $flat[]= $locale.':'.$label;
+        $values = array();
+        foreach ($association->getTranslations() as $translation) {
+            $values[sprintf('label-%s', $translation->getLocale())] = $translation->getLabel();
         }
 
-        return implode(', ', $flat);
+        return $values;
     }
 }

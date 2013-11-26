@@ -5,13 +5,14 @@ Feature: Filter products
   I need to be able to filter products in the catalog
 
   Background:
-    Given the following family:
+    Given the "default" catalog configuration
+    And the following family:
       | code      |
       | furniture |
       | library   |
-    And the following attributes:
-      | code      | label      | type                     |
-      | color     | Color      | pim_catalog_simpleselect |
+    And the following attribute:
+      | code  | label | type         |
+      | color | Color | simpleselect |
     And the following "color" attribute options: Black and White
     And the following products:
       | sku    | family    |
@@ -27,7 +28,7 @@ Feature: Filter products
     And a "postit" product
     And a "book" product
     And I am logged in as "admin"
-    
+
   Scenario: Successfully display datagrid with group
     Given I am on the products page
     Then the grid should contain 4 elements
@@ -36,13 +37,13 @@ Feature: Filter products
 
   Scenario: Successfully filter by group
     Given I am on the products page
-    When I filter by "Groups" with value "MUG"
+    When I filter by "Groups" with value "Mug"
     Then the grid should contain 2 elements
     And I should see products MUG-1 and MUG-2
     And I should not see products BOOK and POSTIT
 
   Scenario: Successfully filter by a group without products linked
     Given I am on the products page
-    When I filter by "Groups" with value "EMPTY"
+    When I filter by "Groups" with value "Empty"
     Then the grid should contain 0 element
     And I should not see products BOOK, MUG-1, MUG-2 and POSTIT

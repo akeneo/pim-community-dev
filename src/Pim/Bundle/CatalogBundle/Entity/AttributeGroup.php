@@ -3,11 +3,8 @@
 namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation\ExclusionPolicy;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
-use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
@@ -19,21 +16,19 @@ use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @ORM\Entity(repositoryClass="Pim\Bundle\CatalogBundle\Entity\Repository\AttributeGroupRepository")
- * @ORM\Table(name="pim_catalog_attribute_group")
  * @Config(
- *  defaultValues={
- *      "entity"={"label"="Attribute group", "plural_label"="Attribute groups"},
- *      "security"={
- *          "type"="ACL",
- *          "group_name"=""
- *      }
- *  }
+ *     defaultValues={
+ *         "entity"={"label"="Attribute group", "plural_label"="Attribute groups"},
+ *          "security"={
+ *              "type"="ACL",
+ *              "group_name"=""
+ *          }
+ *     }
  * )
- * 
+ *
  * @ExclusionPolicy("all")
  */
-class AttributeGroup implements TranslatableInterface, VersionableInterface
+class AttributeGroup implements TranslatableInterface
 {
     /**
      * @staticvar string
@@ -42,48 +37,31 @@ class AttributeGroup implements TranslatableInterface, VersionableInterface
 
     /**
      * @var integer $id
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
 
     /**
      * @var string $code
-     *
-     * @ORM\Column(name="code", type="string", length=100)
      */
     protected $code;
 
     /**
      * @var integer
-     *
-     * @ORM\Column(name="sort_order", type="integer")
      */
     protected $sortOrder;
 
     /**
      * @var datetime $created
-     *
-     * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(type="datetime")
      */
     protected $created;
 
     /**
      * @var datetime $updated
-     *
-     * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(type="datetime")
      */
     protected $updated;
 
     /**
      * @var ArrayCollection $attributes
-     *
-     * @ORM\OneToMany(targetEntity="ProductAttribute", mappedBy="group")
-     * @ORM\OrderBy({"sortOrder" = "ASC"})
      */
     protected $attributes;
 
@@ -97,23 +75,8 @@ class AttributeGroup implements TranslatableInterface, VersionableInterface
 
     /**
      * @var ArrayCollection $translations
-     *
-     * @ORM\OneToMany(
-     *     targetEntity="Pim\Bundle\CatalogBundle\Entity\AttributeGroupTranslation",
-     *     mappedBy="foreignKey",
-     *     cascade={"persist", "remove"},
-     *     orphanRemoval=true
-     * )
      */
     protected $translations;
-
-    /**
-     * @var integer $version
-     *
-     * @ORM\Column(name="version", type="integer")
-     * @ORM\Version
-     */
-    protected $version;
 
     /**
      * Constructor
@@ -420,15 +383,5 @@ class AttributeGroup implements TranslatableInterface, VersionableInterface
         $this->getTranslation()->setLabel($label);
 
         return $this;
-    }
-
-    /**
-     * Get version
-     *
-     * @return string $version
-     */
-    public function getVersion()
-    {
-        return $this->version;
     }
 }

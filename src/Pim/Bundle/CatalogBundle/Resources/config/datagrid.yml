@@ -9,7 +9,8 @@ parameters:
     pim_catalog.datagrid.manager.association_datagrid.class:     Pim\Bundle\CatalogBundle\Datagrid\AssociationDatagridManager
     pim_catalog.datagrid.manager.association_product_datagrid.class: Pim\Bundle\CatalogBundle\Datagrid\AssociationProductDatagridManager
     pim_catalog.datagrid.manager.association_group_datagrid.class:   Pim\Bundle\CatalogBundle\Datagrid\AssociationGroupDatagridManager
-    pim_catalog.datagrid.worker.class:                           Pim\Bundle\CatalogBundle\Datagrid\DatagridWorker
+    pim_catalog.datagrid.manager.variant_group_datagrid.class:       Pim\Bundle\CatalogBundle\Datagrid\VariantGroupDatagridManager
+    pim_catalog.datagrid.manager.group_type_datagrid.class:          Pim\Bundle\CatalogBundle\Datagrid\GroupTypeDatagridManager
 
 services:
     pim_catalog.datagrid.manager.productattribute:
@@ -84,7 +85,19 @@ services:
         calls:
             - [ setIdentifierField, ['id'] ]
             - [ setLocaleManager, ['@pim_catalog.manager.locale'] ]
-            - [ setVariantGroupManager, ['@pim_catalog.manager.variant_group'] ]
+            - [ setGroupManager, ['@pim_catalog.manager.group'] ]
+
+    pim_catalog.datagrid.manager.variant_group:
+        class: %pim_catalog.datagrid.manager.variant_group_datagrid.class%
+        tags:
+            - name: oro_grid.datagrid.manager
+              datagrid_name: variant_groups
+              entity_hint: variant group
+              route_name: pim_catalog_variant_group_index
+        calls:
+            - [ setIdentifierField, ['id'] ]
+            - [ setLocaleManager, ['@pim_catalog.manager.locale'] ]
+            - [ setGroupManager, ['@pim_catalog.manager.group'] ]
 
     pim_catalog.datagrid.manager.group_product:
         class: %pim_catalog.datagrid.manager.group_product_datagrid.class%
@@ -96,6 +109,16 @@ services:
               flexible: true
               route_name: pim_catalog_group_edit
               cache_disabled: true
+
+    pim_catalog.datagrid.manager.group_type:
+        class: %pim_catalog.datagrid.manager.group_type_datagrid.class%
+        tags:
+            - name: oro_grid.datagrid.manager
+              datagrid_name: group_types
+              entity_hint: group type
+              route_name: pim_catalog_group_type_index
+        calls:
+            - [ setLocaleManager, ['@pim_catalog.manager.locale'] ]
 
     pim_catalog.datagrid.manager.association:
         class: %pim_catalog.datagrid.manager.association_datagrid.class%
@@ -133,9 +156,4 @@ services:
         calls:
             - [ setIdentifierField, ['id'] ]
             - [ setLocaleManager, ['@pim_catalog.manager.locale'] ]
-            - [ setVariantGroupManager, ['@pim_catalog.manager.variant_group'] ]
-
-    pim_catalog.datagrid.worker:
-        class: %pim_catalog.datagrid.worker.class%
-        arguments:
-            - '@service_container'
+            - [ setGroupManager, ['@pim_catalog.manager.group'] ]

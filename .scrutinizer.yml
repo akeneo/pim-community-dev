@@ -1,0 +1,51 @@
+filter:
+    paths:
+        - src/*
+    excluded_paths:
+        - src/Pim/Bundle/JsFormValidationBundle/Generator/*
+
+tools:
+    php_mess_detector:
+        filter:
+            paths:
+                - src/*
+            excluded_paths:
+                - src/Pim/Bundle/JsFormValidationBundle/Generator/*
+    php_cs_fixer:
+        config:
+            level: all
+    php_analyzer:
+        filter:
+            paths:
+                - src/*
+            excluded_paths:
+                - src/Pim/Bundle/JsFormValidationBundle/Generator/*
+    php_code_sniffer:
+        config:
+            standard: PSR2
+        filter:
+            paths:
+                - src/*
+            excluded_paths:
+                - src/Pim/Bundle/JsFormValidationBundle/Generator/*
+    sensiolabs_security_checker: true
+    php_cpd:
+        filter:
+            paths:
+                - src/*
+            excluded_paths:
+                - src/Pim/Bundle/JsFormValidationBundle/Generator/*
+    php_loc:
+        excluded_dirs:
+            - app/
+            - features/
+            - src/Pim/Bundle/JsFormValidationBundle/Generator/*
+            - vendor/
+            - web/
+    php_pdepend:
+        excluded_dirs:
+            - app/
+            - features/
+            - src/Pim/Bundle/JsFormValidationBundle/Generator/*
+            - vendor/
+            - web/

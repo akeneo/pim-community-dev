@@ -20,7 +20,8 @@ class Base extends Page
         'Title'          => array('css' => '.navbar-title'),
         'HeadTitle'      => array('css' => 'title'),
         'Flash messages' => array('css' => '.flash-messages-holder'),
-        'Navigation Bar' => array('css' => 'header#oroplatform-header')
+        'Navigation Bar' => array('css' => 'header#oroplatform-header'),
+        'Container'      => array('css' => '#container'),
     );
 
     /**
@@ -35,6 +36,20 @@ class Base extends Page
                 "$('.select2-drop-active input:visible').trigger($.Event('keydown', {which: 9, keyCode: 9}));"
             );
         } catch (UnsupportedDriverActionException $e) {
+        }
+    }
+
+    /**
+     * Toggle the bootstrapSwitch on or off
+     *
+     * @param string  $locator
+     * @param boolean $on
+     */
+    public function toggleSwitch($locator, $on = true)
+    {
+        $field = $this->findField($locator);
+        if ($field->isChecked() != $on) {
+            $field->getParent()->find('css', 'label')->click();
         }
     }
 

@@ -1,0 +1,25 @@
+services:
+
+    pim_versioning.event_listener.addversion:
+        class: %pim_versioning.event_listener.addversion.class%
+        arguments:
+            - '@pim_versioning.builder.version'
+            - '@pim_versioning.builder.audit'
+            - '@pim_versioning.update_guesser.chained'
+        tags:
+            - { name: doctrine.event_subscriber }
+
+    pim_versioning.event_listener.adduser:
+        class:     %pim_versioning.event_listener.adduser.class%
+        arguments:
+            - '@pim_versioning.event_listener.addversion'
+            - '@security.context'
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest}
+
+    pim_versioning.event_listener.addcontext:
+        class:     %pim_versioning.event_listener.addcontext.class%
+        arguments:
+            - '@pim_versioning.builder.audit'
+        tags:
+            - { name: kernel.event_subscriber}

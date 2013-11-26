@@ -5,22 +5,23 @@ Feature: Import categories
 
   @javascript
   Scenario: Succesfully import categories
-    Given the following jobs:
+    Given the "default" catalog configuration
+    And the following jobs:
       | connector            | alias           | code                 | label                        | type   |
       | Akeneo CSV Connector | category_import | acme_category_import | Category import for Acme.com | import |
     And I am logged in as "Julia"
     And the following file to import:
     """
-    code;parent;dynamic;label
+    code;parent;dynamic;label-en_US
     default;;;
-    computers;;;en_US:Computers
-    laptops;computers;;en_US:Laptops
-    hard_drives;laptops;;"en_US:Hard drives"
-    pc;computers;;en_US:PC
+    computers;;;Computers
+    laptops;computers;;Laptops
+    hard_drives;laptops;;Hard drives
+    pc;computers;;PC
     """
     And the following job "acme_category_import" configuration:
-      | element | property | value                |
-      | reader  | filePath | {{ file to import }} |
+      | step   | element | property | value                |
+      | import | reader  | filePath | {{ file to import }} |
     When I am on the "acme_category_import" import job page
     And I launch the import job
     And I wait for the job to finish

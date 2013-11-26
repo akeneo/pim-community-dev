@@ -18,7 +18,7 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->formView = new ProductFormView();
     }
@@ -62,11 +62,12 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
                 'label'      => 'General',
                 'attributes' => array(
                     42 => array(
-                        'isRemovable' => true,
-                        'code'        => 'name',
-                        'label'       => 'Name',
-                        'sortOrder'   => 0,
-                        'value'       => $view,
+                        'isRemovable'        => true,
+                        'allowValueCreation' => false,
+                        'code'               => 'name',
+                        'label'              => 'Name',
+                        'sortOrder'          => 0,
+                        'value'              => $view,
                     ),
                 ),
             ),
@@ -131,18 +132,20 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
                 'label'      => 'General',
                 'attributes' => array(
                     42 => array(
-                        'isRemovable' => true,
-                        'code'        => 'name',
-                        'label'       => 'Name',
-                        'sortOrder'   => 0,
-                        'value'       => $nameView
+                        'isRemovable'        => true,
+                        'allowValueCreation' => false,
+                        'code'               => 'name',
+                        'label'              => 'Name',
+                        'sortOrder'          => 0,
+                        'value'              => $nameView
                     ),
                     1337 => array(
-                        'isRemovable' => false,
-                        'code'        => 'color',
-                        'label'       => 'Color',
-                        'sortOrder'   => 0,
-                        'value'       => $colorView,
+                        'isRemovable'        => false,
+                        'allowValueCreation' => false,
+                        'code'               => 'color',
+                        'label'              => 'Color',
+                        'sortOrder'          => 0,
+                        'value'              => $colorView,
                     ),
                 ),
             ),
@@ -201,14 +204,15 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
                 'label'      => 'General',
                 'attributes' => array(
                     42 => array(
-                        'isRemovable' => true,
-                        'code'        => 'name',
-                        'label'       => 'Name',
-                        'sortOrder'   => 0,
-                        'classes'     => array(
+                        'isRemovable'        => true,
+                        'allowValueCreation' => false,
+                        'code'               => 'name',
+                        'label'              => 'Name',
+                        'sortOrder'          => 0,
+                        'classes'            => array(
                             'scopable' => true
                         ),
-                        'values'      => array(
+                        'values'             => array(
                             'Web'    => $viewWeb,
                             'Mobile' => $viewMobile,
                         ),
@@ -260,14 +264,15 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
                 'label'      => 'General',
                 'attributes' => array(
                     42 => array(
-                        'isRemovable' => false,
-                        'code'        => 'name',
-                        'label'       => 'Name',
-                        'sortOrder'   => 0,
-                        'classes'     => array(
+                        'isRemovable'        => false,
+                        'allowValueCreation' => false,
+                        'code'               => 'name',
+                        'label'              => 'Name',
+                        'sortOrder'          => 0,
+                        'classes'            => array(
                             'currency' => true
                         ),
-                        'value'       => $view,
+                        'value'              => $view,
                     ),
                 ),
             ),

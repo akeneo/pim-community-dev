@@ -1,0 +1,17 @@
+services:
+
+    pim_versioning.manager.version:
+        class: %pim_versioning.manager.version.class%
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@pim_serializer'
+
+    pim_versioning.manager.audit:
+        class: %pim_versioning.manager.audit.class%
+        arguments:
+            - '@doctrine.orm.entity_manager'
+
+    pim_versioning.manager.pending:
+        class: %pim_versioning.manager.pending.class%
+        arguments:
+            - '@doctrine.orm.entity_manager'

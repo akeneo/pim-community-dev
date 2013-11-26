@@ -1,0 +1,93 @@
+families:
+    boots:
+        labels:
+            en_US: Boots
+        attributes:
+            - sku
+            - name
+            - manufacturer
+            - description
+            - weather_conditions
+            - price
+            - rating
+            - side_view
+            - top_view
+            - size
+            - color
+            - lace_color
+        attributeAsLabel: name
+        requirements:
+            tablet:
+                - name
+                - description
+                - weather_conditions
+                - price
+                - rating
+                - side_view
+                - size
+                - color
+            mobile:
+                - name
+                - price
+                - size
+                - color
+    sneakers:
+        labels:
+            en_US: Sneakers
+        attributes:
+            - sku
+            - name
+            - manufacturer
+            - description
+            - weather_conditions
+            - price
+            - rating
+            - side_view
+            - top_view
+            - size
+            - color
+            - lace_color
+        attributeAsLabel: name
+        requirements:
+            tablet:
+                - name
+                - description
+                - weather_conditions
+                - price
+                - rating
+                - side_view
+                - size
+                - color
+            mobile:
+                - name
+                - price
+                - size
+                - color
+    sandals:
+        labels:
+            en_US: Sandals
+        attributes:
+            - sku
+            - name
+            - manufacturer
+            - description
+            - price
+            - rating
+            - side_view
+            - size
+            - color
+        attributeAsLabel: name
+        requirements:
+            tablet:
+                - name
+                - description
+                - price
+                - rating
+                - side_view
+                - size
+                - color
+            mobile:
+                - name
+                - price
+                - size
+                - color

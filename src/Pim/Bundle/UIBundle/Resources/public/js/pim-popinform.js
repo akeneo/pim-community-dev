@@ -29,7 +29,7 @@ define(
             var $select = $el.find('select');
             $select.select2('destroy');
 
-            $el.multiselect(opts).multiselectfilter({
+            $select.multiselect(opts).multiselectfilter({
                 label: false,
                 placeholder: opts.placeholder
             });
@@ -40,7 +40,7 @@ define(
 
             var footerContainer = $('<div>').addClass('ui-multiselect-footer').appendTo($menu);
             var $saveButton = $('<a>').addClass('btn btn-small').html(saveButton).on('click', function () {
-                $el.multiselect('close');
+                $select.multiselect('close');
                 if ($select.val() !== null) {
                     $el.submit();
                 }

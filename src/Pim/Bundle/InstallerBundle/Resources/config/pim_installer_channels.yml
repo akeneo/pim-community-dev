@@ -1,6 +1,5 @@
 channels:
     default:
-        code:  default
         label: Default
         locales:
             - en_US

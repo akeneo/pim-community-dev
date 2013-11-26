@@ -18,7 +18,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
-use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
+use Pim\Bundle\GridBundle\Helper\DatagridHelperInterface;
 use Pim\Bundle\CatalogBundle\Form\Handler\ChannelHandler;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Exception\DeleteException;
@@ -34,9 +34,9 @@ use Pim\Bundle\CatalogBundle\Exception\LastAttributeOptionDeletedException;
 class ChannelController extends AbstractDoctrineController
 {
     /**
-     * @var DatagridWorkerInterface
+     * @var DatagridHelperInterface
      */
-    private $datagridWorker;
+    private $datagridHelper;
 
     /**
      * @var Form
@@ -59,7 +59,7 @@ class ChannelController extends AbstractDoctrineController
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
      * @param RegistryInterface        $doctrine
-     * @param DatagridWorkerInterface  $datagridWorker
+     * @param DatagridHelperInterface  $datagridHelper
      * @param ChannelHandler           $channelHandler
      * @param Form                     $channelForm
      */
@@ -72,7 +72,7 @@ class ChannelController extends AbstractDoctrineController
         ValidatorInterface $validator,
         TranslatorInterface $translator,
         RegistryInterface $doctrine,
-        DatagridWorkerInterface $datagridWorker,
+        DatagridHelperInterface $datagridHelper,
         ChannelHandler $channelHandler,
         Form $channelForm
     ) {
@@ -87,7 +87,7 @@ class ChannelController extends AbstractDoctrineController
             $doctrine
         );
 
-        $this->datagridWorker = $datagridWorker;
+        $this->datagridHelper = $datagridHelper;
         $this->channelForm    = $channelForm;
         $this->channelHandler = $channelHandler;
     }
@@ -109,7 +109,7 @@ class ChannelController extends AbstractDoctrineController
             ->select('c')
             ->from('PimCatalogBundle:Channel', 'c');
 
-        $datagrid = $this->datagridWorker->getDatagrid('channel', $queryBuilder);
+        $datagrid = $this->datagridHelper->getDatagrid('channel', $queryBuilder);
 
         $view = ('json' === $request->getRequestFormat()) ?
             'OroGridBundle:Datagrid:list.json.php' : 'PimCatalogBundle:Channel:index.html.twig';
@@ -146,13 +146,49 @@ class ChannelController extends AbstractDoctrineController
             $this->addFlash('success', 'flash.channel.saved');
 
             return $this->redirect(
-                $this->generateUrl('pim_catalog_channel_index')
+                $this->generateUrl('pim_catalog_channel_edit', array('id' => $channel->getId()))
             );
         }
 
+        $historyGrid = $channel->getId() ?$this->getHistoryGrid($channel)->createView() : null;
+
         return array(
-            'form' => $this->channelForm->createView()
+            'form' => $this->channelForm->createView(),
+            'historyDatagrid' => $historyGrid
         );
+    }
+
+    /**
+     * Get channel history datagrid
+     *
+     * @param Channel $channel
+     *
+     * @return \Oro\Bundle\GridBundle\Datagrid\Datagrid
+     */
+    protected function getHistoryGrid(Channel $channel)
+    {
+        return $this->datagridHelper->getDataAuditDatagrid(
+            $channel,
+            'pim_catalog_channel_history',
+            array('id' => $channel->getId())
+        );
+    }
+
+    /**
+     * History of a channel
+     *
+     * @param Request $request
+     * @param Channel $channel
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function historyAction(Request $request, Channel $channel)
+    {
+        $historyGridView = $this->getHistoryGrid($channel)->createView();
+
+        if ('json' === $request->getRequestFormat()) {
+            return $this->datagridHelper->getDatagridRenderer()->renderResultsJsonResponse($historyGridView);
+        }
     }
 
     /**

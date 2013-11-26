@@ -6,7 +6,6 @@ use Symfony\Component\Validator\GroupSequenceProviderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
@@ -19,8 +18,6 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @ORM\Entity(repositoryClass="Pim\Bundle\CatalogBundle\Entity\Repository\GroupRepository")
- * @ORM\Table(name="pim_catalog_group")
  * @Assert\GroupSequenceProvider
  * @Config(
  *  defaultValues={
@@ -31,56 +28,33 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
  *      }
  *  }
  * )
- * 
+ *
  * @ExclusionPolicy("all")
  */
 class Group implements TranslatableInterface, GroupSequenceProviderInterface
 {
     /**
      * @var integer $id
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
 
     /**
      * @var string $code
-     *
-     * @ORM\Column(name="code", type="string", length=50, unique=true)
      */
     protected $code;
 
     /**
      * @var GroupType
-     *
-     * @ORM\ManyToOne(targetEntity="Pim\Bundle\CatalogBundle\Entity\GroupType")
-     * @ORM\JoinColumn(name="type_id", referencedColumnName="id", nullable=false)
      */
     protected $type;
 
     /**
      * @var ArrayCollection $products
-     *
-     * @ORM\ManyToMany(
-     *     targetEntity="Pim\Bundle\CatalogBundle\Model\ProductInterface",
-     *     inversedBy="groups",
-     *     cascade={"persist"}
-     * )
-     * @ORM\JoinTable(name="pim_catalog_group_product")
      */
     protected $products;
 
     /**
      * @var ArrayCollection $attributes
-     *
-     * @ORM\ManyToMany(targetEntity="Pim\Bundle\CatalogBundle\Entity\ProductAttribute")
-     * @ORM\JoinTable(
-     *     name="pim_catalog_group_attribute",
-     *     joinColumns={@ORM\JoinColumn(name="group_id", referencedColumnName="id")},
-     *     inverseJoinColumns={@ORM\JoinColumn(name="attribute_id", referencedColumnName="id")}
-     * )
      */
     protected $attributes;
 
@@ -94,13 +68,6 @@ class Group implements TranslatableInterface, GroupSequenceProviderInterface
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection $translations
-     *
-     * @ORM\OneToMany(
-     *     targetEntity="Pim\Bundle\CatalogBundle\Entity\GroupTranslation",
-     *     mappedBy="foreignKey",
-     *     cascade={"persist", "remove"},
-     *     orphanRemoval=true
-     * )
      */
     protected $translations;
 
@@ -281,6 +248,7 @@ class Group implements TranslatableInterface, GroupSequenceProviderInterface
     {
         if (!$this->products->contains($product)) {
             $this->products[] = $product;
+            $product->addGroup($this);
         }
 
         return $this;
@@ -296,6 +264,7 @@ class Group implements TranslatableInterface, GroupSequenceProviderInterface
     public function removeProduct(ProductInterface $product)
     {
         $this->products->removeElement($product);
+        $product->removeGroup($this);
 
         return $this;
     }
@@ -379,6 +348,20 @@ class Group implements TranslatableInterface, GroupSequenceProviderInterface
             },
             $this->getAttributes()->toArray()
         );
+    }
+
+    /**
+     * Setter for attributes property
+     *
+     * @param ProductAttribute[] $attributes
+     *
+     * @return Group
+     */
+    public function setAttributes(array $attributes = array())
+    {
+        $this->attributes = $attributes;
+
+        return $this;
     }
 
     /**

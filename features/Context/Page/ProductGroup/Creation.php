@@ -18,8 +18,7 @@ class Creation extends Form
      * @var array
      */
     protected $elements = array(
-        'Create popin' => array('css' => 'div.ui-dialog'),
-        'Axis'         => array('css' => '#pim_catalog_group_form_attributes')
+        'Create popin' => array('css' => 'div.ui-dialog')
     );
 
     /**
@@ -58,14 +57,5 @@ class Creation extends Form
         }
 
         return $field;
-    }
-
-    /**
-     * Select the axis
-     * @param string $axis
-     */
-    public function selectAxis($axis)
-    {
-        $this->getElement('Axis')->selectOption($axis);
     }
 }

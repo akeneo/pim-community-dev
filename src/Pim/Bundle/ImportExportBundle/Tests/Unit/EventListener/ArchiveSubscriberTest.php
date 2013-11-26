@@ -14,12 +14,18 @@ use Pim\Bundle\ImportExportBundle\EventListener\ArchiveSubscriber;
  */
 class Test extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         $this->archiver   = $this->getArchiverMock();
         $this->subscriber = new ArchiveSubscriber($this->archiver);
     }
 
+    /**
+     * Test related method
+     */
     public function testSubscribedEvents()
     {
         $this->assertEquals(
@@ -30,6 +36,9 @@ class Test extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * Test related method
+     */
     public function testArchiveJobExecution()
     {
         $jobExecution = $this->getJobExecutionMock();
@@ -43,6 +52,9 @@ class Test extends \PHPUnit_Framework_TestCase
         $this->subscriber->afterJobExecution($event);
     }
 
+    /**
+     * @return \Pim\Bundle\ImportExportBundle\Archiver\JobExecutionArchiver
+     */
     protected function getArchiverMock()
     {
         return $this
@@ -51,6 +63,9 @@ class Test extends \PHPUnit_Framework_TestCase
             ->getMock();
     }
 
+    /**
+     * @return \Oro\Bundle\BatchBundle\Entity\JobExecution
+     */
     protected function getJobExecutionMock()
     {
         return $this
@@ -59,6 +74,11 @@ class Test extends \PHPUnit_Framework_TestCase
             ->getMock();
     }
 
+    /**
+     * @param \Oro\Bundle\BatchBundle\Entity\JobExecution $jobExecution
+     *
+     * @return \Oro\Bundle\BatchBundle\Event\JobExecutionEvent
+     */
     protected function getJobExecutionEventMock($jobExecution)
     {
         $event = $this

@@ -14,7 +14,7 @@
     'action': path('pim_catalog_family_edit', { id: family.id }),
     'attr': {
         'data-updated-title': 'confirmation.leave'|trans,
-        'data-updated-message': 'confirmation.discard changes.'|trans({ '%entity%': 'family'|trans })
+        'data-updated-message': 'confirmation.discard changes'|trans({ '%entity%': 'family'|trans })
     }
 }) }}
 
@@ -30,13 +30,7 @@
         {{ elements.submitBtn() }}
     {% endset %}
 
-    {% set right %}
-        <div class="pull-right entity-updated">
-            <span id="updated" class="label label-warning hide">{{ 'info.updated'|trans }}</span>
-        </div>
-    {% endset %}
-
-    {{ elements.page_header(title, buttons, null, null, right) }}
+    {{ elements.page_header(title, buttons, null, null, elements.updated(form.vars.id)) }}
 
     {{ elements.form_navbar(['Properties', 'Attributes', 'History']) }}
 
@@ -52,7 +46,6 @@
 
             {{ elements.accordion({ 'General Properties': generalProperties, 'Locale values': form_row(form.label) }) }}
         </div>
-        {{ form_row(form._token) }}
 
         <div class="tab-pane" id="attributes">
             {% include 'PimCatalogBundle:Family:_attributeRequirements.html.twig' %}
@@ -63,7 +56,7 @@
         </div>
 
     </div>
-</form>
+{{ form_end(form) }}
 {% endblock %}
 
 {% block head_script_component %}
@@ -71,13 +64,11 @@
 
     <script type="text/javascript">
         require(
-            ['jquery', 'pim/formupdatelistener'],
-            function($, FormUpdateListener){
+            ['jquery'],
+            function ($) {
                 'use strict';
 
                 $(function() {
-                    new FormUpdateListener($('#{{ form.vars.id }}'));
-
                     $('.group').click(function() {
                         $(this).parent().find('tr:not(.group)').toggle();
                         $(this).find('i').toggleClass('icon-expand-alt icon-collapse-alt');
@@ -107,5 +98,5 @@
             }
         );
     </script>
-    {% include 'OroGridBundle:Include:javascript.html.twig' with {'datagridView': datagrid, 'selector': '#history-grid'} %}
+    {% include 'OroGridBundle:Include:javascript.html.twig' with {'datagridView': historyDatagrid, 'selector': '#history-grid'} %}
 {% endblock %}

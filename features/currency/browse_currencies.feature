@@ -5,31 +5,29 @@ Feature: Browse currencies
   I need to be able to see active and inactive currencies in the catalog
 
   Background:
-    Given the following currencies:
-      | code | activated |
-      | USD  | yes       |
-      | EUR  | yes       |
-      | GBP  | no        |
+    Given the "default" catalog configuration
     And I am logged in as "admin"
+    And I am on the currencies page
 
-  Scenario: Successfully display currencies
-    Given I am on the currencies page
-    Then the grid should contain 3 elements
-    And I should see the columns Code and Activated
-    And I should see activated currencies USD and EUR
-    And I should see deactivated currency GBP
+  Scenario: Successfully view, sort and filter currencies
+    Then I should see the columns Code, Label and Activated
+    And the rows should be sorted ascending by code
+    And I should be able to sort the rows by code and activated
+    And I should be able to use the following filters:
+      | filter    | value | result      |
+      | Code      | EU    | EUR and XEU |
+      | Activated | yes   | USD and EUR |
 
   Scenario: Successfully activate a currency
-    Given I am on the currencies page
-    Then I should see activated currencies USD and EUR
-    And I should see deactivated currency GBP
-    When I activate the GBP currency
+    Given I filter by "Code" with value "GBP"
+    And I activate the GBP currency
+    When I hide the filter "Code"
+    And I filter by "Activated" with value "yes"
     Then I should see activated currencies GBP, USD and EUR
 
   Scenario: Successfully deactivate a currency
-    Given I am on the currencies page
+    Given I filter by "Activated" with value "yes"
     Then I should see activated currencies USD and EUR
-    And I should see deactivated currency GBP
     When I deactivate the USD currency
-    Then I should see activated currency EUR
-    And I should see deactivated currencies GBP and USD
+    Then the grid should contain 1 element
+    And I should see activated currency EUR

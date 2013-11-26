@@ -39,6 +39,10 @@ mass_edit_action:
     resource: '@PimCatalogBundle/Resources/config/routing/mass_edit_action.yml'
     prefix: /enrich/mass-edit-action
 
+variant_group:
+    resource: '@PimCatalogBundle/Resources/config/routing/variant_group.yml'
+    prefix: /enrich/variant-group
+
 group:
     resource: '@PimCatalogBundle/Resources/config/routing/group.yml'
     prefix: /enrich/group
@@ -50,3 +54,7 @@ association:
 media:
     resource: '@PimCatalogBundle/Resources/config/routing/media.yml'
     prefix: /media
+
+grouptype:
+    resource: '@PimCatalogBundle/Resources/config/routing/grouptype.yml'
+    prefix: /configuration/group-type

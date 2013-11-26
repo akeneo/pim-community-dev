@@ -4,7 +4,8 @@ Feature: Create a user
   I need to be able to create a user
 
   Background:
-    Given I am logged in as "admin"
+    Given the "default" catalog configuration
+    And I am logged in as "admin"
 
   @javascript
   Scenario: Successfully create a user

@@ -8,17 +8,19 @@ define(
             if (!$el || !$el.length || !_.isObject($el)) {
                 throw new Error('Unable to instantiate tree on this element');
             }
-            var selectedNode = $el.attr('data-node-id') || -1,
-                preventFirst = selectedNode > 0,
-                loadingMask  = new LoadingMask();
+            var selectedNode       = $el.attr('data-node-id') || -1,
+                selectedTree       = $el.attr('data-tree-id') || -1,
+                selectedNodeOrTree = selectedNode in [0, -1] ? selectedTree : selectedNode,
+                preventFirst       = selectedNode > 0,
+                loadingMask        = new LoadingMask();
 
             loadingMask.render().$el.appendTo($('#container'));
 
             this.config = {
-                'core': {
-                    'animation': 200
+                core: {
+                    animation: 200
                 },
-                'plugins': [
+                plugins: [
                     'tree_selector',
                     'themes',
                     'json_data',
@@ -28,28 +30,28 @@ define(
                 ],
                 contextmenu: {
                     items: {
-                        'ccp': false,
-                        'rename': false,
-                        'remove': false
+                        ccp: false,
+                        rename: false,
+                        remove: false
                     }
                 },
-                'tree_selector': {
-                    'ajax': {
-                        'url': Routing.generate('pim_catalog_categorytree_listtree', { '_format': 'json', 'select_node_id': selectedNode })
+                tree_selector: {
+                    ajax: {
+                        url: Routing.generate('pim_catalog_categorytree_listtree', { _format: 'json', select_node_id: selectedNodeOrTree })
                     },
-                    'auto_open_root': true,
-                    'node_label_field': 'label',
-                    'no_tree_message': _.__('jstree.no_tree'),
-                    'preselect_node_id': selectedNode
+                    auto_open_root: true,
+                    node_label_field: 'label',
+                    no_tree_message: _.__('jstree.no_tree'),
+                    preselect_node_id: selectedNode
                 },
-                'themes': {
-                    'dots': true,
-                    'icons': true
+                themes: {
+                    dots: true,
+                    icons: true
                 },
-                'json_data': {
-                    'ajax': {
-                        'url': Routing.generate('pim_catalog_categorytree_children', { '_format': 'json' }),
-                        'data': function (node) {
+                json_data: {
+                    ajax: {
+                        url: Routing.generate('pim_catalog_categorytree_children', { _format: 'json' }),
+                        data: function (node) {
                             // the result is fed to the AJAX request `data` option
                             var id = null;
 
@@ -59,34 +61,34 @@ define(
                                 id = -1;
                             }
                             return {
-                                'id': id,
-                                'select_node_id': selectedNode,
-                                'with_products_count': 1
+                                id: id,
+                                select_node_id: selectedNode,
+                                with_products_count: 1
                             };
                         }
                     }
                 },
-                'types': {
-                    'max_depth': -2,
-                    'max_children': -2,
-                    'valid_children': [ 'folder' ],
-                    'types': {
+                types: {
+                    max_depth: -2,
+                    max_children: -2,
+                    valid_children: [ 'folder' ],
+                    types: {
                         'default': {
-                            'valid_children': 'folder'
+                            valid_children: 'folder'
                         }
                     }
                 },
-                'ui': {
-                    'select_limit': 1,
-                    'select_multiple_modifier': false
+                ui: {
+                    select_limit: 1,
+                    select_multiple_modifier: false
                 }
             };
-            if ($el.attr("data-movable")) {
-                this.config.plugins.push("dnd")
-            } 
-            if ($el.attr("data-creatable")) {
-                this.config.plugins.push("contextmenu")
-            } 
+            if ($el.attr('data-movable')) {
+                this.config.plugins.push('dnd');
+            }
+            if ($el.attr('data-creatable')) {
+                this.config.plugins.push('contextmenu');
+            }
             this.init = function () {
                 $el.jstree(this.config).bind('move_node.jstree', function (e, data) {
                     var this_jstree = $.jstree._focused();
@@ -96,12 +98,12 @@ define(
                             type: 'POST',
                             url: Routing.generate('pim_catalog_categorytree_movenode'),
                             data: {
-                                'id': $(this).attr('id').replace('node_', ''),
-                                'parent': data.rslt.cr === -1 ? 1 : data.rslt.np.attr('id').replace('node_', ''),
-                                'prev_sibling': this_jstree._get_prev(this, true) ? this_jstree._get_prev(this, true).attr('id').replace('node_', '') : null,
-                                'position': data.rslt.cp + i,
-                                'code': data.rslt.name,
-                                'copy': data.rslt.cy ? 1 : 0
+                                id: $(this).attr('id').replace('node_', ''),
+                                parent: data.rslt.cr === -1 ? 1 : data.rslt.np.attr('id').replace('node_', ''),
+                                prev_sibling: this_jstree._get_prev(this, true) ? this_jstree._get_prev(this, true).attr('id').replace('node_', '') : null,
+                                position: data.rslt.cp + i,
+                                code: data.rslt.name,
+                                copy: data.rslt.cy ? 1 : 0
                             },
                             success: function (r) {
                                 if (!r.status) {

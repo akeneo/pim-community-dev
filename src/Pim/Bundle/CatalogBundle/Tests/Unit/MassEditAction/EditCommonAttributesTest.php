@@ -192,6 +192,16 @@ class EditCommonAttributesTest extends \PHPUnit_Framework_TestCase
         $oldBarDescriptionMobileVal->expects($this->once())->method('setData')->with('newDescriptionMobile');
         $oldBarDescriptionWebVal->expects($this->once())->method('setData')->with('newDescriptionWeb');
 
+        $this->productManager
+            ->expects($this->once())
+            ->method('handleAllMedia')
+            ->with(array($foo, $bar));
+
+        $this->productManager
+            ->expects($this->once())
+            ->method('saveAll')
+            ->with(array($foo, $bar), false);
+
         $this->action->perform(array($foo, $bar));
     }
 

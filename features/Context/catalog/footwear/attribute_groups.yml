@@ -1,0 +1,16 @@
+attribute_groups:
+    info:
+        labels:
+            en_US: Product information
+    marketing:
+        labels:
+            en_US: Marketing
+    sizes:
+        labels:
+            en_US: Sizes
+    colors:
+        labels:
+            en_US: Colors
+    media:
+        labels:
+            en_US: Media

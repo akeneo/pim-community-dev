@@ -7,57 +7,57 @@ require(
             var measures = {% include 'PimUIBundle::measures.html.twig' with measures %};
 
             // Get form name
-            var formName = 'pim_catalog_attribute_form';
+            var formName = '#{{ form.vars.id }}';
 
             var $optionList;
 
             function updateForm() {
                 $.post(
                     '{{ path("pim_catalog_productattribute_preprocess") }}',
-                    $('#'+formName).serialize(),
+                    $(formName).serialize(),
                     function(data) {
                         for (var prop in data) {
                             $('#'+prop).html(data[prop]);
                         }
-                        $('#'+formName+' div.alert').remove();
+                        $(formName+' div.alert').remove();
                         initializeForm();
                     }
                 );
             }
 
-            function initializeForm() {
-                $('#'+formName+' .switch:not(.has-switch)').bootstrapSwitch();
+            function initializeForm(preventUpdate) {
+                $(formName+' .switch:not(.has-switch)').bootstrapSwitch();
                 $('[data-toggle="tooltip"]').tooltip();
 
                 initSelect2();
 
                 initializeOptions();
-                $('#'+formName+'_attributeType').on('change', function() {
+                $(formName+'_attributeType').on('change', function() {
                     updateForm();
                 });
 
                 // Enable/disable scope and translatable fields according to unique field value
-                $('#'+formName+'_unique').closest('.has-switch').on('switch-change', function (e, data) {
+                $(formName+'_unique').closest('.has-switch').on('switch-change', function (e, data) {
                     if (data.value) {
-                        $('#'+formName+'_scopable').select2('val', 0).select2('enable', false);
-                        $('#'+formName+'_translatable').closest('.has-switch').bootstrapSwitch('setState', false);
-                        $('#'+formName+'_translatable').closest('.has-switch').bootstrapSwitch('setActive', false);
+                        $(formName+'_scopable').select2('val', 0).select2('enable', false);
+                        $(formName+'_translatable').closest('.has-switch').bootstrapSwitch('setState', false);
+                        $(formName+'_translatable').closest('.has-switch').bootstrapSwitch('setActive', false);
                     } else {
-                        $('#'+formName+'_scopable').select2('enable');
-                        $('#'+formName+'_translatable').closest('.has-switch').bootstrapSwitch('setActive', true);
+                        $(formName+'_scopable').select2('enable');
+                        $(formName+'_translatable').closest('.has-switch').bootstrapSwitch('setActive', true);
                     }
                 });
 
-                $('#'+formName+'_validationRule').change(function() {
+                $(formName+'_validationRule').change(function() {
                     if ($(this).val() == 'regexp') {
-                        $('#'+formName+'_validationRegexp').parent().parent().show();
+                        $(formName+'_validationRegexp').parent().parent().show();
                     } else {
-                        $('#'+formName+'_validationRegexp').val('').parent().parent().hide();
+                        $(formName+'_validationRegexp').val('').parent().parent().hide();
                     }
                 }).trigger('change');
 
-                if ($('#'+formName+'_availableLocales').val()) {
-                    $('#'+formName+'_availableLocales').parent().parent().show();
+                if ($(formName+'_availableLocales').val()) {
+                    $(formName+'_availableLocales').parent().parent().show();
                     $('#limitLocales-switch').bootstrapSwitch('setState', true);
                 }
 
@@ -70,18 +70,22 @@ require(
                     }
                 });
 
-                $('#'+formName+'_metricFamily').select2({
+                $(formName+'_metricFamily').select2({
                     data: measures.getMetricTypes(),
                     placeholder: '{{ "Choose a family"|trans }}'
                 }).change(function() {
-                    $('#'+formName+'_defaultMetricUnit').select2('val', '').select2({
+                    $(formName+'_defaultMetricUnit').select2('val', '').select2({
                         data: measures.getMetricUnits($(this).select2('val')),
                         placeholder: '{{ "Choose a unit"|trans }}'
                     });
                 }).trigger('change');
+
+                if (preventUpdate) {
+                    $('#updated').addClass('hide');
+                }
             }
 
-            initializeForm();
+            initializeForm(true);
 
             function initializeOptions() {
                 $optionList = $('table#sortable_options');
@@ -138,7 +142,7 @@ require(
                 var option = $optionList.find('tr').last().html();
 
                 var optionNumber = $optionList.find('tr.att-option').length + 1;
-                while ($optionList.find('[id*='+formName+'_options_'+optionNumber+']').length) {
+                while ($optionList.find('[id*='+formName.substr(1)+'_options_'+optionNumber+']').length) {
                     optionNumber++;
                 }
 

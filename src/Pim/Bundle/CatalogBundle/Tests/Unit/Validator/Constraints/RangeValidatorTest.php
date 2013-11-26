@@ -298,7 +298,7 @@ class RangeValidatorTest extends \PHPUnit_Framework_TestCase
             ->method('addViolation')
             ->with(
                 'myMessage',
-                $this->identicalTo(array('{{ value }}' => $value, '{{ limit }}' => 10,))
+                $this->identicalTo(array('{{ value }}' => $value, '{{ limit }}' => 10))
             );
 
         $this->validator->validate($value, $constraint);

@@ -113,38 +113,88 @@ class MediaManagerTest extends \PHPUnit_Framework_TestCase
     /**
      * Test related method
      */
-    public function testExportMedia()
+    public function testCopyMedia()
     {
         @mkdir($this->uploadDir, 0777, true);
         file_put_contents($this->uploadDir . '/phpunit-file.txt', 'Lorem ipsum');
 
-        $media = $this->getMediaMock();
+        $media     = $this->getMediaMock();
+        $entity    = $this->getProductMock('sku000');
+        $attribute = $this->getAttributeMock('mockFile');
+        $value     = $this->getValueMock($entity, $attribute);
+
         $media->expects($this->any())
             ->method('getFilePath')
             ->will($this->returnValue($this->uploadDir . '/phpunit-file.txt'));
+
         $media->expects($this->any())
-            ->method('getFilename')
+            ->method('getValue')
+            ->will($this->returnValue($value));
+
+        $media->expects($this->any())
+            ->method('getOriginalFilename')
             ->will($this->returnValue('phpunit-file.txt'));
 
-        $this->assertEquals(
-            '/tmp/behat/phpunit-file.txt',
+        $this->assertTrue(
             $this->manager->copy($media, '/tmp/behat/')
         );
 
         $this->assertFileEquals(
             $this->uploadDir . '/phpunit-file.txt',
-            '/tmp/behat/phpunit-file.txt'
+            '/tmp/behat/files/sku000/mockFile/phpunit-file.txt'
+        );
+    }
+
+    /**
+     * @param string $locale
+     * @param string $scope
+     * @param string $exportPath
+     *
+     * @dataProvider getExportPathData
+     */
+    public function testGetExportPath($locale, $scope, $exportPath)
+    {
+        $media     = $this->getMediaMock();
+        $entity    = $this->getProductMock('sku000');
+        $attribute = $this->getAttributeMock('mockFile', $locale !== '', $scope !== '');
+        $value     = $this->getValueMock($entity, $attribute, $locale, $scope);
+
+        $media->expects($this->any())
+            ->method('getValue')
+            ->will($this->returnValue($value));
+
+        $media->expects($this->any())
+            ->method('getOriginalFilename')
+            ->will($this->returnValue('phpunit-file.txt'));
+
+        $media->expects($this->any())
+            ->method('getFilePath')
+            ->will($this->returnValue('filePath'));
+
+        $this->assertEquals($exportPath, $this->manager->getExportPath($media));
+    }
+
+    /**
+     * @return array
+     */
+    public static function getExportPathData()
+    {
+        return array(
+            array('',      '',          'files/sku000/mockFile/phpunit-file.txt'),
+            array('en_US', '',          'files/sku000/mockFile/en_US/phpunit-file.txt'),
+            array('',      'ecommerce', 'files/sku000/mockFile/ecommerce/phpunit-file.txt'),
+            array('en_US', 'ecommerce', 'files/sku000/mockFile/en_US/ecommerce/phpunit-file.txt'),
         );
     }
 
     /**
      * @param mixed $file
      *
-     * @return \Oro\Bundle\FlexibleEntityBundle\Entity\Media
+     * @return \Pim\Bundle\CatalogBundle\Entity\Media
      */
     protected function getMediaMock($file = null)
     {
-        $media = $this->getMock('Oro\Bundle\FlexibleEntityBundle\Entity\Media');
+        $media = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Media');
 
         $media->expects($this->any())
               ->method('getFile')
@@ -191,5 +241,78 @@ class MediaManagerTest extends \PHPUnit_Framework_TestCase
             ->getMock();
 
         return $filesystem;
+    }
+
+    /**
+     * @param object           $entity
+     * @param ProductAttribute $attribute
+     * @param string           $locale
+     * @param string           $scope
+     *
+     * @return ProductValue
+     */
+    protected function getValueMock($entity, $attribute, $locale = null, $scope = null)
+    {
+        $value = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductValue');
+
+        $value->expects($this->any())
+            ->method('getEntity')
+            ->will($this->returnValue($entity));
+
+        $value->expects($this->any())
+            ->method('getAttribute')
+            ->will($this->returnValue($attribute));
+
+        $value->expects($this->any())
+            ->method('getLocale')
+            ->will($this->returnValue($locale));
+
+        $value->expects($this->any())
+            ->method('getScope')
+            ->will($this->returnValue($scope));
+
+        return $value;
+    }
+
+    /**
+     * @param string $identifier
+     *
+     * @return Product
+     */
+    protected function getProductMock($identifier)
+    {
+        $product = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Product');
+
+        $product->expects($this->any())
+            ->method('getIdentifier')
+            ->will($this->returnValue($identifier));
+
+        return $product;
+    }
+
+    /**
+     * @param string  $code
+     * @param boolean $localisable
+     * @param boolean $scopable
+     *
+     * @return ProductAttribute
+     */
+    protected function getAttributeMock($code, $localisable = false, $scopable = false)
+    {
+        $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductAttribute');
+
+        $attribute->expects($this->any())
+            ->method('getCode')
+            ->will($this->returnValue($code));
+
+        $attribute->expects($this->any())
+            ->method('getTranslatable')
+            ->will($this->returnValue($localisable));
+
+        $attribute->expects($this->any())
+            ->method('getScopable')
+            ->will($this->returnValue($scopable));
+
+        return $attribute;
     }
 }

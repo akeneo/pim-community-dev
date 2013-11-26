@@ -5,8 +5,9 @@ Feature: Add metric attribute to a product
   I need to be able to add a metric attribute to a product
 
   Background:
-    Given a "Car" product
-    And the following product attribute:
+    Given the "default" catalog configuration
+    And a "Car" product
+    And the following attribute:
       | type   | label  | metric family | default metric unit |
       | metric | Weight | Weight        | KILOGRAM            |
     And I am logged in as "admin"

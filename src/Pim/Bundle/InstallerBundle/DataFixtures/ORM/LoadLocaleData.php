@@ -25,6 +25,7 @@ class LoadLocaleData extends AbstractInstallerFixture
             $locale = new Locale();
             $locale->setCode($localeCode);
             $this->setReference('locale.'. $localeCode, $locale);
+            $this->validate($locale, $localeCode);
             $manager->persist($locale);
         }
 

@@ -38,3 +38,9 @@ pim_importexport_import_launch:
     defaults: { _controller: pim_import_export.controller.import:launchAction }
     requirements:
         id: \d+
+
+pim_importexport_import_history:
+    path: /{id}/history
+    defaults: { _controller: pim_import_export.controller.import:historyAction }
+    requirements:
+        id: \d+

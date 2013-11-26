@@ -16,7 +16,7 @@ class DateGuesserTest extends ConstraintGuesserTest
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->target = new DateGuesser();
     }
@@ -51,7 +51,7 @@ class DateGuesserTest extends ConstraintGuesserTest
     {
         $constraints = $this->target->guessConstraints(
             $this->getAttributeMock(
-                array('attributeType' => 'pim_catalog_date', 'dateType'      => 'date',)
+                array('attributeType' => 'pim_catalog_date', 'dateType' => 'date')
             )
         );
 
@@ -64,7 +64,7 @@ class DateGuesserTest extends ConstraintGuesserTest
     public function testDoNotGuessDateConstraint()
     {
         $constraints = $this->target->guessConstraints(
-            $this->getAttributeMock(array('attributeType' => 'pim_catalog_text',))
+            $this->getAttributeMock(array('attributeType' => 'pim_catalog_text'))
         );
 
         $this->assertEquals(0, count($constraints));

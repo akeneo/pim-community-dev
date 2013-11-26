@@ -3,15 +3,17 @@
 namespace Pim\Bundle\CatalogBundle\EventListener;
 
 use Doctrine\Common\EventSubscriber;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\UnitOfWork;
 use Doctrine\ORM\EntityManager;
+use Oro\Bundle\FlexibleEntityBundle\Entity\AttributeOption;
+use Pim\Bundle\CatalogBundle\Entity\Category;
+use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Exception\LastAttributeOptionDeletedException;
 
 /**
- * Aims to add / remove locales and channels
+ * Aims to add/remove locales, channels and trees to user preference choices
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -37,7 +39,7 @@ class UserPreferencesListener implements EventSubscriber
     /**
      * @var array
      */
-    private $metadata=array();
+    private $metadata = array();
 
     /**
      * Inject service container
@@ -95,6 +97,10 @@ class UserPreferencesListener implements EventSubscriber
         if ($entity instanceof Channel) {
             $this->addOptionValue('catalogscope', $entity->getCode());
         }
+
+        if ($entity instanceof Category && $entity->isRoot()) {
+            $this->addOptionValue('defaulttree', $entity->getCode());
+        }
     }
 
     /**
@@ -106,6 +112,10 @@ class UserPreferencesListener implements EventSubscriber
     {
         if ($entity instanceof Channel) {
             $this->removeOption('catalogscope', $entity->getCode());
+        }
+
+        if ($entity instanceof Category && $entity->isRoot()) {
+            $this->removeOption('defaulttree', $entity->getCode());
         }
     }
 
@@ -153,8 +163,9 @@ class UserPreferencesListener implements EventSubscriber
         $this->uow->persist($entity);
         $this->uow->computeChangeSet($this->getMetadata($entity), $entity);
     }
+
     /**
-     * Add a value as user attribute option for new locale or new scope (=channel)
+     * Add a value as user attribute option for new locale, scope (=channel) or tree (=category)
      *
      * @param string $attributeCode
      * @param string $optionValue
@@ -164,8 +175,8 @@ class UserPreferencesListener implements EventSubscriber
         $userManager = $this->container->get('oro_user.manager');
         $attribute = $userManager->getFlexibleRepository()->findAttributeByCode($attributeCode);
         if ($attribute) {
-            $option    = $userManager->createAttributeOption();
-            $value     = $userManager->createAttributeOptionValue()->setValue($optionValue);
+            $option = $userManager->createAttributeOption();
+            $value  = $userManager->createAttributeOptionValue()->setValue($optionValue);
             $option->addOptionValue($value);
             $attribute->addOption($option);
             $this->computeChangeset($option);
@@ -174,53 +185,73 @@ class UserPreferencesListener implements EventSubscriber
     }
 
     /**
-     * Remove a value as user attribute option for removed locale or removed scope (=channel)
+     * Remove a value as user attribute option for removed locale, scope (=channel) or tree (=category)
      *
      * @param string $attributeCode
      * @param string $value
+     *
+     * @return null
      */
     protected function removeOption($attributeCode, $value)
     {
-        $userManager = $this->container->get('oro_user.manager');
-        $flexRepository = $userManager->getFlexibleRepository();
+        $flexRepository = $this->container->get('oro_user.manager')->getFlexibleRepository();
         $attribute = $flexRepository->findAttributeByCode($attributeCode);
 
         if ($attribute) {
-            foreach ($attribute->getOptions() as $option) {
-                if ($value == $option->getOptionValue()->getValue()) {
-                    $removedOption = $option;
-                } elseif (!isset($defaultOption)) {
-                    $defaultOption = $option;
+            $removedOption = $attribute->getOptions()->filter(
+                function ($option) use ($value) {
+                    return $option->getOptionValue()->getValue() == $value;
                 }
-                if (isset($removedOption) && isset($defaultOption)) {
-                    break;
-                }
+            )->first();
+
+            if (!$removedOption) {
+                return;
             }
-            if (!isset($defaultOption)) {
+
+            $defaultOption = $attribute->getOptions()->filter(
+                function ($option) use ($removedOption) {
+                    return $option !== $removedOption;
+                }
+            )->first();
+
+            if (!$defaultOption) {
                 throw new LastAttributeOptionDeletedException(
                     sprintf('Tried to delete last %s attribute option', $attributeCode)
                 );
             }
 
-            // TODO : quick fix to pass behat, waiting for refactoring of that listener
-            if (isset($removedOption)) {
-                $usersQB = $flexRepository->findByWithAttributesQB(array($attributeCode));
-                $flexRepository->applyFilterByAttribute(
-                    $usersQB,
-                    $attributeCode,
-                    array($removedOption->getId()), //$removedOption->getValue()->getId()
-                    'IN'
-                );
-                $users = $usersQB->getQuery()->getResult();
-                foreach ($users as $user) {
-                    $value = $user->getValue($attributeCode);
-                    $value->setData($defaultOption);
-                    $this->computeChangeset($value);
-                }
+            $this->updateUserPreferences($attributeCode, $removedOption, $defaultOption);
 
-                $attribute->removeOption($removedOption);
-                $this->uow->scheduleForDelete($removedOption);
-            }
+            $attribute->removeOption($removedOption);
+            $this->uow->scheduleForDelete($removedOption);
+        }
+    }
+
+    /**
+     * Sets user preferences to a new option if the previously selected option is deleted
+     *
+     * @param string          $attributeCode
+     * @param AttributeOption $removedOption
+     * @param AttributeOption $newOption
+     *
+     * @return null
+     */
+    protected function updateUserPreferences($attributeCode, AttributeOption $removedOption, AttributeOption $newOption)
+    {
+        $flexRepository = $this->container->get('oro_user.manager')->getFlexibleRepository();
+
+        $usersQB = $flexRepository->findByWithAttributesQB(array($attributeCode));
+        $flexRepository->applyFilterByAttribute(
+            $usersQB,
+            $attributeCode,
+            array($removedOption->getId()), // $removedOption->getValue()->getId()
+            'IN'
+        );
+        $users = $usersQB->getQuery()->getResult();
+        foreach ($users as $user) {
+            $value = $user->getValue($attributeCode);
+            $value->setData($newOption);
+            $this->computeChangeset($value);
         }
     }
 }

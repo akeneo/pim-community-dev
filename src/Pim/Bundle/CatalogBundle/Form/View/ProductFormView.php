@@ -18,6 +18,14 @@ use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 class ProductFormView
 {
     /**
+     * @var array A list of the attribute types for which creating a new option is allowed
+     */
+    private $choiceAttributeTypes = array(
+        'pim_catalog_multiselect',
+        'pim_catalog_simpleselect'
+    );
+
+    /**
      * @var FormView|array
      */
     protected $view = array();
@@ -110,10 +118,11 @@ class ProductFormView
         $group     = $attribute->getVirtualGroup();
 
         $attributeView = array(
-            'isRemovable' => $value->isRemovable(),
-            'code'        => $attribute->getCode(),
-            'label'       => $attribute->getLabel(),
-            'sortOrder'   => $attribute->getSortOrder(),
+            'isRemovable'        => $value->isRemovable(),
+            'code'               => $attribute->getCode(),
+            'label'              => $attribute->getLabel(),
+            'sortOrder'          => $attribute->getSortOrder(),
+            'allowValueCreation' => in_array($attribute->getAttributeType(), $this->choiceAttributeTypes)
         );
 
         if ($attribute->getScopable()) {

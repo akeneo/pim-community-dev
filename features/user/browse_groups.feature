@@ -5,7 +5,8 @@ Feature: Browse groups
   I need to be able to see user groups
 
   Background:
-    Given I am logged in as "Peter"
+    Given the "default" catalog configuration
+    And I am logged in as "Peter"
 
   Scenario: Successfully display groups
     Given I am on the user groups page

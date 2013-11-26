@@ -18,8 +18,10 @@ class CommandContext extends RawMinkContext
      */
     public function iLaunchedTheCompletenessCalculator()
     {
-        $batchCalculator = $this->getContainer()->get('pim_catalog.calculator.batch_completeness');
-        $batchCalculator->execute();
+        $this
+            ->getContainer()
+            ->get('pim_catalog.manager.completeness')
+            ->createAllCompletenesses();
     }
 
     /**

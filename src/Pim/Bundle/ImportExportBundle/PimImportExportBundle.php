@@ -3,7 +3,6 @@
 namespace Pim\Bundle\ImportExportBundle;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Pim\Bundle\ImportExportBundle\DependencyInjection\Compiler\ReplacePimSerializerArgumentsPass;
 use Oro\Bundle\BatchBundle\Connector\Connector;
 
 /**
@@ -20,6 +19,9 @@ class PimImportExportBundle extends Connector
      */
     public function build(ContainerBuilder $container)
     {
-        $container->addCompilerPass(new ReplacePimSerializerArgumentsPass());
+        $container
+            ->addCompilerPass(new DependencyInjection\Compiler\ResolveDoctrineOrmTargetEntitiesPass())
+            ->addCompilerPass(new DependencyInjection\Compiler\ReplacePimSerializerArgumentsPass())
+            ->addCompilerPass(new DependencyInjection\Compiler\PropertyTransformersPass());
     }
 }

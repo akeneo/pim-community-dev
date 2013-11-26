@@ -1,3 +1,4 @@
+---
 attribute:
   overview: Attribute Übersicht
   create: Attribut anlegen
@@ -42,13 +43,21 @@ product:
   create: Produkt anlegen
   edit: Produkt bearbeiten
 group:
-  overview: group overview
-  create: create group
-  edit: edit group
+  overview: Gruppenübersicht
+  create: Gruppe anlegen
+  edit: Gruppe bearbeiten
+variant group:
+  overview: variant group overview
+  create: create variant group
+  edit: edit variant group
 association:
-  overview: association overview
-  create: create association
-  edit: edit association
+  overview: Verbindungsübersicht
+  create: Verbindung anlegen
+  edit: Verbindung bearbeiten
+group type:
+  overview: group type overview
+  create: create group type
+  edit: edit group type
 export report:
   overview: Export-Berichte
 import report:
@@ -67,8 +76,10 @@ btn:
     import profile: Importprofil anlegen
     locale: Gebietsschema anlegen
     product: Produkt anlegen
-    group: create group
-    association: create association
+    group: Gruppe anlegen
+    variant group: create variant group
+    association: Verbindung anlegen
+    group type: create group type
   edit: Bearbeiten
   save: Speichern
   remove: Entfernen
@@ -93,8 +104,10 @@ confirmation:
     export profile: Sind Sie sicher, dass Sie das Export-Profil %name% löschen möchten?
     import profile: Sind Sie sicher, dass Sie das Import-Profil %name% löschen möchten?
     channel: Sind Sie sicher, dass Sie den Ausgabekanal %name% löschen möchten?
-    group: Are you sure you want to delete the group %name%?
-    association: Are you sure you want to delete the association %name%?
+    group: Sind Sie sicher, dass Sie die Gruppe %name% löschen möchten?
+    variant group: Are you sure you want to delete the variant group %name%?
+    association: Sind Sie sicher, dass Sie die Verbindung %name% löschen möchten?
+    group type: Are you sure you want to delete the group type %name%?
 flash:
   entity:
     removed: Element wurde gelöscht
@@ -103,6 +116,9 @@ flash:
     updated: Attribut erfolgreich aktualisiert
     removed: Attribut erfolgreich entfernt
     identifier not removable: Ein Attribut zur eindeutigen Identifizierung kann nicht entfernt werden
+    used by groups: This attribute can not be removed because it is used by %count% groups
+    option created: Option successfully created
+    error creating option: Error ocurred when trying to create the option, please try again
   attribute group:
     created: Attributgruppe erfolgreich angelegt
     updated: Attributgruppe erfolgreich aktualisiert
@@ -146,13 +162,23 @@ flash:
   export:
     removed: Der Export wurde entfernt
   group:
-    created: Group successfully created
-    updated: Group successfully updated
-    removed: Group successfully removed
+    created: Gruppe erfolgreich angelegt
+    updated: Gruppe erfolgreich aktualisiert
+    removed: Gruppe erfolgreich entfernt
+  variant group:
+    created: Variant group successfully created
+    updated: Variant group successfully updated
+    removed: Variant group successfully removed
+  group type:
+    created: Group type successfully created
+    updated: Group type successfully updated
+    removed: Group type successfully removed
+    cant remove variant: "Group type variant can't be removed"
+    cant remove used: "Group type is used by some groups and can't be removed"
   association:
-    created: Association successfully created
-    updated: Association successfully updated
-    removed: Association successfully removed
+    created: Verbindung erfolgreich angelegt
+    updated: Verbindung erfolgreich aktualisiert
+    removed: Verbindung erfolgreich entfernt
   error ocurred: Die Aktion ist fehlgeschlagen. Bitte wiederholen Sie den Vorgang.
 info:
   updated: Es gibt ungesicherte Änderungen.
@@ -165,7 +191,7 @@ info:
     change family to: Produktfamilie ändern zu
     merge attributes: Die aktuellen Attribute werden mit denen der neuen Produktfamilie zusammengeführt.
     keep attributes: Es werden keine Attribute entfernt.
-    number of associations: %productCount% products and %groupCount% groups
+    number of associations: %productCount% Produkte und %groupCount% Gruppen
     enable: Aktivieren
     enabled: Aktiviert
     disable: Deaktivieren
@@ -173,12 +199,12 @@ info:
   group:
     axis:
       Variation axis: %attributes%
-    select products: Please select products that should belong to this group.
-    selectable products: The following selectable products have a defined value for each axis.
+    select products: Bitte wählen Sie die Produkte aus, die zu dieser Gruppe gehören.
+    selectable products: Die folgenden wählbaren Produkte haben einen definierten Wert für jede Achse.
   association:
-    show products: Show products
-    show groups: Show groups
-    remove from products: Deleting the association will remove it from %count% products.
+    show products: Produkte anzeigen
+    show groups: Gruppen anzeigen
+    remove from products: Das Löschen dieser Verbindung entfernt sie von %count% Produkten.
 Options: Optionen
 Created at: Angelegt am
 Updated at: Aktualisiert am
@@ -187,7 +213,7 @@ Updated: Aktualisiert
 N/A: N/A
 Add an option: Auswahlmöglichkeit hinzufügen
 Manage products: Produkte verwalten
-Manage groups: Manage groups
+Manage groups: Gruppen verwalten
 Code: Code
 Name: Name
 Type: Typ
@@ -225,7 +251,8 @@ Create: Anlegen
 Cancel: Abbrechen
 Create a new product: Neues Produkt anlegen
 Choose a family: Wählen Sie eine Produktfamilie
-Create a new association: Create a new association
+Create a new association: Neue Verbindung anlegen
+Create a new option: Create a new option
 Global: Global
 Channel: Ausgabekanal
 Always override: Immer überschreiben
@@ -249,11 +276,10 @@ Date max: Max. Datum
 Default currency: Standardwährung
 Metric family: Metrische Gruppe
 Default metric unit: Standard-Maßeinheit
-Max file size: Maximale Dateigröße
+Max file size: Maximale Dateigröße (MB)
 Allowed file extensions: Zulässige Dateierweiterungen
 Attributes: Attribute
 Title: Titel
-Is dynamic: Ist dynamisch
 Dashboard: Dashboard
 Attribute groups: Attributgruppen
 Attribute groups | Create: Attributgruppen | Anlegen
@@ -286,12 +312,18 @@ Channels %channel.label% | Edit: Ausgabekanäle %channel.label% | Bearbeiten
 Currencies: Währungen
 Locales: Gebietsschemata
 Locales %locale.code% | Edit: Gebietsschemata %locale.code% | Bearbeiten
-Groups: Groups
-Groups | Create: Groups | Create
-Groups %group.label% | Edit: Groups %group.label% | Edit
-Associations: Associations
-Associations | Create: Associations | Create
-Associations %association.label% | Edit: Associations %association.label% | Edit
+Groups: Gruppen
+Groups | Create: Gruppen | Anlegen
+Groups %group.label% | Edit: Gruppen %group.label% | Bearbeiten
+Variant groups: Variant groups
+Variant groups | Create: Variant groups | Create
+Variant groups %group.label% | Edit: Variant groups %group.label% | Edit
+Associations: Verbindungen
+Associations | Create: Verbindungen | Anlegen
+Associations %association.label% | Edit: Verbindungen %association.label% | Bearbeiten
+Group types: Group types
+Group types | Create: Group types | Create
+Group types %grouptype.label% | Edit: Group types %grouptype.label% | Edit
 pim_catalog_identifier: Kennung
 pim_catalog_text: Text
 pim_catalog_textarea: Textbereich
@@ -312,7 +344,7 @@ pim_catalog.mass_edit_action:
   page_subtitle: Massenbearbeitung (1 Produkt)|Massenbearbeitung (%count% Produkte)
   title: Aktion auswählen
   subtitle: Wählen Sie die Aktion aus, die Sie auf das ausgewählte Produkt anwenden wollen|Wählen Sie die Aktion aus, die Sie auf die ausgewählten %count% Produkte anwenden wollen
-  confirm: 'Sie sind dabei ein Produkt mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.|Sie sind dabei %count% Produkte mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.|'
+  confirm: "Sie sind dabei ein Produkt mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.|Sie sind dabei %count% Produkte mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.|"
   change-status:
     label: Status ändern (aktivieren / deaktivieren)
     description: Die ausgewählten Produkte werden aktiviert oder deaktiviert.
@@ -331,17 +363,17 @@ pim_catalog.mass_edit_action:
     description: Die Produktfamilie der ausgewählten Produkte wird auf die gewählte Produktfamilie geändert
     success_flash: Die Produktfamilie der ausgewählten Produkte wurde erfolgreich geändert
 pim_catalog.completeness:
-  progress_bar.title: %ratio%% complete (1 required value)|%ratio%% complete (%count% required values)
-  subtitle: '{0} Complete|{1} 1 missing value|]1,Inf] %count% missing values'
-  missing_attributes: Missing value|Missing values
+  progress_bar.title: %ratio%% vollständig (1 fehlender Wert)|%ratio%% vollständig (%count% fehlende Werte)
+  subtitle: "{0} Vollständig|{1} 1 fehlender Wert|]1,Inf] %count% fehlende Werte"
+  missing_attributes: Fehlender Wert|Fehlende Werte
   legend:
-    locale_not_associated: Locale not associated to this channel
+    locale_not_associated: Das Gebietsschema ist nicht mit diesem Ausgabekanal verbunden
 pim_catalog.group:
-  axis.help: Axis are attributes which define variants of the variant group. Axis are attributes with options, not localizable and not scoped. It cannot be changed after the creation of the variant group.
+  axis.help: Achsen sind Attribute, die Varianten der Variantengruppe definieren. Achsen sind Attribute mit Optionen, welche nicht lokalisierbar sind und keinen Gültigkeitsbereich haben. Eine Achse kann nach der Erstellung der Variantengruppe nicht geändert werden.
   type:
-    VARIANT: Variant
-    X_SELL: X-Sell
-    ADDITIONAL: Additional
-    RELATED: Related
-Group: Group
-View group: View group
+    VARIANT: Variante
+    X_SELL: Cross-Sell
+    ADDITIONAL: Ergänzend
+    RELATED: Zugehörig
+Group: Gruppe
+View group: Gruppe ansehen

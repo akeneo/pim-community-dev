@@ -47,7 +47,7 @@ class ValidMetricValidatorTest extends \PHPUnit_Framework_TestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->context = $this->getMock('Symfony\Component\Validator\ExecutionContext', array(), array(), '', false);
         $this->validator = new ValidMetricValidator($this->measures);
@@ -58,7 +58,7 @@ class ValidMetricValidatorTest extends \PHPUnit_Framework_TestCase
     /**
      * {@inheritdoc}
      */
-    public function tearDown()
+    protected function tearDown()
     {
         $this->context = null;
         $this->validator = null;
@@ -151,7 +151,7 @@ class ValidMetricValidatorTest extends \PHPUnit_Framework_TestCase
         return array(
             array('Length', 'REAUMUR'),
             array('Temperature', 'KILOMETER'),
-            array('Temperature','invalid_unit')
+            array('Temperature', 'invalid_unit')
         );
     }
 
@@ -185,7 +185,7 @@ class ValidMetricValidatorTest extends \PHPUnit_Framework_TestCase
         return array(
             array('Length', 'INCH'),
             array('Temperature', 'RANKINE'),
-            array('Temperature','KELVIN')
+            array('Temperature', 'KELVIN')
         );
     }
 

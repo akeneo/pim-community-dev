@@ -1,0 +1,14 @@
+parameters:
+    pim_catalog.factory.family.class:                Pim\Bundle\CatalogBundle\Factory\FamilyFactory
+    pim_catalog.factory.attribute_requirement.class: Pim\Bundle\CatalogBundle\Factory\AttributeRequirementFactory
+
+services:
+    pim_catalog.factory.family:
+        class: %pim_catalog.factory.family.class%
+        arguments:
+            - '@pim_catalog.manager.product'
+            - '@pim_catalog.manager.channel'
+            - '@pim_catalog.factory.attribute_requirement'
+
+    pim_catalog.factory.attribute_requirement:
+        class: %pim_catalog.factory.attribute_requirement.class%

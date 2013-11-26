@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "6815ecb51ab9d22d1e2f42e9950f80f8",
+    "hash": "bac58623c5d2f7477c10210374a10fad",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -74,12 +74,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/akeneo/DemoBundle.git",
-                "reference": "a1072f132564048988d2873b5c05f1c7fa53d5cc"
+                "reference": "49336b1807d30f676b2efaa251c6ff293a715c49"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/akeneo/DemoBundle/zipball/a1072f132564048988d2873b5c05f1c7fa53d5cc",
-                "reference": "a1072f132564048988d2873b5c05f1c7fa53d5cc",
+                "url": "https://api.github.com/repos/akeneo/DemoBundle/zipball/49336b1807d30f676b2efaa251c6ff293a715c49",
+                "reference": "49336b1807d30f676b2efaa251c6ff293a715c49",
                 "shasum": ""
             },
             "require": {
@@ -3477,16 +3477,16 @@
         },
         {
             "name": "oro/platform",
-            "version": "dev-maintenance/pim_beta1",
+            "version": "dev-maintenance/pim_beta3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/akeneo/platform.git",
-                "reference": "546cb47132194ae36595f489bf4abe799173e445"
+                "reference": "51c4583eb141b7617cdf5308cd61e60d43056544"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/akeneo/platform/zipball/546cb47132194ae36595f489bf4abe799173e445",
-                "reference": "546cb47132194ae36595f489bf4abe799173e445",
+                "url": "https://api.github.com/repos/akeneo/platform/zipball/51c4583eb141b7617cdf5308cd61e60d43056544",
+                "reference": "51c4583eb141b7617cdf5308cd61e60d43056544",
                 "shasum": ""
             },
             "require": {

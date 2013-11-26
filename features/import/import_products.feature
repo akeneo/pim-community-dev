@@ -5,7 +5,8 @@ Feature: Execute a job
   I need to be able to import products
 
   Background:
-    Given the following families:
+    Given the "default" catalog configuration
+    And the following families:
       | code |
       | Bag  |
       | Hat  |
@@ -19,16 +20,17 @@ Feature: Execute a job
       | men     | Men     | master |
       | women   | Women   | master |
     And the following product groups:
-      | code  | label      | attributes  | type   |
-      | CROSS | Bag Cross  |             | X_SELL |
+      | code  | label     | attributes | type   |
+      | CROSS | Bag Cross |            | X_SELL |
     And the following attributes:
-      | code        | label       | type                         |
-      | name        | Name        | pim_catalog_text             |
-      | description | Description | pim_catalog_textarea         |
-      | prices      | Prices      | pim_catalog_price_collection |
+      | code        | label       | type     |
+      | name        | Name        | text     |
+      | description | Description | textarea |
+      | prices      | Prices      | prices   |
     And the following job:
       | connector            | alias          | code                | label                       | type   |
       | Akeneo CSV Connector | product_import | acme_product_import | Product import for Acme.com | import |
+    And I am logged in as "Julia"
 
   Scenario: Successfully import a csv file of products
     Given the following file to import:
@@ -46,17 +48,22 @@ Feature: Execute a job
       SKU-010;Bag;CROSS;men,silk;non,;vestibulum nec, euismod in, dolor. Fusce feugiat. Lorem ipsum dolor
       """
     And the following job "acme_product_import" configuration:
-      | element   | property          | value                |
-      | reader    | filePath          | {{ file to import }} |
-      | reader    | uploadAllowed     | no                   |
-      | reader    | delimiter         | ;                    |
-      | reader    | enclosure         | "                    |
-      | reader    | escape            | \                    |
-      | processor | enabled           | yes                  |
-      | processor | categories column | categories           |
-      | processor | family column     | families             |
-      | processor | groups column     | groups               |
-    And I am logged in as "Julia"
+      | step                | element   | property          | value                |
+      | import              | reader    | filePath          | {{ file to import }} |
+      | import              | reader    | uploadAllowed     | no                   |
+      | import              | reader    | delimiter         | ;                    |
+      | import              | reader    | enclosure         | "                    |
+      | import              | reader    | escape            | \                    |
+      | import              | processor | enabled           | yes                  |
+      | import              | processor | categories column | categories           |
+      | import              | processor | family column     | families             |
+      | import              | processor | groups column     | groups               |
+      | import_associations | reader    | filePath          | {{ file to import }} |
+      | import_associations | reader    | uploadAllowed     | no                   |
+      | import_associations | reader    | delimiter         | ;                    |
+      | import_associations | reader    | enclosure         | "                    |
+      | import_associations | reader    | escape            | \                    |
+
     When I am on the "acme_product_import" import job page
     And I launch the import job
     And I wait for the job to finish
@@ -76,17 +83,22 @@ Feature: Execute a job
       SKU-001;Hat;;travel;Donex;Pellentesque habitant morbi tristique senectus et netus et malesuada fames
       """
     And the following job "acme_product_import" configuration:
-      | element   | property          | value                |
-      | reader    | filePath          | {{ file to import }} |
-      | reader    | uploadAllowed     | no                   |
-      | reader    | delimiter         | ;                    |
-      | reader    | enclosure         | "                    |
-      | reader    | escape            | \                    |
-      | processor | enabled           | yes                  |
-      | processor | categories column | categories           |
-      | processor | family column     | families             |
-      | processor | groups column     | groups               |
-    And I am logged in as "Julia"
+      | step                | element   | property          | value                |
+      | import              | reader    | filePath          | {{ file to import }} |
+      | import              | reader    | uploadAllowed     | no                   |
+      | import              | reader    | delimiter         | ;                    |
+      | import              | reader    | enclosure         | "                    |
+      | import              | reader    | escape            | \                    |
+      | import              | processor | enabled           | yes                  |
+      | import              | processor | categories column | categories           |
+      | import              | processor | family column     | families             |
+      | import              | processor | groups column     | groups               |
+      | import_associations | reader    | filePath          | {{ file to import }} |
+      | import_associations | reader    | uploadAllowed     | no                   |
+      | import_associations | reader    | delimiter         | ;                    |
+      | import_associations | reader    | enclosure         | "                    |
+      | import_associations | reader    | escape            | \                    |
+
     When I am on the "acme_product_import" import job page
     And I launch the import job
     And I wait for the job to finish
@@ -107,17 +119,21 @@ Feature: Execute a job
       SKU-001;Bag;;leather,travel;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est
       """
     And the following job "acme_product_import" configuration:
-      | element   | property          | value                |
-      | reader    | filePath          | {{ file to import }} |
-      | reader    | uploadAllowed     | no                   |
-      | reader    | delimiter         | ;                    |
-      | reader    | enclosure         | "                    |
-      | reader    | escape            | \                    |
-      | processor | enabled           | yes                  |
-      | processor | categories column | categories           |
-      | processor | family column     | families             |
-      | processor | groups column     | groups               |
-    And I am logged in as "Julia"
+      | step                | element   | property          | value                |
+      | import              | reader    | filePath          | {{ file to import }} |
+      | import              | reader    | uploadAllowed     | no                   |
+      | import              | reader    | delimiter         | ;                    |
+      | import              | reader    | enclosure         | "                    |
+      | import              | reader    | escape            | \                    |
+      | import              | processor | enabled           | yes                  |
+      | import              | processor | categories column | categories           |
+      | import              | processor | family column     | families             |
+      | import              | processor | groups column     | groups               |
+      | import_associations | reader    | filePath          | {{ file to import }} |
+      | import_associations | reader    | uploadAllowed     | no                   |
+      | import_associations | reader    | delimiter         | ;                    |
+      | import_associations | reader    | enclosure         | "                    |
+      | import_associations | reader    | escape            | \                    |
     When I am on the "acme_product_import" import job page
     And I launch the import job
     And I wait for the job to finish
@@ -142,44 +158,49 @@ Feature: Execute a job
       SKU-010;Bag;;men,silk;non,;vestibulum nec, euismod in, dolor. Fusce feugiat. Lorem ipsum dolor
       """
     And the following job "acme_product_import" configuration:
-      | element   | property          | value      |
-      | reader    | filePath          |            |
-      | reader    | uploadAllowed     | yes        |
-      | reader    | delimiter         | ;          |
-      | reader    | enclosure         | "          |
-      | reader    | escape            | \          |
-      | processor | enabled           | yes        |
-      | processor | categories column | categories |
-      | processor | family column     | families   |
-      | processor | groups column     | groups     |
-    And I am logged in as "Julia"
+      | step                | element   | property          | value      |
+      | import              | reader    | filePath          |            |
+      | import              | reader    | uploadAllowed     | yes        |
+      | import              | reader    | delimiter         | ;          |
+      | import              | reader    | enclosure         | "          |
+      | import              | reader    | escape            | \          |
+      | import              | processor | enabled           | yes        |
+      | import              | processor | categories column | categories |
+      | import              | processor | family column     | families   |
+      | import              | processor | groups column     | groups     |
+      | import_associations | reader    | filePath          |            |
+      | import_associations | reader    | uploadAllowed     | yes        |
+      | import_associations | reader    | delimiter         | ;          |
+      | import_associations | reader    | enclosure         | "          |
+      | import_associations | reader    | escape            | \          |
+
     When I am on the "acme_product_import" import job page
     And I upload and import the file "{{ file to import }}"
     Then there should be 10 products
 
   Scenario: Successfully import products prices
-    Given the following currencies:
-      | code | activated |
-      | USD  | yes       |
-      | EUR  | yes       |
-    And the following file to import:
+    Given the following file to import:
       """
       sku;prices
       SKU-001;"100 EUR, 90 USD"
       SKU-002;50 EUR
       """
     And the following job "acme_product_import" configuration:
-      | element   | property          | value                |
-      | reader    | filePath          | {{ file to import }} |
-      | reader    | uploadAllowed     | no                   |
-      | reader    | delimiter         | ;                    |
-      | reader    | enclosure         | "                    |
-      | reader    | escape            | \                    |
-      | processor | enabled           | yes                  |
-      | processor | categories column | categories           |
-      | processor | family column     | families             |
-      | processor | groups column     | groups               |
-    And I am logged in as "Julia"
+      | step                | element   | property          | value                |
+      | import              | reader    | filePath          | {{ file to import }} |
+      | import              | reader    | uploadAllowed     | no                   |
+      | import              | reader    | delimiter         | ;                    |
+      | import              | reader    | enclosure         | "                    |
+      | import              | reader    | escape            | \                    |
+      | import              | processor | enabled           | yes                  |
+      | import              | processor | categories column | categories           |
+      | import              | processor | family column     | families             |
+      | import              | processor | groups column     | groups               |
+      | import_associations | reader    | filePath          | {{ file to import }} |
+      | import_associations | reader    | uploadAllowed     | no                   |
+      | import_associations | reader    | delimiter         | ;                    |
+      | import_associations | reader    | enclosure         | "                    |
+      | import_associations | reader    | escape            | \                    |
     When I am on the "acme_product_import" import job page
     And I launch the import job
     And I wait for the job to finish
@@ -190,30 +211,31 @@ Feature: Execute a job
       | prices | 50.00 EUR |
 
   Scenario: Successfully update existing products prices
-    Given the following currencies:
-      | code | activated |
-      | USD  | yes       |
-      | EUR  | yes       |
+    Given a "SKU-001" product
     And the following product values:
-      | product | attribute  | value            |
-      | SKU-001 | Prices     | 100 EUR, 150 USD |
+      | product | attribute | value            |
+      | SKU-001 | Prices    | 100 EUR, 150 USD |
     And the following file to import:
       """
       sku;prices
       SKU-001;"100 EUR, 90 USD"
       """
     And the following job "acme_product_import" configuration:
-      | element   | property          | value                |
-      | reader    | filePath          | {{ file to import }} |
-      | reader    | uploadAllowed     | no                   |
-      | reader    | delimiter         | ;                    |
-      | reader    | enclosure         | "                    |
-      | reader    | escape            | \                    |
-      | processor | enabled           | yes                  |
-      | processor | categories column | categories           |
-      | processor | family column     | families             |
-      | processor | groups column     | groups               |
-    And I am logged in as "Julia"
+      | step                | element   | property          | value                |
+      | import              | reader    | filePath          | {{ file to import }} |
+      | import              | reader    | uploadAllowed     | no                   |
+      | import              | reader    | delimiter         | ;                    |
+      | import              | reader    | enclosure         | "                    |
+      | import              | reader    | escape            | \                    |
+      | import              | processor | enabled           | yes                  |
+      | import              | processor | categories column | categories           |
+      | import              | processor | family column     | families             |
+      | import              | processor | groups column     | groups               |
+      | import_associations | reader    | filePath          | {{ file to import }} |
+      | import_associations | reader    | uploadAllowed     | no                   |
+      | import_associations | reader    | delimiter         | ;                    |
+      | import_associations | reader    | enclosure         | "                    |
+      | import_associations | reader    | escape            | \                    |
     When I am on the "acme_product_import" import job page
     And I launch the import job
     And I wait for the job to finish

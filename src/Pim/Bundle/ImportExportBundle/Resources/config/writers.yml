@@ -1,0 +1,59 @@
+parameters:
+    pim_import_export.writer.orm.product.class:                     Pim\Bundle\ImportExportBundle\Writer\ORM\ProductWriter
+    pim_import_export.writer.orm.entity.class:                      Pim\Bundle\ImportExportBundle\Writer\ORM\Writer
+    pim_import_export.writer.orm.category.class:                    Pim\Bundle\ImportExportBundle\Writer\ORM\CategoryWriter
+
+    pim_import_export.writer.file.class:                            Pim\Bundle\ImportExportBundle\Writer\File\FileWriter
+    pim_import_export.writer.file.product.class:                    Pim\Bundle\ImportExportBundle\Writer\File\ProductWriter
+
+    pim_import_export.writer.dummy.class:                           Pim\Bundle\ImportExportBundle\Writer\DummyWriter
+
+services:
+    pim_import_export.writer.file:
+        class: %pim_import_export.writer.file.class%
+
+    pim_import_export.writer.product_file:
+        parent: pim_import_export.writer.file
+        class: %pim_import_export.writer.file.product.class%
+        arguments:
+            - '@pim_catalog.manager.media'
+
+    pim_import_export.writer.dummy:
+        class: %pim_import_export.writer.dummy.class%
+
+    pim_import_export.writer.orm.product:
+        class: %pim_import_export.writer.orm.product.class%
+        arguments:
+            - '@pim_catalog.manager.product'
+            - '@pim_import_export.entity_cache'
+            - '@pim_versioning.event_listener.addversion'
+
+    pim_import_export.writer.orm.category:
+        class: %pim_import_export.writer.orm.category.class%
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+
+    pim_import_export.writer.orm.association:
+        class: %pim_import_export.writer.orm.entity.class%
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+
+    pim_import_export.writer.orm.group:
+        class: %pim_import_export.writer.orm.entity.class%
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+
+    pim_import_export.writer.orm.attribute:
+        class: %pim_import_export.writer.orm.entity.class%
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+
+    pim_import_export.writer.orm.attribute_option:
+        class: %pim_import_export.writer.orm.entity.class%
+        arguments:
+            - '@doctrine.orm.default_entity_manager'
+
+    pim_import_export.writer.orm.product_association:
+        class: %pim_import_export.writer.orm.entity.class%
+        arguments:
+            - '@doctrine.orm.default_entity_manager'

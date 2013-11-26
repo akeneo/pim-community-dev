@@ -13,29 +13,48 @@ pim_import_export:
         attribute_export:
             title: Attribute export in CSV
             export.title: Configuration
+        attribute_option_export:
+            title: Attribute option export in CSV
+            export.title: Configuration
+        association_export:
+            title: Association export in CSV
+            export.title: Configuration
+        group_export:
+            title: Group export in CSV
+            export.title: Configuration
         product_import:
             title: Product import in CSV
             import.title: Configuration
+            import_associations.title: Configuration import association
         category_import:
             title: Category import in CSV
             import.title: Configuration
         attribute_import:
             title: Attribute import in CSV
             import.title: Configuration
+        attribute_option_import:
+            title: Attribute option import in CSV
+            import.title: Configuration
+        association_import:
+            title: Association import in CSV
+            import.title: Configuration
+        group_import:
+            title: Group import in CSV
+            import.title: Configuration
 
 ## Step elements (readers, processors, writers)
 oro_batch:
+    dummy_reader.title:    Dummy reader
+    dummy_processor.title: Dummy processor
+    dummy_writer.title:    Dummy writer
     product_reader:
         title: Scope
         channel:
             label: Channel
             help: The channel you want to export
 
-    category_reader:
-        title: Category extraction
-
-    attribute_reader:
-        title: Attribute extraction
+    entity_reader:
+        title: Entity extraction
 
     csv_reader:
         title: CSV Reader
@@ -55,7 +74,7 @@ oro_batch:
             label: Allow file upload
             help: Whether or not to allow uploading the file directly
 
-    product_csv_reader:
+    csv_product_reader:
         title: CSV Reader
         filePath:
             label: File
@@ -73,7 +92,7 @@ oro_batch:
             label: Allow file upload
             help: Whether or not to allow uploading the file directly
 
-    csv_file_reader:
+    csv_category_reader:
         title: CSV File Reader
         filePath:
             label: File
@@ -91,8 +110,8 @@ oro_batch:
             label: Allow file upload
             help: Whether or not to allow uploading the file directly
 
-    valid_product_creation_processor:
-        title: Product creation
+    product_processor:
+        title: Transform product
         enabled:
             label: Enable the product?
             help: Whether or not imported product should be enabled
@@ -111,8 +130,20 @@ oro_batch:
         channel:
             label: Channel
             help: The channel in which create the imported value
+        delimiter:
+            label: Delimiter
+            help: One character used to set the field delimiter
+        enclosure:
+            label: Enclosure
+            help: One character used to set the field enclosure
+        withHeader:
+            label: With header
+            help: Whether or not to print the column name
+        channel:
+            label: Channel
+            help: The channel in which create the imported value
 
-    valid_category_creation_processor:
+    category_processor:
         title: Category creation
         labelDelimiter:
             label: Label delimiter
@@ -124,7 +155,25 @@ oro_batch:
             label: Check circular references
             help: If yes, data will be processed to make sure that there are no circular references between the categories
 
-    heterogeneous_csv_serializer_processor:
+    association_processor:
+        title: Association creation
+
+    group_processor:
+        title: Group creation
+
+    attribute_processor:
+        title: Create / update attributes
+
+    attribute_option_processor:
+        title: Create / update attributes
+
+    product_association_processor:
+        title: Product association creation
+
+    csv_serializer:
+        help: Whether or not to print the column name
+
+    heterogeneous_processor:
         title: Settings
         delimiter:
             label: Delimiter
@@ -136,7 +185,7 @@ oro_batch:
             label: With header
             help: Whether or not to print the column name
 
-    product_csv_serializer_processor:
+    homogeneous_processor:
         title: Settings
         delimiter:
             label: Delimiter
@@ -146,43 +195,23 @@ oro_batch:
             help: One character used to set the field enclosure
         withHeader:
             label: With header
-            help: Whether or not to print the column name
-
-    homogeneous_csv_serializer_processor:
-        title: Settings
-        delimiter:
-            label: Delimiter
-            help: One character used to set the field delimiter
-        enclosure:
-            label: Enclosure
-            help: One character used to set the field enclosure
-        withHeader:
-            label: With header
-            help: Whether or not to print the column name
 
     file_writer:
         title: Output
-        directoryName:
-            label: Directory path
+        filePath:
+            label: File path
             help: Where to write the generated file on the file system
-        fileName:
-            label: File name
-            help: The name of the generated file.
-
-    product_file_writer:
-        title: Output
-        directoryName:
-            label: Directory path
+    product_writer:
+        title: Product storage
+        filePath:
+            label: File path
             help: Where to write the generated file on the file system
-        fileName:
-            label: File name
-            help: The name of the generated file.
 
-    orm_category_writer:
+    category_writer:
         title: Category storage
 
-    orm_product_writer:
-        title: Product storage
+    writer:
+        title: Entity storage
 
 # Page titles:
 Import management:        Import management

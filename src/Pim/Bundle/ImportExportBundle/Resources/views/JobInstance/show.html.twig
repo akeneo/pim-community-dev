@@ -28,9 +28,9 @@
 
     {% set left %}
         <ul class="inline">
-           <li>{{ 'Code'|trans }}: {{ jobInstance.code }}</li>
-           <li>{{ 'Connector'|trans }}: {{ jobInstance.job.name|trans }}</li>
-       </ul>
+            <li>{{ 'Job'|trans }}: {{ jobInstance.job.name|trans }}</li>
+            <li>{{ 'Connector'|trans }}: {{ jobInstance.connector|trans }}</li>
+        </ul>
     {% endset %}
 
     {% set buttons %}
@@ -59,10 +59,9 @@
             {{ elements.form_errors(form) }}
             <div class="row-fluid">
                 {{ form_row(form.file) }}
-                {{ form_row(form._token) }}
                 {{ elements.submitBtn('Upload and '~action~' now') }}
             </div>
-        </form>
+        {{ form_end(form) }}
     {% endif %}
 
     {% set accordionContent = {} %}

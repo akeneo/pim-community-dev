@@ -10,7 +10,7 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\Association;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\Family;
-use Behat\Mink\Exception\UnsupportedDriverActionException;
+use Pim\Bundle\CatalogBundle\Entity\GroupType;
 
 /**
  * Context for navigating the website
@@ -57,12 +57,15 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
         'locales'                  => 'Locale index',
         'products'                 => 'Product index',
         'product groups'           => 'ProductGroup index',
+        'group types'              => 'GroupType index',
         'users'                    => 'User index',
         'user roles'               => 'UserRole index',
         'user groups'              => 'UserGroup index',
-        'variants'                 => 'Variant index',
+        'variant groups'           => 'VariantGroup index',
         'attribute groups'         => 'AttributeGroup index',
         'attribute group creation' => 'AttributeGroup creation',
+        'dashboard'                => 'Dashboard index',
+        'search'                   => 'Search index',
     );
 
     /**
@@ -74,24 +77,13 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     }
 
     /**
-     * @BeforeScenario
+     * @AfterScenario
      */
     public function resetCurrentPage()
     {
+        $script = 'sessionStorage.clear(); typeof $ !== "undefined" && $(window).off("beforeunload");';
+        $this->getMainContext()->executeScript($script);
         $this->currentPage = null;
-    }
-
-    /**
-     * @AfterScenario
-     */
-    public function disableNavigationConfirmation()
-    {
-        if (strpos($this->currentPage, 'edit')) {
-            try {
-                $this->getSession()->executeScript('typeof $ !== "undefined" && $(window).off("beforeunload");');
-            } catch (UnsupportedDriverActionException $e) {
-            }
-        }
     }
 
     /**
@@ -101,11 +93,8 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
      */
     public function iAmLoggedInAs($username)
     {
-        $password = $username;
-        $this->getFixturesContext()->getOrCreateUser($username, $password);
-
         $this->username = $username;
-        $this->password = $password;
+        $this->password = $username;
     }
 
     /**
@@ -182,6 +171,28 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     }
 
     /**
+     * @param JobInstance $job
+     *
+     * @Given /^I am on the ("([^"]*)" import job) edit page$/
+     */
+    public function iAmOnTheImportJobEditPage(JobInstance $job)
+    {
+        $this->openPage('Import edit', array('id' => $job->getId()));
+        $this->wait();
+    }
+
+    /**
+     * @param JobInstance $job
+     *
+     * @Given /^I am on the ("([^"]*)" export job) edit page$/
+     */
+    public function iAmOnTheExportJobEditPage(JobInstance $job)
+    {
+        $this->openPage('Export edit', array('id' => $job->getId()));
+        $this->wait();
+    }
+
+    /**
      * @param string $jobTitle
      * @param string $jobType
      *
@@ -214,6 +225,33 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     public function iAmOnTheProductGroupEditPage($identifier)
     {
         $page = 'ProductGroup';
+        $getter = sprintf('get%s', $page);
+        $entity = $this->getFixturesContext()->$getter($identifier);
+        $this->openPage(sprintf('%s edit', $page), array('id' => $entity->getId()));
+    }
+
+    /**
+     * @param string $identifier
+     *
+     * @Given /^I am on the "([^"]*)" variant group page$/
+     * @Given /^I edit the "([^"]*)" variant group$/
+     */
+    public function iAmOnTheVariantGroupEditPage($identifier)
+    {
+        $page = 'VariantGroup';
+        $entity = $this->getFixturesContext()->getProductGroup($identifier);
+        $this->openPage(sprintf('%s edit', $page), array('id' => $entity->getId()));
+    }
+
+    /**
+     * @param string $identifier
+     *
+     * @Given /^I am on the "([^"]*)" group type page$/
+     * @Given /^I edit the "([^"]*)" group type$/
+     */
+    public function iAmOnTheGroupTypeEditPage($identifier)
+    {
+        $page = 'GroupType';
         $getter = sprintf('get%s', $page);
         $entity = $this->getFixturesContext()->$getter($identifier);
         $this->openPage(sprintf('%s edit', $page), array('id' => $entity->getId()));
@@ -263,6 +301,17 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     public function iShouldBeOnTheAttributeGroupPage(AttributeGroup $group)
     {
         $expectedAddress = $this->getPage('AttributeGroup edit')->getUrl(array('id' => $group->getId()));
+        $this->assertAddress($expectedAddress);
+    }
+
+    /**
+     * @param GroupType $groupType
+     *
+     * @Given /^I should be on the ("([^"]*)" group type) page$/
+     */
+    public function iShouldBeOnTheGroupTypePage(GroupType $groupType)
+    {
+        $expectedAddress = $this->getPage('GroupType edit')->getUrl(array('id' => $groupType->getId()));
         $this->assertAddress($expectedAddress);
     }
 

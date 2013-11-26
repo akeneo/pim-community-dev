@@ -16,42 +16,42 @@ define(
                 locked       = false;
 
             this.config = {
-                'core': {
-                    'animation': 200,
-                    'html_titles': true
+                core: {
+                    animation: 200,
+                    html_titles: true
                 },
-                'plugins': [
+                plugins: [
                     'themes',
                     'json_data',
                     'ui',
                     'types',
                     'checkbox'
                 ],
-                'checkbox': {
-                    'two_state': true,
-                    'real_checkboxes': true,
-                    'override_ui': true,
-                    'real_checkboxes_names': function (n) {
+                checkbox: {
+                    two_state: true,
+                    real_checkboxes: true,
+                    override_ui: true,
+                    real_checkboxes_names: function (n) {
                         return ['category_' + n[0].id, 1];
                     }
                 },
-                'themes': {
-                    'dots': true,
-                    'icons': true
+                themes: {
+                    dots: true,
+                    icons: true
                 },
-                'json_data': {
-                    'ajax': {
-                        'url': function (node) {
+                json_data: {
+                    ajax: {
+                        url: function (node) {
                             var treeHasProduct = $('#tree-link-' + currentTree).hasClass('tree-has-product');
 
                             if ((!node || (node === -1)) && treeHasProduct) {
                                 // First load of the tree: get the checked categories
-                                return Routing.generate('pim_catalog_product_listcategories', { 'id': id, 'category_id': currentTree, '_format': 'json', 'dataLocale': dataLocale });
+                                return Routing.generate('pim_catalog_product_listcategories', { id: id, category_id: currentTree, _format: 'json', dataLocale: dataLocale });
                             }
 
-                            return Routing.generate('pim_catalog_categorytree_children', { '_format': 'json', 'dataLocale': dataLocale });
+                            return Routing.generate('pim_catalog_categorytree_children', { _format: 'json', dataLocale: dataLocale });
                         },
-                        'data': function (node) {
+                        data: function (node) {
                             var data           = {},
                                 treeHasProduct = $('#tree-link-' + currentTree).hasClass('tree-has-product');
 
@@ -76,19 +76,19 @@ define(
                         }
                     }
                 },
-                'types': {
-                    'max_depth': -2,
-                    'max_children': -2,
-                    'valid_children': [ 'folder' ],
-                    'types': {
+                types: {
+                    max_depth: -2,
+                    max_children: -2,
+                    valid_children: [ 'folder' ],
+                    types: {
                         'default': {
-                            'valid_children': 'folder'
+                            valid_children: 'folder'
                         }
                     }
                 },
-                'ui': {
-                    'select_limit': 1,
-                    'select_multiple_modifier': false
+                ui: {
+                    select_limit: 1,
+                    select_multiple_modifier: false
                 }
             };
 
@@ -114,7 +114,7 @@ define(
                 $('#apply-on-tree-' + treeId).val(1);
                 $tree.jstree(self.config);
 
-                $tree.bind("check_node.jstree", function (e, d) {
+                $tree.bind('check_node.jstree', function (e, d) {
                     if (d.inst.get_checked() && $(d.rslt.obj[0]).hasClass('jstree-root') === false) {
                         var selected = $(hiddenCategoryId).val();
                         selected = selected.length > 0 ? selected.split(',') : [];
@@ -132,7 +132,7 @@ define(
                     }
                 });
 
-                $tree.bind("uncheck_node.jstree", function (e, d) {
+                $tree.bind('uncheck_node.jstree', function (e, d) {
                     if (d.inst.get_checked()) {
                         var selected = $(hiddenCategoryId).val();
                         selected = selected.split(',');
@@ -141,7 +141,7 @@ define(
                         selected = selected.join(',');
                         $(hiddenCategoryId).val(selected);
                         var treeId = e.target.id;
-                        if ($("#"+treeId).jstree('get_checked').length === 0) {
+                        if ($('#'+treeId).jstree('get_checked').length === 0) {
                             var treeLinkId = treeId.replace('-', '-link-');
                             $('#'+treeLinkId+' i').removeClass('green');
                             $('#'+treeLinkId+' i').addClass('gray');

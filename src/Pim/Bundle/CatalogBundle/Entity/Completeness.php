@@ -5,8 +5,6 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Doctrine\ORM\Mapping as ORM;
-use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * Product completeness entity
@@ -16,97 +14,45 @@ use Gedmo\Mapping\Annotation as Gedmo;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @ORM\Entity
- * @ORM\Table(
- *     name="pim_catalog_completeness",
- *     uniqueConstraints={
- *         @ORM\UniqueConstraint(
- *             name="searchunique_idx",
- *             columns={"channel_id", "locale_id", "product_id"}
- *         )
- *     }
- * )
- * 
  * @ExclusionPolicy("all")
  */
 class Completeness
 {
     /**
      * @var integer $id
-     *
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
      */
     protected $id;
 
     /**
      * @var Locale $locale
-     *
-     * @ORM\ManyToOne(targetEntity="Pim\Bundle\CatalogBundle\Entity\Locale")
      */
     protected $locale;
 
     /**
      * @var \Pim\Bundle\CatalogBundle\Entity\Channel $channel
-     *
-     * @ORM\ManyToOne(targetEntity="Pim\Bundle\CatalogBundle\Entity\Channel")
-     * @ORM\JoinColumn(name="channel_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $channel;
 
     /**
      * @var integer $ratio
-     *
-     * @ORM\Column(type="integer")
      */
     protected $ratio = 100;
 
     /**
      * @var integer $missingCount
-     *
-     * @ORM\Column(name="missing_count", type="integer")
      */
     protected $missingCount = 0;
 
     /**
      * @var integer $requiredCount
-     *
-     * @ORM\Column(name="required_count", type="integer")
      */
     protected $requiredCount = 0;
 
     /**
-     * @var datetime $updated
-     *
-     * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(type="datetime")
-     */
-    protected $updated;
-
-    /**
      * @var \Pim\Bundle\CatalogBundle\Model\ProductInterface
-     *
-     * @ORM\ManyToOne(
-     *     targetEntity="Pim\Bundle\CatalogBundle\Model\ProductInterface",
-     *     inversedBy="completenesses"
-     * )
-     * @ORM\JoinColumn(name="product_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $product;
 
-    /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
-     *
-     * @ORM\ManyToMany(targetEntity="Pim\Bundle\CatalogBundle\Entity\ProductAttribute")
-     * @ORM\JoinTable(
-     *     name="pim_catalog_completenesses_attributes",
-     *     joinColumns={@ORM\JoinColumn(name="completeness_id", referencedColumnName="id", onDelete="CASCADE")},
-     *     inverseJoinColumns={
-     *         @ORM\JoinColumn(name="attribute_id", referencedColumnName="id", onDelete="CASCADE")
-     *     }
-     * )
-     */
     protected $missingAttributes;
 
     /**
@@ -233,30 +179,6 @@ class Completeness
     public function setRequiredCount($requiredCount)
     {
         $this->requiredCount = $requiredCount;
-
-        return $this;
-    }
-
-    /**
-     * Getter updated datetime
-     *
-     * @return datetime
-     */
-    public function getUpdated()
-    {
-        return $this->updated;
-    }
-
-    /**
-     * Setter updated datetime
-     *
-     * @param datetime $updated
-     *
-     * @return Completeness
-     */
-    public function setUpdated($updated)
-    {
-        $this->updated = $updated;
 
         return $this;
     }

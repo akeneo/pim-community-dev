@@ -87,7 +87,7 @@ class MediaController extends AbstractDoctrineController
      */
     public function showAction(Request $request, $filename)
     {
-        $media = $this->getRepository('OroFlexibleEntityBundle:Media')->findOneBy(
+        $media = $this->getRepository('PimCatalogBundle:Media')->findOneBy(
             array(
                 'filename' => $filename
             )

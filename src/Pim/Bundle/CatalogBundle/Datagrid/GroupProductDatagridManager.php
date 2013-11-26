@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Datagrid;
 
-use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
-
 use Oro\Bundle\GridBundle\Sorter\SorterInterface;
 
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
@@ -104,7 +102,8 @@ class GroupProductDatagridManager extends FlexibleDatagridManager
                 'sortable'        => true,
                 'filter_type'     => FilterInterface::TYPE_BOOLEAN,
                 'filterable'      => true,
-                'filter_by_where' => true
+                'filter_by_where' => true,
+                'show_filter'     => true
             )
         );
 
@@ -200,7 +199,7 @@ class GroupProductDatagridManager extends FlexibleDatagridManager
         );
 
         foreach ($this->getFlexibleAttributes() as $attribute) {
-            if (!$attribute->isUseableAsGridColumn() || !$attribute->isUseableAsGridFilter()) {
+            if (!$attribute->isUseableAsGridFilter()) {
                 continue;
             }
 

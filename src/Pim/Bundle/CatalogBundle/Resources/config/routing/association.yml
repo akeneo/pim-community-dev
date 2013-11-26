@@ -20,3 +20,9 @@ pim_catalog_association_remove:
     requirements:
         id: \d+
     methods: [DELETE]
+
+pim_catalog_association_history:
+    path: /{id}/history
+    defaults: { _controller: pim_catalog.controller.association:historyAction }
+    requirements:
+        id: \d+

@@ -3,6 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Normalizer;
 
 use Pim\Bundle\ImportExportBundle\Normalizer\CategoryNormalizer;
+use Pim\Bundle\ImportExportBundle\Normalizer\TranslationNormalizer;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 
 /**
@@ -12,53 +13,37 @@ use Pim\Bundle\CatalogBundle\Entity\Category;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CategoryNormalizerTest extends \PHPUnit_Framework_TestCase
+class CategoryNormalizerTest extends NormalizerTestCase
 {
-    /**
-     * @var CategoryNormalizer
-     */
-    protected $normalizer;
-
     /**
      * {@inheritdoc}
      */
     protected function setUp()
     {
-        $this->normalizer = new CategoryNormalizer();
+        $this->normalizer = new CategoryNormalizer(new TranslationNormalizer());
+        $this->format     = 'json';
     }
 
     /**
-     * Data provider for testing supportsNormalization method
-     * @return array
+     * {@inheritdoc}
      */
     public static function getSupportNormalizationData()
     {
         return array(
-            array('Pim\Bundle\CatalogBundle\Model\CategoryInterface', 'json',  true),
+            array('Pim\Bundle\CatalogBundle\Model\CategoryInterface', 'json', true),
+            array('Pim\Bundle\CatalogBundle\Model\CategoryInterface', 'xml', true),
             array('Pim\Bundle\CatalogBundle\Model\CategoryInterface', 'csv', false),
-            array('stdClass',                                         'json',  false),
-            array('stdClass',                                         'csv', false),
+            array('Pim\Bundle\CatalogBundle\Entity\Category', 'json', true),
+            array('Pim\Bundle\CatalogBundle\Entity\Category', 'xml', true),
+            array('Pim\Bundle\CatalogBundle\Entity\Category', 'csv', false),
+            array('stdClass', 'json', false),
+            array('stdClass', 'xml', false),
+            array('stdClass', 'csv', false),
         );
     }
 
     /**
-     * Test supportsNormalization method
-     * @param mixed   $class
-     * @param string  $format
-     * @param boolean $isSupported
-     *
-     * @dataProvider getSupportNormalizationData
-     */
-    public function testSupportNormalization($class, $format, $isSupported)
-    {
-        $data = $this->getMock($class);
-
-        $this->assertSame($isSupported, $this->normalizer->supportsNormalization($data, $format));
-    }
-
-    /**
-     * Data provider for testing normalize method
-     * @return array
+     * {@inheritdoc}
      */
     public static function getNormalizeData()
     {
@@ -67,44 +52,25 @@ class CategoryNormalizerTest extends \PHPUnit_Framework_TestCase
                 array(
                     'code'    => 'root_category',
                     'label'   => array('en' => 'Root category', 'fr' => 'Categorie racine'),
-                    'parent'  => '',
-                    'dynamic' => '0',
+                    'parent'  => ''
                 )
             ),
             array(
                 array(
                     'code'    => 'child_category',
                     'label'   => array('en' => 'Child category', 'fr' => 'fr:Catégorie enfant'),
-                    'parent'  => '1',
-                    'dynamic' => '0',
+                    'parent'  => '1'
                 )
             ),
         );
     }
 
     /**
-     * Test normalize method
-     * @param array $data
-     *
-     * @dataProvider getNormalizeData
-     */
-    public function testNormalize(array $data)
-    {
-        $category = $this->createCategory($data);
-
-        $this->assertEquals(
-            $data,
-            $this->normalizer->normalize($category, 'csv')
-        );
-    }
-
-    /**
-     * Create a category
-     * @param array $data
+     * {@inheritdoc}
      *
      * @return Category
      */
-    protected function createCategory(array $data)
+    protected function createEntity(array $data)
     {
         $category = new Category();
         $category->setCode($data['code']);
@@ -120,8 +86,6 @@ class CategoryNormalizerTest extends \PHPUnit_Framework_TestCase
             $parent->setCode($data['parent']);
             $category->setParent($parent);
         }
-
-        $category->setDynamic($data['dynamic']);
 
         return $category;
     }

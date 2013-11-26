@@ -4,11 +4,7 @@ Feature: Browse families
   I need to be able to view a list of them
 
   Scenario: Successfully display all the families
-    Given the following families:
-      | code       |
-      | smartphone |
-      | bags       |
-      | jewels     |
+    Given a "footwear" catalog configuration
     And I am logged in as "admin"
     When I am on the families page
-    Then I should see the families bags, jewels and smartphone
+    Then I should see the families Boots, Sandals and Sneakers

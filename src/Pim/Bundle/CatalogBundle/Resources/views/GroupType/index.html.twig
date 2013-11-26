@@ -1,0 +1,42 @@
+{% extends 'PimCatalogBundle::layout.html.twig' %}
+
+{% block head_script %}
+    {{ parent() }}
+
+    {% include 'OroGridBundle:Include:javascript.html.twig' with {'datagridView': datagrid, 'selector': '#group-type-grid'} %}
+    {% include 'OroGridBundle:Include:stylesheet.html.twig' %}
+{% endblock %}
+
+{% block content %}
+
+    <script type="text/javascript">
+        require(
+            ['jquery', 'pim/dialogform'],
+            function ($, dialogForm) {
+                'use strict';
+                $(function() {
+                    new dialogForm('#create-group-type');
+                });
+            }
+        );
+    </script>
+
+    {% if title is not defined %}
+        {% set title = 'group type.overview'|trans %}
+    {% endif %}
+
+    {% if buttons is not defined %}
+        {% set buttons %}
+            {{ elements.createBtn(
+                'group type',
+                null,
+                { 'id': 'create-group-type', 'data-form': 'dialog', 'data-form-url': path('pim_catalog_group_type_create') }
+            ) }}
+        {% endset %}
+    {% endif %}
+
+    {{ elements.page_header(title, buttons) }}
+
+    <div id="group-type-grid"></div>
+
+{% endblock %}

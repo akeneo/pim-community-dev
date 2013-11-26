@@ -65,12 +65,18 @@ oro_menu_config:
         pim_catalog_channel:
             label: Channels
             route: pim_catalog_channel_index
+        pim_enrich_variant_group:
+            label: Variant groups
+            route: pim_catalog_variant_group_index
         pim_enrich_group:
             label: Groups
             route: pim_catalog_group_index
         pim_catalog_association:
             label: Associations
             route: pim_catalog_association_index
+        pim_catalog_group_type:
+            label: Group types
+            route: pim_catalog_group_type_index
 
         oro_tag_list:
             display: false
@@ -96,6 +102,7 @@ oro_menu_config:
                     children:
                         pim_enrich_product: ~
                         pim_enrich_categorytree: ~
+                        pim_enrich_variant_group: ~
                         pim_enrich_group: ~
 
                 pim_configuration_tab:
@@ -104,6 +111,7 @@ oro_menu_config:
                         pim_enrich_attribute: ~
                         pim_enrich_family: ~
                         pim_catalog_association: ~
+                        pim_catalog_group_type: ~
                         pim_catalog_currency: ~
                         pim_catalog_locale: ~
 
@@ -135,6 +143,9 @@ oro_titles:
     pim_catalog_group_index:             Groups
     pim_catalog_group_create:            Groups | Create
     pim_catalog_group_edit:              Groups %%group.label%% | Edit
+    pim_catalog_variant_group_index:     Variant groups
+    pim_catalog_variant_group_create:    Variant groups | Create
+    pim_catalog_variant_group_edit:      Variant groups %%group.label%% | Edit
     pim_catalog_association_index:       Associations
     pim_catalog_association_create:      Associations | Create
     pim_catalog_association_edit:        Associations %%association.label%% | Edit

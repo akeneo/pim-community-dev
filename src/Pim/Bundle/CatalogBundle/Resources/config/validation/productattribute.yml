@@ -34,21 +34,6 @@ Pim\Bundle\CatalogBundle\Entity\ProductAttribute:
                 - pim_catalog_multiselect
                 - pim_catalog_simpleselect
     properties:
-        attributeType:
-            - Choice:
-                choices:
-                    - pim_catalog_identifier
-                    - pim_catalog_text
-                    - pim_catalog_textarea
-                    - pim_catalog_multiselect
-                    - pim_catalog_simpleselect
-                    - pim_catalog_price_collection
-                    - pim_catalog_number
-                    - pim_catalog_boolean
-                    - pim_catalog_date
-                    - pim_catalog_file
-                    - pim_catalog_image
-                    - pim_catalog_metric
         code:
             - NotBlank: ~
             - Regex:
@@ -57,7 +42,7 @@ Pim\Bundle\CatalogBundle\Entity\ProductAttribute:
             - Length:
                 max: 255
             - Regex:
-                pattern: /^(?!(categories|categoryId|completeness|enabled|family|groups|productAssociations|scope|treeId|values)$)/
+                pattern: /^(?!(associations|categories|categoryId|completeness|enabled|family|groups|productAssociations|products|scope|treeId|values|(.)*_(products|groups))$)/
                 message: This code is not available.
         searchable:
             - Type: bool
@@ -102,20 +87,17 @@ Pim\Bundle\CatalogBundle\Entity\ProductAttribute:
                     - pim_catalog_file
                     - pim_catalog_metric
                     - pim_catalog_boolean
-        options:
-            - Count:
-                min: 1
-                minMessage: You must specify at least one option
-                groups: [pim_catalog_simpleselect, pim_catalog_multiselect]
         dateType:
             - Choice:
                 choices: [date, time, datetime]
                 groups: [pim_catalog_date]
         maxFileSize:
-            - GreaterThanOrEqual:
-                value: 0
+            - Range:
+                min: 0.01
+                max: 9999.99
+                groups: [pim_catalog_file, pim_catalog_image]
             - Type:
-                type: integer
+                type: numeric
                 groups: [pim_catalog_file, pim_catalog_image]
         defaultValue:
             - Blank:
@@ -142,7 +124,7 @@ Pim\Bundle\CatalogBundle\Entity\ProductAttribute:
                 groups: [pim_catalog_date]
         validationRule:
             - Choice:
-                choices: [url, email, regexp]
+                choices: [null, url, email, regexp]
                 groups: [pim_catalog_text]
         validationRegexp:
             - Blank:
@@ -175,8 +157,6 @@ Pim\Bundle\CatalogBundle\Entity\ProductAttributeTranslation:
                 max: 64
 
 Pim\Bundle\CatalogBundle\Entity\AttributeOption:
-    constraints:
-        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: code
     properties:
         code:
             - NotBlank: ~
@@ -185,3 +165,5 @@ Pim\Bundle\CatalogBundle\Entity\AttributeOption:
                 message: Option code may contain only letters, numbers and underscores
             - Length:
                 max: 255
+        attribute:
+            - Valid: ~

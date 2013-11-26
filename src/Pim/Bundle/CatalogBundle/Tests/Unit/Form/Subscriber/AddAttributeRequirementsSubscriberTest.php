@@ -20,7 +20,10 @@ class AddAttributeRequirementsSubscriberTest extends \PHPUnit_Framework_TestCase
     public function testGetSubscribedEvent()
     {
         $this->assertEquals(
-            array('form.pre_set_data' => 'preSetData'),
+            array(
+                'form.pre_set_data' => 'preSetData',
+                'form.post_set_data' => 'postSetData',
+            ),
             AddAttributeRequirementsSubscriber::getSubscribedEvents()
         );
     }
@@ -63,12 +66,58 @@ class AddAttributeRequirementsSubscriberTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test related method
+     */
+    public function testPostSetData()
+    {
+        $mobile      = $this->getChannelMock('mobile');
+        $ecommerce   = $this->getChannelMock('ecommerce');
+        $name        = $this->getAttributeMock('name');
+        $description = $this->getAttributeMock('description');
+
+        $channels    = array($mobile, $ecommerce);
+        $attributes  = array($name, $description);
+
+        $requirement1 = $this->getAttributeRequirementMock($this->getProductAttributeMock('bar'));
+        $requirement2 = $this->getAttributeRequirementMock($this->getProductAttributeMock('pim_catalog_identifier'));
+        $requirement2->expects($this->once())
+            ->method('setRequired')
+            ->with(true);
+        $family = $this->getFamilyMock(
+            array(
+                'foo' => $requirement1,
+                'baz' => $requirement2
+            )
+        );
+
+        $form   = $this->getFormMock();
+        $event  = $this->getEventMock($family, $form);
+
+        $requirementsForm = $this->getFormMock();
+        $form->expects($this->any())
+            ->method('get')
+            ->will(
+                $this->returnValueMap(
+                    array(
+                        array('attributeRequirements', $requirementsForm)
+                    )
+                )
+            );
+        $requirementsForm->expects($this->once())
+            ->method('remove')
+            ->with('baz');
+
+        $subscriber  = new AddAttributeRequirementsSubscriber($channels, $attributes);
+        $subscriber->postSetData($event);
+    }
+
+    /**
      * @param mixed $attribute
      * @param mixed $channel
      *
      * @return \Pim\Bundle\CatalogBundle\Entity\AttributeRequirement
      */
-    private function getAttributeRequirementMock($attribute, $channel)
+    private function getAttributeRequirementMock($attribute, $channel = null)
     {
         $requirement = $this->getMock('Pim\Bundle\CatalogBundle\Entity\AttributeRequirement');
 
@@ -131,10 +180,11 @@ class AddAttributeRequirementsSubscriberTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @param mixed $data
+     * @param Form  $form
      *
      * @return \Symfony\Component\Form\FormEvent
      */
-    private function getEventMock($data)
+    private function getEventMock($data, $form = null)
     {
         $event = $this
             ->getMockBuilder('Symfony\Component\Form\FormEvent')
@@ -145,6 +195,53 @@ class AddAttributeRequirementsSubscriberTest extends \PHPUnit_Framework_TestCase
             ->method('getData')
             ->will($this->returnValue($data));
 
+        $event->expects($this->any())
+            ->method('getForm')
+            ->will($this->returnValue($form));
+
         return $event;
+    }
+
+    /**
+     * @param array $requirements
+     *
+     * @return \Pim\Bundle\CatalogBundle\Entity\Family
+     */
+    protected function getFamilyMock(array $requirements)
+    {
+        $family = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Family');
+
+        $family->expects($this->any())
+            ->method('getAttributeRequirements')
+            ->will($this->returnValue($requirements));
+
+        return $family;
+    }
+
+    /**
+     * @return \Symfony\Component\Form\Form
+     */
+    protected function getFormMock()
+    {
+        return $this
+            ->getMockBuilder('Symfony\Component\Form\Form')
+            ->disableOriginalConstructor()
+            ->getMock();
+    }
+
+    /**
+     * @param string $type
+     *
+     * @return \Pim\Bundle\CatalogBundle\Entity\ProductAttribute
+     */
+    protected function getProductAttributeMock($type)
+    {
+        $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductAttribute');
+
+        $attribute->expects($this->any())
+            ->method('getAttributeType')
+            ->will($this->returnValue($type));
+
+        return $attribute;
     }
 }

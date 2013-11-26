@@ -49,6 +49,8 @@ class LoadUserAttrData extends AbstractFixture implements OrderedFixtureInterfac
      */
     public function load(ObjectManager $manager)
     {
+        $storageManager = $this->userManager->getStorageManager();
+
         $attribute = $this->createAttributeWithOptions(
             'oro_flexibleentity_simpleselect',
             'cataloglocale',
@@ -56,7 +58,7 @@ class LoadUserAttrData extends AbstractFixture implements OrderedFixtureInterfac
             true,
             'Catalog locale'
         );
-        $this->userManager->getStorageManager()->persist($attribute);
+        $storageManager->persist($attribute);
 
         $attribute = $this->createAttributeWithOptions(
             'oro_flexibleentity_simpleselect',
@@ -65,9 +67,18 @@ class LoadUserAttrData extends AbstractFixture implements OrderedFixtureInterfac
             true,
             'Catalog scope'
         );
-        $this->userManager->getStorageManager()->persist($attribute);
+        $storageManager->persist($attribute);
 
-        $this->userManager->getStorageManager()->flush();
+        $attribute = $this->createAttributeWithOptions(
+            'oro_flexibleentity_simpleselect',
+            'defaulttree',
+            $this->getTrees(),
+            true,
+            'Default tree'
+        );
+        $storageManager->persist($attribute);
+
+        $storageManager->flush();
     }
 
     /**
@@ -165,6 +176,23 @@ class LoadUserAttrData extends AbstractFixture implements OrderedFixtureInterfac
         $choices = array();
         foreach ($channels as $channel) {
             $choices[] = $channel->getCode();
+        }
+
+        return $choices;
+    }
+
+    /**
+     * Get array of category trees
+     *
+     * @return array
+     */
+    protected function getTrees()
+    {
+        $trees = $this->container->get('pim_catalog.manager.category')->getTrees();
+
+        $choices = array();
+        foreach ($trees as $tree) {
+            $choices[] = $tree->getCode();
         }
 
         return $choices;

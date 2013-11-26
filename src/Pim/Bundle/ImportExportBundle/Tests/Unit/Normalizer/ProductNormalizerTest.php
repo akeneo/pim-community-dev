@@ -19,7 +19,7 @@ class ProductNormalizerTest extends \PHPUnit_Framework_TestCase
     /**
      * Prepare the normalizer
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->normalizer = new ProductNormalizer($this->getRouterMock());
         $this->normalizer->setChannel($this->getChannelMock());
@@ -33,10 +33,15 @@ class ProductNormalizerTest extends \PHPUnit_Framework_TestCase
     public static function getSupportNormalizationData()
     {
         return array(
-            array('Pim\Bundle\CatalogBundle\Entity\Product',         'json', true),
+            array('Pim\Bundle\CatalogBundle\Entity\Product', 'json', true),
+            array('Pim\Bundle\CatalogBundle\Entity\Product', 'xml', true),
+            array('Pim\Bundle\CatalogBundle\Entity\Product', 'csv',  false),
             array('Pim\Bundle\CatalogBundle\Model\ProductInterface', 'json', true),
-            array('Pim\Bundle\CatalogBundle\Entity\Product',         'csv',  false),
-            array('stdClass',                                        'json', false),
+            array('Pim\Bundle\CatalogBundle\Model\ProductInterface', 'xml', true),
+            array('Pim\Bundle\CatalogBundle\Entity\ProductInterface', 'csv', false),
+            array('stdClass', 'json', false),
+            array('stdClass', 'xml', false),
+            array('stdClass', 'csv', false),
         );
     }
 

@@ -44,6 +44,12 @@ services:
         tags:
             - { name: pim.attribute_constraint_guesser }
 
+    pim.attribute_constraint_guesser.numeric:
+        public: false
+        class: Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\NumericGuesser
+        tags:
+            - { name: pim.attribute_constraint_guesser }
+
     pim.attribute_constraint_guesser.range:
         public: false
         class: Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\RangeGuesser
@@ -71,5 +77,11 @@ services:
     pim.attribute_constraint_guesser.unique_value:
         public: false
         class: Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\UniqueValueGuesser
+        tags:
+            - { name: pim.attribute_constraint_guesser }
+
+    pim.attribute_constraint_guesser.price_collection:
+        public: false
+        class: Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\PriceCollectionGuesser
         tags:
             - { name: pim.attribute_constraint_guesser }

@@ -79,6 +79,12 @@ class ProductDatagridManager extends FlexibleDatagridManager
     protected $filterCategoryId = self::UNCLASSIFIED_CATEGORY;
 
     /**
+     * Filter with sub-categories
+     * @var integer
+     */
+    protected $filterIncludeSub = 0;
+
+    /**
      * Define constructor to add new price type
      */
     public function __construct()
@@ -138,6 +144,16 @@ class ProductDatagridManager extends FlexibleDatagridManager
     }
 
     /**
+     * Define if the sub-category are used to filter the product collection
+     *
+     * @param integer $includeSub
+     */
+    public function setIncludeSub($includeSub)
+    {
+        $this->filterIncludeSub = $includeSub;
+    }
+
+    /**
      * {@inheritdoc}
      */
     protected function getProperties()
@@ -192,6 +208,9 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $field = $this->createFamilyField();
         $fieldsCollection->add($field);
 
+        $field = $this->createGroupField();
+        $fieldsCollection->add($field);
+
         $field = new FieldDescription();
         $field->setName('enabled');
         $field->setOptions(
@@ -240,9 +259,6 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $fieldsCollection->add($fieldUpdated);
 
         $field = $this->createCompletenessField();
-        $fieldsCollection->add($field);
-
-        $field = $this->createGroupField();
         $fieldsCollection->add($field);
     }
 
@@ -411,7 +427,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
                 'multiple'        => true,
                 'field_options'   => array('choices' => $choices),
                 'filter_by_where' => true,
-                'show_column'     => false
+                'show_column'     => true
             )
         );
 
@@ -486,9 +502,10 @@ class ProductDatagridManager extends FlexibleDatagridManager
         if ($this->securityFacade->isGranted('pim_catalog_product_remove')) {
             $actions[] = new DeleteMassAction(
                 array(
-                    'name'  => 'delete',
-                    'label' => $this->translate('Delete'),
-                    'icon'  => 'trash'
+                    'name'    => 'delete',
+                    'label'   => $this->translate('Delete'),
+                    'icon'    => 'trash',
+                    'route'   => 'pim_catalog_mass_edit_action_delete'
                 )
             );
         }
@@ -619,23 +636,20 @@ class ProductDatagridManager extends FlexibleDatagridManager
      */
     protected function prepareQueryForCategory(ProxyQueryInterface $proxyQuery, $rootAlias)
     {
-        if ($this->filterTreeId != static::UNCLASSIFIED_CATEGORY) {
-            $categoryRepository = $this->categoryManager->getEntityRepository();
-            $categoryExists = ($this->filterCategoryId != static::UNCLASSIFIED_CATEGORY)
-                && $categoryRepository->find($this->filterCategoryId) != null;
-            $treeExists = $categoryRepository->find($this->filterTreeId) != null;
+        $repository = $this->categoryManager->getEntityRepository();
 
-            if ($categoryExists) {
-                $productIds = $categoryRepository->getLinkedProductIds($this->filterCategoryId, false);
-                $productIds = (empty($productIds)) ? array(0) : $productIds;
-                $expression = $proxyQuery->expr()->in($rootAlias .'.id', $productIds);
-                $proxyQuery->andWhere($expression);
-            } elseif ($treeExists) {
-                $productIds = $categoryRepository->getLinkedProductIds($this->filterTreeId, true);
-                $productIds = (empty($productIds)) ? array(0) : $productIds;
-                $expression = $proxyQuery->expr()->notIn($rootAlias .'.id', $productIds);
-                $proxyQuery->andWhere($expression);
-            }
+        $categoryExists = ($this->filterCategoryId != static::UNCLASSIFIED_CATEGORY)
+            && $repository->find($this->filterCategoryId) != null;
+
+        $treeExists = ($this->filterTreeId != static::UNCLASSIFIED_CATEGORY)
+            && $repository->find($this->filterTreeId) != null;
+
+        if ($treeExists && $categoryExists) {
+            $includeSub = ($this->filterIncludeSub == 1);
+            $productIds = $repository->getLinkedProductIds($this->filterCategoryId, $includeSub);
+            $productIds = (empty($productIds)) ? array(0) : $productIds;
+            $expression = $proxyQuery->expr()->in($rootAlias .'.id', $productIds);
+            $proxyQuery->andWhere($expression);
         }
     }
 

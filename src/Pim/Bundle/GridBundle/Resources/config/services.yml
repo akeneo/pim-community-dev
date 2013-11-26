@@ -9,6 +9,7 @@ parameters:
     pim_grid.twig_extension.class:                  Pim\Bundle\GridBundle\Twig\DatagridExtension
 
     oro_grid.mass_action.dispatcher.class:          Pim\Bundle\GridBundle\Action\MassAction\MassActionDispatcher
+    pim_grid.datagrid.helper.class:                 Pim\Bundle\GridBundle\Helper\DatagridHelper
 
 services:
     pim_grid.builder.datagrid:
@@ -61,3 +62,8 @@ services:
         class: %pim_grid.action.product_delete.class%
         tags:
             - { name: oro_grid.action.type, alias: pim_grid_action_product_delete }
+
+    pim_grid.datagrid.helper:
+        class: %pim_grid.datagrid.helper.class%
+        arguments:
+            - '@service_container'

@@ -5,73 +5,59 @@ Feature: Remove a category
   I need to be able to remove a category
 
   Background:
-  Given the following product attributes:
-    | label       | required |
-    | SKU         | yes      |
+  Given a "footwear" catalog configuration
   And the following products:
-    | sku       |
-    | shoes-f-1 |
-    | shoes-f-2 |
-    | shoes-m-1 |
-    | shoes-mf  |
-  And the following category:
-    | code      | label     | parent    | products             |
-    | master    | Master    |           |                      |
-    | books     | Books     | master    |                      |
-    | computers | Computers | master    |                      |
-    | notebooks | Notebooks | computers |                      |
-    | ipad      | I-Pad     | computers |                      |
-    | desktops  | Desktops  | computers |                      |
-    | servers   | Servers   | computers |                      |
-    | shoes     | Shoes     | master    | shoes-mf             |
-    | shoes_f   | Female    | shoes     | shoes-f-1, shoes-f-2 |
-    | shoes_m   | Male      | shoes     | shoes-m-1            |
+    | sku           | categories        |
+    | caterpillar_1 | winter_collection |
+    | caterpillar_2 | winter_boots      |
   And I am logged in as "admin"
 
   Scenario: Remove a simple category
-    Given I am on the "books" category page
+    Given I am on the "sandals" category page
     When I press the "Delete" button
     And I confirm the deletion
-    Then I should be on the category "master" edit page
+    Then I should be on the category "summer_collection" edit page
     And I should see flash message "Category successfully removed"
-    And I should not see the "Books" category under the "Master" category
-    And I should see the "Computers" category under the "Master" category
+    And I should not see the "Sandals" category under the "Summer collection" category
 
   Scenario: Remove a category with sub-categories
-    Given I am on the "computers" category page
+    Given I am on the "winter_collection" category page
     When I press the "Delete" button
     And I confirm the deletion
-    Then I should be on the category "master" edit page
+    Then I should be on the category "2014_collection" edit page
     And I should see flash message "Category successfully removed"
-    And I should not see the "Computers" category under the "Master" category
+    And I should not see "Winter collection"
 
   Scenario: Remove a category with products linked
-    Given I am on the "shoes_f" category page
+    Given I am on the "winter_boots" category page
     When I press the "Delete" button
     And I confirm the deletion
-    Then I should be on the category "shoes" edit page
+    Then I should be on the category "winter_collection" edit page
     And I should see flash message "Category successfully removed"
-    When I expand the "Shoes" category
-    Then I should not see the "Female" category under the "Shoes" category
-    And I should see the "Male" category under the "Shoes" category
+    When I expand the "Winter collection" category
+    Then I should not see "Winter boots"
 
   Scenario: Remove a category with sub-categories and products linked
-    Given I am on the "shoes" category page
+    Given I am on the "winter_collection" category page
     When I press the "Delete" button
     And I confirm the deletion
-    Then I should be on the category "master" edit page
+    Then I should be on the category "2014_collection" edit page
     And I should see flash message "Category successfully removed"
-    And I should not see the "Shoes" category under the "Master" category
+    Then I should not see "Winter collection"
+    And I should not see "Winter boots"
 
   Scenario: Remove a category tree
-    Given I am on the "master" category page
+    Given the following category:
+      | code            | label           |
+      | 2013_collection | 2013 collection |
+    And I am on the "2013_collection" category page
     When I press the "Delete" button
     And I confirm the deletion
     Then I should be redirected on the category tree creation page
     And I should see flash message "Tree successfully removed"
 
-  Scenario: Cancel the remove of a category
-    Given I am on the "shoes" category page
+  Scenario: Cancel the removal of a category
+    Given I am on the "sandals" category page
     When I press the "Delete" button
     And I cancel the deletion
-    Then I should see the "Shoes" category under the "Master" category
+    Then I should see the "Sandals" category under the "Summer collection" category

@@ -19,12 +19,11 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
-use Oro\Bundle\GridBundle\Renderer\GridRenderer;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
-use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
+use Pim\Bundle\GridBundle\Helper\DatagridHelperInterface;
 use Pim\Bundle\CatalogBundle\Datagrid\ProductDatagridManager;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Exception\DeleteException;
@@ -36,6 +35,7 @@ use Pim\Bundle\CatalogBundle\Model\AvailableProductAttributes;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\ImportExportBundle\Normalizer\FlatProductNormalizer;
 use Pim\Bundle\VersioningBundle\Manager\AuditManager;
+use Pim\Bundle\CatalogBundle\Helper\CompletenessHelper;
 
 /**
  * Product Controller
@@ -47,14 +47,9 @@ use Pim\Bundle\VersioningBundle\Manager\AuditManager;
 class ProductController extends AbstractDoctrineController
 {
     /**
-     * @var GridRenderer
+     * @var DatagridHelperInterface
      */
-    private $gridRenderer;
-
-    /**
-     * @var DatagridWorkerInterface
-     */
-    private $datagridWorker;
+    private $datagridHelper;
 
     /**
      * @var ProductManager
@@ -82,6 +77,11 @@ class ProductController extends AbstractDoctrineController
     private $securityFacade;
 
     /**
+     * @var CompletenessHelper
+     */
+    private $completenessHelper;
+
+    /**
      * @staticvar int
      */
     const BATCH_SIZE = 250;
@@ -97,13 +97,13 @@ class ProductController extends AbstractDoctrineController
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
      * @param RegistryInterface        $doctrine
-     * @param GridRenderer             $gridRenderer
-     * @param DatagridWorkerInterface  $datagridWorker
+     * @param DatagridHelperInterface  $datagridHelper
      * @param ProductManager           $productManager
      * @param CategoryManager          $categoryManager
      * @param LocaleManager            $localeManager
      * @param AuditManager             $auditManager
      * @param SecurityFacade           $securityFacade
+     * @param CompletenessHelper       $completenessHelper
      */
     public function __construct(
         Request $request,
@@ -114,13 +114,13 @@ class ProductController extends AbstractDoctrineController
         ValidatorInterface $validator,
         TranslatorInterface $translator,
         RegistryInterface $doctrine,
-        GridRenderer $gridRenderer,
-        DatagridWorkerInterface $datagridWorker,
+        DatagridHelperInterface $datagridHelper,
         ProductManager $productManager,
         CategoryManager $categoryManager,
         LocaleManager $localeManager,
         AuditManager $auditManager,
-        SecurityFacade $securityFacade
+        SecurityFacade $securityFacade,
+        CompletenessHelper $completenessHelper
     ) {
         parent::__construct(
             $request,
@@ -133,13 +133,13 @@ class ProductController extends AbstractDoctrineController
             $doctrine
         );
 
-        $this->gridRenderer         = $gridRenderer;
-        $this->datagridWorker       = $datagridWorker;
+        $this->datagridHelper       = $datagridHelper;
         $this->productManager       = $productManager;
         $this->categoryManager      = $categoryManager;
         $this->localeManager        = $localeManager;
         $this->auditManager         = $auditManager;
         $this->securityFacade       = $securityFacade;
+        $this->completenessHelper   = $completenessHelper;
 
         $this->productManager->setLocale($this->getDataLocale());
     }
@@ -154,9 +154,10 @@ class ProductController extends AbstractDoctrineController
     public function indexAction(Request $request)
     {
         /** @var $gridManager ProductDatagridManager */
-        $gridManager = $this->datagridWorker->getDatagridManager('product');
+        $gridManager = $this->datagridHelper->getDatagridManager('product');
         $gridManager->setFilterTreeId($request->get('treeId', 0));
         $gridManager->setFilterCategoryId($request->get('categoryId', 0));
+        $gridManager->setIncludeSub($request->get('includeSub', 0));
         $datagrid = $gridManager->getDatagrid();
 
         switch ($request->getRequestFormat()) {
@@ -198,7 +199,7 @@ class ProductController extends AbstractDoctrineController
             'datagrid'   => $datagrid->createView(),
             'locales'    => $this->localeManager->getUserLocales(),
             'dataLocale' => $this->getDataLocale(),
-            'dataScope' => $this->getDataScope(),
+            'dataScope'  => $this->getDataScope()
         );
 
         return $this->render($view, $params);
@@ -300,24 +301,12 @@ class ProductController extends AbstractDoctrineController
      */
     public function editAction(Request $request, $id)
     {
-        $product  = $this->findProductOr404($id);
-
-        $datagrid = $this->datagridWorker->getDataAuditDatagrid(
-            $product,
-            'pim_catalog_product_edit',
-            array(
-                'id' => $product->getId()
-            )
-        );
-
-        if ('json' === $request->getRequestFormat()) {
-            return $this->gridRenderer->renderResultsJsonResponse($datagrid->createView());
-        }
+        $product = $this->findProductOr404($id);
 
         $this->productManager->ensureAllAssociations($product);
 
         $form = $this->createForm(
-            'pim_product',
+            'pim_product_edit',
             $product,
             $this->getEditFormOptions($product)
         );
@@ -349,10 +338,10 @@ class ProductController extends AbstractDoctrineController
 
         $associations = $this->getRepository('PimCatalogBundle:Association')->findAll();
 
-        $associationProductGridManager = $this->datagridWorker->getDatagridManager('association_product');
+        $associationProductGridManager = $this->datagridHelper->getDatagridManager('association_product');
         $associationProductGridManager->setProduct($product);
 
-        $associationGroupGridManager = $this->datagridWorker->getDatagridManager('association_group');
+        $associationGroupGridManager = $this->datagridHelper->getDatagridManager('association_group');
         $associationGroupGridManager->setProduct($product);
 
         $association = null;
@@ -379,12 +368,31 @@ class ProductController extends AbstractDoctrineController
             'trees'                  => $trees,
             'created'                => $this->auditManager->getOldestLogEntry($product),
             'updated'                => $this->auditManager->getNewestLogEntry($product),
-            'datagrid'               => $datagrid->createView(),
+            'historyDatagrid'        => $this->getHistoryGrid($product)->createView(),
             'associations'           => $associations,
             'associationProductGrid' => $associationProductGridView,
             'associationGroupGrid'   => $associationGroupGridView,
             'locales'                => $this->localeManager->getUserLocales(),
+            'completenessHelper'     => $this->completenessHelper
         );
+    }
+
+    /**
+     * History of a product
+     *
+     * @param Request $request
+     * @param integer $id
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|template
+     */
+    public function historyAction(Request $request, $id)
+    {
+        $product  = $this->findProductOr404($id);
+        $historyGridView = $this->getHistoryGrid($product)->createView();
+
+        if ('json' === $request->getRequestFormat()) {
+            return $this->datagridHelper->getDatagridRenderer()->renderResultsJsonResponse($historyGridView);
+        }
     }
 
     /**
@@ -513,12 +521,12 @@ class ProductController extends AbstractDoctrineController
     {
         $product = $this->findProductOr404($id);
 
-        $datagridManager = $this->datagridWorker->getDatagridManager('association_product');
+        $datagridManager = $this->datagridHelper->getDatagridManager('association_product');
         $datagridManager->setProduct($product);
 
         $datagridView = $datagridManager->getDatagrid()->createView();
 
-        return $this->gridRenderer->renderResultsJsonResponse($datagridView);
+        return $this->datagridHelper->getDatagridRenderer()->renderResultsJsonResponse($datagridView);
     }
 
     /**
@@ -535,12 +543,12 @@ class ProductController extends AbstractDoctrineController
     {
         $product = $this->findProductOr404($id);
 
-        $datagridManager = $this->datagridWorker->getDatagridManager('association_group');
+        $datagridManager = $this->datagridHelper->getDatagridManager('association_group');
         $datagridManager->setProduct($product);
 
         $datagridView = $datagridManager->getDatagrid()->createView();
 
-        return $this->gridRenderer->renderResultsJsonResponse($datagridView);
+        return $this->datagridHelper->getDatagridRenderer()->renderResultsJsonResponse($datagridView);
     }
 
     /**
@@ -680,5 +688,21 @@ class ProductController extends AbstractDoctrineController
     protected function getCreateFormOptions(ProductInterface $product)
     {
         return array();
+    }
+
+    /**
+     * @param ProductInterface $product
+     *
+     * @return Datagrid
+     */
+    protected function getHistoryGrid(ProductInterface $product)
+    {
+        $historyGrid = $this->datagridHelper->getDataAuditDatagrid(
+            $product,
+            'pim_catalog_product_history',
+            array('id' => $product->getId())
+        );
+
+        return $historyGrid;
     }
 }

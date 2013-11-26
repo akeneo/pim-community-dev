@@ -3,10 +3,11 @@
 namespace Pim\Bundle\ImportExportBundle\Normalizer;
 
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Oro\Bundle\FlexibleEntityBundle\Entity\Media;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\CatalogBundle\Entity\Media;
+use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 
 /**
  * A normalizer to transform a product entity into a flat array
@@ -29,6 +30,9 @@ class FlatProductNormalizer implements NormalizerInterface
     /** @staticvar string */
     const ITEM_SEPARATOR = ',';
 
+    /** @var Pim\Bundle\CatalogBundle\Manager\MediaManager */
+    protected $mediaManager;
+
     /** @var array */
     protected $supportedFormats = array('csv');
 
@@ -36,23 +40,26 @@ class FlatProductNormalizer implements NormalizerInterface
     protected $results;
 
     /**
-     * Fields to export if needed
-     * @var array
+     * Constructor
+     *
+     * @param Pim\Bundle\CatalogBundle\Manager\MediaManager $mediaManager
      */
-    protected $fields = array();
+    public function __construct(MediaManager $mediaManager)
+    {
+        $this->mediaManager = $mediaManager;
+    }
 
     /**
-     * Transforms an object into a flat array
-     *
-     * @param object $object
-     * @param string $format
-     * @param array  $context
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function normalize($object, $format = null, array $context = array())
     {
-        $this->results = $this->normalizeValue($identifier = $object->getIdentifier());
+        $scopeCode = null;
+        if (isset($context['scopeCode'])) {
+            $scopeCode = $context['scopeCode'];
+        }
+
+        $this->results = $this->normalizeValue($object->getIdentifier());
 
         $this->normalizeFamily($object->getFamily());
 
@@ -60,33 +67,66 @@ class FlatProductNormalizer implements NormalizerInterface
 
         $this->normalizeCategories($object->getCategoryCodes());
 
-        $values = array();
-        foreach ($object->getValues() as $value) {
-            if ($value === $identifier) {
-                continue;
-            }
-            $values = array_merge(
-                $values,
-                $this->normalizeValue($value)
-            );
-        }
-        ksort($values);
-        $this->results = array_merge($this->results, $values);
+        $this->normalizeAssociations($object->getProductAssociations());
+
+        $this->normalizeValues($object, $scopeCode);
+
+        $this->normalizeProperties($object);
 
         return $this->results;
     }
 
     /**
-     * Indicates whether this normalizer can normalize the given data
-     *
-     * @param mixed  $data
-     * @param string $format
-     *
-     * @return boolean
+     * {@inheritdoc}
      */
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof ProductInterface && in_array($format, $this->supportedFormats);
+    }
+
+    /**
+     * Normalize properties
+     *
+     * @param ProductInterface $product
+     */
+    protected function normalizeProperties(ProductInterface $product)
+    {
+        $this->results['enabled'] = (int) $product->isEnabled();
+    }
+
+    /**
+     * Normalize values
+     *
+     * @param ProductInterface $product
+     * @param string           $scopeCode
+     */
+    protected function normalizeValues(ProductInterface $product, $scopeCode)
+    {
+        $identifier = $product->getIdentifier();
+
+        $filteredValues = $product->getValues()->filter(
+            function ($value) use ($identifier, $scopeCode) {
+                return (
+                    ($value !== $identifier) &&
+                    (
+                        ($scopeCode == null) ||
+                        (!$value->getAttribute()->getScopable()) ||
+                        ($value->getAttribute()->getScopable() && $value->getScope() == $scopeCode)
+                    )
+                );
+            }
+        );
+
+        $normalizedValues = array();
+        foreach ($filteredValues as $value) {
+            $normalizedValues = array_merge(
+                $normalizedValues,
+                $this->normalizeValue($value)
+            );
+        }
+        ksort($normalizedValues);
+
+        $this->results = array_merge($this->results, $normalizedValues);
     }
 
     /**
@@ -99,25 +139,16 @@ class FlatProductNormalizer implements NormalizerInterface
     protected function normalizeValue($value)
     {
         $data = $value->getData();
-
-        if (empty($this->fields) || isset($this->fields[$this->getFieldValue($value)])) {
-            if ($data instanceof \DateTime) {
-                $data = $data->format('m/d/Y');
-            } elseif ($data instanceof \Pim\Bundle\CatalogBundle\Entity\AttributeOption) {
-                $data = $data->getCode();
-            } elseif ($data instanceof \Doctrine\Common\Collections\Collection) {
-                $result = array();
-                foreach ($data as $item) {
-                    if ($item instanceof \Pim\Bundle\CatalogBundle\Entity\AttributeOption) {
-                        $result[] = $item->getCode();
-                    } else {
-                        $result[] = (string) $item;
-                    }
-                }
-                $data = join(self::ITEM_SEPARATOR, $result);
-            } elseif ($data instanceof Media) {
-                $data = $data->getFilename();
-            }
+        if (is_bool($data)) {
+            $data = ($data) ? 1 : 0;
+        } elseif ($data instanceof \DateTime) {
+            $data = $data->format('m/d/Y');
+        } elseif ($data instanceof \Pim\Bundle\CatalogBundle\Entity\AttributeOption) {
+            $data = $data->getCode();
+        } elseif ($data instanceof \Doctrine\Common\Collections\Collection) {
+            $data = $this->normalizeCollectionData($data);
+        } elseif ($data instanceof Media) {
+            $data = $this->mediaManager->getExportPath($data);
         }
 
         return array($this->getFieldValue($value) => (string) $data);
@@ -145,15 +176,35 @@ class FlatProductNormalizer implements NormalizerInterface
     }
 
     /**
+     * Normalize the value collection data
+     *
+     * @param array $data
+     *
+     * @return string
+     */
+    protected function normalizeCollectionData($data)
+    {
+        $result = array();
+        foreach ($data as $item) {
+            if ($item instanceof \Pim\Bundle\CatalogBundle\Entity\AttributeOption) {
+                $result[] = $item->getCode();
+            } else {
+                $result[] = (string) $item;
+            }
+        }
+        $data = join(self::ITEM_SEPARATOR, $result);
+
+        return $data;
+    }
+
+    /**
      * Normalizes a family
      *
      * @param Family $family
      */
     protected function normalizeFamily(Family $family = null)
     {
-        if (empty($this->fields) || isset($this->fields[self::FIELD_FAMILY])) {
-            $this->results[self::FIELD_FAMILY] = $family ? $family->getCode() : '';
-        }
+        $this->results[self::FIELD_FAMILY] = $family ? $family->getCode() : '';
     }
 
     /**
@@ -163,9 +214,7 @@ class FlatProductNormalizer implements NormalizerInterface
      */
     protected function normalizeGroups($groups = null)
     {
-        if (empty($this->fields) || isset($this->fields[self::FIELD_GROUPS])) {
-            $this->results[self::FIELD_GROUPS] = $groups;
-        }
+        $this->results[self::FIELD_GROUPS] = $groups;
     }
 
     /**
@@ -175,8 +224,31 @@ class FlatProductNormalizer implements NormalizerInterface
      */
     protected function normalizeCategories($categories = '')
     {
-        if (empty($this->fields) || isset($this->fields[self::FIELD_CATEGORY])) {
-            $this->results[self::FIELD_CATEGORY] = $categories;
+        $this->results[self::FIELD_CATEGORY] = $categories;
+    }
+
+    /**
+     * Normalize associations
+     *
+     * @param ProductAssociation[] $productAssociations
+     */
+    protected function normalizeAssociations($productAssociations = array())
+    {
+        foreach ($productAssociations as $productAssociation) {
+            $columnPrefix = $productAssociation->getAssociation()->getCode();
+
+            $groups = array();
+            foreach ($productAssociation->getGroups() as $group) {
+                $groups[] = $group->getCode();
+            }
+
+            $products = array();
+            foreach ($productAssociation->getProducts() as $product) {
+                $products[] = $product->getIdentifier();
+            }
+
+            $this->results[$columnPrefix .'_groups'] = implode(',', $groups);
+            $this->results[$columnPrefix .'_products'] = implode(',', $products);
         }
     }
 }

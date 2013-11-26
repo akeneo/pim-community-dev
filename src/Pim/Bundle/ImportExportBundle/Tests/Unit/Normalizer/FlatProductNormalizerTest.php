@@ -15,7 +15,9 @@ use Pim\Bundle\CatalogBundle\Exception\MissingIdentifierException;
  */
 class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
 {
-    private $normalizer;
+    protected $normalizer;
+
+    protected $mediaManager;
 
     /**
      * @return array
@@ -23,10 +25,15 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
     public static function getSupportNormalizationData()
     {
         return array(
-            array('Pim\Bundle\CatalogBundle\Model\ProductInterface', 'csv',  true),
+            array('Pim\Bundle\CatalogBundle\Model\ProductInterface', 'csv', true),
+            array('Pim\Bundle\CatalogBundle\Model\ProductInterface', 'xml', false),
             array('Pim\Bundle\CatalogBundle\Model\ProductInterface', 'json', false),
-            array('stdClass',                                        'csv',  false),
-            array('stdClass',                                        'json', false),
+            array('Pim\Bundle\CatalogBundle\Entity\Product', 'csv', true),
+            array('Pim\Bundle\CatalogBundle\Entity\Product', 'xml', false),
+            array('Pim\Bundle\CatalogBundle\Entity\Product', 'json', false),
+            array('stdClass', 'csv', false),
+            array('stdClass', 'xml', false),
+            array('stdClass', 'json', false),
         );
     }
 
@@ -35,7 +42,8 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->normalizer = new FlatProductNormalizer();
+        $this->mediaManager = $this->getMediaManagerMock();
+        $this->normalizer = new FlatProductNormalizer($this->mediaManager);
     }
 
     /**
@@ -58,21 +66,28 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
     public function testNormalizeProduct()
     {
         $now    = new \DateTime();
-        $media  = $this->getMediaMock('kb0001.jpg');
+        $media  = $this->getMediaMock();
+        $this->mediaManager
+            ->expects($this->any())
+            ->method('getExportPath')
+            ->with($media)
+            ->will($this->returnValue('files/media.jpg'));
 
-        $values = array(
-            $this->getValueMock($this->getAttributeMock('name', true), 'Brouette', 'fr_FR'),
-            $this->getValueMock($this->getAttributeMock('name', true), 'Wheelbarrow', 'en_US'),
-            $this->getValueMock($this->getAttributeMock('name', true), 'Carretilla', 'es_ES'),
-            $this->getValueMock($this->getAttributeMock('exportedAt'), $now),
-            $this->getValueMock(
-                $this->getAttributeMock('elements'),
-                new ArrayCollection(array('roue', 'poignées', 'benne'))
-            ),
-            $this->getValueMock($this->getAttributeMock('visual'), $media)
+        $values = new ArrayCollection(
+            array(
+                $this->getValueMock($this->getAttributeMock('name', true), 'Brouette', 'fr_FR'),
+                $this->getValueMock($this->getAttributeMock('name', true), 'Wheelbarrow', 'en_US'),
+                $this->getValueMock($this->getAttributeMock('name', true), 'Carretilla', 'es_ES'),
+                $this->getValueMock($this->getAttributeMock('exportedAt'), $now),
+                $this->getValueMock(
+                    $this->getAttributeMock('elements'),
+                    new ArrayCollection(array('roue', 'poignées', 'benne'))
+                ),
+                $this->getValueMock($this->getAttributeMock('visual'), $media)
+            )
         );
         $identifier = $this->getValueMock(
-            $this->getAttributeMock('sku', false, 'pim_catalog_identifier'),
+            $this->getAttributeMock('sku', false, false, 'pim_catalog_identifier'),
             'KB0001'
         );
         $family  = $this->getFamilyMock('garden-tool');
@@ -81,14 +96,15 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
         $result = array(
             'sku'           => 'KB0001',
             'family'        => 'garden-tool',
-            'groups'        => '',
+            'groups'        => null,
             'categories'    => 'cat1, cat2, cat3',
             'elements'      => 'roue,poignées,benne',
             'exportedAt'    => $now->format('m/d/Y'),
             'name-en_US'    => 'Wheelbarrow',
             'name-es_ES'    => 'Carretilla',
             'name-fr_FR'    => 'Brouette',
-            'visual'        => 'kb0001.jpg',
+            'visual'        => 'files/media.jpg',
+            'enabled'       => (int) true
         );
 
         $this->assertArrayEquals($result, $this->normalizer->normalize($product, 'csv'));
@@ -97,32 +113,133 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
     /**
      * Test related method
      */
+    public function testNormalizeProductWithScope()
+    {
+        $now    = new \DateTime();
+
+        $values = new ArrayCollection(
+            array(
+                $this->getValueMock($this->getAttributeMock('name', true, true), 'Brou.', 'fr_FR', 'mobile'),
+                $this->getValueMock($this->getAttributeMock('name', true, true), 'Brouette', 'fr_FR', 'ecommerce'),
+                $this->getValueMock($this->getAttributeMock('name', true, true), 'WB', 'en_US', 'mobile'),
+                $this->getValueMock($this->getAttributeMock('name', true, true), 'Wheelbarrow', 'en_US', 'ecommerce'),
+                $this->getValueMock($this->getAttributeMock('name', true, true), 'Carret.', 'es_ES', 'mobile'),
+                $this->getValueMock($this->getAttributeMock('name', true, true), 'Carretilla', 'es_ES', 'ecommerce'),
+                $this->getValueMock($this->getAttributeMock('exportedAt'), $now),
+                $this->getValueMock(
+                    $this->getAttributeMock('elements'),
+                    new ArrayCollection(array('roue', 'poignées', 'benne'))
+                ),
+            )
+        );
+        $identifier = $this->getValueMock(
+            $this->getAttributeMock('sku', false, false, 'pim_catalog_identifier'),
+            'KB0001'
+        );
+        $family  = $this->getFamilyMock('garden-tool');
+        $product = $this->getProductMock($identifier, $values, $family, 'cat1, cat2, cat3');
+
+        $result = array(
+            'sku'           => 'KB0001',
+            'family'        => 'garden-tool',
+            'groups'        => null,
+            'categories'    => 'cat1, cat2, cat3',
+            'elements'      => 'roue,poignées,benne',
+            'exportedAt'    => $now->format('m/d/Y'),
+            'name-en_US-ecommerce' => 'Wheelbarrow',
+            'name-en_US-mobile' => 'WB',
+            'name-es_ES-ecommerce' => 'Carretilla',
+            'name-es_ES-mobile' => 'Carret.',
+            'name-fr_FR-ecommerce' => 'Brouette',
+            'name-fr_FR-mobile' => 'Brou.',
+            'enabled'       => 1
+        );
+
+        $this->assertArrayEquals($result, $this->normalizer->normalize($product, 'csv'));
+    }
+
+    /**
+     * Test related method
+     */
+    public function testNormalizeOnScopeProductWithScope()
+    {
+        $now    = new \DateTime();
+
+        $values = new ArrayCollection(
+            array(
+                $this->getValueMock($this->getAttributeMock('name', true, true), 'Brou.', 'fr_FR', 'mobile'),
+                $this->getValueMock($this->getAttributeMock('name', true, true), 'Brouette', 'fr_FR', 'ecommerce'),
+                $this->getValueMock($this->getAttributeMock('name', true, true), 'WB', 'en_US', 'mobile'),
+                $this->getValueMock($this->getAttributeMock('name', true, true), 'Wheelbarrow', 'en_US', 'ecommerce'),
+                $this->getValueMock($this->getAttributeMock('name', true, true), 'Carret.', 'es_ES', 'mobile'),
+                $this->getValueMock($this->getAttributeMock('name', true, true), 'Carretilla', 'es_ES', 'ecommerce'),
+                $this->getValueMock($this->getAttributeMock('exportedAt'), $now),
+                $this->getValueMock(
+                    $this->getAttributeMock('elements'),
+                    new ArrayCollection(array('roue', 'poignées', 'benne'))
+                ),
+            )
+        );
+        $identifier = $this->getValueMock(
+            $this->getAttributeMock('sku', false, false, 'pim_catalog_identifier'),
+            'KB0001'
+        );
+        $family  = $this->getFamilyMock('garden-tool');
+        $product = $this->getProductMock($identifier, $values, $family, 'cat1, cat2, cat3');
+
+        $result = array(
+            'sku'           => 'KB0001',
+            'family'        => 'garden-tool',
+            'groups'        => null,
+            'categories'    => 'cat1, cat2, cat3',
+            'elements'      => 'roue,poignées,benne',
+            'exportedAt'    => $now->format('m/d/Y'),
+            'name-en_US-ecommerce' => 'Wheelbarrow',
+            'name-es_ES-ecommerce' => 'Carretilla',
+            'name-fr_FR-ecommerce' => 'Brouette',
+            'enabled'       => 1
+        );
+
+        $context = array('scopeCode' => 'ecommerce');
+
+        $this->assertArrayEquals($result, $this->normalizer->normalize($product, 'csv', $context));
+    }
+
+    /**
+     * Test related method
+     */
     public function testNormalizeProductWithoutFamily()
     {
         $now = new \DateTime();
-        $values = array(
-            $this->getValueMock($this->getAttributeMock('name', true), 'Brouette', 'fr_FR'),
-            $this->getValueMock($this->getAttributeMock('name', true), 'Wheelbarrow', 'en_US'),
-            $this->getValueMock($this->getAttributeMock('name', true), 'Carretilla', 'es_ES'),
-            $this->getValueMock($this->getAttributeMock('exportedAt'), $now),
-            $this->getValueMock(
-                $this->getAttributeMock('elements'),
-                new ArrayCollection(array('roue', 'poignées', 'benne'))
-            ),
+        $values = new ArrayCollection(
+            array(
+                $this->getValueMock($this->getAttributeMock('name', true), 'Brouette', 'fr_FR'),
+                $this->getValueMock($this->getAttributeMock('name', true), 'Wheelbarrow', 'en_US'),
+                $this->getValueMock($this->getAttributeMock('name', true), 'Carretilla', 'es_ES'),
+                $this->getValueMock($this->getAttributeMock('exportedAt'), $now),
+                $this->getValueMock(
+                    $this->getAttributeMock('elements'),
+                    new ArrayCollection(array('roue', 'poignées', 'benne'))
+                ),
+            )
         );
-        $identifier = $this->getValueMock($this->getAttributeMock('sku', false, 'pim_catalog_identifier'), 'KB0001');
+        $identifier = $this->getValueMock(
+            $this->getAttributeMock('sku', false, false, 'pim_catalog_identifier'),
+            'KB0001'
+        );
         $product    = $this->getProductMock($identifier, $values, null, 'cat1, cat2, cat3');
 
         $result = array(
             'sku'        => 'KB0001',
             'family'     => '',
-            'groups'     => '',
+            'groups'     => null,
             'categories' => 'cat1, cat2, cat3',
             'elements'   => 'roue,poignées,benne',
             'exportedAt' => $now->format('m/d/Y'),
             'name-en_US' => 'Wheelbarrow',
             'name-es_ES' => 'Carretilla',
             'name-fr_FR' => 'Brouette',
+            'enabled'    => 1
         );
 
         $this->assertArrayEquals($result, $this->normalizer->normalize($product, 'csv'));
@@ -134,15 +251,17 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
     public function testNormalizeProductWithoutIdentifier()
     {
         $now = new \DateTime();
-        $values = array(
-            $this->getValueMock($this->getAttributeMock('name', true), 'Brouette', 'fr_FR'),
-            $this->getValueMock($this->getAttributeMock('name', true), 'Wheelbarrow', 'en_US'),
-            $this->getValueMock($this->getAttributeMock('name', true), 'Carretilla', 'es_ES'),
-            $this->getValueMock($this->getAttributeMock('exportedAt'), $now),
-            $this->getValueMock(
-                $this->getAttributeMock('elements'),
-                new ArrayCollection(array('roue', 'poignées', 'benne'))
-            ),
+        $values = new ArrayCollection(
+            array(
+                $this->getValueMock($this->getAttributeMock('name', true), 'Brouette', 'fr_FR'),
+                $this->getValueMock($this->getAttributeMock('name', true), 'Wheelbarrow', 'en_US'),
+                $this->getValueMock($this->getAttributeMock('name', true), 'Carretilla', 'es_ES'),
+                $this->getValueMock($this->getAttributeMock('exportedAt'), $now),
+                $this->getValueMock(
+                    $this->getAttributeMock('elements'),
+                    new ArrayCollection(array('roue', 'poignées', 'benne'))
+                ),
+            )
         );
         $family  = $this->getFamilyMock('garden-tool');
         $product = $this->getProductMock(null, $values, $family, 'cat1,cat2,cat3');
@@ -170,8 +289,12 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
      *
      * @return ProductInterface
      */
-    private function getProductMock($identifier = null, array $values = array(), $family = null, $categories = '')
-    {
+    protected function getProductMock(
+        $identifier = null,
+        ArrayCollection $values = null,
+        $family = null,
+        $categories = ''
+    ) {
         $product = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Product');
         if ($identifier) {
             $identifierReturn = $this->returnValue($identifier);
@@ -195,17 +318,26 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
             ->method('getCategoryCodes')
             ->will($this->returnValue($categories));
 
+        $product->expects($this->any())
+            ->method('getProductAssociations')
+            ->will($this->returnValue(array()));
+
+        $product->expects($this->any())
+            ->method('isEnabled')
+            ->will($this->returnValue(true));
+
         return $product;
     }
 
     /**
      * @param ProductAttribute $attribute
      * @param mixed            $data
-     * @param mixed            $locale
+     * @param string           $locale
+     * @param string           $scope
      *
      * @return ProductValue
      */
-    private function getValueMock($attribute = null, $data = null, $locale = null)
+    protected function getValueMock($attribute = null, $data = null, $locale = null, $scope = null)
     {
         $value = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductValue');
 
@@ -221,17 +353,22 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
             ->method('getLocale')
             ->will($this->returnValue($locale));
 
+        $value->expects($this->any())
+            ->method('getScope')
+            ->will($this->returnValue($scope));
+
         return $value;
     }
 
     /**
      * @param string  $code
      * @param boolean $translatable
+     * @param boolean $scopable
      * @param string  $type
      *
      * @return ProductAttribute
      */
-    private function getAttributeMock($code, $translatable = false, $type = 'pim_catalog_text')
+    protected function getAttributeMock($code, $translatable = false, $scopable = false, $type = 'pim_catalog_text')
     {
         $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductAttribute');
 
@@ -242,6 +379,10 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
         $attribute->expects($this->any())
             ->method('getTranslatable')
             ->will($this->returnValue($translatable));
+
+        $attribute->expects($this->any())
+            ->method('getScopable')
+            ->will($this->returnValue($scopable));
 
         $attribute->expects($this->any())
             ->method('getAttributeType')
@@ -255,7 +396,7 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
      *
      * @return Family
      */
-    private function getFamilyMock($code)
+    protected function getFamilyMock($code)
     {
         $family = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Family');
 
@@ -267,18 +408,21 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param string $filename
-     *
-     * @return \Oro\Bundle\FlexibleEntityBundle\Entity\Media
+     * @return \Pim\Bundle\CatalogBundle\Entity\Media
      */
-    private function getMediaMock($filename)
+    protected function getMediaMock()
     {
-        $media = $this->getMock('Oro\Bundle\FlexibleEntityBundle\Entity\Media');
+        return $this->getMock('Pim\Bundle\CatalogBundle\Entity\Media');
+    }
 
-        $media->expects($this->any())
-            ->method('getFilename')
-            ->will($this->returnValue($filename));
-
-        return $media;
+    /**
+     * @return \Pim\Bundle\CatalogBundle\Manager\MediaManager
+     */
+    protected function getMediaManagerMock()
+    {
+        return $this
+            ->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\MediaManager')
+            ->disableOriginalConstructor()
+            ->getMock();
     }
 }

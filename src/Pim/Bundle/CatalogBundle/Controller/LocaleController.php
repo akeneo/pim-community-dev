@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
-use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
+use Pim\Bundle\GridBundle\Helper\DatagridHelperInterface;
 
 /**
  * Locale controller for configuration
@@ -28,9 +28,9 @@ use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
 class LocaleController extends AbstractDoctrineController
 {
     /**
-     * @var DatagridWorkerInterface
+     * @var DatagridHelperInterface
      */
-    private $datagridWorker;
+    private $datagridHelper;
 
     /**
      * Constructor
@@ -43,7 +43,7 @@ class LocaleController extends AbstractDoctrineController
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
      * @param RegistryInterface        $doctrine
-     * @param DatagridWorkerInterface  $datagridWorker
+     * @param DatagridHelperInterface  $datagridHelper
      */
     public function __construct(
         Request $request,
@@ -54,7 +54,7 @@ class LocaleController extends AbstractDoctrineController
         ValidatorInterface $validator,
         TranslatorInterface $translator,
         RegistryInterface $doctrine,
-        DatagridWorkerInterface $datagridWorker
+        DatagridHelperInterface $datagridHelper
     ) {
         parent::__construct(
             $request,
@@ -67,7 +67,7 @@ class LocaleController extends AbstractDoctrineController
             $doctrine
         );
 
-        $this->datagridWorker = $datagridWorker;
+        $this->datagridHelper = $datagridHelper;
     }
 
     /**
@@ -86,7 +86,7 @@ class LocaleController extends AbstractDoctrineController
             ->select('l')
             ->from('PimCatalogBundle:Locale', 'l');
 
-        $datagrid = $this->datagridWorker->getDatagrid('locale', $queryBuilder);
+        $datagrid = $this->datagridHelper->getDatagrid('locale', $queryBuilder);
 
         $view = ('json' === $request->getRequestFormat()) ?
             'OroGridBundle:Datagrid:list.json.php' : 'PimCatalogBundle:Locale:index.html.twig';

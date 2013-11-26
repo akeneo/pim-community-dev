@@ -1,0 +1,34 @@
+Pim\Bundle\CatalogBundle\Entity\AttributeRequirement:
+    type: entity
+    table: pim_catalog_attribute_requirement
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        required:
+            type: boolean
+    manyToOne:
+        family:
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\Family
+            inversedBy: requirements
+            joinColumns:
+                family_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+                    nullable: false
+        attribute:
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\ProductAttribute
+            joinColumns:
+                attribute_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+                    nullable: false
+        channel:
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\Channel
+            joinColumns:
+                channel_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+                    nullable: false

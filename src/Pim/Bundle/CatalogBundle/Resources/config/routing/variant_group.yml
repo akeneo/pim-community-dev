@@ -1,0 +1,22 @@
+pim_catalog_variant_group_index:
+    path: /.{_format}
+    defaults: { _controller: pim_catalog.controller.variant_group:indexAction, _format: html }
+    requirements:
+        _format: html|json
+
+pim_catalog_variant_group_create:
+    path: /create
+    defaults: { _controller: pim_catalog.controller.variant_group:createAction }
+
+pim_catalog_variant_group_edit:
+    path: /{id}/edit
+    defaults: { _controller: pim_catalog.controller.variant_group:editAction }
+    requirements:
+        id: \d+
+
+pim_catalog_variant_group_remove:
+    path: /{id}/remove
+    defaults: { _controller: pim_catalog.controller.variant_group:removeAction }
+    requirements:
+        id: \d+
+    methods: [DELETE]

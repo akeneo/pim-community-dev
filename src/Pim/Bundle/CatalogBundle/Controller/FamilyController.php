@@ -2,29 +2,29 @@
 
 namespace Pim\Bundle\CatalogBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Validator\ValidatorInterface;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-use Oro\Bundle\GridBundle\Renderer\GridRenderer;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
-use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
-use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Entity\Family;
-use Pim\Bundle\CatalogBundle\Model\AvailableProductAttributes;
-use Pim\Bundle\CatalogBundle\Form\Type\AvailableProductAttributesType;
-use Symfony\Component\HttpFoundation\Response;
 use Pim\Bundle\CatalogBundle\Exception\DeleteException;
+use Pim\Bundle\CatalogBundle\Factory\FamilyFactory;
+use Pim\Bundle\CatalogBundle\Form\Type\AvailableProductAttributesType;
+use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
+use Pim\Bundle\CatalogBundle\Model\AvailableProductAttributes;
+use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
+use Pim\Bundle\GridBundle\Helper\DatagridHelperInterface;
 
 /**
  * Family controller
@@ -35,25 +35,17 @@ use Pim\Bundle\CatalogBundle\Exception\DeleteException;
  */
 class FamilyController extends AbstractDoctrineController
 {
-    /**
-     * @var GridRenderer
-     */
-    private $gridRenderer;
+    /** @var DatagridHelperInterface */
+    private $datagridHelper;
 
-    /**
-     * @var DatagridWorkerInterface
-     */
-    private $dataGridWorker;
-
-    /**
-     * @var ChannelManager
-     */
+    /** @var ChannelManager */
     private $channelManager;
 
-    /**
-     * @var ProductManager
-     */
-    private $productManager;
+    /** @var FamilyFactory */
+    private $factory;
+
+    /** @var CompletenessManager */
+    private $completenessManager;
 
     /**
      * Constructor
@@ -66,10 +58,10 @@ class FamilyController extends AbstractDoctrineController
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
      * @param RegistryInterface        $doctrine
-     * @param GridRenderer             $gridRenderer
-     * @param DatagridWorkerInterface  $dataGridWorker
+     * @param DatagridHelperInterface  $datagridHelper
      * @param ChannelManager           $channelManager
-     * @param ProductManager           $productManager
+     * @param FamilyFactory            $factory
+     * @param CompletenessManager      $completenessManager
      */
     public function __construct(
         Request $request,
@@ -80,10 +72,10 @@ class FamilyController extends AbstractDoctrineController
         ValidatorInterface $validator,
         TranslatorInterface $translator,
         RegistryInterface $doctrine,
-        GridRenderer $gridRenderer,
-        DatagridWorkerInterface $dataGridWorker,
+        DatagridHelperInterface $datagridHelper,
         ChannelManager $channelManager,
-        ProductManager $productManager
+        FamilyFactory $factory,
+        CompletenessManager $completenessManager
     ) {
         parent::__construct(
             $request,
@@ -96,10 +88,10 @@ class FamilyController extends AbstractDoctrineController
             $doctrine
         );
 
-        $this->gridRenderer   = $gridRenderer;
-        $this->dataGridWorker = $dataGridWorker;
-        $this->channelManager = $channelManager;
-        $this->productManager = $productManager;
+        $this->datagridHelper      = $datagridHelper;
+        $this->channelManager      = $channelManager;
+        $this->factory             = $factory;
+        $this->completenessManager = $completenessManager;
     }
 
     /**
@@ -113,15 +105,13 @@ class FamilyController extends AbstractDoctrineController
      */
     public function createAction(Request $request)
     {
-        $family   = new Family();
+        $family = $this->factory->createFamily();
         $families = $this->getRepository('PimCatalogBundle:Family')->getIdToLabelOrderedByLabel();
 
         $form = $this->createForm('pim_family', $family);
         if ($request->isMethod('POST')) {
-            $form->handleRequest($request);
+            $form->submit($request);
             if ($form->isValid()) {
-                $identifier = $this->productManager->getIdentifierAttribute();
-                $family->addAttribute($identifier);
                 $this->getManager()->persist($family);
                 $this->getManager()->flush();
                 $this->addFlash('success', 'flash.family.created');
@@ -149,17 +139,6 @@ class FamilyController extends AbstractDoctrineController
     public function editAction(Request $request, $id)
     {
         $family   = $this->findOr404('PimCatalogBundle:Family', $id);
-        $datagrid = $this->dataGridWorker->getDataAuditDatagrid(
-            $family,
-            'pim_catalog_family_edit',
-            array('id' => $family->getId())
-        );
-        $datagridView = $datagrid->createView();
-
-        if ('json' === $request->getRequestFormat()) {
-            return $this->gridRenderer->renderResultsJsonResponse($datagridView);
-        }
-
         $families = $this->getRepository('PimCatalogBundle:Family')->getIdToLabelOrderedByLabel();
         $channels = $this->channelManager->getChannels();
         $form = $this->createForm(
@@ -172,8 +151,11 @@ class FamilyController extends AbstractDoctrineController
         );
 
         if ($request->isMethod('POST')) {
-            $form->handleRequest($request);
+            $form->submit($request);
             if ($form->isValid()) {
+                foreach ($family->getProducts() as $product) {
+                    $this->completenessManager->schedule($product);
+                }
                 $this->getManager()->flush();
                 $this->addFlash('success', 'flash.family.updated');
 
@@ -182,15 +164,32 @@ class FamilyController extends AbstractDoctrineController
         }
 
         return array(
-            'family'         => $family,
-            'families'       => $families,
-            'channels'       => $channels,
-            'form'           => $form->createView(),
-            'datagrid'       => $datagridView,
-            'attributesForm' => $this->getAvailableProductAttributesForm(
+            'family'          => $family,
+            'families'        => $families,
+            'channels'        => $channels,
+            'form'            => $form->createView(),
+            'historyDatagrid' => $this->getHistoryGrid($family)->createView(),
+            'attributesForm'  => $this->getAvailableProductAttributesForm(
                 $family->getAttributes()->toArray()
             )->createView(),
         );
+    }
+
+    /**
+     * History of a family
+     *
+     * @param Request $request
+     * @param Family  $family
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|template
+     */
+    public function historyAction(Request $request, Family $family)
+    {
+        $historyGridView = $this->getHistoryGrid($family)->createView();
+
+        if ('json' === $request->getRequestFormat()) {
+            return $this->datagridHelper->getDatagridRenderer()->renderResultsJsonResponse($historyGridView);
+        }
     }
 
     /**
@@ -231,7 +230,7 @@ class FamilyController extends AbstractDoctrineController
             $availableAttributes
         );
 
-        $attributesForm->bind($request);
+        $attributesForm->submit($request);
 
         foreach ($availableAttributes->getAttributes() as $attribute) {
             $family->addAttribute($attribute);
@@ -294,5 +293,21 @@ class FamilyController extends AbstractDoctrineController
             $availableAttributes ?: new AvailableProductAttributes(),
             array('attributes' => $attributes)
         );
+    }
+
+    /**
+     * @param Family $family
+     *
+     * @return Datagrid
+     */
+    protected function getHistoryGrid(Family $family)
+    {
+        $historyGrid = $this->datagridHelper->getDataAuditDatagrid(
+            $family,
+            'pim_catalog_family_history',
+            array('id' => $family->getId())
+        );
+
+        return $historyGrid;
     }
 }

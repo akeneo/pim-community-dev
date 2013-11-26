@@ -46,7 +46,9 @@
                     label: 'pim_dashboard.menu.label.enrich',
                     links: [
                         { url: path('pim_catalog_product_index'), label: 'pim_dashboard.link.label.product' },
-                        { url: path('pim_catalog_categorytree_create'), label: 'pim_dashboard.link.label.category' }
+                        { url: path('pim_catalog_categorytree_create'), label: 'pim_dashboard.link.label.category' },
+                        { url: path('pim_catalog_variant_group_index'), label: 'pim_dashboard.link.label.variant' },
+                        { url: path('pim_catalog_group_index'), label: 'pim_dashboard.link.label.group' }
                     ],
                     image: 'enrich-image',
                     acl: 'pim_navigation_enrich'
@@ -80,7 +82,7 @@
 
         </div>
         <div class="version-container">
-            <strong>Version:</strong> 1.0.0-beta2 "Hold the Lion, please"
+            <strong>Version:</strong> 1.0.0-beta3 "Hare Conditioned"
         </div>
     </div>
 {% endblock %}

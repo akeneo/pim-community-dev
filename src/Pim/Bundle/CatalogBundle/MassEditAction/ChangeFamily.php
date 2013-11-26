@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\MassEditAction;
 
-use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Pim\Bundle\CatalogBundle\Form\Type\MassEditAction\ChangeFamilyType;
 use Pim\Bundle\CatalogBundle\Entity\Family;
+use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 
 /**
  * Batch operation to change the family of products
@@ -15,20 +15,16 @@ use Pim\Bundle\CatalogBundle\Entity\Family;
  */
 class ChangeFamily extends AbstractMassEditAction
 {
-    /**
-     * @var FlexibleManager $manager
-     */
+    /** @var ProductManager $manager */
     protected $manager;
 
-    /**
-     * @var Family $family The family to change the product family to
-     */
-    protected $family = null;
+    /** @var Family $family The family to change the product family to */
+    protected $family;
 
     /**
-     * @param FlexibleManager $manager
+     * @param ProductManager $manager
      */
-    public function __construct(FlexibleManager $manager)
+    public function __construct(ProductManager $manager)
     {
         $this->manager = $manager;
     }
@@ -38,7 +34,7 @@ class ChangeFamily extends AbstractMassEditAction
      *
      * @return ChangeFamily
      */
-    public function setFamily(Family $family = null)
+    public function setFamily(Family $family)
     {
         $this->family = $family;
 
@@ -69,6 +65,6 @@ class ChangeFamily extends AbstractMassEditAction
         foreach ($products as $product) {
             $product->setFamily($this->family);
         }
-        $this->manager->getStorageManager()->flush();
+        $this->manager->saveAll($products, false);
     }
 }

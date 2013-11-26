@@ -5,16 +5,13 @@ Feature: Association creation
   I need to be able to manually create an association
 
   Background:
-    Given I am logged in as "admin"
-
-  Scenario: Successfully display all required fields in the association creation form
-    Given I am on the associations page
-    And I create a new association
-    Then I should see the Code field
+    Given the "default" catalog configuration
+    And I am logged in as "admin"
 
   Scenario: Successfully create an association
     Given I am on the associations page
     When I create a new association
+    Then I should see the Code field
     And I fill in the following information in the popin:
       | Code | up_sell |
     And I press the "Save" button
@@ -33,8 +30,8 @@ Feature: Association creation
 
   Scenario: Fail to create an association with an already used code
     Given the following association:
-      | code        |
-      | cross_sell  |
+      | code       |
+      | cross_sell |
     When I am on the associations page
     And I create a new association
     And I fill in the following information in the popin:

@@ -238,15 +238,6 @@ class AttributeGroupTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test related method
-     * Only test if getVersion return a value or null. Setter is not accessible.
-     */
-    public function testGetVersion()
-    {
-        $this->assertNull($this->group->getVersion());
-    }
-
-    /**
      * Assert entity
      * @param Pim\Bundle\CatalogBundle\Entity\AttributeGroup $entity
      */

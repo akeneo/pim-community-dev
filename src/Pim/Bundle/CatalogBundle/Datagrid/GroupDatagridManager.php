@@ -13,7 +13,7 @@ use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
 
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
-use Pim\Bundle\CatalogBundle\Manager\VariantGroupManager;
+use Pim\Bundle\CatalogBundle\Manager\GroupManager;
 
 /**
  * Group datagrid manager
@@ -30,9 +30,9 @@ class GroupDatagridManager extends DatagridManager
     protected $localeManager;
 
     /**
-     * @var VariantGroupManager
+     * @var GroupManager
      */
-    protected $variantGroupManager;
+    protected $groupManager;
 
     /**
      * {@inheritdoc}
@@ -50,6 +50,18 @@ class GroupDatagridManager extends DatagridManager
      */
     protected function configureFields(FieldDescriptionCollection $fieldsCollection)
     {
+        $this->createCodeField($fieldsCollection);
+        $this->createLabelField($fieldsCollection);
+        $this->createTypeField($fieldsCollection);
+    }
+
+    /**
+     * Create code field
+     *
+     * @param FieldDescriptionCollection $fieldsCollection
+     */
+    protected function createCodeField(FieldDescriptionCollection $fieldsCollection)
+    {
         $field = new FieldDescription();
         $field->setName('code');
         $field->setOptions(
@@ -65,7 +77,15 @@ class GroupDatagridManager extends DatagridManager
             )
         );
         $fieldsCollection->add($field);
+    }
 
+    /**
+     * Create label field
+     *
+     * @param FieldDescriptionCollection $fieldsCollection
+     */
+    protected function createLabelField(FieldDescriptionCollection $fieldsCollection)
+    {
         $field = new FieldDescription();
         $field->setName('label');
         $field->setOptions(
@@ -85,7 +105,16 @@ class GroupDatagridManager extends DatagridManager
             new TwigTemplateProperty($field, 'PimGridBundle:Rendering:_toString.html.twig')
         );
         $fieldsCollection->add($field);
+    }
 
+    /**
+     * Create group type field
+     *
+     * @param FieldDescriptionCollection $fieldsCollection
+     */
+    protected function createTypeField(FieldDescriptionCollection $fieldsCollection)
+    {
+        $choices = $this->groupManager->getTypeChoices(false);
         $field = new FieldDescription();
         $field->setName('type');
         $field->setOptions(
@@ -93,55 +122,16 @@ class GroupDatagridManager extends DatagridManager
                 'type'            => FieldDescriptionInterface::TYPE_TEXT,
                 'label'           => $this->translate('Type'),
                 'field_name'      => 'type',
-                'filter_type'     => FilterInterface::TYPE_ENTITY,
+                'filter_type'     => FilterInterface::TYPE_CHOICE,
                 'required'        => false,
                 'sortable'        => true,
-                'filterable'      => true,
-                'show_filter'     => true,
-                'multiple'        => false,
-                'class'           => 'PimCatalogBundle:GroupType',
-                'property'        => 'code',
-                'filter_by_where' => true,
-            )
-        );
-        $fieldsCollection->add($field);
-
-        $field = $this->createAxisField();
-        $fieldsCollection->add($field);
-    }
-
-    /**
-     * Create an axis field
-     *
-     * @return \Oro\Bundle\GridBundle\Field\FieldDescription
-     */
-    protected function createAxisField()
-    {
-        $choices = $this->variantGroupManager->getAvailableAxisChoices();
-
-        $field = new FieldDescription();
-        $field->setName('attribute');
-        $field->setOptions(
-            array(
-                'type'            => FieldDescriptionInterface::TYPE_HTML,
-                'label'           => $this->translate('Axis'),
-                'field_name'      => 'attributes',
-                'expression'      => 'attribute.id',
-                'filter_type'     => FilterInterface::TYPE_CHOICE,
-                'required'        => true,
-                'multiple'        => true,
                 'filterable'      => true,
                 'show_filter'     => true,
                 'field_options'   => array('choices' => $choices),
                 'filter_by_where' => true
             )
         );
-
-        $field->setProperty(
-            new TwigTemplateProperty($field, 'PimGridBundle:Rendering:_optionsToString.html.twig')
-        );
-
-        return $field;
+        $fieldsCollection->add($field);
     }
 
     /**
@@ -187,24 +177,34 @@ class GroupDatagridManager extends DatagridManager
             ->select('g')
             ->from('PimCatalogBundle:Group', 'g');
 
-        $rootAlias = $proxyQuery->getRootAlias();
-        $labelExpr = sprintf(
-            "(CASE WHEN translation.label IS NULL THEN %s.code ELSE translation.label END)",
-            $rootAlias
-        );
+        $groupLabelExpr = "(CASE WHEN translation.label IS NULL THEN g.code ELSE translation.label END)";
+        $typeLabelExpr = "(CASE WHEN typTrans.label IS NULL THEN typ.code ELSE typTrans.label END)";
 
         $proxyQuery
-            ->addSelect(sprintf("%s AS groupLabel", $labelExpr), true)
+            ->addSelect(sprintf("%s AS groupLabel", $groupLabelExpr), true)
+            ->addSelect(sprintf("%s AS typeLabel", $typeLabelExpr), true)
             ->addSelect('translation.label', true);
 
         $proxyQuery
-            ->leftJoin($rootAlias .'.translations', 'translation', 'WITH', 'translation.locale = :localeCode')
-            ->leftJoin($rootAlias .'.attributes', 'attribute')
-            ->innerJoin($rootAlias .'.type', 'type');
+            ->leftJoin('g.translations', 'translation', 'WITH', 'translation.locale = :localeCode')
+            ->leftJoin('g.type', 'typ')
+            ->leftJoin('typ.translations', 'typTrans', 'WITH', 'typTrans.locale = :localeCode');
 
-        $proxyQuery->groupBy($rootAlias);
+        $this->applyJoinOnGroupType($proxyQuery);
 
         $proxyQuery->setParameter('localeCode', $this->getCurrentLocale());
+    }
+
+    /**
+     * Apply join on group type
+     * @param ProxyQueryInterface $proxyQuery
+     */
+    protected function applyJoinOnGroupType(ProxyQueryInterface $proxyQuery)
+    {
+        $joinExpr = $proxyQuery->expr()->neq('type.code', ':group');
+        $proxyQuery
+            ->innerJoin($proxyQuery->getRootAlias() .'.type', 'type', 'WITH', $joinExpr)
+            ->setParameter('group', 'VARIANT');
     }
 
     /**
@@ -222,15 +222,15 @@ class GroupDatagridManager extends DatagridManager
     }
 
     /**
-     * Set the variant group manager
+     * Set the group manager
      *
-     * @param VariantGroupManager $variantGroupManager
+     * @param GroupManager $groupManager
      *
-     * @return \Pim\Bundle\CatalogBundle\Datagrid\VariantGroupDatagridManager
+     * @return \Pim\Bundle\CatalogBundle\Datagrid\GroupDatagridManager
      */
-    public function setVariantGroupManager(VariantGroupManager $variantGroupManager)
+    public function setGroupManager(GroupManager $groupManager)
     {
-        $this->variantGroupManager = $variantGroupManager;
+        $this->groupManager = $groupManager;
 
         return $this;
     }

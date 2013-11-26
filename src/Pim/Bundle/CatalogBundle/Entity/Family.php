@@ -3,15 +3,12 @@
 namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation\ExclusionPolicy;
-use Gedmo\Mapping\Annotation as Gedmo;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
-use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
 
 /**
  * Family entity
@@ -20,47 +17,32 @@ use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @ORM\Table(name="pim_catalog_family")
- * @ORM\Entity(repositoryClass="Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository")
  * @Config(
- *  defaultValues={
- *      "entity"={"label"="Family", "plural_label"="Families"},
- *      "security"={
- *          "type"="ACL",
- *          "group_name"=""
- *      }
- *  }
+ *     defaultValues={
+ *         "entity"={"label"="Family", "plural_label"="Families"},
+ *         "security"={
+ *              "type"="ACL",
+ *              "group_name"=""
+ *         }
+ *     }
  * )
- * 
+ *
  * @ExclusionPolicy("all")
  */
-class Family implements TranslatableInterface, VersionableInterface
+class Family implements TranslatableInterface
 {
     /**
      * @var integer $id
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
 
     /**
      * @var string $code
-     *
-     * @ORM\Column(name="code", type="string", length=100, unique=true)
      */
     protected $code;
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection $attributes
-     *
-     * @ORM\ManyToMany(targetEntity="Pim\Bundle\CatalogBundle\Entity\ProductAttribute", cascade={"persist"})
-     * @ORM\JoinTable(
-     *    name="pim_catalog_family_attribute",
-     *    joinColumns={@ORM\JoinColumn(name="family_id", referencedColumnName="id", onDelete="CASCADE")},
-     *    inverseJoinColumns={@ORM\JoinColumn(name="attribute_id", referencedColumnName="id", onDelete="CASCADE")}
-     * )
      */
     protected $attributes;
 
@@ -74,56 +56,27 @@ class Family implements TranslatableInterface, VersionableInterface
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection $translations
-     *
-     * @ORM\OneToMany(
-     *     targetEntity="Pim\Bundle\CatalogBundle\Entity\FamilyTranslation",
-     *     mappedBy="foreignKey",
-     *     cascade={"persist", "remove"},
-     *     orphanRemoval=true
-     * )
      */
     protected $translations;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="ProductAttribute")
-     * @ORM\JoinColumn(name="label_attribute_id", referencedColumnName="id", onDelete="SET NULL")
-     */
     protected $attributeAsLabel;
 
     /**
      * @var \Doctrine\Common\Collections\ArrayCollection $requirements
-     *
-     * @ORM\OneToMany(
-     *     targetEntity="Pim\Bundle\CatalogBundle\Entity\AttributeRequirement",
-     *     mappedBy="family",
-     *     cascade={"persist", "remove"}
-     * )
      */
     protected $requirements;
 
     /**
      * @var datetime $created
-     *
-     * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(type="datetime")
      */
     protected $created;
 
     /**
      * @var datetime $updated
-     *
-     * @Gedmo\Timestampable(on="update")
-     * @ORM\Column(type="datetime")
      */
     protected $updated;
 
-    /**
-     * @var integer $version
-     *
-     * @ORM\Column(name="version", type="integer")
-     * @ORM\Version
-     */
-    protected $version;
+    protected $products;
 
     /**
      * Constructor
@@ -133,6 +86,7 @@ class Family implements TranslatableInterface, VersionableInterface
         $this->attributes   = new ArrayCollection();
         $this->translations = new ArrayCollection();
         $this->requirements = new ArrayCollection();
+        $this->products     = new ArrayCollection();
     }
 
     /**
@@ -153,16 +107,6 @@ class Family implements TranslatableInterface, VersionableInterface
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * Get version
-     *
-     * @return string $version
-     */
-    public function getVersion()
-    {
-        return $this->version;
     }
 
     /**
@@ -246,7 +190,9 @@ class Family implements TranslatableInterface, VersionableInterface
      */
     public function addAttribute(ProductAttribute $attribute)
     {
-        $this->attributes[] = $attribute;
+        if (!$this->attributes->contains($attribute)) {
+            $this->attributes->add($attribute);
+        }
 
         return $this;
     }
@@ -453,8 +399,10 @@ class Family implements TranslatableInterface, VersionableInterface
      */
     public function addAttributeRequirement(AttributeRequirement $requirement)
     {
-        $requirement->setFamily($this);
-        $this->requirements[] = $requirement;
+        if (!$this->requirements->contains($requirement)) {
+            $requirement->setFamily($this);
+            $this->requirements->add($requirement);
+        }
 
         return $this;
     }
@@ -466,9 +414,9 @@ class Family implements TranslatableInterface, VersionableInterface
      *
      * @return Family
      */
-    public function setAttributeRequirements($requirements)
+    public function setAttributeRequirements(array $requirements)
     {
-        $this->requirements = $requirements;
+        $this->requirements = new ArrayCollection($requirements);
 
         return $this;
     }
@@ -504,5 +452,29 @@ class Family implements TranslatableInterface, VersionableInterface
     public function getAttributeRequirementKeyFor($attributeCode, $channelCode)
     {
         return sprintf('%s_%s', $attributeCode, $channelCode);
+    }
+
+    /**
+     * Getter for products
+     *
+     * @return ArrayCollection
+     */
+    public function getProducts()
+    {
+        return $this->products;
+    }
+
+    /**
+     * Set products
+     *
+     * @param array $products
+     *
+     * @return Product
+     */
+    public function setProducts(array $products)
+    {
+        $this->products = new ArrayCollection($products);
+
+        return $this;
     }
 }

@@ -1,3 +1,4 @@
+---
 attribute:
   overview: Liste des attributs
   create: Créer un attribut
@@ -45,10 +46,18 @@ group:
   overview: Liste des groupes
   create: Créer un groupe
   edit: Editer un groupe
+variant group:
+  overview: Liste des groupes de variantes
+  create: Créer un groupe de variantes
+  edit: Modifier un groupe de variantes
 association:
   overview: Liste des associations
   create: Créer une association
   edit: Modifier une association
+group type:
+  overview: Liste des types de groupe
+  create: Créez le type de groupe
+  edit: modifier le type de groupe
 export report:
   overview: "Rapports d'exportations"
 import report:
@@ -68,7 +77,9 @@ btn:
     locale: Créer une locale
     product: Créer un produit
     group: Créer un groupe
+    variant group: Créer un groupe de variantes
     association: Créer une association
+    group type: Créez un type de groupe
   edit: Modifier
   save: Enregistrer
   remove: Retirer
@@ -94,7 +105,9 @@ confirmation:
     import profile: "Êtes-vous sûr de vouloir supprimer le profil d'export %name%?"
     channel: Êtes-vous sûr de vouloir supprimer le canal %name% ?
     group: Êtes-vous sûr de que vouloir supprimer le groupe %name% ?
+    variant group: Êtes-vous sûr de vouloir supprimer le groupe de variantes %name%?
     association: "Êtes-vous sûr de que vouloir supprimer l'association %name% ?"
+    group type: Êtes-vous sûr de que vouloir supprimer le groupe %name%?
 flash:
   entity:
     removed: "L'entité a été supprimée"
@@ -103,6 +116,9 @@ flash:
     updated: Attribut mis à jour avec succès
     removed: Attribut supprimé avec succès
     identifier not removable: Un attribut de type identifiant ne peut pas être supprimé
+    used by groups: Cet attribut ne peut pas être supprimé car il est utilisé par %count% groupes
+    option created: Option créée avec succès
+    error creating option: "Une erreur s'est produite durant la création d'une option, merci d'essayer à nouveau"
   attribute group:
     created: "Groupe d'attributs créé avec succès"
     updated: "Groupe d'attributs mis à jour avec succès"
@@ -149,6 +165,16 @@ flash:
     created: Groupe créé avec succès
     updated: Groupe mis à jour avec succès
     removed: Groupe supprimé avec succès
+  variant group:
+    created: Le groupe de variantes a bien été crée
+    updated: Le groupe de variantes a bien été mis à jour
+    removed: Le groupe de variantes a bien été supprimé
+  group type:
+    created: Le type de groupe a bien été crée
+    updated: Le type de groupe a bien été mis à jour
+    removed: Le type de groupe a bien été supprimé
+    cant remove variant: Le type variant ne peut pas être supprimé
+    cant remove used: Ce type de groupe est utilisé par certains groupes et ne peut pas être supprimé
   association:
     created: Association créée avec succès
     updated: Association mise à jour avec succès
@@ -226,6 +252,7 @@ Cancel: Annuler
 Create a new product: Créer un nouveau produit
 Choose a family: Choisissez une famille
 Create a new association: Créer une nouvelle association
+Create a new option: Créer une nouvelle option
 Global: Global
 Channel: Canal
 Always override: Toujours écraser
@@ -249,11 +276,10 @@ Date max: Date maxi
 Default currency: Devise par défaut
 Metric family: Type de mesure
 Default metric unit: Unité de mesure par défaut
-Max file size: Taille de fichier maximale
+Max file size: Taille de fichier maximale (MB)
 Allowed file extensions: Extensions autorisées
 Attributes: Attributs
 Title: Titre
-Is dynamic: Dynamique
 Dashboard: Tableau de bord
 Attribute groups: "Groupes d'attributs"
 Attribute groups | Create: "Groupe d'attributs | Créer"
@@ -289,9 +315,15 @@ Locales %locale.code% | Edit: Locale %locale.code% | Modifier
 Groups: Groupes
 Groups | Create: Groupes | Créer
 Groups %group.label% | Edit: Groupes %group.label% | Edit
+Variant groups: Groupes de variantes
+Variant groups | Create: Groupes de variantes | Créer
+Variant groups %group.label% | Edit: Groupe de variantes %group.label% | Editer
 Associations: Associations
 Associations | Create: Associations | Créer
 Associations %association.label% | Edit: Associations %association.label% | Edit
+Group types: Types de groupe
+Group types | Create: Types de groupe | Créer
+Group types %grouptype.label% | Edit: Type de groupes %grouptype.label% | Editer
 pim_catalog_identifier: Identifiant
 pim_catalog_text: Texte
 pim_catalog_textarea: Zone de texte (TextArea)
@@ -312,7 +344,7 @@ pim_catalog.mass_edit_action:
   page_subtitle: Edition de masse (1 produit)|Edition de masse (%count% produits)
   title: "Choisir l'opération à effectuer"
   subtitle: "Choisissez l'opération que vous souhaitez effectuer sur le produit sélectionné| Choisissez l'opération que vous souhaitez effectuer sur les %count% produits sélectionnés"
-  confirm: 'Vous êtes sur le point de mettre à jour un produit avec les renseignements suivants, merci de confirmer. |Vous êtes sur le point de mettre à jour  %count% produits avec les renseignements suivants, merci de confirmer.'
+  confirm: "Vous êtes sur le point de mettre à jour un produit avec les renseignements suivants, merci de confirmer. |Vous êtes sur le point de mettre à jour  %count% produits avec les renseignements suivants, merci de confirmer."
   change-status:
     label: Changer de statut (activé / désactivé)
     description: Les produits sélectionnés vont être activés ou désactivés.
@@ -332,7 +364,7 @@ pim_catalog.mass_edit_action:
     success_flash: La famille de(s) produit(s) sélectionné(s) a été modifiée avec succès
 pim_catalog.completeness:
   progress_bar.title: %ratio%% complet (1 valeur requise)|%ratio%% complet (%count% valeurs requises)
-  subtitle: '{0} Complet|{1} 1 valeur manquante|]1,Inf] %count% valeurs manquantes'
+  subtitle: "{0} Complet|{1} 1 valeur manquante|]1,Inf] %count% valeurs manquantes"
   missing_attributes: Valeur manquante|Valeurs manquantes
   legend:
     locale_not_associated: Locale non associée à ce canal

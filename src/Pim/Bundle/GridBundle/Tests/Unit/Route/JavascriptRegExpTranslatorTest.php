@@ -34,12 +34,23 @@ class JavascriptRegExpTranslatorTest extends \PHPUnit_Framework_TestCase
     public function getTranslateData()
     {
         return array(
-            "oro_search_results"=> array('#^/search/ajax$#s', '/^%prefix%\/search\/ajax$/'),
-            "users" => array('#^/user(?:/(?P<_format>html|json))?$#s', '/^%prefix%\/user(\/(html|json))?$/'),
+            "oro_search_results"=> array('#^/search/ajax$#s', array(), '/^%prefix%\/search\/ajax$/'),
+            "users" => array('#^/user(?:/(?P<_format>html|json))?$#s', array(), '/^%prefix%\/user(\/(html|json))?$/'),
             "products" => array(
                 '#^/enrich/product/(?:\.(?P<_format>html|json|csv))?$#s',
+                array(),
                 '/^%prefix%\/enrich\/product\/(\.(html|json|csv))?$/'
             ),
+            'custom' => array(
+                '#^/enrich/(?P<customEntityName>[^/]++)/(?:\.(?P<_format>html|json|csv))?$#s',
+                array('customEntityName' => 'value'),
+                '/^%prefix%\/enrich\/value\/(\.(html|json|csv))?$/'
+            ),
+            'nested_replacement' => array(
+                '#^/enrich/(?P<customEntityName>aabb(aa(bb)))/(?:\.(?P<_format>html|json|csv))?$#s',
+                array('customEntityName' => 'value'),
+                '/^%prefix%\/enrich\/value\/(\.(html|json|csv))?$/'
+            )
         );
     }
 
@@ -47,13 +58,14 @@ class JavascriptRegExpTranslatorTest extends \PHPUnit_Framework_TestCase
      * Tests translate
      *
      * @param string $phpRegexp
+     * @param array  $replacements
      * @param string $javascriptRegexp
      *
      * @dataProvider getTranslateData
      */
-    public function testTranslate($phpRegexp, $javascriptRegexp)
+    public function testTranslate($phpRegexp, $replacements, $javascriptRegexp)
     {
-        $this->assertEquals($javascriptRegexp, $this->translator->translate($phpRegexp));
+        $this->assertEquals($javascriptRegexp, $this->translator->translate($phpRegexp, $replacements));
     }
 
     /**

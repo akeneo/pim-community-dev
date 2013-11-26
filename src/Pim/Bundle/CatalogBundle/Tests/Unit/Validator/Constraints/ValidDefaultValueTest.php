@@ -16,7 +16,7 @@ class ValidDefaultValueTest extends \PHPUnit_Framework_TestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->target = new ValidDefaultValue();
     }

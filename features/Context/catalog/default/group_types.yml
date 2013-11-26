@@ -1,0 +1,5 @@
+group_types:
+    VARIANT:
+        is_variant: 1
+    X_SELL:
+        is_variant: 0

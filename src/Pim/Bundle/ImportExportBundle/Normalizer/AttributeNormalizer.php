@@ -27,70 +27,57 @@ class AttributeNormalizer implements NormalizerInterface
     protected $supportedFormats = array('json', 'xml');
 
     /**
-     * @var array
+     * @var TranslationNormalizer
      */
-    protected $results;
+    protected $translationNormalizer;
 
     /**
-     * Transforms an object into a flat array
+     * Constructor
      *
-     * @param ProductAttribute $attribute
-     * @param string           $format
-     * @param array            $context
-     *
-     * @return array
+     * @param TranslationNormalizer $translationNormalizer
      */
-    public function normalize($attribute, $format = null, array $context = array())
+    public function __construct(TranslationNormalizer $translationNormalizer)
     {
-        $attributeTypes = explode('_', $attribute->getAttributeType());
-
-        $dateMin = (is_null($attribute->getDateMin())) ? '' : $attribute->getDateMin()->format(\DateTime::ISO8601);
-        $dateMax = (is_null($attribute->getDateMax())) ? '' : $attribute->getDateMax()->format(\DateTime::ISO8601);
-
-        $this->results = array(
-            'type'                    => end($attributeTypes),
-            'code'                    => $attribute->getCode(),
-            'label'                   => $this->normalizeLabel($attribute),
-            'available_locales'       => $this->normalizeAvailableLocales($attribute),
-            'group'                   => $attribute->getVirtualGroup()->getCode(),
-            'sort_order'              => $attribute->getSortOrder(),
-            'required'                => $attribute->getRequired(),
-            'unique'                  => $attribute->getUnique(),
-            'searchable'              => $attribute->getSearchable(),
-            'localizable'             => $attribute->getTranslatable(),
-            'scope'                   => $attribute->getScopable() ? self::CHANNEL_SCOPE : self::GLOBAL_SCOPE,
-            'useable_as_grid_column'  => (string) (int) $attribute->isUseableAsGridColumn(),
-            'useable_as_grid_filter'  => (string) (int) $attribute->isUseableAsGridFilter(),
-            'default_value'           => (string) $attribute->getDefaultValue(),
-            'max_characters'          => (string) $attribute->getMaxCharacters(),
-            'validation_rule'         => (string) $attribute->getValidationRule(),
-            'validation_regexp'       => (string) $attribute->getValidationRegexp(),
-            'wysiwyg_enabled'         => (string) $attribute->isWysiwygEnabled(),
-            'number_min'              => (string) $attribute->getNumberMin(),
-            'number_max'              => (string) $attribute->getNumberMax(),
-            'decimals_allowed'        => (string) $attribute->isDecimalsAllowed(),
-            'negative_allowed'        => (string) $attribute->isNegativeAllowed(),
-            'date_min'                => $dateMin,
-            'date_max'                => $dateMax,
-            'date_type'               => (string) $attribute->getDateType(),
-            'metric_family'           => (string) $attribute->getMetricFamily(),
-            'default_metric_unit'     => (string) $attribute->getDefaultMetricUnit(),
-            'allowed_extensions'      => implode(self::ITEM_SEPARATOR, $attribute->getAllowedExtensions()),
-            'max_file_size'           => (string) $attribute->getMaxFileSize(),
-            'options'                 => $this->normalizeOptions($attribute),
-            'default_options'         => $this->normalizeDefaultOptions($attribute)
-        );
-
-        return $this->results;
+        $this->translationNormalizer = $translationNormalizer;
     }
 
     /**
-     * Indicates whether this normalizer can normalize the given data
-     *
-     * @param mixed  $data
-     * @param string $format
-     *
-     * @return boolean
+     * {@inheritdoc}
+     */
+    public function normalize($object, $format = null, array $context = array())
+    {
+        $results = array(
+            'type' => $object->getAttributeType(),
+            'code' => $object->getCode()
+        ) + $this->translationNormalizer->normalize($object, $format, $context);
+
+        $results = array_merge(
+            $results,
+            array(
+                'group'                   => $object->getVirtualGroup()->getCode(),
+                'unique'                  => (int) $object->getUnique(),
+                'useable_as_grid_column'  => (int) $object->isUseableAsGridColumn(),
+                'useable_as_grid_filter'  => (int) $object->isUseableAsGridFilter(),
+                'allowed_extensions'      => implode(self::ITEM_SEPARATOR, $object->getAllowedExtensions()),
+            )
+        );
+        if (isset($context['versioning'])) {
+            $results = array_merge($results, $this->getVersionedData($object));
+        } else {
+            $results = array_merge(
+                $results,
+                array(
+                    'is_translatable' => (int) $object->getTranslatable(),
+                    'is_scopable'     => (int) $object->getScopable(),
+                )
+            );
+        }
+
+        return $results;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function supportsNormalization($data, $format = null)
     {
@@ -98,20 +85,42 @@ class AttributeNormalizer implements NormalizerInterface
     }
 
     /**
-     * Normalize the label
+     * Get extra data to store in version
      *
      * @param ProductAttribute $attribute
      *
      * @return array
      */
-    protected function normalizeLabel(ProductAttribute $attribute)
+    protected function getVersionedData(ProductAttribute $attribute)
     {
-        $labels = array();
-        foreach ($attribute->getTranslations() as $translation) {
-            $labels[$translation->getLocale()]= $translation->getLabel();
-        }
+        $dateMin = (is_null($attribute->getDateMin())) ? '' : $attribute->getDateMin()->format(\DateTime::ISO8601);
+        $dateMax = (is_null($attribute->getDateMax())) ? '' : $attribute->getDateMax()->format(\DateTime::ISO8601);
 
-        return $labels;
+        return array(
+            'available_locales'   => $this->normalizeAvailableLocales($attribute),
+            'searchable'          => $attribute->getSearchable(),
+            'localizable'         => $attribute->getTranslatable(),
+            'scope'               => $attribute->getScopable() ? self::CHANNEL_SCOPE : self::GLOBAL_SCOPE,
+            'options'             => $this->normalizeOptions($attribute),
+            'default_options'     => $this->normalizeDefaultOptions($attribute),
+            'sort_order'          => (int) $attribute->getSortOrder(),
+            'required'            => (int) $attribute->getRequired(),
+            'default_value'       => (string) $attribute->getDefaultValue(),
+            'max_characters'      => (string) $attribute->getMaxCharacters(),
+            'validation_rule'     => (string) $attribute->getValidationRule(),
+            'validation_regexp'   => (string) $attribute->getValidationRegexp(),
+            'wysiwyg_enabled'     => (string) $attribute->isWysiwygEnabled(),
+            'number_min'          => (string) $attribute->getNumberMin(),
+            'number_max'          => (string) $attribute->getNumberMax(),
+            'decimals_allowed'    => (string) $attribute->isDecimalsAllowed(),
+            'negative_allowed'    => (string) $attribute->isNegativeAllowed(),
+            'date_min'            => $dateMin,
+            'date_max'            => $dateMax,
+            'date_type'           => (string) $attribute->getDateType(),
+            'metric_family'       => (string) $attribute->getMetricFamily(),
+            'default_metric_unit' => (string) $attribute->getDefaultMetricUnit(),
+            'max_file_size'       => (string) $attribute->getMaxFileSize(),
+        );
     }
 
     /**
@@ -125,7 +134,7 @@ class AttributeNormalizer implements NormalizerInterface
     {
         $locales = array();
         foreach ($attribute->getAvailableLocales() as $locale) {
-            $locales[]= $locale->getCode();
+            $locales[] = $locale->getCode();
         }
 
         return $locales;

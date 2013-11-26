@@ -1,0 +1,47 @@
+{% extends 'PimCatalogBundle::layout.html.twig' %}
+
+{% oro_title_set({ params: { '%group type.label%': form.vars.value.label } }) %}
+
+{% block content %}
+    {{ JSFV(form) }}
+    {{ form_start(form, {
+        'action': path('pim_catalog_group_type_edit', { id: form.vars.value.id}),
+        'attr': {
+            'data-updated-title': 'confirmation.leave'|trans,
+            'data-updated-message': 'confirmation.discard changes'|trans({ '%entity%': 'group type'|trans })
+        }
+    }) }}
+
+        {% set title = 'group type.edit'|trans ~ ' - ' ~ form.vars.value.label %}
+
+        {% set confirmationMessage = 'confirmation.remove.group type'|trans({ '%name%': form.vars.value.label }) %}
+        {% set buttons %}
+            {{ elements.backLink(path('pim_catalog_group_type_index')) }}
+            {% if not form.vars.value.isVariant %}
+            {{
+                elements.deleteLink(
+                    path('pim_catalog_group_type_remove', { id: form.vars.value.id }),
+                    path('pim_catalog_group_type_index'),
+                    confirmationMessage,
+                    '',
+                    'flash.group type.removed'|trans
+                )
+            }}
+            {% endif %}
+            {{ elements.submitBtn() }}
+        {% endset %}
+
+        {{ elements.page_header(title, buttons, null, null, elements.updated(form.vars.id)) }}
+
+        {{ elements.form_navbar(['Properties']) }}
+
+        <div class="row-fluid tab-content">
+
+            {{ elements.form_errors(form) }}
+
+            <div class="tab-pane active" id="properties">
+                {{ elements.accordion({ 'General Properties': form_row(form.code), 'Locale values': form_row(form.label) }) }}
+            </div>
+        </div>
+    {{ form_end(form) }}
+{% endblock %}

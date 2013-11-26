@@ -1,0 +1,9 @@
+services:
+
+    pim_versioning.builder.version:
+        class: %pim_versioning.builder.version.class%
+        arguments:
+            - '@pim_serializer'
+
+    pim_versioning.builder.audit:
+        class: %pim_versioning.builder.audit.class%

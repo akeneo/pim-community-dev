@@ -2,8 +2,9 @@
 
 {% set actionRoute = form.vars.value.id ?
     path('pim_importexport_export_edit', { 'id': form.vars.value.id }) :
-    path('pim_importexport_export_create', { 'connector': connector, 'alias': alias }) %}
+    path('pim_importexport_export_create', { 'connector': jobInstance.connector, 'alias': alias }) %}
 
+{% set entityName = 'export profile' %}
 {% set title = form.vars.value.id ? 'export profile.edit'|trans ~ ' - ' ~ form.vars.value.label : 'export profile.create'|trans %}
 
 {% set indexRoute = path('pim_importexport_export_index') %}

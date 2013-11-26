@@ -4,11 +4,12 @@ Feature: Display the family history
   I need to have access to a family history
 
   Background:
-    Given I am logged in as "admin"
+    Given the "default" catalog configuration
+    And I am logged in as "admin"
     And the following attribute group:
       | code    | label   |
       | general | General |
-    And the following product attributes:
+    And the following attributes:
       | label       | group   |
       | Description | General |
 
@@ -21,34 +22,37 @@ Feature: Display the family history
     When I visit the "History" tab
     Then there should be 1 update
     And I should see history:
-      | action | version | data       |
-      | create | 1       | code:Flyer |
+      | action | version | property | value |
+      | create | 1       | code     | Flyer |
+
     When I visit the "Properties" tab
     And I change the english Label to "Fly"
     And I save the family
     When I visit the "History" tab
     Then there should be 2 updates
     And I should see history:
-      | action | version | data            |
-      | create | 1       | code:Flyer      |
-      | update | 2       | label:en_US:Fly |
+      | action | version | property    | value |
+      | create | 1       | code        | Flyer |
+      | update | 2       | label-en_US | Fly   |
+
     When I visit the "Attributes" tab
     And I add available attributes Description
     When I visit the "History" tab
     Then there should be 3 updates
     And I should see history:
-      | action | version | data                          |
-      | create | 1       | code:Flyer                    |
-      | update | 2       | label:en_US:Fly               |
-      | update | 3       | attributes:skusku,description |
+      | action | version | property    | value           |
+      | create | 1       | code        | Flyer           |
+      | update | 2       | label-en_US | Fly             |
+      | update | 3       | attributes  | sku,description |
+
     When I visit the "Attributes" tab
     And I remove the "Description" attribute
     Then I should see flash message "Attribute successfully removed from the family"
     When I visit the "History" tab
     Then there should be 4 updates
     And I should see history:
-      | action | version | data                          |
-      | create | 1       | code:Flyer                    |
-      | update | 2       | label:en_US:Fly               |
-      | update | 3       | attributes:skusku,description |
-      | update | 4       | attributes:sku,descriptionsku |
+      | action | version | property    | value           |
+      | create | 1       | code        | Flyer           |
+      | update | 2       | label-en_US | Fly             |
+      | update | 3       | attributes  | sku,description |
+      | update | 4       | attributes  | sku             |

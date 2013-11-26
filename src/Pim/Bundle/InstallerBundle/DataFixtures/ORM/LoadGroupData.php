@@ -29,6 +29,7 @@ class LoadGroupData extends AbstractInstallerFixture
         if (isset($configuration['groups'])) {
             foreach ($configuration['groups'] as $code => $data) {
                 $group = $this->createGroup($code, $data);
+                $this->validate($group, $data);
                 $manager->persist($group);
                 $this->addReference('group.'. $group->getCode(), $group);
             }

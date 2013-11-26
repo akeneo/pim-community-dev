@@ -5,47 +5,32 @@ Feature: Product group creation
   I need to be able to manually create a group
 
   Background:
-    Given the following attributes:
-      | code      | label      | type                     |
-      | color     | Color      | pim_catalog_simpleselect |
-      | size      | Size       | pim_catalog_simpleselect |
-      | dimension | Dimensions | pim_catalog_simpleselect |
+    Given the "default" catalog configuration
     And I am logged in as "admin"
 
-  Scenario: Successfully display all required fields in the variant creation form
+  Scenario: Successfully display all required fields in the group creation form
     Given I am on the product groups page
     And I create a new product group
-    Then I should see the Code and Axis fields
+    Then I should see the Code and Type fields
+    And I should not see the Axis field
 
-  Scenario: Successfully create a variant
-    Given I am on the product groups page
-    When I create a new product group
-    And I fill in the following information in the popin:
-      | Code | MUG     |
-    And I select the axis "Color"
-    And I press the "Save" button
-    Then I am on the product groups page
-    And I should see group MUG
-
-  @skip
   Scenario: Successfully create a cross sell
     Given I am on the product groups page
     When I create a new product group
     And I fill in the following information in the popin:
-      | Code | Cross  |
+      | Code | Cross |
     And I select "X_SELL" from "Type"
     And I press the "Save" button
     Then I am on the product groups page
-    And I should see group Cross
+    And I should see groups Cross
 
-  Scenario: Fail to create a variant missing the code
+  Scenario: Fail to create a group missing the code
     Given I am on the product groups page
     When I create a new product group
-    And I select the axis "Size"
     And I press the "Save" button
     Then I should see validation error "This value should not be blank."
 
-  Scenario: Fail to create a variant filling a non-valid code
+  Scenario: Fail to create a group filling a non-valid code
     Given I am on the product groups page
     When I create a new product group
     And I fill in the following information in the popin:
@@ -53,21 +38,13 @@ Feature: Product group creation
     And I press the "Save" button
     Then I should see validation error "Group code may contain only letters, numbers and underscores."
 
-  Scenario: Fail to create a variant filling an already used code
-    Given I am on the product groups page
-    And the following product groups:
-      | code    | label          | attributes  | type    |
-      | TSHIRT  | T-Shirt Akeneo | size, color | VARIANT |
+  Scenario: Fail to create a group filling an already used code
+    Given the following product groups:
+      | code   | label          | type   |
+      | TSHIRT | T-Shirt Akeneo | X_SELL |
+    And I am on the product groups page
     When I create a new product group
     And I fill in the following information in the popin:
-      | Code | TSHIRT  |
+      | Code | TSHIRT |
     And I press the "Save" button
     Then I should see validation error "This value is already used."
-
-  Scenario: Fail to create a variant missing adding an axis
-    Given I am on the product groups page
-    When I create a new product group
-    And I fill in the following information in the popin:
-      | Code | MUG     |
-    And I press the "Save" button
-    Then I should see validation error "This collection should contain 1 element or more."

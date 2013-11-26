@@ -27,43 +27,44 @@ class GroupSubscriber implements EventSubscriberInterface
 
     /**
      * Post set data event
-     * Disable code and axis fields
+     * Disable axis fields
      *
      * @param FormEvent $event
      */
     public function postSetData(FormEvent $event)
     {
         $group = $event->getData();
-        if (null === $group || !$group->getId()) {
+        if (null === $group) {
             return;
         }
 
         $form = $event->getForm();
 
-        $form->add('code', 'text', array('disabled' => true));
+        if ($group->getId()) {
+            $form->add(
+                'attributes',
+                'entity',
+                array(
+                    'disabled' => true,
+                    'class'    => 'Pim\Bundle\CatalogBundle\Entity\ProductAttribute',
+                    'multiple' => true,
+                    'label'    => 'Axis',
+                    'help'     => 'pim_catalog.group.axis.help'
+                )
+            );
+        }
 
-        $form->add(
-            'attributes',
-            'entity',
-            array(
-                'disabled' => true,
-                'class'    => 'Pim\Bundle\CatalogBundle\Entity\ProductAttribute',
-                'multiple' => true,
-                'label'    => 'Axis',
-                'help'     => 'pim_catalog.group.axis.help'
-            )
-        );
-
-        $form->add(
-            'type',
-            'entity',
-            array(
-                'disabled' => true,
-                'class' => 'PimCatalogBundle:GroupType',
-                'multiple' => false,
-                'expanded' => false
-            )
-        );
-
+        if ($group->getType()) {
+            $form->add(
+                'type',
+                'entity',
+                array(
+                    'disabled' => true,
+                    'class' => 'PimCatalogBundle:GroupType',
+                    'multiple' => false,
+                    'expanded' => false
+                )
+            );
+        }
     }
 }

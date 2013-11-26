@@ -39,8 +39,6 @@ class WebApiContext extends BehatWebApiContext
      */
     public function iAmAuthenticatingWithApiKey($username, $apiKey)
     {
-        $this->getFixturesContext()->getOrCreateUser($username, null, $apiKey);
-
         $this->generateWsseHeader($username, $apiKey);
     }
 

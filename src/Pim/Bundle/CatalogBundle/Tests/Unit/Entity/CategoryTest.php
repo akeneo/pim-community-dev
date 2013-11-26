@@ -160,25 +160,6 @@ class CategoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test is/setter for dynamic property
-     */
-    public function testDynamic()
-    {
-        // assert getter
-        $this->assertFalse($this->category->isDynamic());
-
-        // assert setter
-        $testIsDynamic = true;
-        $this->assertEntity($this->category->setDynamic($testIsDynamic));
-        $this->assertTrue($this->category->isDynamic());
-
-        // assert setter
-        $testIsDynamic = false;
-        $this->assertEntity($this->category->setDynamic($testIsDynamic));
-        $this->assertFalse($this->category->isDynamic());
-    }
-
-    /**
      * Test getter/setter for translations property
      */
     public function testTranslations()
@@ -208,15 +189,6 @@ class CategoryTest extends \PHPUnit_Framework_TestCase
     public function testGetCreated()
     {
         $this->assertNull($this->category->getCreated());
-    }
-
-    /**
-     * Test related method
-     * Only test if getVersion return a value or null. Setter is not accessible.
-     */
-    public function testGetVersion()
-    {
-        $this->assertNull($this->category->getVersion());
     }
 
     /**

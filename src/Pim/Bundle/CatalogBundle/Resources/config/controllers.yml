@@ -11,6 +11,8 @@ parameters:
     pim_catalog.controller.group.class:             Pim\Bundle\CatalogBundle\Controller\GroupController
     pim_catalog.controller.association.class:       Pim\Bundle\CatalogBundle\Controller\AssociationController
     pim_catalog.controller.media.class:             Pim\Bundle\CatalogBundle\Controller\MediaController
+    pim_catalog.controller.variant_group.class:     Pim\Bundle\CatalogBundle\Controller\VariantGroupController
+    pim_catalog.controller.group_type.class:        Pim\Bundle\CatalogBundle\Controller\GroupTypeController
 
 services:
     pim_catalog.controller.abstract:
@@ -35,8 +37,7 @@ services:
         class: %pim_catalog.controller.attribute_group.class%
         parent: pim_catalog.controller.abstract_doctrine
         arguments:
-            - '@oro_grid.renderer'
-            - '@pim_catalog.datagrid.worker'
+            - '@pim_grid.datagrid.helper'
             - '@pim_catalog.form.handler.attribute_group'
             - '@pim_catalog.form.attribute_group'
 
@@ -45,8 +46,7 @@ services:
         class: %pim_catalog.controller.category_tree.class%
         parent: pim_catalog.controller.abstract_doctrine
         arguments:
-            - '@oro_grid.renderer'
-            - '@pim_catalog.datagrid.worker'
+            - '@pim_grid.datagrid.helper'
             - '@pim_catalog.manager.category'
 
     pim_catalog.controller.channel:
@@ -54,7 +54,7 @@ services:
         class: %pim_catalog.controller.channel.class%
         parent: pim_catalog.controller.abstract_doctrine
         arguments:
-            - '@pim_catalog.datagrid.worker'
+            - '@pim_grid.datagrid.helper'
             - '@pim_catalog.form.handler.channel'
             - '@pim_catalog.form.channel'
 
@@ -63,32 +63,31 @@ services:
         class: %pim_catalog.controller.currency.class%
         parent: pim_catalog.controller.abstract_doctrine
         arguments:
-            - '@pim_catalog.datagrid.worker'
+            - '@pim_grid.datagrid.helper'
 
     pim_catalog.controller.family:
         scope: request
         class: %pim_catalog.controller.family.class%
         parent: pim_catalog.controller.abstract_doctrine
         arguments:
-            - '@oro_grid.renderer'
-            - '@pim_catalog.datagrid.worker'
+            - '@pim_grid.datagrid.helper'
             - '@pim_catalog.manager.channel'
-            - '@pim_catalog.manager.product'
+            - '@pim_catalog.factory.family'
+            - '@pim_catalog.manager.completeness'
 
     pim_catalog.controller.locale:
         scope: request
         class: %pim_catalog.controller.locale.class%
         parent: pim_catalog.controller.abstract_doctrine
         arguments:
-            - '@pim_catalog.datagrid.worker'
+            - '@pim_grid.datagrid.helper'
 
     pim_catalog.controller.product_attribute:
         scope: request
         class: %pim_catalog.controller.product_attribute.class%
         parent: pim_catalog.controller.abstract_doctrine
         arguments:
-            - '@oro_grid.renderer'
-            - '@pim_catalog.datagrid.worker'
+            - '@pim_grid.datagrid.helper'
             - '@pim_catalog.form.handler.attribute'
             - '@pim_catalog.form.attribute'
             - '@pim_catalog.manager.product'
@@ -101,13 +100,13 @@ services:
         class: %pim_catalog.controller.product.class%
         parent: pim_catalog.controller.abstract_doctrine
         arguments:
-            - '@oro_grid.renderer'
-            - '@pim_catalog.datagrid.worker'
+            - '@pim_grid.datagrid.helper'
             - '@pim_catalog.manager.product'
             - '@pim_catalog.manager.category'
             - '@pim_catalog.manager.locale'
             - '@pim_versioning.manager.audit'
             - '@oro_security.security_facade'
+            - '@pim_catalog.helper.completeness'
 
     pim_catalog.controller.mass_edit_action:
         scope: request
@@ -115,15 +114,16 @@ services:
         parent: pim_catalog.controller.abstract_doctrine
         arguments:
             - '@pim_catalog.mass_edit_action.operator'
-            - '@pim_catalog.datagrid.worker'
+            - '@pim_grid.datagrid.helper'
             - '@oro_grid.mass_action.parameters_parser'
+            - '@pim_catalog.manager.product'
 
     pim_catalog.controller.group:
         scope: request
         class: %pim_catalog.controller.group.class%
         parent: pim_catalog.controller.abstract_doctrine
         arguments:
-            - '@pim_catalog.datagrid.worker'
+            - '@pim_grid.datagrid.helper'
             - '@pim_catalog.form.handler.group'
             - '@pim_catalog.form.group'
 
@@ -132,8 +132,7 @@ services:
         class: %pim_catalog.controller.association.class%
         parent: pim_catalog.controller.abstract_doctrine
         arguments:
-            - '@oro_grid.renderer'
-            - '@pim_catalog.datagrid.worker'
+            - '@pim_grid.datagrid.helper'
             - '@pim_catalog.form.handler.association'
             - '@pim_catalog.form.association'
 
@@ -145,3 +144,21 @@ services:
             - '@liip_imagine'
             - '@liip_imagine.filter.manager'
             - '@liip_imagine.cache.manager'
+
+    pim_catalog.controller.variant_group:
+        scope: request
+        class: %pim_catalog.controller.variant_group.class%
+        parent: pim_catalog.controller.abstract_doctrine
+        arguments:
+            - '@pim_grid.datagrid.helper'
+            - '@pim_catalog.form.handler.group'
+            - '@pim_catalog.form.group'
+
+    pim_catalog.controller.group_type:
+        scope: request
+        class: %pim_catalog.controller.group_type.class%
+        parent: pim_catalog.controller.abstract_doctrine
+        arguments:
+            - '@pim_grid.datagrid.helper'
+            - '@pim_catalog.form.handler.group_type'
+            - '@pim_catalog.form.group_type'

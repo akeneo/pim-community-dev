@@ -2,11 +2,17 @@
 
 {% block familyTab %}
 {{ JSFV(form) }}
-{{ form_start(form, { 'action': path('pim_catalog_family_create') }) }}
+{{ form_start(form, {
+    'action': path('pim_catalog_family_create'),
+    'attr': {
+        'data-updated-title': 'confirmation.leave'|trans,
+        'data-updated-message': 'confirmation.discard changes'|trans({ '%entity%': 'family'|trans })
+    }
+}) }}
 
     {% set title = 'family.create'|trans %}
 
-    {{ elements.page_header(title, elements.submitBtn) }}
+    {{ elements.page_header(title, elements.submitBtn, null, null, elements.updated(form.vars.id)) }}
 
     {{ elements.form_navbar('Properties') }}
 
@@ -19,6 +25,5 @@
         </div>
     </div>
 
-    {{ form_row(form._token) }}
-</form>
+{{ form_end(form) }}
 {% endblock %}

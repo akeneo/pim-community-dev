@@ -7,6 +7,7 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
 use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
+use Context\Page\Base\Grid;
 
 /**
  * Feature context for the datagrid related steps
@@ -43,14 +44,19 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function theGridShouldContainElement($count)
     {
+        if ($count > 10) {
+            $this->datagrid->changePageSize(100);
+            $this->wait();
+        }
+
         assertEquals(
-            intval($count),
+            $count,
             $actualCount = $this->datagrid->getToolbarCount(),
-            sprintf('Expecting to see %d record(s) in the datagrid, actually saw %d', $count, $actualCount)
+            sprintf('Expecting to see %d record(s) in the datagrid toolbar, actually saw %d', $count, $actualCount)
         );
 
         assertEquals(
-            intval($count),
+            $count,
             $actualCount = $this->datagrid->countRows(),
             sprintf('Expecting to see %d row(s) in the datagrid, actually saw %d.', $count, $actualCount)
         );
@@ -65,7 +71,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iFilterPerPrice($action, $value, $currency)
     {
-        $this->getPage('Product index')->filterPerPrice($action, $value, $currency);
+        $this->datagrid->filterPerPrice($action, $value, $currency);
         $this->wait();
     }
 
@@ -77,7 +83,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function iFilterPerCategory($code)
     {
         $category = $this->getFixturesContext()->getCategory($code);
-        $this->getPage('Product index')->clickCategoryFilterLink($category);
+        $this->getCurrentPage()->clickCategoryFilterLink($category);
         $this->wait();
     }
 
@@ -86,7 +92,8 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iFilterPerUnclassifiedCategory()
     {
-        $this->getPage('Product index')->clickUnclassifiedCategoryFilterLink();
+        $this->wait();
+        $this->getCurrentPage()->clickUnclassifiedCategoryFilterLink();
         $this->wait();
     }
 
@@ -97,7 +104,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iFilterPerFamily($code)
     {
-        $this->getPage('Product index')->filterPerFamily($code);
+        $this->datagrid->filterPerFamily($code);
         $this->wait();
     }
 
@@ -108,7 +115,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iFilterPerChannel($code)
     {
-        $this->getPage('Product index')->filterPerChannel($code);
+        $this->datagrid->filterPerChannel($code);
         $this->wait();
     }
 
@@ -188,9 +195,9 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     /**
      * @param string $filterName
      *
-     * @Then /^I make visible the filter "([^"]*)"$/
+     * @Then /^I show the filter "([^"]*)"$/
      */
-    public function iMakeVisibleTheFilter($filterName)
+    public function iShowTheFilter($filterName)
     {
         $this->datagrid->showFilter($filterName);
     }
@@ -286,6 +293,43 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param TableNode $table
+     *
+     * @Then /^I should be able to use the following filters:$/
+     *
+     * @return Then[]
+     */
+    public function iShouldBeAbleToUseTheFollowingFilters(TableNode $table)
+    {
+        $data = $table->getHash();
+
+        $filters = array_unique(
+            array_map(
+                function ($item) {
+                    return $item['filter'];
+                },
+                $data
+            )
+        );
+
+        $steps = array(
+            new Then(sprintf('I should see the filters %s', implode(', ', $filters)))
+        );
+
+        foreach ($data as $item) {
+            $count = count($this->getMainContext()->listToArray($item['result']));
+            $filter = $item['filter'];
+            $steps[] = new Then(sprintf('I show the filter "%s"', $filter));
+            $steps[] = new Then(sprintf('I filter by "%s" with value "%s"', $filter, $item['value']));
+            $steps[] = new Then(sprintf('the grid should contain %d elements', $count));
+            $steps[] = new Then(sprintf('I should see entities %s', $item['result']));
+            $steps[] = new Then(sprintf('I hide the filter "%s"', $filter));
+        }
+
+        return $steps;
+    }
+
+    /**
      * @param string $columnName
      * @param string $order
      *
@@ -321,17 +365,23 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      * @throws ExpectationException
      *
      * @Then /^I should see products? (.*)$/
-     * @Then /^I should see attributes? (?!(.*)in group )(.*)$/
+     * @Then /^I should see attributes? (?!(?:.*)in group )(.*)$/
      * @Then /^I should see channels? (.*)$/
      * @Then /^I should see locales? (.*)$/
      * @Then /^I should see (?:import|export) profiles? (.*)$/
      * @Then /^I should see (?:(?:entit|currenc)(?:y|ies)) (.*)$/
-     * @Then /^I should see groups? (.*)$/
+     * @Then /^I should see groups? (?:types )?(.*)$/
      * @Then /^I should see associations? (.*)$/
+     * @Then /^I should see users? (.*)$/
      */
     public function iShouldSeeEntities($elements)
     {
         $elements = $this->getMainContext()->listToArray($elements);
+
+        if (count($elements) > 10) {
+            $this->datagrid->changePageSize(100);
+            $this->wait();
+        }
 
         foreach ($elements as $element) {
             if (!$this->datagrid->getRow($element)) {
@@ -349,7 +399,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      * @Then /^I should not see locales? (.*)$/
      * @Then /^I should not see (?:import|export) profiles? (.*)$/
      * @Then /^I should not see (?:(?:entit|currenc)(?:y|ies)) (.*)$/
-     * @Then /^I should not see groups? (.*)$/
+     * @Then /^I should not see group(?: type)?s? (.*)$/
      * @Then /^I should not see associations? (.*)$/
      */
     public function iShouldNotSeeEntities($entities)
@@ -382,6 +432,33 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $filterName
+     * @param string $operatorName
+     * @param string $value
+     *
+     * @Then /^I filter by "([^"]*)" with operator "([^"]*)" and value "([^"]*)"$/
+     */
+    public function iFilterByWithOperator($filterName, $operatorName, $value)
+    {
+        $operators = array(
+            'contains' => Grid::FILTER_CONTAINS,
+            'does not contain' => Grid::FILTER_DOES_NOT_CONTAIN,
+            'is equal to' => Grid::FILTER_IS_EQUAL_TO,
+            'starts with' => Grid::FILTER_STARTS_WITH,
+            'ends with' => Grid::FILTER_ENDS_WITH
+        );
+
+        if (!isset($operators[$operatorName])) {
+            throw new \InvalidArgumentException("Operator $operatorName is unknown.");
+        }
+
+        $operator = $operators[$operatorName];
+
+        $this->datagrid->filterBy($filterName, $value, $operator);
+        $this->wait();
+    }
+
+    /**
      * @param string $row
      *
      * @When /^I click on the "([^"]*)" row$/
@@ -401,6 +478,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iCheckTheRows($rows)
     {
+        $this->wait();
         $rows = $this->getMainContext()->listToArray($rows);
 
         foreach ($rows as $row) {
@@ -507,12 +585,10 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $name
-     *
      * @return \SensioLabs\Behat\PageObjectExtension\PageObject\Page
      */
-    public function getPage($name)
+    public function getCurrentPage()
     {
-        return $this->getNavigationContext()->getPage($name);
+        return $this->getNavigationContext()->getCurrentPage();
     }
 }

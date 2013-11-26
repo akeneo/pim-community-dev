@@ -9,8 +9,8 @@ services:
             - '@event_dispatcher'
             - '@oro_flexibleentity.attributetype.factory'
             - '@pim_catalog.manager.media'
-            - '@pim_catalog.manager.currency'
-            - '@pim_catalog.calculator.completeness'
+            - '@pim_catalog.manager.completeness'
+            - '@pim_catalog.builder.product'
         tags:
             - { name: oro_flexibleentity_manager, entity: %pim_catalog.entity.product.class%}
         calls:
@@ -26,6 +26,13 @@ services:
             - [ addAttributeType, [pim_catalog_boolean] ]
             - [ addAttributeType, [pim_catalog_date] ]
             - [ addAttributeType, [pim_catalog_metric] ]
+
+    pim_catalog.builder.product:
+        class: %pim_catalog.builder.product.class%
+        arguments:
+            - %pim_catalog.entity.product.class%
+            - '@doctrine.orm.entity_manager'
+            - '@pim_catalog.manager.currency'
 
     pim_catalog.manager.category:
         class: %pim_catalog.manager.category.class%
@@ -67,7 +74,13 @@ services:
             - '@doctrine.orm.entity_manager'
             - '@security.context'
 
-    pim_catalog.manager.variant_group:
-        class: %pim_catalog.manager.variant_group.class%
+    pim_catalog.manager.group:
+        class: %pim_catalog.manager.group.class%
         arguments:
             - '@doctrine.orm.entity_manager'
+
+    pim_catalog.manager.completeness:
+        class: %pim_catalog.manager.completeness.class%
+        arguments:
+            - '@doctrine'
+            - '@pim_catalog.doctrine.completeness_query_builder'

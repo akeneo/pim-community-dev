@@ -2,9 +2,8 @@
 
 namespace Pim\Bundle\ImportExportBundle\Normalizer;
 
-use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
-
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 
 /**
  * Attribute group normalizer
@@ -16,28 +15,35 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 class AttributeGroupNormalizer implements NormalizerInterface
 {
     /**
-     * @var string[]
+     * @var array
      */
     protected $supportedFormats = array('json', 'xml');
 
     /**
-     * @var array
+     * @var TranslationNormalizer
      */
-    protected $results;
+    protected $translationNormalizer;
+
+    /**
+     * Constructor
+     *
+     * @param TranslationNormalizer $translationNormalizer
+     */
+    public function __construct(TranslationNormalizer $translationNormalizer)
+    {
+        $this->translationNormalizer = $translationNormalizer;
+    }
 
     /**
      * {@inheritdoc}
      */
-    public function normalize($group, $format = null, array $context = array())
+    public function normalize($object, $format = null, array $context = array())
     {
-        $this->results = array(
-            'code'       => $group->getCode(),
-            'label'      => $this->normalizeLabel($group),
-            'sortOrder'  => $group->getSortOrder(),
-            'attributes' => $this->normalizeAttributes($group)
-        );
-
-        return $this->results;
+        return array(
+            'code'       => $object->getCode(),
+            'sortOrder'  => $object->getSortOrder(),
+            'attributes' => $this->normalizeAttributes($object)
+        ) + $this->translationNormalizer->normalize($object, $format, $context);
     }
 
     /**
@@ -46,23 +52,6 @@ class AttributeGroupNormalizer implements NormalizerInterface
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof AttributeGroup && in_array($format, $this->supportedFormats);
-    }
-
-    /**
-     * Normalize the label
-     *
-     * @param AttributeGroup $group
-     *
-     * @return array
-     */
-    protected function normalizeLabel(AttributeGroup $group)
-    {
-        $labels = array();
-        foreach ($group->getTranslations() as $translation) {
-            $labels[$translation->getLocale()] = $translation->getLabel();
-        }
-
-        return $labels;
     }
 
     /**
@@ -76,7 +65,7 @@ class AttributeGroupNormalizer implements NormalizerInterface
     {
         $attributes = array();
         foreach ($group->getAttributes() as $attribute) {
-            $attributes[]= $attribute->getCode();
+            $attributes[] = $attribute->getCode();
         }
 
         return $attributes;

@@ -16,14 +16,13 @@ use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Oro\Bundle\GridBundle\Renderer\GridRenderer;
 
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\CatalogBundle\Form\Handler\AttributeGroupHandler;
 use Pim\Bundle\CatalogBundle\Model\AvailableProductAttributes;
 use Pim\Bundle\CatalogBundle\Form\Type\AvailableProductAttributesType;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
-use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
+use Pim\Bundle\GridBundle\Helper\DatagridHelperInterface;
 
 /**
  * AttributeGroup controller
@@ -35,14 +34,9 @@ use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
 class AttributeGroupController extends AbstractDoctrineController
 {
     /**
-     * @var GridRenderer
+     * @var DatagridHelperInterface
      */
-    private $gridRenderer;
-
-    /**
-     * @var DatagridWorkerInterface
-     */
-    private $dataGridWorker;
+    private $datagridHelper;
 
     /**
      * @var AttributeGroupHandler
@@ -65,8 +59,7 @@ class AttributeGroupController extends AbstractDoctrineController
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
      * @param RegistryInterface        $doctrine
-     * @param GridRenderer             $gridRenderer
-     * @param DatagridWorkerInterface  $dataGridWorker
+     * @param DatagridHelperInterface  $datagridHelper
      * @param AttributeGroupHandler    $formHandler
      * @param Form                     $form
      */
@@ -79,8 +72,7 @@ class AttributeGroupController extends AbstractDoctrineController
         ValidatorInterface $validator,
         TranslatorInterface $translator,
         RegistryInterface $doctrine,
-        GridRenderer $gridRenderer,
-        DatagridWorkerInterface $dataGridWorker,
+        DatagridHelperInterface $datagridHelper,
         AttributeGroupHandler $formHandler,
         Form $form
     ) {
@@ -95,8 +87,7 @@ class AttributeGroupController extends AbstractDoctrineController
             $doctrine
         );
 
-        $this->gridRenderer   = $gridRenderer;
-        $this->dataGridWorker = $dataGridWorker;
+        $this->datagridHelper = $datagridHelper;
         $this->formHandler    = $formHandler;
         $this->form           = $form;
     }
@@ -140,17 +131,6 @@ class AttributeGroupController extends AbstractDoctrineController
     {
         $groups = $this->getRepository('PimCatalogBundle:AttributeGroup')->getIdToLabelOrderedBySortOrder();
 
-        $datagrid = $this->dataGridWorker->getDataAuditDatagrid(
-            $group,
-            'pim_catalog_attributegroup_edit',
-            array('id' => $group->getId())
-        );
-        $datagridView = $datagrid->createView();
-
-        if ('json' === $this->getRequest()->getRequestFormat()) {
-            return $this->gridRenderer->renderResultsJsonResponse($datagridView);
-        }
-
         if ($this->formHandler->process($group)) {
             $this->addFlash('success', 'flash.attribute group.updated');
 
@@ -162,8 +142,25 @@ class AttributeGroupController extends AbstractDoctrineController
             'group'          => $group,
             'form'           => $this->form->createView(),
             'attributesForm' => $this->getAvailableProductAttributesForm($this->getGroupedAttributes())->createView(),
-            'datagrid'       => $datagridView,
+            'historyDatagrid' => $this->getHistoryGrid($group)->createView()
         );
+    }
+
+    /**
+     * History of a group
+     *
+     * @param Request        $request
+     * @param AttributeGroup $group
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|template
+     */
+    public function historyAction(Request $request, AttributeGroup $group)
+    {
+        $historyGridView = $this->getHistoryGrid($group)->createView();
+
+        if ('json' === $request->getRequestFormat()) {
+            return $this->datagridHelper->getDatagridRenderer()->renderResultsJsonResponse($historyGridView);
+        }
     }
 
     /**
@@ -317,5 +314,21 @@ class AttributeGroupController extends AbstractDoctrineController
     protected function getGroupedAttributes()
     {
         return $this->getRepository('PimCatalogBundle:ProductAttribute')->findAllGrouped();
+    }
+
+    /**
+     * @param AttributeGroup $group
+     *
+     * @return Datagrid
+     */
+    protected function getHistoryGrid(AttributeGroup $group)
+    {
+        $historyGrid = $this->datagridHelper->getDataAuditDatagrid(
+            $group,
+            'pim_catalog_attributegroup_history',
+            array('id' => $group->getId())
+        );
+
+        return $historyGrid;
     }
 }

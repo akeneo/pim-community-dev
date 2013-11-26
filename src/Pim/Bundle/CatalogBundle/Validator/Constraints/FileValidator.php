@@ -6,7 +6,7 @@ use Symfony\Component\Validator\Constraints\FileValidator as BaseFileValidator;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\HttpFoundation\File\File as FileObject;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Oro\Bundle\FlexibleEntityBundle\Entity\Media;
+use Pim\Bundle\CatalogBundle\Entity\Media;
 
 /**
  * Constraint

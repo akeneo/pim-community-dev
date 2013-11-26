@@ -20,49 +20,35 @@ class AssociationNormalizer implements NormalizerInterface
     protected $supportedFormats = array('json', 'xml');
 
     /**
-     * Transforms an object into a flat array
-     *
-     * @param object $association
-     * @param string $format
-     * @param array  $context
-     *
-     * @return array
+     * @var TranslationNormalizer
      */
-    public function normalize($association, $format = null, array $context = array())
+    protected $translationNormalizer;
+
+    /**
+     * Constructor
+     *
+     * @param TranslationNormalizer $translationNormalizer
+     */
+    public function __construct(TranslationNormalizer $translationNormalizer)
     {
-        return array(
-            'code'  => $association->getCode(),
-            'label' => $this->normalizeLabel($association)
-        );
+        $this->translationNormalizer = $translationNormalizer;
     }
 
     /**
-     * Indicates whether this normalizer can normalize the given data
-     *
-     * @param mixed  $data
-     * @param string $format
-     *
-     * @return boolean
+     * {@inheritdoc}
+     */
+    public function normalize($object, $format = null, array $context = array())
+    {
+        return array(
+            'code'  => $object->getCode()
+        ) + $this->translationNormalizer->normalize($object, $format, $context);
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof Association && in_array($format, $this->supportedFormats);
-    }
-
-    /**
-     * Normalize the label
-     *
-     * @param Association $association
-     *
-     * @return array
-     */
-    protected function normalizeLabel(Association $association)
-    {
-        $labels = array();
-        foreach ($association->getTranslations() as $translation) {
-            $labels[$translation->getLocale()] = $translation->getLabel();
-        }
-
-        return $labels;
     }
 }

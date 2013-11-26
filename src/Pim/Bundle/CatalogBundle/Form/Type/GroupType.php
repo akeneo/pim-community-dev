@@ -7,6 +7,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\CatalogBundle\Form\Subscriber\BindGroupProductsSubscriber;
+use Pim\Bundle\CatalogBundle\Form\Subscriber\DisableCodeFieldSubscriber;
 use Pim\Bundle\CatalogBundle\Form\Subscriber\GroupSubscriber;
 use Pim\Bundle\CatalogBundle\Entity\Repository\ProductAttributeRepository;
 
@@ -36,6 +37,7 @@ class GroupType extends AbstractType
 
         $builder
             ->addEventSubscriber(new GroupSubscriber())
+            ->addEventSubscriber(new DisableCodeFieldSubscriber())
             ->addEventSubscriber(new BindGroupProductsSubscriber());
     }
 
@@ -54,7 +56,10 @@ class GroupType extends AbstractType
             array(
                 'class' => 'PimCatalogBundle:GroupType',
                 'query_builder' => function (EntityRepository $repository) {
-                    return $repository->buildAll();
+                    return $repository
+                        ->buildAll()
+                        ->andWhere('group_type.code != :variant')
+                        ->setParameter('variant', 'VARIANT');
                 },
                 'multiple' => false,
                 'expanded' => false

@@ -9,26 +9,31 @@
 
 {% block content %}
 
-    {% set title = 'group.overview'|trans %}
+    <script type="text/javascript">
+        require(
+            ['jquery', 'pim/dialogform'],
+            function ($, dialogForm) {
+                'use strict';
+                $(function() {
+                    new dialogForm('#create-group');
+                });
+            }
+        );
+    </script>
 
-    {% set buttons %}
-        {{ elements.createBtn(
-            'group',
-            null,
-            { 'id': 'create-group', 'data-form': 'dialog', 'data-form-url': path('pim_catalog_group_create') }
-        ) }}
-        <script type="text/javascript">
-            require(
-                ['jquery', 'pim/dialogform'],
-                function ($, dialogForm) {
-                    'use strict';
-                    $(function() {
-                        new dialogForm('#create-group');
-                    });
-                }
-            );
-        </script>
-    {% endset %}
+    {% if title is not defined %}
+        {% set title = 'group.overview'|trans %}
+    {% endif %}
+
+    {% if buttons is not defined %}
+        {% set buttons %}
+            {{ elements.createBtn(
+                'group',
+                null,
+                { 'id': 'create-group', 'data-form': 'dialog', 'data-form-url': path('pim_catalog_group_create') }
+            ) }}
+        {% endset %}
+    {% endif %}
 
     {{ elements.page_header(title, buttons) }}
 

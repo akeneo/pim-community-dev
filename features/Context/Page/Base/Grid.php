@@ -13,6 +13,12 @@ use Behat\Mink\Element\NodeElement;
  */
 class Grid extends Index
 {
+    const FILTER_CONTAINS = 1;
+    const FILTER_DOES_NOT_CONTAIN = 2;
+    const FILTER_IS_EQUAL_TO = 3;
+    const FILTER_STARTS_WITH = 4;
+    const FILTER_ENDS_WITH = 5;
+
     /**
      * {@inheritdoc}
      */
@@ -33,6 +39,35 @@ class Grid extends Index
     }
 
     /**
+     * Returns the currently visible grid, if there is one
+     *
+     * @return NodeElement
+     * @throws InvalidArgumentException
+     */
+    public function getGrid()
+    {
+        $grids = $this->getElement('Container')->findAll('css', $this->elements['Grid']['css']);
+
+        foreach ($grids as $grid) {
+            if ($grid->isVisible()) {
+                return $grid;
+            }
+        }
+
+        throw new \InvalidArgumentException('No visible grids found');
+    }
+
+    /**
+     * Returns the grid body
+     *
+     * @return NodeElement
+     */
+    public function getGridContent()
+    {
+        return $this->getGrid()->find('css', 'tbody');
+    }
+
+    /**
      * Get a row from the grid containing the value asked
      * @param string $value
      *
@@ -42,7 +77,7 @@ class Grid extends Index
     public function getRow($value)
     {
         $value = str_replace('"', '', $value);
-        $gridRow = $this->getElement('Grid content')->find('css', sprintf('tr:contains("%s")', $value));
+        $gridRow = $this->getGridContent()->find('css', sprintf('tr:contains("%s")', $value));
 
         if (!$gridRow) {
             throw new \InvalidArgumentException(
@@ -51,26 +86,6 @@ class Grid extends Index
         }
 
         return $gridRow;
-    }
-
-    /**
-     * Get row position
-     * @param string $value
-     *
-     * @throws \InvalidArgumentException
-     * @return int
-     */
-    public function getRowPosition($value)
-    {
-        foreach ($this->getRows() as $key => $row) {
-            if ($row->find('css', sprintf('td:contains("%s")', $value))) {
-                return $key;
-            }
-        }
-
-        throw new \InvalidArgumentException(
-            sprintf('Couldn\'t find a row for value "%s"', $value)
-        );
     }
 
     /**
@@ -94,12 +109,11 @@ class Grid extends Index
     }
 
     /**
-     * Filter the filter name by the value
-     *
-     * @param string $filterName
-     * @param string $value
+     * @param string $filterName The name of the filter
+     * @param string $value      The value to filter by
+     * @param string $operator   If false, no operator will be selected
      */
-    public function filterBy($filterName, $value)
+    public function filterBy($filterName, $value, $operator = false)
     {
         $filter = $this->getFilter($filterName);
         $this->openFilter($filter);
@@ -107,6 +121,10 @@ class Grid extends Index
         if ($elt = $filter->find('css', 'select')) {
             $elt->selectOption($value);
         } elseif ($elt = $filter->find('css', 'div.filter-criteria')) {
+            if ($operator !== false) {
+                $filter->find('css', 'button.dropdown-toggle')->click();
+                $filter->find('css', '[data-value="'.$operator.'"]')->click();
+            }
             $elt->fillField('value', $value);
             $filter->find('css', 'button.filter-update')->click();
         } else {
@@ -122,7 +140,11 @@ class Grid extends Index
      */
     public function countRows()
     {
-        return count($this->getElement('Grid content')->findAll('css', 'tr'));
+        try {
+            return count($this->getRows());
+        } catch (\InvalidArgumentException $e) {
+            return 0;
+        }
     }
 
     /**
@@ -147,6 +169,17 @@ class Grid extends Index
         } else {
             throw new \InvalidArgumentException('Impossible to get count of datagrid records');
         }
+    }
+
+    /**
+     * @param int $num
+     */
+    public function changePageSize($num)
+    {
+        assertContains($num, array(10, 25, 50, 100), 'Only 10, 25, 50 and 100 records per page are available');
+        $element = $this->getElement('Grid toolbar')->find('css', '.page-size');
+        $element->find('css', 'button')->click();
+        $element->find('css', sprintf('ul.dropdown-menu li a:contains("%d")', $num))->click();
     }
 
     /**
@@ -229,16 +262,7 @@ class Grid extends Index
             return false;
         }
 
-        $rows = $this->getRows();
-        $rowCount = count($rows);
-        $values = array();
-        $currentRow = 0;
-        $columnPosition = $this->getColumnPosition($column);
-        while ($rowCount > 0) {
-            $values[] = $this->getRowCell($rows[$currentRow], $columnPosition)->getText();
-            $currentRow++;
-            $rowCount--;
-        }
+        $values = $this->getValuesInColumn($column);
         $sortedValues = $values;
         if ($order === 'ascending') {
             sort($sortedValues);
@@ -389,7 +413,9 @@ class Grid extends Index
      */
     private function activateFilter($filterName)
     {
-        $this->clickOnFilterToManage($filterName);
+        if (!$this->getFilter($filterName)->isVisible()) {
+            $this->clickOnFilterToManage($filterName);
+        }
 
         if (!$this->getFilter($filterName)->isVisible()) {
             throw new \InvalidArgumentException(
@@ -406,7 +432,9 @@ class Grid extends Index
      */
     private function deactivateFilter($filterName)
     {
-        $this->clickOnFilterToManage($filterName);
+        if ($this->getFilter($filterName)->isVisible()) {
+            $this->clickOnFilterToManage($filterName);
+        }
 
         if ($this->getFilter($filterName)->isVisible()) {
             throw new \InvalidArgumentException(
@@ -492,7 +520,7 @@ class Grid extends Index
             throw new \InvalidArgumentException(
                 sprintf(
                     'Trying to access cell %d of a row which has %d cell(s).',
-                    $position,
+                    $position + 1,
                     count($cells)
                 )
             );
@@ -528,7 +556,7 @@ class Grid extends Index
      */
     protected function getColumnHeaders($withHidden = false, $withActions = true)
     {
-        $headers = $this->getElement('Grid')->findAll('css', 'thead th');
+        $headers = $this->getGrid()->findAll('css', 'thead th');
 
         if (!$withActions) {
             foreach ($headers as $key => $header) {
@@ -561,6 +589,62 @@ class Grid extends Index
      */
     protected function getRows()
     {
-        return $this->getElement('Grid content')->findAll('css', 'tr');
+        return $this->getGridContent()->findAll('css', 'tr');
+    }
+
+    /**
+     * @param string $code
+     */
+    public function filterPerFamily($code)
+    {
+        $elt = $this->getElement('Filters')->find('css', sprintf(':contains("%s") select', $code));
+
+        if (!$elt) {
+            throw new \Exception(sprintf('Could not find filter for family "%s".', $code));
+        }
+
+        $elt->selectOption($code);
+    }
+
+    /**
+     * @param string $action   Type of filtering (>, >=, etc.)
+     * @param number $value    Value to filter
+     * @param string $currency Currency on which filter
+     */
+    public function filterPerPrice($action, $value, $currency)
+    {
+        $filter = $this->getFilter('Price');
+        if (!$filter) {
+            throw new \Exception('Could not find filter for price.');
+        }
+
+        $this->openFilter($filter);
+
+        $criteriaElt = $filter->find('css', 'div.filter-criteria');
+        $criteriaElt->fillField('value', $value);
+
+        // Open the dropdown menu with currency list and click on $currency line
+        $this->pressButton('Currency');
+        $this->pressButton($currency);
+
+        // Open the dropdown menu with action list and click on $action line
+        $this->pressButton('Action');
+        $this->pressbutton($action);
+
+        $filter->find('css', 'button.filter-update')->click();
+    }
+
+    /**
+     * @param string $code
+     */
+    public function filterPerChannel($code)
+    {
+        $elt = $this->getElement('Filters')->find('css', sprintf(':contains("%s") select', $code));
+
+        if (!$elt) {
+            throw new \Exception(sprintf('Could not find filter for channel "%s".', $code));
+        }
+
+        $elt->selectOption($code);
     }
 }

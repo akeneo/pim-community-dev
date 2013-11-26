@@ -4,24 +4,15 @@ Feature: Create a channel
   As a user
   I need to be able to create a channel
 
-  Background:
-    Given the following categories:
-      | code           | label          |
-      | ipad_catalog   | iPad Catalog   |
-      | mobile_catelog | Mobile Catalog |
-    And the following currencies:
-      | code | activated |
-      | EUR  | yes       |
-      | USD  | yes       |
-    And I am logged in as "admin"
-
   Scenario: Succesfully create a channel
-    Given I am on the channel creation page
+    Given a "footwear" catalog configuration
+    And I am logged in as "admin"
+    When I am on the channel creation page
     Then I should see the Code, Default label, Currencies, Locales and Category tree fields
     And I fill in the following information:
-      | Code          | foo            |
-      | Default label | bar            |
-      | Category tree | Mobile Catalog |
+      | Code          | foo             |
+      | Default label | bar             |
+      | Category tree | 2014 collection |
     And I select the currency "EUR"
     And I select the locale "French"
     And I press the "Save" button

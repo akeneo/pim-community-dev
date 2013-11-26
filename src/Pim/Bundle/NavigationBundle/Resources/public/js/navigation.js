@@ -39,13 +39,13 @@ define(
                     if (gridName) {
                         var qs = this.url.replace(QUERY_STRING_REGEX, ''),
                             args = qs ? app.unpackFromQueryString(qs) : {},
-                            sessionStorageKey = "gridURL_" + gridName,
+                            sessionStorageKey = 'gridURL_' + gridName,
                             storageUrl = sessionStorage ? sessionStorage.getItem(sessionStorageKey) : null;
                         if (!encodedStateData && storageUrl) {
                             this.encodedStateData = storageUrl;
                             this.skipAjaxCall = false;
                         } else if (!this.encodedStateData) {
-                            this.encodedStateData = "";
+                            this.encodedStateData = '';
                         }
                         if (args.dataLocale) {
                             this.encodedStateData += (this.encodedStateData ? '&' : '') +
@@ -54,7 +54,7 @@ define(
                             this.skipAjaxCall = false;
                         }
                         if (!this.skipAjaxCall) {
-                            this.navigate("url=" + this.url.split("?").shift() + "|g/" + this.encodedStateData, { trigger: false, replace: true});
+                            this.navigate('url=' + this.url.split('?').shift() + '|g/' + this.encodedStateData, { trigger: false, replace: true});
                         }
                     }
                     if (!this.skipAjaxCall) {

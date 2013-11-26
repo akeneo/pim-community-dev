@@ -154,18 +154,6 @@ class CompletenessTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test predicate for updated property
-     */
-    public function testGetSetUpdated()
-    {
-        $this->assertNull($this->completeness->getUpdated());
-
-        $expectedUpdated = new \DateTime();
-        $this->assertEntity($this->completeness->setUpdated($expectedUpdated));
-        $this->assertEquals($expectedUpdated, $this->completeness->getUpdated());
-    }
-
-    /**
      * Test getter/setter for product property
      */
     public function testGetSetProduct()

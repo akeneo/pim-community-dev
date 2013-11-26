@@ -3,16 +3,15 @@
 namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\NoResultException;
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory;
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Entity\ProductAssociation;
-use Pim\Bundle\CatalogBundle\Entity\ProductValue;
-use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
-use Pim\Bundle\CatalogBundle\Calculator\CompletenessCalculator;
+use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 
 /**
  * Product manager
@@ -29,26 +28,26 @@ class ProductManager extends FlexibleManager
     protected $mediaManager;
 
     /**
-     * @var CurrencyManager
+     * @var CompletenessManager
      */
-    protected $currencyManager;
+    protected $completenessManager;
 
     /**
-     * @var CompletenessCalculator
+     * @var ProductBuilder
      */
-    protected $completenessCalculator;
+    protected $builder;
 
     /**
      * Constructor
      *
-     * @param string                   $flexibleName           Entity name
-     * @param array                    $flexibleConfig         Global flexible entities configuration array
-     * @param ObjectManager            $storageManager         Storage manager
-     * @param EventDispatcherInterface $eventDispatcher        Event dispatcher
-     * @param AttributeTypeFactory     $attributeTypeFactory   Attribute type factory
-     * @param MediaManager             $mediaManager           Media manager
-     * @param CurrencyManager          $currencyManager        Currency manager
-     * @param CompletenessCalculator   $completenessCalculator Completeness calculator
+     * @param string                   $flexibleName         Entity name
+     * @param array                    $flexibleConfig       Global flexible entities configuration array
+     * @param ObjectManager            $storageManager       Storage manager
+     * @param EventDispatcherInterface $eventDispatcher      Event dispatcher
+     * @param AttributeTypeFactory     $attributeTypeFactory Attribute type factory
+     * @param MediaManager             $mediaManager         Media manager
+     * @param CompletenessManager      $completenessManager  Completeness manager
+     * @param ProductBuilder           $builder              Product builder
      */
     public function __construct(
         $flexibleName,
@@ -57,8 +56,8 @@ class ProductManager extends FlexibleManager
         EventDispatcherInterface $eventDispatcher,
         AttributeTypeFactory $attributeTypeFactory,
         MediaManager $mediaManager,
-        CurrencyManager $currencyManager,
-        CompletenessCalculator $completenessCalculator
+        CompletenessManager $completenessManager,
+        ProductBuilder $builder
     ) {
         parent::__construct(
             $flexibleName,
@@ -68,9 +67,9 @@ class ProductManager extends FlexibleManager
             $attributeTypeFactory
         );
 
-        $this->mediaManager           = $mediaManager;
-        $this->currencyManager        = $currencyManager;
-        $this->completenessCalculator = $completenessCalculator;
+        $this->mediaManager         = $mediaManager;
+        $this->completenessManager  = $completenessManager;
+        $this->builder              = $builder;
     }
 
     /**
@@ -110,7 +109,7 @@ class ProductManager extends FlexibleManager
         $product = $this->getFlexibleRepository()->findWithSortedAttribute($id);
 
         if ($product) {
-            $this->addMissingProductValues($product);
+            $this->builder->addMissingProductValues($product);
         }
 
         return $product;
@@ -129,7 +128,7 @@ class ProductManager extends FlexibleManager
         $products = $this->getFlexibleRepository()->findByIds($ids);
 
         foreach ($products as $product) {
-            $this->addMissingProductValues($product);
+            $this->builder->addMissingProductValues($product);
         }
 
         return $products;
@@ -151,10 +150,51 @@ class ProductManager extends FlexibleManager
         $product = reset($products);
 
         if ($product) {
-            $this->addMissingProductValues($product);
+            $this->builder->addMissingProductValues($product);
         }
 
         return $product;
+    }
+
+    /**
+     * Returns a product for the import process
+     *
+     * @param array            $attributes
+     * @param ProductAttribute $identifierAttribute
+     * @param string           $code
+     *
+     * @return ProductInterface
+     */
+    public function getImportProduct($attributes, $identifierAttribute, $code)
+    {
+        $class = $this->getFlexibleRepository()->getClassName();
+        $em = $this->getStorageManager();
+        try {
+            $id = $em->createQuery(
+                'SELECT p.id FROM ' . $class . ' p '.
+                'INNER JOIN p.values v '  .
+                'WHERE v.attribute=:identifier_attribute ' .
+                'AND v.' . $identifierAttribute->getBackendType() .'=:code'
+            )
+                ->setParameter('identifier_attribute', $identifierAttribute)
+                ->setParameter('code', $code)
+                ->getSingleScalarResult();
+        } catch (NoResultException $ex) {
+            return null;
+        }
+
+        return $em->createQuery(
+            'SELECT p, v, f, o, pr ' .
+            'FROM ' . $class . ' p ' .
+            'LEFT JOIN p.family f ' .
+            'LEFT JOIN p.values v WITH v.attribute IN (:attributes) ' .
+            'LEFT JOIN v.options o ' .
+            'LEFT JOIN v.prices pr ' .
+            'WHERE p.id=:id'
+        )
+            ->setParameter('attributes', $attributes)
+            ->setParameter('id', $id)
+            ->getSingleResult();
     }
 
     /**
@@ -167,11 +207,7 @@ class ProductManager extends FlexibleManager
      */
     public function addAttributeToProduct(ProductInterface $product, ProductAttribute $attribute)
     {
-        $requiredValues = $this->getExpectedValues($attribute);
-
-        foreach ($requiredValues as $value) {
-            $this->addProductValue($product, $attribute, $value['locale'], $value['scope']);
-        }
+        $this->builder->addAttributeToProduct($product, $attribute);
     }
 
     /**
@@ -184,35 +220,44 @@ class ProductManager extends FlexibleManager
      */
     public function removeAttributeFromProduct(ProductInterface $product, ProductAttribute $attribute)
     {
-        $values = $this->getFlexibleValueRepository()->findBy(
-            array(
-                'entity'    => $product,
-                'attribute' => $attribute,
-            )
-        );
-
-        foreach ($values as $value) {
-            $this->storageManager->remove($value);
-        }
-
-        $this->storageManager->flush();
+        $this->builder->removeAttributeFromProduct($product, $attribute);
     }
 
     /**
      * Save a product
      *
-     * @param ProductInterface $product
-     * @param boolean          $calculateCompleteness
-     *
-     * @return null
+     * @param ProductInterface $product     The product to save
+     * @param boolean          $recalculate Whether or not to directly recalculate the completeness
+     * @param boolean          $flush       Whether or not to flush the entity manager
      */
-    public function save(ProductInterface $product, $calculateCompleteness = true)
+    public function save(ProductInterface $product, $recalculate = true, $flush = true)
     {
         $this->storageManager->persist($product);
-        $this->storageManager->flush();
-        if ($calculateCompleteness) {
-            $this->storageManager->refresh($product);
-            $this->completenessCalculator->calculateForAProduct($product);
+
+        if ($flush) {
+            $this->storageManager->flush();
+        }
+        $this->completenessManager->schedule($product);
+
+        if ($recalculate) {
+            $this->completenessManager->createProductCompletenesses($product);
+        }
+    }
+
+    /**
+     * Save multiple products
+     *
+     * @param ProductInterface[] $products    The products to save
+     * @param boolean            $recalculate Wether or not to directly recalculate the completeness
+     * @param boolean            $flush       Wether or not to flush the entity manager
+     */
+    public function saveAll(array $products, $recalculate = false, $flush = true)
+    {
+        foreach ($products as $product) {
+            $this->save($product, $recalculate, false);
+        }
+
+        if ($flush) {
             $this->storageManager->flush();
         }
     }
@@ -263,6 +308,24 @@ class ProductManager extends FlexibleManager
     }
 
     /**
+     * @param ProductInterface[] $products
+     */
+    public function handleAllMedia(array $products)
+    {
+        foreach ($products as $product) {
+            if (!$product instanceof \Pim\Bundle\CatalogBundle\Model\ProductInterface) {
+                throw new \InvalidArgumentException(
+                    sprintf(
+                        'Expected instance of Pim\Bundle\CatalogBundle\Model\ProductInterface, got %s',
+                        get_class($product)
+                    )
+                );
+            }
+            $this->handleMedia($product);
+        }
+    }
+
+    /**
      * @param ProductInterface $product
      */
     public function ensureAllAssociations(ProductInterface $product)
@@ -277,206 +340,31 @@ class ProductManager extends FlexibleManager
                 $productAssociation->setAssociation($association);
                 $product->addProductAssociation($productAssociation);
             }
-            $this->save($product, false);
+            $this->storageManager->flush();
         }
     }
 
     /**
-     * Add empty values for family and product-specific attributes for relevant scopes and locales
+     * Remove products
      *
-     * It makes sure that if an attribute is translatable/scopable, then all values in the required locales/channels
-     * exist. If the attribute is not scopable or translatable, makes sure that a single value exists.
-     *
-     * @param ProductInterface $product
-     *
-     * @return null
+     * @param integer[] $ids
      */
-    protected function addMissingProductValues(ProductInterface $product)
+    public function removeAll(array $ids)
     {
-        $attributes = $product->getAttributes();
-
-        if ($family = $product->getFamily()) {
-            foreach ($family->getAttributes() as $attribute) {
-                $attributes[] = $attribute;
-            }
+        $products = $this->getFlexibleRepository()->findByIds($ids);
+        foreach ($products as $product) {
+            $this->storageManager->remove($product);
         }
-
-        if (!is_array($attributes)) {
-            return;
-        }
-
-        $attributes = array_unique($attributes);
-
-        foreach ($attributes as $attribute) {
-            $requiredValues = $this->getExpectedValues($attribute);
-            $existingValues = array();
-
-            foreach ($product->getValues() as $value) {
-                if ($value->getAttribute() === $attribute) {
-                    $existingValues[] = array('locale' => $value->getLocale(), 'scope' => $value->getScope());
-                }
-            }
-
-            $missingValues = array_filter(
-                $requiredValues,
-                function ($value) use ($existingValues) {
-                    return !in_array($value, $existingValues);
-                }
-            );
-
-            $redundantValues = array_filter(
-                $existingValues,
-                function ($value) use ($requiredValues) {
-                    return !in_array($value, $requiredValues);
-                }
-            );
-
-            foreach ($missingValues as $value) {
-                $this->addProductValue($product, $attribute, $value['locale'], $value['scope']);
-            }
-
-            foreach ($redundantValues as $value) {
-                $this->removeProductValue($product, $attribute, $value['locale'], $value['scope']);
-            }
-        }
-
-        $this->addMissingPrices($product);
+        $this->storageManager->flush();
     }
 
     /**
-     * Returns an array of values that are expected to link product to an attribute depending on locale and scope
-     * Each value is returned as an array with 'scope' and 'locale' keys
-     *
-     * @param ProductAttribute $attribute
-     *
-     * @return array:array
-     */
-    protected function getExpectedValues(ProductAttribute $attribute)
-    {
-        $requiredValues = array();
-
-        if ($attribute->getScopable()) {
-            $channels = $this->getChannels();
-            if ($attribute->getTranslatable()) {
-                foreach ($channels as $channel) {
-                    foreach ($channel->getLocales() as $locale) {
-                        $requiredValues[] = array('locale' => $locale->getCode(), 'scope' => $channel->getCode());
-                    }
-                }
-            } else {
-                foreach ($channels as $channel) {
-                    $requiredValues[] = array('locale' => null, 'scope' => $channel->getCode());
-                }
-            }
-        } elseif ($attribute->getTranslatable()) {
-            $locales = $this->getLocales();
-            foreach ($locales as $locale) {
-                $requiredValues[] = array('locale' => $locale->getCode(), 'scope' => null);
-            }
-        } else {
-            $requiredValues[] = array('locale' => null, 'scope' => null);
-        }
-
-        return $requiredValues;
-    }
-
-    /**
-     * Add missing prices (a price per currency)
-     *
-     * @param ProductInterface $product the product
-     *
-     * @return null
-     */
-    protected function addMissingPrices(ProductInterface $product)
-    {
-        foreach ($product->getValues() as $value) {
-            if ($value->getAttribute()->getAttributeType() === 'pim_catalog_price_collection') {
-                $activeCurrencies = $this->currencyManager->getActiveCodes();
-                $value->addMissingPrices($activeCurrencies);
-                $value->removeDisabledPrices($activeCurrencies);
-            }
-        }
-    }
-
-    /**
-     * Return available channels
-     *
-     * @return ArrayCollection
-     */
-    protected function getChannels()
-    {
-        return $this->storageManager->getRepository('PimCatalogBundle:Channel')->findAll();
-    }
-
-    /**
-     * Return available locales
-     *
-     * @return ArrayCollection
-     */
-    protected function getLocales()
-    {
-        return $this->storageManager->getRepository('PimCatalogBundle:Locale')->getActivatedLocales();
-    }
-
-    /**
-     * Add a missing value to the product
-     *
-     * @param ProductInterface $product
-     * @param Attribute        $attribute
-     * @param string           $locale
-     * @param string           $scope
-     *
-     * @return null
-     */
-    protected function addProductValue(ProductInterface $product, $attribute, $locale = null, $scope = null)
-    {
-        $value = $this->createProductValue();
-        if ($locale) {
-            $value->setLocale($locale);
-        }
-        $value->setScope($scope);
-        $value->setAttribute($attribute);
-
-        $product->addValue($value);
-    }
-
-    /**
-     * Remove a redundant value from the product
-     *
-     * @param ProductInterface $product
-     * @param Attribute        $attribute
-     * @param string           $locale
-     * @param string           $scope
-     *
-     * @return null
-     */
-    protected function removeProductValue(ProductInterface $product, $attribute, $locale = null, $scope = null)
-    {
-        $values = $product->getValues();
-        $values = $values->filter(
-            function ($value) use ($attribute, $locale, $scope) {
-                if ($value->getAttribute() === $attribute
-                    && $value->getScope() === $scope
-                    && $value->getLocale() === $locale) {
-                    return true;
-                }
-
-                return false;
-            }
-        );
-        foreach ($values as $value) {
-            $product->removeValue($value);
-            $value->setEntity(null);
-        }
-    }
-
-    /**
-     * @param ProductInterface $product
-     * @param ProductValue     $value
+     * @param ProductInterface      $product
+     * @param ProductValueInterface $value
      *
      * @return string
      */
-    protected function generateFilenamePrefix(ProductInterface $product, ProductValue $value)
+    protected function generateFilenamePrefix(ProductInterface $product, ProductValueInterface $value)
     {
         return sprintf(
             '%s-%s-%s-%s-%s',

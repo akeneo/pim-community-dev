@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Oro\Bundle\FlexibleEntityBundle\Entity\Media;
+use Pim\Bundle\CatalogBundle\Entity\Media;
 use Gaufrette\Filesystem;
 use Pim\Bundle\CatalogBundle\Exception\MediaManagementException;
 
@@ -66,18 +66,58 @@ class MediaManager
      * @param Media  $media
      * @param string $targetDir
      *
-     * @return string
+     * @return boolean true on success, false on failure
      */
     public function copy(Media $media, $targetDir)
     {
-        if (!is_dir($targetDir)) {
-            mkdir($targetDir, 0777, true);
+        if ($media->getFilePath() === null) {
+            return false;
         }
 
-        $targetFilePath = sprintf('%s/%s', rtrim($targetDir, '/'), $media->getFilename());
-        copy($media->getFilePath(), $targetFilePath);
+        $targetDir = sprintf('%s/%s', $targetDir, $this->getExportPath($media));
 
-        return $targetFilePath;
+        if (!is_dir(dirname($targetDir))) {
+            mkdir(dirname($targetDir), 0777, true);
+        }
+
+        return copy($media->getFilePath(), $targetDir);
+    }
+
+    /**
+     * Get the export path of the media
+     *
+     * Examples:
+     *   - files/sku-001/front_view/en_US/ecommerce
+     *   - files/sku-002/manual/ecommerce
+     *   - files/sku-003/back_view/en_US
+     *   - files/sku-004/insurance
+     *
+     * @param Media $media
+     *
+     * @return string
+     */
+    public function getExportPath(Media $media)
+    {
+        if ($media->getFilePath() === null) {
+            return '';
+        }
+
+        $value     = $media->getValue();
+        $attribute = $value->getAttribute();
+        $target    = sprintf(
+            'files/%s/%s',
+            $value->getEntity()->getIdentifier(),
+            $attribute->getCode()
+        );
+
+        if ($attribute->getTranslatable()) {
+            $target .= '/' . $value->getLocale();
+        }
+        if ($attribute->getScopable()) {
+            $target .= '/' . $value->getScope();
+        }
+
+        return $target . '/' . $media->getOriginalFilename();
     }
 
     /**

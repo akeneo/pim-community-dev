@@ -12,6 +12,7 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 use Oro\Bundle\BatchBundle\Connector\ConnectorRegistry;
@@ -20,7 +21,7 @@ use Oro\Bundle\BatchBundle\Entity\JobExecution;
 use Oro\Bundle\BatchBundle\Item\UploadedFileAwareInterface;
 
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
-use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
+use Pim\Bundle\GridBundle\Helper\DatagridHelperInterface;
 use Pim\Bundle\CatalogBundle\Form\Type\UploadType;
 use Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceType;
 
@@ -34,9 +35,9 @@ use Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceType;
 class JobInstanceController extends AbstractDoctrineController
 {
     /**
-     * @var DatagridWorkerInterface
+     * @var DatagridHelperInterface
      */
-    private $datagridWorker;
+    private $datagridHelper;
 
     /**
      * @var ConnectorRegistry
@@ -69,7 +70,7 @@ class JobInstanceController extends AbstractDoctrineController
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
      * @param RegistryInterface        $doctrine
-     * @param DatagridWorkerInterface  $datagridWorker
+     * @param DatagridHelperInterface  $datagridHelper
      * @param ConnectorRegistry        $connectorRegistry
      * @param string                   $jobType
      * @param string                   $rootDir
@@ -84,7 +85,7 @@ class JobInstanceController extends AbstractDoctrineController
         ValidatorInterface $validator,
         TranslatorInterface $translator,
         RegistryInterface $doctrine,
-        DatagridWorkerInterface $datagridWorker,
+        DatagridHelperInterface $datagridHelper,
         ConnectorRegistry $connectorRegistry,
         $jobType,
         $rootDir,
@@ -101,7 +102,7 @@ class JobInstanceController extends AbstractDoctrineController
             $doctrine
         );
 
-        $this->datagridWorker    = $datagridWorker;
+        $this->datagridHelper    = $datagridHelper;
         $this->connectorRegistry = $connectorRegistry;
         $this->jobType           = $jobType;
         $this->rootDir           = $rootDir;
@@ -139,7 +140,7 @@ class JobInstanceController extends AbstractDoctrineController
      *
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|template
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function createAction(Request $request)
     {
@@ -165,10 +166,7 @@ class JobInstanceController extends AbstractDoctrineController
                 $this->getManager()->persist($jobInstance);
                 $this->getManager()->flush();
 
-                $this->addFlash(
-                    'success',
-                    sprintf('The %s has been successfully created.', $this->getJobType())
-                );
+                $this->addFlash('success', sprintf('The %s has been successfully created.', $this->getJobType()));
 
                 return $this->redirectToShowView($jobInstance->getId());
             }
@@ -177,8 +175,8 @@ class JobInstanceController extends AbstractDoctrineController
         return $this->render(
             sprintf('PimImportExportBundle:%s:edit.html.twig', ucfirst($this->getJobType())),
             array(
+                'jobInstance' => $jobInstance,
                 'form'      => $form->createView(),
-                'connector' => $connector,
                 'alias'     => $alias,
             )
         );
@@ -189,7 +187,7 @@ class JobInstanceController extends AbstractDoctrineController
      *
      * @param integer $id
      *
-     * @return template
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function showAction($id)
     {
@@ -232,7 +230,7 @@ class JobInstanceController extends AbstractDoctrineController
      * @param Request $request
      * @param integer $id
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|template
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function editAction(Request $request, $id)
     {
@@ -244,6 +242,12 @@ class JobInstanceController extends AbstractDoctrineController
             return $this->redirectToIndexView();
         }
         $form = $this->createForm(new JobInstanceType(), $jobInstance);
+
+        $historyDatagrid = $this->datagridHelper->getDataAuditDatagrid(
+            $jobInstance,
+            sprintf('pim_importexport_%s_history', $this->getJobType()),
+            array('id' => $jobInstance->getId())
+        );
 
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
@@ -263,9 +267,34 @@ class JobInstanceController extends AbstractDoctrineController
         return $this->render(
             sprintf('PimImportExportBundle:%s:edit.html.twig', ucfirst($this->getJobType())),
             array(
-                'form'      => $form->createView(),
+                'jobInstance'     => $jobInstance,
+                'form'            => $form->createView(),
+                'historyDatagrid' => $historyDatagrid->createView()
             )
         );
+    }
+
+    /**
+     * History of a job instance
+     *
+     * @param Request $request
+     * @param integer $id
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function historyAction(Request $request, $id)
+    {
+        $jobInstance = $this->getJobInstance($id);
+        $historyGrid = $this->datagridHelper->getDataAuditDatagrid(
+            $jobInstance,
+            sprintf('pim_importexport_%s_history', $this->getJobType()),
+            array('id' => $id)
+        );
+        $historyGridView = $historyGrid->createView();
+
+        if ('json' === $request->getRequestFormat()) {
+            return $this->datagridHelper->getDatagridRenderer()->renderResultsJsonResponse($historyGridView);
+        }
     }
 
     /**
@@ -304,7 +333,7 @@ class JobInstanceController extends AbstractDoctrineController
      * @param Request $request
      * @param integer $id
      *
-     * @return RedirectResponse
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function launchAction(Request $request, $id)
     {
@@ -319,48 +348,11 @@ class JobInstanceController extends AbstractDoctrineController
         $violations       = $this->getValidator()->validate($jobInstance, array('Default', 'Execution'));
         $uploadViolations = $this->getValidator()->validate($jobInstance, array('Default', 'UploadExecution'));
 
-        if (count($violations) === 0 || count($uploadViolations) === 0) {
+        $uploadMode = $uploadViolations->count() === 0 ? $this->processUploadForm($jobInstance) : false;
+
+        if ($uploadMode === true || $violations->count() === 0) {
             $jobExecution = new JobExecution();
             $jobExecution->setJobInstance($jobInstance);
-            $job = $jobInstance->getJob();
-
-            $uploadMode = false;
-            if ($request->isMethod('POST') && count($uploadViolations) === 0) {
-                $form = $this->createUploadForm();
-                $form->handleRequest($request);
-                if ($form->isValid()) {
-                    $data = $form->getData();
-                    $media = $data['file'];
-                    $file = $media->getFile();
-
-                    $filename = $file->getClientOriginalName();
-                    $file = $file->move(
-                        sys_get_temp_dir(),
-                        $file->getFilename() . substr($filename, strrpos($filename, '.'))
-                    );
-
-                    foreach ($job->getSteps() as $step) {
-                        $reader = $step->getReader();
-
-                        if ($reader instanceof UploadedFileAwareInterface) {
-                            $constraints = $reader->getUploadedFileConstraints();
-                            $errors = $this->getValidator()->validateValue($file, $constraints);
-
-                            if ($errors->count()) {
-                                foreach ($errors as $error) {
-                                    $this->addFlash('error', $error->getMessage());
-                                }
-
-                                return $this->redirectToShowView($jobInstance->getId());
-                            }
-
-                            $reader->setUploadedFile($file);
-                            $uploadMode = true;
-                        }
-                    }
-                }
-            }
-
             $this->getManager()->persist($jobExecution);
             $this->getManager()->flush();
             $instanceCode = $jobExecution->getJobInstance()->getCode();
@@ -370,7 +362,7 @@ class JobInstanceController extends AbstractDoctrineController
                 $this->rootDir,
                 $this->environment,
                 $this->getUser()->getEmail(),
-                $uploadMode ? sprintf('-c \'%s\'', json_encode($job->getConfiguration())) : '',
+                $uploadMode ? sprintf('-c \'%s\'', json_encode($jobInstance->getJob()->getConfiguration())) : '',
                 $instanceCode,
                 $executionId,
                 $this->rootDir
@@ -383,6 +375,67 @@ class JobInstanceController extends AbstractDoctrineController
         }
 
         return $this->redirectToShowView($jobInstance->getId());
+    }
+
+    /**
+     * Process the upload form
+     *
+     * @param JobInstance $jobInstance
+     *
+     * @return boolean
+     */
+    protected function processUploadForm(JobInstance $jobInstance)
+    {
+        $request = $this->getRequest();
+        if ($request->isMethod('POST')) {
+            $form = $this->createUploadForm();
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $data = $form->get('file')->getData();
+                $file = $data->getFile();
+                $file = $file->move(sys_get_temp_dir(), $file->getClientOriginalName());
+
+                return $this->configureUploadJob($jobInstance, $file);
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Configure job instance for uploaded file
+     *
+     * @param JobInstance $jobInstance
+     * @param File        $file
+     *
+     * @return boolean
+     */
+    protected function configureUploadJob(JobInstance $jobInstance, File $file)
+    {
+        $success = false;
+
+        $job = $jobInstance->getJob();
+        foreach ($job->getSteps() as $step) {
+            $reader = $step->getReader();
+
+            if ($reader instanceof UploadedFileAwareInterface) {
+                $constraints = $reader->getUploadedFileConstraints();
+                $errors = $this->getValidator()->validateValue($file, $constraints);
+
+                if ($errors->count() !== 0) {
+                    foreach ($errors as $error) {
+                        $this->addFlash('error', $error->getMessage());
+                    }
+
+                    return false;
+                } else {
+                    $reader->setUploadedFile($file);
+                    $success = true;
+                }
+            }
+        }
+
+        return $success;
     }
 
     /**
@@ -481,7 +534,7 @@ class JobInstanceController extends AbstractDoctrineController
      */
     protected function getDatagridManager()
     {
-        return $this->datagridWorker->getDatagridManager($this->getJobType(), 'pim_import_export');
+        return $this->datagridHelper->getDatagridManager($this->getJobType(), 'pim_import_export');
     }
 
     /**

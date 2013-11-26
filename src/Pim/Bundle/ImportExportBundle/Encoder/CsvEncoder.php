@@ -29,19 +29,66 @@ class CsvEncoder implements EncoderInterface
     protected $hasHeader      = false;
 
     /**
+     * @var string
+     */
+    protected $delimiter;
+
+    /**
+     * @var string
+     */
+    protected $enclosure;
+
+    /**
+     * @var string
+     */
+    protected $withHeader;
+
+    /**
      * {@inheritdoc}
      */
     public function encode($data, $format, array $context = array())
     {
-        $context = array_merge(
-            array(
-                'delimiter'     => ';',
-                'enclosure'     => '"',
-                'withHeader'    => false,
-                'heterogeneous' => false,
-            ),
-            $context
-        );
+        if (!is_array($data)) {
+            throw new \InvalidArgumentException(
+                sprintf('Expecting data of type array, got "%s".', gettype($data))
+            );
+        }
+
+        $this->initializeContext($context);
+
+        $output = fopen('php://temp', 'r+');
+
+        if (isset($data[0]) && is_array($data[0])) {
+            $columns = $this->getColumns($data);
+            if ($this->withHeader && !$this->hasHeader) {
+                $this->encodeHeader($columns, $output, $this->delimiter, $this->enclosure);
+            }
+            foreach ($this->normalizeColumns($data, $columns) as $entry) {
+                $this->checkHasStringKeys($entry);
+                $this->write($output, $entry, $this->delimiter, $this->enclosure);
+            }
+        } else {
+            if ($this->withHeader && !$this->hasHeader) {
+                $this->encodeHeader($data, $output, $this->delimiter, $this->enclosure);
+            }
+            $this->checkHasStringKeys($data);
+            $this->write($output, $data, $this->delimiter, $this->enclosure);
+        }
+
+        return $this->readCsv($output);
+    }
+
+    /**
+     * Initialize CSV encoder context merging default configuration
+     *
+     * @param array $context
+     *
+     * @throws \RuntimeException
+     */
+    protected function initializeContext(array $context)
+    {
+        $context = array_merge($this->getDefaultContext(), $context);
+
         if (!$this->firstExecution && $context['heterogeneous']) {
             throw new \RuntimeException(
                 'The csv encode method should not be called more than once when handling heterogeneous data. '.
@@ -50,39 +97,24 @@ class CsvEncoder implements EncoderInterface
         }
         $this->firstExecution = false;
 
-        $delimiter  = is_string($context['delimiter']) ? $context['delimiter'] : ';';
-        $enclosure  = is_string($context['enclosure']) ? $context['enclosure'] : '"';
-        $withHeader = is_bool($context['withHeader']) ? $context['withHeader'] : false;
+        $this->delimiter  = is_string($context['delimiter']) ? $context['delimiter'] : ';';
+        $this->enclosure  = is_string($context['enclosure']) ? $context['enclosure'] : '"';
+        $this->withHeader = is_bool($context['withHeader']) ? $context['withHeader'] : false;
+    }
 
-        if (!is_array($data)) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expecting data of type array, got "%s".',
-                    gettype($data)
-                )
-            );
-        }
-
-        $output = fopen('php://temp', 'r+');
-
-        if (isset($data[0]) && is_array($data[0])) {
-            $columns = $this->getColumns($data);
-            if ($withHeader && !$this->hasHeader) {
-                $this->encodeHeader($columns, $output, $delimiter, $enclosure);
-            }
-            foreach ($this->normalizeColumns($data, $columns) as $entry) {
-                $this->checkHasStringKeys($entry);
-                $this->write($output, $entry, $delimiter, $enclosure);
-            }
-        } else {
-            if ($withHeader && !$this->hasHeader) {
-                $this->encodeHeader($data, $output, $delimiter, $enclosure);
-            }
-            $this->checkHasStringKeys($data);
-            $this->write($output, $data, $delimiter, $enclosure);
-        }
-
-        return $this->readCsv($output);
+    /**
+     * Get a default context for the csv encoder
+     *
+     * @return array
+     */
+    protected function getDefaultContext()
+    {
+        return array(
+            'delimiter'     => ';',
+            'enclosure'     => '"',
+            'withHeader'    => false,
+            'heterogeneous' => false,
+        );
     }
 
     /**

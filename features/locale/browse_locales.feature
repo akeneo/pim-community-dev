@@ -4,18 +4,14 @@ Feature: Browse locales
   As a user
   I need to be able to see active and inactive locales in the catalog
 
-  Background:
-    Given the following locales:
-      | code  | fallback | activated |
-      | de_DE |          | no        |
-      | en_US |          | yes       |
-      | fr_FR | en_US    | yes       |
+  Scenario: Successfully view, sort and filter locales
+    Given the "default" catalog configuration
     And I am logged in as "admin"
-
-  Scenario: Successfully display locales
-    Given I am on the locales page
-    Then the grid should contain 3 elements
-    And I should see the columns Code and Activated
-    And I should see activated locales en_US and fr_FR
-    And I should see deactivated locales de_DE
-
+    When I am on the locales page
+    Then I should see the columns Code and Activated
+    And the rows should be sorted ascending by code
+    And I should be able to sort the rows by code and activated
+    And I should be able to use the following filters:
+      | filter    | value | result          |
+      | Code      | as    | as_IN           |
+      | Activated | yes   | en_US and fr_FR |

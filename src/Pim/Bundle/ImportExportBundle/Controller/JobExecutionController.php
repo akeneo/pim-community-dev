@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Oro\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler;
 
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
-use Pim\Bundle\CatalogBundle\Datagrid\DatagridWorkerInterface;
+use Pim\Bundle\GridBundle\Helper\DatagridHelperInterface;
 use Pim\Bundle\ImportExportBundle\Archiver\JobExecutionArchiver;
 
 /**
@@ -29,9 +29,9 @@ use Pim\Bundle\ImportExportBundle\Archiver\JobExecutionArchiver;
 class JobExecutionController extends AbstractDoctrineController
 {
     /**
-     * @var DatagridWorkerInterface
+     * @var DatagridHelperInterface
      */
-    private $dataGridWorker;
+    private $datagridHelper;
 
     /**
      * @var BatchLogHandler
@@ -58,7 +58,7 @@ class JobExecutionController extends AbstractDoctrineController
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
      * @param RegistryInterface        $doctrine
-     * @param DatagridWorkerInterface  $dataGridWorker
+     * @param DatagridHelperInterface  $datagridHelper
      * @param BatchLogHandler          $batchLogHandler
      * @param JobExecutionArchiver     $archiver
      * @param string                   $jobType
@@ -72,7 +72,7 @@ class JobExecutionController extends AbstractDoctrineController
         ValidatorInterface $validator,
         TranslatorInterface $translator,
         RegistryInterface $doctrine,
-        DatagridWorkerInterface $dataGridWorker,
+        DatagridHelperInterface $datagridHelper,
         BatchLogHandler $batchLogHandler,
         JobExecutionArchiver $archiver,
         $jobType
@@ -88,7 +88,7 @@ class JobExecutionController extends AbstractDoctrineController
             $doctrine
         );
 
-        $this->dataGridWorker       = $dataGridWorker;
+        $this->datagridHelper       = $datagridHelper;
         $this->batchLogHandler      = $batchLogHandler;
         $this->jobExecutionArchiver = $archiver;
         $this->jobType              = $jobType;
@@ -100,7 +100,7 @@ class JobExecutionController extends AbstractDoctrineController
      */
     public function indexAction()
     {
-        $gridManager = $this->dataGridWorker->getDatagridManager($this->getJobType().'_report', 'pim_import_export');
+        $gridManager = $this->datagridHelper->getDatagridManager($this->getJobType().'_report', 'pim_import_export');
 
         return $this->renderDatagrid($gridManager);
     }

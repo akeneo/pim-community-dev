@@ -5,16 +5,17 @@ Feature: Classify a product
   I need to associate a product to categories
 
   Background:
-  Given the following products:
-    | sku    |
-    | tea    |
-    | coffee |
-  Given the following categories:
-    | code      | label     | parent    |
-    | beverages | Beverages |           |
-    | hot       | Hot       | beverages |
-    | cold      | Cold      | beverages |
-  And I am logged in as "Julia"
+    Given the "default" catalog configuration
+    And the following products:
+      | sku    |
+      | tea    |
+      | coffee |
+    Given the following categories:
+      | code      | label     | parent    |
+      | beverages | Beverages |           |
+      | hot       | Hot       | beverages |
+      | cold      | Cold      | beverages |
+    And I am logged in as "Julia"
 
   Scenario: Associate a product to categories
     Given I edit the "tea" product

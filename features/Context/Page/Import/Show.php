@@ -25,15 +25,4 @@ class Show extends JobShow
     {
         $this->clickLink('Import now');
     }
-
-    /**
-     * Click the job execution link
-     * @param string $fileToImport
-     */
-    public function uploadAndImportFile($fileToImport)
-    {
-        $this->clickLink('Upload and import');
-        $this->attachFileToField('upload_file_file', $fileToImport);
-        $this->pressButton('Upload and import now');
-    }
 }

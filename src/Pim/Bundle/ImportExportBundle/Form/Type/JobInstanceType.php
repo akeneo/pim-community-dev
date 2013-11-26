@@ -5,6 +5,7 @@ namespace Pim\Bundle\ImportExportBundle\Form\Type;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\AbstractType;
 use Oro\Bundle\BatchBundle\Form\Type\JobConfigurationType;
+use Pim\Bundle\CatalogBundle\Form\Subscriber\DisableCodeFieldSubscriber;
 
 /**
  * Job instance form type
@@ -30,7 +31,8 @@ class JobInstanceType extends AbstractType
                     'required'     => false,
                     'by_reference' => false,
                 )
-            );
+            )
+            ->addEventSubscriber(new DisableCodeFieldSubscriber());
     }
 
     /**

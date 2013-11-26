@@ -4,10 +4,14 @@ Feature: Join an image to a product
   I need to be able to upload it and preview it
 
   Background:
-    Given a "Car" product
-    And the following product attribute:
-      | product | label  | type  |
-      | Car     | Visual | image |
+    Given the "default" catalog configuration
+    And a "Car" product
+    And the following attribute:
+      | label  | type  |
+      | Visual | image |
+    And the following product value:
+      | product | attribute | value |
+      | Car     | Visual    |       |
     And I am logged in as "admin"
     And I am on the "Car" product page
 

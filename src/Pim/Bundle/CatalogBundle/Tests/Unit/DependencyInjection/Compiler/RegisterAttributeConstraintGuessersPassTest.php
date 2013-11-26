@@ -16,7 +16,7 @@ class RegisterAttributeConstraintGuessersPassTest extends \PHPUnit_Framework_Tes
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->target = new RegisterAttributeConstraintGuessersPass();
     }
@@ -47,7 +47,7 @@ class RegisterAttributeConstraintGuessersPassTest extends \PHPUnit_Framework_Tes
         $definition = $this->getDefinitionMock();
         $container  = $this->getContainerBuilderMock(
             $definition,
-            array('pim.attribute_constraint_guesser.foo', 'pim.attribute_constraint_guesser.bar',)
+            array('pim.attribute_constraint_guesser.foo', 'pim.attribute_constraint_guesser.bar')
         );
 
         $definition->expects($this->exactly(2))

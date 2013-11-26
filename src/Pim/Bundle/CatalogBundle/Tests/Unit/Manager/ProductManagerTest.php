@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Tests\Unit\Manager;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Manager\ProductBuilder;
 
 /**
  * Test related class
@@ -120,8 +121,8 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
             $this->getEventDispatcherInterfaceMock(),
             $this->getAttributeTypeFactoryMock(),
             $mediaManager ?: $this->getMediaManagerMock(),
-            $this->getCurrencyManagerMock(),
-            $this->getCompletenessCalculatorMock()
+            $this->getCompletenessManagerMock(),
+            $this->getProductBuilderMock()
         );
     }
 
@@ -319,11 +320,11 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
      *
      * @param string $filename
      *
-     * @return \Oro\Bundle\FlexibleEntityBundle\Entity\Media
+     * @return \Pim\Bundle\CatalogBundle\Entity\Media
      */
     protected function getMediaMock($filename = null)
     {
-        $media = $this->getMock('Oro\Bundle\FlexibleEntityBundle\Entity\Media', array('getFile', 'isRemoved'));
+        $media = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Media');
 
         $media->expects($this->any())
               ->method('getFile')
@@ -355,20 +356,14 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param array $activeCodes
-     *
-     * @return \Pim\Bundle\CatalogBundle\Manager\CurrencyManager
+     * @return \Pim\Bundle\CatalogBundle\Builder\ProductBuilder
      */
-    protected function getCurrencyManagerMock(array $activeCodes = array())
+    protected function getProductBuilderMock()
     {
         $manager = $this
-            ->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\CurrencyManager')
+            ->getMockBuilder('Pim\Bundle\CatalogBundle\Builder\ProductBuilder')
             ->disableOriginalConstructor()
             ->getMock();
-
-        $manager->expects($this->any())
-            ->method('getActiveCodes')
-            ->will($this->returnValue($activeCodes));
 
         return $manager;
     }
@@ -385,14 +380,13 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return \Pim\Bundle\CatalogBundle\Calculator\CompletenessCalculator
+     * @return \Pim\Bundle\CatalogBundle\Manager\CompletenessManager
      */
-    protected function getCompletenessCalculatorMock()
+    protected function getCompletenessManagerMock()
     {
         return $this
-            ->getMockBuilder('Pim\Bundle\CatalogBundle\Calculator\CompletenessCalculator')
+            ->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\CompletenessManager')
             ->disableOriginalConstructor()
             ->getMock();
-
     }
 }

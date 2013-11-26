@@ -148,7 +148,6 @@ class Edit extends Form
             }
         }
 
-
         $field = $label->getParent()->find('css', 'input');
 
         if (!$field) {
@@ -166,6 +165,16 @@ class Edit extends Form
     public function getRemoveLinkFor($field)
     {
         return $this->find('css', sprintf('.control-group:contains("%s") .remove-attribute', $field));
+    }
+
+    /**
+     * @param string $field
+     *
+     * @return NodeElement
+     */
+    public function getAddOptionLinkFor($field)
+    {
+        return $this->find('css', sprintf('.control-group:contains("%s") .add-attribute-option', $field));
     }
 
     /**

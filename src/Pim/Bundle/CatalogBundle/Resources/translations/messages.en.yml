@@ -11,7 +11,9 @@ import profile:  import profile
 locale:          locale
 product:         product
 group:           group
+variant group:   variant group
 association:     association
+group type:      group type
 
 # Page header titles
 attribute:
@@ -65,6 +67,14 @@ group:
     overview: group overview
     create:   create group
     edit:     edit group
+group type:
+    overview: group type overview
+    create:   create group type
+    edit:     edit group type
+variant group:
+    overview: variant group overview
+    create:   create variant group
+    edit:     edit variant group
 association:
     overview: association overview
     create:   create association
@@ -88,7 +98,9 @@ btn:
         locale:          create locale
         product:         create product
         group:           create group
+        variant group:   create variant group
         association:     create association
+        group type:      create group type
     edit:      edit
     save:      save
     remove:    remove
@@ -116,7 +128,9 @@ confirmation:
         import profile:  Are you sure you want to delete the import profile %name%?
         channel:         Are you sure you want to delete the channel %name%?
         group:           Are you sure you want to delete the group %name%?
+        variant group:   Are you sure you want to delete the variant group %name%?
         association:     Are you sure you want to delete the association %name%?
+        group type:      Are you sure you want to delete the group type %name%?
 
 # Flash messages
 flash:
@@ -128,6 +142,9 @@ flash:
         updated:                  Attribute successfully updated
         removed:                  Attribute successfully removed
         identifier not removable: Identifier attribute can not be removed
+        used by groups:           This attribute can not be removed because it is used by %count% groups
+        option created:           Option successfully created
+        error creating option:    Error ocurred when trying to create the option, please try again
     attribute group:
         created:           Attribute group successfully created
         updated:           Attribute group successfully updated
@@ -174,6 +191,17 @@ flash:
         created: Group successfully created
         updated: Group successfully updated
         removed: Group successfully removed
+    variant group:
+        created: Variant group successfully created
+        updated: Variant group successfully updated
+        removed: Variant group successfully removed
+    group type:
+        created: Group type successfully created
+        updated: Group type successfully updated
+        removed: Group type successfully removed
+        cant remove variant: Group type variant can't be removed
+        cant remove used: Group type is used by some groups and can't be removed
+
     association:
         created: Association successfully created
         updated: Association successfully updated
@@ -259,6 +287,7 @@ Cancel:                   Cancel
 Create a new product:     Create a new product
 Create a new association: Create a new association
 Choose a family:          Choose a family
+Create a new option:      Create a new option
 
 # Scopes
 Global:  Global
@@ -291,7 +320,7 @@ Date max:                Max date
 Default currency:        Default currency
 Metric family:           Metric family
 Default metric unit:     Default metric unit
-Max file size:           Max file size
+Max file size:           Max file size (MB)
 Allowed file extensions: Allowed file extensions
 
 # Family
@@ -299,7 +328,6 @@ Attributes: Attributes
 
 # Category
 Title:      Title
-Is dynamic: Is dynamic
 
 # Page titles
 Dashboard:                                   Dashboard
@@ -337,9 +365,15 @@ Locales %locale.code% | Edit:                Locales %locale.code% | Edit
 Groups:                                      Groups
 Groups | Create:                             Groups | Create
 Groups %group.label% | Edit:                 Groups %group.label% | Edit
+Variant groups:                              Variant groups
+Variant groups | Create:                     Variant groups | Create
+Variant groups %group.label% | Edit:         Variant groups %group.label% | Edit
 Associations:                                Associations
 Associations | Create:                       Associations | Create
 Associations %association.label% | Edit:     Associations %association.label% | Edit
+Group types:                                 Group types
+Group types | Create:                        Group types | Create
+Group types %grouptype.label% | Edit:        Group types %grouptype.label% | Edit
 
 
 pim_catalog_identifier:       Identifier

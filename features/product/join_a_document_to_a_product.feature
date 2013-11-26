@@ -4,10 +4,14 @@ Feature: Join a document to a product
   I need to be able to upload it and preview it
 
   Background:
-    Given a "Car" product
-    And the following product attribute:
-      | product | label       | type |
-      | Car     | Description | file |
+    Given the "default" catalog configuration
+    And a "Car" product
+    And the following attribute:
+      | label       | type |
+      | Description | file |
+    And the following product value:
+      | product | attribute   | value |
+      | Car     | Description |       |
     And I am logged in as "admin"
     And I am on the "Car" product page
 

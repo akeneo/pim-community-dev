@@ -52,6 +52,20 @@ class CurrencyDatagridManager extends DatagridManager
         $fieldsCollection->add($field);
 
         $field = new FieldDescription();
+        $field->setName('label');
+        $field->setOptions(
+            array(
+                'type'        => FieldDescriptionInterface::TYPE_HTML,
+                'label'       => $this->translate('Label'),
+                'field_name'  => 'code'
+            )
+        );
+        $field->setProperty(
+            new TwigTemplateProperty($field, 'PimCatalogBundle:Currency:_field_label.html.twig')
+        );
+        $fieldsCollection->add($field);
+
+        $field = new FieldDescription();
         $field->setName('activated');
         $field->setOptions(
             array(

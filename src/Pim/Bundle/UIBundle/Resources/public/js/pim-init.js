@@ -91,13 +91,12 @@ define(
                 if (typeof Storage !== 'undefined') {
                     restoreFormState();
 
-                    $('form.form-horizontal').on('submit', saveFormState);
-                    $('#locale-switcher').find('a').on('click', saveFormState);
+                    $('a[data-toggle="tab"]').on('shown', saveFormState);
                 }
 
                 // Initialize slimbox
                 if (!/android|iphone|ipod|series60|symbian|windows ce|blackberry/i.test(navigator.userAgent)) {
-                    $("a[rel^='slimbox']").slimbox({
+                    $('a[rel^="slimbox"]').slimbox({
                         overlayOpacity: 0.3
                     }, null, function (el) {
                         return (this === el) || ((this.rel.length > 8) && (this.rel === el.rel));
@@ -191,7 +190,7 @@ define(
                                 data: { _method: $el.data('method') },
                                 success: function() {
                                     var navigation = Navigation.getInstance();
-                                    navigation.navigate("#url=" + $el.attr("data-redirect-url"), { trigger: true });
+                                    navigation.navigate('#url=' + $el.attr('data-redirect-url'), { trigger: true });
                                     navigation.addFlashMessage('success', $el.attr('data-success-message'));
                                 },
                                 error: function(xhr) {
@@ -199,7 +198,7 @@ define(
                                         'error',
                                         (xhr.responseJSON && xhr.responseJSON.message)
                                             ? xhr.responseJSON.message
-                                            : $el.attr("data-error-message"));
+                                            : $el.attr('data-error-message'));
                                 }
                             });
                         };
@@ -215,7 +214,7 @@ define(
 
                 pageInit();
             })
-            mediator.bind("hash_navigation_request:complete", function () {
+            mediator.bind('hash_navigation_request:complete', function () {
                 pageInit();
             });
         }

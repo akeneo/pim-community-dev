@@ -28,6 +28,7 @@ class LoadFamilyData extends AbstractInstallerFixture
         if (isset($configuration['families'])) {
             foreach ($configuration['families'] as $code => $data) {
                 $family = $this->createFamily($code, $data);
+                $this->validate($family, $data);
                 $manager->persist($family);
                 $this->addReference('attribute-family.'.$family->getCode(), $family);
             }
@@ -45,7 +46,7 @@ class LoadFamilyData extends AbstractInstallerFixture
      */
     protected function createFamily($code, $data)
     {
-        $family = new Family();
+        $family = $this->container->get('pim_catalog.factory.family')->createFamily();
         $family->setCode($code);
 
         foreach ($data['labels'] as $locale => $translation) {
@@ -57,15 +58,7 @@ class LoadFamilyData extends AbstractInstallerFixture
         }
 
         if (array_key_exists('requirements', $data)) {
-            foreach ($data['requirements'] as $channel => $attributes) {
-                foreach ($attributes as $attribute) {
-                    $requirement =  new AttributeRequirement();
-                    $requirement->setAttribute($this->getReference('product-attribute.'.$attribute));
-                    $requirement->setChannel($this->getReference('channel.'.$channel));
-                    $requirement->setRequired(true);
-                    $family->addAttributeRequirement($requirement);
-                }
-            }
+            $this->addRequirements($family, $data['requirements']);
         }
 
         if (isset($data['attributeAsLabel'])) {
@@ -90,6 +83,25 @@ class LoadFamilyData extends AbstractInstallerFixture
         $translation->setLabel($content);
 
         $family->addTranslation($translation);
+    }
+
+    /**
+     * Add attribute requirements
+     *
+     * @param Family $family
+     * @param array  $requirements
+     */
+    public function addRequirements(Family $family, $requirements)
+    {
+        foreach ($requirements as $channel => $attributes) {
+            foreach ($attributes as $attribute) {
+                $requirement =  new AttributeRequirement();
+                $requirement->setAttribute($this->getReference('product-attribute.'.$attribute));
+                $requirement->setChannel($this->getReference('channel.'.$channel));
+                $requirement->setRequired(true);
+                $family->addAttributeRequirement($requirement);
+            }
+        }
     }
 
     /**

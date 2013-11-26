@@ -2,16 +2,14 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexible;
 use JMS\Serializer\Annotation\ExclusionPolicy;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Exception\MissingIdentifierException;
-use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
 use Pim\Bundle\CatalogBundle\Entity\Association;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
@@ -25,90 +23,52 @@ use Pim\Bundle\CatalogBundle\Entity\ProductAssociation;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @ORM\Table(name="pim_catalog_product")
- * @ORM\Entity(repositoryClass="Pim\Bundle\CatalogBundle\Entity\Repository\ProductRepository")
  * @Config(
- *  defaultValues={
- *      "entity"={"label"="Product", "plural_label"="Products"},
- *      "security"={
- *          "type"="ACL",
- *          "group_name"=""
- *      }
- *  }
+ *     defaultValues={
+ *         "entity"={"label"="Product", "plural_label"="Products"},
+ *         "security"={
+ *             "type"="ACL",
+ *             "group_name"=""
+ *         }
+ *     }
  * )
  *
  * @ExclusionPolicy("all")
  */
-class Product extends AbstractEntityFlexible implements ProductInterface, VersionableInterface
+class Product extends AbstractEntityFlexible implements ProductInterface
 {
     /**
-     * @var integer $version
-     *
-     * @ORM\Column(name="version", type="integer")
-     * @ORM\Version
-     */
-    protected $version;
-
-    /**
      * @var ArrayCollection $values
-     *
-     * @ORM\OneToMany(
-     *     targetEntity="Pim\Bundle\CatalogBundle\Model\ProductValueInterface",
-     *     mappedBy="entity",
-     *     cascade={"persist", "remove", "refresh"}
-     * )
      */
     protected $values;
 
     /**
      * @var Pim\Bundle\CatalogBundle\Entity\Family $family
-     *
-     * @ORM\ManyToOne(targetEntity="Pim\Bundle\CatalogBundle\Entity\Family", cascade={"persist", "refresh"})
-     * @ORM\JoinColumn(name="family_id", referencedColumnName="id", onDelete="SET NULL")
      */
     protected $family;
 
     /**
      * @var ArrayCollection $categories
-     *
-     * @ORM\ManyToMany(targetEntity="Pim\Bundle\CatalogBundle\Model\CategoryInterface", mappedBy="products")
      */
     protected $categories;
 
     /**
      * @var boolean $enabled
-     *
-     * @ORM\Column(name="is_enabled", type="boolean")
      */
     protected $enabled = true;
 
     /**
      * @var ArrayCollection $groups
-     *
-     * @ORM\ManyToMany(targetEntity="Pim\Bundle\CatalogBundle\Entity\Group", mappedBy="products")
      */
     protected $groups;
 
     /**
      * @var ArrayCollection $productAssociations
-     *
-     * @ORM\OneToMany(
-     *     targetEntity="Pim\Bundle\CatalogBundle\Entity\ProductAssociation",
-     *     mappedBy="owner",
-     *     cascade={"persist", "remove", "refresh"},
-     *     orphanRemoval=true
-     * )
      */
     protected $productAssociations;
 
     /**
      * @var ArrayCollection $completenesses
-     *
-     * @ORM\OneToMany(
-     *     targetEntity="Pim\Bundle\CatalogBundle\Entity\Completeness",
-     *     mappedBy="product",
-     *     cascade={"persist", "remove", "refresh"}
-     * )
      */
     protected $completenesses;
 
@@ -123,16 +83,6 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
         $this->completenesses      = new ArrayCollection();
         $this->groups              = new ArrayCollection();
         $this->productAssociations = new ArrayCollection();
-    }
-
-    /**
-     * Get version
-     *
-     * @return string $version
-     */
-    public function getVersion()
-    {
-        return $this->version;
     }
 
     /**
@@ -162,7 +112,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
     /**
      * Get the identifier of the product
      *
-     * @return ProductValue the identifier of the product
+     * @return ProductValueInterface the identifier of the product
      *
      * @throws MissingIdentifierException if no identifier could be found
      */
@@ -297,7 +247,6 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
     public function addCategory(Category $category)
     {
         if (!$this->categories->contains($category)) {
-            $category->addProduct($this);
             $this->categories->add($category);
         }
 
@@ -313,7 +262,6 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
     public function removeCategory(Category $category)
     {
         $this->categories->removeElement($category);
-        $category->removeProduct($this);
 
         return $this;
     }
@@ -420,7 +368,6 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
     public function addGroup(Group $group)
     {
         if (!$this->groups->contains($group)) {
-            $group->addProduct($this);
             $this->groups->add($group);
         }
 
@@ -436,7 +383,6 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Versio
     public function removeGroup(Group $group)
     {
         $this->groups->removeElement($group);
-        $group->removeProduct($this);
 
         return $this;
     }

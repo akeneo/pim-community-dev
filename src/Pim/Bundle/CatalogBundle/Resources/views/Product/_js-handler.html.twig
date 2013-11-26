@@ -1,20 +1,37 @@
 <script type="text/javascript">
     require(
-        ['jquery', 'underscore', 'oro/mediator', 'pim/tree/associate', 'pim/scopable', 'pim/formupdatelistener', 'pim/dialog', 'backbone/bootstrap-modal', 'jquery.currencyfield'],
-        function ($, _, mediator, TreeAssociate, Scopable, FormUpdateListener, Dialog) {
+        ['jquery', 'underscore', 'oro/mediator', 'pim/tree/associate', 'pim/scopable', 'pim/dialog', 'pim/dialogform', 'oro/messenger', 'backbone/bootstrap-modal', 'jquery.currencyfield', 'jquery.select2'],
+        function ($, _, mediator, TreeAssociate, Scopable, Dialog, DialogForm, messenger) {
             'use strict';
             $(function () {
                 {% if resource_granted('pim_catalog_product_categories_view') %}
-                    new TreeAssociate('#trees', '#pim_product_categories');
+                    new TreeAssociate('#trees', '#pim_product_edit_categories');
                 {% endif %}
 
                 _.each($('form div.scopable'), function (field) {
                     new Scopable({ el: $(field) });
                 });
 
-                $('form div.currency').currencyField();
+                {% if resource_granted('pim_catalog_attribute_edit') %}
+                    _.each($('.add-attribute-option'), function (field) {
+                        var $field = $(field),
+                            $target = $field.parent().find('.icons-container').first();
+                        if ($target.length) {
+                            $field.insertBefore($target).attr('tabIndex', -1);
+                        }
+                        var callback = function(data) {
+                            if (data.status) {
+                                $field.siblings('select.select2-offscreen').first().append('<option value="' + data.option.id + '" selected="selected">' + data.option.label + '</option').select2().trigger('change');
+                                messenger.notificationFlashMessage('success', '{{ "flash.attribute.option created"|trans }}');
+                            } else {
+                                messenger.notificationFlashMessage('error', '{{ "flash.attribute.error creating option"|trans }}');
+                            }
+                        }
+                        new DialogForm('#' + $field.attr('id'), callback);
+                    });
+                {% endif %}
 
-                new FormUpdateListener($('#{{ form.vars.id }}'));
+                $('form div.currency').currencyField();
 
                 $('#default_channel').select2('destroy').css('padding', '0').on('change', function (e) {
                     e.preventDefault();

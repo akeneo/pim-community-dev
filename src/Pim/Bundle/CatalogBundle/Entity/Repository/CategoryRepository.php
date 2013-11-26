@@ -50,8 +50,8 @@ class CategoryRepository extends SegmentRepository
         $rootAlias = $qb->getRootAliases();
         $firstRootAlias = $rootAlias[0];
 
-        $qb->select($qb->expr()->count('p'))
-           ->join($firstRootAlias .'.products', 'p');
+        $qb->select($qb->expr()->count('distinct p'))
+            ->join($firstRootAlias .'.products', 'p');
 
         return $qb->getQuery()->getSingleScalarResult();
     }
@@ -104,7 +104,7 @@ class CategoryRepository extends SegmentRepository
         $products = $qb->getQuery()->execute(array(), \Doctrine\ORM\AbstractQuery::HYDRATE_ARRAY);
         $productIds = array();
         foreach ($products as $product) {
-            $productIds[]= $product['id'];
+            $productIds[] = $product['id'];
         }
         $productIds = array_unique($productIds);
 
@@ -138,7 +138,7 @@ class CategoryRepository extends SegmentRepository
 
         $rawTrees = $query->getResult();
         $trees = array();
-        $treeKeys = array('tree','productsCount');
+        $treeKeys = array('tree', 'productsCount');
 
         foreach ($rawTrees as $rawTree) {
             $trees[] = array_combine($treeKeys, $rawTree);

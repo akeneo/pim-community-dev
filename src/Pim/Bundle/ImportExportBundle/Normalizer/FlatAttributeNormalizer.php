@@ -26,51 +26,7 @@ class FlatAttributeNormalizer extends AttributeNormalizer
     protected $supportedFormats = array('csv');
 
     /**
-     * @var array
-     */
-    protected $results;
-
-    /**
-     * Indicates whether this normalizer can normalize the given data
-     *
-     * @param mixed  $data
-     * @param string $format
-     *
-     * @return boolean
-     */
-    public function supportsNormalization($data, $format = null)
-    {
-        return $data instanceof ProductAttribute && in_array($format, $this->supportedFormats);
-    }
-
-    /**
-     * Normalize the label
-     *
-     * @param ProductAttribute $attribute
-     *
-     * @return string
-     */
-    protected function normalizeLabel(ProductAttribute $attribute)
-    {
-        $pattern = self::LOCALIZABLE_PATTERN;
-        $labels = $attribute->getTranslations()->map(
-            function ($translation) use ($pattern) {
-                $label = str_replace('{locale}', $translation->getLocale(), $pattern);
-                $label = str_replace('{value}', $translation->getLabel(), $label);
-
-                return $label;
-            }
-        )->toArray();
-
-        return implode(self::ITEM_SEPARATOR, $labels);
-    }
-
-    /**
-     * Normalize available locales
-     *
-     * @param ProductAttribute $attribute
-     *
-     * @return string
+     * {@inheritdoc}
      */
     protected function normalizeAvailableLocales($attribute)
     {
@@ -89,11 +45,7 @@ class FlatAttributeNormalizer extends AttributeNormalizer
     }
 
     /**
-     * Normalize options
-     *
-     * @param ProductAttribute $attribute
-     *
-     * @return string
+     * {@inheritdoc}
      */
     protected function normalizeOptions($attribute)
     {
@@ -119,11 +71,7 @@ class FlatAttributeNormalizer extends AttributeNormalizer
     }
 
     /**
-     * Normalize default options
-     *
-     * @param ProductAttribute $attribute
-     *
-     * @return string
+     * {@inheritdoc}
      */
     protected function normalizeDefaultOptions($attribute)
     {

@@ -16,7 +16,7 @@ class TimeGuesserTest extends ConstraintGuesserTest
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp()
     {
         $this->target = new TimeGuesser();
     }
@@ -68,7 +68,7 @@ class TimeGuesserTest extends ConstraintGuesserTest
     {
         $constraints = $this->target->guessConstraints(
             $this->getAttributeMock(
-                array('attributeType' => 'pim_catalog_text',)
+                array('attributeType' => 'pim_catalog_text')
             )
         );
 

@@ -1,14 +1,11 @@
 parameters:
     pim_import_export.twig.normalize_configuration_extension.class:          Pim\Bundle\ImportExportBundle\Twig\NormalizeConfigurationExtension
     pim_import_export.validator.constraints.channel_validator.class:         Pim\Bundle\ImportExportBundle\Validator\Constraints\ChannelValidator
-    pim_import_export.form.transform_imported_product_data_subscriber.class: Pim\Bundle\ImportExportBundle\Form\Subscriber\TransformImportedProductDataSubscriber
-    pim_import_export.converter.product_enabled_converter.class:             Pim\Bundle\ImportExportBundle\Converter\ProductEnabledConverter
-    pim_import_export.converter.product_value_converter.class:               Pim\Bundle\ImportExportBundle\Converter\ProductValueConverter
-    pim_import_export.converter.product_family_converter.class:              Pim\Bundle\ImportExportBundle\Converter\ProductFamilyConverter
-    pim_import_export.converter.product_categories_converter.class:          Pim\Bundle\ImportExportBundle\Converter\ProductCategoriesConverter
-    pim_import_export.converter.product_groups_converter.class:              Pim\Bundle\ImportExportBundle\Converter\ProductGroupsConverter
     pim_import_export.event_listener.archive_subscriber.class:               Pim\Bundle\ImportExportBundle\EventListener\ArchiveSubscriber
     pim_import_export.archiver.job_execution_archiver.class:                 Pim\Bundle\ImportExportBundle\Archiver\JobExecutionArchiver
+    pim_import_export.entity_cache.class:                                    Pim\Bundle\ImportExportBundle\Cache\EntityCache
+    pim_import_export.attribute_cache.class:                                 Pim\Bundle\ImportExportBundle\Cache\AttributeCache
+    pim_import_export.product_validator.class:                               Pim\Bundle\ImportExportBundle\Validator\Import\ProductImportValidator
 
 services:
     pim_import_export.twig.normalize_configuration_extension:
@@ -23,45 +20,6 @@ services:
         tags:
             - { name: validator.constraint_validator, alias: channel_validator }
 
-    pim_import_export.form.transform_imported_product_data_subscriber:
-        public: false
-        class: %pim_import_export.form.transform_imported_product_data_subscriber.class%
-        arguments:
-            - '@pim_import_export.converter.product_enabled_converter'
-            - '@pim_import_export.converter.product_value_converter'
-            - '@pim_import_export.converter.product_family_converter'
-            - '@pim_import_export.converter.product_categories_converter'
-            - '@pim_import_export.converter.product_groups_converter'
-
-    pim_import_export.converter.product_enabled_converter:
-        public: false
-        class: %pim_import_export.converter.product_enabled_converter.class%
-
-    pim_import_export.converter.product_value_converter:
-        public: false
-        class: %pim_import_export.converter.product_value_converter.class%
-        arguments:
-            - '@doctrine.orm.entity_manager'
-            - '@pim_catalog.manager.currency'
-
-    pim_import_export.converter.product_family_converter:
-        public: false
-        class: %pim_import_export.converter.product_family_converter.class%
-        arguments:
-            - '@doctrine.orm.entity_manager'
-
-    pim_import_export.converter.product_categories_converter:
-        public: false
-        class: %pim_import_export.converter.product_categories_converter.class%
-        arguments:
-            - '@doctrine.orm.entity_manager'
-
-    pim_import_export.converter.product_groups_converter:
-        public: false
-        class: %pim_import_export.converter.product_groups_converter.class%
-        arguments:
-            - '@doctrine.orm.entity_manager'
-
     pim_import_export.archiver.job_execution_archiver:
         class: %pim_import_export.archiver.job_execution_archiver.class%
         arguments:
@@ -73,3 +31,20 @@ services:
             - '@pim_import_export.archiver.job_execution_archiver'
         tags:
             - { name: kernel.event_subscriber }
+
+    pim_import_export.entity_cache:
+        class: '%pim_import_export.entity_cache.class%'
+        arguments:
+            - '@doctrine'
+
+    pim_import_export.attribute_cache:
+        class: '%pim_import_export.attribute_cache.class%'
+        arguments:
+            - '@doctrine'
+
+    pim_import_export.product_validator:
+        class: '%pim_import_export.product_validator.class%'
+        arguments:
+            - '@validator'
+            - '@oro_flexibleentity.validator.attribute_constraint_guesser'
+            - '@translator'

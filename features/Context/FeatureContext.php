@@ -8,6 +8,7 @@ use Behat\Symfony2Extension\Context\KernelAwareInterface;
 use Behat\MinkExtension\Context\MinkContext;
 use Behat\Behat\Exception\BehaviorException;
 use Behat\Mink\Exception\ExpectationException;
+use Behat\Mink\Driver\Selenium2Driver;
 
 /**
  * Main feature context
@@ -33,6 +34,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     public function __construct(array $parameters)
     {
         $this->useContext('fixtures', new FixturesContext());
+        $this->useContext('catalogConfiguration', new CatalogConfigurationContext());
         $this->useContext('webUser', new WebUser($parameters['window_width'], $parameters['window_height']));
         $this->useContext('webApi', new WebApiContext($parameters['base_url']));
         $this->useContext('datagrid', new DataGridContext());
@@ -135,7 +137,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
      */
     public function wait($time = 10000, $condition = null)
     {
-        if (!$this->getSession()->getDriver() instanceof \Behat\Mink\Driver\Selenium2Driver) {
+        if (!$this->getSession()->getDriver() instanceof Selenium2Driver) {
             return;
         }
 
@@ -160,6 +162,24 @@ JS;
         if ($condition !== false && microtime(true) > $end) {
             throw new BehaviorException(sprintf('Timeout of %d reached when checking on %s', $time, $condition));
         }
+    }
+
+    /**
+     * Execute javascript
+     *
+     * @param string $script
+     *
+     * @return boolean Success or failure
+     */
+    public function executeScript($script)
+    {
+        if ($this->getSession()->getDriver() instanceof Selenium2Driver) {
+            $this->getSession()->executeScript($script);
+
+            return true;
+        }
+
+        return false;
     }
 
     /**

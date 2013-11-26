@@ -5,20 +5,21 @@ Feature: Change family of many products at once
   I need to be able to change the family of many products at once
 
   Background:
-    Given the following family:
+    Given the "default" catalog configuration
+    And the following family:
       | code     |
       | Food     |
       | Clothing |
     And the following products:
-      | sku       | family    |
-      | coffee    | Food      |
-      | hamburger |           |
-      | jeans     | Clothing  |
+      | sku       | family   |
+      | coffee    | Food     |
+      | hamburger |          |
+      | jeans     | Clothing |
+    And I am logged in as "Julia"
+    And I am on the products page
 
   Scenario: Change the family of many products at once
-    Given I am logged in as "Julia"
-    And I am on the products page
-    When I mass-edit products coffee and hamburger
+    Given I mass-edit products coffee and hamburger
     And I choose the "Change the family of products" operation
     And I change the Family to "Food"
     When I move on to the next step
@@ -26,9 +27,7 @@ Feature: Change family of many products at once
     And the family of product "hamburger" should be "Food"
 
   Scenario: Remove many products from a product family
-    Given I am logged in as "Julia"
-    And I am on the products page
-    When I mass-edit products coffee, hamburger and jeans
+    Given I mass-edit products coffee, hamburger and jeans
     And I choose the "Change the family of products" operation
     And I change the Family to "None"
     When I move on to the next step

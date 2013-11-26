@@ -1,0 +1,236 @@
+attributes:
+    sku:
+        labels:
+            en_US: SKU
+        type:  pim_catalog_identifier
+        group: info
+        parameters:
+            required:            true
+            unique:              true
+            useableAsGridColumn: true
+            useableAsGridFilter: true
+            sortOrder:           1
+    name:
+        labels:
+            en_US: Name
+        type:  pim_catalog_text
+        group: info
+        parameters:
+            translatable:        true
+            useableAsGridColumn: true
+            useableAsGridFilter: true
+            sortOrder:           2
+    manufacturer:
+        labels:
+            en_US: Manufacturer
+        type:  pim_catalog_simpleselect
+        group: info
+        parameters:
+            useableAsGridColumn: true
+            useableAsGridFilter: true
+            sortOrder:           3
+        options:
+            Converse:
+                labels:
+                    en_US: Converse
+            TimberLand:
+                labels:
+                    en_US: TimberLand
+            Nike:
+                labels:
+                    en_US: Nike
+            Caterpillar:
+                labels:
+                    en_US: Caterpillar
+    weather_conditions:
+        labels:
+            en_US: Weather conditions
+        type:  pim_catalog_multiselect
+        group: info
+        parameters:
+            useableAsGridColumn: true
+            useableAsGridFilter: true
+            sortOrder:           4
+        options:
+            dry:
+                labels:
+                    en_US: Dry
+            wet:
+                labels:
+                    en_US: Wet
+            hot:
+                labels:
+                    en_US: Hot
+            cold:
+                labels:
+                    en_US: Cold
+            snowy:
+                labels:
+                    en_US: Snowy
+    description:
+        labels:
+            en_US: Description
+        type:  pim_catalog_textarea
+        group: info
+        parameters:
+            translatable:        true
+            scopable:            true
+            useableAsGridColumn: false
+            useableAsGridFilter: true
+            maxCharacters:       1000
+            sortOrder:           5
+    price:
+        labels:
+            en_US: Price
+        type:  pim_catalog_price_collection
+        group: marketing
+        parameters:
+            useableAsGridColumn: true
+            useableAsGridFilter: true
+            numberMin:           1
+            numberMax:           200
+            sortOrder:           1
+            decimalsAllowed:     true
+    rating:
+        labels:
+            en_US: Rating
+        type:  pim_catalog_simpleselect
+        group: marketing
+        parameters:
+            useableAsGridColumn: true
+            useableAsGridFilter: true
+            sortOrder:           2
+        options:
+            1:
+                labels:
+                    en_US: 1 star
+            2:
+                labels:
+                    en_US: 2 stars
+            3:
+                labels:
+                    en_US: 3 stars
+            4:
+                labels:
+                    en_US: 4 stars
+            5:
+                labels:
+                    en_US: 5 stars
+    side_view:
+        labels:
+            en_US: Side view
+        type:  pim_catalog_image
+        group: media
+        parameters:
+            maxFileSize: 1
+            sortOrder:   1
+            allowedExtensions: gif,png,jpeg
+    top_view:
+        labels:
+            en_US: Top view
+        type:  pim_catalog_image
+        group: media
+        parameters:
+            maxFileSize: 1
+            sortOrder:   2
+            allowedExtensions: gif,png,jpeg
+    size:
+        labels:
+            en_US: Size
+        type:  pim_catalog_simpleselect
+        group: sizes
+        parameters:
+            useableAsGridColumn: true
+            useableAsGridFilter: true
+            sortOrder:           1
+        options:
+            35:
+                labels:
+                    en_US: 35
+            36:
+                labels:
+                    en_US: 36
+            37:
+                labels:
+                    en_US: 37
+            38:
+                labels:
+                    en_US: 38
+            39:
+                labels:
+                    en_US: 39
+            40:
+                labels:
+                    en_US: 40
+            41:
+                labels:
+                    en_US: 41
+            42:
+                labels:
+                    en_US: 42
+            43:
+                labels:
+                    en_US: 43
+            44:
+                labels:
+                    en_US: 44
+            45:
+                labels:
+                    en_US: 45
+            46:
+                labels:
+                    en_US: 46
+    color:
+        labels:
+            en_US: Color
+        type:  pim_catalog_simpleselect
+        group: colors
+        parameters:
+            useableAsGridColumn: true
+            useableAsGridFilter: true
+            sortOrder:           1
+        options:
+            white:
+                labels:
+                    en_US: White
+            black:
+                labels:
+                    en_US: Black
+            blue:
+                labels:
+                    en_US: Blue
+            maroon:
+                labels:
+                    en_US: Maroon
+            saddle:
+                labels:
+                    en_US: Saddle
+            greem:
+                labels:
+                    en_US: Greem
+            red:
+                labels:
+                    en_US: Red
+            charcoal:
+                labels:
+                    en_US: Charcoal
+    lace_color:
+        labels:
+            en_US: Lace color
+        type:  pim_catalog_simpleselect
+        group: colors
+        parameters:
+            useableAsGridColumn: false
+            useableAsGridFilter: true
+            sortOrder:           2
+            defaultValue:        laces_black
+        options:
+            laces_black:
+                labels:
+                    en_US: Black
+            laces_brown:
+                labels:
+                    en_US: Brown
+            laces_white:
+                labels:
+                    en_US: White

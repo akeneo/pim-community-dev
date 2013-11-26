@@ -27,6 +27,7 @@ class LoadCurrencyData extends AbstractInstallerFixture
             $activated = in_array($currencyCode, $activatedCurrencies['currencies']);
             $currency = $this->createCurrency($currencyCode, $activated);
             $this->setReference('currency.'. $currencyCode, $currency);
+            $this->validate($currency, $allCurrencies[$currencyCode]);
             $manager->persist($currency);
         }
 

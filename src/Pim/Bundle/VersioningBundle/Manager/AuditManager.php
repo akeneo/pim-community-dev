@@ -5,7 +5,6 @@ namespace Pim\Bundle\VersioningBundle\Manager;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\DataAuditBundle\Entity\Audit;
-use Pim\Bundle\VersioningBundle\Entity\VersionableInterface;
 
 /**
  * Audit manager
@@ -32,11 +31,11 @@ class AuditManager
     /**
      * Return product logs
      *
-     * @param VersionableInterface $versionable
+     * @param object $versionable
      *
      * @return ArrayCollection
      */
-    public function getLogEntries(VersionableInterface $versionable)
+    public function getLogEntries($versionable)
     {
         $repo = $this->em->getRepository('Oro\Bundle\DataAuditBundle\Entity\Audit');
         $logs = $repo->getLogEntries($versionable);
@@ -48,11 +47,11 @@ class AuditManager
      * Return the oldest log entry. A the log is order by date
      * desc, it means the very last line of the log
      *
-     * @param VersionableInterface $versionable
+     * @param object $versionable
      *
      * @return Audit
      */
-    public function getOldestLogEntry(VersionableInterface $versionable)
+    public function getOldestLogEntry($versionable)
     {
         $logs = $this->getLogEntries($versionable);
 
@@ -63,11 +62,11 @@ class AuditManager
      * Return the newest log entry. As the log is order by date
      * desc, it means the first line of the log
      *
-     * @param VersionableInterface $versionable
+     * @param object $versionable
      *
      * @return Audit
      */
-    public function getNewestLogEntry(VersionableInterface $versionable)
+    public function getNewestLogEntry($versionable)
     {
         $logs = $this->getLogEntries($versionable);
 

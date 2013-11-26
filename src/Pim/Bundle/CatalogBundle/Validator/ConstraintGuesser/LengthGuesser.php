@@ -38,7 +38,7 @@ class LengthGuesser implements ConstraintGuesserInterface
         $constraints = array();
 
         if ($maxCharacters = $attribute->getMaxCharacters()) {
-            $constraints[] = new Assert\Length(array('max' => $maxCharacters,));
+            $constraints[] = new Assert\Length(array('max' => $maxCharacters));
         }
 
         return $constraints;

@@ -15,24 +15,24 @@
         <h4>{{ groupView.label }}</h4>
 
         {% for attributeId, attributeView in groupView.attributes %}
-        <div class="attribute-field {{ attributeView.classes|default([])|keys|join(' ') }}">
-            {% if attributeView.values is defined %}
-                {% for scope, subvalue in attributeView.values %}
-                <div class="control-group" data-field="{{ attributeView.code }}">
-                    {{ form_widget(subvalue, {'attr': {'data-scope': scope}}) }}
-                </div>
-                {% endfor %}
+            <div class="attribute-field {{ attributeView.classes|default([])|keys|join(' ') }}">
+                {% if attributeView.values is defined %}
+                    {% for scope, subvalue in attributeView.values %}
+                        <div class="control-group" data-field="{{ attributeView.code }}">
+                            {{ form_widget(subvalue, {'attr': {'data-scope': scope}}) }}
+                        </div>
+                    {% endfor %}
                 {% else %}
-                <div class="control-group" data-field="{{ attributeView.code }}">
-                    {{ form_widget(attributeView.value) }}
-                </div>
-            {% endif %}
-            <i class="icon-remove remove-attribute" data-id="{{ attributeId }}" data-toggle="tooltip" data-placement="right" data-original-title="{{ 'Remove this attribute'|trans }}"></i>
-        </div>
+                    <div class="control-group" data-field="{{ attributeView.code }}">
+                        {{ form_widget(attributeView.value) }}
+                    </div>
+                {% endif %}
+                <i class="icon-remove remove-attribute" data-id="{{ attributeId }}" data-toggle="tooltip" data-placement="right" data-original-title="{{ 'Remove this attribute'|trans }}"></i>
+            </div>
         {% endfor %}
 
         {% if not loop.last %}
-        <hr />
+            <hr />
         {% endif %}
 
     {% else %}
@@ -41,7 +41,6 @@
 
     {% endfor %}
 
-    {{ form_widget(form._token) }}
 {% endblock %}
 
 {% block head_script_component %}

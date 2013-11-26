@@ -32,6 +32,7 @@ class LoadAttributeGroupData extends AbstractInstallerFixture
         if (isset($configuration['attribute_groups'])) {
             foreach ($configuration['attribute_groups'] as $code => $data) {
                 $group = $this->createGroup($code, $data['labels']);
+                $this->validate($group, $data);
                 $manager->persist($group);
                 $this->addReference('attribute-group.'.$group->getCode(), $group);
             }

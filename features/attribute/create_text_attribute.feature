@@ -4,7 +4,8 @@ Feature: Create an attribute
   I need to create a text attribute
 
   Background:
-    Given I am logged in as "admin"
+    Given the "default" catalog configuration
+    And I am logged in as "admin"
     And I am on the attribute creation page
     And I select the attribute type "Text"
 
@@ -22,20 +23,17 @@ Feature: Create an attribute
   @javascript
   Scenario: Fail to create a text attribute with an invalid validation regex
     Given I fill in the following information:
-     | Code              | short_descsription |
+     | Code              | short_description  |
      | Validation rule   | Regular expression |
      | Validation regexp | this is not valid  |
     And I save the attribute
     Then I should see validation error "This regular expression is not valid."
 
-  @info Codes 'categories', 'categoryId', 'completeness', 'enabled', 'family', 'groups', 'productAssociations', 'scope', 'treeId' and 'values' are reserved for grid filters and import/export column names
-  Scenario Outline: Fail to create a text attribute with a code that is a reserved word
-    Given I change the Code to "<invalid code>"
-    And I save the attribute
-    Then I should see validation error "This code is not available."
-
-    Examples:
-      | invalid code        |
+  @info Codes 'associations', 'categories', 'categoryId', 'completeness', 'enabled', 'family', 'groups', 'productAssociations', 'products', 'scope', 'treeId', 'values', '*_groups' and '*_products' are reserved for grid filters and import/export column names
+  Scenario: Fail to create a text attribute with a code that is a reserved word
+    Then the following attribute codes should not be available:
+      | code                |
+      | associations        |
       | categories          |
       | categoryId          |
       | completeness        |
@@ -43,6 +41,9 @@ Feature: Create an attribute
       | family              |
       | groups              |
       | productAssociations |
+      | products            |
       | scope               |
       | treeId              |
       | values              |
+      | my_groups           |
+      | my_products         |

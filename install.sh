@@ -102,8 +102,10 @@ if [ $TASK = 'db' ] || [ $TASK = 'all' ]; then
     php app/console cache:clear
     echo "Loading ORO fixtures"
     php app/console doctrine:fixtures:load $ORO_FIXTURES --no-interaction
-    echo "Loading PIM fixtures"
-    php app/console doctrine:fixtures:load $PIM_FIXTURES --no-interaction --append
+    if [ $ENV != 'behat' ]; then
+        echo "Loading PIM fixtures"
+        php app/console doctrine:fixtures:load $PIM_FIXTURES --no-interaction --append
+    fi
     php app/console oro:entity-config:init
     php app/console oro:entity-extend:init
     php app/console oro:entity-extend:update-config
@@ -112,7 +114,7 @@ if [ $TASK = 'db' ] || [ $TASK = 'all' ]; then
     php app/console oro:search:create-index
     php app/console pim:search:reindex en_US
     php app/console pim:versioning:refresh
-    php app/console pim:product:completeness-calculator
+    php app/console pim:completeness:calculate
 fi
 
 if [ $TASK = 'assets' ] || [ $TASK = 'all' ]; then

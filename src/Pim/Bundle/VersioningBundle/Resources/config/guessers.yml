@@ -1,0 +1,38 @@
+services:
+
+    pim_versioning.update_guesser.attribute_group:
+        class: %pim_versioning.update_guesser.attribute_group.class%
+        tags:
+            - { name: pim_versioning.update_guesser }
+
+    pim_versioning.update_guesser.attribute_option:
+        class: %pim_versioning.update_guesser.attribute_option.class%
+        tags:
+            - { name: pim_versioning.update_guesser }
+
+    pim_versioning.update_guesser.contains_products:
+        class: %pim_versioning.update_guesser.contains_products.class%
+        tags:
+            - { name: pim_versioning.update_guesser }
+
+    pim_versioning.update_guesser.product_value:
+        class: %pim_versioning.update_guesser.product_value.class%
+        tags:
+            - { name: pim_versioning.update_guesser }
+
+    pim_versioning.update_guesser.translations:
+        class: %pim_versioning.update_guesser.translations.class%
+        arguments:
+            - %pim_versioning.versionable_entities%
+        tags:
+            - { name: pim_versioning.update_guesser }
+
+    pim_versioning.update_guesser.versionable:
+        class: %pim_versioning.update_guesser.versionable.class%
+        arguments:
+            - %pim_versioning.versionable_entities%
+        tags:
+            - { name: pim_versioning.update_guesser }
+
+    pim_versioning.update_guesser.chained:
+        class: %pim_versioning.update_guesser.chained.class%

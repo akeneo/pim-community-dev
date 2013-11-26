@@ -1,0 +1,115 @@
+{% extends 'PimCatalogBundle::layout.html.twig' %}
+
+{% oro_title_set({ params: { "%group.label%": form.vars.data.label } }) %}
+
+{% block head_script %}
+    {{ parent() }}
+
+    {% set listenerParameters = {
+        'columnName': 'has_product',
+        'selectors': {
+            'included': '#appendProducts',
+            'excluded': '#removeProducts'
+        }
+    } %}
+
+    {% placeholder prepare_grid with {'datagrid': datagrid, 'selector': '#group-products-grid', 'parameters': listenerParameters } %}
+
+    {% include 'OroGridBundle:Include:javascript.html.twig' with {'datagridView': historyDatagrid, 'selector': '#history-grid'} %}
+{% endblock %}
+
+{% block content %}
+    {{ JSFV(form) }}
+    {{ form_start(form, {
+        'action': path(editRoute, { id: form.vars.value.id}),
+        'attr': {
+            'data-updated-title': 'confirmation.leave'|trans,
+            'data-updated-message': 'confirmation.discard changes'|trans({ '%entity%': entityType|trans })
+        }
+    }) }}
+
+        {% set title = title ~ ' - ' ~ form.vars.data.label %}
+
+        {% set buttons %}
+            {{ elements.backLink(path(indexRoute)) }}
+            {{
+                elements.deleteLink(
+                    path(removeRoute, { id: form.vars.value.id }),
+                    path(indexRoute),
+                    confirmationMessage|trans({"%name%": form.vars.value.label}),
+                    "",
+                    removeMessage|trans
+                )
+            }}
+            {{ elements.submitBtn() }}
+        {% endset %}
+
+        {% set left %}
+            <ul class="inline">
+                <li>
+                    {{ 'code'|trans|capitalize }}: {{ form.vars.value.code }}
+                </li>
+                <li>
+                    {{ 'type'|trans|capitalize }}: {{ form.vars.value.type.code }}
+                </li>
+                {% if form.vars.value.type.isVariant %}
+                    {% set variantGroupAttributes %}
+                        {% for attribute in form.vars.value.attributes %}
+                            {{ attribute }}{% if not loop.last %},{% endif %}
+                        {% endfor %}
+                    {% endset %}
+                    <li>{{ 'axis'|trans|capitalize }}: <span>{{ variantGroupAttributes|capitalize|default('N/A'|trans) }}</span></li>
+                {% endif %}
+
+                {% if form.vars.data.products|length > 0 %}
+                    <li>{{ 'products'|trans|capitalize }}: {{ form.vars.data.products|length }}</li>
+                {% endif %}
+           </ul>
+        {% endset %}
+
+        {{ elements.page_header(title, buttons, null, left, elements.updated(form.vars.id)) }}
+
+        {{ elements.form_navbar(['Products', 'Properties', 'History']) }}
+
+        <div class="row-fluid tab-content group-edit">
+
+            {{ elements.form_errors(form) }}
+
+            <div class="tab-pane active" id="products">
+
+                {% if form.vars.data.products|length == 0 %}
+                    <div class="alert alert-info">
+                        <button data-dismiss="alert" class="close" type="button">×</button>
+                        {{ 'info.group.select products'|trans }}
+                    {% if form.vars.data.type.isVariant %}
+                        <br />{{ 'info.group.selectable products'|trans }}
+                    {% endif %}
+                    </div>
+                {% endif %}
+                <div id="group-products-grid"></div>
+                {{ form_widget(form.appendProducts, {'id': 'appendProducts'}) }}
+                {{ form_widget(form.removeProducts, {'id': 'removeProducts'}) }}
+            </div>
+
+            <div class="tab-pane" id="properties">
+                {% set generalProperties %}
+                    {{ form_row(form.code) }}
+                    {{ form_row(form.type) }}
+                    {% if form.vars.data.type.isVariant %}
+                        {{ form_row(form.attributes) }}
+                    {% endif %}
+                {% endset %}
+                {{ elements.accordion({
+                    'General Properties': generalProperties,
+                    'Labels': form_row(form.label)
+                }) }}
+            </div>
+
+            <div class="tab-pane" id="history">
+                <div id="history-grid"></div>
+            </div>
+
+        </div>
+        {{ form_end(form) }}
+
+{% endblock %}

@@ -4,17 +4,22 @@ services:
         class: %pim_catalog.form.type.product.view.class%
 
     pim_catalog.form.type.product:
-        class:     %pim_catalog.form.type.product.class%
+        class: %pim_catalog.form.type.product.class%
         arguments:
             - '@pim_catalog.manager.product'
             - pim_product_value
-            - '@pim_catalog.form.type.product.view'
-            - '@pim_catalog.form.transform_imported_product_data_subscriber'
         tags:
             - { name: form.type, alias: pim_product }
 
+    pim_catalog.form.type.product_edit:
+        class:     %pim_catalog.form.type.product_edit.class%
+        arguments:
+            - '@pim_catalog.form.type.product.view'
+        tags:
+            - { name: form.type, alias: pim_product_edit }
+
     pim_catalog.form.type.product_create:
-        class:     %pim_catalog.form.type.product_create.class%
+        class: %pim_catalog.form.type.product_create.class%
         arguments:
             - '@pim_catalog.manager.product'
             - pim_product_value
@@ -37,6 +42,11 @@ services:
         arguments:
             - '@pim_catalog.manager.attribute_type'
             - '@pim_catalog.form.subscriber.attribute'
+
+    pim_catalog.form.type.attribute_option_create:
+        class: %pim_catalog.form.type.attribute_option_create.class%
+        tags:
+            - { name: form.type, alias: pim_attribute_option_create }
 
     pim_catalog.form.type.attribute_group:
         class: %pim_catalog.form.type.attribute_group.class%
@@ -104,6 +114,11 @@ services:
         tags:
             - { name: form.type, alias: pim_catalog_group }
 
+    pim_catalog.form.type.group_type:
+        class: %pim_catalog.form.type.group_type.class%
+        tags:
+            - { name: form.type, alias: pim_catalog_group_type }
+
     pim_catalog.form.type.association:
         class: %pim_catalog.form.type.association.class%
         tags:
@@ -118,3 +133,14 @@ services:
         class: %pim_catalog.form.type.product_association.class%
         tags:
             - { name: form.type, alias: pim_catalog_product_association }
+
+    # Form extensions
+    pim_catalog.extension.type.image:
+        class: %pim_catalog.extension.type.image.class%
+        tags:
+            - { name: form.type_extension, alias: pim_image }
+
+    pim_catalog.extension.type.media:
+        class: %pim_catalog.extension.type.media.class%
+        tags:
+            - { name: form.type_extension, alias: oro_media }

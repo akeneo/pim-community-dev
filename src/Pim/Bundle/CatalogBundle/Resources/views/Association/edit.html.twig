@@ -4,19 +4,7 @@
 
 {% block head_script %}
     {{ parent() }}
-
-    <script type="text/javascript">
-        require(
-            ['jquery', 'pim/formupdatelistener'],
-            function ($, FormUpdateListener){
-                'use strict';
-                $(function() {
-                    new FormUpdateListener($('#{{ form.vars.id }}'));
-                });
-            }
-        );
-    </script>
-    {% include 'OroGridBundle:Include:javascript.html.twig' with {'datagridView': datagrid, 'selector': '#history-grid'} %}
+    {% include 'OroGridBundle:Include:javascript.html.twig' with {'datagridView': historyDatagrid, 'selector': '#history-grid'} %}
 {% endblock %}
 
 {% block content %}
@@ -49,13 +37,7 @@
             {{ elements.submitBtn() }}
         {% endset %}
 
-        {% set right %}
-            <div class="pull-right entity-updated">
-                <span id="updated" class="label label-warning hide">{{ 'info.updated'|trans }}</span>
-            </div>
-        {% endset %}
-
-        {{ elements.page_header(title, buttons, null, null, right) }}
+        {{ elements.page_header(title, buttons, null, null, elements.updated(form.vars.id)) }}
 
         {{ elements.form_navbar(['Properties', 'History']) }}
 
@@ -70,8 +52,6 @@
             <div class="tab-pane" id="history">
                 <div id="history-grid"></div>
             </div>
-
-            {{ form_row(form._token) }}
         </div>
-    </form>
+    {{ form_end(form) }}
 {% endblock %}

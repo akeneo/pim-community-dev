@@ -1,14 +1,10 @@
 <div class="tab-pane active" id="properties">
     {% set generalProperties %}
         {{ form_row(form.code) }}
-        {% if form.dynamic is defined %}
-            {{ form_row(form.dynamic) }}
-        {% endif %}
     {% endset %}
 
     {% set nodeValues %}
         {{ form_row(form.label) }}
-        {{ form_rest(form) }}
     {% endset %}
 
     {{ elements.accordion({ 'General Properties': generalProperties, 'Node values': nodeValues }) }}

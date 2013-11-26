@@ -5,7 +5,8 @@ Feature: Filter products per family
   I need to be able to manually filter products per family
 
   Background:
-    Given the following families:
+    Given the "default" catalog configuration
+    And the following families:
       | code             |
       | Computers        |
       | Hi-fi            |

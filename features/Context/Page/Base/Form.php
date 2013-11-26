@@ -30,6 +30,7 @@ class Form extends Base
                 'Available attributes form'       => array('css' => '#pim_available_product_attributes'),
                 'Available attributes button'     => array('css' => 'button:contains("Add attributes")'),
                 'Available attributes list'       => array('css' => '.pimmultiselect .ui-multiselect-checkboxes'),
+                'Available attributes search'     => array('css' => '.pimmultiselect input[type="search"]'),
                 'Available attributes add button' => array('css' => '.pimmultiselect a:contains("Add")'),
             ),
             $this->elements
@@ -86,20 +87,6 @@ class Form extends Base
     }
 
     /**
-     * Toggle the bootstrapSwitch on or off
-     *
-     * @param string  $locator
-     * @param boolean $on
-     */
-    public function toggleSwitch($locator, $on = true)
-    {
-        $field = $this->findField($locator);
-        if ($field->isChecked() != $on) {
-            $field->getParent()->find('css', 'label')->click();
-        }
-    }
-
-    /**
      * Get validation errors
      *
      * @return array:string
@@ -132,7 +119,12 @@ class Form extends Base
     {
         $this->openAvailableAttributesMenu();
 
+        $search = $this->getElement('Available attributes search');
         foreach ($attributes as $attribute) {
+            $search->setValue($attribute);
+            if (!$search->isVisible()) {
+                $this->openAvailableAttributesMenu();
+            }
             $label = $this->getElement('Available attributes list')
                     ->find('css', sprintf('li:contains("%s") label', $attribute));
 

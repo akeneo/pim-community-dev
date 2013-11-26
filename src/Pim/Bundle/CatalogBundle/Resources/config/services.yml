@@ -1,5 +1,7 @@
 parameters:
-    pim_catalog.imagine.local_dir_resolver.class:    Pim\Bundle\CatalogBundle\Imagine\Cache\Resolver\LocalDirResolver
+    pim_catalog.imagine.local_dir_resolver.class:                  Pim\Bundle\CatalogBundle\Imagine\Cache\Resolver\LocalDirResolver
+    pim_catalog.event_listener.progress.class:                     Pim\Bundle\CatalogBundle\EventListener\ProgressListener
+    pim_catalog.event_listener.create_attribute_requirement.class: Pim\Bundle\CatalogBundle\EventListener\CreateAttributeRequirementSubscriber
 
 services:
     # Attribute property types
@@ -37,19 +39,22 @@ services:
         tags:
             - { name: doctrine.event_subscriber }
 
-    pim_catalog.event_listener.update_completeness:
-        class: %pim_catalog.event_listener.update_completeness.class%
+    pim_catalog.event_listener.create_attribute_requirement:
+        class: %pim_catalog.event_listener.create_attribute_requirement.class%
+        arguments:
+            - '@pim_catalog.factory.attribute_requirement'
         tags:
             - { name: doctrine.event_subscriber }
+
+    pim_catalog.event_listener.progress:
+        class: %pim_catalog.event_listener.progress.class%
+        arguments:
+            - '@event_dispatcher'
 
     pim_catalog.event_listener.request:
         class: Pim\Bundle\CatalogBundle\EventListener\RequestListener
         tags:
             - { name: kernel.event_subscriber }
-
-    pim_catalog.form.transform_imported_product_data_subscriber:
-        public: false
-        class: %pim_catalog.form.transform_imported_product_data_subscriber.class%
 
     # Validators
     pim_catalog.form.validator.metric:
@@ -99,6 +104,13 @@ services:
         tags:
             - { name: twig.extension }
 
+    pim_catalog.twig.category_extension:
+        class: Pim\Bundle\CatalogBundle\Twig\CategoryExtension
+        arguments:
+            - '@pim_catalog.manager.category'
+        tags:
+            - { name: twig.extension }
+
     # extension listener
     stof_doctrine_extensions.event_listener.locale:
         class: %pim_catalog.event_listener.user_context.class%
@@ -108,23 +120,6 @@ services:
             - '@pim_catalog.manager.product'
         tags:
             - { name: kernel.event_subscriber }
-
-    # Product completeness calculator
-    pim_catalog.calculator.completeness:
-        class: %pim_catalog.calculator.completeness.class%
-        arguments:
-            - '@pim_catalog.manager.channel'
-            - '@pim_catalog.manager.locale'
-            - '@doctrine.orm.entity_manager'
-            - '@validator'
-
-    # Batch completeness calculator
-    pim_catalog.calculator.batch_completeness:
-        class: %pim_catalog.calculator.batch_completeness.class%
-        arguments:
-            - '@pim_catalog.calculator.completeness'
-            - '@pim_catalog.manager.product'
-            - '@doctrine.orm.entity_manager'
 
     # Mass edit action operator
     pim_catalog.mass_edit_action.operator:
@@ -176,3 +171,15 @@ services:
             - %kernel.cache_dir%/media
         tags:
             - { name: liip_imagine.cache.resolver, resolver: 'local_dir' }
+
+    pim_catalog.helper.completeness:
+        class: %pim_catalog.helper.completeness.class%
+        arguments:
+            - '@validator'
+
+    pim_catalog.doctrine.completeness_query_builder:
+        class: %pim_catalog.doctrine.completeness_query_builder.class%
+        arguments:
+            - '@doctrine'
+            - %pim_catalog.entity.product.class%
+            - %pim_catalog.entity.product_value.class%

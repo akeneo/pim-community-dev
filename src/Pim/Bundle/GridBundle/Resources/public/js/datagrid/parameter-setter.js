@@ -20,7 +20,7 @@ define(
                         datagrid.getRefreshAction().execute();
                     }
                 } else {
-                    mediator.once("datagrid:created:" + datagridName, function(datagrid) {
+                    mediator.once('datagrid:created:' + datagridName, function(datagrid) {
                         datagrid.setAdditionalParameter(parameterName, parameterValue);
                         if (refresh === true) {
                             datagrid.getRefreshAction().execute();
@@ -41,7 +41,7 @@ define(
                         datagrid.getRefreshAction().execute();
                     }
                 } else {
-                    mediator.once("datagrid:created:" + datagridName, function(datagrid) {
+                    mediator.once('datagrid:created:' + datagridName, function(datagrid) {
                         datagrid.removeAdditionalParameter(parameterName);
                         if (refresh === true) {
                             datagrid.getRefreshAction().execute();

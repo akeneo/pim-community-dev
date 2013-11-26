@@ -3,7 +3,7 @@ define(
     function ($, Navigation) {
         'use strict';
 
-        return function (elementId) {
+        return function (elementId, callback) {
             var $el = $(elementId);
             var $dialog;
             var url = $el.attr('data-form-url');
@@ -87,8 +87,10 @@ define(
             function processResponse(data, $dialog) {
                 if (isJSON(data)) {
                     data = $.parseJSON(data);
-                    if (data.status === 1) {
-                        destroyDialog();
+                    destroyDialog();
+                    if (callback) {
+                        callback(data);
+                    } else {
                         Navigation.getInstance().setLocation(data.url);
                     }
                 } else if ($(data).prop('tagName').toLowerCase() === 'form') {

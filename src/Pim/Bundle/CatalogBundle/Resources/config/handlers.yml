@@ -41,6 +41,14 @@ services:
             - '@request'
             - '@doctrine.orm.entity_manager'
 
+    pim_catalog.form.handler.group_type:
+        class: %pim_catalog.form.handler.group_type.class%
+        scope: request
+        arguments:
+            - '@pim_catalog.form.group_type'
+            - '@request'
+            - '@doctrine.orm.entity_manager'
+
     pim_catalog.form.handler.association:
         class: %pim_catalog.form.handler.association.class%
         scope: request

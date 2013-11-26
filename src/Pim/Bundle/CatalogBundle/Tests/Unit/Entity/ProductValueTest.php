@@ -15,13 +15,21 @@ use Doctrine\Common\Collections\ArrayCollection;
 class ProductValueTest extends \PHPUnit_Framework_TestCase
 {
     /**
+     * {@inheritdoc}
+     */
+    protected function setUp()
+    {
+        $this->value = new ProductValue();
+    }
+
+    /**
      * @test
      */
     public function itShouldBeAnEntityFlexibleValue()
     {
         $this->assertInstanceOf(
             'Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexibleValue',
-            $this->getTargetedClass()
+            $this->value
         );
     }
 
@@ -30,9 +38,7 @@ class ProductValueTest extends \PHPUnit_Framework_TestCase
      */
     public function itShouldBeRemovableIfValueHasNoProduct()
     {
-        $target = $this->getTargetedClass();
-
-        $this->assertTrue($target->isRemovable());
+        $this->assertTrue($this->value->isRemovable());
     }
 
     /**
@@ -43,7 +49,6 @@ class ProductValueTest extends \PHPUnit_Framework_TestCase
         $family    = $this->getFamilyMock();
         $attribute = $this->getProductAttributeMock();
         $product   = $this->getProductMock();
-        $target    = $this->getTargetedClass();
 
         $product->expects($this->any())
                 ->method('getFamily')
@@ -58,10 +63,10 @@ class ProductValueTest extends \PHPUnit_Framework_TestCase
                 ->with($attribute)
                 ->will($this->returnValue(!$family->getAttributes()->contains($attribute)));
 
-        $target->setEntity($product);
-        $target->setAttribute($attribute);
+        $this->value->setEntity($product);
+        $this->value->setAttribute($attribute);
 
-        $this->assertFalse($target->isRemovable());
+        $this->assertFalse($this->value->isRemovable());
     }
 
     /**
@@ -72,7 +77,6 @@ class ProductValueTest extends \PHPUnit_Framework_TestCase
         $family    = $this->getFamilyMock();
         $attribute = $this->getProductAttributeMock();
         $product   = $this->getProductMock();
-        $target    = $this->getTargetedClass();
 
         $product->expects($this->any())
                 ->method('getFamily')
@@ -87,10 +91,10 @@ class ProductValueTest extends \PHPUnit_Framework_TestCase
                 ->with($attribute)
                 ->will($this->returnValue(!$family->getAttributes()->contains($attribute)));
 
-        $target->setEntity($product);
-        $target->setAttribute($attribute);
+        $this->value->setEntity($product);
+        $this->value->setAttribute($attribute);
 
-        $this->assertTrue($target->isRemovable());
+        $this->assertTrue($this->value->isRemovable());
     }
 
     /**
@@ -100,7 +104,6 @@ class ProductValueTest extends \PHPUnit_Framework_TestCase
     {
         $attribute = $this->getProductAttributeMock();
         $product   = $this->getProductMock();
-        $target    = $this->getTargetedClass();
 
         $product->expects($this->any())
                 ->method('getFamily')
@@ -111,20 +114,24 @@ class ProductValueTest extends \PHPUnit_Framework_TestCase
                 ->with($attribute)
                 ->will($this->returnValue($product->getFamily() === null));
 
-        $target->setEntity($product);
-        $target->setAttribute($attribute);
+        $this->value->setEntity($product);
+        $this->value->setAttribute($attribute);
 
-        $this->assertTrue($target->isRemovable());
+        $this->assertTrue($this->value->isRemovable());
     }
 
     /**
-     * @return ProductValue
+     * Test related method
      */
-    private function getTargetedClass()
+    public function testGetSetMedia()
     {
-        return new ProductValue();
-    }
+        $media = $this->getMediaMock();
+        $media->expects($this->once())
+            ->method('setValue')
+            ->with($this->value);
 
+        $this->value->setMedia($media);
+    }
     /**
      * @return \Pim\Bundle\CatalogBundle\Entity\Family
      */
@@ -167,5 +174,13 @@ class ProductValueTest extends \PHPUnit_Framework_TestCase
              ->will($this->returnValue($contains));
 
         return $coll;
+    }
+
+    /**
+     * @return PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function getMediaMock()
+    {
+        return $this->getMock('Pim\Bundle\CatalogBundle\Entity\Media');
     }
 }

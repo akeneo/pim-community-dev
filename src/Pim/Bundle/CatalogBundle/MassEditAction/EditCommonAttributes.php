@@ -4,7 +4,6 @@ namespace Pim\Bundle\CatalogBundle\MassEditAction;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Oro\Bundle\FlexibleEntityBundle\Entity\Media;
 use Oro\Bundle\FlexibleEntityBundle\Entity\Metric;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
@@ -13,6 +12,7 @@ use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Entity\ProductPrice;
+use Pim\Bundle\CatalogBundle\Entity\Media;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 
@@ -238,9 +238,9 @@ class EditCommonAttributes extends AbstractMassEditAction
     {
         foreach ($products as $product) {
             $this->setProductValues($product);
-            $this->productManager->handleMedia($product);
-            $this->productManager->save($product);
         }
+        $this->productManager->handleAllMedia($products);
+        $this->productManager->saveAll($products, false);
     }
 
     /**
@@ -286,11 +286,7 @@ class EditCommonAttributes extends AbstractMassEditAction
      */
     protected function setProductValue(ProductInterface $product, ProductValueInterface $value)
     {
-        $productValue = $product->getValue(
-            $value->getAttribute()->getCode(),
-            $value->getAttribute()->getTranslatable() ? $this->getLocale()->getCode() : null,
-            $value->getAttribute()->getScopable() ? $value->getScope() : null
-        );
+        $productValue = $this->getProductValue($product, $value);
 
         switch ($value->getAttribute()->getAttributeType()) {
             case 'pim_catalog_price_collection':
@@ -313,6 +309,23 @@ class EditCommonAttributes extends AbstractMassEditAction
             default:
                 $productValue->setData($value->getData());
         }
+    }
+
+    /**
+     * Get product value
+     *
+     * @param ProductInterface      $product
+     * @param ProductValueInterface $value
+     *
+     * @return ProductValueInterface
+     */
+    protected function getProductValue(ProductInterface $product, ProductValueInterface $value)
+    {
+        return $product->getValue(
+            $value->getAttribute()->getCode(),
+            $value->getAttribute()->getTranslatable() ? $this->getLocale()->getCode() : null,
+            $value->getAttribute()->getScopable() ? $value->getScope() : null
+        );
     }
 
     /**
@@ -396,7 +409,7 @@ class EditCommonAttributes extends AbstractMassEditAction
      * @param Locale           $locale
      * @param Channel          $channel
      *
-     * @return ProductValue
+     * @return ProductValueInterface
      */
     protected function createValue(ProductAttribute $attribute, Locale $locale, Channel $channel = null)
     {

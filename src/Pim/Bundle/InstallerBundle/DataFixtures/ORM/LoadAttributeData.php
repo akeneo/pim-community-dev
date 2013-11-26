@@ -13,7 +13,6 @@ use Pim\Bundle\CatalogBundle\Entity\ProductAttributeTranslation;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
- *
  */
 class LoadAttributeData extends AbstractInstallerFixture
 {
@@ -36,6 +35,7 @@ class LoadAttributeData extends AbstractInstallerFixture
         if (isset($configuration['attributes'])) {
             foreach ($configuration['attributes'] as $code => $data) {
                 $attribute = $this->createAttribute($code, $data);
+                $this->validate($attribute, $data);
                 $manager->persist($attribute);
                 $this->addReference('product-attribute.'.$attribute->getCode(), $attribute);
             }
@@ -56,7 +56,10 @@ class LoadAttributeData extends AbstractInstallerFixture
     {
         $attribute = $this->getProductManager()->createAttribute($data['type']);
         $attribute->setCode($code);
-        $attribute->setGroup($this->getReference('attribute-group.'.$data['group']));
+
+        if (isset($data['group'])) {
+            $attribute->setGroup($this->getReference('attribute-group.'.$data['group']));
+        }
 
         foreach ($data['labels'] as $locale => $label) {
             $translation = $this->createTranslation($attribute, $locale, $label);
@@ -136,7 +139,7 @@ class LoadAttributeData extends AbstractInstallerFixture
                 $optionValue->setLocale($locale);
                 $option->addOptionValue($optionValue);
             }
-            $options[]= $option;
+            $options[] = $option;
             $this->addReference('product-attributeoption.'.$code, $option);
         }
 

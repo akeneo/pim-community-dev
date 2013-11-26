@@ -14,21 +14,27 @@ Important Note: this application is not production ready and is intended for eva
 
 Requirements
 ------------
- - PHP 5.4.4 or above
+## System
+ - PHP 5.4.* above 5.4.4 ( Akeneo PIM has not been yet tested with PHP 5.5)
  - PHP Modules:
     - php5-curl
     - php5-gd
     - php5-intl
     - php5-mysql
     - php5-mcrypt
- - a PHP opcode cache (Akeneo is tested mainly with APC)
+    - php-apc (opcode and data cache)
  - PHP memory_limit at least at 256 MB on Apache side and 512 MB on CLI side
  - MySQL 5.1 or above
  - Apache mod rewrite enabled
  - Java JRE (for compressing the JavaScript via YUI Compressor)
 
-Akeneo PIM is based on Symfony 2, Doctrine 2 and Oro Platform [OroPlatform][3].
+Akeneo PIM is based on Symfony 2, Doctrine 2 and [OroPlatform][3].
 These dependencies will be installed automatically with [Composer][2].
+
+## Web browsers
+ - tested : Chrome & Firefox
+ - supported : IE 10, Safari
+ - not supported : IE < 10
 
 Installation instructions
 -------------------------
@@ -106,14 +112,21 @@ You must give write permission to the Apache user on the following directories:
 - app/export
 - app/emails
 - web/bundles
-- web/uploads/product
+- app/uploads/product
 
 Configure crontab
 -----------------
 
 To ensure that completeness is as up to date as possible, you can configure the following crontab
 line:
-*/5 * * * * php app/console pim:product:completeness-calculator > /tmp/completeness.log
+
+    */2 * * * * php app/console pim:completeness:calculate > /tmp/completeness.log
+
+In case you import data without running the versionning system in real time, you can make sure
+the versionning is recalculated appropriately with this crontab line (assuming you filled the 
+version pending table with the adequate information):
+
+    */5 * * * * php app/console pim:versioning:refresh > /tmp/versioning.log
 
 Checking your System Configuration
 ----------------------------------
@@ -167,3 +180,7 @@ Known issues
 [1]:  http://symfony.com/doc/2.1/book/installation.html
 [2]:  http://getcomposer.org/
 [3]:  http://www.orocrm.com/oro-platform 
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/akeneo/pim-community-dev/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+

@@ -5,15 +5,15 @@
 
     <target name="build" depends="prepare,composer,vendors,setupdb,fixtures,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdox,phpunit,phpcb"/>
 
-    <target name="build-phpunit" depends="prepare,composer,vendors,setupdb,fixtures,phpunit"/>
+    <target name="build-phpunit" depends="prepare,composer,vendors,setupdb-test,phpunit"/>
 
-    <target name="build-phpunit-coverage" depends="prepare,composer,vendors,setupdb,fixtures,phpunit-coverage"/>
+    <target name="build-phpunit-coverage" depends="prepare,composer,vendors,setupdb-test,phpunit-coverage"/>
 
     <target name="build-behat" depends="prepare,composer,vendors,install-all-behat,behat"/>
 
     <target name="build-behat-pr" depends="prepare,composer,vendors,install-all-behat,behat-pr"/>
 
-    <target name="build-behat-coverage" depends="prepare,composer,vendors,setupdb,dumpassets,behat-coverage"/>
+    <target name="build-behat-coverage" depends="prepare,composer,vendors,install-all-behat,behat-coverage"/>
 
     <target name="build-code-quality" depends="prepare,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdoc"/>
 
@@ -171,7 +171,7 @@
     <target name="behat" description="Run acceptance tests with Behat">
         <exec executable="${basedir}/app/Resources/jenkins/behat/run_behat.sh" failonerror="true">
             <!-- Concurrency -->
-            <arg value="3" />
+            <arg value="2" />
             <arg value="noxdebug" />
             <!-- DB Prefix -->
             <arg value="akeneo_ci_pim_behat_" />
@@ -228,21 +228,6 @@
         </exec>
     </target>
 
-    <target name="dumpassets" description="Dump the assets">
-        <exec executable="app/console">
-            <arg value="oro:navigation:init" />
-        </exec>
-        <exec executable="app/console">
-            <arg value="assetic:dump" />
-        </exec>
-        <exec executable="app/console">
-            <arg value="oro:assetic:dump" />
-        </exec>
-        <exec executable="app/console">
-            <arg value="oro:translation:dump" />
-        </exec>
-    </target>
-
     <target name="setupdb" description="Setup db">
         <exec executable="app/console">
           <arg value="oro:entity-extend:clear" />
@@ -281,6 +266,13 @@
           <arg value="-n" />
           <arg value="--complete" />
           <arg value="--force" />
+        </exec>
+    </target>
+
+    <target name="setupdb-test" description="Setup db for test env">
+        <exec executable="./install.sh">
+          <arg value="db" />
+          <arg value="test" />
         </exec>
     </target>
 
