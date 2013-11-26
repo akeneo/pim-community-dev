@@ -2,27 +2,18 @@
 
 namespace Pim\Bundle\CatalogBundle\Datagrid;
 
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-
+use Oro\Bundle\GridBundle\Datagrid\DatagridManager;
+use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
+use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
+use Oro\Bundle\GridBundle\Field\FieldDescription;
+use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
+use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
 use Oro\Bundle\GridBundle\Property\UrlProperty;
 
-use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
-
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
-
-use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
-
+use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\GridBundle\Action\ActionInterface;
-
 use Pim\Bundle\GridBundle\Filter\FilterInterface;
-
-use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
-
-use Oro\Bundle\GridBundle\Field\FieldDescription;
-
-use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
-
-use Oro\Bundle\GridBundle\Datagrid\DatagridManager;
 
 /**
  * Family datagrid manager
