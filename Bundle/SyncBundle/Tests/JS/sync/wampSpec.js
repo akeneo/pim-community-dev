@@ -1,9 +1,9 @@
 /* global define, require, describe, it, expect, beforeEach, afterEach, spyOn, jasmine */
-define(['oro/sync/wamp', 'backbone'],
-function(Wamp, Backbone) {
+define(['oro/sync/wamp', 'backbone', 'requirejs-exposure'],
+function(Wamp, Backbone, requirejsExposure) {
     'use strict';
 
-    var exposure = require('oro/sync/wamp/exposure');
+    var exposure = requirejsExposure.disclose('oro/sync/wamp');
 
     describe('oro/sync/wamp', function () {
         var ab, $, session;

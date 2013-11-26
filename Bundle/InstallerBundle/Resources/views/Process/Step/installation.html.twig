@@ -1,7 +1,7 @@
 {% extends 'OroInstallerBundle::layout.html.twig' %}
 {% use 'OroInstallerBundle::progress.html.twig' %}
 
-{% set step, steps = 'administration', ['search', 'navigation', 'localization', 'assets', 'assetic', 'assetic-oro', 'translation', 'requirejs'] %}
+{% set step, steps = 'administration', ['search', 'navigation', 'localization', 'assets', 'assetic', 'assetic-oro', 'translation', 'requirejs', 'finish'] %}
 
 {% if loadFixtures %}
     {% set steps = ['fixtures']|merge(steps) %}

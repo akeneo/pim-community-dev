@@ -9,7 +9,7 @@ oro_entity_config:
                                 scope:      extend
                             code:           owner
                             value:          System
-                        priority: 10
+                        priority: 100
                     constraints:
                         - NotBlank:         ~
                     grid:
