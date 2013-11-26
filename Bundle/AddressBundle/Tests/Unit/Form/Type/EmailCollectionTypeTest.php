@@ -20,7 +20,7 @@ class EmailCollectionTypeTest extends \PHPUnit_Framework_TestCase
 
     public function testGetParent()
     {
-        $this->assertEquals('oro_item_collection', $this->type->getParent());
+        $this->assertEquals('oro_collection', $this->type->getParent());
     }
 
     public function testGetName()
