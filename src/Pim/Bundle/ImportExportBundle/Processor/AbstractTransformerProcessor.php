@@ -10,7 +10,7 @@ use Pim\Bundle\ImportExportBundle\Exception\TranslatableExceptionInterface;
 use Pim\Bundle\ImportExportBundle\Validator\Import\ImportValidatorInterface;
 
 /**
- * Description of AbstractProcessor
+ * Abstract processor for transformer based imports
  *
  * @author    Antoine Guigan <antoine@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -104,7 +104,8 @@ abstract class AbstractTransformerProcessor extends AbstractConfigurableStepElem
     /**
      * Transforms the array in an object
      *
-     * @param  array  $item
+     * @param array $item
+     *
      * @return object
      */
     abstract protected function transform($item);
