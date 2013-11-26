@@ -6,11 +6,15 @@ Feature: Switch product locale
   Background:
     Given the "default" catalog configuration
     And a "Computer" product
-    And the "Computer" product has the following translations:
-      | locale  | attribute | value      |
-      | english | name      | computer   |
-      | french  | name      | ordinateur |
-      | english | screen    | 15 inches  |
+    And the following attributes:
+      | label  | translatable |
+      | name   | yes          |
+      | screen | yes          |
+    And the following product values:
+      | product  | attribute | value      | locale |
+      | Computer | name      | computer   | en_US  |
+      | Computer | name      | ordinateur | fr_FR  |
+      | Computer | screen    | 15 inches  | en_US  |
     And I am logged in as "admin"
 
   Scenario: Succesfully display product in the current locale

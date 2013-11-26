@@ -28,6 +28,7 @@ class LoadFamilyData extends AbstractInstallerFixture
         if (isset($configuration['families'])) {
             foreach ($configuration['families'] as $code => $data) {
                 $family = $this->createFamily($code, $data);
+                $this->validate($family, $data);
                 $manager->persist($family);
                 $this->addReference('attribute-family.'.$family->getCode(), $family);
             }

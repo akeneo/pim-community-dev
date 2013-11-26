@@ -17,7 +17,7 @@ Feature: Expose product data via a REST API
 
   Scenario: Successfully retrieve a product
     Given a "Car" product
-    And the following product attributes:
+    And the following attributes:
       | type   | label             | scopable | translatable |
       | prices | Price             | no       | no           |
       | text   | Color             | no       | yes          |

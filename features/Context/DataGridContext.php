@@ -50,13 +50,13 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
         }
 
         assertEquals(
-            intval($count),
+            $count,
             $actualCount = $this->datagrid->getToolbarCount(),
-            sprintf('Expecting to see %d record(s) in the datagrid, actually saw %d', $count, $actualCount)
+            sprintf('Expecting to see %d record(s) in the datagrid toolbar, actually saw %d', $count, $actualCount)
         );
 
         assertEquals(
-            intval($count),
+            $count,
             $actualCount = $this->datagrid->countRows(),
             sprintf('Expecting to see %d row(s) in the datagrid, actually saw %d.', $count, $actualCount)
         );
@@ -195,9 +195,9 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     /**
      * @param string $filterName
      *
-     * @Then /^I make visible the filter "([^"]*)"$/
+     * @Then /^I show the filter "([^"]*)"$/
      */
-    public function iMakeVisibleTheFilter($filterName)
+    public function iShowTheFilter($filterName)
     {
         $this->datagrid->showFilter($filterName);
     }
@@ -319,7 +319,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
         foreach ($data as $item) {
             $count = count($this->getMainContext()->listToArray($item['result']));
             $filter = $item['filter'];
-            $steps[] = new Then(sprintf('I make visible the filter "%s"', $filter));
+            $steps[] = new Then(sprintf('I show the filter "%s"', $filter));
             $steps[] = new Then(sprintf('I filter by "%s" with value "%s"', $filter, $item['value']));
             $steps[] = new Then(sprintf('the grid should contain %d elements', $count));
             $steps[] = new Then(sprintf('I should see entities %s', $item['result']));
@@ -370,10 +370,9 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      * @Then /^I should see locales? (.*)$/
      * @Then /^I should see (?:import|export) profiles? (.*)$/
      * @Then /^I should see (?:(?:entit|currenc)(?:y|ies)) (.*)$/
-     * @Then /^I should see groups (.*)$/
+     * @Then /^I should see groups? (?:types )?(.*)$/
      * @Then /^I should see associations? (.*)$/
-     * @Then /^I should see group types? (.*)$/
-     * @Then /^I should see users (.*)$/
+     * @Then /^I should see users? (.*)$/
      */
     public function iShouldSeeEntities($elements)
     {

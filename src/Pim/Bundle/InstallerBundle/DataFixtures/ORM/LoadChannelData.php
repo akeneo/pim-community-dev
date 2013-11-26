@@ -30,6 +30,7 @@ class LoadChannelData extends AbstractInstallerFixture
                 $data['currencies'],
                 $data['tree']
             );
+            $this->validate($channel, $data);
             $manager->persist($channel);
         }
 

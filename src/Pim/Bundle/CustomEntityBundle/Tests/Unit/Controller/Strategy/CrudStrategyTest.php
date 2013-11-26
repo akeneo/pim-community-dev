@@ -15,12 +15,18 @@ class CrudStrategyTest extends AbstractStrategyTest
 {
     protected $strategy;
 
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         parent::setUp();
         $this->strategy = new CrudStrategy($this->formFactory, $this->templating, $this->router, $this->translator);
     }
 
+    /**
+     * @return array
+     */
     public function getFormActionData()
     {
         return array(
@@ -29,7 +35,11 @@ class CrudStrategyTest extends AbstractStrategyTest
             'valid'     => array(true, true)
         );
     }
+
     /**
+     * @param boolean $post
+     * @param boolean $valid
+     *
      * @dataProvider getFormActionData
      */
     public function testCreateAction($post, $valid)
@@ -108,6 +118,9 @@ class CrudStrategyTest extends AbstractStrategyTest
     }
 
     /**
+     * @param boolean $post
+     * @param boolean $valid
+     *
      * @dataProvider getFormActionData
      */
     public function testEditAction($post, $valid)
@@ -196,6 +209,9 @@ class CrudStrategyTest extends AbstractStrategyTest
         $this->strategy->editAction($this->configuration, $this->request);
     }
 
+    /**
+     * Test related method
+     */
     public function testRemove()
     {
         $entity = new \stdClass;
@@ -236,6 +252,13 @@ class CrudStrategyTest extends AbstractStrategyTest
         $this->strategy->removeAction($this->configuration, $this->request);
     }
 
+    /**
+     * @param string $type
+     * @param object $entity
+     * @param array  $options
+     *
+     * @return \Symfony\Component\Form\Form
+     */
     protected function getMockForm($type, $entity, $options)
     {
         $form = $this->getMockBuilder('Symfony\Component\Form\Form')
@@ -249,6 +272,10 @@ class CrudStrategyTest extends AbstractStrategyTest
         return $form;
     }
 
+    /**
+     * @param string $type
+     * @param string $message
+     */
     protected function assertFlash($type, $message)
     {
         $this->translator

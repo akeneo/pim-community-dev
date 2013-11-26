@@ -28,7 +28,7 @@ class AssociationProcessorTest extends AbstractProcessorTestCase
     }
 
     /**
-     * Test related method
+     * @return array
      */
     protected function getExpectedConfigurationFields()
     {
@@ -74,6 +74,7 @@ class AssociationProcessorTest extends AbstractProcessorTestCase
     /**
      * Test the process method returning validation errors
      * @expectedException Oro\Bundle\BatchBundle\Item\InvalidItemException
+     * @return null
      */
     public function testInvalidProcess()
     {

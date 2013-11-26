@@ -58,6 +58,7 @@ class JavascriptRegExpTranslatorTest extends \PHPUnit_Framework_TestCase
      * Tests translate
      *
      * @param string $phpRegexp
+     * @param array  $replacements
      * @param string $javascriptRegexp
      *
      * @dataProvider getTranslateData

@@ -35,6 +35,7 @@ class LoadAttributeData extends AbstractInstallerFixture
         if (isset($configuration['attributes'])) {
             foreach ($configuration['attributes'] as $code => $data) {
                 $attribute = $this->createAttribute($code, $data);
+                $this->validate($attribute, $data);
                 $manager->persist($attribute);
                 $this->addReference('product-attribute.'.$attribute->getCode(), $attribute);
             }

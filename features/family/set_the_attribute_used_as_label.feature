@@ -8,12 +8,12 @@ Feature: Set the attribute used as label
     And the following family:
       | code |
       | Bags |
-    And the following product attributes:
-      | label       | family | type     |
-      | Brand       | Bags   | text     |
-      | Model       | Bags   | text     |
-      | Size        | Bags   | number   |
-      | Description | Bags   | textarea |
+    And the following attributes:
+      | label       | families | type     |
+      | Brand       | Bags     | text     |
+      | Model       | Bags     | text     |
+      | Size        | Bags     | number   |
+      | Description | Bags     | textarea |
     And I am logged in as "admin"
 
   Scenario: Fail to set a non-text attribute as the family label

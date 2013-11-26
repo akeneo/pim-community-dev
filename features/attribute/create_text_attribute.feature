@@ -29,7 +29,7 @@ Feature: Create an attribute
     And I save the attribute
     Then I should see validation error "This regular expression is not valid."
 
-  @info Codes 'associations', 'categories', 'categoryId', 'completeness', 'enabled', 'family', 'groups', 'productAssociations', 'products', 'scope', 'treeId' and 'values' are reserved for grid filters and import/export column names
+  @info Codes 'associations', 'categories', 'categoryId', 'completeness', 'enabled', 'family', 'groups', 'productAssociations', 'products', 'scope', 'treeId', 'values', '*_groups' and '*_products' are reserved for grid filters and import/export column names
   Scenario: Fail to create a text attribute with a code that is a reserved word
     Then the following attribute codes should not be available:
       | code                |
@@ -45,3 +45,5 @@ Feature: Create an attribute
       | scope               |
       | treeId              |
       | values              |
+      | my_groups           |
+      | my_products         |

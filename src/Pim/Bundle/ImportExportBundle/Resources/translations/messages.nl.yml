@@ -1,0 +1,174 @@
+---
+pim_import_export.status:
+  - Ready
+pim_import_export:
+  jobs:
+    product_export:
+      title: Product export in CSV
+      export.title: Configuration
+    category_export:
+      title: Category export in CSV
+      export.title: Configuration
+    attribute_export:
+      title: Attribute export in CSV
+      export.title: Configuration
+    product_import:
+      title: Product import in CSV
+      import.title: Configuration
+    category_import:
+      title: Category import in CSV
+      import.title: Configuration
+    attribute_import:
+      title: Attribute import in CSV
+      import.title: Configuration
+oro_batch:
+  product_reader:
+    title: Scope
+    channel:
+      label: Channel
+      help: The channel you want to export
+  category_reader:
+    title: Category extraction
+  attribute_reader:
+    title: Attribute extraction
+  csv_reader:
+    title: CSV Reader
+    filePath:
+      label: File
+      help: The csv file to import
+    delimiter:
+      label: Delimiter
+      help: One character used to set the field delimiter
+    enclosure:
+      label: Enclosure
+      help: One character used to set the field enclosure
+    escape:
+      label: Escape
+      help: One character used to set the field escape
+    uploadAllowed:
+      label: Allow file upload
+      help: Whether or not to allow uploading the file directly
+  product_csv_reader:
+    title: CSV Reader
+    filePath:
+      label: File
+      help: The csv file to import
+    delimiter:
+      label: Delimiter
+      help: One character used to set the field delimiter
+    enclosure:
+      label: Enclosure
+      help: One character used to set the field enclosure
+    escape:
+      label: Escape
+      help: One character used to set the field escape
+    uploadAllowed:
+      label: Allow file upload
+      help: Whether or not to allow uploading the file directly
+  csv_file_reader:
+    title: CSV File Reader
+    filePath:
+      label: File
+      help: The csv file to import
+    delimiter:
+      label: Delimiter
+      help: One character used to set the field delimiter
+    enclosure:
+      label: Enclosure
+      help: One character used to set the field enclosure
+    escape:
+      label: Escape
+      help: One character used to set the field escape
+    uploadAllowed:
+      label: Allow file upload
+      help: Whether or not to allow uploading the file directly
+  valid_product_creation_processor:
+    title: Product creation
+    enabled:
+      label: Enable the product?
+      help: Whether or not imported product should be enabled
+    categoriesColumn:
+      label: Categories column
+      help: Name of the categories column
+    groupsColumn:
+      label: Groups column
+      help: Name of the groups column
+    familyColumn:
+      label: Family column
+      help: Name of the family column
+    categoriesDelimiter:
+      label: Categories delimiter
+      help: Character used to separate the category codes
+    channel:
+      label: Channel
+      help: The channel in which create the imported value
+  valid_category_creation_processor:
+    title: Category creation
+    labelDelimiter:
+      label: Label delimiter
+      help: One character separating the labels in each locale
+    localeDelimiter:
+      label: Locale delimiter
+      help: One character separating the title from the locale
+    circularRefsChecked:
+      label: Check circular references
+      help: If yes, data will be processed to make sure that there are no circular references between the categories
+  heterogeneous_csv_serializer_processor:
+    title: Settings
+    delimiter:
+      label: Delimiter
+      help: One character used to set the field delimiter
+    enclosure:
+      label: Enclosure
+      help: One character used to set the field enclosure
+    withHeader:
+      label: With header
+      help: Whether or not to print the column name
+  product_csv_serializer_processor:
+    title: Settings
+    delimiter:
+      label: Delimiter
+      help: One character used to set the field delimiter
+    enclosure:
+      label: Enclosure
+      help: One character used to set the field enclosure
+    withHeader:
+      label: With header
+      help: Whether or not to print the column name
+  homogeneous_csv_serializer_processor:
+    title: Settings
+    delimiter:
+      label: Delimiter
+      help: One character used to set the field delimiter
+    enclosure:
+      label: Enclosure
+      help: One character used to set the field enclosure
+    withHeader:
+      label: With header
+      help: Whether or not to print the column name
+  file_writer:
+    title: Output
+    directoryName:
+      label: Directory path
+      help: Where to write the generated file on the file system
+    fileName:
+      label: File name
+      help: The name of the generated file.
+  product_file_writer:
+    title: Output
+    directoryName:
+      label: Directory path
+      help: Where to write the generated file on the file system
+    fileName:
+      label: File name
+      help: The name of the generated file.
+  orm_category_writer:
+    title: Category storage
+  orm_product_writer:
+    title: Product storage
+Import management: Import management
+Import %job.name% | Edit: Import %job.name% | Edit
+Import %job.name% | Show: Import %job.name% | Show
+Export management: Export management
+Export %job.name% | Edit: Export %job.name% | Edit
+Export %job.name% | Show: Export %job.name% | Show

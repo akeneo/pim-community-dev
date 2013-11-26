@@ -7,10 +7,10 @@ Feature: Variant group creation
   Background:
     Given the "default" catalog configuration
     And the following attributes:
-      | code      | label      | type                     |
-      | color     | Color      | pim_catalog_simpleselect |
-      | size      | Size       | pim_catalog_simpleselect |
-      | dimension | Dimensions | pim_catalog_simpleselect |
+      | code      | label      | type         |
+      | color     | Color      | simpleselect |
+      | size      | Size       | simpleselect |
+      | dimension | Dimensions | simpleselect |
     And I am logged in as "admin"
 
   Scenario: Successfully display all required fields in the variant creation form

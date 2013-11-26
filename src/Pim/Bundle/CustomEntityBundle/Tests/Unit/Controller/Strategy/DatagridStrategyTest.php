@@ -16,6 +16,9 @@ class DatagridStrategyTest extends AbstractStrategyTest
     protected $datagridHelper;
     protected $strategy;
 
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         parent::setUp();
@@ -29,6 +32,9 @@ class DatagridStrategyTest extends AbstractStrategyTest
         );
     }
 
+    /**
+     * @return array
+     */
     public function getIndexActionData()
     {
         return array(
@@ -38,6 +44,8 @@ class DatagridStrategyTest extends AbstractStrategyTest
     }
 
     /**
+     * @param string $requestFormat
+     *
      * @dataProvider getIndexActionData
      */
     public function testIndexAction($requestFormat)

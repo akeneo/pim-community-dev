@@ -70,7 +70,8 @@ abstract class NormalizerTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * Create entity to normalize
-     * @param array
+     * @param array $data
+     *
      * @return object
      * @abstract
      */

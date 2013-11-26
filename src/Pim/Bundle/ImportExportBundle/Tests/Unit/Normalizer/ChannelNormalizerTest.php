@@ -88,8 +88,9 @@ class ChannelNormalizerTest extends NormalizerTestCase
 
     /**
      * Create a currency
-     * @param  string                                             $currencyCode
-     * @return \Pim\Bundle\ImportExportBundle\Normalizer\Currency
+     * @param string $currencyCode
+     *
+     * @return Currency
      */
     protected function createCurrency($currencyCode)
     {
@@ -101,8 +102,9 @@ class ChannelNormalizerTest extends NormalizerTestCase
 
     /**
      * Create a locale
-     * @param  string                                  $localeCode
-     * @return \Pim\Bundle\CatalogBundle\Entity\Locale
+     * @param string $localeCode
+     *
+     * @return Locale
      */
     protected function createLocale($localeCode)
     {
@@ -114,8 +116,9 @@ class ChannelNormalizerTest extends NormalizerTestCase
 
     /**
      * Create a category
-     * @param  string                                    $categoryCode
-     * @return \Pim\Bundle\CatalogBundle\Entity\Category
+     * @param string $categoryCode
+     *
+     * @return Category
      */
     protected function createCategory($categoryCode)
     {

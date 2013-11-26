@@ -32,8 +32,8 @@ Feature: Import attributes
     pim_catalog_image;image_upload;"Image upload";media;0;0;0;0;0;gif,png
     """
     And the following job "acme_attribute_import" configuration:
-      | element | property | value                |
-      | reader  | filePath | {{ file to import }} |
+      | step   | element | property | value                |
+      | import | reader  | filePath | {{ file to import }} |
     When I am on the "acme_attribute_import" import job page
     And I launch the import job
     And I wait for the job to finish

@@ -1,4 +1,4 @@
-# 1.0.0-beta-3
+# 1.0.0-beta-3 - "Hare Conditioned"
 
 ## Features
 - History of changes for groups and variant groups
@@ -32,6 +32,8 @@
 - Mass delete products
 - Fix some issues with import ACL translations (issues#484)
 - Add a message when trying to delete an attribute used by one or more variant groups instead of throwing an error
+- Selection of products in mass edit
+- Versioning of installed entities (from demo bundle)
 
 ## BC breaks
 - Command "pim:product:completeness-calculator" has been replaced into "pim:completeness:calculate"

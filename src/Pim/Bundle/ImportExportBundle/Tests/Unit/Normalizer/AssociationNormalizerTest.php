@@ -75,7 +75,8 @@ class AssociationNormalizerTest extends NormalizerTestCase
 
     /**
      * Returns label property
-     * @param  array $data
+     * @param array $data
+     *
      * @return mixed
      */
     protected function getLabels($data)

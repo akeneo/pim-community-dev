@@ -41,8 +41,9 @@ class Controller
     /**
      * Default action
      *
-     * @param  string                $customEntityName
-     * @param  string                $actionName
+     * @param string $customEntityName
+     * @param string $actionName
+     *
      * @return Response
      * @throws NotFoundHttpException
      */

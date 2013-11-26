@@ -49,8 +49,9 @@ class DatagridStrategy extends CrudStrategy
     /**
      * Index action
      *
-     * @param  ConfigurationInterface $configuration
-     * @param  Request                $request
+     * @param ConfigurationInterface $configuration
+     * @param Request                $request
+     *
      * @return Response
      */
     public function indexAction(ConfigurationInterface $configuration, Request $request)
@@ -72,8 +73,9 @@ class DatagridStrategy extends CrudStrategy
     /**
      * Creates the query builder for the datagrid
      *
-     * @param  ConfigurationInterface $configuration
-     * @param  Request                $request
+     * @param ConfigurationInterface $configuration
+     * @param Request                $request
+     *
      * @return QueryBuilder
      */
     protected function createQueryBuilder(ConfigurationInterface $configuration, Request $request)

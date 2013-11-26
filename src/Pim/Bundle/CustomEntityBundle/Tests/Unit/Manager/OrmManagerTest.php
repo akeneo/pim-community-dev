@@ -19,6 +19,9 @@ class OrmManagerTest extends \PHPUnit_Framework_TestCase
     protected $entityManager;
     protected $manager;
 
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         parent::setUp();
@@ -41,6 +44,9 @@ class OrmManagerTest extends \PHPUnit_Framework_TestCase
         $this->manager = new OrmManager($this->doctrine, $this->propertyAccessor);
     }
 
+    /**
+     * Test related method
+     */
     public function testCreate()
     {
         $this->propertyAccessor
@@ -61,6 +67,9 @@ class OrmManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('stdClass', $object);
     }
 
+    /**
+     * Test related method
+     */
     public function testFind()
     {
         $this->repository->expects($this->once())
@@ -70,6 +79,9 @@ class OrmManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('success', $this->manager->find('class', 'id'));
     }
 
+    /**
+     * @return array
+     */
     public function getCreateQueryBuilderData()
     {
         return array(
@@ -86,6 +98,10 @@ class OrmManagerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param array  $options
+     * @param string $method
+     * @param string $alias
+     *
      * @dataProvider getCreateQueryBuilderData
      */
     public function testCreateQueryBuilder($options, $method, $alias)
@@ -97,6 +113,9 @@ class OrmManagerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('success', $this->manager->createQueryBuilder('class', $options));
     }
 
+    /**
+     * Test related method
+     */
     public function testSave()
     {
         $this->entityManager->expects($this->once())
@@ -107,6 +126,9 @@ class OrmManagerTest extends \PHPUnit_Framework_TestCase
         $this->manager->save('entity');
     }
 
+    /**
+     * Test related method
+     */
     public function testRemove()
     {
         $this->entityManager->expects($this->once())

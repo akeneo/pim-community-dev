@@ -368,26 +368,7 @@ class ProductAttributeController extends AbstractDoctrineController
      */
     public function removeAction(Request $request, ProductAttribute $entity)
     {
-        if ($entity->getAttributeType() === 'pim_catalog_identifier') {
-            $errorMessage = 'flash.attribute.identifier not removable';
-        } else {
-            $groupCount = $this->getRepository('Pim\Bundle\CatalogBundle\Model\Group')->countForAttribute($entity);
-            if ($groupCount > 0) {
-                $errorMessage = 'flash.attribute.used by groups';
-                $messageParameters = array('%count%' => $groupCount);
-            }
-        }
-
-        if (isset($errorMessage)) {
-            $messageParameters = isset($messageParameters) ? $messageParameters : array();
-            if ($request->isXmlHttpRequest()) {
-                throw new DeleteException($this->getTranslator()->trans($errorMessage, $messageParameters));
-            } else {
-                $this->addFlash($errorMessage, $messageParameters);
-
-                return $this->redirectToRoute('pim_catalog_productattribute_index');
-            }
-        }
+        $this->validateRemoval($entity);
 
         $this->getManager()->remove($entity);
         $this->getManager()->flush();
@@ -396,6 +377,39 @@ class ProductAttributeController extends AbstractDoctrineController
             return new Response('', 204);
         } else {
             return $this->redirectToRoute('pim_catalog_productattribute_index');
+        }
+    }
+
+    /**
+     * Check if the attribute is removable, otherwise throw an exception or redirect
+     *
+     * @param ProductAttribute $attribute
+     *
+     * @throws DeleteException For ajax requests if the attribute is not removable
+     *
+     * @return RedirectResponse|null
+     */
+    protected function validateRemoval(ProductAttribute $attribute)
+    {
+        if ($attribute->getAttributeType() === 'pim_catalog_identifier') {
+            $errorMessage = 'flash.attribute.identifier not removable';
+            $messageParameters = array();
+        } else {
+            $groupCount = $this->getRepository('Pim\Bundle\CatalogBundle\Model\Group')->countForAttribute($attribute);
+            if ($groupCount > 0) {
+                $errorMessage = 'flash.attribute.used by groups';
+                $messageParameters = array('%count%' => $groupCount);
+            }
+        }
+
+        if (isset($errorMessage)) {
+            if ($this->getRequest()->isXmlHttpRequest()) {
+                throw new DeleteException($this->getTranslator()->trans($errorMessage, $messageParameters));
+            } else {
+                $this->addFlash($errorMessage, $messageParameters);
+
+                return $this->redirectToRoute('pim_catalog_productattribute_index');
+            }
         }
     }
 

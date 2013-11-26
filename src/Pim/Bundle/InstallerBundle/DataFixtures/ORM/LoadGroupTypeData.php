@@ -28,6 +28,7 @@ class LoadGroupTypeData extends AbstractInstallerFixture
         if (isset($configuration['group_types'])) {
             foreach ($configuration['group_types'] as $code => $data) {
                 $type = $this->createType($code, $data);
+                $this->validate($type, $data);
                 $manager->persist($type);
                 $this->addReference('group-type.'. $type->getCode(), $type);
             }

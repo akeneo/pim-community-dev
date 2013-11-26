@@ -27,6 +27,7 @@ class LoadAssociationData extends AbstractInstallerFixture
         if (isset($configuration['associations'])) {
             foreach ($configuration['associations'] as $code => $data) {
                 $association = $this->createAssociation($code, $data);
+                $this->validate($association, $data);
                 $manager->persist($association);
                 $this->addReference('association.'. $association->getCode(), $association);
             }
