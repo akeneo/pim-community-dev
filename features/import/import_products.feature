@@ -58,11 +58,6 @@ Feature: Execute a job
       | import              | processor | categories column | categories           |
       | import              | processor | family column     | families             |
       | import              | processor | groups column     | groups               |
-      | import_associations | reader    | filePath          | {{ file to import }} |
-      | import_associations | reader    | uploadAllowed     | no                   |
-      | import_associations | reader    | delimiter         | ;                    |
-      | import_associations | reader    | enclosure         | "                    |
-      | import_associations | reader    | escape            | \                    |
 
     When I am on the "acme_product_import" import job page
     And I launch the import job
@@ -93,11 +88,6 @@ Feature: Execute a job
       | import              | processor | categories column | categories           |
       | import              | processor | family column     | families             |
       | import              | processor | groups column     | groups               |
-      | import_associations | reader    | filePath          | {{ file to import }} |
-      | import_associations | reader    | uploadAllowed     | no                   |
-      | import_associations | reader    | delimiter         | ;                    |
-      | import_associations | reader    | enclosure         | "                    |
-      | import_associations | reader    | escape            | \                    |
 
     When I am on the "acme_product_import" import job page
     And I launch the import job
@@ -129,11 +119,6 @@ Feature: Execute a job
       | import              | processor | categories column | categories           |
       | import              | processor | family column     | families             |
       | import              | processor | groups column     | groups               |
-      | import_associations | reader    | filePath          | {{ file to import }} |
-      | import_associations | reader    | uploadAllowed     | no                   |
-      | import_associations | reader    | delimiter         | ;                    |
-      | import_associations | reader    | enclosure         | "                    |
-      | import_associations | reader    | escape            | \                    |
     When I am on the "acme_product_import" import job page
     And I launch the import job
     And I wait for the job to finish
@@ -168,11 +153,6 @@ Feature: Execute a job
       | import              | processor | categories column | categories |
       | import              | processor | family column     | families   |
       | import              | processor | groups column     | groups     |
-      | import_associations | reader    | filePath          |            |
-      | import_associations | reader    | uploadAllowed     | yes        |
-      | import_associations | reader    | delimiter         | ;          |
-      | import_associations | reader    | enclosure         | "          |
-      | import_associations | reader    | escape            | \          |
 
     When I am on the "acme_product_import" import job page
     And I upload and import the file "{{ file to import }}"
@@ -196,11 +176,6 @@ Feature: Execute a job
       | import              | processor | categories column | categories           |
       | import              | processor | family column     | families             |
       | import              | processor | groups column     | groups               |
-      | import_associations | reader    | filePath          | {{ file to import }} |
-      | import_associations | reader    | uploadAllowed     | no                   |
-      | import_associations | reader    | delimiter         | ;                    |
-      | import_associations | reader    | enclosure         | "                    |
-      | import_associations | reader    | escape            | \                    |
     When I am on the "acme_product_import" import job page
     And I launch the import job
     And I wait for the job to finish
@@ -231,11 +206,6 @@ Feature: Execute a job
       | import              | processor | categories column | categories           |
       | import              | processor | family column     | families             |
       | import              | processor | groups column     | groups               |
-      | import_associations | reader    | filePath          | {{ file to import }} |
-      | import_associations | reader    | uploadAllowed     | no                   |
-      | import_associations | reader    | delimiter         | ;                    |
-      | import_associations | reader    | enclosure         | "                    |
-      | import_associations | reader    | escape            | \                    |
     When I am on the "acme_product_import" import job page
     And I launch the import job
     And I wait for the job to finish
