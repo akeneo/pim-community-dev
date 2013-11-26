@@ -259,12 +259,12 @@
     {% if span %}
         <div class="{{ span }}">
     {% endif %}
-    {% if title|length %}<h5 class="usser-fiedset"><span>{{ title|trans }}</span></h5>{% endif %}
+    {% if title|length %}<h5 class="user-fiedset"><span>{{ title|trans }}</span></h5>{% endif %}
     {% for dataBlock in data %}
         {{ dataBlock|raw }}
     {% endfor %}
     {% if span %}
-        </div>
+    </div>
     {% endif %}
 {% endmacro %}
 
@@ -282,7 +282,7 @@
 #}
 {% macro scrollBlock(blockId, title, subblocks, isForm) %}
     {% set cols = subblocks|length %}
-    <div class="usser-row">
+    <div class="user-row">
         <h4 class="scrollspy-title">{{ title|trans }}</h4>
         <div id="{{ blockId }}" class="scrollspy-nav-target"></div>
         <div class="row-fluid {% if cols > 1 %}row-fluid-divider{% endif %}">

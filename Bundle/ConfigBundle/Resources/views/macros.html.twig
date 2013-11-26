@@ -60,7 +60,7 @@
         </div>
         <div class="scrollable-container">
             <div class="container-fluid">
-                <div class="usser-row">
+                <div class="user-row">
                     <div class="row-fluid row-fluid-divider">
                         {% if activeVTab and form != false %}
                             {{ __.renderVerticalSubmenu(activeTab, activeVTab) }}
@@ -190,7 +190,7 @@
 {% macro renderFiedset(block) %}
     {% import _self as __ %}
     <fieldset class="form-horizontal">
-        <h5 class="usser-fiedset">
+        <h5 class="user-fiedset">
             <span>{{ block.title|trans }}</span>
         </h5>
 

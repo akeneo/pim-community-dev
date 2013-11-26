@@ -31,7 +31,7 @@
                             <div class="clearfix customer-info {% if (breadcrumbs.hasAvatar is not defined) %}customer-simple{% endif %} well-small">
                                 {% if (breadcrumbs.hasAvatar is defined and breadcrumbs.hasAvatar) %}
                                     <div class="visual">
-                                        <img src="{{ breadcrumbs.imagePath ? breadcrumbs.imagePath | imagine_filter('avatar_med') : asset('bundles/oroui/img/info-usser.png') }}" alt="{{ breadcrumbs.entityTitle }}"/>
+                                        <img src="{{ breadcrumbs.imagePath ? breadcrumbs.imagePath | imagine_filter('avatar_med') : asset('bundles/oroui/img/info-user.png') }}" alt="{{ breadcrumbs.entityTitle }}"/>
                                     </div>
                                 {% endif %}
                                 <div class="customer-content pull-left">
