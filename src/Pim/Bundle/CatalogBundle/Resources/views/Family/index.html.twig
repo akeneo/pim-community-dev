@@ -11,6 +11,16 @@
 
     {% set title = 'family.overview'|trans %}
 
+    {% set buttons %}
+        {{ elements.createBtn(
+            'family',
+            null,
+            { 'id': 'create-family', 'data-form': 'dialog', 'data-form-url': path('pim_catalog_family_create') }
+        ) }}
+    {% endset %}
+
+    {{ elements.page_header(title, buttons) }}
+
     <div id="family-grid"></div>
 
 {% endblock %}
