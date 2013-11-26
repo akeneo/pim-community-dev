@@ -19,9 +19,10 @@ interface LabelTransformerInterface
      *  - locale:           the locale of the label
      *  - scope:            the scope of the label
      *
-     * @param string $label
+     * @param string       $class
+     * @param string|array $label
      *
      * @return array
      */
-    public function transform($label);
+    public function transform($class, $label);
 }
