@@ -1,3 +1,4 @@
+---
 attribute:
   overview: Attribute Übersicht
   create: Attribut anlegen
@@ -249,10 +250,11 @@ Date max: Max. Datum
 Default currency: Standardwährung
 Metric family: Metrische Gruppe
 Default metric unit: Standard-Maßeinheit
-Max file size: Maximale Dateigröße (MB)
+Max file size: Maximale Dateigröße
 Allowed file extensions: Zulässige Dateierweiterungen
 Attributes: Attribute
 Title: Titel
+Is dynamic: Ist dynamisch
 Dashboard: Dashboard
 Attribute groups: Attributgruppen
 Attribute groups | Create: Attributgruppen | Anlegen
