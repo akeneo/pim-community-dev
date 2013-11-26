@@ -3,8 +3,8 @@
 namespace Pim\Bundle\InstallerBundle\Transformer\Property;
 
 use Doctrine\Common\DataFixtures\ReferenceRepository;
-use Doctrine\Common\DataFixtures\ReferenceRepository as ReferenceRepository2;
 use Pim\Bundle\ImportExportBundle\Transformer\Property\AbstractAssociationTransformer;
+use Pim\Bundle\ImportExportBundle\Transformer\Property\AssociationTransformerInterface;
 use Pim\Bundle\ImportExportBundle\Transformer\Property\PropertyTransformerInterface;
 
 /**
@@ -19,12 +19,12 @@ use Pim\Bundle\ImportExportBundle\Transformer\Property\PropertyTransformerInterf
 class FixtureReferenceTransformer extends AbstractAssociationTransformer
 {
     /**
-     * @var PropertyTransformerInterface
+     * @var AssociationTransformerInterface
      */
     protected $entityTransformer;
 
     /**
-     * @var ReferenceRepository2
+     * @var ReferenceRepository
      */
     protected $referenceRepository;
 
