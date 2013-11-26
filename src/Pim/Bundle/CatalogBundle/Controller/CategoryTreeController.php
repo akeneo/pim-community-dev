@@ -21,7 +21,7 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\GridBundle\Helper\DatagridHelperInterface;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
-use Pim\Bundle\CatalogBundle\Model\Category;
+use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Exception\DeleteException;
 
 /**

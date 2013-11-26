@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Helper;
 
 use Doctrine\Common\Collections\Collection;
-use Pim\Bundle\CatalogBundle\Model\Category;
+use Pim\Bundle\CatalogBundle\Entity\Category;
 
 /**
  * Category helper

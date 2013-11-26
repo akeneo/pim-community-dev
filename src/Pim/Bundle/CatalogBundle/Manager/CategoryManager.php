@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Oro\Bundle\SegmentationTreeBundle\Manager\SegmentManager;
 
-use Pim\Bundle\CatalogBundle\Model\Category;
+use Pim\Bundle\CatalogBundle\Entity\Category;
 use Doctrine\Common\Collections\Collection;
 
 /**

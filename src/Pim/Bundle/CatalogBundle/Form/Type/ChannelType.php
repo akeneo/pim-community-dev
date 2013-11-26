@@ -145,7 +145,7 @@ class ChannelType extends AbstractType
             array(
                 'label'         => 'Category tree',
                 'required'      => true,
-                'class'         => 'Pim\Bundle\CatalogBundle\Model\Category',
+                'class'         => 'Pim\Bundle\CatalogBundle\Entity\Category',
                 'query_builder' => function (CategoryRepository $repository) {
                     return $repository->getTreesQB();
                 }

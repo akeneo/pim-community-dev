@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\Entity;
 
-use Pim\Bundle\CatalogBundle\Model\CategoryTranslation;
+use Pim\Bundle\CatalogBundle\Entity\CategoryTranslation;
 
 /**
  * Test related class

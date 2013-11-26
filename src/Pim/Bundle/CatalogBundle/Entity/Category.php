@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Model;
+namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
@@ -226,7 +226,7 @@ class Category extends AbstractSegment implements CategoryInterface, Translatabl
      */
     public function getTranslationFQCN()
     {
-        return 'Pim\Bundle\CatalogBundle\Model\CategoryTranslation';
+        return 'Pim\Bundle\CatalogBundle\Entity\CategoryTranslation';
     }
 
     /**

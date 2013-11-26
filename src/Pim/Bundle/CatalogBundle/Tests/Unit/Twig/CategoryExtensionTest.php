@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\Twig;
 
-use Pim\Bundle\CatalogBundle\Model\Category;
+use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Twig\CategoryExtension;
 
 /**
@@ -165,7 +165,7 @@ class CategoryExtensionTest extends \PHPUnit_Framework_TestCase
     protected function getCategoryMock(array $properties = array())
     {
         $category = $this
-            ->getMockBuilder('Pim\Bundle\CatalogBundle\Model\Category')
+            ->getMockBuilder('Pim\Bundle\CatalogBundle\Entity\Category')
             ->disableOriginalConstructor()
             ->getMock();
 

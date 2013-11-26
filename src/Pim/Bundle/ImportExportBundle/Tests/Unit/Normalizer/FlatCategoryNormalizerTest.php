@@ -4,7 +4,7 @@ namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Normalizer;
 
 use Pim\Bundle\ImportExportBundle\Normalizer\FlatCategoryNormalizer;
 use Pim\Bundle\ImportExportBundle\Normalizer\FlatTranslationNormalizer;
-use Pim\Bundle\CatalogBundle\Model\Category;
+use Pim\Bundle\CatalogBundle\Entity\Category;
 
 /**
  * Test class for CategoryNormalizer
@@ -33,9 +33,9 @@ class FlatCategoryNormalizerTest extends CategoryNormalizerTest
             array('Pim\Bundle\CatalogBundle\Model\CategoryInterface', 'csv', true),
             array('Pim\Bundle\CatalogBundle\Model\CategoryInterface', 'xml', false),
             array('Pim\Bundle\CatalogBundle\Model\CategoryInterface', 'json', false),
-            array('Pim\Bundle\CatalogBundle\Model\Category', 'csv', true),
-            array('Pim\Bundle\CatalogBundle\Model\Category', 'xml', false),
-            array('Pim\Bundle\CatalogBundle\Model\Category', 'json', false),
+            array('Pim\Bundle\CatalogBundle\Entity\Category', 'csv', true),
+            array('Pim\Bundle\CatalogBundle\Entity\Category', 'xml', false),
+            array('Pim\Bundle\CatalogBundle\Entity\Category', 'json', false),
             array('stdClass', 'csv', false),
             array('stdClass', 'xml', false),
             array('stdClass', 'json', false),
