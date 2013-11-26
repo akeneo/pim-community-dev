@@ -221,19 +221,19 @@ pim_catalog_group:
 
 pim_catalog_group_index:
     type: entity
-    class: Pim/Bundle/CatalogBundle/Model/Group
+    class: Pim\Bundle\CatalogBundle\Model\Group
     permission: VIEW
 pim_catalog_group_create:
     type: entity
-    class: Pim/Bundle/CatalogBundle/Model/Group
+    class: Pim\Bundle\CatalogBundle\Model\Group
     permission: CREATE
 pim_catalog_group_edit:
     type: entity
-    class: Pim/Bundle/CatalogBundle/Model/Group
+    class: Pim\Bundle\CatalogBundle\Model\Group
     permission: EDIT
 pim_catalog_group_remove:
     type: entity
-    class: Pim/Bundle/CatalogBundle/Model/Group
+    class: Pim\Bundle\CatalogBundle\Model\Group
     permission: DELETE
 
 # Group types
