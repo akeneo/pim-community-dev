@@ -11,6 +11,7 @@ parameters:
     pim_catalog.datagrid.manager.association_group_datagrid.class:   Pim\Bundle\CatalogBundle\Datagrid\AssociationGroupDatagridManager
     pim_catalog.datagrid.manager.variant_group_datagrid.class:       Pim\Bundle\CatalogBundle\Datagrid\VariantGroupDatagridManager
     pim_catalog.datagrid.manager.group_type_datagrid.class:          Pim\Bundle\CatalogBundle\Datagrid\GroupTypeDatagridManager
+    pim_catalog.datagrid.manager.family_datagrid.class:              Pim\Bundle\CatalogBundle\Datagrid\FamilyDatagridManager
 
 services:
     pim_catalog.datagrid.manager.productattribute:
