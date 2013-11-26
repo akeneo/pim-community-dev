@@ -17,12 +17,15 @@ class FilterLocaleValueSubscriber implements EventSubscriberInterface
 {
     protected $currentLocale;
 
+    protected $comparisonLocale;
+
     /**
      * @param string $currentLocale
      */
-    public function __construct($currentLocale)
+    public function __construct($currentLocale, $comparisonLocale)
     {
-        $this->currentLocale = $currentLocale;
+        $this->currentLocale    = $currentLocale;
+        $this->comparisonLocale = $comparisonLocale;
     }
 
     /**
@@ -48,10 +51,19 @@ class FilterLocaleValueSubscriber implements EventSubscriberInterface
         }
 
         foreach ($data as $name => $value) {
-            if ($this->currentLocale &&
-                $this->isTranslatable($value->getAttribute()) &&
-                !$this->isInCurrentLocale($value)) {
+            if (
+                $this->currentLocale
+                && $this->isTranslatable($value->getAttribute())
+                && !$this->isInCurrentLocale($value)
+                && !$this->isInComparisonLocale($value)
+            ) {
                 $form->remove($name);
+            }
+
+            if ($this->isInComparisonLocale($value)) {
+                $form->add($name, 'pim_product_value', array(
+                    'read_only' => true
+                ));
             }
         }
     }
@@ -74,5 +86,15 @@ class FilterLocaleValueSubscriber implements EventSubscriberInterface
     private function isInCurrentLocale($value)
     {
         return $value->getLocale() && $value->getLocale() === $this->currentLocale;
+    }
+
+    /**
+     * @param Value $value
+     *
+     * @return boolean
+     */
+    private function isInComparisonLocale($value)
+    {
+        return $value->getLocale() && $value->getLocale() === $this->comparisonLocale;
     }
 }
