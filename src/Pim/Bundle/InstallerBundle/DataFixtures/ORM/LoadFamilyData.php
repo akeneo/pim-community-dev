@@ -94,12 +94,15 @@ class LoadFamilyData extends AbstractInstallerFixture
     public function addRequirements(Family $family, $requirements)
     {
         foreach ($requirements as $channel => $attributes) {
-            foreach ($attributes as $attribute) {
-                $requirement =  new AttributeRequirement();
-                $requirement->setAttribute($this->getReference('product-attribute.'.$attribute));
-                $requirement->setChannel($this->getReference('channel.'.$channel));
-                $requirement->setRequired(true);
-                $family->addAttributeRequirement($requirement);
+            foreach ($attributes as $attributeCode) {
+                $attribute = $this->getReference('product-attribute.'.$attributeCode);
+                if ($attribute->getAttributeType() !== 'pim_catalog_identifier') {
+                    $requirement =  new AttributeRequirement();
+                    $requirement->setAttribute($attribute);
+                    $requirement->setChannel($this->getReference('channel.'.$channel));
+                    $requirement->setRequired(true);
+                    $family->addAttributeRequirement($requirement);
+                }
             }
         }
     }
