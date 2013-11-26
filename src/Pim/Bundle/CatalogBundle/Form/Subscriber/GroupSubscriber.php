@@ -46,7 +46,7 @@ class GroupSubscriber implements EventSubscriberInterface
                 'entity',
                 array(
                     'disabled' => true,
-                    'class'    => 'Pim\Bundle\CatalogBundle\Model\ProductAttribute',
+                    'class'    => 'Pim\Bundle\CatalogBundle\Entity\ProductAttribute',
                     'multiple' => true,
                     'label'    => 'Axis',
                     'help'     => 'pim_catalog.group.axis.help'

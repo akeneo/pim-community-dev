@@ -53,7 +53,6 @@ class FixturesContext extends RawMinkContext
     );
 
     private $entities = array(
-        'Product'         => 'PimCatalogBundle:Product',
         'Attribute'       => 'PimCatalogBundle:ProductAttribute',
         'AttributeGroup'  => 'PimCatalogBundle:AttributeGroup',
         'AttributeOption' => 'PimCatalogBundle:AttributeOption',
@@ -66,8 +65,9 @@ class FixturesContext extends RawMinkContext
         'User'            => 'OroUserBundle:User',
         'Role'            => 'OroUserBundle:Role',
         'Locale'          => 'PimCatalogBundle:Locale',
-        'ProductGroup'    => 'PimCatalogBundle:Group',
         'GroupType'       => 'PimCatalogBundle:GroupType',
+        'Product'         => 'Pim\Bundle\CatalogBundle\Model\Product',
+        'ProductGroup'    => 'Pim\Bundle\CatalogBundle\Model\Group',
     );
 
     private $placeholderValues = array();
