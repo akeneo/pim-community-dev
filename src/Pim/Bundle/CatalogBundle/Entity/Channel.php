@@ -214,6 +214,21 @@ class Channel
     }
 
     /**
+     * Get locale codes
+     *
+     * @return array
+     */
+    public function getLocaleCodes()
+    {
+        $codes = array();
+        foreach ($this->locales as $locale) {
+            $codes[]= $locale->getCode();
+        }
+
+        return $codes;
+    }
+
+    /**
      * Add locale
      *
      * @param Locale $locale
