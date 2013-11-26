@@ -384,7 +384,7 @@ class UniqueValueValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return \Pim\Bundle\CatalogBundle\Entity\Product
+     * @return \Pim\Bundle\CatalogBundle\Model\Product
      */
     public function getProductMock()
     {
@@ -392,7 +392,7 @@ class UniqueValueValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return \Pim\Bundle\CatalogBundle\Entity\ProductValue
+     * @return \Pim\Bundle\CatalogBundle\Model\ProductValue
      */
     public function getProductValueMock()
     {

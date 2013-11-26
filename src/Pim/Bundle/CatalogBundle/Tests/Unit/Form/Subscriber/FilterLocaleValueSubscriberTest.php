@@ -114,7 +114,7 @@ class FilterLocaleValueSubscriberTest extends \PHPUnit_Framework_TestCase
      * @param mixed $attribute
      * @param mixed $locale
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\ProductValue
+     * @return \Pim\Bundle\CatalogBundle\Model\ProductValue
      */
     private function getProductValueMock($attribute, $locale)
     {

@@ -11,7 +11,7 @@ use Pim\Bundle\VersioningBundle\EventListener\AddVersionListener;
 use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;
 use Pim\Bundle\VersioningBundle\Builder\AuditBuilder;
 use Pim\Bundle\VersioningBundle\UpdateGuesser\ChainedUpdateGuesser;
-use Pim\Bundle\CatalogBundle\Entity\Product;
+use Pim\Bundle\CatalogBundle\Model\Product;
 
 /**
  * Test related class
@@ -74,7 +74,7 @@ class AddVersionListenerTest extends \PHPUnit_Framework_TestCase
      */
     protected function getVersionableMock($data)
     {
-        $versionable = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Product');
+        $versionable = $this->getMock('Pim\Bundle\CatalogBundle\Model\Product');
 
         $versionable->expects($this->any())
             ->method('getId')

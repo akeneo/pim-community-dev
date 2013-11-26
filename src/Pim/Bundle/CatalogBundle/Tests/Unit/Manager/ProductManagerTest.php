@@ -187,7 +187,7 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
      * @param Media  $media
      * @param string $code
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\ProductValue
+     * @return \Pim\Bundle\CatalogBundle\Model\ProductValue
      */
     protected function getValueMock($scope = null, $locale = null, $media = null, $code = null)
     {

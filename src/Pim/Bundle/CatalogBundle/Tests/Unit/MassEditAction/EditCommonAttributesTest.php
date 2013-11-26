@@ -375,7 +375,7 @@ class EditCommonAttributesTest extends \PHPUnit_Framework_TestCase
      * @param mixed $scope
      * @param array $prices
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\ProductValue
+     * @return \Pim\Bundle\CatalogBundle\Model\ProductValue
      */
     protected function getProductValueMock($attribute, $data, $scope = null, array $prices = array())
     {

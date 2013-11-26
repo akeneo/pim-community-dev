@@ -187,7 +187,7 @@ class ProductValueNotBlankValidatorTest extends \PHPUnit_Framework_TestCase
      * @param mixed            $return
      * @param ProductAttribute $attribute
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\ProductValue
+     * @return \Pim\Bundle\CatalogBundle\Model\ProductValue
      */
     protected function getProductValueMock($return, $attribute = null)
     {

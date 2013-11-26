@@ -261,7 +261,7 @@ SQL;
         if ('Oro\Bundle\FlexibleEntityBundle\Entity\Metric' == $className ||
             'Pim\Bundle\CatalogBundle\Model\ProductPrice' == $className) {
             return array(sprintf('%s.%s', $prefix, 'data'));
-        } elseif ('Pim\Bundle\CatalogBundle\Entity\Media' == $className) {
+        } elseif ('Pim\Bundle\CatalogBundle\Model\Media' == $className) {
             return array(sprintf('%s.%s', $prefix, 'filename'));
         } else {
             return array_map(

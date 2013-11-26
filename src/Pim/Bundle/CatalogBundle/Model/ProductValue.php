@@ -134,7 +134,7 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
     /**
      * Get media
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Media
+     * @return Media
      */
     public function getMedia()
     {
@@ -144,7 +144,7 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
     /**
      * Set media
      *
-     * @param Pim\Bundle\CatalogBundle\Entity\Media $media
+     * @param Media $media
      *
      * @return ProductValue
      */

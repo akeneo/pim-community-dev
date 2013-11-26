@@ -157,7 +157,7 @@ class ProductNormalizerTest extends \PHPUnit_Framework_TestCase
      *
      * @param string $code
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\ProductLocale
+     * @return \Pim\Bundle\CatalogBundle\Entity\Locale
      */
     private function getLocaleMock($code)
     {
