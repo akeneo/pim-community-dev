@@ -6,7 +6,6 @@ parameters:
     pim_import_export.processor.transformer.class:                  Pim\Bundle\ImportExportBundle\Processor\TransformerProcessor
     pim_import_export.processor.product.class:                      Pim\Bundle\ImportExportBundle\Processor\ProductProcessor
     pim_import_export.processor.category.class:                     Pim\Bundle\ImportExportBundle\Processor\CategoryProcessor
-    pim_import_export.processor.association.class:                  Pim\Bundle\ImportExportBundle\Processor\AssociationProcessor
     pim_import_export.processor.group.class:                        Pim\Bundle\ImportExportBundle\Processor\GroupProcessor
     pim_import_export.processor.attribute.class:                    Pim\Bundle\ImportExportBundle\Processor\AttributeProcessor
     pim_import_export.processor.attribute_option.class:             Pim\Bundle\ImportExportBundle\Processor\AttributeOptionProcessor
