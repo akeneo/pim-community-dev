@@ -15,7 +15,7 @@ use Pim\Bundle\CatalogBundle\Entity\Media;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class MediaTransformer implements PropertyTransformerInterface, ProductValueUpdaterInterface
+class MediaTransformer implements PropertyTransformerInterface, EntityUpdaterInterface
 {
     /**
      * {@inheritdoc}
@@ -37,19 +37,16 @@ class MediaTransformer implements PropertyTransformerInterface, ProductValueUpda
         return $file;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function updateProductValue(ProductValueInterface $productValue, $data, array $options = array())
+    public function setValue($object, array $columnInfo, $data, array $options = array())
     {
         if (null === $data) {
             return;
         }
 
-        $media = $productValue->getMedia();
+        $media = $object->getMedia();
         if (!$media) {
             $media = new Media();
-            $productValue->setMedia($media);
+            $object->setMedia($media);
         }
         $media->setFile($data);
     }

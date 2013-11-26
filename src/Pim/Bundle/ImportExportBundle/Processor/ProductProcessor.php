@@ -3,8 +3,6 @@
 namespace Pim\Bundle\ImportExportBundle\Processor;
 
 use Oro\Bundle\BatchBundle\Item\ItemProcessorInterface;
-use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
-use Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Oro\Bundle\BatchBundle\Entity\StepExecution;
 use Pim\Bundle\ImportExportBundle\Transformer\ORMProductTransformer;
 
@@ -16,8 +14,7 @@ use Pim\Bundle\ImportExportBundle\Transformer\ORMProductTransformer;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductProcessor extends AbstractConfigurableStepElement implements ItemProcessorInterface,
- StepExecutionAwareInterface
+class ProductProcessor extends AbstractProcessor implements ItemProcessorInterface
 {
     /**
      * @var ORMProductTransformer
@@ -49,16 +46,15 @@ class ProductProcessor extends AbstractConfigurableStepElement implements ItemPr
      */
     protected $stepExecution;
 
-    /**
-     * Constructor
-     *
-     * @param ORMProductTransformer $transformer
-     */
-    public function __construct(ORMProductTransformer $transformer)
-    {
+
+    public function __construct(
+        ImportValidatorInterface $validator,
+        TranslatorInterface $translator,
+        ORMProductTransformer $transformer
+    ) {
+        parent::__construct($validator, $translator);
         $this->transformer = $transformer;
     }
-
     /**
      * Set wether or not the created product should be activated or not
      *
@@ -154,29 +150,17 @@ class ProductProcessor extends AbstractConfigurableStepElement implements ItemPr
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function process($item)
+    protected function transform($item)
     {
-        return $this->transformer->getProduct(
-            $item,
-            array(
-                'family'        => $this->familyColumn,
-                'categories'    => $this->categoriesColumn,
-                'groups'        => $this->groupsColumn
-            ),
-            array(
-                'enabled'       => $this->enabled
-            )
-        );
+        return $this->transformer->transform($item);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function setStepExecution(StepExecution $stepExecution)
+    protected function getMapping()
     {
-        $this->stepExecution = $stepExecution;
+        return array(
+            'family'        => $this->familyColumn,
+            'categories'    => $this->categoriesColumn,
+            'groups'        => $this->groupsColumn
+        );
     }
 }
