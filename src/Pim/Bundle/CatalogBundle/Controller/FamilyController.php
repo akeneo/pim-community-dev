@@ -95,6 +95,32 @@ class FamilyController extends AbstractDoctrineController
     }
 
     /**
+     * List families
+     *
+     * @param Request $request
+     *
+     * @Template
+     * @AclAncestor("pim_catalog_family_index")
+     * @return Response
+     */
+    public function indexAction(Request $request)
+    {
+        return array();
+        /** @var $queryBuilder QueryBuilder */
+        $queryBuilder = $this->getManager()->createQueryBuilder();
+        $queryBuilder
+            ->select('c')
+            ->from('PimCatalogBundle:Family', 'f');
+
+        $datagrid = $this->datagridHelper->getDatagrid('family', $queryBuilder);
+
+        $view = ('json' === $request->getRequestFormat()) ?
+            'OroGridBundle:Datagrid:list.json.php' : 'PimCatalogBundle:Family:index.html.twig';
+
+        return $this->render($view, array('datagrid' => $datagrid->createView()));
+    }
+
+    /**
      * Create a family
      *
      * @param Request $request

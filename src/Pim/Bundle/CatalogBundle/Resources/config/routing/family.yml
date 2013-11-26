@@ -1,6 +1,8 @@
 pim_catalog_family_index:
-    path: ''
-    defaults: { _controller: pim_catalog.controller.family:createAction }
+    path: /.{_format}
+    defaults: { _controller: pim_catalog.controller.family:indexAction }
+    requirements:
+        _format: html|json
 
 pim_catalog_family_create:
     path: /create
