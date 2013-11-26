@@ -72,7 +72,8 @@ class ProductProcessor extends HeterogeneousProcessor
                 'enclosure'     => $this->enclosure,
                 'withHeader'    => $this->withHeader,
                 'heterogeneous' => true,
-                'scopeCode'     => $this->channel
+                'scopeCode'     => $this->channel,
+                'localeCodes'   => $this->getLocaleCodes($this->channel)
             )
         );
 
@@ -108,5 +109,19 @@ class ProductProcessor extends HeterogeneousProcessor
                 )
             )
         );
+    }
+
+    /**
+     * Get locale codes for a channel
+     *
+     * @param string $channelCode
+     *
+     * @return array
+     */
+    protected function getLocaleCodes($channelCode)
+    {
+        $channel = $this->channelManager->getChannelByCode($channelCode);
+
+        return $channel->getLocaleCodes();
     }
 }
