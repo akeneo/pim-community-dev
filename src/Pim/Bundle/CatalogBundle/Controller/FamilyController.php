@@ -107,9 +107,6 @@ class FamilyController extends AbstractDoctrineController
     {
         /** @var $queryBuilder QueryBuilder */
         $queryBuilder = $this->getManager()->createQueryBuilder();
-        $queryBuilder
-            ->select('c')
-            ->from('PimCatalogBundle:Family', 'f');
 
         $datagrid = $this->datagridHelper->getDatagrid('family', $queryBuilder);
 

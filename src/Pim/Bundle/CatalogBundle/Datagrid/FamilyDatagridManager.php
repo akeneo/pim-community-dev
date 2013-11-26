@@ -2,6 +2,12 @@
 
 namespace Pim\Bundle\CatalogBundle\Datagrid;
 
+use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+
+use Oro\Bundle\GridBundle\Property\UrlProperty;
+
+use Oro\Bundle\GridBundle\Property\TwigTemplateProperty;
+
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
@@ -31,6 +37,11 @@ class FamilyDatagridManager extends DatagridManager
      * @var LocaleManager
      */
     protected $localeManager;
+
+    /**
+     * @var ProductManager
+     */
+    protected $productManager;
 
     /**
      * {@inheritdoc}
@@ -124,6 +135,31 @@ class FamilyDatagridManager extends DatagridManager
      */
     protected function createAttributeAsLabelField(FieldDescriptionCollection $fieldsCollection)
     {
+        $choices = $this
+            ->productManager
+            ->getAttributeRepository()
+            ->getAvailableAttributesAsLabelChoice();
+
+        $field = new FieldDescription();
+        $field->setName('attributeAsLabel');
+        $field->setOptions(
+            array(
+                'type'            => FieldDescriptionInterface::TYPE_TEXT,
+                'label'           => $this->translate('Attribute as label'),
+                'field_name'      => 'attributeAsLabel',
+                'filter_type'     => FilterInterface::TYPE_CHOICE,
+                'required'        => false,
+                'sortable'        => true,
+                'filterable'      => true,
+                'show_filter'     => true,
+                'field_options'   => array('choices' => $choices),
+                'filter_by_where' => true,
+                'multiple'        => true
+            )
+        );
+
+        $fieldsCollection->add($field);
+
         return $this;
     }
 
@@ -168,7 +204,7 @@ class FamilyDatagridManager extends DatagridManager
     {
         $proxyQuery
             ->select('f')
-            ->from('PimCatalogBundle:Family');
+            ->from('PimCatalogBundle:Family', 'f');
 
         $familyLabelExpr = "(CASE WHEN translation.label IS NULL THEN f.code ELSE translation.label END)";
 
@@ -176,7 +212,9 @@ class FamilyDatagridManager extends DatagridManager
             ->addSelect(sprintf("%s AS familyLabel", $familyLabelExpr), true)
             ->addSelect('translation.label', true);
 
-        $proxyQuery->leftJoin('f.translations', 'translation', 'WITH', 'translation.locale = :localeCode');
+        $proxyQuery
+            ->leftJoin('f.translations', 'translation', 'WITH', 'translation.locale = :localeCode')
+            ->leftJoin('f.attributeAsLabel', 'a');
 
         $proxyQuery->setParameter('localeCode', $this->getCurrentLocale());
     }
@@ -191,6 +229,20 @@ class FamilyDatagridManager extends DatagridManager
     public function setLocaleManager(LocaleManager $localeManager)
     {
         $this->localeManager = $localeManager;
+
+        return $this;
+    }
+
+    /**
+     * Set the product manager
+     *
+     * @param ProductManager $productManager
+     *
+     * @return \Pim\Bundle\CatalogBundle\Datagrid\FamilyDatagridManager
+     */
+    public function setProductManager(ProductManager $productManager)
+    {
+        $this->productManager = $productManager;
 
         return $this;
     }

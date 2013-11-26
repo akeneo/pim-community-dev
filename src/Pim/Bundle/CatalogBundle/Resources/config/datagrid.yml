@@ -169,3 +169,4 @@ services:
         calls:
             - [ setIdentifierField, ['id'] ]
             - [ setLocaleManager, ['@pim_catalog.manager.locale'] ]
+            - [ setProductManager, ['@pim_catalog.manager.product'] ]
