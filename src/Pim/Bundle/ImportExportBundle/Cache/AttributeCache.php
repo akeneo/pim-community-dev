@@ -271,18 +271,27 @@ class AttributeCache
             );
         }
         foreach ($columnsInfo as $columnInfo) {
-            $attribute = $this->attributes[$columnInfo['name']];
-            if (!$columnInfo['locale'] && $attribute->getTranslatable()) {
-                throw new ColumnLabelException(
-                    'The column "%column%" must contain a locale code',
-                    array('%column%' => $columnInfo['label'])
-                );
+            $columnInfo['attribute'] = $this->attributes[$columnInfo['name']];
+            $suffixes = $columnInfo['suffixes'];
+            if ($columnInfo['attribute']->getTranslatable()) {
+                if (count($suffixes)) {
+                    $columnInfo['locale'] = array_shift($suffixes);
+                } else {
+                    throw new ColumnLabelException(
+                        'The column "%column%" must contain a locale code',
+                        array('%column%' => $columnInfo['label'])
+                    );
+                }
             }
-            if (!$columnInfo['scope'] && $attribute->getScopable()) {
-                throw new ColumnLabelException(
-                    'The column "%column%" must contain a scope code',
-                    array('%column%' => $columnInfo['label'])
-                );
+            if ($columnInfo['attribute']->getScopable()) {
+                if (count($suffixes)) {
+                    $columnInfo['scope'] = array_shift($suffixes);
+                } else {
+                    throw new ColumnLabelException(
+                        'The column "%column%" must contain a scope code',
+                        array('%column%' => $columnInfo['label'])
+                    );
+                }
             }
         }
     }

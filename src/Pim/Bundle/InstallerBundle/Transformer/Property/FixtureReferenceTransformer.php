@@ -51,7 +51,7 @@ class FixtureReferenceTransformer extends AbstractAssociationTransformer
     /**
      * {@inheritdoc}
      */
-    public function getReference($class, $code)
+    public function getEntity($class, $code)
     {
         $refName = $class . '.' . $code;
         if ($this->referenceRepository && $this->referenceRepository->hasReference($refName)) {

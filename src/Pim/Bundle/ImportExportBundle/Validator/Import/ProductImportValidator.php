@@ -10,6 +10,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\ImportExportBundle\Cache\AttributeCache;
 use Pim\Bundle\ImportExportBundle\Validator\Import\ImportValidator;
+use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo;
 
 /**
  * Validates an imported product
@@ -70,11 +71,11 @@ class ProductImportValidator extends ImportValidator
      * Validates a ProductValue
      *
      * @param ProductInterface $product
-     * @param ProductAttribute $attribute
+     * @param ColumnInfo       $attribute
      *
      * @return ConstraintViolationListInterface
      */
-    public function validateProductValue(ProductInterface $product, array $columnInfo)
+    protected function validateProductValue(ProductInterface $product, ColumnInfo $columnInfo)
     {
         return $this->validator->validateValue(
                 $this->getProductValue($product, $columnInfo)->getData(),
@@ -89,7 +90,7 @@ class ProductImportValidator extends ImportValidator
      *
      * @return string
      */
-    public function getAttributeConstraints(ProductAttribute $attribute)
+    protected function getAttributeConstraints(ProductAttribute $attribute)
     {
         $code = $attribute->getCode();
         if (!isset($this->constraints[$code])) {
@@ -133,11 +134,11 @@ class ProductImportValidator extends ImportValidator
      * Returns a ProductValue
      *
      * @param ProductInterface $product
-     * @param array            $columnInfo
+     * @param ColumnInfo       $columnInfo
      *
      * @return ProductValueInterface
      */
-    protected function getProductValue(ProductInterface $product, array $columnInfo)
+    protected function getProductValue(ProductInterface $product, ColumnInfo $columnInfo)
     {
         return $product->getValue($columnInfo['name'], $columnInfo['locale'], $columnInfo['scope']);
     }

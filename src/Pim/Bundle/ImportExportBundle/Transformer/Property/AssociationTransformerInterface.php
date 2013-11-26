@@ -19,5 +19,5 @@ interface AssociationTransformerInterface extends PropertyTransformerInterface
      *
      * @return object
      */
-    abstract public function getReference($class, $value);
+    abstract public function getEntity($class, $value);
 }

@@ -28,22 +28,7 @@ class LabelTransformer implements LabelTransformerInterface
                 if (!isset($this->labels[$class])) {
                     $this->labels[$class] = array();
                 }
-                $data = array(
-                    'label'  => $label,
-                    'locale' => null,
-                    'scope'  => null,
-                );
-                $parts = explode('-', $data['label']);
-                $data['name'] = array_shift($parts);
-                $data['propertyPath'] = lcfirst(Inflector::classify($data['name']));
-                if (count($parts)) {
-                    $data['locale'] = array_shift($parts);
-                }
-                if (count($parts)) {
-                    $data['scope'] = array_shift($parts);
-                }
-
-                $this->labels[$class][$label] = $data;
+                $this->labels[$class][$label] = new ColumnInfo($label);
             }
 
             return $this->labels[$class][$label];

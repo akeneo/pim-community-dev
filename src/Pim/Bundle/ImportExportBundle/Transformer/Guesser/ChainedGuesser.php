@@ -3,6 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Transformer\Guesser;
 
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
+use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo;
 
 /**
  * Chained guesser
@@ -33,7 +34,7 @@ class ChainedGuesser implements GuesserInterface
     /**
      * {@inheritdoc}
      */
-    public function getTransformerInfo(array $columnInfo, ClassMetadataInfo $metadata)
+    public function getTransformerInfo(ColumnInfo $columnInfo, ClassMetadataInfo $metadata)
     {
         foreach ($this->guessers as $guesser) {
             if ($transformerInfo = $guesser->getTransformerInfo($columnInfo, $metadata)) {

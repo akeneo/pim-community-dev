@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\ImportExportBundle\Transformer\Property;
 
+use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo;
+
 /**
  * Extra interface for property transformers which need specific treatment
  *
@@ -14,10 +16,10 @@ interface EntityUpdaterInterface
     /**
      * Updates the ProductValue instance
      *
-     * @param object $productValue
-     * @param array  $columnInfo
-     * @param mixed  $data
-     * @param array  $options
+     * @param object        $productValue
+     * @param ColumnInfo    $columnInfo
+     * @param mixed         $data
+     * @param array         $options
      */
-    public function setValue($object, array $columnInfo, $data, array $options = array());
+    public function setValue($object, ColumnInfo $columnInfo, $data, array $options = array());
 }

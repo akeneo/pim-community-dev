@@ -2,10 +2,11 @@
 
 namespace Pim\Bundle\ImportExportBundle\Transformer\Property;
 
-use Pim\Bundle\CatalogBundle\Entity\Media;
-use Pim\Bundle\ImportExportBundle\Exception\PropertyTransformerException;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\HttpFoundation\File\File;
+use Pim\Bundle\CatalogBundle\Entity\Media;
+use Pim\Bundle\ImportExportBundle\Exception\PropertyTransformerException;
+use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo;
 
 /**
  * Media attribute transformer
@@ -36,7 +37,7 @@ class MediaTransformer implements PropertyTransformerInterface, EntityUpdaterInt
         return $file;
     }
 
-    public function setValue($object, array $columnInfo, $data, array $options = array())
+    public function setValue($object, ColumnInfo $columnInfo, $data, array $options = array())
     {
         if (null === $data) {
             return;

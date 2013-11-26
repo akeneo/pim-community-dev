@@ -136,7 +136,7 @@ class OrmProductTransformer extends AbstractOrmTransformer
      *
      * @param ProductInterface $product
      * @param ProductAttribute $attribute
-     * @param array            $columnInfo
+     * @param ColumnInfo       $columnInfo
      * @param array            $transformerInfo
      * @param mixed            $value
      *
@@ -145,14 +145,13 @@ class OrmProductTransformer extends AbstractOrmTransformer
     protected function setProductValue(
         ProductInterface $product,
         ProductAttribute $attribute,
-        array $columnInfo,
+        ColumnInfo $columnInfo,
         array $transformerInfo,
         $value
     ) {
         if ($transformerInfo[0] instanceof SkipTransformer) {
             return array();
         }
-        $columnInfo['attribute'] = $attribute;
         $productValue = $this->getProductValue($product, $columnInfo);
 
         return parent::setProperty($productValue, $columnInfo, $transformerInfo, $value);
@@ -166,7 +165,7 @@ class OrmProductTransformer extends AbstractOrmTransformer
      *
      * @return ProductValueInterface
      */
-    protected function getProductValue(ProductInterface $product, array $columnInfo)
+    protected function getProductValue(ProductInterface $product, ColumnInfo $columnInfo)
     {
         $productValue = $product->getValue($columnInfo['name'], $columnInfo['locale'], $columnInfo['scope']);
         if (!$productValue) {

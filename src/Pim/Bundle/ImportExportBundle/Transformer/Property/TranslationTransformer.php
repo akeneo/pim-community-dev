@@ -4,6 +4,7 @@ namespace Pim\Bundle\ImportExportBundle\Transformer\Property;
 
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Pim\Bundle\ImportExportBundle\Transformer\Property\DefaultTransformer;
+use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo;
 
 /**
  * Translation transformer
@@ -32,9 +33,9 @@ class TranslationTransformer extends DefaultTransformer implements EntityUpdater
     /**
      * {@inheritdoc}
      */
-    public function setValue($object, array $columnInfo, $data, array $options = array())
+    public function setValue($object, ColumnInfo $columnInfo, $data, array $options = array())
     {
-        $object->setLocale($columnInfo['locale']);
+        $object->setLocale($columnInfo['suffixes'][0]);
         $this->propertyAccessor->setValue($object, 'translation.' . $columnInfo['propertyPath'], $data);
     }
 }

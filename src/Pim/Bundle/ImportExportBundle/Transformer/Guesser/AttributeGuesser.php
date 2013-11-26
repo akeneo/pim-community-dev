@@ -3,8 +3,8 @@
 namespace Pim\Bundle\ImportExportBundle\Transformer\Guesser;
 
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
+use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo;
 use Pim\Bundle\ImportExportBundle\Transformer\Guesser\GuesserInterface;
-use Pim\Bundle\ImportExportBundle\Cache\AttributeCache;
 use Pim\Bundle\ImportExportBundle\Transformer\Property\PropertyTransformerInterface;
 
 /**
@@ -22,11 +22,6 @@ class AttributeGuesser implements GuesserInterface
     protected $transformer;
 
     /**
-     * @var AttributeCache
-     */
-    protected $attributeCache;
-
-    /**
      * @var string
      */
     protected $class;
@@ -40,18 +35,15 @@ class AttributeGuesser implements GuesserInterface
      * Constructor
      *
      * @param PropertyTransformerInterface $transformer
-     * @param AttributeCache               $attributeCache
      * @param string                       $class
      * @param string                       $backendType
      */
     public function __construct(
         PropertyTransformerInterface $transformer,
-        AttributeCache $attributeCache,
         $class,
         $backendType
     ) {
         $this->transformer = $transformer;
-        $this->attributeCache = $attributeCache;
         $this->class = $class;
         $this->backendType = $backendType;
     }
@@ -59,17 +51,15 @@ class AttributeGuesser implements GuesserInterface
     /**
      * {@inheritdoc}
      */
-    public function getTransformerInfo(array $columnInfo, ClassMetadataInfo $metadata)
+    public function getTransformerInfo(ColumnInfo $columnInfo, ClassMetadataInfo $metadata)
     {
-        if ($this->class !== $metadata->getName()) {
+        if ($this->class !== $metadata->getName() ||
+            !isset($columnInfo['attribute']) ||
+            $this->backendType !== $columnInfo['attribute']->getBackendType()
+        ) {
             return;
         }
 
-        $attribute = $this->attributeCache->getAttribute($columnInfo['name']);
-        if ($this->backendType !== $attribute->getBackendType()) {
-            return;
-        }
-
-        return array($this->transformer, array('attribute' => $attribute));
+        return array($this->transformer, array());
     }
 }

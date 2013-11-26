@@ -372,11 +372,18 @@ class AttributeCacheTest extends \PHPUnit_Framework_TestCase
 
     protected function getColumnInfo($label, $name = null, $locale = null, $scope = null)
     {
-        return array(
+        $info = array(
             'label'     => $label,
             'name'      => $name ?: $label,
-            'locale'    => $locale,
-            'scope'     => $scope
+            'suffixes'  => array()
         );
+        if ($locale) {
+            $info['suffixes'][] = $locale;
+        }
+        if ($scope) {
+            $info['suffixes'][] = $scope;
+        }
+
+        return $info;
     }
 }

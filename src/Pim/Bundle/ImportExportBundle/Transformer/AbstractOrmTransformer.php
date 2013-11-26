@@ -130,12 +130,12 @@ abstract class AbstractOrmTransformer
      * Sets a property of the object
      *
      * @param object                       $entity
-     * @param array                        $columnInfo
+     * @param ColumnInfo                   $columnInfo
      * @param PropertyTransformerInterface $transformer
      * @param array                        $transformerOptions
      * @param mixed                        $value
      */
-    protected function setProperty($entity, array $columnInfo, array $transformerInfo, $value)
+    protected function setProperty($entity, ColumnInfo $columnInfo, array $transformerInfo, $value)
     {
         if ($transformerInfo[0] instanceof SkipTransformer) {
             return array();

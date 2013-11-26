@@ -3,6 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Transformer\Guesser;
 
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
+use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo;
 
 /**
  * Interface for property guesser
@@ -19,10 +20,10 @@ interface GuesserInterface
      * Returns an array containing the PropertyTransformer at first position and its options at second position
      * or null if the column is not supported.
      *
-     * @param array             $columnInfo
+     * @param ColumnInfo        $columnInfo
      * @param ClassMetadataInfo $metadata
      *
      * @return array
      */
-    public function getTransformerInfo(array $columnInfo, ClassMetadataInfo $metadata);
+    public function getTransformerInfo(ColumnInfo $columnInfo, ClassMetadataInfo $metadata);
 }

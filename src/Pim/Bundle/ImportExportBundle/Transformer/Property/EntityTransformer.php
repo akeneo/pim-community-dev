@@ -31,7 +31,7 @@ class EntityTransformer extends AbstractAssociationTransformer
     /**
      * {@inheritdoc}
      */
-    public function getReference($class, $value)
+    public function getEntity($class, $value)
     {
         return $this->entityCache->find($class, $value);
     }
