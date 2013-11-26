@@ -48,15 +48,15 @@ abstract class AbstractTransformerProcessor extends AbstractConfigurableStepElem
         $this->mapValues($item);
         try {
             $entity = $this->transform($item);
+            $errors = $this->getTransformerErrors();
+
+            $errors = $this->validator->validate($entity, $this->getTransformedColumnsInfo(), $item, $errors);
         } catch (\Exception $ex) {
             if ($ex instanceof TranslatableExceptionInterface) {
                 $ex->translateMessage($this->translator);
             }
             throw $ex;
         }
-        $errors = $this->getTransformerErrors();
-
-        $errors = $this->validator->validate($entity, $this->getTransformedColumnsInfo(), $item, $errors);
 
         if (count($errors)) {
             throw new InvalidItemException(implode("\n", $this->getErrorMessages($errors)), $item);

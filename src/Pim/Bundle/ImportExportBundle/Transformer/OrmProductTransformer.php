@@ -166,7 +166,7 @@ class OrmProductTransformer extends AbstractOrmTransformer
      *
      * @return ProductValueInterface
      */
-    protected function getProductValue(ProductInterface $product,array $columnInfo)
+    protected function getProductValue(ProductInterface $product, array $columnInfo)
     {
         $productValue = $product->getValue($columnInfo['name'], $columnInfo['locale'], $columnInfo['scope']);
         if (!$productValue) {

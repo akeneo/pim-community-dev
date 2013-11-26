@@ -7,6 +7,8 @@ use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 use Oro\Bundle\BatchBundle\Item\InvalidItemException;
+use Pim\Bundle\ImportExportBundle\Exception\DuplicateIdentifierException;
+
 
 /**
  * Validates an imported entity
@@ -43,8 +45,7 @@ class ImportValidator implements ImportValidatorInterface
      */
     public function validate($entity, array $columnsInfo, array $data, array $errors = array())
     {
-        $identifier = $this->getIdentifier($columnsInfo, $entity);
-        $this->checkIdentifier(get_class($entity), $identifier, $data);
+        $this->checkIdentifier($entity, $columnsInfo, $data);
         if (!count($errors)) {
             return $this->getErrors($this->validator->validate($entity));
         } else {
@@ -55,24 +56,20 @@ class ImportValidator implements ImportValidatorInterface
     /**
      * Checks if the identifier is not already used
      *
-     * @param string $class
-     * @param mixed  $identifier
+     * @param object $entity
+     * @param array  $columnsInfo
      * @param array  $data
      *
-     * @throws InvalidItemException
+     * @throws DuplicateIdentifierException
      */
-    protected function checkIdentifier($class, $identifier, $data)
+    protected function checkIdentifier($entity, array $columnsInfo, $data)
     {
+        $identifier = $this->getIdentifier($columnsInfo, $entity);
+        $class = get_class($entity);
         if (!isset($this->identifiers[$class])) {
             $this->identifiers[$class] = array();
         } elseif (in_array($identifier, $this->identifiers[$class])) {
-            throw new InvalidItemException(
-                $this->translator->trans(
-                    'Twin ! the entity "%identifier%" has already been processed',
-                    array('%identifier%' => $identifier)
-                ),
-                $data
-            );
+            throw new DuplicateIdentifierException($identifier, $this->getIdentifierColumn($columnsInfo), $data);
         }
         $this->identifiers[$class][] = $identifier;
     }
@@ -91,9 +88,21 @@ class ImportValidator implements ImportValidatorInterface
     }
 
     /**
+     * Returns the label of the identifier column
+     * 
+     * @param array  $columnsInfo
+     * 
+     * @return string
+     */
+    protected function getIdentifierColumn(array $columnsInfo)
+    {
+        return 'code';
+    }
+
+    /**
      * Validates the properties of an entity
      *
-     * @param type  $entity
+     * @param object  $entity
      * @param array $columnsInfo
      *
      * @return array
@@ -101,7 +110,7 @@ class ImportValidator implements ImportValidatorInterface
     protected function validateProperties($entity, array $columnsInfo)
     {
         $errors = array();
-        foreach ($columnsInfo as $label=>$columnInfo) {
+        foreach ($columnsInfo as $label => $columnInfo) {
             $violations = $this->validator->validateProperty($entity, $columnInfo['propertyPath']);
             if ($violations->count()) {
                 $errors[$label] = $this->getErrorArray($violations);
