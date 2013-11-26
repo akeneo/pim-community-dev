@@ -4,20 +4,6 @@ function($, _, __, tools) {
     'use strict';
 
     /**
-     * Fetches descendant form elements which available for validation
-     *
-     * @this $.validator
-     * @param {Element|jQuery} element
-     * @returns {jQuery}
-     */
-    function elementsOf(element) {
-        /*jshint validthis:true */
-        return $(element).find("input, select, textarea")
-            .not(":submit, :reset, :image, [disabled]")
-            .not(this.settings.ignore);
-    }
-
-    /**
      * Collects all ancestor elements that have validation rules
      *
      * @param {Element|jQuery} element
@@ -31,7 +17,7 @@ function($, _, __, tools) {
         return _.filter($el.add($el.parentsUntil(form)).add(form).toArray(), function (el) {
             var $el = $(el);
             // is it current element or first in a group of elements
-            return $el.data('validation') && ($el.is(element) || elementsOf.call(validator, $el).first().is(element));
+            return $el.data('validation') && ($el.is(element) || validator.elementsOf($el).first().is(element));
         });
     }
 
@@ -63,6 +49,20 @@ function($, _, __, tools) {
         });
     }
 
+    /**
+     * Looks for validation error message holder
+     *
+     * @param {Element} element
+     * @returns {jQuery}
+     */
+    function getErrorTarget(element) {
+        var $target = $(validationBelongs(element));
+        if ($target.parent().is('.selector, .uploader, .input-append, .input-prepend')) {
+            $target = $target.parent();
+        }
+        return $target;
+    }
+
     // turn off adding rules from attributes
     $.validator.attributeRules = function () {return {};};
 
@@ -79,7 +79,28 @@ function($, _, __, tools) {
                 console.error('Validation method "' + method + '" does not exist');
             }
         });
+        // make sure required validators are at front
+        _.each(['NotNull', 'NotBlank'], function (name) {
+            if (rules[name]) {
+                var _rules = {};
+                _rules[name] = rules[name];
+                delete rules[name];
+                rules = $.extend(_rules, rules);
+            }
+        });
         return rules;
+    };
+
+    /**
+     * Fetches descendant form elements which available for validation
+     *
+     * @param {Element|jQuery} element
+     * @returns {jQuery}
+     */
+    $.validator.prototype.elementsOf = function (element) {
+        return $(element).find("input, select, textarea")
+            .not(":submit, :reset, :image, [disabled]")
+            .not(this.settings.ignore);
     };
 
     // translates default messages
@@ -120,21 +141,18 @@ function($, _, __, tools) {
         errorElement: 'span',
         errorClass: 'validation-faled',
         errorPlacement: function (label, $el) {
-            // finds element which validation rule was violated and inserts label after it
-            label.insertAfter(validationBelongs($el));
+            label.insertAfter(getErrorTarget($el));
         },
         highlight: function (element) {
-            var $target = $(validationBelongs(element));
             this.settings.unhighlight.call(this, element);
-            if ($target.parent().is('.selector, .uploader, .input-append, .input-prepend')) {
-                $target = $target.parent();
-            }
-            $target.addClass('error').closest('.controls').addClass('validation-error');
+            getErrorTarget(element).addClass('error').closest('.controls').addClass('validation-error');
         },
         unhighlight: function(element) {
             $(element).closest('.error').removeClass('error')
                 .closest('.controls').removeClass('validation-error');
-        }
+        },
+        // ignore all invisible elements except input type=hidden
+        ignore: ":hidden:not([type=hidden])"
     });
 
     // general validation methods
@@ -144,9 +162,39 @@ function($, _, __, tools) {
         'oro/validator/email',
         'oro/validator/length',
         'oro/validator/notblank',
+        'oro/validator/notnull',
         'oro/validator/range',
         'oro/validator/regex',
+        'oro/validator/repeated',
         'oro/validator/url'
     ];
     $.validator.loadMethod(methods);
+
+    /**
+     * Extend original dataRules method and implements optional-group validation
+     *
+     * If all fields of optional-group container have empty value - validation is turned off
+     *
+     * @type {Function}
+     */
+    $.validator.dataRules = _.wrap($.validator.dataRules, function (dataRules, element) {
+        var group, validator,
+            rules = dataRules(element);
+        if (!$.isEmptyObject(rules)) {
+            group = $(element).parents('[data-validation-optional-group]').get(0);
+        }
+        if (group) {
+            validator = $(element.form).data('validator');
+            validator.settings.unhighlight(element);
+            _.each(rules, function (param) {
+                param.depends = function () {
+                    // all fields in a group failed a required rule (have empty value) - stop group validation
+                    return _.some(validator.elementsOf(group), function (elem) {
+                        return $.validator.methods.required.call(validator, validator.elementValue(elem), elem);
+                    });
+                };
+            });
+        }
+        return rules;
+    });
 });

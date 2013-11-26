@@ -41,7 +41,6 @@ function(_, Backbone, __, app, messenger, LoadingMask,
                 collection: null,
                 itemFormTemplateSelector: null,
                 itemFormDeleteButtonSelector: null,
-                itemFormValidationScriptUrl: null,
                 calendar: null
             },
             connectionsOptions: {
@@ -81,8 +80,7 @@ function(_, Backbone, __, app, messenger, LoadingMask,
                 this.eventView = new EventView({
                     model: model,
                     calendar: this.options.calendar,
-                    formTemplateSelector: this.options.eventsOptions.itemFormTemplateSelector,
-                    formValidationScriptUrl: this.options.eventsOptions.itemFormValidationScriptUrl
+                    formTemplateSelector: this.options.eventsOptions.itemFormTemplateSelector
                 });
                 // subscribe to event view collection events
                 this.listenTo(this.eventView, 'addEvent', this.handleEventViewAdd);

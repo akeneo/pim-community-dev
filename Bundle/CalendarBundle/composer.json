@@ -10,7 +10,6 @@
         "oro/ui-bundle": "dev-master",
         "oro/windows-bundle": "dev-master",
         "oro/form-bundle": "dev-master",
-        "oro/jsfv-bundle": "dev-master",
         "oro/email-bundle": "dev-master",
         "oro/notification-bundle": "dev-master",
         "oro/locale-bundle": "dev-master",

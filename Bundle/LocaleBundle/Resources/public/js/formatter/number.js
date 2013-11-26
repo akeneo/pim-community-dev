@@ -6,8 +6,8 @@ function(numeral, localeSettings) {
     /**
      * Number Formatter
      *
-     * @export oro/number-formatter
-     * @class  oro.NumberFormatter
+     * @export oro/formatter/number
+     * @name   oro.formatter.number
      */
     var NumberFormatter = function() {
         var createFormat = function(options) {
