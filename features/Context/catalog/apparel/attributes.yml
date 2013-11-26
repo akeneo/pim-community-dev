@@ -792,6 +792,7 @@ attributes:
         type:  pim_catalog_price_collection
         group: internal
         parameters:
+            translatable:        true
             availableLocales:
                 - de_DE
             useableAsGridColumn: true
