@@ -2,6 +2,12 @@
 
 namespace Pim\Bundle\CatalogBundle\Datagrid;
 
+use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
+
+use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
+
+use Pim\Bundle\GridBundle\Action\ActionInterface;
+
 use Pim\Bundle\GridBundle\Filter\FilterInterface;
 
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
@@ -22,6 +28,11 @@ use Oro\Bundle\GridBundle\Datagrid\DatagridManager;
 class FamilyDatagridManager extends DatagridManager
 {
     /**
+     * @var LocaleManager
+     */
+    protected $localeManager;
+
+    /**
      * {@inheritdoc}
      */
     protected function getProperties()
@@ -38,19 +49,19 @@ class FamilyDatagridManager extends DatagridManager
     protected function configureFields(FieldDescriptionCollection $fieldsCollection)
     {
         $this
-            ->addCodeField($fieldsCollection)
-            ->addLabelField($fieldsCollection)
-            ->addAttributeAsLabelField($fieldsCollection);
+            ->createCodeField($fieldsCollection)
+            ->createLabelField($fieldsCollection)
+            ->createAttributeAsLabelField($fieldsCollection);
     }
 
     /**
-     * Create and add field code to field description collection
+     * Create and add code to field description collection
      *
      * @param FieldDescriptionCollection $fieldsCollection
      *
      * @return \Pim\Bundle\CatalogBundle\Datagrid\FamilyDatagridManager
      */
-    protected function addCodeField(FieldDescriptionCollection $fieldsCollection)
+    protected function createCodeField(FieldDescriptionCollection $fieldsCollection)
     {
         $field = new FieldDescription();
         $field->setName('code');
@@ -67,16 +78,130 @@ class FamilyDatagridManager extends DatagridManager
             )
         );
 
+        $fieldsCollection->add($field);
+
         return $this;
     }
 
-    protected function addLabelField(FieldDescriptionCollection $fieldsCollection)
+    /**
+     * Create and add label to field description collection
+     *
+     * @param FieldDescriptionCollection $fieldsCollection
+     *
+     * @return \Pim\Bundle\CatalogBundle\Datagrid\FamilyDatagridManager
+     */
+    protected function createLabelField(FieldDescriptionCollection $fieldsCollection)
+    {
+        $field = new FieldDescription();
+        $field->setName('label');
+        $field->setOptions(
+            array(
+                'type'        => FieldDescriptionInterface::TYPE_TEXT,
+                'label'       => $this->translate('Label'),
+                'field_name'  => 'familyLabel',
+                'expression'  => 'translation.label',
+                'filter_type' => FilterInterface::TYPE_STRING,
+                'required'    => false,
+                'sortable'    => true,
+                'filterable'  => true,
+                'show_filter' => true,
+            )
+        );
+        $field->setProperty(
+            new TwigTemplateProperty($field, 'PimGridBundle:Rendering:_toString.html.twig')
+        );
+        $fieldsCollection->add($field);
+
+        return $this;
+    }
+
+    /**
+     * Create and add attribute as label to field description collection
+     *
+     * @param FieldDescriptionCollection $fieldsCollection
+     *
+     * @return \Pim\Bundle\CatalogBundle\Datagrid\FamilyDatagridManager
+     */
+    protected function createAttributeAsLabelField(FieldDescriptionCollection $fieldsCollection)
     {
         return $this;
     }
 
-    protected function addAttributeAsLabelField(FieldDescriptionCollection $fieldsCollection)
+    /**
+     * {@inheritdoc}
+     */
+    protected function getRowActions()
     {
+        $editAction = array(
+            'name'         => 'edit',
+            'type'         => ActionInterface::TYPE_REDIRECT,
+            'acl_resource' => 'pim_catalog_family_edit',
+            'options'      => array(
+                'label' => $this->translate('Edit'),
+                'icon'  => 'edit',
+                'link'  => 'edit_link'
+            )
+        );
+
+        $clickAction = $editAction;
+        $clickAction['name'] = 'rowClick';
+        $clicAction['options']['runOnRowClick'] = true;
+
+        $deleteAction = array(
+            'name'         => 'delete',
+            'type'         => ActionInterface::TYPE_DELETE,
+            'acl_resource' => 'pim_catalog_family_remove',
+            'options'      => array(
+                'label' => $this->translate('Delete'),
+                'icon'  => 'trash',
+                'link'  => 'delete_link'
+            )
+        );
+
+        return array($clickAction, $editAction, $deleteAction);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function prepareQuery(ProxyQueryInterface $proxyQuery)
+    {
+        $proxyQuery
+            ->select('f')
+            ->from('PimCatalogBundle:Family');
+
+        $familyLabelExpr = "(CASE WHEN translation.label IS NULL THEN f.code ELSE translation.label END)";
+
+        $proxyQuery
+            ->addSelect(sprintf("%s AS familyLabel", $familyLabelExpr), true)
+            ->addSelect('translation.label', true);
+
+        $proxyQuery->leftJoin('f.translations', 'translation', 'WITH', 'translation.locale = :localeCode');
+
+        $proxyQuery->setParameter('localeCode', $this->getCurrentLocale());
+    }
+
+    /**
+     * Set the locale manager
+     *
+     * @param LocaleManager $localeManager
+     *
+     * @return \Pim\Bundle\CatalogBundle\Datagrid\FamilyDatagridManager
+     */
+    public function setLocaleManager(LocaleManager $localeManager)
+    {
+        $this->localeManager = $localeManager;
+
         return $this;
+    }
+
+    /**
+     * Get the current locale code from the locale manager
+     *
+     * @return string
+     */
+    protected function getCurrentLocale()
+    {
+        return $this->localeManager->getUserLocale()->getCode();
     }
 }
