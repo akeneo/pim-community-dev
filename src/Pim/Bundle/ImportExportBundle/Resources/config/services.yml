@@ -48,7 +48,6 @@ services:
         class: '%pim_import_export.validator.import.class%'
         arguments:
             - '@validator'
-            - '@translator'
 
     pim_import_export.validator.product_import:
         class: '%pim_import_export.validator.product_import.class%'

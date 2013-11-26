@@ -121,7 +121,7 @@ abstract class AbstractOrmTransformer
             $transformerInfo = $this->getTransformerInfo($class, $columnInfo);
             $error = $this->setProperty($entity, $columnInfo, $transformerInfo, $value);
             if ($error) {
-                $this->errors[$label] = $error;
+                $this->errors[$label] = array($error);
             }
         }
     }

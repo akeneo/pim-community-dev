@@ -54,19 +54,43 @@ abstract class AbstractTransformerProcessor extends AbstractConfigurableStepElem
             }
             throw $ex;
         }
-        $errors = array_map(
-            function ($args) {
-                return call_user_func_array(array($this->translator, 'trans'), $args);
-            },
-            $this->getTransformerErrors()
-        );
-        $this->validator->validate($entity, $this->getTransformedColumnsInfo(), $item, $errors);
+        $errors = $this->getTransformerErrors();
+
+        $errors = $this->validator->validate($entity, $this->getTransformedColumnsInfo(), $item, $errors);
 
         if (count($errors)) {
-            throw new InvalidItemException(implode("\n", $errors), $item);
+            throw new InvalidItemException(implode("\n", $this->getErrorMessages($errors)), $item);
         }
 
         return $entity;
+    }
+
+    /**
+     * Returns an array of translated field errors
+     *
+     * @param array $errors
+     *
+     * @return array
+     */
+    protected function getErrorMessages(array $errors)
+    {
+        return array_map(
+            function ($fieldErrors, $label) {
+                return sprintf(
+                    '%s: %s',
+                    $label,
+                    implode(
+                        ',',
+                        array_map(
+                            function ($args) {
+                                return call_user_func_array(array($this->translator, 'trans'), $args);
+                            },
+                            $fieldErrors
+                        )
+                    )
+                );
+            }
+        );
     }
 
     /**

@@ -111,7 +111,7 @@ class OrmProductTransformer extends AbstractOrmTransformer
             $transformerInfo = $this->getTransformerInfo($class, $columnInfo);
             $error = $this->setProperty($entity, $columnInfo, $transformerInfo, $data[$label]);
             if ($error) {
-                $this->errors[$label] = $error;
+                $this->errors[$label] = array($error);
             }
             unset($data[$label]);
         }
@@ -125,7 +125,7 @@ class OrmProductTransformer extends AbstractOrmTransformer
             if ('' != trim($value) || in_array($columnInfo['name'], $requiredAttributeCodes)) {
                 $error = $this->setProductValue($entity, $attribute, $columnInfo, $transformerInfo, $value);
                 if ($error) {
-                    $this->errors[$label] = $error;
+                    $this->errors[$label] = array($error);
                 }
             }
         }

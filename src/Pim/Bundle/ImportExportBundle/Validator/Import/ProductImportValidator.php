@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\ImportExportBundle\Validator\Import;
 
-use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 use Oro\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface;
@@ -35,15 +34,13 @@ class ProductImportValidator extends ImportValidator
      * Constructor
      *
      * @param ValidatorInterface         $validator
-     * @param TranslatorInterface        $translator
      * @param ConstraintGuesserInterface $constraintGuesser
      */
     public function __construct(
         ValidatorInterface $validator,
-        TranslatorInterface $translator,
         ConstraintGuesserInterface $constraintGuesser
     ) {
-        parent::__construct($validator, $translator);
+        parent::__construct($validator);
         $this->constraintGuesser = $constraintGuesser;
     }
 
@@ -63,7 +60,7 @@ class ProductImportValidator extends ImportValidator
             }
 
             if ($violations->count()) {
-                $errors[$columnInfo['label']] = $this->getError($violations);
+                $errors[$columnInfo['label']] = $this->getErrorArray($violations);
             }
         }
 

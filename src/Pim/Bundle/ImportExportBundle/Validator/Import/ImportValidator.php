@@ -23,11 +23,6 @@ class ImportValidator implements ImportValidatorInterface
     protected $validator;
 
     /**
-     * @var TranslatorInterface
-     */
-    protected $translator;
-
-    /**
      * @var array
      */
     protected $identifiers = array();
@@ -38,10 +33,9 @@ class ImportValidator implements ImportValidatorInterface
      * @param ValidatorInterface  $validator
      * @param TranslatorInterface $translator
      */
-    public function __construct(ValidatorInterface $validator, TranslatorInterface $translator)
+    public function __construct(ValidatorInterface $validator)
     {
         $this->validator = $validator;
-        $this->translator = $translator;
     }
 
     /**
@@ -110,8 +104,29 @@ class ImportValidator implements ImportValidatorInterface
         foreach ($columnsInfo as $label=>$columnInfo) {
             $violations = $this->validator->validateProperty($entity, $columnInfo['propertyPath']);
             if ($violations->count()) {
-                $errors[$label] = $this->getError($violations);
+                $errors[$label] = $this->getErrorArray($violations);
             }
+        }
+
+        return $errors;
+    }
+
+    /**
+     * Returns an array of field error arrays for a list of violations
+     *
+     * @param ConstraintViolationListInterface $violations
+     *
+     * @return array
+     */
+    protected function getErrorMap(ConstraintViolationListInterface $violations)
+    {
+        $errors = array();
+        foreach ($violations as $violation) {
+            $path = $violation->getPath();
+            if (!isset($errors[$path])) {
+                $errors[$path] = array();
+            }
+            $errors[$path][] = $this->getViolationError($violation);
         }
 
         return $errors;
@@ -120,36 +135,29 @@ class ImportValidator implements ImportValidatorInterface
     /**
      * Returns an array of errors for a list of violations
      *
-     * @param ConstraintViolationListInterface $violations
+     * @param ConstraintViolationInterface $violations
      *
      * @return array
      */
-    protected function getErrors(ConstraintViolationListInterface $violations)
-    {
-        $errors = array();
-        foreach ($violations as $violation) {
-            $path = $violation->getPath();
-            if (!isset($errors[$path])) {
-                $errors[$path] = array();
-            }
-            $errors[$path][] = $violation;
-        }
-
-        return array_map($errors, array($this, 'getError'));
-    }
-
-    protected function getError($violations)
+    protected function getErrorArray(ConstraintViolationInterface $violations)
     {
         $errors = array();
         foreach ($violations as $violation) {
             $errors[] = $this->getViolationError($violation);
         }
 
-        return explode(', ', $errors);
+        return $errors;
     }
 
+    /**
+     * Returns an error array for a constraint violation
+     *
+     * @param ConstraintViolationInterface $violation
+     *
+     * @return array
+     */
     protected function getViolationError(ConstraintViolationInterface $violation)
     {
-        return $this->translator->trans($violation->getMessageTemplate(), $violation->getMessageParameters());
+        return array($violation->getMessageTemplate(), $violation->getMessageParameters());
     }
 }
