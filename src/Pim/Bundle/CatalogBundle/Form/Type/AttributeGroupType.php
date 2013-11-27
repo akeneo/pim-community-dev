@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Form\Type;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Pim\Bundle\CatalogBundle\Form\Subscriber\DisableCodeFieldSubscriber;
+use Pim\Bundle\CatalogBundle\Form\Subscriber\DisableFieldSubscriber;
 
 /**
  * Type for AttributeGroup form
@@ -36,7 +36,7 @@ class AttributeGroupType extends AbstractType
                 )
             )
             ->add('sort_order', 'hidden')
-            ->addEventSubscriber(new DisableCodeFieldSubscriber('code'));
+            ->addEventSubscriber(new DisableFieldSubscriber('code'));
     }
 
     /**

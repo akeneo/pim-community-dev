@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\Form\Subscriber;
 
-use Pim\Bundle\CatalogBundle\Form\Subscriber\DisableCodeFieldSubscriber;
+use Pim\Bundle\CatalogBundle\Form\Subscriber\DisableFieldSubscriber;
 
 /**
  * Test related class
@@ -11,7 +11,7 @@ use Pim\Bundle\CatalogBundle\Form\Subscriber\DisableCodeFieldSubscriber;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class DisableCodeFieldSubscriberTest extends \PHPUnit_Framework_TestCase
+class DisableFieldSubscriberTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @return array
@@ -69,7 +69,7 @@ class DisableCodeFieldSubscriberTest extends \PHPUnit_Framework_TestCase
                     ->method('add');
             }
         }
-        $subscriber = new DisableCodeFieldSubscriber('code');
+        $subscriber = new DisableFieldSubscriber('code');
         $subscriber->postSetData($event);
     }
 }

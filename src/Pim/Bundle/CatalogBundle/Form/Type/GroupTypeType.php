@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Pim\Bundle\CatalogBundle\Form\Subscriber\DisableCodeFieldSubscriber;
+use Pim\Bundle\CatalogBundle\Form\Subscriber\DisableFieldSubscriber;
 
 /**
  * Type for group type form
@@ -32,7 +32,7 @@ class GroupTypeType extends AbstractType
                 'property_path'     => 'translations'
             )
         );
-        $builder->addEventSubscriber(new DisableCodeFieldSubscriber('code'));
+        $builder->addEventSubscriber(new DisableFieldSubscriber('code'));
     }
 
     /**

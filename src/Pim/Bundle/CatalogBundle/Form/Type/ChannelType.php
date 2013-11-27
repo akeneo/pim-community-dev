@@ -11,7 +11,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
 use Pim\Bundle\CatalogBundle\Entity\Repository\CurrencyRepository;
 use Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository;
-use Pim\Bundle\CatalogBundle\Form\Subscriber\DisableCodeFieldSubscriber;
+use Pim\Bundle\CatalogBundle\Form\Subscriber\DisableFieldSubscriber;
 use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
 use Pim\Bundle\CatalogBundle\Helper\SortHelper;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
@@ -168,7 +168,7 @@ class ChannelType extends AbstractType
      */
     protected function addEventSubscribers(FormBuilderInterface $builder)
     {
-        $builder->addEventSubscriber(new DisableCodeFieldSubscriber('code'));
+        $builder->addEventSubscriber(new DisableFieldSubscriber('code'));
 
         return $this;
     }
