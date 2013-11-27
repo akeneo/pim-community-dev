@@ -5,7 +5,7 @@ Table of Contents
 -----------------
  - [Attributes Type](#attributes-type)
  - [Workflow Step Type](#workflow-step-type)
- - [Workflow Transition Type](#worfklow-transition-type)
+ - [Workflow Transition Type](#workflow-transition-type)
 
 Attributes Type
 ========================

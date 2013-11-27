@@ -689,7 +689,7 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
 
         $workflow = $this->createWorkflow();
         $workflow->getTransitionManager()->setTransitions($transitions);
-        $this->assertEquals($expected, $workflow->getStartTransitions());
+        $this->assertEquals($expected, $workflow->getTransitionManager()->getStartTransitions());
     }
 
     public function testGetAttribute()
@@ -795,7 +795,7 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($transition));
         $workflow = new Workflow(null, null, $transitionManager);
 
-        $this->assertTrue($workflow->isTransitionAvailable($transition, $workflowItem, $errors));
+        $this->assertTrue($workflow->isTransitionAvailable($workflowItem, $transition, $errors));
     }
 
     public function testIsStartTransitionAvailable()

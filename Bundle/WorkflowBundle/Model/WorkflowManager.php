@@ -7,13 +7,9 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManager;
 
 use Oro\Bundle\WorkflowBundle\Exception\WorkflowNotFoundException;
-use Oro\Bundle\WorkflowBundle\Model\Workflow;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Bundle\WorkflowBundle\Exception\UnknownAttributeException;
-use Oro\Bundle\WorkflowBundle\Model\WorkflowRegistry;
-use Oro\Bundle\WorkflowBundle\Model\Attribute;
 use Oro\Bundle\WorkflowBundle\Entity\Repository\WorkflowItemRepository;
-use Oro\Bundle\WorkflowBundle\Model\DoctrineHelper;
 use Oro\Bundle\WorkflowBundle\Exception\WorkflowException;
 
 class WorkflowManager
@@ -56,15 +52,7 @@ class WorkflowManager
     {
         $workflow = $this->getWorkflow($workflow);
 
-        return $workflow->getStartTransitions();
-    }
-
-    public function isStartTransitionAvailable($transition, $workflow, $entity = null, Collection $errors = null)
-    {
-        $workflow = $this->getWorkflow($workflow);
-        $initData = $this->getWorkflowData($workflow, $entity);
-
-        return $workflow->isStartTransitionAvailable($transition, $initData, $errors);
+        return $workflow->getTransitionManager()->getStartTransitions();
     }
 
     /**
@@ -78,11 +66,32 @@ class WorkflowManager
         return $workflow->getTransitionsByWorkflowItem($workflowItem);
     }
 
-    public function isTransitionAvailable($transition, WorkflowItem $workflowItem, Collection $errors = null)
+    /**
+     * @param string|Transition $transition
+     * @param WorkflowItem $workflowItem
+     * @param Collection $errors
+     * @return bool
+     */
+    public function isTransitionAvailable(WorkflowItem $workflowItem, $transition, Collection $errors = null)
     {
         $workflow = $this->getWorkflow($workflowItem);
 
-        return $workflow->isTransitionAvailable($transition, $workflowItem, $errors);
+        return $workflow->isTransitionAvailable($workflowItem, $transition, $errors);
+    }
+
+    /**
+     * @param string|Transition $transition
+     * @param string|Workflow $workflow
+     * @param object|null $entity
+     * @param Collection $errors
+     * @return bool
+     */
+    public function isStartTransitionAvailable($workflow, $transition, $entity = null, Collection $errors = null)
+    {
+        $workflow = $this->getWorkflow($workflow);
+        $initData = $this->getWorkflowData($workflow, $entity);
+
+        return $workflow->isStartTransitionAvailable($transition, $initData, $errors);
     }
 
     /**

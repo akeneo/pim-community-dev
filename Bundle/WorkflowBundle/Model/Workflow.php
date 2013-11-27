@@ -352,16 +352,6 @@ class Workflow
     }
 
     /**
-     * Get start transitions.
-     *
-     * @return Collection|Transition[]
-     */
-    public function getStartTransitions()
-    {
-        return $this->transitionManager->getStartTransitions();
-    }
-
-    /**
      * Check that start transition is available to show.
      *
      * @param string|Transition $transition
@@ -373,7 +363,7 @@ class Workflow
     {
         $workflowItem = $this->createWorkflowItem($data);
 
-        return $this->isTransitionAvailable($transition, $workflowItem, $errors);
+        return $this->isTransitionAvailable($workflowItem, $transition, $errors);
     }
 
     /**
@@ -384,7 +374,7 @@ class Workflow
      * @param Collection $errors
      * @return bool
      */
-    public function isTransitionAvailable($transition, WorkflowItem $workflowItem, Collection $errors = null)
+    public function isTransitionAvailable(WorkflowItem $workflowItem, $transition, Collection $errors = null)
     {
         $transition = $this->transitionManager->extractTransition($transition);
 
