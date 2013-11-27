@@ -60,13 +60,11 @@
         </div>
         <div class="scrollable-container">
             <div class="container-fluid">
-                <div class="user-row">
-                    <div class="row-fluid row-fluid-divider">
-                        {% if activeVTab and form != false %}
-                            {{ __.renderVerticalSubmenu(activeTab, activeVTab) }}
-                            {{ __.renderTab(form, path('oro_config_configuration_system', {activeGroup: activeTab.name, activeSubGroup: activeVTab})) }}
-                        {% endif %}
-                    </div>
+                <div class="row-fluid row-fluid-divider">
+                    {% if activeVTab and form != false %}
+                        {{ __.renderVerticalSubmenu(activeTab, activeVTab) }}
+                        {{ __.renderTab(form, path('oro_config_configuration_system', {activeGroup: activeTab.name, activeSubGroup: activeVTab})) }}
+                    {% endif %}
                 </div>
             </div>
         </div>

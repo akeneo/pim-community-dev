@@ -251,21 +251,23 @@
         useSpan - flag to indicate is subblock must have span6 css class or not
 #}
 {% macro scrollSubblock(title, data, isForm, useSpan) %}
-    {% if useSpan is not defined or useSpan == true %}
+    {#% if useSpan is not defined or useSpan == true %}
         {% set span = 'span6' %}
     {% else %}
         {% set span = '' %}
     {% endif %}
     {% if span %}
         <div class="{{ span }}">
-    {% endif %}
+    {% endif %#}
+    <div class="responsive-cell">
     {% if title|length %}<h5 class="user-fiedset"><span>{{ title|trans }}</span></h5>{% endif %}
     {% for dataBlock in data %}
         {{ dataBlock|raw }}
     {% endfor %}
-    {% if span %}
     </div>
-    {% endif %}
+    {#% if span %}
+        </div>
+    {% endif %#}
 {% endmacro %}
 
 {#
@@ -282,7 +284,7 @@
 #}
 {% macro scrollBlock(blockId, title, subblocks, isForm) %}
     {% set cols = subblocks|length %}
-    <div class="user-row">
+    <div class="responsive-section">
         <h4 class="scrollspy-title">{{ title|trans }}</h4>
         <div id="{{ blockId }}" class="scrollspy-nav-target"></div>
         <div class="row-fluid {% if cols > 1 %}row-fluid-divider{% endif %}">
@@ -381,7 +383,7 @@
 #}
 {% macro collectionField(field, label, buttonCaption) %}
     <div class="control-group">
-        <label for="selectAccountName" class="control-label">{{ label|trans }}:</label>
+        <label for="selectAccountName" class="control-label">{{ label|trans }}</label>
         <div class="controls">
             <div class="row-oro">
                 <div class="collection-fields-list" data-prototype="{{ _self.collection_prototype(field)|escape }}">
