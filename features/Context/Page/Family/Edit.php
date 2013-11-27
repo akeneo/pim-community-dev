@@ -2,7 +2,7 @@
 
 namespace Context\Page\Family;
 
-use Context\Page\Family\Creation;
+use Context\Page\Base\Form;
 
 /**
  * Family edit page
@@ -11,7 +11,7 @@ use Context\Page\Family\Creation;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Edit extends Creation
+class Edit extends Form
 {
     /**
      * @var string $path
