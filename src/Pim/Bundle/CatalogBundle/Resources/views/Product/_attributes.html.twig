@@ -33,40 +33,39 @@
                 </div>
             </div>
         </div>
+        <div class="btn-group">
+            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                {{ 'Translate'|trans }}
+                <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu pull-right">
+                {% for locale in locales if locale != dataLocale %}
+                    <li class="{{ locale.code == comparisonLocale ? 'active' : '' }}">
+                        <a href="{{ path('pim_catalog_product_edit', {id: form.vars.value.id, dataLocale: dataLocale, compareWith: locale.code}) }}" title="{{ locale_label(locale.code) }}">
+                            <span class="icon pull-left">
+                                {% if locale == dataLocale %}
+                                <i class="icon-bullet"></i>
+                                {% endif %}
+                            </span>
+                            <span class="code">
+                                {{ locale.code|flag }}
+                            </span>
+                            <span class="title">{{ locale_label(locale.code) }}</span>
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
 
     {% for groupId, groupView in form.vars.groups %}
     <div id="tabs-{{ groupId }}" class="tab-pane fullheight">
         <h3>{{ groupView.label }}</h3>
-        {% for attributeId, attributeView in groupView.attributes %}
-            <div class="attribute-field {{ attributeView.classes|default([])|keys|join(' ') }}">
-            {% if attributeView.values is defined %}
-                {% for scope, subvalue in attributeView.values %}
-                    <div class="control-group" data-field="{{ attributeView.code }}">
-                        {{ form_widget(subvalue, {'attr': {'data-scope': scope}}) }}
-                    </div>
-                {% endfor %}
-            {% else %}
-                    <div class="control-group" data-field="{{ attributeView.code }}">
-                        {{ form_widget(attributeView.value) }}
-                    </div>
-            {% endif %}
-            {% if attributeView.isRemovable %}
-                <i {{ elements.deleteLinkAttributes(
-                    path('pim_catalog_product_removeproductattribute', { 'productId': product.id, 'attributeId': attributeId, 'dataLocale': dataLocale }),
-                    path('pim_catalog_product_edit', { 'id': product.id, 'dataLocale': dataLocale, 'boost': "now"|date('U') }),
-                    'confirmation.remove.attribute'|trans({'%name%': attributeView.label}),
-                    '',
-                    'flash.product.attribute removed'|trans
-                )}} class="icon-remove remove-attribute" data-toggle="tooltip" data-placement="right" data-original-title="{{ 'Remove this attribute'|trans }}"></i>
-            {% endif %}
-            {% if attributeView.allowValueCreation and resource_granted('pim_catalog_attribute_edit') %}
-                <a id="add-option-link-{{ attributeId }}" data-form="dialog" data-form-url="{{ path('pim_catalog_productattribute_create_option', { id: attributeId, dataLocale: dataLocale }) }}" class="btn btn-small icons-holder add-attribute-option" href="javascript:void(0);" data-toggle="tooltip" data-original-title="{{ 'Add an option'|trans }}">
-                    <i class="icon-plus"></i>
-                </a>
-            {% endif %}
-            </div>
-        {% endfor %}
+        {% if comparisonLocale %}
+            {% include 'PimCatalogBundle:Product:_edit_with_comparison.html.twig' %}
+        {% else %}
+            {% include 'PimCatalogBundle:Product:_edit_without_comparison.html.twig' %}
+        {% endif %}
     </div>
     {% endfor %}
 </div>

@@ -361,6 +361,7 @@ class ProductController extends AbstractDoctrineController
         return array(
             'form'                   => $form->createView(),
             'dataLocale'             => $this->getDataLocale(),
+            'comparisonLocale'       => $this->getComparisonLocale(),
             'channels'               => $channels,
             'attributesForm'         =>
                 $this->getAvailableProductAttributesForm($product->getAttributes())->createView(),
@@ -586,6 +587,11 @@ class ProductController extends AbstractDoctrineController
         return $dataLocale;
     }
 
+    protected function getComparisonLocale()
+    {
+        return $this->getRequest()->query->get('compareWith');
+    }
+
     /**
      * Get data currency code
      *
@@ -672,9 +678,10 @@ class ProductController extends AbstractDoctrineController
     protected function getEditFormOptions(ProductInterface $product)
     {
         return array(
-            'enable_family' => $this->securityFacade->isGranted('pim_catalog_product_change_family'),
-            'enable_state'  => $this->securityFacade->isGranted('pim_catalog_product_change_state'),
-            'currentLocale' => $this->getDataLocale()
+            'enable_family'    => $this->securityFacade->isGranted('pim_catalog_product_change_family'),
+            'enable_state'     => $this->securityFacade->isGranted('pim_catalog_product_change_state'),
+            'currentLocale'    => $this->getDataLocale(),
+            'comparisonLocale' => $this->getComparisonLocale(),
         );
     }
 
