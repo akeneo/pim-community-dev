@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Tests\Unit\Entity;
 
 use Pim\Bundle\CatalogBundle\Entity\Currency;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
+use Pim\Bundle\CatalogBundle\Entity\Channel;
 
 /**
  * Test related class
@@ -122,10 +123,12 @@ class LocaleTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertFalse($this->locale->isActivated());
 
-        $this->assertEntity($this->locale->activate());
+        $channel = new Channel();
+
+        $this->assertEntity($this->locale->addChannel($channel));
         $this->assertTrue($this->locale->isActivated());
 
-        $this->assertEntity($this->locale->deactivate());
+        $this->assertEntity($this->locale->removeChannel($channel));
         $this->assertFalse($this->locale->isActivated());
     }
 

@@ -35,6 +35,7 @@
 - Selection of products in mass edit
 - Versioning of installed entities (from demo bundle)
 - For csv export of products, only export values related to selected channel and related locales
+- Fix locale activation/deactivation based on locales used by channels
 
 ## BC breaks
 - Command "pim:product:completeness-calculator" has been replaced into "pim:completeness:calculate"

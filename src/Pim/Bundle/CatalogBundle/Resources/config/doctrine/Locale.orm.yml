@@ -16,9 +16,6 @@ Pim\Bundle\CatalogBundle\Entity\Locale:
             type: string
             length: 20
             nullable: true
-        activated:
-            type: boolean
-            column: is_activated
     manyToOne:
         defaultCurrency:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\Currency
