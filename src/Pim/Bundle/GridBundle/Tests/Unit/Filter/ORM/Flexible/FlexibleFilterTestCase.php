@@ -13,6 +13,13 @@ use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Oro\Bundle\GridBundle\Datagrid\ORM\ProxyQuery;
 use Pim\Bundle\GridBundle\Filter\ORM\Flexible\AbstractFlexibleFilter;
 
+/**
+ * Test related class
+ *
+ * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 abstract class FlexibleFilterTestCase extends \PHPUnit_Framework_TestCase
 {
     /**#@+

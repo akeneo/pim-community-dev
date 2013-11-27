@@ -10,6 +10,13 @@ use Oro\Bundle\GridBundle\Field\FieldDescription;
 use Oro\Bundle\GridBundle\Sorter\SorterInterface;
 use Pim\Bundle\GridBundle\Sorter\ORM\Flexible\FlexibleSorter;
 
+/**
+ * Test related class
+ *
+ * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class FlexibleSorterTest extends \PHPUnit_Framework_TestCase
 {
     /**

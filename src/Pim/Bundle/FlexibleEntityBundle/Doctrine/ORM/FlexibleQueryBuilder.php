@@ -10,6 +10,10 @@ use Pim\Bundle\FlexibleEntityBundle\Exception\FlexibleQueryException;
 /**
  * Aims to customize a query builder to add useful shortcuts which allow to easily select, filter or sort a flexible
  * entity values
+ *
+ * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class FlexibleQueryBuilder
 {

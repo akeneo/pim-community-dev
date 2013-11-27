@@ -10,6 +10,13 @@ use Oro\Bundle\GridBundle\Sorter\ORM\Sorter;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 
+/**
+ * Flexible sorter
+ *
+ * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class FlexibleSorter extends Sorter
 {
     /**

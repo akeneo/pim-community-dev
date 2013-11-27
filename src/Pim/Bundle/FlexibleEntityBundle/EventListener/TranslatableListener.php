@@ -12,6 +12,10 @@ use Pim\Bundle\FlexibleEntityBundle\Model\Behavior\TranslatableInterface;
 /**
  * Aims to inject selected locale into loaded translatable container, ie, not store locale code but contains some
  * translated "children" (values for flexible, option value for option) and allow to select relevant child
+ *
+ * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class TranslatableListener implements EventSubscriber
 {

@@ -11,6 +11,13 @@ use Oro\Bundle\GridBundle\Filter\ORM\AbstractFilter;
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 use Oro\Bundle\GridBundle\Datagrid\ORM\ProxyQuery;
 
+/**
+ * Flexible filter
+ *
+ * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 abstract class AbstractFlexibleFilter implements FilterInterface
 {
     /**

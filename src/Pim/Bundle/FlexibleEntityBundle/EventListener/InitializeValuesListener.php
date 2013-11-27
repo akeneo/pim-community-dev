@@ -12,6 +12,10 @@ use Pim\Bundle\FlexibleEntityBundle\FlexibleEntityEvents;
  * Aims to add all values / required values when create or load a new flexible :
  * - required : an empty (or default value) for each required attribute
  * - all : an empty (or default value) for each attribute
+ *
+ * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class InitializeValuesListener implements EventSubscriberInterface
 {

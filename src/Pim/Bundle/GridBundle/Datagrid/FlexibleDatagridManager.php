@@ -11,6 +11,13 @@ use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
 use Pim\Bundle\GridBundle\Filter\FilterInterface;
 use Oro\Bundle\GridBundle\Datagrid\DatagridManager;
 
+/**
+ * Flexible datagrid manager
+ *
+ * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 abstract class FlexibleDatagridManager extends DatagridManager
 {
     /**

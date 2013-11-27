@@ -10,6 +10,10 @@ use Doctrine\ORM\Mapping as ORM;
  * Media entity
  * File is not save here
  *
+ * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
  * @ORM\Table(name="pim_flexibleentity_media")
  * @ORM\Entity
  */
