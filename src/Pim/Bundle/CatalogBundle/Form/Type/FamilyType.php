@@ -10,7 +10,6 @@ use Pim\Bundle\CatalogBundle\Form\Type\AttributeRequirementType;
 use Pim\Bundle\CatalogBundle\Form\Subscriber\AddAttributeAsLabelSubscriber;
 use Pim\Bundle\CatalogBundle\Form\Subscriber\AddAttributeRequirementsSubscriber;
 use Pim\Bundle\CatalogBundle\Form\Subscriber\DisableCodeFieldSubscriber;
-use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 
 /**
  * Type for family form
@@ -22,11 +21,6 @@ use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 class FamilyType extends AbstractType
 {
     /**
-     * @var ChannelManager
-     */
-    protected $channelManager;
-
-    /**
      * @var AddAttributeRequirementsSubscriber
      */
     protected $requirementsSubscriber;
@@ -34,13 +28,10 @@ class FamilyType extends AbstractType
     /**
      * Constructor
      *
-     * @param ChannelManager $channelManager
+     * @param AddAttributeRequirementsSubscriber $requirementsSubscriber
      */
-    public function __construct(
-        ChannelManager $channelManager,
-        AddAttributeRequirementsSubscriber $requirementsSubscriber
-    ) {
-        $this->channelManager         = $channelManager;
+    public function __construct(AddAttributeRequirementsSubscriber $requirementsSubscriber)
+    {
         $this->requirementsSubscriber = $requirementsSubscriber;
     }
 

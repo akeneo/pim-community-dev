@@ -58,7 +58,6 @@ services:
         tags:
             - { name: form.type, alias: pim_family }
         arguments:
-            - '@pim_catalog.manager.channel'
             - '@pim_catalog.form.subscriber.attribute_requirements'
 
     pim_catalog.form.type.wysiwyg:
