@@ -313,11 +313,12 @@ oro_entity_config:
                 set_expanded:
                     options:
                         allowed_type:       [optionSet]
-#                        required_property:
-#                            config_id:
-#                                scope:      extend
-#                            code:           state
-#                            value:          New
+                        required_property:
+                            config_id:
+                                scope:      extend
+                                field_name: null
+                            code:           is_extend
+                            value:          true
                     form:
                         type:               choice
                         options:
@@ -342,3 +343,4 @@ oro_entity_config:
                             block:          entity
                             subblock:       properties
                             type:           oro_entity_option_set
+                            tooltip:        'Deleting an option will remove these values from related records.'

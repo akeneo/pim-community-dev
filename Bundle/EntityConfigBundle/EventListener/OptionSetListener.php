@@ -5,11 +5,12 @@ namespace Oro\Bundle\EntityConfigBundle\EventListener;
 use Doctrine\Common\Inflector\Inflector;
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
-
 use Doctrine\ORM\Event\PostFlushEventArgs;
 
 use Oro\Bundle\EntityBundle\ORM\OroEntityManager;
+
 use Oro\Bundle\EntityConfigBundle\Config\Config;
+
 use Oro\Bundle\EntityConfigBundle\Entity\OptionSet;
 use Oro\Bundle\EntityConfigBundle\Entity\OptionSetRelation;
 
