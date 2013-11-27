@@ -1,6 +1,7 @@
 /*jslint browser: true, vars: true, nomen: true*/
 /*global define*/
-define(['jquery', 'underscore', 'backbone'], function($, _, Backbone) {
+define(['underscore', 'backbone', 'oro/grid/registry', 'oro/mediator'],
+function(_, Backbone, registry, mediator) {
     'use strict';
 
     /**
@@ -27,8 +28,6 @@ define(['jquery', 'underscore', 'backbone'], function($, _, Backbone) {
          * @param {Object} options
          */
         initialize: function(options) {
-            var listener = this;
-
             if (!_.has(options, 'columnName')) {
                 throw new Error('Data column name is not specified');
             }
@@ -42,12 +41,26 @@ define(['jquery', 'underscore', 'backbone'], function($, _, Backbone) {
 
             if (options.grid) {
                 this.setDatagridAndSubscribe(options.grid);
-            } else if (options.datagridName) {
-                $(document).once('datagrid:created:' + options.datagridName, function (e, grid) {
-                    listener.setDatagridAndSubscribe(grid);
-                });
             } else {
-                throw new Error('grid or datagridName is not specified');
+                if (!_.has(options, 'datagridName')) {
+                    throw new Error('Datagrid name is not specified');
+                }
+                this._assignDatagridAndSubscribe(options.datagridName);
+            }
+        },
+
+        /**
+         * Subscribe to datagrid events
+         *
+         * @param {String} datagridName
+         * @private
+         */
+        _assignDatagridAndSubscribe: function(datagridName) {
+            var datagrid = registry.getElement('datagrid', datagridName);
+            if (datagrid) {
+                this.setDatagridAndSubscribe(datagrid);
+            } else {
+                mediator.once("datagrid:created:" + datagridName, this.setDatagridAndSubscribe, this);
             }
         },
 

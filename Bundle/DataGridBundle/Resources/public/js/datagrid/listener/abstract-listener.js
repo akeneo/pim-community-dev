@@ -11,10 +11,6 @@ define(['underscore', 'jquery', 'backbone'], function (_, $, Backbone) {
      * @extends Backbone.Model
      */
     return Backbone.Model.extend({
-
-        /** @param {oro.datagrid.Grid} */
-        datagrid: null,
-
         /** @param {String} Column name of cells that will be listened for changing their values */
         columnName: 'id',
 
@@ -27,8 +23,6 @@ define(['underscore', 'jquery', 'backbone'], function (_, $, Backbone) {
          * @param {Object} options
          */
         initialize: function (options) {
-            var listener = this;
-
             if (!_.has(options, 'columnName')) {
                 throw new Error('Data column name is not specified');
             }
@@ -40,25 +34,20 @@ define(['underscore', 'jquery', 'backbone'], function (_, $, Backbone) {
 
             Backbone.Model.prototype.initialize.apply(this, arguments);
 
-            if (options.grid) {
-                this.setDatagridAndSubscribe(options.grid);
-            } else if (options.datagridName) {
-                $(document).once('datagrid:created:' + options.datagridName, function (e, grid) {
-                    listener.setDatagridAndSubscribe(grid);
-                });
-            } else {
-                throw new Error('grid or datagridName is not specified');
+            if (!options.$gridContainer) {
+                throw new Error('gridSelector is not specified');
             }
+            this.$gridContainer = options.$gridContainer;
+            this.gridName = options.gridName;
+
+            this.setDatagridAndSubscribe();
         },
 
         /**
          * Set datagrid instance
-         *
-         * @param {oro.datagrid.Grid} datagrid
          */
-        setDatagridAndSubscribe: function (datagrid) {
-            this.datagrid = datagrid;
-            this.datagrid.collection.on('change:' + this.columnName, this._onModelEdited, this);
+        setDatagridAndSubscribe: function () {
+            this.$gridContainer.on('datagrid:change:' + this.gridName, this._onModelEdited.bind(this));
         },
 
         /**
@@ -67,8 +56,13 @@ define(['underscore', 'jquery', 'backbone'], function (_, $, Backbone) {
          * @param {Backbone.Model} model
          * @protected
          */
-        _onModelEdited: function (model) {
+        _onModelEdited: function (e, model) {
+            if (!model.hasChanged(this.columnName)) {
+                return;
+            }
+
             var value = model.get(this.dataField);
+
             if (!_.isUndefined(value)) {
                 this._processValue(value, model);
             }

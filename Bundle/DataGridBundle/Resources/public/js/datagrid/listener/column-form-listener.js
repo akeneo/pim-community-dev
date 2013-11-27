@@ -3,8 +3,6 @@ define(['jquery', 'underscore', 'oro/translator', 'oro/mediator', 'oro/modal', '
 function($, _, __, mediator, Modal, AbstractListener) {
     'use strict';
 
-    var initialized = false;
-
     /**
      * Listener for entity edit form and datagrid
      *
@@ -36,14 +34,12 @@ function($, _, __, mediator, Modal, AbstractListener) {
 
         /**
          * Set datagrid instance
-         *
-         * @param {oro.datagrid.Grid} datagrid
          */
-        setDatagridAndSubscribe: function(datagrid) {
+        setDatagridAndSubscribe: function () {
             AbstractListener.prototype.setDatagridAndSubscribe.apply(this, arguments);
 
-            this.listenTo(this.datagrid.getRefreshAction(), 'preExecute', this._onExecuteRefreshAction);
-            this.listenTo(this.datagrid.getResetAction(), 'preExecute', this._onExecuteResetAction);
+            this.$gridContainer.on('preExecute:refresh:' + this.gridName, this._onExecuteRefreshAction.bind(this));
+            this.$gridContainer.on('preExecute:reset:' + this.gridName, this._onExecuteResetAction.bind(this));
 
             this._clearState();
             this._restoreState();
@@ -51,13 +47,9 @@ function($, _, __, mediator, Modal, AbstractListener) {
             /**
              * Restore include/exclude state from pagestate
              */
-            mediator.bind(
-                "pagestate_restored",
-                function() {
-                    this._restoreState();
-                },
-                this
-            );
+            mediator.bind("pagestate_restored", function () {
+                this._restoreState();
+            }, this);
         },
 
         /**
@@ -129,8 +121,8 @@ function($, _, __, mediator, Modal, AbstractListener) {
             if (this.selectors.excluded) {
                 $(this.selectors.excluded).val(excluded.join(','));
             }
-            this.datagrid.setAdditionalParameter('data_in', included);
-            this.datagrid.setAdditionalParameter('data_not_in', excluded);
+            mediator.trigger('datagrid:setParam:' + this.gridName, 'data_in', included);
+            mediator.trigger('datagrid:setParam:' + this.gridName, 'data_not_in', excluded);
         },
 
         /**
@@ -164,18 +156,9 @@ function($, _, __, mediator, Modal, AbstractListener) {
                 this.set('excluded', excluded)
             }
             if (included || excluded) {
-                this.datagrid.setAdditionalParameter('data_in', included);
-                this.datagrid.setAdditionalParameter('data_not_in', excluded);
-                var columnName = this.columnName;
-                var dataField = this.dataField;
-                this.datagrid.collection.each(function(model) {
-                    if (_.indexOf(included, model.get(dataField)) !== -1) {
-                        model.set(columnName, true);
-                    }
-                    if (_.indexOf(excluded, model.get(dataField)) !== -1) {
-                        model.set(columnName, false);
-                    }
-                });
+                mediator.trigger('datagrid:setParam:' + this.gridName, 'data_in', included);
+                mediator.trigger('datagrid:setParam:' + this.gridName, 'data_not_in', excluded);
+                mediator.trigger('datagrid:restoreState:' + this.gridName, this.columnName, this.dataField, included, excluded);
             }
          },
 
@@ -186,7 +169,7 @@ function($, _, __, mediator, Modal, AbstractListener) {
          * @param {Object} options
          * @private
          */
-        _onExecuteRefreshAction: function(action, options) {
+        _onExecuteRefreshAction: function (e, action, options) {
             this._confirmAction(action, options, 'refresh', {
                 title: __('Refresh Confirmation'),
                 content: __('Your local changes will be lost. Are you sure you want to refresh grid?')
@@ -200,7 +183,7 @@ function($, _, __, mediator, Modal, AbstractListener) {
          * @param {Object} options
          * @private
          */
-        _onExecuteResetAction: function(action, options) {
+        _onExecuteResetAction: function(e, action, options) {
             this._confirmAction(action, options, 'reset', {
                 title: __('Reset Confirmation'),
                 content: __('Your local changes will be lost. Are you sure you want to reset grid?')
@@ -259,24 +242,12 @@ function($, _, __, mediator, Modal, AbstractListener) {
         }
     });
 
-    ColumnFormListener.init = function ($el, gridName) {
-        var initHandler = function (e, grid) {
-            var $el = $(e.target);
-            var metadata = $el.data('metadata');
-            var options = metadata.options || {};
-
-            if (options.columnListener) {
-                initialized = true;
-                new ColumnFormListener(_.extend({grid: grid}, metadata.options.columnListener));
-            }
-        };
-
-        $el.one('datagrid:created:' + gridName, initHandler);
-        mediator.once('hash_navigation_request:start', function () {
-            if (!initialized) {
-                $el.off('datagrid:created:' + gridName, initHandler);
-            }
-        });
+    ColumnFormListener.init = function ($gridContainer, gridName) {
+        var metadata = $gridContainer.data('metadata');
+        var options = metadata.options || {};
+        if (options.columnListener) {
+            new ColumnFormListener(_.extend({ $gridContainer: $gridContainer, gridName: gridName }, options.columnListener));
+        }
     };
 
     return ColumnFormListener;

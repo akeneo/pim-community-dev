@@ -134,6 +134,7 @@ define(['jquery', 'underscore', 'backgrid', 'oro/translator', 'oro/mediator', 'o
                 // Listen and proxy events
                 this._listenToCollectionEvents();
                 this._listenToBodyEvents();
+                this._listenToCommands();
             },
 
             /**
@@ -294,6 +295,10 @@ define(['jquery', 'underscore', 'backgrid', 'oro/translator', 'oro/mediator', 'o
                     mediator.on('datagrid:refresh:' + grid.name, function () {
                         grid.refreshAction.execute();
                     });
+
+                    grid.refreshAction.on('preExecute', function (action, options) {
+                        grid.$el.trigger('preExecute:refresh:' + grid.name, [action, options]);
+                    });
                 }
 
                 return grid.refreshAction;
@@ -320,6 +325,10 @@ define(['jquery', 'underscore', 'backgrid', 'oro/translator', 'oro/mediator', 'o
                     mediator.on('datagrid:reset:' + grid.name, function () {
                         grid.resetAction.execute();
                     });
+
+                    grid.resetAction.on('preExecute', function (action, options) {
+                        grid.$el.trigger('preExecute:reset:' + grid.name, [action, options]);
+                    });
                 }
 
                 return grid.resetAction;
@@ -342,6 +351,11 @@ define(['jquery', 'underscore', 'backgrid', 'oro/translator', 'oro/mediator', 'o
                 }, this);
 
                 this.collection.on('remove', this._onRemove, this);
+
+                var self = this;
+                this.collection.on('change', function (model) {
+                    self.$el.trigger('datagrid:change:' + self.name, model);
+                });
             },
 
             /**
@@ -373,6 +387,28 @@ define(['jquery', 'underscore', 'backgrid', 'oro/translator', 'oro/mediator', 'o
                         action.run();
                     }
                 }
+            },
+
+            /**
+             * Listen to commands on mediator
+             */
+            _listenToCommands: function () {
+                var grid = this;
+
+                mediator.on('datagrid:setParam:' + grid.name, function (param, value) {
+                    grid.setAdditionalParameter(param, value);
+                });
+
+                mediator.on('datagrid:restoreState:' + grid.name, function (columnName, dataField, included, excluded) {
+                    grid.collection.each(function (model) {
+                        if (_.indexOf(included, model.get(dataField)) !== -1) {
+                            model.set(columnName, true);
+                        }
+                        if (_.indexOf(excluded, model.get(dataField)) !== -1) {
+                            model.set(columnName, false);
+                        }
+                    });
+                });
             },
 
             /**

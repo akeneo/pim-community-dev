@@ -8,7 +8,7 @@
 {% macro renderGrid(name, params = {}, renderParams = {}) %}
     {% set metaData = oro_datagrid_metadata(name, params) %}
 
-    <div data-type="datagrid" data-data="{{ oro_datagrid_data(name, params)|escape }}"
+    <div id="grid-{{ name }}" data-type="datagrid" data-data="{{ oro_datagrid_data(name, params)|escape }}"
          {% if renderParams.cssClass is defined %} class="{{ renderParams.cssClass }}" {% endif %}
          data-metadata="{{ metaData|json_encode }}"></div>
     <script type="text/javascript">

@@ -38,18 +38,26 @@ define(function (require) {
             /**
              * Reads data from grid container, collects required modules and runs grid builder
              */
-            initBuilder: function () {
-                this.metadata = _.extend({
+            initBuilder: function (cb) {
+                var self = this;
+
+                self.metadata = _.extend({
                     columns: [],
                     options: {},
                     state: {},
                     rowActions: {},
                     massActions: {}
-                }, this.$el.data('metadata'));
-                this.modules = {};
-                methods.collectModules.call(this);
+                }, self.$el.data('metadata'));
+
+                self.modules = {};
+
+                methods.collectModules.call(self);
+
                 // load all dependencies and build grid
-                tools.loadModules(this.modules, _.bind(methods.buildGrid, this));
+                tools.loadModules(self.modules, function () {
+                    methods.buildGrid.call(self);
+                    cb();
+                });
             },
 
             /**
@@ -188,20 +196,18 @@ define(function (require) {
      * @name   oro.datagridBuilder
      */
     return function (builders) {
-        var $container = $(document),
-            $grids = $container.find(gridSelector);
-
-        $grids.each(function (i, el) {
+        $(gridSelector).each(function (i, el) {
             var $el = $(el);
             var gridName = $el.data('metadata').options.gridName;
-            _.each(builders, function (builder) {
-                if (!_.has(builder, 'init') || !$.isFunction(builder.init)) {
-                    throw new TypeError('Builder does not have init method');
-                }
-                builder.init($el, gridName);
+            methods.initBuilder.call({ $el: $el }, function () {
+                _.each(builders, function (builder) {
+                    if (!_.has(builder, 'init') || !$.isFunction(builder.init)) {
+                        throw new TypeError('Builder does not have init method');
+                    }
+                    builder.init($el, gridName);
+                });
+                $el.attr('data-rendered', true);
             });
-            methods.initBuilder.call({$el: $(el)});
-            $el.attr('data-rendered', true);
         }).end();
     };
 });
