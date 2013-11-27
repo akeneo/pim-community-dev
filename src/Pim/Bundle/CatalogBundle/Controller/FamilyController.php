@@ -185,7 +185,13 @@ class FamilyController extends AbstractDoctrineController
     public function editAction(Request $request, $id)
     {
         $family   = $this->findOr404('PimCatalogBundle:Family', $id);
-        $families = $this->getRepository('PimCatalogBundle:Family')->getIdToLabelOrderedByLabel();
+
+        if ($this->familyHandler->process($family)) {
+            $this->addFlash('success', 'flash.family.updated');
+
+            return $this->redirectToRoute('pim_catalog_family_edit', array('id' => $family->getId()));
+        }
+
         $channels = $this->channelManager->getChannels();
         $form = $this->createForm(
             'pim_family',
@@ -196,22 +202,8 @@ class FamilyController extends AbstractDoctrineController
             )
         );
 
-        if ($request->isMethod('POST')) {
-            $form->submit($request);
-            if ($form->isValid()) {
-                foreach ($family->getProducts() as $product) {
-                    $this->completenessManager->schedule($product);
-                }
-                $this->getManager()->flush();
-                $this->addFlash('success', 'flash.family.updated');
-
-                return $this->redirectToRoute('pim_catalog_family_edit', array('id' => $id));
-            }
-        }
-
         return array(
             'family'          => $family,
-            'families'        => $families,
             'channels'        => $channels,
             'form'            => $form->createView(),
             'historyDatagrid' => $this->getHistoryGrid($family)->createView(),
