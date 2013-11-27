@@ -59,10 +59,13 @@
                 {% for data in transitionsData %}
                 (function(transitionBtn) {
                     if (transitionBtn.data('enabled')) {
-                        transitionBtn.on(
-                            'click',
-                            workflowTransitionHandler
-                        );
+                        transitionBtn.data('executor', function() {
+                            workflowTransitionHandler.call(transitionBtn);
+                        });
+                        transitionBtn.on('click', function(e) {
+                            e.preventDefault();
+                            $(this).data('executor').call();
+                        });
                         transitionBtn.trigger('transitionHandlerInitialized');
                     } else {
                         transitionBtn.popover({

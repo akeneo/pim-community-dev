@@ -65,10 +65,9 @@ function($, messenger, __, Navigation, Modal) {
      * @export  oro/workflow-transition-handler
      * @class   oro.WorkflowTransitionHandler
      */
-    return function(e) {
-        e.preventDefault();
-
+    return function() {
         var element = $(this);
+        console.log(element);
         if (element.data('dialog-url')) {
             require(['oro/dialog-widget'],
             function(DialogWidget) {
