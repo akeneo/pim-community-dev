@@ -112,14 +112,14 @@ function(_, __, AbstractView, FilterCollection, filterBuilder) {
             var filtersLogic = this.getFiltersLogic();
             var newFiltersLogic = filtersLogic;
             var index = '' + model.get('index');
-            if (filtersLogic == index || filtersLogic == 'NOT ' + index) {
+            if (filtersLogic == index) {
                 newFiltersLogic = '';
             } else {
-                newFiltersLogic = newFiltersLogic.replace(new RegExp(' (AND|OR) (NOT )?\\((NOT )?' + index + '\\) ', 'i') , ' ');
-                newFiltersLogic = newFiltersLogic.replace(new RegExp(' (AND|OR) (NOT )?' + index + ' ', 'i') , ' ');
-                newFiltersLogic = newFiltersLogic.replace(new RegExp(' (AND|OR) (NOT )?' + index + '$', 'i') , '');
-                newFiltersLogic = newFiltersLogic.replace(new RegExp(' (NOT )?' + index + ' (AND|OR) ', 'i') , ' ');
-                newFiltersLogic = newFiltersLogic.replace(new RegExp('^(NOT )?' + index + ' (AND|OR) ', 'i') , '');
+                newFiltersLogic = newFiltersLogic.replace(new RegExp(' (AND|OR) \\(' + index + '\\) ', 'i') , ' ');
+                newFiltersLogic = newFiltersLogic.replace(new RegExp(' (AND|OR) ' + index + ' ', 'i') , ' ');
+                newFiltersLogic = newFiltersLogic.replace(new RegExp(' (AND|OR) ' + index + '$', 'i') , '');
+                newFiltersLogic = newFiltersLogic.replace(new RegExp(' ' + index + ' (AND|OR) ', 'i') , ' ');
+                newFiltersLogic = newFiltersLogic.replace(new RegExp('^' + index + ' (AND|OR) ', 'i') , '');
             }
             if (newFiltersLogic != filtersLogic) {
                 index = Number(index);
