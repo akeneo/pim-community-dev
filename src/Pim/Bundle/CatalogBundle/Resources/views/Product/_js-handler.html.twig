@@ -146,6 +146,18 @@
 
                 $('a[data-toggle="tab"]').on('shown', setFullHeight);
                 setFullHeight();
+
+                $('.copy').click(function(event) {
+                    event.preventDefault();
+                    $('.comparison tr').each(function() {
+                        $('td:nth-child(2) textarea, td:nth-child(2) input', this).each(function() {
+                            var sourceId = $(this).attr('id');
+                            var targetId = sourceId.replace('{{ comparisonLocale}}', '{{ dataLocale }}');
+
+                            $('#' + targetId).val($('#' + sourceId).val()).trigger('change');
+                        });
+                    });
+                });
             });
         }
     );
