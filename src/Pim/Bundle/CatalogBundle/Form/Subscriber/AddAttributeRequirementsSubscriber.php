@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Form\Subscriber;
 
+use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
+
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
@@ -17,17 +19,17 @@ use Pim\Bundle\CatalogBundle\Entity\Family;
  */
 class AddAttributeRequirementsSubscriber implements EventSubscriberInterface
 {
+    /**
+     * @var Channel[]
+     */
     protected $channels;
-    protected $attributes;
 
     /**
      * @param array|ArrayCollection $channels
-     * @param array|ArrayCollection $attributes
      */
-    public function __construct($channels, $attributes)
+    public function __construct(ChannelManager $channelManager)
     {
-        $this->channels   = $channels;
-        $this->attributes = $attributes;
+        $this->channels = $channelManager->getChannels();
     }
 
     /**
@@ -56,7 +58,7 @@ class AddAttributeRequirementsSubscriber implements EventSubscriberInterface
 
         $requirements = array();
 
-        foreach ($this->attributes as $attribute) {
+        foreach ($family->getAttributes() as $attribute) {
             foreach ($this->channels as $channel) {
                 $requirement = new AttributeRequirement();
                 $requirement->setChannel($channel);

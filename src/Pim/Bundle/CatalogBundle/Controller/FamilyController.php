@@ -189,24 +189,12 @@ class FamilyController extends AbstractDoctrineController
 
         return array(
             'form'            => $this->familyForm->createView(),
-            'historyDatagrid' => $this->getHistoryGrid($family)->createView()
+            'historyDatagrid' => $this->getHistoryGrid($family)->createView(),
+            'attributesForm'  => $this->getAvailableProductAttributesForm(
+                $family->geTAttributes()->toArray()
+            )->createView(),
+            'channels' => $this->channelManager->getChannels()
         );
-//         $form = $this->createForm(
-//             'pim_family',
-//             $family,
-//             array(
-//                 'attributes' => $family->getAttributes(),
-//             )
-//         );
-
-//         return array(
-// //             'family'          => $family,
-//             'form'            => $form->createView(),
-//             'historyDatagrid' => $this->getHistoryGrid($family)->createView(),
-//             'attributesForm'  => $this->getAvailableProductAttributesForm(
-//                 $family->getAttributes()->toArray()
-//             )->createView(),
-//         );
     }
 
     /**

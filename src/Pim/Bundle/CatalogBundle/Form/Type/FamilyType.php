@@ -42,8 +42,6 @@ class FamilyType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $factory = $builder->getFormFactory();
-//         $channels   = $this->channelManager->getChannels();
-//         $attributes = $options['attributes'];
 
         $builder
             ->add('code');
@@ -53,7 +51,7 @@ class FamilyType extends AbstractType
         $builder
             ->add('attributeRequirements', 'collection', array('type' => new AttributeRequirementType()))
             ->addEventSubscriber(new AddAttributeAsLabelSubscriber($factory))
-//             ->addEventSubscriber(new AddAttributeRequirementsSubscriber($channels, $attributes))
+            ->addEventSubscriber(new AddAttributeRequirementsSubscriber($this->channelManager))
             ->addEventSubscriber(new DisableCodeFieldSubscriber());
     }
 
