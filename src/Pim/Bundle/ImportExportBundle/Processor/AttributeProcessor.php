@@ -126,11 +126,10 @@ class AttributeProcessor extends AbstractEntityProcessor
             $parameters[Inflector::camelize($key)] = (bool) $data[$key];
         }
 
-        $extensions = 'allowed_extensions';
-        $parameters[Inflector::camelize($extensions)] = $data[$extensions];
-
-        $dateType = 'date_type';
-        $parameters[Inflector::camelize($dateType)] = $data[$dateType];
+        $strParams = array('allowed_extensions', 'date_type', 'metric_family', 'default_metric_unit');
+        foreach ($strParams as $key) {
+            $parameters[Inflector::camelize($key)] = (string) $data[$key];
+        }
 
         return $parameters;
     }
