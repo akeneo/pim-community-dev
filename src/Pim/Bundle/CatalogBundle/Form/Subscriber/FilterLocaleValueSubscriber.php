@@ -62,7 +62,7 @@ class FilterLocaleValueSubscriber implements EventSubscriberInterface
 
             if ($this->isInComparisonLocale($value)) {
                 $form->add($name, 'pim_product_value', array(
-                    'read_only' => true
+                    'disabled' => true
                 ));
             }
         }

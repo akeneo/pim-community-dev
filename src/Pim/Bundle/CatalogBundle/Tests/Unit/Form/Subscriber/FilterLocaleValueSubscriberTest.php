@@ -76,7 +76,7 @@ class FilterLocaleValueSubscriberTest extends \PHPUnit_Framework_TestCase
         $this->target->preSetData($event);
     }
 
-    public function testSetComparisonAttributesReadOnly()
+    public function testSetComparisonAttributesDisabled()
     {
         $data = array(
             'name_current'    => $this->getProductValueMock($this->getProductAttributeMock(), self::CURRENT_LOCALE),
@@ -89,7 +89,7 @@ class FilterLocaleValueSubscriberTest extends \PHPUnit_Framework_TestCase
         $form->expects($this->exactly(1))
             ->method('add')
             ->with('name_comparison', 'pim_product_value', array(
-                'read_only' => true
+                'disabled' => true
             ));
 
         $this->target->preSetData($event);
