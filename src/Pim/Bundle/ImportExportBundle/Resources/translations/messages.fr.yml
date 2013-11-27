@@ -1,3 +1,4 @@
+---
 pim_import_export.status:
   - Disponible
 pim_import_export:
@@ -11,35 +12,45 @@ pim_import_export:
     attribute_export:
       title: Export attributs (CSV)
       export.title: Configuration
+    attribute_option_export:
+      title: "Export des options d'attributs en CSV"
+      export.title: Configuration
     association_export:
-      title: Export associations (CSV)
+      title: Export des associations en CSV
       export.title: Configuration
     group_export:
-      title: Export groups (CSV)
+      title: Export des groupes en CSV
       export.title: Configuration
     product_import:
       title: Import produits (CSV)
       import.title: Configuration
+      import_associations.title: "Configuration de l'import d'associations"
     category_import:
       title: Import catégories (CSV)
       import.title: Configuration
     attribute_import:
       title: Import attributs (CSV)
       import.title: Configuration
-    association_import:
-      title: Import associations (CSV)
+    attribute_option_import:
+      title: "Import CSV des options d'attributs"
       import.title: Configuration
-    groupe_import:
-      title: Import groupes (CSV)
+    association_import:
+      title: Import CSV des associations
+      import.title: Configuration
+    group_import:
+      title: Import CSV des groupes
       import.title: Configuration
 oro_batch:
+  dummy_reader.title: Lecteur factice
+  dummy_processor.title: Processeur factice
+  dummy_writer.title: Écrivain factice
   product_reader:
     title: Portée
     channel:
       label: Canal
       help: Le canal que vous souhaitez exporter
   entity_reader:
-    title: Extraction des entités
+    title: "Extraction d'entité"
   csv_reader:
     title: Reader CSV
     filePath:
@@ -49,7 +60,7 @@ oro_batch:
       label: Délimiteur
       help: Caractère utilisé pour délimiter les valeurs
     enclosure:
-      label: Enclosure
+      label: "Caractère d'encadrement (enclosure)"
       help: Délimiteur de champs
     escape:
       label: Echapper
@@ -57,132 +68,130 @@ oro_batch:
     uploadAllowed:
       label: "Autoriser l'envoi de fichier sur le serveur"
       help: Autoriser à sélectionner puis envoyer le fichier sur le serveur directement
-  product_csv_reader:
-    title: Lecteur de CSV
-    filePath:
-      label: Fichier
-      help: Le fichier CSV à importer
-    delimiter:
-      label: Délimiteur
-      help: Le caractère utilisé pour délimiter les champs
-    enclosure:
-      label: Enclosure
-      help: Délimiteur de champs
-    escape:
-      label: Echappement
-      help: "Caractère d'échappement"
-    uploadAllowed:
-      label: "Autoriser l'envoi de fichier sur le serveur"
-      help: Whether or not to allow uploading the file directly
-  csv_file_reader:
-    title: CSV File Reader
+  csv_product_reader:
+    title: Lecteur CSV
     filePath:
       label: Fichier
       help: Fichier CSV à importer
     delimiter:
-      label: Séparateur
-      help: One character used to set the field delimiter
+      label: Délimiteur
+      help: Caractère utilisé pour délimiter les valeurs
     enclosure:
-      label: Enclosure
-      help: One character used to set the field enclosure
+      label: "Caractère d'encadrement (enclosure)"
+      help: Caractère utilisé pour délimiter les champs
     escape:
-      label: Echappement
-      help: One character used to set the field escape
+      label: Echapper
+      help: Le caractère utilisé pour échapper les champs
     uploadAllowed:
       label: "Autoriser l'envoi de fichier sur le serveur"
-      help: Whether or not to allow uploading the file directly
-  valid_product_creation_processor:
-    title: Création de produit
+      help: Autoriser à sélectionner puis envoyer le fichier sur le serveur directement
+  csv_category_reader:
+    title: Lecteur de fichier CSV
+    filePath:
+      label: Fichier
+      help: Fichier CSV à importer
+    delimiter:
+      label: Délimiteur
+      help: Caractère utilisé pour délimiter les valeurs
+    enclosure:
+      label: "Caractère d'encadrement (enclosure)"
+      help: Caractère utilisé pour délimiter les champs
+    escape:
+      label: Echapper
+      help: Le caractère utilisé pour échapper les champs
+    uploadAllowed:
+      label: "Autoriser l'envoi de fichier sur le serveur"
+      help: Autoriser à sélectionner puis envoyer le fichier sur le serveur directement
+  product_processor:
+    title: Transformer un produit
     enabled:
-      label: Activer le produit ?
-      help: Whether or not imported product should be enabled
+      label: Activer le produit?
+      help: Activer automatiquement les produits importés
     categoriesColumn:
       label: Colonne catégories
       help: Nom de la colonne catégories
     groupsColumn:
-      label: Groups column
-      help: Name of the groups column
+      label: Colonne de groupes
+      help: Nom de la colonne de groupes
     familyColumn:
       label: Colonne Famille
       help: Nom de la colonne famille
     categoriesDelimiter:
       label: Délimiteur de catégories
-      help: Character used to separate the category codes
+      help: Caractère utilisé pour séparer les codes de catégories
     channel:
       label: Canal
-      help: The channel in which create the imported value
-  valid_category_creation_processor:
-    title: Category creation
+      help: Canal auxquelles seront affectées les valeurs importées
+    delimiter:
+      label: Délimiteur
+      help: Caractère utilisé pour délimiter les valeurs
+    enclosure:
+      label: "Caractère d'encadrement (enclosure)"
+      help: Caractère utilisé pour délimiter les champs
+    withHeader:
+      label: Avec en-tête
+      help: Définit si la première ligne du fichier contient les libellés des colonnes
+  category_processor:
+    title: Création de catégorie
     labelDelimiter:
-      label: Label delimiter
-      help: One character separating the labels in each locale
+      label: "Séparateur d'en-tête"
+      help: Caractère séparant les libellés de chaque locale
     localeDelimiter:
-      label: Locale delimiter
-      help: One character separating the title from the locale
+      label: Délimiteur de locales
+      help: Caractère séparant le titre de la locale
     circularRefsChecked:
-      label: Check circular references
-      help: If yes, data will be processed to make sure that there are no circular references between the categories
-    valid_association_creation_processor:
-      title: Création d'associations
-    valid_group_creation_processor:
-      title: Création de groupes
+      label: Vérifiez les références circulaires
+      help: "Si oui, un contrôle sera effectué pour s'assurer qu'il n'existe pas de références circulaires entre les catégories"
+  association_processor:
+    title: "Création d'association"
+  group_processor:
+    title: Création de groupe
+  attribute_processor:
+    title: Créer / mettre à jour les attributs
+  attribute_option_processor:
+    title: Créer / mettre à jour les attributs
+  product_association_processor:
+    title: "Création de l'association de produit"
+  csv_serializer:
+    help: Définit si la première ligne du fichier contient les libellés des colonnes
   heterogeneous_processor:
-    title: Settings
+    title: Paramètres
     delimiter:
-      label: Delimiter
-      help: One character used to set the field delimiter
+      label: Délimiteur
+      help: Caractère utilisé pour délimiter les valeurs
     enclosure:
-      label: Enclosure
-      help: One character used to set the field enclosure
+      label: "Caractère d'encadrement (enclosure)"
+      help: Caractère utilisé pour délimiter les champs
     withHeader:
-      label: With header
-      help: Whether or not to print the column name
-  product_processor:
-    title: Settings
-    delimiter:
-      label: Delimiter
-      help: One character used to set the field delimiter
-    enclosure:
-      label: Enclosure
-      help: One character used to set the field enclosure
-    withHeader:
-      label: With header
-      help: Whether or not to print the column name
-    channel:
-      label: Canal
-      help: The channel in which create the imported value
+      label: Avec en-tête
+      help: Définit si la première ligne du fichier contient les libellés des colonnes
   homogeneous_processor:
-    title: Settings
+    title: Paramètres
     delimiter:
-      label: Delimiter
-      help: One character used to set the field delimiter
+      label: Délimiteur
+      help: Caractère utilisé pour délimiter les valeurs
     enclosure:
-      label: Enclosure
-      help: One character used to set the field enclosure
+      label: "Caractère d'encadrement (enclosure)"
+      help: Caractère utilisé pour délimiter les champs
     withHeader:
-      label: With header
-      help: Whether or not to print the column name
+      label: Avec en-tête
   file_writer:
-    title: Output
+    title: Sortie
     filePath:
-      label: __File path
-      help: __Where to write the generated file on the file system
+      label: Chemin du fichier
+      help: Emplacement du fichier généré sur le serveur
   product_writer:
-    title: Output
+    title: Sauvegarde des produits
     filePath:
-      label: __File path
-      help: __Where to write the generated file on the file system
-  orm_category_writer:
-    title: Category storage
-  orm_product_writer:
-    title: Product storage
-  orm_association_writer:
-    title: Association storage
-  orm_group_writer:
-    title: Group storage
-Import management: Import management
-Import %job.name% | Edit: Import %job.name% | Edit
-Import %job.name% | Show: Import %job.name% | Show
-Export management: Export management
-Export %job.name% | Edit: Export %job.name% | Edit
-Export %job.name% | Show: Export %job.name% | Show
+      label: Chemin du fichier
+      help: Emplacement du fichier généré sur le serveur
+  category_writer:
+    title: Sauvegarde des catégories
+  writer:
+    title: Sauvegarde des entités
+Import management: Gestion des imports
+Import %job.name% | Edit: Importer %job.name% | Modifier
+Import %job.name% | Show: Importer %job.name% | Afficher
+Export management: Gestion des exports
+Export %job.name% | Edit: Exporter %job.name% | Modifier
+Export %job.name% | Show: Exporter %job.name% | Afficher

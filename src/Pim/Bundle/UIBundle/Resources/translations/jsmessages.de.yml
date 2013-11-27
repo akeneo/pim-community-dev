@@ -1,3 +1,4 @@
+---
 Close: Schließen
 Update: Aktualisieren
 Selected Rows: Ausgewählte Zeilen
@@ -6,6 +7,7 @@ jstree:
   all: Alle Produkte
   unclassified: Nicht klassifizierte Produkte
   no_tree: Kein Strukturbaum verfügbar
+  include_sub: Include sub-categories
 Area: Fläche
 ACRE: Morgen
 ARE: Ar

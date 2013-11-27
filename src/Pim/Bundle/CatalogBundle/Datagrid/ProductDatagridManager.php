@@ -208,6 +208,9 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $field = $this->createFamilyField();
         $fieldsCollection->add($field);
 
+        $field = $this->createGroupField();
+        $fieldsCollection->add($field);
+
         $field = new FieldDescription();
         $field->setName('enabled');
         $field->setOptions(
@@ -256,9 +259,6 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $fieldsCollection->add($fieldUpdated);
 
         $field = $this->createCompletenessField();
-        $fieldsCollection->add($field);
-
-        $field = $this->createGroupField();
         $fieldsCollection->add($field);
     }
 
@@ -427,7 +427,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
                 'multiple'        => true,
                 'field_options'   => array('choices' => $choices),
                 'filter_by_where' => true,
-                'show_column'     => false
+                'show_column'     => true
             )
         );
 
