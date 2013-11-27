@@ -27,13 +27,21 @@ class FamilyType extends AbstractType
     protected $channelManager;
 
     /**
+     * @var AddAttributeRequirementsSubscriber
+     */
+    protected $requirementsSubscriber;
+
+    /**
      * Constructor
      *
      * @param ChannelManager $channelManager
      */
-    public function __construct(ChannelManager $channelManager)
-    {
-        $this->channelManager = $channelManager;
+    public function __construct(
+        ChannelManager $channelManager,
+        AddAttributeRequirementsSubscriber $requirementsSubscriber
+    ) {
+        $this->channelManager         = $channelManager;
+        $this->requirementsSubscriber = $requirementsSubscriber;
     }
 
     /**
@@ -51,7 +59,7 @@ class FamilyType extends AbstractType
         $builder
             ->add('attributeRequirements', 'collection', array('type' => new AttributeRequirementType()))
             ->addEventSubscriber(new AddAttributeAsLabelSubscriber($factory))
-            ->addEventSubscriber(new AddAttributeRequirementsSubscriber($this->channelManager))
+            ->addEventSubscriber($this->requirementsSubscriber)
             ->addEventSubscriber(new DisableCodeFieldSubscriber());
     }
 
