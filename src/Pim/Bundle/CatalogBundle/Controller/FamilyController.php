@@ -175,42 +175,38 @@ class FamilyController extends AbstractDoctrineController
     /**
      * Edit a family
      *
-     * @param Request $request
-     * @param integer $id
+     * @param Family $family
      *
      * @Template
      * @AclAncestor("pim_catalog_family_edit")
      * @return array
      */
-    public function editAction(Request $request, $id)
+    public function editAction(Family $family)
     {
-        $family   = $this->findOr404('PimCatalogBundle:Family', $id);
-
         if ($this->familyHandler->process($family)) {
             $this->addFlash('success', 'flash.family.updated');
-
-            return $this->redirectToRoute('pim_catalog_family_edit', array('id' => $family->getId()));
         }
 
-        $channels = $this->channelManager->getChannels();
-        $form = $this->createForm(
-            'pim_family',
-            $family,
-            array(
-                'channels'   => $channels,
-                'attributes' => $family->getAttributes(),
-            )
-        );
-
         return array(
-            'family'          => $family,
-            'channels'        => $channels,
-            'form'            => $form->createView(),
-            'historyDatagrid' => $this->getHistoryGrid($family)->createView(),
-            'attributesForm'  => $this->getAvailableProductAttributesForm(
-                $family->getAttributes()->toArray()
-            )->createView(),
+            'form'            => $this->familyForm->createView(),
+            'historyDatagrid' => $this->getHistoryGrid($family)->createView()
         );
+//         $form = $this->createForm(
+//             'pim_family',
+//             $family,
+//             array(
+//                 'attributes' => $family->getAttributes(),
+//             )
+//         );
+
+//         return array(
+// //             'family'          => $family,
+//             'form'            => $form->createView(),
+//             'historyDatagrid' => $this->getHistoryGrid($family)->createView(),
+//             'attributesForm'  => $this->getAvailableProductAttributesForm(
+//                 $family->getAttributes()->toArray()
+//             )->createView(),
+//         );
     }
 
     /**

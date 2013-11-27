@@ -4,27 +4,27 @@
 
 {% block content %}
 
-    {% include 'PimCatalogBundle:ProductAttribute:_available-attributes-form.html.twig' with {
+{#{% include 'PimCatalogBundle:ProductAttribute:_available-attributes-form.html.twig' with {
         'form': attributesForm,
-        'action': path('pim_catalog_family_addproductattributes', {'id': family.id})
-    } %}
+        'action': path('pim_catalog_family_addproductattributes', {'id': form.vars.value.id})
+    } %}#}
 
     {{ JSFV(form) }}
     {{ form_start(form, {
-        'action': path('pim_catalog_family_edit', { id: family.id }),
+        'action': path('pim_catalog_family_edit', { id: form.vars.value.id }),
         'attr': {
             'data-updated-title': 'confirmation.leave'|trans,
             'data-updated-message': 'confirmation.discard changes'|trans({ '%entity%': 'family'|trans })
         }
     }) }}
 
-        {% set title = 'family.edit'|trans ~ ' - ' ~ family.label %}
+        {% set title = 'family.edit'|trans ~ ' - ' ~ form.vars.value.label %}
 
         {% set buttons %}
             {% if form.vars.value.id %}
                 {{ elements.deleteLink(
-                    path('pim_catalog_family_remove', {'id': family.id}),
-                    path('pim_catalog_family_index'), 'confirmation.remove.family'|trans({ '%name%': family.label }), "", "flash.family.removed"|trans)
+                    path('pim_catalog_family_remove', {'id': form.vars.value.id}),
+                    path('pim_catalog_family_index'), 'confirmation.remove.family'|trans({ '%name%': form.vars.value.label }), "", "flash.family.removed"|trans)
                 }}
             {% endif %}
             {{ elements.submitBtn() }}
@@ -47,9 +47,9 @@
                 {{ elements.accordion({ 'General Properties': generalProperties, 'Locale values': form_row(form.label) }) }}
             </div>
 
-            <div class="tab-pane" id="attributes">
+            {#<div class="tab-pane" id="attributes">
                 {% include 'PimCatalogBundle:Family:_attributeRequirements.html.twig' %}
-            </div>
+            </div>#}
 
             <div class="tab-pane" id="history">
                 <div id="history-grid"></div>

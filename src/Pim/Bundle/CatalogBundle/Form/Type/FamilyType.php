@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Form\Type;
 
+use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
+
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -20,30 +22,62 @@ use Pim\Bundle\CatalogBundle\Form\Subscriber\DisableCodeFieldSubscriber;
 class FamilyType extends AbstractType
 {
     /**
+     * @var ChannelManager
+     */
+    protected $channelManager;
+
+    /**
+     * Constructor
+     *
+     * @param ChannelManager $channelManager
+     */
+    public function __construct(ChannelManager $channelManager)
+    {
+        $this->channelManager = $channelManager;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $factory = $builder->getFormFactory();
-        $channels   = $options['channels'];
-        $attributes = $options['attributes'];
+//         $channels   = $this->channelManager->getChannels();
+//         $attributes = $options['attributes'];
 
         $builder
-            ->add('code')
-            ->add(
-                'label',
-                'pim_translatable_field',
-                array(
-                    'field'             => 'label',
-                    'translation_class' => 'Pim\\Bundle\\CatalogBundle\\Entity\\FamilyTranslation',
-                    'entity_class'      => 'Pim\\Bundle\\CatalogBundle\\Entity\\Family',
-                    'property_path'     => 'translations'
-                )
-            )
+            ->add('code');
+
+        $this->addLabelField($builder);
+
+        $builder
             ->add('attributeRequirements', 'collection', array('type' => new AttributeRequirementType()))
             ->addEventSubscriber(new AddAttributeAsLabelSubscriber($factory))
-            ->addEventSubscriber(new AddAttributeRequirementsSubscriber($channels, $attributes))
+//             ->addEventSubscriber(new AddAttributeRequirementsSubscriber($channels, $attributes))
             ->addEventSubscriber(new DisableCodeFieldSubscriber());
+    }
+
+    /**
+     * Add label field
+     *
+     * @param FormBuilderInterface $builder
+     *
+     * @return \Pim\Bundle\CatalogBundle\Form\Type\FamilyType
+     */
+    protected function addLabelField(FormBuilderInterface $builder)
+    {
+        $builder->add(
+            'label',
+            'pim_translatable_field',
+            array(
+                'field'             => 'label',
+                'translation_class' => 'Pim\\Bundle\\CatalogBundle\\Entity\\FamilyTranslation',
+                'entity_class'      => 'Pim\\Bundle\\CatalogBundle\\Entity\\Family',
+                'property_path'     => 'translations'
+            )
+        );
+
+        return $this;
     }
 
     /**
@@ -53,9 +87,7 @@ class FamilyType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'data_class' => 'Pim\Bundle\CatalogBundle\Entity\Family',
-                'channels'   => array(),
-                'attributes' => array(),
+                'data_class' => 'Pim\Bundle\CatalogBundle\Entity\Family'
             )
         );
     }
