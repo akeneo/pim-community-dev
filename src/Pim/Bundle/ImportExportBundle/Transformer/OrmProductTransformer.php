@@ -68,15 +68,16 @@ class OrmProductTransformer extends AbstractOrmTransformer
      * Transforms an array in a product
      *
      * @param array $data
+     * @param array $defaults
      *
      * @throws InvalidItemException
      * @return ProductInterface
      */
-    public function transform(array $data)
+    public function transform(array $data, array $defaults = array())
     {
         $this->initializeAttributes($data);
 
-        return $this->doTransform($this->productManager->getFlexibleName(), $data);
+        return $this->doTransform($this->productManager->getFlexibleName(), $data, $defaults);
     }
 
     /**

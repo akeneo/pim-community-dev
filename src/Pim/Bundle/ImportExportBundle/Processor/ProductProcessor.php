@@ -162,12 +162,7 @@ class ProductProcessor extends AbstractTransformerProcessor
      */
     protected function transform($item)
     {
-        return $this->transformer->transform(
-            $item,
-            array(
-                'enabled'       => $this->enabled
-            )
-        );
+        return $this->transformer->transform($item, array('enabled' => $this->enabled));
     }
 
     /**

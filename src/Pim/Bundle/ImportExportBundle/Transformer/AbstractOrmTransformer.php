@@ -103,7 +103,7 @@ abstract class AbstractOrmTransformer
      * @throws InvalidItemException
      * @return object
      */
-    protected function doTransform($class, array $data, array $mapping = array(), array $defaults = array())
+    protected function doTransform($class, array $data, array $defaults = array())
     {
         $this->transformedColumnsInfo = array();
         $this->errors = array();

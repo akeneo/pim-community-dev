@@ -20,9 +20,9 @@ class OrmTransformer extends AbstractOrmTransformer
      * @param  array  $defaults
      * @return object
      */
-    public function transform($class, array $data, array $mapping = array(), array $defaults = array())
+    public function transform($class, array $data, array $defaults = array())
     {
-        return $this->doTransform($class, $data, $mapping, $defaults);
+        return $this->doTransform($class, $data, $defaults);
     }
 
     /**
