@@ -38,7 +38,7 @@ Feature: Edit a channel
     When I am on the locales page
     And I filter by "Activated" with value "yes"
     Then the grid should contain 2 elements
-    Then I should see locales "en_US" and "br_FR"
+    And I should see locales "en_US" and "br_FR"
     When I am on the "tablet" channel page
     And I press the "Delete" button
     And I confirm the deletion
