@@ -118,16 +118,18 @@ class ProductFormView
         $group     = $attribute->getVirtualGroup();
 
         $attributeView = array(
+            'id'                 => $attribute->getId(),
             'isRemovable'        => $value->isRemovable(),
             'code'               => $attribute->getCode(),
             'label'              => $attribute->getLabel(),
             'sortOrder'          => $attribute->getSortOrder(),
-            'allowValueCreation' => in_array($attribute->getAttributeType(), $this->choiceAttributeTypes)
+            'allowValueCreation' => in_array($attribute->getAttributeType(), $this->choiceAttributeTypes),
+            'locale'             => $value->getLocale(),
         );
 
         if ($attribute->getScopable()) {
             $attributeView['values'] = array_merge(
-                $this->getAttributeValues($attribute),
+                $this->getAttributeValues($attribute, $value->getLocale()),
                 array($value->getScope() => $view)
             );
         } else {
@@ -139,7 +141,7 @@ class ProductFormView
             $attributeView['classes'] = $classes;
         }
 
-        $this->view[$group->getId()]['attributes'][$attribute->getId()] = $attributeView;
+        $this->view[$group->getId()]['attributes'][$attribute->getCode() . '_' . $value->getLocale()] = $attributeView;
     }
 
     /**
@@ -147,14 +149,14 @@ class ProductFormView
      *
      * @return ArrayCollection
      */
-    protected function getAttributeValues(ProductAttribute $attribute)
+    protected function getAttributeValues(ProductAttribute $attribute, $locale)
     {
         $group = $attribute->getVirtualGroup();
-        if (!isset($this->view[$group->getId()]['attributes'][$attribute->getId()]['values'])) {
+        if (!isset($this->view[$group->getId()]['attributes'][$attribute->getCode() . '_' . $locale]['values'])) {
             return array();
         }
 
-        return $this->view[$group->getId()]['attributes'][$attribute->getId()]['values'];
+        return $this->view[$group->getId()]['attributes'][$attribute->getCode() . '_' . $locale]['values'];
     }
 
     /**
