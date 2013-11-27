@@ -35,7 +35,16 @@
         </div>
 
         {% if comparisonLocale is not null %}
-            <a class="btn copy" href="#">{{ 'Copy all'|trans }}</a>
+            <div class="btn-group">
+                <span class="btn">Copy</span>
+                <button class="btn dropdown-toggle" data-toggle="dropdown">
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu pull-right">
+                    <li><a class="copy" data-target="all" href="#">{{ 'All'|trans }}</a></li>
+                    <li><a class="copy" data-target="selected" href="#">{{ 'Selected'|trans }}</a></li>
+                </ul>
+            </div>
         {% endif %}
 
         <div id="comparison-switcher" class="btn-group">
@@ -50,7 +59,7 @@
 
             <ul class="dropdown-menu pull-right">
                 {% for locale in locales if locale != dataLocale %}
-                    <li {{ locale.code == comparisonLocale ? 'class="active"' }}">
+                    <li {{ locale.code == comparisonLocale ? 'class="active"' }}>
                         <a href="{{ path('pim_catalog_product_edit', {id: form.vars.value.id, dataLocale: dataLocale, compareWith: locale.code}) }}" title="{{ locale_label(locale.code) }}">
                             <span class="icon pull-left">
                                 {% if locale == dataLocale %}
@@ -74,13 +83,13 @@
     </div>
 
     {% for groupId, groupView in form.vars.groups %}
-    <div id="tabs-{{ groupId }}" class="tab-pane fullheight">
-        <h3>{{ groupView.label }}</h3>
-        {% if comparisonLocale %}
-            {% include 'PimCatalogBundle:Product:_edit_with_comparison.html.twig' %}
-        {% else %}
-            {% include 'PimCatalogBundle:Product:_edit_without_comparison.html.twig' %}
-        {% endif %}
-    </div>
+        <div id="tabs-{{ groupId }}" class="tab-pane fullheight">
+            <h3>{{ groupView.label }}</h3>
+            {% if comparisonLocale %}
+                {% include 'PimCatalogBundle:Product:_edit_with_comparison.html.twig' %}
+            {% else %}
+                {% include 'PimCatalogBundle:Product:_edit_without_comparison.html.twig' %}
+            {% endif %}
+        </div>
     {% endfor %}
 </div>
