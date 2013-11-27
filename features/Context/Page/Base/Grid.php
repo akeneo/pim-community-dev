@@ -154,17 +154,16 @@ class Grid extends Index
      */
     public function getToolbarCount()
     {
-        $paginationText = $this
+        $pagination = $this
             ->getElement('Grid toolbar')
-            ->find('css', 'div label:contains("record")')
-            ->getText();
+            ->find('css', 'div label:contains("record")');
 
         // If pagination not found, count rows
-        if (!$paginationText) {
+        if (!$pagination) {
             return $this->countRows();
         }
 
-        if (preg_match('/([0-9][0-9 ]*) records?$/', $paginationText, $matches)) {
+        if (preg_match('/([0-9][0-9 ]*) records?$/', $pagination->getText(), $matches)) {
             return $matches[1];
         } else {
             throw new \InvalidArgumentException('Impossible to get count of datagrid records');
