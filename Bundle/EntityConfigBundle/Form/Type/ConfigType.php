@@ -5,16 +5,12 @@ namespace Oro\Bundle\EntityConfigBundle\Form\Type;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
-
 use Oro\Bundle\EntityConfigBundle\Entity\FieldConfigModel;
-
 use Oro\Bundle\EntityConfigBundle\Entity\OptionSet;
 use Oro\Bundle\EntityConfigBundle\Form\EventListener\ConfigSubscriber;
-
 use Oro\Bundle\EntityConfigBundle\Provider\PropertyConfigContainer;
 
 class ConfigType extends AbstractType

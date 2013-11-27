@@ -23,7 +23,7 @@ class OptionSet
 
     /**
      * @var FieldConfigModel
-     * @ORM\ManyToOne(targetEntity="FieldConfigModel", inversedBy="options", cascade={"all"})
+     * @ORM\ManyToOne(targetEntity="FieldConfigModel", inversedBy="options", cascade={"persist"})
      * @ORM\JoinColumn(referencedColumnName="id")
      */
     protected $field;
@@ -48,7 +48,7 @@ class OptionSet
 
     /**
      * @var OptionSetRelation[]|PersistentCollection
-     * @ORM\OneToMany(targetEntity="OptionSetRelation", mappedBy="option", cascade={"all"})
+     * @ORM\OneToMany(targetEntity="OptionSetRelation", mappedBy="option", cascade={"remove"})
      */
     protected $relation;
 

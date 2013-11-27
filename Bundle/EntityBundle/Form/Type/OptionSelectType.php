@@ -72,8 +72,7 @@ class OptionSelectType extends AbstractType
         $this->config = $this->extendProvider->getConfigById($options['config_id']);
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'preSetData'));
-        //$builder->addEventListener(FormEvents::PRE_SUBMIT, array($this, 'preSubmitData'));
-        $builder->addEventListener(FormEvents::POST_SUBMIT, array($this, 'postSubmitData'));
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, array($this, 'preSubmitData'));
     }
 
     public function preSetData(FormEvent $event)
@@ -98,7 +97,7 @@ class OptionSelectType extends AbstractType
 
     public function preSubmitData(FormEvent $event)
     {
-        list($entityId, $model, $extendConfig, $fieldConfigId) = $this->prepareEvent($event);
+        list($entityId, $model) = $this->prepareEvent($event);
 
         $saved = [];
         if ($entityId) {
@@ -118,9 +117,6 @@ class OptionSelectType extends AbstractType
         if (!is_array($data)) {
             $data = [$data];
         }
-
-        //$entityId = $this->em->getUnitOfWork()->getEntityIdentifier($entityX->getEntityY());
-        //$uow = $this->em->getUnitOfWork()->getEntityIdentifier();
 
         /**
          * Save selected options
@@ -147,14 +143,6 @@ class OptionSelectType extends AbstractType
         }
 
         $this->em->flush();
-    }
-
-    public function postSubmitData(FormEvent $event)
-    {
-        $form = $event->getForm();
-        $data = $event->getData();
-
-        $uow = $this->em->getUnitOfWork();
     }
 
     /**
