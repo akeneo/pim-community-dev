@@ -243,4 +243,3 @@ attributes:
             sortOrder:   10
             metricFamily: Length
             defaultMetricUnit: CENTIMETER
-
