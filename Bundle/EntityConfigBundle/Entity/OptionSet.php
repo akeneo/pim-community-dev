@@ -48,7 +48,7 @@ class OptionSet
 
     /**
      * @var OptionSetRelation[]|PersistentCollection
-     * @ORM\OneToMany(targetEntity="OptionSetRelation", mappedBy="option", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="OptionSetRelation", mappedBy="option", cascade={"persist","remove"})
      */
     protected $relation;
 

@@ -9,7 +9,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Routing\Router;
 
 use Oro\Bundle\EntityBundle\ORM\OroEntityManager;
@@ -118,31 +117,31 @@ class OptionSelectType extends AbstractType
             $data = [$data];
         }
 
-        /**
-         * Save selected options
-         */
-        $toSave = array_intersect($data, $saved);
-        foreach ($data as $option) {
-            if (!in_array($option, $saved)) {
-                $optionRelation = new OptionSetRelation();
-                $optionRelation->setData(null, $entityId, $model, $this->options->find($option));
-                $toSave[] = $option;
+        if ($entityId) {
+            /**
+             * Save selected options
+             */
+            $toSave = array_intersect($data, $saved);
+            foreach ($data as $option) {
+                if (!in_array($option, $saved)) {
+                    $optionRelation = new OptionSetRelation();
+                    $optionRelation->setData(null, $entityId, $model, $this->options->find($option));
+                    $toSave[] = $option;
 
-                $this->em->persist($optionRelation);
+                    $this->em->persist($optionRelation);
+                }
+            }
+
+            /**
+             * Remove unselected
+             */
+            if ($entityId && $this->relations->count($model->getId(), $entityId)) {
+                $toRemove = $this->relations->findByNotIn($model->getId(), $entityId, $toSave);
+                foreach ($toRemove as $option) {
+                    $this->em->remove($option);
+                }
             }
         }
-
-        /**
-         * Remove unselected
-         */
-        if ($entityId && $this->relations->count($model->getId(), $entityId)) {
-            $toRemove = $this->relations->findByNotIn($model->getId(), $entityId, $toSave);
-            foreach ($toRemove as $option) {
-                $this->em->remove($option);
-            }
-        }
-
-        $this->em->flush();
     }
 
     /**
@@ -164,7 +163,7 @@ class OptionSelectType extends AbstractType
             $fieldConfigId->getFieldName()
         );
 
-        return [$entityId, $model, $extendConfig, $fieldConfigId];
+        return [$entityId, $model, $extendConfig];
     }
 
     /**
