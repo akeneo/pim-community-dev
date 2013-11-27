@@ -85,7 +85,7 @@ class Grid extends Index
             );
         }
 
-        return $gridRow;
+        return $gridRow->getParent();
     }
 
     /**
