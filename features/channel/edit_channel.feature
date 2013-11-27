@@ -29,3 +29,20 @@ Feature: Edit a channel
     Then I should see a confirm dialog with the following content:
       | title   | Are you sure you want to leave this page?                    |
       | content | You will lose changes to the channel if you leave this page. |
+
+  Scenario: Successfully edit a channel to enable a locale
+    Given a "sirup" product
+    And the following attributes:
+      | label       | required | translatable | scopable | useable as grid filter |
+      | composition | no       | yes          | no       | yes                    |
+    And the following product values:
+      | product | attribute   | locale | scope     | value |
+      | sirup   | SKU         |        |           | sirup |
+      | sirup   | name        | en_US  |           | Sirup |
+      | sirup   | name        | fr_FR  |           | Sirop |
+    And I am on the "tablet" channel page
+    And I select the locale "Breton (France)"
+    And I press the "Save" button
+    Then I should see "My tablet"
+
+
