@@ -60,3 +60,26 @@ is "false".
 
 Also there are three additional optional options "workflow_item", "workflow" and "workflow_name" that are providing
 appropriate workflow information - these data can be used in descendant classes.
+
+Workflow Step Type
+==================
+
+Workflow step form type is used to render workflow step form with all available attributes, uses
+attributes type as a parent form type.
+
+**Additional form options:**
+ - **workflow_item** - required, used to extract current step and workflow data;
+ - **step_name** - optional, by default uses current step of workflow item;
+ - **disable_attribute_fields** - optional, be default set it to "true" in case if "step_name" not equal
+ to current step of workflow item.
+
+Workflow Transition Type
+========================
+
+Workflow transition type is used to render transition form with all available attributes, uses
+attributes type as a parent form type. This form type adds additional validator constraint TransitionIsAllowed
+to validate whether current condition allowed for specified workflow item.
+
+**Additional form options:**
+ - **workflow_item** - required, used by validator constraint to check is transition allowed;
+ - **transition_name** - required, name of transition that should be performed.
