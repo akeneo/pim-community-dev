@@ -47,17 +47,17 @@ group:
   create: Groep aanmaken
   edit: Groep bewerken
 variant group:
-  overview: variant group overview
-  create: create variant group
-  edit: edit variant group
+  overview: Variantgroepen overzicht
+  create: Variantgroep aanmaken
+  edit: Variantgroep bewerken
 association:
   overview: Koppelingsoverzicht
   create: Koppeling aanmaken
   edit: Koppeling bewerken
 group type:
-  overview: group type overview
-  create: create group type
-  edit: edit group type
+  overview: Groepstype overzicht
+  create: Groepstype aanmaken
+  edit: Groepstype bewerken
 export report:
   overview: Exporteer rapporten
 import report:
@@ -77,9 +77,9 @@ btn:
     locale: Lokalisatie aanmaken
     product: Product aanmaken
     group: Groep aanmaken
-    variant group: create variant group
+    variant group: Variantgroep aanmaken
     association: Koppeling aanmaken
-    group type: create group type
+    group type: Groepstype aanmaken
   edit: Bewerken
   save: Opslaan
   remove: Verwijderen
@@ -105,9 +105,9 @@ confirmation:
     import profile: Weet u zeker dat u het importprofiel %name% wilt verwijderen?
     channel: Weet u zeker dat u het kanaal %name% wilt verwijderen?
     group: Weet u zeker dat u de groep %name% wilt verwijderen?
-    variant group: Are you sure you want to delete the variant group %name%?
+    variant group: Weet u zeker dat u de variantgroep %name% wilt verwijderen?
     association: Weet u zeker dat u de koppeling %name% wilt verwijderen?
-    group type: Are you sure you want to delete the group type %name%?
+    group type: Weet u zeker dat u het groepstype %name% wilt verwijderen?
 flash:
   entity:
     removed: Object is verwijderd
@@ -116,9 +116,9 @@ flash:
     updated: Kenmerk succesvol bijgewerkt
     removed: Kenmerk succesvol verwijderd
     identifier not removable: Id-kenmerk kan niet worden verwijderd
-    used by groups: This attribute can not be removed because it is used by %count% groups
-    option created: Option successfully created
-    error creating option: Error ocurred when trying to create the option, please try again
+    used by groups: Dit kenmerk kan niet worden verwijderd omdat het wordt gebruikt door %count% groepen
+    option created: Optie succesvol aangemaakt
+    error creating option: Een fout is opgetreden tijdens het aanmakne van de optie, probeer het opnieuw
   attribute group:
     created: Kenmerkgroep succesvol aangemaakt
     updated: Kenmerkgroep succesvol bijgewerkt
@@ -166,15 +166,15 @@ flash:
     updated: Groep succesvol bijgewerkt
     removed: Groep succesvol verwijderd
   variant group:
-    created: Variant group successfully created
-    updated: Variant group successfully updated
-    removed: Variant group successfully removed
+    created: Variantgroep succesvol aangemaakt
+    updated: Variantgroep succesvol bijgewerkt
+    removed: Variantgroep succesvol verwijderd
   group type:
-    created: Group type successfully created
-    updated: Group type successfully updated
-    removed: Group type successfully removed
-    cant remove variant: "Group type variant can't be removed"
-    cant remove used: "Group type is used by some groups and can't be removed"
+    created: Groepstype succesvol aangemaakt
+    updated: Groepstype succesvol bijgewerkt
+    removed: Groepstype succesvol verwijderd
+    cant remove variant: Groeptype variant kan niet worden verwijderd
+    cant remove used: Groepstype wordt gebruikt door sommige groepen en kan niet worden verwijderd
   association:
     created: Koppeling succesvol aangemaakt
     updated: Koppeling succesvol bijgewerkt
@@ -252,7 +252,7 @@ Cancel: Annuleren
 Create a new product: Een nieuw product aanmaken
 Choose a family: Kies een familie
 Create a new association: Een nieuwe koppeling aanmaken
-Create a new option: Create a new option
+Create a new option: Nieuwe optie aanmaken
 Global: Globaal
 Channel: Kanaal
 Always override: Altijd overschrijven
@@ -276,7 +276,7 @@ Date max: Tot datum
 Default currency: Standaardvaluta
 Metric family: Meeteenhedenfamilie
 Default metric unit: Standaard meeteenheid
-Max file size: Max file size (MB)
+Max file size: Max bestandsgrootte (MB)
 Allowed file extensions: Toegestane bestandsextensies
 Attributes: Kenmerken
 Title: Titel
@@ -315,15 +315,15 @@ Locales %locale.code% | Edit: Lokalisatie %locale.code% | Bewerken
 Groups: Groepen
 Groups | Create: Groepen | Aanmaken
 Groups %group.label% | Edit: Groepen %group.label% | Bewerken
-Variant groups: Variant groups
-Variant groups | Create: Variant groups | Create
-Variant groups %group.label% | Edit: Variant groups %group.label% | Edit
+Variant groups: Variantgroepen
+Variant groups | Create: Variantgroepen|Aanmaken
+Variant groups %group.label% | Edit: Variantgroepen %group.label%|Bewerken
 Associations: Koppelingen
 Associations | Create: Koppelingen|Aanmaken
 Associations %association.label% | Edit: Koppelingen %association.label%|Bewerken
-Group types: Group types
-Group types | Create: Group types | Create
-Group types %grouptype.label% | Edit: Group types %grouptype.label% | Edit
+Group types: Groepstypen
+Group types | Create: Groepstypen | aanmaken
+Group types %grouptype.label% | Edit: Groepstypen %grouptype.label% | Bewerken
 pim_catalog_identifier: Id
 pim_catalog_text: Tekst
 pim_catalog_textarea: Tekstblok

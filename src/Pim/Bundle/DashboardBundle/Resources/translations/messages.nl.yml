@@ -12,8 +12,8 @@ pim_dashboard:
       import_report: Importgeschiedenis
       product: Producten beheren
       category: Categorieën beheren
-      variant: Manage Variant Groups
-      group: Manage Groups
+      variant: Variantgroepen beheren
+      group: Groepen beheren
       channel: Kanalen beheren
       export_profile: Exportprofielen beheren
       export_report: Exportgeschiedenis

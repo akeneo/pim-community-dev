@@ -7,7 +7,7 @@ jstree:
   all: Alle producten
   unclassified: Niet-geclassificeerde producten
   no_tree: Geen structuur beschikbaar
-  include_sub: Include sub-categories
+  include_sub: Inclusief subcategorieën
 Area: Oppervlak
 ACRE: Acre
 ARE: Are
