@@ -18,7 +18,7 @@ use Pim\Bundle\ImportExportBundle\Validator\Import\ImportValidatorInterface;
 class ProductProcessor extends AbstractTransformerProcessor
 {
     /**
-     * @var ORMProductTransformer
+     * @var OrmProductTransformer
      */
     protected $transformer;
 
@@ -57,7 +57,7 @@ class ProductProcessor extends AbstractTransformerProcessor
     public function __construct(
         ImportValidatorInterface $validator,
         TranslatorInterface $translator,
-        ORMProductTransformer $transformer
+        OrmProductTransformer $transformer
     ) {
         parent::__construct($validator, $translator);
         $this->transformer = $transformer;

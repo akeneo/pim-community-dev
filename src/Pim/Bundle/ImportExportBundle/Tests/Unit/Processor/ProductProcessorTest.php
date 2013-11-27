@@ -20,7 +20,7 @@ class ProductProcessorTest extends \PHPUnit_Framework_TestCase
     public function testProcess()
     {
         $productTransformer = $this
-            ->getMockBuilder('Pim\Bundle\ImportExportBundle\Transformer\ORMProductTransformer')
+            ->getMockBuilder('Pim\Bundle\ImportExportBundle\Transformer\OrmProductTransformer')
             ->disableOriginalConstructor()
             ->getMock();
 
