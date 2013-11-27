@@ -8,6 +8,6 @@ Feature: Browse families
     And I am logged in as "admin"
     When I am on the families page
     Then the grid should contain 3 elements
-    And I should see the columns Code, Label and Label as attribute
-    And I should see families Boots, Sandals and Sneakers
+    And I should see the columns Code, Label and Attribute as label
+    And I should see families boots, sandals and sneakers
     And the rows should be sorted ascending by code

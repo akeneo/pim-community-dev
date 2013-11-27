@@ -373,6 +373,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      * @Then /^I should see groups? (?:types )?(.*)$/
      * @Then /^I should see associations? (.*)$/
      * @Then /^I should see users? (.*)$/
+     * @Then /^I should see famil(?:y|ies) (.*)$/
      */
     public function iShouldSeeEntities($elements)
     {
