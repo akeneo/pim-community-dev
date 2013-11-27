@@ -5,12 +5,12 @@ Feature: Remove a category
   I need to be able to remove a category
 
   Background:
-  Given a "footwear" catalog configuration
-  And the following products:
-    | sku           | categories        |
-    | caterpillar_1 | winter_collection |
-    | caterpillar_2 | winter_boots      |
-  And I am logged in as "admin"
+    Given a "footwear" catalog configuration
+    And the following products:
+      | sku           | categories        |
+      | caterpillar_1 | winter_collection |
+      | caterpillar_2 | winter_boots      |
+    And I am logged in as "admin"
 
   Scenario: Remove a simple category
     Given I am on the "sandals" category page
