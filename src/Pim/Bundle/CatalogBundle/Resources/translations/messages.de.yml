@@ -47,17 +47,17 @@ group:
   create: Gruppe anlegen
   edit: Gruppe bearbeiten
 variant group:
-  overview: variant group overview
-  create: create variant group
-  edit: edit variant group
+  overview: Variantengruppen-Übersicht
+  create: Variantengruppe anlegen
+  edit: Variantengruppe bearbeiten
 association:
   overview: Verbindungsübersicht
   create: Verbindung anlegen
   edit: Verbindung bearbeiten
 group type:
-  overview: group type overview
-  create: create group type
-  edit: edit group type
+  overview: Gruppentypen-Übersicht
+  create: Gruppentyp anlegen
+  edit: Gruppentyp bearbeiten
 export report:
   overview: Export-Berichte
 import report:
@@ -77,9 +77,9 @@ btn:
     locale: Gebietsschema anlegen
     product: Produkt anlegen
     group: Gruppe anlegen
-    variant group: create variant group
+    variant group: Variantengruppe anlegen
     association: Verbindung anlegen
-    group type: create group type
+    group type: Gruppentyp anlegen
   edit: Bearbeiten
   save: Speichern
   remove: Entfernen
@@ -105,9 +105,9 @@ confirmation:
     import profile: Sind Sie sicher, dass Sie das Import-Profil %name% löschen möchten?
     channel: Sind Sie sicher, dass Sie den Ausgabekanal %name% löschen möchten?
     group: Sind Sie sicher, dass Sie die Gruppe %name% löschen möchten?
-    variant group: Are you sure you want to delete the variant group %name%?
+    variant group: Sind Sie sicher, dass Sie die Variantengruppe %name% löschen möchten?
     association: Sind Sie sicher, dass Sie die Verbindung %name% löschen möchten?
-    group type: Are you sure you want to delete the group type %name%?
+    group type: Sind Sie sicher, dass Sie die Gruppe %name% löschen möchten?
 flash:
   entity:
     removed: Element wurde gelöscht
@@ -116,9 +116,9 @@ flash:
     updated: Attribut erfolgreich aktualisiert
     removed: Attribut erfolgreich entfernt
     identifier not removable: Ein Attribut zur eindeutigen Identifizierung kann nicht entfernt werden
-    used by groups: This attribute can not be removed because it is used by %count% groups
-    option created: Option successfully created
-    error creating option: Error ocurred when trying to create the option, please try again
+    used by groups: Dieses Attribut kann nicht gelöscht werden, da es von %count% Gruppen verwendet wird
+    option created: Option erfolgreich angelegt
+    error creating option: Es trat ein Fehler bei dem Versuch auf, eine Option anzulegen. Bitte wiederholen Sie den Vorgang.
   attribute group:
     created: Attributgruppe erfolgreich angelegt
     updated: Attributgruppe erfolgreich aktualisiert
@@ -166,15 +166,15 @@ flash:
     updated: Gruppe erfolgreich aktualisiert
     removed: Gruppe erfolgreich entfernt
   variant group:
-    created: Variant group successfully created
-    updated: Variant group successfully updated
-    removed: Variant group successfully removed
+    created: Variantengruppe erfolgreich angelegt
+    updated: Variantengruppe erfolgreich aktualisiert
+    removed: Variantengruppe erfolgreich entfernt
   group type:
-    created: Group type successfully created
-    updated: Group type successfully updated
-    removed: Group type successfully removed
-    cant remove variant: "Group type variant can't be removed"
-    cant remove used: "Group type is used by some groups and can't be removed"
+    created: Gruppentyp erfolgreich angelegt
+    updated: Gruppentyp erfolgreich aktualisiert
+    removed: Gruppentyp erfolgreich gelöscht
+    cant remove variant: Gruppentyp Variante kann nicht gelöscht werden
+    cant remove used: Der Gruppentyp wird von anderen Gruppen verwendet und kann nicht gelöscht werden
   association:
     created: Verbindung erfolgreich angelegt
     updated: Verbindung erfolgreich aktualisiert
@@ -252,7 +252,7 @@ Cancel: Abbrechen
 Create a new product: Neues Produkt anlegen
 Choose a family: Wählen Sie eine Produktfamilie
 Create a new association: Neue Verbindung anlegen
-Create a new option: Create a new option
+Create a new option: Neue Option anlegen
 Global: Global
 Channel: Ausgabekanal
 Always override: Immer überschreiben
@@ -315,15 +315,15 @@ Locales %locale.code% | Edit: Gebietsschemata %locale.code% | Bearbeiten
 Groups: Gruppen
 Groups | Create: Gruppen | Anlegen
 Groups %group.label% | Edit: Gruppen %group.label% | Bearbeiten
-Variant groups: Variant groups
-Variant groups | Create: Variant groups | Create
-Variant groups %group.label% | Edit: Variant groups %group.label% | Edit
+Variant groups: Variantengruppen
+Variant groups | Create: Variantengruppen | Anlegen
+Variant groups %group.label% | Edit: Variantengruppen %group.label% | Bearbeiten
 Associations: Verbindungen
 Associations | Create: Verbindungen | Anlegen
 Associations %association.label% | Edit: Verbindungen %association.label% | Bearbeiten
-Group types: Group types
-Group types | Create: Group types | Create
-Group types %grouptype.label% | Edit: Group types %grouptype.label% | Edit
+Group types: Gruppentypen
+Group types | Create: Gruppentypen | Anlegen
+Group types %grouptype.label% | Edit: Gruppentypen %grouptype.label% | Bearbeiten
 pim_catalog_identifier: Kennung
 pim_catalog_text: Text
 pim_catalog_textarea: Textbereich
