@@ -134,6 +134,6 @@ class FamilyType extends AbstractType
      */
     public function getName()
     {
-        return 'pim_family';
+        return 'pim_catalog_family';
     }
 }
