@@ -55,6 +55,11 @@ class Locale
     protected $defaultCurrency;
 
     /**
+     * @var boolean $activated
+     */
+    protected $activated = false;
+
+    /**
      * @var ArrayCollection
      */
     protected $channels;
@@ -221,6 +226,9 @@ class Locale
     public function addChannel(Channel $channel)
     {
         $this->channels[] = $channel;
+        if ($this->channels->count() > 0) {
+            $this->activated = true;
+        }
 
         return $this;
     }
@@ -235,6 +243,9 @@ class Locale
     public function removeChannel(Channel $channel)
     {
         $this->channels->removeElement($channel);
+        if ($this->channels->count() === 0) {
+            $this->activated = false;
+        }
 
         return $this;
     }
