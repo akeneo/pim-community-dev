@@ -7,6 +7,7 @@ use JMS\Serializer\Annotation\ExclusionPolicy;
 use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Pim\Bundle\CatalogBundle\Validator\Constraints as PimAssert;
+use Pim\Bundle\CatalogBundle\Entity\Channel;
 
 /**
  * Locale entity
@@ -52,11 +53,6 @@ class Locale
      * TODO : must be removed
      */
     protected $defaultCurrency;
-
-    /**
-     * @var boolean $activated
-     */
-    protected $activated = false;
 
     /**
      * @var ArrayCollection
@@ -160,7 +156,7 @@ class Locale
      */
     public function isActivated()
     {
-        return $this->activated;
+        return $this->channels->count() > 0;
     }
 
     /**
@@ -216,28 +212,29 @@ class Locale
     }
 
     /**
-     * Activate the locale
+     * Add channel
+     *
+     * @param Channel $channel
      *
      * @return Locale
      */
-    public function activate()
+    public function addChannel(Channel $channel)
     {
-        $this->activated = true;
+        $this->channels[] = $channel;
 
         return $this;
     }
 
     /**
-     * Deactivate the locale
-     * Only if it's no more link to a channel so <= 1 because it's call before persist
+     * Remove channel
+     *
+     * @param Channel $channel
      *
      * @return Locale
      */
-    public function deactivate()
+    public function removeChannel(Channel $channel)
     {
-        if ($this->getChannels()->count() <= 1) {
-            $this->activated = false;
-        }
+        $this->channels->removeElement($channel);
 
         return $this;
     }

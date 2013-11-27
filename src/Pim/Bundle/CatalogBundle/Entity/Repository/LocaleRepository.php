@@ -63,11 +63,9 @@ class LocaleRepository extends EntityRepository
      */
     public function getActivatedLocalesQB()
     {
-        $qb = $this->createQueryBuilder('l');
-        $qb->where($qb->expr()->eq('l.activated', true))
-           ->orderBy('l.code');
-
-        return $qb;
+        return $this->createQueryBuilder('l')
+            ->innerJoin('l.channels', 'channels')
+            ->orderBy('l.code');
     }
 
     /**
@@ -92,10 +90,8 @@ class LocaleRepository extends EntityRepository
      */
     public function getAvailableFallbacksQB()
     {
-        $qb = $this->createQueryBuilder('l');
-        $qb
-            ->andWhere($qb->expr()->eq('l.activated', true))
-            ->andWhere($qb->expr()->isNull('l.fallback'));
+        $qb = $this->getActivatedLocalesQB();
+        $qb->andWhere($qb->expr()->isNull('l.fallback'));
 
         return $qb;
     }

@@ -220,12 +220,11 @@ class Channel
      */
     public function getLocaleCodes()
     {
-        $codes = array();
-        foreach ($this->locales as $locale) {
-            $codes[]= $locale->getCode();
-        }
-
-        return $codes;
+        return $this->locales->map(
+            function ($locale) {
+                return $locale->getCode();
+            }
+        )->toArray();
     }
 
     /**
@@ -239,7 +238,7 @@ class Channel
     {
         if (!$this->hasLocale($locale)) {
             $this->locales[] = $locale;
-            $locale->activate();
+            $locale->addChannel($this);
         }
 
         return $this;
@@ -255,19 +254,9 @@ class Channel
     public function removeLocale(Locale $locale)
     {
         $this->locales->removeElement($locale);
-        $locale->deactivate();
+        $locale->removeChannel($this);
 
         return $this;
-    }
-
-    /**
-     * Pre remove method to deactivate unusable locales
-     */
-    public function preRemove()
-    {
-        foreach ($this->locales as $locale) {
-            $locale->deactivate();
-        }
     }
 
     /**
