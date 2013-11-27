@@ -135,15 +135,7 @@ class FieldConfigModel extends AbstractConfigModel
     }
 
     /**
-     * @param \Doctrine\ORM\PersistentCollection|\Oro\Bundle\EntityConfigBundle\Entity\OptionSet[] $options
-     */
-    public function setOptions($options)
-    {
-        $this->options = $options;
-    }
-
-    /**
-     * @return \Doctrine\ORM\PersistentCollection|\Oro\Bundle\EntityConfigBundle\Entity\OptionSet[]
+     * @return ArrayCollection|PersistentCollection|OptionSet[]
      */
     public function getOptions()
     {

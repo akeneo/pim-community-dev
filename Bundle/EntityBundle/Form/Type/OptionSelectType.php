@@ -9,6 +9,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Routing\Router;
 
 use Oro\Bundle\EntityBundle\ORM\OroEntityManager;
@@ -71,7 +72,8 @@ class OptionSelectType extends AbstractType
         $this->config = $this->extendProvider->getConfigById($options['config_id']);
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'preSetData'));
-        $builder->addEventListener(FormEvents::PRE_SUBMIT, array($this, 'preSubmitData'));
+        //$builder->addEventListener(FormEvents::PRE_SUBMIT, array($this, 'preSubmitData'));
+        $builder->addEventListener(FormEvents::POST_SUBMIT, array($this, 'postSubmitData'));
     }
 
     public function preSetData(FormEvent $event)
@@ -96,7 +98,7 @@ class OptionSelectType extends AbstractType
 
     public function preSubmitData(FormEvent $event)
     {
-        list($entityId, $model) = $this->prepareEvent($event);
+        list($entityId, $model, $extendConfig, $fieldConfigId) = $this->prepareEvent($event);
 
         $saved = [];
         if ($entityId) {
@@ -116,6 +118,9 @@ class OptionSelectType extends AbstractType
         if (!is_array($data)) {
             $data = [$data];
         }
+
+        //$entityId = $this->em->getUnitOfWork()->getEntityIdentifier($entityX->getEntityY());
+        //$uow = $this->em->getUnitOfWork()->getEntityIdentifier();
 
         /**
          * Save selected options
@@ -144,6 +149,14 @@ class OptionSelectType extends AbstractType
         $this->em->flush();
     }
 
+    public function postSubmitData(FormEvent $event)
+    {
+        $form = $event->getForm();
+        $data = $event->getData();
+
+        $uow = $this->em->getUnitOfWork();
+    }
+
     /**
      * @param FormEvent $event
      * @return array
@@ -163,7 +176,7 @@ class OptionSelectType extends AbstractType
             $fieldConfigId->getFieldName()
         );
 
-        return [$entityId, $model, $extendConfig];
+        return [$entityId, $model, $extendConfig, $fieldConfigId];
     }
 
     /**

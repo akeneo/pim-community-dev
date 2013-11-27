@@ -190,7 +190,7 @@ class CustomEntityType extends AbstractType
                 }
 
                 if ($fieldConfigId->getFieldType() == 'optionSet' && is_object($data) && $data->getId() == null) {
-                    continue;
+                    //continue;
                 }
                 $builder->add($fieldConfigId->getFieldName(), $this->typeMap[$fieldConfigId->getFieldType()], $options);
             }

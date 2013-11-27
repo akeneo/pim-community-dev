@@ -32,9 +32,7 @@ class OptionSetRelation
     /**
      * @var OptionSet
      * @ORM\ManyToOne(targetEntity="OptionSet", inversedBy="relation")
-     * @ORM\JoinColumns({
-     *  @ORM\JoinColumn(referencedColumnName="id")
-     * })
+     * @ORM\JoinColumn(referencedColumnName="id")
      */
     protected $option;
 
