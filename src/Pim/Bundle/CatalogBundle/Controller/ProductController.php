@@ -589,7 +589,11 @@ class ProductController extends AbstractDoctrineController
 
     protected function getComparisonLocale()
     {
-        return $this->getRequest()->query->get('compareWith');
+        $locale = $this->getRequest()->query->get('compareWith');
+
+        if ($this->getDataLocale() !== $locale) {
+            return $locale;
+        }
     }
 
     /**
