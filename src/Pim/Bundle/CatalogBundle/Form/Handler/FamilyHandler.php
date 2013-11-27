@@ -2,13 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\Form\Handler;
 
-use Pim\Bundle\CatalogBundle\Entity\Family;
-
-use Doctrine\Common\Persistence\ObjectManager;
-
-use Symfony\Component\HttpFoundation\Request;
-
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Doctrine\Common\Persistence\ObjectManager;
+use Pim\Bundle\CatalogBundle\Entity\Family;
 
 /**
  * Form handler for family
