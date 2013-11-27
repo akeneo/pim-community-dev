@@ -37,7 +37,6 @@ class TranslatableException extends \Exception implements TranslatableExceptionI
     ) {
         $this->rawMessage = $rawMessage;
         $this->messageParameters = $messageParameters;
-
         parent::__construct(strtr($rawMessage, $messageParameters), $code, $previous);
     }
 

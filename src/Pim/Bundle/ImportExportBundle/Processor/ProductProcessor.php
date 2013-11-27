@@ -4,7 +4,7 @@ namespace Pim\Bundle\ImportExportBundle\Processor;
 
 use Symfony\Component\Translation\TranslatorInterface;
 use Oro\Bundle\BatchBundle\Entity\StepExecution;
-use Pim\Bundle\ImportExportBundle\Transformer\ORMProductTransformer;
+use Pim\Bundle\ImportExportBundle\Transformer\OrmProductTransformer;
 use Pim\Bundle\ImportExportBundle\Validator\Import\ImportValidatorInterface;
 
 /**
@@ -171,9 +171,9 @@ class ProductProcessor extends AbstractTransformerProcessor
     protected function getMapping()
     {
         return array(
-            'family'        => $this->familyColumn,
-            'categories'    => $this->categoriesColumn,
-            'groups'        => $this->groupsColumn
+            $this->familyColumn     => 'family',
+            $this->categoriesColumn => 'categories',
+            $this->groupsColumn     => 'groups'
         );
     }
 
