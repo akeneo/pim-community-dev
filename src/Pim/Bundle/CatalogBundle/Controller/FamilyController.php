@@ -202,7 +202,7 @@ class FamilyController extends AbstractDoctrineController
     /**
      * History of a family
      *
-     * @param Family  $family
+     * @param Family $family
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|template
      */
