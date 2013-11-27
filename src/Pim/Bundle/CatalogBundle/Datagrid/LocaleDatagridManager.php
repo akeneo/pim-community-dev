@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Datagrid;
 
 use Oro\Bundle\GridBundle\Datagrid\DatagridManager;
+use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
@@ -46,6 +47,7 @@ class LocaleDatagridManager extends DatagridManager
                 'type'        => FieldDescriptionInterface::TYPE_HTML,
                 'label'       => $this->translate('Activated'),
                 'field_name'  => 'activated',
+                'expression'  => 'channels',
                 'filter_type' => FilterInterface::TYPE_BOOLEAN,
                 'required'    => false,
                 'sortable'    => true,
@@ -57,5 +59,22 @@ class LocaleDatagridManager extends DatagridManager
             new TwigTemplateProperty($field, 'PimCatalogBundle:Currency:_field_activated.html.twig')
         );
         $fieldsCollection->add($field);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function prepareQuery(ProxyQueryInterface $proxyQuery)
+    {
+        $rootAlias = $proxyQuery->getRootAlias();
+
+        $proxyQuery
+            ->leftJoin($rootAlias .'.channels', 'channels');
+
+        $activatedExpr = '(CASE WHEN channels IS NULL THEN false ELSE true END)';
+
+        $proxyQuery
+            ->addSelect('channels', true)
+            ->addSelect(sprintf('%s AS activated', $activatedExpr), true);
     }
 }

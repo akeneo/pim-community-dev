@@ -312,9 +312,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
             )
         );
 
-        $steps = array(
-            new Then(sprintf('I should see the filters %s', implode(', ', $filters)))
-        );
+        $steps = array();
 
         foreach ($data as $item) {
             $count = count($this->getMainContext()->listToArray($item['result']));
