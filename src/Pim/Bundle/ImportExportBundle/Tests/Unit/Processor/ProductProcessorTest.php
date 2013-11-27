@@ -27,7 +27,7 @@ class ProductProcessorTest extends AbstractTransformerProcessorTestCase
             ->expects($this->once())
             ->method('getErrors')
             ->will($this->returnValue(array()));
-        
+
         $processor = new ProductProcessor(
             $this->validator,
             $this->translator,

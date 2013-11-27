@@ -9,7 +9,7 @@ use stdClass;
 
 /**
  * Tests related class
- * 
+ *
  * @author    Antoine Guigan <antoine@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -20,7 +20,7 @@ class TransformerProcessorTest extends AbstractTransformerProcessorTestCase
     protected $transformer;
     protected $data = array('key' => 'val');
     protected $entity;
-    
+
     protected function setUp()
     {
         parent::setUp();
@@ -60,10 +60,10 @@ class TransformerProcessorTest extends AbstractTransformerProcessorTestCase
             ->expects($this->once())
             ->method('validate')
             ->will($this->returnArgument(4));
-        
+
         $this->assertSame($this->entity, $this->processor->process($this->data));
     }
-    
+
     /**
      * @expectedException Pim\Bundle\ImportExportBundle\Exception\TranslatableException
      * @expectedExceptionMessage <tr>exception value</tr>
@@ -80,7 +80,7 @@ class TransformerProcessorTest extends AbstractTransformerProcessorTestCase
             );
         $this->processor->process($this->data);
     }
-    
+
     /**
      * @expectedException Pim\Bundle\ImportExportBundle\Exception\TranslatableException
      * @expectedExceptionMessage <tr>exception value</tr>
@@ -100,7 +100,7 @@ class TransformerProcessorTest extends AbstractTransformerProcessorTestCase
                     new TranslatableException('exception %arg1%', array('%arg1%'=>'value'))
                 )
             );
-        
+
         $this->processor->process($this->data);
     }
 

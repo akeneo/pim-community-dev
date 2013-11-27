@@ -121,10 +121,11 @@ abstract class OrmTransformerTestCase extends PHPUnit_Framework_TestCase
             ->method('getPropertyPath')
             ->will($this->returnValue($label . '_path'));
         $this->columnInfos[$label] = $columnInfo;
-        
+
         if ($addTransformer) {
             $this->addTransformer($label . '_path');
         }
+
         return $columnInfo;
     }
 }

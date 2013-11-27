@@ -14,24 +14,24 @@ use Pim\Bundle\ImportExportBundle\Transformer\OrmTransformer;
 class OrmTransformerTest extends OrmTransformerTestCase
 {
     protected $transformer;
-    
+
     protected function setUp()
     {
         parent::setUp();
         $this->transformer = new OrmTransformer(
-            $this->doctrine, 
-            $this->propertyAccessor, 
-            $this->guesser, 
+            $this->doctrine,
+            $this->propertyAccessor,
+            $this->guesser,
             $this->labelTransformer
         );
         $this->addColumn('code');
     }
-    
+
     public function testTransform()
     {
         $this->addColumn('col1');
         $this->addColumn('col2');
-        
+
         $object = $this->transformer->transform(
             'stdClass',
             array('code' => 'code', 'col1' => 'val1', 'col2' => 'val2'),
@@ -52,7 +52,7 @@ class OrmTransformerTest extends OrmTransformerTestCase
         $this->addColumn('col1', false);
         $this->addColumn('col2');
         $this->addTransformer('col1_path', true);
-        
+
         $object = $this->transformer->transform(
             'stdClass',
             array('code' => 'code', 'col1' => 'val1', 'col2' => 'val2')
@@ -74,7 +74,7 @@ class OrmTransformerTest extends OrmTransformerTestCase
     {
         $this->addColumn('col1', false);
         $this->addColumn('col2');
-        
+
         $object = $this->transformer->transform(
             'stdClass',
             array('code' => 'code', 'col1' => 'val1', 'col2' => 'val2')

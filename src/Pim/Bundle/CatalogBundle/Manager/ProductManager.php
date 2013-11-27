@@ -182,6 +182,7 @@ class ProductManager extends FlexibleManager
         } catch (NoResultException $ex) {
             return null;
         }
+
         return $em->createQuery(
             'SELECT p, v, f, o, pr ' .
             'FROM ' . $class . ' p ' .
