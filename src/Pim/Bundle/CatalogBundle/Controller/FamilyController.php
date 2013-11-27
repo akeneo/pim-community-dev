@@ -2,6 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\Controller;
 
+use Symfony\Component\Form\Form;
+
+use Pim\Bundle\CatalogBundle\Form\Handler\FamilyHandler;
+
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -48,6 +52,16 @@ class FamilyController extends AbstractDoctrineController
     private $completenessManager;
 
     /**
+     * @var FamilyHandler
+     */
+    protected $familyHandler;
+
+    /**
+     * @var Form
+     */
+    protected $familyForm;
+
+    /**
      * Constructor
      *
      * @param Request                  $request
@@ -62,6 +76,8 @@ class FamilyController extends AbstractDoctrineController
      * @param ChannelManager           $channelManager
      * @param FamilyFactory            $factory
      * @param CompletenessManager      $completenessManager
+     * @param FamilyHandler            $familyHandler
+     * @param Form                     $familyForm
      */
     public function __construct(
         Request $request,
@@ -75,7 +91,9 @@ class FamilyController extends AbstractDoctrineController
         DatagridHelperInterface $datagridHelper,
         ChannelManager $channelManager,
         FamilyFactory $factory,
-        CompletenessManager $completenessManager
+        CompletenessManager $completenessManager,
+        FamilyHandler $familyHandler,
+        Form $familyForm
     ) {
         parent::__construct(
             $request,
@@ -92,6 +110,8 @@ class FamilyController extends AbstractDoctrineController
         $this->channelManager      = $channelManager;
         $this->factory             = $factory;
         $this->completenessManager = $completenessManager;
+        $this->familyHandler       = $familyHandler;
+        $this->familyForm          = $familyForm;
     }
 
     /**
@@ -108,12 +128,15 @@ class FamilyController extends AbstractDoctrineController
         /** @var $queryBuilder QueryBuilder */
         $queryBuilder = $this->getManager()->createQueryBuilder();
 
-        $datagrid = $this->datagridHelper->getDatagrid('family', $queryBuilder);
+        $datagridView = $this->datagridHelper->getDatagrid('family', $queryBuilder)->createView();
 
-        $view = ('json' === $request->getRequestFormat()) ?
-            'OroGridBundle:Datagrid:list.json.php' : 'PimCatalogBundle:Family:index.html.twig';
+        if ('json' === $request->getRequestFormat()) {
+            return $this->datagridHelper->getDatagridRenderer()->renderResultsJsonResponse($datagridView);
+        }
 
-        return $this->render($view, array('datagrid' => $datagrid->createView()));
+        return array(
+            'datagrid' => $datagridView
+        );
     }
 
     /**
@@ -127,24 +150,25 @@ class FamilyController extends AbstractDoctrineController
      */
     public function createAction(Request $request)
     {
+        if (!$request->isXmlHttpRequest()) {
+            return $this->redirectToRoute('pim_catalog_family_index');
+        }
+
         $family = $this->factory->createFamily();
-        $families = $this->getRepository('PimCatalogBundle:Family')->getIdToLabelOrderedByLabel();
 
-        $form = $this->createForm('pim_family', $family);
-        if ($request->isMethod('POST')) {
-            $form->submit($request);
-            if ($form->isValid()) {
-                $this->getManager()->persist($family);
-                $this->getManager()->flush();
-                $this->addFlash('success', 'flash.family.created');
+        if ($this->familyHandler->process($family)) {
+            $this->addFlash('success', 'flash.family.created');
 
-                return $this->redirectToRoute('pim_catalog_family_edit', array('id' => $family->getId()));
-            }
+            $response = array(
+                'status' => 1,
+                'url'    => $this->generateUrl('pim_catalog_group_edit', array('id' => $family->getId()))
+            );
+
+            return new Response(json_encode($response));
         }
 
         return array(
-            'form'     => $form->createView(),
-            'families' => $families,
+            'form' => $this->familyForm->createView()
         );
     }
 

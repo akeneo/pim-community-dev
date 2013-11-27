@@ -45,7 +45,7 @@ class FamilyHandler
     {
         $this->form    = $form;
         $this->request = $request;
-        $this->manager = $manager;
+        $this->manager = $objectManager;
     }
 
     /**
