@@ -108,10 +108,10 @@ class ImportValidator implements ImportValidatorInterface
     protected function validateProperties($entity, array $columnsInfo)
     {
         $errors = array();
-        foreach ($columnsInfo as $label => $columnInfo) {
+        foreach ($columnsInfo as $columnInfo) {
             $violations = $this->validator->validateProperty($entity, $columnInfo->getPropertyPath());
             if ($violations->count()) {
-                $errors[$label] = $this->getErrorArray($violations);
+                $errors[$columnInfo->getLabel()] = $this->getErrorArray($violations);
             }
         }
 
@@ -129,7 +129,7 @@ class ImportValidator implements ImportValidatorInterface
     {
         $errors = array();
         foreach ($violations as $violation) {
-            $path = $violation->getPath();
+            $path = $violation->getPropertyPath();
             if (!isset($errors[$path])) {
                 $errors[$path] = array();
             }
@@ -142,11 +142,11 @@ class ImportValidator implements ImportValidatorInterface
     /**
      * Returns an array of errors for a list of violations
      *
-     * @param ConstraintViolationInterface $violations
+     * @param ConstraintViolationListInterface $violations
      *
      * @return array
      */
-    protected function getErrorArray(ConstraintViolationInterface $violations)
+    protected function getErrorArray(ConstraintViolationListInterface $violations)
     {
         $errors = array();
         foreach ($violations as $violation) {

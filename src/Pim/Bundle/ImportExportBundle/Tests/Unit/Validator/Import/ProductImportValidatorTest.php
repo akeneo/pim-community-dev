@@ -11,19 +11,16 @@ use Pim\Bundle\ImportExportBundle\Validator\Import\ProductImportValidator;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductImportValidatorTest extends \PHPUnit_Framework_TestCase
+class ProductImportValidatorTest extends ImportValidatorTestCase
 {
     protected $productValidator;
-    protected $validator;
     protected $constraintGuesser;
-    protected $translator;
 
     /**
      * {@inheritdoc}
      */
     protected function setUp()
     {
-        $this->validator = $this->getMock('Symfony\Component\Validator\ValidatorInterface');
         $this->constraintGuesser = $this->getMock(
             'Oro\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface'
         );
@@ -79,34 +76,6 @@ class ProductImportValidatorTest extends \PHPUnit_Framework_TestCase
                 array('key1' => 'val1', 'key2' => 'val2')
             )
         );
-    }
-
-    /**
-     * @param array $violationMessages
-     *
-     * @return \Symfony\Component\Validator\ConstraintViolationList
-     */
-    public function getViolationListMock(array $violationMessages)
-    {
-        $list = $this->getMock('Symfony\Component\Validator\ConstraintViolationList');
-        $violations = array();
-
-        foreach ($violationMessages as $message => $params) {
-            $violation = $this->getMock('Symfony\Component\Validator\ConstraintViolationInterface');
-            $violation->expects($this->any())
-                ->method('getMessageTemplate')
-                ->will($this->returnValue($message));
-            $violation->expects($this->any())
-                ->method('getMessageParameters')
-                ->will($this->returnValue($params));
-            $violations[] = $violation;
-        }
-
-        $list->expects($this->once())
-            ->method('getIterator')
-            ->will($this->returnValue(new \ArrayIterator($violations)));
-
-        return $list;
     }
 
     /**
