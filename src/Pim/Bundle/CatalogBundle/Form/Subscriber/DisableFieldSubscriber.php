@@ -7,7 +7,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
 /**
- * Subscriber to disable entity code modification after the entity has been created
+ * Subscriber to disable field modification after the entity has been created
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -15,6 +15,9 @@ use Symfony\Component\Form\FormEvents;
  */
 class DisableFieldSubscriber implements EventSubscriberInterface
 {
+    /**
+     * @var string The name of the field to disable
+     */
     protected $fieldName;
 
     /**
@@ -55,8 +58,8 @@ class DisableFieldSubscriber implements EventSubscriberInterface
         $type    = $field->getConfig()->getType()->getName();
         $options = $field->getConfig()->getOptions();
 
-        $options['disabled']  = true;
-        $options['read_only'] = true;
+        $options['disabled']        = true;
+        $options['read_only']       = true;
         $options['auto_initialize'] = false;
 
         $form->add($this->fieldName, $type, $options);
