@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Transformer;
+namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Transformer\ColumnInfo;
 
 use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfo;
 
