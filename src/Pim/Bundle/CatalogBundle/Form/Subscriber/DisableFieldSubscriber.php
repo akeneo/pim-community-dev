@@ -52,16 +52,21 @@ class DisableFieldSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $form  = $event->getForm();
-        $field = $form->get($this->fieldName);
+        $form   = $event->getForm();
+        $config = $form->get($this->fieldName)->getConfig();
 
-        $type    = $field->getConfig()->getType()->getName();
-        $options = $field->getConfig()->getOptions();
+        $options = array(
+            'disabled'  => true,
+            'read_only' => true,
+        );
 
-        $options['disabled']        = true;
-        $options['read_only']       = true;
-        $options['auto_initialize'] = false;
+        if ($help = $config->getOption('help')) {
+            $options['help'] = $help;
+        }
+        if ($label = $config->getOption('label')) {
+            $options['label'] = $label;
+        }
 
-        $form->add($this->fieldName, $type, $options);
+        $form->add($this->fieldName, null, $options);
     }
 }
