@@ -71,6 +71,7 @@ process:
             translation:   Prepare translations
             requirejs:     Optimize RequireJS resources (this process might take few minutes)
             finish:        Clear cache to finalize installation
+            js-routing:    Dump JS routing
         final:
             header:        Finish
             greeting:      Success!!!
