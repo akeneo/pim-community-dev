@@ -27,5 +27,9 @@ class GuesserTestCase extends \PHPUnit_Framework_TestCase
             ->method('getName')
             ->will($this->returnValue('class'));
         $this->columnInfo = $this->getMock('Pim\Bundle\ImportExportBundle\Transformer\ColumnInfoInterface');
+        $this->columnInfo->expects($this->any())
+            ->method('getPropertyPath')
+            ->will($this->returnValue('property_path'));
+
     }
 }

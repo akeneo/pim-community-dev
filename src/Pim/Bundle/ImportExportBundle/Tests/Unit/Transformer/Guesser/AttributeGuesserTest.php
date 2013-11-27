@@ -3,6 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Transformer\Guesser;
 
 use Pim\Bundle\ImportExportBundle\Transformer\Guesser\AttributeGuesser;
+
 /**
  * Tests related class
  *
