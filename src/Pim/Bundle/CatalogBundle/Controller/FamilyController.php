@@ -161,7 +161,7 @@ class FamilyController extends AbstractDoctrineController
 
             $response = array(
                 'status' => 1,
-                'url'    => $this->generateUrl('pim_catalog_group_edit', array('id' => $family->getId()))
+                'url'    => $this->generateUrl('pim_catalog_family_edit', array('id' => $family->getId()))
             );
 
             return new Response(json_encode($response));
