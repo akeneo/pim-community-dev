@@ -1,3 +1,4 @@
+@javascript
 Feature: Family creation
   In order to provide a new family for a new type of product
   As a user
