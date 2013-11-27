@@ -207,7 +207,12 @@ class Grid extends Index
         $values = array();
 
         foreach ($rows as $row) {
-            $values[] = $this->getRowCell($row, $column)->getText();
+            $cell = $this->getRowCell($row, $column);
+            if ($span = $cell->find('css', 'span')) {
+                $values[] = (string) strpos($span->getAttribute('class'), 'success') !== false;
+            } else {
+                $values[] = $cell->getText();
+            }
         }
 
         return $values;
