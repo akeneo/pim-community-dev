@@ -26,8 +26,6 @@ class GuesserTestCase extends \PHPUnit_Framework_TestCase
         $this->metadata->expects($this->any())
             ->method('getName')
             ->will($this->returnValue('class'));
-        $this->columnInfo = $this->getMockBuilder('Pim\Bundle\ImportExportBundle\Transformer\ColumnInfoInterface')
-            ->disableOrignalConstructor()
-            ->getMock();
+        $this->columnInfo = $this->getMock('Pim\Bundle\ImportExportBundle\Transformer\ColumnInfoInterface');
     }
 }

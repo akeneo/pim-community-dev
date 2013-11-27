@@ -60,7 +60,7 @@ class ColumnInfo implements ColumnInfoInterface
         $this->label = $label;
         $parts = explode('-', $label);
         $this->name = array_shift($parts);
-        $this->propertyPath = lcfirst(Inflector::classify($data['name']));
+        $this->propertyPath = lcfirst(Inflector::classify($this->name));
         $this->suffixes = $parts;
     }
 
@@ -71,7 +71,7 @@ class ColumnInfo implements ColumnInfoInterface
      *
      * @throws ColumnLabelException
      */
-    public function setAttribute($attribute)
+    public function setAttribute(ProductAttribute $attribute)
     {
         $this->attribute = $attribute;
         $this->propertyPath = $attribute->getBackendType();
