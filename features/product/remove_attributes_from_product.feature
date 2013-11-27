@@ -28,14 +28,14 @@ Feature: Remove an attribute from a product
   @javascript
   Scenario: Successfully remove a scopable attribute from a product
     Given the following attribute:
-      | label  | scopable | group |
-      | Length | yes      | sizes |
+      | code            | label           | scopable | group |
+      | scopable_length | Scopable length | yes      | sizes |
     And the following product values:
-      | product | attribute | scope  | value |
-      | nike    | length  | tablet |       |
-      | nike    | length  | mobile |       |
+      | product | attribute       | scope  | value |
+      | nike    | scopable_length | tablet |       |
+      | nike    | scopable_length | mobile |       |
     And I am on the "nike" product page
     When I visit the "Sizes" group
-    And I remove the "Length" attribute
+    And I remove the "Scopable length" attribute
     Then I should see flash message "Attribute successfully removed from the product"
     And attribute in group "Sizes" should be Size

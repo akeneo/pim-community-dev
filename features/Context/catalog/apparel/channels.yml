@@ -1,0 +1,31 @@
+channels:
+    ecommerce:
+        label: Ecommerce
+        locales:
+            - en_US
+            - en_GB
+            - fr_FR
+            - de_DE
+        currencies:
+            - USD
+            - GBP
+            - EUR
+        tree: 2014_collection
+    tablet:
+        label: Tablet
+        locales:
+            - en_US
+            - en_GB
+        currencies:
+            - USD
+            - GBP
+        tree: 2013_collection
+    print:
+        label: Print
+        locales:
+            - en_US
+            - de_DE
+        currencies:
+            - USD
+            - EUR
+        tree: 2015_collection

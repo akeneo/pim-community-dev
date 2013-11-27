@@ -53,7 +53,7 @@ Feature: Filter available products for a variant group
     And I should not see the filters Created at and Updated at
 
   Scenario: Successfully filter by price
-    Given I make visible the filter "Price"
+    Given I show the filter "Price"
     And I filter per price < "47" and currency "EUR"
     Then the grid should contain 2 elements
     And I should see products black_boots and blue_boots

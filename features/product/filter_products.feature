@@ -77,8 +77,8 @@ Feature: Filter products
     Given I am on the products page
     Then I should see the filters SKU, Family and Enabled
     Then I should not see the filters Name, Image, Description
-    When I make visible the filter "Name"
-    And I make visible the filter "Description"
+    When I show the filter "Name"
+    And I show the filter "Description"
     And I hide the filter "SKU"
     Then I should see the filters Name, Description, Family and Enabled
     And I should not see the filters Image, SKU

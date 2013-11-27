@@ -73,8 +73,7 @@ class LoadAttributeData extends AbstractInstallerFixture
             }
         }
 
-        $parameters = $this->prepareParameters($data);
-        $attribute->setParameters($parameters);
+        $attribute->setParameters($this->prepareParameters($data));
 
         return $attribute;
     }
@@ -103,16 +102,25 @@ class LoadAttributeData extends AbstractInstallerFixture
      *
      * @param array $data
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\ProductAttributeTranslation
+     * @return array
      */
     public function prepareParameters($data)
     {
         $parameters = $data['parameters'];
-        $parameters['dateMin']= (isset($parameters['dateMin'])) ? new \DateTime($parameters['dateMin']) : null;
-        $parameters['dateMax']= (isset($parameters['dateMax'])) ? new \DateTime($parameters['dateMax']) : null;
+        $parameters['dateMin'] = (isset($parameters['dateMin'])) ? new \DateTime($parameters['dateMin']) : null;
+        $parameters['dateMax'] = (isset($parameters['dateMax'])) ? new \DateTime($parameters['dateMax']) : null;
 
         if ($data['type'] === 'pim_catalog_simpleselect' and isset($parameters['defaultValue'])) {
-            $parameters['defaultValue']= $this->getReference('product-attributeoption.'.$parameters['defaultValue']);
+            $parameters['defaultValue'] = $this->getReference('product-attributeoption.'.$parameters['defaultValue']);
+        }
+
+        if (isset($parameters['availableLocales'])) {
+            $parameters['availableLocales'] = array_map(
+                function ($localeCode) {
+                    return $this->getReference('locale.' . $localeCode);
+                },
+                $parameters['availableLocales']
+            );
         }
 
         return $parameters;

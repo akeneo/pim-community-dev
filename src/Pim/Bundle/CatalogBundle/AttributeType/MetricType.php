@@ -60,7 +60,9 @@ class MetricType extends FlexMetricType
             array(
                 'name'    => 'metricFamily',
                 'options' => array(
-                    'required' => true
+                    'required'  => true,
+                    'disabled'  => (bool) $attribute->getId(),
+                    'read_only' => (bool) $attribute->getId()
                 )
             ),
             array(

@@ -17,7 +17,7 @@
         }
     },
     "require": {
-        "php": ">=5.3.3",
+        "php": ">=5.4.4",
         "oro/platform": "dev-maintenance/pim_flexibleentity",
         "akeneo/DemoBundle": "dev-flexibleentity",
         "knplabs/knp-gaufrette-bundle": "dev-master",

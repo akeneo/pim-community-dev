@@ -416,6 +416,20 @@ class ProductAttribute extends AbstractEntityAttribute implements
     }
 
     /**
+     * Set available locales
+     *
+     * @param ArrayCollection $availableLocales
+     *
+     * @return ProductAttribute
+     */
+    public function setAvailableLocales($availableLocales)
+    {
+        $this->availableLocales = $availableLocales;
+
+        return $this;
+    }
+
+    /**
      * Get Max characters
      *
      * @return integer $maxCharacters
