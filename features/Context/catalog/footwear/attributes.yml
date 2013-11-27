@@ -234,3 +234,12 @@ attributes:
             laces_white:
                 labels:
                     en_US: White
+    length:
+        labels:
+            en_US: Length
+        type:  pim_catalog_metric
+        group: info
+        parameters:
+            sortOrder:   10
+            metricFamily: Length
+            defaultMetricUnit: CENTIMETER

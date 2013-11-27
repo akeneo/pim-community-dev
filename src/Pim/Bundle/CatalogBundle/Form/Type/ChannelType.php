@@ -125,6 +125,7 @@ class ChannelType extends AbstractType
             array(
                 'required'      => true,
                 'multiple'      => true,
+                'by_reference'  => false,
                 'class'         => 'Pim\Bundle\CatalogBundle\Entity\Locale',
                 'query_builder' => function (LocaleRepository $repository) {
                     return $repository->getLocalesQB();

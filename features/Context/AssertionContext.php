@@ -140,7 +140,7 @@ class AssertionContext extends RawMinkContext
             $title = $this->getCurrentPage()->getConfirmDialogTitle();
 
             if ($expectedTitle !== $title) {
-                $this->createExpectationException(
+                throw $this->createExpectationException(
                     sprintf('Expecting confirm dialog title "%s", saw "%s"', $expectedTitle, $title)
                 );
             }
@@ -151,7 +151,7 @@ class AssertionContext extends RawMinkContext
             $content = $this->getCurrentPage()->getConfirmDialogContent();
 
             if ($expectedContent !== $content) {
-                $this->createExpectationException(
+                throw $this->createExpectationException(
                     sprintf('Expecting confirm dialog content "%s", saw "%s"', $expectedContent, $content)
                 );
             }
