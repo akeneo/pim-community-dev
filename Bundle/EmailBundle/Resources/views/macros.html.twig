@@ -42,7 +42,7 @@
 
 {% macro renderPreviewDialog(formName, title) %}
     <script type="text/javascript">
-        require(['jquery', 'underscore', 'oro/translator', 'oro/modal', 'jquery.bind-first'],
+        require(['jquery', 'underscore', 'oro/translator', 'oro/modal'],
         function($, _, __, Modal){
             $(function () {
                 var showEmailPreviewDialog = function(el) {
@@ -62,7 +62,7 @@
                     var form = $('#{{ formName }}');
                     var formAction = form.attr('action');
 
-                    form.bindFirst('submit', function(e) {
+                    form.submit(function(e) {
                         if (!$(this).data('preview')) {
                             return;
                         }

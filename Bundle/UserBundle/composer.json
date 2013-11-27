@@ -20,7 +20,6 @@
         "oro/grid-bundle": "dev-master",
         "oro/navigation-bundle": "dev-master",
         "oro/data-audit-bundle": "dev-master",
-        "oro/jsfv-bundle": "dev-master",
         "oro/form-bundle": "dev-master",
         "oro/email-bundle": "dev-master",
         "oro/organization-bundle": "dev-master",

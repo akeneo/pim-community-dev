@@ -25,16 +25,18 @@
         </div>
     </div>
 
-    {% if gridName is defined %}
-        {% if params is defined %}
-            {{ dataGrid.renderGrid(gridName, params) }}
-        {% else %}
-            {{ dataGrid.renderGrid(gridName) }}
+    {% block content_datagrid %}
+        {% if gridName is defined %}
+            {% if params is defined %}
+                {{ dataGrid.renderGrid(gridName, params) }}
+            {% else %}
+                {{ dataGrid.renderGrid(gridName) }}
+            {% endif %}
         {% endif %}
-    {% endif %}
 
-    {# fallback for OroGridBundle grids #}
-    {% if gridId is defined %}
-        {{ UI.gridBlock(gridId) }}
-    {% endif %}
+        {# fallback for OroGridBundle grids #}
+        {% if gridId is defined %}
+            {{ UI.gridBlock(gridId) }}
+        {% endif %}
+    {% endblock content_datagrid %}
 {% endblock content %}

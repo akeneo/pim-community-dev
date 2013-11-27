@@ -15,7 +15,7 @@ function (_, numberValidator) {
     return [
         'Length',
         function (value, element, param) {
-            return numberValidator[1].call(this, value.length, element, param);
+            return this.optional(element) || numberValidator[1].call(this, value.length, element, param);
         },
         function (param, element) {
             var value = this.elementValue(element);
