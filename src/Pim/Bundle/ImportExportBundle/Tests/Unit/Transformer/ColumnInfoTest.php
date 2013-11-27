@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Transformer;
 
-use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo;
+use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfo;
 
 /**
  * Tests related class

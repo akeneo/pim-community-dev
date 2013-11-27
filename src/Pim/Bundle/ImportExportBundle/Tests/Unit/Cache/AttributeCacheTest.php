@@ -303,7 +303,7 @@ class AttributeCacheTest extends \PHPUnit_Framework_TestCase
 
     protected function getColumnInfoMock($name, $withAttribute = true)
     {
-        $info = $this->getMock('Pim\Bundle\ImportExportBundle\Transformer\ColumnInfoInterface');
+        $info = $this->getMock('Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoInterface');
         $info->expects($this->any())
             ->method('getName')
             ->will($this->returnValue($name));

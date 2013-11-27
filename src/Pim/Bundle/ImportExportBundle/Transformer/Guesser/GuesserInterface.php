@@ -3,7 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Transformer\Guesser;
 
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
-use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfoInterface;
+use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoInterface;
 
 /**
  * Interface for property guesser

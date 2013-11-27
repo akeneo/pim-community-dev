@@ -11,6 +11,8 @@ use Pim\Bundle\ImportExportBundle\Transformer\Guesser\GuesserInterface;
 use Pim\Bundle\ImportExportBundle\Transformer\Property\EntityUpdaterInterface;
 use Pim\Bundle\ImportExportBundle\Transformer\Property\PropertyTransformerInterface;
 use Pim\Bundle\ImportExportBundle\Transformer\Property\SkipTransformer;
+use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoInterface;
+use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoTransformerInterface;
 
 /**
  * Transforms an array in an entity
@@ -37,7 +39,7 @@ abstract class AbstractOrmTransformer
     protected $guesser;
 
     /**
-     * @var LabelTransformerInterface
+     * @var ColumnInfoTransformerInterface
      */
     protected $labelTransformer;
 
@@ -62,13 +64,13 @@ abstract class AbstractOrmTransformer
      * @param RegistryInterface         $doctrine
      * @param PropertyAccessorInterface $propertyAccessor
      * @param GuesserInterface          $guesser
-     * @param LabelTransformerInterface $labelTransformer
+     * @param ColumnInfoTransformerInterface $labelTransformer
      */
     public function __construct(
         RegistryInterface $doctrine,
         PropertyAccessorInterface $propertyAccessor,
         GuesserInterface $guesser,
-        LabelTransformerInterface $labelTransformer
+        ColumnInfoTransformerInterface $labelTransformer
     ) {
         $this->doctrine = $doctrine;
         $this->propertyAccessor = $propertyAccessor;

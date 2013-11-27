@@ -10,7 +10,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\ImportExportBundle\Cache\AttributeCache;
 use Pim\Bundle\ImportExportBundle\Validator\Import\ImportValidator;
-use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfoInterface;
+use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoInterface;
 
 /**
  * Validates an imported product

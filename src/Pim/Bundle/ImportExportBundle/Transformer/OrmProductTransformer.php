@@ -11,6 +11,8 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\ImportExportBundle\Cache\AttributeCache;
 use Pim\Bundle\ImportExportBundle\Transformer\Guesser\GuesserInterface;
 use Pim\Bundle\ImportExportBundle\Transformer\Property\SkipTransformer;
+use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoInterface;
+use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoTransformerInterface;
 
 /**
  * Specialized OrmTransformer for products
@@ -47,7 +49,7 @@ class OrmProductTransformer extends AbstractOrmTransformer
      * @param RegistryInterface         $doctrine
      * @param PropertyAccessorInterface $propertyAccessor
      * @param GuesserInterface          $guesser
-     * @param LabelTransformerInterface $labelTransformer
+     * @param ColumnInfoTransformerInterface $labelTransformer
      * @param ProductManager            $productManager
      * @param AttributeCache            $attributeCache
      */
@@ -55,7 +57,7 @@ class OrmProductTransformer extends AbstractOrmTransformer
         RegistryInterface $doctrine,
         PropertyAccessorInterface $propertyAccessor,
         GuesserInterface $guesser,
-        LabelTransformerInterface $labelTransformer,
+        ColumnInfoTransformerInterface $labelTransformer,
         ProductManager $productManager,
         AttributeCache $attributeCache
     ) {

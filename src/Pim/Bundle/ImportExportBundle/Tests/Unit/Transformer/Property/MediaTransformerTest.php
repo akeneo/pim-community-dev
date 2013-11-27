@@ -86,7 +86,7 @@ class MediaTransformerTest extends \PHPUnit_Framework_TestCase
                 ->expects($this->never())
                 ->method('getMedia');
         }
-        $columnInfo = $this->getMock('Pim\Bundle\ImportExportBundle\Transformer\ColumnInfoInterface');
+        $columnInfo = $this->getMock('Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoInterface');
         $transformer->setValue($productValue, $columnInfo, $file);
         if ($hasFile) {
             $this->assertEquals($file, $this->media->getFile());

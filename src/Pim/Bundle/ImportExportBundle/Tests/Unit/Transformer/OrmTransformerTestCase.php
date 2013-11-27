@@ -52,7 +52,7 @@ abstract class OrmTransformerTestCase extends PHPUnit_Framework_TestCase
         $this->guesser->expects($this->any())
             ->method('getTransformerInfo')
             ->will($this->returnCallback(array($this, 'getTransformer')));
-        $this->labelTransformer = $this->getMock('Pim\Bundle\ImportExportBundle\Transformer\LabelTransformerInterface');
+        $this->labelTransformer = $this->getMock('Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoTransformerInterface');
         $this->labelTransformer->expects($this->any())
             ->method('transform')
             ->will($this->returnCallback(array($this, 'getColumnInfo')));
@@ -113,7 +113,7 @@ abstract class OrmTransformerTestCase extends PHPUnit_Framework_TestCase
 
     protected function addColumn($label, $addTransformer = true)
     {
-        $columnInfo = $this->getMock('Pim\Bundle\ImportExportBundle\Transformer\ColumnInfoInterface');
+        $columnInfo = $this->getMock('Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoInterface');
         $columnInfo->expects($this->any())
             ->method('getLabel')
             ->will($this->returnValue($label));

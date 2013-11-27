@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Transformer;
+namespace Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo;
 
 use Doctrine\Common\Util\Inflector;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;

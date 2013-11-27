@@ -6,7 +6,7 @@ use Pim\Bundle\CatalogBundle\Entity\ProductPrice;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\ImportExportBundle\Exception\PropertyTransformerException;
-use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfoInterface;
+use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoInterface;
 
 /**
  * Prices attribute transformer

@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ImportExportBundle\Transformer\Property;
 
-use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfoInterface;
+use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoInterface;
 
 /**
  * Extra interface for property transformers which need specific treatment

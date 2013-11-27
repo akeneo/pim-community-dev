@@ -4,7 +4,7 @@ namespace Pim\Bundle\ImportExportBundle\Transformer\Guesser;
 
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Pim\Bundle\ImportExportBundle\Transformer\Property\PropertyTransformerInterface;
-use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfoInterface;
+use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoInterface;
 
 /**
  * Guesses the property transformer by inspecting the ORM column type

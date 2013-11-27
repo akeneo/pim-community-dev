@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle\Transformer;
+namespace Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo;
 
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\ImportExportBundle\Exception\ColumnLabelException;
