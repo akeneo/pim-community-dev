@@ -2,12 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Controller;
 
-use Symfony\Component\Form\Form;
-
-use Pim\Bundle\CatalogBundle\Form\Handler\FamilyHandler;
-
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,6 +21,7 @@ use Pim\Bundle\CatalogBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Exception\DeleteException;
 use Pim\Bundle\CatalogBundle\Factory\FamilyFactory;
+use Pim\Bundle\CatalogBundle\Form\Handler\FamilyHandler;
 use Pim\Bundle\CatalogBundle\Form\Type\AvailableProductAttributesType;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Model\AvailableProductAttributes;
@@ -39,16 +37,24 @@ use Pim\Bundle\GridBundle\Helper\DatagridHelperInterface;
  */
 class FamilyController extends AbstractDoctrineController
 {
-    /** @var DatagridHelperInterface */
+    /**
+     * @var DatagridHelperInterface
+     */
     private $datagridHelper;
 
-    /** @var ChannelManager */
+    /**
+     * @var ChannelManager
+     */
     private $channelManager;
 
-    /** @var FamilyFactory */
+    /**
+     * @var FamilyFactory
+     */
     private $factory;
 
-    /** @var CompletenessManager */
+    /**
+     * @var CompletenessManager
+     */
     private $completenessManager;
 
     /**
@@ -117,20 +123,18 @@ class FamilyController extends AbstractDoctrineController
     /**
      * List families
      *
-     * @param Request $request
-     *
      * @Template
      * @AclAncestor("pim_catalog_family_index")
      * @return Response
      */
-    public function indexAction(Request $request)
+    public function indexAction()
     {
         /** @var $queryBuilder QueryBuilder */
         $queryBuilder = $this->getManager()->createQueryBuilder();
 
         $datagridView = $this->datagridHelper->getDatagrid('family', $queryBuilder)->createView();
 
-        if ('json' === $request->getRequestFormat()) {
+        if ('json' === $this->getRequest()->getRequestFormat()) {
             return $this->datagridHelper->getDatagridRenderer()->renderResultsJsonResponse($datagridView);
         }
 
@@ -142,15 +146,13 @@ class FamilyController extends AbstractDoctrineController
     /**
      * Create a family
      *
-     * @param Request $request
-     *
      * @Template
      * @AclAncestor("pim_catalog_family_create")
      * @return array
      */
-    public function createAction(Request $request)
+    public function createAction()
     {
-        if (!$request->isXmlHttpRequest()) {
+        if (!$this->getRequest()->isXmlHttpRequest()) {
             return $this->redirectToRoute('pim_catalog_family_index');
         }
 
@@ -191,7 +193,7 @@ class FamilyController extends AbstractDoctrineController
             'form'            => $this->familyForm->createView(),
             'historyDatagrid' => $this->getHistoryGrid($family)->createView(),
             'attributesForm'  => $this->getAvailableProductAttributesForm(
-                $family->geTAttributes()->toArray()
+                $family->getAttributes()->toArray()
             )->createView(),
             'channels' => $this->channelManager->getChannels()
         );
@@ -200,16 +202,15 @@ class FamilyController extends AbstractDoctrineController
     /**
      * History of a family
      *
-     * @param Request $request
      * @param Family  $family
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|template
      */
-    public function historyAction(Request $request, Family $family)
+    public function historyAction(Family $family)
     {
         $historyGridView = $this->getHistoryGrid($family)->createView();
 
-        if ('json' === $request->getRequestFormat()) {
+        if ('json' === $this->getRequest()->getRequestFormat()) {
             return $this->datagridHelper->getDatagridRenderer()->renderResultsJsonResponse($historyGridView);
         }
     }
@@ -217,42 +218,40 @@ class FamilyController extends AbstractDoctrineController
     /**
      * Remove a family
      *
-     * @param Family $entity
+     * @param Family $family
      *
      * @AclAncestor("pim_catalog_family_remove")
      * @return Response|RedirectResponse
      */
-    public function removeAction(Family $entity)
+    public function removeAction(Family $family)
     {
-        $this->getManager()->remove($entity);
+        $this->getManager()->remove($family);
         $this->getManager()->flush();
 
         if ($this->getRequest()->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {
-            return $this->redirectToRoute('pim_catalog_family_create');
+            return $this->redirectToRoute('pim_catalog_family_index');
         }
     }
 
     /**
      * Add attributes to a family
      *
-     * @param Request $request The request object
-     * @param integer $id      The family id to which add attributes
+     * @param Family $family
      *
      * @AclAncestor("pim_catalog_family_add_attribute")
      * @return Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function addProductAttributesAction(Request $request, $id)
+    public function addProductAttributesAction(Family $family)
     {
-        $family              = $this->findOr404('PimCatalogBundle:Family', $id);
         $availableAttributes = new AvailableProductAttributes();
         $attributesForm      = $this->getAvailableProductAttributesForm(
             $family->getAttributes()->toArray(),
             $availableAttributes
         );
 
-        $attributesForm->submit($request);
+        $attributesForm->submit($this->getRequest());
 
         foreach ($availableAttributes->getAttributes() as $attribute) {
             $family->addAttribute($attribute);
