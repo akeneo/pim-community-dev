@@ -77,7 +77,7 @@ class Grid extends Index
     public function getRow($value)
     {
         $value = str_replace('"', '', $value);
-        $gridRow = $this->getGridContent()->find('css', sprintf('tr:contains("%s")', $value));
+        $gridRow = $this->getGridContent()->find('css', sprintf('tr td:contains("%s")', $value));
 
         if (!$gridRow) {
             throw new \InvalidArgumentException(
