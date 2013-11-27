@@ -4,7 +4,7 @@ namespace Pim\Bundle\ImportExportBundle\Transformer\Guesser;
 
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Pim\Bundle\ImportExportBundle\Transformer\Property\PropertyTransformerInterface;
-use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo;
+use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfoInterface;
 
 /**
  * Translation guesser
@@ -35,9 +35,9 @@ class TranslationGuesser implements GuesserInterface
     /**
      * {@inheritdoc}
      */
-    public function getTransformerInfo(ColumnInfo $columnInfo, ClassMetadataInfo $metadata)
+    public function getTransformerInfo(ColumnInfoInterface $columnInfo, ClassMetadataInfo $metadata)
     {
-        if (!$columnInfo['locale'] || !$metadata->hasAssociation('translations')) {
+        if (!count($columnInfo->getSuffixes()) || !$metadata->hasAssociation('translations')) {
             return;
         }
 

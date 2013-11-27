@@ -3,7 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Transformer\Guesser;
 
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
-use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo;
+use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfoInterface;
 use Pim\Bundle\ImportExportBundle\Transformer\Guesser\GuesserInterface;
 use Pim\Bundle\ImportExportBundle\Transformer\Property\PropertyTransformerInterface;
 
@@ -51,11 +51,10 @@ class AttributeGuesser implements GuesserInterface
     /**
      * {@inheritdoc}
      */
-    public function getTransformerInfo(ColumnInfo $columnInfo, ClassMetadataInfo $metadata)
+    public function getTransformerInfo(ColumnInfoInterface $columnInfo, ClassMetadataInfo $metadata)
     {
-        if ($this->class !== $metadata->getName() ||
-            !isset($columnInfo['attribute']) ||
-            $this->backendType !== $columnInfo['attribute']->getBackendType()
+        if ($this->class !== $metadata->getName() || !$columnInfo->getAttribute() ||
+            $this->backendType !== $columnInfo->getAttribute()->getBackendType()
         ) {
             return;
         }

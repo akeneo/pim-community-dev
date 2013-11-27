@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\ImportExportBundle\Transformer\Property;
 
-use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo;
-
 /**
  * Boolean attribute transformer
  *

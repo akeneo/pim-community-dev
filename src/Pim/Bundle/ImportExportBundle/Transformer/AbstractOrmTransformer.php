@@ -130,12 +130,12 @@ abstract class AbstractOrmTransformer
      * Sets a property of the object
      *
      * @param object                       $entity
-     * @param ColumnInfo                   $columnInfo
+     * @param ColumnInfoInterface          $columnInfo
      * @param PropertyTransformerInterface $transformer
      * @param array                        $transformerOptions
      * @param mixed                        $value
      */
-    protected function setProperty($entity, ColumnInfo $columnInfo, array $transformerInfo, $value)
+    protected function setProperty($entity, ColumnInfoInterface $columnInfo, array $transformerInfo, $value)
     {
         if ($transformerInfo[0] instanceof SkipTransformer) {
             return array();
@@ -150,7 +150,7 @@ abstract class AbstractOrmTransformer
         if ($transformerInfo[0] instanceof EntityUpdaterInterface) {
             $transformerInfo[0]->setValue($entity, $columnInfo, $value, $transformerInfo[1]);
         } else {
-            $this->propertyAccessor->setValue($entity, $columnInfo['propertyPath'], $value);
+            $this->propertyAccessor->setValue($entity, $columnInfo->getPropertyPath(), $value);
         }
 
         $this->transformedColumnsInfo[] = $columnInfo;
@@ -169,14 +169,14 @@ abstract class AbstractOrmTransformer
     /**
      * Returns the transformer info for a column
      *
-     * @param string $class
-     * @param array  $columnInfo
+     * @param string              $class
+     * @param ColumnInfoInterface $columnInfo
      *
      * @return array
      */
-    protected function getTransformerInfo($class, $columnInfo)
+    protected function getTransformerInfo($class, ColumnInfoInterface $columnInfo)
     {
-        $label = $columnInfo['label'];
+        $label = $columnInfo->getLabel();
         if (!isset($this->transformers[$class][$label])) {
             if (!isset($this->transformers[$class])) {
                 $this->transformers[$class] = array();

@@ -5,7 +5,7 @@ namespace Pim\Bundle\ImportExportBundle\Transformer\Guesser;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Pim\Bundle\ImportExportBundle\Transformer\Guesser\GuesserInterface;
 use Pim\Bundle\ImportExportBundle\Transformer\Property\PropertyTransformerInterface;
-use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo;
+use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfoInterface;
 
 /**
  * Regexp guesser
@@ -48,14 +48,14 @@ class RegexpGuesser implements GuesserInterface
     /**
      * {@inheritdoc}
      */
-    public function getTransformerInfo(ColumnInfo $columnInfo, ClassMetadataInfo $metadata)
+    public function getTransformerInfo(ColumnInfoInterface $columnInfo, ClassMetadataInfo $metadata)
     {
         if ($this->class !== $metadata->getName()) {
             return;
         }
 
         foreach ($this->regexps as $regexp) {
-            if (preg_match($regexp, $columnInfo['label'])) {
+            if (preg_match($regexp, $columnInfo->getLabel())) {
                 return;
             }
         }

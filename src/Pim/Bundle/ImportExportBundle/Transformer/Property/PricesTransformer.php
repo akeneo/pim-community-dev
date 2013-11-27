@@ -6,7 +6,7 @@ use Pim\Bundle\CatalogBundle\Entity\ProductPrice;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\ImportExportBundle\Exception\PropertyTransformerException;
-use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo;
+use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfoInterface;
 
 /**
  * Prices attribute transformer
@@ -71,7 +71,7 @@ class PricesTransformer implements PropertyTransformerInterface, EntityUpdaterIn
      * {@inheritdoc}
      */
 
-    public function setValue($object, ColumnInfo $columnInfo, $data, array $options = array())
+    public function setValue($object, ColumnInfoInterface $columnInfo, $data, array $options = array())
     {
         $currencies = $this->getCurrencies();
         $removeCurrency = function ($code) use (&$currencies) {

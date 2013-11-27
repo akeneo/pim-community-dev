@@ -69,7 +69,6 @@ class AttributeCache
     public function clear()
     {
         $this->attributes = null;
-        $this->columns = null;
         $this->identifierAttribute = null;
         $this->initialized = false;
     }
@@ -128,24 +127,6 @@ class AttributeCache
     public function getIdentifierAttribute()
     {
         return $this->identifierAttribute;
-    }
-
-    /**
-     * Returns an array of information about the columns
-     *
-     * The following info is returned for each column :
-     *
-     * columnLabel:
-     *      attribute:  A ProductAttribute instance
-     *      code:       The code of the attribute
-     *      locale:     The locale of the column
-     *      scope:      The scope of the column
-     *
-     * @return array
-     */
-    public function getColumns()
-    {
-        return $this->columns;
     }
 
     /**
@@ -240,7 +221,7 @@ class AttributeCache
         $codes = array_unique(
             array_map(
                 function ($columnInfo) {
-                    return $columnInfo['name'];
+                    return $columnInfo->getName();
                 },
                 $columnsInfo
             )
@@ -271,28 +252,7 @@ class AttributeCache
             );
         }
         foreach ($columnsInfo as $columnInfo) {
-            $columnInfo['attribute'] = $this->attributes[$columnInfo['name']];
-            $suffixes = $columnInfo['suffixes'];
-            if ($columnInfo['attribute']->getTranslatable()) {
-                if (count($suffixes)) {
-                    $columnInfo['locale'] = array_shift($suffixes);
-                } else {
-                    throw new ColumnLabelException(
-                        'The column "%column%" must contain a locale code',
-                        array('%column%' => $columnInfo['label'])
-                    );
-                }
-            }
-            if ($columnInfo['attribute']->getScopable()) {
-                if (count($suffixes)) {
-                    $columnInfo['scope'] = array_shift($suffixes);
-                } else {
-                    throw new ColumnLabelException(
-                        'The column "%column%" must contain a scope code',
-                        array('%column%' => $columnInfo['label'])
-                    );
-                }
-            }
+            $columnInfo->setAttribute($this->attributes[$columnInfo->getName()]);
         }
     }
 }

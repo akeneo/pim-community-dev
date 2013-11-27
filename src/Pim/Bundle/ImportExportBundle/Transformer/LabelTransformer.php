@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\ImportExportBundle\Transformer;
 
-use Doctrine\Common\Inflector\Inflector;
-
 /**
  * Transforms a label
  *
@@ -13,6 +11,19 @@ use Doctrine\Common\Inflector\Inflector;
  */
 class LabelTransformer implements LabelTransformerInterface
 {
+    /**
+     * @var string
+     */
+    protected $columnInfoClass;
+
+    /**
+     * Constructor
+     * @param string $columnInfoClass
+     */
+    public function __construct($columnInfoClass)
+    {
+        $this->columnInfoClass = $columnInfoClass;
+    }
     /**
      * @var array
      */
@@ -28,7 +39,7 @@ class LabelTransformer implements LabelTransformerInterface
                 if (!isset($this->labels[$class])) {
                     $this->labels[$class] = array();
                 }
-                $this->labels[$class][$label] = new ColumnInfo($label);
+                $this->labels[$class][$label] = new $this->columnInfoClass($label);
             }
 
             return $this->labels[$class][$label];

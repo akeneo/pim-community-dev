@@ -109,7 +109,7 @@ class ImportValidator implements ImportValidatorInterface
     {
         $errors = array();
         foreach ($columnsInfo as $label => $columnInfo) {
-            $violations = $this->validator->validateProperty($entity, $columnInfo['propertyPath']);
+            $violations = $this->validator->validateProperty($entity, $columnInfo->getPropertyPath());
             if ($violations->count()) {
                 $errors[$label] = $this->getErrorArray($violations);
             }

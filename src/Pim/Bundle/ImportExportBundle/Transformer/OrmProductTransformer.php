@@ -5,7 +5,6 @@ namespace Pim\Bundle\ImportExportBundle\Transformer;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Oro\Bundle\BatchBundle\Item\InvalidItemException;
-use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
@@ -119,11 +118,9 @@ class OrmProductTransformer extends AbstractOrmTransformer
         $requiredAttributeCodes = $this->attributeCache->getRequiredAttributeCodes($entity);
         foreach ($data as $label => $value) {
             $columnInfo = $this->labelTransformer->transform($class, $label);
-            $attribute = $this->attributeCache->getAttribute($columnInfo['name']);
-            $columnInfo['propertyPath'] = $attribute->getBackendType();
             $transformerInfo = $this->getTransformerInfo($flexibleValueClass, $columnInfo);
-            if ('' != trim($value) || in_array($columnInfo['name'], $requiredAttributeCodes)) {
-                $error = $this->setProductValue($entity, $attribute, $columnInfo, $transformerInfo, $value);
+            if ('' != trim($value) || in_array($columnInfo->getName(), $requiredAttributeCodes)) {
+                $error = $this->setProductValue($entity, $columnInfo, $transformerInfo, $value);
                 if ($error) {
                     $this->errors[$label] = array($error);
                 }
@@ -134,18 +131,16 @@ class OrmProductTransformer extends AbstractOrmTransformer
     /**
      * Sets a product value
      *
-     * @param ProductInterface $product
-     * @param ProductAttribute $attribute
-     * @param ColumnInfo       $columnInfo
-     * @param array            $transformerInfo
-     * @param mixed            $value
+     * @param ProductInterface    $product
+     * @param ColumnInfoInterface $columnInfo
+     * @param array               $transformerInfo
+     * @param mixed               $value
      *
      * @return array
      */
     protected function setProductValue(
         ProductInterface $product,
-        ProductAttribute $attribute,
-        ColumnInfo $columnInfo,
+        ColumnInfoInterface $columnInfo,
         array $transformerInfo,
         $value
     ) {
@@ -165,11 +160,12 @@ class OrmProductTransformer extends AbstractOrmTransformer
      *
      * @return ProductValueInterface
      */
-    protected function getProductValue(ProductInterface $product, ColumnInfo $columnInfo)
+    protected function getProductValue(ProductInterface $product, ColumnInfoInterface $columnInfo)
     {
-        $productValue = $product->getValue($columnInfo['name'], $columnInfo['locale'], $columnInfo['scope']);
+        $productValue = $product->getValue($columnInfo->getName(), $columnInfo->getLocale(), $columnInfo->getScope());
         if (!$productValue) {
-            $productValue = $product->createValue($columnInfo['name'], $columnInfo['locale'], $columnInfo['scope']);
+            $productValue = $product
+                ->createValue($columnInfo->getName(), $columnInfo->getLocale(), $columnInfo->getScope());
             $product->addValue($productValue);
         }
 
@@ -193,9 +189,11 @@ class OrmProductTransformer extends AbstractOrmTransformer
         $attributeColumnInfos = array();
         $this->propertyColumns = array();
         foreach ($columnsInfo as $columnInfo) {
-            $propertyPath = $columnInfo['propertyPath'];
-            if ($metadata->hasField($propertyPath) || $metadata->hasAssociation($propertyPath)) {
-                $this->propertyColumns[] = $columnInfo['label'];
+            $propertyPath = $columnInfo->getPropertyPath();
+            if (!$columnInfo->getAttribute() &&
+                ($metadata->hasField($propertyPath) || $metadata->hasAssociation($propertyPath))
+                ) {
+                $this->propertyColumns[] = $columnInfo->getPropertyPath();
             } else {
                 $attributeColumnInfos[] = $columnInfo;
             }

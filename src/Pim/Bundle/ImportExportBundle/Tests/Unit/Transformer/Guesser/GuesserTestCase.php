@@ -13,6 +13,7 @@ class GuesserTestCase extends \PHPUnit_Framework_TestCase
 {
     protected $transformer;
     protected $metadata;
+    protected $columnInfo;
 
     protected function setUp()
     {
@@ -25,32 +26,8 @@ class GuesserTestCase extends \PHPUnit_Framework_TestCase
         $this->metadata->expects($this->any())
             ->method('getName')
             ->will($this->returnValue('class'));
-    }
-
-    protected function getColumnInfoMock(array $array = array())
-    {
-        $info = $this->getMockBuilder('Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo')
-            ->disableOriginalConstructor()
+        $this->columnInfo = $this->getMockBuilder('Pim\Bundle\ImportExportBundle\Transformer\ColumnInfoInterface')
+            ->disableOrignalConstructor()
             ->getMock();
-        $info->expects($this->any())
-            ->method(('offsetExists'))
-            ->will(
-                $this->returnCallback(
-                    function ($offset) use ($array) {
-                        return array_key_exists($offset, $array);
-                    }
-                )
-            );
-        $info->expects($this->any())
-            ->method(('offsetGet'))
-            ->will(
-                $this->returnCallback(
-                    function ($offset) use ($array) {
-                        return $array[$offset];
-                    }
-                )
-            );
-
-        return $info;
     }
 }

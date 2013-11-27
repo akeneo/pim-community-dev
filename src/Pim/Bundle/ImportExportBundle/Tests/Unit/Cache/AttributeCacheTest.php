@@ -50,7 +50,7 @@ class AttributeCacheTest extends \PHPUnit_Framework_TestCase
         $this->repository->expects($this->once())
             ->method('findBy')
             ->will($this->returnCallback(array($this, 'getAttributes')));
-        $this->addAttribute('identifier', false, false, AttributeCache::IDENTIFIER_ATTRIBUTE_TYPE);
+        $this->addAttribute('identifier', AttributeCache::IDENTIFIER_ATTRIBUTE_TYPE);
     }
 
     /**
@@ -73,7 +73,7 @@ class AttributeCacheTest extends \PHPUnit_Framework_TestCase
      *
      * @return \Pim\Bundle\CatalogBundle\Entity\ProductAttribute
      */
-    public function addAttribute($code, $translatable = false, $scopable = false, $attributeType = 'default')
+    public function addAttribute($code, $attributeType = 'default')
     {
         $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductAttribute');
 
@@ -84,14 +84,6 @@ class AttributeCacheTest extends \PHPUnit_Framework_TestCase
         $attribute->expects($this->any())
             ->method('getAttributeType')
             ->will($this->returnValue($attributeType));
-
-        $attribute->expects($this->any())
-            ->method('getTranslatable')
-            ->will($this->returnValue($translatable));
-
-        $attribute->expects($this->any())
-            ->method('getScopable')
-            ->will($this->returnValue($scopable));
 
         $this->attributes[$code] = $attribute;
 
@@ -106,18 +98,13 @@ class AttributeCacheTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->attributeCache->isInitialized());
         $this->initializeAttributes();
         $this->addAttribute('col1');
-        $this->addAttribute('col2', true);
-        $this->addAttribute('col3', true, true);
-        $this->addAttribute('col4', false, true);
+        $this->addAttribute('col2');
 
         $this->attributeCache->initialize(
             array(
-                $this->getColumnInfo('identifier'),
-                $this->getColumnInfo('col1'),
-                $this->getColumnInfo('col2-locale1', 'col2', 'locale1'),
-                $this->getColumnInfo('col2-locale2', 'col2', 'locale2'),
-                $this->getColumnInfo('col3-locale-scope', 'col3', 'locale', 'scope'),
-                $this->getColumnInfo('col4-scope', 'col4', null, 'scope')
+                $this->getColumnInfoMock('identifier'),
+                $this->getColumnInfoMock('col1'),
+                $this->getColumnInfoMock('col2'),
             )
         );
 
@@ -133,67 +120,11 @@ class AttributeCacheTest extends \PHPUnit_Framework_TestCase
     public function testClear()
     {
         $this->initializeAttributes();
-        $this->attributeCache->initialize(array($this->getColumnInfo('identifier')));
+        $this->attributeCache->initialize(array($this->getColumnInfoMock('identifier')));
         $this->attributeCache->clear();
         $this->assertFalse($this->attributeCache->isInitialized());
         $this->assertNull($this->attributeCache->getAttributes());
-        $this->assertNull($this->attributeCache->getColumns());
         $this->assertNull($this->attributeCache->getIdentifierAttribute());
-    }
-
-    /**
-     * @expectedException \Pim\Bundle\ImportExportBundle\Exception\ColumnLabelException
-     * @expectedExceptionMessage The column "col" must contain a locale code
-     */
-    public function testColumnWithoutLocale()
-    {
-        $this->initializeAttributes();
-        $this->expectedQueryCodes = array('identifier', 'col');
-        $this->addAttribute('col', true);
-
-        $this->attributeCache->initialize(
-            array(
-                $this->getColumnInfo('identifier'),
-                $this->getColumnInfo('col')
-            )
-        );
-    }
-
-    /**
-     * @expectedException \Pim\Bundle\ImportExportBundle\Exception\ColumnLabelException
-     * @expectedExceptionMessage The column "col" must contain a scope code
-     */
-    public function testColumnWithoutScope()
-    {
-        $this->initializeAttributes();
-        $this->expectedQueryCodes = array('identifier', 'col');
-        $this->addAttribute('col', false, true);
-
-
-        $this->attributeCache->initialize(
-            array(
-                $this->getColumnInfo('identifier'),
-                $this->getColumnInfo('col')
-            )
-        );
-    }
-
-    /**
-     * @expectedException \Pim\Bundle\ImportExportBundle\Exception\ColumnLabelException
-     * @expectedExceptionMessage The column "col" must contain a locale code
-     */
-    public function testColumnWithoutLocalAndScope()
-    {
-        $this->initializeAttributes();
-        $this->expectedQueryCodes = array('identifier', 'col');
-        $this->addAttribute('col', true, true);
-
-        $this->attributeCache->initialize(
-            array(
-                $this->getColumnInfo('identifier'),
-                $this->getColumnInfo('col')
-            )
-        );
     }
 
     /**
@@ -207,9 +138,9 @@ class AttributeCacheTest extends \PHPUnit_Framework_TestCase
 
         $this->attributeCache->initialize(
             array(
-                $this->getColumnInfo('identifier'),
-                $this->getColumnInfo('col1'),
-                $this->getColumnInfo('col2'),
+                $this->getColumnInfoMock('identifier', false),
+                $this->getColumnInfoMock('col1'),
+                $this->getColumnInfoMock('col2'),
             )
         );
     }
@@ -370,18 +301,18 @@ class AttributeCacheTest extends \PHPUnit_Framework_TestCase
         return $collection;
     }
 
-    protected function getColumnInfo($label, $name = null, $locale = null, $scope = null)
+    protected function getColumnInfoMock($name, $withAttribute = true)
     {
-        $info = array(
-            'label'     => $label,
-            'name'      => $name ?: $label,
-            'suffixes'  => array()
-        );
-        if ($locale) {
-            $info['suffixes'][] = $locale;
-        }
-        if ($scope) {
-            $info['suffixes'][] = $scope;
+        $info = $this->getMockBuilder('Pim\Bundle\ImportExportBundle\Transformer\ColumnInfoInterface')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $info->expects($this->any())
+            ->method('getName')
+            ->will($this->returnValue($name));
+        if ($withAttribute && isset($this->attributes[$name])) {
+            $info->expects($this->once())
+                ->method('setAttribute')
+                ->with($this->equalTo($this->attributes[$name]));
         }
 
         return $info;

@@ -10,7 +10,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\ImportExportBundle\Cache\AttributeCache;
 use Pim\Bundle\ImportExportBundle\Validator\Import\ImportValidator;
-use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo;
+use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfoInterface;
 
 /**
  * Validates an imported product
@@ -53,14 +53,14 @@ class ProductImportValidator extends ImportValidator
         $this->checkIdentifier($entity, $columnsInfo, $data);
 
         foreach ($columnsInfo as $columnInfo) {
-            if (isset($columnInfo['attribute'])) {
+            if ($columnInfo->getAttribute()) {
                 $violations = $this->validateProductValue($entity, $columnInfo);
             } else {
-                $violations = $this->validator->validateProperty($entity, $columnInfo['propertyPath']);
+                $violations = $this->validator->validateProperty($entity, $columnInfo->getPropertyPath());
             }
 
             if ($violations->count()) {
-                $errors[$columnInfo['label']] = $this->getErrorArray($violations);
+                $errors[$columnInfo->getLabel()] = $this->getErrorArray($violations);
             }
         }
 
@@ -70,16 +70,16 @@ class ProductImportValidator extends ImportValidator
     /**
      * Validates a ProductValue
      *
-     * @param ProductInterface $product
-     * @param ColumnInfo       $attribute
+     * @param ProductInterface    $product
+     * @param ColumnInfoInterface $attribute
      *
      * @return ConstraintViolationListInterface
      */
-    protected function validateProductValue(ProductInterface $product, ColumnInfo $columnInfo)
+    protected function validateProductValue(ProductInterface $product, ColumnInfoInterface $columnInfo)
     {
         return $this->validator->validateValue(
                 $this->getProductValue($product, $columnInfo)->getData(),
-                $this->getAttributeConstraints($columnInfo['attribute'])
+                $this->getAttributeConstraints($columnInfo->getAttribute())
         );
     }
 
@@ -111,7 +111,7 @@ class ProductImportValidator extends ImportValidator
     {
         $columnLabel = $this->getIdentifierColumn($columnsInfo);
         foreach ($columnsInfo as $columnInfo) {
-            if ($columnLabel === $columnInfo['label']) {
+            if ($columnLabel === $columnInfo->getLabel()) {
                 return $this->getProductValue($entity, $columnInfo)->getData();
             }
         }
@@ -123,9 +123,9 @@ class ProductImportValidator extends ImportValidator
     protected function getIdentifierColumn(array $columnsInfo)
     {
         foreach ($columnsInfo as $columnInfo) {
-            if (isset($columnInfo['attribute']) &&
-                AttributeCache::IDENTIFIER_ATTRIBUTE_TYPE === $columnInfo['attribute']->getAttributeType()) {
-                return $columnInfo['label'];
+            if ($columnInfo->getAttribute() &&
+                AttributeCache::IDENTIFIER_ATTRIBUTE_TYPE === $columnInfo->getAttribute()->getAttributeType()) {
+                return $columnInfo->getLabel();
             }
         }
     }
@@ -133,13 +133,13 @@ class ProductImportValidator extends ImportValidator
     /**
      * Returns a ProductValue
      *
-     * @param ProductInterface $product
-     * @param ColumnInfo       $columnInfo
+     * @param ProductInterface    $product
+     * @param ColumnInfoInterface $columnInfo
      *
      * @return ProductValueInterface
      */
-    protected function getProductValue(ProductInterface $product, ColumnInfo $columnInfo)
+    protected function getProductValue(ProductInterface $product, ColumnInfoInterface $columnInfo)
     {
-        return $product->getValue($columnInfo['name'], $columnInfo['locale'], $columnInfo['scope']);
+        return $product->getValue($columnInfo->getName(), $columnInfo->getLocale(), $columnInfo->getScope());
     }
 }

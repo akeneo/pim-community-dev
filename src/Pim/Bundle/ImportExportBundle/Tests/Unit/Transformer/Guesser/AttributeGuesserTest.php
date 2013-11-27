@@ -12,49 +12,50 @@ use Pim\Bundle\ImportExportBundle\Transformer\Guesser\AttributeGuesser;
  */
 class AttributeGuesserTest extends GuesserTestCase
 {
-    protected $attribute;
 
-    protected function setUp()
+    protected function setAttributeMock()
     {
-        parent::setUp();
-        $this->attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductAttribute');
-        $this->attribute->expects($this->any())
+        $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductAttribute');
+        $attribute->expects($this->any())
             ->method('getBackendType')
             ->will($this->returnValue('backend_type'));
+
+        $this->columnInfo->expects($this->any())
+            ->method('getAttribute')
+            ->will($this->returnValue($attribute));
     }
 
     public function testMatching()
     {
-        $columnInfo = $this->getColumnInfoMock(array('attribute' => $this->attribute));
+        $this->setAttributeMock();
         $guesser = new AttributeGuesser($this->transformer, 'class', 'backend_type');
 
         $this->assertEquals(
             array($this->transformer, array()),
-            $guesser->getTransformerInfo($columnInfo, $this->metadata)
+            $guesser->getTransformerInfo($this->columnInfo, $this->metadata)
         );
     }
 
     public function testNoAttribute()
     {
-        $columnInfo = $this->getColumnInfoMock();
         $guesser = new AttributeGuesser($this->transformer, 'class', 'backend_type');
 
-        $this->assertNull($guesser->getTransformerInfo($columnInfo, $this->metadata));
+        $this->assertNull($guesser->getTransformerInfo($this->columnInfo, $this->metadata));
     }
 
     public function testWrongClass()
     {
-        $columnInfo = $this->getColumnInfoMock(array('attribute' => $this->attribute));
+        $this->setAttributeMock();
         $guesser = new AttributeGuesser($this->transformer, 'other_class', 'backend_type');
 
-        $this->assertNull($guesser->getTransformerInfo($columnInfo, $this->metadata));
+        $this->assertNull($guesser->getTransformerInfo($this->columnInfo, $this->metadata));
     }
 
     public function testWrongBackendType()
     {
-        $columnInfo = $this->getColumnInfoMock(array('attribute' => $this->attribute));
+        $this->setAttributeMock();
         $guesser = new AttributeGuesser($this->transformer, 'class', 'other_backend_type');
 
-        $this->assertNull($guesser->getTransformerInfo($columnInfo, $this->metadata));
+        $this->assertNull($guesser->getTransformerInfo($this->columnInfo, $this->metadata));
     }
 }

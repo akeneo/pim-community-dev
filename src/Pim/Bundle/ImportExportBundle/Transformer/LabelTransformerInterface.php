@@ -24,7 +24,7 @@ interface LabelTransformerInterface
      * @param string       $class
      * @param string|array $label
      *
-     * @return columnInfo|array
+     * @return ColumnInfoInterface|array
      */
     public function transform($class, $label);
 }

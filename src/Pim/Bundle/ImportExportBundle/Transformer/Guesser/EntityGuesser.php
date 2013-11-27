@@ -5,7 +5,7 @@ namespace Pim\Bundle\ImportExportBundle\Transformer\Guesser;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Pim\Bundle\ImportExportBundle\Transformer\Property\PropertyTransformerInterface;
-use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo;
+use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfoInterface;
 
 /**
  * Guesser for entity transformer
@@ -41,13 +41,13 @@ class EntityGuesser implements GuesserInterface
     /**
      * {@inheritdoc}
      */
-    public function getTransformerInfo(ColumnInfo $columnInfo, ClassMetadataInfo $metadata)
+    public function getTransformerInfo(ColumnInfoInterface $columnInfo, ClassMetadataInfo $metadata)
     {
-        if (!$metadata->hasAssociation($columnInfo['propertyPath'])) {
+        if (!$metadata->hasAssociation($columnInfo->getPropertyPath())) {
             return;
         }
 
-        $mapping = $metadata->getAssociationMapping($columnInfo['propertyPath']);
+        $mapping = $metadata->getAssociationMapping($columnInfo->getPropertyPath());
         $relatedMapping = $this->doctrine->getManager()->getClassMetadata($mapping['targetEntity']);
         if (!$relatedMapping->hasField('code')) {
             return;

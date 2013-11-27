@@ -4,7 +4,7 @@ namespace Pim\Bundle\ImportExportBundle\Transformer\Guesser;
 
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Pim\Bundle\ImportExportBundle\Transformer\Property\PropertyTransformerInterface;
-use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo;
+use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfoInterface;
 
 /**
  * Guesses the property transformer by inspecting the ORM column type
@@ -40,10 +40,10 @@ class TypeGuesser implements GuesserInterface
     /**
      * {@inheritdoc}
      */
-    public function getTransformerInfo(ColumnInfo $columnInfo, ClassMetadataInfo $metadata)
+    public function getTransformerInfo(ColumnInfoInterface $columnInfo, ClassMetadataInfo $metadata)
     {
-        if (!$metadata->hasField($columnInfo['propertyPath']) ||
-            $this->type != $metadata->getTypeOfField($columnInfo['propertyPath'])) {
+        if (!$metadata->hasField($columnInfo->getPropertyPath()) ||
+            $this->type != $metadata->getTypeOfField($columnInfo->getPropertyPath())) {
             return;
         }
 

@@ -11,6 +11,7 @@ parameters:
     pim_import_export.transformer.property.metric.class:       Pim\Bundle\ImportExportBundle\Transformer\Property\MetricTransformer
     pim_import_export.transformer.property.prices.class:       Pim\Bundle\ImportExportBundle\Transformer\Property\PricesTransformer
     pim_import_export.transformer.property.skip.class:         Pim\Bundle\ImportExportBundle\Transformer\Property\SkipTransformer
+    pim_import_exoprt.transformer.column_info.class:           Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo
 
 services:
     pim_import_export.transformer.orm:
@@ -23,6 +24,8 @@ services:
 
     pim_import_export.transformer.label:
         class: %pim_import_export.transformer.label.class%
+        arguments:
+            - %pim_import_exoprt.transformer.column_info.class%
 
     pim_import_export.transformer.property.translation:
         class: %pim_import_export.transformer.property.translation.class%
