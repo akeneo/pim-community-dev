@@ -241,7 +241,7 @@ class Grid extends Index
     public function sortBy($column, $order = 'ascending')
     {
         $sorter = $this->getColumnSorter($column);
-        if ($sorter->getAttribute('class') !== strtolower($order)) {
+        if ($sorter->getParent()->getAttribute('class') !== strtolower($order)) {
             $sorter->click();
         }
     }
@@ -265,9 +265,9 @@ class Grid extends Index
         $values = $this->getValuesInColumn($column);
         $sortedValues = $values;
         if ($order === 'ascending') {
-            sort($sortedValues);
+            sort($sortedValues, SORT_NATURAL | SORT_FLAG_CASE);
         } else {
-            rsort($sortedValues);
+            rsort($sortedValues, SORT_NATURAL | SORT_FLAG_CASE);
         }
 
         return $sortedValues === $values;
