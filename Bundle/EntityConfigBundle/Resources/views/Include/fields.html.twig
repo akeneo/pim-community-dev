@@ -33,24 +33,27 @@
     </script>
 {% endblock %}
 
-{% block oro_item_collection_widget %}
-{% spaceless %}
-    {% import 'OroAddressBundle:Include:fields.html.twig' as _address %}
-    {% set prototypeHtml = _address.oro_collection_item_prototype(form) %}
-    <div class="row-oro">
-        <div class="oro-item-collection collection-fields-list" id="{{ id }}_collection" data-prototype="{{ prototypeHtml|escape }}">
-            {% if form.children|length %}
-                {% for child in form.children %}
-                    {{ _address.oro_collection_item_prototype(child) }}
-                {% endfor %}
-            {% elseif show_form_when_empty %}
-                {{ prototypeHtml|replace({'__name__': '0'})|raw }}
-            {% endif %}
+{% block oro_collection_widget %}
+    {% spaceless %}
+        {% import 'OroFormBundle:Form:fields.html.twig' as _form %}
+        {% set prototypeHtml = _form.oro_collection_item_prototype(form) %}
+
+        {% set attr = attr|merge({'class': (attr.class is defined ? attr.class ~ ' ' : '') ~ 'oro-item-collection collection-fields-list' }) %}
+        {% set id = id ~ '_collection' %}
+        <div class="row-oro">
+            <div {{ block('widget_container_attributes') }} data-prototype="{{ prototypeHtml|escape }}">
+                {% if form.children|length %}
+                    {% for child in form.children %}
+                        {{ _form.oro_collection_item_prototype(child) }}
+                    {% endfor %}
+                {% elseif show_form_when_empty %}
+                    {{ prototypeHtml|replace({'__name__': '0'})|raw }}
+                {% endif %}
+            </div>
+            <a class="btn add-list-item" href="javascript: void(0);"><i class="icon-plus"></i>{{ 'Add'|trans }}</a>
         </div>
-        <a class="btn add-list-item" href="javascript: void(0);"><i class="icon-plus"></i>{{ 'Add'|trans }}</a>
-    </div>
-    {{ _self.oro_item_collection_validate_default_js(_context) }}
-{% endspaceless %}
+        {{ _self.oro_item_collection_validate_default_js(_context) }}
+    {% endspaceless %}
 {% endblock %}
 
 {% macro oro_item_collection_validate_default_js(context) %}
@@ -64,13 +67,9 @@
             require(['jquery'],
             function($){
                 $(function() {
-                    var container = $('#{{ id }}_collection');
+                    var container = $('#{{ context.id }}');
 
                     {% if has_default %}
-                    /**
-                     * Allow only 1 primary checkbox to be checked.
-                     * This logic convert checkbox logic to logic used in radiobutton
-                     */
                     container.on('click', '[name$="[is_default]"]', function() {
                         var is_expanded = $('form select#oro_entity_config_type_extend_set_expanded option:selected').attr('value');
                         if (is_expanded == 0) {
@@ -82,7 +81,7 @@
                     });
                     {% endif %}
 
-                    var change_defaults_type = function(){
+                    var change_defaults_type = function() {
                         var el = $(this),
                             is_expanded = el.find('option:selected').attr('value');
 
@@ -92,7 +91,7 @@
                         });
                     };
 
-                    var set_default_type = function(){
+                    var set_default_type = function() {
                         var is_expanded = $('form select#oro_entity_config_type_extend_set_expanded option:selected').attr('value');
                         container.find('[name$="[is_default]"]').each(function (idx, el) {
                             el.type = (is_expanded == 1) ? 'checkbox' : 'radio';
