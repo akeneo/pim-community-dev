@@ -34,10 +34,21 @@
             </div>
         </div>
         <div id="comparison-switcher" class="btn-group">
-            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                {{ 'Translate'|trans }}
-                <span class="caret"></span>
-            </a>
+
+            {% if comparisonLocale is not null %}
+                <a class="btn btn-danger" href="{{ path('pim_catalog_product_edit', {id: form.vars.value.id, dataLocale: dataLocale}) }}">
+                    {{ 'Hide translations'|trans }}
+                </a>
+                <button class="btn dropdown-toggle btn-danger" data-toggle="dropdown" >
+                    <span class="caret"></span>
+                </button>
+            {% else %}
+                <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                    {{ 'Translate'|trans }}
+                    <span class="caret"></span>
+                </a>
+            {% endif %}
+
             <ul class="dropdown-menu pull-right">
                 {% for locale in locales if locale != dataLocale %}
                     <li class="{{ locale.code == comparisonLocale ? 'active' : '' }}">
