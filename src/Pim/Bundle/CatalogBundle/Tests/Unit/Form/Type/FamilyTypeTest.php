@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\Form\Type;
 
+use Pim\Bundle\CatalogBundle\Form\Subscriber\AddAttributeRequirementsSubscriber;
 use Pim\Bundle\CatalogBundle\Form\Type\FamilyType;
 
 /**
@@ -21,7 +22,7 @@ class FamilyTypeTest extends AbstractFormTypeTest
         parent::setUp();
 
         // Create form type
-        $this->type = new FamilyType();
+        $this->type = new FamilyType($this->getRequirementsSubscriber());
         $this->form = $this->factory->create($this->type);
     }
 
@@ -41,5 +42,28 @@ class FamilyTypeTest extends AbstractFormTypeTest
 
         // Assert name
         $this->assertEquals('pim_family', $this->form->getName());
+    }
+
+    /**
+     * Get attribute requirements subscriber mock
+     *
+     * @return AddAttributeRequirementsSubscriber
+     */
+    private function getRequirementsSubscriber()
+    {
+        $channelManager = $this->getChannelManagerMock();
+
+        return new AddAttributeRequirementsSubscriber($channelManager);
+    }
+
+    /**
+     * @return ChannelManager
+     */
+    private function getChannelManagerMock()
+    {
+        return $this
+            ->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\ChannelManager')
+            ->disableOriginalConstructor()
+            ->getMock();
     }
 }
