@@ -1,3 +1,0 @@
-bundles:
-    - APY\JsFormValidationBundle\APYJsFormValidationBundle
-    - Oro\Bundle\JsFormValidationBundle\OroJsFormValidationBundle

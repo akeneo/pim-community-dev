@@ -7,7 +7,7 @@ function(localeSettings) {
      * Name formatter
      *
      * @export  oro/formatter/name
-     * @class   oro.NameFormatter
+     * @name    oro.formatter.name
      */
     return {
         /**
