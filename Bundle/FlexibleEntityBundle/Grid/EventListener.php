@@ -11,11 +11,10 @@ use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\PropertyInterface;
 use Oro\Bundle\DataGridBundle\Extension\Sorter\Configuration as OrmSorterConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
-use Oro\Bundle\FilterBundle\Extension\Configuration as FilterConfiguration;
-use Oro\Bundle\FilterBundle\Extension\Orm\FilterInterface;
+use Oro\Bundle\FilterBundle\Grid\Extension\Configuration as FilterConfiguration;
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Oro\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository;
-use Oro\Bundle\FlexibleEntityBundle\Grid\Extension\Filter\FlexibleFilterUtility;
+use Oro\Bundle\FlexibleEntityBundle\Grid\Extension\Filter\FilterUtility;
 use Oro\Bundle\FlexibleEntityBundle\Grid\Extension\Formatter\Property\FlexibleFieldProperty;
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
@@ -104,11 +103,11 @@ class EventListener
                     $config->offsetSetByPath(
                         sprintf('%s[%s]', FilterConfiguration::COLUMNS_PATH, $attribute),
                         [
-                            FilterConfiguration::TYPE_KEY          => $filterType,
-                            FlexibleFilterUtility::FEN_KEY         => $flexibleEntity,
-                            FilterInterface::DATA_NAME_KEY         => $attribute,
-                            FlexibleFilterUtility::PARENT_TYPE_KEY => $parentType,
-                            FilterConfiguration::ENABLED_KEY       => $enabledFilter
+                            FilterUtility::TYPE_KEY        => $filterType,
+                            FilterUtility::FEN_KEY         => $flexibleEntity,
+                            FilterUtility::DATA_NAME_KEY   => $attribute,
+                            FilterUtility::PARENT_TYPE_KEY => $parentType,
+                            FilterUtility::ENABLED_KEY     => $enabledFilter
                         ]
                     );
                 }

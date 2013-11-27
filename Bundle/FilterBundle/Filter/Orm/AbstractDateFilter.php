@@ -1,12 +1,8 @@
 <?php
 
-namespace Oro\Bundle\FilterBundle\Extension\Orm;
+namespace Oro\Bundle\FilterBundle\Filter\Orm;
 
 use Doctrine\ORM\QueryBuilder;
-
-use Symfony\Component\Form\FormFactoryInterface;
-
-use Oro\Bundle\LocaleBundle\Twig\DateFormatExtension;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\DateRangeFilterType;
 
 abstract class AbstractDateFilter extends AbstractFilter
@@ -15,11 +11,6 @@ abstract class AbstractDateFilter extends AbstractFilter
      * DateTime object as string format
      */
     const DATETIME_FORMAT = 'Y-m-d';
-
-    public function __construct(FormFactoryInterface $factory)
-    {
-        parent::__construct($factory);
-    }
 
     /**
      * {@inheritdoc}
@@ -47,7 +38,7 @@ abstract class AbstractDateFilter extends AbstractFilter
             $dateEndValue,
             $startDateParameterName,
             $endDateParameterName,
-            $this->get(self::DATA_NAME_KEY)
+            $this->get(FilterUtility::DATA_NAME_KEY)
         );
 
         /** @var $queryBuilder QueryBuilder */

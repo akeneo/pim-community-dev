@@ -1,19 +1,26 @@
 parameters:
-    oro_filter.extension.orm.string_filter.class:          Oro\Bundle\FilterBundle\Extension\Orm\StringFilter
-    oro_filter.extension.orm.select_row_filter.class:      Oro\Bundle\FilterBundle\Extension\Orm\SelectRowFilter
-    oro_filter.extension.orm.number_filter.class:          Oro\Bundle\FilterBundle\Extension\Orm\NumberFilter
-    oro_filter.extension.orm.percent_filter.class:         Oro\Bundle\FilterBundle\Extension\Orm\PercentFilter
-    oro_filter.extension.orm.choice_filter.class:          Oro\Bundle\FilterBundle\Extension\Orm\ChoiceFilter
-    oro_filter.extension.orm.entity_filter.class:          Oro\Bundle\FilterBundle\Extension\Orm\EntityFilter
-    oro_filter.extension.orm.boolean_filter.class:         Oro\Bundle\FilterBundle\Extension\Orm\BooleanFilter
-    oro_filter.extension.orm.date_range_filter.class:      Oro\Bundle\FilterBundle\Extension\Orm\DateRangeFilter
-    oro_filter.extension.orm.datetime_range_filter.class:  Oro\Bundle\FilterBundle\Extension\Orm\DateTimeRangeFilter
+    oro_filter.extension.filter_utility.class:             Oro\Bundle\FilterBundle\Filter\Orm\FilterUtility
+    oro_filter.extension.orm.string_filter.class:          Oro\Bundle\FilterBundle\Filter\Orm\StringFilter
+    oro_filter.extension.orm.select_row_filter.class:      Oro\Bundle\FilterBundle\Filter\Orm\SelectRowFilter
+    oro_filter.extension.orm.number_filter.class:          Oro\Bundle\FilterBundle\Filter\Orm\NumberFilter
+    oro_filter.extension.orm.percent_filter.class:         Oro\Bundle\FilterBundle\Filter\Orm\PercentFilter
+    oro_filter.extension.orm.choice_filter.class:          Oro\Bundle\FilterBundle\Filter\Orm\ChoiceFilter
+    oro_filter.extension.orm.entity_filter.class:          Oro\Bundle\FilterBundle\Filter\Orm\EntityFilter
+    oro_filter.extension.orm.boolean_filter.class:         Oro\Bundle\FilterBundle\Filter\Orm\BooleanFilter
+    oro_filter.extension.orm.date_range_filter.class:      Oro\Bundle\FilterBundle\Filter\Orm\DateRangeFilter
+    oro_filter.extension.orm.datetime_range_filter.class:  Oro\Bundle\FilterBundle\Filter\Orm\DateTimeRangeFilter
 
 services:
+    oro_filter.extension.filter_utility:
+        class: %oro_filter.extension.filter_utility.class%
+        arguments:
+            - @oro_flexibleentity.registry
+
     oro_filter.extension.orm.string_filter:
         class: %oro_filter.extension.orm.string_filter.class%
         arguments:
             - @form.factory
+            - @oro_filter.extension.filter_utility
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: string }
 
@@ -21,6 +28,7 @@ services:
         class: %oro_filter.extension.orm.select_row_filter.class%
         arguments:
             - @form.factory
+            - @oro_filter.extension.filter_utility
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: selectrow }
 
@@ -28,6 +36,7 @@ services:
         class: %oro_filter.extension.orm.number_filter.class%
         arguments:
             - @form.factory
+            - @oro_filter.extension.filter_utility
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: number }
 
@@ -35,6 +44,7 @@ services:
         class: %oro_filter.extension.orm.percent_filter.class%
         arguments:
             - @form.factory
+            - @oro_filter.extension.filter_utility
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: percent }
 
@@ -42,6 +52,7 @@ services:
         class: %oro_filter.extension.orm.choice_filter.class%
         arguments:
             - @form.factory
+            - @oro_filter.extension.filter_utility
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: choice }
 
@@ -49,6 +60,7 @@ services:
         class: %oro_filter.extension.orm.entity_filter.class%
         arguments:
             - @form.factory
+            - @oro_filter.extension.filter_utility
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: entity }
 
@@ -56,6 +68,7 @@ services:
         class: %oro_filter.extension.orm.boolean_filter.class%
         arguments:
             - @form.factory
+            - @oro_filter.extension.filter_utility
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: boolean }
 
@@ -63,6 +76,7 @@ services:
         class: %oro_filter.extension.orm.date_range_filter.class%
         arguments:
             - @form.factory
+            - @oro_filter.extension.filter_utility
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: date }
 
@@ -70,6 +84,7 @@ services:
         class: %oro_filter.extension.orm.datetime_range_filter.class%
         arguments:
             - @form.factory
+            - @oro_filter.extension.filter_utility
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: datetime }
 

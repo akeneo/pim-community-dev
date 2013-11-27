@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\FilterBundle\Extension\Orm;
+namespace Oro\Bundle\FilterBundle\Filter\Orm;
 
 use Oro\Bundle\FilterBundle\Form\Type\Filter\NumberFilterType;
 
@@ -11,10 +11,10 @@ class PercentFilter extends NumberFilter
      */
     public function init($name, array $params)
     {
-        $params[self::FRONTEND_TYPE_KEY]             = 'number';
-        $params[self::FORM_OPTIONS_KEY]              = isset($params[self::FORM_OPTIONS_KEY])
-            ? $params[self::FORM_OPTIONS_KEY] : [];
-        $params[self::FORM_OPTIONS_KEY]['data_type'] = NumberFilterType::DATA_DECIMAL;
+        $params[FilterUtility::FRONTEND_TYPE_KEY]             = 'number';
+        $params[FilterUtility::FORM_OPTIONS_KEY]              =
+            isset($params[FilterUtility::FORM_OPTIONS_KEY]) ? $params[FilterUtility::FORM_OPTIONS_KEY] : [];
+        $params[FilterUtility::FORM_OPTIONS_KEY]['data_type'] = NumberFilterType::DATA_DECIMAL;
         parent::init($name, $params);
     }
 

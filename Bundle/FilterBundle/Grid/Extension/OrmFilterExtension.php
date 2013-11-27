@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\FilterBundle\Extension;
+namespace Oro\Bundle\FilterBundle\Grid\Extension;
 
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -12,7 +12,8 @@ use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 use Oro\Bundle\DataGridBundle\Extension\AbstractExtension;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
-use Oro\Bundle\FilterBundle\Extension\Orm\FilterInterface;
+use Oro\Bundle\FilterBundle\Filter\Orm\FilterUtility;
+use Oro\Bundle\FilterBundle\Filter\Orm\FilterInterface;
 
 class OrmFilterExtension extends AbstractExtension
 {
@@ -196,7 +197,7 @@ class OrmFilterExtension extends AbstractExtension
      */
     protected function getFilterObject($name, array $config)
     {
-        $type = $config[Configuration::TYPE_KEY];
+        $type = $config[FilterUtility::TYPE_KEY];
 
         $filter = $this->filters[$type];
         $filter->init($name, $config);

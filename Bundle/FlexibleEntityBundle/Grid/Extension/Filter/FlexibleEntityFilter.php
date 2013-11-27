@@ -4,24 +4,12 @@ namespace Oro\Bundle\FlexibleEntityBundle\Grid\Extension\Filter;
 
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Common\Collections\ArrayCollection;
-
 use Symfony\Component\Form\FormFactoryInterface;
-
-use Oro\Bundle\FilterBundle\Extension\Orm\EntityFilter;
+use Oro\Bundle\FilterBundle\Filter\Orm\EntityFilter;
 
 class FlexibleEntityFilter extends EntityFilter
 {
     const BACKEND_TYPE_KEY = 'backend_type';
-
-    /** @var FlexibleFilterUtility */
-    protected $util;
-
-    public function __construct(FormFactoryInterface $factory, FlexibleFilterUtility $util)
-    {
-        parent::__construct($factory);
-        $this->util = $util;
-        $this->paramMap = FlexibleFilterUtility::$paramMap;
-    }
 
     public function init($name, array $params)
     {
@@ -40,8 +28,8 @@ class FlexibleEntityFilter extends EntityFilter
 
             $this->util->applyFlexibleFilter(
                 $qb,
-                $this->get(FlexibleFilterUtility::FEN_KEY),
-                $this->get(self::DATA_NAME_KEY),
+                $this->get(FilterUtility::FEN_KEY),
+                $this->get(FilterUtility::DATA_NAME_KEY),
                 $this->extractIds($data['value']),
                 $operator
             );
@@ -61,7 +49,7 @@ class FlexibleEntityFilter extends EntityFilter
      */
     protected function getClassName()
     {
-        $fm            = $this->util->getFlexibleManager($this->get(FlexibleFilterUtility::FEN_KEY));
+        $fm            = $this->util->getFlexibleManager($this->get(FilterUtility::FEN_KEY));
         $valueName     = $fm->getFlexibleValueName();
         $valueMetadata = $fm->getStorageManager()
             ->getMetadataFactory()

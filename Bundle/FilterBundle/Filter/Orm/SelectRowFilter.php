@@ -1,9 +1,8 @@
 <?php
 
-namespace Oro\Bundle\FilterBundle\Extension\Orm;
+namespace Oro\Bundle\FilterBundle\Filter\Orm;
 
 use Doctrine\ORM\QueryBuilder;
-
 use Oro\Bundle\FilterBundle\Form\Type\Filter\SelectRowFilterType;
 
 class SelectRowFilter extends ChoiceFilter
@@ -36,10 +35,10 @@ class SelectRowFilter extends ChoiceFilter
                 $expression = $qb->expr()->eq(0, 1);
                 break;
             case !empty($data['in']):
-                $expression = $qb->expr()->in($this->get(self::DATA_NAME_KEY), $data['in']);
+                $expression = $qb->expr()->in($this->get(FilterUtility::DATA_NAME_KEY), $data['in']);
                 break;
             case !empty($data['out']):
-                $expression = $qb->expr()->notIn($this->get(self::DATA_NAME_KEY), $data['out']);
+                $expression = $qb->expr()->notIn($this->get(FilterUtility::DATA_NAME_KEY), $data['out']);
                 break;
         }
 

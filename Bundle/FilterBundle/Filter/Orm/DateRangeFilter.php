@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\FilterBundle\Extension\Orm;
+namespace Oro\Bundle\FilterBundle\Filter\Orm;
 
 use Oro\Bundle\FilterBundle\Form\Type\Filter\DateRangeFilterType;
 

@@ -3,26 +3,11 @@
 namespace Oro\Bundle\FlexibleEntityBundle\Grid\Extension\Filter;
 
 use Doctrine\ORM\QueryBuilder;
-
-use Symfony\Component\Form\FormFactoryInterface;
-
-use Oro\Bundle\FilterBundle\Extension\Orm\AbstractDateFilter;
+use Oro\Bundle\FilterBundle\Filter\Orm\AbstractDateFilter;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\DateRangeFilterType;
 
 abstract class AbstractFlexibleDateFilter extends AbstractDateFilter
 {
-    /** @var FlexibleFilterUtility */
-    protected $util;
-
-    public function __construct(
-        FormFactoryInterface $factory,
-        FlexibleFilterUtility $util
-    ) {
-        parent::__construct($factory);
-        $this->util     = $util;
-        $this->paramMap = FlexibleFilterUtility::$paramMap;
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -44,7 +29,7 @@ abstract class AbstractFlexibleDateFilter extends AbstractDateFilter
             $qb,
             $dateStartValue,
             $dateEndValue,
-            $this->get(self::DATA_NAME_KEY)
+            $this->get(FilterUtility::DATA_NAME_KEY)
         );
 
         return true;
@@ -123,6 +108,6 @@ abstract class AbstractFlexibleDateFilter extends AbstractDateFilter
      */
     protected function getFEN()
     {
-        return $this->get(FlexibleFilterUtility::FEN_KEY);
+        return $this->get(FilterUtility::FEN_KEY);
     }
 }

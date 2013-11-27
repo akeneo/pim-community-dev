@@ -1,17 +1,14 @@
 <?php
 
-namespace Oro\Bundle\FilterBundle\Extension;
+namespace Oro\Bundle\FilterBundle\Grid\Extension;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
-use Oro\Bundle\FilterBundle\Extension\Orm\FilterInterface;
+use Oro\Bundle\FilterBundle\Filter\Orm\FilterUtility;
 
 class Configuration implements ConfigurationInterface
 {
-    const TYPE_KEY    = 'type';
-    const ENABLED_KEY ='enabled';
-
     const FILTERS_PATH         = '[filters]';
     const COLUMNS_PATH         = '[filters][columns]';
     const DEFAULT_FILTERS_PATH = '[filters][default]';
@@ -40,19 +37,19 @@ class Configuration implements ConfigurationInterface
                     ->prototype('array')
                         ->ignoreExtraKeys()
                         ->children()
-                            ->scalarNode(self::TYPE_KEY)
+                            ->scalarNode(FilterUtility::TYPE_KEY)
                                 ->isRequired()
                                 ->validate()
                                 ->ifNotInArray($this->types)
                                     ->thenInvalid('Invalid filter type "%s"')
                                 ->end()
                             ->end()
-                            ->scalarNode(FilterInterface::DATA_NAME_KEY)->isRequired()->end()
+                            ->scalarNode(FilterUtility::DATA_NAME_KEY)->isRequired()->end()
                             ->enumNode('filter_condition')
-                                ->values(array(FilterInterface::CONDITION_AND, FilterInterface::CONDITION_OR))
+                                ->values(array(FilterUtility::CONDITION_AND, FilterUtility::CONDITION_OR))
                             ->end()
                             ->booleanNode('filter_by_having')->end()
-                            ->booleanNode(self::ENABLED_KEY)->end()
+                            ->booleanNode(FilterUtility::ENABLED_KEY)->end()
                         ->end()
                     ->end()
                 ->end()

@@ -4,27 +4,15 @@ namespace Oro\Bundle\FlexibleEntityBundle\Grid\Extension\Filter;
 
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Common\Persistence\ObjectRepository;
-
 use Symfony\Component\Form\FormFactoryInterface;
-
 use Oro\Bundle\FlexibleEntityBundle\Entity\Attribute;
-use Oro\Bundle\FilterBundle\Extension\Orm\ChoiceFilter;
+use Oro\Bundle\FilterBundle\Filter\Orm\ChoiceFilter;
 use Oro\Bundle\FlexibleEntityBundle\Entity\AttributeOption;
 
 class FlexibleChoiceFilter extends ChoiceFilter
 {
-    /** @var FlexibleFilterUtility */
-    protected $util;
-
     /** @var array */
     protected $valueOptions;
-
-    public function __construct(FormFactoryInterface $factory, FlexibleFilterUtility $util)
-    {
-        parent::__construct($factory);
-        $this->util = $util;
-        $this->paramMap = FlexibleFilterUtility::$paramMap;
-    }
 
     /**
      * {@inheritdoc}
@@ -35,8 +23,14 @@ class FlexibleChoiceFilter extends ChoiceFilter
         if ($data) {
             $operator = $this->getOperator($data['type']);
 
-            $fen = $this->get(FlexibleFilterUtility::FEN_KEY);
-            $this->util->applyFlexibleFilter($qb, $fen, $this->get(self::DATA_NAME_KEY), $data['value'], $operator);
+            $fen = $this->get(FilterUtility::FEN_KEY);
+            $this->util->applyFlexibleFilter(
+                $qb,
+                $fen,
+                $this->get(FilterUtility::DATA_NAME_KEY),
+                $data['value'],
+                $operator
+            );
 
             return true;
         }
@@ -71,8 +65,8 @@ class FlexibleChoiceFilter extends ChoiceFilter
     protected function getValueOptions()
     {
         if (null === $this->valueOptions) {
-            $filedName       = $this->get(self::DATA_NAME_KEY);
-            $flexibleManager = $this->util->getFlexibleManager($this->get(FlexibleFilterUtility::FEN_KEY));
+            $filedName       = $this->get(FilterUtility::DATA_NAME_KEY);
+            $flexibleManager = $this->util->getFlexibleManager($this->get(FilterUtility::FEN_KEY));
 
             /** @var $attributeRepository ObjectRepository */
             $attributeRepository = $flexibleManager->getAttributeRepository();

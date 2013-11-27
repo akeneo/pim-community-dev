@@ -1,13 +1,10 @@
 <?php
 
-namespace Oro\Bundle\FilterBundle\Extension\Orm;
+namespace Oro\Bundle\FilterBundle\Filter\Orm;
 
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Common\Collections\Collection;
-
 use Symfony\Component\Form\Extension\Core\View\ChoiceView;
-
-use Oro\Bundle\FilterBundle\Extension\Configuration;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\ChoiceFilterType;
 
 class ChoiceFilter extends AbstractFilter
@@ -34,9 +31,9 @@ class ChoiceFilter extends AbstractFilter
         $parameter = $this->generateQueryParameterName();
 
         if ('IN' == $operator) {
-            $expression = $qb->expr()->in($this->get(self::DATA_NAME_KEY), ':' . $parameter);
+            $expression = $qb->expr()->in($this->get(FilterUtility::DATA_NAME_KEY), ':' . $parameter);
         } else {
-            $expression = $qb->expr()->notIn($this->get(self::DATA_NAME_KEY), ':' . $parameter);
+            $expression = $qb->expr()->notIn($this->get(FilterUtility::DATA_NAME_KEY), ':' . $parameter);
         }
 
         $this->applyFilterToClause($qb, $expression);
@@ -70,7 +67,7 @@ class ChoiceFilter extends AbstractFilter
         $metadata['populateDefault'] = $formView->vars['populate_default'];
 
         if ($fieldView->vars['multiple']) {
-            $metadata[Configuration::TYPE_KEY] = 'multichoice';
+            $metadata[FilterUtility::TYPE_KEY] = 'multichoice';
         }
         return $metadata;
     }

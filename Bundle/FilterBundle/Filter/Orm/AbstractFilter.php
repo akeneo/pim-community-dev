@@ -1,45 +1,39 @@
 <?php
 
-namespace Oro\Bundle\FilterBundle\Extension\Orm;
+namespace Oro\Bundle\FilterBundle\Filter\Orm;
 
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
-
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormFactoryInterface;
 
-use Oro\Bundle\FilterBundle\Extension\Configuration;
-
 abstract class AbstractFilter implements FilterInterface
 {
+    /** @var FormFactoryInterface */
+    protected $formFactory;
+
+    /** @var FilterUtility */
+    protected $util;
+
     /** @var string */
     protected $name;
 
     /** @var array */
     protected $params;
 
-    /** @var FormFactoryInterface */
-    protected $formFactory;
-
     /** @var Form */
     protected $form;
 
     /**
-     * Map configuration keys to metadata keys
+     * Constructor
      *
-     * @var array
+     * @param FormFactoryInterface $factory
+     * @param FilterUtility        $util
      */
-    protected $paramMap = [self::FRONTEND_TYPE_KEY => self::TYPE_KEY];
-
-    /** @var array */
-    protected $excludeParams = [];
-
-    /** @var array */
-    protected $excludeParamsDefault = [self::DATA_NAME_KEY, self::FORM_OPTIONS_KEY];
-
-    public function __construct(FormFactoryInterface $factory)
+    public function __construct(FormFactoryInterface $factory, FilterUtility $util)
     {
         $this->formFactory = $factory;
+        $this->util        = $util;
     }
 
     /**
@@ -60,7 +54,7 @@ abstract class AbstractFilter implements FilterInterface
             $this->form = $this->formFactory->create(
                 $this->getFormType(),
                 [],
-                array_merge($this->getOr(self::FORM_OPTIONS_KEY, []), ['csrf_protection' => false])
+                array_merge($this->getOr(FilterUtility::FORM_OPTIONS_KEY, []), ['csrf_protection' => false])
             );
         }
 
@@ -88,15 +82,17 @@ abstract class AbstractFilter implements FilterInterface
             // use filter name if label not set
             'label'                    => ucfirst($this->name),
             'choices'                  => $typeView->vars['choices'],
-            Configuration::ENABLED_KEY => true,
+            FilterUtility::ENABLED_KEY => true,
         ];
 
         $metadata = array_diff_key(
             $this->get(),
-            array_flip(array_merge($this->excludeParams, $this->excludeParamsDefault))
+            array_flip($this->util->getExcludeParams())
         );
         $metadata = $this->mapParams($metadata);
         $metadata = array_merge($defaultMetadata, $metadata);
+
+        return $metadata;
 
         return $metadata;
     }
@@ -121,7 +117,7 @@ abstract class AbstractFilter implements FilterInterface
         }
 
         /** @var QueryBuilder $queryBuilder */
-        if ($this->getOr('filter_condition', self::CONDITION_AND) == self::CONDITION_OR) {
+        if ($this->getOr('filter_condition', FilterUtility::CONDITION_AND) == FilterUtility::CONDITION_OR) {
             $qb->orWhere($parameter);
         } else {
             $qb->andWhere($parameter);
@@ -141,7 +137,7 @@ abstract class AbstractFilter implements FilterInterface
         }
 
         /** @var $queryBuilder QueryBuilder */
-        if ($this->getOr('filter_condition', self::CONDITION_AND) == self::CONDITION_OR) {
+        if ($this->getOr('filter_condition', FilterUtility::CONDITION_AND) == FilterUtility::CONDITION_OR) {
             $qb->orHaving($parameter);
         } else {
             $qb->andHaving($parameter);
@@ -160,7 +156,8 @@ abstract class AbstractFilter implements FilterInterface
     private function fixComparison(QueryBuilder $qb, $parameter)
     {
         if ($parameter instanceof \Doctrine\ORM\Query\Expr\Comparison
-            && ($parameter->getOperator() === 'LIKE' || $parameter->getOperator() === 'NOT LIKE')) {
+            && ($parameter->getOperator() === 'LIKE' || $parameter->getOperator() === 'NOT LIKE')
+        ) {
             $extraSelect   = null;
             $expectedAlias = (string)$parameter->getLeftExpr();
 
@@ -282,9 +279,10 @@ abstract class AbstractFilter implements FilterInterface
     protected function mapParams($params)
     {
         $keys = [];
+        $paramMap = $this->util->getParamMap();
         foreach (array_keys($params) as $key) {
-            if (isset($this->paramMap[$key])) {
-                $keys[] = $this->paramMap[$key];
+            if (isset($paramMap[$key])) {
+                $keys[] = $paramMap[$key];
             } else {
                 $keys[] = $key;
             }

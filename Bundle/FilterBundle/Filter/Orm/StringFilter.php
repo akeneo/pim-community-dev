@@ -1,9 +1,8 @@
 <?php
 
-namespace Oro\Bundle\FilterBundle\Extension\Orm;
+namespace Oro\Bundle\FilterBundle\Filter\Orm;
 
 use Doctrine\ORM\QueryBuilder;
-
 use Oro\Bundle\FilterBundle\Form\Type\Filter\TextFilterType;
 
 class StringFilter extends AbstractFilter
@@ -20,7 +19,7 @@ class StringFilter extends AbstractFilter
 
             $this->applyFilterToClause(
                 $qb,
-                $this->createComparisonExpression($this->get(self::DATA_NAME_KEY), $operator, $parameterName)
+                $this->createComparisonExpression($this->get(FilterUtility::DATA_NAME_KEY), $operator, $parameterName)
             );
 
             $qb->setParameter($parameterName, $data['value']);

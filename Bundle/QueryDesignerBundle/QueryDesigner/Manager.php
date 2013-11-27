@@ -3,7 +3,7 @@
 namespace Oro\Bundle\QueryDesignerBundle\QueryDesigner;
 
 use Oro\Bundle\QueryDesignerBundle\Provider\SystemAwareResolver;
-use Oro\Bundle\FilterBundle\Extension\Orm\FilterInterface;
+use Oro\Bundle\FilterBundle\Filter\Orm\FilterInterface;
 
 class Manager
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\FilterBundle\Extension\Orm;
+namespace Oro\Bundle\FilterBundle\Filter\Orm;
 
 use Doctrine\ORM\QueryBuilder;
 
@@ -8,14 +8,6 @@ use Symfony\Component\Form\Form;
 
 interface FilterInterface
 {
-    const CONDITION_OR  = 'OR';
-    const CONDITION_AND = 'AND';
-
-    const FRONTEND_TYPE_KEY = 'ftype';
-    const TYPE_KEY          = 'type';
-    const FORM_OPTIONS_KEY  = 'options';
-    const DATA_NAME_KEY     = 'data_name';
-
     /**
      * Initialize current filter by config
      *
