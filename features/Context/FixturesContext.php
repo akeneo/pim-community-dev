@@ -587,6 +587,7 @@ class FixturesContext extends RawMinkContext
             if ($data['allowed_extensions'] != '') {
                 assertEquals(explode(',', $data['allowed_extensions']), $attribute->getAllowedExtensions());
             }
+            assertEquals($data['date_type'], $attribute->getDateType());
         }
     }
 

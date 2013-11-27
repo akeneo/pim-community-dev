@@ -129,6 +129,9 @@ class AttributeProcessor extends AbstractEntityProcessor
         $extensions = 'allowed_extensions';
         $parameters[Inflector::camelize($extensions)] = $data[$extensions];
 
+        $dateType = 'date_type';
+        $parameters[Inflector::camelize($dateType)] = $data[$dateType];
+
         return $parameters;
     }
 

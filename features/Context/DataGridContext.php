@@ -167,7 +167,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
         foreach ($filters as $filter) {
             $filterNode = $this->datagrid->getFilter($filter);
             if (!$filterNode->isVisible()) {
-                $this->createExpectationException(
+                throw $this->createExpectationException(
                     sprintf('Filter "%s" should be visible', $filter)
                 );
             }
@@ -185,7 +185,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
         foreach ($filters as $filter) {
             $filterNode = $this->datagrid->getFilter($filter);
             if ($filterNode->isVisible()) {
-                $this->createExpectationException(
+                throw $this->createExpectationException(
                     sprintf('Filter "%s" should not be visible', $filter)
                 );
             }
@@ -249,7 +249,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
         $columnName = strtoupper($columnName);
 
         if (!$this->datagrid->isSortedAndOrdered($columnName, $order)) {
-            $this->createExpectationException(
+            throw $this->createExpectationException(
                 sprintf('The rows are not sorted %s by column %s', $order, $columnName)
             );
         }
@@ -355,7 +355,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
                 $this->datagrid->getColumnSorter($columnName);
             }
         } catch (\InvalidArgumentException $e) {
-            $this->createExpectationException($e->getMessage());
+            throw $this->createExpectationException($e->getMessage());
         }
     }
 
@@ -409,7 +409,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
         foreach ($entities as $entity) {
             try {
                 $this->datagrid->getRow($entity);
-                $this->createExpectationException(
+                throw $this->createExpectationException(
                     sprintf('Entity "%s" should not be seen', $entity)
                 );
             } catch (\InvalidArgumentException $e) {
