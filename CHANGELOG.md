@@ -11,7 +11,7 @@
 - Group types management
 - Import/Export product groups (CSV)
 - Import/Export associations (CSV)
-- Import/Export product associations (CSV)
+- Export product associations (CSV)
 - Import/Export attributes (CSV)
 - Import/Export attribute options (CSV)
 - Upload and import an archive (CSV and medias)

@@ -65,11 +65,6 @@ connector:
                     reader:    pim_import_export.reader.file.csv_product
                     processor: pim_import_export.processor.product
                     writer:    pim_import_export.writer.orm.product
-                import_associations:
-                    title:     pim_import_export.jobs.product_import.import_associations.title
-                    reader:    pim_import_export.reader.file.csv
-                    processor: pim_import_export.processor.product_association
-                    writer:    pim_import_export.writer.orm.product_association
         category_import:
             title: pim_import_export.jobs.category_import.title
             type:  import
