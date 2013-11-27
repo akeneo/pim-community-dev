@@ -43,7 +43,7 @@ class FamilyType extends AbstractType
             ->add('attributeRequirements', 'collection', array('type' => new AttributeRequirementType()))
             ->addEventSubscriber(new AddAttributeAsLabelSubscriber($factory))
             ->addEventSubscriber(new AddAttributeRequirementsSubscriber($channels, $attributes))
-            ->addEventSubscriber(new DisableCodeFieldSubscriber());
+            ->addEventSubscriber(new DisableCodeFieldSubscriber('code'));
     }
 
     /**

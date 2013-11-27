@@ -168,7 +168,7 @@ class ChannelType extends AbstractType
      */
     protected function addEventSubscribers(FormBuilderInterface $builder)
     {
-        $builder->addEventSubscriber(new DisableCodeFieldSubscriber());
+        $builder->addEventSubscriber(new DisableCodeFieldSubscriber('code'));
 
         return $this;
     }

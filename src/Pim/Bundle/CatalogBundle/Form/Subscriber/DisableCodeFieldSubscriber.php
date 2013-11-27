@@ -15,6 +15,18 @@ use Symfony\Component\Form\FormEvents;
  */
 class DisableCodeFieldSubscriber implements EventSubscriberInterface
 {
+    protected $fieldName;
+
+    /**
+     * Constructor
+     *
+     * @param string $fieldName
+     */
+    public function __construct($fieldName)
+    {
+        $this->fieldName = $fieldName;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -37,15 +49,16 @@ class DisableCodeFieldSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $form = $event->getForm();
+        $form  = $event->getForm();
+        $field = $form->get($this->fieldName);
 
-        $form->add(
-            'code',
-            'text',
-            array(
-                'disabled'  => true,
-                'read_only' => true
-            )
-        );
+        $type    = $field->getConfig()->getType()->getName();
+        $options = $field->getConfig()->getOptions();
+
+        $options['disabled']  = true;
+        $options['read_only'] = true;
+        $options['auto_initialize'] = false;
+
+        $form->add($this->fieldName, $type, $options);
     }
 }

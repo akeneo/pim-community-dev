@@ -36,7 +36,7 @@ class AttributeGroupType extends AbstractType
                 )
             )
             ->add('sort_order', 'hidden')
-            ->addEventSubscriber(new DisableCodeFieldSubscriber());
+            ->addEventSubscriber(new DisableCodeFieldSubscriber('code'));
     }
 
     /**

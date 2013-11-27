@@ -51,7 +51,7 @@ class CategoryType extends AbstractSegmentType
 
         $this->addLabelField($builder);
 
-        $builder->addEventSubscriber(new DisableCodeFieldSubscriber());
+        $builder->addEventSubscriber(new DisableCodeFieldSubscriber('code'));
     }
 
     /**

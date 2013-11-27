@@ -25,7 +25,7 @@ class AssociationType extends AbstractType
 
         $this->addLabelField($builder);
 
-        $builder->addEventSubscriber(new DisableCodeFieldSubscriber());
+        $builder->addEventSubscriber(new DisableCodeFieldSubscriber('code'));
     }
 
     /**

@@ -32,7 +32,7 @@ class JobInstanceType extends AbstractType
                     'by_reference' => false,
                 )
             )
-            ->addEventSubscriber(new DisableCodeFieldSubscriber());
+            ->addEventSubscriber(new DisableCodeFieldSubscriber('code'));
     }
 
     /**

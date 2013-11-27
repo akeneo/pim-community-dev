@@ -69,7 +69,7 @@ class DisableCodeFieldSubscriberTest extends \PHPUnit_Framework_TestCase
                     ->method('add');
             }
         }
-        $subscriber = new DisableCodeFieldSubscriber();
+        $subscriber = new DisableCodeFieldSubscriber('code');
         $subscriber->postSetData($event);
     }
 }

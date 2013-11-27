@@ -37,7 +37,7 @@ class GroupType extends AbstractType
 
         $builder
             ->addEventSubscriber(new GroupSubscriber())
-            ->addEventSubscriber(new DisableCodeFieldSubscriber())
+            ->addEventSubscriber(new DisableCodeFieldSubscriber('code'))
             ->addEventSubscriber(new BindGroupProductsSubscriber());
     }
 

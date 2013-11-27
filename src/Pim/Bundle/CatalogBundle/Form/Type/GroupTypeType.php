@@ -32,7 +32,7 @@ class GroupTypeType extends AbstractType
                 'property_path'     => 'translations'
             )
         );
-        $builder->addEventSubscriber(new DisableCodeFieldSubscriber());
+        $builder->addEventSubscriber(new DisableCodeFieldSubscriber('code'));
     }
 
     /**
