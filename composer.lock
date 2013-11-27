@@ -3481,12 +3481,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/akeneo/platform.git",
-                "reference": "a20f4e681771f1cbd753df4c9360374140fbde2f"
+                "reference": "ea0b09455a25d8ac12db081b31567f9f9dba57f7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/akeneo/platform/zipball/a20f4e681771f1cbd753df4c9360374140fbde2f",
-                "reference": "a20f4e681771f1cbd753df4c9360374140fbde2f",
+                "url": "https://api.github.com/repos/akeneo/platform/zipball/ea0b09455a25d8ac12db081b31567f9f9dba57f7",
+                "reference": "ea0b09455a25d8ac12db081b31567f9f9dba57f7",
                 "shasum": ""
             },
             "require": {

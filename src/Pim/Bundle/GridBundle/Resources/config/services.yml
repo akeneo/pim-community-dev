@@ -7,9 +7,11 @@ parameters:
     pim_grid.routes_registry.builder.class:         Pim\Bundle\GridBundle\Route\DatagridRouteRegistryBuilder
     pim_grid.routes_registry.cache_warmer.class:    Pim\Bundle\GridBundle\CacheWarmer\DatagridRouteCacheWarmer
     pim_grid.twig_extension.class:                  Pim\Bundle\GridBundle\Twig\DatagridExtension
-
-    oro_grid.mass_action.dispatcher.class:          Pim\Bundle\GridBundle\Action\MassAction\MassActionDispatcher
     pim_grid.datagrid.helper.class:                 Pim\Bundle\GridBundle\Helper\DatagridHelper
+
+    # overrided classes
+    oro_grid.mass_action.dispatcher.class:          Pim\Bundle\GridBundle\Action\MassAction\MassActionDispatcher
+    oro_grid.sorter.factory.class:                  Pim\Bundle\GridBundle\Sorter\SorterFactory
 
 services:
     pim_grid.builder.datagrid:
