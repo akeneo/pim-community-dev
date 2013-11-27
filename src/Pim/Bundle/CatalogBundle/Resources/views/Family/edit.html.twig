@@ -21,9 +21,10 @@
         {% set title = 'family.edit'|trans ~ ' - ' ~ form.vars.value.label %}
 
         {% set buttons %}
+            {{ elements.backLink(path('pim_catalog_family_index')) }}
             {% if form.vars.value.id %}
                 {{ elements.deleteLink(
-                    path('pim_catalog_family_remove', {'id': form.vars.value.id}),
+                    path('pim_catalog_family_remove', { 'id': form.vars.value.id }),
                     path('pim_catalog_family_index'), 'confirmation.remove.family'|trans({ '%name%': form.vars.value.label }), "", "flash.family.removed"|trans)
                 }}
             {% endif %}
