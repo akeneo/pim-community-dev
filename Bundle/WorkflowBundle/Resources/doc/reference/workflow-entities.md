@@ -53,8 +53,8 @@ Oro\Bundle\WorkflowBundle\Model\Workflow
 **Description:**
 Encapsulates all logic of workflow, contains lists of steps, attributes and transitions. Create instance of
 Workflow Item, performs transition if it's allowed, gets allowed transitions and start transitions.
-Delegates operations with aggregated domain models to corresponding managers, such as StepManager, TransitionManager
-and AttributeManager
+Delegates operations with aggregated domain models to corresponding managers, such as Step Manager, Transition Manager
+and Attribute Manager
 
 **Methods:**
 * **transit(WorkflowItem, Transition)** - performs transit with name transitionName for specified WorkflowItem;
@@ -66,9 +66,9 @@ for specified WorkflowItem;
 * **getTransitionsByWorkflowItem(WorkflowItem)** - returns a list of allowed transitions;
 * **getManagedEntityAttributes()** - gets list of Attributes of managed entities;
 * **createWorkflowItem(array data)** - create WorkflowItem instance and initialize it with passed data.
-* **getStepManager()** - get instance of embedded StepManager;
-* **getAttributeManager()** - get instance of embedded AttributeManager;
-* **getTransitionManager()** - get instance of embedded TransitionManager;
+* **getStepManager()** - get instance of embedded Step Manager;
+* **getAttributeManager()** - get instance of embedded Attribute Manager;
+* **getTransitionManager()** - get instance of embedded Transition Manager;
 * **bindEntities(workflowItem)** - bind all managed entities of specified worklfow item.
 
 Workflow Registry
@@ -342,7 +342,7 @@ Oro\Bundle\WorkflowBundle\Model\WorkflowResult
 Container of results of last applied transition actions. This data is not persistable so it can be used only once
 right after successful transition.
 
-StepManager
+Step Manager
 -----------
 **Class:**
 Oro\Bundle\WorkflowBundle\Model\StepManager
@@ -353,7 +353,7 @@ StepManaged is a container for steps, is provides getters, setters and list of a
 **Methods:**
 * **getOrderedSteps()** - get list of steps sorted by rendering order.
 
-TransitionManager
+Transition Manager
 -----------------
 **Class:**
 Oro\Bundle\WorkflowBundle\Model\TransitionManager
@@ -366,7 +366,7 @@ and list of additional functions applicable to transitions.
 * **extractTransition(transition)** - converts transition name to transition instance;
 * **getStartTransitions()** - get list of start transitions.
 
-AttributeManager
+Attribute Manager
 ----------------
 **Class:**
 Oro\Bundle\WorkflowBundle\Model\AttributeManager
