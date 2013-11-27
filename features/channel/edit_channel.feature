@@ -31,10 +31,18 @@ Feature: Edit a channel
       | content | You will lose changes to the channel if you leave this page. |
 
   @javascript
-  Scenario: Successfully edit a channel to enable a locale
+  Scenario: Successfully edit a channel to enable a locale and disable unused locales when deleting a channel
     Given I am on the "tablet" channel page
     And I select the locale "Breton (France)"
     And I press the "Save" button
     When I am on the locales page
     And I filter by "Activated" with value "yes"
+    Then the grid should contain 2 elements
     Then I should see locales "en_US" and "br_FR"
+    When I am on the "tablet" channel page
+    And I press the "Delete" button
+    And I confirm the deletion
+    And I am on the locales page
+    And I filter by "Activated" with value "yes"
+    Then the grid should contain 1 element
+    And I should see locale "en_US"
