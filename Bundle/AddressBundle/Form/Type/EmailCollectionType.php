@@ -11,7 +11,7 @@ class EmailCollectionType extends AbstractType
      */
     public function getParent()
     {
-        return 'oro_item_collection';
+        return 'oro_collection';
     }
 
     /**

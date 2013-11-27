@@ -1134,7 +1134,7 @@ define(function (require) {
         processForms: function() {
             $('body').on('submit', _.bind(function (e) {
                 var $form = $(e.target);
-                if ($form.data('nohash')) {
+                if ($form.data('nohash') || e.isDefaultPrevented()) {
                     return;
                 }
                 e.preventDefault();

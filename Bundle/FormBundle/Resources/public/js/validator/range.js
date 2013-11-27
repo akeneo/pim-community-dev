@@ -1,6 +1,6 @@
 /* global define */
-define(['underscore', 'oro/translator'],
-function (_, __) {
+define(['underscore', 'oro/translator', 'oro/formatter/number'],
+function (_, __, numberFormatter) {
     'use strict';
 
     var defaultParam = {
@@ -15,20 +15,22 @@ function (_, __) {
     return [
         'Range',
         function (value, element, param) {
-            value = Number(value);
+            value = numberFormatter.unformat(value);
             return this.optional(element) ||
-                !(isNaN(value) || value < Number(param.min) || value > Number(param.max));
+                !(isNaN(value) ||
+                    (param.min !== null && value < Number(param.min)) ||
+                    (param.max !== null && value > Number(param.max)));
         },
         function (param, element) {
             var message, placeholders = {},
-                value = Number(this.elementValue(element));
+                value = numberFormatter.unformat(this.elementValue(element));
             param = _.extend({}, defaultParam, param);
             if (isNaN(value)) {
                 message = param.invalidMessage;
-            } else if (value < Number(param.min)) {
+            } else if (param.min !== null && value < Number(param.min)) {
                 message = param.minMessage;
                 placeholders.limit = param.min;
-            } else if (value > Number(param.max)) {
+            } else if (param.max !== null && value > Number(param.max)) {
                 message = param.maxMessage;
                 placeholders.limit = param.max;
             }

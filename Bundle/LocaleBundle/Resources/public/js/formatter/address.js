@@ -7,7 +7,7 @@ function(localeSettings, nameFormatter) {
      * Address formatter
      *
      * @export  oro/formatter/address
-     * @class   oro.AddressFormatter
+     * @name    oro.formatter.address
      */
     return {
         /**

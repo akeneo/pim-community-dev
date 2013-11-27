@@ -68,13 +68,30 @@ $.validator.loadMethod('my/validation/method')
 ```
 After it, form fields which have this constraint will be processed by this validation method.
 
+## Validation for optional group
+In case you have one form which saves several different entities at once (e.g. contact entity + address sub-entity), it useful to mark container of sub-entity fields elements with attribute `data-validation-optional-group`.
+```
+<form>
+|
++--<fieldset>
+|  +--<input>
+|  +--<input>
+|  +--<input>
+|
++--<fieldset data-validation-optional-group>
+   +--<input>
+   +--<input>
+   +--<input>
+```
+After that, validation for sub-entinty works only if some of fields is not blank. Otherwise it ignores all validation rules for fields elements of sub-entity.
+
 ## Conformity server side validations to client once
 ```
 +--------------+---------+-----+------------------------+---------+
 | Server side  | Symfony | Oro |       Client side      | Coment. |
 +--------------+---------+-----+------------------------+---------+
 | All          |    √    |     |                        |   (2)   |
-| Blank        |    √    |     |                        |         |
+| Blank        |    √    |     |                        |   (2)   |
 | Callback     |    √    |     |                        |   (2)   |
 | Choice       |    √    |     |                        |   (2)   |
 | Collection   |    √    |     |                        |   (2)   |
@@ -83,7 +100,7 @@ After it, form fields which have this constraint will be processed by this valid
 | DateTime     |    √    |  √  |                        |         |
 | Date         |    √    |  √  | oro/validator/date     |         |
 | Email        |    √    |     | oro/validator/email    |         |
-| False        |    √    |     |                        |         |
+| False        |    √    |     |                        |   (2)   |
 | File         |    √    |     |                        |   (2)   |
 | Image        |    √    |     |                        |   (2)   |
 | Ip           |    √    |     |                        |         |
@@ -94,16 +111,16 @@ After it, form fields which have this constraint will be processed by this valid
 | Max          |    √    |  √  |                        |         |
 | MinLength    |    √    |     |                        |         |
 | Min          |    √    |  √  |                        |         |
-| NotBlank     |    √    |     | oro/validator/notblank |         |
-| NotNull      |    √    |  √  |                        |   (2)   |
+| NotBlank     |    √    |     | oro/validator/notblank |   (3)   |
+| NotNull      |    √    |  √  | oro/validator/notnull  |   (3)   |
 | Null         |    √    |     |                        |   (2)   |
 | Range        |    √    |  √  | oro/validator/range    |         |
 | Regex        |    √    |     | oro/validator/regex    |         |
-| Repeated     |    √    |     |                        |         |
+| Repeated     |    √    |     | oro/validator/repeated |         |
 | SizeLength   |    √    |     |                        |         |
 | Size         |    √    |  √  |                        |         |
 | Time         |    √    |     |                        |         |
-| True         |    √    |     |                        |         |
+| True         |    √    |     |                        |   (2)   |
 | Type         |    √    |     |                        |   (2)   |
 | UniqueEntity |    √    |     |                        |         |
 | Url          |    √    |     | oro/validator/url      |         |
@@ -112,3 +129,4 @@ After it, form fields which have this constraint will be processed by this valid
 
  1. supports only group of checkboxes with same name (like `user[role][]`)
  2. can't be supported on client side
+ 3. alias for `required` validator (standard jQuery.validate)

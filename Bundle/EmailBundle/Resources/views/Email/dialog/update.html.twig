@@ -23,7 +23,6 @@
             });
         </script>
     {% else %}
-        {{ JSFV(form) }}
         {% if not form.vars.valid and form.vars.errors|length %}
             <div class="alert alert-error">
                 <div class="message">
@@ -46,6 +45,7 @@
                     </div>
                 </fieldset>
             </form>
+            {{ oro_form_js_validation(form) }}
         </div>
     {% endif %}
 </div>
