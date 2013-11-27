@@ -67,7 +67,6 @@ function($, messenger, __, Navigation, Modal) {
      */
     return function() {
         var element = $(this);
-        console.log(element);
         if (element.data('dialog-url')) {
             require(['oro/dialog-widget'],
             function(DialogWidget) {
