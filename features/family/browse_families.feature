@@ -7,4 +7,7 @@ Feature: Browse families
     Given a "footwear" catalog configuration
     And I am logged in as "admin"
     When I am on the families page
-    Then I should see the families Boots, Sandals and Sneakers
+    Then the grid should contain 3 elements
+    And I should see the columns Code, Label and Label as attribute
+    And I should see families Boots, Sandals and Sneakers
+    And the rows should be sorted ascending by code

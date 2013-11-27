@@ -74,8 +74,6 @@ class AddAttributeRequirementsSubscriberTest extends \PHPUnit_Framework_TestCase
     {
         $mobile      = $this->getChannelMock('mobile');
         $ecommerce   = $this->getChannelMock('ecommerce');
-        $name        = $this->getAttributeMock('name');
-        $description = $this->getAttributeMock('description');
 
         $channels    = array($mobile, $ecommerce);
 
