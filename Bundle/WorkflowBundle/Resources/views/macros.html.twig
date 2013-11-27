@@ -33,10 +33,11 @@
         }) %}
     {% endif %}
 
-    <button type="button"
+    <a href="{{ transitionData['transition-url'] }}"
         {% for key, value in transitionData %}
             data-{{ key }}="{{ value }}"
         {% endfor %}
+        title="{{ transition.label|trans }}"
         class="btn icons-holder-text no-hash
             {% if not transitionData.enabled %}disabled{% endif %}
             {% if transition.frontendOptions is defined and transition.frontendOptions.class is defined %}{{ transition.frontendOptions.class }}{% endif %}"
@@ -45,7 +46,7 @@
             <i class="{{ transition.frontendOptions.icon }}"></i>
         {% endif %}
         {{ transition.label|trans }}
-    </button>
+    </a>
 {% endmacro %}
 
 {% macro renderTransitionsJs(transitionsData, blockId) %}
