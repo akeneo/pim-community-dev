@@ -38,7 +38,9 @@ class DateType extends OroDateType
                         'date'     => 'Date',
                         'time'     => 'Time',
                         'datetime' => 'Datetime'
-                    )
+                    ),
+                    'disabled'  => (bool) $attribute->getId(),
+                    'read_only' => (bool) $attribute->getId()
                 )
             ),
             array(

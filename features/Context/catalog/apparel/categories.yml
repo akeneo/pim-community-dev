@@ -1,0 +1,89 @@
+categories:
+    2013_collection:
+        labels:
+            en_US: 2013 collection
+            en_GB: 2013 collection
+    2014_collection:
+        labels:
+            en_US: 2014 collection
+            en_GB: 2014 collection
+            fr_FR: Collection 2014
+            de_DE: 2014 Kollektion
+    2015_collection:
+        labels:
+            en_US: 2015 collection
+            de_DE: 2015 Kollektion
+    men_2013:
+        labels:
+            en_US: 2013 men's collection
+            en_GB: 2013 men's collection
+        parent: 2013_collection
+    women_2013:
+        labels:
+            en_US: 2013 women's collection
+            en_GB: 2013 women's collection
+        parent: 2013_collection
+    men_2014:
+        labels:
+            en_US: 2014 men's collection
+            en_GB: 2014 men's collection
+            fr_FR: La collection de 2014 hommes
+            de_DE: 2014 Männer-Kollektion
+        parent: 2014_collection
+    women_2014:
+        labels:
+            en_US: 2014 women's collection
+            en_GB: 2014 women's collection
+            fr_FR: La collection de 2014 femmes
+            de_DE: 2014 Damenkollektion
+        parent: 2014_collection
+    men_2015:
+        labels:
+            en_US: 2015 men's collection
+            de_DE: 2015 Männer-Kollektion
+        parent: 2015_collection
+    women_2015:
+        labels:
+            en_US: 2015 women's collection
+            de_DE: 2015 Damenkollektion
+        parent: 2015_collection
+    men_2015_spring:
+        labels:
+            en_US: 2015 men's spring collection
+            de_DE: 2015 Männer-Frühjahrskollektion
+        parent: men_2015
+    men_2015_summer:
+        labels:
+            en_US: 2015 men's summer collection
+            de_DE: 2015 Männer-Sommer-Kollektion
+        parent: men_2015
+    men_2015_autumn:
+        labels:
+            en_US: 2015 men's autumn collection
+            de_DE: 2015 Männer-Herbstkollektion
+        parent: men_2015
+    men_2015_winter:
+        labels:
+            en_US: 2015 men's winter collection
+            de_DE: 2015 Männer-Winterkollektion
+        parent: men_2015
+    women_2015_spring:
+        labels:
+            en_US: 2015 women's spring collection
+            de_DE: 2015 Damen-Frühjahrskollektion
+        parent: women_2015
+    women_2015_summer:
+        labels:
+            en_US: 2015 women's summer collection
+            de_DE: 2015 Damen-Sommer-Kollektion
+        parent: women_2015
+    women_2015_autumn:
+        labels:
+            en_US: 2015 women's autumn collection
+            de_DE: 2015 Damen-Herbstkollektion
+        parent: women_2015
+    women_2015_winter:
+        labels:
+            en_US: 2015 women's winter collection
+            de_DE: 2015 Damen-Winterkollektion
+        parent: women_2015

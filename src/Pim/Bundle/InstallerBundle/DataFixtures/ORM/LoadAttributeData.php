@@ -74,6 +74,13 @@ class LoadAttributeData extends AbstractInstallerFixture
         }
 
         $parameters = $this->prepareParameters($data);
+        if (isset($parameters['availableLocales'])) {
+            foreach ($parameters['availableLocales'] as $localeCode) {
+                $locale = $this->getReference('locale.' . $localeCode);
+                $attribute->addAvailableLocale($locale);
+            }
+            unset($parameters['availableLocales']);
+        }
         $attribute->setParameters($parameters);
 
         return $attribute;

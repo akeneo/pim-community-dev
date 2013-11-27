@@ -1,0 +1,13 @@
+group_types:
+    variant:
+        is_variant: 1
+    similar:
+        is_variant: 0
+    related:
+        is_variant: 0
+    cross_sell:
+        is_variant: 0
+    upsell:
+        is_variant: 0
+    substitute:
+        is_variant: 0

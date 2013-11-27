@@ -1,0 +1,167 @@
+families:
+    tshirts:
+        labels:
+            en_US: T-shirts
+            en_GB: T-shirts
+            fr_FR: T-shirts
+            de_DE: T-Shirts
+        attributes:
+            - sku
+            - name
+            - description
+            - thumbnail
+            - image
+            - price
+            - customer_rating
+            - release_date
+            - size
+            - color
+            - additional_colors
+            - manufacturer
+            - country_of_manufacture
+            - handmade
+            - washing_temperature
+            - weight
+            - material
+            - cost
+            - number_in_stock
+            - customs_tax
+        attributeAsLabel: name
+        requirements:
+            ecommerce:
+                - name
+                - description
+                - price
+                - size
+                - color
+                - manufacturer
+                - material
+            tablet:
+                - name
+                - price
+                - size
+                - color
+                - manufacturer
+            print:
+                - name
+                - description
+                - price
+                - size
+                - color
+                - manufacturer
+                - country_of_manufacture
+                - material
+    sweaters:
+        labels:
+            en_US: Sweaters
+            en_GB: Chandails
+            fr_FR: Sweaters
+            de_DE: Pullovern
+        attributes:
+            - sku
+            - name
+            - description
+            - thumbnail
+            - image
+            - price
+            - customer_rating
+            - release_date
+            - size
+            - color
+            - additional_colors
+            - manufacturer
+            - country_of_manufacture
+            - handmade
+            - care_instructions
+            - washing_temperature
+            - weight
+            - material
+            - additional_materials
+            - cost
+            - number_in_stock
+            - customs_tax
+        attributeAsLabel: name
+        requirements:
+            ecommerce:
+                - name
+                - description
+                - price
+                - size
+                - color
+                - manufacturer
+                - material
+            tablet:
+                - name
+                - price
+                - size
+                - color
+                - manufacturer
+            print:
+                - name
+                - description
+                - price
+                - size
+                - color
+                - manufacturer
+                - country_of_manufacture
+                - material
+    jackets:
+        labels:
+            en_US: Jackets
+            en_GB: Jackets
+            fr_FR: Vestes
+            de_DE: Jacken
+        attributes:
+            - sku
+            - name
+            - description
+            - thumbnail
+            - image
+            - price
+            - customer_rating
+            - release_date
+            - chest_size
+            - waist_size
+            - color
+            - additional_colors
+            - manufacturer
+            - country_of_manufacture
+            - handmade
+            - weather_conditions
+            - care_instructions
+            - washing_temperature
+            - weight
+            - material
+            - additional_materials
+            - cost
+            - number_in_stock
+            - customs_tax
+        attributeAsLabel: name
+        requirements:
+            ecommerce:
+                - name
+                - description
+                - price
+                - chest_size
+                - waist_size
+                - color
+                - manufacturer
+                - material
+            tablet:
+                - name
+                - price
+                - chest_size
+                - waist_size
+                - color
+                - manufacturer
+            print:
+                - name
+                - description
+                - price
+                - chest_size
+                - waist_size
+                - color
+                - manufacturer
+                - country_of_manufacture
+                - weather_conditions
+                - material

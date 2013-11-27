@@ -52,7 +52,7 @@ class CatalogConfigurationContext extends RawMinkContext
      * @param string $catalog
      *
      * @throws ExpectationException If configuration is not found
-     * @Given /^(?:a|the) "([^"]*)" catalog configuration$/
+     * @Given /^(?:a|an|the) "([^"]*)" catalog configuration$/
      */
     public function aCatalogConfiguration($catalog)
     {

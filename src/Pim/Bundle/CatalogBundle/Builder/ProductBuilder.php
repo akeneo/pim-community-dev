@@ -249,6 +249,19 @@ class ProductBuilder
             $requiredValues[] = array('locale' => null, 'scope' => null);
         }
 
+        if ($attribute->getAvailableLocales()) {
+            $availableLocales = $attribute->getAvailableLocales()->map(
+                function ($locale) {
+                    return $locale->getCode();
+                }
+            )->toArray();
+            foreach ($requiredValues as $index => $value) {
+                if ($value['locale'] && !in_array($value['locale'], $availableLocales)) {
+                    unset($requiredValues[$index]);
+                }
+            }
+        }
+
         return $requiredValues;
     }
 

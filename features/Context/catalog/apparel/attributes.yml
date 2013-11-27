@@ -1,0 +1,828 @@
+attributes:
+    sku:
+        labels:
+            en_US: SKU
+            en_GB: SKU
+            fr_FR: SKU
+            de_DE: SKU
+        type:  pim_catalog_identifier
+        group: general
+        parameters:
+            required:            true
+            unique:              true
+            useableAsGridColumn: true
+            useableAsGridFilter: true
+            sortOrder:           1
+    name:
+        labels:
+            en_US: Name
+            en_GB: Name
+            fr_FR: Nom
+            de_DE: Name
+        type:  pim_catalog_text
+        group: general
+        parameters:
+            translatable:        true
+            useableAsGridColumn: true
+            useableAsGridFilter: true
+            sortOrder:           2
+    description:
+        labels:
+            en_US: Description
+            en_GB: Description
+            fr_FR: Description
+            de_DE: Beschreibung
+        type:  pim_catalog_textarea
+        group: general
+        parameters:
+            translatable:        true
+            scopable:            true
+            useableAsGridColumn: false
+            useableAsGridFilter: true
+            maxCharacters:       1000
+            sortOrder:           3
+    thumbnail:
+        labels:
+            en_US: Thumbnail
+            en_GB: Thumbnail
+            fr_FR: Imagette
+            de_DE: Miniaturansicht
+        type:  pim_catalog_image
+        group: media
+        parameters:
+            maxFileSize: 1
+            sortOrder:   1
+            allowedExtensions: gif,png,jpeg,jpg
+    image:
+        labels:
+            en_US: Image
+            en_GB: Image
+            fr_FR: Image
+            de_DE: Bild
+        type:  pim_catalog_image
+        group: media
+        parameters:
+            maxFileSize: 2
+            sortOrder:   2
+            allowedExtensions: gif,png,jpeg,jpg
+    price:
+        labels:
+            en_US: Price
+            en_GB: Price
+            fr_FR: Prix
+            de_DE: Preis
+        type:  pim_catalog_price_collection
+        group: sales
+        parameters:
+            useableAsGridColumn: true
+            useableAsGridFilter: true
+            numberMin:           1
+            numberMax:           1000
+            sortOrder:           1
+            decimalsAllowed:     true
+    customer_rating:
+        labels:
+            en_US: Customer rating
+            en_GB: Customer rating
+            fr_FR: Évaluation du client
+            de_DE: Kundenbewertung
+        type:  pim_catalog_simpleselect
+        group: sales
+        parameters:
+            scopable:            true
+            useableAsGridColumn: true
+            useableAsGridFilter: true
+            sortOrder:           2
+        options:
+            1:
+                labels:
+                    en_US: 1 star
+                    en_GB: 1 star
+                    fr_FR: 1 étoile
+                    de_DE: 1 Stern
+            2:
+                labels:
+                    en_US: 2 stars
+                    en_GB: 2 stars
+                    fr_FR: 2 étoiles
+                    de_DE: 2 Sterne
+            3:
+                labels:
+                    en_US: 3 stars
+                    en_GB: 3 stars
+                    fr_FR: 3 étoiles
+                    de_DE: 3 Sterne
+            4:
+                labels:
+                    en_US: 4 stars
+                    en_GB: 4 stars
+                    fr_FR: 4 étoiles
+                    de_DE: 4 Sterne
+            5:
+                labels:
+                    en_US: 5 stars
+                    en_GB: 5 stars
+                    fr_FR: 5 étoiles
+                    de_DE: 5 Sternen
+    release_date:
+        labels:
+            en_US: Release date
+            en_GB: Release date
+            fr_FR: Date de sortie
+            de_DE: Erscheinungsdatum
+        type:  pim_catalog_date
+        group: sales
+        parameters:
+            dateType:            date
+            scopable:            true
+            useableAsGridColumn: true
+            useableAsGridFilter: true
+            sortOrder:           3
+    size:
+        labels:
+            en_US: Size
+            en_GB: Size
+            fr_FR: Taille
+            de_DE: Größe
+        type:  pim_catalog_simpleselect
+        group: sizes
+        parameters:
+            useableAsGridColumn: true
+            useableAsGridFilter: true
+            sortOrder:           1
+        options:
+            size_XXS:
+                labels:
+                    en_US: XXS
+                    en_GB: XXS
+                    fr_FR: XXS
+                    de_DE: XXS
+            size_XS:
+                labels:
+                    en_US: XS
+                    en_GB: XS
+                    fr_FR: XS
+                    de_DE: XS
+            size_S:
+                labels:
+                    en_US: S
+                    en_GB: S
+                    fr_FR: S
+                    de_DE: S
+            size_M:
+                labels:
+                    en_US: M
+                    en_GB: M
+                    fr_FR: M
+                    de_DE: M
+            size_L:
+                labels:
+                    en_US: L
+                    en_GB: L
+                    fr_FR: L
+                    de_DE: L
+            size_XL:
+                labels:
+                    en_US: XL
+                    en_GB: XL
+                    fr_FR: XL
+                    de_DE: XL
+            size_2XL:
+                labels:
+                    en_US: 2XL
+                    en_GB: 2XL
+                    fr_FR: 2XL
+                    de_DE: 2XL
+            size_3XL:
+                labels:
+                    en_US: 3XL
+                    en_GB: 3XL
+                    fr_FR: 3XL
+                    de_DE: 3XL
+    chest_size:
+        labels:
+            en_US: Chest size
+            en_GB: Chest size
+            fr_FR: Tour de poitrine
+            de_DE: Brustumfang
+        type:  pim_catalog_simpleselect
+        group: sizes
+        parameters:
+            useableAsGridColumn: true
+            useableAsGridFilter: true
+            sortOrder:           2
+        options:
+            chest_size_XXS:
+                labels:
+                    en_US: XXS
+                    en_GB: XXS
+                    fr_FR: XXS
+                    de_DE: XXS
+            chest_size_XS:
+                labels:
+                    en_US: XS
+                    en_GB: XS
+                    fr_FR: XS
+                    de_DE: XS
+            chest_size_S:
+                labels:
+                    en_US: S
+                    en_GB: S
+                    fr_FR: S
+                    de_DE: S
+            chest_size_M:
+                labels:
+                    en_US: M
+                    en_GB: M
+                    fr_FR: M
+                    de_DE: M
+            chest_size_L:
+                labels:
+                    en_US: L
+                    en_GB: L
+                    fr_FR: L
+                    de_DE: L
+            chest_size_XL:
+                labels:
+                    en_US: XL
+                    en_GB: XL
+                    fr_FR: XL
+                    de_DE: XL
+            chest_size_2XL:
+                labels:
+                    en_US: 2XL
+                    en_GB: 2XL
+                    fr_FR: 2XL
+                    de_DE: 2XL
+            chest_size_3XL:
+                labels:
+                    en_US: 3XL
+                    en_GB: 3XL
+                    fr_FR: 3XL
+                    de_DE: 3XL
+    waist_size:
+        labels:
+            en_US: Waist size
+            en_GB: Waist size
+            fr_FR: Tour de taille
+            de_DE: Taillengröße
+        type:  pim_catalog_simpleselect
+        group: sizes
+        parameters:
+            useableAsGridColumn: true
+            useableAsGridFilter: true
+            sortOrder:           3
+        options:
+            waist_size_XXS:
+                labels:
+                    en_US: XXS
+                    en_GB: XXS
+                    fr_FR: XXS
+                    de_DE: XXS
+            waist_size_XS:
+                labels:
+                    en_US: XS
+                    en_GB: XS
+                    fr_FR: XS
+                    de_DE: XS
+            waist_size_S:
+                labels:
+                    en_US: S
+                    en_GB: S
+                    fr_FR: S
+                    de_DE: S
+            waist_size_M:
+                labels:
+                    en_US: M
+                    en_GB: M
+                    fr_FR: M
+                    de_DE: M
+            waist_size_L:
+                labels:
+                    en_US: L
+                    en_GB: L
+                    fr_FR: L
+                    de_DE: L
+            waist_size_XL:
+                labels:
+                    en_US: XL
+                    en_GB: XL
+                    fr_FR: XL
+                    de_DE: XL
+            waist_size_2XL:
+                labels:
+                    en_US: 2XL
+                    en_GB: 2XL
+                    fr_FR: 2XL
+                    de_DE: 2XL
+            waist_size_3XL:
+                labels:
+                    en_US: 3XL
+                    en_GB: 3XL
+                    fr_FR: 3XL
+                    de_DE: 3XL
+    color:
+        labels:
+            en_US: Color
+            en_GB: Colour
+            fr_FR: Couleur
+            de_DE: Farbe
+        type:  pim_catalog_simpleselect
+        group: colors
+        parameters:
+            useableAsGridColumn: true
+            useableAsGridFilter: true
+            sortOrder:           1
+        options:
+            black:
+                labels:
+                    en_US: Black
+                    en_GB: Black
+                    fr_FR: Noir
+                    de_DE: Schwarz
+            white:
+                labels:
+                    en_US: White
+                    en_GB: White
+                    fr_FR: Blanc
+                    de_DE: Weiß
+            gray:
+                labels:
+                    en_US: Gray
+                    en_GB: Grey
+                    fr_FR: Gris
+                    de_DE: Grau
+            red:
+                labels:
+                    en_US: Red
+                    en_GB: Red
+                    fr_FR: Rouge
+                    de_DE: Rot
+            blue:
+                labels:
+                    en_US: Blue
+                    en_GB: Blue
+                    fr_FR: Bleu
+                    de_DE: Blau
+            green:
+                labels:
+                    en_US: Green
+                    en_GB: Green
+                    fr_FR: Vert
+                    de_DE: Grün
+            yellow:
+                labels:
+                    en_US: Yellow
+                    en_GB: Yellow
+                    fr_FR: Jaune
+                    de_DE: Gelb
+    additional_colors:
+        labels:
+            en_US: Additional colors
+            en_GB: Additional colours
+            fr_FR: Autres couleurs
+            de_DE: Zusätzliche Farben
+        type:  pim_catalog_multiselect
+        group: colors
+        parameters:
+            useableAsGridColumn: false
+            useableAsGridFilter: true
+            sortOrder:           2
+        options:
+            additional_black:
+                labels:
+                    en_US: Black
+                    en_GB: Black
+                    fr_FR: Noir
+                    de_DE: Schwarz
+            additional_white:
+                labels:
+                    en_US: White
+                    en_GB: White
+                    fr_FR: Blanc
+                    de_DE: Weiß
+            additional_gray:
+                labels:
+                    en_US: Gray
+                    en_GB: Grey
+                    fr_FR: Gris
+                    de_DE: Grau
+            additional_red:
+                labels:
+                    en_US: Red
+                    en_GB: Red
+                    fr_FR: Rouge
+                    de_DE: Rot
+            additional_blue:
+                labels:
+                    en_US: Blue
+                    en_GB: Blue
+                    fr_FR: Bleu
+                    de_DE: Blau
+            additional_green:
+                labels:
+                    en_US: Green
+                    en_GB: Green
+                    fr_FR: Vert
+                    de_DE: Grün
+            additional_yellow:
+                labels:
+                    en_US: Yellow
+                    en_GB: Yellow
+                    fr_FR: Jaune
+                    de_DE: Gelb
+    manufacturer:
+        labels:
+            en_US: Manufacturer
+            en_GB: Manufacturer
+            fr_FR: Fabricant
+            de_DE: Hersteller
+        type:  pim_catalog_simpleselect
+        group: additional
+        parameters:
+            useableAsGridColumn: true
+            useableAsGridFilter: true
+            sortOrder:           1
+        options:
+            american_apparel:
+                labels:
+                    en_US: American apparel
+                    en_GB: American apparel
+                    fr_FR: American apparel
+                    de_DE: American apparel
+            lacoste:
+                labels:
+                    en_US: Lacoste
+                    en_GB: Lacoste
+                    fr_FR: Lacoste
+                    de_DE: Lacoste
+            columbia:
+                labels:
+                    en_US: Columbia
+                    en_GB: Columbia
+                    fr_FR: Columbia
+                    de_DE: Columbia
+            levi_strauss:
+                labels:
+                    en_US: Levi Strauss
+                    en_GB: Levi Strauss
+                    fr_FR: Levi Strauss
+                    de_DE: Levi Strauss
+            diesel:
+                labels:
+                    en_US: Diesel
+                    en_GB: Diesel
+                    fr_FR: Diesel
+                    de_DE: Diesel
+            prada:
+                labels:
+                    en_US: Prada
+                    en_GB: Prada
+                    fr_FR: Prada
+                    de_DE: Prada
+            marc_o_polo:
+                labels:
+                    en_US: Marc O’Polo
+                    en_GB: Marc O’Polo
+                    fr_FR: Marc O’Polo
+                    de_DE: Marc O’Polo
+    country_of_manufacture:
+        labels:
+            en_US: Country of manufacture
+            en_GB: Country of manufacture
+            fr_FR: Pays de fabrication
+            de_DE: Herstellungsland
+        type:  pim_catalog_simpleselect
+        group: additional
+        parameters:
+            useableAsGridColumn: true
+            useableAsGridFilter: true
+            sortOrder:           2
+        options:
+            usa:
+                labels:
+                    en_US: USA
+                    en_GB: USA
+                    fr_FR: USA
+                    de_DE: USA
+            france:
+                labels:
+                    en_US: France
+                    en_GB: France
+                    fr_FR: France
+                    de_DE: Frankreich
+            germany:
+                labels:
+                    en_US: Germany
+                    en_GB: Germany
+                    fr_FR: Allemagne
+                    de_DE: Deutschland
+            italy:
+                labels:
+                    en_US: Italy
+                    en_GB: Italy
+                    fr_FR: Italie
+                    de_DE: Italien
+            china:
+                labels:
+                    en_US: China
+                    en_GB: China
+                    fr_FR: Chine
+                    de_DE: China
+            taiwan:
+                labels:
+                    en_US: Taiwan
+                    en_GB: Taiwan
+                    fr_FR: Taiwan
+                    de_DE: Taiwan
+            vietnam:
+                labels:
+                    en_US: Vietnam
+                    en_GB: Vietnam
+                    fr_FR: Viêt-Nam
+                    de_DE: Vietnam
+    handmade:
+        labels:
+            en_US: Handmade
+            en_GB: Handmade
+            fr_FR: Fait main
+            de_DE: Handgefertigt
+        type:  pim_catalog_boolean
+        group: additional
+        parameters:
+            defaultValue:        false
+            useableAsGridColumn: true
+            useableAsGridFilter: true
+            sortOrder:           3
+    weather_conditions:
+        labels:
+            en_US: Weather conditions
+            en_GB: Weather conditions
+            fr_FR: Conditions météorologiques
+            de_DE: Wetterverhältnisse
+        type:  pim_catalog_multiselect
+        group: additional
+        parameters:
+            useableAsGridColumn: true
+            useableAsGridFilter: true
+            sortOrder:           4
+        options:
+            dry:
+                labels:
+                    en_US: Dry
+                    en_GB: Dry
+                    fr_FR: Sec
+                    de_DE: Trocken
+            wet:
+                labels:
+                    en_US: Wet
+                    en_GB: Wet
+                    fr_FR: Humide
+                    de_DE: Nass
+            hot:
+                labels:
+                    en_US: Hot
+                    en_GB: Hot
+                    fr_FR: Chaud
+                    de_DE: Heiß
+            cold:
+                labels:
+                    en_US: Cold
+                    en_GB: Cold
+                    fr_FR: Froid
+                    de_DE: Kalt
+            snowy:
+                labels:
+                    en_US: Snowy
+                    en_GB: Snowy
+                    fr_FR: Neigeux
+                    de_DE: Verschneit
+    care_instructions:
+        labels:
+            en_US: Care instructions
+            en_GB: Care instructions
+            fr_FR: Conseils d'entretien
+            de_DE: Pflegehinweise
+        type:  pim_catalog_textarea
+        group: additional
+        parameters:
+            translatable:        true
+            scopable:            true
+            useableAsGridColumn: false
+            useableAsGridFilter: false
+            maxCharacters:       1000
+            sortOrder:           5
+    washing_temperature:
+        labels:
+            en_US: Washing temperature
+            en_GB: Washing temperature
+            fr_FR: Température de lavage
+            de_DE: Waschtemperatur
+        type:  pim_catalog_metric
+        group: additional
+        parameters:
+            metricFamily:      Temperature
+            sortOrder:         6
+            defaultMetricUnit: CELCIUS
+            negativeAllowed:   false
+            numberMax:         100
+    weight:
+        labels:
+            en_US: Weight
+            en_GB: Weight
+            fr_FR: Poids
+            de_DE: Gewicht
+        type:  pim_catalog_metric
+        group: additional
+        parameters:
+            metricFamily:      Weight
+            sortOrder:         7
+            defaultMetricUnit: KILOGRAM
+            negativeAllowed:   false
+            numberMax:         10
+    material:
+        labels:
+            en_US: Material
+            en_GB: Material
+            fr_FR: Matériau
+            de_DE: Material
+        type:  pim_catalog_simpleselect
+        group: additional
+        parameters:
+            useableAsGridColumn: true
+            useableAsGridFilter: true
+            sortOrder:           8
+        options:
+            cotton:
+                labels:
+                    en_US: Cotton
+                    en_GB: Cotton
+                    fr_FR: Coton
+                    de_DE: Baumwolle
+            flax:
+                labels:
+                    en_US: Flax
+                    en_GB: Flax
+                    fr_FR: Lin
+                    de_DE: Flachs
+            wool:
+                labels:
+                    en_US: Wool
+                    en_GB: Wool
+                    fr_FR: Laine
+                    de_DE: Wolle
+            silk:
+                labels:
+                    en_US: Silk
+                    en_GB: Silk
+                    fr_FR: Soie
+                    de_DE: Seide
+            denim:
+                labels:
+                    en_US: Denim
+                    en_GB: Denim
+                    fr_FR: Toile
+                    de_DE: Denim
+            leather:
+                labels:
+                    en_US: Leather
+                    en_GB: Leather
+                    fr_FR: Cuir
+                    de_DE: Leder
+            fur:
+                labels:
+                    en_US: Fur
+                    en_GB: Fur
+                    fr_FR: Fourrure
+                    de_DE: Pelz
+    additional_materials:
+        labels:
+            en_US: Additional materials
+            en_GB: Additional materials
+            fr_FR: Matériels supplémentaires
+            de_DE: Zusätzliche Materialien
+        type:  pim_catalog_multiselect
+        group: additional
+        parameters:
+            useableAsGridColumn: false
+            useableAsGridFilter: true
+            sortOrder:           9
+        options:
+            additional_cotton:
+                labels:
+                    en_US: Cotton
+                    en_GB: Cotton
+                    fr_FR: Coton
+                    de_DE: Baumwolle
+            additional_flax:
+                labels:
+                    en_US: Flax
+                    en_GB: Flax
+                    fr_FR: Lin
+                    de_DE: Flachs
+            additional_wool:
+                labels:
+                    en_US: Wool
+                    en_GB: Wool
+                    fr_FR: Laine
+                    de_DE: Wolle
+            additional_silk:
+                labels:
+                    en_US: Silk
+                    en_GB: Silk
+                    fr_FR: Soie
+                    de_DE: Seide
+            additional_denim:
+                labels:
+                    en_US: Denim
+                    en_GB: Denim
+                    fr_FR: Toile
+                    de_DE: Denim
+            additional_leather:
+                labels:
+                    en_US: Leather
+                    en_GB: Leather
+                    fr_FR: Cuir
+                    de_DE: Leder
+            additional_fur:
+                labels:
+                    en_US: Fur
+                    en_GB: Fur
+                    fr_FR: Fourrure
+                    de_DE: Pelz
+    cost:
+        labels:
+            en_US: Cost
+            en_GB: Cost
+            fr_FR: Coût
+            de_DE: Kosten
+        type:  pim_catalog_price_collection
+        group: internal
+        parameters:
+            useableAsGridColumn: true
+            useableAsGridFilter: true
+            numberMin:           1
+            numberMax:           1000
+            sortOrder:           1
+            decimalsAllowed:     true
+            negativeAllowed:     false
+    number_in_stock:
+        labels:
+            en_US: Number in stock
+            en_GB: Number in stock
+            fr_FR: Nombre en stock
+            de_DE: Anzahl auf Lager
+        type:  pim_catalog_number
+        group: internal
+        parameters:
+            scopable:            true
+            useableAsGridColumn: true
+            useableAsGridFilter: true
+            numberMin:           1
+            numberMax:           10000
+            sortOrder:           2
+            decimalsAllowed:     false
+            negativeAllowed:     false
+    customs_tax:
+        labels:
+            en_US: Customs tax
+            en_GB: Customs tax
+            fr_FR: Taxe de douanes
+            de_DE: Zollsteuer
+        type:  pim_catalog_price_collection
+        group: internal
+        parameters:
+            translatable:        true
+            availableLocales:
+                - de_DE
+            useableAsGridColumn: true
+            useableAsGridFilter: true
+            numberMin:           1
+            numberMax:           1000
+            sortOrder:           3
+            decimalsAllowed:     true
+            negativeAllowed:     false
+    datasheet:
+        labels:
+            en_US: Datasheet
+            en_GB: Datasheet
+            fr_FR: Fiche technique
+            de_DE: Datenblatt
+        type:  pim_catalog_file
+        group: internal
+        parameters:
+            maxFileSize:       10
+            sortOrder:         4
+            allowedExtensions: txt,pdf,doc,docx,csv,rtf
+    attachment:
+        labels:
+            en_US: Attachment
+            en_GB: Attachment
+            fr_FR: Attachements
+            de_DE: Befestigung
+        type:  pim_catalog_file
+        group: internal
+        parameters:
+            maxFileSize:       10
+            sortOrder:         5
+            allowedExtensions: zip,rar,7z,txt,pdf,doc,docx,csv,rtf

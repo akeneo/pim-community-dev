@@ -1,13 +1,13 @@
 jobs:
-    footwear_product_import:
+    product_import:
         connector: Akeneo CSV Connector
         alias:     product_import
-        label:     Footwear product import
+        label:     Product import
         type:      import
         steps:
             import:
                 reader:
-                    filePath:      /tmp/product_import/product_import.csv
+                    filePath:      /tmp/import/products.csv
                     uploadAllowed: true
                     delimiter:     ;
                     enclosure:     '"'
@@ -17,41 +17,73 @@ jobs:
                     categoriesColumn: categories
                     familyColumn:     family
                     groupsColumn:     groups
-    footwear_product_export:
+    ecommerce_product_export:
         connector: Akeneo CSV Connector
         alias:     product_export
-        label:     Footwear product export
+        label:     Product export for ecommerce
         type:      export
         steps:
             export:
                 reader:
-                    channel: mobile
+                    channel: ecommerce
                 processor:
-                    channel:    mobile
+                    channel:    ecommerce
                     delimiter:  ;
                     enclosure:  '"'
                     withHeader: true
                 writer:
-                    filePath: /tmp/product_export/product_export.csv
-    footwear_category_import:
+                    filePath: /tmp/export/products_ecommerce.csv
+    tablet_product_export:
+        connector: Akeneo CSV Connector
+        alias:     product_export
+        label:     Product export for tablet
+        type:      export
+        steps:
+            export:
+                reader:
+                    channel: tablet
+                processor:
+                    channel:    tablet
+                    delimiter:  ;
+                    enclosure:  '"'
+                    withHeader: true
+                writer:
+                    filePath: /tmp/export/products_tablet.csv
+    print_product_export:
+        connector: Akeneo CSV Connector
+        alias:     product_export
+        label:     Product export for print
+        type:      export
+        steps:
+            export:
+                reader:
+                    channel: print
+                processor:
+                    channel:    print
+                    delimiter:  ;
+                    enclosure:  '"'
+                    withHeader: true
+                writer:
+                    filePath: /tmp/export/products_print.csv
+    category_import:
         connector: Akeneo CSV Connector
         alias:     category_import
-        label:     Footwear category import
+        label:     Category import
         type:      import
         steps:
             import:
                 reader:
-                    filePath:      /tmp/category_import/category_import.csv
+                    filePath:      /tmp/import/categories.csv
                     uploadAllowed: true
                     delimiter:     ;
                     enclosure:     '"'
                     escape:        '\'
                 processor:
                     circularRefsChecked: true
-    footwear_category_export:
+    category_export:
         connector: Akeneo CSV Connector
         alias:     category_export
-        label:     Footwear category export
+        label:     Category export
         type:      export
         steps:
             export:
@@ -60,24 +92,24 @@ jobs:
                     enclosure:  '"'
                     withHeader: true
                 writer:
-                    filePath: /tmp/category_export/category_export.csv
-    footwear_association_import:
+                    filePath: /tmp/export/categories.csv
+    association_import:
         connector: Akeneo CSV Connector
         alias:     association_import
-        label:     Footwear association import
+        label:     Association import
         type:      import
         steps:
             import:
                  reader:
-                    filePath:      /tmp/association_import/association_import.csv
+                    filePath:      /tmp/import/associations.csv
                     uploadAllowed: true
                     delimiter:     ;
                     enclosure:     '"'
                     escape:        '\'
-    footwear_association_export:
+    association_export:
         connector: Akeneo CSV Connector
         alias:     association_export
-        label:     Footwear association export
+        label:     Association export
         type:      export
         steps:
             export:
@@ -86,24 +118,24 @@ jobs:
                     enclosure:  '"'
                     withHeader: true
                 writer:
-                    filePath: /tmp/association_export/association_export.csv
-    footwear_group_import:
+                    filePath: /tmp/export/associations.csv
+    group_import:
         connector: Akeneo CSV Connector
         alias:     group_import
-        label:     Footwear group import
+        label:     Group import
         type:      import
         steps:
             import:
                 reader:
-                    filePath:      /tmp/group_import/group_import.csv
+                    filePath:      /tmp/import/groups.csv
                     uploadAllowed: true
                     delimiter:     ;
                     enclosure:     '"'
                     escape:        '\'
-    footwear_group_export:
+    group_export:
         connector: Akeneo CSV Connector
         alias:     group_export
-        label:     Footwear group export
+        label:     Group export
         type:      export
         steps:
             export:
@@ -112,24 +144,24 @@ jobs:
                     enclosure:  '"'
                     withHeader: true
                 writer:
-                    filePath: /tmp/group_export/group_export.csv
-    footwear_attribute_import:
+                    filePath: /tmp/export/groups.csv
+    attribute_import:
         connector: Akeneo CSV Connector
         alias:     attribute_import
-        label:     Footwear attribute import
+        label:     Attribute import
         type:      import
         steps:
             import:
                 reader:
-                    filePath:      /tmp/attribute_import/attribute_import.csv
+                    filePath:      /tmp/import/attributes.csv
                     uploadAllowed: true
                     delimiter:     ;
                     enclosure:     '"'
                     escape:        '\'
-    footwear_attribute_export:
+    attribute_export:
         connector: Akeneo CSV Connector
         alias:     attribute_export
-        label:     Footwear attribute export
+        label:     Attribute export
         type:      export
         steps:
             export:
@@ -138,24 +170,24 @@ jobs:
                     enclosure:  '"'
                     withHeader: true
                 writer:
-                    filePath: /tmp/attribute_export/attribute_export.csv
-    footwear_option_import:
+                    filePath: /tmp/export/attributes.csv
+    option_import:
         connector: Akeneo CSV Connector
         alias:     attribute_option_import
-        label:     Footwear option import
+        label:     Option import
         type:      import
         steps:
             import:
                 reader:
-                    filePath:      /tmp/attribute_import/option_import.csv
+                    filePath:      /tmp/import/options.csv
                     uploadAllowed: true
                     delimiter:     ;
                     enclosure:     '"'
                     escape:        '\'
-    footwear_option_export:
+    option_export:
         connector: Akeneo CSV Connector
         alias:     attribute_option_export
-        label:     Footwear option export
+        label:     Option export
         type:      export
         steps:
             export:
@@ -164,4 +196,4 @@ jobs:
                     enclosure:  '"'
                     withHeader: true
                 writer:
-                    filePath: /tmp/option_export/option_export.csv
+                    filePath: /tmp/export/options.csv
