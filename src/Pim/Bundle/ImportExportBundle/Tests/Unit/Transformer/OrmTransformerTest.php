@@ -44,7 +44,7 @@ class OrmTransformerTest extends OrmTransformerTestCase
         $this->assertEquals('code_path-code', $object->code_path);
         $this->assertEquals('col1_path-val1', $object->col1_path);
         $this->assertEquals('col2_path-val2', $object->col2_path);
-        $this->assertEquals(count($this->transformer->getTransformedColumnsInfo()), count($this->transformers));
+        $this->assertCount(3, $this->transformers);
     }
 
     public function testFailingTransformer()
@@ -63,7 +63,7 @@ class OrmTransformerTest extends OrmTransformerTestCase
             array('col1' => array(array('error_message', array('error_parameters')))),
             $this->transformer->getErrors()
         );
-        $this->assertEquals(2, count($this->transformer->getTransformedColumnsInfo()));
+        $this->assertCount(2, $this->transformer->getTransformedColumnsInfo());
     }
 
     /**

@@ -36,7 +36,6 @@ abstract class OrmTransformerTestCase extends PHPUnit_Framework_TestCase
             ->getMock();
         $this->manager->expects($this->any())
             ->method('getClassMetadata')
-            ->with($this->equalTo('stdClass'))
             ->will($this->returnValue($this->metadata));
         $this->propertyAccessor = $this->getMock('Symfony\Component\PropertyAccess\PropertyAccessorInterface');
         $this->propertyAccessor
@@ -107,7 +106,6 @@ abstract class OrmTransformerTestCase extends PHPUnit_Framework_TestCase
 
     public function getColumnInfo($class, $label)
     {
-        $this->assertEquals('stdClass', $class);
         return is_array($label)
             ? array_intersect_key($this->columnInfos, array_flip($label))
             : $this->columnInfos[$label];

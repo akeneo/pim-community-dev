@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\ImportExportBundle\Transformer\Property;
 
+use Pim\Bundle\ImportExportBundle\Exception\PropertyTransformerException;
+
 /**
  * Abstract class for association transformers
  *
@@ -23,12 +25,20 @@ abstract class AbstractAssociationTransformer implements AssociationTransformerI
         if (!$value) {
             return $multiple ? array() : null;
         }
-        $getReference = function ($value) use ($options) {
-            return $this->getReference($options['class'], $value);
+        $getEntity = function ($value) use ($options) {
+            $entity = $this->getEntity($options['class'], $value);
+            if (!$entity) {
+                throw new PropertyTransformerException(
+                    'No entity of class "%class%" with code "%code%"',
+                    array('%class%' => $options['class'], '%code%' => $value)
+                );
+            }
+
+            return $entity;
         };
 
         return $multiple
-            ? array_map($getReference, preg_split('/\s*,\s*/', $value))
-            : $getReference($value);
+            ? array_map($getEntity, preg_split('/\s*,\s*/', $value))
+            : $getEntity($value);
     }
 }

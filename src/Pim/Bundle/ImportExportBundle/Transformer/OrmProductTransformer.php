@@ -194,7 +194,7 @@ class OrmProductTransformer extends AbstractOrmTransformer
             if (!$columnInfo->getAttribute() &&
                 ($metadata->hasField($propertyPath) || $metadata->hasAssociation($propertyPath))
                 ) {
-                $this->propertyColumns[] = $columnInfo->getPropertyPath();
+                $this->propertyColumns[] = $columnInfo->getLabel();
             } else {
                 $attributeColumnInfos[] = $columnInfo;
             }

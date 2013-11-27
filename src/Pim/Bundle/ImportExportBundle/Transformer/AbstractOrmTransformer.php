@@ -110,7 +110,7 @@ abstract class AbstractOrmTransformer
         $entity = $this->getEntity($class, $data);
         $this->setDefaultValues($entity, $defaults);
         $this->setProperties($class, $entity, $data);
-
+        
         return $entity;
     }
 
