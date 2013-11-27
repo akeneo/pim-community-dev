@@ -38,9 +38,22 @@ class DisableFieldSubscriberTest extends \PHPUnit_Framework_TestCase
         $form = $this->getMockBuilder('Symfony\Component\Form\Form')
             ->disableOriginalConstructor()
             ->getMock();
+        $field = $this->getMockBuilder('Symfony\Component\Form\Form')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $config = $this->getMock('Symfony\Component\Form\FormConfigInterface');
+
         $event->expects($this->any())
             ->method('getForm')
             ->will($this->returnValue($form));
+
+        $form->expects($this->any())
+            ->method('get')
+            ->will($this->returnValue($field));
+
+        $field->expects($this->any())
+            ->method('getConfig')
+            ->will($this->returnValue($config));
 
         if ($id === null) {
             $event->expects($this->once())
@@ -61,7 +74,7 @@ class DisableFieldSubscriberTest extends \PHPUnit_Framework_TestCase
                     ->method('add')
                     ->with(
                         $this->equalTo('code'),
-                        $this->equalTo('text'),
+                        $this->equalTo(null),
                         $this->equalTo(array('disabled' => true, 'read_only' => true))
                     );
             } else {
