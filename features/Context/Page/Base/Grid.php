@@ -598,20 +598,6 @@ class Grid extends Index
     }
 
     /**
-     * @param string $code
-     */
-    public function filterPerFamily($code)
-    {
-        $elt = $this->getElement('Filters')->find('css', sprintf(':contains("%s") select', $code));
-
-        if (!$elt) {
-            throw new \Exception(sprintf('Could not find filter for family "%s".', $code));
-        }
-
-        $elt->selectOption($code);
-    }
-
-    /**
      * @param string $filterName The name of the price filter
      * @param string $action     Type of filtering (>, >=, etc.)
      * @param number $value      Value to filter
