@@ -2,15 +2,16 @@
 
 namespace Oro\Bundle\WorkflowBundle\Form\Type;
 
-use Oro\Bundle\WorkflowBundle\Model\WorkflowData;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Exception\InvalidConfigurationException;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\OptionsResolver\Options;
 
+use Oro\Bundle\WorkflowBundle\Form\EventListener\DefaultValuesListener;
+use Oro\Bundle\WorkflowBundle\Form\EventListener\InitActionsListener;
+use Oro\Bundle\WorkflowBundle\Form\EventListener\RequiredAttributesListener;
+use Oro\Bundle\WorkflowBundle\Model\WorkflowData;
 use Oro\Bundle\WorkflowBundle\Model\Attribute;
 use Oro\Bundle\WorkflowBundle\Model\Workflow;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowRegistry;
@@ -30,11 +31,36 @@ class WorkflowAttributesType extends AbstractType
     protected $workflowData;
 
     /**
-     * @param WorkflowRegistry $workflowRegistry
+     * @var DefaultValuesListener
      */
-    public function __construct(WorkflowRegistry $workflowRegistry)
-    {
+    protected $defaultValuesListener;
+
+    /**
+     * @var InitActionsListener
+     */
+    protected $initActionsListener;
+
+    /**
+     * @var RequiredAttributesListener
+     */
+    protected $requiredAttributesListener;
+
+    /**
+     * @param WorkflowRegistry $workflowRegistry
+     * @param DefaultValuesListener $defaultValuesListener
+     * @param InitActionsListener $initActionsListener
+     * @param RequiredAttributesListener $requiredAttributesListener
+     */
+    public function __construct(
+        WorkflowRegistry $workflowRegistry,
+        DefaultValuesListener $defaultValuesListener,
+        InitActionsListener $initActionsListener,
+        RequiredAttributesListener $requiredAttributesListener
+    ) {
         $this->workflowRegistry = $workflowRegistry;
+        $this->defaultValuesListener = $defaultValuesListener;
+        $this->initActionsListener = $initActionsListener;
+        $this->requiredAttributesListener = $requiredAttributesListener;
     }
 
     /**
@@ -42,60 +68,62 @@ class WorkflowAttributesType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        /** @var Workflow $workflow */
-        $workflow = $options['workflow'];
-
-        if (!empty($options['attribute_fields'])) {
-            foreach ($options['attribute_fields'] as $attributeName => $attributeOptions) {
-                $attribute = $workflow->getAttributeManager()->getAttribute($attributeName);
-                if (!$attribute) {
-                    throw new InvalidConfigurationException(
-                        sprintf(
-                            'Invalid reference to unknown attribute "%s" of workflow "%s".',
-                            $attributeName,
-                            $workflow->getName()
-                        )
-                    );
-                }
-                $this->addAttributeField($builder, $attribute, $attributeOptions, $options);
-            }
-
-            // extract only required attributes for form and create new WorkflowData based on them
-            $builder->addEventListener(
-                FormEvents::PRE_SET_DATA,
-                function (FormEvent $event) use ($options) {
-                    /** @var WorkflowData $data */
-                    $data = $event->getData();
-                    if ($data instanceof WorkflowData) {
-                        $this->workflowData = $data;
-                        $rawData = $data->getValues(array_keys($options['attribute_fields']));
-                        $formData = new WorkflowData($rawData);
-                        $event->setData($formData);
-                    }
-                }
-            );
-
-            // copy submitted data to existing workflow data
-            $builder->addEventListener(
-                FormEvents::SUBMIT,
-                function (FormEvent $event) {
-                    /** @var WorkflowData $formData */
-                    $formData = $event->getData();
-                    if ($this->workflowData && $formData instanceof WorkflowData) {
-                        $this->workflowData->add($formData->getValues());
-                        $event->setData($this->workflowData);
-                    }
-                }
-            );
-        }
+        $this->addEventListeners($builder, $options);
+        $this->addAttributes($builder, $options);
     }
 
     /**
-     * {@inheritDoc}
+     * Adds required event listeners
+     *
+     * @param FormBuilderInterface $builder
+     * @param array $options
      */
-    public function getName()
+    protected function addEventListeners(FormBuilderInterface $builder, array $options)
     {
-        return self::NAME;
+        $this->defaultValuesListener->initialize(
+            $options['workflow_item'],
+            $options['attribute_default_values']
+        );
+
+        $builder->addEventSubscriber($this->defaultValuesListener);
+
+        if (!empty($options['attribute_init_actions'])) {
+            $this->initActionsListener->initialize(
+                $options['workflow_item'],
+                $options['attribute_init_actions']
+            );
+            $builder->addEventSubscriber($this->initActionsListener);
+        }
+
+        $this->requiredAttributesListener->initialize(array_keys($options['attribute_fields']));
+        $builder->addEventSubscriber($this->requiredAttributesListener);
+    }
+
+    /**
+     * Add attributes to form
+     *
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     * @throws InvalidConfigurationException When attribute is not found in given Workflow
+     */
+    protected function addAttributes(FormBuilderInterface $builder, array $options)
+    {
+        /** @var Workflow $workflow */
+        $workflow = $options['workflow'];
+
+        foreach ($options['attribute_fields'] as $attributeName => $attributeOptions) {
+            $attribute = $workflow->getAttributeManager()->getAttribute($attributeName);
+            if (!$attribute) {
+                throw new InvalidConfigurationException(
+                    sprintf(
+                        'Invalid reference to unknown attribute "%s" of workflow "%s".',
+                        $attributeName,
+                        $workflow->getName()
+                    )
+                );
+            }
+            $this->addAttributeField($builder, $attribute, $attributeOptions, $options);
+        }
     }
 
     /**
@@ -172,21 +200,33 @@ class WorkflowAttributesType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
+        $resolver->setOptional(
+            array(
+                'attribute_fields',
+                'attribute_default_values',
+                'attribute_init_actions',
+                'workflow',
+                'workflow_item',
+                'workflow_name'
+            )
+        );
+
         $resolver->setDefaults(
             array(
                 'data_class' => 'Oro\Bundle\WorkflowBundle\Model\WorkflowData',
                 'disable_attribute_fields' => false,
-                'attribute_fields' => array()
+                'attribute_fields' => array(),
+                'attribute_default_values' => array()
             )
         );
-
-        $resolver->setOptional(array('attribute_fields', 'workflow', 'workflow_item', 'workflow_name'));
 
         $resolver->setAllowedTypes(
             array(
                 'workflow_item' => 'Oro\Bundle\WorkflowBundle\Entity\WorkflowItem',
                 'workflow' => 'Oro\Bundle\WorkflowBundle\Model\Workflow',
                 'attribute_fields' => 'array',
+                'attribute_default_values' => 'array',
+                'attribute_init_actions' => 'Oro\Bundle\WorkflowBundle\Model\Action\ActionInterface',
             )
         );
 
@@ -211,5 +251,13 @@ class WorkflowAttributesType extends AbstractType
                 },
             )
         );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getName()
+    {
+        return self::NAME;
     }
 }

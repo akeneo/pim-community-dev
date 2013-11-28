@@ -94,12 +94,6 @@ return array(
                         '@custom_post_action' => null
 
                     )
-                ),
-                'init_actions' => array(
-                    array(
-                        '@custom_post_action' => null
-
-                    )
                 )
             )
         ),
@@ -141,8 +135,7 @@ return array(
             'second_transition_definition' => array(
                 'pre_conditions' => array(),
                 'conditions' => array(),
-                'post_actions' => array(),
-                'init_actions' => array()
+                'post_actions' => array()
             )
         ),
         'type' => 'wizard'

@@ -12,14 +12,33 @@ use Oro\Bundle\WorkflowBundle\Model\Attribute;
 class StepAssemblerTest extends \PHPUnit_Framework_TestCase
 {
     /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $formOptionsAssembler;
+
+    /**
+     * @var StepAssembler
+     */
+    protected $assembler;
+
+    protected function setUp()
+    {
+        $this->formOptionsAssembler = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\FormOptionsAssembler')
+            ->disableOriginalConstructor()
+            ->setMethods(array('assemble'))
+            ->getMock();
+
+        $this->assembler = new StepAssembler($this->formOptionsAssembler);
+    }
+
+    /**
      * @expectedException \Oro\Bundle\WorkflowBundle\Exception\AssemblerException
      * @dataProvider invalidOptionsDataProvider
      * @param array $configuration
      */
     public function testAssembleRequiredOptionException($configuration)
     {
-        $assembler = new StepAssembler();
-        $assembler->assemble($configuration, null);
+        $this->assembler->assemble($configuration, null);
     }
 
     public function invalidOptionsDataProvider()
@@ -42,11 +61,8 @@ class StepAssemblerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider configurationDataProvider
-     * @param array $configuration
-     * @param array $attributes
-     * @param Step $expectedStep
      */
-    public function testAssemble($configuration, $attributes, $expectedStep)
+    public function testAssemble($configuration, $attributes, Step $expectedStep)
     {
         $configurationPass = $this->getMockBuilder(
             'Oro\Bundle\WorkflowBundle\Model\ConfigurationPass\ConfigurationPassInterface'
@@ -60,15 +76,29 @@ class StepAssemblerTest extends \PHPUnit_Framework_TestCase
                     function (array $data) {
                         if (isset($data['path'])) {
                             $data['path'] = new PropertyPath('data.' . str_replace('$', '', $data['path']));
+                        } else {
+                            foreach ($data as &$value) {
+                                $value = new PropertyPath('data.' . str_replace('$', '', $value));
+                            }
                         }
                         return $data;
                     }
                 )
             );
 
-        $assembler = new StepAssembler();
-        $assembler->addConfigurationPass($configurationPass);
-        $steps = $assembler->assemble($configuration, $attributes);
+        $this->assembler->addConfigurationPass($configurationPass);
+
+        $expectedAttributes = array();
+        foreach ($attributes ? $attributes : array() as $attribute) {
+            $expectedAttributes[$attribute->getName()] = $attribute;
+        }
+
+        $this->formOptionsAssembler->expects($this->once())
+            ->method('assemble')
+            ->with($this->isType('array'), $expectedAttributes, 'step', $expectedStep->getName())
+            ->will($this->returnArgument(0));
+
+        $steps = $this->assembler->assemble($configuration, $attributes);
         $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $steps);
         $this->assertCount(1, $steps);
         $this->assertTrue($steps->containsKey($expectedStep->getName()));
@@ -103,8 +133,7 @@ class StepAssemblerTest extends \PHPUnit_Framework_TestCase
                         'form_type' => 'custom_workflow_step',
                         'form_options' => array(
                             'attribute_fields' => array(
-                                'attribute_one' => array('form_type' => 'text'),
-                                'attribute_two' => array('form_type' => 'text'),
+                                'attribute_one' => array('form_type' => 'text')
                             )
                         ),
                         'view_attributes' => array(
@@ -127,8 +156,7 @@ class StepAssemblerTest extends \PHPUnit_Framework_TestCase
                     ->setFormOptions(
                         array(
                             'attribute_fields' => array(
-                                'attribute_one' => array('form_type' => 'text'),
-                                'attribute_two' => array('form_type' => 'text'),
+                                'attribute_one' => array('form_type' => 'text')
                             )
                         )
                     )
@@ -150,29 +178,12 @@ class StepAssemblerTest extends \PHPUnit_Framework_TestCase
      * @expectedException \Oro\Bundle\WorkflowBundle\Exception\UnknownAttributeException
      * @expectedExceptionMessage Unknown attribute "unknown_attribute" at step "step_one"
      */
-    public function testUnknownAttributeInFormOptionsException()
-    {
-        $configuration = array(
-            'step_one' => array(
-                'label' => 'label',
-                'form_options' => array(
-                    'attribute_fields' => array(
-                        'unknown_attribute' => array()
-                    )
-                )
-            )
-        );
-        $attributes = array($this->createAttribute('attribute_one'));
-        $assembler = new StepAssembler();
-        $assembler->assemble($configuration, $attributes);
-    }
-
-    /**
-     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\UnknownAttributeException
-     * @expectedExceptionMessage Unknown attribute "unknown_attribute" at step "step_one"
-     */
     public function testUnknownAttributeInViewAttributesException()
     {
+        $this->formOptionsAssembler->expects($this->once())
+            ->method('assemble')
+            ->will($this->returnValue(array()));
+
         $configuration = array(
             'step_one' => array(
                 'label' => 'label',
@@ -181,28 +192,9 @@ class StepAssemblerTest extends \PHPUnit_Framework_TestCase
                 )
             )
         );
-        $attributes = array($this->createAttribute('attribute_one'));
-        $assembler = new StepAssembler();
-        $assembler->assemble($configuration, $attributes);
-    }
 
-    /**
-     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\InvalidParameterException
-     * @expectedExceptionMessage Option "attribute_fields" at step "step_one" must be an array
-     */
-    public function testInvalidAttributeFieldsOptionException()
-    {
-        $configuration = array(
-            'step_one' => array(
-                'label' => 'label',
-                'form_options' => array(
-                    'attribute_fields' => 'string'
-                )
-            )
-        );
         $attributes = array($this->createAttribute('attribute_one'));
-        $assembler = new StepAssembler();
-        $assembler->assemble($configuration, $attributes);
+        $this->assembler->assemble($configuration, $attributes);
     }
 
     /**
@@ -211,6 +203,10 @@ class StepAssemblerTest extends \PHPUnit_Framework_TestCase
      */
     public function testInvalidViewAttributesOptionException()
     {
+        $this->formOptionsAssembler->expects($this->once())
+            ->method('assemble')
+            ->will($this->returnValue(array()));
+
         $configuration = array(
             'step_one' => array(
                 'label' => 'label',
@@ -218,8 +214,7 @@ class StepAssemblerTest extends \PHPUnit_Framework_TestCase
             )
         );
         $attributes = array($this->createAttribute('attribute_one'));
-        $assembler = new StepAssembler();
-        $assembler->assemble($configuration, $attributes);
+        $this->assembler->assemble($configuration, $attributes);
     }
 
     /**
@@ -228,6 +223,10 @@ class StepAssemblerTest extends \PHPUnit_Framework_TestCase
      */
     public function testViewAttributeRequiredOptionsException()
     {
+        $this->formOptionsAssembler->expects($this->once())
+            ->method('assemble')
+            ->will($this->returnValue(array()));
+
         $configuration = array(
             'step_one' => array(
                 'label' => 'label',
@@ -237,8 +236,7 @@ class StepAssemblerTest extends \PHPUnit_Framework_TestCase
             )
         );
         $attributes = array($this->createAttribute('attribute_one'));
-        $assembler = new StepAssembler();
-        $assembler->assemble($configuration, $attributes);
+        $this->assembler->assemble($configuration, $attributes);
     }
 
     /**
@@ -247,6 +245,10 @@ class StepAssemblerTest extends \PHPUnit_Framework_TestCase
      */
     public function testViewAttributeRequiredLabelException()
     {
+        $this->formOptionsAssembler->expects($this->once())
+            ->method('assemble')
+            ->will($this->returnValue(array()));
+
         $configuration = array(
             'step_one' => array(
                 'label' => 'label',
@@ -256,8 +258,7 @@ class StepAssemblerTest extends \PHPUnit_Framework_TestCase
             )
         );
         $attributes = array($this->createAttribute('attribute_one'));
-        $assembler = new StepAssembler();
-        $assembler->assemble($configuration, $attributes);
+        $this->assembler->assemble($configuration, $attributes);
     }
 
     /**

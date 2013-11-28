@@ -2,10 +2,10 @@
 
 namespace Oro\Bundle\WorkflowBundle\Model;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
+use Oro\Bundle\WorkflowBundle\Exception\ForbiddenTransitionException;
 use Oro\Bundle\WorkflowBundle\Model\Condition\ConditionInterface;
 use Oro\Bundle\WorkflowBundle\Model\Action\ActionInterface;
 
@@ -40,11 +40,6 @@ class Transition
      * @var ActionInterface|null
      */
     protected $postAction;
-
-    /**
-     * @var ActionInterface|null
-     */
-    protected $initAction;
 
     /**
      * @var bool
@@ -275,21 +270,10 @@ class Transition
     }
 
     /**
-     * Initialize workflow item with init actions.
-     *
-     * @param WorkflowItem $workflowItem
-     */
-    public function initialize(WorkflowItem $workflowItem)
-    {
-        if ($this->initAction) {
-            $this->initAction->execute($workflowItem);
-        }
-    }
-
-    /**
      * Run transition process.
      *
      * @param WorkflowItem $workflowItem
+     * @throws ForbiddenTransitionException
      */
     public function transit(WorkflowItem $workflowItem)
     {
@@ -303,6 +287,10 @@ class Transition
             if ($this->postAction) {
                 $this->postAction->execute($workflowItem);
             }
+        } else {
+            throw new ForbiddenTransitionException(
+                sprintf('Transition "%s" is not allowed.', $this->getName())
+            );
         }
     }
 
@@ -407,24 +395,6 @@ class Transition
     public function setHidden($hidden)
     {
         $this->hidden = $hidden;
-        return $this;
-    }
-
-    /**
-     * @return null|ActionInterface
-     */
-    public function getInitAction()
-    {
-        return $this->initAction;
-    }
-
-    /**
-     * @param ActionInterface $initAction
-     * @return Transition
-     */
-    public function setInitAction(ActionInterface $initAction)
-    {
-        $this->initAction = $initAction;
         return $this;
     }
 

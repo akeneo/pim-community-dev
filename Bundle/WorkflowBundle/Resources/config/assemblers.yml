@@ -7,6 +7,7 @@ parameters:
     oro_workflow.step_assembler.class: Oro\Bundle\WorkflowBundle\Model\StepAssembler
     oro_workflow.transition_assembler.class: Oro\Bundle\WorkflowBundle\Model\TransitionAssembler
     oro_workflow.workflow_assembler.class: Oro\Bundle\WorkflowBundle\Model\WorkflowAssembler
+    oro_workflow.form_options_assembler.class: Oro\Bundle\WorkflowBundle\Model\FormOptionsAssembler
 
 services:
     oro_workflow.configuration_pass.replace_property_path:
@@ -34,12 +35,15 @@ services:
 
     oro_workflow.step_assembler:
         class: %oro_workflow.step_assembler.class%
+        arguments:
+            - @oro_workflow.form_options_assembler
         calls:
             - [addConfigurationPass, [@oro_workflow.configuration_pass.replace_property_path]]
 
     oro_workflow.transition_assembler:
         class: %oro_workflow.transition_assembler.class%
         arguments:
+            - @oro_workflow.form_options_assembler
             - @oro_workflow.condition_factory
             - @oro_workflow.action_factory
 
@@ -52,3 +56,9 @@ services:
             - @oro_workflow.step_assembler
             - @oro_workflow.transition_assembler
 
+    oro_workflow.form_options_assembler:
+        class: %oro_workflow.form_options_assembler.class%
+        arguments:
+            - @oro_workflow.action_factory
+        calls:
+            - [addConfigurationPass, [@oro_workflow.configuration_pass.replace_property_path]]

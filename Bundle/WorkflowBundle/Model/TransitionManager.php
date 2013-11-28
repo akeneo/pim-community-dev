@@ -32,16 +32,11 @@ class TransitionManager
 
     /**
      * @param string $transitionName
-     * @return Transition
-     * @throws InvalidTransitionException
+     * @return Transition|null
      */
     public function getTransition($transitionName)
     {
-        $result = $this->transitions->get($transitionName);
-        if (!$result) {
-            throw InvalidTransitionException::unknownTransition($transitionName);
-        }
-        return $result;
+        return $this->transitions->get($transitionName);
     }
 
     /**
@@ -87,6 +82,7 @@ class TransitionManager
      *
      * @param string|Transition $transition
      * @return Transition
+     * @throws InvalidTransitionException
      */
     public function extractTransition($transition)
     {
@@ -94,6 +90,9 @@ class TransitionManager
         if (is_string($transition)) {
             $transitionName = $transition;
             $transition = $this->getTransition($transitionName);
+            if (!$transition) {
+                throw InvalidTransitionException::unknownTransition($transitionName);
+            }
         }
 
         return $transition;

@@ -33,7 +33,7 @@ class TransitionIsAllowedValidator extends ConstraintValidator
      * Checks if current workflow item allows transition
      *
      * @param WorkflowData $value
-     * @param Constraint $constraint
+     * @param TransitionIsAllowed $constraint
      */
     public function validate($value, Constraint $constraint)
     {
@@ -46,7 +46,7 @@ class TransitionIsAllowedValidator extends ConstraintValidator
 
         $result = false;
         try {
-            $result = $workflow->isTransitionAllowed($workflowItem, $constraint->getTransitionName(), $errors, true);
+            $result = $workflow->isTransitionAllowed($workflowItem, $transitionName, $errors, true);
         } catch (InvalidTransitionException $e) {
             switch ($e->getCode()) {
                 case InvalidTransitionException::UNKNOWN_TRANSITION:
