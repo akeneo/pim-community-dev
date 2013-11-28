@@ -1,3 +1,14 @@
+# 1.0.0-beta-4 -
+
+## Features
+- Import product associations (CSV)
+
+## Improvements
+
+## Bug fixes
+
+## BC breaks
+
 # 1.0.0-beta-3 - "Hare Conditioned"
 
 ## Features
