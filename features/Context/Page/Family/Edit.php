@@ -29,7 +29,7 @@ class Edit extends Form
             $this->elements,
             array(
                 'Attributes'                      => array('css' => '#attributes table'),
-                'Attribute as label choices'      => array('css' => '#pim_family_attributeAsLabel'),
+                'Attribute as label choices'      => array('css' => '#pim_catalog_family_form_attributeAsLabel'),
                 'Updates grid'                    => array('css' => '#history table.grid'),
             )
         );
