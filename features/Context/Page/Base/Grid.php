@@ -612,15 +612,16 @@ class Grid extends Index
     }
 
     /**
-     * @param string $action   Type of filtering (>, >=, etc.)
-     * @param number $value    Value to filter
-     * @param string $currency Currency on which filter
+     * @param string $filterName The name of the price filter
+     * @param string $action     Type of filtering (>, >=, etc.)
+     * @param number $value      Value to filter
+     * @param string $currency   Currency on which to filter
      */
-    public function filterPerPrice($action, $value, $currency)
+    public function filterPerPrice($filterName, $action, $value, $currency)
     {
-        $filter = $this->getFilter('Price');
+        $filter = $this->getFilter($filterName);
         if (!$filter) {
-            throw new \Exception('Could not find filter for price.');
+            throw new \Exception("Could not find filter for $filterName.");
         }
 
         $this->openFilter($filter);
