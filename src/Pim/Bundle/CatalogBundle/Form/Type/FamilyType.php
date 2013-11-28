@@ -111,7 +111,7 @@ class FamilyType extends AbstractType
 
         $builder
             ->addEventSubscriber(new AddAttributeAsLabelSubscriber($factory))
-            ->addEventSubscriber(new AddAttributeRequirementsSubscriber($channels, $attributes))
+            ->addEventSubscriber($this->requirementsSubscriber)
             ->addEventSubscriber(new DisableFieldSubscriber('code'));
     }
 
