@@ -13,16 +13,16 @@ services:
         factory_method:  createNamed
         factory_service: form.factory
         arguments:
-            - pim_attribute_group_form
-            - pim_attribute_group
+            - pim_catalog_attribute_group_form
+            - pim_catalog_attribute_group
 
     pim_catalog.form.family:
         class:           Symfony\Component\Form\Form
         factory_method:  createNamed
         factory_service: form.factory
         arguments:
-            - pim_family_form
-            - pim_family
+            - pim_catalog_family_form
+            - pim_catalog_family
 
     pim_catalog.form.channel:
         class:           Symfony\Component\Form\Form

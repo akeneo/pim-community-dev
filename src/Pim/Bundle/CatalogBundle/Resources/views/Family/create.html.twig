@@ -1,29 +1,24 @@
-{% extends 'PimCatalogBundle:Family:index.html.twig' %}
+{% spaceless %}
+    {% if elements is not defined %}
+        {% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
+    {% endif %}
+{% endspaceless %}
 
-{% block familyTab %}
-{{ JSFV(form) }}
 {{ form_start(form, {
     'action': path('pim_catalog_family_create'),
+    'class': 'form-inline',
     'attr': {
-        'data-updated-title': 'confirmation.leave'|trans,
-        'data-updated-message': 'confirmation.discard changes'|trans({ '%entity%': 'family'|trans })
+        'data-title': 'Create a new family'|trans,
+        'data-button-submit': 'btn.save'|trans|capitalize,
+        'data-button-cancel': 'btn.cancel'|trans|capitalize
     }
 }) }}
 
-    {% set title = 'family.create'|trans %}
+    {{ JSFV(form) }}
 
-    {{ elements.page_header(title, elements.submitBtn, null, null, elements.updated(form.vars.id)) }}
+    {{ elements.form_errors(form) }}
 
-    {{ elements.form_navbar('Properties') }}
-
-    <div class="tab-content">
-
-        {{ elements.form_errors(form) }}
-
-        <div class="tab-pane active" id="properties">
-            {{ elements.accordion({ 'General Properties': form_row(form.code), 'Locale values': form_row(form.label) }) }}
-        </div>
+    <div class="row-fluid">
+        {{ form_row(form.code) }}
     </div>
-
 {{ form_end(form) }}
-{% endblock %}

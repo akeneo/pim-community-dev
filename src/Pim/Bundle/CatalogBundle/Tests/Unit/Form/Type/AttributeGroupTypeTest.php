@@ -51,6 +51,6 @@ class AttributeGroupTypeTest extends AbstractFormTypeTest
         );
 
         // Assert name
-        $this->assertEquals('pim_attribute_group', $this->form->getName());
+        $this->assertEquals('pim_catalog_attribute_group', $this->form->getName());
     }
 }

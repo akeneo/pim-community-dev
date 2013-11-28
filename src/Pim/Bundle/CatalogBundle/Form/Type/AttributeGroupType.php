@@ -56,6 +56,6 @@ class AttributeGroupType extends AbstractType
      */
     public function getName()
     {
-        return 'pim_attribute_group';
+        return 'pim_catalog_attribute_group';
     }
 }
