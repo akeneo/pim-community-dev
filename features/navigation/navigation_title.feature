@@ -38,7 +38,7 @@ Feature: Well display navigation titles
 
   Scenario: Successfully display the family page titles
     Given I am on the families page
-    Then I should see the title "Families | Create"
+    Then I should see the title "Families"
     When I am on the family creation page
     Then I should see the title "Families | Create"
     When I edit the "boots" family
