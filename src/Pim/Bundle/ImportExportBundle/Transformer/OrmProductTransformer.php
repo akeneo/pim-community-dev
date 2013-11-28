@@ -46,12 +46,12 @@ class OrmProductTransformer extends AbstractOrmTransformer
     /**
      * Constructor
      *
-     * @param RegistryInterface         $doctrine
-     * @param PropertyAccessorInterface $propertyAccessor
-     * @param GuesserInterface          $guesser
+     * @param RegistryInterface              $doctrine
+     * @param PropertyAccessorInterface      $propertyAccessor
+     * @param GuesserInterface               $guesser
      * @param ColumnInfoTransformerInterface $labelTransformer
-     * @param ProductManager            $productManager
-     * @param AttributeCache            $attributeCache
+     * @param ProductManager                 $productManager
+     * @param AttributeCache                 $attributeCache
      */
     public function __construct(
         RegistryInterface $doctrine,

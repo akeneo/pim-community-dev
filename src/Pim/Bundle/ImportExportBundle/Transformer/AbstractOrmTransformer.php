@@ -61,9 +61,9 @@ abstract class AbstractOrmTransformer
     /**
      * Constructor
      *
-     * @param RegistryInterface         $doctrine
-     * @param PropertyAccessorInterface $propertyAccessor
-     * @param GuesserInterface          $guesser
+     * @param RegistryInterface              $doctrine
+     * @param PropertyAccessorInterface      $propertyAccessor
+     * @param GuesserInterface               $guesser
      * @param ColumnInfoTransformerInterface $labelTransformer
      */
     public function __construct(

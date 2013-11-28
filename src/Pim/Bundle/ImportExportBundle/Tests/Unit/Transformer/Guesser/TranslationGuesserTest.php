@@ -14,7 +14,7 @@ use Pim\Bundle\ImportExportBundle\Transformer\Guesser\TranslationGuesser;
 class TranslationGuesserTest extends GuesserTestCase
 {
     protected $guesser;
-    
+
     protected function setUp()
     {
         parent::setUp();
