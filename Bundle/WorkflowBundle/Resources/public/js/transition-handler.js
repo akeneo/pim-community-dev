@@ -67,6 +67,15 @@ function($, messenger, __, Navigation, Modal) {
      */
     return function() {
         var element = $(this);
+        if (element.data('_in-progress')) {
+            return;
+        }
+        element.data('_in-progress', true);
+        var resetInProgress = function() {
+            element.data('_in-progress', false);
+        };
+        element.one('transitions_success', resetInProgress);
+        element.one('transitions_failure', resetInProgress);
         if (element.data('dialog-url')) {
             require(['oro/dialog-widget'],
             function(DialogWidget) {
@@ -83,6 +92,7 @@ function($, messenger, __, Navigation, Modal) {
                         autoResize: true
                     }
                 });
+                transitionFormWidget.on('renderComplete', resetInProgress);
                 transitionFormWidget.on('formSave', function(data) {
                     transitionFormWidget.remove();
                     performTransition(element, data);
