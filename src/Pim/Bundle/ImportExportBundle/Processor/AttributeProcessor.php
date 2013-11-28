@@ -5,6 +5,7 @@ namespace Pim\Bundle\ImportExportBundle\Processor;
 use Symfony\Component\Validator\ValidatorInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\Common\Inflector\Inflector;
+use Oro\Bundle\BatchBundle\Item\InvalidItemException;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\manager\ProductManager;
