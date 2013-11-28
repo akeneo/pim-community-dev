@@ -1,0 +1,67 @@
+groups:
+    tshirts:
+        type: variant
+        labels:
+            en_US: T-shirts
+            en_GB: T-shirts
+            fr_FR: T-shirts
+            de_DE: T-Shirts
+        attributes:
+            - color
+            - size
+    sweaters:
+        type: variant
+        labels:
+            en_US: Sweaters
+            en_GB: Chandails
+            fr_FR: Sweaters
+            de_DE: Pullovern
+        attributes:
+            - color
+            - size
+    jackets:
+        type: variant
+        labels:
+            en_US: Jackets
+            en_GB: Jackets
+            fr_FR: Vestes
+            de_DE: Jacken
+        attributes:
+            - color
+            - chest_size
+            - waist_size
+    similar:
+        type: similar
+        labels:
+            en_US: Similar
+            en_GB: Similar
+            fr_FR: Similaire
+            de_DE: Ähnlich
+    related:
+        type: related
+        labels:
+            en_US: Related
+            en_GB: Related
+            fr_FR: Connexe
+            de_DE: Verbunden
+    cross_sell:
+        type: cross_sell
+        labels:
+            en_US: Cross sell
+            en_GB: Cross sell
+            fr_FR: Vente croisée
+            de_DE: Cross-Selling
+    upsell:
+        type: upsell
+        labels:
+            en_US: Upsell
+            en_GB: Upsell
+            fr_FR: Vente incitative
+            de_DE: Upsell
+    substitute:
+        type: substitute
+        labels:
+            en_US: Substitute
+            en_GB: Substitute
+            fr_FR: Substitut
+            de_DE: Ersatz

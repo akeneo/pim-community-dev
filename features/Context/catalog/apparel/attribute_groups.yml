@@ -1,0 +1,43 @@
+attribute_groups:
+    general:
+        labels:
+            en_US: General
+            en_GB: General
+            fr_FR: Général
+            de_DE: Allgemein
+    media:
+        labels:
+            en_US: Media
+            en_GB: Media
+            fr_FR: Médias
+            de_DE: Medien
+    sales:
+        labels:
+            en_US: Sales
+            en_GB: Sales
+            fr_FR: Ventes
+            de_DE: Vertrieb
+    sizes:
+        labels:
+            en_US: Sizes
+            en_GB: Sizes
+            fr_FR: Tailles
+            de_DE: Größen
+    colors:
+        labels:
+            en_US: Colors
+            en_GB: Colours
+            fr_FR: Couleurs
+            de_DE: Farben
+    additional:
+        labels:
+            en_US: Additional information
+            en_GB: Additional information
+            fr_FR: Informations complémentaires
+            de_DE: Zusätzliche Informationen
+    internal:
+        labels:
+            en_US: Internal
+            en_GB: Internal
+            fr_FR: Interne
+            de_DE: Intern

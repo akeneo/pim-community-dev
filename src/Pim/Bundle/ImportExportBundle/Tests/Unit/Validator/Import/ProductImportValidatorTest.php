@@ -28,7 +28,7 @@ class ProductImportValidatorTest extends ImportValidatorTestCase
         parent::setUp();
         $this->values = array();
         $this->constraintGuesser = $this->getMock(
-            'Oro\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface'
+            'Pim\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface'
         );
         $this->constraintGuesser->expects($this->any())
             ->method('supportAttribute')

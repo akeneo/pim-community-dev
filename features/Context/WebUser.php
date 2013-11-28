@@ -1550,6 +1550,8 @@ class WebUser extends RawMinkContext
 
         foreach ($expectedLines as $index => $expectedLine) {
             $actualLine = $actualLines[$index];
+            sort($expectedLine);
+            sort($actualLine);
             assertEquals(
                 $expectedLine,
                 $actualLine,

@@ -2,15 +2,15 @@
 
 namespace Pim\Bundle\CatalogBundle\Datagrid;
 
-use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
-use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
-use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
+use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
+use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
+use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 
 use Oro\Bundle\GridBundle\Action\MassAction\Ajax\DeleteMassAction;
 use Oro\Bundle\GridBundle\Action\MassAction\Redirect\RedirectMassAction;
 use Oro\Bundle\GridBundle\Builder\DatagridBuilderInterface;
 use Oro\Bundle\GridBundle\Datagrid\DatagridInterface;
-use Oro\Bundle\GridBundle\Datagrid\FlexibleDatagridManager;
+use Pim\Bundle\GridBundle\Datagrid\FlexibleDatagridManager;
 use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
@@ -208,6 +208,9 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $field = $this->createFamilyField();
         $fieldsCollection->add($field);
 
+        $field = $this->createGroupField();
+        $fieldsCollection->add($field);
+
         $field = new FieldDescription();
         $field->setName('enabled');
         $field->setOptions(
@@ -256,9 +259,6 @@ class ProductDatagridManager extends FlexibleDatagridManager
         $fieldsCollection->add($fieldUpdated);
 
         $field = $this->createCompletenessField();
-        $fieldsCollection->add($field);
-
-        $field = $this->createGroupField();
         $fieldsCollection->add($field);
     }
 
@@ -427,7 +427,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
                 'multiple'        => true,
                 'field_options'   => array('choices' => $choices),
                 'filter_by_where' => true,
-                'show_column'     => false
+                'show_column'     => true
             )
         );
 
@@ -638,17 +638,21 @@ class ProductDatagridManager extends FlexibleDatagridManager
     {
         $repository = $this->categoryManager->getEntityRepository();
 
+        $treeExists = $repository->find($this->filterTreeId) != null;
+
         $categoryExists = ($this->filterCategoryId != static::UNCLASSIFIED_CATEGORY)
             && $repository->find($this->filterCategoryId) != null;
-
-        $treeExists = ($this->filterTreeId != static::UNCLASSIFIED_CATEGORY)
-            && $repository->find($this->filterTreeId) != null;
 
         if ($treeExists && $categoryExists) {
             $includeSub = ($this->filterIncludeSub == 1);
             $productIds = $repository->getLinkedProductIds($this->filterCategoryId, $includeSub);
             $productIds = (empty($productIds)) ? array(0) : $productIds;
             $expression = $proxyQuery->expr()->in($rootAlias .'.id', $productIds);
+            $proxyQuery->andWhere($expression);
+        } elseif ($treeExists && ($this->filterCategoryId == static::UNCLASSIFIED_CATEGORY)) {
+            $productIds = $repository->getLinkedProductIds($this->filterTreeId, true);
+            $productIds = (empty($productIds)) ? array(0) : $productIds;
+            $expression = $proxyQuery->expr()->notIn($rootAlias .'.id', $productIds);
             $proxyQuery->andWhere($expression);
         }
     }

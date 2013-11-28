@@ -1,12 +1,1 @@
-{% set children %}
-    [{% for category in categories %}
-        {% include 'PimCatalogBundle:CategoryTree:_category_tree.html.twig'
-            with { 'category': category['item'], 'children': category['__children'] } %}{% if not loop.last %},{% endif %}
-    {% endfor %}]
-{% endset %}
-
-{% if parent is not null %}
-    {% include 'PimCatalogBundle:CategoryTree:_category_tree.html.twig' with { 'category': parent } %}
-{% else %}
-    {{ children }}
-{% endif %}
+{{ children_tree_response(categories, select_node, parent, product_count, select_node)|json_encode|raw }}

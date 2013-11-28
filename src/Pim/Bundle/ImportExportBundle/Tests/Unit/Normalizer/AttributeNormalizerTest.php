@@ -83,6 +83,9 @@ class AttributeNormalizerTest extends NormalizerTestCase
                     'searchable'             => '1',
                     'localizable'            => '1',
                     'available_locales'      => array('en', 'fr'),
+                    'date_type'              => '',
+                    'metric_family'          => '',
+                    'default_metric_unit'    => '',
                     'scope'                  => 'Global',
                     'options'                => array(
                         'green' => array('en' => 'Green', 'fr' => 'Vert'),
@@ -106,6 +109,9 @@ class AttributeNormalizerTest extends NormalizerTestCase
                     'searchable'             => '1',
                     'localizable'            => '1',
                     'available_locales'      => array('en', 'fr'),
+                    'date_type'              => '',
+                    'metric_family'          => '',
+                    'default_metric_unit'    => '',
                     'scope'                  => 'Channel',
                     'options'                => array(),
                     'useable_as_grid_column' => '1',
@@ -171,6 +177,9 @@ class AttributeNormalizerTest extends NormalizerTestCase
         $attribute->setScopable(strtolower($data['scope']) !== 'global');
         $attribute->setUseableAsGridColumn((bool) $data['useable_as_grid_column']);
         $attribute->setUseableAsGridFilter((bool) $data['useable_as_grid_filter']);
+        $attribute->setDateType($data['date_type']);
+        $attribute->setMetricFamily($data['metric_family']);
+        $attribute->setDefaultMetricUnit($data['default_metric_unit']);
 
         $this->addAvailableLocales($attribute, $data);
         $this->addOptions($attribute, $data);
