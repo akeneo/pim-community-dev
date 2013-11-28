@@ -25,3 +25,4 @@ Feature: Compare and copy localized fields
     When I compare values with the "French (France)" translation
     And I copy all translations
     Then the product Name should be "Floup"
+    And the product ecommerce Description should be "Chaussures de ville"
