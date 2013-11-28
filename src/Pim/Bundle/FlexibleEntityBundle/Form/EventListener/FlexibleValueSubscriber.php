@@ -42,8 +42,11 @@ class FlexibleValueSubscriber implements EventSubscriberInterface
      * @param AttributeTypeFactory    $attributeTypeFactory
      * @param FlexibleManagerRegistry $flexibleManagerRegistry
      */
-    public function __construct(FormFactoryInterface $factory, AttributeTypeFactory $attributeTypeFactory, FlexibleManagerRegistry $flexibleManagerRegistry)
-    {
+    public function __construct(
+        FormFactoryInterface $factory,
+        AttributeTypeFactory $attributeTypeFactory,
+        FlexibleManagerRegistry $flexibleManagerRegistry
+    ) {
         $this->factory = $factory;
         $this->attributeTypeFactory = $attributeTypeFactory;
         $this->flexibleManagerRegistry = $flexibleManagerRegistry;
