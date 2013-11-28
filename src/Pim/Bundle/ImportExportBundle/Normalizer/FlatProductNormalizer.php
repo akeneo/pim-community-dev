@@ -59,6 +59,11 @@ class FlatProductNormalizer implements NormalizerInterface
             $scopeCode = $context['scopeCode'];
         }
 
+        $localeCodes = array();
+        if (isset($context['localeCodes'])) {
+            $localeCodes = $context['localeCodes'];
+        }
+
         $this->results = $this->normalizeValue($object->getIdentifier());
 
         $this->normalizeFamily($object->getFamily());
@@ -69,7 +74,7 @@ class FlatProductNormalizer implements NormalizerInterface
 
         $this->normalizeAssociations($object->getProductAssociations());
 
-        $this->normalizeValues($object, $scopeCode);
+        $this->normalizeValues($object, $scopeCode, $localeCodes);
 
         $this->normalizeProperties($object);
 
@@ -99,19 +104,28 @@ class FlatProductNormalizer implements NormalizerInterface
      *
      * @param ProductInterface $product
      * @param string           $scopeCode
+     * @param array            $localeCodes
+     *
+     * @return null
      */
-    protected function normalizeValues(ProductInterface $product, $scopeCode)
+    protected function normalizeValues(ProductInterface $product, $scopeCode, $localeCodes)
     {
         $identifier = $product->getIdentifier();
 
         $filteredValues = $product->getValues()->filter(
-            function ($value) use ($identifier, $scopeCode) {
+            function ($value) use ($identifier, $scopeCode, $localeCodes) {
                 return (
                     ($value !== $identifier) &&
                     (
                         ($scopeCode == null) ||
                         (!$value->getAttribute()->getScopable()) ||
                         ($value->getAttribute()->getScopable() && $value->getScope() == $scopeCode)
+                    ) &&
+                    (
+                        (count($localeCodes) == 0) ||
+                        (!$value->getAttribute()->getTranslatable()) ||
+                        ($value->getAttribute()->getTranslatable() && in_array($value->getLocale(), $localeCodes))
+
                     )
                 );
             }
@@ -188,6 +202,10 @@ class FlatProductNormalizer implements NormalizerInterface
         foreach ($data as $item) {
             if ($item instanceof \Pim\Bundle\CatalogBundle\Entity\AttributeOption) {
                 $result[] = $item->getCode();
+            } elseif ($item instanceof \Pim\Bundle\CatalogBundle\Entity\ProductPrice) {
+                if ($item->getData() !== null) {
+                    $result[] = (string) $item;
+                }
             } else {
                 $result[] = (string) $item;
             }

@@ -203,7 +203,12 @@ class ChannelController extends AbstractDoctrineController
     public function removeAction(Request $request, Channel $channel)
     {
         try {
+            foreach ($channel->getLocales() as $locale) {
+                $channel->removeLocale($locale);
+                $this->getManager()->persist($locale);
+            }
             $this->getManager()->remove($channel);
+
             $this->getManager()->flush();
         } catch (LastAttributeOptionDeletedException $ex) {
             throw new DeleteException($this->getTranslator()->trans('flash.channel.not removable'));

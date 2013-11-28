@@ -1,0 +1,21 @@
+---
+pim_dashboard:
+  menu:
+    label:
+      collect: Verzamelen
+      enrich: Verrijken
+      spread: Verspreiden
+      settings: Instellingen
+  link:
+    label:
+      import_profile: Importprofielen beheren
+      import_report: Importgeschiedenis
+      product: Producten beheren
+      category: Categorieën beheren
+      variant: Variantgroepen beheren
+      group: Groepen beheren
+      channel: Kanalen beheren
+      export_profile: Exportprofielen beheren
+      export_report: Exportgeschiedenis
+      attribute: Kenmerken beheren
+      family: Families beheren

@@ -59,6 +59,9 @@ class AttributeNormalizer implements NormalizerInterface
                 'useable_as_grid_column'  => (int) $object->isUseableAsGridColumn(),
                 'useable_as_grid_filter'  => (int) $object->isUseableAsGridFilter(),
                 'allowed_extensions'      => implode(self::ITEM_SEPARATOR, $object->getAllowedExtensions()),
+                'date_type'               => $object->getDateType(),
+                'metric_family'           => $object->getMetricFamily(),
+                'default_metric_unit'     => $object->getDefaultMetricUnit()
             )
         );
         if (isset($context['versioning'])) {

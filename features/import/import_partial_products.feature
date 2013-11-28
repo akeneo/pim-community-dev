@@ -16,7 +16,6 @@ Feature: Import partial product information
     And the following job "footwear_product_import" configuration:
       | step                | element   | property          | value                |
       | import              | reader    | filePath          | {{ file to import }} |
-      | import_associations | reader    | filePath          | {{ file to import }} |
     And I am logged in as "Julia"
     When I am on the "footwear_product_import" import job page
     And I launch the import job

@@ -51,6 +51,21 @@ class ChannelManager
     }
 
     /**
+     * Get channel by code
+     *
+     * @param string $code
+     *
+     * @return Channel
+     */
+    public function getChannelByCode($code)
+    {
+        return $this
+            ->objectManager
+            ->getRepository('PimCatalogBundle:Channel')
+            ->findOneBy(array('code' => $code));
+    }
+
+    /**
      * Get channel choices with criterias
      * Allow to list channels in an array like array[<code>] = <label>
      *

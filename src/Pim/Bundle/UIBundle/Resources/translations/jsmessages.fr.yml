@@ -1,3 +1,4 @@
+---
 Close: Fermer
 Update: Mettre à jour
 Selected Rows: Lignes sélectionnées
@@ -6,6 +7,7 @@ jstree:
   all: Tous les produits
   unclassified: Produits non classifiés
   no_tree: "Pas d'arborescence disponible"
+  include_sub: Inclure les sous-catégories
 Area: Surface
 ACRE: Acre
 ARE: Are

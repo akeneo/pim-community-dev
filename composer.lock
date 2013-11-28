@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "bac58623c5d2f7477c10210374a10fad",
+    "hash": "65bb9eaf998d9b60aeb3fdfefe594848",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -74,12 +74,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/akeneo/DemoBundle.git",
-                "reference": "49336b1807d30f676b2efaa251c6ff293a715c49"
+                "reference": "b87042e6249ad0f34d8eadcc906b8146516fa0c5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/akeneo/DemoBundle/zipball/49336b1807d30f676b2efaa251c6ff293a715c49",
-                "reference": "49336b1807d30f676b2efaa251c6ff293a715c49",
+                "url": "https://api.github.com/repos/akeneo/DemoBundle/zipball/b87042e6249ad0f34d8eadcc906b8146516fa0c5",
+                "reference": "b87042e6249ad0f34d8eadcc906b8146516fa0c5",
                 "shasum": ""
             },
             "require": {
@@ -3545,7 +3545,7 @@
             "description": "Business Application Platform (BAP)",
             "homepage": "https://github.com/orocrm/platform.git",
             "support": {
-                "source": "https://github.com/akeneo/platform/tree/maintenance/pim_beta1",
+                "source": "https://github.com/akeneo/platform/tree/maintenance/pim_beta3",
                 "issues": "https://github.com/akeneo/platform/issues"
             },
             "time": "2013-10-28 08:41:50"

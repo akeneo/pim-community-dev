@@ -1,3 +1,4 @@
+---
 pim_import_export.status:
   - Bereit
 pim_import_export:
@@ -11,21 +12,45 @@ pim_import_export:
     attribute_export:
       title: Attribut-Export als CSV-Datei
       export.title: Konfiguration
+    attribute_option_export:
+      title: Attribute option export in CSV
+      export.title: Konfiguration
+    association_export:
+      title: Association export in CSV
+      export.title: Konfiguration
+    group_export:
+      title: Group export in CSV
+      export.title: Konfiguration
     product_import:
       title: Produkt-Import aus CSV-Datei
       import.title: Konfiguration
+      import_associations.title: Configuration import association
     category_import:
       title: Kategorie-Import aus CSV-Datei
       import.title: Konfiguration
     attribute_import:
       title: Attribut-Import aus CSV-Datei
       import.title: Konfiguration
+    attribute_option_import:
+      title: Attribute option import in CSV
+      import.title: Konfiguration
+    association_import:
+      title: Association import in CSV
+      import.title: Konfiguration
+    group_import:
+      title: Group import in CSV
+      import.title: Konfiguration
 oro_batch:
+  dummy_reader.title: Dummy reader
+  dummy_processor.title: Dummy processor
+  dummy_writer.title: Dummy writer
   product_reader:
     title: Gültigkeitsbereich
     channel:
       label: Ausgabekanal
       help: Der Ausgabekanal, den Sie exportieren möchten
+  entity_reader:
+    title: Entity extraction
   csv_reader:
     title: CSV-Reader
     filePath:
@@ -43,7 +68,7 @@ oro_batch:
     uploadAllowed:
       label: Datei-Upload erlauben
       help: Auswahl, ob ein direkter Datei-Upload möglich sein soll oder nicht
-  product_csv_reader:
+  csv_product_reader:
     title: CSV-Reader
     filePath:
       label: Datei
@@ -60,7 +85,7 @@ oro_batch:
     uploadAllowed:
       label: Datei-Upload erlauben
       help: Auswahl, ob ein direkter Datei-Upload möglich sein soll oder nicht
-  csv_file_reader:
+  csv_category_reader:
     title: CSV-Datei Reader
     filePath:
       label: Datei
@@ -97,6 +122,15 @@ oro_batch:
     channel:
       label: Ausgabekanal
       help: Ausgabekanal in welchem der importierte Wert angelegt werden soll
+    delimiter:
+      label: Delimiter
+      help: Ein einzelnes Zeichen, welches als Feld-Trennzeichen verwendet wird
+    enclosure:
+      label: Eingeschlossen von
+      help: Ein einzelnes Zeichen, von dem das Feld eingeschlossen wird
+    withHeader:
+      label: Mit Kopfzeile
+      help: Whether or not to print the column name
   category_processor:
     title: Kategorieanlage
     labelDelimiter:
@@ -108,32 +142,29 @@ oro_batch:
     circularRefsChecked:
       label: Prüfen Sie auf Zirkelbezüge
       help: Falls ja, werden die Daten verarbeitet, um sicherzustellen, dass keine Zirkelbezüge zwischen den Kategorien existieren
+  association_processor:
+    title: Association creation
+  group_processor:
+    title: Group creation
+  attribute_processor:
+    title: Create / update attributes
+  attribute_option_processor:
+    title: Create / update attributes
+  product_association_processor:
+    title: Product association creation
   csv_serializer:
-    heterogeneous_processor:
-        title: Einstellungen
-        delimiter:
-          label: Trennzeichen
-          help: Ein einzelnes Zeichen, welches als Feld-Trennzeichen verwendet wird
-        enclosure:
-          label: Eingeschlossen von
-          help: Ein einzelnes Zeichen, von dem das Feld eingeschlossen wird
-        withHeader:
-          label: Mit Kopfzeile
-          help: Auswahl, ob die Spaltenüberschrift mit ausgegeben werden sollen oder nicht
-  product_processor:
-    title: Settings
+    help: Auswahl, ob die Spaltenüberschrift mit ausgegeben werden sollen oder nicht
+  heterogeneous_processor:
+    title: Einstellungen
     delimiter:
-      label: Delimiter
-      help: One character used to set the field delimiter
+      label: Trennzeichen
+      help: Ein einzelnes Zeichen, welches als Feld-Trennzeichen verwendet wird
     enclosure:
-      label: Enclosure
-      help: One character used to set the field enclosure
+      label: Eingeschlossen von
+      help: Ein einzelnes Zeichen, von dem das Feld eingeschlossen wird
     withHeader:
-      label: With header
-      help: Whether or not to print the column name
-    channel:
-      label: Ausgabekanal
-      help: Ausgabekanal in welchem der importierte Wert angelegt werden soll
+      label: Mit Kopfzeile
+      help: Auswahl, ob die Spaltenüberschrift mit ausgegeben werden sollen oder nicht
   homogeneous_processor:
     title: Einstellungen
     delimiter:
@@ -144,21 +175,20 @@ oro_batch:
       help: Ein einzelnes Zeichen, von dem das Feld eingeschlossen wird
     withHeader:
       label: Mit Kopfzeile
-      help: Auswahl, ob die Spaltenüberschriften mit ausgegeben werden sollen oder nicht
   file_writer:
     title: Ausgabe
     filePath:
-      label: __File path
-      help: __Where to write the generated file on the file system
+      label: Datei
+      help: Verzeichnis, in welches die generierte Datei abgelegt werden soll
   product_writer:
-    title: Output
-    filePath:
-      label: __File path
-      help: __Where to write the generated file on the file system
-  orm_category_writer:
-    title: Kategorie-Speicher
-  orm_product_writer:
     title: Produkt-Speicher
+    filePath:
+      label: Datei
+      help: Verzeichnis, in welches die generierte Datei abgelegt werden soll
+  category_writer:
+    title: Kategorie-Speicher
+  writer:
+    title: Entity storage
 Import management: Import-Verwaltung
 Import %job.name% | Edit: Import %job.name% | Bearbeiten
 Import %job.name% | Show: Import %job.name% | Anzeigen

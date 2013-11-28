@@ -1,0 +1,197 @@
+---
+pim_import_export.status:
+  - Klaar
+pim_import_export:
+  jobs:
+    product_export:
+      title: Product exporteren naar CSV
+      export.title: Configuratie
+    category_export:
+      title: Categorie exporteren naar CSV
+      export.title: Configuratie
+    attribute_export:
+      title: Kenmerk exporteren naar CSV
+      export.title: Configuratie
+    attribute_option_export:
+      title: Kenmerkoptie exporteren naar CSV
+      export.title: Configuratie
+    association_export:
+      title: Koppeling exporteren naar CSV
+      export.title: Configuratie
+    group_export:
+      title: Groep exporteren naar CSV
+      export.title: Configuratie
+    product_import:
+      title: Product importeren vanuit CSV
+      import.title: Configuratie
+      import_associations.title: Configuratie importeren koppelingen
+    category_import:
+      title: Categorie importeren vanuit CSV
+      import.title: Configuratie
+    attribute_import:
+      title: Kenmerk importeren vanuit CSV
+      import.title: Configuratie
+    attribute_option_import:
+      title: Kenmerkoptie importeren vanuit CSV
+      import.title: Configuratie
+    association_import:
+      title: Koppeling importeren vanuit CSV
+      import.title: Configuratie
+    group_import:
+      title: Groep importeren vanuit CSV
+      import.title: Configuratie
+oro_batch:
+  dummy_reader.title: Dummy lezer
+  dummy_processor.title: Dummy verwerker
+  dummy_writer.title: Dummy schrijver
+  product_reader:
+    title: Bereik
+    channel:
+      label: Kanaal
+      help: Het kanaal dat u wilt exporteren
+  entity_reader:
+    title: Entiteitextractie
+  csv_reader:
+    title: CSV Lezer
+    filePath:
+      label: Bestand
+      help: Het CSV-bestand om te importeren
+    delimiter:
+      label: Scheidingsteken
+      help: Eén teken voor het scheiden van de velden
+    enclosure:
+      label: Omsluiting
+      help: Eén teken voor gebruik als omsluitingsteken voor het veld
+    escape:
+      label: Escape
+      help: Eén teken voor gebruik als escape-teken voor het veld
+    uploadAllowed:
+      label: Bestanden uploaden toestaan
+      help: Of direct uploaden van het bestand is toegestaan
+  csv_product_reader:
+    title: CSV Lezer
+    filePath:
+      label: Bestand
+      help: Het CSV-bestand om te importeren
+    delimiter:
+      label: Scheidingsteken
+      help: Eén teken voor het scheiden van de velden
+    enclosure:
+      label: Omsluiting
+      help: Eén teken voor gebruik als omsluitingsteken voor het veld
+    escape:
+      label: Escape
+      help: Eén teken voor gebruik als escape-teken voor het veld
+    uploadAllowed:
+      label: Bestanden uploaden toestaan
+      help: Of direct uploaden van het bestand is toegestaan
+  csv_category_reader:
+    title: CSV-bestand lezer
+    filePath:
+      label: Bestand
+      help: Het CSV-bestand om te importeren
+    delimiter:
+      label: Scheidingsteken
+      help: Eén teken voor het scheiden van de velden
+    enclosure:
+      label: Omsluiting
+      help: Eén teken voor gebruik als omsluitingsteken voor het veld
+    escape:
+      label: Escape
+      help: Eén teken voor gebruik als escape-teken voor het veld
+    uploadAllowed:
+      label: Bestanden uploaden toestaan
+      help: Of direct uploaden van het bestand is toegestaan
+  product_processor:
+    title: Product omvormen
+    enabled:
+      label: Het product inschakelen?
+      help: Of geïmporteerd product moet worden ingeschakeld
+    categoriesColumn:
+      label: Categoriekolom
+      help: Naam van de categoriekolom
+    groupsColumn:
+      label: Groepskolom
+      help: Naam van de groepskolom
+    familyColumn:
+      label: Familiekolom
+      help: Naam van de familiekolom
+    categoriesDelimiter:
+      label: Categorieënscheidingsteken
+      help: Teken om de categoriecodes te scheiden
+    channel:
+      label: Kanaal
+      help: Het kanaal waarin de geïmporteerde waarde moet worden aangemaakt
+    delimiter:
+      label: Scheidingsteken
+      help: Eén teken voor het scheiden van de velden
+    enclosure:
+      label: Omsluiting
+      help: Eén teken voor gebruik als omsluitingsteken voor het veld
+    withHeader:
+      label: Met koptekst
+      help: Of de kolomnaam geprint moet worden
+  category_processor:
+    title: Categorie creatie
+    labelDelimiter:
+      label: Labelscheidingsteken
+      help: Eén teken voor het scheiden van de labels in elke lokalisatie
+    localeDelimiter:
+      label: Lokalisatiescheidingsteken
+      help: Eén teken voor het scheiden van de titel van de lokalisatie
+    circularRefsChecked:
+      label: Controleer op kruisverwijzingen
+      help: Indien ja zullen de gegevens worden verwerkt om ervoor te zorgen dat er zich geen kringverwijzingen tussen de categorieën voordoen
+  association_processor:
+    title: Koppeling aanmaken
+  group_processor:
+    title: Groep aanmaken
+  attribute_processor:
+    title: Kenmerken aanmaken/bewerken
+  attribute_option_processor:
+    title: Kenmerken aanmaken/bewerken
+  product_association_processor:
+    title: Productkoppeling aanmaken
+  csv_serializer:
+    help: Of de kolomnaam geprint moet worden
+  heterogeneous_processor:
+    title: Instellingen
+    delimiter:
+      label: Scheidingsteken
+      help: Eén teken voor het scheiden van de velden
+    enclosure:
+      label: Omsluiting
+      help: Eén teken voor gebruik als omsluitingsteken voor het veld
+    withHeader:
+      label: Met koptekst
+      help: Of de kolomnaam geprint moet worden
+  homogeneous_processor:
+    title: Instellingen
+    delimiter:
+      label: Scheidingsteken
+      help: Eén teken voor het scheiden van de velden
+    enclosure:
+      label: Omsluiting
+      help: Eén teken voor gebruik als omsluitingsteken voor het veld
+    withHeader:
+      label: Met koptekst
+  file_writer:
+    title: Uitvoer
+    filePath:
+      label: Bestandspad
+      help: Waar het gegenereerde bestand op het bestandssysteem op te slaan
+  product_writer:
+    title: Productopslag
+    filePath:
+      label: Bestandspad
+      help: Waar het gegenereerde bestand op het bestandssysteem op te slaan
+  category_writer:
+    title: Categorieopslag
+  writer:
+    title: Entiteitopslag
+Import management: Importbeheer
+Import %job.name% | Edit: Import %job.name% | Bewerken
+Import %job.name% | Show: Import %job.name% | Tonen
+Export management: Exportbeheer
+Export %job.name% | Edit: Export %job.name% | Bewerken
+Export %job.name% | Show: Export %job.name% | Tonen
