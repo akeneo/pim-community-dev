@@ -202,7 +202,7 @@ class FlatProductNormalizer implements NormalizerInterface
         foreach ($data as $item) {
             if ($item instanceof \Pim\Bundle\CatalogBundle\Entity\AttributeOption) {
                 $result[] = $item->getCode();
-            } elseif ($item instanceof \Pim\Bundle\CatalogBundle\Entity\ProductPrice) {
+            } elseif ($item instanceof \Pim\Bundle\CatalogBundle\Model\ProductPrice) {
                 if ($item->getData() !== null) {
                     $result[] = (string) $item;
                 }
