@@ -37,6 +37,8 @@ define(function (require) {
         methods = {
             /**
              * Reads data from grid container, collects required modules and runs grid builder
+             *
+             * @param {Function} cb
              */
             initBuilder: function (cb) {
                 var self = this;
@@ -99,7 +101,6 @@ define(function (require) {
                 options = methods.combineGridOptions.call(this);
                 grid = new Grid(_.extend({collection: collection}, options));
                 this.$el.append(grid.render().$el);
-                this.$el.trigger('datagrid:created:' + options.name, grid);
 
                 if (options.routerEnabled !== false) {
                     // register router
@@ -198,7 +199,11 @@ define(function (require) {
     return function (builders) {
         $(gridSelector).each(function (i, el) {
             var $el = $(el);
-            var gridName = $el.data('metadata').options.gridName;
+            var gridName = (($el.data('metadata') || {}).options || {}).gridName;
+            if (!gridName) {
+                return;
+            }
+
             methods.initBuilder.call({ $el: $el }, function () {
                 _.each(builders, function (builder) {
                     if (!_.has(builder, 'init') || !$.isFunction(builder.init)) {

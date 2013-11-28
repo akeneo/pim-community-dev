@@ -17,7 +17,7 @@
                     messenger.notificationFlashMessage('success', __('The email was sent'));
                     widget.remove();
                     {% if form.vars.value.gridName|length %}
-                    mediator.trigger('datagrid:refresh:' + {{ form.vars.value.gridName|json_encode|raw }});
+                    mediator.trigger('datagrid:doRefresh:' + {{ form.vars.value.gridName|json_encode|raw }});
                     {% endif %}
                 });
             });

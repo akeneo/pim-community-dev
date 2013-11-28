@@ -292,7 +292,7 @@ define(['jquery', 'underscore', 'backgrid', 'oro/translator', 'oro/mediator', 'o
                         }
                     });
 
-                    mediator.on('datagrid:refresh:' + grid.name, function () {
+                    mediator.on('datagrid:doRefresh:' + grid.name, function () {
                         grid.refreshAction.execute();
                     });
 
@@ -322,7 +322,7 @@ define(['jquery', 'underscore', 'backgrid', 'oro/translator', 'oro/mediator', 'o
                         }
                     });
 
-                    mediator.on('datagrid:reset:' + grid.name, function () {
+                    mediator.on('datagrid:doReset:' + grid.name, function () {
                         grid.resetAction.execute();
                     });
 
@@ -468,8 +468,8 @@ define(['jquery', 'underscore', 'backgrid', 'oro/translator', 'oro/mediator', 'o
              */
             renderNoDataBlock: function () {
                 var placeholders = {entityHint: (this.entityHint || __('oro.datagrid.entityHint')).toLowerCase()},
-                    template = _.isEmpty(this.collection.state.filters)
-                        ? 'oro.datagrid.noentities' : 'oro.datagrid.noresults';
+                    template = _.isEmpty(this.collection.state.filters) ? 'oro.datagrid.noentities' :
+                        'oro.datagrid.noresults';
                 this.$(this.selectors.noDataBlock).html($(this.noDataTemplate({
                     hint: __(template, placeholders).replace('\n', '<br />')
                 }))).hide();
