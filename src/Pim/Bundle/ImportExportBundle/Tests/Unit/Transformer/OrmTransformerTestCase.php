@@ -52,7 +52,8 @@ abstract class OrmTransformerTestCase extends PHPUnit_Framework_TestCase
         $this->guesser->expects($this->any())
             ->method('getTransformerInfo')
             ->will($this->returnCallback(array($this, 'getTransformer')));
-        $this->labelTransformer = $this->getMock('Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoTransformerInterface');
+        $this->labelTransformer = $this
+            ->getMock('Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoTransformerInterface');
         $this->labelTransformer->expects($this->any())
             ->method('transform')
             ->will($this->returnCallback(array($this, 'getColumnInfo')));
@@ -81,7 +82,11 @@ abstract class OrmTransformerTestCase extends PHPUnit_Framework_TestCase
         if ($failing) {
             $transformer->expects($this->any())
                 ->method('transform')
-                ->will($this->throwException(new PropertyTransformerException('error_message', array('error_parameters'))));
+                ->will(
+                    $this->throwException(
+                        new PropertyTransformerException('error_message', array('error_parameters'))
+                    )
+                );
         } else {
             $transformer->expects($this->any())
                 ->method('transform')

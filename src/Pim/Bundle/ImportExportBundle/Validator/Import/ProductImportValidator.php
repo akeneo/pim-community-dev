@@ -78,8 +78,8 @@ class ProductImportValidator extends ImportValidator
     protected function validateProductValue(ProductInterface $product, ColumnInfoInterface $columnInfo)
     {
         return $this->validator->validateValue(
-                $this->getProductValue($product, $columnInfo)->getData(),
-                $this->getAttributeConstraints($columnInfo->getAttribute())
+            $this->getProductValue($product, $columnInfo)->getData(),
+            $this->getAttributeConstraints($columnInfo->getAttribute())
         );
     }
 

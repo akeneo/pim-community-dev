@@ -40,5 +40,4 @@ class DuplicateIdentifierException extends InvalidItemException implements Trans
         $this->translatableException->translateMessage($translator);
         $this->message = $this->translatableException->getMessage();
     }
-
 }

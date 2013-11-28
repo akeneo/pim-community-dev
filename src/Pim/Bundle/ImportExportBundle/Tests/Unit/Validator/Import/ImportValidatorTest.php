@@ -68,7 +68,7 @@ class ImportValidatorTest extends ImportValidatorTestCase
                         return $this->getViolationListMock(array($propertyPath => $this->errors[$label]));
                     }
                 )
-             );
+            );
         $errors = $this->importValidator->validate($this->entity, $columns, $this->data, $otherErrors);
         $this->assertEquals($expectedErrors, $errors);
     }

@@ -75,7 +75,7 @@ class OrmTransformerTest extends OrmTransformerTestCase
         $this->addColumn('col1', false);
         $this->addColumn('col2');
 
-        $object = $this->transformer->transform(
+        $this->transformer->transform(
             'stdClass',
             array('code' => 'code', 'col1' => 'val1', 'col2' => 'val2')
         );

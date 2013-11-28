@@ -24,7 +24,7 @@ class RegexpGuesserTest extends GuesserTestCase
 
     public function testMatching()
     {
-        $guesser = new RegexpGuesser($this->transformer, 'class' , array('/bogus/', '/^column_label$/'));
+        $guesser = new RegexpGuesser($this->transformer, 'class', array('/bogus/', '/^column_label$/'));
         $this->assertEquals(
             array($this->transformer, array()),
             $guesser->getTransformerInfo($this->columnInfo, $this->metadata)
@@ -33,13 +33,13 @@ class RegexpGuesserTest extends GuesserTestCase
 
     public function testNotClass()
     {
-        $guesser = new RegexpGuesser($this->transformer, 'other_class' , array('/bogus/', '/^column_label$/'));
+        $guesser = new RegexpGuesser($this->transformer, 'other_class', array('/bogus/', '/^column_label$/'));
         $this->assertNull($guesser->getTransformerInfo($this->columnInfo, $this->metadata));
     }
 
     public function testNotMatching()
     {
-        $guesser = new RegexpGuesser($this->transformer, 'class' , array('/bogus/'));
+        $guesser = new RegexpGuesser($this->transformer, 'class', array('/bogus/'));
         $this->assertNull($guesser->getTransformerInfo($this->columnInfo, $this->metadata));
     }
 }

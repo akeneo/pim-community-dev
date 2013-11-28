@@ -76,7 +76,7 @@ class ProductImportValidatorTest extends ImportValidatorTestCase
             ->method('validateValue')
             ->will(
                 $this->returnCallback(
-                    function ($value, $constraints) use ($constraintList, $errors) {
+                    function ($value) use ($constraintList, $errors) {
                         $this->assertSame($constraintList[0], $constraintList[0]);
                         $parts = explode('_', $value);
                         $valueErrors = isset($errors[$parts[0]])
