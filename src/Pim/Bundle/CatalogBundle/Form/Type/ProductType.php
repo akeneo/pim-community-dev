@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Form\Type;
 
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Oro\Bundle\FlexibleEntityBundle\Form\Type\FlexibleType;
+use Pim\Bundle\FlexibleEntityBundle\Form\Type\FlexibleType;
 
 /**
  * Product form type

@@ -4,6 +4,7 @@ namespace Pim\Bundle\GridBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Pim\Bundle\GridBundle\DependencyInjection\Compiler\AddFlexibleManagerCompilerPass;
 
 /**
  * Override OroGridBundle
@@ -27,6 +28,7 @@ class PimGridBundle extends Bundle
      */
     public function build(ContainerBuilder $container)
     {
+        $container->addCompilerPass(new AddFlexibleManagerCompilerPass());
         $container->addCompilerPass(new DependencyInjection\Compiler\DatagridRoutesPass);
     }
 }

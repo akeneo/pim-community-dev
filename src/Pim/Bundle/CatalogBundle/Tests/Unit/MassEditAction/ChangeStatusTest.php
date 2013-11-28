@@ -82,12 +82,12 @@ class ChangeStatusTest extends \PHPUnit_Framework_TestCase
     /**
      * @param mixed $objectManager
      *
-     * @return \Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager
+     * @return \Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager
      */
     protected function getFlexibleManagerMock($objectManager)
     {
         $manager = $this
-            ->getMockBuilder('Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager')
+            ->getMockBuilder('Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager')
             ->disableOriginalConstructor()
             ->getMock();
 
