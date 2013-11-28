@@ -445,3 +445,74 @@
         });
     </script>
 {% endblock oro_datetime_widget %}
+
+{% macro oro_collection_item_prototype(widget) %}
+    {% if 'prototype' in widget.vars|keys %}
+        {% set form = widget.vars.prototype %}
+        {% set name = widget.vars.prototype.vars.name %}
+    {% else %}
+        {% set form = widget %}
+        {% set name = widget.vars.full_name %}
+    {% endif %}
+    <div data-content="{{ name }}" data-validation-optional-group>
+        <div class="row-oro oro-multiselect-holder">
+            {{ form_widget(form) }}
+            <button class="removeRow btn btn-action btn-link" type="button" data-related="{{ name }}">×</button>
+        </div>
+    </div>
+{% endmacro %}
+
+{% block oro_collection_widget %}
+    {% spaceless %}
+        {% set prototypeHtml = _self.oro_collection_item_prototype(form) %}
+        {% set attr = attr|merge({'class': (attr.class is defined ? attr.class ~ ' ' : '') ~ 'oro-item-collection collection-fields-list' }) %}
+        {% set id = id ~ '_collection' %}
+        <div class="row-oro">
+            <div {{ block('widget_container_attributes') }} data-prototype="{{ prototypeHtml|escape }}">
+                {% if form.children|length %}
+                    {% for child in form.children %}
+                        {{ _self.oro_collection_item_prototype(child) }}
+                    {% endfor %}
+                {% elseif show_form_when_empty %}
+                    {{ prototypeHtml|replace({'__name__': '0'})|raw }}
+                {% endif %}
+            </div>
+            <a class="btn add-list-item" href="javascript: void(0);"><i class="icon-plus"></i>{{ 'Add'|trans }}</a>
+        </div>
+        {{ _self.oro_collection_validate_primary_js(_context) }}
+    {% endspaceless %}
+{% endblock %}
+
+{% macro oro_collection_validate_primary_js(context) %}
+    {% if context.form.vars.prototype.primary is defined %}
+        <script type="text/javascript">
+            require(['jquery'],
+            function($){
+                $(function() {
+                    var container = $('#{{ context.id }}');
+                    /**
+                     * Allow only 1 primary checkbox to be checked.
+                     * This logic convert checkbox logic to logic used in radiobutton
+                     */
+                    container.on('click', '[name$="[primary]"]', function() {
+                        container.find('[name$="[primary]"]').each(function (idx, el) {
+                            el.checked = false;
+                        });
+                        this.checked = true;
+                    });
+                });
+            });
+        </script>
+    {% endif %}
+{% endmacro %}
+
+
+{% block oro_form_js_validation %}
+<script type="text/javascript">
+    require(['jquery', 'jquery.validate'],
+    function ($) {
+        var options = {{ js_options ? js_options|json_encode|raw : '{}' }};
+        $('#{{ form.vars.name }}').validate(options);
+    });
+</script>
+{% endblock %}

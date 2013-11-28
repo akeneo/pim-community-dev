@@ -441,7 +441,10 @@ class ConfigManager
      */
     public function getUpdateConfig(\Closure $filter = null)
     {
-        $result = iterator_to_array($this->persistConfigs, false);
+        $result = array();
+        foreach ($this->persistConfigs as $element) {
+            $result[] = $element;
+        }
 
         return $filter ? array_filter($result, $filter) : $result;
     }

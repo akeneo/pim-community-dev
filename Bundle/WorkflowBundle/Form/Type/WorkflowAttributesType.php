@@ -200,8 +200,6 @@ class WorkflowAttributesType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setRequired(array('attribute_fields'));
-
         $resolver->setOptional(
             array(
                 'attribute_fields',

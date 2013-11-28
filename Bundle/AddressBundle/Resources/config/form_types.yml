@@ -1,8 +1,6 @@
 parameters:
     oro_address.form.listener.address.class: Oro\Bundle\AddressBundle\Form\EventListener\AddressCountryAndRegionSubscriber
 
-    oro_address.form.type.item_collection.class: Oro\Bundle\AddressBundle\Form\Type\ItemCollectionType
-
     oro_address.form.type.address.class: Oro\Bundle\AddressBundle\Form\Type\AddressType
     oro_address.form.type.address_api.class: Oro\Bundle\AddressBundle\Form\Type\AddressApiType
     oro_address.form.type.address_collection.class: Oro\Bundle\AddressBundle\Form\Type\AddressCollectionType
@@ -26,12 +24,6 @@ services:
         arguments:
             - @doctrine.orm.entity_manager
             - @form.factory
-
-    # Collections form types
-    oro_address.type.item_collection:
-        class: %oro_address.form.type.item_collection.class%
-        tags:
-             - { name: form.type, alias: oro_item_collection }
 
     # Addresses form types
     oro_address.form.type.address:

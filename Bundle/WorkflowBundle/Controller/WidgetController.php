@@ -309,7 +309,7 @@ class WidgetController extends Controller
         foreach ($transitions as $transition) {
             if (!$transition->isHidden()) {
                 $errors = new ArrayCollection();
-                $isAllowed = $workflowManager->isTransitionAvailable($transition, $workflowItem, $errors);
+                $isAllowed = $workflowManager->isTransitionAvailable($workflowItem, $transition, $errors);
                 if ($isAllowed || !$transition->isUnavailableHidden()) {
                     $transitionsData[] = array(
                         'workflow' => $workflowManager->getWorkflow($workflowItem),
@@ -341,7 +341,7 @@ class WidgetController extends Controller
         foreach ($transitions as $transition) {
             if (!$transition->isHidden()) {
                 $errors = new ArrayCollection();
-                $isAllowed = $workflowManager->isStartTransitionAvailable($transition, $workflow, $entity, $errors);
+                $isAllowed = $workflowManager->isStartTransitionAvailable($workflow, $transition, $entity, $errors);
                 if ($isAllowed || !$transition->isUnavailableHidden()) {
                     $transitionsData[] = array(
                         'workflow' => $workflowManager->getWorkflow($workflow),

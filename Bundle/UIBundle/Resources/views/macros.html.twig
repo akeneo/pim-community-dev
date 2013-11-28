@@ -159,7 +159,7 @@
                 title="{{ parameters.title|trans }}"
             {% endif %}
            >
-           <i class="icon-trash hide-text">{{ parameters.label|trans }}</i>{{ parameters.label|trans }}
+           <i class="icon-trash"></i>{{ parameters.label|trans }}
         </a>
     </div>
 {% endmacro %}
@@ -283,7 +283,8 @@
 {% macro scrollBlock(blockId, title, subblocks, isForm) %}
     {% set cols = subblocks|length %}
     <div class="usser-row">
-        <h4 id="{{ blockId }}" class="scrollspy-title">{{ title|trans }}</h4>
+        <h4 class="scrollspy-title">{{ title|trans }}</h4>
+        <div id="{{ blockId }}" class="scrollspy-nav-target"></div>
         <div class="row-fluid {% if cols > 1 %}row-fluid-divider{% endif %}">
             {% if isForm is defined and isForm == true %}
                 <fieldset class="form-horizontal">
@@ -353,7 +354,7 @@
                 </div>
             </div>
         {% endif %}
-        <div data-spy="scroll" data-target="#{{ dataTarget }}" data-offset="50" class="scrollspy container-fluid scrollable-container{% if isForm %} form-container{% endif %}">
+        <div data-spy="scroll" data-target="#{{ dataTarget }}" data-offset="1" class="scrollspy container-fluid scrollable-container{% if isForm %} form-container{% endif %}">
             {% for scrollBlock in dataBlocks %}
                 {{ _self.scrollBlock("scroll-" ~ loop.index, scrollBlock.title, scrollBlock.subblocks, isForm) }}
             {% endfor %}
@@ -380,7 +381,7 @@
 #}
 {% macro collectionField(field, label, buttonCaption) %}
     <div class="control-group">
-        <label for="selectAccountName" class="control-label">{{ label|trans }}:</label>
+        <label class="control-label">{{ label|trans }}:</label>
         <div class="controls">
             <div class="row-oro">
                 <div class="collection-fields-list" data-prototype="{{ _self.collection_prototype(field)|escape }}">
