@@ -40,7 +40,7 @@ class TransformerGuesserPass implements CompilerPassInterface
         }
 
         $definition = $container->getDefinition(self::CHAINED_TRANSFORMER_SERVICE);
-        ksort($priorities);
+        krsort($priorities);
         foreach ($priorities as $serviceIds) {
             foreach ($serviceIds as $serviceId) {
                 $definition->addMethodCall('addGuesser', array(new Reference($serviceId)));
