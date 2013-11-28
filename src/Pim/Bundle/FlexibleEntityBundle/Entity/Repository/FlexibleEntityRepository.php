@@ -51,7 +51,7 @@ class FlexibleEntityRepository extends EntityRepository implements TranslatableI
 
     /**
      * Set flexible entity config
-
+     *
      * @param array $config
      *
      * @return FlexibleEntityRepository
@@ -162,8 +162,8 @@ class FlexibleEntityRepository extends EntityRepository implements TranslatableI
 
     /**
      * @param QueryBuilder $qb
-     * @param string       $locale
-     * @param string       $scope
+     *
+     * @return FlexibleQueryBuilder
      */
     public function getFlexibleQueryBuilder($qb)
     {
@@ -218,8 +218,7 @@ class FlexibleEntityRepository extends EntityRepository implements TranslatableI
         array $orderBy = null,
         $limit = null,
         $offset = null
-    )
-    {
+    ) {
         $qb = $this->createQueryBuilder('Entity');
         $this->addJoinToValueTables($qb);
         $codeToAttribute = $this->getCodeToAttributes($attributes);
@@ -264,8 +263,7 @@ class FlexibleEntityRepository extends EntityRepository implements TranslatableI
         array $orderBy = null,
         $limit = null,
         $offset = null
-    )
-    {
+    ) {
         return $this
             ->findByWithAttributesQB($attributes, $criteria, $orderBy, $limit, $offset)
             ->getQuery()

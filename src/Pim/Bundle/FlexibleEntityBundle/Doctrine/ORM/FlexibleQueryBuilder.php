@@ -44,6 +44,8 @@ class FlexibleQueryBuilder
     /**
      * Constructor
      * @param QueryBuilder $qb
+     * @param string       $locale
+     * @param string       $scope
      */
     public function __construct(QueryBuilder $qb, $locale, $scope)
     {
@@ -285,7 +287,10 @@ class FlexibleQueryBuilder
             // inner join to value
             $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias);
             $this->qb->innerJoin(
-                $this->qb->getRootAlias().'.' . $attribute->getBackendStorage(), $joinAlias, 'WITH', $condition
+                $this->qb->getRootAlias().'.' . $attribute->getBackendStorage(),
+                $joinAlias,
+                'WITH',
+                $condition
             );
 
             // then join to option with filter on option id
@@ -314,7 +319,10 @@ class FlexibleQueryBuilder
             $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias);
             $condition .= ' AND '.$this->prepareCriteriaCondition($backendField, $operator, $value);
             $this->qb->innerJoin(
-                $this->qb->getRootAlias().'.'.$attribute->getBackendStorage(), $joinAlias, 'WITH', $condition
+                $this->qb->getRootAlias().'.'.$attribute->getBackendStorage(),
+                $joinAlias,
+                'WITH',
+                $condition
             );
         }
 
@@ -338,7 +346,10 @@ class FlexibleQueryBuilder
             // join to value
             $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias);
             $this->qb->leftJoin(
-                $this->qb->getRootAlias().'.' . $attribute->getBackendStorage(), $joinAlias, 'WITH', $condition
+                $this->qb->getRootAlias().'.' . $attribute->getBackendStorage(),
+                $joinAlias,
+                'WITH',
+                $condition
             );
 
             // then to option and option value to sort on
@@ -358,7 +369,10 @@ class FlexibleQueryBuilder
             // join to value and sort on
             $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias);
             $this->qb->leftJoin(
-                $this->qb->getRootAlias().'.'.$attribute->getBackendStorage(), $joinAlias, 'WITH', $condition
+                $this->qb->getRootAlias().'.'.$attribute->getBackendStorage(),
+                $joinAlias,
+                'WITH',
+                $condition
             );
             $this->qb->addOrderBy($joinAlias.'.'.$attribute->getBackendType(), $direction);
         }

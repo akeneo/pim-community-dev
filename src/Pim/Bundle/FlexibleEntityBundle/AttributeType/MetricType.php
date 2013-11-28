@@ -31,8 +31,7 @@ class MetricType extends AbstractAttributeType
         $formType,
         ConstraintGuesserInterface $constraintGuesser,
         MeasureManager $manager
-    )
-    {
+    ) {
         parent::__construct($backendType, $formType, $constraintGuesser);
 
         $this->manager = $manager;

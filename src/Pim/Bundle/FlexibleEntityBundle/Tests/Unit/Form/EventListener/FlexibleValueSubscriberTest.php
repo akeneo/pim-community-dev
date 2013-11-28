@@ -37,24 +37,39 @@ class FlexibleValueSubscriberTest extends \PHPUnit_Framework_TestCase
      */
     protected $subscriber;
 
+    /**
+     * {@inheritdoc}
+     */
     protected function setUp()
     {
         $this->formFactory = $this->getMockBuilder('Symfony\Component\Form\FormFactoryInterface')
             ->getMock();
-        $this->attributeTypeFactory = $this->getMockBuilder('Pim\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory')
+        $this->attributeTypeFactory = $this
+            ->getMockBuilder('Pim\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->flexibleManagerRegistry = $this->getMockBuilder('Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManagerRegistry')
+        $this->flexibleManagerRegistry = $this
+            ->getMockBuilder('Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManagerRegistry')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->subscriber = new FlexibleValueSubscriber($this->formFactory, $this->attributeTypeFactory, $this->flexibleManagerRegistry);
+        $this->subscriber = new FlexibleValueSubscriber(
+            $this->formFactory,
+            $this->attributeTypeFactory,
+            $this->flexibleManagerRegistry
+        );
     }
 
+    /**
+     * Test related method
+     */
     public function testGetSubscribedEvents()
     {
         $this->assertEquals(array(FormEvents::PRE_SET_DATA => 'preSetData'), $this->subscriber->getSubscribedEvents());
     }
 
+    /**
+     * Test related method
+     */
     public function testPreSetDataNoData()
     {
         $event = $this->getMockBuilder('Symfony\Component\Form\FormEvent')
@@ -67,11 +82,17 @@ class FlexibleValueSubscriberTest extends \PHPUnit_Framework_TestCase
         $this->assertEmpty($this->subscriber->preSetData($event));
     }
 
+    /**
+     * Test related method
+     */
     public function testPreSetDataNoFlexibleAttrs()
     {
         $this->assertAttrbiuteValueFormInit('Acme\TestBundle\Entity\Test');
     }
 
+    /**
+     * Test related method
+     */
     public function testPreSetDataWithFlexibleAttribute()
     {
         $dataClass = 'Pim\Bundle\FlexibleEntityBundle\Model\AbstractFlexible';
@@ -95,6 +116,10 @@ class FlexibleValueSubscriberTest extends \PHPUnit_Framework_TestCase
 
     }
 
+    /**
+     * @param string $dataClass
+     * @param object $valueFormData
+     */
     protected function assertAttrbiuteValueFormInit($dataClass, $valueFormData = null)
     {
         $attributeTypeName = 'test_attribute';

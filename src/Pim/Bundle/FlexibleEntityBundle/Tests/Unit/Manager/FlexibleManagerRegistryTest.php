@@ -16,7 +16,6 @@ use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManagerRegistry;
  */
 class FlexibleManagerRegistryTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * Registry
      *
