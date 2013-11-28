@@ -3,49 +3,83 @@
 namespace Oro\Bundle\EntityConfigBundle\Tests\Unit\Entity;
 
 use Oro\Bundle\EntityConfigBundle\Entity\OptionSet;
+use Oro\Bundle\EntityConfigBundle\Entity\OptionSetRelation;
 
 class OptionSetTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var OptionSet
      */
-    protected $entity;
+    protected $optionSet;
+
+    /**
+     * @var OptionSetRelation
+     */
+    protected $optionRelation;
 
     public function setUp()
     {
-        $this->entity = new OptionSet();
+        $this->optionSet      = new OptionSet();
+        $this->optionRelation = new OptionSetRelation();
     }
 
-    public function testGettersSetters()
+    public function testOptionSet()
     {
-        $entity = $this->entity;
-        $entity
+        $this->checkAssertsSet($this->setSet());
+
+        $this->assertNull($this->optionSet->getRelation());
+        $this->assertEquals(1, $this->optionSet->getField());
+    }
+
+    public function testOptionSetData()
+    {
+        $this->optionSet->setData(null, 10, 'test', false);
+        $this->checkAssertsSet($this->optionSet);
+    }
+
+    public function testOptionSetRelation()
+    {
+        $this->optionRelation->setData(null, 1, null, $this->setSet());
+        $this->checkAssertsRelation($this->optionRelation);
+    }
+
+    protected function setSet()
+    {
+        $this->optionSet
             ->setId(null)
             ->setField(1)
             ->setLabel('test')
             ->setIsDefault(false)
             ->setPriority(10);
 
-        $this->checkAsserts($entity);
-
-        $this->assertNull($entity->getRelation());
-        $this->assertEquals(1, $entity->getField());
+        return $this->optionSet;
     }
 
-    public function testSetData()
+    protected function setRelation()
     {
-        $entity = $this->entity;
-        $entity->setData(null, 10, 'test', false);
+        $this->optionRelation
+            ->setId(null)
+            ->setEntityId(1)
+            ->setField(null)
+            ->setOption($this->setSet());
 
-        $this->checkAsserts($entity);
+        return $this->optionRelation;
     }
 
-    protected function checkAsserts($entity)
+    protected function checkAssertsSet(OptionSet $entity)
     {
         $this->assertNull($entity->getId());
         $this->assertEquals('test', $entity->getLabel());
         $this->assertEquals('test', $entity->getValue());
         $this->assertFalse($entity->getIsDefault());
         $this->assertEquals(10, $entity->getPriority());
+    }
+
+    protected function checkAssertsRelation(OptionSetRelation $entity)
+    {
+        $this->assertNull($entity->getId());
+        $this->assertNull($entity->getField());
+        $this->assertEquals(1, $entity->getEntityId());
+        $this->assertEquals($this->setSet(), $entity->getOption());
     }
 }
