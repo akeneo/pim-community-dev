@@ -68,9 +68,9 @@ class ConfigType extends AbstractType
         }
 
         if ($fieldType == 'optionSet') {
-            $data['extend']['set_options'] =
-                $this->configManager->getEntityManager()->getRepository(OptionSet::ENTITY_NAME)
-                    ->findBy(['field' => $configModel->getId()], ['priority' => 'ASC']);
+            $data['extend']['set_options'] = $this->configManager->getEntityManager()
+                ->getRepository(OptionSet::ENTITY_NAME)
+                ->findOptionsByField($configModel->getId());
         }
 
         $builder->setData($data);
