@@ -117,7 +117,12 @@
                 (function() {
                     var transitionsWidget = new ButtonsWidget({
                         'el': widget.$('#workflow-transitions-{{ data.workflowItem.id }}'),
-                        'url': {{ path('oro_workflow_widget_buttons_wizard', {workflowItemId: data.workflowItem.id})|json_encode|raw }},
+                        'url': {{ path(
+                            'oro_workflow_widget_buttons_wizard',
+                            {
+                                workflowItemId: data.workflowItem.id,
+                                redirectToWorkflow: true
+                            })|json_encode|raw }},
                         'cssClass': ''
                     });
                     transitionsWidget.on('renderStart', function(el) {

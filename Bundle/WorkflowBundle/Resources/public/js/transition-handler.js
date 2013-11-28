@@ -92,7 +92,7 @@ function($, messenger, __, Navigation, Modal) {
                         autoResize: true
                     }
                 });
-                transitionFormWidget.on('renderComplete', resetInProgress);
+                transitionFormWidget.on('widgetRemove', resetInProgress);
                 transitionFormWidget.on('formSave', function(data) {
                     transitionFormWidget.remove();
                     performTransition(element, data);
