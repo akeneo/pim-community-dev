@@ -1169,7 +1169,7 @@ class WebUser extends RawMinkContext
      */
     public function iWaitForTheJobToFinish()
     {
-        $timeout = 60;
+        $timeout = 120;
 
         while ($timeout && $refreshLink = $this->getCurrentPage()->findLink('Refresh')) {
             sleep(3);
@@ -1179,7 +1179,7 @@ class WebUser extends RawMinkContext
         }
 
         if ($refreshLink) {
-            throw $this->createExpectationException("The job didn't finish in 1 minute");
+            throw $this->createExpectationException("The job didn't finish in 2 minutes");
         }
     }
 
