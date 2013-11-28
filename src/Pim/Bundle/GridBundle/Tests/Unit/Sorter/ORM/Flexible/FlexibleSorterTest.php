@@ -114,8 +114,8 @@ class FlexibleSorterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param string $flexibleName
-     * @param string $fieldName
+     * @param  string                                                    $flexibleName
+     * @param  string                                                    $fieldName
      * @return FieldDescription|\PHPUnit_Framework_MockObject_MockObject
      */
     private function createFieldDescription($flexibleName, $fieldName = null)
@@ -144,6 +144,7 @@ class FlexibleSorterTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->setMethods(array('getFlexibleRepository'))
             ->getMock();
+
         return $flexibleManager;
     }
 

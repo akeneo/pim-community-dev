@@ -29,8 +29,8 @@ class SorterFactory implements SorterFactoryInterface
     }
 
     /**
-     * @param FieldDescriptionInterface $field
-     * @param string $direction
+     * @param  FieldDescriptionInterface $field
+     * @param  string                    $direction
      * @throws \RunTimeException
      *
      * @return SorterInterface
@@ -55,7 +55,7 @@ class SorterFactory implements SorterFactoryInterface
     /**
      * Checks is field flexible or no
      *
-     * @param FieldDescriptionInterface $field
+     * @param  FieldDescriptionInterface $field
      * @return bool
      */
     protected function isFlexible(FieldDescriptionInterface $field)

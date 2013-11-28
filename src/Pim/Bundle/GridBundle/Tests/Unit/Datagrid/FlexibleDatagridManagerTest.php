@@ -3,7 +3,6 @@
 namespace Pim\Bundle\GridBundle\Tests\Unit\Datagrid;
 
 use Pim\Bundle\GridBundle\Datagrid\FlexibleDatagridManager;
-use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 
 /**
  * Test related class

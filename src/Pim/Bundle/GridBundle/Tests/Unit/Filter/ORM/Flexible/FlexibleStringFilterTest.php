@@ -21,6 +21,7 @@ class FlexibleStringFilterTest extends FlexibleFilterTestCase
     protected function createTestFilter($flexibleRegistry)
     {
         $parentFilter = new StringFilter($this->getTranslatorMock());
+
         return new FlexibleStringFilter($flexibleRegistry, $parentFilter);
     }
 

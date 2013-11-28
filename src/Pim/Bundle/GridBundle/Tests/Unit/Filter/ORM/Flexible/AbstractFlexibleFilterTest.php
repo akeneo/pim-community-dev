@@ -118,7 +118,6 @@ class AbstractFlexibleFilterTest extends \PHPUnit_Framework_TestCase
         $this->assertAttributeEquals($flexibleManager, 'flexibleManager', $this->model);
     }
 
-
     public function applyDataProvider()
     {
         return array(
