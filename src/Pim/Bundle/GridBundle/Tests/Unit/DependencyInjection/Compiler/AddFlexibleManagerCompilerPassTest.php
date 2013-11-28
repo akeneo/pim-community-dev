@@ -7,6 +7,13 @@ use Symfony\Component\DependencyInjection\Reference;
 use Oro\Bundle\GridBundle\Tests\Unit\DependencyInjection\Compiler\AbstractCompilerPassTest;
 use Pim\Bundle\GridBundle\DependencyInjection\Compiler\AddFlexibleManagerCompilerPass;
 
+/**
+ * Test related class
+ *
+ * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class AddFlexibleManagerCompilerPassTest extends AbstractCompilerPassTest
 {
     /**
@@ -41,8 +48,6 @@ class AddFlexibleManagerCompilerPassTest extends AbstractCompilerPassTest
     }
 
     /**
-     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
-     *
      * @return array
      */
     public function processDataProvider()

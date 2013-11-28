@@ -264,7 +264,6 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
      * @throws \Exception
      *
      * @return Ambigous <mixed, multitype:>
-     * @SuppressWarnings(PHPMD.NPathComplexity)
      */
     public function __call($method, $arguments)
     {
