@@ -238,7 +238,7 @@ class FlexibleEntityRepository extends EntityRepository implements TranslatableI
         // use doctrine paginator to avoid count problem with left join of values
         if (!is_null($offset) and !is_null($limit)) {
             $qb->setFirstResult($offset)->setMaxResults($limit);
-            $paginator = new Paginator($qb->getQuery(), $fetchJoinCollection = true);
+            $paginator = new Paginator($qb->getQuery());
 
             return $paginator;
         }

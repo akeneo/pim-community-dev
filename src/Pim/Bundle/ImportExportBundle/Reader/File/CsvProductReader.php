@@ -3,7 +3,6 @@
 namespace Pim\Bundle\ImportExportBundle\Reader\File;
 
 use Doctrine\ORM\EntityManager;
-use Oro\Bundle\BatchBundle\Item\InvalidItemException;
 
 /**
  * Product csv reader
@@ -19,9 +18,6 @@ use Oro\Bundle\BatchBundle\Item\InvalidItemException;
  */
 class CsvProductReader extends CsvReader
 {
-    /** @var array Unique attribute value data grouped by attribute codes */
-    protected $uniqueValues = array();
-
     /** @var array Media attribute codes */
     protected $mediaAttributes = array();
 
@@ -33,9 +29,6 @@ class CsvProductReader extends CsvReader
     public function __construct(EntityManager $entityManager)
     {
         $repository = $entityManager->getRepository('PimCatalogBundle:ProductAttribute');
-        foreach ($repository->findUniqueAttributeCodes() as $code) {
-            $this->uniqueValues[$code] = array();
-        }
         $this->mediaAttributes = $repository->findMediaAttributeCodes();
     }
 
@@ -50,36 +43,7 @@ class CsvProductReader extends CsvReader
             return $data;
         }
 
-        $this->assertValueUniqueness($data);
-
         return $this->transformMediaPathToAbsolute($data);
-    }
-
-    /**
-     * @param array $data
-     *
-     * @throws InvalidItemException
-     */
-    protected function assertValueUniqueness(array $data)
-    {
-        foreach ($data as $code => $value) {
-            if (array_key_exists($code, $this->uniqueValues)) {
-                if (in_array($value, $this->uniqueValues[$code])) {
-                    throw new InvalidItemException(
-                        sprintf(
-                            'The "%s" attribute is unique, the value "%s" was already read ' .
-                            'in this file in %s:%s.',
-                            $code,
-                            $value,
-                            $this->csv->getRealPath(),
-                            $this->csv->key()
-                        ),
-                        $data
-                    );
-                }
-                $this->uniqueValues[$code][] = $value;
-            }
-        }
     }
 
     /**

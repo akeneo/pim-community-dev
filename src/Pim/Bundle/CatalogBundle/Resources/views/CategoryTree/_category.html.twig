@@ -1,6 +1,0 @@
-{
-    "attr": {"id":"node_{{ category.id }}"},
-    "data": "{{ category.label|raw }}{% if product_count %} ({{ count_products(category, include_sub) }}){% endif %}",
-    "state": "{{ define_state(category) }}"
-    {% if children is defined %},"children": {{ children }}{% endif %}
-}

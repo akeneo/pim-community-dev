@@ -122,7 +122,7 @@ abstract class AbstractFlexibleManagerTest extends AbstractOrmTest
         );
 
         // add attribute types
-        foreach ($attTypes as $attTypeAlias => $attTypeId) {
+        foreach (array_keys($attTypes) as $attTypeAlias) {
             $this->manager->addAttributeType($attTypeAlias);
         }
 

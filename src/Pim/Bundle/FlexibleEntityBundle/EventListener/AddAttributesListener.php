@@ -39,17 +39,17 @@ class AddAttributesListener implements EventSubscriber
 
         if ($flexible instanceof AbstractEntityFlexible) {
 
-            $metadata               = $em->getMetadataFactory()->getLoadedMetadata();
-            $entityClass            = ClassUtils::getRealClass(get_class($flexible));
-            $flexibleMetadata       = $metadata[$entityClass];
-            $flexibleAssociations   = $flexibleMetadata->getAssociationMappings();
-            $toValueAssociation     = $flexibleAssociations['values'];
-            $valueClass             = $toValueAssociation['targetEntity'];
+            $metadata             = $em->getMetadataFactory()->getLoadedMetadata();
+            $entityClass          = ClassUtils::getRealClass(get_class($flexible));
+            $flexibleMetadata     = $metadata[$entityClass];
+            $flexibleAssociations = $flexibleMetadata->getAssociationMappings();
+            $valueAssociation     = $flexibleAssociations['values'];
+            $valueClass           = $valueAssociation['targetEntity'];
 
-            $valueMetadata          = $metadata[$valueClass];
-            $valueAssociations      = $valueMetadata->getAssociationMappings();
-            $toAttributeAssociation = $valueAssociations['attribute'];
-            $attributeClass         = $toAttributeAssociation['targetEntity'];
+            $valueMetadata        = $metadata[$valueClass];
+            $valueAssociations    = $valueMetadata->getAssociationMappings();
+            $attributeAssociation = $valueAssociations['attribute'];
+            $attributeClass       = $attributeAssociation['targetEntity'];
 
             $codeToAttributeData = $em->getRepository($attributeClass)->getCodeToAttributes($entityClass);
             $flexible->setAllAttributes($codeToAttributeData);

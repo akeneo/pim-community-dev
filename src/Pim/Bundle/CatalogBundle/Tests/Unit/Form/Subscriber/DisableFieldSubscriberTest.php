@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\Form\Subscriber;
 
-use Pim\Bundle\CatalogBundle\Form\Subscriber\DisableCodeFieldSubscriber;
+use Pim\Bundle\CatalogBundle\Form\Subscriber\DisableFieldSubscriber;
 
 /**
  * Test related class
@@ -11,7 +11,7 @@ use Pim\Bundle\CatalogBundle\Form\Subscriber\DisableCodeFieldSubscriber;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class DisableCodeFieldSubscriberTest extends \PHPUnit_Framework_TestCase
+class DisableFieldSubscriberTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @return array
@@ -38,9 +38,22 @@ class DisableCodeFieldSubscriberTest extends \PHPUnit_Framework_TestCase
         $form = $this->getMockBuilder('Symfony\Component\Form\Form')
             ->disableOriginalConstructor()
             ->getMock();
+        $field = $this->getMockBuilder('Symfony\Component\Form\Form')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $config = $this->getMock('Symfony\Component\Form\FormConfigInterface');
+
         $event->expects($this->any())
             ->method('getForm')
             ->will($this->returnValue($form));
+
+        $form->expects($this->any())
+            ->method('get')
+            ->will($this->returnValue($field));
+
+        $field->expects($this->any())
+            ->method('getConfig')
+            ->will($this->returnValue($config));
 
         if ($id === null) {
             $event->expects($this->once())
@@ -61,7 +74,7 @@ class DisableCodeFieldSubscriberTest extends \PHPUnit_Framework_TestCase
                     ->method('add')
                     ->with(
                         $this->equalTo('code'),
-                        $this->equalTo('text'),
+                        $this->equalTo(null),
                         $this->equalTo(array('disabled' => true, 'read_only' => true))
                     );
             } else {
@@ -69,7 +82,7 @@ class DisableCodeFieldSubscriberTest extends \PHPUnit_Framework_TestCase
                     ->method('add');
             }
         }
-        $subscriber = new DisableCodeFieldSubscriber();
+        $subscriber = new DisableFieldSubscriber('code');
         $subscriber->postSetData($event);
     }
 }

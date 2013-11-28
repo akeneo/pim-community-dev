@@ -61,17 +61,22 @@ Feature: Filter products
       | ebook   | description | fr_FR  | mobile    | Ma descr ebook mobile     |
     And I am logged in as "admin"
 
-  Scenario: Successfully filter products using basic filters
+  Scenario: Successfully filter products
     Given I am on the products page
     Then the grid should contain 4 elements
     And I should see products postit and book and book2 and ebook
     And I should be able to use the following filters:
-      | filter      | value | result                  |
-      | SKU         | book  | book, ebook and book2   |
-      | Name        | post  | postit                  |
-      | Description | book  | book, ebook and book2   |
-      | Enabled     | yes   | postit, ebook and book2 |
-      | Enabled     | no    | book                    |
+      | filter      | value                 | result                  |
+      | SKU         | book                  | book, ebook and book2   |
+      | Name        | post                  | postit                  |
+      | Description | book                  | book, ebook and book2   |
+      | Enabled     | yes                   | postit, ebook and book2 |
+      | Enabled     | no                    | book                    |
+      | SKU         | contains book         | book, book2 and ebook   |
+      | SKU         | does not contain book | postit                  |
+      | SKU         | starts with boo       | book and book2          |
+      | SKU         | is equal to book      | book                    |
+      | SKU         | ends with book        | book and ebook          |
 
   Scenario: Successfully hide/show filters
     Given I am on the products page
@@ -82,51 +87,6 @@ Feature: Filter products
     And I hide the filter "SKU"
     Then I should see the filters Name, Description, Family and Enabled
     And I should not see the filters Image, SKU
-
-  Scenario: Successfully filter by SKU that contains
-    Given I am on the products page
-    When I filter by "SKU" with operator "contains" and value "book"
-    Then the grid should contain 3 elements
-    And I should see products book
-    And I should see products book2
-    And I should see products ebook
-    And I should not see products postit
-
-  Scenario: Successfully filter by SKU that does not contain
-    Given I am on the products page
-    When I filter by "SKU" with operator "does not contain" and value "book"
-    Then the grid should contain 1 element
-    And I should see products postit
-    And I should not see products book
-    And I should not see products book2
-    And I should not see products ebook
-
-  Scenario: Successfully filter by SKU that starts with
-    Given I am on the products page
-    When I filter by "SKU" with operator "starts with" and value "boo"
-    Then the grid should contain 2 elements
-    And I should see products book
-    And I should see products book2
-    And I should not see products postit
-    And I should not see products ebook
-
-  Scenario: Successfully filter by SKU that is equal to
-    Given I am on the products page
-    When I filter by "SKU" with operator "is equal to" and value "book"
-    Then the grid should contain 1 element
-    And I should see products book
-    And I should not see products book2
-    And I should not see products postit
-    And I should not see products ebook
-
-  Scenario: Successfully filter by SKU that ends with
-    Given I am on the products page
-    When I filter by "SKU" with operator "ends with" and value "book"
-    Then the grid should contain 2 elements
-    And I should see products book
-    And I should see products ebook
-    And I should not see products book2
-    And I should not see products postit
 
   Scenario: Successfully reset the filters
     Given I am on the products page
