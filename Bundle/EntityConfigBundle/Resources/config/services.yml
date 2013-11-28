@@ -5,6 +5,8 @@ parameters:
     oro_entity_config.cache.cache.class:                        Oro\Bundle\EntityConfigBundle\Config\ConfigCache
     oro_entity_config.provider_bag.class:                       Oro\Bundle\EntityConfigBundle\Provider\ConfigProviderBag
 
+    oro_entity_config.event_listener.option_set_listener.class:        Oro\Bundle\EntityConfigBundle\EventListener\OptionSetListener
+
     oro_entity_config.event_listener.entityconfig_grid_listener.class: Oro\Bundle\EntityConfigBundle\EventListener\EntityConfigGridListener
     oro_entity_config.event_listener.entityfields_grid_listener.class: Oro\Bundle\EntityConfigBundle\EventListener\FieldConfigGridListener
 
@@ -67,6 +69,12 @@ services:
         parent: oro.cache.abstract
         calls:
             - [setNamespace, ['oro_entity_config.model']]
+
+    oro_entity_config.event_listener.option_set_listener:
+        class: %oro_entity_config.event_listener.option_set_listener.class%
+        tags:
+            - { name: doctrine.event_listener, event: postPersist }
+            - { name: doctrine.event_listener, event: postFlush }
 
     oro_entity_config.event_listener.entityconfig_grid_listener:
         class: %oro_entity_config.event_listener.entityconfig_grid_listener.class%

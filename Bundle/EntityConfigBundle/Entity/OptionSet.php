@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
 
 /**
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="Oro\Bundle\EntityConfigBundle\Entity\Repository\OptionSetRepository")
  * @ORM\Table(name="oro_entity_config_optionset")
  * @ORM\HasLifecycleCallbacks
  */
@@ -23,7 +23,7 @@ class OptionSet
 
     /**
      * @var FieldConfigModel
-     * @ORM\ManyToOne(targetEntity="FieldConfigModel", inversedBy="options", cascade={"all"})
+     * @ORM\ManyToOne(targetEntity="FieldConfigModel", inversedBy="options", cascade={"persist"})
      * @ORM\JoinColumn(referencedColumnName="id")
      */
     protected $field;
@@ -48,7 +48,7 @@ class OptionSet
 
     /**
      * @var OptionSetRelation[]|PersistentCollection
-     * @ORM\OneToMany(targetEntity="OptionSetRelation", mappedBy="option", cascade={"all"})
+     * @ORM\OneToMany(targetEntity="OptionSetRelation", mappedBy="option", cascade={"persist","remove"})
      */
     protected $relation;
 

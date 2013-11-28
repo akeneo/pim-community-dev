@@ -144,7 +144,6 @@ class ExtendConfigDumper
                     if (in_array($fieldType, ['oneToMany', 'manyToOne', 'manyToMany', 'optionSet'])) {
                         $relationProperties[$fieldName] = $fieldConfig->getId()->getFieldName();
                         if ($fieldType != 'manyToOne') {
-                        //if (!in_array($fieldType, ['manyToOne', 'optionSet'])) {
                             $defaultName = self::DEFAULT_PREFIX . $fieldConfig->getId()->getFieldName();
 
                             $defaultProperties[$defaultName] = $defaultName;

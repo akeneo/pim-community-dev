@@ -337,3 +337,4 @@ oro_entity_config:
                             block:          entity
                             subblock:       properties
                             type:           oro_entity_option_set
+                            tooltip:        'Deleting an option will remove these values from related records.'

@@ -31,7 +31,7 @@ class OptionSetRelation
 
     /**
      * @var OptionSet
-     * @ORM\ManyToOne(targetEntity="OptionSet", inversedBy="relation")
+     * @ORM\ManyToOne(targetEntity="OptionSet", inversedBy="relation", cascade={"persist"})
      * @ORM\JoinColumn(referencedColumnName="id")
      */
     protected $option;
@@ -40,6 +40,7 @@ class OptionSetRelation
      * @ORM\Column(type="integer")
      */
     protected $entity_id;
+
 
     /**
      * @param int $entity_id

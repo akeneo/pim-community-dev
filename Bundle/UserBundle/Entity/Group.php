@@ -244,4 +244,14 @@ class Group
 
         return $this;
     }
+
+    /**
+     * Return the group name field
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return (string) $this->name;
+    }
 }

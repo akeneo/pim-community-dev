@@ -62,6 +62,7 @@ class CustomEntityType extends AbstractType
      * {@inheritdoc}
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -189,9 +190,6 @@ class CustomEntityType extends AbstractType
                         break;
                 }
 
-                if ($fieldConfigId->getFieldType() == 'optionSet' && is_object($data) && $data->getId() == null) {
-                    //continue;
-                }
                 $builder->add($fieldConfigId->getFieldName(), $this->typeMap[$fieldConfigId->getFieldType()], $options);
             }
         }

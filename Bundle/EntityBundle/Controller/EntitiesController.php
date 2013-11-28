@@ -188,6 +188,7 @@ class EntitiesController extends Controller
                 return
                     $config->is('is_displayable')
                     && $extendConfig->is('is_deleted', false)
+                    && !$extendConfig->is('state', ExtendManager::STATE_NEW)
                     && !(
                         in_array($extendConfig->getId()->getFieldType(), array('oneToMany', 'manyToOne', 'manyToMany'))
                         && $extendConfigProvider->getConfig($extendConfig->get('target_entity'))->is('is_deleted', true)

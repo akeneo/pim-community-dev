@@ -9,7 +9,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Routing\Router;
 
 use Oro\Bundle\EntityBundle\ORM\OroEntityManager;
@@ -72,8 +71,7 @@ class OptionSelectType extends AbstractType
         $this->config = $this->extendProvider->getConfigById($options['config_id']);
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'preSetData'));
-        //$builder->addEventListener(FormEvents::PRE_SUBMIT, array($this, 'preSubmitData'));
-        $builder->addEventListener(FormEvents::POST_SUBMIT, array($this, 'postSubmitData'));
+        $builder->addEventListener(FormEvents::PRE_SUBMIT, array($this, 'preSubmitData'));
     }
 
     public function preSetData(FormEvent $event)
@@ -98,7 +96,7 @@ class OptionSelectType extends AbstractType
 
     public function preSubmitData(FormEvent $event)
     {
-        list($entityId, $model, $extendConfig, $fieldConfigId) = $this->prepareEvent($event);
+        list($entityId, $model) = $this->prepareEvent($event);
 
         $saved = [];
         if ($entityId) {
@@ -119,42 +117,31 @@ class OptionSelectType extends AbstractType
             $data = [$data];
         }
 
-        //$entityId = $this->em->getUnitOfWork()->getEntityIdentifier($entityX->getEntityY());
-        //$uow = $this->em->getUnitOfWork()->getEntityIdentifier();
+        if ($entityId) {
+            /**
+             * Save selected options
+             */
+            $toSave = array_intersect($data, $saved);
+            foreach ($data as $option) {
+                if (!in_array($option, $saved)) {
+                    $optionRelation = new OptionSetRelation();
+                    $optionRelation->setData(null, $entityId, $model, $this->options->find($option));
+                    $toSave[] = $option;
 
-        /**
-         * Save selected options
-         */
-        $toSave = array_intersect($data, $saved);
-        foreach ($data as $option) {
-            if (!in_array($option, $saved)) {
-                $optionRelation = new OptionSetRelation();
-                $optionRelation->setData(null, $entityId, $model, $this->options->find($option));
-                $toSave[] = $option;
+                    $this->em->persist($optionRelation);
+                }
+            }
 
-                $this->em->persist($optionRelation);
+            /**
+             * Remove unselected
+             */
+            if ($entityId && $this->relations->count($model->getId(), $entityId)) {
+                $toRemove = $this->relations->findByNotIn($model->getId(), $entityId, $toSave);
+                foreach ($toRemove as $option) {
+                    $this->em->remove($option);
+                }
             }
         }
-
-        /**
-         * Remove unselected
-         */
-        if ($entityId && $this->relations->count($model->getId(), $entityId)) {
-            $toRemove = $this->relations->findByNotIn($model->getId(), $entityId, $toSave);
-            foreach ($toRemove as $option) {
-                $this->em->remove($option);
-            }
-        }
-
-        $this->em->flush();
-    }
-
-    public function postSubmitData(FormEvent $event)
-    {
-        $form = $event->getForm();
-        $data = $event->getData();
-
-        $uow = $this->em->getUnitOfWork();
     }
 
     /**
@@ -176,7 +163,7 @@ class OptionSelectType extends AbstractType
             $fieldConfigId->getFieldName()
         );
 
-        return [$entityId, $model, $extendConfig, $fieldConfigId];
+        return [$entityId, $model, $extendConfig];
     }
 
     /**
