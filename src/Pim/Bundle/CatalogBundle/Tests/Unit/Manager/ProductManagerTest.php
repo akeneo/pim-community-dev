@@ -156,12 +156,12 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
     /**
      * Get a mock of AttributeTypeFactory
      *
-     * @return Oro\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory
+     * @return Pim\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory
      */
     protected function getAttributeTypeFactoryMock()
     {
         return $this
-            ->getMockBuilder('Oro\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory')
+            ->getMockBuilder('Pim\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory')
             ->disableOriginalConstructor()
             ->getMock();
     }
@@ -225,7 +225,7 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
      * @param boolean $translatable
      * @param string  $code
      *
-     * @return \Oro\Bundle\FlexibleEntityBundle\Entity\Attribute
+     * @return \Pim\Bundle\FlexibleEntityBundle\Entity\Attribute
      */
     protected function getAttributeMock($scopable = false, $translatable = false, $code = null)
     {

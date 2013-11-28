@@ -30,7 +30,7 @@ services:
         class:     %pim_catalog.form.type.product_value.class%
         arguments:
             - '@pim_catalog.manager.product'
-            - '@oro_flexibleentity.value_form.value_subscriber'
+            - '@pim_flexibleentity.value_form.value_subscriber'
             - '@pim_catalog.form.type.product.view'
         tags:
             - { name: form.type, alias: pim_product_value }

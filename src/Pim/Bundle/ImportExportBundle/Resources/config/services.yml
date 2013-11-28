@@ -46,5 +46,5 @@ services:
         class: '%pim_import_export.product_validator.class%'
         arguments:
             - '@validator'
-            - '@oro_flexibleentity.validator.attribute_constraint_guesser'
+            - '@pim_flexibleentity.validator.attribute_constraint_guesser'
             - '@translator'

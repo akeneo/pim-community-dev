@@ -6,7 +6,7 @@ use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 
-use Oro\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface;
+use Pim\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\ImportExportBundle\Exception\InvalidValueException;

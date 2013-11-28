@@ -4,107 +4,107 @@ services:
         arguments:
             - varchar
             - text
-            - '@oro_flexibleentity.validator.attribute_constraint_guesser'
+            - '@pim_flexibleentity.validator.attribute_constraint_guesser'
         tags:
-            - { name: oro_flexibleentity.attributetype, alias: pim_catalog_identifier }
+            - { name: pim_flexibleentity.attributetype, alias: pim_catalog_identifier }
 
     pim_catalog.attributetype.text:
         class: Pim\Bundle\CatalogBundle\AttributeType\TextType
         arguments:
             - varchar
             - text
-            - '@oro_flexibleentity.validator.attribute_constraint_guesser'
+            - '@pim_flexibleentity.validator.attribute_constraint_guesser'
         tags:
-            - { name: oro_flexibleentity.attributetype, alias: pim_catalog_text }
+            - { name: pim_flexibleentity.attributetype, alias: pim_catalog_text }
 
     pim_catalog.attributetype.textarea:
         class: Pim\Bundle\CatalogBundle\AttributeType\TextAreaType
         arguments:
             - text
             - textarea
-            - '@oro_flexibleentity.validator.attribute_constraint_guesser'
+            - '@pim_flexibleentity.validator.attribute_constraint_guesser'
         tags:
-            - { name: oro_flexibleentity.attributetype, alias: pim_catalog_textarea }
+            - { name: pim_flexibleentity.attributetype, alias: pim_catalog_textarea }
 
     pim_catalog.attributetype.multiselect:
         class: Pim\Bundle\CatalogBundle\AttributeType\OptionMultiSelectType
         arguments:
             - options
             - entity
-            - '@oro_flexibleentity.validator.attribute_constraint_guesser'
+            - '@pim_flexibleentity.validator.attribute_constraint_guesser'
         tags:
-            - { name: oro_flexibleentity.attributetype, alias: pim_catalog_multiselect }
+            - { name: pim_flexibleentity.attributetype, alias: pim_catalog_multiselect }
 
     pim_catalog.attributetype.simpleselect:
         class: Pim\Bundle\CatalogBundle\AttributeType\OptionSimpleSelectType
         arguments:
             - option
             - entity
-            - '@oro_flexibleentity.validator.attribute_constraint_guesser'
+            - '@pim_flexibleentity.validator.attribute_constraint_guesser'
         tags:
-            - { name: oro_flexibleentity.attributetype, alias: pim_catalog_simpleselect }
+            - { name: pim_flexibleentity.attributetype, alias: pim_catalog_simpleselect }
 
     pim_catalog.attributetype.pricecollection:
         class: Pim\Bundle\CatalogBundle\AttributeType\PriceCollectionType
         arguments:
             - prices
             - pim_catalog_price_collection
-            - '@oro_flexibleentity.validator.attribute_constraint_guesser'
+            - '@pim_flexibleentity.validator.attribute_constraint_guesser'
             - '@pim_catalog.manager.currency'
         tags:
-            - { name: oro_flexibleentity.attributetype, alias: pim_catalog_price_collection }
+            - { name: pim_flexibleentity.attributetype, alias: pim_catalog_price_collection }
 
     pim_catalog.attributetype.number:
         class: Pim\Bundle\CatalogBundle\AttributeType\NumberType
         arguments:
             - decimal
             - number
-            - '@oro_flexibleentity.validator.attribute_constraint_guesser'
+            - '@pim_flexibleentity.validator.attribute_constraint_guesser'
         tags:
-            - { name: oro_flexibleentity.attributetype, alias: pim_catalog_number }
+            - { name: pim_flexibleentity.attributetype, alias: pim_catalog_number }
 
     pim_catalog.attributetype.boolean:
         class: Pim\Bundle\CatalogBundle\AttributeType\BooleanType
         arguments:
             - boolean
             - switch
-            - '@oro_flexibleentity.validator.attribute_constraint_guesser'
+            - '@pim_flexibleentity.validator.attribute_constraint_guesser'
         tags:
-            - { name: oro_flexibleentity.attributetype, alias: pim_catalog_boolean }
+            - { name: pim_flexibleentity.attributetype, alias: pim_catalog_boolean }
 
     pim_catalog.attributetype.date:
         class: Pim\Bundle\CatalogBundle\AttributeType\DateType
         arguments:
             - date
             - oro_date
-            - '@oro_flexibleentity.validator.attribute_constraint_guesser'
+            - '@pim_flexibleentity.validator.attribute_constraint_guesser'
         tags:
-            - { name: oro_flexibleentity.attributetype, alias: pim_catalog_date }
+            - { name: pim_flexibleentity.attributetype, alias: pim_catalog_date }
 
     pim_catalog.attributetype.file:
         class: Pim\Bundle\CatalogBundle\AttributeType\FileType
         arguments:
             - media
             - oro_media
-            - '@oro_flexibleentity.validator.attribute_constraint_guesser'
+            - '@pim_flexibleentity.validator.attribute_constraint_guesser'
         tags:
-            - { name: oro_flexibleentity.attributetype, alias: pim_catalog_file }
+            - { name: pim_flexibleentity.attributetype, alias: pim_catalog_file }
 
     pim_catalog.attributetype.image:
         class: Pim\Bundle\CatalogBundle\AttributeType\ImageType
         arguments:
             - media
             - pim_image
-            - '@oro_flexibleentity.validator.attribute_constraint_guesser'
+            - '@pim_flexibleentity.validator.attribute_constraint_guesser'
         tags:
-            - { name: oro_flexibleentity.attributetype, alias: pim_catalog_image }
+            - { name: pim_flexibleentity.attributetype, alias: pim_catalog_image }
 
     pim_catalog.attributetype.metric:
         class: Pim\Bundle\CatalogBundle\AttributeType\MetricType
         arguments:
             - metric
-            - oro_flexibleentity_metric
-            - '@oro_flexibleentity.validator.attribute_constraint_guesser'
+            - pim_flexibleentity_metric
+            - '@pim_flexibleentity.validator.attribute_constraint_guesser'
             - '@oro_measure.manager'
         tags:
-            - { name: oro_flexibleentity.attributetype, alias: pim_catalog_metric }
+            - { name: pim_flexibleentity.attributetype, alias: pim_catalog_metric }

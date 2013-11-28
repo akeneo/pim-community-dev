@@ -3,8 +3,9 @@
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\Validator\Constraints;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Oro\Bundle\FlexibleEntityBundle\Entity\AttributeOption;
+use Pim\Bundle\FlexibleEntityBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Model\ProductPrice;
+use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\ProductValueNotBlank;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\ProductValueNotBlankValidator;
 use Pim\Bundle\CatalogBundle\Entity\Channel;

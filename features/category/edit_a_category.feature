@@ -4,8 +4,8 @@ Feature: Edit a category
   I need to be able to edit a category
 
   Background:
-  Given a "footwear" catalog configuration
-  And I am logged in as "admin"
+    Given a "footwear" catalog configuration
+    And I am logged in as "admin"
 
   Scenario: Successfully display the edit view for a category
     Given I edit the "Sandals" category

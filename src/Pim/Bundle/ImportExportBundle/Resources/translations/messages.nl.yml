@@ -13,18 +13,18 @@ pim_import_export:
       title: Kenmerk exporteren naar CSV
       export.title: Configuratie
     attribute_option_export:
-      title: Attribute option export in CSV
+      title: Kenmerkoptie exporteren naar CSV
       export.title: Configuratie
     association_export:
-      title: Association export in CSV
+      title: Koppeling exporteren naar CSV
       export.title: Configuratie
     group_export:
-      title: Group export in CSV
+      title: Groep exporteren naar CSV
       export.title: Configuratie
     product_import:
       title: Product importeren vanuit CSV
       import.title: Configuratie
-      import_associations.title: Configuration import association
+      import_associations.title: Configuratie importeren koppelingen
     category_import:
       title: Categorie importeren vanuit CSV
       import.title: Configuratie
@@ -32,25 +32,25 @@ pim_import_export:
       title: Kenmerk importeren vanuit CSV
       import.title: Configuratie
     attribute_option_import:
-      title: Attribute option import in CSV
+      title: Kenmerkoptie importeren vanuit CSV
       import.title: Configuratie
     association_import:
-      title: Association import in CSV
+      title: Koppeling importeren vanuit CSV
       import.title: Configuratie
     group_import:
-      title: Group import in CSV
+      title: Groep importeren vanuit CSV
       import.title: Configuratie
 oro_batch:
-  dummy_reader.title: Dummy reader
-  dummy_processor.title: Dummy processor
-  dummy_writer.title: Dummy writer
+  dummy_reader.title: Dummy lezer
+  dummy_processor.title: Dummy verwerker
+  dummy_writer.title: Dummy schrijver
   product_reader:
     title: Bereik
     channel:
       label: Kanaal
       help: Het kanaal dat u wilt exporteren
   entity_reader:
-    title: Entity extraction
+    title: Entiteitextractie
   csv_reader:
     title: CSV Lezer
     filePath:
@@ -69,7 +69,7 @@ oro_batch:
       label: Bestanden uploaden toestaan
       help: Of direct uploaden van het bestand is toegestaan
   csv_product_reader:
-    title: CSV Reader
+    title: CSV Lezer
     filePath:
       label: Bestand
       help: Het CSV-bestand om te importeren
@@ -86,7 +86,7 @@ oro_batch:
       label: Bestanden uploaden toestaan
       help: Of direct uploaden van het bestand is toegestaan
   csv_category_reader:
-    title: CSV File Reader
+    title: CSV-bestand lezer
     filePath:
       label: Bestand
       help: Het CSV-bestand om te importeren
@@ -103,25 +103,25 @@ oro_batch:
       label: Bestanden uploaden toestaan
       help: Of direct uploaden van het bestand is toegestaan
   product_processor:
-    title: Transform product
+    title: Product omvormen
     enabled:
-      label: Enable the product?
-      help: Whether or not imported product should be enabled
+      label: Het product inschakelen?
+      help: Of geïmporteerd product moet worden ingeschakeld
     categoriesColumn:
-      label: Categories column
-      help: Name of the categories column
+      label: Categoriekolom
+      help: Naam van de categoriekolom
     groupsColumn:
-      label: Groups column
-      help: Name of the groups column
+      label: Groepskolom
+      help: Naam van de groepskolom
     familyColumn:
-      label: Family column
-      help: Name of the family column
+      label: Familiekolom
+      help: Naam van de familiekolom
     categoriesDelimiter:
-      label: Categories delimiter
-      help: Character used to separate the category codes
+      label: Categorieënscheidingsteken
+      help: Teken om de categoriecodes te scheiden
     channel:
       label: Kanaal
-      help: The channel in which create the imported value
+      help: Het kanaal waarin de geïmporteerde waarde moet worden aangemaakt
     delimiter:
       label: Scheidingsteken
       help: Eén teken voor het scheiden van de velden
@@ -129,31 +129,31 @@ oro_batch:
       label: Omsluiting
       help: Eén teken voor gebruik als omsluitingsteken voor het veld
     withHeader:
-      label: With header
-      help: Whether or not to print the column name
+      label: Met koptekst
+      help: Of de kolomnaam geprint moet worden
   category_processor:
-    title: Category creation
+    title: Categorie creatie
     labelDelimiter:
-      label: Label delimiter
-      help: One character separating the labels in each locale
+      label: Labelscheidingsteken
+      help: Eén teken voor het scheiden van de labels in elke lokalisatie
     localeDelimiter:
-      label: Locale delimiter
-      help: One character separating the title from the locale
+      label: Lokalisatiescheidingsteken
+      help: Eén teken voor het scheiden van de titel van de lokalisatie
     circularRefsChecked:
-      label: Check circular references
-      help: If yes, data will be processed to make sure that there are no circular references between the categories
+      label: Controleer op kruisverwijzingen
+      help: Indien ja zullen de gegevens worden verwerkt om ervoor te zorgen dat er zich geen kringverwijzingen tussen de categorieën voordoen
   association_processor:
-    title: Association creation
+    title: Koppeling aanmaken
   group_processor:
-    title: Group creation
+    title: Groep aanmaken
   attribute_processor:
-    title: Create / update attributes
+    title: Kenmerken aanmaken/bewerken
   attribute_option_processor:
-    title: Create / update attributes
+    title: Kenmerken aanmaken/bewerken
   product_association_processor:
-    title: Product association creation
+    title: Productkoppeling aanmaken
   csv_serializer:
-    help: Whether or not to print the column name
+    help: Of de kolomnaam geprint moet worden
   heterogeneous_processor:
     title: Instellingen
     delimiter:
@@ -163,8 +163,8 @@ oro_batch:
       label: Omsluiting
       help: Eén teken voor gebruik als omsluitingsteken voor het veld
     withHeader:
-      label: With header
-      help: Whether or not to print the column name
+      label: Met koptekst
+      help: Of de kolomnaam geprint moet worden
   homogeneous_processor:
     title: Instellingen
     delimiter:
@@ -174,21 +174,21 @@ oro_batch:
       label: Omsluiting
       help: Eén teken voor gebruik als omsluitingsteken voor het veld
     withHeader:
-      label: With header
+      label: Met koptekst
   file_writer:
     title: Uitvoer
     filePath:
-      label: File path
-      help: Where to write the generated file on the file system
+      label: Bestandspad
+      help: Waar het gegenereerde bestand op het bestandssysteem op te slaan
   product_writer:
-    title: Product storage
+    title: Productopslag
     filePath:
-      label: File path
-      help: Where to write the generated file on the file system
+      label: Bestandspad
+      help: Waar het gegenereerde bestand op het bestandssysteem op te slaan
   category_writer:
-    title: Category storage
+    title: Categorieopslag
   writer:
-    title: Entity storage
+    title: Entiteitopslag
 Import management: Importbeheer
 Import %job.name% | Edit: Import %job.name% | Bewerken
 Import %job.name% | Show: Import %job.name% | Tonen

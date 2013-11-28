@@ -57,6 +57,3 @@ Pim\Bundle\CatalogBundle\Entity\Channel:
                     locale_id:
                         referencedColumnName: id
                         onDelete: CASCADE
-    lifecycleCallbacks:
-        preRemove:
-            - preRemove

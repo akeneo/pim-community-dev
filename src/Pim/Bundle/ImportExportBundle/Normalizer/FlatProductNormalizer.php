@@ -105,6 +105,8 @@ class FlatProductNormalizer implements NormalizerInterface
      * @param ProductInterface $product
      * @param string           $scopeCode
      * @param array            $localeCodes
+     *
+     * @return null
      */
     protected function normalizeValues(ProductInterface $product, $scopeCode, $localeCodes)
     {
@@ -200,6 +202,10 @@ class FlatProductNormalizer implements NormalizerInterface
         foreach ($data as $item) {
             if ($item instanceof \Pim\Bundle\CatalogBundle\Entity\AttributeOption) {
                 $result[] = $item->getCode();
+            } elseif ($item instanceof \Pim\Bundle\CatalogBundle\Entity\ProductPrice) {
+                if ($item->getData() !== null) {
+                    $result[] = (string) $item;
+                }
             } else {
                 $result[] = (string) $item;
             }

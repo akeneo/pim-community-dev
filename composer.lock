@@ -3,7 +3,11 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
+<<<<<<< HEAD
     "hash": "8499f0bf3e370adaf942d1c34f259910",
+=======
+    "hash": "7a2aaf7fdd571495d4edf2b7bf6c3b09",
+>>>>>>> master
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -74,12 +78,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/akeneo/DemoBundle.git",
-                "reference": "06f8ea2c72d87c542429367f277f88d2f5bef382"
+                "reference": "bbbf368d7dc61459a190f8e803f626818d98d512"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/akeneo/DemoBundle/zipball/06f8ea2c72d87c542429367f277f88d2f5bef382",
-                "reference": "06f8ea2c72d87c542429367f277f88d2f5bef382",
+                "url": "https://api.github.com/repos/akeneo/DemoBundle/zipball/bbbf368d7dc61459a190f8e803f626818d98d512",
+                "reference": "bbbf368d7dc61459a190f8e803f626818d98d512",
                 "shasum": ""
             },
             "require": {
@@ -117,7 +121,7 @@
                 "source": "https://github.com/akeneo/DemoBundle/tree/master",
                 "issues": "https://github.com/akeneo/DemoBundle/issues"
             },
-            "time": "2013-11-26 10:25:59"
+            "time": "2013-11-28 13:00:31"
         },
         {
             "name": "apy/jsfv-bundle",
@@ -3687,16 +3691,16 @@
         },
         {
             "name": "oro/platform",
-            "version": "dev-maintenance/pim_beta3",
+            "version": "dev-maintenance/pim_beta4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/akeneo/platform.git",
-                "reference": "51c4583eb141b7617cdf5308cd61e60d43056544"
+                "reference": "ea0b09455a25d8ac12db081b31567f9f9dba57f7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/akeneo/platform/zipball/51c4583eb141b7617cdf5308cd61e60d43056544",
-                "reference": "51c4583eb141b7617cdf5308cd61e60d43056544",
+                "url": "https://api.github.com/repos/akeneo/platform/zipball/ea0b09455a25d8ac12db081b31567f9f9dba57f7",
+                "reference": "ea0b09455a25d8ac12db081b31567f9f9dba57f7",
                 "shasum": ""
             },
             "require": {
@@ -3755,10 +3759,10 @@
             "description": "Business Application Platform (BAP)",
             "homepage": "https://github.com/orocrm/platform.git",
             "support": {
-                "source": "https://github.com/akeneo/platform/tree/maintenance/pim_beta1",
+                "source": "https://github.com/akeneo/platform/tree/maintenance/pim_beta4",
                 "issues": "https://github.com/akeneo/platform/issues"
             },
-            "time": "2013-10-28 08:41:50"
+            "time": "2013-11-07 08:24:58"
         },
         {
             "name": "phpcollection/phpcollection",

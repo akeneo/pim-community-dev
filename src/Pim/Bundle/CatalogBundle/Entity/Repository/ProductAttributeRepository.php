@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 
-use Oro\Bundle\FlexibleEntityBundle\Entity\Repository\AttributeRepository;
+use Pim\Bundle\FlexibleEntityBundle\Entity\Repository\AttributeRepository;
 
 /**
  * Repository for attribute entity

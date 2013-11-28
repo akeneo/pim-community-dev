@@ -11,7 +11,7 @@
 - Group types management
 - Import/Export product groups (CSV)
 - Import/Export associations (CSV)
-- Import/Export product associations (CSV)
+- Export product associations (CSV)
 - Import/Export attributes (CSV)
 - Import/Export attribute options (CSV)
 - Upload and import an archive (CSV and medias)
@@ -35,6 +35,7 @@
 - Selection of products in mass edit
 - Versioning of installed entities (from demo bundle)
 - For csv export of products, only export values related to selected channel and related locales
+- Fix locale activation/deactivation based on locales used by channels
 
 ## BC breaks
 - Command "pim:product:completeness-calculator" has been replaced into "pim:completeness:calculate"

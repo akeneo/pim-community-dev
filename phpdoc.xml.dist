@@ -12,4 +12,12 @@
         <directory>src</directory>
         <ignore>*Tests*</ignore>
     </files>
+
+    <logging>
+        <level>warn</level>
+        <paths>
+            <default>app/logs/phpdoc/{DATE}.log</default>
+            <errors>app/logs/phpdoc/{DATE}.errors.log</errors>
+        </paths>
+    </logging>
 </phpdoc>

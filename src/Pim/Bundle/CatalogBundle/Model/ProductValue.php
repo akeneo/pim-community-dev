@@ -4,8 +4,8 @@ namespace Pim\Bundle\CatalogBundle\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
-use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexibleValue;
-use Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttributeOption;
+use Pim\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexibleValue;
+use Pim\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttributeOption;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
@@ -21,7 +21,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 class ProductValue extends AbstractEntityFlexibleValue implements ProductValueInterface
 {
     /**
-     * @var Oro\Bundle\FlexibleEntityBundle\Entity\Attribute $attribute
+     * @var Pim\Bundle\FlexibleEntityBundle\Entity\Attribute $attribute
      */
     protected $attribute;
 

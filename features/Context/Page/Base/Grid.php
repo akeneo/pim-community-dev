@@ -77,7 +77,7 @@ class Grid extends Index
     public function getRow($value)
     {
         $value = str_replace('"', '', $value);
-        $gridRow = $this->getGridContent()->find('css', sprintf('tr:contains("%s")', $value));
+        $gridRow = $this->getGridContent()->find('css', sprintf('tr td:contains("%s")', $value));
 
         if (!$gridRow) {
             throw new \InvalidArgumentException(
@@ -85,7 +85,7 @@ class Grid extends Index
             );
         }
 
-        return $gridRow;
+        return $gridRow->getParent();
     }
 
     /**
@@ -207,7 +207,12 @@ class Grid extends Index
         $values = array();
 
         foreach ($rows as $row) {
-            $values[] = $this->getRowCell($row, $column)->getText();
+            $cell = $this->getRowCell($row, $column);
+            if ($span = $cell->find('css', 'span')) {
+                $values[] = (string) strpos($span->getAttribute('class'), 'success') !== false;
+            } else {
+                $values[] = $cell->getText();
+            }
         }
 
         return $values;
@@ -241,7 +246,7 @@ class Grid extends Index
     public function sortBy($column, $order = 'ascending')
     {
         $sorter = $this->getColumnSorter($column);
-        if ($sorter->getAttribute('class') !== strtolower($order)) {
+        if ($sorter->getParent()->getAttribute('class') !== strtolower($order)) {
             $sorter->click();
         }
     }
@@ -265,9 +270,9 @@ class Grid extends Index
         $values = $this->getValuesInColumn($column);
         $sortedValues = $values;
         if ($order === 'ascending') {
-            sort($sortedValues);
+            sort($sortedValues, SORT_NATURAL | SORT_FLAG_CASE);
         } else {
-            rsort($sortedValues);
+            rsort($sortedValues, SORT_NATURAL | SORT_FLAG_CASE);
         }
 
         return $sortedValues === $values;

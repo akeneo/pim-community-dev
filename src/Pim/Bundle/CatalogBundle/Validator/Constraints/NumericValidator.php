@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Validator\Constraints;
 
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Constraint;
-use Oro\Bundle\FlexibleEntityBundle\Entity\Metric;
+use Pim\Bundle\FlexibleEntityBundle\Entity\Metric;
 use Pim\Bundle\CatalogBundle\Model\ProductPrice;
 
 /**

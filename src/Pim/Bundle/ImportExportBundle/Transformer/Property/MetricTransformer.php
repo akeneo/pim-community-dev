@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ImportExportBundle\Transformer\Property;
 
-use Oro\Bundle\FlexibleEntityBundle\Entity\Metric;
+use Pim\Bundle\FlexibleEntityBundle\Entity\Metric;
 use Pim\Bundle\ImportExportBundle\Exception\InvalidValueException;
 
 /**

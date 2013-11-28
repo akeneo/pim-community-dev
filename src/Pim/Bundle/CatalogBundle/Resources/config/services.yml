@@ -30,7 +30,7 @@ services:
         class:     %pim_catalog.form.subscriber.add_attribute_type.class%
         arguments:
             - '@pim_catalog.manager.attribute_type'
-            - '@oro_flexibleentity.attributetype.factory'
+            - '@pim_flexibleentity.attributetype.factory'
 
     pim_catalog.event_listener.user_preferences:
         class: %pim_catalog.event_listener.user_preferences.class%

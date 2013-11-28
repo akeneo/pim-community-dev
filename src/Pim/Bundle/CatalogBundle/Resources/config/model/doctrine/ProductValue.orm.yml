@@ -112,7 +112,7 @@ Pim\Bundle\CatalogBundle\Model\ProductValue:
                     referencedColumnName: id
                     onDelete: CASCADE
         metric:
-            targetEntity: Oro\Bundle\FlexibleEntityBundle\Entity\Metric
+            targetEntity: Pim\Bundle\FlexibleEntityBundle\Entity\Metric
             cascade:
                 - persist
                 - refresh
