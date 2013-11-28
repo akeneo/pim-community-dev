@@ -50,8 +50,9 @@ attributes:
         type:  pim_catalog_image
         group: media
         parameters:
-            maxFileSize: 1
-            sortOrder:   1
+            translatable:      true
+            maxFileSize:       1
+            sortOrder:         1
             allowedExtensions: gif,png,jpeg,jpg
     image:
         labels:
@@ -89,6 +90,7 @@ attributes:
         type:  pim_catalog_simpleselect
         group: sales
         parameters:
+            translatable:        true
             scopable:            true
             useableAsGridColumn: true
             useableAsGridFilter: true
@@ -385,6 +387,7 @@ attributes:
         type:  pim_catalog_multiselect
         group: colors
         parameters:
+            translatable:        true
             useableAsGridColumn: false
             useableAsGridFilter: true
             sortOrder:           2
@@ -550,6 +553,7 @@ attributes:
         type:  pim_catalog_boolean
         group: additional
         parameters:
+            translatable:        true
             defaultValue:        false
             useableAsGridColumn: true
             useableAsGridFilter: true
@@ -621,6 +625,7 @@ attributes:
         type:  pim_catalog_metric
         group: additional
         parameters:
+            translatable:      true
             metricFamily:      Temperature
             sortOrder:         6
             defaultMetricUnit: CELCIUS

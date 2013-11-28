@@ -148,10 +148,15 @@
                 setFullHeight();
 
                 function copyValue() {
-                    var sourceId = $(this).attr('id');
-                    var targetId = sourceId.replace('{{ comparisonLocale}}', '{{ dataLocale }}');
+                    $(this).find('textarea, input[type=text], select').each(function() {
+                        var sourceId = $(this).attr('id');
+                        if (!sourceId) {
+                            return;
+                        }
+                        var targetId = sourceId.replace('{{ comparisonLocale}}', '{{ dataLocale }}');
 
-                    $('#' + targetId).val($('#' + sourceId).val()).trigger('change');
+                        $('#' + targetId).val($('#' + sourceId).val()).trigger('change');
+                    });
                 }
 
                 $('.copy').click(function(event) {
@@ -159,13 +164,13 @@
                     switch($(this).data('target')) {
                         case 'all':
                             $('.comparison tr').each(function() {
-                                $('td:nth-child(2) textarea, td:nth-child(2) .attribute-field input', this).each(copyValue);
+                                $('td:nth-child(2)', this).each(copyValue);
                             });
                             break;
 
                         case 'selected':
                             $('.comparison input.comparisonSelection:checked').each(function() {
-                                $(this).parent().find('.attribute-field textarea, .attribute-field input').each(copyValue);
+                                $(this).parent().find('.attribute-field').each(copyValue);
                             });
                     }
                 });
