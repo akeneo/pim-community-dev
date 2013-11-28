@@ -72,6 +72,12 @@
                             <span class="title">{{ locale_label(locale.code) }}</span>
                         </a>
                     </li>
+                {% else %}
+                    <li>
+                        <a href="javascript:void(0);">
+                            <span class="title">{{ 'pim_catalog.product.no_comparison_locale_available'|trans }}</span>
+                        </a>
+                    </li>
                 {% endfor %}
             </ul>
         </div>
