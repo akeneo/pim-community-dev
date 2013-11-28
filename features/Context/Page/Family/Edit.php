@@ -122,7 +122,7 @@ class Edit extends Form
      */
     public function isAttributeRequired($attributeCode, $channelCode)
     {
-        $selector = '#pim_family_attributeRequirements_%s_%s_required';
+        $selector = '#pim_catalog_family_form_attributeRequirements_%s_%s_required';
         $checkbox = $this->find('css', sprintf($selector, $attributeCode, $channelCode));
         if (!$checkbox) {
             throw new \RuntimeException(
