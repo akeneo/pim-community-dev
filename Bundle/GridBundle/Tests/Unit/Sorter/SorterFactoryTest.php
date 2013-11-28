@@ -11,9 +11,7 @@ class SorterFactoryTest extends \PHPUnit_Framework_TestCase
      * Test parameters
      */
     const TEST_NAME                    = 'name';
-    const TEST_FLEXIBLE_NAME           = 'flexible_name';
     const TEST_SORTER_SERVICE          = 'oro_grid.sorter';
-    const TEST_FLEXIBLE_SORTER_SERVICE = 'oro_grid.sorter.flexible';
     /**#@-*/
 
     /**
@@ -41,11 +39,10 @@ class SorterFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param $flexibleName
      * @param $serviceName
      * @dataProvider getFieldOptionsDataProvider
      */
-    public function testCreate($flexibleName, $serviceName)
+    public function testCreate($serviceName)
     {
         $sorterMock = $this->getMockForAbstractClass(
             'Oro\Bundle\GridBundle\Sorter\SorterInterface',
@@ -73,11 +70,6 @@ class SorterFactoryTest extends \PHPUnit_Framework_TestCase
 
         $fieldDescription = new FieldDescription();
         $fieldDescription->setName(self::TEST_NAME);
-        $fieldDescription->setOptions(
-            array(
-                'flexible_name' => $flexibleName
-            )
-        );
 
         $sorter = $this->model->create($fieldDescription);
 
@@ -87,12 +79,7 @@ class SorterFactoryTest extends \PHPUnit_Framework_TestCase
     public function getFieldOptionsDataProvider()
     {
         return array(
-            'is_flexible' => array(
-                '$flexibleName' => self::TEST_FLEXIBLE_NAME,
-                '$serviceName'  => self::TEST_FLEXIBLE_SORTER_SERVICE
-            ),
             'is_regular' => array(
-                '$flexibleName' => null,
                 '$serviceName'  => self::TEST_SORTER_SERVICE
             )
         );
