@@ -104,7 +104,7 @@ class LoadDataCommand extends ContainerAwareCommand
     {
         $em = $this->getEntityManager();
         $rsm = new ResultSetMappingBuilder($em);
-        $rsm->addRootEntityFromClassMetadata('Pim\Bundle\CatalogBundle\Entity\Product', 'u');
+        $rsm->addRootEntityFromClassMetadata('Pim\Bundle\CatalogBundle\Model\Product', 'u');
         $query = $em->createNativeQuery(sprintf(
             'SELECT * FROM pim_product order by rand() limit %d', rand(0, $maxProductsPerNode)
         ), $rsm);
