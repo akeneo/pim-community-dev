@@ -11,6 +11,8 @@ use Pim\Bundle\ImportExportBundle\Validator\Import\ImportValidatorInterface;
 /**
  * Abstract processor for transformer based imports
  *
+ * @abstract
+ *
  * @author    Antoine Guigan <antoine@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -122,6 +124,7 @@ abstract class AbstractTransformerProcessor extends AbstractConfigurableStepElem
     /**
      * Transforms the array in an object
      *
+     * @abstract
      * @param array $item
      *
      * @return object
@@ -131,6 +134,7 @@ abstract class AbstractTransformerProcessor extends AbstractConfigurableStepElem
     /**
      * Returns the column info of the transformed fields
      *
+     * @abstract
      * @return array
      */
     abstract protected function getTransformedColumnsInfo();
@@ -138,6 +142,7 @@ abstract class AbstractTransformerProcessor extends AbstractConfigurableStepElem
     /**
      * Returns an array of errors for each columns
      *
+     * @abstract
      * @return array
      */
     abstract protected function getTransformerErrors();

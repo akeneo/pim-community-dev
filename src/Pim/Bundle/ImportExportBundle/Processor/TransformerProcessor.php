@@ -25,6 +25,14 @@ class TransformerProcessor extends AbstractTransformerProcessor
      */
     protected $class;
 
+    /**
+     * Constructor
+     *
+     * @param ImportValidatorInterface $validator
+     * @param TranslatorInterface      $translator
+     * @param OrmTransformer           $transformer
+     * @param string                   $class
+     */
     public function __construct(
         ImportValidatorInterface $validator,
         TranslatorInterface $translator,
@@ -35,6 +43,7 @@ class TransformerProcessor extends AbstractTransformerProcessor
         $this->transformer = $transformer;
         $this->class = $class;
     }
+
     /**
      * {@inheritdoc}
      */

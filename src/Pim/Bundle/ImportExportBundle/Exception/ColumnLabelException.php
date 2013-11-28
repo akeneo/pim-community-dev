@@ -11,5 +11,4 @@ namespace Pim\Bundle\ImportExportBundle\Exception;
  */
 class ColumnLabelException extends ParametrizedException
 {
-
 }

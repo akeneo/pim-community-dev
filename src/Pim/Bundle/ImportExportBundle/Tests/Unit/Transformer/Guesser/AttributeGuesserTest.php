@@ -13,7 +13,6 @@ use Pim\Bundle\ImportExportBundle\Transformer\Guesser\AttributeGuesser;
  */
 class AttributeGuesserTest extends GuesserTestCase
 {
-
     protected function setAttributeMock()
     {
         $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductAttribute');

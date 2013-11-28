@@ -116,6 +116,13 @@ abstract class AbstractOrmTransformer
         return $entity;
     }
 
+    /**
+     * Sets the properties of the entity
+     *
+     * @param string $class
+     * @param object $entity
+     * @param array  $data
+     */
     protected function setProperties($class, $entity, array $data)
     {
         foreach ($data as $label => $value) {
@@ -131,16 +138,20 @@ abstract class AbstractOrmTransformer
     /**
      * Sets a property of the object
      *
+     * Returns an array with the error and its parameters, or null if no error encountered
+     *
      * @param object                       $entity
      * @param ColumnInfoInterface          $columnInfo
      * @param PropertyTransformerInterface $transformer
      * @param array                        $transformerOptions
      * @param mixed                        $value
+     *
+     * @return array|null
      */
     protected function setProperty($entity, ColumnInfoInterface $columnInfo, array $transformerInfo, $value)
     {
         if ($transformerInfo[0] instanceof SkipTransformer) {
-            return array();
+            return;
         }
 
         try {
@@ -157,16 +168,6 @@ abstract class AbstractOrmTransformer
 
         $this->transformedColumnsInfo[] = $columnInfo;
     }
-
-    /**
-     * Finds or creates an entity for given class and data
-     *
-     * @param string $class
-     * @param array  $data
-     *
-     * @return object
-     */
-    abstract protected function getEntity($class, array $data);
 
     /**
      * Returns the transformer info for a column
@@ -198,13 +199,25 @@ abstract class AbstractOrmTransformer
     /**
      * Sets the default values of the product
      *
-     * @param object $product
+     * @param object $object
      * @param array  $defaults
      */
-    protected function setDefaultValues($product, array $defaults)
+    protected function setDefaultValues($object, array $defaults)
     {
         foreach ($defaults as $propertyPath => $value) {
-            $this->propertyAccessor->setValue($product, $propertyPath, $value);
+            $this->propertyAccessor->setValue($object, $propertyPath, $value);
         }
     }
+
+    /**
+     * Finds or creates an entity for given class and data
+     *
+     * @abstract
+     *
+     * @param string $class
+     * @param array  $data
+     *
+     * @return object
+     */
+    abstract protected function getEntity($class, array $data);
 }

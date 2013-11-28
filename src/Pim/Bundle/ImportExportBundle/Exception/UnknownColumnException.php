@@ -19,7 +19,7 @@ class UnknownColumnException extends ParametrizedException
     /**
      * Constructor
      *
-     * @param string $label
+     * @param array $labels
      */
     public function __construct(array $labels)
     {
