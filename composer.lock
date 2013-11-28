@@ -3477,7 +3477,7 @@
         },
         {
             "name": "oro/platform",
-            "version": "dev-maintenance/pim_flexibleentity",
+            "version": "dev-maintenance/pim_beta4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/akeneo/platform.git",
