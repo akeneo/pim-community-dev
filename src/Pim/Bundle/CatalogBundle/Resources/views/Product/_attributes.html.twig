@@ -11,29 +11,7 @@
     </ul>
 </div>
 <div class="tab-content">
-    <div id="attribute-buttons">
-        <div class="btn-group">
-            <a class="btn dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);">
-                <i class="icon-eye-open"></i>
-                <i class="icon-caret-down"></i>
-            </a>
-            <div class="dropdown-menu channel pull-right">
-                <h5>{{ 'Scope'|trans }}</h5>
-                <div>
-                    <span id="channel-controls">
-                        <label for="default_channel">{{ 'Default channel'|trans }}</label>
-                        <select id="default_channel">
-                            {% for channel in channels %}
-                                <option value="{{ channel.code }}" data-scope="{{ channel.code }}">{{ channel.label }}</option>
-                            {% endfor %}
-                        </select>
-                    </span>
-                    <a href="javascript:void(0);" data-action="expand">{{ 'Expand all channels'|trans }}</a>
-                    <a href="javascript:void(0);" data-action="collapse">{{ 'Collapse all channels'|trans }}</a>
-                </div>
-            </div>
-        </div>
-
+    <div {{ comparisonLocale is not null ? 'class="compare" ' }}id="comparison-buttons">
         {% if comparisonLocale is not null %}
             <div id="copy-switcher" class="btn-group">
                 <button class="btn dropdown-toggle" data-toggle="dropdown">
@@ -86,6 +64,29 @@
                 &times;
             </a>
         {% endif %}
+    </div>
+    <div id="attribute-buttons">
+        <div class="btn-group">
+            <a class="btn dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);">
+                <i class="icon-eye-open"></i>
+                <i class="icon-caret-down"></i>
+            </a>
+            <div class="dropdown-menu channel pull-right">
+                <h5>{{ 'Scope'|trans }}</h5>
+                <div>
+                    <span id="channel-controls">
+                        <label for="default_channel">{{ 'Default channel'|trans }}</label>
+                        <select id="default_channel">
+                            {% for channel in channels %}
+                                <option value="{{ channel.code }}" data-scope="{{ channel.code }}">{{ channel.label }}</option>
+                            {% endfor %}
+                        </select>
+                    </span>
+                    <a href="javascript:void(0);" data-action="expand">{{ 'Expand all channels'|trans }}</a>
+                    <a href="javascript:void(0);" data-action="collapse">{{ 'Collapse all channels'|trans }}</a>
+                </div>
+            </div>
+        </div>
     </div>
 
     {% for groupId, groupView in form.vars.groups %}
