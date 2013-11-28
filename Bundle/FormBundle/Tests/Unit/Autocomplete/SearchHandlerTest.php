@@ -11,8 +11,6 @@ use Doctrine\ORM\Mapping\ClassMetadataFactory;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
-use Oro\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
-
 use Oro\Bundle\SearchBundle\Engine\Indexer;
 
 use Oro\Bundle\SearchBundle\Query\Result;
@@ -285,7 +283,7 @@ class SearchHandlerTest extends \PHPUnit_Framework_TestCase
                                 array(
                                     self::TEST_ID_FIELD => 4,
                                     'name' => 'Bill',
-                                    'email' => $this->createMockFlexibleValue('bill@example.com')
+                                    'email' => 'bill@example.com'
                                 )
                             )
                         )
@@ -414,16 +412,6 @@ class SearchHandlerTest extends \PHPUnit_Framework_TestCase
                 ->method($methods[$name])
                 ->will($this->returnValue($property));
         }
-
-        return $result;
-    }
-
-    public function createMockFlexibleValue($data)
-    {
-        $result = $this->getMock('Oro\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface');
-        $result->expects($this->any())
-            ->method('getData')
-            ->will($this->returnValue($data));
 
         return $result;
     }

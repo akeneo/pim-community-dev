@@ -8,8 +8,6 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
 
-use Oro\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
-
 use Oro\Bundle\SearchBundle\Engine\Indexer;
 
 class SearchHandler implements SearchHandlerInterface
@@ -256,10 +254,6 @@ class SearchHandler implements SearchHandlerInterface
             }
         } elseif (is_array($item) && array_key_exists($name, $item)) {
             $result = $item[$name];
-        }
-
-        if ($result instanceof FlexibleValueInterface) {
-            $result = $result->getData();
         }
 
         return $result;
