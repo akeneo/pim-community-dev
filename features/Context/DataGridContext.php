@@ -79,22 +79,18 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     /**
      * @param string $code
      *
-     * @Given /^I filter per category "([^"]*)"$/
+     * @Given /^I filter by "category" with value "([^"]*)"$/
      */
-    public function iFilterPerCategory($code)
+    public function iFilterByCategory($code)
     {
-        $category = $this->getFixturesContext()->getCategory($code);
-        $this->getCurrentPage()->clickCategoryFilterLink($category);
         $this->wait();
-    }
+        if (strtolower($code) === 'unclassified') {
+            $this->getCurrentPage()->clickUnclassifiedCategoryFilterLink();
+        } else {
+            $category = $this->getFixturesContext()->getCategory($code);
+            $this->getCurrentPage()->clickCategoryFilterLink($category);
+        }
 
-    /**
-     * @Given /^I filter per unclassified category$/
-     */
-    public function iFilterPerUnclassifiedCategory()
-    {
-        $this->wait();
-        $this->getCurrentPage()->clickUnclassifiedCategoryFilterLink();
         $this->wait();
     }
 
@@ -422,7 +418,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      * @param string $filterName
      * @param string $value
      *
-     * @Then /^I filter by "([^"]*)" with value "((?!contains|does not contain|is equal to|(?:starts|ends) with)[^">=<]*)"$/
+     * @Then /^I filter by "((?!category)[^"]*)" with value "((?!contains|does not contain|is equal to|(?:starts|ends) with)[^">=<]*)"$/
      */
     public function iFilterBy($filterName, $value)
     {
