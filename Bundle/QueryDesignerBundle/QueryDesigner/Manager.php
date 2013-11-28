@@ -46,12 +46,23 @@ class Manager
     /**
      * Add filter to array of available filters
      *
-     * @param string          $type
+     * @param string          $filterType
      * @param FilterInterface $filter
      */
-    public function addFilter($type, FilterInterface $filter)
+    public function addFilter($filterType, FilterInterface $filter)
     {
-        $this->filters[$type] = $filter;
+        $this->filters[$filterType] = $filter;
+    }
+
+    /**
+     * Gets a filter
+     *
+     * @param $filterType
+     * @return FilterInterface
+     */
+    public function getFilter($filterType)
+    {
+        return $this->filters[$filterType];
     }
 
     /**

@@ -1,6 +1,6 @@
 /* global define */
-define(['backbone'],
-function(Backbone) {
+define(['backbone', 'oro/app'],
+function(Backbone, app) {
     'use strict';
 
     /**
@@ -14,6 +14,10 @@ function(Backbone) {
             index : null,
             columnName : null,
             criterion: null
+        },
+
+        toJSON: function(options) {
+            return app.deepClone(this.attributes);
         }
     });
 });
