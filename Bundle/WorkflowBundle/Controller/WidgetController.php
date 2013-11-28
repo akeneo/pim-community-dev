@@ -258,6 +258,7 @@ class WidgetController extends Controller
 
         return array(
             'transitionsData' => $transitionsData,
+            'redirectToWorkflow' => $this->getRequest()->get('redirectToWorkflow', false)
         );
     }
 

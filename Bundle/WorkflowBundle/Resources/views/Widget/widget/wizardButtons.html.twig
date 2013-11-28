@@ -5,7 +5,7 @@
     <div class="btn-group">
         {% for data in transitionsData %}
             {% set transitionData = {
-                'redirect-to-workflow': false,
+                'redirect-to-workflow': redirectToWorkflow,
                 'transition-label': data.transition.label|trans,
                 'enabled': data.isAllowed,
                 'message': data.transition.message|trans,
