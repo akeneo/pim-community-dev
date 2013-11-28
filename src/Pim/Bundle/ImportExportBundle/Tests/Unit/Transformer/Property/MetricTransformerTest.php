@@ -3,7 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Transformer\Property;
 
 use Pim\Bundle\ImportExportBundle\Transformer\Property\MetricTransformer;
-use Oro\Bundle\FlexibleEntityBundle\Entity\Metric;
+use Pim\Bundle\FlexibleEntityBundle\Entity\Metric;
 
 /**
  * Tests related class
@@ -29,7 +29,7 @@ class MetricTransformerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Pim\Bundle\ImportExportBundle\Exception\InvalidValueException
+     * @expectedException Pim\Bundle\ImportExportBundle\Exception\PropertyTransformerException
      * @expectedExceptionMessage Malformed metric: 15.2
      */
     public function testUnvalidTransform()

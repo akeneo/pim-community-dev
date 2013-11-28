@@ -11,47 +11,54 @@ use Pim\Bundle\ImportExportBundle\Processor\ProductProcessor;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductProcessorTest extends \PHPUnit_Framework_TestCase
+class ProductProcessorTest extends AbstractTransformerProcessorTestCase
 {
-
-    /**
-     * Test related method
-     */
     public function testProcess()
     {
         $productTransformer = $this
-            ->getMockBuilder('Pim\Bundle\ImportExportBundle\Transformer\ORMProductTransformer')
+            ->getMockBuilder('Pim\Bundle\ImportExportBundle\Transformer\OrmProductTransformer')
             ->disableOriginalConstructor()
             ->getMock();
+        $productTransformer
+            ->expects($this->once())
+            ->method('getTransformedColumnsInfo')
+            ->will($this->returnValue(array()));
+        $productTransformer
+            ->expects($this->once())
+            ->method('getErrors')
+            ->will($this->returnValue(array()));
 
-        $processor = new ProductProcessor($productTransformer);
+        $processor = new ProductProcessor(
+            $this->validator,
+            $this->translator,
+            $productTransformer
+        );
 
         $processor->setEnabled('enabled');
         $processor->setFamilyColumn('fml');
         $processor->setCategoriesColumn('ctg');
         $processor->setGroupsColumn('grp');
 
-        $data = array('key'=>'val');
-
+        $data = array('key' => 'val1', 'fml' => 'val2', 'ctg' => 'val3', 'grp' => 'val4');
+        $mappedData = array(
+            'key'           => 'val1',
+            'family'        => 'val2',
+            'categories'    => 'val3',
+            'groups'        => 'val4'
+        );
+        $entity = new \stdClass;
         $productTransformer->expects($this->once())
-            ->method('getProduct')
+            ->method('transform')
             ->with(
-                $this->equalTo($data),
-                $this->equalTo(
-                    array(
-                        'family'        => 'fml',
-                        'categories'    => 'ctg',
-                        'groups'        => 'grp'
-                    )
-                ),
+                $this->equalTo($mappedData),
                 $this->equalTo(
                     array(
                         'enabled' => 'enabled'
                     )
                 )
             )
-            ->will($this->returnValue('success'));
+            ->will($this->returnValue($entity));
 
-        $this->assertEquals('success', $processor->process($data));
+        $this->assertSame($entity, $processor->process($data));
     }
 }
