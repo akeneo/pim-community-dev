@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "586055ab9d1599dd5da59a380134da13",
+    "hash": "7a2aaf7fdd571495d4edf2b7bf6c3b09",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -69,7 +69,7 @@
         },
         {
             "name": "akeneo/DemoBundle",
-            "version": "dev-flexibleentity",
+            "version": "dev-master",
             "target-dir": "Pim/Bundle/DemoBundle",
             "source": {
                 "type": "git",
@@ -114,7 +114,7 @@
                 "Generator"
             ],
             "support": {
-                "source": "https://github.com/akeneo/DemoBundle/tree/flexibleentity",
+                "source": "https://github.com/akeneo/DemoBundle/tree/master",
                 "issues": "https://github.com/akeneo/DemoBundle/issues"
             },
             "time": "2013-11-22 13:36:31"
@@ -3545,7 +3545,7 @@
             "description": "Business Application Platform (BAP)",
             "homepage": "https://github.com/orocrm/platform.git",
             "support": {
-                "source": "https://github.com/akeneo/platform/tree/maintenance/pim_flexibleentity",
+                "source": "https://github.com/akeneo/platform/tree/maintenance/pim_beta4",
                 "issues": "https://github.com/akeneo/platform/issues"
             },
             "time": "2013-11-07 08:24:58"
