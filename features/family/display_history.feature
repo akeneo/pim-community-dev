@@ -14,9 +14,11 @@ Feature: Display the family history
       | Description | General |
 
   @javascript
-  Scenario: Succesfully edit a family and see the history
-    Given I am on the family creation page
-    And I change the Code to "Flyer"
+  Scenario: Succesfully create a family and see the history
+    Given I am on the families page
+    And I create a new family
+    And I fill in the following information in the popin:
+      | Code | Flyer |
     And I save the family
     And I edit the "Flyer" family
     When I visit the "History" tab
@@ -26,7 +28,8 @@ Feature: Display the family history
       | create | 1       | code     | Flyer |
 
     When I visit the "Properties" tab
-    And I change the english Label to "Fly"
+    And I fill in the following information:
+      | English (United States) | Fly |
     And I save the family
     When I visit the "History" tab
     Then there should be 2 updates
@@ -34,25 +37,3 @@ Feature: Display the family history
       | action | version | property    | value |
       | create | 1       | code        | Flyer |
       | update | 2       | label-en_US | Fly   |
-
-    When I visit the "Attributes" tab
-    And I add available attributes Description
-    When I visit the "History" tab
-    Then there should be 3 updates
-    And I should see history:
-      | action | version | property    | value           |
-      | create | 1       | code        | Flyer           |
-      | update | 2       | label-en_US | Fly             |
-      | update | 3       | attributes  | sku,description |
-
-    When I visit the "Attributes" tab
-    And I remove the "Description" attribute
-    Then I should see flash message "Attribute successfully removed from the family"
-    When I visit the "History" tab
-    Then there should be 4 updates
-    And I should see history:
-      | action | version | property    | value           |
-      | create | 1       | code        | Flyer           |
-      | update | 2       | label-en_US | Fly             |
-      | update | 3       | attributes  | sku,description |
-      | update | 4       | attributes  | sku             |

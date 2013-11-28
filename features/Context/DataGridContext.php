@@ -350,6 +350,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      * @Then /^I should see groups? (?:types )?(.*)$/
      * @Then /^I should see associations? (.*)$/
      * @Then /^I should see users? (.*)$/
+     * @Then /^I should see famil(?:y|ies) (.*)$/
      */
     public function iShouldSeeEntities($elements)
     {
@@ -378,6 +379,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      * @Then /^I should not see (?:(?:entit|currenc)(?:y|ies)) (.*)$/
      * @Then /^I should not see group(?: type)?s? (.*)$/
      * @Then /^I should not see associations? (.*)$/
+     * @Then /^I should not see famil(?:y|ies) (.*)$/
      */
     public function iShouldNotSeeEntities($entities)
     {
@@ -400,36 +402,28 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      * @param string $filterName
      * @param string $value
      *
-     * @Then /^I filter by "((?!category)[^"]*)" with value "((?!contains|does not contain|is equal to|(?:starts|ends) with)[^">=<]*)"$/
+     * @Then /^I filter by "((?!category)[^"]*)" with value "([^">=<]*)"$/
      */
     public function iFilterBy($filterName, $value)
     {
-        $this->datagrid->filterBy($filterName, $value);
-        $this->wait();
-    }
+        $operatorPattern = '/^(contains|does not contain|is equal to|(?:starts|ends) with) ([^">=<]*)$/';
+        $operator = false;
 
-    /**
-     * @param string $filterName
-     * @param string $operatorName
-     * @param string $value
-     *
-     * @Then /^I filter by "([^"]*)" with value "(contains|does not contain|is equal to|(?:starts|ends) with)([^"]*)"$/
-     */
-    public function iFilterByWithOperator($filterName, $operatorName, $value)
-    {
-        $operators = array(
-            'contains' => Grid::FILTER_CONTAINS,
-            'does not contain' => Grid::FILTER_DOES_NOT_CONTAIN,
-            'is equal to' => Grid::FILTER_IS_EQUAL_TO,
-            'starts with' => Grid::FILTER_STARTS_WITH,
-            'ends with' => Grid::FILTER_ENDS_WITH
-        );
+        $matches = array();
+        if (preg_match($operatorPattern, $value, $matches)) {
+            $operator = $matches[1];
+            $value    = $matches[2];
 
-        if (!isset($operators[$operatorName])) {
-            throw new \InvalidArgumentException("Operator $operatorName is unknown.");
+            $operators = array(
+                'contains'         => Grid::FILTER_CONTAINS,
+                'does not contain' => Grid::FILTER_DOES_NOT_CONTAIN,
+                'is equal to'      => Grid::FILTER_IS_EQUAL_TO,
+                'starts with'      => Grid::FILTER_STARTS_WITH,
+                'ends with'        => Grid::FILTER_ENDS_WITH
+            );
+
+            $operator = $operators[$operator];
         }
-
-        $operator = $operators[$operatorName];
 
         $this->datagrid->filterBy($filterName, $value, $operator);
         $this->wait();

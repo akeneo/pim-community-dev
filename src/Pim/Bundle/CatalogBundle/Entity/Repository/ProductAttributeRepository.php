@@ -150,4 +150,37 @@ class ProductAttributeRepository extends AttributeRepository
 
         return $qb->getQuery()->getResult();
     }
+
+    /**
+     * Get available attributes as label
+     *
+     * @return array
+     */
+    protected function getAvailableAttributesAsLabel()
+    {
+        $qb = $this->createQueryBuilder('a');
+        $qb
+            ->andWhere(
+                $qb->expr()->in('a.attributeType', array('pim_catalog_text', 'pim_catalog_identifier'))
+            );
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * Get available attributes as label as a choice
+     *
+     * @return array
+     */
+    public function getAvailableAttributesAsLabelChoice()
+    {
+        $attributes = $this->getAvailableAttributesAsLabel();
+
+        $choices = array();
+        foreach ($attributes as $attribute) {
+            $choices[$attribute->getId()] = $attribute->getLabel();
+        }
+
+        return $choices;
+    }
 }

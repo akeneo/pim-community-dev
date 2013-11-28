@@ -11,6 +11,7 @@ parameters:
     pim_catalog.datagrid.manager.association_group_datagrid.class:   Pim\Bundle\CatalogBundle\Datagrid\AssociationGroupDatagridManager
     pim_catalog.datagrid.manager.variant_group_datagrid.class:       Pim\Bundle\CatalogBundle\Datagrid\VariantGroupDatagridManager
     pim_catalog.datagrid.manager.group_type_datagrid.class:          Pim\Bundle\CatalogBundle\Datagrid\GroupTypeDatagridManager
+    pim_catalog.datagrid.manager.family_datagrid.class:              Pim\Bundle\CatalogBundle\Datagrid\FamilyDatagridManager
 
 services:
     pim_catalog.datagrid.manager.productattribute:
@@ -157,3 +158,15 @@ services:
             - [ setIdentifierField, ['id'] ]
             - [ setLocaleManager, ['@pim_catalog.manager.locale'] ]
             - [ setGroupManager, ['@pim_catalog.manager.group'] ]
+
+    pim_catalog.datagrid.manager.family:
+        class: %pim_catalog.datagrid.manager.family_datagrid.class%
+        tags:
+            - name: oro_grid.datagrid.manager
+              datagrid_name: families
+              entity_hint: family
+              route_name: pim_catalog_family_index
+        calls:
+            - [ setIdentifierField, ['id'] ]
+            - [ setLocaleManager, ['@pim_catalog.manager.locale'] ]
+            - [ setProductManager, ['@pim_catalog.manager.product'] ]

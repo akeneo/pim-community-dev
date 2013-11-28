@@ -854,29 +854,17 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string    $popin
      * @param TableNode $table
-     * @param Element   $element
      *
-     * @Given /^I fill in the following information:$/
+     * @Given /^I fill in the following information(| in the popin):$/
      */
-    public function iFillInTheFollowingInformation(TableNode $table, Element $element = null)
+    public function iFillInTheFollowingInformation($popin, TableNode $table)
     {
+        $element = $popin ? $this->getCurrentPage()->find('css', '.ui-dialog') : null;
         foreach ($table->getRowsHash() as $field => $value) {
             $this->getCurrentPage()->fillField($field, $value, $element);
         }
-    }
-
-    /**
-     * @param TableNode $table
-     *
-     * @Given /^I fill in the following information in the popin?:$/
-     */
-    public function iFillInTheFollowingInformationInThePopin(TableNode $table)
-    {
-        $this->iFillInTheFollowingInformation(
-            $table,
-            $this->getCurrentPage()->find('css', '.ui-dialog')
-        );
     }
 
     /**

@@ -1,43 +1,37 @@
 {% extends 'PimCatalogBundle::layout.html.twig' %}
 
-{% block content %}
-    {% set currentFamily = family is defined ? family.id : null %}
-    <div id="family-container" class="row-fluid">
-        <div class="sidebar-list">
-            <ul>
-                {% for familyId, familyLabel in families %}
-                <li class="{{ familyId == currentFamily ? 'active' : '' }}"><a href="{{ path('pim_catalog_family_edit', {'id': familyId}) }}">{{ familyLabel }}</a></li>
-                {% endfor %}
-            </ul>
-        </div>
-        <div id="form-tab">
-            {% block familyTab %}
-            {% endblock familyTab %}
-        </div>
-    </div>
+{% block head_script %}
+    {{ parent() }}
+
+    {% include 'OroGridBundle:Include:javascript.html.twig' with {'datagridView': datagrid, 'selector': '#family-grid'} %}
+    {% include 'OroGridBundle:Include:stylesheet.html.twig' %}
 {% endblock %}
 
-{% block head_script_component %}
-    {{ parent() }}
-    <script type="text/javascript">
-        require(
-            ['jquery', 'jquery.sidebarize', 'bootstrap-tooltip'],
-            function ($){
-                'use strict';
-                $(function() {
-                    var createBtn = $('<a>', {
-                        'href': '{{ path("pim_catalog_family_create") }}',
-                        'data-toggle': 'tooltip',
-                        'data-placement': 'right',
-                        'data-original-title': '{{ "btn.create.family"|trans|capitalize }}'
-                    }).html(
-                        $('<i>', { 'class': 'icon-plus-sign' })
-                    );
+{% block content %}
 
-                    $('#family-container').sidebarize({ buttons: [ createBtn ] });
-                    $('[data-toggle="tooltip"]').tooltip();
-                });
-            }
-        );
-    </script>
+    {% set title = 'family.overview'|trans %}
+
+    {% set buttons %}
+        {{ elements.createBtn(
+            'family',
+            null,
+            { 'id': 'create-family', 'data-form': 'dialog', 'data-form-url': path('pim_catalog_family_create') }
+        ) }}
+        <script type="text/javascript">
+            require(
+                ['jquery', 'pim/dialogform'],
+                function ($, DialogForm) {
+                    'use strict';
+                    $(function() {
+                        new DialogForm('#create-family');
+                    });
+                }
+            );
+        </script>
+    {% endset %}
+
+    {{ elements.page_header(title, buttons) }}
+
+    <div id="family-grid"></div>
+
 {% endblock %}

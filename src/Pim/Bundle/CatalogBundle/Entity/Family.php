@@ -59,6 +59,9 @@ class Family implements TranslatableInterface
      */
     protected $translations;
 
+    /**
+     * @var \Pim\Bundle\CatalogBundle\Entity\ProductAttribute $attributeAsLabel
+     */
     protected $attributeAsLabel;
 
     /**
@@ -76,6 +79,9 @@ class Family implements TranslatableInterface
      */
     protected $updated;
 
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection $products
+     */
     protected $products;
 
     /**
