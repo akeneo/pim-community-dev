@@ -27,7 +27,6 @@ use Pim\Bundle\GridBundle\Helper\DatagridHelperInterface;
 use Pim\Bundle\CatalogBundle\Datagrid\ProductDatagridManager;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Exception\DeleteException;
-use Pim\Bundle\CatalogBundle\Helper\CategoryHelper;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
@@ -502,9 +501,7 @@ class ProductController extends AbstractDoctrineController
         }
         $trees = $this->categoryManager->getFilledTree($parent, $categories);
 
-        $treesData = CategoryHelper::listCategoriesResponse($trees, $categories);
-
-        return array('trees' => $treesData);
+        return array('trees' => $trees, 'categories' => $categories);
     }
 
     /**
