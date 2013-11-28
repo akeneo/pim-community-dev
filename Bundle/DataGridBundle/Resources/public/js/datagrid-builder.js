@@ -203,7 +203,7 @@ define(function (require) {
             if (!gridName) {
                 return;
             }
-
+            $el.attr('data-rendered', true);
             methods.initBuilder.call({ $el: $el }, function () {
                 _.each(builders, function (builder) {
                     if (!_.has(builder, 'init') || !$.isFunction(builder.init)) {
@@ -211,7 +211,6 @@ define(function (require) {
                     }
                     builder.init($el, gridName);
                 });
-                $el.attr('data-rendered', true);
             });
         }).end();
     };
