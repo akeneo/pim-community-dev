@@ -80,23 +80,26 @@ class WorkflowAttributesType extends AbstractType
      */
     protected function addEventListeners(FormBuilderInterface $builder, array $options)
     {
-        $this->defaultValuesListener->initialize(
-            $options['workflow_item'],
-            $options['attribute_default_values']
-        );
+        if (!$options['attribute_default_values']) {
+            $this->defaultValuesListener->initialize(
+                $options['workflow_item'],
+                $options['attribute_default_values']
+            );
+            $builder->addEventSubscriber($this->defaultValuesListener);
+        }
 
-        $builder->addEventSubscriber($this->defaultValuesListener);
-
-        if (!empty($options['attribute_init_actions'])) {
+        if (!empty($options['init_actions'])) {
             $this->initActionsListener->initialize(
                 $options['workflow_item'],
-                $options['attribute_init_actions']
+                $options['init_actions']
             );
             $builder->addEventSubscriber($this->initActionsListener);
         }
 
-        $this->requiredAttributesListener->initialize(array_keys($options['attribute_fields']));
-        $builder->addEventSubscriber($this->requiredAttributesListener);
+        if (!empty($options['attribute_fields'])) {
+            $this->requiredAttributesListener->initialize(array_keys($options['attribute_fields']));
+            $builder->addEventSubscriber($this->requiredAttributesListener);
+        }
     }
 
     /**
@@ -193,21 +196,20 @@ class WorkflowAttributesType extends AbstractType
      * - "attribute_fields"         - required, list of attributes form types options
      * - "workflow_item"            - optional, instance of WorkflowItem entity
      * - "workflow"                 - optional, instance of Workflow
-     * - "workflow_name"            - optional, name of Workflow
      * - "disable_attribute_fields" - optional, a flag to disable all attributes fields
      *
      * @param OptionsResolverInterface $resolver
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
+        $resolver->setRequired(array('workflow_item'));
+
         $resolver->setOptional(
             array(
                 'attribute_fields',
                 'attribute_default_values',
-                'attribute_init_actions',
-                'workflow',
-                'workflow_item',
-                'workflow_name'
+                'init_actions',
+                'workflow'
             )
         );
 
@@ -226,7 +228,7 @@ class WorkflowAttributesType extends AbstractType
                 'workflow' => 'Oro\Bundle\WorkflowBundle\Model\Workflow',
                 'attribute_fields' => 'array',
                 'attribute_default_values' => 'array',
-                'attribute_init_actions' => 'Oro\Bundle\WorkflowBundle\Model\Action\ActionInterface',
+                'init_actions' => 'Oro\Bundle\WorkflowBundle\Model\Action\ActionInterface',
             )
         );
 
@@ -236,15 +238,7 @@ class WorkflowAttributesType extends AbstractType
             array(
                 'workflow' => function (Options $options, $workflow) use ($workflowRegistry) {
                     if (!$workflow) {
-                        if (!empty($options['workflow_item'])) {
-                            $workflowName = $options['workflow_item']->getWorkflowName();
-                        } elseif (!empty($options['workflow_name'])) {
-                            $workflowName = $options['workflow_name'];
-                        } else {
-                            throw new InvalidConfigurationException(
-                                'One of the options must be specified: "workflow", "workflow_item", "workflow_name".'
-                            );
-                        }
+                        $workflowName = $options['workflow_item']->getWorkflowName();
                         $workflow = $this->workflowRegistry->getWorkflow($workflowName);
                     }
                     return $workflow;

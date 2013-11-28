@@ -16,15 +16,9 @@ class WorkflowStepTypeTest extends AbstractWorkflowAttributesTypeTestCase
 
     protected function setUp()
     {
-        $this->markTestIncomplete();
         parent::setUp();
-        $this->type = new WorkflowStepType();
-    }
 
-    protected function tearDown()
-    {
-        unset($this->type);
-        parent::tearDown();
+        $this->type = new WorkflowStepType();
     }
 
     protected function getExtensions()
@@ -32,7 +26,7 @@ class WorkflowStepTypeTest extends AbstractWorkflowAttributesTypeTestCase
         return array(
             new PreloadedExtension(
                 array(
-                    WorkflowAttributesType::NAME => new WorkflowAttributesType($this->workflowRegistry),
+                    WorkflowAttributesType::NAME => $this->createWorkflowAttributesType(),
                 ),
                 array()
             )

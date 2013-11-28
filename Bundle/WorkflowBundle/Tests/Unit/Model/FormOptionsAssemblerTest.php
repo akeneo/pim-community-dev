@@ -50,7 +50,7 @@ class FormOptionsAssemblerTest extends \PHPUnit_Framework_TestCase
                 'attribute_one' => '$foo',
                 'attribute_two' => '$bar',
             ),
-            'attribute_init_actions' => array(
+            'init_actions' => array(
                 array('@foo' => 'bar')
             )
         );
@@ -64,7 +64,7 @@ class FormOptionsAssemblerTest extends \PHPUnit_Framework_TestCase
                 'attribute_one' => new PropertyPath('data.foo'),
                 'attribute_two' => new PropertyPath('data.bar'),
             ),
-            'attribute_init_actions' => $this->getMock('Oro\Bundle\WorkflowBundle\Model\Action\ActionInterface')
+            'init_actions' => $this->getMock('Oro\Bundle\WorkflowBundle\Model\Action\ActionInterface')
         );
 
         $attributes = array(
@@ -79,8 +79,8 @@ class FormOptionsAssemblerTest extends \PHPUnit_Framework_TestCase
 
         $this->actionFactory->expects($this->once())
             ->method('create')
-            ->with(Configurable::ALIAS, $options['attribute_init_actions'])
-            ->will($this->returnValue($expectedOptions['attribute_init_actions']));
+            ->with(Configurable::ALIAS, $options['init_actions'])
+            ->will($this->returnValue($expectedOptions['init_actions']));
 
         $this->assertEquals(
             $expectedOptions,

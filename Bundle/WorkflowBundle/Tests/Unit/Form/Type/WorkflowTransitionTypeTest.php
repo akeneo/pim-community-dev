@@ -19,15 +19,7 @@ class WorkflowTransitionTypeTest extends AbstractWorkflowAttributesTypeTestCase
 
     protected function setUp()
     {
-        $this->markTestIncomplete();
-        parent::setUp();
         $this->type = new WorkflowTransitionType();
-    }
-
-    protected function tearDown()
-    {
-        unset($this->type);
-        parent::tearDown();
     }
 
     protected function getExtensions()
@@ -35,7 +27,7 @@ class WorkflowTransitionTypeTest extends AbstractWorkflowAttributesTypeTestCase
         return array(
             new PreloadedExtension(
                 array(
-                    WorkflowAttributesType::NAME => new WorkflowAttributesType($this->workflowRegistry),
+                    WorkflowAttributesType::NAME => $this->createWorkflowAttributesType(),
                 ),
                 array()
             )
@@ -61,12 +53,9 @@ class WorkflowTransitionTypeTest extends AbstractWorkflowAttributesTypeTestCase
         $transitionName = 'test';
         $transition = $this->getMock('Oro\Bundle\WorkflowBundle\Model\Transition');
         $transition->expects($this->once())->method('getName')->will($this->returnValue($transitionName));
-        $transition->expects($this->once())->method('initialize')->with($workflowItem);
 
         $workflow = new Workflow();
-        $workflow->getTransitionManager()->setTransitions(
-            array($transition)
-        );
+        $workflow->getTransitionManager()->setTransitions(array($transition));
 
         $options = array(
             'workflow' => $workflow,
