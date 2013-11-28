@@ -26,10 +26,10 @@ class AddFlexibleManagerCompilerPass extends AbstractDatagridManagerCompilerPass
             return;
         }
 
-        $flexibleManagerServiceId = $this->getFlexibleManagerServiceId();
+        $serviceId = $this->getFlexibleManagerServiceId();
 
-        if ($flexibleManagerServiceId) {
-            $this->definition->addMethodCall($managerSetter, array(new Reference($flexibleManagerServiceId)));
+        if ($serviceId) {
+            $this->definition->addMethodCall($managerSetter, array(new Reference($serviceId)));
         }
     }
 

@@ -237,13 +237,13 @@ class ORMProductTransformer
      */
     protected function setAttributeValues(ProductInterface $product, array $attributeValues)
     {
-        $requiredAttributeCodes = $this->attributeCache->getRequiredAttributeCodes($product);
+        $requiredAttrCodes = $this->attributeCache->getRequiredAttributeCodes($product);
         $columns = $this->attributeCache->getColumns();
         $errors = array();
         foreach ($attributeValues as $columnCode => $columnValue) {
             $columnInfo = $columns[$columnCode];
             try {
-                if ('' != trim($columnValue) || in_array($columnInfo['code'], $requiredAttributeCodes)) {
+                if ('' != trim($columnValue) || in_array($columnInfo['code'], $requiredAttrCodes)) {
                     $backendType = $columnInfo['attribute']->getBackendType();
                     $transformerConfig = isset($this->attributeTransformers[$backendType])
                             ? $this->attributeTransformers[$backendType]
