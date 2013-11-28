@@ -41,7 +41,7 @@ class FamilyDatagridManager extends DatagridManager
     {
         return array(
             new UrlProperty('edit_link', $this->router, 'pim_catalog_family_edit', array('id')),
-            new UrlProperty('delete_llink', $this->router, 'pim_catalog_family_remove', array('id'))
+            new UrlProperty('delete_link', $this->router, 'pim_catalog_family_remove', array('id'))
         );
     }
 
