@@ -2,18 +2,16 @@
 
 namespace Oro\Bundle\EntityExtendBundle\Form\Type;
 
-use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigId;
-use Oro\Bundle\EntityConfigBundle\Entity\FieldConfigModel;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
+use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigId;
+
+use Oro\Bundle\EntityConfigBundle\Entity\FieldConfigModel;
 use Oro\Bundle\EntityConfigBundle\Entity\OptionSet;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormView;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class OptionSetCollectionType extends AbstractType
 {
@@ -36,6 +34,9 @@ class OptionSetCollectionType extends AbstractType
         $builder->addEventListener(FormEvents::POST_SUBMIT, [$this, 'postSubmitData']);
     }
 
+    /**
+     * @param FormEvent $event
+     */
     public function preSetData(FormEvent $event)
     {
         $form = $event->getForm()->getRoot();
@@ -59,6 +60,9 @@ class OptionSetCollectionType extends AbstractType
         $form->setData($data);
     }
 
+    /**
+     * @param FormEvent $event
+     */
     public function postSubmitData(FormEvent $event)
     {
         $form        = $event->getForm();

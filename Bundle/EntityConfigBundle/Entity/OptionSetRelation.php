@@ -2,7 +2,6 @@
 
 namespace Oro\Bundle\EntityConfigBundle\Entity;
 
-use Doctrine\ORM\Event\PreFlushEventArgs;
 use Doctrine\ORM\Mapping as ORM;
 
 /**

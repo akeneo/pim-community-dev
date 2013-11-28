@@ -21,9 +21,8 @@ class OptionSetListener
     public function postPersist(LifecycleEventArgs $event)
     {
         /** @var OroEntityManager $em */
-        $em     = $event->getEntityManager();
-        $entity = $event->getEntity();
-
+        $em             = $event->getEntityManager();
+        $entity         = $event->getEntity();
         $configProvider = $em->getExtendManager()->getConfigProvider();
 
         $className = get_class($entity);
@@ -35,9 +34,8 @@ class OptionSetListener
                     /** @var Config $fieldConfig */
                     $fieldConfig = $configProvider->getConfig($className, $fieldName);
                     if ($fieldConfig->getId()->getFieldType() == 'optionSet'
-                        && $setData = $entity->{Inflector::camelize('get_'. $fieldName)}()
+                        && $setData = $entity->{Inflector::camelize('get_' . $fieldName)}()
                     ) {
-                        //$setData = $setData;
                         $model = $configProvider->getConfigManager()->getConfigFieldModel(
                             $fieldConfig->getId()->getClassName(),
                             $fieldConfig->getId()->getFieldName()
