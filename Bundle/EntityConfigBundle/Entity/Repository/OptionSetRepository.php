@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\EntityConfigBundle\Entity\Repository;
 
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityRepository;
 
 class OptionSetRepository extends EntityRepository
@@ -14,7 +15,7 @@ class OptionSetRepository extends EntityRepository
     {
         return $this->findBy(
             ['field' => $fieldConfigId],
-            ['priority' => 'ASC']
+            ['priority' => Criteria::ASC]
         );
     }
 }
