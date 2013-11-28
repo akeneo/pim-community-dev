@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\MassEditAction;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Oro\Bundle\FlexibleEntityBundle\Entity\Metric;
+use Pim\Bundle\FlexibleEntityBundle\Entity\Metric;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;

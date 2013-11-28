@@ -25,7 +25,7 @@ class ProductImportValidatorTest extends \PHPUnit_Framework_TestCase
     {
         $this->validator = $this->getMock('Symfony\Component\Validator\ValidatorInterface');
         $this->constraintGuesser = $this->getMock(
-            'Oro\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface'
+            'Pim\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface'
         );
         $this->translator = $this->getMock('Symfony\Component\Translation\TranslatorInterface');
         $this->translator->expects($this->any())

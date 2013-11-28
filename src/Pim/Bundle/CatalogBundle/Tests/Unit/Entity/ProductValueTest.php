@@ -28,7 +28,7 @@ class ProductValueTest extends \PHPUnit_Framework_TestCase
     public function itShouldBeAnEntityFlexibleValue()
     {
         $this->assertInstanceOf(
-            'Oro\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexibleValue',
+            'Pim\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexibleValue',
             $this->value
         );
     }
@@ -132,6 +132,7 @@ class ProductValueTest extends \PHPUnit_Framework_TestCase
 
         $this->value->setMedia($media);
     }
+
     /**
      * @return \Pim\Bundle\CatalogBundle\Entity\Family
      */

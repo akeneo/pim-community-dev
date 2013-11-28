@@ -1,0 +1,10 @@
+parameters:
+    pim_grid.sorter.flexible.class:          Pim\Bundle\GridBundle\Sorter\ORM\Flexible\FlexibleSorter
+
+services:
+
+    pim_grid.sorter.flexible:
+        class:     %pim_grid.sorter.flexible.class%
+        scope:     prototype
+        arguments: ["@pim_flexibleentity.registry"]
+

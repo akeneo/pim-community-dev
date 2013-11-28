@@ -1,0 +1,123 @@
+parameters:
+    pim_flexibleentity.flexible_config:                               ~
+    pim_flexibleentity.registry.class:                                Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManagerRegistry
+    pim_flexibleentity.attributetype.factory.class:                   Pim\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory
+    pim_flexibleentity.value_form.value_subscriber.class:             Pim\Bundle\FlexibleEntityBundle\Form\EventListener\FlexibleValueSubscriber
+    pim_flexibleentity.filterAttributes.twig.extension.class:         Pim\Bundle\FlexibleEntityBundle\Twig\FilterAttributesExtension
+    pim_flexibleentity.validator.attribute_constraint_guesser.class:  Pim\Bundle\FlexibleEntityBundle\Form\Validator\AttributeConstraintGuesser
+    pim_flexibleentity.listener.add_attributes.class:                 Pim\Bundle\FlexibleEntityBundle\EventListener\AddAttributesListener
+    pim_flexibleentity.listener.translatable.class:                   Pim\Bundle\FlexibleEntityBundle\EventListener\TranslatableListener
+    pim_flexibleentity.listener.scopable.class:                       Pim\Bundle\FlexibleEntityBundle\EventListener\ScopableListener
+    pim_flexibleentity.listener.timestampable.class:                  Pim\Bundle\FlexibleEntityBundle\EventListener\TimestampableListener
+    pim_flexibleentity.listener.has_required_value.class:             Pim\Bundle\FlexibleEntityBundle\EventListener\RequiredValueListener
+    pim_flexibleentity.listener.default_value.class:                  Pim\Bundle\FlexibleEntityBundle\EventListener\DefaultValueListener
+    pim_flexibleentity.listener.initialize_flexible.class:            Pim\Bundle\FlexibleEntityBundle\EventListener\InitializeValuesListener
+    pim_flexibleentity.listener.attribute_cache.class:                Pim\Bundle\FlexibleEntityBundle\EventListener\AttributeCacheListener
+
+services:
+    pim_flexibleentity.value_form.value_subscriber:
+        class: %pim_flexibleentity.value_form.value_subscriber.class%
+        arguments:
+            - @form.factory
+            - @pim_flexibleentity.attributetype.factory
+            - @pim_flexibleentity.registry
+
+    # manager registry
+    pim_flexibleentity.registry:
+        class: %pim_flexibleentity.registry.class%
+
+    pim_flexibleentity.attributetype.factory:
+        class: %pim_flexibleentity.attributetype.factory.class%
+        arguments: ["@service_container", ~]
+
+    # inject attributes into flexible entity
+    pim_flexibleentity.listener.add_attributes:
+        class: %pim_flexibleentity.listener.add_attributes.class%
+        tags:
+            - { name: doctrine.event_subscriber }
+
+    # inject current locale of manager into entity
+    pim_flexibleentity.listener.translatable:
+        class: %pim_flexibleentity.listener.translatable.class%
+        calls:
+            - [ setContainer, [ @service_container ] ]
+        tags:
+            - { name: doctrine.event_subscriber }
+
+    # inject current scope of manager into entity
+    pim_flexibleentity.listener.scopable:
+        class: %pim_flexibleentity.listener.scopable.class%
+        calls:
+            - [ setContainer, [ @service_container ] ]
+        tags:
+            - { name: doctrine.event_subscriber }
+
+    # update created and updated at fields
+    pim_flexibleentity.listener.timestampable:
+        class: %pim_flexibleentity.listener.timestampable.class%
+        tags:
+            - { name: doctrine.event_subscriber }
+
+    # ensure that required value has been set
+    pim_flexibleentity.listener.has_required_value:
+        class: %pim_flexibleentity.listener.has_required_value.class%
+        calls:
+            - [ setContainer, [ @service_container ] ]
+        tags:
+            - { name: doctrine.event_subscriber }
+
+    # Clear attribute list cache when inserting or delete an attribute
+    pim_flexibleentity.listener.attribute_cache:
+        class: %pim_flexibleentity.listener.attribute_cache.class%
+        tags:
+            - { name: doctrine.event_subscriber }
+
+
+    # add default value
+    pim_flexibleentity.listener.listener.default_value:
+        class: %pim_flexibleentity.listener.default_value.class%
+
+    # initialize flexible entity
+    pim_flexibleentity.listener.listener.initialize_values:
+        class: %pim_flexibleentity.listener.initialize_flexible.class%
+        tags:
+            - { name: kernel.event_subscriber}
+
+    # Media form type
+    form.type.oro_media:
+        class: Pim\Bundle\FlexibleEntityBundle\Form\Type\MediaType
+        tags:
+            - { name: form.type, alias: oro_media }
+
+    # Price form type
+    form.type.pim_flexibleentity_price:
+        class: Pim\Bundle\FlexibleEntityBundle\Form\Type\PriceType
+        tags:
+            - { name: form.type, alias: pim_flexibleentity_price }
+
+    # Metric form type
+    form.type.pim_flexibleentity_metric:
+        class: Pim\Bundle\FlexibleEntityBundle\Form\Type\MetricType
+        tags:
+            - { name: form.type, alias: pim_flexibleentity_metric }
+
+    # Phone collection form type
+    form.type.pim_flexibleentity_phone_collection:
+        class: Pim\Bundle\FlexibleEntityBundle\Form\Type\PhoneCollectionType
+        tags:
+            - { name: form.type, alias: pim_flexibleentity_phone_collection }
+
+    # Email collection form type
+    form.type.pim_flexibleentity_email_collection:
+        class: Pim\Bundle\FlexibleEntityBundle\Form\Type\EmailCollectionType
+        tags:
+            - { name: form.type, alias: pim_flexibleentity_email_collection }
+
+    pim_flexibleentity.filterAttributes.twig.extension:
+        class: %pim_flexibleentity.filterAttributes.twig.extension.class%
+        tags:
+            - { name: twig.extension }
+
+    pim_flexibleentity.validator.attribute_constraint_guesser:
+        class: %pim_flexibleentity.validator.attribute_constraint_guesser.class%
+        public: false

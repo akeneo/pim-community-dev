@@ -64,7 +64,7 @@ class ProductWriter extends AbstractConfigurableStepElement implements
         'Oro\\Bundle\\BatchBundle\\Entity\\StepExecution',
         'Oro\\Bundle\\UserBundle\\Entity\\User',
         'Oro\\Bundle\\OrganizationBundle\\Entity\\BusinessUnit',
-        'Oro\\Bundle\\FlexibleEntityBundle\\Entity\\Attribute',
+        'Pim\\Bundle\\FlexibleEntityBundle\\Entity\\Attribute',
         'Oro\\Bundle\\UserBundle\\Entity\\UserApi'
     );
 
