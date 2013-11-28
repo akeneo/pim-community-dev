@@ -21,13 +21,20 @@ class DisableFieldSubscriber implements EventSubscriberInterface
     protected $fieldName;
 
     /**
+     * @var string The name of the method used to determine whether the field should be disabled
+     */
+    protected $determinator;
+
+    /**
      * Constructor
      *
      * @param string $fieldName
+     * @param string $determinator
      */
-    public function __construct($fieldName)
+    public function __construct($fieldName, $determinator = 'getId')
     {
-        $this->fieldName = $fieldName;
+        $this->fieldName    = $fieldName;
+        $this->determinator = $determinator;
     }
 
     /**
@@ -48,7 +55,8 @@ class DisableFieldSubscriber implements EventSubscriberInterface
     public function postSetData(FormEvent $event)
     {
         $entity = $event->getData();
-        if (null === $entity || !$entity->getId()) {
+        $determinator = $this->determinator;
+        if (null === $entity || !method_exists($entity, $determinator) || !$entity->$determinator()) {
             return;
         }
 

@@ -62,7 +62,7 @@ class GroupType extends AbstractType
                     'expanded' => false
                 )
             )
-            ->addEventSubscriber(new DisableFieldSubscriber('type'));
+            ->addEventSubscriber(new DisableFieldSubscriber('type', 'getType'));
     }
 
     /**
