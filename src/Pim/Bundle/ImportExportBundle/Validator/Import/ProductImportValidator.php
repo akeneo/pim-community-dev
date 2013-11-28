@@ -2,14 +2,15 @@
 
 namespace Pim\Bundle\ImportExportBundle\Validator\Import;
 
-use Symfony\Component\Validator\ValidatorInterface;
-use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
-
+use Symfony\Component\Validator\ValidatorInterface;
 use Pim\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
-use Pim\Bundle\ImportExportBundle\Exception\InvalidValueException;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\ImportExportBundle\Cache\AttributeCache;
+use Pim\Bundle\ImportExportBundle\Validator\Import\ImportValidator;
+use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoInterface;
 
 /**
  * Validates an imported product
@@ -18,22 +19,12 @@ use Pim\Bundle\ImportExportBundle\Exception\InvalidValueException;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductImportValidator
+class ProductImportValidator extends ImportValidator
 {
-    /**
-     * @var ValidatorInterface
-     */
-    protected $validator;
-
     /**
      * @var ConstraintGuesserInterface
      */
     protected $constraintGuesser;
-
-    /**
-     * @var TranslatorInterface
-     */
-    protected $translator;
 
     /**
      * @var array
@@ -45,37 +36,32 @@ class ProductImportValidator
      *
      * @param ValidatorInterface         $validator
      * @param ConstraintGuesserInterface $constraintGuesser
-     * @param TranslatorInterface        $translator
      */
     public function __construct(
         ValidatorInterface $validator,
-        ConstraintGuesserInterface $constraintGuesser,
-        TranslatorInterface $translator
+        ConstraintGuesserInterface $constraintGuesser
     ) {
-        $this->validator = $validator;
+        parent::__construct($validator);
         $this->constraintGuesser = $constraintGuesser;
-        $this->translator = $translator;
     }
 
     /**
-     * Validates a list of property
-     *
-     * @param ProductInterface $product
-     * @param array            $values
-     *
-     * @return array an array of errors
+     * {@inheritdoc}
      */
-    public function validateProductProperties(ProductInterface $product, array $values)
+    public function validate($entity, array $columnsInfo, array $data, array $errors = array())
     {
-        $errors = array();
-        foreach ($values as $propertyPath => $value) {
-            $errors = array_merge(
-                $errors,
-                $this->getErrors(
-                    $propertyPath,
-                    $this->validator->validatePropertyValue($product, $propertyPath, $value)
-                )
-            );
+        $this->checkIdentifier($entity, $columnsInfo, $data);
+
+        foreach ($columnsInfo as $columnInfo) {
+            if ($columnInfo->getAttribute()) {
+                $violations = $this->validateProductValue($entity, $columnInfo);
+            } else {
+                $violations = $this->validator->validateProperty($entity, $columnInfo->getPropertyPath());
+            }
+
+            if ($violations->count()) {
+                $errors[$columnInfo->getLabel()] = $this->getErrorArray($violations);
+            }
         }
 
         return $errors;
@@ -84,31 +70,27 @@ class ProductImportValidator
     /**
      * Validates a ProductValue
      *
-     * @param string           $propertyPath
-     * @param ProductAttribute $attribute
-     * @param mixed            $value
+     * @param ProductInterface    $product
+     * @param ColumnInfoInterface $attribute
      *
-     * @return array an array of errors
+     * @return ConstraintViolationListInterface
      */
-    public function validateProductValue($propertyPath, ProductAttribute $attribute, $value)
+    protected function validateProductValue(ProductInterface $product, ColumnInfoInterface $columnInfo)
     {
-        return $this->getErrors(
-            $propertyPath,
-            $this->validator->validateValue(
-                $value,
-                $this->getAttributeConstraints($attribute)
-            )
+        return $this->validator->validateValue(
+            $this->getProductValue($product, $columnInfo)->getData(),
+            $this->getAttributeConstraints($columnInfo->getAttribute())
         );
     }
 
     /**
      * Returns an array of constraints for a given attribute
      *
-     * @param Entity\ProductAttribute $attribute
+     * @param ProductAttribute $attribute
      *
      * @return string
      */
-    public function getAttributeConstraints(ProductAttribute $attribute)
+    protected function getAttributeConstraints(ProductAttribute $attribute)
     {
         $code = $attribute->getCode();
         if (!isset($this->constraints[$code])) {
@@ -123,59 +105,41 @@ class ProductImportValidator
     }
 
     /**
-     * Returns an array of error strings
-     *
-     * @param string                           $propertyPath
-     * @param ConstraintViolationListInterface $violations
-     *
-     * @return array
+     * {@inheritdoc}
      */
-    public function getErrors($propertyPath, ConstraintViolationListInterface $violations)
+    protected function getIdentifier(array $columnsInfo, $entity)
     {
-        $errors = array();
-        foreach ($violations as $violation) {
-            $errors[] = $this->getTranslatedErrorMessage(
-                $propertyPath,
-                $violation->getMessageTemplate(),
-                $violation->getMessageParameters()
-            );
+        $columnLabel = $this->getIdentifierColumn($columnsInfo);
+        foreach ($columnsInfo as $columnInfo) {
+            if ($columnLabel === $columnInfo->getLabel()) {
+                return $this->getProductValue($entity, $columnInfo)->getData();
+            }
         }
-
-        return $errors;
     }
 
     /**
-     * Returns a translated error message
-     *
-     * @param string $propertyPath
-     * @param string $message
-     * @param array  $parameters
-     *
-     * @return string
+     * {@inheritdoc}
      */
-    public function getTranslatedErrorMessage($propertyPath, $message, array $parameters = array())
+    protected function getIdentifierColumn(array $columnsInfo)
     {
-        return sprintf(
-            '%s: %s',
-            $propertyPath,
-            $this->translator->trans($message, $parameters)
-        );
+        foreach ($columnsInfo as $columnInfo) {
+            if ($columnInfo->getAttribute() &&
+                AttributeCache::IDENTIFIER_ATTRIBUTE_TYPE === $columnInfo->getAttribute()->getAttributeType()) {
+                return $columnInfo->getLabel();
+            }
+        }
     }
 
     /**
-     * Returns a translated InvalidValueException message
+     * Returns a ProductValue
      *
-     * @param string                $propertyPath
-     * @param InvalidValueException $exception
+     * @param ProductInterface    $product
+     * @param ColumnInfoInterface $columnInfo
      *
-     * @return string
+     * @return ProductValueInterface
      */
-    public function getTranslatedExceptionMessage($propertyPath, InvalidValueException $exception)
+    protected function getProductValue(ProductInterface $product, ColumnInfoInterface $columnInfo)
     {
-        return $this->getTranslatedErrorMessage(
-            $propertyPath,
-            $exception->getRawMessage(),
-            $exception->getMessageParameters()
-        );
+        return $product->getValue($columnInfo->getName(), $columnInfo->getLocale(), $columnInfo->getScope());
     }
 }
