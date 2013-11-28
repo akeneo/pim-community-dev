@@ -30,6 +30,7 @@ Feature: Filter products by category
       | category | trousers     |                                |
       | category | unclassified | akeneo-mug                     |
     When I check the "Include sub-categories" switch
+    When I select the "Catalog" tree
     Then I should be able to use the following filters:
       | filter   | value    | result     |
       | category | trousers | blue-jeans |

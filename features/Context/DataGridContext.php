@@ -196,7 +196,9 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iShowTheFilter($filterName)
     {
-        $this->datagrid->showFilter($filterName);
+        if (strtolower($filterName) !== 'category') {
+            $this->datagrid->showFilter($filterName);
+        }
     }
 
     /**
@@ -206,7 +208,9 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iHideTheFilter($filterName)
     {
-        $this->datagrid->hideFilter($filterName);
+        if (strtolower($filterName) !== 'category') {
+            $this->datagrid->hideFilter($filterName);
+        }
     }
 
     /**
