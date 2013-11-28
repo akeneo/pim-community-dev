@@ -156,10 +156,10 @@ class Grid extends Index
     {
         $pagination = $this
             ->getElement('Grid toolbar')
-            ->find('css', 'div label:contains("record")');
+            ->find('css', 'div label.dib:contains("record")');
 
-        // If pagination not found, count rows
-        if (!$pagination) {
+        // If pagination not found or is empty, count rows
+        if (!$pagination || !$pagination->getText()) {
             return $this->countRows();
         }
 
