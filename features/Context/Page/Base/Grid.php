@@ -629,18 +629,4 @@ class Grid extends Index
 
         $filter->find('css', 'button.filter-update')->click();
     }
-
-    /**
-     * @param string $code
-     */
-    public function filterPerChannel($code)
-    {
-        $elt = $this->getElement('Filters')->find('css', sprintf(':contains("%s") select', $code));
-
-        if (!$elt) {
-            throw new \Exception(sprintf('Could not find filter for channel "%s".', $code));
-        }
-
-        $elt->selectOption($code);
-    }
 }

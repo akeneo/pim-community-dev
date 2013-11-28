@@ -95,17 +95,6 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $code
-     *
-     * @Given /^I filter per channel ([^"]*)$/
-     */
-    public function iFilterPerChannel($code)
-    {
-        $this->datagrid->filterPerChannel($code);
-        $this->wait();
-    }
-
-    /**
      * @param string    $code
      * @param TableNode $table
      *
