@@ -24,12 +24,8 @@ Feature: Filter products per family
   Scenario: Successfully filter products by a single family
     Given I am on the products page
     Then I should see the filter "Family"
-    When I filter by "Family" with value "Computers"
-    Then I should see products PC and Laptop
-    And I should not see products Amplifier, CD changer, Whirlpool and Electrolux
-    When I filter by "Family" with value "Hi-fi"
-    Then I should see products Amplifier and CD changer
-    And I should not see products PC, Laptop, Whirlpool and Electrolux
-    When I filter by "Family" with value "Washing machines"
-    Then I should see products Whirlpool and Electrolux
-    And I should not see products Amplifier, CD changer, PC and Laptop
+    And I should be able to use the following filters:
+      | filter | value            | result                   |
+      | Family | Computers        | PC and Laptop            |
+      | Family | Hi-fi            | Amplifier and CD changer |
+      | Family | Washing machines | Whirlpool and Electrolux |

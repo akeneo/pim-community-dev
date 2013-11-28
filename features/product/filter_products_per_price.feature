@@ -2,7 +2,7 @@
 Feature: Filter products per price
   In order to filter products in the catalog per price
   As a user
-  I need to be able to filter products per price in the catalog
+  I need to be able to filter products per price
 
   Background:
     Given the "default" catalog configuration
@@ -29,63 +29,18 @@ Feature: Filter products per price
       | book    | price     | ecommerce | 22.5   |
     And I am logged in as "admin"
 
-  Scenario: Successfully display filters
+  Scenario: Successfully filter products by price
     Given I am on the products page
     Then I should see the filter SKU
     And I should not see the filter Price
     And the grid should contain 2 elements
     And I should see products postit and book
-
-  Scenario: Successfully filter per Price with "greater or equal" action
-    Given I am on the products page
-    When I show the filter "Price"
-    And I filter per price >= "20" and currency "EUR"
-    Then the grid should contain 1 element
-    And I should see product book
-    And I should not see product postit
-
-  Scenario: Successfully filter per Price with "greater than" action and decimal number
-    Given I am on the products page
-    When I show the filter "Price"
-    And I filter per price > "12.5" and currency "EUR"
-    Then the grid should contain 1 element
-    And I should see product book
-    And I should not see product postit
-
-  Scenario: Successfully filter per Price with "equal" action
-    Given I am on the products page
-    When I show the filter "Price"
-    And I filter per price = "12.5" and currency "EUR"
-    Then the grid should contain 1 element
-    And I should see product postit
-    And I should not see product book
-
-  Scenario: Successfully filter per Price with "less than" action
-    Given I am on the products page
-    When I show the filter "Price"
-    And I filter per price < "20" and currency "EUR"
-    Then the grid should contain 1 element
-    And I should see product postit
-    And I should not see product book
-
-  Scenario: Successfully filter per Price with "less or equal" action
-    Given I am on the products page
-    When I show the filter "Price"
-    And I filter per price <= "13" and currency "EUR"
-    Then the grid should contain 1 element
-    And I should see product postit
-    And I should not see product book
-
-  Scenario: Successfully filter per Price with useless filter
-    Given I am on the products page
-    When I show the filter "Price"
-    And I filter per price <= "20" and currency "EUR"
-    Then the grid should contain 2 elements
-    And I should see product postit and book
-
-  Scenario: Successfully filter per Price with no result values
-    Given I am on the products page
-    When I show the filter "Price"
-    And I filter per price > "40.5" and currency "EUR"
-    Then the grid should contain 0 element
-    And I should not see products book and postit
+    And I should be able to use the following filters:
+      | filter | value      | result          |
+      | Price  | >= 20 EUR  | book            |
+      | Price  | > 12.5 EUR | book            |
+      | Price  | = 12.5 EUR | postit          |
+      | Price  | < 20 EUR   | postit          |
+      | Price  | <= 13 EUR  | postit          |
+      | Price  | <= 20 EUR  | postit and book |
+      | Price  | > 40.5 EUR |                 |
