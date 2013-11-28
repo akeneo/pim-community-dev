@@ -67,12 +67,14 @@ class AttributeOptionProcessor extends AbstractEntityProcessor
     {
         $attribute = $this->findAttribute($item['attribute']);
         if (!$attribute) {
+            $this->stepExecution->incrementSummaryInfo('skip');
             throw new InvalidItemException(
                 sprintf('The "%s" attribute not exists.', $item['attribute']),
                 $item
             );
         }
         if (!in_array($attribute->getBackendType(), array('option', 'options'))) {
+            $this->stepExecution->incrementSummaryInfo('skip');
             throw new InvalidItemException(
                 sprintf('The "%s" attribute cant contain option', $item['attribute']),
                 $item
