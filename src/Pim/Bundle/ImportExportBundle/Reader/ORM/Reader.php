@@ -56,6 +56,7 @@ class Reader extends AbstractConfigurableStepElement implements
 
             $result = $this->getQuery()->execute();
             $this->stepExecution->setReadCount(count($result));
+            $this->stepExecution->addSummaryInfo('read', count($result));
 
             return empty($result) ? null : $result;
         }
