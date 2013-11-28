@@ -5,7 +5,6 @@ namespace Pim\Bundle\GridBundle\Filter\ORM\Flexible;
 use Doctrine\Common\Persistence\ObjectRepository;
 
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
-use Oro\Bundle\FilterBundle\Form\Type\Filter\ChoiceFilterType;
 use Pim\Bundle\FlexibleEntityBundle\Entity\Attribute;
 use Pim\Bundle\FlexibleEntityBundle\Entity\AttributeOption;
 use Oro\Bundle\GridBundle\Filter\ORM\ChoiceFilter;
@@ -58,6 +57,7 @@ class FlexibleOptionsFilter extends AbstractFlexibleFilter
         list($formType, $formOptions) = parent::getRenderSettings();
         $formOptions['field_options']['choices'] = $this->getValueOptions();
         $formOptions['field_options']['multiple'] = $this->getOption('multiple') ? true : false;
+
         return array($formType, $formOptions);
     }
 

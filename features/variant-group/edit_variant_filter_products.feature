@@ -50,11 +50,5 @@ Feature: Filter available products for a variant group
       | Size        | 42       | white_boots                             |
       | Name        | bl       | black_boots and blue_boots              |
       | Description | great    | white_boots                             |
+      | Price       | < 47 EUR | black_boots and blue_boots              |
     And I should not see the filters Created at and Updated at
-
-  Scenario: Successfully filter by price
-    Given I show the filter "Price"
-    And I filter per price < "47" and currency "EUR"
-    Then the grid should contain 2 elements
-    And I should see products black_boots and blue_boots
-    And I should not see products sneakers and white_boots

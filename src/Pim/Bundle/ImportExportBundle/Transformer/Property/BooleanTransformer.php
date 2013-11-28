@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ImportExportBundle\Transformer\Property;
 
-use Pim\Bundle\ImportExportBundle\Exception\InvalidValueException;
+use Pim\Bundle\ImportExportBundle\Exception\PropertyTransformerException;
 
 /**
  * Boolean attribute transformer
@@ -26,6 +26,6 @@ class BooleanTransformer implements PropertyTransformerInterface
             return true;
         }
 
-        throw new InvalidValueException('Invalid boolean');
+        throw new PropertyTransformerException('Invalid boolean');
     }
 }

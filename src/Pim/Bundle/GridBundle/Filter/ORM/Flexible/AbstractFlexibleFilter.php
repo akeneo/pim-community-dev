@@ -46,8 +46,8 @@ abstract class AbstractFlexibleFilter implements FilterInterface
     protected $parentFilter;
 
     /**
-     * @param FlexibleManagerRegistry $flexibleRegistry
-     * @param FilterInterface $parentFilter
+     * @param  FlexibleManagerRegistry   $flexibleRegistry
+     * @param  FilterInterface           $parentFilter
      * @throws \InvalidArgumentException If $parentFilter has invalid type
      */
     public function __construct(FlexibleManagerRegistry $flexibleRegistry, FilterInterface $parentFilter)
@@ -77,6 +77,7 @@ abstract class AbstractFlexibleFilter implements FilterInterface
     protected function getFlexibleManager()
     {
         $this->loadFlexibleManager();
+
         return $this->flexibleManager;
     }
 
@@ -95,9 +96,9 @@ abstract class AbstractFlexibleFilter implements FilterInterface
      * Apply filter using flexible repository
      *
      * @param ProxyQueryInterface $proxyQuery
-     * @param string $field
-     * @param string $value
-     * @param string $operator
+     * @param string              $field
+     * @param string              $value
+     * @param string              $operator
      */
     protected function applyFlexibleFilter(ProxyQueryInterface $proxyQuery, $field, $value, $operator)
     {
@@ -151,6 +152,7 @@ abstract class AbstractFlexibleFilter implements FilterInterface
         if (!empty($fieldMapping['entityAlias'])) {
             $alias = $fieldMapping['entityAlias'];
         }
+
         return array($alias, $this->getFieldName());
     }
 

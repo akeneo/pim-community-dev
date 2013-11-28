@@ -42,31 +42,10 @@ class CsvProductReaderTest extends CsvReaderTest
     public function testInitializeWithAttributeRepository()
     {
         $this->assertAttributeEquals(
-            array('sku' => array(), 'name' => array()),
-            'uniqueValues',
-            $this->reader
-        );
-
-        $this->assertAttributeEquals(
             array('view', 'manual'),
             'mediaAttributes',
             $this->reader
         );
-    }
-
-    /**
-     * Test related method
-     *
-     * @expectedException Oro\Bundle\BatchBundle\Item\InvalidItemException
-     * @expectedExceptionMessage The "sku" attribute is unique, the value "SKU-001" was already read in this file
-     */
-    public function testReadDuplicateUniqueValue()
-    {
-        $this->reader->setFilePath(__DIR__ . '/../../../fixtures/duplicate_values.csv');
-
-        $this->reader->read();
-        $this->reader->read();
-        $this->reader->read();
     }
 
     /**

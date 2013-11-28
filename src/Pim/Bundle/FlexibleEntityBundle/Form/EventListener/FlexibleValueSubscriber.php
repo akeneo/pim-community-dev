@@ -33,20 +33,23 @@ class FlexibleValueSubscriber implements EventSubscriberInterface
     /**
      * @var FlexibleManagerRegistry
      */
-    protected $flexibleManagerRegistry;
+    protected $registry;
 
     /**
      * Constructor
      *
      * @param FormFactoryInterface    $factory
      * @param AttributeTypeFactory    $attributeTypeFactory
-     * @param FlexibleManagerRegistry $flexibleManagerRegistry
+     * @param FlexibleManagerRegistry $registry
      */
-    public function __construct(FormFactoryInterface $factory, AttributeTypeFactory $attributeTypeFactory, FlexibleManagerRegistry $flexibleManagerRegistry)
-    {
+    public function __construct(
+        FormFactoryInterface $factory,
+        AttributeTypeFactory $attributeTypeFactory,
+        FlexibleManagerRegistry $registry
+    ) {
         $this->factory = $factory;
         $this->attributeTypeFactory = $attributeTypeFactory;
-        $this->flexibleManagerRegistry = $flexibleManagerRegistry;
+        $this->registry = $registry;
     }
 
     /**
@@ -85,7 +88,7 @@ class FlexibleValueSubscriber implements EventSubscriberInterface
         // Initialize subforms which connected to flexible entities
         $dataClass = $valueForm->getConfig()->getDataClass();
         if (is_subclass_of($dataClass, 'Pim\Bundle\FlexibleEntityBundle\Model\FlexibleInterface')) {
-            $flexibleManager = $this->flexibleManagerRegistry->getManager($dataClass);
+            $flexibleManager = $this->registry->getManager($dataClass);
             $entity = $flexibleManager->createFlexible();
             $valueForm->setData($entity);
         }

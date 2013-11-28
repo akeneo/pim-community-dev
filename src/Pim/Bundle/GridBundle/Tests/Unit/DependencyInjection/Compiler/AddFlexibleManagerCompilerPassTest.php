@@ -152,7 +152,7 @@ class AddFlexibleManagerCompilerPassTest extends AbstractCompilerPassTest
     /**
      * @dataProvider processErrorDataProvider
      *
-     * @param array $containerData
+     * @param array  $containerData
      * @param string $exceptionName
      * @param string $exceptionMessage
      */

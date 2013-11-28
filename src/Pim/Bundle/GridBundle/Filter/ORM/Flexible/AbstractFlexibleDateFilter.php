@@ -48,9 +48,9 @@ abstract class AbstractFlexibleDateFilter extends AbstractFlexibleFilter
 
     /**
      * @param ProxyQueryInterface $queryBuilder
-     * @param string $dateStartValue
-     * @param string $dateEndValue
-     * @param string $field
+     * @param string              $dateStartValue
+     * @param string              $dateEndValue
+     * @param string              $field
      */
     protected function applyFilterBetween(
         ProxyQueryInterface $queryBuilder,
@@ -69,9 +69,9 @@ abstract class AbstractFlexibleDateFilter extends AbstractFlexibleFilter
 
     /**
      * @param ProxyQueryInterface $queryBuilder
-     * @param string $dateStartValue
-     * @param string $dateEndValue
-     * @param string $field
+     * @param string              $dateStartValue
+     * @param string              $dateEndValue
+     * @param string              $field
      */
     protected function applyFilterNotBetween(
         ProxyQueryInterface $queryBuilder,

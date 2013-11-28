@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\GridBundle\Tests\Unit\Filter\ORM\Flexible;
 
-use Doctrine\ORM\QueryBuilder;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\ChoiceFilterType;

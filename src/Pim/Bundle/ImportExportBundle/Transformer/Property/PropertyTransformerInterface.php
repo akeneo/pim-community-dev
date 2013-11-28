@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\ImportExportBundle\Transformer\Property;
 
-use Pim\Bundle\ImportExportBundle\Exception\InvalidValueException;
+use Pim\Bundle\ImportExportBundle\Exception\PropertyTransformerException;
 
 /**
  * Interface for transformer classes
@@ -19,7 +19,7 @@ interface PropertyTransformerInterface
      * @param string $value
      * @param array  $options
      *
-     * @throws InvalidValueException
+     * @throws PropertyTransformerException
      * @return mixed
      */
     public function transform($value, array $options = array());

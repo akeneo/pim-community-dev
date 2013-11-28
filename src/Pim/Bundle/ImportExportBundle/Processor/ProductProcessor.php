@@ -2,11 +2,10 @@
 
 namespace Pim\Bundle\ImportExportBundle\Processor;
 
-use Oro\Bundle\BatchBundle\Item\ItemProcessorInterface;
-use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
-use Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 use Oro\Bundle\BatchBundle\Entity\StepExecution;
-use Pim\Bundle\ImportExportBundle\Transformer\ORMProductTransformer;
+use Pim\Bundle\ImportExportBundle\Transformer\OrmProductTransformer;
+use Pim\Bundle\ImportExportBundle\Validator\Import\ImportValidatorInterface;
 
 /**
  * Product import processor
@@ -16,11 +15,10 @@ use Pim\Bundle\ImportExportBundle\Transformer\ORMProductTransformer;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductProcessor extends AbstractConfigurableStepElement implements ItemProcessorInterface,
- StepExecutionAwareInterface
+class ProductProcessor extends AbstractTransformerProcessor
 {
     /**
-     * @var ORMProductTransformer
+     * @var OrmProductTransformer
      */
     protected $transformer;
 
@@ -52,13 +50,18 @@ class ProductProcessor extends AbstractConfigurableStepElement implements ItemPr
     /**
      * Constructor
      *
-     * @param ORMProductTransformer $transformer
+     * @param ImportValidatorInterface $validator
+     * @param TranslatorInterface      $translator
+     * @param OrmProductTransformer    $transformer
      */
-    public function __construct(ORMProductTransformer $transformer)
-    {
+    public function __construct(
+        ImportValidatorInterface $validator,
+        TranslatorInterface $translator,
+        OrmProductTransformer $transformer
+    ) {
+        parent::__construct($validator, $translator);
         $this->transformer = $transformer;
     }
-
     /**
      * Set wether or not the created product should be activated or not
      *
@@ -157,26 +160,36 @@ class ProductProcessor extends AbstractConfigurableStepElement implements ItemPr
     /**
      * {@inheritdoc}
      */
-    public function process($item)
+    protected function transform($item)
     {
-        return $this->transformer->getProduct(
-            $item,
-            array(
-                'family'        => $this->familyColumn,
-                'categories'    => $this->categoriesColumn,
-                'groups'        => $this->groupsColumn
-            ),
-            array(
-                'enabled'       => $this->enabled
-            )
+        return $this->transformer->transform($item, array('enabled' => $this->enabled));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getMapping()
+    {
+        return array(
+            $this->familyColumn     => 'family',
+            $this->categoriesColumn => 'categories',
+            $this->groupsColumn     => 'groups'
         );
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setStepExecution(StepExecution $stepExecution)
+    protected function getTransformedColumnsInfo()
     {
-        $this->stepExecution = $stepExecution;
+        return $this->transformer->getTransformedColumnsInfo();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getTransformerErrors()
+    {
+        return $this->transformer->getErrors();
     }
 }

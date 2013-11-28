@@ -24,8 +24,8 @@ abstract class AbstractOptionType extends AbstractAttributeType
         $attribute = $value->getAttribute();
         $options['empty_value']   = false;
         $options['class']         = 'PimFlexibleEntityBundle:AttributeOption';
-        $options['query_builder'] = function (EntityRepository $er) use ($attribute) {
-            return $er->createQueryBuilder('opt')->where('opt.attribute = '.$attribute->getId());
+        $options['query_builder'] = function (EntityRepository $repository) use ($attribute) {
+            return $repository->createQueryBuilder('opt')->where('opt.attribute = '.$attribute->getId());
         };
 
         return $options;

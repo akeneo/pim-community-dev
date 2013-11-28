@@ -86,14 +86,15 @@ class MediaTransformerTest extends \PHPUnit_Framework_TestCase
                 ->expects($this->never())
                 ->method('getMedia');
         }
-        $transformer->updateProductValue($productValue, $file);
+        $columnInfo = $this->getMock('Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoInterface');
+        $transformer->setValue($productValue, $columnInfo, $file);
         if ($hasFile) {
             $this->assertEquals($file, $this->media->getFile());
         }
         unlink($f);
     }
     /**
-     * @expectedException Pim\Bundle\ImportExportBundle\Exception\InvalidValueException
+     * @expectedException \Pim\Bundle\ImportExportBundle\Exception\PropertyTransformerException
      * @expectedExceptionMessage File not found: "/bogus-file"
      */
     public function testUnvalid()

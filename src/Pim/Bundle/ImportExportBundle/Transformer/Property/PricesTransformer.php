@@ -2,10 +2,12 @@
 
 namespace Pim\Bundle\ImportExportBundle\Transformer\Property;
 
-use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
-use Pim\Bundle\ImportExportBundle\Exception\InvalidValueException;
 use Pim\Bundle\CatalogBundle\Model\ProductPrice;
+use Pim\Bundle\CatalogBundle\Entity\ProductPrice;
+use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\ImportExportBundle\Exception\PropertyTransformerException;
+use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoInterface;
 
 /**
  * Prices attribute transformer
@@ -14,7 +16,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class PricesTransformer implements PropertyTransformerInterface, ProductValueUpdaterInterface
+class PricesTransformer implements PropertyTransformerInterface, EntityUpdaterInterface
 {
     /**
      * @var CurrencyManager
@@ -50,11 +52,11 @@ class PricesTransformer implements PropertyTransformerInterface, ProductValueUpd
             }
 
             if (0 === preg_match('/^([^\s]+) (\w+)$/', $price, $matches)) {
-                throw new InvalidValueException('Malformed price: "%value%"', array('%value%' => $price));
+                throw new PropertyTransformerException('Malformed price: "%value%"', array('%value%' => $price));
             }
 
             if (!in_array($matches[2], $currencies)) {
-                throw new InvalidValueException(
+                throw new PropertyTransformerException(
                     'Currency "%currency%" is not active',
                     array('%currency%' => $matches[2])
                 );
@@ -69,7 +71,8 @@ class PricesTransformer implements PropertyTransformerInterface, ProductValueUpd
     /**
      * {@inheritdoc}
      */
-    public function updateProductValue(ProductValueInterface $productValue, $data, array $options = array())
+
+    public function setValue($object, ColumnInfoInterface $columnInfo, $data, array $options = array())
     {
         $currencies = $this->getCurrencies();
         $removeCurrency = function ($code) use (&$currencies) {
@@ -79,7 +82,7 @@ class PricesTransformer implements PropertyTransformerInterface, ProductValueUpd
             }
         };
 
-        foreach ($productValue->getPrices() as $price) {
+        foreach ($object->getPrices() as $price) {
             $currency = $price->getCurrency();
             if (isset($data[$currency])) {
                 $price->setData($data[$currency]->getData());
@@ -89,12 +92,12 @@ class PricesTransformer implements PropertyTransformerInterface, ProductValueUpd
         }
 
         foreach ($data as $currency => $price) {
-            $this->addPrice($productValue, $price->getData(), $currency);
+            $this->addPrice($object, $price->getData(), $currency);
             $removeCurrency($currency);
         }
 
         foreach ($currencies as $currency) {
-            $this->addPrice($productValue, null, $currency);
+            $this->addPrice($object, null, $currency);
         }
     }
 
