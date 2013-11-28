@@ -14,6 +14,15 @@ use Oro\Bundle\EntityConfigBundle\Config\Config;
 use Oro\Bundle\EntityConfigBundle\Entity\OptionSet;
 use Oro\Bundle\EntityConfigBundle\Entity\OptionSetRelation;
 
+/**
+ * Class OptionSetListener
+ * @package Oro\Bundle\EntityConfigBundle\EventListener
+ *
+ * - needed by entity extend bundle functionality
+ * - listen to doctrine PostPersist event
+ * - determinate if NEW optionSet field type model have been created (field create action)
+ * - persists and flush option relations for created OptionSet
+ */
 class OptionSetListener
 {
     protected $needFlush = false;
