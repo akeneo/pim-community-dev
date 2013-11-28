@@ -629,13 +629,17 @@ class Grid extends Index
         $criteriaElt = $filter->find('css', 'div.filter-criteria');
         $criteriaElt->fillField('value', $value);
 
+        $buttons = $filter->findAll('css', '.currencyfilter button.dropdown-toggle');
+        $actionButton = array_shift($buttons);
+        $currencyButton = array_shift($buttons);
+
         // Open the dropdown menu with currency list and click on $currency line
-        $this->pressButton('Currency');
-        $this->pressButton($currency);
+        $currencyButton->click();
+        $currencyButton->getParent()->find('css', sprintf('ul a:contains("%s")', $currency))->click();
 
         // Open the dropdown menu with action list and click on $action line
-        $this->pressButton('Action');
-        $this->pressbutton($action);
+        $actionButton->click();
+        $actionButton->getParent()->find('xpath', sprintf("//ul//a[text() = '%s']", $action))->click();
 
         $filter->find('css', 'button.filter-update')->click();
     }
