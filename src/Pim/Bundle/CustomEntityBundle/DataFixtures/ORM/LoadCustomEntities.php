@@ -47,10 +47,10 @@ class LoadCustomEntities extends AbstractFixture implements ContainerAwareInterf
      */
     public function loadFile(ObjectManager $manager, $filePath, $class)
     {
-        $f = fopen($filePath, 'r');
-        $labels = array_map('trim', fgetcsv($f, 0, ';'));
+        $fd = fopen($filePath, 'r');
+        $labels = array_map('trim', fgetcsv($fd, 0, ';'));
         $transformer = $this->getOrmTransformer();
-        while ($row = fgetcsv($f, 0, ';')) {
+        while ($row = fgetcsv($fd, 0, ';')) {
             $object = $transformer->transform(
                 $class,
                 array_combine($labels, $row)
