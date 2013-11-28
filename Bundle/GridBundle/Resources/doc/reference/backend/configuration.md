@@ -44,34 +44,3 @@ services:
               validator: ~
 ```
 
-#### Flexible Datagrid Manager Configuration
-
-Flexible Datagrid Manager has the same configuration as regular Datagird Manager
-with the exceptions of **flexible** attribute - it must has true value, and **entity\_name** attribute - it is obligatory.
-
-```
-services:
-    acme_demo_grid.user_grid.manager:
-        class: Acme\Bundle\DemoGridBundle\Datagrid\UserDatagridManager
-        tags:
-            - name: oro_grid.datagrid.manager
-              datagrid_name: users
-              entity_name: Oro\Bundle\UserBundle\Entity\User
-              entity_hint: users
-              flexible: true
-              route_name: acme_demo_gridbundle_user_list
-```
-
-Alternatively **flexible\_manager** attribute can be passed. This attribute must contain id of flexible manager service. In this case entity_name attribute will not be used to determine flexible manager service so it can be omitted. For example:
-
-```
-services:
-    acme_demo_grid.user_grid.manager:
-        class: Acme\Bundle\DemoGridBundle\Datagrid\UserDatagridManager
-        tags:
-            - name: oro_grid.datagrid.manager
-              datagrid_name: users
-              entity_hint: users
-              flexible_manager: oro_user.manager.flexible
-              route_name: user_flexible_manager
-```

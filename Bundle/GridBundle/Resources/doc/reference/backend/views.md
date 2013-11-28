@@ -31,7 +31,6 @@ services:
               datagrid_name: users
               entity_name: Oro\Bundle\UserBundle\Entity\User
               entity_hint: user
-              flexible: true
               route_name: oro_user_index
               views_list: something.user_datagrid_views_list
 ```

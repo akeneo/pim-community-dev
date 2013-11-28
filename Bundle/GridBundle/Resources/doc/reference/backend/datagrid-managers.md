@@ -3,17 +3,16 @@ Datagrid Managers
 
 Datagrid Managers provides inner interface for developer to work with grid. They receive dependencies through setter methods, store configuration and build datagrid entity.
 
-There are two types of Datagrid Manager - regular and flexible. Regular Datagrid Manager works with regular Doctrine entities and flat arrays as source data, Flexible Datagrid Manager works with Flexible Entities which provides by OroFlexibleEntityBundle.
+Datagrid Manager works with regular Doctrine entities and flat arrays as source data.
 
 #### Class Description
 
 * **Datagrid \ DatagridManagerInterface** - general interface for all Datagrid Managers, provides setter method to inject dependencies through Symfony Container;
 * **Datagrid \ DatagridManager** - abstract Datagrid Manager which implements basic method to get Datagrid, contains methods to specify grid configuration;
-* **Datagrid \ FlexibleDatagridManager** - abstract Flexible Datagrid Manager, provides setter for Flexible Entity Manager, getter for flexible attributes and methods to convert flexible types to regular field and filter types.
 
 #### Configuration
 
-Following example shows configuration of two datagrid managers - regular and flexible.
+Following example shows configuration of two datagrid managers.
 
 ```
 parameters:
@@ -28,7 +27,6 @@ services:
               datagrid_name: users
               entity_name: Oro\Bundle\UserBundle\Entity\User
               entity_hint: users
-              flexible: true
               route_name: acme_demo_gridbundle_user_list
 
     acme_demo_grid.product_grid.manager:
