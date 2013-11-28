@@ -52,7 +52,7 @@ class AuditManager
         $log->setUser($this->getUser());
 
         foreach ($this->getConfigManager()->getUpdateConfig() as $config) {
-            if ($diff = $this->logConfig($config, $log)) {
+            if ($diff = $this->computeChanges($config, $log)) {
                 $log->addDiff($diff);
             }
         }
@@ -64,14 +64,9 @@ class AuditManager
 
     /**
      * @param ConfigInterface $config
-     * @param ConfigLog       $log
-     */
-
-    /**
-     * @param ConfigInterface $config
      * @return \Oro\Bundle\EntityConfigBundle\Entity\ConfigLogDiff
      */
-    protected function logConfig(ConfigInterface $config)
+    protected function computeChanges(ConfigInterface $config)
     {
         $changes = $this->getConfigManager()->getConfigChangeSet($config);
 
