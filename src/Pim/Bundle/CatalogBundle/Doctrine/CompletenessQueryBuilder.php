@@ -259,9 +259,9 @@ SQL;
     protected function getClassContentFields($className, $prefix)
     {
         if ('Pim\Bundle\FlexibleEntityBundle\Entity\Metric' == $className ||
-            'Pim\Bundle\CatalogBundle\Entity\ProductPrice' == $className) {
+            'Pim\Bundle\CatalogBundle\Model\ProductPrice' == $className) {
             return array(sprintf('%s.%s', $prefix, 'data'));
-        } elseif ('Pim\Bundle\CatalogBundle\Entity\Media' == $className) {
+        } elseif ('Pim\Bundle\CatalogBundle\Model\Media' == $className) {
             return array(sprintf('%s.%s', $prefix, 'filename'));
         } else {
             return array_map(

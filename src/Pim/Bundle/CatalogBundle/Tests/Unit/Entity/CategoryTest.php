@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\Entity;
 
-use Pim\Bundle\CatalogBundle\Entity\CategoryTranslation;
-use Pim\Bundle\CatalogBundle\Entity\Product;
+use Pim\Bundle\CatalogBundle\Model\Product;
 use Pim\Bundle\CatalogBundle\Entity\Category;
+use Pim\Bundle\CatalogBundle\Entity\CategoryTranslation;
 
 /**
  * Test related class
@@ -16,7 +16,7 @@ use Pim\Bundle\CatalogBundle\Entity\Category;
 class CategoryTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var Pim\Bundle\CatalogBundle\Entity\Category
+     * @var Category
      */
     protected $category;
 
@@ -31,7 +31,7 @@ class CategoryTest extends \PHPUnit_Framework_TestCase
     /**
      * Create a mock of flexible product entity
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Product
+     * @return \Pim\Bundle\CatalogBundle\Model\Product
      */
     protected function createProduct()
     {
@@ -213,10 +213,10 @@ class CategoryTest extends \PHPUnit_Framework_TestCase
     /**
      * Assert product entity
      *
-     * @param Pim\Bundle\CatalogBundle\Entity\Product $entity
+     * @param Pim\Bundle\CatalogBundle\Model\Product $entity
      */
     protected function assertProductEntity($entity)
     {
-        $this->assertInstanceOf('Pim\Bundle\CatalogBundle\Entity\Product', $entity);
+        $this->assertInstanceOf('Pim\Bundle\CatalogBundle\Model\Product', $entity);
     }
 }

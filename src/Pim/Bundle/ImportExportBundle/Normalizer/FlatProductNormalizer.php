@@ -4,10 +4,10 @@ namespace Pim\Bundle\ImportExportBundle\Normalizer;
 
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Entity\Family;
-use Pim\Bundle\CatalogBundle\Entity\Group;
-use Pim\Bundle\CatalogBundle\Entity\Media;
+use Pim\Bundle\CatalogBundle\Model\Group;
+use Pim\Bundle\CatalogBundle\Model\Media;
 use Pim\Bundle\CatalogBundle\Manager\MediaManager;
+use Pim\Bundle\CatalogBundle\Entity\Family;
 
 /**
  * A normalizer to transform a product entity into a flat array
@@ -202,7 +202,7 @@ class FlatProductNormalizer implements NormalizerInterface
         foreach ($data as $item) {
             if ($item instanceof \Pim\Bundle\CatalogBundle\Entity\AttributeOption) {
                 $result[] = $item->getCode();
-            } elseif ($item instanceof \Pim\Bundle\CatalogBundle\Entity\ProductPrice) {
+            } elseif ($item instanceof \Pim\Bundle\CatalogBundle\Model\ProductPrice) {
                 if ($item->getData() !== null) {
                     $result[] = (string) $item;
                 }

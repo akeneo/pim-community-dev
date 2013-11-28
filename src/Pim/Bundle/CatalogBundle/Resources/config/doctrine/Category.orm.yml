@@ -81,6 +81,6 @@ Pim\Bundle\CatalogBundle\Entity\Category:
                 - treeParent
     manyToMany:
         products:
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\Product
+            targetEntity: Pim\Bundle\CatalogBundle\Model\ProductInterface
             mappedBy: categories
             fetch: EXTRA_LAZY

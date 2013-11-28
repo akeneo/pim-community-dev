@@ -1,4 +1,4 @@
-Pim\Bundle\CatalogBundle\Entity\ProductValue:
+Pim\Bundle\CatalogBundle\Model\ProductValue:
     type: entity
     table: pim_catalog_product_value
     indexes:
@@ -78,7 +78,7 @@ Pim\Bundle\CatalogBundle\Entity\ProductValue:
                     referencedColumnName: id
                     onDelete: 'SET NULL'
         entity:
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\Product
+            targetEntity: Pim\Bundle\CatalogBundle\Model\ProductInterface
             inversedBy: values
             joinColumns:
                 entity_id:
@@ -102,7 +102,7 @@ Pim\Bundle\CatalogBundle\Entity\ProductValue:
                         onDelete: CASCADE
     oneToOne:
         media:
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\Media
+            targetEntity: Pim\Bundle\CatalogBundle\Model\Media
             cascade:
                 - persist
                 - refresh
@@ -122,7 +122,7 @@ Pim\Bundle\CatalogBundle\Entity\ProductValue:
                     onDelete: 'SET NULL'
     oneToMany:
         prices:
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\ProductPrice
+            targetEntity: Pim\Bundle\CatalogBundle\Model\ProductPrice
             cascade:
                 - remove
                 - persist

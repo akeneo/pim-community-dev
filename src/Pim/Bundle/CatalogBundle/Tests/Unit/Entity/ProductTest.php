@@ -2,12 +2,12 @@
 
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\Entity;
 
+use Pim\Bundle\CatalogBundle\Model\Group;
+use Pim\Bundle\CatalogBundle\Model\Product;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Entity\Completeness;
-use Pim\Bundle\CatalogBundle\Entity\Product;
 use Pim\Bundle\CatalogBundle\Entity\Family;
-use Pim\Bundle\CatalogBundle\Entity\Group;
 
 /**
  * Test related class
@@ -38,7 +38,7 @@ class ProductTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstruct()
     {
-        $this->assertInstanceOf('Pim\Bundle\CatalogBundle\Entity\Product', $this->product);
+        $this->assertInstanceOf('Pim\Bundle\CatalogBundle\Model\Product', $this->product);
 
         $this->assertInstanceOf('\Doctrine\Common\Collections\Collection', $this->product->getCategories());
         $this->assertCount(0, $this->product->getCategories());
@@ -374,7 +374,7 @@ class ProductTest extends \PHPUnit_Framework_TestCase
      *
      * @param string $code
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Group
+     * @return \Pim\Bundle\CatalogBundle\Model\Group
      */
     protected function createGroup($code)
     {
@@ -418,11 +418,11 @@ class ProductTest extends \PHPUnit_Framework_TestCase
      * @param mixed $attribute
      * @param mixed $data
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\ProductValue
+     * @return \Pim\Bundle\CatalogBundle\Model\ProductValue
      */
     protected function getValueMock($attribute, $data = null)
     {
-        $value = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductValue');
+        $value = $this->getMock('Pim\Bundle\CatalogBundle\Model\ProductValue');
 
         $value->expects($this->any())
               ->method('getAttribute')
@@ -488,14 +488,14 @@ class ProductTest extends \PHPUnit_Framework_TestCase
      */
     protected function assertEntity($entity)
     {
-        $this->assertInstanceOf('Pim\Bundle\CatalogBundle\Entity\Product', $entity);
+        $this->assertInstanceOf('Pim\Bundle\CatalogBundle\Model\Product', $entity);
     }
 
     /**
-     * @return \Pim\Bundle\CatalogBundle\Entity\Media
+     * @return \Pim\Bundle\CatalogBundle\Model\Media
      */
     protected function getMediaMock()
     {
-        return $this->getMock('Pim\Bundle\CatalogBundle\Entity\Media');
+        return $this->getMock('Pim\Bundle\CatalogBundle\Model\Media');
     }
 }

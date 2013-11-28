@@ -29,9 +29,9 @@ class FlatGroupNormalizerTest extends GroupNormalizerTest
     public static function getSupportNormalizationData()
     {
         return array(
-            array('Pim\Bundle\CatalogBundle\Entity\Group', 'csv', true),
-            array('Pim\Bundle\CatalogBundle\Entity\Group', 'xml', false),
-            array('Pim\Bundle\CatalogBundle\Entity\Group', 'json', false),
+            array('Pim\Bundle\CatalogBundle\Model\Group', 'csv', true),
+            array('Pim\Bundle\CatalogBundle\Model\Group', 'xml', false),
+            array('Pim\Bundle\CatalogBundle\Model\Group', 'json', false),
             array('stdClass', 'csv', false),
             array('stdClass', 'xml', false),
             array('stdClass', 'json', false),

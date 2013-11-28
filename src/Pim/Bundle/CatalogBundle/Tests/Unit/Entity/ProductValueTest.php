@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\Entity;
 
-use Pim\Bundle\CatalogBundle\Entity\ProductValue;
+use Pim\Bundle\CatalogBundle\Model\ProductValue;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
@@ -148,7 +148,7 @@ class ProductValueTest extends \PHPUnit_Framework_TestCase
     private function getProductMock()
     {
         return $this
-            ->getMock('Pim\Bundle\CatalogBundle\Entity\Product');
+            ->getMock('Pim\Bundle\CatalogBundle\Model\Product');
     }
 
     /**
@@ -182,6 +182,6 @@ class ProductValueTest extends \PHPUnit_Framework_TestCase
      */
     protected function getMediaMock()
     {
-        return $this->getMock('Pim\Bundle\CatalogBundle\Entity\Media');
+        return $this->getMock('Pim\Bundle\CatalogBundle\Model\Media');
     }
 }

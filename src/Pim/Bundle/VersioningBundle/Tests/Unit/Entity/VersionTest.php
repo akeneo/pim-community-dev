@@ -3,7 +3,7 @@
 namespace Pim\Bundle\VersioningBundle\Tests\Unit\Entity;
 
 use Pim\Bundle\VersioningBundle\Entity\Version;
-use Pim\Bundle\CatalogBundle\Entity\Product;
+use Pim\Bundle\CatalogBundle\Model\Product;
 
 /**
  * Test related class
@@ -47,7 +47,7 @@ class VersionTest extends \PHPUnit_Framework_TestCase
      */
     protected function getVersionableMock()
     {
-        $versionable = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Product');
+        $versionable = $this->getMock('Pim\Bundle\CatalogBundle\Model\Product');
 
         $versionable->expects($this->any())
             ->method('getId')

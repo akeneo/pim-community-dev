@@ -85,7 +85,7 @@ class ProductProcessorTest extends \PHPUnit_Framework_TestCase
      */
     public function getMediaMock()
     {
-        return $this->getMock('Pim\Bundle\CatalogBundle\Entity\Media');
+        return $this->getMock('Pim\Bundle\CatalogBundle\Model\Media');
     }
 
     /**
@@ -114,7 +114,7 @@ class ProductProcessorTest extends \PHPUnit_Framework_TestCase
      */
     protected function getProductMock(array $media)
     {
-        $product = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Product');
+        $product = $this->getMock('Pim\Bundle\CatalogBundle\Model\Product');
 
         $product->expects($this->any())
             ->method('getMedia')

@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\Entity;
 
-use Pim\Bundle\CatalogBundle\Entity\GroupTranslation;
+use Pim\Bundle\CatalogBundle\Model\GroupTranslation;
 
 /**
  * Test related class

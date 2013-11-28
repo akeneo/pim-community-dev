@@ -44,7 +44,7 @@ class PriceCollectionGuesser implements ConstraintGuesserInterface
                     'constraints' => array_merge(
                         array(
                             new Type(
-                                array('type' => 'Pim\Bundle\CatalogBundle\Entity\ProductPrice')
+                                array('type' => 'Pim\Bundle\CatalogBundle\Model\ProductPrice')
                             ),
                         ),
                         $numericGuesser->guessConstraints($attribute),

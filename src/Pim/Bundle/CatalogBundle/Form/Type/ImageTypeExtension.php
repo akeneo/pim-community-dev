@@ -22,7 +22,7 @@ class ImageTypeExtension extends AbstractTypeExtension
     {
         $resolver->setDefaults(
             array(
-                'data_class' => 'Pim\Bundle\CatalogBundle\Entity\Media'
+                'data_class' => 'Pim\Bundle\CatalogBundle\Model\Media'
             )
         );
     }
