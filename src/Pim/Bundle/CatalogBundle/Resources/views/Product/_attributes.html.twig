@@ -35,9 +35,9 @@
         </div>
 
         {% if comparisonLocale is not null %}
-            <div class="btn-group">
-                <span class="btn">Copy</span>
+            <div id="copy-switcher" class="btn-group">
                 <button class="btn dropdown-toggle" data-toggle="dropdown">
+                    {{ 'Copy'|trans }}
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu pull-right">

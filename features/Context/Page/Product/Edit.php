@@ -30,15 +30,17 @@ class Edit extends Form
         $this->elements = array_merge(
             $this->elements,
             array(
-                'Locales dropdown' => array('css' => '#locale-switcher'),
-                'Locales selector' => array('css' => '#pim_product_locales'),
-                'Enable switcher'  => array('css' => '#switch_status'),
-                'Updates grid'     => array('css' => '#history table.grid'),
-                'Image preview'    => array('css' => '#lbImage'),
-                'Completeness'     => array('css' => 'div#completeness'),
-                'Updates grid'     => array('css' => '#history table.grid'),
-                'Category pane'    => array('css' => '#categories'),
-                'Category tree'    => array('css' => '#trees'),
+                'Locales dropdown'    => array('css' => '#locale-switcher'),
+                'Comparison dropdown' => array('css' => '#comparison-switcher'),
+                'Locales selector'    => array('css' => '#pim_product_locales'),
+                'Enable switcher'     => array('css' => '#switch_status'),
+                'Updates grid'        => array('css' => '#history table.grid'),
+                'Image preview'       => array('css' => '#lbImage'),
+                'Completeness'        => array('css' => 'div#completeness'),
+                'Updates grid'        => array('css' => '#history table.grid'),
+                'Category pane'       => array('css' => '#categories'),
+                'Category tree'       => array('css' => '#trees'),
+                'Copy dropdown'       => array('css' => '#copy-switcher'),
             )
         );
     }
@@ -279,38 +281,6 @@ class Edit extends Form
     }
 
     /**
-     * Find a completeness cell from column and row (channel and locale codes)
-     * @param string $columnCode (channel code)
-     * @param string $rowCode    (locale code)
-     *
-     * @throws \InvalidArgumentException
-     *
-     * @return \Behat\Mink\Element\NodeElement
-     */
-    protected function findCompletenessCell($columnCode, $rowCode)
-    {
-        $completenessTable = $this->findCompletenessContent();
-
-        $columnIdx = 0;
-        foreach ($completenessTable->findAll('css', 'thead th') as $index => $header) {
-            if ($header->getText() === $columnCode) {
-                $columnIdx = $index;
-                break;
-            }
-        }
-        if ($columnIdx === 0) {
-            throw new \InvalidArgumentException(sprintf('Column %s not found', $columnCode));
-        }
-
-        $cells = $completenessTable->findAll('css', sprintf('tbody tr:contains("%s") td', $rowCode));
-        if (!$cells || count($cells) < $columnIdx) {
-            throw new \InvalidArgumentException(sprintf('Row %s not found', $rowCode));
-        }
-
-        return $cells[$columnIdx];
-    }
-
-    /**
      * Check completeness state
      * @param string $channelCode
      * @param string $localeCode
@@ -450,4 +420,79 @@ class Edit extends Form
 
         return $elt;
     }
+
+    /**
+     * Find comparison language labels
+     *
+     * @return string[]
+     */
+    public function getComparisonLanguages()
+    {
+        $languages = $this->getElement('Comparison dropdown')->findAll('css', 'ul.dropdown-menu li .title');
+
+        return array_map(function ($language) {
+            return $language->getText();
+        }, $languages);
+    }
+
+    public function compareWith($language)
+    {
+        $this->getElement('Comparison dropdown')->find('css', 'button:contains("Translate")')->click();
+        if (!in_array($language, $this->getComparisonLanguages())) {
+            throw new \InvalidArgumentException(
+                sprintf('Language "%s" is not available for comparison', $language)
+            );
+        }
+
+        $this->getElement('Comparison dropdown')->find(
+            'css',
+            sprintf('ul.dropdown-menu a:contains("%s")', $language)
+        )->click();
+    }
+
+    public function copyTranslations($mode)
+    {
+        $this
+            ->getElement('Copy dropdown')
+            ->find('css', 'button:contains("Copy")')
+            ->click();
+
+        $this
+            ->getElement('Copy dropdown')
+            ->find('css', sprintf('a:contains("%s")', $mode))
+            ->click();
+    }
+
+    /**
+     * Find a completeness cell from column and row (channel and locale codes)
+     * @param string $columnCode (channel code)
+     * @param string $rowCode    (locale code)
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \Behat\Mink\Element\NodeElement
+     */
+    protected function findCompletenessCell($columnCode, $rowCode)
+    {
+        $completenessTable = $this->findCompletenessContent();
+
+        $columnIdx = 0;
+        foreach ($completenessTable->findAll('css', 'thead th') as $index => $header) {
+            if ($header->getText() === $columnCode) {
+                $columnIdx = $index;
+                break;
+            }
+        }
+        if ($columnIdx === 0) {
+            throw new \InvalidArgumentException(sprintf('Column %s not found', $columnCode));
+        }
+
+        $cells = $completenessTable->findAll('css', sprintf('tbody tr:contains("%s") td', $rowCode));
+        if (!$cells || count($cells) < $columnIdx) {
+            throw new \InvalidArgumentException(sprintf('Row %s not found', $rowCode));
+        }
+
+        return $cells[$columnIdx];
+    }
+
 }
