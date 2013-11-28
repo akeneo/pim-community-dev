@@ -181,41 +181,69 @@ class FlexibleQueryBuilder
      *
      * @return string
      * @throws FlexibleQueryException
-     *
-     * TODO: This method should be refactored (BAP-974).
      */
     public function prepareCriteriaCondition($field, $operator, $value)
     {
-        // OR condition check
         if (is_array($operator)) {
-            if (!is_array($value)) {
-                throw new FlexibleQueryException('Values must be array');
-            }
+            return $this->prepareMultiCriteriaCondition($field, $operator, $value);
 
-            // convert field to array
-            if (!is_array($field)) {
-                $fieldArray = array();
-                foreach (array_keys($operator) as $key) {
-                    $fieldArray[$key] = $field;
-                }
-                $field = $fieldArray;
-            }
+        } else {
+            return $this->prepareSingleCriteriaCondition($field, $operator, $value);
+        }
+    }
 
-            // if arrays have different keys
-            if (array_diff(array_keys($field), array_keys($operator))
-                || array_diff(array_keys($field), array_keys($value))
-            ) {
-                throw new FlexibleQueryException('Field, operator and value arrays must have the same keys');
-            }
-
-            $conditions = array();
-            foreach ($field as $key => $fieldName) {
-                $conditions[] = $this->prepareCriteriaCondition($fieldName, $operator[$key], $value[$key]);
-            }
-
-            return '(' . implode(' OR ', $conditions) . ')';
+    /**
+     * Prepare multi criteria condition with field, operator and value
+     *
+     * @param array $field    the backend field name
+     * @param array $operator the operator used to filter
+     * @param array $value    the value(s) to filter
+     *
+     * @throws FlexibleQueryException
+     *
+     * @return string
+     */
+    protected function prepareMultiCriteriaCondition($field, $operator, $value)
+    {
+        if (!is_array($value)) {
+            throw new FlexibleQueryException('Values must be array');
         }
 
+        if (!is_array($field)) {
+            $fieldArray = array();
+            foreach (array_keys($operator) as $key) {
+                $fieldArray[$key] = $field;
+            }
+            $field = $fieldArray;
+        }
+
+        if (array_diff(array_keys($field), array_keys($operator))
+            || array_diff(array_keys($field), array_keys($value))
+        ) {
+            throw new FlexibleQueryException('Field, operator and value arrays must have the same keys');
+        }
+
+        $conditions = array();
+        foreach ($field as $key => $fieldName) {
+            $conditions[] = $this->prepareSingleCriteriaCondition($fieldName, $operator[$key], $value[$key]);
+        }
+
+        return '(' . implode(' OR ', $conditions) . ')';
+    }
+
+    /**
+     * Prepare single criteria condition with field, operator and value
+     *
+     * @param string $field    the backend field name
+     * @param string $operator the operator used to filter
+     * @param string $value    the value(s) to filter
+     *
+     * @throws FlexibleQueryException
+     *
+     * @return string
+     */
+    protected function prepareSingleCriteriaCondition($field, $operator, $value)
+    {
         switch ($operator) {
             case '=':
                 $condition = $this->qb->expr()->eq($field, $this->qb->expr()->literal($value))->__toString();
