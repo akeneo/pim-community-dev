@@ -34,7 +34,7 @@ foreach ($datagridObject->getResults() as $object) {
 #### Example of Creating Properties
 
 ``` php
-class UserDatagridManager extends FlexibleDatagridManager
+class UserDatagridManager extends DatagridManager
 {
     protected function getProperties()
     {

@@ -51,7 +51,7 @@ services:
 
 ``` php
 
-class UserDatagridManager extends FlexibleDatagridManager
+class UserDatagridManager extends DatagridManager
 {
     /**
      * {@inheritdoc}

@@ -136,7 +136,6 @@ Dependencies
 
 * Oro UIBundle - https://github.com/laboro/UIBundle;
 * Oro FilterBundle - https://github.com/laboro/FilterBundle;
-* Oro FlexibleEntityBundle - https://github.com/laboro/FlexibleEntityBundle;
 
 #### Frontend Dependencies
 
