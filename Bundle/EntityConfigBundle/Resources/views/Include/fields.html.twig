@@ -15,21 +15,20 @@
     {{ form_rest(form) }}
     <script type="text/javascript">
         require(['jquery'],
-            function($){
-                $('#oro_entity_config_type_extend_set_options_collection').sortable({
-                    axis  : 'y',
-                    cursor: 'move',
-                    delay : 100,
-                    handle: '.handle',
-                    stop  : function () {
-                        var index = 1;
-                        $('#oro_entity_config_type_extend_set_options_collection input.priority').each(function(i, el){
-                            $(el).val(index++);
-                        })
-                    }
-                });
-            }
-        );
+        function($){
+            $('#oro_entity_config_type_extend_set_options_collection').sortable({
+                axis  : 'y',
+                cursor: 'move',
+                delay : 100,
+                handle: '.handle',
+                stop  : function () {
+                    var index = 1;
+                    $('#oro_entity_config_type_extend_set_options_collection input.priority').each(function(i, el){
+                        $(el).val(index++);
+                    })
+                }
+            });
+        });
     </script>
 {% endblock %}
 

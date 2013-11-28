@@ -13,15 +13,12 @@ class OptionSetRelationRepository extends EntityRepository
      */
     public function findByFieldId($fieldConfigId, $entityId)
     {
-        $qb = $this->createQueryBuilder('a');
-        $qb->where(
-            $qb->expr()->andX(
-                $qb->expr()->eq('a.field', $fieldConfigId),
-                $qb->expr()->eq('a.entity_id', $entityId)
-            )
+        return $this->findBy(
+            [
+                'field'  => $fieldConfigId,
+                'entity_id' => $entityId
+            ]
         );
-
-        return $qb->getQuery()->getResult();
     }
 
     /**
@@ -38,11 +35,14 @@ class OptionSetRelationRepository extends EntityRepository
 
         $qb = $this->createQueryBuilder('a');
         $qb->where(
-            $qb->expr()->andX(
-                $qb->expr()->eq('a.field', $fieldConfigId),
-                $qb->expr()->eq('a.entity_id', $entityId),
-                $qb->expr()->notIn('a.option', $values)
-            )
+            'a.field = ?1  AND a.entity_id = ?2 AND a.option NOT IN (?3)'
+        );
+        $qb->setParameters(
+            [
+                1 => $fieldConfigId,
+                2 => $entityId,
+                3 => $values
+            ]
         );
 
         return $qb->getQuery()->getResult();
