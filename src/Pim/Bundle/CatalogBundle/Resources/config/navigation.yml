@@ -132,6 +132,7 @@ oro_titles:
     pim_catalog_product_index:           Products
     pim_catalog_product_create:          Products | Create
     pim_catalog_product_edit:            Products %%product.sku%% | Edit
+    pim_catalog_family_index:            Families
     pim_catalog_family_create:           Families | Create
     pim_catalog_family_edit:             Families %%family.label%% | Edit
     pim_catalog_channel_index:           Channels
