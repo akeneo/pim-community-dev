@@ -1,13 +1,7 @@
 parameters:
     oro_grid.sorter.class:                   Oro\Bundle\GridBundle\Sorter\ORM\Sorter
-    oro_grid.sorter.flexible.class:          Oro\Bundle\GridBundle\Sorter\ORM\Flexible\FlexibleSorter
 
 services:
     oro_grid.sorter:
         class:     %oro_grid.sorter.class%
         scope:     prototype
-
-    oro_grid.sorter.flexible:
-        class:     %oro_grid.sorter.flexible.class%
-        scope:     prototype
-        arguments: ["@oro_flexibleentity.registry"]

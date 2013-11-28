@@ -33,25 +33,10 @@ class SorterFactory implements SorterFactoryInterface
             throw new \RunTimeException('The field name must be defined for sorter');
         }
 
-        if ($this->isFlexible($field)) {
-            $sorter = $this->container->get('oro_grid.sorter.flexible');
-        } else {
-            $sorter = $this->container->get('oro_grid.sorter');
-        }
+        $sorter = $this->container->get('oro_grid.sorter');
 
         $sorter->initialize($field, $direction);
 
         return $sorter;
-    }
-
-    /**
-     * Checks is field flexible or no
-     *
-     * @param FieldDescriptionInterface $field
-     * @return bool
-     */
-    protected function isFlexible(FieldDescriptionInterface $field)
-    {
-        return $field->getOption('flexible_name') ? true : false;
     }
 }
