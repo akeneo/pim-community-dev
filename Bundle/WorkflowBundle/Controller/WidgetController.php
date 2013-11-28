@@ -112,7 +112,7 @@ class WidgetController extends Controller
         }
 
         $workflowItem = $workflow->createWorkflowItem($initData);
-        $transition = $workflow->getTransitionManager()->getTransition($transitionName);
+        $transition = $workflow->getTransitionManager()->extractTransition($transitionName);
         $transitionForm = $this->getTransitionForm($workflowItem, $transition);
 
         $data = null;
@@ -159,7 +159,7 @@ class WidgetController extends Controller
         $workflowManager = $this->get('oro_workflow.manager');
         $workflow = $workflowManager->getWorkflow($workflowItem);
 
-        $transition = $workflow->getTransitionManager()->getTransition($transitionName);
+        $transition = $workflow->getTransitionManager()->extractTransition($transitionName);
         $transitionForm = $this->getTransitionForm($workflowItem, $transition);
 
         $saved = false;
@@ -192,7 +192,6 @@ class WidgetController extends Controller
      */
     protected function getTransitionForm(WorkflowItem $workflowItem, Transition $transition)
     {
-        $transition->initialize($workflowItem);
         return $this->createForm(
             $transition->getFormType(),
             $workflowItem->getData(),

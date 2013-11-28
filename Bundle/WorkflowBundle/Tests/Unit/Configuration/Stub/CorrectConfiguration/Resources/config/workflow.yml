@@ -64,8 +64,6 @@ workflows:
                         message: "Fail upper level"
                 post_actions:
                     - @custom_post_action: ~
-                init_actions:
-                    - @custom_post_action: ~
     second_workflow:
         label: 'Second Workflow'
         enabled: false

@@ -217,7 +217,7 @@ class Workflow
     }
 
     /**
-     * Check if transition allowed for workflow item
+     * Check if transition allowed for workflow item.
      *
      * @param WorkflowItem $workflowItem
      * @param string|Transition $transition
@@ -243,6 +243,25 @@ class Workflow
             }
         }
 
+        $transitionIsValid = $this->checkTransitionValid($transition, $workflowItem, $fireExceptions);
+
+        return $transitionIsValid && $transition->isAllowed($workflowItem, $errors);
+    }
+
+    /**
+     * Checks whether transition is valid in context of workflow item state.
+     *
+     * Transition is considered invalid when workflow item is new and transition is not "start".
+     * Also transition is considered invalid when current step doesn't contain such allowed transition.
+     *
+     * @param Transition $transition
+     * @param WorkflowItem $workflowItem
+     * @param bool $fireExceptions
+     * @return bool
+     * @throws InvalidTransitionException
+     */
+    protected function checkTransitionValid(Transition $transition, WorkflowItem $workflowItem, $fireExceptions)
+    {
         // get current step
         $currentStep = null;
         $currentStepName = $workflowItem->getCurrentStepName();
@@ -273,7 +292,7 @@ class Workflow
             return false;
         }
 
-        return $transition->isAllowed($workflowItem, $errors);
+        return true;
     }
 
     /**
@@ -282,22 +301,18 @@ class Workflow
      * @param WorkflowItem $workflowItem
      * @param string|Transition $transition
      * @throws ForbiddenTransitionException
-     * @throws UnknownStepException
+     * @throws InvalidTransitionException
      */
     public function transit(WorkflowItem $workflowItem, $transition)
     {
         $transition = $this->transitionManager->extractTransition($transition);
 
-        if ($this->isTransitionAllowed($workflowItem, $transition)) {
-            $transitionRecord = $this->createTransitionRecord($workflowItem, $transition);
-            $transition->transit($workflowItem);
-            $workflowItem->addTransitionRecord($transitionRecord);
-            $this->bindEntities($workflowItem);
-        } else {
-            throw new ForbiddenTransitionException(
-                sprintf('Transition "%s" is not allowed.', $transition->getName())
-            );
-        }
+        $this->checkTransitionValid($transition, $workflowItem, true);
+
+        $transitionRecord = $this->createTransitionRecord($workflowItem, $transition);
+        $transition->transit($workflowItem);
+        $workflowItem->addTransitionRecord($transitionRecord);
+        $this->bindEntities($workflowItem);
     }
 
     /**
@@ -409,7 +424,7 @@ class Workflow
         $transitions = new ArrayCollection();
         $transitionNames = $currentStep->getAllowedTransitions();
         foreach ($transitionNames as $transitionName) {
-            $transition = $this->transitionManager->getTransition($transitionName);
+            $transition = $this->transitionManager->extractTransition($transitionName);
             $transitions->add($transition);
         }
 

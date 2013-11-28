@@ -14,6 +14,7 @@ class WorkflowAttributesTypeTest extends AbstractWorkflowAttributesTypeTestCase
 
     protected function setUp()
     {
+        $this->markTestIncomplete();
         parent::setUp();
         $this->type = new WorkflowAttributesType($this->workflowRegistry);
     }

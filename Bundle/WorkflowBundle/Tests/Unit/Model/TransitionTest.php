@@ -51,10 +51,6 @@ class TransitionTest extends \PHPUnit_Framework_TestCase
             'postAction' => array(
                 'postAction',
                 $this->getMock('Oro\Bundle\WorkflowBundle\Model\Action\ActionInterface')
-            ),
-            'initAction' => array(
-                'initAction',
-                $this->getMock('Oro\Bundle\WorkflowBundle\Model\Action\ActionInterface')
             )
         );
     }
@@ -73,21 +69,6 @@ class TransitionTest extends \PHPUnit_Framework_TestCase
             $transition->setHidden(false)
         );
         $this->assertFalse($transition->isHidden());
-    }
-
-    public function testInitialize()
-    {
-        $workflowItem = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Entity\WorkflowItem')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $obj = new Transition();
-        $action = $this->getMock('Oro\Bundle\WorkflowBundle\Model\Action\ActionInterface');
-        $action->expects($this->once())
-            ->method('execute')
-            ->with($workflowItem);
-        $obj->setInitAction($action);
-        $obj->initialize($workflowItem);
     }
 
     /**
@@ -228,6 +209,8 @@ class TransitionTest extends \PHPUnit_Framework_TestCase
      * @dataProvider transitDisallowedDataProvider
      * @param bool $preConditionAllowed
      * @param bool $conditionAllowed
+     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\ForbiddenTransitionException
+     * @expectedExceptionMessage Transition "test" is not allowed.
      */
     public function testTransitNotAllowed($preConditionAllowed, $conditionAllowed)
     {
@@ -237,23 +220,24 @@ class TransitionTest extends \PHPUnit_Framework_TestCase
         $workflowItem->expects($this->never())
             ->method('setCurrentStepName');
 
-        $condition = $this->getMock('Oro\Bundle\WorkflowBundle\Model\Condition\ConditionInterface');
-        $condition->expects($this->any())
-            ->method('isAllowed')
-            ->with($workflowItem)
-            ->will($this->returnValue($conditionAllowed));
-
         $preCondition = $this->getMock('Oro\Bundle\WorkflowBundle\Model\Condition\ConditionInterface');
         $preCondition->expects($this->any())
             ->method('isAllowed')
             ->with($workflowItem)
             ->will($this->returnValue($preConditionAllowed));
 
+        $condition = $this->getMock('Oro\Bundle\WorkflowBundle\Model\Condition\ConditionInterface');
+        $condition->expects($this->any())
+            ->method('isAllowed')
+            ->with($workflowItem)
+            ->will($this->returnValue($conditionAllowed));
+
         $postAction = $this->getMock('Oro\Bundle\WorkflowBundle\Model\Action\ActionInterface');
         $postAction->expects($this->never())
             ->method('execute');
 
         $obj = new Transition();
+        $obj->setName('test');
         $obj->setPreCondition($preCondition);
         $obj->setCondition($condition);
         $obj->setPostAction($postAction);
@@ -291,14 +275,14 @@ class TransitionTest extends \PHPUnit_Framework_TestCase
                 ->method('setClosed');
         }
 
-        $condition = $this->getMock('Oro\Bundle\WorkflowBundle\Model\Condition\ConditionInterface');
-        $condition->expects($this->once())
+        $preCondition = $this->getMock('Oro\Bundle\WorkflowBundle\Model\Condition\ConditionInterface');
+        $preCondition->expects($this->once())
             ->method('isAllowed')
             ->with($workflowItem)
             ->will($this->returnValue(true));
 
-        $preCondition = $this->getMock('Oro\Bundle\WorkflowBundle\Model\Condition\ConditionInterface');
-        $preCondition->expects($this->once())
+        $condition = $this->getMock('Oro\Bundle\WorkflowBundle\Model\Condition\ConditionInterface');
+        $condition->expects($this->once())
             ->method('isAllowed')
             ->with($workflowItem)
             ->will($this->returnValue(true));
@@ -311,8 +295,8 @@ class TransitionTest extends \PHPUnit_Framework_TestCase
         $step = $this->getStepMock('currentStep', $isFinal, $hasAllowedTransition);
 
         $obj = new Transition();
-        $obj->setCondition($condition);
         $obj->setPreCondition($preCondition);
+        $obj->setCondition($condition);
         $obj->setPostAction($postAction);
         $obj->setStepTo($step);
         $obj->transit($workflowItem);

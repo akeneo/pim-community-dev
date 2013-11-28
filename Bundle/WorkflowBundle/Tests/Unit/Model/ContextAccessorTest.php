@@ -121,6 +121,52 @@ class ContextAccessorTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * @dataProvider hasValueDataProvider
+     */
+    public function testHasValue($context, $value, $expectedValue)
+    {
+        $this->contextAccessor->hasValue($context, $value);
+        $actualValue = $this->contextAccessor->hasValue($context, $value);
+        $this->assertEquals($expectedValue, $actualValue);
+    }
+
+    public function hasValueDataProvider()
+    {
+        return array(
+            'not_has' => array(
+                'context' => $this->createObject(array()),
+                'value' => new PropertyPath('test'),
+                'expectedValue' => false
+            ),
+            'not_has_nested' => array(
+                'context' => $this->createObject(array('foo' => $this->createObject(array('bar' => 'baz')))),
+                'value' => new PropertyPath('data[foo].baz'),
+                'expectedValue' => false
+            ),
+            'has_as_array_syntax' => array(
+                'context' => $this->createObject(array('foo' => 'bar')),
+                'value' => new PropertyPath('data[foo]'),
+                'expectedValue' => true
+            ),
+            'has_as_object_syntax' => array(
+                'context' => $this->createObject(array('foo' => 'bar')),
+                'value' => new PropertyPath('data[foo]'),
+                'expectedValue' => true
+            ),
+            'has_nested' => array(
+                'context' => $this->createObject(array('foo' => $this->createObject(array('bar' => 'baz')))),
+                'value' => new PropertyPath('data[foo].data'),
+                'expectedValue' => true
+            ),
+            'has_nested_nested' => array(
+                'context' => $this->createObject(array('foo' => $this->createObject(array('bar' => 'baz')))),
+                'value' => new PropertyPath('data[foo].data.bar'),
+                'expectedValue' => true
+            ),
+        );
+    }
+
     public function testGetValueNoSuchProperty()
     {
         $context = $this->createObject(array());

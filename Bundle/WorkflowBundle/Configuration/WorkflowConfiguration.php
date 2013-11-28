@@ -276,10 +276,6 @@ class WorkflowConfiguration implements ConfigurationInterface
                         ->prototype('variable')
                         ->end()
                     ->end()
-                    ->arrayNode('init_actions')
-                        ->prototype('variable')
-                        ->end()
-                    ->end()
                 ->end()
             ->end();
 

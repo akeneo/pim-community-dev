@@ -17,6 +17,19 @@ class StepAssembler extends AbstractAssembler
     protected $attributes;
 
     /**
+     * @var FormOptionsAssembler
+     */
+    protected $formOptionsAssembler;
+
+    /**
+     * @param FormOptionsAssembler $formOptionsAssembler
+     */
+    public function __construct(FormOptionsAssembler $formOptionsAssembler)
+    {
+        $this->formOptionsAssembler = $formOptionsAssembler;
+    }
+
+    /**
      * @param array $configuration
      * @param Attribute[]|Collection $attributes
      * @return ArrayCollection
@@ -27,27 +40,13 @@ class StepAssembler extends AbstractAssembler
 
         $steps = new ArrayCollection();
         foreach ($configuration as $name => $options) {
-            $step = $this->assembleStep($name, $options, $attributes);
+            $step = $this->assembleStep($name, $options);
             $steps->set($name, $step);
         }
 
         $this->attributes = array();
 
         return $steps;
-    }
-
-    /**
-     * @param Attribute[]|Collection $attributes
-     * @return array
-     */
-    protected function setAttributes($attributes)
-    {
-        $this->attributes = array();
-        if ($attributes) {
-            foreach ($attributes as $attribute) {
-                $this->attributes[$attribute->getName()] = $attribute;
-            }
-        }
     }
 
     /**
@@ -79,24 +78,11 @@ class StepAssembler extends AbstractAssembler
      * @param array $options
      * @param string $stepName
      * @return array
-     * @throws InvalidParameterException
      */
     protected function assembleFormOptions(array $options, $stepName)
     {
         $formOptions = $this->getOption($options, 'form_options', array());
-        $attributeFields = $this->getOption($formOptions, 'attribute_fields', array());
-
-        if (!is_array($attributeFields)) {
-            throw new InvalidParameterException(
-                sprintf('Option "attribute_fields" at step "%s" must be an array', $stepName)
-            );
-        }
-
-        foreach (array_keys($attributeFields) as $attributeName) {
-            $this->assertAttributeExists($attributeName, $stepName);
-        }
-
-        return $formOptions;
+        return $this->formOptionsAssembler->assemble($formOptions, $this->attributes, 'step', $stepName);
     }
 
     /**
@@ -146,6 +132,32 @@ class StepAssembler extends AbstractAssembler
             $result[] = $this->passConfiguration($viewAttribute);
         }
         return $result;
+    }
+
+    /**
+     * @param Attribute[]|Collection $attributes
+     * @return array
+     */
+    protected function setAttributes($attributes)
+    {
+        $this->attributes = array();
+        if ($attributes) {
+            foreach ($attributes as $attribute) {
+                $this->attributes[$attribute->getName()] = $attribute;
+            }
+        }
+    }
+
+    /**
+     * @param array $attributeNames
+     * @param string $stepName
+     * @throws UnknownAttributeException
+     */
+    protected function assertAttributesExist(array $attributeNames, $stepName)
+    {
+        foreach ($attributeNames as $attributeName) {
+            $this->assertAttributeExists($attributeName, $stepName);
+        }
     }
 
     /**
