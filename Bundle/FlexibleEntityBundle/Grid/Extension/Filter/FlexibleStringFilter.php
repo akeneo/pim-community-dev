@@ -13,21 +13,21 @@ class FlexibleStringFilter extends StringFilter
     public function apply(QueryBuilder $qb, $data)
     {
         $data = $this->parseData($data);
-        if ($data) {
-            $operator = $this->getOperator($data['type']);
-
-            $fen = $this->get(FilterUtility::FEN_KEY);
-            $this->util->applyFlexibleFilter(
-                $qb,
-                $fen,
-                $this->get(FilterUtility::DATA_NAME_KEY),
-                $data['value'],
-                $operator
-            );
-
-            return true;
+        if (!$data) {
+            return false;
         }
 
-        return false;
+        $operator = $this->getOperator($data['type']);
+
+        $fen = $this->get(FilterUtility::FEN_KEY);
+        $this->util->applyFlexibleFilter(
+            $qb,
+            $fen,
+            $this->get(FilterUtility::DATA_NAME_KEY),
+            $data['value'],
+            $operator
+        );
+
+        return true;
     }
 }

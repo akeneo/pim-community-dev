@@ -13,21 +13,21 @@ class StringFilter extends AbstractFilter
     public function apply(QueryBuilder $qb, $data)
     {
         $data = $this->parseData($data);
-        if ($data) {
-            $operator      = $this->getOperator($data['type']);
-            $parameterName = $this->generateQueryParameterName();
-
-            $this->applyFilterToClause(
-                $qb,
-                $this->createComparisonExpression($this->get(FilterUtility::DATA_NAME_KEY), $operator, $parameterName)
-            );
-
-            $qb->setParameter($parameterName, $data['value']);
-
-            return true;
+        if (!$data) {
+            return false;
         }
 
-        return false;
+        $operator      = $this->getOperator($data['type']);
+        $parameterName = $this->generateQueryParameterName();
+
+        $this->applyFilterToClause(
+            $qb,
+            $this->createComparisonExpression($this->get(FilterUtility::DATA_NAME_KEY), $operator, $parameterName)
+        );
+
+        $qb->setParameter($parameterName, $data['value']);
+
+        return true;
     }
 
     /**

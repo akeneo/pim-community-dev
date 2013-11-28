@@ -45,7 +45,7 @@ interface FilterInterface
      * @param QueryBuilder $qb
      * @param mixed        $data
      *
-     * @return mixed
+     * @return bool true if a filter successfully applied; otherwise, false.
      */
     public function apply(QueryBuilder $qb, $data);
 }

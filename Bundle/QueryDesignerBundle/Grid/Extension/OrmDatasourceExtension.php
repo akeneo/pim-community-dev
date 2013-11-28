@@ -2,7 +2,8 @@
 
 namespace Oro\Bundle\QueryDesignerBundle\Grid\Extension;
 
-use Symfony\Component\Translation\TranslatorInterface;
+use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Query\Expr as Expr;
 
 use Oro\Bundle\DataGridBundle\Extension\ExtensionVisitorInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
@@ -18,9 +19,6 @@ class OrmDatasourceExtension implements ExtensionVisitorInterface
     /** @var Manager */
     protected $manager;
 
-    /** @var array */
-    protected $queryConfig;
-
     public function __construct(Manager $manager)
     {
         $this->manager = $manager;
@@ -31,11 +29,8 @@ class OrmDatasourceExtension implements ExtensionVisitorInterface
      */
     public function isApplicable(DatagridConfiguration $config)
     {
-        $this->queryConfig = $config->offsetGetByPath('[source][query_config]');
-
-        return $this->queryConfig
-            && isset($this->queryConfig['filters'])
-            && $config->offsetGetByPath(Builder::DATASOURCE_TYPE_PATH) == OrmDatasource::TYPE;
+        return $config->offsetGetByPath(Builder::DATASOURCE_TYPE_PATH) == OrmDatasource::TYPE
+            && $config->offsetGetByPath('[source][query_config][filters]');
     }
 
     /**
@@ -50,6 +45,9 @@ class OrmDatasourceExtension implements ExtensionVisitorInterface
      */
     public function visitDatasource(DatagridConfiguration $config, DatasourceInterface $datasource)
     {
+        /** @var QueryBuilder $qb */
+//        $qb = $datasource->getQueryBuilder();
+//        $qb->
     }
 
     /**

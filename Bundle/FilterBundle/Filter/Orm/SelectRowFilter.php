@@ -21,7 +21,6 @@ class SelectRowFilter extends ChoiceFilter
     public function apply(QueryBuilder $qb, $data)
     {
         $data = $this->parseData($data);
-
         if (!$data) {
             return false;
         }
@@ -41,12 +40,13 @@ class SelectRowFilter extends ChoiceFilter
                 $expression = $qb->expr()->notIn($this->get(FilterUtility::DATA_NAME_KEY), $data['out']);
                 break;
         }
-
-        if ($expression) {
-            $this->applyFilterToClause($qb, $expression);
-
-            return true;
+        if (!$expression) {
+            return false;
         }
+
+        $this->applyFilterToClause($qb, $expression);
+
+        return true;
     }
 
     /**

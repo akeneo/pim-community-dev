@@ -23,21 +23,21 @@ class FlexibleEntityFilter extends EntityFilter
     public function apply(QueryBuilder $qb, $data)
     {
         $data = $this->parseData($data);
-        if ($data) {
-            $operator = $this->getOperator($data['type']);
-
-            $this->util->applyFlexibleFilter(
-                $qb,
-                $this->get(FilterUtility::FEN_KEY),
-                $this->get(FilterUtility::DATA_NAME_KEY),
-                $this->extractIds($data['value']),
-                $operator
-            );
-
-            return true;
+        if (!$data) {
+            return false;
         }
 
-        return false;
+        $operator = $this->getOperator($data['type']);
+
+        $this->util->applyFlexibleFilter(
+            $qb,
+            $this->get(FilterUtility::FEN_KEY),
+            $this->get(FilterUtility::DATA_NAME_KEY),
+            $this->extractIds($data['value']),
+            $operator
+        );
+
+        return true;
     }
 
     /**
