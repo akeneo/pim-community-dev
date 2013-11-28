@@ -13,7 +13,6 @@
         "knplabs/knp-paginator-bundle": "dev-master",
         "jms/job-queue-bundle": "dev-master",
         "jms/serializer-bundle": "0.12.*@dev",
-        "oro/flexible-entity-bundle": "dev-master",
         "oro/ui-bundle": "dev-master",
         "oro/config-bundle": "dev-master",
         "oro/soap-bundle": "dev-master",

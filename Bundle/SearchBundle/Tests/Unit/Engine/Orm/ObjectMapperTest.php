@@ -1,8 +1,6 @@
 <?php
 namespace Oro\Bundle\SearchBundle\Tests\Unit\Engine\Orm;
 
-use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
-
 use Oro\Bundle\SearchBundle\Engine\ObjectMapper;
 
 use Oro\Bundle\SearchBundle\Tests\Unit\Fixture\Entity\Product;
@@ -89,7 +87,6 @@ class ObjectMapperTest extends \PHPUnit_Framework_TestCase
                         )
                     ),
                 ),
-                'flexible_manager' => 'test_manager'
             )
         );
 
@@ -108,17 +105,6 @@ class ObjectMapperTest extends \PHPUnit_Framework_TestCase
             ->setDescription('description')
             ->setCreateDate(new \DateTime());
 
-        $this->flexibleManager = $this
-            ->getMockBuilder('Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->attributeRepository = $this->getMock('Doctrine\Common\Persistence\ObjectRepository');
-
-        $this->flexibleManager->expects($this->any())
-            ->method('getAttributeRepository')
-            ->will($this->returnValue($this->attributeRepository));
-
         $this->route = $this
             ->getMockBuilder('Symfony\Component\Routing\Router')
             ->disableOriginalConstructor()
@@ -128,7 +114,6 @@ class ObjectMapperTest extends \PHPUnit_Framework_TestCase
             ->method('generate')
             ->will($this->returnValue('http://example.com'));
         $params = array(
-            'test_manager' => $this->flexibleManager,
             'router'       => $this->route,
         );
         $this->container->expects($this->any())
@@ -152,30 +137,6 @@ class ObjectMapperTest extends \PHPUnit_Framework_TestCase
 
     public function testMapObject()
     {
-        $testTextAttribute = new Attribute();
-        $testTextAttribute->setCode('text_attribute')
-            ->setBackendType(AbstractAttributeType::BACKEND_TYPE_TEXT);
-
-        $testIntegerAttribute = new Attribute();
-        $testIntegerAttribute->setCode('integer_attribute')
-            ->setBackendType(AbstractAttributeType::BACKEND_TYPE_INTEGER);
-
-        $testDatetimeAttribute = new Attribute();
-        $testDatetimeAttribute->setCode('datetime_attribute')
-            ->setBackendType(AbstractAttributeType::BACKEND_TYPE_DATETIME);
-
-        $this->attributeRepository->expects($this->once())
-            ->method('findBy')
-            ->will(
-                $this->returnValue(
-                    array(
-                         $testTextAttribute,
-                         $testIntegerAttribute,
-                         $testDatetimeAttribute
-                    )
-                )
-            );
-
         $mapping = $this->mapper->mapObject($this->product);
 
         $this->assertEquals('test product ', $mapping['text']['name']);

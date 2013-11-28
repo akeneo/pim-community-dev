@@ -55,7 +55,6 @@ Example:
 ```
     Acme\DemoBundle\Entity\Product:
         alias: demo_product
-        flexible_manager: demo_product_manager
         label: Demo products
         route:
             name: acme_demo_search_product
@@ -103,9 +102,6 @@ Parameters:
 - **target_fields**: array of virtual fields for entity field from 'name' parameter.
 - **relation_type**: indicate that this field is relation field to another table. Supported relation types: one-to-one, many-to-many, one-to-many, many-to-one.
 - **relation_fields**: array of fields from relation record we must to index.
-- **flexible_manager**. If entity has flexible attributes, they can be indexed for search by parameter flexible_manager in mapping config. Value of this parameter
-is the service name for flexible entity. In search index will be indexed all the attributes with parameter **searchable** set to true. All text fields data will
-be store in **all_text** virtual field. Additionally, all the fields will be stored in fieldName virtual fields.
 
 [Query builder](Resources/doc/query_builder.md)
 

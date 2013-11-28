@@ -3,7 +3,6 @@
 namespace Oro\Bundle\SearchBundle\Engine;
 
 use Symfony\Component\PropertyAccess\PropertyAccess;
-use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -135,112 +134,6 @@ abstract class AbstractMapper
                 }
                 $objectData[$fieldConfig['target_type']][Indexer::TEXT_ALL_DATA_FIELD] .= $value . ' ';
             }
-        }
-
-        return $objectData;
-    }
-
-    /**
-     * Map Flexible entity fields
-     *
-     * @param string $alias
-     * @param        $object
-     * @param array  $objectData
-     * @param string $managerName
-     *
-     * @return array
-     */
-    protected function setFlexibleFields($alias, $object, $objectData, $managerName)
-    {
-        /** @var $flexibleManager \Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager */
-        $flexibleManager = $this->container->get($managerName);
-        if ($flexibleManager) {
-            $attributes = $flexibleManager->getAttributeRepository()
-                ->findBy(array('entityType' => $flexibleManager->getFlexibleName()));
-
-            if (count($attributes)) {
-                /** @var $attribute \Oro\Bundle\FlexibleEntityBundle\Entity\Attribute */
-                foreach ($attributes as $attribute) {
-                    if ($attribute->getSearchable() && $value = $object->getValue($attribute->getCode())) {
-                        $attributeType = $attribute->getBackendType();
-
-                        switch ($attributeType) {
-                            case AbstractAttributeType::BACKEND_TYPE_TEXT:
-                            case AbstractAttributeType::BACKEND_TYPE_VARCHAR:
-                                $objectData = $this->saveFlexibleTextData(
-                                    $alias,
-                                    $objectData,
-                                    $attribute->getCode(),
-                                    $value->__toString()
-                                );
-                                break;
-                            case AbstractAttributeType::BACKEND_TYPE_DATETIME:
-                            case AbstractAttributeType::BACKEND_TYPE_DATE:
-                                $objectData = $this->saveFlexibleData(
-                                    $alias,
-                                    $objectData,
-                                    AbstractAttributeType::BACKEND_TYPE_DATETIME,
-                                    $attribute->getCode(),
-                                    $value->getData()
-                                );
-                                break;
-                            default:
-                                $objectData = $this->saveFlexibleData(
-                                    $alias,
-                                    $objectData,
-                                    $attributeType,
-                                    $attribute->getCode(),
-                                    $value->__toString()
-                                );
-                        }
-
-                    }
-                }
-            }
-        }
-
-        return $objectData;
-    }
-
-    /**
-     * @param string $alias
-     * @param array  $objectData
-     * @param string $attribute
-     * @param mixed  $value
-     *
-     * @return array
-     */
-    protected function saveFlexibleTextData($alias, $objectData, $attribute, $value)
-    {
-        if ($value !== null) {
-            $backendType = AbstractAttributeType::BACKEND_TYPE_TEXT;
-            if (!isset($objectData[$backendType][$attribute])) {
-                $objectData[$backendType][$attribute] = '';
-            }
-            $objectData[$backendType][$attribute] .= " " . $value;
-            if (!isset($objectData[$backendType][Indexer::TEXT_ALL_DATA_FIELD])) {
-                $objectData[$backendType][Indexer::TEXT_ALL_DATA_FIELD] = '';
-            }
-            $objectData[$backendType][Indexer::TEXT_ALL_DATA_FIELD] .= " " . $value;
-            $objectData[$backendType][$alias . '_' . $attribute] = $value;
-        }
-
-        return $objectData;
-    }
-
-    /**
-     * @param string $alias
-     * @param array  $objectData
-     * @param string $attributeType
-     * @param string $attribute
-     * @param mixed  $value
-     *
-     * @return array
-     */
-    protected function saveFlexibleData($alias, $objectData, $attributeType, $attribute, $value)
-    {
-        if ($attributeType != AbstractAttributeType::BACKEND_TYPE_OPTION) {
-            $objectData[$attributeType][$attribute] = $value;
         }
 
         return $objectData;

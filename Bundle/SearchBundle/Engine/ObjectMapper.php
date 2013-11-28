@@ -4,8 +4,6 @@ namespace Oro\Bundle\SearchBundle\Engine;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
-
 class ObjectMapper extends AbstractMapper
 {
     public function __construct(ContainerInterface $container, $mappingConfig)
@@ -99,15 +97,6 @@ class ObjectMapper extends AbstractMapper
                     default:
                         $objectData = $this->setDataValue($alias, $objectData, $field, $value);
                 }
-            }
-
-            if ($this->getEntityMapParameter($objectClass, 'flexible_manager')) {
-                $objectData = $this->setFlexibleFields(
-                    $alias,
-                    $object,
-                    $objectData,
-                    $this->getEntityMapParameter($objectClass, 'flexible_manager')
-                );
             }
         }
 

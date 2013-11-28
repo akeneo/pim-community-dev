@@ -41,7 +41,6 @@ class ItemTest extends \PHPUnit_Framework_TestCase
                          'target_type'   => 'text',
                      ),
                  ),
-                 'flexible_manager' => 'test_manager'
             )
         );
 

@@ -51,7 +51,6 @@ class ResultTest extends \PHPUnit_Framework_TestCase
                          'target_type'   => 'text',
                      ),
                  ),
-                 'flexible_manager' => 'test_manager'
             )
         );
         $items[] = new Item(
@@ -70,7 +69,6 @@ class ResultTest extends \PHPUnit_Framework_TestCase
                          'target_type'   => 'text',
                      ),
                  ),
-                 'flexible_manager' => 'test_manager'
             )
         );
         $items[] = new Item(
@@ -89,7 +87,6 @@ class ResultTest extends \PHPUnit_Framework_TestCase
                          'target_type'   => 'text',
                      ),
                  ),
-                 'flexible_manager' => 'test_manager'
             )
         );
 

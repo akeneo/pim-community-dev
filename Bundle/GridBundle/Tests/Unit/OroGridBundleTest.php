@@ -37,9 +37,6 @@ class OroGridBundleTest extends \PHPUnit_Framework_TestCase
             ->with($this->isInstanceOf(self::COMPILER_NAMESPACE . '\AddDependencyCallsCompilerPass'));
         $containerBuilderMock->expects($this->at(1))
             ->method('addCompilerPass')
-            ->with($this->isInstanceOf(self::COMPILER_NAMESPACE . '\AddFlexibleManagerCompilerPass'));
-        $containerBuilderMock->expects($this->at(2))
-            ->method('addCompilerPass')
             ->with($this->isInstanceOf(self::COMPILER_NAMESPACE . '\AddFilterTypeCompilerPass'));
 
         $this->model->build($containerBuilderMock);
