@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\ImportExportBundle\Exception;
 
-use Symfony\Component\Translation\TranslatorInterface;
-
 /**
  * Description of TranslatableException
  *
@@ -11,12 +9,12 @@ use Symfony\Component\Translation\TranslatorInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class TranslatableException extends \Exception implements TranslatableExceptionInterface
+class ParametrizedException extends \Exception implements ParametrizedExceptionInterface
 {
     /**
      * @var string
      */
-    protected $rawMessage;
+    protected $messageTemplate;
 
     /**
      * @var array
@@ -26,34 +24,22 @@ class TranslatableException extends \Exception implements TranslatableExceptionI
     /**
      * Constructor
      *
-     * @param string $rawMessage
+     * @param string $messageTemplate
      * @param array  $messageParameters
      */
     public function __construct(
-        $rawMessage,
+        $messageTemplate,
         array $messageParameters = array(),
         $code = null,
         \Exception $previous = null
     ) {
-        $this->rawMessage = $rawMessage;
+        $this->messageTemplate = $messageTemplate;
         $this->messageParameters = $messageParameters;
-        parent::__construct(strtr($rawMessage, $messageParameters), $code, $previous);
+        parent::__construct(strtr($messageTemplate, $messageParameters), $code, $previous);
     }
 
     /**
-     * Returns the raw exception message
-     *
-     * @return string
-     */
-    public function getRawMessage()
-    {
-        return $this->rawMessage;
-    }
-
-    /**
-     * Returns the exception message parameters
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getMessageParameters()
     {
@@ -63,8 +49,8 @@ class TranslatableException extends \Exception implements TranslatableExceptionI
     /**
      * {@inheritdoc}
      */
-    public function translateMessage(TranslatorInterface $translator)
+    public function getMessageTemplate()
     {
-        $this->message = $translator->trans($this->rawMessage, $this->messageParameters);
+        return $this->messageTemplate;
     }
 }

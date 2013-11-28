@@ -3,9 +3,8 @@
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Processor;
 
 use Oro\Bundle\BatchBundle\Item\InvalidItemException;
-use Pim\Bundle\ImportExportBundle\Exception\TranslatableException;
 use Pim\Bundle\ImportExportBundle\Processor\TransformerProcessor;
-use stdClass;
+use Pim\Bundle\ImportExportBundle\Exception\ParametrizedException;
 
 /**
  * Tests related class
@@ -33,7 +32,7 @@ class TransformerProcessorTest extends AbstractTransformerProcessorTestCase
             $this->transformer,
             'class'
         );
-        $this->entity = new stdClass;
+        $this->entity = new \stdClass;
     }
 
     protected function initializeTransformer()
@@ -65,8 +64,8 @@ class TransformerProcessorTest extends AbstractTransformerProcessorTestCase
     }
 
     /**
-     * @expectedException Pim\Bundle\ImportExportBundle\Exception\TranslatableException
-     * @expectedExceptionMessage <tr>exception value</tr>
+     * @expectedException Pim\Bundle\ImportExportBundle\Exception\ParametrizedException
+     * @expectedExceptionMessage exception value
      */
     public function testProcessWithTransformerException()
     {
@@ -75,15 +74,15 @@ class TransformerProcessorTest extends AbstractTransformerProcessorTestCase
             ->method('transform')
             ->will(
                 $this->throwException(
-                    new TranslatableException('exception %arg1%', array('%arg1%'=>'value'))
+                    new ParametrizedException('exception %arg1%', array('%arg1%'=>'value'))
                 )
             );
         $this->processor->process($this->data);
     }
 
     /**
-     * @expectedException Pim\Bundle\ImportExportBundle\Exception\TranslatableException
-     * @expectedExceptionMessage <tr>exception value</tr>
+     * @expectedException Pim\Bundle\ImportExportBundle\Exception\ParametrizedException
+     * @expectedExceptionMessage exception value
      */
     public function testProcessWithValidatorException()
     {
@@ -97,7 +96,7 @@ class TransformerProcessorTest extends AbstractTransformerProcessorTestCase
             ->method('validate')
             ->will(
                 $this->throwException(
-                    new TranslatableException('exception %arg1%', array('%arg1%'=>'value'))
+                    new ParametrizedException('exception %arg1%', array('%arg1%'=>'value'))
                 )
             );
 

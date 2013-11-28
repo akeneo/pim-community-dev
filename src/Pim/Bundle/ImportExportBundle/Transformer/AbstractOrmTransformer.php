@@ -146,7 +146,7 @@ abstract class AbstractOrmTransformer
         try {
             $value = $transformerInfo[0]->transform($value, $transformerInfo[1]);
         } catch (PropertyTransformerException $ex) {
-            return array($ex->getRawMessage(), $ex->getMessageParameters());
+            return array($ex->getMessageTemplate(), $ex->getMessageParameters());
         }
 
         if ($transformerInfo[0] instanceof EntityUpdaterInterface) {

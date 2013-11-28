@@ -3,7 +3,6 @@
 namespace Pim\Bundle\ImportExportBundle\Exception;
 
 use Oro\Bundle\BatchBundle\Item\InvalidItemException;
-use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Exception for duplicate identifiers in exports
@@ -12,32 +11,52 @@ use Symfony\Component\Translation\TranslatorInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class DuplicateIdentifierException extends InvalidItemException implements TranslatableExceptionInterface
+class DuplicateIdentifierException extends InvalidItemException implements ParametrizedExceptionInterface
 {
-    protected $translatableException;
+    /**
+     * @var string
+     */
+    protected $messageTemplate =
+        'The "%identifierColumn%" attribute is unique, the value "%identifier%" was already read in this file';
+
+    /**
+     * @var array
+     */
+    protected $messageParameters;
 
     /**
      * Constructor
      *
      * @param mixed  $identifier
      * @param string $identifierColumn
+     * @param array  $item
      */
     public function __construct($identifier, $identifierColumn, array $item)
     {
-        $this->translatableException = new TranslatableException(
-            'The "%identifierColumn%" attribute is unique, the value "%identifier%" was already read in this file',
-            array(
-                '%identifierColumn%' => $identifierColumn,
-                '%identifier%'       => $identifier
-            )
+        $this->messageParameters = array(
+            '%identifierColumn%' => $identifierColumn,
+            '%identifier%'       => $identifier
         );
-        parent::__construct($this->translatableException->getMessage(), $item);
-
+        $parametrizedException = new ParametrizedException(
+            $this->messageTemplate,
+            $this->messageParameters
+        );
+        parent::__construct($parametrizedException->getMessage(), $item);
     }
 
-    public function translateMessage(TranslatorInterface $translator)
+    /**
+     * {@inheritdoc}
+     */
+    public function getMessageParameters()
     {
-        $this->translatableException->translateMessage($translator);
-        $this->message = $this->translatableException->getMessage();
+        return $this->messageParameters;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getMessageTemplate()
+    {
+        return $this->messageTemplate;
     }
 }

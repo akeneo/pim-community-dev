@@ -6,7 +6,6 @@ use Symfony\Component\Translation\TranslatorInterface;
 use Oro\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Oro\Bundle\BatchBundle\Item\InvalidItemException;
 use Oro\Bundle\BatchBundle\Item\ItemProcessorInterface;
-use Pim\Bundle\ImportExportBundle\Exception\TranslatableExceptionInterface;
 use Pim\Bundle\ImportExportBundle\Validator\Import\ImportValidatorInterface;
 
 /**
@@ -46,17 +45,10 @@ abstract class AbstractTransformerProcessor extends AbstractConfigurableStepElem
     public function process($item)
     {
         $this->mapValues($item);
-        try {
-            $entity = $this->transform($item);
-            $errors = $this->getTransformerErrors();
+        $entity = $this->transform($item);
+        $errors = $this->getTransformerErrors();
 
-            $errors = $this->validator->validate($entity, $this->getTransformedColumnsInfo(), $item, $errors);
-        } catch (\Exception $ex) {
-            if ($ex instanceof TranslatableExceptionInterface) {
-                $ex->translateMessage($this->translator);
-            }
-            throw $ex;
-        }
+        $errors = $this->validator->validate($entity, $this->getTransformedColumnsInfo(), $item, $errors);
 
         if (count($errors)) {
             throw new InvalidItemException(implode("\n", $this->getErrorMessages($errors)), $item);
