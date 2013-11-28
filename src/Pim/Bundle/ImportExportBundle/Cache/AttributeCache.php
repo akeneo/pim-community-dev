@@ -237,6 +237,7 @@ class AttributeCache
             }
             $this->attributes[$attribute->getCode()] = $attribute;
         }
+
         if (count($attributes) !== count($codes)) {
             throw new UnknownColumnException(
                 array_diff(
@@ -244,13 +245,13 @@ class AttributeCache
                     array_map(
                         function ($attribute) {
                             return $attribute->getCode();
-
                         },
                         $this->attributes
                     )
                 )
             );
         }
+
         foreach ($columnsInfo as $columnInfo) {
             $columnInfo->setAttribute($this->attributes[$columnInfo->getName()]);
         }
