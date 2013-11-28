@@ -195,12 +195,22 @@ class DatagridConfigurationBuilderTest extends \PHPUnit_Framework_TestCase
         $en         = 'Acme\Entity\TestEntity';
         $en1        = 'Acme\Entity\TestEntity1';
         $definition = [
-            'columns' => [
+            'columns'       => [
                 ['name' => 'column1', 'label' => 'lbl1', 'sorting' => ''],
             ],
-            'filters' => [
-                ['columnName' => 'rc1,' . $en1 . '::column2', 'criterion' => []],
-            ]
+            'filters'       => [
+                [
+                    'columnName' => 'rc1,' . $en1 . '::column2',
+                    'criterion'  => [
+                        'filter' => 'string',
+                        'data'   => [
+                            'type'  => '1',
+                            'value' => 'test'
+                        ]
+                    ]
+                ],
+            ],
+            'filters_logic' => '1'
         ];
         $doctrine   = $this->getDoctrine(
             [
@@ -239,6 +249,16 @@ class DatagridConfigurationBuilderTest extends \PHPUnit_Framework_TestCase
                     'column_aliases' => [
                         'column1' => 'c1',
                     ],
+                    'filters'        => [
+                        [
+                            'column'     => 't2.column2',
+                            'filter'     => 'string',
+                            'filterData' => [
+                                'type'  => '1',
+                                'value' => 'test'
+                            ]
+                        ],
+                    ]
                 ],
             ],
             'columns' => [
@@ -250,6 +270,9 @@ class DatagridConfigurationBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $result);
     }
 
+    /**
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     */
     public function testComplexQuery()
     {
         $gridName   = 'test_grid';
@@ -258,18 +281,44 @@ class DatagridConfigurationBuilderTest extends \PHPUnit_Framework_TestCase
         $en2        = 'Acme\Entity\TestEntity2';
         $en3        = 'Acme\Entity\TestEntity3';
         $definition = [
-            'columns' => [
+            'columns'       => [
                 ['name' => 'column1', 'label' => 'lbl1', 'sorting' => 'DESC'],
                 ['name' => 'rc1,' . $en1 . '::column2', 'label' => 'lbl2', 'sorting' => ''],
                 ['name' => 'rc2,' . $en2 . '::column3', 'label' => 'lbl3', 'sorting' => 'ASC'],
             ],
-            'filters' => [
-                ['columnName' => 'rc1,' . $en1 . '::c2', 'criterion' => []],
+            'filters'       => [
                 [
-                    'columnName' => 'rc1,' . $en1 . '::rc4,' . $en3 . '::c5',
-                    'criterion'  => []
+                    'columnName' => 'rc1,' . $en1 . '::column2',
+                    'criterion'  => [
+                        'filter' => 'string',
+                        'data'   => [
+                            'type'  => '1',
+                            'value' => 'test'
+                        ]
+                    ]
                 ],
-            ]
+                [
+                    'columnName' => 'rc1,' . $en1 . '::rc4,' . $en3 . '::column5',
+                    'criterion'  => [
+                        'filter' => 'string',
+                        'data'   => [
+                            'type'  => '1',
+                            'value' => 'test'
+                        ]
+                    ]
+                ],
+                [
+                    'columnName' => 'rc1,' . $en1 . '::rc4,' . $en3 . '::column6',
+                    'criterion'  => [
+                        'filter' => 'string',
+                        'data'   => [
+                            'type'  => '1',
+                            'value' => 'test'
+                        ]
+                    ]
+                ],
+            ],
+            'filters_logic' => ' 1  OR  ( 2 And ( ( 3 or 1 ) oR 2) ) '
         ];
         $doctrine   = $this->getDoctrine(
             [
@@ -317,6 +366,60 @@ class DatagridConfigurationBuilderTest extends \PHPUnit_Framework_TestCase
                         'rc1,' . $en1 . '::column2' => 'c2',
                         'rc2,' . $en2 . '::column3' => 'c3',
                     ],
+                    'filters'        => [
+                        [
+                            'column'      => 't2.column2',
+                            'filter'      => 'string',
+                            'filterData'  => [
+                                'type'  => '1',
+                                'value' => 'test'
+                            ],
+                            'columnAlias' => 'c2'
+                        ],
+                        'OR',
+                        [
+                            [
+                                'column'     => 't3.column5',
+                                'filter'     => 'string',
+                                'filterData' => [
+                                    'type'  => '1',
+                                    'value' => 'test'
+                                ]
+                            ],
+                            'AND',
+                            [
+                                [
+                                    [
+                                        'column'     => 't3.column6',
+                                        'filter'     => 'string',
+                                        'filterData' => [
+                                            'type'  => '1',
+                                            'value' => 'test'
+                                        ]
+                                    ],
+                                    'OR',
+                                    [
+                                        'column'      => 't2.column2',
+                                        'filter'      => 'string',
+                                        'filterData'  => [
+                                            'type'  => '1',
+                                            'value' => 'test'
+                                        ],
+                                        'columnAlias' => 'c2'
+                                    ],
+                                ],
+                                'OR',
+                                [
+                                    'column'     => 't3.column5',
+                                    'filter'     => 'string',
+                                    'filterData' => [
+                                        'type'  => '1',
+                                        'value' => 'test'
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ]
                 ],
             ],
             'columns' => [
@@ -344,7 +447,7 @@ class DatagridConfigurationBuilderTest extends \PHPUnit_Framework_TestCase
 
         $emMap = [];
         foreach ($config as $entity => $fields) {
-            $em = $this->getMockBuilder('Doctrine\ORM\EntityManager')
+            $em      = $this->getMockBuilder('Doctrine\ORM\EntityManager')
                 ->disableOriginalConstructor()
                 ->getMock();
             $emMap[] = [$entity, $em];

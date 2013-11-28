@@ -2,6 +2,9 @@
 
 namespace Oro\Bundle\QueryDesignerBundle\Grid;
 
+use Symfony\Bridge\Doctrine\ManagerRegistry;
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\QueryDesignerBundle\Model\AbstractQueryDesigner;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\PropertyInterface;
@@ -35,6 +38,30 @@ class DatagridConfigurationQueryConverter extends AbstractOrmQueryConverter
     protected $leftJoins;
 
     /**
+     * @var array
+     */
+    protected $filters;
+
+    /**
+     * @var string
+     */
+    protected $currentFilterPath;
+
+    /** @var PropertyAccessor */
+    protected $accessor;
+
+    /**
+     * Constructor
+     *
+     * @param ManagerRegistry $doctrine
+     */
+    public function __construct(ManagerRegistry $doctrine)
+    {
+        parent::__construct($doctrine);
+        $this->accessor = PropertyAccess::createPropertyAccessor();
+    }
+
+    /**
      * Converts a query specified in $source parameter to a datagrid configuration
      *
      * @param string                $gridName
@@ -54,15 +81,19 @@ class DatagridConfigurationQueryConverter extends AbstractOrmQueryConverter
      */
     protected function doConvert(AbstractQueryDesigner $source)
     {
-        $this->selectColumns = [];
-        $this->from          = [];
-        $this->innerJoins    = [];
-        $this->leftJoins     = [];
+        $this->selectColumns     = [];
+        $this->from              = [];
+        $this->innerJoins        = [];
+        $this->leftJoins         = [];
+        $this->filters           = [];
+        $this->currentFilterPath = '';
         parent::doConvert($source);
-        $this->selectColumns = null;
-        $this->from          = null;
-        $this->innerJoins    = null;
-        $this->leftJoins     = null;
+        $this->selectColumns     = null;
+        $this->from              = null;
+        $this->innerJoins        = null;
+        $this->leftJoins         = null;
+        $this->filters           = null;
+        $this->currentFilterPath = null;
 
         $this->config->offsetSetByPath('[source][type]', 'orm');
     }
@@ -160,6 +191,91 @@ class DatagridConfigurationQueryConverter extends AbstractOrmQueryConverter
             'join'  => sprintf('%s.%s', $joinTableAlias, $joinFieldName),
             'alias' => $joinAlias
         ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function addWhereStatement()
+    {
+        parent::addWhereStatement();
+        if (!empty($this->filters)) {
+            $this->config->offsetSetByPath('[source][query_config][filters]', $this->filters);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function beginWhereGroup()
+    {
+        $this->currentFilterPath .= '[0]';
+        $this->accessor->setValue($this->filters, $this->currentFilterPath, []);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function endWhereGroup()
+    {
+        $this->currentFilterPath = substr(
+            $this->currentFilterPath,
+            0,
+            strrpos($this->currentFilterPath, '[')
+        );
+        if ($this->currentFilterPath !== '') {
+            $this->incrementCurrentFilterPath();
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function addWhereOperator($operator)
+    {
+        $this->accessor->setValue($this->filters, $this->currentFilterPath, $operator);
+        $this->incrementCurrentFilterPath();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function addWhereCondition(
+        $entityClassName,
+        $tableAlias,
+        $fieldName,
+        $columnAlias,
+        $filterName,
+        array $filterData
+    ) {
+        $filter = [
+            'column'     => sprintf('%s.%s', $tableAlias, $fieldName),
+            'filter'     => $filterName,
+            'filterData' => $filterData
+        ];
+        if ($columnAlias) {
+            $filter['columnAlias'] = $columnAlias;
+        }
+        $this->accessor->setValue($this->filters, $this->currentFilterPath, $filter);
+        $this->incrementCurrentFilterPath();
+    }
+
+    /**
+     * Increments last index in the path of filter
+     */
+    protected function incrementCurrentFilterPath()
+    {
+        $start                   = strrpos($this->currentFilterPath, '[');
+        $index                   = substr(
+            $this->currentFilterPath,
+            $start + 1,
+            strlen($this->currentFilterPath) - $start - 2
+        );
+        $this->currentFilterPath = sprintf(
+            '%s%d]',
+            substr($this->currentFilterPath, 0, $start + 1),
+            intval($index) + 1
+        );
     }
 
     /**
