@@ -63,59 +63,34 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $filterName
      * @param string $action
      * @param string $value
      * @param string $currency
      *
-     * @When /^I filter per price (>|>=|=|<|<=) "([^"]*)" and currency "([^"]*)"$/
+     * @When /^I filter by "([^"]*)" with value "(>|>=|=|<|<=) (\d+[.]?\d*) ([A-Z]{3})"$/
      */
-    public function iFilterPerPrice($action, $value, $currency)
+    public function iFilterByPrice($filterName, $action, $value, $currency)
     {
-        $this->datagrid->filterPerPrice($action, $value, $currency);
+        $this->datagrid->filterPerPrice($filterName, $action, $value, $currency);
         $this->wait();
     }
 
     /**
      * @param string $code
      *
-     * @Given /^I filter per category "([^"]*)"$/
+     * @Given /^I filter by "category" with value "([^"]*)"$/
      */
-    public function iFilterPerCategory($code)
+    public function iFilterByCategory($code)
     {
-        $category = $this->getFixturesContext()->getCategory($code);
-        $this->getCurrentPage()->clickCategoryFilterLink($category);
         $this->wait();
-    }
+        if (strtolower($code) === 'unclassified') {
+            $this->getCurrentPage()->clickUnclassifiedCategoryFilterLink();
+        } else {
+            $category = $this->getFixturesContext()->getCategory($code);
+            $this->getCurrentPage()->clickCategoryFilterLink($category);
+        }
 
-    /**
-     * @Given /^I filter per unclassified category$/
-     */
-    public function iFilterPerUnclassifiedCategory()
-    {
-        $this->wait();
-        $this->getCurrentPage()->clickUnclassifiedCategoryFilterLink();
-        $this->wait();
-    }
-
-    /**
-     * @param string $code
-     *
-     * @Given /^I filter per family ([^"]*)$/
-     */
-    public function iFilterPerFamily($code)
-    {
-        $this->datagrid->filterPerFamily($code);
-        $this->wait();
-    }
-
-    /**
-     * @param string $code
-     *
-     * @Given /^I filter per channel ([^"]*)$/
-     */
-    public function iFilterPerChannel($code)
-    {
-        $this->datagrid->filterPerChannel($code);
         $this->wait();
     }
 
@@ -199,7 +174,9 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iShowTheFilter($filterName)
     {
-        $this->datagrid->showFilter($filterName);
+        if (strtolower($filterName) !== 'category') {
+            $this->datagrid->showFilter($filterName);
+        }
     }
 
     /**
@@ -209,7 +186,9 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iHideTheFilter($filterName)
     {
-        $this->datagrid->hideFilter($filterName);
+        if (strtolower($filterName) !== 'category') {
+            $this->datagrid->hideFilter($filterName);
+        }
     }
 
     /**
@@ -423,7 +402,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      * @param string $filterName
      * @param string $value
      *
-     * @Then /^I filter by "([^"]*)" with value "([^"]*)"$/
+     * @Then /^I filter by "((?!category)[^"]*)" with value "((?!contains|does not contain|is equal to|(?:starts|ends) with)[^">=<]*)"$/
      */
     public function iFilterBy($filterName, $value)
     {
@@ -436,7 +415,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      * @param string $operatorName
      * @param string $value
      *
-     * @Then /^I filter by "([^"]*)" with operator "([^"]*)" and value "([^"]*)"$/
+     * @Then /^I filter by "([^"]*)" with value "(contains|does not contain|is equal to|(?:starts|ends) with)([^"]*)"$/
      */
     public function iFilterByWithOperator($filterName, $operatorName, $value)
     {

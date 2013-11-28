@@ -9,7 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Pim\Bundle\CatalogBundle\Form\Type\AttributeRequirementType;
 use Pim\Bundle\CatalogBundle\Form\Subscriber\AddAttributeAsLabelSubscriber;
 use Pim\Bundle\CatalogBundle\Form\Subscriber\AddAttributeRequirementsSubscriber;
-use Pim\Bundle\CatalogBundle\Form\Subscriber\DisableCodeFieldSubscriber;
+use Pim\Bundle\CatalogBundle\Form\Subscriber\DisableFieldSubscriber;
 
 /**
  * Type for family form
@@ -111,10 +111,8 @@ class FamilyType extends AbstractType
 
         $builder
             ->addEventSubscriber(new AddAttributeAsLabelSubscriber($factory))
-            ->addEventSubscriber($this->requirementsSubscriber)
-            ->addEventSubscriber(new DisableCodeFieldSubscriber());
-
-        return $this;
+            ->addEventSubscriber(new AddAttributeRequirementsSubscriber($channels, $attributes))
+            ->addEventSubscriber(new DisableFieldSubscriber('code'));
     }
 
     /**

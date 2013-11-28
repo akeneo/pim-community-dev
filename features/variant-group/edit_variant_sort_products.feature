@@ -33,5 +33,5 @@ Feature: Edit a variant group adding/removing products
 
   Scenario: Successfully sort products
     Given I am on the "POSTIT" variant group page
-    Then the rows should be sorted ascending by Has product
+    Then the rows should be sorted descending by Has product
     And I should be able to sort the rows by Has product, SKU, Color, Size, Family, Created at and Updated at

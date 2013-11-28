@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\FormInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
+use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
 use Pim\Bundle\CatalogBundle\Manager\AttributeTypeManager;
 
@@ -97,13 +98,20 @@ class ProductAttributeHandler
     }
 
     /**
-     * Add missing attribute optio values
+     * Add missing attribute option values
      *
      * @param ProductAttribute $entity
      */
     protected function addMissingOptionValues(ProductAttribute $entity)
     {
         $locales = $this->getLocaleCodes();
+
+        if (in_array($entity->getAttributeType(), array('pim_catalog_simpleselect', 'pim_catalog_multiselect')) &&
+            count($entity->getOptions()) < 1) {
+            $option = new AttributeOption();
+            $option->setTranslatable(true);
+            $entity->addOption($option);
+        }
 
         foreach ($entity->getOptions() as $option) {
             if ($option->getTranslatable()) {

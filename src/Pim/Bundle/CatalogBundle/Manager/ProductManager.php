@@ -5,8 +5,8 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\NoResultException;
-use Oro\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory;
-use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
+use Pim\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory;
+use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
@@ -192,7 +192,7 @@ class ProductManager extends FlexibleManager
             'LEFT JOIN v.prices pr ' .
             'WHERE p.id=:id'
         )
-            ->setParameter('attributes', $attributes)
+            ->setParameter('attributes', array_values($attributes))
             ->setParameter('id', $id)
             ->getSingleResult();
     }

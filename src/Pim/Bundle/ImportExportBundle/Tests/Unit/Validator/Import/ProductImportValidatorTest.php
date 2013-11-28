@@ -3,6 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Validator\Import;
 
 use Pim\Bundle\ImportExportBundle\Validator\Import\ProductImportValidator;
+use Pim\Bundle\ImportExportBundle\Cache\AttributeCache;
 
 /**
  * Tests related class
@@ -11,158 +12,150 @@ use Pim\Bundle\ImportExportBundle\Validator\Import\ProductImportValidator;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductImportValidatorTest extends \PHPUnit_Framework_TestCase
+class ProductImportValidatorTest extends ImportValidatorTestCase
 {
-    protected $productValidator;
-    protected $validator;
+    protected $importValidator;
+    protected $identifierColumn;
     protected $constraintGuesser;
-    protected $translator;
+    protected $product;
+    protected $values;
 
     /**
      * {@inheritdoc}
      */
     protected function setUp()
     {
-        $this->validator = $this->getMock('Symfony\Component\Validator\ValidatorInterface');
+        parent::setUp();
+        $this->values = array();
         $this->constraintGuesser = $this->getMock(
-            'Oro\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface'
+            'Pim\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface'
         );
-        $this->translator = $this->getMock('Symfony\Component\Translation\TranslatorInterface');
-        $this->translator->expects($this->any())
-            ->method('trans')
-            ->will($this->returnCallback(array($this, 'translate')));
-        $this->productValidator = new ProductImportValidator(
-            $this->validator,
-            $this->constraintGuesser,
-            $this->translator
-        );
-    }
-
-    /**
-     * @param string $message
-     * @param array  $params
-     *
-     * @return string
-     */
-    public function translate($message, array $params = array())
-    {
-        return 'trans-' . strtr($message, $params);
-    }
-
-    /**
-     * Test related method
-     * @return null
-     */
-    public function testValidateProductProperties()
-    {
-        $test = $this;
-        $product = $this->getMockProduct();
-        $this->validator->expects($this->exactly(2))
-            ->method('validatePropertyValue')
-            ->will(
-                $this->returnCallback(
-                    function ($valProduct, $propertyPath, $value) use ($product, $test) {
-                        $test->assertSame($product, $valProduct);
-                        if ('key1' === $propertyPath) {
-                            return $test->getViolationListMock(array('error "%value%"' => array('%value%' => $value)));
-                        } else {
-                            return $test->getViolationListMock(array());
-                        }
-                    }
-                )
-            );
-
-        $this->assertEquals(
-            array('key1: trans-error "val1"'),
-            $this->productValidator->validateProductProperties(
-                $product,
-                array('key1' => 'val1', 'key2' => 'val2')
-            )
-        );
-    }
-
-    /**
-     * @param array $violationMessages
-     *
-     * @return \Symfony\Component\Validator\ConstraintViolationList
-     */
-    public function getViolationListMock(array $violationMessages)
-    {
-        $list = $this->getMock('Symfony\Component\Validator\ConstraintViolationList');
-        $violations = array();
-
-        foreach ($violationMessages as $message => $params) {
-            $violation = $this->getMock('Symfony\Component\Validator\ConstraintViolationInterface');
-            $violation->expects($this->any())
-                ->method('getMessageTemplate')
-                ->will($this->returnValue($message));
-            $violation->expects($this->any())
-                ->method('getMessageParameters')
-                ->will($this->returnValue($params));
-            $violations[] = $violation;
-        }
-
-        $list->expects($this->once())
-            ->method('getIterator')
-            ->will($this->returnValue(new \ArrayIterator($violations)));
-
-        return $list;
-    }
-
-    /**
-     * Test related method
-     * @return null
-     */
-    public function testGetAttributeConstraints()
-    {
-        $constraints = array(
-            'key1' => array(),
-            'key2' => array('constraint1')
-        );
-
-        $this->constraintGuesser->expects($this->exactly(count($constraints)))
+        $this->constraintGuesser->expects($this->any())
             ->method('supportAttribute')
-            ->will(
-                $this->returnCallback(
-                    function ($attribute) use ($constraints) {
-                        return null !== $constraints[$attribute->getCode()];
-                    }
-                )
-            );
+            ->will($this->returnValue(true));
+        $this->importValidator = new ProductImportValidator(
+            $this->validator,
+            $this->constraintGuesser
+        );
+        $this->product = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Model\ProductInterface')
+            ->setMethods(array('getValue'))
+            ->getMock();
+        $this->product->expects($this->any())
+            ->method('getValue')
+            ->will($this->returnCallback(array($this, 'getProductValue')));
+        $this->identifierColumn = $this->getColumnInfoMock('id');
+        $this->identifierColumn->getAttribute()
+            ->expects($this->any())
+            ->method('getAttributeType')
+            ->will($this->returnValue(AttributeCache::IDENTIFIER_ATTRIBUTE_TYPE));
+    }
 
+    public function testValidate()
+    {
+        $columns = array(
+            $this->identifierColumn,
+            $this->getColumnInfoMock('key1'),
+            $this->getColumnInfoMock('key2'),
+            $this->getColumnInfoMock('key3', false),
+            $this->getColumnInfoMock('key4', false),
+        );
+        $errors = array(
+            'key1' => array(
+                array('error1', array('error1_parameters')),
+                array('error2', array('error2_parameters')),
+            ),
+            'key3' => array(
+                array('error3', array('error3_parameters')),
+            ),
+        );
+        $constraintList = array($this->getMock('Symfony\Component\Validator\Constraint'));
         $this->constraintGuesser->expects($this->any())
             ->method('guessConstraints')
+            ->will($this->returnValue($constraintList));
+        $this->validator->expects($this->any())
+            ->method('validateValue')
             ->will(
                 $this->returnCallback(
-                    function ($attribute) use ($constraints) {
-                        return $constraints[$attribute->getCode()];
+                    function ($value) use ($constraintList, $errors) {
+                        $this->assertSame($constraintList[0], $constraintList[0]);
+                        $parts = explode('_', $value);
+                        $valueErrors = isset($errors[$parts[0]])
+                            ? array($parts[0] => $errors[$parts[0]])
+                            : array();
+
+                        return $this->getViolationListMock($valueErrors);
                     }
                 )
             );
+        $this->validator->expects($this->any())
+            ->method('validateProperty')
+            ->will(
+                $this->returnCallback(
+                    function ($product, $propertyPath) use ($errors) {
+                        $this->assertSame($this->product, $product);
+                        $parts = explode('_', $propertyPath);
+                        $valueErrors = isset($errors[$parts[0]])
+                            ? array($parts[0] => $errors[$parts[0]])
+                            : array();
 
-        foreach ($constraints as $code => $attributeConstraints) {
+                        return $this->getViolationListMock($valueErrors);
+                    }
+                )
+            );
+        $validatorErrors = $this->importValidator->validate($this->product, $columns, $this->data);
+        $this->assertEquals($validatorErrors, $errors);
+    }
+
+    /**
+     * @expectedException Pim\Bundle\ImportExportBundle\Exception\DuplicateIdentifierException
+     * @expectedExceptionMessage The "id" attribute is unique, the value "id_name_data" was already read in this file
+     */
+    public function testWithDuplicateIdentifiers()
+    {
+        $this->validator->expects($this->once())
+            ->method('validateValue')
+            ->will($this->returnValue($this->getViolationListMock(array())));
+        $this->importValidator->validate($this->product, array($this->identifierColumn), $this->data);
+        $this->importValidator->validate($this->product, array($this->identifierColumn), $this->data);
+    }
+
+    protected function getColumnInfoMock($label, $withAttribute = true)
+    {
+        $column = parent::getColumnInfoMock($label);
+        $column->expects($this->any())
+            ->method('getName')
+            ->will($this->returnValue($label . '_name'));
+        $column->expects($this->any())
+            ->method('getLocale')
+            ->will($this->returnValue('locale'));
+        $column->expects($this->any())
+            ->method('getScope')
+            ->will($this->returnValue('scope'));
+        if ($withAttribute) {
             $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductAttribute');
             $attribute->expects($this->any())
                 ->method('getCode')
-                ->will($this->returnValue($code));
-            $this->assertEquals(
-                $attributeConstraints?:array(),
-                $this->productValidator->getAttributeConstraints($attribute)
-            );
-
-            // Test constraints are cached
-            $this->assertEquals(
-                $attributeConstraints?:array(),
-                $this->productValidator->getAttributeConstraints($attribute)
-            );
+                ->will($this->returnValue($label . '_code'));
+            $column->expects($this->any())
+                ->method('getAttribute')
+                ->will($this->returnValue($attribute));
         }
-    }
 
-    /**
-     * @return \Pim\Bundle\CatalogBundle\Model\ProductInterface
-     */
-    protected function getMockProduct()
+        return $column;
+    }
+    public function getProductValue($name, $locale, $scope)
     {
-        return $this->getMock('Pim\Bundle\CatalogBundle\Model\ProductInterface');
+        $this->assertEquals('locale', $locale);
+        $this->assertEquals('scope', $scope);
+        if (!isset($this->values[$name])) {
+            $this->values[$name] = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Model\ProductValueInterface')
+                ->setMethods(array('getData', '__toString'))
+                ->getMock();
+            $this->values[$name]->expects($this->any())
+                ->method('getData')
+                ->will($this->returnValue($name . '_data'));
+        }
+
+        return $this->values[$name];
     }
 }

@@ -74,6 +74,9 @@ class ChannelHandler
     protected function onSuccess(Channel $channel)
     {
         $this->manager->persist($channel);
+        foreach ($channel->getLocales() as $locale) {
+            $this->manager->persist($locale);
+        }
         $this->manager->flush();
     }
 }

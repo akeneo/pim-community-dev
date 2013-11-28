@@ -249,20 +249,33 @@ class ProductBuilder
             $requiredValues[] = array('locale' => null, 'scope' => null);
         }
 
+        return $this->filterExpectedValues($attribute, $requiredValues);
+    }
+
+    /**
+     * Filter expected values based on the locales available for the provided attribute
+     *
+     * @param ProductAttribute $attribute
+     * @param array            $values
+     *
+     * @return array
+     */
+    protected function filterExpectedValues(ProductAttribute $attribute, array $values)
+    {
         if ($attribute->getAvailableLocales()) {
             $availableLocales = $attribute->getAvailableLocales()->map(
                 function ($locale) {
                     return $locale->getCode();
                 }
             )->toArray();
-            foreach ($requiredValues as $index => $value) {
+            foreach ($values as $index => $value) {
                 if ($value['locale'] && !in_array($value['locale'], $availableLocales)) {
-                    unset($requiredValues[$index]);
+                    unset($values[$index]);
                 }
             }
         }
 
-        return $requiredValues;
+        return $values;
     }
 
     /**
