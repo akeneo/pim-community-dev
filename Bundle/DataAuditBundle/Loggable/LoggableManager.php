@@ -74,13 +74,6 @@ class LoggableManager
     protected $collectionLogData = array();
 
     /**
-     * Stack of logged flexible entities
-     *
-     * @var array
-     */
-    protected $loggedObjects = array();
-
-    /**
      * @var ConfigProvider
      */
     protected $auditConfigProvider;
