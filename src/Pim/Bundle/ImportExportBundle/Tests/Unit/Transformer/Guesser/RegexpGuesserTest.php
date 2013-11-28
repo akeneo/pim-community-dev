@@ -19,7 +19,7 @@ class RegexpGuesserTest extends GuesserTestCase
         $this->columnInfo->expects($this->any())
             ->method('getLabel')
             ->will($this->returnValue('column_label'));
-        
+
     }
 
     public function testMatching()
