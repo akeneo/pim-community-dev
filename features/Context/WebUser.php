@@ -1615,11 +1615,19 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @Given /^I copy all translations$/
+     * @Given /^I select translations for "([^"]*)"$/
      */
-    public function iCopyAllTranslations()
+    public function iSelectTranslationsFor($field)
     {
-        $this->getCurrentPage()->copyTranslations('All');
+        $this->getCurrentPage()->selectTranslation($field);
+    }
+
+    /**
+     * @Given /^I copy (\w+) translations$/
+     */
+    public function iCopyTranslations($mode)
+    {
+        $this->getCurrentPage()->copyTranslations(ucfirst($mode));
     }
 
     /**

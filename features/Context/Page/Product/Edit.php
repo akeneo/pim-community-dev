@@ -156,49 +156,6 @@ class Edit extends Form
         return $field;
     }
 
-    protected function findPriceField($name, $currency)
-    {
-        $label = $this->find('css', sprintf('label:contains("%s")', $name));
-
-        if (!$label) {
-            throw new ElementNotFoundException($this->getSession(), 'form label ', 'value', $name);
-        }
-
-        $label = $label
-            ->getParent()
-            ->find('css', sprintf('label:contains("%s")', $currency));
-        if (!$label) {
-            throw new ElementNotFoundException($this->getSession(), 'form label ', 'value', $name);
-        }
-
-        $field = $label->getParent()->find('css', 'input');
-
-        if (!$field) {
-            throw new ElementNotFoundException($this->getSession(), 'form field ', 'id|name|label|value', $name);
-        }
-
-        return $field;
-    }
-
-    protected function findScopedField($name, $scope)
-    {
-        $label = $this->find('css', sprintf('label:contains("%s")', $name));
-
-        if (!$label) {
-            throw new ElementNotFoundException($this->getSession(), 'form label ', 'value', $name);
-        }
-
-        $scopeLabel = $label
-            ->getParent()
-            ->find('css', sprintf('label:contains("%s")', $scope));
-
-        if (!$scopeLabel) {
-            throw new ElementNotFoundException($this->getSession(), 'form label ', 'value', $name);
-        }
-
-        return $this->find('css', sprintf('#%s', $scopeLabel->getAttribute('for')));
-    }
-
     /**
      * @param string $field
      *
@@ -503,6 +460,13 @@ class Edit extends Form
             ->click();
     }
 
+    public function selectTranslation($field)
+    {
+        $this
+            ->find('css', sprintf('tr:contains("%s") .comparisonSelection', $field))
+            ->check();
+    }
+
     /**
      * Find a completeness cell from column and row (channel and locale codes)
      * @param string $columnCode (channel code)
@@ -533,6 +497,49 @@ class Edit extends Form
         }
 
         return $cells[$columnIdx];
+    }
+
+    protected function findPriceField($name, $currency)
+    {
+        $label = $this->find('css', sprintf('label:contains("%s")', $name));
+
+        if (!$label) {
+            throw new ElementNotFoundException($this->getSession(), 'form label ', 'value', $name);
+        }
+
+        $label = $label
+            ->getParent()
+            ->find('css', sprintf('label:contains("%s")', $currency));
+        if (!$label) {
+            throw new ElementNotFoundException($this->getSession(), 'form label ', 'value', $name);
+        }
+
+        $field = $label->getParent()->find('css', 'input');
+
+        if (!$field) {
+            throw new ElementNotFoundException($this->getSession(), 'form field ', 'id|name|label|value', $name);
+        }
+
+        return $field;
+    }
+
+    protected function findScopedField($name, $scope)
+    {
+        $label = $this->find('css', sprintf('label:contains("%s")', $name));
+
+        if (!$label) {
+            throw new ElementNotFoundException($this->getSession(), 'form label ', 'value', $name);
+        }
+
+        $scopeLabel = $label
+            ->getParent()
+            ->find('css', sprintf('label:contains("%s")', $scope));
+
+        if (!$scopeLabel) {
+            throw new ElementNotFoundException($this->getSession(), 'form label ', 'value', $name);
+        }
+
+        return $this->find('css', sprintf('#%s', $scopeLabel->getAttribute('for')));
     }
 
 }

@@ -26,3 +26,12 @@ Feature: Compare and copy localized fields
     And I copy all translations
     Then the product Name should be "Floup"
     And the product ecommerce Description should be "Chaussures de ville"
+
+  @javascript
+  Scenario: Successfully copy selected compared product localized values
+    Given I am on the "tshirt" product page
+    When I compare values with the "French (France)" translation
+    And I select translations for "Name"
+    And I copy select translations
+    Then the product Name should be "Floup"
+    And the product ecommerce Description should be "City shoes"
