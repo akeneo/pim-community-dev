@@ -19,7 +19,7 @@ class OroMeasureExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-        // retrieve each flexible entity config from bundles
+        // retrieve each measure config from bundles
         $measuresConfig = array();
         foreach ($container->getParameter('kernel.bundles') as $bundle) {
             $reflection = new \ReflectionClass($bundle);

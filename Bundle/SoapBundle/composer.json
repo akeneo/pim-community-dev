@@ -8,7 +8,6 @@
     "require": {
         "php": ">=5.3.3",
         "symfony/symfony": "2.1.*",
-        "oro/flexible-entity-bundle": "dev-master",
         "besimple/soap-common": "dev-master",
         "besimple/soap-server": "dev-master",
         "besimple/soap-bundle": "dev-master"
