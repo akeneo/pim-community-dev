@@ -216,8 +216,7 @@ class WorkflowAttributesType extends AbstractType
                 'data_class' => 'Oro\Bundle\WorkflowBundle\Model\WorkflowData',
                 'disable_attribute_fields' => false,
                 'attribute_fields' => array(),
-                'attribute_default_values' => array(),
-                'validation_groups' => array('Workflow')
+                'attribute_default_values' => array()
             )
         );
 
