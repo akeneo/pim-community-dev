@@ -16,14 +16,15 @@ class RegexpGuesserTest extends GuesserTestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->metadata->expects($this->any())
-            ->method('getName')
-            ->will($this->returnValue('class'));
+        $this->columnInfo->expects($this->any())
+            ->method('getLabel')
+            ->will($this->returnValue('column_label'));
+        
     }
 
     public function testMatching()
     {
-        $guesser = new RegexpGuesser($this->transformer, 'class' , array('/bogus/', '/^class$/'));
+        $guesser = new RegexpGuesser($this->transformer, 'class' , array('/bogus/', '/^column_label$/'));
         $this->assertEquals(
             array($this->transformer, array()),
             $guesser->getTransformerInfo($this->columnInfo, $this->metadata)
@@ -32,13 +33,13 @@ class RegexpGuesserTest extends GuesserTestCase
 
     public function testNotClass()
     {
-        $guesser = new RegexpGuesser($this->transformer, 'other_class' , array('/bogus/', '/^class$/'));
+        $guesser = new RegexpGuesser($this->transformer, 'other_class' , array('/bogus/', '/^column_label$/'));
         $this->assertNull($guesser->getTransformerInfo($this->columnInfo, $this->metadata));
     }
 
     public function testNotMatching()
     {
-        $guesser = new RegexpGuesser($this->transformer, 'other_class' , array('/bogus/', '/^class$/'));
+        $guesser = new RegexpGuesser($this->transformer, 'class' , array('/bogus/'));
         $this->assertNull($guesser->getTransformerInfo($this->columnInfo, $this->metadata));
     }
 }

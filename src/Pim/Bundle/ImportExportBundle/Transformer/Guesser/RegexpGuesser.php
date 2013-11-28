@@ -56,10 +56,10 @@ class RegexpGuesser implements GuesserInterface
 
         foreach ($this->regexps as $regexp) {
             if (preg_match($regexp, $columnInfo->getLabel())) {
-                return;
+                return array($this->transformer, array());
             }
         }
 
-        return array($this->transformer, array());
+        return;
     }
 }
