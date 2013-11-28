@@ -3,6 +3,7 @@
 namespace Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM;
 
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\Query\Expr\Join;
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\FlexibleEntityBundle\Exception\FlexibleQueryException;
@@ -396,6 +397,9 @@ class FlexibleQueryBuilder
 
             // join to value and sort on
             $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias);
+            $joinsSet = $this->qb->getDQLPart('join');
+            $this->qb->resetDQLPart('join');
+
             $this->qb->leftJoin(
                 $this->qb->getRootAlias().'.'.$attribute->getBackendStorage(),
                 $joinAlias,
@@ -403,6 +407,28 @@ class FlexibleQueryBuilder
                 $condition
             );
             $this->qb->addOrderBy($joinAlias.'.'.$attribute->getBackendType(), $direction);
+
+            foreach($joinsSet as $joins) {
+                foreach($joins as $join) {
+                    if ($join->getJoinType() === Join::LEFT_JOIN) {
+                        $this->qb->leftJoin(
+                            $join->getJoin(),
+                            $join->getAlias(),
+                            $join->getConditionType(),
+                            $join->getCondition(),
+                            $join->getIndexBy()
+                        );
+                    } else {
+                        $this->qb->join(
+                            $join->getJoin(),
+                            $join->getAlias(),
+                            $join->getConditionType(),
+                            $join->getCondition(),
+                            $join->getIndexBy()
+                        );
+                    }
+                }
+            }
         }
     }
 }
