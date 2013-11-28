@@ -151,11 +151,6 @@ class ItemSegment extends AbstractSegment
 
 ```
 
-Use segmentation tree with flexible entity
-------------------------------------------
-It's the same to use segment with a flexible entity.
-
-
 Translate segments
 ------------------
 To translate node, we used doctrine extension so the example below is based on (assuming that the extension is already installed and configured).
