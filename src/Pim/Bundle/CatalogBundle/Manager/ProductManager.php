@@ -192,7 +192,7 @@ class ProductManager extends FlexibleManager
             'LEFT JOIN v.prices pr ' .
             'WHERE p.id=:id'
         )
-            ->setParameter('attributes', $attributes)
+            ->setParameter('attributes', array_values($attributes))
             ->setParameter('id', $id)
             ->getSingleResult();
     }
