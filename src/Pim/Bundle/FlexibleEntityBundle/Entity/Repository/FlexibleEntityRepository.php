@@ -212,7 +212,13 @@ class FlexibleEntityRepository extends EntityRepository implements TranslatableI
      *
      * @return array The objects.
      */
-    public function findByWithAttributesQB(array $attributes = array(), array $criteria = null, array $orderBy = null, $limit = null, $offset = null)
+    public function findByWithAttributesQB(
+        array $attributes = array(),
+        array $criteria = null,
+        array $orderBy = null,
+        $limit = null,
+        $offset = null
+    )
     {
         $qb = $this->createQueryBuilder('Entity');
         $this->addJoinToValueTables($qb);
@@ -252,7 +258,13 @@ class FlexibleEntityRepository extends EntityRepository implements TranslatableI
      *
      * @return array The objects.
      */
-    public function findByWithAttributes(array $attributes = array(), array $criteria = null, array $orderBy = null, $limit = null, $offset = null)
+    public function findByWithAttributes(
+        array $attributes = array(),
+        array $criteria = null,
+        array $orderBy = null,
+        $limit = null,
+        $offset = null
+    )
     {
         return $this
             ->findByWithAttributesQB($attributes, $criteria, $orderBy, $limit, $offset)
@@ -278,7 +290,9 @@ class FlexibleEntityRepository extends EntityRepository implements TranslatableI
 
         } else {
             $field = current($qb->getRootAliases()).'.'.$attributeCode;
-            $qb->andWhere($this->getFlexibleQueryBuilder($qb)->prepareCriteriaCondition($field, $operator, $attributeValue));
+            $qb->andWhere(
+                $this->getFlexibleQueryBuilder($qb)->prepareCriteriaCondition($field, $operator, $attributeValue)
+            );
         }
     }
 
