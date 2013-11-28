@@ -20,6 +20,7 @@ class AbstractFlexibleDateFilterTest extends FlexibleFilterTestCase
     protected function createTestFilter($flexibleRegistry)
     {
         $parentFilter = new DateRangeFilter($this->getTranslatorMock());
+
         return $this->getMockBuilder('Pim\Bundle\GridBundle\Filter\ORM\Flexible\AbstractFlexibleDateFilter')
             ->setConstructorArgs(array($flexibleRegistry, $parentFilter))
             ->getMockForAbstractClass();

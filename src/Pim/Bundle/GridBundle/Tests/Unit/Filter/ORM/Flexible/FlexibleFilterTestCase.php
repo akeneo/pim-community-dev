@@ -74,7 +74,7 @@ abstract class FlexibleFilterTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param FlexibleEntityRepository $entityRepository
+     * @param  FlexibleEntityRepository                                 $entityRepository
      * @return FlexibleManager|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function createFlexibleManager(FlexibleEntityRepository $entityRepository)
@@ -101,8 +101,8 @@ abstract class FlexibleFilterTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param FlexibleManager $flexibleManager
-     * @param string $flexibleName
+     * @param  FlexibleManager                                                  $flexibleManager
+     * @param  string                                                           $flexibleName
      * @return FlexibleManagerRegistry|\PHPUnit_Framework_MockObject_MockObject
      */
     protected function createFlexibleRegistry(FlexibleManager $flexibleManager, $flexibleName)
@@ -120,7 +120,7 @@ abstract class FlexibleFilterTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param FlexibleManagerRegistry|\PHPUnit_Framework_MockObject_MockObject $flexibleRegistry
+     * @param  FlexibleManagerRegistry|\PHPUnit_Framework_MockObject_MockObject $flexibleRegistry
      * @return AbstractFlexibleFilter
      */
     abstract protected function createTestFilter($flexibleRegistry);
@@ -151,7 +151,7 @@ abstract class FlexibleFilterTestCase extends \PHPUnit_Framework_TestCase
 
     /**
      * @param AbstractFlexibleFilter $filter
-     * @param array $options
+     * @param array                  $options
      */
     protected function initializeFlexibleFilter(AbstractFlexibleFilter $filter, array $options = array())
     {
@@ -159,7 +159,7 @@ abstract class FlexibleFilterTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param array $options
+     * @param  array $options
      * @return array
      */
     protected function getFilterInitializeOptions(array $options = array())
@@ -183,7 +183,7 @@ abstract class FlexibleFilterTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param mixed $queryBuilder
+     * @param  mixed      $queryBuilder
      * @return ProxyQuery
      */
     protected function createProxyQuery($queryBuilder = null)
@@ -191,6 +191,7 @@ abstract class FlexibleFilterTestCase extends \PHPUnit_Framework_TestCase
         if (!$queryBuilder) {
             $queryBuilder = $this->createQueryBuilder();
         }
+
         return new ProxyQuery($queryBuilder);
     }
 
@@ -225,6 +226,7 @@ abstract class FlexibleFilterTestCase extends \PHPUnit_Framework_TestCase
     {
         $translator = $this->getMockForAbstractClass('Symfony\Component\Translation\TranslatorInterface');
         $translator->expects($this->any())->method('trans')->will($this->returnArgument(0));
+
         return $translator;
     }
 }

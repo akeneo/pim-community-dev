@@ -29,6 +29,7 @@ class FlexibleOptionsFilterTest extends FlexibleFilterTestCase
     protected function createTestFilter($flexibleRegistry)
     {
         $parentFilter = new ChoiceFilter($this->getTranslatorMock());
+
         return new FlexibleOptionsFilter($flexibleRegistry, $parentFilter);
     }
 
@@ -104,7 +105,7 @@ class FlexibleOptionsFilterTest extends FlexibleFilterTestCase
     }
 
     /**
-     * @param array $data
+     * @param  array $data
      * @return array
      */
     private function createFlexibleOptions(array $data)

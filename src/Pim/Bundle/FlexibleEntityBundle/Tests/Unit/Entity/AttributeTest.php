@@ -33,8 +33,8 @@ class AttributeTest extends \PHPUnit_Framework_TestCase
     public function testGetId()
     {
         $myid = 123;
-        $this->attribute->setId(123);
-        $this->assertEquals($this->attribute->getId(), 123);
+        $this->attribute->setId($myid);
+        $this->assertEquals($this->attribute->getId(), $myid);
     }
 
     /**

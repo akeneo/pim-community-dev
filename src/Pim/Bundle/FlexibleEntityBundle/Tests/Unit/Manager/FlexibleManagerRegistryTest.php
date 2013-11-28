@@ -16,7 +16,6 @@ use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManagerRegistry;
  */
 class FlexibleManagerRegistryTest extends \PHPUnit_Framework_TestCase
 {
-
     /**
      * Registry
      *
@@ -88,7 +87,8 @@ class FlexibleManagerRegistryTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Cannot get flexible manager for class "Pim\Bundle\FlexibleEntityBundle\Test\Entity\Demo".
+     * @expectedExceptionMessage Cannot get flexible manager
+     * for class "Pim\Bundle\FlexibleEntityBundle\Test\Entity\Demo".
      */
     public function testGetManagerFails()
     {

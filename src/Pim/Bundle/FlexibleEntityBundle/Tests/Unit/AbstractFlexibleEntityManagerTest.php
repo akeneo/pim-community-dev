@@ -18,7 +18,6 @@ use Pim\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory;
  */
 abstract class AbstractFlexibleManagerTest extends AbstractOrmTest
 {
-
     /**
      * @var FlexibleManager
      */
@@ -104,7 +103,11 @@ abstract class AbstractFlexibleManagerTest extends AbstractOrmTest
         $this->container->setParameter('pim_flexibleentity.flexible_config', $this->flexibleConfig);
 
         // prepare attribute type factory
-        $attType = new TextType('varchar', 'text', $this->getMock('Pim\Bundle\FlexibleEntityBundle\Form\Validator\AttributeConstraintGuesser'));
+        $attType = new TextType(
+            'varchar',
+            'text',
+            $this->getMock('Pim\Bundle\FlexibleEntityBundle\Form\Validator\AttributeConstraintGuesser')
+        );
         $this->container->set('pim_flexibleentity.attributetype.text', $attType);
         $attTypes = array('pim_flexibleentity_text' => 'pim_flexibleentity.attributetype.text');
         $this->attributeTypeFactory = new AttributeTypeFactory($this->container, $attTypes);
@@ -119,7 +122,7 @@ abstract class AbstractFlexibleManagerTest extends AbstractOrmTest
         );
 
         // add attribute types
-        foreach ($attTypes as $attTypeAlias => $attTypeId) {
+        foreach (array_keys($attTypes) as $attTypeAlias) {
             $this->manager->addAttributeType($attTypeAlias);
         }
 

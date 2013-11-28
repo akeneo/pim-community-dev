@@ -38,8 +38,8 @@ class FlexibleSorter extends Sorter
     }
 
     /**
-     * @param FieldDescriptionInterface $field
-     * @param string $direction
+     * @param  FieldDescriptionInterface $field
+     * @param  string                    $direction
      * @throws \LogicException
      */
     public function initialize(FieldDescriptionInterface $field, $direction = null)
@@ -56,7 +56,7 @@ class FlexibleSorter extends Sorter
 
     /**
      * @param ProxyQueryInterface $queryInterface
-     * @param string|null $direction
+     * @param string|null         $direction
      */
     public function apply(ProxyQueryInterface $queryInterface, $direction = null)
     {

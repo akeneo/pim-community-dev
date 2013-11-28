@@ -66,18 +66,17 @@ class TimestampableListener implements EventSubscriber
     /**
      * Update flexible fields when a value is updated
      *
-     * @param ObjectManager $om
+     * @param ObjectManager $manager
      * @param Flexible      $flexible
      * @param array         $fields
      */
-    protected function updateFlexibleFields(ObjectManager $om, AbstractFlexible $flexible, $fields)
+    protected function updateFlexibleFields(ObjectManager $manager, AbstractFlexible $flexible, $fields)
     {
-        $meta = $om->getClassMetadata(get_class($flexible));
-        $uow  = $om->getUnitOfWork();
-        $now  = new \DateTime('now', new \DateTimeZone('UTC'));
+        $uow     = $manager->getUnitOfWork();
+        $now     = new \DateTime('now', new \DateTimeZone('UTC'));
         $changes = array();
         foreach ($fields as $field) {
-            $changes[$field]= array(null, $now);
+            $changes[$field] = array(null, $now);
         }
         $uow->scheduleExtraUpdate($flexible, $changes);
     }

@@ -21,6 +21,7 @@ class FlexibleNumberFilterTest extends FlexibleFilterTestCase
     protected function createTestFilter($flexibleRegistry)
     {
         $parentFilter = new NumberFilter($this->getTranslatorMock());
+
         return new FlexibleNumberFilter($flexibleRegistry, $parentFilter);
     }
 
