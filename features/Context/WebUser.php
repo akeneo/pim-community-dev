@@ -739,46 +739,6 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @param string $channel
-     *
-     * @Given /^I select the channel "([^"]*)"$/
-     */
-    public function iSelectChannel($channel)
-    {
-        $this->getPage('Export creation')->selectChannel($channel);
-    }
-
-    /**
-     * @param string $axis
-     *
-     * @Given /^I select the axis "([^"]*)"$/
-     */
-    public function iSelectAxis($axis)
-    {
-        $this->getCurrentPage()->selectAxis($axis);
-    }
-
-    /**
-     * @param string $status
-     *
-     * @Given /^I select the status "([^"]*)"$/
-     */
-    public function iSelectStatus($status)
-    {
-        $this->getPage('User creation')->selectStatus($status);
-    }
-
-    /**
-     * @param string $owner
-     *
-     * @Given /^I select the owner "([^"]*)"$/
-     */
-    public function iSelectOwner($owner)
-    {
-        $this->getPage('User creation')->selectOwner($owner);
-    }
-
-    /**
      * @param string $role
      *
      * @Given /^I select the role "([^"]*)"$/
@@ -991,30 +951,6 @@ class WebUser extends RawMinkContext
             $actualFamily,
             sprintf('Expecting the family of "%s" to be "%s", not "%s".', $sku, $expectedFamily, $actualFamily)
         );
-    }
-
-    /**
-     * @param string $channel
-     * @param string $not
-     * @param string $category
-     *
-     * @Given /^the channel (.*) is (not )?able to export category (.*)$/
-     */
-    public function theChannelIsAbleToExportCategory($channel, $not, $category)
-    {
-        $expected = (bool) $not;
-        $actual = $this->getPage('Channel index')->channelCanExport($channel, $category);
-
-        if ($expected !== $actual) {
-            throw $this->createExpectationException(
-                sprintf(
-                    'Expecting channel %s %sto be able to export category %s',
-                    $channel,
-                    $not,
-                    $category
-                )
-            );
-        }
     }
 
     /**
