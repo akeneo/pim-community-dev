@@ -1,0 +1,8 @@
+Pim\Bundle\CatalogBundle\Model\GroupTranslation:
+    fields:
+        id:
+            id: true
+        label:
+            type: string
+        locale:
+            type: string

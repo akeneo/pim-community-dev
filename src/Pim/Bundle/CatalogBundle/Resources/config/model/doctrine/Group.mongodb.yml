@@ -1,0 +1,24 @@
+Pim\Bundle\CatalogBundle\Model\Group:
+    collection: pim_catalog_group
+    repositoryClass: Pim\Bundle\CatalogBundle\Entity\Repository\GroupRepository
+    fields:
+        id:
+            id: true
+        code:
+            type: string
+        # References GroupType ORM entity code
+        groupType:
+            type: string
+        # References ProductAttribute entity codes
+        productAttributes:
+            type: collection
+        # Translations
+        translations:
+            embedded: true
+            type: many
+            targetDocument: Pim\Bundle\CatalogBundle\Model\Group\GroupTranslation
+            cascade: persist
+        products:
+            reference: true
+            type: many
+            targetDocument: Pim\Bundle\CatalogBundle\Model\ProductInterface
