@@ -32,6 +32,17 @@ class ActionAclExtension extends AbstractAclExtension
     /**
      * {@inheritdoc}
      */
+    public function getAccessLevelNames($object)
+    {
+        return array(
+            AccessLevel::NONE_LEVEL => AccessLevel::NONE_LEVEL_NAME,
+            AccessLevel::SYSTEM_LEVEL => AccessLevel::getAccessLevelName(AccessLevel::SYSTEM_LEVEL)
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function supports($type, $id)
     {
         if ($type === ObjectIdentityFactory::ROOT_IDENTITY_TYPE && $id === $this->getExtensionKey()) {

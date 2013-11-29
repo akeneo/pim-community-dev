@@ -86,9 +86,17 @@ class EntityOwnershipDecisionMakerTest extends \PHPUnit_Framework_TestCase
             new OwnershipMetadata('BUSINESS_UNIT', 'owner', 'owner_id')
         );
 
+        $treeProvider = $this->getMockBuilder('Oro\Bundle\SecurityBundle\Owner\OwnerTreeProvider')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $treeProvider->expects($this->any())
+            ->method('getTree')
+            ->will($this->returnValue($this->tree));
+
         $classAccessor = new EntityClassAccessor();
         $this->decisionMaker = new EntityOwnershipDecisionMaker(
-            $this->tree,
+            $treeProvider,
             $classAccessor,
             new ObjectIdAccessor(),
             new EntityOwnerAccessor($classAccessor, $this->metadataProvider),
