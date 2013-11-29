@@ -18,8 +18,11 @@ Feature: Family creation
     Then I should be on the "CAR" family page
     And I should see "Edit family - [CAR]"
 
-  Scenario: Fail to create a family with an empty or invalid code
-    Given I am on the families page
+  Scenario: Fail to create a family with an empty, invalid or already used code
+    Given the following family:
+      | code |
+      | BOAT |
+    And I am on the families page
     When I create a new family
     And I press the "Save" button
     Then I should see validation error "This value should not be blank."
@@ -27,14 +30,7 @@ Feature: Family creation
       | Code | =( |
     And I press the "Save" button
     Then I should see validation error "Family code may contain only letters, numbers and underscores"
-  
-  Scenario: Fail to create a family with an already used code
-    Given the following families:
-      | code |
-      | BOAT |
-    When I am on the families page
-    And I create a new family
-    And I fill in the following information in the popin:
+    When I fill in the following information in the popin:
       | Code | BOAT |
     And I press the "Save" button
     Then I should see validation error "This value is already used."

@@ -292,8 +292,7 @@ class FixturesContext extends RawMinkContext
     /**
      * @param TableNode $table
      *
-     * @Given /^the following families:$/
-     * @Given /^the following family:$/
+     * @Given /^the following famil(?:y|ies):$/
      */
     public function theFollowingFamilies(TableNode $table)
     {

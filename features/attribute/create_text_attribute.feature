@@ -15,23 +15,12 @@ Feature: Create an attribute
     And I save the attribute
     Then I should see "Attribute successfully created"
 
-  Scenario: Fail to create a text attribute with an invalid code
+  @info Codes 'associations', 'categories', 'categoryId', 'completeness', 'enabled', 'family', 'groups', 'productAssociations', 'products', 'scope', 'treeId', 'values', '*_groups' and '*_products' are reserved for grid filters and import/export column names
+  Scenario: Fail to create a text attribute with an invalid or reserved code
     Given I change the Code to an invalid value
     And I save the attribute
     Then I should see validation error "Attribute code may contain only letters, numbers and underscores"
-
-  @javascript
-  Scenario: Fail to create a text attribute with an invalid validation regex
-    Given I fill in the following information:
-     | Code              | short_description  |
-     | Validation rule   | Regular expression |
-     | Validation regexp | this is not valid  |
-    And I save the attribute
-    Then I should see validation error "This regular expression is not valid."
-
-  @info Codes 'associations', 'categories', 'categoryId', 'completeness', 'enabled', 'family', 'groups', 'productAssociations', 'products', 'scope', 'treeId', 'values', '*_groups' and '*_products' are reserved for grid filters and import/export column names
-  Scenario: Fail to create a text attribute with a code that is a reserved word
-    Then the following attribute codes should not be available:
+    And the following attribute codes should not be available:
       | code                |
       | associations        |
       | categories          |
@@ -47,3 +36,12 @@ Feature: Create an attribute
       | values              |
       | my_groups           |
       | my_products         |
+
+  @javascript
+  Scenario: Fail to create a text attribute with an invalid validation regex
+    Given I fill in the following information:
+     | Code              | short_description  |
+     | Validation rule   | Regular expression |
+     | Validation regexp | this is not valid  |
+    And I save the attribute
+    Then I should see validation error "This regular expression is not valid."
