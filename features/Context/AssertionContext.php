@@ -35,12 +35,12 @@ class AssertionContext extends RawMinkContext
     /**
      * @param string $text
      *
-     * @Then /^I should see a tooltip "([^"]*)"$/
+     * @Then /^I should see(?: a)? validation tooltip "([^"]*)"$/
      */
     public function iShouldSeeATooltip($text)
     {
-        if (!$this->getCurrentPage()->findTooltip($text)) {
-            throw $this->createExpectationException(sprintf('No tooltip containing "%s" were found.', $text));
+        if (!$this->getCurrentPage()->findValidationTooltip($text)) {
+            throw $this->createExpectationException(sprintf('Validation tooltip containing "%s" not found.', $text));
         }
     }
 
@@ -51,9 +51,11 @@ class AssertionContext extends RawMinkContext
      */
     public function iShouldSeeValidationError($error)
     {
-        $this->getMainContext()->wait();
-        $errors = $this->getCurrentPage()->getValidationErrors();
-        assertTrue(in_array($error, $errors), sprintf('Expecting to see validation error "%s", not found', $error));
+        if (!$this->getCurrentPage()->findValidationTooltip($error)) {
+            $this->getMainContext()->wait();
+            $errors = $this->getCurrentPage()->getValidationErrors();
+            assertTrue(in_array($error, $errors), sprintf('Expecting to see validation error "%s", not found', $error));
+        }
     }
 
     /**
