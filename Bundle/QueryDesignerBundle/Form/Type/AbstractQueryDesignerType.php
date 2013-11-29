@@ -94,6 +94,19 @@ abstract class AbstractQueryDesignerType extends AbstractType
                             )
                         );
                     }
+
+                    for ($i = 1; $i<=$filtersCount; $i++) {
+                        if (!in_array($i, $digits[0])) {
+                            $form['filters_logic']->addError(
+                                new FormError(
+                                    sprintf(
+                                        'You doesn\'t use %d filter',
+                                        $i
+                                    )
+                                )
+                            );
+                        }
+                    }
                 }
             }
         );
