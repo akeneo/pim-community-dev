@@ -77,9 +77,9 @@ doctrine:
 doctrine_mongodb:
     connections:
         default:
-#            server: "%mongodb_server%"
+            server: "%mongodb_server%"
             server: ~
-#    default_database: "%mongodb_database%"
+    default_database: "%mongodb_database%"
     default_database: ~
     document_managers:
         default:
@@ -143,6 +143,9 @@ lexik_maintenance:
 
 pim_demo:
     load_data: %load_demo_data%
+
+pim_catalog:
+    storage_driver: 'doctrine/mongodb-odm'
 
 oro_batch:
     enable_mail_notification: true
