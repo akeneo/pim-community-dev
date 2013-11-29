@@ -194,6 +194,7 @@ class OrmProductTransformer extends AbstractOrmTransformer
         $class = $this->productManager->getFlexibleName();
         $columnsInfo = $this->labelTransformer->transform($class, array_keys($data));
         $this->attributeCache->initialize($columnsInfo);
+        $this->attributeColumnsInfo = array();
         $this->propertyColumnsInfo = array();
         foreach ($columnsInfo as $columnInfo) {
             if ($columnInfo->getAttribute()) {
