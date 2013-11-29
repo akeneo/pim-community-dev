@@ -89,7 +89,10 @@ class FilterLocaleValueSubscriberTest extends \PHPUnit_Framework_TestCase
         $form->expects($this->exactly(1))
             ->method('add')
             ->with('name_comparison', 'pim_product_value', array(
-                'disabled' => true
+                'disabled'     => true,
+                'block_config' => array(
+                    'mode' => 'comparison'
+                )
             ));
 
         $this->target->preSetData($event);

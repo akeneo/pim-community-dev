@@ -30,9 +30,8 @@
                 {% endif %}
             </div>
         </td>
-        <td>
+        <td class="no-label">
             {% if attributeView.locale is not null %}
-                <input type="checkbox" class="comparisonSelection" />
                 {% for comparisonView in groupView.attributes if comparisonView.locale == comparisonLocale %}
                     {% if comparisonView.code == attributeView.code %}
                         <div class="attribute-field {{ comparisonView.classes|default([])|keys|join(' ') }}">

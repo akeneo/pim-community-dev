@@ -294,6 +294,27 @@ div.btn-group > .has-switch {
   padding-top: 7px;
 }
 
+
+.comparison {
+  width: 100%;
+  td {
+    width: 50%;
+    border-right: 1px solid darken(@color-light_grey, 5%);
+    vertical-align: top;
+    &.no-label .control-group {
+      label.control-label {
+        width: 30px;
+        &.add-on {
+          width: 135px;
+        }
+      }
+      .controls {
+        margin-left: 40px;
+      }
+    }
+  }
+}
+
 #lbCenter {
   z-index: 1000;
 }

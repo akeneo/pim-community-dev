@@ -60,7 +60,13 @@
             {% set label = name|humanize %}
         {% endif %}
         {% set isRadioLabel = form.parent.vars.expanded|default(false) and checked is defined %}
-        <label{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>{% if required and not isRadioLabel %}<em>*</em>{% endif %}{{ label|trans({}, translation_domain) }}</label>
+        <label{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>
+            {% if form.parent.vars.mode is defined and 'comparison' == form.parent.vars.mode %}
+                <input type="checkbox" class="comparisonSelection" />
+            {% else %}
+                {% if required and not isRadioLabel %}<em>*</em>{% endif %}{{ label|trans({}, translation_domain) }}
+            {% endif %}
+        </label>
     {% endif %}
 {% endspaceless %}
 {% endblock form_label %}

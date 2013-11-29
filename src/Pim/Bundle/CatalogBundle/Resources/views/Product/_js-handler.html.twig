@@ -170,7 +170,7 @@
 
                         case 'selected':
                             $('.comparison input.comparisonSelection:checked').each(function() {
-                                $(this).parent().find('.attribute-field').each(copyValue);
+                                $(this).parent().parent().find('.controls').each(copyValue);
                             });
                     }
                 });
