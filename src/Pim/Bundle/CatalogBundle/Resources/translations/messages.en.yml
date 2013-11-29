@@ -373,7 +373,7 @@ Associations | Create:                       Associations | Create
 Associations %association.label% | Edit:     Associations %association.label% | Edit
 Group types:                                 Group types
 Group types | Create:                        Group types | Create
-Group types %grouptype.label% | Edit:        Group types %grouptype.label% | Edit
+Group types %group type.label% | Edit:       Group types %group type.label% | Edit
 
 
 pim_catalog_identifier:       Identifier
