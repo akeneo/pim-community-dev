@@ -58,6 +58,14 @@ class Metric
     protected $baseUnit;
 
     /**
+     * Measure family
+     * @var string $family
+     *
+     * @ORM\Column(name="family", type="string", length=20, nullable=true)
+     */
+    protected $family;
+
+    /**
      * Get id
      *
      * @return integer
@@ -173,6 +181,30 @@ class Metric
     public function setBaseUnit($baseUnit)
     {
         $this->baseUnit = $baseUnit;
+
+        return $this;
+    }
+
+    /**
+     * Get family
+     *
+     * @return string
+     */
+    public function getFamily()
+    {
+        return $this->family;
+    }
+
+    /**
+     * Set family
+     *
+     * @param string $family
+     *
+     * @return Metric
+     */
+    public function setFamily($family)
+    {
+        $this->family = $family;
 
         return $this;
     }
