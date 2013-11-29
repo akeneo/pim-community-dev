@@ -168,11 +168,34 @@ function(_, __, AbstractView, FilterCollection, filterBuilder) {
 
         getCriterionFieldLabel: function (field, name, value) {
             if (field.attr('name') == this.criterionSelector.attr('name')) {
-                return (value != '')
-                    ? this.filterManager.getCriteriaHint(JSON.parse(value))
-                    : '';
+                if (_.isNull(value) || value == '') {
+                    return '';
+                } else if (_.isString(value)) {
+                    value = JSON.parse(value)
+                }
+                return this.filterManager.getCriteriaHint(value);
             }
             return null;
+        },
+
+        getFormFieldValue: function (name, field) {
+            if (field.attr('name') == this.criterionSelector.attr('name')) {
+                var value = field.val();
+                return (value != '') ? JSON.parse(value) : null;
+            }
+            return AbstractView.prototype.getFormFieldValue.apply(this, arguments);
+        },
+
+        setFormFieldValue: function (name, field, value) {
+            if (field.attr('name') == this.criterionSelector.attr('name')) {
+                if (_.isNull(value) || value == '') {
+                    field.val('');
+                } else {
+                    field.val(JSON.stringify(value));
+                }
+                return;
+            }
+            AbstractView.prototype.setFormFieldValue.apply(this, arguments);
         }
     });
 });

@@ -364,11 +364,15 @@ function(_, Backbone, __, FormValidation, DeleteConfirmation) {
 
         getFormData: function () {
             var data = {};
-            this.iterateFormData(function (name, field) {
-                data[name] = field.val();
-            });
+            this.iterateFormData(_.bind(function (name, field) {
+                data[name] = this.getFormFieldValue(name, field);
+            }, this));
 
             return data;
+        },
+
+        getFormFieldValue: function (name, field) {
+            return field.val();
         },
 
         clearFormData: function () {
@@ -378,9 +382,14 @@ function(_, Backbone, __, FormValidation, DeleteConfirmation) {
         },
 
         setFormData: function (data) {
-            this.iterateFormData(function (name, field) {
-                field.val(data[name]).trigger('change');
-            });
+            this.iterateFormData(_.bind(function (name, field) {
+                this.setFormFieldValue(name, field, data[name]);
+                field.trigger('change');
+            }, this));
+        },
+
+        setFormFieldValue: function (name, field, value) {
+            field.val(value);
         },
 
         iterateFormData: function (callback) {
