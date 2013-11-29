@@ -150,7 +150,6 @@ class OroAsseticNode extends \Twig_Node
      */
     protected function compileAssetUrl(\Twig_Compiler $compiler, AssetInterface $asset, $name)
     {
-
         $compiler->subcompile($this->getPathFunction($name));
     }
 

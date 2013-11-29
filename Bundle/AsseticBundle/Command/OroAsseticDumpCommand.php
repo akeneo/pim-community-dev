@@ -5,11 +5,7 @@ namespace Oro\Bundle\AsseticBundle\Command;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\HttpFoundation\Request;
-
-use Doctrine\Common\Cache\CacheProvider;
 
 use Assetic\Asset\AssetInterface;
 use Assetic\Util\VarUtils;
@@ -23,17 +19,12 @@ class OroAsseticDumpCommand extends ContainerAwareCommand
      */
     protected $am;
 
-    /**
-     * @var CacheProvider
-     */
-    protected $cache;
-
     protected function configure()
     {
         $this
             ->setName('oro:assetic:dump')
             ->setDescription('Dumps oro assetics')
-            ->addArgument('show-groups', InputArgument::OPTIONAL, 'Show list of css and js groups')
+            ->addArgument('show-groups', InputArgument::OPTIONAL, 'Show list of css groups')
             ->addArgument('write_to', InputArgument::OPTIONAL, 'Override the configured asset root');
     }
 
@@ -41,20 +32,18 @@ class OroAsseticDumpCommand extends ContainerAwareCommand
     {
         $this->basePath = $input->getArgument('write_to') ? : $this->getContainer()->getParameter('assetic.write_to');
         $this->am = $this->getContainer()->get('oro_assetic.asset_manager');
-        $this->cache = $this->getContainer()->get('oro_assetic.cache');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         if ($input->getArgument('show-groups') !== null) {
-            $output->writeln('Get list of js and css groups');
+            $output->writeln('Get list of css groups');
             $this->getGroupList($output);
         } else {
             $output->writeln(sprintf('Dumping all <comment>%s</comment> assets.', $input->getOption('env')));
             $output->writeln(sprintf('Debug mode is <comment>%s</comment>.', 'off'));
             $output->writeln('');
 
-            $this->cache->flushAll();
             $this->dumpAssets($output);
         }
     }
@@ -63,10 +52,6 @@ class OroAsseticDumpCommand extends ContainerAwareCommand
     {
         $assets = $this->am->getAssetGroups();
         $compiledGroups = $this->am->getCompiledGroups();
-
-        $output->writeln('');
-        $output->writeln('<comment>Js</comment> groups:');
-        $this->writeGroups($assets['js'], $compiledGroups['js'], $output);
 
         $output->writeln('');
         $output->writeln('<comment>Css</comment> groups:');
@@ -113,7 +98,6 @@ class OroAsseticDumpCommand extends ContainerAwareCommand
      */
     private function doDump(AssetInterface $asset, OutputInterface $output)
     {
-
         foreach ($this->getAssetVarCombinations($asset) as $combination) {
             $asset->setValues($combination);
 
