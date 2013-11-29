@@ -65,6 +65,7 @@ process:
             search:        Create search index
             navigation:    Init navigation
             localization:  Dump localization
+            routes:        Dump frontend routes
             assets:        Install assets
             assetic:       Dump assetic
             assetic-oro:   Dump Oro assetic
