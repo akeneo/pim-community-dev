@@ -26,8 +26,7 @@ class LoadDataCommand extends ContainerAwareCommand
             ->addArgument('depth', InputArgument::OPTIONAL, 'Max depth of the tree', 5)
             ->addArgument('nodes-per-level', InputArgument::OPTIONAL, 'Number of nodes to add at each level (i.e 10: lvl1 => 10 nodes, lvl2 => 20 nodes, lvl3 => 30 nodes, etc.', 10)
             ->addArgument('max-products-per-node', InputArgument::OPTIONAL, 'Max number of products per node', 10)
-            ->addOption('purge-table', null, InputOption::VALUE_NONE, 'Whether or not to purge db')
-        ;
+            ->addOption('purge-table', null, InputOption::VALUE_NONE, 'Whether or not to purge db');
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
