@@ -9,10 +9,11 @@ use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\ImportExportBundle\Cache\AttributeCache;
-use Pim\Bundle\ImportExportBundle\Transformer\Guesser\GuesserInterface;
-use Pim\Bundle\ImportExportBundle\Transformer\Property\SkipTransformer;
+use Pim\Bundle\ImportExportBundle\Exception\MissingIdentifierException;
 use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoInterface;
 use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoTransformerInterface;
+use Pim\Bundle\ImportExportBundle\Transformer\Guesser\GuesserInterface;
+use Pim\Bundle\ImportExportBundle\Transformer\Property\SkipTransformer;
 
 /**
  * Specialized OrmTransformer for products
@@ -93,6 +94,9 @@ class OrmProductTransformer extends AbstractOrmTransformer
     protected function getEntity($class, array $data)
     {
         $identifierAttribute = $this->attributeCache->getIdentifierAttribute();
+        if (!$identifierAttribute) {
+            throw new MissingIdentifierException;
+        }
         $product = $this->productManager->getImportProduct(
             $this->attributeCache->getAttributes(),
             $identifierAttribute,
