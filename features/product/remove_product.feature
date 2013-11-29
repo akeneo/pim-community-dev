@@ -12,7 +12,7 @@ Feature: Remove a product
   Scenario: Successfully delete a product from the grid
     Given I am on the products page
     Then I should see products CD player
-    And I try to delete the product "CD player" from the product grid
+    When I click on the "Delete the product" action of the row which contains "CD player"
     Then I should see "Delete confirmation"
     And I confirm the removal
     Then I should not see product CD player
