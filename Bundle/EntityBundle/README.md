@@ -1,6 +1,9 @@
 OroEntityBundle
 ========================
 
+- [Form Components Overview](./Resources/doc/form_components.md)
+
+
     Example for Resources/config/entity_extend.yml
     TestClassExtend:
         configs:
@@ -60,3 +63,5 @@ where
 
  - **filter_name** - required filter name,
  - **enbaled** - flag, if the filter must be enabled, by default filters are disabled
+
+

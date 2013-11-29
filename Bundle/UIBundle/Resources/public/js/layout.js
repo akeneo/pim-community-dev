@@ -110,9 +110,9 @@ define(['jquery', 'oro/translator', 'bootstrap-tooltip', 'jquery-ui', 'jquery-ui
             var $spy = $(this);
             var spyHeight = $spy.innerHeight();
 
-            var isMultipleRows = $spy.find('.usser-row').length > 1;
+            var isMultipleRows = $spy.find('.responsive-section').length > 1;
 
-            $spy.find('.usser-row:last').each(function () {
+            $spy.find('.responsive-section:last').each(function () {
                 var $row = $(this);
                 var titleHeight = $row.find('.scrollspy-title').outerHeight();
                 var rowAdjHeight = isMultipleRows ? titleHeight + spyHeight : spyHeight;

@@ -3,6 +3,7 @@
 namespace Oro\Bundle\EntityConfigBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+
 use Doctrine\ORM\Mapping as ORM;
 
 use Doctrine\ORM\PersistentCollection;
@@ -42,6 +43,12 @@ class FieldConfigModel extends AbstractConfigModel
     protected $values;
 
     /**
+     * @var OptionSet[]|PersistentCollection
+     * @ORM\OneToMany(targetEntity="OptionSet", mappedBy="field", cascade={"all"})
+     */
+    protected $options;
+
+    /**
      * @var string
      * @ORM\Column(name="field_name", type="string", length=255)
      */
@@ -58,6 +65,7 @@ class FieldConfigModel extends AbstractConfigModel
         $this->type      = $type;
         $this->mode      = ConfigModelManager::MODE_DEFAULT;
         $this->values    = new ArrayCollection;
+        $this->options   = new ArrayCollection;
         $this->fieldName = $fieldName;
     }
 
@@ -124,5 +132,13 @@ class FieldConfigModel extends AbstractConfigModel
     public function getEntity()
     {
         return $this->entity;
+    }
+
+    /**
+     * @return ArrayCollection|PersistentCollection|OptionSet[]
+     */
+    public function getOptions()
+    {
+        return $this->options;
     }
 }

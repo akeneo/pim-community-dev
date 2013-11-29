@@ -2,13 +2,12 @@
 
 namespace Oro\Bundle\EntityExtendBundle\Tools;
 
-use Oro\Bundle\EntityConfigBundle\Config\Config;
 use Symfony\Component\Filesystem\Filesystem;
 
-use Oro\Bundle\EntityBundle\ORM\OroEntityManager;
-
+use Oro\Bundle\EntityConfigBundle\Config\Config;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
 
+use Oro\Bundle\EntityBundle\ORM\OroEntityManager;
 use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 use Oro\Bundle\EntityExtendBundle\Mapping\ExtendClassMetadataFactory;
 
@@ -67,7 +66,7 @@ class ExtendConfigDumper
 
     public function dump()
     {
-        $schemas   = [];
+        $schemas        = [];
         $extendProvider = $this->em->getExtendManager()->getConfigProvider();
         $configs        = $extendProvider->getConfigs();
         foreach ($configs as $config) {
@@ -83,7 +82,7 @@ class ExtendConfigDumper
 
     public function clear()
     {
-        $filesystem = new Filesystem();
+        $filesystem   = new Filesystem();
         $baseCacheDir = ExtendClassLoadingUtils::getEntityBaseCacheDir($this->cacheDir);
         if ($filesystem->exists($baseCacheDir)) {
             $filesystem->remove([$baseCacheDir]);
@@ -142,13 +141,12 @@ class ExtendConfigDumper
                     $fieldName = self::FIELD_PREFIX . $fieldConfig->getId()->getFieldName();
                     $fieldType = $fieldConfig->getId()->getFieldType();
 
-                    if (in_array($fieldType, ['oneToMany', 'manyToOne', 'manyToMany'])) {
+                    if (in_array($fieldType, ['oneToMany', 'manyToOne', 'manyToMany', 'optionSet'])) {
                         $relationProperties[$fieldName] = $fieldConfig->getId()->getFieldName();
                         if ($fieldType != 'manyToOne') {
                             $defaultName = self::DEFAULT_PREFIX . $fieldConfig->getId()->getFieldName();
 
                             $defaultProperties[$defaultName] = $defaultName;
-
                         }
                     } else {
                         $properties[$fieldName] = $fieldConfig->getId()->getFieldName();

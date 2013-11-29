@@ -8,6 +8,7 @@ require(['oro/mediator'], function (mediator) {
         setTimeout(function () {
             // emulates 'document ready state' for selenium tests
             document['page-rendered'] = true;
+            mediator.trigger('page-rendered');
         }, 50);
     });
 });
@@ -192,7 +193,7 @@ require(['jquery', 'underscore', 'oro/translator', 'oro/app', 'oro/mediator', 'o
             var debugBarHeight = debugBar.length && debugBar.is(':visible') ? debugBar.height() : 0,
                 anchorTop = anchor.position().top;
 
-            content.each(function (pos, el) {
+            $(content.get().reverse()).each(function (pos, el) {
                 el = $(el);
                 el.height(anchorTop - el.position().top - debugBarHeight);
             });
@@ -227,11 +228,13 @@ require(['jquery', 'underscore', 'oro/translator', 'oro/app', 'oro/mediator', 'o
                 .appendTo($(document.body));
         }
 
-        if (debugBar.length) {
-            waitForDebugBar();
-        } else {
-            adjustHeight();
-        }
+        mediator.once("page-rendered", function () {
+            if (debugBar.length) {
+                waitForDebugBar();
+            } else {
+                adjustHeight();
+            }
+        });
 
         $(window).on('resize', adjustHeight);
 

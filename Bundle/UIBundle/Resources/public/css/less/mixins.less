@@ -1,0 +1,49 @@
+.box-sizing(@sizing: content-box ) {
+  -webkit-box-sizing: @sizing;
+  -moz-box-sizing: @sizing;
+  box-sizing: @sizing;
+}
+.opacity(@float, @decimal) {
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=@float)";
+  filter: "alpha(opacity=@float)";
+  -moz-opacity: @decimal;
+  -khtml-opacity: @decimal;
+  opacity: @decimal;
+}
+
+.forScreen (@size; background; @value: none) {
+  @media only screen and (max-width: @size) {
+    background: @value;
+  }
+}
+.forScreen (@size; float; @value: none) {
+  @media only screen and (max-width: @size) {
+    float: @value;
+  }
+}
+.forScreen (@size; width; @value: 100%) {
+  @media only screen and (max-width: @size) {
+    width: @value;
+  }
+}
+.forScreen (@size; height; @value: auto) {
+  @media only screen and (max-width: @size) {
+    height: @value;
+  }
+}
+.forScreen (@size; min-height; @value: initial) {
+  @media only screen and (max-width: @size) {
+    min-height: @value;
+  }
+}
+.forScreen (@size; margin; @value: 0) {
+  @media only screen and (max-width: @size) {
+    margin: @value;
+  }
+}
+.forScreen (@size; padding; @value: 0) {
+  @media only screen and (max-width: @size) {
+    padding: @value;
+  }
+}
+.forScreen (@size; @_; @value) {}

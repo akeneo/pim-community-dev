@@ -24,24 +24,6 @@ Oro is the global namespace for all JS widgets. Also it contains several useful 
 * **deepClone** (Object value) - clones source value with all references.
 
 
-### Oro.Registry
-
-Oro.Registry is an implementation of Registry pattern realized as singleton.
-
-**Private properties**
-
-* **storage** : Object - stores all elements in registry;
-* **frozen** : Boolean - whether elements can be added to registry storage.
-
-**Public methods**
-
-* **getElement** (String *keys) - returns data from storage accessed by keys.
-Example: Oro.Registry.getElement('foo', 'baz') is equal to storage.foo.baz;
-* **setElement** (String *keys, element) - saves element in storage according to keys.
-Example: Oro.Registry.setElement('foo', 'baz', 'data') is equals to storage.foo.baz = 'data';
-* **freeze** () - sets frozen flag to true, so further setting of element is not allowed.
-
-
 ### Oro.BootstrapModal
 
 Oro.BootstrapModal extends Backbone.BootstrapModal (implemented as Backbone Bootstrap Modal) and replaces modal template.
