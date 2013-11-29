@@ -33,6 +33,7 @@ class Form extends Base
                 'Available attributes list'       => array('css' => '.pimmultiselect .ui-multiselect-checkboxes'),
                 'Available attributes search'     => array('css' => '.pimmultiselect input[type="search"]'),
                 'Available attributes add button' => array('css' => '.pimmultiselect a:contains("Add")'),
+                'Updates grid'                    => array('css' => '#history table.grid'),
             ),
             $this->elements
         );
@@ -251,7 +252,11 @@ class Form extends Base
                         $field->focus();
                     } catch (UnsupportedDriverActionException $e) {
                     }
-                    $field->setValue($value);
+                    if ($field->getTagName() === 'select') {
+                        $field->selectOption($value);
+                    } else {
+                        $field->setValue($value);
+                    }
                 }
             } else {
                 foreach (explode(',', $value) as $value) {
@@ -274,6 +279,14 @@ class Form extends Base
 
             $this->fillField($subLabelContent, $value, $label->getParent());
         }
+    }
+
+    /**
+     * @return array
+     */
+    public function getHistoryRows()
+    {
+        return $this->getElement('Updates grid')->findAll('css', 'tbody tr');
     }
 
     /**

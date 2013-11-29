@@ -7,13 +7,10 @@ Feature: Edit a job
     Given a "footwear" catalog configuration
     And I am logged in as "admin"
 
-  Scenario: Successfully display the edit view for a job
-    Given I am on the "footwear_product_export" export job edit page
-    Then I should see the Code field
-    And the field Code should be disabled
-
   Scenario: Successfully edit a job
     Given I am on the "footwear_product_import" import job edit page
+    Then I should see the Code field
+    And the field Code should be disabled
     When I fill in the following information:
       | Label | My import |
     And I press the "Save" button

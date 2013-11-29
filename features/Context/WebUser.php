@@ -566,7 +566,8 @@ class WebUser extends RawMinkContext
             sprintf('%s.%s', $this->getNavigationContext()->currentPage, $field)
         );
 
-        return $this->getCurrentPage()->fillField($field, $value);
+        $this->getCurrentPage()->fillField($field, $value);
+        $this->wait();
     }
 
     /**
@@ -771,18 +772,6 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @param string $type
-     *
-     * @When /^I select the attribute type "([^"]*)"$/
-     */
-    public function iSelectTheAttributeType($type)
-    {
-        $this->getPage('Attribute creation')->selectAttributeType($type);
-
-        $this->wait();
-    }
-
-    /**
      * @param string $channel
      *
      * @Given /^I select the channel "([^"]*)"$/
@@ -927,7 +916,7 @@ class WebUser extends RawMinkContext
     public function theFollowingAttributeTypesShouldHaveTheFollowingFields(TableNode $table)
     {
         foreach ($table->getRowsHash() as $type => $fields) {
-            $this->iSelectTheAttributeType($type);
+            $this->iChangeTheTo('Attribute type', $type);
             try {
                 $this->getMainContext()->getSubcontext('assertions')->iShouldSeeTheFields($fields);
             } catch (ExpectationException $e) {
@@ -1084,13 +1073,12 @@ class WebUser extends RawMinkContext
     /**
      * @param integer $count
      *
-     * @Then /^there should be (\d+) update$/
-     * @Then /^there should be (\d+) updates$/
+     * @Then /^there should be (\d+) updates?$/
      */
     public function thereShouldBeUpdate($count)
     {
-        if ((int) $count !== $countUpdates = $this->getPage('Product edit')->countUpdates()) {
-            throw $this->createExpectationException(sprintf('Expected %d updates, saw %d.', $count, $countUpdates));
+        if ((int) $count !== $actualCount = count($this->getCurrentPage()->getHistoryRows())) {
+            throw $this->createExpectationException(sprintf('Expected %d updates, saw %d.', $count, $actualCount));
         }
     }
 

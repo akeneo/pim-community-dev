@@ -28,31 +28,11 @@ class Creation extends Form
         $this->elements = array_merge(
             $this->elements,
             array(
-                'Attribute type selector' => array('css' => '#pim_catalog_attribute_form_attributeType'),
                 'Attribute options table' => array('css' => 'table#sortable_options'),
                 'Attribute options'       => array('css' => 'table#sortable_options tbody tr'),
                 'Add option button'       => array('css' => 'a.btn.add_option_link'),
-                'Default label field'     => array('css' => '#pim_catalog_attribute_form_label_default'),
-                'Updates grid'            => array('css' => '#history table.grid'),
             )
         );
-    }
-
-    /**
-     * @return array
-     */
-    public function getHistoryRows()
-    {
-        return $this->getElement('Updates grid')->findAll('css', 'tbody tr');
-    }
-
-    /**
-     * Select the attribute type
-     * @param string $type
-     */
-    public function selectAttributeType($type)
-    {
-        $this->getElement('Attribute type selector')->selectOption($type);
     }
 
     /**
@@ -117,14 +97,5 @@ class Creation extends Form
     public function countRemovableOptions()
     {
         return count($this->findAll('css', 'button.action-delete-inline:not([disabled])'));
-    }
-
-    /**
-     * Fill the default label field
-     * @param string $value
-     */
-    public function fillDefaultLabelField($value)
-    {
-        $this->getElement('Default label field')->setValue($value);
     }
 }

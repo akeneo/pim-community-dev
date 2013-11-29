@@ -15,27 +15,4 @@ class Edit extends CategoryView
      * @var string
      */
     protected $path = '/enrich/category-tree/{id}/edit';
-
-    /**
-     * {@inheritdoc}
-     */
-    public function __construct($session, $pageFactory, $parameters = array())
-    {
-        parent::__construct($session, $pageFactory, $parameters);
-
-        $this->elements = array_merge(
-            $this->elements,
-            array(
-                'Updates grid' => array('css' => '#history table.grid'),
-            )
-        );
-    }
-
-    /**
-     * @return array
-     */
-    public function getHistoryRows()
-    {
-        return $this->getElement('Updates grid')->findAll('css', 'tbody tr');
-    }
 }

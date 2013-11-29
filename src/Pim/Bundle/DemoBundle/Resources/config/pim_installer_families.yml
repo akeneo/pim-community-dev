@@ -1,0 +1,96 @@
+families:
+    mug:
+        labels:
+            en_US: Mug
+            fr_FR: Tasse
+        attributes:
+            - sku
+            - name
+            - short_description
+            - manufacturer
+            - color
+            - release_date
+            - price
+        attributeAsLabel: name
+        requirements:
+            ecommerce:
+                - name
+                - short_description
+                - color
+                - price
+            mobile:
+                - name
+                - color
+    shirt:
+        labels:
+            en_US: Shirt
+            fr_FR: Chemise
+        attributes:
+            - sku
+            - name
+            - short_description
+            - size
+            - color
+            - price
+        attributeAsLabel: name
+        requirements:
+            ecommerce:
+                - name
+                - short_description
+                - color
+                - size
+                - price
+            mobile:
+                - name
+                - color
+                - size
+    shoe:
+        labels:
+            en_US: Shoe
+            fr_FR: Chaussure
+        attributes:
+            - sku
+            - name
+            - short_description
+            - long_description
+            - size
+            - color
+            - image_upload
+            - price
+        attributeAsLabel: name
+        requirements:
+            ecommerce:
+                - name
+                - short_description
+                - long_description
+                - color
+                - size
+                - price
+            mobile:
+                - name
+                - short_description
+                - color
+                - size
+    dress:
+        labels:
+            en_US: Dress
+            fr_FR: Robe
+        attributes:
+            - sku
+            - name
+            - short_description
+            - size
+            - unique_color
+            - price
+        attributeAsLabel: name
+        requirements:
+            ecommerce:
+                - name
+                - short_description
+                - unique_color
+                - size
+                - price
+            mobile:
+                - name
+                - unique_color
+                - size

@@ -366,21 +366,6 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @param string $product
-     * @param string $family
-     *
-     * @Given /^the product "([^"]*)" belongs to the family "([^"]*)"$/
-     */
-    public function theProductBelongsToTheFamily($product, $family)
-    {
-        $product = $this->getProduct($product);
-        $family  = $this->getFamily($family);
-
-        $product->setFamily($family);
-        $this->flush();
-    }
-
-    /**
      * @param TableNode $table
      *
      * @Given /^the following attribute groups?:$/

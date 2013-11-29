@@ -10,13 +10,11 @@ Feature: Edit a product group
     And I am on the "similar_boots" product group page
     And I visit the "Properties" tab
 
-  Scenario: Successfully display the edit view for a group
+  Scenario: Successfully edit a group
     Then I should see the Code and Type fields
     And the fields Code and Type should be disabled
     And I should not see the Axis field
-
-  Scenario: Successfully edit a group
-    Given I fill in the following information:
+    When I fill in the following information:
       | English (United States) | My similar boots |
     And I press the "Save" button
     Then I should see "My similar boots"
