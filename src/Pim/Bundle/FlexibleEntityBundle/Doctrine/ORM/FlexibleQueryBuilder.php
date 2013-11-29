@@ -394,9 +394,11 @@ class FlexibleQueryBuilder
             $this->qb->addOrderBy($joinAliasOptVal.'.value', $direction);
 
         } else {
-
             // join to value and sort on
             $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias);
+
+            // Remove current join in order to put the orderBy related join
+            // at first place in the join queue for performances reasons
             $joinsSet = $this->qb->getDQLPart('join');
             $this->qb->resetDQLPart('join');
 
@@ -408,25 +410,37 @@ class FlexibleQueryBuilder
             );
             $this->qb->addOrderBy($joinAlias.'.'.$attribute->getBackendType(), $direction);
 
-            foreach($joinsSet as $joins) {
-                foreach($joins as $join) {
-                    if ($join->getJoinType() === Join::LEFT_JOIN) {
-                        $this->qb->leftJoin(
-                            $join->getJoin(),
-                            $join->getAlias(),
-                            $join->getConditionType(),
-                            $join->getCondition(),
-                            $join->getIndexBy()
-                        );
-                    } else {
-                        $this->qb->join(
-                            $join->getJoin(),
-                            $join->getAlias(),
-                            $join->getConditionType(),
-                            $join->getCondition(),
-                            $join->getIndexBy()
-                        );
-                    }
+            // Reapply previous join after the orderBy related join
+            $this->applyJoins($joinsSet);
+
+        }
+    }
+
+    /**
+     * Reapply joins from a set of joins got from getDQLPart('join')
+     *
+     * @param array joinsSet
+     */
+    protected function applyJoins($joinsSet)
+    {
+        foreach ($joinsSet as $joins) {
+            foreach ($joins as $join) {
+                if ($join->getJoinType() === Join::LEFT_JOIN) {
+                    $this->qb->leftJoin(
+                        $join->getJoin(),
+                        $join->getAlias(),
+                        $join->getConditionType(),
+                        $join->getCondition(),
+                        $join->getIndexBy()
+                    );
+                } else {
+                    $this->qb->join(
+                        $join->getJoin(),
+                        $join->getAlias(),
+                        $join->getConditionType(),
+                        $join->getCondition(),
+                        $join->getIndexBy()
+                    );
                 }
             }
         }
