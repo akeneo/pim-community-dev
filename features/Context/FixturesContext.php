@@ -292,8 +292,7 @@ class FixturesContext extends RawMinkContext
     /**
      * @param TableNode $table
      *
-     * @Given /^the following families:$/
-     * @Given /^the following family:$/
+     * @Given /^the following famil(?:y|ies):$/
      */
     public function theFollowingFamilies(TableNode $table)
     {
@@ -363,21 +362,6 @@ class FixturesContext extends RawMinkContext
         foreach ($entities as $entity) {
             $this->remove($entity, false);
         }
-        $this->flush();
-    }
-
-    /**
-     * @param string $product
-     * @param string $family
-     *
-     * @Given /^the product "([^"]*)" belongs to the family "([^"]*)"$/
-     */
-    public function theProductBelongsToTheFamily($product, $family)
-    {
-        $product = $this->getProduct($product);
-        $family  = $this->getFamily($family);
-
-        $product->setFamily($family);
         $this->flush();
     }
 

@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "302f4407bb94c6228b6ccbf758cff487",
+    "hash": "ffbd521143e7f4a4852410d04c2405c7",
     "packages": [
         {
             "name": "a2lix/translation-form-bundle",
@@ -66,58 +66,6 @@
                 "translation"
             ],
             "time": "2013-10-07 19:50:34"
-        },
-        {
-            "name": "akeneo/DemoBundle",
-            "version": "dev-master",
-            "target-dir": "Pim/Bundle/DemoBundle",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/akeneo/DemoBundle.git",
-                "reference": "bbbf368d7dc61459a190f8e803f626818d98d512"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/akeneo/DemoBundle/zipball/bbbf368d7dc61459a190f8e803f626818d98d512",
-                "reference": "bbbf368d7dc61459a190f8e803f626818d98d512",
-                "shasum": ""
-            },
-            "require": {
-                "fzaninotto/faker": "~1.2",
-                "nelmio/alice": "1.2.*",
-                "php": ">=5.3.3",
-                "symfony/symfony": "2.*"
-            },
-            "require-dev": {
-                "doctrine/dbal": ">=2.2,<2.4-dev",
-                "doctrine/orm": ">=2.2.3,<2.4-dev"
-            },
-            "type": "symfony-bundle",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-0": {
-                    "Pim\\Bundle\\DemoBundle": ""
-                }
-            },
-            "license": [
-                "OSL"
-            ],
-            "description": "Demo Bundle",
-            "homepage": "https://github.com/akeneo/DemoBundle",
-            "keywords": [
-                "Data",
-                "Demo",
-                "Generator"
-            ],
-            "support": {
-                "source": "https://github.com/akeneo/DemoBundle/tree/master",
-                "issues": "https://github.com/akeneo/DemoBundle/issues"
-            },
-            "time": "2013-11-28 13:00:31"
         },
         {
             "name": "apy/jsfv-bundle",
@@ -1271,8 +1219,10 @@
             },
             "require": {
                 "doctrine/common": ">=2.1.0,<2.5-dev",
-                "ext-mongo": ">=1.2.12,<1.6-dev",
                 "php": ">=5.3.2"
+            },
+            "suggest": {
+                "ext-mongo": ">=1.2.12,<1.6-dev"
             },
             "type": "library",
             "autoload": {

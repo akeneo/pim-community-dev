@@ -225,49 +225,16 @@ class WebUser extends RawMinkContext
     /* -------------------- Other methods -------------------- */
 
     /**
-     * @param string $deactivated
      * @param string $currencies
      *
-     * @Then /^I should see (de)?activated currency (.*)$/
-     * @Then /^I should see (de)?activated currencies (.*)$/
+     * @When /^I (?:de)?activate the (.*) currenc(?:y|ies)$/
      */
-    public function iShouldSeeActivatedCurrencies($deactivated, $currencies)
+    public function iToggleTheCurrencies($currencies)
     {
-        $currencies = $this->listToArray($currencies);
-
-        foreach ($currencies as $currency) {
-            if ($deactivated) {
-                if (!$this->getPage('Currency index')->findDeactivatedCurrency($currency)) {
-                    throw $this->createExpectationException(sprintf('Currency "%s" is not deactivated.', $currency));
-                }
-            } else {
-                if (!$this->getPage('Currency index')->findActivatedCurrency($currency)) {
-                    throw $this->createExpectationException(sprintf('Currency "%s" is not activated.', $currency));
-                }
-            }
+        foreach ($this->listToArray($currencies) as $currency) {
+            $this->getCurrentPage()->clickOnAction($currency, 'Change status');
+            $this->wait();
         }
-    }
-
-    /**
-     * @param string $currencies
-     *
-     * @When /^I activate the (.*) currency$/
-     */
-    public function iActivateTheCurrency($currencies)
-    {
-        $this->getPage('Currency index')->activateCurrencies($this->listToArray($currencies));
-        $this->wait();
-    }
-
-    /**
-     * @param string $currencies
-     *
-     * @When /^I deactivate the (.*) currency$/
-     */
-    public function iDeactivateTheCurrency($currencies)
-    {
-        $this->getPage('Currency index')->deactivateCurrencies($this->listToArray($currencies));
-        $this->wait();
     }
 
     /**
@@ -566,7 +533,8 @@ class WebUser extends RawMinkContext
             sprintf('%s.%s', $this->getNavigationContext()->currentPage, $field)
         );
 
-        return $this->getCurrentPage()->fillField($field, $value);
+        $this->getCurrentPage()->fillField($field, $value);
+        $this->wait();
     }
 
     /**
@@ -771,78 +739,6 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @param string $type
-     *
-     * @When /^I select the attribute type "([^"]*)"$/
-     */
-    public function iSelectTheAttributeType($type)
-    {
-        $this->getPage('Attribute creation')->selectAttributeType($type);
-
-        $this->wait();
-    }
-
-    /**
-     * @param string $channel
-     *
-     * @Given /^I select the channel "([^"]*)"$/
-     */
-    public function iSelectChannel($channel)
-    {
-        $this->getPage('Export creation')->selectChannel($channel);
-    }
-
-    /**
-     * @param string $locale
-     *
-     * @Given /^I select the locale "([^"]*)"$/
-     */
-    public function iSelectLocale($locale)
-    {
-        $this->getPage('Channel creation')->selectLocale($locale);
-    }
-
-    /**
-     * @param string $currency
-     *
-     * @Given /^I select the currency "([^"]*)"$/
-     */
-    public function iSelectCurrency($currency)
-    {
-        $this->getPage('Channel creation')->selectCurrency($currency);
-    }
-
-    /**
-     * @param string $axis
-     *
-     * @Given /^I select the axis "([^"]*)"$/
-     */
-    public function iSelectAxis($axis)
-    {
-        $this->getCurrentPage()->selectAxis($axis);
-    }
-
-    /**
-     * @param string $status
-     *
-     * @Given /^I select the status "([^"]*)"$/
-     */
-    public function iSelectStatus($status)
-    {
-        $this->getPage('User creation')->selectStatus($status);
-    }
-
-    /**
-     * @param string $owner
-     *
-     * @Given /^I select the owner "([^"]*)"$/
-     */
-    public function iSelectOwner($owner)
-    {
-        $this->getPage('User creation')->selectOwner($owner);
-    }
-
-    /**
      * @param string $role
      *
      * @Given /^I select the role "([^"]*)"$/
@@ -927,7 +823,7 @@ class WebUser extends RawMinkContext
     public function theFollowingAttributeTypesShouldHaveTheFollowingFields(TableNode $table)
     {
         foreach ($table->getRowsHash() as $type => $fields) {
-            $this->iSelectTheAttributeType($type);
+            $this->iChangeTheTo('Attribute type', $type);
             try {
                 $this->getMainContext()->getSubcontext('assertions')->iShouldSeeTheFields($fields);
             } catch (ExpectationException $e) {
@@ -1058,39 +954,14 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @param string $channel
-     * @param string $not
-     * @param string $category
-     *
-     * @Given /^the channel (.*) is (not )?able to export category (.*)$/
-     */
-    public function theChannelIsAbleToExportCategory($channel, $not, $category)
-    {
-        $expected = (bool) $not;
-        $actual = $this->getPage('Channel index')->channelCanExport($channel, $category);
-
-        if ($expected !== $actual) {
-            throw $this->createExpectationException(
-                sprintf(
-                    'Expecting channel %s %sto be able to export category %s',
-                    $channel,
-                    $not,
-                    $category
-                )
-            );
-        }
-    }
-
-    /**
      * @param integer $count
      *
-     * @Then /^there should be (\d+) update$/
-     * @Then /^there should be (\d+) updates$/
+     * @Then /^there should be (\d+) updates?$/
      */
     public function thereShouldBeUpdate($count)
     {
-        if ((int) $count !== $countUpdates = $this->getPage('Product edit')->countUpdates()) {
-            throw $this->createExpectationException(sprintf('Expected %d updates, saw %d.', $count, $countUpdates));
+        if ((int) $count !== $actualCount = count($this->getCurrentPage()->getHistoryRows())) {
+            throw $this->createExpectationException(sprintf('Expected %d updates, saw %d.', $count, $actualCount));
         }
     }
 

@@ -8,13 +8,10 @@ Feature: Edit an association
     Given a "footwear" catalog configuration
     And I am logged in as "admin"
 
-  Scenario: Successfully display the edit view for an association
-    Given I am on the "UPSELL" association page
-    Then I should see the Code field
-    And the field Code should be disabled
-
   Scenario: Successfully edit an association
     Given I am on the "SUBSTITUTION" association page
+    Then I should see the Code field
+    And the field Code should be disabled
     When I fill in the following information:
       | English (United States) | My substitution |
     And I press the "Save" button

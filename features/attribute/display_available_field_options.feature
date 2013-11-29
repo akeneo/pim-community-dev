@@ -25,7 +25,7 @@ Feature: Display available field options
       | Text          | Default value, Max characters, Validation rule, Searchable                                                                   |
 
   Scenario Outline: Succesfully display available values fields for attribute types
-    Given I select the attribute type "<type>"
+    Given I change the "Attribute type" to "<type>"
     And I visit the "Values" tab
     Then I should see the <fields> fields
 

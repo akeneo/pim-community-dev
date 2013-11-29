@@ -7,6 +7,7 @@ use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\Gherkin\Node\TableNode;
+use Behat\Mink\Driver\Selenium2Driver;
 
 /**
  * Context for assertions
@@ -33,26 +34,25 @@ class AssertionContext extends RawMinkContext
     }
 
     /**
-     * @param string $text
-     *
-     * @Then /^I should see a tooltip "([^"]*)"$/
-     */
-    public function iShouldSeeATooltip($text)
-    {
-        if (!$this->getCurrentPage()->findTooltip($text)) {
-            throw $this->createExpectationException(sprintf('No tooltip containing "%s" were found.', $text));
-        }
-    }
-
-    /**
      * @param string $error
      *
-     * @Then /^I should see validation error "([^"]*)"$/
+     * @Then /^I should see(?: a)? validation (?:error|tooltip) "([^"]*)"$/
      */
     public function iShouldSeeValidationError($error)
     {
-        $errors = $this->getCurrentPage()->getValidationErrors();
-        assertTrue(in_array($error, $errors), sprintf('Expecting to see validation error "%s", not found', $error));
+        if ($this->getSession()->getDriver() instanceof Selenium2Driver) {
+            $script = 'return $(\'.validation-tooltip[data-original-title="%s"]\').length > 0';
+            $found = $this->getSession()->evaluateScript(sprintf($script, $error));
+            if ($found) {
+                return;
+            }
+        }
+
+        if (!$this->getCurrentPage()->findValidationTooltip($error)) {
+            $this->getMainContext()->wait();
+            $errors = $this->getCurrentPage()->getValidationErrors();
+            assertTrue(in_array($error, $errors), sprintf('Expecting to see validation error "%s", not found', $error));
+        }
     }
 
     /**
@@ -256,6 +256,24 @@ class AssertionContext extends RawMinkContext
             $steps[] = new Then(sprintf('I change the Code to "%s"', $item['code']));
             $steps[] = new Then(sprintf('I save the %s', $entity));
             $steps[] = new Then('I should see validation error "This code is not available."');
+        }
+
+        return $steps;
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @return Then[]
+     * @Then /^the following pages should have the following titles:$/
+     */
+    public function theFollowingPagesShouldHaveTheFollowingTitles($table)
+    {
+        $steps = array();
+
+        foreach ($table->getHash() as $item) {
+            $steps[] = new Then(sprintf('I am on the %s page', $item['page']));
+            $steps[] = new Then(sprintf('I should see the title "%s"', $item['title']));
         }
 
         return $steps;
