@@ -38,9 +38,9 @@ define(function (require) {
             /**
              * Reads data from grid container, collects required modules and runs grid builder
              *
-             * @param {Function} cb
+             * @param {Function} initBuilders
              */
-            initBuilder: function (cb) {
+            initBuilder: function (initBuilders) {
                 var self = this;
 
                 self.metadata = _.extend({
@@ -58,7 +58,8 @@ define(function (require) {
                 // load all dependencies and build grid
                 tools.loadModules(self.modules, function () {
                     methods.buildGrid.call(self);
-                    cb();
+                    initBuilders();
+                    methods.announceCollectionCreated.call(self);
                 });
             },
 
@@ -95,11 +96,11 @@ define(function (require) {
                 // create collection
                 options = methods.combineCollectionOptions.call(this);
                 collection = new PageableCollection(this.$el.data('data'), options);
-                mediator.trigger('datagrid_collection_set_after', collection, this.$el);
 
                 // create grid
                 options = methods.combineGridOptions.call(this);
                 grid = new Grid(_.extend({collection: collection}, options));
+                this.grid = grid;
                 this.$el.append(grid.render().$el);
 
                 if (options.routerEnabled !== false) {
@@ -110,6 +111,13 @@ define(function (require) {
                 // create grid view
                 options = methods.combineGridViewsOptions.call(this);
                 $(gridGridViewsSelector).append((new GridViewsView(_.extend({collection: collection}, options))).render().$el);
+            },
+
+            /**
+             * Announce collection
+             */
+            announceCollectionCreated: function () {
+                mediator.trigger('datagrid_collection_set_after', this.grid.collection, this.$el);
             },
 
             /**
