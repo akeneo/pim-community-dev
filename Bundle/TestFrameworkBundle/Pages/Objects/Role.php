@@ -51,10 +51,12 @@ class Role extends AbstractEntity implements Entity
     {
         foreach ($aclaction as $action) {
             $action = strtoupper($action);
-            $this->byXPath(
+            $xpath = $this->byXPath(
                 "//div[strong/text() = '{$entityName}']/ancestor::tr//input" .
                 "[contains(@name, '[$action][accessLevel')]/preceding-sibling::a"
-            )->click();
+            );
+            $this->moveto($xpath);
+            $xpath->click();
             $this->waitForAjax();
             $this->accesslevel = $this->select(
                 $this->byXpath(
@@ -75,9 +77,11 @@ class Role extends AbstractEntity implements Entity
     public function setCapability($capabilityname, $accesslevel)
     {
         foreach ($capabilityname as $name) {
-            $this->byXpath(
+            $xpath = $this->byXpath(
                 "//div[strong/text() = '{$name}']/following-sibling::div//a"
-            )->click();
+            );
+            $this->moveto($xpath);
+            $xpath->click();
             $this->waitForAjax();
             $this->accesslevel = $this->select($this->byXpath(
                 "//div[strong/text() = '{$name}']/following-sibling::div//select")
