@@ -225,30 +225,6 @@ class WebUser extends RawMinkContext
     /* -------------------- Other methods -------------------- */
 
     /**
-     * @param string $deactivated
-     * @param string $currencies
-     *
-     * @Then /^I should see (de)?activated currency (.*)$/
-     * @Then /^I should see (de)?activated currencies (.*)$/
-     */
-    public function iShouldSeeActivatedCurrencies($deactivated, $currencies)
-    {
-        $currencies = $this->listToArray($currencies);
-
-        foreach ($currencies as $currency) {
-            if ($deactivated) {
-                if (!$this->getPage('Currency index')->findDeactivatedCurrency($currency)) {
-                    throw $this->createExpectationException(sprintf('Currency "%s" is not deactivated.', $currency));
-                }
-            } else {
-                if (!$this->getPage('Currency index')->findActivatedCurrency($currency)) {
-                    throw $this->createExpectationException(sprintf('Currency "%s" is not activated.', $currency));
-                }
-            }
-        }
-    }
-
-    /**
      * @param string $currencies
      *
      * @When /^I activate the (.*) currency$/

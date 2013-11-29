@@ -19,26 +19,6 @@ class Index extends Grid
     protected $path = '/configuration/currency/';
 
     /**
-     * @param string $currency
-     *
-     * @return NodeElement
-     */
-    public function findActivatedCurrency($currency)
-    {
-        return $this->getRow($currency)->find('css', 'span.label-success');
-    }
-
-    /**
-     * @param string $currency
-     *
-     * @return NodeElement
-     */
-    public function findDeactivatedCurrency($currency)
-    {
-        return $this->getRow($currency)->find('css', 'span.label-important');
-    }
-
-    /**
      * @param array $currencies
      */
     public function activateCurrencies(array $currencies)
