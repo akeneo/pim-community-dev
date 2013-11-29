@@ -3,7 +3,7 @@
         {% if recordUrl is defined -%}
         <a href="{{ recordUrl }}" {% if recordUrlCssClass is defined %}class="{{ recordUrlCssClass }}"{% endif %}>
         {%- endif -%}
-            <img src="{{ showImage|default(false) and imagePath ? imagePath|imagine_filter('avatar_med') : asset('bundles/oroui/img/info-' ~ iconType|default('usser') ~ '.png') }}" alt="{{ title }}" />
+            <img src="{{ showImage|default(false) and imagePath ? imagePath|imagine_filter('avatar_med') : asset('bundles/oroui/img/info-' ~ iconType|default('user') ~ '.png') }}" alt="{{ title }}" />
         {%- if recordUrl is defined -%}
         </a>
         {%- endif %}

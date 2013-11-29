@@ -9,17 +9,17 @@
     <div class="container-fluid page-title">
         <div class="navigation clearfix navbar-extra">
             <div class="row">
-                <div class="pull-right title-buttons-container">
-                    {% placeholder index_navButtons_before %}
-                    {% block navButtons %}{% endblock navButtons %}
-                    {% placeholder index_navButtons_after %}
-                </div>
                 <div class="span9">
                     <div class="pull-left">
                         <div class="container-fluid">
                             <h1 class="oro-subtitle">{{ (pageTitle is defined ? pageTitle : '')|trans }}</h1>
                         </div>
                     </div>
+                </div>
+                <div class="pull-right title-buttons-container">
+                    {% placeholder index_navButtons_before %}
+                    {% block navButtons %}{% endblock navButtons %}
+                    {% placeholder index_navButtons_after %}
                 </div>
             </div>
         </div>
