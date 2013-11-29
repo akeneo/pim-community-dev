@@ -41,7 +41,12 @@ class OrmProductTransformer extends AbstractOrmTransformer
     /**
      * @var array
      */
-    protected $propertyColumns;
+    protected $propertyColumnsInfo;
+
+    /**
+     * @var array
+     */
+    protected $attributeColumnsInfo;
 
     /**
      * Constructor
@@ -108,20 +113,20 @@ class OrmProductTransformer extends AbstractOrmTransformer
     {
         $flexibleValueClass = $this->productManager->getFlexibleValueName();
 
-        foreach ($this->propertyColumns as $label) {
-            $columnInfo = $this->labelTransformer->transform($class, $label);
+        foreach ($this->propertyColumnsInfo as $columnInfo) {
+            $label = $columnInfo->getLabel();
             $transformerInfo = $this->getTransformerInfo($class, $columnInfo);
             $error = $this->setProperty($entity, $columnInfo, $transformerInfo, $data[$label]);
             if ($error) {
                 $this->errors[$label] = array($error);
             }
-            unset($data[$label]);
         }
 
         $requiredAttributeCodes = $this->attributeCache->getRequiredAttributeCodes($entity);
-        foreach ($data as $label => $value) {
-            $columnInfo = $this->labelTransformer->transform($class, $label);
+        foreach ($this->attributeColumnsInfo as $columnInfo) {
+            $label = $columnInfo->getLabel();
             $transformerInfo = $this->getTransformerInfo($flexibleValueClass, $columnInfo);
+            $value = $data[$label];
             if ('' != trim($value) || in_array($columnInfo->getName(), $requiredAttributeCodes)) {
                 $error = $this->setProductValue($entity, $columnInfo, $transformerInfo, $value);
                 if ($error) {
@@ -188,21 +193,14 @@ class OrmProductTransformer extends AbstractOrmTransformer
 
         $class = $this->productManager->getFlexibleName();
         $columnsInfo = $this->labelTransformer->transform($class, array_keys($data));
-        $metadata = $this->doctrine->getManager()->getClassMetadata($class);
-        $attributeColumnInfos = array();
-        $this->propertyColumns = array();
+        $this->attributeCache->initialize($columnsInfo);
+        $this->propertyColumnsInfo = array();
         foreach ($columnsInfo as $columnInfo) {
-            $propertyPath = $columnInfo->getPropertyPath();
-            $label = $columnInfo->getLabel();
-            if (!$columnInfo->getAttribute() &&
-                ($metadata->hasField($propertyPath) || $metadata->hasAssociation($propertyPath)) ||
-                preg_match('/_(groups|products)$/', $label)
-                ) {
-                $this->propertyColumns[] = $label;
+            if ($columnInfo->getAttribute()) {
+                $this->attributeColumnsInfo[] = $columnInfo;
             } else {
-                $attributeColumnInfos[] = $columnInfo;
+                $this->propertyColumnsInfo[] = $columnInfo;
             }
         }
-        $this->attributeCache->initialize($attributeColumnInfos);
     }
 }

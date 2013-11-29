@@ -77,9 +77,6 @@ class AttributeCache
      * Initializes the cache with a set of column labels
      *
      * @param array $columnsInfo
-     *
-     * @throws UnknownColumnException
-     * @throws ColumnLabelException
      */
     public function initialize(array $columnsInfo)
     {
@@ -212,12 +209,14 @@ class AttributeCache
      * Sets the attributes and identifierAttributes properties
      *
      * @param array $columnsInfo
-     *
-     * @throws UnknownColumnException
-     * @throws ColumnLabelException
      */
     protected function setAttributes($columnsInfo)
     {
+        $this->attributes = array();
+        $this->identifierAttribute = null;
+        if (!count($columnsInfo)) {
+            return;
+        }
         $codes = array_unique(
             array_map(
                 function ($columnInfo) {
@@ -230,30 +229,17 @@ class AttributeCache
         $attributes = $this->doctrine->getRepository('PimCatalogBundle:ProductAttribute')
                 ->findBy(array('code' => $codes));
 
-        $this->attributes = array();
         foreach ($attributes as $attribute) {
             if (static::IDENTIFIER_ATTRIBUTE_TYPE === $attribute->getAttributeType()) {
                 $this->identifierAttribute = $attribute;
             }
             $this->attributes[$attribute->getCode()] = $attribute;
         }
-
-        if (count($attributes) !== count($codes)) {
-            throw new UnknownColumnException(
-                array_diff(
-                    $codes,
-                    array_map(
-                        function ($attribute) {
-                            return $attribute->getCode();
-                        },
-                        $this->attributes
-                    )
-                )
-            );
-        }
-
         foreach ($columnsInfo as $columnInfo) {
-            $columnInfo->setAttribute($this->attributes[$columnInfo->getName()]);
+            $columnName = $columnInfo->getName();
+            if (isset($this->attributes[$columnName])) {
+                $columnInfo->setAttribute($this->attributes[$columnName]);
+            }
         }
     }
 }
