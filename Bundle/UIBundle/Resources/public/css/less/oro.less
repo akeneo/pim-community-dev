@@ -858,10 +858,6 @@ header {
       .dropdown-menu {
         width:100px;
         margin:-4px -4px 0 0;
-        .divider {
-          border-bottom-color:#eee;
-          margin:4px 0;
-        }
         li {
           a {
             padding:2px 12px;
@@ -874,7 +870,12 @@ header {
   }
 }
 
-
+.dropdown-menu {
+  .divider {
+    border-bottom-color:#eee;
+    margin:4px 0;
+  }
+}
 
 /* Header Application Menu */
 #oroplatform-header {
@@ -5243,8 +5244,4 @@ span.validation-faled {
 }
 .input-addon{
   width: 258px;
-}
-
-.dropdown-menu .divider {
-  border-bottom: 1px solid #F2F2F2;
 }
