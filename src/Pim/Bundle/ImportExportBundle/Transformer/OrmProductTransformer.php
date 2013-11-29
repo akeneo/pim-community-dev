@@ -193,10 +193,12 @@ class OrmProductTransformer extends AbstractOrmTransformer
         $this->propertyColumns = array();
         foreach ($columnsInfo as $columnInfo) {
             $propertyPath = $columnInfo->getPropertyPath();
+            $label = $columnInfo->getLabel();
             if (!$columnInfo->getAttribute() &&
-                ($metadata->hasField($propertyPath) || $metadata->hasAssociation($propertyPath))
+                ($metadata->hasField($propertyPath) || $metadata->hasAssociation($propertyPath)) ||
+                preg_match('/_(groups|products)$/', $label)
                 ) {
-                $this->propertyColumns[] = $columnInfo->getLabel();
+                $this->propertyColumns[] = $label;
             } else {
                 $attributeColumnInfos[] = $columnInfo;
             }
