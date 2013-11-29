@@ -72,41 +72,14 @@ class WebUser extends RawMinkContext
     /**
      * @param string $entity
      *
-     * @Given /^I create a new (\w+)$/
+     * @Given /^I create a new ([^"]*)$/
      */
     public function iCreateANew($entity)
     {
-        $entity = ucfirst($entity);
+        $entity = implode('', array_map('ucfirst', explode(' ', $entity)));
         $this->getPage(sprintf('%s index', $entity))->clickCreationLink();
         $this->getNavigationContext()->currentPage = sprintf('%s creation', $entity);
         $this->wait();
-    }
-
-     /**
-      * @Given /^I create a new product group$/
-      */
-    public function iCreateANewProductGroup()
-    {
-        $entity = 'ProductGroup';
-        $this->iCreateANew($entity);
-    }
-
-    /**
-     * @Given /^I create a new group type$/
-     */
-    public function iCreateANewGroupType()
-    {
-        $entity = 'GroupType';
-        $this->iCreateANew($entity);
-    }
-
-    /**
-     * @Given /^I create a new variant group$/
-     */
-    public function iCreateANewVariantGroup()
-    {
-        $entity = 'VariantGroup';
-        $this->iCreateANew($entity);
     }
 
     /**
@@ -234,35 +207,6 @@ class WebUser extends RawMinkContext
         foreach ($this->listToArray($currencies) as $currency) {
             $this->getCurrentPage()->clickOnAction($currency, 'Change status');
             $this->wait();
-        }
-    }
-
-    /**
-     * @param string $deactivated
-     * @param string $locales
-     *
-     * @throws ExpectationException
-     *
-     * @When /^I should see (de)?activated locales? (.*)$/
-     */
-    public function iShouldSeeActivatedLocales($deactivated, $locales)
-    {
-        $locales = $this->listToArray($locales);
-
-        foreach ($locales as $locale) {
-            if ($deactivated) {
-                if (!$this->getPage('Locale index')->findDeactivatedLocale($locale)) {
-                    throw $this->createExpectationException(
-                        sprintf('Locale "%s" is not deactivated', $locale)
-                    );
-                }
-            } else {
-                if (!$this->getPage('Locale index')->findActivatedLocale($locale)) {
-                    throw $this->createExpectationException(
-                        sprintf('Locale "%s" is not activated', $locale)
-                    );
-                }
-            }
         }
     }
 
