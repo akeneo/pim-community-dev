@@ -227,23 +227,14 @@ class WebUser extends RawMinkContext
     /**
      * @param string $currencies
      *
-     * @When /^I activate the (.*) currency$/
+     * @When /^I (?:de)?activate the (.*) currenc(?:y|ies)$/
      */
-    public function iActivateTheCurrency($currencies)
+    public function iToggleTheCurrencies($currencies)
     {
-        $this->getPage('Currency index')->activateCurrencies($this->listToArray($currencies));
-        $this->wait();
-    }
-
-    /**
-     * @param string $currencies
-     *
-     * @When /^I deactivate the (.*) currency$/
-     */
-    public function iDeactivateTheCurrency($currencies)
-    {
-        $this->getPage('Currency index')->deactivateCurrencies($this->listToArray($currencies));
-        $this->wait();
+        foreach ($this->listToArray($currencies) as $currency) {
+            $this->getCurrentPage()->clickOnAction($currency, 'Change status');
+            $this->wait();
+        }
     }
 
     /**
@@ -755,26 +746,6 @@ class WebUser extends RawMinkContext
     public function iSelectChannel($channel)
     {
         $this->getPage('Export creation')->selectChannel($channel);
-    }
-
-    /**
-     * @param string $locale
-     *
-     * @Given /^I select the locale "([^"]*)"$/
-     */
-    public function iSelectLocale($locale)
-    {
-        $this->getPage('Channel creation')->selectLocale($locale);
-    }
-
-    /**
-     * @param string $currency
-     *
-     * @Given /^I select the currency "([^"]*)"$/
-     */
-    public function iSelectCurrency($currency)
-    {
-        $this->getPage('Channel creation')->selectCurrency($currency);
     }
 
     /**

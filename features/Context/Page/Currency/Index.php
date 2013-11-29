@@ -17,24 +17,4 @@ class Index extends Grid
      * @var string $path
      */
     protected $path = '/configuration/currency/';
-
-    /**
-     * @param array $currencies
-     */
-    public function activateCurrencies(array $currencies)
-    {
-        foreach ($currencies as $currency) {
-            $this->clickOnAction($currency, 'Change status');
-        }
-    }
-
-    /**
-     * @param array $currencies
-     */
-    public function deactivateCurrencies(array $currencies)
-    {
-        foreach ($currencies as $currency) {
-            $this->clickOnAction($currency, 'Change status');
-        }
-    }
 }
