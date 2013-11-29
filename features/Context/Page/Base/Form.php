@@ -251,7 +251,11 @@ class Form extends Base
                         $field->focus();
                     } catch (UnsupportedDriverActionException $e) {
                     }
-                    $field->setValue($value);
+                    if ($field->getTagName() === 'select') {
+                        $field->selectOption($value);
+                    } else {
+                        $field->setValue($value);
+                    }
                 }
             } else {
                 foreach (explode(',', $value) as $value) {

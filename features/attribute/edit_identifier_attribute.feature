@@ -15,13 +15,13 @@ Feature: Edit an identifier attribute
   @javascript
   Scenario: Succesfully display a message that an identifier already exists when trying to create a second identifier
     Given I am on the attribute creation page
-    When I select the attribute type "Identifier"
+    When I change the "Attribute type" to "Identifier"
     Then I should see validation error "An identifier attribute already exists."
 
   @javascript
   Scenario: Fail to create a second identifier
     Given I am on the attribute creation page
-    And I select the attribute type "Identifier"
+    When I change the "Attribute type" to "Identifier"
     And I fill in the following information:
       | Code           | mySecondId |
       | Max characters | 100        |

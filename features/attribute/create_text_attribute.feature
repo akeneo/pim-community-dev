@@ -7,7 +7,6 @@ Feature: Create an attribute
     Given the "default" catalog configuration
     And I am logged in as "admin"
     And I am on the attribute creation page
-    And I select the attribute type "Text"
 
   Scenario: Sucessfully create and validate a text attribute
     Given I fill in the following information:
@@ -37,7 +36,6 @@ Feature: Create an attribute
       | my_groups           |
       | my_products         |
 
-  @javascript
   Scenario: Fail to create a text attribute with an invalid validation regex
     Given I fill in the following information:
      | Code              | short_description  |
