@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\OrganizationBundle\Tests\Form\EventListener;
 
+use Oro\Bundle\TagBundle\Entity\Tag;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
@@ -10,7 +11,6 @@ use Doctrine\Common\Util\ClassUtils;
 
 use Oro\Bundle\OrganizationBundle\Form\EventListener\OwnerFormSubscriber;
 use Oro\Bundle\UserBundle\Entity\User;
-use OroCRM\Bundle\ContactBundle\Entity\Contact;
 
 class OwnerFormSubscriberTest extends \PHPUnit_Framework_TestCase
 {
@@ -116,7 +116,7 @@ class OwnerFormSubscriberTest extends \PHPUnit_Framework_TestCase
 
     public function testPostSetDataReplaceOwnerAssignGranted()
     {
-        $data = new Contact();
+        $data = new Tag();
 
         $this->prepareEntityManager($data);
 
@@ -131,7 +131,7 @@ class OwnerFormSubscriberTest extends \PHPUnit_Framework_TestCase
 
     public function testPostSetDataReplaceOwnerAssignNotGranted()
     {
-        $data = new Contact();
+        $data = new Tag();
         $ownerName = 'user';
         $owner = new User();
         $owner->setUsername($ownerName);
