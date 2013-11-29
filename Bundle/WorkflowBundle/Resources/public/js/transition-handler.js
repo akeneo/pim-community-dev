@@ -1,5 +1,5 @@
-define(['jquery', 'oro/messenger', 'oro/translator', 'oro/navigation', 'oro/modal'],
-function($, messenger, __, Navigation, Modal) {
+define(['jquery', 'routing', 'oro/messenger', 'oro/translator', 'oro/navigation', 'oro/modal'],
+function($, routing, messenger, __, Navigation, Modal) {
     'use strict';
 
     var navigation = Navigation.getInstance();
@@ -40,7 +40,7 @@ function($, messenger, __, Navigation, Modal) {
                     var needRedirect = element.data('redirect-to-workflow');
                     if (needRedirect && workflowItemId) {
                         e.stopImmediatePropagation();
-                        var redirectUrl = Routing.generate(
+                        var redirectUrl = routing.generate(
                             'oro_workflow_step_edit',
                             {id: workflowItemId}
                         );

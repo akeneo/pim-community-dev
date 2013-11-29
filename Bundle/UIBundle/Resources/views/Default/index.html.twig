@@ -18,17 +18,10 @@
                 {% include 'OroRequireJSBundle::scripts.html.twig' with {compressed: not app.debug} %}
                 <script type="text/javascript">
                     require(['oro/init-layout', 'oro/init-user', 'oro/widget-manager', 'jquery.uniform']);
-                </script>
                 {% if app.debug %}
-                    <script type="text/javascript">
-                        require(['routing'], function() { require(['{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}']); });
-                        require(['oro/app'], function(app){app.debug = true;});
-                    </script>
-                {% else %}
-                    <script type="text/javascript">
-                        require(['routing'], function() { require(['../js/routes']); });
-                    </script>
+                    require(['oro/app'], function(app){app.debug = true;});
                 {% endif %}
+                </script>
                 <!--[if lte IE 9]>
                 <link href="{{ asset('bundles/oroui/css/ie.css') }}" rel="stylesheet" media="all" />
                 <script type="text/javascript">

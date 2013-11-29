@@ -1,0 +1,28 @@
+require({
+    shim: {
+        'oro/routes': {
+            deps: ['routing'],
+            init: function(routing) {
+                {% if not app.debug %}
+                routing.setBaseUrl({{ asset('')[:-1]|json_encode|raw }});
+                {% endif %}
+                return routing;
+            }
+        }
+    },
+    map: {
+        '*': {
+            'routing': 'oro/routes'
+        },
+        'oro/routes': {
+            'routing': 'routing'
+        }
+    },
+    paths: {
+    {% if not app.debug %}
+        'oro/routes': '{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}'
+    {% else %}
+        'oro/routes': '../js/routes'
+    {% endif %}
+    }
+});
