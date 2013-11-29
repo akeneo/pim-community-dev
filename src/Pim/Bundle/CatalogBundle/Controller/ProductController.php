@@ -325,6 +325,9 @@ class ProductController extends AbstractDoctrineController
 
                 // TODO : Check if the locale exists and is activated
                 $params = array('id' => $product->getId(), 'dataLocale' => $this->getDataLocale());
+                if ($comparisonLocale = $this->getComparisonLocale()) {
+                    $params['compareWith'] = $comparisonLocale;
+                }
 
                 return $this->redirectToRoute('pim_catalog_product_edit', $params);
             } else {
