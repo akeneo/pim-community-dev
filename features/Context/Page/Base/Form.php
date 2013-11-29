@@ -246,6 +246,7 @@ class Form extends Base
                     $field->selectOption($value);
                 } else {
                     $field = $this->find('css', sprintf('#%s', $for));
+                    $field->focus();
                     $field->setValue($value);
                 }
             } else {
