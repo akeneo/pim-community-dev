@@ -1,5 +1,5 @@
-define(['jquery', 'oro/messenger', 'oro/translator', 'oro/navigation', 'oro/modal'],
-function($, messenger, __, Navigation, Modal) {
+define(['jquery', 'routing', 'oro/messenger', 'oro/translator', 'oro/navigation', 'oro/modal'],
+function($, routing, messenger, __, Navigation, Modal) {
     'use strict';
 
     var navigation = Navigation.getInstance();
@@ -40,7 +40,7 @@ function($, messenger, __, Navigation, Modal) {
                     var needRedirect = element.data('redirect-to-workflow');
                     if (needRedirect && workflowItemId) {
                         e.stopImmediatePropagation();
-                        var redirectUrl = Routing.generate(
+                        var redirectUrl = routing.generate(
                             'oro_workflow_step_edit',
                             {id: workflowItemId}
                         );
@@ -65,10 +65,17 @@ function($, messenger, __, Navigation, Modal) {
      * @export  oro/workflow-transition-handler
      * @class   oro.WorkflowTransitionHandler
      */
-    return function(e) {
-        e.preventDefault();
-
+    return function() {
         var element = $(this);
+        if (element.data('_in-progress')) {
+            return;
+        }
+        element.data('_in-progress', true);
+        var resetInProgress = function() {
+            element.data('_in-progress', false);
+        };
+        element.one('transitions_success', resetInProgress);
+        element.one('transitions_failure', resetInProgress);
         if (element.data('dialog-url')) {
             require(['oro/dialog-widget'],
             function(DialogWidget) {
@@ -85,6 +92,7 @@ function($, messenger, __, Navigation, Modal) {
                         autoResize: true
                     }
                 });
+                transitionFormWidget.on('widgetRemove', resetInProgress);
                 transitionFormWidget.on('formSave', function(data) {
                     transitionFormWidget.remove();
                     performTransition(element, data);

@@ -33,19 +33,20 @@
         }) %}
     {% endif %}
 
-    <button type="button"
+    <a href="{{ transitionData['transition-url'] }}"
         {% for key, value in transitionData %}
             data-{{ key }}="{{ value }}"
         {% endfor %}
+        title="{{ transition.label|trans }}"
         class="btn icons-holder-text no-hash
             {% if not transitionData.enabled %}disabled{% endif %}
             {% if transition.frontendOptions is defined and transition.frontendOptions.class is defined %}{{ transition.frontendOptions.class }}{% endif %}"
         id="transition-{{ workflow.name }}-{{ transition.name }}">
         {% if transition.frontendOptions is defined and transition.frontendOptions.icon is defined %}
-            <i class="{{ transition.frontendOptions.icon }} hide-text">{{ transition.label|trans }}</i>
+            <i class="{{ transition.frontendOptions.icon }}"></i>
         {% endif %}
         {{ transition.label|trans }}
-    </button>
+    </a>
 {% endmacro %}
 
 {% macro renderTransitionsJs(transitionsData, blockId) %}
@@ -59,10 +60,14 @@
                 {% for data in transitionsData %}
                 (function(transitionBtn) {
                     if (transitionBtn.data('enabled')) {
-                        transitionBtn.on(
-                            'click',
-                            workflowTransitionHandler
-                        );
+                        transitionBtn.data('executor', function() {
+                            workflowTransitionHandler.call(transitionBtn);
+                        });
+                        transitionBtn.on('click', function(e) {
+                            e.preventDefault();
+                            $(this).data('executor').call();
+                        });
+                        transitionBtn.trigger('transitionHandlerInitialized');
                     } else {
                         transitionBtn.popover({
                             'html': true,

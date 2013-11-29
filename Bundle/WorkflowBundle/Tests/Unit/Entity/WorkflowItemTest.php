@@ -135,6 +135,19 @@ class WorkflowItemTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->workflowItem->getResult()->isEmpty());
     }
 
+    /**
+     * @depends testGetResult
+     */
+    public function testGetResultUnserialized()
+    {
+        $reflection = new \ReflectionObject($this->workflowItem);
+        $resultProperty = $reflection->getProperty('result');
+        $resultProperty->setAccessible(true);
+        $resultProperty->setValue($this->workflowItem, null);
+        $this->assertInstanceOf('Oro\Bundle\WorkflowBundle\Model\WorkflowResult', $this->workflowItem->getResult());
+        $this->assertTrue($this->workflowItem->getResult()->isEmpty());
+    }
+
     public function testClosed()
     {
         $this->assertFalse($this->workflowItem->isClosed());

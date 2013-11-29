@@ -50,6 +50,13 @@ class OptionSetListener
                             $fieldConfig->getId()->getFieldName()
                         );
 
+                        /**
+                         * in case of single select field type, should wrap value in array
+                         */
+                        if ($setData && !is_array($setData)) {
+                            $setData = [$setData];
+                        }
+
                         foreach ($setData as $option) {
                             $optionSetRelation = new OptionSetRelation();
                             $optionSetRelation->setData(

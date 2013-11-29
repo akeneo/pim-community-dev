@@ -5,3 +5,13 @@
     background: none;
     font-size: 14px;
 }
+div.disabled-choice div.selector {
+    background: none;
+    border: none;
+}
+div.disabled-choice div.selector span {
+    color: inherit;
+}
+div.disabled-choice div.selector span:after {
+    content: '';
+}

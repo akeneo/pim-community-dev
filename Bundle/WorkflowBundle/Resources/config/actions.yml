@@ -5,6 +5,7 @@ parameters:
     oro_workflow.action.configurable.class: Oro\Bundle\WorkflowBundle\Model\Action\Configurable
     oro_workflow.action.assign_value.class: Oro\Bundle\WorkflowBundle\Model\Action\AssignValue
     oro_workflow.action.unset_value.class: Oro\Bundle\WorkflowBundle\Model\Action\UnsetValue
+    oro_workflow.action.create_object.class: Oro\Bundle\WorkflowBundle\Model\Action\CreateObject
     oro_workflow.action.create_entity.class: Oro\Bundle\WorkflowBundle\Model\Action\CreateEntity
     oro_workflow.action.request_entity.class: Oro\Bundle\WorkflowBundle\Model\Action\RequestEntity
     oro_workflow.action.call_method.class: Oro\Bundle\WorkflowBundle\Model\Action\CallMethod
@@ -47,6 +48,13 @@ services:
             - @oro_workflow.action.assign_value
         tags:
             - { name: oro_workflow.action, alias: unset_value }
+
+    oro_workflow.action.create_object:
+        class: %oro_workflow.action.create_object.class%
+        arguments:
+            - @oro_workflow.context_accessor
+        tags:
+            - { name: oro_workflow.action, alias: create_object }
 
     oro_workflow.action.create_entity:
         class: %oro_workflow.action.create_entity.class%

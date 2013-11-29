@@ -27,8 +27,12 @@ Table of Contents
    - [Workflow Item Repository](#workflow-item-repository)
    - [Workflow Bind Entity](#workflow-bind-entity)
  - [Support Entities](#support-entities)
+   - [Workflow Manager](#workflow-manager)
    - [Workflow Data](#workflow-data)
    - [Workflow Result](#workflow-result)
+   - [Step Manager](#step-manager)
+   - [Transition Manager](#transition-manager)
+   - [Attribute Manager](#attribute-manager)
    - [Context Accessor](#context-accessor)
    - [Entity Binder](#entity-binder)
    - [Workflow Configuration](#workflow-configuration)
@@ -49,22 +53,23 @@ Oro\Bundle\WorkflowBundle\Model\Workflow
 **Description:**
 Encapsulates all logic of workflow, contains lists of steps, attributes and transitions. Create instance of
 Workflow Item, performs transition if it's allowed, gets allowed transitions and start transitions.
-Delegates operations with aggregated domain models to corresponding managers, such as StepManager, TransitionManager
-and AttributeManager
+Delegates operations with aggregated domain models to corresponding managers, such as Step Manager, Transition Manager
+and Attribute Manager
 
 **Methods:**
 * **transit(WorkflowItem, Transition)** - performs transit with name transitionName for specified WorkflowItem;
-* **isTransitionAllowed(WorkflowItem, Transition)** - calculates whether transition is allowed for specified WorkflowItem;
-* **start(data, Transition)** - returns new instance of Workflow Item and processes it's start transition.
-* **getAllowedStartTransitions(data)** - returns a list of allowed start transitions
-* **getAllowedTransitions(WorkflowItem)** - returns a list of allowed transitions
-* **getTransition(transitionName)** - gets Transition by name
-* **getTransitions(transitionName)** - gets all transitions
-* **getBindEntityAttributes()** - gets list of Attributes of bound entities
-* **getManagedEntityAttributes()** - gets list of Attributes of managed entities
-* **getAttributes()** - gets list of all Attributes
-* **getOrderedSteps()** - gets ordered list of all Steps
-* **createWorkflowItem(array data)** - create WorkflowItem instance and initialize it with passed data
+* **isTransitionAllowed(WorkflowItem, Transition)** - calculates whether transition is allowed
+for specified WorkflowItem;
+* **isTransitionAvailable(WorkflowItem, transition, errors)** - check whether transitions available for showing
+for specified WorkflowItem;
+* **start(data, Transition)** - returns new instance of Workflow Item and processes it's start transition;
+* **getTransitionsByWorkflowItem(WorkflowItem)** - returns a list of allowed transitions;
+* **getManagedEntityAttributes()** - gets list of Attributes of managed entities;
+* **createWorkflowItem(array data)** - create WorkflowItem instance and initialize it with passed data.
+* **getStepManager()** - get instance of embedded Step Manager;
+* **getAttributeManager()** - get instance of embedded Attribute Manager;
+* **getTransitionManager()** - get instance of embedded Transition Manager;
+* **bindEntities(workflowItem)** - bind all managed entities of specified worklfow item.
 
 Workflow Registry
 -----------------
@@ -101,8 +106,13 @@ Oro\Bundle\WorkflowBundle\Model\Transition
 Encapsulates transition parameters, contains init action, condition and post action, has next step property.
 
 **Methods:**
-* **isAllowed(WorkflowItem)** - calculates whether this transition allowed for WorkflowItem;
-* **transit(WorkflowItem)** - performs transition for WorkflowItem.
+* **isPreConditionAllowed(WorkflowItem, errors)** - check whether preconditions allowed
+and optionally returns list of errors;
+* **isAllowed(WorkflowItem, errors)** - calculates whether this transition allowed for WorkflowItem
+and optionally returns list of errors;
+* **isAvailable(WorkflowItem, errors)** - check whether this transition should be shown;
+* **transit(WorkflowItem)** - performs transition for WorkflowItem;
+* **hasForm()** - if transition has form or not.
 
 Attribute
 ---------
@@ -145,7 +155,7 @@ Basic interface for Transition Actions. Detailed description
 
 **Methods:**
 * **initialize(options)** - initialize specific action based on input options;
-* **execute(context)** - execute specific action for current context (usually context is WorkflowItem).
+* **execute(context)** - execute specific action for current context (usually context is WorkflowItem instance).
 
 Action Factory
 -------------------
@@ -285,6 +295,36 @@ of Workflow.
 
 Support Entities
 ================
+
+Workflow Manager
+----------------
+**Class:**
+Oro\Bundle\WorkflowBundle\Model\WorkflowManager
+
+**Description:**
+Main entry point for client to work with workflows. Provides lots of useful methods that should be used in controllers
+and specific implementations.
+
+**Methods:**
+* **getStartTransitions(workflow)** - returns list of start transition of specified workflow;
+* **isStartTransitionAvailable(workflow, transition, entity, errors)** - check whether specified start transition
+is allowed for current workflow, optionally returns list of errors;
+* **getTransitionsByWorkflowItem(WorkflowItem)** - get list of all possible (allowed and not allowed) transitions
+for specified WorkflowItem;
+* **isTransitionAvailable(WorkflowItem, transition, errors)** - check if current transition is allowed for
+specified workflow item, optionally returns list of errors;
+* **startWorkflow(workflow, entity, transition, data)** - start workflow for input entity using start transition
+and workflow data as array;
+* **transit(WorkflowItem, transition)** - perform transition for specified workflow item;
+* **getApplicableWorkflows(entity, workflowItems, workflowName)** - returns list of workflows that can be started
+for specified entity;
+* **getWorkflowItemsByEntity(entity, workflowName, workflowType)** - get list of all workflow items by input entity;
+* **isAllManagedEntitiesSpecified(WorkflowItem)** - returns "false" if some of required managed entities
+are not specified;
+* **getWorkflowData(Workflow, entity, data)** - get array filled with calculated workflow data based on
+input entity and data;
+* **getWorkflow(workflowIdentifier)** - get workflow instance by workflow name, workflow instance of workflow item.
+
 Workflow Data
 -------------
 **Class:**
@@ -301,6 +341,44 @@ Oro\Bundle\WorkflowBundle\Model\WorkflowResult
 **Description:**
 Container of results of last applied transition actions. This data is not persistable so it can be used only once
 right after successful transition.
+
+Step Manager
+-----------
+**Class:**
+Oro\Bundle\WorkflowBundle\Model\StepManager
+
+**Description:**
+StepManaged is a container for steps, is provides getters, setters and list of additional functions applicable to steps.
+
+**Methods:**
+* **getOrderedSteps()** - get list of steps sorted by rendering order.
+
+Transition Manager
+-----------------
+**Class:**
+Oro\Bundle\WorkflowBundle\Model\TransitionManager
+
+**Description:**
+TransitionManager is a container for transitions, is provides getters, setters
+and list of additional functions applicable to transitions.
+
+**Methods:**
+* **extractTransition(transition)** - converts transition name to transition instance;
+* **getStartTransitions()** - get list of start transitions.
+
+Attribute Manager
+----------------
+**Class:**
+Oro\Bundle\WorkflowBundle\Model\AttributeManager
+
+**Description:**
+AttributeManager is a container for attributes, is provides getters, setters
+and list of additional functions applicable to attributes.
+
+**Methods:**
+* **getManagedEntityAttributes()** - git list of attributes that contain managed entities;
+* **getBindEntityAttributes()** - git list of attributes that should be bound;
+* **getBindEntityAttributeNames()** - git list of the names of attributes that should be bound.
 
 Context Accessor
 ----------------
