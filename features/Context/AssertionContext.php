@@ -7,6 +7,7 @@ use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Mink\Exception\ElementNotFoundException;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\Gherkin\Node\TableNode;
+use Behat\Mink\Driver\Selenium2Driver;
 
 /**
  * Context for assertions
@@ -33,24 +34,20 @@ class AssertionContext extends RawMinkContext
     }
 
     /**
-     * @param string $text
-     *
-     * @Then /^I should see(?: a)? validation tooltip "([^"]*)"$/
-     */
-    public function iShouldSeeATooltip($text)
-    {
-        if (!$this->getCurrentPage()->findValidationTooltip($text)) {
-            throw $this->createExpectationException(sprintf('Validation tooltip containing "%s" not found.', $text));
-        }
-    }
-
-    /**
      * @param string $error
      *
-     * @Then /^I should see validation error "([^"]*)"$/
+     * @Then /^I should see(?: a)? validation (?:error|tooltip) "([^"]*)"$/
      */
     public function iShouldSeeValidationError($error)
     {
+        if ($this->getSession()->getDriver() instanceof Selenium2Driver) {
+            $script = 'return $(\'.validation-tooltip[data-original-title="%s"]\').length > 0';
+            $found = $this->getSession()->evaluateScript(sprintf($script, $error));
+            if ($found) {
+                return;
+            }
+        }
+
         if (!$this->getCurrentPage()->findValidationTooltip($error)) {
             $this->getMainContext()->wait();
             $errors = $this->getCurrentPage()->getValidationErrors();
