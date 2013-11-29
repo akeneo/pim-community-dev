@@ -1073,13 +1073,12 @@ class WebUser extends RawMinkContext
     /**
      * @param integer $count
      *
-     * @Then /^there should be (\d+) update$/
-     * @Then /^there should be (\d+) updates$/
+     * @Then /^there should be (\d+) updates?$/
      */
     public function thereShouldBeUpdate($count)
     {
-        if ((int) $count !== $countUpdates = $this->getPage('Product edit')->countUpdates()) {
-            throw $this->createExpectationException(sprintf('Expected %d updates, saw %d.', $count, $countUpdates));
+        if ((int) $count !== $actualCount = count($this->getCurrentPage()->getHistoryRows())) {
+            throw $this->createExpectationException(sprintf('Expected %d updates, saw %d.', $count, $actualCount));
         }
     }
 
