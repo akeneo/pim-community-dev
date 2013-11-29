@@ -2,13 +2,11 @@
 
 namespace Pim\Bundle\FlexibleEntityBundle\EventListener;
 
-
-use Oro\Bundle\MeasureBundle\Manager\MeasureManager;
-
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 
 use Oro\Bundle\MeasureBundle\Convert\MeasureConverter;
+use Oro\Bundle\MeasureBundle\Manager\MeasureManager;
 
 use Pim\Bundle\FlexibleEntityBundle\Entity\Metric;
 
@@ -45,6 +43,9 @@ class MetricBaseValuesSubscriber implements EventSubscriber
         $this->manager   = $manager;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getSubscribedEvents()
     {
         return array(
@@ -52,26 +53,37 @@ class MetricBaseValuesSubscriber implements EventSubscriber
         );
     }
 
+    /**
+     * Pre persist
+     * @param LifecycleEventArgs $args
+     */
     public function prePersist(LifecycleEventArgs $args)
     {
         $this->createMetricBaseValues($args);
     }
 
+    /**
+     * Pre update
+     * @param LifecycleEventArgs $args
+     */
     public function preUpdate(LifecycleEventArgs $args)
     {
         $this->createMetricBaseValues($args);
     }
 
-    protected function createMetricBaseValues($args)
+    /**
+     * Allow to create convert data in standard unit for metrics
+     *
+     * @param LifecycleEventArgs $args
+     */
+    protected function createMetricBaseValues(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
 
         if ($entity instanceof Metric) {
-            $measureFamily = $this->manager->getFamilyFromUnitSymbol($entity->getUnit());
-            $standardUnit = $this->manager->getStandardUnitSymbolForFamily($measureFamily);
-
             $this->converter->setFamily($measureFamily);
-            $baseData = $this->converter->convert($entity->getUnit(), $standardUnit, $entity->getData());
+            $baseData = $this->converter->convertBaseToStandard($entity->getUnit(), $entity->getData());
+            $baseUnit = $this->manager->getStandardUnitForFamily($entity->getFamily());
 
             $entity
                 ->setBaseData($baseData)
