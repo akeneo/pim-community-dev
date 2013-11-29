@@ -3,6 +3,7 @@
 namespace Context\Page\Base;
 
 use Behat\Mink\Exception\ElementNotFoundException;
+use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\Mink\Element\Element;
 
 /**
@@ -246,7 +247,10 @@ class Form extends Base
                     $field->selectOption($value);
                 } else {
                     $field = $this->find('css', sprintf('#%s', $for));
-                    $field->focus();
+                    try {
+                        $field->focus();
+                    } catch (UnsupportedDriverActionException $e) {
+                    }
                     $field->setValue($value);
                 }
             } else {
