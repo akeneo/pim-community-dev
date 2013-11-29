@@ -28,9 +28,8 @@ class Edit extends Form
         $this->elements = array_merge(
             $this->elements,
             array(
-                'Attributes'                      => array('css' => '#attributes table'),
-                'Attribute as label choices'      => array('css' => '#pim_catalog_family_form_attributeAsLabel'),
-                'Updates grid'                    => array('css' => '#history table.grid'),
+                'Attributes'                 => array('css' => '#attributes table'),
+                'Attribute as label choices' => array('css' => '#pim_catalog_family_form_attributeAsLabel'),
             )
         );
     }
@@ -179,13 +178,5 @@ class Edit extends Form
         }
 
         return $cells[$columnIdx];
-    }
-
-    /**
-     * @return array
-     */
-    public function getHistoryRows()
-    {
-        return $this->getElement('Updates grid')->findAll('css', 'tbody tr');
     }
 }

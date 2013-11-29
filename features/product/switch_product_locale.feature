@@ -4,56 +4,32 @@ Feature: Switch product locale
   I need to be able to switch product locale
 
   Background:
-    Given the "default" catalog configuration
-    And a "Computer" product
-    And the following attributes:
-      | label  | translatable |
-      | name   | yes          |
-      | screen | yes          |
+    Given an "apparel" catalog configuration
+    And the following product:
+      | sku    | family  |
+      | jacket | jackets |
     And the following product values:
-      | product  | attribute | value      | locale |
-      | Computer | name      | computer   | en_US  |
-      | Computer | name      | ordinateur | fr_FR  |
-      | Computer | screen    | 15 inches  | en_US  |
+      | product | attribute | value     | locale |
+      | jacket  | name      | My jacket | en_US  |
+      | jacket  | name      | Ma veste  | fr_FR  |
     And I am logged in as "admin"
+    And I am on the "jacket" product page
 
-  Scenario: Succesfully display product in the current locale
-    Given I am on the "Computer" product page
-    Then the product name should be "computer"
-
-  Scenario: Successfully switch product current locale
-    Given I am on the "Computer" product page
-    When I switch the locale to "French"
-    Then the product name should be "ordinateur"
-
-  Scenario: Successfully display nothing if no translation was set
-    Given I am on the "Computer" product page
-    When I switch the locale to "French"
-    Then the product screen should be empty
-
-  Scenario: Successfully edit a translated value in the default locale
-    Given I am on the "Computer" product page
-    When I change the name to "laptop"
-    And I save the product
-    Then the product name should be "laptop"
-
-  Scenario: Sucessfully edit a translated value in another locale
-    Given I am on the "Computer" product page
-    And I switch the locale to "French"
-    When I change the name to "ordinateur portable"
-    And I save the product
-    Then the product name should be "ordinateur portable"
-
-  Scenario: Succesfully display translated product label in the locale switcher
-    Given the following family:
-      | code       |
-      | technology |
-    And the family "technology" has the following attribute:
-      | label | attribute as label |
-      | name  | yes                |
-    And the product "Computer" belongs to the family "Technology"
-    And I am on the "Computer" product page
+  Scenario: Succesfully display and edit a product in the default locale
     Then the locale switcher should contain the following items:
-      | language                | label      |
-      | English (United States) | computer   |
-      | French                  | ordinateur |
+      | language                 | label     |
+      | English (United States)  | My jacket |
+      | English (United Kingdom) | jacket    |
+      | German (Germany)         | jacket    |
+      | French (France)          | Ma veste  |
+    And the product Name should be "My jacket"
+    When I change the Name to "My cool jacket"
+    And I save the product
+    Then the product Name should be "My cool jacket"
+
+  Scenario: Successfully edit a product in another locale
+    Given I switch the locale to "German"
+    Then the product Name should be empty
+    When I change the Name to "Meine Jacke"
+    And I save the product
+    Then the product Name should be "Meine Jacke"

@@ -8,13 +8,10 @@ Feature: Edit a group type
     Given the "default" catalog configuration
     And I am logged in as "admin"
 
-  Scenario: Successfully display the edit view for a group type
+  Scenario: Successfully edit a group type
     Given I am on the "X_SELL" group type page
     Then I should see the Code field
     And the field Code should be disabled
-
-  Scenario: Successfully edit a group type
-    Given I am on the "X_SELL" group type page
     When I fill in the following information:
       | English (United States) | My cross-sell type |
     And I press the "Save" button

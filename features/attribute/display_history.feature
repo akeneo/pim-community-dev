@@ -10,7 +10,7 @@ Feature: Display the attribute history
   @javascript
   Scenario: Succesfully edit a attribute and see the history
     Given I am on the attribute creation page
-    And I select the attribute type "Simple select"
+    And I change the "Attribute type" to "Simple select"
     And I change the Code to "packaging"
     And I visit the "Values" tab
     And I create the following attribute options:

@@ -31,15 +31,13 @@ class Edit extends Form
             $this->elements,
             array(
                 'Locales dropdown'    => array('css' => '#locale-switcher'),
-                'Comparison dropdown' => array('css' => '#comparison-switcher'),
                 'Locales selector'    => array('css' => '#pim_product_locales'),
                 'Enable switcher'     => array('css' => '#switch_status'),
-                'Updates grid'        => array('css' => '#history table.grid'),
                 'Image preview'       => array('css' => '#lbImage'),
                 'Completeness'        => array('css' => 'div#completeness'),
-                'Updates grid'        => array('css' => '#history table.grid'),
                 'Category pane'       => array('css' => '#categories'),
                 'Category tree'       => array('css' => '#trees'),
+                'Comparison dropdown' => array('css' => '#comparison-switcher'),
                 'Copy dropdown'       => array('css' => '#copy-switcher'),
             )
         );
@@ -201,14 +199,6 @@ class Edit extends Form
     }
 
     /**
-     * @return integer
-     */
-    public function countUpdates()
-    {
-        return count($this->getElement('Updates grid')->findAll('css', 'tbody tr'));
-    }
-
-    /**
      * @return NodeElement|void
      */
     public function getImagePreview()
@@ -364,14 +354,6 @@ class Edit extends Form
         }
 
         return $legend;
-    }
-
-    /**
-     * @return array
-     */
-    public function getHistoryRows()
-    {
-        return $this->getElement('Updates grid')->findAll('css', 'tbody tr');
     }
 
     /**
