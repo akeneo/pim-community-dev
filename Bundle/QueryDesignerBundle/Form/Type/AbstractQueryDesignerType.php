@@ -86,11 +86,7 @@ abstract class AbstractQueryDesignerType extends AbstractType
                     if ($maxDigit > $filtersCount) {
                         $form['filters_logic']->addError(
                             new FormError(
-                                sprintf(
-                                    'Filters have %d records. But You use %d as parameter',
-                                    $filtersCount,
-                                    $maxDigit
-                                )
+                                'You use extra filters'
                             )
                         );
                     }
@@ -99,10 +95,7 @@ abstract class AbstractQueryDesignerType extends AbstractType
                         if (!in_array($i, $digits[0])) {
                             $form['filters_logic']->addError(
                                 new FormError(
-                                    sprintf(
-                                        'You doesn\'t use %d filter',
-                                        $i
-                                    )
+                                    'You use not all filters'
                                 )
                             );
                         }
