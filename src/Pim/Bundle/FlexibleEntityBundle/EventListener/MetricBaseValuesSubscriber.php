@@ -81,13 +81,13 @@ class MetricBaseValuesSubscriber implements EventSubscriber
         $entity = $args->getEntity();
 
         if ($entity instanceof Metric) {
-            $this->converter->setFamily($measureFamily);
+            $this->converter->setFamily($entity->getFamily());
             $baseData = $this->converter->convertBaseToStandard($entity->getUnit(), $entity->getData());
             $baseUnit = $this->manager->getStandardUnitForFamily($entity->getFamily());
 
             $entity
                 ->setBaseData($baseData)
-                ->setBaseUnit($standardUnit);
+                ->setBaseUnit($baseUnit);
         }
     }
 }
