@@ -4,7 +4,7 @@ namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Normalizer;
 
 use Pim\Bundle\ImportExportBundle\Normalizer\GroupNormalizer;
 use Pim\Bundle\ImportExportBundle\Normalizer\TranslationNormalizer;
-use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\CatalogBundle\Model\Group;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 
@@ -32,9 +32,9 @@ class GroupNormalizerTest extends NormalizerTestCase
     public static function getSupportNormalizationData()
     {
         return array(
-            array('Pim\Bundle\CatalogBundle\Entity\Group', 'json', true),
-            array('Pim\Bundle\CatalogBundle\Entity\Group', 'xml', true),
-            array('Pim\Bundle\CatalogBundle\Entity\Group', 'csv', false),
+            array('Pim\Bundle\CatalogBundle\Model\Group', 'json', true),
+            array('Pim\Bundle\CatalogBundle\Model\Group', 'xml', true),
+            array('Pim\Bundle\CatalogBundle\Model\Group', 'csv', false),
             array('stdClass', 'json', false),
             array('stdClass', 'xml', false),
             array('stdClass', 'csv', false),

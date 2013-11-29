@@ -100,7 +100,7 @@ class UniqueValueValidatorTest extends \PHPUnit_Framework_TestCase
      */
     public function testNonExistingProductAttribute()
     {
-        $product = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Product');
+        $product = $this->getMock('Pim\Bundle\CatalogBundle\Model\Product');
         $this
             ->context
             ->expects($this->any())
@@ -132,7 +132,7 @@ class UniqueValueValidatorTest extends \PHPUnit_Framework_TestCase
      */
     public function testNonProductValue()
     {
-        $product = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Product');
+        $product = $this->getMock('Pim\Bundle\CatalogBundle\Model\Product');
         $this
             ->context
             ->expects($this->any())
@@ -384,19 +384,19 @@ class UniqueValueValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return \Pim\Bundle\CatalogBundle\Entity\Product
+     * @return \Pim\Bundle\CatalogBundle\Model\Product
      */
     public function getProductMock()
     {
-        return $this->getMock('Pim\Bundle\CatalogBundle\Entity\Product');
+        return $this->getMock('Pim\Bundle\CatalogBundle\Model\Product');
     }
 
     /**
-     * @return \Pim\Bundle\CatalogBundle\Entity\ProductValue
+     * @return \Pim\Bundle\CatalogBundle\Model\ProductValue
      */
     public function getProductValueMock()
     {
-        return $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductValue');
+        return $this->getMock('Pim\Bundle\CatalogBundle\Model\ProductValue');
     }
 
     /**

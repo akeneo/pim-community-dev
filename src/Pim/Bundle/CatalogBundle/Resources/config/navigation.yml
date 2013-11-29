@@ -22,7 +22,7 @@ oro_menu_config:
             route: pim_catalog_productattribute_index
         pim_enrich_family:
             label: Families
-            route: pim_catalog_family_create
+            route: pim_catalog_family_index
         pim_enrich_attributegroup:
             label: Attribute groups
             route: pim_catalog_attributegroup_create
@@ -132,6 +132,7 @@ oro_titles:
     pim_catalog_product_index:           Products
     pim_catalog_product_create:          Products | Create
     pim_catalog_product_edit:            Products %%product.sku%% | Edit
+    pim_catalog_family_index:            Families
     pim_catalog_family_create:           Families | Create
     pim_catalog_family_edit:             Families %%family.label%% | Edit
     pim_catalog_channel_index:           Channels
@@ -149,3 +150,6 @@ oro_titles:
     pim_catalog_association_index:       Associations
     pim_catalog_association_create:      Associations | Create
     pim_catalog_association_edit:        Associations %%association.label%% | Edit
+    pim_catalog_group_type_index:        Group types
+    pim_catalog_group_type_create:       Group types | Create
+    pim_catalog_group_type_edit:         Group types %%group type.label%% | Edit

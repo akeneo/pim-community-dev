@@ -4,8 +4,8 @@ namespace Pim\Bundle\CatalogBundle\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraints\RangeValidator as BaseRangeValidator;
 use Symfony\Component\Validator\Constraint;
-use Oro\Bundle\FlexibleEntityBundle\Entity\Metric;
-use Pim\Bundle\CatalogBundle\Entity\ProductPrice;
+use Pim\Bundle\FlexibleEntityBundle\Entity\Metric;
+use Pim\Bundle\CatalogBundle\Model\ProductPrice;
 
 /**
  * Constraint

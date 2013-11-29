@@ -74,6 +74,8 @@ services:
             - '@pim_catalog.manager.channel'
             - '@pim_catalog.factory.family'
             - '@pim_catalog.manager.completeness'
+            - '@pim_catalog.form.handler.family'
+            - '@pim_catalog.form.family'
 
     pim_catalog.controller.locale:
         scope: request

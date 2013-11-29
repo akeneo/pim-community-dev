@@ -4,18 +4,18 @@ namespace Pim\Bundle\CatalogBundle\Datagrid;
 
 use Oro\Bundle\GridBundle\Sorter\SorterInterface;
 
-use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
+use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 
-use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
-use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
-use Oro\Bundle\GridBundle\Datagrid\FlexibleDatagridManager;
+use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
+use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
+use Pim\Bundle\GridBundle\Datagrid\FlexibleDatagridManager;
 use Oro\Bundle\GridBundle\Datagrid\ParametersInterface;
 use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
 use Oro\Bundle\GridBundle\Field\FieldDescription;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
 
-use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\CatalogBundle\Model\Group;
 use Pim\Bundle\GridBundle\Filter\FilterInterface;
 
 /**
@@ -357,7 +357,7 @@ class GroupProductDatagridManager extends FlexibleDatagridManager
      *
      * @throws \LogicException
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Group
+     * @return \Pim\Bundle\CatalogBundle\Model\Group
      */
     protected function getGroup()
     {

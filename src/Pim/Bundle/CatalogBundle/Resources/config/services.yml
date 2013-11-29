@@ -2,6 +2,7 @@ parameters:
     pim_catalog.imagine.local_dir_resolver.class:                  Pim\Bundle\CatalogBundle\Imagine\Cache\Resolver\LocalDirResolver
     pim_catalog.event_listener.progress.class:                     Pim\Bundle\CatalogBundle\EventListener\ProgressListener
     pim_catalog.event_listener.create_attribute_requirement.class: Pim\Bundle\CatalogBundle\EventListener\CreateAttributeRequirementSubscriber
+    pim_catalog.form.subscriber.add_attribute_requirements.class:  Pim\Bundle\CatalogBundle\Form\Subscriber\AddAttributeRequirementsSubscriber
 
 services:
     # Attribute property types
@@ -30,7 +31,12 @@ services:
         class:     %pim_catalog.form.subscriber.add_attribute_type.class%
         arguments:
             - '@pim_catalog.manager.attribute_type'
-            - '@oro_flexibleentity.attributetype.factory'
+            - '@pim_flexibleentity.attributetype.factory'
+
+    pim_catalog.form.subscriber.attribute_requirements:
+        class: %pim_catalog.form.subscriber.add_attribute_requirements.class%
+        arguments:
+            - '@pim_catalog.manager.channel'
 
     pim_catalog.event_listener.user_preferences:
         class: %pim_catalog.event_listener.user_preferences.class%

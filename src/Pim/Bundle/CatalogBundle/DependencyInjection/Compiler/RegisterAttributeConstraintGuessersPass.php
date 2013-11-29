@@ -20,11 +20,11 @@ class RegisterAttributeConstraintGuessersPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition('oro_flexibleentity.validator.attribute_constraint_guesser')) {
+        if (!$container->hasDefinition('pim_flexibleentity.validator.attribute_constraint_guesser')) {
             return;
         }
 
-        $service = $container->getDefinition('oro_flexibleentity.validator.attribute_constraint_guesser');
+        $service = $container->getDefinition('pim_flexibleentity.validator.attribute_constraint_guesser');
 
         $taggedServices = $container->findTaggedServiceIds('pim.attribute_constraint_guesser');
 

@@ -17,7 +17,6 @@ Feature: Navigate the application in hash navigation mode
       | pim_catalog_channel_create           |
       | pim_catalog_channel_index            |
       | pim_catalog_currency_index           |
-      | pim_catalog_family_create            |
       | pim_catalog_family_index             |
       | pim_catalog_group_index              |
       | pim_catalog_group_type_index         |

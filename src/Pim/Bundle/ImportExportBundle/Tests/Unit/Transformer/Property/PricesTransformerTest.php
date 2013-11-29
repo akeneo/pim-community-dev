@@ -3,7 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Transformer\Property;
 
 use Pim\Bundle\ImportExportBundle\Transformer\Property\PricesTransformer;
-use Pim\Bundle\CatalogBundle\Entity\ProductPrice;
+use Pim\Bundle\CatalogBundle\Model\ProductPrice;
 
 /**
  * Tests related class
@@ -47,7 +47,7 @@ class PricesTransformerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Pim\Bundle\ImportExportBundle\Exception\InvalidValueException
+     * @expectedException Pim\Bundle\ImportExportBundle\Exception\PropertyTransformerException
      * @expectedExceptionMessage Malformed price: "15"
      */
     public function testUnvalidTransform()
@@ -56,7 +56,7 @@ class PricesTransformerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Pim\Bundle\ImportExportBundle\Exception\InvalidValueException
+     * @expectedException Pim\Bundle\ImportExportBundle\Exception\PropertyTransformerException
      * @expectedExceptionMessage Currency "CHF" is not active
      */
     public function testInactiveCurrenctTransform()

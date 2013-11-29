@@ -5,7 +5,8 @@ parameters:
     pim_import_export.archiver.job_execution_archiver.class:                 Pim\Bundle\ImportExportBundle\Archiver\JobExecutionArchiver
     pim_import_export.entity_cache.class:                                    Pim\Bundle\ImportExportBundle\Cache\EntityCache
     pim_import_export.attribute_cache.class:                                 Pim\Bundle\ImportExportBundle\Cache\AttributeCache
-    pim_import_export.product_validator.class:                               Pim\Bundle\ImportExportBundle\Validator\Import\ProductImportValidator
+    pim_import_export.validator.import.class:                                Pim\Bundle\ImportExportBundle\Validator\Import\ImportValidator
+    pim_import_export.validator.product_import.class:                        Pim\Bundle\ImportExportBundle\Validator\Import\ProductImportValidator
 
 services:
     pim_import_export.twig.normalize_configuration_extension:
@@ -41,10 +42,16 @@ services:
         class: '%pim_import_export.attribute_cache.class%'
         arguments:
             - '@doctrine'
+            - '%pim_catalog.entity.product_attribute.class%'
 
-    pim_import_export.product_validator:
-        class: '%pim_import_export.product_validator.class%'
+    pim_import_export.validator.import:
+        class: '%pim_import_export.validator.import.class%'
         arguments:
             - '@validator'
-            - '@oro_flexibleentity.validator.attribute_constraint_guesser'
-            - '@translator'
+
+    pim_import_export.validator.product_import:
+        class: '%pim_import_export.validator.product_import.class%'
+        parent: pim_import_export.validator.import
+        arguments:
+            - '@pim_flexibleentity.validator.attribute_constraint_guesser'
+

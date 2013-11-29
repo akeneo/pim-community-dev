@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\Entity;
 
-use Pim\Bundle\CatalogBundle\Entity\ProductValue;
-use Pim\Bundle\CatalogBundle\Entity\ProductPrice;
+use Pim\Bundle\CatalogBundle\Model\ProductValue;
+use Pim\Bundle\CatalogBundle\Model\ProductPrice;
 
 /**
  * Test related class
@@ -103,15 +103,15 @@ class ProductPriceTest extends \PHPUnit_Framework_TestCase
 
         $this->assertNull($this->price->getValue());
         $this->assertEntity($this->price->setValue($value));
-        $this->assertInstanceOf('Pim\Bundle\CatalogBundle\Entity\ProductValue', $this->price->getValue());
+        $this->assertInstanceOf('Pim\Bundle\CatalogBundle\Model\ProductValue', $this->price->getValue());
     }
 
     /**
      * Assert entity
-     * @param Pim\Bundle\CatalogBundle\Entity\ProductPrice $entity
+     * @param ProductPrice $entity
      */
     protected function assertEntity($entity)
     {
-        $this->assertInstanceOf('Pim\Bundle\CatalogBundle\Entity\ProductPrice', $entity);
+        $this->assertInstanceOf('Pim\Bundle\CatalogBundle\Model\ProductPrice', $entity);
     }
 }

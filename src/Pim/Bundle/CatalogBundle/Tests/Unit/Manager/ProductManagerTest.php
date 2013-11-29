@@ -56,7 +56,7 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
     public function testCreateProductValue()
     {
         $value = $this->getProductManager()->createProductValue();
-        $this->assertEquals(get_class($value), 'Pim\Bundle\CatalogBundle\Entity\ProductValue');
+        $this->assertEquals(get_class($value), 'Pim\Bundle\CatalogBundle\Model\ProductValue');
     }
 
     /**
@@ -65,7 +65,7 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
     public function testCreateProduct()
     {
         $product = $this->getProductManager()->createProduct();
-        $this->assertEquals(get_class($product), 'Pim\Bundle\CatalogBundle\Entity\Product');
+        $this->assertEquals(get_class($product), 'Pim\Bundle\CatalogBundle\Model\Product');
     }
 
     /**
@@ -103,12 +103,12 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
         $flexibleRepository = $this->getEntityRepositoryMock();
 
         return new ProductManager(
-            'Pim\Bundle\CatalogBundle\Entity\Product',
+            'Pim\Bundle\CatalogBundle\Model\Product',
             array(
                 'entities_config' => array(
-                    'Pim\Bundle\CatalogBundle\Entity\Product' => array(
-                        'flexible_class' => 'Pim\Bundle\CatalogBundle\Entity\Product',
-                        'flexible_value_class' => 'Pim\Bundle\CatalogBundle\Entity\ProductValue',
+                    'Pim\Bundle\CatalogBundle\Model\Product' => array(
+                        'flexible_class' => 'Pim\Bundle\CatalogBundle\Model\Product',
+                        'flexible_value_class' => 'Pim\Bundle\CatalogBundle\Model\ProductValue',
                         'attribute_class' => 'Pim\Bundle\CatalogBundle\Entity\ProductAttribute',
                         'attribute_option_class' => 'Pim\Bundle\CatalogBundle\Entity\AttributeOption',
                         'attribute_option_value_class' => 'Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue',
@@ -156,12 +156,12 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
     /**
      * Get a mock of AttributeTypeFactory
      *
-     * @return Oro\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory
+     * @return Pim\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory
      */
     protected function getAttributeTypeFactoryMock()
     {
         return $this
-            ->getMockBuilder('Oro\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory')
+            ->getMockBuilder('Pim\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory')
             ->disableOriginalConstructor()
             ->getMock();
     }
@@ -187,12 +187,12 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
      * @param Media  $media
      * @param string $code
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\ProductValue
+     * @return \Pim\Bundle\CatalogBundle\Model\ProductValue
      */
     protected function getValueMock($scope = null, $locale = null, $media = null, $code = null)
     {
         $value = $this->getMock(
-            'Pim\Bundle\CatalogBundle\Entity\ProductValue',
+            'Pim\Bundle\CatalogBundle\Model\ProductValue',
             array('getAttribute', 'getMedia', 'setMedia')
         );
 
@@ -225,7 +225,7 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
      * @param boolean $translatable
      * @param string  $code
      *
-     * @return \Oro\Bundle\FlexibleEntityBundle\Entity\Attribute
+     * @return \Pim\Bundle\FlexibleEntityBundle\Entity\Attribute
      */
     protected function getAttributeMock($scopable = false, $translatable = false, $code = null)
     {
@@ -259,7 +259,7 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
      */
     protected function getProductMock(array $values, $sku = null)
     {
-        $product = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Product');
+        $product = $this->getMock('Pim\Bundle\CatalogBundle\Model\Product');
 
         $product->expects($this->any())
                 ->method('getValues')
@@ -284,11 +284,11 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
      *
      * @param string $code
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\ProductLocale
+     * @return \Pim\Bundle\CatalogBundle\Entity\Locale
      */
     protected function getLocaleMock($code)
     {
-        $locale = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductLocale', array('getCode'));
+        $locale = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Locale', array('getCode'));
 
         $locale->expects($this->any())
                  ->method('getCode')
@@ -320,11 +320,11 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
      *
      * @param string $filename
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Media
+     * @return \Pim\Bundle\CatalogBundle\Model\Media
      */
     protected function getMediaMock($filename = null)
     {
-        $media = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Media');
+        $media = $this->getMock('Pim\Bundle\CatalogBundle\Model\Media');
 
         $media->expects($this->any())
               ->method('getFile')

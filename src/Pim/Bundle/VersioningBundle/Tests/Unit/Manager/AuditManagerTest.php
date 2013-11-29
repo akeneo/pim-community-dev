@@ -41,7 +41,7 @@ class AuditManagerTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetLogEntries()
     {
-        $versionable = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Product');
+        $versionable = $this->getMock('Pim\Bundle\CatalogBundle\Model\Product');
         $entries = $this->manager->getLogEntries($versionable);
         $this->assertEquals($entries, $this->entries);
     }
@@ -51,7 +51,7 @@ class AuditManagerTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetNewestLogEntry()
     {
-        $versionable = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Product');
+        $versionable = $this->getMock('Pim\Bundle\CatalogBundle\Model\Product');
         $entry = $this->manager->getNewestLogEntry($versionable);
         $this->assertEquals($entry, reset($this->entries));
     }
@@ -61,7 +61,7 @@ class AuditManagerTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetOldestLogEntry()
     {
-        $versionable = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Product');
+        $versionable = $this->getMock('Pim\Bundle\CatalogBundle\Model\Product');
         $entry = $this->manager->getOldestLogEntry($versionable);
         $this->assertEquals($entry, end($this->entries));
     }

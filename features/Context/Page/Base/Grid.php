@@ -154,17 +154,16 @@ class Grid extends Index
      */
     public function getToolbarCount()
     {
-        $paginationText = $this
+        $pagination = $this
             ->getElement('Grid toolbar')
-            ->find('css', 'div label:contains("record")')
-            ->getText();
+            ->find('css', 'div label.dib:contains("record")');
 
-        // If pagination not found, count rows
-        if (!$paginationText) {
+        // If pagination not found or is empty, count rows
+        if (!$pagination || !$pagination->getText()) {
             return $this->countRows();
         }
 
-        if (preg_match('/([0-9][0-9 ]*) records?$/', $paginationText, $matches)) {
+        if (preg_match('/([0-9][0-9 ]*) records?$/', $pagination->getText(), $matches)) {
             return $matches[1];
         } else {
             throw new \InvalidArgumentException('Impossible to get count of datagrid records');
@@ -598,29 +597,16 @@ class Grid extends Index
     }
 
     /**
-     * @param string $code
+     * @param string $filterName The name of the price filter
+     * @param string $action     Type of filtering (>, >=, etc.)
+     * @param number $value      Value to filter
+     * @param string $currency   Currency on which to filter
      */
-    public function filterPerFamily($code)
+    public function filterPerPrice($filterName, $action, $value, $currency)
     {
-        $elt = $this->getElement('Filters')->find('css', sprintf(':contains("%s") select', $code));
-
-        if (!$elt) {
-            throw new \Exception(sprintf('Could not find filter for family "%s".', $code));
-        }
-
-        $elt->selectOption($code);
-    }
-
-    /**
-     * @param string $action   Type of filtering (>, >=, etc.)
-     * @param number $value    Value to filter
-     * @param string $currency Currency on which filter
-     */
-    public function filterPerPrice($action, $value, $currency)
-    {
-        $filter = $this->getFilter('Price');
+        $filter = $this->getFilter($filterName);
         if (!$filter) {
-            throw new \Exception('Could not find filter for price.');
+            throw new \Exception("Could not find filter for $filterName.");
         }
 
         $this->openFilter($filter);
@@ -628,28 +614,18 @@ class Grid extends Index
         $criteriaElt = $filter->find('css', 'div.filter-criteria');
         $criteriaElt->fillField('value', $value);
 
+        $buttons = $filter->findAll('css', '.currencyfilter button.dropdown-toggle');
+        $actionButton = array_shift($buttons);
+        $currencyButton = array_shift($buttons);
+
         // Open the dropdown menu with currency list and click on $currency line
-        $this->pressButton('Currency');
-        $this->pressButton($currency);
+        $currencyButton->click();
+        $currencyButton->getParent()->find('css', sprintf('ul a:contains("%s")', $currency))->click();
 
         // Open the dropdown menu with action list and click on $action line
-        $this->pressButton('Action');
-        $this->pressbutton($action);
+        $actionButton->click();
+        $actionButton->getParent()->find('xpath', sprintf("//ul//a[text() = '%s']", $action))->click();
 
         $filter->find('css', 'button.filter-update')->click();
-    }
-
-    /**
-     * @param string $code
-     */
-    public function filterPerChannel($code)
-    {
-        $elt = $this->getElement('Filters')->find('css', sprintf(':contains("%s") select', $code));
-
-        if (!$elt) {
-            throw new \Exception(sprintf('Could not find filter for channel "%s".', $code));
-        }
-
-        $elt->selectOption($code);
     }
 }

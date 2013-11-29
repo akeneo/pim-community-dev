@@ -9,9 +9,9 @@ use Behat\Gherkin\Node\TableNode;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Behat\Context\Step;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
-use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\Family;
-use Pim\Bundle\CatalogBundle\Entity\Product;
+use Pim\Bundle\CatalogBundle\Entity\Category;
+use Pim\Bundle\CatalogBundle\Model\Product;
 use Behat\Mink\Element\Element;
 
 /**
@@ -854,29 +854,17 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string    $popin
      * @param TableNode $table
-     * @param Element   $element
      *
-     * @Given /^I fill in the following information:$/
+     * @Given /^I fill in the following information(| in the popin):$/
      */
-    public function iFillInTheFollowingInformation(TableNode $table, Element $element = null)
+    public function iFillInTheFollowingInformation($popin, TableNode $table)
     {
+        $element = $popin ? $this->getCurrentPage()->find('css', '.ui-dialog') : null;
         foreach ($table->getRowsHash() as $field => $value) {
             $this->getCurrentPage()->fillField($field, $value, $element);
         }
-    }
-
-    /**
-     * @param TableNode $table
-     *
-     * @Given /^I fill in the following information in the popin?:$/
-     */
-    public function iFillInTheFollowingInformationInThePopin(TableNode $table)
-    {
-        $this->iFillInTheFollowingInformation(
-            $table,
-            $this->getCurrentPage()->find('css', '.ui-dialog')
-        );
     }
 
     /**
@@ -1181,7 +1169,7 @@ class WebUser extends RawMinkContext
      */
     public function iWaitForTheJobToFinish()
     {
-        $timeout = 60;
+        $timeout = 120;
 
         while ($timeout && $refreshLink = $this->getCurrentPage()->findLink('Refresh')) {
             sleep(3);
@@ -1191,7 +1179,7 @@ class WebUser extends RawMinkContext
         }
 
         if ($refreshLink) {
-            throw $this->createExpectationException("The job didn't finish in 1 minute");
+            throw $this->createExpectationException("The job didn't finish in 2 minutes");
         }
     }
 

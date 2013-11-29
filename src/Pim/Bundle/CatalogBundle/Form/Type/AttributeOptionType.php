@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Form\Type;
 
-use Oro\Bundle\FlexibleEntityBundle\Form\Type\AttributeOptionType as FlexibleAttributeOptionType;
+use Pim\Bundle\FlexibleEntityBundle\Form\Type\AttributeOptionType as FlexibleAttributeOptionType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Pim\Bundle\CatalogBundle\Form\Type\AttributeOptionValueType;

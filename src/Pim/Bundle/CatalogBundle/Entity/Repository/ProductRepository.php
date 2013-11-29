@@ -3,9 +3,9 @@
 namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 
 use Doctrine\ORM\AbstractQuery;
-use Oro\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository;
+use Pim\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\CatalogBundle\Model\Group;
 
 /**
  * Product repository

@@ -3,10 +3,12 @@
 namespace Pim\Bundle\ImportExportBundle\Cache;
 
 use Symfony\Bridge\Doctrine\RegistryInterface;
+use Pim\Bundle\CatalogBundle\Model\Group;
+use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Entity\Family;
-use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\ImportExportBundle\Exception\ColumnLabelException;
+use Pim\Bundle\ImportExportBundle\Exception\UnknownColumnException;
 
 /**
  * Caches the attributes of an import. Do not forget to call the reset method between two imports.
@@ -31,10 +33,6 @@ class AttributeCache
      * @var array
      */
     protected $attributes;
-    /**
-     * @var array
-     */
-    protected $columns;
 
     /**
      * @var ProductAttribute
@@ -71,7 +69,6 @@ class AttributeCache
     public function clear()
     {
         $this->attributes = null;
-        $this->columns = null;
         $this->identifierAttribute = null;
         $this->initialized = false;
     }
@@ -79,13 +76,14 @@ class AttributeCache
     /**
      * Initializes the cache with a set of column labels
      *
-     * @param array $columnLabels
+     * @param array $columnsInfo
+     *
+     * @throws UnknownColumnException
+     * @throws ColumnLabelException
      */
-    public function initialize(array $columnLabels)
+    public function initialize(array $columnsInfo)
     {
-        $columnLabelTokens = $this->getColumnLabelTokens($columnLabels);
-        $this->setAttributes($columnLabelTokens);
-        $this->setColumns($columnLabelTokens);
+        $this->setAttributes($columnsInfo);
         $this->initialized = true;
     }
 
@@ -108,11 +106,7 @@ class AttributeCache
      */
     public function getAttribute($code)
     {
-        foreach ($this->attributes as $attribute) {
-            if ($code === $attribute->getCode()) {
-                return $attribute;
-            }
-        }
+        return $this->attributes[$code];
     }
 
     /**
@@ -133,24 +127,6 @@ class AttributeCache
     public function getIdentifierAttribute()
     {
         return $this->identifierAttribute;
-    }
-
-    /**
-     * Returns an array of information about the columns
-     *
-     * The following info is returned for each column :
-     *
-     * columnLabel:
-     *      attribute:  A ProductAttribute instance
-     *      code:       The code of the attribute
-     *      locale:     The locale of the column
-     *      scope:      The scope of the column
-     *
-     * @return array
-     */
-    public function getColumns()
-    {
-        return $this->columns;
     }
 
     /**
@@ -233,112 +209,51 @@ class AttributeCache
     }
 
     /**
-     * Returns an array of tokens for each column label.
-     *
-     * @param array $columnLabels
-     *
-     * @return array
-     */
-    protected function getColumnLabelTokens($columnLabels)
-    {
-        $columnTokens = array();
-        foreach ($columnLabels as $columnLabel) {
-            $columnTokens[$columnLabel] = explode('-', $columnLabel);
-        }
-
-        return $columnTokens;
-    }
-
-    /**
-     * Sets the columns property
-     *
-     * @param array $columnLabelTokens
-     *
-     * @throws \InvalidArgumentException
-     */
-    protected function setColumns(array $columnLabelTokens)
-    {
-        $this->columns = array();
-        foreach ($columnLabelTokens as $columnCode => $labelTokens) {
-            $columnInfo = array(
-                'code' => array_shift($labelTokens),
-                'locale' => null,
-                'scope' => null
-            );
-            $columnInfo['attribute'] = $this->getAttribute($columnInfo['code']);
-            if ($columnInfo['attribute']->getTranslatable()) {
-                if (!count($labelTokens)) {
-                    throw new \InvalidArgumentException(
-                        sprintf(
-                            'The column "%s" must contain the local code',
-                            $columnCode
-                        )
-                    );
-                }
-                $columnInfo['locale'] = array_shift($labelTokens);
-            }
-            if ($columnInfo['attribute']->getScopable()) {
-                if (!count($labelTokens)) {
-                    throw new \InvalidArgumentException(
-                        sprintf(
-                            'The column "%s" must contain the scope code',
-                            $columnCode
-                        )
-                    );
-                }
-                $columnInfo['scope']  = array_shift($labelTokens);
-            }
-            $this->columns[$columnCode] = $columnInfo;
-        }
-    }
-
-    /**
      * Sets the attributes and identifierAttributes properties
      *
-     * @param array $columnLabelTokens
+     * @param array $columnsInfo
      *
-     * @return null
-     * @throws \InvalidArgumentException
+     * @throws UnknownColumnException
+     * @throws ColumnLabelException
      */
-    protected function setAttributes($columnLabelTokens)
+    protected function setAttributes($columnsInfo)
     {
         $codes = array_unique(
             array_map(
-                function ($tokens) {
-                    return $tokens[0];
+                function ($columnInfo) {
+                    return $columnInfo->getName();
                 },
-                $columnLabelTokens
+                $columnsInfo
             )
         );
 
-        $this->attributes = $this->doctrine->getRepository('PimCatalogBundle:ProductAttribute')
+        $attributes = $this->doctrine->getRepository('PimCatalogBundle:ProductAttribute')
                 ->findBy(array('code' => $codes));
 
-        foreach ($this->attributes as $attribute) {
+        $this->attributes = array();
+        foreach ($attributes as $attribute) {
             if (static::IDENTIFIER_ATTRIBUTE_TYPE === $attribute->getAttributeType()) {
                 $this->identifierAttribute = $attribute;
-                break;
             }
+            $this->attributes[$attribute->getCode()] = $attribute;
         }
-        if (count($this->attributes) !== count($codes)) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'The following fields do not exist: %s',
-                    implode(
-                        ', ',
-                        array_diff(
-                            $codes,
-                            array_map(
-                                function ($attribute) {
-                                    return $attribute->getCode();
 
-                                },
-                                $this->attributes
-                            )
-                        )
+        if (count($attributes) !== count($codes)) {
+            throw new UnknownColumnException(
+                array_diff(
+                    $codes,
+                    array_map(
+                        function ($attribute) {
+                            return $attribute->getCode();
+                        },
+                        $this->attributes
                     )
                 )
             );
+        }
+
+        foreach ($columnsInfo as $columnInfo) {
+            $columnInfo->setAttribute($this->attributes[$columnInfo->getName()]);
         }
     }
 }

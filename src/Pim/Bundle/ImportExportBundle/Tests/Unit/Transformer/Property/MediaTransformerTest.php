@@ -4,7 +4,7 @@ namespace Pim\Bundle\ImportExportBundle\Tests\Unit\Transformer\Property;
 
 use Pim\Bundle\ImportExportBundle\Transformer\Property\MediaTransformer;
 use Symfony\Component\HttpFoundation\File\File;
-use Pim\Bundle\CatalogBundle\Entity\Media;
+use Pim\Bundle\CatalogBundle\Model\Media;
 
 /**
  * Tests related class
@@ -72,7 +72,7 @@ class MediaTransformerTest extends \PHPUnit_Framework_TestCase
                 $productValue
                     ->expects($this->once())
                     ->method('setMedia')
-                    ->with($this->isInstanceOf('Pim\Bundle\CatalogBundle\Entity\Media'))
+                    ->with($this->isInstanceOf('Pim\Bundle\CatalogBundle\Model\Media'))
                     ->will(
                         $this->returnCallback(
                             function ($createdMedia) use ($test) {
@@ -86,14 +86,15 @@ class MediaTransformerTest extends \PHPUnit_Framework_TestCase
                 ->expects($this->never())
                 ->method('getMedia');
         }
-        $transformer->updateProductValue($productValue, $file);
+        $columnInfo = $this->getMock('Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoInterface');
+        $transformer->setValue($productValue, $columnInfo, $file);
         if ($hasFile) {
             $this->assertEquals($file, $this->media->getFile());
         }
         unlink($f);
     }
     /**
-     * @expectedException Pim\Bundle\ImportExportBundle\Exception\InvalidValueException
+     * @expectedException \Pim\Bundle\ImportExportBundle\Exception\PropertyTransformerException
      * @expectedExceptionMessage File not found: "/bogus-file"
      */
     public function testUnvalid()

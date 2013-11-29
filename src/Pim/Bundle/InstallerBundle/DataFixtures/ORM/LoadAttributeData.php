@@ -18,7 +18,7 @@ class LoadAttributeData extends AbstractInstallerFixture
 {
     /**
      * Get entity manager
-     * @return Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager
+     * @return Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager
      */
     protected function getProductManager()
     {

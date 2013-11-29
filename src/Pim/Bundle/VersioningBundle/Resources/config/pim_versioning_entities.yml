@@ -1,9 +1,9 @@
 versionable:
-    - Pim\Bundle\CatalogBundle\Entity\Product
-    - Pim\Bundle\CatalogBundle\Entity\Family
+    - Pim\Bundle\CatalogBundle\Model\Product
+    - Pim\Bundle\CatalogBundle\Model\Group
     - Pim\Bundle\CatalogBundle\Entity\Category
+    - Pim\Bundle\CatalogBundle\Entity\Family
     - Pim\Bundle\CatalogBundle\Entity\Association
-    - Pim\Bundle\CatalogBundle\Entity\Group
     - Pim\Bundle\CatalogBundle\Entity\ProductAttribute
     - Pim\Bundle\CatalogBundle\Entity\AttributeGroup
     - Pim\Bundle\CatalogBundle\Entity\Channel

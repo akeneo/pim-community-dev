@@ -35,16 +35,18 @@ class AddAttributeRequirementsSubscriberTest extends \PHPUnit_Framework_TestCase
     {
         $mobile      = $this->getChannelMock('mobile');
         $ecommerce   = $this->getChannelMock('ecommerce');
+
+        $channelManager = $this->getChannelManagerMock(array($mobile, $ecommerce));
+
         $name        = $this->getAttributeMock('name');
         $description = $this->getAttributeMock('description');
 
-        $channels    = array($mobile, $ecommerce);
-        $attributes  = array($name, $description);
-
         $family      = new Family();
+        $family->addAttribute($name);
+        $family->addAttribute($description);
         $event       = $this->getEventMock($family);
 
-        $subscriber  = new AddAttributeRequirementsSubscriber($channels, $attributes);
+        $subscriber  = new AddAttributeRequirementsSubscriber($channelManager);
 
         $existingRequirement = $this->getAttributeRequirementMock($name, $mobile);
         $family->setAttributeRequirements(array($existingRequirement));
@@ -72,11 +74,8 @@ class AddAttributeRequirementsSubscriberTest extends \PHPUnit_Framework_TestCase
     {
         $mobile      = $this->getChannelMock('mobile');
         $ecommerce   = $this->getChannelMock('ecommerce');
-        $name        = $this->getAttributeMock('name');
-        $description = $this->getAttributeMock('description');
 
         $channels    = array($mobile, $ecommerce);
-        $attributes  = array($name, $description);
 
         $requirement1 = $this->getAttributeRequirementMock($this->getProductAttributeMock('bar'));
         $requirement2 = $this->getAttributeRequirementMock($this->getProductAttributeMock('pim_catalog_identifier'));
@@ -107,7 +106,7 @@ class AddAttributeRequirementsSubscriberTest extends \PHPUnit_Framework_TestCase
             ->method('remove')
             ->with('baz');
 
-        $subscriber  = new AddAttributeRequirementsSubscriber($channels, $attributes);
+        $subscriber  = new AddAttributeRequirementsSubscriber($this->getChannelManagerMock($channels));
         $subscriber->postSetData($event);
     }
 
@@ -243,5 +242,27 @@ class AddAttributeRequirementsSubscriberTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($type));
 
         return $attribute;
+    }
+
+    /**
+     * Get channel manager mock
+     *
+     * @param array $channels
+     *
+     * @return ChannelManager
+     */
+    protected function getChannelManagerMock(array $channels = array())
+    {
+        $channelManager = $this
+            ->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\ChannelManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $channelManager
+            ->expects($this->any())
+            ->method('getChannels')
+            ->will($this->returnValue($channels));
+
+        return $channelManager;
     }
 }
