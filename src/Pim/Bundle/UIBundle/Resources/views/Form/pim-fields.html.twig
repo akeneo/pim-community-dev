@@ -241,6 +241,7 @@
         <div class="controls metric input-prepend">
             {{ form_widget(form.unit, { 'attr': { 'class': 'input-small prepend pull-left' }}) }}
             {{ form_widget(form.data, { 'attr': { 'class': 'pull-left' }}) }}
+            {{ form_widget(form.family) }}
             <div class="icons-container">
                 {{ form_errors(form) }}
             </div>
