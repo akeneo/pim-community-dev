@@ -57,8 +57,8 @@ Entity and Wizard Workflows
 ===========================
 
 There are two types of Workflows:
-* wizard
-* entity (default)
+* wizard;
+* entity (default).
 
 **Wizard Workflow**
 

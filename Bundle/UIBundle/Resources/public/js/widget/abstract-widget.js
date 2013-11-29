@@ -476,8 +476,9 @@ function(_, Backbone, mediator, LoadingMask, layout) {
          * Render widget
          */
         render: function() {
-            var loadAllowed = this.$el.html().length == 0 || !this.options.elementFirst ||
-                (this.options.elementFirst && !this.firstRun);
+            var loadAllowed = !this.options.elementFirst
+                || (this.options.elementFirst && !this.firstRun)
+                || this.$el.html().length == 0;
             if (loadAllowed && this.options.url !== false) {
                 this.loadContent();
             } else {

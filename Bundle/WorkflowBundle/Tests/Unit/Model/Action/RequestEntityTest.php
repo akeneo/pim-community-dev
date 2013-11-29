@@ -54,70 +54,137 @@ class RequestEntityTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\InvalidParameterException
-     * @expectedExceptionMessage Class name parameter is required
+     * @param array $options
+     * @param string $expectedMessage
+     * @dataProvider initializeExceptionDataProvider
      */
-    public function testInitializeExceptionNoClassName()
+    public function testInitializeException(array $options, $expectedMessage)
     {
-        $this->action->initialize(
-            array(
-                'some' => 1,
-                'attribute' => $this->getPropertyPath(),
-            )
+        $this->setExpectedException(
+            '\Oro\Bundle\WorkflowBundle\Exception\InvalidParameterException',
+            $expectedMessage
+        );
+
+        $this->action->initialize($options);
+    }
+
+    public function initializeExceptionDataProvider()
+    {
+        return array(
+            'no class name' => array(
+                'options' => array(
+                    'some' => 1,
+                ),
+                'message' => 'Class name parameter is required'
+            ),
+            'no attribute' => array(
+                'options' => array(
+                    'class' => 'stdClass',
+                ),
+                'message' => 'Attribute name parameter is required'
+            ),
+            'invalid attribute' => array(
+                array(
+                    'class' => 'stdClass',
+                    'identifier' => 1,
+                    'attribute' => 'string',
+                ),
+                'message' => 'Attribute must be valid property definition.'
+            ),
+            'no identifier' => array(
+                'options' => array(
+                    'class' => 'stdClass',
+                    'attribute' => $this->getPropertyPath(),
+                ),
+                'message' => 'One of parameters "identifier", "where" or "order_by" must be defined'
+            ),
+            'invalid where' => array(
+                'options' => array(
+                    'class' => 'stdClass',
+                    'attribute' => $this->getPropertyPath(),
+                    'where' => 'scalar_data'
+                ),
+                'message' => 'Parameter "where" must be array'
+            ),
+            'invalid order_by' => array(
+                'options' => array(
+                    'class' => 'stdClass',
+                    'attribute' => $this->getPropertyPath(),
+                    'order_by' => 'scalar_data'
+                ),
+                'message' => 'Parameter "order_by" must be array'
+            ),
         );
     }
 
     /**
-     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\InvalidParameterException
-     * @expectedExceptionMessage Identifier parameter is required
+     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\NotManageableEntityException
+     * @expectedExceptionMessage Entity class "\stdClass" is not manageable.
      */
-    public function testInitializeExceptionNoIdentifier()
-    {
-        $this->action->initialize(
-            array(
-                'class' => 'stdClass',
-            )
-        );
-    }
-
-    /**
-     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\InvalidParameterException
-     * @expectedExceptionMessage Attribute name parameter is required
-     */
-    public function testInitializeExceptionNoAttribute()
-    {
-        $this->action->initialize(
-            array(
-                'class' => 'stdClass',
-                'identifier' => 1,
-            )
-        );
-    }
-
-    /**
-     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\InvalidParameterException
-     * @expectedExceptionMessage Attribute must be valid property definition.
-     */
-    public function testInitializeExceptionInvalidAttribute()
-    {
-        $this->action->initialize(
-            array(
-                'class' => 'stdClass',
-                'identifier' => 1,
-                'attribute' => 'string',
-            )
-        );
-    }
-
-    public function testInitialize()
+    public function testExecuteNotManageableEntity()
     {
         $options = array(
-            'class' => 'stdClass',
+            'class' => '\stdClass',
             'identifier' => 1,
-            'attribute' => $this->getPropertyPath(),
+            'attribute' => $this->getPropertyPath()
         );
-        $this->assertEquals($this->action, $this->action->initialize($options));
-        $this->assertAttributeEquals($options, 'options', $this->action);
+        $context = new ItemStub(array());
+
+        $this->registry->expects($this->once())
+            ->method('getManagerForClass')
+            ->with('\stdClass')
+            ->will($this->returnValue(null));
+
+        $this->action->initialize($options);
+        $this->action->execute($context);
+    }
+
+    /**
+     * @param array $source
+     * @param array $expected
+     * @dataProvider initializeDataProvider
+     */
+    public function testInitialize(array $source, array $expected)
+    {
+        $this->assertEquals($this->action, $this->action->initialize($source));
+        $this->assertAttributeEquals($expected, 'options', $this->action);
+    }
+
+    public function initializeDataProvider()
+    {
+        return array(
+            'entity identifier' => array(
+                'source' => array(
+                    'class' => 'stdClass',
+                    'identifier' => 1,
+                    'attribute' => $this->getPropertyPath(),
+                ),
+                'expected' => array(
+                    'class' => 'stdClass',
+                    'identifier' => 1,
+                    'attribute' => $this->getPropertyPath(),
+                    'where' => array(),
+                    'order_by' => array(),
+                    'case_insensitive' => false,
+                ),
+            ),
+            'where and order by' => array(
+                'source' => array(
+                    'class' => 'stdClass',
+                    'where' => array('name' => 'qwerty'),
+                    'order_by' => array('date' => 'asc'),
+                    'attribute' => $this->getPropertyPath(),
+                    'case_insensitive' => true,
+                ),
+                'expected' => array(
+                    'class' => 'stdClass',
+                    'where' => array('name' => 'qwerty'),
+                    'order_by' => array('date' => 'asc'),
+                    'attribute' => $this->getPropertyPath(),
+                    'case_insensitive' => true,
+                ),
+            )
+        );
     }
 
     /**
@@ -130,8 +197,14 @@ class RequestEntityTest extends \PHPUnit_Framework_TestCase
         $context = new ItemStub($data);
         $entity = new \stdClass();
 
+        if (is_string($options['identifier'])) {
+            $options['identifier'] = trim($options['identifier']);
+        }
+
         $expectedIdentifier = $this->convertIdentifier($context, $options['identifier']);
-        $this->assertNotEmpty($expectedIdentifier);
+        if (!empty($options['case_insensitive'])) {
+            $expectedIdentifier = strtolower($expectedIdentifier);
+        }
 
         $em = $this->getMockBuilder('\Doctrine\ORM\EntityManager')
             ->disableOriginalConstructor()
@@ -176,6 +249,14 @@ class RequestEntityTest extends \PHPUnit_Framework_TestCase
                     'id' => 1
                 ),
             ),
+            'scalar_case_insensitive_identifier' => array(
+                'options' => array(
+                    'class' => '\stdClass',
+                    'identifier' => ' DATA ',
+                    'attribute' => new PropertyPath('entity_attribute'),
+                    'case_insensitive' => true,
+                )
+            ),
             'array_identifier' => array(
                 'options' => array(
                     'class' => '\stdClass',
@@ -204,6 +285,76 @@ class RequestEntityTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @param bool $caseInsensitive
+     * @dataProvider executeWithConditionsDataProvider
+     */
+    public function testExecuteWithWhereAndOrderBy($caseInsensitive)
+    {
+        $options = array(
+            'class' => '\stdClass',
+            'where' => array('name' => ' Qwerty '),
+            'attribute' => new PropertyPath('entity'),
+            'order_by' => array('createdDate' => ' asc '),
+            'case_insensitive' => $caseInsensitive
+        );
+
+        $context = new ItemStub();
+        $entity = new \stdClass();
+
+        $query = $this->getMockBuilder('Doctrine\ORM\AbstractQuery')->disableOriginalConstructor()
+            ->setMethods(array('getOneOrNullResult'))->getMockForAbstractClass();
+        $query->expects($this->once())->method('getOneOrNullResult')->will($this->returnValue($entity));
+
+        $expectedField = !empty($options['case_insensitive']) ? 'LOWER(e.name)' : 'e.name';
+        $expectedValue = !empty($options['case_insensitive'])
+            ? trim(strtolower($options['where']['name']))
+            : trim($options['where']['name']);
+        $expectedParameter = 'parameter_0';
+        $expectedOrder = 'e.createdDate';
+
+        $queryBuilder = $this->getMockBuilder('Doctrine\ORM\QueryBuilder')->disableOriginalConstructor()->getMock();
+        $queryBuilder->expects($this->once())->method('andWhere')
+            ->with("$expectedField = :$expectedParameter")->will($this->returnSelf());
+        $queryBuilder->expects($this->once())->method('setParameter')
+            ->with($expectedParameter, $expectedValue)->will($this->returnSelf());
+        $queryBuilder->expects($this->once())->method('orderBy')
+            ->with($expectedOrder, trim($options['order_by']['createdDate']))->will($this->returnSelf());
+        $queryBuilder->expects($this->once())->method('getQuery')->will($this->returnValue($query));
+
+        $repository = $this->getMockBuilder('Doctrine\ORM\EntityRepository')->disableOriginalConstructor()->getMock();
+        $repository->expects($this->once())->method('createQueryBuilder')
+            ->with('e')->will($this->returnValue($queryBuilder));
+
+        $em = $this->getMockBuilder('\Doctrine\ORM\EntityManager')->disableOriginalConstructor()->getMock();
+        $em->expects($this->once())->method('getRepository')
+            ->with($options['class'])->will($this->returnValue($repository));
+
+        $this->registry->expects($this->once())->method('getManagerForClass')
+            ->with($options['class'])->will($this->returnValue($em));
+
+        $this->action->initialize($options);
+        $this->action->execute($context);
+
+        $attributeName = (string)$options['attribute'];
+        $this->assertEquals($entity, $context->$attributeName);
+    }
+
+    /**
+     * @return array
+     */
+    public function executeWithConditionsDataProvider()
+    {
+        return array(
+            'case sensitive' => array(
+                'caseInsensitive' => false,
+            ),
+            'case insensitive' => array(
+                'caseInsensitive' => true,
+            ),
+        );
+    }
+
+    /**
      * @param mixed $context
      * @param mixed $identifier
      * @return mixed
@@ -219,27 +370,5 @@ class RequestEntityTest extends \PHPUnit_Framework_TestCase
         }
 
         return $identifier;
-    }
-
-    /**
-     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\NotManageableEntityException
-     * @expectedExceptionMessage Entity class "\stdClass" is not manageable.
-     */
-    public function testExecuteNotManageableEntity()
-    {
-        $options = array(
-            'class' => '\stdClass',
-            'identifier' => 1,
-            'attribute' => $this->getPropertyPath()
-        );
-        $context = new ItemStub(array());
-
-        $this->registry->expects($this->once())
-            ->method('getManagerForClass')
-            ->with('\stdClass')
-            ->will($this->returnValue(null));
-
-        $this->action->initialize($options);
-        $this->action->execute($context);
     }
 }

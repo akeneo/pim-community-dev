@@ -12,6 +12,9 @@ abstract class AbstractAssembler
      */
     protected $configurationPasses = array();
 
+    /**
+     * @param ConfigurationPassInterface $configurationPass
+     */
     public function addConfigurationPass(ConfigurationPassInterface $configurationPass)
     {
         $this->configurationPasses[] = $configurationPass;

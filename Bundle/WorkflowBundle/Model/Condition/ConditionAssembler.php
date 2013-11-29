@@ -44,7 +44,7 @@ class ConditionAssembler extends AbstractAssembler
                     $options[$key] = $conditionParameter;
                 }
             }
-        } else {
+        } elseif ($conditionParameters[self::PARAMETERS_KEY] !== null) {
             $options[] = $conditionParameters[self::PARAMETERS_KEY];
         }
 
@@ -68,7 +68,7 @@ class ConditionAssembler extends AbstractAssembler
     protected function parseParameters($conditionParameters)
     {
         $result = array();
-        if (isset($conditionParameters[self::PARAMETERS_KEY])) {
+        if (is_array($conditionParameters) && array_key_exists(self::PARAMETERS_KEY, $conditionParameters)) {
             $result[self::PARAMETERS_KEY] = $conditionParameters[self::PARAMETERS_KEY];
             if (isset($conditionParameters[self::MESSAGE_KEY])) {
                 $result[self::MESSAGE_KEY] = $conditionParameters[self::MESSAGE_KEY];

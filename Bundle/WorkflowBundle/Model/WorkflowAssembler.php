@@ -9,8 +9,6 @@ use Oro\Bundle\WorkflowBundle\Exception\UnknownStepException;
 use Oro\Bundle\WorkflowBundle\Exception\AssemblerException;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowDefinition;
 use Oro\Bundle\WorkflowBundle\Configuration\WorkflowConfiguration;
-use Oro\Bundle\WorkflowBundle\Model\Workflow;
-use Oro\Bundle\WorkflowBundle\Model\Step;
 
 class WorkflowAssembler extends AbstractAssembler
 {
@@ -80,7 +78,7 @@ class WorkflowAssembler extends AbstractAssembler
 
         $attributes = $this->assembleAttributes($configuration);
         $steps = $this->assembleSteps($configuration, $attributes);
-        $transitions = $this->assembleTransitions($configuration, $steps);
+        $transitions = $this->assembleTransitions($configuration, $steps, $attributes);
 
         $workflow = $this->createWorkflow();
         $workflow
@@ -197,9 +195,10 @@ class WorkflowAssembler extends AbstractAssembler
     /**
      * @param array $configuration
      * @param Collection $steps
+     * @param Collection $attributes
      * @return Collection
      */
-    protected function assembleTransitions(array $configuration, Collection $steps)
+    protected function assembleTransitions(array $configuration, Collection $steps, Collection $attributes)
     {
         $transitionsConfiguration = $this->getOption($configuration, WorkflowConfiguration::NODE_TRANSITIONS, array());
         $transitionDefinitionsConfiguration = $this->getOption(
@@ -211,7 +210,8 @@ class WorkflowAssembler extends AbstractAssembler
         return $this->transitionAssembler->assemble(
             $transitionsConfiguration,
             $transitionDefinitionsConfiguration,
-            $steps
+            $steps,
+            $attributes
         );
     }
 

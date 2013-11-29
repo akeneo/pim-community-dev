@@ -49,7 +49,7 @@ See syntax examples:
 
 ```
 - @alias_of_action:
-    condition:
+    conditions:
         # optional condition configuration
     parameters:
         - some_parameters: some_value
@@ -80,7 +80,7 @@ Assign Value
 **Configuration Example**
 ```
 - @assign_value:
-    condition:
+    conditions:
         # optional condition configuration
     parameters: [$call_successfull, true]
 
@@ -110,7 +110,7 @@ Unset Value
 **Configuration Example**
 ```
 - @unset_value:
-    condition:
+    conditions:
         # optional condition configuration
     parameters: [$call_successfull]
 
@@ -141,7 +141,7 @@ Create Entity
 **Configuration Example**
 ```
 - @create_entity:
-    condition:
+    conditions:
         # optional condition configuration
     parameters:
         class: Acme\Bundle\DemoWorkflowBundle\Entity\PhoneConversation
@@ -172,17 +172,20 @@ Find Entity
 
 **Alias:** find_entity|request_entity
 
-**Description:** Finds entity by identifier value and assigns saves reference to path.
+**Description:** Finds entity by identifier value or "where" condition and saves reference or entity to path.
 
 **Parameters:**
  - class - fully qualified class name of requested entity;
- - identifier - value of identifier of entity to find
- - attribute - target path where result of action will be saved.
+ - attribute - target path where result of action will be saved;
+ - identifier - value of identifier of entity to find;
+ - where - array of conditions to find entity, key is field name, value is scalar value or path;
+ - order_by - array of fields used to sort values, key is field name, value is direction (asc or desc);
+ - case_insensitive - boolean flag used to find entity using case insensitive search, default value is false.
 
 **Configuration Example**
 ```
 - @find_entity:
-    condition:
+    conditions:
         # optional condition configuration
     parameters:
         class: OroCRM\Bundle\SalesBundle\Entity\LeadStatus
@@ -196,6 +199,16 @@ OR
     identifier: 'canceled'
     attribute: $lead.status
 
+OR
+
+- @find_entity:
+    class: OroCRM\Bundle\AccountBundle\Entity\Account
+    attribute: $account
+    where:
+        name: $company_name
+    order_by:
+        date_created: desc
+    case_insensitive: true
 ```
 
 Call Method
@@ -215,7 +228,7 @@ Call Method
 **Configuration Example**
 ```
 - @call_method:
-    condition:
+    conditions:
         # optional condition configuration
     parameters:
         object: $lead.contact
@@ -249,7 +262,7 @@ Start Workflow
 **Configuration Example**
 ```
 - @start_workflow: # start workflow and create workflow item
-    condition:
+    conditions:
         # optional condition configuration
     parameters:
         name: sales
@@ -353,7 +366,7 @@ Tree Executor
 **Configuration Example**
 ```
 - @tree:
-    condition:
+    conditions:
         # optional condition configuration
     actions:
         - @create_entity:

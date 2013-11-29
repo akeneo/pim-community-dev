@@ -51,6 +51,34 @@ class ContextAccessor
     }
 
     /**
+     * Checks whether context has value
+     *
+     * @param mixed $context
+     * @param mixed $value
+     * @return bool
+     */
+    public function hasValue($context, $value)
+    {
+        if ($value instanceof PropertyPath) {
+            try {
+                $key = $value->getElement($value->getLength() - 1);
+                $parentValue = $this->getPropertyAccessor()->getValue($context, $value->getParent());
+                if (is_array($parentValue)) {
+                    return array_key_exists($key, $parentValue);
+                } elseif ($parentValue instanceof \ArrayAccess) {
+                    return isset($parentValue[$key]);
+                } else {
+                    return $this->getPropertyAccessor()->getValue($context, $value) !== null;
+                }
+            } catch (\Exception $e) {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * Get PropertyAccessor
      *
      * @return PropertyAccessor
