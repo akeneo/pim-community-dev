@@ -5,7 +5,7 @@ oro_entity_config:
                 auditable:
                     options:
                         priority:           60
-                        default_value:      true
+                        default_value:      false
                     grid:
                         type:               boolean
                         label:              'Auditable'
@@ -26,7 +26,7 @@ oro_entity_config:
                 auditable:
                     options:
                         priority:           60
-                        default_value:      true
+                        default_value:      false
                     grid:
                         type:               boolean
                         label:              'Auditable'
