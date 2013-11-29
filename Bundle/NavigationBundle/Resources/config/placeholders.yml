@@ -43,6 +43,10 @@ placeholders:
         items:
             breadcrumbs:
                 order: 100
+    requirejs_config_extend:
+        items:
+            routing_requirejs_config:
+                order: 100
 
 items:
    hashNavigation:
@@ -51,6 +55,8 @@ items:
         template: OroNavigationBundle:Js:dot.menu.js.twig
    pinbar_js:
         template: OroNavigationBundle:Js:pinbar.js.twig
+   routing_requirejs_config:
+        template: OroNavigationBundle:Js:requirejs.config.js.twig
    shortcuts:
         template: OroNavigationBundle:Shortcut:shortcuts.html.twig
    application_menu:

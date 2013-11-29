@@ -25,88 +25,89 @@
 
     <script type="text/javascript">
         {% set wid = app.request.get('_wid') %}
-        require(['jquery', 'oro/datagrid/callback-listener', 'oro/widget-manager', 'oro/multiple-entity/model'],
-                function($, CallbackListener, WidgetManager, MultipleEntityModel) {
-                    var addedModels = {};
-                    WidgetManager.getWidgetInstance({{ wid|json_encode|raw }}, function(widget) {
-                        if (widget.options.type == 'dialog') {
-                            widget.getWidget().css({
-                                'padding': 0,
-                                'max-height': 500,
-                                'overflow': 'auto'
-                            });
-                        }
-
-                        widget.getAction('select', 'adopted', function(selectBtn) {
-                            selectBtn.click(function() {
-                                var addedVal = $('#appendRelation').val();
-                                var removedVal = $('#removeRelation').val();
-                                var appendedIds = addedVal.length ? addedVal.split(',') : [];
-                                var removedIds = removedVal.length ? removedVal.split(',') : [];
-                                widget.trigger('completeSelection', appendedIds, addedModels, removedIds);
-                            });
-                        });
+        require(['jquery', 'routing', 'oro/datagrid/callback-listener', 'oro/widget-manager',
+            'oro/multiple-entity/model'],
+        function($, routing, CallbackListener, WidgetManager, MultipleEntityModel) {
+            var addedModels = {};
+            WidgetManager.getWidgetInstance({{ wid|json_encode|raw }}, function(widget) {
+                if (widget.options.type == 'dialog') {
+                    widget.getWidget().css({
+                        'padding': 0,
+                        'max-height': 500,
+                        'overflow': 'auto'
                     });
+                }
 
-                    var gridName = {{ gridName|json_encode|raw }};
-
-                    $(function() {
-                        /** @type {oro.datagrid.CallbackListener} */
-                        new CallbackListener({
-                            $gridContainer: $('#grid-' + gridName),
-                            gridName: gridName,
-                            dataField: 'id',
-                            columnName: 'assigned',
-                            processCallback: function (value, model, listener) {
-                                var isActive = model.get(listener.columnName);
-                                var id = model.get('id');
-                                if (isActive) {
-                                    var label = '';
-
-                                    {% set label = '' %}
-                                    {% for title in relation.get('target_title') %}
-                                        {% set is_extend = extend_provider.getConfig(relation.get('target_entity'), title).is('owner', 'Custom') %}
-                                        {% set field_label = title %}
-                                        {% if is_extend == true %}
-                                            {% set field_label = 'field_' ~ title %}
-                                        {% endif %}
-
-                                        label += model.get('{{ field_label }}') + ' ';
-                                    {% endfor %}
-
-                                    addedModels[id] = new MultipleEntityModel({
-                                        'id': model.get('id'),
-                                        'link': Routing.generate(
-                                                'oro_entity_detailed',
-                                                {
-                                                    id: model.get('id'),
-                                                    className: '{{ relation.get('target_entity')|replace('\\', '_') }}',
-                                                    fieldName: '{{ relation.getId().getFieldName() }}'
-                                                }
-                                        ),
-                                        'label': label,
-                                        'extraData':
-                                        [
-                                            {% for field in relation.get('target_grid') %}
-                                                {% set is_extend = extend_provider.getConfig(relation.get('target_entity'), field).is('owner', 'Custom') %}
-                                                {% set field_name = field %}
-                                                {% if is_extend == true %}
-                                                    {% set field_name = 'field_' ~ field %}
-                                                {% endif %}
-                                            {
-                                                'label': '{{ entity_provider.getConfig(relation.get('target_entity'), field).get('label') }}',
-                                                'value': model.get('{{ field_name }}')
-                                            },
-                                            {% endfor %}
-                                        ]
-                                    });
-                                } else if (addedModels.hasOwnProperty(id)) {
-                                    delete addedModels[id];
-                                }
-                            }
-                        });
+                widget.getAction('select', 'adopted', function(selectBtn) {
+                    selectBtn.click(function() {
+                        var addedVal = $('#appendRelation').val();
+                        var removedVal = $('#removeRelation').val();
+                        var appendedIds = addedVal.length ? addedVal.split(',') : [];
+                        var removedIds = removedVal.length ? removedVal.split(',') : [];
+                        widget.trigger('completeSelection', appendedIds, addedModels, removedIds);
                     });
                 });
+            });
+
+            var gridName = {{ gridName|json_encode|raw }};
+
+            $(function() {
+                /** @type {oro.datagrid.CallbackListener} */
+                new CallbackListener({
+                    $gridContainer: $('#grid-' + gridName),
+                    gridName: gridName,
+                    dataField: 'id',
+                    columnName: 'assigned',
+                    processCallback: function (value, model, listener) {
+                        var isActive = model.get(listener.columnName);
+                        var id = model.get('id');
+                        if (isActive) {
+                            var label = '';
+
+                            {% set label = '' %}
+                            {% for title in relation.get('target_title') %}
+                                {% set is_extend = extend_provider.getConfig(relation.get('target_entity'), title).is('owner', 'Custom') %}
+                                {% set field_label = title %}
+                                {% if is_extend == true %}
+                                    {% set field_label = 'field_' ~ title %}
+                                {% endif %}
+
+                                label += model.get('{{ field_label }}') + ' ';
+                            {% endfor %}
+
+                            addedModels[id] = new MultipleEntityModel({
+                                'id': model.get('id'),
+                                'link': routing.generate(
+                                        'oro_entity_detailed',
+                                        {
+                                            id: model.get('id'),
+                                            className: '{{ relation.get('target_entity')|replace('\\', '_') }}',
+                                            fieldName: '{{ relation.getId().getFieldName() }}'
+                                        }
+                                ),
+                                'label': label,
+                                'extraData':
+                                [
+                                    {% for field in relation.get('target_grid') %}
+                                        {% set is_extend = extend_provider.getConfig(relation.get('target_entity'), field).is('owner', 'Custom') %}
+                                        {% set field_name = field %}
+                                        {% if is_extend == true %}
+                                            {% set field_name = 'field_' ~ field %}
+                                        {% endif %}
+                                    {
+                                        'label': '{{ entity_provider.getConfig(relation.get('target_entity'), field).get('label') }}',
+                                        'value': model.get('{{ field_name }}')
+                                    },
+                                    {% endfor %}
+                                ]
+                            });
+                        } else if (addedModels.hasOwnProperty(id)) {
+                            delete addedModels[id];
+                        }
+                    }
+                });
+            });
+        });
     </script>
 
     <div class="widget-actions">
