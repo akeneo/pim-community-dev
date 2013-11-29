@@ -59,7 +59,7 @@ define(function (require) {
                 tools.loadModules(self.modules, function () {
                     methods.buildGrid.call(self);
                     initBuilders();
-                    methods.announceCollectionCreated.call(self);
+                    methods.afterBuild.call(self);
                 });
             },
 
@@ -114,9 +114,9 @@ define(function (require) {
             },
 
             /**
-             * Announce collection
+             * After build
              */
-            announceCollectionCreated: function () {
+            afterBuild: function () {
                 mediator.trigger('datagrid_collection_set_after', this.grid.collection, this.$el);
             },
 
