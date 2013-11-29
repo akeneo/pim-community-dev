@@ -51,6 +51,7 @@ class AssertionContext extends RawMinkContext
      */
     public function iShouldSeeValidationError($error)
     {
+        $this->getMainContext()->wait();
         $errors = $this->getCurrentPage()->getValidationErrors();
         assertTrue(in_array($error, $errors), sprintf('Expecting to see validation error "%s", not found', $error));
     }
