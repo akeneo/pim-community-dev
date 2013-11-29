@@ -11,8 +11,8 @@ function(_) {
     /**
      * Global registry implementation
      *
-     * @export oro/registry
-     * @name   oro.registry
+     * @export oro/grid/registry
+     * @name   oro/grid.registry
      */
     return {
         /**

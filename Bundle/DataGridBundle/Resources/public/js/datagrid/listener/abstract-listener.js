@@ -1,6 +1,6 @@
-/* global define */
-define(['underscore', 'backbone', 'oro/registry', 'oro/mediator'],
-function(_, Backbone, registry, mediator) {
+/*jslint browser: true, nomen: true*/
+/*global define*/
+define(['underscore', 'jquery', 'backbone'], function (_, $, Backbone) {
     'use strict';
 
     /**
@@ -11,10 +11,6 @@ function(_, Backbone, registry, mediator) {
      * @extends Backbone.Model
      */
     return Backbone.Model.extend({
-
-        /** @param {oro.datagrid.Grid} */
-        datagrid: null,
-
         /** @param {String} Column name of cells that will be listened for changing their values */
         columnName: 'id',
 
@@ -26,8 +22,7 @@ function(_, Backbone, registry, mediator) {
          *
          * @param {Object} options
          */
-        initialize: function(options) {
-
+        initialize: function (options) {
             if (!_.has(options, 'columnName')) {
                 throw new Error('Data column name is not specified');
             }
@@ -39,40 +34,20 @@ function(_, Backbone, registry, mediator) {
 
             Backbone.Model.prototype.initialize.apply(this, arguments);
 
-            if (options.grid) {
-                this.setDatagridAndSubscribe(options.grid);
-            } else {
-                // @todo delete
-                if (!_.has(options, 'datagridName')) {
-                    throw new Error('Datagrid name is not specified');
-                }
-                this._assignDatagridAndSubscribe(options.datagridName);
+            if (!options.$gridContainer) {
+                throw new Error('gridSelector is not specified');
             }
-        },
+            this.$gridContainer = options.$gridContainer;
+            this.gridName = options.gridName;
 
-        /**
-         * Subscribe to datagrid events
-         *
-         * @param {String} datagridName
-         * @private
-         */
-        _assignDatagridAndSubscribe: function(datagridName) {
-            var datagrid = registry.getElement('datagrid', datagridName);
-            if (datagrid) {
-                this.setDatagridAndSubscribe(datagrid);
-            } else {
-                mediator.once("datagrid:created:" + datagridName, this.setDatagridAndSubscribe, this);
-            }
+            this.setDatagridAndSubscribe();
         },
 
         /**
          * Set datagrid instance
-         *
-         * @param {oro.datagrid.Grid} datagrid
          */
-        setDatagridAndSubscribe: function(datagrid) {
-            this.datagrid = datagrid;
-            this.datagrid.collection.on('change:' + this.columnName, this._onModelEdited, this);
+        setDatagridAndSubscribe: function () {
+            this.$gridContainer.on('datagrid:change:' + this.gridName, this._onModelEdited.bind(this));
         },
 
         /**
@@ -81,8 +56,13 @@ function(_, Backbone, registry, mediator) {
          * @param {Backbone.Model} model
          * @protected
          */
-        _onModelEdited: function (model) {
+        _onModelEdited: function (e, model) {
+            if (!model.hasChanged(this.columnName)) {
+                return;
+            }
+
             var value = model.get(this.dataField);
+
             if (!_.isUndefined(value)) {
                 this._processValue(value, model);
             }
@@ -96,7 +76,7 @@ function(_, Backbone, registry, mediator) {
          * @protected
          * @abstract
          */
-        _processValue: function(value, model) {
+        _processValue: function (value, model) {
             throw new Error('_processValue method is abstract and must be implemented');
         }
     });

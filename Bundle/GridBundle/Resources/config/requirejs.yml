@@ -41,4 +41,4 @@ config:
         'oro/grid/router': 'bundles/orogrid/js/datagrid/router.js'
         'oro/grid/row': 'bundles/orogrid/js/datagrid/row.js'
         'oro/grid/toolbar': 'bundles/orogrid/js/datagrid/toolbar.js'
-
+        'oro/grid/registry': 'bundles/orogrid/js/registry.js'

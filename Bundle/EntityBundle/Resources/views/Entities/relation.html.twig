@@ -48,10 +48,13 @@
                         });
                     });
 
+                    var gridName = {{ gridName|json_encode|raw }};
+
                     $(function() {
                         /** @type {oro.datagrid.CallbackListener} */
                         new CallbackListener({
-                            datagridName: {{ gridName|json_encode|raw }},
+                            $gridContainer: $('#grid-' + gridName),
+                            gridName: gridName,
                             dataField: 'id',
                             columnName: 'assigned',
                             processCallback: function (value, model, listener) {
