@@ -7,13 +7,10 @@ Feature: Edit a channel
     Given a "footwear" catalog configuration
     And I am logged in as "admin"
 
-  Scenario: Successfully display the edit view for a channel
+  Scenario: Successfully edit a channel
     Given I am on the "tablet" channel page
     Then I should see the Code field
     And the field Code should be disabled
-
-  Scenario: Successfully edit a channel
-    Given I am on the "tablet" channel page
     When I fill in the following information:
       | Default label | My tablet |
     And I press the "Save" button
