@@ -7,9 +7,8 @@ use Pim\Bundle\CatalogBundle\Model\Group;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\ImportExportBundle\Exception\ColumnLabelException;
 use Pim\Bundle\ImportExportBundle\Exception\UnknownColumnException;
-
+use Pim\Bundle\ImportExportBundle\Exception\MissingIdentifierException;
 /**
  * Caches the attributes of an import. Do not forget to call the reset method between two imports.
  *
@@ -77,9 +76,6 @@ class AttributeCache
      * Initializes the cache with a set of column labels
      *
      * @param array $columnsInfo
-     *
-     * @throws UnknownColumnException
-     * @throws ColumnLabelException
      */
     public function initialize(array $columnsInfo)
     {
@@ -213,11 +209,14 @@ class AttributeCache
      *
      * @param array $columnsInfo
      *
-     * @throws UnknownColumnException
-     * @throws ColumnLabelException
+     * @throws MissingIdentifierException
+     * @throw  UnknownColumnException
      */
     protected function setAttributes($columnsInfo)
     {
+        if (!count($columnsInfo)) {
+            throw new MissingIdentifierException;
+        }
         $codes = array_unique(
             array_map(
                 function ($columnInfo) {
@@ -238,6 +237,9 @@ class AttributeCache
             $this->attributes[$attribute->getCode()] = $attribute;
         }
 
+        if (!isset($this->identifierAttribute)) {
+            throw new MissingIdentifierException();
+        }
         if (count($attributes) !== count($codes)) {
             throw new UnknownColumnException(
                 array_diff(
