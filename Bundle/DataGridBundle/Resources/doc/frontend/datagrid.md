@@ -8,23 +8,19 @@
 ###Mediator events
 Datagrid listens on mediator for events:
 
-- ```datagrid:setParam:<gridName>``` - ```param```, ```value```
-    
-    Set additional datagrid parameters
+- `datagrid:setParam:<gridName>` - `param`, `value`
+  Set additional datagrid parameters
 
-- ```datagrid:restoreState:<gridName>``` - ```columnName```, ```dataField```, ```included```, ```excluded```
+- `datagrid:restoreState:<gridName>` - `columnName`, `dataField`, `included`, `excluded`
+  Restore checkboxes state
 
-    Restore checkboxes state
+- `datagrid:doRefresh:<gridName>`
+  Refresh datagrid
 
-- ```datagrid:doRefresh:<gridName>```
+- `datagrid:doReset:<gridName>`
+  Reset datagrid state
 
-    Refresh datagrid
-
-- ```datagrid:doReset:<gridName>```
-
-    Reset datagrid state
-
-### DOM events
+###DOM events
 Datagrid emits DOM events on its $el element:
 
-- ```datagrid:change:<gridName``` - ```model```
+- `datagrid:change:<gridName` - `model`
