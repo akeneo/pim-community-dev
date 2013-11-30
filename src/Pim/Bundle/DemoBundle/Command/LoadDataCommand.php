@@ -24,7 +24,13 @@ class LoadDataCommand extends ContainerAwareCommand
         $this
             ->setName('pim:category:generate')
             ->addArgument('depth', InputArgument::OPTIONAL, 'Max depth of the tree', 5)
-            ->addArgument('nodes-per-level', InputArgument::OPTIONAL, 'Number of nodes to add at each level (i.e 10: lvl1 => 10 nodes, lvl2 => 20 nodes, lvl3 => 30 nodes, etc.', 10)
+            ->addArgument(
+                'nodes-per-level',
+                InputArgument::OPTIONAL,
+                'Number of nodes to add at each level'
+                .'(i.e 10: lvl1 => 10 nodes, lvl2 => 20 nodes, lvl3 => 30 nodes, etc.',
+                10
+            )
             ->addArgument('max-products-per-node', InputArgument::OPTIONAL, 'Max number of products per node', 10)
             ->addOption('purge-table', null, InputOption::VALUE_NONE, 'Whether or not to purge db')
         ;
@@ -46,18 +52,19 @@ class LoadDataCommand extends ContainerAwareCommand
         }
         $this->totalNodesCount++;
 
-        $output->writeln(sprintf(
-            '<question>Generating a categories tree with the following characteristics:</question>'."\n".
-            '<comment> > </comment> depth                           <info>%s</info>' . "\n" .
-            '<comment> > </comment> nodes added at each level       <info>%s</info>' . "\n" .
-            '<comment> > </comment> max products attached to a node <info>%s</info>' . "\n" .
-            '<comment> > </comment> total number of generated nodes <info>%s</info>' . "\n"
-            ,
-            $depth,
-            $this->nodesPerLevel,
-            $maxProductsPerNode,
-            $this->totalNodesCount
-        ));
+        $output->writeln(
+            sprintf(
+                '<question>Generating a categories tree with the following characteristics:</question>'."\n".
+                '<comment> > </comment> depth                           <info>%s</info>' . "\n" .
+                '<comment> > </comment> nodes added at each level       <info>%s</info>' . "\n" .
+                '<comment> > </comment> max products attached to a node <info>%s</info>' . "\n" .
+                '<comment> > </comment> total number of generated nodes <info>%s</info>' . "\n",
+                $depth,
+                $this->nodesPerLevel,
+                $maxProductsPerNode,
+                $this->totalNodesCount
+            )
+        );
 
         $class = 'Pim\Bundle\CatalogBundle\Entity\Category';
         $fixtures[$class]['root'] = array(
@@ -71,7 +78,11 @@ class LoadDataCommand extends ContainerAwareCommand
                 $fixtures[$class][sprintf('category-%d-%d', $level, $i)] = array(
                     'code (unique)' => '<sentence(2)>',
                     'title'         => '<sentence(2)>',
-                    'parent'        => $level ? sprintf('@category-%d-%d', $level - 1, rand(0, $nodesPerLevel - $this->nodesPerLevel - 1)) : '@root',
+                    'parent'        => $level ? sprintf(
+                        '@category-%d-%d',
+                        $level - 1,
+                        rand(0, $nodesPerLevel - $this->nodesPerLevel - 1)
+                    ) : '@root',
                     'products'      => $this->getSomeRandomProducts($maxProductsPerNode),
                 );
                 $fixtures = $this->insert($fixtures, $class, $output);
@@ -88,10 +99,12 @@ class LoadDataCommand extends ContainerAwareCommand
             $objects = Fixtures::load($fixtures, $this->getEntityManager());
             $this->insertedNodesCount += count($objects);
 
-            $output->writeln(sprintf(
-                '<comment>  Inserted %d categories... %.1f%%</comment>',
-                $this->insertedNodesCount,
-                ($this->insertedNodesCount/$this->totalNodesCount) * 100)
+            $output->writeln(
+                sprintf(
+                    '<comment>  Inserted %d categories... %.1f%%</comment>',
+                    $this->insertedNodesCount,
+                    ($this->insertedNodesCount/$this->totalNodesCount) * 100
+                )
             );
 
             return array();
@@ -105,9 +118,13 @@ class LoadDataCommand extends ContainerAwareCommand
         $em = $this->getEntityManager();
         $rsm = new ResultSetMappingBuilder($em);
         $rsm->addRootEntityFromClassMetadata('Pim\Bundle\CatalogBundle\Model\Product', 'u');
-        $query = $em->createNativeQuery(sprintf(
-            'SELECT * FROM pim_product order by rand() limit %d', rand(0, $maxProductsPerNode)
-        ), $rsm);
+        $query = $em->createNativeQuery(
+            sprintf(
+                'SELECT * FROM pim_product order by rand() limit %d',
+                rand(0, $maxProductsPerNode)
+            ),
+            $rsm
+        );
 
         return $query->getResult();
     }
