@@ -323,7 +323,7 @@ class EditCommonAttributes extends AbstractMassEditAction
     {
         return $product->getValue(
             $value->getAttribute()->getCode(),
-            $value->getAttribute()->getTranslatable() ? $this->getLocale()->getCode() : null,
+            $value->getAttribute()->isTranslatable() ? $this->getLocale()->getCode() : null,
             $value->getAttribute()->isScopable() ? $value->getScope() : null
         );
     }
@@ -416,7 +416,7 @@ class EditCommonAttributes extends AbstractMassEditAction
         $value = $this->productManager->createFlexibleValue();
         $value->setAttribute($attribute);
 
-        if ($attribute->getTranslatable()) {
+        if ($attribute->isTranslatable()) {
             $value->setLocale($locale);
         }
 

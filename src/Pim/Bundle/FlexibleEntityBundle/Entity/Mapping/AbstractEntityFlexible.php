@@ -217,7 +217,7 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
         $attribute = $this->allAttributes[$attributeCode];
         $value = new $this->valueClass();
         $value->setAttribute($attribute);
-        if ($attribute->getTranslatable()) {
+        if ($attribute->isTranslatable()) {
             $value->setLocale($locale);
         }
         if ($attribute->isScopable()) {

@@ -160,7 +160,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface
         foreach ($this->values as $value) {
             $attribute = $value->getAttribute();
             $key = $attribute->getCode();
-            if ($attribute->getTranslatable()) {
+            if ($attribute->isTranslatable()) {
                 $key .= '_'.$value->getLocale();
             }
             if ($attribute->isScopable()) {

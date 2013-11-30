@@ -231,11 +231,11 @@ class ProductManagerTest extends \PHPUnit_Framework_TestCase
     {
         $attribute = $this->getMock(
             'Pim\Bundle\CatalogBundle\Entity\ProductAttribute',
-            array('getTranslatable', 'isScopable', 'getCode')
+            array('isTranslatable', 'isScopable', 'getCode')
         );
 
         $attribute->expects($this->any())
-                  ->method('getTranslatable')
+                  ->method('isTranslatable')
                   ->will($this->returnValue($translatable));
 
         $attribute->expects($this->any())

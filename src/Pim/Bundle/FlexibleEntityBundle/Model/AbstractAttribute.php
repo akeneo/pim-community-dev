@@ -425,11 +425,11 @@ abstract class AbstractAttribute implements TimestampableInterface
     }
 
     /**
-     * Get translatable
+     * Is translatable
      *
      * @return boolean $translatable
      */
-    public function getTranslatable()
+    public function isTranslatable()
     {
         return $this->translatable;
     }

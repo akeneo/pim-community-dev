@@ -125,9 +125,9 @@ class AttributeTest extends \PHPUnit_Framework_TestCase
     public function testTranslatable()
     {
         // false by default
-        $this->assertFalse($this->attribute->getTranslatable());
+        $this->assertFalse($this->attribute->isTranslatable());
         $this->attribute->setTranslatable(true);
-        $this->assertTrue($this->attribute->getTranslatable());
+        $this->assertTrue($this->attribute->isTranslatable());
     }
 
     /**

@@ -308,7 +308,7 @@ class EditCommonAttributesTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($scopable));
 
         $attribute->expects($this->any())
-            ->method('getTranslatable')
+            ->method('isTranslatable')
             ->will($this->returnValue($translatable));
 
         $attribute->expects($this->any())
