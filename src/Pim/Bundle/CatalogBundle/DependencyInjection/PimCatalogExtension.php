@@ -59,6 +59,7 @@ class PimCatalogExtension extends Extension implements PrependExtensionInterface
 
     /**
      * Provides the supported driver for product storage
+     * @return string[]
      */
     protected function getSupportedStorageDrivers()
     {
@@ -66,6 +67,9 @@ class PimCatalogExtension extends Extension implements PrependExtensionInterface
     }
 
     /**
+     * @param array            $config
+     * @param ContainerBuilder $container
+     *
      * Load the mapping for product and product storage
      */
     protected function loadStorageDriver(array $config, ContainerBuilder $container)
@@ -82,7 +86,6 @@ class PimCatalogExtension extends Extension implements PrependExtensionInterface
         $container->setParameter($this->getAlias().'.storage_driver', $storageDriver);
         // Parameter defining if the mapping driver must be enabled or not
         $container->setParameter($this->getAlias().'.storage_driver.'.$storageDriver, true);
-        
     }
 
     /**
