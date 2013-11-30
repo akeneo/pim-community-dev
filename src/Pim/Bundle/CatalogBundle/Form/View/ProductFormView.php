@@ -93,7 +93,7 @@ class ProductFormView
     protected function getAttributeClasses(ProductAttribute $attribute)
     {
         $classes = array();
-        if ($attribute->getScopable()) {
+        if ($attribute->isScopable()) {
             $classes['scopable'] = true;
         }
 
@@ -125,7 +125,7 @@ class ProductFormView
             'allowValueCreation' => in_array($attribute->getAttributeType(), $this->choiceAttributeTypes)
         );
 
-        if ($attribute->getScopable()) {
+        if ($attribute->isScopable()) {
             $attributeView['values'] = array_merge(
                 $this->getAttributeValues($attribute),
                 array($value->getScope() => $view)

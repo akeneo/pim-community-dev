@@ -86,7 +86,7 @@ class ColumnInfo implements ColumnInfoInterface
                 );
             }
         }
-        if ($attribute->getScopable()) {
+        if ($attribute->isScopable()) {
             if (count($suffixes)) {
                 $this->scope = array_shift($suffixes);
             } else {

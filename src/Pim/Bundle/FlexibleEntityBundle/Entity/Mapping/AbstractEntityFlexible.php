@@ -220,7 +220,7 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
         if ($attribute->getTranslatable()) {
             $value->setLocale($locale);
         }
-        if ($attribute->getScopable()) {
+        if ($attribute->isScopable()) {
             $value->setScope($scope);
         }
 

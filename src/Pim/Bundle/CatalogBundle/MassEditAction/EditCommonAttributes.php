@@ -324,7 +324,7 @@ class EditCommonAttributes extends AbstractMassEditAction
         return $product->getValue(
             $value->getAttribute()->getCode(),
             $value->getAttribute()->getTranslatable() ? $this->getLocale()->getCode() : null,
-            $value->getAttribute()->getScopable() ? $value->getScope() : null
+            $value->getAttribute()->isScopable() ? $value->getScope() : null
         );
     }
 
@@ -392,7 +392,7 @@ class EditCommonAttributes extends AbstractMassEditAction
     protected function addValues(ProductAttribute $attribute)
     {
         $locale = $this->getLocale();
-        if ($attribute->getScopable()) {
+        if ($attribute->isScopable()) {
             foreach ($locale->getChannels() as $channel) {
                 $key = $attribute->getCode().'_'.$channel->getCode();
                 $this->values[$key] = $this->createValue($attribute, $locale, $channel);
@@ -420,7 +420,7 @@ class EditCommonAttributes extends AbstractMassEditAction
             $value->setLocale($locale);
         }
 
-        if ($channel && $attribute->getScopable()) {
+        if ($channel && $attribute->isScopable()) {
             $value->setScope($channel->getCode());
         }
 

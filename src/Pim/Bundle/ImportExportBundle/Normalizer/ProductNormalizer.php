@@ -159,7 +159,7 @@ class ProductNormalizer implements NormalizerInterface
 
         $values = $values->filter(
             function ($value) use ($channelCode) {
-                return (!$value->getAttribute()->getScopable() || $value->getScope() == $channelCode);
+                return (!$value->getAttribute()->isScopable() || $value->getScope() == $channelCode);
             }
         );
 

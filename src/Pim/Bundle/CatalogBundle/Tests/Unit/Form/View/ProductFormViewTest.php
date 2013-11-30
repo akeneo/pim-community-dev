@@ -357,7 +357,7 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($options['sortOrder']));
 
         $attribute->expects($this->any())
-            ->method('getScopable')
+            ->method('isScopable')
             ->will($this->returnValue($options['scopable']));
 
         $attribute->expects($this->any())

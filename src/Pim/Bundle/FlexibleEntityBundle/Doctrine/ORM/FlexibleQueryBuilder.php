@@ -133,7 +133,7 @@ class FlexibleQueryBuilder
             }
             $condition .= ' AND '.$joinAlias.'.locale = '.$this->qb->expr()->literal($this->getLocale());
         }
-        if ($attribute->getScopable()) {
+        if ($attribute->isScopable()) {
             if ($this->getScope() === null) {
                 throw new FlexibleQueryException('Scope must be configured');
             }

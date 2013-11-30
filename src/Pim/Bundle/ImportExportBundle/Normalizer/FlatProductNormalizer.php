@@ -118,8 +118,8 @@ class FlatProductNormalizer implements NormalizerInterface
                     ($value !== $identifier) &&
                     (
                         ($scopeCode == null) ||
-                        (!$value->getAttribute()->getScopable()) ||
-                        ($value->getAttribute()->getScopable() && $value->getScope() == $scopeCode)
+                        (!$value->getAttribute()->isScopable()) ||
+                        ($value->getAttribute()->isScopable() && $value->getScope() == $scopeCode)
                     ) &&
                     (
                         (count($localeCodes) == 0) ||
@@ -182,7 +182,7 @@ class FlatProductNormalizer implements NormalizerInterface
         if ($value->getAttribute()->getTranslatable()) {
             $suffix = sprintf('-%s', $value->getLocale());
         }
-        if ($value->getAttribute()->getScopable()) {
+        if ($value->getAttribute()->isScopable()) {
             $suffix .= sprintf('-%s', $value->getScope());
         }
 

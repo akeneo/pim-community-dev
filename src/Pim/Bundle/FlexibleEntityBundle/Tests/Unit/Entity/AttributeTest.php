@@ -147,9 +147,9 @@ class AttributeTest extends \PHPUnit_Framework_TestCase
     public function testScopable()
     {
         // false by default
-        $this->assertFalse($this->attribute->getScopable());
+        $this->assertFalse($this->attribute->isScopable());
         $this->attribute->setScopable(true);
-        $this->assertTrue($this->attribute->getScopable());
+        $this->assertTrue($this->attribute->isScopable());
     }
 
     /**

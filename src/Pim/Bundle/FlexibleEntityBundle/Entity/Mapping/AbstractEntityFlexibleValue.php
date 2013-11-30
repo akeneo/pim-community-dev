@@ -515,7 +515,7 @@ abstract class AbstractEntityFlexibleValue extends AbstractFlexibleValue
     public function isMatching($attribute, $locale, $scope)
     {
         $isLocalizable = $this->getAttribute()->getTranslatable();
-        $isScopable    = $this->getAttribute()->getScopable();
+        $isScopable    = $this->getAttribute()->isScopable();
         $isLocalized   = $this->getLocale() == $locale;
         $isScoped      = $this->getScope() == $scope;
 

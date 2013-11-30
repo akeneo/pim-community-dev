@@ -449,11 +449,11 @@ abstract class AbstractAttribute implements TimestampableInterface
     }
 
     /**
-     * Get scopable
+     * Is scopable
      *
      * @return boolean $scopable
      */
-    public function getScopable()
+    public function isScopable()
     {
         return $this->scopable;
     }
