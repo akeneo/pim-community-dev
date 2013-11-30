@@ -42,10 +42,10 @@ class ProductAttributeTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($this->attribute->getAvailableLocales());
         $this->assertEmptyCollection($this->attribute->getTranslations());
 
-        $this->assertFalse($this->attribute->getRequired());
-        $this->assertFalse($this->attribute->getUnique());
+        $this->assertFalse($this->attribute->isRequired());
+        $this->assertFalse($this->attribute->isUnique());
         $this->assertNull($this->attribute->getDefaultValue());
-        $this->assertFalse($this->attribute->getSearchable());
+        $this->assertFalse($this->attribute->isSearchable());
         $this->assertFalse($this->attribute->isTranslatable());
         $this->assertFalse($this->attribute->isScopable());
         $this->assertFalse($this->attribute->isUseableAsGridColumn());

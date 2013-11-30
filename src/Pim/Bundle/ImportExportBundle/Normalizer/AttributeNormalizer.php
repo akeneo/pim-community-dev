@@ -55,7 +55,7 @@ class AttributeNormalizer implements NormalizerInterface
             $results,
             array(
                 'group'                   => $object->getVirtualGroup()->getCode(),
-                'unique'                  => (int) $object->getUnique(),
+                'unique'                  => (int) $object->isUnique(),
                 'useable_as_grid_column'  => (int) $object->isUseableAsGridColumn(),
                 'useable_as_grid_filter'  => (int) $object->isUseableAsGridFilter(),
                 'allowed_extensions'      => implode(self::ITEM_SEPARATOR, $object->getAllowedExtensions()),
@@ -101,13 +101,13 @@ class AttributeNormalizer implements NormalizerInterface
 
         return array(
             'available_locales'   => $this->normalizeAvailableLocales($attribute),
-            'searchable'          => $attribute->getSearchable(),
+            'searchable'          => $attribute->isSearchable(),
             'localizable'         => $attribute->isTranslatable(),
             'scope'               => $attribute->isScopable() ? self::CHANNEL_SCOPE : self::GLOBAL_SCOPE,
             'options'             => $this->normalizeOptions($attribute),
             'default_options'     => $this->normalizeDefaultOptions($attribute),
             'sort_order'          => (int) $attribute->getSortOrder(),
-            'required'            => (int) $attribute->getRequired(),
+            'required'            => (int) $attribute->isRequired(),
             'default_value'       => (string) $attribute->getDefaultValue(),
             'max_characters'      => (string) $attribute->getMaxCharacters(),
             'validation_rule'     => (string) $attribute->getValidationRule(),

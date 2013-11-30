@@ -329,11 +329,11 @@ abstract class AbstractAttribute implements TimestampableInterface
     }
 
     /**
-     * Get required
+     * Is required
      *
      * @return boolean $required
      */
-    public function getRequired()
+    public function isRequired()
     {
         return $this->required;
     }
@@ -353,11 +353,11 @@ abstract class AbstractAttribute implements TimestampableInterface
     }
 
     /**
-     * Get unique
+     * Is unique
      *
      * @return boolean $unique
      */
-    public function getUnique()
+    public function isUnique()
     {
         return $this->unique;
     }
@@ -401,11 +401,11 @@ abstract class AbstractAttribute implements TimestampableInterface
     }
 
     /**
-     * Get searchable
+     * Is searchable
      *
      * @return boolean $searchable
      */
-    public function getSearchable()
+    public function isSearchable()
     {
         return $this->searchable;
     }

@@ -75,7 +75,7 @@ class ChainedConstraintGuesserTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($options['backendType']));
 
         $attribute->expects($this->any())
-            ->method('getRequired')
+            ->method('isRequired')
             ->will($this->returnValue($options['required']));
 
         return $attribute;

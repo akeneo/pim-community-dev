@@ -567,7 +567,7 @@ class FixturesContext extends RawMinkContext
             assertEquals($data['group'], $attribute->getGroup()->getCode());
             assertEquals(($data['useable_as_grid_column'] == 1), $attribute->isUseableAsGridColumn());
             assertEquals(($data['useable_as_grid_filter'] == 1), $attribute->isUseableAsGridFilter());
-            assertEquals(($data['unique'] == 1), $attribute->getUnique());
+            assertEquals(($data['unique'] == 1), $attribute->isUnique());
             if ($data['allowed_extensions'] != '') {
                 assertEquals(explode(',', $data['allowed_extensions']), $attribute->getAllowedExtensions());
             }

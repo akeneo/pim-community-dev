@@ -212,7 +212,7 @@ class EditCommonAttributes extends AbstractMassEditAction
         foreach ($products as $product) {
             foreach ($this->commonAttributes as $key => $attribute) {
                 if ('pim_catalog_identifier' === $attribute->getAttributeType() ||
-                    $attribute->getUnique() ||
+                    $attribute->isUnique() ||
                     false === $product->getValue($attribute->getCode())) {
                     /**
                      * Attribute is not available for mass editing if:
