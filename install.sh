@@ -31,7 +31,7 @@ PIM_FIXTURE_PATHS="
     src/Pim/Bundle/InstallerBundle/DataFixtures
     src/Pim/Bundle/UserBundle/DataFixtures
     src/Pim/Bundle/CustomEntityBundle/DataFixtures
-    vendor/akeneo/DemoBundle/Pim/Bundle/DemoBundle/DataFixtures
+    src/Pim/Bundle/DemoBundle/DataFixtures
 "
 PIM_FIXTURES=`echo $PIM_FIXTURE_PATHS | sed -e "s# # --fixtures=#g" -e "s#^# --fixtures=#"`
 
