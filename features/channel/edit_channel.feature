@@ -30,7 +30,7 @@ Feature: Edit a channel
   @javascript
   Scenario: Successfully edit a channel to enable a locale and disable unused locales when deleting a channel
     Given I am on the "tablet" channel page
-    And I select the locale "Breton (France)"
+    And I change the "Locales" to "Breton (France)"
     And I press the "Save" button
     When I am on the locales page
     And I filter by "Activated" with value "yes"

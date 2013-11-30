@@ -5,6 +5,7 @@
 
 ## Improvements
 - Improve the user experience for family management
+- Update import / export detail view
 
 ## Bug fixes
 

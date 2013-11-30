@@ -24,11 +24,13 @@ class MetricType extends AbstractType
         if ($options['default_unit']) {
             $unitOptions['preferred_choices'] = $options['default_unit'];
         }
+        $options['family'] = 'Weight';
 
         $builder
             ->add('id', 'hidden')
             ->add('data', 'number')
-            ->add('unit', 'choice', $unitOptions);
+            ->add('unit', 'choice', $unitOptions)
+            ->add('family', 'hidden', array('data' => $options['family']));
     }
 
     /**
@@ -41,6 +43,7 @@ class MetricType extends AbstractType
                 'data_class'   => 'Pim\Bundle\FlexibleEntityBundle\Entity\Metric',
                 'units'        => array(),
                 'default_unit' => null,
+                'family'       => null
             )
         );
     }

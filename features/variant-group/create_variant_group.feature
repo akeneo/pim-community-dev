@@ -14,14 +14,15 @@ Feature: Variant group creation
     Then I should see the Code, Axis and Type fields
     And the field Type should be disabled
     And I fill in the following information in the popin:
-      | Code | MUG |
-    And I select the axis "Color"
+      | Code | MUG   |
+      | Axis | Color |
     And I press the "Save" button
     Then I am on the variant groups page
     And I should see group MUG
 
   Scenario: Fail to create a variant group with an empty, invalid or already used code
-    Given I select the axis "Size"
+    Given I fill in the following information in the popin:
+      | Axis | Size |
     And I press the "Save" button
     Then I should see validation error "This value should not be blank."
     When I fill in the following information in the popin:

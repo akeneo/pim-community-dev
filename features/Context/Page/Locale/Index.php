@@ -17,24 +17,4 @@ class Index extends Grid
      * @var string $path
      */
     protected $path = '/configuration/locale/';
-
-    /**
-     * @param string $locale
-     *
-     * @return \Behat\Mink\Element\NodeElement
-     */
-    public function findActivatedLocale($locale)
-    {
-        return $this->getRow($locale)->find('css', 'span.label-success');
-    }
-
-    /**
-     * @param string $locale
-     *
-     * @return \Behat\Mink\Element\NodeElement
-     */
-    public function findDeactivatedLocale($locale)
-    {
-        return $this->getRow($locale)->find('css', 'span.label-important');
-    }
 }

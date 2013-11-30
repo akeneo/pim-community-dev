@@ -32,8 +32,7 @@ class LoadDataCommand extends ContainerAwareCommand
                 10
             )
             ->addArgument('max-products-per-node', InputArgument::OPTIONAL, 'Max number of products per node', 10)
-            ->addOption('purge-table', null, InputOption::VALUE_NONE, 'Whether or not to purge db')
-        ;
+            ->addOption('purge-table', null, InputOption::VALUE_NONE, 'Whether or not to purge db');
     }
 
     public function execute(InputInterface $input, OutputInterface $output)
