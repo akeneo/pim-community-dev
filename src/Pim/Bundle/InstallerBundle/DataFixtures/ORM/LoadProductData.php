@@ -23,12 +23,14 @@ class LoadProductData extends AbstractInstallerFixture
     {
         $configuration = Yaml::parse(realpath($this->getFilePath()));
         $processor = $this->getProductProcessor();
-        foreach ($configuration['products'] as $data) {
-            $product = $processor->process($data);
-            $this->validate($product, $data);
-            $manager->persist($product);
+        if (isset($configuration['products'])) {
+            foreach ($configuration['products'] as $data) {
+                $product = $processor->process($data);
+                $this->validate($product, $data);
+                $manager->persist($product);
+            }
+            $manager->flush();
         }
-        $manager->flush();
     }
 
     /**
