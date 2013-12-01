@@ -1,2 +1,2 @@
 oro_entity_extend:
-    backup: "%kernel.root_dir%/entities/Backup/"
+    backup: %kernel.root_dir%/entities/Backup/
