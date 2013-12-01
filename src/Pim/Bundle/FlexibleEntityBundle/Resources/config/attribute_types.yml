@@ -2,198 +2,198 @@ services:
     pim_flexibleentity.attributetype.boolean:
         class: Pim\Bundle\FlexibleEntityBundle\AttributeType\BooleanType
         arguments:
-            - "boolean"
-            - "checkbox"
-            - @pim_flexibleentity.validator.attribute_constraint_guesser
+            - boolean
+            - checkbox
+            - '@pim_flexibleentity.validator.attribute_constraint_guesser'
         tags:
             - { name: pim_flexibleentity.attributetype, alias: pim_flexibleentity_boolean }
 
     pim_flexibleentity.attributetype.text:
         class: Pim\Bundle\FlexibleEntityBundle\AttributeType\TextType
         arguments:
-            - "varchar"
-            - "text"
-            - @pim_flexibleentity.validator.attribute_constraint_guesser
+            - varchar
+            - text
+            - '@pim_flexibleentity.validator.attribute_constraint_guesser'
         tags:
             - { name: pim_flexibleentity.attributetype, alias: pim_flexibleentity_text }
 
     pim_flexibleentity.attributetype.textarea:
         class: Pim\Bundle\FlexibleEntityBundle\AttributeType\TextAreaType
         arguments:
-            - "text"
-            - "textarea"
-            - @pim_flexibleentity.validator.attribute_constraint_guesser
+            - text
+            - textarea
+            - '@pim_flexibleentity.validator.attribute_constraint_guesser'
         tags:
             - { name: pim_flexibleentity.attributetype, alias: pim_flexibleentity_textarea }
 
     pim_flexibleentity.attributetype.date:
         class: Pim\Bundle\FlexibleEntityBundle\AttributeType\DateType
         arguments:
-            - "date"
-            - "oro_date"
-            - @pim_flexibleentity.validator.attribute_constraint_guesser
+            - date
+            - oro_date
+            - '@pim_flexibleentity.validator.attribute_constraint_guesser'
         tags:
             - { name: pim_flexibleentity.attributetype, alias: pim_flexibleentity_date }
 
     pim_flexibleentity.attributetype.datetime:
         class: Pim\Bundle\FlexibleEntityBundle\AttributeType\DateTimeType
         arguments:
-            - "datetime"
-            - "oro_datetime"
-            - @pim_flexibleentity.validator.attribute_constraint_guesser
+            - datetime
+            - oro_datetime
+            - '@pim_flexibleentity.validator.attribute_constraint_guesser'
         tags:
             - { name: pim_flexibleentity.attributetype, alias: pim_flexibleentity_datetime }
 
     pim_flexibleentity.attributetype.integer:
         class: Pim\Bundle\FlexibleEntityBundle\AttributeType\IntegerType
         arguments:
-            - "integer"
-            - "integer"
-            - @pim_flexibleentity.validator.attribute_constraint_guesser
+            - integer
+            - integer
+            - '@pim_flexibleentity.validator.attribute_constraint_guesser'
         tags:
             - { name: pim_flexibleentity.attributetype, alias: pim_flexibleentity_integer }
 
     pim_flexibleentity.attributetype.money:
         class: Pim\Bundle\FlexibleEntityBundle\AttributeType\MoneyType
         arguments:
-            - "decimal"
-            - "money"
-            - @pim_flexibleentity.validator.attribute_constraint_guesser
+            - decimal
+            - money
+            - '@pim_flexibleentity.validator.attribute_constraint_guesser'
         tags:
             - { name: pim_flexibleentity.attributetype, alias: pim_flexibleentity_money }
 
     pim_flexibleentity.attributetype.number:
         class: Pim\Bundle\FlexibleEntityBundle\AttributeType\NumberType
         arguments:
-            - "decimal"
-            - "number"
-            - @pim_flexibleentity.validator.attribute_constraint_guesser
+            - decimal
+            - number
+            - '@pim_flexibleentity.validator.attribute_constraint_guesser'
         tags:
             - { name: pim_flexibleentity.attributetype, alias: pim_flexibleentity_number }
 
     pim_flexibleentity.attributetype.multiselect:
         class: Pim\Bundle\FlexibleEntityBundle\AttributeType\OptionMultiSelectType
         arguments:
-            - "options"
-            - "entity"
-            - @pim_flexibleentity.validator.attribute_constraint_guesser
+            - options
+            - entity
+            - '@pim_flexibleentity.validator.attribute_constraint_guesser'
         tags:
             - { name: pim_flexibleentity.attributetype, alias: pim_flexibleentity_multiselect }
 
     pim_flexibleentity.attributetype.simpleselect:
         class: Pim\Bundle\FlexibleEntityBundle\AttributeType\OptionSimpleSelectType
         arguments:
-            - "option"
-            - "entity"
-            - @pim_flexibleentity.validator.attribute_constraint_guesser
+            - option
+            - entity
+            - '@pim_flexibleentity.validator.attribute_constraint_guesser'
         tags:
             - { name: pim_flexibleentity.attributetype, alias: pim_flexibleentity_simpleselect }
 
     pim_flexibleentity.attributetype.metric:
         class: Pim\Bundle\FlexibleEntityBundle\AttributeType\MetricType
         arguments:
-            - "metric"
-            - "pim_flexibleentity_metric"
-            - @pim_flexibleentity.validator.attribute_constraint_guesser
-            - @oro_measure.manager
+            - metric
+            - pim_flexibleentity_metric
+            - '@pim_flexibleentity.validator.attribute_constraint_guesser'
+            - '@oro_measure.manager'
         tags:
             - { name: pim_flexibleentity.attributetype, alias: pim_flexibleentity_metric }
 
     pim_flexibleentity.attributetype.file:
         class: Pim\Bundle\FlexibleEntityBundle\AttributeType\FileType
         arguments:
-            - "media"
-            - "oro_media"
-            - @pim_flexibleentity.validator.attribute_constraint_guesser
+            - media
+            - oro_media
+            - '@pim_flexibleentity.validator.attribute_constraint_guesser'
         tags:
             - { name: pim_flexibleentity.attributetype, alias: pim_flexibleentity_file }
 
     pim_flexibleentity.attributetype.image:
         class: Pim\Bundle\FlexibleEntityBundle\AttributeType\ImageType
         arguments:
-            - "media"
-            - "oro_media"
-            - @pim_flexibleentity.validator.attribute_constraint_guesser
+            - media
+            - oro_media
+            - '@pim_flexibleentity.validator.attribute_constraint_guesser'
         tags:
             - { name: pim_flexibleentity.attributetype, alias: pim_flexibleentity_image }
 
     pim_flexibleentity.attributetype.fileurl:
         class: Pim\Bundle\FlexibleEntityBundle\AttributeType\FileUrlType
         arguments:
-            - "media"
-            - "oro_media"
-            - @pim_flexibleentity.validator.attribute_constraint_guesser
+            - media
+            - oro_media
+            - '@pim_flexibleentity.validator.attribute_constraint_guesser'
         tags:
             - { name: pim_flexibleentity.attributetype, alias: pim_flexibleentity_fileurl }
 
     pim_flexibleentity.attributetype.imageurl:
         class: Pim\Bundle\FlexibleEntityBundle\AttributeType\ImageUrlType
         arguments:
-            - "media"
-            - "oro_media"
-            - @pim_flexibleentity.validator.attribute_constraint_guesser
+            - media
+            - oro_media
+            - '@pim_flexibleentity.validator.attribute_constraint_guesser'
         tags:
             - { name: pim_flexibleentity.attributetype, alias: pim_flexibleentity_imageurl }
 
     pim_flexibleentity.attributetype.email:
         class: Pim\Bundle\FlexibleEntityBundle\AttributeType\EmailType
         arguments:
-            - "varchar"
-            - "email"
-            - @pim_flexibleentity.validator.attribute_constraint_guesser
+            - varchar
+            - email
+            - '@pim_flexibleentity.validator.attribute_constraint_guesser'
         tags:
             - { name: pim_flexibleentity.attributetype, alias: pim_flexibleentity_email }
 
     pim_flexibleentity.attributetype.url:
         class: Pim\Bundle\FlexibleEntityBundle\AttributeType\UrlType
         arguments:
-            - "varchar"
-            - "url"
-            - @pim_flexibleentity.validator.attribute_constraint_guesser
+            - varchar
+            - url
+            - '@pim_flexibleentity.validator.attribute_constraint_guesser'
         tags:
             - { name: pim_flexibleentity.attributetype, alias: pim_flexibleentity_url }
 
     pim_flexibleentity.attributetype.multicheckbox:
         class: Pim\Bundle\FlexibleEntityBundle\AttributeType\OptionMultiCheckboxType
         arguments:
-            - "options"
-            - "entity"
-            - @pim_flexibleentity.validator.attribute_constraint_guesser
+            - options
+            - entity
+            - '@pim_flexibleentity.validator.attribute_constraint_guesser'
         tags:
             - { name: pim_flexibleentity.attributetype, alias: pim_flexibleentity_multicheckbox }
 
     pim_flexibleentity.attributetype.simpleradio:
         class: Pim\Bundle\FlexibleEntityBundle\AttributeType\OptionSimpleRadioType
         arguments:
-            - "option"
-            - "entity"
-            - @pim_flexibleentity.validator.attribute_constraint_guesser
+            - option
+            - entity
+            - '@pim_flexibleentity.validator.attribute_constraint_guesser'
         tags:
             - { name: pim_flexibleentity.attributetype, alias: pim_flexibleentity_simpleradio }
 
     pim_flexibleentity.attributetype.price:
         class: Pim\Bundle\FlexibleEntityBundle\AttributeType\PriceType
         arguments:
-            - "price"
-            - "pim_flexibleentity_price"
-            - @pim_flexibleentity.validator.attribute_constraint_guesser
+            - price
+            - pim_flexibleentity_price
+            - '@pim_flexibleentity.validator.attribute_constraint_guesser'
         tags:
             - { name: pim_flexibleentity.attributetype, alias: pim_flexibleentity_price }
 
     pim_flexibleentity.attributetype.email_collection:
         class: Pim\Bundle\FlexibleEntityBundle\AttributeType\EmailCollectionType
         arguments:
-            - "collections"
-            - "pim_flexibleentity_email_collection"
-            - @pim_flexibleentity.validator.attribute_constraint_guesser
+            - collections
+            - pim_flexibleentity_email_collection
+            - '@pim_flexibleentity.validator.attribute_constraint_guesser'
         tags:
             - { name: pim_flexibleentity.attributetype, alias: pim_flexibleentity_email_collection }
 
     pim_flexibleentity.attributetype.phone_collection:
         class: Pim\Bundle\FlexibleEntityBundle\AttributeType\PhoneCollectionType
         arguments:
-            - "collections"
-            - "pim_flexibleentity_phone_collection"
-            - @pim_flexibleentity.validator.attribute_constraint_guesser
+            - collections
+            - pim_flexibleentity_phone_collection
+            - '@pim_flexibleentity.validator.attribute_constraint_guesser'
         tags:
             - { name: pim_flexibleentity.attributetype, alias: pim_flexibleentity_phone_collection }
