@@ -104,15 +104,9 @@ class ProductAttributeHandler
      */
     protected function addMissingOptionValues(ProductAttribute $entity)
     {
+        $this->ensureOneOption($entity);
+
         $locales = $this->getLocaleCodes();
-
-        if (in_array($entity->getAttributeType(), array('pim_catalog_simpleselect', 'pim_catalog_multiselect')) &&
-            count($entity->getOptions()) < 1) {
-            $option = new AttributeOption();
-            $option->setTranslatable(true);
-            $entity->addOption($option);
-        }
-
         foreach ($entity->getOptions() as $option) {
             if ($option->getTranslatable()) {
                 $existingLocales = array();
@@ -128,6 +122,21 @@ class ProductAttributeHandler
                     }
                 }
             }
+        }
+    }
+
+    /**
+     * Ensure at least one option for the attribute
+     *
+     * @param ProductAttribute $entity
+     */
+    protected function ensureOneOption(ProductAttribute $entity)
+    {
+        $selectTypes = array('pim_catalog_simpleselect', 'pim_catalog_multiselect');
+        if (in_array($entity->getAttributeType(), $selectTypes) && count($entity->getOptions()) < 1) {
+            $option = new AttributeOption();
+            $option->setTranslatable(true);
+            $entity->addOption($option);
         }
     }
 
