@@ -141,8 +141,5 @@ lexik_maintenance:
         options:
             file_path:        %kernel.root_dir%/cache/lock
 
-pim_demo:
-    load_data: %load_demo_data%
-
 oro_batch:
     enable_mail_notification: true

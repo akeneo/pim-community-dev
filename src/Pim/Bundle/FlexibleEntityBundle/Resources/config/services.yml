@@ -19,9 +19,9 @@ services:
     pim_flexibleentity.value_form.value_subscriber:
         class: %pim_flexibleentity.value_form.value_subscriber.class%
         arguments:
-            - @form.factory
-            - @pim_flexibleentity.attributetype.factory
-            - @pim_flexibleentity.registry
+            - '@form.factory'
+            - '@pim_flexibleentity.attributetype.factory'
+            - '@pim_flexibleentity.registry'
 
     # manager registry
     pim_flexibleentity.registry:
@@ -29,7 +29,7 @@ services:
 
     pim_flexibleentity.attributetype.factory:
         class: %pim_flexibleentity.attributetype.factory.class%
-        arguments: ["@service_container", ~]
+        arguments: ['@service_container', ~]
 
     # inject attributes into flexible entity
     pim_flexibleentity.listener.add_attributes:
@@ -41,7 +41,7 @@ services:
     pim_flexibleentity.listener.translatable:
         class: %pim_flexibleentity.listener.translatable.class%
         calls:
-            - [ setContainer, [ @service_container ] ]
+            - [ setContainer, [ '@service_container' ] ]
         tags:
             - { name: doctrine.event_subscriber }
 
@@ -49,7 +49,7 @@ services:
     pim_flexibleentity.listener.scopable:
         class: %pim_flexibleentity.listener.scopable.class%
         calls:
-            - [ setContainer, [ @service_container ] ]
+            - [ setContainer, [ '@service_container' ] ]
         tags:
             - { name: doctrine.event_subscriber }
 
@@ -63,7 +63,7 @@ services:
     pim_flexibleentity.listener.has_required_value:
         class: %pim_flexibleentity.listener.has_required_value.class%
         calls:
-            - [ setContainer, [ @service_container ] ]
+            - [ setContainer, [ '@service_container' ] ]
         tags:
             - { name: doctrine.event_subscriber }
 

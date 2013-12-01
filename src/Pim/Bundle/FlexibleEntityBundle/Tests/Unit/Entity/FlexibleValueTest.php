@@ -182,4 +182,59 @@ class FlexibleValueTest extends \PHPUnit_Framework_TestCase
         $this->value->setOption($option);
         $this->assertEquals($this->value->getOption(), $option);
     }
+
+    /**
+     * Data provider
+     *
+     * @return multitype:multitype:number string
+     *
+     * @static
+     */
+    public static function valueMatchingProvider()
+    {
+        return array(
+            array(true, true, 'en_US', 'en_US', 'mobile', 'mobile', true),
+            array(true, true, 'en_US', 'fr_FR', 'mobile', 'mobile', false),
+            array(true, true, 'en_US', 'en_US', 'mobile', 'commerce', false),
+            array(true, true, 'en_US', 'fr_FR', 'mobile', 'commerce', false),
+            array(true, false, 'en_US', 'en_US', null, null, true),
+            array(true, false, 'en_US', 'fr_FR', null, null, false),
+            array(true, false, 'en_US', 'en_US', null, 'mobile', true),
+            array(false, true, null, null, 'mobile', 'mobile', true),
+            array(false, true, null, null, 'mobile', 'ecommerce', false),
+            array(false, true, null, 'en_US', 'mobile', 'mobile', true),
+            array(false, false, null, null, null, null, true),
+            array(false, false, null, 'en_US', null, null, true),
+            array(false, false, null, null, null, 'ecommerce', true),
+        );
+    }
+
+    /**
+     * Test related method
+     *
+     * @param boolean $isTranslatable is translatable
+     * @param boolean $isScopable     is scopable
+     * @param string  $locale         locale
+     * @param string  $matchLocale    locale to match
+     * @param string  $scope          scope
+     * @param string  $matchScope     scope to match
+     * @param boolean $expected       expected result
+     *
+     * @dataProvider valueMatchingProvider
+     */
+    public function testIsMatching($isTranslatable, $isScopable, $locale, $matchLocale, $scope, $matchScope, $expected)
+    {
+        $attribute = new Attribute();
+        $attribute->setCode('mycode');
+        $attribute->setTranslatable($isTranslatable);
+        $attribute->setScopable($isScopable);
+        $attribute->setBackendType(AbstractAttributeType::BACKEND_TYPE_VARCHAR);
+
+        $value = new FlexibleValue();
+        $value->setAttribute($attribute);
+        $value->setLocale($locale);
+        $value->setScope($scope);
+
+        $this->assertEquals($value->isMatching($attribute->getCode(), $matchLocale, $matchScope), $expected);
+    }
 }

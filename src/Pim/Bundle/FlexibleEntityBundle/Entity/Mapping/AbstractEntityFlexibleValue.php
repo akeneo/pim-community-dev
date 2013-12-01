@@ -508,30 +508,24 @@ abstract class AbstractEntityFlexibleValue extends AbstractFlexibleValue
     /**
      * Check if value is related to attribute and match locale and scope if it's localizable, scopable
      *
-     * @param string $attribute
-     * @param string $locale
-     * @param string $scope
+     * @param string $attribute the attribute code
+     * @param string $locale    the locale
+     * @param string $scope     th scope
+     *
+     * @return boolean
      */
     public function isMatching($attribute, $locale, $scope)
     {
-        $isLocalizable = $this->getAttribute()->isTranslatable();
-        $isScopable    = $this->getAttribute()->isScopable();
-        $isLocalized   = $this->getLocale() == $locale;
-        $isScoped      = $this->getScope() == $scope;
+        $isLocalizable = (int) $this->getAttribute()->isTranslatable();
+        $isScopable    = (int) $this->getAttribute()->isScopable();
+        $isLocalized   = (int) ($this->getLocale() == $locale);
+        $isScoped      = (int) ($this->getScope() == $scope);
 
         if ($this->getAttribute()->getCode() == $attribute) {
-            if ($isLocalizable and $isLocalized) {
-                if ($isScopable and $isScoped) {
-                    return true;
-                } elseif (!$isScopable) {
-                    return true;
-                }
-            } elseif (!$isLocalizable) {
-                if ($isScopable and $isScoped) {
-                    return true;
-                } elseif (!$isScopable) {
-                    return true;
-                }
+            $matchedMatrix = array('0000', '0100', '0001', '0101', '1111', '1100', '1101', '0011', '0111');
+            $status = (string) $isLocalizable.$isLocalized.$isScopable.$isScoped;
+            if (in_array($status, $matchedMatrix)) {
+                return true;
             }
         }
 
