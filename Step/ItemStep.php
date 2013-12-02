@@ -183,15 +183,7 @@ class ItemStep extends AbstractStep
 
             // Processing
             try {
-                if (null === $processedItem = $this->processor->process($item)) {
-                    throw new \Exception(
-                        sprintf(
-                            'Processor %s returned unexpected value: NULL. ' .
-                            'Use Oro\Bundle\BatchBundle\Item\InvalidItemException to warn invalid value.',
-                            get_class($this->processor)
-                        )
-                    );
-                }
+                $processedItem = $this->processor->process($item);
             } catch (InvalidItemException $e) {
                 $this->handleStepExecutionWarning($stepExecution, $this->processor, $e);
 
@@ -199,8 +191,11 @@ class ItemStep extends AbstractStep
             }
 
             // Writing
-            $itemsToWrite[] = $processedItem;
-            if (0 === ++$writeCount % $this->batchSize) {
+            if (null !== $processedItem) {
+                $itemsToWrite[] = $processedItem;
+                $writeCount++;
+            }
+            if (0 === $writeCount % $this->batchSize) {
                 try {
                     $this->writer->write($itemsToWrite);
                     $itemsToWrite = array();
@@ -215,7 +210,6 @@ class ItemStep extends AbstractStep
         if (count($itemsToWrite) > 0) {
             try {
                 $this->writer->write($itemsToWrite);
-                $itemsToWrite = array();
             } catch (InvalidItemException $e) {
                 $this->handleStepExecutionWarning($stepExecution, $this->writer, $e);
             }
@@ -243,16 +237,22 @@ class ItemStep extends AbstractStep
     /**
      * Handle step execution warning
      *
-     * @param StepExecution        $stepExecution
-     * @param string               $class
+     * @param StepExecution $stepExecution
+     * @param object $element
      * @param InvalidItemException $e
      */
     private function handleStepExecutionWarning(
         StepExecution $stepExecution,
-        AbstractConfigurableStepElement $element,
+        $element,
         InvalidItemException $e
     ) {
-        $stepExecution->addWarning($element->getName(), $e->getMessage(), $e->getItem());
+        if ($element instanceof AbstractConfigurableStepElement) {
+            $warningName = $element->getName();
+        } else {
+            $warningName = get_class($element);
+        }
+
+        $stepExecution->addWarning($warningName, $e->getMessage(), $e->getItem());
         $this->dispatchInvalidItemEvent(get_class($element), $e->getMessage(), $e->getItem());
     }
 }

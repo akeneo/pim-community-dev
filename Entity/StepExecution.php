@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Oro\Bundle\BatchBundle\Item\ExecutionContext;
 use Oro\Bundle\BatchBundle\Job\BatchStatus;
 use Oro\Bundle\BatchBundle\Job\ExitStatus;
+use Oro\Bundle\BatchBundle\Item\ItemReaderInterface;
 
 /**
  * Batch domain object representation the execution of a step. Unlike
@@ -294,22 +295,6 @@ class StepExecution
     }
 
     /**
-     * Add a filter warning
-     *
-     * @param string $filter
-     * @param string $message
-     * @param mixed  $data
-     */
-    public function addFilterWarning($filter, $message, $data)
-    {
-        $this->filterWarnings[] = array(
-            'filter' => $filter,
-            'reason' => $message,
-            'data'   => $data,
-        );
-    }
-
-    /**
      * @return flag to indicate that an execution should halt
      */
     public function isTerminateOnly()
@@ -435,6 +420,17 @@ class StepExecution
     public function getJobExecution()
     {
         return $this->jobExecution;
+    }
+
+    /**
+     * @param JobExecution $jobExecution
+     * @return StepExecution
+     */
+    public function setJobExecution(JobExecution $jobExecution)
+    {
+        $this->jobExecution = $jobExecution;
+
+        return $this;
     }
 
     /**
