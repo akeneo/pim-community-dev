@@ -9,10 +9,10 @@ use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\ImportExportBundle\Cache\AttributeCache;
-use Pim\Bundle\ImportExportBundle\Transformer\Guesser\GuesserInterface;
-use Pim\Bundle\ImportExportBundle\Transformer\Property\SkipTransformer;
 use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoInterface;
 use Pim\Bundle\ImportExportBundle\Transformer\ColumnInfo\ColumnInfoTransformerInterface;
+use Pim\Bundle\ImportExportBundle\Transformer\Guesser\GuesserInterface;
+use Pim\Bundle\ImportExportBundle\Transformer\Property\SkipTransformer;
 
 /**
  * Specialized OrmTransformer for products
@@ -41,7 +41,27 @@ class OrmProductTransformer extends AbstractOrmTransformer
     /**
      * @var array
      */
-    protected $propertyColumns;
+    protected $attributes;
+
+    /**
+     * @var ProductAttribute
+     */
+    protected $identifierAttribute;
+
+    /**
+     * @var boolean
+     */
+    protected $initialized=false;
+
+    /**
+     * @var array
+     */
+    protected $propertyColumnsInfo;
+
+    /**
+     * @var array
+     */
+    protected $attributeColumnsInfo;
 
     /**
      * Constructor
@@ -49,7 +69,7 @@ class OrmProductTransformer extends AbstractOrmTransformer
      * @param RegistryInterface              $doctrine
      * @param PropertyAccessorInterface      $propertyAccessor
      * @param GuesserInterface               $guesser
-     * @param ColumnInfoTransformerInterface $labelTransformer
+     * @param ColumnInfoTransformerInterface $columnInfoTransformer
      * @param ProductManager                 $productManager
      * @param AttributeCache                 $attributeCache
      */
@@ -57,11 +77,11 @@ class OrmProductTransformer extends AbstractOrmTransformer
         RegistryInterface $doctrine,
         PropertyAccessorInterface $propertyAccessor,
         GuesserInterface $guesser,
-        ColumnInfoTransformerInterface $labelTransformer,
+        ColumnInfoTransformerInterface $columnInfoTransformer,
         ProductManager $productManager,
         AttributeCache $attributeCache
     ) {
-        parent::__construct($doctrine, $propertyAccessor, $guesser, $labelTransformer);
+        parent::__construct($doctrine, $propertyAccessor, $guesser, $columnInfoTransformer);
         $this->productManager = $productManager;
         $this->attributeCache = $attributeCache;
     }
@@ -87,11 +107,10 @@ class OrmProductTransformer extends AbstractOrmTransformer
      */
     protected function getEntity($class, array $data)
     {
-        $identifierAttribute = $this->attributeCache->getIdentifierAttribute();
         $product = $this->productManager->getImportProduct(
-            $this->attributeCache->getAttributes(),
-            $identifierAttribute,
-            $data[$identifierAttribute->getCode()]
+            $this->attributes,
+            $this->identifierAttribute,
+            $data[$this->identifierAttribute->getCode()]
         );
 
         if (!$product) {
@@ -108,21 +127,21 @@ class OrmProductTransformer extends AbstractOrmTransformer
     {
         $flexibleValueClass = $this->productManager->getFlexibleValueName();
 
-        foreach ($this->propertyColumns as $label) {
-            $columnInfo = $this->labelTransformer->transform($class, $label);
+        foreach ($this->propertyColumnsInfo as $columnInfo) {
+            $label = $columnInfo->getLabel();
             $transformerInfo = $this->getTransformerInfo($class, $columnInfo);
             $error = $this->setProperty($entity, $columnInfo, $transformerInfo, $data[$label]);
             if ($error) {
                 $this->errors[$label] = array($error);
             }
-            unset($data[$label]);
         }
 
         $requiredAttributeCodes = $this->attributeCache->getRequiredAttributeCodes($entity);
-        foreach ($data as $label => $value) {
-            $columnInfo = $this->labelTransformer->transform($class, $label);
+        foreach ($this->attributeColumnsInfo as $columnInfo) {
+            $label = $columnInfo->getLabel();
             $transformerInfo = $this->getTransformerInfo($flexibleValueClass, $columnInfo);
-            if ('' != trim($value) || in_array($columnInfo->getName(), $requiredAttributeCodes)) {
+            $value = $data[$label];
+            if ('' !== trim($value) || in_array($columnInfo->getName(), $requiredAttributeCodes)) {
                 $error = $this->setProductValue($entity, $columnInfo, $transformerInfo, $value);
                 if ($error) {
                     $this->errors[$label] = array($error);
@@ -182,25 +201,40 @@ class OrmProductTransformer extends AbstractOrmTransformer
      */
     protected function initializeAttributes($data)
     {
-        if ($this->attributeCache->isInitialized()) {
+        if ($this->initialized) {
             return;
         }
 
         $class = $this->productManager->getFlexibleName();
-        $columnsInfo = $this->labelTransformer->transform($class, array_keys($data));
-        $metadata = $this->doctrine->getManager()->getClassMetadata($class);
-        $attributeColumnInfos = array();
-        $this->propertyColumns = array();
+        $columnsInfo = $this->columnInfoTransformer->transform($class, array_keys($data));
+        $this->attributes = $this->attributeCache->getAttributes($columnsInfo);
+        $this->attributeColumnsInfo = array();
+        $this->propertyColumnsInfo = array();
         foreach ($columnsInfo as $columnInfo) {
-            $propertyPath = $columnInfo->getPropertyPath();
-            if (!$columnInfo->getAttribute() &&
-                ($metadata->hasField($propertyPath) || $metadata->hasAssociation($propertyPath))
-                ) {
-                $this->propertyColumns[] = $columnInfo->getLabel();
+            $columnName = $columnInfo->getName();
+            if (isset($this->attributes[$columnName])) {
+                $attribute = $this->attributes[$columnName];
+                $columnInfo->setAttribute($attribute);
+                $this->attributeColumnsInfo[] = $columnInfo;
+                if (static::IDENTIFIER_ATTRIBUTE_TYPE == $attribute->getAttributeType()) {
+                    $this->identifierAttribute = $attribute;
+                }
             } else {
-                $attributeColumnInfos[] = $columnInfo;
+                $this->propertyColumnsInfo[] = $columnInfo;
             }
         }
-        $this->attributeCache->initialize($attributeColumnInfos);
+        $this->initialized = true;
+    }
+
+    /**
+     * Clears the cache
+     */
+    public function reset()
+    {
+        $this->attributes = null;
+        $this->identifierAttribute = null;
+        $this->attributeColumnsInfo = null;
+        $this->propertyColumnsInfo = null;
+        $this->initialized = false;
     }
 }

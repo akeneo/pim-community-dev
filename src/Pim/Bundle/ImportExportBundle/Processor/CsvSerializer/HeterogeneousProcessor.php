@@ -20,6 +20,8 @@ class HeterogeneousProcessor extends Processor
      */
     public function process($item)
     {
+        $this->stepExecution->addSummaryInfo('write', count($item));
+
         return $this->serializer->serialize(
             $item,
             'csv',

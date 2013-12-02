@@ -1,5 +1,5 @@
 twig:
-    exception_controller: "FOS\RestBundle\Controller\ExceptionController::showAction"
+    exception_controller: FOS\RestBundle\Controller\ExceptionController::showAction
     form:
         resources:
             - 'OroUIBundle:Form:fields.html.twig'
@@ -13,5 +13,5 @@ twig:
             layout:      ::base.html.twig
             start_route: oro_default
         ws:
-            port:        "%websocket_port%"
-            host:        "%websocket_host%"
+            port:        %websocket_port%
+            host:        %websocket_host%

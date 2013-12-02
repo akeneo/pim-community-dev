@@ -6,6 +6,9 @@
 
 ## Improvements
 - Improve the user experience for family management
+- Update import / export detail view
+- Improve installer to provide different data set (minimal or dev)
+- Use a form extension to apply select2 only on specified fields
 
 ## Bug fixes
 

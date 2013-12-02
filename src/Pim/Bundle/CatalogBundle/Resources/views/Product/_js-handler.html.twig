@@ -33,7 +33,7 @@
 
                 $('form div.currency').currencyField();
 
-                $('#default_channel').select2('destroy').css('padding', '0').on('change', function (e) {
+                $('#default_channel').css('padding', '0').on('change', function (e) {
                     e.preventDefault();
                     e.stopPropagation();
                     mediator.trigger('scopablefield:changescope', $(this).val());

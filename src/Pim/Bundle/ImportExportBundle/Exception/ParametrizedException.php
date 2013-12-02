@@ -3,7 +3,7 @@
 namespace Pim\Bundle\ImportExportBundle\Exception;
 
 /**
- * Description of TranslatableException
+ * An exception with message parameters
  *
  * @author    Antoine Guigan <antoine@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)

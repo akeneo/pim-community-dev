@@ -242,28 +242,6 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @param string $action
-     * @param string $identifier
-     * @param string $entityType
-     *
-     * @Given /^I try to ([^"]*) "([^"]*)" from the ([^"]*) grid$/
-     */
-    public function iTryToDoActionFromTheGrid($action, $identifier, $entityType)
-    {
-        $entityType = ucfirst(strtolower($entityType));
-        $entityPage = $entityType.' index';
-
-        $page = $this->getPage($entityPage);
-        if (!$page) {
-            throw $this->createExpectationException(sprintf('Unable to find page "%s"', $entityPage));
-        }
-
-        $action = ucfirst(strtolower($action));
-
-        $page->clickOnAction($identifier, $action);
-    }
-
-    /**
      * @Given /^I confirm the ([^"]*)$/
      */
     public function iConfirmThe()
@@ -670,16 +648,6 @@ class WebUser extends RawMinkContext
                 )
             );
         }
-    }
-
-    /**
-     * @param string $attribute
-     *
-     * @Given /^I choose "([^"]*)" as the label of the family$/
-     */
-    public function iChooseAsTheLabelOfTheFamily($attribute)
-    {
-        $this->getPage('Family edit')->selectAttributeAsLabel($attribute)->save();
     }
 
     /**

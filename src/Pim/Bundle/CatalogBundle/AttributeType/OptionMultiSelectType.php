@@ -30,6 +30,7 @@ class OptionMultiSelectType extends AbstractAttributeType
         };
         $options['expanded'] = false;
         $options['multiple'] = true;
+        $options['select2']  = true;
 
         return $options;
     }

@@ -57,6 +57,7 @@ class MetricType extends AbstractAttributeType
                     $value->getAttribute()->getMetricFamily()
                 ),
                 'default_unit' => $value->getAttribute()->getDefaultMetricUnit(),
+                'family'       => $value->getAttribute()->getMetricFamily()
             )
         );
     }
