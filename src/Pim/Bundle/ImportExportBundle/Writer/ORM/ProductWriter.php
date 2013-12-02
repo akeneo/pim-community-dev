@@ -128,10 +128,8 @@ class ProductWriter extends AbstractConfigurableStepElement implements
     {
         if ($product->getId()) {
             $this->stepExecution->incrementSummaryInfo('update');
-            $this->stepExecution->incrementUpdateCount();
         } else {
             $this->stepExecution->incrementSummaryInfo('create');
-            $this->stepExecution->incrementCreationCount();
         }
     }
 }

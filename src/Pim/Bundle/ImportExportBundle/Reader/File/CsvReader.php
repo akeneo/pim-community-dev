@@ -268,7 +268,6 @@ class CsvReader extends AbstractConfigurableStepElement implements
             if ($data === array(null) || $data === null) {
                 return null;
             }
-            $this->stepExecution->incrementReadCount();
             $this->stepExecution->incrementSummaryInfo('read');
 
             if (count($this->fieldNames) !== count($data)) {
