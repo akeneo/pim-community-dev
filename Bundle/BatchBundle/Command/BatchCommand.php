@@ -97,11 +97,11 @@ class BatchCommand extends ContainerAwareCommand
 
         $job->execute($jobExecution);
 
-        $this->getEntityManager()->persist($jobInstance);
-        $this->getEntityManager()->flush($jobInstance);
-
         $this->getEntityManager()->persist($jobExecution);
         $this->getEntityManager()->flush($jobExecution);
+
+        $this->getEntityManager()->persist($jobInstance);
+        $this->getEntityManager()->flush($jobInstance);
 
         if (ExitStatus::COMPLETED === $jobExecution->getExitStatus()->getExitCode()) {
             $output->writeln(
@@ -118,6 +118,10 @@ class BatchCommand extends ContainerAwareCommand
                 )
             );
         }
+
+        // FIXME: Workaround, waiting for https://github.com/symfony/SwiftmailerBundle/pull/64
+        // to be merged
+        $this->flushMailQueue();
     }
 
     /**
@@ -218,5 +222,36 @@ class BatchCommand extends ContainerAwareCommand
         }
 
         throw new \InvalidArgumentException($error);
+    }
+
+    /**
+     * @see Symfony\Bundle\SwiftmailerBundle\EventListener\EmailSenderListener::onKernelTerminate
+     * and https://github.com/symfony/SwiftmailerBundle/pull/64
+     */
+    public function flushMailQueue()
+    {
+       if (!$this->getContainer()->has('mailer')) {
+            return;
+        }
+
+        $mailers = array_keys($this->getContainer()->getParameter('swiftmailer.mailers'));
+        foreach ($mailers as $name) {
+            if ($this->getContainer() instanceof IntrospectableContainerInterface ?
+                $this->getContainer()->initialized(sprintf('swiftmailer.mailer.%s', $name)) : true) {
+                if ($this->getContainer()->getParameter(sprintf('swiftmailer.mailer.%s.spool.enabled', $name))) {
+                    $mailer = $this->getContainer()->get(sprintf('swiftmailer.mailer.%s', $name));
+                    $transport = $mailer->getTransport();
+                    if ($transport instanceof \Swift_Transport_SpoolTransport) {
+                        $spool = $transport->getSpool();
+                        if ($spool instanceof \Swift_MemorySpool) {
+                            $spool->flushQueue(
+                                $this->getContainer()->get(sprintf('swiftmailer.mailer.%s.transport.real', $name))
+                            );
+                        }
+                    }
+                }
+            }
+        }
+ 
     }
 }

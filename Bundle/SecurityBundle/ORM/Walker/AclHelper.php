@@ -112,7 +112,12 @@ class AclHelper
         } else {
             // we have request with only many where conditions
             $subQueryAcl = [];
-            foreach ($conditionalExpression->conditionalFactors as $factorId => $expression) {
+            if (isset($conditionalExpression->conditionalFactors)) {
+                $factors = $conditionalExpression->conditionalFactors;
+            } else {
+                $factors = $conditionalExpression->conditionalTerms;
+            }
+            foreach ($factors as $factorId => $expression) {
                 if (isset($expression->simpleConditionalExpression->subselect)
                     && $expression->simpleConditionalExpression->subselect instanceof Subselect
                 ) {
