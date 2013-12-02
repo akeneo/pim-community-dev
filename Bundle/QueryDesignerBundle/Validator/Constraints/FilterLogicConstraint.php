@@ -4,7 +4,7 @@ namespace Oro\Bundle\QueryDesignerBundle\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 
-class FilterLogicConstraint extends  Constraint
+class FilterLogicConstraint extends Constraint
 {
     const FILTER_LOGIC_VALIDATOR_CLASS = 'Oro\Bundle\QueryDesignerBundle\Validator\FilterLogicValidator';
 

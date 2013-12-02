@@ -60,6 +60,9 @@ class OrmDatasourceExtensionTest extends OrmTestCase
             ->getFormFactory();
     }
 
+    /**
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     */
     public function testVisitDatasource()
     {
         $qb = new QueryBuilder($this->_getTestEntityManager());
