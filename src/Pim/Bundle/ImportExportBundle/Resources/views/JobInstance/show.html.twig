@@ -1,22 +1,14 @@
 {% extends 'PimCatalogBundle::layout.html.twig' %}
 
-{% macro configuration(title, config, stepIndex, violations, stepType) %}
+{% macro configuration(config, violations) %}
 <table class="configuration">
-    <thead>
-        <tr>
-            <td colspan="2" class="buffer-small-bottom">{{ ('oro_batch.' ~ title ~ '.title')|trans }}</td>
-        </tr>
-    </thead>
+    <thead></thead>
     <tbody>
-        {% for field, value in config %}
-        <tr>
-            <td><b>{{ ('oro_batch.' ~ title ~ '.' ~ field ~ '.label')|trans }}</b></td>
-            <td>{{ value|normalizeValue }} {{ getViolations(violations, stepIndex, stepType, field) }}</td>
-        </tr>
-        {% else %}
-        <tr>
-            <td><i>{{ 'No configuration'|trans }}</i></td>
-        </tr>
+        {% for element, value in config %}
+            <tr>
+                <td><b>{{ element|trans }}</b></td>
+                <td>{{ value|normalizeValue }} {{ getViolations(violations, element) }}</td>
+            </tr>
         {% endfor %}
     </tbody>
 </table>
@@ -64,22 +56,11 @@
         {{ form_end(form) }}
     {% endif %}
 
-    {% set accordionContent = {} %}
-    {% for stepTitle, stepConfig in jobInstance.job.configuration %}
-
-        {% set heading = 'Step %stepIndex%'|trans({ '%stepIndex%': loop.index }) ~ ' - ' ~ stepTitle|trans %}
-
-        {% set content %}
-            {% set step = jobInstance.job.step(stepTitle) %}
-            {% set stepIndex = loop.index - 1 %}
-            {{ _self.configuration(step.reader.name, stepConfig.reader, stepIndex, violations, 'reader') }}
-            {{ _self.configuration(step.processor.name, stepConfig.processor, stepIndex, violations, 'processor') }}
-            {{ _self.configuration(step.writer.name, stepConfig.writer, stepIndex, violations, 'writer') }}
-        {% endset %}
-
-        {% set accordionContent = accordionContent|merge({ (heading): content }) %}
-    {% endfor %}
-
-    {{ elements.accordion(accordionContent, 1, true) }}
+    <div class="row-fluid tab-content">
+        <div class="tab-pane active">
+            {% set configuration = _self.configuration(jobInstance.job.configuration, violations) %}
+            {{ elements.accordion({ 'Configuration': configuration }, 1, true) }}
+        </div>
+    </div>
 
 {% endblock %}
