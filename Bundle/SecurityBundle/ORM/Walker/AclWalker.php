@@ -71,12 +71,19 @@ class AclWalker extends TreeWalkerAdapter
 
             foreach ($subRequests as $subRequest) {
                 /** @var SubRequestAclConditionStorage $subRequest */
-                $subselect = $AST
+                $conditionalExpression = $AST
                     ->whereClause
-                    ->conditionalExpression
-                    ->conditionalFactors[$subRequest->getFactorId()]
-                    ->simpleConditionalExpression
-                    ->subselect;
+                    ->conditionalExpression;
+
+                if (isset($conditionalExpression->conditionalFactors)) {
+                    $subselect = $conditionalExpression->conditionalFactors[$subRequest->getFactorId()]
+                        ->simpleConditionalExpression
+                        ->subselect;
+                } else {
+                    $subselect = $conditionalExpression->conditionalTerms[$subRequest->getFactorId()]
+                        ->simpleConditionalExpression
+                        ->subselect;
+                }
 
                 if (!is_null($subRequest->getWhereConditions()) && count($subRequest->getWhereConditions())) {
                     $this->addAclToWhereClause($subselect, $subRequest->getWhereConditions());
