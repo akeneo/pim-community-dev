@@ -37,10 +37,10 @@
 
             <ul class="dropdown-menu pull-right">
                 {% for locale in locales if locale != dataLocale %}
-                    <li {{ locale.code == comparisonLocale ? 'class="active"' }}>
+                    <li class="left-aligned{{ locale.code == comparisonLocale ? ' active' }}">
                         <a href="{{ path('pim_catalog_product_edit', {id: form.vars.value.id, dataLocale: dataLocale, compareWith: locale.code}) }}" title="{{ locale_label(locale.code) }}">
                             <span class="icon pull-left">
-                                {% if locale == dataLocale %}
+                                {% if locale == comparisonLocale %}
                                     <i class="icon-bullet"></i>
                                 {% endif %}
                             </span>
