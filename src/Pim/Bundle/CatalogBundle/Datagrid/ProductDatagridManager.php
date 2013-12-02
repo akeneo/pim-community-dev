@@ -93,6 +93,11 @@ class ProductDatagridManager extends FlexibleDatagridManager
             'field'  => FieldDescriptionInterface::TYPE_OPTIONS,
             'filter' => FilterInterface::TYPE_CURRENCY
         );
+
+        self::$typeMatches['metric'] = array(
+            'field'  => FieldDescriptionInterface::TYPE_TEXT,
+            'filter' => FilterInterface::TYPE_METRIC
+        );
     }
 
     /**
@@ -278,6 +283,8 @@ class ProductDatagridManager extends FlexibleDatagridManager
         if ($backendType !== AbstractAttributeType::BACKEND_TYPE_OPTION
             && $result['type'] === FieldDescriptionInterface::TYPE_OPTIONS) {
             $result['sortable'] = false;
+        } elseif ($backendType === AbstractAttributeType::BACKEND_TYPE_METRIC) {
+            $result['family'] = 'Length';
         }
 
         if ($result['type'] === FieldDescriptionInterface::TYPE_DECIMAL and !$attribute->isDecimalsAllowed()) {
