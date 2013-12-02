@@ -9,7 +9,6 @@ class Role extends AbstractEntity implements Entity
 {
 
     protected $name;
-
     protected $label;
 
     public function __construct($testCase, $redirect = true)
@@ -45,15 +44,26 @@ class Role extends AbstractEntity implements Entity
     /**
      * @param $entityName string of ACL resource name
      * @param $aclaction array of actions such as create, edit, delete, view, assign
+     * @param $accesslevel
      * @return $this
      */
-    public function setEntity($entityName, $aclaction)
+    public function setEntity($entityName, $aclaction, $accesslevel)
     {
         foreach ($aclaction as $action) {
             $action = strtoupper($action);
-            $this->byXPath(
-                "//div[strong/text() = '{$entityName}']/ancestor::tr//input[contains(@name, '[$action][accessLevel')]"
-            )->click();
+            $xpath = $this->byXPath(
+                "//div[strong/text() = '{$entityName}']/ancestor::tr//input" .
+                "[contains(@name, '[$action][accessLevel')]/preceding-sibling::a"
+            );
+            $this->moveto($xpath);
+            $xpath->click();
+            $this->waitForAjax();
+            $this->accesslevel = $this->select(
+                $this->byXpath(
+                    "//div[strong/text() = '{$entityName}']/ancestor::tr//select" .
+                    "[contains(@name, '[$action][accessLevel')]")
+            );
+            $this->accesslevel->selectOptionByLabel($accesslevel);
         }
 
         return $this;
@@ -61,14 +71,22 @@ class Role extends AbstractEntity implements Entity
 
     /**
      * @param $capabilityname array of Capability ACL resources
+     * @param $accesslevel
      * @return $this
      */
-    public function setCapability($capabilityname)
+    public function setCapability($capabilityname, $accesslevel)
     {
         foreach ($capabilityname as $name) {
-            $this->byXpath(
-                "//div[strong/text() = '{$name}']/following-sibling::input[@type = 'checkbox']"
-            )->click();
+            $xpath = $this->byXpath(
+                "//div[strong/text() = '{$name}']/following-sibling::div//a"
+            );
+            $this->moveto($xpath);
+            $xpath->click();
+            $this->waitForAjax();
+            $this->accesslevel = $this->select($this->byXpath(
+                "//div[strong/text() = '{$name}']/following-sibling::div//select")
+            );
+            $this->accesslevel->selectOptionByLabel($accesslevel);
         }
 
         return $this;

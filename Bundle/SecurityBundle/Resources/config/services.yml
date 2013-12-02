@@ -19,11 +19,8 @@ parameters:
 
     oro_security.owner.tree.class:                             Oro\Bundle\SecurityBundle\Owner\OwnerTree
     oro_security.owner.decision_maker.class:                   Oro\Bundle\SecurityBundle\Owner\EntityOwnershipDecisionMaker
-    oro_security.orm.ownership_sql_filter.class:               Oro\Bundle\SecurityBundle\ORM\SqlFilter\OwnershipFilter
-    oro_security.orm.ownership_sql_filter_builder.class:       Oro\Bundle\SecurityBundle\ORM\SqlFilter\OwnershipFilterBuilder
 
-    oro_security.type.oro_acl_collection.class:                Oro\Bundle\SecurityBundle\Form\Type\CollectionType
-    oro_security.type.oro_acl_object_name.class:               Oro\Bundle\SecurityBundle\Form\Type\ObjectNameType
+    oro_security.type.oro_acl_access_level_selector.class:     Oro\Bundle\SecurityBundle\Form\Type\AclAccessLevelSelectorType
     oro_security.type.oro_acl_label.class:                     Oro\Bundle\SecurityBundle\Form\Type\ObjectLabelType
 
     oro_security.entity_security_metadata_provider.class:      Oro\Bundle\SecurityBundle\Metadata\EntitySecurityMetadataProvider
@@ -48,6 +45,16 @@ parameters:
     oro_security.twig.security_extension:                      Oro\Bundle\SecurityBundle\Twig\OroSecurityExtension
 
     oro_security.encoder.mcrypt.class:                         Oro\Bundle\SecurityBundle\Encoder\Mcrypt
+
+    oro_security.acl.listenerclass:                            Oro\Bundle\SecurityBundle\EventListener\AclListener
+
+    oro_security.acl_helper.class:                             Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper
+    oro_security.orm.ownership_sql_walker_builder.class:       Oro\Bundle\SecurityBundle\ORM\Walker\OwnershipConditionDataBuilder
+    oro_security.ownership_tree_provider.class:                Oro\Bundle\SecurityBundle\Owner\OwnerTreeProvider
+    oro_security.ownership_tree_provider.cache.class:          Doctrine\Common\Cache\FilesystemCache
+    oro_security.ownership_tree.cache.warmer.class:            Oro\Bundle\SecurityBundle\Cache\OwnerTreeCacheWarmer
+    oro_security.ownership_tree.cache.clearer.class:           Oro\Bundle\SecurityBundle\Cache\OwnerTreeCacheCleaner
+    oro_security.ownership_tree_subscriber.class:              Oro\Bundle\SecurityBundle\EventListener\OwnerTreeListener
 
 services:
     oro_security.security_facade:
@@ -161,43 +168,16 @@ services:
         public: false
         class: %oro_security.owner.decision_maker.class%
         arguments:
-            - @oro_security.owner.tree
+            - @oro_security.ownership_tree_provider
             - @oro_entity.orm.entity_class_accessor
             - @oro_security.acl.object_id_accessor
             - @oro_security.owner.entity_owner_accessor
             - @oro_security.owner.ownership_metadata_provider
 
-    oro_security.orm.ownership_sql_filter_builder:
-        public: false
-        class: %oro_security.orm.ownership_sql_filter_builder.class%
-        arguments:
-            - @oro_entity_config.link.security_context
-            - @oro_security.acl.object_id_accessor
-            - @oro_security.entity_security_metadata_provider
-            - @oro_security.owner.ownership_metadata_provider
-            - @oro_security.owner.tree
-            - @?security.acl.voter.basic_permissions
-
-#    oro_security.orm.ownership_sql_filter:
-#        public: false
-#        class: %oro_security.orm.ownership_sql_filter.class%
-#        arguments:
-#            - @doctrine.orm.entity_manager
-#        calls:
-#            - [setBuilder, [@oro_security.orm.ownership_sql_filter_builder]]
-#        tags:
-#            - { name: oro_entity.orm.sql_filter, filter_name: ownershipFilter, enabled: true }
-#            - { name: kernel.event_listener, priority: -255, event: kernel.request, method: setUserParameter }
-
-    oro_security.form.type.collection_type:
-        class: %oro_security.type.oro_acl_collection.class%
+    oro_security.form.type.oro_acl_access_level_selector:
+        class: %oro_security.type.oro_acl_access_level_selector.class%
         tags:
-            - { name: form.type, alias: oro_acl_collection }
-
-    oro_security.form.type.object_name_type:
-        class: %oro_security.type.oro_acl_object_name.class%
-        tags:
-            - { name: form.type, alias: oro_acl_object_name }
+            - { name: form.type, alias: oro_acl_access_level_selector }
 
     oro_security.form.type.object_label_type:
         class: %oro_security.type.oro_acl_label.class%
@@ -322,7 +302,7 @@ services:
             - @oro_security.security_facade
             - @logger
         tags:
-            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: 255 }
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController, priority: -1 }
             - { name: monolog.logger, channel: security }
 
     oro_security.twig.security_extension:
@@ -335,3 +315,59 @@ services:
     oro_security.encoder.mcrypt:
         class: %oro_security.encoder.mcrypt.class%
         arguments: [ %kernel.secret% ]
+
+    oro_security.acl_helper:
+        class: %oro_security.acl_helper.class%
+        arguments:
+             - @oro_security.orm.ownership_sql_walker_builder
+
+    oro_security.orm.ownership_sql_walker_builder:
+        public: false
+        class: %oro_security.orm.ownership_sql_walker_builder.class%
+        arguments:
+            - @oro_entity_config.link.security_context
+            - @oro_security.acl.object_id_accessor
+            - @oro_security.entity_security_metadata_provider
+            - @oro_security.owner.ownership_metadata_provider
+            - @oro_security.ownership_tree_provider
+            - @?security.acl.voter.basic_permissions
+
+    oro_security.ownership_tree_provider:
+        public: false
+        class: %oro_security.ownership_tree_provider.class%
+        arguments:
+            - @doctrine.orm.entity_manager
+            - @oro_security.ownership_tree_provider.cache
+
+    oro_security.link.ownership_tree_provider:
+        tags:
+            - { name: oro_service_link,  service: oro_security.ownership_tree_provider }
+
+    oro_security.ownership_tree_provider.cache:
+        public: false
+        class: %oro_security.ownership_tree_provider.cache.class%
+        arguments:
+           - %kernel.cache_dir%/oro_acl_owner_tree
+
+    oro_security.ownership_tree.cache.warmer:
+        public: false
+        class: %oro_security.ownership_tree.cache.warmer.class%
+        arguments:
+            - @oro_security.ownership_tree_provider
+        tags:
+            - { name: kernel.cache_warmer}
+
+    oro_security.ownership_tree.cache.cleaner:
+        public: false
+        class: %oro_security.ownership_tree.cache.clearer.class%
+        arguments:
+            - @oro_security.ownership_tree_provider
+        tags:
+            - { name: kernel.cache_clearer }
+
+    oro_security.ownership_tree_subscriber:
+        class: %oro_security.ownership_tree_subscriber.class%
+        arguments:
+            - @oro_security.link.ownership_tree_provider
+        tags:
+            - { name: doctrine.event_listener, event: onFlush }

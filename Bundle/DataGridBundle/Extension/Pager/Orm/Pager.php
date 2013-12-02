@@ -8,6 +8,7 @@ use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\BatchBundle\ORM\Query\QueryCountCalculator;
 use Oro\Bundle\DataGridBundle\Extension\Pager\PagerInterface;
 use Oro\Bundle\DataGridBundle\Extension\Pager\AbstractPager;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
 class Pager extends AbstractPager implements PagerInterface
 {
@@ -17,10 +18,14 @@ class Pager extends AbstractPager implements PagerInterface
     /** @var array */
     protected $parameters = [];
 
-    public function __construct($maxPerPage = 10, QueryBuilder $qb = null)
+    /** @var AclHelper */
+    protected $aclHelper;
+
+    public function __construct(AclHelper $aclHelper, $maxPerPage = 10, QueryBuilder $qb = null)
     {
         $this->qb = $qb;
         parent::__construct($maxPerPage);
+        $this->aclHelper = $aclHelper;
     }
 
     /**
@@ -55,6 +60,8 @@ class Pager extends AbstractPager implements PagerInterface
             ->setMaxResults(null)
             ->resetDQLPart('orderBy')
             ->getQuery();
+
+        $query = $this->aclHelper->apply($query);
 
         return QueryCountCalculator::calculateCount($query);
     }

@@ -4,8 +4,16 @@ namespace Oro\Bundle\MeasureBundle\Manager;
 
 class MeasureManager
 {
+    /**
+     * @var array $config
+     */
     protected $config = array();
 
+    /**
+     * Set measure config
+     *
+     * @param array $config
+     */
     public function setMeasureConfig(array $config)
     {
         $this->config = $config;
@@ -20,14 +28,39 @@ class MeasureManager
      */
     public function getUnitSymbolsForFamily($family)
     {
-        if (!isset($this->config[$family])) {
-            throw new \InvalidArgumentException(sprintf(
-                'Undefined measure family "%s"', $family
-            ));
-        }
-
         return array_map(function ($unit) {
             return $unit['symbol'];
-        }, $this->config[$family]['units']);
+        }, $this->getFamilyConfig($family)['units']);
+    }
+
+    /**
+     * Get standard unit for a measure family
+     *
+     * @param string $family
+     *
+     * @return string
+     */
+    public function getStandardUnitForFamily($family)
+    {
+        return $this->getFamilyConfig($family)['standard'];
+    }
+
+    /**
+     * Get the family config
+     *
+     * @param string $family
+     *
+     * @return array
+     * @throws \InvalidArgumentException
+     */
+    protected function getFamilyConfig($family)
+    {
+        if (!isset($this->config[$family])) {
+            throw new \InvalidArgumentException(
+                sprintf('Undefined measure family "%s"', $family)
+            );
+        }
+
+        return $this->config[$family];
     }
 }

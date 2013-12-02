@@ -1,10 +1,10 @@
 <?php
 
-namespace Oro\Bundle\SecurityBundle\Tests\Unit\ORM\SqlFilter;
+namespace Oro\Bundle\SecurityBundle\Tests\Unit\ORM\Walker;
 
 use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
 use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdAccessor;
-use Oro\Bundle\SecurityBundle\ORM\SqlFilter\OwnershipFilterBuilder;
+use Oro\Bundle\SecurityBundle\ORM\Walker\OwnershipConditionDataBuilder;
 use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadata;
 use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\User;
 use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\OwnershipMetadataProviderStub;
@@ -19,7 +19,7 @@ class OwnershipFilterBuilderTest extends \PHPUnit_Framework_TestCase
     const TEST_ENTITY = 'Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\TestEntity';
 
     /**
-     * @var OwnershipFilterBuilder
+     * @var OwnershipConditionDataBuilder
      */
     private $builder;
 
@@ -38,6 +38,14 @@ class OwnershipFilterBuilderTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->tree = new OwnerTree();
+
+        $treeProvider = $this->getMockBuilder('Oro\Bundle\SecurityBundle\Owner\OwnerTreeProvider')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $treeProvider->expects($this->any())
+            ->method('getTree')
+            ->will($this->returnValue($this->tree));
 
         $entityMetadataProvider =
             $this->getMockBuilder('Oro\Bundle\SecurityBundle\Metadata\EntitySecurityMetadataProvider')
@@ -72,12 +80,12 @@ class OwnershipFilterBuilderTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->builder = new OwnershipFilterBuilder(
+        $this->builder = new OwnershipConditionDataBuilder(
             $securityContextLink,
             new ObjectIdAccessor(),
             $entityMetadataProvider,
             $this->metadataProvider,
-            $this->tree,
+            $treeProvider,
             $this->aclVoter
         );
     }
@@ -139,7 +147,7 @@ class OwnershipFilterBuilderTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider buildFilterConstraintProvider
      */
-    public function testBuildFilterConstraint(
+    public function testGetAclConditionData(
         $userId,
         $isGranted,
         $accessLevel,
@@ -184,9 +192,11 @@ class OwnershipFilterBuilderTest extends \PHPUnit_Framework_TestCase
             ->method('getToken')
             ->will($this->returnValue($userId ? $token : null));
 
+        $result = $this->builder->getAclConditionData($targetEntityClassName);
+
         $this->assertEquals(
             $expectedConstraint,
-            $this->builder->buildFilterConstraint($targetEntityClassName, $targetTableAlias)
+            $result
         );
     }
 
@@ -208,14 +218,14 @@ class OwnershipFilterBuilderTest extends \PHPUnit_Framework_TestCase
     public static function buildFilterConstraintProvider()
     {
         return array(
-            array('', false, AccessLevel::NONE_LEVEL, null, self::TEST_ENTITY, '', ''),
-            array('', false, AccessLevel::NONE_LEVEL, null, self::TEST_ENTITY, 't', ''),
-            array('', true, AccessLevel::NONE_LEVEL, null, '\stdClass', '', ''),
-            array('user4', true, AccessLevel::SYSTEM_LEVEL, null, self::TEST_ENTITY, '', ''),
-            array('user4', true, AccessLevel::SYSTEM_LEVEL, 'ORGANIZATION', self::TEST_ENTITY, '', ''),
-            array('user4', true, AccessLevel::SYSTEM_LEVEL, 'BUSINESS_UNIT', self::TEST_ENTITY, '', ''),
-            array('user4', true, AccessLevel::SYSTEM_LEVEL, 'USER', self::TEST_ENTITY, '', ''),
-            array('user4', true, AccessLevel::GLOBAL_LEVEL, null, self::TEST_ENTITY, '', ''),
+            array('', false, AccessLevel::NONE_LEVEL, null, self::TEST_ENTITY, '', []),
+            array('', false, AccessLevel::NONE_LEVEL, null, self::TEST_ENTITY, 't', []),
+            array('', true, AccessLevel::NONE_LEVEL, null, '\stdClass', '', []),
+            array('user4', true, AccessLevel::SYSTEM_LEVEL, null, self::TEST_ENTITY, '', []),
+            array('user4', true, AccessLevel::SYSTEM_LEVEL, 'ORGANIZATION', self::TEST_ENTITY, '', []),
+            array('user4', true, AccessLevel::SYSTEM_LEVEL, 'BUSINESS_UNIT', self::TEST_ENTITY, '', []),
+            array('user4', true, AccessLevel::SYSTEM_LEVEL, 'USER', self::TEST_ENTITY, '', []),
+            array('user4', true, AccessLevel::GLOBAL_LEVEL, null, self::TEST_ENTITY, '', []),
             array(
                 'user4',
                 true,
@@ -223,7 +233,10 @@ class OwnershipFilterBuilderTest extends \PHPUnit_Framework_TestCase
                 'ORGANIZATION',
                 self::TEST_ENTITY,
                 '',
-                'owner_id IN (org3,org4)'
+                array(
+                    'owner',
+                    array('org3', 'org4')
+                )
             ),
             array(
                 'user4',
@@ -232,7 +245,10 @@ class OwnershipFilterBuilderTest extends \PHPUnit_Framework_TestCase
                 'BUSINESS_UNIT',
                 self::TEST_ENTITY,
                 '',
-                'owner_id IN (bu3,bu31,bu3a,bu3a1,bu4,bu41,bu411)'
+                array(
+                    'owner',
+                    array('bu3', 'bu31', 'bu3a', 'bu3a1', 'bu4', 'bu41', 'bu411')
+                )
             ),
             array(
                 'user4',
@@ -241,11 +257,25 @@ class OwnershipFilterBuilderTest extends \PHPUnit_Framework_TestCase
                 'USER',
                 self::TEST_ENTITY,
                 '',
-                'owner_id IN (user3,user31,user4,user41,user411)'
+                array(
+                    'owner',
+                    array('user3', 'user31', 'user4', 'user41', 'user411')
+                )
             ),
-            array('user4', true, AccessLevel::GLOBAL_LEVEL, null, self::ORGANIZATION, '', 'id IN (org3,org4)'),
-            array('user4', true, AccessLevel::DEEP_LEVEL, null, self::TEST_ENTITY, '', ''),
-            array('user4', true, AccessLevel::DEEP_LEVEL, 'ORGANIZATION', self::TEST_ENTITY, '', '1 = 0'),
+            array(
+                'user4',
+                true,
+                AccessLevel::GLOBAL_LEVEL,
+                null,
+                self::ORGANIZATION,
+                '',
+                array(
+                    'id',
+                    array('org3', 'org4')
+                )
+            ),
+            array('user4', true, AccessLevel::DEEP_LEVEL, null, self::TEST_ENTITY, '', []),
+            array('user4', true, AccessLevel::DEEP_LEVEL, 'ORGANIZATION', self::TEST_ENTITY, '', null),
             array(
                 'user4',
                 true,
@@ -253,7 +283,10 @@ class OwnershipFilterBuilderTest extends \PHPUnit_Framework_TestCase
                 'BUSINESS_UNIT',
                 self::TEST_ENTITY,
                 '',
-                'owner_id IN (bu3,bu4,bu31,bu41,bu411)'
+                array(
+                    'owner',
+                    array('bu3', 'bu4', 'bu31', 'bu41', 'bu411')
+                )
             ),
             array(
                 'user4',
@@ -262,7 +295,10 @@ class OwnershipFilterBuilderTest extends \PHPUnit_Framework_TestCase
                 'USER',
                 self::TEST_ENTITY,
                 '',
-                'owner_id IN (user3,user4,user31,user41,user411)'
+                array(
+                    'owner',
+                    array('user3', 'user4', 'user31', 'user41', 'user411')
+                )
             ),
             array(
                 'user4',
@@ -271,10 +307,13 @@ class OwnershipFilterBuilderTest extends \PHPUnit_Framework_TestCase
                 null,
                 self::BUSINESS_UNIT,
                 '',
-                'id IN (bu3,bu4,bu31,bu41,bu411)'
+                array(
+                    'id',
+                    array('bu3', 'bu4', 'bu31', 'bu41', 'bu411')
+                )
             ),
-            array('user4', true, AccessLevel::LOCAL_LEVEL, null, self::TEST_ENTITY, '', ''),
-            array('user4', true, AccessLevel::LOCAL_LEVEL, 'ORGANIZATION', self::TEST_ENTITY, '', '1 = 0'),
+            array('user4', true, AccessLevel::LOCAL_LEVEL, null, self::TEST_ENTITY, '', []),
+            array('user4', true, AccessLevel::LOCAL_LEVEL, 'ORGANIZATION', self::TEST_ENTITY, '', null),
             array(
                 'user4',
                 true,
@@ -282,7 +321,10 @@ class OwnershipFilterBuilderTest extends \PHPUnit_Framework_TestCase
                 'BUSINESS_UNIT',
                 self::TEST_ENTITY,
                 '',
-                'owner_id IN (bu3,bu4)'
+                array(
+                    'owner',
+                    array('bu3', 'bu4')
+                )
             ),
             array(
                 'user4',
@@ -291,12 +333,26 @@ class OwnershipFilterBuilderTest extends \PHPUnit_Framework_TestCase
                 'USER',
                 self::TEST_ENTITY,
                 '',
-                'owner_id IN (user3,user4)'
+                array(
+                    'owner',
+                    array('user3', 'user4')
+                )
             ),
-            array('user4', true, AccessLevel::LOCAL_LEVEL, null, self::BUSINESS_UNIT, '', 'id IN (bu3,bu4)'),
-            array('user4', true, AccessLevel::BASIC_LEVEL, null, self::TEST_ENTITY, '', ''),
-            array('user4', true, AccessLevel::BASIC_LEVEL, 'ORGANIZATION', self::TEST_ENTITY, '', '1 = 0'),
-            array('user4', true, AccessLevel::BASIC_LEVEL, 'BUSINESS_UNIT', self::TEST_ENTITY, '', '1 = 0'),
+            array(
+                'user4',
+                true,
+                AccessLevel::LOCAL_LEVEL,
+                null,
+                self::BUSINESS_UNIT,
+                '',
+                array(
+                    'id',
+                    array('bu3', 'bu4')
+                )
+            ),
+            array('user4', true, AccessLevel::BASIC_LEVEL, null, self::TEST_ENTITY, '', []),
+            array('user4', true, AccessLevel::BASIC_LEVEL, 'ORGANIZATION', self::TEST_ENTITY, '', null),
+            array('user4', true, AccessLevel::BASIC_LEVEL, 'BUSINESS_UNIT', self::TEST_ENTITY, '', null),
             array(
                 'user4',
                 true,
@@ -304,9 +360,23 @@ class OwnershipFilterBuilderTest extends \PHPUnit_Framework_TestCase
                 'USER',
                 self::TEST_ENTITY,
                 '',
-                'owner_id = user4'
+                array(
+                    'owner',
+                    'user4'
+                )
             ),
-            array('user4', true, AccessLevel::BASIC_LEVEL, null, self::USER, '', 'id = user4'),
+            array(
+                'user4',
+                true,
+                AccessLevel::BASIC_LEVEL,
+                null,
+                self::USER,
+                '',
+                array(
+                    'id',
+                    'user4'
+                )
+            )
         );
     }
 }

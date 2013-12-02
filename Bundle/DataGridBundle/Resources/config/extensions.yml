@@ -25,6 +25,8 @@ services:
             - { name: oro_datagrid.extension }
 
     oro_datagrid.extension.pager.orm.pager:
+        arguments:
+            - @oro_security.acl_helper
         class: %oro_datagrid.extension.pager.orm.pager.class%
 
     oro_datagrid.extension.orm_sorter:
