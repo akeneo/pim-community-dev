@@ -321,8 +321,6 @@
 {% block oro_batch_step_element_configuration_widget %}
     {% for child in form %}
         {{ form_row(child) }}
-    {% else %}
-        {{ 'No configuration'|trans }}
     {% endfor %}
 {% endblock oro_batch_step_element_configuration_widget %}
 
