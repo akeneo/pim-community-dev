@@ -8,9 +8,10 @@
             {# Show button for start or transit entity workflow #}
             {% set transitionData = {
                 'redirect-to-workflow': false,
-                'enabled': true,
+                'enabled': data.isAllowed,
                 'transition-label': data.transition.label|trans,
-                'message': data.transition.message|trans
+                'message': data.transition.message|trans,
+                'transition-condition-messages': data.errors
             } %}
 
             {% if data.workflowItem is not defined %}
@@ -53,9 +54,10 @@
         {% for data in transitionsData if data.workflow.type == 'wizard' and data.workflowItem is not defined  %}
             {% set transitionData = {
                 'redirect-to-workflow': true,
-                'enabled': true,
+                'enabled': data.isAllowed,
                 'transition-label': data.transition.label|trans,
                 'message': data.transition.message|trans,
+                'transition-condition-messages': data.errors,
                 'transition-url': path(
                     'oro_workflow_api_rest_workflow_start',
                     {

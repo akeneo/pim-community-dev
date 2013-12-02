@@ -11,6 +11,8 @@ use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
 use Oro\Bundle\LocaleBundle\Model\FullNameInterface;
 use Oro\Bundle\LocaleBundle\Model\AddressInterface;
 
+use Oro\Bundle\FormBundle\Entity\EmptyItem;
+
 /**
  * Address
  *

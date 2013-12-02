@@ -157,7 +157,7 @@
             {% if (parameters.title is defined) %}
                 title="{{ parameters.title|trans }}"
             {% endif %}
-           ><i class="icon-trash hide-text">{{ parameters.label|trans }}</i>{{ parameters.label|trans -}}
+           ><i class="icon-trash"></i>{{ parameters.label|trans -}}
         </a>
     </div>
 {% endmacro %}
@@ -253,22 +253,23 @@
         spanClass - css class name of subblock, if this parameter is not specified the css class is span6
 #}
 {% macro scrollSubblock(title, data, isForm, useSpan, spanClass) %}
-    {% set spanClass = spanClass|default('span6') %}
-    {% if useSpan is not defined or useSpan == true %}
+    {#% if useSpan is not defined or useSpan == true %}
         {% set span = spanClass %}
     {% else %}
         {% set span = '' %}
     {% endif %}
     {% if span %}
         <div class="{{ span }}">
-    {% endif %}
-    {% if title|length %}<h5 class="usser-fiedset"><span>{{ title|trans }}</span></h5>{% endif %}
+    {% endif %#}
+    <div class="responsive-cell{% if spanClass is defined %} {{ spanClass }}{% endif %}">
+    {% if title|length %}<h5 class="user-fiedset"><span>{{ title|trans }}</span></h5>{% endif %}
     {% for dataBlock in data %}
         {{ dataBlock|raw }}
     {% endfor %}
-    {% if span %}
+    </div>
+    {#% if span %}
         </div>
-    {% endif %}
+    {% endif %#}
 {% endmacro %}
 
 {#
@@ -287,7 +288,7 @@
 #}
 {% macro scrollBlock(blockId, title, subblocks, isForm, contentAttributes, useSubBlockDivider) %}
     {% set cols = subblocks|length %}
-    <div class="usser-row">
+    <div class="responsive-section">
         <h4 class="scrollspy-title">{{ title|trans }}</h4>
         <div id="{{ blockId }}" class="scrollspy-nav-target"></div>
         <div class="row-fluid{% if (contentAttributes is defined and contentAttributes.class is defined and contentAttributes.class|length) %} {{ contentAttributes.class }}{% endif %}{% if cols > 1 and (useSubBlockDivider is not defined or useSubBlockDivider == true) %} row-fluid-divider{% endif %}" {{ _self.attributes(contentAttributes, ['class']) }}>
@@ -387,7 +388,7 @@
 #}
 {% macro collectionField(field, label, buttonCaption) %}
     <div class="control-group">
-        <label for="selectAccountName" class="control-label">{{ label|trans }}:</label>
+        <label class="control-label">{{ label|trans }}</label>
         <div class="controls">
             <div class="row-oro">
                 <div class="collection-fields-list" data-prototype="{{ _self.collection_prototype(field)|escape }}">

@@ -16,9 +16,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Oro\Bundle\EntityBundle\ORM\OroEntityManager;
-use Oro\Bundle\EntityBundle\Datagrid\CustomEntityDatagrid;
 
 use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
+use Oro\Bundle\EntityConfigBundle\Entity\OptionSetRelation;
+use Oro\Bundle\EntityConfigBundle\Entity\Repository\OptionSetRelationRepository;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 use Oro\Bundle\EntityConfigBundle\Metadata\EntityMetadata;
 
@@ -138,13 +139,13 @@ class EntitiesController extends Controller
         $fieldConfig  = $extendConfigProvider->getConfig($extendEntityName, $fieldName);
 
         return [
-                'entity_id'       => $className,
-                'entity_class'    => $extendEntityName,
-                'label'           => $entityConfig->get('label'),
-                'entity_provider' => $entityConfigProvider,
-                'extend_provider' => $extendConfigProvider,
-                'relation'        => $fieldConfig
-            ];
+            'entity_id'       => $className,
+            'entity_class'    => $extendEntityName,
+            'label'           => $entityConfig->get('label'),
+            'entity_provider' => $entityConfigProvider,
+            'extend_provider' => $extendConfigProvider,
+            'relation'        => $fieldConfig
+        ];
     }
 
 
@@ -187,6 +188,7 @@ class EntitiesController extends Controller
                 return
                     $config->is('is_displayable')
                     && $extendConfig->is('is_deleted', false)
+                    && !$extendConfig->is('state', ExtendManager::STATE_NEW)
                     && !(
                         in_array($extendConfig->getId()->getFieldType(), array('oneToMany', 'manyToOne', 'manyToMany'))
                         && $extendConfigProvider->getConfig($extendConfig->get('target_entity'))->is('is_deleted', true)
@@ -199,9 +201,30 @@ class EntitiesController extends Controller
         foreach ($fields as $field) {
             $value = $record->{'get' . Inflector::classify($field->getId()->getFieldName())}();
 
+            /** Prepare OptionSet field type */
+            if ($field->getId()->getFieldType() == 'optionSet') {
+                /** @var OptionSetRelationRepository */
+                $osr = $em->getRepository(OptionSetRelation::ENTITY_NAME);
+
+                $model = $extendConfigProvider->getConfigManager()->getConfigFieldModel(
+                    $field->getId()->getClassName(),
+                    $field->getId()->getFieldName()
+                );
+
+                $value = $osr->findByFieldId($model->getId(), $id);
+                array_walk(
+                    $value,
+                    function (&$item) {
+                        $item = ['title' => $item->getOption()->getLabel()];
+                    }
+                );
+
+                $value['values'] = $value;
+            }
+
             /** Prepare DateTime field type */
             if ($value instanceof \DateTime) {
-                $dateFormat   = 'Y-m-d';
+                $dateFormat = 'Y-m-d';
                 if ($this->get('oro_config.global')->get('oro_locale.date_format')) {
                     $dateFormat = $this->get('oro_config.global')->get('oro_locale.date_format');
                 }

@@ -12,12 +12,12 @@ class ResponseHashnavListener
     const HASH_NAVIGATION_HEADER = 'x-oro-hash-navigation';
 
     /**
-     * @var \Symfony\Component\Security\Core\SecurityContextInterface
+     * @var SecurityContextInterface
      */
     protected $security;
 
     /**
-     * @var \Symfony\Bundle\FrameworkBundle\Templating\EngineInterface
+     * @var EngineInterface
      */
     protected $templating;
 
@@ -45,7 +45,7 @@ class ResponseHashnavListener
                     $isFullRedirect = true;
                 }
             }
-            if ($response->isNotFound() || $response->isForbidden()) {
+            if ($response->isNotFound()) {
                 $location = $request->getUri();
                 $isFullRedirect = true;
             }

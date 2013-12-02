@@ -249,6 +249,26 @@ oro_entity_config:
                             block:          entity
                             subblock:       properties
 
+                is_deleted:
+                    options:
+                        default_value:      false
+                        auditable:          false
+                    grid:
+                        # TODO: remove/deprecate show_column key here with GridBundle
+                        show_column:        false
+                        renderable:         false
+                        query:
+                            operator:       '!='
+                            value:          true
+
+                is_inverse:
+                    options:
+                        default_value:      false
+                        auditable:          false
+
+                #
+                # Relations form type fields
+                #
                 relation:
                     options:
                         allowed_type:       [oneToMany, manyToOne, manyToMany]
@@ -287,19 +307,34 @@ oro_entity_config:
                         auditable:          false
                         serializable:       true
 
-                is_deleted:
+                #
+                # OptionSet form type fields
+                #
+                set_expanded:
                     options:
-                        default_value:      false
-                        auditable:          false
-                    grid:
-                        # TODO: remove/deprecate show_column key here with GridBundle
-                        show_column:        false
-                        renderable:         false
-                        query:
-                            operator:       '!='
-                            value:          true
-
-                is_inverse:
+                        allowed_type:       [optionSet]
+                        create_only:        true
+                    form:
+                        type:               choice
+                        options:
+                            required:       false
+                            choices:        ['No', 'Yes']
+                            empty_value:    false
+                            label:          'Expanded'
+                            attr:
+                                class:      is-option-set-expanded
+                            block:          entity
+                            subblock:       properties
+                set_options:
                     options:
-                        default_value:      false
+                        allowed_type:       [optionSet]
                         auditable:          false
+                    form:
+                        type:               oro_entity_option_set_collection
+                        options:
+                            required:       false
+                            label:          'Options'
+                            block:          entity
+                            subblock:       properties
+                            type:           oro_entity_option_set
+                            tooltip:        'Deleting an option will remove these values from related records.'

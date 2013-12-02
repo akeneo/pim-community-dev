@@ -9,7 +9,7 @@ function(localeSettings, moment) {
      * Datetime formatter
      *
      * @export  oro/formatter/datetime
-     * @class   oro.DatetimeFormatter
+     * @name    oro.formatter.datetime
      */
     return {
         /**

@@ -9,11 +9,6 @@
     <div class="container-fluid page-title">
         <div class="navigation clearfix navbar-extra">
             <div class="row">
-                <div class="pull-right title-buttons-container">
-                    {% placeholder index_navButtons_before %}
-                    {% block navButtons %}{% endblock navButtons %}
-                    {% placeholder index_navButtons_after %}
-                </div>
                 <div class="span9">
                     <div class="pull-left">
                         <div class="container-fluid">
@@ -21,20 +16,27 @@
                         </div>
                     </div>
                 </div>
+                <div class="pull-right title-buttons-container">
+                    {% placeholder index_navButtons_before %}
+                    {% block navButtons %}{% endblock navButtons %}
+                    {% placeholder index_navButtons_after %}
+                </div>
             </div>
         </div>
     </div>
 
-    {% if gridName is defined %}
-        {% if params is defined %}
-            {{ dataGrid.renderGrid(gridName, params) }}
-        {% else %}
-            {{ dataGrid.renderGrid(gridName) }}
+    {% block content_datagrid %}
+        {% if gridName is defined %}
+            {% if params is defined %}
+                {{ dataGrid.renderGrid(gridName, params) }}
+            {% else %}
+                {{ dataGrid.renderGrid(gridName) }}
+            {% endif %}
         {% endif %}
-    {% endif %}
 
-    {# fallback for OroGridBundle grids #}
-    {% if gridId is defined %}
-        {{ UI.gridBlock(gridId) }}
-    {% endif %}
+        {# fallback for OroGridBundle grids #}
+        {% if gridId is defined %}
+            {{ UI.gridBlock(gridId) }}
+        {% endif %}
+    {% endblock content_datagrid %}
 {% endblock content %}

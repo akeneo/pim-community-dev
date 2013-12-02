@@ -97,6 +97,7 @@
                 </div>
             </fieldset>
         </form>
+        {{ oro_form_js_validation(event_form)|replace({'<script': '<% print("<sc" + "ript") %>', '</script>': '<% print("</sc" + "ript>") %>'})|raw }}
     </script>
 
     <script type="text/javascript">
@@ -126,7 +127,6 @@
                     subordinate: true,
                     containerSelector: '.calendar-events',
                     itemFormTemplateSelector: '#template-calendar-event',
-                    itemFormValidationScriptUrl: '{{ JSFV(event_form, true) }}',
                     date: "{{ 'now'|date('Y-m-d') }}",
                     firstDay: localeSettings.getCalendarFirstDayOfWeek() - 1,
                     monthNames: localeSettings.getCalendarMonthNames('wide', true),

@@ -1,5 +1,6 @@
-/* global define */
-define(['underscore', 'backbone', 'oro/registry', 'oro/mediator'],
+/*jslint browser: true, vars: true, nomen: true*/
+/*global define*/
+define(['underscore', 'backbone', 'oro/grid/registry', 'oro/mediator'],
 function(_, Backbone, registry, mediator) {
     'use strict';
 

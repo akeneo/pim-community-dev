@@ -1,11 +1,19 @@
-/* jshint browser:true */
-/* global define, require */
-define(['jquery', 'underscore', 'backbone', 'oro/translator', 'oro/tools', 'oro/mediator', 'oro/registry', 'oro/loading-mask',
-    'oro/pageable-collection', 'oro/datagrid/grid', 'oro/datagrid/router',
-    'oro/datagrid/grid-views/view'],
-function($, _, Backbone, __, tools, mediator, registry, LoadingMask,
-         PageableCollection, Grid, GridRouter, GridViewsView) {
+/*jslint vars: true, nomen: true, browser: true*/
+/*jshint browser: true*/
+/*global define, require*/
+define(function (require) {
     'use strict';
+
+    var $ = require('jquery');
+    var _ = require('underscore');
+    var __ = require('oro/translator');
+    var tools = require('oro/tools');
+    var mediator = require('oro/mediator');
+    var LoadingMask = require('oro/loading-mask');
+    var PageableCollection = require('oro/pageable-collection');
+    var Grid = require('oro/datagrid/grid');
+    var GridRouter = require('oro/datagrid/router');
+    var GridViewsView = require('oro/datagrid/grid-views/view');
 
     var gridSelector = '[data-type="datagrid"]:not([data-rendered])',
         gridGridViewsSelector = '.page-title > .navbar-extra .span9:last',
@@ -29,19 +37,30 @@ function($, _, Backbone, __, tools, mediator, registry, LoadingMask,
         methods = {
             /**
              * Reads data from grid container, collects required modules and runs grid builder
+             *
+             * @param {Function} initBuilders
              */
-            initBuilder: function () {
-                this.metadata = _.extend({
+            initBuilder: function (initBuilders) {
+                var self = this;
+
+                self.metadata = _.extend({
                     columns: [],
                     options: {},
                     state: {},
                     rowActions: {},
                     massActions: {}
-                }, this.$el.data('metadata'));
-                this.modules = {};
-                methods.collectModules.call(this);
+                }, self.$el.data('metadata'));
+
+                self.modules = {};
+
+                methods.collectModules.call(self);
+
                 // load all dependencies and build grid
-                tools.loadModules(this.modules, _.bind(methods.buildGrid, this));
+                tools.loadModules(self.modules, function () {
+                    methods.buildGrid.call(self);
+                    initBuilders();
+                    methods.afterBuild.call(self);
+                });
             },
 
             /**
@@ -77,16 +96,12 @@ function($, _, Backbone, __, tools, mediator, registry, LoadingMask,
                 // create collection
                 options = methods.combineCollectionOptions.call(this);
                 collection = new PageableCollection(this.$el.data('data'), options);
-                mediator.trigger('datagrid_collection_set_after', collection, this.$el);
 
                 // create grid
                 options = methods.combineGridOptions.call(this);
                 grid = new Grid(_.extend({collection: collection}, options));
+                this.grid = grid;
                 this.$el.append(grid.render().$el);
-                mediator.trigger('datagrid:created', grid, this.$el);
-                // @todo delete
-                registry.setElement('datagrid', options.name, grid);
-                mediator.trigger('datagrid:created:' + options.name, grid);
 
                 if (options.routerEnabled !== false) {
                     // register router
@@ -96,6 +111,13 @@ function($, _, Backbone, __, tools, mediator, registry, LoadingMask,
                 // create grid view
                 options = methods.combineGridViewsOptions.call(this);
                 $(gridGridViewsSelector).append((new GridViewsView(_.extend({collection: collection}, options))).render().$el);
+            },
+
+            /**
+             * After build
+             */
+            afterBuild: function () {
+                mediator.trigger('datagrid_collection_set_after', this.grid.collection, this.$el);
             },
 
             /**
@@ -110,7 +132,7 @@ function($, _, Backbone, __, tools, mediator, registry, LoadingMask,
                     url: '\/user\/json',
                     state: _.extend({
                         filters: {},
-                        sorters:{}
+                        sorters: {}
                     }, this.metadata.state)
                 }, this.metadata.options);
             },
@@ -183,18 +205,21 @@ function($, _, Backbone, __, tools, mediator, registry, LoadingMask,
      * @name   oro.datagridBuilder
      */
     return function (builders) {
-        var $container = $(document),
-            $grids = $container.find(gridSelector);
-        $grids.each(function (i, el) {
+        $(gridSelector).each(function (i, el) {
             var $el = $(el);
-            _.each(builders, function (builder) {
-                if (!_.has(builder, 'init') || !$.isFunction(builder.init)) {
-                    throw new TypeError('Builder does not have init method');
-                }
-                builder.init($el);
-            });
-            methods.initBuilder.call({$el: $(el)});
+            var gridName = (($el.data('metadata') || {}).options || {}).gridName;
+            if (!gridName) {
+                return;
+            }
             $el.attr('data-rendered', true);
+            methods.initBuilder.call({ $el: $el }, function () {
+                _.each(builders, function (builder) {
+                    if (!_.has(builder, 'init') || !$.isFunction(builder.init)) {
+                        throw new TypeError('Builder does not have init method');
+                    }
+                    builder.init($el, gridName);
+                });
+            });
         }).end();
     };
 });

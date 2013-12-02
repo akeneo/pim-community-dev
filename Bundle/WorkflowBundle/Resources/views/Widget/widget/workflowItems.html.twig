@@ -5,29 +5,36 @@
         .widget-content.workflow-items {
             margin: 20px 15px;
         }
-        .widget-content.workflow-items .dropdown-menu {
-            padding: 5px 0 0;
-            min-width: 100px;
+
+        .widget-content.workflow-items .workflow-item-transitions a {
+            padding: 5px 10px;
+            display: block;
         }
-        .widget-content.workflow-items .dropdown-menu>li {
-            margin: 0;
+
+        .widget-content.workflow-items .workflow-item-transitions a:hover {
+            background-color: #fafafa;
         }
-        .widget-content.workflow-items .btn-mini {
-            height: 20px;
-            line-height: 20px;
+
+        .widget-content.workflow-items .workflow-item-transitions .divider {
+            margin: 1px 9px;
+            border-bottom: none;
+        }
+
+        .workflow-items .grid-container {
+            width: auto;
+            overflow: visible;
         }
     </style>
     {% if workflows_items_data|length %}
         {% set allow_delete = resource_granted('oro_workflow') %}
-        <table class="table-hover table table-bordered table-condensed">
+        <div class="grid-container">
+        <table class="grid table-hover table table-bordered table-condensed">
             <thead>
                 <tr>
                     <th>{% trans %}Workflow Name{% endtrans %}</th>
                     <th>{% trans %}Current Step{% endtrans %}</th>
                     <th>{% trans %}Start Date{% endtrans %}</th>
-                    {% if allow_delete %}
-                        <th>{% trans %}Actions{% endtrans %}</th>
-                    {% endif %}
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -53,30 +60,45 @@
                         <td>
                             {{ data.workflowItem.createdAt|oro_format_datetime }}
                         </td>
-                        {% if allow_delete %}
-                            <td style="width: 90px;">
-                                {{ UI.deleteButton({
-                                    'dataUrl': path('oro_api_workflow_delete', { workflowItemId: data.workflowItem.id }),
-                                    'aCss': 'no-hash remove-button btn-mini',
-                                    'dataId': data.workflowItem.id,
-                                    'id': 'btn-remove-workflow-item',
-                                    'dataMessage': 'Are you sure you want to delete this workflow item?'|trans,
-                                    'title': 'Delete workflow item'|trans,
-                                    'label': 'Delete'|trans
-                                }) }}
-                            </td>
-                        {% endif %}
+                        <td>
+                            <div class="dropdown">
+                                <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown">...</a>
+                                <ul class="dropdown-menu pull-right launchers-dropdown-menu workflow-item-transitions">
+                                    <li>
+                                        <div id="workflow-transitions-{{ data.workflowItem.id }}"></div>
+                                    </li>
+                                    {% if allow_delete %}
+                                    <li class="divider" role="presentation"></li>
+                                    <li>
+                                        <a href="javascript: void(0);"
+                                            class="no-hash remove-button"
+                                            id="btn-remove-workflow-item"
+                                            data-id="{{ data.workflowItem.id }}"
+                                            data-message="{{ 'Are you sure you want to delete this workflow item?'|trans }}"
+                                            data-success-message="{{ 'Workflow item deleted'|trans }}"
+                                            data-url="{{ path('oro_api_workflow_delete', { workflowItemId: data.workflowItem.id }) }}"
+                                            title="{{ 'Delete workflow item'|trans }}"
+                                        >
+                                            <i class="icon-trash"></i>
+                                            {{ 'Delete'|trans }}
+                                        </a>
+                                    </li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+                        </td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
+        </div>
     {% endif %}
     <p class="no-workflow-items-text" {% if workflows_items_data|length %}style="display: none;"{% endif %}>
         {% trans %}No workflow items are available{% endtrans %}
     </p>
     <script type="text/javascript">
-        require(['jquery', 'oro/widget-manager'],
-        function($, widgetManager){
+        require(['jquery', 'oro/widget-manager', 'oro/buttons-widget'],
+        function($, widgetManager, ButtonsWidget){
             widgetManager.getWidgetInstance({{ app.request.get('_wid')|json_encode|raw }}, function(widget){
                 var wiTable = widget.$el.find('table');
                 var noItemsText = widget.$el.find('.no-workflow-items-text');
@@ -90,6 +112,26 @@
                     }
                     widget.trigger('workflowItemRemoved');
                 });
+
+                {% for data in workflows_items_data %}
+                (function() {
+                    var transitionsWidget = new ButtonsWidget({
+                        'el': widget.$('#workflow-transitions-{{ data.workflowItem.id }}'),
+                        'url': {{ path(
+                            'oro_workflow_widget_buttons_wizard',
+                            {
+                                workflowItemId: data.workflowItem.id,
+                                redirectToWorkflow: true
+                            })|json_encode|raw }},
+                        'cssClass': ''
+                    });
+                    transitionsWidget.on('renderStart', function(el) {
+                        el.find('.btn-group').removeClass('btn-group');
+                        el.find('.btn').prop('class', 'no-hash');
+                    });
+                    transitionsWidget.render();
+                })();
+                {% endfor %}
             });
         });
     </script>

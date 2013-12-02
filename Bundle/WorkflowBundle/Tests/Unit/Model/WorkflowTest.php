@@ -383,10 +383,10 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\ForbiddenTransitionException
-     * @expectedTransitionMessage Transition "transition" is not allowed for step "stepOne".
+     * @expectedException \Oro\Bundle\WorkflowBundle\Exception\InvalidTransitionException
+     * @expectedTransitionMessage Step "stepOne" of workflow "test" doesn't have allowed transition "transition".
      */
-    public function testTransitForbiddenTransition()
+    public function testTransitNotAllowedTransition()
     {
         $workflowItem = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Entity\WorkflowItem')
             ->disableOriginalConstructor()
@@ -403,7 +403,7 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
 
         $transition = $this->getTransitionMock('transition');
 
-        $workflow = $this->createWorkflow();
+        $workflow = $this->createWorkflow('test');
         $workflow->getTransitionManager()->setTransitions(array($transition));
         $workflow->getStepManager()->setSteps(array($step));
         $workflow->transit($workflowItem, 'transition');
@@ -437,10 +437,6 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(true));
 
         $transition = $this->getTransitionMock('transition', false, 'stepTwo');
-        $transition->expects($this->once())
-            ->method('isAllowed')
-            ->with($workflowItem)
-            ->will($this->returnValue(true));
         $transition->expects($this->once())
             ->method('transit')
             ->with($workflowItem);
@@ -628,19 +624,18 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
      */
     public function testStart($data, $transitionName)
     {
-        $transitions = array();
         if (!$transitionName) {
-            $transitions[Workflow::DEFAULT_START_TRANSITION_NAME] =
-                $this->getTransitionMock(Workflow::DEFAULT_START_TRANSITION_NAME, true, 'step_name');
+            $expectedTransitionName = Workflow::DEFAULT_START_TRANSITION_NAME;
         } else {
-            $transitions[$transitionName] = $this->getTransitionMock($transitionName, true, 'step_name');
+            $expectedTransitionName = $transitionName;
         }
-        foreach ($transitions as $transition) {
-            $transition->expects($this->once())
-                ->method('isAllowed')
-                ->will($this->returnValue(true));
-        }
-        $transitions = new ArrayCollection($transitions);
+
+        $transition = $this->getTransitionMock($expectedTransitionName, true, 'step_name');
+        $transition->expects($this->once())
+            ->method('transit')
+            ->with($this->isInstanceOf('Oro\Bundle\WorkflowBundle\Entity\WorkflowItem'));
+
+        $transitions = new ArrayCollection(array($expectedTransitionName => $transition));
 
         $entityBinder = $this->getMockEntityBinder();
         $entityBinder->expects($this->once())
@@ -663,7 +658,7 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testGetAllowedStartTransitions()
+    public function testGetStartTransitions()
     {
         $allowedStartTransition = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\Transition')
             ->disableOriginalConstructor()
@@ -671,21 +666,6 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
         $allowedStartTransition->expects($this->once())
             ->method('isStart')
             ->will($this->returnValue(true));
-        $allowedStartTransition->expects($this->once())
-            ->method('isAllowed')
-            ->with($this->isInstanceOf('Oro\Bundle\WorkflowBundle\Entity\WorkflowItem'))
-            ->will($this->returnValue(true));
-
-        $disallowedStartTransition = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\Transition')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $disallowedStartTransition->expects($this->once())
-            ->method('isStart')
-            ->will($this->returnValue(true));
-        $disallowedStartTransition->expects($this->once())
-            ->method('isAllowed')
-            ->with($this->isInstanceOf('Oro\Bundle\WorkflowBundle\Entity\WorkflowItem'))
-            ->will($this->returnValue(false));
 
         $allowedTransition = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\Transition')
             ->disableOriginalConstructor()
@@ -693,13 +673,10 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
         $allowedTransition->expects($this->once())
             ->method('isStart')
             ->will($this->returnValue(false));
-        $allowedTransition->expects($this->never())
-            ->method('isAllowed');
 
         $transitions = new ArrayCollection(
             array(
                 $allowedStartTransition,
-                $disallowedStartTransition,
                 $allowedTransition
             )
         );
@@ -707,7 +684,7 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
 
         $workflow = $this->createWorkflow();
         $workflow->getTransitionManager()->setTransitions($transitions);
-        $this->assertEquals($expected, $workflow->getAllowedStartTransitions());
+        $this->assertEquals($expected, $workflow->getTransitionManager()->getStartTransitions());
     }
 
     public function testGetAttribute()
@@ -775,7 +752,7 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
         $workflowItem = new WorkflowItem();
         $workflowItem->setCurrentStepName($step->getName());
 
-        $actualTransitions = $workflow->getAllowedTransitions($workflowItem);
+        $actualTransitions = $workflow->getTransitionsByWorkflowItem($workflowItem);
         $this->assertEquals(array($secondTransition), $actualTransitions->getValues());
     }
 
@@ -789,10 +766,57 @@ class WorkflowTest extends \PHPUnit_Framework_TestCase
         $workflowItem->setCurrentStepName('unknown_step');
 
         $workflow = $this->createWorkflow();
-        $workflow->getAllowedTransitions($workflowItem);
+        $workflow->getTransitionsByWorkflowItem($workflowItem);
+    }
+
+    public function testIsTransitionAvailable()
+    {
+        $workflowItem = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Entity\WorkflowItem')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $errors = new ArrayCollection();
+        $transitionName = 'test_transition';
+        $transition = $this->getTransitionMock($transitionName);
+        $transition->expects($this->once())
+            ->method('isAvailable')
+            ->with($workflowItem, $errors)
+            ->will($this->returnValue(true));
+        $transitionManager = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\TransitionManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $transitionManager->expects($this->once())
+            ->method('extractTransition')
+            ->with($transition)
+            ->will($this->returnValue($transition));
+        $workflow = new Workflow(null, null, $transitionManager);
+
+        $this->assertTrue($workflow->isTransitionAvailable($workflowItem, $transition, $errors));
+    }
+
+    public function testIsStartTransitionAvailable()
+    {
+        $data = array();
+        $errors = new ArrayCollection();
+        $transitionName = 'test_transition';
+        $transition = $this->getTransitionMock($transitionName);
+        $transition->expects($this->once())
+            ->method('isAvailable')
+            ->with($this->isInstanceOf('Oro\Bundle\WorkflowBundle\Entity\WorkflowItem'), $errors)
+            ->will($this->returnValue(true));
+        $transitionManager = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\TransitionManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $transitionManager->expects($this->once())
+            ->method('extractTransition')
+            ->with($transition)
+            ->will($this->returnValue($transition));
+        $workflow = new Workflow(null, null, $transitionManager);
+
+        $this->assertTrue($workflow->isStartTransitionAvailable($transition, $data, $errors));
     }
 
     /**
+     * @param null|string $workflowName
      * @return Workflow
      */
     protected function createWorkflow($workflowName = null)

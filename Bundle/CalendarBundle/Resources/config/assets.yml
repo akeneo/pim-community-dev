@@ -1,4 +1,4 @@
 css:
     'full-calendar':
-        - '@OroCalendarBundle/Resources/public/css/calendar.css'
-        - '@OroCalendarBundle/Resources/public/lib/fullcalendar/fullcalendar.css'
+        - 'bundles/orocalendar/css/calendar.css'
+        - 'bundles/orocalendar/lib/fullcalendar/fullcalendar.css'

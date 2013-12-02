@@ -1,9 +1,10 @@
 parameters:
-    oro_entity.form.type.custom_entity.class:         Oro\Bundle\EntityBundle\Form\Type\CustomEntityType
-    oro_entity.form.type.entity_choice.class:         Oro\Bundle\EntityBundle\Form\Type\EntityChoiceType
-    oro_entity.form.type.entity_field_choice.class:   Oro\Bundle\EntityBundle\Form\Type\EntityFieldChoiceType
-    oro_entity.form.type.entity_select.class:         Oro\Bundle\EntityBundle\Form\Type\EntitySelectType
-    oro_entity.form.handler.entity_select.class:      Oro\Bundle\EntityBundle\Form\Handler\EntitySelectHandler
+    oro_entity.form.type.custom_entity.class:                  Oro\Bundle\EntityBundle\Form\Type\CustomEntityType
+    oro_entity.form.type.entity_choice.class:                  Oro\Bundle\EntityBundle\Form\Type\EntityChoiceType
+    oro_entity.form.type.entity_field_choice.class:            Oro\Bundle\EntityBundle\Form\Type\EntityFieldChoiceType
+    oro_entity.form.type.option_select.class:                  Oro\Bundle\EntityBundle\Form\Type\OptionSelectType
+    oro_entity.form.type.entity_select.class:                  Oro\Bundle\EntityBundle\Form\Type\EntitySelectType
+    oro_entity.form.handler.entity_select.class:               Oro\Bundle\EntityBundle\Form\Handler\EntitySelectHandler
 
 services:
     oro_entity.form.type.custom_entity:
@@ -28,6 +29,13 @@ services:
             - @translator
         tags:
             - { name: form.type, alias: oro_entity_field_choice }
+
+    oro_entity.form.type.option_select:
+        class:                                                %oro_entity.form.type.option_select.class%
+        arguments:
+            - @oro_entity_config.config_manager
+        tags:
+            - { name: form.type, alias: oro_option_select }
 
     oro_entity.form.type.entity_select:
         class: %oro_entity.form.type.entity_select.class%

@@ -1,4 +1,5 @@
-/* global define */
+/*jslint nomen: true, vars: true*/
+/*global define*/
 define(['jquery', 'underscore', 'backgrid', 'oro/translator', 'oro/mediator', 'oro/loading-mask',
     'oro/datagrid/header', 'oro/datagrid/body', 'oro/datagrid/toolbar', 'oro/datagrid/action-column',
     'oro/datagrid/select-row-cell', 'oro/datagrid/select-all-header-cell',
@@ -133,6 +134,7 @@ define(['jquery', 'underscore', 'backgrid', 'oro/translator', 'oro/mediator', 'o
                 // Listen and proxy events
                 this._listenToCollectionEvents();
                 this._listenToBodyEvents();
+                this._listenToCommands();
             },
 
             /**
@@ -260,11 +262,11 @@ define(['jquery', 'underscore', 'backgrid', 'oro/translator', 'oro/mediator', 'o
             /**
              * Creates action
              *
-             * @param {Function} actionPrototype
+             * @param {Function} ActionPrototype
              * @protected
              */
-            createMassAction: function (actionPrototype) {
-                return new actionPrototype({
+            createMassAction: function (ActionPrototype) {
+                return new ActionPrototype({
                     datagrid:        this,
                     launcherOptions: {
                         className: 'btn'
@@ -278,17 +280,28 @@ define(['jquery', 'underscore', 'backgrid', 'oro/translator', 'oro/mediator', 'o
              * @return oro.datagrid.RefreshCollectionAction
              */
             getRefreshAction: function () {
-                if (!this.refreshAction) {
-                    this.refreshAction = new RefreshCollectionAction({
-                        datagrid:        this,
+                var grid = this;
+
+                if (!grid.refreshAction) {
+                    grid.refreshAction = new RefreshCollectionAction({
+                        datagrid: grid,
                         launcherOptions: {
-                            label:         'Refresh',
-                            className:     'btn',
+                            label: 'Refresh',
+                            className: 'btn',
                             iconClassName: 'icon-refresh'
                         }
                     });
+
+                    mediator.on('datagrid:doRefresh:' + grid.name, function () {
+                        grid.refreshAction.execute();
+                    });
+
+                    grid.refreshAction.on('preExecute', function (action, options) {
+                        grid.$el.trigger('preExecute:refresh:' + grid.name, [action, options]);
+                    });
                 }
-                return this.refreshAction;
+
+                return grid.refreshAction;
             },
 
             /**
@@ -297,17 +310,28 @@ define(['jquery', 'underscore', 'backgrid', 'oro/translator', 'oro/mediator', 'o
              * @return oro.datagrid.ResetCollectionAction
              */
             getResetAction: function () {
-                if (!this.resetAction) {
-                    this.resetAction = new ResetCollectionAction({
-                        datagrid:        this,
+                var grid = this;
+
+                if (!grid.resetAction) {
+                    grid.resetAction = new ResetCollectionAction({
+                        datagrid: grid,
                         launcherOptions: {
-                            label:         'Reset',
-                            className:     'btn',
+                            label: 'Reset',
+                            className: 'btn',
                             iconClassName: 'icon-repeat'
                         }
                     });
+
+                    mediator.on('datagrid:doReset:' + grid.name, function () {
+                        grid.resetAction.execute();
+                    });
+
+                    grid.resetAction.on('preExecute', function (action, options) {
+                        grid.$el.trigger('preExecute:reset:' + grid.name, [action, options]);
+                    });
                 }
-                return this.resetAction;
+
+                return grid.resetAction;
             },
 
             /**
@@ -323,10 +347,15 @@ define(['jquery', 'underscore', 'backgrid', 'oro/translator', 'oro/mediator', 'o
                     xhr.always = function () {
                         always.apply(this, arguments);
                         self._afterRequest();
-                    }
+                    };
                 }, this);
 
                 this.collection.on('remove', this._onRemove, this);
+
+                var self = this;
+                this.collection.on('change', function (model) {
+                    self.$el.trigger('datagrid:change:' + self.name, model);
+                });
             },
 
             /**
@@ -358,6 +387,28 @@ define(['jquery', 'underscore', 'backgrid', 'oro/translator', 'oro/mediator', 'o
                         action.run();
                     }
                 }
+            },
+
+            /**
+             * Listen to commands on mediator
+             */
+            _listenToCommands: function () {
+                var grid = this;
+
+                mediator.on('datagrid:setParam:' + grid.name, function (param, value) {
+                    grid.setAdditionalParameter(param, value);
+                });
+
+                mediator.on('datagrid:restoreState:' + grid.name, function (columnName, dataField, included, excluded) {
+                    grid.collection.each(function (model) {
+                        if (_.indexOf(included, model.get(dataField)) !== -1) {
+                            model.set(columnName, true);
+                        }
+                        if (_.indexOf(excluded, model.get(dataField)) !== -1) {
+                            model.set(columnName, false);
+                        }
+                    });
+                });
             },
 
             /**
@@ -417,8 +468,8 @@ define(['jquery', 'underscore', 'backgrid', 'oro/translator', 'oro/mediator', 'o
              */
             renderNoDataBlock: function () {
                 var placeholders = {entityHint: (this.entityHint || __('oro.datagrid.entityHint')).toLowerCase()},
-                    template = _.isEmpty(this.collection.state.filters) ?
-                        'oro.datagrid.noentities' : 'oro.datagrid.noresults';
+                    template = _.isEmpty(this.collection.state.filters) ? 'oro.datagrid.noentities' :
+                        'oro.datagrid.noresults';
                 this.$(this.selectors.noDataBlock).html($(this.noDataTemplate({
                     hint: __(template, placeholders).replace('\n', '<br />')
                 }))).hide();
@@ -431,7 +482,7 @@ define(['jquery', 'underscore', 'backgrid', 'oro/translator', 'oro/mediator', 'o
              * @private
              */
             _beforeRequest: function () {
-                this.requestsCount++;
+                this.requestsCount += 1;
                 this.showLoading();
             },
 
@@ -441,8 +492,8 @@ define(['jquery', 'underscore', 'backgrid', 'oro/translator', 'oro/mediator', 'o
              * @private
              */
             _afterRequest: function () {
-                this.requestsCount--;
-                if (this.requestsCount == 0) {
+                this.requestsCount -= 1;
+                if (this.requestsCount === 0) {
                     this.hideLoading();
                     // render block instead of update in order to change message depending on filter state
                     this.renderNoDataBlock();

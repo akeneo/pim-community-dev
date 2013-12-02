@@ -2,8 +2,8 @@
 
 namespace Oro\Bundle\AsseticBundle\Parser;
 
-use Assetic\Asset\AssetInterface;
 use Assetic\Factory\AssetFactory;
+
 use Oro\Bundle\AsseticBundle\Node\OroAsseticNode;
 
 class AsseticTokenParser extends \Twig_TokenParser

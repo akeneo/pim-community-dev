@@ -71,6 +71,9 @@ return array(
         ),
         'transition_definitions' => array(
             'first_transition_definition' => array(
+                'pre_conditions' => array(
+                    '@true' => null
+                ),
                 'conditions' => array(
                     '@and' => array(
                         '@true' => null,
@@ -87,12 +90,6 @@ return array(
                     )
                 ),
                 'post_actions' => array(
-                    array(
-                        '@custom_post_action' => null
-
-                    )
-                ),
-                'init_actions' => array(
                     array(
                         '@custom_post_action' => null
 
@@ -136,9 +133,9 @@ return array(
         ),
         'transition_definitions' => array(
             'second_transition_definition' => array(
+                'pre_conditions' => array(),
                 'conditions' => array(),
-                'post_actions' => array(),
-                'init_actions' => array()
+                'post_actions' => array()
             )
         ),
         'type' => 'wizard'

@@ -18,6 +18,5 @@ Validation configuration should be placed in file Resources/config/validation.ym
 OroCRM\Bundle\ContactBundle\Entity\Contact:
     properties:
         addresses:
-            - Oro\Bundle\AddressBundle\Validator\Constraints\ContainsPrimary: ~
             - Oro\Bundle\AddressBundle\Validator\Constraints\UniqueAddressTypes: ~
 ```

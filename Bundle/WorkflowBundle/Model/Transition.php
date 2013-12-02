@@ -2,10 +2,10 @@
 
 namespace Oro\Bundle\WorkflowBundle\Model;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
+use Oro\Bundle\WorkflowBundle\Exception\ForbiddenTransitionException;
 use Oro\Bundle\WorkflowBundle\Model\Condition\ConditionInterface;
 use Oro\Bundle\WorkflowBundle\Model\Action\ActionInterface;
 
@@ -32,14 +32,14 @@ class Transition
     protected $condition;
 
     /**
-     * @var ActionInterface|null
+     * @var ConditionInterface|null
      */
-    protected $postAction;
+    protected $preCondition;
 
     /**
      * @var ActionInterface|null
      */
-    protected $initAction;
+    protected $postAction;
 
     /**
      * @var bool
@@ -121,6 +121,28 @@ class Transition
     }
 
     /**
+     * Set pre-condition.
+     *
+     * @param ConditionInterface|null $condition
+     * @return Transition
+     */
+    public function setPreCondition($condition)
+    {
+        $this->preCondition = $condition;
+        return $this;
+    }
+
+    /**
+     * Get pre-condition.
+     *
+     * @return ConditionInterface|null
+     */
+    public function getPreCondition()
+    {
+        return $this->preCondition;
+    }
+
+    /**
      * Set name.
      *
      * @param string $name
@@ -187,13 +209,13 @@ class Transition
     }
 
     /**
-     * Check is transition allowed for current workflow item.
+     * Check is transition condition is allowed for current workflow item.
      *
      * @param WorkflowItem $workflowItem
      * @param Collection|null $errors
      * @return boolean
      */
-    public function isAllowed(WorkflowItem $workflowItem, Collection $errors = null)
+    protected function isConditionAllowed(WorkflowItem $workflowItem, Collection $errors = null)
     {
         if (!$this->condition) {
             return true;
@@ -203,14 +225,47 @@ class Transition
     }
 
     /**
-     * Initialize workflow item with init actions.
+     * Check is transition pre condition is allowed for current workflow item.
      *
      * @param WorkflowItem $workflowItem
+     * @param Collection|null $errors
+     * @return boolean
      */
-    public function initialize(WorkflowItem $workflowItem)
+    protected function isPreConditionAllowed(WorkflowItem $workflowItem, Collection $errors = null)
     {
-        if ($this->initAction) {
-            $this->initAction->execute($workflowItem);
+        if (!$this->preCondition) {
+            return true;
+        }
+
+        return $this->preCondition->isAllowed($workflowItem, $errors);
+    }
+
+    /**
+     * Check is transition allowed for current workflow item.
+     *
+     * @param WorkflowItem $workflowItem
+     * @param Collection $errors
+     * @return bool
+     */
+    public function isAllowed(WorkflowItem $workflowItem, Collection $errors = null)
+    {
+        return $this->isPreConditionAllowed($workflowItem, $errors)
+            && $this->isConditionAllowed($workflowItem, $errors);
+    }
+
+    /**
+     * Check that transition is available to show.
+     *
+     * @param WorkflowItem $workflowItem
+     * @param Collection $errors
+     * @return bool
+     */
+    public function isAvailable(WorkflowItem $workflowItem, Collection $errors = null)
+    {
+        if ($this->hasForm()) {
+            return $this->isPreConditionAllowed($workflowItem, $errors);
+        } else {
+            return $this->isAllowed($workflowItem, $errors);
         }
     }
 
@@ -218,6 +273,7 @@ class Transition
      * Run transition process.
      *
      * @param WorkflowItem $workflowItem
+     * @throws ForbiddenTransitionException
      */
     public function transit(WorkflowItem $workflowItem)
     {
@@ -231,6 +287,10 @@ class Transition
             if ($this->postAction) {
                 $this->postAction->execute($workflowItem);
             }
+        } else {
+            throw new ForbiddenTransitionException(
+                sprintf('Transition "%s" is not allowed.', $this->getName())
+            );
         }
     }
 
@@ -335,24 +395,6 @@ class Transition
     public function setHidden($hidden)
     {
         $this->hidden = $hidden;
-        return $this;
-    }
-
-    /**
-     * @return null|ActionInterface
-     */
-    public function getInitAction()
-    {
-        return $this->initAction;
-    }
-
-    /**
-     * @param ActionInterface $initAction
-     * @return Transition
-     */
-    public function setInitAction(ActionInterface $initAction)
-    {
-        $this->initAction = $initAction;
         return $this;
     }
 

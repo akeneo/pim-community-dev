@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
 
-use Oro\Bundle\AddressBundle\Entity\AddressType;
+use Oro\Bundle\FormBundle\Entity\PrimaryItem;
 
 /**
  * Typed Address

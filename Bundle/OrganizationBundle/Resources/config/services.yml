@@ -7,7 +7,7 @@ parameters:
     oro_organization.business_unit.manager.class:                       Oro\Bundle\OrganizationBundle\Entity\Manager\BusinessUnitManager
     oro_organization.type.ownership_type.class:                         Oro\Bundle\OrganizationBundle\Form\Type\OwnershipType
     oro_organization.form.type.business_unit_tree_select_type.class:    Oro\Bundle\OrganizationBundle\Form\Type\BusinessUnitTreeSelectType
-    oro_organization.type.form_type.class:                              Oro\Bundle\OrganizationBundle\Form\Extension\FormTypeExtension
+    oro_organization.form.extension.owner.class:                        Oro\Bundle\OrganizationBundle\Form\Extension\OwnerFormExtension
     oro_organization.form.transformer.business_unit_select.class:       Oro\Bundle\OrganizationBundle\Form\Transformer\BusinessUnitTransformer
     oro_organization.form.listener.class:                               Oro\Bundle\OrganizationBundle\Event\FormListener
     oro_organization.twig.get_owner.class:                              Oro\Bundle\OrganizationBundle\Twig\OwnerTypeExtension
@@ -79,10 +79,11 @@ services:
         tags:
             - { name: form.type, alias: oro_business_unit_tree_select }
 
-    oro_organization.form.type.form_type:
-        class:                        %oro_organization.type.form_type.class%
+    oro_organization.form.extension.owner:
+        class:                        %oro_organization.form.extension.owner.class%
         arguments:
             - @security.context
+            - @doctrine
             - @oro_security.owner.ownership_metadata_provider
             - @oro_organization.business_unit_manager
             - @oro_security.security_facade

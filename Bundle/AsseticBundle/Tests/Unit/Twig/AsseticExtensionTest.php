@@ -1,5 +1,5 @@
 <?php
-namespace Oro\Bundle\NavigationBundle\Tests\Unit\Twig;
+namespace Oro\Bundle\AsseticBundle\Tests\Unit\Twig;
 
 use Oro\Bundle\AsseticBundle\Twig\AsseticExtension;
 
@@ -11,7 +11,7 @@ class AsseticExtensionTest extends \PHPUnit_Framework_TestCase
     private $enabledBundles;
 
     /**
-     * @var \Oro\Bundle\NavigationBundle\Twig\AsseticExtension
+     * @var AsseticExtension
      */
     private $extension;
 
@@ -29,10 +29,6 @@ class AsseticExtensionTest extends \PHPUnit_Framework_TestCase
             'css' => array(
                 'first.css',
                 'second.css'
-            ),
-            'js' => array(
-                'first.js',
-                'second.js'
             )
         );
 
@@ -50,8 +46,8 @@ class AsseticExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $tokens = $this->extension->getTokenParsers();
         $this->assertTrue(is_array($tokens));
-        $jsToken = $tokens[0];
-        $this->assertEquals('oro_js', $jsToken->getTag());
+        $token = $tokens[0];
+        $this->assertEquals('oro_css', $token->getTag());
     }
 
     public function testGetName()

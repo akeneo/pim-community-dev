@@ -65,8 +65,17 @@ class PermissionGrantingStrategyTest extends \PHPUnit_Framework_TestCase
         $this->metadataProvider = new OwnershipMetadataProviderStub($this);
         $classAccessor = new EntityClassAccessor();
         $objectIdAccessor = new ObjectIdAccessor();
+
+        $treeProviderMock = $this->getMockBuilder('Oro\Bundle\SecurityBundle\Owner\OwnerTreeProvider')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $treeProviderMock->expects($this->any())
+            ->method('getTree')
+            ->will($this->returnValue($this->ownerTree));
+
         $decisionMaker = new EntityOwnershipDecisionMaker(
-            $this->ownerTree,
+            $treeProviderMock,
             $classAccessor,
             $objectIdAccessor,
             new EntityOwnerAccessor($classAccessor, $this->metadataProvider),

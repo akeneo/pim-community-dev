@@ -153,6 +153,33 @@ class EntityAclExtension extends AbstractAclExtension
     /**
      * {@inheritdoc}
      */
+    public function getAccessLevelNames($object)
+    {
+        if ($this->getObjectClassName($object) === ObjectIdentityFactory::ROOT_IDENTITY_TYPE) {
+            $minLevel = AccessLevel::BASIC_LEVEL;
+        } else {
+            $metadata = $this->getMetadata($object);
+            if (!$metadata->hasOwner()) {
+                return array(
+                    AccessLevel::NONE_LEVEL => AccessLevel::NONE_LEVEL_NAME,
+                    AccessLevel::SYSTEM_LEVEL => AccessLevel::getAccessLevelName(AccessLevel::SYSTEM_LEVEL)
+                );
+            }
+            if ($metadata->isUserOwned()) {
+                $minLevel = AccessLevel::BASIC_LEVEL;
+            } elseif ($metadata->isBusinessUnitOwned()) {
+                $minLevel = AccessLevel::DEEP_LEVEL;
+            } elseif ($metadata->isOrganizationOwned()) {
+                $minLevel = AccessLevel::GLOBAL_LEVEL;
+            }
+        }
+
+        return AccessLevel::getAccessLevelNames($minLevel);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function supports($type, $id)
     {
         if ($type === ObjectIdentityFactory::ROOT_IDENTITY_TYPE && $id === $this->getExtensionKey()) {
@@ -165,7 +192,7 @@ class EntityAclExtension extends AbstractAclExtension
             $type = $this->entityClassAccessor->getClass($type);
         }
 
-        return $this->entityMetadataProvider->isProtectedEntity($type);
+        return $this->entityClassResolver->isEntity($type);
     }
 
     /**
@@ -589,6 +616,17 @@ class EntityAclExtension extends AbstractAclExtension
      */
     protected function getMetadata($object)
     {
+        return $this->metadataProvider->getMetadata($this->getObjectClassName($object));
+    }
+
+    /**
+     * Gets class name for given object
+     *
+     * @param $object
+     * @return string
+     */
+    protected function getObjectClassName($object)
+    {
         if ($object instanceof ObjectIdentity) {
             $className = $object->getType();
         } elseif (is_string($object)) {
@@ -598,7 +636,7 @@ class EntityAclExtension extends AbstractAclExtension
             $className = $this->entityClassAccessor->getClass($object);
         }
 
-        return $this->metadataProvider->getMetadata($className);
+        return $className;
     }
 
     /**
