@@ -180,15 +180,14 @@ class Job implements JobInterface
             if ($jobExecution->getStatus()->getValue() !== BatchStatus::STOPPING) {
                 $jobExecution->setStartTime(new \DateTime());
                 $this->updateStatus($jobExecution, BatchStatus::STARTED);
-                $this->jobRepository->updateJobExecution($jobExecution);
 
+                // Todo Listener beforeJob
                 $this->doExecute($jobExecution);
             } else {
                 // The job was already stopped before we even got this far. Deal
                 // with it in the same way as any other interruption.
                 $jobExecution->setStatus(new BatchStatus(BatchStatus::STOPPED));
                 $jobExecution->setExitStatus(new ExitStatus(ExitStatus::COMPLETED));
-                $this->jobRepository->updateJobExecution($jobExecution);
 
                 $this->dispatchJobExecutionEvent(EventInterface::JOB_EXECUTION_STOPPED, $jobExecution);
             }
@@ -201,15 +200,11 @@ class Job implements JobInterface
                 )
             );
             $jobExecution->addFailureException($e);
-            $this->jobRepository->updateJobExecution($jobExecution);
-
             $this->dispatchJobExecutionEvent(EventInterface::JOB_EXECUTION_INTERRUPTED, $jobExecution);
         } catch (\Exception $e) {
             $jobExecution->setExitStatus($this->getDefaultExitStatusForFailure($e));
             $jobExecution->setStatus(new BatchStatus(BatchStatus::FAILED));
             $jobExecution->addFailureException($e);
-            $this->jobRepository->updateJobExecution($jobExecution);
-
             $this->dispatchJobExecutionEvent(EventInterface::JOB_EXECUTION_FATAL_ERROR, $jobExecution);
         }
 
@@ -221,11 +216,9 @@ class Job implements JobInterface
             $noopExitStatus = new ExitStatus(ExitStatus::NOOP);
             $noopExitStatus->addExitDescription("All steps already completed or no steps configured for this job.");
             $jobExecution->setExitStatus($exitStatus->logicalAnd($noopExitStatus));
-            $this->jobRepository->updateJobExecution($jobExecution);
         }
 
         $jobExecution->setEndTime(new \DateTime());
-        $this->jobRepository->updateJobExecution($jobExecution);
 
         $this->dispatchJobExecutionEvent(EventInterface::AFTER_JOB_EXECUTION, $jobExecution);
     }
@@ -327,7 +320,6 @@ class Job implements JobInterface
 
         foreach ($this->steps as $step) {
             $stepExecution = $this->handleStep($step, $jobExecution);
-            $this->jobRepository->updateStepExecution($stepExecution);
 
             if ($stepExecution->getStatus()->getValue() !== BatchStatus::COMPLETED) {
                 // Terminate the job if a step fails
@@ -338,10 +330,8 @@ class Job implements JobInterface
         // Update the job status to be the same as the last step
         if ($stepExecution !== null) {
             $this->dispatchJobExecutionEvent(EventInterface::BEFORE_JOB_STATUS_UPGRADE, $jobExecution);
-
             $jobExecution->upgradeStatus($stepExecution->getStatus()->getValue());
             $jobExecution->setExitStatus($stepExecution->getExitStatus());
-            $this->jobRepository->updateJobExecution($jobExecution);
         }
     }
 
@@ -368,15 +358,12 @@ class Job implements JobInterface
             $step->execute($stepExecution);
         } catch (JobInterruptedException $e) {
             $stepExecution->setStatus(new BatchStatus(BatchStatus::STOPPING));
-            $this->jobRepository->updateStepExecution($stepExecution);
             throw $e;
         }
 
         if ($stepExecution->getStatus()->getValue() == BatchStatus::STOPPING
             || $stepExecution->getStatus()->getValue() == BatchStatus::STOPPED) {
-
             $jobExecution->setStatus(new BatchStatus(BatchStatus::STOPPING));
-            $this->jobRepository->updateJobExecution($jobExecution);
             throw new JobInterruptedException("Job interrupted by step execution");
         }
 

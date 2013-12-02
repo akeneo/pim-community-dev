@@ -13,7 +13,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Monolog\Handler\StreamHandler;
 use Doctrine\ORM\EntityManager;
 use Oro\Bundle\BatchBundle\Entity\JobExecution;
-use Oro\Bundle\BatchBundle\Entity\JobInstance;
 use Oro\Bundle\BatchBundle\Job\ExitStatus;
 use Oro\Bundle\BatchBundle\Job\BatchStatus;
 
@@ -77,7 +76,27 @@ class BatchCommand extends ContainerAwareCommand
             );
         }
 
-        $this->validate($input, $jobInstance);
+        $validator = $this->getValidator();
+
+        // Override mail notifier recipient email
+        if ($email = $input->getOption('email')) {
+            $errors = $validator->validateValue($email, new Assert\Email());
+            if (count($errors) > 0) {
+                throw new \RuntimeException(
+                    sprintf('Email "%s" is invalid: %s', $email, $this->getErrorMessages($errors))
+                );
+            }
+            $this
+                ->getMailNotifier()
+                ->setRecipientEmail($email);
+        }
+
+        $errors = $validator->validate($jobInstance, array('Default', 'Execution'));
+        if (count($errors) > 0) {
+            throw new \RuntimeException(
+                sprintf('Job "%s" is invalid: %s', $code, $this->getErrorMessages($errors))
+            );
+        }
 
         $executionId = $input->getArgument('execution');
         if ($executionId) {
@@ -97,11 +116,11 @@ class BatchCommand extends ContainerAwareCommand
 
         $job->execute($jobExecution);
 
-        $this->getEntityManager()->persist($jobExecution);
-        $this->getEntityManager()->flush($jobExecution);
-
         $this->getEntityManager()->persist($jobInstance);
         $this->getEntityManager()->flush($jobInstance);
+
+        $this->getEntityManager()->persist($jobExecution);
+        $this->getEntityManager()->flush($jobExecution);
 
         if (ExitStatus::COMPLETED === $jobExecution->getExitStatus()->getExitCode()) {
             $output->writeln(
@@ -118,41 +137,7 @@ class BatchCommand extends ContainerAwareCommand
                 )
             );
         }
-
-        // FIXME: Workaround, waiting for https://github.com/symfony/SwiftmailerBundle/pull/64
-        // to be merged
-        $this->flushMailQueue();
     }
-
-    /**
-     * Validate job instance
-     */
-    protected function validate(InputInterface $input, JobInstance $jobInstance)
-    {
-        $validator = $this->getValidator();
-
-        // Override mail notifier recipient email
-        $email = $input->getOption('email');
-        if ($email) {
-            $errors = $validator->validateValue($email, new Assert\Email());
-            if (count($errors) > 0) {
-                throw new \RuntimeException(
-                    sprintf('Email "%s" is invalid: %s', $email, $this->getErrorMessages($errors))
-                );
-            }
-            $this
-                ->getMailNotifier()
-                ->setRecipientEmail($email);
-        }
-
-        $errors = $validator->validate($jobInstance, array('Default', 'Execution'));
-        if (count($errors) > 0) {
-            throw new \RuntimeException(
-                sprintf('Job "%s" is invalid: %s', $jobInstance->getCode(), $this->getErrorMessages($errors))
-            );
-        }
-    }
-
 
     /**
      * @return EntityManager
@@ -222,36 +207,5 @@ class BatchCommand extends ContainerAwareCommand
         }
 
         throw new \InvalidArgumentException($error);
-    }
-
-    /**
-     * @see Symfony\Bundle\SwiftmailerBundle\EventListener\EmailSenderListener::onKernelTerminate
-     * and https://github.com/symfony/SwiftmailerBundle/pull/64
-     */
-    public function flushMailQueue()
-    {
-       if (!$this->getContainer()->has('mailer')) {
-            return;
-        }
-
-        $mailers = array_keys($this->getContainer()->getParameter('swiftmailer.mailers'));
-        foreach ($mailers as $name) {
-            if ($this->getContainer() instanceof IntrospectableContainerInterface ?
-                $this->getContainer()->initialized(sprintf('swiftmailer.mailer.%s', $name)) : true) {
-                if ($this->getContainer()->getParameter(sprintf('swiftmailer.mailer.%s.spool.enabled', $name))) {
-                    $mailer = $this->getContainer()->get(sprintf('swiftmailer.mailer.%s', $name));
-                    $transport = $mailer->getTransport();
-                    if ($transport instanceof \Swift_Transport_SpoolTransport) {
-                        $spool = $transport->getSpool();
-                        if ($spool instanceof \Swift_MemorySpool) {
-                            $spool->flushQueue(
-                                $this->getContainer()->get(sprintf('swiftmailer.mailer.%s.transport.real', $name))
-                            );
-                        }
-                    }
-                }
-            }
-        }
- 
     }
 }
