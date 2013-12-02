@@ -58,6 +58,8 @@ class Media
 
     protected $removed = false;
 
+    protected $copyFrom;
+
     /**
      * Get id
      *
@@ -240,6 +242,30 @@ class Media
     public function getValue()
     {
         return $this->value;
+    }
+
+    /**
+     * Get the media id to copy from
+     *
+     * @return int
+     */
+    public function getCopyFrom()
+    {
+        return $this->copyFrom;
+    }
+
+    /**
+     * Set the media id to copy from
+     *
+     * @param int $copyFrom
+     *
+     * @return Media
+     */
+    public function setCopyFrom($copyFrom)
+    {
+        $this->copyFrom = $copyFrom;
+
+        return $this;
     }
 
     /**

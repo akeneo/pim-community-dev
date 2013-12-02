@@ -172,6 +172,8 @@
                 <div class="icons-container">
                     {{ form_errors(form) }}
                 </div>
+                {{ form_widget(form.id) }}
+                {{ form_widget(form.copyFrom) }}
             </div>
         </div>
     {% else %}
@@ -219,6 +221,8 @@
                 <div class="icons-container">
                     {{ form_errors(form) }}
                 </div>
+                {{ form_widget(form.id) }}
+                {{ form_widget(form.copyFrom) }}
             </div>
         </div>
     {% else %}

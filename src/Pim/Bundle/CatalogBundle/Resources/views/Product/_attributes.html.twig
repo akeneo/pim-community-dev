@@ -30,7 +30,7 @@
             <button class="btn dropdown-toggle" data-toggle="dropdown">
                 {{ 'Translate'|trans }}
                 {% if comparisonLocale is not null %}
-                    {{ ' : ' ~ locale_label(comparisonLocale) }}
+                    : {{ comparisonLocale|flag }} {{ locale_label(comparisonLocale) }}
                 {% endif %}
                 <span class="caret"></span>
             </button>
