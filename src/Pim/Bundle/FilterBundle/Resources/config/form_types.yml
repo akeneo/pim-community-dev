@@ -1,6 +1,7 @@
 parameters:
     pim_filter.form.type.filter.currency_class: Pim\Bundle\FilterBundle\Form\Type\Filter\CurrencyFilterType
     pim_filter.form.type.filter.scope_class:    Pim\Bundle\FilterBundle\Form\Type\Filter\ScopeFilterType
+    pim_filter.form.type.filter.metric_class:   Pim\Bundle\FilterBundle\Form\Type\Filter\MetricFilterType
 
 services:
     pim_filter.form.type.filter.currency:
@@ -18,3 +19,11 @@ services:
             - '@pim_catalog.manager.channel'
         tags:
             - { name: form.type, alias: pim_type_scope_filter }
+
+    pim_filter.form.type.filter.metric:
+        class: %pim_filter.form.type.filter.metric_class%
+        arguments:
+            - '@translator'
+            - '@oro_measure.manager'
+        tags:
+            - { name: form.type, alias: pim_type_metric_filter }
