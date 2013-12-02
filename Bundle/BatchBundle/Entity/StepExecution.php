@@ -138,6 +138,13 @@ class StepExecution
     private $warnings = array();
 
     /**
+     * @var array
+     *
+     * @ORM\Column(name="summary", type="array")
+     */
+    private $summary = array();
+
+    /**
      * Constructor with mandatory properties.
      *
      * @param string       $stepName     the step to which this execution belongs
@@ -509,6 +516,67 @@ class StepExecution
     public function getWarnings()
     {
         return $this->warnings;
+    }
+
+    /**
+     * Add row in summary
+     *
+     * @param string $key
+     * @param mixed  $info
+     */
+    public function addSummaryInfo($key, $info)
+    {
+        $this->summary[$key]= $info;
+    }
+
+    /**
+     * Increment counter in summary
+     *
+     * @param string $key
+     */
+    public function incrementSummaryInfo($key)
+    {
+        if (!isset($this->summary[$key])) {
+            $this->summary[$key]= 1;
+        } else {
+            $this->summary[$key]= $this->summary[$key] + 1;
+        }
+    }
+
+    /**
+     * Get a summary row
+     *
+     * @param string $key
+     *
+     * @return mixed
+     */
+    public function getSummaryInfo($key)
+    {
+        return $this->summary[$key];
+    }
+
+    /**
+     * Set summary
+     *
+     * @param array $summary
+     *
+     * @return \Oro\Bundle\BatchBundle\Entity\StepExecution
+     */
+    public function setSummary($summary)
+    {
+        $this->summary = $summary;
+
+        return $this;
+    }
+
+    /**
+     * Get summary
+     *
+     * @return array
+     */
+    public function getSummary()
+    {
+        return $this->summary;
     }
 
     /**
