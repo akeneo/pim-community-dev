@@ -57,6 +57,8 @@ require(
                 if ($(formName+'_availableLocales').val()) {
                     $(formName+'_availableLocales').parent().parent().show();
                     $('#limitLocales-switch').bootstrapSwitch('setState', true);
+                } else {
+                    $(formName+'_availableLocales').parent().parent().hide();
                 }
 
                 $('#limitLocales-switch').on('switch-change', function (e, data) {

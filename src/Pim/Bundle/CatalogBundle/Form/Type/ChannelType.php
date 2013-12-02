@@ -101,6 +101,7 @@ class ChannelType extends AbstractType
             array(
                 'required'      => true,
                 'multiple'      => true,
+                'select2'       => true,
                 'class'         => 'Pim\Bundle\CatalogBundle\Entity\Currency',
                 'query_builder' => function (CurrencyRepository $repository) {
                     return $repository->getActivatedCurrenciesQB();
@@ -125,6 +126,7 @@ class ChannelType extends AbstractType
             array(
                 'required'      => true,
                 'multiple'      => true,
+                'select2'       => true,
                 'by_reference'  => false,
                 'class'         => 'Pim\Bundle\CatalogBundle\Entity\Locale',
                 'query_builder' => function (LocaleRepository $repository) {
@@ -151,6 +153,7 @@ class ChannelType extends AbstractType
             array(
                 'label'         => 'Category tree',
                 'required'      => true,
+                'select2'       => true,
                 'class'         => 'Pim\Bundle\CatalogBundle\Entity\Category',
                 'query_builder' => function (CategoryRepository $repository) {
                     return $repository->getTreesQB();

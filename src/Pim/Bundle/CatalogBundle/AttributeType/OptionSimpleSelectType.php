@@ -30,6 +30,7 @@ class OptionSimpleSelectType extends AbstractAttributeType
         };
         $options['expanded'] = false;
         $options['multiple'] = false;
+        $options['select2']  = true;
 
         return $options;
     }
