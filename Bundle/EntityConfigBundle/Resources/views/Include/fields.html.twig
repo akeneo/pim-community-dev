@@ -17,10 +17,11 @@
         require(['jquery'],
         function($){
             $('#oro_entity_config_type_extend_set_options_collection').sortable({
-                axis  : 'y',
+                //axis  : "y",
                 cursor: 'move',
                 delay : 100,
                 handle: '.handle',
+                containment: "parent",
                 stop  : function () {
                     var index = 1;
                     $('#oro_entity_config_type_extend_set_options_collection input.priority').each(function(i, el){
@@ -95,7 +96,7 @@
                         container.find('[name$="[is_default]"]').each(function (idx, el) {
                             el.type = (is_expanded == 1) ? 'checkbox' : 'radio';
                         });
-                    }
+                    };
 
                     $(document).ready(set_default_type);
                     $(document).on('change', 'form select#oro_entity_config_type_extend_set_expanded', change_defaults_type);
