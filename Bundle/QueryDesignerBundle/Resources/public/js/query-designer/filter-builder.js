@@ -63,7 +63,7 @@ function($, _, __, tools, mediator, FilterManager) {
                 _.each(this.metadata.filters, function (options) {
                     options.showLabel = false;
                     options.canDisable = false;
-                    options.placeholder = __('Choose a criterion');
+                    options.placeholder = __('Choose a condition');
                     filters[options.type] = new (modules[options.type].extend(options));
                 });
                 return {filters: filters};
