@@ -284,7 +284,7 @@ class ProductDatagridManager extends FlexibleDatagridManager
             && $result['type'] === FieldDescriptionInterface::TYPE_OPTIONS) {
             $result['sortable'] = false;
         } elseif ($backendType === AbstractAttributeType::BACKEND_TYPE_METRIC) {
-            $result['family'] = 'Length';
+//             $result['field_options']['family'] = $attribute->getMetricFamily();
         }
 
         if ($result['type'] === FieldDescriptionInterface::TYPE_DECIMAL and !$attribute->isDecimalsAllowed()) {
