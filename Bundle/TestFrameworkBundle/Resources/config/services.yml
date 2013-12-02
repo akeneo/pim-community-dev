@@ -1,9 +1,2 @@
 parameters:
     test.client.class:         Oro\Bundle\TestFrameworkBundle\Test\Client
-    search_item_manager_class: Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager
-    search_item_entity_class:  Oro\Bundle\TestFrameworkBundle\Entity\Item
-
-services:
-    search_item_manager:
-        class:     "%search_item_manager_class%"
-        arguments: [%search_item_entity_class%, %oro_flexibleentity.flexible_config%, "@doctrine.orm.entity_manager", "@event_dispatcher", "@oro_flexibleentity.attributetype.factory"]
