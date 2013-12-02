@@ -13,7 +13,7 @@ define(
                     tags = _.union(tags, value).sort();
                 options = { tags: tags, tokenSeparators: [',', ' '] };
             } else {
-                if ($el.attr('data-placeholder').length) {
+                if ($el.attr('data-placeholder') && $el.attr('data-placeholder').length) {
                     options = { allowClear: true };
                 } else {
                     var $empty = $el.children('[value=""]');
