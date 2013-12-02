@@ -17,10 +17,6 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
-                ->arrayNode('js_debug')
-                    ->prototype('scalar')->end()
-                ->end()
-                ->booleanNode('js_debug_all')->defaultValue(false)->end()
                 ->arrayNode('css_debug')
                     ->prototype('scalar')->end()
                 ->end()

@@ -2,21 +2,22 @@
 
 namespace Oro\Bundle\AsseticBundle\Tests\Unit\Parser;
 
-use Oro\Bundle\AsseticBundle\Parser\AsseticTokenParser;
-
 use \Twig_Token;
 use \Twig_TokenStream;
-use Assetic\Asset\AssetCollection;
+
+use Oro\Bundle\AsseticBundle\Parser\AsseticTokenParser;
 
 class AsseticTokenParserTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \Oro\Bundle\NavigationBundle\Twig\AsseticTokenParser
+     * @var AsseticTokenParser
      */
     private $parser;
 
     private $assets;
+
     private $assetsFactory;
+
     private $tagName;
 
     public function setUp()
@@ -34,15 +35,15 @@ class AsseticTokenParserTest extends \PHPUnit_Framework_TestCase
             ),
             'uncompress' => array(
                 array(
-                    'first.js',
-                    'second.js'
+                    'third.css',
+                    'fourth.css'
                 )
             )
         );
 
-        $this->tagName = 'oro_js';
+        $this->tagName = 'oro_css';
 
-        $this->parser = new AsseticTokenParser($this->assets, $this->assetsFactory, $this->tagName, 'js/*.js');
+        $this->parser = new AsseticTokenParser($this->assets, $this->assetsFactory, $this->tagName, 'css/*.css');
     }
 
     public function testGetTag()
@@ -105,7 +106,7 @@ class AsseticTokenParserTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->assetsFactory->expects($this->any())
+        $this->assetsFactory->expects($this->atLeastOnce())
             ->method('createAsset')
             ->will($this->returnValue($assert));
         /**
@@ -114,7 +115,7 @@ class AsseticTokenParserTest extends \PHPUnit_Framework_TestCase
         $resultNode = $this->parser->parse($startToken);
 
         $this->assertEquals(31, $resultNode->getLine());
-        $this->assertEquals('oro_js', $resultNode->getNodeTag());
+        $this->assertEquals('oro_css', $resultNode->getNodeTag());
     }
 
     public function testParseBrokenStream()

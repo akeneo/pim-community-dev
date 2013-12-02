@@ -73,6 +73,14 @@ class ConfigScopeType extends AbstractType
 
                 $options['config_id'] = $this->config->getId();
 
+                /**
+                 * Disable field on editAction
+                 */
+                if (isset($config['options']['create_only']) && $this->configModel->getId()) {
+                    $options['disabled'] = true;
+                    $options['attr']['class'] .= ' disabled-' . $config['form']['type'];
+                }
+
                 if (isset($config['options']['required_property'])) {
                     $property = $config['options']['required_property'];
 

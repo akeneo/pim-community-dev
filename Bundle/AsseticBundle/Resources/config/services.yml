@@ -1,8 +1,6 @@
 parameters:
     oro_assetic.twig_extension.class:  Oro\Bundle\AsseticBundle\Twig\AsseticExtension
-    oro_assetic.routing_loader.class:  Oro\Bundle\AsseticBundle\Routing\AsseticLoader
     oro_assetic.asset_manager.class:   Oro\Bundle\AsseticBundle\Factory\OroAssetManager
-    oro_assetic.controller.class:      Oro\Bundle\AsseticBundle\Controller\AsseticController
 
 services:
     oro_assetic.asset_manager:
@@ -12,13 +10,6 @@ services:
               - @twig
               - %oro_assetic.assets_groups%
               - %oro_assetic.compiled_assets_groups%
-          calls:
-              - [setCache, [@oro_assetic.cache]]
-
-    oro_assetic.cache:
-          parent: oro.cache.abstract
-          calls:
-              - [setNamespace, ['oro_assetic.cache']]
 
     oro_assetic.twig.extension:
           class:        %oro_assetic.twig_extension.class%
@@ -29,21 +20,3 @@ services:
               - %assetic.bundles%
           tags:
               - { name: twig.extension }
-
-    oro_assetic.routing_loader:
-          class:        %oro_assetic.routing_loader.class%
-          arguments:
-              - @oro_assetic.asset_manager
-          tags:
-              - { name: routing.loader }
-
-    oro_assetic.controller:
-          class:        %oro_assetic.controller.class%
-          arguments:
-              - @request
-              - @oro_assetic.asset_manager
-              - @assetic.cache
-              - %assetic.enable_profiler%
-          scope: prototype
-          calls:
-              - [setValueSupplier, [@assetic.value_supplier]]

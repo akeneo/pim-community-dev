@@ -102,6 +102,12 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
             $this->configField->getEntity()
         );
 
+        /** test ConfigField getOptions */
+        $this->assertInstanceOf(
+            '\Doctrine\Common\Collections\ArrayCollection',
+            $this->configField->getOptions()
+        );
+
         /** test ConfigEntity addField */
         $this->configEntity->addField($this->configField);
         $this->assertEquals(

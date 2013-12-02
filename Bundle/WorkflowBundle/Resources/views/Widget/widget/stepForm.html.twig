@@ -18,21 +18,6 @@
 
 <div class="container-fluid widget-content">
     <style type="text/css">
-        .step-form-header li.display {
-            font-weight: bold;
-        }
-
-        .step-form-header li {
-            font-size: 15px;
-        }
-
-        .step-form-header li.step:not(:last-child):after {
-            content: "-";
-            padding-left: 10px;
-            color: #c8c8c8;
-            font-weight: normal;
-        }
-
         .step-form-container {
             padding: 20px 0 20px;
         }
@@ -40,32 +25,71 @@
         .form-horizontal .step-form-container .control-label {
             font-weight: normal;
         }
+
+        /** Wizard styles **/
+        .wizard a {
+            padding: 5px 5px 5px 20px;
+            margin-right: 0px;
+            color: #898989;
+            background: #e5e5e5;
+            position: relative;
+            display: inline-block;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .wizard a:before {
+            width: 0;
+            height: 0;
+            border-top: 14px inset transparent;
+            border-bottom: 14px inset transparent;
+            border-left: 15px solid #f2f2f2;
+            position: absolute;
+            content: "";
+            top: 0;
+            left: 0;
+        }
+        .wizard a:after {
+            width: 0;
+            height: 0;
+            border-top: 14px inset transparent;
+            border-bottom: 14px inset transparent;
+            border-left: 15px solid #e5e5e5;
+            position: absolute;
+            content: "";
+            top: 0;
+            right: -15px;
+            z-index: 2;
+        }
+        .wizard a:first-child:before {
+            border: none;
+        }
+        .wizard a:first-child {
+            padding-left: 15px;
+        }
+        .wizard .processed {
+            background: #1f8fd7;
+            color: #fff;
+        }
+        .wizard .processed:after {
+            border-left-color: #1f8fd7;
+        }
     </style>
 
-    <div class="step-form-header" style="display: none;">
-        <ul class="inline">
+    <div class="step-form-header wizard" style="display: none;">
+            {% set isProcessed = false %}
             {% for step in steps %}
-                <li class="step
-                    {% if step.name == currentStep.name %} current{% endif %}
-                    {% if step.name == displayStep.name %} display{% endif %}
-                    "
-                >
-                    {% if step.name != displayStep.name %}
-                        <a href="{{ path('oro_workflow_widget_step_form', { workflowItemId: workflowItem.id, stepName: step.name }) }}"
-                            class="no-hash">
-                            {% block step_label %}
-                                {% if step.name == currentStep.name %}
-                                    <i class="icon icon-chevron-right"></i>
-                                {% endif %}
-                                {{ step.label|trans }}
-                            {% endblock %}
-                        </a>
-                    {% else %}
-                        {{ block('step_label') }}
+                <a href="{{ path('oro_workflow_widget_step_form', { workflowItemId: workflowItem.id, stepName: step.name }) }}"
+                   class="no-hash {% if not isProcessed %}processed{% endif %} {% if step.name == currentStep.name %}current{% endif %}">
+                    {% if step.name == displayStep.name %}
+                        <i class="icon icon-chevron-sign-right"></i>
                     {% endif %}
-                </li>
+                    {{ step.label|trans }}
+                </a>
+                {% if step.name == currentStep.name %}
+                    {% set isProcessed = true %}
+                {% endif %}
             {% endfor %}
-        </ul>
     </div>
 
     {% if saved %}

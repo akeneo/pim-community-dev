@@ -47,8 +47,8 @@ class ConfigController extends Controller
      */
     public function indexAction(Request $request)
     {
-        $actions = array();
-        $modules = array();
+        $actions       = [];
+        $modules       = [];
         $configManager = $this->get('oro_entity_config.config_manager');
 
         foreach ($configManager->getProviders() as $provider) {
@@ -62,10 +62,10 @@ class ConfigController extends Controller
             );
         }
 
-        return array(
+        return [
             'buttonConfig' => $actions,
             'require_js'   => $modules,
-        );
+        ];
     }
 
     /**
@@ -86,9 +86,7 @@ class ConfigController extends Controller
         $form = $this->createForm(
             'oro_entity_config_type',
             null,
-            array(
-                'config_model' => $entity,
-            )
+            ['config_model' => $entity]
         );
 
         if ($request->getMethod() == 'POST') {
@@ -102,14 +100,8 @@ class ConfigController extends Controller
                 );
 
                 return $this->get('oro_ui.router')->actionRedirect(
-                    array(
-                        'route'      => 'oro_entityconfig_update',
-                        'parameters' => array('id' => $id),
-                    ),
-                    array(
-                        'route'      => 'oro_entityconfig_view',
-                        'parameters' => array('id' => $id)
-                    )
+                    ['route' => 'oro_entityconfig_update', 'parameters' => ['id' => $id]],
+                    ['route' => 'oro_entityconfig_view', 'parameters' => ['id' => $id]]
                 );
             }
         }
@@ -117,11 +109,11 @@ class ConfigController extends Controller
         /** @var ConfigProvider $entityConfigProvider */
         $entityConfigProvider = $this->get('oro_entity_config.provider.entity');
 
-        return array(
+        return [
             'entity'        => $entity,
             'entity_config' => $entityConfigProvider->getConfig($entity->getClassName()),
             'form'          => $form->createView(),
-        );
+        ];
     }
 
     /**
@@ -146,7 +138,7 @@ class ConfigController extends Controller
             foreach ($className as $i => $name) {
                 if (count($className) - 1 == $i) {
                     $entityName = $name;
-                } elseif (!in_array($name, array('Bundle', 'Entity'))) {
+                } elseif (!in_array($name, ['Bundle', 'Entity'])) {
                     $moduleName .= $name;
                 }
             }
@@ -184,7 +176,7 @@ class ConfigController extends Controller
             if ($extendConfig->is('owner', ExtendManager::OWNER_CUSTOM)) {
                 $link = $this->generateUrl(
                     'oro_entity_index',
-                    array('id' => str_replace('\\', '_', $entity->getClassName()))
+                    ['id' => str_replace('\\', '_', $entity->getClassName())]
                 );
             }
 
@@ -199,7 +191,7 @@ class ConfigController extends Controller
 
         list ($layoutActions, $requireJsModules) = $this->getLayoutParams($entity);
 
-        return array(
+        return [
             'entity'           => $entity,
             'entity_config'    => $entityConfigProvider->getConfig($entity->getClassName()),
             'entity_extend'    => $extendConfig,
@@ -211,7 +203,7 @@ class ConfigController extends Controller
             'module_name'      => $moduleName,
             'button_config'    => $layoutActions,
             'require_js'       => $requireJsModules,
-        );
+        ];
     }
 
     /**
@@ -226,12 +218,12 @@ class ConfigController extends Controller
 
         list ($layoutActions, $requireJsModules) = $this->getLayoutParams($entity);
 
-        return array(
+        return [
             'buttonConfig' => $layoutActions,
             'entity_id'    => $id,
             'entity_name'  => $entity->getClassName(),
             'require_js'   => $requireJsModules,
-        );
+        ];
     }
 
     /**
@@ -253,9 +245,7 @@ class ConfigController extends Controller
         $form = $this->createForm(
             'oro_entity_config_type',
             null,
-            array(
-                'config_model' => $field,
-            )
+            ['config_model' => $field]
         );
 
         if ($request->getMethod() == 'POST') {
@@ -269,14 +259,8 @@ class ConfigController extends Controller
                 );
 
                 return $this->get('oro_ui.router')->actionRedirect(
-                    array(
-                        'route'      => 'oro_entityconfig_field_update',
-                        'parameters' => array('id' => $id),
-                    ),
-                    array(
-                        'route'      => 'oro_entityconfig_view',
-                        'parameters' => array('id' => $field->getEntity()->getId())
-                    )
+                    ['route' => 'oro_entityconfig_field_update', 'parameters' => ['id' => $id]],
+                    ['route' => 'oro_entityconfig_view', 'parameters' => ['id' => $field->getEntity()->getId()]]
                 );
             }
         }
@@ -287,20 +271,20 @@ class ConfigController extends Controller
         /** @var ConfigProvider $entityExtendProvider */
         $entityExtendProvider = $this->get('oro_entity_config.provider.extend');
 
-        $entityConfig         = $entityConfigProvider->getConfig($field->getEntity()->getClassName());
-        $fieldConfig          = $entityConfigProvider->getConfig(
+        $entityConfig = $entityConfigProvider->getConfig($field->getEntity()->getClassName());
+        $fieldConfig  = $entityConfigProvider->getConfig(
             $field->getEntity()->getClassName(),
             $field->getFieldName()
         );
 
-        return array(
+        return [
             'entity_config' => $entityConfig,
             'field_config'  => $fieldConfig,
             'field'         => $field,
             'form'          => $form->createView(),
-            'formAction'    => $this->generateUrl('oro_entityconfig_field_update', array('id' => $field->getId())),
+            'formAction'    => $this->generateUrl('oro_entityconfig_field_update', ['id' => $field->getId()]),
             'require_js'    => $entityExtendProvider->getPropertyConfig()->getRequireJsModules()
-        );
+        ];
     }
 
     /**
@@ -314,7 +298,7 @@ class ConfigController extends Controller
      */
     public function fieldSearchAction($id)
     {
-        $fields = array();
+        $fields = [];
         if ($id) {
             $id = str_replace('_', '\\', $id);
 
@@ -357,10 +341,9 @@ class ConfigController extends Controller
      */
     protected function getLayoutParams(EntityConfigModel $entity)
     {
-        $configManager = $this->get('oro_entity_config.config_manager');
-
-        $actions = array();
-        $requireJsModules = array();
+        $configManager    = $this->get('oro_entity_config.config_manager');
+        $actions          = [];
+        $requireJsModules = [];
 
         foreach ($configManager->getProviders() as $provider) {
             $layoutActions = $provider->getPropertyConfig()->getLayoutActions(PropertyConfigContainer::TYPE_FIELD);
@@ -384,7 +367,7 @@ class ConfigController extends Controller
                 }
 
                 if (isset($config['entity_id']) && $config['entity_id'] == true) {
-                    $config['args'] = array('id' => $entity->getId());
+                    $config['args'] = ['id' => $entity->getId()];
                 }
 
                 $actions[] = $config;
@@ -392,8 +375,7 @@ class ConfigController extends Controller
 
             $requireJsModules = array_merge(
                 $requireJsModules,
-                $provider->getPropertyConfig(PropertyConfigContainer::TYPE_FIELD)
-                    ->getRequireJsModules()
+                $provider->getPropertyConfig(PropertyConfigContainer::TYPE_FIELD)->getRequireJsModules()
             );
         }
 

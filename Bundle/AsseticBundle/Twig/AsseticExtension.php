@@ -42,7 +42,6 @@ class AsseticExtension extends \Twig_Extension
         TemplateNameParserInterface $templateNameParser,
         $enabledBundles = array()
     ) {
-
         $this->enabledBundles = $enabledBundles;
         $this->templateNameParser = $templateNameParser;
         $this->assetsFactory = $assetsFactory;
@@ -55,7 +54,6 @@ class AsseticExtension extends \Twig_Extension
     public function getTokenParsers()
     {
         return array(
-            new AsseticTokenParser($this->assets['js'], $this->assetsFactory, 'oro_js', 'js/*.js'),
             new AsseticTokenParser($this->assets['css'], $this->assetsFactory, 'oro_css', 'css/*.css'),
         );
     }

@@ -433,6 +433,11 @@ contains alias - a unique name of condition and options.
 Optionally each condition can have a constraint message. All messages of not passed conditions will be shown to user
 when transition could not be performed.
 
+There are two types of conditions - preconditions and actually transit conditions. Preconditions is used to check
+whether transition should be allowed to start, and actual conditions used to check whether transition can be done.
+Good example of usage is transition forms: preconditions are restrictions to show button that open transition
+form dialog, and actual transitions are used to validate form content after submitting.
+
 Alias of condition starts from "@" symbol and must refer to registered condition. For example "@or" refers to logical
 OR condition.
 
@@ -451,6 +456,9 @@ workflows:
         # ...
         transition_definitions:
             # some transition definition
+            qualify_call:
+                pre_conditions:
+                    @equal: [$status, "in_progress"]
                 conditions:
                     # empty($call_timeout) || (($call_timeout >= 60 && $call_timeout < 100) || ($call_timeout > 0 && $call_timeout <= 30))
                     @or:

@@ -13,6 +13,11 @@ class TransitionAssemblerTest extends \PHPUnit_Framework_TestCase
     /**
      * @var \PHPUnit_Framework_MockObject_MockObject
      */
+    protected $formOptionsAssembler;
+
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
     protected $conditionFactory;
 
     /**
@@ -30,31 +35,40 @@ class TransitionAssemblerTest extends \PHPUnit_Framework_TestCase
      */
     protected $transitionDefinitions = array(
         'empty_definition' => array(),
+        'with_pre_condition' => array(
+            'pre_conditions' => array('@true' => null)
+        ),
         'with_condition' => array(
             'conditions' => array('@true' => null)
         ),
         'with_post_actions' => array(
             'post_actions' => array('@assign_value' => array('parameters' => array('$attribute', 'first_value')))
         ),
-        'with_init_actions' => array(
-            'init_actions' => array('@assign_value' => array('parameters' => array('$attribute', 'first_value')))
-        ),
         'full_definition' => array(
+            'pre_conditions' => array('@true' => null),
             'conditions' => array('@true' => null),
             'post_actions' => array('@assign_value' => array('parameters' => array('$attribute', 'first_value'))),
-            'init_actions' => array('@assign_value' => array('parameters' => array('$attribute', 'first_value'))),
         )
     );
 
     protected function setUp()
     {
+        $this->formOptionsAssembler = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\FormOptionsAssembler')
+            ->disableOriginalConstructor()
+            ->setMethods(array('assemble'))
+            ->getMock();
+
         $this->conditionFactory = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\Condition\ConditionFactory')
             ->disableOriginalConstructor()
             ->getMock();
         $this->actionFactory = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\Action\ActionFactory')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->assembler = new TransitionAssembler($this->conditionFactory, $this->actionFactory);
+        $this->assembler = new TransitionAssembler(
+            $this->formOptionsAssembler,
+            $this->conditionFactory,
+            $this->actionFactory
+        );
     }
 
     /**
@@ -64,7 +78,7 @@ class TransitionAssemblerTest extends \PHPUnit_Framework_TestCase
      */
     public function testAssembleNoRequiredTransitionDefinitionException($configuration)
     {
-        $this->assembler->assemble($configuration, array(), array());
+        $this->assembler->assemble($configuration, array(), array(), array());
     }
 
     public function missedTransitionDefinitionDataProvider()
@@ -97,7 +111,7 @@ class TransitionAssemblerTest extends \PHPUnit_Framework_TestCase
                 'transition_definition' => 'unknown'
             )
         );
-        $this->assembler->assemble($configuration, $definitions, array());
+        $this->assembler->assemble($configuration, $definitions, array(), array());
     }
 
     public function incorrectTransitionDefinitionDataProvider()
@@ -127,7 +141,7 @@ class TransitionAssemblerTest extends \PHPUnit_Framework_TestCase
             )
         );
         $definitions = array('transition_definition' => array());
-        $this->assembler->assemble($configuration, $definitions, $steps);
+        $this->assembler->assemble($configuration, $definitions, $steps, array());
     }
 
     public function incorrectStepsDataProvider()
@@ -137,7 +151,7 @@ class TransitionAssemblerTest extends \PHPUnit_Framework_TestCase
                 array()
             ),
             'unknown step' => array(
-                array('known' => $this->getStep())
+                array('known' => $this->createStep())
             )
         );
     }
@@ -150,14 +164,25 @@ class TransitionAssemblerTest extends \PHPUnit_Framework_TestCase
     public function testAssemble(array $configuration, array $transitionDefinition)
     {
         $steps = array(
-            'step' => $this->getStep()
+            'step' => $this->createStep()
+        );
+
+        $attributes = array(
+            'attribute' => $this->createAttribute()
         );
 
         $expectedCondition = null;
         $expectedAction = null;
+        $conditionFactoryCallCount = 0;
+        if (array_key_exists('pre_conditions', $transitionDefinition)) {
+            $conditionFactoryCallCount++;
+        }
         if (array_key_exists('conditions', $transitionDefinition)) {
-            $expectedCondition = $this->getCondition();
-            $this->conditionFactory->expects($this->once())
+            $conditionFactoryCallCount++;
+        }
+        if ($conditionFactoryCallCount) {
+            $expectedCondition = $this->createCondition();
+            $this->conditionFactory->expects($this->exactly($conditionFactoryCallCount))
                 ->method('create')
                 ->with(
                     ConfigurableCondition::ALIAS,
@@ -165,6 +190,7 @@ class TransitionAssemblerTest extends \PHPUnit_Framework_TestCase
                 )
                 ->will($this->returnValue($expectedCondition));
         }
+
         $actionFactoryCallCount = 0;
         if (array_key_exists('post_actions', $transitionDefinition)) {
             $actionFactoryCallCount++;
@@ -173,20 +199,31 @@ class TransitionAssemblerTest extends \PHPUnit_Framework_TestCase
             $actionFactoryCallCount++;
         }
         if ($actionFactoryCallCount) {
-            $expectedAction = $this->getAction();
+            $expectedAction = $this->createAction();
             $this->actionFactory->expects($this->exactly($actionFactoryCallCount))
                 ->method('create')
                 ->with(
                     ConfigurableAction::ALIAS,
                     $transitionDefinition['post_actions']
                 )
-                ->will($this->returnValue($this->getAction()));
+                ->will($this->returnValue($this->createAction()));
         }
+
+        $this->formOptionsAssembler->expects($this->once())
+            ->method('assemble')
+            ->with(
+                isset($configuration['form_options']) ? $configuration['form_options'] : array(),
+                $attributes,
+                'transition',
+                'test'
+            )
+            ->will($this->returnArgument(0));
 
         $transitions = $this->assembler->assemble(
             array('test' => $configuration),
             $this->transitionDefinitions,
-            $steps
+            $steps,
+            $attributes
         );
 
         $configuration = array_merge(
@@ -225,6 +262,11 @@ class TransitionAssemblerTest extends \PHPUnit_Framework_TestCase
                     'label' => 'label',
                     'step_to' => 'step',
                     'form_type' => 'custom_workflow_transition',
+                    'form_options' => array(
+                        'attribute_fields' => array(
+                            'attribute_onbe' => array('type' => 'text')
+                        )
+                    ),
                     'frontend_options' => array('class' => 'foo', 'icon' => 'bar'),
                 ),
                 'transitionDefinition' => $this->transitionDefinitions['empty_definition'],
@@ -265,20 +307,27 @@ class TransitionAssemblerTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    protected function getStep()
+    protected function createStep()
     {
         return $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\Step')
             ->disableOriginalConstructor()
             ->getMock();
     }
 
-    protected function getCondition()
+    protected function createAttribute()
+    {
+        return $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\Attribute')
+            ->disableOriginalConstructor()
+            ->getMock();
+    }
+
+    protected function createCondition()
     {
         return $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\Condition\ConditionInterface')
             ->getMockForAbstractClass();
     }
 
-    protected function getAction()
+    protected function createAction()
     {
         return $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\Action\ActionInterface')
             ->getMockForAbstractClass();

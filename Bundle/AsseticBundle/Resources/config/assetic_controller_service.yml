@@ -1,9 +1,0 @@
-parameters:
-
-    assetic.cache.class:  Assetic\Cache\FilesystemCache
-
-services:
-    assetic.cache:
-          class:        %assetic.cache.class%
-          arguments:
-              - %assetic.cache_dir%/assets

@@ -31,7 +31,7 @@ class CustomEntityType extends AbstractType
      */
     protected $configManager;
 
-    protected $typeMap = array(
+    protected $typeMap = [
         'string'     => 'text',
         'integer'    => 'integer',
         'smallint'   => 'integer',
@@ -45,7 +45,8 @@ class CustomEntityType extends AbstractType
         'manyToOne'  => 'oro_entity_select',
         'oneToMany'  => 'oro_multiple_entity',
         'manyToMany' => 'oro_multiple_entity',
-    );
+        'optionSet'  => 'oro_option_select',
+    ];
 
     /**
      * @param ConfigManager $configManager
@@ -61,6 +62,7 @@ class CustomEntityType extends AbstractType
      * {@inheritdoc}
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -83,9 +85,9 @@ class CustomEntityType extends AbstractType
             if ($formConfig->get('is_enabled') && !$extendConfig->is('is_deleted')
                 && $extendConfig->is('owner', ExtendManager::OWNER_CUSTOM)
                 && !$extendConfig->is('state', ExtendManager::STATE_NEW)
-                && !in_array($formConfig->getId()->getFieldType(), array('ref-one', 'ref-many'))
+                && !in_array($formConfig->getId()->getFieldType(), ['ref-one', 'ref-many'])
                 && !(
-                    in_array($formConfig->getId()->getFieldType(), array('oneToMany', 'manyToOne', 'manyToMany'))
+                    in_array($formConfig->getId()->getFieldType(), ['oneToMany', 'manyToOne', 'manyToMany'])
                     && $extendConfigProvider->getConfig($extendConfig->get('target_entity'))->is('is_deleted', true)
                 )
             ) {
@@ -106,6 +108,37 @@ class CustomEntityType extends AbstractType
                     case 'boolean':
                         $options['empty_value'] = false;
                         $options['choices']     = ['No', 'Yes'];
+                        break;
+                    case 'optionSet':
+                        $options['multiple'] = $extendConfig->get('set_expanded');
+                        $configFieldModel    = $extendConfigProvider->getConfigManager()->getConfigFieldModel(
+                            $className,
+                            $fieldConfigId->getFieldName()
+                        );
+
+                        $modelOptions = $configFieldModel->getOptions()->toArray();
+                        uasort(
+                            $modelOptions,
+                            function ($a, $b) {
+                                return ($a->getPriority() < $b->getPriority()) ? -1 : 1;
+                            }
+                        );
+
+                        $options['config_id'] = $extendConfig->getId();
+
+                        foreach ($modelOptions as $option) {
+                            $options['choices'][$option->getId()] = $option->getLabel();
+                            if ($option->getIsDefault()) {
+                                $options['data'][] = $option->getId();
+                            }
+                        }
+
+                        if ($extendConfig->is('set_expanded', false)) {
+                            $options['empty_value'] = 'oro.form.choose_value';
+                            if (isset($options['data']) && count($options['data'])) {
+                                $options['data'] = array_shift($options['data']);
+                            }
+                        }
                         break;
                     case 'manyToOne':
                         $options['entity_class'] = $extendConfig->get('target_entity');
@@ -171,7 +204,7 @@ class CustomEntityType extends AbstractType
      */
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
-        $blockConfig = isset($view->vars['block_config']) ? $view->vars['block_config'] : array();
+        $blockConfig = isset($view->vars['block_config']) ? $view->vars['block_config'] : [];
 
         foreach ($view->children as $child) {
             if (isset($child->vars['block_config'])) {
@@ -202,15 +235,15 @@ class CustomEntityType extends AbstractType
                 && !$extendConfig->is('is_deleted')
                 && $extendConfig->is('owner', ExtendManager::OWNER_CUSTOM)
                 && !$extendConfig->is('state', ExtendManager::STATE_NEW)
-                && !in_array($formConfig->getId()->getFieldType(), array('ref-one', 'ref-many'))
+                && !in_array($formConfig->getId()->getFieldType(), ['ref-one', 'ref-many'])
                 && (
-                    in_array($formConfig->getId()->getFieldType(), array('oneToMany', 'manyToOne', 'manyToMany'))
+                    in_array($formConfig->getId()->getFieldType(), ['oneToMany', 'manyToOne', 'manyToMany'])
                     && $extendConfigProvider->getConfig($extendConfig->get('target_entity'))->is('is_deleted', false)
                 )
             ) {
                 /** @var FieldConfigId $fieldConfigId */
                 $fieldConfigId = $formConfig->getId();
-                if (in_array($fieldConfigId->getFieldType(), array('oneToMany', 'manyToMany'))) {
+                if (in_array($fieldConfigId->getFieldType(), ['oneToMany', 'manyToMany'])) {
                     $fieldName = $fieldConfigId->getFieldName();
 
                     $dataId = 0;

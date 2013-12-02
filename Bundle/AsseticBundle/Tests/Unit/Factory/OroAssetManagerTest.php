@@ -2,10 +2,8 @@
 namespace Oro\Bundle\AsseticBundle\Tests\Unit\Factory;
 
 use Assetic\Asset\FileAsset;
-use Assetic\Asset\AssetCollection;
 
 use Oro\Bundle\AsseticBundle\Factory\OroAssetManager;
-use Oro\Bundle\AsseticBundle\Node\OroAsseticNode;
 
 class OroAssetManagerTest extends \PHPUnit_Framework_TestCase
 {
@@ -57,21 +55,19 @@ class OroAssetManagerTest extends \PHPUnit_Framework_TestCase
         $barAsset = $this->createMockOroAsseticNode('uncompress_bar_asset');
         $fooAsset = $this->createMockOroAsseticNode('uncompress_foo_asset', array($barAsset));
 
-        $this->addMockExpectedCalls(
-            array(
-                'mock' => $this->am,
-                'expectedCalls' => array(
-                    array('getResources', array(), $this->returnValue(array($resource)))
-                )
-            ),
-            array(
-                'mock' => $this->twig,
-                'expectedCalls' => array(
-                    array('tokenize', array('resource_content', 'resource_name'), $this->returnValue($token)),
-                    array('parse', array($token), $this->returnValue($fooAsset))
-                )
-            )
-        );
+        $this->am->expects($this->once())
+            ->method('getResources')
+            ->will($this->returnValue(array($resource)));
+
+        $this->twig->expects($this->once())
+            ->method('tokenize')
+            ->with('resource_content', 'resource_name')
+            ->will($this->returnValue($token));
+
+        $this->twig->expects($this->once())
+            ->method('parse')
+            ->with($token)
+            ->will($this->returnValue($fooAsset));
 
         $this->assertEquals(
             array(
@@ -80,73 +76,6 @@ class OroAssetManagerTest extends \PHPUnit_Framework_TestCase
             ),
             $this->manager->getAssets()
         );
-    }
-
-    public function testSaveAssetsToCache()
-    {
-        $cache = $this->getMockBuilder('Doctrine\Common\Cache\CacheProvider')
-            ->setMethods(array('fetch', 'save'))
-            ->getMockForAbstractClass();
-        $this->manager->setCache($cache);
-
-                $resource = $this->createMockResource('resource_name', 'resource_content');
-        $token = $this->getMockBuilder('Twig_TokenStream')->disableOriginalConstructor()->getMock();
-        $asset = $this->createMockOroAsseticNode('uncompress_test_asset');
-
-        $this->addMockExpectedCalls(
-            array(
-                'mock' => $this->am,
-                'expectedCalls' => array(
-                    array('getResources', array(), $this->returnValue(array($resource)))
-                )
-            ),
-            array(
-                'mock' => $this->twig,
-                'expectedCalls' => array(
-                    array('tokenize', array('resource_content', 'resource_name'), $this->returnValue($token)),
-                    array('parse', array($token), $this->returnValue($asset))
-                )
-            ),
-            array(
-                'mock' => $cache,
-                'expectedCalls' => array(
-                    array('fetch', array('assets'), $this->returnValue(false)),
-                    array(
-                        'save',
-                        array('assets', $this->stringStartsWith('a:1:{s:21:"uncompress_test_asset"')),
-                        $this->returnValue(false)
-                    ),
-                )
-            )
-        );
-
-        $this->assertEquals(
-            array('uncompress_test_asset' => $asset),
-            $this->manager->getAssets()
-        );
-    }
-
-    public function testFetchAssetsFromCache()
-    {
-        $cache = $this->getMockBuilder('Doctrine\Common\Cache\CacheProvider')
-            ->setMethods(array('fetch', 'save'))
-            ->getMockForAbstractClass();
-        $this->manager->setCache($cache);
-
-        $cachedAssets = array(
-            'foo' => new \stdClass()
-        );
-
-        $this->addMockExpectedCalls(
-            array(
-                'mock' => $cache,
-                'expectedCalls' => array(
-                    array('fetch', array('assets'), $this->returnValue(serialize($cachedAssets))),
-                )
-            )
-        );
-
-        $this->assertEquals($cachedAssets, $this->manager->getAssets());
     }
 
     public function testGet()
@@ -158,21 +87,19 @@ class OroAssetManagerTest extends \PHPUnit_Framework_TestCase
         $assetFile = new FileAsset('test.css');
         $asset->expects($this->once())->method('getUnCompressAsset')->will($this->returnValue($assetFile));
 
-        $this->addMockExpectedCalls(
-            array(
-                'mock' => $this->am,
-                'expectedCalls' => array(
-                    array('getResources', array(), $this->returnValue(array($resource)))
-                )
-            ),
-            array(
-                'mock' => $this->twig,
-                'expectedCalls' => array(
-                    array('tokenize', array('resource_content', 'resource_name'), $this->returnValue($token)),
-                    array('parse', array($token), $this->returnValue($asset))
-                )
-            )
-        );
+        $this->am->expects($this->once())
+            ->method('getResources')
+            ->will($this->returnValue(array($resource)));
+
+        $this->twig->expects($this->once())
+            ->method('tokenize')
+            ->with('resource_content', 'resource_name')
+            ->will($this->returnValue($token));
+
+        $this->twig->expects($this->once())
+            ->method('parse')
+            ->with($token)
+            ->will($this->returnValue($asset));
 
         $this->assertEquals(
             $assetFile,
@@ -186,79 +113,21 @@ class OroAssetManagerTest extends \PHPUnit_Framework_TestCase
         $token = $this->getMockBuilder('Twig_TokenStream')->disableOriginalConstructor()->getMock();
         $asset = $this->createMockOroAsseticNode('uncompress_test_asset');
 
-        $this->addMockExpectedCalls(
-            array(
-                'mock' => $this->am,
-                'expectedCalls' => array(
-                    array('getResources', array(), $this->returnValue(array($resource)))
-                )
-            ),
-            array(
-                'mock' => $this->twig,
-                'expectedCalls' => array(
-                    array('tokenize', array('resource_content', 'resource_name'), $this->returnValue($token)),
-                    array('parse', array($token), $this->returnValue($asset))
-                )
-            )
-        );
+        $this->am->expects($this->once())
+            ->method('getResources')
+            ->will($this->returnValue(array($resource)));
+
+        $this->twig->expects($this->once())
+            ->method('tokenize')
+            ->with('resource_content', 'resource_name')
+            ->will($this->returnValue($token));
+
+        $this->twig->expects($this->once())
+            ->method('parse')
+            ->with($token)
+            ->will($this->returnValue($asset));
 
         $this->assertTrue($this->manager->has('uncompress_test_asset'));
-    }
-
-    public function testHasFormula()
-    {
-        $this->addMockExpectedCalls(
-            array(
-                'mock' => $this->am,
-                'expectedCalls' => array()
-            ),
-            array(
-                'mock' => $this->twig,
-                'expectedCalls' => array()
-            )
-        );
-
-        $this->assertTrue($this->manager->hasFormula('uncompress_test_asset'));
-    }
-
-    public function testGetFormula()
-    {
-        $resource = $this->createMockResource('resource_name', 'resource_content');
-        $token = $this->getMockBuilder('Twig_TokenStream')->disableOriginalConstructor()->getMock();
-        $asset = $this->createMockOroAsseticNode('uncompress_test_asset');
-
-        $inputsAttribute = array('foo');
-        $asset->expects($this->once())->method('getAttribute')
-            ->with('inputs')->will($this->returnValue($inputsAttribute));
-
-        $this->addMockExpectedCalls(
-            array(
-                'mock' => $this->am,
-                'expectedCalls' => array(
-                    array('getResources', array(), $this->returnValue(array($resource)))
-                )
-            ),
-            array(
-                'mock' => $this->twig,
-                'expectedCalls' => array(
-                    array('tokenize', array('resource_content', 'resource_name'), $this->returnValue($token)),
-                    array('parse', array($token), $this->returnValue($asset))
-                )
-            )
-        );
-
-        $this->assertEquals(array($inputsAttribute), $this->manager->getFormula('uncompress_test_asset'));
-    }
-
-    public function testGetLastModified()
-    {
-        $asset = $this->getMock('Assetic\Asset\AssetInterface');
-
-        $this->am->expects($this->any())
-            ->method('getLastModified')
-            ->will($this->returnValue(123));
-
-        $this->assertEquals(123, $this->manager->getLastModified($asset));
     }
 
     protected function createMockResource($name, $content)
@@ -292,28 +161,5 @@ class OroAssetManagerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($nameUnCompress));
 
         return $result;
-    }
-
-    protected function addMockExpectedCalls()
-    {
-        $mocksExpectedCalls = func_get_args();
-        foreach ($mocksExpectedCalls as $mockExpectedCalls) {
-            /** @var \PHPUnit_Framework_MockObject_MockObject $mock */
-            list($mock, $expectedCalls) = array_values($mockExpectedCalls);
-            if ($expectedCalls) {
-                $index = 0;
-                foreach ($expectedCalls as $expectedCall) {
-                    $expectedCall = array_pad($expectedCall, 3, null);
-                    list($method, $arguments, $result) = $expectedCall;
-                    $methodExpectation = $mock->expects(\PHPUnit_Framework_TestCase::at($index++))->method($method);
-                    $methodExpectation = call_user_func_array(array($methodExpectation, 'with'), $arguments);
-                    if ($expectedCall) {
-                        $methodExpectation->will($result);
-                    }
-                }
-            } else {
-                $mock->expects(\PHPUnit_Framework_TestCase::never())->method(\PHPUnit_Framework_TestCase::anything());
-            }
-        };
     }
 }

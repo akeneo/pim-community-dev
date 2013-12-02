@@ -50,6 +50,8 @@ workflows:
                                 required: true
         transition_definitions:
             first_transition_definition:
+                pre_conditions:
+                    @true: ~
                 conditions:
                     @and:
                         @true: ~
@@ -61,8 +63,6 @@ workflows:
                                     message: "Not equals"
                         message: "Fail upper level"
                 post_actions:
-                    - @custom_post_action: ~
-                init_actions:
                     - @custom_post_action: ~
     second_workflow:
         label: 'Second Workflow'

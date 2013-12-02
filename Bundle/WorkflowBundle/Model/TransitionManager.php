@@ -5,7 +5,6 @@ namespace Oro\Bundle\WorkflowBundle\Model;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 
-use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Bundle\WorkflowBundle\Exception\InvalidTransitionException;
 
 class TransitionManager
@@ -33,16 +32,11 @@ class TransitionManager
 
     /**
      * @param string $transitionName
-     * @return Transition
-     * @throws InvalidTransitionException
+     * @return Transition|null
      */
     public function getTransition($transitionName)
     {
-        $result = $this->transitions->get($transitionName);
-        if (!$result) {
-            throw InvalidTransitionException::unknownTransition($transitionName);
-        }
-        return $result;
+        return $this->transitions->get($transitionName);
     }
 
     /**
@@ -88,6 +82,7 @@ class TransitionManager
      *
      * @param string|Transition $transition
      * @return Transition
+     * @throws InvalidTransitionException
      */
     public function extractTransition($transition)
     {
@@ -95,22 +90,24 @@ class TransitionManager
         if (is_string($transition)) {
             $transitionName = $transition;
             $transition = $this->getTransition($transitionName);
+            if (!$transition) {
+                throw InvalidTransitionException::unknownTransition($transitionName);
+            }
         }
 
         return $transition;
     }
 
     /**
-     * Get allowed start transitions
+     * Get start transitions
      *
-     * @param WorkflowItem $workflowItem
      * @return Collection
      */
-    public function getAllowedStartTransitions(WorkflowItem $workflowItem)
+    public function getStartTransitions()
     {
         return $this->getTransitions()->filter(
-            function (Transition $transition) use ($workflowItem) {
-                return $transition->isStart() && $transition->isAllowed($workflowItem);
+            function (Transition $transition) {
+                return $transition->isStart();
             }
         );
     }

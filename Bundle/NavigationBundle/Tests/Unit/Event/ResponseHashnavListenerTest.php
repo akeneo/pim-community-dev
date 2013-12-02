@@ -93,12 +93,6 @@ class ResponseHashnavListenerTest extends \PHPUnit_Framework_TestCase
         $this->serverErrorHandle();
     }
 
-    public function testHashRequestForbidden()
-    {
-        $this->response->setStatusCode(403);
-        $this->serverErrorHandle();
-    }
-
     private function serverErrorHandle()
     {
         $this->event->expects($this->once())

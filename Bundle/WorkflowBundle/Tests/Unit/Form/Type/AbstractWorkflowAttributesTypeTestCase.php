@@ -4,33 +4,20 @@ namespace Oro\Bundle\WorkflowBundle\Tests\Unit\Form\Type;
 
 use Symfony\Component\Form\Test\FormIntegrationTestCase;
 
+use Oro\Bundle\WorkflowBundle\Form\EventListener\DefaultValuesListener;
+use Oro\Bundle\WorkflowBundle\Form\EventListener\InitActionsListener;
+use Oro\Bundle\WorkflowBundle\Form\EventListener\RequiredAttributesListener;
+use Oro\Bundle\WorkflowBundle\Form\Type\WorkflowAttributesType;
+
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Bundle\WorkflowBundle\Model\Step;
 use Oro\Bundle\WorkflowBundle\Model\Attribute;
 use Oro\Bundle\WorkflowBundle\Model\WorkflowData;
 use Oro\Bundle\WorkflowBundle\Model\Workflow;
+use Oro\Bundle\WorkflowBundle\Model\WorkflowRegistry;
 
 abstract class AbstractWorkflowAttributesTypeTestCase extends FormIntegrationTestCase
 {
-    /**
-     * @var \PHPUnit_Framework_MockObject_MockObject
-     */
-    protected $workflowRegistry;
-
-    protected function setUp()
-    {
-        $this->workflowRegistry = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\WorkflowRegistry')
-            ->disableOriginalConstructor()
-            ->getMock();
-        parent::setUp();
-    }
-
-    protected function tearDown()
-    {
-        unset($this->workflowRegistry);
-        parent::tearDown();
-    }
-
     /**
      * @param string $workflowName
      * @param array $attributes
@@ -102,5 +89,64 @@ abstract class AbstractWorkflowAttributesTypeTestCase extends FormIntegrationTes
         $result->setCurrentStepName($currentStepName);
         $result->setWorkflowName($workflow->getName());
         return $result;
+    }
+
+    protected function createWorkflowAttributesType(
+        WorkflowRegistry $workflowRegistry = null,
+        DefaultValuesListener $defaultValuesListener = null,
+        InitActionsListener $initActionListener = null,
+        RequiredAttributesListener $requiredAttributesListener = null
+    ) {
+        if (!$workflowRegistry) {
+            $workflowRegistry = $this->createWorkflowRegistryMock();
+        }
+        if (!$defaultValuesListener) {
+            $defaultValuesListener = $this->createDefaultValuesListenerMock();
+        }
+        if (!$initActionListener) {
+            $initActionListener = $this->createInitActionsListenerMock();
+        }
+        if (!$requiredAttributesListener) {
+            $requiredAttributesListener = $this->createRequiredAttributesListenerMock();
+        }
+
+        return new WorkflowAttributesType(
+            $workflowRegistry,
+            $defaultValuesListener,
+            $initActionListener,
+            $requiredAttributesListener
+        );
+    }
+
+    protected function createWorkflowRegistryMock()
+    {
+        return $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\WorkflowRegistry')
+            ->disableOriginalConstructor()
+            ->setMethods(array('getWorkflow'))
+            ->getMock();
+    }
+
+    protected function createDefaultValuesListenerMock()
+    {
+        return$this->getMockBuilder('Oro\Bundle\WorkflowBundle\Form\EventListener\DefaultValuesListener')
+            ->disableOriginalConstructor()
+            ->setMethods(array('initialize', 'setDefaultValues'))
+            ->getMock();
+    }
+
+    protected function createInitActionsListenerMock()
+    {
+        return$this->getMockBuilder('Oro\Bundle\WorkflowBundle\Form\EventListener\InitActionsListener')
+            ->disableOriginalConstructor()
+            ->setMethods(array('initialize', 'executeInitAction'))
+            ->getMock();
+    }
+
+    protected function createRequiredAttributesListenerMock()
+    {
+        return $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Form\EventListener\RequiredAttributesListener')
+            ->disableOriginalConstructor()
+            ->setMethods(array('initialize', 'onPreSetData', 'onSubmit'))
+            ->getMock();
     }
 }

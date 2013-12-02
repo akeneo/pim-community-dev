@@ -483,6 +483,13 @@ class ConfigManager
         return null !== $this->modelManager->findModel($className, $fieldName);
     }
 
+    public function getConfigFieldModel($className, $fieldName)
+    {
+        if ($this->hasConfigFieldModel($className, $fieldName)) {
+            return $this->modelManager->findModel($className, $fieldName);
+        }
+    }
+
     /**
      * TODO:: check class name for custom entity
      *
