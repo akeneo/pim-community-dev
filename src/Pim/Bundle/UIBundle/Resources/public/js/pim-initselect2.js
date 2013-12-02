@@ -13,11 +13,15 @@ define(
                     tags = _.union(tags, value).sort();
                 options = { tags: tags, tokenSeparators: [',', ' '] };
             } else {
-                var $empty = $el.children('[value=""]');
-                if ($empty.length && $empty.html()) {
-                    $el.attr('data-placeholder', $empty.html());
-                    $empty.html('');
+                if ($el.attr('data-placeholder').length) {
                     options = { allowClear: true };
+                } else {
+                    var $empty = $el.children('[value=""]');
+                    if ($empty.length && $empty.html()) {
+                        $el.attr('data-placeholder', $empty.html());
+                        $empty.html('');
+                        options = { allowClear: true };
+                    }
                 }
             }
 
