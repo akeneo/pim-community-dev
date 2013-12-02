@@ -4,6 +4,7 @@ namespace Oro\Bundle\BatchBundle\Job;
 
 use Oro\Bundle\BatchBundle\Entity\JobInstance;
 use Oro\Bundle\BatchBundle\Entity\JobExecution;
+use Oro\Bundle\BatchBundle\Entity\StepExecution;
 
 /**
  * Common interface for Job repositories which should handle how job are stored, updated
@@ -22,4 +23,22 @@ interface JobRepositoryInterface
      * @return JobExecution
      */
     public function createJobExecution(JobInstance $job);
+
+    /**
+     * Update a JobExecution
+     *
+     * @param JobExecution $jobExecution
+     *
+     * @return JobExecution
+     */
+    public function updateJobExecution(JobExecution $job);
+
+    /**
+     * Update a StepExecution
+     *
+     * @param StepExecution $stepExecution
+     *
+     * @return StepExecution
+     */
+    public function updateStepExecution(StepExecution $job);
 }
