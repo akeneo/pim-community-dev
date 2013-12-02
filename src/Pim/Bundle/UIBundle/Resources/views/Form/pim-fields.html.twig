@@ -142,35 +142,45 @@
     {% spaceless %}
 
     {% set empty = not form.vars.value or not form.vars.value.filePath %}
-    <div class="control-group">
-        {{ form_label(form, null, { 'label_attr': {'class': 'control-label', 'for': form.file.vars.id} }) }}
-        <div class="controls">
-            <label class="upload-zone file{% if empty %} empty{% endif %}">
-                <div class="upload-info">
-                    {% if not empty %}
-                        <a class="no-hash upload-preview" href="{{ path('pim_catalog_media_show', { 'filename': form.vars.value.filename }) }}" target="_blank" title="{{ form.vars.value.originalFilename }}">
-                            <i class="icon-file upload-preview"></i>
+    {% if not (empty and form.parent.vars.mode is defined and 'comparison' == form.parent.vars.mode) %}
+        <div class="control-group">
+            {{ form_label(form, null, { 'label_attr': {'class': 'control-label', 'for': form.file.vars.id} }) }}
+            <div class="controls">
+                <label class="upload-zone file{% if empty %} empty{% endif %}">
+                    <div class="upload-info">
+                        {% if not empty %}
+                            <a class="no-hash upload-preview" href="{{ path('pim_catalog_media_show', { 'filename': form.vars.value.filename }) }}" target="_blank" title="{{ form.vars.value.originalFilename }}">
+                                <i class="icon-file upload-preview"></i>
+                            </a>
+                        {% else %}
+                            <i class="icon-file upload-preview empty"></i>
+                        {% endif %}
+                        <span class="upload-filename" data-empty-title="{{ 'Drop a file or click here'|trans }}">{% if empty %}{{ 'Drop a file or click here'|trans }}{% else %}{{ form.vars.value.originalFilename }}{% endif %}</span>
+                    </div>
+                    {% if form.parent.vars.mode is not defined or 'comparison' != form.parent.vars.mode %}
+                        <a class="btn no-hash remove-upload{% if empty %} hide{% endif %}">
+                            <i class="icon-trash"></i>
                         </a>
-                    {% else %}
-                        <i class="icon-file upload-preview empty"></i>
                     {% endif %}
-                    <span class="upload-filename" data-empty-title="{{ 'Drop a file or click here'|trans }}">{% if empty %}{{ 'Drop a file or click here'|trans }}{% else %}{{ form.vars.value.originalFilename }}{% endif %}</span>
+                    {% if empty %}
+                        {{ form_widget(form.file) }}
+                    {% else %}
+                        {{ form_widget(form.file, { attr: { 'class': 'hide', 'disabled': 'disabled' }}) }}
+                        {{ form_widget(form.removed, {'attr': { 'class': 'hide' }}) }}
+                    {% endif %}
+                </label>
+                <div class="icons-container">
+                    {{ form_errors(form) }}
                 </div>
-                <a class="btn no-hash remove-upload{% if empty %} hide{% endif %}">
-                    <i class="icon-trash"></i>
-                </a>
-                {% if empty %}
-                    {{ form_widget(form.file) }}
-                {% else %}
-                    {{ form_widget(form.file, { attr: { 'class': 'hide', 'disabled': 'disabled' }}) }}
-                    {{ form_widget(form.removed, {'attr': { 'class': 'hide' }}) }}
-                {% endif %}
-            </label>
-            <div class="icons-container">
-                {{ form_errors(form) }}
             </div>
         </div>
-    </div>
+    {% else %}
+        <div class="control-group">
+            <div class="controls">
+                {{ 'pim_catalog.product.no_compared_media'|trans }}
+            </div>
+        </div>
+    {% endif %}
 
     {% endspaceless %}
 {% endblock %}
@@ -179,35 +189,45 @@
     {% spaceless %}
 
     {% set empty = not form.vars.value or not form.vars.value.filePath %}
-    <div class="control-group">
-        {{ form_label(form, null, { 'label_attr': {'class': 'control-label', 'for': form.file.vars.id} }) }}
-        <div class="controls">
-            <label class="upload-zone image{% if empty %} empty{% endif %}">
-                <div class="upload-info">
-                    {% if not empty %}
-                        <a class="no-hash upload-preview" href="{{ path('pim_catalog_media_show', { 'filename': form.vars.value.filename, 'filter': 'image_preview' }) }}" title="{{ form.vars.value.originalFilename }}" rel="slimbox">
-                            <img src="{{ path('pim_catalog_media_show', { 'filename': form.vars.value.filename, 'filter': 'thumbnail_small' }) }}">
+    {% if not (empty and form.parent.vars.mode is defined and 'comparison' == form.parent.vars.mode) %}
+        <div class="control-group">
+            {{ form_label(form, null, { 'label_attr': {'class': 'control-label', 'for': form.file.vars.id} }) }}
+            <div class="controls">
+                <label class="upload-zone image{% if empty %} empty{% endif %}">
+                    <div class="upload-info">
+                        {% if not empty %}
+                            <a class="no-hash upload-preview" href="{{ path('pim_catalog_media_show', { 'filename': form.vars.value.filename, 'filter': 'image_preview' }) }}" title="{{ form.vars.value.originalFilename }}" rel="slimbox">
+                                <img src="{{ path('pim_catalog_media_show', { 'filename': form.vars.value.filename, 'filter': 'thumbnail_small' }) }}">
+                            </a>
+                        {% else %}
+                            <i class="icon-camera-retro upload-preview empty"></i>
+                        {% endif %}
+                        <span class="upload-filename" data-empty-title="{{ 'Drop an image or click here'|trans }}">{% if empty %}{{ 'Drop an image or click here'|trans }}{% else %}{{ form.vars.value.originalFilename }}{% endif %}</span>
+                    </div>
+                    {% if form.parent.vars.mode is not defined or 'comparison' != form.parent.vars.mode %}
+                        <a class="btn no-hash remove-upload{% if empty %} hide{% endif %}">
+                            <i class="icon-trash"></i>
                         </a>
-                    {% else %}
-                        <i class="icon-camera-retro upload-preview empty"></i>
                     {% endif %}
-                    <span class="upload-filename" data-empty-title="{{ 'Drop an image or click here'|trans }}">{% if empty %}{{ 'Drop an image or click here'|trans }}{% else %}{{ form.vars.value.originalFilename }}{% endif %}</span>
+                    {% if empty %}
+                        {{ form_widget(form.file) }}
+                    {% else %}
+                        {{ form_widget(form.file, { 'attr': { 'class': 'hide', 'disabled': 'disabled' }}) }}
+                        {{ form_widget(form.removed, { 'attr': { 'class': 'hide' }}) }}
+                    {% endif %}
+                </label>
+                <div class="icons-container">
+                    {{ form_errors(form) }}
                 </div>
-                <a class="btn no-hash remove-upload{% if empty %} hide{% endif %}">
-                    <i class="icon-trash"></i>
-                </a>
-                {% if empty %}
-                    {{ form_widget(form.file) }}
-                {% else %}
-                    {{ form_widget(form.file, { 'attr': { 'class': 'hide', 'disabled': 'disabled' }}) }}
-                    {{ form_widget(form.removed, { 'attr': { 'class': 'hide' }}) }}
-                {% endif %}
-            </label>
-            <div class="icons-container">
-                {{ form_errors(form) }}
             </div>
         </div>
-    </div>
+    {% else %}
+        <div class="control-group">
+            <div class="controls">
+                {{ 'pim_catalog.product.no_compared_media'|trans }}
+            </div>
+        </div>
+    {% endif %}
 
     {% endspaceless %}
 {% endblock %}
