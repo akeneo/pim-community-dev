@@ -201,10 +201,17 @@ class AclWalker extends TreeWalkerAdapter
                     );
                 } else {
                     // 'where' part has more than one condition
-                    $AST->whereClause->conditionalExpression->conditionalFactors = array_merge(
-                        $AST->whereClause->conditionalExpression->conditionalFactors,
-                        $aclConditionalFactors
-                    );
+                    if (isset($AST->whereClause->conditionalExpression->conditionalFactors)) {
+                        $AST->whereClause->conditionalExpression->conditionalFactors = array_merge(
+                            $AST->whereClause->conditionalExpression->conditionalFactors,
+                            $aclConditionalFactors
+                        );
+                    } else {
+                        $AST->whereClause->conditionalExpression->conditionalTerms = array_merge(
+                            $AST->whereClause->conditionalExpression->conditionalTerms,
+                            $aclConditionalFactors
+                        );
+                    }
                 }
             }
         }
