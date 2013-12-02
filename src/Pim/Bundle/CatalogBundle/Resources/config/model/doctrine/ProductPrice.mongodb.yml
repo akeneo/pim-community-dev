@@ -1,0 +1,8 @@
+Pim\Bundle\CatalogBundle\Model\ProductPrice:
+    fields:
+        id:
+            id: true
+        data:
+            type: float
+        currency:
+            type: string

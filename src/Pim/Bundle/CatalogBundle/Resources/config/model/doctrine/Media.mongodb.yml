@@ -1,0 +1,12 @@
+Pim\Bundle\CatalogBundle\Model\Media:
+    fields:
+        id:
+            id: true
+        filename:
+            type: string
+        filePath:
+            type: string
+        originalFilename:
+            type: string
+        mimeType:
+            type: string
