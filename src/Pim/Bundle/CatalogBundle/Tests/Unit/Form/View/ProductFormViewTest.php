@@ -284,7 +284,7 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
     /**
      * @param array $options
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\ProductValue
+     * @return \Pim\Bundle\CatalogBundle\Model\ProductValue
      */
     private function getValueMock(array $options)
     {
@@ -297,7 +297,7 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
             $options
         );
 
-        $value = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductValue');
+        $value = $this->getMock('Pim\Bundle\CatalogBundle\Model\ProductValue');
 
         $value->expects($this->any())
             ->method('getAttribute')

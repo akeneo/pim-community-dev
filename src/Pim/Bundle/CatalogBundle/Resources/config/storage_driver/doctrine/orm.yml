@@ -1,0 +1,14 @@
+#parameters:
+#    pim_catalog.repository.product.class: Pim\Bundle\CatalogBundle\Entity\Repository\ProductRepository
+#    pim_catalog.product.class: Pim\Bundle\CatalogBundle\Model\Product
+#
+#services:
+#    pim_catalog.object_manager.product:
+#        alias: doctrine.orm.entity_manager
+#
+#    pim_catalog.repository.product:
+#        class: %pim_catalog.repository.product.class%
+#        factory_service: doctrine.orm.default_entity_manager
+#        factory_method: getRepository
+#        arguments:
+#            - %pim_catalog.product.class%

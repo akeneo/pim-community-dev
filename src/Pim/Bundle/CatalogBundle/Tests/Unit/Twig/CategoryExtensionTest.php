@@ -249,7 +249,7 @@ class CategoryExtensionTest extends \PHPUnit_Framework_TestCase
      */
     protected function getProductMock(array $properties = array())
     {
-        $product = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Product');
+        $product = $this->getMock('Pim\Bundle\CatalogBundle\Model\Product');
 
         if (isset($properties['id'])) {
             $product

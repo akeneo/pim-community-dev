@@ -28,29 +28,9 @@ class Creation extends Form
         $this->elements = array_merge(
             $this->elements,
             array(
-                'Statuses' => array('css' => '#oro_user_user_form_enabled'),
-                'Owners'   => array('css' => '#oro_user_user_form_owner'),
-                'Roles'    => array('css' => '#oro_user_user_form_rolesCollection'),
+                'Roles' => array('css' => '#oro_user_user_form_rolesCollection'),
             )
         );
-    }
-
-    /**
-     * Select the status
-     * @param string $status
-     */
-    public function selectStatus($status)
-    {
-        $this->getElement('Statuses')->selectOption($status);
-    }
-
-    /**
-     * Select the owner
-     * @param string $owner
-     */
-    public function selectOwner($owner)
-    {
-        $this->getElement('Owners')->selectOption($owner);
     }
 
     /**

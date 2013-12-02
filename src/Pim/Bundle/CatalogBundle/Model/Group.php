@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Entity;
+namespace Pim\Bundle\CatalogBundle\Model;
 
 use Symfony\Component\Validator\GroupSequenceProviderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -9,6 +9,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
+use Pim\Bundle\CatalogBundle\Entity\GroupType;
+use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
@@ -120,7 +122,7 @@ class Group implements TranslatableInterface, GroupSequenceProviderInterface
      *
      * @param GroupType $type
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Group
+     * @return Group
      */
     public function setType(GroupType $type)
     {
@@ -132,7 +134,7 @@ class Group implements TranslatableInterface, GroupSequenceProviderInterface
     /**
      * Get group type
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Group
+     * @return Group
      */
     public function getType()
     {
@@ -208,7 +210,7 @@ class Group implements TranslatableInterface, GroupSequenceProviderInterface
      */
     public function getTranslationFQCN()
     {
-        return 'Pim\Bundle\CatalogBundle\Entity\GroupTranslation';
+        return 'Pim\Bundle\CatalogBundle\Model\GroupTranslation';
     }
 
     /**
@@ -242,7 +244,7 @@ class Group implements TranslatableInterface, GroupSequenceProviderInterface
      *
      * @param ProductInterface $product
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Group
+     * @return Group
      */
     public function addProduct(ProductInterface $product)
     {
@@ -259,7 +261,7 @@ class Group implements TranslatableInterface, GroupSequenceProviderInterface
      *
      * @param ProductInterface $product
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Group
+     * @return Group
      */
     public function removeProduct(ProductInterface $product)
     {
@@ -284,7 +286,7 @@ class Group implements TranslatableInterface, GroupSequenceProviderInterface
      *
      * @param array $products
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Group
+     * @return Group
      */
     public function setProducts(array $products)
     {

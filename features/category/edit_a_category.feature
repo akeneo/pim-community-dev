@@ -7,13 +7,10 @@ Feature: Edit a category
     Given a "footwear" catalog configuration
     And I am logged in as "admin"
 
-  Scenario: Successfully display the edit view for a category
+  Scenario: Successfully edit a category
     Given I edit the "Sandals" category
     Then I should see the Code field
     And the field Code should be disabled
-
-  Scenario: Successfully edit a category
-    Given I edit the "Sandals" category
     When I fill in the following information:
       | English (United States) | My sandals |
     And I save the category

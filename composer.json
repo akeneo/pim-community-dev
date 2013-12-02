@@ -19,9 +19,9 @@
     "require": {
         "php": ">=5.4.4",
         "oro/platform": "dev-maintenance/pim_beta4",
-        "akeneo/DemoBundle": "dev-master",
         "knplabs/knp-gaufrette-bundle": "dev-master",
-        "incenteev/composer-parameter-handler": "~2.0"
+        "incenteev/composer-parameter-handler": "~2.0",
+        "doctrine/mongodb-odm-bundle": "3.0.*@dev"
     },
     "require-dev": {
         "behat/behat":  "2.4.*@stable",
@@ -38,10 +38,6 @@
             "type": "vcs",
             "url": "https://github.com/akeneo/platform.git",
             "branch": "master"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/akeneo/DemoBundle.git"
         }
     ],
     "scripts": {

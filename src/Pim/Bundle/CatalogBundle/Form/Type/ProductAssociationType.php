@@ -34,7 +34,7 @@ class ProductAssociationType extends AbstractType
                 'appendProducts',
                 'oro_entity_identifier',
                 array(
-                    'class'    => 'Pim\Bundle\CatalogBundle\Entity\Product',
+                    'class'    => 'Pim\Bundle\CatalogBundle\Model\Product',
                     'mapped'   => false,
                     'required' => false,
                     'multiple' => true
@@ -44,7 +44,7 @@ class ProductAssociationType extends AbstractType
                 'removeProducts',
                 'oro_entity_identifier',
                 array(
-                    'class'    => 'Pim\Bundle\CatalogBundle\Entity\Product',
+                    'class'    => 'Pim\Bundle\CatalogBundle\Model\Product',
                     'mapped'   => false,
                     'required' => false,
                     'multiple' => true
@@ -54,7 +54,7 @@ class ProductAssociationType extends AbstractType
                 'appendGroups',
                 'oro_entity_identifier',
                 array(
-                    'class'    => 'Pim\Bundle\CatalogBundle\Entity\Group',
+                    'class'    => 'Pim\Bundle\CatalogBundle\Model\Group',
                     'mapped'   => false,
                     'required' => false,
                     'multiple' => true
@@ -64,7 +64,7 @@ class ProductAssociationType extends AbstractType
                 'removeGroups',
                 'oro_entity_identifier',
                 array(
-                    'class'    => 'Pim\Bundle\CatalogBundle\Entity\Group',
+                    'class'    => 'Pim\Bundle\CatalogBundle\Model\Group',
                     'mapped'   => false,
                     'required' => false,
                     'multiple' => true

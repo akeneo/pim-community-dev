@@ -280,20 +280,9 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iShouldBeAbleToUseTheFollowingFilters(TableNode $table)
     {
-        $data = $table->getHash();
-
-        $filters = array_unique(
-            array_map(
-                function ($item) {
-                    return $item['filter'];
-                },
-                $data
-            )
-        );
-
         $steps = array();
 
-        foreach ($data as $item) {
+        foreach ($table->getHash() as $item) {
             $count = count($this->getMainContext()->listToArray($item['result']));
             $filter = $item['filter'];
             $steps[] = new Then(sprintf('I show the filter "%s"', $filter));

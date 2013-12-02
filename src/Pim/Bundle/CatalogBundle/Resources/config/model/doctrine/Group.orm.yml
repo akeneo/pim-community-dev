@@ -1,4 +1,4 @@
-Pim\Bundle\CatalogBundle\Entity\Group:
+Pim\Bundle\CatalogBundle\Model\Group:
     type: entity
     table: pim_catalog_group
     repositoryClass: Pim\Bundle\CatalogBundle\Entity\Repository\GroupRepository
@@ -34,11 +34,11 @@ Pim\Bundle\CatalogBundle\Entity\Group:
                     attribute_id:
                         referencedColumnName: id
         products:
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\Product
+            targetEntity: Pim\Bundle\CatalogBundle\Model\ProductInterface
             mappedBy: groups
     oneToMany:
         translations:
-            targetEntity: Pim\Bundle\CatalogBundle\Entity\GroupTranslation
+            targetEntity: Pim\Bundle\CatalogBundle\Model\GroupTranslation
             mappedBy: foreignKey
             cascade:
                 - persist

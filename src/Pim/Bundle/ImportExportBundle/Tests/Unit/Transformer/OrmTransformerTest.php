@@ -22,7 +22,7 @@ class OrmTransformerTest extends OrmTransformerTestCase
             $this->doctrine,
             $this->propertyAccessor,
             $this->guesser,
-            $this->labelTransformer
+            $this->columnInfoTransformer
         );
         $this->addColumn('code');
     }

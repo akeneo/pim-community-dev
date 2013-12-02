@@ -1,4 +1,4 @@
-Pim\Bundle\CatalogBundle\Entity\Media:
+Pim\Bundle\CatalogBundle\Model\Media:
     type: entity
     table: pim_catalog_media
     fields:

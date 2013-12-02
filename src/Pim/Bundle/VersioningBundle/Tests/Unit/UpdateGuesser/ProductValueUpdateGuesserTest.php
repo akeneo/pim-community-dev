@@ -4,9 +4,9 @@ namespace Pim\Bundle\VersioningBundle\Tests\Unit\UpdateGuesser;
 
 use Pim\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
 use Pim\Bundle\VersioningBundle\UpdateGuesser\ProductValueUpdateGuesser;
-use Pim\Bundle\CatalogBundle\Entity\Product;
-use Pim\Bundle\CatalogBundle\Entity\ProductValue;
-use Pim\Bundle\CatalogBundle\Entity\ProductPrice;
+use Pim\Bundle\CatalogBundle\Model\Product;
+use Pim\Bundle\CatalogBundle\Model\ProductValue;
+use Pim\Bundle\CatalogBundle\Model\ProductPrice;
 
 /**
  * Test related class

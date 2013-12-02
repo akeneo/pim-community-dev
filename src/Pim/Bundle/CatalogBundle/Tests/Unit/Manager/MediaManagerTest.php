@@ -190,11 +190,11 @@ class MediaManagerTest extends \PHPUnit_Framework_TestCase
     /**
      * @param mixed $file
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Media
+     * @return \Pim\Bundle\CatalogBundle\Model\Media
      */
     protected function getMediaMock($file = null)
     {
-        $media = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Media');
+        $media = $this->getMock('Pim\Bundle\CatalogBundle\Model\Media');
 
         $media->expects($this->any())
               ->method('getFile')
@@ -253,7 +253,7 @@ class MediaManagerTest extends \PHPUnit_Framework_TestCase
      */
     protected function getValueMock($entity, $attribute, $locale = null, $scope = null)
     {
-        $value = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductValue');
+        $value = $this->getMock('Pim\Bundle\CatalogBundle\Model\ProductValue');
 
         $value->expects($this->any())
             ->method('getEntity')
@@ -281,7 +281,7 @@ class MediaManagerTest extends \PHPUnit_Framework_TestCase
      */
     protected function getProductMock($identifier)
     {
-        $product = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Product');
+        $product = $this->getMock('Pim\Bundle\CatalogBundle\Model\Product');
 
         $product->expects($this->any())
             ->method('getIdentifier')

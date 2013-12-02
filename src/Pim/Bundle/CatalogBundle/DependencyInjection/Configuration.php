@@ -25,6 +25,7 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
                 ->booleanNode('record_mails')->defaultFalse()->end()
+                ->scalarNode('storage_driver')->defaultValue('doctrine/orm')->end()
             ->end()
         ->end();
 

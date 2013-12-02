@@ -11,7 +11,7 @@ Feature: Display the variant group history
     When I create a new variant group
     And I fill in the following information in the popin:
       | Code | converse_sneakers |
-    And I select the axis "Size"
+      | Axis | Size              |
     And I press the "Save" button
     And I am on the variant groups page
     Then I should see groups converse_sneakers and caterpillar_boots

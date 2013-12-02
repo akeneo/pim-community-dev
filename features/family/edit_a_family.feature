@@ -8,13 +8,10 @@ Feature: Edit a family
     And I am logged in as "admin"
     And I am on the families page
 
-  Scenario: Successfully display the edit view for a family
+  Scenario: Successfully edit a family
     Given I am on the "Sneakers" family page
     Then I should see the Code field
     And the field Code should be disabled
-
-  Scenario: Successfully edit a family
-    Given I am on the "Sneakers" family page
     When I fill in the following information:
       | English (United States) | My family |
     And I save the family

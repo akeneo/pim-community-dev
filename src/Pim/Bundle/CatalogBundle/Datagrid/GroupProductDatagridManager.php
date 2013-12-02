@@ -15,7 +15,7 @@ use Oro\Bundle\GridBundle\Field\FieldDescription;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionCollection;
 use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
 
-use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\CatalogBundle\Model\Group;
 use Pim\Bundle\GridBundle\Filter\FilterInterface;
 
 /**
@@ -357,7 +357,7 @@ class GroupProductDatagridManager extends FlexibleDatagridManager
      *
      * @throws \LogicException
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Group
+     * @return \Pim\Bundle\CatalogBundle\Model\Group
      */
     protected function getGroup()
     {

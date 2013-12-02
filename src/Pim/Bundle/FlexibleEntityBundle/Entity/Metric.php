@@ -27,7 +27,7 @@ class Metric
 
     /**
      * Store decimal value
-     * @var double $decimal
+     * @var double $data
      *
      * @ORM\Column(name="data", type="decimal", precision=14, scale=4, nullable=true)
      */
@@ -40,6 +40,30 @@ class Metric
      * @ORM\Column(name="unit_code", type="string", length=20, nullable=true)
      */
     protected $unit;
+
+    /**
+     * Base data value
+     * @var double $baseData
+     *
+     * @ORM\Column(name="baseData", type="decimal", precision=14, scale=4, nullable=true)
+     */
+    protected $baseData;
+
+    /**
+     * Base unit value
+     * @var string $baseUnit
+     *
+     * @ORM\Column(name="baseUnit", type="string", length=20, nullable=true)
+     */
+    protected $baseUnit;
+
+    /**
+     * Measure family
+     * @var string $family
+     *
+     * @ORM\Column(name="family", type="string", length=20, nullable=true)
+     */
+    protected $family;
 
     /**
      * Get id
@@ -109,6 +133,78 @@ class Metric
     public function setUnit($unit)
     {
         $this->unit = $unit;
+
+        return $this;
+    }
+
+    /**
+     * Get base data
+     *
+     * @return double
+     */
+    public function getBaseData()
+    {
+        return $this->baseData;
+    }
+
+    /**
+     * Set base data
+     *
+     * @param double $baseData
+     *
+     * @return Metric
+     */
+    public function setBaseData($baseData)
+    {
+        $this->baseData = $baseData;
+
+        return $this;
+    }
+
+    /**
+     * Get base unit
+     *
+     * @return string
+     */
+    public function getBaseUnit()
+    {
+        return $this->baseUnit;
+    }
+
+    /**
+     * Set base unit
+     *
+     * @param string $baseUnit
+     *
+     * @return Metric
+     */
+    public function setBaseUnit($baseUnit)
+    {
+        $this->baseUnit = $baseUnit;
+
+        return $this;
+    }
+
+    /**
+     * Get family
+     *
+     * @return string
+     */
+    public function getFamily()
+    {
+        return $this->family;
+    }
+
+    /**
+     * Set family
+     *
+     * @param string $family
+     *
+     * @return Metric
+     */
+    public function setFamily($family)
+    {
+        $this->family = $family;
 
         return $this;
     }

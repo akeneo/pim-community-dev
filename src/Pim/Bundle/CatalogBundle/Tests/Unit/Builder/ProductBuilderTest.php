@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\Builder;
 
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
-use Pim\Bundle\CatalogBundle\Entity\Product;
+use Pim\Bundle\CatalogBundle\Model\Product;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
@@ -156,7 +156,7 @@ class ProductBuilderTest extends \PHPUnit_Framework_TestCase
             ->method('getAssociationMappings')
             ->will(
                 $this->returnValue(
-                    array('values' => array('targetEntity' => 'Pim\Bundle\CatalogBundle\Entity\ProductValue'))
+                    array('values' => array('targetEntity' => 'Pim\Bundle\CatalogBundle\Model\ProductValue'))
                 )
             );
 

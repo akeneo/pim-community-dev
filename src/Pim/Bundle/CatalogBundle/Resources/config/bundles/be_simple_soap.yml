@@ -7,5 +7,5 @@ be_simple_soap:
         soap:
             namespace:        http://symfony.loc/Api/1.0/
             binding:          rpc-literal
-            resource:         "%kernel.root_dir%/../app/config/soap.yml"
+            resource:         %kernel.root_dir%/../app/config/soap.yml
             resource_type:    yml

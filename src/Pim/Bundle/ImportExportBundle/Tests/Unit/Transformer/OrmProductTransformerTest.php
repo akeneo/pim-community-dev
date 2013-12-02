@@ -15,7 +15,7 @@ class OrmProductTransformerTest extends OrmTransformerTestCase
 {
     protected $productManager;
     protected $attributeCache;
-    protected $identifierAttribute;
+    protected $attributes;
     protected $transformer;
     protected $fields;
     protected $product;
@@ -26,6 +26,7 @@ class OrmProductTransformerTest extends OrmTransformerTestCase
         parent::setUp();
         $this->fields = array();
         $this->values = array();
+        $this->attributes = array();
 
         $this->metadata->expects($this->any())
             ->method('hasField')
@@ -55,29 +56,26 @@ class OrmProductTransformerTest extends OrmTransformerTestCase
         $this->attributeCache = $this->getMockBuilder('Pim\Bundle\ImportExportBundle\Cache\AttributeCache')
             ->disableOriginalConstructor()
             ->getMock();
-
-        $this->identifierAttribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductAttribute');
-        $this->identifierAttribute
-            ->expects($this->any())
-            ->method('getCode')
-            ->will($this->returnValue('identifier'));
         $this->attributeCache->expects($this->any())
-            ->method('getIdentifierAttribute')
-            ->will($this->returnValue($this->identifierAttribute));
+            ->method('getAttributes')
+            ->will($this->returnCallback(array($this, 'getAttributes')));
+
+        $this->addAttribute('identifier', OrmProductTransformer::IDENTIFIER_ATTRIBUTE_TYPE);
+        $this->addColumn('identifier', true, false);
 
         $this->transformer = new OrmProductTransformer(
             $this->doctrine,
             $this->propertyAccessor,
             $this->guesser,
-            $this->labelTransformer,
+            $this->columnInfoTransformer,
             $this->productManager,
             $this->attributeCache
         );
-        $this->addColumn('identifier', true, false);
     }
 
     public function testTransform()
     {
+        $this->addAttribute('col2');
         $this->addColumn('col1');
         $this->addColumn('col2', true, false);
         $product = $this->transformer->transform(
@@ -98,9 +96,37 @@ class OrmProductTransformerTest extends OrmTransformerTestCase
     protected function addColumn($label, $addTransformer = true, $addField = true)
     {
         $column = parent::addColumn($label, $addTransformer);
+        $column->expects($this->any())
+            ->method('getName')
+            ->will($this->returnValue($label));
         if ($addField) {
             $this->fields[] = $column->getPropertyPath();
+        } else {
+            $column
+                ->expects($this->once())
+                ->method('setAttribute')
+                ->with($this->equalTo($this->attributes[$label]));
         }
+    }
+
+    protected function addAttribute($code, $attributeType = 'type')
+    {
+        $this->attributes[$code] = $this->getMock('Pim\Bundle\CatalogBundle\Entity\ProductAttribute');
+        $this->attributes[$code]
+            ->expects($this->any())
+            ->method('getCode')
+            ->will($this->returnValue($code));
+        $this->attributes[$code]
+            ->expects($this->any())
+            ->method('getAttributeType')
+            ->will($this->returnValue($attributeType));
+
+        return $this->attributes[$code];
+    }
+
+    public function getAttributes()
+    {
+        return $this->attributes;
     }
 
     public function createValue($name)

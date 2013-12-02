@@ -7,13 +7,10 @@ Feature: Edit a channel
     Given a "footwear" catalog configuration
     And I am logged in as "admin"
 
-  Scenario: Successfully display the edit view for a channel
+  Scenario: Successfully edit a channel
     Given I am on the "tablet" channel page
     Then I should see the Code field
     And the field Code should be disabled
-
-  Scenario: Successfully edit a channel
-    Given I am on the "tablet" channel page
     When I fill in the following information:
       | Default label | My tablet |
     And I press the "Save" button
@@ -33,7 +30,7 @@ Feature: Edit a channel
   @javascript
   Scenario: Successfully edit a channel to enable a locale and disable unused locales when deleting a channel
     Given I am on the "tablet" channel page
-    And I select the locale "Breton (France)"
+    And I change the "Locales" to "Breton (France)"
     And I press the "Save" button
     When I am on the locales page
     And I filter by "Activated" with value "yes"

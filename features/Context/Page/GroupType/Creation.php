@@ -2,7 +2,6 @@
 
 namespace Context\Page\GroupType;
 
-use Behat\Mink\Exception\ElementNotFoundException;
 use Context\Page\Base\Form;
 
 /**
@@ -14,48 +13,4 @@ use Context\Page\Base\Form;
  */
 class Creation extends Form
 {
-    /**
-     * @var array
-     */
-    protected $elements = array(
-        'Create popin' => array('css' => 'div.ui-dialog')
-    );
-
-    /**
-     * {@inheritdoc}
-     */
-    public function pressButton($locator)
-    {
-        if ($locator === 'Create') {
-            $button = $this
-                ->getElement('Create popin')
-                ->find('css', sprintf('button:contains("%s")', $locator));
-
-            if ($button) {
-                return $button->click();
-            }
-        }
-
-        parent::pressButton($locator);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function findField($field)
-    {
-        $label = $this->find('css', sprintf('#pim_catalog_group_type_form label:contains("%s")', $field));
-
-        if (!$label) {
-            throw new ElementNotFoundException($this->getSession(), 'form label ', 'value', $field);
-        }
-
-        $field = $label->getParent()->find('css', 'input');
-
-        if (!$field) {
-            throw new ElementNotFoundException($this->getSession(), 'form field ', 'id|name|label|value', $field);
-        }
-
-        return $field;
-    }
 }

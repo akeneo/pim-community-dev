@@ -17,6 +17,8 @@ use Symfony\Component\Finder\Finder;
  */
 class PimCatalogExtension extends Extension implements PrependExtensionInterface
 {
+    const DOCTRINE_ORM = 'doctrine/orm';
+    const DOCTRINE_MONGODB_ODM = 'doctrine/mongodb-odm';
     /**
      * {@inheritdoc}
      */
@@ -51,6 +53,39 @@ class PimCatalogExtension extends Extension implements PrependExtensionInterface
         }
 
         $container->setParameter('validator.mapping.loader.yaml_files_loader.mapping_files', $yamlMappingFiles);
+
+        $this->loadStorageDriver($config, $container);
+    }
+
+    /**
+     * Provides the supported driver for product storage
+     * @return string[]
+     */
+    protected function getSupportedStorageDrivers()
+    {
+        return array(self::DOCTRINE_ORM, self::DOCTRINE_MONGODB_ODM);
+    }
+
+    /**
+     * @param array            $config
+     * @param ContainerBuilder $container
+     *
+     * Load the mapping for product and product storage
+     */
+    protected function loadStorageDriver(array $config, ContainerBuilder $container)
+    {
+        $storageDriver = $config['storage_driver'];
+
+        if (!in_array($storageDriver, $this->getSupportedStorageDrivers())) {
+            throw new RuntimeException("The storage driver $storageDriver is not a supported drivers");
+        }
+
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load(sprintf('storage_driver/%s.yml', $storageDriver));
+
+        $container->setParameter($this->getAlias().'.storage_driver', $storageDriver);
+        // Parameter defining if the mapping driver must be enabled or not
+        $container->setParameter($this->getAlias().'.storage_driver.'.$storageDriver, true);
     }
 
     /**
