@@ -89,11 +89,11 @@ define(
 
                         '<div class="btn-group">' +
                             '<button class="btn dropdown-toggle" data-toggle="dropdown">' +
-                                'Currency' +
+                                'Unit' +
                                 '<span class="caret"></span>' +
                             '</button>' +
                             '<ul class="dropdown-menu">' +
-                                '<% _.each(currencies, function (hint, value) { %>' +
+                                '<% _.each(units, function (hint, value) { %>' +
                                     '<li><a class="choice_value" href="#" data-value="<%= value %>"><%= hint %></a></li>' +
                                 '<% }); %>' +
                             '</ul>' +
