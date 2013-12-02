@@ -3,9 +3,6 @@
 namespace Oro\Bundle\QueryDesignerBundle\Tests\Unit\Grid\Extension;
 
 use Doctrine\Tests\OrmTestCase;
-use Doctrine\Tests\Mocks\EntityManagerMock;
-use Doctrine\Common\Annotations\AnnotationReader;
-use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\FilterBundle\Filter\DateTimeRangeFilter;
 use Oro\Bundle\FilterBundle\Form\Type\DateRangeType;
@@ -16,15 +13,11 @@ use Oro\Bundle\FilterBundle\Form\Type\Filter\FilterType;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\TextFilterType;
 use Oro\Bundle\LocaleBundle\Model\LocaleSettings;
 use Symfony\Component\Form\Extension\Csrf\CsrfExtension;
-use Symfony\Component\Form\Extension\Csrf\Type\FormTypeCsrfExtension;
-use Symfony\Component\Form\FormFactoryBuilderInterface;
 use Symfony\Component\Form\Forms;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
-use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 use Oro\Bundle\FilterBundle\Filter\StringFilter;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
 use Oro\Bundle\QueryDesignerBundle\Grid\Extension\OrmDatasourceExtension;
-use Oro\Bundle\QueryDesignerBundle\QueryDesigner\Manager;
 use Oro\Bundle\FilterBundle\Filter\FilterInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\PreloadedExtension;
