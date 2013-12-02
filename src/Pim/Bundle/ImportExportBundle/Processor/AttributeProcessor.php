@@ -90,6 +90,7 @@ class AttributeProcessor extends AbstractEntityProcessor
         } else {
             $group = $this->findAttributeGroup($item['group']);
             if (!$group) {
+                $this->stepExecution->incrementSummaryInfo('skip');
                 throw new InvalidItemException(
                     sprintf('The "%s" group not exists.', $item['group']),
                     $item

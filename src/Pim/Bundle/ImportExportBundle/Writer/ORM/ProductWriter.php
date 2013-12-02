@@ -127,9 +127,9 @@ class ProductWriter extends AbstractConfigurableStepElement implements
     protected function incrementCount(ProductInterface $product)
     {
         if ($product->getId()) {
-            $this->stepExecution->incrementUpdateCount();
+            $this->stepExecution->incrementSummaryInfo('update');
         } else {
-            $this->stepExecution->incrementCreationCount();
+            $this->stepExecution->incrementSummaryInfo('create');
         }
     }
 }

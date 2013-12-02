@@ -88,9 +88,9 @@ class Writer extends AbstractConfigurableStepElement implements
     protected function incrementCount($entity)
     {
         if ($entity->getId()) {
-            $this->stepExecution->incrementUpdateCount();
+            $this->stepExecution->incrementSummaryInfo('update');
         } else {
-            $this->stepExecution->incrementCreationCount();
+            $this->stepExecution->incrementSummaryInfo('create');
         }
     }
 }
