@@ -253,6 +253,7 @@
         spanClass - css class name of subblock, if this parameter is not specified the css class is span6
 #}
 {% macro scrollSubblock(title, data, isForm, useSpan, spanClass) %}
+    {% set spanClass = spanClass|default('responsive-cell') %}
     {#% if useSpan is not defined or useSpan == true %}
         {% set span = spanClass %}
     {% else %}
@@ -261,7 +262,7 @@
     {% if span %}
         <div class="{{ span }}">
     {% endif %#}
-    <div class="responsive-cell{% if spanClass is defined %} {{ spanClass }}{% endif %}">
+    <div class="{{ spanClass }}">
     {% if title|length %}<h5 class="user-fiedset"><span>{{ title|trans }}</span></h5>{% endif %}
     {% for dataBlock in data %}
         {{ dataBlock|raw }}
