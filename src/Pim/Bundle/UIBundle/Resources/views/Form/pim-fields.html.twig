@@ -41,6 +41,16 @@
                     {% if form.children|length == 0 %}
                         {{ block('form_info') }}
                     {% endif %}
+                    {% if select2 is defined %}
+                        <script type="text/javascript">
+                            require(
+                                ['pim/initselect2'],
+                                function (initSelect2) {
+                                    initSelect2('{{ form.vars.id }}');
+                                }
+                            );
+                        </script>
+                    {% endif %}
                 </div>
             </div>
         {% endif %}
