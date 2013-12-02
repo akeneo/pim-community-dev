@@ -127,16 +127,6 @@
     {% endspaceless %}
 {% endblock choice_widget_options %}
 
-{% block oro_flexibleentity_email_collection_widget %}
-    {% set subform = form.collection %}
-    {{ block('collection_render') }}
-{%  endblock oro_flexibleentity_email_collection_widget %}
-
-{% block oro_flexibleentity_phone_collection_widget %}
-    {% set subform = form.collection %}
-    {{ block('collection_render') }}
-{%  endblock oro_flexibleentity_phone_collection_widget %}
-
 {% block collection_render %}
     {% spaceless %}
         {% from 'OroUIBundle::macros.html.twig' import collection_prototype as collection  %}
