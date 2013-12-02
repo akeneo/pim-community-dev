@@ -82,7 +82,7 @@ class PimCatalogExtension extends Extension implements PrependExtensionInterface
         $container->setParameter($this->getAlias().'.storage_driver', $storageDriver);
         // Parameter defining if the mapping driver must be enabled or not
         $container->setParameter($this->getAlias().'.storage_driver.'.$storageDriver, true);
-        
+
     }
 
     /**

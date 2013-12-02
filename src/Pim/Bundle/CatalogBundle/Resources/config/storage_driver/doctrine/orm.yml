@@ -12,4 +12,3 @@
 #        factory_method: getRepository
 #        arguments:
 #            - %pim_catalog.product.class%
-
