@@ -110,7 +110,7 @@ class CompletenessManager
      * @param  array            $locales
      * @return array
      */
-    public function getProductCompleteness(ProductInterface $product, array $channels, array $locales)
+    public function getProductCompleteness(ProductInterface $product, array $channels, array $locales, $localeCode)
     {
         $family = $product->getFamily();
 
@@ -141,6 +141,18 @@ class CompletenessManager
                 $channel = $completeness->getChannel();
                 $completenesses[$locale->getCode()][$channel->getCode()]['completeness'] = $completeness;
             }
+            $fullFamily = $this->doctrine
+                ->getRepository(get_class($family))
+                ->createQueryBuilder('f')
+                ->select('f, r, a, t')
+                ->leftJoin('f.requirements', 'r')
+                ->leftJoin('r.attribute', 'a')
+                ->leftJoin('a.translations', 't', 'WITH', 't.locale=:localeCode')
+                ->where('f.id=:id')
+                ->setParameter('id', $family->getId())
+                ->setParameter('localeCode', $localeCode)
+                ->getQuery()
+                ->getOneOrNullResult();
             foreach ($family->getAttributeRequirements() as $requirement) {
                 if ($requirement->isRequired()) {
                     $attribute = $requirement->getAttribute();

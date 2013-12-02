@@ -2,12 +2,13 @@
 
 namespace Pim\Bundle\CatalogBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
-use Symfony\Component\HttpFoundation\Response;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Controller for completeness
@@ -74,13 +75,16 @@ class CompletenessController
      */
     public function completenessAction($id)
     {
-        $s = new \Symfony\Component\Stopwatch\Stopwatch;
-        $s->start('cpl');
         $product = $this->productManager->getFlexibleRepository()->find($id);
 
         $channels = $this->channelManager->getChannels();
         $locales = $this->localeManager->getUserLocales();
-        $completenesses = $this->completenessManager->getProductCompleteness($product, $channels, $locales);
+        $completenesses = $this->completenessManager->getProductCompleteness(
+            $product,
+            $channels,
+            $locales,
+            $this->localeManager->getCurrentLocale()
+        );
 
         return $this->templating->renderResponse(
             'PimCatalogBundle:Completeness:_completeness.html.twig',
