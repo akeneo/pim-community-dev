@@ -5,7 +5,7 @@ namespace Oro\Bundle\FilterBundle\Grid\Extension;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
-use Oro\Bundle\FilterBundle\Filter\Orm\FilterUtility;
+use Oro\Bundle\FilterBundle\Filter\FilterUtility;
 
 class Configuration implements ConfigurationInterface
 {
@@ -45,10 +45,10 @@ class Configuration implements ConfigurationInterface
                                 ->end()
                             ->end()
                             ->scalarNode(FilterUtility::DATA_NAME_KEY)->isRequired()->end()
-                            ->enumNode('filter_condition')
+                            ->enumNode(FilterUtility::CONDITION_KEY)
                                 ->values(array(FilterUtility::CONDITION_AND, FilterUtility::CONDITION_OR))
                             ->end()
-                            ->booleanNode('filter_by_having')->end()
+                            ->booleanNode(FilterUtility::BY_HAVING_KEY)->end()
                             ->booleanNode(FilterUtility::ENABLED_KEY)->end()
                         ->end()
                     ->end()

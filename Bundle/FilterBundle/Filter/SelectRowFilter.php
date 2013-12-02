@@ -1,9 +1,9 @@
 <?php
 
-namespace Oro\Bundle\FilterBundle\Filter\Orm;
+namespace Oro\Bundle\FilterBundle\Filter;
 
-use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\SelectRowFilterType;
+use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 
 class SelectRowFilter extends ChoiceFilter
 {
@@ -18,7 +18,7 @@ class SelectRowFilter extends ChoiceFilter
     /**
      * {@inheritdoc}
      */
-    public function apply(QueryBuilder $qb, $data)
+    public function apply(FilterDatasourceAdapterInterface $ds, $data)
     {
         $data = $this->parseData($data);
         if (!$data) {
@@ -28,23 +28,23 @@ class SelectRowFilter extends ChoiceFilter
         $expression = false;
         switch (true) {
             case $data['in'] === null && $data['out'] !== null && empty($data['out']):
-                $expression = $qb->expr()->eq(1, 1);
+                $expression = $ds->expr()->eq(1, 1);
                 break;
             case $data['out'] === null && $data['in'] !== null && empty($data['in']):
-                $expression = $qb->expr()->eq(0, 1);
+                $expression = $ds->expr()->eq(0, 1);
                 break;
             case !empty($data['in']):
-                $expression = $qb->expr()->in($this->get(FilterUtility::DATA_NAME_KEY), $data['in']);
+                $expression = $ds->expr()->in($this->get(FilterUtility::DATA_NAME_KEY), $data['in']);
                 break;
             case !empty($data['out']):
-                $expression = $qb->expr()->notIn($this->get(FilterUtility::DATA_NAME_KEY), $data['out']);
+                $expression = $ds->expr()->notIn($this->get(FilterUtility::DATA_NAME_KEY), $data['out']);
                 break;
         }
         if (!$expression) {
             return false;
         }
 
-        $this->applyFilterToClause($qb, $expression);
+        $this->applyFilterToClause($ds, $expression);
 
         return true;
     }

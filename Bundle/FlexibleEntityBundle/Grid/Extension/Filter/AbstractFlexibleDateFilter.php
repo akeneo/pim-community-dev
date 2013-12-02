@@ -2,16 +2,16 @@
 
 namespace Oro\Bundle\FlexibleEntityBundle\Grid\Extension\Filter;
 
-use Doctrine\ORM\QueryBuilder;
-use Oro\Bundle\FilterBundle\Filter\Orm\AbstractDateFilter;
+use Oro\Bundle\FilterBundle\Filter\AbstractDateFilter;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\DateRangeFilterType;
+use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 
 abstract class AbstractFlexibleDateFilter extends AbstractDateFilter
 {
     /**
      * {@inheritdoc}
      */
-    public function apply(QueryBuilder $qb, $data)
+    public function apply(FilterDatasourceAdapterInterface $ds, $data)
     {
         $data = $this->parseData($data);
         if (!$data) {
@@ -26,7 +26,7 @@ abstract class AbstractFlexibleDateFilter extends AbstractDateFilter
 
         $this->applyFlexibleDependingOnType(
             $type,
-            $qb,
+            $ds,
             $dateStartValue,
             $dateEndValue,
             $this->get(FilterUtility::DATA_NAME_KEY)
@@ -38,21 +38,21 @@ abstract class AbstractFlexibleDateFilter extends AbstractDateFilter
     /**
      * {@inheritdoc}
      */
-    protected function applyFlexibleDependingOnType($type, $qb, $dateStartValue, $dateEndValue, $fieldName)
+    protected function applyFlexibleDependingOnType($type, $ds, $dateStartValue, $dateEndValue, $fieldName)
     {
         switch ($type) {
             case DateRangeFilterType::TYPE_MORE_THAN:
-                $this->applyFlexibleFilterLessMore($qb, $dateStartValue, $fieldName, false);
+                $this->applyFlexibleFilterLessMore($ds, $dateStartValue, $fieldName, false);
                 break;
             case DateRangeFilterType::TYPE_LESS_THAN:
-                $this->applyFlexibleFilterLessMore($qb, $dateEndValue, $fieldName, true);
+                $this->applyFlexibleFilterLessMore($ds, $dateEndValue, $fieldName, true);
                 break;
             case DateRangeFilterType::TYPE_NOT_BETWEEN:
-                $this->applyFlexibleFilterNotBetween($qb, $dateStartValue, $dateEndValue, $fieldName);
+                $this->applyFlexibleFilterNotBetween($ds, $dateStartValue, $dateEndValue, $fieldName);
                 break;
             default:
             case DateRangeFilterType::TYPE_BETWEEN:
-                $this->applyFlexibleFilterBetween($qb, $dateStartValue, $dateEndValue, $fieldName);
+                $this->applyFlexibleFilterBetween($ds, $dateStartValue, $dateEndValue, $fieldName);
                 break;
         }
     }
@@ -60,28 +60,28 @@ abstract class AbstractFlexibleDateFilter extends AbstractDateFilter
     /**
      * {@inheritdoc}
      */
-    protected function applyFlexibleFilterBetween($qb, $dateStartValue, $dateEndValue, $fieldName)
+    protected function applyFlexibleFilterBetween($ds, $dateStartValue, $dateEndValue, $fieldName)
     {
         if ($dateStartValue) {
-            $this->util->applyFlexibleFilter($qb, $this->getFEN(), $fieldName, $dateStartValue, '>=');
+            $this->util->applyFlexibleFilter($ds, $this->getFEN(), $fieldName, $dateStartValue, '>=');
         }
         if ($dateEndValue) {
-            $this->util->applyFlexibleFilter($qb, $this->getFEN(), $fieldName, $dateEndValue, '<=');
+            $this->util->applyFlexibleFilter($ds, $this->getFEN(), $fieldName, $dateEndValue, '<=');
         }
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function applyFlexibleFilterLessMore($qb, $dateValue, $fieldName, $isLess)
+    protected function applyFlexibleFilterLessMore($ds, $dateValue, $fieldName, $isLess)
     {
-        $this->util->applyFlexibleFilter($qb, $this->getFEN(), $fieldName, $dateValue, $isLess ? '<' : '>');
+        $this->util->applyFlexibleFilter($ds, $this->getFEN(), $fieldName, $dateValue, $isLess ? '<' : '>');
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function applyFlexibleFilterNotBetween($qb, $dateStartValue, $dateEndValue, $fieldName)
+    protected function applyFlexibleFilterNotBetween($ds, $dateStartValue, $dateEndValue, $fieldName)
     {
         $values    = array();
         $operators = array();
@@ -97,7 +97,7 @@ abstract class AbstractFlexibleDateFilter extends AbstractDateFilter
         }
 
         if ($values && $operators) {
-            $this->util->applyFlexibleFilter($qb, $this->getFEN(), $fieldName, $values, $operators);
+            $this->util->applyFlexibleFilter($ds, $this->getFEN(), $fieldName, $values, $operators);
         }
     }
 

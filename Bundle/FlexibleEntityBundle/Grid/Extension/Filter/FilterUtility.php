@@ -2,8 +2,9 @@
 
 namespace Oro\Bundle\FlexibleEntityBundle\Grid\Extension\Filter;
 
-use Doctrine\ORM\QueryBuilder;
-use Oro\Bundle\FilterBundle\Filter\Orm\FilterUtility as BaseFilterUtility;
+use Oro\Bundle\FilterBundle\Datasource\Orm\OrmFilterDatasourceAdapter;
+use Oro\Bundle\FilterBundle\Filter\FilterUtility as BaseFilterUtility;
+use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManagerRegistry;
 use Oro\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository;
@@ -49,18 +50,19 @@ class FilterUtility extends BaseFilterUtility
     /**
      * Applies filter to query by flexible attribute
      *
-     * @param QueryBuilder $qb
+     * @param FilterDatasourceAdapterInterface $ds
      * @param string       $flexibleEntityName
      * @param string       $field
      * @param mixed        $value
      * @param string       $operator
      */
-    public function applyFlexibleFilter($qb, $flexibleEntityName, $field, $value, $operator)
+    public function applyFlexibleFilter($ds, $flexibleEntityName, $field, $value, $operator)
     {
         /** @var $entityRepository FlexibleEntityRepository */
         $entityRepository = $this->getFlexibleManager($flexibleEntityName)
             ->getFlexibleRepository();
 
-        $entityRepository->applyFilterByAttribute($qb, $field, $value, $operator);
+        /** @var OrmFilterDatasourceAdapter $ds */
+        $entityRepository->applyFilterByAttribute($ds->getQueryBuilder(), $field, $value, $operator);
     }
 }

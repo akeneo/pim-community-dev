@@ -12,8 +12,9 @@ use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 use Oro\Bundle\DataGridBundle\Extension\AbstractExtension;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
-use Oro\Bundle\FilterBundle\Filter\Orm\FilterUtility;
-use Oro\Bundle\FilterBundle\Filter\Orm\FilterInterface;
+use Oro\Bundle\FilterBundle\Filter\FilterUtility;
+use Oro\Bundle\FilterBundle\Filter\FilterInterface;
+use Oro\Bundle\FilterBundle\Datasource\Orm\OrmFilterDatasourceAdapter;
 
 class OrmFilterExtension extends AbstractExtension
 {
@@ -67,6 +68,7 @@ class OrmFilterExtension extends AbstractExtension
     {
         $filters = $this->getFiltersToApply($config);
         $values  = $this->getValuesToApply($config);
+        $datasourceAdapter = new OrmFilterDatasourceAdapter($datasource->getQueryBuilder());
 
         foreach ($filters as $filter) {
             $value = isset($values[$filter->getName()]) ? $values[$filter->getName()] : false;
@@ -78,7 +80,7 @@ class OrmFilterExtension extends AbstractExtension
                 }
 
                 if ($form->isValid()) {
-                    $filter->apply($datasource->getQueryBuilder(), $form->getData());
+                    $filter->apply($datasourceAdapter, $form->getData());
                 }
             }
         }

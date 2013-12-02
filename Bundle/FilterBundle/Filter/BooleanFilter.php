@@ -1,9 +1,9 @@
 <?php
 
-namespace Oro\Bundle\FilterBundle\Filter\Orm;
+namespace Oro\Bundle\FilterBundle\Filter;
 
-use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\BooleanFilterType;
+use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 
 class BooleanFilter extends ChoiceFilter
 {
@@ -30,7 +30,7 @@ class BooleanFilter extends ChoiceFilter
     /**
      * {@inheritdoc}
      */
-    public function apply(QueryBuilder $qb, $data)
+    public function apply(FilterDatasourceAdapterInterface $ds, $data)
     {
         $data = $this->parseData($data);
         if (!$data) {
@@ -38,11 +38,11 @@ class BooleanFilter extends ChoiceFilter
         }
 
         $field             = $this->get(FilterUtility::DATA_NAME_KEY);
-        $compareExpression = $qb->expr()->neq($field, 'false');
+        $compareExpression = $ds->expr()->neq($field, 'false');
 
         if ($this->getOr(self::NULLABLE_KEY, false)) {
-            $summaryExpression = $qb->expr()->andX(
-                $qb->expr()->isNotNull($field),
+            $summaryExpression = $ds->expr()->andX(
+                $ds->expr()->isNotNull($field),
                 $compareExpression
             );
         } else {
@@ -55,11 +55,11 @@ class BooleanFilter extends ChoiceFilter
                 break;
             case BooleanFilterType::TYPE_NO:
             default:
-                $expression = $qb->expr()->not($summaryExpression);
+                $expression = $ds->expr()->not($summaryExpression);
                 break;
         }
 
-        $this->applyFilterToClause($qb, $expression);
+        $this->applyFilterToClause($ds, $expression);
 
         return true;
     }

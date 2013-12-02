@@ -1,10 +1,9 @@
 <?php
 
-namespace Oro\Bundle\FilterBundle\Filter\Orm;
-
-use Doctrine\ORM\QueryBuilder;
+namespace Oro\Bundle\FilterBundle\Filter;
 
 use Symfony\Component\Form\Form;
+use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 
 interface FilterInterface
 {
@@ -40,12 +39,12 @@ interface FilterInterface
     public function getMetadata();
 
     /**
-     * Applies filter to query builder
+     * Applies a filter restrictions to a data source
      *
-     * @param QueryBuilder $qb
+     * @param FilterDatasourceAdapterInterface $ds
      * @param mixed        $data
      *
      * @return bool true if a filter successfully applied; otherwise, false.
      */
-    public function apply(QueryBuilder $qb, $data);
+    public function apply(FilterDatasourceAdapterInterface $ds, $data);
 }

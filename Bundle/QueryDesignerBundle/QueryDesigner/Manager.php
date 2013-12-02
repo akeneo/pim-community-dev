@@ -3,7 +3,7 @@
 namespace Oro\Bundle\QueryDesignerBundle\QueryDesigner;
 
 use Oro\Bundle\QueryDesignerBundle\Provider\SystemAwareResolver;
-use Oro\Bundle\FilterBundle\Filter\Orm\FilterInterface;
+use Oro\Bundle\FilterBundle\Filter\FilterInterface;
 
 class Manager
 {
@@ -35,7 +35,7 @@ class Manager
     public function getMetadata()
     {
         $filtersMetadata = [];
-        $filters = $this->getFilters();
+        $filters         = $this->getFilters();
         foreach ($filters as $filter) {
             $filtersMetadata[] = $filter->getMetadata();
         }
@@ -46,23 +46,42 @@ class Manager
     /**
      * Add filter to array of available filters
      *
-     * @param string          $filterType
+     * @param string          $type
      * @param FilterInterface $filter
      */
-    public function addFilter($filterType, FilterInterface $filter)
+    public function addFilter($type, FilterInterface $filter)
     {
-        $this->filters[$filterType] = $filter;
+        $this->filters[$type] = $filter;
     }
 
     /**
-     * Gets a filter
+     * Creates a new instance of a filter based on a configuration
+     * of a filter registered in this manager with the given name
      *
-     * @param $filterType
+     * @param string $name   A filter name
+     * @param array  $params An additional parameters of a new filter
+     * @throws \RuntimeException if a filter with the given name does not exist
      * @return FilterInterface
      */
-    public function getFilter($filterType)
+    public function createFilter($name, array $params = null)
     {
-        return $this->filters[$filterType];
+        $config = null;
+        $filtersConfig = $this->config->offsetGet('filters');
+        foreach ($filtersConfig as $filterName => $attr) {
+            if ($filterName === $name) {
+                $config = $attr;
+                break;
+            }
+        }
+        if ($config === null) {
+            throw new \RuntimeException(sprintf('Unknown filter "%s".', $name));
+        }
+
+        if ($params !== null && !empty($params)) {
+            $config = array_merge($config, $params);
+        }
+
+        return $this->getFilterObject($name, $config);
     }
 
     /**

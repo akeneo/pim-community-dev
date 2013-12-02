@@ -1,6 +1,6 @@
 <?php
 
-namespace Oro\Bundle\FilterBundle\Filter\Orm;
+namespace Oro\Bundle\FilterBundle\Filter;
 
 use Oro\Bundle\FilterBundle\Form\Type\Filter\EntityFilterType;
 

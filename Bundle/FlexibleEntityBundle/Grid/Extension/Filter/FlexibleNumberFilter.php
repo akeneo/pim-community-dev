@@ -2,15 +2,15 @@
 
 namespace Oro\Bundle\FlexibleEntityBundle\Grid\Extension\Filter;
 
-use Doctrine\ORM\QueryBuilder;
-use Oro\Bundle\FilterBundle\Filter\Orm\NumberFilter;
+use Oro\Bundle\FilterBundle\Filter\NumberFilter;
+use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 
 class FlexibleNumberFilter extends NumberFilter
 {
     /**
      * {@inheritdoc}
      */
-    public function apply(QueryBuilder $qb, $data)
+    public function apply(FilterDatasourceAdapterInterface $ds, $data)
     {
         $data = $this->parseData($data);
         if (!$data) {
@@ -21,7 +21,7 @@ class FlexibleNumberFilter extends NumberFilter
 
         $fen = $this->get(FilterUtility::FEN_KEY);
         $this->util->applyFlexibleFilter(
-            $qb,
+            $ds,
             $fen,
             $this->get(FilterUtility::DATA_NAME_KEY),
             $data['value'],

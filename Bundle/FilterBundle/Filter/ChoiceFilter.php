@@ -1,9 +1,9 @@
 <?php
 
-namespace Oro\Bundle\FilterBundle\Filter\Orm;
+namespace Oro\Bundle\FilterBundle\Filter;
 
-use Doctrine\ORM\QueryBuilder;
 use Doctrine\Common\Collections\Collection;
+use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Symfony\Component\Form\Extension\Core\View\ChoiceView;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\ChoiceFilterType;
 
@@ -20,7 +20,7 @@ class ChoiceFilter extends AbstractFilter
     /**
      * {@inheritdoc}
      */
-    public function apply(QueryBuilder $qb, $data)
+    public function apply(FilterDatasourceAdapterInterface $ds, $data)
     {
         $data = $this->parseData($data);
         if (!$data) {
@@ -28,17 +28,16 @@ class ChoiceFilter extends AbstractFilter
         }
 
         $operator  = $this->getOperator($data['type']);
-        $parameter = $this->generateQueryParameterName();
+        $parameter = $ds->generateParameterName($this->getName());
 
         if ('IN' == $operator) {
-            $expression = $qb->expr()->in($this->get(FilterUtility::DATA_NAME_KEY), ':' . $parameter);
+            $expression = $ds->expr()->in($this->get(FilterUtility::DATA_NAME_KEY), $parameter, true);
         } else {
-            $expression = $qb->expr()->notIn($this->get(FilterUtility::DATA_NAME_KEY), ':' . $parameter);
+            $expression = $ds->expr()->notIn($this->get(FilterUtility::DATA_NAME_KEY), $parameter, true);
         }
 
-        $this->applyFilterToClause($qb, $expression);
-        /** @var $qb QueryBuilder */
-        $qb->setParameter($parameter, $data['value']);
+        $this->applyFilterToClause($ds, $expression);
+        $ds->setParameter($parameter, $data['value']);
 
         return true;
     }

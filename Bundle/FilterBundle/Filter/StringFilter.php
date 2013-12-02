@@ -1,16 +1,16 @@
 <?php
 
-namespace Oro\Bundle\FilterBundle\Filter\Orm;
+namespace Oro\Bundle\FilterBundle\Filter;
 
-use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\TextFilterType;
+use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 
 class StringFilter extends AbstractFilter
 {
     /**
      * {@inheritDoc}
      */
-    public function apply(QueryBuilder $qb, $data)
+    public function apply(FilterDatasourceAdapterInterface $ds, $data)
     {
         $data = $this->parseData($data);
         if (!$data) {
@@ -18,14 +18,14 @@ class StringFilter extends AbstractFilter
         }
 
         $operator      = $this->getOperator($data['type']);
-        $parameterName = $this->generateQueryParameterName();
+        $parameterName = $ds->generateParameterName($this->getName());
 
         $this->applyFilterToClause(
-            $qb,
-            $this->createComparisonExpression($this->get(FilterUtility::DATA_NAME_KEY), $operator, $parameterName)
+            $ds,
+            $ds->expr()->comparison($this->get(FilterUtility::DATA_NAME_KEY), $operator, $parameterName, true)
         );
 
-        $qb->setParameter($parameterName, $data['value']);
+        $ds->setParameter($parameterName, $data['value']);
 
         return true;
     }
