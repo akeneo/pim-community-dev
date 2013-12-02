@@ -116,6 +116,8 @@ if [ $TASK = 'db' ] || [ $TASK = 'all' ]; then
     php app/console oro:search:create-index
     php app/console pim:search:reindex en_US
     php app/console pim:versioning:refresh
+    php app/console doctrine:query:sql "ANALYZE TABLE pim_product_value"
+    php app/console doctrine:query:sql "ANALYZE TABLE pim_icecatdemo_product_value" 2>&1 > /dev/null || true
     php app/console pim:completeness:calculate
 fi
 
