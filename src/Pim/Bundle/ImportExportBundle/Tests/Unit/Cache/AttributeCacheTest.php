@@ -50,7 +50,6 @@ class AttributeCacheTest extends \PHPUnit_Framework_TestCase
         $this->repository->expects($this->once())
             ->method('findBy')
             ->will($this->returnCallback(array($this, 'getAttributes')));
-        $this->addAttribute('identifier', AttributeCache::IDENTIFIER_ATTRIBUTE_TYPE);
     }
 
     /**
@@ -93,56 +92,21 @@ class AttributeCacheTest extends \PHPUnit_Framework_TestCase
     /**
      * Test related method
      */
-    public function testInitialize()
+    public function testGetAttributes()
     {
-        $this->assertFalse($this->attributeCache->isInitialized());
         $this->initializeAttributes();
         $this->addAttribute('col1');
         $this->addAttribute('col2');
 
-        $this->attributeCache->initialize(
+        $attributes = $this->attributeCache->getAttributes(
             array(
-                $this->getColumnInfoMock('identifier'),
                 $this->getColumnInfoMock('col1'),
                 $this->getColumnInfoMock('col2'),
             )
         );
 
-        $this->assertEquals($this->attributes, $this->attributeCache->getAttributes());
-        $this->assertEquals($this->attributes['identifier'], $this->attributeCache->getIdentifierAttribute());
-        $this->assertEquals($this->attributes['col1'], $this->attributeCache->getAttribute('col1'));
-        $this->assertTrue($this->attributeCache->isInitialized());
-    }
-
-    /**
-     * Test related method
-     */
-    public function testClear()
-    {
-        $this->initializeAttributes();
-        $this->attributeCache->initialize(array($this->getColumnInfoMock('identifier')));
-        $this->attributeCache->clear();
-        $this->assertFalse($this->attributeCache->isInitialized());
-        $this->assertNull($this->attributeCache->getAttributes());
-        $this->assertNull($this->attributeCache->getIdentifierAttribute());
-    }
-
-    /**
-     * @expectedException \Pim\Bundle\ImportExportBundle\Exception\UnknownColumnException
-     * @expectedExceptionMessage Columns col1, col2 do not exist
-     */
-    public function testExtraColumns()
-    {
-        $this->initializeAttributes();
-        $this->expectedQueryCodes = array('identifier', 'col1', 'col2');
-
-        $this->attributeCache->initialize(
-            array(
-                $this->getColumnInfoMock('identifier', false),
-                $this->getColumnInfoMock('col1'),
-                $this->getColumnInfoMock('col2'),
-            )
-        );
+        $this->assertEquals($this->attributes, $attributes);
+        $this->assertEquals($this->attributes['col1'], $attributes['col1']);
     }
 
     /**
@@ -307,11 +271,6 @@ class AttributeCacheTest extends \PHPUnit_Framework_TestCase
         $info->expects($this->any())
             ->method('getName')
             ->will($this->returnValue($name));
-        if ($withAttribute && isset($this->attributes[$name])) {
-            $info->expects($this->once())
-                ->method('setAttribute')
-                ->with($this->equalTo($this->attributes[$name]));
-        }
 
         return $info;
     }

@@ -97,7 +97,7 @@ cd $APP_ROOT
 if [ $TASK = 'db' ] || [ $TASK = 'all' ]; then
     # Ignoring the case where the DB does not exist yet
     php app/console oro:entity-extend:clear
-    php app/console doctrine:database:drop --force 2>&1 > /dev/null || true
+    php app/console doctrine:database:drop --force --full-database 2>&1 > /dev/null || true
     php app/console doctrine:database:create
     php app/console doctrine:schema:create
     php app/console cache:clear
