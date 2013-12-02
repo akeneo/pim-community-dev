@@ -79,12 +79,8 @@ class MetricFilterType extends NumberFilterType
     protected function createUnitOptions(array $options)
     {
         $result = array('required' => true);
-        $options['family'] = 'Length';
-//         if (!$options['family']) {
-//             throw new FormException('Family option must be set');
-//         }
-
-        $result['choices'] = $this->measureManager->getUnitSymbolsForFamily($options['family']);
+        $family = 'Weight';
+        $result['choices'] = $this->measureManager->getUnitSymbolsForFamily($family);
 
         return $result;
     }
@@ -92,15 +88,10 @@ class MetricFilterType extends NumberFilterType
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        parent::setDefaultOptions($resolver);
+//     public function setDefaultOptions(OptionsResolverInterface $resolver)
+//     {
+//         parent::setDefaultOptions($resolver);
 
-        $resolver->replaceDefaults(array('data_type' => self::DATA_DECIMAL));
-        $resolver->setDefaults(
-            array(
-                'family' => null
-            )
-        );
-    }
+//         $resolver->replaceDefaults(array('data_type' => self::DATA_DECIMAL));
+//     }
 }

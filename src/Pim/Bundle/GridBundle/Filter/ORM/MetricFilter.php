@@ -30,9 +30,18 @@ class MetricFilter extends NumberFilter
     /**
      * {@inheritdoc}
      */
+    public function initialize($name, array $options = array())
+    {
+        $this->name = $name;
+        $this->setOptions($options);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function filter(ProxyQueryInterface $proxyQuery, $alias, $field, $data)
     {
-        var_dump($data);
+        $data = $this->parseData($data);
     }
 
     /**
@@ -50,6 +59,9 @@ class MetricFilter extends NumberFilter
      */
     public function getRenderSettings()
     {
-        return parent::getRenderSettings();
+        list($formType, $formOptions) = parent::getRenderSettings();
+        $formOptions['data_type'] = MetricFilterType::DATA_DECIMAL;
+
+        return array($formType, $formOptions);
     }
 }
