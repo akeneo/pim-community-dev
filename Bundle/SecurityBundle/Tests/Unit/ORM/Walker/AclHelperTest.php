@@ -111,6 +111,16 @@ class AclHelperTest extends OrmTestCase
                 'resultHelper3',
                 'resultWalker3'
             ]
+            ,
+            [
+                $this->getRequest4(),
+                [
+                    'Doctrine\Tests\Models\CMS\CmsArticle' => ['id', [10]],
+                    'Doctrine\Tests\Models\CMS\CmsUser' => ['id', [3, 2, 1]],
+                ],
+                'resultHelper4',
+                'resultWalker4'
+            ]
         ];
     }
 
@@ -255,6 +265,47 @@ class AclHelperTest extends OrmTestCase
         $subselect = $resultAst->whereClause
             ->conditionalExpression
             ->conditionalFactors[0]
+            ->simpleConditionalExpression
+            ->subselect;
+        $expression = $subselect->whereClause->conditionalExpression->conditionalFactors[1]->simpleConditionalExpression;
+        $this->assertEquals([3, 2, 1], $this->collectLiterals($expression->literals));
+    }
+
+    protected function getRequest4()
+    {
+        $qb = $this->getQueryBuilder();
+        $qb->select('u')
+            ->from('Doctrine\Tests\Models\CMS\CmsUser', 'u')
+            ->join('u.articles', 'art')
+            ->where('art.id in (1,2,3)')
+            ->orWhere(
+                $qb->expr()->in(
+                    'u.id',
+                    'SELECT users.id FROM Doctrine\Tests\Models\CMS\CmsUser users
+                       JOIN users.articles articles
+                       WHERE articles.id in (1,2,3)
+                    '
+                )
+            );
+
+        return $qb;
+    }
+
+    protected function resultHelper4($hints)
+    {
+        $whereCondition = $hints[AclWalker::ORO_ACL_CONDITION]->getWhereConditions()[0];
+        $joinCondition = $hints[AclWalker::ORO_ACL_CONDITION]->getJoinConditions()[0];
+        $subRequest = $hints[AclWalker::ORO_ACL_CONDITION]->getSubRequests()[0];
+        $this->assertEquals([3, 2, 1], $whereCondition->getValue());
+        $this->assertEquals([10], $joinCondition->getValue());
+        $this->assertEquals(1, $subRequest->getFactorId());
+    }
+
+    protected function resultWalker4(SelectStatement $resultAst)
+    {
+        $subselect = $resultAst->whereClause
+            ->conditionalExpression
+            ->conditionalTerms[1]
             ->simpleConditionalExpression
             ->subselect;
         $expression = $subselect->whereClause->conditionalExpression->conditionalFactors[1]->simpleConditionalExpression;
