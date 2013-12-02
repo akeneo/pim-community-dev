@@ -7,8 +7,7 @@ use Pim\Bundle\CatalogBundle\Model\Group;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\ProductAttribute;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\ImportExportBundle\Exception\UnknownColumnException;
-use Pim\Bundle\ImportExportBundle\Exception\MissingIdentifierException;
+
 /**
  * Caches the attributes of an import. Do not forget to call the reset method between two imports.
  *
@@ -19,29 +18,9 @@ use Pim\Bundle\ImportExportBundle\Exception\MissingIdentifierException;
 class AttributeCache
 {
     /**
-     * @staticvar the identifier attribute type
-     */
-    const IDENTIFIER_ATTRIBUTE_TYPE = 'pim_catalog_identifier';
-
-    /**
      * @var RegistryInterface
      */
     protected $doctrine;
-
-    /**
-     * @var array
-     */
-    protected $attributes;
-
-    /**
-     * @var ProductAttribute
-     */
-    protected $identifierAttribute;
-
-    /**
-     * @var boolean
-     */
-    protected $initialized=false;
 
     /**
      * @var array
@@ -63,66 +42,34 @@ class AttributeCache
     }
 
     /**
-     * Clears the cache
-     */
-    public function clear()
-    {
-        $this->attributes = null;
-        $this->identifierAttribute = null;
-        $this->initialized = false;
-    }
-
-    /**
-     * Initializes the cache with a set of column labels
+     * Sets the attributes and identifierAttributes properties
      *
      * @param array $columnsInfo
      */
-    public function initialize(array $columnsInfo)
+    public function getAttributes($columnsInfo)
     {
-        $this->setAttributes($columnsInfo);
-        $this->initialized = true;
-    }
+        $this->attributes = array();
+        $this->identifierAttribute = null;
+        if (!count($columnsInfo)) {
+            return;
+        }
+        $codes = array_unique(
+            array_map(
+                function ($columnInfo) {
+                    return $columnInfo->getName();
+                },
+                $columnsInfo
+            )
+        );
 
-    /**
-     * Returns true if the cache has been initialized
-     *
-     * @return boolean
-     */
-    public function isInitialized()
-    {
-        return $this->initialized;
-    }
+        $attributes = $this->doctrine->getRepository('PimCatalogBundle:ProductAttribute')
+                ->findBy(array('code' => $codes));
+        $attributeMap = array();
+        foreach ($attributes as $attribute) {
+            $attributeMap[$attribute->getCode()] = $attribute;
+        }
 
-    /**
-     * Returns the attribute corresponding to the specified code
-     *
-     * @param string $code
-     *
-     * @return ProductAttribute
-     */
-    public function getAttribute($code)
-    {
-        return $this->attributes[$code];
-    }
-
-    /**
-     * Returns an array of cached attributes
-     *
-     * @return array
-     */
-    public function getAttributes()
-    {
-        return $this->attributes;
-    }
-
-    /**
-     * Returns the product attribute
-     *
-     * @return ProductAttribute
-     */
-    public function getIdentifierAttribute()
-    {
-        return $this->identifierAttribute;
+        return $attributeMap;
     }
 
     /**
@@ -202,43 +149,5 @@ class AttributeCache
             },
             $object->getAttributes()->toArray()
         );
-    }
-
-    /**
-     * Sets the attributes and identifierAttributes properties
-     *
-     * @param array $columnsInfo
-     */
-    protected function setAttributes($columnsInfo)
-    {
-        $this->attributes = array();
-        $this->identifierAttribute = null;
-        if (!count($columnsInfo)) {
-            return;
-        }
-        $codes = array_unique(
-            array_map(
-                function ($columnInfo) {
-                    return $columnInfo->getName();
-                },
-                $columnsInfo
-            )
-        );
-
-        $attributes = $this->doctrine->getRepository('PimCatalogBundle:ProductAttribute')
-                ->findBy(array('code' => $codes));
-
-        foreach ($attributes as $attribute) {
-            if (static::IDENTIFIER_ATTRIBUTE_TYPE === $attribute->getAttributeType()) {
-                $this->identifierAttribute = $attribute;
-            }
-            $this->attributes[$attribute->getCode()] = $attribute;
-        }
-        foreach ($columnsInfo as $columnInfo) {
-            $columnName = $columnInfo->getName();
-            if (isset($this->attributes[$columnName])) {
-                $columnInfo->setAttribute($this->attributes[$columnName]);
-            }
-        }
     }
 }
