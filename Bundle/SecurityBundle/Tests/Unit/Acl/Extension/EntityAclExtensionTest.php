@@ -6,7 +6,7 @@ use Oro\Bundle\SecurityBundle\Acl\AccessLevel;
 use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdentityFactory;
 use Oro\Bundle\SecurityBundle\Acl\Extension\EntityAclExtension;
 use Oro\Bundle\SecurityBundle\Acl\Extension\EntityMaskBuilder;
-use Oro\Bundle\EntityBundle\Owner\Metadata\OwnershipMetadata;
+use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadata;
 use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\BusinessUnit;
 use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\Organization;
 use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\Entity\TestEntity;
@@ -395,6 +395,16 @@ class EntityAclExtensionTest extends \PHPUnit_Framework_TestCase
             )
         );
     }
+
+    public function testGetAccessLevelNamesForRoot()
+    {
+        $object = new ObjectIdentity('entity', ObjectIdentityFactory::ROOT_IDENTITY_TYPE);
+        $this->assertEquals(
+            array('NONE', 'BASIC', 'LOCAL', 'DEEP', 'GLOBAL', 'SYSTEM'),
+            $this->extension->getAccessLevelNames($object)
+        );
+    }
+
 
     public function decideIsGrantingProvider()
     {

@@ -12,7 +12,7 @@ use FOS\Rest\Util\Codes;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
-use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigIdInterface;
+use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigId;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
 use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
@@ -62,7 +62,7 @@ class ConfigEntityGridController extends Controller
             new UniqueKeyCollectionType(
                 array_filter(
                     $fieldConfigIds,
-                    function (FieldConfigIdInterface $fieldConfigId) {
+                    function (FieldConfigId $fieldConfigId) {
                         return $fieldConfigId->getFieldType() != 'ref-many';
                     }
                 )

@@ -41,8 +41,8 @@ class LoadUserData extends AbstractFixture implements ContainerAwareInterface
         $user
             ->setUsername(self::USER_NAME)
             ->setPlainPassword(self::USER_PASSWORD)
-            ->setFirstname('Simple')
-            ->setLastname('User')
+            ->setFirstName('Simple')
+            ->setLastName('User')
             ->addRole($role[0])
             ->setEmail('simple@example.com')
             ->setApi($api);

@@ -53,8 +53,7 @@ class EmailOwnerManagerTest extends \PHPUnit_Framework_TestCase
      */
     public function testHandleOnFlush(
         $handleInsertionsOrUpdatesReturnValue,
-        $handleDeletionsReturnValue,
-        $expectComputeChangeSets
+        $handleDeletionsReturnValue
     ) {
         $this->initOnFlush();
 
@@ -102,19 +101,16 @@ class EmailOwnerManagerTest extends \PHPUnit_Framework_TestCase
             )
             ->will($this->returnValue($handleDeletionsReturnValue));
 
-        $this->uow->expects($expectComputeChangeSets ? $this->once() : $this->never())
-            ->method('computeChangeSets');
-
         $manager->handleOnFlush($this->flushEventArgs);
     }
 
     public function handleOnFlushProvider()
     {
         return array(
-            'no changes' => array(false, false, false),
-            'has updates' => array(true, false, true),
-            'has deletion' => array(false, true, true),
-            'has updates and deletion' => array(true, true, true),
+            'no changes' => array(false, false),
+            'has updates' => array(true, false),
+            'has deletion' => array(false, true),
+            'has updates and deletion' => array(true, true),
         );
     }
 
@@ -124,8 +120,7 @@ class EmailOwnerManagerTest extends \PHPUnit_Framework_TestCase
     public function testHandleInsertionsOrUpdates(
         $entity,
         $processInsertionOrUpdateEntityCall,
-        $processInsertionOrUpdateEntityReturnValue,
-        $returnValue
+        $processInsertionOrUpdateEntityReturnValue
     ) {
         $this->initOnFlush();
 
@@ -165,30 +160,28 @@ class EmailOwnerManagerTest extends \PHPUnit_Framework_TestCase
                 ->method('processInsertionOrUpdateEntity');
         }
 
-        $result = ReflectionUtil::callProtectedMethod(
+        ReflectionUtil::callProtectedMethod(
             $manager,
             'handleInsertionsOrUpdates',
             array($entity === null ? array() : array($entity), $this->em, $this->uow)
         );
-        $this->assertEquals($returnValue, $result);
     }
 
     public function handleInsertionsOrUpdatesProvider()
     {
         return array(
-            'no items' => array(null, false, false, false),
-            'not tracked item' => array(new \stdClass(), false, false, false),
+            'no items' => array(null, false, false),
+            'not tracked item' => array(new \stdClass(), false, false),
             'EmailOwnerInterface nothing to change' =>
-            array($this->handleInsertionsOrUpdatesPrepareMockForEmailOwnerInterface(), true, false, false),
+            array($this->handleInsertionsOrUpdatesPrepareMockForEmailOwnerInterface(), true, false),
             'EmailOwnerInterface' => array(
                 $this->handleInsertionsOrUpdatesPrepareMockForEmailOwnerInterface(),
                 true,
                 true,
-                true
             ),
             'EmailInterface nothing to change' =>
-            array($this->handleInsertionsOrUpdatesPrepareMockForEmailInterface(), true, false, false),
-            'EmailInterface' => array($this->handleInsertionsOrUpdatesPrepareMockForEmailInterface(), true, true, true),
+            array($this->handleInsertionsOrUpdatesPrepareMockForEmailInterface(), true, false),
+            'EmailInterface' => array($this->handleInsertionsOrUpdatesPrepareMockForEmailInterface(), true, true),
         );
     }
 
@@ -221,8 +214,7 @@ class EmailOwnerManagerTest extends \PHPUnit_Framework_TestCase
     public function testHandleDeletions(
         $entity,
         $unbindEmailAddressCall,
-        $unbindEmailAddressReturnValue,
-        $returnValue
+        $unbindEmailAddressReturnValue
     ) {
         $this->initOnFlush();
 
@@ -253,25 +245,24 @@ class EmailOwnerManagerTest extends \PHPUnit_Framework_TestCase
                 ->method('unbindEmailAddress');
         }
 
-        $result = ReflectionUtil::callProtectedMethod(
+        ReflectionUtil::callProtectedMethod(
             $manager,
             'handleDeletions',
             array($entity === null ? array() : array($entity), $this->em)
         );
-        $this->assertEquals($returnValue, $result);
     }
 
     public function handleDeletionsProvider()
     {
         return array(
-            'no items' => array(null, false, false, false),
-            'not tracked item' => array(new \stdClass(), false, false, false),
+            'no items' => array(null, false, false),
+            'not tracked item' => array(new \stdClass(), false, false),
             'EmailOwnerInterface nothing to change' =>
-            array($this->handleDeletionsPrepareMockForEmailOwnerInterface(), true, false, false),
-            'EmailOwnerInterface' => array($this->handleDeletionsPrepareMockForEmailOwnerInterface(), true, true, true),
+            array($this->handleDeletionsPrepareMockForEmailOwnerInterface(), true, false),
+            'EmailOwnerInterface' => array($this->handleDeletionsPrepareMockForEmailOwnerInterface(), true, true),
             'EmailInterface nothing to change' =>
-            array($this->handleDeletionsPrepareMockForEmailInterface(), true, false, false),
-            'EmailInterface' => array($this->handleDeletionsPrepareMockForEmailInterface(), true, true, true),
+            array($this->handleDeletionsPrepareMockForEmailInterface(), true, false),
+            'EmailInterface' => array($this->handleDeletionsPrepareMockForEmailInterface(), true, true),
         );
     }
 
@@ -308,13 +299,11 @@ class EmailOwnerManagerTest extends \PHPUnit_Framework_TestCase
 
         $owner = $this->getMock('Oro\Bundle\EmailBundle\Entity\EmailOwnerInterface');
 
-        $result = ReflectionUtil::callProtectedMethod(
+        ReflectionUtil::callProtectedMethod(
             $manager,
             'processInsertionOrUpdateEntity',
             array(null, null, $owner, $this->em, $this->uow)
         );
-
-        $this->assertEquals(false, $result);
     }
 
     public function testProcessInsertionOrUpdateEntityNoEmailRelatedChanges()
@@ -334,13 +323,11 @@ class EmailOwnerManagerTest extends \PHPUnit_Framework_TestCase
 
         $owner = $this->getMock('Oro\Bundle\EmailBundle\Entity\EmailOwnerInterface');
 
-        $result = ReflectionUtil::callProtectedMethod(
+        ReflectionUtil::callProtectedMethod(
             $manager,
             'processInsertionOrUpdateEntity',
             array('testEmailField', null, $owner, $this->em, $this->uow)
         );
-
-        $this->assertEquals(false, $result);
     }
 
     public function testProcessInsertionOrUpdateEntityEmailValueNotChanged()
@@ -360,13 +347,11 @@ class EmailOwnerManagerTest extends \PHPUnit_Framework_TestCase
 
         $owner = $this->getMock('Oro\Bundle\EmailBundle\Entity\EmailOwnerInterface');
 
-        $result = ReflectionUtil::callProtectedMethod(
+        ReflectionUtil::callProtectedMethod(
             $manager,
             'processInsertionOrUpdateEntity',
             array('testEmailField', null, $owner, $this->em, $this->uow)
         );
-
-        $this->assertEquals(false, $result);
     }
 
     public function testProcessInsertionOrUpdateEntityEmailValueChanged()
@@ -387,13 +372,11 @@ class EmailOwnerManagerTest extends \PHPUnit_Framework_TestCase
 
         $owner = $this->getMock('Oro\Bundle\EmailBundle\Entity\EmailOwnerInterface');
 
-        $result = ReflectionUtil::callProtectedMethod(
+        ReflectionUtil::callProtectedMethod(
             $manager,
             'processInsertionOrUpdateEntity',
             array('testEmailField', null, $owner, $this->em, $this->uow)
         );
-
-        $this->assertEquals(true, $result);
     }
 
     public function testCreateEmailAddress()
@@ -422,8 +405,7 @@ class EmailOwnerManagerTest extends \PHPUnit_Framework_TestCase
             $addrManager
         );
 
-
-        $result = ReflectionUtil::callProtectedMethod(
+        ReflectionUtil::callProtectedMethod(
             $manager,
             'createEmailAddress',
             array('test@example.com', $owner)

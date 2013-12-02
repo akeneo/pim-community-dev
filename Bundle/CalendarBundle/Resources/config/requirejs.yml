@@ -1,0 +1,16 @@
+config:
+    shim:
+        'jquery.fullcalendar':
+            deps:
+                - 'jquery'
+                - 'jquery-ui'
+    paths:
+        'jquery.fullcalendar': 'bundles/orocalendar/lib/fullcalendar/fullcalendar.js'
+        'oro/calendar': 'bundles/orocalendar/js/calendar.js'
+        'oro/calendar/connection/collection': 'bundles/orocalendar/js/calendar/connection/collection.js'
+        'oro/calendar/connection/model': 'bundles/orocalendar/js/calendar/connection/model.js'
+        'oro/calendar/connection/view': 'bundles/orocalendar/js/calendar/connection/view.js'
+        'oro/calendar/event/collection': 'bundles/orocalendar/js/calendar/event/collection.js'
+        'oro/calendar/event/model': 'bundles/orocalendar/js/calendar/event/model.js'
+        'oro/calendar/event/view': 'bundles/orocalendar/js/calendar/event/view.js'
+        'oro/form-validation': 'bundles/orocalendar/js/form-validation.js'

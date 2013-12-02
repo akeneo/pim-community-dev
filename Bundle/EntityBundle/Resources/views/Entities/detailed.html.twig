@@ -1,0 +1,23 @@
+{% import 'OroUIBundle::macros.html.twig' as macros %}
+{% import 'OroLocaleBundle::macros.html.twig' as Locale %}
+{% import 'OroTagBundle::macros.html.twig' as _tag %}
+
+{# TODO: Move this to OroUIBundle::macros.html.twig #}
+{% macro renderRow(label, value) %}
+    {% import 'OroUIBundle::macros.html.twig' as macros %}
+    {{ macros.renderAttribute(label, '<p class="control-label">' ~ value|default('N/A'|trans) ~ '</p>') }}
+{% endmacro %}
+
+<style>
+    .entity-info {min-height: 380px;}
+</style>
+
+<div class="widget-content entity-info form-horizontal box-content row-fluid">
+    <div class="span6">
+        {% if dynamic|length %}
+            {% for label, item in dynamic %}
+                {{ _self.renderRow(label|trans, item) }}
+            {% endfor %}
+        {% endif %}
+    </div>
+</div>

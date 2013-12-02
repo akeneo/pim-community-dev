@@ -332,10 +332,10 @@ class TagManagerTest extends \PHPUnit_Framework_TestCase
             ->method('getTagging')
             ->will($this->returnValue(new ArrayCollection(array($tagging))));
 
-        $tag2->expects($this->once())->method('getName')
-            ->will($this->returnValue('test name 2'));
         $tag2->expects($this->any())->method('getId')
             ->will($this->returnValue(2));
+        $tag2->expects($this->once())->method('getName')
+            ->will($this->returnValue('test name 2'));
         $tag2->expects($this->exactly(1))->method('getTagging')
             ->will($this->returnValue(new ArrayCollection(array($tagging))));
 

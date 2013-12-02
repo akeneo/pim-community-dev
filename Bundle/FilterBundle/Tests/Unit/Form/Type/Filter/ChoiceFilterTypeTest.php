@@ -47,8 +47,8 @@ class ChoiceFilterTypeTest extends AbstractTypeTestCase
                     'field_type' => 'choice',
                     'field_options' => array('choices' => array()),
                     'operator_choices' => array(
-                        ChoiceFilterType::TYPE_CONTAINS => 'label_type_contains',
-                        ChoiceFilterType::TYPE_NOT_CONTAINS => 'label_type_not_contains',
+                        ChoiceFilterType::TYPE_CONTAINS => 'oro.filter.form.label_type_contains',
+                        ChoiceFilterType::TYPE_NOT_CONTAINS => 'oro.filter.form.label_type_not_contains',
                     ),
                     'populate_default' => true
                 )
@@ -79,7 +79,6 @@ class ChoiceFilterTypeTest extends AbstractTypeTestCase
                     'field_options' => array(
                         'choices' => array(1 => 'One', 2 => 'Two')
                     ),
-                    'translation_domain' => 'OroFilterBundle'
                 )
             ),
             'invalid value choice' => array(
@@ -92,7 +91,6 @@ class ChoiceFilterTypeTest extends AbstractTypeTestCase
                     'field_options' => array(
                         'choices' => array(1 => 'One')
                     ),
-                    'translation_domain' => 'OroFilterBundle'
                 )
             ),
             'multiple choices' => array(
@@ -106,7 +104,6 @@ class ChoiceFilterTypeTest extends AbstractTypeTestCase
                         'multiple' => true,
                         'choices' => array(1 => 'One', 2 => 'Two', 3 => 'Three')
                     ),
-                    'translation_domain' => 'OroFilterBundle'
                 )
             ),
             'invalid multiple choices' => array(
@@ -120,7 +117,6 @@ class ChoiceFilterTypeTest extends AbstractTypeTestCase
                         'multiple' => true,
                         'choices' => array(1 => 'One', 2 => 'Two', 3 => 'Three')
                     ),
-                    'translation_domain' => 'OroFilterBundle'
                 )
             ),
         );

@@ -3,7 +3,7 @@
 namespace Oro\Bundle\OrganizationBundle\Event;
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
-use Oro\Bundle\OrganizationBundle\Entity\Manager\BusinessUnitManager;
+
 use Oro\Bundle\OrganizationBundle\Entity\BusinessUnit;
 use Oro\Bundle\OrganizationBundle\Entity\Repository\BusinessUnitRepository;
 

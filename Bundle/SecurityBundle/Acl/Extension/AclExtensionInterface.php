@@ -202,4 +202,14 @@ interface AclExtensionInterface
      * @return bool
      */
     public function decideIsGranting($triggeredMask, $object, TokenInterface $securityToken);
+
+    /**
+     * Gets list of available access levels for given object
+     *
+     * @param $object
+     * @return array
+     *  key = access level code,
+     *  value = access level name
+     */
+    public function getAccessLevelNames($object);
 }

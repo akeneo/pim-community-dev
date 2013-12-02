@@ -14,7 +14,9 @@ class ExtendClassMetadataFactory extends ClassMetadataFactory
     public function setMetadataFor($className, $class)
     {
         $this->getCacheDriver()->save(
-            $className . $this->cacheSalt, $className, null
+            $className . $this->cacheSalt,
+            $class,
+            null
         );
 
         parent::setMetadataFor($className, $class);

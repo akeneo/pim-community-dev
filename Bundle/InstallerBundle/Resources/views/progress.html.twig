@@ -1,5 +1,5 @@
 {% block progress %}
-{% set step = step is defined ? step|lower : 'check' %}
+{% set step = step is defined ? step|lower : 'configure' %}
 <div class="progress-bar">
     <ul>
         <li{% if step == 'check' %} class="active"{% endif %}>
@@ -12,14 +12,19 @@
             <strong class="step">2</strong>
             <span>{{ 'process.step.configure.header'|trans }}</span>
         </li>
-        <li{% if step == 'setup' %} class="active"{% endif %}>
+        <li{% if step == 'schema' %} class="active"{% endif %}>
             <em class="fix-bg">&nbsp;</em>
             <strong class="step">3</strong>
+            <span>{{ 'process.step.schema.header'|trans }}</span>
+        </li>
+        <li{% if step == 'setup' %} class="active"{% endif %}>
+            <em class="fix-bg">&nbsp;</em>
+            <strong class="step">4</strong>
             <span>{{ 'process.step.setup.header'|trans }}</span>
         </li>
         <li{% if step == 'final' %} class="active"{% endif %}>
             <em class="fix-bg">&nbsp;</em>
-            <strong class="step">4</strong>
+            <strong class="step">5</strong>
             <span>{{ 'process.step.final.header'|trans }}</span>
         </li>
     </ul>

@@ -33,9 +33,9 @@ class SecurityFacade
      * Constructor
      *
      * @param SecurityContextInterface $securityContext
-     * @param AclAnnotationProvider $annotationProvider
-     * @param ObjectIdentityFactory $objectIdentityFactory
-     * @param LoggerInterface $logger
+     * @param AclAnnotationProvider    $annotationProvider
+     * @param ObjectIdentityFactory    $objectIdentityFactory
+     * @param LoggerInterface          $logger
      */
     public function __construct(
         SecurityContextInterface $securityContext,
@@ -52,8 +52,8 @@ class SecurityFacade
     /**
      * Checks if an access to the given method of the given class is granted to the caller
      *
-     * @param string $class
-     * @param string $method
+     * @param  string $class
+     * @param  string $method
      * @return bool
      */
     public function isClassMethodGranted($class, $method)
@@ -90,11 +90,27 @@ class SecurityFacade
     }
 
     /**
+     * Get permission for given class and method from the ACL annotation
+     *
+     * @param $class
+     * @param $method
+     * @return string
+     */
+    public function getClassMethodAnnotationPermission($class, $method)
+    {
+        $annotation = $this->annotationProvider->findAnnotation($class, $method);
+
+        if ($annotation) {
+            return $annotation->getPermission();
+        }
+    }
+
+    /**
      * Checks if an access to a resource is granted to the caller
      *
      * @param string|string[] $attributes Can be a role name(s), permission name(s), an ACL annotation id
      *                                    or something else, it depends on registered security voters
-     * @param mixed $object               A domain object, object identity or object identity descriptor (id:type)
+     * @param  mixed $object A domain object, object identity or object identity descriptor (id:type)
      * @return bool
      */
     public function isGranted($attributes, $object = null)

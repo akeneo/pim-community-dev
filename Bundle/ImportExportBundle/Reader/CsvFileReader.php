@@ -2,24 +2,15 @@
 
 namespace Oro\Bundle\ImportExportBundle\Reader;
 
-use Oro\Bundle\BatchBundle\Entity\StepExecution;
-use Oro\Bundle\BatchBundle\Item\ItemReaderInterface;
 use Oro\Bundle\BatchBundle\Item\InvalidItemException;
-use Oro\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 
 use Oro\Bundle\ImportExportBundle\Context\ContextInterface;
-use Oro\Bundle\ImportExportBundle\Context\ContextRegistry;
 use Oro\Bundle\ImportExportBundle\Exception\InvalidConfigurationException;
 use Oro\Bundle\ImportExportBundle\Exception\InvalidArgumentException;
 use Oro\Bundle\ImportExportBundle\Exception\RuntimeException;
 
-class CsvFileReader implements ItemReaderInterface, StepExecutionAwareInterface
+class CsvFileReader extends AbstractReader
 {
-    /**
-     * @var ContextRegistry
-     */
-    protected $contextRegistry;
-
     /**
      * @var \SplFileInfo
      */
@@ -55,11 +46,6 @@ class CsvFileReader implements ItemReaderInterface, StepExecutionAwareInterface
      */
     protected $header;
 
-    public function __construct(ContextRegistry $contextRegistry)
-    {
-        $this->contextRegistry = $contextRegistry;
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -71,10 +57,10 @@ class CsvFileReader implements ItemReaderInterface, StepExecutionAwareInterface
 
         $data = $this->getFile()->fgetcsv();
         if (false !== $data) {
-            $context = $this->getContext($this->stepExecution);
+            $context = $this->getContext();
             $context->incrementReadOffset();
             if (null === $data || array(null) === $data) {
-                return false;
+                return $this->getFile()->eof() ? null : array();
             }
             $context->incrementReadCount();
 
@@ -125,14 +111,11 @@ class CsvFileReader implements ItemReaderInterface, StepExecutionAwareInterface
     }
 
     /**
-     * @param StepExecution $stepExecution
+     * @param ContextInterface $context
      * @throws InvalidConfigurationException
      */
-    public function setStepExecution(StepExecution $stepExecution)
+    protected function initializeFromContext(ContextInterface $context)
     {
-        $this->stepExecution = $stepExecution;
-        $context = $this->getContext($stepExecution);
-
         if (!$context->hasOption('filePath')) {
             throw new InvalidConfigurationException(
                 'Configuration of CSV reader must contain "filePath".'
@@ -160,15 +143,6 @@ class CsvFileReader implements ItemReaderInterface, StepExecutionAwareInterface
         if ($context->hasOption('header')) {
             $this->header = $context->getOption('header');
         }
-    }
-
-    /**
-     * @param StepExecution $stepExecution
-     * @return ContextInterface
-     */
-    protected function getContext(StepExecution $stepExecution)
-    {
-        return $this->contextRegistry->getByStepExecution($stepExecution);
     }
 
     /**

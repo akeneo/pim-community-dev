@@ -13,6 +13,8 @@ class TestEmailSynchronizer extends AbstractEmailSynchronizer
 {
     const EMAIL_ORIGIN_ENTITY = 'AcmeBundle:EmailOrigin';
 
+    private $now;
+
     public function __construct(
         EntityManager $em,
         EmailEntityBuilder $emailEntityBuilder,
@@ -34,6 +36,16 @@ class TestEmailSynchronizer extends AbstractEmailSynchronizer
             $this->emailEntityBuilder,
             $this->emailAddressManager
         );
+    }
+
+    protected function getCurrentUtcDateTime()
+    {
+        return $this->now;
+    }
+
+    public function setCurrentUtcDateTime(\DateTime $now)
+    {
+        $this->now = $now;
     }
 
     public function callDoSyncOrigin(EmailOrigin $origin)

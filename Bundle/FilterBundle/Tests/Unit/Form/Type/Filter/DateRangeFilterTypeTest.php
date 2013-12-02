@@ -17,10 +17,18 @@ class DateRangeFilterTypeTest extends AbstractTypeTestCase
 
     protected function setUp()
     {
+        $localeSettings = $this->getMockBuilder('Oro\Bundle\LocaleBundle\Model\LocaleSettings')
+            ->disableOriginalConstructor()
+            ->setMethods(array('getTimezone'))
+            ->getMock();
+        $localeSettings->expects($this->any())
+            ->method('getTimezone')
+            ->will($this->returnValue(date_default_timezone_get()));
+
         $translator = $this->createMockTranslator();
 
         $types = array(
-            new DateRangeType($translator),
+            new DateRangeType($localeSettings),
             new FilterType($translator)
         );
 
@@ -53,10 +61,10 @@ class DateRangeFilterTypeTest extends AbstractTypeTestCase
                 'defaultOptions' => array(
                     'field_type' => DateRangeType::NAME,
                     'operator_choices' => array(
-                        DateRangeFilterType::TYPE_BETWEEN => 'label_date_type_between',
-                        DateRangeFilterType::TYPE_NOT_BETWEEN => 'label_date_type_not_between',
-                        DateRangeFilterType::TYPE_MORE_THAN => 'label_date_type_more_than',
-                        DateRangeFilterType::TYPE_LESS_THAN => 'label_date_type_less_than',
+                        DateRangeFilterType::TYPE_BETWEEN => 'oro.filter.form.label_date_type_between',
+                        DateRangeFilterType::TYPE_NOT_BETWEEN => 'oro.filter.form.label_date_type_not_between',
+                        DateRangeFilterType::TYPE_MORE_THAN => 'oro.filter.form.label_date_type_more_than',
+                        DateRangeFilterType::TYPE_LESS_THAN => 'oro.filter.form.label_date_type_less_than',
                     ),
                     'widget_options' => array(),
                     'type_values' => array(

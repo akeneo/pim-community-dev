@@ -10,7 +10,9 @@
         "symfony/symfony": ">=2.1",
         "oro/ui-bundle": "dev-master",
         "oro/flexible-entity-bundle": "dev-master",
-        "oro/filter-bundle": "dev-master"
+        "oro/filter-bundle": "dev-master",
+        "oro/requirejs-bundle": "dev-master",
+        "oro/locale-bundle": "dev-master"
     },
     "autoload": {
         "psr-0": { "Oro\\Bundle\\GridBundle": "" }

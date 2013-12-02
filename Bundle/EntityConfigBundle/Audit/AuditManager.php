@@ -11,7 +11,7 @@ use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 use Oro\Bundle\EntityConfigBundle\Entity\ConfigLogDiff;
 use Oro\Bundle\EntityConfigBundle\Entity\ConfigLog;
 
-use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigIdInterface;
+use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigId;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
 
 /**
@@ -20,9 +20,9 @@ use Oro\Bundle\EntityConfigBundle\Config\ConfigInterface;
 class AuditManager
 {
     /**
-     * @var ConfigManager
+     * @var ServiceLink
      */
-    protected $configManager;
+    protected $configManagerLink;
 
     /**
      * @var ServiceLink
@@ -30,13 +30,13 @@ class AuditManager
     protected $securityLink;
 
     /**
-     * @param ConfigManager $configManager
-     * @param ServiceLink   $securityLink
+     * @param ServiceLink $configManagerLink
+     * @param ServiceLink $securityLink
      */
-    public function __construct(ConfigManager $configManager, ServiceLink $securityLink)
+    public function __construct(ServiceLink $configManagerLink, ServiceLink $securityLink)
     {
-        $this->configManager = $configManager;
-        $this->securityLink  = $securityLink;
+        $this->configManagerLink = $configManagerLink;
+        $this->securityLink      = $securityLink;
     }
 
     /**
@@ -51,31 +51,32 @@ class AuditManager
         $log = new ConfigLog();
         $log->setUser($this->getUser());
 
-        foreach ($this->configManager->getUpdateConfig() as $config) {
-            $this->logConfig($config, $log);
+        foreach ($this->getConfigManager()->getUpdateConfig() as $config) {
+            if ($diff = $this->computeChanges($config, $log)) {
+                $log->addDiff($diff);
+            }
         }
 
         if ($log->getDiffs()->count()) {
-            $this->configManager->getEntityManager()->persist($log);
+            $this->getConfigManager()->getEntityManager()->persist($log);
         }
     }
 
     /**
      * @param ConfigInterface $config
-     * @param ConfigLog       $log
+     * @return \Oro\Bundle\EntityConfigBundle\Entity\ConfigLogDiff
      */
-    protected function logConfig(ConfigInterface $config, ConfigLog $log)
+    protected function computeChanges(ConfigInterface $config)
     {
-        $changes = $this->configManager->getConfigChangeSet($config);
+        $changes = $this->getConfigManager()->getConfigChangeSet($config);
 
         $configId        = $config->getId();
-        $configContainer = $this->configManager->getProvider($config->getId()->getScope())->getPropertyConfig();
-        $internalValues  = $configContainer->getInternalValues($configId);
+        $configContainer = $this->getConfigManager()->getProvider($configId->getScope())->getPropertyConfig();
+        $internalValues  = $configContainer->getNotAuditableValues($configId);
 
         $changes = array_diff_key($changes, $internalValues);
-
         if (!count($changes)) {
-            return;
+            return null;
         }
 
         $diff = new ConfigLogDiff();
@@ -83,11 +84,11 @@ class AuditManager
         $diff->setDiff($changes);
         $diff->setClassName($configId->getClassName());
 
-        if ($configId instanceof FieldConfigIdInterface) {
+        if ($configId instanceof FieldConfigId) {
             $diff->setFieldName($configId->getFieldName());
         }
 
-        $log->addDiff($diff);
+        return $diff;
     }
 
     /**
@@ -102,5 +103,13 @@ class AuditManager
         }
 
         return $security->getToken()->getUser();
+    }
+
+    /**
+     * @return ConfigManager
+     */
+    protected function getConfigManager()
+    {
+        return $this->configManagerLink->getService();
     }
 }

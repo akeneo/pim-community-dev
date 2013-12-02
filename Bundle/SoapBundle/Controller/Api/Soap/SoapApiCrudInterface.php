@@ -14,7 +14,7 @@ interface SoapApiCrudInterface extends SoapApiReadInterface
     /**
      * Delete item.
      *
-     * @param mixed $id
+     * @param  mixed $id
      * @return bool
      */
     public function handleDeleteRequest($id);
@@ -22,7 +22,7 @@ interface SoapApiCrudInterface extends SoapApiReadInterface
     /**
      * Update item.
      *
-     * @param mixed $id
+     * @param  mixed $id
      * @return bool
      */
     public function handleUpdateRequest($id);

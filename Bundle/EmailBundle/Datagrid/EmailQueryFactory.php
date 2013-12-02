@@ -2,13 +2,13 @@
 
 namespace Oro\Bundle\EmailBundle\Datagrid;
 
-use \Doctrine\ORM\QueryBuilder;
-use Oro\Bundle\ConfigBundle\Config\UserConfigManager;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;
-use Oro\Bundle\GridBundle\Datagrid\ORM\QueryFactory\EntityQueryFactory;
+
+use Oro\Bundle\ConfigBundle\Config\UserConfigManager;
 use Oro\Bundle\EmailBundle\Entity\Provider\EmailOwnerProviderStorage;
 
-class EmailQueryFactory extends EntityQueryFactory
+class EmailQueryFactory
 {
     /**
      * A list of field names of all email owners
@@ -23,6 +23,21 @@ class EmailQueryFactory extends EntityQueryFactory
     protected $fromEmailExpression;
 
     /**
+     * @var RegistryInterface
+     */
+    protected $registry;
+
+    /**
+     * @var string
+     */
+    protected $className;
+
+    /**
+     * @var string
+     */
+    protected $alias;
+
+    /**
      * @param RegistryInterface $registry
      * @param string $className
      * @param EmailOwnerProviderStorage $emailOwnerProviderStorage
@@ -34,7 +49,10 @@ class EmailQueryFactory extends EntityQueryFactory
         EmailOwnerProviderStorage $emailOwnerProviderStorage,
         UserConfigManager $userConfigManager
     ) {
-        parent::__construct($registry, $className);
+        $this->registry = $registry;
+        $this->className = $className;
+        $this->alias = 'o'; // default
+
         for ($i = 1; $i <= count($emailOwnerProviderStorage->getProviders()); $i++) {
             $this->emailOwnerFieldNames[] = sprintf('owner%d', $i);
         }
@@ -45,22 +63,16 @@ class EmailQueryFactory extends EntityQueryFactory
             $firstNames[] = sprintf('%s.firstName', $fieldName);
             $lastNames[] = sprintf('%s.lastName', $fieldName);
         }
+
         $firstName = sprintf('COALESCE(%s, \'\')', implode(', ', $firstNames));
         $lastName = sprintf('COALESCE(%s, \'\')', implode(', ', $lastNames));
-        $nameFormat = $userConfigManager->get('oro_locale.name_format');
-        $this->fromEmailExpression = $this->buildFromEmailExpression($nameFormat, $firstName, $lastName);
+
+        // TODO: refactor usage of email name formats https://magecore.atlassian.net/browse/BAP-2007
+        $nameFormat = '%first% %last%';
+        $this->fromEmailExpression = $this->buildFromEmailExpression($nameFormat, $firstName, $lastName)
+            . ' as FromEmailExpression';
     }
 
-    protected function prepareQuery(QueryBuilder $qb)
-    {
-        $firstNames = array();
-        $lastNames = array();
-        foreach ($this->emailOwnerFieldNames as $fieldName) {
-            $qb->leftJoin('a.' . $fieldName, $fieldName);
-            $firstNames[] = sprintf('%s.firstName', $fieldName);
-            $lastNames[] = sprintf('%s.lastName', $fieldName);
-        }
-    }
 
     /**
      * @return string
@@ -68,6 +80,19 @@ class EmailQueryFactory extends EntityQueryFactory
     public function getFromEmailExpression()
     {
         return $this->fromEmailExpression;
+    }
+
+    /**
+     * @param QueryBuilder $qb
+     * @return $this
+     */
+    public function prepareQuery(QueryBuilder $qb)
+    {
+        foreach ($this->emailOwnerFieldNames as $fieldName) {
+            $qb->leftJoin('a.' . $fieldName, $fieldName);
+        }
+
+        return $this;
     }
 
     /**

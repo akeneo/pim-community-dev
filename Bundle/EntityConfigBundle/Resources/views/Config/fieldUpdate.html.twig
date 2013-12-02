@@ -1,7 +1,6 @@
 {% extends 'OroUIBundle:actions:update.html.twig' %}
-{% form_theme form with 'OroUIBundle:Form:fields.html.twig' %}
+{% form_theme form with ['OroFormBundle:Form:fields.html.twig', 'OroEntityConfigBundle:Include:fields.html.twig'] %}
 
-{% set title = 'Update Field' %}
 {% oro_title_set({params : {
     "%entityName%": entity_config.get('label')|default('N/A'),
     "%fieldName%": field_config.get('label')|default('N/A'),

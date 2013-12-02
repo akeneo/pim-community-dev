@@ -1,0 +1,6 @@
+oro_calendar_connection_view:
+    type: entity
+    class: OroCalendarBundle:CalendarConnection
+    permission: VIEW
+    group_name: ""
+    bindings: ~

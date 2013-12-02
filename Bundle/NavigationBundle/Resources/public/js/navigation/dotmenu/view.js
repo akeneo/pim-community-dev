@@ -94,9 +94,9 @@ function($, _, Backbone, mediator, DotmenuItemView) {
             }
             /**
              * Backbone event. Fired when item is added to menu
-             * @event navigaion_item:added
+             * @event navigation_item:added
              */
-            mediator.trigger("navigaion_item:added", el);
+            mediator.trigger("navigation_item:added", el);
         },
 
         cleanup: function(tabKey) {

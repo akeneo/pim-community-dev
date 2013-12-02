@@ -1,0 +1,7 @@
+css:
+  'grids':
+      - 'bundles/orodatagrid/lib/backgrid/backgrid.css'
+      - 'bundles/orodatagrid/lib/backgrid/extensions/paginator/backgrid-paginator.css'
+      - 'bundles/orodatagrid/lib/multiselect/jquery.multiselect.css'
+      - 'bundles/orodatagrid/lib/multiselect/jquery.multiselect.filter.css'
+      - 'bundles/orodatagrid/css/oro.grid.css'

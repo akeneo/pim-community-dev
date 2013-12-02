@@ -50,8 +50,13 @@
     width: 17em;
     padding: .2em .2em 0;
     display: none;
-    /** z-index is !important as datepicker element can not be clicked when behind it placed styled select with z-index 700**/
-    z-index: 800 !important;
+    /**
+        z-index is !important as datepicker element can not be clicked when behind it placed styled select with z-index 700
+        901 = z-index of .ui-dialog + 1 because the datepicker is shown behind of a dialog when the associated field is in the dialog
+        Vova Soroka: TODO: not sure that it is good idea to set z-index here. The better way is to set
+                     position: relative and z-index for the picker associated field
+    **/
+    z-index: 901 !important;
 }
 .ui-datepicker .ui-datepicker-header {
     position: relative;

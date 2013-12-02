@@ -2,7 +2,9 @@
 
 namespace Oro\Bundle\TestFrameworkBundle\Tests\Selenium;
 
-class LoginFormTest extends \PHPUnit_Extensions_Selenium2TestCase
+use Oro\Bundle\TestFrameworkBundle\Test\Selenium2TestCase;
+
+class LoginFormTest extends Selenium2TestCase
 {
     protected $coverageScriptUrl = PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_TESTS_URL_COVERAGE;
 
@@ -96,8 +98,8 @@ class LoginFormTest extends \PHPUnit_Extensions_Selenium2TestCase
         $this->waitForAjax();
         $this->assertEquals('Dashboard', $this->title());
 
-        $this->byXPath("//*[@id='top-page']//ul[@class='nav pull-right']/li[@class='dropdown']/a")->click();
-        $this->byXPath("//*[@id='top-page']//ul[@class='nav pull-right']//li/a[contains(.,'Logout')]")->click();
+        $this->byXPath("//*[@id='top-page']//ul[@class='nav pull-right user-menu']/li[@class='dropdown']/a")->click();
+        $this->byXPath("//*[@id='top-page']//ul[@class='nav pull-right user-menu']//li/a[contains(.,'Logout')]")->click();
         $this->assertEquals('Login', $this->title());
     }
 

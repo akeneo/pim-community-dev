@@ -1,0 +1,2 @@
+bundles:
+    - { name: Oro\Bundle\NavigationBundle\OroNavigationBundle, priority: 10 }

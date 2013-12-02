@@ -1,0 +1,30 @@
+config:
+    shim:
+        'jquery.validate':
+            deps:
+                - 'jquery'
+    map:
+        '*':
+            'jquery.validate': 'oro/validate-setup'
+        'oro/validate-setup':
+            'jquery.validate': 'jquery.validate'
+    paths:
+        'jquery.validate': 'bundles/oroform/lib/jquery.validate/jquery.validate.js'
+        'oro/validate-setup': 'bundles/oroform/js/validate-setup.js'
+        'oro/validator/count': 'bundles/oroform/js/validator/count.js'
+        'oro/validator/date': 'bundles/oroform/js/validator/date.js'
+        'oro/validator/email': 'bundles/oroform/js/validator/email.js'
+        'oro/validator/length': 'bundles/oroform/js/validator/length.js'
+        'oro/validator/notblank': 'bundles/oroform/js/validator/notblank.js'
+        'oro/validator/notnull': 'bundles/oroform/js/validator/notnull.js'
+        'oro/validator/number': 'bundles/oroform/js/validator/number.js'
+        'oro/validator/range': 'bundles/oroform/js/validator/range.js'
+        'oro/validator/regex': 'bundles/oroform/js/validator/regex.js'
+        'oro/validator/repeated': 'bundles/oroform/js/validator/repeated.js'
+        'oro/validator/url': 'bundles/oroform/js/validator/url.js'
+
+        'oro/select2-config': 'bundles/oroform/js/select2-config.js'
+        'oro/multiple-entity': 'bundles/oroform/js/multiple-entity.js'
+        'oro/multiple-entity/view': 'bundles/oroform/js/multiple-entity/view.js'
+        'oro/multiple-entity/model': 'bundles/oroform/js/multiple-entity/model.js'
+        'oro/multiple-entity/collection': 'bundles/oroform/js/multiple-entity/collection.js'

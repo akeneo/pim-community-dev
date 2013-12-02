@@ -119,6 +119,7 @@ class IndexListener
     /**
      * @param string $entity
      * @return bool
+     * TODO::don`t use get_class()
      */
     protected function isSupported($entity)
     {

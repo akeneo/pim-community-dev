@@ -9,7 +9,7 @@ oro_entity_config:
                     grid:
                         type:               boolean
                         label:              'Auditable'
-                        filter_type:        oro_grid_orm_boolean
+                        filter_type:        boolean
                         required:           true
                         sortable:           true
                         filterable:         true
@@ -30,7 +30,7 @@ oro_entity_config:
                     grid:
                         type:               boolean
                         label:              'Auditable'
-                        filter_type:        oro_grid_orm_boolean
+                        filter_type:        boolean
                         required:           true
                         sortable:           true
                         filterable:         false

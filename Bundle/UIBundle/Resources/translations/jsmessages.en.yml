@@ -1,2 +1,21 @@
 "Delete Confirmation": "Delete Confirmation"
 "Yes, Delete": "Yes, Delete"
+"Unexpected error occured. Please contact system administrator.": "Unexpected error occured. Please contact system administrator."
+Now: Now
+Prev: Prev
+Next: Next
+Today: Today
+Wk: Wk
+Done: Done
+AM: AM
+A: A
+PM: PM
+P: P
+"Choose Time": "Choose Time"
+Time: Time
+Hour: Hour
+Minute: Minute
+Second: Second
+Millisecond: Millisecond
+Microsecond: Microsecond
+"Time Zone": "Time Zone"

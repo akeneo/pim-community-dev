@@ -49,7 +49,7 @@ abstract class AbstractTableDataConverter extends DefaultDataConverter
             $frontendToBackendHeader,
             $plainDataWithFrontendHeader
         );
-        $complexDataWithBackendHeader = parent::convertToImportFormat($plainDataWithBackendHeader);
+        $complexDataWithBackendHeader = parent::convertToImportFormat($plainDataWithBackendHeader, $skipNullValues);
 
         return $complexDataWithBackendHeader;
     }

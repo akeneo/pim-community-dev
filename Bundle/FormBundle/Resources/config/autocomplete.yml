@@ -2,6 +2,7 @@ parameters:
     oro_form.autocomplete.security.class:  Oro\Bundle\FormBundle\Autocomplete\Security
     oro_form.autocomplete.search_registry.class: Oro\Bundle\FormBundle\Autocomplete\SearchRegistry
     oro_form.autocomplete.search_handler.class:  Oro\Bundle\FormBundle\Autocomplete\SearchHandler
+    oro_form.autocomplete.full_name.search_handler.class:  Oro\Bundle\FormBundle\Autocomplete\FullNameSearchHandler
 
 services:
     oro_form.autocomplete.security:
@@ -17,3 +18,10 @@ services:
         calls:
             - [initSearchIndexer, ["@oro_search.index", %oro_search.entities_config%]]
             - [initDoctrinePropertiesByManagerRegistry, ["@doctrine"]]
+
+    oro_form.autocomplete.full_name.search_handler:
+        class: %oro_form.autocomplete.full_name.search_handler.class%
+        abstract: true
+        parent: oro_form.autocomplete.search_handler
+        calls:
+            - [ setNameFormatter, [@oro_locale.formatter.name] ]

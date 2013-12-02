@@ -1,8 +1,8 @@
 /* global define */
 define(['underscore', 'backbone', 'oro/translator', 'oro/mediator', 'oro/messenger', 'oro/dialog-widget',
-    'oro/mapservice/googlemaps', 'oro/address/view', 'oro/address/collection', 'oro/widget-manager'],
+    'oro/mapservice/googlemaps', 'oro/address/view', 'oro/address/collection'],
 function(_, Backbone, __, mediator, messenger, dialogWidget,
-     Googlemaps, AddressView, AddressCollection, widgetManager) {
+     Googlemaps, AddressView, AddressCollection) {
     'use strict';
 
     var $ = Backbone.$;
@@ -125,7 +125,6 @@ function(_, Backbone, __, mediator, messenger, dialogWidget,
                         }, this)
                     }
                 });
-                widgetManager.addWidgetInstance(this.addressEditDialog);
                 this.addressEditDialog.render();
                 mediator.on(
                     "hash_navigation_request:start",

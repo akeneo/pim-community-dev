@@ -32,7 +32,6 @@ function(_, Backbone, app, error, AbstractWidget, StateModel) {
          */
         initialize: function(options) {
             options = options || {};
-            this.initializeWidget(options);
 
             this.on('adoptedFormResetClick', _.bind(this.remove, this));
 
@@ -63,6 +62,8 @@ function(_, Backbone, app, error, AbstractWidget, StateModel) {
 
             this.on('widgetRender', _.bind(this._initAdjustHeight, this));
             this.on('contentLoadError', _.bind(this.loadErrorHandler, this));
+
+            this.initializeWidget(options);
         },
 
         setTitle: function(title) {

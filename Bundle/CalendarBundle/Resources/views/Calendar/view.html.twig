@@ -1,0 +1,163 @@
+{% extends 'OroUIBundle:actions:view.html.twig' %}
+
+{% set name = entity.owner|oro_format_name|default('N/A') %}
+{% oro_title_set({params : {"%username%": name, "%calendarname%": entity.name|default(name) }}) %}
+
+{% block head_script %}
+    {{ parent() }}
+{% endblock %}
+
+{% block navButtons %}
+{% endblock navButtons %}
+
+{% block breadcrumb %}
+    {% set breadcrumbs = [{'label': name }] %}
+    {% if not entity.name is empty %}
+        {% set breadcrumbs = breadcrumbs|merge([{'label': 'Calendars'|trans }, {'label': entity.name}]) %}
+    {% else %}
+        {% set breadcrumbs = breadcrumbs|merge([{'label': 'My Calendar'|trans}]) %}
+    {% endif %}
+    {% include 'OroNavigationBundle:Menu:breadcrumbs.html.twig' %}
+{% endblock breadcrumb %}
+
+{% block pageHeader %}
+    {% set breadcrumbs = {'entityTitle': 'Calendar' } %}
+    {{ parent() }}
+{% endblock pageHeader %}
+
+{% block stats %}{% endblock stats %}
+
+{% block content_data %}
+    <div class="row-fluid" id="calendar">
+        <div class="span3">
+            <div class="calendars">
+                <div class="calendar-connections"></div>
+                {% if resource_granted('oro_calendar_connection_view') %}
+                <form action="#">
+                    {{ form_row(user_select_form) }}
+                </form>
+                {% endif %}
+            </div>
+        </div>
+        <div class="span9 calendar-events scrollable-container"></div>
+    </div>
+
+    <script type="text/html" id="template-calendar-connections">
+        <ul class="media-list connection-container">
+        </ul>
+    </script>
+
+    <script type="text/html" id="template-calendar-connection-item">
+        <li class="media connection-item"
+            <% if (!_.isEmpty(backgroundColor)) { %>
+                style="background-color: #<%- backgroundColor %>; border-color: #<%- backgroundColor %>"
+            <% } %> >
+            <div class="pull-left media-body"
+                    <% if (!_.isEmpty(color)) { %> style="color: #<%- color %>"<% } %>
+                ><%- calendarName %></div>
+            <% if (removable) { %>
+            <div class="pull-right icons-holder"><a
+                href="javascript: void(0);" class="icons-holder-text no-hash remove-connection-button"
+                title="{{ 'Exclude this calendar'|trans }}"><i
+                    class="icon-remove hide-text"></i></a></div>
+            <% } %>
+        </li>
+    </script>
+
+    <script type="text/html" id="template-calendar-event">
+        {% set data = [
+                form_row(event_form.title, {'label': 'Title'}),
+                form_row(event_form.start, {'label': 'Start'}),
+                form_row(event_form.end, {'label': 'End'}),
+                form_row(event_form.allDay, {'label': 'All day event'}),
+                form_row(event_form.reminder, {'label': 'Reminder'}),
+            ]
+        %}
+        <div class="alert alert-error" style="display: none;"></div>
+        <form id="{{ event_form.vars.name }}" action="#">
+            <fieldset class="form-horizontal">
+                {{ UI.scrollSubblock(null, data, true, false)|replace({'<script': '<% print("<sc" + "ript") %>', '</script>': '<% print("</sc" + "ript>") %>'})|raw }}
+                <div class="widget-actions form-actions" style="display: none;">
+                    <% if (id != null && removable) { %>
+                    {{
+                        UI.deleteButton({
+                            'aCss': 'no-hash',
+                            'id': 'btn-remove-calendarevent',
+                            'dataMessage': 'Are you sure you want to delete this event?',
+                            'title': 'Delete event',
+                            'label': 'Delete',
+                            'data': {'action-name': 'delete'}
+                        })
+                    }}
+                    <% } %>
+                    <button class="btn" type="reset">{{ 'Cancel'|trans }}</button>
+                    <% if (id == null || (id != null && editable)) { %>
+                    <button class="btn btn-primary" type="submit">{{ 'Save'|trans }}</button>
+                    <% } %>
+                </div>
+            </fieldset>
+        </form>
+        {{ oro_form_js_validation(event_form)|replace({'<script': '<% print("<sc" + "ript") %>', '</script>': '<% print("</sc" + "ript>") %>'})|raw }}
+    </script>
+
+    <script type="text/javascript">
+        require(['jquery', 'underscore', 'oro/calendar', 'oro/calendar/event/collection',
+            'oro/calendar/connection/collection', 'oro/locale-settings'],
+        function($, _, Calendar, EventCollection, ConnectionCollection, localeSettings){
+            var connections = new ConnectionCollection();
+            connections.reset({{ render(path('oro_api_get_calendar_connections', {id: entity.id})) }});
+            var events = new EventCollection();
+            events.reset({{ render(path('oro_api_get_calendarevents', {calendar: entity.id, start: startDate|date('c'), end: endDate|date('c'), subordinate: true})) }});
+
+            var dateFormat = localeSettings.getVendorDateTimeFormat('fullcalendar', 'date', 'MMM d, yyyy');
+            var timeFormat = localeSettings.getVendorDateTimeFormat('fullcalendar', 'time', 'h:mm TT');
+            // @TODO Get date format without year
+            var dateFormatWithoutYear = dateFormat;
+            // prepare FullCalendar specific date/time formats
+            var isDateFormatStartedWithDay = dateFormat.indexOf('d') === 0;
+            var weekFormat = isDateFormatStartedWithDay
+                ? 'd[ MMMM][ yyyy]{ \'&#8212;\' d MMMM yyyy}'
+                : 'MMMM d[ yyyy]{ \'&#8212;\'[ MMMM] d yyyy}';
+
+            var options = {
+                el: '#calendar',
+                calendar: {{ entity.id }},
+                collection: events,
+                eventsOptions: {
+                    subordinate: true,
+                    containerSelector: '.calendar-events',
+                    itemFormTemplateSelector: '#template-calendar-event',
+                    date: "{{ 'now'|date('Y-m-d') }}",
+                    firstDay: localeSettings.getCalendarFirstDayOfWeek() - 1,
+                    monthNames: localeSettings.getCalendarMonthNames('wide', true),
+                    monthNamesShort: localeSettings.getCalendarMonthNames('abbreviated', true),
+                    dayNames: localeSettings.getCalendarDayOfWeekNames('wide', true),
+                    dayNamesShort: localeSettings.getCalendarDayOfWeekNames('abbreviated', true),
+                    titleFormat: {
+                        month: 'MMMM yyyy',
+                        week: weekFormat,
+                        day: 'dddd, ' + dateFormat
+                    },
+                    columnFormat: {
+                        month: 'ddd',
+                        week: 'ddd ' + dateFormatWithoutYear,
+                        day: 'dddd ' + dateFormatWithoutYear
+                    },
+                    timeFormat: {
+                        '': timeFormat,
+                        agenda: timeFormat + '{ - ' + timeFormat + '}'
+                    },
+                    axisFormat: timeFormat
+                },
+                connectionsOptions: {
+                    collection: connections,
+                    containerSelector: '.calendar-connections',
+                    containerTemplateSelector: '#template-calendar-connections',
+                    itemTemplateSelector: '#template-calendar-connection-item'
+                }
+            };
+            _.extend(options.eventsOptions, {{ calendar|json_encode|raw }});
+            $(function() { new Calendar(options).render(); });
+        });
+    </script>
+{% endblock content_data %}

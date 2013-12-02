@@ -1,14 +1,14 @@
 /* global define */
-define(['underscore', 'oro/mediator', 'oro/datagrid/model-action'],
+define(['underscore', 'oro/mediator', 'oro/grid/model-action'],
 function(_, mediator, ModelAction) {
     'use strict';
 
     /**
      * Navigate action. Changes window location to url, from getLink method
      *
-     * @export  oro/datagrid/navigate-action
-     * @class   oro.datagrid.NavigateAction
-     * @extends oro.datagrid.ModelAction
+     * @export  oro/grid/navigate-action
+     * @class   oro.grid.NavigateAction
+     * @extends oro.grid.ModelAction
      */
     return ModelAction.extend({
 

@@ -2,47 +2,57 @@
 
 namespace Oro\Bundle\WorkflowBundle\Model;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 
-use Oro\Bundle\WorkflowBundle\Model\Transition;
 use Oro\Bundle\WorkflowBundle\Exception\AssemblerException;
+use Oro\Bundle\WorkflowBundle\Form\Type\WorkflowTransitionType;
 use Oro\Bundle\WorkflowBundle\Model\Condition\ConditionFactory;
-use Oro\Bundle\WorkflowBundle\Model\PostAction\PostActionFactory;
 use Oro\Bundle\WorkflowBundle\Model\Condition\Configurable as ConfigurableCondition;
-use Oro\Bundle\WorkflowBundle\Model\PostAction\Configurable as ConfigurablePostAction;
+use Oro\Bundle\WorkflowBundle\Model\Action\ActionFactory;
+use Oro\Bundle\WorkflowBundle\Model\Action\Configurable as ConfigurableAction;
 
 class TransitionAssembler extends AbstractAssembler
 {
+    /**
+     * @var FormOptionsAssembler
+     */
+    protected $formOptionsAssembler;
+
     /**
      * @var ConditionFactory
      */
     protected $conditionFactory;
 
     /**
-     * @var PostActionFactory
+     * @var ActionFactory
      */
-    protected $postActionFactory;
+    protected $actionFactory;
 
     /**
+     * @param FormOptionsAssembler $formOptionsAssembler
      * @param ConditionFactory $conditionFactory
-     * @param PostActionFactory $postActionFactory
+     * @param ActionFactory $actionFactory
      */
     public function __construct(
+        FormOptionsAssembler $formOptionsAssembler,
         ConditionFactory $conditionFactory,
-        PostActionFactory $postActionFactory
+        ActionFactory $actionFactory
     ) {
+        $this->formOptionsAssembler = $formOptionsAssembler;
         $this->conditionFactory = $conditionFactory;
-        $this->postActionFactory = $postActionFactory;
+        $this->actionFactory = $actionFactory;
     }
 
     /**
      * @param array $configuration
      * @param array $definitionsConfiguration
-     * @param Step[]|ArrayCollection $steps
-     * @return ArrayCollection
+     * @param Step[]|Collection $steps
+     * @param Attribute[]|Collection $attributes
+     * @return Collection
      * @throws AssemblerException
      */
-    public function assemble(array $configuration, array $definitionsConfiguration, $steps)
+    public function assemble(array $configuration, array $definitionsConfiguration, $steps, $attributes)
     {
         $definitions = $this->parseDefinitions($definitionsConfiguration);
 
@@ -57,7 +67,7 @@ class TransitionAssembler extends AbstractAssembler
             }
             $definition = $definitions[$definitionName];
 
-            $transition = $this->assembleTransition($name, $options, $definition, $steps);
+            $transition = $this->assembleTransition($name, $options, $definition, $steps, $attributes);
             $transitions->set($name, $transition);
         }
 
@@ -73,8 +83,9 @@ class TransitionAssembler extends AbstractAssembler
         $definitions = array();
         foreach ($configuration as $name => $options) {
             $definitions[$name] = array(
+                'pre_conditions' => $this->getOption($options, 'pre_conditions', array()),
                 'conditions' => $this->getOption($options, 'conditions', array()),
-                'post_actions' => $this->getOption($options, 'post_actions', array()),
+                'post_actions' => $this->getOption($options, 'post_actions', array())
             );
         }
 
@@ -86,26 +97,34 @@ class TransitionAssembler extends AbstractAssembler
      * @param array $options
      * @param array $definition
      * @param Step[]|ArrayCollection $steps
+     * @param Attribute[]|Collection $attributes
      * @return Transition
      * @throws AssemblerException
      */
-    protected function assembleTransition($name, array $options, array $definition, $steps)
+    protected function assembleTransition($name, array $options, array $definition, $steps, $attributes)
     {
         $this->assertOptions($options, array('step_to', 'label'));
         $stepToName = $options['step_to'];
         if (empty($steps[$stepToName])) {
             throw new AssemblerException(sprintf('Step "%s" not found', $stepToName));
         }
-        $stepTo = $steps[$stepToName];
-        $transitionOptions = $this->getOption($options, 'options', array());
-        $isStart = $this->getOption($options, 'is_start', false);
 
         $transition = new Transition();
         $transition->setName($name)
             ->setLabel($options['label'])
-            ->setStepTo($stepTo)
-            ->setStart($isStart)
-            ->setOptions($transitionOptions);
+            ->setStepTo($steps[$stepToName])
+            ->setMessage($this->getOption($options, 'message', null))
+            ->setStart($this->getOption($options, 'is_start', false))
+            ->setHidden($this->getOption($options, 'is_hidden', false))
+            ->setUnavailableHidden($this->getOption($options, 'is_unavailable_hidden', false))
+            ->setFormType($this->getOption($options, 'form_type', WorkflowTransitionType::NAME))
+            ->setFormOptions($this->assembleFormOptions($options, $attributes, $name))
+            ->setFrontendOptions($this->getOption($options, 'frontend_options', array()));
+
+        if (!empty($definition['pre_conditions'])) {
+            $condition = $this->conditionFactory->create(ConfigurableCondition::ALIAS, $definition['pre_conditions']);
+            $transition->setPreCondition($condition);
+        }
 
         if (!empty($definition['conditions'])) {
             $condition = $this->conditionFactory->create(ConfigurableCondition::ALIAS, $definition['conditions']);
@@ -113,10 +132,22 @@ class TransitionAssembler extends AbstractAssembler
         }
 
         if (!empty($definition['post_actions'])) {
-            $postAction = $this->postActionFactory->create(ConfigurablePostAction::ALIAS, $definition['post_actions']);
+            $postAction = $this->actionFactory->create(ConfigurableAction::ALIAS, $definition['post_actions']);
             $transition->setPostAction($postAction);
         }
 
         return $transition;
+    }
+
+    /**
+     * @param array $options
+     * @param Attribute[]|Collection $attributes
+     * @param string $transitionName
+     * @return array
+     */
+    protected function assembleFormOptions(array $options, $attributes, $transitionName)
+    {
+        $formOptions = $this->getOption($options, 'form_options', array());
+        return $this->formOptionsAssembler->assemble($formOptions, $attributes, 'transition', $transitionName);
     }
 }

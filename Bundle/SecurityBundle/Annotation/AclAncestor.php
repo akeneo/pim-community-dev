@@ -16,7 +16,7 @@ class AclAncestor implements \Serializable
     /**
      * Constructor
      *
-     * @param array $data
+     * @param  array                     $data
      * @throws \InvalidArgumentException
      */
     public function __construct(array $data)

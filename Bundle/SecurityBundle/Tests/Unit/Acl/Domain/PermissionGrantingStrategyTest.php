@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain;
 
-use Oro\Bundle\EntityBundle\Owner\Metadata\OwnershipMetadata;
+use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadata;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity;
 use Symfony\Component\Security\Acl\Domain\Acl;
@@ -19,7 +19,7 @@ use Oro\Bundle\SecurityBundle\Owner\OwnerTree;
 use Oro\Bundle\SecurityBundle\Owner\EntityOwnershipDecisionMaker;
 use Oro\Bundle\EntityBundle\ORM\EntityClassAccessor;
 use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdAccessor;
-use Oro\Bundle\EntityBundle\Owner\EntityOwnerAccessor;
+use Oro\Bundle\SecurityBundle\Owner\EntityOwnerAccessor;
 use Oro\Bundle\SecurityBundle\Acl\Extension\AclExtensionSelector;
 use Oro\Bundle\SecurityBundle\Tests\Unit\TestHelper;
 
@@ -65,8 +65,17 @@ class PermissionGrantingStrategyTest extends \PHPUnit_Framework_TestCase
         $this->metadataProvider = new OwnershipMetadataProviderStub($this);
         $classAccessor = new EntityClassAccessor();
         $objectIdAccessor = new ObjectIdAccessor();
+
+        $treeProviderMock = $this->getMockBuilder('Oro\Bundle\SecurityBundle\Owner\OwnerTreeProvider')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $treeProviderMock->expects($this->any())
+            ->method('getTree')
+            ->will($this->returnValue($this->ownerTree));
+
         $decisionMaker = new EntityOwnershipDecisionMaker(
-            $this->ownerTree,
+            $treeProviderMock,
             $classAccessor,
             $objectIdAccessor,
             new EntityOwnerAccessor($classAccessor, $this->metadataProvider),

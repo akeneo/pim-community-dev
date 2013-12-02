@@ -156,7 +156,7 @@ function($, _, Backbone, app) {
         },
 
         /**
-         * Get clone of current value
+         * Get clone of current raw value
          *
          * @return {Object}
          */
@@ -165,13 +165,12 @@ function($, _, Backbone, app) {
         },
 
         /**
-         * Set value to filter
+         * Set raw value to filter
          *
          * @param value
          * @return {*}
          */
         setValue: function(value) {
-            value = this._formatRawValue(value);
             if (this._isNewValueUpdated(value)) {
                 var oldValue = this.value;
                 this.value = app.deepClone(value);

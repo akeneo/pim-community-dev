@@ -55,18 +55,18 @@
     }
 %}
 
-require(['jquery', 'underscore', 'backbone', 'oro/mediator', 'oro/registry', 'oro/loading-mask',
-    'oro/datagrid/grid', 'oro/datagrid/router', 'oro/pageable-collection', 'oro/datagrid/filter-list',
-    'oro/datagrid/moment-cell', 'oro/datagrid/number-cell', 'oro/datagrid/integer-cell', 'oro/datagrid/boolean-cell',
-    'oro/datagrid/html-cell', 'oro/datagrid/select-cell', 'oro/datagrid/string-cell', 'oro/datagrid/percent-cell',
-    'oro/datagrid/delete-action', 'oro/datagrid/navigate-action', 'oro/datagrid/mass-action',
+require(['jquery', 'underscore', 'backbone', 'oro/mediator', 'oro/grid/registry', 'oro/loading-mask',
+    'oro/grid/grid', 'oro/grid/router', 'oro/grid/pageable-collection', 'oro/grid/filter-list',
+    'oro/grid/date-cell', 'oro/grid/datetime-cell', 'oro/grid/number-cell', 'oro/grid/boolean-cell',
+    'oro/grid/html-cell', 'oro/grid/select-cell', 'oro/grid/string-cell',
+    'oro/grid/delete-action', 'oro/grid/navigate-action', 'oro/grid/mass-action',
     'oro/datafilter/choice-filter', 'oro/datafilter/number-filter', 'oro/datafilter/date-filter',
     'oro/datafilter/datetime-filter', 'oro/datafilter/select-filter', 'oro/datafilter/multiselect-filter',
-    'oro/datafilter/select-row-filter', 'oro/datagrid/ajax-action', 'oro/datagrid/grid-views/view'],
+    'oro/datafilter/select-row-filter', 'oro/grid/ajax-action', 'oro/grid/grid-views/view'],
     function($, _, Backbone, mediator, registry, LoadingMask,
              Grid, GridRouter, PageableCollection, FilterList,
-             MomentCell, NumberCell, IntegerCell, BooleanCell,
-             HtmlCell, SelectCell, StringCell, PercentCell,
+             DateCell, DateTimeCell, NumberCell, BooleanCell,
+             HtmlCell, SelectCell, StringCell,
              DeleteAction, NavigateAction, MassAction,
              ChoiceFilter, NumberFilter, DateFilter,
              DatetimeFilter, SelectFilter, MultiselectFilter,
@@ -84,23 +84,15 @@ require(['jquery', 'underscore', 'backbone', 'oro/mediator', 'oro/registry', 'or
                         sortable: {{ column.sortable|json_encode|raw }},
                         editable: {{ column.editable|json_encode|raw }},
                         {% if column.type == constant(columnTypePrefix ~ 'TYPE_DATE') %}
-                            cell: MomentCell.extend({
-                                modelFormat:   "YYYY-MM-DD",
-                                displayFormat: {{ oro_config_moment_dateformat()|json_encode|raw }}
-                            })
+                            cell: DateCell,
                         {% elseif column.type == constant(columnTypePrefix ~ 'TYPE_DATETIME') %}
-                            cell: MomentCell.extend({
-                                modelFormat:   "YYYY-MM-DD hh:mm:ss",
-                                displayFormat: {{ oro_config_moment_datetimeformat()|json_encode|raw }},
-                                displayInUTC:  false,
-                                displayTimeZone: {{ oro_config_timezone()|json_encode|raw }}
-                            })
+                            cell: DateTimeCell,
                         {% elseif column.type == constant(columnTypePrefix ~ 'TYPE_DECIMAL') %}
-                            cell: NumberCell
+                            cell: NumberCell.extend({ style: 'decimal' })
                         {% elseif column.type == constant(columnTypePrefix ~ 'TYPE_INTEGER') %}
-                            cell: IntegerCell.extend({ orderSeparator: '' })
+                            cell: NumberCell.extend({ style: 'integer' })
                         {% elseif column.type == constant(columnTypePrefix ~ 'TYPE_PERCENT') %}
-                            cell: PercentCell,
+                            cell: NumberCell.extend({ style: 'percent' })
                         {% elseif column.type == constant(columnTypePrefix ~ 'TYPE_BOOLEAN') %}
                             cell: BooleanCell,
                             width: 10

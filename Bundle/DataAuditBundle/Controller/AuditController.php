@@ -2,7 +2,6 @@
 
 namespace Oro\Bundle\DataAuditBundle\Controller;
 
-use Oro\Bundle\DataAuditBundle\Datagrid\AuditHistoryDatagridManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -11,7 +10,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
-use Oro\Bundle\DataAuditBundle\Entity\Audit;
 
 class AuditController extends Controller
 {
@@ -22,16 +20,12 @@ class AuditController extends Controller
      *      requirements={"_format"="html|json"},
      *      defaults={"_format" = "html"}
      * )
+     * @Template
      * @AclAncestor("oro_dataaudit_history")
      */
     public function indexAction(Request $request)
     {
-        $datagrid = $this->get('oro_dataaudit.datagrid.manager')->getDatagrid();
-        $view     = 'json' == $request->getRequestFormat()
-            ? 'OroGridBundle:Datagrid:list.json.php'
-            : 'OroDataAuditBundle:Audit:index.html.twig';
-
-        return $this->render($view, array('datagrid' => $datagrid->createView()));
+        return [];
     }
 
     /**
@@ -51,26 +45,10 @@ class AuditController extends Controller
      */
     public function historyAction($entity, $id)
     {
-        /** @var $datagridManager AuditHistoryDatagridManager */
-        $datagridManager = $this->get('oro_dataaudit.history.datagrid.manager');
-
-        $datagridManager->entityClass   = str_replace('_', '\\', $entity);
-        $datagridManager->entityClassId = $id;
-
-        $datagridManager->getRouteGenerator()->setRouteParameters(
-            array(
-                'entity' => $entity,
-                'id'     => $id
-            )
-        );
-
-        $datagridView = $datagridManager->getDatagrid()->createView();
-        if ('json' == $this->getRequest()->getRequestFormat()) {
-            return $this->get('oro_grid.renderer')->renderResultsJsonResponse($datagridView);
-        }
-
         return array(
-            'datagrid' => $datagridView,
+            'gridName'     => 'audit-history-grid',
+            'entityClass'  => $entity,
+            'entityId'     => $id,
         );
     }
 }

@@ -1,18 +1,19 @@
-/* global define */
-define(['underscore', 'backbone', 'oro/registry', 'oro/mediator'],
+/*jslint browser: true, vars: true, nomen: true*/
+/*global define*/
+define(['underscore', 'backbone', 'oro/grid/registry', 'oro/mediator'],
 function(_, Backbone, registry, mediator) {
     'use strict';
 
     /**
      * Abstarct listener for datagrid
      *
-     * @export  oro/datagrid/abstract-listener
-     * @class   oro.datagrid.AbstractListener
+     * @export  oro/grid/abstract-listener
+     * @class   oro.grid.AbstractListener
      * @extends Backbone.Model
      */
     return Backbone.Model.extend({
 
-        /** @param {oro.datagrid.Grid} */
+        /** @param {oro.grid.Grid} */
         datagrid: null,
 
         /** @param {String} Column name of cells that will be listened for changing their values */
@@ -27,10 +28,6 @@ function(_, Backbone, registry, mediator) {
          * @param {Object} options
          */
         initialize: function(options) {
-            if (!_.has(options, 'datagridName')) {
-                throw new Error('Datagrid name is not specified');
-            }
-
             if (!_.has(options, 'columnName')) {
                 throw new Error('Data column name is not specified');
             }
@@ -42,7 +39,14 @@ function(_, Backbone, registry, mediator) {
 
             Backbone.Model.prototype.initialize.apply(this, arguments);
 
-            this._assignDatagridAndSubscribe(options.datagridName);
+            if (options.grid) {
+                this.setDatagridAndSubscribe(options.grid);
+            } else {
+                if (!_.has(options, 'datagridName')) {
+                    throw new Error('Datagrid name is not specified');
+                }
+                this._assignDatagridAndSubscribe(options.datagridName);
+            }
         },
 
         /**
@@ -63,28 +67,24 @@ function(_, Backbone, registry, mediator) {
         /**
          * Set datagrid instance
          *
-         * @param {oro.datagrid.Grid} datagrid
+         * @param {oro.grid.Grid} datagrid
          */
         setDatagridAndSubscribe: function(datagrid) {
             this.datagrid = datagrid;
-            this.datagrid.on('cellEdited', this._onCellEdited, this);
+            this.datagrid.collection.on('change:' + this.columnName, this._onModelEdited, this);
         },
 
         /**
          * Process cell editing
          *
-         * @param {oro.datagrid.Grid} datagrid
-         * @param {oro.datagrid.Row} row
-         * @param {Backgrid.Cell} cell
+         * @param {Backbone.Model} model
+         * @param {Backgrid.Column} column
          * @protected
          */
-        _onCellEdited: function (datagrid, row, cell) {
-            var columnName = cell.column.get('name');
-            if (columnName == this.columnName) {
-                var fieldValue = cell.model.get(this.dataField);
-                if (fieldValue !== undefined) {
-                    this._processValue(fieldValue, cell.model);
-                }
+        _onModelEdited: function (model) {
+            var value = model.get(this.dataField);
+            if (!_.isUndefined(value)) {
+                this._processValue(value, model);
             }
         },
 

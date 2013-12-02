@@ -1,0 +1,52 @@
+{#
+    Available variables:
+    * entity       - Oro\Bundle\EmailBundle\Model\Email
+    * form         - Oro\Bundle\EmailBundle\Form\type\EmailType
+    * saved        - bool
+#}
+{% form_theme form with ['OroFormBundle:Form:fields.html.twig'] %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+
+{% block page_container %}
+<div class="widget-content email-form">
+    {% if saved %}
+        <script type="text/javascript">
+            require(['underscore', 'oro/translator', 'oro/widget-manager', 'oro/messenger', 'oro/mediator'],
+            function(_, __, widgetManager, messenger, mediator) {
+                widgetManager.getWidgetInstance({{ app.request.get('_wid')|json_encode|raw }}, function(widget) {
+                    messenger.notificationFlashMessage('success', __('The email was sent'));
+                    widget.remove();
+                    {% if form.vars.value.gridName|length %}
+                    mediator.trigger('datagrid:doRefresh:' + {{ form.vars.value.gridName|json_encode|raw }});
+                    {% endif %}
+                });
+            });
+        </script>
+    {% else %}
+        {% if not form.vars.valid and form.vars.errors|length %}
+            <div class="alert alert-error">
+                <div class="message">
+                    {{ form_errors(form) }}
+                </div>
+            </div>
+        {% endif %}
+        <div class="form-container">
+            <form id="{{ form.vars.name }}" action="{{ path('oro_email_email_create') }}" method="post">
+                <fieldset class="form-horizontal">
+                    {{ form_row(form.gridName) }}
+                    {{ form_row(form.from, {'label': 'From'}) }}
+                    {{ form_row(form.to, {'label': 'To'}) }}
+                    {{ form_row(form.subject, {'label': 'Subject'}) }}
+                    {{ form_row(form.body, {'label': 'Body', 'attr': {'class': 'email-body'} }) }}
+                    {{ form_rest(form) }}
+                    <div class="widget-actions form-actions" style="display: none;">
+                        <button class="btn" type="reset">{{ 'Cancel'|trans }}</button>
+                        <button class="btn btn-primary" type="submit">{{ 'Send'|trans }}</button>
+                    </div>
+                </fieldset>
+            </form>
+            {{ oro_form_js_validation(form) }}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -6,8 +6,8 @@ function ($, _, Backbone, Backgrid, PageableCollection) {
     /**
      * Datagrid header cell
      *
-     * @export  oro/datagrid/header-cell
-     * @class   oro.datagrid.HeaderCell
+     * @export  oro/grid/header-cell
+     * @class   oro.grid.HeaderCell
      * @extends Backgrid.HeaderCell
      */
     return Backgrid.HeaderCell.extend({

@@ -69,7 +69,25 @@ class EmailTemplateTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($clone->getId());
         $this->assertEquals($clone->getParent(), $this->emailTemplate->getId());
 
+        $this->assertFalse($clone->getIsSystem());
+        $this->assertTrue($clone->getIsEditable());
+
         $this->assertEquals($this->emailTemplate->getName(), (string)$this->emailTemplate);
         $this->assertFalse($clone->getTranslations()->first() === $translation);
+    }
+
+    public function testCloneForSystemNonEditableTemplate()
+    {
+        $emailTemplate = new EmailTemplate();
+        $emailTemplate->setIsSystem(true);
+        $emailTemplate->setIsEditable(false);
+
+        $this->assertTrue($emailTemplate->getIsSystem());
+        $this->assertFalse($emailTemplate->getIsEditable());
+
+        $clone = clone $emailTemplate;
+
+        $this->assertFalse($clone->getIsSystem());
+        $this->assertTrue($clone->getIsEditable());
     }
 }

@@ -98,7 +98,6 @@ class ActionMetadataProviderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($action, $actions[0]);
     }
 
-
     public function testCache()
     {
         $this->annotationProvider->expects($this->exactly(2))

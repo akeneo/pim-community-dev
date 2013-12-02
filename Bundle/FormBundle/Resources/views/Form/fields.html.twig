@@ -1,3 +1,5 @@
+{% extends 'OroUIBundle:Form:fields.html.twig' %}
+
 {% block genemu_jqueryselect2_country_row %}
     {{ block('genemu_jqueryselect2_row') }}
 {% endblock %}
@@ -243,6 +245,8 @@
             margin-left: 0;
             margin-right: 1.5%;
             margin-top: 15px;
+            height: 80px;
+            min-width: 290px;
         }
 
         #{{ id }}-container .entity-item h4 {
@@ -278,4 +282,239 @@
             widget.getCollection().reset(data);
         });
     </script>
+{% endblock %}
+
+{% block form_label %}
+    {% spaceless %}
+        {% if not compound %}
+            {% set label_attr = label_attr|merge({'for': id}) %}
+        {% endif %}
+        {% if required %}
+            {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' required')|trim}) %}
+        {% endif %}
+        {% if label is empty %}
+            {% set label = name|humanize %}
+        {% endif %}
+        {% set isRadioLabel = form.parent.vars.expanded|default(false) and checked is defined %}
+        <label{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>
+            {% if tooltip is defined and tooltip %}
+                {% set tooltip = tooltip|trans %}
+                {% if (tooltip_details_enabled is defined and tooltip_details_enabled)
+                    or (tooltip_details_anchor is defined or tooltip_details_link is defined) %}
+                    {% set helpLink = tooltip_details_link|default(get_help_link()) %}
+                    {% if tooltip_details_anchor is defined and tooltip_details_anchor %}
+                        {% set helpLink = helpLink ~ '#' ~ tooltip_details_anchor %}
+                    {% endif %}
+                    {% set tooltip = tooltip
+                        ~ '<div class="clearfix"><div class="pull-right"><a href="' ~ helpLink ~ '">' ~ 'Read more'|trans ~ '</a></div></div>' %}
+                {% endif %}
+                <i class="icon-info-sign"
+                    style="color: #6b92d0;font-size: 13px;"
+                    {% if tooltip_placement is defined %}data-placement="{{ tooltip_placement }}"{% endif %}
+                    data-content="{{ tooltip }}"
+                    data-toggle="popover"></i>
+            {% endif %}
+            {% if required and not isRadioLabel %}
+                <em>*</em>
+            {% endif %}
+            {{ label|trans({}, translation_domain)|capitalize }}
+        </label>
+    {% endspaceless %}
+{% endblock form_label %}
+
+{% block oro_money_currency_addon %}
+    <span class="add-on">{{ currency_symbol }}</span>
+{% endblock oro_money_currency_addon %}
+
+{% block oro_money_widget %}
+    {% spaceless %}
+        {% if currency_symbol_prepend is null %}
+            {% set div_input_class = '' %}
+        {% elseif currency_symbol_prepend == true %}
+            {% set div_input_class = 'input-prepend' %}
+        {% else %}
+            {% set div_input_class = 'input-append' %}
+        {% endif %}
+
+        {% set attr = attr|merge({'class': (attr.class|default('') ~ ' input-addon')|trim}) %}
+
+        <div class="{{ div_input_class }}">
+            {% set money_field = money_pattern %}
+            {% set money_field = money_field|replace({ '{{ widget }}': block('form_widget_simple') }) %}
+            {% set money_field = money_field|replace({ '{{ currency }}': block('oro_money_currency_addon') }) %}
+            {{ money_field|raw }}
+        </div>
+    {% endspaceless %}
+{% endblock oro_money_widget %}
+
+{% block oro_date_widget %}
+    {% set actual_id = id %}
+    {% set selector_name = 'date_selector_' ~ id %}
+    {% set selector_id = selector_name %}
+
+    {# Actual date field that uses ISO format #}
+    {% set attr = attr|merge({'data-input-id': selector_id}) %}
+    <span style="display:none">{{ block('date_widget') }}</span>
+
+    {# Visible fake datepicker field that uses localized format #}
+    <input type="text"
+           name="{{ selector_name }}"
+           id="{{ selector_id }}"
+           placeholder="{{ placeholder|trans }}" />
+
+    <script type="text/javascript">
+        require(['jquery', 'oro/formatter/datetime', 'jquery-ui'],
+        function($, datetimeFormatter) {
+            var selector = $("#{{ selector_id }}");
+            var actual = $("#{{ actual_id }}");
+            var sync = function() {
+                selector.val(datetimeFormatter.formatDate(actual.val()));
+            };
+            actual.on('change', sync);
+            if (actual.val() && actual.val().length) {
+                sync();
+            }
+            selector.datepicker({
+                altField: '#{{ actual_id }}',
+                altFormat: 'yy-mm-dd',
+                changeMonth: true,
+                changeYear: true,
+                yearRange: '-80:+1',
+                showButtonPanel: true
+            });
+            selector.keyup(
+                function () {
+                    var selectorValue = selector.val();
+                    if (datetimeFormatter.isDateValid(selectorValue)) {
+                        actual.val(datetimeFormatter.convertDateToBackendFormat(selectorValue));
+                    } else {
+                        actual.val('');
+                    }
+                }
+            );
+        });
+    </script>
+{% endblock oro_date_widget %}
+
+{% block oro_datetime_widget %}
+    {% set actual_id = id %}
+    {% set selector_name = 'datetime_selector_' ~ id %}
+    {% set selector_id = selector_name %}
+
+    {# Actual date field that uses ISO format #}
+    {% set attr = attr|merge({'data-input-id': selector_id}) %}
+    <span style="display:none">{{ block('datetime_widget') }}</span>
+
+    {# Visible fake datetimepicker field that uses localized format #}
+    <input type="text"
+           name="{{ selector_name }}"
+           id="{{ selector_id }}"
+           placeholder="{{ placeholder|trans }}" />
+
+    <script type="text/javascript">
+        require(['jquery', 'oro/formatter/datetime', 'jquery-ui-timepicker'],
+        function($, datetimeFormatter) {
+            var selector = $("#{{ selector_id }}");
+            var actual = $("#{{ actual_id }}");
+            var sync = function() {
+                selector.val(datetimeFormatter.formatDateTime(actual.val()));
+            };
+            actual.on('change', sync);
+            if (actual.val() && actual.val().length) {
+                sync();
+            }
+            selector.datetimepicker({
+                altField: '#{{ actual_id }}',
+                altFormat: 'yy-mm-dd',
+                altTimeFormat: 'HH:mm:ssz',
+                altFieldTimeOnly: false,
+                altSeparator: 'T',
+                changeMonth: true,
+                changeYear: true,
+                yearRange: '-80:+1',
+                showButtonPanel: true
+            });
+            selector.keyup(
+                function () {
+                    var selectorValue = selector.val();
+                    if (datetimeFormatter.isDateTimeValid(selectorValue)) {
+                        actual.val(datetimeFormatter.convertDateTimeToBackendFormat(selectorValue));
+                    } else {
+                        actual.val('');
+                    }
+                }
+            );
+        });
+    </script>
+{% endblock oro_datetime_widget %}
+
+{% macro oro_collection_item_prototype(widget) %}
+    {% if 'prototype' in widget.vars|keys %}
+        {% set form = widget.vars.prototype %}
+        {% set name = widget.vars.prototype.vars.name %}
+    {% else %}
+        {% set form = widget %}
+        {% set name = widget.vars.full_name %}
+    {% endif %}
+    <div data-content="{{ name }}" data-validation-optional-group>
+        <div class="row-oro oro-multiselect-holder">
+            {{ form_widget(form) }}
+            <button class="removeRow btn btn-action btn-link" type="button" data-related="{{ name }}">×</button>
+        </div>
+    </div>
+{% endmacro %}
+
+{% block oro_collection_widget %}
+    {% spaceless %}
+        {% set prototypeHtml = _self.oro_collection_item_prototype(form) %}
+        {% set attr = attr|merge({'class': (attr.class is defined ? attr.class ~ ' ' : '') ~ 'oro-item-collection collection-fields-list' }) %}
+        {% set id = id ~ '_collection' %}
+        <div class="row-oro">
+            <div {{ block('widget_container_attributes') }} data-prototype="{{ prototypeHtml|escape }}">
+                {% if form.children|length %}
+                    {% for child in form.children %}
+                        {{ _self.oro_collection_item_prototype(child) }}
+                    {% endfor %}
+                {% elseif show_form_when_empty %}
+                    {{ prototypeHtml|replace({'__name__': '0'})|raw }}
+                {% endif %}
+            </div>
+            <a class="btn add-list-item" href="javascript: void(0);"><i class="icon-plus"></i>{{ 'Add'|trans }}</a>
+        </div>
+        {{ _self.oro_collection_validate_primary_js(_context) }}
+    {% endspaceless %}
+{% endblock %}
+
+{% macro oro_collection_validate_primary_js(context) %}
+    {% if context.form.vars.prototype.primary is defined %}
+        <script type="text/javascript">
+            require(['jquery'],
+            function($){
+                $(function() {
+                    var container = $('#{{ context.id }}');
+                    /**
+                     * Allow only 1 primary checkbox to be checked.
+                     * This logic convert checkbox logic to logic used in radiobutton
+                     */
+                    container.on('click', '[name$="[primary]"]', function() {
+                        container.find('[name$="[primary]"]').each(function (idx, el) {
+                            el.checked = false;
+                        });
+                        this.checked = true;
+                    });
+                });
+            });
+        </script>
+    {% endif %}
+{% endmacro %}
+
+
+{% block oro_form_js_validation %}
+<script type="text/javascript">
+    require(['jquery', 'jquery.validate'],
+    function ($) {
+        var options = {{ js_options ? js_options|json_encode|raw : '{}' }};
+        $('#{{ form.vars.name }}').validate(options);
+    });
+</script>
 {% endblock %}

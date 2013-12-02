@@ -1,7 +1,7 @@
 /* jshint devel:true */
 /* global define */
-define(['underscore', 'backbone', 'oro/dialog-widget', 'oro/widget-manager'],
-function(_, Backbone, DialogWidget, WidgetManager) {
+define(['underscore', 'backbone', 'oro/dialog-widget'],
+function(_, Backbone, DialogWidget) {
     'use strict';
 
     /**
@@ -52,7 +52,6 @@ function(_, Backbone, DialogWidget, WidgetManager) {
                     'autoResize':true
                 }
             });
-            WidgetManager.addWidgetInstance(widget);
             widget.render();
         },
 

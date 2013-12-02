@@ -47,6 +47,7 @@ class AbstractEmailSynchronizerTest extends \PHPUnit_Framework_TestCase
 
     public function testSyncNoOrigin()
     {
+        $now = new \DateTime('now', new \DateTimeZone('UTC'));
         $maxConcurrentTasks = 3;
         $minExecPeriodInMin = 1;
 
@@ -57,12 +58,16 @@ class AbstractEmailSynchronizerTest extends \PHPUnit_Framework_TestCase
                     'resetHangedOrigins',
                     'findOriginToSync',
                     'createSynchronizationProcessor',
-                    'changeOriginSyncState'
+                    'changeOriginSyncState',
+                    'getCurrentUtcDateTime'
                 )
             )
             ->getMock();
         $sync->setLogger($this->log);
 
+        $sync->expects($this->once())
+            ->method('getCurrentUtcDateTime')
+            ->will($this->returnValue($now));
         $sync->expects($this->once())
             ->method('resetHangedOrigins');
         $sync->expects($this->once())
@@ -77,6 +82,7 @@ class AbstractEmailSynchronizerTest extends \PHPUnit_Framework_TestCase
 
     public function testDoSyncOrigin()
     {
+        $now = new \DateTime('now', new \DateTimeZone('UTC'));
         $origin = new TestEmailOrigin(123);
 
         $processor =
@@ -90,12 +96,16 @@ class AbstractEmailSynchronizerTest extends \PHPUnit_Framework_TestCase
                 array(
                     'findOriginToSync',
                     'createSynchronizationProcessor',
-                    'changeOriginSyncState'
+                    'changeOriginSyncState',
+                    'getCurrentUtcDateTime'
                 )
             )
             ->getMock();
         $sync->setLogger($this->log);
 
+        $sync->expects($this->once())
+            ->method('getCurrentUtcDateTime')
+            ->will($this->returnValue($now));
         $sync->expects($this->once())
             ->method('createSynchronizationProcessor')
             ->with($this->identicalTo($origin))
@@ -107,12 +117,12 @@ class AbstractEmailSynchronizerTest extends \PHPUnit_Framework_TestCase
         $processor->expects($this->once())
             ->method('process')
             ->with($this->identicalTo($origin));
-        $sync->expects($this->at(2))
+        $sync->expects($this->at(3))
             ->method('changeOriginSyncState')
             ->with(
                 $this->identicalTo($origin),
                 AbstractEmailSynchronizer::SYNC_CODE_SUCCESS,
-                $this->lessThanOrEqual(new \DateTime('now', new \DateTimeZone('UTC')))
+                $this->equalTo($now)
             );
 
         $sync->callDoSyncOrigin($origin);
@@ -133,12 +143,15 @@ class AbstractEmailSynchronizerTest extends \PHPUnit_Framework_TestCase
                 array(
                     'findOriginToSync',
                     'createSynchronizationProcessor',
-                    'changeOriginSyncState'
+                    'changeOriginSyncState',
+                    'getCurrentUtcDateTime'
                 )
             )
             ->getMock();
         $sync->setLogger($this->log);
 
+        $sync->expects($this->never())
+            ->method('getCurrentUtcDateTime');
         $sync->expects($this->once())
             ->method('createSynchronizationProcessor')
             ->with($this->identicalTo($origin))
@@ -158,6 +171,7 @@ class AbstractEmailSynchronizerTest extends \PHPUnit_Framework_TestCase
      */
     public function testDoSyncOriginProcessFailed()
     {
+        $now = new \DateTime('now', new \DateTimeZone('UTC'));
         $origin = new TestEmailOrigin(123);
 
         $processor =
@@ -171,12 +185,16 @@ class AbstractEmailSynchronizerTest extends \PHPUnit_Framework_TestCase
                 array(
                     'findOriginToSync',
                     'createSynchronizationProcessor',
-                    'changeOriginSyncState'
+                    'changeOriginSyncState',
+                    'getCurrentUtcDateTime'
                 )
             )
             ->getMock();
         $sync->setLogger($this->log);
 
+        $sync->expects($this->once())
+            ->method('getCurrentUtcDateTime')
+            ->will($this->returnValue($now));
         $sync->expects($this->once())
             ->method('createSynchronizationProcessor')
             ->with($this->identicalTo($origin))
@@ -189,7 +207,7 @@ class AbstractEmailSynchronizerTest extends \PHPUnit_Framework_TestCase
             ->method('process')
             ->with($this->identicalTo($origin))
             ->will($this->throwException(new \Exception()));
-        $sync->expects($this->at(2))
+        $sync->expects($this->at(3))
             ->method('changeOriginSyncState')
             ->with($this->identicalTo($origin), AbstractEmailSynchronizer::SYNC_CODE_FAILURE);
 
@@ -201,6 +219,7 @@ class AbstractEmailSynchronizerTest extends \PHPUnit_Framework_TestCase
      */
     public function testDoSyncOriginSetFailureFailed()
     {
+        $now = new \DateTime('now', new \DateTimeZone('UTC'));
         $origin = new TestEmailOrigin(123);
 
         $processor =
@@ -214,12 +233,16 @@ class AbstractEmailSynchronizerTest extends \PHPUnit_Framework_TestCase
                 array(
                     'findOriginToSync',
                     'createSynchronizationProcessor',
-                    'changeOriginSyncState'
+                    'changeOriginSyncState',
+                    'getCurrentUtcDateTime'
                 )
             )
             ->getMock();
         $sync->setLogger($this->log);
 
+        $sync->expects($this->once())
+            ->method('getCurrentUtcDateTime')
+            ->will($this->returnValue($now));
         $sync->expects($this->once())
             ->method('createSynchronizationProcessor')
             ->with($this->identicalTo($origin))
@@ -232,7 +255,7 @@ class AbstractEmailSynchronizerTest extends \PHPUnit_Framework_TestCase
             ->method('process')
             ->with($this->identicalTo($origin))
             ->will($this->throwException(new \InvalidArgumentException()));
-        $sync->expects($this->at(2))
+        $sync->expects($this->at(3))
             ->method('changeOriginSyncState')
             ->with($this->identicalTo($origin), AbstractEmailSynchronizer::SYNC_CODE_FAILURE)
             ->will($this->throwException(new \Exception()));
@@ -243,8 +266,9 @@ class AbstractEmailSynchronizerTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider changeOriginSyncStateProvider
      */
-    public function testChangeOriginSyncState($syncCode, $synchronizedAt)
+    public function testChangeOriginSyncState($syncCode, $hasSynchronizedAt)
     {
+        $now = new \DateTime('now', new \DateTimeZone('UTC'));
         $origin = new TestEmailOrigin(123);
 
         $q = $this->getMockBuilder('Doctrine\ORM\AbstractQuery')
@@ -285,20 +309,20 @@ class AbstractEmailSynchronizerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($qb));
         $qb->expects($this->at($index++))
             ->method('setParameter')
-            ->with('updated', $this->lessThanOrEqual(new \DateTime('now', new \DateTimeZone('UTC'))))
+            ->with('updated', $this->equalTo($now))
             ->will($this->returnValue($qb));
         $qb->expects($this->at($index++))
             ->method('setParameter')
             ->with('id', $origin->getId())
             ->will($this->returnValue($qb));
-        if ($synchronizedAt !== null) {
+        if ($hasSynchronizedAt) {
             $qb->expects($this->at($index++))
                 ->method('set')
                 ->with('o.synchronizedAt', ':synchronized')
                 ->will($this->returnValue($qb));
             $qb->expects($this->at($index++))
                 ->method('setParameter')
-                ->with('synchronized', $synchronizedAt)
+                ->with('synchronized', $now)
                 ->will($this->returnValue($qb));
         }
         if ($syncCode === AbstractEmailSynchronizer::SYNC_CODE_IN_PROCESS) {
@@ -319,7 +343,8 @@ class AbstractEmailSynchronizerTest extends \PHPUnit_Framework_TestCase
             ->with(TestEmailSynchronizer::EMAIL_ORIGIN_ENTITY)
             ->will($this->returnValue($repo));
 
-        $result = $this->sync->callChangeOriginSyncState($origin, $syncCode, $synchronizedAt);
+        $this->sync->setCurrentUtcDateTime($now);
+        $result = $this->sync->callChangeOriginSyncState($origin, $syncCode, $hasSynchronizedAt ? $now : null);
         $this->assertTrue($result);
     }
 
@@ -388,15 +413,15 @@ class AbstractEmailSynchronizerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($qb));
         $qb->expects($this->at($index++))
             ->method('setParameter')
-            ->with('now', $this->lessThanOrEqual($now))
+            ->with('now', $this->equalTo($now))
             ->will($this->returnValue($qb));
         $qb->expects($this->at($index++))
             ->method('setParameter')
-            ->with('min', $this->lessThanOrEqual($min))
+            ->with('min', $this->equalTo($min))
             ->will($this->returnValue($qb));
         $qb->expects($this->at($index++))
             ->method('setParameter')
-            ->with('border', $this->lessThanOrEqual($border))
+            ->with('border', $this->equalTo($border))
             ->will($this->returnValue($qb));
         $qb->expects($this->at($index++))
             ->method('setMaxResults')
@@ -424,6 +449,7 @@ class AbstractEmailSynchronizerTest extends \PHPUnit_Framework_TestCase
             ->with(TestEmailSynchronizer::EMAIL_ORIGIN_ENTITY)
             ->will($this->returnValue($repo));
 
+        $this->sync->setCurrentUtcDateTime($now);
         $result = $this->sync->callFindOriginToSync($maxConcurrentTasks, $minExecPeriodInMin);
 
         $this->assertEquals($origin2, $result);
@@ -432,6 +458,8 @@ class AbstractEmailSynchronizerTest extends \PHPUnit_Framework_TestCase
     public function testResetHangedOrigins()
     {
         $now = new \DateTime('now', new \DateTimeZone('UTC'));
+        $border = clone $now;
+        $border->sub(new \DateInterval('P1D'));
 
         $q = $this->getMockBuilder('Doctrine\ORM\AbstractQuery')
             ->disableOriginalConstructor()
@@ -471,7 +499,7 @@ class AbstractEmailSynchronizerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($qb));
         $qb->expects($this->at($index++))
             ->method('setParameter')
-            ->with('border', $this->lessThanOrEqual($now))
+            ->with('border', $this->equalTo($border))
             ->will($this->returnValue($qb));
         $qb->expects($this->at($index++))
             ->method('getQuery')
@@ -485,15 +513,16 @@ class AbstractEmailSynchronizerTest extends \PHPUnit_Framework_TestCase
             ->with(TestEmailSynchronizer::EMAIL_ORIGIN_ENTITY)
             ->will($this->returnValue($repo));
 
+        $this->sync->setCurrentUtcDateTime($now);
         $this->sync->callResetHangedOrigins();
     }
 
     public function changeOriginSyncStateProvider()
     {
         return array(
-            array(AbstractEmailSynchronizer::SYNC_CODE_FAILURE, null),
-            array(AbstractEmailSynchronizer::SYNC_CODE_IN_PROCESS, null),
-            array(AbstractEmailSynchronizer::SYNC_CODE_SUCCESS, new \DateTime('now', new \DateTimeZone('UTC'))),
+            array(AbstractEmailSynchronizer::SYNC_CODE_FAILURE, false),
+            array(AbstractEmailSynchronizer::SYNC_CODE_IN_PROCESS, false),
+            array(AbstractEmailSynchronizer::SYNC_CODE_SUCCESS, true),
         );
     }
 }

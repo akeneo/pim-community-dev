@@ -36,8 +36,8 @@ class OroIconType extends AbstractType
                 'allowClear'         => true,
                 'configs'            => array(
                     'placeholder'             => 'oro.form.choose_value',
-                    'result_template_twig'    => 'OroFormBundle:Js:configResult.html.twig',
-                    'selection_template_twig' => 'OroFormBundle:Js:configSelection.html.twig',
+                    'result_template_twig'    => 'OroFormBundle:Autocomplete:icon/result.html.twig',
+                    'selection_template_twig' => 'OroFormBundle:Autocomplete:icon/selection.html.twig',
                     'extra_config'            => 'autocomplete',
                     'route_name'              => 'oro_form_autocomplete_config',
                     'autocomplete_alias'      => 'config_icon',

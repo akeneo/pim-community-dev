@@ -24,9 +24,9 @@ abstract class AbstractChoiceType extends AbstractType
     }
 
     /**
-     * @param FormView $view
+     * @param FormView      $view
      * @param FormInterface $form
-     * @param array $options
+     * @param array         $options
      */
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
@@ -45,7 +45,11 @@ abstract class AbstractChoiceType extends AbstractType
                 // translate choice values
                 /** @var $choiceView ChoiceView */
                 foreach ($valueFormView->vars['choices'] as $key => $choiceView) {
-                    $choiceView->label = $this->translator->trans($choiceView->label, array(), $translationDomain);
+                    $choiceView->label = $this->translator->trans(
+                        $choiceView->label,
+                        array(),
+                        $translationDomain
+                    );
                     $valueFormView->vars['choices'][$key] = $choiceView;
                 }
             }

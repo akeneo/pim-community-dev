@@ -100,13 +100,14 @@ class AddressCountryAndRegionSubscriber implements EventSubscriberInterface
     public function preSubmit(FormEvent $event)
     {
         $data = $event->getData();
-        $form = $event->getForm();
 
         /** @var $country \Oro\Bundle\AddressBundle\Entity\Country */
         $country = $this->om->getRepository('OroAddressBundle:Country')
             ->find(isset($data['country']) ? $data['country'] : false);
 
         if ($country && $country->hasRegions()) {
+            $form = $event->getForm();
+
             $config = $form->get('state')->getConfig()->getOptions();
             unset($config['choice_list']);
             unset($config['choices']);
@@ -126,7 +127,15 @@ class AddressCountryAndRegionSubscriber implements EventSubscriberInterface
                     $config
                 )
             );
+
+            // do not allow saving text state in case when state was checked from list
+            unset($data['state_text']);
+        } else {
+            // do not allow saving state select in case when state was filled as text
+            unset($data['state']);
         }
+
+        $event->setData($data);
     }
 
     /**

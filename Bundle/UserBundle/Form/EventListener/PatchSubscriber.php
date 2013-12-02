@@ -7,6 +7,8 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormInterface;
 
+use Doctrine\Common\Collections\Collection;
+
 /**
  * Changes Form->submit() behavior so that it treats not set values as if they
  * were sent unchanged.
@@ -36,18 +38,28 @@ class PatchSubscriber implements EventSubscriberInterface
      * @param FormInterface $form
      * @return array
      */
-    protected function unbind($form)
+    protected function unbind(FormInterface $form)
     {
         if ($form->count() > 0) {
             $ary = array();
 
             foreach ($form->all() as $name => $child) {
-                $ary[$name] = $this->unbind($child);
+                $value = $this->unbind($child);
+                if (null !== $value // if not null
+                    || (
+                        (is_array($value) || $value instanceof Collection)
+                        && count($value) > 0 // if not empty array or collection
+                    )
+                ) {
+                    $ary[$name] = $value;
+                }
             }
 
             return $ary;
         } else {
-            return $form->getViewData();
+            $data = $form->getViewData();
+
+            return $data instanceof Collection ? $data->toArray() : $data;
         }
     }
 }

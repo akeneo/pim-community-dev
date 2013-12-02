@@ -24,7 +24,6 @@ class Configuration implements ConfigurationInterface
 
         $rootNode->children()
             ->scalarNode('engine')
-                ->isRequired()
                 ->cannotBeEmpty()
                 ->defaultValue('orm')
             ->end()

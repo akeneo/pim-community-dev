@@ -58,4 +58,21 @@ class StepManager
     {
         return $this->steps;
     }
+
+    /**
+     * Get steps sorted by order.
+     *
+     * @return Collection|Step[]
+     */
+    public function getOrderedSteps()
+    {
+        $steps = $this->steps->toArray();
+        usort(
+            $steps,
+            function (Step $stepOne, Step $stepTwo) {
+                return ($stepOne->getOrder() >= $stepTwo->getOrder()) ? 1 : -1;
+            }
+        );
+        return new ArrayCollection($steps);
+    }
 }

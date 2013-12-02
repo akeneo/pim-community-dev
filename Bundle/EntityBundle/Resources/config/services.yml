@@ -1,6 +1,10 @@
 parameters:
-    oro_entity.listener.navigation_listener.class:              Oro\Bundle\EntityBundle\EventListener\NavigationListener
-    oro_entity.owner.entity_config_subscriber.class:            Oro\Bundle\EntityBundle\EventListener\EntityConfigSubscriber
+    oro_entity.listener.navigation_listener.class:                 Oro\Bundle\EntityBundle\EventListener\NavigationListener
+    oro_entity.owner.entity_config_subscriber.class:               Oro\Bundle\EntityBundle\EventListener\EntityConfigSubscriber
+    oro_entity.datagrid.extension.class:                           Oro\Bundle\EntityBundle\Grid\ExtendExtension
+    oro_entity.event_listener.custom_entity_grid_subscriber.class: Oro\Bundle\EntityBundle\EventListener\CustomEntityGridListener
+    oro_entity.event_listener.relation_entity_grid_subscriber.class: Oro\Bundle\EntityBundle\EventListener\RelationEntityGridListener
+
 services:
     oro_entity.listener.navigation_listener:
         class: %oro_entity.listener.navigation_listener.class%
@@ -14,5 +18,34 @@ services:
 
     oro_entity.owner.entity_config_subscriber:
         class: %oro_entity.owner.entity_config_subscriber.class%
+        tags:
+            - { name: kernel.event_subscriber }
+
+    oro_entity.datagrid.extension:
+        class: %oro_entity.datagrid.extension.class%
+        arguments:
+            - @oro_entity_config.config_manager
+        tags:
+            - { name: oro_datagrid.extension }
+
+    oro_entity.event_listener.custom_entity_grid_subscriber:
+        class: %oro_entity.event_listener.custom_entity_grid_subscriber.class%
+        arguments:
+            - @oro_entity_config.config_manager
+            - @oro_datagrid.datagrid.request_params
+            - @router
+        calls:
+            - [setRequest, [@?request=]]
+        tags:
+            - { name: kernel.event_subscriber }
+
+    oro_entity.event_listener.relation_entity_grid_subscriber:
+        class: %oro_entity.event_listener.relation_entity_grid_subscriber.class%
+        arguments:
+            - @oro_entity_config.config_manager
+            - @oro_datagrid.datagrid.request_params
+            - @router
+        calls:
+            - [setRequest, [@?request=]]
         tags:
             - { name: kernel.event_subscriber }

@@ -1,8 +1,7 @@
 /* jshint devel:true */
 /* global define */
-define(['underscore', 'backbone', 'oro/multiple-entity/view', 'oro/multiple-entity/model',
-    'oro/widget-manager', 'oro/dialog-widget'],
-function(_, Backbone, EntityView, MultipleEntityModel, WidgetManager, DialogWidget) {
+define(['underscore', 'backbone', 'oro/multiple-entity/view', 'oro/multiple-entity/model', 'oro/dialog-widget'],
+function(_, Backbone, EntityView, MultipleEntityModel, DialogWidget) {
     'use strict';
 
     var $ = Backbone.$;
@@ -123,7 +122,6 @@ function(_, Backbone, EntityView, MultipleEntityModel, WidgetManager, DialogWidg
                         }, this)
                     }
                 });
-                WidgetManager.addWidgetInstance(this.selectorDialog);
                 this.selectorDialog.on('completeSelection', _.bind(this.processSelectedEntities, this));
                 this.selectorDialog.render();
             }

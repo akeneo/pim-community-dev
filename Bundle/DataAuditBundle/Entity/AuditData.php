@@ -20,6 +20,15 @@ class AuditData extends AbstractKeyValue
     public function __construct($key, $value)
     {
         $this->key   = $key;
+
+        if (is_array($value)) {
+            foreach ($value as &$val) {
+                if ($val instanceof \DateTime) {
+                    $val = $val->format(\DateTime::ISO8601);
+                }
+            }
+        }
+
         $this->value = $value;
     }
 }

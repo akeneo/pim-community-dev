@@ -1,7 +1,6 @@
 {% extends bap.layout %}
 {% import 'OroUIBundle::macros.html.twig' as UI %}
-{% import 'OroLocaleBundle::macros.html.twig' as Locale %}
-{% set format = oro_config_value('oro_locale.name_format') %}
+
 {% block content %}
 <div class="layout-content">
     <div class="navigation clearfix navbar-extra navbar-extra-right">
@@ -22,16 +21,20 @@
                                     {% if (ownerType == 'USER') %}
                                         {% if resource_granted('oro_user_user_view') %}
                                             {% set ownerPath = path('oro_user_view', {'id': entity.owner.id}) %}
+                                            {% set ownerName = entity.owner|oro_format_name %}
                                         {% endif %}
                                     {% elseif (ownerType == 'BUSINESS_UNIT') %}
                                         {% if resource_granted('oro_business_unit_view') %}
                                             {% set ownerPath = path('oro_business_unit_view', {'id': entity.owner.id}) %}
+                                            {% set ownerName = entity.owner.name %}
                                         {% endif %}
                                     {% endif %}
-                                    {% if ownerPath is defined %}
-                                        <a href="{{ ownerPath }}">{{ entity.owner.name }}</a>
-                                    {% else %}
-                                        {{ entity.owner.name }}
+                                    {% if ownerName is defined %}
+                                        {% if ownerPath is defined %}
+                                            <a href="{{ ownerPath }}">{{ ownerName }}</a>
+                                        {% else %}
+                                            {{ ownerName }}
+                                        {% endif %}
                                     {% endif %}
                                 </li>
                             {% endif %}
@@ -47,13 +50,14 @@
                 <div class="customer-info {% if (breadcrumbs.hasAvatar is not defined) %}customer-simple{% endif %} well-small">
                     {% if breadcrumbs.hasAvatar is defined and breadcrumbs.hasAvatar %}
                         <div class="visual">
-                            <img src="{{ breadcrumbs.imagePath ? breadcrumbs.imagePath | imagine_filter('avatar_med') : asset('bundles/oroui/img/info-usser.png') }}" alt="{{ breadcrumbs.entityTitle }}"/>
+                            <img src="{{ breadcrumbs.imagePath ? breadcrumbs.imagePath | imagine_filter('avatar_med') : asset('bundles/oroui/img/info-user.png') }}" alt="{{ breadcrumbs.entityTitle }}"/>
                         </div>
                     {% endif %}
                     <div class="customer-content pull-left">
                         <div class="clearfix">
                             {% block breadcrumbs %}
                                 <div class="pull-left">
+                                    {% if breadcrumbs.indexLabel is defined %}
                                     <div class="sub-title">
                                     {%- if breadcrumbs.indexPath is defined -%}
                                         <a href="{{ breadcrumbs.indexPath }}">{{ breadcrumbs.indexLabel|trans }}</a>
@@ -62,6 +66,7 @@
                                     {%- endif -%}
                                     </div>
                                     <span class="separator">/</span>
+                                    {% endif %}
                                     {% if breadcrumbs.additional is defined %}
                                         {% for breadcrumb in breadcrumbs.additional %}
                                             <div class="sub-title"><a href="{{ breadcrumb.indexPath }}">{{ breadcrumb.indexLabel|trans }}</a></div>
@@ -75,8 +80,8 @@
                         <div class="clearfix">
                             <ul class="inline">
                                 {% block stats %}
-                                    <li>{{ 'Created'|trans }}: {{ breadcrumbs.entity.createdAt ? Locale.time(breadcrumbs.entity.createdAt) : 'N/A' }}</li>
-                                    <li>{{ 'Updated'|trans }}: {{ breadcrumbs.entity.updatedAt ? Locale.time(breadcrumbs.entity.updatedAt) : 'N/A' }}</li>
+                                    <li>{{ 'Created'|trans }}: {{ breadcrumbs.entity.createdAt ? breadcrumbs.entity.createdAt|oro_format_datetime : 'N/A' }}</li>
+                                    <li>{{ 'Updated'|trans }}: {{ breadcrumbs.entity.updatedAt ? breadcrumbs.entity.updatedAt|oro_format_datetime : 'N/A' }}</li>
                                 {% endblock stats %}
                             </ul>
                         </div>

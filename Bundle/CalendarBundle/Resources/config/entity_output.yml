@@ -1,0 +1,4 @@
+Oro\Bundle\CalendarBundle\Entity\CalendarEvent:
+    icon_class:                         icon-calendar
+    name:                               entity.calendar_event.name
+    description:                        entity.calendar_event.description

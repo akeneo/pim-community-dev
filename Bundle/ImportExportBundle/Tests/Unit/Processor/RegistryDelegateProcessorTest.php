@@ -157,7 +157,7 @@ class RegistryDelegateProcessorTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \Oro\Bundle\ImportExportBundle\Exception\InvalidConfigurationException
-     * @expectedExceptionMessage Configuration of processor must contain "entityName" and "processorAlias" options.
+     * @expectedExceptionMessage Configuration of processor must contain "processorAlias" options.
      */
     public function testProcessFailsWhenNoConfigurationProvided()
     {

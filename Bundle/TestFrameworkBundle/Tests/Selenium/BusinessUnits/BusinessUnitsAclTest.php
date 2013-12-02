@@ -3,8 +3,9 @@
 namespace Oro\Bundle\TestFrameworkBundle\Tests\Selenium;
 
 use Oro\Bundle\TestFrameworkBundle\Pages\Objects\Login;
+use Oro\Bundle\TestFrameworkBundle\Test\Selenium2TestCase;
 
-class BusinessUnitsAclTest extends \PHPUnit_Extensions_Selenium2TestCase
+class BusinessUnitsAclTest extends Selenium2TestCase
 {
     protected $coverageScriptUrl = PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_TESTS_URL_COVERAGE;
 
@@ -32,7 +33,7 @@ class BusinessUnitsAclTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->add()
             ->setLabel('Label_' . $randomPrefix)
             ->setOwner('Main')
-            ->setEntity('Business Unit', array('Create', 'Edit', 'Delete', 'View', 'Assign'))
+            ->setEntity('Business Unit', array('Create', 'Edit', 'Delete', 'View', 'Assign'), 'System')
             ->save()
             ->assertMessage('Role saved')
             ->close();
@@ -61,8 +62,8 @@ class BusinessUnitsAclTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->setOwner('Main')
             ->setFirstpassword('123123q')
             ->setSecondpassword('123123q')
-            ->setFirstname('First_'.$username)
-            ->setLastname('Last_'.$username)
+            ->setFirstName('First_'.$username)
+            ->setLastName('Last_'.$username)
             ->setEmail($username.'@mail.com')
             ->setRoles(array('Label_' . $role))
             ->save()
@@ -112,7 +113,6 @@ class BusinessUnitsAclTest extends \PHPUnit_Extensions_Selenium2TestCase
      */
     public function testBusinessUnitAcl($aclcase, $username, $role, $unitname)
     {
-        $this->markTestSkipped('Skipped due bug BAP-1693');
         $rolename = 'Label_' . $role;
         $login = new Login($this);
         $login->setUsername(PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_LOGIN)
@@ -140,9 +140,9 @@ class BusinessUnitsAclTest extends \PHPUnit_Extensions_Selenium2TestCase
     public function deleteAcl($login, $rolename, $username, $unitname)
     {
         $login->openRoles()
-            ->filterBy('Role', $rolename)
+            ->filterBy('Label', $rolename)
             ->open(array($rolename))
-            ->setEntity('Business Unit', array('Delete'))
+            ->setEntity('Business Unit', array('Delete'), 'None')
             ->save()
             ->logout()
             ->setUsername($username)
@@ -155,9 +155,9 @@ class BusinessUnitsAclTest extends \PHPUnit_Extensions_Selenium2TestCase
     public function updateAcl($login, $rolename, $username, $unitname)
     {
         $login->openRoles()
-            ->filterBy('Role', $rolename)
+            ->filterBy('Label', $rolename)
             ->open(array($rolename))
-            ->setEntity('Business Unit', array('Edit'))
+            ->setEntity('Business Unit', array('Edit'), 'None')
             ->save()
             ->logout()
             ->setUsername($username)
@@ -170,9 +170,9 @@ class BusinessUnitsAclTest extends \PHPUnit_Extensions_Selenium2TestCase
     public function createAcl($login, $rolename, $username)
     {
         $login->openRoles()
-            ->filterBy('Role', $rolename)
+            ->filterBy('Label', $rolename)
             ->open(array($rolename))
-            ->setEntity('Business Unit', array('Create'))
+            ->setEntity('Business Unit', array('Create'), 'None')
             ->save()
             ->logout()
             ->setUsername($username)
@@ -182,12 +182,12 @@ class BusinessUnitsAclTest extends \PHPUnit_Extensions_Selenium2TestCase
             ->assertElementNotPresent("//div[@class = 'container-fluid']//a[contains(., 'Create business unit')]");
     }
 
-    public function viewAcl($login, $username, $rolename, $unitname)
+    public function viewAcl($login, $username, $rolename)
     {
         $login->openRoles()
-            ->filterBy('Role', $rolename)
+            ->filterBy('Label', $rolename)
             ->open(array($rolename))
-            ->setEntity('Business Unit', array('View'))
+            ->setEntity('Business Unit', array('View'), 'None')
             ->save()
             ->logout()
             ->setUsername($username)

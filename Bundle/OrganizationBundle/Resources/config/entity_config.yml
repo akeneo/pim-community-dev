@@ -9,12 +9,13 @@ oro_entity_config:
                                 scope:      extend
                             code:           owner
                             value:          System
+                        priority: 100
                     constraints:
                         - NotBlank:         ~
                     grid:
-                        type:               options
+                        type:               select
                         label:              'Ownership Type'
-                        filter_type:        oro_grid_orm_choice
+                        filter_type:        choice
                         required:           true
                         sortable:           true
                         filterable:         true

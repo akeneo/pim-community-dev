@@ -1,21 +1,10 @@
 {% extends bap.layout %}
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+
+{% set gridName = 'search-grid' %}
+
 
 {% oro_title_set({ params: { '%keyword%': searchString } }) %}
-
-{% block head_script %}
-    {{ parent() }}
-    {% include 'OroGridBundle:Include:javascript.html.twig' with { datagridView: datagrid, selector: '#search-result-grid' } %}
-    <script type="text/javascript">
-        require(['jquery', 'oro/registry'],
-        function($, registry) {
-            $(function() {
-                // hide header
-                var searchDatagrid = registry.getElement('datagrid', {{ datagrid.datagrid.name|json_encode|raw }});
-                //searchDatagrid.header.$el.remove();
-            });
-        });
-    </script>
-{% endblock %}
 
 {% block page_container %}
     {% block content %}
@@ -56,7 +45,9 @@
                     {% endfor %}
                 </td>
                 <td class="search-results-column">
-                    <div id="search-result-grid"></div>
+                    <div id="search-result-grid">
+                        {{ dataGrid.renderGrid(gridName, {from: from, search: searchString}, { cssClass: 'search-grid' }) }}
+                    </div>
                 </td>
             </tr>
         </table>

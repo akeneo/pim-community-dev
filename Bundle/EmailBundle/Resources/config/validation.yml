@@ -12,3 +12,12 @@ Oro\Bundle\EmailBundle\Entity\EmailTemplate:
             - NotBlank:     ~
         entityName:
             - NotBlank:     ~
+
+Oro\Bundle\EmailBundle\Form\Model\Email:
+    properties:
+        from:
+            - NotBlank:     ~
+        to:
+            - NotBlank:     ~
+        subject:
+            - NotBlank:     ~

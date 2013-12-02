@@ -8,23 +8,33 @@ use Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel;
 use Oro\Bundle\EntityConfigBundle\Entity\FieldConfigModel;
 use Oro\Bundle\EntityConfigBundle\Entity\ConfigModelValue;
 use Oro\Bundle\EntityConfigBundle\Tests\Unit\ConfigManagerTest;
+use Oro\Bundle\EntityConfigBundle\Tests\Unit\Fixture\DemoEntity;
 
 class FoundEntityConfigRepository extends EntityRepository
 {
     protected static $configEntity;
+    protected static $configField;
 
     public function findOneBy(array $criteria, array $orderBy = null)
     {
-        return self::getResultConfigEntity();
+        if (isset($criteria['fieldName'])) {
+            return self::getResultConfigField();
+        } else {
+            return self::getResultConfigEntity();
+        }
+    }
+
+    public function findAll()
+    {
+        return array(self::getResultConfigEntity());
     }
 
     public static function getResultConfigEntity()
     {
         if (!self::$configEntity) {
-            self::$configEntity = new EntityConfigModel(ConfigManagerTest::DEMO_ENTITY);
+            self::$configEntity = new EntityConfigModel(DemoEntity::ENTITY_NAME);
 
-            $configField = new FieldConfigModel('test', 'string');
-            self::$configEntity->addField($configField);
+            self::$configEntity->addField(self::getResultConfigField());
 
             $configValue = new ConfigModelValue(
                 'test_value',
@@ -43,5 +53,22 @@ class FoundEntityConfigRepository extends EntityRepository
         }
 
         return self::$configEntity;
+    }
+
+    public static function getResultConfigField()
+    {
+        if (!self::$configField) {
+            self::$configField = new FieldConfigModel('test', 'string');
+
+            $configValue = new ConfigModelValue(
+                'test_value',
+                'test',
+                'test_value_origin'
+            );
+
+            self::$configField->addValue($configValue);
+        }
+
+        return self::$configField;
     }
 }

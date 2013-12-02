@@ -25,12 +25,12 @@ oro_entity_config:
                 owner:
                     options:
                         priority:           40
-                        internal:           true
+                        auditable:          false
                         default_value:      'System'
                     grid:
                         type:               string
                         label:              'Type'
-                        filter_type:        oro_grid_orm_string
+                        filter_type:        string
                         required:           true
                         sortable:           true
                         filterable:         true
@@ -47,11 +47,11 @@ oro_entity_config:
                     options:
                         priority:           27
                         default_value:      false
-                        internal:           true
+                        auditable:          false
                     grid:
                         type:               boolean
                         label:              'Is Extend'
-                        filter_type:        oro_grid_orm_boolean
+                        filter_type:        boolean
                         required:           true
                         sortable:           true
                         filterable:         true
@@ -65,7 +65,7 @@ oro_entity_config:
                     grid:
                         type:               string
                         label:              'Schema status'
-                        filter_type:        oro_grid_orm_choice
+                        filter_type:        choice
                         choices:            {system: '', new: 'New', active: 'Active', updated: 'Requires update', deleted: 'To be deleted'}
                         required:           true
                         sortable:           true
@@ -75,27 +75,41 @@ oro_entity_config:
                 is_deleted:
                     options:
                         default_value:      false
-                        internal:           true
+                        auditable:          false
                     grid:
+                        # TODO: remove/deprecate show_column key here with GridBundle
                         show_column:        false
+                        renderable:         false
                         query:
                             operator:       '!='
                             value:          true
 
                 unique_key:
                     options:
-                        internal:           true
+                        auditable:          false
                         serializable:       true
 
                 index:
                     options:
-                        internal:           true
+                        auditable:          false
                         serializable:       true
 
                 upgradeable:
                     options:
-                        internal:           true
+                        auditable:          false
                         default_value:      true
+
+                relation:
+                    options:
+                        auditable:          false
+                        serializable:       true
+                        default_value:      []
+
+                schema:
+                    options:
+                        auditable:          false
+                        serializable:       true
+                        default_value:      []
 
         field:
             grid_action:
@@ -118,7 +132,7 @@ oro_entity_config:
                     name:                   'Manage unique keys'
                     route:                  'oro_entityextend_entity_unique_key'
                     entity_id:              true
-                    filter:                 { is_extend: true }
+                    filter:                 { is_extend: true, upgradeable: true }
                 -
                     name:                   'Create field'
                     route:                  'oro_entityextend_field_create'
@@ -136,11 +150,11 @@ oro_entity_config:
                     options:
                         priority:           20
                         default_value:      'System'
-                        internal:           true
+                        auditable:          false
                     grid:
                         type:               string
                         label:              'Type'
-                        filter_type:        oro_grid_orm_string
+                        filter_type:        string
                         required:           true
                         sortable:           true
                         filterable:         false
@@ -154,7 +168,7 @@ oro_entity_config:
                     grid:
                         type:               string
                         label:              'Schema status'
-                        filter_type:        oro_grid_orm_choice
+                        filter_type:        choice
                         choices:            { new: 'New', applied: 'Applied', updated: 'Requires update', deleted: 'To be deleted'}
                         required:           true
                         sortable:           true
@@ -163,9 +177,13 @@ oro_entity_config:
 
                 is_extend:
                     options:
-                        priority:           40
                         default_value:      false
-                        internal:           true
+                        auditable:          false
+
+                extend:
+                    options:
+                        default_value:      false
+                        auditable:          false
 
                 length:
                     options:
@@ -231,56 +249,92 @@ oro_entity_config:
                             block:          entity
                             subblock:       properties
 
-                target_entity:
-                    options:
-                        allowed_type:       [oneToMany, manyToOne, manyToMany]
-                        required_property:
-                            config_id:
-                                field_name:  null
-                                scope:      extend
-                            code:           is_extend
-                            value:          true
-                    constraints:
-                        - NotBlank:
-                            message: 'Please choice target entity...'
-                    form:
-                        type:               oro_entity_target_type
-                        options:
-                            attr:           {class: 'extend-rel-target-name'}
-                            required:       true
-                            label:          'Target entity'
-                            empty_value:    'Please choice target entity...'
-                            block:          entity
-                            subblock:       properties
-
-                target_field:
-                    options:
-                        allowed_type:       [oneToMany, manyToOne, manyToMany]
-                        required_property:
-                            config_id:
-                                field_name:  null
-                                scope:      extend
-                            code:           is_extend
-                            value:          true
-                    constraints:
-                        - NotBlank:
-                            message: 'Please choice target field...'
-                    form:
-                        type:               oro_entity_target_field_type
-                        options:
-                            attr:           {class: 'extend-rel-target-field'}
-                            required:       true
-                            label:          'Target field'
-                            empty_value:    'Please choice target field...'
-                            block:          entity
-                            subblock:       properties
-
                 is_deleted:
                     options:
                         default_value:      false
-                        internal:           true
+                        auditable:          false
                     grid:
+                        # TODO: remove/deprecate show_column key here with GridBundle
                         show_column:        false
+                        renderable:         false
                         query:
                             operator:       '!='
                             value:          true
+
+                is_inverse:
+                    options:
+                        default_value:      false
+                        auditable:          false
+
+                #
+                # Relations form type fields
+                #
+                relation:
+                    options:
+                        allowed_type:       [oneToMany, manyToOne, manyToMany]
+                        required_property:
+                            config_id:
+                                field_name:  null
+                                scope:      extend
+                            code:           is_extend
+                            value:          true
+                    form:
+                        type:               oro_entity_relation_type
+                        options:
+                            block:          entity
+                            subblock:       properties
+
+                target_entity:
+                    options:
+                        auditable:          false
+
+                target_field:
+                    options:
+                        auditable:          false
+
+                target_grid:
+                    options:
+                        auditable:          false
+                        serializable:       true
+
+                target_title:
+                    options:
+                        auditable:          false
+                        serializable:       true
+
+                target_detailed:
+                    options:
+                        auditable:          false
+                        serializable:       true
+
+                #
+                # OptionSet form type fields
+                #
+                set_expanded:
+                    options:
+                        allowed_type:       [optionSet]
+                        create_only:        true
+                    form:
+                        type:               choice
+                        options:
+                            required:       false
+                            choices:        ['No', 'Yes']
+                            empty_value:    false
+                            label:          'Expanded'
+                            attr:
+                                class:      is-option-set-expanded
+                            block:          entity
+                            subblock:       properties
+                set_options:
+                    options:
+                        allowed_type:       [optionSet]
+                        auditable:          false
+                    form:
+                        type:               oro_entity_option_set_collection
+                        options:
+                            required:       false
+                            label:          'Options'
+                            block:          entity
+                            subblock:       properties
+                            type:           oro_entity_option_set
+                            tooltip:        'Deleting an option will remove these values from related records.'

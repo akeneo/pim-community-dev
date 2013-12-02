@@ -26,7 +26,7 @@ abstract class SoapGetController extends ContainerAware implements EntityManager
     /**
      * Get entity by identifier.
      *
-     * @param mixed $id
+     * @param  mixed      $id
      * @return object
      * @throws \SoapFault
      */

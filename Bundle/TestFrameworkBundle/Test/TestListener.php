@@ -34,11 +34,10 @@ class TestListener implements \PHPUnit_Framework_TestListener
             $className = explode('\\', get_class($test));
             try {
                 $file = getcwd() . DIRECTORY_SEPARATOR . $this->directory . DIRECTORY_SEPARATOR . end($className);
-                $file .= '__' . $test->getName() . '__ ' . date('Y-m-d\TH-i-s') . '.png';
+                $file .= '__' . preg_replace('/[^A-Za-z0-9_\-]/', '_', $test->getName()) . '__ ' . date('Y-m-d\TH-i-s') . '.png';
                 file_put_contents($file, $test->currentScreenshot());
             } catch (\Exception $e) {
-                $file = getcwd() . DIRECTORY_SEPARATOR . $this->directory . DIRECTORY_SEPARATOR . end($className);
-                $file .= '__' . $test->getName() . '__ ' . date('Y-m-d\TH-i-s') . '.txt';
+                $file .= '.txt';
                 file_put_contents(
                     $file,
                     "Screenshot generation doesn't work." . "\n" . $e->getMessage() . "\n" . $e->getTraceAsString()
@@ -68,6 +67,7 @@ class TestListener implements \PHPUnit_Framework_TestListener
         if ($suite instanceof PHPUnit_Extensions_SeleniumTestSuite ||
             in_array('selenium', $groups)
         ) {
+            $this->setSeleniumCoverageFlag();
             $this->runPhantom();
         }
     }
@@ -75,6 +75,24 @@ class TestListener implements \PHPUnit_Framework_TestListener
     public function endTestSuite(\PHPUnit_Framework_TestSuite $suite)
     {
 
+    }
+
+    private function setSeleniumCoverageFlag()
+    {
+        //create file in tmp folder
+        $fileName = getcwd() . DIRECTORY_SEPARATOR .
+            'app' . DIRECTORY_SEPARATOR .
+            'logs' . DIRECTORY_SEPARATOR .
+            'selenium.coverage';
+
+        if (file_exists($fileName)) {
+            unlink($fileName);
+        }
+
+        if (defined('PHPUNIT_SELENIUM_COVERAGE')) {
+            $file = fopen($fileName, "w");
+            fclose($file);
+        }
     }
 
     private function runPhantom()

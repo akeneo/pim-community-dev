@@ -16,9 +16,12 @@ class ControllersTest extends WebTestCase
     protected $userData = array(
         'username' => 'testAdmin',
         'email' => 'test@test.com',
+        'namePrefix' => 'Mr.',
         'firstName' => 'FirstNameAudit',
+        'middleName' => 'MiddleName',
         'lastName' => 'LastNameAudit',
-        'birthday' => '07/01/2013',
+        'nameSuffix' => 'Sn.',
+        'birthday' => '2013-01-01',
         'enabled' => 1,
         'roles' => 'Administrator',
         'groups' => 'Sales',
@@ -52,7 +55,6 @@ class ControllersTest extends WebTestCase
         $form['oro_user_user_form[email]'] = $this->userData['email'];
         $form['oro_user_user_form[groups][1]'] = 2;
         $form['oro_user_user_form[rolesCollection][1]'] = true;
-        $form['oro_user_user_form[values][company][varchar]'] = $this->userData['company'];
         $form['oro_user_user_form[owner]'] = 1;
 
         $this->client->followRedirects(true);
@@ -70,63 +72,91 @@ class ControllersTest extends WebTestCase
         ToolsAPI::assertJsonResponse($result, 200, 'text/html; charset=UTF-8');
     }
 
-    public function testHistory()
+    /**
+     * @return array
+     */
+    public function testAudit()
     {
         $this->prepareFixture();
-        $this->client->request(
-            'GET',
-            $this->client->generate('oro_dataaudit_index', array('_format' =>'json')),
-            array(
-                'audit[_filter][objectName][type]' => null,
-                'audit[_filter][objectName][value]' => $this->userData['username'],
-                'audit[_pager][_page]' => 1,
-                'audit[_pager][_per_page]' => 10,
-                'audit[_sort_by][action]' => 'ASC')
-        );
 
-        $result = $this->client->getResponse();
-        ToolsAPI::assertJsonResponse($result, 200);
-        $result = ToolsAPI::jsonToArray($result->getContent());
-        $result = reset($result['data']);
-        $this->client->request(
-            'GET',
-            $this->client->generate(
-                'oro_dataaudit_history',
-                array(
-                    'entity' => str_replace('\\', '_', $result['objectClass']),
-                    'id' => $result['objectId'],
-                    '_format' =>'json'
-                )
+        $result = ToolsAPI::getEntityGrid(
+            $this->client,
+            'audit-grid',
+            array(
+                'audit-grid[_filter][objectName][type]' => 1,
+                'audit-grid[_filter][objectName][value]' => $this->userData['username'],
+                'audit-grid[_filter][objectClass][value]' => 'Oro\\Bundle\\CalendarBundle\\Entity\\User'
             )
         );
-        $result = $this->client->getResponse();
+
         ToolsAPI::assertJsonResponse($result, 200);
         $result = ToolsAPI::jsonToArray($result->getContent());
         $result = reset($result['data']);
 
-        $result['old'] = strip_tags(preg_replace('/(<!--(.*)-->)|(\h)/Uis', '', $result['old']));
-        $count = 0;
-        do {
-            $result['old'] = strip_tags(preg_replace('/\n{2,}/Uis', "\n", $result['old'], -1, $count));
-        } while ($count > 0);
-        $result['new'] = strip_tags(preg_replace('/(<!--(.*)-->)|(\h)/Uis', '', $result['new']));
-        $count = 0;
-        do {
-            $result['new'] = strip_tags(preg_replace('/\n{2,}/Uis', "\n", $result['new'], -1, $count));
-        } while ($count > 0);
-        $result['old'] = explode("\n", trim($result['old'], "\n"));
-        $result['new'] = explode("\n", trim($result['new'], "\n"));
+        return $result;
+    }
+
+    /**
+     * @depends testAudit
+     * @param $result
+     */
+    public function testAuditHistory($result)
+    {
+
+        $result = ToolsAPI::getEntityGrid(
+            $this->client,
+            'audit-history-grid',
+            array(
+                'audit-history-grid[object_class]' => str_replace('\\', '_', $result['objectClass']),
+                'audit-history-grid[object_id]' => $result['objectId']
+            )
+        );
+
+        ToolsAPI::assertJsonResponse($result, 200);
+        $result = ToolsAPI::jsonToArray($result->getContent());
+        $result = reset($result['data']);
+
+        $result['old'] = $this->clearResult($result['old']);
+        $result['new'] = $this->clearResult($result['new']);
+
         foreach ($result['old'] as $auditRecord) {
-            $auditValue = explode(':', $auditRecord);
-            $this->assertEquals('', $auditValue[1]);
+            $auditValue = explode(': ', $auditRecord, 2);
+            $this->assertEmpty(trim($auditValue[1]));
         }
 
         foreach ($result['new'] as $auditRecord) {
-            $auditValue = explode(':', $auditRecord);
-            $this->assertEquals($this->userData[$auditValue[0]], $auditValue[1]);
+            $auditValue = explode(': ', $auditRecord, 2);
+            $key = trim($auditValue[0]);
+            $value = trim($auditValue[1]);
+            if ($key == 'birthday') {
+                $value = $this->getFormattedDate($value);
+            }
+            $this->assertEquals($this->userData[$key], $value);
         }
 
         $this->assertEquals('John Doe  - admin@example.com', $result['author']);
 
+    }
+
+    protected function clearResult($result)
+    {
+        $result = preg_replace("/\n+ */", "\n", $result);
+        $result = strip_tags($result);
+        $result = explode("\n", trim($result, "\n"));
+
+        return array_filter($result);
+    }
+
+    /**
+     * Get formatted date acceptable by oro_date type.
+     *
+     * @param string $date
+     * @return bool|string
+     */
+    protected function getFormattedDate($date)
+    {
+        $dateObject = new \DateTime($date);
+        $dateObject->setTimezone(new \DateTimeZone('UTC'));
+        return $dateObject->format('Y-m-d');
     }
 }

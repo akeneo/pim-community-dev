@@ -1,6 +1,3 @@
-js:
-  'search_bar':
-      - '@OroSearchBundle/Resources/public/js/searchBar.js'
 css:
   'search':
       - 'bundles/orosearch/css/search.css'

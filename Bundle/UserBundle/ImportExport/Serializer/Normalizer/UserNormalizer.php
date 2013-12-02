@@ -26,12 +26,12 @@ class UserNormalizer extends AbstractContextModeAwareNormalizer
      */
     protected function normalizeShort($object, $format = null, array $context = array())
     {
-        $firstName = $object->getFirstname();
-        $lastName = $object->getLastname();
+        $firstName = $object->getFirstName();
+        $lastName = $object->getLastName();
 
         $fullName = null;
         if ($firstName || $lastName) {
-            $fullName = trim(sprintf('%s %s', $object->getFirstname(), $object->getLastname()));
+            $fullName = trim(sprintf('%s %s', $object->getFirstName(), $object->getLastName()));
         }
 
         return array(
@@ -57,8 +57,8 @@ class UserNormalizer extends AbstractContextModeAwareNormalizer
         }
         if (!empty($data['fullName'])) {
             list($firstName, $lastName) = explode(' ', $data['fullName'], 2);
-            $result->setFirstname($firstName);
-            $result->setLastname($lastName);
+            $result->setFirstName($firstName);
+            $result->setLastName($lastName);
         }
         return $result;
     }

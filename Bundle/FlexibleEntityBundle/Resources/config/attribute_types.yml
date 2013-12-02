@@ -53,6 +53,15 @@ services:
         tags:
             - { name: oro_flexibleentity.attributetype, alias: oro_flexibleentity_integer }
 
+    oro_flexibleentity.attributetype.integer_unsigned:
+        class: Oro\Bundle\FlexibleEntityBundle\AttributeType\IntegerUnsignedType
+        arguments:
+            - "integer"
+            - "integer"
+            - @oro_flexibleentity.validator.attribute_constraint_guesser
+        tags:
+            - { name: oro_flexibleentity.attributetype, alias: oro_flexibleentity_integer_unsigned }
+
     oro_flexibleentity.attributetype.money:
         class: Oro\Bundle\FlexibleEntityBundle\AttributeType\MoneyType
         arguments:

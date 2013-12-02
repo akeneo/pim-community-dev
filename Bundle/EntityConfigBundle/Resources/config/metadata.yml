@@ -1,22 +1,14 @@
 parameters:
     oro_entity_config.metadata.metadata_factory.class:         Metadata\MetadataFactory
     oro_entity_config.metadata.annotation_driver.class:        Oro\Bundle\EntityConfigBundle\Metadata\Driver\AnnotationDriver
-    oro_entity_config.metadata.cache.file_cache.class:         Metadata\Cache\FileCache
 
 services:
     oro_entity_config.metadata.annotation_metadata_factory:
         class:                                              %oro_entity_config.metadata.metadata_factory.class%
         arguments:                                          [@oro_entity_config.metadata.annotation_driver]
         public:                                             false
-        calls:
-            - [setCache, [@oro_entity_config.metadata.cache.file_cache.annotation]]
 
     oro_entity_config.metadata.annotation_driver:
         class:                                              %oro_entity_config.metadata.annotation_driver.class%
         arguments:                                          [@annotation_reader]
-        public:                                             false
-
-    oro_entity_config.metadata.cache.file_cache.annotation:
-        class:                                              %oro_entity_config.metadata.cache.file_cache.class%
-        arguments:                                          [%oro_entity_config.cache_dir.annotation%]
         public:                                             false

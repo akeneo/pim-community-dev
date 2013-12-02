@@ -1,9 +1,18 @@
 parameters:
-    oro_form.twig.form.class:                     Oro\Bundle\FormBundle\Twig\FormExtension
-    oro_form.autocomplete.config.handler.class:   Oro\Bundle\FormBundle\Autocomplete\ConfigHandler
+    oro_form.validator.constraint_factory.class: Oro\Bundle\FormBundle\Validator\ConstraintFactory
+    oro_form.twig.form.class:                    Oro\Bundle\FormBundle\Twig\FormExtension
+    oro_form.twig.js_validation_extension.class: Oro\Bundle\FormBundle\Twig\JsValidationExtension
 
 services:
+    oro_form.validator.constraint_factory:
+        class: %oro_form.validator.constraint_factory.class%
+
     oro_form.twig.form_extension:
         class: %oro_form.twig.form.class%
+        tags:
+            - { name: twig.extension }
+
+    oro_form.twig.js_validation_extension:
+        class: %oro_form.twig.js_validation_extension.class%
         tags:
             - { name: twig.extension }

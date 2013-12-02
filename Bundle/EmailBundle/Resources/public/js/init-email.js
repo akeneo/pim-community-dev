@@ -1,12 +1,16 @@
 /* jshint browser:true */
 /* global require */
-require(['jquery', 'oro/dialog-widget'],
-function($, DialogWidget) {
+require(['jquery', 'underscore', 'oro/dialog-widget'],
+function($, _, DialogWidget) {
     'use strict';
     $(function () {
-        $(document).on('click', '.view-email-entity-btn', function (e) {
+        $(document).on('click', '.view-email-button', function (e) {
+            var url = $(this).attr('data-url');
+            if (_.isUndefined(url)) {
+                url = $(this).attr('href');
+            }
             new DialogWidget({
-                url: $(this).attr('href'),
+                url: url,
                 dialogOptions: {
                     allowMaximize: true,
                     allowMinimize: true,

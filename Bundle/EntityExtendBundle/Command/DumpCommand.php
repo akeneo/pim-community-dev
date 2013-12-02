@@ -17,7 +17,7 @@ class DumpCommand extends ContainerAwareCommand
     {
         $this
             ->setName('oro:entity-extend:dump')
-            ->setDescription('Dump extend config to config and backup folder');
+            ->setDescription('Dump extended entities configuration to the cache.');
     }
 
     /**

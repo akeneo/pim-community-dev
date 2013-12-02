@@ -6,6 +6,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
 
+use Oro\Bundle\FormBundle\Entity\PrimaryItem;
+use Oro\Bundle\FormBundle\Entity\EmptyItem;
+
 /**
  * @ORM\MappedSuperclass
  */

@@ -5,7 +5,7 @@ namespace Oro\Bundle\WorkflowBundle\Model\Condition;
 use Oro\Bundle\WorkflowBundle\Exception\ConditionException;
 use Oro\Bundle\WorkflowBundle\Model\ContextAccessor;
 
-class Blank implements ConditionInterface
+class Blank extends AbstractCondition
 {
     /**
      * @var ContextAccessor
@@ -33,7 +33,7 @@ class Blank implements ConditionInterface
      * @param mixed $context
      * @return boolean
      */
-    public function isAllowed($context)
+    protected function isConditionAllowed($context)
     {
         $value = $this->contextAccessor->getValue($context, $this->target);
         return '' === $value || null === $value;

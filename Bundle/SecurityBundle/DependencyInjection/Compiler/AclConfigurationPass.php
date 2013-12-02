@@ -5,7 +5,6 @@ namespace Oro\Bundle\SecurityBundle\DependencyInjection\Compiler;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
-use Symfony\Component\DependencyInjection\Definition;
 
 class AclConfigurationPass implements CompilerPassInterface
 {
@@ -27,6 +26,10 @@ class AclConfigurationPass implements CompilerPassInterface
 
     const DEFAULT_ACL_CACHE_CLASS = 'Oro\Bundle\SecurityBundle\Acl\Cache\AclCache';
 
+    const DOCTRINE_CONVERTER = 'sensio_framework_extra.converter.doctrine.orm';
+    const DOCTRINE_CONVERTER_CLASS = 'Oro\Bundle\SecurityBundle\Request\ParamConverter\DoctrineParamConverter';
+    const SECURITY_FACADE_SERVICE = 'oro_security.security_facade';
+
     /**
      * {@inheritDoc}
      */
@@ -36,7 +39,18 @@ class AclConfigurationPass implements CompilerPassInterface
         $this->configureDefaultAclProvider($container);
         $this->configureDefaultAclCache($container);
         $this->configureDefaultAclVoter($container);
+        $this->configureParamConverter($container);
     }
+
+    protected function configureParamConverter(ContainerBuilder $container)
+    {
+        if ($container->hasDefinition(self::DOCTRINE_CONVERTER)) {
+            $paramConverterDef = $container->getDefinition(self::DOCTRINE_CONVERTER);
+            $paramConverterDef->setClass(self::DOCTRINE_CONVERTER_CLASS);
+            $paramConverterDef->addArgument(new Reference(self::SECURITY_FACADE_SERVICE));
+        }
+    }
+
 
     /**
      * @param ContainerBuilder $container
@@ -135,7 +149,7 @@ class AclConfigurationPass implements CompilerPassInterface
     /**
      * Load ACL extensions and sort them by priority.
      *
-     * @param ContainerBuilder $container
+     * @param  ContainerBuilder $container
      * @return array
      */
     protected function loadAclExtensions(ContainerBuilder $container)
@@ -145,7 +159,7 @@ class AclConfigurationPass implements CompilerPassInterface
             $priority = 0;
             foreach ($attributes as $attr) {
                 if (isset($attr['priority'])) {
-                    $priority = (int)$attr['priority'];
+                    $priority = (int) $attr['priority'];
                     break;
                 }
             }

@@ -43,7 +43,7 @@ class WorkflowData implements \ArrayAccess, \IteratorAggregate, \Countable
      */
     public function set($name, $value)
     {
-        if (!isset($this->data[$name]) || $this->data[$name] != $value) {
+        if (!array_key_exists($name, $this->data) || $this->data[$name] !== $value) {
             $this->data[$name] = $value;
             $this->modified = true;
         }

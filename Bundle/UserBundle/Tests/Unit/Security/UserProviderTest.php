@@ -45,7 +45,7 @@ class UserProviderTest extends \PHPUnit_Framework_TestCase
         $this->userManager = $this->getMock(
             'Oro\Bundle\UserBundle\Entity\UserManager',
             array('findUserBy', 'findUserByUsernameOrEmail', 'getClass'),
-            array(static::USER_CLASS, $om, null, $ef)
+            array(static::USER_CLASS, $om, $ef)
         );
 
         $this->userManager

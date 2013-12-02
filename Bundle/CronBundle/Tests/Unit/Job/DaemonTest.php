@@ -88,14 +88,9 @@ class DaemonTest extends \PHPUnit_Framework_TestCase
     public function testFailedRun()
     {
         $this->process
-            ->expects($this->once())
+            ->expects($this->any())
             ->method('getOutput')
             ->will($this->returnValue(''));
-
-        $this->process
-            ->expects($this->once())
-            ->method('getPid')
-            ->will($this->returnValue(null));
 
         $this->assertNull($this->object->run());
     }
@@ -103,16 +98,11 @@ class DaemonTest extends \PHPUnit_Framework_TestCase
     public function testRun()
     {
         $this->process
-            ->expects($this->once())
+            ->expects($this->exactly(2))
             ->method('getOutput')
-            ->will($this->returnValue(''));
+            ->will($this->onConsecutiveCalls('', $this->getPsOutput()));
 
-        $this->process
-            ->expects($this->once())
-            ->method('getPid')
-            ->will($this->returnValue(111));
-
-        $this->assertNotEmpty($this->object->run());
+        $this->assertEquals(111, $this->object->run());
     }
 
     /**

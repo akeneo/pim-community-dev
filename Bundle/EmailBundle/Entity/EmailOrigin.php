@@ -82,6 +82,22 @@ abstract class EmailOrigin
     }
 
     /**
+     * Get an email folder
+     *
+     * @param string $type Can be 'inbox', 'sent', 'trash', 'drafts' or 'other'
+     * @return EmailFolder|null
+     */
+    public function getFolder($type)
+    {
+        return $this->folders
+            ->filter(
+                function (EmailFolder $folder) use (&$type) {
+                    return $folder->getType() === $type;
+                }
+            )->first();
+    }
+
+    /**
      * Get email folders
      *
      * @return EmailFolder[]

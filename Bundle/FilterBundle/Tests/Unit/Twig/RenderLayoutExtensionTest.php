@@ -146,10 +146,10 @@ class RenderLayoutExtensionTest extends AbstractExtensionTestCase
             new ChoiceView('data_2', 'value_2', 'label_2'),
             'additional' => 'choices',
         );
-        $expectedData = array(
-            'value_1' => 'label_1',
-            'value_2' => 'label_2',
-        );
+        $expectedData = [
+            ['value'  => 'value_1', 'label' => 'label_1'],
+            ['value'  => 'value_2', 'label' => 'label_2'],
+        ];
 
         $this->assertEquals($expectedData, $this->extension->getChoices($actualData));
     }

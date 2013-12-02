@@ -1,14 +1,14 @@
 /* global define */
-define(['underscore', 'oro/messenger', 'oro/translator', 'oro/modal', 'oro/datagrid/abstract-action'],
+define(['underscore', 'oro/messenger', 'oro/translator', 'oro/modal', 'oro/grid/abstract-action'],
 function(_, messenger, __, Modal, AbstractAction) {
     'use strict';
 
     /**
      * Basic mass action class.
      *
-     * @export  oro/datagrid/mass-action
-     * @class   oro.datagrid.MassAction
-     * @extends oro.datagrid.AbstractAction
+     * @export  oro/grid/mass-action
+     * @class   oro.grid.MassAction
+     * @extends oro.grid.AbstractAction
      */
     return AbstractAction.extend({
         /** @property {Object} */

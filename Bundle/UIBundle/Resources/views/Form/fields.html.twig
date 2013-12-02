@@ -2,59 +2,17 @@
 
 {% block form_row %}
     {% spaceless %}
-        {% if form|is_flexible %}
-            {{ block('form_row_flex') }}
-        {% else %}
-            <div class="control-group{% if attr.class is defined %} {{ attr.class }}{% endif %}">
-                {{ form_label(form, '' , { label_attr: label_attr|merge({ class: 'control-label' })}) }}
-                <div class="controls{% if errors|length > 0 %} validation-error{% endif %}">
-                    {{ form_widget(form) }}
-                    {{ form_errors(form) }}
-                </div>
+        <div class="control-group{% if attr.class is defined %} {{ attr.class }}{% endif %}">
+            {% if label is not sameas(false) %}
+            {{ form_label(form, '' , { label_attr: label_attr|merge({ class: 'control-label' })}) }}
+            {% endif %}
+            <div class="controls{% if errors|length > 0 %} validation-error{% endif %}">
+                {{ form_widget(form) }}
+                {{ form_errors(form) }}
             </div>
-        {% endif %}
+        </div>
     {% endspaceless %}
 {% endblock form_row %}
-
-{% block form_row_flex %}
-    {% spaceless %}
-        {% set col = attr['data-col'] is defined ? attr['data-col'] : 0 %}
-
-        {% if col > 1 %}
-            {# calculate Bootstrap class for 12-columns grid system #}
-            {% set class = 'span' ~ (12 // col) %}
-
-            {% for attribute in form %}
-                {% if loop.first %}
-                    <div class="{{ class }}">
-                {% endif %}
-
-                {{ form_widget(attribute) }}
-                {{ form_errors(attribute) }}
-
-                {% if loop.index % ((loop.length / col)|ceil) == 0  and not loop.last %}
-                    </div>
-                    <div class="{{ class }}">
-                {% endif %}
-
-                {% if loop.last %}
-                    </div>
-                {% endif %}
-            {% endfor %}
-        {% else %}
-            {% for attribute in form %}
-                {{ form_widget(attribute) }}
-                {{ form_errors(attribute) }}
-            {% endfor %}
-        {% endif %}
-
-        {% for attribute in form %}
-            {% if (attribute.values is defined) %}
-                {{ form_row(attribute.values) }}
-            {% endif %}
-        {% endfor %}
-    {% endspaceless %}
-{% endblock form_row_flex %}
 
 {% block choice_widget_collapsed %}
     {% if client_validation %}
@@ -121,15 +79,6 @@
     {% endspaceless %}
 {% endblock form_errors %}
 
-{% block money_widget %}
-    {% spaceless %}
-        <div class="input-prepend input-prepend-right">
-            <span class="add-on">{{ money_pattern|replace({ '{{ widget }}': '' }) }}</span>
-            {{ money_pattern|replace({ '{{ widget }}': block('form_widget_simple') })|raw }}
-        </div>
-    {% endspaceless %}
-{% endblock money_widget %}
-
 {% block date_widget %}
     {% spaceless %}
         {% set type = 'text' %}
@@ -177,22 +126,6 @@
         {% endfor %}
     {% endspaceless %}
 {% endblock choice_widget_options %}
-
-{% block form_label %}
-    {% spaceless %}
-        {% if not compound %}
-            {% set label_attr = label_attr|merge({'for': id}) %}
-        {% endif %}
-        {% if required %}
-            {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' required')|trim}) %}
-        {% endif %}
-        {% if label is empty %}
-            {% set label = name|humanize %}
-        {% endif %}
-        {% set isRadioLabel = form.parent.vars.expanded|default(false) and checked is defined %}
-        <label{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>{% if required and not isRadioLabel %}<em>*</em>{% endif %}{{ label|trans({}, translation_domain)|capitalize }}</label>
-    {% endspaceless %}
-{% endblock form_label %}
 
 {% block oro_flexibleentity_email_collection_widget %}
     {% set subform = form.collection %}

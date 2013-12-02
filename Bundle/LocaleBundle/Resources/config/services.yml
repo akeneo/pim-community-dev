@@ -1,10 +1,188 @@
 parameters:
-    oro_locale.twig.dateformat.class: Oro\Bundle\LocaleBundle\Twig\DateFormatExtension
+    oro_locale.settings.class: Oro\Bundle\LocaleBundle\Model\LocaleSettings
+    oro_locale.calendar.class: Oro\Bundle\LocaleBundle\Model\Calendar
+    oro_locale.calendar_factory.class: Oro\Bundle\LocaleBundle\Model\CalendarFactory
+    oro_locale.form.type.name_format.class: Oro\Bundle\LocaleBundle\Form\Type\NameFormatType
+
+    oro_locale.format_converter.date_time.registry.class: Oro\Bundle\LocaleBundle\Converter\DateTimeFormatConverterRegistry
+    oro_locale.format_converter.date_time.intl.class: Oro\Bundle\LocaleBundle\Converter\IntlDateTimeFormatConverter
+    oro_locale.format_converter.date_time.moment.class: Oro\Bundle\LocaleBundle\Converter\MomentDateTimeFormatConverter
+
+    oro_locale.formatter.name.class: Oro\Bundle\LocaleBundle\Formatter\NameFormatter
+    oro_locale.formatter.address.class: Oro\Bundle\LocaleBundle\Formatter\AddressFormatter
+    oro_locale.formatter.date_time.class: Oro\Bundle\LocaleBundle\Formatter\DateTimeFormatter
+    oro_locale.formatter.number.class: Oro\Bundle\LocaleBundle\Formatter\NumberFormatter
+
+    oro_locale.form.type.country.class: Oro\Bundle\LocaleBundle\Form\Type\CountryType
+    oro_locale.form.type.currency.class: Oro\Bundle\LocaleBundle\Form\Type\CurrencyType
+    oro_locale.form.type.locale.class: Oro\Bundle\LocaleBundle\Form\Type\LocaleType
+    oro_locale.form.type.timezone.class: Oro\Bundle\LocaleBundle\Form\Type\TimezoneType
+
+    oro_locale.locale_listener.class: Oro\Bundle\LocaleBundle\EventListener\LocaleListener
+
+    oro_locale.twig.date_format.class: Oro\Bundle\LocaleBundle\Twig\DateFormatExtension
+    oro_locale.twig.locale.class: Oro\Bundle\LocaleBundle\Twig\LocaleExtension
+    oro_locale.twig.calendar.class: Oro\Bundle\LocaleBundle\Twig\CalendarExtension
+    oro_locale.twig.date_time.class: Oro\Bundle\LocaleBundle\Twig\DateTimeExtension
+    oro_locale.twig.name.class: Oro\Bundle\LocaleBundle\Twig\NameExtension
+    oro_locale.twig.address.class: Oro\Bundle\LocaleBundle\Twig\AddressExtension
+    oro_locale.twig.number.class: Oro\Bundle\LocaleBundle\Twig\NumberExtension
 
 services:
-    oro_locale.twig.dateformat:
-        class: %oro_locale.twig.dateformat.class%
+    oro_locale.cache:
+            parent: oro.cache.abstract
+            calls:
+                - [ setNamespace, [ "oro_locale.cache" ] ]
+
+    oro_locale.settings:
+        class: %oro_locale.settings.class%
         arguments:
             - @oro_config.global
+            - @oro_locale.calendar_factory
+        calls:
+            - [addNameFormats, [%oro_locale.format.name%]]
+            - [addAddressFormats, [%oro_locale.format.address%]]
+            - [addLocaleData, [%oro_locale.locale_data%]]
+            - [addCurrencyData, [%oro_locale.currency_data%]]
+
+    # Calendar
+    oro_locale.calendar:
+        scope: prototype
+        class: %oro_locale.calendar.class%
+
+    oro_locale.calendar_factory:
+        class: %oro_locale.calendar_factory.class%
+        arguments:
+            - @service_container
+
+    # Form types
+    oro_locale.form.type.name_format:
+        class: %oro_locale.form.type.name_format.class%
+        arguments:
+            - @oro_locale.formatter.name
+        tags:
+            - { name: form.type, alias: "oro_name_format" }
+
+    oro_locale.form.type.country:
+        class: %oro_locale.form.type.country.class%
+        tags:
+            - { name: form.type, alias: "oro_locale_country" }
+
+    oro_locale.form.type.currency:
+        class: %oro_locale.form.type.currency.class%
+        tags:
+            - { name: form.type, alias: "oro_currency" }
+
+    oro_locale.form.type.locale:
+        class: %oro_locale.form.type.locale.class%
+        tags:
+            - { name: form.type, alias: "oro_locale" }
+
+    oro_locale.form.type.timezone:
+        class: %oro_locale.form.type.timezone.class%
+        arguments:
+            - @oro_locale.cache
+        tags:
+            - { name: form.type, alias: "oro_locale_timezone" }
+
+    # Converters
+    oro_locale.format_converter.date_time.registry:
+        class: %oro_locale.format_converter.date_time.registry.class%
+
+    oro_locale.format_converter.date_time.intl:
+        class: %oro_locale.format_converter.date_time.intl.class%
+        arguments:
+            - @oro_locale.formatter.date_time
+        tags:
+            - { name: oro_locale.format_converter.date_time, alias: intl }
+
+    oro_locale.format_converter.date_time.moment:
+        class: %oro_locale.format_converter.date_time.moment.class%
+        arguments:
+            - @oro_locale.formatter.date_time
+        tags:
+            - { name: oro_locale.format_converter.date_time, alias: moment }
+
+    # event listeners
+    oro_locale.locale_listener:
+        class: %oro_locale.locale_listener.class%
+        arguments:
+            - @oro_locale.settings
+            - %installed%
+        calls:
+            - [ setRequest, [@?request=] ]
+        tags:
+            - { name: kernel.event_subscriber }
+
+
+    # Formatters
+    oro_locale.formatter.name:
+        class: %oro_locale.formatter.name.class%
+        arguments:
+            - @oro_locale.settings
+
+    oro_locale.formatter.address:
+        class: %oro_locale.formatter.address.class%
+        arguments:
+            - @oro_locale.settings
+            - @oro_locale.formatter.name
+
+    oro_locale.formatter.date_time:
+        class: %oro_locale.formatter.date_time.class%
+        arguments:
+            - @oro_locale.settings
+
+    oro_locale.formatter.number:
+        class: %oro_locale.formatter.number.class%
+        arguments:
+            - @oro_locale.settings
+
+    # Twig extensions
+    oro_locale.twig.date_format:
+        class: %oro_locale.twig.date_format.class%
+        arguments:
+            - @oro_locale.format_converter.date_time.registry
+        tags:
+            - { name: twig.extension }
+
+    oro_locale.twig.locale:
+        class: %oro_locale.twig.locale.class%
+        arguments:
+            - @oro_locale.settings
+        tags:
+            - { name: twig.extension }
+
+    oro_locale.twig.calendar:
+        class: %oro_locale.twig.calendar.class%
+        arguments:
+            - @oro_locale.settings
+        tags:
+            - { name: twig.extension }
+
+    oro_locale.twig.date_time:
+        class: %oro_locale.twig.date_time.class%
+        arguments:
+            - @oro_locale.formatter.date_time
+        tags:
+            - { name: twig.extension }
+
+    oro_locale.twig.name:
+        class: %oro_locale.twig.name.class%
+        arguments:
+            - @oro_locale.formatter.name
+        tags:
+            - { name: twig.extension }
+
+    oro_locale.twig.address:
+        class: %oro_locale.twig.address.class%
+        arguments:
+            - @oro_locale.formatter.address
+        tags:
+            - { name: twig.extension }
+
+    oro_locale.twig.number:
+        class: %oro_locale.twig.number.class%
+        arguments:
+            - @oro_locale.formatter.number
         tags:
             - { name: twig.extension }

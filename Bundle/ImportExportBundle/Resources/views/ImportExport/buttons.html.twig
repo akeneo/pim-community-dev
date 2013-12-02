@@ -17,9 +17,8 @@
 </div>
 
 <script type="text/javascript">
-    require(['jquery', 'oro/translator', 'oro/widget-manager', 'oro/dialog-widget', 'oro/messenger',
-        'oro/registry', 'oro/mediator'],
-    function($, __, WidgetManager, DialogWidget, Messanger, registry, mediator) {
+    require(['jquery', 'oro/translator', 'oro/dialog-widget', 'oro/messenger', 'oro/mediator'],
+    function($, __, DialogWidget, messenger, mediator) {
         $('.import-btn').on('click', function(e) {
             e.preventDefault();
 
@@ -34,31 +33,22 @@
                     'modal': true
                 }
             });
-            WidgetManager.addWidgetInstance(widget);
             widget.render();
 
             {% if dataGridName is defined %}
             var datagridName = {{ dataGridName|json_encode|raw }};
-            var onGridAdd = function(datagrid) {
-                widget.on('importComplete', function(data) {
-                    if (data.success) {
-                        datagrid.collection.fetch();
-                    }
-                });
-            };
-            var datagrid = registry.getElement('datagrid', datagridName);
-            if (datagrid) {
-                onGridAdd(datagrid);
-            } else {
-                mediator.once("datagrid:created:" + datagridName, onGridAdd);
-            }
+            widget.on('importComplete', function (data) {
+                if (data.success) {
+                    mediator.trigger('datagrid:doReset:' + datagridName);
+                }
+            });
             {% endif %}
         });
 
         $('.export-btn').on('click', function(e) {
             e.preventDefault();
 
-            var exportStartedMessage = Messanger.notificationFlashMessage(
+            var exportStartedMessage = messenger.notificationFlashMessage(
                 'info',
                 {{ 'Export started, please wait...'|trans|json_encode|raw }},
                 {delay: 0}
@@ -76,9 +66,9 @@
                             = '<a href="' + data.url + '" target="_blank">{{ 'Download result file'|trans }}</a>';
                         $successMessage += ' ' + resultFileLink;
 
-                        Messanger.notificationFlashMessage('success', $successMessage, {delay: 0});
+                        messenger.notificationFlashMessage('success', $successMessage, {delay: 0});
                     } else {
-                        Messanger.notificationFlashMessage(
+                        messenger.notificationFlashMessage(
                             'info',
                             {{ 'No entities found for export.'|trans|json_encode|raw }},
                             {delay: 0}
@@ -93,7 +83,7 @@
                         = '<a href="' + data.url + '" target="_blank">{{ 'Download error log'|trans }}</a>';
                     $errorMessage += ' ' + errorLogLink;
 
-                    Messanger.notificationFlashMessage('error', $errorMessage, {delay: 0});
+                    messenger.notificationFlashMessage('error', $errorMessage, {delay: 0});
                 }
             });
         });

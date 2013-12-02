@@ -1,0 +1,4 @@
+config:
+    paths:
+        'oro/init-entity-extend-apply': 'bundles/oroentityextend/js/init-entity-extend-apply.js'
+        'oro/init-entity-extend-relation': 'bundles/oroentityextend/js/init-entity-extend-relation.js'

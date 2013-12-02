@@ -1,35 +1,47 @@
-/* jshint browser:true, devel:true */
-/* global define */
-define(['jquery', 'underscore', 'backbone', 'oro/translator', 'oro/app', 'oro/mediator', 'oro/messenger', 'oro/registry',
-    'oro/modal', 'oro/loading-mask', 'oro/navigation/pagestate/view', 'oro/navigation/pagestate/model',
-    'oro/pageable-collection', 'oro/widget-manager','jquery.form'],
-function($, _, Backbone, __, app, mediator, messenger, registry,
-         Modal, LoadingMask, PagestateView, PagestateModel,
-         PageableCollection, widgetManager) {
+/*jslint browser: true, vars: true, nomen: true*/
+/*jshint browser: true, devel: true*/
+/*global define*/
+define(function (require) {
     'use strict';
 
-    var Navigation,
-        instance,
-        pageCacheStates = {
-            state: {},
+    var $ = require('jquery');
+    var _ = require('underscore');
+    var Backbone = require('backbone');
+    var __ = require('oro/translator');
+    var app = require('oro/app');
+    var mediator = require('oro/mediator');
+    var messenger = require('oro/messenger');
+    var Modal = require('oro/modal');
+    var LoadingMask = require('oro/loading-mask');
+    var PagestateView = require('oro/navigation/pagestate/view');
+    var PagestateModel = require('oro/navigation/pagestate/model');
+    var PageableCollection = require('oro/pageable-collection');
+    var widgetManager = require('oro/widget-manager');
+    var _jqueryForm = require('jquery.form');
 
-            registerStateObject: function(type, fields) {
-                this.state[type] = {};
-                _.each(fields, function(field) {
-                    this.state[type][field] = '';
-                }, this);
-            },
+    var Navigation;
+    var instance;
+    var pinbarView = null;
+    var pageCacheStates = {
+        state: {},
 
-            saveObjectCache: function(type, values) {
-                _.each(values, function(value, key) {
-                    this.state[type][key] = value;
-                }, this);
-            },
+        registerStateObject: function(type, fields) {
+            this.state[type] = {};
+            _.each(fields, function(field) {
+                this.state[type][field] = '';
+            }, this);
+        },
 
-            getObjectCache: function(type) {
-                return this.state[type];
-            }
-        };
+        saveObjectCache: function(type, values) {
+            _.each(values, function(value, key) {
+                this.state[type][key] = value;
+            }, this);
+        },
+
+        getObjectCache: function(type) {
+            return this.state[type];
+        }
+    };
 
     pageCacheStates.registerStateObject('grid',['collection']);
     pageCacheStates.registerStateObject('form',['form_data']);
@@ -50,7 +62,6 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
         /**
          * links - Selector for all links that will be processed by hash navigation
          * scrollLinks - Selector for anchor links
-         * forms - Selector for all forms that will be processed by hash navigation
          * content - Selector for ajax response content area
          * container - Selector for main content area
          * loadingMask - Selector for loading spinner
@@ -69,8 +80,8 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
         selectors: {
             links:               'a:not([href^=#],[href^=javascript],[href^=mailto],[href^=skype],[href^=ftp],[href^=callto],[href^=tel]),span[data-url]',
             scrollLinks:         'a[href^=#]',
-            forms:               'form',
             content:             '#content',
+            userMenu:            '#top-page .user-menu',
             container:           '#container',
             loadingMask:         '.hash-loading-mask',
             searchDropdown:      '#search-div',
@@ -273,6 +284,7 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
                         headers: this.headerObject,
                         data: stringState,
                         beforeSend: function( xhr ) {
+                            $.isActive(false);
                             //remove standard ajax header because we already have a custom header sent
                             xhr.setRequestHeader('X-Requested-With', {toString: function(){ return ''; }});
                         },
@@ -564,7 +576,6 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
                 "grid_load:complete",
                 function (collection) {
                     this.updateCachedContent('grid', {'collection': collection});
-                    var pinbarView = registry.getElement('pinbar_view');
                     if (pinbarView) {
                         var item = pinbarView.getItemForCurrentPage(true);
                         if (item.length && this.useCache) {
@@ -680,7 +691,7 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
              * Processing links in 3 dots menu after item is added (e.g. favourites)
              */
             mediator.bind(
-                "navigaion_item:added",
+                "navigation_item:added",
                 function (item) {
                     this.processClicks(item.find(this.selectors.links));
                 },
@@ -746,7 +757,7 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
             this.processClicks(this.selectorCached.links);
             this.disableEmptyLinks(this.selectorCached.menu.find(this.selectors.scrollLinks));
 
-            this.processForms(this.selectors.forms);
+            this.processForms();
             this.processAnchors(this.selectorCached.container.find(this.selectors.scrollLinks));
 
             this.loadingMask = new LoadingMask();
@@ -882,6 +893,7 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
                         var content = data.content;
                         this.selectorCached.container.html(content);
                         this.selectorCached.menu.html(data.mainMenu);
+                        this.selectorCached.userMenu.html(data.userMenu);
                         this.selectorCached.breadcrumb.html(data.breadcrumb);
                         /**
                          * Collecting javascript from head and append them to content
@@ -894,10 +906,10 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
                          */
                         document.title = data.title;
                         this.processClicks(this.selectorCached.menu.find(this.selectors.links));
+                        this.processClicks(this.selectorCached.userMenu.find(this.selectors.links));
                         this.disableEmptyLinks(this.selectorCached.menu.find(this.selectors.scrollLinks));
                         this.processClicks(this.selectorCached.container.find(this.selectors.links));
                         this.processAnchors(this.selectorCached.container.find(this.selectors.scrollLinks));
-                        this.processForms(this.selectorCached.container.find(this.selectors.forms));
                         this.processPinButton(data);
                         this.restoreFormState(this.tempCache);
                         if (!options.fromCache) {
@@ -946,6 +958,7 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
             if (urlParts[1]) {
                 redirectUrl = urlParts[1];
             }
+            $.isActive(true);
             if(data.fullRedirect) {
                 var delimiter = '?';
                 if (redirectUrl.indexOf(delimiter) !== -1) {
@@ -968,11 +981,21 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
          * @param {String} errorThrown
          */
         processError: function(XMLHttpRequest, textStatus, errorThrown) {
+            var message403 = 'You do not have permission to this action';
             if (app.debug) {
-                document.body.innerHTML = XMLHttpRequest.responseText;
+                if (XMLHttpRequest.status == 403) {
+                    this.showMessage(__(message403));
+                    this.loadingMask.hide();
+                } else {
+                    document.body.innerHTML = XMLHttpRequest.responseText;
+                }
                 this.updateDebugToolbar(XMLHttpRequest);
             } else {
-                this.showMessage(__('Sorry, page was not loaded correctly'));
+                var message = 'Sorry, page was not loaded correctly';
+                if (XMLHttpRequest.status == 403) {
+                    message = message403;
+                }
+                this.showMessage(__(message));
                 this.loadingMask.hide();
             }
         },
@@ -1117,13 +1140,11 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
 
         /**
          * Processing forms submit events
-         *
-         * @param {String} selector
          */
-        processForms: function(selector) {
-            $(selector).on('submit', _.bind(function (e) {
-                var $form = $(e.currentTarget);
-                if ($form.data('nohash')) {
+        processForms: function() {
+            $('body').on('submit', _.bind(function (e) {
+                var $form = $(e.target);
+                if ($form.data('nohash') || e.isDefaultPrevented()) {
                     return;
                 }
                 e.preventDefault();
@@ -1136,9 +1157,11 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
 
                 if (url) {
                     $form.data('sent', true);
-                    registry.setElement('form_validate', true);
-                    mediator.trigger("hash_navigation_request:form-start", $form.get(0));
-                    if (registry.getElement('form_validate')) {
+                    var formStartSettings = {
+                        form_validate: true
+                    };
+                    mediator.trigger('hash_navigation_request:form-start', $form.get(0), formStartSettings);
+                    if (formStartSettings.form_validate) {
                         var data = $form.serialize();
                         if (this.method === 'get') {
                             if (data) {
@@ -1223,7 +1246,6 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
                     this.useCache = options.useCache;
                 }
                 url = url.replace(this.baseUrl, '').replace(/^(#\!?|\.)/, '');
-                var pinbarView = registry.getElement('pinbar_view');
                 if (pinbarView) {
                     var item = pinbarView.getItemForPage(url, true);
                     if (item.length) {
@@ -1284,6 +1306,15 @@ function($, _, Backbone, __, app, mediator, messenger, registry,
      */
     Navigation.setup = function(options) {
         instance = new Navigation(options);
+    };
+
+    /**
+     * Register Pinbar view instance
+     *
+     * @param {Object} pinbarView
+     */
+    Navigation.registerPinbarView = function (instance) {
+        pinbarView = instance;
     };
 
     return Navigation;

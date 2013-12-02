@@ -1,0 +1,7 @@
+config:
+    paths:
+        'oro/init-job': 'bundles/orocron/js/init-job.js'
+
+build:
+    paths:
+        'oro/init-job': 'empty:'

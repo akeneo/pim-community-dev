@@ -8,10 +8,10 @@ use Oro\Bundle\EntityBundle\ORM\EntityClassResolver;
 use Oro\Bundle\SecurityBundle\Acl\Extension\AclExtensionSelector;
 use Oro\Bundle\SecurityBundle\Acl\Extension\EntityAclExtension;
 use Oro\Bundle\SecurityBundle\Acl\Extension\ActionAclExtension;
-use Oro\Bundle\EntityBundle\Owner\EntityOwnerAccessor;
+use Oro\Bundle\SecurityBundle\Owner\EntityOwnerAccessor;
 use Oro\Bundle\SecurityBundle\Owner\EntityOwnershipDecisionMaker;
 use Oro\Bundle\SecurityBundle\Owner\OwnerTree;
-use Oro\Bundle\EntityBundle\Owner\Metadata\OwnershipMetadataProvider;
+use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadataProvider;
 use Oro\Bundle\SecurityBundle\Tests\Unit\Acl\Domain\Fixtures\OwnershipMetadataProviderStub;
 
 class TestHelper
@@ -86,8 +86,16 @@ class TestHelper
             $ownerTree = new OwnerTree();
         }
 
+        $treeProviderMock = $this->testCase->getMockBuilder('Oro\Bundle\SecurityBundle\Owner\OwnerTreeProvider')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $treeProviderMock->expects($this->testCase->any())
+            ->method('getTree')
+            ->will($this->testCase->returnValue($ownerTree));
+
         $decisionMaker = new EntityOwnershipDecisionMaker(
-            $ownerTree,
+            $treeProviderMock,
             $classAccessor,
             $idAccessor,
             new EntityOwnerAccessor($classAccessor, $metadataProvider),
@@ -120,6 +128,9 @@ class TestHelper
         $doctrine->expects($this->testCase->any())
             ->method('getManagers')
             ->will($this->testCase->returnValue(array('default' => $em)));
+        $doctrine->expects($this->testCase->any())
+            ->method('getManagerForClass')
+            ->will($this->testCase->returnValue(new \stdClass()));
         $doctrine->expects($this->testCase->any())
             ->method('getManager')
             ->with($this->testCase->equalTo('default'))

@@ -1,0 +1,25 @@
+bundles:
+    - { name: Symfony\Bundle\FrameworkBundle\FrameworkBundle, priority: -255 }
+    - { name: Symfony\Bundle\SecurityBundle\SecurityBundle, priority: -250 }
+    - { name: Symfony\Bundle\TwigBundle\TwigBundle, priority: -245 }
+    - { name: Symfony\Bundle\MonologBundle\MonologBundle, priority: -240 }
+    - { name: Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle, priority: -235 }
+    - { name: Symfony\Bundle\AsseticBundle\AsseticBundle, priority: -230 }
+    - { name: Doctrine\Bundle\DoctrineBundle\DoctrineBundle, priority: -225 }
+    - { name: Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle, priority: -220 }
+    - { name: Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle, priority: -215 }
+    - { name: JMS\SerializerBundle\JMSSerializerBundle, kernel: true, priority: -210 }
+    - { name: Knp\Bundle\PaginatorBundle\KnpPaginatorBundle, priority: -205 }
+    - { name: Knp\Bundle\MenuBundle\KnpMenuBundle, priority: -200 }
+    - { name: FOS\RestBundle\FOSRestBundle, priority: -195 }
+    - { name: FOS\JsRoutingBundle\FOSJsRoutingBundle, priority: -190 }
+    - { name: Nelmio\ApiDocBundle\NelmioApiDocBundle, priority: -185 }
+    - { name: BeSimple\SoapBundle\BeSimpleSoapBundle, priority: -180 }
+    - { name: Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle, priority: -175 }
+    - { name: Escape\WSSEAuthenticationBundle\EscapeWSSEAuthenticationBundle, priority: -170 }
+    - { name: Liip\ImagineBundle\LiipImagineBundle, priority: -165 }
+    - { name: Bazinga\ExposeTranslationBundle\BazingaExposeTranslationBundle, priority: -160 }
+    - { name: Genemu\Bundle\FormBundle\GenemuFormBundle, priority: -155 }
+    - { name: A2lix\TranslationFormBundle\A2lixTranslationFormBundle, priority: -150 }
+    - { name: Lexik\Bundle\MaintenanceBundle\LexikMaintenanceBundle, priority: -145 }
+    - Oro\Bundle\PlatformBundle\OroPlatformBundle

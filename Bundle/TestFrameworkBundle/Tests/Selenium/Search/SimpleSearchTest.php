@@ -4,8 +4,9 @@ namespace Oro\Bundle\TestFrameworkBundle\Tests\Selenium;
 
 use Oro\Bundle\TestFrameworkBundle\Pages\Objects\Login;
 use Oro\Bundle\TestFrameworkBundle\Pages\Objects\Search;
+use Oro\Bundle\TestFrameworkBundle\Test\Selenium2TestCase;
 
-class SimpleSearchTest extends \PHPUnit_Extensions_Selenium2TestCase
+class SimpleSearchTest extends Selenium2TestCase
 {
     protected $coverageScriptUrl = PHPUNIT_TESTSUITE_EXTENSION_SELENIUM_TESTS_URL_COVERAGE;
 

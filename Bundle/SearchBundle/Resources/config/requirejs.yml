@@ -1,0 +1,7 @@
+config:
+    paths:
+        'oro/init-search-bar': 'bundles/orosearch/js/init-search-bar.js'
+
+build:
+    paths:
+        'oro/init-search-bar': 'empty:'

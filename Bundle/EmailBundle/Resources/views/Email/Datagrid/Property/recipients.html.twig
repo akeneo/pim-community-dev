@@ -1,11 +1,12 @@
 {% import 'OroEmailBundle::macros.html.twig' as EA %}
 
 {% set valueArray = value.toArray %}
+{% set recipients = {} %}
 {% if value.first %}
     {% set recipients = value.first.email.getRecipients() %}
 {% endif %}
 
-{{ EA.recipient_email_addresses(recipients, oro_config_value('oro_locale.name_format'), false, true) }}
+{{ EA.recipient_email_addresses(recipients, false, true) }}
 
 
 

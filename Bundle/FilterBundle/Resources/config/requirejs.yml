@@ -1,0 +1,26 @@
+config:
+    shim:
+        'jquery.multiselect':
+            deps:
+                - 'jquery-ui'
+        'jquery.multiselect.filter':
+            deps:
+                - 'jquery.multiselect'
+    paths:
+        'jquery.multiselect': 'bundles/orofilter/lib/multiselect/jquery.multiselect.js'
+        'jquery.multiselect.filter': 'bundles/orofilter/lib/multiselect/jquery.multiselect.filter.js'
+        'oro/datafilter/abstract-filter': 'bundles/orofilter/js/datafilter/filter/abstract-filter.js'
+        'oro/datafilter/choice-filter': 'bundles/orofilter/js/datafilter/filter/choice-filter.js'
+        'oro/datafilter/date-filter': 'bundles/orofilter/js/datafilter/filter/date-filter.js'
+        'oro/datafilter/datetime-filter': 'bundles/orofilter/js/datafilter/filter/datetime-filter.js'
+        'oro/datafilter/multiselect-filter': 'bundles/orofilter/js/datafilter/filter/multiselect-filter.js'
+        'oro/datafilter/number-filter': 'bundles/orofilter/js/datafilter/filter/number-filter.js'
+        'oro/datafilter/select-filter': 'bundles/orofilter/js/datafilter/filter/select-filter.js'
+        'oro/datafilter/select-row-filter': 'bundles/orofilter/js/datafilter/filter/select-row-filter.js'
+        'oro/datafilter/text-filter': 'bundles/orofilter/js/datafilter/filter/text-filter.js'
+        'oro/datafilter/abstract-formatter': 'bundles/orofilter/js/datafilter/formatter/abstract-formatter.js'
+        'oro/datafilter/number-formatter': 'bundles/orofilter/js/datafilter/formatter/number-formatter.js'
+        'oro/datafilter/filters-manager': 'bundles/orofilter/js/datafilter/filters-manager.js'
+        'oro/datafilter/collection-filters-manager': 'bundles/orofilter/js/datafilter/collection-filters-manager.js'
+        'oro/datafilter-builder': 'bundles/orofilter/js/datafilter-builder.js'
+        'oro/multiselect-decorator': 'bundles/orofilter/js/multiselect-decorator.js'

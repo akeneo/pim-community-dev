@@ -29,11 +29,12 @@ class ConditionFactory
 
     /**
      * @param string $type
-     * @param array  $options
-     * @return ConditionInterface
+     * @param array $options
+     * @param null|string $message
      * @throws \RunTimeException
+     * @return ConditionInterface
      */
-    public function create($type, array $options = array())
+    public function create($type, array $options = array(), $message = null)
     {
         if (!$type) {
             throw new \RunTimeException('The type must be defined');
@@ -52,6 +53,9 @@ class ConditionFactory
             throw new \RunTimeException(sprintf('The service `%s` must implement `ConditionInterface`', $id));
         }
 
+        if ($message) {
+            $condition->setMessage($message);
+        }
         $condition->initialize($options);
 
         return $condition;

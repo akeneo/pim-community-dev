@@ -111,6 +111,15 @@ class RootBasedAclWrapper implements AclInterface
      */
     public function getObjectIdentity()
     {
+        /**
+         *  @todo: Check ObjectIdentity for ACL records from the database.
+         *         It is quite possible we will have to return rootAcl ObjectIdentity to
+         *         turn additional ACL masks check by AclExtension::adaptRootMask() method.
+         */
+        if (!count($this->acl->getClassAces()) && !count($this->acl->getObjectAces())) {
+            return $this->rootAcl->getObjectIdentity();
+        }
+
         return $this->acl->getObjectIdentity();
     }
 

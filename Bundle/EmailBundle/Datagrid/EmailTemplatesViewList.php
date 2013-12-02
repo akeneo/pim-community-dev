@@ -2,8 +2,8 @@
 
 namespace Oro\Bundle\EmailBundle\Datagrid;
 
-use Oro\Bundle\GridBundle\Datagrid\Views\AbstractViewsList;
-use Oro\Bundle\GridBundle\Datagrid\Views\View;
+use Oro\Bundle\DataGridBundle\Extension\GridViews\View;
+use Oro\Bundle\DataGridBundle\Extension\GridViews\AbstractViewsList;
 
 class EmailTemplatesViewList extends AbstractViewsList
 {

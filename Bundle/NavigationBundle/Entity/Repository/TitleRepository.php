@@ -14,15 +14,13 @@ class TitleRepository extends EntityRepository
      */
     public function getTitles($routes = array())
     {
+        $routes = $routes ?: null;
         $qb = $this
             ->createQueryBuilder('title')
             ->andWhere('title.title <> :title')
-            ->setParameter('title', '');
-
-        if (!empty($routes)) {
-            $qb->andWhere('title.route IN (:routes)')
-               ->setParameter('routes', $routes);
-        }
+            ->setParameter('title', '')
+            ->andWhere('title.route IN (:routes)')
+            ->setParameter('routes', $routes);
 
         return $qb->getQuery()->getArrayResult();
     }

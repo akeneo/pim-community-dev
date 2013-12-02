@@ -9,8 +9,8 @@ function($, _, Backbone) {
      * Events:
      * click: Fired when launcher was clicked
      *
-     * @export  oro/datagrid/action-launcher
-     * @class   oro.datagrid.ActionLauncher
+     * @export  oro/grid/action-launcher
+     * @class   oro.grid.ActionLauncher
      * @extends Backbone.View
      */
     return Backbone.View.extend({
@@ -23,7 +23,7 @@ function($, _, Backbone) {
         /** @property {Boolean} */
         onClickReturnValue: true,
 
-        /** @property {oro.datagrid.AbstractAction} */
+        /** @property {oro.grid.AbstractAction} */
         action: undefined,
 
         /** @property {String} */
@@ -79,7 +79,7 @@ function($, _, Backbone) {
          * Initialize
          *
          * @param {Object} options
-         * @param {oro.datagrid.AbstractAction} options.action
+         * @param {oro.grid.AbstractAction} options.action
          * @param {function(Object, ?Object=): string} [options.template]
          * @param {String} [options.label]
          * @param {String} [options.icon]

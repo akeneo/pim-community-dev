@@ -7,7 +7,8 @@
     "require": {
         "php": ">=5.3.3",
         "symfony/symfony": "2.1.*",
-        "oro/form-bundle": "dev-master"
+        "oro/form-bundle": "dev-master",
+        "oro/requirejs-bundle": "dev-master"
     },
     "autoload": {
         "psr-0": { "Oro\\Bundle\\TagBundle": "" }

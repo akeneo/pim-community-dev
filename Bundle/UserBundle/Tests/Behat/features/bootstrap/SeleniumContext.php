@@ -89,10 +89,10 @@ class SeleniumContext extends BehatSeleniumContext
                 $form->setSecondpassword($value);
                 break;
             case 'first name':
-                $form->setFirstname($value);
+                $form->setFirstName($value);
                 break;
             case 'last name':
-                $form->setLastname($value);
+                $form->setLastName($value);
                 break;
             case 'email':
                 $form->setEmail($value);

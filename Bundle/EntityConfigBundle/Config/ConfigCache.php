@@ -73,25 +73,18 @@ class ConfigCache
      */
     public function getConfigurable($className, $fieldName = null)
     {
-        $key = $className . '_' . $fieldName;
-        if ($this->modelCache->contains($key)) {
-            return $this->modelCache->fetch($key);
-        }
-
-        return null;
+        return $this->modelCache->fetch($className . '_' . $fieldName);
     }
 
     /**
-     * @param $value
+     * @param        $value
      * @param string $className
      * @param string $fieldName
      * @return bool
      */
     public function setConfigurable($value, $className, $fieldName = null)
     {
-        $key = $className . '_' . $fieldName;
-
-        return $this->modelCache->save($key, $value);
+        return $this->modelCache->save($className . '_' . $fieldName, $value);
     }
 
     /**

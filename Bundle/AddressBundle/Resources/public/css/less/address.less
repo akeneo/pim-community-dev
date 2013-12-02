@@ -1,0 +1,123 @@
+.map-box {
+  /*background: url("../../img/vertical-separator.png") repeat-y 40% 0;*/
+  &:after {
+    content: "";
+    clear: both;
+    display: block;
+  }
+  .map-address-list {
+    width: 40%;
+    height: 420px;
+    background-color: #fbfbfb;
+    float: left;
+    overflow: hidden;
+  }
+  .map-address-list:hover {
+    overflow: auto;
+  }
+  .map-visual-frame {
+    border-left:1px solid #ddd;
+    float: left;
+    width: 60%;
+    height: 420px;
+  }
+  .map-visual {
+    border: 1px solid #d3d3d3;
+    height: 400px;
+    margin:10px;
+    img {
+      max-width:none;
+    }
+  }
+  .map-unknown {
+    line-height: 420px;
+    text-align: center;
+  }
+  .map-item {
+    border-bottom:1px solid #eee;
+    padding: 15px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    width: 100%;
+    cursor:pointer;
+    &:hover {
+      background:#f8f8f8;
+    }
+    address {
+      margin-bottom:0;
+      line-height:1.5em;
+    }
+    &.active {
+      background-color: #ecf1f9;
+    }
+    .inline {
+      clear:left;
+      margin-bottom:2px;
+      li {
+        padding:0;
+        .label {
+          background:none;
+          padding:0;
+          text-shadow:none;
+          color:#999;
+          font-weight:normal;
+          font-size:11px;
+          &:after {
+            content:", "
+          }
+        }
+        &:last-of-type {
+          .label:after {
+            content:"";
+          }
+        }
+        .label-info {
+          background:#6891cf;
+          color:#fff;
+          font-weight:bold;
+          padding:2px 4px;
+        }
+      }
+    }
+  }
+  .title-item {
+    font: bold 14px/18px @baseFontFamily;
+    float: left;
+  }
+  .map-actions {
+    position:relative;
+    float: right;
+    margin-right:-4px;
+    z-index:99;
+    .btn {
+      line-height:1em;
+      height:auto;
+      border: 0;
+      background: 0;
+      -webkit-box-shadow: none;
+      box-shadow: none;
+      padding: 0;
+      [class^='icon-'] {
+        &:before {
+          .opacity(30,.3);
+          font-size:15px;
+        }
+        &:hover {
+          &:before {
+            .opacity(70,.7);
+          }
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: @smallScreen) {
+  .map-box {
+    .map-address-list, .map-visual-frame {
+      width: 100%;
+      height: auto;
+    }
+  }
+}

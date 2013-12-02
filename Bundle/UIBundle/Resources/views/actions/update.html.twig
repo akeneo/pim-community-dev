@@ -1,10 +1,8 @@
 {% extends bap.layout%}
 {% import 'OroUIBundle::macros.html.twig' as UI %}
-{% import 'OroLocaleBundle::macros.html.twig' as Locale %}
 
 {% block page_container %}
     {% block content %}
-        {{ JSFV(form) }}
         <form id="{{ form.vars.name }}" action="{{ formAction }}" {{ form_enctype(form) }}
               method="post" data-collect="true" class="scrollable-substructure">
             <div class="navigation clearfix navbar-extra navbar-extra-right">
@@ -32,7 +30,7 @@
                             <div class="clearfix customer-info {% if (breadcrumbs.hasAvatar is not defined) %}customer-simple{% endif %} well-small">
                                 {% if (breadcrumbs.hasAvatar is defined and breadcrumbs.hasAvatar) %}
                                     <div class="visual">
-                                        <img src="{{ breadcrumbs.imagePath ? breadcrumbs.imagePath | imagine_filter('avatar_med') : asset('bundles/oroui/img/info-usser.png') }}" alt="{{ breadcrumbs.entityTitle }}"/>
+                                        <img src="{{ breadcrumbs.imagePath ? breadcrumbs.imagePath | imagine_filter('avatar_med') : asset('bundles/oroui/img/info-user.png') }}" alt="{{ breadcrumbs.entityTitle }}"/>
                                     </div>
                                 {% endif %}
                                 <div class="customer-content pull-left">
@@ -55,8 +53,8 @@
                                         <ul class="inline">
                                             {% block stats %}
                                                 {% if breadcrumbs.entity.createdAt is defined and breadcrumbs.entity.updatedAt is defined %}
-                                                    <li>{{ 'Created'|trans }}: {{ breadcrumbs.entity.createdAt ? Locale.time(breadcrumbs.entity.createdAt) : 'N/A' }}</li>
-                                                    <li>{{ 'Updated'|trans }}: {{ breadcrumbs.entity.updatedAt ? Locale.time(breadcrumbs.entity.updatedAt) : 'N/A' }}</li>
+                                                    <li>{{ 'Created'|trans }}: {{ breadcrumbs.entity.createdAt ? breadcrumbs.entity.createdAt|oro_format_datetime : 'N/A' }}</li>
+                                                    <li>{{ 'Updated'|trans }}: {{ breadcrumbs.entity.updatedAt ? breadcrumbs.entity.updatedAt|oro_format_datetime : 'N/A' }}</li>
                                                 {% endif %}
                                             {% endblock stats %}
                                         </ul>
@@ -74,5 +72,6 @@
                 {% endblock content_data %}
             </div>
         </form>
+        {{ oro_form_js_validation(form) }}
     {% endblock content %}
 {% endblock %}

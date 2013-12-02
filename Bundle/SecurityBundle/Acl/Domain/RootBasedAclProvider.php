@@ -55,28 +55,31 @@ class RootBasedAclProvider implements AclProviderInterface
      */
     public function findAcl(ObjectIdentityInterface $oid, array $sids = array())
     {
-        $rootOid = $this->objectIdentityFactory->root($oid->getIdentifier());
+        $rootOid = $this->objectIdentityFactory->root($oid);
         try {
-            $acl = $this->baseAclProvider->findAcl($oid, $sids);
-            try {
-                $rootAcl = $this->baseAclProvider->findAcl($rootOid, $sids);
-            } catch (AclNotFoundException $noRootAcl) {
-                return $acl;
-            }
-
-            return new RootBasedAclWrapper($acl, $rootAcl);
+            $acl = $this->getAcl($oid, $sids, $rootOid);
         } catch (AclNotFoundException $noAcl) {
-            // Try to get ACL for root object
             try {
-                return $this->baseAclProvider->findAcl($rootOid, $sids);
-            } catch (AclNotFoundException $noRootAcl) {
-                throw new AclNotFoundException(
-                    sprintf('There is no ACL for %s. The root ACL %s was not found as well.', $oid, $rootOid),
-                    0,
-                    $noAcl
-                );
+                // Try to get ACL for underlying object
+                $underlyingOid = $this->objectIdentityFactory->underlying($oid);
+                $acl = $this->getAcl($underlyingOid, $sids, $rootOid);
+            } catch (\Exception $noUnderlyingAcl) {
+                // Try to get ACL for root object
+                try {
+                    $this->baseAclProvider->cacheEmptyAcl($oid);
+
+                    return $this->baseAclProvider->findAcl($rootOid, $sids);
+                } catch (AclNotFoundException $noRootAcl) {
+                    throw new AclNotFoundException(
+                        sprintf('There is no ACL for %s. The root ACL %s was not found as well.', $oid, $rootOid),
+                        0,
+                        $noAcl
+                    );
+                }
             }
         }
+
+        return $acl;
     }
 
     /**
@@ -85,5 +88,25 @@ class RootBasedAclProvider implements AclProviderInterface
     public function findAcls(array $oids, array $sids = array())
     {
         return $this->baseAclProvider->findAcls($oids, $sids);
+    }
+
+    /**
+     * Get Acl based on given OID and Parent OID
+     *
+     * @param ObjectIdentityInterface $oid
+     * @param array $sids
+     * @param ObjectIdentityInterface $rootOid
+     * @return RootBasedAclWrapper|\Symfony\Component\Security\Acl\Model\AclInterface
+     */
+    protected function getAcl(ObjectIdentityInterface $oid, array $sids, ObjectIdentityInterface $rootOid)
+    {
+        $acl = $this->baseAclProvider->findAcl($oid, $sids);
+        try {
+            $rootAcl = $this->baseAclProvider->findAcl($rootOid, $sids);
+        } catch (AclNotFoundException $noRootAcl) {
+            return $acl;
+        }
+
+        return new RootBasedAclWrapper($acl, $rootAcl);
     }
 }

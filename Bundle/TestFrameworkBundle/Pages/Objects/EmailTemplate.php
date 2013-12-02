@@ -60,7 +60,7 @@ class EmailTemplate extends AbstractEntity implements Entity
      */
     public function setType($type)
     {
-        $this->type->element($this->using('xpath')->value("div[label[text() = '{$type}']]/input"))->click();
+        $this->type->element($this->using('xpath')->value("div[label[normalize-space(text()) = '{$type}']]/input"))->click();
         return $this;
     }
 

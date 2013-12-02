@@ -96,25 +96,22 @@ class AclAnnotationLoader extends AbstractLoader implements AclAnnotationLoaderI
      *      - only one class must be declared in a file
      *      - a namespace must be declared in a file
      *
-     * @param string $fileName
+     * @param  string      $fileName
      * @return null|string the fully qualified class name or null if the class name cannot be extracted
      */
     protected function getClassName($fileName)
     {
         $src = $this->getFileContent($fileName);
         if (!preg_match('#' . str_replace("\\", "\\\\", self::ANNOTATION_CLASS) . '#', $src)) {
-
             return null;
         }
 
         if (!preg_match('/\bnamespace\s+([^;]+);/s', $src, $match)) {
-
             return null;
         }
         $namespace = $match[1];
 
         if (!preg_match('/\bclass\s+([^\s]+)\s+(?:extends|implements|{)/s', $src, $match)) {
-
             return null;
         }
 
@@ -124,7 +121,7 @@ class AclAnnotationLoader extends AbstractLoader implements AclAnnotationLoaderI
     /**
      * Creates ReflectionClass object
      *
-     * @param string $className
+     * @param  string           $className
      * @return \ReflectionClass
      */
     protected function getReflectionClass($className)
@@ -135,7 +132,7 @@ class AclAnnotationLoader extends AbstractLoader implements AclAnnotationLoaderI
     /**
      * Reads the given file into a string
      *
-     * @param string $fileName
+     * @param  string $fileName
      * @return string
      */
     protected function getFileContent($fileName)
@@ -145,7 +142,7 @@ class AclAnnotationLoader extends AbstractLoader implements AclAnnotationLoaderI
 
     /**
      * @param $filePattern
-     * @param array $dirs
+     * @param  array $dirs
      * @return array
      */
     private function findFiles($filePattern, array $dirs)
@@ -157,6 +154,12 @@ class AclAnnotationLoader extends AbstractLoader implements AclAnnotationLoaderI
             ->in($dirs)
             ->ignoreVCS(true);
 
-        return array_map('realpath', array_keys(iterator_to_array($finder)));
+        $result = array();
+        /** @var \SplFileInfo $file */
+        foreach ($finder as $file) {
+            $result[] = $file->getRealPath();
+        }
+
+        return $result;
     }
 }

@@ -55,7 +55,8 @@ class ImportExportController extends Controller
                 $this->setImportFileName($processorAlias, $tmpFileName);
                 return $this->forward(
                     'OroImportExportBundle:ImportExport:importValidate',
-                    array('processorAlias' => $processorAlias)
+                    array('processorAlias' => $processorAlias),
+                    $this->getRequest()->query->all()
                 );
             }
         }
@@ -103,7 +104,7 @@ class ImportExportController extends Controller
             $counts['process'] += $counts['replace'] = $context->getReplaceCount();
             $counts['process'] += $counts['update'] = $context->getUpdateCount();
             $counts['process'] += $counts['delete'] = $context->getDeleteCount();
-            $counts['process'] -= $counts['error_entries'] = $context->getErrorEntriesCount();
+            $counts['error_entries'] = $context->getErrorEntriesCount();
             $counts['errors'] += count($context->getErrors());
         }
 

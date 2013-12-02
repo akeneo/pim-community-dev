@@ -8,9 +8,9 @@ use Oro\Bundle\SoapBundle\Tests\Unit\Entity\Manager\Stub\Entity;
 class ApiEntityManagerTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @param string $class
-     * @param \PHPUnit_Framework_MockObject_MockObject $metadata
-     * @param \PHPUnit_Framework_MockObject_MockObject $objectManager
+     * @param  string                                   $class
+     * @param  \PHPUnit_Framework_MockObject_MockObject $metadata
+     * @param  \PHPUnit_Framework_MockObject_MockObject $objectManager
      * @return ApiEntityManager
      */
     protected function createApiEntityManager($class, $metadata = null, $objectManager = null)
@@ -35,7 +35,6 @@ class ApiEntityManagerTest extends \PHPUnit_Framework_TestCase
             ->method('getClassMetadata')
             ->with($class)
             ->will($this->returnValue($metadata));
-
 
         return new ApiEntityManager($class, $objectManager);
     }

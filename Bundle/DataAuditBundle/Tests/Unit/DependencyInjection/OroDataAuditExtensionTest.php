@@ -19,7 +19,6 @@ class OroDataAuditExtensionTest extends \PHPUnit_Framework_TestCase
         $loader->load(array($config), $configuration);
 
         $this->assertTrue($configuration instanceof ContainerBuilder);
-        $this->assertTrue($configuration->has('oro_dataaudit.datagrid.manager'));
         $this->assertTrue($configuration->has('oro_dataaudit.loggable.loggable_manager'));
         $this->assertTrue($configuration->has('oro_dataaudit.listener.kernel_listener'));
     }

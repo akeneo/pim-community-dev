@@ -20,6 +20,7 @@ parameters:
     oro_tag.provider.search_provider.class: Oro\Bundle\TagBundle\Provider\SearchProvider
 
     oro_tag.twig.tag.extension.class: Oro\Bundle\TagBundle\Twig\TagExtension
+    oro_tag.event_listener.search_results_grid_listener.class: Oro\Bundle\TagBundle\EventListener\TagSearchResultsGridListener
 
 services:
     oro_tag.tag.manager:
@@ -140,3 +141,10 @@ services:
             - @oro_tag.tag.manager
         tags:
             - { name: twig.extension }
+
+    oro_tag.event_listener.search_results_grid_listener:
+        class: %oro_tag.event_listener.search_results_grid_listener.class%
+        arguments:
+          - @oro_datagrid.datagrid.request_params
+        tags:
+          - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.tag-results-grid, method: onBuildAfter }

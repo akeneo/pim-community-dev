@@ -52,7 +52,7 @@ class AclAnnotationProvider
     /**
      * Gets an annotation by its id
      *
-     * @param string $id
+     * @param  string             $id
      * @return AclAnnotation|null AclAnnotation object or null if ACL annotation was not found
      */
     public function findAnnotationById($id)
@@ -65,8 +65,8 @@ class AclAnnotationProvider
     /**
      * Gets an annotation bound to the given class/method
      *
-     * @param string $class
-     * @param string|null $method
+     * @param  string             $class
+     * @param  string|null        $method
      * @return AclAnnotation|null AclAnnotation object or null if ACL annotation was not found
      */
     public function findAnnotation($class, $method = null)
@@ -79,8 +79,8 @@ class AclAnnotationProvider
     /**
      * Determines whether the given class/method has an annotation
      *
-     * @param string $class
-     * @param string|null $method
+     * @param  string      $class
+     * @param  string|null $method
      * @return bool
      */
     public function hasAnnotation($class, $method = null)
@@ -93,7 +93,7 @@ class AclAnnotationProvider
     /**
      * Gets annotations
      *
-     * @param string|null $type The annotation type
+     * @param  string|null     $type The annotation type
      * @return AclAnnotation[]
      */
     public function getAnnotations($type = null)
@@ -106,8 +106,8 @@ class AclAnnotationProvider
     /**
      * Checks whether the given class or at least one of its method is protected by ACL security policy
      *
-     * @param string $class
-     * @return bool true if the class is protected; otherwise, false
+     * @param  string $class
+     * @return bool   true if the class is protected; otherwise, false
      */
     public function isProtectedClass($class)
     {
@@ -119,9 +119,9 @@ class AclAnnotationProvider
     /**
      * Checks whether the given method of the given class is protected by ACL security policy
      *
-     * @param string $class
-     * @param string $method
-     * @return bool true if the method is protected; otherwise, false
+     * @param  string $class
+     * @param  string $method
+     * @return bool   true if the method is protected; otherwise, false
      */
     public function isProtectedMethod($class, $method)
     {
@@ -150,7 +150,7 @@ class AclAnnotationProvider
     }
 
     /**
-     * @param array $bundleDirectories
+     * @param  array                $bundleDirectories
      * @return AclAnnotationStorage
      */
     public function getBundleAnnotations(array $bundleDirectories)

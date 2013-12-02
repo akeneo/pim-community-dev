@@ -9,6 +9,8 @@ parameters:
     oro_ui.view.listener.class:          Oro\Bundle\UIBundle\EventListener\TemplateListener
     oro_ui.twig.form.class:              Oro\Bundle\UIBundle\Twig\FormExtension
 
+    oro_ui.format_converter.date_time.jquery_ui.class: Oro\Bundle\UIBundle\Converter\JqueryUiDateTimeFormatConverter
+
 services:
     oro_ui.router:
         class: %oro_ui.router.class%
@@ -63,3 +65,10 @@ services:
             - @service_container
         tags:
             - { name: kernel.event_listener, event: kernel.view, method: onKernelView }
+
+    oro_ui.format_converter.date_time.jquery_ui:
+        class: %oro_ui.format_converter.date_time.jquery_ui.class%
+        arguments:
+            - @oro_locale.formatter.date_time
+        tags:
+            - { name: oro_locale.format_converter.date_time, alias: jquery_ui }

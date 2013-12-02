@@ -135,6 +135,19 @@ class WorkflowItemTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->workflowItem->getResult()->isEmpty());
     }
 
+    /**
+     * @depends testGetResult
+     */
+    public function testGetResultUnserialized()
+    {
+        $reflection = new \ReflectionObject($this->workflowItem);
+        $resultProperty = $reflection->getProperty('result');
+        $resultProperty->setAccessible(true);
+        $resultProperty->setValue($this->workflowItem, null);
+        $this->assertInstanceOf('Oro\Bundle\WorkflowBundle\Model\WorkflowResult', $this->workflowItem->getResult());
+        $this->assertTrue($this->workflowItem->getResult()->isEmpty());
+    }
+
     public function testClosed()
     {
         $this->assertFalse($this->workflowItem->isClosed());
@@ -144,8 +157,8 @@ class WorkflowItemTest extends \PHPUnit_Framework_TestCase
 
     public function testAddBindEntity()
     {
-        $entityFoo = new WorkflowBindEntity();
-        $entityBar = new WorkflowBindEntity();
+        $entityFoo = $this->createBindEntity();
+        $entityBar = $this->createBindEntity();
         $this->workflowItem->addBindEntity($entityFoo);
         $this->workflowItem->addBindEntity($entityBar);
 
@@ -158,12 +171,9 @@ class WorkflowItemTest extends \PHPUnit_Framework_TestCase
 
     public function testRemoveEntity()
     {
-        $entityFoo = new WorkflowBindEntity();
-        $entityFoo->setEntityClass('Foo');
-        $entityBar = new WorkflowBindEntity();
-        $entityBar->setEntityClass('Bar');
-        $entityBaz = new WorkflowBindEntity();
-        $entityBaz->setEntityClass('Baz');
+        $entityFoo = $this->createBindEntity('Foo');
+        $entityBar = $this->createBindEntity('Bar');
+        $entityBaz = $this->createBindEntity('Baz');
         $this->workflowItem->addBindEntity($entityFoo);
         $this->workflowItem->addBindEntity($entityBar);
         $this->workflowItem->addBindEntity($entityBaz);
@@ -183,12 +193,52 @@ class WorkflowItemTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->workflowItem->getBindEntities()->isEmpty());
     }
 
+    /**
+     * @dataProvider syncBindEntitiesDataProvider
+     *
+     * @param WorkflowBindEntity[] $initialEntities
+     * @param WorkflowBindEntity[] $syncEntities
+     * @param WorkflowBindEntity[] $expectedEntities
+     */
+    public function testSyncBindEntities(array $initialEntities, array $syncEntities, array $expectedEntities)
+    {
+        foreach ($initialEntities as $bindEntity) {
+            $this->workflowItem->addBindEntity($bindEntity);
+        }
+
+        foreach ($expectedEntities as $expectedEntity) {
+            $expectedEntity->setWorkflowItem($this->workflowItem);
+        }
+
+        $this->workflowItem->syncBindEntities($syncEntities);
+        $this->assertEquals($expectedEntities, $this->workflowItem->getBindEntities()->getValues());
+    }
+
+    public function syncBindEntitiesDataProvider()
+    {
+        return array(
+            'add' => array(
+                'initial' => array(),
+                'sync' => array($this->createBindEntity('Foo', 1)),
+                'expected' => array($this->createBindEntity('Foo', 1)),
+            ),
+            'remove' => array(
+                'initial' => array($this->createBindEntity('Foo', 1), $this->createBindEntity('Bar', 2)),
+                'sync' => array($this->createBindEntity('Bar', 2)),
+                'expected' => array($this->createBindEntity('Bar', 2)),
+            ),
+            'add_and_remove' => array(
+                'initial' => array($this->createBindEntity('Foo', 1), $this->createBindEntity('Bar', 2)),
+                'sync' => array($this->createBindEntity('Foo', 1), $this->createBindEntity('Baz', 3)),
+                'expected' => array($this->createBindEntity('Foo', 1), $this->createBindEntity('Baz', 3)),
+            ),
+        );
+    }
+
     public function testHasBindEntity()
     {
-        $entityFoo = new WorkflowBindEntity();
-        $entityFoo->setId(1);
-        $entityBar = new WorkflowBindEntity();
-        $entityBar->setId(2);
+        $entityFoo = $this->createBindEntity(null, 1);
+        $entityBar = $this->createBindEntity(null, 2);
 
         $entityBaz = $this->getMock('Oro\Bundle\WorkflowBundle\Entity\WorkflowBindEntity', array('hasSameEntity'));
         $this->assertFalse($this->workflowItem->hasBindEntity($entityBaz));
@@ -242,5 +292,22 @@ class WorkflowItemTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($this->workflowItem, $this->workflowItem->addTransitionRecord($transitionRecord));
         $this->assertEquals(array($transitionRecord), $this->workflowItem->getTransitionRecords()->getValues());
         $this->assertEquals($this->workflowItem, $transitionRecord->getWorkflowItem());
+    }
+
+    /**
+     * @param string $entityClass
+     * @param mixed $entityId
+     * @return WorkflowBindEntity
+     */
+    protected function createBindEntity($entityClass = null, $entityId = null)
+    {
+        $result = new WorkflowBindEntity();
+        if ($entityClass) {
+            $result->setEntityClass($entityClass);
+        }
+        if ($entityId) {
+            $result->setEntityId($entityId);
+        }
+        return $result;
     }
 }

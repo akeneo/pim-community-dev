@@ -1,6 +1,8 @@
 parameters:
     oro_workflow.twig.extension.class_name.class: Oro\Bundle\WorkflowBundle\Twig\ClassNameExtension
     oro_workflow.twig.extension.workflow.class: Oro\Bundle\WorkflowBundle\Twig\WorkflowExtension
+    oro_workflow.twig.extension.view_attribute.class: Oro\Bundle\WorkflowBundle\Twig\ViewAttributeExtension
+    oro_workflow.twig.extension.view_attribute.templates: ['OroWorkflowBundle:WorkflowStep:view_attributes.html.twig']
 
 services:
     oro_workflow.twig.extension.class_name:
@@ -11,8 +13,16 @@ services:
             - { name: twig.extension }
 
     oro_workflow.twig.extension.workflow:
-            class: %oro_workflow.twig.extension.workflow.class%
-            arguments:
-                - @oro_workflow.registry
-            tags:
-                - { name: twig.extension }
+        class: %oro_workflow.twig.extension.workflow.class%
+        arguments:
+            - @oro_workflow.registry
+        tags:
+            - { name: twig.extension }
+
+    oro_workflow.twig.extension.view_attribute:
+        class: %oro_workflow.twig.extension.view_attribute.class%
+        arguments:
+            - @oro_workflow.context_accessor
+            - %oro_workflow.twig.extension.view_attribute.templates%
+        tags:
+            - { name: twig.extension }

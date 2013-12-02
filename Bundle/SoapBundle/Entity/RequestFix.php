@@ -32,8 +32,12 @@ class RequestFix
      * @param string $requestAttributeKey
      * @return array
      */
-    public function getFixedAttributesData($entityClass, array $data, $attributeKey = 'values', $requestAttributeKey = 'attributes')
-    {
+    public function getFixedAttributesData(
+        $entityClass,
+        array $data,
+        $attributeKey = 'values',
+        $requestAttributeKey = 'attributes'
+    ) {
         /** @var ObjectRepository $attrRepository */
         $attrRepository = $this->managerRegistry
             ->getManager($entityClass)
@@ -46,30 +50,13 @@ class RequestFix
 
         foreach ($attrDef as $attr) {
             /* @var AbstractEntityAttribute $attr */
-            if ($attr->getBackendType() == 'options') {
-                if (in_array(
-                    $attr->getAttributeType(),
-                    array(
-                        'oro_flexibleentity_multiselect',
-                        'oro_flexibleentity_multicheckbox',
-                    )
-                )) {
-                    $type = 'options';
-                    $default = array($attr->getOptions()->offsetGet(0)->getId());
-                } else {
-                    $type = 'option';
-                    $default = $attr->getOptions()->offsetGet(0)->getId();
-                }
-            } else {
-                $type = $attr->getBackendType();
-                //TODO: temporary fix for https://github.com/symfony/symfony/issues/8548
-                $default = '';
-            }
+            list($type, $default) = $this->getAttributeParameters($attr);
 
             $attrCode = $attr->getCode();
-            $data[$attributeKey][$attrCode] = array();
-            $data[$attributeKey][$attrCode]['id'] = $attr->getId();
-            $data[$attributeKey][$attrCode][$type] = $default;
+            if ($default) {
+                $data[$attributeKey][$attrCode]['id'] = $attr->getId();
+                $data[$attributeKey][$attrCode][$type] = $default;
+            }
 
             foreach ($attrVal as $fieldCode => $fieldValue) {
                 if ($attr->getCode() == (string)$fieldCode) {
@@ -82,7 +69,10 @@ class RequestFix
                         }
                         $fieldValue = $fieldValue['value'];
                     }
-                    $data[$attributeKey][$attrCode][$type] = (string)$fieldValue;
+                    if ($fieldValue) {
+                        $data[$attributeKey][$attrCode]['id'] = $attr->getId();
+                        $data[$attributeKey][$attrCode][$type] = (string)$fieldValue;
+                    }
 
                     break;
                 }
@@ -90,5 +80,34 @@ class RequestFix
         }
 
         return $data;
+    }
+
+    /**
+     * @param AbstractEntityAttribute $attr
+     * @return array
+     */
+    protected function getAttributeParameters(AbstractEntityAttribute $attr)
+    {
+        if ($attr->getBackendType() == 'options') {
+            if (in_array(
+                $attr->getAttributeType(),
+                array(
+                    'oro_flexibleentity_multiselect',
+                    'oro_flexibleentity_multicheckbox',
+                )
+            )) {
+                $type = 'options';
+                $default = array($attr->getOptions()->offsetGet(0)->getId());
+            } else {
+                $type = 'option';
+                $default = $attr->getOptions()->offsetGet(0)->getId();
+            }
+        } else {
+            $type = $attr->getBackendType();
+            //TODO: temporary fix for https://github.com/symfony/symfony/issues/8548
+            $default = '';
+        }
+
+        return array($type, $default);
     }
 }

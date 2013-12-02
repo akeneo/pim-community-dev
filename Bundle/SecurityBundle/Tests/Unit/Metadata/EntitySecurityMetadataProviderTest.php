@@ -91,6 +91,10 @@ class EntitySecurityMetadataProviderTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($securityConfigId));
         $securityConfig->expects($this->at(2))
             ->method('get')
+            ->with('permissions')
+            ->will($this->returnValue('All'));
+        $securityConfig->expects($this->at(3))
+            ->method('get')
             ->with('group_name')
             ->will($this->returnValue('SomeGroup'));
 

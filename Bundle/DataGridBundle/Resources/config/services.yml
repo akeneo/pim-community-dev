@@ -1,0 +1,49 @@
+parameters:
+    oro_datagrid.datagrid.base.class:                Oro\Bundle\DataGridBundle\Datagrid\Datagrid
+    oro_datagrid.extension.acceptor.class:           Oro\Bundle\DataGridBundle\Extension\Acceptor
+
+    oro_datagrid.datagrid.manager.class:             Oro\Bundle\DataGridBundle\Datagrid\Manager
+    oro_datagrid.datagrid.builder.class:             Oro\Bundle\DataGridBundle\Datagrid\Builder
+    oro_datagrid.datagrid.request_params.class:      Oro\Bundle\DataGridBundle\Datagrid\RequestParameters
+
+    oro_datagrid.provider.resolver.class:            Oro\Bundle\DataGridBundle\Provider\SystemAwareResolver
+
+    oro_datagrid.twig.metadata.class:                Oro\Bundle\DataGridBundle\Twig\MetadataExtension
+    oro_datagrid.event_listener.base_orm_relation.class: Oro\Bundle\DataGridBundle\EventListener\BaseOrmRelationDatagridListener
+
+services:
+    oro_datagrid.datagrid.manager:
+        class: %oro_datagrid.datagrid.manager.class%
+        arguments:
+            - []
+            - @oro_datagrid.datagrid.builder
+            - @oro_datagrid.provider.resolver
+            - @oro_datagrid.datagrid.request_params
+
+    oro_datagrid.datagrid.builder:
+        class: %oro_datagrid.datagrid.builder.class%
+        arguments:
+            - %oro_datagrid.datagrid.base.class%
+            - %oro_datagrid.extension.acceptor.class%
+            - @event_dispatcher
+            - @oro_security.security_facade
+
+    oro_datagrid.datagrid.request_params:
+        class: %oro_datagrid.datagrid.request_params.class%
+        calls:
+            - [setRequest, [@?request=]]
+
+    oro_datagrid.provider.resolver:
+        class: %oro_datagrid.provider.resolver.class%
+        arguments:
+            - @service_container
+
+    oro_datagrid.twig.metadata:
+        class: %oro_datagrid.twig.metadata.class%
+        arguments:
+            - @oro_datagrid.datagrid.manager
+            - @oro_datagrid.datagrid.request_params
+            - @router
+        tags:
+            - { name: twig.extension }
+

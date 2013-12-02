@@ -1,0 +1,22 @@
+vendors:
+    Bar:
+        alias: BarAliasOverride
+    Foo:
+        alias: FooAlias
+
+resources:
+    BarBundle:
+      alias: BarOverride
+    FooBundle:
+      alias: Foo
+
+
+routes:
+    bar_route:
+        uri: bar/override
+
+    foo_route:
+        uri: foo/uri
+        server: http://server.com/
+        link: http://server.com/foo
+

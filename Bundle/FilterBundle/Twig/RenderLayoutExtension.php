@@ -80,6 +80,7 @@ class RenderLayoutExtension extends AbstractExtension
      * Convert array of choice views to plain array
      *
      * @param array $choices
+     *
      * @return array
      */
     public function getChoices(array $choices)
@@ -87,7 +88,10 @@ class RenderLayoutExtension extends AbstractExtension
         $result = array();
         foreach ($choices as $choice) {
             if ($choice instanceof ChoiceView) {
-                $result[$choice->value] = $choice->label;
+                $result[] = [
+                    'value' => $choice->value,
+                    'label' => $choice->label
+                ];
             }
         }
         return $result;

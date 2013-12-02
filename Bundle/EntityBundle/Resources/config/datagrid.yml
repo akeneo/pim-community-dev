@@ -1,16 +1,100 @@
-parameters:
-    oro_entity.custom_datagrid.manager.class:   Oro\Bundle\EntityBundle\Datagrid\CustomEntityDatagrid
+datagrid:
+    custom-entity-grid:
+        options:
+            entityHint: entity
+        source:
+            acl_resource: ~
+            type: orm
+            query:
+                select:
+                    - ce.id
+                from:
+                    - { table: OroEntityConfigBundle:EntityConfigModel, alias: ce }
 
-services:
-    oro_entity.custom_datagrid.manager:
-        class:                                  %oro_entity.custom_datagrid.manager.class%
-        arguments:
-            - @oro_entity_config.config_manager
-        tags:
-            - name:                             oro_grid.datagrid.manager
-              datagrid_name:                    custom_entity
-              entity_name:                      Oro\Bundle\EntityConfigBundle\Entity\EntityConfigModel
-              entity_hint:                      entity
-              route_name:                       oro_entity_index
-              query_entity_alias:               ce
+        columns: ~ # no static columns
+
+        properties:
+            id: ~
+            update_link:
+                type: callback
+                callable: @oro_entity.event_listener.custom_entity_grid_subscriber->getLinkProperty
+                route: oro_entity_update
+                params:
+                    - id
+            view_link:
+                type: callback
+                callable: @oro_entity.event_listener.custom_entity_grid_subscriber->getLinkProperty
+                route: oro_entity_view
+                params:
+                    - id
+            delete_link:
+                type: callback
+                callable: @oro_entity.event_listener.custom_entity_grid_subscriber->getLinkProperty
+                route: oro_entity_delete
+                params:
+                    - id
+
+        actions:
+            # TODO: add dynamic acl_resources
+            view:
+                type: navigate
+                label: View
+                icon: book
+                link: view_link
+                rowAction: true
+            update:
+                type: navigate
+                label: Update
+                icon: edit
+                link: update_link
+            delete:
+                type: delete
+                label: Delete
+                icon: trash
+                link: delete_link
+
+        sorters: ~
+        filters: ~
+
+    entity-relation-grid:
+        options:
+            entityHint: entity
+            requireJSModules:
+              - oro/datagrid/column-form-listener
+            columnListener:
+                dataField: id
+                columnName: assigned
+                selectors:
+                    included: '#appendRelation'
+                    excluded: '#removeRelation'
+        source:
+            acl_resource: ~
+            type: orm
+            query:
+                select:
+                    - ce.id
+                from:
+                    - { table: OroEntityConfigBundle:EntityConfigModel, alias: ce }
+
+        columns:
+            assigned:
+                frontend_type: boolean
+                label: Assigned
+                editable: true
+
+        properties:
+            id: ~
+
+        sorters:
+            columns:
+                assigned:
+                    data_name: assigned
+            default:
+                assigned: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+
+        filters:
+            columns:
+                assigned:
+                    type: boolean
+                    data_name: assigned
 

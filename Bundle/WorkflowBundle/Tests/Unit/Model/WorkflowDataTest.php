@@ -162,10 +162,12 @@ class WorkflowDataTest extends \PHPUnit_Framework_TestCase
     {
         $this->data->set('foo', 'foo_value');
         $this->data->set('bar', 'bar_value');
-        $this->assertEquals(
+        $this->data->set('val', 0);
+        $this->assertSame(
             array(
                 'foo' => 'foo_value',
-                'bar' => 'bar_value'
+                'bar' => 'bar_value',
+                'val' => 0,
             ),
             $this->data->getValues()
         );
@@ -174,12 +176,14 @@ class WorkflowDataTest extends \PHPUnit_Framework_TestCase
             array(
                 'bar' => 'new_bar_value',
                 'baz' => 'baz_value',
+                'val' => null,
             )
         );
-        $this->assertEquals(
+        $this->assertSame(
             array(
                 'foo' => 'foo_value',
                 'bar' => 'new_bar_value',
+                'val' => null,
                 'baz' => 'baz_value',
             ),
             $this->data->getValues()

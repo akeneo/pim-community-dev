@@ -78,7 +78,10 @@ class FieldNodeDefinition extends AbstractNodeDefinition
             array(
                 'target_field' => $this
             ),
-            array_intersect_key($this->getOptions(), array_flip(array('label', 'required', 'block', 'subblock')))
+            array_intersect_key(
+                $this->getOptions(),
+                array_flip(array('label', 'required', 'block', 'subblock', 'tooltip'))
+            )
         );
     }
 
@@ -105,8 +108,9 @@ class FieldNodeDefinition extends AbstractNodeDefinition
     /**
      * @param $name
      * @param $options
-     *
      * @return mixed
+     *
+     * TODO: use ConstraintFactory here, https://magecore.atlassian.net/browse/BAP-2270
      */
     protected function newConstraint($name, $options)
     {

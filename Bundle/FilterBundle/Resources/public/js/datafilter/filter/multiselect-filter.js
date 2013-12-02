@@ -20,7 +20,7 @@ function(_, __, SelectFilter) {
             '<div class="btn filter-select filter-criteria-selector">' +
                 '<%= label %>: ' +
                 '<select multiple>' +
-                    '<% _.each(options, function (hint, value) { %><option value="<%= value %>"><%= hint %></option><% }); %>' +
+                    '<% _.each(options, function (option) { %><option value="<%= option.value %>"><%= option.label %></option><% }); %>' +
                 '</select>' +
             '</div>' +
             '<a href="<%= nullLink %>" class="disable-filter"><i class="icon-remove hide-text"><%- _.__("Close") %></i></a>'

@@ -45,38 +45,28 @@ class EntityBinder
         }
 
         $workflow = $this->workflowRegistry->getWorkflow($workflowItem->getWorkflowName());
-        $bindAttributeNames = $workflow->getBindEntityAttributeNames();
+        $bindAttributeNames = $workflow->getAttributeManager()->getBindEntityAttributeNames();
         $entitiesToBind = $workflowData->getValues($bindAttributeNames);
 
-        $counter = 0;
-
-        foreach ($entitiesToBind as $entity) {
-            if ($entity && $this->bindEntity($workflowItem, $entity)) {
-                $counter++;
-            }
-        }
-
-        return $counter > 0;
+        return $workflowItem->syncBindEntities($this->createBindEntities($entitiesToBind));
     }
 
     /**
-     * Binds entity to WorkflowItem
-     *
-     * @param WorkflowItem $workflowItem
-     * @param mixed $entity
-     * @return bool Returns true if at least one entity was bound
+     * @param array $entitiesToBind
+     * @return WorkflowBindEntity[]
      */
-    protected function bindEntity(WorkflowItem $workflowItem, $entity)
+    protected function createBindEntities(array $entitiesToBind)
     {
-        $bindEntity = new WorkflowBindEntity();
-        $bindEntity->setEntityClass($this->doctrineHelper->getEntityClass($entity));
-        $bindEntity->setEntityId($this->doctrineHelper->getEntityIdentifier($entity));
+        $result = array();
+        foreach ($entitiesToBind as $entity) {
+            if ($entity) {
+                $bindEntity = new WorkflowBindEntity();
+                $bindEntity->setEntityClass($this->doctrineHelper->getEntityClass($entity));
+                $bindEntity->setEntityId($this->doctrineHelper->getEntityIdentifier($entity));
 
-        if (!$workflowItem->hasBindEntity($bindEntity)) {
-            $workflowItem->addBindEntity($bindEntity);
-            return true;
+                $result[] = $bindEntity;
+            }
         }
-
-        return false;
+        return $result;
     }
 }

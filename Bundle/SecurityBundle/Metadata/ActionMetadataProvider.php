@@ -30,7 +30,7 @@ class ActionMetadataProvider
      * Constructor
      *
      * @param AclAnnotationProvider $annotationProvider
-     * @param CacheProvider|null $cache
+     * @param CacheProvider|null    $cache
      */
     public function __construct(
         AclAnnotationProvider $annotationProvider,
@@ -46,7 +46,7 @@ class ActionMetadataProvider
     /**
      * Checks whether an action with the given name is defined.
      *
-     * @param string $actionName The entity class name
+     * @param  string $actionName The entity class name
      * @return bool
      */
     public function isKnownAction($actionName)

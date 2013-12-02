@@ -14,7 +14,12 @@ class MultipleEntityTypeTypeTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->type = new MultipleEntityType();
+        $em = $this->getMockBuilder('Doctrine\ORM\EntityManager')
+            ->disableOriginalConstructor()
+            ->setMethods(array('getClassMetadata', 'getRepository'))
+            ->getMockForAbstractClass();
+
+        $this->type = new MultipleEntityType($em);
     }
 
     public function testGetName()
@@ -35,7 +40,7 @@ class MultipleEntityTypeTypeTest extends \PHPUnit_Framework_TestCase
             ->method('add')
             ->with('removed', 'oro_entity_identifier', array('class' => '\stdObject', 'multiple' => true))
             ->will($this->returnSelf());
-        $this->type->buildForm($builder, array('class' => '\stdObject'));
+        $this->type->buildForm($builder, array('class' => '\stdObject', 'extend' => false));
     }
 
     public function testSetDefaultOptions()
@@ -50,12 +55,13 @@ class MultipleEntityTypeTypeTest extends \PHPUnit_Framework_TestCase
             ->method('setDefaults')
             ->with(
                 array(
-                    'class' => null,
-                    'mapped' => false,
-                    'grid_url' => null,
-                    'default_element' => null,
-                    'initial_elements' => null,
-                    'selector_window_title' => null
+                    'class'                 => null,
+                    'mapped'                => false,
+                    'grid_url'              => null,
+                    'default_element'       => null,
+                    'initial_elements'      => null,
+                    'selector_window_title' => null,
+                    'extend'                => false
                 )
             );
         $this->type->setDefaultOptions($optionsResolver);
@@ -63,9 +69,9 @@ class MultipleEntityTypeTypeTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider optionsDataProvider
-     * @param array $options
+     * @param array  $options
      * @param string $expectedKey
-     * @param mixed $expectedValue
+     * @param mixed  $expectedValue
      */
     public function testFinishView($options, $expectedKey, $expectedValue)
     {
@@ -83,28 +89,44 @@ class MultipleEntityTypeTypeTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array(
-                array('grid_url' => '/test'), 'grid_url', '/test'
+                array('grid_url' => '/test'),
+                'grid_url',
+                '/test'
             ),
             array(
-                array(), 'grid_url', null
+                array(),
+                'grid_url',
+                null
             ),
             array(
-                array('initial_elements' => array()), 'initial_elements', array()
+                array('initial_elements' => array()),
+                'initial_elements',
+                array()
             ),
             array(
-                array(), 'initial_elements', null
+                array(),
+                'initial_elements',
+                null
             ),
             array(
-                array('selector_window_title' => 'Select'), 'selector_window_title', 'Select'
+                array('selector_window_title' => 'Select'),
+                'selector_window_title',
+                'Select'
             ),
             array(
-                array(), 'selector_window_title', null
+                array(),
+                'selector_window_title',
+                null
             ),
             array(
-                array('default_element' => 'name'), 'default_element', 'name'
+                array('default_element' => 'name'),
+                'default_element',
+                'name'
             ),
             array(
-                array(), 'default_element', null
+                array(),
+                'default_element',
+                null
             )
         );
     }

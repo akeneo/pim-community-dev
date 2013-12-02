@@ -1,8 +1,8 @@
 /* global define */
 define(['jquery', 'underscore', 'backgrid', 'oro/translator', 'oro/mediator', 'oro/loading-mask',
-    'oro/datagrid/header', 'oro/datagrid/body', 'oro/datagrid/toolbar', 'oro/datagrid/action-column',
-    'oro/datagrid/select-row-cell', 'oro/datagrid/select-all-header-cell',
-    'oro/datagrid/refresh-collection-action', 'oro/datagrid/reset-collection-action'],
+    'oro/grid/header', 'oro/grid/body', 'oro/grid/toolbar', 'oro/grid/action-column',
+    'oro/grid/select-row-cell', 'oro/grid/select-all-header-cell',
+    'oro/grid/refresh-collection-action', 'oro/grid/reset-collection-action'],
 function($, _, Backgrid, __, mediator, LoadingMask, GridHeader, GridBody, Toolbar, ActionColumn, SelectRowCell,
          SelectAllHeaderCell, RefreshCollectionAction, ResetCollectionAction) {
     'use strict';
@@ -11,11 +11,10 @@ function($, _, Backgrid, __, mediator, LoadingMask, GridHeader, GridBody, Toolba
      * Basic grid class.
      *
      * Triggers events:
-     *  - "cellEdited" when one of cell of grid body row is edited
      *  - "rowClicked" when row of grid body is clicked
      *
-     * @export  oro/datagrid/grid
-     * @class   oro.datagrid.Grid
+     * @export  oro/grid/grid
+     * @class   oro.grid.Grid
      * @extends Backgrid.Grid
      */
     return Backgrid.Grid.extend({
@@ -55,19 +54,19 @@ function($, _, Backgrid, __, mediator, LoadingMask, GridHeader, GridBody, Toolba
             filterBox:   '.filter-box'
         },
 
-        /** @property {oro.datagrid.Header} */
+        /** @property {oro.grid.Header} */
         header: GridHeader,
 
-        /** @property {oro.datagrid.Body} */
+        /** @property {oro.grid.Body} */
         body: GridBody,
 
-        /** @property {oro.datagrid.Toolbar} */
+        /** @property {oro.grid.Toolbar} */
         toolbar: Toolbar,
 
         /** @property {oro.LoadingMask} */
         loadingMask: LoadingMask,
 
-        /** @property {oro.datagrid.ActionColumn} */
+        /** @property {oro.grid.ActionColumn} */
         actionsColumn: ActionColumn,
 
         /**
@@ -95,9 +94,9 @@ function($, _, Backgrid, __, mediator, LoadingMask, GridHeader, GridBody, Toolba
          * @param {String} [options.rowClickActionClass] CSS class for row with click action
          * @param {String} [options.rowClassName] CSS class for row
          * @param {Object} [options.toolbarOptions] Options for toolbar
-         * @param {Array<oro.datagrid.AbstractAction>} [options.rowActions] Array of row actions prototypes
-         * @param {Array<oro.datagrid.AbstractAction>} [options.massActions] Array of mass actions prototypes
-         * @param {oro.datagrid.AbstractAction} [options.rowClickAction] Prototype for action that handles row click
+         * @param {Array<oro.grid.AbstractAction>} [options.rowActions] Array of row actions prototypes
+         * @param {Array<oro.grid.AbstractAction>} [options.massActions] Array of mass actions prototypes
+         * @param {oro.grid.AbstractAction} [options.rowClickAction] Prototype for action that handles row click
          * @throws {TypeError} If mandatory options are undefined
          */
         initialize: function(options) {
@@ -123,7 +122,7 @@ function($, _, Backgrid, __, mediator, LoadingMask, GridHeader, GridBody, Toolba
             this._initRowActions();
 
             if (this.rowClickAction) {
-                // This option property is used in oro.datagrid.Body
+                // This option property is used in oro.grid.Body
                 options.rowClassName = this.rowClickActionClass + ' ' + this.rowClassName;
             }
 
@@ -225,7 +224,7 @@ function($, _, Backgrid, __, mediator, LoadingMask, GridHeader, GridBody, Toolba
         /**
          * Creates instance of toolbar
          *
-         * @return {oro.datagrid.Toolbar}
+         * @return {oro.grid.Toolbar}
          * @private
          */
         _createToolbar: function() {
@@ -286,7 +285,7 @@ function($, _, Backgrid, __, mediator, LoadingMask, GridHeader, GridBody, Toolba
         /**
          * Get action that refreshes grid's collection
          *
-         * @return oro.datagrid.RefreshCollectionAction
+         * @return oro.grid.RefreshCollectionAction
          */
         getRefreshAction: function() {
             if (!this.refreshAction) {
@@ -305,7 +304,7 @@ function($, _, Backgrid, __, mediator, LoadingMask, GridHeader, GridBody, Toolba
         /**
          * Get action that resets grid's collection
          *
-         * @return oro.datagrid.ResetCollectionAction
+         * @return oro.grid.ResetCollectionAction
          */
         getResetAction: function() {
             if (!this.resetAction) {
@@ -341,7 +340,7 @@ function($, _, Backgrid, __, mediator, LoadingMask, GridHeader, GridBody, Toolba
         },
 
         /**
-         * Listen to events of body, proxies events "rowClicked" and "rowEdited", handle run of rowClickAction if required
+         * Listen to events of body, proxies events "rowClicked", handle run of rowClickAction if required
          *
          * @private
          */
@@ -350,15 +349,12 @@ function($, _, Backgrid, __, mediator, LoadingMask, GridHeader, GridBody, Toolba
                 this.trigger('rowClicked', this, row);
                 this._runRowClickAction(row);
             });
-            this.listenTo(this.body, 'cellEdited', function(row, cell) {
-                this.trigger('cellEdited', this, row, cell);
-            });
         },
 
         /**
          * Create row click action
          *
-         * @param {oro.datagrid.Row} row
+         * @param {oro.grid.Row} row
          * @private
          */
         _runRowClickAction: function(row) {

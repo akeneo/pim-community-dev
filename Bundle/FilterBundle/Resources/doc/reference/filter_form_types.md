@@ -73,6 +73,11 @@ There are next filters form types:
     <td>oro_type_datetime_range</td>
     <td>This form type is used by oro_type_datetime_range_filter as field type</td>
 </tr>
+<tr>
+    <td><a href="#oro_type_selectrow">SelectRowFilterType</a></td>
+    <td>oro_type_selectrow_filter</td>
+    <td>This form type is used by datagrid extension only</td>
+</tr>
 </table>
 
 ### oro\_type\_filter Form Type
@@ -409,6 +414,22 @@ oro\_type\_date\_range
 
 _Oro\Bundle\FilterBundle\Form\Type\DateTimeRangeType_
 
+### oro\_type\_selectrow  Form Type
+
+Provides filtering by selected/not selected rows in datagrid
+
+**Default Options**
+
+* field\_type = "choice"
+
+**Parent Type**
+
+oro\_type\_filter
+
+**Class**
+
+_Oro\Bundle\FilterBundle\Form\Type\SelectRowFilterType_
+
 
 Example of Usage
 ----------------
@@ -426,13 +447,13 @@ class MyFilterFormType extends AbstractType
         // Add filters
         $builder->add('name', 'oro_type_text_filter');
         $builder->add('salary', 'oro_type_number_filter');
-    	$builder->add('hobby', 'oro_type_choice_filter', array(
-			'field_options' => array(
-				'choices' => array(1 => 'Coding', 2 => 'Hiking', 3 => 'Photography'), 
-				'multiple' => true
-			)
-		)); 
-	}
+        $builder->add('hobby', 'oro_type_choice_filter', array(
+        field_options' => array(
+                'choices' => array(1 => 'Coding', 2 => 'Hiking', 3 => 'Photography'),
+                'multiple' => true
+            )
+        ));
+    }
 }
 ```
 

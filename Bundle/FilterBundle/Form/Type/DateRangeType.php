@@ -29,7 +29,13 @@ class DateRangeType extends AbstractType
             'start',
             $options['field_type'],
             array_merge(
-                array('required' => false, 'widget' => 'single_text'),
+                array(
+                    'required' => false,
+                    'widget' => 'single_text',
+                    'format' => 'yyyy-MM-dd',
+                    'model_timezone' => 'UTC',
+                    'view_timezone' => 'UTC',
+                ),
                 $options['field_options'],
                 $options['start_field_options']
             )
@@ -39,7 +45,13 @@ class DateRangeType extends AbstractType
             'end',
             $options['field_type'],
             array_merge(
-                array('required' => false, 'widget' => 'single_text'),
+                array(
+                    'required' => false,
+                    'widget' => 'single_text',
+                    'format' => 'yyyy-MM-dd',
+                    'model_timezone' => 'UTC',
+                    'view_timezone' => 'UTC',
+                ),
                 $options['field_options'],
                 $options['end_field_options']
             )
@@ -51,9 +63,9 @@ class DateRangeType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $children = $form->all();
+        $children                     = $form->all();
         $view->vars['value']['start'] = $children['start']->getViewData();
-        $view->vars['value']['end'] = $children['end']->getViewData();
+        $view->vars['value']['end']   = $children['end']->getViewData();
     }
 
     /**
@@ -63,10 +75,10 @@ class DateRangeType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'field_type' => 'date',
-                'field_options' => array(),
+                'field_type'          => 'date',
+                'field_options'       => array(),
                 'start_field_options' => array(),
-                'end_field_options' => array(),
+                'end_field_options'   => array(),
             )
         );
     }

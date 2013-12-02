@@ -10,21 +10,20 @@
         "symfony/symfony": "2.1.*",
         "friendsofsymfony/rest-bundle": "0.11.*",
         "nelmio/api-doc-bundle": "dev-master",
-        "escapestudios/wsse-authentication-bundle": "2.1.x-dev",
+        "escapestudios/wsse-authentication-bundle": "2.3.x-dev",
         "jms/serializer-bundle": "0.12.*@dev",
         "liip/imagine-bundle": "dev-master",
         "doctrine/data-fixtures": "@dev",
         "doctrine/doctrine-fixtures-bundle": "@dev",
-        "oro/flexible-entity-bundle": "dev-master",
         "oro/ui-bundle": "dev-master",
         "oro/soap-bundle": "dev-master",
         "oro/grid-bundle": "dev-master",
         "oro/navigation-bundle": "dev-master",
         "oro/data-audit-bundle": "dev-master",
-        "oro/jsfv-bundle": "dev-master",
         "oro/form-bundle": "dev-master",
         "oro/email-bundle": "dev-master",
-        "oro/organization-bundle": "dev-master"
+        "oro/organization-bundle": "dev-master",
+        "oro/requirejs-bundle": "dev-master"
     },
     "autoload": {
         "psr-0": { "Oro\\Bundle\\UserBundle": "" }

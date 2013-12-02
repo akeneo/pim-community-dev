@@ -90,9 +90,8 @@ abstract class AbstractEngine
     /**
      * Search query with query builder
      *
-     * @param \Oro\Bundle\SearchBundle\Query\Query $query
-     *
-     * @return \Oro\Bundle\SearchBundle\Query\Result
+     * @param Query $query
+     * @return Result
      */
     public function search(Query $query)
     {

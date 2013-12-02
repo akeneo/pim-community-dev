@@ -5,7 +5,7 @@ namespace Oro\Bundle\WorkflowBundle\Model;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 
-use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
+use Oro\Bundle\WorkflowBundle\Exception\InvalidTransitionException;
 
 class TransitionManager
 {
@@ -68,7 +68,12 @@ class TransitionManager
     protected function assertTransitionArgument($transition)
     {
         if (!is_string($transition) && !$transition instanceof Transition) {
-            throw new \InvalidArgumentException('Expected transition argument type is string or Transition');
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Expected transition argument type is string or Transition, but %s given',
+                    is_object($transition) ? get_class($transition) : gettype($transition)
+                )
+            );
         }
     }
 
@@ -76,7 +81,8 @@ class TransitionManager
      * Receive transition by name or object
      *
      * @param string|Transition $transition
-     * @return null|Transition
+     * @return Transition
+     * @throws InvalidTransitionException
      */
     public function extractTransition($transition)
     {
@@ -84,22 +90,24 @@ class TransitionManager
         if (is_string($transition)) {
             $transitionName = $transition;
             $transition = $this->getTransition($transitionName);
+            if (!$transition) {
+                throw InvalidTransitionException::unknownTransition($transitionName);
+            }
         }
 
         return $transition;
     }
 
     /**
-     * Get allowed start transitions
+     * Get start transitions
      *
-     * @param WorkflowItem $workflowItem
      * @return Collection
      */
-    public function getAllowedStartTransitions(WorkflowItem $workflowItem)
+    public function getStartTransitions()
     {
         return $this->getTransitions()->filter(
-            function (Transition $transition) use ($workflowItem) {
-                return $transition->isStart() && $transition->isAllowed($workflowItem);
+            function (Transition $transition) {
+                return $transition->isStart();
             }
         );
     }

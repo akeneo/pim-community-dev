@@ -1,7 +1,7 @@
 OroAsseticBundle
 ========================
 
-OroAssetic enables expandable and optimized way to manage CSS and JS assets that are distributed across many bundles.
+OroAssetic enables expandable and optimized way to manage CSS assets that are distributed across many bundles.
 With OroAssetic developer can define CSS and JavaScript files groups in assets.yml configuration of the bundle. Defined
 files will be automatically merged and optimized for web presentation. For development and debug purposes some files can
 be excluded from optimization process.
@@ -9,11 +9,6 @@ be excluded from optimization process.
 
 Example of assets.yml file:
 ```yaml
-js:
-    'some_group'
-        - 'Assets/Path/To/Js/first.js'
-        - 'Assets/Path/To/Js/second.js'
-        - 'Assets/Path/To/Js/third.js'
 css:
     'css_group':
         - 'Assets/Path/To/Css/first.css'
@@ -21,7 +16,7 @@ css:
         - 'Assets/Path/To/Css/third.css'
 ```
 
-Js and css sections contain groups of files. This groups can be excluded from optimization process debugging purposes.
+Css section contain groups of files. This groups can be excluded from optimization process debugging purposes.
 
 The path to file can be defined as @BundleName/Resources/puclic/path/to/file.ext or bundles/bundle/path/to/file.ext.
 If the file path contains @, then in debug mode it will be taken via controller. If path doesn't contain @, then file
@@ -32,14 +27,12 @@ to app/config/config.yml (or app/config/config_{mode}.yml) file:
 
 ```yaml
 oro_assetic:
-    js_debug: ~
     css_debug: [css_group]
 ```
-In order to anable debug mode for all CSS and JS files following configuration can be applied:
+In order to enable debug mode for all CSS files following configuration can be applied:
 
 ```yaml
 oro_assetic:
-    js_debug_all: true
     css_debug_all: true
 ```
 
@@ -60,25 +53,14 @@ php app/console oro:assetic:dump show-groups
 The next code must be added in main template:
 
 ```
-    {% oro_js filter='array with filters' output='js/name_of_output_file.js' %}
-        <script type="text/javascript" src="{{ asset_url }}"></script>
-    {% endoro_js %}
     {% oro_css filter='array with filters' output='css/name_of_output_file.css' %}
         <link rel="stylesheet" media="all" href="{{ asset_url }}" />
     {% endoro_css %}
 ```
-These tags are the same as assettics "javascripts" and "stylesheet" tags but without list of files.
+These tags are the same as assetics "stylesheet" tags but without list of files.
 
 To compile blocks of files into single file, there is command
 
 ```
 php app/console oro:assetic:dump
-```
-
-To use uncompressed files, in routing.yml must be added the next route rule:
-
-```yml
-oro_assets:
-    resource: .
-    type: oro_assetic
 ```

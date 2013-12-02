@@ -36,6 +36,11 @@ class EntityBinderTest extends \PHPUnit_Framework_TestCase
     protected $workflow;
 
     /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $attributeManager;
+
+    /**
      * @var EntityBinder
      */
     protected $binder;
@@ -51,10 +56,11 @@ class EntityBinderTest extends \PHPUnit_Framework_TestCase
             ->getMock();
         $this->workflowItem = $this->getMock('Oro\Bundle\WorkflowBundle\Entity\WorkflowItem');
         $this->workflowData = $this->getMock('Oro\Bundle\WorkflowBundle\Model\WorkflowData');
+        $this->attributeManager = $this->getMock('Oro\Bundle\WorkflowBundle\Model\AttributeManager');
         $this->workflow = $this->getMock(
             'Oro\Bundle\WorkflowBundle\Model\Workflow',
-            array(),
-            array(new StepManager(), new AttributeManager(), new TransitionManager())
+            null,
+            array(null, $this->attributeManager, null)
         );
 
         $this->binder = new EntityBinder($this->workflowRegistry, $this->doctrineHelper);
@@ -64,6 +70,7 @@ class EntityBinderTest extends \PHPUnit_Framework_TestCase
     {
         $this->workflowItem->expects($this->once())->method('getData')->will($this->returnValue($this->workflowData));
         $this->workflowData->expects($this->once())->method('isModified')->will($this->returnValue(false));
+        $this->workflowData->expects($this->never())->method('syncBindEntities');
 
         $this->assertFalse($this->binder->bindEntities($this->workflowItem));
     }
@@ -82,11 +89,14 @@ class EntityBinderTest extends \PHPUnit_Framework_TestCase
         $this->workflowRegistry->expects($this->once())->method('getWorkflow')->with($workflowName)
             ->will($this->returnValue($this->workflow));
 
-        $this->workflow->expects($this->once())->method('getBindEntityAttributeNames')
+        $this->attributeManager->expects($this->once())->method('getBindEntityAttributeNames')
             ->will($this->returnValue($bindAttributeNames));
 
         $this->workflowData->expects($this->once())->method('getValues')->with($bindAttributeNames)
             ->will($this->returnValue(array()));
+
+        $this->workflowItem->expects($this->once())->method('syncBindEntities')->with(array())
+            ->will($this->returnValue(false));
 
         $this->assertFalse($this->binder->bindEntities($this->workflowItem));
     }
@@ -109,7 +119,7 @@ class EntityBinderTest extends \PHPUnit_Framework_TestCase
         $this->workflowRegistry->expects($this->once())->method('getWorkflow')->with($workflowName)
             ->will($this->returnValue($this->workflow));
 
-        $this->workflow->expects($this->once())->method('getBindEntityAttributeNames')
+        $this->attributeManager->expects($this->once())->method('getBindEntityAttributeNames')
             ->will($this->returnValue($bindAttributeNames));
 
         $this->workflowData->expects($this->once())->method('getValues')->with($bindAttributeNames)
@@ -128,35 +138,23 @@ class EntityBinderTest extends \PHPUnit_Framework_TestCase
             ->with($barEntity)
             ->will($this->returnValue($barIds));
 
-        $this->workflowItem->expects($this->at(2))->method('hasBindEntity')
+        $this->workflowItem->expects($this->once())
+            ->method('syncBindEntities')
             ->with(
                 $this->callback(
-                    function (WorkflowBindEntity $bindEntity) use ($fooEntity, $fooIds) {
-                        return $bindEntity->getEntityId() == $fooIds['id']
-                            && $bindEntity->getEntityClass() == get_class($fooEntity);
+                    function (array $bindEntities) use ($fooEntity, $fooIds, $barEntity, $barIds) {
+                        return
+                            count($bindEntities) == 2 &&
+                            $bindEntities[0] instanceof WorkflowBindEntity &&
+                            $bindEntities[0]->getEntityId() == $fooIds['id'] &&
+                            $bindEntities[0]->getEntityClass() == get_class($fooEntity) &&
+                            $bindEntities[1] instanceof WorkflowBindEntity &&
+                            $bindEntities[1]->getEntityId() == $barIds['id'] &&
+                            $bindEntities[1]->getEntityClass() == get_class($barEntity);
                     }
                 )
             )
             ->will($this->returnValue(true));
-        $this->workflowItem->expects($this->at(3))->method('hasBindEntity')
-            ->with(
-                $this->callback(
-                    function (WorkflowBindEntity $bindEntity) use ($barEntity, $barIds) {
-                        return $bindEntity->getEntityId() == $barIds['id']
-                            && $bindEntity->getEntityClass() == get_class($barEntity);
-                    }
-                )
-            )
-            ->will($this->returnValue(false));
-
-        $this->workflowItem->expects($this->at(4))->method('addBindEntity')->with(
-            $this->callback(
-                function (WorkflowBindEntity $bindEntity) use ($barEntity, $barIds) {
-                    return $bindEntity->getEntityId() == $barIds['id']
-                        && $bindEntity->getEntityClass() == get_class($barEntity);
-                }
-            )
-        );
 
         $this->assertTrue($this->binder->bindEntities($this->workflowItem));
     }

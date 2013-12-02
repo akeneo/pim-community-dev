@@ -12,27 +12,16 @@
             {% endblock %}
 
             {% block script %}
-                {% include 'OroUIBundle:Default:require.js.config.html.twig' %}
-                {% placeholder requirejs_config_extend %}
-                <script type="text/javascript" src="{{ asset('bundles/oroui/lib/require.js') }}"></script>
-                <script type="text/javascript">
-                    require(['oro/init-layout', 'oro/init-user', 'jquery.uniform']);
-                </script>
-
                 {% block scripts_before %}
                     {% placeholder scripts_before %}
                 {% endblock %}
-
+                {% include 'OroRequireJSBundle::scripts.html.twig' with {compressed: not app.debug} %}
+                <script type="text/javascript">
+                    require(['oro/init-layout', 'oro/init-user', 'oro/widget-manager', 'jquery.uniform']);
                 {% if app.debug %}
-                    <script type="text/javascript">
-                        require(['routing'], function() { require(['{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}']); });
-                        require(['oro/app'], function(app){app.debug = true;});
-                    </script>
-                {% else %}
-                    <script type="text/javascript">
-                        require(['routing'], function() { require(['../js/routes']); });
-                    </script>
+                    require(['oro/app'], function(app){app.debug = true;});
                 {% endif %}
+                </script>
                 <!--[if lte IE 9]>
                 <link href="{{ asset('bundles/oroui/css/ie.css') }}" rel="stylesheet" media="all" />
                 <script type="text/javascript">
@@ -82,15 +71,17 @@
                                         {% placeholder application_menu %}
                                     {% endblock application_menu %}
                                  </div>
-                                <ul class="nav pull-right">
-                                    {% placeholder user_menu %}
-                                    {# Disabled notification icon till it will be implemented
-                                    {% block notifications %}
-                                    <li class="divider-vertical small-divider"></li>
-                                    <li><a class="notifications" href="#"><i class="icon-bullhorn"></i><span class="badge badge-important">1</span></a></li>
-                                    {% endblock notifications %}
-                                    #}
-                                </ul>
+                                {% block user_menu %}
+                                    <ul class="nav pull-right user-menu">
+                                        {% placeholder user_menu %}
+                                        {# Disabled notification icon till it will be implemented
+                                        {% block notifications %}
+                                        <li class="divider-vertical small-divider"></li>
+                                        <li><a class="notifications" href="#"><i class="icon-bullhorn"></i><span class="badge badge-important">1</span></a></li>
+                                        {% endblock notifications %}
+                                        #}
+                                    </ul>
+                                {% endblock %}
                             </div>
                         </div>
                     </div>
@@ -211,7 +202,8 @@
         'script': block('head_script'),
         'content': block('page_container'),
         'menu': block('application_menu'),
-        'breadcrumb': block('breadcrumb')
+        'breadcrumb': block('breadcrumb'),
+        'userMenu': block('user_menu')
     }
     %}
 {% endif %}

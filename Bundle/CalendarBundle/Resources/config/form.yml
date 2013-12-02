@@ -1,0 +1,47 @@
+parameters:
+    oro_calendar.calendar_event.form.type.class:              Oro\Bundle\CalendarBundle\Form\Type\CalendarEventType
+    oro_calendar.calendar_event.form.type.api.class:          Oro\Bundle\CalendarBundle\Form\Type\CalendarEventApiType
+    oro_calendar.calendar_event.form.handler.class:           Oro\Bundle\CalendarBundle\Form\Handler\CalendarEventHandler
+
+services:
+    oro_calendar.calendar_event.form.type:
+        class: %oro_calendar.calendar_event.form.type.class%
+        tags:
+            - { name: form.type, alias: oro_calendar_event }
+
+    oro_calendar.calendar_event.form.type.api:
+        class: %oro_calendar.calendar_event.form.type.api.class%
+        tags:
+            - { name: form.type, alias: oro_calendar_event_api }
+
+    oro_calendar.calendar_event.form:
+        class:           Symfony\Component\Form\Form
+        factory_method:  createNamed
+        factory_service: form.factory
+        arguments:
+            - "oro_calendar_event_form"
+            - "oro_calendar_event"
+
+    oro_calendar.calendar_event.form.api:
+        class:           Symfony\Component\Form\Form
+        factory_method:  createNamed
+        factory_service: form.factory
+        arguments:
+            - ~
+            - "oro_calendar_event_api"
+
+    oro_calendar.calendar_event.form.handler:
+        class: %oro_calendar.calendar_event.form.handler.class%
+        scope: request
+        arguments:
+            - @oro_calendar.calendar_event.form
+            - @request
+            - @doctrine.orm.entity_manager
+
+    oro_calendar.calendar_event.form.handler.api:
+        class: %oro_calendar.calendar_event.form.handler.class%
+        scope: request
+        arguments:
+            - @oro_calendar.calendar_event.form.api
+            - @request
+            - @doctrine.orm.entity_manager

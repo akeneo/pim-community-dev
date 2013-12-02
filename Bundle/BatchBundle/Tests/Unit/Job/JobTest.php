@@ -99,7 +99,7 @@ class JobTest extends \PHPUnit_Framework_TestCase
             ->method('doExecute')
             ->will($this->throwException($exception));
 
-        $this->job->addStep('name', $mockStep);
+        $this->job->addStep($mockStep);
 
         $this->job->execute($jobExecution);
 
@@ -139,7 +139,7 @@ class JobTest extends \PHPUnit_Framework_TestCase
         $step->setJobRepository($this->jobRepository);
 
         $this->job->setJobRepository($this->jobRepository);
-        $this->job->addStep('name', $step);
+        $this->job->addStep($step);
         $this->job->execute($jobExecution);
 
         $this->assertEquals(BatchStatus::STOPPED, $jobExecution->getStatus()->getValue(), 'Batch status stopped');
@@ -165,7 +165,7 @@ class JobTest extends \PHPUnit_Framework_TestCase
         $step->setJobRepository($this->jobRepository);
 
         $this->job->setJobRepository($this->jobRepository);
-        $this->job->addStep('name', $step);
+        $this->job->addStep($step);
         $this->job->execute($jobExecution);
 
         $this->assertEquals(BatchStatus::FAILED, $jobExecution->getStatus()->getValue(), 'Batch status stopped');
@@ -193,7 +193,7 @@ class JobTest extends \PHPUnit_Framework_TestCase
 
         $step = $this->getItemStep('export', $reader, $processor, $writer);
 
-        $this->job->addStep('name', $step);
+        $this->job->addStep($step);
         $expectedConfiguration = array(
             'export' => array(
                 'reader' => array(
@@ -230,7 +230,7 @@ class JobTest extends \PHPUnit_Framework_TestCase
             ->with(array('writer_foo' => 'writer_bar'));
 
         $itemStep = $this->getItemStep('export', $reader, $processor, $writer);
-        $this->job->addStep('name', $itemStep);
+        $this->job->addStep($itemStep);
         $this->job->setConfiguration(
             array(
                 'export' => array(
@@ -259,7 +259,7 @@ class JobTest extends \PHPUnit_Framework_TestCase
 
         $step = $this->getItemStep('export', $reader, $processor, $writer);
 
-        $this->job->addStep('name', $step);
+        $this->job->addStep($step);
         $this->job->setConfiguration(
             array(
                 'unknown' => array(),
@@ -289,10 +289,10 @@ class JobTest extends \PHPUnit_Framework_TestCase
             array('my_mock_step2')
         );
 
-        $this->job->addStep('name1', $mockStep1);
-        $this->job->addStep('name2', $mockStep2);
+        $this->job->addStep($mockStep1);
+        $this->job->addStep($mockStep2);
 
-        $this->assertEquals(array($mockStep1, $mockStep2), $this->job->getSteps());
+        $this->assertEquals(array( $mockStep1, $mockStep2), $this->job->getSteps());
     }
 
     public function testSetSteps()

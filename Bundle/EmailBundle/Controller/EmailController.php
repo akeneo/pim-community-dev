@@ -2,6 +2,8 @@
 
 namespace Oro\Bundle\EmailBundle\Controller;
 
+use Doctrine\ORM\Query;
+use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\EmailBundle\Decoder\ContentDecoder;
 use Oro\Bundle\EmailBundle\Entity\Util\EmailUtil;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -16,8 +18,7 @@ use Oro\Bundle\EmailBundle\Entity\Repository\EmailRepository;
 use Oro\Bundle\EmailBundle\Entity\Email;
 use Oro\Bundle\EmailBundle\Entity\EmailBody;
 use Oro\Bundle\EmailBundle\Entity\EmailAttachment;
-use Oro\Bundle\EmailBundle\Entity\EmailInterface;
-use Doctrine\Common\Collections\ArrayCollection;
+use Oro\Bundle\EmailBundle\Form\Model\Email as EmailModel;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
@@ -27,9 +28,9 @@ class EmailController extends Controller
      * @Route("/view/{id}", name="oro_email_view", requirements={"id"="\d+"})
      * @Acl(
      *      id="oro_email_view",
-     *      type="action",
-     *      label="View email",
-     *      group_name=""
+     *      type="entity",
+     *      class="OroEmailBundle:Email",
+     *      permission="VIEW"
      * )
      * @Template
      */
@@ -43,6 +44,31 @@ class EmailController extends Controller
     }
 
     /**
+     * @Route("/create")
+     * @Acl(
+     *      id="oro_email_create",
+     *      type="entity",
+     *      class="OroEmailBundle:Email",
+     *      permission="CREATE"
+     * )
+     * @Template("OroEmailBundle:Email:update.html.twig")
+     */
+    public function createAction()
+    {
+        $entity = new EmailModel();
+        $responseData = array(
+            'entity' => $entity,
+            'saved' => false
+        );
+        if ($this->get('oro_email.form.handler.email')->process($entity)) {
+            $responseData['saved'] = true;
+        }
+        $responseData['form'] = $this->get('oro_email.form.email')->createView();
+
+        return $responseData;
+    }
+
+    /**
      * Get email list
      * TODO: This is a temporary action created for demo purposes. It will be removed when 'display activities'
      *       functionality is implemented
@@ -52,20 +78,8 @@ class EmailController extends Controller
      */
     public function activitiesAction($emails)
     {
-        /** @var $emailRepository EmailRepository */
-        $emailRepository = $this->getDoctrine()->getRepository('OroEmailBundle:Email');
-
-        $emails = EmailUtil::extractEmailAddresses($emails);
-        if (empty($emails)) {
-            $qb = $emailRepository->createEmailListForAddressesQueryBuilder();
-            $qb->setParameter(EmailRepository::EMAIL_ADDRESSES, $emails);
-            $rows = $qb->getQuery()->execute();
-        } else {
-            $rows = array();
-        }
-
         return array(
-            'entities' => $rows
+            'entities' => array()
         );
     }
 

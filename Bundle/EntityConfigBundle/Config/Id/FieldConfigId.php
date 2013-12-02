@@ -2,7 +2,7 @@
 
 namespace Oro\Bundle\EntityConfigBundle\Config\Id;
 
-class FieldConfigId implements FieldConfigIdInterface
+class FieldConfigId implements ConfigIdInterface
 {
     /**
      * @var string

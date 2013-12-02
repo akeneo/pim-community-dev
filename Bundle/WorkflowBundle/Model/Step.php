@@ -40,6 +40,11 @@ class Step
     protected $formOptions = array();
 
     /**
+     * @var array[]
+     */
+    protected $viewAttributes = array();
+
+    /**
      * @var string[]
      */
     protected $allowedTransitions = array();
@@ -255,5 +260,23 @@ class Step
     public function getFormOptions()
     {
         return $this->formOptions;
+    }
+
+    /**
+     * @param array $viewAttributes
+     * @return Step
+     */
+    public function setViewAttributes(array $viewAttributes)
+    {
+        $this->viewAttributes = $viewAttributes;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getViewAttributes()
+    {
+        return $this->viewAttributes;
     }
 }

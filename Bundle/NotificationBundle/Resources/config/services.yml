@@ -1,9 +1,12 @@
 parameters:
-    oro_notification.send_from: example@example.com
+    oro_notification.send_from: welmag@ukr.net
 
     # Entity classes
     oro_notification.event_entity.class: Oro\Bundle\NotificationBundle\Entity\Event
     oro_notification.emailnotification.entity.class: Oro\Bundle\NotificationBundle\Entity\EmailNotification
+
+    # Notification processors
+    oro_notification.email_processor.class: Oro\Bundle\NotificationBundle\Processor\EmailNotificationProcessor
 
     # Event manager and event handler classes
     oro_notification.manager.class: Oro\Bundle\NotificationBundle\Provider\NotificationManager
@@ -27,6 +30,8 @@ parameters:
     oro_notification.mailer.transport.spool_entity.class: Oro\Bundle\NotificationBundle\Entity\SpoolItem
 
     swiftmailer.mailer.db_spool_mailer.spool.enabled: true
+
+    oro_notification.event_listener.email_notification_service.class: Oro\Bundle\NotificationBundle\Provider\EmailNotificationGridHelper
 services:
     # Email notification form services
     oro_notification.form.email_notification:
@@ -104,8 +109,8 @@ services:
             - @doctrine.orm.entity_manager
             - %oro_notification.emailnotification.entity.class%
 
-    oro_notification.email_handler:
-        class: %oro_notification.email_handler.class%
+    oro_notification.email_processor:
+        class: %oro_notification.email_processor.class%
         arguments:
             - @oro_email.email_renderer
             - @swiftmailer.mailer.db_spool_mailer
@@ -115,6 +120,12 @@ services:
         calls:
             - [ setEnv, ['prod'] ]
             - [ setMessageLimit, [100] ]
+
+    oro_notification.email_handler:
+        class: %oro_notification.email_handler.class%
+        arguments:
+            - @oro_notification.email_processor
+            - @doctrine.orm.entity_manager
         tags:
             - { name: notification.handler, alias: email_notification_handler }
 
@@ -124,7 +135,6 @@ services:
         arguments:
             - @doctrine.orm.entity_manager
             - %oro_notification.mailer.transport.spool_entity.class%
-
 
     oro_notification.mailer.transport.eventdispatcher:
         parent: swiftmailer.transport.eventdispatcher.abstract
@@ -143,3 +153,9 @@ services:
 
     swiftmailer.mailer.db_spool_mailer.transport.real:
         alias: swiftmailer.transport.real
+
+    oro_notification.event_listener.email_notification_service:
+        class: %oro_notification.event_listener.email_notification_service.class%
+        arguments:
+            - @doctrine.orm.entity_manager
+            - %oro_config.entities%

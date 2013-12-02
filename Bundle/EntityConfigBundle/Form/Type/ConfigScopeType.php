@@ -71,6 +71,16 @@ class ConfigScopeType extends AbstractType
             if (isset($config['form']['type'])) {
                 $options = isset($config['form']['options']) ? $config['form']['options'] : array();
 
+                $options['config_id'] = $this->config->getId();
+
+                /**
+                 * Disable field on editAction
+                 */
+                if (isset($config['options']['create_only']) && $this->configModel->getId()) {
+                    $options['disabled'] = true;
+                    $options['attr']['class'] .= ' disabled-' . $config['form']['type'];
+                }
+
                 if (isset($config['options']['required_property'])) {
                     $property = $config['options']['required_property'];
 
@@ -157,6 +167,8 @@ class ConfigScopeType extends AbstractType
      * @param $name
      * @param $options
      * @return mixed
+     *
+     * TODO: use ConstraintFactory here, https://magecore.atlassian.net/browse/BAP-2270
      */
     protected function newConstraint($name, $options)
     {

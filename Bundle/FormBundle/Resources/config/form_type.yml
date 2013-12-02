@@ -1,12 +1,20 @@
 parameters:
-    oro_form.type.date.class:                       Oro\Bundle\FormBundle\Form\Type\OroDateType
-    oro_form.type.datetime.class:                   Oro\Bundle\FormBundle\Form\Type\OroDateTimeType
-    oro_form.type.entity_identifier.class:          Oro\Bundle\FormBundle\Form\Type\EntityIdentifierType
-    oro_form.type.jqueryselect2_hidden.class:       Oro\Bundle\FormBundle\Form\Type\OroJquerySelect2HiddenType
-    oro_form.extension.data_block.class:            Oro\Bundle\FormBundle\Form\Extension\DataBlockExtension
-    oro_form.extension.client_validation.class:     Oro\Bundle\FormBundle\Form\Extension\ClientValidationExtension
-    oro_form.type.icon.class:                       Oro\Bundle\FormBundle\Form\Type\OroIconType
-    oro_form.type.multiple_entity.class:            Oro\Bundle\FormBundle\Form\Type\MultipleEntityType
+    oro_form.type.date.class:                                    Oro\Bundle\FormBundle\Form\Type\OroDateType
+    oro_form.type.datetime.class:                                Oro\Bundle\FormBundle\Form\Type\OroDateTimeType
+    oro_form.type.money.class:                                   Oro\Bundle\FormBundle\Form\Type\OroMoneyType
+    oro_form.type.entity_identifier.class:                       Oro\Bundle\FormBundle\Form\Type\EntityIdentifierType
+    oro_form.type.jqueryselect2_hidden.class:                    Oro\Bundle\FormBundle\Form\Type\OroJquerySelect2HiddenType
+    oro_form.type.icon.class:                                    Oro\Bundle\FormBundle\Form\Type\OroIconType
+    oro_form.type.multiple_entity.class:                         Oro\Bundle\FormBundle\Form\Type\MultipleEntityType
+    oro_form.type.collection.class:                              Oro\Bundle\FormBundle\Form\Type\CollectionType
+
+    oro_form.extension.data_block.class:                         Oro\Bundle\FormBundle\Form\Extension\DataBlockExtension
+    oro_form.extension.client_validation.class:                  Oro\Bundle\FormBundle\Form\Extension\ClientValidationExtension
+    oro_form.extension.constraint_as_option.class:               Oro\Bundle\FormBundle\Form\Extension\ConstraintAsOptionExtension
+    oro_form.extension.tooltip.class:                            Oro\Bundle\FormBundle\Form\Extension\TooltipFormExtension
+    oro_form.extension.js_validation.class:                      Oro\Bundle\FormBundle\Form\Extension\JsValidationExtension
+    oro_form.extension.js_validation.constraints_provider.class: Oro\Bundle\FormBundle\Form\Extension\JsValidation\ConstraintsProvider
+    oro_form.extension.js_validation.repeated.class:             Oro\Bundle\FormBundle\Form\Extension\JsValidation\RepeatedTypeExtension
 
 services:
     # Form types
@@ -17,8 +25,18 @@ services:
 
     oro_form.type.datetime:
         class: %oro_form.type.datetime.class%
+        arguments:
+            - @oro_locale.settings
         tags:
             - { name: form.type, alias: oro_datetime }
+
+    oro_form.type.money:
+        class: %oro_form.type.money.class%
+        arguments:
+            - @oro_locale.settings
+            - @oro_locale.formatter.number
+        tags:
+            - { name: form.type, alias: oro_money }
 
     oro_form.type.icon:
         class: %oro_form.type.icon.class%
@@ -39,6 +57,20 @@ services:
         tags:
             - { name: form.type, alias: oro_jqueryselect2_hidden }
 
+    oro_form.type.multiple_entity:
+        class: %oro_form.type.multiple_entity.class%
+        arguments:
+            - @doctrine.orm.entity_manager
+        tags:
+            - { name: form.type, alias: oro_multiple_entity }
+
+    # Collections form types
+    oro_form.type.collection:
+        class: %oro_form.type.collection.class%
+        tags:
+             - { name: form.type, alias: oro_collection }
+
+    # Form extensions
     oro_form.extension.data_block:
         class: %oro_form.extension.data_block.class%
         tags:
@@ -49,7 +81,32 @@ services:
         tags:
             - { name: form.type_extension, alias: form }
 
-    oro_form.type.multiple_entity:
-        class: %oro_form.type.multiple_entity.class%
+    oro_help.form.tooltip_extension:
+        class: %oro_form.extension.tooltip.class%
         tags:
-            - { name: form.type, alias: oro_multiple_entity }
+            - { name: form.type_extension, alias: form }
+
+    oro_form.extension.constraint_as_option:
+        class: %oro_form.extension.constraint_as_option.class%
+        arguments:
+            - @oro_form.validator.constraint_factory
+        tags:
+            - { name: form.type_extension, alias: form }
+
+    oro_form.extension.js_validation:
+        class: %oro_form.extension.js_validation.class%
+        arguments: [@oro_form.extension.js_validation.constraints_provider]
+        tags:
+            - { name: form.type_extension, alias: form }
+
+    oro_form.extension.js_validation.constraints_provider:
+        class: %oro_form.extension.js_validation.constraints_provider.class%
+        arguments:
+            - @validator.mapping.class_metadata_factory
+
+
+    oro_form.extension.js_validation.repeated:
+        class: %oro_form.extension.js_validation.repeated.class%
+        tags:
+            - { name: form.type_extension, alias: repeated }
+

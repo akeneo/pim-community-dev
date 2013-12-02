@@ -12,21 +12,12 @@ parameters:
     oro_email.manager.email.api.class:            Oro\Bundle\EmailBundle\Entity\Manager\EmailApiEntityManager
     oro_email.entity.cache.warmer.class:          Oro\Bundle\EmailBundle\Cache\EntityCacheWarmer
     oro_email.entity.cache.clearer.class:         Oro\Bundle\EmailBundle\Cache\EntityCacheClearer
+    oro_email.direct_mailer.class:                Oro\Bundle\EmailBundle\Mailer\DirectMailer
 
     oro_email.emailtemplate.entity.class: Oro\Bundle\EmailBundle\Entity\EmailTemplate
 
-    # Email template field
-    oro_email.form.subscriber.emailtemplate.class: Oro\Bundle\EmailBundle\Form\EventListener\BuildTemplateFormSubscriber
-
-    # Email template forms
-    oro_email.form.type.emailtemplate.class: Oro\Bundle\EmailBundle\Form\Type\EmailTemplateType
-    oro_email.form.type.emailtemplate_select.class: Oro\Bundle\EmailBundle\Form\Type\EmailTemplateSelectType
-    oro_email.form.type.emailtemplate_translation.class: Oro\Bundle\EmailBundle\Form\Type\EmailTemplateTranslationType
-    oro_email.form.handler.emailtemplate.class: Oro\Bundle\EmailBundle\Form\Handler\EmailTemplateHandler
-
     # Email template API
     oro_email.manager.emailtemplate.api.class: Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
-    oro_email.form.type.emailtemplate.api.class: Oro\Bundle\EmailBundle\Form\Type\EmailTemplateApiType
 
     # Entity config event listener
     oro_email.listener.config_subscriber.class: Oro\Bundle\EmailBundle\EventListener\ConfigSubscriber
@@ -40,6 +31,11 @@ parameters:
     # Email renderer, twig instance
     oro_email.email_renderer.class: Oro\Bundle\EmailBundle\Provider\EmailRenderer
     oro_email.twig.email_security_policy.class: Twig_Sandbox_SecurityPolicy
+
+    oro_email.datagrid_query_factory.class: Oro\Bundle\EmailBundle\Datagrid\EmailQueryFactory
+
+    oro_email.emailtemplate.datagrid_view_list.class: Oro\Bundle\EmailBundle\Datagrid\EmailTemplatesViewList
+    oro_email.emailtemplate.datagrid_helper.class:    Oro\Bundle\EmailBundle\Datagrid\EmailTemplatesGridHelper
 
 services:
     oro_email.entity.cache.warmer:
@@ -125,44 +121,11 @@ services:
             - %oro_email.email.entity.class%
             - @doctrine.orm.entity_manager
 
-    # Email template field
-    oro_email.form.subscriber.emailtemplate:
-        class: %oro_email.form.subscriber.emailtemplate.class%
+    oro_email.direct_mailer:
+        class: %oro_email.direct_mailer.class%
         arguments:
-            - @doctrine.orm.entity_manager
-            - @form.factory
-
-    # Email template forms
-    oro_email.form.emailtemplate:
-            class: Symfony\Component\Form\Form
-            factory_method: createNamed
-            factory_service: form.factory
-            arguments: ["oro_email_emailtemplate", "oro_email_emailtemplate", null]
-
-    oro_email.form.type.emailtemplate:
-        class: %oro_email.form.type.emailtemplate.class%
-        arguments: [ %oro_config.entities% ]
-        tags:
-            - { name: form.type, alias: oro_email_emailtemplate }
-
-    oro_email.form.type.emailtemplate_translation:
-        class: %oro_email.form.type.emailtemplate_translation.class%
-        tags:
-            - { name: form.type, alias: oro_email_emailtemplate_translatation }
-
-    oro_email.form.type.emailtemplate_select:
-        class: %oro_email.form.type.emailtemplate_select.class%
-        tags:
-            - { name: form.type, alias: oro_email_template_list }
-
-    oro_email.form.handler.emailtemplate:
-        class: %oro_email.form.handler.emailtemplate.class%
-        scope: request
-        arguments:
-            - @oro_email.form.emailtemplate
-            - @request
-            - @doctrine.orm.entity_manager
-            - @translator
+            - @mailer
+            - @service_container
 
     # Email template API
     oro_email.manager.emailtemplate.api:
@@ -170,27 +133,6 @@ services:
         arguments:
             - %oro_email.emailtemplate.entity.class%
             - @doctrine.orm.entity_manager
-
-    oro_email.form.type.emailtemplate.api:
-        class: %oro_email.form.type.emailtemplate.api.class%
-        arguments: [ %oro_config.entities% ]
-        tags:
-            - { name: form.type, alias: oro_email_emailtemplate_api }
-
-    oro_email.form.emailtemplate.api:
-        class: Symfony\Component\Form\Form
-        factory_method: createNamed
-        factory_service: form.factory
-        arguments: ["oro_email_emailtemplate_api", "oro_email_emailtemplate_api", null]
-
-    oro_email.form.handler.emailtemplate.api:
-        class: %oro_email.form.handler.emailtemplate.class%
-        scope: request
-        arguments:
-            - @oro_email.form.emailtemplate.api
-            - @request
-            - @doctrine.orm.entity_manager
-            - @translator
 
     oro_email.cache:
           parent: oro.cache.abstract
@@ -224,15 +166,15 @@ services:
         class: %oro_email.twig.email_security_policy.class%
         arguments:
             # tags
-            - [ 'if', 'app', 'for' ]
+            - [ 'app', 'for', 'if', 'spaceless' ]
             # filters
-            - [ 'upper', 'escape' ]
+            - [ 'default', 'date', 'escape', 'format', 'length', 'lower', 'nl2br', 'number_format', 'title', 'trim', 'upper' ]
             # methods
             - []
             # properties
             - []
             # functions
-            - []
+            - [ 'date' ]
 
     oro_email.twig.email_sandbox:
         class: Twig_Extension_Sandbox
@@ -253,3 +195,20 @@ services:
             - @security.context
         tags:
             - { name: validator.constraint_validator, alias: oro_email.variables_validator }
+
+    oro_email.datagrid_query_factory:
+        class: %oro_email.datagrid_query_factory.class%
+        arguments:
+            - @doctrine
+            - %oro_email.email.entity.class%
+            - @oro_email.email.owner.provider.storage
+            - @oro_config.user
+
+    oro_email.emailtemplate.datagrid_view_list:
+        class: %oro_email.emailtemplate.datagrid_view_list.class%
+        arguments:
+            - @translator
+
+    oro_email.emailtemplate.datagrid_helper:
+        class: %oro_email.emailtemplate.datagrid_helper.class%
+        arguments: [%oro_config.entities%]

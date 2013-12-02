@@ -16,8 +16,8 @@ class BlockConfigTest extends \PHPUnit_Framework_TestCase
     /** @var string form DataBlock code */
     private $blockCode = 'datagrid';
 
-    private $testCode        = 'testCode';
-    private $testTitle       = 'testTitle';
+    private $testCode = 'testCode';
+    private $testTitle = 'testTitle';
     private $testDescription = 'testDescription';
 
     private $testClass = 'Oro\Bundle\UserBundle\Entity\User';
@@ -31,10 +31,12 @@ class BlockConfigTest extends \PHPUnit_Framework_TestCase
                     'common' => array(
                         'title'    => 'Common Setting',
                         'priority' => 1,
+                        'useSpan'  => true
                     ),
                     'custom' => array(
                         'title'    => 'Custom Setting',
                         'priority' => 2,
+                        'useSpan'  => true
                     ),
                 )
             ),
@@ -47,15 +49,18 @@ class BlockConfigTest extends \PHPUnit_Framework_TestCase
         'common' => array(
             'title'       => 'Common Setting',
             'priority'    => 3,
-            'description' => 'some description'
+            'description' => 'some description',
+            'useSpan'     => true
         ),
         'custom' => array(
             'title'    => 'Custom Setting',
             'priority' => 2,
+            'useSpan'  => true
         ),
         'last'   => array(
             'title'    => 'Last SubBlock',
             'priority' => 1,
+            'useSpan'  => true
         )
     );
 
@@ -112,13 +117,14 @@ class BlockConfigTest extends \PHPUnit_Framework_TestCase
         $subblocks = array();
         foreach ($this->testSubBlocksConfig as $code => $data) {
             $blockDescription = !empty($data['description']) ? $data['description'] : null;
-            $subblocks[] = array(
+            $subblocks[]      = array(
                 'code'        => $code,
                 'title'       => $data['title'],
                 'data'        => array('some_data'),
-                'description' => $blockDescription
+                'description' => $blockDescription,
+                'useSpan'     => true
             );
-            $subBlock = new SubBlockConfig($code);
+            $subBlock         = new SubBlockConfig($code);
 
             /** test SubBlockConfig set/get Title/Priority/Code */
             $subBlock->setTitle($data['title']);
@@ -132,6 +138,9 @@ class BlockConfigTest extends \PHPUnit_Framework_TestCase
 
             $subBlock->setData(array('some_data'));
             $this->assertEquals(array('some_data'), $subBlock->getData());
+
+            $subBlock->setUseSpan(true);
+            $this->assertTrue($subBlock->getUseSpan());
 
             $subBlock->setDescription($blockDescription);
             $this->assertEquals($blockDescription, $subBlock->getDescription());
@@ -151,7 +160,7 @@ class BlockConfigTest extends \PHPUnit_Framework_TestCase
                 'title'       => $this->testTitle,
                 'class'       => $this->testClass,
                 'subblocks'   => $subblocks,
-                'description' => $this->testDescription
+                'description' => $this->testDescription,
             ),
             $this->blockConfig->toArray()
         );

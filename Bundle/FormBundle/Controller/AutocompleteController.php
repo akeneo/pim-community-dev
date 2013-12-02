@@ -20,6 +20,9 @@ use Oro\Bundle\FormBundle\Autocomplete\SearchHandlerInterface;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Config\FileLocator;
 
+/**
+ * @Route("/autocomplete")
+ */
 class AutocompleteController extends Controller
 {
     /**

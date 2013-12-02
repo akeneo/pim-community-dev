@@ -42,7 +42,7 @@
 
 {% macro renderPreviewDialog(formName, title) %}
     <script type="text/javascript">
-        require(['jquery', 'underscore', 'oro/translator', 'oro/modal', 'jquery.bind-first'],
+        require(['jquery', 'underscore', 'oro/translator', 'oro/modal'],
         function($, _, __, Modal){
             $(function () {
                 var showEmailPreviewDialog = function(el) {
@@ -62,7 +62,7 @@
                     var form = $('#{{ formName }}');
                     var formAction = form.attr('action');
 
-                    form.bindFirst('submit', function(e) {
+                    form.submit(function(e) {
                         if (!$(this).data('preview')) {
                             return;
                         }
@@ -121,17 +121,16 @@
     Parameters:
         emailAddress - email address entity Oro\Bundle\EmailBundle\Entity\EmailAddress
         emailAddressName - a string contains an email address. It is used if the email address has no owner
-        nameFormat - a format string used to render the owner full name
         noLink - determines whether the rendering of a link to the owner view page is forbidden or not. Default value is false
         knownOnly - if true renders only emails which have an owner; otherwise, all emails. Default value is false
 #}
-{% macro email_address(emailAddress, emailAddressName, nameFormat, noLink, knownOnly) -%}
-    {% macro email_address_text(emailAddress, nameFormat) -%}
-        {{ emailAddress.owner.fullname(nameFormat)|default('N/A') }}
+{% macro email_address(emailAddress, emailAddressName, noLink, knownOnly) -%}
+    {% macro email_address_text(emailAddress) -%}
+        {{ emailAddress.owner|oro_format_name|default('N/A') }}
     {%- endmacro -%}
-    {% macro email_address_link(emailAddress, nameFormat) -%}
+    {% macro email_address_link(emailAddress) -%}
         {#- TODO: we need EntityConfig to get view url for an entity -#}
-        <a href="{{ path(emailAddress.owner.class|split('\\')|first|lower ~ '_' ~ emailAddress.owner.class|split('\\')|last|lower ~ '_view', {id:emailAddress.owner.id}) }}">{{ _self.email_address_text(emailAddress, nameFormat) }}</a>
+        <a href="{{ path(emailAddress.owner.class|split('\\')|first|lower ~ '_' ~ emailAddress.owner.class|split('\\')|last|lower ~ '_view', {id:emailAddress.owner.id}) }}">{{ _self.email_address_text(emailAddress) }}</a>
     {%- endmacro -%}
     {% if emailAddress.owner is null -%}
         {% if not knownOnly|default(false) -%}
@@ -139,9 +138,9 @@
         {%- endif %}
     {%- else -%}
         {% if noLink|default(false) -%}
-            {{ _self.email_address_text(emailAddress, nameFormat) }}
+            {{ _self.email_address_text(emailAddress) }}
         {%- else -%}
-            {{ _self.email_address_link(emailAddress, nameFormat)|raw }}
+            {{ _self.email_address_link(emailAddress)|raw }}
         {%- endif %}
     {%- endif %}
 {%- endmacro %}
@@ -150,14 +149,13 @@
     Render the given email recipients
     Parameters:
         recipients - an array of Oro\Bundle\EmailBundle\Entity\EmailRecipients
-        nameFormat - a format string used to render the owner full name
         noLink - determines whether the rendering of a link to the owner view page is forbidden or not. Default value is false
         knownOnly - if true renders only emails which have an owner; otherwise, all emails. Default value is false
 #}
-{% macro recipient_email_addresses(recipients, nameFormat, noLink, knownOnly) -%}
+{% macro recipient_email_addresses(recipients, noLink, knownOnly) -%}
     {% set addresses = {} -%}
     {% for recipient in recipients -%}
-        {% set address = _self.email_address(recipient.emailAddress, recipient.name, nameFormat, noLink, knownOnly) %}
+        {% set address = _self.email_address(recipient.emailAddress, recipient.name, noLink, knownOnly) %}
         {%- if address|length > 0 -%}
             {% set addresses = addresses|merge([address]) %}
         {%- endif %}

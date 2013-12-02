@@ -5,7 +5,6 @@ namespace Oro\Bundle\EmailBundle\Tests\Unit\Builder;
 use Oro\Bundle\EmailBundle\Builder\EmailEntityBatchProcessor;
 use Oro\Bundle\EmailBundle\Entity\Manager\EmailAddressManager;
 use Oro\Bundle\EmailBundle\Entity\Email;
-use Oro\Bundle\EmailBundle\Entity\EmailAddress;
 use Oro\Bundle\EmailBundle\Entity\EmailFolder;
 use Oro\Bundle\EmailBundle\Entity\EmailOrigin;
 use Oro\Bundle\EmailBundle\Entity\EmailRecipient;

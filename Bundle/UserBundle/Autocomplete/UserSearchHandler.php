@@ -4,9 +4,9 @@ namespace Oro\Bundle\UserBundle\Autocomplete;
 
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 
-use Oro\Bundle\FormBundle\Autocomplete\SearchHandler;
+use Oro\Bundle\FormBundle\Autocomplete\FullNameSearchHandler;
 
-class UserSearchHandler extends SearchHandler
+class UserSearchHandler extends FullNameSearchHandler
 {
     const IMAGINE_AVATAR_FILTER = 'avatar_med';
 

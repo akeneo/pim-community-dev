@@ -1462,10 +1462,6 @@ BT:
         BT.24:
             combinedCode: BT.24
             code: '24'
-BV:
-    iso2Code: BV
-    iso3Code: BVT
-    regions: {  }
 BW:
     iso2Code: BW
     iso3Code: BWA
@@ -3801,10 +3797,6 @@ HK:
         HK.NST:
             combinedCode: HK.NST
             code: NST
-HM:
-    iso2Code: HM
-    iso3Code: HMD
-    regions: {  }
 HN:
     iso2Code: HN
     iso3Code: HND

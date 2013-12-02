@@ -6,18 +6,18 @@ function(_, Backbone) {
     /**
      * Panel with action buttons
      *
-     * @export  oro/datagrid/actions-panel
-     * @class   oro.datagrid.ActionsPanel
+     * @export  oro/grid/actions-panel
+     * @class   oro.grid.ActionsPanel
      * @extends Backbone.View
      */
     return Backbone.View.extend({
         /** @property String */
         className: 'btn-group',
 
-        /** @property {Array.<oro.datagrid.AbstractAction>} */
+        /** @property {Array.<oro.grid.AbstractAction>} */
         actions: [],
 
-        /** @property {Array.<oro.datagrid.ActionLauncher>} */
+        /** @property {Array.<oro.grid.ActionLauncher>} */
         launchers: [],
 
         /**
@@ -54,7 +54,7 @@ function(_, Backbone) {
         /**
          * Set actions
          *
-         * @param {Array.<oro.datagrid.AbstractAction>} actions
+         * @param {Array.<oro.grid.AbstractAction>} actions
          */
         setActions: function(actions) {
             this.actions = [];
@@ -67,7 +67,7 @@ function(_, Backbone) {
         /**
          * Adds action to toolbar
          *
-         * @param {oro.datagrid.AbstractAction} action
+         * @param {oro.grid.AbstractAction} action
          */
         addAction: function(action) {
             this.actions.push(action);

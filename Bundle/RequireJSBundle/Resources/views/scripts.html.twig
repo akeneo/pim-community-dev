@@ -1,0 +1,20 @@
+{% if compressed and requirejs_build_exists() %}
+    <script type="text/javascript">
+        var require = (function(){
+            var r=function(c){m(r.c,c)};r.c={};function m(a,b){
+                for (var i in b)b[i].toString()==='[object Object]'?m(a[i]||(a[i]={}),b[i]):a[i]=b[i]}
+            return r;
+        }());
+        {% placeholder requirejs_config_extend %}
+        require = require.c;
+    </script>
+    <script type="text/javascript" src="{{ asset(get_requirejs_build_path()) }}"></script>
+{% else %}
+    <script type="text/javascript" src="{{ asset('bundles/ororequirejs/lib/require.js') }}"></script>
+    <script type="text/javascript">
+        {{ get_requirejs_config() }}
+    </script>
+    <script type="text/javascript">
+        {% placeholder requirejs_config_extend %}
+    </script>
+{% endif %}

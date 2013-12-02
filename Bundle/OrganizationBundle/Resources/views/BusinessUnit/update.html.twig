@@ -1,10 +1,15 @@
 {% extends 'OroUIBundle:actions:update.html.twig' %}
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+
 {% form_theme form with ['OroFormBundle:Form:fields.html.twig', 'OroTagBundle:Form:fields.html.twig'] %}
-{% set title = form.vars.value.id ? 'Update Business Unit'|trans : 'New Business Unit'|trans %}
+
+{% set entityId = form.vars.value.id %}
+{% set title = entityId ? 'Update Business Unit'|trans : 'New Business Unit'|trans %}
 {% oro_title_set({params : { "%business_unit.name%": form.vars.value.name } }) %}
 {% set audit_entity_class = 'Oro_Bundle_OrganizationBundle_Entity_BusinessUnit' %}
-{% set gridId = 'users-grid' %}
-{% set formAction = form.vars.value.id ? path('oro_business_unit_update', { 'id': form.vars.value.id}) : path('oro_business_unit_create') %}
+{% set gridName = 'bu-update-users-grid' %}
+{% set formAction = entityId ? path('oro_business_unit_update', { 'id': entityId}) : path('oro_business_unit_create') %}
+
 {% block head_script %}
     {{ parent() }}
 
@@ -15,17 +20,15 @@
             'excluded': '#businessUnitRemoveUsers'
         }
     } %}
-
-    {% placeholder prepare_grid with {'datagrid': datagrid, 'selector': '#' ~ gridId, 'parameters': listenerParameters} %}
 {% endblock %}
 
 {% block navButtons %}
-    {% if form.vars.value.id and oro_get_business_units_count() > 1 and resource_granted('oro_business_unit_delete') %}
+    {% if entityId and oro_get_business_units_count() > 1 and resource_granted('oro_business_unit_delete') %}
         {{ UI.deleteButton({
-            'dataUrl': path('oro_api_delete_businessunit', {'id': form.vars.value.id}),
+            'dataUrl': path('oro_api_delete_businessunit', {'id': entityId}),
             'dataRedirect': path('oro_business_unit_index'),
             'aCss': 'no-hash remove-button',
-            'dataId': form.vars.value.id,
+            'dataId': entityId,
             'id': 'btn-remove-business_unit',
             'dataMessage': 'Are you sure you want to delete this business unit?',
             'title': 'Delete business unit',
@@ -40,7 +43,7 @@
 {% endblock navButtons %}
 
 {% block pageHeader %}
-    {% if form.vars.value.id %}
+    {% if entityId %}
         {% set breadcrumbs = {
             'entity':      form.vars.value,
             'indexPath':   path('oro_business_unit_index'),
@@ -86,7 +89,7 @@
                 {
                     'title' : null,
                     'useSpan': false,
-                    'data' : [UI.gridBlock(gridId)]
+                    'data' : [dataGrid.renderGrid(gridName, {business_unit_id: entityId}, { cssClass: 'inner-grid' })]
                 }
             ]
         }]

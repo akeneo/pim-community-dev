@@ -5,11 +5,12 @@ namespace Oro\Bundle\EmailBundle\Entity\Manager;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\UnitOfWork;
 use Doctrine\ORM\Event\OnFlushEventArgs;
+use Doctrine\Common\Util\ClassUtils;
+
 use Oro\Bundle\EmailBundle\Entity\EmailAddress;
 use Oro\Bundle\EmailBundle\Entity\EmailOwnerInterface;
 use Oro\Bundle\EmailBundle\Entity\EmailInterface;
 use Oro\Bundle\EmailBundle\Entity\Provider\EmailOwnerProviderStorage;
-use Oro\Bundle\EmailBundle\Entity\Manager\EmailAddressManager;
 
 /**
  * This class responsible for binging EmailAddress to owner entities
@@ -54,29 +55,22 @@ class EmailOwnerManager
     {
         $em = $event->getEntityManager();
         $uow = $em->getUnitOfWork();
-        $needChangeSetsComputing = false;
 
-        $needChangeSetsComputing |= $this->handleInsertionsOrUpdates($uow->getScheduledEntityInsertions(), $em, $uow);
-        $needChangeSetsComputing |= $this->handleInsertionsOrUpdates($uow->getScheduledEntityUpdates(), $em, $uow);
-        $needChangeSetsComputing |= $this->handleDeletions($uow->getScheduledEntityDeletions(), $em);
-
-        if ($needChangeSetsComputing) {
-            $uow->computeChangeSets();
-        }
+        $this->handleInsertionsOrUpdates($uow->getScheduledEntityInsertions(), $em, $uow);
+        $this->handleInsertionsOrUpdates($uow->getScheduledEntityUpdates(), $em, $uow);
+        $this->handleDeletions($uow->getScheduledEntityDeletions(), $em);
     }
 
     /**
      * @param array $entities
      * @param EntityManager $em
      * @param UnitOfWork $uow
-     * @return bool true if UnitOfWork change set need to be recomputed
      */
     protected function handleInsertionsOrUpdates(array $entities, EntityManager $em, UnitOfWork $uow)
     {
-        $needChangeSetsComputing = false;
         foreach ($entities as $entity) {
             if ($entity instanceof EmailOwnerInterface) {
-                $needChangeSetsComputing |= $this->processInsertionOrUpdateEntity(
+                $this->processInsertionOrUpdateEntity(
                     $entity->getPrimaryEmailField(),
                     $entity,
                     $entity,
@@ -84,7 +78,7 @@ class EmailOwnerManager
                     $uow
                 );
             } elseif ($entity instanceof EmailInterface) {
-                $needChangeSetsComputing |= $this->processInsertionOrUpdateEntity(
+                $this->processInsertionOrUpdateEntity(
                     $entity->getEmailField(),
                     $entity,
                     $entity->getEmailOwner(),
@@ -93,8 +87,6 @@ class EmailOwnerManager
                 );
             }
         }
-
-        return $needChangeSetsComputing;
     }
 
     /**
@@ -103,7 +95,6 @@ class EmailOwnerManager
      * @param EmailOwnerInterface $owner
      * @param EntityManager $em
      * @param UnitOfWork $uow
-     * @return bool true if UnitOfWork change set need to be recomputed
      */
     protected function processInsertionOrUpdateEntity(
         $emailField,
@@ -112,19 +103,16 @@ class EmailOwnerManager
         EntityManager $em,
         UnitOfWork $uow
     ) {
-        $needChangeSetsComputing = false;
         if (!empty($emailField)) {
             foreach ($uow->getEntityChangeSet($entity) as $field => $vals) {
                 if ($field === $emailField) {
                     list($oldValue, $newValue) = $vals;
                     if ($newValue !== $oldValue) {
-                        $needChangeSetsComputing |= $this->bindEmailAddress($em, $owner, $newValue, $oldValue);
+                        $this->bindEmailAddress($em, $owner, $newValue, $oldValue);
                     }
                 }
             }
         }
-
-        return $needChangeSetsComputing;
     }
 
     /**
@@ -134,16 +122,13 @@ class EmailOwnerManager
      */
     protected function handleDeletions(array $entities, EntityManager $em)
     {
-        $needChangeSetsComputing = false;
         foreach ($entities as $entity) {
             if ($entity instanceof EmailOwnerInterface) {
-                $needChangeSetsComputing |= $this->unbindEmailAddress($em, $entity);
+                $this->unbindEmailAddress($em, $entity);
             } elseif ($entity instanceof EmailInterface) {
-                $needChangeSetsComputing |= $this->unbindEmailAddress($em, $entity->getEmailOwner(), $entity);
+                $this->unbindEmailAddress($em, $entity->getEmailOwner(), $entity);
             }
         }
-
-        return $needChangeSetsComputing;
     }
 
     /**
@@ -153,31 +138,28 @@ class EmailOwnerManager
      * @param EmailOwnerInterface $owner
      * @param string $newEmail
      * @param string $oldEmail
-     * @return bool true if UnitOfWork change set need to be recomputed
      */
     protected function bindEmailAddress(EntityManager $em, EmailOwnerInterface $owner, $newEmail, $oldEmail)
     {
-        $result = false;
         $repository = $this->emailAddressManager->getEmailAddressRepository($em);
         if (!empty($newEmail)) {
             $emailAddress = $repository->findOneBy(array('email' => $newEmail));
             if ($emailAddress === null) {
-                $em->persist($this->createEmailAddress($newEmail, $owner));
-                $result = true;
+                $emailAddress = $this->createEmailAddress($newEmail, $owner);
+                $em->persist($emailAddress);
+                $this->computeEntityChangeSet($em, $emailAddress);
             } elseif ($emailAddress->getOwner() != $owner) {
                 $emailAddress->setOwner($owner);
-                $result = true;
+                $this->computeEntityChangeSet($em, $emailAddress);
             }
         }
         if (!empty($oldEmail)) {
             $emailAddress = $repository->findOneBy(array('email' => $oldEmail));
             if ($emailAddress !== null) {
                 $emailAddress->setOwner(null);
-                $result = true;
+                $this->computeEntityChangeSet($em, $emailAddress);
             }
         }
-
-        return $result;
     }
 
     /**
@@ -186,11 +168,9 @@ class EmailOwnerManager
      * @param EntityManager $em
      * @param EmailOwnerInterface $owner
      * @param EmailInterface $email
-     * @return bool true if UnitOfWork change set need to be recomputed
      */
     protected function unbindEmailAddress(EntityManager $em, EmailOwnerInterface $owner, EmailInterface $email = null)
     {
-        $result = false;
         $repository = $this->emailAddressManager->getEmailAddressRepository($em);
         foreach ($this->emailOwnerClasses as $fieldName => $emailOwnerClass) {
             $condition = array($fieldName => $owner);
@@ -200,11 +180,9 @@ class EmailOwnerManager
             /** @var EmailAddress $emailAddress */
             foreach ($repository->findBy($condition) as $emailAddress) {
                 $emailAddress->setOwner(null);
-                $result = true;
+                $this->computeEntityChangeSet($em, $emailAddress);
             }
         }
-
-        return $result;
     }
 
     /**
@@ -219,5 +197,17 @@ class EmailOwnerManager
         return $this->emailAddressManager->newEmailAddress()
             ->setEmail($email)
             ->setOwner($owner);
+    }
+
+    /**
+     * @param EntityManager $entityManager
+     * @param mixed $entity
+     */
+    protected function computeEntityChangeSet(EntityManager $entityManager, $entity)
+    {
+        $entityClass = ClassUtils::getClass($entity);
+        $classMetadata = $entityManager->getClassMetadata($entityClass);
+        $unitOfWork = $entityManager->getUnitOfWork();
+        $unitOfWork->computeChangeSet($classMetadata, $entity);
     }
 }

@@ -18,3 +18,13 @@
     <a href="{{ path('oro_default') }}" class="button primary" target="_blank">{{ 'process.button.finish'|trans }}</a>
 </div>
 {% endblock %}
+
+{% block javascript %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        $(function() {
+            $.get('{{ path('sylius_flow_display', { scenarioAlias: 'oro_installer', stepName: 'schema' }) }}?action=cache');
+        });
+    </script>
+{% endblock javascript %}

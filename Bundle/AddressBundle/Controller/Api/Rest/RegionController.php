@@ -20,26 +20,6 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 class RegionController extends FOSRestController
 {
     /**
-     * Get regions
-     *
-     * @ApiDoc(
-     *  description="Get regions",
-     *  resource=true
-     * )
-     * AclAncestor("oro_address")
-     * @return Response
-     */
-    public function cgetAction()
-    {
-        /** @var  $item \Oro\Bundle\AddressBundle\Entity\Region */
-        $items = $this->getDoctrine()->getRepository('OroAddressBundle:Region')->findAll();
-
-        return $this->handleView(
-            $this->view($items, is_array($items) ? Codes::HTTP_OK : Codes::HTTP_NOT_FOUND)
-        );
-    }
-
-    /**
      * REST GET region by id
      *
      * @QueryParam(name="id", nullable=false)
@@ -48,7 +28,7 @@ class RegionController extends FOSRestController
      *     description="Get region by id",
      *     resource=true,
      *     requirements={
-     *         {"name"="id", "dataType"="string"},
+     *         {"name"="id", "dataType"="string", "requirement"="\d+", "description"="region combined code"}
      *     }
      * )
      * @return Response

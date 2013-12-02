@@ -51,7 +51,7 @@ class ConfigSubscriber implements EventSubscriberInterface
             $className = $configModel->getClassName();
         }
 
-        $data = $event->getData();
+        $data    = $event->getData();
 
         foreach ($this->configManager->getProviders() as $provider) {
             if (isset($data[$provider->getScope()])) {

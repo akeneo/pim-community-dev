@@ -6,6 +6,7 @@ services:
 
     oro_filter.form.type.datetime_range:
         class: Oro\Bundle\FilterBundle\Form\Type\DateTimeRangeType
+        arguments: ["@oro_locale.settings"]
         tags:
             - { name: form.type, alias: oro_type_datetime_range }
 

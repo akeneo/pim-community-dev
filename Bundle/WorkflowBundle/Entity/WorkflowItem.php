@@ -314,6 +314,44 @@ class WorkflowItem
     }
 
     /**
+     * Synchronize current bind entities with the list of actual bind entities, removes entities that are outdated and
+     * adds new entities.
+     *
+     * @param WorkflowBindEntity[] $actualBindEntities
+     * @return bool
+     */
+    public function syncBindEntities(array $actualBindEntities)
+    {
+        $hasChanges = false;
+
+        // Remove connections with WorkflowBindEntity that are outdated
+        /** @var $bindEntity WorkflowBindEntity */
+        foreach ($this->getBindEntities() as $bindEntity) {
+            $isActual = false;
+            foreach ($actualBindEntities as $actualBindEntity) {
+                if ($actualBindEntity->hasSameEntity($bindEntity)) {
+                    $isActual = true;
+                    break;
+                }
+            }
+            if (!$isActual) {
+                $hasChanges = true;
+                $this->removeBindEntity($bindEntity);
+            }
+        }
+
+        // Add WorkflowBindEntity that are missing entities
+        foreach ($actualBindEntities as $bindEntity) {
+            if (!$this->hasBindEntity($bindEntity)) {
+                $this->addBindEntity($bindEntity);
+                $hasChanges = true;
+            }
+        }
+
+        return $hasChanges;
+    }
+
+    /**
      * Set workflow definition
      *
      * @param WorkflowDefinition $definition

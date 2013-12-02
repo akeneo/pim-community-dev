@@ -50,8 +50,8 @@ abstract class SoapController extends SoapGetController implements
     /**
      * Form processing
      *
-     * @param mixed $entity Entity object
-     * @return bool True on success
+     * @param  mixed      $entity Entity object
+     * @return bool       True on success
      * @throws \SoapFault
      */
     protected function processForm($entity)
@@ -65,8 +65,8 @@ abstract class SoapController extends SoapGetController implements
     }
 
     /**
-     * @param FormInterface $form
-     * @return string All form's error messages concatenated into one string
+     * @param  FormInterface $form
+     * @return string        All form's error messages concatenated into one string
      */
     protected function getFormErrors(FormInterface $form)
     {
@@ -116,7 +116,7 @@ abstract class SoapController extends SoapGetController implements
         }
 
         if (is_object($value)) {
-            $value = (array)$value;
+            $value = (array) $value;
         }
 
         if (is_array($value)) {

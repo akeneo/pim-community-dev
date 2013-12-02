@@ -24,12 +24,12 @@
     {% endif %}
     {% import _self as pinbar %}
     <script type="text/javascript">
-        require(['jquery', 'oro/navigation/pinbar/view', 'oro/registry'],
-        function($, PinbarView, registry) {
+        require(['jquery', 'oro/navigation/pinbar/view', 'oro/navigation'], function ($, PinbarView, Navigation) {
             $(function () {
                 /** @type {oro.navigation.pinbar.View} */
                 var pinbarView = new PinbarView({{- pinbar.get_options(['maxPinbarItems', 'el', 'listBar', 'tabTitle', 'tabIcon', 'minimizeButton', 'closeButton', 'defaultUrl'], options) -}});
-                registry.setElement('pinbar_view', pinbarView);
+                Navigation.registerPinbarView(pinbarView);
+
                 {% if pinbarItems is defined %}
                 pinbarView.resetCollection({{ pinbarItems|json_encode|raw }});
                 {% endif %}

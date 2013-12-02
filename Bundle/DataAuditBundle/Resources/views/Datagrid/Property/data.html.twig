@@ -1,26 +1,25 @@
-{% import 'OroLocaleBundle::macros.html.twig' as macro %}
 <ul>
 {% for fieldKey, fieldValue in value %}
     {% if fieldKey == 'auditData' %}
-    {% for collKey, collValue in fieldValue.new %}
-    <li>
-        <b>{{ collKey }}:</b>
-        {% if fieldValue.old|length %}
-        <s>{{ fieldValue.old[collKey] }}</s>
-        {% endif %}
-        {{ collValue }}
-    </li>
-    {% endfor %}
+        {% for collKey, collValue in fieldValue.new %}
+        <li>
+            <b>{{ collKey }}:</b>
+            {% if fieldValue.old|length %}
+                <s>{{ fieldValue.old[collKey] }}</s>
+            {% endif %}
+            {{ collValue }}
+        </li>
+        {% endfor %}
     {% else %}
-    <li>
-        <b>{{ fieldKey }}:</b>
-        {% if fieldValue.old.timestamp is defined %}
-        <s>{{ fieldValue.old|date('m/d/Y') }}</s>
-        {% else %}
-        <s>{{ fieldValue.old }}</s>
-        {% endif %}
-        {{ fieldValue.new.timestamp is defined ? macro.time(fieldValue.new) : fieldValue.new }}
-    </li>
+        <li>
+            <b>{{ fieldKey }}:</b>
+            {% if fieldValue.old.timestamp is defined %}
+                <s>{{ fieldValue.old|oro_format_datetime }}</s>
+            {% else %}
+                <s>{{ fieldValue.old|default('') }}</s>
+            {% endif %}
+            {{ fieldValue.new.timestamp is defined ? fieldValue.new|oro_format_datetime : fieldValue.new|default('') }}
+        </li>
     {% endif %}
 {% endfor %}
 </ul>

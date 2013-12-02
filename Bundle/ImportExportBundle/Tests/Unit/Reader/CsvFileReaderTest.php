@@ -81,19 +81,17 @@ class CsvFileReaderTest extends \PHPUnit_Framework_TestCase
      */
     public function testRead($options, $expected)
     {
-        $context       = $this->getContextWithOptionsMock($options);
+        $context = $this->getContextWithOptionsMock($options);
         $stepExecution = $this->getMockStepExecution($context);
         $this->reader->setStepExecution($stepExecution);
-
         $context->expects($this->atLeastOnce())
             ->method('incrementReadOffset');
         $context->expects($this->atLeastOnce())
             ->method('incrementReadCount');
         $stepExecution->expects($this->never())
             ->method('addReaderWarning');
-
         $data = array();
-        while (($dataRow = $this->reader->read()) !== null) {
+        while (($dataRow = $this->reader->read($stepExecution)) !== null) {
             $data[] = $dataRow;
         }
         $this->assertEquals($expected, $data);
@@ -115,13 +113,12 @@ class CsvFileReaderTest extends \PHPUnit_Framework_TestCase
                         'field_two' => 'test2',
                         'field_three' => 'test3',
                     ),
-                    false,
+                    array(),
                     array(
                         'field_one' => 'after_new1',
                         'field_two' => 'after_new2',
                         'field_three' => 'after_new3',
                     ),
-                    false
                 )
             ),
             array(
@@ -145,13 +142,12 @@ class CsvFileReaderTest extends \PHPUnit_Framework_TestCase
                         'h2' => 'test2',
                         'h3' => 'test3',
                     ),
-                    false,
+                    array(),
                     array(
                         'h1' => 'after_new1',
                         'h2' => 'after_new2',
                         'h3' => 'after_new3',
                     ),
-                    false
                 )
             ),
             array(
@@ -163,9 +159,8 @@ class CsvFileReaderTest extends \PHPUnit_Framework_TestCase
                     array('field_one', 'field_two', 'field_three'),
                     array('1', '2', '3'),
                     array('test1', 'test2', 'test3'),
-                    false,
+                    array(),
                     array('after_new1', 'after_new2', 'after_new3'),
-                    false
                 )
             )
         );
@@ -180,7 +175,7 @@ class CsvFileReaderTest extends \PHPUnit_Framework_TestCase
         $context = $this->getContextWithOptionsMock(array('filePath' => __DIR__ . '/fixtures/import_incorrect.csv'));
         $stepExecution = $this->getMockStepExecution($context);
         $this->reader->setStepExecution($stepExecution);
-        $this->reader->read();
+        $this->reader->read($stepExecution);
     }
 
     /**

@@ -21,16 +21,16 @@ function($, _, __, TextFilter) {
                 '<div class="input-prepend">' +
                     '<div class="btn-group">' +
                         '<button class="btn dropdown-toggle" data-toggle="dropdown">' +
-                            '<%= first = _.first(_.values(choices)) %>' +
+                            '<%= first = _.first(choices).label %>' +
                             '<span class="caret"></span>' +
                         '</button>' +
                         '<ul class="dropdown-menu">' +
-                            '<% _.each(choices, function (hint, value) { %>' +
-                                '<li><a class="choice_value" href="#" data-value="<%= value %>"><%= hint %></a></li>' +
+                            '<% _.each(choices, function (option) { %>' +
+                                '<li><a class="choice_value" href="#" data-value="<%= option.value %>"><%= option.label %></a></li>' +
                             '<% }); %>' +
                         '</ul>' +
                         '<input type="text" name="value" value="">' +
-                        '<input class="name_input" type="hidden" name="<%= name %>" id="<%= name %>" value="<%= _.invert(choices)[first] %>"/>' +
+                        '<input class="name_input" type="hidden" name="<%= name %>" id="<%= name %>" value="<%= _.first(choices).value %>"/>' +
                         '</div>' +
                     '</div>' +
                     '<button class="btn btn-primary filter-update" type="button"><%- _.__("Update") %></button>' +
@@ -49,7 +49,7 @@ function($, _, __, TextFilter) {
         },
 
         /** @property */
-        choices: {},
+        choices: [],
 
         /**
          * Empty value object
@@ -59,6 +59,21 @@ function($, _, __, TextFilter) {
         emptyValue: {
             value: '',
             type: ''
+        },
+
+        /**
+         * Initialize.
+         *
+         * @param {Object} options
+         */
+        initialize: function() {
+            // temp code to keep backward compatible
+            if ($.isPlainObject(this.choices)) {
+                this.choices = _.map(this.choices, function(option, i) {
+                    return {value: i.toString(), label: option};
+                });
+            }
+            TextFilter.prototype.initialize.apply(this, arguments);
         },
 
         /**
@@ -76,14 +91,26 @@ function($, _, __, TextFilter) {
          * @inheritDoc
          */
         _getCriteriaHint: function() {
-            var value = this._getDisplayValue();
+            var option, hint,
+                value = this._getDisplayValue();
             if (!value.value) {
-                return this.defaultCriteriaHint;
-            } else if (_.has(this.choices, value.type)) {
-                return this.choices[value.type] + ' "' + value.value + '"'
+                hint = this.defaultCriteriaHint;
             } else {
-                return '"' + value.value + '"';
+                option = this._getChoiceOption(value.type);
+                hint = (option ? option.label + ' ' : '') + '"' + value.value + '"';
             }
+            return hint;
+        },
+
+        /**
+         * Fetches option object for corresponded value type
+         *
+         * @param {*|string} valueType
+         * @returns {{value: string, label: string}}
+         * @private
+         */
+        _getChoiceOption: function(valueType) {
+            return _.findWhere(this.choices, {value: valueType.toString()});
         },
 
         /**

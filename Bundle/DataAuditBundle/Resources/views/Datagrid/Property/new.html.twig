@@ -10,7 +10,7 @@
         {% endif %}
     {% else %}
     <li>
-        <b>{{ fieldKey }}:</b> {{ fieldValue.new.timestamp is defined ? fieldValue.new|date('m/d/Y') : fieldValue.new }}
+        <b>{{ fieldKey }}:</b> {{ fieldValue.new.timestamp is defined ? fieldValue.new|oro_format_datetime : fieldValue.new }}
     </li>
     {% endif %}
 {% endfor %}

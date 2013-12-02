@@ -11,7 +11,9 @@
         "kriswallsmith/assetic": "1.1.*@dev",
         "symfony/assetic-bundle": "2.1.*",
         "leafo/lessphp": "dev-master",
-        "willdurand/expose-translation-bundle": "0.2.*@dev"
+        "willdurand/expose-translation-bundle": "0.2.*@dev",
+        "oro/requirejs-bundle": "dev-master",
+        "oro/locale-bundle": "dev-master"
     },
     "autoload": {
         "psr-0": { "Oro\\Bundle\\UIBundle": "" }

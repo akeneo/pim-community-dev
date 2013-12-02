@@ -5,7 +5,7 @@
 {# TODO: This is a temporary template created for demo purposes. It will be removed when 'display activities' functionality is implemented  #}
 {% import 'OroUIBundle::macros.html.twig' as UI %}
 {% import 'OroEmailBundle::macros.html.twig' as EA %}
-{% set format = oro_config_value('oro_locale.name_format') %}
+
 <div id="emails-grid">
     <div class="clearfix">
         <div class="clearfix">
@@ -23,7 +23,12 @@
                         </thead>
                         <tbody>
                         {% for entity in entities %}
-                            {% include 'OroEmailBundle:Email:activity.html.twig' with {'entity': entity} %}
+                            <tr>
+                                <td class="integer-cell" style="display: none;">{{ entity.id }}</td>
+                                <td class="string-cell">{{ EA.email_address(entity.fromEmailAddress, entity.fromName) }}</td>
+                                <td class="string-cell"><a class="view-email-entity-btn no-hash" title="{{ entity.subject }}" href="{{ path('oro_email_view', {id:entity.id}) }}">{{ entity.subject }}</a></td>
+                                <td class="datetime-cell">{{ entity.sentAt|oro_format_datetime }}</td>
+                            </tr>
                         {% endfor %}
                         </tbody>
                     </table>

@@ -1,0 +1,2 @@
+bundles:
+    - { name: Oro\Bundle\EntityExtendBundle\OroEntityExtendBundle, kernel: true }

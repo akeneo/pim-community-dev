@@ -6,8 +6,8 @@ function(_, Backbone, Navigation, mediator) {
     /**
      * Router for basic datagrid
      *
-     * @export  oro/datagrid/router
-     * @class   oro.datagrid.Router
+     * @export  oro/grid/router
+     * @class   oro.grid.Router
      * @extends Backbone.Router
      */
     return Backbone.Router.extend({

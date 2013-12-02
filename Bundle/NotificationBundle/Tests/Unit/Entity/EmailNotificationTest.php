@@ -60,43 +60,27 @@ class EmailNotificationTest extends \PHPUnit_Framework_TestCase
 
     public function testGetUsersRecipientsList()
     {
-        $this->assertEmpty($this->entity->getRecipientUsersList());
+        $this->assertTrue($this->entity->getRecipientUsersList()->isEmpty());
 
         $userMock1 = $this->getMock('Oro\Bundle\UserBundle\Entity\User');
-        $userMock1->expects($this->once())->method('getFullname')
-            ->will($this->returnValue('Test Name'));
-        $userMock1->expects($this->once())->method('getEmail')
-            ->will($this->returnValue('test@email1.com'));
-
         $userMock2 = $this->getMock('Oro\Bundle\UserBundle\Entity\User');
-        $userMock2->expects($this->once())->method('getFullname')
-            ->will($this->returnValue('Test2 Name2'));
-        $userMock2->expects($this->once())->method('getEmail')
-            ->will($this->returnValue('test@email2.com'));
-
         $collection = new ArrayCollection(array($userMock1, $userMock2));
 
         $list = $this->getMock('Oro\Bundle\NotificationBundle\Entity\RecipientList');
         $list->expects($this->once())->method('getUsers')->will($this->returnValue($collection));
         $this->entity->setRecipientList($list);
 
-        $this->assertEquals(
-            'Test Name <test@email1.com>, Test2 Name2 <test@email2.com>',
-            $this->entity->getRecipientUsersList()
-        );
+        $actual = $this->entity->getRecipientUsersList();
+        $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $actual);
+        $this->assertEquals($collection, $actual);
     }
 
     public function testGetGroupsRecipientsList()
     {
-        $this->assertEmpty($this->entity->getRecipientGroupsList());
+        $this->assertTrue($this->entity->getRecipientGroupsList()->isEmpty());
 
         $groupMock1 = $this->getMock('Oro\Bundle\UserBundle\Entity\Group');
-        $groupMock1->expects($this->once())->method('getName')
-            ->will($this->returnValue('Test Name'));
-
         $groupMock2 = $this->getMock('Oro\Bundle\UserBundle\Entity\Group');
-        $groupMock2->expects($this->once())->method('getName')
-            ->will($this->returnValue('Test2 Name2'));
 
         $collection = new ArrayCollection(array($groupMock1, $groupMock2));
 
@@ -104,9 +88,8 @@ class EmailNotificationTest extends \PHPUnit_Framework_TestCase
         $list->expects($this->once())->method('getGroups')->will($this->returnValue($collection));
         $this->entity->setRecipientList($list);
 
-        $this->assertEquals(
-            'Test Name, Test2 Name2',
-            $this->entity->getRecipientGroupsList()
-        );
+        $actual = $this->entity->getRecipientGroupsList();
+        $this->assertInstanceOf('Doctrine\Common\Collections\ArrayCollection', $actual);
+        $this->assertEquals($collection, $actual);
     }
 }

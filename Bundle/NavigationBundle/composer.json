@@ -15,7 +15,8 @@
         "friendsofsymfony/rest-bundle": "0.11.*",
         "nelmio/api-doc-bundle": "dev-master",
         "symfony/assetic-bundle": "2.1.*",
-        "kriswallsmith/assetic": "1.1.*@dev"
+        "kriswallsmith/assetic": "1.1.*@dev",
+        "oro/requirejs-bundle": "dev-master"
     },
     "require-dev": {
         "doctrine/data-fixtures": "@dev",

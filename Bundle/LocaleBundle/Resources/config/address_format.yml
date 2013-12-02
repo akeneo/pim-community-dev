@@ -1,0 +1,535 @@
+AD:
+    format: '%name%\n%organization%\n%street%\n%postal_code% %REGION%\n%COUNTRY%'
+    require: [street, region]
+    region_name_type: parish
+AE:
+    format: '%name%\n%organization%\n%street%\n%city%\n%country%'
+    require: [street, city]
+AG:
+    require: [street]
+AM:
+    format: '%name%\n%organization%\n%street%\n%postal_code%\n%city%\n%region%\n%country%'
+    latin_format: '%name%\n%organization%\n%street%\n%postal_code%\n%city%\n%region%\n%country%'
+AR:
+    format: '%name%\n%organization%\n%STREET%\n%POSTAL_CODE% %CITY%\n%region%\n%country%'
+    region_name_type: region
+AS:
+    format: '%NAME%\n%ORGANIZATION%\n%STREET%\n%CITY% %REGION% %COUNTRY% %postal_code%'
+    require: [street, city, region, postal_code]
+    zip_name_type: zip
+    region_name_type: region
+AT:
+    format: '%organization%\n%name%\n%street%\n%postal_code% %city%\n%country%'
+    require: [street, city, postal_code]
+AU:
+    format: '%organization%\n%name%\n%street%\n%CITY% %REGION% %COUNTRY% %postal_code%'
+    require: [street, city, region, postal_code]
+    region_name_type: region
+AX:
+    format: '%organization%\n%name%\n%street%\nAX-%postal_code% %city%\n%country%\nÅLAND'
+    require: [street, city, postal_code]
+    postprefix: AX-
+AZ:
+    format: '%name%\n%organization%\n%street%\nAZ %postal_code% %city%\n%country%'
+    postprefix: 'AZ '
+BA:
+    format: '%name%\n%organization%\n%street%\n%postal_code% %city%\n%country%'
+BB:
+    region_name_type: parish
+BD:
+    format: '%name%\n%organization%\n%street%\n%city% - %postal_code%\n%country%'
+BE:
+    format: '%organization%\n%name%\n%street%\n%postal_code% %city%\n%country%'
+    require: [street, city, postal_code]
+BF:
+    format: '%name%\n%organization%\n%street%\n%city%\n%country%'
+BG:
+    format: '%name%\n%organization%\n%street%\n%postal_code% %city%\n%country%'
+BH:
+    format: '%name%\n%organization%\n%street%\n%city% %postal_code%\n%country%'
+BL:
+    format: '%organization%\n%name%\n%STREET%\n%postal_code% %CITY%\n%COUNTRY%'
+    require: [street, city, postal_code]
+BM:
+    format: '%name%\n%organization%\n%street%\n%city% %postal_code%\n%country%'
+BN:
+    format: '%name%\n%organization%\n%street%\n%city% %postal_code%\n%country%'
+BR:
+    format: '%organization%\n%name%\n%street%\n%CITY%-%REGION%\n%COUNTRY%\n%postal_code%'
+    require: [street, region, city, postal_code]
+    region_name_type: region
+BS:
+    format: '%name%\n%organization%\n%street%\n%city%, %region%\n%country%'
+    region_name_type: island
+BY:
+    format: '%country%\n%region%\n%postal_code% %city% %street%\n%organization%\n%name%'
+CA:
+    format: '%NAME%\n%ORGANIZATION%\n%STREET%\n%CITY% %REGION%, %COUNTRY% %POSTAL_CODE%'
+    require: [street, city, region, postal_code]
+CC:
+    format: '%organization%\n%name%\n%street%\n%CITY% %REGION% %COUNTRY% %postal_code%'
+CD:
+    format: '%name%\n%organization%\n%street%\n%city%\n%country%'
+CH:
+    format: '%organization%\n%name%\n%street%\nCH-%postal_code% %city%\n%country%'
+    require: [street, city, postal_code]
+    postprefix: CH-
+CI:
+    format: '%name%\n%organization% %street% %city%\n%country%'
+CK:
+    format: '%name%\n%organization%\n%street%\n%city% %postal_code%\n%country%'
+CL:
+    format: '%name%\n%organization%\n%street%\n%postal_code% %city%\n%region%\n%country%'
+    region_name_type: region
+CN:
+    format: '%postal_code%\n%COUNTRY%\n%REGION%%city%\n%street%\n%organization%\n%name%'
+    latin_format: '%name%\n%organization%\n%street%, %city%\n%REGION%, %COUNTRY% %postal_code%'
+    require: [street, city, region, postal_code]
+    has_disputed: true
+    format_charset: GB2312
+CO:
+    format: '%name%\n%organization%\n%street%\n%city%, %region%\n%country%'
+CR:
+    format: '%name%\n%organization%\n%street%\n%postal_code% %city%\n%country%'
+CS:
+    format: '%name%\n%organization%\n%street%\n%postal_code% %city%\n%country%'
+CV:
+    format: '%name%\n%organization%\n%street%\n%postal_code% %city%\n%region%\n%country%'
+    region_name_type: island
+CX:
+    format: '%organization%\n%name%\n%street%\n%CITY% %REGION% %COUNTRY% %postal_code%'
+CY:
+    format: '%name%\n%organization%\n%street%\n%postal_code% %city%\n%country%'
+CZ:
+    format: '%name%\n%organization%\n%street%\n%postal_code% %city%\n%country%'
+DE:
+    format: '%name%\n%organization%\n%street%\n%postal_code% %city%\n%country%'
+    require: [street, city, postal_code]
+DK:
+    format: '%organization%\n%name%\n%street%\n%postal_code% %city%\n%country%'
+    require: [street, city, postal_code]
+DO:
+    format: '%name%\n%organization%\n%street%\n%postal_code% %city%\n%country%'
+DZ:
+    format: '%name%\n%organization%\n%street%\n%postal_code% %city%\n%country%'
+EC:
+    format: '%name%\n%organization%\n%street%\n%POSTAL_CODE%\n%CITY%\n%COUNTRY%'
+EE:
+    format: '%name%\n%organization%\n%street%\n%postal_code% %city%\n%country%'
+EG:
+    format: '%name%\n%organization%\n%street%\n%city%\n%region%\n%country%\n%postal_code%'
+    direction: rtl
+ES:
+    format: '%name%\n%organization%\n%street%\n%postal_code% %CITY% %REGION%\n%COUNTRY%'
+    require: [street, city, region, postal_code]
+ET:
+    format: '%name%\n%organization%\n%street%\n%postal_code% %city%\n%country%'
+FI:
+    format: '%organization%\n%name%\n%street%\nFI-%postal_code% %city%\n%country%'
+    require: [street, city, postal_code]
+    postprefix: FI-
+FK:
+    format: '%name%\n%organization%\n%street%\n%CITY%\n%COUNTRY%\n%POSTAL_CODE%'
+    require: [street, city, postal_code]
+FM:
+    format: '%NAME%\n%ORGANIZATION%\n%STREET%\n%CITY% %COUNTRY% %REGION% %postal_code%'
+    require: [street, city, region, postal_code]
+    zip_name_type: zip
+    region_name_type: region
+FO:
+    format: '%name%\n%organization%\n%street%\nFO%postal_code% %city%\n%country%'
+    postprefix: FO
+FR:
+    format: '%organization%\n%name%\n%street%\n%postal_code% %CITY%\n%COUNTRY%'
+    require: [street, city, postal_code]
+GB:
+    format: '%name%\n%organization%\n%street%\n%CITY%\n%region%\n%country%\n%POSTAL_CODE%'
+    require: [street, city, postal_code]
+    region_name_type: county
+GE:
+    format: '%name%\n%organization%\n%street%\n%postal_code% %city%\n%country%'
+GF:
+    format: '%organization%\n%name%\n%STREET%\n%postal_code% %CITY%\n%COUNTRY%'
+    require: [street, city, postal_code]
+GG:
+    format: '%name%\n%organization%\n%street%\n%CITY%\n%COUNTRY%\nGUERNSEY\n%POSTAL_CODE%'
+    require: [street, city, postal_code]
+GI:
+    format: '%name%\n%organization%\n%street%\n%country%'
+    require: [street]
+GL:
+    format: '%name%\n%organization%\n%street%\n%postal_code% %city%\n%country%'
+    require: [street, city, postal_code]
+GN:
+    format: '%name%\n%organization%\n%postal_code% %street% %city%\n%country%'
+GP:
+    format: '%organization%\n%name%\n%STREET%\n%postal_code% %CITY%\n%COUNTRY%'
+    require: [street, city, postal_code]
+GR:
+    format: '%name%\n%organization%\n%street%\n%postal_code% %city%\n%country%'
+    require: [street, city, postal_code]
+GS:
+    format: '%name%\n%organization%\n%street%\n%CITY%\n%COUNTRY%\n%POSTAL_CODE%'
+    require: [street, city, postal_code]
+GT:
+    format: '%name%\n%organization%\n%street%\n%postal_code%- %city%\n%country%'
+GU:
+    format: '%NAME%\n%ORGANIZATION%\n%STREET%\n%CITY% %REGION% %COUNTRY% %postal_code%'
+    require: [street, city, region, postal_code]
+    zip_name_type: zip
+    region_name_type: region
+GW:
+    format: '%name%\n%organization%\n%street%\n%postal_code% %city%\n%country%'
+HK:
+    format: '%REGION%\n%street%\n%organization%\n%name%'
+    latin_format: '%name%\n%organization%\n%street%\n%REGION%\n%COUNTRY%'
+    require: [street, region]
+    region_name_type: area
+    format_charset: Big5
+HM:
+    format: '%organization%\n%name%\n%street%\n%CITY% %REGION% %COUNTRY% %postal_code%'
+HN:
+    format: '%name%\n%organization%\n%street%\n%city%, %region%\n%country%\n%postal_code%'
+    require: [street, city, region]
+HR:
+    format: '%name%\n%organization%\n%street%\nHR-%postal_code% %city%\n%country%'
+    postprefix: HR-
+HT:
+    format: '%name%\n%organization%\n%street%\nHT%postal_code% %city%\n%country%'
+    postprefix: HT
+HU:
+    format: '%NAME%\n%ORGANIZATION%\n%CITY%\n%STREET%\n%COUNTRY%\n%postal_code%'
+ID:
+    format: '%name%\n%organization%\n%street%\n%city% %postal_code%\n%region%\n%country%'
+IE:
+    format: '%name%\n%organization%\n%street%\n%city%\n%region%\n%country%'
+    region_name_type: county
+IL:
+    format: '%name%\n%organization%\n%street%\n%city% %postal_code%\n%country%'
+    direction: rtl
+IM:
+    format: '%name%\n%organization%\n%street%\n%CITY%\n%COUNTRY%\n%POSTAL_CODE%'
+    require: [street, city, postal_code]
+IN:
+    format: '%name%\n%organization%\n%street%\n%city% %postal_code%\n%region%\n%country%'
+    require: [street, city, region, postal_code]
+    region_name_type: region
+IO:
+    format: '%name%\n%organization%\n%street%\n%CITY%\n%COUNTRY%\n%POSTAL_CODE%'
+    require: [street, city, postal_code]
+IQ:
+    format: '%organization%\n%name%\n%street%\n%CITY%, %REGION%\n%COUNTRY%\n%postal_code%'
+    require: [street, city, region]
+IS:
+    format: '%name%\n%organization%\n%street%\n%postal_code% %city%\n%country%'
+IT:
+    format: '%name%\n%organization%\n%street%\n%postal_code% %CITY% %REGION%\n%COUNTRY%'
+    require: [street, city, region, postal_code]
+JE:
+    format: '%name%\n%organization%\n%street%\n%CITY%\n%COUNTRY%\nJERSEY\n%POSTAL_CODE%'
+    require: [street, city, postal_code]
+JM:
+    format: '%name%\n%organization%\n%street%\n%city%\n%region%\n%country%'
+    require: [street, city, region]
+    region_name_type: parish
+JO:
+    format: '%name%\n%organization%\n%street%\n%city% %postal_code%\n%country%'
+JP:
+    format: 〒%postal_code%\n%REGION%%city%\n%street%\n%organization%\n%name%
+    latin_format: '%name%\n%organization%\n%street%\n%city%, %REGION%\n%COUNTRY%\n%postal_code%'
+    require: [street, city, region, postal_code]
+    region_name_type: prefecture
+    format_charset: ISO-2022-JP
+KE:
+    format: '%name%\n%organization%\n%street%\n%city%\n%country%\n%postal_code%'
+KG:
+    format: '%postal_code% %country% %city% %street%\n%organization%\n%name%'
+KH:
+    format: '%name%\n%organization%\n%street%\n%city% %postal_code%\n%country%'
+KI:
+    format: '%NAME%\n%ORGANIZATION%\n%STREET%\n%REGION%\n%CITY%\n%COUNTRY%'
+    region_name_type: island
+KN:
+    format: '%name%\n%organization%\n%street%\n%city%, %region%\n%country%'
+    require: [street, city, region]
+    region_name_type: island
+KR:
+    format: '%country%\n%region% %city%\n%street%\n%organization%\n%name%\nSEOUL %POSTAL_CODE%'
+    latin_format: '%name%\n%organization%\n%street%\n%city%\n%region%\n%country%\nSEOUL %POSTAL_CODE%'
+    require: [street, city, region, postal_code]
+    region_name_type: do_si
+    format_charset: EUC-KR
+KW:
+    format: '%name%\n%organization%\n%street%\n%postal_code% %city%\n%country%'
+KY:
+    format: '%name%\n%organization%\n%street%\n%region%\n%country%'
+    require: [street, region]
+    region_name_type: island
+KZ:
+    format: '%postal_code%\n%country%\n%region%\n%city%\n%street%\n%organization%\n%name%'
+LA:
+    format: '%name%\n%organization%\n%street%\n%postal_code% %city%\n%country%'
+LB:
+    format: '%name%\n%organization%\n%street%\n%city% %postal_code%\n%country%'
+LI:
+    format: '%organization%\n%name%\n%street%\nFL-%postal_code% %city%\n%country%'
+    require: [street, city, postal_code]
+    postprefix: FL-
+LK:
+    format: '%name%\n%organization%\n%street%\n%city%\n%country%\n%postal_code%'
+LR:
+    format: '%name%\n%organization%\n%street%\n%postal_code% %city%\n%country%'
+LS:
+    format: '%name%\n%organization%\n%street%\n%city% %postal_code%\n%country%'
+LT:
+    format: '%organization%\n%name%\n%street%\nLT-%postal_code% %city%\n%country%'
+    postprefix: LT-
+LU:
+    format: '%organization%\n%name%\n%street%\nL-%postal_code% %city%\n%country%'
+    require: [street, city, postal_code]
+    postprefix: L-
+LV:
+    format: '%name%\n%organization%\n%street%\n%city% %country%, %postal_code%'
+MA:
+    format: '%name%\n%organization%\n%street%\n%postal_code% %city%\n%country%'
+MC:
+    format: '%name%\n%organization%\n%street%\nMC-%postal_code% %city%\n%country%'
+    postprefix: MC-
+MD:
+    format: '%name%\n%organization%\n%street%\nMD-%postal_code% %city%\n%country%'
+    postprefix: MD-
+ME:
+    format: '%name%\n%organization%\n%street%\n%postal_code% %city%\n%country%'
+MF:
+    format: '%organization%\n%name%\n%STREET%\n%postal_code% %CITY%\n%COUNTRY%'
+    require: [street, city, postal_code]
+MG:
+    format: '%name%\n%organization%\n%street%\n%postal_code% %city%\n%country%'
+MH:
+    format: '%NAME%\n%ORGANIZATION%\n%STREET%\n%CITY% %COUNTRY% %REGION% %postal_code%'
+    require: [street, city, region, postal_code]
+    zip_name_type: zip
+    region_name_type: region
+MK:
+    format: '%name%\n%organization%\n%street%\n%postal_code% %city%\n%country%'
+MN:
+    format: '%name%\n%organization%\n%street%\n%region% %city%\n%country%\n%postal_code%'
+MO:
+    format: '%street%\n%organization%\n%name%'
+    latin_format: '%name%\n%organization%\n%street%'
+    require: [street]
+MP:
+    format: '%NAME%\n%ORGANIZATION%\n%STREET%\n%CITY% %COUNTRY% %REGION% %postal_code%'
+    require: [street, city, region, postal_code]
+    zip_name_type: zip
+    region_name_type: region
+MQ:
+    format: '%organization%\n%name%\n%STREET%\n%postal_code% %CITY%\n%COUNTRY%'
+    require: [street, city, postal_code]
+MT:
+    format: '%name%\n%organization%\n%street%\n%CITY% %POSTAL_CODE%\n%COUNTRY%'
+MU:
+    format: '%name%\n%organization%\n%street%\n%POSTAL_CODE%\n%CITY%\n%COUNTRY%'
+MV:
+    format: '%name%\n%organization%\n%street%\n%city% %postal_code%\n%country%'
+MW:
+    format: '%name%\n%organization%\n%street%\n%city%\n%country%'
+MX:
+    format: '%name%\n%organization%\n%street%\n%POSTAL_CODE% %CITY%, %REGION%\n%COUNTRY%'
+    require: [street, city, postal_code]
+    region_name_type: region
+MY:
+    format: '%name%\n%organization%\n%street%\n%postal_code% %CITY%, %REGION%\n%COUNTRY%'
+    require: [street, city, postal_code]
+    region_name_type: region
+MZ:
+    format: '%name%\n%organization%\n%street%\n%city%\n%country%'
+NC:
+    format: '%organization%\n%name%\n%STREET%\n%postal_code% %CITY%\n%COUNTRY%'
+    require: [street, city, postal_code]
+NE:
+    format: '%name%\n%organization%\n%street%\n%postal_code% %city%\n%country%'
+NF:
+    format: '%organization%\n%name%\n%street%\n%CITY% %REGION% %postal_code%'
+NG:
+    format: '%name%\n%organization%\n%street%\n%CITY% %postal_code%\n%REGION%\n%COUNTRY%'
+    region_name_type: region
+NI:
+    format: '%name%\n%organization%\n%street%\n%postal_code%\n%CITY%, %REGION%\n%COUNTRY%'
+    region_name_type: department
+NL:
+    format: '%organization%\n%name%\n%street%\n%postal_code% %city%\n%country%'
+    require: [street, city, postal_code]
+NO:
+    format: '%name%\n%organization%\n%street%\n%postal_code% %city%\n%country%'
+    require: [street, city, postal_code]
+NP:
+    format: '%name%\n%organization%\n%street%\n%city% %postal_code%\n%country%'
+NR:
+    format: '%name%\n%organization%\n%street%\n%region%\n%country%'
+    require: [street, region]
+    region_name_type: district
+NZ:
+    format: '%name%\n%organization%\n%street%\n%city% %postal_code%\n%country%'
+    require: [street, city, postal_code]
+OM:
+    format: '%name%\n%organization%\n%street%\n%postal_code%\n%city%\n%country%'
+PA:
+    format: '%name%\n%organization%\n%street%\n%CITY%\n%REGION%\n%COUNTRY%'
+PF:
+    format: '%name%\n%organization%\n%street%\n%postal_code% %CITY% %REGION%\n%COUNTRY%'
+    require: [street, city, region, postal_code]
+    region_name_type: island
+PG:
+    format: '%name%\n%organization%\n%street%\n%city% %postal_code% %region%\n%country%'
+    require: [street, city, region]
+PH:
+    format: '%name%\n%organization%\n%street%\n%postal_code% %city%\n%region%\n%country%'
+    require: [street, city]
+PK:
+    format: '%name%\n%organization%\n%street%\n%city%-%postal_code%\n%country%'
+PL:
+    format: '%name%\n%organization%\n%street%\n%postal_code% %city%\n%country%'
+    require: [street, city, postal_code]
+PM:
+    format: '%organization%\n%name%\n%STREET%\n%postal_code% %CITY%\n%COUNTRY%'
+    require: [street, city, postal_code]
+PN:
+    format: '%name%\n%organization%\n%street%\n%CITY%\n%COUNTRY%\n%POSTAL_CODE%'
+    require: [street, city, postal_code]
+PR:
+    format: '%NAME%\n%ORGANIZATION%\n%STREET%\n%CITY% PR %postal_code%\n%COUNTRY%'
+    require: [street, city, postal_code]
+    zip_name_type: zip
+    postprefix: PR
+PT:
+    format: '%name%\n%organization%\n%street%\n%postal_code% %city%\n%country%'
+    require: [street, city, postal_code]
+PW:
+    format: '%NAME%\n%ORGANIZATION%\n%STREET%\n%CITY% %COUNTRY% %REGION% %postal_code%'
+    require: [street, city, region, postal_code]
+    zip_name_type: zip
+    region_name_type: region
+PY:
+    format: '%name%\n%organization%\n%street%\n%postal_code% %city%\n%country%'
+RE:
+    format: '%organization%\n%name%\n%STREET%\n%postal_code% %CITY%\n%COUNTRY%'
+    require: [street, city, postal_code]
+RO:
+    format: '%name%\n%organization%\n%STREET%\n%postal_code% %CITY%\n%COUNTRY%'
+RS:
+    format: '%name%\n%organization%\n%street%\n%postal_code% %city%\n%country%'
+RU:
+    format: '%postal_code% %COUNTRY% %CITY%\n%STREET%\n%organization%\n%name%'
+    require: [street, city, postal_code]
+SA:
+    format: '%name%\n%organization%\n%street%\n%city% %postal_code%\n%country%'
+SC:
+    format: '%name%\n%organization%\n%street%\n%city%\n%REGION%\n%COUNTRY%'
+    region_name_type: island
+SE:
+    format: '%organization%\n%name%\n%street%\nSE-%postal_code% %city%\n%country%'
+    require: [street, city, postal_code]
+    postprefix: SE-
+SG:
+    format: '%name%\n%organization%\n%street%\nSINGAPORE %postal_code%'
+    require: [street, postal_code]
+SH:
+    format: '%name%\n%organization%\n%street%\n%CITY%\n%COUNTRY%\n%POSTAL_CODE%'
+    require: [street, city, postal_code]
+SI:
+    format: '%name%\n%organization%\n%street%\nSI- %postal_code% %city%\n%country%'
+    postprefix: SI-
+SJ:
+    format: '%name%\n%organization%\n%street%\n%postal_code% %city%\n%country%'
+    require: [street, city, postal_code]
+SK:
+    format: '%name%\n%organization%\n%street%\n%postal_code% %city%\n%country%'
+SM:
+    format: '%name%\n%organization%\n%street%\n%postal_code% %city%\n%country%'
+    require: [street, postal_code]
+SN:
+    format: '%name%\n%organization%\n%street%\n%postal_code% %city%\n%country%'
+SO:
+    format: '%name%\n%organization%\n%STREET%\n%CITY%, %REGION% %COUNTRY% %postal_code%'
+    require: [street, city, region]
+SR:
+    format: '%name%\n%organization%\n%STREET%\n%city% %REGION%\n%COUNTRY%'
+ST:
+    format: '%name%\n%organization%\n%street%\n%city%\n%country%'
+SV:
+    format: '%name%\n%organization%\n%street%\n%POSTAL_CODE%-%CITY%\n%REGION%\n%COUNTRY%'
+    require: [street, city, region]
+SZ:
+    format: '%name%\n%organization%\n%STREET%\n%CITY%\n%COUNTRY%\n%POSTAL_CODE%'
+TC:
+    format: '%name%\n%organization%\n%street%\n%CITY%\n%COUNTRY%\n%POSTAL_CODE%'
+    require: [street, city, postal_code]
+TH:
+    format: '%name%\n%organization%\n%street%\n%city%\n%REGION% %COUNTRY% %postal_code%'
+    latin_format: '%name%\n%organization%\n%street%\n%city%\n%REGION% %COUNTRY% %postal_code%'
+    format_charset: TIS-620
+TJ:
+    format: '%name%\n%organization%\n%street%\n%postal_code% %city%\n%country%'
+TM:
+    format: '%name%\n%organization%\n%street%\n%postal_code% %city%\n%country%'
+TN:
+    format: '%name%\n%organization%\n%street%\n%postal_code% %city%\n%country%'
+TR:
+    format: '%name%\n%organization%\n%street%\n%postal_code% %city%/%region%\n%country%'
+    require: [street, city, postal_code]
+TV:
+    format: '%name%\n%organization%\n%STREET%\n%CITY%\n%REGION%\n%COUNTRY%'
+    region_name_type: island
+TW:
+    format: '%postal_code%\n%country%\n%region%%city%\n%street%\n%organization%\n%name%'
+    latin_format: '%name%\n%organization%\n%street%\n%city%, %region% %country% %postal_code%'
+    require: [street, city, region, postal_code]
+    region_name_type: county
+    format_charset: Big5
+UA:
+    format: '%postal_code% %country% %city%\n%street%\n%organization%\n%name%'
+UM:
+    format: '%NAME%\n%ORGANIZATION%\n%STREET%\n%CITY% %REGION% %COUNTRY% %postal_code%'
+    require: [street, city, region]
+    zip_name_type: zip
+    region_name_type: region
+US:
+    format: '%name%\n%organization%\n%street%\n%CITY% %REGION_CODE% %COUNTRY_ISO2% %postal_code%'
+    require: [street, city, region, postal_code]
+    zip_name_type: zip
+    region_name_type: region
+UY:
+    format: '%name%\n%organization%\n%street%\n%postal_code% %CITY% %REGION%\n%COUNTRY%'
+UZ:
+    format: '%name%\n%organization%\n%street%\n%postal_code% %CITY%\n%REGION%\n%COUNTRY%'
+VA:
+    format: '%name%\n%organization%\n%street%\n%postal_code% %city%\n%country%'
+VE:
+    format: '%name%\n%organization%\n%street%\n%CITY% %postal_code%, %REGION%\n%COUNTRY%'
+    require: [street, city, region]
+VG:
+    require: [street]
+VI:
+    format: '%NAME%\n%ORGANIZATION%\n%STREET%\n%CITY% %REGION% %COUNTRY% %postal_code%'
+    require: [street, city, region, postal_code]
+    zip_name_type: zip
+    region_name_type: region
+VN:
+    format: '%name%\n%organization%\n%street%\n%city%\n%region%\n%country%'
+    latin_format: '%name%\n%organization%\n%street%\n%city%\n%region%\n%country%'
+    require: [street, city]
+WF:
+    format: '%organization%\n%name%\n%STREET%\n%postal_code% %CITY%\n%COUNTRY%'
+    require: [street, city, postal_code]
+YE:
+    require: [street, city]
+YT:
+    format: '%organization%\n%name%\n%STREET%\n%postal_code% %CITY%\n%COUNTRY%'
+    require: [street, city, postal_code]
+ZA:
+    format: '%name%\n%organization%\n%street%\n%city%\n%country%\n%postal_code%'
+    require: [street, city, postal_code]
+ZM:
+    format: '%name%\n%organization%\n%street%\n%postal_code% %city%\n%country%'
+    require: [street, city]

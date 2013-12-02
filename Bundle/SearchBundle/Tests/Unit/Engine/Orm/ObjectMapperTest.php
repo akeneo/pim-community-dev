@@ -189,12 +189,11 @@ class ObjectMapperTest extends \PHPUnit_Framework_TestCase
         $this->mapper->mapObject($manufacturer);
     }
 
-    public function testGetEntitiesLabels()
+    public function testGetEntitiesListAliases()
     {
-        $data = $this->mapper->getEntitiesLabels();
+        $data = $this->mapper->getEntitiesListAliases();
 
-        $this->assertEquals('test_product', $data[1]['alias']);
-        $this->assertEquals('Oro\Bundle\SearchBundle\Tests\Unit\Fixture\Entity\Product', $data[1]['class']);
+        $this->assertEquals('test_product', $data['Oro\Bundle\SearchBundle\Tests\Unit\Fixture\Entity\Product']);
     }
 
     public function testGetMappingConfig()

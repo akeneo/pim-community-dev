@@ -238,4 +238,14 @@ class EmailFolder
 
         return $this;
     }
+
+    /**
+     * Get a human-readable representation of this object.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return sprintf('EmailFolder(%s)', $this->fullName);
+    }
 }

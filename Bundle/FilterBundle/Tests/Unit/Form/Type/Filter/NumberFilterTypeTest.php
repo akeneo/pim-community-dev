@@ -51,11 +51,11 @@ class NumberFilterTypeTest extends AbstractTypeTestCase
                 'defaultOptions' => array(
                     'field_type' => 'number',
                     'operator_choices' => array(
-                        NumberFilterType::TYPE_EQUAL => 'label_type_equal',
-                        NumberFilterType::TYPE_GREATER_EQUAL => 'label_type_greater_equal',
-                        NumberFilterType::TYPE_GREATER_THAN => 'label_type_greater_than',
-                        NumberFilterType::TYPE_LESS_EQUAL => 'label_type_less_equal',
-                        NumberFilterType::TYPE_LESS_THAN => 'label_type_less_than',
+                        NumberFilterType::TYPE_EQUAL => 'oro.filter.form.label_type_equal',
+                        NumberFilterType::TYPE_GREATER_EQUAL => 'oro.filter.form.label_type_greater_equal',
+                        NumberFilterType::TYPE_GREATER_THAN => 'oro.filter.form.label_type_greater_than',
+                        NumberFilterType::TYPE_LESS_EQUAL => 'oro.filter.form.label_type_less_equal',
+                        NumberFilterType::TYPE_LESS_THAN => 'oro.filter.form.label_type_less_than',
                     ),
                     'data_type' => NumberFilterType::DATA_INTEGER,
                     'formatter_options' => array()

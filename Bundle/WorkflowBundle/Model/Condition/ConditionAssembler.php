@@ -2,30 +2,24 @@
 
 namespace Oro\Bundle\WorkflowBundle\Model\Condition;
 
-use Oro\Bundle\WorkflowBundle\Model\Condition\ConditionFactory;
 use Oro\Bundle\WorkflowBundle\Model\AbstractAssembler;
-use Oro\Bundle\WorkflowBundle\Model\Pass\PassInterface;
 
 class ConditionAssembler extends AbstractAssembler
 {
+    const PARAMETERS_KEY = 'parameters';
+    const MESSAGE_KEY = 'message';
+
     /**
      * @var ConditionFactory
      */
     protected $factory;
 
     /**
-     * @var PassInterface
-     */
-    protected $configurationPass;
-
-    /**
      * @param ConditionFactory $factory
-     * @param PassInterface $configurationPass
      */
-    public function __construct(ConditionFactory $factory, PassInterface $configurationPass)
+    public function __construct(ConditionFactory $factory)
     {
-        $this->factory           = $factory;
-        $this->configurationPass = $configurationPass;
+        $this->factory = $factory;
     }
 
     /**
@@ -41,21 +35,47 @@ class ConditionAssembler extends AbstractAssembler
         $options = array();
         $conditionType = $this->getEntityType($configuration);
         $conditionParameters = $this->getEntityParameters($configuration);
-        if (is_array($conditionParameters)) {
-            foreach ($conditionParameters as $key => $conditionParameter) {
+        $conditionParameters = $this->parseParameters($conditionParameters);
+        if (is_array($conditionParameters[self::PARAMETERS_KEY])) {
+            foreach ($conditionParameters[self::PARAMETERS_KEY] as $key => $conditionParameter) {
                 if ($this->isService($conditionParameter)) {
                     $options[$key] = $this->assemble($conditionParameter);
                 } else {
                     $options[$key] = $conditionParameter;
                 }
             }
-        } else {
-            $options[] = $conditionParameters;
+        } elseif ($conditionParameters[self::PARAMETERS_KEY] !== null) {
+            $options[] = $conditionParameters[self::PARAMETERS_KEY];
         }
 
-        $passedOptions = $this->configurationPass->pass($options);
+        $message = null;
+        if (isset($conditionParameters[self::MESSAGE_KEY])) {
+            $message = $conditionParameters[self::MESSAGE_KEY];
+        } elseif (isset($options[self::MESSAGE_KEY])) {
+            $message = $options[self::MESSAGE_KEY];
+            unset($options[self::MESSAGE_KEY]);
+        }
+        $passedOptions = $this->passConfiguration($options);
 
         $serviceName = $this->getServiceName($conditionType);
-        return $this->factory->create($serviceName, $passedOptions);
+        return $this->factory->create($serviceName, $passedOptions, $message);
+    }
+
+    /**
+     * @param array $conditionParameters
+     * @return array
+     */
+    protected function parseParameters($conditionParameters)
+    {
+        $result = array();
+        if (is_array($conditionParameters) && array_key_exists(self::PARAMETERS_KEY, $conditionParameters)) {
+            $result[self::PARAMETERS_KEY] = $conditionParameters[self::PARAMETERS_KEY];
+            if (isset($conditionParameters[self::MESSAGE_KEY])) {
+                $result[self::MESSAGE_KEY] = $conditionParameters[self::MESSAGE_KEY];
+            }
+        } else {
+            $result[self::PARAMETERS_KEY] = $conditionParameters;
+        }
+        return $result;
     }
 }

@@ -35,7 +35,7 @@ class AclPrivilegeIdentity
     }
 
     /**
-     * @param string $id
+     * @param  string               $id
      * @return AclPrivilegeIdentity
      */
     public function setId($id)
@@ -54,7 +54,7 @@ class AclPrivilegeIdentity
     }
 
     /**
-     * @param string $name
+     * @param  string               $name
      * @return AclPrivilegeIdentity
      */
     public function setName($name)

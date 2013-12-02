@@ -15,7 +15,7 @@
             {% else %}
                 <a href="{{ path('oro_user_status_clear_current') }}" class="close" type="button"><i class="icon-minus-sign"></i></a>
             {% endif %}
-            <p>{{ status.createdAt|date("m/d/Y H:m:s") }}</p>
+            <p>{{ status.createdAt|oro_format_date }}</p>
             <h3>{{ status.status }}</h3>
         </div>
     {% endfor %}

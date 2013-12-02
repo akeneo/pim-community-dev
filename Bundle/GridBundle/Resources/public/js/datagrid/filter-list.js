@@ -1,13 +1,13 @@
 /* global define */
-define(['underscore', 'oro/datafilter/list'],
+define(['underscore', 'oro/datafilter/filters-manager'],
 function(_, FilterList) {
     'use strict';
 
     /**
      * View that represents all grid filters
      *
-     * @export  oro/datagrid/filter-list
-     * @class   oro.datagrid.FilterList
+     * @export  oro/grid/filter-list
+     * @class   oro.grid.FilterList
      * @extends oro.FilterList
      */
     return FilterList.extend({
@@ -25,7 +25,7 @@ function(_, FilterList) {
 
             this.collection.on('beforeFetch', this._beforeCollectionFetch, this);
             this.collection.on('updateState', this._onUpdateCollectionState, this);
-            this.collection.on('reset', this._oCollectionReset, this);
+            this.collection.on('reset', this._onCollectionReset, this);
 
             FilterList.prototype.initialize.apply(this, arguments);
         },
@@ -71,11 +71,10 @@ function(_, FilterList) {
          *
          * @protected
          */
-        _oCollectionReset: function(collection) {
-            if (collection.state.totalRecords > 0) {
+        _onCollectionReset: function(collection) {
+            if (collection.state.totalRecords > 0 && this.$el.children().length > 0) {
                 this.$el.show();
             }
-            this.$el.show();
         },
 
         /**

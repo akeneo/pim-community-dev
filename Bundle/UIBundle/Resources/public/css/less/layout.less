@@ -1,0 +1,32 @@
+.responsive-cell, .responsive-block {
+  float: left;
+  width: 50%;
+  &:only-child {
+    width: 100%;
+    float: none;
+  }
+}
+
+.responsive-cell{
+  .forScreen(@mediumScreen, width, 100%);
+  .forScreen(@mediumScreen, float, none);
+}
+
+.responsive-block{
+  .forScreen(@smallScreen, width, 100%);
+  .forScreen(@smallScreen, float, none);
+}
+
+.layout-content .responsive-section{
+  padding: 0 0 35px;
+}
+.container-fluid > .responsive-section {
+  margin: 0 -20px;
+  padding-right: 20px;
+  .scrollspy-title {
+    margin-left:0;
+  }
+  .responsive-cell {
+    padding-left: 20px;
+  }
+}

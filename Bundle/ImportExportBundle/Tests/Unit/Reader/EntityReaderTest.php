@@ -31,7 +31,7 @@ class EntityReaderTest extends \PHPUnit_Framework_TestCase
             ->getMock();
 
         $this->managerRegistry = $this->getMock('Doctrine\Common\Persistence\ManagerRegistry');
-        $this->reader = new EntityReader($this->managerRegistry, $this->contextRegistry);
+        $this->reader = new EntityReader($this->contextRegistry, $this->managerRegistry);
     }
 
     public function testReadMockIterator()
@@ -239,6 +239,58 @@ class EntityReaderTest extends \PHPUnit_Framework_TestCase
         $context->expects($this->exactly(3))->method('hasOption')->will($this->returnValue(false));
 
         $this->reader->setStepExecution($this->getMockStepExecution($context));
+    }
+
+    public function testSetSourceEntityName()
+    {
+        $name = '\stdClass';
+
+        $queryBuilder = $this->getMockBuilder('Doctrine\ORM\QueryBuilder')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $classMetadata = $this->getMockBuilder('Doctrine\ORM\Mapping\ClassMetadata')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $classMetadata->expects($this->once())
+            ->method('getAssociationMappings')
+            ->will(
+                $this->returnValue(
+                    array(
+                        array('fieldName' => 'test')
+                    )
+                )
+            );
+        $queryBuilder->expects($this->once())
+            ->method('addSelect')
+            ->with('_test');
+        $queryBuilder->expects($this->once())
+            ->method('leftJoin')
+            ->with('o.test', '_test');
+
+        $repository = $this->getMockBuilder('Doctrine\ORM\EntityRepository')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $repository->expects($this->once())
+            ->method('createQueryBuilder')
+            ->with('o')
+            ->will($this->returnValue($queryBuilder));
+
+        $this->managerRegistry->expects($this->once())
+            ->method('getRepository')
+            ->with($name)
+            ->will($this->returnValue($repository));
+
+        $entityManager = $this->getMockBuilder('Doctrine\ORM\EntityManager')->disableOriginalConstructor()->getMock();
+        $entityManager->expects($this->once())->method('getClassMetadata')
+            ->with($name)
+            ->will($this->returnValue($classMetadata));
+
+        $queryBuilder->expects($this->once())->method('getEntityManager')
+            ->will($this->returnValue($entityManager));
+
+        $this->reader->setSourceEntityName($name);
     }
 
     /**

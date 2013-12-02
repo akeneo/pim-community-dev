@@ -34,7 +34,7 @@ class GroupController extends SoapController
 
     /**
      * @Soap\Method("createGroup")
-     * @Soap\Param("group", phpType="\Oro\Bundle\UserBundle\Entity\Group")
+     * @Soap\Param("group", phpType="Oro\Bundle\UserBundle\Entity\Group")
      * @Soap\Result(phpType="int")
      * @AclAncestor("oro_user_group_create")
      */
@@ -46,7 +46,7 @@ class GroupController extends SoapController
     /**
      * @Soap\Method("updateGroup")
      * @Soap\Param("id", phpType="int")
-     * @Soap\Param("group", phpType="\Oro\Bundle\UserBundle\Entity\Group")
+     * @Soap\Param("group", phpType="Oro\Bundle\UserBundle\Entity\Group")
      * @Soap\Result(phpType="boolean")
      * @AclAncestor("oro_user_group_update")
      */

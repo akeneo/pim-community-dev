@@ -3,7 +3,6 @@
 namespace Oro\Bundle\SoapBundle\Entity\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository;
 use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 
@@ -17,9 +16,9 @@ class ApiFlexibleEntityManager extends ApiEntityManager
     /**
      * Constructor
      *
-     * @param string $class Entity name
-     * @param ObjectManager $om Object manager
-     * @param FlexibleManager $fm Proxy for methods of flexible manager
+     * @param string          $class Entity name
+     * @param ObjectManager   $om    Object manager
+     * @param FlexibleManager $fm    Proxy for methods of flexible manager
      */
     public function __construct($class, ObjectManager $om, FlexibleManager $fm)
     {
@@ -50,6 +49,7 @@ class ApiFlexibleEntityManager extends ApiEntityManager
     {
         /** @var FlexibleEntityRepository $repository */
         $repository = $this->getFlexibleManager()->getFlexibleRepository();
+
         return $repository->findByWithAttributesQB(array(), null, $this->getOrderBy($orderBy), $limit, $this->getOffset($page));
     }
 }

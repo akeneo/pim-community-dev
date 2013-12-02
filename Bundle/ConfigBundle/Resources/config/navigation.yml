@@ -1,6 +1,6 @@
 oro_menu_config:
     items:
-        system_configuraion:
+        system_configuration:
             label: 'Configuration'
             extras:
                 description: 'System configuration'
@@ -11,7 +11,7 @@ oro_menu_config:
             children:
                 system_tab:
                     children:
-                        system_configuraion: ~
+                        system_configuration: ~
 
 oro_titles:
-    oro_config_configuration_system: "System configuration"
+    oro_config_configuration_system: ~

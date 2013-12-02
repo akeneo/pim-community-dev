@@ -37,7 +37,7 @@ class AuditController extends ContainerAware
      * @param  string     $repo
      * @param  int|string $id
      * @throws \SoapFault
-     * @return AuditSoap
+     * @return Audit
      */
     protected function getEntity($repo, $id)
     {

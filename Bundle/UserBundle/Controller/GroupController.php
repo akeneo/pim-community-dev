@@ -11,7 +11,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Oro\Bundle\UserBundle\Entity\Group;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Oro\Bundle\UserBundle\Datagrid\GroupUserDatagridManager;
 
 /**
  * @Route("/group")
@@ -101,14 +100,11 @@ class GroupController extends Controller
      *      class="OroUserBundle:Group",
      *      permission="VIEW"
      * )
+     * @Template
      */
     public function indexAction(Request $request)
     {
-        $view = $this->get('oro_user.group_datagrid_manager')->getDatagrid()->createView();
-
-        return 'json' == $this->getRequest()->getRequestFormat()
-            ? $this->get('oro_grid.renderer')->renderResultsJsonResponse($view)
-            : $this->render('OroUserBundle:Group:index.html.twig', array('datagrid' => $view));
+        return array();
     }
 
     /**
@@ -138,7 +134,6 @@ class GroupController extends Controller
         }
 
         return array(
-            'datagrid' => $this->getGroupUserDatagridManager($entity)->getDatagrid()->createView(),
             'form'     => $this->get('oro_user.form.group')->createView(),
         );
     }

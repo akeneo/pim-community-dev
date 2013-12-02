@@ -88,7 +88,8 @@ class Attribute extends AbstractEntityAttribute
     {
         if ($this->getDefaultValue() !== null) {
             // TODO : must be moved and avoid to use service name here
-            if ($this->getAttributeType() === 'oro_flexibleentity_integer') {
+            if ($this->getAttributeType() === 'oro_flexibleentity_integer'
+                || $this->getAttributeType() === 'oro_flexibleentity_integer_unsigned') {
                 $this->setDefaultValue((int) $this->getDefaultValue());
             }
         }

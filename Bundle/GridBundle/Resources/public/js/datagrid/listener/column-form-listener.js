@@ -1,14 +1,14 @@
 /* global define */
-define(['jquery', 'underscore', 'oro/translator', 'oro/mediator', 'oro/modal', 'oro/datagrid/abstract-listener'],
+define(['jquery', 'underscore', 'oro/translator', 'oro/mediator', 'oro/modal', 'oro/grid/abstract-listener'],
 function($, _, __, mediator, Modal, AbstractListener) {
     'use strict';
 
     /**
      * Listener for entity edit form and datagrid
      *
-     * @export  oro/datagrid/column-form-listener
-     * @class   oro.datagrid.ColumnFormListener
-     * @extends oro.datagrid.AbstractListener
+     * @export  oro/grid/column-form-listener
+     * @class   oro.grid.ColumnFormListener
+     * @extends oro.grid.AbstractListener
      */
     return AbstractListener.extend({
 
@@ -35,7 +35,7 @@ function($, _, __, mediator, Modal, AbstractListener) {
         /**
          * Set datagrid instance
          *
-         * @param {oro.datagrid.Grid} datagrid
+         * @param {oro.grid.Grid} datagrid
          */
         setDatagridAndSubscribe: function(datagrid) {
             AbstractListener.prototype.setDatagridAndSubscribe.apply(this, arguments);
@@ -180,7 +180,7 @@ function($, _, __, mediator, Modal, AbstractListener) {
         /**
          * Confirms refresh action that before it will be executed
          *
-         * @param {oro.datagrid.AbstractAction} action
+         * @param {oro.grid.AbstractAction} action
          * @param {Object} options
          * @private
          */
@@ -194,7 +194,7 @@ function($, _, __, mediator, Modal, AbstractListener) {
         /**
          * Confirms reset action that before it will be executed
          *
-         * @param {oro.datagrid.AbstractAction} action
+         * @param {oro.grid.AbstractAction} action
          * @param {Object} options
          * @private
          */
@@ -208,7 +208,7 @@ function($, _, __, mediator, Modal, AbstractListener) {
         /**
          * Asks user a confirmation if there are local changes, if user confirms then clears state and runs action
          *
-         * @param {oro.datagrid.AbstractAction} action
+         * @param {oro.grid.AbstractAction} action
          * @param {Object} actionOptions
          * @param {String} type "reset" or "refresh"
          * @param {Object} confirmModalOptions Options for confirm dialog

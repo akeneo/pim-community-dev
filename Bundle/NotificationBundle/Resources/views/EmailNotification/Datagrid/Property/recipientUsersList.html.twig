@@ -1,0 +1,5 @@
+<ul>
+    {% for recipient in value if recipient is not empty %}
+        <li>{{ recipient|oro_format_name }} &lt;{{ recipient.email }}&gt;</li>
+    {% endfor %}
+</ul>

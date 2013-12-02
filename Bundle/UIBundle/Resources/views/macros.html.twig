@@ -138,18 +138,69 @@
             {% if (parameters.id is defined) %}
                 id="{{ parameters.id }}"
             {% endif %}
-            data-id="{{ parameters.dataId }}"
+            {% if (parameters.dataId is defined) %}
+                data-id="{{ parameters.dataId }}"
+            {% endif %}
             data-message="{{ parameters.dataMessage|trans }}"
             data-success-message="{{ parameters.successMessage|default('Item deleted')|trans }}"
-            data-url="{{ parameters.dataUrl }}"
+            {% if (parameters.dataUrl is defined) %}
+                data-url="{{ parameters.dataUrl }}"
+            {% endif %}
             {% if parameters.dataRedirect is defined %}
                 data-redirect="{{ parameters.dataRedirect  }}"
+            {% endif %}
+
+            {% if parameters.data is defined %}
+                {% for actionName,actionValue in parameters.data %}
+                data-{{ actionName }}="{{ actionValue  }}"
+                {% endfor %}
             {% endif %}
             {% if (parameters.title is defined) %}
                 title="{{ parameters.title|trans }}"
             {% endif %}
            >
-           <i class="icon-trash hide-text">{{ parameters.label|trans }}</i>{{ parameters.label|trans }}
+           <i class="icon-trash"></i>{{ parameters.label|trans }}
+        </a>
+    </div>
+{% endmacro %}
+
+{#
+    A button with javascript handler
+    Parameters - array:
+        [
+            'aCss' - additional css class for 'a' tag
+            'iCss' - additional css class for 'i' tag
+            'dataId' - data-id parameter
+            'dataUrl' - data-url parameter
+            'dataRedirect' - url to redirect after an operation finished
+            'successMessage' - a message which will be shown after an operation finished
+            'title' - button title
+            'label' - button label
+        ]
+#}
+{% macro clientButton(parameters) %}
+    <div class="pull-left btn-group icons-holder">
+        <a href="javascript: void(0);" class="btn icons-holder-text {{ parameters.aCss is defined ? parameters.aCss : '' }}"
+           {% if (parameters.id is defined) %}
+           id="{{ parameters.id }}"
+           {% endif %}
+           {% if (parameters.dataId is defined) %}
+           data-id="{{ parameters.dataId }}"
+           {% endif %}
+           {% if (parameters.dataUrl is defined) %}
+           data-url="{{ parameters.dataUrl }}"
+           {% endif %}
+           {% if (parameters.successMessage is defined) %}
+           data-success-message="{{ parameters.successMessage }}"
+           {% endif %}
+           {% if parameters.dataRedirect is defined %}
+           data-redirect="{{ parameters.dataRedirect  }}"
+           {% endif %}
+           {% if (parameters.title is defined) %}
+           title="{{ parameters.title }}"
+           {% endif -%}
+           >
+           <i class="{{ parameters.iCss is defined ? parameters.iCss : '' }} hide-text">{{ parameters.label }}</i>{{ parameters.label -}}
         </a>
     </div>
 {% endmacro %}
@@ -200,21 +251,23 @@
         useSpan - flag to indicate is subblock must have span6 css class or not
 #}
 {% macro scrollSubblock(title, data, isForm, useSpan) %}
-    {% if useSpan is not defined or useSpan == true %}
+    {#% if useSpan is not defined or useSpan == true %}
         {% set span = 'span6' %}
     {% else %}
         {% set span = '' %}
     {% endif %}
     {% if span %}
         <div class="{{ span }}">
-    {% endif %}
-    {% if title|length %}<h5 class="usser-fiedset"><span>{{ title|trans }}</span></h5>{% endif %}
+    {% endif %#}
+    <div class="responsive-cell">
+    {% if title|length %}<h5 class="user-fiedset"><span>{{ title|trans }}</span></h5>{% endif %}
     {% for dataBlock in data %}
         {{ dataBlock|raw }}
     {% endfor %}
-    {% if span %}
+    </div>
+    {#% if span %}
         </div>
-    {% endif %}
+    {% endif %#}
 {% endmacro %}
 
 {#
@@ -231,8 +284,9 @@
 #}
 {% macro scrollBlock(blockId, title, subblocks, isForm) %}
     {% set cols = subblocks|length %}
-    <div class="usser-row">
-        <h4 id="{{ blockId }}" class="scrollspy-title">{{ title|trans }}</h4>
+    <div class="responsive-section">
+        <h4 class="scrollspy-title">{{ title|trans }}</h4>
+        <div id="{{ blockId }}" class="scrollspy-nav-target"></div>
         <div class="row-fluid {% if cols > 1 %}row-fluid-divider{% endif %}">
             {% if isForm is defined and isForm == true %}
                 <fieldset class="form-horizontal">
@@ -302,7 +356,7 @@
                 </div>
             </div>
         {% endif %}
-        <div data-spy="scroll" data-target="#{{ dataTarget }}" data-offset="50" class="scrollspy container-fluid scrollable-container{% if isForm %} form-container{% endif %}">
+        <div data-spy="scroll" data-target="#{{ dataTarget }}" data-offset="1" class="scrollspy container-fluid scrollable-container{% if isForm %} form-container{% endif %}">
             {% for scrollBlock in dataBlocks %}
                 {{ _self.scrollBlock("scroll-" ~ loop.index, scrollBlock.title, scrollBlock.subblocks, isForm) }}
             {% endfor %}
@@ -329,7 +383,7 @@
 #}
 {% macro collectionField(field, label, buttonCaption) %}
     <div class="control-group">
-        <label for="selectAccountName" class="control-label">{{ label|trans }}:</label>
+        <label class="control-label">{{ label|trans }}</label>
         <div class="controls">
             <div class="row-oro">
                 <div class="collection-fields-list" data-prototype="{{ _self.collection_prototype(field)|escape }}">

@@ -1,5 +1,6 @@
 parameters:
     oro_search.index.class:                               Oro\Bundle\SearchBundle\Engine\Indexer
+    oro_search.security_provider.class:                   Oro\Bundle\SearchBundle\Security\SecurityProvider
     oro_search.index_listener.class:                      Oro\Bundle\SearchBundle\EventListener\IndexListener
     oro_search.twig_extension.class:                      Oro\Bundle\SearchBundle\Twig\OroSearchExtension
     oro_search.mapper.class:                              Oro\Bundle\SearchBundle\Engine\ObjectMapper
@@ -7,10 +8,30 @@ parameters:
     oro_search.formatter.result_formatter.class:          Oro\Bundle\SearchBundle\Formatter\ResultFormatter
     oro_search.prepare_result_item.listener.class:        Oro\Bundle\SearchBundle\EventListener\PrepareResultItemListener
 
+    oro_search.extension.formatter.property.search_result_property.class: Oro\Bundle\SearchBundle\Extension\SearchResultProperty
+    oro_search.extension.search_results.class:          Oro\Bundle\SearchBundle\Extension\SearchResultsExtension
+
+    oro_search.event_listener.search_results_grid_listener.class: Oro\Bundle\SearchBundle\EventListener\SearchResultsGridListener
+    oro_search.datasource.search.class:                 Oro\Bundle\SearchBundle\Extension\SearchDatasource
+
+    oro_search.extension.orm_pager.class:               Oro\Bundle\SearchBundle\Extension\Pager\SearchPagerExtension
+    oro_search.extension.pager.search.pager.class:      Oro\Bundle\SearchBundle\Extension\Pager\IndexerPager
+
 services:
     oro_search.index:
         class:                        %oro_search.index.class%
-        arguments:                    ["@doctrine.orm.entity_manager", "@oro_search.search.engine", "@oro_search.mapper"]
+        arguments:
+            - "@doctrine.orm.entity_manager"
+            - "@oro_search.search.engine"
+            - "@oro_search.mapper"
+            - "@oro_search.security_provider"
+
+    oro_search.security_provider:
+        class:                        %oro_search.security_provider.class%
+        public:                       false
+        arguments:
+            - "@oro_security.security_facade"
+            - "@oro_security.entity_security_metadata_provider"
 
     oro_search.index_listener:
         class:                        %oro_search.index_listener.class%
@@ -44,3 +65,50 @@ services:
             - @doctrine.orm.entity_manager
         tags:
             - { name: kernel.event_listener, event: oro_search.prepare_result_item, method: process }
+
+    oro_search.extension.formatter.property.search_result_property:
+        class: %oro_search.extension.formatter.property.search_result_property.class%
+        arguments:
+            - @twig
+            - %oro_search.entities_config%
+
+        tags:
+            - { name:  oro_datagrid.extension.formatter.property, type: search-result }
+
+    oro_search.extension.search_results:
+        class: %oro_search.extension.search_results.class%
+        arguments:
+            - @oro_datagrid.datagrid.request_params
+            - @oro_search.formatter.result_formatter
+            - @doctrine.orm.entity_manager
+            - @oro_search.mapper
+            - @event_dispatcher
+        tags:
+            - { name: oro_datagrid.extension }
+
+    oro_search.event_listener.search_results_grid_listener:
+        class: %oro_search.event_listener.search_results_grid_listener.class%
+        arguments:
+          - @oro_datagrid.datagrid.request_params
+          - @oro_search.index
+        tags:
+          - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.search-grid, method: onBuildAfter }
+
+    oro_search.datasource.search:
+        class: %oro_search.datasource.search.class%
+        arguments:
+            - @doctrine.orm.entity_manager
+            - @oro_security.acl_helper
+        tags:
+            - { name: oro_datagrid.datasource, type: search }
+
+    oro_search.extension.pager.orm.pager:
+        class: %oro_search.extension.pager.search.pager.class%
+
+    oro_search.extension.search_pager:
+        class: %oro_search.extension.orm_pager.class%
+        arguments:
+            - @oro_search.extension.pager.orm.pager
+            - @oro_datagrid.datagrid.request_params
+        tags:
+            - { name: oro_datagrid.extension }

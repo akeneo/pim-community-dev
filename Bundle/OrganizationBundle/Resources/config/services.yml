@@ -7,13 +7,14 @@ parameters:
     oro_organization.business_unit.manager.class:                       Oro\Bundle\OrganizationBundle\Entity\Manager\BusinessUnitManager
     oro_organization.type.ownership_type.class:                         Oro\Bundle\OrganizationBundle\Form\Type\OwnershipType
     oro_organization.form.type.business_unit_tree_select_type.class:    Oro\Bundle\OrganizationBundle\Form\Type\BusinessUnitTreeSelectType
-    oro_organization.type.form_type.class:                              Oro\Bundle\OrganizationBundle\Form\Extension\FormTypeExtension
+    oro_organization.form.extension.owner.class:                        Oro\Bundle\OrganizationBundle\Form\Extension\OwnerFormExtension
     oro_organization.form.transformer.business_unit_select.class:       Oro\Bundle\OrganizationBundle\Form\Transformer\BusinessUnitTransformer
     oro_organization.form.listener.class:                               Oro\Bundle\OrganizationBundle\Event\FormListener
     oro_organization.twig.get_owner.class:                              Oro\Bundle\OrganizationBundle\Twig\OwnerTypeExtension
     oro_organization.entity_ownership.listener.class:                   Oro\Bundle\OrganizationBundle\Event\RecordOwnerDataListener
     oro_organization.business_unit.listener.class:                      Oro\Bundle\OrganizationBundle\Event\BusinessUnitListener
     oro_organization.twig.business_units.class:                         Oro\Bundle\OrganizationBundle\Twig\BusinessUnitExtension
+    oro_organization.provider.business_units.class:                     Oro\Bundle\OrganizationBundle\Provider\BusinessUnitGridService
 
 services:
     oro_organization.form.business_unit:
@@ -78,11 +79,12 @@ services:
         tags:
             - { name: form.type, alias: oro_business_unit_tree_select }
 
-    oro_organization.form.type.form_type:
-        class:                        %oro_organization.type.form_type.class%
+    oro_organization.form.extension.owner:
+        class:                        %oro_organization.form.extension.owner.class%
         arguments:
             - @security.context
-            - @oro_entity.owner.ownership_metadata_provider
+            - @doctrine
+            - @oro_security.owner.ownership_metadata_provider
             - @oro_organization.business_unit_manager
             - @oro_security.security_facade
             - @translator
@@ -122,3 +124,25 @@ services:
             - @oro_organization.business_unit_manager
         tags:
             - { name: twig.extension }
+
+    oro_organization.event_listener.bu_update_grid_listener:
+        class: %oro_datagrid.event_listener.base_orm_relation.class%
+        arguments:
+          - business_unit_id
+          - @oro_datagrid.datagrid.request_params
+        tags:
+          - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.bu-update-users-grid, method: onBuildAfter }
+
+    oro_organization.event_listener.bu_view_grid_listener:
+        class: %oro_datagrid.event_listener.base_orm_relation.class%
+        arguments:
+          - business_unit_id
+          - @oro_datagrid.datagrid.request_params
+          - false
+        tags:
+          - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.bu-view-users-grid, method: onBuildAfter }
+
+    oro_organization.provider.business_units_grid:
+        class: %oro_organization.provider.business_units.class%
+        arguments:
+          - @doctrine.orm.entity_manager

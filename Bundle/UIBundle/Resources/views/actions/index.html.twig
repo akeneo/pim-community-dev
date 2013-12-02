@@ -1,27 +1,42 @@
 {% extends bap.layout %}
 {% import 'OroUIBundle::macros.html.twig' as UI %}
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
 {% block head_script %}
     {{ parent() }}
-    {% placeholder prepare_grid with {'datagrid': datagrid, 'selector': '#' ~ gridId} %}
+    {% if gridId is defined %}{% placeholder prepare_grid with {'datagrid': datagrid, 'selector': '#' ~ gridId} %}{% endif %}
 {% endblock %}
 {% block content %}
-     <div class="container-fluid page-title">
-         <div class="navigation clearfix navbar-extra">
-             <div class="row">
-                 <div class="pull-right title-buttons-container">
+    <div class="container-fluid page-title">
+        <div class="navigation clearfix navbar-extra">
+            <div class="row">
+                <div class="span9">
+                    <div class="pull-left">
+                        <div class="container-fluid">
+                            <h1 class="oro-subtitle">{{ (pageTitle is defined ? pageTitle : '')|trans }}</h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="pull-right title-buttons-container">
                     {% placeholder index_navButtons_before %}
-                     {% block navButtons %}{% endblock navButtons %}
+                    {% block navButtons %}{% endblock navButtons %}
                     {% placeholder index_navButtons_after %}
-                 </div>
-                 <div class="span9">
-                     <div class="pull-left">
-                         <div class="container-fluid">
-                             <h1 class="oro-subtitle">{{ (pageTitle is defined ? pageTitle : '')|trans }}</h1>
-                         </div>
-                     </div>
-                 </div>
-             </div>
-         </div>
-     </div>
-     {{ UI.gridBlock(gridId) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% block content_datagrid %}
+        {% if gridName is defined %}
+            {% if params is defined %}
+                {{ dataGrid.renderGrid(gridName, params) }}
+            {% else %}
+                {{ dataGrid.renderGrid(gridName) }}
+            {% endif %}
+        {% endif %}
+
+        {# fallback for OroGridBundle grids #}
+        {% if gridId is defined %}
+            {{ UI.gridBlock(gridId) }}
+        {% endif %}
+    {% endblock content_datagrid %}
 {% endblock content %}

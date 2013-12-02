@@ -29,7 +29,7 @@ abstract class AbstractMapper
      */
     public function getFieldValue($objectOrArray, $fieldName)
     {
-        $propertyAccessor = PropertyAccess::getPropertyAccessor();
+        $propertyAccessor = PropertyAccess::createPropertyAccessor();
 
         return $propertyAccessor->getValue($objectOrArray, $fieldName);
     }

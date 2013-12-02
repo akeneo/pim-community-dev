@@ -44,13 +44,13 @@ class Ace
     /**
      * Constructor
      *
-     * @param string $type
-     * @param string|null $field
+     * @param string                    $type
+     * @param string|null               $field
      * @param SecurityIdentityInterface $sid
-     * @param bool $granting
-     * @param int $mask
-     * @param string|null $strategy
-     * @param bool $replace
+     * @param bool                      $granting
+     * @param int                       $mask
+     * @param string|null               $strategy
+     * @param bool                      $replace
      */
     public function __construct($type, $field, SecurityIdentityInterface $sid, $granting, $mask, $strategy, $replace)
     {

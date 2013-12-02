@@ -49,10 +49,8 @@ require_once 'PHP/CodeCoverage/Autoload.php';
 // It defaults to getcwd(). If you have configured a different directory
 // in prepend.php, you need to configure the same directory here.
 if (!isset($GLOBALS['PHPUNIT_COVERAGE_DATA_DIRECTORY'])) {
-    $PHPUNIT_COVERAGE_DATA_DIRECTORY = realpath(
-        $_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . '..' .
-        DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'logs'
-    );
+    $PHPUNIT_COVERAGE_DATA_DIRECTORY = realpath($_SERVER['DOCUMENT_ROOT']) . DIRECTORY_SEPARATOR . '..' .
+        DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR. 'logs';
 }
 
 if (isset($_GET['PHPUNIT_SELENIUM_TEST_ID'])) {
@@ -66,7 +64,7 @@ if (isset($_GET['PHPUNIT_SELENIUM_TEST_ID'])) {
 
     foreach ($files as $file) {
         $data = unserialize(file_get_contents($file));
-        //unlink($file);
+        unlink($file);
         unset($file);
         $filter = new PHP_CodeCoverage_Filter();
 
@@ -74,7 +72,7 @@ if (isset($_GET['PHPUNIT_SELENIUM_TEST_ID'])) {
             if ($filter->isFile($file)) {
                 if (!isset($coverage[$file])) {
                     $coverage[$file] = array(
-                      'md5' => md5_file($file), 'coverage' => $lines
+                        'md5' => md5_file($file), 'coverage' => $lines
                     );
                 } else {
                     foreach ($lines as $line => $flag) {

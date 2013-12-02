@@ -9,7 +9,8 @@
         "php": ">=5.3.3",
         "symfony/symfony": "2.1.*",
         "oro/ui-bundle": "dev-master",
-        "oro/user-bundle": "dev-master"
+        "oro/user-bundle": "dev-master",
+        "oro/requirejs-bundle": "dev-master"
     },
     "autoload": {
         "psr-0": {

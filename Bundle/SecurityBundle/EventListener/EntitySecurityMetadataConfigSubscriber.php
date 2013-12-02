@@ -5,7 +5,7 @@ namespace Oro\Bundle\SecurityBundle\EventListener;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Oro\Bundle\SecurityBundle\Metadata\EntitySecurityMetadataProvider;
 use Oro\Bundle\EntityConfigBundle\Event\Events;
-use Oro\Bundle\EntityConfigBundle\Event\NewEntityConfigModelEvent;
+use Oro\Bundle\EntityConfigBundle\Event\PersistConfigEvent;
 
 class EntitySecurityMetadataConfigSubscriber implements EventSubscriberInterface
 {
@@ -28,18 +28,19 @@ class EntitySecurityMetadataConfigSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            Events::NEW_ENTITY_CONFIG_MODEL => 'newEntityConfig'
+            Events::PRE_PERSIST_CONFIG => 'prePersistEntityConfig'
         );
     }
 
     /**
-     * @param NewEntityConfigModelEvent $event
+     * @param PersistConfigEvent $event
      */
-    public function newEntityConfig(NewEntityConfigModelEvent $event)
+    public function prePersistEntityConfig(PersistConfigEvent $event)
     {
         $cp = $event->getConfigManager()->getProvider('security');
-        if ($cp->hasConfig($event->getClassName())) {
-            $config = $cp->getConfig($event->getClassName());
+        $className = $event->getConfig()->getId()->getClassName();
+        if ($cp->hasConfig($className)) {
+            $config = $cp->getConfig($className);
             $this->provider->clearCache($config->get('type'));
         }
     }

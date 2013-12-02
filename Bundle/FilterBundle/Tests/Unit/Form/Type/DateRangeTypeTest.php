@@ -19,6 +19,7 @@ class DateRangeTypeTest extends AbstractTypeTestCase
     protected function setUp()
     {
         parent::setUp();
+
         $this->type = new DateRangeType();
     }
 
@@ -61,8 +62,8 @@ class DateRangeTypeTest extends AbstractTypeTestCase
             'custom format' => array(
                 'bindData' => array('start' => 'Jan 12, 1970', 'end' => 'Jan 12, 2013'),
                 'formData' => array(
-                    'start' => $this->createDateTime('1970-01-12'),
-                    'end' => $this->createDateTime('2013-01-12'),
+                    'start' => $this->createDateTime('1970-01-12', 'UTC'),
+                    'end' => $this->createDateTime('2013-01-12', 'UTC'),
                 ),
                 'viewData' => array(
                     'value' => array('start' => 'Jan 12, 1970', 'end' => 'Jan 12, 2013'),

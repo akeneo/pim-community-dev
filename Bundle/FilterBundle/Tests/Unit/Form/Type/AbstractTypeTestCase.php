@@ -71,7 +71,7 @@ abstract class AbstractTypeTestCase extends FormIntegrationTestCase
         $translator = $this->getMockForAbstractClass('Symfony\Component\Translation\TranslatorInterface');
         $translator->expects($this->any())
             ->method('trans')
-            ->with($this->anything(), array(), 'OroFilterBundle')
+            ->with($this->anything(), array())
             ->will($this->returnArgument(0));
 
         return $translator;

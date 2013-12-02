@@ -19,12 +19,16 @@ placeholders:
     head_script:
         label: Head scripts
     requirejs_config_extend:
-        lable: RequireJS Configuration Extend
+        items:
+            ui_requirejs_config:
+                order: 10
 
 items:
-   logo:
+    logo:
         template: OroUIBundle:Default:logo.html.twig
-   help:
+    help:
         template: OroUIBundle:Default:help.html.twig
-   add_update_delete:
+    add_update_delete:
         template: OroUIBundle:Form:buttons.html.twig
+    ui_requirejs_config:
+        template: OroUIBundle::requirejs.config.js.twig

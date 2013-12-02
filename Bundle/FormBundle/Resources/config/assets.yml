@@ -1,3 +1,0 @@
-js:
-  'form':
-      - '@OroFormBundle/Resources/public/js/oro.select2.config.js'

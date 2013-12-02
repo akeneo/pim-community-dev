@@ -70,8 +70,76 @@ class WorkflowManagerTest extends \PHPUnit_Framework_TestCase
         unset($this->workflowManager);
     }
 
-    public function testGetAllowedStartTransitions()
+    public function testGetStartTransitions()
     {
+        $startTransition = new Transition();
+        $startTransition->setName('start_transition');
+        $startTransition->setStart(true);
+
+        $startTransitions = new ArrayCollection(array($startTransition));
+        $workflow = $this->createWorkflow('test_workflow', array(), $startTransitions->toArray());
+        $this->assertEquals($startTransitions, $this->workflowManager->getStartTransitions($workflow));
+    }
+
+    public function testGetTransitionsByWorkflowItem()
+    {
+        $workflowName = 'test_workflow';
+
+        $workflowItem = new WorkflowItem();
+        $workflowItem->setWorkflowName($workflowName);
+
+        $transition = new Transition();
+        $transition->setName('test_transition');
+
+        $transitions = new ArrayCollection(array($transition));
+
+        $workflow = $this->createWorkflow($workflowName);
+        $workflow->expects($this->once())
+            ->method('getTransitionsByWorkflowItem')
+            ->with($workflowItem)
+            ->will($this->returnValue($transitions));
+
+        $this->workflowRegistry->expects($this->once())
+            ->method('getWorkflow')
+            ->with($workflowName)
+            ->will($this->returnValue($workflow));
+
+        $this->assertEquals(
+            $transitions,
+            $this->workflowManager->getTransitionsByWorkflowItem($workflowItem)
+        );
+    }
+
+    public function testIsTransitionAvailable()
+    {
+        $workflowName = 'test_workflow';
+
+        $workflowItem = new WorkflowItem();
+        $workflowItem->setWorkflowName($workflowName);
+
+        $errors = new ArrayCollection();
+
+        $transition = new Transition();
+        $transition->setName('test_transition');
+
+        $workflow = $this->createWorkflow($workflowName);
+        $workflow->expects($this->once())
+            ->method('isTransitionAvailable')
+            ->with($workflowItem, $transition, $errors)
+            ->will($this->returnValue(true));
+
+        $this->workflowRegistry->expects($this->once())
+            ->method('getWorkflow')
+            ->with($workflowName)
+            ->will($this->returnValue($workflow));
+
+        $this->assertTrue($this->workflowManager->isTransitionAvailable($workflowItem, $transition, $errors));
+    }
+
+    public function testIsStartTransitionAvailable()
+    {
+        $workflowName = 'test_workflow';
+        $errors = new ArrayCollection();
         $entity = new \DateTime('now');
 
         $entityAttribute = new Attribute();
@@ -83,21 +151,21 @@ class WorkflowManagerTest extends \PHPUnit_Framework_TestCase
         $stringAttribute->setName('other_attribute');
         $stringAttribute->setType('string');
 
-        $startTransition = new Transition();
-        $startTransition->setName('start_transition');
-        $startTransition->setStart(true);
+        $transition = 'test_transition';
 
-        $allowedStartTransitions = new ArrayCollection(array($startTransition));
-
-        $workflow = $this->createWorkflow('test_workflow', array($entityAttribute, $stringAttribute));
+        $workflow = $this->createWorkflow($workflowName, array($entityAttribute, $stringAttribute));
         $workflow->expects($this->once())
-            ->method('getAllowedStartTransitions')
-            ->with(array('entity_attribute' => $entity))
-            ->will($this->returnValue($allowedStartTransitions));
+            ->method('isStartTransitionAvailable')
+            ->with($transition, array('entity_attribute' => $entity), $errors)
+            ->will($this->returnValue(true));
 
-        $this->assertEquals(
-            $allowedStartTransitions,
-            $this->workflowManager->getAllowedStartTransitions($workflow, $entity)
+        $this->workflowRegistry->expects($this->once())
+            ->method('getWorkflow')
+            ->with($workflowName)
+            ->will($this->returnValue($workflow));
+
+        $this->assertTrue(
+            $this->workflowManager->isStartTransitionAvailable($workflowName, $transition, $entity, $errors)
         );
     }
 
@@ -107,38 +175,16 @@ class WorkflowManagerTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetWorkflowDataUnknownAttribute()
     {
+        $workflowName = 'empty_workflow';
+        $transition = 'test_transition';
         $entity = new \DateTime('now');
-        $workflow = $this->createWorkflow('empty_workflow');
-        $this->workflowManager->getAllowedStartTransitions($workflow, $entity);
-    }
-
-    public function testGetAllowedTransitions()
-    {
-        $workflowName = 'test_workflow';
-
-        $workflowItem = new WorkflowItem();
-        $workflowItem->setWorkflowName($workflowName);
-
-        $transition = new Transition();
-        $transition->setName('test_transition');
-
-        $allowedTransitions = new ArrayCollection(array($transition));
 
         $workflow = $this->createWorkflow($workflowName);
-        $workflow->expects($this->once())
-            ->method('getAllowedTransitions')
-            ->with($workflowItem)
-            ->will($this->returnValue($allowedTransitions));
-
         $this->workflowRegistry->expects($this->once())
             ->method('getWorkflow')
             ->with($workflowName)
             ->will($this->returnValue($workflow));
-
-        $this->assertEquals(
-            $allowedTransitions,
-            $this->workflowManager->getAllowedTransitions($workflowItem)
-        );
+        $this->workflowManager->isStartTransitionAvailable($workflowName, $transition, $entity);
     }
 
     public function testStartWorkflow()
@@ -489,25 +535,40 @@ class WorkflowManagerTest extends \PHPUnit_Framework_TestCase
     /**
      * @param string $name
      * @param array $entityAttributes
+     * @param array $startTransitions
      * @return Workflow|\PHPUnit_Framework_MockObject_MockObject
      */
-    protected function createWorkflow($name = self::TEST_WORKFLOW_NAME, array $entityAttributes = array())
-    {
+    protected function createWorkflow(
+        $name = self::TEST_WORKFLOW_NAME,
+        array $entityAttributes = array(),
+        array $startTransitions = array()
+    ) {
+        $attributeManager = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\AttributeManager')
+            ->setMethods(array('getManagedEntityAttributes'))
+            ->getMock();
+        $attributeManager->expects($this->any())
+            ->method('getManagedEntityAttributes')
+            ->will($this->returnValue($entityAttributes));
+
+        $transitionManager = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\TransitionManager')
+            ->setMethods(array('getStartTransitions'))
+            ->getMock();
+        $transitionManager->expects($this->any())
+            ->method('getStartTransitions')
+            ->will($this->returnValue(new ArrayCollection($startTransitions)));
+
         $worklflow = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\Workflow')
-            ->setConstructorArgs(array(new StepManager(), new AttributeManager(), new TransitionManager()))
+            ->setConstructorArgs(array(null, $attributeManager, $transitionManager))
             ->setMethods(
                 array(
-                    'getManagedEntityAttributes',
-                    'getAllowedStartTransitions',
-                    'getAllowedTransitions',
+                    'isTransitionAvailable',
+                    'isStartTransitionAvailable',
+                    'getTransitionsByWorkflowItem',
                     'start',
                     'transit'
                 )
             )
             ->getMock();
-        $worklflow->expects($this->any())
-            ->method('getManagedEntityAttributes')
-            ->will($this->returnValue($entityAttributes));
 
         /** @var Workflow $worklflow */
         $worklflow->setName($name);

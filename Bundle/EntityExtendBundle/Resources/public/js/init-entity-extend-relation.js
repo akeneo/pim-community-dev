@@ -10,18 +10,26 @@ function($, routing) {
                 query =  routing.generate.apply(routing, ['oro_entityconfig_field_search', {id: target}]),
                 fields = $('form select.extend-rel-target-field');
 
-            $(fields).prev('span').text('loading...');
-            fields.empty().append('<option value="">Please choice target field...</option>');
+            $(fields).each(function(index, el){
+                var is_multiple = typeof $(el).attr('multiple') !== 'undefined' && $(el).attr('multiple') !== false;
+                if (is_multiple) {
+                    $(el).empty().append('<option value="">Loading...</option>');
+                } else {
+                    $(el).prev('span').text('loading...');
+                }
+            });
 
             $.getJSON(query, function(response) {
-                var items = [];
-                items.push('<option value="">Please choice target field...</option>');
-                $.each( response, function( key, val ) {
-                    items.push("<option value='" + key + "'>" + val + "</option>");
-                });
-                fields.empty().append(items.join(''));
+                $(fields).each(function(index, el){
+                    var items = [];
 
-                $(fields).prev('span').text('Please choice target field...');
+                    $.each( response, function( key, val ) {
+                        items.push("<option value='" + key + "'>" + val + "</option>");
+                    });
+
+                    $(el).empty().append(items.join(''));
+                    $(el).prev('span').text('Please choice target field...');
+                });
             });
 
             return false;

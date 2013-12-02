@@ -1,14 +1,14 @@
 /* global define */
-define(['oro/datagrid/abstract-action'],
+define(['oro/grid/abstract-action'],
 function(AbstractAction) {
     'use strict';
 
     /**
      * Refreshes collection
      *
-     * @export  oro/datagrid/refresh-collection-action
-     * @class   oro.datagrid.RefreshCollectionAction
-     * @extends oro.datagrid.AbstractAction
+     * @export  oro/grid/refresh-collection-action
+     * @class   oro.grid.RefreshCollectionAction
+     * @extends oro.grid.AbstractAction
      */
     return AbstractAction.extend({
 

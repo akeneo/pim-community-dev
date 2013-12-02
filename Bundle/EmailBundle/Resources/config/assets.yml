@@ -1,14 +1,3 @@
-js:
-  'email':
-      - '@OroEmailBundle/Resources/public/js/views/templates.updater.js'
-      - '@OroEmailBundle/Resources/public/js/models/templates.updater.js'
-      - '@OroEmailBundle/Resources/public/js/collections/templates.updater.js'
-      - '@OroEmailBundle/Resources/public/js/email.js'
-
-  'email_variables':
-      - '@OroEmailBundle/Resources/public/js/models/variable.js'
-      - '@OroEmailBundle/Resources/public/js/views/variables.updater.js'
-
 css:
     'email':
-      - '@OroEmailBundle/Resources/public/css/style.css'
+      - 'bundles/oroemail/css/style.css'

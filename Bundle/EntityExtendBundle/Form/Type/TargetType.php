@@ -2,60 +2,103 @@
 
 namespace Oro\Bundle\EntityExtendBundle\Form\Type;
 
-use Oro\Bundle\EntityConfigBundle\Entity\FieldConfigModel;
 use Symfony\Component\DependencyInjection\Container;
-use Symfony\Component\Form\AbstractType;
 
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
+
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
+use Oro\Bundle\EntityConfigBundle\Config\Id\EntityConfigId;
+use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigId;
+
+use Oro\Bundle\EntityConfigBundle\Provider\ConfigProvider;
+use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 
 class TargetType extends AbstractType
 {
-    /** @var  ConfigManager */
-    protected $configManager;
-
-    /** @var  Request */
-    protected $request;
+    /**
+     * @var ConfigProvider
+     */
+    protected $configProvider;
 
     /**
-     * @param ConfigManager $configManager
-     * @param Request $request
+     * @var FieldConfigId
      */
-    public function __construct(ConfigManager $configManager, Request $request)
+    protected $configId;
+
+    public function __construct(ConfigProvider $configProvider, $configId)
     {
-        $this->configManager = $configManager;
-        $this->request       = $request;
+        $this->configProvider = $configProvider;
+        $this->configId = $configId;
+        $this->targetEntity = $this->configProvider->getConfigById($this->configId)->get('target_entity');
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, array($this, 'preSetData'));
+    }
+
+    public function preSetData(FormEvent $event)
+    {
+        $event->setData($this->targetEntity);
+    }
+
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $options = array();
-        $config  = array();
+        $resolver->setDefaults(
+            array(
+                'attr'        => array(
+                    'class' => 'extend-rel-target-name'
+                ),
+                'label'       => 'Target entity',
+                'empty_value' => $this->targetEntity ? false : 'Please choice target entity...',
+                'read_only'   => (bool) $this->targetEntity,
+                'choices'     => $this->getEntityChoiceList(
+                    $this->configId->getClassName(),
+                    $this->configId->getFieldType()
+                )
+            )
+        );
+    }
 
-        if (null === $this->request->get('entity')) {
-            /** @var FieldConfigModel $entity */
-            $entity = $this->configManager->getEntityManager()
-                ->getRepository(FieldConfigModel::ENTITY_NAME)
-                ->find($this->request->get('id'));
+    protected function getEntityChoiceList($entityClassName, $relationType)
+    {
+        $configManager = $this->configProvider->getConfigManager();
+        $choices       = array();
 
-            $entityClassName = $entity->getEntity()->getClassName();
-            $config['disabled'] = true;
+        if ($this->targetEntity) {
+            $entityIds = array($this->configProvider->getId($this->targetEntity));
         } else {
-            $entityClassName = $this->request->get('entity')->getClassName();
+            $entityIds = $configManager->getIds('extend');
         }
 
-        $entities = $this->configManager->getIds('entity');
-        foreach ($entities as $entity) {
+        if (in_array($relationType, array('oneToMany', 'manyToMany'))) {
+            $entityIds = array_filter(
+                $entityIds,
+                function (EntityConfigId $configId) use ($configManager) {
+                    $config = $configManager->getConfig($configId);
+
+                    return $config->is('is_extend');
+                }
+            );
+        }
+
+        $entityIds = array_filter(
+            $entityIds,
+            function (EntityConfigId $configId) use ($configManager) {
+                $config = $configManager->getConfig($configId);
+
+                return $config->is('is_extend', false) || !$config->is('state', ExtendManager::STATE_NEW);
+            }
+        );
+
+        foreach ($entityIds as $entityId) {
             $entityName = $moduleName = '';
-
-            if ($entity->getClassName() != $entityClassName) {
-
-                $className = explode('\\', $entity->getClassName());
+            if ($entityId->getClassName() != $entityClassName) {
+                $className  = explode('\\', $entityId->getClassName());
                 if (count($className) > 1) {
                     foreach ($className as $i => $name) {
                         if (count($className) - 1 == $i) {
@@ -66,19 +109,11 @@ class TargetType extends AbstractType
                     }
                 }
 
-                $options[$entity->getClassName()] = $moduleName . ':' . $entityName;
+                $choices[$entityId->getClassName()] = $moduleName . ':' . $entityName;
             }
         }
 
-        $resolver->setDefaults(
-            array_merge_recursive(
-                $config,
-                array(
-                    'required' => true,
-                    'choices'  => $options,
-                )
-            )
-        );
+        return $choices;
     }
 
     /**

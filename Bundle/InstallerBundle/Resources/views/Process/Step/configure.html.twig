@@ -46,7 +46,7 @@
 
         <div class="button-set">
             <div class="pull-right">
-                <a href="{{ path('sylius_flow_display', { scenarioAlias: 'oro_installer', stepName: 'check' }) }}" class="button back"><span>{{ 'process.button.back'|trans }}</span></a>
+                <a href="{{ app.request.basePath }}/install.php" class="button back"><span>{{ 'process.button.back'|trans }}</span></a>
                 <button class="primary button next" type="submit"><span>{{ 'process.button.next'|trans }}</span></button>
             </div>
         </div>

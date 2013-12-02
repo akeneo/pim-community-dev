@@ -43,67 +43,71 @@ class AbstractDateFilterTest extends FilterTestCase
             ),
             'correct_dates' => array(
                 array(
-                    'value' => array('start' => new \DateTime('2013-04-08'), 'end' => new \DateTime('2013-05-08')),
+                    'value' => array(
+                        'start' => new \DateTime('2013-04-08', new \DateTimeZone('UTC')),
+                        'end' => new \DateTime('2013-05-08', new \DateTimeZone('UTC'))),
                     'type' => DateRangeFilterType::TYPE_BETWEEN
                 ),
                 array(
-                    'date_start' => $this->dateTimeToString(new \DateTime('2013-04-08')),
-                    'date_end' => $this->dateTimeToString(new \DateTime('2013-05-08')),
+                    'date_start' => $this->dateTimeToString(new \DateTime('2013-04-08', new \DateTimeZone('UTC'))),
+                    'date_end' => $this->dateTimeToString(new \DateTime('2013-05-08', new \DateTimeZone('UTC'))),
                     'type' => DateRangeFilterType::TYPE_BETWEEN
                 )
             ),
             'correct_dates_between_as_default_type' => array(
                 array(
-                    'value' => array('start' => new \DateTime('2013-04-08'), 'end' => new \DateTime('2013-05-08')),
+                    'value' => array(
+                        'start' => new \DateTime('2013-04-08', new \DateTimeZone('UTC')),
+                        'end' => new \DateTime('2013-05-08', new \DateTimeZone('UTC'))),
                     'type'  => 'SomeNotValidValue'
                 ),
                 array(
-                    'date_start' => $this->dateTimeToString(new \DateTime('2013-04-08')),
-                    'date_end'   => $this->dateTimeToString(new \DateTime('2013-05-08')),
+                    'date_start' => $this->dateTimeToString(new \DateTime('2013-04-08', new \DateTimeZone('UTC'))),
+                    'date_end'   => $this->dateTimeToString(new \DateTime('2013-05-08', new \DateTimeZone('UTC'))),
                     'type'       => DateRangeFilterType::TYPE_BETWEEN
                 )
             ),
             'only_start_date' => array(
                 array(
-                    'value' => array('start' => new \DateTime('2013-04-08')),
+                    'value' => array('start' => new \DateTime('2013-04-08', new \DateTimeZone('UTC'))),
                     'type' => DateRangeFilterType::TYPE_BETWEEN
                 ),
                 array(
-                    'date_start' => $this->dateTimeToString(new \DateTime('2013-04-08')),
+                    'date_start' => $this->dateTimeToString(new \DateTime('2013-04-08', new \DateTimeZone('UTC'))),
                     'date_end' => null,
                     'type' => DateRangeFilterType::TYPE_BETWEEN
                 )
             ),
             'only_end_date' => array(
                 array(
-                    'value' => array('end' => new \DateTime('2013-04-08')),
+                    'value' => array('end' => new \DateTime('2013-04-08', new \DateTimeZone('UTC'))),
                     'type' => DateRangeFilterType::TYPE_BETWEEN
                 ),
                 array(
                     'date_start' => null,
-                    'date_end' => $this->dateTimeToString(new \DateTime('2013-04-08')),
+                    'date_end' => $this->dateTimeToString(new \DateTime('2013-04-08', new \DateTimeZone('UTC'))),
                     'type' => DateRangeFilterType::TYPE_BETWEEN
                 )
             ),
             'more_than_date' => array(
                 array(
-                    'value' => array('start' => new \DateTime('2013-04-08')),
+                    'value' => array('start' => new \DateTime('2013-04-08', new \DateTimeZone('UTC'))),
                     'type'  => DateRangeFilterType::TYPE_MORE_THAN
                 ),
                 array(
-                    'date_start' => $this->dateTimeToString(new \DateTime('2013-04-08')),
+                    'date_start' => $this->dateTimeToString(new \DateTime('2013-04-08', new \DateTimeZone('UTC'))),
                     'date_end'   => null,
                     'type'       => DateRangeFilterType::TYPE_MORE_THAN
                 )
             ),
             'less_than_date' => array(
                 array(
-                    'value' => array('end' => new \DateTime('2013-04-08')),
+                    'value' => array('end' => new \DateTime('2013-04-08', new \DateTimeZone('UTC'))),
                     'type'  => DateRangeFilterType::TYPE_LESS_THAN
                 ),
                 array(
                     'date_start' => null,
-                    'date_end'   => $this->dateTimeToString(new \DateTime('2013-04-08')),
+                    'date_end'   => $this->dateTimeToString(new \DateTime('2013-04-08', new \DateTimeZone('UTC'))),
                     'type'       => DateRangeFilterType::TYPE_LESS_THAN
                 )
             ),
@@ -134,7 +138,10 @@ class AbstractDateFilterTest extends FilterTestCase
             ),
             'between' => array(
                 'data' => array(
-                    'value' => array('start' => new \DateTime('2012-01-01'), 'end' => new \DateTime('2013-01-01')),
+                    'value' => array(
+                        'start' => new \DateTime('2012-01-01', new \DateTimeZone('UTC')),
+                        'end' => new \DateTime('2013-01-01', new \DateTimeZone('UTC'))
+                    ),
                     'type'  => DateRangeFilterType::TYPE_BETWEEN
                 ),
                 'expectProxyQueryCalls' => array(
@@ -155,16 +162,27 @@ class AbstractDateFilterTest extends FilterTestCase
                             )
                         ), null),
                     array('setParameter',
-                        array(self::TEST_NAME . '_p1', $this->dateTimeToString(new \DateTime('2012-01-01'))), null
+                        array(
+                            self::TEST_NAME . '_p1',
+                            $this->dateTimeToString(new \DateTime('2012-01-01', new \DateTimeZone('UTC')))
+                        ),
+                        null
                     ),
                     array('setParameter',
-                        array(self::TEST_NAME . '_p2', $this->dateTimeToString(new \DateTime('2013-01-01'))), null
+                        array(
+                            self::TEST_NAME . '_p2',
+                            $this->dateTimeToString(new \DateTime('2013-01-01', new \DateTimeZone('UTC')))
+                        ),
+                        null
                     ),
                 )
             ),
             'not_between' => array(
                 'data' => array(
-                    'value' => array('start' => new \DateTime('2012-01-01'), 'end' => new \DateTime('2013-01-01')),
+                    'value' => array(
+                        'start' => new \DateTime('2012-01-01', new \DateTimeZone('UTC')),
+                        'end' => new \DateTime('2013-01-01', new \DateTimeZone('UTC'))
+                    ),
                     'type'  => DateRangeFilterType::TYPE_NOT_BETWEEN
                 ),
                 'expectProxyQueryCalls' => array(
@@ -184,16 +202,23 @@ class AbstractDateFilterTest extends FilterTestCase
                             )
                         ), null),
                     array('setParameter',
-                        array(self::TEST_NAME . '_p1', $this->dateTimeToString(new \DateTime('2012-01-01'))), null
+                        array(
+                            self::TEST_NAME . '_p1',
+                            $this->dateTimeToString(new \DateTime('2012-01-01', new \DateTimeZone('UTC')))),
+                        null
                     ),
                     array('setParameter',
-                        array(self::TEST_NAME . '_p2', $this->dateTimeToString(new \DateTime('2013-01-01'))), null
+                        array(
+                            self::TEST_NAME . '_p2',
+                            $this->dateTimeToString(new \DateTime('2013-01-01', new \DateTimeZone('UTC')))
+                        ),
+                        null
                     ),
                 )
             ),
             'date_more_than' => array(
                 'data'                  => array(
-                    'value' => array('start' => new \DateTime('2012-01-01')),
+                    'value' => array('start' => new \DateTime('2012-01-01', new \DateTimeZone('UTC'))),
                     'type'  => DateRangeFilterType::TYPE_MORE_THAN
                 ),
                 'expectProxyQueryCalls' => array(
@@ -211,14 +236,17 @@ class AbstractDateFilterTest extends FilterTestCase
                     ),
                     array(
                         'setParameter',
-                        array(self::TEST_NAME . '_p1', $this->dateTimeToString(new \DateTime('2012-01-01'))),
+                        array(
+                            self::TEST_NAME . '_p1',
+                            $this->dateTimeToString(new \DateTime('2012-01-01', new \DateTimeZone('UTC')))
+                        ),
                         null
                     ),
                 )
             ),
             'date_less_than' => array(
                 'data'                  => array(
-                    'value' => array('end' => new \DateTime('2012-01-01')),
+                    'value' => array('end' => new \DateTime('2012-01-01', new \DateTimeZone('UTC'))),
                     'type'  => DateRangeFilterType::TYPE_LESS_THAN
                 ),
                 'expectProxyQueryCalls' => array(
@@ -236,7 +264,10 @@ class AbstractDateFilterTest extends FilterTestCase
                     ),
                     array(
                         'setParameter',
-                        array(self::TEST_NAME . '_p2', $this->dateTimeToString(new \DateTime('2012-01-01'))),
+                        array(
+                            self::TEST_NAME . '_p2',
+                            $this->dateTimeToString(new \DateTime('2012-01-01', new \DateTimeZone('UTC')))
+                        ),
                         null
                     ),
                 )

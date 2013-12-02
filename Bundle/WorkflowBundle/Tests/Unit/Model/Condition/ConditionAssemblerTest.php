@@ -3,7 +3,6 @@
 namespace Oro\Bundle\WorkflowBundle\Tests\Unit\Model\Condition;
 
 use Oro\Bundle\WorkflowBundle\Model\Condition\ConditionAssembler;
-use Oro\Bundle\WorkflowBundle\Model\Pass\ParameterPass;
 
 class ConditionAssemblerTest extends \PHPUnit_Framework_TestCase
 {
@@ -27,10 +26,12 @@ class ConditionAssemblerTest extends \PHPUnit_Framework_TestCase
                 )
             );
 
-        $parametersPass = $this->getMockBuilder('Oro\Bundle\WorkflowBundle\Model\Pass\PassInterface')
-            ->getMockForAbstractClass();
-        $parametersPass->expects($this->any())
-            ->method('pass')
+        $configurationPass = $this->getMockBuilder(
+            'Oro\Bundle\WorkflowBundle\Model\ConfigurationPass\ConfigurationPassInterface'
+        )->getMockForAbstractClass();
+
+        $configurationPass->expects($this->any())
+            ->method('passConfiguration')
             ->will(
                 $this->returnCallback(
                     function ($options) {
@@ -38,7 +39,10 @@ class ConditionAssemblerTest extends \PHPUnit_Framework_TestCase
                     }
                 )
             );
-        $assembler = new ConditionAssembler($factory, $parametersPass);
+
+        $assembler = new ConditionAssembler($factory);
+        $assembler->addConfigurationPass($configurationPass);
+
         $actual = $assembler->assemble($configuration);
         $this->assertEquals($expected, $actual);
     }
@@ -49,21 +53,28 @@ class ConditionAssemblerTest extends \PHPUnit_Framework_TestCase
             array(
                 array(
                     '@or' => array(
-                        array(
-                            '@and' => array(
-                                array('@graterOrEquals' => array('$contact.budget', 2000)),
-                                array('@isDevMode' => null),
-                                array(
-                                    '@inChoiceList' => array(
-                                        'type' => '$contact.type',
-                                        array('a' => 1, 'b' => 2)
+                        'parameters' => array(
+                            array(
+                                '@and' => array(
+                                    array('@graterOrEquals' =>
+                                        array('parameters' => array('$contact.budget', 2000))
+                                    ),
+                                    array('@isDevMode' => null),
+                                    array('@isDevModeWithParameter' => 'test'),
+                                    array('@isDevModeWithMessage' => array('test', 'message' => 'TEST MSG')),
+                                    array(
+                                        '@inChoiceList' => array(
+                                            'type' => '$contact.type',
+                                            array('a' => 1, 'b' => 2)
+                                        )
                                     )
                                 )
+                            ),
+                            array(
+                                '@notEmpty' => array('$lead.name')
                             )
                         ),
-                        array(
-                            '@notEmpty' => array('$lead.name')
-                        )
+                        'message' => 'Or fail'
                     )
                 ),
                 array(
@@ -73,7 +84,9 @@ class ConditionAssemblerTest extends \PHPUnit_Framework_TestCase
                                 '_and' => array(
                                     'passed' => array(
                                         array('_graterOrEquals' => array('passed' => array('$contact.budget', 2000))),
-                                        array('_isDevMode' => array('passed' => array(null))),
+                                        array('_isDevMode' => array('passed' => array())),
+                                        array('_isDevModeWithParameter' => array('passed' => array('test'))),
+                                        array('_isDevModeWithMessage' => array('passed' => array('test'))),
                                         array(
                                             '_inChoiceList' => array(
                                                 'passed' => array(

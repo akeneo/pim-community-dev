@@ -13,8 +13,8 @@ class UserSelectType extends AbstractType
                 'configs' => array(
                     'width' => '400px',
                     'placeholder' => 'oro.user.form.choose_user',
-                    'result_template_twig' => 'OroUserBundle:Js:userResult.html.twig',
-                    'selection_template_twig' => 'OroUserBundle:Js:userSelection.html.twig'
+                    'result_template_twig' => 'OroUserBundle:User:Autocomplete/result.html.twig',
+                    'selection_template_twig' => 'OroUserBundle:User:Autocomplete/selection.html.twig'
                 ),
                 'autocomplete_alias' => 'users'
             )

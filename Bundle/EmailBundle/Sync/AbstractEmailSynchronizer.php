@@ -86,7 +86,7 @@ abstract class AbstractEmailSynchronizer
             $this->log = new NullLogger();
         }
 
-        $startTime = new \DateTime('now', new \DateTimeZone('UTC'));
+        $startTime = $this->getCurrentUtcDateTime();
         $this->resetHangedOrigins();
 
         $maxExecTimeout = $maxExecTimeInMin > 0
@@ -96,7 +96,7 @@ abstract class AbstractEmailSynchronizer
         $failedOriginIds = array();
         while (true) {
             if ($maxExecTimeout !== false) {
-                $date = new \DateTime('now', new \DateTimeZone('UTC'));
+                $date = $this->getCurrentUtcDateTime();
                 if ($date->sub($maxExecTimeout) >= $startTime) {
                     $this->log->notice('Exit because allocated time frame elapsed.');
                     break;
@@ -182,7 +182,7 @@ abstract class AbstractEmailSynchronizer
 
         try {
             if ($this->changeOriginSyncState($origin, self::SYNC_CODE_IN_PROCESS)) {
-                $synchronizedAt = new \DateTime('now', new \DateTimeZone('UTC'));
+                $synchronizedAt = $this->getCurrentUtcDateTime();
                 $processor->process($origin);
                 $this->changeOriginSyncState($origin, self::SYNC_CODE_SUCCESS, $synchronizedAt);
             } else {
@@ -195,13 +195,13 @@ abstract class AbstractEmailSynchronizer
                 // ignore any exception here
                 $this->log->error(
                     sprintf('Cannot set the fail state. Error: %s.', $innerEx->getMessage()),
-                    array($innerEx)
+                    array('exception' => $innerEx)
                 );
             }
 
             $this->log->error(
                 sprintf('The synchronization failed. Error: %s.', $ex->getMessage()),
-                array($ex)
+                array('exception' => $ex)
             );
 
             throw $ex;
@@ -240,7 +240,7 @@ abstract class AbstractEmailSynchronizer
             ->set('o.syncCodeUpdatedAt', ':updated')
             ->where('o.id = :id')
             ->setParameter('code', $syncCode)
-            ->setParameter('updated', new \DateTime('now', new \DateTimeZone('UTC')))
+            ->setParameter('updated', $this->getCurrentUtcDateTime())
             ->setParameter('id', $origin->getId());
         if ($synchronizedAt !== null) {
             $queryBuilder
@@ -267,7 +267,7 @@ abstract class AbstractEmailSynchronizer
     {
         $this->log->notice('Finding an email origin ...');
 
-        $now = new \DateTime('now', new \DateTimeZone('UTC'));
+        $now = $this->getCurrentUtcDateTime();
         $border = clone $now;
         if ($minExecIntervalInMin > 0) {
             $border->sub(new \DateInterval('PT' . $minExecIntervalInMin . 'M'));
@@ -355,7 +355,7 @@ abstract class AbstractEmailSynchronizer
     {
         $this->log->notice('Resetting hanged email origins ...');
 
-        $now = new \DateTime('now', new \DateTimeZone('UTC'));
+        $now = $this->getCurrentUtcDateTime();
         $border = clone $now;
         $border->sub(new \DateInterval('P1D'));
 
@@ -371,5 +371,15 @@ abstract class AbstractEmailSynchronizer
 
         $affectedRows = $query->execute();
         $this->log->notice(sprintf('Updated %d row(s).', $affectedRows));
+    }
+
+    /**
+     * Gets a DateTime object that is set to the current date and time in UTC.
+     *
+     * @return \DateTime
+     */
+    protected function getCurrentUtcDateTime()
+    {
+        return new \DateTime('now', new \DateTimeZone('UTC'));
     }
 }

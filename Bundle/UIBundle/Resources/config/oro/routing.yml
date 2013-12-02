@@ -1,0 +1,91 @@
+oro_ui_index:
+    pattern: /ui
+    defaults: { _controller: FrameworkBundle:Template:template, template: "OroUIBundle:Default:index.html.twig" }
+
+oro_ui_1column:
+    pattern:  /ui/1column
+    defaults: { _controller: FrameworkBundle:Template:template, template: "OroUIBundle:Default:oneColumn.html.twig" }
+
+oro_ui_1column_menu:
+    pattern:  /ui/1column-menu
+    defaults: { _controller: FrameworkBundle:Template:template, template: "OroUIBundle:Default:oneColumnMenu.html.twig" }
+
+oro_ui_1column_toolbar:
+    pattern:  /ui/1column-toolbar
+    defaults: { _controller: FrameworkBundle:Template:template, template: "OroUIBundle:Default:oneColumnWithToolbar.html.twig" }
+
+oro_ui_2columns_left:
+    pattern:  /ui/2columns-left
+    defaults: { _controller: FrameworkBundle:Template:template, template: "OroUIBundle:Default:twoColumnLeft.html.twig" }
+
+oro_ui_2columns_right:
+    pattern:  /ui/2columns-right
+    defaults: { _controller: FrameworkBundle:Template:template, template: "OroUIBundle:Default:twoColumnRight.html.twig" }
+
+oro_ui_3columns:
+    pattern:  /ui/3columns
+    defaults: { _controller: FrameworkBundle:Template:template, template: "OroUIBundle:Default:threeColumn.html.twig" }
+
+oro_ui_forgot_password:
+    pattern:  /ui/forgot-password
+    defaults: { _controller: FrameworkBundle:Template:template, template: "OroUIBundle:Default:forgotPassword.html.twig" }
+
+oro_ui_login:
+    pattern:  /ui/login
+    defaults: { _controller: FrameworkBundle:Template:template, template: "OroUIBundle:Default:loginPage.html.twig" }
+
+oro_ui_registration:
+    pattern:  /ui/registration
+    defaults: { _controller: FrameworkBundle:Template:template, template: "OroUIBundle:Default:registrationPage.html.twig" }
+
+oro_ui_404:
+    pattern:  /ui/404
+    defaults: { _controller: FrameworkBundle:Template:template, template: "OroUIBundle:Default:Page404.html.twig" }
+
+oro_ui_503:
+    pattern:  /ui/503
+    defaults: { _controller: FrameworkBundle:Template:template, template: "OroUIBundle:Default:Page503.html.twig" }
+
+oro_ui_form_elements:
+    pattern:  /ui/form-elements
+    defaults: { _controller: FrameworkBundle:Template:template, template: "OroUIBundle:Default:formElements.html.twig" }
+
+oro_ui_messages:
+    pattern:  /ui/messages
+    defaults: { _controller: FrameworkBundle:Template:template, template: "OroUIBundle:Default:systemMessages.html.twig" }
+
+oro_ui_buttons:
+    pattern:  /ui/buttons
+    defaults: { _controller: FrameworkBundle:Template:template, template: "OroUIBundle:Default:buttonsPage.html.twig" }
+
+oro_ui_tables:
+    pattern:  /ui/tables
+    defaults: { _controller: FrameworkBundle:Template:template, template: "OroUIBundle:Default:tablesPage.html.twig" }
+
+oro_ui_general_elements:
+    pattern:  /ui/general-elements
+    defaults: { _controller: FrameworkBundle:Template:template, template: "OroUIBundle:Default:generalElements.html.twig" }
+
+oro_ui_dialog_styled:
+    pattern:  /ui/dialog-styled
+    defaults: { _controller: FrameworkBundle:Template:template, template: "OroUIBundle:Default:dialogStyledPage.html.twig" }
+
+oro_ui_grid_page:
+    pattern:  /ui/grid-page
+    defaults: { _controller: FrameworkBundle:Template:template, template: "OroUIBundle:Default:gridPage.html.twig" }
+
+oro_ui_grid_without_bar_page:
+    pattern:  /ui/grid-page-withoutabr
+    defaults: { _controller: FrameworkBundle:Template:template, template: "OroUIBundle:Default:gridPageWithoutBar.html.twig" }
+
+oro_ui_record_edit:
+    pattern:  /ui/record-edit
+    defaults: { _controller: FrameworkBundle:Template:template, template: "OroUIBundle:Default:RecordEdit.html.twig" }
+
+oro_ui_title_bar:
+    pattern:  /ui/entity-title-bar
+    defaults: { _controller: FrameworkBundle:Template:template, template: "OroUIBundle:Default:EntityTitleBar.html.twig" }
+
+oro_ui_form_horizontal:
+    pattern:  /ui/form-horizontal
+    defaults: { _controller: FrameworkBundle:Template:template, template: "OroUIBundle:Default:formHorizontal.html.twig" }

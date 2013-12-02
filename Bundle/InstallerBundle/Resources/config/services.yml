@@ -15,37 +15,11 @@ services:
         tags:
           - { name: sylius.process.scenario, alias: oro_installer }
 
-    oro_installer.requirements:
-        class:                                    %oro_installer.requirements.class%
-        arguments:
-            - [ "@oro_installer.requirements.settings", "@oro_installer.requirements.extensions", "@oro_installer.requirements.filesystem" ]
-
-    oro_installer.requirements.settings:
-        class:                                    %oro_installer.requirements.settings.class%
-        public:                                   false
-        arguments:
-            - "@translator"
-
-    oro_installer.requirements.extensions:
-        class:                                    %oro_installer.requirements.extensions.class%
-        public:                                   false
-        arguments:
-            - "@translator"
-
-    oro_installer.requirements.filesystem:
-        class:                                    %oro_installer.requirements.filesystem.class%
-        public:                                   false
-        arguments:
-            - "@translator"
-            - %kernel.root_dir%
-            - %kernel.cache_dir%
-            - %kernel.logs_dir%
-            - "%kernel.root_dir%/../web/uploads"
-
     oro_installer.yaml_persister:
         class:                                    %oro_installer.yaml_persister.class%
         arguments:
-            - %kernel.root_dir%/config/parameters.yml
+            - %kernel.root_dir%/config
+            - %kernel.environment%
 
     kernel.listener.install.event:
         class:                                    %oro_installer.listener.request.class%

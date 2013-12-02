@@ -4,17 +4,23 @@
 <div class="widget-content" id="{{ blockId }}">
     <div class="btn-group">
         {% for data in transitionsData %}
+            {% set transitionData = {
+                'redirect-to-workflow': redirectToWorkflow,
+                'transition-label': data.transition.label|trans,
+                'enabled': data.isAllowed,
+                'message': data.transition.message|trans,
+                'transition-condition-messages': data.errors
+            } %}
+
+            {% if data.errors is defined and data.errors %}
+                {% set transitionData = transitionData|merge({'transition-condition-messages': data.errors }) %}
+            {% endif %}
+
             {{ workflowMacros.renderTransitionButton(
                 data.workflow,
                 data.transition,
-                data.workflow.isTransitionAllowed(data.workflowItem, data.transition),
-                path(
-                    'oro_workflow_api_rest_workflow_transit',
-                    {
-                        workflowItemId: data.workflowItem.id,
-                        transitionName: data.transition.name
-                    }
-                )
+                data.workflowItem,
+                transitionData
             ) }}
         {% endfor %}
     </div>

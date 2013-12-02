@@ -27,12 +27,6 @@ class OroAsseticExtension extends Extension
         $loader->load('services.yml');
 
         $container->setParameter('oro_assetic.assets', $this->getAssets($container, $config));
-
-        // choose dynamic or static
-        $useController = $container->getParameterBag()->get('assetic.use_controller');
-        if (!$container->getParameterBag()->resolveValue($useController)) {
-            $loader->load('assetic_controller_service.yml');
-        }
     }
 
     /**
@@ -56,7 +50,6 @@ class OroAsseticExtension extends Extension
     {
         $bundles = $container->getParameter('kernel.bundles');
 
-        $js = array();
         $css = array();
 
         foreach ($bundles as $bundle) {
@@ -66,9 +59,6 @@ class OroAsseticExtension extends Extension
                 if (isset($bundleConfig['css'])) {
                     $css = array_merge_recursive($css, $bundleConfig['css']);
                 }
-                if (isset($bundleConfig['js'])) {
-                    $js = array_merge_recursive($js, $bundleConfig['js']);
-                }
             }
 
         }
@@ -76,7 +66,6 @@ class OroAsseticExtension extends Extension
         $container->setParameter(
             'oro_assetic.assets_groups',
             array(
-                'js' => array_keys($js),
                 'css' => array_keys($css)
             )
         );
@@ -84,13 +73,11 @@ class OroAsseticExtension extends Extension
         $container->setParameter(
             'oro_assetic.compiled_assets_groups',
             array(
-                'js' => $config['js_debug'],
                 'css' => $config['css_debug']
             )
         );
 
         return array(
-            'js' => $this->getAssetics($js, $config['js_debug'], $config['js_debug_all']),
             'css' => $this->getAssetics($css, $config['css_debug'], $config['css_debug_all']),
         );
     }

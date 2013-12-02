@@ -5,16 +5,10 @@
     <div id="{{ valueContainerId }}"
          class="controls control-subgroup{% if form.value.vars.errors|length > 0 %} validation-error{% endif %}">
         {{ form_widget(form.value, additionalOptions) }}
-        {% if form.value.vars.tooltip is defined and form.value.vars.tooltip != '' %}
-            <i class="icon-info-sign info-tooltip" data-html="true" data-placement="top" data-toogle="tooltip"
-               data-original-title="{{ form.value.vars.tooltip|trans }}">
-                data-original-title
-            </i>
-        {% endif %}
         {{ form_errors(form.value) }}
     </div>
 
-    <div class="horizontal">
+    <div class="horizontal parent-scope-checkbox">
         <div class="oro-clearfix">
             {{ form_widget(form.use_parent_scope_value) }}
             {{ form_label(form.use_parent_scope_value) }}

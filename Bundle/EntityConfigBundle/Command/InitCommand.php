@@ -16,7 +16,7 @@ class InitCommand extends BaseCommand
     {
         $this
             ->setName('oro:entity-config:init')
-            ->setDescription('EntityConfig configurator init');
+            ->setDescription('Initialize configuration data for entities.');
     }
 
     /**

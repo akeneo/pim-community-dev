@@ -177,13 +177,14 @@ class IndexListenerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param string $name
+     * @param  string  $name
      * @return Product
      */
     protected function createTestEntity($name)
     {
         $result = new Product();
         $result->setName($name);
+
         return $result;
     }
 }

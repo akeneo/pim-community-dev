@@ -143,7 +143,7 @@ class MassActionDispatcher
         $result = new IterableResult($proxyQuery);
 
         if ($bufferSize) {
-            $result->setBufferSize($result);
+            $result->setBufferSize($bufferSize);
         }
 
         return $result;

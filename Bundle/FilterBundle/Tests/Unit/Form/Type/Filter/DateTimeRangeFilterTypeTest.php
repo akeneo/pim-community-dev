@@ -21,10 +21,18 @@ class DateTimeRangeFilterTypeTest extends AbstractTypeTestCase
     {
         $translator = $this->createMockTranslator();
 
+        $localeSettings = $this->getMockBuilder('Oro\Bundle\LocaleBundle\Model\LocaleSettings')
+            ->disableOriginalConstructor()
+            ->setMethods(array('getTimezone'))
+            ->getMock();
+        $localeSettings->expects($this->any())
+            ->method('getTimezone')
+            ->will($this->returnValue(date_default_timezone_get()));
+
         $types = array(
             new FilterType($translator),
-            new DateRangeType($translator),
-            new DateTimeRangeType($translator),
+            new DateRangeType($localeSettings),
+            new DateTimeRangeType($localeSettings),
             new DateRangeFilterType($translator)
         );
 

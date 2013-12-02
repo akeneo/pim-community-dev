@@ -56,7 +56,7 @@ class UserManagerTest extends \PHPUnit_Framework_TestCase
             ->method('getName')
             ->will($this->returnValue(static::USER_CLASS));
 
-        $this->userManager = new UserManager(static::USER_CLASS, $this->om, null, $ef);
+        $this->userManager = new UserManager(static::USER_CLASS, $this->om, $ef);
     }
 
     public function testGetClass()

@@ -8,6 +8,18 @@ use Oro\Bundle\EmailBundle\Entity\EmailTemplate;
 class EmailTemplateRepository extends EntityRepository
 {
     /**
+     * Gets a template by its name
+     * This method can return null if the requested template does not exist
+     *
+     * @param string $templateName
+     * @return EmailTemplate|null
+     */
+    public function findByName($templateName)
+    {
+        return $this->findOneBy(array('name' => $templateName));
+    }
+
+    /**
      * Load templates by entity name
      *
      * @param $entityName

@@ -14,11 +14,18 @@ class YamlPersister
     protected $paramFile;
 
     /**
-     * @param string $paramFile Path to parameters.yml file
+     * @param string $dir Path to parameters storage directory
+     * @param string $env Current environment
      */
-    public function __construct($paramFile)
+    public function __construct($dir, $env)
     {
-        $this->paramFile = $paramFile;
+        if (file_exists($file = $dir . '/parameters_' . $env . '.yml')) {
+            $this->paramFile = $file;
+        } elseif (file_exists($dir . '/parameters_' . $env . '.yml.dist')) {
+            $this->paramFile = $dir . '/parameters_' . $env . '.yml';
+        } else {
+            $this->paramFile = $dir . '/parameters.yml';
+        }
     }
 
     public function parse()
@@ -56,7 +63,7 @@ class YamlPersister
         }
 
         if (false === file_put_contents($this->paramFile, Yaml::dump(array('parameters' => $parameters)))) {
-            throw new \RuntimeException(sprintf('Failed to write to %s.', $this->file));
+            throw new \RuntimeException(sprintf('Failed to write to %s.', $this->paramFile));
         }
     }
 }

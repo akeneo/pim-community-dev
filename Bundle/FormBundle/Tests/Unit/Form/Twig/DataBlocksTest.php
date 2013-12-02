@@ -30,52 +30,57 @@ class DataBlocksTest extends \PHPUnit_Framework_TestCase
      */
     private $testFormConfig = array(
         'second' => array(
-            'title'     => 'Second',
-            'class'     => null,
-            'subblocks' => array(
+            'title'       => 'Second',
+            'class'       => null,
+            'subblocks'   => array(
                 'text_3__subblock' => array(
-                    'code'  => 'text_3__subblock',
-                    'title' => null,
-                    'data'  => array(null),
-                    'description' => null
+                    'code'        => 'text_3__subblock',
+                    'title'       => null,
+                    'data'        => array(null),
+                    'description' => null,
+                    'useSpan'     => true
                 ),
             ),
             'description' => null
         ),
         'first'  => array(
-            'title'     => 'First Block',
-            'class'     => null,
-            'subblocks' => array(
+            'title'       => 'First Block',
+            'class'       => null,
+            'subblocks'   => array(
                 'first'  => array(
-                    'code'  => 'first',
-                    'title' => null,
-                    'data'  => array(null),
-                    'description' => null
+                    'code'        => 'first',
+                    'title'       => null,
+                    'data'        => array(null),
+                    'description' => null,
+                    'useSpan'     => true
                 ),
                 'second' => array(
-                    'code'  => 'second',
-                    'title' => 'Second SubBlock',
-                    'data'  => array(null),
-                    'description' => null
+                    'code'        => 'second',
+                    'title'       => 'Second SubBlock',
+                    'data'        => array(null),
+                    'description' => null,
+                    'useSpan'     => true
                 ),
             ),
             'description' => 'some desc'
         ),
         'third'  => array(
-            'title'     => 'Third',
-            'class'     => null,
-            'subblocks' => array(
+            'title'       => 'Third',
+            'class'       => null,
+            'subblocks'   => array(
                 'text_4__subblock' => array(
-                    'code'  => 'text_4__subblock',
-                    'title' => null,
-                    'data'  => array(null),
-                    'description' => null
+                    'code'        => 'text_4__subblock',
+                    'title'       => null,
+                    'data'        => array(null),
+                    'description' => null,
+                    'useSpan'     => true
                 ),
-                'first' => array(
-                    'code'  => 'first',
-                    'title' => null,
-                    'data'  => array(null),
-                    'description' => null
+                'first'            => array(
+                    'code'        => 'first',
+                    'title'       => null,
+                    'data'        => array(null),
+                    'description' => null,
+                    'useSpan'     => true
                 ),
             ),
             'description' => null
@@ -112,23 +117,24 @@ class DataBlocksTest extends \PHPUnit_Framework_TestCase
 
     public function testRender()
     {
-        $options = array('block_config' =>
-              array(
-                  'first'  => array(
-                      'priority'  => 1,
-                      'title'     => 'First Block',
-                      'subblocks' => array(
-                          'first'  => array(),
-                          'second' => array(
-                              'title' => 'Second SubBlock'
-                          ),
-                      ),
-                      'description' => 'some desc'
-                  ),
-                  'second' => array(
-                      'priority' => 2,
-                  )
-              )
+        $options = array(
+            'block_config' =>
+                array(
+                    'first'  => array(
+                        'priority'    => 1,
+                        'title'       => 'First Block',
+                        'subblocks'   => array(
+                            'first'  => array(),
+                            'second' => array(
+                                'title' => 'Second SubBlock'
+                            ),
+                        ),
+                        'description' => 'some desc'
+                    ),
+                    'second' => array(
+                        'priority' => 2,
+                    )
+                )
         );
         $builder = $this->factory->createNamedBuilder('test', 'form', null, $options);
         $builder->add('text_1', null, array('block' => 'first', 'subblock' => 'second'));

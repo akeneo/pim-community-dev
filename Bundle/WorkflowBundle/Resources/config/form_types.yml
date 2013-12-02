@@ -1,9 +1,39 @@
 parameters:
-    oro_workflow.form.type.step.class: Oro\Bundle\WorkflowBundle\Form\Type\OroWorkflowStep
+    oro_workflow.form.event_listener.default_values.class: Oro\Bundle\WorkflowBundle\Form\EventListener\DefaultValuesListener
+    oro_workflow.form.event_listener.init_actions.class: Oro\Bundle\WorkflowBundle\Form\EventListener\InitActionsListener
+    oro_workflow.form.event_listener.required_attributes.class: Oro\Bundle\WorkflowBundle\Form\EventListener\RequiredAttributesListener
+
+    oro_workflow.form.type.attributes.class: Oro\Bundle\WorkflowBundle\Form\Type\WorkflowAttributesType
+    oro_workflow.form.type.step.class: Oro\Bundle\WorkflowBundle\Form\Type\WorkflowStepType
+    oro_workflow.form.type.transition.class: Oro\Bundle\WorkflowBundle\Form\Type\WorkflowTransitionType
 
 services:
+    oro_workflow.form.event_listener.default_values:
+        class: %oro_workflow.form.event_listener.default_values.class%
+        arguments: [@oro_workflow.context_accessor]
+
+    oro_workflow.form.event_listener.init_actions:
+        class: %oro_workflow.form.event_listener.init_actions.class%
+
+    oro_workflow.form.event_listener.required_attributes:
+        class: %oro_workflow.form.event_listener.required_attributes.class%
+
+    oro_workflow.form.type.attributes:
+        class: %oro_workflow.form.type.attributes.class%
+        arguments:
+            - @oro_workflow.registry
+            - @oro_workflow.form.event_listener.default_values
+            - @oro_workflow.form.event_listener.init_actions
+            - @oro_workflow.form.event_listener.required_attributes
+        tags:
+            - { name: form.type, alias: oro_workflow_attributes }
+
     oro_workflow.form.type.step:
         class: %oro_workflow.form.type.step.class%
-        arguments: [@oro_workflow.registry]
         tags:
             - { name: form.type, alias: oro_workflow_step }
+
+    oro_workflow.form.type.transition:
+        class: %oro_workflow.form.type.transition.class%
+        tags:
+            - { name: form.type, alias: oro_workflow_transition }

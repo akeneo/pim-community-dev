@@ -146,4 +146,14 @@ abstract class EmailAddress
     {
         return $this;
     }
+
+    /**
+     * Get a human-readable representation of this object.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return sprintf('EmailAddress(%s)', $this->email);
+    }
 }

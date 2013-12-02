@@ -1,0 +1,3 @@
+bundles:
+    - Sylius\Bundle\FlowBundle\SyliusFlowBundle
+    - Oro\Bundle\InstallerBundle\OroInstallerBundle

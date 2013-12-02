@@ -2,8 +2,9 @@
 
 namespace Oro\Bundle\FlexibleEntityBundle\Form\Validator;
 
-use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Symfony\Component\Validator\Constraints;
+
+use Oro\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Oro\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
 
 /**
@@ -42,6 +43,9 @@ class AttributeConstraintGuesser implements ConstraintGuesserInterface
         switch ($attribute->getAttributeType()) {
             case 'oro_flexibleentity_email':
                 $constraints[] = new Constraints\Email();
+                break;
+            case 'oro_flexibleentity_integer_unsigned':
+                $constraints[] = new Constraints\Range(array('min' => 0));
                 break;
         }
 

@@ -4,9 +4,14 @@ namespace Oro\Bundle\AddressBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
+use Symfony\Component\Validator\ExecutionContext;
+
 use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
 
-use Symfony\Component\Validator\ExecutionContext;
+use Oro\Bundle\LocaleBundle\Model\FullNameInterface;
+use Oro\Bundle\LocaleBundle\Model\AddressInterface;
+
+use Oro\Bundle\FormBundle\Entity\EmptyItem;
 
 /**
  * Address
@@ -15,8 +20,9 @@ use Symfony\Component\Validator\ExecutionContext;
  * @ORM\HasLifecycleCallbacks
  *
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ * @SuppressWarnings(PHPMD.ExcessivePublicCount)
  */
-abstract class AbstractAddress implements EmptyItem
+abstract class AbstractAddress implements EmptyItem, FullNameInterface, AddressInterface
 {
     /**
      * @var integer
@@ -69,7 +75,7 @@ abstract class AbstractAddress implements EmptyItem
     protected $postalCode;
 
     /**
-     * @var string
+     * @var Country
      *
      * @ORM\ManyToOne(targetEntity="Oro\Bundle\AddressBundle\Entity\Country", cascade={"persist"})
      * @ORM\JoinColumn(name="country_code", referencedColumnName="iso2_code")
@@ -91,10 +97,27 @@ abstract class AbstractAddress implements EmptyItem
      * @var string
      *
      * @TODO Refactor in CRM-185
+     * @ORM\Column(name="organization", type="string", length=255, nullable=true)
+     * @Soap\ComplexType("string", nillable=true)
+     */
+    protected $organization;
+
+    /**
+     * @var string
+     *
+     * @TODO Refactor in CRM-185
      * @ORM\Column(name="state_text", type="string", length=255, nullable=true)
      * @Soap\ComplexType("string", nillable=true)
      */
     protected $stateText;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="name_prefix", type="string", length=255, nullable=true)
+     * @Soap\ComplexType("string", nillable=true)
+     */
+    protected $namePrefix;
 
     /**
      * @var string
@@ -107,10 +130,26 @@ abstract class AbstractAddress implements EmptyItem
     /**
      * @var string
      *
+     * @ORM\Column(name="middle_name", type="string", length=255, nullable=true)
+     * @Soap\ComplexType("string", nillable=true)
+     */
+    protected $middleName;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="last_name", type="string", length=255, nullable=true)
      * @Soap\ComplexType("string", nillable=true)
      */
     protected $lastName;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="name_suffix", type="string", length=255, nullable=true)
+     * @Soap\ComplexType("string", nillable=true)
+     */
+    protected $nameSuffix;
 
     /**
      * @var \DateTime $created
@@ -339,6 +378,26 @@ abstract class AbstractAddress implements EmptyItem
     }
 
     /**
+     * Get name of region
+     *
+     * @return string
+     */
+    public function getRegionName()
+    {
+        return $this->getRegion() ? $this->getRegion()->getName() : $this->getRegionText();
+    }
+
+    /**
+     * Get code of region
+     *
+     * @return string
+     */
+    public function getRegionCode()
+    {
+        return $this->getRegion() ? $this->getRegion()->getCode() : '';
+    }
+
+    /**
      * Get state
      *
      * @TODO Refactor in CRM-185
@@ -411,6 +470,83 @@ abstract class AbstractAddress implements EmptyItem
     }
 
     /**
+     * Get name of country
+     *
+     * @return string
+     */
+    public function getCountryName()
+    {
+        return $this->getCountry() ? $this->getCountry()->getName() : '';
+    }
+
+    /**
+     * Get country ISO3 code
+     *
+     * @return string
+     */
+    public function getCountryIso3()
+    {
+        return $this->getCountry() ? $this->getCountry()->getIso3Code() : '';
+    }
+
+    /**
+     * Get country ISO2 code
+     *
+     * @return string
+     */
+    public function getCountryIso2()
+    {
+        return $this->getCountry() ? $this->getCountry()->getIso2Code() : '';
+    }
+
+    /**
+     * Sets organization
+     *
+     * @param string $organization
+     * @return AbstractAddress
+     */
+    public function setOrganization($organization)
+    {
+        $this->organization = $organization;
+
+        return $this;
+    }
+
+    /**
+     * Get organization
+     *
+     * @return string
+     */
+    public function getOrganization()
+    {
+        return $this->organization;
+    }
+
+    /**
+
+     * Set name prefix
+     *
+     * @param string $namePrefix
+     * @return $this
+     */
+    public function setNamePrefix($namePrefix)
+    {
+        $this->namePrefix = $namePrefix;
+
+        return $this;
+    }
+
+    /**
+     * Get name prefix
+     *
+     * @return string
+     */
+    public function getNamePrefix()
+    {
+        return $this->namePrefix;
+    }
+
+    /**
 
      * Set first name
      *
@@ -435,6 +571,30 @@ abstract class AbstractAddress implements EmptyItem
     }
 
     /**
+
+     * Set middle name
+     *
+     * @param string $middleName
+     * @return $this
+     */
+    public function setMiddleName($middleName)
+    {
+        $this->middleName = $middleName;
+
+        return $this;
+    }
+
+    /**
+     * Get middle name
+     *
+     * @return string
+     */
+    public function getMiddleName()
+    {
+        return $this->middleName;
+    }
+
+    /**
      * Set last name
      *
      * @param string $lastName
@@ -455,6 +615,29 @@ abstract class AbstractAddress implements EmptyItem
     public function getLastName()
     {
         return $this->lastName;
+    }
+
+    /**
+     * Set name suffix
+     *
+     * @param string $nameSuffix
+     * @return $this
+     */
+    public function setNameSuffix($nameSuffix)
+    {
+        $this->nameSuffix = $nameSuffix;
+
+        return $this;
+    }
+
+    /**
+     * Get name suffix
+     *
+     * @return string
+     */
+    public function getNameSuffix()
+    {
+        return $this->nameSuffix;
     }
 
     /**

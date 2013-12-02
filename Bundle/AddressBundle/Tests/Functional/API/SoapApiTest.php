@@ -23,7 +23,11 @@ class SoapApiTest extends WebTestCase
             'country' => 'US',
             'postalCode' => '32422',
             'firstName' => 'First name',
-            'lastName' => 'Last name'
+            'lastName' => 'Last name',
+            'namePrefix' => 'Mr.',
+            'nameSuffix' => 'Sn.',
+            'middleName' => 'Middle name',
+            'organization' => 'Test Ltd.'
         ),
         'Update Address Data' => array(
             'label' => 'updated address',
@@ -35,7 +39,11 @@ class SoapApiTest extends WebTestCase
             'country' => 'US',
             'postalCode' => '32422',
             'firstName' => 'First name Updated',
-            'lastName' => 'Last name Updated'
+            'lastName' => 'Last name Updated',
+            'namePrefix' => 'Mr. Updated',
+            'nameSuffix' => 'Sn. Updated',
+            'middleName' => 'Middle name Updated',
+            'organization' => 'Test Ltd. Updated'
         ),
         'Expected Address Data' => array(
             'label' => 'created address',
@@ -47,7 +55,11 @@ class SoapApiTest extends WebTestCase
             'country' => 'United States',
             'postalCode' => '32422',
             'firstName' => 'First name',
-            'lastName' => 'Last name'
+            'lastName' => 'Last name',
+            'namePrefix' => 'Mr.',
+            'nameSuffix' => 'Sn.',
+            'middleName' => 'Middle name',
+            'organization' => 'Test Ltd.'
         ),
         'Expected Updated Address Data' => array(
             'label' => 'updated address',
@@ -59,7 +71,11 @@ class SoapApiTest extends WebTestCase
             'country' => 'United States',
             'postalCode' => '32422',
             'firstName' => 'First name Updated',
-            'lastName' => 'Last name Updated'
+            'lastName' => 'Last name Updated',
+            'namePrefix' => 'Mr. Updated',
+            'nameSuffix' => 'Sn. Updated',
+            'middleName' => 'Middle name Updated',
+            'organization' => 'Test Ltd. Updated'
         )
     );
 

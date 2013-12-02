@@ -298,7 +298,9 @@ class JobInstance
         $this->job = $job;
 
         if ($job) {
-            $this->rawConfiguration = $job->getConfiguration();
+            // need to merge configuration to allow passing of extra parameters
+            $jobConfiguration = $job->getConfiguration();
+            $this->rawConfiguration = array_merge_recursive($this->rawConfiguration, $jobConfiguration);
         }
 
         return $this;

@@ -100,6 +100,7 @@ class StepExecutionProxyContextTest extends \PHPUnit_Framework_TestCase
             array('replace_count'),
             array('delete_count'),
             array('error_entries_count'),
+            array('add_count')
         );
     }
 
@@ -133,6 +134,7 @@ class StepExecutionProxyContextTest extends \PHPUnit_Framework_TestCase
             array('replace_count'),
             array('delete_count'),
             array('error_entries_count'),
+            array('add_count')
         );
     }
 
@@ -178,5 +180,31 @@ class StepExecutionProxyContextTest extends \PHPUnit_Framework_TestCase
 
         $this->stepExecution->expects($this->exactly($count))->method('getJobExecution')
             ->will($this->returnValue($jobExecution));
+    }
+
+    public function testAddErrors()
+    {
+        $messages = array('Error 1', 'Error 2');
+
+        $this->stepExecution->expects($this->exactly(2))
+            ->method('addError');
+        $this->stepExecution->expects($this->at(0))
+            ->method('addError')
+            ->with($messages[0]);
+        $this->stepExecution->expects($this->at(1))
+            ->method('addError')
+            ->with($messages[1]);
+
+        $this->context->addErrors($messages);
+    }
+
+    public function testGetFailureExceptions()
+    {
+        $exceptions = array(array('message' => 'Error 1'), array('message' => 'Error 2'));
+        $expected = array('Error 1', 'Error 2');
+        $this->stepExecution->expects($this->once())
+            ->method('getFailureExceptions')
+            ->will($this->returnValue($exceptions));
+        $this->assertEquals($expected, $this->context->getFailureExceptions());
     }
 }

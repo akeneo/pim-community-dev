@@ -121,9 +121,10 @@ class EmailTemplateHandlerTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->handler->process($this->entity));
     }
 
-    public function testAddingErrorToSystemEntity()
+    public function testAddingErrorToNonEditableSystemEntity()
     {
         $this->entity->setIsSystem(true);
+        $this->entity->setIsEditable(false);
 
         $this->form->expects($this->once())->method('setData')
             ->with($this->entity);

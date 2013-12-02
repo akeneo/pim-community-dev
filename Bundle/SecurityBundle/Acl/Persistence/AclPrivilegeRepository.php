@@ -596,6 +596,7 @@ class AclPrivilegeRepository
             $this->manager->getAceProvider()->getAces($acl, $type, $field),
             function ($ace) use (&$sid) {
                 /** @var EntryInterface $ace */
+
                 return $sid->equals($ace->getSecurityIdentity());
             }
         );

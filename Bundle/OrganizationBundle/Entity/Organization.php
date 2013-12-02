@@ -2,17 +2,23 @@
 
 namespace Oro\Bundle\OrganizationBundle\Entity;
 
-use Oro\Bundle\UserBundle\Entity\User;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Configurable;
-
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 
 /**
  * Organization
  *
  * @ORM\Table(name="oro_organization")
  * @ORM\Entity
+ * @Config(
+ *  defaultValues={
+ *      "entity"={"label"="Organization", "plural_label"="Organizations"},
+ *      "security"={
+ *          "type"="ACL",
+ *          "group_name"=""
+ *      }
+ *  }
+ * )
  */
 class Organization
 {

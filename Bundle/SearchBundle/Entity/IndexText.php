@@ -24,7 +24,7 @@ class IndexText
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Item", inversedBy="stringFields")
+     * @ORM\ManyToOne(targetEntity="Item", inversedBy="textFields")
      * @ORM\JoinColumn(name="item_id", referencedColumnName="id", nullable=false)
      */
     private $item;
@@ -37,7 +37,7 @@ class IndexText
     private $field;
 
     /**
-     * @var text
+     * @var string
      *
      * @ORM\Column(name="value", type="text", nullable=false)
      */

@@ -1,19 +1,14 @@
 /* global define */
-define(['oro/datagrid/string-cell'],
+define(['oro/grid/string-cell'],
 function(StringCell) {
     'use strict';
 
     /**
      * Html column cell. Added missing behaviour.
      *
-     * Triggers events:
-     *  - "edit" when a cell is entering edit mode and an editor
-     *  - "editing" when a cell has finished switching to edit mode
-     *  - "edited" when cell editing is finished
-     *
-     * @export  oro/datagrid/html-cell
-     * @class   oro.datagrid.HtmlCell
-     * @extends oro.datagrid.StringCell
+     * @export  oro/grid/html-cell
+     * @class   oro.grid.HtmlCell
+     * @extends oro.grid.StringCell
      */
     return StringCell.extend({
         /**

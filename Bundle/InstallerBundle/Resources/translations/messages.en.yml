@@ -1,13 +1,9 @@
 title:                    Oro Application installation
 
-welcome:
-    header:               Welcome to Oro Installer
-    content:              This wizard will guide you through the setup process.
-    button:               Begin Installation
-
-switch:
-    off:                  off
-    on:                   on
+wait:                     Waiting
+progress:                 In progress...
+passed:                   Done
+failed:                   Failed
 
 form:
     configuration:
@@ -22,6 +18,8 @@ form:
         mailer:
             header:       Mailer settings
             host:         Host
+            port:         Port
+            encryption:   Encryption
             user:         User
             password:     Password
             transport:    Transport
@@ -40,27 +38,48 @@ form:
         lastname:         Last name
         password:         Password
         password_re:      Re-enter password
-        load_fixtures:    Load fixtures
+        load_fixtures:    Load Sample Data
 
 process:
     step:
         check:
-            header:       System requirements check
-            invalid:      Some of the requirements are not met and the installation process cannot continue. Please check below for the minimum requirements to Install Oro.
-            table:
-                current:  Current
-                required: Required
+            header:        System requirements check
         configure:
-            header:       Configuration
+            header:        Configuration
+        schema:
+            header:        Database initialization
+            cache:         Clear cache before database initialization
+            clear:         Clear extended entities data
+            schema-drop:   Drop current schema
+            schema-create: Create schema
+            schema-update: Schema update
+            fixtures:      Load fixtures
+            init-config:   Init entities config
+            init-extend:   Init extended entities
+            update-config: Update extended entities config
         setup:
-            header:       Administration setup
+            header:        Administration setup
+        installation:
+            header:        Installation
+            fixtures:      Load sample data
+            search:        Create search index
+            navigation:    Init navigation
+            localization:  Dump localization
+            assets:        Install assets
+            assetic:       Dump assetic
+            assetic-oro:   Dump Oro assetic
+            translation:   Prepare translations
+            requirejs:     Optimize RequireJS resources (this process might take few minutes)
+            finish:        Clear cache to finalize installation
         final:
-            header:       Finish
-            greeting:     Success!!!
-            content:      You are now ready to start using Oro.<br>For help please join our community <a href="http://www.orocrm.com/forums">forums</a>.
+            header:        Finish
+            greeting:      Success!!!
+            content:       You are now ready to start using Oro.<br>For help please join our community <a href="http://www.orocrm.com/forums">forums</a>.
     button:
-        back:             Back
-        next:             Next
-        install:          Install
-        refresh:          Refresh
-        finish:           Launch application
+        back:              Back
+        next:              Next
+        install:           Install
+        finish:            Launch application
+    operation:             Operation
+    status:                Status
+

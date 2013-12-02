@@ -1,7 +1,6 @@
 {% extends 'OroUIBundle:actions:update.html.twig' %}
-{% form_theme form with 'OroUIBundle:Form:fields.html.twig' %}
+{% form_theme form with 'OroFormBundle:Form:fields.html.twig' %}
 
-{% set title = 'New Field ' %}
 {% oro_title_set({params : {"%entityName%": entity_config.get('label')|default('N/A') }}) %}
 
 {% set formAction = path('oro_entityextend_field_create', {id: entity_id}) %}
@@ -35,6 +34,26 @@
         'dataBlocks': form_data_blocks(form),
         'hiddenData': form_rest(form)
     } %}
+
+    <script type="text/javascript">
+        require(['jquery'], function($) {
+            'use strict';
+            $(function() {
+                $(document).on('change', 'form select#oro_entity_extend_field_type_type', function (e) {
+                    var el = $(this),
+                        relation = el.find('option:selected').attr('value').split('||'),
+                        field_name = $('input#oro_entity_extend_field_type_fieldName');
+
+                    if (relation !== 'undefined' && relation.length > 1 && relation[1]) {
+                        $(field_name).val(relation[1]).attr('readonly', 'readonly');
+                    }
+                    else if ($(field_name).attr('readonly')) {
+                        $(field_name).val('').removeAttr('readonly');
+                    }
+                });
+            })
+        });
+    </script>
 
     {{ parent() }}
 {% endblock content_data %}

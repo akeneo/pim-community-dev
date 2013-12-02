@@ -7,13 +7,9 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\EntityManager;
 
 use Oro\Bundle\WorkflowBundle\Exception\WorkflowNotFoundException;
-use Oro\Bundle\WorkflowBundle\Model\Workflow;
 use Oro\Bundle\WorkflowBundle\Entity\WorkflowItem;
 use Oro\Bundle\WorkflowBundle\Exception\UnknownAttributeException;
-use Oro\Bundle\WorkflowBundle\Model\WorkflowRegistry;
-use Oro\Bundle\WorkflowBundle\Model\Attribute;
 use Oro\Bundle\WorkflowBundle\Entity\Repository\WorkflowItemRepository;
-use Oro\Bundle\WorkflowBundle\Model\DoctrineHelper;
 use Oro\Bundle\WorkflowBundle\Exception\WorkflowException;
 
 class WorkflowManager
@@ -50,26 +46,52 @@ class WorkflowManager
 
     /**
      * @param string|Workflow $workflow
-     * @param object|null $entity
      * @return Collection
      */
-    public function getAllowedStartTransitions($workflow, $entity = null)
+    public function getStartTransitions($workflow)
     {
         $workflow = $this->getWorkflow($workflow);
-        $initData = $this->getWorkflowData($workflow, $entity);
 
-        return $workflow->getAllowedStartTransitions($initData);
+        return $workflow->getTransitionManager()->getStartTransitions();
     }
 
     /**
      * @param WorkflowItem $workflowItem
      * @return Collection
      */
-    public function getAllowedTransitions(WorkflowItem $workflowItem)
+    public function getTransitionsByWorkflowItem(WorkflowItem $workflowItem)
     {
         $workflow = $this->getWorkflow($workflowItem);
 
-        return $workflow->getAllowedTransitions($workflowItem);
+        return $workflow->getTransitionsByWorkflowItem($workflowItem);
+    }
+
+    /**
+     * @param string|Transition $transition
+     * @param WorkflowItem $workflowItem
+     * @param Collection $errors
+     * @return bool
+     */
+    public function isTransitionAvailable(WorkflowItem $workflowItem, $transition, Collection $errors = null)
+    {
+        $workflow = $this->getWorkflow($workflowItem);
+
+        return $workflow->isTransitionAvailable($workflowItem, $transition, $errors);
+    }
+
+    /**
+     * @param string|Transition $transition
+     * @param string|Workflow $workflow
+     * @param object|null $entity
+     * @param Collection $errors
+     * @return bool
+     */
+    public function isStartTransitionAvailable($workflow, $transition, $entity = null, Collection $errors = null)
+    {
+        $workflow = $this->getWorkflow($workflow);
+        $initData = $this->getWorkflowData($workflow, $entity);
+
+        return $workflow->isStartTransitionAvailable($transition, $initData, $errors);
     }
 
     /**
@@ -201,7 +223,7 @@ class WorkflowManager
     {
         $workflow = $this->getWorkflow($workflowItem);
 
-        foreach ($workflow->getManagedEntityAttributes() as $attribute) {
+        foreach ($workflow->getAttributeManager()->getManagedEntityAttributes() as $attribute) {
             $attributeName = $attribute->getName();
             if (!$workflowItem->getData()->get($attributeName)) {
                 return false;
@@ -218,7 +240,7 @@ class WorkflowManager
      * @return array
      * @throws UnknownAttributeException
      */
-    protected function getWorkflowData(Workflow $workflow, $entity = null, array $data = array())
+    public function getWorkflowData(Workflow $workflow, $entity = null, array $data = array())
     {
         // try to find appropriate entity
         if ($entity) {
@@ -253,7 +275,7 @@ class WorkflowManager
         $entityClass = $this->doctrineHelper->getEntityClass($entity);
 
         /** @var Attribute $attribute */
-        foreach ($workflow->getManagedEntityAttributes() as $attribute) {
+        foreach ($workflow->getAttributeManager()->getManagedEntityAttributes() as $attribute) {
             if ($attribute->getOption('class') == $entityClass) {
                 return $attribute;
             }

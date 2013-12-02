@@ -9,13 +9,25 @@ use JMS\Serializer\Annotation\Type;
 use JMS\Serializer\Annotation\Exclude;
 use BeSimple\SoapBundle\ServiceDefinition\Annotation as Soap;
 
+use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
+
 /**
  * Email
  *
  * @ORM\Table(name="oro_email")
  * @ORM\Entity
- * @ORM\Entity(repositoryClass="Oro\Bundle\EmailBundle\Entity\Repository\EmailRepository")
  * @ORM\HasLifecycleCallbacks
+ *
+ *  @Config(
+ *  defaultValues={
+ *      "entity"={"label"="Email", "plural_label"="Emails"},
+ *      "security"={
+ *          "type"="ACL",
+ *          "permissions"="VIEW;CREATE",
+ *          "group_name"=""
+ *      }
+ *  }
+ * )
  */
 class Email
 {

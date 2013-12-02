@@ -1,0 +1,8 @@
+parameters:
+    oro_form.importexport.primary_item_collection_normalizer.class: Oro\Bundle\FormBundle\ImportExport\Serializer\Normalizer\PrimaryItemCollectionNormalizer
+
+services:
+    oro_form.importexport.primary_item_collection_normalizer:
+        class: %oro_form.importexport.primary_item_collection_normalizer.class%
+        tags:
+            - { name: oro_importexport.normalizer, priority: -5 }

@@ -1,0 +1,107 @@
+{% block oro_entity_option_set_widget %}
+    <div class="email-holder {% if form.label.vars.errors|length > 0 %} validation-error{% endif %}">
+        <div class="input-append collection-element-primary">
+            {{ form_widget(form.label) }}
+            <label class="add-on" title="{{ 'Default'|trans }}">
+                {{ form_widget(form.is_default) }}
+            </label>
+            <label class="add-on" title="{{ 'Priority'|trans }}">
+                <i class="icon-list handle"></i>
+                {{ form_widget(form.priority, {'attr': {'class': 'priority'}}) }}
+            </label>
+        </div>
+        {{ form_errors(form.label) }}
+    </div>
+    {{ form_rest(form) }}
+    <script type="text/javascript">
+        require(['jquery'],
+        function($){
+            $('#oro_entity_config_type_extend_set_options_collection').sortable({
+                axis  : 'y',
+                cursor: 'move',
+                delay : 100,
+                handle: '.handle',
+                stop  : function () {
+                    var index = 1;
+                    $('#oro_entity_config_type_extend_set_options_collection input.priority').each(function(i, el){
+                        $(el).val(index++);
+                    })
+                }
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block oro_collection_widget %}
+    {% spaceless %}
+        {% import 'OroFormBundle:Form:fields.html.twig' as _form %}
+        {% set prototypeHtml = _form.oro_collection_item_prototype(form) %}
+
+        {% set attr = attr|merge({'class': (attr.class is defined ? attr.class ~ ' ' : '') ~ 'oro-item-collection collection-fields-list' }) %}
+        {% set id = id ~ '_collection' %}
+        <div class="row-oro">
+            <div {{ block('widget_container_attributes') }} data-prototype="{{ prototypeHtml|escape }}">
+                {% if form.children|length %}
+                    {% for child in form.children %}
+                        {{ _form.oro_collection_item_prototype(child) }}
+                    {% endfor %}
+                {% elseif show_form_when_empty %}
+                    {{ prototypeHtml|replace({'__name__': '0'})|raw }}
+                {% endif %}
+            </div>
+            <a class="btn add-list-item" href="javascript: void(0);"><i class="icon-plus"></i>{{ 'Add'|trans }}</a>
+        </div>
+        {{ _self.oro_item_collection_validate_default_js(_context) }}
+    {% endspaceless %}
+{% endblock %}
+
+{% macro oro_item_collection_validate_default_js(context) %}
+    {% set form = context.form %}
+    {% set id = context.id %}
+    {% set show_form_when_empty = context.show_form_when_empty %}
+    {% set has_default = form.vars.prototype.is_default is defined %}
+
+    {% if has_default or show_form_when_empty %}
+        <script type="text/javascript">
+            require(['jquery'],
+            function($){
+                $(function() {
+                    var container = $('#{{ context.id }}');
+
+                    {% if has_default %}
+                    container.on('click', '[name$="[is_default]"]', function() {
+                        var is_expanded = $('form select#oro_entity_config_type_extend_set_expanded option:selected').attr('value');
+                        if (is_expanded == 0) {
+                            container.find('[name$="[is_default]"]').each(function (idx, el) {
+                                el.checked = false;
+                            });
+                            this.checked = true;
+                        }
+                    });
+                    {% endif %}
+
+                    var change_defaults_type = function() {
+                        var el = $(this),
+                            is_expanded = el.find('option:selected').attr('value');
+
+                        container.find('[name$="[is_default]"]').each(function (idx, el) {
+                            el.type = (is_expanded == 1) ? 'checkbox' : 'radio';
+                            el.checked = false;
+                        });
+                    };
+
+                    var set_default_type = function() {
+                        var is_expanded = $('form select#oro_entity_config_type_extend_set_expanded option:selected').attr('value');
+                        container.find('[name$="[is_default]"]').each(function (idx, el) {
+                            el.type = (is_expanded == 1) ? 'checkbox' : 'radio';
+                        });
+                    }
+
+                    $(document).ready(set_default_type);
+                    $(document).on('change', 'form select#oro_entity_config_type_extend_set_expanded', change_defaults_type);
+                    $(document).on('click', 'a.add-list-item', set_default_type);
+                });
+            });
+        </script>
+    {% endif %}
+{% endmacro %}

@@ -9,6 +9,9 @@ parameters:
 
     oro_dataaudit.loggable.entity.class:            Oro\Bundle\DataAuditBundle\Entity\Audit
 
+    oro_dataaudit.event_listener.dataaudit_grid_listener.class: Oro\Bundle\DataAuditBundle\EventListener\AuditGridListener
+    oro_dataaudit.event_listener.dataaudit_history_grid_listener.class: Oro\Bundle\DataAuditBundle\EventListener\AuditHistoryGridListener
+
 services:
     oro_dataaudit.loggable.loggable_manager:
         class:                                      %oro_dataaudit.loggable.loggable_manager.class%
@@ -39,3 +42,16 @@ services:
         arguments:                                  [@oro_dataaudit.loggable.loggable_manager, @security.context]
         tags:
             - { name: kernel.event_listener, event: kernel.request , method: onKernelRequest}
+
+    oro_dataaudit.dataaudit_grid_service:
+        class: %oro_dataaudit.event_listener.dataaudit_grid_listener.class%
+        arguments:
+            - @doctrine.orm.entity_manager
+
+    oro_dataaudit.event_listener.dataaudit_history_grid_listener:
+        class: %oro_dataaudit.event_listener.dataaudit_history_grid_listener.class%
+        arguments:
+            - @oro_datagrid.datagrid.request_params
+            - [objectClass, objectId]
+        tags:
+          - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.audit-history-grid, method: onBuildAfter }

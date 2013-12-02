@@ -1,22 +1,33 @@
 parameters:
-    oro_entity_extend.type.target.class:                        Oro\Bundle\EntityExtendBundle\Form\Type\TargetType
-    oro_entity_extend.type.target_field.class:                  Oro\Bundle\EntityExtendBundle\Form\Type\TargetFieldType
+    oro_entity_extend.type.field.class:                         Oro\Bundle\EntityExtendBundle\Form\Type\FieldType
+    oro_entity_extend.type.relation.class:                      Oro\Bundle\EntityExtendBundle\Form\Type\RelationType
+
+    oro_entity_extend.type.option_set.class:                    Oro\Bundle\EntityExtendBundle\Form\Type\OptionSetType
+    oro_entity_extend.type.option_set_collection.class:         Oro\Bundle\EntityExtendBundle\Form\Type\OptionSetCollectionType
 
 services:
-    oro_entity_extend.type.target:
-        class:                                                  %oro_entity_extend.type.target.class%
-        scope: request
+    oro_entity_extend.type.field:
+        class:                                                  %oro_entity_extend.type.field.class%
         arguments:
             - @oro_entity_config.config_manager
-            - @request
         tags:
-            - { name: form.type, alias: oro_entity_target_type }
+            - { name: form.type, alias: oro_entity_extend_field_type }
 
-    oro_entity_extend.type.target_field:
-        class:                                                  %oro_entity_extend.type.target_field.class%
-        scope: request
+    oro_entity_extend.type.relation:
+        class:                                                  %oro_entity_extend.type.relation.class%
+        arguments:
+            - @oro_entity_config.provider.extend
+        tags:
+            - { name: form.type, alias: oro_entity_relation_type }
+
+    oro_entity_extend.type.option_set:
+        class:                                                  %oro_entity_extend.type.option_set.class%
+        tags:
+            - { name: form.type, alias: oro_entity_option_set }
+
+    oro_entity_extend.type.option_set_collection:
+        class:                                                  %oro_entity_extend.type.option_set_collection.class%
         arguments:
             - @oro_entity_config.config_manager
-            - @request
         tags:
-            - { name: form.type, alias: oro_entity_target_field_type }
+            - { name: form.type, alias: oro_entity_option_set_collection }

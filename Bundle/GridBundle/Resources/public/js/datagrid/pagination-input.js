@@ -1,14 +1,14 @@
 /* global define */
-define(['jquery', 'underscore', 'oro/datagrid/pagination', 'jquery.numeric'],
+define(['jquery', 'underscore', 'oro/grid/pagination', 'jquery.numeric'],
 function($, _, Pagination) {
     'use strict';
 
     /**
      * Datagrid pagination with input field
      *
-     * @export  oro/datagrid/pagination-input
-     * @class   oro.datagrid.PaginationInput
-     * @extends oro.datagrid.Pagination
+     * @export  oro/grid/pagination-input
+     * @class   oro.grid.PaginationInput
+     * @extends oro.grid.Pagination
      */
     return Pagination.extend({
         /** @property */

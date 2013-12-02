@@ -12,8 +12,8 @@ use Oro\Bundle\EntityBundle\ORM\EntityClassAccessor;
 use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdAccessor;
 use Oro\Bundle\SecurityBundle\Acl\Extension\OwnershipDecisionMakerInterface;
 use Oro\Bundle\EntityBundle\ORM\EntityClassResolver;
-use Oro\Bundle\EntityBundle\Owner\Metadata\OwnershipMetadataProvider;
-use Oro\Bundle\EntityBundle\Owner\Metadata\OwnershipMetadata;
+use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadataProvider;
+use Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadata;
 use Oro\Bundle\SecurityBundle\Acl\Exception\InvalidAclMaskException;
 use Oro\Bundle\SecurityBundle\Acl\Domain\ObjectIdentityFactory;
 use Oro\Bundle\SecurityBundle\Annotation\Acl as AclAnnotation;
@@ -153,6 +153,33 @@ class EntityAclExtension extends AbstractAclExtension
     /**
      * {@inheritdoc}
      */
+    public function getAccessLevelNames($object)
+    {
+        if ($this->getObjectClassName($object) === ObjectIdentityFactory::ROOT_IDENTITY_TYPE) {
+            $minLevel = AccessLevel::BASIC_LEVEL;
+        } else {
+            $metadata = $this->getMetadata($object);
+            if (!$metadata->hasOwner()) {
+                return array(
+                    AccessLevel::NONE_LEVEL => AccessLevel::NONE_LEVEL_NAME,
+                    AccessLevel::SYSTEM_LEVEL => AccessLevel::getAccessLevelName(AccessLevel::SYSTEM_LEVEL)
+                );
+            }
+            if ($metadata->isUserOwned()) {
+                $minLevel = AccessLevel::BASIC_LEVEL;
+            } elseif ($metadata->isBusinessUnitOwned()) {
+                $minLevel = AccessLevel::DEEP_LEVEL;
+            } elseif ($metadata->isOrganizationOwned()) {
+                $minLevel = AccessLevel::GLOBAL_LEVEL;
+            }
+        }
+
+        return AccessLevel::getAccessLevelNames($minLevel);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function supports($type, $id)
     {
         if ($type === ObjectIdentityFactory::ROOT_IDENTITY_TYPE && $id === $this->getExtensionKey()) {
@@ -165,7 +192,7 @@ class EntityAclExtension extends AbstractAclExtension
             $type = $this->entityClassAccessor->getClass($type);
         }
 
-        return $this->entityMetadataProvider->isProtectedEntity($type);
+        return $this->entityClassResolver->isEntity($type);
     }
 
     /**
@@ -261,7 +288,6 @@ class EntityAclExtension extends AbstractAclExtension
 
         return $maskBuilderClassName::getPatternFor($mask);
     }
-
 
     /**
      * {@inheritdoc}
@@ -379,8 +405,15 @@ class EntityAclExtension extends AbstractAclExtension
      */
     public function getAllowedPermissions(ObjectIdentity $oid)
     {
-        $result = array_keys($this->permissionToMaskBuilderIdentity);
-        if ($oid->getType() !== ObjectIdentityFactory::ROOT_IDENTITY_TYPE) {
+        if ($oid->getType() === ObjectIdentityFactory::ROOT_IDENTITY_TYPE) {
+            $result = array_keys($this->permissionToMaskBuilderIdentity);
+        } else {
+            $config = $this->entityMetadataProvider->getMetadata($oid->getType());
+            $result = $config->getPermissions();
+            if (empty($result)) {
+                $result = array_keys($this->map);
+            }
+
             $metadata = $this->getMetadata($oid);
             if (!$metadata->hasOwner()) {
                 foreach ($result as $key => $value) {
@@ -583,6 +616,17 @@ class EntityAclExtension extends AbstractAclExtension
      */
     protected function getMetadata($object)
     {
+        return $this->metadataProvider->getMetadata($this->getObjectClassName($object));
+    }
+
+    /**
+     * Gets class name for given object
+     *
+     * @param $object
+     * @return string
+     */
+    protected function getObjectClassName($object)
+    {
         if ($object instanceof ObjectIdentity) {
             $className = $object->getType();
         } elseif (is_string($object)) {
@@ -592,7 +636,7 @@ class EntityAclExtension extends AbstractAclExtension
             $className = $this->entityClassAccessor->getClass($object);
         }
 
-        return $this->metadataProvider->getMetadata($className);
+        return $className;
     }
 
     /**

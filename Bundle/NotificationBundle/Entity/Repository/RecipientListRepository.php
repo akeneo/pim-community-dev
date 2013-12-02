@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityRepository;
 
 use Oro\Bundle\NotificationBundle\Entity\RecipientList;
 use Oro\Bundle\TagBundle\Entity\ContainAuthorInterface;
+use Oro\Bundle\EmailBundle\Model\EmailHolderInterface;
 
 class RecipientListRepository extends EntityRepository
 {
@@ -18,7 +19,7 @@ class RecipientListRepository extends EntityRepository
     {
         // get user emails
         $emails = $recipientList->getUsers()->map(
-            function ($user) {
+            function (EmailHolderInterface $user) {
                 return $user->getEmail();
             }
         );

@@ -9,6 +9,7 @@ use Oro\Bundle\SearchBundle\Query\Parser;
 use Oro\Bundle\SearchBundle\Query\Result;
 use Oro\Bundle\SearchBundle\Engine\ObjectMapper;
 use Oro\Bundle\SearchBundle\Engine\AbstractEngine;
+use Oro\Bundle\SearchBundle\Security\SecurityProvider;
 
 class Indexer
 {
@@ -18,6 +19,8 @@ class Indexer
     const RELATION_MANY_TO_MANY = 'many-to-many';
     const RELATION_MANY_TO_ONE  = 'many-to-one';
     const RELATION_ONE_TO_MANY  = 'one-to-many';
+
+    const SEARCH_ENTITY_PERMISSION = 'VIEW';
 
     /**
      * @var AbstractEngine
@@ -35,26 +38,46 @@ class Indexer
     protected $mapper;
 
     /**
-     *
-     * @param ObjectManager  $em
-     * @param AbstractEngine $adapter
-     * @param ObjectMapper   $mapper
+     * @var SecurityProvider
      */
-    public function __construct(ObjectManager $em, AbstractEngine $adapter, ObjectMapper $mapper)
-    {
+    protected $securityProvider;
+
+    /**
+     * @param ObjectManager $em
+     * @param AbstractEngine $adapter
+     * @param ObjectMapper $mapper
+     * @param SecurityProvider $securityProvider
+     */
+    public function __construct(
+        ObjectManager $em,
+        AbstractEngine $adapter,
+        ObjectMapper $mapper,
+        SecurityProvider $securityProvider
+    ) {
         $this->em      = $em;
         $this->adapter = $adapter;
         $this->mapper  = $mapper;
+        $this->securityProvider = $securityProvider;
     }
 
     /**
-     * Get array with entities aliases and labels
+     * Get array with mapped entities
      *
      * @return array
      */
-    public function getEntitiesLabels()
+    public function getEntitiesListAliases()
     {
-        return $this->mapper->getEntitiesLabels();
+        return $this->mapper->getEntitiesListAliases();
+    }
+
+    /**
+     * Get list of entities allowed to user
+     *
+     * @return array
+     */
+    public function getAllowedEntitiesListAliases()
+    {
+        return $this->filterAllowedEntities(self::SEARCH_ENTITY_PERMISSION, $this->getEntitiesListAliases());
     }
 
     /**
@@ -115,6 +138,12 @@ class Indexer
      */
     public function query(Query $query)
     {
+        $this->applyAclToQuery($query);
+        // we haven't allowed entities, so return null search result
+        if (count($query->getFrom()) == 0) {
+            return new Result($query, array(), 0);
+        }
+
         return $this->adapter->search($query);
     }
 
@@ -129,5 +158,52 @@ class Indexer
         $parser = new Parser($this->mapper->getMappingConfig());
 
         return $this->query($parser->getQueryFromString($searchString));
+    }
+
+    /**
+     * Apply ACL to search Query.
+     * Removes all entities of the request to which the user has no access
+     *
+     * @param Query $query
+     */
+    protected function applyAclToQuery(Query $query)
+    {
+        $allowedEntities = $this->getAllowedEntitiesListAliases();
+        $queryFromEntities = $query->getFrom();
+        $entitiesList = array_values($allowedEntities);
+
+        // in query, from record !== '*'
+        if (!empty($queryFromEntities) && $queryFromEntities[0] !== '*') {
+            foreach ($queryFromEntities as $key => $fromEntityAlias) {
+                if (!in_array($fromEntityAlias, $entitiesList)) {
+                    unset($queryFromEntities[$key]);
+                }
+            }
+            $query->from($queryFromEntities);
+        } else {
+            $query->from($allowedEntities);
+        }
+    }
+
+    /**
+     * Filter array of entities. Return array of allowed entities
+     *
+     * @param  string   $attribute Permission
+     * @param  string[] $entities  The list of entity class names to be checked
+     * @return string[]
+     */
+    protected function filterAllowedEntities($attribute, $entities)
+    {
+        foreach (array_keys($entities) as $entityClass) {
+            $objectString = 'Entity:' . $entityClass;
+
+            if ($this->securityProvider->isProtectedEntity($entityClass)
+                && !$this->securityProvider->isGranted($attribute, $objectString)
+            ) {
+                unset ($entities[$entityClass]);
+            }
+        }
+
+        return $entities;
     }
 }

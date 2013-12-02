@@ -9,8 +9,8 @@ interface RestApiReadInterface
     /**
      * Get paginated items list.
      *
-     * @param int $page
-     * @param int $limit
+     * @param  int      $page
+     * @param  int      $limit
      * @return Response
      */
     public function handleGetListRequest($page, $limit);
@@ -18,7 +18,7 @@ interface RestApiReadInterface
     /**
      * Get item by identifier.
      *
-     * @param mixed $id
+     * @param  mixed $id
      * @return mixed
      */
     public function handleGetRequest($id);

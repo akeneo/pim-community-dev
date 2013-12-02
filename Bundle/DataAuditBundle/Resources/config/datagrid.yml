@@ -1,24 +1,177 @@
-parameters:
-    oro_dataaudit.datagrid.manager.class:         Oro\Bundle\DataAuditBundle\Datagrid\AuditDatagridManager
-    oro_dataaudit.history.datagrid.manager.class: Oro\Bundle\DataAuditBundle\Datagrid\AuditHistoryDatagridManager
+datagrid:
+    audit-grid:
+        options:
+            entityHint: audit
+        source:
+            acl_resource: oro_dataaudit_history
+            type: orm
+            query:
+                select:
+                    - a.id
+                    - a.action
+                    - a.version
+                    - a.objectClass
+                    - a.objectName
+                    - a.objectId
+                    - a.data
+                    - a.loggedAt
+                    - >
+                      CONCAT(
+                        CONCAT(
+                            CONCAT(u.firstName, ' '),
+                            CONCAT(u.lastName, ' ')
+                        ),
+                        CONCAT(' - ', u.email)
+                      ) as author
+                from:
+                    - { table: OroDataAuditBundle:Audit, alias: a }
+                join:
+                    left:
+                        user:
+                            join: a.user
+                            alias: u
 
-services:
-    oro_dataaudit.datagrid.manager:
-        class:                                  %oro_dataaudit.datagrid.manager.class%
-        tags:
-            - name:                             oro_grid.datagrid.manager
-              datagrid_name:                    audit
-              entity_name:                      Oro\Bundle\DataAuditBundle\Entity\Audit
-              entity_hint:                      audit
-              route_name:                       oro_dataaudit_index
-              query_entity_alias:               a
+        columns:
+            action:
+                label: Action
+            version:
+                label: Version
+            objectClass:
+                label: Entity type
+                frontend_type: select
+                choices: @oro_dataaudit.dataaudit_grid_service->getObjectClassOptions
+            objectName:
+                label: Entity name
+            objectId:
+                label: Entity id
+                frontend_type: integer
+            data:
+                label: Data
+                type: twig
+                template: OroDataAuditBundle:Datagrid:Property/data.html.twig
+                frontend_type: html
+            author:
+                label: Author
+            loggedAt:
+                label: Logged at
+                frontend_type: datetime
 
-    oro_dataaudit.history.datagrid.manager:
-        class:                                  %oro_dataaudit.history.datagrid.manager.class%
-        tags:
-            - name:                             oro_grid.datagrid.manager
-              datagrid_name:                    history
-              entity_name:                      Oro\Bundle\DataAuditBundle\Entity\Audit
-              entity_hint:                      history
-              route_name:                       oro_dataaudit_history
-              query_entity_alias:               a
+        properties: ~
+        sorters:
+            columns:
+                action:
+                    data_name: a.action
+                version:
+                    data_name: a.version
+                objectClass:
+                    data_name: a.objectClass
+                objectName:
+                    data_name: a.objectName
+                objectId:
+                    data_name: a.objectId
+                data:
+                    data_name: a.data
+                author:
+                    data_name: author
+                loggedAt:
+                    data_name: a.loggedAt
+            default: ~
+
+        filters:
+            columns:
+                action:
+                    type: choice
+                    data_name: a.action
+                    options:
+                        field_options:
+                            choices:
+                                update: Updated
+                                create: Created
+                                remove: Deleted
+                version:
+                    type: number
+                    data_name: a.version
+                    enabled: false
+                objectClass:
+                    type: choice
+                    data_name: a.objectClass
+                    options:
+                          field_options:
+                              choices: @oro_dataaudit.dataaudit_grid_service->getObjectClassOptions
+                objectName:
+                    type: string
+                    data_name: a.objectName
+                objectId:
+                    type: number
+                    data_name: a.objectId
+                data:
+                    type: string
+                    data_name: a.data
+                author:
+                    type: string
+                    data_name: author
+                    filter_by_having: true
+                loggedAt:
+                    type: datetime
+                    data_name: a.loggedAt
+                    enabled: false
+
+    audit-history-grid:
+        source:
+            acl_resource: oro_dataaudit_history
+            type: orm
+            query:
+                select:
+                    - a.id
+                    - a.data as data
+                    - a.loggedAt
+                    - >
+                      CONCAT(
+                        CONCAT(
+                            CONCAT(u.firstName, ' '),
+                            CONCAT(u.lastName, ' ')
+                        ),
+                        CONCAT(' - ', u.email)
+                      ) as author
+                from:
+                    - { table: OroDataAuditBundle:Audit, alias: a }
+                join:
+                    left:
+                        user:
+                            join: a.user
+                            alias: u
+                where:
+                    and:
+                        - a.objectClass = :objectClass AND a.objectId = :objectId
+        columns:
+            author:
+                label: Author
+                type: field
+                frontend_type: string
+            loggedAt:
+                label: Logged at
+                type: field
+                frontend_type: datetime
+            old:
+                label: Old values
+                type: twig
+                template: OroDataAuditBundle:Datagrid:Property/old.html.twig
+                frontend_type: html
+                data_name: data
+            new:
+                label: New values
+                type: twig
+                template: OroDataAuditBundle:Datagrid:Property/new.html.twig
+                frontend_type: html
+                data_name: data
+        properties: ~
+        sorters:
+            columns:
+                author:
+                    data_name: author
+                loggedAt:
+                    data_name: a.loggedAt
+            default:
+                loggedAt: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+
+        filters: ~

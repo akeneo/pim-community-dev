@@ -1,0 +1,23 @@
+{
+    "name": "oro/requirejs-bundle",
+    "type": "symfony-bundle",
+    "description": "BAP RequireJS Bundle",
+    "keywords": ["BAP", "RequireJS"],
+    "homepage": "https://github.com/laboro/RequireJSBundle",
+    "license": "MIT",
+    "require": {
+        "php": ">=5.3.3",
+        "symfony/symfony": "2.1.*",
+        "oro/ui-bundle": "dev-master"
+    },
+    "autoload": {
+        "psr-0": { "Oro\\Bundle\\RequireJSBundle": "" }
+    },
+    "target-dir": "Oro/Bundle/RequireJSBundle",
+    "minimum-stability": "dev",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}

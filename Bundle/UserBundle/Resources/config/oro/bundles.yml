@@ -1,0 +1,2 @@
+bundles:
+    - Oro\Bundle\UserBundle\OroUserBundle

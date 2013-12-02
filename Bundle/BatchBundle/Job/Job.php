@@ -144,10 +144,9 @@ class Job implements JobInterface
     /**
      * Convenience method for adding a single step to the job.
      *
-     * @param string $stepName
      * @param StepInterface $step a {@link Step} to add
      */
-    public function addStep($stepName, StepInterface $step)
+    public function addStep(StepInterface $step)
     {
         $this->steps[] = $step;
     }
@@ -300,10 +299,10 @@ class Job implements JobInterface
      */
     public function setConfiguration(array $steps)
     {
-        foreach ($steps as $name => $config) {
-            $step = $this->getStep($name);
+        foreach ($steps as $title => $config) {
+            $step = $this->getStep($title);
             if (!$step) {
-                throw new \InvalidArgumentException(sprintf('Unknown step "%s"', $name));
+                throw new \InvalidArgumentException(sprintf('Unknown step "%s"', $title));
             }
 
             $step->setConfiguration($config);
