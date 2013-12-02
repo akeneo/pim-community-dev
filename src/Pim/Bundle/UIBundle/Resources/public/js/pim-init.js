@@ -152,6 +152,16 @@ define(
                     $('#' + $(this).attr('data-form-toggle')).show();
                     $(this).hide();
                 });
+                
+                $("a[data-toggle='tab']").on("show.bs.tab", function() {
+                    var target = $(this.getAttribute('href'))
+                    if (!target.attr("data-loaded") && target.attr("data-url")) {
+                        $.get(target.attr("data-url"), function(data) {
+                            target.html(data)
+                            target.attr("data-loaded", 1)
+                        })
+                    }
+                })
             }
 
             $(function(){
