@@ -19,7 +19,7 @@ require({
         }
     },
     paths: {
-    {% if not app.debug %}
+    {% if app.debug %}
         'oro/routes': '{{ path('fos_js_routing_js', {"callback": "fos.Router.setData"}) }}'
     {% else %}
         'oro/routes': '../js/routes'

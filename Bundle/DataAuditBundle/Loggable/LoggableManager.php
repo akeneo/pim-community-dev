@@ -430,7 +430,7 @@ class LoggableManager
 
     protected function checkAuditable($entityClassName)
     {
-        if ($this->hasConfig($entityClassName)) {
+        if (!$this->hasConfig($entityClassName)) {
             return;
         }
 
