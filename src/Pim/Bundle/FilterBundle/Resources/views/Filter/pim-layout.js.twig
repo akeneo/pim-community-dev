@@ -60,7 +60,7 @@
     }))
 {% endblock %}
 
-{% block pim_type_metric_filter %}
+{% block pim_type_metric_filter_js %}
     new (MetricFilter.extend({
         'name':             {{ formView.vars.name|json_encode|raw }},
         'label':            {{ formView.vars.label|json_encode|raw }},
