@@ -1,12 +1,12 @@
 define(
-    ['jquery', 'oro/translator', 'oro/mediator', 'oro/navigation', 'oro/messenger', 'pim/dialog', 'pim/initselect2',
+    ['jquery', 'oro/translator', 'oro/mediator', 'oro/navigation', 'oro/messenger', 'pim/dialog',
      'bootstrap', 'bootstrap.bootstrapswitch', 'bootstrap-tooltip', 'jquery.slimbox'],
-    function ($, __, mediator, Navigation, messenger, Dialog, initSelect2) {
+    function ($, __, mediator, Navigation, messenger, Dialog) {
         'use strict';
         var initialized = false;
         return function() {
             if (initialized) {
-                return
+                return;
             }
             initialized = true;
 
@@ -19,9 +19,6 @@ define(
                         $(this).appendTo(target).attr('tabIndex', -1);
                     }
                 });
-
-                // Apply Select2
-                initSelect2();
 
                 // Apply bootstrapSwitch
                 $('.switch:not(.has-switch)').bootstrapSwitch();

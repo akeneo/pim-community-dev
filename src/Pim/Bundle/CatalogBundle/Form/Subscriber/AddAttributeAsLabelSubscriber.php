@@ -61,6 +61,7 @@ class AddAttributeAsLabelSubscriber implements EventSubscriberInterface
                         'class'           => 'Pim\Bundle\CatalogBundle\Entity\ProductAttribute',
                         'choices'         => $data->getAttributeAsLabelChoices(),
                         'auto_initialize' => false,
+                        'select2'         => true
                     )
                 )
             );

@@ -105,8 +105,9 @@ class ProductReader extends Reader
             'channel' => array(
                 'type' => 'choice',
                 'options' => array(
-                    'choices' => $this->channelManager->getChannelChoices(),
-                    'required' => true
+                    'choices'  => $this->channelManager->getChannelChoices(),
+                    'required' => true,
+                    'select2'  => true
                 )
             )
         );

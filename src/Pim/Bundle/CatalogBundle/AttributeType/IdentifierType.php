@@ -31,7 +31,8 @@ class IdentifierType extends FlexTextType
                     'choices' => array(
                         null     => 'None',
                         'regexp' => 'Regular expression'
-                    )
+                    ),
+                    'select2' => true
                 )
             ),
             array(

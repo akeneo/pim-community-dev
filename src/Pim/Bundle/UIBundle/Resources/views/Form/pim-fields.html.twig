@@ -41,6 +41,16 @@
                     {% if form.children|length == 0 %}
                         {{ block('form_info') }}
                     {% endif %}
+                    {% if select2 is defined and select2 == true %}
+                        <script type="text/javascript">
+                            require(
+                                ['pim/initselect2'],
+                                function (initSelect2) {
+                                    initSelect2('{{ form.vars.id }}');
+                                }
+                            );
+                        </script>
+                    {% endif %}
                 </div>
             </div>
         {% endif %}
@@ -251,7 +261,7 @@
         require(
             ['jquery', 'jquery.select2', 'selectize'],
             function ($) {
-                $('#{{ form.unit.vars.id }}').select2('destroy').selectize();
+                $('#{{ form.unit.vars.id }}').selectize();
             }
         );
     </script>
