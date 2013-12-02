@@ -14,6 +14,13 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 use Oro\Bundle\FilterBundle\Form\Type\Filter\NumberFilterType;
 
+/**
+ * Metric filter type for products
+ *
+ * @author    Romain Monceau <romain@akeneo.com>
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class MetricFilterType extends NumberFilterType
 {
     /**
@@ -72,9 +79,10 @@ class MetricFilterType extends NumberFilterType
     protected function createUnitOptions(array $options)
     {
         $result = array('required' => true);
-        if (!$options['family']) {
-            throw new FormException('Family option must be set');
-        }
+        $options['family'] = 'Length';
+//         if (!$options['family']) {
+//             throw new FormException('Family option must be set');
+//         }
 
         $result['choices'] = $this->measureManager->getUnitSymbolsForFamily($options['family']);
 
