@@ -124,7 +124,7 @@ class ProductImportValidator extends ImportValidator
     {
         foreach ($columnsInfo as $columnInfo) {
             if ($columnInfo->getAttribute() &&
-                    OrmProductTransformer::IDENTIFIER_ATTRIBUTE_TYPE === $columnInfo->getAttribute()->getAttributeType()) {
+                OrmProductTransformer::IDENTIFIER_ATTRIBUTE_TYPE === $columnInfo->getAttribute()->getAttributeType()) {
                 return $columnInfo->getLabel();
             }
         }
