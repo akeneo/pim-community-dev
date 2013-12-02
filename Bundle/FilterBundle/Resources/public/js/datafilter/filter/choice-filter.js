@@ -26,7 +26,7 @@ function($, _, __, app, TextFilter) {
                         '</button>' +
                         '<ul class="dropdown-menu">' +
                             '<% _.each(choices, function (option) { %>' +
-                                '<li><a class="choice_value" href="#" data-value="<%= option.value %>"><%= option.label %></a></li>' +
+                                '<li<% if (selectedChoice == option.value) { %> class="active"<% } %>><a class="choice_value" href="#" data-value="<%= option.value %>"><%= option.label %></a></li>' +
                             '<% }); %>' +
                         '</ul>' +
                         '<input type="text" name="value" value="">' +
@@ -167,6 +167,25 @@ function($, _, __, app, TextFilter) {
             if (!app.isEqualsLoosely(newValue.value, oldValue.value)) {
                 this.trigger('update');
             }
+        },
+
+        /**
+         * @inheritDoc
+         */
+        _onValueUpdated: function(newValue, oldValue) {
+            // synchronize choice selector with new value
+            var menu = this.$('.choicefilter .dropdown-menu');
+            menu.find('li a').each(function() {
+                var item = $(this);
+                if (item.data('value') == oldValue.type && item.parent().hasClass('active')) {
+                    item.parent().removeClass('active');
+                } else if (item.data('value') == newValue.type && !item.parent().hasClass('active')) {
+                    item.parent().addClass('active');
+                    menu.parent().find('button').html(item.html() + '<span class="caret"></span>');
+                }
+            });
+
+            TextFilter.prototype._onValueUpdated.apply(this, arguments);
         },
 
         /**
