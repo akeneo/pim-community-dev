@@ -3,9 +3,11 @@
 namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Symfony\Bridge\Doctrine\RegistryInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Symfony\Component\Validator\ValidatorInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\CompletenessQueryBuilder;
+use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Validator\Constraints\ProductValueNotBlank;
 
 /**
  * Manages completeness
@@ -27,15 +29,31 @@ class CompletenessManager
     protected $completenessQB;
 
     /**
+     * @var ValidatorInterface
+     */
+    protected $validator;
+
+    /**
+     * @var string
+     */
+    protected $class;
+
+    /**
      * Constructor
      *
      * @param RegistryInterface        $doctrine
      * @param CompletenessQueryBuilder $completenessQB
      */
-    public function __construct(RegistryInterface $doctrine, CompletenessQueryBuilder $completenessQB)
-    {
+    public function __construct(
+        RegistryInterface $doctrine,
+        CompletenessQueryBuilder $completenessQB,
+        ValidatorInterface $validator,
+        $class
+    ) {
         $this->doctrine       = $doctrine;
         $this->completenessQB = $completenessQB;
+        $this->validator = $validator;
+        $this->class = $class;
     }
 
     /**
@@ -77,11 +95,69 @@ class CompletenessManager
     {
         if ($product->getId()) {
             $query = $this->doctrine->getManager()->createQuery(
-                'DELETE FROM Pim\Bundle\CatalogBundle\Entity\Completeness c WHERE c.product = :product'
+                "DELETE FROM $class c WHERE c.product = :product"
             );
             $query->setParameter('product', $product);
             $query->execute();
         }
+    }
+
+    /**
+     * Returns an array containing all completeness info and missing attributes for a product
+     *
+     * @param  ProductInterface $product
+     * @param  array            $channels
+     * @param  array            $locales
+     * @return array
+     */
+    public function getProductCompleteness(ProductInterface $product, array $channels, array $locales)
+    {
+        $family = $product->getFamily();
+
+        $getCodes = function ($entities) {
+            return array_map(
+                function ($entity) {
+                    return $entity->getCode();
+                },
+                $entities
+            );
+        };
+        $channelTemplate = array_fill_keys($getCodes($channels), array('completeness' => null, 'missing' => array()));
+        $localeCodes = $getCodes($locales);
+        $completenesses = array_fill_keys($localeCodes, $channelTemplate);
+
+        if ($family) {
+            $allCompletenesses = $this->doctrine->getRepository($this->class)
+                ->createQueryBuilder('co')
+                ->select('co, lo, ch')
+                ->innerJoin('co.locale', 'lo')
+                ->innerJoin('co.channel', 'ch')
+                ->where('co.product = :product')
+                ->setParameter('product', $product)
+                ->getQuery()
+                ->execute();
+            foreach ($allCompletenesses as $completeness) {
+                $locale = $completeness->getLocale();
+                $channel = $completeness->getChannel();
+                $completenesses[$locale->getCode()][$channel->getCode()]['completeness'] = $completeness;
+            }
+            foreach ($family->getAttributeRequirements() as $requirement) {
+                if ($requirement->isRequired()) {
+                    $attribute = $requirement->getAttribute();
+                    $channel = $requirement->getChannel();
+                    foreach ($localeCodes as $localeCode) {
+                        $value = $product->getValue($attribute->getCode(), $localeCode, $channel->getCode());
+                        $constraint = new ProductValueNotBlank(array('channel' => $channel));
+
+                        if ($this->validator->validateValue($value, $constraint)->count()) {
+                            $completenesses[$localeCode][$channel->getCode()]['missing'][] = $attribute;
+                        }
+                    }
+                }
+            }
+        }
+
+        return $completenesses;
     }
 
     /**
