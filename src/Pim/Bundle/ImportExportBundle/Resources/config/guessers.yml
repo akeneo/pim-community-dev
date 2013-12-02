@@ -18,7 +18,7 @@ services:
             - '@pim_import_export.transformer.property.default'
         tags:
             - { name: pim_import_export.transformer.guesser, priority: 0 }
-            
+
     pim_import_export.transformer.guesser.translation:
         class: %pim_import_export.transformer.guesser.translation.class%
         public: false

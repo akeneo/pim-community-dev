@@ -52,7 +52,7 @@ class OrmProductTransformer extends AbstractOrmTransformer
      * @var boolean
      */
     protected $initialized=false;
-    
+
     /**
      * @var array
      */
@@ -211,13 +211,13 @@ class OrmProductTransformer extends AbstractOrmTransformer
         $this->attributeColumnsInfo = array();
         $this->propertyColumnsInfo = array();
         foreach ($columnsInfo as $columnInfo) {
-            $columName = $columnInfo->getName();
-            if (isset($this->attributes[$columName])) {
-                $attribute = $this->attributes[$columName];
+            $columnName = $columnInfo->getName();
+            if (isset($this->attributes[$columnName])) {
+                $attribute = $this->attributes[$columnName];
                 $columnInfo->setAttribute($attribute);
                 $this->attributeColumnsInfo[] = $columnInfo;
-                if (static::IDENTIFIER_ATTRIBUTE_TYPE == $columnInfo->getAttribute()->getAttributeType()) {
-                    $this->identifierAttribute = $columnInfo->getAttribute();
+                if (static::IDENTIFIER_ATTRIBUTE_TYPE == $attribute->getAttributeType()) {
+                    $this->identifierAttribute = $attribute;
                 }
             } else {
                 $this->propertyColumnsInfo[] = $columnInfo;
