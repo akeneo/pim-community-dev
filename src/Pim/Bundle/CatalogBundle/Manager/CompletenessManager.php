@@ -2,12 +2,14 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
-use Symfony\Bridge\Doctrine\RegistryInterface;
-use Symfony\Component\Validator\ValidatorInterface;
+use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Doctrine\CompletenessQueryBuilder;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\ProductValueNotBlank;
+use Symfony\Bridge\Doctrine\RegistryInterface;
+use Symfony\Component\Validator\ValidatorInterface;
 
 /**
  * Manages completeness
@@ -127,41 +129,39 @@ class CompletenessManager
         $completenesses = array_fill_keys($localeCodes, $channelTemplate);
 
         if ($family) {
-            $allCompletenesses = $this->doctrine->getRepository($this->class)
-                ->createQueryBuilder('co')
-                ->select('co, lo, ch')
-                ->innerJoin('co.locale', 'lo')
-                ->innerJoin('co.channel', 'ch')
-                ->where('co.product = :product')
-                ->setParameter('product', $product)
-                ->getQuery()
-                ->execute();
+            $allCompletenesses = $this->getCompletenessQB($product)->getQuery()->execute();
             foreach ($allCompletenesses as $completeness) {
                 $locale = $completeness->getLocale();
                 $channel = $completeness->getChannel();
                 $completenesses[$locale->getCode()][$channel->getCode()]['completeness'] = $completeness;
             }
-            $fullFamily = $this->doctrine
+            $requirements = $this->doctrine
                 ->getRepository(get_class($family))
-                ->createQueryBuilder('f')
-                ->select('f, r, a, t')
-                ->leftJoin('f.requirements', 'r')
-                ->leftJoin('r.attribute', 'a')
-                ->leftJoin('a.translations', 't', 'WITH', 't.locale=:localeCode')
-                ->where('f.id=:id')
-                ->setParameter('id', $family->getId())
-                ->setParameter('localeCode', $localeCode)
+                ->getFullRequirementsQB($family, $locale)
                 ->getQuery()
-                ->getOneOrNullResult();
-            foreach ($family->getAttributeRequirements() as $requirement) {
+                ->getResult();
+
+            $productValues = $product->getValues();
+            foreach ($requirements as $requirement) {
                 if ($requirement->isRequired()) {
                     $attribute = $requirement->getAttribute();
                     $channel = $requirement->getChannel();
                     foreach ($localeCodes as $localeCode) {
-                        $value = $product->getValue($attribute->getCode(), $localeCode, $channel->getCode());
                         $constraint = new ProductValueNotBlank(array('channel' => $channel));
-
-                        if ($this->validator->validateValue($value, $constraint)->count()) {
+                        $valueCode = $attribute->getCode();
+                        if ($attribute->getTranslatable()) {
+                            $valueCode .= '_' .$localeCode;
+                        }
+                        if ($attribute->getScopable()) {
+                            $valueCode .= '_' . $channel->getCode();
+                        }
+                        $missing = false;
+                        if (!isset($productValues[$valueCode])) {
+                            $missing = true;
+                        } elseif ($this->validator->validateValue($productValues[$valueCode], $constraint)->count()) {
+                            $missing = true;
+                        }
+                        if ($missing) {
                             $completenesses[$localeCode][$channel->getCode()]['missing'][] = $attribute;
                         }
                     }
@@ -173,10 +173,28 @@ class CompletenessManager
     }
 
     /**
+     * Returns a query to get the existing completenesses for the product
+     *
+     * @param ProductInterface $product
+     *
+     * @return QueryBuilder
+     */
+    protected function getCompletenessQB(ProductInterface $product)
+    {
+        return $this->doctrine->getRepository($this->class)
+            ->createQueryBuilder('co')
+            ->select('co, lo, ch')
+            ->innerJoin('co.locale', 'lo')
+            ->innerJoin('co.channel', 'ch')
+            ->where('co.product = :product')
+            ->setParameter('product', $product);
+    }
+
+    /**
      * Insert missing completeness according to the criteria
      *
      * @param array   $criteria
-     * @param inreger $limit
+     * @param integer $limit
      */
     protected function createCompletenesses(array $criteria, $limit = null)
     {

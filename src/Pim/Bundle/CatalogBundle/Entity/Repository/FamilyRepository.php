@@ -2,7 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 
+use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Doctrine\EntityRepository;
+use Pim\Bundle\CatalogBundle\Entity\Family;
 
 /**
  * Repository
@@ -14,7 +16,7 @@ use Pim\Bundle\CatalogBundle\Doctrine\EntityRepository;
 class FamilyRepository extends EntityRepository
 {
     /**
-     * @return \Doctrine\ORM\QueryBuilder
+     * @return QueryBuilder
      */
     public function buildAllWithTranslations()
     {
@@ -46,7 +48,7 @@ class FamilyRepository extends EntityRepository
     /**
      * @param integer $id
      *
-     * @return \Doctrine\ORM\QueryBuilder
+     * @return QueryBuilder
      */
     protected function buildOneWithAttributes($id)
     {
@@ -57,5 +59,26 @@ class FamilyRepository extends EntityRepository
             ->leftJoin('attribute.group', 'group')
             ->addOrderBy('group.sortOrder', 'ASC')
             ->addOrderBy('attribute.sortOrder', 'ASC');
+    }
+
+    /**
+     * Returns a querybuilder to get full requirements
+     *
+     * @param Family $family
+     * @param type   $localeCode
+     *
+     * @return QueryBuilder
+     */
+    public function getFullRequirementsQB(Family $family, $localeCode)
+    {
+        return $this->getEntityManager()
+            ->getRepository('Pim\Bundle\CatalogBundle\Entity\AttributeRequirement')
+            ->createQueryBuilder('r')
+            ->select('r, a, t')
+            ->leftJoin('r.attribute', 'a')
+            ->leftJoin('a.translations', 't', 'WITH', 't.locale=:localeCode')
+            ->where('r.family=:family')
+            ->setParameter('family', $family)
+            ->setParameter('localeCode', $localeCode);
     }
 }

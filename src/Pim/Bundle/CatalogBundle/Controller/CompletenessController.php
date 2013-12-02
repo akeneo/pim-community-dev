@@ -7,7 +7,6 @@ use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -75,10 +74,11 @@ class CompletenessController
      */
     public function completenessAction($id)
     {
-        $product = $this->productManager->getFlexibleRepository()->find($id);
-
-        $channels = $this->channelManager->getChannels();
+        $t = new \Symfony\Component\Stopwatch\Stopwatch;
+        $product = $this->productManager->getFlexibleRepository()->getFullProduct($id);
+        $channels = $this->channelManager->getFullChannels();
         $locales = $this->localeManager->getUserLocales();
+
         $completenesses = $this->completenessManager->getProductCompleteness(
             $product,
             $channels,
