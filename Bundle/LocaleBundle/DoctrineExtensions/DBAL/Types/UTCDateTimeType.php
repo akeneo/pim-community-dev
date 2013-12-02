@@ -8,47 +8,8 @@ use Doctrine\DBAL\Types\DateTimeType;
 
 class UTCDateTimeType extends DateTimeType
 {
-    /**
-     * @var \DateTimeZone
-     */
-    static private $utcTimeZone = null;
-
-    /**
-     * PHP Time zone
-     *
-     * @var \DateTimeZone
-     */
-    static private $serverTimeZone = null;
-
-    /**
-     * Get datetime zone UTC
-     *
-     * @static
-     * @return \DateTimeZone
-     */
-    private static function getUTCTimeZone()
-    {
-        if (!self::$utcTimeZone) {
-            self::$utcTimeZone = new \DateTimeZone('UTC');
-        }
-
-        return self::$utcTimeZone;
-    }
-
-    /**
-     * Get server time zone
-     *
-     * @static
-     * @return \DateTimeZone
-     */
-    private static function getServerTimeZone()
-    {
-        if (!self::$serverTimeZone) {
-            self::$serverTimeZone = new \DateTimeZone(date_default_timezone_get());
-        }
-
-        return self::$serverTimeZone;
-    }
+    /** @var null| \DateTimeZone  */
+    static private $utc = null;
 
     /**
      * {@inheritdoc}
@@ -59,7 +20,7 @@ class UTCDateTimeType extends DateTimeType
             return null;
         }
 
-        $value->setTimeZone(self::getUTCTimeZone());
+        $value->setTimeZone((self::$utc) ? self::$utc : (self::$utc = new \DateTimeZone('UTC')));
 
         return parent::convertToDatabaseValue($value, $platform);
     }
@@ -76,9 +37,8 @@ class UTCDateTimeType extends DateTimeType
         $val = \DateTime::createFromFormat(
             $platform->getDateTimeFormatString(),
             $value,
-            self::getUTCTimeZone()
+            (self::$utc) ? self::$utc : (self::$utc = new \DateTimeZone('UTC'))
         );
-        $val->setTimeZone(self::getServerTimeZone());
 
         if (!$val) {
             throw ConversionException::conversionFailed($value, $this->getName());
