@@ -22,8 +22,22 @@ class PimInstallerExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('guessers.yml');
         $loader->load('transformers.yml');
+        $this->addInstallerDataFiles($container);
+    }
 
-        $prefix = 'pim_installer_';
+    /**
+     * Prepare data files that installer takes in account
+     *
+     * @param ContainerBuilder $container
+     */
+    protected function addInstallerDataFiles(ContainerBuilder $container)
+    {
+        $dataParam = $container->getParameter('installer_data');
+        preg_match('/^(?P<bundle>\w+):(?P<directory>\w+)$/', $dataParam, $matches);
+        $bundles    = $container->getParameter('kernel.bundles');
+        $reflection = new \ReflectionClass($bundles[$matches['bundle']]);
+        $dataPath   = dirname($reflection->getFilename()).'/Resources/config/installer/'.$matches['directory'].'/';
+
         $entities = array(
             'channels',
             'locales',
@@ -35,20 +49,17 @@ class PimInstallerExtension extends Extension
             'group_types',
             'groups',
             'associations',
-            'jobs'
+            'jobs',
+            'products'
         );
         $installerFiles = array();
 
         foreach ($entities as $entity) {
-            foreach ($container->getParameter('kernel.bundles') as $bundle) {
-                $reflection = new \ReflectionClass($bundle);
-                $file = dirname($reflection->getFilename()).'/Resources/config/'.$prefix.$entity.'.yml';
-                if (is_file($file)) {
-                    $installerFiles[$entity]= $file;
-                }
+            $file = $dataPath.$entity.'.yml';
+            if (is_file($file)) {
+                $installerFiles[$entity]= $file;
             }
         }
-
         $container->setParameter('pim_installer.files', $installerFiles);
     }
 }

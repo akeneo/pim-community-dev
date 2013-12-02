@@ -4,7 +4,7 @@ parameters:
 
 services:
     pim_catalog.object_manager.product:
-        alias: "doctrine.odm.mondodb.document_manager"
+        alias: doctrine.odm.mondodb.document_manager
 
     pim_catalog.repository.product:
         class: %pim_catalog.repository.product.class%
@@ -12,5 +12,3 @@ services:
         factory_method: getRepository
         arguments:
             - %pim_catalog.product.class%
-
-
