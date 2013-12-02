@@ -2,6 +2,7 @@
 
 ## Features
 - Import product associations (CSV)
+- Compare and copy values between a product translations
 
 ## Improvements
 - Improve the user experience for family management
