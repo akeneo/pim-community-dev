@@ -3,6 +3,14 @@
 {% block formTitle %}
     <div class="pull-left">
         {{ form_widget(form.operation.locale) }}
+        <script type="text/javascript">
+            require(
+                ['pim/initselect2'],
+                function (initSelect2) {
+                    initSelect2('{{ form.operation.locale.vars.id }}');
+                }
+            );
+        </script>
     </div>
     <div class="pull-left buffer-small-left">
         {{ form_widget(form.operation.attributesToDisplay) }}

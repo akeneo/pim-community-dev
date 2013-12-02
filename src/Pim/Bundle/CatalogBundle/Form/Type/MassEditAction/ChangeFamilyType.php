@@ -26,7 +26,8 @@ class ChangeFamilyType extends AbstractType
             array(
                 'class'       => 'PimCatalogBundle:Family',
                 'empty_value' => 'None',
-                'required'    => false
+                'required'    => false,
+                'select2'     => true
             )
         );
     }
