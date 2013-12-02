@@ -24,11 +24,6 @@ class GroupingOrmFilterDatasourceAdapter extends OrmFilterDatasourceAdapter
     protected $conditionStack;
 
     /**
-     * @var Expr\Base[]
-     */
-    protected $currentWhereExprPath;
-
-    /**
      * @var Expr\Composite
      */
     protected $currentExpr = null;
@@ -46,9 +41,7 @@ class GroupingOrmFilterDatasourceAdapter extends OrmFilterDatasourceAdapter
     public function __construct(QueryBuilder $qb)
     {
         parent::__construct($qb);
-        $this->exprStack = [];
-        $this->conditionStack = [];
-        $this->currentExpr = null;
+        $this->resetState();
     }
 
     /**
@@ -86,15 +79,15 @@ class GroupingOrmFilterDatasourceAdapter extends OrmFilterDatasourceAdapter
         array_push($this->exprStack, $this->currentExpr);
         array_push($this->conditionStack, $this->currentCondition);
 
-        $this->currentExpr = null;
+        $this->currentExpr      = null;
         $this->currentCondition = $condition;
     }
 
     public function endRestrictionGroup()
     {
-        $tmpExpr = $this->currentExpr;
-        $tmpCondition = $this->currentCondition;
-        $this->currentExpr = array_pop($this->exprStack);
+        $tmpExpr                = $this->currentExpr;
+        $tmpCondition           = $this->currentCondition;
+        $this->currentExpr      = array_pop($this->exprStack);
         $this->currentCondition = array_pop($this->conditionStack);
 
         $this->addRestriction($tmpExpr, $tmpCondition);
@@ -109,5 +102,17 @@ class GroupingOrmFilterDatasourceAdapter extends OrmFilterDatasourceAdapter
             $this->currentExpr = array_pop($this->exprStack);
         }
         $this->qb->andWhere($this->currentExpr);
+        $this->resetState();
+    }
+
+    /**
+     * Resets all 'state' variables of this adapter
+     */
+    protected function resetState()
+    {
+        $this->exprStack        = [];
+        $this->conditionStack   = [];
+        $this->currentExpr      = null;
+        $this->currentCondition = null;
     }
 }

@@ -71,7 +71,17 @@ class DatagridConfigurationBuilderTest extends \PHPUnit_Framework_TestCase
             'columns' => [
                 'c1' => ['label' => 'lbl1', 'frontend_type' => 'string'],
             ],
-            'name'    => $gridName
+            'name'    => $gridName,
+            'sorters' => [
+                'columns' => [
+                    'c1' => ['data_name' => 't1.column1']
+                ]
+            ],
+            'filters' => [
+                'columns' => [
+                    'c1' => ['data_name' => 't1.column1', 'type' => 'string']
+                ]
+            ]
         ];
 
         $this->assertEquals($expected, $result);
@@ -120,7 +130,17 @@ class DatagridConfigurationBuilderTest extends \PHPUnit_Framework_TestCase
             'columns' => [
                 'c1' => ['label' => 'lbl1', 'frontend_type' => 'string'],
             ],
-            'name'    => $gridName
+            'name'    => $gridName,
+            'sorters' => [
+                'columns' => [
+                    'c1' => ['data_name' => 't1.column1']
+                ]
+            ],
+            'filters' => [
+                'columns' => [
+                    'c1' => ['data_name' => 't1.column1', 'type' => 'string']
+                ]
+            ]
         ];
 
         $this->assertEquals($expected, $result);
@@ -183,7 +203,19 @@ class DatagridConfigurationBuilderTest extends \PHPUnit_Framework_TestCase
                 'c1' => ['label' => 'lbl1', 'frontend_type' => 'string'],
                 'c2' => ['label' => 'lbl2', 'frontend_type' => 'string'],
             ],
-            'name'    => $gridName
+            'name'    => $gridName,
+            'sorters' => [
+                'columns' => [
+                    'c1' => ['data_name' => 't1.column1'],
+                    'c2' => ['data_name' => 't2.column2']
+                ]
+            ],
+            'filters' => [
+                'columns' => [
+                    'c1' => ['data_name' => 't1.column1', 'type' => 'string'],
+                    'c2' => ['data_name' => 't2.column2', 'type' => 'string']
+                ]
+            ]
         ];
 
         $this->assertEquals($expected, $result);
@@ -264,7 +296,17 @@ class DatagridConfigurationBuilderTest extends \PHPUnit_Framework_TestCase
             'columns' => [
                 'c1' => ['label' => 'lbl1', 'frontend_type' => 'string'],
             ],
-            'name'    => $gridName
+            'name'    => $gridName,
+            'sorters' => [
+                'columns' => [
+                    'c1' => ['data_name' => 't1.column1']
+                ]
+            ],
+            'filters' => [
+                'columns' => [
+                    'c1' => ['data_name' => 't1.column1', 'type' => 'string']
+                ]
+            ]
         ];
 
         $this->assertEquals($expected, $result);
@@ -428,12 +470,24 @@ class DatagridConfigurationBuilderTest extends \PHPUnit_Framework_TestCase
                 'c3' => ['label' => 'lbl3', 'frontend_type' => 'decimal'],
             ],
             'sorters' => [
+                'columns' => [
+                    'c1' => ['data_name' => 't1.column1'],
+                    'c2' => ['data_name' => 't2.column2'],
+                    'c3' => ['data_name' => 't4.column3']
+                ],
                 'default' => [
                     'c1' => 'DESC',
                     'c3' => 'ASC',
                 ]
             ],
-            'name'    => $gridName
+            'name'    => $gridName,
+            'filters' => [
+                'columns' => [
+                    'c1' => ['data_name' => 't1.column1', 'type' => 'string'],
+                    'c2' => ['data_name' => 't2.column2', 'type' => 'number'],
+                    'c3' => ['data_name' => 't4.column3', 'type' => 'number']
+                ]
+            ]
         ];
 
         $this->assertEquals($expected, $result);

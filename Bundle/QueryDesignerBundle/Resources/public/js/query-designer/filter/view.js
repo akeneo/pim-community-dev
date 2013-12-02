@@ -115,11 +115,21 @@ function(_, __, AbstractView, FilterCollection, filterBuilder) {
             if (filtersLogic == index) {
                 newFiltersLogic = '';
             } else {
-                newFiltersLogic = newFiltersLogic.replace(new RegExp(' (AND|OR) \\(' + index + '\\) ', 'i') , ' ');
-                newFiltersLogic = newFiltersLogic.replace(new RegExp(' (AND|OR) ' + index + ' ', 'i') , ' ');
-                newFiltersLogic = newFiltersLogic.replace(new RegExp(' (AND|OR) ' + index + '$', 'i') , '');
-                newFiltersLogic = newFiltersLogic.replace(new RegExp(' ' + index + ' (AND|OR) ', 'i') , ' ');
-                newFiltersLogic = newFiltersLogic.replace(new RegExp('^' + index + ' (AND|OR) ', 'i') , '');
+                var replacers = [
+                    {pattern: '^\\(' + index + '\\)$',          replaceValue: ''},
+                    {pattern: ' (AND|OR) \\(' + index + '\\) ', replaceValue: ' '},
+                    {pattern: ' (AND|OR) \\(' + index + '\\)$', replaceValue: ''},
+                    {pattern: '^\\(' + index + '\\) (AND|OR) ', replaceValue: ''},
+                    {pattern: ' (AND|OR) ' + index + ' ',       replaceValue: ' '},
+                    {pattern: ' (AND|OR) ' + index + '\\)',     replaceValue: ')'},
+                    {pattern: ' (AND|OR) ' + index + '$',       replaceValue: ''},
+                    {pattern: ' ' + index + ' (AND|OR) ',       replaceValue: ' '},
+                    {pattern: '\\(' + index + ' (AND|OR) ',     replaceValue: '('},
+                    {pattern: '^' + index + ' (AND|OR) ',       replaceValue: ''}
+                ];
+                _.each(replacers, function (replacer) {
+                    newFiltersLogic = newFiltersLogic.replace(new RegExp(replacer.pattern, 'i') , replacer.replaceValue);
+                });
             }
             if (newFiltersLogic != filtersLogic) {
                 index = Number(index);
