@@ -34,7 +34,9 @@ class MediaType extends AbstractType
                         'class' => 'noswitch',
                     )
                 )
-            );
+            )
+            ->add('id', 'hidden')
+            ->add('copyFrom', 'hidden');
     }
 
     /**

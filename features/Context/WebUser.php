@@ -1369,6 +1369,39 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @When /^I compare values with the "([^"]*)" translation$/
+     */
+    public function iCompareValuesWithTheTranslation($language)
+    {
+        $this->getCurrentPage()->compareWith($language);
+        $this->wait();
+    }
+
+    /**
+     * @Then /^I should see comparison languages "([^"]*)"$/
+     */
+    public function iShouldSeeComparisonLanguages($languages)
+    {
+        assertEquals($this->getCurrentPage()->getComparisonLanguages(), $this->listToArray($languages));
+    }
+
+    /**
+     * @Given /^I select translations for "([^"]*)"$/
+     */
+    public function iSelectTranslationsFor($field)
+    {
+        $this->getCurrentPage()->selectTranslation($field);
+    }
+
+    /**
+     * @Given /^I copy (\w+) translations$/
+     */
+    public function iCopyTranslations($mode)
+    {
+        $this->getCurrentPage()->copyTranslations(ucfirst($mode));
+    }
+
+    /**
      * @param integer $y
      */
     private function scrollContainerTo($y)

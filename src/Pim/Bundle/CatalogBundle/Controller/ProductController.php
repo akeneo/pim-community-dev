@@ -325,6 +325,9 @@ class ProductController extends AbstractDoctrineController
 
                 // TODO : Check if the locale exists and is activated
                 $params = array('id' => $product->getId(), 'dataLocale' => $this->getDataLocale());
+                if ($comparisonLocale = $this->getComparisonLocale()) {
+                    $params['compareWith'] = $comparisonLocale;
+                }
 
                 return $this->redirectToRoute('pim_catalog_product_edit', $params);
             } else {
@@ -360,6 +363,7 @@ class ProductController extends AbstractDoctrineController
         return array(
             'form'                   => $form->createView(),
             'dataLocale'             => $this->getDataLocale(),
+            'comparisonLocale'       => $this->getComparisonLocale(),
             'channels'               => $channels,
             'attributesForm'         =>
                 $this->getAvailableProductAttributesForm($product->getAttributes())->createView(),
@@ -583,6 +587,15 @@ class ProductController extends AbstractDoctrineController
         return $dataLocale;
     }
 
+    protected function getComparisonLocale()
+    {
+        $locale = $this->getRequest()->query->get('compareWith');
+
+        if ($this->getDataLocale() !== $locale) {
+            return $locale;
+        }
+    }
+
     /**
      * Get data currency code
      *
@@ -669,9 +682,10 @@ class ProductController extends AbstractDoctrineController
     protected function getEditFormOptions(ProductInterface $product)
     {
         return array(
-            'enable_family' => $this->securityFacade->isGranted('pim_catalog_product_change_family'),
-            'enable_state'  => $this->securityFacade->isGranted('pim_catalog_product_change_state'),
-            'currentLocale' => $this->getDataLocale()
+            'enable_family'    => $this->securityFacade->isGranted('pim_catalog_product_change_family'),
+            'enable_state'     => $this->securityFacade->isGranted('pim_catalog_product_change_state'),
+            'currentLocale'    => $this->getDataLocale(),
+            'comparisonLocale' => $this->getComparisonLocale(),
         );
     }
 

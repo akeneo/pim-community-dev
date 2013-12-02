@@ -21,7 +21,12 @@ class LocalizedCollectionType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->addEventSubscriber(new FilterLocaleValueSubscriber($options['currentLocale']));
+        $builder->addEventSubscriber(
+            new FilterLocaleValueSubscriber(
+                $options['currentLocale'],
+                $options['comparisonLocale']
+            )
+        );
     }
 
     /**
@@ -29,7 +34,12 @@ class LocalizedCollectionType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array('currentLocale' => null));
+        $resolver->setDefaults(
+            array(
+                'currentLocale'    => null,
+                'comparisonLocale' => null,
+            )
+        );
     }
 
     /**
