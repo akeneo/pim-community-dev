@@ -1,11 +1,10 @@
 <?php
 
-namespace Oro\Bundle\FilterBundle\Filter\Orm;
+namespace Oro\Bundle\FilterBundle\Filter;
 
-use Doctrine\ORM\Query\Expr;
-use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormFactoryInterface;
+use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 
 abstract class AbstractFilter implements FilterInterface
 {
@@ -93,8 +92,6 @@ abstract class AbstractFilter implements FilterInterface
         $metadata = array_merge($defaultMetadata, $metadata);
 
         return $metadata;
-
-        return $metadata;
     }
 
     /**
@@ -105,128 +102,18 @@ abstract class AbstractFilter implements FilterInterface
     abstract protected function getFormType();
 
     /**
-     * Applies expression to where clause
-     *
-     * @param QueryBuilder $qb
-     * @param mixed        $parameter
-     */
-    protected function applyWhere(QueryBuilder $qb, $parameter)
-    {
-        if ($this->fixComparison($qb, $parameter)) {
-            return;
-        }
-
-        /** @var QueryBuilder $queryBuilder */
-        if ($this->getOr('filter_condition', FilterUtility::CONDITION_AND) == FilterUtility::CONDITION_OR) {
-            $qb->orWhere($parameter);
-        } else {
-            $qb->andWhere($parameter);
-        }
-    }
-
-    /**
-     * Applies expression to having clause
-     *
-     * @param QueryBuilder $qb
-     * @param mixed        $parameter
-     */
-    protected function applyHaving(QueryBuilder $qb, $parameter)
-    {
-        if ($this->fixComparison($qb, $parameter)) {
-            return;
-        }
-
-        /** @var $queryBuilder QueryBuilder */
-        if ($this->getOr('filter_condition', FilterUtility::CONDITION_AND) == FilterUtility::CONDITION_OR) {
-            $qb->orHaving($parameter);
-        } else {
-            $qb->andHaving($parameter);
-        }
-    }
-
-    /**
-     * Note: this is workaround for http://www.doctrine-project.org/jira/browse/DDC-1858
-     * It could be removed when doctrine version >= 2.4
-     *
-     * @param QueryBuilder $qb
-     * @param mixed        $parameter
-     *
-     * @return bool
-     */
-    private function fixComparison(QueryBuilder $qb, $parameter)
-    {
-        if ($parameter instanceof \Doctrine\ORM\Query\Expr\Comparison
-            && ($parameter->getOperator() === 'LIKE' || $parameter->getOperator() === 'NOT LIKE')
-        ) {
-            $extraSelect   = null;
-            $expectedAlias = (string)$parameter->getLeftExpr();
-
-            foreach ($qb->getDQLPart('select') as $selectPart) {
-                foreach ($selectPart->getParts() as $part) {
-                    if (preg_match("#(.*)\\s+as\\s+$expectedAlias#i", $part, $matches)) {
-                        $extraSelect = $matches[1];
-                    }
-                }
-            }
-
-            if ($extraSelect !== null) {
-                $isParam   = preg_match('#^:{1}#', $parameter->getRightExpr());
-                $parameter = $this->createComparisonExpression(
-                    $extraSelect,
-                    $parameter->getOperator(),
-                    $parameter->getRightExpr(),
-                    !$isParam
-                );
-
-                $this->applyWhere($qb, $parameter);
-
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
      * Apply filter expression to having or where clause depending on configuration
      *
-     * @param QueryBuilder $qb
-     * @param mixed        $expression
+     * @param FilterDatasourceAdapterInterface $ds
+     * @param mixed                            $expression
      */
-    protected function applyFilterToClause(QueryBuilder $qb, $expression)
+    protected function applyFilterToClause(FilterDatasourceAdapterInterface $ds, $expression)
     {
-        if ($this->getOr('filter_by_having', false)) {
-            $this->applyHaving($qb, $expression);
-        } else {
-            $this->applyWhere($qb, $expression);
-        }
-    }
-
-    /**
-     * Create filter expression that will be applied
-     *
-     * @param mixed  $leftExpression
-     * @param string $operator
-     * @param mixed  $rightExpression
-     * @param bool   $withParam
-     *
-     * @return \Doctrine\ORM\Query\Expr\Comparison
-     */
-    protected function createComparisonExpression($leftExpression, $operator, $rightExpression, $withParam = true)
-    {
-        $rightExpression = $withParam ? ':' . $rightExpression : $rightExpression;
-
-        return new Expr\Comparison($leftExpression, $operator, $rightExpression);
-    }
-
-    /**
-     * Generates unique param name
-     *
-     * @return string
-     */
-    protected function generateQueryParameterName()
-    {
-        return preg_replace('#[^a-z0-9]#i', '', $this->getName()) . mt_rand();
+        $ds->addRestriction(
+            $expression,
+            $this->getOr(FilterUtility::CONDITION_KEY, FilterUtility::CONDITION_AND),
+            $this->getOr(FilterUtility::BY_HAVING_KEY, false)
+        );
     }
 
     /**
@@ -278,7 +165,7 @@ abstract class AbstractFilter implements FilterInterface
      */
     protected function mapParams($params)
     {
-        $keys = [];
+        $keys     = [];
         $paramMap = $this->util->getParamMap();
         foreach (array_keys($params) as $key) {
             if (isset($paramMap[$key])) {

@@ -1,90 +1,88 @@
 parameters:
-    oro_filter.extension.filter_utility.class:             Oro\Bundle\FilterBundle\Filter\Orm\FilterUtility
-    oro_filter.extension.orm.string_filter.class:          Oro\Bundle\FilterBundle\Filter\Orm\StringFilter
-    oro_filter.extension.orm.select_row_filter.class:      Oro\Bundle\FilterBundle\Filter\Orm\SelectRowFilter
-    oro_filter.extension.orm.number_filter.class:          Oro\Bundle\FilterBundle\Filter\Orm\NumberFilter
-    oro_filter.extension.orm.percent_filter.class:         Oro\Bundle\FilterBundle\Filter\Orm\PercentFilter
-    oro_filter.extension.orm.choice_filter.class:          Oro\Bundle\FilterBundle\Filter\Orm\ChoiceFilter
-    oro_filter.extension.orm.entity_filter.class:          Oro\Bundle\FilterBundle\Filter\Orm\EntityFilter
-    oro_filter.extension.orm.boolean_filter.class:         Oro\Bundle\FilterBundle\Filter\Orm\BooleanFilter
-    oro_filter.extension.orm.date_range_filter.class:      Oro\Bundle\FilterBundle\Filter\Orm\DateRangeFilter
-    oro_filter.extension.orm.datetime_range_filter.class:  Oro\Bundle\FilterBundle\Filter\Orm\DateTimeRangeFilter
+    oro_filter.filter_utility.class:              Oro\Bundle\FilterBundle\Filter\FilterUtility
+    oro_filter.string_filter.class:               Oro\Bundle\FilterBundle\Filter\StringFilter
+    oro_filter.select_row_filter.class:           Oro\Bundle\FilterBundle\Filter\SelectRowFilter
+    oro_filter.number_filter.class:               Oro\Bundle\FilterBundle\Filter\NumberFilter
+    oro_filter.percent_filter.class:              Oro\Bundle\FilterBundle\Filter\PercentFilter
+    oro_filter.choice_filter.class:               Oro\Bundle\FilterBundle\Filter\ChoiceFilter
+    oro_filter.entity_filter.class:               Oro\Bundle\FilterBundle\Filter\EntityFilter
+    oro_filter.boolean_filter.class:              Oro\Bundle\FilterBundle\Filter\BooleanFilter
+    oro_filter.date_range_filter.class:           Oro\Bundle\FilterBundle\Filter\DateRangeFilter
+    oro_filter.datetime_range_filter.class:       Oro\Bundle\FilterBundle\Filter\DateTimeRangeFilter
 
 services:
-    oro_filter.extension.filter_utility:
-        class: %oro_filter.extension.filter_utility.class%
-        arguments:
-            - @oro_flexibleentity.registry
+    oro_filter.filter_utility:
+        class: %oro_filter.filter_utility.class%
 
-    oro_filter.extension.orm.string_filter:
-        class: %oro_filter.extension.orm.string_filter.class%
+    oro_filter.string_filter:
+        class: %oro_filter.string_filter.class%
         arguments:
             - @form.factory
-            - @oro_filter.extension.filter_utility
+            - @oro_filter.filter_utility
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: string }
 
-    oro_filter.extension.orm.select_row_filter:
-        class: %oro_filter.extension.orm.select_row_filter.class%
+    oro_filter.select_row_filter:
+        class: %oro_filter.select_row_filter.class%
         arguments:
             - @form.factory
-            - @oro_filter.extension.filter_utility
+            - @oro_filter.filter_utility
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: selectrow }
 
-    oro_filter.extension.orm.number_filter:
-        class: %oro_filter.extension.orm.number_filter.class%
+    oro_filter.number_filter:
+        class: %oro_filter.number_filter.class%
         arguments:
             - @form.factory
-            - @oro_filter.extension.filter_utility
+            - @oro_filter.filter_utility
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: number }
 
-    oro_filter.extension.orm.percent_filter:
-        class: %oro_filter.extension.orm.percent_filter.class%
+    oro_filter.percent_filter:
+        class: %oro_filter.percent_filter.class%
         arguments:
             - @form.factory
-            - @oro_filter.extension.filter_utility
+            - @oro_filter.filter_utility
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: percent }
 
-    oro_filter.extension.orm.choice_filter:
-        class: %oro_filter.extension.orm.choice_filter.class%
+    oro_filter.choice_filter:
+        class: %oro_filter.choice_filter.class%
         arguments:
             - @form.factory
-            - @oro_filter.extension.filter_utility
+            - @oro_filter.filter_utility
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: choice }
 
-    oro_filter.extension.orm.entity_filter:
-        class: %oro_filter.extension.orm.entity_filter.class%
+    oro_filter.entity_filter:
+        class: %oro_filter.entity_filter.class%
         arguments:
             - @form.factory
-            - @oro_filter.extension.filter_utility
+            - @oro_filter.filter_utility
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: entity }
 
-    oro_filter.extension.orm.boolean_filter:
-        class: %oro_filter.extension.orm.boolean_filter.class%
+    oro_filter.boolean_filter:
+        class: %oro_filter.boolean_filter.class%
         arguments:
             - @form.factory
-            - @oro_filter.extension.filter_utility
+            - @oro_filter.filter_utility
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: boolean }
 
-    oro_filter.extension.orm.date_range_filter:
-        class: %oro_filter.extension.orm.date_range_filter.class%
+    oro_filter.date_range_filter:
+        class: %oro_filter.date_range_filter.class%
         arguments:
             - @form.factory
-            - @oro_filter.extension.filter_utility
+            - @oro_filter.filter_utility
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: date }
 
-    oro_filter.extension.orm.datetime_range_filter:
-        class: %oro_filter.extension.orm.datetime_range_filter.class%
+    oro_filter.datetime_range_filter:
+        class: %oro_filter.datetime_range_filter.class%
         arguments:
             - @form.factory
-            - @oro_filter.extension.filter_utility
+            - @oro_filter.filter_utility
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: datetime }
 

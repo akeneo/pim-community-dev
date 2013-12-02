@@ -1,33 +1,33 @@
 <?php
 
-namespace Oro\Bundle\FilterBundle\Filter\Orm;
+namespace Oro\Bundle\FilterBundle\Filter;
 
-use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\TextFilterType;
+use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 
 class StringFilter extends AbstractFilter
 {
     /**
      * {@inheritDoc}
      */
-    public function apply(QueryBuilder $qb, $data)
+    public function apply(FilterDatasourceAdapterInterface $ds, $data)
     {
         $data = $this->parseData($data);
-        if ($data) {
-            $operator      = $this->getOperator($data['type']);
-            $parameterName = $this->generateQueryParameterName();
-
-            $this->applyFilterToClause(
-                $qb,
-                $this->createComparisonExpression($this->get(FilterUtility::DATA_NAME_KEY), $operator, $parameterName)
-            );
-
-            $qb->setParameter($parameterName, $data['value']);
-
-            return true;
+        if (!$data) {
+            return false;
         }
 
-        return false;
+        $operator      = $this->getOperator($data['type']);
+        $parameterName = $ds->generateParameterName($this->getName());
+
+        $this->applyFilterToClause(
+            $ds,
+            $ds->expr()->comparison($this->get(FilterUtility::DATA_NAME_KEY), $operator, $parameterName, true)
+        );
+
+        $ds->setParameter($parameterName, $data['value']);
+
+        return true;
     }
 
     /**

@@ -2,12 +2,13 @@
 
 namespace Oro\Bundle\FlexibleEntityBundle\Grid\Extension\Filter;
 
-use Doctrine\ORM\QueryBuilder;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Symfony\Component\Form\FormFactoryInterface;
+use Oro\Bundle\FilterBundle\Filter\ChoiceFilter;
+use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FlexibleEntityBundle\Entity\Attribute;
-use Oro\Bundle\FilterBundle\Filter\Orm\ChoiceFilter;
 use Oro\Bundle\FlexibleEntityBundle\Entity\AttributeOption;
+use Oro\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 
 class FlexibleChoiceFilter extends ChoiceFilter
 {
@@ -17,25 +18,25 @@ class FlexibleChoiceFilter extends ChoiceFilter
     /**
      * {@inheritdoc}
      */
-    public function apply(QueryBuilder $qb, $data)
+    public function apply(FilterDatasourceAdapterInterface $ds, $data)
     {
         $data = $this->parseData($data);
-        if ($data) {
-            $operator = $this->getOperator($data['type']);
-
-            $fen = $this->get(FilterUtility::FEN_KEY);
-            $this->util->applyFlexibleFilter(
-                $qb,
-                $fen,
-                $this->get(FilterUtility::DATA_NAME_KEY),
-                $data['value'],
-                $operator
-            );
-
-            return true;
+        if (!$data) {
+            return false;
         }
 
-        return false;
+        $operator = $this->getOperator($data['type']);
+
+        $fen = $this->get(FilterUtility::FEN_KEY);
+        $this->util->applyFlexibleFilter(
+            $ds,
+            $fen,
+            $this->get(FilterUtility::DATA_NAME_KEY),
+            $data['value'],
+            $operator
+        );
+
+        return true;
     }
 
     /**
@@ -66,6 +67,7 @@ class FlexibleChoiceFilter extends ChoiceFilter
     {
         if (null === $this->valueOptions) {
             $filedName       = $this->get(FilterUtility::DATA_NAME_KEY);
+            /** @var FlexibleManager $flexibleManager */
             $flexibleManager = $this->util->getFlexibleManager($this->get(FilterUtility::FEN_KEY));
 
             /** @var $attributeRepository ObjectRepository */

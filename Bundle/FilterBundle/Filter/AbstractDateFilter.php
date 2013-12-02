@@ -1,8 +1,8 @@
 <?php
 
-namespace Oro\Bundle\FilterBundle\Filter\Orm;
+namespace Oro\Bundle\FilterBundle\Filter;
 
-use Doctrine\ORM\QueryBuilder;
+use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\DateRangeFilterType;
 
 abstract class AbstractDateFilter extends AbstractFilter
@@ -15,7 +15,7 @@ abstract class AbstractDateFilter extends AbstractFilter
     /**
      * {@inheritdoc}
      */
-    public function apply(QueryBuilder $qb, $data)
+    public function apply(FilterDatasourceAdapterInterface $ds, $data)
     {
         $data = $this->parseData($data);
         if (!$data) {
@@ -28,12 +28,12 @@ abstract class AbstractDateFilter extends AbstractFilter
         $dateEndValue = $data['date_end'];
         $type         = $data['type'];
 
-        $startDateParameterName = $this->generateQueryParameterName();
-        $endDateParameterName   = $this->generateQueryParameterName();
+        $startDateParameterName = $ds->generateParameterName($this->getName());
+        $endDateParameterName   = $ds->generateParameterName($this->getName());
 
         $this->applyDependingOnType(
             $type,
-            $qb,
+            $ds,
             $dateStartValue,
             $dateEndValue,
             $startDateParameterName,
@@ -41,12 +41,11 @@ abstract class AbstractDateFilter extends AbstractFilter
             $this->get(FilterUtility::DATA_NAME_KEY)
         );
 
-        /** @var $queryBuilder QueryBuilder */
         if ($dateStartValue) {
-            $qb->setParameter($startDateParameterName, $dateStartValue);
+            $ds->setParameter($startDateParameterName, $dateStartValue);
         }
         if ($dateEndValue) {
-            $qb->setParameter($endDateParameterName, $dateEndValue);
+            $ds->setParameter($endDateParameterName, $dateEndValue);
         }
 
         return true;
@@ -142,15 +141,15 @@ abstract class AbstractDateFilter extends AbstractFilter
     /**
      * Apply expression using "between" filtering
      *
-     * @param QueryBuilder $queryBuilder
-     * @param string       $dateStartValue
-     * @param string       $dateEndValue
-     * @param string       $startDateParameterName
-     * @param string       $endDateParameterName
-     * @param string       $fieldName ,
+     * @param FilterDatasourceAdapterInterface $ds
+     * @param string                           $dateStartValue
+     * @param string                           $dateEndValue
+     * @param string                           $startDateParameterName
+     * @param string                           $endDateParameterName
+     * @param string                           $fieldName ,
      */
     protected function applyFilterBetween(
-        $queryBuilder,
+        $ds,
         $dateStartValue,
         $dateEndValue,
         $startDateParameterName,
@@ -159,15 +158,15 @@ abstract class AbstractDateFilter extends AbstractFilter
     ) {
         if ($dateStartValue) {
             $this->applyFilterToClause(
-                $queryBuilder,
-                $this->createComparisonExpression($fieldName, '>=', $startDateParameterName)
+                $ds,
+                $ds->expr()->gte($fieldName, $startDateParameterName, true)
             );
         }
 
         if ($dateEndValue) {
             $this->applyFilterToClause(
-                $queryBuilder,
-                $this->createComparisonExpression($fieldName, '<=', $endDateParameterName)
+                $ds,
+                $ds->expr()->lte($fieldName, $endDateParameterName, true)
             );
         }
     }
@@ -175,73 +174,78 @@ abstract class AbstractDateFilter extends AbstractFilter
     /**
      * Apply expression using one condition (less or more)
      *
-     * @param QueryBuilder        $queryBuilder
-     * @param                     $dateValue
-     * @param                     $dateParameterName
-     * @param string              $fieldName
-     * @param bool                $isLess less/more mode, true if 'less than', false if 'more than'
+     * @param FilterDatasourceAdapterInterface $ds
+     * @param                                  $dateValue
+     * @param                                  $dateParameterName
+     * @param string                           $fieldName
+     * @param bool                             $isLess less/more mode, true if 'less than', false if 'more than'
      */
     protected function applyFilterLessMore(
-        $queryBuilder,
+        $ds,
         $dateValue,
         $dateParameterName,
         $fieldName,
         $isLess
     ) {
         if ($dateValue) {
-            $this->applyFilterToClause(
-                $queryBuilder,
-                $this->createComparisonExpression($fieldName, $isLess ? '<' : '>', $dateParameterName)
-            );
+            $expr = $isLess
+                ? $ds->expr()->lt($fieldName, $dateParameterName, true)
+                : $ds->expr()->gt($fieldName, $dateParameterName, true);
+            $this->applyFilterToClause($ds, $expr);
         }
     }
 
     /**
      * Apply expression using "not between" filtering
      *
-     * @param QueryBuilder $queryBuilder
-     * @param string       $dateStartValue
-     * @param string       $dateEndValue
-     * @param string       $startDateParameterName
-     * @param string       $endDateParameterName
-     * @param string       $fieldName
+     * @param FilterDatasourceAdapterInterface $ds
+     * @param string                           $dateStartValue
+     * @param string                           $dateEndValue
+     * @param string                           $startDateParameterName
+     * @param string                           $endDateParameterName
+     * @param string                           $fieldName
      */
     protected function applyFilterNotBetween(
-        $queryBuilder,
+        $ds,
         $dateStartValue,
         $dateEndValue,
         $startDateParameterName,
         $endDateParameterName,
         $fieldName
     ) {
-        $orExpression = $queryBuilder->expr()->orX();
-
-        if ($dateStartValue) {
-            $orExpression->add($this->createComparisonExpression($fieldName, '<', $startDateParameterName));
+        if ($dateStartValue || $dateEndValue) {
+            $expr = null;
+            if ($dateStartValue) {
+                if ($dateEndValue) {
+                    $expr = $ds->expr()->orX(
+                        $ds->expr()->lt($fieldName, $startDateParameterName, true),
+                        $ds->expr()->gt($fieldName, $endDateParameterName, true)
+                    );
+                } else {
+                    $expr = $ds->expr()->lt($fieldName, $startDateParameterName, true);
+                }
+            } else {
+                $expr = $ds->expr()->gt($fieldName, $endDateParameterName, true);
+            }
+            $this->applyFilterToClause($ds, $expr);
         }
-
-        if ($dateEndValue) {
-            $orExpression->add($this->createComparisonExpression($fieldName, '>', $endDateParameterName));
-        }
-
-        $this->applyFilterToClause($queryBuilder, $orExpression);
     }
 
     /**
      * Applies filter depending on it's type
      *
-     * @param int                 $type
-     * @param QueryBuilder        $queryBuilder
-     * @param string              $dateStartValue
-     * @param string              $dateEndValue
-     * @param string              $startDateParameterName
-     * @param string              $endDateParameterName
-     * @param                     $fieldName
+     * @param int                              $type
+     * @param FilterDatasourceAdapterInterface $ds
+     * @param string                           $dateStartValue
+     * @param string                           $dateEndValue
+     * @param string                           $startDateParameterName
+     * @param string                           $endDateParameterName
+     * @param                                  $fieldName
      *
      */
     protected function applyDependingOnType(
         $type,
-        $queryBuilder,
+        $ds,
         $dateStartValue,
         $dateEndValue,
         $startDateParameterName,
@@ -251,7 +255,7 @@ abstract class AbstractDateFilter extends AbstractFilter
         switch ($type) {
             case DateRangeFilterType::TYPE_MORE_THAN:
                 $this->applyFilterLessMore(
-                    $queryBuilder,
+                    $ds,
                     $dateStartValue,
                     $startDateParameterName,
                     $fieldName,
@@ -260,7 +264,7 @@ abstract class AbstractDateFilter extends AbstractFilter
                 break;
             case DateRangeFilterType::TYPE_LESS_THAN:
                 $this->applyFilterLessMore(
-                    $queryBuilder,
+                    $ds,
                     $dateEndValue,
                     $endDateParameterName,
                     $fieldName,
@@ -269,7 +273,7 @@ abstract class AbstractDateFilter extends AbstractFilter
                 break;
             case DateRangeFilterType::TYPE_NOT_BETWEEN:
                 $this->applyFilterNotBetween(
-                    $queryBuilder,
+                    $ds,
                     $dateStartValue,
                     $dateEndValue,
                     $startDateParameterName,
@@ -280,7 +284,7 @@ abstract class AbstractDateFilter extends AbstractFilter
             default:
             case DateRangeFilterType::TYPE_BETWEEN:
                 $this->applyFilterBetween(
-                    $queryBuilder,
+                    $ds,
                     $dateStartValue,
                     $dateEndValue,
                     $startDateParameterName,

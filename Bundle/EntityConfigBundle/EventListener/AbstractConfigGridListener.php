@@ -14,7 +14,7 @@ use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigModelManager;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
-use Oro\Bundle\FilterBundle\Filter\Orm\FilterUtility;
+use Oro\Bundle\FilterBundle\Filter\FilterUtility;
 
 /**
  * Class AbstractConfigGridListener

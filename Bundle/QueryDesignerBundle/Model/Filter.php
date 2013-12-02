@@ -35,7 +35,7 @@ class Filter
     }
 
     /**
-     * Get column label
+     * Get filter criterion
      *
      * @return string
      */
@@ -45,11 +45,11 @@ class Filter
     }
 
     /**
-     * Set column label
+     * Set filter criterion
      *
      * @param string $criterion
      */
-    public function setLabel($criterion)
+    public function setCriterion($criterion)
     {
         $this->criterion = $criterion;
     }

@@ -2,16 +2,16 @@
 
 namespace Oro\Bundle\FlexibleEntityBundle\Grid\Extension\Filter;
 
-use Doctrine\ORM\QueryBuilder;
-use Oro\Bundle\FilterBundle\Filter\Orm\BooleanFilter;
+use Oro\Bundle\FilterBundle\Filter\BooleanFilter;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\BooleanFilterType;
+use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 
 class FlexibleBooleanFilter extends BooleanFilter
 {
     /**
      * {@inheritdoc}
      */
-    public function apply(QueryBuilder $qb, $data)
+    public function apply(FilterDatasourceAdapterInterface $ds, $data)
     {
         $data = $this->parseData($data);
         if (!$data) {
@@ -21,7 +21,7 @@ class FlexibleBooleanFilter extends BooleanFilter
         $field = $this->get(FilterUtility::DATA_NAME_KEY);
         $value = ($data['value'] == BooleanFilterType::TYPE_YES) ? 1 : 0;
 
-        $this->util->applyFlexibleFilter($qb, $this->get(FilterUtility::FEN_KEY), $field, $value, '=');
+        $this->util->applyFlexibleFilter($ds, $this->get(FilterUtility::FEN_KEY), $field, $value, '=');
 
         return true;
     }
