@@ -15,9 +15,9 @@ use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
 use Oro\Bundle\EntityConfigBundle\Config\Id\FieldConfigId;
 use Oro\Bundle\EntityExtendBundle\Extend\ExtendManager;
 use Oro\Bundle\EntityExtendBundle\Tools\ExtendConfigDumper;
-use Oro\Bundle\FilterBundle\Extension\Orm\FilterInterface;
+use Oro\Bundle\FilterBundle\Filter\FilterUtility;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\NumberFilterType;
-use Oro\Bundle\FilterBundle\Extension\Configuration as FilterConfiguration;
+use Oro\Bundle\FilterBundle\Grid\Extension\Configuration as FilterConfiguration;
 
 class ExtendExtension extends AbstractExtension
 {
@@ -93,10 +93,10 @@ class ExtendExtension extends AbstractExtension
             $config->offsetSetByPath(
                 sprintf('%s[%s]', FilterConfiguration::COLUMNS_PATH, $fieldName),
                 [
-                    FilterConfiguration::TYPE_KEY     => $filterType,
-                    FilterInterface::DATA_NAME_KEY    => $fieldName,
-                    FilterConfiguration::ENABLED_KEY  => false,
-                    FilterInterface::FORM_OPTIONS_KEY => $filterOptions
+                    FilterUtility::TYPE_KEY     => $filterType,
+                    FilterUtility::DATA_NAME_KEY    => $fieldName,
+                    FilterUtility::ENABLED_KEY  => false,
+                    FilterUtility::FORM_OPTIONS_KEY => $filterOptions
                 ]
             );
         }
@@ -138,7 +138,7 @@ class ExtendExtension extends AbstractExtension
                     sprintf('%s.%s', $alias, $fn)
                 );
                 $config->offsetSetByPath(
-                    sprintf('%s[%s][%s]', FilterConfiguration::COLUMNS_PATH, $fn, FilterInterface::DATA_NAME_KEY),
+                    sprintf('%s[%s][%s]', FilterConfiguration::COLUMNS_PATH, $fn, FilterUtility::DATA_NAME_KEY),
                     sprintf('%s.%s', $alias, $fn)
                 );
             }

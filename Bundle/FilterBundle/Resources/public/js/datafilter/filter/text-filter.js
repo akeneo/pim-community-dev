@@ -18,10 +18,11 @@ function($, _, __, AbstractFilter) {
         /** @property */
         template: _.template(
             '<button type="button" class="btn filter-criteria-selector oro-drop-opener oro-dropdown-toggle">' +
-                '<%= label %>: <strong class="filter-criteria-hint"><%= criteriaHint %></strong>' +
+                '<% if (showLabel) { %><%= label %>: <% } %>' +
+                '<strong class="filter-criteria-hint"><%= criteriaHint %></strong>' +
                 '<span class="caret"></span>' +
             '</button>' +
-            '<a href="<%= nullLink %>" class="disable-filter"><i class="icon-remove hide-text"><%- _.__("Close") %></i></a>' +
+            '<% if (canDisable) { %><a href="<%= nullLink %>" class="disable-filter"><i class="icon-remove hide-text"><%- _.__("Close") %></i></a><% } %>' +
             '<div class="filter-criteria dropdown-menu" />'
         ),
 
@@ -75,22 +76,6 @@ function($, _, __, AbstractFilter) {
         },
 
         /**
-         * Default value showed as filter's criteria hint
-         *
-         * @property {String}
-         */
-        defaultCriteriaHint: 'All',
-
-        /**
-         * Empty value
-         *
-         * @property {String}
-         */
-        emptyValue: {
-            value: ''
-        },
-
-        /**
          * View events
          *
          * @property {Object}
@@ -102,6 +87,32 @@ function($, _, __, AbstractFilter) {
             'click .filter-criteria-selector': '_onClickCriteriaSelector',
             'click .filter-criteria .filter-criteria-hide': '_onClickCloseCriteria',
             'click .disable-filter': '_onClickDisableFilter'
+        },
+
+        /**
+         * Initialize.
+         *
+         * @param {Object} options
+         */
+        initialize: function() {
+            // init empty value object if it was not initialized so far
+            if (_.isUndefined(this.emptyValue)) {
+                this.emptyValue = {
+                    value: ''
+                };
+            }
+
+            AbstractFilter.prototype.initialize.apply(this, arguments);
+        },
+
+        /**
+         * Makes sure the criteria popup dialog is closed
+         */
+        ensurePopupCriteriaClosed: function () {
+            if (this.popupCriteriaShowed) {
+                this._hideCriteria();
+                this.setValue(this._formatRawValue(this._readDOMValue()));
+            }
         },
 
         /**
@@ -190,8 +201,10 @@ function($, _, __, AbstractFilter) {
             this.$el.append(
                 this.template({
                     label: this.label,
+                    showLabel: this.showLabel,
                     criteriaHint: this._getCriteriaHint(),
-                    nullLink: this.nullLink
+                    nullLink: this.nullLink,
+                    canDisable: this.canDisable
                 })
             );
 
@@ -308,8 +321,8 @@ function($, _, __, AbstractFilter) {
          * @protected
          */
         _getCriteriaHint: function() {
-            var value = this._getDisplayValue();
-            return value.value ? '"' + value.value + '"': this.defaultCriteriaHint;
+            var value = (arguments.length > 0) ? this._getDisplayValue(arguments[0]) : this._getDisplayValue();
+            return value.value ? '"' + value.value + '"': this.placeholder;
         }
     });
 });

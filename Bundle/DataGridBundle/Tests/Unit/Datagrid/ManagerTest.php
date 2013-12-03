@@ -3,6 +3,8 @@
 namespace Oro\Bundle\DataGridBundle\Tests\Unit\Datagrid;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Manager;
+use Oro\Bundle\DataGridBundle\Provider\ConfigurationProvider;
+use Oro\Bundle\DataGridBundle\Provider\ChainConfigurationProvider;
 
 class ManagerTest extends \PHPUnit_Framework_TestCase
 {
@@ -39,7 +41,10 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
         $this->requestParams = $this->getMockBuilder('Oro\Bundle\DataGridBundle\Datagrid\RequestParameters')
             ->disableOriginalConstructor()->getMock();
 
-        $this->manager = new Manager($this->testConfiguration, $this->builder, $this->resolver, $this->requestParams);
+        $configProvider = new ConfigurationProvider($this->testConfiguration, $this->resolver);
+        $chainConfigProvider = new ChainConfigurationProvider();
+        $chainConfigProvider->addProvider($configProvider);
+        $this->manager = new Manager($chainConfigProvider, $this->builder, $this->requestParams);
     }
 
     public function tearDown()
@@ -80,7 +85,7 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
             ],
             'test some not existing grid should throw exception' => [
                 'someName',
-                'Configuration for datagrid "someName" not found'
+                'A configuration for "someName" datagrid was not found.'
             ]
         ];
     }

@@ -39,6 +39,33 @@
     z-index: 700;
     left: 5px;
 }
+.filter-box .filter-item .filter-criteria select,
+.filter-box .filter-item .filter-criteria textarea,
+.filter-box .filter-item .filter-criteria input[type="text"],
+.filter-box .filter-item .filter-criteria input[type="password"],
+.filter-box .filter-item .filter-criteria input[type="datetime"],
+.filter-box .filter-item .filter-criteria input[type="datetime-local"],
+.filter-box .filter-item .filter-criteria input[type="date"],
+.filter-box .filter-item .filter-criteria input[type="month"],
+.filter-box .filter-item .filter-criteria input[type="time"],
+.filter-box .filter-item .filter-criteria input[type="week"],
+.filter-box .filter-item .filter-criteria input[type="number"],
+.filter-box .filter-item .filter-criteria input[type="email"],
+.filter-box .filter-item .filter-criteria input[type="url"],
+.filter-box .filter-item .filter-criteria input[type="search"],
+.filter-box .filter-item .filter-criteria input[type="tel"],
+.filter-box .filter-item .filter-criteria input[type="color"],
+.filter-box .filter-item .filter-criteria .uneditable-input {
+    margin-bottom: 10px;
+}
+.filter-box .filter-item .filter-criteria .input-append input,
+.filter-box .filter-item .filter-criteria .input-prepend input,
+.filter-box .filter-item .filter-criteria .input-append select,
+.filter-box .filter-item .filter-criteria .input-prepend select,
+.filter-box .filter-item .filter-criteria .input-append .uneditable-input,
+.filter-box .filter-item .filter-criteria .input-prepend .uneditable-input {
+    margin-bottom: 0;
+}
 .filter-select .select-filter-widget {
     font-weight: bold;
     color: #333333;

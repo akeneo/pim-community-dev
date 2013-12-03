@@ -218,8 +218,11 @@ class OwnerFormExtension extends AbstractTypeExtension
                         'empty_value' => $this->translator->trans('oro.business_unit.form.choose_business_user'),
                         'choices' => $businessUnits,
                         'mapped' => true,
-                        'attr' => array('is_safe' => true),
-                        'label' => $this->fieldLabel
+                        'label' => $this->fieldLabel,
+                        'configs'     => array(
+                            'is_translate_option' => false,
+                            'is_safe'             => true
+                        )
                     ),
                     $validation
                 )

@@ -18,12 +18,12 @@ function(_, __, SelectFilter) {
          */
         template: _.template(
             '<div class="btn filter-select filter-criteria-selector">' +
-                '<%= label %>: ' +
+                '<% if (showLabel) { %><%= label %>: <% } %>' +
                 '<select multiple>' +
                     '<% _.each(options, function (option) { %><option value="<%= option.value %>"><%= option.label %></option><% }); %>' +
                 '</select>' +
             '</div>' +
-            '<a href="<%= nullLink %>" class="disable-filter"><i class="icon-remove hide-text"><%- _.__("Close") %></i></a>'
+            '<% if (canDisable) { %><a href="<%= nullLink %>" class="disable-filter"><i class="icon-remove hide-text"><%- _.__("Close") %></i></a><% } %>'
         ),
 
         /**

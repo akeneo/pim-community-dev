@@ -14,10 +14,11 @@ use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigModelManager;
 use Oro\Bundle\EntityConfigBundle\Config\ConfigManager;
-use Oro\Bundle\FilterBundle\Extension\Configuration as FilterConfiguration;
+use Oro\Bundle\FilterBundle\Filter\FilterUtility;
 
 /**
  * Class AbstractConfigGridListener
+ *
  * @package Oro\Bundle\EntityConfigBundle\EventListener
  *
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
@@ -69,9 +70,9 @@ abstract class AbstractConfigGridListener implements EventSubscriberInterface
      * Add dynamic fields
      *
      * @param BuildBefore $event
-     * @param string|null  $alias
-     * @param string|null  $itemType
-     * @param bool         $dynamicFirst flag if true - dynamic columns will be placed before static, false - after
+     * @param string|null $alias
+     * @param string|null $itemType
+     * @param bool        $dynamicFirst flag if true - dynamic columns will be placed before static, false - after
      */
     public function doBuildBefore(BuildBefore $event, $alias = null, $itemType = null, $dynamicFirst = true)
     {
@@ -180,11 +181,11 @@ abstract class AbstractConfigGridListener implements EventSubscriberInterface
 
             if (isset($field['filterable']) && $field['filterable']) {
                 $filters['columns'][$fieldName] = [
-                    'data_name'                      => isset($field['expression']) ? $field['expression'] : $fieldName,
-                    'type'                           => isset($field['filter_type']) ? $field['filter_type'] : 'string',
-                    'frontend_type'                  => $field['frontend_type'],
-                    'label'                          => $field['label'],
-                    FilterConfiguration::ENABLED_KEY => isset($field['show_filter']) ? $field['show_filter'] : true,
+                    'data_name'                => isset($field['expression']) ? $field['expression'] : $fieldName,
+                    'type'                     => isset($field['filter_type']) ? $field['filter_type'] : 'string',
+                    'frontend_type'            => $field['frontend_type'],
+                    'label'                    => $field['label'],
+                    FilterUtility::ENABLED_KEY => isset($field['show_filter']) ? $field['show_filter'] : true,
                 ];
 
                 if (isset($field['choices'])) {

@@ -66,6 +66,7 @@ config:
         'jquery': 'bundles/oroui/lib/jquery-1.10.2.js'
         'jquery-ui': 'bundles/oroui/lib/jquery-ui.min.js'
         'jquery-ui-timepicker': 'bundles/oroui/lib/jquery-ui-timepicker-addon.js'
+        'jquery-outer-html': 'bundles/oroui/lib/outerHTML-2.1.0-min.js'
         'jquery.mousewheel': 'bundles/oroui/lib/jquery/jquery.mousewheel.min.js'
         'jquery.numeric': 'bundles/oroui/lib/jquery/jquery.numeric.js'
         'jquery.uniform': 'bundles/oroui/lib/jquery/jquery.uniform.min.js'

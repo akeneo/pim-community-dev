@@ -2,11 +2,12 @@
 
 namespace Oro\Bundle\DataGridBundle\Datagrid;
 
-use Oro\Bundle\DataGridBundle\Provider\SystemAwareResolver;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
+use Oro\Bundle\DataGridBundle\Provider\ConfigurationProviderInterface;
 
 /**
  * Class Manager
+ *
  * @package Oro\Bundle\DataGridBundle\Datagrid
  *
  * Responsibility of this class is to store raw config data, prepare configs for datagrid builder.
@@ -17,28 +18,27 @@ class Manager implements ManagerInterface
     /** @var Builder */
     protected $datagridBuilder;
 
-    /** @var SystemAwareResolver */
-    protected $resolver;
-
     /** @var RequestParameters */
     protected $requestParams;
 
-    /** @var array */
-    protected $rawConfiguration = [];
+    /** @var ConfigurationProviderInterface */
+    protected $configurationProvider;
 
-    /** @var DatagridConfiguration[] */
-    protected $processedConfiguration = [];
-
+    /**
+     * Constructor
+     *
+     * @param ConfigurationProviderInterface $configurationProvider
+     * @param Builder                        $builder
+     * @param RequestParameters              $requestParams
+     */
     public function __construct(
-        array $rawConfiguration,
+        ConfigurationProviderInterface $configurationProvider,
         Builder $builder,
-        SystemAwareResolver $resolver,
         RequestParameters $requestParams
     ) {
-        $this->rawConfiguration = $rawConfiguration;
-        $this->datagridBuilder  = $builder;
-        $this->resolver         = $resolver;
-        $this->requestParams    = $requestParams;
+        $this->configurationProvider = $configurationProvider;
+        $this->datagridBuilder       = $builder;
+        $this->requestParams         = $requestParams;
     }
 
     /**
@@ -61,17 +61,7 @@ class Manager implements ManagerInterface
      */
     public function getConfigurationForGrid($name)
     {
-        if (!isset($this->rawConfiguration[$name])) {
-            throw new \RuntimeException(sprintf('Configuration for datagrid "%s" not found', $name));
-        }
-
-        if (!isset($this->processedConfiguration[$name])) {
-            $config = $this->resolver->resolve($name, $this->rawConfiguration[$name]);
-
-            $this->processedConfiguration[$name] = $config;
-        }
-
-        return DatagridConfiguration::createNamed($name, $this->processedConfiguration[$name]);
+        return $this->configurationProvider->getConfiguration($name);
     }
 
     /**

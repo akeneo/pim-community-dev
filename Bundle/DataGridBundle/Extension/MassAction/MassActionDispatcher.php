@@ -14,7 +14,7 @@ use Oro\Bundle\DataGridBundle\Datasource\Orm\IterableResult;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 use Oro\Bundle\DataGridBundle\Extension\ExtensionVisitorInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface;
-use Oro\Bundle\FilterBundle\Extension\OrmFilterExtension;
+use Oro\Bundle\FilterBundle\Grid\Extension\OrmFilterExtension;
 
 class MassActionDispatcher
 {
