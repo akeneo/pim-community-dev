@@ -67,16 +67,14 @@ class MetricFilter extends NumberFilter
         }
 
         $operator = $this->getOperator($data['type']);
-        $unit     = $data['unit'];
-
-        $newAlias = 'valueMetrics';
 
         // Convert value to base unit
         $this->converter->setFamily($this->family);
         $baseValue = $this->converter->convertBaseToStandard($data['unit'], $data['value']);
 
+        // Apply clause
         $paramValue = $this->getNewParameterName($proxyQuery);
-        $exprCmp = $this->createCompareFieldExpression('baseData', $newAlias, $operator, $paramValue);
+        $exprCmp = $this->createCompareFieldExpression('baseData', 'valueMetrics', $operator, $paramValue);
         $this->applyFilterToClause($proxyQuery, $exprCmp);
         $proxyQuery->setParameter($paramValue, $baseValue);
     }
