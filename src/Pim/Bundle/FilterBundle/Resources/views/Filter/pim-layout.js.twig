@@ -67,6 +67,6 @@
         'enabled':          {{ formView.vars.show_filter|json_encode|raw }},
         'choices':          {{ formView.vars.operator.type|json_encode|raw }},
         'units':            {{ formView.vars.unit.type|json_encode|raw }},
-{#         'formatterOptions': {{ formView.vars.formatter_options|json_encode|raw }}#}
+        'formatterOptions': {{ formView.vars.formatter_options|json_encode|raw }}
     }))
 {% endblock %}
