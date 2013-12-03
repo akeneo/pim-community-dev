@@ -4,16 +4,12 @@ namespace Pim\Bundle\GridBundle\Filter\ORM;
 
 use Symfony\Component\Translation\TranslatorInterface;
 
+use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
+use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
+use Oro\Bundle\GridBundle\Filter\ORM\NumberFilter;
 use Oro\Bundle\MeasureBundle\Convert\MeasureConverter;
 
-use Oro\Bundle\FilterBundle\Form\Type\Filter\NumberFilterType;
-
-use Oro\Bundle\GridBundle\Field\FieldDescriptionInterface;
-
 use Pim\Bundle\FilterBundle\Form\Type\Filter\MetricFilterType;
-
-use Oro\Bundle\GridBundle\Datagrid\ProxyQueryInterface;
-use Oro\Bundle\GridBundle\Filter\ORM\NumberFilter;
 
 /**
  * Metric filter related to flexible entities
@@ -21,7 +17,6 @@ use Oro\Bundle\GridBundle\Filter\ORM\NumberFilter;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
  */
 class MetricFilter extends NumberFilter
 {
@@ -73,7 +68,7 @@ class MetricFilter extends NumberFilter
         $operator = $this->getOperator($data['type']);
         $unit     = $data['unit'];
 
-        $newAlias = 'valueMetrics'; // FIXME with static property count
+        $newAlias = 'valueMetrics';
 
         // Convert value to base unit
         $this->converter->setFamily($this->family);
@@ -83,12 +78,6 @@ class MetricFilter extends NumberFilter
         $exprCmp = $this->createCompareFieldExpression('baseData', $newAlias, $operator, $paramValue);
         $this->applyFilterToClause($proxyQuery, $exprCmp);
         $proxyQuery->setParameter($paramValue, $baseValue);
-
-
-//         $expr = $this->createCompareFieldExpression($field, $alias, $operator, $parameterName)
-
-
-//         return $data;
     }
 
     /**

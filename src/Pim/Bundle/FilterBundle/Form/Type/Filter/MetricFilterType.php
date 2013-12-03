@@ -25,15 +25,6 @@ class MetricFilterType extends NumberFilterType
      */
     const NAME = 'pim_type_metric_filter';
 
-    const TYPE_GREATER_EQUAL = 1;
-    const TYPE_GREATER_THAN = 2;
-    const TYPE_EQUAL = 3;
-    const TYPE_LESS_EQUAL = 4;
-    const TYPE_LESS_THAN = 5;
-
-    const DATA_INTEGER = 'data_integer';
-    const DATA_DECIMAL = 'data_decimal';
-
     /**
      * Constructor
      *
@@ -60,11 +51,10 @@ class MetricFilterType extends NumberFilterType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('unit', 'choice', $this->createUnitOptions($options));
-
-        $builder->add('operator', 'choice', array('choices' => $this->getOperatorChoices()));
-
-        $builder->add('value', 'number');
+        $builder
+            ->add('operator', 'choice', array('choices' => $this->getOperatorChoices()))
+            ->add('value', 'number')
+            ->add('unit', 'choice', $this->createUnitOptions($options));
     }
 
     /**
@@ -89,8 +79,6 @@ class MetricFilterType extends NumberFilterType
      *
      * @param array $options
      *
-     * @throws FormException
-     *
      * @return array
      */
     protected function createUnitOptions(array $options)
@@ -103,18 +91,24 @@ class MetricFilterType extends NumberFilterType
         return $result;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
+        parent::setDefaultOptions($resolver);
+
         $resolver->setDefaults(
             array(
-                'data_type' => 'data_decimal',
                 'operator_choices' => $this->getOperatorChoices(),
-                'field_options' => array(),
-                'formatter_options' => array()
+                'field_options' => array()
             )
         );
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         parent::buildView($view, $form, $options);
