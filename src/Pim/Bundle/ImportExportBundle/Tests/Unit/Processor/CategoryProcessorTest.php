@@ -43,7 +43,11 @@ class CategoryProcessorTest extends AbstractProcessorTestCase
     {
         return array(
             'circularRefsChecked' => array(
-                'type' => 'switch',
+                'type'    => 'switch',
+                'options' => array(
+                    'label' => 'pim_import_export.import.circularRefsChecked.label',
+                    'help'  => 'pim_import_export.import.circularRefsChecked.help'
+                )
             ),
         );
     }
