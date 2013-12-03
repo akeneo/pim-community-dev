@@ -59,7 +59,7 @@ class RemoveDuplicateJobConfigurationSubscriber implements EventSubscriberInterf
     }
 
     /**
-     * Set the current configuration to all the steps of the job
+     * Synchronize the configuration to all the steps of the job
      * to make it available to steps that duplicate configuration
      *
      * @param FormEvent $event
@@ -71,6 +71,6 @@ class RemoveDuplicateJobConfigurationSubscriber implements EventSubscriberInterf
             return;
         }
 
-        $job->setConfiguration($job->getConfiguration());
+        $job->syncConfiguration();
     }
 }
