@@ -111,13 +111,8 @@ class MetricFilterTest extends FilterTestCase
                 'expectProxyQueryCalls' => array(),
                 array('field_options' => array('family' => 'Weight'))
             ),
-            'no_currency' => array(
+            'no_unit' => array(
                 'data' => array('value' => 5),
-                'expectProxyQueryCalls' => array(),
-                array('field_options' => array('family' => 'Weight'))
-            ),
-            'not_alphanumeric_currency' => array(
-                'data' => array('value' => 'string', 'unit' => 'GRAM'),
                 'expectProxyQueryCalls' => array(),
                 array('field_options' => array('family' => 'Weight'))
             )
