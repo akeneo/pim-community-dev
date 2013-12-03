@@ -19,85 +19,85 @@ oro_default:
         _controller: FrameworkBundle:Template:template
 
 oro_ui:
-    resource: "@OroUIBundle/Resources/config/routing.yml"
+    resource: "@OroUIBundle/Resources/config/oro/routing.yml"
     prefix:   /ui
 
 oro_form:
-    resource: "@OroFormBundle/Resources/config/routing.yml"
+    resource: "@OroFormBundle/Resources/config/oro/routing.yml"
     prefix:   /
 
 oro_notification:
-    resource: "@OroNotificationBundle/Resources/config/routing.yml"
+    resource: "@OroNotificationBundle/Resources/config/oro/routing.yml"
     prefix:   /
 
 oro_grid:
-    resource: "@OroGridBundle/Resources/config/routing.yml"
+    resource: "@OroGridBundle/Resources/config/oro/routing.yml"
 
 oro_user:
-    resource: "@OroUserBundle/Resources/config/routing.yml"
+    resource: "@OroUserBundle/Resources/config/oro/routing.yml"
 
 oro_search:
-    resource: "@OroSearchBundle/Resources/config/routing.yml"
+    resource: "@OroSearchBundle/Resources/config/oro/routing.yml"
     prefix:   /
 
 oro_navigation:
-    resource: "@OroNavigationBundle/Resources/config/routing.yml"
+    resource: "@OroNavigationBundle/Resources/config/oro/routing.yml"
     prefix:   /
 
 oro_windows:
-    resource: "@OroWindowsBundle/Resources/config/routing.yml"
+    resource: "@OroWindowsBundle/Resources/config/oro/routing.yml"
     prefix: /
 
 oro_soap:
-    resource: "@OroSoapBundle/Resources/config/routing.yml"
+    resource: "@OroSoapBundle/Resources/config/oro/routing.yml"
     prefix:   /api
 
 oro_config:
-    resource: "@OroConfigBundle/Resources/config/routing.yml"
+    resource: "@OroConfigBundle/Resources/config/oro/routing.yml"
 
 oro_dataaudit:
-    resource: "@OroDataAuditBundle/Resources/config/routing.yml"
+    resource: "@OroDataAuditBundle/Resources/config/oro/routing.yml"
 
 oro_entity:
-    resource: "@OroEntityBundle/Resources/config/routing.yml"
+    resource: "@OroEntityBundle/Resources/config/oro/routing.yml"
 
 oro_entity_config:
-    resource: "@OroEntityConfigBundle/Resources/config/routing.yml"
+    resource: "@OroEntityConfigBundle/Resources/config/oro/routing.yml"
 
 oro_entity_extend:
-    resource: "@OroEntityExtendBundle/Resources/config/routing.yml"
+    resource: "@OroEntityExtendBundle/Resources/config/oro/routing.yml"
 
 oro_workflow:
-    resource: "@OroWorkflowBundle/Resources/config/routing.yml"
+    resource: "@OroWorkflowBundle/Resources/config/oro/routing.yml"
 
 oro_address:
-    resource: "@OroAddressBundle/Resources/config/routing.yml"
+    resource: "@OroAddressBundle/Resources/config/oro/routing.yml"
 
 oro_translation_bundle:
-    resource: "@OroTranslationBundle/Resources/config/routing.yml"
+    resource: "@OroTranslationBundle/Resources/config/oro/routing.yml"
 
-oro_assets:
-    resource: .
-    type:     oro_assetic
+#oro_assets:
+#    resource: .
+#    type:     oro_assetic
 
 oro_tag:
-    resource: "@OroTagBundle/Resources/config/routing.yml"
+    resource: "@OroTagBundle/Resources/config/oro/routing.yml"
 
 oro_email:
-    resource: "@OroEmailBundle/Resources/config/routing.yml"
+    resource: "@OroEmailBundle/Resources/config/oro/routing.yml"
 
 oro_organization:
-    resource: "@OroOrganizationBundle/Resources/config/routing.yml"
+    resource: "@OroOrganizationBundle/Resources/config/oro/routing.yml"
 
 oro_cron:
-    resource: "@OroCronBundle/Resources/config/routing.yml"
+    resource: "@OroCronBundle/Resources/config/oro/routing.yml"
     prefix:   /cron
 
 oro_installer:
-    resource: "@OroInstallerBundle/Resources/config/routing.yml"
+    resource: "@OroInstallerBundle/Resources/config/oro/routing.yml"
 
 oro_importexport:
-    resource: "@OroImportExportBundle/Resources/config/routing.yml"
+    resource: "@OroImportExportBundle/Resources/config/oro/routing.yml"
 
 # other third party
 
@@ -112,5 +112,5 @@ _imagine:
     resource: .
     type:     imagine
 
-_apy_jsformvalidation:
-    resource: "@APYJsFormValidationBundle/Resources/config/routing/routing.yml"
+#_apy_jsformvalidation:
+#    resource: "@APYJsFormValidationBundle/Resources/config/routing/routing.yml"

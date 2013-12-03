@@ -18,7 +18,7 @@
     },
     "require": {
         "php": ">=5.4.4",
-        "oro/platform": "dev-maintenance/pim_beta4",
+        "oro/platform": "dev-fix/remove_flexible_entity",
         "knplabs/knp-gaufrette-bundle": "dev-master",
         "incenteev/composer-parameter-handler": "~2.0",
         "doctrine/mongodb-odm-bundle": "3.0.*@dev"
@@ -36,7 +36,7 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/akeneo/platform.git",
+            "url": "https://github.com/laboro/platform.git",
             "branch": "master"
         }
     ],
